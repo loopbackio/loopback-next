@@ -1,0 +1,39 @@
+<!-- A table of members such as parameters/properties/variables -->
+<div class="code-arguments-hdr"><%-title%></div>
+<table class="params code-arguments">
+  <tr>
+    <th class="hdr-name">Name</th>
+    <th class="hdr-type">Type</th>
+    <th class="hdr-default-value">Default Value</th>
+    <th class="hdr-flags">Flags</th>
+    <th class="hdr-desc">Description</th>
+  </tr>
+  <%
+  if (members && members.length > 0) {
+    members.forEach(function(param) {
+  %>
+    <tr class="code-arg">
+      <td>
+        <a name="<%-param.anchorId%>"></a>
+        <strong class="code-arg-name">
+          <%-param.name%>
+        </strong>
+      </td>
+      <td class="code-arg-types">
+        <%- include('type', param); %>
+      </td>
+      <td class="code-arg-default-value">
+        <%- param.defaultValue %>
+      </td>
+      <td class="code-arg-flags">
+        <%- tsHelpers.getFlags(param.flags) %>
+      </td>
+      <td class="code-arg-desc">
+        <%- include('comments', param); %>
+      </td>
+    </tr>
+    <%
+    });
+  }
+%>
+</table>

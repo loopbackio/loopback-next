@@ -1,0 +1,17 @@
+Usage:
+  
+  sdocs <arguments>
+  
+Arguments:
+
+  --config, -c          Relative path to config file. Eg. `foo/docs.json`
+  --html-file           The file name for the generated html page
+  --out, -o             Output path for generated docs directory
+  --preview, -p         Start a preview server
+  --port                Specify the preview server port
+  --skip-public-assets  Do not copy public assets
+  --tsconfig            Specify the tsconfig option for typescript
+  --tstarget            Specify the target for typescript
+  --help, -h            Print this help text
+
+Either --out or --preview argument must be specified.

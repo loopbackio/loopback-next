@@ -1,0 +1,38 @@
+<%
+  if (type.type === 'intrinsic') {
+%>
+<section class="code-doc ">
+    <a name="<%-anchorId%>"></a>
+    <h3 class="code-ref"><%-kindString%>: <%-name%> = <%-type.name%></h3>
+</section>
+<%
+  } else if (type.type === 'array') {
+%>
+<section class="code-doc ">
+    <a name="<%-anchorId%>"></a>
+    <h3 class="code-ref"><%-kindString%>: <%-name%> = <%-type.elementType.name%>[]</h3>
+</section>
+<%
+  } else if (type.type === 'reference') {
+%>
+<section class="code-doc ">
+    <a name="<%-anchorId%>"></a>
+    <h3 class="code-ref"><%-kindString%>: <%-name%> = <%-type.name%></h3>
+</section>
+<%
+  } else if (type.type === 'reflection') {
+    var declaration = type.declaration;
+    var signatures = [];
+    if (Array.isArray(declaration.signatures)) {
+      signatures = signatures.concat(declaration.signatures);
+    }
+    if (declaration.indexSignature) {
+      signatures.push(declaration.indexSignature);
+    }
+    signatures.forEach(function(signature) {
+%>
+    <%- include('typeAliasReflection', {signature: signature}); %>
+<%
+    });
+  }
+%>

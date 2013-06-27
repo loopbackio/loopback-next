@@ -1,0 +1,24 @@
+<%
+    var templates = {
+        'Class': 'class',
+        'Interface': 'interface',
+        'Function': 'function',
+        'Variable': 'variable',
+        'Object literal': 'objectLiteral',
+        'Module': 'namespace',
+        'Type alias': 'typeAlias',
+        'Enumeration': 'enum'
+    };
+    if (locals.children && locals.children.length > 0) {
+        children.filter(function(c) {
+            return tsHelpers.shouldDocument(c);
+        }).forEach(function(child) {
+            child.name = name + '.' + child.name;
+            if (templates[child.kindString]) {
+%>
+        <%- include(templates[child.kindString], child); %>
+<%
+            }
+        });
+    }
+%>

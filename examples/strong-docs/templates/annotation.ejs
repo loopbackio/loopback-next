@@ -1,0 +1,171 @@
+<section class="code-doc <%= ann.isClass ? 'code-class' : '' %>">
+  <a name="<%= ann.anchor %>"></a>
+  <h<%= section.depth %> class="code-ref"><%= ann.header %></h<%= section.depth %>>
+  <% if(ann.classDesc) { %>
+    <h<%= section.depth + 1 %> class="code-class-desc"><%= ann.classDesc %></h<%= section.depth + 1 %>>
+  <% } %>
+    <% if(ann.moduleExample) { %>
+    <h<%= section.depth + 1 %> class="code-module-example"><%= ann.moduleExample %></h<%= section.depth + 1 %>>
+  <% } %>
+  <div class="code-desc">
+    <%- ann.html %>
+  </div>
+  <% if(Array.isArray(ann.args) && ann.args.length) { %>
+    <div class="code-arguments-hdr">Arguments</div>
+    <table class="params code-arguments">
+      <tr>
+        <th class="hdr-name">Name</th>
+        <th class="hdr-type">Type</th>
+        <th class="hdr-desc">Description</th>
+      </tr>
+      <%
+      ann.args.forEach(function (arg) {
+        renderArg(arg);
+      })
+      %>
+    </table>
+    <%
+
+      ann.args.forEach(function (arg) {
+        if(arg.type === 'options' && arg.properties.length) {
+          %>
+          <div class="code-arguments-hdr"><%= arg.name || 'Options' %></div>
+          <table class="params code-arg-options">
+            <tr>
+              <th class="hdr-name">Name</th>
+              <th class="hdr-type">Type</th>
+              <th class="hdr-desc">Description</th>
+            </tr>
+          <%
+          arg.properties.forEach(renderArg);
+          %>
+          </table>
+          <%
+        } else if(arg.type === 'callback' && arg.args.length) {
+          %>
+
+          <% if (!ann.promise) {%>
+            <div class="code-arguments-hdr">Callback</div>
+          <% } else { %>
+            <div class="code-arguments-hdr">Callback (optional)</div>
+            <p>
+            Optional callback. When the callback function is not provided,
+            a promise is returned instead (see below).
+            </p>
+          <% } %>
+
+          <table class="params code-callback-args">
+          <tr>
+            <th class="hdr-name">Name</th>
+            <th class="hdr-type">Type</th>
+            <th class="hdr-desc">Description</th>
+          </tr>
+          <%
+          arg.args.forEach(renderArg);
+          %>
+          </table>
+          <%
+        }
+      })
+    %>
+
+  <% } %>
+
+    <% if(Array.isArray(ann.properties) && ann.properties.length) { %>
+    <div class="code-arguments-hdr">Class Properties</div>
+    <table class="params code-arguments">
+      <tr>
+        <th class="hdr-name">Name</th>
+        <th class="hdr-type">Type</th>
+        <th class="hdr-desc">Description</th>
+      </tr>
+      <%
+      ann.properties.forEach(function (arg) {
+        renderArg(arg);
+      })
+      %>
+    </table>
+    <%
+      ann.properties.forEach(function (arg) {
+        if(arg.type === 'options' && arg.properties.length) {
+          %>
+          <div class="code-arguments-hdr"><%= arg.name || 'Options' %></div>
+          <table class="params code-arg-options">
+            <tr>
+              <th class="hdr-name">Name</th>
+              <th class="hdr-type">Type</th>
+              <th class="hdr-desc">Description</th>
+            </tr>
+          <%
+          arg.properties.forEach(renderArg);
+          %>
+          </table>
+          <% }
+      })
+ }
+ %>
+
+  <% if(ann.attrs.returns) { %>
+    <div class="code-arguments-hdr">Returns</div>
+    <table class="params code-callback-args">
+      <tr>
+        <th class="hdr-name">Name</th>
+        <th class="hdr-type">Type</th>
+        <th class="hdr-desc">Description</th>
+      </tr>
+      <% renderArg(ann.attrs.returns) %>
+    </table>
+  <% } %>
+
+  <% if(ann.attrs.example) {%>
+    <div class="code-arguments-hdr">Example</div>
+    <div class="example">
+      <%- md(ann.attrs.example) %>
+    </div>
+  <% } %>
+
+  <% if(ann.promise) {%>
+    <div class="code-arguments-hdr">Promise</div>
+    <p>
+    This method supports both callback-based and promise-based invocation.
+    Call this method with no callback argument to get back a promise instead.
+    <% if(ann.promise.warning) {%>
+    <div>
+      <b>WARNING</b>: this promise implementation will not resolve according to
+      the callback function.
+    </div>
+    <% } %>
+    </p>
+    <table class="params code-callback-args">
+    <tr>
+      <th class="hdr-name">Handler</th>
+      <th class="hdr-type">Argument</th>
+      <th class="hdr-desc">Description</th>
+    </tr>
+    <%
+    ann.promise.attrs.forEach(renderArg);
+    %>
+    </table>
+
+  <% } %>
+
+</section>
+
+
+<% function renderArg(arg) { %>
+  <tr class="code-arg">
+      <td>
+        <strong class="code-arg-name"><%= arg.name %></strong>
+      </td>
+      <td class="code-arg-types">
+        <% if(arg.types) { %>
+          <code><%= arg.types.join(' or ') %></code>
+        <% } else if(arg.type) { %>
+          <code><%= arg.type %></code>
+        <% } %>
+      </td>
+    <td class="code-arg-desc">
+      <%- arg.description || '' %>
+    </td>
+  </tr>
+<% } %>

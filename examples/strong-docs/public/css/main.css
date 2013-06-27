@@ -1,0 +1,151 @@
+/* Since we generate (both via Marked and JSDoc) empty anchors as jump link
+targets, we can target them here to offset said jump links. */
+a[name] {
+  display: block; position: relative; top: -70px; visibility: hidden;
+}
+
+.column {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.scroll-spy-target {
+  border-right: 1px solid #ccc;
+}
+
+.readability {
+  padding-left: 40px;
+  max-width: 700px;
+}
+
+@media (min-width: 992px) {
+  .column {
+    position: absolute;
+    top: 52px;
+    bottom: 0;
+    overflow-y: auto;
+  }
+}
+
+.nav-pills a {
+  color: #08592b;
+}
+
+.nav .depth-1 > a { font-size: 170%; }
+.nav .depth-2 > a { font-size: 140%; }
+.nav .depth-3 > a { font-size: 120%; }
+.nav .depth-4 > a { font-size: 100%; font-weight: 500; }
+.nav .depth-5 > a { font-size: 90%; font-weight: 500; }
+.nav .depth-6 > a { font-size: 80%; font-weight: 500; }
+
+.nav-pills li > a {
+  padding: 3px 6px;
+}
+.nav .depth-1 { margin: 0; padding: 0 0 0 0; }
+.nav .depth-2 { margin: 0; padding: 20px 0 0 0; }
+.nav .depth-3 { margin: 0; padding: 10px 0 0 10px; }
+.nav .depth-4 { margin: 0; padding: 0 0 0 20px; }
+.nav .depth-5 { margin: 0; padding: 0 0 0 40px; }
+.nav .depth-6 { margin: 0; padding: 0 0 0 60px; }
+
+/* Annotations */
+.code-arguments-hdr {
+  font-size: 120%;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+code {
+  font-family: 'Courier New','Andale Mono',monospace !important;
+  font-weight: bold;
+  background: none;
+}
+
+.code-ref {
+  margin-left: -20px;
+}
+
+.code-arg {
+  margin-top: 10px;
+  margin-left: 20px;
+}
+.code-arg-types {
+  font-weight: bold;
+}
+.code-arg-flags {
+  font-weight: normal;
+}
+.code-arg-default-value {
+  font-weight: normal;
+}
+.code-arg-desc {
+  margin-top: 10px;
+}
+
+.intentionally-left-blank {
+  display: block;
+  height: 100%;
+}
+
+.params {
+  width: 100%;
+  border: solid 1px #ccc;
+}
+.params td, .params th {
+  padding: 5px;
+  vertical-align: middle;
+  border: solid 1px #ccc;
+}
+
+.params .hdr-name {
+  width: 15%;
+}
+.params .hdr-type {
+  width: 15%;
+}
+.params .hdr-default-value {
+  width: 15%;
+}
+.params .hdr-flags {
+  width: 10%;
+}
+.params .hdr-desc {
+  width: 60%;
+}
+
+.params th {
+  background: #e8e8e8;
+}
+
+.params p {
+  margin: 0;
+}
+
+.params ul {
+  margin: 0;
+}
+
+.params ul + * {
+  margin-top: 10px;
+}
+
+.params pre {
+  margin: 0;
+}
+
+.params pre + * {
+  margin-top: 10px;
+}
+
+.params p + * {
+  margin-top: 10px;
+}
+
+section + section {
+  margin-top: 24px;
+}
+
+section {
+  margin-left: 30px;
+}

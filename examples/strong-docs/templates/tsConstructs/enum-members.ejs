@@ -1,0 +1,34 @@
+<section class="code-doc">
+    <div class="code-arguments-hdr">Members</div>
+    <table class="params code-arguments">
+        <tr>
+            <th class="hdr-name">Name</th>
+            <th class="hdr-default-value">Default Value</th>
+            <th class="hdr-flags">Flags</th>
+            <th class="hdr-desc">Description</th>
+        </tr>
+        <%
+            if (children && children.length > 0) {
+                children.forEach(function(member) {
+        %>
+            <tr class="code-arg">
+                <td>
+                    <a name="<%-member.anchorId%>"></a>
+                    <strong class="code-arg-name"><%-member.name%></strong>
+                </td>
+                <td class="code-arg-default-value">
+                    <%- member.defaultValue %>
+                </td>
+                <td class="code-arg-flags">
+                    <%- tsHelpers.getFlags(member.flags) %>
+                </td>
+                <td class="code-arg-desc">
+                    <%- include('comments', member); %>
+                </td>
+            </tr>
+        <%
+                });
+            }
+        %>
+    </table>
+</section>

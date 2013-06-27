@@ -1,0 +1,39 @@
+<%
+    var properties = [];
+    var variables = [];
+    if (locals.children && locals.children.length > 0) {
+        children.forEach(function(child) {
+            if (child.kindString === 'Property' && tsHelpers.shouldDocument(child)) {
+                properties.push(child);
+            }
+            if (child.kindString === 'Variable' && tsHelpers.shouldDocument(child)) {
+                variables.push(child);
+            }
+        });
+        if (properties && properties.length > 0) {
+%>
+    <%- include('properties', {'properties': properties}); %>
+<%
+        }
+        if (variables && variables.length > 0) {
+%>
+            <%- include('variables', {'variables': variables}); %>
+<%
+        }
+        children.forEach(function(child) {
+            if (tsHelpers.shouldDocument(child) &&
+              (child.kindString === 'Constructor' ||
+               child.kindString === 'Method')) {
+%>
+                <%- include('method', child); %>
+<%
+            }
+            if (child.kindString === 'Accessor') {
+                child.signatures = [child.getSignature || child.setSignature];
+%>
+                <%- include('method', child); %>
+<%
+            }
+        });
+    }
+%>

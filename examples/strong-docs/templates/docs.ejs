@@ -1,0 +1,15 @@
+<% include header %>
+<div class="row">
+  <div class="col-lg-3 column scroll-spy-target">
+    <% include nav %>
+  </div>
+  <div class="col-lg-9 col-lg-offset-3 column" data-spy="scroll" data-target=".scroll-spy-target" data-offset="0">
+    <div class="readability">
+      <% docs.content.forEach(function (doc) { %>
+        <%- doc.html %>
+      <% }) %>
+    </div>
+    <div class="intentionally-left-blank"></div>
+  </div>
+</div>
+<% include footer %>

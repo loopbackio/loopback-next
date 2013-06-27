@@ -1,0 +1,19 @@
+<section class="code-doc ">
+    <a name="<%-anchorId%>"></a>
+<%
+var type = signature.type;
+%>
+<h4 class="code-ref"><%-name%>(<%-tsHelpers.commaSepParams(signature.parameters)%>) : <%-tsHelpers.getTypeStr(type)%></h4>
+<%
+var methodComment = signature.comment || null;
+%>
+    <%- include('comments', {'comment': methodComment}); %>
+<%
+    var parameters = signature.parameters;
+    if (parameters && parameters.length > 0) {
+%>
+    <%- include('members', {title: 'Parameters', members: parameters}); %>
+<%
+    }
+%>
+</section>

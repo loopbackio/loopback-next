@@ -1,0 +1,88 @@
+<section class="code-doc ">
+    <a name="<%-anchorId%>"></a>
+<%
+    if (signature.type.type === 'reference' && signature.type.name !== 'Promise') {
+%>
+        <h3 class="code-ref"><%-kindString%>: <%-name%>(<%-tsHelpers.commaSepParams(signature.parameters)%>): <a href="#<%-signature.type.name%>"><%-signature.type.name%></a></h3>
+<%
+    } else if (signature.type.type === 'reference' && signature.type.name === 'Promise') {
+%>
+        <h3 class="code-ref"><%-kindString%>: <%-name%>(<%-tsHelpers.commaSepParams(signature.parameters)%>): <%-signature.type.name%>&lt;<a href="#<%-signature.type.typeArguments[0].name%>"><%-signature.type.typeArguments[0].name%></a>&gt;</h3>
+<%
+    } else {
+%>
+        <h3 class="code-ref"><%-kindString%>: <%-name%>(<%-tsHelpers.commaSepParams(signature.parameters)%>): <%-signature.type.name%></h3>
+<%
+    }
+%>
+    <div class="code-desc">
+        <%
+            var comment = comment || comment_copy || signature.comment || null;
+            var commentsMap;
+            if (comment && comment.tags) {
+                commentsMap = {};
+                comment.tags.forEach(function(tag) {
+                    if (tag.tag === 'param') {
+                        commentsMap[tag.param] = tag.text;
+                    }
+                    if (tag.tag === 'returns') {
+                        commentsMap[tag.tag] = tag.text;
+                    }
+                });
+            }
+          if (comment) {%>
+            <p><%-comment.shortText%></p>
+            <p><%-comment.text%></p>
+          <%}
+          if (comment && comment.returns) {%>
+            Returns: <p><%-comment.returns%></p>
+          <%
+          } else if (commentsMap) {
+          %>
+            Returns: <p><%-commentsMap['returns']%></p>
+          <%
+          }
+          %>
+    </div>
+<%
+    var parameters = signature.parameters;
+    if (parameters && parameters.length > 0) {
+%>
+    <div class="code-arguments-hdr">Arguments</div>
+    <table class="params code-arguments">
+        <tr>
+            <th class="hdr-name">Name</th>
+            <th class="hdr-type">Type</th>
+            <th class="hdr-desc">Description</th>
+        </tr>
+<%
+        parameters.forEach(function(param) {
+%>
+            <tr class="code-arg">
+                <td>
+                    <strong class="code-arg-name"><%-param.name%></strong>
+                </td>
+                <td class="code-arg-types">
+                    <%- include('type', param); %>
+                </td>
+                <td class="code-arg-desc">
+                    <%if (param.comment) {%>
+                        <div class="code-desc">
+                            <p><%-param.comment.shortText%></p>
+                            <p><%-param.comment.text%></p>
+                        </div>
+                    <%} else if (commentsMap) {%>
+                        <div class="code-desc">
+                            <p><%-commentsMap[param.name]%></p>
+                        </div>
+                    <%}%>
+                </td>
+            </tr>
+<%
+        });
+%>
+    </table>
+<%
+    }
+%>
+</section>

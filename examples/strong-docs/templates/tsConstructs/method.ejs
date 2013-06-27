@@ -1,0 +1,10 @@
+<%
+if (Array.isArray(signatures)) {
+  // An overloaded function has multiple signatures
+  signatures.forEach(function(signature) {
+%>
+  <%- include('methodSignature', {flags: flags, signature: signature}); %>
+<%
+  });
+}
+%>
