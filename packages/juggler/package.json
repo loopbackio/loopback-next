@@ -1,0 +1,11 @@
+{
+  "name": "@loopback/juggler",
+  "version": "4.0.0-alpha.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
