@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/unit"
+    "test": "npm run unit",
+    "unit": "mocha test/unit"
   },
   "author": "",
   "license": "MIT"
