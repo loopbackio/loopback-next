@@ -18,3 +18,24 @@ This is the next chapter in the LoopBack story. For practicality we are using a 
  - All code should have tests and documentation! Details TBD
  - All code must conform to automated linting
 
+## Tests
+
+Run tests for all packages:
+
+```
+lerna run test
+```
+
+Run unit tests for all packages:
+
+```
+lerna run unit
+```
+
+Run unit tests for one package:
+
+```
+lerna run unit --scope loopback
+```
+
+Replace `unit` with `int` or `e2e` for integration/end-to-end tests accordingly.
