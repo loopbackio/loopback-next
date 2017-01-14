@@ -18,6 +18,18 @@ This is the next chapter in the LoopBack story. For practicality we are using a 
  - All code should have tests and documentation! Details TBD
  - All code must conform to automated linting
 
+## Package management
+
+### Shared dependencies
+
+Regular NPM install at the package root:
+
+```
+npm i -D mocha
+```
+
+You DO NOT need to install in the submodules as Lerna figures it out for you.
+
 ## Tests
 
 Run tests for all packages:
