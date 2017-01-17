@@ -8,5 +8,9 @@
     "unit": "mocha"
   },
   "author": "IBM",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^3.2.0",
+    "typescript": "^2.1.5"
+  }
 }
