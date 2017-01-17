@@ -1,7 +1,7 @@
-const assert = require('assert');
+import assert = require('assert');
 
 describe('smoke test', () => {
   it('should pass', () => {
-    assert(1);
+    assert.equal(1, 1);
   });
 });

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run unit",
-    "unit": "mocha test/unit"
+    "unit": "mocha"
   },
   "author": "IBM",
   "license": "MIT"
