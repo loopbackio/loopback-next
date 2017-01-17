@@ -1,10 +1,16 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs"
+    "target": "es5",
+    "lib": ["es6", "dom"],
+    "types": ["reflect-metadata"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": [
-    "packages/**/*.ts"
+    "packages/**/*.ts",
+    "examples/**/*.ts"
   ],
   "exclude": [
     "node_modules"

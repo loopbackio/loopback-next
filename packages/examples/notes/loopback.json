@@ -1,0 +1,16 @@
+{
+  "name": "notes",
+  "typescript": {
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs"
+    },
+    "include": [
+        "server/**/*.ts",
+        "common/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+  }
+}
