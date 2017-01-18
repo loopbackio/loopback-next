@@ -2,6 +2,7 @@
   "devDependencies": {
     "@types/mocha": "^2.2.38",
     "@types/node": "^7.0.0",
+    "chai": "^3.5.0",
     "lerna": "2.0.0-beta.32",
     "mocha": "^3.2.0",
     "ts-node": "^2.0.0",

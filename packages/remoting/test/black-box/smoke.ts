@@ -1,7 +1,7 @@
-import assert = require('assert');
+import {expect} from 'chai';
 
 suite('black-box smoke test', () => {
   test('passes', () => {
-    assert(true);
+    expect(true).to.be.true;
   });
 });
