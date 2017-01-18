@@ -4,13 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm run unit",
-    "unit": "mocha"
+    "black-box": "mocha --ui tdd test/black-box/**/*.ts",
+    "test": "npm run black-box && npm run white-box",
+    "white-box": "mocha --ui bdd test/white-box/**/*.ts"
   },
   "author": "IBM",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "^3.2.0",
-    "typescript": "^2.1.5"
+    "mocha": "^3.2.0"
   }
 }
