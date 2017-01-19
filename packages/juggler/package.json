@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "black-box": "mocha --ui tdd test/black-box/**/*.ts",
+    "black-box": "mocha --opts ../../test/mocha.opts.black-box",
     "test": "npm run black-box && npm run white-box",
-    "white-box": "mocha --ui bdd test/white-box/**/*.ts"
+    "white-box": "mocha --opts ../../test/mocha.opts.white-box"
   },
   "author": "IBM",
   "license": "MIT",
