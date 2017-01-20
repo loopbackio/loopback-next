@@ -22,6 +22,7 @@
     "serve-favicon": "^2.0.1"
   },
   "devDependencies": {
+    "@types/bluebird": "^3.0.37",
     "@types/node": "^7.0.0",
     "eslint": "^2.5.3",
     "nsp": "^2.1.0"

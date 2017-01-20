@@ -1,5 +1,4 @@
 import { inject, Container } from "inversify";
-import { Promise } from "bluebird";
 import express = require('express');
 
 export { inject, Container };
@@ -27,6 +26,7 @@ export class Server {
   }
   public expressApp : any;
   public listen(port : Number) {
+    let Promise = require('bluebird');
     return Promise.promisify(this.expressApp.listen)(port);
   }
 }
@@ -75,12 +75,26 @@ export function rest(url : string) {
   }
 }
 
+export function path(url : string) {
+  return function(...args: any[]) {
+
+  }
+}
+
+export function get(target : any, key: string, descriptor: PropertyDescriptor) {
+
+}
+
+export function queryParam(name?: string) {
+    return function(target : any, key: string, descriptor: PropertyDescriptor) {
+  };
+}
+
 export function required(target : any, key : string) {
 
 }
 
-export class PersistenceController {
-  public 
+export abstract class PersistenceController<T> {
 
   public authorize(target : any) {
     
@@ -90,8 +104,8 @@ export class PersistenceController {
 
   }
 
-  public find<T>(filter : Filter){
-    return [];
+  public find<T>(filter : Filter): Promise<T[]> {
+      return Promise.resolve([]);
   }
 }
 
