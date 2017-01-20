@@ -1,12 +1,14 @@
-import { inject } from "inversify";
 import {
+    root,
     app,
     Application,
-    Server
+    Server,
+    inject
 } from "./loopback";
 
-
-@app(__dirname)
-export class Notes {
-  constructor(@inject(Server) public server : Server) {}
+@app
+export class MyApplication extends Application {
+  constructor() {
+    super();
+  }
 }
