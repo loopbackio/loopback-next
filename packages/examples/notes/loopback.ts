@@ -1,4 +1,5 @@
-import { inject, Container } from "inversify";
+import { inject, Container, tagged } from "inversify";
+import { Promise } from "bluebird";
 import express = require('express');
 
 export { inject, Container };
@@ -18,10 +19,22 @@ export class Server {
       ctx.bind("req").toConstantValue(req);
       ctx.bind("res").toConstantValue(res);
       
-      // find controller
-      // find the method to invoke
+      registry.bind("RequestContext").toConstantValue(ctx);
 
+
+      // find controller (factor into Router)
+      let controllers = ctx.getAll<Controller>("Controller");
+      for(var controller of controllers) {
+        if (controller.path === req.url) {
+          ctx.bind("currentController").toConstantValue(controller);
+          ctx.bind("currentMethod").toConstantValue("find");
+        }
+      }
+
+      // find the method to invoke
       await app.accept(ctx);
+
+      registry.unbind("RequestContext", ctx); // fixme
     });
   }
   public expressApp : any;
@@ -32,7 +45,8 @@ export class Server {
 }
 
 export class Context extends Container {
-
+  public req : NodeJS.ReadWriteStream;
+  public res : NodeJS.WritableStream;
 }
 
 export class Application {
@@ -43,7 +57,7 @@ export class Application {
 
   public server : Server;
   public accept(ctx : Context) {
-    
+    ctx.get("currentController");
   }
 
   public start() {
@@ -51,7 +65,12 @@ export class Application {
   }
 }
 
-export function app(dir : string, parent : any) {
+export function app(config : any, dir : string, parent : any) {
+  // TODO
+  // - import and bind controllers based on config
+  // - bind data source + connector config into registry
+  // - controllers will bind models themselves 
+
   return function(MyApplication: any) {
     let registry = new Container();
     if (parent) {
@@ -94,7 +113,7 @@ export function required(target : any, key : string) {
 
 }
 
-export abstract class PersistenceController<T> {
+export class PersistenceController extends Controller {
 
   public authorize(target : any) {
     
@@ -119,4 +138,12 @@ export class Filter {
 enum SortOrder {
   asc,
   desc
+}
+
+export class Controller {
+  public path : String;
+}
+
+export class Model {
+
 }

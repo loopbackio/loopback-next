@@ -12,5 +12,17 @@
     "exclude": [
         "node_modules"
     ]
+  },
+	"controllers": {
+		"NoteController": {
+			"name": "NoteController",
+			"path": "./note"
+		}
+	},
+  "dataSources": {
+    "db": {
+			"name": "db",
+			"connector": "memory"
+    }
   }
 }

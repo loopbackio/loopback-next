@@ -1,9 +1,0 @@
-{
-  "final:after": {
-    "loopback#errorHandler": {
-      "params": {
-        "includeStack": false
-      }
-    }
-  }
-}

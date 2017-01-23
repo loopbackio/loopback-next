@@ -1,14 +1,16 @@
 import {
-    root,
     app,
     Application,
     Server,
-    inject
+    inject,
+    Context
 } from "./loopback";
 
-@app
+import config = require('./app.json');
+
+@app(config, __dirname)
 export class MyApplication extends Application {
-  constructor() {
-    super();
+  public accept(ctx : Context) {
+    return super.accept(ctx);
   }
 }

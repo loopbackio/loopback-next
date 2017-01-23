@@ -1,6 +1,0 @@
-{
-  "db": {
-    "name": "db",
-    "connector": "memory"
-  }
-}
