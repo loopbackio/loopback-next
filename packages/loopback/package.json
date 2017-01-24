@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "black-box": "mocha --opts ../../test/mocha.opts.black-box",
-    "test": "npm run black-box && npm run white-box",
+    "test": "npm run white-box && npm run black-box",
     "white-box": "mocha --opts ../../test/mocha.opts.white-box"
   },
   "author": "IBM",
