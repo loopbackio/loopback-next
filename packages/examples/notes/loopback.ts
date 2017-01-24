@@ -28,6 +28,9 @@ export class Server {
         if (controller.path === req.url) {
           ctx.bind("currentController").toConstantValue(controller);
           ctx.bind("currentMethod").toConstantValue("find");
+
+
+          await ctx.get('currentMethod').invoke(ctx);
         }
       }
 
@@ -55,6 +58,10 @@ export class Application {
     registry.bind("server").toConstantValue(new Server(registry));
   }
 
+  public on(ev : string, cb : Function) {
+
+  }
+
   public server : Server;
   public accept(ctx : Context) {
     ctx.get("currentController");
@@ -65,7 +72,7 @@ export class Application {
   }
 }
 
-export function app(config : any, dir : string, parent : any) {
+export function app(config : any, dir : string, parent? : any) {
   // TODO
   // - import and bind controllers based on config
   // - bind data source + connector config into registry
@@ -113,6 +120,10 @@ export function required(target : any, key : string) {
 
 }
 
+export class Controller {
+  constructor(public registry : Container) {}
+}
+
 export class PersistenceController extends Controller {
 
   public authorize(target : any) {
@@ -123,8 +134,8 @@ export class PersistenceController extends Controller {
 
   }
 
-  public find<T>(filter : Filter): Promise<T[]> {
-      return Promise.resolve([]);
+  public find(filter : Filter) : any{
+    return [];
   }
 }
 
@@ -146,4 +157,16 @@ export class Controller {
 
 export class Model {
 
+}
+
+export function controls(modelClass : any) {
+  return function(ctrl : any) {
+
+  }
+}
+
+export function dataSource(name : any) {
+  return function(ctrl : any) {
+
+  }
 }

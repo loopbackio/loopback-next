@@ -1,35 +1,36 @@
-import 
+import {
   rest,
   model,
   required,
   controller,
   PersistenceController,
+  dataSource,
   Filter,
-  Context
+  controls
 } from "./loopback";
 
-let settings = require('./notes.json');
-
 @rest('/notes')
-// implies @controller
-@dataSource('db')
-@controls(Note)
+@def(require('./notes.json'))
 export class NoteController extends PersistenceController {
-  public find<Note>(@queryParam('f') f : Filter) {
-    let notes = await super.find(f);
+  // customize via override
+  public async find(filter : Filter) {
+    let notes = await super.find(filter);
     notes.map(myMap);
 
     return Promise.resolve(notes);
   }
 
+  // define remote methods in swagger + JSON/YAML
+  // or in code via @decorators
   @path('/echo')
   @post
   @responds('body')
   public echo(@body msg : string) : string {
     let ctx = this.ctx;
-    let ctrl = ctx.get("OtherController") as NoteController;
-    return msg + ctx.req.url;
+    let ctrl = ctx.get<OtherController>('OtherController');
+    return msg + ctx.get('Request').url;
   }
+
 }
 
 @model
@@ -60,4 +61,8 @@ class NoteController extends PersistenceController<Note> {
 
         return Promise.resolve(notes);
     }
+}
+
+function myMap(arr : any) {
+  return arr;
 }
