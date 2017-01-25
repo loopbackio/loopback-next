@@ -1,4 +1,4 @@
 --require ts-node/register
---require ../../test/expect.ts
---ui bdd
+--require test/support/scenarios.ts
+--ui tdd
 test/white-box/**/*.ts
