@@ -3,18 +3,15 @@ scenarios('User starting app', (util, expect) => {
     let app;
     let client;
 
-    before(() => {
+    before(async () => {
       app = util.createApp();
       client = util.createClient(app);
-      return app.start();
+      await app.start();
     });
 
-    it('will start the app on port 3000', () => {
-      return client
-        .get('/')
-        .then((result) => {
-          expect(result.status).to.equal(200);
-        });
+    it('will start the app on port 3000', async () => {
+      let result = await client.get('/')
+      expect(result.status).to.equal(200);
     });
   });
 });
