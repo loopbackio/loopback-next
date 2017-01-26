@@ -1,16 +1,20 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "baseUrl": ".",
+    "paths": {
+      "*": ["packages/*"]
+    },
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "lib": ["es6", "dom"],
-    "types": ["reflect-metadata"],
     "module": "commonjs",
     "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "target": "es5"
   },
   "include": [
     "examples/**/*.ts",
-    "packages/**/*.ts"
+    "packages/**/*.ts",
+    "test/global-types.d.ts"
   ],
   "exclude": [
     "node_modules"

@@ -11,7 +11,7 @@
   "author": "IBM",
   "license": "MIT",
   "devDependencies": {
-    "@types/mocha": "^2.2.38",
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "mocha-gherkin": "^0.2.0"
   }
 }

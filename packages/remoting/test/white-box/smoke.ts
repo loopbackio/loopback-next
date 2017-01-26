@@ -1,7 +1,5 @@
-import {expect} from '../../../../test/expect';
-
-describe('white-box smoke test', () => {
-  it('passes', () => {
+suite('white-box smoke test', () => {
+  test('passes', () => {
     expect(true).to.be.true();
   });
 });

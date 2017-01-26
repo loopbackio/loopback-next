@@ -1,23 +1,35 @@
 import http = require('http');
-
 import bluebird = require('bluebird');
 
 export interface AppConfig {
   port : number;
 }
 
+export enum AppState {
+  cold,
+  starting,
+  listening,
+  crashed,
+  stopped
+}
+
 export class Application {
-  constructor(public config : AppConfig) {
+  // get runtime to enforce AppConfig as AppConfig
+  constructor(public config?: AppConfig) {
     if (config === undefined) {
       this.config = {port: 3000};
     }
   }
-  public start() : Promise<void> {
-    let server = http.createServer((req, res) => {
+
+  public state: AppState = AppState.cold;
+
+  async start() {
+    this.state = AppState.starting;
+    const server = http.createServer((req, res) => {
       res.end();
     });
-    let listen = bluebird.promisify(server.listen, {context: server});
-
-    return listen(this.config.port);
+    const listen = bluebird.promisify(server.listen, {context: server});
+    await listen(this.config.port);
+    this.state = AppState.listening;
   }
 }

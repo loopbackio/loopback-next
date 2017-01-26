@@ -1,12 +1,16 @@
 {
   "license": "MIT",
   "devDependencies": {
+    "@types/mocha": "^2.2.38",
+    "@types/node": "^7.0.4",
     "chai": "^3.5.0",
     "dirty-chai": "^1.2.2",
     "lerna": "^2.0.0-beta.32",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
+    "sinon": "^1.17.7",
     "ts-node": "^2.0.0",
+    "tsconfig-paths": "^2.1.0",
     "typescript": "^2.1.5"
   },
   "dependencies": {
