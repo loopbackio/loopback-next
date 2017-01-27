@@ -1,10 +1,10 @@
-import { Application, AppConfig } from '../../loopback';
+import { Application, AppConfig } from 'loopback';
 import bluebird = require('bluebird');
 import request = require('request-promise');
 
 export class Client {
   constructor(public app : Application) {
-    
+
   }
 
   public get(path : string) : Promise<Result>{
@@ -17,7 +17,7 @@ export class Client {
     return request(options)
       .then((response) => {
         return {
-          status: response.statusCode
+          statusCode: response.statusCode
         };
       });
   }

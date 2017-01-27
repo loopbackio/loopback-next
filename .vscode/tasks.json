@@ -1,0 +1,48 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "0.1.0",
+	"command": "lerna",
+	"isShellCommand": true,
+	"echo command": true,
+	"showOutput": "always",
+	"suppressTaskName": true,
+	"tasks": [
+		// Installing dependencies
+		{
+			"taskName": "Install dependencies",
+			"args": ["exec", "npm", "install"]
+		},
+		{
+			"taskName": "Install loopback dependencies",
+			"args": ["exec", "npm", "install", "--scope", "loopback"]
+		},
+		{
+			"taskName": "Install juggler dependencies",
+			"args": ["exec", "npm", "install", "--scope", "@loopback/juggler"]
+		},
+		{
+			"taskName": "Install remoting dependencies",
+			"args": ["exec", "npm", "install", "--scope", "@loopback/remoting"]
+		},
+		// Running tests
+		{
+			// run all tests for every package
+			"taskName": "test", // DO NOT CHANGE (used for vscode ctrl+shift+t keybinding)
+			"args": ["run", "test"],
+			"isTestCommand": true
+		},
+	  {
+			"taskName": "Run loopback tests",
+			"args": ["run", "test", "--scope", "loopback"]
+		},
+	  {
+			"taskName": "Run juggler tests",
+			"args": ["run", "test", "--scope", "@loopback/juggler"]
+		},
+	  {
+			"taskName": "Run remoting tests",
+			"args": ["run", "test", "--scope", "@loopback/remoting"]
+		}
+	]
+}

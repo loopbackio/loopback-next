@@ -1,4 +1,7 @@
---require ../../test/ts-nodify.js
---require test/support/scenarios.ts
---ui bdd
+--require ../../test/ts-node.js
+--compilers ts:tsconfig-paths/register
+--require ../../test/gherkin.ts
+--require ../../test/expect.ts
+--require ../../test/sinon.ts
+--ui mocha-gherkin --reporter mocha-gherkin/build/spec
 test/black-box/**/*.ts
