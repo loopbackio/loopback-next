@@ -50,4 +50,4 @@ Run unit tests for one package:
 lerna run unit --scope loopback
 ```
 
-Replace `unit` with `int` or `e2e` for integration/end-to-end tests accordingly.
+Replace `unit` with `integration` or `e2e` for integration/end-to-end tests accordingly.
