@@ -50,4 +50,4 @@ Run black-box tests for one package:
 lerna run black-box --scope loopback
 ```
 
-Replace `black-box` with `white-box` for accordingly.
+Replace `black-box` with `white-box` accordingly.
