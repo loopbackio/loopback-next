@@ -1,7 +1,8 @@
 import chai = require('chai');
 import dirtyChai = require('dirty-chai');
+import sinon = require('sinon');
 
 chai.use(dirtyChai);
-const expect = chai.expect;
 
-global['expect'] = expect;
+global['expect'] = chai.expect;
+global['sinon'] = sinon;

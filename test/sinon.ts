@@ -1,1 +1,0 @@
-global['sinon'] = require('sinon');

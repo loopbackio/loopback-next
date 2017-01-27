@@ -1,7 +1,5 @@
 --require ../../test/ts-node.js
 --compilers ts:tsconfig-paths/register
---require ../../test/gherkin.ts
---require ../../test/expect.ts
---require ../../test/sinon.ts
+--require ../../test/globals.ts
 --ui tdd
 test/white-box/**/*.ts
