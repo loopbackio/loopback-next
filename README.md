@@ -32,22 +32,22 @@ You DO NOT need to install in the submodules as Lerna figures it out for you.
 
 ## Tests
 
-Run tests for all packages:
+Run tests (black-box and white-box) for all packages:
 
 ```
 lerna run test
 ```
 
-Run unit tests for all packages:
+Run black-box tests for all packages:
 
 ```
-lerna run unit
+lerna run black-box
 ```
 
-Run unit tests for one package:
+Run black-box tests for one package:
 
 ```
-lerna run unit --scope loopback
+lerna run black-box --scope loopback
 ```
 
-Replace `unit` with `integration` or `e2e` for integration/end-to-end tests accordingly.
+Replace `black-box` with `white-box` for accordingly.
