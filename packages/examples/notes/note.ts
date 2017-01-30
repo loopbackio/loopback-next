@@ -1,14 +1,3 @@
-import {
-  rest,
-  model,
-  required,
-  controller,
-  PersistenceController,
-  dataSource,
-  Filter,
-  controls
-} from "./loopback";
-
 @rest('/notes')
 @def(require('./notes.json'))
 export class NoteController extends PersistenceController {
