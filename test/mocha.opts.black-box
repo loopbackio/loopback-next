@@ -1,5 +1,4 @@
 --require ../../test/ts-node.js
 --compilers ts:tsconfig-paths/register
---require ../../test/globals.ts
 --ui mocha-gherkin --reporter mocha-gherkin/build/spec
 test/black-box/**/*.ts

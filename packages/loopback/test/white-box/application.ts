@@ -1,4 +1,5 @@
 import {Application, AppState} from 'loopback';
+import {expect} from '@loopback/testlab';
 
 suite('Application', () => {
   suite('constructor(config?: AppConfig)', () => {

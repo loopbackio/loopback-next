@@ -4,13 +4,9 @@
     "@types/inversify": "^2.0.33",
     "@types/mocha": "^2.2.38",
     "@types/node": "^7.0.4",
-    "@types/sinon": "^1.16.34",
-    "chai": "^3.5.0",
-    "dirty-chai": "^1.2.2",
-    "lerna": "^2.0.0-beta.32",
+    "lerna": "2.0.0-beta.35",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
-    "sinon": "^1.17.7",
     "ts-node": "^2.0.0",
     "tsconfig-paths": "^2.1.0",
     "typescript": "^2.1.5"
@@ -21,6 +17,7 @@
     "reflect-metadata": "^0.1.9"
   },
   "scripts": {
-    "bootstrap": "lerna bootstrap"
+    "bootstrap": "lerna bootstrap",
+    "test": "lerna run test"
   }
 }

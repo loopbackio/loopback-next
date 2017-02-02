@@ -10,7 +10,12 @@
   },
   "author": "IBM",
   "license": "MIT",
+  "dependencies": {
+    "@loopback/remoting": "^4.0.0-alpha.1",
+    "@loopback/juggler": "^4.0.0-alpha.1"
+  },
   "devDependencies": {
+    "@loopback/testlab": "^4.0.0-alpha.1",
     "mocha": "^3.2.0",
     "mocha-gherkin": "^0.2.0"
   }
