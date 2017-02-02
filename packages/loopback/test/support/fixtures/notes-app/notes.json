@@ -1,0 +1,32 @@
+{
+  "loopback version": "loopback@4.0.0-alpha1",
+  "resource": "notes",
+  "endpoint": "/notes",
+  "dataSource": "db",  // registry.get<DataSource>('db')
+  "model": "Note",  // registry.get<ModelDefinition>('Note')
+  "access controls": [],
+  "relationships": [],
+  "mixins": [],
+  "tags": [],
+  "paths": {
+    "get": {
+      "summary": "List all notes",
+      "operationId": "find",
+      "parameters": [{"$ref": "#/params/filterParam"}],
+      "responses": {
+        "200": {
+          "description": "An paged array of notes",
+          "schema": {
+            "$lb": "Note"
+          }
+        },
+        "default": {
+          "description": "unexpected error",
+          "schema": {
+            "$ref": "#/errors/DefaultError"
+          }
+        }
+      }
+    }
+  }
+}

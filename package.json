@@ -1,8 +1,10 @@
 {
   "license": "MIT",
   "devDependencies": {
+    "@types/inversify": "^2.0.33",
     "@types/mocha": "^2.2.38",
     "@types/node": "^7.0.4",
+    "@types/sinon": "^1.16.34",
     "chai": "^3.5.0",
     "dirty-chai": "^1.2.2",
     "lerna": "^2.0.0-beta.32",

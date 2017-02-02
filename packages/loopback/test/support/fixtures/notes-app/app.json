@@ -1,0 +1,16 @@
+{
+  "name": "notes",
+	"controllers": {
+		"NoteController": {
+			"name": "NoteController",
+			"path": "./note"
+		}
+	},
+  "dataSources": {
+    "db": {
+			"name": "db",
+			"connector": "memory"
+    }
+  },
+	"port": 0
+}
