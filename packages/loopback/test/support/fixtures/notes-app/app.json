@@ -12,5 +12,5 @@
 			"connector": "memory"
     }
   },
-	"port": 3000
+	"port": 0
 }

@@ -1,0 +1,55 @@
+{
+  "swagger": "2.0",
+  "host": "petstore.swagger.io",
+  "basePath": "/notes",
+  "paths": {
+    "/echo": {
+      "get": {
+        "operationId": "notes.echo",
+        "parameters": [
+          {
+            "name": "msg",
+            "in": "query",
+            "description": "The message.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "description": "Returns the message you send it",
+        "responses": {
+          "200": {
+            "description": "The message.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "/": {
+      "get": {
+        "operationId": "notes.find",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of notes to get.",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "description": "Get a number of notes.",
+        "responses": {
+          "200": {
+            "description": "The notes.",
+            "schema": {
+              "type": "array",
+              "item": "./note.ts#Note"
+            }
+          }
+        }
+      }
+    }
+  }
+}

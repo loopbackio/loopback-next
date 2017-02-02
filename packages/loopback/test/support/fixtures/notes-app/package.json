@@ -1,0 +1,10 @@
+{
+  "name": "notes-app",
+  "version": "1.0.0",
+  "description": "A simple test fixture.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "test": "mocha"
+  }
+}

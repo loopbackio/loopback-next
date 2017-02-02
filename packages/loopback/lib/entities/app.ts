@@ -1,5 +1,6 @@
 import http = require('http');
 import bluebird = require('bluebird');
+import { Container } from 'inversify';
 
 export interface AppConfig {
   port : number;
@@ -13,9 +14,10 @@ export enum AppState {
   stopped
 }
 
-export class Application {
+export class Application extends Container {
   // get runtime to enforce AppConfig as AppConfig
   constructor(public config?: AppConfig) {
+    super();
     if (config === undefined) {
       this.config = {port: 3000};
     }
