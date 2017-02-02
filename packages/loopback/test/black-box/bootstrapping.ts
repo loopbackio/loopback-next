@@ -1,3 +1,4 @@
+import {expect} from '@loopback/testlab';
 import * as util from 'loopback/test/support/util';
 
 Feature('Bootstrapping',
