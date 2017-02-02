@@ -11,6 +11,7 @@
   "author": "IBM",
   "license": "MIT",
   "devDependencies": {
+    "@loopback/testlab": "^4.0.0-alpha.1",
     "mocha": "^3.2.0",
     "mocha-gherkin": "^0.2.0"
   }

@@ -1,0 +1,15 @@
+{
+  "name": "@loopback/testlab",
+  "version": "4.0.0-alpha.1",
+  "description": "A collection of test utilities we use to write LoopBack tests.",
+  "main": "testlab",
+  "author": "IBM",
+  "license": "MIT",
+  "dependencies": {
+    "@types/chai": "^3.4.34",
+    "@types/sinon": "^1.16.34",
+    "chai": "^3.5.0",
+    "dirty-chai": "^1.2.2",
+    "sinon": "^1.17.7"
+  }
+}

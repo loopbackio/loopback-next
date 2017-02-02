@@ -4,5 +4,5 @@ import sinon = require('sinon');
 
 chai.use(dirtyChai);
 
-global['expect'] = chai.expect;
-global['sinon'] = sinon;
+export const expect = chai.expect;
+export {sinon};
