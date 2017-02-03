@@ -1,0 +1,3 @@
+--compilers ts:tsconfig-paths/register
+--recursive
+--require ../../test/ts-node

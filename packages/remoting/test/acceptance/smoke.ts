@@ -1,7 +1,7 @@
 import {expect} from '@loopback/testlab';
 
-suite('white-box smoke test', () => {
-  test('passes', () => {
+describe('acceptance smoke test', () => {
+  it('passes', () => {
     expect(true).to.be.true();
   });
 });

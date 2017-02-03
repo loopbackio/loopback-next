@@ -2,17 +2,17 @@
   "name": "@loopback/remoting",
   "version": "4.0.0-alpha.1",
   "description": "",
-  "main": "index.js",
+  "main": "remoting",
   "scripts": {
-    "black-box": "mocha --opts ../../test/mocha.opts.black-box",
-    "test": "npm run white-box && npm run black-box",
-    "white-box": "mocha --opts ../../test/mocha.opts.white-box"
+    "acceptance": "mocha --opts ../../test/mocha.opts test/acceptance",
+    "integration": "mocha --opts ../../test/mocha.opts test/integration",
+    "test": "npm run unit && npm run integration && npm run acceptance",
+    "unit": "mocha --opts ../../test/mocha.opts test/unit"
   },
   "author": "IBM",
   "license": "MIT",
   "devDependencies": {
     "@loopback/testlab": "^4.0.0-alpha.1",
-    "mocha": "^3.2.0",
-    "mocha-gherkin": "^0.2.0"
+    "mocha": "^3.2.0"
   }
 }

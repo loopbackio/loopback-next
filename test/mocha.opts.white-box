@@ -1,4 +1,0 @@
---require ../../test/ts-node.js
---compilers ts:tsconfig-paths/register
---ui tdd
-test/white-box/**/*.ts
