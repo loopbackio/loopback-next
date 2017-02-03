@@ -32,22 +32,22 @@ You DO NOT need to install in the submodules as Lerna figures it out for you.
 
 ## Tests
 
-Run tests (black-box and white-box) for all packages:
+Run tests (unit, then integration, then acceptance) for all packages:
 
 ```
 lerna run test
 ```
 
-Run black-box tests for all packages:
+Run acceptance tests for all packages:
 
 ```
-lerna run black-box
+lerna run acceptance
 ```
 
-Run black-box tests for one package:
+Run acceptance tests for one package:
 
 ```
-lerna run black-box --scope loopback
+lerna run acceptance --scope loopback
 ```
 
-Replace `black-box` with `white-box` accordingly.
+Replace `acceptance` with `integration` or `unit` accordingly.
