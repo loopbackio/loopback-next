@@ -8,27 +8,54 @@
 	"showOutput": "always",
 	"suppressTaskName": true,
 	"tasks": [
-		// Installing dependencies
+		// Install dependencies
 		{
+			// For all packages
 			"taskName": "Install dependencies",
-			"args": ["exec", "npm", "install"]
+			"args": ["bootstrap"]
 		},
 		{
 			"taskName": "Install loopback dependencies",
-			"args": ["exec", "npm", "install", "--scope", "loopback"]
+			"args": ["bootstrap", "--scope", "loopback"]
 		},
 		{
 			"taskName": "Install juggler dependencies",
-			"args": ["exec", "npm", "install", "--scope", "@loopback/juggler"]
+			"args": ["bootstrap", "--scope", "@loopback/juggler"]
 		},
 		{
 			"taskName": "Install remoting dependencies",
-			"args": ["exec", "npm", "install", "--scope", "@loopback/remoting"]
+			"args": ["bootstrap", "--scope", "@loopback/remoting"]
 		},
-		// Running tests
 		{
-			// run all tests for every package
-			"taskName": "test", // DO NOT CHANGE (used for vscode ctrl+shift+t keybinding)
+			"taskName": "Install testlab dependencies",
+			"args": ["bootstrap", "--scope", "@loopback/testlab"]
+		},
+		// Remove dependencies for all packages
+		{
+			// For all packages
+			"taskName": "Remove dependencies",
+			"args": ["clean", "--yes"]
+		},
+	  {
+			"taskName": "Remove loopback dependencies",
+			"args": ["clean", "--scope", "loopback", "--yes"]
+		},
+	  {
+			"taskName": "Remove juggler dependencies",
+			"args": ["clean", "--scope", "@loopback/juggler", "--yes"]
+		},
+	  {
+			"taskName": "Remove remoting dependencies",
+			"args": ["clean", "--scope", "@loopback/remoting", "--yes"]
+		},
+	  {
+			"taskName": "Remove testlab dependencies",
+			"args": ["clean", "--scope", "@loopback/testlab", "--yes"]
+		},
+		// Run tests
+		{
+			// For all packages
+			"taskName": "test", // DO NOT CHANGE (used for ctrl+shift+t keybinding)
 			"args": ["run", "test"],
 			"isTestCommand": true
 		},
