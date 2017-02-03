@@ -13,8 +13,7 @@
   },
   "include": [
     "examples/**/*.ts",
-    "packages/**/*.ts",
-    "test/global-types.d.ts"
+    "packages/**/*.ts"
   ],
   "exclude": [
     "node_modules"
