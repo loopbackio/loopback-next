@@ -64,12 +64,48 @@
 			"args": ["run", "test", "--scope", "loopback"]
 		},
 	  {
+			"taskName": "Run loopback acceptance tests",
+			"args": ["run", "acceptance", "--scope", "loopback"]
+		},
+	  {
+			"taskName": "Run loopback integration tests",
+			"args": ["run", "integration", "--scope", "loopback"]
+		},
+	  {
+			"taskName": "Run loopback unit tests",
+			"args": ["run", "unit", "--scope", "loopback"]
+		},
+	  {
 			"taskName": "Run juggler tests",
 			"args": ["run", "test", "--scope", "@loopback/juggler"]
 		},
 	  {
+			"taskName": "Run juggler acceptance tests",
+			"args": ["run", "acceptance", "--scope", "@loopback/juggler"]
+		},
+	  {
+			"taskName": "Run juggler integration tests",
+			"args": ["run", "integration", "--scope", "@loopback/juggler"]
+		},
+	  {
+			"taskName": "Run juggler unit tests",
+			"args": ["run", "unit", "--scope", "@loopback/juggler"]
+		},
+	  {
 			"taskName": "Run remoting tests",
 			"args": ["run", "test", "--scope", "@loopback/remoting"]
-		}
+		},
+	  {
+			"taskName": "Run remoting acceptance tests",
+			"args": ["run", "acceptance", "--scope", "@loopback/remoting"]
+		},
+	  {
+			"taskName": "Run remoting integration tests",
+			"args": ["run", "integration", "--scope", "@loopback/remoting"]
+		},
+	  {
+			"taskName": "Run remoting unit tests",
+			"args": ["run", "unit", "--scope", "@loopback/remoting"]
+		},
 	]
 }
