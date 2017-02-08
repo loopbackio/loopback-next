@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2013,2017. All Rights Reserved.
+// Node module: loopback
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import http = require('http');
 import bluebird = require('bluebird');
 
@@ -10,7 +15,7 @@ export enum AppState {
   starting,
   listening,
   crashed,
-  stopped
+  stopped,
 }
 
 export class Application {

@@ -1,0 +1,70 @@
+{
+  // See https://palantir.github.io/tslint/rules/
+  "rules": {
+    // These rules find errors related to TypeScript features.
+    "adjacent-overload-signatures": true,
+    "prefer-for-of": true,
+    "unified-signatures": true,
+
+    // These rules catch common errors in JS programming or otherwise
+    // confusing constructs that are prone to producing bugs.
+
+    "label-position": true,
+    "no-arg": true,
+    "no-construct": true,
+    "no-duplicate-variable": true,
+
+    "no-invalid-this": true,
+    "no-misused-new": true,
+    "no-shadowed-variable": true,
+    "no-string-throw": true,
+    "no-unused-expression": true,
+    "no-unused-new": true,
+    "no-use-before-declare": true,
+    "no-var-keyword": true,
+    "triple-equals": [
+      true,
+      "allow-null-check",
+      "allow-undefined-check"
+    ],
+    "typeof-compare": true,
+
+    // These rules make code maintenance easier
+    "eofline": true,
+    "indent": [true, "spaces"],
+    "no-trailing-whitespace": true,
+    "prefer-const": true,
+    "trailing-comma": [true, {
+      "multiline": "always",
+      "singleline": "never"
+    }],
+
+    // These rules enforce consistent style across your codebase:
+    "arrow-return-shorthand": [true],
+    "class-name": true,
+    "comment-format": [true, "check-space"],
+    "file-header": [true, "Copyright IBM"],
+    "no-consecutive-blank-lines": [true, 2],
+    "one-variable-per-declaration": [true, "ignore-for-loop"],
+    "prefer-method-signature": true,
+    "quotemark": [true, "single", "avoid-escape"],
+    "semicolon": [true, "always"],
+    "space-before-function-paren": [true, {
+      "anonymous": "never",
+      "named": "never",
+      "asyncArrow": "always",
+      "method": "never",
+      "constructor": "never"
+    }],
+    "variable-name": [true, "ban-keywords", "check-format"],
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-separator",
+      "check-type",
+      "check-typecast",
+      "check-preblock"
+    ]
+  }
+}
