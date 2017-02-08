@@ -107,5 +107,65 @@
 			"taskName": "Run remoting unit tests",
 			"args": ["run", "unit", "--scope", "@loopback/remoting"]
 		},
+		{
+			"taskName": "Lint all packages",
+			"command": "npm",
+			"args": ["run", "lint"],
+			"problemMatcher": [
+				{
+					// linting errors - relative paths
+					"owner": "tslint",
+					"fileLocation": ["relative", "${workspaceRoot}"],
+					"severity": "warning",
+					"pattern": {
+						"regexp": "^([^/]\\S.*)\\[(\\d+), (\\d+)\\]:\\s+(.*)$",
+						"file": 1,
+						"line": 2,
+						"column": 3,
+						"message": 4
+					}
+				},
+				{
+					// linting errors - absolute paths
+					"owner": "tslint",
+					"fileLocation": "absolute",
+					"severity": "warning",
+					"pattern": {
+						"regexp": "^(/\\S.*)\\[(\\d+), (\\d+)\\]:\\s+(.*)$",
+						"file": 1,
+						"line": 2,
+						"column": 3,
+						"message": 4
+					}
+				},
+				{
+					// compilation errors - relative paths
+					"owner": "tslint",
+					"fileLocation": ["relative", "${workspaceRoot}"],
+					"severity": "error",
+					"pattern": {
+						"regexp": "^Error at ([^\/]\\S.*):(\\d+):(\\d+):\\s+(.*)$",
+						"file": 1,
+						"line": 2,
+						"column": 3,
+						"message": 4
+					}
+				},
+				{
+					// compilation errors - absolute paths
+					"owner": "tslint",
+					"fileLocation": "absolute",
+					"severity": "error",
+					"pattern": {
+						"regexp": "^Error at (/\\S.*):(\\d+):(\\d+):\\s+(.*)$",
+						"file": 1,
+						"line": 2,
+						"column": 3,
+						"message": 4
+					}
+
+				}
+			]
+		}
 	]
 }

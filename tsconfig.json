@@ -12,10 +12,16 @@
     "target": "es5"
   },
   "include": [
-    "examples/**/*.ts",
-    "packages/**/*.ts"
+    "packages/**/*"
   ],
   "exclude": [
-    "node_modules"
+    // Temporarily disable linting & compilation of examples,
+    // because they are depending on features/APIs that are
+    // not implemented yet
+    "packages/examples/**/*",
+
+    "node_modules/**/*",
+    "packages/*/node_modules/**/*",
+    "**/*.d.ts"
   ]
 }
