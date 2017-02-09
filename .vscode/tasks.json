@@ -53,56 +53,56 @@
 		// Running tests
 		{
 			"taskName": "Run all tests",
-			"args": ["run", "test"],
+			"args": ["run", "test", "-- -s"],
 			"isTestCommand": true
 		},
 	  {
 			"taskName": "Run loopback tests",
-			"args": ["run", "test", "--scope", "loopback"]
+			"args": ["run", "test", "--scope", "loopback", "-- -s"]
 		},
 	  {
 			"taskName": "Run loopback acceptance tests",
-			"args": ["run", "acceptance", "--scope", "loopback"]
+			"args": ["run", "acceptance", "--scope", "loopback", "-- -s"]
 		},
 	  {
 			"taskName": "Run loopback integration tests",
-			"args": ["run", "integration", "--scope", "loopback"]
+			"args": ["run", "integration", "--scope", "loopback", "-- -s"]
 		},
 	  {
 			"taskName": "Run loopback unit tests",
-			"args": ["run", "unit", "--scope", "loopback"]
+			"args": ["run", "unit", "--scope", "loopback", "-- -s"]
 		},
 	  {
 			"taskName": "Run juggler tests",
-			"args": ["run", "test", "--scope", "@loopback/juggler"]
+			"args": ["run", "test", "--scope", "@loopback/juggler", "-- -s"]
 		},
 	  {
 			"taskName": "Run juggler acceptance tests",
-			"args": ["run", "acceptance", "--scope", "@loopback/juggler"]
+			"args": ["run", "acceptance", "--scope", "@loopback/juggler", "-- -s"]
 		},
 	  {
 			"taskName": "Run juggler integration tests",
-			"args": ["run", "integration", "--scope", "@loopback/juggler"]
+			"args": ["run", "integration", "--scope", "@loopback/juggler", "-- -s"]
 		},
 	  {
 			"taskName": "Run juggler unit tests",
-			"args": ["run", "unit", "--scope", "@loopback/juggler"]
+			"args": ["run", "unit", "--scope", "@loopback/juggler", "-- -s"]
 		},
 	  {
 			"taskName": "Run remoting tests",
-			"args": ["run", "test", "--scope", "@loopback/remoting"]
+			"args": ["run", "test", "--scope", "@loopback/remoting", "-- -s"]
 		},
 	  {
 			"taskName": "Run remoting acceptance tests",
-			"args": ["run", "acceptance", "--scope", "@loopback/remoting"]
+			"args": ["run", "acceptance", "--scope", "@loopback/remoting", "-- -s"]
 		},
 	  {
 			"taskName": "Run remoting integration tests",
-			"args": ["run", "integration", "--scope", "@loopback/remoting"]
+			"args": ["run", "integration", "--scope", "@loopback/remoting", "-- -s"]
 		},
 	  {
 			"taskName": "Run remoting unit tests",
-			"args": ["run", "unit", "--scope", "@loopback/remoting"]
+			"args": ["run", "unit", "--scope", "@loopback/remoting", "-- -s"]
 		},
 		// Linting
 		{
