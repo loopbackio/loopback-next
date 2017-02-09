@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "acceptance": "mocha --opts ../../test/mocha.opts test/acceptance",
-    "integration": "mocha --opts ../../test/mocha.opts test/integration",
+    "acceptance": "mocha --opts ../../test/mocha.opts test/acceptance/**/*.ts",
+    "integration": "mocha --opts ../../test/mocha.opts test/integration/**/*.ts",
     "test": "npm run unit && npm run integration && npm run acceptance",
-    "unit": "mocha --opts ../../test/mocha.opts test/unit"
+    "unit": "mocha --opts ../../test/mocha.opts test/unit/**/*.ts"
   },
   "author": "IBM",
   "license": "MIT",
