@@ -236,7 +236,7 @@ let ctx = new Context();
 ctx.bind('foo.:name').to('hello world');
 
 ctx.get('foo.bar'); // => hello world
-ctx.get('foo.bar'); // => hello world
+ctx.get('foo.bat'); // => hello world
 ```
 
 ## TBD Scenario: LoopBack Routing
