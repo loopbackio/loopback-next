@@ -8,10 +8,9 @@
 	"showOutput": "always",
 	"suppressTaskName": true,
 	"tasks": [
-		// Install dependencies
+		// Installing dependencies
 		{
-			// For all packages
-			"taskName": "Install dependencies",
+			"taskName": "Install all dependencies",
 			"args": ["bootstrap"]
 		},
 		{
@@ -30,10 +29,9 @@
 			"taskName": "Install testlab dependencies",
 			"args": ["bootstrap", "--scope", "@loopback/testlab"]
 		},
-		// Remove dependencies for all packages
+		// Removing dependencies
 		{
-			// For all packages
-			"taskName": "Remove dependencies",
+			"taskName": "Remove all dependencies",
 			"args": ["clean", "--yes"]
 		},
 	  {
@@ -52,10 +50,9 @@
 			"taskName": "Remove testlab dependencies",
 			"args": ["clean", "--scope", "@loopback/testlab", "--yes"]
 		},
-		// Run tests
+		// Running tests
 		{
-			// For all packages
-			"taskName": "test", // DO NOT CHANGE (used for ctrl+shift+t keybinding)
+			"taskName": "Run all tests",
 			"args": ["run", "test"],
 			"isTestCommand": true
 		},
@@ -107,6 +104,7 @@
 			"taskName": "Run remoting unit tests",
 			"args": ["run", "unit", "--scope", "@loopback/remoting"]
 		},
+		// Linting
 		{
 			"taskName": "Lint all packages",
 			"command": "npm",
@@ -163,7 +161,6 @@
 						"column": 3,
 						"message": 4
 					}
-
 				}
 			]
 		}
