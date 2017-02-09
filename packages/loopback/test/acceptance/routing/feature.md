@@ -22,6 +22,7 @@ let client = new Client(server.url);
   baseUrl: '/',
   {
     '/greet': {
+      controllerMethod: 'greet',
       get: {
         responses: {
           type: 'string'
@@ -59,7 +60,6 @@ app.bind('definitions.controllers').to({
   }
 });
 
-
 app
   .bind(':type.:name')
   .toDynamicValue((type, name) => {
@@ -89,7 +89,6 @@ app.bind('currentMethod').toDynamicValue(() => {
   let remoteMethod = controller.getMethodForUrl(this.get('url'));
   return remoteMethod;
 });
-
 
 server.on('request', async (req, res) {
   let ctx = new Context();
