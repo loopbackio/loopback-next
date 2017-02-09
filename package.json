@@ -27,5 +27,8 @@
     "lint": "tslint -c tslint.full.json --project tsconfig.json --type-check --exclude 'packages/examples/**/*' --exclude '**/node_modules/**' --exclude '**/*.d.ts' '**/*.ts'",
     "test": "lerna run test",
     "posttest": "npm run lint"
+  },
+  "engines": {
+    "node": ">=4.0.0"
   }
 }
