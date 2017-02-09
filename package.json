@@ -9,7 +9,7 @@
   "devDependencies": {
     "@types/mocha": "^2.2.38",
     "@types/node": "^7.0.4",
-    "lerna": "2.0.0-beta.36",
+    "lerna": "2.0.0-beta.37",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
     "ts-node": "^2.0.0",
