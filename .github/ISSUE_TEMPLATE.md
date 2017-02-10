@@ -7,20 +7,20 @@ Immediate support:
   https://strongloop.com/node-js/subscription-plans/
 -->
 
-### Description/Steps to reproduce
+# Description/Steps to reproduce
 
 <!--
 If feature: A description of the feature
 If bug: Steps to reproduce + link to sample repo
 -->
 
-### Expected result
+# Expected result
 
 <!--
 Also include actual results if bug
 -->
 
-### Additional information
+# Additional information
 
 <!--
 Copy+paste the output of these two commands:
