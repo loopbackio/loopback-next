@@ -1,168 +1,293 @@
 {
-	// See https://go.microsoft.com/fwlink/?LinkId=733558
-	// for the documentation about the tasks.json format
-	"version": "0.1.0",
-	"command": "lerna",
-	"isShellCommand": true,
-	"echo command": true,
-	"showOutput": "always",
-	"suppressTaskName": true,
-	"tasks": [
-		// Installing dependencies
-		{
-			"taskName": "Install all dependencies",
-			"args": ["bootstrap"]
-		},
-		{
-			"taskName": "Install loopback dependencies",
-			"args": ["bootstrap", "--scope", "loopback"]
-		},
-		{
-			"taskName": "Install juggler dependencies",
-			"args": ["bootstrap", "--scope", "@loopback/juggler"]
-		},
-		{
-			"taskName": "Install remoting dependencies",
-			"args": ["bootstrap", "--scope", "@loopback/remoting"]
-		},
-		{
-			"taskName": "Install testlab dependencies",
-			"args": ["bootstrap", "--scope", "@loopback/testlab"]
-		},
-		// Removing dependencies
-		{
-			"taskName": "Remove all dependencies",
-			"args": ["clean", "--yes"]
-		},
-	  {
-			"taskName": "Remove loopback dependencies",
-			"args": ["clean", "--scope", "loopback", "--yes"]
-		},
-	  {
-			"taskName": "Remove juggler dependencies",
-			"args": ["clean", "--scope", "@loopback/juggler", "--yes"]
-		},
-	  {
-			"taskName": "Remove remoting dependencies",
-			"args": ["clean", "--scope", "@loopback/remoting", "--yes"]
-		},
-	  {
-			"taskName": "Remove testlab dependencies",
-			"args": ["clean", "--scope", "@loopback/testlab", "--yes"]
-		},
-		// Running tests
-		{
-			"taskName": "Run all tests",
-			"args": ["run", "test", "-- -s"],
-			"isTestCommand": true
-		},
-	  {
-			"taskName": "Run loopback tests",
-			"args": ["run", "test", "--scope", "loopback", "-- -s"]
-		},
-	  {
-			"taskName": "Run loopback acceptance tests",
-			"args": ["run", "acceptance", "--scope", "loopback", "-- -s"]
-		},
-	  {
-			"taskName": "Run loopback integration tests",
-			"args": ["run", "integration", "--scope", "loopback", "-- -s"]
-		},
-	  {
-			"taskName": "Run loopback unit tests",
-			"args": ["run", "unit", "--scope", "loopback", "-- -s"]
-		},
-	  {
-			"taskName": "Run juggler tests",
-			"args": ["run", "test", "--scope", "@loopback/juggler", "-- -s"]
-		},
-	  {
-			"taskName": "Run juggler acceptance tests",
-			"args": ["run", "acceptance", "--scope", "@loopback/juggler", "-- -s"]
-		},
-	  {
-			"taskName": "Run juggler integration tests",
-			"args": ["run", "integration", "--scope", "@loopback/juggler", "-- -s"]
-		},
-	  {
-			"taskName": "Run juggler unit tests",
-			"args": ["run", "unit", "--scope", "@loopback/juggler", "-- -s"]
-		},
-	  {
-			"taskName": "Run remoting tests",
-			"args": ["run", "test", "--scope", "@loopback/remoting", "-- -s"]
-		},
-	  {
-			"taskName": "Run remoting acceptance tests",
-			"args": ["run", "acceptance", "--scope", "@loopback/remoting", "-- -s"]
-		},
-	  {
-			"taskName": "Run remoting integration tests",
-			"args": ["run", "integration", "--scope", "@loopback/remoting", "-- -s"]
-		},
-	  {
-			"taskName": "Run remoting unit tests",
-			"args": ["run", "unit", "--scope", "@loopback/remoting", "-- -s"]
-		},
-		// Linting
-		{
-			"taskName": "Lint all packages",
-			"command": "npm",
-			"args": ["run", "lint"],
-			"problemMatcher": [
-				{
-					// linting errors - relative paths
-					"owner": "tslint",
-					"fileLocation": ["relative", "${workspaceRoot}"],
-					"severity": "warning",
-					"pattern": {
-						"regexp": "^([^/]\\S.*)\\[(\\d+), (\\d+)\\]:\\s+(.*)$",
-						"file": 1,
-						"line": 2,
-						"column": 3,
-						"message": 4
-					}
-				},
-				{
-					// linting errors - absolute paths
-					"owner": "tslint",
-					"fileLocation": "absolute",
-					"severity": "warning",
-					"pattern": {
-						"regexp": "^(/\\S.*)\\[(\\d+), (\\d+)\\]:\\s+(.*)$",
-						"file": 1,
-						"line": 2,
-						"column": 3,
-						"message": 4
-					}
-				},
-				{
-					// compilation errors - relative paths
-					"owner": "tslint",
-					"fileLocation": ["relative", "${workspaceRoot}"],
-					"severity": "error",
-					"pattern": {
-						"regexp": "^Error at ([^\/]\\S.*):(\\d+):(\\d+):\\s+(.*)$",
-						"file": 1,
-						"line": 2,
-						"column": 3,
-						"message": 4
-					}
-				},
-				{
-					// compilation errors - absolute paths
-					"owner": "tslint",
-					"fileLocation": "absolute",
-					"severity": "error",
-					"pattern": {
-						"regexp": "^Error at (/\\S.*):(\\d+):(\\d+):\\s+(.*)$",
-						"file": 1,
-						"line": 2,
-						"column": 3,
-						"message": 4
-					}
-				}
-			]
-		}
-	]
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "0.1.0",
+  "tasks": [
+    // installing dependencies
+    {
+      "taskName": "Install all dependencies",
+      "command": "lerna",
+      "args": [
+        "bootstrap"
+      ]
+    },
+    {
+      "taskName": "Install loopback dependencies",
+      "command": "lerna",
+      "args": [
+        "bootstrap",
+        "--scope",
+        "loopback"
+      ]
+    },
+    {
+      "taskName": "Install juggler dependencies",
+      "command": "lerna",
+      "args": [
+        "bootstrap",
+        "--scope",
+        "@loopback/juggler"
+      ]
+    },
+    {
+      "taskName": "Install remoting dependencies",
+      "command": "lerna",
+      "args": [
+        "bootstrap",
+        "--scope",
+        "@loopback/remoting"
+      ]
+    },
+    {
+      "taskName": "Install testlab dependencies",
+      "command": "lerna",
+      "args": [
+        "bootstrap",
+        "--scope",
+        "@loopback/testlab"
+      ]
+    },
+    // removing dependencies
+    {
+      "taskName": "Remove all dependencies",
+      "command": "lerna",
+      "args": [
+        "clean",
+        "--yes"
+      ]
+    },
+    {
+      "taskName": "Remove loopback dependencies",
+      "command": "lerna",
+      "args": [
+        "clean",
+        "--scope",
+        "loopback",
+        "--yes"
+      ]
+    },
+    {
+      "taskName": "Remove juggler dependencies",
+      "command": "lerna",
+      "args": [
+        "clean",
+        "--scope",
+        "@loopback/juggler",
+        "--yes"
+      ]
+    },
+    {
+      "taskName": "Remove remoting dependencies",
+      "command": "lerna",
+      "args": [
+        "clean",
+        "--scope",
+        "@loopback/remoting",
+        "--yes"
+      ]
+    },
+    {
+      "taskName": "Remove testlab dependencies",
+      "command": "lerna",
+      "args": [
+        "clean",
+        "--scope",
+        "@loopback/testlab",
+        "--yes"
+      ]
+    },
+    // running tests
+    {
+      "taskName": "Run all tests",
+      "command": "npm",
+      "args": [
+        "run",
+        "test"
+      ],
+      "isTestCommand": true
+    },
+    {
+      "taskName": "Run all loopback tests",
+      "command": "mocha",
+      "args": [
+        "--opts",
+        "test/mocha.opts.root",
+        "packages/loopback/test/unit/*.ts",
+        "packages/loopback/test/integration/**/*.ts",
+        "packages/loopback/test/acceptance/**/*.ts"
+      ]
+    },
+    {
+      "taskName": "Run loopback unit tests",
+      "command": "mocha",
+      "args": [
+        "--opts",
+        "test/mocha.opts.root",
+        "packages/loopback/test/unit/**/*.ts"
+      ]
+    },
+    {
+      "taskName": "Run loopback integration tests",
+      "command": "mocha",
+      "args": [
+        "--opts",
+        "test/mocha.opts.root",
+        "packages/loopback/test/integration/**/*.ts"
+      ]
+    },
+    {
+      "taskName": "Run loopback acceptance tests",
+      "command": "mocha",
+      "args": [
+        "--opts",
+        "test/mocha.opts.root",
+        "packages/loopback/test/acceptance/**/*.ts"
+      ]
+    },
+    {
+      "taskName": "Run all juggler tests",
+      "command": "mocha",
+      "args": [
+        "--opts",
+        "test/mocha.opts.root",
+        "packages/juggler/test/unit/*.ts",
+        "packages/juggler/test/integration/**/*.ts",
+        "packages/juggler/test/acceptance/**/*.ts"
+      ]
+    },
+    {
+      "taskName": "Run juggler unit tests",
+      "command": "mocha",
+      "args": [
+        "--opts",
+        "test/mocha.opts.root",
+        "packages/juggler/test/unit/**/*.ts"
+      ]
+    },
+    {
+      "taskName": "Run juggler integration tests",
+      "command": "mocha",
+      "args": [
+        "--opts",
+        "test/mocha.opts.root",
+        "packages/juggler/test/integration/**/*.ts"
+      ]
+    },
+    {
+      "taskName": "Run juggler acceptance tests",
+      "command": "mocha",
+      "args": [
+        "--opts",
+        "test/mocha.opts.root",
+        "packages/juggler/test/acceptance/**/*.ts"
+      ]
+    },
+    {
+      "taskName": "Run all remoting tests",
+      "command": "mocha",
+      "args": [
+        "--opts",
+        "test/mocha.opts.root",
+        "packages/remoting/test/unit/*.ts",
+        "packages/remoting/test/integration/**/*.ts",
+        "packages/remoting/test/acceptance/**/*.ts"
+      ]
+    },
+    {
+      "taskName": "Run remoting unit tests",
+      "command": "mocha",
+      "args": [
+        "--opts",
+        "test/mocha.opts.root",
+        "packages/remoting/test/unit/**/*.ts"
+      ]
+    },
+    {
+      "taskName": "Run remoting integration tests",
+      "command": "mocha",
+      "args": [
+        "--opts",
+        "test/mocha.opts.root",
+        "packages/remoting/test/integration/**/*.ts"
+      ]
+    },
+    {
+      "taskName": "Run remoting acceptance tests",
+      "command": "mocha",
+      "args": [
+        "--opts",
+        "test/mocha.opts.root",
+        "packages/remoting/test/acceptance/**/*.ts"
+      ]
+    },
+    // linting
+    {
+      "taskName": "Lint all packages",
+      "command": "npm",
+      "args": [
+        "run",
+        "lint"
+      ],
+      "problemMatcher": [
+        {
+          // linting errors - relative paths
+          "owner": "tslint",
+          "fileLocation": [
+            "relative",
+            "${workspaceRoot}"
+          ],
+          "severity": "warning",
+          "pattern": {
+            "regexp": "^([^/]\\S.*)\\[(\\d+), (\\d+)\\]:\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "message": 4
+          }
+        },
+        {
+          // linting errors - absolute paths
+          "owner": "tslint",
+          "fileLocation": "absolute",
+          "severity": "warning",
+          "pattern": {
+            "regexp": "^(/\\S.*)\\[(\\d+), (\\d+)\\]:\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "message": 4
+          }
+        },
+        {
+          // compilation errors - relative paths
+          "owner": "tslint",
+          "fileLocation": [
+            "relative",
+            "${workspaceRoot}"
+          ],
+          "severity": "error",
+          "pattern": {
+            "regexp": "^Error at ([^\/]\\S.*):(\\d+):(\\d+):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "message": 4
+          }
+        },
+        {
+          // compilation errors - absolute paths
+          "owner": "tslint",
+          "fileLocation": "absolute",
+          "severity": "error",
+          "pattern": {
+            "regexp": "^Error at (/\\S.*):(\\d+):(\\d+):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "message": 4
+          }
+        }
+      ]
+    }
+  ]
 }
