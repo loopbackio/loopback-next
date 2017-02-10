@@ -8,7 +8,7 @@ import {Application} from 'loopback';
 import {expect} from '@loopback/testlab';
 import * as util from 'loopback/test/support/util';
 
-describe('bootstrapping the application', () => {
+describe.skip('bootstrapping the application', () => {
   describe('with default configs', () => {
     let app: Application;
     let client: Client;
@@ -30,7 +30,7 @@ describe('bootstrapping the application', () => {
     });
 
     function createApp() {
-      app = util.createApp();
+      app = util.createApp({port: 0});
     }
     function createClient() {
       client = util.createClient(app);

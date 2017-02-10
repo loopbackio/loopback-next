@@ -6,5 +6,5 @@
 export {
   Application,
   AppConfig,
-  AppState
+  AppState,
 } from './lib/application';
