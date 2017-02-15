@@ -56,7 +56,7 @@
       "method": "never",
       "constructor": "never"
     }],
-    "variable-name": [false, "ban-keywords", "check-format"],
+    "variable-name": [true, "allow-leading-underscore", "ban-keywords", "check-format"],
     "whitespace": [
       true,
       "check-branch",
