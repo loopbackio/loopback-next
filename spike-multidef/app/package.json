@@ -1,0 +1,20 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "files": [
+    "lib"
+  ],
+  "main": "lib/main",
+  "scripts": {
+    "test": "mocha test.js"
+  },
+  "dependencies": {
+    "component-controller": "file:../component-controller",
+    "metadata": "file:../metadata-v2"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "dirty-chai": "^1.2.2",
+    "mocha": "^3.2.0"
+  }
+}

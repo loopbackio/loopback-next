@@ -4,6 +4,16 @@
   "editor.trimAutoWhitespace": true,
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
+
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true,
+    "spike-multidef/*/lib/**/*": true,
+    "spike-multidef/app/test.js": false,
+    "spike-multidef/*-v2": true
+  },
   "tslint.ignoreDefinitionFiles": true,
   // Temporarily disable linting & compilation of examples,
   // because they are depending on features/APIs that are

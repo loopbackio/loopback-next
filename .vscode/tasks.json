@@ -105,7 +105,7 @@
         "test",
         "-s"
       ],
-      "isTestCommand": true
+      "isTestCommand": false
     },
     {
       "taskName": "Run all loopback tests",
@@ -289,6 +289,13 @@
           }
         }
       ]
+    },
+    {
+      "taskName": "Test multidef",
+      "command": "ts-node",
+      "args": ["spike-multidef/build"],
+      "problemMatcher": "$tsc",
+      "isTestCommand": true
     }
   ]
 }
