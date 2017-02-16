@@ -9,11 +9,12 @@ const expect = chai.expect;
 
 const app = require('./');
 const inspectStringwise = require('metadata').inspectStringwise;
+const inspectSymbolwise = require('metadata').inspectSymbolwise;
 
 describe('remoting metadata', () => {
   const TEST_CASES = {
-    'indexed by string keys': inspectStringwise,
-    // TODO: 'indexed by symbols': inspectSymbolwise
+    'indexed by string key': inspectStringwise,
+    'indexed by Symbol key': inspectSymbolwise,
   };
 
   Object.keys(TEST_CASES).forEach(tc => {

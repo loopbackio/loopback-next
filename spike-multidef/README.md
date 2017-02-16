@@ -46,7 +46,6 @@ Directory layout:
 
 ## Todo
 
-- [ ] reflection/symbol based remoting metadata
 - [ ] ModelRepository base class
 - [ ] component-model
 - [ ] app - model repository
