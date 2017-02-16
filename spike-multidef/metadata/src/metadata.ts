@@ -5,16 +5,16 @@
 
 import * as assert from 'assert';
 
+const VERSION = require('../package.json').version;
+
 export function controller(baseUrl: string) {
   return function(constructor: Function) {
     const meta = constructor as any;
     if (!meta._loopbackRemoting)
       meta._loopbackRemoting = constructor.prototype._loopbackRemoting || {};
 
-    if (!baseUrl)
-      baseUrl = '/' + meta.name;
-
     meta._loopbackRemoting.baseUrl = baseUrl;
+    meta._loopbackRemoting.version = VERSION;
   };
 }
 

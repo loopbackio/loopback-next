@@ -21,6 +21,7 @@ describe('remoting metadata', () => {
     describe(tc, () => {
       it('recognizes app controller', () => {
         expect(inspect(app.LogController)).to.eql({
+          version: '1.2.0',
           baseUrl: '/logs',
           getLogs: { http: { verb: 'get' } }
         });
@@ -28,6 +29,7 @@ describe('remoting metadata', () => {
 
       it('recognizes component controller', () => {
         expect(inspect(app.StatusController)).to.eql({
+          version: '1.0.0',
           baseUrl: '/status',
           getStatus: { http: { verb: 'get' } }
         });
