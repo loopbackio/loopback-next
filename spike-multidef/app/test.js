@@ -23,7 +23,12 @@ describe('remoting metadata', () => {
         expect(inspect(app.LogController)).to.eql({
           version: '1.2.0',
           baseUrl: '/logs',
-          getLogs: { http: { verb: 'get' } }
+          methods: {
+            getLogs: {
+              http: { verb: 'get' },
+              returns: { type: 'Array' },
+            }
+          },
         });
       });
 
@@ -31,7 +36,14 @@ describe('remoting metadata', () => {
         expect(inspect(app.StatusController)).to.eql({
           version: '1.0.0',
           baseUrl: '/status',
-          getStatus: { http: { verb: 'get' } }
+          methods: {
+            getStatus: {
+               http: { verb: 'get' },
+               // somehow, "design:returntype" is not defined when
+               // the type is a custom/private constructor function
+               // returns: { type: 'Status' },
+            },
+          },
         });
       });
     });

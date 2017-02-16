@@ -5,7 +5,7 @@
 
 import {controller, get} from 'metadata';
 
-@controller('/logs')
+@controller()
 export class LogController {
   @get
   public getLogs(): string[] {
