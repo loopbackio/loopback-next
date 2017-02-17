@@ -113,7 +113,7 @@
       "args": [
         "--opts",
         "test/mocha.opts.root",
-        "packages/loopback/test/unit/*.ts",
+        "packages/loopback/test/unit/**/*.ts",
         "packages/loopback/test/integration/**/*.ts",
         "packages/loopback/test/acceptance/**/*.ts"
       ]
@@ -151,7 +151,7 @@
       "args": [
         "--opts",
         "test/mocha.opts.root",
-        "packages/juggler/test/unit/*.ts",
+        "packages/juggler/test/unit/**/*.ts",
         "packages/juggler/test/integration/**/*.ts",
         "packages/juggler/test/acceptance/**/*.ts"
       ]
@@ -189,7 +189,7 @@
       "args": [
         "--opts",
         "test/mocha.opts.root",
-        "packages/remoting/test/unit/*.ts",
+        "packages/remoting/test/unit/**/*.ts",
         "packages/remoting/test/integration/**/*.ts",
         "packages/remoting/test/acceptance/**/*.ts"
       ]
