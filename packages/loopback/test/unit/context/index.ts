@@ -9,11 +9,11 @@ import * as util from 'loopback/test/support/util';
 
 describe('Context', () => {
   let ctx;
-  beforeEach('given a context', getContext);
+  before('given a context', createContext);
 
   describe('bind', () => {
     let binding;
-    beforeEach('create a binding', createBinding);
+    before('create a binding', createBinding);
 
     it('adds a binding into the registry', () => {
       const result = ctx.contains('foo');
@@ -29,15 +29,20 @@ describe('Context', () => {
     }
   });
 
-  describe('contains', () => {
+  describe('contains()', () => {
     it('returns true when the key is the registry', () => {
       ctx.bind('foo');
       const result = ctx.contains('foo');
       expect(result).to.be.true();
     });
+
+    it('returns false when the key is not in the registry', () => {
+      const result = ctx.contains('bar');
+      expect(result).to.be.false();
+    });
   });
 
-  function getContext() {
+  function createContext() {
     ctx = util.getContext();
   }
 });

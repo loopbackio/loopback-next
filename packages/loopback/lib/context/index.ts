@@ -11,13 +11,19 @@ export class Context {
     this.registry = new Map();
   }
 
-  bind(key: string) : Binding {
+  bind(key: string): Binding {
+    const keyExists = this.registry.has(key);
+    const bindingIsLocked = this.registry.get(key) && this.registry.get(key).isLocked;
+
+    if (keyExists && bindingIsLocked)
+      throw new Error(`Cannot rebind key "${key}" because associated binding is locked`);
+
     const binding = new Binding(key);
     this.registry.set(key, binding);
     return binding;
   }
 
-  contains(key: string) : boolean {
+  contains(key: string): boolean {
     return this.registry.has(key);
   }
 
