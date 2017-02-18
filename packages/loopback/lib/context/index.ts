@@ -5,7 +5,7 @@
 import {Binding} from './binding';
 
 export class Context {
-  private registry: Map<string, any>;
+  private registry: Map<string, Binding>;
 
   constructor() {
     this.registry = new Map();
@@ -25,6 +25,23 @@ export class Context {
 
   contains(key: string): boolean {
     return this.registry.has(key);
+  }
+
+  find(pattern: string): Binding[] {
+    let bindings = [];
+    if (pattern) {
+      // TODO: swap with production grade glob to regex lib
+      const glob = new RegExp('^' + pattern.split('*').join('.*') + '$');
+      this.registry.forEach(binding => {
+        const isMatch = glob.test(binding.key);
+        if (isMatch)
+          bindings.push(binding);
+      });
+    } else {
+      bindings = Array.from(this.registry.values());
+    }
+
+    return bindings;
   }
 
   get(key: string) {
