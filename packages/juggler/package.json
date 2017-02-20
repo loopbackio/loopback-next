@@ -1,0 +1,21 @@
+{
+  "name": "@loopback/juggler",
+  "version": "4.0.0-alpha.1",
+  "description": "",
+  "main": "index",
+  "scripts": {
+    "acceptance": "mocha --opts ../../test/mocha.opts test/acceptance/**/*.ts",
+    "integration": "mocha --opts ../../test/mocha.opts test/integration/**/*.ts",
+    "test": "mocha --opts ../../test/mocha.opts 'test/unit**/*.ts' 'test/integration/**/*.ts' 'test/acceptance/**/*.ts'",
+    "unit": "mocha --opts ../../test/mocha.opts test/unit/**/*.ts"
+  },
+  "author": "IBM",
+  "license": "MIT",
+  "devDependencies": {
+    "@loopback/testlab": "^4.0.0-alpha.1",
+    "mocha": "^3.2.0"
+  },
+  "dependencies": {
+    "loopback-datasource-juggler": "^3.2.0"
+  }
+}
