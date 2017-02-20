@@ -14,5 +14,8 @@
   "devDependencies": {
     "@loopback/testlab": "^4.0.0-alpha.1",
     "mocha": "^3.2.0"
+  },
+  "dependencies": {
+    "loopback-datasource-juggler": "^3.2.0"
   }
 }
