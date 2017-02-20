@@ -22,7 +22,12 @@ export interface Model {
   toObject() : Partial<Model>;
 }
 
-export abstract class ModelRepository<M extends Model> {
+export interface ModelRepository<M extends Model> {
+  find(filter: Filter): Promise<M[]>;
+  create(data: Partial<M>): Promise<M>;
+}
+
+export abstract class ModelRepositoryBase<M extends Model>  implements ModelRepository<M> {
   public static readonly MODEL_VERSION: string = VERSION;
 
   protected constructor(

@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ModelRepository, DataAccessConnector} from 'model';
+import {ModelRepositoryBase, DataAccessConnector} from 'model';
 
 export class LogEntry {
   public message: string;
@@ -18,7 +18,7 @@ export class LogEntry {
   }
 }
 
-export class LogEntryRepository extends ModelRepository<LogEntry> {
+export class LogEntryRepository extends ModelRepositoryBase<LogEntry> {
   public static create(connector: DataAccessConnector): LogEntryRepository {
     return new LogEntryRepository(LogEntry, LogEntry.name, connector);
   }

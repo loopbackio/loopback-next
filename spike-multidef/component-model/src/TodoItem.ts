@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ModelRepository, DataAccessConnector} from 'model';
+import {ModelRepositoryBase, DataAccessConnector} from 'model';
 
 export class TodoItem {
   public title: string;
@@ -18,7 +18,7 @@ export class TodoItem {
   }
 }
 
-export class TodoItemRepository extends ModelRepository<TodoItem> {
+export class TodoItemRepository extends ModelRepositoryBase<TodoItem> {
   public static create(connector: DataAccessConnector): TodoItemRepository {
     return new TodoItemRepository(TodoItem, TodoItem.name, connector);
   }
