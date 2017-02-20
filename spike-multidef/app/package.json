@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "component-controller": "file:../component-controller",
-    "metadata": "file:../metadata-v2"
+    "component-model": "file:../component-model",
+    "metadata": "file:../metadata-v2",
+    "model": "file:../model-v2"
   },
   "devDependencies": {
     "chai": "^3.5.0",

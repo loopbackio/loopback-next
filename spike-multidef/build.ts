@@ -9,7 +9,9 @@ import * as fs from 'fs';
 
 const PROJECTS = {
   metadata: subdir('metadata'),
-  controller: subdir('component-controller'),
+  model: subdir('model'),
+  componentController: subdir('component-controller'),
+  componentModel: subdir('component-model'),
   app: subdir('app'),
 };
 
@@ -22,11 +24,16 @@ async function build() {
   await clean();
 
   await compile(PROJECTS.metadata);
+  await compile(PROJECTS.model);
 
-  await install(PROJECTS.controller);
-  await compile(PROJECTS.controller);
+  await install(PROJECTS.componentController);
+  await compile(PROJECTS.componentController);
+
+  await install(PROJECTS.componentModel);
+  await compile(PROJECTS.componentModel);
 
   await makeVersion2(PROJECTS.metadata);
+  await makeVersion2(PROJECTS.model);
 
   await install(PROJECTS.app);
   await compile(PROJECTS.app);

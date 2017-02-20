@@ -44,9 +44,3 @@ Directory layout:
 - `app` - the app using the two components above, adding an own controller and
         model,.using v2 versions
 
-## Todo
-
-- [ ] ModelRepository base class
-- [ ] component-model
-- [ ] app - model repository
-

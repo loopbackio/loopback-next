@@ -8,10 +8,11 @@ chai.use(require('dirty-chai'));
 const expect = chai.expect;
 
 const app = require('./');
-const inspectStringwise = require('metadata').inspectStringwise;
-const inspectSymbolwise = require('metadata').inspectSymbolwise;
 
 describe('remoting metadata', () => {
+  const inspectStringwise = require('metadata').inspectStringwise;
+  const inspectSymbolwise = require('metadata').inspectSymbolwise;
+
   const TEST_CASES = {
     'indexed by string key': inspectStringwise,
     'indexed by Symbol key': inspectSymbolwise,
@@ -48,5 +49,53 @@ describe('remoting metadata', () => {
         });
       });
     });
+  });
+});
+
+describe('Model repository (inheritance)', () => {
+  const OUR_MODEL_VERSION = '1.2.0';
+  const COMPONENT_MODEL_VERSION = '1.0.0';
+  const {
+    LogEntry,
+    LogEntryRepository,
+    TodoItem,
+    TodoItemRepository
+  } = app.models;
+
+  it('allows different version of model and connector', () => {
+    expect(app.dataSources.db.constructor.MODEL_VERSION).to.eql(OUR_MODEL_VERSION);
+
+    expect(LogEntryRepository.constructor.MODEL_VERSION).to.eql(OUR_MODEL_VERSION);
+    expect(LogEntryRepository.connector.constructor.MODEL_VERSION).to.eql(OUR_MODEL_VERSION);
+
+    // Notice that the repository class uses type info from a different version of "model" package
+    // than the connector it is attached to.
+    expect(TodoItemRepository.constructor.MODEL_VERSION).to.eql(COMPONENT_MODEL_VERSION);
+    expect(TodoItemRepository.connector.constructor.MODEL_VERSION).to.eql(OUR_MODEL_VERSION);
+  });
+
+  it('finds no instances in empty datasource (LogEntry)', () => {
+    return LogEntryRepository.find().then(found => expect(found).to.be.empty());
+  });
+
+  it('finds no instances in empty datasource (TodoItem)', () => {
+    return LogEntryRepository.find().then(found => expect(found).to.be.empty());
+  });
+
+  it('creates and finds model instances', () => {
+    return LogEntryRepository.create({ message: 'hello', timestamp: Date.now() })
+      .then(() => TodoItemRepository.create({ title: 'greet', done: true}))
+      .then(() => Promise.all([LogEntryRepository.find(), TodoItemRepository.find()]))
+      .then(results => {
+        const logs = results[0] || [];
+        const todos = results[1] || [];
+        var prettify = it => it.message || it.title;
+
+        expect(logs.map(prettify), 'LogEntry').to.eql(['hello']);
+        expect(logs[0], 'LogEntry instance').to.be.instanceOf(LogEntry);
+
+        expect(todos.map(prettify), 'TodoItem').to.eql(['greet']);
+        expect(todos[0], 'TodoItem instance').to.be.instanceOf(TodoItem);
+      });
   });
 });
