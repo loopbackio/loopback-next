@@ -5,7 +5,7 @@
 
 import {DataAccessConnector, Filter, VERSION as ModelVersion} from 'model';
 
-type ModelStore = Map<string, Object>;
+type ModelStore = Map<string, any>;
 
 export class MemoryConnector implements DataAccessConnector {
   public static readonly MODEL_VERSION: string = ModelVersion;
@@ -13,29 +13,29 @@ export class MemoryConnector implements DataAccessConnector {
   private _nextId = 1;
   private _store: Map<string, ModelStore> = new Map<string, ModelStore>();
 
-  public async find(modelName: string, filter: Filter): Promise<Object[]> {
+  public async find(modelName: string, filter: Filter): Promise<any[]> {
     const values: Object[] = Array.from(this.getStoreForModel(modelName).values());
     return Promise.resolve(values);
   }
 
-  public async create(modelName: string, data: Object): Promise<Object> {
-    let id: string = (data as any).id;
+  public async create(modelName: string, data: any): Promise<any> {
+    let id: string = data.id;
     if (!id) {
       id = '' + this._nextId++;
-      (data as any).id = id;
+      data.id = id;
     }
 
     this.getStoreForModel(modelName).set(id, data);
     return Promise.resolve(data);
   }
 
-  protected getStoreForModel(modelName: string): Map<string, Object> {
+  protected getStoreForModel(modelName: string): Map<string, any> {
     if (this._store.has(modelName)) {
       const store = this._store.get(modelName);
       return store;
     }
 
-    const store = new Map<string, Object>();
+    const store = new Map<string, any>();
     this._store.set(modelName, store);
     return store;
   }
