@@ -61,6 +61,7 @@ describe('Model repository (inheritance)', () => {
     TodoItem,
     TodoItemRepository
   } = app.models;
+  const ModelRepository = require('model').ModelRepository;
 
   it('allows different version of model and connector', () => {
     expect(app.dataSources.db.constructor.MODEL_VERSION).to.eql(OUR_MODEL_VERSION);
@@ -73,6 +74,14 @@ describe('Model repository (inheritance)', () => {
     expect(TodoItemRepository.constructor.MODEL_VERSION).to.eql(COMPONENT_MODEL_VERSION);
     expect(TodoItemRepository.connector.constructor.MODEL_VERSION).to.eql(OUR_MODEL_VERSION);
   });
+
+  it('detects app\'s LogEntryRepository as ModelRepository', () => {
+    expect(LogEntryRepository).to.be.instanceOf(ModelRepository);
+  });
+
+  it('detects components\'s TodoItemRepository as ModelRepository', () => {
+    expect(TodoItemRepository).to.be.instanceOf(ModelRepository);
+  })
 
   it('finds no instances in empty datasource (LogEntry)', () => {
     return LogEntryRepository.find().then(found => expect(found).to.be.empty());
