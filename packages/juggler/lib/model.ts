@@ -3,36 +3,66 @@
  * Driven Design.
  * See https://en.wikipedia.org/wiki/Domain-driven_design#Building_blocks
  */
+export class ModelProperty {
+  name: string;
+  type: string | Function | Object;
+  // ...
+}
+
+export class ModelDefinition {
+  name: string;
+  properties: Map<string, ModelProperty>;
+
+  idProperties(): ModelProperty[] {
+    return [];
+  }
+}
 
 export abstract class Model {
   static modelName: string;
+  static definition: ModelDefinition;
 
   /**
    * Serialize into a plain JSON object
    */
-  abstract toJSON(): Object;
+  toJSON(): Object {
+    return {};
+  }
 
   /**
    * Convert to a plain object as DTO
    */
-  abstract toObject(): Object;
-};
+  toObject(options?: Object): Object {
+    return {};
+  }
+}
 
 /**
  * Base class for value objects - An object that contains attributes but has no
  * conceptual identity. They should be treated as immutable.
  */
-export abstract class ValueObject {
-};
+export abstract class ValueObject extends Model {
+}
 
 /**
  * Base class for entities which have unique ids
  */
-export abstract class Entity {
+export abstract class Entity extends Model {
   /**
    * Get the identity value
    */
-  abstract getId(): any;
+  getId(): any {
+    let definition = (this.constructor as typeof Entity).definition;
+    let idProps = definition.idProperties();
+    if (idProps.length === 0) {
+      return this[idProps[0].name];
+    }
+    let idObj = {};
+    for (let idProp of idProps) {
+      idObj[idProp.name] = this[idProp.name];
+    }
+    return idObj;
+  }
 }
 
 /**
