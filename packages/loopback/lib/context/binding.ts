@@ -22,4 +22,8 @@ export class Binding {
     this.value = value;
     return this;
   }
+
+  unlock() {
+    this._isLocked = false;
+  }
 }
