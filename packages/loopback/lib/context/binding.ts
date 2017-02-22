@@ -6,11 +6,16 @@
 export class Binding {
   public value;
 
-  constructor(private _key: string) {
+  constructor(private _key: string, private _isLocked?: boolean) {
+    if (!_isLocked)
+      this._isLocked = false;
   }
 
-  get key() {
-    return this._key;
+  get key() { return this._key; }
+  get isLocked() { return this._isLocked; }
+
+  lock() {
+    this._isLocked = true;
   }
 
   to(value: any) : this {
