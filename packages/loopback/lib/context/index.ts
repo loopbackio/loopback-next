@@ -16,7 +16,7 @@ export class Context {
     const bindingIsLocked = this.registry.get(key) && this.registry.get(key).isLocked;
 
     if (keyExists && bindingIsLocked)
-      throw new Error(`Cannot rebind key "${key}" because associated binding is locked`);
+      throw new Error(`Cannot rebind key "${key}", associated binding is locked`);
 
     const binding = new Binding(key);
     this.registry.set(key, binding);
@@ -46,6 +46,8 @@ export class Context {
 
   get(key: string) {
     const binding = this.registry.get(key);
-    return binding.value;
+    return binding && binding.isDynamic ?
+      binding.value() :
+      binding.value;
   }
 }

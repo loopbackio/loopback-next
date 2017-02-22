@@ -1,29 +1,3 @@
-## Scenario: Dynamic Bindings
-
-- Given a binding container
-- And a dynamic binding named `data` with values `a`, `b`, `c`
-- When I resolve the binding for `data` three times
-- Then I get the value `a`
-- And then I get the value `b`
-- And then I get the value `c`
-
-```ts
-// create a container for bindings
-let ctx = new Context();
-let data = ['a', 'b', 'c'];
-
-// creating a dynamic binding
-ctx.bind('data').toDynamicValue(() => {
-  return data.shift();
-});
-
-ctx.get('data'); // => a
-ctx.get('data'); // => b
-ctx.get('data'); // => c
-```
-
-
-
 ## Scenario: Tags
 
 - Given two simple object bindings

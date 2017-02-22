@@ -5,6 +5,7 @@
 
 export class Binding {
   public value;
+  private _isDynamic = false;
 
   constructor(private _key: string, private _isLocked?: boolean) {
     if (!_isLocked)
@@ -12,14 +13,21 @@ export class Binding {
   }
 
   get key() { return this._key; }
+  get isDynamic() { return this._isDynamic; }
   get isLocked() { return this._isLocked; }
 
   lock() {
     this._isLocked = true;
   }
 
-  to(value: any) : this {
+  to(value: any): this {
     this.value = value;
+    return this;
+  }
+
+  toDynamicValue(value: any): this {
+    this.value = value;
+    this._isDynamic = true;
     return this;
   }
 

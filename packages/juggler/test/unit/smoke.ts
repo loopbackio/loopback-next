@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect} from 'testlab';
 
 describe('unit smoke test', () => {
   it('passes', () => {

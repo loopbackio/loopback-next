@@ -2,7 +2,7 @@
   "name": "loopback",
   "version": "4.0.0-alpha.1",
   "description": "",
-  "main": "index.js",
+  "main": "index",
   "scripts": {
     "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
     "integration": "mocha --opts ../../test/mocha.opts 'test/integration/**/*.ts'",
