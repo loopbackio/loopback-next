@@ -4,20 +4,27 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export class Binding {
-  public value;
-  private _isDynamic = false;
+  public value: any;
+  private _isDynamic: boolean = false;
+  private _tagName: string;
 
   constructor(private _key: string, private _isLocked?: boolean) {
     if (!_isLocked)
       this._isLocked = false;
   }
 
-  get key() { return this._key; }
   get isDynamic() { return this._isDynamic; }
   get isLocked() { return this._isLocked; }
+  get key() { return this._key; }
+  get tagName() { return this._tagName; }
 
   lock() {
     this._isLocked = true;
+  }
+
+  tag(tagName: string): this {
+    this._tagName = tagName;
+    return this;
   }
 
   to(value: any): this {

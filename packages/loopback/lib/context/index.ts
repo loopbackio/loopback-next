@@ -30,7 +30,7 @@ export class Context {
   find(pattern: string): Binding[] {
     let bindings = [];
     if (pattern) {
-      // TODO: swap with production grade glob to regex lib
+      // TODO(@superkhau): swap with production grade glob to regex lib
       const glob = new RegExp('^' + pattern.split('*').join('.*') + '$');
       this.registry.forEach(binding => {
         const isMatch = glob.test(binding.key);
@@ -41,6 +41,18 @@ export class Context {
       bindings = Array.from(this.registry.values());
     }
 
+    return bindings;
+  }
+
+  findByTag(pattern: string): Binding[] {
+    const bindings = [];
+    // TODO(@superkhau): swap with production grade glob to regex lib
+    const glob = new RegExp('^' + pattern.split('*').join('.*') + '$');
+    this.registry.forEach(binding => {
+      const isMatch = glob.test(binding.tagName);
+      if (isMatch)
+        bindings.push(binding);
+    });
     return bindings;
   }
 

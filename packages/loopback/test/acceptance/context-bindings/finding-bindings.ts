@@ -46,6 +46,25 @@ describe('Context bindings - Finding bindings', () => {
     });
   });
 
+  describe('Finding bindings by tag', () => {
+    before('given a context', createContext);
+    before('with tagged bindings', createTaggedBindings);
+
+    describe('when I find binding by tag', () => {
+      it('returns all bindings matching the tag', () => {
+        const bindings = ctx.findByTag('dog');
+        const dogs = bindings.map(binding => binding.key);
+        expect(dogs).to.include('spot', 'fido');
+      });
+    });
+
+    function createTaggedBindings() {
+      class Dog {}
+      ctx.bind('spot').to(new Dog()).tag('dog');
+      ctx.bind('fido').to(new Dog()).tag('dog');
+    }
+  });
+
   function createContext() {
     ctx = util.getContext();
   }
