@@ -7,22 +7,22 @@
   "version": "4.0.0-alpha.1",
   "license": "MIT",
   "devDependencies": {
-    "@types/mocha": "^2.2.38",
-    "@types/node": "^7.0.4",
     "@types/request": "0.0.40",
+    "@types/mocha": "^2.2.39",
+    "@types/node": "^7.0.5",
     "@types/request-promise": "^4.1.33",
     "lerna": "2.0.0-beta.38",
     "mocha": "^3.2.0",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
-    "ts-node": "^2.0.0",
-    "tsconfig-paths": "^2.1.0",
+    "ts-node": "^2.1.0",
+    "tsconfig-paths": "^2.1.1",
     "tslint": "^4.4.2",
-    "typescript": "^2.1.5"
+    "typescript": "^2.2.1"
   },
   "dependencies": {
     "bluebird": "^3.4.7",
-    "reflect-metadata": "^0.1.9"
+    "reflect-metadata": "^0.1.10"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
