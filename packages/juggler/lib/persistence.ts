@@ -1,6 +1,9 @@
 import {Entity} from './model';
 
-class Repository<T extends Entity> {
+/**
+ * Repository implementation
+ */
+export class Repository<T extends Entity> {
 
   constructor(public connector: any, public model: T) {
 
