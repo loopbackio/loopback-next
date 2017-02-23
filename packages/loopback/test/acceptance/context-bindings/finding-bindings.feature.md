@@ -1,5 +1,10 @@
 # Feature: Context Binding - Finding bindings
 
+- In order to retrieve my dependencies
+- As a developer
+- I want to find bindings
+- So that I can use them in my application's business logic
+
 ## Scenario: Finding all bindings
 
 - Given a context
@@ -49,4 +54,28 @@ const bindings = ctx.find('my.*');
 
 const keys = bindings.map(binding => binding.key)
 console.log(keys); // => ['my.foo', 'my.baz']
+```
+
+## Scenario: Finding bindings by tag
+
+- Given a context
+- And a binding with key `spot` bound to a `Dog` instance tagged as `dog`
+- And a binding with key `fido` bound to a `Dog` instance tagged as `dog`
+- When I find bindings by tag
+- Then I get a list of all bindings matching the pattern
+
+```ts
+// create a container for bindings
+const ctx = new Context();
+
+// bind some animals and tag them as dogs
+ctx.bind('spot').to(new Dog()).tag('dog');
+ctx.bind('fido').to(new Dog()).tag('dog');
+ctx.bind('mew').to(new Dog()).tag('cat');
+
+// find by dog tag
+const bindings = ctx.findByTag('dog');
+
+const dogs = bindings.map(binding => binding.key)
+console.log(dogs); // => ['spot', 'fido']
 ```
