@@ -6,7 +6,7 @@
   "scripts": {
     "acceptance": "mocha --opts ../../test/mocha.opts test/acceptance/**/*.ts",
     "integration": "mocha --opts ../../test/mocha.opts test/integration/**/*.ts",
-    "test": "mocha --opts ../../test/mocha.opts 'test/unit**/*.ts' 'test/integration/**/*.ts' 'test/acceptance/**/*.ts'",
+    "test": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts' 'test/integration/**/*.ts' 'test/acceptance/**/*.ts'",
     "unit": "mocha --opts ../../test/mocha.opts test/unit/**/*.ts"
   },
   "author": "IBM",
