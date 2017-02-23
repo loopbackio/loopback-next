@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect} from 'testlab';
 import * as util from 'loopback/test/support/util';
 
 describe(`Context bindings - Unlocking bindings`, () => {

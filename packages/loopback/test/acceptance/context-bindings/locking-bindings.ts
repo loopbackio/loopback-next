@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect} from 'testlab';
 import * as util from 'loopback/test/support/util';
 
 describe('Context bindings - Locking bindings', () => {
@@ -38,7 +38,7 @@ describe('Context bindings - Locking bindings', () => {
         it('throws a rebind error', () => {
           const key = 'foo';
           const operation = () => ctx.bind('foo');
-          expect(operation).to.throw(Error, new RegExp(`Cannot rebind key "${key}" because associated binding is locked`));
+          expect(operation).to.throw(Error, new RegExp(`Cannot rebind key "${key}", associated binding is locked`));
         });
       });
     });

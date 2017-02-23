@@ -2,7 +2,7 @@
   "name": "@loopback/testlab",
   "version": "4.0.0-alpha.1",
   "description": "A collection of test utilities we use to write LoopBack tests.",
-  "main": "testlab",
+  "main": "index",
   "author": "IBM",
   "license": "MIT",
   "dependencies": {

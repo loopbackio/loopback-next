@@ -5,7 +5,7 @@
 
 import {Client} from './../../support/client';
 import {Application} from 'loopback';
-import {expect} from '@loopback/testlab';
+import {expect} from 'testlab';
 import * as util from 'loopback/test/support/util';
 
 describe.skip('bootstrapping the application', () => {

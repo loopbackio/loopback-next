@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect} from 'testlab';
 import {Binding} from 'loopback/lib/context/binding';
 import * as util from 'loopback/test/support/util';
 
@@ -29,7 +29,7 @@ describe('Context', () => {
     }
   });
 
-  describe('contains()', () => {
+  describe('contains', () => {
     it('returns true when the key is the registry', () => {
       ctx.bind('foo');
       const result = ctx.contains('foo');
