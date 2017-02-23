@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {MixinBuilder, Constructable} from '../../../lib/mixin';
+import {MixinBuilder, Constructor} from '../../../lib/mixin';
 
 class BaseClass {
   baseProp: string = 'baseProp';
@@ -17,7 +17,7 @@ class BaseClass {
   }
 }
 
-function Mixin1(superClass: Constructable) {
+function Mixin1(superClass: Constructor) {
   return class extends superClass {
     mixinProp1: string = 'mixinProp1';
 
@@ -31,7 +31,7 @@ function Mixin1(superClass: Constructable) {
   };
 }
 
-function Mixin2(superClass: Constructable) {
+function Mixin2(superClass: Constructor) {
   return class extends superClass {
     mixinProp2: string = 'mixinProp2';
 
