@@ -1,13 +1,41 @@
 # Feature: Bootstrapping the application
 
-- In order to serve up my API
-- As a user
-- I want to start the application
+## Scenario: Single Application
 
-## Scenario: with default configs
+- Given a `Server`
+- And a single `Application` bound to that `Server`
+- And a `EchoController` bound to the `Application`
+- When I make a request to the `Server`
+- Then the `Server` routes the request to the `EchoController` within the `Application`
 
-- Given an application
-- And a client
-- When I start the application
-- And I send a request to GET / from the client
-- Then the application responds with HTTP 200
+```ts
+import {Application, Server, Controller, api} from "loopback";
+
+@api({
+  baseUrl: '/',
+  paths: {
+    '/': {
+      get: {
+        responses: {
+          200: 'string'
+        }
+      }
+    }
+  }
+});
+class EchoController extends Controller {
+  public echo(msg : string) {
+    return msg;
+  }
+}
+
+let server = new Server();
+let app = new Application();
+
+server.bind('applications.myApp').to(app);
+app.bind('controllers.echo').to(EchoController);
+
+await server.start();
+let client = new Cient(server.info());
+await client.get('/?msg=hello'); // => {status: 200, response: {body: 'hello'}}
+```
