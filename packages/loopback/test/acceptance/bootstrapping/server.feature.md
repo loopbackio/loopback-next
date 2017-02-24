@@ -1,42 +1,61 @@
-# Feature: Bootstrapping the server
+# Feature: Bootstrapping the Application
 
-## Scenario: Single server with single application
 
-- Given a `Server`
-- And a single `Application` bound to that `Server`
-- And a `EchoController` bound to the `Application`
-- When I make a request to the `Server`
-- Then the `Server` routes the request to the `EchoController` within the `Application`
+## Scenario: Basic Application
+
+- Given a `Application`
+- When I make a get the `Application` status
+- Then the `Application` 
 
 ```ts
-import {Application, Server, Controller, api} from "loopback";
+import {Application} from "loopback";
 
-@api({
-  baseUrl: '/',
-  paths: {
-    '/': {
-      get: {
-        responses: {
-          200: 'string'
-        }
-      }
-    }
-  }
-});
-class EchoController extends Controller {
-  public echo(msg : string) {
-    return msg;
-  }
-}
-
-let server = new Server();
 let app = new Application();
 
-server.bind('applications.myApp').to(app);
-const echoController = new EchoController();
-app.bind('controllers.echo').to(echoController);
+app.status(); // => {state: AppState.COLD}
+let start = app.start();
+app.status(); // => {state: AppState.STARTING}
+await start;
+app.status(); // => {state: AppState.RUNNING}
+```
 
-await server.start();
-let client = new Cient(server.info());
-await client.get('/?msg=hello'); // => {status: 200, response: {body: 'hello'}}
+
+## Scenario: Application with Server
+
+- Given a `Application`
+- And a `Server` bound to the `Application`
+- When I get the `Application` status
+- Then the `Application` responds with the correct `AppState`
+
+```ts
+import {Application, Server} from "loopback";
+
+let app = new Application();
+let server = new Server();
+
+app.bind('server').toConstantValue(server);
+
+app.status(); // => {state: AppState.COLD}
+let start = app.start();
+app.status(); // => {state: AppState.STARTING}
+await start;
+app.status(); // => {state: AppState.RUNNING, server: {port: 3000}}
+```
+
+
+## Scenario: Stopping an Application
+
+- Given a `Application` in the `RUNNING` state
+- And a listening `Server` bound to the `Application`
+- When I stop the `Application`
+- And I get the `Application` state
+- Then the `Application` responds with the `STOPPED` state
+- And the `Server` is no longer listening
+- And the `Server` port is undefined
+
+```ts
+// app already started
+app.status(); // => {state: AppState.RUNNING, server: {port: 3000}}
+await app.stop();
+app.status(); // => {state: AppState.STOPPED, server: {listening: false}}
 ```
