@@ -1,6 +1,6 @@
-# Feature: Bootstrapping the application
+# Feature: Bootstrapping the server
 
-## Scenario: Single Application
+## Scenario: Single server with single application
 
 - Given a `Server`
 - And a single `Application` bound to that `Server`
@@ -33,7 +33,8 @@ let server = new Server();
 let app = new Application();
 
 server.bind('applications.myApp').to(app);
-app.bind('controllers.echo').to(EchoController);
+const echoController = new EchoController();
+app.bind('controllers.echo').to(echoController);
 
 await server.start();
 let client = new Cient(server.info());

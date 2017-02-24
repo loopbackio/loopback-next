@@ -3,16 +3,20 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, AppConfig} from 'loopback';
+import {Application, Server, ServerConfig} from 'loopback';
 import {Client} from './client';
 import {Context} from '../../lib/context';
 
-export function createApp(config?: AppConfig) : Application {
-  return new Application(config);
+export function createApp(config?: ServerConfig) : Server {
+  return new Server(config);
 }
 
-export function createClient(app : Application) {
-  return new Client(app);
+export function createClient(server : Server) {
+  return new Client(server);
+}
+
+export function createServer(config?: ServerConfig) : Server {
+  return new Server(config);
 }
 
 export function getContext() : Context {

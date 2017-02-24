@@ -3,12 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { Application, AppConfig } from 'loopback';
+import {Server, ServerConfig} from 'loopback';
 import bluebird = require('bluebird');
 import request = require('request-promise');
 
 export class Client {
-  constructor(public app : Application) {
+  constructor(public app : Server) {
 
   }
 
@@ -22,6 +22,9 @@ export class Client {
     const response = await request(options);
     return {
       status: response.statusCode,
+      response: {
+        body: 'hello',
+      },
     };
   }
 }
