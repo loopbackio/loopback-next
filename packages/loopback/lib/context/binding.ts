@@ -8,17 +8,12 @@ export class Binding {
   public getValue: () => any = () => { throw new Error(`No value was configured for binding {this._key}.`); };
   private _tagName: string;
 
-  constructor(private _key: string, private _isLocked?: boolean) {
-    if (!_isLocked)
-      this._isLocked = false;
-  }
-
-  get isLocked() { return this._isLocked; }
+  constructor(private readonly _key: string, public isLocked: boolean = false) {}
   get key() { return this._key; }
   get tagName() { return this._tagName; }
 
   lock() {
-    this._isLocked = true;
+    this.isLocked = true;
   }
 
   tag(tagName: string): this {
@@ -37,6 +32,6 @@ export class Binding {
   }
 
   unlock() {
-    this._isLocked = false;
+    this.isLocked = false;
   }
 }
