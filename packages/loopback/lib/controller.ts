@@ -3,12 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export {
-  Server,
-  ServerConfig,
-  ServerState,
-} from './lib/server';
+export class Controller {
 
-export {
-  Application
-} from './lib/application';
+}
