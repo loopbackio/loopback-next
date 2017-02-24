@@ -4,7 +4,7 @@ import {UserController} from "./controllers/users";
 let app = new Application();
 let server = new Server();
 
-server.bind('applications.app').to(app);
+app.bind('server').to(server);
 app.bind('controllers.users').to(UserController);
 app.bind('userId').to(42);
 
