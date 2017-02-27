@@ -7,14 +7,7 @@ import {Server, ServerConfig} from 'loopback';
 import bluebird = require('bluebird');
 import request = require('request-promise');
 import {RequestResponse} from 'request';
-
-// A workaround for a possible bug in request-promise .d.ts,
-// where RequestResponse interface does not include "body"
-// property as it should
-// TODO(bajtos) contribute this fix back to definitely-typed
-interface FullRequestResponse extends RequestResponse {
-  readonly body: any;
-}
+import {FullRequestResponse} from './FullRequestResponse';
 
 export class Client {
   constructor(public app : Server) {
@@ -43,7 +36,7 @@ export class Client {
 
   // A workaround to fix incorrect type information for
   // the return value of request()
-// TODO(bajtos) contribute this fix back to definitely-typed
+  // TODO(bajtos) contribute this fix back to definitely-typed
   private async _request(options): Promise<FullRequestResponse> {
     return request(options);
   }
