@@ -5,7 +5,7 @@
 
 export class Binding {
   public value: any;
-  private _isDynamic: boolean = false;
+  public getValue: () => any = () => { throw new Error(`No value was configured for binding {this._key}.`); };
   private _tagName: string;
 
   constructor(private _key: string, private _isLocked?: boolean) {
@@ -13,7 +13,6 @@ export class Binding {
       this._isLocked = false;
   }
 
-  get isDynamic() { return this._isDynamic; }
   get isLocked() { return this._isLocked; }
   get key() { return this._key; }
   get tagName() { return this._tagName; }
@@ -28,13 +27,12 @@ export class Binding {
   }
 
   to(value: any): this {
-    this.value = value;
+    this.getValue = () => value;
     return this;
   }
 
-  toDynamicValue(value: any): this {
-    this.value = value;
-    this._isDynamic = true;
+  toDynamicValue(factoryFn: () => any): this {
+    this.getValue = factoryFn;
     return this;
   }
 

@@ -58,8 +58,6 @@ export class Context {
 
   get(key: string) {
     const binding = this.registry.get(key);
-    return binding && binding.isDynamic ?
-      binding.value() :
-      binding.value;
+    return binding.getValue();
   }
 }
