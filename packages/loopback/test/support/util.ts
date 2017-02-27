@@ -16,7 +16,7 @@ export function createClient(server : Server) {
 }
 
 export function createServer(config?: ServerConfig) : Server {
-  return new Server(config);
+  return new Server(config || {port: 0});
 }
 
 export function getContext() : Context {

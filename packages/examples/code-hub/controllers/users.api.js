@@ -1,7 +1,7 @@
 module.exports = {
   // IMPORTANT: this controller implements enpoints at different root paths
   // GET /users, GET /user, etc.
-  baseUrl: '/',
+  basePath: '/',
   paths: {
     '/users': {
       get: {

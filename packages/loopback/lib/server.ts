@@ -33,10 +33,16 @@ export class Server extends Context {
   async start() {
     this.state = ServerState.starting;
     const server = http.createServer((req, res) => {
+      // TODO(bajtos) route the request to the correct controller
+      res.write('hello!');
       res.end();
     });
-    const listen = bluebird.promisify(server.listen, {context: server});
+    // NOTE(bajtos) bluebird.promisify looses type information about the original function
+    // As a (temporary?) workaround, I am casting the result to "any function"
+    // This would be a more accurate type: (port: number) => Promise<http.Server>
+    const listen = bluebird.promisify(server.listen, {context: server}) as Function;
     await listen(this.config.port);
+    this.config.port = server.address().port;
     this.state = ServerState.listening;
   }
 }
