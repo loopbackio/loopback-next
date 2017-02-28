@@ -5,21 +5,15 @@
 
 export class Binding {
   public value: any;
-  private _isDynamic: boolean = false;
+  public getValue: () => any = () => { throw new Error(`No value was configured for binding {this._key}.`); };
   private _tagName: string;
 
-  constructor(private _key: string, private _isLocked?: boolean) {
-    if (!_isLocked)
-      this._isLocked = false;
-  }
-
-  get isDynamic() { return this._isDynamic; }
-  get isLocked() { return this._isLocked; }
+  constructor(private readonly _key: string, public isLocked: boolean = false) {}
   get key() { return this._key; }
   get tagName() { return this._tagName; }
 
   lock() {
-    this._isLocked = true;
+    this.isLocked = true;
   }
 
   tag(tagName: string): this {
@@ -28,17 +22,16 @@ export class Binding {
   }
 
   to(value: any): this {
-    this.value = value;
+    this.getValue = () => value;
     return this;
   }
 
-  toDynamicValue(value: any): this {
-    this.value = value;
-    this._isDynamic = true;
+  toDynamicValue(factoryFn: () => any): this {
+    this.getValue = factoryFn;
     return this;
   }
 
   unlock() {
-    this._isLocked = false;
+    this.isLocked = false;
   }
 }
