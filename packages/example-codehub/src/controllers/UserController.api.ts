@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-module.exports = {
+export const def = {
   // IMPORTANT: this controller implements enpoints at different root paths
   // GET /users, GET /user, etc.
   basePath: '/',

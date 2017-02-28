@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2013,2017. All Rights Reserved.
+// Node module: loopback
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 // The file name matches the exported class (UserController is defined in UserController.ts)
 // This is the convention used in C# and Java too.
 
@@ -6,7 +11,7 @@
 import * as createHttpError from 'http-errors';
 
 // Load OpenAPI specification for this controller
-const spec = require('./UserController.api');
+import {def} from './UserController.api';
 
 // Initially, bajtos was proposing
 //   import {api} from '@loopback/controller-decorators';
@@ -18,7 +23,7 @@ const spec = require('./UserController.api');
 import {api, inject} from 'loopback';
 
 // Notice that the controler is not required to extend any Controller base class
-@api(spec)
+@api(def)
 export class UserController {
   // Remote methods are returning a Promise and should be implemented as async functions
   // This is required because most real world methods need to talk to other services,
