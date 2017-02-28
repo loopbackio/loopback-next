@@ -12,3 +12,9 @@ export {
 export {
   Application
 } from './lib/application';
+
+export {
+  api,
+} from './lib/router/metadata'
+
+export * from './lib/router/OpenApiSpec';

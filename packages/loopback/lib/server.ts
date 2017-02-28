@@ -6,6 +6,10 @@
 import http = require('http');
 import bluebird = require('bluebird');
 import {Context} from './context';
+import {Application} from '../lib/application';
+import SwaggerRouter from './router/SwaggerRouter';
+
+const debug = require('debug')('loopback:Server');
 
 export interface ServerConfig {
   port : number;
@@ -32,11 +36,25 @@ export class Server extends Context {
 
   async start() {
     this.state = ServerState.starting;
-    const server = http.createServer((req, res) => {
-      res.end();
+
+    // TODO(bajtos) support hot-reloading of controllers
+    // after the app started. The idea is to rebuild the SwaggerRouter
+    // instance whenever a controller was added/deleted.
+    const router = new SwaggerRouter();
+    this.find('applications.*').forEach(appBinding => {
+      debug('Registering app controllers for %j', appBinding.key);
+      const app = appBinding.getValue() as Application;
+      app.mountControllers(router);
     });
-    const listen = bluebird.promisify(server.listen, {context: server});
+
+    const server = http.createServer(router.handler);
+
+    // NOTE(bajtos) bluebird.promisify looses type information about the original function
+    // As a (temporary?) workaround, I am casting the result to "any function"
+    // This would be a more accurate type: (port: number) => Promise<http.Server>
+    const listen = bluebird.promisify(server.listen, {context: server}) as Function;
     await listen(this.config.port);
+    this.config.port = server.address().port;
     this.state = ServerState.listening;
   }
 }
