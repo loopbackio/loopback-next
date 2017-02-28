@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2013,2017. All Rights Reserved.
+// Node module: loopback
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 module.exports = {
   // IMPORTANT: this controller implements enpoints at different root paths
   // GET /users, GET /user, etc.
@@ -25,12 +30,12 @@ module.exports = {
               items: {
                 // TODO(bajtos) We should $ref a shared definition of User Response/Model
                 type: 'object',
-                additionalProperties: true
-              }
-            }
-          }
-        }
-      }
+                additionalProperties: true,
+              },
+            },
+          },
+        },
+      },
     },
     '/user': {
       get: {
@@ -40,22 +45,22 @@ module.exports = {
             schema: {
               // TODO(bajtos) We should $ref a shared definition of User Response/Model
               type: 'object',
-              additionalProperties: true
-            }
+              additionalProperties: true,
+            },
           },
           404: {
             schema: {
               // TODO(bajtos) Refer to a shared definition of Error responses
               // as provided by strong-error-handler and/or API Connect
               type: 'object',
-              additionalProperties: true
-            }
-          }
-        }
+              additionalProperties: true,
+            },
+          },
+        },
       },
       patch: {
         // TODO(ritch) please fill in details
-      }
+      },
     },
     '/users/{username}': {
       get: {
@@ -74,11 +79,11 @@ module.exports = {
             schema: {
               // TODO(bajtos) We should $ref a shared definition of User Response/Model
               type: 'object',
-              additionalProperties: true
-            }
-          }
-        }
-      }
-    }
-  }
-}
+              additionalProperties: true,
+            },
+          },
+        },
+      },
+    },
+  },
+};
