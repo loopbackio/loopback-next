@@ -11,4 +11,5 @@ import {RequestResponse} from 'request';
 // TODO(bajtos) contribute this fix back to definitely-typed
 export interface FullRequestResponse extends RequestResponse {
   readonly body: any;
+  statusCode: any;
 }
