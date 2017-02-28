@@ -5,7 +5,7 @@
 
 import {expect} from 'testlab';
 
-describe('integration smoke test', () => {
+describe('codehub integration smoke test', () => {
   it('passes', () => {
     expect(true).to.be.true();
   });

@@ -96,7 +96,7 @@
         "--yes"
       ]
     },
-    // running tests
+    // running all tests
     {
       "taskName": "Run all tests",
       "command": "npm",
@@ -107,6 +107,46 @@
       ],
       "isTestCommand": true
     },
+    // running example-codehub tests
+    {
+      "taskName": "Run all example-codehub tests",
+      "command": "mocha",
+      "args": [
+        "--opts",
+        "test/mocha.opts.root",
+        "packages/example-codehub/test/unit/**/*.ts",
+        "packages/example-codehub/test/integration/**/*.ts",
+        "packages/example-codehub/test/acceptance/**/*.ts"
+      ]
+    },
+    {
+      "taskName": "Run example-codehub unit tests",
+      "command": "mocha",
+      "args": [
+        "--opts",
+        "test/mocha.opts.root",
+        "packages/example-codehub/test/unit/**/*.ts"
+      ]
+    },
+    {
+      "taskName": "Run example-codehub integration tests",
+      "command": "mocha",
+      "args": [
+        "--opts",
+        "test/mocha.opts.root",
+        "packages/example-codehub/test/integration/**/*.ts"
+      ]
+    },
+    {
+      "taskName": "Run example-codehub acceptance tests",
+      "command": "mocha",
+      "args": [
+        "--opts",
+        "test/mocha.opts.root",
+        "packages/example-codehub/test/acceptance/**/*.ts"
+      ]
+    },
+    // running loopback tests
     {
       "taskName": "Run all loopback tests",
       "command": "mocha",
@@ -145,6 +185,7 @@
         "packages/loopback/test/acceptance/**/*.ts"
       ]
     },
+    // running juggler tests
     {
       "taskName": "Run all juggler tests",
       "command": "mocha",
@@ -194,6 +235,7 @@
         "packages/remoting/test/acceptance/**/*.ts"
       ]
     },
+    // running remoting tests
     {
       "taskName": "Run remoting unit tests",
       "command": "mocha",
