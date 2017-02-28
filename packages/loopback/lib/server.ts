@@ -9,6 +9,8 @@ import {Context} from './context';
 import {Application} from '../lib/application';
 import SwaggerRouter from './router/SwaggerRouter';
 
+const debug = require('debug')('loopback:Server');
+
 export interface ServerConfig {
   port : number;
 }
@@ -40,8 +42,9 @@ export class Server extends Context {
     // instance whenever a controller was added/deleted.
     const router = new SwaggerRouter();
     this.find('applications.*').forEach(appBinding => {
+      debug('Registering app controllers for %j', appBinding.key);
       const app = appBinding.getValue() as Application;
-      app.find('controllers.*').forEach(b => router.controller(b.getValue()));
+      app.mountControllers(router);
     });
 
     const server = http.createServer(router.handler);

@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as assert from 'assert';
+import 'reflect-metadata';
 
 import {OpenApiSpec} from './OpenApiSpec';
 
@@ -20,8 +21,11 @@ export function api(spec: OpenApiSpec) {
   return function(constructor: Function) {
     assert(typeof constructor === 'function',
      'The @api decorator can be applied to constructors only.');
-
-    // TODO(bajtos)
-    // Associate the OpenAPI spec with the Controller constructor
+    Reflect.defineMetadata('loopback:api-spec', spec, constructor);
   };
+}
+
+// TODO(bajtos) Add unit-tests
+export function getApiSpec(constructor: Function): OpenApiSpec {
+  return Reflect.getMetadata('loopback:api-spec', constructor);
 }

@@ -50,7 +50,7 @@ describe('Routing', () => {
         return msg;
       });
 
-      const result = await whenIMakeRequestTo(app).get('/?msg=hello%20world');
+      const result = await whenIMakeRequestTo(app).get('/echo?msg=hello%20world');
 
       // Then I get the result `hello world` from the `Method`
       expect(result).to.have.property('body', 'hello world');
@@ -86,7 +86,7 @@ describe('Routing', () => {
 
   function whenIMakeRequestTo(app: Application): Client {
     const server = new Server({port: 0});
-    server.bind('application.myApp').to(app);
+    server.bind('applications.myApp').to(app);
     return new Client(server);
   }
 });
