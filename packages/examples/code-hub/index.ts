@@ -8,8 +8,6 @@ app.bind('server').to(server);
 app.bind('controllers.users').to(UserController);
 app.bind('userId').to(42);
 
-await server.start();
+await app.start();
 
 console.log('server listenting on', server.info());
-
-
