@@ -18,3 +18,9 @@ export {
 } from './lib/router/metadata'
 
 export * from './lib/router/OpenApiSpec';
+
+export function inject(name: string) {
+  return function(target, propoertyNAme, index) {
+    // TODO(bajtos, superkhau)
+  };
+}

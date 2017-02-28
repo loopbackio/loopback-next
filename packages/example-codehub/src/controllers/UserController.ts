@@ -6,7 +6,7 @@
 import * as createHttpError from 'http-errors';
 
 // Load OpenAPI specification for this controller
-import spec = require('./users.api');
+const spec = require('./UserController.api');
 
 // Initially, bajtos was proposing
 //   import {api} from '@loopback/controller-decorators';
@@ -28,7 +28,7 @@ export class UserController {
   //    const user: UserResponse = await userController.getUserByUsername('bajtos');
   //    console.log(user.email);
   public async getUserByUsername(username : string) : Promise<UserResponse> {
-
+    return new UserResponse({ name: username });
   }
 
   public async getAuthenticatedUser(@inject('userId') userId : number) : Promise<UserResponse> {
@@ -44,12 +44,12 @@ export class UserController {
     });
   }
 
-  public updateAuthenticatedUser(@inject('userId') userId : number) : Promise<UserRespone> {
-
+  public async updateAuthenticatedUser(@inject('userId') userId : number) : Promise<UserResponse> {
+    return new UserResponse({ id: userId });
   }
 
-  public getAllUsers(since : string) : Promise<Array<UserResponse>> {
-
+  public async getAllUsers(since : string) : Promise<Array<UserResponse>> {
+    return [];
   }
 }
 

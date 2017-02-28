@@ -54,6 +54,9 @@ export class Server extends Context {
     // This would be a more accurate type: (port: number) => Promise<http.Server>
     const listen = bluebird.promisify(server.listen, {context: server}) as Function;
     await listen(this.config.port);
+    // FIXME(bajtos) The updated port number should be part of "status" object,
+    // we shouldn't be changing original config IMO.
+    // Consider exposing full base URL including http/https scheme prefix
     this.config.port = server.address().port;
     this.state = ServerState.listening;
   }
