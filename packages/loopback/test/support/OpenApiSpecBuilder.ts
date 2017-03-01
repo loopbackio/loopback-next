@@ -3,9 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {OpenApiSpec, OperationObject} from './../../../lib/router/OpenApiSpec';
+import {OpenApiSpec, OperationObject} from './../../lib/router/OpenApiSpec';
 
-export default class OpenApiSpecBuilder {
+export function givenOpenApiSpec(basePath?: string) {
+  return new OpenApiSpecBuilder(basePath);
+}
+
+export class OpenApiSpecBuilder {
   private _spec: OpenApiSpec;
 
   constructor(basePath: string = '/') {
