@@ -20,12 +20,13 @@
     "typescript": "^2.1.5"
   },
   "dependencies": {
+    "@types/request": "0.0.40",
     "bluebird": "^3.4.7",
     "reflect-metadata": "^0.1.9"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "lint": "tslint -c tslint.full.json --project tsconfig.json --type-check --exclude 'examples/**/*' --exclude '**/node_modules/**' --exclude '**/*.d.ts' --exclude '**/*.ts'",
+    "lint": "tslint -c tslint.full.json --project tsconfig.json --type-check --exclude 'examples/**/*' --exclude '**/node_modules/**' --exclude '**/*.d.ts' '**/*.ts'",
     "test": "mocha --opts test/mocha.opts.root 'packages/**/test/**/*.ts'",
     "posttest": "npm run lint"
   },
