@@ -20,6 +20,7 @@
     "typescript": "^2.1.5"
   },
   "dependencies": {
+    "@types/request": "0.0.40",
     "bluebird": "^3.4.7",
     "reflect-metadata": "^0.1.9"
   },
