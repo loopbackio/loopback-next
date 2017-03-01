@@ -8,8 +8,8 @@
 ## Scenario: Basic Usage
 
 - Given an `Application`
-- And a single `Controller`
-- And a single `Method` that returns the `msg` query field
+- And API spec describing a single endpoint accepting a "msg" query field
+- And a controller implementing that API spec
 - When I make a request to the `Application` with `?msg=hello%20world`
 - Then I get the result `hello world` from the `Method`
 
@@ -50,7 +50,7 @@ app.bind('controllers.myController').to(MyController);
 server.bind('applications.myApp').to(app);
 
 await server.start();
-await client.get('/?msg=hello%20world'); // => {status: 200, body: 'hello world'}
+await client.get('/echo?msg=hello%20world'); // => {status: 200, body: 'hello world'}
 ```
 
 ---

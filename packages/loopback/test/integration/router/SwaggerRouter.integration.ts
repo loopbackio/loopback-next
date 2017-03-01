@@ -11,14 +11,14 @@ import * as bluebird from 'bluebird';
 import {expect} from 'testlab';
 import {listen} from '../../support/util';
 import {OpenApiSpec, ParameterObject} from '../../../lib/router/OpenApiSpec';
-import OpenApiSpecBuilder from './OpenApiSpecBuilder';
+import {givenOpenApiSpec} from '../../support/OpenApiSpecBuilder';
 
 describe('SwaggerRouter', () => {
   beforeEach(givenRouter);
 
   context('with a simple HelloWorld controller', () => {
     beforeEach(function setupHelloController() {
-      const spec = new OpenApiSpecBuilder()
+      const spec = givenOpenApiSpec()
         .withOperationReturningString('get', '/hello', 'greet')
         .build();
 
@@ -40,7 +40,7 @@ describe('SwaggerRouter', () => {
 
   context('with a controller with operations at different paths/verbs', () => {
     beforeEach(function setupHelloController() {
-      const spec = new OpenApiSpecBuilder()
+      const spec = givenOpenApiSpec()
         .withOperationReturningString('get', '/hello', 'hello')
         .withOperationReturningString('get', '/bye', 'bye')
         .withOperationReturningString('post', '/hello', 'postHello')
@@ -91,7 +91,7 @@ describe('SwaggerRouter', () => {
 
 context('with an operation echoing a string parameter from query', () => {
     beforeEach(function setupEchoController() {
-      const spec = new OpenApiSpecBuilder()
+      const spec = givenOpenApiSpec()
         .withOperation('get', '/echo', {
           'x-operation-name': 'echo',
           parameters: [
@@ -141,8 +141,8 @@ context('with an operation echoing a string parameter from query', () => {
   }
 
  function givenControllerClass(ctor: new (...args: any[]) => Object, spec: OpenApiSpec) {
-    router.controller((req, res) => new ctor(), spec);
-  }
+   router.controller((req, res) => new ctor(), spec);
+ }
 
   async function requestEndpoint(verb: string, path: string): Promise<FullRequestResponse> {
     const server = http.createServer(router.handler);

@@ -6,6 +6,7 @@
 import {Application, Server, api, OpenApiSpec, ParameterObject, OperationObject} from '../../..';
 import {Client} from './../../support/client';
 import {expect} from 'testlab';
+import {givenOpenApiSpec} from '../../support/OpenApiSpecBuilder';
 
 /* # Feature: Routing
  * - In order to build REST APIs
@@ -16,21 +17,16 @@ import {expect} from 'testlab';
 describe('Routing', () => {
   /* ## Scenario: Basic Usage
    * - Given an `Application`
-   * - And a single `Controller`
-   * - And a single `Method` that returns the `msg` query field
+   * - And API spec describing a single endpoint accepting a "msg" query field
+   * - And a controller implementing that API spec
    * - When I make a request to the `Application` with `?msg=hello%20world`
    * - Then I get the result `hello world` from the `Method`
    */
   it('supports basic usage', async () => {
     const app = givenAnApplication();
 
-    const controller = givenControllerInApp(app, {
-      basePath: '/',
-      paths: {},
-    });
-
-    givenMethod(controller, 'get', '/echo',
-      {
+    const spec = givenOpenApiSpec()
+      .withOperation('get', '/echo', {
         'x-operation-name': 'echo',
         parameters: [
           // the type cast is not required, but improves Intellisense
@@ -45,15 +41,21 @@ describe('Routing', () => {
             type: 'string',
           },
         },
-      },
-      async function(msg: string): Promise<string> {
+      })
+      .build();
+
+    @api(spec)
+    class EchoController {
+      async echo(msg: string): Promise<string> {
         return msg;
-      });
+      }
+    }
+    givenControllerInApp(app, EchoController);
 
-      const result = await whenIMakeRequestTo(app).get('/echo?msg=hello%20world');
+    const result = await whenIMakeRequestTo(app).get('/echo?msg=hello%20world');
 
-      // Then I get the result `hello world` from the `Method`
-      expect(result).to.have.property('body', 'hello world');
+    // Then I get the result `hello world` from the `Method`
+    expect(result).to.have.property('body', 'hello world');
   });
 
   /* ===== HELPERS ===== */
@@ -62,26 +64,8 @@ describe('Routing', () => {
     return new Application();
   }
 
-  let apiSpec: OpenApiSpec;
-  function givenControllerInApp(app: Application, spec: OpenApiSpec) {
-    apiSpec = spec;
-
-    @api(spec)
-    class TestController {
-    }
-
-    // TODO(bajtos) make the controller name configurable
-    app.bind('controllers.myController').to(TestController);
-    return TestController;
-  }
-
-  function givenMethod(controllerCtor: Function, verb: string, path: string, spec: OperationObject, handler: Function) {
-    expect(spec).to.have.property('x-operation-name');
-
-    apiSpec.paths[path] = apiSpec.paths[path] || {};
-    apiSpec.paths[path][verb] = apiSpec.paths[path][verb] || {};
-    apiSpec.paths[path][verb] = spec;
-    controllerCtor.prototype[spec['x-operation-name']] = handler;
+  function givenControllerInApp(app: Application, controller: Function) {
+    app.bind('controllers.' + controller.name).to(controller);
   }
 
   function whenIMakeRequestTo(app: Application): Client {
