@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Binding} from './context/binding';
 import {Context} from './context';
 import * as http from 'http';
 import {SwaggerRouter} from './router/SwaggerRouter';
@@ -22,5 +23,23 @@ export class Application extends Context {
       const apiSpec = getApiSpec(ctor);
       router.controller(ctorFactory, apiSpec);
     });
+  }
+
+  /**
+   * Register a controller class with this application.
+   *
+   * @param controllerCtor {Function} The controller class (constructor function).
+   * @return {Binding} The newly created binding, you can use the reference to further
+   * modify the binding, e.g. lock the value to prevent further modifications.
+   *
+   * ```ts
+   * @spec(apiSpec)
+   * class MyController {
+   * }
+   * app.controller(MyController).lock();
+   * ```
+   */
+  public controller(controllerCtor: new(...args: any[]) => Object): Binding {
+    return this.bind('controllers.' + controllerCtor.name).to(controllerCtor);
   }
 }

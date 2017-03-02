@@ -64,8 +64,8 @@ describe('Routing', () => {
     return new Application();
   }
 
-  function givenControllerInApp(app: Application, controller: Function) {
-    app.bind('controllers.' + controller.name).to(controller);
+  function givenControllerInApp(app: Application, controller: new(...args: any[]) => any) {
+    app.controller(controller);
   }
 
   function whenIMakeRequestTo(app: Application): Client {

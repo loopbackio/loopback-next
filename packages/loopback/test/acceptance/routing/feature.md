@@ -46,7 +46,7 @@ class MyController {
   }
 }
 
-app.bind('controllers.myController').to(MyController);
+app.controller(MyController);
 server.bind('applications.myApp').to(app);
 
 await server.start();

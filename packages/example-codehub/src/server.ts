@@ -16,7 +16,7 @@ async function main(): Promise<void> {
   const app = new Application();
   const server = new Server();
 
-  app.bind('controllers.users').to(UserController);
+  app.controller(UserController);
   app.bind('userId').to(42);
 
   // FIXME
