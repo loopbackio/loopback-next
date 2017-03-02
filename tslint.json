@@ -32,6 +32,7 @@
     // These rules make code maintenance easier
     "eofline": true,
     "indent": [true, "spaces"],
+    "no-default-export": true,
     "no-trailing-whitespace": true,
     "prefer-const": true,
     "trailing-comma": [true, {

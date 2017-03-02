@@ -18,7 +18,7 @@ export type ControllerFactory = (request: Request, response: Response) => Object
  * SwaggerRouter - an express-compatible Router using OpenAPI/Swagger
  * to define routes and input parameters
  */
-export default class SwaggerRouter {
+export class SwaggerRouter {
   /**
    * The function handling incoming requests.
    * Pass it Node.js HttpServer or register it
