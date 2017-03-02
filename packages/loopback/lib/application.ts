@@ -5,7 +5,7 @@
 
 import {Context} from './context';
 import * as http from 'http';
-import SwaggerRouter from './router/SwaggerRouter';
+import {SwaggerRouter} from './router/SwaggerRouter';
 import {getApiSpec} from './router/metadata';
 
 const debug = require('debug')('loopback:Application');

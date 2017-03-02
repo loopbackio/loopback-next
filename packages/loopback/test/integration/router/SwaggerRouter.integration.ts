@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import SwaggerRouter from '../../../lib/router/SwaggerRouter';
+import {SwaggerRouter} from '../../../lib/router/SwaggerRouter';
 import * as http from 'http';
 import * as request from 'request-promise';
 import { FullRequestResponse } from './../../support/FullRequestResponse';
