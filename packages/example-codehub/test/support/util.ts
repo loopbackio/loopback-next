@@ -2,6 +2,7 @@
 // Node module: loopback
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
+
 import {supertest} from 'testlab';
 import {CodeHubApplication} from 'example-codehub/src/CodeHubApplication';
 
