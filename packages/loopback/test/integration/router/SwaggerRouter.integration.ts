@@ -135,6 +135,47 @@ context('with an operation echoing a string parameter from query', () => {
     });
   });
 
+  context('with a path-parameter route', () => {
+    beforeEach(givenRouteParamController);
+
+    it('returns "admin" for "/users/admin"', async () => {
+      const response = await requestEndpoint('GET', '/users/admin');
+      expect(response.body).to.equal('admin');
+    });
+
+    function givenRouteParamController() {
+      const spec = givenOpenApiSpec()
+        .withOperation('get', '/users/{username}', {
+          'x-operation-name': 'getUserByUsername',
+          parameters: [
+            <ParameterObject> {
+              name: 'username',
+              in: 'path',
+              description: 'The name of the user to look up.',
+              required: true,
+              type: 'string',
+            },
+          ],
+          responses: {
+            200: {
+              schema: {
+                type: 'string',
+              },
+            },
+          },
+        })
+        .build();
+
+      class RouteParamController {
+        public async getUserByUsername(userName: string): Promise<string> {
+          return userName;
+        }
+      }
+
+      givenControllerClass(RouteParamController, spec);
+    }
+  });
+
   let router: SwaggerRouter;
   function givenRouter() {
     router = new SwaggerRouter();
