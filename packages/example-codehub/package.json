@@ -2,7 +2,6 @@
   "name": "@loopback/example-codehub",
   "version": "4.0.0-alpha.1",
   "description": "",
-  "main": "lib/server",
   "scripts": {
     "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
     "integration": "mocha --opts ../../test/mocha.opts 'test/integration/**/*.ts'",

@@ -3,10 +3,5 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from 'testlab';
-
-describe('codehub acceptance smoke test', () => {
-  it('passes', () => {
-    expect(true).to.be.true();
-  });
-});
+export * from './HealthController';
+export * from './UserController';

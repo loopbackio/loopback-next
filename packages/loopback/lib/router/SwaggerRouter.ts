@@ -158,7 +158,11 @@ class Endpoint {
       function onSuccess(result) {
         debug('%s() result -', operationName, result);
         // TODO(bajtos) handle non-string results via JSON.stringify
-        if (result) response.write(result);
+        if (result) {
+          // TODO(ritch) remove this, should be configurable
+          response.setHeader('Content-Type', 'application/json');
+          response.write(result);
+        }
         response.end();
         // Do not call next(), the request was handled.
       },
