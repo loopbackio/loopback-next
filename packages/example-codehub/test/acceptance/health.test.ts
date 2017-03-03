@@ -6,7 +6,7 @@
 import {expect, supertest as request} from 'testlab';
 import * as util from 'example-codehub/test/support/util';
 
-describe.only('health', () => {
+describe('health', () => {
   let app;
   let client;
   before(createClient);

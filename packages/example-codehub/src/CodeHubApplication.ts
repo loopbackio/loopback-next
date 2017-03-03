@@ -6,7 +6,6 @@
 import {Application, Server} from 'loopback';
 import {UserController, HealthController} from './controllers';
 
-
 export class CodeHubApplication extends Application {
   constructor() {
     super();
