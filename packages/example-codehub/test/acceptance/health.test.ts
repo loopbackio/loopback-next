@@ -15,7 +15,7 @@ describe('health', () => {
   it('returns the uptime', async () => {
     const response = await client
       .get('/health')
-      // .expect('Content-Type', /json/)
+      .expect('Content-Type', /json/)
       .expect(200);
     expect(response.body.uptime).to.be.a('number');
   });

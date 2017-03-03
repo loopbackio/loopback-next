@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-// tslint whines about `import {spec}` here... :(
 import {def} from './HealthController.api';
 import {api, inject} from 'loopback';
 
