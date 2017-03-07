@@ -7,6 +7,7 @@ import {ServerRequest as Request, ServerResponse as Response} from 'http';
 import {OpenApiSpec, OperationObject, ParameterObject} from './OpenApiSpec';
 import * as assert from 'assert';
 import * as url from 'url';
+import * as pathToRegexp from 'path-to-regexp';
 const debug = require('debug')('loopback:SwaggerRouter');
 
 type HandlerCallback = (err?: Error | string) => void;
@@ -122,15 +123,19 @@ interface ParsedRequest extends Request {
 // https://github.com/strongloop/strong-remoting/pull/282
 class Endpoint {
   private readonly _verb: string;
+  private readonly _pathRegexp: pathToRegexp.PathRegExp;
 
   constructor(
-      private readonly _path: string,
+      path: string,
       verb: string,
       private readonly _spec: OperationObject,
       private readonly _controllerFactory: ControllerFactory) {
     this._verb = verb.toLowerCase();
 
-    assert(!/:/.test(this._path), 'Path parameters are not supported yet.');
+    // In Swagger, path parameters are wrapped in `{}`.
+    // In Express.js, path parameters are prefixed with `:`
+    path = path.replace(/{([^}]*)}(\/|$)/g, ':$1$2');
+    this._pathRegexp = pathToRegexp(path, [], {strict: false, end: true});
   }
 
   public handle(request: ParsedRequest, response: Response, next: HandlerCallback) {
@@ -141,15 +146,23 @@ class Endpoint {
       return;
     }
 
-    if (this._path !== request.path) {
+    const match = this._pathRegexp.exec(request.path);
+    if (!match) {
       debug(' -> next (path mismatch)');
       next();
       return;
     }
 
+    const pathParams = Object.create(null);
+    for (const ix in this._pathRegexp.keys) {
+      const key = this._pathRegexp.keys[ix];
+      const matchIndex = +ix + 1;
+      pathParams[key.name] = match[matchIndex];
+    }
+
     const controller = this._controllerFactory(request, response);
     const operationName = this._spec['x-operation-name'];
-    const args = buildOperationArguments(this._spec, request);
+    const args = buildOperationArguments(this._spec, request, pathParams);
 
     debug('invoke %s with arguments', operationName, args);
 
@@ -173,7 +186,8 @@ class Endpoint {
   }
 }
 
-function buildOperationArguments(operationSpec: OperationObject, request: ParsedRequest): any[] {
+function buildOperationArguments(operationSpec: OperationObject, request: ParsedRequest,
+    pathParams: {[key: string]: any}): any[] {
   const args = [];
   for (const paramSpec of operationSpec.parameters || []) {
     if ('$ref' in paramSpec) {
@@ -184,6 +198,9 @@ function buildOperationArguments(operationSpec: OperationObject, request: Parsed
     switch (spec.in) {
       case 'query':
         args.push(request.query[spec.name]);
+        break;
+      case 'path':
+        args.push(pathParams[spec.name]);
         break;
       default:
         // TODO(bajtos) support all parameter sources (path, body, etc.)
