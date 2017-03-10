@@ -1,13 +1,13 @@
 /**
  * A constructor
  */
-export type Constructor = new (...args: any[]) => Object;
+export type Constructor<T> = new (...args: any[]) => T;
 
 /**
  * Interface for functions that can mix properties/methods into a base class
  */
 export interface MixinFunc {
-  <BC extends Constructor>(Base: BC): BC;
+  <BC extends Constructor<{}>>(Base: BC): BC;
 }
 
 export class MixinBuilder {
@@ -24,11 +24,11 @@ export class MixinBuilder {
 }
 
 
-function extend(superClass: Constructor, ...mixins: Constructor[]): Constructor {
+function extend<T extends Constructor<{}>>(superClass: T, ...mixins: Constructor<{}>[]): T {
   const mixed = class extends superClass {
   };
   Object.assign(mixed, ...mixins);
-  let prototypes: Constructor[] = mixins.map((c) => c.prototype);
+  let prototypes: Constructor<{}>[] = mixins.map((c) => c.prototype);
   Object.assign(mixed.prototype, ...prototypes);
   return mixed;
 }
