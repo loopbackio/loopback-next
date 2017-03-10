@@ -6,12 +6,16 @@
 export class ModelProperty {
   name: string;
   type: string | Function | Object;
-  // ...
+  readOnly?: boolean;  // Is the property only for read, such as 'lastModified'
+  writeOnly?: boolean; // Is the property only for write, such as 'password'
+  persistent?: boolean; // Is the property persistent?
+  [attribute: string]: any; // Other attributes
 }
 
 export class ModelDefinition {
   name: string;
   properties: Map<string, ModelProperty>;
+  [attribute: string]: any; // Other attributes
 
   idProperties(): ModelProperty[] {
     return [];
