@@ -17,7 +17,7 @@ class BaseClass {
   }
 }
 
-function Mixin1(superClass: Constructor) {
+function Mixin1<T extends Constructor<{}>>(superClass: T) {
   return class extends superClass {
     mixinProp1: string = 'mixinProp1';
 
@@ -31,7 +31,7 @@ function Mixin1(superClass: Constructor) {
   };
 }
 
-function Mixin2(superClass: Constructor) {
+function Mixin2<T extends Constructor<{}>>(superClass: T) {
   return class extends superClass {
     mixinProp2: string = 'mixinProp2';
 
