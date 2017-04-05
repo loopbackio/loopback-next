@@ -1,4 +1,4 @@
-import {Entity} from './model';
+import {Entity, Model} from './model';
 
 /**
  * Operators for where clauses
@@ -30,6 +30,11 @@ export class Where {
  * Order by direction
  */
 export type Direction = 'ASC' | 'DESC';
+
+/**
+ * Type alias for options object
+ */
+export type Options = Object;
 
 /**
  * Order by
@@ -66,58 +71,109 @@ export class Filter {
   include?: Inclusion[];
 }
 
+export interface Repository<T extends Model> {
+}
+
+/**
+ * Basic CRUD operations for value objects (without IDs)
+ */
+export interface ValueObjectRepository<T extends Model> extends Repository<T> {
+  /**
+   * Create a new record
+   * @param value
+   * @param options
+   */
+  create(value: T, options?: Options): Promise<T>;
+
+  /**
+   * Find matching records
+   * @param filter
+   * @param options
+   */
+  find(filter?: Filter, options?: Options): Promise<T[]>;
+
+  /**
+   * Updating matching records with attributes from the data object
+   * @param data
+   * @param where
+   * @param options
+   */
+  updateAll(data: {}, where?: Where, options?: Options): Promise<number>;
+
+  /**
+   * Delete matching records
+   * @param where
+   * @param options
+   */
+  deleteAll(where?: Where, options?: Options): Promise<number>;
+
+  /**
+   * Count matching records
+   * @param where
+   * @param options
+   */
+  count(where?: Where, options?: Options): Promise<number>;
+}
+
 /**
  * Base interface for a repository
  */
-export interface Repository<T extends Entity, ID> {
+export interface EntityRepository<T extends Entity, ID> extends Repository<T> {
 }
 
 /**
  * CRUD repository
  */
-export interface CrudRepository<T extends Entity, ID>
-extends Repository<T, ID> {
+export interface EntityCrudRepository<T extends Entity, ID>
+extends EntityRepository<T, ID> {
   /**
-   *
+   * Create an entity
    * @param entity
    * @param options
    */
-  create(entity: T | T[], options?: Object): Promise<T | T[]>;
+  create(entity: T, options?: Options): Promise<T>;
+
+  /**
+   * Create all entities
+   * @param entities
+   * @param options
+   */
+  createAll(entities: T[], options?: Options): Promise<T[]>;
 
   /**
    *
    * @param entity
    * @param options
    */
-  upsert(entity: T, options: Object): Promise<T>;
+  save(entity: T, options?: Options): Promise<T>;
 
   /**
    *
    * @param filter
    * @param options
    */
-  find(filter?: Filter, options?: Object): Promise<T[]>;
+  find(filter?: Filter, options?: Options): Promise<T[]>;
 
   /**
    *
    * @param id
    * @param options
    */
-  findById(id: ID, options?: Object): Promise<T[]>;
+  findById(id: ID, options?: Options): Promise<T[]>;
 
   /**
    *
    * @param entity
    * @param options
    */
-  update(entity: T, options?: Object): Promise<boolean>;
+  update(entity: T, options?: Options): Promise<boolean>;
 
   /**
    *
    * @param entity
    * @param options
    */
-  delete(entity: T, options?: Object): Promise<boolean>;
+  delete(entity: T, options?: Options): Promise<boolean>;
 
   /**
    *
@@ -125,7 +181,7 @@ extends Repository<T, ID> {
    * @param where
    * @param options
    */
-  updateAll(data: any, where?: any, options?: Object): Promise<number>;
+  updateAll(data: {}, where?: Where, options?: Options): Promise<number>;
 
   /**
    *
@@ -133,69 +189,97 @@ extends Repository<T, ID> {
    * @param id
    * @param options
    */
-  updateById(data: any, id: ID, options?: Object): Promise<number>;
+  updateById(id: ID, data: {}, options?: Options): Promise<number>;
+
+  /**
+   *
+   * @param data
+   * @param id
+   * @param options
+   */
+  replaceById(id: ID, data: {}, options?: Options): Promise<number>;
 
   /**
    *
    * @param where
    * @param options
    */
-  deleteAll(where?: any, options?: Object): Promise<number>;
+  deleteAll(where?: Where, options?: Options): Promise<number>;
 
   /**
    *
    * @param id
    * @param options
    */
-  deleteById(id: ID, options?: Object): Promise<number>;
+  deleteById(id: ID, options?: Options): Promise<number>;
+
+  /**
+   * Count the matching records
+   * @param where
+   * @param options
+   */
+  count(where?: Where, options?: Options): Promise<number>;
 }
 
 /**
  * Repository implementation
  */
-export class CrudRepositoryImpl<T extends Entity, ID> implements CrudRepository<T, ID> {
+export class CrudRepositoryImpl<T extends Entity, ID>
+implements EntityCrudRepository<T, ID> {
 
   constructor(public connector: any, public model: T) {
 
   }
 
-  create(entity: T | T[], options?: Object): Promise<T | T[]> {
+  create(entity: T, options?: Options): Promise<T> {
     return this.connector.create(this.model, entity, options);
   }
 
-  upsert(entity: T, options: Object): Promise<T> {
-    return this.connector.upsert(this.model, entity, options);
+  createAll(entities: T[], options?: Options): Promise<T[]> {
+    return this.connector.create(this.model, entities, options);
   }
 
-  find(filter?: any, options?: Object): Promise<T[]> {
+  save(entity: T, options?: Options): Promise<T> {
+    return this.connector.save(this.model, entity, options);
+  }
+
+  find(filter?: Filter, options?: Options): Promise<T[]> {
     return this.connector.find(this.model, filter, options);
   }
 
-  findById(id: ID, options?: Object): Promise<T[]> {
+  findById(id: ID, options?: Options): Promise<T[]> {
     return this.connector.findById(this.model, id, options);
   }
 
-  update(entity: T, options?: Object): Promise<boolean> {
+  update(entity: T, options?: Options): Promise<boolean> {
     return this.connector.updateById(this.model, entity.getId(), options);
   }
 
-  delete(entity: T, options?: Object): Promise<boolean> {
+  delete(entity: T, options?: Options): Promise<boolean> {
     return this.connector.deleteById(this.model, entity.getId(), options);
   }
 
-  updateAll(data: any, where?: any, options?: Object): Promise<number> {
+  updateAll(data: {}, where?: Where, options?: Options): Promise<number> {
     return this.connector.update(this.model, where, options);
   }
 
-  updateById(data: any, id: ID, options?: Object): Promise<number> {
+  updateById(id: ID, data: {}, options?: Options): Promise<number> {
     return this.connector.updateById(this.model, id, options);
   }
 
-  deleteAll(where?: any, options?: Object): Promise<number> {
+  replaceById(id: ID, data: {}, options?: Options): Promise<number> {
+    return this.connector.replaceById(this.model, id, options);
+  }
+
+  deleteAll(where?: Where, options?: Options): Promise<number> {
     return this.connector.delete(this.model, where, options);
   }
 
-  deleteById(id: ID, options?: Object): Promise<number> {
+  deleteById(id: ID, options?: Options): Promise<number> {
     return this.connector.deleteById(this.model, id, options);
+  }
+
+  count(where?: Where, options?: Options): Promise<number> {
+    return this.connector.count(this.model, where, options);
   }
 }

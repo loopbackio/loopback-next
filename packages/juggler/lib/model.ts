@@ -3,18 +3,34 @@
  * Driven Design.
  * See https://en.wikipedia.org/wiki/Domain-driven_design#Building_blocks
  */
+
+/**
+ * Property definition for a model
+ */
 export class ModelProperty {
   name: string;
-  type: string | Function | Object;
-  readOnly?: boolean;  // Is the property only for read, such as 'lastModified'
-  writeOnly?: boolean; // Is the property only for write, such as 'password'
-  persistent?: boolean; // Is the property persistent?
+  type: string | Function | Object; // For example, 'string', String, or {}
+  json?: PropertyForm;
+  store?: PropertyForm;
   [attribute: string]: any; // Other attributes
 }
 
+/**
+ * See https://github.com/strongloop/loopback-datasource-juggler/issues/432
+ */
+export interface PropertyForm {
+  in?: boolean, // Can the property be used for input
+  out?: boolean, // Can the property be used for output
+  name?: string // Custom name for this form
+}
+
+/**
+ * Definition for a model
+ */
 export class ModelDefinition {
   name: string;
   properties: Map<string, ModelProperty>;
+  // indexes: Map<string, any>;
   [attribute: string]: any; // Other attributes
 
   idProperties(): ModelProperty[] {
@@ -22,6 +38,9 @@ export class ModelDefinition {
   }
 }
 
+/**
+ * Base class for models
+ */
 export abstract class Model {
   static modelName: string;
   static definition: ModelDefinition;
