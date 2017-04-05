@@ -121,9 +121,6 @@ interface ParsedRequest extends Request {
   query: { [key: string]: string };
 }
 
-// TODO(mbajtos) This is a temporary implementation that does not support path parameters.
-// We should write our own optimised router based on the spike in
-// https://github.com/strongloop/strong-remoting/pull/282
 class Endpoint {
   private readonly _verb: string;
   private readonly _pathRegexp: pathToRegexp.PathRegExp;
@@ -177,6 +174,9 @@ class Endpoint {
         if (result) {
           // TODO(ritch) remove this, should be configurable
           response.setHeader('Content-Type', 'application/json');
+          // TODO(bajtos) handle errors - JSON.stringify can throw
+          if (typeof result === 'object')
+            result = JSON.stringify(result);
           response.write(result);
         }
         response.end();

@@ -176,6 +176,32 @@ context('with an operation echoing a string parameter from query', () => {
     }
   });
 
+  context('response serialization', () => {
+    it('converts object result to a JSON response', async () => {
+      const spec = givenOpenApiSpec()
+        .withOperation('get', '/object', {
+          'x-operation-name': 'getObject',
+          responses: {
+            '200': { type: 'object' },
+          },
+        })
+        .build();
+
+      class TestController {
+        public async getObject(): Promise<Object> {
+          return {key: 'value'};
+        }
+      }
+
+      givenControllerClass(TestController, spec);
+
+      const response = await requestEndpoint('GET', '/object');
+      expect(response.statusCode, 'statusCode').to.equal(200);
+      expect(response.headers['content-type']).to.match(/^application\/json($|;)/);
+      expect(response.body, 'body').to.equal('{"key":"value"}');
+    });
+  });
+
   let router: SwaggerRouter;
   function givenRouter() {
     router = new SwaggerRouter();
