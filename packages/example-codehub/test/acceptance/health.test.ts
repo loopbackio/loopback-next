@@ -3,14 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import { CodeHubApplication } from 'example-codehub/src/CodeHubApplication';
 import {expect, supertest as request} from 'testlab';
 import * as util from 'example-codehub/test/support/util';
 
 describe('health', () => {
-  let app;
-  let client;
-  before(createClient);
-  before(createApp);
+  let app: CodeHubApplication;
+  let client: request.SuperTest<request.Test>;
+
+  before(givenClientAndApp);
 
   it('returns the uptime', async () => {
     const response = await client
@@ -20,11 +21,9 @@ describe('health', () => {
     expect(response.body.uptime).to.be.a('number');
   });
 
-  function createClient() {
-    client = util.createClient('http', 3000);
-  }
-  function createApp() {
-   app = util.createApp();
-   return app.start();
+  async function givenClientAndApp() {
+    const result = await util.createAppAndClient();
+    client = result.client;
+    app = result.app;
   }
 });

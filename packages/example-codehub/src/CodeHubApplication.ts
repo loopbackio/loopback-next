@@ -17,6 +17,7 @@ export class CodeHubApplication extends Application {
     app.bind('userId').to(42);
 
     app.bind('servers.http.enabled').to(true);
+    app.bind('servers.http.port').to(3000);
     app.bind('servers.https.enabled').to(true);
   }
 
@@ -24,14 +25,19 @@ export class CodeHubApplication extends Application {
 
   async start() {
     this._startTime = new Date();
-    const server = new Server();
+    const server = new Server({port: this.get('servers.http.port')});
+    this.bind('servers.http.server').to(server);
     server.bind('applications.code-hub').to(this);
     return server.start();
   }
 
   info() {
+    const server = this.get('servers.http.server') as Server;
+    const port = server.config.port;
+
     return {
       uptime: Date.now() - this._startTime.getTime(),
+      url: 'http://127.0.0.1:' + port,
     };
   }
 }

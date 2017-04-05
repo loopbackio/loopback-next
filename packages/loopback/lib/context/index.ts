@@ -58,6 +58,8 @@ export class Context {
 
   get(key: string) {
     const binding = this.registry.get(key);
+    if (!binding)
+      throw new Error(`The key ${key} was not bound to any value.`);
     return binding.getValue();
   }
 }

@@ -6,11 +6,20 @@
 import {supertest} from 'testlab';
 import {CodeHubApplication} from 'example-codehub/src/CodeHubApplication';
 
-export function createClient(protocol: string, port: number) {
-  const URL = `${protocol}://localhost:${port}`;
-  return supertest('http://localhost:3000');
+export function createClientForApp(app: CodeHubApplication) {
+  const url = app.info().url;
+  return supertest(url);
 }
 
 export function createApp() {
-  return new CodeHubApplication();
+  const app = new CodeHubApplication();
+  app.bind('servers.http.port').to(0);
+  return app;
+}
+
+export async function createAppAndClient() {
+  const app = createApp();
+  await app.start();
+  const client = createClientForApp(app);
+  return {app, client};
 }

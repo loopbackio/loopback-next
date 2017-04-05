@@ -100,10 +100,13 @@ export class SwaggerRouter {
 
   private _finalHandler(req: Request, res: Response, err?: any) {
     // TODO(bajtos) cover this final handler by tests
+    // TODO(bajtos) make the error-handling strategy configurable (e.g. via strong-error-handler)
     if (err) {
       res.statusCode = err.statusCode || err.status || 500;
+      console.error('Unhandled error in %s %s: %s %s', req.method, req.url, res.statusCode, err.stack || err);
       res.end();
     } else {
+      console.error('Not found: %s %s', req.method, req.url);
       res.statusCode = 404;
       res.write(req.url + ' not found.\n');
       res.end();
