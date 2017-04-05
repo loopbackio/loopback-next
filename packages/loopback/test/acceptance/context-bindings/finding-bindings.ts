@@ -22,7 +22,7 @@ describe('Context bindings - Finding bindings', () => {
         const keys = bindings.map(binding => {
           return binding.key;
         });
-        expect(keys).to.include('foo', 'baz');
+        expect(keys).to.containDeep(['foo', 'baz']);
       });
     });
 
@@ -40,8 +40,8 @@ describe('Context bindings - Finding bindings', () => {
       it('returns all bindings matching the pattern', () => {
         const bindings = ctx.find('my.*');
         const keys = bindings.map(binding => binding.key);
-        expect(keys).to.include('my.foo', 'my.baz');
-        expect(keys).to.not.include('ur.quux');
+        expect(keys).to.containDeep(['my.foo', 'my.baz']);
+        expect(keys).to.not.containDeep(['ur.quux']);
       });
     });
   });
@@ -54,7 +54,7 @@ describe('Context bindings - Finding bindings', () => {
       it('returns all bindings matching the tag', () => {
         const bindings = ctx.findByTag('dog');
         const dogs = bindings.map(binding => binding.key);
-        expect(dogs).to.include('spot', 'fido');
+        expect(dogs).to.containDeep(['spot', 'fido']);
       });
     });
 
