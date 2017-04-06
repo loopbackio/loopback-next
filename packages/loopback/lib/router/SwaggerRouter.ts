@@ -100,10 +100,13 @@ export class SwaggerRouter {
 
   private _finalHandler(req: Request, res: Response, err?: any) {
     // TODO(bajtos) cover this final handler by tests
+    // TODO(bajtos) make the error-handling strategy configurable (e.g. via strong-error-handler)
     if (err) {
       res.statusCode = err.statusCode || err.status || 500;
+      console.error('Unhandled error in %s %s: %s %s', req.method, req.url, res.statusCode, err.stack || err);
       res.end();
     } else {
+      console.error('Not found: %s %s', req.method, req.url);
       res.statusCode = 404;
       res.write(req.url + ' not found.\n');
       res.end();
@@ -118,9 +121,6 @@ interface ParsedRequest extends Request {
   query: { [key: string]: string };
 }
 
-// TODO(mbajtos) This is a temporary implementation that does not support path parameters.
-// We should write our own optimised router based on the spike in
-// https://github.com/strongloop/strong-remoting/pull/282
 class Endpoint {
   private readonly _verb: string;
   private readonly _pathRegexp: pathToRegexp.PathRegExp;
@@ -174,6 +174,9 @@ class Endpoint {
         if (result) {
           // TODO(ritch) remove this, should be configurable
           response.setHeader('Content-Type', 'application/json');
+          // TODO(bajtos) handle errors - JSON.stringify can throw
+          if (typeof result === 'object')
+            result = JSON.stringify(result);
           response.write(result);
         }
         response.end();
