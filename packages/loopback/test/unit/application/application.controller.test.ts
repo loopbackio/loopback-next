@@ -16,6 +16,6 @@ describe('Application.controller()', () => {
     app.controller(TestController);
 
     const boundControllers = app.find('controllers.*').map(b => b.key);
-    expect(boundControllers).to.contain('controllers.TestController');
+    expect(boundControllers).to.containEql('controllers.TestController');
   });
 });

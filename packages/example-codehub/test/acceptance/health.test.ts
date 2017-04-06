@@ -18,7 +18,7 @@ describe('health', () => {
       .get('/health')
       .expect('Content-Type', /json/)
       .expect(200);
-    expect(response.body.uptime).to.be.a('number');
+    expect(response.body.uptime).to.be.Number();
   });
 
   async function givenClientAndApp() {

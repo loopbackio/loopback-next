@@ -1,12 +1,13 @@
-/// <reference path="./dirty-chai.d.ts" />
+/// <reference path="./should-as-function.d.ts" />
 
-import chai = require('chai');
-import dirtyChai = require('dirty-chai');
+import shouldAsFunction = require('should/as-function');
 import sinon = require('sinon');
 import supertest = require('supertest');
 
-chai.use(dirtyChai);
+shouldAsFunction.use((should, assertion) => {
+  assertion.addChain('to');
+});
 
-export const expect = <DirtyChai.ExpectStatic> chai.expect;
+export const expect = <Internal> shouldAsFunction;
 export {sinon};
 export {supertest};

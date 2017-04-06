@@ -32,7 +32,7 @@ describe(`Context bindings - Unlocking bindings`, () => {
         it('does not throw a rebinding error', () => {
           const key = 'foo';
           const operation = () => ctx.bind('foo').to('baz');
-          expect(operation).to.not.throw(Error, new RegExp(`Cannot rebind key "${key}" because associated binding is locked`));
+          expect(operation).to.not.throw();
         });
 
         it('binds the duplicate key to the new value', () => {

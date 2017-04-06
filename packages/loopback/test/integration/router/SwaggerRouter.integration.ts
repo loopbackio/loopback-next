@@ -33,8 +33,8 @@ describe('SwaggerRouter', () => {
 
     it('handles simple "GET /hello" requests', async () => {
       const response = await requestEndpoint('GET', '/hello');
-      expect(response.statusCode, 'statusCode').to.equal(200);
-      expect(response.body, 'body').to.equal('Hello world!');
+      expect(response.statusCode).to.equal(200);
+      expect(response.body).to.equal('Hello world!', 'body');
     });
   });
 
@@ -196,9 +196,9 @@ context('with an operation echoing a string parameter from query', () => {
       givenControllerClass(TestController, spec);
 
       const response = await requestEndpoint('GET', '/object');
-      expect(response.statusCode, 'statusCode').to.equal(200);
+      expect(response.statusCode).to.equal(200, 'statusCode');
       expect(response.headers['content-type']).to.match(/^application\/json($|;)/);
-      expect(response.body, 'body').to.equal('{"key":"value"}');
+      expect(response.body).to.equal('{"key":"value"}', 'body');
     });
   });
 
