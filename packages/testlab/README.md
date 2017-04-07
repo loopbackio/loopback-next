@@ -4,9 +4,17 @@ A collection of test utilities we use to write LoopBack tests.
 
 ## `expect`
 
-Chai's [BDD API](http://chaijs.com/api/bdd/) configured with
-[dirty-chai](https://github.com/graingert/dirty-chai/blob/master/README.md),
-allowing us to avoid dangerous [asserts on property access](https://github.com/moll/js-must#asserting-on-property-access)
+[Should.js](https://shouldjs.github.io/) configured in "as-function" mode
+(global `Object.protype` is left intact) with an extra chaining word `to`.
+
+#### Example usage
+
+```ts
+import { expect } from '@loopback/testlab';
+
+expect({key:'value'}).to.deepEqual({key: 'value'});
+expect.exists(1);
+```
 
 ## `sinon`
 
