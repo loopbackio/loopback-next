@@ -63,3 +63,7 @@ lerna run acceptance --scope loopback
 ```
 
 Replace `acceptance` with `integration` or `unit` accordingly.
+
+# License
+
+[MIT](https://github.com/strongloop/loopback-next/blob/master/LICENSE)
