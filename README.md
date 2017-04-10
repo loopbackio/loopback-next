@@ -35,40 +35,6 @@ npm i -D mocha
 
 You DO NOT need to install in the submodules as Lerna figures it out for you.
 
-## Testing
-
-### Usage
-
-```shell
-git clone https://github.com/strongloop/loopback-next.git
-cd loopback-next
-npm install
-lerna bootstrap
-npm run test
-```
-
-### Running tests
-
-Run all tests (unit, then integration, then acceptance) for all packages:
-
-```shell
-lerna run test
-```
-
-Run acceptance tests for all packages:
-
-```shell
-lerna run acceptance
-```
-
-Run acceptance tests for one package:
-
-```shell
-lerna run acceptance --scope loopback
-```
-
-Replace `acceptance` with `integration` or `unit` accordingly.
-
 # License
 
 [MIT](https://github.com/strongloop/loopback-next/blob/master/LICENSE)
