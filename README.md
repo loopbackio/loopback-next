@@ -2,9 +2,12 @@
 
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/strongloop/loopback)
 
-# About
+LoopBack makes it easy to build modern applications that require complex integrations.
 
-This is the next chapter in the LoopBack story. For practicality we are using a single repository for major refactoring of components. At some point this will be broken out back into smaller modules.
+- Fast, small, extensible core
+- Generate real APIs with a single command
+- Define your data and endpoints with OpenAPI
+- No maintenance of generated code
 
 ## How to use this `loopback-next` repo
 
