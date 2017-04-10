@@ -23,18 +23,6 @@ LoopBack makes it easy to build modern applications that require complex integra
  - All code should have tests and documentation! Details TBD
  - All code must conform to automated linting
 
-## Package management
-
-### Shared dependencies
-
-Regular NPM install at the package root:
-
-```
-npm i -D mocha
-```
-
-You DO NOT need to install in the submodules as Lerna figures it out for you.
-
 # License
 
 [MIT](https://github.com/strongloop/loopback-next/blob/master/LICENSE)
