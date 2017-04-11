@@ -14,6 +14,7 @@
   "dependencies": {
     "@loopback/juggler": "^4.0.0-alpha.1",
     "@loopback/remoting": "^4.0.0-alpha.1",
+    "body": "^5.1.0",
     "debug": "^2.6.0",
     "path-to-regexp": "^1.7.0"
   },

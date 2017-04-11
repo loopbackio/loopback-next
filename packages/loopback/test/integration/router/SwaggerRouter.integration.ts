@@ -176,6 +176,187 @@ context('with an operation echoing a string parameter from query', () => {
     }
   });
 
+  context('with a header-parameter route', () => {
+    beforeEach(givenHeaderParamController);
+
+    it('returns the value sent in the header', async () => {
+      const response = await requestEndpointWithOptions({
+        method: 'GET',
+        url: '/show-authorization',
+        headers: { authorization: 'admin' },
+      });
+      expect(response.body).to.equal('admin');
+    });
+
+    function givenHeaderParamController() {
+      const spec = givenOpenApiSpec()
+        .withOperation('get', '/show-authorization', {
+          'x-operation-name': 'showAuthorization',
+          parameters: [
+            <ParameterObject> {
+              name: 'Authorization',
+              in: 'header',
+              description: 'Authorization credentials.',
+              required: true,
+              type: 'string',
+            },
+          ],
+          responses: {
+            200: {
+              schema: {
+                type: 'string',
+              },
+            },
+          },
+        })
+        .build();
+
+      class RouteParamController {
+        async showAuthorization(auth: string): Promise<string> {
+          return auth;
+        }
+      }
+
+      givenControllerClass(RouteParamController, spec);
+    }
+  });
+
+  context('with a formData-parameter route', () => {
+    beforeEach(givenFormDataParamController);
+
+    it('returns the value sent in json-encoded body', async () => {
+      const response = await requestEndpointWithOptions({
+        method: 'POST',
+        url: '/show-formdata',
+        headers: {'content-type': 'application/json'},
+        body: JSON.stringify({key: 'value'}),
+      });
+      expect(response.statusCode).to.equal(200);
+      expect(response.body).to.equal('value');
+    });
+
+    it('rejects url-encoded request body', async () => {
+      logErrorsExcept(415);
+      const response = await requestEndpointWithOptions({
+        method: 'POST',
+        url: '/show-formdata',
+        form: {key: 'value'},
+      });
+      expect(response.statusCode).to.equal(415);
+    });
+
+    it('returns 400 for malformed JSON body', async () => {
+      logErrorsExcept(400);
+      const response = await requestEndpointWithOptions({
+        method: 'POST',
+        url: '/show-formdata',
+        headers: {'content-type': 'application/json'},
+        body: 'malformed-json',
+      });
+      expect(response.statusCode).to.equal(400);
+    });
+
+    function givenFormDataParamController() {
+      const spec = givenOpenApiSpec()
+        .withOperation('post', '/show-formdata', {
+          'x-operation-name': 'showFormData',
+          parameters: [
+            <ParameterObject> {
+              name: 'key',
+              in: 'formData',
+              description: 'Any value.',
+              required: true,
+              type: 'string',
+            },
+          ],
+          responses: {
+            200: {
+              schema: {
+                type: 'string',
+              },
+            },
+          },
+        })
+        .build();
+
+      class RouteParamController {
+        async showFormData(key: string): Promise<string> {
+          return key;
+        }
+      }
+
+      givenControllerClass(RouteParamController, spec);
+    }
+  });
+
+  context('with a body-parameter route', () => {
+    beforeEach(givenBodyParamController);
+
+    it('returns the value sent in json-encoded body', async () => {
+      const response = await requestEndpointWithOptions({
+        method: 'POST',
+        url: '/show-body',
+        json: true,
+        body: {key: 'value'},
+      });
+      expect(response.statusCode).to.equal(200);
+      expect(response.body).to.deepEqual({key: 'value'});
+    });
+
+    it('rejects url-encoded request body', async () => {
+      logErrorsExcept(415);
+      const response = await requestEndpointWithOptions({
+        method: 'POST',
+        url: '/show-body',
+        form: {key: 'value'},
+      });
+      expect(response.statusCode).to.equal(415);
+    });
+
+    it('returns 400 for malformed JSON body', async () => {
+      logErrorsExcept(400);
+      const response = await requestEndpointWithOptions({
+        method: 'POST',
+        url: '/show-body',
+        headers: {'content-type': 'application/json'},
+        body: 'malformed-json',
+      });
+      expect(response.statusCode).to.equal(400);
+    });
+
+    function givenBodyParamController() {
+      const spec = givenOpenApiSpec()
+        .withOperation('post', '/show-body', {
+          'x-operation-name': 'showBody',
+          parameters: [
+            <ParameterObject> {
+              name: 'data',
+              in: 'body',
+              description: 'Any object value.',
+              required: true,
+              type: 'object',
+            },
+          ],
+          responses: {
+            200: {
+              schema: {
+                type: 'object',
+              },
+            },
+          },
+        })
+        .build();
+
+      class RouteParamController {
+        async showBody(data: Object): Promise<Object> {
+          return data;
+        }
+      }
+
+      givenControllerClass(RouteParamController, spec);
+    }
+  });
+
   context('response serialization', () => {
     it('converts object result to a JSON response', async () => {
       const spec = givenOpenApiSpec()
@@ -212,14 +393,30 @@ context('with an operation echoing a string parameter from query', () => {
  }
 
   async function requestEndpoint(verb: string, path: string): Promise<FullRequestResponse> {
-    const server = http.createServer(router.handler);
-    const baseUrl = await listen(server);
-    return request({
-      baseUrl,
+    return requestEndpointWithOptions({
       url: path,
       method: verb,
+    });
+  }
+
+  async function requestEndpointWithOptions(options: request.Options): Promise<FullRequestResponse> {
+    const server = http.createServer(router.handler);
+    const baseUrl = await listen(server);
+
+    options = Object.assign({}, options, {
+      baseUrl,
       simple: false,
       resolveWithFullResponse: true,
     });
+    return request(options);
+  }
+
+  function logErrorsExcept(ignoreStatusCode) {
+    const oldLogger = router.logError;
+    router.logError = function logErrorConditionally(req: http.ServerRequest, statusCode: number, err: Error | string) {
+      if (statusCode === ignoreStatusCode) return;
+      // tslint:disable-next-line:no-invalid-this
+      oldLogger.apply(this, arguments);
+    };
   }
 });
