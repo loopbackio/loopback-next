@@ -207,7 +207,7 @@ context('with an operation echoing a string parameter from query', () => {
     router = new SwaggerRouter();
   }
 
- function givenControllerClass(ctor: new (...args: any[]) => Object, spec: OpenApiSpec) {
+ function givenControllerClass(ctor: new (...args) => Object, spec: OpenApiSpec) {
    router.controller((req, res) => new ctor(), spec);
  }
 

@@ -39,7 +39,7 @@ export class Application extends Context {
    * app.controller(MyController).lock();
    * ```
    */
-  public controller(controllerCtor: new(...args: any[]) => Object): Binding {
+  public controller(controllerCtor: new(...args) => Object): Binding {
     return this.bind('controllers.' + controllerCtor.name).to(controllerCtor);
   }
 }

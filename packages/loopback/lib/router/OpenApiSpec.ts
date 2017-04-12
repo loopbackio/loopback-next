@@ -10,6 +10,11 @@
  * possibly contributed either to definitely-typed or to OpenAPI project.
  */
 
+// NOTE(bajtos) Custom extensions can use arbitrary type as the value,
+// e.g. a string, an object or an array
+// tslint:disable-next-line:no-any
+export type ExtensionValue = any;
+
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#swagger-object
 export interface OpenApiSpec {
   basePath: string;
@@ -18,12 +23,12 @@ export interface OpenApiSpec {
   // TODO(bajtos) describe all properties
 
   // Allow users to use extensions
-  [extension: string]: any;
+  [extension: string]: ExtensionValue;
 }
 
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#swagger-object
 export interface PathsObject {
-  [httpPathOrSwaggerExtension: string]: PathItemObject | any;
+  [httpPathOrSwaggerExtension: string]: PathItemObject | ExtensionValue;
 }
 
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#pathItemObject
@@ -38,7 +43,7 @@ export interface PathItemObject {
 
   // TODO(bajtos) $ref, parameters
 
-  [extension: string]: any;
+  [extension: string]: ExtensionValue;
 }
 
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#operationObject
@@ -49,7 +54,7 @@ export interface OperationObject {
 
   // TODO(bajtos) describe all properties
 
-  [extension: string]: any;
+  [extension: string]: ExtensionValue;
 }
 
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#parameterObject
@@ -63,7 +68,7 @@ export interface ParameterObject {
   // enforce polymorphic fields based on "in" value
   type: string;
 
-  [extension: string]: any;
+  [extension: string]: ExtensionValue;
 }
 
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#parameterIn
@@ -78,7 +83,7 @@ export interface ReferenceObject {
 export interface ResponsesObject {
   default?: ResponseObject | ReferenceObject;
 
-  [httpStatusCodeOrSwaggerExtension: string]: ResponseObject | ReferenceObject | any;
+  [httpStatusCodeOrSwaggerExtension: string]: ResponseObject | ReferenceObject | ExtensionValue;
 }
 
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#responseObject
@@ -88,7 +93,7 @@ export interface ResponseObject {
 
   // TODO(bajtos) headers, examples
 
-  [extension: string]: any;
+  [extension: string]: ExtensionValue;
 }
 
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject
@@ -98,7 +103,7 @@ export interface SchemaObject {
   type: string;
   items: SchemaItem;
 
-  [extension: string]: any;
+  [extension: string]: ExtensionValue;
 }
 
 export interface SchemaItem {
@@ -107,5 +112,5 @@ export interface SchemaItem {
   type: string;
   additionalProperties: boolean;
 
-  [extension: string]: any;
+  [extension: string]: ExtensionValue;
 }

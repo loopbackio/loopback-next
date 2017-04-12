@@ -21,7 +21,7 @@ export class Client {
     const options = {
       uri: url,
       resolveWithFullResponse: true,
-    } as any;
+    };
 
     const response = await this._request(options);
     return {
@@ -45,6 +45,6 @@ export class Client {
 export module Client {
   export interface Result {
     status: number;
-    body: any;
+    body: FullRequestResponse.Body;
   }
 }
