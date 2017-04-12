@@ -10,5 +10,11 @@ import {RequestResponse} from 'request';
 // property as it should
 // TODO(bajtos) contribute this fix back to definitely-typed
 export interface FullRequestResponse extends RequestResponse {
-  readonly body: any;
+  readonly body: FullRequestResponse.Body;
+}
+
+export namespace FullRequestResponse {
+  // The response body can be either a string, or a parsed JSON object/array
+  // tslint:disable-next-line:no-any
+  export type Body = any;
 }

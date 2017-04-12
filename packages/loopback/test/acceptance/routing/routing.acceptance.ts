@@ -64,7 +64,7 @@ describe('Routing', () => {
     return new Application();
   }
 
-  function givenControllerInApp(app: Application, controller: new(...args: any[]) => any) {
+  function givenControllerInApp(app: Application, controller: new(...args) => Object) {
     app.controller(controller);
   }
 

@@ -39,7 +39,7 @@ export class SwaggerRouter {
     // users to pass "router.handler" around as a regular function,
     // e.g. http.createServer(router.handler)
     this.handler = (req: Request, res: Response, callback: HandlerCallback) => {
-      this._handleRequest(req, res, (err: any) => {
+      this._handleRequest(req, res, (err: Error) => {
         if (callback) callback(err);
         else this._finalHandler(req, res, err);
       });
@@ -100,7 +100,7 @@ export class SwaggerRouter {
     tryNextEndpoint();
   }
 
-  private _finalHandler(req: Request, res: Response, err?: any) {
+  private _finalHandler(req: Request, res: Response, err?: Error & {statusCode?: number, status?: number}) {
     // TODO(bajtos) cover this final handler by tests
     // TODO(bajtos) make the error-handling strategy configurable (e.g. via strong-error-handler)
     if (err) {
@@ -192,9 +192,13 @@ class Endpoint {
   }
 }
 
+// NOTE(bajtos) We cannot avoid usage of any here, because we are returning
+// a list of method call arguments, which can contain any types.
 function buildOperationArguments(operationSpec: OperationObject, request: ParsedRequest,
-    pathParams: {[key: string]: any}): any[] {
-  const args: String[] = [];
+  // tslint:disable-next-line:no-any
+  pathParams: {[key: string]: string}): any[] {
+  const args = [];
+  
   for (const paramSpec of operationSpec.parameters || []) {
     if ('$ref' in paramSpec) {
       // TODO(bajtos) implement $ref parameters
