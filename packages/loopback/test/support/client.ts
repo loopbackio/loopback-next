@@ -25,7 +25,8 @@ export class Client {
 
     const response = await this._request(options);
     return {
-      status: response.statusCode,
+      // "as number" is a workaround for buggy .d.ts definition
+      status: response.statusCode as number,
       body: response.body,
     };
   }
