@@ -28,6 +28,21 @@ cd ../..
 # proceed to creating index.ts
 ```
 
+# Usage
+
+```ts
+export class UserController {
+  public async getUserByName(username: string): Promise<UserResponse> {
+    const users = new UserRepository();
+    const user = await users.findOne({where: {username: username}});
+    if (!user) {
+      throw createHttpError.NotFound(`User ${username} not found.`);
+    }
+    return new UserResponse(user);
+  }
+}
+```
+
 # License
 
 [MIT](https://github.com/strongloop/loopback-next/blob/master/LICENSE)
