@@ -45,10 +45,10 @@ export class UserController {
 
 # Documentation
 
-- [[FAQ]]
-- [[Official documentation]]
-- [[API documentation]]
-- [[Tutorials and examples]]
+- [FAQ](https://github.com/strongloop/loopback-next/wiki/FAQ)
+- [Official documentation](https://github.com/strongloop/loopback-next/wiki/Official-documentation)
+- [API documentation](https://github.com/strongloop/loopback-next/wiki/API-documentation)
+- [Tutorials and examples](https://github.com/strongloop/loopback-next/wiki/Tutorials-and-examples)
 
 # License
 
