@@ -1,5 +1,6 @@
 import {EntityCrudRepository} from '../../lib/persistence';
 import {Customer} from '../models/customer';
+import {repository} from "../../lib/decorator";
 
 /**
  * Controller for Customer
@@ -11,8 +12,7 @@ import {Customer} from '../models/customer';
 
 // Style 1
 // Create a repository that binds Customer to mongodbDataSource
-// @repository(Customer, 'mongodbDataSource')
-
+@repository(Customer, 'mongodbDataSource')
 // Style 2
 // Reference a pre-configured repository by name. This is close to LoopBack
 // 3.x model-config.json
