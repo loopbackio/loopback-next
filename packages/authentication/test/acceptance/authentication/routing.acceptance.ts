@@ -3,10 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, Server, api, OpenApiSpec, ParameterObject, OperationObject} from '../../..';
-import {Client} from './../../support/client';
+import {Application, Server, api, OpenApiSpec, ParameterObject, OperationObject} from 'loopback';
+import {Client} from 'loopback/test/support/client';
 import {expect} from 'testlab';
-import {givenOpenApiSpec} from '../../support/OpenApiSpecBuilder';
+import {givenOpenApiSpec} from 'loopback/test/support/OpenApiSpecBuilder';
 
 /* # Feature: Routing
  * - In order to build REST APIs
