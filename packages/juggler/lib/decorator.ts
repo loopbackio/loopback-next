@@ -1,3 +1,18 @@
+import {Constructor} from "./mixin";
+import {Model} from "./model";
+/**
+ * Decorator for model definitions
+ * @param model
+ * @param dataSource
+ * @returns {(target:any)}
+ */
+export function repository(model: string | Constructor<Model>,
+  dataSource: string) {
+  return function(target: any, key?: string, descriptor?: PropertyDescriptor | number) {
+    // Apply model definition to the model class
+  }
+}
+
 /**
  * Decorator for model definitions
  * @param definition
