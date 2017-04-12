@@ -1,4 +1,5 @@
 import {EntityCrudRepository} from '../../lib/persistence';
+import {repository} from '../../lib/decorator';
 import {Customer} from '../models/customer';
 
 /**
@@ -7,6 +8,6 @@ import {Customer} from '../models/customer';
 // @controller
 export class CustomerController1 {
   // Use property dependency injection
-  // @repository(Customer, 'mongodbDataSource')
+  @repository(Customer, 'mongodbDataSource')
   private repository: EntityCrudRepository<Customer, string>;
 }
