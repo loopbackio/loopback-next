@@ -13,10 +13,12 @@ export class Context {
 
   bind(key: string): Binding {
     const keyExists = this.registry.has(key);
-    const bindingIsLocked = this.registry.get(key) && this.registry.get(key).isLocked;
-
-    if (keyExists && bindingIsLocked)
-      throw new Error(`Cannot rebind key "${key}", associated binding is locked`);
+    if (keyExists) {
+      const existingBinding = this.registry.get(key);
+      const bindingIsLocked = existingBinding && existingBinding.isLocked;
+      if (bindingIsLocked)
+        throw new Error(`Cannot rebind key "${key}", associated binding is locked`);
+    }
 
     const binding = new Binding(key);
     this.registry.set(key, binding);
@@ -28,7 +30,7 @@ export class Context {
   }
 
   find(pattern: string): Binding[] {
-    let bindings = [];
+    let bindings: Binding[] = [];
     if (pattern) {
       // TODO(@superkhau): swap with production grade glob to regex lib
       const glob = new RegExp('^' + pattern.split('*').join('.*') + '$');
@@ -45,7 +47,7 @@ export class Context {
   }
 
   findByTag(pattern: string): Binding[] {
-    const bindings = [];
+    const bindings: Binding[] = [];
     // TODO(@superkhau): swap with production grade glob to regex lib
     const glob = new RegExp('^' + pattern.split('*').join('.*') + '$');
     this.registry.forEach(binding => {

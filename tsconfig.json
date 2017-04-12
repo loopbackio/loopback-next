@@ -9,6 +9,7 @@
     "lib": ["es6", "dom"],
     "module": "commonjs",
     "moduleResolution": "node",
+    "strictNullChecks": true,
     "target": "es5"
   },
   "include": [
