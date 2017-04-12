@@ -78,9 +78,11 @@ export class SwaggerRouter {
   private _handleRequest(request: Request, response: Response, next: HandlerCallback): void {
     // TODO(bajtos) The following parsing can be skipped when the router
     // is mounted on an express app
-    const parsedUrl = url.parse(request.url, true);
+    // "as string" is a workaround for buggy .d.ts definition
+    const parsedUrl = url.parse(request.url as string, true);
     const parsedRequest = request as ParsedRequest;
-    parsedRequest.path = parsedUrl.pathname;
+    // "as string" is a workaround for buggy .d.ts definition
+    parsedRequest.path = parsedUrl.pathname as string;
     parsedRequest.query = parsedUrl.query;
 
     debug('Handle request "%s %s"', request.method, parsedRequest.path);
@@ -140,7 +142,8 @@ class Endpoint {
 
   public handle(request: ParsedRequest, response: Response, next: HandlerCallback) {
     debug('trying endpoint', this);
-    if (this._verb !== request.method.toLocaleLowerCase()) {
+    // "as string" is a workaround for buggy .d.ts definition
+    if (this._verb !== (request.method as string).toLowerCase()) {
       debug(' -> next (verb mismatch)');
       next();
       return;
@@ -191,7 +194,7 @@ class Endpoint {
 
 function buildOperationArguments(operationSpec: OperationObject, request: ParsedRequest,
     pathParams: {[key: string]: any}): any[] {
-  const args = [];
+  const args: String[] = [];
   for (const paramSpec of operationSpec.parameters || []) {
     if ('$ref' in paramSpec) {
       // TODO(bajtos) implement $ref parameters

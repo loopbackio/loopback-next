@@ -24,12 +24,11 @@ export enum ServerState {
 }
 
 export class Server extends Context {
+  public config: ServerConfig;
   // get runtime to enforce AppConfig as AppConfig
-  constructor(public config?: ServerConfig) {
+  constructor(config?: ServerConfig) {
     super();
-    if (config === undefined) {
-      this.config = {port: 3000};
-    }
+    this.config = config || {port: 3000};
   }
 
   public state: ServerState = ServerState.cold;
