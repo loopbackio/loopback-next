@@ -43,6 +43,13 @@ export class UserController {
 }
 ```
 
+# Documentation
+
+- [[FAQ]]
+- [[Official documentation]]
+- [[API documentation]]
+- [[Tutorials and examples]]
+
 # License
 
 [MIT](https://github.com/strongloop/loopback-next/blob/master/LICENSE)
