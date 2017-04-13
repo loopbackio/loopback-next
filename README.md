@@ -52,7 +52,7 @@ export class UserController {
 
 # Contributing
 
-- [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contributing-guidelines)
+- [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contribution-guidelines)
 - [Join the team](https://github.com/strongloop/loopback-next/wiki/Join-the-team)
 
 # License
