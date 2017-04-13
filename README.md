@@ -19,7 +19,7 @@ Make sure you have the following installed:
 
 Then:
 
-```
+```shell
 npm i -S loopback-next (or wherever we publish)
 cd node_modules/loopback-next
 npm i -g lerna
