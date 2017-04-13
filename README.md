@@ -50,6 +50,11 @@ export class UserController {
 - [API documentation](https://github.com/strongloop/loopback-next/wiki/API-documentation)
 - [Tutorials and examples](https://github.com/strongloop/loopback-next/wiki/Tutorials-and-examples)
 
+# Contributing
+
+- [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contributing-guidelines)
+- [Join the team](https://github.com/strongloop/loopback-next/wiki/Join-the-team)
+
 # License
 
 [MIT](https://github.com/strongloop/loopback-next/blob/master/LICENSE)
