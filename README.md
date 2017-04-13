@@ -28,7 +28,9 @@ cd ../..
 # proceed to creating index.ts
 ```
 
-# Usage
+# Example
+
+A basic example of a controller:
 
 ```ts
 export class UserController {
@@ -42,6 +44,8 @@ export class UserController {
   }
 }
 ```
+
+[See loopback-next-example for more](https://github.com/strongloop/loopback-next-example)
 
 # Documentation
 
@@ -60,7 +64,7 @@ Ritchie Martori|Raymond Feng|Miroslav Bajtos|Rand McKinney|Simon Ho
 
 # Contributing
 
-- [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contribution-guidelines)
+- [Guidelines](http://loopback.io/contributing/)
 - [Join the team](https://github.com/strongloop/loopback-next/wiki/Join-the-team)
 
 # License
