@@ -9,9 +9,10 @@
 
 ```ts
 import {BasicStrategy} from 'passport-http';
-let app = new Application();
-let server = new Server();
-let client = new Client(server.url);
+import {authenticate, UserInfo} from '@loopback/authentication';
+const app = new Application();
+const server = new Server();
+const client = new Client(server.url);
 
 @api({
   basePath: '/',
@@ -29,9 +30,14 @@ let client = new Client(server.url);
   }
 })
 class MyController {
-  @app.authenticate
-  public whoAmI(@app.inject('authentication.user') user) : string {
-    if(!user) 'please login...';
+  constructor(public @inject('authentication.user') user : UserInfo) {
+
+  }
+
+  @authenticate
+  public whoAmI() : string {
+    const user = this.user;
+    if(!user) return 'please login...';
     return user.username;
   }
 }
@@ -39,21 +45,46 @@ class MyController {
 app.controller(MyController);
 server.bind('applications.myApp').to(app);
 
-app.bind('authentication.verifyPassword').to(() => {
-  return function(storedPassword, providedPassword) {
-    // unecrypted password example:
-    return storedPassword === providedPassword;
-  }
-});
+// tell loopback/authentication to use the BasicStrategy
 app.bind('authentication.strategy').to(BasicStrategy);
+
+function verifyPassword(storedPassword, providedPassword) {
+  // unecrypted password example:
+  return storedPassword === providedPassword;
+}
+
+const USERS = {
+  joe: {username: 'joe', password: '12345'}
+};
+
+// my get user function
 app.bind('authentication.user').to(() => {
   const ctx = this;
-  const verifyPassword = ctx.get('authentication.verifyPassword');
-  const user = await User.findOne({ username: userid });
-  if(!verifyPassword(user.password, password)) return false;
+  const username = ctx.get('authentication.credentials.username');
+  const password = ctx.get('authentication.credentials.password');
+  const user = USERS[username];
+  if (!user) return null;
+  if (!verifyPassword(user.password, password)) return null;
   return user;
 });
 
+// test the app
 await server.start();
-await client.get('/echo?msg=hello%20world'); // => {status: 200, body: 'hello world'}
+await client
+  .auth({
+    username: 'joe',
+    password: '123456'
+  })
+  .get('/who-am-i'); // => joe
+
+await client
+  .auth({
+    username: 'joe',
+    password: 'bad password'
+  })
+  .get('/who-am-i'); // => 401
+
+await client
+  // no auth
+  .get('/who-am-i'); // => 401
 ```
