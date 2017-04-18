@@ -6,12 +6,23 @@
 import {ServerRequest as Request, ServerResponse as Response} from 'http';
 import {OpenApiSpec, OperationObject, ParameterObject} from './OpenApiSpec';
 import * as assert from 'assert';
+import * as jsonBody from 'body/json';
 import * as url from 'url';
 import * as pathToRegexp from 'path-to-regexp';
+import * as Promise from 'bluebird';
 const debug = require('debug')('loopback:SwaggerRouter');
+
+// tslint:disable:no-any
+type MaybeBody = any | undefined;
+type OperationArgs = any[];
+type PathParameterValues = {[key: string]: any};
+// tslint:enable:no-any
+
+const parseJsonBody: (req: Request) => Promise<MaybeBody> = Promise.promisify(jsonBody);
 
 type HandlerCallback = (err?: Error | string) => void;
 type RequestHandler = (req: Request, res: Response, cb?: HandlerCallback) => void;
+
 
 export type ControllerFactory = (request: Request, response: Response) => Object;
 
@@ -39,7 +50,7 @@ export class SwaggerRouter {
     // users to pass "router.handler" around as a regular function,
     // e.g. http.createServer(router.handler)
     this.handler = (req: Request, res: Response, callback: HandlerCallback) => {
-      this._handleRequest(req, res, (err: Error) => {
+      this._handleRequest(req, res, (err: HttpError) => {
         if (callback) callback(err);
         else this._finalHandler(req, res, err);
       });
@@ -78,11 +89,9 @@ export class SwaggerRouter {
   private _handleRequest(request: Request, response: Response, next: HandlerCallback): void {
     // TODO(bajtos) The following parsing can be skipped when the router
     // is mounted on an express app
-    // "as string" is a workaround for buggy .d.ts definition
-    const parsedUrl = url.parse(request.url as string, true);
     const parsedRequest = request as ParsedRequest;
-    // "as string" is a workaround for buggy .d.ts definition
-    parsedRequest.path = parsedUrl.pathname as string;
+    const parsedUrl = url.parse(parsedRequest.url, true);
+    parsedRequest.path = parsedUrl.pathname  || '/';
     parsedRequest.query = parsedUrl.query;
 
     debug('Handle request "%s %s"', request.method, parsedRequest.path);
@@ -100,19 +109,23 @@ export class SwaggerRouter {
     tryNextEndpoint();
   }
 
-  private _finalHandler(req: Request, res: Response, err?: Error & {statusCode?: number, status?: number}) {
+  private _finalHandler(req: Request, res: Response, err?: HttpError) {
     // TODO(bajtos) cover this final handler by tests
     // TODO(bajtos) make the error-handling strategy configurable (e.g. via strong-error-handler)
     if (err) {
       res.statusCode = err.statusCode || err.status || 500;
-      console.error('Unhandled error in %s %s: %s %s', req.method, req.url, res.statusCode, err.stack || err);
+      this.logError(req, res.statusCode, err);
       res.end();
     } else {
-      console.error('Not found: %s %s', req.method, req.url);
+      this.logError(req, 404, 'Not found.');
       res.statusCode = 404;
       res.write(req.url + ' not found.\n');
       res.end();
     }
+  }
+
+  public logError(req: Request, statusCode: number, err: Error | string) {
+    console.error('Unhandled error in %s %s: %s %s', req.method, req.url, statusCode, (err as Error).stack || err);
   }
 }
 
@@ -121,6 +134,10 @@ interface ParsedRequest extends Request {
   path: string;
   // see http://expressjs.com/en/4x/api.html#req.query
   query: { [key: string]: string };
+  // see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/15808
+  url: string;
+  pathname: string;
+  method: string;
 }
 
 class Endpoint {
@@ -142,8 +159,7 @@ class Endpoint {
 
   public handle(request: ParsedRequest, response: Response, next: HandlerCallback) {
     debug('trying endpoint', this);
-    // "as string" is a workaround for buggy .d.ts definition
-    if (this._verb !== (request.method as string).toLowerCase()) {
+    if (this._verb !== request.method.toLowerCase()) {
       debug(' -> next (verb mismatch)');
       next();
       return;
@@ -165,8 +181,20 @@ class Endpoint {
 
     const controller = this._controllerFactory(request, response);
     const operationName = this._spec['x-operation-name'];
-    const args = buildOperationArguments(this._spec, request, pathParams);
 
+    loadRequestBodyIfNeeded(this._spec, request)
+      .then(body => buildOperationArguments(this._spec, request, pathParams, body))
+      .then(
+        args => {
+          this._invoke(controller, operationName, args, response, next);
+        },
+        err => {
+          debug('Cannot parse arguments of operation %s: %s', operationName, err.stack || err);
+          next(err);
+        });
+  }
+
+  private _invoke(controller: Object, operationName: string, args: OperationArgs, response: Response, next: HandlerCallback) {
     debug('invoke %s with arguments', operationName, args);
 
     // TODO(bajtos) support sync operations that return the value directly (no Promise)
@@ -192,12 +220,38 @@ class Endpoint {
   }
 }
 
-// NOTE(bajtos) We cannot avoid usage of any here, because we are returning
-// a list of method call arguments, which can contain any types.
+function loadRequestBodyIfNeeded(operationSpec: OperationObject, request: Request): Promise<MaybeBody> {
+  if (!hasArgumentsFromBody(operationSpec))
+    return Promise.resolve();
+
+  const contentType = request.headers['content-type'];
+  if (contentType && !/json/.test(contentType)) {
+    const err = createHttpError(415, `Content-type ${contentType} is not supported.`);
+    return Promise.reject(err);
+  }
+
+  return parseJsonBody(request).catch((err: HttpError) => {
+    err.statusCode = 400;
+    return Promise.reject(err);
+  });
+}
+
+function hasArgumentsFromBody(operationSpec: OperationObject): boolean {
+  if (!operationSpec.parameters || !operationSpec.parameters.length)
+   return false;
+
+  for (const paramSpec of operationSpec.parameters) {
+    if ('$ref' in paramSpec) continue;
+    const source = (paramSpec as ParameterObject).in;
+    if (source === 'formData' || source === 'body')
+     return true;
+  }
+  return false;
+}
+
 function buildOperationArguments(operationSpec: OperationObject, request: ParsedRequest,
-  // tslint:disable-next-line:no-any
-  pathParams: {[key: string]: string}): any[] {
-  const args: string[] = [];
+    pathParams: PathParameterValues, body?: MaybeBody): OperationArgs {
+  const args: OperationArgs = [];
 
   for (const paramSpec of operationSpec.parameters || []) {
     if ('$ref' in paramSpec) {
@@ -212,10 +266,29 @@ function buildOperationArguments(operationSpec: OperationObject, request: Parsed
       case 'path':
         args.push(pathParams[spec.name]);
         break;
+      case 'header':
+        args.push(request.headers[spec.name.toLowerCase()]);
+        break;
+      case 'formData':
+        args.push(body ? body[spec.name] : undefined);
+        break;
+      case 'body':
+        args.push(body);
+        break;
       default:
-        // TODO(bajtos) support all parameter sources (path, body, etc.)
-        throw new Error('Parameters with "in: ' + spec.in + '" are not supported yet.');
+        throw createHttpError(501, 'Parameters with "in: ' + spec.in + '" are not supported yet.');
     }
   }
   return args;
+}
+
+interface HttpError extends Error {
+  statusCode?: number;
+  status?: number;
+}
+
+function createHttpError(statusCode: number, message: string) {
+  const err = new Error(message) as HttpError;
+  err.statusCode = statusCode;
+  return err;
 }
