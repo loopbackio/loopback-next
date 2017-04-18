@@ -197,8 +197,8 @@ class Endpoint {
 function buildOperationArguments(operationSpec: OperationObject, request: ParsedRequest,
   // tslint:disable-next-line:no-any
   pathParams: {[key: string]: string}): any[] {
-  const args = [];
-  
+  const args: string[] = [];
+
   for (const paramSpec of operationSpec.parameters || []) {
     if ('$ref' in paramSpec) {
       // TODO(bajtos) implement $ref parameters
