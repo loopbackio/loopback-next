@@ -23,6 +23,7 @@ Then:
 npm i -S loopback-next (or wherever we publish)
 cd node_modules/loopback-next
 npm i -g lerna
+lerna init
 lerna bootstrap
 cd ../..
 # proceed to creating index.ts
