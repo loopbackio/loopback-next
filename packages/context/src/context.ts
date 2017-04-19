@@ -2,7 +2,8 @@
 // Node module: loopback
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-import {Binding} from './binding';
+import {Binding, BoundValue} from './binding';
+import {inject, describeInjectedArguments} from './inject';
 
 export class Context {
   private registry: Map<string, Binding>;
@@ -23,6 +24,25 @@ export class Context {
     const binding = new Binding(key);
     this.registry.set(key, binding);
     return binding;
+  }
+
+  bindClass(key: string, ctor: new<T>(...args) => T): Binding {
+    return this.bind(key).toDynamicValue(() => this.createClassInstance(ctor));
+  }
+
+  createClassInstance<T>(ctor: new(...args) => T): T {
+    const args = this._resolveInjectedArguments(ctor);
+    return new ctor(...args);
+  }
+
+  private _resolveInjectedArguments(fn: Function): BoundValue[] {
+    const args: BoundValue[] = [];
+    const injectedArgs = describeInjectedArguments(fn);
+    for (const bindingKey of injectedArgs) {
+      // TODO(bajtos) Handle the case where key is undefined
+      args.push(this.get(bindingKey));
+    }
+    return args;
   }
 
   contains(key: string): boolean {

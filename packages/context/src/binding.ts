@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 // tslint:disable-next-line:no-any
-type BoundValue = any;
+export type BoundValue = any;
 
 export class Binding {
   // FIXME(bajtos) The binding class should be parameterized by the value type stored

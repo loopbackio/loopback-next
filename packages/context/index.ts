@@ -5,3 +5,4 @@
 
 export {Binding} from './src/binding';
 export {Context} from './src/context';
+export {inject} from './src/inject';
