@@ -10,7 +10,7 @@ import { FullRequestResponse } from './../../support/FullRequestResponse';
 import * as bluebird from 'bluebird';
 import {expect} from 'testlab';
 import {listen} from '../../support/util';
-import {OpenApiSpec, ParameterObject} from '../../../lib/router/OpenApiSpec';
+import {OpenApiSpec, ParameterObject} from '@loopback/openapi-spec';
 import {givenOpenApiSpec} from '../../support/OpenApiSpecBuilder';
 
 describe('SwaggerRouter', () => {

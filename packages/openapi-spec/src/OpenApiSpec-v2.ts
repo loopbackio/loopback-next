@@ -1,19 +1,16 @@
 // Copyright IBM Corp. 2013,2017. All Rights Reserved.
-// Node module: loopback
+// Node module: @loopback/openapi-spec
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 /*
  * OpenApiSpec - A typescript representation of OpenApi/Swagger Spec 2.0
- *
- * TODO(bajtos) I think this code should be released as a standalone npm package,
- * possibly contributed either to definitely-typed or to OpenAPI project.
  */
 
 // NOTE(bajtos) Custom extensions can use arbitrary type as the value,
 // e.g. a string, an object or an array
 // tslint:disable-next-line:no-any
-export type ExtensionValue = any;
+type ExtensionValue = any;
 
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#swagger-object
 export interface OpenApiSpec {

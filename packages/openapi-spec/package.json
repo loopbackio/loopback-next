@@ -1,0 +1,13 @@
+{
+  "name": "@loopback/openapi-spec",
+  "version": "4.0.0-alpha.1",
+  "description": "TypeScript type definitions for OpenAPI Spec/Swagger documents.",
+  "author": "IBM",
+  "license": "MIT",
+  "keywords": [
+    "Swagger",
+    "OpenAPI Spec",
+    "TypeScript",
+    "Typings"
+  ]
+}

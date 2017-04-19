@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {OpenApiSpec, OperationObject} from './../../lib/router/OpenApiSpec';
+import {OpenApiSpec, OperationObject} from '@loopback/openapi-spec';
 
 export function givenOpenApiSpec(basePath?: string) {
   return new OpenApiSpecBuilder(basePath);

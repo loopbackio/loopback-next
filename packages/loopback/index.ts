@@ -17,7 +17,7 @@ export {
   api,
 } from './lib/router/metadata'
 
-export * from './lib/router/OpenApiSpec';
+export * from '@loopback/openapi-spec';
 
 export function inject(name: string) {
   return function(target, propoertyNAme, index) {

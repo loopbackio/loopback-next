@@ -6,7 +6,7 @@
 import * as assert from 'assert';
 import 'reflect-metadata';
 
-import {OpenApiSpec} from './OpenApiSpec';
+import {OpenApiSpec} from '@loopback/openapi-spec';
 
 /**
  * Decorate the given Controller constructor with metadata describing
