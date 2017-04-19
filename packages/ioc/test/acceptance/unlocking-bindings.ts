@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from 'testlab';
-import * as util from 'loopback/test/support/util';
+import {Context} from '../..';
 
 describe(`Context bindings - Unlocking bindings`, () => {
   describe('Unlocking a locked binding', () => {
@@ -43,7 +43,7 @@ describe(`Context bindings - Unlocking bindings`, () => {
     });
 
     function createContext() {
-      ctx = util.getContext();
+      ctx = new Context();
     }
     function createLockedBinding() {
       binding = ctx.bind('foo').to('bar');

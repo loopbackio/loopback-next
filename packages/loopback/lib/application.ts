@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding} from './context/binding';
-import {Context} from './context';
+import {Binding, Context} from '@loopback/ioc';
 import * as http from 'http';
 import {SwaggerRouter} from './router/SwaggerRouter';
 import {getApiSpec} from './router/metadata';

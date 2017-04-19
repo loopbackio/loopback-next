@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from 'testlab';
-import * as util from 'loopback/test/support/util';
+import {Context} from '../..';
 
 describe('Context bindings - Creating and resolving bindings', () => {
   let ctx;
@@ -68,6 +68,6 @@ describe('Context bindings - Creating and resolving bindings', () => {
   });
 
   function createContext() {
-    ctx = util.getContext();
+    ctx = new Context();
   }
 });

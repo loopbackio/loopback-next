@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from 'testlab';
-import * as util from 'loopback/test/support/util';
+import {Context} from '../..';
 
 describe('Context bindings - Locking bindings', () => {
   describe('Binding with a duplicate key', () => {
@@ -45,7 +45,7 @@ describe('Context bindings - Locking bindings', () => {
     });
 
     function createContext() {
-      ctx = util.getContext();
+      ctx = new Context();
     }
     function createBinding() {
       binding = ctx.bind('foo');
