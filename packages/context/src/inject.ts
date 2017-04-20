@@ -39,6 +39,6 @@ export function inject(bindingKey: string) {
   };
 }
 
-export function describeInjectedArguments(target: Function) {
-  return Reflect.getOwnMetadata(REFLECTION_KEY, target);
+export function describeInjectedArguments(target: Function): string[] {
+  return Reflect.getOwnMetadata(REFLECTION_KEY, target) || [];
 }

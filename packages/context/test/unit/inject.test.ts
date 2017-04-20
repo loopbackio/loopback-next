@@ -24,4 +24,14 @@ describe('function argument injection', () => {
     const meta = describeInjectedArguments(TestClass);
     expect(meta).to.deepEqual(['foo']);
   });
+
+  it('returns an empty array when no ctor arguments are decorated', () => {
+    class TestClass {
+      constructor(foo: string) {
+      }
+    }
+
+    const meta = describeInjectedArguments(TestClass);
+    expect(meta).to.deepEqual([]);
+  });
 });

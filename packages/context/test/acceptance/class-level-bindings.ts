@@ -6,6 +6,8 @@
 import {expect} from 'testlab';
 import {Context, inject} from '../..';
 
+const INFO_CONTROLLER = 'controllers.info';
+
 describe('Context bindings - Injecting dependencies of classes', () => {
   let ctx: Context;
   before('given a context', createContext);
@@ -17,10 +19,36 @@ describe('Context bindings - Injecting dependencies of classes', () => {
       constructor(@inject('application.name') public appName: string) {
       }
     }
-    ctx.bind('controllers.info').toClass(InfoController);
+    ctx.bind(INFO_CONTROLLER).toClass(InfoController);
 
-    const instance = ctx.get('controllers.info');
+    const instance = ctx.get(INFO_CONTROLLER);
     expect(instance).to.have.property('appName', 'CodeHub');
+  });
+
+  it('throws helpful error when no ctor args are decorated', () => {
+    class InfoController {
+      constructor(appName: string) {
+      }
+    }
+    ctx.bind(INFO_CONTROLLER).toClass(InfoController);
+
+    expect.throws(
+      () => ctx.get(INFO_CONTROLLER),
+      /resolve.*InfoController.*argument 1/);
+  });
+
+  it('throws helpful error when some ctor args are not decorated', () => {
+    ctx.bind('application.name').to('CodeHub');
+
+    class InfoController {
+      constructor(argNotInjected: string, @inject('application.name') appName: string) {
+      }
+    }
+    ctx.bind(INFO_CONTROLLER).toClass(InfoController);
+
+    expect.throws(
+      () => ctx.get(INFO_CONTROLLER),
+      /resolve.*InfoController.*argument 1/);
   });
 
   function createContext() {

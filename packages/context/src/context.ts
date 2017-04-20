@@ -36,11 +36,20 @@ export class Context {
 
   private _resolveInjectedArguments(fn: Function): BoundValue[] {
     const args: BoundValue[] = [];
+    // NOTE: the array may be sparse, i.e.
+    //   Object.keys(injectedArgs).length !== injectedArgs.length
+    // Example value:
+    //   [ , 'key1', , 'key2']
     const injectedArgs = describeInjectedArguments(fn);
-    // TODO(bajtos) Verify that all fn arguments were decorated with @inject
-    // i.e. compare fn.length vs. injectedArgs.length
-    for (const bindingKey of injectedArgs) {
-      // TODO(bajtos) Handle the case where key is undefined
+
+    for (let ix = 0; ix < fn.length; ix++) {
+      const bindingKey = injectedArgs[ix];
+      if (!bindingKey) {
+        throw new Error(
+          `Cannot resolve injected arguments for function ${fn.name}: ` +
+          `The argument ${ix+1} was not decorated for dependency injection.`);
+      }
+
       args.push(this.get(bindingKey));
     }
     return args;
