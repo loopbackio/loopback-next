@@ -4,5 +4,5 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export {Binding} from './src/binding';
-export {Context} from './src/context';
+export {Context, Constructor} from './src/context';
 export {inject} from './src/inject';

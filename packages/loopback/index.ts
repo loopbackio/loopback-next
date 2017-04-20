@@ -19,8 +19,6 @@ export {
 
 export * from '@loopback/openapi-spec';
 
-export function inject(name: string) {
-  return function(target, propoertyNAme, index) {
-    // TODO(bajtos, superkhau)
-  };
-}
+export {
+  inject
+} from '@loopback/context';

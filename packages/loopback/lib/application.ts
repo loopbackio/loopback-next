@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, Context} from '@loopback/context';
+import {Binding, Context, Constructor} from '@loopback/context';
 import * as http from 'http';
 import {SwaggerRouter} from './router/SwaggerRouter';
 import {getApiSpec} from './router/metadata';
@@ -14,10 +14,15 @@ export class Application extends Context {
   public mountControllers(router: SwaggerRouter) {
     this.find('controllers.*').forEach(b => {
       debug('mounting controller %j', b.key);
-      const ctor = b.getValue();
+      const ctor = b.valueConstructor;
+      if (!ctor) {
+        throw new Error(`The controller ${b.key} was not bound via .toClass()`);
+      }
+
       const ctorFactory = (req: http.ServerRequest, res: http.ServerResponse) => {
-        // TODO(bajtos) Create per-request Context, inject Controller constructor parameters
-        return new ctor();
+        // TODO(bajtos) Create a new nested/child per-request Context
+        const requestContext = this;
+        return requestContext.get(b.key);
       };
       const apiSpec = getApiSpec(ctor);
       router.controller(ctorFactory, apiSpec);
@@ -38,7 +43,7 @@ export class Application extends Context {
    * app.controller(MyController).lock();
    * ```
    */
-  public controller(controllerCtor: new(...args) => Object): Binding {
-    return this.bind('controllers.' + controllerCtor.name).to(controllerCtor);
+  public controller<T>(controllerCtor: Constructor<T>): Binding {
+    return this.bind('controllers.' + controllerCtor.name).toClass(controllerCtor);
   }
 }

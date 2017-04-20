@@ -14,6 +14,9 @@ export class Binding {
   public getValue: () => BoundValue = () => { throw new Error(`No value was configured for binding ${this._key}.`); };
   private _tagName: string;
 
+  // For bindings bound via toClass, this property contains the constructor function
+  public valueConstructor: Constructor<BoundValue>;
+
   constructor(private readonly _context: Context, private readonly _key: string, public isLocked: boolean = false) {}
   get key() { return this._key; }
   get tagName() { return this._tagName; }
@@ -39,6 +42,7 @@ export class Binding {
 
   toClass<T>(ctor: Constructor<T>): this {
     this.getValue = () => this._context.createClassInstance(ctor);
+    this.valueConstructor = ctor;
     return this;
   }
 

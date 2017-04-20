@@ -7,6 +7,7 @@ import {Application, Server, api, OpenApiSpec, ParameterObject, OperationObject}
 import {Client} from './../../support/client';
 import {expect} from 'testlab';
 import {givenOpenApiSpec} from '../../support/OpenApiSpecBuilder';
+import {inject} from '@loopback/context';
 
 /* # Feature: Routing
  * - In order to build REST APIs
@@ -56,6 +57,37 @@ describe('Routing', () => {
 
     // Then I get the result `hello world` from the `Method`
     expect(result).to.have.property('body', 'hello world');
+  });
+
+  it('injects controller constructor arguments', async () => {
+    const app = givenAnApplication();
+    app.bind('application.name').to('TestApp');
+
+    const spec = givenOpenApiSpec()
+      .withOperation('get', '/name', {
+        'x-operation-name': 'getName',
+        responses: {
+          '200': {
+            type: 'string',
+          },
+        },
+      })
+      .build();
+
+    @api(spec)
+    class InfoController {
+      constructor(@inject('application.name') public appName: string) {
+      }
+
+      async getName(): Promise<string> {
+        return this.appName;
+      }
+    }
+    givenControllerInApp(app, InfoController);
+
+    const result = await whenIMakeRequestTo(app).get('/name');
+
+    expect(result).to.have.property('body', 'TestApp');
   });
 
   /* ===== HELPERS ===== */
