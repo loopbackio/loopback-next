@@ -12,7 +12,7 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
-    "@loopback/ioc": "^4.0.0-alpha.1",
+    "@loopback/context": "^4.0.0-alpha.1",
     "@loopback/juggler": "^4.0.0-alpha.1",
     "@loopback/remoting": "^4.0.0-alpha.1",
     "@loopback/openapi-spec": "^4.0.0-alpha.1",
