@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ServerRequest as Request, ServerResponse as Response} from 'http';
-import {OpenApiSpec, OperationObject, ParameterObject} from './OpenApiSpec';
+import {OpenApiSpec, OperationObject, ParameterObject} from '@loopback/openapi-spec';
 import * as assert from 'assert';
 import * as jsonBody from 'body/json';
 import * as url from 'url';
