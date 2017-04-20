@@ -5,7 +5,7 @@
 
 import {Application, Server, ServerConfig} from 'loopback';
 import {Client} from './client';
-import {Context} from '../../lib/context';
+import {Context} from '@loopback/ioc';
 import * as bluebird from 'bluebird';
 import * as http from 'http';
 

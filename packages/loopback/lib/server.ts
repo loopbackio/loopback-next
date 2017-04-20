@@ -5,7 +5,7 @@
 
 import http = require('http');
 import bluebird = require('bluebird');
-import {Context} from './context';
+import {Context} from '@loopback/ioc';
 import {Application} from '../lib/application';
 import {SwaggerRouter} from './router/SwaggerRouter';
 

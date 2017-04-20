@@ -1,7 +1,7 @@
 {
-  "name": "loopback",
+  "name": "@loopback/ioc",
   "version": "4.0.0-alpha.1",
-  "description": "",
+  "description": "LoopBack's container for Inversion of Control",
   "main": "index",
   "scripts": {
     "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
@@ -12,15 +12,17 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
-    "@loopback/ioc": "^4.0.0-alpha.1",
-    "@loopback/juggler": "^4.0.0-alpha.1",
-    "@loopback/remoting": "^4.0.0-alpha.1",
-    "body": "^5.1.0",
-    "debug": "^2.6.0",
-    "path-to-regexp": "^1.7.0"
   },
   "devDependencies": {
     "@loopback/testlab": "^4.0.0-alpha.1",
     "mocha": "^3.2.0"
-  }
+  },
+  "keywords": [
+    "LoopBack",
+    "IoC",
+    "Inversion",
+    "Control",
+    "Container",
+    "Decorators"
+  ]
 }
