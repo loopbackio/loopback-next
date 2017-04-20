@@ -2,8 +2,11 @@
 // Node module: loopback
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
+
 import {Binding, BoundValue} from './binding';
 import {inject, describeInjectedArguments} from './inject';
+
+export type Constructor<T> = new(...args) => T;
 
 export class Context {
   private registry: Map<string, Binding>;
@@ -21,16 +24,12 @@ export class Context {
         throw new Error(`Cannot rebind key "${key}", associated binding is locked`);
     }
 
-    const binding = new Binding(key);
+    const binding = new Binding(this, key);
     this.registry.set(key, binding);
     return binding;
   }
 
-  bindClass(key: string, ctor: new<T>(...args) => T): Binding {
-    return this.bind(key).toDynamicValue(() => this.createClassInstance(ctor));
-  }
-
-  createClassInstance<T>(ctor: new(...args) => T): T {
+  createClassInstance<T>(ctor: Constructor<T>) : T {
     const args = this._resolveInjectedArguments(ctor);
     return new ctor(...args);
   }
@@ -38,6 +37,8 @@ export class Context {
   private _resolveInjectedArguments(fn: Function): BoundValue[] {
     const args: BoundValue[] = [];
     const injectedArgs = describeInjectedArguments(fn);
+    // TODO(bajtos) Verify that all fn arguments were decorated with @inject
+    // i.e. compare fn.length vs. injectedArgs.length
     for (const bindingKey of injectedArgs) {
       // TODO(bajtos) Handle the case where key is undefined
       args.push(this.get(bindingKey));

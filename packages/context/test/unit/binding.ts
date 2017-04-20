@@ -4,12 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from 'testlab';
-import {Binding} from '../..';
+import {Binding, Context} from '../..';
 
 const key = 'foo';
-const binding = new Binding(key);
 
 describe('Binding', () => {
+  let binding: Binding;
+  beforeEach(givenBinding);
+
   describe('constructor', () => {
     it('sets the given key', () => {
       const result = binding.key;
@@ -27,4 +29,9 @@ describe('Binding', () => {
       expect(binding.isLocked).to.be.true();
     });
   });
+
+  function givenBinding() {
+    const ctx = new Context();
+    binding = new Binding(ctx, key);
+  }
 });

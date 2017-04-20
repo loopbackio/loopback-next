@@ -3,6 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Context, Constructor} from './context';
+
 // tslint:disable-next-line:no-any
 export type BoundValue = any;
 
@@ -12,7 +14,7 @@ export class Binding {
   public getValue: () => BoundValue = () => { throw new Error(`No value was configured for binding ${this._key}.`); };
   private _tagName: string;
 
-  constructor(private readonly _key: string, public isLocked: boolean = false) {}
+  constructor(private readonly _context: Context, private readonly _key: string, public isLocked: boolean = false) {}
   get key() { return this._key; }
   get tagName() { return this._tagName; }
 
@@ -32,6 +34,11 @@ export class Binding {
 
   toDynamicValue(factoryFn: () => BoundValue): this {
     this.getValue = factoryFn;
+    return this;
+  }
+
+  toClass<T>(ctor: Constructor<T>): this {
+    this.getValue = () => this._context.createClassInstance(ctor);
     return this;
   }
 
