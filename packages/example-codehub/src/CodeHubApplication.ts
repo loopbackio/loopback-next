@@ -16,6 +16,8 @@ export class CodeHubApplication extends Application {
 
     app.bind('userId').to(42);
 
+    app.bind('app.info').toDynamicValue(() => this.info());
+
     app.bind('servers.http.enabled').to(true);
     app.bind('servers.http.port').to(3000);
     app.bind('servers.https.enabled').to(true);

@@ -2,7 +2,11 @@
 // Node module: loopback
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-import {Binding} from './binding';
+
+import {Binding, BoundValue} from './binding';
+import {inject, describeInjectedArguments} from './inject';
+
+export type Constructor<T> = new(...args) => T;
 
 export class Context {
   private registry: Map<string, Binding>;
@@ -20,9 +24,35 @@ export class Context {
         throw new Error(`Cannot rebind key "${key}", associated binding is locked`);
     }
 
-    const binding = new Binding(key);
+    const binding = new Binding(this, key);
     this.registry.set(key, binding);
     return binding;
+  }
+
+  createClassInstance<T>(ctor: Constructor<T>) : T {
+    const args = this._resolveInjectedArguments(ctor);
+    return new ctor(...args);
+  }
+
+  private _resolveInjectedArguments(fn: Function): BoundValue[] {
+    const args: BoundValue[] = [];
+    // NOTE: the array may be sparse, i.e.
+    //   Object.keys(injectedArgs).length !== injectedArgs.length
+    // Example value:
+    //   [ , 'key1', , 'key2']
+    const injectedArgs = describeInjectedArguments(fn);
+
+    for (let ix = 0; ix < fn.length; ix++) {
+      const bindingKey = injectedArgs[ix];
+      if (!bindingKey) {
+        throw new Error(
+          `Cannot resolve injected arguments for function ${fn.name}: ` +
+          `The argument ${ix+1} was not decorated for dependency injection.`);
+      }
+
+      args.push(this.get(bindingKey));
+    }
+    return args;
   }
 
   contains(key: string): boolean {
