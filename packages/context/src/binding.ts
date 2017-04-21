@@ -16,7 +16,7 @@ export class Binding {
   // For bindings bound via toClass, this property contains the constructor function
   public valueConstructor: Constructor<BoundValue>;
 
-  constructor(private readonly _context: Context, private readonly _key: string, public isLocked: boolean = false) {}
+  constructor(private readonly _key: string, public isLocked: boolean = false) {}
   get key() { return this._key; }
   get tagName() { return this._tagName; }
 
@@ -32,7 +32,7 @@ export class Binding {
    * to check the type of the returned value to decide how to handle it.
    *
    * ```
-   * const result = binding.getValue();
+   * const result = binding.getValue(ctx);
    * if (isPromise(result)) {
    *   result.then(doSomething)
    * } else {
@@ -40,12 +40,13 @@ export class Binding {
    * }
    * ```
    */
-  getValue(): BoundValue | Promise<BoundValue> {
+  getValue(ctx: Context): BoundValue | Promise<BoundValue> {
     return Promise.reject(new Error(`No value was configured for binding ${this._key}.`));
   }
 
-  lock() {
+  lock(): this {
     this.isLocked = true;
+    return this;
   }
 
   tag(tagName: string): this {
@@ -88,7 +89,8 @@ export class Binding {
    * ```
    */
   toDynamicValue(factoryFn: () => BoundValue | Promise<BoundValue>): this {
-    this.getValue = factoryFn;
+    // TODO(bajtos) allow factoryFn with @inject arguments
+    this.getValue = (ctx) => factoryFn();
     return this;
   }
 
@@ -100,12 +102,13 @@ export class Binding {
    *   we can resolve them from the context.
    */
   toClass<T>(ctor: Constructor<T>): this {
-    this.getValue = () => instantiateClass(ctor, this._context);
+    this.getValue = context => instantiateClass(ctor, context);
     this.valueConstructor = ctor;
     return this;
   }
 
-  unlock() {
+  unlock(): this {
     this.isLocked = false;
+    return this;
   }
 }

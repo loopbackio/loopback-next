@@ -9,6 +9,7 @@ import {Binding, Context} from '../..';
 const key = 'foo';
 
 describe('Binding', () => {
+  let ctx: Context;
   let binding: Binding;
   beforeEach(givenBinding);
 
@@ -33,12 +34,12 @@ describe('Binding', () => {
   describe('to(value)', () => {
     it('returns the value synchronously', () => {
       binding.to('value');
-      expect(binding.getValue()).to.equal('value');
+      expect(binding.getValue(ctx)).to.equal('value');
     });
   });
 
   function givenBinding() {
-    const ctx = new Context();
-    binding = new Binding(ctx, key);
+    ctx = new Context();
+    binding = new Binding(key);
   }
 });

@@ -44,7 +44,7 @@ export class Server extends Context {
     const apps = this.find('applications.*');
     for (const appBinding of apps) {
       debug('Registering app controllers for %j', appBinding.key);
-      const app = await appBinding.getValue() as Application;
+      const app = await Promise.resolve(appBinding.getValue(this)) as Application;
       app.mountControllers(router);
     }
 

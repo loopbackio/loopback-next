@@ -10,7 +10,7 @@ import {isPromise} from './isPromise';
 export class Context {
   private registry: Map<string, Binding>;
 
-  constructor() {
+  constructor(private _parent?: Context) {
     this.registry = new Map();
   }
 
@@ -23,7 +23,7 @@ export class Context {
         throw new Error(`Cannot rebind key "${key}", associated binding is locked`);
     }
 
-    const binding = new Binding(this, key);
+    const binding = new Binding(key);
     this.registry.set(key, binding);
     return binding;
   }
@@ -46,7 +46,8 @@ export class Context {
       bindings = Array.from(this.registry.values());
     }
 
-    return bindings;
+    const parentBindings = this._parent && this._parent.find(pattern);
+    return this._mergeWithParent(bindings, parentBindings);
   }
 
   findByTag(pattern: string): Binding[] {
@@ -58,13 +59,24 @@ export class Context {
       if (isMatch)
         bindings.push(binding);
     });
-    return bindings;
+
+    const parentBindings = this._parent && this._parent.findByTag(pattern);
+    return this._mergeWithParent(bindings, parentBindings);
+  }
+
+  protected _mergeWithParent(childList: Binding[], parentList?: Binding[]) {
+    if (!parentList) return childList;
+    const additions = parentList.filter(parentBinding => {
+      // children bindings take precedence
+      return !childList.some(childBinding => childBinding.key === parentBinding.key);
+    });
+    return childList.concat(additions);
   }
 
   get(key: string): Promise<BoundValue> {
     try {
       const binding = this.getBinding(key);
-      return Promise.resolve(binding.getValue());
+      return Promise.resolve(binding.getValue(this));
     } catch (err) {
       return Promise.reject(err);
     }
@@ -72,7 +84,7 @@ export class Context {
 
   getSync(key: string): BoundValue {
     const binding = this.getBinding(key);
-    const valueOrPromise = binding.getValue();
+    const valueOrPromise = binding.getValue(this);
 
     if (isPromise(valueOrPromise)) {
       throw new Error(
@@ -85,8 +97,14 @@ export class Context {
 
   getBinding(key: string): Binding {
     const binding = this.registry.get(key);
-    if (!binding)
-      throw new Error(`The key ${key} was not bound to any value.`);
-    return binding;
+    if (binding) {
+      return binding;
+    }
+
+    if (this._parent) {
+      return this._parent.getBinding(key);
+    }
+
+    throw new Error(`The key ${key} was not bound to any value.`);
   }
 }

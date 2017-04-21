@@ -3,11 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, Server, api, OpenApiSpec, ParameterObject, OperationObject} from '../../..';
+import {
+  Application, Server, api,
+  OpenApiSpec, ParameterObject, OperationObject,
+  ServerRequest, ServerResponse,
+} from '../../..';
 import {Client} from './../../support/client';
 import {expect} from 'testlab';
 import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
-import {inject, Constructor} from '@loopback/context';
+import {inject, Constructor, Context} from '@loopback/context';
 
 /* # Feature: Routing
  * - In order to build REST APIs
@@ -88,6 +92,73 @@ describe('Routing', () => {
     const result = await whenIMakeRequestTo(app).get('/name');
 
     expect(result).to.have.property('body', 'TestApp');
+  });
+
+  it('creates a new child context for each request', async () => {
+    const app = givenAnApplication();
+    app.bind('flag').to('original');
+
+    // create a special binding returning the current context instance
+    app.bind('context').getValue = ctx => ctx;
+
+    const spec = givenOpenApiSpec()
+      .withOperationReturningString('put', '/flag', 'setFlag')
+      .withOperationReturningString('get', '/flag', 'getFlag')
+      .build();
+
+    @api(spec)
+    class FlagController {
+      constructor(@inject('context') private ctx: Context) {
+      }
+
+      async setFlag(): Promise<string> {
+        this.ctx.bind('flag').to('modified');
+        return 'modified';
+      }
+
+      async getFlag(): Promise<string> {
+        return this.ctx.get('flag');
+      }
+    }
+    givenControllerInApp(app, FlagController);
+
+    // Rebind "flag" to "modified". Since we are modifying
+    // the per-request child context, the change should
+    // be discarded after the request is done.
+    await whenIMakeRequestTo(app).put('/flag');
+    // Get the value "flag" is bound to.
+    // This should return the original value.
+    const result = await whenIMakeRequestTo(app).get('/flag');
+    expect(result).to.have.property('body', 'original');
+  });
+
+  it('binds request and response objects', async () => {
+    const app = givenAnApplication();
+
+    const spec = givenOpenApiSpec()
+      .withOperationReturningString('get', '/status', 'getStatus')
+      .build();
+
+    @api(spec)
+    class StatusController {
+      constructor(
+        @inject('http.request') private request: ServerRequest,
+        @inject('http.response') private response: ServerResponse,
+      ) {
+      }
+
+      async getStatus(): Promise<string> {
+        this.response.statusCode = 202; // 202 Accepted
+        return this.request.method as string;
+      }
+    }
+    givenControllerInApp(app, StatusController);
+
+    const result = await whenIMakeRequestTo(app).get('/status');
+    expect(result).to.containDeep({
+      body: 'GET',
+      status: 202,
+    });
   });
 
   /* ===== HELPERS ===== */
