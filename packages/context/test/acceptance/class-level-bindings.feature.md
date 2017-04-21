@@ -19,7 +19,7 @@
  - And the instance was created with `appName` set to `CodeHub`
 
  ```ts
- const cxt = new Context();
+ const ctx = new Context();
  ctx.bind('application.name').to('CodeHub');
 
  class InfoController {
