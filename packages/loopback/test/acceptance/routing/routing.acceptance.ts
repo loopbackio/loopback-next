@@ -6,7 +6,7 @@
 import {Application, Server, api, OpenApiSpec, ParameterObject, OperationObject} from '../../..';
 import {Client} from './../../support/client';
 import {expect} from 'testlab';
-import {givenOpenApiSpec} from '../../support/OpenApiSpecBuilder';
+import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {inject} from '@loopback/context';
 
 /* # Feature: Routing
