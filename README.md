@@ -13,9 +13,9 @@ LoopBack makes it easy to build modern applications that require complex integra
 
 Make sure you have the following installed:
 
-- [Node.js](https://nodejs.org) >= 7.0.0
-- [TypeScript](https://www.typescriptlang.org/) >= 2.0.0 `npm i -g typescript`
-- [TypeScript Node](https://github.com/TypeStrong/ts-node) >= 3.0.0 `npm i -g ts-node`
+- [Node.js](https://nodejs.org/en/download/) >= 7.0.0
+- [TypeScript](https://www.typescriptlang.org/index.html#download-links) >= 2.0.0 `npm i -g typescript`
+- [TypeScript Node](https://github.com/TypeStrong/ts-node#installation) >= 3.0.0 `npm i -g ts-node`
 
 Then:
 
@@ -30,7 +30,7 @@ npm test
 
 # Example
 
-A basic example of a controller:
+A basic controller:
 
 ```ts
 export class UserController {
@@ -61,7 +61,7 @@ Ritchie Martori|Raymond Feng|Miroslav Bajtos|Rand McKinney|Simon Ho
 :-:|:-:|:-:|:-:|:-:
 [<img src="https://avatars2.githubusercontent.com/u/462228?v=3&s=60">](http://github.com/ritch)|[<img src="https://avatars0.githubusercontent.com/u/540892?v=3&s=60">](http://github.com/raymondfeng)|[<img src="https://avatars2.githubusercontent.com/u/1140553?v=3&s=60">](http://github.com/bajtos)|[<img src="https://avatars2.githubusercontent.com/u/2925364?v=3&s=60">](http://github.com/crandmck)|[<img src="https://avatars1.githubusercontent.com/u/1617364?v=3&s=60">](http://github.com/superkhau)
 
-[See all contributors](https://github.com/strongloop/loopback-next/graphs/contributors)
+See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors)
 
 # Contributing
 
