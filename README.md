@@ -71,7 +71,3 @@ Ritchie Martori|Raymond Feng|Miroslav Bajtos|Rand McKinney|Simon Ho
 # License
 
 MIT
-
----
-
-[loopback.io](http://loopback.io/)
