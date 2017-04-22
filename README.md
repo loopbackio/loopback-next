@@ -22,7 +22,7 @@ Then:
 ```shell
 git clone https://github.com/strongloop/loopback-next.git
 cd loopback-next
-npm i
+npm install
 npm run bootstrap
 npm test
 # proceed to creating index.ts
