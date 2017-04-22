@@ -45,7 +45,7 @@ export class UserController {
 }
 ```
 
-[See loopback-next-example for more](https://github.com/strongloop/loopback-next-example)
+See [loopback-next-example](https://github.com/strongloop/loopback-next-example) for more.
 
 # Documentation
 
@@ -59,7 +59,7 @@ export class UserController {
 
 Ritchie Martori|Raymond Feng|Miroslav Bajtos|Rand McKinney|Simon Ho
 :-:|:-:|:-:|:-:|:-:
-[<img src="https://avatars2.githubusercontent.com/u/462228?v=3&s=60">](http://github.com/ritch)|[<img src="https://avatars0.githubusercontent.com/u/540892?v=3&s=60">](http://github.com/raymondfeng)|[<img src="https://avatars2.githubusercontent.com/u/1140553?v=3&s=60">](http://github.com/bajtos)|[<img src="https://avatars2.githubusercontent.com/u/2925364?v=3&s=60">](<a href="">)|[<img src="https://avatars1.githubusercontent.com/u/1617364?v=3&s=60">](http://github.com/superkhau)
+[<img src="https://avatars2.githubusercontent.com/u/462228?v=3&s=60">](http://github.com/ritch)|[<img src="https://avatars0.githubusercontent.com/u/540892?v=3&s=60">](http://github.com/raymondfeng)|[<img src="https://avatars2.githubusercontent.com/u/1140553?v=3&s=60">](http://github.com/bajtos)|[<img src="https://avatars2.githubusercontent.com/u/2925364?v=3&s=60">](http://github.com/crandmck)|[<img src="https://avatars1.githubusercontent.com/u/1617364?v=3&s=60">](http://github.com/superkhau)
 
 [See all contributors](https://github.com/strongloop/loopback-next/graphs/contributors)
 
