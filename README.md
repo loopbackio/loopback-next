@@ -49,16 +49,17 @@ export class UserController {
 
 # Documentation
 
-- [FAQ](https://github.com/strongloop/loopback-next/wiki/FAQ)
-- [Official documentation](https://github.com/strongloop/loopback-next/wiki/Official-documentation)
 - [API documentation](https://github.com/strongloop/loopback-next/wiki/API-documentation)
+- [FAQ](https://github.com/strongloop/loopback-next/wiki/FAQ)
+- [LoopBack 3 vs LoopBack 4](https://github.com/strongloop/loopback-next/wiki/LoopBack-3-vs-LoopBack-4)
+- [Official documentation](https://github.com/strongloop/loopback-next/wiki/Official-documentation)
 - [Tutorials and examples](https://github.com/strongloop/loopback-next/wiki/Tutorials-and-examples)
 
 # Team
 
 Ritchie Martori|Raymond Feng|Miroslav Bajtos|Rand McKinney|Simon Ho
 :-:|:-:|:-:|:-:|:-:
-<a href="http://github.com/ritch"><img src="https://avatars2.githubusercontent.com/u/462228?v=3&s=60">|<a href="http://github.com/raymondfeng"><img src="https://avatars0.githubusercontent.com/u/540892?v=3&s=60"></a>|<a href="http://github.com/bajtos"><img src="https://avatars2.githubusercontent.com/u/1140553?v=3&s=60"></a>|<a href="http://github.com/crandmck"><img src="https://avatars2.githubusercontent.com/u/2925364?v=3&s=60">|<a href="http://github.com/superkhau"><img src="https://avatars1.githubusercontent.com/u/1617364?v=3&s=60"></a>
+[<img src="https://avatars2.githubusercontent.com/u/462228?v=3&s=60">](http://github.com/ritch)|[<img src="https://avatars0.githubusercontent.com/u/540892?v=3&s=60">](http://github.com/raymondfeng)|[<img src="https://avatars2.githubusercontent.com/u/1140553?v=3&s=60">](http://github.com/bajtos)|[<img src="https://avatars2.githubusercontent.com/u/2925364?v=3&s=60">](<a href="">)|[<img src="https://avatars1.githubusercontent.com/u/1617364?v=3&s=60">](http://github.com/superkhau)
 
 [See all contributors](https://github.com/strongloop/loopback-next/graphs/contributors)
 
@@ -69,4 +70,8 @@ Ritchie Martori|Raymond Feng|Miroslav Bajtos|Rand McKinney|Simon Ho
 
 # License
 
-[MIT](https://github.com/strongloop/loopback-next/blob/master/LICENSE)
+MIT
+
+---
+
+[loopback.io](http://loopback.io/)
