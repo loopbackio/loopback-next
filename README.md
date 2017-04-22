@@ -65,7 +65,7 @@ Ritchie Martori|Raymond Feng|Miroslav Bajtos|Rand McKinney|Simon Ho
 
 # Contributing
 
-- [Guidelines](http://loopback.io/contributing/)
+- [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contributing#guidelines)
 - [Join the team](https://github.com/strongloop/loopback-next/issues/110)
 
 # License
