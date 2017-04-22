@@ -34,7 +34,7 @@ A basic controller:
 
 ```ts
 export class UserController {
-  public async getUserByName(username: string): Promise<UserResponse> {
+  async getUserByName(username: string): Promise<UserResponse> {
     const users = new UserRepository();
     const user = await users.findOne({where: {username: username}});
     if (!user) {
