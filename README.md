@@ -52,7 +52,7 @@ See [loopback-next-example](https://github.com/strongloop/loopback-next-example)
 - [API documentation](https://github.com/strongloop/loopback-next/wiki/API-documentation)
 - [FAQ](https://github.com/strongloop/loopback-next/wiki/FAQ)
 - [LoopBack 3 vs LoopBack 4](https://github.com/strongloop/loopback-next/wiki/LoopBack-3-vs-LoopBack-4)
-- [Official documentation](https://github.com/strongloop/loopback-next/wiki/Official-documentation)
+- [Official documentation](https://github.com/strongloop/loopback-next/wiki)
 - [Tutorials and examples](https://github.com/strongloop/loopback-next/wiki/Tutorials-and-examples)
 
 # Team
