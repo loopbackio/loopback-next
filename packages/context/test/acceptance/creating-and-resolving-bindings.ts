@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from 'testlab';
-import {Context} from '../..';
+import {Context, isPromise} from '../..';
 
 describe('Context bindings - Creating and resolving bindings', () => {
   let ctx: Context;
@@ -19,16 +19,19 @@ describe('Context bindings - Creating and resolving bindings', () => {
           expect(ctx.contains('foo')).to.be.true();
         });
 
+        it('returns the bound value `bar`', async () => {
+          const result = await ctx.get('foo');
+          expect(result).to.equal('bar');
+        });
+
+        it('supports sync retrieval of the bound value', () => {
+          const result = ctx.getSync('foo');
+          expect(result).to.equal('bar');
+        });
+
         function createBinding() {
           ctx.bind('foo').to('bar');
         }
-      });
-
-      context('is resolved', () => {
-        it('returns the bound value `bar`', () => {
-          const result = ctx.get('foo');
-          expect(result).to.equal('bar');
-        });
       });
     });
   });
@@ -38,33 +41,39 @@ describe('Context bindings - Creating and resolving bindings', () => {
       before(createDynamicBinding);
 
       context('resolving the binding for the first time', () => {
-        it('returns the first value', () => {
-          const result = ctx.get('data');
+        it('returns the first value', async () => {
+          const result = await ctx.get('data');
           expect(result).to.equal('a');
         });
       });
 
       context('resolving the binding for the second time', () => {
-        it('returns the second value', () => {
-          const result = ctx.get('data');
+        it('returns the second value', async () => {
+          const result = await ctx.get('data');
           expect(result).to.equal('b');
         });
       });
 
       context('resolving the binding for the third time', () => {
-        it('returns the third value', () => {
-          const result = ctx.get('data');
+        it('returns the third value', async () => {
+          const result = await ctx.get('data');
           expect(result).to.equal('c');
         });
       });
+
+      function createDynamicBinding() {
+        const data = ['a', 'b', 'c'];
+        ctx.bind('data').toDynamicValue(function() {
+          return data.shift();
+        });
+      }
     });
 
-    function createDynamicBinding() {
-      const data = ['a', 'b', 'c'];
-      ctx.bind('data').toDynamicValue(function() {
-        return data.shift();
-      });
-    }
+    it('can resolve synchronously when the factory function is sync', () => {
+      ctx.bind('data').toDynamicValue(() => 'value');
+      const result = ctx.getSync('data');
+      expect(result).to.equal('value');
+    });
   });
 
   function createContext() {

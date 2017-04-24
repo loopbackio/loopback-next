@@ -35,8 +35,8 @@ describe(`Context bindings - Unlocking bindings`, () => {
           expect(operation).to.not.throw();
         });
 
-        it('binds the duplicate key to the new value', () => {
-          const result = ctx.get('foo');
+        it('binds the duplicate key to the new value', async () => {
+          const result = await ctx.get('foo');
           expect(result).to.equal('baz');
         });
       });

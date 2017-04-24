@@ -26,8 +26,8 @@ child.get('foo'); // => 'bar'
 let ctx = new Context();
 ctx.bind(':name').to('hello world')
 
-ctx.get('foo'); // => hello world
-ctx.get('bat'); // => hello world
+await ctx.get('foo'); // => hello world
+await ctx.get('bat'); // => hello world
 ```
 
 ## Scenario: Simple Dynamic Paramaterized Binding
@@ -47,8 +47,8 @@ ctx.bind(':name').to((name) => {
   return data[name];
 });
 
-ctx.get('foo'); // => bar
-ctx.get('bat'); // => baz
+await ctx.get('foo'); // => bar
+await ctx.get('bat'); // => baz
 ```
 
 ## Scenario: Namespaced Paramaterized Binding
@@ -61,6 +61,6 @@ ctx.get('bat'); // => baz
 let ctx = new Context();
 ctx.bind('foo.:name').to('hello world');
 
-ctx.get('foo.bar'); // => hello world
-ctx.get('foo.bat'); // => hello world
+await ctx.get('foo.bar'); // => hello world
+await ctx.get('foo.bat'); // => hello world
 ```

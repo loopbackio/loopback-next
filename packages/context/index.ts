@@ -4,5 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export {Binding, BoundValue} from './src/binding';
-export {Context, Constructor} from './src/context';
+export {Context} from './src/context';
+export {Constructor} from './src/resolver';
 export {inject} from './src/inject';
+export const isPromise = require('is-promise');

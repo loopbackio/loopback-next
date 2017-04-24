@@ -22,7 +22,7 @@ ctx.bind('foo').to('bar');
 ctx.contains('foo'); // true
 
 // ensure bound to value `bar` is returned
-const val = ctx.get('foo'); // val => bar
+const val = await ctx.get('foo'); // val => bar
 ```
 
 ## Scenario: Dynamic Bindings
@@ -44,7 +44,7 @@ ctx.bind('data').toDynamicValue(() => {
   return data.shift();
 });
 
-ctx.get('data'); // => a
-ctx.get('data'); // => b
-ctx.get('data'); // => c
+await ctx.get('data'); // => a
+await ctx.get('data'); // => b
+await ctx.get('data'); // => c
 ```

@@ -28,6 +28,6 @@
  }
  ctx.bind('controllers.info').toClass(InfoController);
 
- const instance = ctx.get('controllers.info');
+ const instance = await ctx.get('controllers.info');
  instance.appName; // => CodeHub
  ```

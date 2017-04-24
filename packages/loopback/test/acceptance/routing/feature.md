@@ -102,7 +102,7 @@ app.bind('currentMethod').toDynamicValue(() => {
 });
 
 
-server.on('request', async (req, res) {
+server.on('request', async (req, res) => {
   let ctx = new Context();
   ctx.bind('url').to(req.url);
   ctx.bind('req.body').toPromise((reject, resolve) => {
@@ -110,15 +110,15 @@ server.on('request', async (req, res) {
   });
   ctx.bind('req').to(req);
 
-  let controller = ctx.get('currentController');
+  let controller = await ctx.get('currentController');
 
   // allow apps to create / customize bindings
   controller.bind();
 
   ctx.bind('result')
-    .toPromise((reject, resolve, ctx) => {
-      let method = ctx.get('currentMethod');
-      let methodArgs = ctx.get('currentArgs');
+    .toPromise(async (reject, resolve, ctx) => {
+      let method = await ctx.get('currentMethod');
+      let methodArgs = await ctx.get('currentArgs');
       return method.invoke(args);
     })
     .memoize()
