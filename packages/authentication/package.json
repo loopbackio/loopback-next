@@ -11,11 +11,10 @@
   },
   "author": "IBM",
   "license": "MIT",
-  "dependencies": {
-  },
   "devDependencies": {
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.1",
     "@loopback/testlab": "^4.0.0-alpha.1",
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "passport-http": "^0.3.0"
   }
 }
