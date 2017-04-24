@@ -11,7 +11,7 @@ import * as bluebird from 'bluebird';
 import {expect} from 'testlab';
 import {listen} from '../../support/util';
 import {OpenApiSpec, ParameterObject} from '@loopback/openapi-spec';
-import {givenOpenApiSpec} from '../../support/OpenApiSpecBuilder';
+import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
 
 describe('SwaggerRouter', () => {
   beforeEach(givenRouter);
