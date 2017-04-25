@@ -45,6 +45,7 @@
     "comment-format": [true, "check-space"],
     "file-header": [true, "Copyright IBM"],
     "no-consecutive-blank-lines": [true, 2],
+    "no-unnecessary-callback-wrapper": true,
     "one-variable-per-declaration": [true, "ignore-for-loop"],
     "prefer-method-signature": true,
     "quotemark": [true, "single", "avoid-escape"],
