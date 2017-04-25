@@ -12,7 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "http-errors": "^1.6.1",
-    "loopback": "^4.0.0-alpha.1"
+    "@loopback/loopback": "^4.0.0-alpha.1"
   },
   "devDependencies": {
     "@loopback/testlab": "^4.0.0-alpha.1",
