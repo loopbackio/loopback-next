@@ -388,9 +388,10 @@ context('with an operation echoing a string parameter from query', () => {
     router = new SwaggerRouter();
   }
 
- function givenControllerClass(ctor: new (...args) => Object, spec: OpenApiSpec) {
-   router.controller((req, res) => new ctor(), spec);
- }
+  // tslint:disable-next-line:no-any
+  function givenControllerClass(ctor: new (...args: any[]) => Object, spec: OpenApiSpec) {
+    router.controller((req, res) => new ctor(), spec);
+  }
 
   async function requestEndpoint(verb: string, path: string): Promise<FullRequestResponse> {
     return requestEndpointWithOptions({
@@ -411,7 +412,7 @@ context('with an operation echoing a string parameter from query', () => {
     return request(options);
   }
 
-  function logErrorsExcept(ignoreStatusCode) {
+  function logErrorsExcept(ignoreStatusCode: number) {
     const oldLogger = router.logError;
     router.logError = function logErrorConditionally(req: http.ServerRequest, statusCode: number, err: Error | string) {
       if (statusCode === ignoreStatusCode) return;

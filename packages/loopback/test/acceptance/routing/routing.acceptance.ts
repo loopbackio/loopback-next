@@ -7,7 +7,7 @@ import {Application, Server, api, OpenApiSpec, ParameterObject, OperationObject}
 import {Client} from './../../support/client';
 import {expect} from 'testlab';
 import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
-import {inject} from '@loopback/context';
+import {inject, Constructor} from '@loopback/context';
 
 /* # Feature: Routing
  * - In order to build REST APIs
@@ -96,7 +96,7 @@ describe('Routing', () => {
     return new Application();
   }
 
-  function givenControllerInApp(app: Application, controller: new(...args) => Object) {
+  function givenControllerInApp<T>(app: Application, controller: Constructor<T>) {
     app.controller(controller);
   }
 

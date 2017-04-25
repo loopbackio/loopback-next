@@ -4,10 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from 'testlab';
-import {Context} from '../..';
+import {Context, BoundValue} from '../..';
 
 describe('Context bindings - Finding bindings', () => {
-  let ctx;
+  let ctx: Context;
 
   describe('Finding all binding', () => {
     before('given a context', createContext);
@@ -68,7 +68,7 @@ describe('Context bindings - Finding bindings', () => {
   function createContext() {
     ctx = new Context();
   }
-  function createBinding(key, value) {
+  function createBinding(key: string, value: BoundValue) {
     ctx.bind(key).to(value);
   }
 });

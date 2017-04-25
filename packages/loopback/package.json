@@ -14,11 +14,14 @@
   "dependencies": {
     "@loopback/context": "^4.0.0-alpha.1",
     "@loopback/juggler": "^4.0.0-alpha.1",
-    "@loopback/remoting": "^4.0.0-alpha.1",
     "@loopback/openapi-spec": "^4.0.0-alpha.1",
+    "@loopback/remoting": "^4.0.0-alpha.1",
+    "@types/bluebird": "^3.5.2",
+    "bluebird": "^3.5.0",
     "body": "^5.1.0",
     "debug": "^2.6.0",
-    "path-to-regexp": "^1.7.0"
+    "path-to-regexp": "^1.7.0",
+    "reflect-metadata": "^0.1.10"
   },
   "devDependencies": {
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.1",

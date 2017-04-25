@@ -12,6 +12,7 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
+    "reflect-metadata": "^0.1.10"
   },
   "devDependencies": {
     "@loopback/testlab": "^4.0.0-alpha.1",

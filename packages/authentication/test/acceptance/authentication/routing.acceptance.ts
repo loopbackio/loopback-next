@@ -64,7 +64,8 @@ describe('Routing', () => {
     return new Application();
   }
 
-  function givenControllerInApp(app: Application, controller: new(...args) => Object) {
+  // tslint:disable-next-line:no-any
+  function givenControllerInApp(app: Application, controller: new(...args: any[]) => Object) {
     app.controller(controller);
   }
 

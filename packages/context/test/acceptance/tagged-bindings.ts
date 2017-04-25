@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from 'testlab';
-import {Context} from '../..';
+import {Context, Binding} from '../..';
 
 describe('Context bindings - Tagged bindings', () => {
-  let ctx;
-  let binding;
+  let ctx: Context;
+  let binding: Binding;
   before('given a context', createContext);
   before(createBinding);
 

@@ -6,7 +6,8 @@
 import {Binding, BoundValue} from './binding';
 import {inject, describeInjectedArguments} from './inject';
 
-export type Constructor<T> = new(...args) => T;
+// tslint:disable-next-line:no-any
+export type Constructor<T> = new(...args: any[]) => T;
 
 export class Context {
   private registry: Map<string, Binding>;
@@ -59,7 +60,7 @@ export class Context {
     return this.registry.has(key);
   }
 
-  find(pattern: string): Binding[] {
+  find(pattern?: string): Binding[] {
     let bindings: Binding[] = [];
     if (pattern) {
       // TODO(@superkhau): swap with production grade glob to regex lib

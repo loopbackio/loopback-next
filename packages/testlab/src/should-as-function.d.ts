@@ -168,8 +168,17 @@ interface ShouldInternal {
   not: ShouldInternal;
 }
 
+interface Assertion {
+  add(name: string, func: Function): void;
+  addChain(name: string, onCall?: Function): void;
+  alias(from: string, to: string): void;
+}
+
 interface Internal extends ShouldInternal {
   (obj: any): ShouldAssertion;
+
+  // Simple utility function for a bit more easier should assertion extension
+  use(fn: (should: Internal, Assertion: Assertion) => void): Internal;
 
   // node.js's assert functions
   fail(actual: any, expected: any, message: string, operator: string): void;

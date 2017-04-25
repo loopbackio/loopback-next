@@ -4,12 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from 'testlab';
-import {Context} from '../..';
+import {Context, Binding} from '../..';
 
 describe('Context bindings - Locking bindings', () => {
   describe('Binding with a duplicate key', () => {
-    let ctx;
-    let binding;
+    let ctx: Context;
+    let binding: Binding;
     before('given a context', createContext);
     before('and a bound key `foo`', createBinding);
 

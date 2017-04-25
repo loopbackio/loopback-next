@@ -38,7 +38,7 @@ export class Client {
   // A workaround to fix incorrect type information for
   // the return value of request()
   // TODO(bajtos) contribute this fix back to definitely-typed
-  private async _request(options): Promise<FullRequestResponse> {
+  private async _request(options: request.OptionsWithUri): Promise<FullRequestResponse> {
     return request(options);
   }
 }

@@ -8,7 +8,7 @@
 
 // https://www.npmjs.com/package/@types/http-errors
 // https://github.com/jshttp/http-errors
-import * as createHttpError from 'http-errors';
+import * as HttpError from 'http-errors';
 
 // Load OpenAPI specification for this controller
 import {def} from './UserController.api';
@@ -39,7 +39,7 @@ export class UserController {
   public async getAuthenticatedUser(@inject('userId') userId : number) : Promise<UserResponse> {
     if (userId !== 42) {
       // using "return Promise.reject(err)" would be probably faster (a possible micro-optimization)
-      throw createHttpError.NotFound('Current user not found (?!).');
+      throw new HttpError.NotFound('Current user not found (?!).');
     }
 
     return new UserResponse({
