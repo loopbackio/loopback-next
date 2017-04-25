@@ -5,6 +5,9 @@
     "url": "https://github.com/strongloop/loopback-next.git"
   },
   "version": "4.0.0-alpha.1",
+  "engines": {
+    "node": ">=6"
+  },
   "license": "MIT",
   "devDependencies": {
     "@types/mocha": "^2.2.38",
