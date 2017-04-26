@@ -1,8 +1,8 @@
-const should = require('should');
-const testlab = require('..');
+const assert = require('assert');
 
 describe('testlab smoke test', () => {
   it('exports expect interface', () => {
-    testlab.expect.should.be.type('function');
+    const testlab = require('..');
+    assert.equal(typeof testlab.expect, 'function');
   });
 });

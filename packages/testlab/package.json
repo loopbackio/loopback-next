@@ -4,7 +4,8 @@
   "description": "A collection of test utilities we use to write LoopBack tests.",
   "main": "index",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run build:es2015",
+    "build:es2015": "tsc --target es2015 --outDir lib-es2015",
     "clean": "rm *.tgz; rm -rf ./package",
     "prepublish": "npm run build",
     "test": "mocha",
@@ -28,7 +29,11 @@
     "index.js",
     "index.d.ts",
     "lib",
-    "lib.es2015",
+    "lib-es2015",
     "should-as-function.d.ts"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
 }
