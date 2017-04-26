@@ -11,7 +11,8 @@
     "moduleResolution": "node",
     "outDir": "./lib",
     "strictNullChecks": true,
-    "target": "es5"
+    "target": "es5",
+    "declaration": true
   },
   "include": [
     "src"

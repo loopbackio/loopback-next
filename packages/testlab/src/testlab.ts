@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-/// <reference path="./should-as-function.d.ts" />
+/// <reference path="../should-as-function.d.ts" />
 
 const shouldAsFunction: Internal = require('should/as-function');
 import sinon = require('sinon');
