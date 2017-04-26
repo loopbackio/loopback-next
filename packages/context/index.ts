@@ -3,6 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export {Binding} from './src/binding';
+export {Binding, BoundValue} from './src/binding';
 export {Context, Constructor} from './src/context';
 export {inject} from './src/inject';

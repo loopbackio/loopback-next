@@ -7,7 +7,7 @@ import {expect} from 'testlab';
 import {Context} from '../..';
 
 describe('Context bindings - Creating and resolving bindings', () => {
-  let ctx;
+  let ctx: Context;
   before('given a context', createContext);
 
   describe('Simple bindings', () => {

@@ -6,16 +6,19 @@
 import {ServerRequest as Request, ServerResponse as Response} from 'http';
 import {OpenApiSpec, OperationObject, ParameterObject} from '@loopback/openapi-spec';
 import * as assert from 'assert';
-import * as jsonBody from 'body/json';
 import * as url from 'url';
 import * as pathToRegexp from 'path-to-regexp';
 import * as Promise from 'bluebird';
 const debug = require('debug')('loopback:SwaggerRouter');
 
+type jsonBodyFn = (req: Request, cb: (err?: Error, body?: {}) => void) => void;
+const jsonBody: jsonBodyFn = require('body/json');
+
 // tslint:disable:no-any
 type MaybeBody = any | undefined;
 type OperationArgs = any[];
 type PathParameterValues = {[key: string]: any};
+type OperationRetval = any;
 // tslint:enable:no-any
 
 const parseJsonBody: (req: Request) => Promise<MaybeBody> = Promise.promisify(jsonBody);
@@ -78,9 +81,10 @@ export class SwaggerRouter {
 
     for (const path in spec.paths) {
       for (const verb in spec.paths[path]) {
-        const opSpec = spec.paths[path][verb];
+        const opSpec: OperationObject = spec.paths[path][verb];
+        // TODO(bajtos) handle the case where opSpec.parameters contains $ref
         debug('  %s %s -> %s(%s)', verb, path, opSpec['x-operation-name'],
-          (opSpec.parameters || []).map(p => p.name).join(', '));
+          (opSpec.parameters as ParameterObject[] || []).map(p => p.name).join(', '));
         this._endpoints.push(new Endpoint(path, verb, opSpec, factory));
       }
     }
@@ -198,8 +202,8 @@ class Endpoint {
     debug('invoke %s with arguments', operationName, args);
 
     // TODO(bajtos) support sync operations that return the value directly (no Promise)
-    controller[operationName].apply(controller, args).then(
-      function onSuccess(result) {
+    (controller as {[opName: string]: Function})[operationName](...args).then(
+      function onSuccess(result: OperationRetval) {
         debug('%s() result -', operationName, result);
         // TODO(bajtos) handle non-string results via JSON.stringify
         if (result) {
@@ -213,7 +217,7 @@ class Endpoint {
         response.end();
         // Do not call next(), the request was handled.
       },
-      function onError(err) {
+      function onError(err: Error) {
         debug('%s() failed - ', operationName, err.stack || err);
         next(err);
       });

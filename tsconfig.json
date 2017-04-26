@@ -9,6 +9,7 @@
     "lib": ["es2017", "dom"],
     "module": "commonjs",
     "moduleResolution": "node",
+    "noImplicitAny": true,
     "strictNullChecks": true,
     "target": "es6"
   },

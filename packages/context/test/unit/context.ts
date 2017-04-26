@@ -7,11 +7,11 @@ import {expect} from 'testlab';
 import {Context, Binding} from '../..';
 
 describe('Context', () => {
-  let ctx;
+  let ctx: Context;
   before('given a context', createContext);
 
   describe('bind', () => {
-    let binding;
+    let binding: Binding;
     before('create a binding', createBinding);
 
     it('adds a binding into the registry', () => {
