@@ -1,8 +1,6 @@
-[![Build Status](https://img.shields.io/travis/rust-lang/rust.svg)](https://travis-ci.org/strongloop/loopback-next)
+[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/strongloop/loopback) [![Build Status](https://img.shields.io/travis/rust-lang/rust.svg)](https://travis-ci.org/strongloop/loopback-next)
 
 # loopback-next
-
-[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/strongloop/loopback)
 
 LoopBack makes it easy to build modern applications that require complex integrations.
 
