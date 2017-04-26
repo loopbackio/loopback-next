@@ -21,7 +21,7 @@ export type Constructor<T> = new(...args: any[]) => T;
  * @param ctor The class constructor to call.
  * @param ctx The context containing values for `@inject` resolution
  */
-export function createClassInstance<T>(ctor: Constructor<T>, ctx: Context): T | Promise<T> {
+export function instantiateClass<T>(ctor: Constructor<T>, ctx: Context): T | Promise<T> {
   const argsOrPromise = resolveInjectedArguments(ctor, ctx);
   if (isPromise(argsOrPromise)) {
     return argsOrPromise.then(args => new ctor(...args));

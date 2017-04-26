@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from './context';
-import {Constructor, createClassInstance} from './resolver';
+import {Constructor, instantiateClass} from './resolver';
 
 // tslint:disable-next-line:no-any
 export type BoundValue = any;
@@ -100,7 +100,7 @@ export class Binding {
    *   we can resolve them from the context.
    */
   toClass<T>(ctor: Constructor<T>): this {
-    this.getValue = () => createClassInstance(ctor, this._context);
+    this.getValue = () => instantiateClass(ctor, this._context);
     this.valueConstructor = ctor;
     return this;
   }
