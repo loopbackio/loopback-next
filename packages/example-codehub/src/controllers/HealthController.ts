@@ -17,6 +17,6 @@ export class HealthController {
   }
 }
 
-interface HealthResponse {
+export interface HealthResponse {
   uptime : number;
 }

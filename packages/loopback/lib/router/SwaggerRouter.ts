@@ -23,8 +23,8 @@ type OperationRetval = any;
 
 const parseJsonBody: (req: Request) => Promise<MaybeBody> = Promise.promisify(jsonBody);
 
-type HandlerCallback = (err?: Error | string) => void;
-type RequestHandler = (req: Request, res: Response, cb?: HandlerCallback) => void;
+export type HandlerCallback = (err?: Error | string) => void;
+export type RequestHandler = (req: Request, res: Response, cb?: HandlerCallback) => void;
 
 
 export type ControllerFactory = (request: Request, response: Response) => Object;
