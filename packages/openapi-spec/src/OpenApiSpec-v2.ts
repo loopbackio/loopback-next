@@ -10,7 +10,7 @@
 // NOTE(bajtos) Custom extensions can use arbitrary type as the value,
 // e.g. a string, an object or an array
 // tslint:disable-next-line:no-any
-type ExtensionValue = any;
+export type ExtensionValue = any;
 
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#swagger-object
 export interface OpenApiSpec {
@@ -69,7 +69,7 @@ export interface ParameterObject {
 }
 
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#parameterIn
-type ParameterLocation = 'query'| 'header'| 'path'| 'formData' | 'body';
+export type ParameterLocation = 'query'| 'header'| 'path'| 'formData' | 'body';
 
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#referenceObject
 export interface ReferenceObject {
