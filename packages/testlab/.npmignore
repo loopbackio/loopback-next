@@ -1,6 +1,0 @@
-*.log
-*.tgz
-package
-src
-test
-tsconfig.json
