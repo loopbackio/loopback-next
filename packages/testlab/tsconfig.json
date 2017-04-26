@@ -1,18 +1,7 @@
 {
+  "extends": "../../tsconfig.common.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "*": ["*"]
-    },
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "lib": ["es6", "dom"],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "outDir": "./lib",
-    "strictNullChecks": true,
-    "target": "es5",
-    "declaration": true
+    "outDir": "./lib"
   },
   "include": [
     "src"
