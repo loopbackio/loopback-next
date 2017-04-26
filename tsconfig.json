@@ -6,11 +6,11 @@
     },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["es6", "dom"],
+    "lib": ["es2017", "dom"],
     "module": "commonjs",
     "moduleResolution": "node",
     "strictNullChecks": true,
-    "target": "es5"
+    "target": "es6"
   },
   "include": [
     "packages/**/*"
