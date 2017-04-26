@@ -20,8 +20,6 @@
     "no-shadowed-variable": true,
     "no-string-throw": true,
     "no-unused-expression": true,
-    "no-unused-new": true,
-    "no-use-before-declare": true,
     "no-var-keyword": true,
     "triple-equals": [
       true,
@@ -47,6 +45,7 @@
     "comment-format": [true, "check-space"],
     "file-header": [true, "Copyright IBM"],
     "no-consecutive-blank-lines": [true, 2],
+    "no-unnecessary-callback-wrapper": true,
     "one-variable-per-declaration": [true, "ignore-for-loop"],
     "prefer-method-signature": true,
     "quotemark": [true, "single", "avoid-escape"],

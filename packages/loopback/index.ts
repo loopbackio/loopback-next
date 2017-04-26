@@ -10,15 +10,15 @@ export {
 } from './lib/server';
 
 export {
-  Application
+  Application,
 } from './lib/application';
 
 export {
   api,
-} from './lib/router/metadata'
+} from './lib/router/metadata';
 
 export * from '@loopback/openapi-spec';
 
 export {
-  inject
+  inject,
 } from '@loopback/context';
