@@ -27,14 +27,15 @@ export class CodeHubApplication extends Application {
 
   async start() {
     this._startTime = new Date();
-    const server = new Server({port: this.get('servers.http.port')});
+    const httpPort = await this.get('servers.http.port');
+    const server = new Server({port: httpPort});
     this.bind('servers.http.server').to(server);
     server.bind('applications.code-hub').to(this);
     return server.start();
   }
 
-  info() {
-    const server = this.get('servers.http.server') as Server;
+  async info() {
+    const server = await this.get('servers.http.server') as Server;
     const port = server.config.port;
 
     return {

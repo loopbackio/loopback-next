@@ -6,8 +6,8 @@
 import {supertest} from 'testlab';
 import {CodeHubApplication} from 'example-codehub/src/CodeHubApplication';
 
-export function createClientForApp(app: CodeHubApplication) {
-  const url = app.info().url;
+export async function createClientForApp(app: CodeHubApplication) {
+  const url = (await app.info()).url;
   return supertest(url);
 }
 
@@ -20,6 +20,6 @@ export function createApp() {
 export async function createAppAndClient() {
   const app = createApp();
   await app.start();
-  const client = createClientForApp(app);
+  const client = await createClientForApp(app);
   return {app, client};
 }

@@ -183,19 +183,20 @@ class Endpoint {
       pathParams[key.name] = match[matchIndex];
     }
 
-    const controller = this._controllerFactory(request, response);
     const operationName = this._spec['x-operation-name'];
-
-    loadRequestBodyIfNeeded(this._spec, request)
-      .then(body => buildOperationArguments(this._spec, request, pathParams, body))
-      .then(
-        args => {
-          this._invoke(controller, operationName, args, response, next);
-        },
-        err => {
-          debug('Cannot parse arguments of operation %s: %s', operationName, err.stack || err);
-          next(err);
-        });
+    Promise.resolve(this._controllerFactory(request, response))
+      .then(controller => {
+        loadRequestBodyIfNeeded(this._spec, request)
+          .then(body => buildOperationArguments(this._spec, request, pathParams, body))
+          .then(
+            args => {
+              this._invoke(controller, operationName, args, response, next);
+            },
+            err => {
+              debug('Cannot parse arguments of operation %s: %s', operationName, err.stack || err);
+              next(err);
+            });
+      });
   }
 
   private _invoke(controller: Object, operationName: string, args: OperationArgs, response: Response, next: HandlerCallback) {

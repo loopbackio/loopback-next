@@ -58,10 +58,10 @@ const USERS = {
 };
 
 // my get user function
-app.bind('authentication.user').to(() => {
+app.bind('authentication.user').to(async () => {
   const ctx = this;
-  const username = ctx.get('authentication.credentials.username');
-  const password = ctx.get('authentication.credentials.password');
+  const username = await ctx.get('authentication.credentials.username');
+  const password = await ctx.get('authentication.credentials.password');
   const user = USERS[username];
   if (!user) return null;
   if (!verifyPassword(user.password, password)) return null;

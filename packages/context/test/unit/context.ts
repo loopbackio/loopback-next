@@ -41,6 +41,31 @@ describe('Context', () => {
     });
   });
 
+  describe('getBinding', () => {
+    it('returns the binding object registered under the given key', () => {
+      const expected = ctx.bind('foo');
+      const actual = ctx.getBinding('foo');
+      expect(actual).to.equal(expected);
+    });
+
+    it('reports an error when binding was not found', () => {
+      expect(() => ctx.getBinding('unknown-key')).to.throw(/unknown-key/);
+    });
+  });
+
+  describe('getSync', () => {
+    it('returns the value immediately when the binding is sync', () => {
+      ctx.bind('foo').to('bar');
+      const result = ctx.getSync('foo');
+      expect(result).to.equal('bar');
+    });
+
+    it('throws a helpful error when the binding is async', () => {
+      ctx.bind('foo').toDynamicValue(() => Promise.resolve('bar'));
+      expect(() => ctx.getSync('foo')).to.throw(/foo.*async/);
+   });
+  });
+
   function createContext() {
     ctx = new Context();
   }

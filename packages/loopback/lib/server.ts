@@ -40,11 +40,13 @@ export class Server extends Context {
     // after the app started. The idea is to rebuild the SwaggerRouter
     // instance whenever a controller was added/deleted.
     const router = new SwaggerRouter();
-    this.find('applications.*').forEach(appBinding => {
+
+    const apps = this.find('applications.*');
+    for (const appBinding of apps) {
       debug('Registering app controllers for %j', appBinding.key);
-      const app = appBinding.getValue() as Application;
+      const app = await appBinding.getValue() as Application;
       app.mountControllers(router);
-    });
+    }
 
     const server = http.createServer(router.handler);
 

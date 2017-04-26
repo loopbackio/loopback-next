@@ -16,6 +16,8 @@
   },
   "devDependencies": {
     "@loopback/testlab": "^4.0.0-alpha.1",
+    "@types/bluebird": "^3.5.2",
+    "bluebird": "^3.5.0",
     "mocha": "^3.2.0"
   },
   "keywords": [

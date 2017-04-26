@@ -30,5 +30,5 @@ binding.unlock();
 ctx.bind('foo').to('baz');
 
 // new value is baz
-console.log(ctx.get('foo')); // => baz
+console.log(await ctx.get('foo')); // => baz
 ```
