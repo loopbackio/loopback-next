@@ -3,8 +3,19 @@
   "version": "4.0.0-alpha.1",
   "description": "A collection of test utilities we use to write LoopBack tests.",
   "main": "index",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm *.tgz; rm -rf ./package",
+    "prepublish": "npm run build",
+    "test": "mocha",
+    "verify": "npm run clean && npm pack && tar xvzf *.tgz && tree package"
+  },
   "author": "IBM",
   "license": "MIT",
+  "devDependencies": {
+    "mocha": "^3.3.0",
+    "typescript": "^2.2.2"
+  },
   "dependencies": {
     "@types/sinon": "^1.16.34",
     "@types/supertest": "^2.0.0",
