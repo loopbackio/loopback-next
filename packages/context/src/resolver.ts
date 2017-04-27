@@ -60,7 +60,7 @@ export function resolveInjectedArguments(fn: Function, ctx: Context): BoundValue
     }
 
     const binding = ctx.getBinding(bindingKey);
-    const valueOrPromise = binding.getValue();
+    const valueOrPromise = binding.getValue(ctx);
     if (isPromise(valueOrPromise)) {
       if (!asyncResolvers) asyncResolvers = [];
       asyncResolvers.push(valueOrPromise.then((v: BoundValue) => args[ix] = v));

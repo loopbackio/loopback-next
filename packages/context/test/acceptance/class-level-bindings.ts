@@ -77,7 +77,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     }
     const b = ctx.bind(INFO_CONTROLLER).toClass(InfoController);
 
-    const valueOrPromise = b.getValue();
+    const valueOrPromise = b.getValue(ctx);
     expect(valueOrPromise).to.not.be.Promise();
     expect(valueOrPromise as InfoController).to.have.property('appName', 'CodeHub');
   });

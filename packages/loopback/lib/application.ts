@@ -20,8 +20,9 @@ export class Application extends Context {
       }
 
       const ctorFactory = (req: http.ServerRequest, res: http.ServerResponse) => {
-        // TODO(bajtos) Create a new nested/child per-request Context
-        const requestContext = this;
+        const requestContext = new Context(this);
+        requestContext.bind('http.request').to(req);
+        requestContext.bind('http.response').to(res);
         return requestContext.get(b.key);
       };
       const apiSpec = getApiSpec(ctor);

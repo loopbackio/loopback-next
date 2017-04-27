@@ -22,3 +22,8 @@ export * from '@loopback/openapi-spec';
 export {
   inject,
 } from '@loopback/context';
+
+export {
+  ServerRequest,
+  ServerResponse,
+} from 'http';

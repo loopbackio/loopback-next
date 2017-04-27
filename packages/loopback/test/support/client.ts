@@ -15,11 +15,20 @@ export class Client {
   }
 
   public async get(path : string) : Promise<Client.Result> {
+    return this.request('get', path);
+  }
+
+  public async put(path: string): Promise<Client.Result> {
+    return this.request('put', path);
+  }
+
+  public async request(verb: string, path: string): Promise<Client.Result> {
     await this._ensureAppIsListening();
 
     const url = 'http://localhost:' + this.app.config.port + path;
     const options = {
       uri: url,
+      method: verb,
       resolveWithFullResponse: true,
     };
 
