@@ -37,16 +37,13 @@ class MyController {
   @authenticate
   public whoAmI() : string {
     const user = this.user;
-    if(!user) return 'please login...';
+    assert(user);
     return user.username;
   }
 }
 
 app.controller(MyController);
 server.bind('applications.myApp').to(app);
-
-// tell loopback/authentication to use the BasicStrategy
-app.bind('authentication.strategy').to(BasicStrategy);
 
 function verifyPassword(storedPassword, providedPassword) {
   // unecrypted password example:
@@ -58,15 +55,14 @@ const USERS = {
 };
 
 // my get user function
-app.bind('authentication.user').to(async () => {
-  const ctx = this;
-  const username = await ctx.get('authentication.credentials.username');
-  const password = await ctx.get('authentication.credentials.password');
-  const user = USERS[username];
-  if (!user) return null;
-  if (!verifyPassword(user.password, password)) return null;
-  return user;
-});
+ app.bind('authentication.strategy').to(() => {
+    return new BasicStrategy(verify);
+
+    function verify(username, password, cb) {
+      cb(null, {username: username});
+    }
+ });
+
 
 // test the app
 await server.start();
