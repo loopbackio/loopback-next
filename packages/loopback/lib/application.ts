@@ -5,7 +5,7 @@
 
 import {Binding, Context, Constructor} from '@loopback/context';
 import * as http from 'http';
-import {SwaggerRouter} from './router/SwaggerRouter';
+import {SwaggerRouter} from '@loopback/router';
 import {getApiSpec} from './router/metadata';
 
 const debug = require('debug')('loopback:Application');

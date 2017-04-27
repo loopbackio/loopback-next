@@ -1,24 +1,27 @@
 {
-  "name": "@loopback/loopback",
+  "name": "@loopback/router",
   "version": "4.0.0-alpha.1",
-  "description": "",
-  "main": "index",
-  "scripts": {
-    "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
-    "integration": "mocha --opts ../../test/mocha.opts 'test/integration/**/*.ts'",
-    "test": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts' 'test/integration/**/*.ts' 'test/acceptance/**/*.ts'",
-    "unit": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts'"
-  },
+  "description": "HTTP(s) server router using OpenAPI Spec/Swagger to define HTTP endpoints and Controller pattern to implement them.",
   "author": "IBM",
   "license": "MIT",
+  "keywords": [
+    "LoopBack",
+    "Router",
+    "Controller",
+    "Swagger",
+    "OpenAPI Spec"
+  ],
+  "scripts": {
+    "integration": "mocha --opts ../../test/mocha.opts 'test/integration/**/*.ts'",
+    "test": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts' 'test/integration/**/*.ts'",
+    "unit": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts'"
+  },
   "dependencies": {
-    "@loopback/context": "^4.0.0-alpha.1",
     "@loopback/openapi-spec": "^4.0.0-alpha.1",
-    "@loopback/router": "^4.0.0-alpha.1",
-    "@types/bluebird": "^3.5.2",
+    "body": "^5.1.0",
     "bluebird": "^3.5.0",
     "debug": "^2.6.0",
-    "reflect-metadata": "^0.1.10"
+    "path-to-regexp": "^1.7.0"
   },
   "devDependencies": {
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.1",
