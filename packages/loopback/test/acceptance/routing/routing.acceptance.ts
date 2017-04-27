@@ -161,7 +161,7 @@ describe('Routing', () => {
     });
   });
 
-  it('binds controller constructor object', async () => {
+  it('binds controller constructor object and operation', async () => {
     const app = givenAnApplication();
 
     const spec = givenOpenApiSpec()
@@ -171,13 +171,17 @@ describe('Routing', () => {
     @api(spec)
     class GetCurrentController {
       constructor(
-        @inject('controller.current.ctor') private ctor : function,
+        @inject('controller.current.ctor') private ctor : Function,
+        @inject('controller.current.operation') private operation : string,
       ) {
         expect(GetCurrentController).eql(ctor);
       }
 
-      async getControllerName(): Promise<string> {
-        return this.ctor.name as string;
+      async getControllerName(): Promise<Array> {
+        return {
+          ctor: this.ctor.name,
+          operation: this.operation
+        };
       }
     }
     givenControllerInApp(app, GetCurrentController);

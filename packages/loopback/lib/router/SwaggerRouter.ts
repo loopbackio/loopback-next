@@ -184,7 +184,7 @@ class Endpoint {
     }
 
     const operationName = this._spec['x-operation-name'];
-    Promise.resolve(this._controllerFactory(request, response))
+    Promise.resolve(this._controllerFactory(request, response, operationName))
       .then(controller => {
         loadRequestBodyIfNeeded(this._spec, request)
           .then(body => buildOperationArguments(this._spec, request, pathParams, body))
