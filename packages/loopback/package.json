@@ -13,9 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "@loopback/context": "^4.0.0-alpha.1",
-    "@loopback/juggler": "^4.0.0-alpha.1",
     "@loopback/openapi-spec": "^4.0.0-alpha.1",
-    "@loopback/remoting": "^4.0.0-alpha.1",
     "@types/bluebird": "^3.5.2",
     "bluebird": "^3.5.0",
     "body": "^5.1.0",
