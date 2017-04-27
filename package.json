@@ -28,8 +28,5 @@
     "lint": "tslint -c tslint.full.json --project tsconfig.json --type-check --exclude 'examples/**/*' --exclude '**/node_modules/**' --exclude '**/*.d.ts' '**/*.ts'",
     "test": "mocha --opts test/mocha.opts.root 'packages/*/test/**/*.ts'",
     "posttest": "npm run lint"
-  },
-  "dependencies": {
-    "reflect-metadata": "^0.1.10"
   }
 }
