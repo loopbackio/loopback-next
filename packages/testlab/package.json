@@ -1,6 +1,6 @@
 {
   "name": "@loopback/testlab",
-  "version": "4.0.0-alpha.1",
+  "version": "4.0.0-alpha.2",
   "description": "A collection of test utilities we use to write LoopBack tests.",
   "main": "index",
   "scripts": {
