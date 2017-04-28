@@ -15,7 +15,7 @@
     "reflect-metadata": "^0.1.10"
   },
   "devDependencies": {
-    "@loopback/testlab": "^4.0.0-alpha.1",
+    "@loopback/testlab": "^4.0.0-alpha.2",
     "@types/bluebird": "^3.5.2",
     "bluebird": "^3.5.0",
     "mocha": "^3.2.0"
