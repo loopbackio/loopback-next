@@ -19,7 +19,7 @@ export class Application extends Context {
         throw new Error(`The controller ${b.key} was not bound via .toClass()`);
       }
 
-      const ctorFactory = (req: http.ServerRequest, res: http.ServerResponse, operationName) => {
+      const ctorFactory = (req: http.ServerRequest, res: http.ServerResponse, operationName: string) => {
         const requestContext = new Context(this);
         requestContext.bind('controller.current.ctor').to(ctor);
         requestContext.bind('controller.current.operation').to(operationName);
