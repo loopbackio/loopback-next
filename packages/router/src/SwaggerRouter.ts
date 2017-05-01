@@ -1,5 +1,5 @@
 // Copyright IBM Corp. 2013,2017. All Rights Reserved.
-// Node module: loopback
+// Node module: @loopback/router
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
@@ -72,7 +72,7 @@ export class SwaggerRouter {
    */
   public controller(factory: ControllerFactory, spec: OpenApiSpec): void {
     assert(typeof factory === 'function', 'Controller factory must be a function.');
-    assert(typeof spec === 'object' && !!spec, 'API speciification must be a non-null object');
+    assert(typeof spec === 'object' && !!spec, 'API specification must be a non-null object');
     if (!spec.paths || !Object.keys(spec.paths).length) {
       return;
     }

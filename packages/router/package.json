@@ -1,0 +1,31 @@
+{
+  "name": "@loopback/router",
+  "version": "4.0.0-alpha.1",
+  "description": "HTTP(s) server router using OpenAPI Spec/Swagger to define HTTP endpoints and Controller pattern to implement them.",
+  "author": "IBM",
+  "license": "MIT",
+  "keywords": [
+    "LoopBack",
+    "Router",
+    "Controller",
+    "Swagger",
+    "OpenAPI Spec"
+  ],
+  "scripts": {
+    "integration": "mocha --opts ../../test/mocha.opts 'test/integration/**/*.ts'",
+    "test": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts' 'test/integration/**/*.ts'",
+    "unit": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts'"
+  },
+  "dependencies": {
+    "@loopback/openapi-spec": "^4.0.0-alpha.1",
+    "body": "^5.1.0",
+    "bluebird": "^3.5.0",
+    "debug": "^2.6.0",
+    "path-to-regexp": "^1.7.0"
+  },
+  "devDependencies": {
+    "@loopback/openapi-spec-builder": "^4.0.0-alpha.1",
+    "@loopback/testlab": "^4.0.0-alpha.1",
+    "mocha": "^3.2.0"
+  }
+}

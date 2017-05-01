@@ -3,13 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {SwaggerRouter} from '../../../lib/router/SwaggerRouter';
+import {SwaggerRouter} from '../..';
 import * as http from 'http';
 import * as request from 'request-promise';
-import { FullRequestResponse } from './../../support/FullRequestResponse';
+import { FullRequestResponse } from '../../../loopback/test/support/FullRequestResponse'; // FIXME(bajtos)
 import * as bluebird from 'bluebird';
 import {expect} from 'testlab';
-import {listen} from '../../support/util';
+import {listen} from '../../../loopback/test/support/util'; // FIXME(bajtos)
 import {OpenApiSpec, ParameterObject} from '@loopback/openapi-spec';
 import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
 
