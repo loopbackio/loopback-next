@@ -31,12 +31,10 @@ export interface ParsedRequest extends Request {
  */
 export class ShimRequest {
   headers: Object;
-  params: Object;
   query: Object;
   url: string;
   path: string;
   method: string;
-
   constructor(request: ParsedRequest) {
     this.headers = request.headers;
     this.query = request.query;
