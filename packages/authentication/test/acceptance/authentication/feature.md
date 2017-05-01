@@ -8,6 +8,7 @@
 ## Scenario: Basic Usage
 
 ```ts
+////////// acceptance
 import {BasicStrategy} from 'passport-http';
 import {authenticate, UserInfo} from '@loopback/authentication';
 const app = new Application();

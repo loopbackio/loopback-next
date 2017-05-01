@@ -27,7 +27,7 @@ export type HandlerCallback = (err?: Error | string) => void;
 export type RequestHandler = (req: Request, res: Response, cb?: HandlerCallback) => void;
 
 
-export type ControllerFactory = (request: Request, response: Response) => Object;
+export type ControllerFactory = (request: Request, response: Response, operationName: string) => Object;
 
 /**
  * SwaggerRouter - an express-compatible Router using OpenAPI/Swagger
@@ -184,7 +184,7 @@ class Endpoint {
     }
 
     const operationName = this._spec['x-operation-name'];
-    Promise.resolve(this._controllerFactory(request, response))
+    Promise.resolve(this._controllerFactory(request, response, operationName))
       .then(controller => {
         loadRequestBodyIfNeeded(this._spec, request)
           .then(body => buildOperationArguments(this._spec, request, pathParams, body))

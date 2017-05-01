@@ -161,6 +161,38 @@ describe('Routing', () => {
     });
   });
 
+    it('binds controller constructor object and operation', async () => {
+      const app = givenAnApplication();
+
+      const spec = givenOpenApiSpec()
+        .withOperationReturningString('get', '/name', 'getControllerName')
+        .build();
+
+      @api(spec)
+      class GetCurrentController {
+        constructor(
+          @inject('controller.current.ctor') private ctor : Function,
+          @inject('controller.current.operation') private operation : string,
+        ) {
+          expect(GetCurrentController).eql(ctor);
+        }
+
+        async getControllerName(): Promise<object> {
+          return {
+            ctor: this.ctor.name,
+            operation: this.operation,
+          };
+        }
+      }
+      givenControllerInApp(app, GetCurrentController);
+
+      const result = await whenIMakeRequestTo(app).get('/name');
+
+      expect(result).to.containDeep({
+        body: '{"ctor":"GetCurrentController","operation":"getControllerName"}',
+      });
+    });
+
   /* ===== HELPERS ===== */
 
   function givenAnApplication() {
