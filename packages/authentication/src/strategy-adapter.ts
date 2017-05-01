@@ -35,12 +35,14 @@ export class ShimRequest {
   url: string;
   path: string;
   method: string;
-  constructor(request: ParsedRequest) {
-    this.headers = request.headers;
-    this.query = request.query;
-    this.url = request.url;
-    this.path = request.path;
-    this.method = request.method;
+  constructor(request?: ParsedRequest) {
+    if (request) {
+      this.headers = request.headers;
+      this.query = request.query;
+      this.url = request.url;
+      this.path = request.path;
+      this.method = request.method;
+    }
   }
 }
 
@@ -62,8 +64,8 @@ export class StrategyAdapter {
    *     3. authenticate using the strategy
    * @param req {http.ServerRequest} The incoming request.
    */
-  authenticate(req: http.ServerRequest) {
-    const shimReq = new ShimRequest(req as ParsedRequest);
+  authenticate(req: ParsedRequest) {
+    const shimReq = new ShimRequest(req);
     return new Promise<Object>((resolve, reject) => {
       // create an instance of the strategy
       const strategy = Object.create(this.strategyCtor);
