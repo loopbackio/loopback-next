@@ -20,10 +20,10 @@ export async function getAuthenticatedUser(
   req: http.ServerRequest,
   strategy: Strategy,
  ): Promise<Object> {
-    const command = new StrategyAdapter(strategy);
-    const user =  await command.authenticate(req);
-    if (required && !user) throw createAuthError(401, 'Access is denied due to invalid credentials');
-    return user;
+  const command = new StrategyAdapter(strategy);
+  const user =  await command.authenticate(req);
+  if (required && !user) throw createAuthError(401, 'Access is denied due to invalid credentials');
+  return user;
 }
 
 interface HttpError extends Error {

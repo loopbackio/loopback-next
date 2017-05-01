@@ -133,7 +133,7 @@ export class SwaggerRouter {
   }
 }
 
-interface ParsedRequest extends Request {
+export interface ParsedRequest extends Request {
   // see http://expressjs.com/en/4x/api.html#req.path
   path: string;
   // see http://expressjs.com/en/4x/api.html#req.query

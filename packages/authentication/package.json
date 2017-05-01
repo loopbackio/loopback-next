@@ -16,10 +16,7 @@
   },
   "devDependencies": {
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.1",
-<<<<<<< c11417bce554f87442fdd0516422eafeed6b56bd
     "@loopback/testlab": "^4.0.0-alpha.2",
     "mocha": "^3.2.0"
-=======
->>>>>>> WIP bindings.ts impl
   }
 }
