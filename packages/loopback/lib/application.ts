@@ -7,6 +7,7 @@ import {Binding, Context, Constructor} from '@loopback/context';
 import * as http from 'http';
 import {SwaggerRouter} from './router/SwaggerRouter';
 import {getApiSpec} from './router/metadata';
+import {getAuthenticatedUser, Strategy} from '../../authentication';
 
 const debug = require('debug')('loopback:Application');
 
@@ -25,6 +26,8 @@ export class Application extends Context {
         requestContext.bind('controller.current.operation').to(operationName);
         requestContext.bind('http.request').to(req);
         requestContext.bind('http.response').to(res);
+        //[rashmi] TODO calling authenticate() here only temporary until Middle design/implementation is in place 
+        this.authenticate(req);
         return requestContext.get(b.key);
       };
       const apiSpec = getApiSpec(ctor);
@@ -48,5 +51,16 @@ export class Application extends Context {
    */
   public controller<T>(controllerCtor: Constructor<T>): Binding {
     return this.bind('controllers.' + controllerCtor.name).toClass(controllerCtor);
+  }
+
+  public authenticate(req: http.ServerRequest) {
+    const strategy = this.get('authentication.strategy');
+    //for now, we assume requeired is always true for now.
+    getAuthenticatedUser(true, req, strategy)
+      .then((user : object) => {
+        this.bind('authentication.user').to(user);
+      }).catch((err: Error) => {
+        throw err; //[rashmi] TODO re-throw here?
+      });
   }
 }
