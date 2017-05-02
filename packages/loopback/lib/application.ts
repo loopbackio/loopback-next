@@ -54,13 +54,15 @@ export class Application extends Context {
   }
 
   public authenticate(req: http.ServerRequest) {
-    const strategy = this.get('authentication.strategy');
-    //for now, we assume requeired is always true for now.
-    getAuthenticatedUser(true, req, strategy)
-      .then((user : object) => {
-        this.bind('authentication.user').to(user);
-      }).catch((err: Error) => {
-        throw err; //[rashmi] TODO re-throw here?
-      });
+    const context = this.get('authentication.strategy');
+    context.then((strategy) => {
+      //for now, we assume required is true always.
+      getAuthenticatedUser(true, req, strategy as Strategy)
+        .then((user : object) => {
+          this.bind('authentication.user').to(user);
+        }).catch((err: Error) => {
+          throw err; //[rashmi] TODO re-throw here?
+        });
+    });
   }
 }

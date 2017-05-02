@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as http from 'http';
+import {ParsedRequest} from './strategy-adapter';
 import {Strategy} from './strategy-adapter';
 import {StrategyAdapter} from './strategy-adapter';
 
@@ -21,7 +22,7 @@ export async function getAuthenticatedUser(
   strategy: Strategy,
  ): Promise<Object> {
   const command = new StrategyAdapter(strategy);
-  const user =  await command.authenticate(req);
+  const user =  await command.authenticate(req as ParsedRequest);
   if (required && !user) throw createAuthError(401, 'Access is denied due to invalid credentials');
   return user;
 }

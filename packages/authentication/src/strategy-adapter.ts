@@ -3,12 +3,47 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 import * as http from 'http';
+import {ServerRequest as Request} from 'http';
 
 /**
  * Interface definition of a passport strategy.
  */
 export interface Strategy {
-  authenticate(req: http.ServerRequest): undefined;
+  authenticate(req: http.ServerRequest): void;
+}
+
+/**
+ * Http Request interface
+ */
+export interface ParsedRequest extends Request {
+  // see http://expressjs.com/en/4x/api.html#req.path
+  path: string;
+  // see http://expressjs.com/en/4x/api.html#req.query
+  query: { [key: string]: string };
+  // see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/15808
+  url: string;
+  pathname: string;
+  method: string;
+}
+
+/**
+ * Shimmed Request to satisfy express requirements of passport strategies.
+ */
+export class ShimRequest {
+  headers: Object;
+  query: Object;
+  url: string;
+  path: string;
+  method: string;
+  constructor(request?: ParsedRequest) {
+    if (request) {
+      this.headers = request.headers;
+      this.query = request.query;
+      this.url = request.url;
+      this.path = request.path;
+      this.method = request.method;
+    }
+  }
 }
 
 /**
@@ -29,8 +64,9 @@ export class StrategyAdapter {
    *     3. authenticate using the strategy
    * @param req {http.ServerRequest} The incoming request.
    */
-  authenticate(req: http.ServerRequest) {
-    return new Promise((resolve, reject) => {
+  authenticate(req: ParsedRequest) {
+    const shimReq = new ShimRequest(req);
+    return new Promise<Object>((resolve, reject) => {
       // create an instance of the strategy
       const strategy = Object.create(this.strategyCtor);
       const self = this;
@@ -51,7 +87,7 @@ export class StrategyAdapter {
       };
 
       // authenticate
-      strategy.authenticate(req);
+      strategy.authenticate(shimReq);
     });
   }
 }

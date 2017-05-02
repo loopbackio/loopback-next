@@ -1,12 +1,35 @@
-import {Application, Server} from '../../../../loopback';
+import {Application, Server, ParameterObject} from '../../../../loopback';
 import {StrategyAdapter} from '../../../src/strategy-adapter';
 import {api, inject} from '../../../../loopback';
+import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
 
 const Strategy = require('passport-http').BasicStrategy;
 
 const USERS = {
-    joe : {username: 'joe', password: '12345'}
+  joe : {username: 'joe', password: '12345'}
 };
+
+@api({
+  basePath: '/',
+  paths: {
+    '/who-am-i': {
+      get: {
+        'x-operation-name': 'whoAmI',
+        responses: {
+          '200': {
+            type: 'string'
+          }
+        }
+      }
+    }
+  }
+})
+export class MyController {
+  public whoAmI() : string {
+    console.log('whoAmI');
+    return 'joe';
+  }
+}
 
 class AuthAcceptance extends Application {
   private _startTime: Date;
@@ -14,7 +37,7 @@ class AuthAcceptance extends Application {
   constructor() {
     super();
     const app = this;
-    app.controller(MyController);
+    //app.controller(MyController);
     app.bind('servers.http.enabled').to(true);
     app.bind('servers.https.enabled').to(true);
     var basicAthStrategy = new Strategy(this.verify);
@@ -43,38 +66,14 @@ class AuthAcceptance extends Application {
   }  
 }
 
-@api({
-  basePath: '/',
-  paths: {
-    '/who-am-i': {
-      get: {
-        'x-operation-name': 'whoAmI',
-        responses: {
-          '200': {
-            type: 'string'
-          }
-        }
-      }
-    }
-  }
-}) 
-
-export class MyController {
-  public whoAmI() : string {
-      console.log('whoAmI');
-      return 'joe';
-   }
-}
-
 main().catch(err => {
   console.log('Cannot start the app.', err);
   process.exit(1);
 });
 
-
 async function main(): Promise<void> {
   console.log('main called');
-  const app = new AccountsApplication();
+  const app = new AuthAcceptance();
   await app.start();
   console.log('app.start called');
   console.log('Application Info:', app.info());
