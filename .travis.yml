@@ -6,3 +6,8 @@ node_js:
 
 before_script:
   - npm run bootstrap
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
