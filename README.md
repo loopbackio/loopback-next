@@ -23,6 +23,11 @@ Then in your Node.js project root, run:
 npm install -S @loopback/core
 ```
 
+> Make sure you set `"target": "es6"` in your compiler options in your
+> `tsconfig.json` if you're using a TypeScript project. See the [installation
+> wiki](https://github.com/strongloop/loopback-next/wiki/installation) for
+> detailed information.
+
 # Example
 
 A basic controller:
