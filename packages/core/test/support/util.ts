@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, Server, ServerConfig} from 'loopback';
+import {Application, Server, ServerConfig} from '../../src';
 import {Client} from './client';
 import {Context} from '@loopback/context';
 import * as bluebird from 'bluebird';

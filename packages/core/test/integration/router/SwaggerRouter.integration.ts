@@ -8,7 +8,7 @@ import * as http from 'http';
 import * as request from 'request-promise';
 import { FullRequestResponse } from './../../support/FullRequestResponse';
 import * as bluebird from 'bluebird';
-import {expect} from 'testlab';
+import {expect} from '@loopback/testlab';
 import {listen} from '../../support/util';
 import {OpenApiSpec, ParameterObject} from '@loopback/openapi-spec';
 import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';

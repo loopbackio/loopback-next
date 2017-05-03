@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Server, ServerConfig} from 'loopback';
+import {Server, ServerConfig} from '../../src';
 import bluebird = require('bluebird');
 import request = require('request-promise');
 import {RequestResponse} from 'request';

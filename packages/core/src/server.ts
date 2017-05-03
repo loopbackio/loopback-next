@@ -6,7 +6,7 @@
 import http = require('http');
 import bluebird = require('bluebird');
 import {Context} from '@loopback/context';
-import {Application} from '../lib/application';
+import {Application} from './application';
 import {SwaggerRouter} from './router/SwaggerRouter';
 
 const debug = require('debug')('loopback:Server');
