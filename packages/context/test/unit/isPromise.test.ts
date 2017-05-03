@@ -5,7 +5,7 @@
 
 import * as bluebird from 'bluebird';
 import {expect} from '@loopback/testlab';
-import {isPromise} from '../..';
+import {isPromise} from '../../src';
 
 describe('isPromise', () => {
   it('returns false for undefined', () => {

@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from 'testlab';
-import {Context, Binding} from '../..';
+import {expect} from '@loopback/testlab';
+import {Context, Binding} from '../../src';
 
 describe('Context bindings - Locking bindings', () => {
   describe('Binding with a duplicate key', () => {
