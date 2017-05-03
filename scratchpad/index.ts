@@ -1,4 +1,4 @@
-import {Application, Sequence} from '@loopback/core';
+import {Application, Sequence, injectInvoke} from '@loopback/core';
 import {WebPack} from '@loopback/webpack';
 import {Compression, userRole} from '@loopback/compression';
 import {Authentication, injectUser, injectAuthenticate} from '@loopback/authentication';
@@ -13,9 +13,16 @@ const app = new Application({
 
 class TodoSequence extends Sequence {
   constructor(
-    public @injectSend() send,
     public @injectAuthenticate() authenticate,
     public @injectAuthorize() authorize,
+    public @injectInvoke() invoke,
+    public @injectSend() send,
     public @injectReject() reject
   ) {}
+
+  async run() {
+    await this.authenticate();
+    await this.authorize();
+    this.send(await this.invoke());
+  }
 }
