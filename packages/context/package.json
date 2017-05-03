@@ -1,6 +1,6 @@
 {
   "name": "@loopback/context",
-  "version": "4.0.0-alpha.4",
+  "version": "4.0.0-alpha.5",
   "description": "LoopBack's container for Inversion of Control",
   "main": "index",
   "scripts": {
