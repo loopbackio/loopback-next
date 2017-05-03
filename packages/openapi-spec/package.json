@@ -24,8 +24,7 @@
     "index.js",
     "index.d.ts",
     "lib",
-    "lib6",
-    "should-as-function.d.ts"
+    "lib6"
   ],
   "repository": {
     "type": "git",
