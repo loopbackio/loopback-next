@@ -19,7 +19,7 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^4.0.0-alpha.4",
+    "@loopback/context": "^4.0.0-alpha.5",
     "@loopback/openapi-spec": "^4.0.0-alpha.3",
     "@types/bluebird": "^3.5.2",
     "bluebird": "^3.5.0",
