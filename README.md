@@ -16,13 +16,14 @@ Make sure you have the following installed:
 - [Node.js](https://nodejs.org/en/download/) >= 7.0.0
 - [TypeScript](https://www.typescriptlang.org/index.html#download-links) >= 2.0.0 `npm i -g typescript`
 - [TypeScript Node](https://github.com/TypeStrong/ts-node#installation) >= 3.0.0 `npm i -g ts-node`
+- [Yarn](https://yarnpkg.com/en/) `npm i -g yarn`
 
 Then:
 
 ```shell
 git clone https://github.com/strongloop/loopback-next.git
 cd loopback-next
-npm install
+yarn
 npm run bootstrap
 npm test
 # proceed to creating index.ts
