@@ -17,15 +17,10 @@ Make sure you have the following installed:
 - [TypeScript](https://www.typescriptlang.org/index.html#download-links) >= 2.0.0 `npm i -g typescript`
 - [TypeScript Node](https://github.com/TypeStrong/ts-node#installation) >= 3.0.0 `npm i -g ts-node`
 
-Then:
+Then in your Node.js project root, run:
 
 ```shell
-git clone https://github.com/strongloop/loopback-next.git
-cd loopback-next
-npm install
-npm run bootstrap
-npm test
-# proceed to creating index.ts
+npm install -S @loopback/core
 ```
 
 # Example
