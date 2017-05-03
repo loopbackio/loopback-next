@@ -7,15 +7,15 @@ export {
   Server,
   ServerConfig,
   ServerState,
-} from './lib/server';
+} from './server';
 
 export {
   Application,
-} from './lib/application';
+} from './application';
 
 export {
   api,
-} from './lib/router/metadata';
+} from './router/metadata';
 
 export * from '@loopback/openapi-spec';
 
