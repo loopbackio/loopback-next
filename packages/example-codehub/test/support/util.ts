@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {supertest} from 'testlab';
-import {CodeHubApplication} from 'example-codehub/src/CodeHubApplication';
+import {CodeHubApplication} from '../../src/CodeHubApplication';
 
 export async function createClientForApp(app: CodeHubApplication) {
   const url = (await app.info()).url;

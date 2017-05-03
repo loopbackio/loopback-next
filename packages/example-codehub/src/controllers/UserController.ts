@@ -20,7 +20,7 @@ import {def} from './UserController.api';
 // After discussion with @ritch, we decided this is preliminary optimization
 // that can be left for later
 
-import {api, inject} from 'loopback';
+import {api, inject} from '@loopback/core';
 
 // Notice that the controler is not required to extend any Controller base class
 @api(def)

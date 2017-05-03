@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, Server} from 'loopback';
+import {Application, Server} from '@loopback/core';
 import {UserController, HealthController} from './controllers';
 
 export class CodeHubApplication extends Application {
