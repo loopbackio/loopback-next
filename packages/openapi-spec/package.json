@@ -1,7 +1,16 @@
 {
   "name": "@loopback/openapi-spec",
-  "version": "4.0.0-alpha.1",
+  "version": "4.0.0-alpha.2",
   "description": "TypeScript type definitions for OpenAPI Spec/Swagger documents.",
+  "main": "index",
+  "scripts": {
+    "build": "npm run build:lib && npm run build:lib6",
+    "build:lib": "tsc --target es2017 --outDir lib",
+    "build:lib6": "tsc --target es2015 --outDir lib6",
+    "clean": "rm *.tgz; rm -rf ./package",
+    "prepublish": "npm run build",
+    "verify": "npm run clean && npm pack && tar xvzf *.tgz && tree package"
+  },
   "author": "IBM",
   "license": "MIT",
   "keywords": [
@@ -9,5 +18,17 @@
     "OpenAPI Spec",
     "TypeScript",
     "Typings"
-  ]
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "lib",
+    "lib6",
+    "should-as-function.d.ts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
 }
