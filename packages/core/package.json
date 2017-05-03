@@ -31,7 +31,8 @@
   "devDependencies": {
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.1",
     "@loopback/testlab": "^4.0.0-alpha.2",
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "typescript": "^2.3.2"
   },
   "files": [
     "README.md",

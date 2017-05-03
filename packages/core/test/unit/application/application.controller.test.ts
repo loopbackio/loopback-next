@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Application} from './../../../lib/application';
+import {Application} from '../../../src/application';
 
 describe('Application.controller()', () => {
   it('binds the controller to "controllers.*" namespace', () => {
