@@ -8,6 +8,7 @@ import * as http from 'http';
 import {SwaggerRouter} from './router/SwaggerRouter';
 import {getApiSpec} from './router/metadata';
 import {getAuthenticatedUser, Strategy} from '../../authentication';
+import {authenticate, getAuthenticateMetadata, AuthenticationMetadata} from '../../authentication';
 
 const debug = require('debug')('loopback:Application');
 
@@ -19,22 +20,45 @@ export class Application extends Context {
       if (!ctor) {
         throw new Error(`The controller ${b.key} was not bound via .toClass()`);
       }
-
+      
       const ctorFactory = (req: http.ServerRequest, res: http.ServerResponse, operationName: string) => {
         const requestContext = new Context(this);
         requestContext.bind('controller.current.ctor').to(ctor);
         requestContext.bind('controller.current.operation').to(operationName);
         requestContext.bind('http.request').to(req);
         requestContext.bind('http.response').to(res);
-        //[rashmi] TODO calling authenticate() here only temporary until Middle design/implementation is in place 
-        this.authenticate(req);
-        return requestContext.get(b.key);
+        //[rashmi] TODO calling getAuthenticatedUser() here only temporary until MiddleWare design/implementation is ready
+        //the reason to call here is - this is the only place right now, where we have access to to request, app context and 
+        //also where AppController's constructor is called where we need to inject the 'user' 
+        return new Promise((resolve, reject) => {
+          const metadata = getAuthenticateMetadata(ctor.prototype, operationName);
+          var isAuthRequired;
+          if (metadata != null) {
+            isAuthRequired = true;
+          } else {
+            isAuthRequired = false;
+          }
+          this.getAuthenticatedUser(isAuthRequired, req).then((user) => {
+            this.bind('authentication.user').to(user);
+            requestContext.get(b.key).then((value) => {
+              resolve(value);
+            });
+          });
+        });
+        //end of Temp code until MiddleWare design/implementation is ready
       };
       const apiSpec = getApiSpec(ctor);
       router.controller(ctorFactory, apiSpec);
     });
   }
 
+  //[rashmi] TODO  getAuthenticatedUser function here only temporary until MiddleWare design/implementation is ready
+  public async getAuthenticatedUser(isAuthRequired: boolean, request: http.ServerRequest) : Promise<Object> {
+    const strategy = await this.get('authentication.strategy');
+    const user = await getAuthenticatedUser(isAuthRequired, request, strategy as Strategy);
+    return user;
+  }
+  
   /**
    * Register a controller class with this application.
    *
@@ -51,18 +75,5 @@ export class Application extends Context {
    */
   public controller<T>(controllerCtor: Constructor<T>): Binding {
     return this.bind('controllers.' + controllerCtor.name).toClass(controllerCtor);
-  }
-
-  public authenticate(req: http.ServerRequest) {
-    const context = this.get('authentication.strategy');
-    context.then((strategy) => {
-      //for now, we assume required is true always.
-      getAuthenticatedUser(true, req, strategy as Strategy)
-        .then((user : object) => {
-          this.bind('authentication.user').to(user);
-        }).catch((err: Error) => {
-          throw err; //[rashmi] TODO re-throw here?
-        });
-    });
   }
 }

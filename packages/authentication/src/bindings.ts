@@ -18,11 +18,11 @@ import {StrategyAdapter} from './strategy-adapter';
  */
 export async function getAuthenticatedUser(
   required: boolean,
-  req: http.ServerRequest,
+  request: http.ServerRequest,
   strategy: Strategy,
  ): Promise<Object> {
   const command = new StrategyAdapter(strategy);
-  const user =  await command.authenticate(req as ParsedRequest);
+  const user =  await command.authenticate(request as ParsedRequest);
   if (required && !user) throw createAuthError(401, 'Access is denied due to invalid credentials');
   return user;
 }

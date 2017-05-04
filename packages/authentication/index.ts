@@ -5,3 +5,4 @@
 
 export * from './src/strategy-adapter';
 export * from './src/bindings';
+export * from './src/decorator';
