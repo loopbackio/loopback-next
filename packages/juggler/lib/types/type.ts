@@ -1,7 +1,7 @@
 /**
  * Typing system for LoopBack
  */
-
+import {Options} from '../common';
 import * as util from 'util';
 
 export interface Type<T> {
@@ -19,14 +19,14 @@ export interface Type<T> {
   /**
    * Generate the default value for this type
    */
-  defaultValue(): T;
+  defaultValue(): T|null|undefined;
 
   /**
    * Check if the given value can be coerced into this type
    * @param value The value to to be coerced
    * @returns {boolean}
    */
-  isCoercible(value: any, options?: Object): boolean;
+  isCoercible(value: any, options?: Options): boolean;
 
   /**
    * Coerce the value into this type
@@ -34,13 +34,13 @@ export interface Type<T> {
    * @param options Options for coercion
    * @returns Coerced value of this type
    */
-  coerce(value: any, options?: Object): T;
+  coerce(value: any, options?: Options): T|null|undefined;
 
   /**
    * Serialize a value into json
    * @param value The value of this type
    * @param options Options for serialization
    */
-  serialize(value: T, options?: Object): any;
+  serialize(value: T|null|undefined, options?: Options): any;
 }
 

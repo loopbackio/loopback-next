@@ -13,7 +13,7 @@ export class ArrayType<T> implements Type<Array<T>> {
     if (!Array.isArray(value)) {
       return false;
     }
-    let list = value as Array<T>;
+    let list = value as Array<T|null|undefined>;
     return list.every((i) => this.itemType.isInstance(i));
   }
 
@@ -32,7 +32,8 @@ export class ArrayType<T> implements Type<Array<T>> {
     return value;
   }
 
-  serialize(value: Array<T>) {
+  serialize(value: Array<T>|null|undefined) {
+    if (value == null) return value;
     return value.map((i) => this.itemType.serialize(i));
   }
 }

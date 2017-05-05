@@ -47,7 +47,7 @@ export class DateType implements Type<Date> {
     return d;
   }
 
-  serialize(value: Date) {
+  serialize(value: Date|null|undefined) {
     if (value == null) return value;
     return value.toJSON();
   }

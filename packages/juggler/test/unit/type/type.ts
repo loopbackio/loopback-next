@@ -201,7 +201,8 @@ describe('types', () => {
     it('creates defaultValue', () => {
       let d = new Date();
       let v = dateType.defaultValue();
-      expect(v.getTime()).to.closeTo(d.getTime(), 1);
+      expect(v.getTime()).to.aboveOrEqual(d.getTime());
+      expect(v.getTime()).to.approximately(d.getTime(), 1);
     });
 
     it('coerces values', () => {

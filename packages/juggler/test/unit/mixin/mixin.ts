@@ -4,7 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {MixinBuilder, Constructor} from '../../../lib/mixin';
+import {Class} from '../../../lib/common';
+import {MixinBuilder} from '../../../lib/mixin';
 
 class BaseClass {
   baseProp: string = 'baseProp';
@@ -17,7 +18,7 @@ class BaseClass {
   }
 }
 
-function Mixin1<T extends Constructor<{}>>(superClass: T) {
+function Mixin1<T extends Class<{}>>(superClass: T) {
   return class extends superClass {
     mixinProp1: string = 'mixinProp1';
 
@@ -31,7 +32,7 @@ function Mixin1<T extends Constructor<{}>>(superClass: T) {
   };
 }
 
-function Mixin2<T extends Constructor<{}>>(superClass: T) {
+function Mixin2<T extends Class<{}>>(superClass: T) {
   return class extends superClass {
     mixinProp2: string = 'mixinProp2';
 
@@ -46,28 +47,28 @@ function Mixin2<T extends Constructor<{}>>(superClass: T) {
 }
 
 describe('mixin builder', () => {
-  let newClass;
+  let newClass: any;
   before(() => {
     newClass = MixinBuilder.mix(BaseClass).with(Mixin1, Mixin2);
   });
 
   it('allows multiple classes to be mixed in', () => {
-    expect(newClass.staticMethod1).to.eq(BaseClass.staticMethod1);
-    expect(newClass.prototype.method1).to.eq(BaseClass.prototype.method1);
-    expect(newClass.staticMixinMethod1).to.exist();
-    expect(newClass.staticMixinMethod2).to.exist();
+    expect(newClass.staticMethod1).to.eql(BaseClass.staticMethod1);
+    expect(newClass.prototype.method1).to.eql(BaseClass.prototype.method1);
+    expect(newClass.staticMixinMethod1).to.not.null();
+    expect(newClass.staticMixinMethod2).to.not.null();
 
-    expect(newClass.staticMethod1()).to.eq('static');
-    expect(newClass.staticMixinMethod1()).to.eq('mixin1.static');
-    expect(newClass.staticMixinMethod2()).to.eq('mixin2.static');
+    expect(newClass.staticMethod1()).to.eql('static');
+    expect(newClass.staticMixinMethod1()).to.eql('mixin1.static');
+    expect(newClass.staticMixinMethod2()).to.eql('mixin2.static');
 
     let x = new newClass();
-    expect(typeof x.mixinMethod1).to.eq('function');
-    expect(typeof x.mixinMethod2).to.eq('function');
-    expect(x.mixinMethod1()).to.eq('mixin1');
-    expect(x.mixinMethod2()).to.eq('mixin2');
-    expect(x.mixinProp1).to.eq('mixinProp1');
-    expect(x.mixinProp2).to.eq('mixinProp2');
+    expect(typeof x.mixinMethod1).to.eql('function');
+    expect(typeof x.mixinMethod2).to.eql('function');
+    expect(x.mixinMethod1()).to.eql('mixin1');
+    expect(x.mixinMethod2()).to.eql('mixin2');
+    expect(x.mixinProp1).to.eql('mixinProp1');
+    expect(x.mixinProp2).to.eql('mixinProp2');
   });
 
   it('allows inheritance', () => {
