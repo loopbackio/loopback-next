@@ -16,6 +16,7 @@
     "@types/request-promise": "^4.1.33",
     "lerna": "^2.0.0-rc.4",
     "mocha": "^3.2.0",
+    "nyc": "^10.3.2",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
     "ts-node": "^2.0.0",
@@ -27,6 +28,22 @@
     "lint": "tslint -c tslint.full.json --project tsconfig.json --type-check --exclude \"examples/**/*\" --exclude \"**/node_modules/**\" --exclude \"**/*.d.ts\" \"**/*.ts\"",
     "lint:fix": "npm run lint -- --fix",
     "test": "mocha --opts test/mocha.opts \"packages/*/test/**/*.ts\"",
-    "posttest": "npm run lint"
+    "posttest": "npm run lint",
+    "coverage": "nyc npm test"
+  },
+  "nyc": {
+    "include": [
+      "packages/*/src/**/*.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "html",
+      "lcov"
+    ]
   }
 }
