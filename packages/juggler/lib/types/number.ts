@@ -29,7 +29,7 @@ export class NumberType implements Type<number> {
     return n;
   }
 
-  serialize(value: number) {
+  serialize(value: number|null|undefined) {
     return value;
   }
 }

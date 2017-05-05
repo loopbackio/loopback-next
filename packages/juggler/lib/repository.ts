@@ -1,75 +1,8 @@
 import {Entity, Model} from './model';
-
-/**
- * Operators for where clauses
- */
-enum Operators {
-  eq, // Equal
-  neq, // Not Equal
-  gt, // >
-  gte, // >=
-  lt, // <
-  lte, // <=
-  inq, // IN
-  between, // BETWEEN [val1, val2]
-  exists,
-  and, // AND
-  or // OR
-}
-
-/**
- * Where object
- */
-export class Where {
-  and?: Where[]; // AND
-  or?: Where[]; // OR
-  [property: string]: any; // Other criteria
-}
-
-/**
- * Order by direction
- */
-export type Direction = 'ASC' | 'DESC';
-
-/**
- * Type alias for options object
- */
-export type Options = Object;
-
-/**
- * Order by
- */
-export class Order {
-  [property: string]: Direction;
-}
-
-/**
- * Selection of fields
- */
-export class Fields {
-  [property: string]: boolean;
-}
-
-/**
- * Inclusion of related items
- */
-export class Inclusion {
-  relation: string;
-  scope: Filter
-}
-
-/**
- * Query filter object
- */
-export class Filter {
-  where?: Where;
-  fields?: Fields;
-  order?: Order[];
-  limit?: number;
-  skip?: number;
-  offset?: number;
-  include?: Inclusion[];
-}
+import {Constructor, Options} from './common';
+import {DataSource} from './datasource';
+import {CrudConnector} from './crud-connector';
+import {Fields, Filter, Where, Operators, Inclusion} from './query';
 
 export interface Repository<T extends Model> {
 }
@@ -159,7 +92,7 @@ extends EntityRepository<T, ID> {
    * @param id
    * @param options
    */
-  findById(id: ID, options?: Options): Promise<T[]>;
+  findById(id: ID, options?: Options): Promise<T>;
 
   /**
    *
@@ -226,9 +159,10 @@ extends EntityRepository<T, ID> {
  */
 export class CrudRepositoryImpl<T extends Entity, ID>
 implements EntityCrudRepository<T, ID> {
+  private connector: CrudConnector;
 
-  constructor(public connector: any, public model: T) {
-
+  constructor(public dataSource: DataSource, public model: Constructor<T>) {
+    this.connector = dataSource.connector as CrudConnector;
   }
 
   create(entity: T, options?: Options): Promise<T> {
@@ -240,15 +174,25 @@ implements EntityCrudRepository<T, ID> {
   }
 
   save(entity: T, options?: Options): Promise<T> {
-    return this.connector.save(this.model, entity, options);
+    if (typeof this.connector.save === 'function') {
+      return this.connector.save(this.model, entity, options);
+    } else {
+      if(entity.getId() != null) {
+        return this.replaceById(entity.getId(), entity, options);
+      } else {
+        return this.create(entity, options);
+      }
+    }
   }
 
   find(filter?: Filter, options?: Options): Promise<T[]> {
     return this.connector.find(this.model, filter, options);
   }
 
-  findById(id: ID, options?: Options): Promise<T[]> {
-    return this.connector.findById(this.model, id, options);
+  findById(id: ID, options?: Options): Promise<T> {
+    if (typeof this.connector.findById === 'function') {
+      return this.connector.findById(this.model, id, options);
+    }
   }
 
   update(entity: T, options?: Options): Promise<boolean> {
@@ -272,11 +216,17 @@ implements EntityCrudRepository<T, ID> {
   }
 
   deleteAll(where?: Where, options?: Options): Promise<number> {
-    return this.connector.delete(this.model, where, options);
+    return this.connector.deleteAll(this.model, where, options);
   }
 
   deleteById(id: ID, options?: Options): Promise<number> {
-    return this.connector.deleteById(this.model, id, options);
+    if (typeof this.connector.deleteById === 'function') {
+      return this.connector.deleteById(this.model, id, options);
+    } else {
+      let where = {};
+      where[this.model.definition] = id;
+      return this.deleteAll({}, options);
+    }
   }
 
   count(where?: Where, options?: Options): Promise<number> {

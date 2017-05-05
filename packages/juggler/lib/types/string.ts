@@ -29,7 +29,7 @@ export class StringType implements Type<string> {
     return String(value);
   }
 
-  serialize(value: string) {
+  serialize(value: string|null|undefined) {
     return value;
   }
 }
