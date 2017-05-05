@@ -1,34 +1,31 @@
-/**
- * A constructor
- */
-export type Constructor<T> = new (...args: any[]) => T;
+import {Class} from './common';
 
 /**
  * Interface for functions that can mix properties/methods into a base class
  */
 export interface MixinFunc {
-  <BC extends Constructor<{}>>(Base: BC): BC;
+  <BC extends Class<{}>>(Base: BC): BC;
 }
 
 export class MixinBuilder {
-  constructor(public baseClass) {
+  constructor(public baseClass: Class<any>) {
   }
 
   with(...mixins: MixinFunc[]) {
     return mixins.reduce((c, mixin) => mixin(c), this.baseClass);
   }
 
-  static mix(baseClass) {
+  static mix(baseClass: Class<any>) {
     return new MixinBuilder(baseClass);
   }
 }
 
 
-function extend<T extends Constructor<{}>>(superClass: T, ...mixins: Constructor<{}>[]): T {
+function extend<T extends Class<{}>>(superClass: T, ...mixins: Class<{}>[]): T {
   const mixed = class extends superClass {
   };
   Object.assign(mixed, ...mixins);
-  let prototypes: Constructor<{}>[] = mixins.map((c) => c.prototype);
+  let prototypes: Class<{}>[] = mixins.map((c) => c.prototype);
   Object.assign(mixed.prototype, ...prototypes);
   return mixed;
 }
