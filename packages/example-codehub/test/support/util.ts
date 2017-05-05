@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {supertest} from 'testlab';
+import {supertest} from '@loopback/testlab';
 import {CodeHubApplication} from '../../src/CodeHubApplication';
 
 export async function createClientForApp(app: CodeHubApplication) {

@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { CodeHubApplication } from 'example-codehub/src/CodeHubApplication';
-import {expect, supertest as request} from 'testlab';
-import * as util from 'example-codehub/test/support/util';
+import { CodeHubApplication } from '../../src/CodeHubApplication';
+import {expect, supertest as request} from '@loopback/testlab';
+import * as util from '../support/util';
 
 describe('users', () => {
   let app: CodeHubApplication;
