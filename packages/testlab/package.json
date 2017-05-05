@@ -17,7 +17,7 @@
   "license": "MIT",
   "devDependencies": {
     "mocha": "^3.3.0",
-    "typescript": "^2.2.2"
+    "typescript": "^2.3.0"
   },
   "dependencies": {
     "@types/sinon": "^1.16.34",

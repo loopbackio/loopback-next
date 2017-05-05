@@ -31,6 +31,6 @@
     "url": "https://github.com/strongloop/loopback-next.git"
   },
   "devDependencies": {
-    "typescript": "^2.3.2"
+    "typescript": "^2.3.0"
   }
 }
