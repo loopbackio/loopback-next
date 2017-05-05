@@ -1,3 +1,5 @@
+import {Options} from './common';
+
 /**
  * This module defines the key classes representing building blocks for Domain
  * Driven Design.
@@ -55,9 +57,11 @@ export abstract class Model {
   /**
    * Convert to a plain object as DTO
    */
-  toObject(options?: Object): Object {
+  toObject(options?: Options): Object {
     return {};
   }
+
+  [prop: string]: any;
 }
 
 /**
@@ -80,7 +84,7 @@ export abstract class Entity extends Model {
     if (idProps.length === 0) {
       return this[idProps[0].name];
     }
-    let idObj = {};
+    let idObj = {} as any;
     for (let idProp of idProps) {
       idObj[idProp.name] = this[idProp.name];
     }

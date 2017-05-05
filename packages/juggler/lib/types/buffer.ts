@@ -1,5 +1,6 @@
 import * as util from 'util';
 import {Type} from './type';
+import {Options} from '../common';
 
 /**
  * Buffer (binary) type
@@ -23,7 +24,7 @@ export class BufferType implements Type<Buffer> {
     return false;
   }
 
-  coerce(value: any, options) {
+  coerce(value: any, options?: Options) {
     if (value == null) return value;
     if (Buffer.isBuffer(value)) return value as Buffer;
     if (typeof value === 'string') {
@@ -37,9 +38,9 @@ export class BufferType implements Type<Buffer> {
     throw new TypeError(msg);
   }
 
-  serialize(value: Buffer, options) {
+  serialize(value: Buffer, options?: Options) {
     if (value == null) return value;
-    let encoding = options.encoding || 'base64';
+    let encoding = options && options.encoding || 'base64';
     return value.toString(encoding);
   }
 }
