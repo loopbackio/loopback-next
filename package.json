@@ -14,7 +14,7 @@
     "@types/node": "^7.0.4",
     "@types/request": "0.0.40",
     "@types/request-promise": "^4.1.33",
-    "lerna": "2.0.0-beta.38",
+    "lerna": "^2.0.0-rc.4",
     "mocha": "^3.2.0",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
