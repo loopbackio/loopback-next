@@ -1,7 +1,7 @@
 import {Entity, Model} from './model';
-import {Constructor, Options} from './common';
+import {Class, ObjectType, AnyObject, Options} from './common';
 import {DataSource} from './datasource';
-import {CrudConnector} from './crud-connector';
+import {CrudConnector, EntityData} from './crud-connector';
 import {Fields, Filter, Where, Operators, Inclusion} from './query';
 
 export interface Repository<T extends Model> {
@@ -16,7 +16,7 @@ export interface ValueObjectRepository<T extends Model> extends Repository<T> {
    * @param value
    * @param options
    */
-  create(value: T, options?: Options): Promise<T>;
+  create(value: ObjectType<T>, options?: Options): Promise<T>;
 
   /**
    * Find matching records
@@ -31,7 +31,7 @@ export interface ValueObjectRepository<T extends Model> extends Repository<T> {
    * @param where
    * @param options
    */
-  updateAll(data: {}, where?: Where, options?: Options): Promise<number>;
+  updateAll(data: ObjectType<T>, where?: Where, options?: Options): Promise<number>;
 
   /**
    * Delete matching records
@@ -64,21 +64,21 @@ extends EntityRepository<T, ID> {
    * @param entity
    * @param options
    */
-  create(entity: T, options?: Options): Promise<T>;
+  create(entity: ObjectType<T>, options?: Options): Promise<T>;
 
   /**
    * Create all entities
    * @param entities
    * @param options
    */
-  createAll(entities: T[], options?: Options): Promise<T[]>;
+  createAll(entities: ObjectType<T>[], options?: Options): Promise<T[]>;
 
   /**
    *
    * @param entity
    * @param options
    */
-  save(entity: T, options?: Options): Promise<T>;
+  save(entity: ObjectType<T>, options?: Options): Promise<T>;
 
   /**
    *
@@ -99,14 +99,14 @@ extends EntityRepository<T, ID> {
    * @param entity
    * @param options
    */
-  update(entity: T, options?: Options): Promise<boolean>;
+  update(entity: ObjectType<T>, options?: Options): Promise<boolean>;
 
   /**
    *
    * @param entity
    * @param options
    */
-  delete(entity: T, options?: Options): Promise<boolean>;
+  delete(entity: ObjectType<T>, options?: Options): Promise<boolean>;
 
   /**
    *
@@ -114,7 +114,7 @@ extends EntityRepository<T, ID> {
    * @param where
    * @param options
    */
-  updateAll(data: {}, where?: Where, options?: Options): Promise<number>;
+  updateAll(data: ObjectType<T>, where?: Where, options?: Options): Promise<number>;
 
   /**
    *
@@ -122,7 +122,7 @@ extends EntityRepository<T, ID> {
    * @param id
    * @param options
    */
-  updateById(id: ID, data: {}, options?: Options): Promise<number>;
+  updateById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean>;
 
   /**
    *
@@ -130,7 +130,7 @@ extends EntityRepository<T, ID> {
    * @param id
    * @param options
    */
-  replaceById(id: ID, data: {}, options?: Options): Promise<number>;
+  replaceById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean>;
 
   /**
    *
@@ -144,7 +144,7 @@ extends EntityRepository<T, ID> {
    * @param id
    * @param options
    */
-  deleteById(id: ID, options?: Options): Promise<number>;
+  deleteById(id: ID, options?: Options): Promise<boolean>;
 
   /**
    * Count the matching records
@@ -161,24 +161,26 @@ export class CrudRepositoryImpl<T extends Entity, ID>
 implements EntityCrudRepository<T, ID> {
   private connector: CrudConnector;
 
-  constructor(public dataSource: DataSource, public model: Constructor<T>) {
+  constructor(public dataSource: DataSource, public model: Class<T>) {
     this.connector = dataSource.connector as CrudConnector;
   }
 
-  create(entity: T, options?: Options): Promise<T> {
+  create(entity: ObjectType<T>, options?: Options): Promise<T> {
     return this.connector.create(this.model, entity, options);
   }
 
-  createAll(entities: T[], options?: Options): Promise<T[]> {
+  createAll(entities: ObjectType<T>[], options?: Options): Promise<T[]> {
     return this.connector.create(this.model, entities, options);
   }
 
-  save(entity: T, options?: Options): Promise<T> {
+  save(entity: ObjectType<T>, options?: Options): Promise<T> {
     if (typeof this.connector.save === 'function') {
       return this.connector.save(this.model, entity, options);
     } else {
       if(entity.getId() != null) {
-        return this.replaceById(entity.getId(), entity, options);
+        return this.replaceById(entity.getId(), entity, options).
+        then((result: boolean) => result? Promise.resolve(entity):
+        Promise.reject(new Error('Not found')));
       } else {
         return this.create(entity, options);
       }
@@ -193,39 +195,54 @@ implements EntityCrudRepository<T, ID> {
     if (typeof this.connector.findById === 'function') {
       return this.connector.findById(this.model, id, options);
     }
+    return this.connector.find(this.model, {where: {id: id}}, options).
+    then((entities: T[]) => {
+      return entities[0];
+    });
   }
 
-  update(entity: T, options?: Options): Promise<boolean> {
-    return this.connector.updateById(this.model, entity.getId(), options);
+  update(entity: ObjectType<T>, options?: Options): Promise<boolean> {
+    return this.updateById(entity.getId(), entity, options);
   }
 
-  delete(entity: T, options?: Options): Promise<boolean> {
-    return this.connector.deleteById(this.model, entity.getId(), options);
+  delete(entity: ObjectType<T>, options?: Options): Promise<boolean> {
+    return this.deleteById(entity.getId(), options);
   }
 
-  updateAll(data: {}, where?: Where, options?: Options): Promise<number> {
-    return this.connector.update(this.model, where, options);
+  updateAll(data: ObjectType<T>, where?: Where, options?: Options): Promise<number> {
+    return this.connector.updateAll(this.model, data, where, options);
   }
 
-  updateById(id: ID, data: {}, options?: Options): Promise<number> {
-    return this.connector.updateById(this.model, id, options);
+  updateById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean> {
+    if (typeof this.connector.updateById === 'function') {
+      return this.connector.updateById(this.model, id, data, options);
+    }
+    return this.updateAll(data, {id: id}, options).
+      then((count:number) => count > 0);
   }
 
-  replaceById(id: ID, data: {}, options?: Options): Promise<number> {
-    return this.connector.replaceById(this.model, id, options);
+  replaceById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean> {
+    if (typeof this.connector.replaceById === 'function') {
+      return this.connector.replaceById(this.model, id, data, options);
+    }
+    // FIXME: populate inst with all properties
+    let inst = data;
+    return this.updateAll(data, {id: id}, options).
+      then((count:number) => count > 0);
   }
 
   deleteAll(where?: Where, options?: Options): Promise<number> {
     return this.connector.deleteAll(this.model, where, options);
   }
 
-  deleteById(id: ID, options?: Options): Promise<number> {
+  deleteById(id: ID, options?: Options): Promise<boolean> {
     if (typeof this.connector.deleteById === 'function') {
       return this.connector.deleteById(this.model, id, options);
     } else {
-      let where = {};
+      let where = {} as AnyObject;
       where[this.model.definition] = id;
-      return this.deleteAll({}, options);
+      return this.deleteAll({}, options).
+        then((count:number) => count > 0);;
     }
   }
 
