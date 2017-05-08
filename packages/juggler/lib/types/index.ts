@@ -1,3 +1,15 @@
+/**
+ * Built-in types for LoopBack modeling
+ * - Type: abstract base type
+ * - StringType: string
+ * - BooleanType: boolean
+ * - NumberType: number
+ * - DateType: Date
+ * - BufferType: Buffer
+ * - AnyType: any
+ * - ArrayType: Array<T>
+ * - UnionType: Union of types
+ */
 import {Type} from './type';
 import {StringType} from './string';
 import {BooleanType} from './boolean';
