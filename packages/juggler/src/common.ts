@@ -6,7 +6,10 @@
  * Interface for classes with `new` operator
  */
 export interface Class<T> {
-  new (...args: any[]): T
+  // new MyClass(...args) ==> T
+  new (...args: any[]): T;
+  // Other static properties/operations
+  [property: string]: any;
 }
 
 /**
@@ -25,7 +28,7 @@ export type Constructor<T> = Class<T> | ConstructorFunction<T>;
  * Objects with open properties
  */
 export interface AnyObject {
-  [property: string]: any,
+  [property: string]: any;
 };
 
 export type ObjectType<T> = T | AnyObject;

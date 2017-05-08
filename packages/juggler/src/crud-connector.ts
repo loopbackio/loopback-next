@@ -29,7 +29,7 @@ export interface CrudConnector extends Connector {
     Promise<EntityData[]>;
 
   findById?(modelClass: Class<Entity>, id: any, options?: Options):
-    Promise<EntityData[]>;
+    Promise<EntityData>;
 
   update?(modelClass: Class<Entity>, entity: EntityData, options?: Options):
     Promise<boolean>;
@@ -45,10 +45,10 @@ export interface CrudConnector extends Connector {
     Promise<number>;
 
   updateById?(modelClass: Class<Entity>, id: any, data: EntityData,
-    options?: Options): Promise<number>;
+    options?: Options): Promise<boolean>;
 
   replaceById?(modelClass: Class<Entity>, id: any, data: EntityData,
-    options?: Options): Promise<number>
+    options?: Options): Promise<boolean>
 
   /**
    * Delete matching entities
@@ -57,7 +57,7 @@ export interface CrudConnector extends Connector {
     Promise<number>;
 
   deleteById?(modelClass: Class<Entity>, id: any, options?: Options):
-    Promise<number>;
+    Promise<boolean>;
 
    /**
     * Count matching entities
