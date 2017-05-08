@@ -4,8 +4,8 @@ import {DataSource} from './datasource';
 
 /**
  * Decorator for model definitions
- * @param model
- * @param dataSource
+ * @param model Model name or class
+ * @param dataSource Data
  * @returns {(target:any)}
  */
 export function repository(model: string | Class<Model>,
