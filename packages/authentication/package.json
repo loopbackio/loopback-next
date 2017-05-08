@@ -16,8 +16,8 @@
     "reflect-metadata": "^0.1.10"
   },
   "devDependencies": {
-    "@loopback/openapi-spec-builder": "^4.0.0-alpha.1",
-    "@loopback/testlab": "^4.0.0-alpha.2",
+    "@loopback/openapi-spec-builder": "^4.0.0-alpha.2",
+    "@loopback/testlab": "^4.0.0-alpha.3",
     "mocha": "^3.2.0"
   }
 }

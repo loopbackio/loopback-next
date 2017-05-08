@@ -12,12 +12,12 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
-    "@loopback/core": "^4.0.0-alpha.3",
+    "@loopback/core": "^4.0.0-alpha.5",
     "@types/http-errors": "^1.5.34",
     "http-errors": "^1.6.1"
   },
   "devDependencies": {
-    "@loopback/testlab": "^4.0.0-alpha.2",
+    "@loopback/testlab": "^4.0.0-alpha.3",
     "mocha": "^3.2.0"
   }
 }
