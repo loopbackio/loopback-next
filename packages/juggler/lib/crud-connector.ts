@@ -2,49 +2,66 @@ import {Connector} from './connector';
 import {Options} from './common';
 import {Entity} from './model';
 import {Filter, Where} from './query';
-import {Constructor} from './common';
+import {Class, ObjectType} from './common';
 
-export type Data = Entity | {};
+export type EntityData = ObjectType<Entity>;
 
+/**
+ * CRUD operations for connector implementations
+ */
 export interface CrudConnector extends Connector {
   /**
    * Create a new entity
    */
-  create(modelClass: Constructor<Entity>, entity: Data, options?: Options): Promise<Data>;
+  create(modelClass: Class<Entity>, entity: EntityData, options?: Options):
+    Promise<EntityData>;
 
-  createAll?(modelClass: Constructor<Entity>, entities: Data[], options?: Options): Promise<Data[]>;
+  createAll?(modelClass: Class<Entity>, entities: EntityData[], options?: Options):
+    Promise<EntityData[]>;
 
-  save?(modelClass: Constructor<Entity>, entity: Data, options?: Options): Promise<Data>;
+  save?(modelClass: Class<Entity>, entity: EntityData, options?: Options):
+    Promise<EntityData>;
 
   /**
    * Find matching entities by the filter
    */
-  find(modelClass: Constructor<Entity>, filter?: Filter, options?: Options): Promise<Data[]>;
+  find(modelClass: Class<Entity>, filter?: Filter, options?: Options):
+    Promise<EntityData[]>;
 
-  findById?(modelClass: Constructor<Entity>, id: any, options?: Options): Promise<Data[]>;
+  findById?(modelClass: Class<Entity>, id: any, options?: Options):
+    Promise<EntityData[]>;
 
-  update?(modelClass: Constructor<Entity>, entity: Data, options?: Options): Promise<boolean>;
+  update?(modelClass: Class<Entity>, entity: EntityData, options?: Options):
+    Promise<boolean>;
 
-  delete?(modelClass: Constructor<Entity>, entity: Data, options?: Options): Promise<boolean>;
+  delete?(modelClass: Class<Entity>, entity: EntityData, options?: Options):
+    Promise<boolean>;
 
   /**
    * Update matching entities
    */
-  updateAll(modelClass: Constructor<Entity>, data: Data, where?: Where, options?: Options): Promise<number>;
+  updateAll(modelClass: Class<Entity>, data: EntityData,
+    where?: Where, options?: Options):
+    Promise<number>;
 
-  updateById?(modelClass: Constructor<Entity>, id: any, data: {}, options?: Options): Promise<number>;
+  updateById?(modelClass: Class<Entity>, id: any, data: EntityData,
+    options?: Options): Promise<number>;
 
-  replaceById?(modelClass: Constructor<Entity>, id: any, data: {}, options?: Options): Promise<number>
+  replaceById?(modelClass: Class<Entity>, id: any, data: EntityData,
+    options?: Options): Promise<number>
 
   /**
    * Delete matching entities
    */
-  deleteAll(modelClass: Constructor<Entity>, where?: Where, options?: Options): Promise<number>;
+  deleteAll(modelClass: Class<Entity>, where?: Where, options?: Options):
+    Promise<number>;
 
-  deleteById?(modelClass: Constructor<Entity>, id: any, options?: Options): Promise<number>;
+  deleteById?(modelClass: Class<Entity>, id: any, options?: Options):
+    Promise<number>;
 
    /**
     * Count matching entities
     */
-  count(modelClass: Constructor<Entity>, where?: Where, options?: Options): Promise<number>;
+  count(modelClass: Class<Entity>, where?: Where, options?: Options):
+    Promise<number>;
 }
