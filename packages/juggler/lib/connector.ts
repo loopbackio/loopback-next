@@ -1,7 +1,7 @@
 import {Model} from './model';
 
 /**
- * Minimum contract for connectors
+ * Common properties/operations for connectors
  */
 export interface Connector {
   name: string; // Name/type of the connector

@@ -1,4 +1,8 @@
 /**
+ * Common types/interfaces such as Class/Constructor/Options/Callback
+ */
+
+/**
  * A interface for classes
  */
 export interface Class<T> {
@@ -11,9 +15,21 @@ export interface Class<T> {
 export type Constructor<T> = Class<T> | ((...args: any[]) => T);
 
 /**
- * Type alias for options object
+ * Objects with open properties
  */
-export interface Options {
+export interface AnyObject {
   [property: string]: any,
 };
+
+export type ObjectType<T> = T|AnyObject;
+
+/**
+ * Type alias for options object
+ */
+export type Options = AnyObject|null|undefined;
+
+/**
+ * Type alias for Node.js callback functions
+ */
+export type Callback<T> = (err:Error|string|null|undefined, result:T) => void;
 
