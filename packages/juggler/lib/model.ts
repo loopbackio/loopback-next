@@ -1,4 +1,5 @@
 import {Options} from './common';
+import {Type} from './types';
 
 /**
  * This module defines the key classes representing building blocks for Domain
@@ -11,7 +12,7 @@ import {Options} from './common';
  */
 export class ModelProperty {
   name: string;
-  type: string | Function | Object; // For example, 'string', String, or {}
+  type: string | Function | Object | Type<any>; // For example, 'string', String, or {}
   json?: PropertyForm;
   store?: PropertyForm;
   [attribute: string]: any; // Other attributes
