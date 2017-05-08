@@ -18,7 +18,7 @@ export enum Operators {
 /**
  * Where object
  */
-export class Where {
+export interface Where {
   and?: Where[]; // AND
   or?: Where[]; // OR
   [property: string]: any; // Other criteria
@@ -32,21 +32,21 @@ export type Direction = 'ASC' | 'DESC';
 /**
  * Order by
  */
-export class Order {
+export interface Order {
   [property: string]: Direction;
 }
 
 /**
  * Selection of fields
  */
-export class Fields {
+export interface Fields {
   [property: string]: boolean;
 }
 
 /**
  * Inclusion of related items
  */
-export class Inclusion {
+export interface Inclusion {
   relation: string;
   scope: Filter
 }
@@ -54,7 +54,7 @@ export class Inclusion {
 /**
  * Query filter object
  */
-export class Filter {
+export interface Filter {
   where?: Where;
   fields?: Fields;
   order?: Order[];
