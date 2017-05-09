@@ -1,5 +1,5 @@
-import {EntityCrudRepository} from '../../lib/persistence';
-import {repository} from '../../lib/decorator';
+import {EntityCrudRepository} from '../../src/repository';
+import {repository} from '../../src/decorator';
 import {Customer} from '../models/customer';
 
 /**
