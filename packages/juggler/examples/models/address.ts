@@ -1,4 +1,4 @@
-import {ValueObject} from "../../lib/model";
+import {ValueObject} from "../../src/model";
 
 export class Address extends ValueObject {
   street: string;
