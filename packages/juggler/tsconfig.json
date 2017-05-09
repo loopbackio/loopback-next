@@ -4,7 +4,8 @@
     "outDir": "./lib6"
   },
   "include": [
-    "src"
+    "src",
+    "examples"
   ],
   "exclude": [
     "node_modules"

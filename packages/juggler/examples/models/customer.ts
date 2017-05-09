@@ -1,5 +1,5 @@
-import {model} from '../../lib/decorator';
-import {Entity, ModelProperty} from '../../lib/model';
+import {model} from '../../src/decorator';
+import {Entity, ModelProperty} from '../../src/model';
 
 @model(require('./customer.definition'))
 export class Customer extends Entity {

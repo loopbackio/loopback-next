@@ -1,5 +1,5 @@
-import {Entity} from "../../lib/model";
-import {property, model, belongsTo} from "../../lib/decorator";
+import {Entity} from "../../src/model";
+import {property, model, belongsTo} from "../../src/decorator";
 import {Customer} from './customer'
 
 @model()
