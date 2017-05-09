@@ -1,14 +1,20 @@
 {
   "name": "@loopback/authentication",
   "version": "4.0.0-alpha.1",
-  "description": "",
-  "private": true,
+  "description": "A LoopBack component for authentication support.",
   "main": "index",
   "scripts": {
     "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
+    "build": "npm run build:lib && npm run build:lib6",
+    "build:lib": "tsc --target es2017 --outDir lib",
+    "build:lib6": "tsc --target es2015 --outDir lib6",
+    "clean": "rm -f loopback-authentication*.tgz && rm -rf lib* && rm -rf package",
     "integration": "mocha --opts ../../test/mocha.opts 'test/integration/**/*.ts'",
+    "prepublish": "npm run build",
+    "pretest": "npm run build",
     "test": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts' 'test/integration/**/*.ts' 'test/acceptance/**/*.ts'",
-    "unit": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts'"
+    "unit": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts'",
+    "verify": "npm pack && tar xf loopback-authentication*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
   "license": "MIT",
@@ -19,5 +25,20 @@
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.2",
     "@loopback/testlab": "^4.0.0-alpha.3",
     "mocha": "^3.2.0"
+  },
+  "keywords": [
+    "LoopBack",
+    "Authentication"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "lib",
+    "lib6"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
   }
 }
