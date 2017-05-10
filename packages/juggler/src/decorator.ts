@@ -9,7 +9,7 @@ import {DataSource} from './datasource';
  * @returns {(target:any)}
  */
 export function repository(model: string | Class<Model>,
-  dataSource: string | DataSource) {
+  dataSource?: string | DataSource) {
   return function(target: any, key?: string, descriptor?: PropertyDescriptor | number) {
     // Apply model definition to the model class
   }
