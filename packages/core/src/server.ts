@@ -3,52 +3,31 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import http = require('http');
-import bluebird = require('bluebird');
-import {Context} from '@loopback/context';
 import {Application} from './application';
 import {SwaggerRouter} from './router/SwaggerRouter';
+import {Sequence} from './Sequence';
 
+import {Context} from '@loopback/context';
+
+import bluebird = require('bluebird');
 const debug = require('debug')('loopback:Server');
-
-export interface ServerConfig {
-  port : number;
-}
-
-export enum ServerState {
-  cold,
-  starting,
-  listening,
-  crashed,
-  stopped,
-}
+import {createServer, ServerRequest, ServerResponse} from 'http';
 
 export class Server extends Context {
-  public config: ServerConfig;
-  // get runtime to enforce AppConfig as AppConfig
-  constructor(config?: ServerConfig) {
-    super();
-    this.config = config || {port: 3000};
-  }
+  public state: ServerState;
 
-  public state: ServerState = ServerState.cold;
+  constructor(public config: ServerConfig = {port: 3000}) {
+    super();
+    this.state = ServerState.cold;
+  }
 
   async start() {
     this.state = ServerState.starting;
 
-    // TODO(bajtos) support hot-reloading of controllers
-    // after the app started. The idea is to rebuild the SwaggerRouter
-    // instance whenever a controller was added/deleted.
-    const router = new SwaggerRouter();
-
-    const apps = this.find('applications.*');
-    for (const appBinding of apps) {
-      debug('Registering app controllers for %j', appBinding.key);
-      const app = await Promise.resolve(appBinding.getValue(this)) as Application;
-      app.mountControllers(router);
-    }
-
-    const server = http.createServer(router.handler);
+    const server = createServer(async (req: ServerRequest, res: ServerResponse) => {
+      const sequence = new Sequence();
+      await sequence.run(this, req, res);
+    });
 
     // NOTE(bajtos) bluebird.promisify looses type information about the original function
     // As a (temporary?) workaround, I am casting the result to "any function"
@@ -61,4 +40,16 @@ export class Server extends Context {
     this.config.port = server.address().port;
     this.state = ServerState.listening;
   }
+}
+
+export interface ServerConfig {
+  port: number;
+}
+
+export enum ServerState {
+  cold,
+  starting,
+  listening,
+  crashed,
+  stopped,
 }

@@ -5,6 +5,7 @@
 
 import {ServerRequest as Request, ServerResponse as Response} from 'http';
 import {OpenApiSpec, OperationObject, ParameterObject} from '@loopback/openapi-spec';
+import {invoke} from '../invoke';
 import * as assert from 'assert';
 import * as url from 'url';
 import * as pathToRegexp from 'path-to-regexp';
@@ -190,37 +191,12 @@ class Endpoint {
           .then(body => buildOperationArguments(this._spec, request, pathParams, body))
           .then(
             args => {
-              this._invoke(controller, operationName, args, response, next);
+              invoke(controller, operationName, args, response, next);
             },
             err => {
               debug('Cannot parse arguments of operation %s: %s', operationName, err.stack || err);
               next(err);
             });
-      });
-  }
-
-  private _invoke(controller: Object, operationName: string, args: OperationArgs, response: Response, next: HandlerCallback) {
-    debug('invoke %s with arguments', operationName, args);
-
-    // TODO(bajtos) support sync operations that return the value directly (no Promise)
-    (controller as {[opName: string]: Function})[operationName](...args).then(
-      function onSuccess(result: OperationRetval) {
-        debug('%s() result -', operationName, result);
-        // TODO(bajtos) handle non-string results via JSON.stringify
-        if (result) {
-          // TODO(ritch) remove this, should be configurable
-          response.setHeader('Content-Type', 'application/json');
-          // TODO(bajtos) handle errors - JSON.stringify can throw
-          if (typeof result === 'object')
-            result = JSON.stringify(result);
-          response.write(result);
-        }
-        response.end();
-        // Do not call next(), the request was handled.
-      },
-      function onError(err: Error) {
-        debug('%s() failed - ', operationName, err.stack || err);
-        next(err);
       });
   }
 }
