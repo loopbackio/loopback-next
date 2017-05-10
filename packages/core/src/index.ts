@@ -4,29 +4,15 @@
 // License text available at https://opensource.org/licenses/MIT
 
 // package dependencies
-export {
-  Application,
-} from './application';
-
-export {
-  api,
-} from './router/metadata';
-
-export {
-  Server,
-  ServerConfig,
-  ServerState,
-} from './server';
+export {Application} from './application';
+export {Component} from './Component';
+export {api} from './router/metadata';
+export {Sequence} from './Sequence';
+export {Server, ServerConfig, ServerState} from './server';
 
 // loopback dependencies
-export {
-  inject,
-} from '@loopback/context';
-
+export {inject} from '@loopback/context';
 export * from '@loopback/openapi-spec';
 
 // external dependencies
-export {
-  ServerRequest,
-  ServerResponse,
-} from 'http';
+export {ServerRequest, ServerResponse} from 'http';

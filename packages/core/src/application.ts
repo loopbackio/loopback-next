@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding, Context, Constructor} from '@loopback/context';
+import {Component, Sequence} from '.';
 import * as http from 'http';
 import {SwaggerRouter} from './router/SwaggerRouter';
 import {getApiSpec} from './router/metadata';
@@ -11,6 +12,30 @@ import {getApiSpec} from './router/metadata';
 const debug = require('debug')('loopback:Application');
 
 export class Application extends Context {
+  constructor(public appConfig?: AppConfig) {
+    super();
+
+    if (appConfig && appConfig.components) {
+      for (const component of appConfig.components) {
+        // TODO(superkhau): Need to figure a way around this hack,
+        //  `componentClassName.constructor.name` + `componentClassName.name`
+        //  doesn't work
+        const componentClassName = component.toString().split(' ')[1];
+        this.bind(`component.${componentClassName}`).toClass(component);
+      }
+    }
+
+    if (appConfig && appConfig.sequences) {
+      for (const sequence of appConfig.sequences) {
+        // TODO(superkhau): Need to figure a way around this hack,
+        //   `componentClassName.constructor.name` + `componentClassName.name`
+        //   doesn't work
+        const sequenceClassName = sequence.toString().split(' ')[1];
+        this.bind(`sequence.${sequenceClassName}`).toClass(sequence);
+      }
+    }
+  }
+
   public mountControllers(router: SwaggerRouter) {
     this.find('controllers.*').forEach(b => {
       debug('mounting controller %j', b.key);
@@ -49,4 +74,9 @@ export class Application extends Context {
   public controller<T>(controllerCtor: Constructor<T>): Binding {
     return this.bind('controllers.' + controllerCtor.name).toClass(controllerCtor);
   }
+}
+
+export interface AppConfig {
+  components: Array<Constructor<Component>>;
+  sequences: Array<Constructor<Sequence>>;
 }
