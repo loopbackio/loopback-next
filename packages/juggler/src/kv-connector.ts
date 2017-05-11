@@ -13,16 +13,16 @@ export interface KVConnector<T extends Entity> extends Connector {
   /**
    * Delete an entry by key
    * @param modelClass
-   * @param key 
+   * @param key
    * @param options
    */
   delete(modelClass: Class<Entity>, key: string, options?: Options):
-    Promise<number>;
-  
+    Promise<boolean>;
+
   /**
    * Delete all entries
    * @param modelClass
-   * @param key 
+   * @param key
    * @param options
    */
   deleteAll(modelClass: Class<Entity>, options?: Options):
@@ -31,7 +31,7 @@ export interface KVConnector<T extends Entity> extends Connector {
   /**
    * Get an entry by key
    * @param modelClass
-   * @param key 
+   * @param key
    * @param options
    */
   get(modelClass: Class<Entity>, key: string, options?: Options):
@@ -40,7 +40,7 @@ export interface KVConnector<T extends Entity> extends Connector {
   /**
    * Set an entry with key/value
    * @param modelClass
-   * @param key 
+   * @param key
    * @param options
    */
   set(modelClass: Class<Entity>, key: string, value: EntityData,
@@ -49,7 +49,7 @@ export interface KVConnector<T extends Entity> extends Connector {
   /**
    * Set up ttl for an entry by key
    * @param modelClass
-   * @param key 
+   * @param key
    * @param options
    */
   expire(modelClass: Class<Entity>, key: string, ttl: number,
@@ -58,7 +58,7 @@ export interface KVConnector<T extends Entity> extends Connector {
   /**
    * Get ttl for an entry by key
    * @param modelClass
-   * @param key 
+   * @param key
    * @param options
    */
   ttl?(modelClass: Class<Entity>, key: string, ttl: number,
@@ -67,7 +67,7 @@ export interface KVConnector<T extends Entity> extends Connector {
   /**
    * Fetch all keys
    * @param modelClass
-   * @param key 
+   * @param key
    * @param options
    */
   keys?(modelClass: Class<Entity>, options?: Options): Promise<string[]>;
