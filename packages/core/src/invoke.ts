@@ -14,11 +14,11 @@ type OperationRetval = any;
 // tslint:enable:no-any
 
 export function invoke(
-  controller: Object,
-  operationName: string,
-  args: OperationArgs,
-  response: Response,
-  next: HandlerCallback,
+  controller: Object, // replace with controllerToInvoke
+  operationName: string, // replace with operationToInvoke
+  args: OperationArgs, // replace with operationArgsToInvokeWith
+  response: Response, // not needed and responsibility should be in the sequence.send
+  next: HandlerCallback, // not requird
 ) {
   debug('invoke %s with arguments', operationName, args);
 

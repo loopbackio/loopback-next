@@ -36,6 +36,13 @@ export class Application extends Context {
     }
   }
 
+  // http handler which basically calls invoke sequence.run
+  public async httpHandle(req: http.ServerRequest, res: http.ServerResponse) {
+    // TODO(superkhau) determine whether a user defined sequence needs to run instead of default
+    const sequence = new Sequence(this);
+    await sequence.run(req, res);
+  }
+
   public mountControllers(router: SwaggerRouter) {
     this.find('controllers.*').forEach(b => {
       debug('mounting controller %j', b.key);

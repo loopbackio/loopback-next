@@ -3,9 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application} from './application';
+import {Application} from './Application';
 import {SwaggerRouter} from './router/SwaggerRouter';
 import {Sequence} from './Sequence';
+import {requestParser} from './request-parser';
 
 import {Context} from '@loopback/context';
 
@@ -25,8 +26,10 @@ export class Server extends Context {
     this.state = ServerState.starting;
 
     const server = createServer(async (req: ServerRequest, res: ServerResponse) => {
-      const sequence = new Sequence();
-      await sequence.run(this, req, res);
+      // get app instance
+      const app = await this.get('application'); // in the test it's myApp for now
+      // app will delegate to sequence
+      app.httpHandle(req, res);
     });
 
     // NOTE(bajtos) bluebird.promisify looses type information about the original function

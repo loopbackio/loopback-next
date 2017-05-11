@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 // package dependencies
-export {Application} from './application';
+export {Application} from './Application';
 export {Component} from './Component';
 export {api} from './router/metadata';
 export {Sequence} from './Sequence';
-export {Server, ServerConfig, ServerState} from './server';
+export {Server, ServerConfig, ServerState} from './Server';
 
 // loopback dependencies
 export {inject} from '@loopback/context';
