@@ -3,7 +3,7 @@
  */
 
 /**
- * Interface for classes with `new` operator
+ * Interface for classes with `new` operator and static properties/methods
  */
 export interface Class<T> {
   // new MyClass(...args) ==> T
@@ -13,7 +13,13 @@ export interface Class<T> {
 }
 
 /**
- * Interface for constructor functions without `new` operator
+ * Interface for constructor functions without `new` operator, for example,
+ * ```
+ * function Foo(x) {
+ *   if (!(this instanceof Foo)) { return new Foo(x); }
+ *   this.x = x;
+ * }
+ * ```
  */
 export interface ConstructorFunction<T> {
   (...args: any[]): T;
