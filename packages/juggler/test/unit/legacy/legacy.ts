@@ -5,7 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 
-import {jugglerModule, bindModel, DataSource, Model, juggler} from '../../../lib/legacy';
+import {jugglerModule, bindModel, DataSource, juggler} from '../../../src/legacy';
 
 describe('legacy loopback-datasource-juggler', function() {
   var ds:juggler.DataSource;
@@ -20,8 +20,11 @@ describe('legacy loopback-datasource-juggler', function() {
   });
 
   it('creates models', function() {
-    let Note = ds.createModel('note', {title: 'string', content: 'string'}, {});
+    let Note =<typeof juggler.PersistedModel>
+      ds.createModel('note', {title: 'string', content: 'string'}, {});
     let Note2 = bindModel(ds, Note);
     expect(Note2.modelName).to.eql('note');
+    expect(Note2.definition).to.eql(Note.definition);
+    expect(Note2.create).to.exactly(Note.create);
   });
 });

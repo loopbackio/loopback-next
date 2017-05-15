@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Class} from '../../../lib/common';
-import {MixinBuilder} from '../../../lib/mixin';
+import {Class} from '../../../src/common';
+import {MixinBuilder} from '../../../src/mixin';
 
 class BaseClass {
   baseProp: string = 'baseProp';
