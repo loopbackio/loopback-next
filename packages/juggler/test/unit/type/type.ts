@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import * as types from '../../../lib/types/index';
+import * as types from '../../../src/types/index';
 
 describe('types', () => {
 
