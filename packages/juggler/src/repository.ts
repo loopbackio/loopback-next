@@ -92,7 +92,7 @@ extends EntityRepository<T, ID> {
    * @param id
    * @param options
    */
-  findById(id: ID, options?: Options): Promise<T>;
+  findById(id: ID, filter?: Filter, options?: Options): Promise<T>;
 
   /**
    *
