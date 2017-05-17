@@ -17,6 +17,9 @@ export declare namespace juggler {
       (typeof ModelBase) | (typeof PersistedModel);
   }
 
+  /**
+   * Base model class
+   */
   export class ModelBase {
     static modelName: string;
     static definition: ModelDefinition;
@@ -245,7 +248,7 @@ export declare namespace juggler {
      * @param {Object} instance Model instance matching the specified ID or null if no instance matches.
      */
     static findById(id: any, filter?: Filter, options?: Options,
-      callback?: Callback<boolean>): PromiseOrVoid<boolean>;
+      callback?: Callback<boolean>): PromiseOrVoid<PersistedData>;
 
     /**
      * Find all model instances that match `filter` specification.
