@@ -15,13 +15,27 @@ export enum Operators {
   or // OR
 }
 
+export interface Condition {
+  eq?: any;
+  neq?: any;
+  gt?: any;
+  get?: any;
+  lt?: any;
+  lte?: any;
+  inq?: any[];
+  between?: any[];
+  exists?: boolean;
+  and?: Where[];
+  or?: Where[];
+}
+
 /**
  * Where object
  */
 export interface Where {
   and?: Where[]; // AND
   or?: Where[]; // OR
-  [property: string]: any; // Other criteria
+  [property: string]: Condition | any; // Other criteria
 }
 
 /**
