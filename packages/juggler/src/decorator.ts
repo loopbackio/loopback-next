@@ -1,15 +1,79 @@
 import {Class} from "./common";
 import {Model} from "./model";
 import {DataSource} from './datasource';
+import {inject} from '@loopback/context';
+
+/**
+ * Metadata for a repository
+ */
+export class RepositoryMetadata {
+  /**
+   * Name of the predefined repository
+   */
+  name?: string;
+  /**
+   * Name of the model
+   */
+  modelName?: string;
+  /**
+   * Class of the model
+   */
+  modelClass?: Class<Model>;
+  /**
+   * Name of the data source
+   */
+  dataSourceName?: string;
+  /**
+   * Instance of the data source
+   */
+  dataSource?: DataSource;
+
+  /**
+   * Constructor for RepositoryMetadata
+   *
+   * @param model Name or class of the model. If the value is a string and
+   * `dataSource` is not present, it will treated as the name of a predefined repository
+   * @param dataSource Name or instance of the data source
+   *
+   * For example:
+   *
+   * - new RepositoryMetadata(repoName);
+   * - new RepositoryMetadata(modelName, dataSourceName);
+   * - new RepositoryMetadata(modelClass, dataSourceInstance);
+   * - new RepositoryMetadata(modelName, dataSourceInstance);
+   * - new RepositoryMetadata(modelClass, dataSourceName);
+   */
+  constructor(model: string | Class<Model>, dataSource?: string | DataSource) {
+    this.name = typeof model === 'string' && dataSource === undefined ?
+      model : undefined;
+    this.modelName = typeof model === 'string' ?
+      model : undefined;
+    this.modelClass = typeof model === 'function' ?
+      model : undefined;
+    this.dataSourceName = typeof dataSource === 'string' ?
+      dataSource : undefined;
+    this.dataSource = typeof dataSource === 'object' ?
+      dataSource : undefined;
+  }
+}
 
 /**
  * Decorator for model definitions
- * @param model Model name or class
- * @param dataSource Data
+ * @param model Name of the repo or name/class of the model
+ * @param dataSource Name or instance of the data source
  * @returns {(target:any)}
+ *
+ * For example:
+ *
+ * - @repository('myCustomerRepo')
+ * - @repository('Customer', 'mysqlDataSource')
+ * - @repository(Customer, mysqlDataSource)
+ * - @repository('Customer', mysqlDataSource)
+ * - @repository(Customer, 'mysqlDataSource')
  */
 export function repository(model: string | Class<Model>,
   dataSource?: string | DataSource) {
+  let meta = new RepositoryMetadata(model, dataSource);
   return function(target: any, key?: string, descriptor?: PropertyDescriptor | number) {
     // Apply model definition to the model class
   }
