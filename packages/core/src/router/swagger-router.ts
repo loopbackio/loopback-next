@@ -13,7 +13,7 @@ import * as url from 'url';
 import * as pathToRegexp from 'path-to-regexp';
 import {HttpErrors} from '../..';
 
-const debug = require('debug')('loopback:SwaggerRouter');
+const debug = require('debug')('loopback:core:swagger-router');
 
 type HttpError = HttpErrors.HttpError;
 

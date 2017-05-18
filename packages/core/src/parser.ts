@@ -8,7 +8,7 @@ import {
   PathParameterValues,
   OperationArgs,
   ParsedRequest,
-} from './router/SwaggerRouter';
+} from './router/swagger-router';
 import {HttpErrors} from './';
 import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
 import {promisify} from './promisify';

@@ -4,12 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application} from './application';
-import {SwaggerRouter} from './router/SwaggerRouter';
-import {Sequence} from './Sequence';
+import {SwaggerRouter} from './router/swagger-router';
+import {Sequence} from './sequence';
 
 import {Context} from '@loopback/context';
 
-const debug = require('debug')('loopback:Server');
+const debug = require('debug')('loopback:core:server');
+
 import {createServer, ServerRequest, ServerResponse} from 'http';
 
 export class Server extends Context {

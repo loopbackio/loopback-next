@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {SwaggerRouter} from '../../../src/router/SwaggerRouter';
+import {SwaggerRouter} from '../../../src/router/swagger-router';
 import * as http from 'http';
 import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {OpenApiSpec, ParameterObject} from '@loopback/openapi-spec';
