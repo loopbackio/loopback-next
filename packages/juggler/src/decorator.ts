@@ -1,5 +1,6 @@
-import {Class} from "./common";
-import {Model} from "./model";
+import {Class} from './common';
+import {Model} from './model';
+import {Repository} from './repository';
 import {DataSource} from './datasource';
 import {inject} from '@loopback/context';
 
@@ -74,7 +75,8 @@ export class RepositoryMetadata {
 export function repository(model: string | Class<Model>,
   dataSource?: string | DataSource) {
   let meta = new RepositoryMetadata(model, dataSource);
-  return function(target: any, key?: string, descriptor?: PropertyDescriptor | number) {
+  return function (target: Object, key?: symbol | string,
+    descriptor?: TypedPropertyDescriptor<Repository<any>> | number) {
     // Apply model definition to the model class
   }
 }
