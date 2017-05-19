@@ -65,24 +65,29 @@ export abstract class Model {
   [prop: string]: any;
 }
 
+export interface Persistable {
+  // isNew: boolean;
+}
+
 /**
  * Base class for value objects - An object that contains attributes but has no
  * conceptual identity. They should be treated as immutable.
  */
-export abstract class ValueObject extends Model {
+export abstract class ValueObject extends Model implements Persistable {
 }
 
 /**
  * Base class for entities which have unique ids
  */
-export abstract class Entity extends Model {
+export abstract class Entity extends Model implements Persistable {
   /**
-   * Get the identity value
+   * Get the identity value. If the identity is a composite key, returns
+   * an object.
    */
   getId(): any {
     let definition = (this.constructor as typeof Entity).definition;
     let idProps = definition.idProperties();
-    if (idProps.length === 0) {
+    if (idProps.length === 1) {
       return this[idProps[0].name];
     }
     let idObj = {} as any;
@@ -90,6 +95,34 @@ export abstract class Entity extends Model {
       idObj[idProp.name] = this[idProp.name];
     }
     return idObj;
+  }
+
+  /**
+   * Get the identity as an object, such as `{id: 1}` or `{schoolId: 1, studentId: 2}`
+   */
+  getIdObject(): Object {
+    let definition = (this.constructor as typeof Entity).definition;
+    let idProps = definition.idProperties();
+    let idObj = {} as any;
+    for (let idProp of idProps) {
+      idObj[idProp.name] = this[idProp.name];
+    }
+    return idObj;
+  }
+
+  /**
+   * Build the where object for the given id
+   */
+  static buildWhereForId(id: any) {
+    let where = {} as any;
+    let idProps = this.definition.idProperties();
+    if (idProps.length === 1) {
+      where[idProps[0].name] = id;
+    }
+    for (let idProp of idProps) {
+      where[idProp.name] = id[idProp.name];
+    }
+    return where;
   }
 }
 
