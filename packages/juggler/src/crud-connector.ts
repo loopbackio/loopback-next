@@ -1,8 +1,8 @@
-import {Connector} from './connector';
-import {Options} from './common';
-import {Entity} from './model';
-import {Filter, Where} from './query';
-import {Class, ObjectType} from './common';
+import { Connector } from './connector';
+import { Options } from './common';
+import { Entity } from './model';
+import { Filter, Where } from './query';
+import { Class, ObjectType } from './common';
 
 export type EntityData = ObjectType<Entity>;
 
@@ -59,9 +59,12 @@ export interface CrudConnector extends Connector {
   deleteById?(modelClass: Class<Entity>, id: any, options?: Options):
     Promise<boolean>;
 
-   /**
-    * Count matching entities
-    */
+  /**
+   * Count matching entities
+   */
   count(modelClass: Class<Entity>, where?: Where, options?: Options):
     Promise<number>;
+
+  exists?(modelClass: Class<Entity>, id: any, options?: Options):
+    Promise<boolean>;
 }
