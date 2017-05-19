@@ -57,7 +57,12 @@ implements EntityCrudRepository<T, ID> {
   }
 
   save(entity: ObjectType<T>, options?: Options): Promise<T> {
-    return Promise.reject(new Error('Not implemented: save()'));
+    if (entity.getId() == null) {
+      return this.create(entity, options);
+    } else {
+      return this.replaceById(entity.getId, entity, options).
+        then(result => { return result ? entity : null; });
+    }
   }
 
   find(filter?: Filter, options?: Options): Promise<T[]> {
@@ -101,5 +106,9 @@ implements EntityCrudRepository<T, ID> {
 
   count(where?: Where, options?: Options): Promise<number> {
     return getPromise(this.modelClass.count(where, options));
+  }
+
+  exists(id: ID, options?: Options): Promise<boolean> {
+    return getPromise(this.modelClass.exists(id, options));
   }
 }
