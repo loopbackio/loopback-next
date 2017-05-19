@@ -29,12 +29,23 @@ describe('legacy loopback-datasource-juggler', function() {
     expect(Note2.create).to.exactly(Note.create);
   });
 
-  it('implements Repository interface', async function () {
+  it('implements Repository.create()', async function () {
     let Note3 = <typeof juggler.PersistedModel>
       ds.createModel('note3', { title: 'string', content: 'string' }, {});
     let repo = new DefaultCrudRepository(Note3, ds);
     let note = await repo.create({ title: 't3', content: 'c3' });
     let result = await repo.findById(note.id);
     expect(result.toJSON()).to.eql(note.toJSON());
+  });
+
+  it('implements Repository.find()', async function () {
+    let Note = <typeof juggler.PersistedModel>
+      ds.createModel('note4', { title: 'string', content: 'string' }, {});
+    let repo = new DefaultCrudRepository(Note, ds);
+    await repo.createAll([
+      { title: 't1', content: 'c1' },
+      { title: 't2', content: 'c2'}]);
+    let notes = await repo.find({where: {title: 't1'}});
+    expect(notes.length).to.eql(1);
   });
 });

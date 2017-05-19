@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@loopback/context": "^4.0.0-alpha.6",
-    "loopback-datasource-juggler": "^3.6.1"
+    "loopback-datasource-juggler": "^3.9.0"
   },
   "files": [
     "README.md",
