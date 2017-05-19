@@ -36,7 +36,7 @@ function getPromise<T>(p: juggler.PromiseOrVoid<T>) {
   if (isPromise(p)) {
     return p;
   } else {
-    return Promise.reject(new Error('The value should be a Promise'))
+    return Promise.reject(new Error('The value should be a Promise: ' + p))
   }
 }
 
