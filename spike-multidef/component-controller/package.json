@@ -1,0 +1,9 @@
+{
+  "name": "component-controller",
+  "version": "1.0.0",
+  "files": ["lib"],
+  "main": "lib/StatusController",
+  "dependencies": {
+    "metadata": "file:../metadata"
+  }
+}

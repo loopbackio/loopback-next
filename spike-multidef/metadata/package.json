@@ -1,0 +1,6 @@
+{
+  "name": "metadata",
+  "version": "1.0.0",
+  "files": ["lib"],
+  "main": "lib/metadata"
+}

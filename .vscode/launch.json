@@ -4,13 +4,16 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch Program",
-      "program": "${workspaceRoot}/app.js",
-      "cwd": "${workspaceRoot}"
-    },
+  {
+    "type": "node",
+    "request": "launch",
+    "name": "mocha spike-multidef",
+    "program": "${workspaceRoot}/spike-multidef/app/node_modules/.bin/_mocha",
+    "cwd": "${workspaceRoot}/spike-multidef/app",
+    "args": [
+      "test.js"
+    ]
+  },
     {
       "type": "node",
       "request": "attach",

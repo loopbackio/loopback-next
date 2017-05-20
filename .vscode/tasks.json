@@ -105,7 +105,7 @@
         "test",
         "-s"
       ],
-      "isTestCommand": true
+      "isTestCommand": false
     },
     // running example-codehub tests
     {
@@ -331,6 +331,13 @@
           }
         }
       ]
+    },
+    {
+      "taskName": "Test multidef",
+      "command": "ts-node",
+      "args": ["spike-multidef/build"],
+      "problemMatcher": "$tsc",
+      "isTestCommand": true
     }
   ]
 }

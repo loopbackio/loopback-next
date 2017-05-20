@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": ["es6", "es2015", "es2016"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es5"
+  },
+  "exclude": [
+    "*/node_modules/**/*",
+    "**/*.d.ts"
+  ],
+  "compileOnSave": true
+}

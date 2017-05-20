@@ -1,0 +1,9 @@
+{
+  "name": "component-model",
+  "version": "1.0.0",
+  "files": ["lib"],
+  "main": "lib/TodoItem",
+  "dependencies": {
+    "model": "file:../model"
+  }
+}
