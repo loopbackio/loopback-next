@@ -6,7 +6,7 @@
 import { Context } from './context';
 import { Binding, BoundValue } from './binding';
 import { isPromise } from './isPromise';
-import { describeInjectedArguments } from './inject';
+import { describeInjectedArguments, describeInjectedProperties } from './inject';
 
 // tslint:disable-next-line:no-any
 export type Constructor<T> = new(...args: any[]) => T;
@@ -23,10 +23,33 @@ export type Constructor<T> = new(...args: any[]) => T;
  */
 export function instantiateClass<T>(ctor: Constructor<T>, ctx: Context): T | Promise<T> {
   const argsOrPromise = resolveInjectedArguments(ctor, ctx);
+  const propertiesOrPromise = resolveInjectedProperties(ctor, ctx);
+  let inst: T | Promise<T>;
   if (isPromise(argsOrPromise)) {
-    return argsOrPromise.then(args => new ctor(...args));
+    // Instantiate the class asynchronously
+    inst = argsOrPromise.then(args => new ctor(...args));
   } else {
-    return new ctor(...argsOrPromise);
+    // Instantiate the class synchronously
+    inst = new ctor(...argsOrPromise);
+  }
+  if (isPromise(propertiesOrPromise)) {
+    return propertiesOrPromise.then((props) => {
+      if (isPromise(inst)) {
+        // Inject the properties asynchrounously
+        return inst.then(obj => Object.assign(obj, props));
+      } else {
+        // Inject the properties synchrounously
+        return Object.assign(inst, props);
+      }
+    });
+  } else {
+    if (isPromise(inst)) {
+      // Inject the properties asynchrounously
+      return inst.then(obj => Object.assign(obj, propertiesOrPromise));
+    } else {
+      // Inject the properties synchrounously
+      return Object.assign(inst, propertiesOrPromise);
+    }
   }
 }
 
@@ -52,7 +75,7 @@ export function resolveInjectedArguments(fn: Function, ctx: Context): BoundValue
   let asyncResolvers: Promise<void>[] | undefined = undefined;
 
   for (let ix = 0; ix < fn.length; ix++) {
-    const bindingKey = injectedArgs[ix];
+    const bindingKey = injectedArgs[ix].bindingKey;
     if (!bindingKey) {
       throw new Error(
         `Cannot resolve injected arguments for function ${fn.name}: ` +
@@ -75,3 +98,38 @@ export function resolveInjectedArguments(fn: Function, ctx: Context): BoundValue
     return args;
   }
 }
+
+export type KV = { [p: string]: BoundValue };
+
+export function resolveInjectedProperties(fn: Function, ctx: Context): KV | Promise<KV> {
+  const injectedProperties = describeInjectedProperties(fn);
+
+  const properties: KV = {};
+  let asyncResolvers: Promise<void>[] | undefined = undefined;
+
+  const propertyResolver = (p: string) => ((v: BoundValue) => properties[p] = v);
+
+  for (const p in injectedProperties) {
+    const bindingKey = injectedProperties[p].bindingKey;
+    if (!bindingKey) {
+      throw new Error(
+        `Cannot resolve injected property for class ${fn.name}: ` +
+        `The property ${p} was not decorated for dependency injection.`);
+    }
+    const binding = ctx.getBinding(bindingKey);
+    const valueOrPromise = binding.getValue(ctx);
+    if (isPromise(valueOrPromise)) {
+      if (!asyncResolvers) asyncResolvers = [];
+      asyncResolvers.push(valueOrPromise.then(propertyResolver(p)));
+    } else {
+      properties[p] = valueOrPromise as BoundValue;
+    }
+  }
+
+  if (asyncResolvers) {
+    return Promise.all(asyncResolvers).then(() => properties);
+  } else {
+    return properties;
+  }
+}
+
