@@ -1,8 +1,7 @@
 {
   "extends": "../../tsconfig.common.json",
   "compilerOptions": {
-    "outDir": "./lib6",
-    "strictNullChecks": false
+    "outDir": "./lib6"
   },
   "include": [
     "src",
