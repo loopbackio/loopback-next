@@ -81,8 +81,8 @@ export function repository(model: string | Class<Model>,
         // Make it shortcut to `@inject('repositories:MyRepo')`
         // Please note key is undefined for constructor. If strictNullChecks
         // is true, the compiler will complain as reflect-metadata won't
-        // accept undefined or null for key
-        return inject('repositories:' + meta.name)(target, key, descriptor);
+        // accept undefined or null for key. Use ! to fool the compiler.
+        return inject('repositories:' + meta.name)(target, key!, descriptor);
       }
     // Apply model definition to the model class
   }
