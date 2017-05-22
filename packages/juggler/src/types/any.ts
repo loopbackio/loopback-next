@@ -14,7 +14,7 @@ export class AnyType implements Type<any> {
     return true;
   }
 
-  defaultValue() {
+  defaultValue(): any {
     return undefined;
   }
 
