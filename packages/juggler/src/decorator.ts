@@ -44,13 +44,13 @@ export class RepositoryMetadata {
    * - new RepositoryMetadata(modelName, dataSourceInstance);
    * - new RepositoryMetadata(modelClass, dataSourceName);
    */
-  constructor(model: string | Class<Model>, dataSource?: string | DataSource) {
-    this.name = typeof model === 'string' && dataSource === undefined ?
-      model : undefined;
-    this.modelName = typeof model === 'string' ?
-      model : undefined;
-    this.modelClass = typeof model === 'function' ?
-      model : undefined;
+  constructor(modelOrRepo: string | Class<Model>, dataSource?: string | DataSource) {
+    this.name = typeof modelOrRepo === 'string' && dataSource === undefined ?
+      modelOrRepo : undefined;
+    this.modelName = typeof modelOrRepo === 'string' && dataSource != null ?
+      modelOrRepo : undefined;
+    this.modelClass = typeof modelOrRepo === 'function' ?
+      modelOrRepo : undefined;
     this.dataSourceName = typeof dataSource === 'string' ?
       dataSource : undefined;
     this.dataSource = typeof dataSource === 'object' ?
@@ -77,6 +77,13 @@ export function repository(model: string | Class<Model>,
   let meta = new RepositoryMetadata(model, dataSource);
   return function (target: Object, key?: symbol | string,
     descriptor?: TypedPropertyDescriptor<Repository<any>> | number) {
+      if ((typeof descriptor === 'number') && meta.name) {
+        // Make it shortcut to `@inject('repositories:MyRepo')`
+        // Please note key is undefined for constructor. If strictNullChecks
+        // is true, the compiler will complain as reflect-metadata won't
+        // accept undefined or null for key
+        return inject('repositories:' + meta.name)(target, key, descriptor);
+      }
     // Apply model definition to the model class
   }
 }
