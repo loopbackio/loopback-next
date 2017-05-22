@@ -1,2 +1,0 @@
---compilers ts:ts-node/register,ts:tsconfig-paths/register
---recursive

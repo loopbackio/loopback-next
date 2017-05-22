@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from 'testlab';
+import {expect} from '@loopback/testlab';
 
 describe('codehub integration smoke test', () => {
   it('passes', () => {

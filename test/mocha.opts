@@ -1,2 +1,2 @@
---compilers ts:ts-node/register,ts:tsconfig-paths/register
+--compilers ts:ts-node/register
 --recursive
