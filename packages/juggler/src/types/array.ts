@@ -24,7 +24,7 @@ export class ArrayType<T> implements Type<Array<T>> {
     return value.every((i) => this.itemType.isCoercible(i));
   }
 
-  defaultValue() {
+  defaultValue(): Array<T> {
     return [];
   }
 
