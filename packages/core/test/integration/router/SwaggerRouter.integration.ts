@@ -5,16 +5,15 @@
 
 import {SwaggerRouter} from '../../../src/router/SwaggerRouter';
 import * as http from 'http';
-import * as request from 'request-promise';
-import { FullRequestResponse } from './../../support/FullRequestResponse';
-import * as bluebird from 'bluebird';
-import {expect} from '@loopback/testlab';
-import {listen} from '../../support/util';
+import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {OpenApiSpec, ParameterObject} from '@loopback/openapi-spec';
 import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
 
 describe('SwaggerRouter', () => {
   beforeEach(givenRouter);
+
+  let client: Client;
+  beforeEach(givenClient);
 
   context('with a simple HelloWorld controller', () => {
     beforeEach(function setupHelloController() {
@@ -31,10 +30,11 @@ describe('SwaggerRouter', () => {
       givenControllerClass(HelloController, spec);
     });
 
-    it('handles simple "GET /hello" requests', async () => {
-      const response = await requestEndpoint('GET', '/hello');
-      expect(response.statusCode).to.equal(200);
-      expect(response.body).to.equal('Hello world!', 'body');
+    it('handles simple "GET /hello" requests', () => {
+      return client.get('/hello')
+        .expect(200)
+        .expect('content-type', 'text/plain')
+        .expect('Hello world!');
     });
   });
 
@@ -63,29 +63,26 @@ describe('SwaggerRouter', () => {
       givenControllerClass(HelloController, spec);
     });
 
-    it('executes hello() for "GET /hello"', async () => {
-      const response = await requestEndpoint('GET', '/hello');
-      expect(response.body).to.equal('hello');
+    it('executes hello() for "GET /hello"', () => {
+      return client.get('/hello').expect('hello');
     });
 
-    it('executes bye() for "GET /bye"', async () => {
-      const response = await requestEndpoint('GET', '/bye');
-      expect(response.body).to.equal('bye');
+    it('executes bye() for "GET /bye"', () => {
+      return client.get('/bye').expect('bye');
     });
 
-    it('executes postHello() for "POST /hello', async () => {
-      const response = await requestEndpoint('POST', '/hello');
-      expect(response.body).to.equal('hello posted');
+    it('executes postHello() for "POST /hello', () => {
+      return client.post('/hello').expect('hello posted');
     });
 
-    it('returns 404 for path not handled', async () => {
-      const response = await requestEndpoint('GET', '/unknown-path');
-      expect(response.statusCode).to.equal(404);
+    it('returns 404 for path not handled', () => {
+      logErrorsExcept(404);
+      return client.get('/unknown-path').expect(404);
     });
 
-    it('returns 404 for verb not handled', async () => {
-      const response = await requestEndpoint('POST', '/bye');
-      expect(response.statusCode).to.equal(404);
+    it('returns 404 for verb not handled', () => {
+      logErrorsExcept(404);
+      return client.post('/bye').expect(404);
     });
   });
 
@@ -119,28 +116,24 @@ context('with an operation echoing a string parameter from query', () => {
       givenControllerClass(EchoController, spec);
     });
 
-    it('returns "hello" for "?msg=hello"', async () => {
-      const response = await requestEndpoint('GET', '/echo?msg=hello');
-      expect(response.body).to.equal('hello');
+    it('returns "hello" for "?msg=hello"', () => {
+      return client.get('/echo?msg=hello').expect('hello');
     });
 
-    it('url-decodes the parameter value', async () => {
-      const response = await requestEndpoint('GET', '/echo?msg=hello%20world');
-      expect(response.body).to.equal('hello world');
+    it('url-decodes the parameter value', () => {
+      return client.get('/echo?msg=hello%20world').expect('hello world');
     });
 
-    it('ignores other query fields', async () => {
-      const response = await requestEndpoint('GET', '/echo?msg=hello&ignoreKey=ignoreMe');
-      expect(response.body).to.equal('hello');
+    it('ignores other query fields', () => {
+      return client.get('/echo?msg=hello&ignoreKey=ignoreMe').expect('hello');
     });
   });
 
   context('with a path-parameter route', () => {
     beforeEach(givenRouteParamController);
 
-    it('returns "admin" for "/users/admin"', async () => {
-      const response = await requestEndpoint('GET', '/users/admin');
-      expect(response.body).to.equal('admin');
+    it('returns "admin" for "/users/admin"', () => {
+      return client.get('/users/admin').expect('admin');
     });
 
     function givenRouteParamController() {
@@ -179,13 +172,10 @@ context('with an operation echoing a string parameter from query', () => {
   context('with a header-parameter route', () => {
     beforeEach(givenHeaderParamController);
 
-    it('returns the value sent in the header', async () => {
-      const response = await requestEndpointWithOptions({
-        method: 'GET',
-        url: '/show-authorization',
-        headers: { authorization: 'admin' },
-      });
-      expect(response.body).to.equal('admin');
+    it('returns the value sent in the header', () => {
+      return client.get('/show-authorization')
+        .set('authorization', 'admin')
+        .expect('admin');
     });
 
     function givenHeaderParamController() {
@@ -224,36 +214,25 @@ context('with an operation echoing a string parameter from query', () => {
   context('with a formData-parameter route', () => {
     beforeEach(givenFormDataParamController);
 
-    it('returns the value sent in json-encoded body', async () => {
-      const response = await requestEndpointWithOptions({
-        method: 'POST',
-        url: '/show-formdata',
-        headers: {'content-type': 'application/json'},
-        body: JSON.stringify({key: 'value'}),
-      });
-      expect(response.statusCode).to.equal(200);
-      expect(response.body).to.equal('value');
+    it('returns the value sent in json-encoded body', () => {
+      return client.post('/show-formdata')
+        .send({key: 'value'})
+        .expect(200, 'value');
     });
 
-    it('rejects url-encoded request body', async () => {
+    it('rejects url-encoded request body', () => {
       logErrorsExcept(415);
-      const response = await requestEndpointWithOptions({
-        method: 'POST',
-        url: '/show-formdata',
-        form: {key: 'value'},
-      });
-      expect(response.statusCode).to.equal(415);
+      return client.post('/show-formdata')
+        .send('key=value')
+        .expect(415);
     });
 
-    it('returns 400 for malformed JSON body', async () => {
+    it('returns 400 for malformed JSON body', () => {
       logErrorsExcept(400);
-      const response = await requestEndpointWithOptions({
-        method: 'POST',
-        url: '/show-formdata',
-        headers: {'content-type': 'application/json'},
-        body: 'malformed-json',
-      });
-      expect(response.statusCode).to.equal(400);
+      return client.post('/show-formdata')
+        .set('content-type', 'application/json')
+        .send('malformed-json')
+        .expect(400);
     });
 
     function givenFormDataParamController() {
@@ -292,36 +271,25 @@ context('with an operation echoing a string parameter from query', () => {
   context('with a body-parameter route', () => {
     beforeEach(givenBodyParamController);
 
-    it('returns the value sent in json-encoded body', async () => {
-      const response = await requestEndpointWithOptions({
-        method: 'POST',
-        url: '/show-body',
-        json: true,
-        body: {key: 'value'},
-      });
-      expect(response.statusCode).to.equal(200);
-      expect(response.body).to.deepEqual({key: 'value'});
+    it('returns the value sent in json-encoded body', () => {
+      return client.post('/show-body')
+        .send({key: 'value'})
+        .expect(200, {key: 'value'});
     });
 
-    it('rejects url-encoded request body', async () => {
+    it('rejects url-encoded request body', () => {
       logErrorsExcept(415);
-      const response = await requestEndpointWithOptions({
-        method: 'POST',
-        url: '/show-body',
-        form: {key: 'value'},
-      });
-      expect(response.statusCode).to.equal(415);
+      return client.post('/show-body')
+        .send('key=value')
+        .expect(415);
     });
 
-    it('returns 400 for malformed JSON body', async () => {
+    it('returns 400 for malformed JSON body', () => {
       logErrorsExcept(400);
-      const response = await requestEndpointWithOptions({
-        method: 'POST',
-        url: '/show-body',
-        headers: {'content-type': 'application/json'},
-        body: 'malformed-json',
-      });
-      expect(response.statusCode).to.equal(400);
+      return client.post('/show-body')
+        .set('content-type', 'application/json')
+        .send('malformed-json')
+        .expect(400);
     });
 
     function givenBodyParamController() {
@@ -358,7 +326,7 @@ context('with an operation echoing a string parameter from query', () => {
   });
 
   context('response serialization', () => {
-    it('converts object result to a JSON response', async () => {
+    it('converts object result to a JSON response', () => {
       const spec = givenOpenApiSpec()
         .withOperation('get', '/object', {
           'x-operation-name': 'getObject',
@@ -376,10 +344,10 @@ context('with an operation echoing a string parameter from query', () => {
 
       givenControllerClass(TestController, spec);
 
-      const response = await requestEndpoint('GET', '/object');
-      expect(response.statusCode).to.equal(200, 'statusCode');
-      expect(response.headers['content-type']).to.match(/^application\/json($|;)/);
-      expect(response.body).to.equal('{"key":"value"}', 'body');
+      return client.get('/object')
+        .expect(200)
+        .expect('content-type', /^application\/json($|;)/)
+        .expect('{"key":"value"}');
     });
   });
 
@@ -393,25 +361,6 @@ context('with an operation echoing a string parameter from query', () => {
     router.controller((req, res) => new ctor(), spec);
   }
 
-  async function requestEndpoint(verb: string, path: string): Promise<FullRequestResponse> {
-    return requestEndpointWithOptions({
-      url: path,
-      method: verb,
-    });
-  }
-
-  async function requestEndpointWithOptions(options: request.Options): Promise<FullRequestResponse> {
-    const server = http.createServer(router.handler);
-    const baseUrl = await listen(server);
-
-    options = Object.assign({}, options, {
-      baseUrl,
-      simple: false,
-      resolveWithFullResponse: true,
-    });
-    return request(options);
-  }
-
   function logErrorsExcept(ignoreStatusCode: number) {
     const oldLogger = router.logError;
     router.logError = function logErrorConditionally(req: http.ServerRequest, statusCode: number, err: Error | string) {
@@ -419,5 +368,9 @@ context('with an operation echoing a string parameter from query', () => {
       // tslint:disable-next-line:no-invalid-this
       oldLogger.apply(this, arguments);
     };
+  }
+
+  function givenClient() {
+    client = createClientForHandler(router.handler);
   }
 });

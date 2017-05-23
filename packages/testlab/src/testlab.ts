@@ -5,6 +5,8 @@
 
 /// <reference path="../should-as-function.d.ts" />
 
+import * as http from 'http';
+
 const shouldAsFunction: Internal = require('should/as-function');
 import sinon = require('sinon');
 import supertest = require('supertest');
@@ -16,3 +18,17 @@ shouldAsFunction.use((should, assertion) => {
 export const expect = shouldAsFunction;
 export {sinon};
 export {supertest};
+
+export type Client = supertest.SuperTest<supertest.Test>;
+
+/**
+ * Create a SuperTest client connected to an HTTP server listening
+ * on an ephemeral port and calling `handler` to handle incoming requests.
+ * @param handler
+ */
+export function createClientForHandler(
+    handler: (req: http.ServerRequest, res: http.ServerResponse) => void)
+    : Client {
+  const server = http.createServer(handler);
+  return supertest(server);
+}
