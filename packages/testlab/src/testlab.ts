@@ -32,3 +32,15 @@ export function createClientForHandler(
   const server = http.createServer(handler);
   return supertest(server);
 }
+
+export interface Server {
+  config: {port: number};
+  start(): Promise<void>;
+}
+
+export function createClientForServer(server: Server): Client {
+  const dontWaitForListening = server.start();
+  const url = `http://127.0.0.1:${server.config.port}`;
+  // TODO(bajtos) Find a way how to stop the server after all tests are done
+  return supertest(url);
+}
