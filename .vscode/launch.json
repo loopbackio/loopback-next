@@ -7,9 +7,14 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
-      "program": "${workspaceRoot}/app.js",
-      "cwd": "${workspaceRoot}"
+      "name": "Run Mocha tests",
+      "program": "${workspaceRoot}/node_modules/.bin/_mocha",
+      "cwd": "${workspaceRoot}",
+      "args": [
+        "--opts",
+        "${workspaceRoot}/test/mocha.opts",
+        "packages/*/test/**/*.ts"
+      ]
     },
     {
       "type": "node",
