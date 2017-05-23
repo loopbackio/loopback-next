@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2017. All Rights Reserved.
+// Node module: juggler
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 /**
  * Built-in types for LoopBack modeling
  * - Type: abstract base type
@@ -21,6 +26,6 @@ import {ArrayType} from './array';
 import {UnionType} from './union';
 
 export {
-  Type, StringType, BooleanType, NumberType, DateType, BufferType, AnyType,
-  ArrayType, UnionType
+  Type, StringType, BooleanType, NumberType, DateType,
+  BufferType, AnyType, ArrayType, UnionType,
 };

@@ -1,8 +1,13 @@
-import {Class} from './common';
-import {Model} from './model';
-import {Repository} from './repository';
-import {DataSource} from './datasource';
-import {inject} from '@loopback/context';
+// Copyright IBM Corp. 2017. All Rights Reserved.
+// Node module: juggler
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+import { Class, AnyType } from './common';
+import { Model } from './model';
+import { Repository } from './repository';
+import { DataSource } from './datasource';
+import { inject } from '@loopback/context';
 
 /**
  * Metadata for a repository
@@ -62,7 +67,7 @@ export class RepositoryMetadata {
  * Decorator for model definitions
  * @param model Name of the repo or name/class of the model
  * @param dataSource Name or instance of the data source
- * @returns {(target:any)}
+ * @returns {(target:AnyType)}
  *
  * For example:
  *
@@ -74,128 +79,128 @@ export class RepositoryMetadata {
  */
 export function repository(model: string | Class<Model>,
   dataSource?: string | DataSource) {
-  let meta = new RepositoryMetadata(model, dataSource);
-  return function (target: Object, key?: symbol | string,
-    descriptor?: TypedPropertyDescriptor<Repository<any>> | number) {
-      if ((typeof descriptor === 'number') && meta.name) {
-        // Make it shortcut to `@inject('repositories:MyRepo')`
-        // Please note key is undefined for constructor. If strictNullChecks
-        // is true, the compiler will complain as reflect-metadata won't
-        // accept undefined or null for key. Use ! to fool the compiler.
-        return inject('repositories:' + meta.name)(target, key!, descriptor);
-      }
+  const meta = new RepositoryMetadata(model, dataSource);
+  return function(target: Object, key?: symbol | string,
+    descriptor?: TypedPropertyDescriptor<Repository<AnyType>> | number) {
+    if ((typeof descriptor === 'number') && meta.name) {
+      // Make it shortcut to `@inject('repositories:MyRepo')`
+      // Please note key is undefined for constructor. If strictNullChecks
+      // is true, the compiler will complain as reflect-metadata won't
+      // accept undefined or null for key. Use ! to fool the compiler.
+      return inject('repositories:' + meta.name)(target, key!, descriptor);
+    }
     // Apply model definition to the model class
-  }
+  };
 }
 
 /**
  * Decorator for model definitions
  * @param definition
- * @returns {(target:any)}
+ * @returns {(target:AnyType)}
  */
 export function model(definition?: Object) {
-  return function(target: any) {
+  return function(target: AnyType) {
     // Apply model definition to the model class
-  }
+  };
 }
 
 /**
  * Decorator for model properties
  * @param definition
- * @returns {(target:any, key:string)}
+ * @returns {(target:AnyType, key:string)}
  */
 export function property(definition?: Object) {
-  return function(target: any, key:string) {
+  return function(target: AnyType, key: string) {
     // Apply model definition to the model class
-  }
+  };
 }
 
 /**
  * Decorator for relations
  * @param definition
- * @returns {(target:any, key:string)}
+ * @returns {(target:AnyType, key:string)}
  */
 export function relation(definition?: Object) {
-  return function(target: any, key:string) {
+  return function(target: AnyType, key: string) {
     // Apply model definition to the model class
-  }
+  };
 }
 
 /**
  * Decorator for belongsTo
  * @param definition
- * @returns {(target:any, key:string)}
+ * @returns {(target:AnyType, key:string)}
  */
 export function belongsTo(definition?: Object) {
-  return function(target: any, key:string) {
+  return function(target: AnyType, key: string) {
     // Apply model definition to the model class
-  }
+  };
 }
 
 /**
  * Decorator for hasOne
  * @param definition
- * @returns {(target:any, key:string)}
+ * @returns {(target:AnyType, key:string)}
  */
 export function hasOne(definition?: Object) {
-  return function(target: any, key:string) {
+  return function(target: AnyType, key: string) {
     // Apply model definition to the model class
-  }
+  };
 }
 
 /**
  * Decorator for hasMany
  * @param definition
- * @returns {(target:any, key:string)}
+ * @returns {(target:AnyType, key:string)}
  */
 export function hasMany(definition?: Object) {
-  return function(target: any, key:string) {
+  return function(target: AnyType, key: string) {
     // Apply model definition to the model class
-  }
+  };
 }
 
 /**
  * Decorator for embedsOne
  * @param definition
- * @returns {(target:any, key:string)}
+ * @returns {(target:AnyType, key:string)}
  */
 export function embedsOne(definition?: Object) {
-  return function(target: any, key:string) {
+  return function(target: AnyType, key: string) {
     // Apply model definition to the model class
-  }
+  };
 }
 
 
 /**
  * Decorator for embedsMany
  * @param definition
- * @returns {(target:any, key:string)}
+ * @returns {(target:AnyType, key:string)}
  */
 export function embedsMany(definition?: Object) {
-  return function(target: any, key:string) {
+  return function(target: AnyType, key: string) {
     // Apply model definition to the model class
-  }
+  };
 }
 
 
 /**
  * Decorator for referencesOne
  * @param definition
- * @returns {(target:any, key:string)}
+ * @returns {(target:AnyType, key:string)}
  */
 export function referencesOne(definition?: Object) {
-  return function(target: any, key:string) {
+  return function(target: AnyType, key: string) {
     // Apply model definition to the model class
-  }
+  };
 }
 
 /**
  * Decorator for referencesMany
  * @param definition
- * @returns {(target:any, key:string)}
+ * @returns {(target:AnyType, key:string)}
  */
 export function referencesMany(definition?: Object) {
-  return function(target: any, key:string) {
+  return function(target: AnyType, key: string) {
     // Apply model definition to the model class
-  }
+  };
 }

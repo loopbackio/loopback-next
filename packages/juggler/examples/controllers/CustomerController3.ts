@@ -1,6 +1,11 @@
+// Copyright IBM Corp. 2017. All Rights Reserved.
+// Node module: juggler
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {EntityCrudRepository} from '../../src/repository';
 import {Customer} from '../models/customer';
-import {repository} from "../../src/decorator";
+import {repository} from '../../src/decorator';
 
 /**
  * Controller for Customer

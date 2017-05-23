@@ -1,4 +1,9 @@
-import {Type} from './type';
+// Copyright IBM Corp. 2017. All Rights Reserved.
+// Node module: juggler
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+import {Type, AnyType} from './type';
 
 /**
  * Array type, such as string[]
@@ -9,15 +14,15 @@ export class ArrayType<T> implements Type<Array<T>> {
 
   readonly name = 'array';
 
-  isInstance(value: any) {
+  isInstance(value: AnyType) {
     if (!Array.isArray(value)) {
       return false;
     }
-    let list = value as Array<T|null|undefined>;
+    const list = value as Array<T|null|undefined>;
     return list.every((i) => this.itemType.isInstance(i));
   }
 
-  isCoercible(value: any): boolean {
+  isCoercible(value: AnyType): boolean {
     if (!Array.isArray(value)) {
       return false;
     }
@@ -28,7 +33,7 @@ export class ArrayType<T> implements Type<Array<T>> {
     return [];
   }
 
-  coerce(value: any) {
+  coerce(value: AnyType) {
     return value;
   }
 

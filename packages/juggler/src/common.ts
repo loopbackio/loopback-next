@@ -1,15 +1,22 @@
+// Copyright IBM Corp. 2017. All Rights Reserved.
+// Node module: juggler
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 /**
  * Common types/interfaces such as Class/Constructor/Options/Callback
  */
+// tslint:disable-next-line:no-any
+export type AnyType = any;
 
 /**
  * Interface for classes with `new` operator and static properties/methods
  */
 export interface Class<T> {
   // new MyClass(...args) ==> T
-  new (...args: any[]): T;
+  new (...args: AnyType[]): T;
   // Other static properties/operations
-  [property: string]: any;
+  [property: string]: AnyType;
 }
 
 /**
@@ -22,7 +29,7 @@ export interface Class<T> {
  * ```
  */
 export interface ConstructorFunction<T> {
-  (...args: any[]): T;
+  (...args: AnyType[]): T;
 }
 
 /**
@@ -34,8 +41,8 @@ export type Constructor<T> = Class<T> | ConstructorFunction<T>;
  * Objects with open properties
  */
 export interface AnyObject {
-  [property: string]: any;
-};
+  [property: string]: AnyType;
+}
 
 export type ObjectType<T> = T | AnyObject;
 

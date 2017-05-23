@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2017. All Rights Reserved.
+// Node module: juggler
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {Options} from '../../src/common';
 import {Where} from '../../src/query';
 import {DataSource} from '../../src/datasource';
