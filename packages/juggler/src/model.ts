@@ -1,4 +1,9 @@
-import {Options} from './common';
+// Copyright IBM Corp. 2017. All Rights Reserved.
+// Node module: juggler
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+import {Options, AnyType} from './common';
 import {Type} from './types';
 
 /**
@@ -12,19 +17,19 @@ import {Type} from './types';
  */
 export class ModelProperty {
   name: string;
-  type: string | Function | Object | Type<any>; // For example, 'string', String, or {}
+  type: string | Function | Object | Type<AnyType>; // For example, 'string', String, or {}
   json?: PropertyForm;
   store?: PropertyForm;
-  [attribute: string]: any; // Other attributes
+  [attribute: string]: AnyType; // Other attributes
 }
 
 /**
  * See https://github.com/strongloop/loopback-datasource-juggler/issues/432
  */
 export interface PropertyForm {
-  in?: boolean, // Can the property be used for input
-  out?: boolean, // Can the property be used for output
-  name?: string // Custom name for this form
+  in?: boolean; // Can the property be used for input
+  out?: boolean; // Can the property be used for output
+  name?: string; // Custom name for this form
 }
 
 /**
@@ -33,8 +38,8 @@ export interface PropertyForm {
 export class ModelDefinition {
   name: string;
   properties: Map<string, ModelProperty>;
-  // indexes: Map<string, any>;
-  [attribute: string]: any; // Other attributes
+  // indexes: Map<string, AnyType>;
+  [attribute: string]: AnyType; // Other attributes
 
   idProperties(): ModelProperty[] {
     return [];
@@ -62,7 +67,7 @@ export abstract class Model {
     return {};
   }
 
-  [prop: string]: any;
+  [prop: string]: AnyType;
 }
 
 export interface Persistable {
@@ -84,14 +89,14 @@ export abstract class Entity extends Model implements Persistable {
    * Get the identity value. If the identity is a composite key, returns
    * an object.
    */
-  getId(): any {
-    let definition = (this.constructor as typeof Entity).definition;
-    let idProps = definition.idProperties();
+  getId(): AnyType {
+    const definition = (this.constructor as typeof Entity).definition;
+    const idProps = definition.idProperties();
     if (idProps.length === 1) {
       return this[idProps[0].name];
     }
-    let idObj = {} as any;
-    for (let idProp of idProps) {
+    const idObj = {} as AnyType;
+    for (const idProp of idProps) {
       idObj[idProp.name] = this[idProp.name];
     }
     return idObj;
@@ -101,10 +106,10 @@ export abstract class Entity extends Model implements Persistable {
    * Get the identity as an object, such as `{id: 1}` or `{schoolId: 1, studentId: 2}`
    */
   getIdObject(): Object {
-    let definition = (this.constructor as typeof Entity).definition;
-    let idProps = definition.idProperties();
-    let idObj = {} as any;
-    for (let idProp of idProps) {
+    const definition = (this.constructor as typeof Entity).definition;
+    const idProps = definition.idProperties();
+    const idObj = {} as AnyType;
+    for (const idProp of idProps) {
       idObj[idProp.name] = this[idProp.name];
     }
     return idObj;
@@ -113,13 +118,13 @@ export abstract class Entity extends Model implements Persistable {
   /**
    * Build the where object for the given id
    */
-  static buildWhereForId(id: any) {
-    let where = {} as any;
-    let idProps = this.definition.idProperties();
+  static buildWhereForId(id: AnyType) {
+    const where = {} as AnyType;
+    const idProps = this.definition.idProperties();
     if (idProps.length === 1) {
       where[idProps[0].name] = id;
     }
-    for (let idProp of idProps) {
+    for (const idProp of idProps) {
       where[idProp.name] = id[idProp.name];
     }
     return where;
@@ -130,6 +135,6 @@ export abstract class Entity extends Model implements Persistable {
  * Domain events
  */
 export class Event {
-  source: any;
+  source: AnyType;
   type: string;
 }

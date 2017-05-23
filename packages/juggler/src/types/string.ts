@@ -1,4 +1,9 @@
-import {Type} from './type';
+// Copyright IBM Corp. 2017. All Rights Reserved.
+// Node module: juggler
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+import {Type, AnyType} from './type';
 
 /**
  * String type
@@ -6,11 +11,11 @@ import {Type} from './type';
 export class StringType implements Type<string> {
   readonly name = 'string';
 
-  isInstance(value: any): boolean {
+  isInstance(value: AnyType): boolean {
     return value == null || typeof value === 'string';
   }
 
-  isCoercible(value: any): boolean {
+  isCoercible(value: AnyType): boolean {
     return true;
   }
 
@@ -18,7 +23,7 @@ export class StringType implements Type<string> {
     return '';
   }
 
-  coerce(value: any): string {
+  coerce(value: AnyType): string {
     if (value == null) return value;
     if (typeof value.toJSON === 'function') {
       value = value.toJSON();

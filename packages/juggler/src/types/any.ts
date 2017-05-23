@@ -1,28 +1,33 @@
-import {Type} from './type';
+// Copyright IBM Corp. 2017. All Rights Reserved.
+// Node module: juggler
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+import {Type, AnyType as Any} from './type';
 
 /**
  * Any type
  */
-export class AnyType implements Type<any> {
+export class AnyType implements Type<Any> {
   readonly name = 'any';
 
-  isInstance(value: any) {
+  isInstance(value: Any) {
     return true;
   }
 
-  isCoercible(value: any) {
+  isCoercible(value: Any) {
     return true;
   }
 
-  defaultValue(): any {
+  defaultValue(): Any {
     return undefined;
   }
 
-  coerce(value: any) {
+  coerce(value: Any) {
     return value;
   }
 
-  serialize(value: any) {
+  serialize(value: Any) {
     return value;
   }
 }

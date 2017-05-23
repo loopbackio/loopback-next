@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Class} from '../../../src/common';
+import {Class, AnyType} from '../../../src/common';
 import {MixinBuilder} from '../../../src/mixin';
 
 class BaseClass {
@@ -43,11 +43,11 @@ function Mixin2<T extends Class<{}>>(superClass: T) {
     mixinMethod2() {
       return 'mixin2';
     }
-  }
+  };
 }
 
 describe('mixin builder', () => {
-  let newClass: any;
+  let newClass: AnyType;
   before(() => {
     newClass = MixinBuilder.mix(BaseClass).with(Mixin1, Mixin2);
   });
@@ -62,7 +62,7 @@ describe('mixin builder', () => {
     expect(newClass.staticMixinMethod1()).to.eql('mixin1.static');
     expect(newClass.staticMixinMethod2()).to.eql('mixin2.static');
 
-    let x = new newClass();
+    const x = new newClass();
     expect(typeof x.mixinMethod1).to.eql('function');
     expect(typeof x.mixinMethod2).to.eql('function');
     expect(x.mixinMethod1()).to.eql('mixin1');
@@ -72,7 +72,7 @@ describe('mixin builder', () => {
   });
 
   it('allows inheritance', () => {
-    let x = new newClass();
+    const x = new newClass();
     expect(x instanceof BaseClass).to.true();
   });
 

@@ -1,3 +1,10 @@
+// Copyright IBM Corp. 2017. All Rights Reserved.
+// Node module: juggler
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+import {AnyType} from './common';
+
 /**
  * Operators for where clauses
  */
@@ -12,18 +19,18 @@ export enum Operators {
   between, // BETWEEN [val1, val2]
   exists,
   and, // AND
-  or // OR
+  or, // OR
 }
 
 export interface Condition {
-  eq?: any;
-  neq?: any;
-  gt?: any;
-  get?: any;
-  lt?: any;
-  lte?: any;
-  inq?: any[];
-  between?: any[];
+  eq?: AnyType;
+  neq?: AnyType;
+  gt?: AnyType;
+  get?: AnyType;
+  lt?: AnyType;
+  lte?: AnyType;
+  inq?: AnyType[];
+  between?: AnyType[];
   exists?: boolean;
   and?: Where[];
   or?: Where[];
@@ -35,7 +42,7 @@ export interface Condition {
 export interface Where {
   and?: Where[]; // AND
   or?: Where[]; // OR
-  [property: string]: Condition | any; // Other criteria
+  [property: string]: Condition | AnyType; // Other criteria
 }
 
 /**
@@ -62,7 +69,7 @@ export interface Fields {
  */
 export interface Inclusion {
   relation: string;
-  scope: Filter
+  scope: Filter;
 }
 
 /**

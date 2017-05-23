@@ -1,5 +1,10 @@
+// Copyright IBM Corp. 2017. All Rights Reserved.
+// Node module: juggler
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import * as util from 'util';
-import {Type} from './type';
+import {Type, AnyType} from './type';
 
 /**
  * Date type
@@ -7,11 +12,11 @@ import {Type} from './type';
 export class DateType implements Type<Date> {
   readonly name = 'date';
 
-  isInstance(value: any) {
+  isInstance(value: AnyType) {
     return value == null || (value instanceof Date);
   }
 
-  isCoercible(value: any): boolean {
+  isCoercible(value: AnyType): boolean {
     // Please note new Date(...) allows the following
     /*
      > new Date('1')
@@ -34,14 +39,14 @@ export class DateType implements Type<Date> {
     return new Date();
   }
 
-  coerce(value: any) {
+  coerce(value: AnyType) {
     if (value == null) return value;
     if (value instanceof Date) {
       return value;
     }
-    let d = new Date(value);
+    const d = new Date(value);
     if (isNaN(d.getTime())) {
-      let msg = util.format('Invalid %s: %j', this.name, value);
+      const msg = util.format('Invalid %s: %j', this.name, value);
       throw new TypeError(msg);
     }
     return d;

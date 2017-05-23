@@ -1,12 +1,18 @@
+// Copyright IBM Corp. 2017. All Rights Reserved.
+// Node module: juggler
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 export const jugglerModule = require('loopback-datasource-juggler');
 
 import {MixinBuilder} from './mixin';
-import {Class, ObjectType, Options} from './common';
+import {Class, ObjectType, Options, AnyType} from './common';
 
 import {juggler} from './loopback-datasource-juggler';
 
 export * from './loopback-datasource-juggler';
 
+/* tslint:disable:variable-name */
 export const DataSource = jugglerModule.DataSource as typeof juggler.DataSource;
 export const ModelBase = jugglerModule.ModelBaseClass as typeof juggler.ModelBase;
 
@@ -19,16 +25,16 @@ export const ModelBase = jugglerModule.ModelBaseClass as typeof juggler.ModelBas
  */
 export function bindModel<T extends typeof juggler.ModelBase>(modelClass: T,
   ds: juggler.DataSource): T {
-  let boundModelClass = class extends modelClass {};
+  const boundModelClass = class extends modelClass {};
   boundModelClass.attachTo(ds);
   return boundModelClass;
-};
+}
 
 import {Entity} from './model';
 import {Filter, Where} from './query';
 import {EntityCrudRepository} from './repository';
 
-function isPromise<T>(p: any): p is Promise<T> {
+function isPromise<T>(p: AnyType): p is Promise<T> {
   return p !== null && typeof p === 'object' && typeof p.then === 'function';
 }
 
@@ -36,7 +42,7 @@ function getPromise<T>(p: juggler.PromiseOrVoid<T>) {
   if (isPromise(p)) {
     return p;
   } else {
-    return Promise.reject(new Error('The value should be a Promise: ' + p))
+    return Promise.reject(new Error('The value should be a Promise: ' + p));
   }
 }
 
@@ -61,7 +67,7 @@ implements EntityCrudRepository<T, ID> {
       return this.create(entity, options);
     } else {
       return this.replaceById(entity.getId, entity, options).
-        then(result => { return result ? entity : null; });
+        then(result => result ? entity : null);
     }
   }
 
@@ -86,8 +92,8 @@ implements EntityCrudRepository<T, ID> {
   }
 
   updateById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean> {
-    let idProp = this.modelClass.getIdName();
-    let where = {} as Where;
+    const idProp = this.modelClass.getIdName();
+    const where = {} as Where;
     where[idProp] = id;
     return this.updateAll(data, where, options).then(count => count > 0);
   }

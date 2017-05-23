@@ -43,7 +43,7 @@ describe('types', () => {
       expect(stringType.coerce({x: 1})).to.equal('{"x":1}');
       expect(stringType.coerce([1, '2'])).to.equal('[1,"2"]');
       expect(stringType.coerce(1)).to.equal('1');
-      let date = new Date();
+      const date = new Date();
       expect(stringType.coerce(date)).to.equal(date.toJSON());
     });
 
@@ -96,7 +96,7 @@ describe('types', () => {
       expect(booleanType.coerce('false')).to.equal(true); // string false is true
       expect(booleanType.coerce(0)).to.equal(false);
       expect(booleanType.coerce(1)).to.equal(true);
-      let date = new Date();
+      const date = new Date();
       expect(booleanType.coerce(date)).to.equal(true);
     });
 
@@ -155,7 +155,7 @@ describe('types', () => {
       expect(() => numberType.coerce([1, '2'])).to.throw(/Invalid number/);
       expect(numberType.coerce(1)).to.equal(1);
       expect(numberType.coerce(1.1)).to.equal(1.1);
-      let date = new Date();
+      const date = new Date();
       expect(numberType.coerce(date)).to.equal(date.getTime());
     });
 
@@ -199,8 +199,8 @@ describe('types', () => {
     });
 
     it('creates defaultValue', () => {
-      let d = new Date();
-      let v = dateType.defaultValue();
+      const d = new Date();
+      const v = dateType.defaultValue();
       expect(v.getTime()).to.aboveOrEqual(d.getTime());
       expect(v.getTime()).to.approximately(d.getTime(), 1);
     });
@@ -221,12 +221,12 @@ describe('types', () => {
       expect(dateType.coerce(1)).to.eql(new Date('1970-01-01T00:00:00.001Z'));
       expect(dateType.coerce(1.1)).to.eql(
         new Date('1970-01-01T00:00:00.001Z'));
-      let date = new Date();
+      const date = new Date();
       expect(dateType.coerce(date)).to.equal(date);
     });
 
     it('serializes values', () => {
-      let date = new Date();
+      const date = new Date();
       expect(dateType.serialize(date)).to.eql(date.toJSON());
       expect(dateType.serialize(null)).null();
       expect(dateType.serialize(undefined)).undefined();
@@ -283,7 +283,7 @@ describe('types', () => {
       expect(unionType.coerce([1, '2'])).to.equal(true);
       expect(unionType.coerce(1)).to.equal(1);
       expect(unionType.coerce(1.1)).to.equal(1.1);
-      let date = new Date();
+      const date = new Date();
       expect(unionType.coerce(date)).to.equal(date.getTime());
     });
 

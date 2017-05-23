@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2017. All Rights Reserved.
+// Node module: juggler
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import { Entity, ValueObject, Model } from './model';
 import { Class, ObjectType, AnyObject, Options } from './common';
 import { DataSource } from './datasource';
@@ -165,7 +170,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     if (typeof this.connector.findById === 'function') {
       return this.connector.findById(this.model, id, options);
     }
-    let where = this.model.buildWhereForId(id);
+    const where = this.model.buildWhereForId(id);
     return this.connector.find(this.model, {where: where}, options).
       then((entities: T[]) => {
         return entities[0];
@@ -188,7 +193,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     if (typeof this.connector.updateById === 'function') {
       return this.connector.updateById(this.model, id, data, options);
     }
-    let where = this.model.buildWhereForId(id);
+    const where = this.model.buildWhereForId(id);
     return this.updateAll(data, where, options).
       then((count: number) => count > 0);
   }
@@ -198,8 +203,8 @@ export class CrudRepositoryImpl<T extends Entity, ID>
       return this.connector.replaceById(this.model, id, data, options);
     }
     // FIXME: populate inst with all properties
-    let inst = data;
-    let where = this.model.buildWhereForId(id);
+    const inst = data;
+    const where = this.model.buildWhereForId(id);
     return this.updateAll(data, where, options).
       then((count: number) => count > 0);
   }
@@ -212,9 +217,9 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     if (typeof this.connector.deleteById === 'function') {
       return this.connector.deleteById(this.model, id, options);
     } else {
-      let where = this.model.buildWhereForId(id);
+      const where = this.model.buildWhereForId(id);
       return this.deleteAll(where, options).
-        then((count: number) => count > 0);;
+        then((count: number) => count > 0);
     }
   }
 
@@ -226,7 +231,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     if (typeof this.connector.exists === 'function') {
       return this.connector.exists(this.model, id, options);
     } else {
-      let where = this.model.buildWhereForId(id);
+      const where = this.model.buildWhereForId(id);
       return this.count(where, options).then(result => result > 0);
     }
   }
