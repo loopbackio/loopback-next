@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2017. All Rights Reserved.
+// Node module: juggler
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {Connector} from './connector';
 import {Options} from './common';
 import {Entity} from './model';
@@ -78,5 +83,6 @@ export interface KVConnector<T extends Entity> extends Connector {
    * @param filter
    * @param options
    */
-  iterateKeys?(modelClass: Class<Entity>, filter?: Filter, options?: Options): Promise<Iterator<T>>;
+  iterateKeys?(modelClass: Class<Entity>, filter?: Filter,
+    options?: Options): Promise<Iterator<T>>;
 }

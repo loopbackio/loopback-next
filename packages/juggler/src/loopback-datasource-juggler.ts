@@ -1,4 +1,9 @@
-import { Class, Options, Callback, AnyObject } from './common';
+// Copyright IBM Corp. 2017. All Rights Reserved.
+// Node module: juggler
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+import { Class, Options, Callback, AnyObject, AnyType } from './common';
 
 export declare namespace juggler {
   /**
@@ -24,8 +29,8 @@ export declare namespace juggler {
     static modelName: string;
     static definition: ModelDefinition;
     static attachTo(ds: DataSource): void;
-    constructor(...args: any[]);
-    [property: string]: any;
+    constructor(...args: AnyType[]);
+    [property: string]: AnyType;
   }
 
   /**
@@ -53,18 +58,18 @@ export declare namespace juggler {
     between, // BETWEEN [val1, val2]
     exists,
     and, // AND
-    or // OR
+    or, // OR
   }
 
   export interface Condition {
-    eq?: any;
-    neq?: any;
-    gt?: any;
-    get?: any;
-    lt?: any;
-    lte?: any;
-    inq?: any[];
-    between?: any[];
+    eq?: AnyType;
+    neq?: AnyType;
+    gt?: AnyType;
+    get?: AnyType;
+    lt?: AnyType;
+    lte?: AnyType;
+    inq?: AnyType[];
+    between?: AnyType[];
     exists?: boolean;
     and?: Where[];
     or?: Where[];
@@ -76,7 +81,7 @@ export declare namespace juggler {
   export interface Where {
     and?: Where[]; // AND
     or?: Where[]; // OR
-    [property: string]: Condition | any; // Other criteria
+    [property: string]: Condition | AnyType; // Other criteria
   }
 
   /**
@@ -103,7 +108,7 @@ export declare namespace juggler {
    */
   export interface Inclusion {
     relation: string;
-    scope: Filter
+    scope: Filter;
   }
 
   /**
@@ -231,7 +236,7 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Boolean} exists True if the instance with the specified ID exists; false otherwise.
      */
-    static exists(id: any, options?: Options,
+    static exists(id: AnyType, options?: Options,
       callback?: Callback<boolean>): PromiseOrVoid<boolean>;
 
     /**
@@ -247,7 +252,7 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Object} instance Model instance matching the specified ID or null if no instance matches.
      */
-    static findById(id: any, filter?: Filter, options?: Options,
+    static findById(id: AnyType, filter?: Filter, options?: Options,
       callback?: Callback<boolean>): PromiseOrVoid<PersistedData>;
 
     /**
@@ -349,7 +354,7 @@ export declare namespace juggler {
      * ```
      * <br/>see
      * [Where filter](http://loopback.io/doc/en/lb2/Where-filter.html#where-clause-for-other-methods).
-     * @param {Object} data Object containing data to replace matching instances, if any.
+     * @param {Object} data Object containing data to replace matching instances, if AnyType.
      *
      * @callback {Function} callback Callback function called with `(err, info)` arguments.  Required.
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
@@ -369,13 +374,13 @@ export declare namespace juggler {
      * @callback {Function} callback Callback function called with `(err)` arguments.  Required.
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      */
-    static destroyById(id: any, options?: Options,
+    static destroyById(id: AnyType, options?: Options,
       callback?: Callback<boolean>): PromiseOrVoid<boolean>;
 
-    static removeById(id: any, options?: Options,
+    static removeById(id: AnyType, options?: Options,
       callback?: Callback<boolean>): PromiseOrVoid<boolean>;
 
-    static deleteById(id: any, options?: Options,
+    static deleteById(id: AnyType, options?: Options,
       callback?: Callback<boolean>): PromiseOrVoid<boolean>;
 
     /**
@@ -391,7 +396,7 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Object} instance Replaced instance.
      */
-    static replaceById(id: any, data: PersistedData, options?: Options,
+    static replaceById(id: AnyType, data: PersistedData, options?: Options,
       callback?: Callback<boolean>): PromiseOrVoid<boolean>;
 
     /**
@@ -449,7 +454,7 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Object} instance Updated instance.
      */
-    updateAttribute(name: string, value: any, options?: Options,
+    updateAttribute(name: string, value: AnyType, options?: Options,
       callback?: Callback<boolean>): PromiseOrVoid<boolean>;
 
     /**
@@ -493,7 +498,7 @@ export declare namespace juggler {
      *
      * @param {*} val The `id` value. Will be converted to the type that the `id` property specifies.
      */
-    setId(val: any): void;
+    setId(val: AnyType): void;
 
     /**
      * Get the `id` value for the `PersistedModel`.
@@ -501,7 +506,7 @@ export declare namespace juggler {
      * @returns {*} The `id` value
      */
 
-    getId(): any;
+    getId(): AnyType;
 
     /**
      * Get the `id` property name of the constructor.

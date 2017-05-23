@@ -1,8 +1,12 @@
+// Copyright IBM Corp. 2017. All Rights Reserved.
+// Node module: juggler
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import { Connector } from './connector';
-import { Options } from './common';
 import { Entity } from './model';
 import { Filter, Where } from './query';
-import { Class, ObjectType } from './common';
+import { Class, ObjectType, Options, AnyType } from './common';
 
 export type EntityData = ObjectType<Entity>;
 
@@ -28,7 +32,7 @@ export interface CrudConnector extends Connector {
   find(modelClass: Class<Entity>, filter?: Filter, options?: Options):
     Promise<EntityData[]>;
 
-  findById?(modelClass: Class<Entity>, id: any, options?: Options):
+  findById?(modelClass: Class<Entity>, id: AnyType, options?: Options):
     Promise<EntityData>;
 
   update?(modelClass: Class<Entity>, entity: EntityData, options?: Options):
@@ -44,11 +48,11 @@ export interface CrudConnector extends Connector {
     where?: Where, options?: Options):
     Promise<number>;
 
-  updateById?(modelClass: Class<Entity>, id: any, data: EntityData,
+  updateById?(modelClass: Class<Entity>, id: AnyType, data: EntityData,
     options?: Options): Promise<boolean>;
 
-  replaceById?(modelClass: Class<Entity>, id: any, data: EntityData,
-    options?: Options): Promise<boolean>
+  replaceById?(modelClass: Class<Entity>, id: AnyType, data: EntityData,
+    options?: Options): Promise<boolean>;
 
   /**
    * Delete matching entities
@@ -56,7 +60,7 @@ export interface CrudConnector extends Connector {
   deleteAll(modelClass: Class<Entity>, where?: Where, options?: Options):
     Promise<number>;
 
-  deleteById?(modelClass: Class<Entity>, id: any, options?: Options):
+  deleteById?(modelClass: Class<Entity>, id: AnyType, options?: Options):
     Promise<boolean>;
 
   /**
@@ -65,6 +69,6 @@ export interface CrudConnector extends Connector {
   count(modelClass: Class<Entity>, where?: Where, options?: Options):
     Promise<number>;
 
-  exists?(modelClass: Class<Entity>, id: any, options?: Options):
+  exists?(modelClass: Class<Entity>, id: AnyType, options?: Options):
     Promise<boolean>;
 }

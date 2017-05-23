@@ -7,25 +7,28 @@ import { expect } from '@loopback/testlab';
 import { Context } from '@loopback/context';
 import { repository } from '../../../src/decorator';
 
+import { AnyType } from '../../../src/common';
 import { Repository } from '../../../src/repository';
 import { jugglerModule, bindModel, DataSource, juggler, DefaultCrudRepository }
   from '../../../src/legacy';
 
 class MyController {
-  constructor(@repository('noteRepo') public noteRepo: Repository<any>) {
+  constructor(@repository('noteRepo') public noteRepo: Repository<AnyType>) {
   }
 }
 
-describe('@repository', function () {
-  var ctx: Context;
-  var repo: Repository<any>;
+describe('@repository', () => {
+  let ctx: Context;
+  let repo: Repository<AnyType>;
 
-  before(function () {
-    let ds: juggler.DataSource = new DataSource({
+  before(function() {
+    const ds: juggler.DataSource = new DataSource({
       name: 'db',
-      connector: 'memory'
+      connector: 'memory',
     });
-    let Note = <typeof juggler.PersistedModel>
+
+    /* tslint:disable:variable-name */
+    const Note = <typeof juggler.PersistedModel>
       ds.createModel('note', { title: 'string', content: 'string' }, {});
     repo = new DefaultCrudRepository(Note, ds);
     ctx = new Context();
@@ -33,8 +36,8 @@ describe('@repository', function () {
     ctx.bind('controllers:MyController').toClass(MyController);
   });
 
-  it('supports referencing predefined repository by name', async function () {
-    let myController: MyController = await ctx.get('controllers:MyController');
+  it('supports referencing predefined repository by name', async () => {
+    const myController: MyController = await ctx.get('controllers:MyController');
     expect(myController.noteRepo).exactly(repo);
   });
 });
