@@ -12,8 +12,8 @@ export class HealthController {
     this._info = {uptime: 29389384};
   }
 
-  async getHealth() : Promise<string> {
-    return Promise.resolve(JSON.stringify(this._info));
+  async getHealth() : Promise<HealthResponse> {
+    return Promise.resolve(this._info);
   }
 }
 

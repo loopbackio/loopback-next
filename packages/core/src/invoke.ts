@@ -28,11 +28,14 @@ export function invoke(
       debug('%s() result -', operationName, result);
       // TODO(bajtos) handle non-string results via JSON.stringify
       if (result) {
-        // TODO(ritch) remove this, should be configurable
-        response.setHeader('Content-Type', 'application/json');
-        // TODO(bajtos) handle errors - JSON.stringify can throw
-        if (typeof result === 'object')
+        if (typeof result === 'object') {
+          // TODO(ritch) remove this, should be configurable
+          response.setHeader('Content-Type', 'application/json');
+          // TODO(bajtos) handle errors - JSON.stringify can throw
           result = JSON.stringify(result);
+        } else if (typeof result === 'string') {
+          response.setHeader('Content-Type', 'text/plain');
+        }
         response.write(result);
       }
       response.end();
