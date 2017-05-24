@@ -29,23 +29,23 @@ export class UnionType implements Type<AnyType> {
 
   coerce(value: AnyType) {
     // First find instances
-    for (let type of this.itemTypes) {
+    for (const type of this.itemTypes) {
       if (type.isInstance(value)) {
         return type.coerce(value);
       }
     }
     // Try coercible
-    for (let type of this.itemTypes) {
+    for (const type of this.itemTypes) {
       if (type.isCoercible(value)) {
         return type.coerce(value);
       }
     }
-    let msg = util.format('Invalid %s: %j', this.name, value);
+    const msg = util.format('Invalid %s: %j', this.name, value);
     throw new TypeError(msg);
   }
 
   serialize(value: AnyType) {
-    for (let type of this.itemTypes) {
+    for (const type of this.itemTypes) {
       if (type.isInstance(value)) {
         return type.serialize(value);
       }

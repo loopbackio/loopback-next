@@ -87,7 +87,8 @@ export function repository(model: string | Class<Model>,
       // Please note key is undefined for constructor. If strictNullChecks
       // is true, the compiler will complain as reflect-metadata won't
       // accept undefined or null for key. Use ! to fool the compiler.
-      return inject('repositories:' + meta.name)(target, key!, descriptor);
+      inject('repositories:' + meta.name)(target, key!, descriptor);
+      return;
     }
     // Apply model definition to the model class
   };
