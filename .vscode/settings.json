@@ -2,8 +2,19 @@
   "typescript.tsdk": "./node_modules/typescript/lib",
   "editor.tabSize": 2,
   "editor.trimAutoWhitespace": true,
+
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "coverage": true,
+    ".nyc_output": true
+  },
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
+
   "tslint.ignoreDefinitionFiles": true,
   // Temporarily disable linting & compilation of examples,
   // because they are depending on features/APIs that are
