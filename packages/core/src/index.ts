@@ -16,3 +16,7 @@ export * from '@loopback/openapi-spec';
 
 // external dependencies
 export {ServerRequest, ServerResponse} from 'http';
+
+// internals used by unit-tests
+export {parseOperationArgs} from './parser';
+export {ParsedRequest, parseRequestUrl} from './router/SwaggerRouter';

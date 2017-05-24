@@ -6,23 +6,17 @@
 import {ServerRequest as Request, ServerResponse as Response} from 'http';
 import {OpenApiSpec, OperationObject, ParameterObject} from '@loopback/openapi-spec';
 import {invoke} from '../invoke';
+import {parseOperationArgs} from '../parser';
 import * as assert from 'assert';
 import * as url from 'url';
 import * as pathToRegexp from 'path-to-regexp';
-import * as Promise from 'bluebird';
 const debug = require('debug')('loopback:SwaggerRouter');
 
-type jsonBodyFn = (req: Request, cb: (err?: Error, body?: {}) => void) => void;
-const jsonBody: jsonBodyFn = require('body/json');
-
 // tslint:disable:no-any
-type MaybeBody = any | undefined;
-type OperationArgs = any[];
-type PathParameterValues = {[key: string]: any};
+export type OperationArgs = any[];
+export type PathParameterValues = {[key: string]: any};
 type OperationRetval = any;
 // tslint:enable:no-any
-
-const parseJsonBody: (req: Request) => Promise<MaybeBody> = Promise.promisify(jsonBody);
 
 export type HandlerCallback = (err?: Error | string) => void;
 export type RequestHandler = (req: Request, res: Response, cb?: HandlerCallback) => void;
@@ -73,7 +67,7 @@ export class SwaggerRouter {
    */
   public controller(factory: ControllerFactory, spec: OpenApiSpec): void {
     assert(typeof factory === 'function', 'Controller factory must be a function.');
-    assert(typeof spec === 'object' && !!spec, 'API speciification must be a non-null object');
+    assert(typeof spec === 'object' && !!spec, 'API specification must be a non-null object');
     if (!spec.paths || !Object.keys(spec.paths).length) {
       return;
     }
@@ -92,12 +86,7 @@ export class SwaggerRouter {
   }
 
   private _handleRequest(request: Request, response: Response, next: HandlerCallback): void {
-    // TODO(bajtos) The following parsing can be skipped when the router
-    // is mounted on an express app
-    const parsedRequest = request as ParsedRequest;
-    const parsedUrl = url.parse(parsedRequest.url, true);
-    parsedRequest.path = parsedUrl.pathname  || '/';
-    parsedRequest.query = parsedUrl.query;
+    const parsedRequest = parseRequestUrl(request);
 
     debug('Handle request "%s %s"', request.method, parsedRequest.path);
 
@@ -134,7 +123,7 @@ export class SwaggerRouter {
   }
 }
 
-interface ParsedRequest extends Request {
+export interface ParsedRequest extends Request {
   // see http://expressjs.com/en/4x/api.html#req.path
   path: string;
   // see http://expressjs.com/en/4x/api.html#req.query
@@ -185,10 +174,10 @@ class Endpoint {
     }
 
     const operationName = this._spec['x-operation-name'];
+    // tslint:disable-next-line:no-floating-promises
     Promise.resolve(this._controllerFactory(request, response, operationName))
       .then(controller => {
-        loadRequestBodyIfNeeded(this._spec, request)
-          .then(body => buildOperationArguments(this._spec, request, pathParams, body))
+        return parseOperationArgs(request, this._spec, pathParams)
           .then(
             args => {
               invoke(controller, operationName, args, response, next);
@@ -197,79 +186,31 @@ class Endpoint {
               debug('Cannot parse arguments of operation %s: %s', operationName, err.stack || err);
               next(err);
             });
+      },
+      err => {
+        debug('Cannot resolve controller instance for operation %s: %s', operationName, err.stack || err);
+        next(err);
       });
   }
 }
 
-function loadRequestBodyIfNeeded(operationSpec: OperationObject, request: Request): Promise<MaybeBody> {
-  if (!hasArgumentsFromBody(operationSpec))
-    return Promise.resolve();
-
-  const contentType = request.headers['content-type'];
-  if (contentType && !/json/.test(contentType)) {
-    const err = createHttpError(415, `Content-type ${contentType} is not supported.`);
-    return Promise.reject(err);
-  }
-
-  return parseJsonBody(request).catch((err: HttpError) => {
-    err.statusCode = 400;
-    return Promise.reject(err);
-  });
-}
-
-function hasArgumentsFromBody(operationSpec: OperationObject): boolean {
-  if (!operationSpec.parameters || !operationSpec.parameters.length)
-   return false;
-
-  for (const paramSpec of operationSpec.parameters) {
-    if ('$ref' in paramSpec) continue;
-    const source = (paramSpec as ParameterObject).in;
-    if (source === 'formData' || source === 'body')
-     return true;
-  }
-  return false;
-}
-
-function buildOperationArguments(operationSpec: OperationObject, request: ParsedRequest,
-    pathParams: PathParameterValues, body?: MaybeBody): OperationArgs {
-  const args: OperationArgs = [];
-
-  for (const paramSpec of operationSpec.parameters || []) {
-    if ('$ref' in paramSpec) {
-      // TODO(bajtos) implement $ref parameters
-      throw new Error('$ref parameters are not supported yet.');
-    }
-    const spec = paramSpec as ParameterObject;
-    switch (spec.in) {
-      case 'query':
-        args.push(request.query[spec.name]);
-        break;
-      case 'path':
-        args.push(pathParams[spec.name]);
-        break;
-      case 'header':
-        args.push(request.headers[spec.name.toLowerCase()]);
-        break;
-      case 'formData':
-        args.push(body ? body[spec.name] : undefined);
-        break;
-      case 'body':
-        args.push(body);
-        break;
-      default:
-        throw createHttpError(501, 'Parameters with "in: ' + spec.in + '" are not supported yet.');
-    }
-  }
-  return args;
-}
-
-interface HttpError extends Error {
+export interface HttpError extends Error {
   statusCode?: number;
   status?: number;
 }
 
-function createHttpError(statusCode: number, message: string) {
+export function createHttpError(statusCode: number, message: string) {
   const err = new Error(message) as HttpError;
   err.statusCode = statusCode;
   return err;
+}
+
+export function parseRequestUrl(request: Request): ParsedRequest {
+  // TODO(bajtos) The following parsing can be skipped when the router
+  // is mounted on an express app
+  const parsedRequest = request as ParsedRequest;
+  const parsedUrl = url.parse(parsedRequest.url, true);
+  parsedRequest.path = parsedUrl.pathname || '/';
+  parsedRequest.query = parsedUrl.query;
+  return parsedRequest;
 }
