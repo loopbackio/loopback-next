@@ -102,6 +102,18 @@
         "clean"
       ],
       "problemMatcher": []
+    },
+    // compiler
+    {
+      "taskName": "Watch and recompile TS files",
+      "group": "build",
+      "type": "shell",
+      "command": "node",
+      "args": [
+        "./bin/tsc-watch-all"
+      ],
+      "isBackground": true,
+      "problemMatcher": "$tsc-watch"
     }
   ]
 }

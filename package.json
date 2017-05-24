@@ -15,12 +15,14 @@
     "@commitlint/config-conventional": "^7.5.0",
     "@commitlint/travis-cli": "^7.5.0",
     "@types/mocha": "^5.0.0",
+    "@types/split2": "^2.1.5",
     "coveralls": "^3.0.0",
     "cz-conventional-changelog": "^2.1.0",
     "husky": "^2.0.0",
     "lerna": "^3.14.1",
     "tslint": "^5.15.0",
-    "typescript": "^3.4.3"
+    "typescript": "^3.4.3",
+    "split2": "^2.1.1"
   },
   "scripts": {
     "postinstall": "lerna bootstrap",
@@ -49,6 +51,7 @@
     "clean:lerna": "lerna clean",
     "build": "node bin/run-lerna run build",
     "build:full": "npm run clean:lerna && npm install && npm run clean && npm run build",
+    "build:watch": "node bin/tsc-watch-all",
     "pretest": "npm run clean && npm run build",
     "test": "node packages/build/bin/run-nyc npm run mocha --scripts-prepend-node-path",
     "test:ci": "node packages/build/bin/run-nyc npm run mocha --scripts-prepend-node-path",
