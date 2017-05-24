@@ -7,6 +7,7 @@ export {Binding, BoundValue} from './binding';
 export {Context} from './context';
 export {Constructor} from './resolver';
 export {inject} from './inject';
+export {NamespacedReflect} from './reflect';
 export const isPromise = require('is-promise');
 
 // internals for testing
