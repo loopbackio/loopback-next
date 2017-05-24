@@ -6,3 +6,6 @@ node_js:
 
 before_script:
   - npm run bootstrap
+
+after_success:
+  - npm run coverage
