@@ -24,4 +24,4 @@ export class CustomerRepository extends CrudRepositoryImpl<Customer, string> {
   deleteAll(where?: Where, options?: Options) {
     return Promise.reject(new Error('deleteAll is disabled'));
   }
-};
+}
