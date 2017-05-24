@@ -27,3 +27,5 @@ export {HttpErrors};
 export {parseOperationArgs} from './parser';
 export {ParsedRequest, parseRequestUrl} from './router/swagger-router';
 export {RoutingTable, ResolvedRoute} from './router/routing-table';
+export {OperationRetval} from './invoke';
+export {writeResultToResponse} from './writer';
