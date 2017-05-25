@@ -14,6 +14,7 @@
     "@types/node": "^7.0.4",
     "@types/request": "0.0.40",
     "@types/request-promise": "^4.1.33",
+    "coveralls": "^2.13.1",
     "lerna": "^2.0.0-rc.4",
     "mocha": "^3.2.0",
     "nyc": "^10.3.2",
@@ -27,9 +28,9 @@
     "bootstrap": "lerna bootstrap",
     "lint": "tslint -c tslint.full.json --project tsconfig.json --type-check --exclude \"examples/**/*\" --exclude \"**/node_modules/**\" --exclude \"**/*.d.ts\" \"**/*.ts\"",
     "lint:fix": "npm run lint -- --fix",
-    "test": "mocha --opts test/mocha.opts \"packages/*/test/**/*.ts\"",
+    "test": "nyc mocha --opts test/mocha.opts \"packages/*/test/**/*.ts\"",
     "posttest": "npm run lint",
-    "coverage": "nyc npm test"
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "nyc": {
     "include": [
@@ -43,7 +44,7 @@
     ],
     "reporter": [
       "html",
-      "lcov"
+      "text"
     ]
   }
 }
