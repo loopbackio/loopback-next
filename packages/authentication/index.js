@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-// NOTE(bajtos) This file is used by VSCode/TypeScriptServer at dev time only
-export * from './src';
-
+const nodeMajorVersion = +process.versions.node.split('.')[0];
+module.exports = nodeMajorVersion >= 7 ?
+  require('./lib') :
+  require('./lib6');
