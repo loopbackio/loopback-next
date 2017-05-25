@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {inject, describeInjectedArguments} from '../../src/inject';
+import {inject, describeInjectedArguments, describeInjectedProperties} from '../../src/inject';
 
 describe('function argument injection', () => {
   it('can decorate class constructor arguments', () => {
@@ -22,7 +22,7 @@ describe('function argument injection', () => {
     }
 
     const meta = describeInjectedArguments(TestClass);
-    expect(meta).to.deepEqual(['foo']);
+    expect(meta.map(m => m.bindingKey)).to.deepEqual(['foo']);
   });
 
   it('returns an empty array when no ctor arguments are decorated', () => {
@@ -33,5 +33,32 @@ describe('function argument injection', () => {
 
     const meta = describeInjectedArguments(TestClass);
     expect(meta).to.deepEqual([]);
+  });
+});
+
+describe('property injection', () => {
+  it('can decorate properties', () => {
+    class TestClass {
+      @inject('foo') foo: string;
+    }
+    // the test passes when TypeScript Compiler is happy
+  });
+
+  it('can retrieve information about injected properties', () => {
+    class TestClass {
+      @inject('foo') foo: string;
+    }
+
+    const meta = describeInjectedProperties(TestClass);
+    expect(meta.foo.bindingKey).to.eql('foo');
+  });
+
+  it('returns an empty object when no properties are decorated', () => {
+    class TestClass {
+      foo: string;
+    }
+
+    const meta = describeInjectedProperties(TestClass);
+    expect(meta).to.deepEqual({});
   });
 });

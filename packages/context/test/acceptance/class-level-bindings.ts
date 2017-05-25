@@ -82,6 +82,42 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     expect(valueOrPromise as InfoController).to.have.property('appName', 'CodeHub');
   });
 
+  it('resolves promises before injecting properties', async () => {
+    ctx.bind('authenticated').toDynamicValue(async () => {
+      // Emulate asynchronous database call
+      await Promise.resolve();
+      // Return the authentication result
+      return false;
+    });
+
+    class InfoController {
+      @inject('authenticated')
+      public isAuthenticated: boolean;
+    }
+    ctx.bind(INFO_CONTROLLER).toClass(InfoController);
+
+    const instance = await ctx.get(INFO_CONTROLLER);
+    expect(instance).to.have.property('isAuthenticated', false);
+  });
+
+  it('creates instance synchronously when property/constructor dependencies are sync too', () => {
+    ctx.bind('appName').to('CodeHub');
+    ctx.bind('authenticated').to(false);
+    class InfoController {
+      constructor(@inject('appName') public appName: string) {
+      }
+
+      @inject('authenticated')
+      public isAuthenticated: boolean;
+    }
+    const b = ctx.bind(INFO_CONTROLLER).toClass(InfoController);
+
+    const valueOrPromise = b.getValue(ctx);
+    expect(valueOrPromise).to.not.be.Promise();
+    expect(valueOrPromise as InfoController).to.have.property('appName', 'CodeHub');
+    expect(valueOrPromise as InfoController).to.have.property('isAuthenticated', false);
+  });
+
   function createContext() {
     ctx = new Context();
   }
