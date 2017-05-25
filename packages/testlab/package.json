@@ -2,11 +2,10 @@
   "name": "@loopback/testlab",
   "version": "4.0.0-alpha.3",
   "description": "A collection of test utilities we use to write LoopBack tests.",
-  "main": "index",
   "scripts": {
     "build": "npm run build:lib && npm run build:lib6",
-    "build:lib": "tsc --target es2017 --outDir lib",
-    "build:lib6": "tsc --target es2015 --outDir lib6",
+    "build:lib": "tsc -p tsconfig.build.json --target es2017 --outDir lib",
+    "build:lib6": "tsc -p tsconfig.build.json --target es2015 --outDir lib6",
     "clean": "rm -f loopback-testlab*.tgz && rm -rf lib* && rm -rf package",
     "prepublish": "npm run build",
     "pretest": "npm run build",
