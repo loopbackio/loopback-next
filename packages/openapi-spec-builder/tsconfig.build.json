@@ -1,12 +1,7 @@
 {
+  "$schema": "http://json.schemastore.org/tsconfig",
   "extends": "../../tsconfig.common.json",
-  "compilerOptions": {
-    "outDir": "./lib6"
-  },
   "include": [
     "src"
-  ],
-  "exclude": [
-    "node_modules"
   ]
 }
