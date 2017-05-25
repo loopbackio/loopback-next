@@ -351,6 +351,26 @@ context('with an operation echoing a string parameter from query', () => {
     });
   });
 
+  context('error handling', () => {
+    it('handles errors throws by controller constructor', () => {
+      const spec = givenOpenApiSpec()
+        .withOperationReturningString('get', '/hello', 'greet')
+        .build();
+
+      class ThrowingController {
+        constructor() {
+          throw new Error('Thrown from constructor.');
+        }
+      }
+
+      givenControllerClass(ThrowingController, spec);
+
+      logErrorsExcept(500);
+      return client.get('/hello')
+        .expect(500);
+    });
+  });
+
   let router: SwaggerRouter;
   function givenRouter() {
     router = new SwaggerRouter();
@@ -358,7 +378,7 @@ context('with an operation echoing a string parameter from query', () => {
 
   // tslint:disable-next-line:no-any
   function givenControllerClass(ctor: new (...args: any[]) => Object, spec: OpenApiSpec) {
-    router.controller((req, res) => new ctor(), spec);
+    router.controller((req, res) => Promise.resolve().then(() => new ctor()), spec);
   }
 
   function logErrorsExcept(ignoreStatusCode: number) {
