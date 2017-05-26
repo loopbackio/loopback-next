@@ -28,6 +28,9 @@ export class AnyType implements Type<Any> {
   }
 
   serialize(value: Any) {
+    if (value && typeof value.toJSON === 'function') {
+      return value.toJSON();
+    }
     return value;
   }
 }
