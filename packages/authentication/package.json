@@ -5,8 +5,8 @@
   "scripts": {
     "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
     "build": "npm run build:lib && npm run build:lib6",
-    "build:lib": "tsc -p tsconfig.build.json --target es2017 --outDir lib",
-    "build:lib6": "tsc -p tsconfig.build.json --target es2015 --outDir lib6",
+    "build:lib": "node ../../bin/compile-package es2017",
+    "build:lib6": "node ../../bin/compile-package es2015",
     "clean": "rm -f loopback-authentication*.tgz && rm -rf lib* && rm -rf package",
     "integration": "mocha --opts ../../test/mocha.opts 'test/integration/**/*.ts'",
     "prepublish": "npm run build",

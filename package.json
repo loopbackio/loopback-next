@@ -28,6 +28,8 @@
     "bootstrap": "lerna bootstrap",
     "lint": "tslint -c tslint.full.json --project tsconfig.json --type-check --exclude \"examples/**/*\" --exclude \"**/node_modules/**\" --exclude \"**/*.d.ts\" \"**/*.ts\"",
     "lint:fix": "npm run lint -- --fix",
+    "clean": "lerna run clean",
+    "build": "lerna run build",
     "test": "nyc mocha --opts test/mocha.opts \"packages/*/test/**/*.ts\"",
     "posttest": "npm run lint",
     "coverage": "nyc report --reporter=text-lcov | coveralls"

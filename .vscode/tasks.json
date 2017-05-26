@@ -331,6 +331,28 @@
           }
         }
       ]
+    },
+
+    // build
+    {
+      "taskName": "Compile TypeScript sources",
+      "isBuildCommand": true,
+      "isShellCommand": true,
+      "command": "npm",
+      "args": [
+        "run",
+        "build"
+      ],
+      "problemMatcher": "$tsc"
+    },
+    {
+      "taskName": "Clean all generated files",
+      "isShellCommand": true,
+      "command": "npm",
+      "args": [
+        "run",
+        "clean"
+      ]
     }
   ]
 }
