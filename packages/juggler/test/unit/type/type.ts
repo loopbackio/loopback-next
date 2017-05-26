@@ -236,6 +236,121 @@ describe('types', () => {
 
   });
 
+  describe('buffer', () => {
+    const bufferType  = new types.BufferType();
+    it('checks isInstance', () => {
+      expect(bufferType.isInstance(new Buffer([1]))).to.be.true();
+      expect(bufferType.isInstance(new Buffer('123'))).to.be.true();
+      expect(bufferType.isInstance('str')).to.be.false();
+      expect(bufferType.isInstance(null)).to.be.true();
+      expect(bufferType.isInstance(undefined)).to.be.true();
+      expect(bufferType.isInstance(true)).to.be.false();
+      expect(bufferType.isInstance({x: 1})).to.be.false();
+      expect(bufferType.isInstance([1, 2])).to.be.false();
+      expect(bufferType.isInstance(1)).to.be.false();
+      expect(bufferType.isInstance(new Date())).to.be.false();
+      expect(bufferType.isInstance([1])).to.be.false();
+    });
+
+    it('checks isCoercible', () => {
+      expect(bufferType.isCoercible('str')).to.be.true();
+      expect(bufferType.isCoercible(null)).to.be.true();
+      expect(bufferType.isCoercible(undefined)).to.be.true();
+      expect(bufferType.isCoercible(new Buffer('12'))).to.be.true();
+      expect(bufferType.isCoercible({x: 1})).to.be.false();
+      expect(bufferType.isCoercible(1)).to.be.false();
+      expect(bufferType.isCoercible(new Date())).to.be.false();
+    });
+
+    it('creates defaultValue', () => {
+      expect(bufferType.defaultValue().equals(Buffer.from([]))).to.be.true();
+    });
+
+    it('coerces values', () => {
+      expect(bufferType.coerce('str').equals(new Buffer('str'))).to.be.true();
+      expect(bufferType.coerce([1]).equals(Buffer.from([1]))).to.be.true();
+      expect(bufferType.coerce(null)).to.equal(null);
+      expect(bufferType.coerce(undefined)).to.equal(undefined);
+    });
+
+    it('serializes values', () => {
+      expect(bufferType.serialize(new Buffer('str'), {encoding: 'utf-8'})).
+        to.eql('str');
+      expect(bufferType.serialize(new Buffer('str'))).to.eql('c3Ry');
+      expect(bufferType.serialize(null)).null();
+      expect(bufferType.serialize(undefined)).undefined();
+    });
+
+  });
+
+  describe('any', () => {
+    const anyType  = new types.AnyType();
+    it('checks isInstance', () => {
+      expect(anyType.isInstance('str')).to.be.true();
+      expect(anyType.isInstance(null)).to.be.true();
+      expect(anyType.isInstance(undefined)).to.be.true();
+      expect(anyType.isInstance(true)).to.be.true();
+      expect(anyType.isInstance({x: 1})).to.be.true();
+      expect(anyType.isInstance([1, 2])).to.be.true();
+      expect(anyType.isInstance(1)).to.be.true();
+      expect(anyType.isInstance(new Date())).to.be.true();
+      expect(anyType.isInstance(new Buffer('123'))).to.be.true();
+    });
+
+    it('checks isCoercible', () => {
+      expect(anyType.isCoercible('str')).to.be.true();
+      expect(anyType.isCoercible(null)).to.be.true();
+      expect(anyType.isCoercible(undefined)).to.be.true();
+      expect(anyType.isCoercible(true)).to.be.true();
+      expect(anyType.isCoercible({x: 1})).to.be.true();
+      expect(anyType.isCoercible(1)).to.be.true();
+      expect(anyType.isCoercible([1, '2'])).to.be.true();
+      expect(anyType.isCoercible(new Date())).to.be.true();
+      expect(anyType.isCoercible(new Buffer('123'))).to.be.true();
+    });
+
+    it('creates defaultValue', () => {
+      expect(anyType.defaultValue()).to.equal(undefined);
+    });
+
+    it('coerces values', () => {
+      expect(anyType.coerce('str')).to.equal('str');
+      expect(anyType.coerce(null)).to.equal(null);
+      expect(anyType.coerce(undefined)).to.equal(undefined);
+      expect(anyType.coerce(true)).to.equal(true);
+      const obj = {x: 1};
+      expect(anyType.coerce(obj)).to.equal(obj);
+      const arr = [1, '2'];
+      expect(anyType.coerce(arr)).to.equal(arr);
+      expect(anyType.coerce(1)).to.equal(1);
+      const date = new Date();
+      expect(anyType.coerce(date)).to.equal(date);
+      const buf = new Buffer('12');
+      expect(anyType.coerce(buf)).to.equal(buf);
+    });
+
+    it('serializes values', () => {
+      expect(anyType.serialize('str')).to.eql('str');
+      expect(anyType.serialize(1)).to.eql(1);
+      expect(anyType.serialize([1, '2'])).to.eql([1, '2']);
+      expect(anyType.serialize(null)).null();
+      expect(anyType.serialize(undefined)).undefined();
+      const date = new Date();
+      expect(anyType.serialize(date)).to.eql(date.toJSON());
+      const obj = {x: 1};
+      expect(anyType.serialize(obj)).to.eql(obj);
+      const json = {
+        x: 1,
+        y: 2,
+        toJSON() {
+          return { a: json.x + json.y };
+        },
+      };
+      expect(anyType.serialize(json)).to.eql({ a: 3 });
+    });
+
+  });
+
   describe('union', () => {
     const numberType = new types.NumberType();
     const booleanType = new types.BooleanType();
