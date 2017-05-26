@@ -43,7 +43,7 @@ export class BufferType implements Type<Buffer> {
     throw new TypeError(msg);
   }
 
-  serialize(value: Buffer, options?: Options) {
+  serialize(value: Buffer|null|undefined, options?: Options) {
     if (value == null) return value;
     const encoding = options && options.encoding || 'base64';
     return value.toString(encoding);
