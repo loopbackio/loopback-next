@@ -207,17 +207,19 @@ describe('types', () => {
 
     it('coerces values', () => {
       expect(() => dateType.coerce('str')).to.throw(/Invalid date/);
+      // '1' will be parsed as local 2001-01-01
       expect(dateType.coerce('1')).to.eql(
-        new Date('2001-01-01T08:00:00.000Z'));
+        new Date('01/01/2001'));
+      // '1.1' will be parsed as local 2001-01-01
       expect(dateType.coerce('1.1')).to.eql(
-        new Date('2001-01-01T08:00:00.000Z'));
+        new Date('01/01/2001'));
       expect(dateType.coerce(null)).to.equal(null);
       expect(dateType.coerce(undefined)).to.equal(undefined);
       expect(dateType.coerce(true)).to.eql(new Date(1));
       expect(dateType.coerce(false)).to.eql(new Date(0));
       expect(() => dateType.coerce({x: 1})).to.throw(/Invalid date/);
       expect(dateType.coerce([1, '2'])).to.eql(
-        new Date('2001-01-02T08:00:00.000Z'));
+        new Date('01/02/2001'));
       expect(dateType.coerce(1)).to.eql(new Date('1970-01-01T00:00:00.001Z'));
       expect(dateType.coerce(1.1)).to.eql(
         new Date('1970-01-01T00:00:00.001Z'));
