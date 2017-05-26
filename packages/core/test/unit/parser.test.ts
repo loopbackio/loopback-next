@@ -9,13 +9,9 @@ import {
   ParsedRequest,
   parseRequestUrl,
 } from '../..';
-import {expect} from '@loopback/testlab';
+import {expect, ShotRequest, ShotRequestOptions} from '@loopback/testlab';
 import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
 
-import {RequestOptions as ShotRequestOptions} from 'shot';
-type ShotRequestCtor = new(options: ShotRequestOptions) => ServerRequest;
-// tslint:disable-next-line:variable-name
-const ShotRequest: ShotRequestCtor = require('shot/lib/request');
 
 describe('operationArgsParser', () => {
   it('parses path parameters', async () => {

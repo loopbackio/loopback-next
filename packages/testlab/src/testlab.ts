@@ -16,3 +16,4 @@ export const expect = shouldAsFunction;
 export {sinon};
 
 export * from './client';
+export * from './shot';

@@ -30,9 +30,7 @@
   "devDependencies": {
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.2",
     "@loopback/testlab": "^4.0.0-alpha.3",
-    "@types/shot": "^3.4.0",
     "mocha": "^3.2.0",
-    "shot": "^3.4.0",
     "typescript": "^2.3.2"
   },
   "files": [
