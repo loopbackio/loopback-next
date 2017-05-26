@@ -9,6 +9,8 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true,
+    "packages/*/lib": true,
+    "packages/*/lib6": true,
     "coverage": true,
     ".nyc_output": true
   },
