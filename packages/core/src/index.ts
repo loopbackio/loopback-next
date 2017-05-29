@@ -20,3 +20,9 @@ export {ServerRequest, ServerResponse} from 'http';
 // internals used by unit-tests
 export {parseOperationArgs} from './parser';
 export {ParsedRequest, parseRequestUrl} from './router/SwaggerRouter';
+
+// import all errors from external http-errors package
+import * as HttpErrors from 'http-errors';
+
+// http errors
+export {HttpErrors};
