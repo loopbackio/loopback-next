@@ -6,7 +6,7 @@
     "build": "npm run build:lib && npm run build:lib6",
     "build:lib": "node ../../bin/compile-package es2017",
     "build:lib6": "node ../../bin/compile-package es2015",
-    "clean": "rm -f loopback-openapi-spec*.tgz && rm -rf lib* && rm -rf package",
+    "clean": "rm -rf loopback-openapi-spec*.tgz lib* package",
     "prepublish": "npm run build",
     "verify": "npm pack && tar xf loopback-openapi-spec*.tgz && tree package && npm run clean"
   },

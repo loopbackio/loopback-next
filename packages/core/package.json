@@ -7,7 +7,7 @@
     "build": "npm run build:lib && npm run build:lib6",
     "build:lib": "node ../../bin/compile-package es2017",
     "build:lib6": "node ../../bin/compile-package es2015",
-    "clean": "rm -f loopback-core*.tgz && rm -rf lib* && rm -rf package",
+    "clean": "rm -rf loopback-core*.tgz lib* package",
     "prepublish": "npm run build",
     "pretest": "npm run build",
     "integration": "mocha --opts ../../test/mocha.opts 'test/integration/**/*.ts'",
