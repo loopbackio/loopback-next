@@ -11,7 +11,11 @@ import {RoutingTable, ResolvedRoute} from './routing-table';
 import * as assert from 'assert';
 import * as url from 'url';
 import * as pathToRegexp from 'path-to-regexp';
+import {HttpErrors} from '../..';
+
 const debug = require('debug')('loopback:SwaggerRouter');
+
+type HttpError = HttpErrors.HttpError;
 
 // tslint:disable:no-any
 export type OperationArgs = any[];
@@ -133,18 +137,6 @@ export interface ParsedRequest extends Request {
   pathname: string;
   method: string;
 }
-
-export interface HttpError extends Error {
-  statusCode?: number;
-  status?: number;
-}
-
-export function createHttpError(statusCode: number, message: string) {
-  const err = new Error(message) as HttpError;
-  err.statusCode = statusCode;
-  return err;
-}
-
 export function parseRequestUrl(request: Request): ParsedRequest {
   // TODO(bajtos) The following parsing can be skipped when the router
   // is mounted on an express app
