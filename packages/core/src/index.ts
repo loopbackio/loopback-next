@@ -17,12 +17,13 @@ export * from '@loopback/openapi-spec';
 // external dependencies
 export {ServerRequest, ServerResponse} from 'http';
 
-// internals used by unit-tests
-export {parseOperationArgs} from './parser';
-export {ParsedRequest, parseRequestUrl} from './router/SwaggerRouter';
-
 // import all errors from external http-errors package
 import * as HttpErrors from 'http-errors';
 
 // http errors
 export {HttpErrors};
+
+// internals used by unit-tests
+export {parseOperationArgs} from './parser';
+export {ParsedRequest, parseRequestUrl} from './router/SwaggerRouter';
+export {RoutingTable, ResolvedRoute} from './router/routing-table';
