@@ -25,7 +25,7 @@ export {HttpErrors};
 
 // internals used by unit-tests
 export {parseOperationArgs} from './parser';
-export {ParsedRequest, parseRequestUrl} from './router/swagger-router';
+export {ParsedRequest, parseRequestUrl} from './router/routing-table';
 export {RoutingTable, ResolvedRoute} from './router/routing-table';
 export {OperationRetval} from './invoke';
 export {writeResultToResponse} from './writer';

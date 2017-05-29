@@ -15,7 +15,7 @@
 
 ```ts
 let app = new Application();
-let server = new Server();
+let server = new Server(app);
 let client = new Client(server.url);
 
 @api({
@@ -47,7 +47,6 @@ class MyController {
 }
 
 app.controller(MyController);
-server.bind('applications.myApp').to(app);
 
 await server.start();
 await client.get('/echo?msg=hello%20world'); // => {status: 200, body: 'hello world'}

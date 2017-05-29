@@ -6,10 +6,9 @@
 import {ServerRequest as Request, ServerResponse as Response} from 'http';
 import {OpenApiSpec, OperationObject, ParameterObject} from '@loopback/openapi-spec';
 import {invoke} from '../invoke';
-import {parseOperationArgs} from '../parser';
-import {RoutingTable, ResolvedRoute} from './routing-table';
+import {parseOperationArgs, OperationArgs} from '../parser';
+import {RoutingTable, ResolvedRoute, PathParameterValues, ParsedRequest, parseRequestUrl} from './routing-table';
 import * as assert from 'assert';
-import * as url from 'url';
 import * as pathToRegexp from 'path-to-regexp';
 import {HttpErrors} from '../..';
 
@@ -18,9 +17,7 @@ const debug = require('debug')('loopback:core:swagger-router');
 type HttpError = HttpErrors.HttpError;
 
 // tslint:disable:no-any
-export type OperationArgs = any[];
-export type PathParameterValues = {[key: string]: any};
-type OperationRetval = any;
+export type OperationRetval = any;
 // tslint:enable:no-any
 
 export type HandlerCallback = (err?: Error | string) => void;
@@ -71,7 +68,7 @@ export class SwaggerRouter {
    */
   public controller(factory: ControllerFactory, spec: OpenApiSpec): void {
     assert(typeof factory === 'function', 'Controller factory must be a function.');
-    this._routingTable.define(factory, spec);
+    this._routingTable.registerController(factory, spec);
   }
 
   private _handleRequest(request: Request, response: Response, next: HandlerCallback): void {
@@ -125,24 +122,4 @@ export class SwaggerRouter {
   public logError(req: Request, statusCode: number, err: Error | string) {
     console.error('Unhandled error in %s %s: %s %s', req.method, req.url, statusCode, (err as Error).stack || err);
   }
-}
-
-export interface ParsedRequest extends Request {
-  // see http://expressjs.com/en/4x/api.html#req.path
-  path: string;
-  // see http://expressjs.com/en/4x/api.html#req.query
-  query: { [key: string]: string };
-  // see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/15808
-  url: string;
-  pathname: string;
-  method: string;
-}
-export function parseRequestUrl(request: Request): ParsedRequest {
-  // TODO(bajtos) The following parsing can be skipped when the router
-  // is mounted on an express app
-  const parsedRequest = request as ParsedRequest;
-  const parsedUrl = url.parse(parsedRequest.url, true);
-  parsedRequest.path = parsedUrl.pathname || '/';
-  parsedRequest.query = parsedUrl.query;
-  return parsedRequest;
 }

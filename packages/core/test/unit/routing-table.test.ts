@@ -21,7 +21,7 @@ describe('RoutingTable', () => {
       .build();
 
     const table = new RoutingTable<string>();
-    table.define('TestController', spec);
+    table.registerController('TestController', spec);
 
     const request = givenRequest({
       method: 'get',
