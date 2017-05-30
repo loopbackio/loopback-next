@@ -9,3 +9,6 @@ before_script:
 
 after_success:
   - npm run coverage
+
+notifications:
+  email: false
