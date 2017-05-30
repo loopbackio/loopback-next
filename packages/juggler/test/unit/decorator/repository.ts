@@ -27,7 +27,7 @@ describe('@repository', () => {
       connector: 'memory',
     });
 
-    /* tslint:disable:variable-name */
+    /* tslint:disable-next-line:variable-name */
     const Note = <typeof juggler.PersistedModel>
       ds.createModel('note', { title: 'string', content: 'string' }, {});
     repo = new DefaultCrudRepository(Note, ds);
