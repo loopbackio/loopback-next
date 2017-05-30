@@ -5,9 +5,9 @@
 
 // package dependencies
 export {Application} from './application';
-export {Component} from './Component';
+export {Component} from './component';
 export {api} from './router/metadata';
-export {Sequence} from './Sequence';
+export {Sequence} from './sequence';
 export {Server, ServerConfig, ServerState} from './server';
 
 // loopback dependencies
@@ -25,5 +25,5 @@ export {HttpErrors};
 
 // internals used by unit-tests
 export {parseOperationArgs} from './parser';
-export {ParsedRequest, parseRequestUrl} from './router/SwaggerRouter';
+export {ParsedRequest, parseRequestUrl} from './router/swagger-router';
 export {RoutingTable, ResolvedRoute} from './router/routing-table';

@@ -9,7 +9,7 @@ import {
   ParameterObject,
 } from '@loopback/openapi-spec';
 import {ServerRequest} from 'http';
-import {PathParameterValues, ParsedRequest} from './SwaggerRouter';
+import {PathParameterValues, ParsedRequest} from './swagger-router';
 
 import * as assert from 'assert';
 const debug = require('debug')('loopback:core:routing-table');

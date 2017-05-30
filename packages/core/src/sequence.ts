@@ -5,9 +5,9 @@
 
 import {Application} from './application';
 import {Server} from './server';
-import {SwaggerRouter} from './router/SwaggerRouter';
+import {SwaggerRouter} from './router/swagger-router';
 
-const debug = require('debug')('loopback:Server');
+const debug = require('debug')('loopback:core:sequence');
 import {ServerRequest, ServerResponse} from 'http';
 
 export class Sequence {

@@ -6,10 +6,10 @@
 import {Binding, Context, Constructor} from '@loopback/context';
 import {Component, Sequence} from '.';
 import * as http from 'http';
-import {SwaggerRouter} from './router/SwaggerRouter';
+import {SwaggerRouter} from './router/swagger-router';
 import {getApiSpec} from './router/metadata';
 
-const debug = require('debug')('loopback:Application');
+const debug = require('debug')('loopback:core:application');
 
 export class Application extends Context {
   constructor(public appConfig?: AppConfig) {

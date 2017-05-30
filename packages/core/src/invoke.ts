@@ -4,9 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ServerResponse as Response} from 'http';
-import {HandlerCallback} from './router/SwaggerRouter';
+import {HandlerCallback} from './router/swagger-router';
 
-const debug = require('debug')('loopback:invoker');
+const debug = require('debug')('loopback:core:invoker');
 
 // tslint:disable:no-any
 export type OperationArgs = any[];
