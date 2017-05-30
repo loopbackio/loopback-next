@@ -9,9 +9,12 @@ import {Class, AnyType} from './common';
  * Interface for functions that can mix properties/methods into a base class
  */
 export interface MixinFunc {
-  <BC extends Class<{}>>(baseClass: BC): BC;
+  <BC extends Class<AnyType>>(baseClass: BC): BC;
 }
 
+/**
+ * A builder to compose mixins
+ */
 export class MixinBuilder {
   constructor(public baseClass: Class<AnyType>) {
   }
@@ -23,14 +26,4 @@ export class MixinBuilder {
   static mix(baseClass: Class<AnyType>) {
     return new MixinBuilder(baseClass);
   }
-}
-
-
-function extend<T extends Class<{}>>(superClass: T, ...mixins: Class<{}>[]): T {
-  const mixed = class extends superClass {
-  };
-  Object.assign(mixed, ...mixins);
-  const prototypes: Class<{}>[] = mixins.map((c) => c.prototype);
-  Object.assign(mixed.prototype, ...prototypes);
-  return mixed;
 }
