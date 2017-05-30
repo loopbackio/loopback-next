@@ -10,7 +10,7 @@ import { repository } from '../../../src/decorator';
 import { AnyType } from '../../../src/common';
 import { Repository } from '../../../src/repository';
 import { jugglerModule, bindModel, DataSource, juggler, DefaultCrudRepository }
-  from '../../../src/legacy';
+  from '../../../src/legacy-juggler-bridge';
 
 class MyController {
   constructor(@repository('noteRepo') public noteRepo: Repository<AnyType>) {
