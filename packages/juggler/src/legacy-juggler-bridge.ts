@@ -39,7 +39,7 @@ function isPromise<T>(p: AnyType): p is Promise<T> {
   return p !== null && typeof p === 'object' && typeof p.then === 'function';
 }
 
-function getPromise<T>(p: juggler.PromiseOrVoid<T>) {
+function getPromise<T>(p: juggler.PromiseOrVoid<T>): Promise<T> {
   if (isPromise(p)) {
     return p;
   } else {
@@ -64,10 +64,17 @@ implements EntityCrudRepository<T, ID> {
   }
 
   save(entity: ObjectType<T>, options?: Options): Promise<T> {
-    if (entity.getId() == null) {
+    const idName = this.modelClass.definition.idName();
+    let id;
+    if (typeof entity.getId === 'function') {
+      id = entity.getId();
+    } else {
+      id = entity[idName];
+    }
+    if (id == null) {
       return this.create(entity, options);
     } else {
-      return this.replaceById(entity.getId, entity, options).
+      return this.replaceById(id, entity, options).
         then(result => result ? entity : null);
     }
   }
@@ -89,26 +96,29 @@ implements EntityCrudRepository<T, ID> {
   }
 
   updateAll(data: ObjectType<T>, where?: Where, options?: Options): Promise<number> {
-    return getPromise(this.modelClass.updateAll(data, where, options));
+    return getPromise(this.modelClass.updateAll(where, data, options)).
+      then(result => result.count);
   }
 
   updateById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean> {
-    const idProp = this.modelClass.getIdName();
+    const idProp = this.modelClass.definition.idName();
     const where = {} as Where;
     where[idProp] = id;
     return this.updateAll(data, where, options).then(count => count > 0);
   }
 
   replaceById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean> {
-    return getPromise(this.modelClass.replaceById(id, data, options));
+    return getPromise(this.modelClass.replaceById(id, data, options)).then(result => !!result);
   }
 
   deleteAll(where?: Where, options?: Options): Promise<number> {
-    return getPromise(this.modelClass.deleteAll(where, options));
+    return getPromise(this.modelClass.deleteAll(where, options)).
+      then(result => result.count);
   }
 
   deleteById(id: ID, options?: Options): Promise<boolean> {
-    return getPromise(this.modelClass.deleteById(id, options));
+    return getPromise(this.modelClass.deleteById(id, options)).
+      then(result => result.count > 0);
   }
 
   count(where?: Where, options?: Options): Promise<number> {
