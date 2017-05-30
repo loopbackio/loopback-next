@@ -12,8 +12,9 @@ import {juggler} from './loopback-datasource-juggler';
 
 export * from './loopback-datasource-juggler';
 
-/* tslint:disable:variable-name */
+/* tslint:disable-next-line:variable-name */
 export const DataSource = jugglerModule.DataSource as typeof juggler.DataSource;
+/* tslint:disable-next-line:variable-name */
 export const ModelBase = jugglerModule.ModelBaseClass as typeof juggler.ModelBase;
 
 /**
