@@ -338,9 +338,10 @@
       "taskName": "Compile TypeScript sources",
       "isBuildCommand": true,
       "isShellCommand": true,
-      "command": "npm",
+      "command": "lerna",
       "args": [
         "run",
+        "--loglevel=silent",
         "build"
       ],
       "problemMatcher": "$tsc"
