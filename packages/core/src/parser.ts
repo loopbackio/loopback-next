@@ -8,11 +8,12 @@ import {
   PathParameterValues,
   OperationArgs,
   ParsedRequest,
-  HttpError,
-  createHttpError,
 } from './router/SwaggerRouter';
+import {HttpErrors} from './';
 import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
 import {promisify} from './promisify';
+
+type HttpError = HttpErrors.HttpError;
 
 type jsonBodyFn = (req: Request, cb: (err?: Error, body?: {}) => void) => void;
 const jsonBody: jsonBodyFn = require('body/json');
@@ -35,7 +36,8 @@ function loadRequestBodyIfNeeded(operationSpec: OperationObject, request: Reques
 
   const contentType = request.headers['content-type'];
   if (contentType && !/json/.test(contentType)) {
-    const err = createHttpError(415, `Content-type ${contentType} is not supported.`);
+    const err = new HttpErrors.UnsupportedMediaType(
+      `Content-type ${contentType} is not supported.`);
     return Promise.reject(err);
   }
 
@@ -85,7 +87,8 @@ function buildOperationArguments(operationSpec: OperationObject, request: Parsed
         args.push(body);
         break;
       default:
-        throw createHttpError(501, 'Parameters with "in: ' + spec.in + '" are not supported yet.');
+        throw new HttpErrors.NotImplemented(
+          'Parameters with "in: ' + spec.in + '" are not supported yet.');
     }
   }
   return args;
