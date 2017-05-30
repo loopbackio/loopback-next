@@ -42,6 +42,7 @@ export declare namespace juggler {
    * Model definition
    */
   export class ModelDefinition {
+    idName(): string;
   }
 
   /**
@@ -125,6 +126,10 @@ export declare namespace juggler {
   }
 
   export type PersistedData = ModelData<PersistedModel>;
+
+  export interface Count {
+    count: number;
+  }
 
   export class PersistedModel extends ModelBase {
 
@@ -329,13 +334,13 @@ export declare namespace juggler {
      * @param {Number} info.count Number of instances (rows, documents) destroyed.
      */
     static destroyAll(where?: Where, options?: Options,
-      callback?: Callback<number>): PromiseOrVoid<number>;
+      callback?: Callback<Count>): PromiseOrVoid<Count>;
 
     static remove(where?: Where, options?: Options,
-      callback?: Callback<number>): PromiseOrVoid<number>;
+      callback?: Callback<Count>): PromiseOrVoid<Count>;
 
     static deleteAll(where?: Where, options?: Options,
-      callback?: Callback<number>): PromiseOrVoid<number>;
+      callback?: Callback<Count>): PromiseOrVoid<Count>;
 
     /**
      * Update multiple instances that match the where clause.
@@ -363,10 +368,10 @@ export declare namespace juggler {
      *
      */
     static updateAll(where?: Where, data?: PersistedData, options?: Options,
-      callback?: Callback<number>): PromiseOrVoid<number>;
+      callback?: Callback<Count>): PromiseOrVoid<Count>;
 
     static update(where?: Where, data?: PersistedData, options?: Options,
-      callback?: Callback<number>): PromiseOrVoid<number>;
+      callback?: Callback<Count>): PromiseOrVoid<Count>;
 
     /**
      * Destroy model instance with the specified ID.
@@ -375,13 +380,13 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      */
     static destroyById(id: AnyType, options?: Options,
-      callback?: Callback<boolean>): PromiseOrVoid<boolean>;
+      callback?: Callback<Count>): PromiseOrVoid<Count>;
 
     static removeById(id: AnyType, options?: Options,
-      callback?: Callback<boolean>): PromiseOrVoid<boolean>;
+      callback?: Callback<Count>): PromiseOrVoid<Count>;
 
     static deleteById(id: AnyType, options?: Options,
-      callback?: Callback<boolean>): PromiseOrVoid<boolean>;
+      callback?: Callback<Count>): PromiseOrVoid<Count>;
 
     /**
      * Replace attributes for a model instance whose id is the first input
@@ -397,7 +402,7 @@ export declare namespace juggler {
      * @param {Object} instance Replaced instance.
      */
     static replaceById(id: AnyType, data: PersistedData, options?: Options,
-      callback?: Callback<boolean>): PromiseOrVoid<boolean>;
+      callback?: Callback<PersistedData>): PromiseOrVoid<PersistedData>;
 
     /**
      * Return the number of records that match the optional "where" filter.
