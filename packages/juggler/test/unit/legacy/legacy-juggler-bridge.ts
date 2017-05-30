@@ -6,7 +6,7 @@
 import {expect} from '@loopback/testlab';
 
 import {jugglerModule, bindModel, DataSource, juggler, DefaultCrudRepository}
-  from '../../../src/legacy';
+  from '../../../src/legacy-juggler-bridge';
 
 describe('legacy loopback-datasource-juggler', () => {
   let ds: juggler.DataSource;

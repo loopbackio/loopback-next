@@ -55,5 +55,5 @@ export type Options = AnyObject | null | undefined;
  * Type alias for Node.js callback functions
  */
 export type Callback<T> =
-  (err: Error | string | null | undefined, result: T) => void;
+  (err: Error | string | null | undefined, result?: T) => void;
 
