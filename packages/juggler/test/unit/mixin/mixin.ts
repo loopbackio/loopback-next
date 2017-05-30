@@ -18,7 +18,7 @@ class BaseClass {
   }
 }
 
-function Mixin1<T extends Class<{}>>(superClass: T) {
+function Mixin1<T extends Class<AnyType>>(superClass: T) {
   return class extends superClass {
     mixinProp1: string = 'mixinProp1';
 
@@ -32,7 +32,7 @@ function Mixin1<T extends Class<{}>>(superClass: T) {
   };
 }
 
-function Mixin2<T extends Class<{}>>(superClass: T) {
+function Mixin2<T extends Class<AnyType>>(superClass: T) {
   return class extends superClass {
     mixinProp2: string = 'mixinProp2';
 
