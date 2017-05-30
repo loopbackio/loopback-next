@@ -21,9 +21,10 @@ describe('legacy loopback-datasource-juggler', () => {
   });
 
   it('creates models', () => {
-    /* tslint:disable:variable-name */
+    /* tslint:disable-next-line:variable-name */
     const Note = <typeof juggler.PersistedModel>
       ds.createModel('note', {title: 'string', content: 'string'}, {});
+    /* tslint:disable-next-line:variable-name */
     const Note2 = bindModel(Note, ds);
     expect(Note2.modelName).to.eql('note');
     expect(Note2.definition).to.eql(Note.definition);
@@ -31,7 +32,7 @@ describe('legacy loopback-datasource-juggler', () => {
   });
 
   it('implements Repository.create()', async () => {
-    /* tslint:disable:variable-name */
+    /* tslint:disable-next-line:variable-name */
     const Note3 = <typeof juggler.PersistedModel>
       ds.createModel('note3', { title: 'string', content: 'string' }, {});
     const repo = new DefaultCrudRepository(Note3, ds);
@@ -41,7 +42,7 @@ describe('legacy loopback-datasource-juggler', () => {
   });
 
   it('implements Repository.find()', async () => {
-    /* tslint:disable:variable-name */
+    /* tslint:disable-next-line:variable-name */
     const Note = <typeof juggler.PersistedModel>
       ds.createModel('note4', { title: 'string', content: 'string' }, {});
     const repo = new DefaultCrudRepository(Note, ds);
