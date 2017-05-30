@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Type, AnyType} from './type';
+import * as util from 'util';
 
 /**
  * Array type, such as string[]
@@ -15,6 +16,7 @@ export class ArrayType<T> implements Type<Array<T>> {
   readonly name = 'array';
 
   isInstance(value: AnyType) {
+    if (value == null) return true;
     if (!Array.isArray(value)) {
       return false;
     }
@@ -23,6 +25,7 @@ export class ArrayType<T> implements Type<Array<T>> {
   }
 
   isCoercible(value: AnyType): boolean {
+    if (value == null) return true;
     if (!Array.isArray(value)) {
       return false;
     }
@@ -34,7 +37,12 @@ export class ArrayType<T> implements Type<Array<T>> {
   }
 
   coerce(value: AnyType) {
-    return value;
+    if (value == null) return value;
+    if (!Array.isArray(value)) {
+      const msg = util.format('Invalid %s: %j', this.name, value);
+      throw new TypeError(msg);
+    }
+    return value.map((i) => this.itemType.coerce(i));
   }
 
   serialize(value: Array<T>|null|undefined) {

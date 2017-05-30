@@ -351,6 +351,77 @@ describe('types', () => {
 
   });
 
+  describe('array', () => {
+    const stringType = new types.StringType();
+    const arrayType = new types.ArrayType(stringType);
+
+    it('checks isInstance', () => {
+      expect(arrayType.isInstance('str')).to.be.false();
+      expect(arrayType.isInstance(null)).to.be.true();
+      expect(arrayType.isInstance(undefined)).to.be.true();
+      expect(arrayType.isInstance(NaN)).to.be.false();
+      expect(arrayType.isInstance(true)).to.be.false();
+      expect(arrayType.isInstance({x: 1})).to.be.false();
+      expect(arrayType.isInstance([1, 2])).to.be.false();
+      expect(arrayType.isInstance([1, '2'])).to.be.false();
+      expect(arrayType.isInstance(['1'])).to.be.true();
+      expect(arrayType.isInstance(['1', 'a'])).to.be.true();
+      expect(arrayType.isInstance(['1', 'a', null])).to.be.true();
+      expect(arrayType.isInstance(['1', 'a', undefined])).to.be.true();
+      expect(arrayType.isInstance([])).to.be.true();
+      expect(arrayType.isInstance(1)).to.be.false();
+      expect(arrayType.isInstance(1.1)).to.be.false();
+      expect(arrayType.isInstance(new Date())).to.be.false();
+    });
+
+    it('checks isCoercible', () => {
+      expect(arrayType.isCoercible('str')).to.be.false();
+      expect(arrayType.isCoercible('1')).to.be.false();
+      expect(arrayType.isCoercible('1.1')).to.be.false();
+      expect(arrayType.isCoercible(null)).to.be.true();
+      expect(arrayType.isCoercible(undefined)).to.be.true();
+      expect(arrayType.isCoercible(true)).to.be.false();
+      expect(arrayType.isCoercible(false)).to.be.false();
+      expect(arrayType.isCoercible({x: 1})).to.be.false();
+      expect(arrayType.isCoercible(1)).to.be.false();
+      expect(arrayType.isCoercible(1.1)).to.be.false();
+      expect(arrayType.isCoercible(new Date())).to.be.false();
+    });
+
+    it('creates defaultValue', () => {
+      expect(arrayType.defaultValue()).to.be.eql([]);
+    });
+
+    it('coerces values', () => {
+      expect(() => arrayType.coerce('str')).to.throw(/Invalid array/);
+      expect(() => arrayType.coerce('1')).to.throw(/Invalid array/);
+      expect(() => arrayType.coerce('1.1')).to.throw(/Invalid array/);
+      expect(arrayType.coerce(null)).to.equal(null);
+      expect(arrayType.coerce(undefined)).to.equal(undefined);
+
+      expect(() => arrayType.coerce(true)).to.throw(/Invalid array/);
+      expect(() => arrayType.coerce(false)).to.throw(/Invalid array/);
+      expect(() => arrayType.coerce({x: 1})).to.throw(/Invalid array/);
+      expect(() => arrayType.coerce(1)).to.throw(/Invalid array/);
+
+      const date = new Date();
+      expect(() => arrayType.coerce(date)).to.throw(/Invalid array/);
+
+      expect(arrayType.coerce([1, '2'])).to.eql(['1', '2']);
+      expect(arrayType.coerce(['2'])).to.eql(['2']);
+      expect(arrayType.coerce([null, undefined, '2'])).to.eql([null, undefined, '2']);
+      expect(arrayType.coerce([true, '2'])).to.eql(['true', '2']);
+      expect(arrayType.coerce([false, '2'])).to.eql(['false', '2']);
+      expect(arrayType.coerce([date])).to.eql([date.toJSON()]);
+    });
+
+    it('serializes values', () => {
+      expect(arrayType.serialize(['a'])).to.eql(['a']);
+      expect(arrayType.serialize(null)).null();
+      expect(arrayType.serialize(undefined)).undefined();
+    });
+  });
+
   describe('union', () => {
     const numberType = new types.NumberType();
     const booleanType = new types.BooleanType();
