@@ -5,12 +5,13 @@
 
 import {ServerResponse as Response} from 'http';
 import {HandlerCallback} from './router/swagger-router';
+import {writeResultToResponse} from './writer';
 
 const debug = require('debug')('loopback:core:invoker');
 
 // tslint:disable:no-any
 export type OperationArgs = any[];
-type OperationRetval = any;
+export type OperationRetval = any;
 // tslint:enable:no-any
 
 export function invoke(
@@ -26,19 +27,8 @@ export function invoke(
   (controller as { [opName: string]: Function })[operationName](...args).then(
     function onSuccess(result: OperationRetval) {
       debug('%s() result -', operationName, result);
-      // TODO(bajtos) handle non-string results via JSON.stringify
-      if (result) {
-        if (typeof result === 'object') {
-          // TODO(ritch) remove this, should be configurable
-          response.setHeader('Content-Type', 'application/json');
-          // TODO(bajtos) handle errors - JSON.stringify can throw
-          result = JSON.stringify(result);
-        } else if (typeof result === 'string') {
-          response.setHeader('Content-Type', 'text/plain');
-        }
-        response.write(result);
-      }
-      response.end();
+      // write the return result from operation invocation into http response
+      writeResultToResponse(response, result);
       // Do not call next(), the request was handled.
     },
     function onError(err: Error) {

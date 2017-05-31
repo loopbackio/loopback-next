@@ -15,7 +15,7 @@ import {
   ResponseObject,
   inject} from 'shot';
 
-export {inject, ShotRequestOptions, ResponseObject};
+export {inject, ShotRequestOptions};
 
 // tslint:disable-next-line:variable-name
 export const ShotRequest: ShotRequestCtor = require('shot/lib/request');
@@ -31,3 +31,4 @@ export type ShotCallback = (response: ResponseObject) => void;
 export type ShotResponseCtor =
   new(request: ServerRequest, onEnd: ShotCallback) => ServerResponse;
 
+export type ShotObservedResponse = ResponseObject;
