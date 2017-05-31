@@ -6,10 +6,14 @@
 import {Application} from './application';
 import {Server} from './server';
 const debug = require('debug')('loopback:core:sequence');
-import {OperationRetval} from './invoke';
 import {ServerRequest, ServerResponse} from 'http';
-import {ResolvedRoute, ParsedRequest} from './router/routing-table';
-import {OperationArgs, parseOperationArgs} from './parser';
+import {ResolvedRoute} from './router/routing-table';
+import {
+  OperationArgs,
+  OperationRetval,
+  ParsedRequest,
+} from './internal-types';
+import {parseOperationArgs} from './parser';
 import {writeResultToResponse} from './writer';
 import {HttpError} from 'http-errors';
 

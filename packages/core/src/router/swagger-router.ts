@@ -6,8 +6,13 @@
 import {ServerRequest as Request, ServerResponse as Response} from 'http';
 import {OpenApiSpec, OperationObject, ParameterObject} from '@loopback/openapi-spec';
 import {invoke} from '../invoke';
-import {parseOperationArgs, OperationArgs} from '../parser';
-import {RoutingTable, ResolvedRoute, PathParameterValues, ParsedRequest, parseRequestUrl} from './routing-table';
+import {parseOperationArgs} from '../parser';
+import {RoutingTable, ResolvedRoute, parseRequestUrl} from './routing-table';
+import {
+  ParsedRequest,
+  OperationArgs,
+  PathParameterValues,
+} from '../internal-types';
 import * as assert from 'assert';
 import * as pathToRegexp from 'path-to-regexp';
 import {HttpErrors} from '../..';

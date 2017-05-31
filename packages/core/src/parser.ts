@@ -8,13 +8,10 @@ import {HttpErrors} from './';
 import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
 import {promisify} from './promisify';
 import {
-  PathParameterValues,
+  OperationArgs,
   ParsedRequest,
-} from './router/routing-table';
-
-// tslint:disable:no-any
-export type OperationArgs = any[];
-// tslint:enable:no-any
+  PathParameterValues,
+} from './internal-types';
 
 type HttpError = HttpErrors.HttpError;
 

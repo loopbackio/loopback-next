@@ -6,13 +6,9 @@
 import {ServerResponse as Response} from 'http';
 import {HandlerCallback} from './router/swagger-router';
 import {writeResultToResponse} from './writer';
+import {OperationArgs, OperationRetval} from './internal-types';
 
 const debug = require('debug')('loopback:core:invoker');
-
-// tslint:disable:no-any
-export type OperationArgs = any[];
-export type OperationRetval = any;
-// tslint:enable:no-any
 
 export function invoke(
   controller: Object,

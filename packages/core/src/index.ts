@@ -24,8 +24,11 @@ import * as HttpErrors from 'http-errors';
 export {HttpErrors};
 
 // internals used by unit-tests
+export {
+  ParsedRequest,
+  OperationRetval,
+} from './internal-types';
 export {parseOperationArgs} from './parser';
-export {ParsedRequest, parseRequestUrl} from './router/routing-table';
+export {parseRequestUrl} from './router/routing-table';
 export {RoutingTable, ResolvedRoute} from './router/routing-table';
-export {OperationRetval} from './invoke';
 export {writeResultToResponse} from './writer';

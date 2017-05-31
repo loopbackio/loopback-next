@@ -4,10 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application} from './application';
-import {OperationRetval} from './invoke';
 import {Sequence, FindRoute, InvokeMethod} from './Sequence';
-import {RoutingTable, ResolvedRoute, ParsedRequest, parseRequestUrl} from './router/routing-table';
-import {OperationArgs} from './parser';
+import {RoutingTable, ResolvedRoute, parseRequestUrl} from './router/routing-table';
+import {
+  OperationArgs,
+  OperationRetval,
+  ParsedRequest,
+} from './internal-types';
 
 import {Context} from '@loopback/context';
 

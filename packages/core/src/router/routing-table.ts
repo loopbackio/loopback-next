@@ -10,6 +10,11 @@ import {
 } from '@loopback/openapi-spec';
 import {ServerRequest} from 'http';
 
+import {
+  ParsedRequest,
+  PathParameterValues,
+} from '../internal-types';
+
 import * as assert from 'assert';
 import * as url from 'url';
 const debug = require('debug')('loopback:core:routing-table');
@@ -17,21 +22,6 @@ const debug = require('debug')('loopback:core:routing-table');
 // TODO(bajtos) Refactor this code to use Trie-based lookup,
 // e.g. via wayfarer/trie or find-my-way
 import * as pathToRegexp from 'path-to-regexp';
-
-// tslint:disable:no-any
-export type PathParameterValues = {[key: string]: any};
-// tslint:enable:no-any
-
-export interface ParsedRequest extends ServerRequest {
-  // see http://expressjs.com/en/4x/api.html#req.path
-  path: string;
-  // see http://expressjs.com/en/4x/api.html#req.query
-  query: { [key: string]: string };
-  // see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/15808
-  url: string;
-  pathname: string;
-  method: string;
-}
 
 export function parseRequestUrl(request: ServerRequest): ParsedRequest {
   // TODO(bajtos) The following parsing can be skipped when the router
@@ -42,6 +32,7 @@ export function parseRequestUrl(request: ServerRequest): ParsedRequest {
   parsedRequest.query = parsedUrl.query;
   return parsedRequest;
 }
+
 export class RoutingTable<ControllerType> {
   private readonly _routes: RouteEntry<ControllerType>[] = [];
 
