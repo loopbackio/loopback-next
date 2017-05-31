@@ -4,7 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './common';
-export * from './decorator';
+export * from './decorators/model';
+export * from './decorators/repository';
 export * from './model';
 export * from './query';
 export * from './connector';

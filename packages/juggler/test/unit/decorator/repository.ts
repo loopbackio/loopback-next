@@ -5,7 +5,7 @@
 
 import { expect } from '@loopback/testlab';
 import { Context } from '@loopback/context';
-import { repository } from '../../../src/decorator';
+import { repository } from '../../../src/decorators/repository';
 
 import { AnyType } from '../../../src/common';
 import { Repository } from '../../../src/repository';
@@ -17,7 +17,7 @@ class MyController {
   }
 }
 
-describe('@repository', () => {
+describe('repository decorator', () => {
   let ctx: Context;
   let repo: Repository<AnyType>;
 

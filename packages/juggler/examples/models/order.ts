@@ -4,7 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Entity} from '../../src/model';
-import {property, model, belongsTo} from '../../src/decorator';
+import {property, model} from '../../src/decorators/model';
+import {belongsTo} from '../../src/decorators/relation';
 import {Customer} from './customer';
 
 @model()
