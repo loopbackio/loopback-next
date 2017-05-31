@@ -4,10 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from './context';
-import {Constructor, instantiateClass} from './resolver';
+import {Constructor, instantiateClass, resolveValueOrPromise} from './resolver';
+import {isPromise} from './isPromise';
+import {Provider} from './provider';
 
 // tslint:disable-next-line:no-any
 export type BoundValue = any;
+
+export type ValueOrPromise<T> = T | Promise<T>;
 
 // FIXME(bajtos) The binding class should be parameterized by the value type stored
 export class Binding {
@@ -92,6 +96,28 @@ export class Binding {
     // TODO(bajtos) allow factoryFn with @inject arguments
     this.getValue = (ctx) => factoryFn();
     return this;
+  }
+
+  /**
+   * Bind the key to a BindingProvider
+   */
+  public toProvider<T>(providerClass: Constructor<Provider<T>>): this {
+    this.getProviderInstance = async (ctx: Context) => {
+      const providerOrPromise: ValueOrPromise<Provider<T>> = instantiateClass<Provider<T>>(providerClass, ctx);
+      return resolveValueOrPromise<Provider<T>>(providerOrPromise);
+    };
+    this.getValue = async (ctx): Promise<BoundValue> => {
+      const providerInstance: Provider<T> = await this.getProviderInstance<T>(ctx);
+      return providerInstance.value();
+    };
+    return this;
+  }
+
+  /**
+   * get an instance of the provider
+   */
+  public async getProviderInstance<T>(ctx: Context): Promise<Provider<T>> {
+    return Promise.reject(new Error(`No provider is attached to binding ${this._key}.`));
   }
 
   /**
