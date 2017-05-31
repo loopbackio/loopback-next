@@ -5,7 +5,7 @@
 
 import {EntityCrudRepository} from '../../src/repository';
 import {Customer} from '../models/customer';
-import {repository} from '../../src/decorator';
+import {repository} from '../../src/decorators/repository';
 
 /**
  * Controller for Customer
@@ -22,5 +22,5 @@ import {repository} from '../../src/decorator';
 // Reference a pre-configured repository by name. This is close to LoopBack
 // 3.x model-config.json
 // @repository('myCustomerRepository')
-export class CustomerController3 {
+export class CustomerController {
 }

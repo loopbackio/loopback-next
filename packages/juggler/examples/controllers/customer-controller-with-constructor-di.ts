@@ -5,12 +5,12 @@
 
 import {EntityCrudRepository} from '../../src/repository';
 import {Customer} from '../models/customer';
-import {repository} from '../../src/decorator';
+import {repository} from '../../src/decorators/repository';
 /**
  * Controller for Customer
  */
 // @controller
-export class CustomerController2 {
+export class CustomerController {
   constructor(
     // Use constructor dependency injection
     @repository(Customer, 'mongodbDataSource')

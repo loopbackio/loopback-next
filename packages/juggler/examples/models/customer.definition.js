@@ -13,10 +13,10 @@ module.exports = {
       id: true
     },
     name: {
-      type: string
+      type: 'string'
     },
     email: {
-      type: string,
+      type: 'string',
       regexp: '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$',
       required: true
     },
