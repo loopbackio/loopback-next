@@ -271,6 +271,10 @@ describe('types', () => {
       expect(bufferType.coerce([1]).equals(Buffer.from([1]))).to.be.true();
       expect(bufferType.coerce(null)).to.equal(null);
       expect(bufferType.coerce(undefined)).to.equal(undefined);
+      expect(() => bufferType.coerce(1)).to.throw(/Invalid buffer/);
+      expect(() => bufferType.coerce(new Date())).to.throw(/Invalid buffer/);
+      expect(() => bufferType.coerce(true)).to.throw(/Invalid buffer/);
+      expect(() => bufferType.coerce(false)).to.throw(/Invalid buffer/);
     });
 
     it('serializes values', () => {
