@@ -47,7 +47,7 @@ export function belongsTo(definition?: Object) {
   return function(target: AnyType, key: string) {
     // Apply model definition to the model class
     const rel = Object.assign({type: RelationType.belongsTo}, definition);
-    Reflector.defineMetadata(RELATION_KEY, definition, target, key);
+    Reflector.defineMetadata(RELATION_KEY, rel, target, key);
   };
 }
 
@@ -60,7 +60,7 @@ export function hasOne(definition?: Object) {
   return function(target: AnyType, key: string) {
     // Apply model definition to the model class
     const rel = Object.assign({type: RelationType.hasOne}, definition);
-    Reflector.defineMetadata(RELATION_KEY, definition, target, key);
+    Reflector.defineMetadata(RELATION_KEY, rel, target, key);
   };
 }
 
@@ -73,7 +73,7 @@ export function hasMany(definition?: Object) {
   return function(target: AnyType, key: string) {
     // Apply model definition to the model class
     const rel = Object.assign({type: RelationType.hasMany}, definition);
-    Reflector.defineMetadata(RELATION_KEY, definition, target, key);
+    Reflector.defineMetadata(RELATION_KEY, rel, target, key);
   };
 }
 
@@ -86,7 +86,7 @@ export function embedsOne(definition?: Object) {
   return function(target: AnyType, key: string) {
     // Apply model definition to the model class
     const rel = Object.assign({type: RelationType.embedsOne}, definition);
-    Reflector.defineMetadata(RELATION_KEY, definition, target, key);
+    Reflector.defineMetadata(RELATION_KEY, rel, target, key);
   };
 }
 
@@ -100,7 +100,7 @@ export function embedsMany(definition?: Object) {
   return function(target: AnyType, key: string) {
     // Apply model definition to the model class
     const rel = Object.assign({type: RelationType.embedsMany}, definition);
-    Reflector.defineMetadata(RELATION_KEY, definition, target, key);
+    Reflector.defineMetadata(RELATION_KEY, rel, target, key);
   };
 }
 
@@ -113,7 +113,7 @@ export function referencesOne(definition?: Object) {
   return function(target: AnyType, key: string) {
     // Apply model definition to the model class
     const rel = Object.assign({type: RelationType.referencesOne}, definition);
-    Reflector.defineMetadata(RELATION_KEY, definition, target, key);
+    Reflector.defineMetadata(RELATION_KEY, rel, target, key);
   };
 }
 
@@ -126,6 +126,6 @@ export function referencesMany(definition?: Object) {
   return function(target: AnyType, key: string) {
     // Apply model definition to the model class
     const rel = Object.assign({type: RelationType.referencesMany}, definition);
-    Reflector.defineMetadata(RELATION_KEY, definition, target, key);
+    Reflector.defineMetadata(RELATION_KEY, rel, target, key);
   };
 }
