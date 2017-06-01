@@ -29,7 +29,7 @@ describe('HttpHandler', () => {
       givenControllerClass(HelloController, spec);
     });
 
-    it('handles simple "GET /hello" requests', async () => {
+    it('handles simple "GET /hello" requests', () => {
       return client.get('/hello')
         .expect(200)
         .expect('content-type', 'text/plain')
