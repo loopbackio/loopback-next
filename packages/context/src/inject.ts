@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as assert from 'assert';
-import 'reflect-metadata';
+import { Reflector } from './reflect';
 import {BoundValue} from './binding';
 
 const REFLECTION_CDI_KEY = 'loopback:inject:constructor';
@@ -49,15 +49,15 @@ export function inject(bindingKey: string, metadata?: Object) {
       // The decorator is applied to a method parameter
       // Please note propertyKey is `undefined` for constructor
       const injectedArgs: Injection[] =
-        Reflect.getOwnMetadata(REFLECTION_CDI_KEY, target, propertyKey!) || [];
+        Reflector.getOwnMetadata(REFLECTION_CDI_KEY, target, propertyKey!) || [];
       injectedArgs[propertyDescriptorOrParameterIndex] = {bindingKey, metadata};
-      Reflect.defineMetadata(REFLECTION_CDI_KEY, injectedArgs, target, propertyKey!);
+      Reflector.defineMetadata(REFLECTION_CDI_KEY, injectedArgs, target, propertyKey!);
     } else if (propertyKey) {
       // The decorator is applied to a property
       const injections: { [p: string]: Injection } =
-        Reflect.getOwnMetadata(REFLECTION_PDI_KEY, target) || {};
+        Reflector.getOwnMetadata(REFLECTION_PDI_KEY, target) || {};
       injections[propertyKey] = {bindingKey, metadata};
-      Reflect.defineMetadata(REFLECTION_PDI_KEY, injections, target);
+      Reflector.defineMetadata(REFLECTION_PDI_KEY, injections, target);
     } else {
       throw new Error('@inject can be used on properties or method parameters.');
     }
@@ -69,7 +69,7 @@ export function inject(bindingKey: string, metadata?: Object) {
  * @param target The target class
  */
 export function describeInjectedArguments(target: Function): Injection[] {
-  return Reflect.getOwnMetadata(REFLECTION_CDI_KEY, target) || [];
+  return Reflector.getOwnMetadata(REFLECTION_CDI_KEY, target) || [];
 }
 
 /**
@@ -78,5 +78,5 @@ export function describeInjectedArguments(target: Function): Injection[] {
  * the target.prototype
  */
 export function describeInjectedProperties(target: Function): { [p: string]: Injection } {
-  return Reflect.getOwnMetadata(REFLECTION_PDI_KEY, target.prototype) || {};
+  return Reflector.getOwnMetadata(REFLECTION_PDI_KEY, target.prototype) || {};
 }
