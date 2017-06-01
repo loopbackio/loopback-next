@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import 'reflect-metadata';
+import { Reflector } from '@loopback/context';
 
 /* interface to define authentication metadata structure expected in
  * json objects
@@ -38,7 +38,7 @@ export class AuthenticationMetadata {
 export function authenticate(strategyName: string, options? : Object) {
   return function(controllerClass: Object, methodName: string) {
     const metadataObj: AuthenticationMetadata = new AuthenticationMetadata(strategyName, options || {});
-    Reflect.defineMetadata('loopback:authenticate', metadataObj, controllerClass, methodName);
+    Reflector.defineMetadata('loopback:authenticate', metadataObj, controllerClass, methodName);
   };
 }
 
@@ -48,6 +48,6 @@ export function authenticate(strategyName: string, options? : Object) {
  * @param methodName
  */
 export function getAuthenticateMetadata(controllerObj: Object, methodName: string): IMetadata {
-  const metadataObj: AuthenticationMetadata = Reflect.getMetadata('loopback:authenticate', controllerObj, methodName);
+  const metadataObj: AuthenticationMetadata = Reflector.getMetadata('loopback:authenticate', controllerObj, methodName);
   return metadataObj.getMetadata();
 }
