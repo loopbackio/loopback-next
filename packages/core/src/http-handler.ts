@@ -9,7 +9,7 @@ import {ServerRequest, ServerResponse} from 'http';
 import {getApiSpec} from './router/metadata';
 import * as HttpErrors from 'http-errors';
 
-import {Sequence, FindRoute, InvokeMethod} from './Sequence';
+import {Sequence, FindRoute, InvokeMethod} from './sequence';
 import {RoutingTable, parseRequestUrl} from './router/routing-table';
 import {ParsedRequest} from './internal-types';
 

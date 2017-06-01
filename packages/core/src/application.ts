@@ -8,7 +8,7 @@ import {Component, OpenApiSpec} from '.';
 import {ServerRequest, ServerResponse} from 'http';
 import {getApiSpec} from './router/metadata';
 import {HttpHandler} from './http-handler';
-import {Sequence} from './Sequence';
+import {Sequence} from './sequence';
 
 const debug = require('debug')('loopback:core:application');
 
