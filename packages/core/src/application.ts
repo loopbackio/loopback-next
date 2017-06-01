@@ -12,12 +12,24 @@ import {Sequence} from './Sequence';
 
 const debug = require('debug')('loopback:core:application');
 
-export interface ControllerDefinition {
-  controller: string;
-  spec: OpenApiSpec;
-}
-
 export class Application extends Context {
+  /**
+   * Handle incoming HTTP(S) request by invoking the corresponding
+   * Controller method via the configured Sequence.
+   *
+   * @example
+   *
+   * ```ts
+   * const app = new Application();
+   * // setup controllers, etc.
+   *
+   * const server = http.createServer(app.handleHttp);
+   * server.listen(3000);
+   * ```
+   *
+   * @param req The request.
+   * @param res The response.
+   */
   public handleHttp: (req: ServerRequest, res: ServerResponse) => Promise<void>;
 
   protected _httpHandler: HttpHandler;

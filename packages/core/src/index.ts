@@ -31,4 +31,5 @@ export {
 export {parseOperationArgs} from './parser';
 export {parseRequestUrl} from './router/routing-table';
 export {RoutingTable, ResolvedRoute} from './router/routing-table';
+export {HttpHandler} from './http-handler';
 export {writeResultToResponse} from './writer';

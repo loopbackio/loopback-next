@@ -18,14 +18,17 @@ const debug = require('debug')('loopback:core:http-handler');
 export class HttpHandler {
   protected _routes: RoutingTable<string> = new RoutingTable<string>();
 
+  public handleRequest: (request: ServerRequest, response: ServerResponse) => Promise<void>;
+
   constructor(protected _rootContext: Context) {
+    this.handleRequest = (req, res) => this._handleRequest(req, res);
   }
 
   registerController(name: string, spec: OpenApiSpec) {
     this._routes.registerController(name, spec);
   }
 
-  handleRequest(request: ServerRequest, response: ServerResponse): Promise<void> {
+  protected _handleRequest(request: ServerRequest, response: ServerResponse): Promise<void> {
     const parsedRequest: ParsedRequest = parseRequestUrl(request);
     const requestContext = this._createRequestContext(request, response);
 
@@ -48,7 +51,7 @@ export class HttpHandler {
     };
 
     // TODO(bajtos) instantiate the Sequence via ctx.get()
-    const sequence = new Sequence(findRoute, invoke);
+    const sequence = new Sequence(findRoute, invoke, this.logError.bind(this));
     return sequence.run(parsedRequest, response);
   }
 
@@ -68,5 +71,10 @@ export class HttpHandler {
 
     requestContext.bind('controller.current.ctor').to(ctor);
     requestContext.bind('controller.current.operation').to(methodName);
+  }
+
+  logError(err: Error, statusCode: number, req: ServerRequest): void {
+    console.error('Unhandled error in %s %s: %s %s',
+      req.method, req.url, statusCode, err.stack || err);
   }
 }

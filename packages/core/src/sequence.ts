@@ -19,11 +19,14 @@ import {HttpError} from 'http-errors';
 export type FindRoute = (request: ParsedRequest) => ResolvedRoute<string>;
 export type InvokeMethod =
   (controller: string, method: string, args: OperationArgs) => Promise<OperationRetval>;
+export type LogError =
+  (err: Error, statusCode: number, request: ServerRequest) => void;
 
 export class Sequence {
     constructor(
       protected findRoute: FindRoute,
-      protected invoke: InvokeMethod) {
+      protected invoke: InvokeMethod,
+      protected logError: LogError) {
     }
 
   async run(req: ParsedRequest, res: ServerResponse) {
@@ -44,9 +47,9 @@ export class Sequence {
 
   sendError(res: ServerResponse, req: ServerRequest, err: HttpError) {
     const statusCode = err.statusCode || err.status || 500;
-    console.error('Unhandled error in %s %s: %s %s',
-      req.method, req.url, statusCode, err.stack || err);
     res.statusCode = statusCode;
     res.end();
+
+    this.logError(err, statusCode, req);
   }
 }
