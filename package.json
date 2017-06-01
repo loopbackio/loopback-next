@@ -26,13 +26,15 @@
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
+    "coverage:ci": "nyc report --reporter=text-lcov | coveralls",
+    "precoverage": "npm test",
+    "coverage": "open coverage/index.html",
     "lint": "tslint -c tslint.full.json --project tsconfig.json --type-check",
     "lint:fix": "npm run lint -- --fix",
     "clean": "lerna run clean",
     "build": "lerna run build",
     "test": "nyc mocha --opts test/mocha.opts \"packages/*/test/**/*.ts\"",
-    "posttest": "npm run lint",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "posttest": "npm run lint"
   },
   "nyc": {
     "include": [
