@@ -1,18 +1,17 @@
 // Copyright IBM Corp. 2013,2017. All Rights Reserved.
-// Node module: loopback
+// Node module: @loopback/core
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {SwaggerRouter} from '../../../src/router/swagger-router';
-import * as http from 'http';
+import {HttpHandler, Sequence} from '../..';
+import {Context} from '@loopback/context';
 import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {OpenApiSpec, ParameterObject} from '@loopback/openapi-spec';
 import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
 
-describe('SwaggerRouter', () => {
-  beforeEach(givenRouter);
-
+describe('HttpHandler', () => {
   let client: Client;
+  beforeEach(givenHandler);
   beforeEach(givenClient);
 
   context('with a simple HelloWorld controller', () => {
@@ -30,7 +29,7 @@ describe('SwaggerRouter', () => {
       givenControllerClass(HelloController, spec);
     });
 
-    it('handles simple "GET /hello" requests', () => {
+    it('handles simple "GET /hello" requests', async () => {
       return client.get('/hello')
         .expect(200)
         .expect('content-type', 'text/plain')
@@ -371,26 +370,30 @@ context('with an operation echoing a string parameter from query', () => {
     });
   });
 
-  let router: SwaggerRouter;
-  function givenRouter() {
-    router = new SwaggerRouter();
+  let rootContext: Context;
+  let handler: HttpHandler;
+  function givenHandler() {
+    rootContext = new Context();
+    handler = new HttpHandler(rootContext);
   }
 
   // tslint:disable-next-line:no-any
   function givenControllerClass(ctor: new (...args: any[]) => Object, spec: OpenApiSpec) {
-    router.controller((req, res) => Promise.resolve().then(() => new ctor()), spec);
+    rootContext.bind('test-controller').toClass(ctor);
+    handler.registerController('test-controller', spec);
+  }
+
+  function givenClient() {
+    client = createClientForHandler(handler.handleRequest);
   }
 
   function logErrorsExcept(ignoreStatusCode: number) {
-    const oldLogger = router.logError;
-    router.logError = function logErrorConditionally(req: http.ServerRequest, statusCode: number, err: Error | string) {
+    // TODO(bajtos) Rework this code to customize the logger via rootContext.bind()
+    const oldLogger = handler.logError;
+    handler.logError = (err, statusCode, req) => {
       if (statusCode === ignoreStatusCode) return;
       // tslint:disable-next-line:no-invalid-this
       oldLogger.apply(this, arguments);
     };
-  }
-
-  function givenClient() {
-    client = createClientForHandler(router.handler);
   }
 });

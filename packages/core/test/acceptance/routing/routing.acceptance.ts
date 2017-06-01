@@ -198,8 +198,7 @@ describe('Routing', () => {
   }
 
   function whenIMakeRequestTo(app: Application): Client {
-    const server = new Server({port: 0});
-    server.bind('applications.myApp').to(app);
+    const server = new Server(app, {port: 0});
     return createClientForServer(server);
   }
 });

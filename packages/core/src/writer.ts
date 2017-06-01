@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ServerResponse as Response} from 'http';
-import {OperationRetval} from './invoke';
+import {OperationRetval} from './internal-types';
 
 export function writeResultToResponse(
   response: Response, // not needed and responsibility should be in the sequence.send

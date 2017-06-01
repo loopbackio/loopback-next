@@ -9,19 +9,34 @@ import {
   ParameterObject,
 } from '@loopback/openapi-spec';
 import {ServerRequest} from 'http';
-import {PathParameterValues, ParsedRequest} from './swagger-router';
+
+import {
+  ParsedRequest,
+  PathParameterValues,
+} from '../internal-types';
 
 import * as assert from 'assert';
+import * as url from 'url';
 const debug = require('debug')('loopback:core:routing-table');
 
 // TODO(bajtos) Refactor this code to use Trie-based lookup,
 // e.g. via wayfarer/trie or find-my-way
 import * as pathToRegexp from 'path-to-regexp';
 
+export function parseRequestUrl(request: ServerRequest): ParsedRequest {
+  // TODO(bajtos) The following parsing can be skipped when the router
+  // is mounted on an express app
+  const parsedRequest = request as ParsedRequest;
+  const parsedUrl = url.parse(parsedRequest.url, true);
+  parsedRequest.path = parsedUrl.pathname || '/';
+  parsedRequest.query = parsedUrl.query;
+  return parsedRequest;
+}
+
 export class RoutingTable<ControllerType> {
   private readonly _routes: RouteEntry<ControllerType>[] = [];
 
-  define(controller: ControllerType, spec: OpenApiSpec) {
+  registerController(controller: ControllerType, spec: OpenApiSpec) {
     assert(typeof spec === 'object' && !!spec, 'API specification must be a non-null object');
     if (!spec.paths || !Object.keys(spec.paths).length) {
       return;

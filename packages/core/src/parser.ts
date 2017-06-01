@@ -3,26 +3,26 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ServerRequest as Request} from 'http';
-import {
-  PathParameterValues,
-  OperationArgs,
-  ParsedRequest,
-} from './router/swagger-router';
+import {ServerRequest} from 'http';
 import {HttpErrors} from './';
 import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
 import {promisify} from './promisify';
+import {
+  OperationArgs,
+  ParsedRequest,
+  PathParameterValues,
+} from './internal-types';
 
 type HttpError = HttpErrors.HttpError;
 
-type jsonBodyFn = (req: Request, cb: (err?: Error, body?: {}) => void) => void;
+type jsonBodyFn = (req: ServerRequest, cb: (err?: Error, body?: {}) => void) => void;
 const jsonBody: jsonBodyFn = require('body/json');
 
 // tslint:disable:no-any
 type MaybeBody = any | undefined;
 // tslint:enable:no-any
 
-const parseJsonBody: (req: Request) => Promise<MaybeBody> = promisify(jsonBody);
+const parseJsonBody: (req: ServerRequest) => Promise<MaybeBody> = promisify(jsonBody);
 
 export async function parseOperationArgs(request: ParsedRequest, operationSpec: OperationObject, pathParams: PathParameterValues): Promise<OperationArgs> {
   const args: OperationArgs = [];
@@ -30,7 +30,7 @@ export async function parseOperationArgs(request: ParsedRequest, operationSpec: 
   return buildOperationArguments(operationSpec, request, pathParams, body);
 }
 
-function loadRequestBodyIfNeeded(operationSpec: OperationObject, request: Request): Promise<MaybeBody> {
+function loadRequestBodyIfNeeded(operationSpec: OperationObject, request: ServerRequest): Promise<MaybeBody> {
   if (!hasArgumentsFromBody(operationSpec))
     return Promise.resolve();
 
