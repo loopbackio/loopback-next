@@ -4,9 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import { expect } from '@loopback/testlab';
-import { model, property, MODEL_KEY, PROPERTY_KEY } from '../../../src/decorators/model';
-import { belongsTo, embedsOne, embedsMany, hasMany, referencesMany, referencesOne }
-  from '../../../src/decorators/relation';
+import { model, property, MODEL_KEY, PROPERTY_KEY }
+  from '../../../src/decorators/model';
+import { belongsTo, embedsOne, embedsMany, hasMany, referencesMany,
+  referencesOne, RELATION_KEY, RelationType } from '../../../src/decorators/relation';
 
 import { Entity, ValueObject } from '../../../src/model';
 import { Reflector } from '@loopback/context';
@@ -94,4 +95,48 @@ describe('model decorator', () => {
       },
     });
   });
+
+  it('adds embedsOne metadata', () => {
+    const meta = Reflector.getOwnMetadata(RELATION_KEY, Customer.prototype, 'address');
+    expect(meta).to.eql({
+      type: RelationType.embedsOne,
+    });
+  });
+
+  it('adds embedsMany metadata', () => {
+    const meta = Reflector.getOwnMetadata(RELATION_KEY, Customer.prototype, 'phones');
+    expect(meta).to.eql({
+      type: RelationType.embedsMany,
+    });
+  });
+
+  it('adds referencesMany metadata', () => {
+    const meta = Reflector.getOwnMetadata(RELATION_KEY, Customer.prototype, 'accounts');
+    expect(meta).to.eql({
+      type: RelationType.referencesMany,
+    });
+  });
+
+  it('adds referencesOne metadata', () => {
+    const meta = Reflector.getOwnMetadata(RELATION_KEY, Customer.prototype, 'profile');
+    expect(meta).to.eql({
+      type: RelationType.referencesOne,
+    });
+  });
+
+  it('adds hasMany metadata', () => {
+    const meta = Reflector.getOwnMetadata(RELATION_KEY, Customer.prototype, 'orders');
+    expect(meta).to.eql({
+      type: RelationType.hasMany,
+    });
+  });
+
+  it('adds belongsTo metadata', () => {
+    const meta = Reflector.getOwnMetadata(RELATION_KEY, Order.prototype, 'customer');
+    expect(meta).to.eql({
+      type: RelationType.belongsTo,
+      target: 'Customer',
+    });
+  });
+
 });
