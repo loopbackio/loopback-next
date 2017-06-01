@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application} from './application';
-import {Server} from './server';
 const debug = require('debug')('loopback:core:sequence');
 import {ServerRequest, ServerResponse} from 'http';
 import {ResolvedRoute} from './router/routing-table';
@@ -27,7 +26,7 @@ export class Sequence {
       protected invoke: InvokeMethod) {
     }
 
-  async run(server: Server, req: ParsedRequest, res: ServerResponse) {
+  async run(req: ParsedRequest, res: ServerResponse) {
       try {
         const {controller, methodName, spec, pathParams} = this.findRoute(req);
         const args = await parseOperationArgs(req, spec, pathParams);

@@ -4,61 +4,23 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application} from './application';
-import {Sequence, FindRoute, InvokeMethod} from './Sequence';
-import {RoutingTable, ResolvedRoute, parseRequestUrl} from './router/routing-table';
-import {
-  OperationArgs,
-  OperationRetval,
-  ParsedRequest,
-} from './internal-types';
-
 import {Context} from '@loopback/context';
+import {createServer, ServerRequest, ServerResponse} from 'http';
 
 const debug = require('debug')('loopback:core:server');
 
-import {createServer, ServerRequest, ServerResponse} from 'http';
-
-import * as HttpErrors from 'http-errors';
-
 export class Server extends Context {
   public state: ServerState;
-  protected routingTable: RoutingTable<string>;
-  public handler: (req: ServerRequest, res: ServerResponse) => void;
-  protected _findRoute: FindRoute;
-  protected _invoke: InvokeMethod;
 
   constructor(public app: Application, public config: ServerConfig = {port: 3000}) {
     super();
     this.state = ServerState.cold;
-
-    // NOTE(bajtos) It is important to use an arrow function here to allow
-    // users to pass "router.handler" around as a regular function,
-    // e.g. http.createServer(router.handler)
-    // TODO(bajtos) Move this function to Application
-    this.handler = (req: ServerRequest, res: ServerResponse) => {
-      // tslint:disable-next-line:no-floating-promises
-      this._handleRequest(req, res).catch((err: Error) => {
-        if (!res.headersSent) {
-          res.statusCode = 500;
-          res.end();
-        }
-        // It's the responsibility of the Sequence to handle any errors.
-        // If an unhandled error escaped, then something very wrong happened
-        // and it's best to crash the process immediately.
-        process.nextTick(() => { throw err; });
-      });
-    };
   }
 
   async start() {
     this.state = ServerState.starting;
 
-    // TODO(bajtos) support hot-reloading of controllers
-    // after the app started. The idea is to rebuild the SwaggerRouter
-    // instance whenever a controller was added/deleted.
-    this.buildRoutes();
-
-    const server = createServer(this.handler);
+    const server = createServer((req, res) => this._handleRequest(req, res));
     server.listen(this.config.port);
 
     // FIXME(bajtos) The updated port number should be part of "status" object,
@@ -70,37 +32,22 @@ export class Server extends Context {
     this.state = ServerState.listening;
   }
 
-  protected buildRoutes() {
-    this.routingTable = new RoutingTable<string>();
-
-    const controllers = this.app.getAllControllers();
-    for (const c of controllers) {
-      this.routingTable.registerController(c.controller, c.spec);
-    }
+  protected _handleRequest(req: ServerRequest, res: ServerResponse) {
+    this.app.handleHttp(req, res).catch((err: Error) => {
+      this._onUnhandledError(req, res, err);
+    });
   }
 
-  protected _handleRequest(request: ServerRequest, response: ServerResponse) {
-    const parsedRequest: ParsedRequest = parseRequestUrl(request);
-    const requestContext = this.app.createRequestContext(request, response);
+  protected _onUnhandledError(req: ServerRequest, res: ServerResponse, err: Error): void {
+    if (!res.headersSent) {
+      res.statusCode = 500;
+      res.end();
+    }
 
-    const findRoute: FindRoute = (req) => {
-      const found = this.routingTable.find(req);
-      if (!found) {
-        throw new HttpErrors.NotFound(
-          `Endpoint "${req.method} ${req.path}" not found.`);
-      }
-      this.app.bindRouteInfo(requestContext, found.controller, found.methodName);
-      return found;
-    };
-
-    const invoke: InvokeMethod = async (controllerName, method, args) => {
-      const controller: { [opName: string]: Function } = await requestContext.get(controllerName);
-      const result = await controller[method](...args);
-      return result;
-    };
-
-    const sequence = new Sequence(findRoute, invoke);
-    return sequence.run(this, parsedRequest, response);
+    // It's the responsibility of the Application to handle any errors.
+    // If an unhandled error escaped, then something very wrong happened
+    // and it's best to crash the process immediately.
+    process.nextTick(() => { throw err; });
   }
 }
 

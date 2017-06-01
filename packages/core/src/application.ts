@@ -4,10 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding, Context, Constructor} from '@loopback/context';
-import { Component, Sequence, OpenApiSpec } from '.';
-import * as http from 'http';
-import {SwaggerRouter} from './router/swagger-router';
+import {Component, OpenApiSpec} from '.';
+import {ServerRequest, ServerResponse} from 'http';
 import {getApiSpec} from './router/metadata';
+import {HttpHandler} from './http-handler';
+import {Sequence} from './Sequence';
 
 const debug = require('debug')('loopback:core:application');
 
@@ -17,6 +18,10 @@ export interface ControllerDefinition {
 }
 
 export class Application extends Context {
+  public handleHttp: (req: ServerRequest, res: ServerResponse) => Promise<void>;
+
+  protected _httpHandler: HttpHandler;
+
   constructor(public appConfig?: AppConfig) {
     super();
 
@@ -39,58 +44,31 @@ export class Application extends Context {
         this.bind(`sequence.${sequenceClassName}`).toClass(sequence);
       }
     }
+
+    this.handleHttp = (req: ServerRequest, res: ServerResponse) =>
+      this._handleHttpRequest(req, res);
   }
 
-  public mountControllers(router: SwaggerRouter) {
-    this.find('controllers.*').forEach(b => {
-      debug('mounting controller %j', b.key);
+  protected _handleHttpRequest(request: ServerRequest, response: ServerResponse) {
+    this._setupHandlerIfNeeded();
+    return this._httpHandler.handleRequest(request, response);
+  }
+
+  protected _setupHandlerIfNeeded() {
+    // TODO(bajtos) support hot-reloading of controllers
+    // after the app started. The idea is to rebuild the HttpHandler
+    // instance whenever a controller was added/deleted.
+    if (this._httpHandler) return;
+
+    this._httpHandler = new HttpHandler(this);
+    for (const b of this.find('controllers.*')) {
       const ctor = b.valueConstructor;
       if (!ctor) {
         throw new Error(`The controller ${b.key} was not bound via .toClass()`);
       }
-
-      const ctorFactory = (req: http.ServerRequest, res: http.ServerResponse, operationName: string) => {
-        const requestContext = this.createRequestContext(req, res);
-        this.bindRouteInfo(requestContext, b.key, operationName);
-        return requestContext.get(b.key);
-      };
       const apiSpec = getApiSpec(ctor);
-      router.controller(ctorFactory, apiSpec);
-    });
-  }
-
-  public getAllControllers(): ControllerDefinition[] {
-    return this.find('controllers.*').map(b => {
-      const ctor = b.valueConstructor;
-      if (!ctor) {
-        throw new Error(`The controller ${b.key} was not bound via .toClass()`);
-      }
-
-      const apiSpec = getApiSpec(ctor);
-
-      return {
-        controller: b.key,
-        spec: apiSpec,
-      };
-    });
-  }
-
-  public createRequestContext(req: http.ServerRequest, res: http.ServerResponse): Context {
-    const requestContext = new Context(this);
-    requestContext.bind('http.request').to(req);
-    requestContext.bind('http.response').to(res);
-    return requestContext;
-  }
-
-  public bindRouteInfo(requestContext: Context, controllerName: string, methodName: string) {
-    const ctor = requestContext.getBinding(controllerName).valueConstructor;
-    if (!ctor) {
-      throw new Error(
-        `The controller ${controllerName} was not bound via .toClass()`);
+      this._httpHandler.registerController(b.key, apiSpec);
     }
-
-    requestContext.bind('controller.current.ctor').to(ctor);
-    requestContext.bind('controller.current.operation').to(methodName);
   }
 
   /**

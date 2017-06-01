@@ -15,6 +15,6 @@
 
     "await-promise": true,
     "no-floating-promises": true,
-    "no-void-expression": true
+    "no-void-expression": [true, "ignore-arrow-function-shorthand"]
   }
 }
