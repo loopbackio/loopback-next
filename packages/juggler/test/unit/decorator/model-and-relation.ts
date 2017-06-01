@@ -9,7 +9,7 @@ import { belongsTo, embedsOne, embedsMany, hasMany, referencesMany, referencesOn
   from '../../../src/decorators/relation';
 
 import { Entity, ValueObject } from '../../../src/model';
-import 'reflect-metadata';
+import { Reflector } from '@loopback/context';
 
 describe('model decorator', () => {
   @model()
@@ -79,15 +79,15 @@ describe('model decorator', () => {
     customer: Customer;
   }
 
-  // Skip the tests before we resolve the issue around global `Reflect`
+  // Skip the tests before we resolve the issue around global `Reflector`
   // The tests are passing it run alone but fails with `npm test`
-  it.skip('adds model metadata', () => {
-    const meta = Reflect.getOwnMetadata(MODEL_KEY, Order);
+  it('adds model metadata', () => {
+    const meta = Reflector.getOwnMetadata(MODEL_KEY, Order);
     expect(meta).to.eql({ name: 'order' });
   });
 
-  it.skip('adds property metadata', () => {
-    const meta = Reflect.getOwnMetadata(PROPERTY_KEY, Order.prototype, 'quantity');
+  it('adds property metadata', () => {
+    const meta = Reflector.getOwnMetadata(PROPERTY_KEY, Order.prototype, 'quantity');
     expect(meta).to.eql({
       name: 'qty', mysql: {
         column: 'QTY',
@@ -95,8 +95,3 @@ describe('model decorator', () => {
     });
   });
 });
-
-
-
-
-
