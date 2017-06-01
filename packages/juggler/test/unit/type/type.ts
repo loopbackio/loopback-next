@@ -257,6 +257,7 @@ describe('types', () => {
       expect(bufferType.isCoercible(null)).to.be.true();
       expect(bufferType.isCoercible(undefined)).to.be.true();
       expect(bufferType.isCoercible(new Buffer('12'))).to.be.true();
+      expect(bufferType.isCoercible([1, 2])).to.be.true();
       expect(bufferType.isCoercible({x: 1})).to.be.false();
       expect(bufferType.isCoercible(1)).to.be.false();
       expect(bufferType.isCoercible(new Date())).to.be.false();
@@ -271,6 +272,8 @@ describe('types', () => {
       expect(bufferType.coerce([1]).equals(Buffer.from([1]))).to.be.true();
       expect(bufferType.coerce(null)).to.equal(null);
       expect(bufferType.coerce(undefined)).to.equal(undefined);
+      const buf = new Buffer('12');
+      expect(bufferType.coerce(buf)).exactly(buf);
       expect(() => bufferType.coerce(1)).to.throw(/Invalid buffer/);
       expect(() => bufferType.coerce(new Date())).to.throw(/Invalid buffer/);
       expect(() => bufferType.coerce(true)).to.throw(/Invalid buffer/);
@@ -390,6 +393,9 @@ describe('types', () => {
       expect(arrayType.isCoercible(1)).to.be.false();
       expect(arrayType.isCoercible(1.1)).to.be.false();
       expect(arrayType.isCoercible(new Date())).to.be.false();
+      expect(arrayType.isCoercible([])).to.be.true();
+      expect(arrayType.isCoercible(['1'])).to.be.true();
+      expect(arrayType.isCoercible(['1', 2])).to.be.true();
     });
 
     it('creates defaultValue', () => {
@@ -477,6 +483,12 @@ describe('types', () => {
       expect(unionType.coerce(1.1)).to.equal(1.1);
       const date = new Date();
       expect(unionType.coerce(date)).to.equal(date.getTime());
+
+      // Create a new union type to test invalid value
+      const dateType = new types.DateType();
+      const numberOrDateType = new types.UnionType([numberType, dateType]);
+      expect(() => numberOrDateType.coerce('str')).to.throw(/Invalid union/);
+
     });
 
     it('serializes values', () => {
