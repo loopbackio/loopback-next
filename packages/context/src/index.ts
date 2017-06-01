@@ -8,3 +8,4 @@ export {Context} from './context';
 export {Constructor} from './resolver';
 export {inject} from './inject';
 export const isPromise = require('is-promise');
+export {Reflector} from './reflect';
