@@ -9,7 +9,7 @@ import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {OpenApiSpec, ParameterObject} from '@loopback/openapi-spec';
 import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
 
-describe.only('HttpHandler', () => {
+describe('HttpHandler', () => {
   let client: Client;
   beforeEach(givenHandler);
   beforeEach(givenClient);
