@@ -8,4 +8,4 @@ before_script:
   - npm run bootstrap
 
 after_success:
-  - npm run coverage
+  - npm run coverage:ci
