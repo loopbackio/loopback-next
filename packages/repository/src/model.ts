@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Options, AnyType} from './common';
+import {Options, AnyType, AnyObject} from './common';
 import {Type} from './types';
 
 /**
@@ -12,15 +12,21 @@ import {Type} from './types';
  * See https://en.wikipedia.org/wiki/Domain-driven_design#Building_blocks
  */
 
+export type PropertyType = string | Function | Object | Type<AnyType>;
 /**
  * Property definition for a model
  */
-export class ModelProperty {
-  name: string;
-  type: string | Function | Object | Type<AnyType>; // For example, 'string', String, or {}
+export class PropertyDefinition {
+  readonly name: string;
+  type: PropertyType; // For example, 'string', String, or {}
   json?: PropertyForm;
   store?: PropertyForm;
   [attribute: string]: AnyType; // Other attributes
+
+  constructor(name: string, type: PropertyType = String) {
+    this.name = name;
+    this.type = type;
+  }
 }
 
 /**
@@ -36,13 +42,71 @@ export interface PropertyForm {
  * Definition for a model
  */
 export class ModelDefinition {
-  name: string;
-  properties: Map<string, ModelProperty>;
+  readonly name: string;
+  properties: {[name: string]: PropertyDefinition};
+  settings: {[name: string]: AnyType};
   // indexes: Map<string, AnyType>;
   [attribute: string]: AnyType; // Other attributes
 
-  idProperties(): ModelProperty[] {
-    return [];
+  constructor(name: string, properties?: {[name: string]: PropertyDefinition},
+    settings?: {[name: string]: AnyType}) {
+    this.name = name;
+    this.properties = properties || {};
+    this.settings = settings || new Map();
+  }
+
+  /**
+   * Add a property
+   * @param property Property definition or name (string)
+   * @param type Property type
+   */
+  addProperty(property: PropertyDefinition|string, type?: PropertyType): this {
+    if (property instanceof PropertyDefinition) {
+      this.properties[property.name] = property;
+    } else {
+      this.properties[property] = new PropertyDefinition(property, type);
+    }
+    return this;
+  }
+
+  /**
+   * Add a setting
+   * @param name Setting name
+   * @param value Setting value
+   */
+  addSetting(name: string, value: AnyType): this {
+    this.settings[name] = value;
+    return this;
+  }
+
+  /**
+   * Get an array of definitions for ID properties, which are specified in
+   * the model settings or properties with `id` attribute. For example,
+   * ```
+   * {
+   *   settings: {
+   *     id: ['id']
+   *   }
+   *   properties: {
+   *     id: {
+   *       type: 'string',
+   *       id: true
+   *     }
+   *   }
+   * }
+   * ```
+   */
+  idProperties(): PropertyDefinition[] {
+    let ids: string[] | null = null;
+    if (typeof this.settings.id === 'string') {
+      ids = [this.settings.id];
+    } else if (Array.isArray(this.settings.id)) {
+      ids = this.settings.id;
+    }
+    if (ids) {
+      return ids.map(id => this.properties[id]);
+    }
+    return Object.values(this.properties).filter(prop => prop.id);
   }
 }
 
@@ -57,14 +121,27 @@ export abstract class Model {
    * Serialize into a plain JSON object
    */
   toJSON(): Object {
-    return {};
+    const json: AnyObject = {};
+    for (const p in this.definition.properties) {
+      if (p in this) {
+        json[p] = this[p];
+      }
+    }
+    return json;
   }
 
   /**
    * Convert to a plain object as DTO
    */
   toObject(options?: Options): Object {
-    return {};
+    const obj: AnyObject = {};
+    if (options && options.ignoreUnknownProperties === false)
+    for (const p in this.definition.properties) {
+      if (p in this) {
+        obj[p] = this[p];
+      }
+    }
+    return obj;
   }
 
   [prop: string]: AnyType;
