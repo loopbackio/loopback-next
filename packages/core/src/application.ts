@@ -61,6 +61,10 @@ export class Application extends Context {
       this._handleHttpRequest(req, res);
 
     this.bind('logError').to(this._logError.bind(this));
+
+    // TODO(bajtos, ritch, superkhau) figure out how to integrate this single
+    // sequence with custom sequences contributed by components
+    this.bind('sequence').toClass(Sequence);
   }
 
   protected _handleHttpRequest(request: ServerRequest, response: ServerResponse) {

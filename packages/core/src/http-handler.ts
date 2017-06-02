@@ -35,12 +35,7 @@ export class HttpHandler {
     this._bindFindRoute(requestContext);
     this._bindInvokeMethod(requestContext);
 
-    // TODO(bajtos) instantiate the Sequence via ctx.get()
-    const findRoute = await requestContext.get('findRoute');
-    const invokeMethod = await requestContext.get('invokeMethod');
-    const logError = await requestContext.get('logError');
-    const sequence = new Sequence(findRoute, invokeMethod, logError);
-
+    const sequence: Sequence = await requestContext.get('sequence');
     return sequence.run(parsedRequest, response);
   }
 

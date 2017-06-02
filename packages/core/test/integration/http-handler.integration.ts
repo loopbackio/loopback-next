@@ -375,6 +375,8 @@ context('with an operation echoing a string parameter from query', () => {
   function givenHandler() {
     rootContext = new Context();
     rootContext.bind('logError').to(logger);
+    rootContext.bind('sequence').toClass(Sequence);
+
     function logger(err: Error, statusCode: number, req: ServerRequest) {
       console.error('Unhandled error in %s %s: %s %s',
         req.method, req.url, statusCode, err.stack || err);

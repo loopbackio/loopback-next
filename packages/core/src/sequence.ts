@@ -6,6 +6,7 @@
 import {Application} from './application';
 const debug = require('debug')('loopback:core:sequence');
 import {ServerRequest, ServerResponse} from 'http';
+import {inject} from '@loopback/context';
 import {ResolvedRoute} from './router/routing-table';
 import {
   OperationArgs,
@@ -24,8 +25,11 @@ export type LogError =
 
 export class Sequence {
   constructor(
+    @inject('findRoute')
     protected findRoute: FindRoute,
+    @inject('invokeMethod')
     protected invoke: InvokeMethod,
+    @inject('logError')
     protected logError: LogError) {
   }
 
