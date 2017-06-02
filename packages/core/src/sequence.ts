@@ -23,22 +23,22 @@ export type LogError =
   (err: Error, statusCode: number, request: ServerRequest) => void;
 
 export class Sequence {
-    constructor(
-      protected findRoute: FindRoute,
-      protected invoke: InvokeMethod,
-      protected logError: LogError) {
-    }
+  constructor(
+    protected findRoute: FindRoute,
+    protected invoke: InvokeMethod,
+    protected logError: LogError) {
+  }
 
   async run(req: ParsedRequest, res: ServerResponse) {
-      try {
-        const {controller, methodName, spec, pathParams} = this.findRoute(req);
-        const args = await parseOperationArgs(req, spec, pathParams);
-        const result = await this.invoke(controller, methodName, args);
-        debug('%s.%s() result -', controller, methodName, result);
-        this.sendResponse(res, result);
-      } catch (err) {
-        this.sendError(res, req, err);
-      }
+    try {
+      const { controller, methodName, spec, pathParams } = this.findRoute(req);
+      const args = await parseOperationArgs(req, spec, pathParams);
+      const result = await this.invoke(controller, methodName, args);
+      debug('%s.%s() result -', controller, methodName, result);
+      this.sendResponse(res, result);
+    } catch (err) {
+      this.sendError(res, req, err);
+    }
   }
 
   sendResponse(response: ServerResponse, result: OperationRetval) {

@@ -11,7 +11,7 @@ import * as HttpErrors from 'http-errors';
 
 import {Sequence, FindRoute, InvokeMethod} from './sequence';
 import {RoutingTable, parseRequestUrl} from './router/routing-table';
-import {ParsedRequest} from './internal-types';
+import {ParsedRequest, OperationArgs} from './internal-types';
 
 const debug = require('debug')('loopback:core:http-handler');
 
@@ -28,30 +28,18 @@ export class HttpHandler {
     this._routes.registerController(name, spec);
   }
 
-  protected _handleRequest(request: ServerRequest, response: ServerResponse): Promise<void> {
+  protected async _handleRequest(request: ServerRequest, response: ServerResponse): Promise<void> {
     const parsedRequest: ParsedRequest = parseRequestUrl(request);
     const requestContext = this._createRequestContext(request, response);
 
-    // TODO(bajtos) bind findRoute to requestContext
-    const findRoute: FindRoute = (req) => {
-      const found = this._routes.find(req);
-      if (!found) {
-        throw new HttpErrors.NotFound(
-          `Endpoint "${req.method} ${req.path}" not found.`);
-      }
-      this._bindRouteInfo(requestContext, found.controller, found.methodName);
-      return found;
-    };
+    this._bindFindRoute(requestContext);
+    this._bindInvokeMethod(requestContext);
 
-    // TODO(bajtos) bind invoke to requestContext
-    const invoke: InvokeMethod = async (controllerName, method, args) => {
-      const controller: { [opName: string]: Function } = await requestContext.get(controllerName);
-      const result = await controller[method](...args);
-      return result;
-    };
+    const findRoute = await requestContext.get('findRoute');
+    const invokeMethod = await requestContext.get('invokeMethod');
 
     // TODO(bajtos) instantiate the Sequence via ctx.get()
-    const sequence = new Sequence(findRoute, invoke, this.logError.bind(this));
+    const sequence = new Sequence(findRoute, invokeMethod, this.logError.bind(this));
     return sequence.run(parsedRequest, response);
   }
 
@@ -62,15 +50,34 @@ export class HttpHandler {
     return requestContext;
   }
 
-  protected _bindRouteInfo(requestContext: Context, controllerName: string, methodName: string) {
-    const ctor = requestContext.getBinding(controllerName).valueConstructor;
-    if (!ctor) {
-      throw new Error(
-        `The controller ${controllerName} was not bound via .toClass()`);
-    }
+  protected _bindFindRoute(context: Context): void {
+    context.bind('findRoute').toDynamicValue(() => {
+      return (request: ParsedRequest) => {
+        const req = context.getSync('http.request');
+        const found = this._routes.find(req);
+        if (!found)
+          throw new HttpErrors.NotFound(`Endpoint "${req.method} ${req.path}" not found.`);
 
-    requestContext.bind('controller.current.ctor').to(ctor);
-    requestContext.bind('controller.current.operation').to(methodName);
+        // bind routing information to context
+        const ctor = context.getBinding(found.controller).valueConstructor;
+        if (!ctor)
+          throw new Error(`The controller ${found.controller} was not bound via .toClass()`);
+        context.bind('controller.current.ctor').to(ctor);
+        context.bind('controller.current.operation').to(found.methodName);
+
+        return found;
+      };
+    });
+  }
+
+  protected _bindInvokeMethod(context: Context) {
+    context.bind('invokeMethod').toDynamicValue(() => {
+      return async (controllerName: string, method: string, args: OperationArgs) => {
+        const controller: { [opName: string]: Function } = await context.get(controllerName);
+        const result = await controller[method](...args);
+        return result;
+      };
+    });
   }
 
   logError(err: Error, statusCode: number, req: ServerRequest): void {
