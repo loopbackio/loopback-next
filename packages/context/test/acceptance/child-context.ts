@@ -5,7 +5,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context} from '../../src';
+import {Context} from '../..';
 
 describe('Context bindings - contexts inheritance', () => {
   let parentCtx: Context;

@@ -4,9 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context} from '../../src/context';
-import {inject} from '../../src/inject';
-import {instantiateClass} from '../../src/resolver';
+import {Context, inject, instantiateClass} from '../..';
 
 describe('constructor injection', () => {
   let ctx: Context;

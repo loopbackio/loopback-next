@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {inject, describeInjectedArguments, describeInjectedProperties} from '../../src/inject';
+import {inject, describeInjectedArguments, describeInjectedProperties} from '../..';
 
 describe('function argument injection', () => {
   it('can decorate class constructor arguments', () => {
