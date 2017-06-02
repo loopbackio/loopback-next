@@ -106,7 +106,9 @@ export class ModelDefinition {
     if (ids) {
       return ids.map(id => this.properties[id]);
     }
-    return Object.values(this.properties).filter(prop => prop.id);
+    const idProps = Object.keys(this.properties)
+      .map(p => this.properties[p]).filter(prop => prop.id);
+    return idProps;
   }
 }
 
@@ -122,7 +124,8 @@ export abstract class Model {
    */
   toJSON(): Object {
     const json: AnyObject = {};
-    for (const p in this.definition.properties) {
+    const def = (<typeof Model> this.constructor).definition;
+    for (const p in def.properties) {
       if (p in this) {
         json[p] = this[p];
       }
@@ -134,12 +137,14 @@ export abstract class Model {
    * Convert to a plain object as DTO
    */
   toObject(options?: Options): Object {
-    const obj: AnyObject = {};
-    if (options && options.ignoreUnknownProperties === false)
-    for (const p in this.definition.properties) {
-      if (p in this) {
+    let obj: AnyObject;
+    if (options && options.ignoreUnknownProperties === false) {
+      obj = {};
+      for (const p in this) {
         obj[p] = this[p];
       }
+    } else {
+      obj = this.toJSON();
     }
     return obj;
   }
@@ -200,9 +205,10 @@ export abstract class Entity extends Model implements Persistable {
     const idProps = this.definition.idProperties();
     if (idProps.length === 1) {
       where[idProps[0].name] = id;
-    }
-    for (const idProp of idProps) {
-      where[idProp.name] = id[idProp.name];
+    } else {
+      for (const idProp of idProps) {
+        where[idProp.name] = id[idProp.name];
+      }
     }
     return where;
   }
