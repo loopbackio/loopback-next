@@ -40,6 +40,9 @@
     "include": [
       "packages/*/src/**/*.ts"
     ],
+    "exclude": [
+      "packages/core/*/promisify.*"
+    ],
     "extension": [
       ".ts"
     ],
