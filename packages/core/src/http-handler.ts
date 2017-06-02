@@ -35,11 +35,12 @@ export class HttpHandler {
     this._bindFindRoute(requestContext);
     this._bindInvokeMethod(requestContext);
 
+    // TODO(bajtos) instantiate the Sequence via ctx.get()
     const findRoute = await requestContext.get('findRoute');
     const invokeMethod = await requestContext.get('invokeMethod');
+    const logError = await requestContext.get('logError');
+    const sequence = new Sequence(findRoute, invokeMethod, logError);
 
-    // TODO(bajtos) instantiate the Sequence via ctx.get()
-    const sequence = new Sequence(findRoute, invokeMethod, this.logError.bind(this));
     return sequence.run(parsedRequest, response);
   }
 
@@ -78,10 +79,5 @@ export class HttpHandler {
         return result;
       };
     });
-  }
-
-  logError(err: Error, statusCode: number, req: ServerRequest): void {
-    console.error('Unhandled error in %s %s: %s %s',
-      req.method, req.url, statusCode, err.stack || err);
   }
 }

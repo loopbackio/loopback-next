@@ -59,6 +59,8 @@ export class Application extends Context {
 
     this.handleHttp = (req: ServerRequest, res: ServerResponse) =>
       this._handleHttpRequest(req, res);
+
+    this.bind('logError').to(this._logError.bind(this));
   }
 
   protected _handleHttpRequest(request: ServerRequest, response: ServerResponse) {
@@ -99,6 +101,11 @@ export class Application extends Context {
    */
   public controller<T>(controllerCtor: Constructor<T>): Binding {
     return this.bind('controllers.' + controllerCtor.name).toClass(controllerCtor);
+  }
+
+  protected _logError(err: Error, statusCode: number, req: ServerRequest): void {
+    console.error('Unhandled error in %s %s: %s %s',
+      req.method, req.url, statusCode, err.stack || err);
   }
 }
 
