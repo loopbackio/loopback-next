@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {HttpHandler, Sequence} from '../..';
+import {HttpHandler, Sequence, ServerRequest} from '../..';
 import {Context} from '@loopback/context';
 import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {OpenApiSpec, ParameterObject} from '@loopback/openapi-spec';
@@ -374,6 +374,12 @@ context('with an operation echoing a string parameter from query', () => {
   let handler: HttpHandler;
   function givenHandler() {
     rootContext = new Context();
+    rootContext.bind('logError').to(logger);
+    function logger(err: Error, statusCode: number, req: ServerRequest) {
+      console.error('Unhandled error in %s %s: %s %s',
+        req.method, req.url, statusCode, err.stack || err);
+    }
+
     handler = new HttpHandler(rootContext);
   }
 
@@ -388,12 +394,13 @@ context('with an operation echoing a string parameter from query', () => {
   }
 
   function logErrorsExcept(ignoreStatusCode: number) {
-    // TODO(bajtos) Rework this code to customize the logger via rootContext.bind()
-    const oldLogger = handler.logError;
-    handler.logError = (err, statusCode, req) => {
+    const oldLogger: Function = rootContext.getSync('logError');
+    rootContext.bind('logError').to(conditionalLogger);
+
+    function conditionalLogger(err: Error, statusCode: number, req: ServerRequest) {
       if (statusCode === ignoreStatusCode) return;
       // tslint:disable-next-line:no-invalid-this
       oldLogger.apply(this, arguments);
-    };
+    }
   }
 });
