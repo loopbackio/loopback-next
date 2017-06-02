@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {model} from '../../src/decorators/model';
-import {Entity, ModelProperty} from '../../src/model';
+import {Entity} from '../../src/model';
 
 @model(require('./customer.definition'))
 export class Customer extends Entity {
