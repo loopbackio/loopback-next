@@ -11,7 +11,7 @@ import * as HttpErrors from 'http-errors';
 
 import {Sequence, FindRoute, InvokeMethod} from './sequence';
 import {RoutingTable, parseRequestUrl} from './router/routing-table';
-import {ParsedRequest} from './internal-types';
+import {ParsedRequest, OperationArgs} from './internal-types';
 
 const debug = require('debug')('loopback:core:http-handler');
 
@@ -33,17 +33,13 @@ export class HttpHandler {
     const requestContext = this._createRequestContext(request, response);
 
     this._bindFindRoute(requestContext);
+    this._bindInvokeMethod(requestContext);
 
-    // TODO(bajtos) bind invoke to requestContext
-    const invoke: InvokeMethod = async (controllerName, method, args) => {
-      const controller: { [opName: string]: Function } = await requestContext.get(controllerName);
-      const result = await controller[method](...args);
-      return result;
-    };
+    const findRoute = await requestContext.get('findRoute');
+    const invokeMethod = await requestContext.get('invokeMethod');
 
     // TODO(bajtos) instantiate the Sequence via ctx.get()
-    const findRoute = await requestContext.get('findRoute');
-    const sequence = new Sequence(findRoute, invoke, this.logError.bind(this));
+    const sequence = new Sequence(findRoute, invokeMethod, this.logError.bind(this));
     return sequence.run(parsedRequest, response);
   }
 
@@ -70,6 +66,16 @@ export class HttpHandler {
         context.bind('controller.current.operation').to(found.methodName);
 
         return found;
+      };
+    });
+  }
+
+  protected _bindInvokeMethod(context: Context) {
+    context.bind('invokeMethod').toDynamicValue(() => {
+      return async (controllerName: string, method: string, args: OperationArgs) => {
+        const controller: { [opName: string]: Function } = await context.get(controllerName);
+        const result = await controller[method](...args);
+        return result;
       };
     });
   }
