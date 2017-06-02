@@ -16,11 +16,9 @@ describe('model', () => {
       .addProperty('lastName', STRING)
       .addSetting('key', ['id']);
     expect(modelDef.name).to.eql('Customer');
-    expect(modelDef.properties.has('id')).to.true();
-    expect(modelDef.properties.has('email')).to.true();
-    expect(modelDef.properties.has('firstName')).to.true();
-    expect(modelDef.properties.has('lastName')).to.true();
-    expect(modelDef.properties.get('lastName')).to.eql({name: 'lastName', type: STRING});
+    expect(modelDef.properties).have.properties('id', 'email', 'lastName', 'firstName');
+    expect(modelDef.properties.lastName).to.eql(
+      new PropertyDefinition('lastName', STRING));
   });
 
   /*
