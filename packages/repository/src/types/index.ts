@@ -29,3 +29,10 @@ export {
   Type, StringType, BooleanType, NumberType, DateType,
   BufferType, AnyType, ArrayType, UnionType,
 };
+
+export const STRING = new StringType();
+export const BOOLEAN = new BooleanType();
+export const NUMBER = new NumberType();
+export const DATE = new DateType();
+export const BUFFER = new BufferType();
+export const ANY = new AnyType();
