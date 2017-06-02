@@ -6,7 +6,7 @@
 import { expect } from '@loopback/testlab';
 import { model, property, MODEL_KEY, PROPERTY_KEY }
   from '../../../src/decorators/model';
-import { belongsTo, embedsOne, embedsMany, hasMany, referencesMany,
+import { relation, hasOne, belongsTo, embedsOne, embedsMany, hasMany, referencesMany,
   referencesOne, RELATION_KEY, RelationType } from '../../../src/decorators/relation';
 
 import { Entity, ValueObject } from '../../../src/model';
@@ -40,8 +40,27 @@ describe('model decorator', () => {
     description: string;
   }
 
+  interface ICustomer {}
+
+  @model({ name: 'order' })
+  class Order extends Entity {
+    @property({
+      name: 'qty', mysql: {
+        column: 'QTY',
+      },
+    })
+    quantity: number;
+
+    @property({ name: 'id', id: true, generated: true })
+    id: string;
+    customerId: string;
+
+    @belongsTo({ target: 'Customer' })
+    customer: ICustomer; // TypeScript does not allow me to reference Customer here
+  }
+
   @model()
-  class Customer extends Entity {
+  class Customer extends Entity implements ICustomer {
     id: string;
     email: string;
     firstName: string;
@@ -61,23 +80,12 @@ describe('model decorator', () => {
 
     @hasMany()
     orders?: Order[];
-  }
 
-  @model({ name: 'order' })
-  class Order extends Entity {
-    @property({
-      name: 'qty', mysql: {
-        column: 'QTY',
-      },
-    })
-    quantity: number;
+    @hasOne()
+    lastOrder?: Order;
 
-    @property({ name: 'id', id: true, generated: true })
-    id: string;
-    customerId: string;
-
-    @belongsTo({ target: 'Customer' })
-    customer: Customer;
+    @relation({type: RelationType.hasMany})
+    recentOrders?: Order[];
   }
 
   // Skip the tests before we resolve the issue around global `Reflector`
@@ -136,6 +144,20 @@ describe('model decorator', () => {
     expect(meta).to.eql({
       type: RelationType.belongsTo,
       target: 'Customer',
+    });
+  });
+
+  it('adds hasOne metadata', () => {
+    const meta = Reflector.getOwnMetadata(RELATION_KEY, Customer.prototype, 'lastOrder');
+    expect(meta).to.eql({
+      type: RelationType.hasOne,
+    });
+  });
+
+  it('adds relation metadata', () => {
+    const meta = Reflector.getOwnMetadata(RELATION_KEY, Customer.prototype, 'recentOrders');
+    expect(meta).to.eql({
+      type: RelationType.hasMany,
     });
   });
 
