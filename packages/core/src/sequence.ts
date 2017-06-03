@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application} from './application';
 const debug = require('debug')('loopback:core:sequence');
 import {ServerRequest, ServerResponse} from 'http';
 import {inject} from '@loopback/context';
@@ -11,7 +10,6 @@ import {
   FindRoute,
   InvokeMethod,
   LogError,
-  OperationArgs,
   OperationRetval,
   ParsedRequest,
 } from './internal-types';
