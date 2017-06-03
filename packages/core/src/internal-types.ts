@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ServerRequest} from 'http';
+import {ResolvedRoute} from './router/routing-table';
 
 export interface ParsedRequest extends ServerRequest {
   // see http://expressjs.com/en/4x/api.html#req.path
@@ -15,6 +16,10 @@ export interface ParsedRequest extends ServerRequest {
   pathname: string;
   method: string;
 }
+
+export type FindRoute = (request: ParsedRequest) => ResolvedRoute<string>;
+export type InvokeMethod = (controller: string, method: string, args: OperationArgs) => Promise<OperationRetval>;
+export type LogError = (err: Error, statusCode: number, request: ServerRequest) => void;
 
 // tslint:disable:no-any
 export type PathParameterValues = {[key: string]: any};

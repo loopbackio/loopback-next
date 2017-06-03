@@ -7,8 +7,10 @@ import {Application} from './application';
 const debug = require('debug')('loopback:core:sequence');
 import {ServerRequest, ServerResponse} from 'http';
 import {inject} from '@loopback/context';
-import {ResolvedRoute} from './router/routing-table';
 import {
+  FindRoute,
+  InvokeMethod,
+  LogError,
   OperationArgs,
   OperationRetval,
   ParsedRequest,
@@ -16,12 +18,6 @@ import {
 import {parseOperationArgs} from './parser';
 import {writeResultToResponse} from './writer';
 import {HttpError} from 'http-errors';
-
-export type FindRoute = (request: ParsedRequest) => ResolvedRoute<string>;
-export type InvokeMethod =
-  (controller: string, method: string, args: OperationArgs) => Promise<OperationRetval>;
-export type LogError =
-  (err: Error, statusCode: number, request: ServerRequest) => void;
 
 export class Sequence {
   constructor(

@@ -9,9 +9,14 @@ import {ServerRequest, ServerResponse} from 'http';
 import {getApiSpec} from './router/metadata';
 import * as HttpErrors from 'http-errors';
 
-import {Sequence, FindRoute, InvokeMethod} from './sequence';
+import {Sequence} from './sequence';
 import {RoutingTable, parseRequestUrl} from './router/routing-table';
-import {ParsedRequest, OperationArgs} from './internal-types';
+import {
+  FindRoute,
+  InvokeMethod,
+  ParsedRequest,
+  OperationArgs,
+} from './internal-types';
 
 const debug = require('debug')('loopback:core:http-handler');
 
