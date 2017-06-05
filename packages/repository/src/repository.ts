@@ -151,7 +151,7 @@ export interface EntityCrudRepository<T extends Entity, ID>
  * Example:
  *
  * User can import `CrudRepositoryImpl` and call its functions like:
- * `CrudRepositoryImpl.find(somefilters, someOptions)`
+ * `CrudRepositoryImpl.find(somefilters, someoptions)`
  *
  * Or extend class `CrudRepositoryImpl` and override its functions:
  * ```ts
