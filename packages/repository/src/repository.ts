@@ -18,6 +18,8 @@ export interface Repository<T extends Model> {
 export interface CrudRepository<T extends (ValueObject | Entity)> extends Repository<T> {
   /**
    * Create a new record
+   *
+   * TODO: where is the return annotation?
    * @param dataObject
    * @param options
    */
@@ -131,6 +133,25 @@ export interface EntityCrudRepository<T extends Entity, ID>
 
 /**
  * Repository implementation
+ *
+ * Example:
+ *
+ * User can import `CrudRepositoryImpl` and call its functions like:
+ * `CrudRepositoryImpl.find(somefilters, someOptions)`
+ *
+ * Or extend class `CrudRepositoryImpl` and override its functions:
+ * ```typescript
+ * export class TestRepository extends CrudRepositoryImpl<Test> {
+ *   constructor(dataSource: DataSource, model: Test) {
+ *     super(dataSource, Customer);
+ *   }
+ *
+ *   // Override `deleteAll` to disable the operation
+ *   deleteAll(where?: Where, options?: Options) {
+ *     return Promise.reject(new Error('deleteAll is disabled'));
+ *   }
+ * }
+ * ```
  */
 export class CrudRepositoryImpl<T extends Entity, ID>
   implements EntityCrudRepository<T, ID> {
