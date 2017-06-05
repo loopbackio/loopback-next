@@ -38,16 +38,15 @@
   },
   "nyc": {
     "include": [
-      "packages/*/src/**/*.ts"
+      "packages/example-codehub/src/**",
+      "packages/*/lib*/*"
     ],
     "exclude": [
       "packages/core/*/promisify.*"
     ],
     "extension": [
+      ".js",
       ".ts"
-    ],
-    "require": [
-      "ts-node/register"
     ],
     "reporter": [
       "html",
