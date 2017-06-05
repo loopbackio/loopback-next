@@ -61,13 +61,13 @@ describe('Routing', () => {
           // tslint:enable:no-shadowed-variable
           const args = await parseOperationArgs(req, spec, pathParams);
           const result = await this.invoke(controller, methodName, args);
-          writeResultToResponse(res, result);
+          writeResultToResponse(res, 'MySequence ' + result);
         }
     }
     app.bind('sequence').toClass(MySequence);
 
     return whenIMakeRequestTo(app).get('/name')
-      .expect('SequenceApp');
+      .expect('MySequence SequenceApp');
   });
 
   /* ===== HELPERS ===== */
