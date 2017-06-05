@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Class, AnyType} from './common';
+import {Class, AnyType} from './common-types';
 
 /**
  * Interface for functions that can mix properties/methods into a base class

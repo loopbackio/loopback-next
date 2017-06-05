@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Options} from '../../src/common';
+import {Options} from '../../src/common-types';
 import {Where} from '../../src/query';
 import {DataSource} from '../../src/datasource';
 

@@ -5,14 +5,17 @@
 
 import {expect} from '@loopback/testlab';
 
-import {jugglerModule, bindModel, DataSource, juggler, DefaultCrudRepository}
+import {jugglerModule, bindModel, DataSourceConstructor, juggler, DefaultCrudRepository}
   from '../../../src/legacy-juggler-bridge';
+
+/* tslint:disable-next-line:variable-name */
+type PersistedModelClass = typeof juggler.PersistedModel;
 
 describe('legacy loopback-datasource-juggler', () => {
   let ds: juggler.DataSource;
 
   before(function() {
-    ds = new DataSource({
+    ds = new DataSourceConstructor({
       name: 'db',
       connector: 'memory',
     });
@@ -22,8 +25,8 @@ describe('legacy loopback-datasource-juggler', () => {
 
   it('creates models', () => {
     /* tslint:disable-next-line:variable-name */
-    const Note = <typeof juggler.PersistedModel>
-      ds.createModel('note', {title: 'string', content: 'string'}, {});
+    const Note = ds.createModel<PersistedModelClass>(
+      'note', {title: 'string', content: 'string'}, {});
     /* tslint:disable-next-line:variable-name */
     const Note2 = bindModel(Note, ds);
     expect(Note2.modelName).to.eql('note');
@@ -35,15 +38,15 @@ describe('legacy loopback-datasource-juggler', () => {
 describe('DefaultCrudRepository', () => {
   let ds: juggler.DataSource;
   /* tslint:disable-next-line:variable-name */
-  let Note: typeof juggler.PersistedModel;
+  let Note: PersistedModelClass;
 
   beforeEach(() => {
-    ds = new DataSource({
+    ds = new DataSourceConstructor({
       name: 'db',
       connector: 'memory',
     });
-    Note = <typeof juggler.PersistedModel>
-      ds.createModel('note3', { title: 'string', content: 'string' }, {});
+    Note = ds.createModel<PersistedModelClass>(
+      'note3', { title: 'string', content: 'string' }, {});
     Note.prototype.getId = function() {
       /* tslint:disable-next-line:no-invalid-this */
       return this.id;

@@ -6,7 +6,7 @@
 import { Connector } from './connector';
 import { Entity } from './model';
 import { Filter, Where } from './query';
-import { Class, ObjectType, Options, AnyType } from './common';
+import { Class, ObjectType, Options, AnyType } from './common-types';
 
 export type EntityData = ObjectType<Entity>;
 

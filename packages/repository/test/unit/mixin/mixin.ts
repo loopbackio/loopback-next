@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Class, AnyType} from '../../../src/common';
+import {Class, AnyType} from '../../../src/common-types';
 import {MixinBuilder} from '../../../src/mixin';
 
 class BaseClass {

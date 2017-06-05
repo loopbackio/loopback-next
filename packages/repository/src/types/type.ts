@@ -6,10 +6,10 @@
 /**
  * Typing system for LoopBack
  */
-import {Options, AnyType} from '../common';
+import {Options, AnyType} from '../common-types';
 import * as util from 'util';
 
-export {AnyType} from '../common';
+export {AnyType} from '../common-types';
 
 export interface Type<T> {
   /**
