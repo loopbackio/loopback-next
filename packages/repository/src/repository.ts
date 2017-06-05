@@ -18,6 +18,8 @@ export interface Repository<T extends Model> {
 export interface CrudRepository<T extends (ValueObject | Entity)> extends Repository<T> {
   /**
    * Create a new record
+   *
+   * TODO: where is the return annotation?
    * @param dataObject
    * @param options
    */
@@ -131,6 +133,23 @@ export interface EntityCrudRepository<T extends Entity, ID>
 
 /**
  * Repository implementation
+ *
+ * Example:
+ *
+ * Class `Example` uses `CrudRepositoryImpl` as its repository, and its method
+ * `getInstanceById` calls method `find` implemented in `CrudRepositoryImpl`.
+ *
+ * ```
+ * import {CrudRepositoryImpl} from 'path_of_folder_repository/repository'
+ *
+ * export class Example {
+ *   repository: CrudRepositoryImpl;
+ *
+ *   async getInstanceById(instanceId) {
+ *    return await this.repository.find(instanceId);
+ *   }
+ * }
+ * ```
  */
 export class CrudRepositoryImpl<T extends Entity, ID>
   implements EntityCrudRepository<T, ID> {
