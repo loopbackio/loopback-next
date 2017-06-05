@@ -61,6 +61,8 @@ describe('Routing', () => {
           // tslint:enable:no-shadowed-variable
           const args = await parseOperationArgs(req, spec, pathParams);
           const result = await this.invoke(controller, methodName, args);
+          // manipulate response by addding 'MySequence ' so that we can test if this sequence is
+          // called or not. Hence response verified below is 'MySequence SequenceApp'
           writeResultToResponse(res, 'MySequence ' + result);
         }
     }
