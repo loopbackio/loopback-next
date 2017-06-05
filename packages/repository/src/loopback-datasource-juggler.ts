@@ -3,24 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { Class, Options, Callback, AnyObject, AnyType } from './common';
+import { Class, Options, Callback, AnyObject, AnyType } from './common-types';
 
 export declare namespace juggler {
   /**
    * Return type for promisified Node.js async methods
    */
   export type PromiseOrVoid<T> = Promise<T> | void;
-
-  /**
-   * DataSource instance properties/operations
-   */
-  export class DataSource {
-    name: string;
-    settings: AnyObject;
-    constructor(settings?: AnyObject);
-    createModel(name: string, properties?: Object, options?: Options):
-      (typeof ModelBase) | (typeof PersistedModel);
-  }
 
   /**
    * Base model class
@@ -31,6 +20,23 @@ export declare namespace juggler {
     static attachTo(ds: DataSource): void;
     constructor(...args: AnyType[]);
     [property: string]: AnyType;
+  }
+
+  /**
+   * DataSource instance properties/operations
+   */
+  export class DataSource {
+    name: string;
+    settings: AnyObject;
+    constructor(settings?: AnyObject);
+    /**
+     * Create a model class
+     * @param name Name of the model
+     * @param properties An object of property definitions
+     * @param options Options for model settings
+     */
+    createModel<T extends typeof ModelBase>(name: string, properties?: AnyObject,
+      options?: Options): T;
   }
 
   /**

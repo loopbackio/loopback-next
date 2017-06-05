@@ -6,16 +6,16 @@
 export const jugglerModule = require('loopback-datasource-juggler');
 
 import {MixinBuilder} from './mixin';
-import {Class, ObjectType, Options, AnyType} from './common';
+import {Class, ObjectType, Options, AnyType} from './common-types';
 
 import {juggler} from './loopback-datasource-juggler';
 
 export * from './loopback-datasource-juggler';
 
 /* tslint:disable-next-line:variable-name */
-export const DataSource = jugglerModule.DataSource as typeof juggler.DataSource;
+export const DataSourceConstructor = jugglerModule.DataSource as typeof juggler.DataSource;
 /* tslint:disable-next-line:variable-name */
-export const ModelBase = jugglerModule.ModelBaseClass as typeof juggler.ModelBase;
+export const ModelBaseConstructor = jugglerModule.ModelBaseClass as typeof juggler.ModelBase;
 
 /**
  * This is a bridge to the legacy DAO class. The function mixes DAO methods
@@ -39,7 +39,7 @@ function isPromise<T>(p: AnyType): p is Promise<T> {
   return p !== null && typeof p === 'object' && typeof p.then === 'function';
 }
 
-function getPromise<T>(p: juggler.PromiseOrVoid<T>): Promise<T> {
+function ensurePromise<T>(p: juggler.PromiseOrVoid<T>): Promise<T> {
   if (isPromise(p)) {
     return p;
   } else {
@@ -56,11 +56,11 @@ implements EntityCrudRepository<T, ID> {
   }
 
   create(entity: ObjectType<T>, options?: Options): Promise<T> {
-    return getPromise(this.modelClass.create(entity, options));
+    return ensurePromise(this.modelClass.create(entity, options));
   }
 
   createAll(entities: ObjectType<T>[], options?: Options): Promise<T[]> {
-    return getPromise(this.modelClass.create(entities, options));
+    return ensurePromise(this.modelClass.create(entities, options));
   }
 
   save(entity: ObjectType<T>, options?: Options): Promise<T> {
@@ -80,11 +80,11 @@ implements EntityCrudRepository<T, ID> {
   }
 
   find(filter?: Filter, options?: Options): Promise<T[]> {
-    return getPromise(this.modelClass.find(filter, options));
+    return ensurePromise(this.modelClass.find(filter, options));
   }
 
   findById(id: ID, filter?: Filter, options?: Options): Promise<T> {
-    return getPromise(this.modelClass.findById(id, filter, options));
+    return ensurePromise(this.modelClass.findById(id, filter, options));
   }
 
   update(entity: ObjectType<T>, options?: Options): Promise<boolean> {
@@ -96,7 +96,7 @@ implements EntityCrudRepository<T, ID> {
   }
 
   updateAll(data: ObjectType<T>, where?: Where, options?: Options): Promise<number> {
-    return getPromise(this.modelClass.updateAll(where, data, options)).
+    return ensurePromise(this.modelClass.updateAll(where, data, options)).
       then(result => result.count);
   }
 
@@ -108,24 +108,24 @@ implements EntityCrudRepository<T, ID> {
   }
 
   replaceById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean> {
-    return getPromise(this.modelClass.replaceById(id, data, options)).then(result => !!result);
+    return ensurePromise(this.modelClass.replaceById(id, data, options)).then(result => !!result);
   }
 
   deleteAll(where?: Where, options?: Options): Promise<number> {
-    return getPromise(this.modelClass.deleteAll(where, options)).
+    return ensurePromise(this.modelClass.deleteAll(where, options)).
       then(result => result.count);
   }
 
   deleteById(id: ID, options?: Options): Promise<boolean> {
-    return getPromise(this.modelClass.deleteById(id, options)).
+    return ensurePromise(this.modelClass.deleteById(id, options)).
       then(result => result.count > 0);
   }
 
   count(where?: Where, options?: Options): Promise<number> {
-    return getPromise(this.modelClass.count(where, options));
+    return ensurePromise(this.modelClass.count(where, options));
   }
 
   exists(id: ID, options?: Options): Promise<boolean> {
-    return getPromise(this.modelClass.exists(id, options));
+    return ensurePromise(this.modelClass.exists(id, options));
   }
 }

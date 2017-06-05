@@ -4,9 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Connector} from './connector';
-import {Options} from './common';
+import {Options} from './common-types';
 import {Entity} from './model';
-import {Class, ObjectType} from './common';
+import {Class, ObjectType} from './common-types';
 import {Filter} from './query';
 
 export type EntityData = ObjectType<Entity>;
