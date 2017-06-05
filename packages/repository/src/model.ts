@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Options, AnyType, AnyObject} from './common';
+import {Options, AnyType, AnyObject} from './common-types';
 import {Type} from './types';
 
 /**

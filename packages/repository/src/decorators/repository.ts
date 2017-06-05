@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { Class, AnyType } from '../common';
+import { Class, AnyType } from '../common-types';
 import { Model } from '../model';
 import { Repository } from '../repository';
 import { DataSource } from '../datasource';

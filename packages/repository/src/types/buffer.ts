@@ -5,7 +5,7 @@
 
 import * as util from 'util';
 import {Type, AnyType} from './type';
-import {Options} from '../common';
+import {Options} from '../common-types';
 
 /**
  * Buffer (binary) type
