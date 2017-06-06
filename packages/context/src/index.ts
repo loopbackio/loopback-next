@@ -12,3 +12,5 @@ export const isPromise = require('is-promise');
 // internals for testing
 export {instantiateClass} from './resolver';
 export {describeInjectedArguments, describeInjectedProperties} from './inject';
+export {Reflector} from './reflect';
+

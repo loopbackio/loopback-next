@@ -1,0 +1,39 @@
+{
+  "name": "@loopback/repository",
+  "version": "4.0.0-alpha.1",
+  "description": "Repository for LoopBack.next",
+  "main": "index",
+  "scripts": {
+    "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
+    "build": "npm run build:lib && npm run build:lib6",
+    "build:lib": "node ../../bin/compile-package es2017",
+    "build:lib6": "node ../../bin/compile-package es2015",
+    "clean": "rm -rf loopback-context*.tgz lib* package",
+    "prepublish": "npm run build",
+    "pretest": "npm run build",
+    "test": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts' 'test/acceptance/**/*.ts'",
+    "unit": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts'",
+    "verify": "npm pack && tar xf loopback-juggler*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM",
+  "license": "MIT",
+  "devDependencies": {
+    "@loopback/testlab": "^4.0.0-alpha.2",
+    "mocha": "^3.2.0"
+  },
+  "dependencies": {
+    "@loopback/context": "^4.0.0-alpha.6",
+    "loopback-datasource-juggler": "^3.9.0"
+  },
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "lib",
+    "lib6"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
+}

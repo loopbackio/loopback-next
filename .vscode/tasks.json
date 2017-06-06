@@ -26,7 +26,7 @@
       "args": [
         "bootstrap",
         "--scope",
-        "@loopback/juggler"
+        "@loopback/repository"
       ]
     },
     {
@@ -72,7 +72,7 @@
       "args": [
         "clean",
         "--scope",
-        "@loopback/juggler",
+        "@loopback/repository",
         "--yes"
       ]
     },

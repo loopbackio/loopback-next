@@ -19,10 +19,10 @@
   "license": "MIT",
   "dependencies": {
     "@loopback/core": "^4.0.0-alpha.5",
+    "@loopback/context": "^4.0.0-alpha.6",
     "@types/passport": "^0.3.3",
     "passport": "^0.3.2",
-    "passport-strategy": "^1.0.0",
-    "reflect-metadata": "^0.1.10"
+    "passport-strategy": "^1.0.0"
   },
   "devDependencies": {
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.2",
