@@ -20,7 +20,7 @@ export interface CrudRepository<T extends (ValueObject | Entity)> extends Reposi
    * Create a new record
    * @param dataObject
    * @param options
-   * @promise {T} resolves a T
+   * @promise resolves a T
    */
   create(dataObject: ObjectType<T>, options?: Options): Promise<T>;
 
@@ -28,7 +28,7 @@ export interface CrudRepository<T extends (ValueObject | Entity)> extends Reposi
    * Create all records
    * @param entities
    * @param options
-   * @promise {T[]} resolves an array of T
+   * @promise resolves an array of created records
    */
   createAll(entities: ObjectType<T>[], options?: Options): Promise<T[]>;
 
@@ -36,7 +36,7 @@ export interface CrudRepository<T extends (ValueObject | Entity)> extends Reposi
    * Find matching records
    * @param filter
    * @param options
-   * @promise {T[]} resolves an array of T
+   * @promise resolves an array retrieved matching records
    */
   find(filter?: Filter, options?: Options): Promise<T[]>;
 
@@ -45,7 +45,7 @@ export interface CrudRepository<T extends (ValueObject | Entity)> extends Reposi
    * @param dataObject
    * @param where
    * @param options
-   * @promise {Number} resolves a Number
+   * @promise resolves the count of updated records
    */
   updateAll(dataObject: ObjectType<T>, where?: Where, options?: Options): Promise<number>;
 
@@ -53,7 +53,7 @@ export interface CrudRepository<T extends (ValueObject | Entity)> extends Reposi
    * Delete matching records
    * @param where
    * @param options
-   * @promise {Number} resolves a Number
+   * @promise resolves the count of deleted records
    */
   deleteAll(where?: Where, options?: Options): Promise<number>;
 
@@ -61,7 +61,7 @@ export interface CrudRepository<T extends (ValueObject | Entity)> extends Reposi
    * Count matching records
    * @param where
    * @param options
-   * @promise {Number} resolves a Number
+   * @promise resolves the count of matching records
    */
   count(where?: Where, options?: Options): Promise<number>;
 }
@@ -82,7 +82,7 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * Save an entity. If no id is present, create a new entity
    * @param entity
    * @param options
-   * @promise {T} resolves a T
+   * @promise resolves the saved entity
    */
   save(entity: ObjectType<T>, options?: Options): Promise<T>;
 
@@ -90,7 +90,8 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * Update an entity
    * @param entity
    * @param options
-   * @promise {Boolean} resolves a Boolean
+   * @promise resolves a boolean represents update succeeds(true) 
+   * or fails(false)
    */
   update(entity: ObjectType<T>, options?: Options): Promise<boolean>;
 
@@ -98,7 +99,8 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * Delete an entity
    * @param entity
    * @param options
-   * @promise {Boolean} resolves a Boolean
+   * @promise resolves a boolean represents delete succeeds(true) 
+   * or fails(false)
    */
   delete(entity: ObjectType<T>, options?: Options): Promise<boolean>;
 
@@ -106,7 +108,7 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * Find an entity by id
    * @param id
    * @param options
-   * @promise {T} resolves a T
+   * @promise resolves the returned entity
    */
   findById(id: ID, filter?: Filter, options?: Options): Promise<T>;
 
@@ -115,7 +117,8 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * @param data
    * @param id
    * @param options
-   * @promise {Boolean} resolves a Boolean
+   * @promise resolves a boolean represents update succeeds(true) 
+   * or fails(false)
    */
   updateById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean>;
 
@@ -124,7 +127,8 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * @param data
    * @param id
    * @param options
-   * @promise {Boolean} resolves a Boolean
+   * @promise resolves a boolean represents replace succeeds(true) 
+   * or fails(false)
    */
   replaceById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean>;
 
@@ -132,7 +136,8 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * Delete an entity by id
    * @param id
    * @param options
-   * @promise {Boolean} resolves a Boolean
+   * @promise resolves a boolean represents delete succeeds(true) 
+   * or fails(false)
    */
   deleteById(id: ID, options?: Options): Promise<boolean>;
 
@@ -140,7 +145,8 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * Check if an entity exists for the given id
    * @param id
    * @param options
-   * @promise {Boolean} resolves a Boolean
+   * @promise resolves a boolean represents entity exists(true) 
+   * or not(false)
    */
   exists(id: ID, options?: Options): Promise<boolean>;
 }
