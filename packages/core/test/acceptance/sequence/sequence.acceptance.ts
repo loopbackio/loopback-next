@@ -7,24 +7,58 @@ import {
   Application, Server, api,
   OpenApiSpec, ParameterObject,
   ServerRequest, ServerResponse, parseOperationArgs, writeResultToResponse,
-} from '../../../src';
+} from '../../../index';
 import {ParsedRequest, OperationArgs, FindRoute, InvokeMethod} from '../../../src/internal-types';
 import {expect, Client, createClientForServer} from '@loopback/testlab';
 import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {inject, Constructor, Context} from '@loopback/context';
 
-/* # Feature: Routing
+/* # Feature: Sequence
  * - In order to build REST APIs
- * - As an app developer
- * - I want the framework to handle the request to controller method routing
- * - So that I can focus on my implementing the methods and not the routing
+ * - As a framework developer
+ * - I want the framework to handle default sequence and user defined sequence
  */
-describe('Routing', () => {
-  it('injects user defined sequence', () => {
-    const app = givenAnApplication();
+describe('Sequence - ', () => {
+  let app: Application;
+
+  beforeEach(givenAppWithController);
+
+  it('default sequence', () => {
+
+    return whenIMakeRequestTo().get('/name')
+      .expect('SequenceApp');
+  });
+
+  it('user defined sequence', () => {
+    class MySequence {
+      constructor(
+        @inject('findRoute')
+        protected findRoute: FindRoute,
+        @inject('invokeMethod')
+        protected invoke: InvokeMethod) {
+      }
+
+      async run(req: ParsedRequest, res: ServerResponse) {
+          const { controller, methodName, spec: routeSpec, pathParams } = this.findRoute(req);
+          const args = await parseOperationArgs(req, routeSpec, pathParams);
+          const result = await this.invoke(controller, methodName, args);
+          // Prepend 'MySequence' to the result of invoke to allow for
+          // execution verification of this user-defined sequence
+          writeResultToResponse(res, `MySequence ${result}`);
+        }
+    }
+    // bind user defined sequence
+    app.bind('sequence').toClass(MySequence);
+
+    return whenIMakeRequestTo().get('/name')
+      .expect('MySequence SequenceApp');
+  });
+
+  function givenAppWithController() {
+    givenAnApplication();
     app.bind('application.name').to('SequenceApp');
 
-    const spec = givenOpenApiSpec()
+    const apispec = givenOpenApiSpec()
       .withOperation('get', '/name', {
         'x-operation-name': 'getName',
         responses: {
@@ -35,7 +69,7 @@ describe('Routing', () => {
       })
       .build();
 
-    @api(spec)
+    @api(apispec)
     class InfoController {
       constructor(@inject('application.name') public appName: string) {
       }
@@ -44,45 +78,19 @@ describe('Routing', () => {
         return this.appName;
       }
     }
-    givenControllerInApp(app, InfoController);
-
-    class MySequence {
-      constructor(
-        @inject('findRoute')
-        protected findRoute: FindRoute,
-        @inject('invokeMethod')
-        protected invoke: InvokeMethod) {
-      }
-
-      async run(req: ParsedRequest, res: ServerResponse) {
-          // TODO Fix - temporarily added this rule since ts-lint complains this for 'spec'
-          // tslint:disable:no-shadowed-variable
-          const { controller, methodName, spec, pathParams } = this.findRoute(req);
-          // tslint:enable:no-shadowed-variable
-          const args = await parseOperationArgs(req, spec, pathParams);
-          const result = await this.invoke(controller, methodName, args);
-          // manipulate response by addding 'MySequence ' so that we can test if this sequence is
-          // called or not. Hence response verified below is 'MySequence SequenceApp'
-          writeResultToResponse(res, 'MySequence ' + result);
-        }
-    }
-    app.bind('sequence').toClass(MySequence);
-
-    return whenIMakeRequestTo(app).get('/name')
-      .expect('MySequence SequenceApp');
-  });
-
+    givenControllerInApp(InfoController);
+  }
   /* ===== HELPERS ===== */
 
   function givenAnApplication() {
-    return new Application();
+    app = new Application();
   }
 
-  function givenControllerInApp<T>(app: Application, controller: Constructor<T>) {
+  function givenControllerInApp<T>(controller: Constructor<T>) {
     app.controller(controller);
   }
 
-  function whenIMakeRequestTo(app: Application): Client {
+  function whenIMakeRequestTo(): Client {
     const server = new Server(app, {port: 0});
     return createClientForServer(server);
   }
