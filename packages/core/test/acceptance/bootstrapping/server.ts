@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Server, Application} from '../../../src';
+import {Server, Application} from '../../..';
 
 describe('Bootstrapping - Single server', () => {
   describe('Single application', () => {

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Binding, Context} from '../../src';
+import {Binding, Context} from '../..';
 
 const key = 'foo';
 

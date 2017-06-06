@@ -7,7 +7,7 @@ import {
   Application, Server, api,
   OpenApiSpec, ParameterObject, OperationObject,
   ServerRequest, ServerResponse,
-} from '../../../src';
+} from '../../..';
 import {expect, Client, createClientForServer} from '@loopback/testlab';
 import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {inject, Constructor, Context} from '@loopback/context';
