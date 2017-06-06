@@ -3,12 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application} from './application';
 const debug = require('debug')('loopback:core:sequence');
 import {ServerRequest, ServerResponse} from 'http';
-import {ResolvedRoute} from './router/routing-table';
+import {inject} from '@loopback/context';
 import {
-  OperationArgs,
+  FindRoute,
+  InvokeMethod,
+  LogError,
   OperationRetval,
   ParsedRequest,
 } from './internal-types';
@@ -16,16 +17,13 @@ import {parseOperationArgs} from './parser';
 import {writeResultToResponse} from './writer';
 import {HttpError} from 'http-errors';
 
-export type FindRoute = (request: ParsedRequest) => ResolvedRoute<string>;
-export type InvokeMethod =
-  (controller: string, method: string, args: OperationArgs) => Promise<OperationRetval>;
-export type LogError =
-  (err: Error, statusCode: number, request: ServerRequest) => void;
-
 export class Sequence {
   constructor(
+    @inject('findRoute')
     protected findRoute: FindRoute,
+    @inject('invokeMethod')
     protected invoke: InvokeMethod,
+    @inject('logError')
     protected logError: LogError) {
   }
 
