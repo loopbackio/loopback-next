@@ -90,7 +90,7 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * Update an entity
    * @param entity
    * @param options
-   * @promise resolves a boolean represents update succeeds(true) 
+   * @promise resolves a boolean represents update succeeds(true)
    * or fails(false)
    */
   update(entity: ObjectType<T>, options?: Options): Promise<boolean>;
@@ -99,7 +99,7 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * Delete an entity
    * @param entity
    * @param options
-   * @promise resolves a boolean represents delete succeeds(true) 
+   * @promise resolves a boolean represents delete succeeds(true)
    * or fails(false)
    */
   delete(entity: ObjectType<T>, options?: Options): Promise<boolean>;
@@ -117,7 +117,7 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * @param data
    * @param id
    * @param options
-   * @promise resolves a boolean represents update succeeds(true) 
+   * @promise resolves a boolean represents update succeeds(true)
    * or fails(false)
    */
   updateById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean>;
@@ -127,7 +127,7 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * @param data
    * @param id
    * @param options
-   * @promise resolves a boolean represents replace succeeds(true) 
+   * @promise resolves a boolean represents replace succeeds(true)
    * or fails(false)
    */
   replaceById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean>;
@@ -136,7 +136,7 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * Delete an entity by id
    * @param id
    * @param options
-   * @promise resolves a boolean represents delete succeeds(true) 
+   * @promise resolves a boolean represents delete succeeds(true)
    * or fails(false)
    */
   deleteById(id: ID, options?: Options): Promise<boolean>;
@@ -145,7 +145,7 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * Check if an entity exists for the given id
    * @param id
    * @param options
-   * @promise resolves a boolean represents entity exists(true) 
+   * @promise resolves a boolean represents entity exists(true)
    * or not(false)
    */
   exists(id: ID, options?: Options): Promise<boolean>;

@@ -38,7 +38,7 @@ export interface Condition {
 
 /**
  * Where object
- * 
+ *
  * Examples:
  * `{afieldname: 'aName'}`
  * `{and: [{fieldone: 'one'}, {fieldtwo: 'two'}]}`
@@ -57,7 +57,7 @@ export type Direction = 'ASC' | 'DESC';
 
 /**
  * Order by
- * 
+ *
  * Example:
  * `{afieldname: 'ASC'}`
  */
@@ -67,7 +67,7 @@ export interface Order {
 
 /**
  * Selection of fields
- * 
+ *
  * Example:
  * `{afieldname: true}`
  */
@@ -77,9 +77,9 @@ export interface Fields {
 
 /**
  * Inclusion of related items
- * 
+ *
  * Note: scope means filter on related items
- * 
+ *
  * Example:
  * `{relation: 'aRelationName', scope: {<AFilterObject>}}`
  */
