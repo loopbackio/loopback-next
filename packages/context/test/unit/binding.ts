@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Binding, Context} from '../..';
+import {Binding, Context, Provider} from '../..';
 
 const key = 'foo';
 
@@ -38,8 +38,21 @@ describe('Binding', () => {
     });
   });
 
+  describe('toProvider(provider)', () => {
+    it('returns the value', () => {
+      binding.toProvider(MyProvider);
+      expect(binding.getValue(ctx)).to.equal(ctx);
+    });
+  });
+
   function givenBinding() {
     ctx = new Context();
     binding = new Binding(key);
+  }
+
+  class MyProvider implements Provider {
+    value(ctx) {
+      return ctx;
+    }
   }
 });

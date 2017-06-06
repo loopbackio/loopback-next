@@ -4,18 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {BindingProvider, Context} from '../../src';
+import {Provider, Context} from '../../src';
 
-describe('BindingProvider', () => {
-  let provider: BindingProvider<String>;
+describe('Provider', () => {
+  let provider: Provider;
 
   beforeEach(givenProvider);
-
-  describe('source()', () => {
-    it('returns the source of the binding', () => {
-      expect(provider.source()).to.equal('hello');
-    });
-  });
 
   describe('value()', () => {
     it('returns the value of the binding', () => {
@@ -29,14 +23,9 @@ describe('BindingProvider', () => {
   }
 });
 
-class MyProvider extends BindingProvider<string> {
-  constructor(private _msg: string) {
-    super();
-  }
-  source(): string {
-    return this._msg;
-  }
+class MyProvider implements Provider {
+  constructor(private _msg: string) {}
   value(ctx: Context): string {
-    return this.source() + ' world';
+    return this._msg + ' world';
   }
 }
