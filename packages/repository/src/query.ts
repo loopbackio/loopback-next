@@ -38,6 +38,11 @@ export interface Condition {
 
 /**
  * Where object
+ * 
+ * Examples:
+ * `{afieldname: 'aName'}`
+ * `{and: [{fieldone: 'one'}, {fieldtwo: 'two'}]}`
+ * `{or: [{fieldone: 'one'}, {fieldtwo: 'two'}]}`
  */
 export interface Where {
   and?: Where[]; // AND
@@ -52,6 +57,9 @@ export type Direction = 'ASC' | 'DESC';
 
 /**
  * Order by
+ * 
+ * Example:
+ * `{afieldname: 'ASC'}`
  */
 export interface Order {
   [property: string]: Direction;
@@ -59,6 +67,9 @@ export interface Order {
 
 /**
  * Selection of fields
+ * 
+ * Example:
+ * `{afieldname: true}`
  */
 export interface Fields {
   [property: string]: boolean;
@@ -66,6 +77,11 @@ export interface Fields {
 
 /**
  * Inclusion of related items
+ * 
+ * Note: scope means filter on related items
+ * 
+ * Example:
+ * `{relation: 'aRelationName', scope: {<AFilterObject>}}`
  */
 export interface Inclusion {
   relation: string;
