@@ -5,9 +5,13 @@
 
 import {Context} from './context';
 import {Constructor, instantiateClass} from './resolver';
+import {isPromise} from './isPromise';
+import {BindingProvider, ValueProvider, FunctionProvider, ConstructorProvider, Provider} from './provider';
 
 // tslint:disable-next-line:no-any
 export type BoundValue = any;
+
+export type ValueOrPromise<T> = T | Promise<T>;
 
 // FIXME(bajtos) The binding class should be parameterized by the value type stored
 export class Binding {
@@ -92,6 +96,41 @@ export class Binding {
     // TODO(bajtos) allow factoryFn with @inject arguments
     this.getValue = (ctx) => factoryFn();
     return this;
+  }
+
+  /**
+   * Bind the key to a BindingProvider
+   */
+  public toProvider<T>(providerClass: Constructor<Provider<T>>): this {
+    this.getValue = async (ctx): Promise<BoundValue> => {
+      const providerInstance: Provider<T> = await this.getProviderInstance(ctx, providerClass);
+      const boundValue = this.resolveProviderValue(providerInstance, ctx);
+      return boundValue;
+    };
+    return this;
+  }
+
+  /**
+   * get an instance of the provider
+   */
+  public async getProviderInstance<T>(ctx: Context, providerClass: Constructor<Provider<T>>): Promise<Provider<T>> {
+    const providerOrPromise: Provider<T> | Promise<Provider<T>> = instantiateClass<Provider<T>>(providerClass, ctx);
+    let  providerInstance: Provider<T>;
+    if (isPromise(providerOrPromise)) {
+      const providerPromise = providerOrPromise as Promise<Provider<T>>;
+      providerInstance = await providerOrPromise;
+      return providerInstance;
+    } else {
+      providerInstance = providerOrPromise as Provider<T>;
+      return providerInstance;
+    }
+  }
+
+  /**
+   * resolve the binding provided by the provider
+   */
+  public resolveProviderValue<T>(providerInstance: Provider<T>, ctx: Context): ValueOrPromise<BoundValue> {
+    return providerInstance.value(ctx);
   }
 
   /**

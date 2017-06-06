@@ -4,7 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, Binding} from '../..';
+import {Context, Binding, inject, ValueProvider} from '../..';
+import {MockValueProvider, MockFunctionProvider, MockConstructorProvider, MockLoopbackController} from './fixtures/mock-binding-providers';
 
 describe('Context', () => {
   let ctx: Context;
@@ -63,7 +64,100 @@ describe('Context', () => {
     it('throws a helpful error when the binding is async', () => {
       ctx.bind('foo').toDynamicValue(() => Promise.resolve('bar'));
       expect(() => ctx.getSync('foo')).to.throw(/foo.*async/);
-   });
+    });
+  });
+
+  describe('context.bind().toProvider()', () => {
+    describe('ValueProvider', () => {
+      it('binds a provider class to a context', () => {
+        ctx.bind('foo').toProvider(MockValueProvider);
+        expect(ctx.contains('foo')).to.be.true();
+      });
+
+      it('binding.getValue() injects constructor values in the Provider Class', async () => {
+        ctx.bind('msg').to('hello');
+        ctx.bind('foo').toProvider(MockValueProvider);
+        const value: string = await ctx.getBinding('foo').getValue(ctx);
+        expect(value).to.equal('hello world');
+      });
+
+      it('binding.getValue() returns the same value as provider.value()', async () => {
+        ctx.bind('msg').to('hello');
+        ctx.bind('foo').toProvider(MockValueProvider);
+        const providerInstance = new MockValueProvider('hello');
+        const value: string = await ctx.getBinding('foo').getValue(ctx);
+        expect(value).to.equal(providerInstance.value(ctx));
+      });
+    });
+
+    describe('FunctionProvider', () => {
+      let provider: MockFunctionProvider;
+      let date: Date;
+      let prefix: string;
+
+      beforeEach(givenProvider);
+
+      it('binds a provider class to a context', () => {
+        ctx.bind('foo').toProvider(MockFunctionProvider);
+        expect(ctx.contains('foo')).to.be.true();
+      });
+
+      it('binding.getValue() injects constructor values in the Provider Class', async () => {
+        ctx.bind('now').to(date);
+        ctx.bind('prefix').to(prefix);
+        ctx.bind('foo').toProvider(MockFunctionProvider);
+        const value: string = await ctx.getBinding('foo').getValue(ctx);
+        expect(value).to.equal(prefix + ' ' + date);
+      });
+
+      it('binding.getValue() returns the same value as provider.value()', async () => {
+        ctx.bind('now').to(date);
+        ctx.bind('prefix').to(prefix);
+        ctx.bind('foo').toProvider(MockFunctionProvider);
+        const value: string = await ctx.getBinding('foo').getValue(ctx);
+        const providerInstance = new MockFunctionProvider(date, prefix);
+        const providerInstanceValue = await providerInstance.value(ctx);
+        expect(value).to.equal(providerInstanceValue);
+      });
+
+      function givenProvider() {
+        date = new Date();
+        prefix = 'Time is';
+        provider = new MockFunctionProvider(date, prefix);
+      }
+    });
+
+    describe('ConstructorProvider', () => {
+      let provider: MockConstructorProvider;
+
+      beforeEach(givenProvider);
+
+      it('binds a provider class to a context', () => {
+        ctx.bind('foo').toProvider(MockConstructorProvider);
+        expect(ctx.contains('foo')).to.be.true();
+      });
+
+      it('binding.getValue() injects constructor values in the Provider Class', async () => {
+        ctx.bind('arg1').to('hello');
+        ctx.bind('param').to('world');
+        ctx.bind('foo').toProvider(MockConstructorProvider);
+        const value: string = await ctx.getBinding('foo').getValue(ctx);
+        expect(value).to.be.instanceof(MockLoopbackController);
+      });
+
+      it('binding.getValue() is an instance of constructor returned by provider.source()', async () => {
+        ctx.bind('arg1').to('hello');
+        ctx.bind('param').to('world');
+        ctx.bind('foo').toProvider(MockConstructorProvider);
+        const providerInstance = new MockConstructorProvider('hello');
+        const value: string = await ctx.getBinding('foo').getValue(ctx);
+        expect(value).to.be.instanceof(providerInstance.source());
+      });
+
+      function givenProvider() {
+        provider = new MockConstructorProvider('hello');
+      }
+    });
   });
 
   function createContext() {

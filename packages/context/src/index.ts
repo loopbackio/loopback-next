@@ -7,6 +7,8 @@ export {Binding, BoundValue} from './binding';
 export {Context} from './context';
 export {Constructor} from './resolver';
 export {inject} from './inject';
+export {BindingProvider, ValueProvider, FunctionProvider, ConstructorProvider} from './provider';
+
 export const isPromise = require('is-promise');
 
 // internals for testing
