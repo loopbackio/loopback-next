@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-codehub",
-  "version": "4.0.0-alpha.1",
+  "version": "4.0.0-alpha.2",
   "description": "",
   "private": true,
   "scripts": {
@@ -12,10 +12,10 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
-    "@loopback/core": "^4.0.0-alpha.5"
+    "@loopback/core": "^4.0.0-alpha.6"
   },
   "devDependencies": {
-    "@loopback/testlab": "^4.0.0-alpha.3",
+    "@loopback/testlab": "^4.0.0-alpha.4",
     "mocha": "^3.2.0"
   }
 }
