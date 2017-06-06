@@ -20,11 +20,9 @@ import {inject, Constructor, Context} from '@loopback/context';
  */
 describe('Sequence - ', () => {
   let app: Application;
-
   beforeEach(givenAppWithController);
 
   it('default sequence', () => {
-
     return whenIMakeRequestTo().get('/name')
       .expect('SequenceApp');
   });
@@ -45,7 +43,7 @@ describe('Sequence - ', () => {
           // Prepend 'MySequence' to the result of invoke to allow for
           // execution verification of this user-defined sequence
           writeResultToResponse(res, `MySequence ${result}`);
-        }
+      }
     }
     // bind user defined sequence
     app.bind('sequence').toClass(MySequence);
