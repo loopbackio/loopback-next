@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {NamespacedReflect, Reflector} from '../../src';
+import {NamespacedReflect, Reflector} from '../..';
 import 'reflect-metadata';
 
 function givenReflectContextWithNameSpace(): NamespacedReflect {
@@ -54,6 +54,12 @@ describe('Reflect Context', () => {
 
       metadata = reflectContext.getMetadata('key', BaseClass);
       expect(metadata).to.be.undefined();
+
+      let result = reflectContext.hasOwnMetadata('key', SubClass);
+      expect(result).to.be.true();
+
+      result = reflectContext.hasMetadata('key', SubClass);
+      expect(result).to.be.true();
     });
 
     it('adds metadata to a static method', () => {
@@ -67,6 +73,12 @@ describe('Reflect Context', () => {
 
       metadata = reflectContext.getOwnMetadata('key', SubClass, 'subStaticMethod');
       expect(metadata).to.be.equal(metadataValue);
+
+      let result = reflectContext.hasOwnMetadata('key', SubClass, 'subStaticMethod');
+      expect(result).to.be.true();
+
+      result = reflectContext.hasMetadata('key', SubClass, 'subStaticMethod');
+      expect(result).to.be.true();
     });
 
     it('adds metadata to a prototype method', () => {
@@ -80,6 +92,12 @@ describe('Reflect Context', () => {
 
       metadata = reflectContext.getOwnMetadata('key', SubClass.prototype, 'subMethod');
       expect(metadata).to.be.equal(metadataValue);
+
+      let result = reflectContext.hasOwnMetadata('key', SubClass.prototype, 'subMethod');
+      expect(result).to.be.true();
+
+      result = reflectContext.hasMetadata('key', SubClass.prototype, 'subMethod');
+      expect(result).to.be.true();
     });
 
     it('deletes metadata from a class', () => {
