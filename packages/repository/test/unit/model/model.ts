@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import { expect } from '@loopback/testlab';
-import { STRING } from '../../../src/types';
-import { Model, Entity, ModelDefinition, PropertyDefinition } from '../../../src/model';
+import { STRING } from '../../../';
+import { Model, Entity, ModelDefinition, PropertyDefinition } from '../../../';
 
 describe('model', () => {
 

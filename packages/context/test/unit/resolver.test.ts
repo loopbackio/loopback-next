@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, inject, instantiateClass} from '../..';
+import {Context, inject, instantiateClass, resolveValueOrPromise} from '../..';
 
 describe('constructor injection', () => {
   let ctx: Context;
@@ -167,5 +167,17 @@ describe('sync constructor & async property injection', () => {
     const t = await instantiateClass(TestClass, ctx);
     expect(t.foo).to.eql('FOO');
     expect(t.bar).to.eql('BAR');
+  });
+});
+
+describe('resolveValueOrPromise()', () => {
+  it('resolves both a promise and a value', async () => {
+    const value: String = 'hello';
+    const promise = new Promise<String>((resolve) => {
+      resolve(value);
+    });
+    const result1 = await resolveValueOrPromise<String>(promise);
+    const result2 = await resolveValueOrPromise<String>(value);
+    expect(result1).to.be.equal(result2);
   });
 });

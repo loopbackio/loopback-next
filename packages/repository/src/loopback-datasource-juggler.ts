@@ -3,7 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { Class, Options, Callback, AnyObject, AnyType } from './common-types';
+import { Class, Options, Callback, AnyObject, Any } from './common-types';
+import {EventEmitter} from 'events';
 
 export declare namespace juggler {
   /**
@@ -12,14 +13,113 @@ export declare namespace juggler {
   export type PromiseOrVoid<T> = Promise<T> | void;
 
   /**
+   * Property definition
+   */
+  export interface PropertyDefinition extends AnyObject {
+    name: string;
+    type: Any;
+  }
+
+  /**
+   * Relation definition
+   */
+  export interface RelationDefinition extends AnyObject {
+    name: string;
+    type: string;
+  }
+
+  /**
+   * Schema definition
+   */
+  export interface Schema {
+    name: string;
+    properties: AnyObject;
+    settings?: AnyObject;
+  }
+
+  /**
+   * ID definition
+   */
+  export interface IdDefinition {
+    name: string;
+    id: number;
+    property: AnyObject;
+  }
+
+  /**
+   * Index definition
+   */
+  export interface IndexDefinition extends AnyObject {
+  }
+
+  /**
+   * Column metadata
+   */
+  export interface ColumnMetadata extends AnyObject {
+    name: string;
+  }
+
+  /**
+   * Model definition
+   */
+  export class ModelDefinition extends EventEmitter implements Schema {
+    name: string;
+    properties: AnyObject;
+    rawProperties: AnyObject;
+    settings?: AnyObject;
+    relations?: AnyObject[];
+
+    constructor(modelBuilder: ModelBuilder | null | undefined, name: string,
+      properties?: {[name: string]: PropertyDefinition}, settings?: AnyObject);
+    constructor(modelBuidler: ModelBuilder | null | undefined, schema: Schema);
+
+    tableName(connectorType: string): string;
+    columnName(connectorType: string, propertyName: string): string;
+    columnNames(connectorType: string): string[];
+    columnMetadata(connectorType: string, propertyName: string): ColumnMetadata;
+
+    ids(): IdDefinition[];
+    idName(): string;
+    idNames(): string[];
+
+    defineProperty(propertyName: string, propertyDefinition: PropertyDefinition): void;
+    indexes(): {[name: string]: IndexDefinition};
+    build(forceRebuild?: boolean): AnyObject;
+    toJSON(forceRebuild?: boolean): AnyObject;
+  }
+
+  /**
    * Base model class
    */
   export class ModelBase {
     static modelName: string;
     static definition: ModelDefinition;
     static attachTo(ds: DataSource): void;
-    constructor(...args: AnyType[]);
-    [property: string]: AnyType;
+    constructor(...args: Any[]);
+    [property: string]: Any;
+  }
+
+  export class ModelBuilder extends EventEmitter {
+    static defaultInstance: ModelBuilder;
+
+    models: {[name: string]: typeof ModelBase};
+    definitions: {[name: string]: ModelDefinition};
+    settings: AnyObject;
+
+    getModel(name: string, forceCreate?: boolean): typeof ModelBase;
+    getModelDefinition(name: string): ModelDefinition | undefined;
+
+    define(className: string, properties?: AnyObject, settings?: AnyObject,
+      parent?: typeof ModelBase): typeof ModelBase;
+
+    defineProperty(modelName: string, propertyName: string, propertyDefinition: AnyObject): void;
+    defineValueType(type: string, aliases?: string[]): void;
+    extendModel(modelName: string, properties: AnyObject): void;
+
+    getSchemaName(name?: string): string;
+    resolveType(type: Any): Any;
+    buildModels(schemas: AnyObject, createModel?: Function): {[name: string]: typeof ModelBase};
+    buildModelFromInstance(name: string, json: AnyObject, options: Options): typeof ModelBase;
   }
 
   /**
@@ -28,7 +128,10 @@ export declare namespace juggler {
   export class DataSource {
     name: string;
     settings: AnyObject;
-    constructor(settings?: AnyObject);
+
+    constructor(name?: string, settings?: AnyObject, modelBuilder?: ModelBuilder);
+    constructor(settings?: AnyObject, modelBuilder?: ModelBuilder);
+
     /**
      * Create a model class
      * @param name Name of the model
@@ -43,13 +146,6 @@ export declare namespace juggler {
    * Union type for model instance or plain object representing the model instance
    */
   export type ModelData<T extends ModelBase> = T | AnyObject;
-
-  /**
-   * Model definition
-   */
-  export class ModelDefinition {
-    idName(): string;
-  }
 
   /**
    * Operators for where clauses
@@ -69,14 +165,14 @@ export declare namespace juggler {
   }
 
   export interface Condition {
-    eq?: AnyType;
-    neq?: AnyType;
-    gt?: AnyType;
-    get?: AnyType;
-    lt?: AnyType;
-    lte?: AnyType;
-    inq?: AnyType[];
-    between?: AnyType[];
+    eq?: Any;
+    neq?: Any;
+    gt?: Any;
+    get?: Any;
+    lt?: Any;
+    lte?: Any;
+    inq?: Any[];
+    between?: Any[];
     exists?: boolean;
     and?: Where[];
     or?: Where[];
@@ -88,7 +184,7 @@ export declare namespace juggler {
   export interface Where {
     and?: Where[]; // AND
     or?: Where[]; // OR
-    [property: string]: Condition | AnyType; // Other criteria
+    [property: string]: Condition | Any; // Other criteria
   }
 
   /**
@@ -247,7 +343,7 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Boolean} exists True if the instance with the specified ID exists; false otherwise.
      */
-    static exists(id: AnyType, options?: Options,
+    static exists(id: Any, options?: Options,
       callback?: Callback<boolean>): PromiseOrVoid<boolean>;
 
     /**
@@ -263,7 +359,7 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Object} instance Model instance matching the specified ID or null if no instance matches.
      */
-    static findById(id: AnyType, filter?: Filter, options?: Options,
+    static findById(id: Any, filter?: Filter, options?: Options,
       callback?: Callback<boolean>): PromiseOrVoid<PersistedData>;
 
     /**
@@ -385,13 +481,13 @@ export declare namespace juggler {
      * @callback {Function} callback Callback function called with `(err)` arguments.  Required.
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      */
-    static destroyById(id: AnyType, options?: Options,
+    static destroyById(id: Any, options?: Options,
       callback?: Callback<Count>): PromiseOrVoid<Count>;
 
-    static removeById(id: AnyType, options?: Options,
+    static removeById(id: Any, options?: Options,
       callback?: Callback<Count>): PromiseOrVoid<Count>;
 
-    static deleteById(id: AnyType, options?: Options,
+    static deleteById(id: Any, options?: Options,
       callback?: Callback<Count>): PromiseOrVoid<Count>;
 
     /**
@@ -407,7 +503,7 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Object} instance Replaced instance.
      */
-    static replaceById(id: AnyType, data: PersistedData, options?: Options,
+    static replaceById(id: Any, data: PersistedData, options?: Options,
       callback?: Callback<PersistedData>): PromiseOrVoid<PersistedData>;
 
     /**
@@ -465,7 +561,7 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Object} instance Updated instance.
      */
-    updateAttribute(name: string, value: AnyType, options?: Options,
+    updateAttribute(name: string, value: Any, options?: Options,
       callback?: Callback<boolean>): PromiseOrVoid<boolean>;
 
     /**
@@ -509,7 +605,7 @@ export declare namespace juggler {
      *
      * @param {*} val The `id` value. Will be converted to the type that the `id` property specifies.
      */
-    setId(val: AnyType): void;
+    setId(val: Any): void;
 
     /**
      * Get the `id` value for the `PersistedModel`.
@@ -517,7 +613,7 @@ export declare namespace juggler {
      * @returns {*} The `id` value
      */
 
-    getId(): AnyType;
+    getId(): Any;
 
     /**
      * Get the `id` property name of the constructor.

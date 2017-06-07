@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as util from 'util';
-import {Type, AnyType} from './type';
+import {Type, Any} from './type';
 
 /**
  * Number type
@@ -12,11 +12,11 @@ import {Type, AnyType} from './type';
 export class NumberType implements Type<number> {
   readonly name = 'number';
 
-  isInstance(value: AnyType) {
+  isInstance(value: Any) {
     return value == null || (!isNaN(value) && (typeof value === 'number'));
   }
 
-  isCoercible(value: AnyType): boolean {
+  isCoercible(value: Any): boolean {
     return value == null || !isNaN(Number(value));
   }
 
@@ -24,7 +24,7 @@ export class NumberType implements Type<number> {
     return 0;
   }
 
-  coerce(value: AnyType) {
+  coerce(value: Any) {
     if (value == null) return value;
     const n = Number(value);
     if (isNaN(n)) {

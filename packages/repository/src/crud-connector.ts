@@ -6,7 +6,7 @@
 import { Connector } from './connector';
 import { Entity } from './model';
 import { Filter, Where } from './query';
-import { Class, ObjectType, Options, AnyType } from './common-types';
+import { Class, ObjectType, Options, Any } from './common-types';
 
 export type EntityData = ObjectType<Entity>;
 
@@ -32,7 +32,7 @@ export interface CrudConnector extends Connector {
   find(modelClass: Class<Entity>, filter?: Filter, options?: Options):
     Promise<EntityData[]>;
 
-  findById?(modelClass: Class<Entity>, id: AnyType, options?: Options):
+  findById?(modelClass: Class<Entity>, id: Any, options?: Options):
     Promise<EntityData>;
 
   update?(modelClass: Class<Entity>, entity: EntityData, options?: Options):
@@ -48,10 +48,10 @@ export interface CrudConnector extends Connector {
     where?: Where, options?: Options):
     Promise<number>;
 
-  updateById?(modelClass: Class<Entity>, id: AnyType, data: EntityData,
+  updateById?(modelClass: Class<Entity>, id: Any, data: EntityData,
     options?: Options): Promise<boolean>;
 
-  replaceById?(modelClass: Class<Entity>, id: AnyType, data: EntityData,
+  replaceById?(modelClass: Class<Entity>, id: Any, data: EntityData,
     options?: Options): Promise<boolean>;
 
   /**
@@ -60,7 +60,7 @@ export interface CrudConnector extends Connector {
   deleteAll(modelClass: Class<Entity>, where?: Where, options?: Options):
     Promise<number>;
 
-  deleteById?(modelClass: Class<Entity>, id: AnyType, options?: Options):
+  deleteById?(modelClass: Class<Entity>, id: Any, options?: Options):
     Promise<boolean>;
 
   /**
@@ -69,6 +69,6 @@ export interface CrudConnector extends Connector {
   count(modelClass: Class<Entity>, where?: Where, options?: Options):
     Promise<number>;
 
-  exists?(modelClass: Class<Entity>, id: AnyType, options?: Options):
+  exists?(modelClass: Class<Entity>, id: Any, options?: Options):
     Promise<boolean>;
 }

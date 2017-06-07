@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Class, AnyType} from '../../../src/common-types';
-import {MixinBuilder} from '../../../src/mixin';
+import {Class, Any} from '../../../';
+import {MixinBuilder} from '../../../';
 
 class BaseClass {
   baseProp: string = 'baseProp';
@@ -18,7 +18,7 @@ class BaseClass {
   }
 }
 
-function Mixin1<T extends Class<AnyType>>(superClass: T) {
+function Mixin1<T extends Class<Any>>(superClass: T) {
   return class extends superClass {
     mixinProp1: string = 'mixinProp1';
 
@@ -32,7 +32,7 @@ function Mixin1<T extends Class<AnyType>>(superClass: T) {
   };
 }
 
-function Mixin2<T extends Class<AnyType>>(superClass: T) {
+function Mixin2<T extends Class<Any>>(superClass: T) {
   return class extends superClass {
     mixinProp2: string = 'mixinProp2';
 
@@ -47,7 +47,7 @@ function Mixin2<T extends Class<AnyType>>(superClass: T) {
 }
 
 describe('mixin builder', () => {
-  let newClass: AnyType;
+  let newClass: Any;
   before(() => {
     newClass = MixinBuilder.mix(BaseClass).with(Mixin1, Mixin2);
   });
