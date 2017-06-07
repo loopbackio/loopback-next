@@ -6,7 +6,7 @@
 import {expect} from '@loopback/testlab';
 
 import {jugglerModule, bindModel, DataSourceConstructor, juggler, DefaultCrudRepository}
-  from '../../../src/legacy-juggler-bridge';
+  from '../../../';
 
 /* tslint:disable-next-line:variable-name */
 type PersistedModelClass = typeof juggler.PersistedModel;

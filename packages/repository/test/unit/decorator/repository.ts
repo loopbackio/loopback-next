@@ -5,21 +5,21 @@
 
 import { expect } from '@loopback/testlab';
 import { Context } from '@loopback/context';
-import { repository } from '../../../src/decorators/repository';
+import { repository } from '../../../';
 
-import { AnyType } from '../../../src/common-types';
-import { Repository } from '../../../src/repository';
+import { Any } from '../../../';
+import { Repository } from '../../../';
 import { jugglerModule, bindModel, DataSourceConstructor, juggler, DefaultCrudRepository }
-  from '../../../src/legacy-juggler-bridge';
+  from '../../../';
 
 class MyController {
-  constructor(@repository('noteRepo') public noteRepo: Repository<AnyType>) {
+  constructor(@repository('noteRepo') public noteRepo: Repository<Any>) {
   }
 }
 
 describe('repository decorator', () => {
   let ctx: Context;
-  let repo: Repository<AnyType>;
+  let repo: Repository<Any>;
 
   before(function() {
     const ds: juggler.DataSource = new DataSourceConstructor({

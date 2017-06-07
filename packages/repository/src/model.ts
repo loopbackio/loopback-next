@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Options, AnyType, AnyObject} from './common-types';
+import {Options, Any, AnyObject} from './common-types';
 import {Type} from './types';
 
 /**
@@ -12,7 +12,7 @@ import {Type} from './types';
  * See https://en.wikipedia.org/wiki/Domain-driven_design#Building_blocks
  */
 
-export type PropertyType = string | Function | Object | Type<AnyType>;
+export type PropertyType = string | Function | Object | Type<Any>;
 /**
  * Property definition for a model
  */
@@ -21,7 +21,7 @@ export class PropertyDefinition {
   type: PropertyType; // For example, 'string', String, or {}
   json?: PropertyForm;
   store?: PropertyForm;
-  [attribute: string]: AnyType; // Other attributes
+  [attribute: string]: Any; // Other attributes
 
   constructor(name: string, type: PropertyType = String) {
     this.name = name;
@@ -44,12 +44,12 @@ export interface PropertyForm {
 export class ModelDefinition {
   readonly name: string;
   properties: {[name: string]: PropertyDefinition};
-  settings: {[name: string]: AnyType};
+  settings: {[name: string]: Any};
   // indexes: Map<string, AnyType>;
-  [attribute: string]: AnyType; // Other attributes
+  [attribute: string]: Any; // Other attributes
 
   constructor(name: string, properties?: {[name: string]: PropertyDefinition},
-    settings?: {[name: string]: AnyType}) {
+    settings?: {[name: string]: Any}) {
     this.name = name;
     this.properties = properties || {};
     this.settings = settings || new Map();
@@ -74,7 +74,7 @@ export class ModelDefinition {
    * @param name Setting name
    * @param value Setting value
    */
-  addSetting(name: string, value: AnyType): this {
+  addSetting(name: string, value: Any): this {
     this.settings[name] = value;
     return this;
   }
@@ -149,7 +149,7 @@ export abstract class Model {
     return obj;
   }
 
-  [prop: string]: AnyType;
+  [prop: string]: Any;
 }
 
 export interface Persistable {
@@ -171,13 +171,13 @@ export abstract class Entity extends Model implements Persistable {
    * Get the identity value. If the identity is a composite key, returns
    * an object.
    */
-  getId(): AnyType {
+  getId(): Any {
     const definition = (this.constructor as typeof Entity).definition;
     const idProps = definition.idProperties();
     if (idProps.length === 1) {
       return this[idProps[0].name];
     }
-    const idObj = {} as AnyType;
+    const idObj = {} as Any;
     for (const idProp of idProps) {
       idObj[idProp.name] = this[idProp.name];
     }
@@ -190,7 +190,7 @@ export abstract class Entity extends Model implements Persistable {
   getIdObject(): Object {
     const definition = (this.constructor as typeof Entity).definition;
     const idProps = definition.idProperties();
-    const idObj = {} as AnyType;
+    const idObj = {} as Any;
     for (const idProp of idProps) {
       idObj[idProp.name] = this[idProp.name];
     }
@@ -200,8 +200,8 @@ export abstract class Entity extends Model implements Persistable {
   /**
    * Build the where object for the given id
    */
-  static buildWhereForId(id: AnyType) {
-    const where = {} as AnyType;
+  static buildWhereForId(id: Any) {
+    const where = {} as Any;
     const idProps = this.definition.idProperties();
     if (idProps.length === 1) {
       where[idProps[0].name] = id;
@@ -218,6 +218,6 @@ export abstract class Entity extends Model implements Persistable {
  * Domain events
  */
 export class Event {
-  source: AnyType;
+  source: Any;
   type: string;
 }

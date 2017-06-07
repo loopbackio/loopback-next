@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Type, AnyType} from './type';
+import {Type, Any} from './type';
 import * as util from 'util';
 
 /**
@@ -15,7 +15,7 @@ export class ArrayType<T> implements Type<Array<T>> {
 
   readonly name = 'array';
 
-  isInstance(value: AnyType) {
+  isInstance(value: Any) {
     if (value == null) return true;
     if (!Array.isArray(value)) {
       return false;
@@ -24,7 +24,7 @@ export class ArrayType<T> implements Type<Array<T>> {
     return list.every((i) => this.itemType.isInstance(i));
   }
 
-  isCoercible(value: AnyType): boolean {
+  isCoercible(value: Any): boolean {
     if (value == null) return true;
     if (!Array.isArray(value)) {
       return false;
@@ -36,7 +36,7 @@ export class ArrayType<T> implements Type<Array<T>> {
     return [];
   }
 
-  coerce(value: AnyType) {
+  coerce(value: Any) {
     if (value == null) return value;
     if (!Array.isArray(value)) {
       const msg = util.format('Invalid %s: %j', this.name, value);

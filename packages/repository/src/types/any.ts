@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Type, AnyType as Any} from './type';
+import {Type, Any} from './type';
 
 /**
  * Any type

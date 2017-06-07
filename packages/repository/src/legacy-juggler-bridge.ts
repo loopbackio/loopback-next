@@ -6,7 +6,7 @@
 export const jugglerModule = require('loopback-datasource-juggler');
 
 import {MixinBuilder} from './mixin';
-import {Class, ObjectType, Options, AnyType} from './common-types';
+import {Class, ObjectType, Options, Any} from './common-types';
 
 import {juggler} from './loopback-datasource-juggler';
 
@@ -35,7 +35,7 @@ import {Entity} from './model';
 import {Filter, Where} from './query';
 import {EntityCrudRepository} from './repository';
 
-function isPromise<T>(p: AnyType): p is Promise<T> {
+function isPromise<T>(p: Any): p is Promise<T> {
   return p !== null && typeof p === 'object' && typeof p.then === 'function';
 }
 

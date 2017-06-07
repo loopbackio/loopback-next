@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { Class, AnyType } from '../common-types';
+import { Class, Any } from '../common-types';
 import { Entity } from '../model';
 
 import { Reflector } from '@loopback/context';
@@ -32,7 +32,7 @@ export class RelationMetadata {
  * @returns {(target:AnyType, key:string)}
  */
 export function relation(definition?: Object) {
-  return function(target: AnyType, key: string) {
+  return function(target: Any, key: string) {
     // Apply model definition to the model class
     Reflector.defineMetadata(RELATION_KEY, definition, target, key);
   };
@@ -44,7 +44,7 @@ export function relation(definition?: Object) {
  * @returns {(target:AnyType, key:string)}
  */
 export function belongsTo(definition?: Object) {
-  return function(target: AnyType, key: string) {
+  return function(target: Any, key: string) {
     // Apply model definition to the model class
     const rel = Object.assign({type: RelationType.belongsTo}, definition);
     Reflector.defineMetadata(RELATION_KEY, rel, target, key);
@@ -57,7 +57,7 @@ export function belongsTo(definition?: Object) {
  * @returns {(target:AnyType, key:string)}
  */
 export function hasOne(definition?: Object) {
-  return function(target: AnyType, key: string) {
+  return function(target: Any, key: string) {
     // Apply model definition to the model class
     const rel = Object.assign({type: RelationType.hasOne}, definition);
     Reflector.defineMetadata(RELATION_KEY, rel, target, key);
@@ -70,7 +70,7 @@ export function hasOne(definition?: Object) {
  * @returns {(target:AnyType, key:string)}
  */
 export function hasMany(definition?: Object) {
-  return function(target: AnyType, key: string) {
+  return function(target: Any, key: string) {
     // Apply model definition to the model class
     const rel = Object.assign({type: RelationType.hasMany}, definition);
     Reflector.defineMetadata(RELATION_KEY, rel, target, key);
@@ -83,7 +83,7 @@ export function hasMany(definition?: Object) {
  * @returns {(target:AnyType, key:string)}
  */
 export function embedsOne(definition?: Object) {
-  return function(target: AnyType, key: string) {
+  return function(target: Any, key: string) {
     // Apply model definition to the model class
     const rel = Object.assign({type: RelationType.embedsOne}, definition);
     Reflector.defineMetadata(RELATION_KEY, rel, target, key);
@@ -97,7 +97,7 @@ export function embedsOne(definition?: Object) {
  * @returns {(target:AnyType, key:string)}
  */
 export function embedsMany(definition?: Object) {
-  return function(target: AnyType, key: string) {
+  return function(target: Any, key: string) {
     // Apply model definition to the model class
     const rel = Object.assign({type: RelationType.embedsMany}, definition);
     Reflector.defineMetadata(RELATION_KEY, rel, target, key);
@@ -110,7 +110,7 @@ export function embedsMany(definition?: Object) {
  * @returns {(target:AnyType, key:string)}
  */
 export function referencesOne(definition?: Object) {
-  return function(target: AnyType, key: string) {
+  return function(target: Any, key: string) {
     // Apply model definition to the model class
     const rel = Object.assign({type: RelationType.referencesOne}, definition);
     Reflector.defineMetadata(RELATION_KEY, rel, target, key);
@@ -123,7 +123,7 @@ export function referencesOne(definition?: Object) {
  * @returns {(target:AnyType, key:string)}
  */
 export function referencesMany(definition?: Object) {
-  return function(target: AnyType, key: string) {
+  return function(target: Any, key: string) {
     // Apply model definition to the model class
     const rel = Object.assign({type: RelationType.referencesMany}, definition);
     Reflector.defineMetadata(RELATION_KEY, rel, target, key);

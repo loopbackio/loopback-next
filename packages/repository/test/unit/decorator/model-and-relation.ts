@@ -5,11 +5,11 @@
 
 import { expect } from '@loopback/testlab';
 import { model, property, MODEL_KEY, PROPERTY_KEY }
-  from '../../../src/decorators/model';
+  from '../../../';
 import { relation, hasOne, belongsTo, embedsOne, embedsMany, hasMany, referencesMany,
-  referencesOne, RELATION_KEY, RelationType } from '../../../src/decorators/relation';
+  referencesOne, RELATION_KEY, RelationType } from '../../../';
 
-import { Entity, ValueObject } from '../../../src/model';
+import { Entity, ValueObject } from '../../../';
 import { Reflector } from '@loopback/context';
 
 describe('model decorator', () => {
