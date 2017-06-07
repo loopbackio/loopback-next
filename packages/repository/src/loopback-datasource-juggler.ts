@@ -4,12 +4,89 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import { Class, Options, Callback, AnyObject, Any } from './common-types';
+import {EventEmitter} from 'events';
 
 export declare namespace juggler {
   /**
    * Return type for promisified Node.js async methods
    */
   export type PromiseOrVoid<T> = Promise<T> | void;
+
+  /**
+   * Property definition
+   */
+  export interface PropertyDefinition extends AnyObject {
+    name: string;
+    type: Any;
+  }
+
+  /**
+   * Relation definition
+   */
+  export interface RelationDefinition extends AnyObject {
+    name: string;
+    type: string;
+  }
+
+  /**
+   * Schema definition
+   */
+  export interface Schema {
+    name: string;
+    properties: AnyObject;
+    settings?: AnyObject;
+  }
+
+  /**
+   * ID definition
+   */
+  export interface IdDefinition {
+    name: string;
+    id: number;
+    property: AnyObject;
+  }
+
+  /**
+   * Index definition
+   */
+  export interface IndexDefinition extends AnyObject {
+  }
+
+  /**
+   * Column metadata
+   */
+  export interface ColumnMetadata extends AnyObject {
+    name: string;
+  }
+
+  /**
+   * Model definition
+   */
+  export class ModelDefinition extends EventEmitter implements Schema {
+    name: string;
+    properties: AnyObject;
+    rawProperties: AnyObject;
+    settings?: AnyObject;
+    relations?: AnyObject[];
+
+    constructor(modelBuilder: ModelBuilder | null | undefined, name: string,
+      properties?: {[name: string]: PropertyDefinition}, settings?: AnyObject);
+    constructor(modelBuidler: ModelBuilder | null | undefined, schema: Schema);
+
+    tableName(connectorType: string): string;
+    columnName(connectorType: string, propertyName: string): string;
+    columnNames(connectorType: string): string[];
+    columnMetadata(connectorType: string, propertyName: string): ColumnMetadata;
+
+    ids(): IdDefinition[];
+    idName(): string;
+    idNames(): string[];
+
+    defineProperty(propertyName: string, propertyDefinition: PropertyDefinition): void;
+    indexes(): {[name: string]: IndexDefinition};
+    build(forceRebuild?: boolean): AnyObject;
+    toJSON(forceRebuild?: boolean): AnyObject;
+  }
 
   /**
    * Base model class
@@ -22,13 +99,39 @@ export declare namespace juggler {
     [property: string]: Any;
   }
 
+  export class ModelBuilder extends EventEmitter {
+    static defaultInstance: ModelBuilder;
+
+    models: {[name: string]: typeof ModelBase};
+    definitions: {[name: string]: ModelDefinition};
+    settings: AnyObject;
+
+    getModel(name: string, forceCreate?: boolean): typeof ModelBase;
+    getModelDefinition(name: string): ModelDefinition | undefined;
+
+    define(className: string, properties?: AnyObject, settings?: AnyObject,
+      parent?: typeof ModelBase): typeof ModelBase;
+
+    defineProperty(modelName: string, propertyName: string, propertyDefinition: AnyObject): void;
+    defineValueType(type: string, aliases?: string[]): void;
+    extendModel(modelName: string, properties: AnyObject): void;
+
+    getSchemaName(name?: string): string;
+    resolveType(type: Any): Any;
+    buildModels(schemas: AnyObject, createModel?: Function): {[name: string]: typeof ModelBase};
+    buildModelFromInstance(name: string, json: AnyObject, options: Options): typeof ModelBase;
+  }
+
   /**
    * DataSource instance properties/operations
    */
   export class DataSource {
     name: string;
     settings: AnyObject;
-    constructor(settings?: AnyObject);
+
+    constructor(name?: string, settings?: AnyObject, modelBuilder?: ModelBuilder);
+    constructor(settings?: AnyObject, modelBuilder?: ModelBuilder);
+
     /**
      * Create a model class
      * @param name Name of the model
@@ -43,13 +146,6 @@ export declare namespace juggler {
    * Union type for model instance or plain object representing the model instance
    */
   export type ModelData<T extends ModelBase> = T | AnyObject;
-
-  /**
-   * Model definition
-   */
-  export class ModelDefinition {
-    idName(): string;
-  }
 
   /**
    * Operators for where clauses
