@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import { Context } from './context';
-import { Binding, BoundValue } from './binding';
+import { Binding, BoundValue, ValueOrPromise } from './binding';
 import { isPromise } from './isPromise';
 import { describeInjectedArguments, describeInjectedProperties } from './inject';
 
@@ -133,3 +133,16 @@ export function resolveInjectedProperties(fn: Function, ctx: Context): KV | Prom
   }
 }
 
+/**
+ * resolve a ValueOrPromise<T> to T
+ */
+export async function resolveValueOrPromise<T>(instanceOrPromise: ValueOrPromise<T>): Promise<T> {
+  if (isPromise(instanceOrPromise)) {
+    const providerPromise = instanceOrPromise as Promise<T>;
+    const instance: T = await providerPromise;
+    return instance;
+  } else {
+    const instance: T = instanceOrPromise as T;
+    return instance;
+  }
+}

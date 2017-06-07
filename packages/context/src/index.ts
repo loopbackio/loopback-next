@@ -5,13 +5,13 @@
 
 export {Binding, BoundValue} from './binding';
 export {Context} from './context';
-export {Constructor} from './resolver';
+export {Constructor, resolveValueOrPromise} from './resolver';
 export {inject} from './inject';
 export {NamespacedReflect} from './reflect';
+export {Provider} from './provider';
 export const isPromise = require('is-promise');
 
 // internals for testing
 export {instantiateClass} from './resolver';
 export {describeInjectedArguments, describeInjectedProperties} from './inject';
 export {Reflector} from './reflect';
-
