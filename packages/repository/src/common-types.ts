@@ -7,16 +7,16 @@
  * Common types/interfaces such as Class/Constructor/Options/Callback
  */
 // tslint:disable-next-line:no-any
-export type AnyType = any;
+export type Any = any;
 
 /**
  * Interface for classes with `new` operator and static properties/methods
  */
 export interface Class<T> {
   // new MyClass(...args) ==> T
-  new (...args: AnyType[]): T;
+  new (...args: Any[]): T;
   // Other static properties/operations
-  [property: string]: AnyType;
+  [property: string]: Any;
 }
 
 /**
@@ -29,7 +29,7 @@ export interface Class<T> {
  * ```
  */
 export interface ConstructorFunction<T> {
-  (...args: AnyType[]): T;
+  (...args: Any[]): T;
 }
 
 /**
@@ -41,7 +41,7 @@ export type Constructor<T> = Class<T> | ConstructorFunction<T>;
  * Objects with open properties
  */
 export interface AnyObject {
-  [property: string]: AnyType;
+  [property: string]: Any;
 }
 
 export type ObjectType<T> = T | AnyObject;

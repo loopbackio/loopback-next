@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Type, AnyType} from './type';
+import {Type, Any} from './type';
 
 /**
  * Boolean type
@@ -11,7 +11,7 @@ import {Type, AnyType} from './type';
 export class BooleanType implements Type<boolean> {
   readonly name = 'boolean';
 
-  isInstance(value: AnyType) {
+  isInstance(value: Any) {
     return value == null || typeof value === 'boolean';
   }
 
@@ -19,11 +19,11 @@ export class BooleanType implements Type<boolean> {
     return false;
   }
 
-  isCoercible(value: AnyType): boolean {
+  isCoercible(value: Any): boolean {
     return true;
   }
 
-  coerce(value: AnyType) {
+  coerce(value: Any) {
     return value == null ? value : Boolean(value);
   }
 

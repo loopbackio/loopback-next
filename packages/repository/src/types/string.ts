@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Type, AnyType} from './type';
+import {Type, Any} from './type';
 
 /**
  * String type
@@ -11,11 +11,11 @@ import {Type, AnyType} from './type';
 export class StringType implements Type<string> {
   readonly name = 'string';
 
-  isInstance(value: AnyType): boolean {
+  isInstance(value: Any): boolean {
     return value == null || typeof value === 'string';
   }
 
-  isCoercible(value: AnyType): boolean {
+  isCoercible(value: Any): boolean {
     return true;
   }
 
@@ -23,7 +23,7 @@ export class StringType implements Type<string> {
     return '';
   }
 
-  coerce(value: AnyType): string {
+  coerce(value: Any): string {
     if (value == null) return value;
     if (typeof value.toJSON === 'function') {
       value = value.toJSON();

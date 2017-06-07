@@ -4,22 +4,22 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as util from 'util';
-import {Type, AnyType} from './type';
+import {Type, Any} from './type';
 
 /**
  * Union type, such as string | number
  */
-export class UnionType implements Type<AnyType> {
-  constructor(public itemTypes: Type<AnyType>[]) {
+export class UnionType implements Type<Any> {
+  constructor(public itemTypes: Type<Any>[]) {
   }
 
   readonly name = 'union';
 
-  isInstance(value: AnyType) {
+  isInstance(value: Any) {
     return this.itemTypes.some((t) => t.isInstance(value));
   }
 
-  isCoercible(value: AnyType) {
+  isCoercible(value: Any) {
     return this.itemTypes.some((t) => t.isCoercible(value));
   }
 
@@ -27,7 +27,7 @@ export class UnionType implements Type<AnyType> {
     return this.itemTypes[0].defaultValue();
   }
 
-  coerce(value: AnyType) {
+  coerce(value: Any) {
     // First find instances
     for (const type of this.itemTypes) {
       if (type.isInstance(value)) {
@@ -44,7 +44,7 @@ export class UnionType implements Type<AnyType> {
     throw new TypeError(msg);
   }
 
-  serialize(value: AnyType) {
+  serialize(value: Any) {
     for (const type of this.itemTypes) {
       if (type.isInstance(value)) {
         return type.serialize(value);

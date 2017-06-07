@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as util from 'util';
-import {Type, AnyType} from './type';
+import {Type, Any} from './type';
 
 /**
  * Date type
@@ -12,11 +12,11 @@ import {Type, AnyType} from './type';
 export class DateType implements Type<Date> {
   readonly name = 'date';
 
-  isInstance(value: AnyType) {
+  isInstance(value: Any) {
     return value == null || (value instanceof Date);
   }
 
-  isCoercible(value: AnyType): boolean {
+  isCoercible(value: Any): boolean {
     // Please note new Date(...) allows the following
     /*
      > new Date('1')
@@ -39,7 +39,7 @@ export class DateType implements Type<Date> {
     return new Date();
   }
 
-  coerce(value: AnyType) {
+  coerce(value: Any) {
     if (value == null) return value;
     if (value instanceof Date) {
       return value;

@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {AnyType} from './common-types';
+import {Any} from './common-types';
 
 /**
  * Operators for where clauses
@@ -23,14 +23,14 @@ export enum Operators {
 }
 
 export interface Condition {
-  eq?: AnyType;
-  neq?: AnyType;
-  gt?: AnyType;
-  get?: AnyType;
-  lt?: AnyType;
-  lte?: AnyType;
-  inq?: AnyType[];
-  between?: AnyType[];
+  eq?: Any;
+  neq?: Any;
+  gt?: Any;
+  get?: Any;
+  lt?: Any;
+  lte?: Any;
+  inq?: Any[];
+  between?: Any[];
   exists?: boolean;
   and?: Where[];
   or?: Where[];
@@ -47,7 +47,7 @@ export interface Condition {
 export interface Where {
   and?: Where[]; // AND
   or?: Where[]; // OR
-  [property: string]: Condition | AnyType; // Other criteria
+  [property: string]: Condition | Any; // Other criteria
 }
 
 /**
