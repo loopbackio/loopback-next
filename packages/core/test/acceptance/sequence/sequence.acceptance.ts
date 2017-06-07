@@ -8,7 +8,7 @@ import {
   OpenApiSpec, ParameterObject,
   ServerRequest, ServerResponse, parseOperationArgs, writeResultToResponse,
 } from '../../../index';
-import {ParsedRequest, OperationArgs, FindRoute, InvokeMethod} from '../../../src/internal-types';
+import {ParsedRequest, OperationArgs, FindRoute, InvokeMethod} from '../../../index';
 import {expect, Client, createClientForServer} from '@loopback/testlab';
 import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {inject, Constructor, Context} from '@loopback/context';

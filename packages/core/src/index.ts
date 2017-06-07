@@ -27,6 +27,10 @@ export {HttpErrors};
 export {
   ParsedRequest,
   OperationRetval,
+  FindRoute,
+  InvokeMethod,
+  LogError,
+  OperationArgs,
 } from './internal-types';
 export {parseOperationArgs} from './parser';
 export {parseRequestUrl} from './router/routing-table';
