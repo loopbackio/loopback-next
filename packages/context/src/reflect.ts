@@ -99,7 +99,7 @@ export class NamespacedReflect {
       if (!this.namespace) return keys; // No normalization is needed
       const prefix = this.namespace + ':';
       for (const key of keys) {
-        if (key.indexOf(prefix) !== -1) {
+        if (key.indexOf(prefix) === 0) {
           // Only add keys with the namespace prefix
           metaKeys.push(key.substr(prefix.length));
         }
@@ -120,7 +120,7 @@ export class NamespacedReflect {
       if (!this.namespace) return keys; // No normalization is needed
       const prefix = this.namespace + ':';
       for (const key of keys) {
-        if (key.indexOf(prefix) !== -1) {
+        if (key.indexOf(prefix) === 0) {
           // Only add keys with the namespace prefix
           metaKeys.push(key.substr(prefix.length));
         }
