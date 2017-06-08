@@ -3,31 +3,33 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Type, Any} from './type';
+import {Type} from './type';
+
+// tslint:disable:no-any
 
 /**
  * Any type
  */
-export class AnyType implements Type<Any> {
+export class AnyType implements Type<any> {
   readonly name = 'any';
 
-  isInstance(value: Any) {
+  isInstance(value: any) {
     return true;
   }
 
-  isCoercible(value: Any) {
+  isCoercible(value: any) {
     return true;
   }
 
-  defaultValue(): Any {
+  defaultValue(): any {
     return undefined;
   }
 
-  coerce(value: Any) {
+  coerce(value: any) {
     return value;
   }
 
-  serialize(value: Any) {
+  serialize(value: any) {
     if (value && typeof value.toJSON === 'function') {
       return value.toJSON();
     }

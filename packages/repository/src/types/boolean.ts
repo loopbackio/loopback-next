@@ -3,7 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Type, Any} from './type';
+import {Type} from './type';
+
+// tslint:disable:no-any
 
 /**
  * Boolean type
@@ -11,7 +13,7 @@ import {Type, Any} from './type';
 export class BooleanType implements Type<boolean> {
   readonly name = 'boolean';
 
-  isInstance(value: Any) {
+  isInstance(value: any) {
     return value == null || typeof value === 'boolean';
   }
 
@@ -19,11 +21,11 @@ export class BooleanType implements Type<boolean> {
     return false;
   }
 
-  isCoercible(value: Any): boolean {
+  isCoercible(value: any): boolean {
     return true;
   }
 
-  coerce(value: Any) {
+  coerce(value: any) {
     return value == null ? value : Boolean(value);
   }
 

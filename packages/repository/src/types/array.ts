@@ -3,8 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Type, Any} from './type';
+import {Type} from './type';
 import * as util from 'util';
+
+// tslint:disable:no-any
 
 /**
  * Array type, such as string[]
@@ -15,7 +17,7 @@ export class ArrayType<T> implements Type<Array<T>> {
 
   readonly name = 'array';
 
-  isInstance(value: Any) {
+  isInstance(value: any) {
     if (value == null) return true;
     if (!Array.isArray(value)) {
       return false;
@@ -24,7 +26,7 @@ export class ArrayType<T> implements Type<Array<T>> {
     return list.every((i) => this.itemType.isInstance(i));
   }
 
-  isCoercible(value: Any): boolean {
+  isCoercible(value: any): boolean {
     if (value == null) return true;
     if (!Array.isArray(value)) {
       return false;
@@ -36,7 +38,7 @@ export class ArrayType<T> implements Type<Array<T>> {
     return [];
   }
 
-  coerce(value: Any) {
+  coerce(value: any) {
     if (value == null) return value;
     if (!Array.isArray(value)) {
       const msg = util.format('Invalid %s: %j', this.name, value);

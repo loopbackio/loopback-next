@@ -6,10 +6,10 @@
 /**
  * Typing system for LoopBack
  */
-import {Options, Any} from '../common-types';
+import {Options} from '../common-types';
 import * as util from 'util';
 
-export {Any} from '../common-types';
+// tslint:disable:no-any
 
 export interface Type<T> {
   /**
@@ -21,7 +21,7 @@ export interface Type<T> {
    * Test if the given value is an instance of this type
    * @param value The value
    */
-  isInstance(value: Any): boolean;
+  isInstance(value: any): boolean;
 
   /**
    * Generate the default value for this type
@@ -33,7 +33,7 @@ export interface Type<T> {
    * @param value The value to to be coerced
    * @returns {boolean}
    */
-  isCoercible(value: Any, options?: Options): boolean;
+  isCoercible(value: any, options?: Options): boolean;
 
   /**
    * Coerce the value into this type
@@ -41,13 +41,13 @@ export interface Type<T> {
    * @param options Options for coercion
    * @returns Coerced value of this type
    */
-  coerce(value: Any, options?: Options): T|null|undefined;
+  coerce(value: any, options?: Options): T|null|undefined;
 
   /**
    * Serialize a value into json
    * @param value The value of this type
    * @param options Options for serialization
    */
-  serialize(value: T|null|undefined, options?: Options): Any;
+  serialize(value: T|null|undefined, options?: Options): any;
 }
 

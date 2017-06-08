@@ -3,7 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Type, Any} from './type';
+import {Type} from './type';
+
+// tslint:disable:no-any
 
 /**
  * String type
@@ -11,11 +13,11 @@ import {Type, Any} from './type';
 export class StringType implements Type<string> {
   readonly name = 'string';
 
-  isInstance(value: Any): boolean {
+  isInstance(value: any): boolean {
     return value == null || typeof value === 'string';
   }
 
-  isCoercible(value: Any): boolean {
+  isCoercible(value: any): boolean {
     return true;
   }
 
@@ -23,7 +25,7 @@ export class StringType implements Type<string> {
     return '';
   }
 
-  coerce(value: Any): string {
+  coerce(value: any): string {
     if (value == null) return value;
     if (typeof value.toJSON === 'function') {
       value = value.toJSON();
