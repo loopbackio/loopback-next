@@ -33,6 +33,7 @@
     "lint:fix": "npm run lint -- --fix",
     "clean": "lerna run clean",
     "build": "lerna run build",
+    "pretest": "npm run build",
     "test": "nyc mocha --opts test/mocha.opts \"packages/*/test/**/*.ts\"",
     "posttest": "npm run lint"
   },
