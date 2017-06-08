@@ -5,6 +5,7 @@
 
 export const jugglerModule = require('loopback-datasource-juggler');
 
+import {isPromise} from '@loopback/context';
 import {MixinBuilder} from './mixin';
 import {Class, ObjectType, Options, Any} from './common-types';
 
@@ -35,12 +36,8 @@ import {Entity} from './model';
 import {Filter, Where} from './query';
 import {EntityCrudRepository} from './repository';
 
-function isPromise<T>(p: Any): p is Promise<T> {
-  return p !== null && typeof p === 'object' && typeof p.then === 'function';
-}
-
 function ensurePromise<T>(p: juggler.PromiseOrVoid<T>): Promise<T> {
-  if (isPromise(p)) {
+  if (p && isPromise(p)) {
     return p;
   } else {
     return Promise.reject(new Error('The value should be a Promise: ' + p));

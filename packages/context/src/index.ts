@@ -9,7 +9,7 @@ export {Constructor, resolveValueOrPromise} from './resolver';
 export {inject} from './inject';
 export {NamespacedReflect} from './reflect';
 export {Provider} from './provider';
-export const isPromise = require('is-promise');
+export {isPromise} from './isPromise';
 
 // internals for testing
 export {instantiateClass} from './resolver';
