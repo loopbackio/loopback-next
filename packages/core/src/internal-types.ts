@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ServerRequest} from 'http';
+import {ServerRequest, ServerResponse} from 'http';
 import {ResolvedRoute} from './router/routing-table';
 
 export interface ParsedRequest extends ServerRequest {
@@ -18,6 +18,7 @@ export interface ParsedRequest extends ServerRequest {
 }
 
 export type FindRoute = (request: ParsedRequest) => ResolvedRoute<string>;
+export type Handler = (request: ServerRequest, response: ServerResponse) => Promise<void>;
 export type InvokeMethod = (controller: string, method: string, args: OperationArgs) => Promise<OperationRetval>;
 export type LogError = (err: Error, statusCode: number, request: ServerRequest) => void;
 

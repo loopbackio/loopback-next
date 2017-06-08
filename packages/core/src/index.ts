@@ -6,6 +6,7 @@
 // package dependencies
 export {Application} from './application';
 export {Component} from './component';
+export {httpHandler} from './handlers';
 export {api} from './router/metadata';
 export {Sequence} from './sequence';
 export {Server, ServerConfig, ServerState} from './server';
@@ -27,6 +28,7 @@ export {HttpErrors};
 export {
   ParsedRequest,
   OperationRetval,
+  Handler,
 } from './internal-types';
 export {parseOperationArgs} from './parser';
 export {parseRequestUrl} from './router/routing-table';
