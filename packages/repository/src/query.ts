@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Any} from './common-types';
+// tslint:disable:no-any
 
 /**
  * Operators for where clauses
@@ -23,14 +23,14 @@ export enum Operators {
 }
 
 export interface Condition {
-  eq?: Any;
-  neq?: Any;
-  gt?: Any;
-  get?: Any;
-  lt?: Any;
-  lte?: Any;
-  inq?: Any[];
-  between?: Any[];
+  eq?: any;
+  neq?: any;
+  gt?: any;
+  get?: any;
+  lt?: any;
+  lte?: any;
+  inq?: any[];
+  between?: any[];
   exists?: boolean;
   and?: Where[];
   or?: Where[];
@@ -47,7 +47,7 @@ export interface Condition {
 export interface Where {
   and?: Where[]; // AND
   or?: Where[]; // OR
-  [property: string]: Condition | Any; // Other criteria
+  [property: string]: Condition | any; // Other criteria
 }
 
 /**

@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { Class, Any } from '../common-types';
+import { Class } from '../common-types';
 import { Model } from '../model';
 import { Repository } from '../repository';
 import { DataSource } from '../datasource';
@@ -77,11 +77,11 @@ export class RepositoryMetadata {
  * - @repository('Customer', mysqlDataSource)
  * - @repository(Customer, 'mysqlDataSource')
  */
-export function repository(model: string | Class<Model>,
+export function repository<T extends Model>(model: string | Class<T>,
   dataSource?: string | DataSource) {
   const meta = new RepositoryMetadata(model, dataSource);
   return function(target: Object, key?: symbol | string,
-    descriptor?: TypedPropertyDescriptor<Repository<Any>> | number) {
+    descriptor?: TypedPropertyDescriptor<Repository<T>> | number) {
     if ((typeof descriptor === 'number') && meta.name) {
       // Make it shortcut to `@inject('repositories:MyRepo')`
       // Please note key is undefined for constructor. If strictNullChecks

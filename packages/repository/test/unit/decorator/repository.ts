@@ -7,19 +7,18 @@ import { expect } from '@loopback/testlab';
 import { Context } from '@loopback/context';
 import { repository } from '../../../';
 
-import { Any } from '../../../';
 import { Repository } from '../../../';
 import { jugglerModule, bindModel, DataSourceConstructor, juggler, DefaultCrudRepository }
   from '../../../';
 
 class MyController {
-  constructor(@repository('noteRepo') public noteRepo: Repository<Any>) {
+  constructor(@repository('noteRepo') public noteRepo: Repository<juggler.PersistedModel>) {
   }
 }
 
 describe('repository decorator', () => {
   let ctx: Context;
-  let repo: Repository<Any>;
+  let repo: Repository<juggler.PersistedModel>;
 
   before(function() {
     const ds: juggler.DataSource = new DataSourceConstructor({

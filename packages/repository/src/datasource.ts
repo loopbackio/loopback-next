@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Any} from './common-types';
 import {Connector} from './connector';
 
 /**
@@ -12,5 +11,7 @@ import {Connector} from './connector';
 export interface DataSource {
   name: string; // Name of the data source
   connector: Connector; // The underlying connector
-  [property: string]: Any; // Other properties that vary by connectors
+
+  // tslint:disable-next-line:no-any
+  [property: string]: any; // Other properties that vary by connectors
 }
