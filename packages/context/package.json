@@ -17,7 +17,6 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
-    "is-promise": "^2.1.0",
     "reflect-metadata": "^0.1.10"
   },
   "devDependencies": {
