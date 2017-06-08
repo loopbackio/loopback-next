@@ -20,7 +20,7 @@
     "nyc": "^11.0.1",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
-    "ts-node": "3.0.4",
+    "ts-node": "^3.0.6",
     "tslint": "^5.4.3",
     "typescript": "^2.2.1"
   },
