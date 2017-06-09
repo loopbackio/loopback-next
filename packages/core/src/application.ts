@@ -34,11 +34,11 @@ export class Application extends Context {
 
   protected _httpHandler: HttpHandler;
 
-  constructor(public appConfig?: AppConfig) {
+  constructor(public options?: ApplicationOptions) {
     super();
 
-    if (appConfig && appConfig.components) {
-      for (const component of appConfig.components) {
+    if (options && options.components) {
+      for (const component of options.components) {
         // TODO(superkhau): Need to figure a way around this hack,
         //  `componentClassName.constructor.name` + `componentClassName.name`
         //  doesn't work
@@ -47,24 +47,21 @@ export class Application extends Context {
       }
     }
 
-    if (appConfig && appConfig.sequences) {
-      for (const sequence of appConfig.sequences) {
-        // TODO(superkhau): Need to figure a way around this hack,
-        //   `componentClassName.constructor.name` + `componentClassName.name`
-        //   doesn't work
-        const sequenceClassName = sequence.toString().split(' ')[1];
-        this.bind(`sequence.${sequenceClassName}`).toClass(sequence);
-      }
-    }
+    this._bindSequence();
 
     this.handleHttp = (req: ServerRequest, res: ServerResponse) =>
       this._handleHttpRequest(req, res);
 
     this.bind('logError').to(this._logError.bind(this));
+  }
 
+  protected _bindSequence(): void {
     // TODO(bajtos, ritch, superkhau) figure out how to integrate this single
     // sequence with custom sequences contributed by components
-    this.bind('sequence').toClass(Sequence);
+    const sequence = this.options && this.options.sequence ?
+      this.options.sequence :
+      Sequence;
+    this.bind('sequence').toClass(sequence);
   }
 
   protected _handleHttpRequest(request: ServerRequest, response: ServerResponse) {
@@ -113,7 +110,7 @@ export class Application extends Context {
   }
 }
 
-export interface AppConfig {
-  components: Array<Constructor<Component>>;
-  sequences: Array<Constructor<Sequence>>;
+export interface ApplicationOptions {
+  components?: Array<Constructor<Component>>;
+  sequence?: Constructor<Sequence>;
 }
