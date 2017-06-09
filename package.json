@@ -31,8 +31,8 @@
     "coverage": "open coverage/index.html",
     "lint": "tslint -c tslint.full.json --project tsconfig.json --type-check",
     "lint:fix": "npm run lint -- --fix",
-    "clean": "lerna run clean",
-    "build": "lerna run build",
+    "clean": "lerna run --loglevel=silent clean",
+    "build": "lerna run --loglevel=silent build",
     "pretest": "npm run build",
     "test": "nyc mocha --opts test/mocha.opts \"packages/*/test/**/*.ts\"",
     "posttest": "npm run lint"

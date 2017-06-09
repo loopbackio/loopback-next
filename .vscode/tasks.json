@@ -105,6 +105,7 @@
         "test",
         "-s"
       ],
+      "problemMatcher": ["$tsc", "$tslint5"],
       "isTestCommand": true
     },
     // running example-codehub tests
