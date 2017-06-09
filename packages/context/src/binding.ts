@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from './context';
-import {Constructor, instantiateClass, resolveValueOrPromise} from './resolver';
+import {Constructor, instantiateClass} from './resolver';
 import {isPromise} from './isPromise';
 import {Provider} from './provider';
 
@@ -102,22 +102,15 @@ export class Binding {
    * Bind the key to a BindingProvider
    */
   public toProvider<T>(providerClass: Constructor<Provider<T>>): this {
-    this.getProviderInstance = async (ctx: Context) => {
-      const providerOrPromise: ValueOrPromise<Provider<T>> = instantiateClass<Provider<T>>(providerClass, ctx);
-      return resolveValueOrPromise<Provider<T>>(providerOrPromise);
-    };
-    this.getValue = async (ctx): Promise<BoundValue> => {
-      const providerInstance: Provider<T> = await this.getProviderInstance<T>(ctx);
-      return providerInstance.value();
+    this.getValue = ctx => {
+      const providerOrPromise = instantiateClass<Provider<T>>(providerClass, ctx);
+      if (isPromise(providerOrPromise)) {
+        return providerOrPromise.then(p => p.value());
+      } else {
+        return providerOrPromise.value();
+      }
     };
     return this;
-  }
-
-  /**
-   * get an instance of the provider
-   */
-  public async getProviderInstance<T>(ctx: Context): Promise<Provider<T>> {
-    return Promise.reject(new Error(`No provider is attached to binding ${this._key}.`));
   }
 
   /**
