@@ -52,6 +52,13 @@ describe('Binding', () => {
       const value: String = ctx.getSync('provider_key');
       expect(value).to.equal('hello world');
     });
+
+    it('support asynchronous dependencies of provider class', async () => {
+      ctx.bind('msg').toDynamicValue(() => Promise.resolve('hello'));
+      ctx.bind('provider_key').toProvider(MyProvider);
+      const value: String = await ctx.get('provider_key');
+      expect(value).to.equal('hello world');
+    });
   });
 
   function givenBinding() {
