@@ -3,9 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, Context, Constructor} from '@loopback/context';
-import {Component, OpenApiSpec} from '.';
+import {Binding, Context, Constructor, Provider} from '@loopback/context';
+import {OpenApiSpec} from '.';
 import {ServerRequest, ServerResponse} from 'http';
+import {Component, mountComponent} from './component';
 import {getApiSpec} from './router/metadata';
 import {HttpHandler} from './http-handler';
 import {Sequence} from './sequence';
@@ -39,11 +40,7 @@ export class Application extends Context {
 
     if (options && options.components) {
       for (const component of options.components) {
-        // TODO(superkhau): Need to figure a way around this hack,
-        //  `componentClassName.constructor.name` + `componentClassName.name`
-        //  doesn't work
-        const componentClassName = component.toString().split(' ')[1];
-        this.bind(`component.${componentClassName}`).toClass(component);
+        this.component(component);
       }
     }
 
@@ -123,6 +120,32 @@ export class Application extends Context {
       statusCode,
       err.stack || err,
     );
+  }
+
+  /**
+   * Add a component to this application.
+   *
+   * @param component The component to add.
+   *
+   * ```ts
+   *
+   * export class ProductComponent {
+   *   controllers = [ProductController];
+   *   repositories = [ProductRepo, UserRepo];
+   *   providers = {
+   *     [AUTHENTICATION_STRATEGY]: AuthStrategy,
+   *     [AUTHORIZATION_ROLE]: Role,
+   *   };
+   * };
+   *
+   * app.component(ProductComponent);
+   * ```
+   */
+  public component(component: Constructor<Component>) {
+    const componentKey = `components.${component.name}`;
+    this.bind(componentKey).toClass(component);
+    const instance = this.getSync(componentKey);
+    mountComponent(this, instance);
   }
 }
 
