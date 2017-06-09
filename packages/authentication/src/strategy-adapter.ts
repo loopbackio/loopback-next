@@ -15,8 +15,7 @@ export class ShimRequest {
   url: string;
   path: string;
   method: string;
-  constructor(request?: ParsedRequest) {
-    if (!request) return;
+  constructor(request: ParsedRequest) {
     this.headers = request.headers;
     this.query = request.query;
     this.url = request.url;
