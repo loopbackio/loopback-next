@@ -38,36 +38,23 @@ describe('Binding', () => {
     });
   });
 
-  describe('getProviderInstance(ctx)', () => {
-    it('returns error when no provider is attached', async () => {
-      let err;
-      try {
-        await binding.getProviderInstance<String>(ctx);
-      } catch (exception) {
-        err = exception;
-        expect(exception.message).to.equal('No provider is attached to binding foo.');
-      }
-      expect(err).to.not.to.be.undefined();
-    });
-  });
-
   describe('toProvider(provider)', () => {
-    it('attaches a provider class to the binding', async () => {
-      ctx.bind('msg').to('hello');
-      binding.toProvider(MyProvider);
-      const providerInstance: Provider<String> = await binding.getProviderInstance<String>(ctx);
-      expect(providerInstance).to.be.instanceOf(MyProvider);
-    });
-
-    it('provider instance is injected with constructor arguments', async () => {
-      ctx.bind('msg').to('hello');
-      binding.toProvider(MyProvider);
-      const providerInstance: Provider<String> = await binding.getProviderInstance<String>(ctx);
-      expect(providerInstance.value()).to.equal('hello world');
-    });
-
     it('binding returns the expected value', async () => {
       ctx.bind('msg').to('hello');
+      ctx.bind('provider_key').toProvider(MyProvider);
+      const value: String = await ctx.get('provider_key');
+      expect(value).to.equal('hello world');
+    });
+
+    it('can resolve provided value synchronously', () => {
+      ctx.bind('msg').to('hello');
+      ctx.bind('provider_key').toProvider(MyProvider);
+      const value: String = ctx.getSync('provider_key');
+      expect(value).to.equal('hello world');
+    });
+
+    it('support asynchronous dependencies of provider class', async () => {
+      ctx.bind('msg').toDynamicValue(() => Promise.resolve('hello'));
       ctx.bind('provider_key').toProvider(MyProvider);
       const value: String = await ctx.get('provider_key');
       expect(value).to.equal('hello world');

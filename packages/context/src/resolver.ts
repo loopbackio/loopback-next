@@ -132,17 +132,3 @@ export function resolveInjectedProperties(fn: Function, ctx: Context): KV | Prom
     return properties;
   }
 }
-
-/**
- * resolve a ValueOrPromise<T> to T
- */
-export async function resolveValueOrPromise<T>(instanceOrPromise: ValueOrPromise<T>): Promise<T> {
-  if (isPromise(instanceOrPromise)) {
-    const providerPromise = instanceOrPromise as Promise<T>;
-    const instance: T = await providerPromise;
-    return instance;
-  } else {
-    const instance: T = instanceOrPromise as T;
-    return instance;
-  }
-}

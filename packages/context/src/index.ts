@@ -5,7 +5,7 @@
 
 export {Binding, BoundValue} from './binding';
 export {Context} from './context';
-export {Constructor, resolveValueOrPromise} from './resolver';
+export {Constructor} from './resolver';
 export {inject} from './inject';
 export {NamespacedReflect} from './reflect';
 export {Provider} from './provider';
