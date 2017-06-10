@@ -6,32 +6,41 @@
 import {expect} from '@loopback/testlab';
 import {Application, Sequence} from '../../..';
 
-describe('Bootstrapping - Application', () => {
-  context('with user-defined configurations', () => {
-    let app: Application;
-    before(givenAppWithConfigs);
+describe('Bootstrapping the application', () => {
+  let app: Application;
 
-    it('registers the given components', () => {
+  context('with a user-defined sequence', () => {
+    before(givenAppWithUserDefinedSequence);
+
+    it('binds the `sequence` key to the user-defined sequence', async () => {
+      const binding = await app.get('sequence');
+      expect(binding.constructor.name).to.equal('UserDefinedSequence');
+    });
+
+    function givenAppWithUserDefinedSequence() {
+      class UserDefinedSequence extends Sequence { }
+      app = new Application({
+        sequence: UserDefinedSequence,
+      });
+    }
+  });
+
+  context('with user-defined components', () => {
+    before(givenAppWithUserDefinedComponents);
+
+    it('binds all user-defined components to the application context', () => {
       expect(app.find('component.*'))
         .to.be.instanceOf(Array)
         .with.lengthOf(4);
     });
 
-    it('registers the given sequence', () => {
-      expect(app.find('sequence.*'))
-        .to.be.instanceOf(Array)
-        .with.lengthOf(1);
-    });
-
-    function givenAppWithConfigs() {
-      class Todo { }
-      class Authentication { }
-      class Authorization { }
-      class Rejection { }
-      class TodoSequence extends Sequence { }
+    function givenAppWithUserDefinedComponents() {
+      class Todo {}
+      class Authentication {}
+      class Authorization {}
+      class Rejection {}
       app = new Application({
         components: [Todo, Authentication, Authorization, Rejection],
-        sequences: [TodoSequence],
       });
     }
   });
