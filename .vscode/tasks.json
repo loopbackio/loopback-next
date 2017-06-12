@@ -6,14 +6,16 @@
     // installing dependencies
     {
       "taskName": "Install all dependencies",
-      "command": "lerna",
+      "command": "./node_modules/.bin/lerna",
+      "isShellCommand": true,
       "args": [
         "bootstrap"
       ]
     },
     {
       "taskName": "Install loopback dependencies",
-      "command": "lerna",
+      "command": "./node_modules/.bin/lerna",
+      "isShellCommand": true,
       "args": [
         "bootstrap",
         "--scope",
@@ -21,8 +23,9 @@
       ]
     },
     {
-      "taskName": "Install juggler dependencies",
-      "command": "lerna",
+      "taskName": "Install repository dependencies",
+      "command": "./node_modules/.bin/lerna",
+      "isShellCommand": true,
       "args": [
         "bootstrap",
         "--scope",
@@ -31,7 +34,8 @@
     },
     {
       "taskName": "Install remoting dependencies",
-      "command": "lerna",
+      "command": "./node_modules/.bin/lerna",
+      "isShellCommand": true,
       "args": [
         "bootstrap",
         "--scope",
@@ -40,7 +44,8 @@
     },
     {
       "taskName": "Install testlab dependencies",
-      "command": "lerna",
+      "command": "./node_modules/.bin/lerna",
+      "isShellCommand": true,
       "args": [
         "bootstrap",
         "--scope",
@@ -50,7 +55,8 @@
     // removing dependencies
     {
       "taskName": "Remove all dependencies",
-      "command": "lerna",
+      "command": "./node_modules/.bin/lerna",
+      "isShellCommand": true,
       "args": [
         "clean",
         "--yes"
@@ -58,7 +64,8 @@
     },
     {
       "taskName": "Remove loopback dependencies",
-      "command": "lerna",
+      "command": "./node_modules/.bin/lerna",
+      "isShellCommand": true,
       "args": [
         "clean",
         "--scope",
@@ -67,8 +74,9 @@
       ]
     },
     {
-      "taskName": "Remove juggler dependencies",
-      "command": "lerna",
+      "taskName": "Remove repository dependencies",
+      "command": "./node_modules/.bin/lerna",
+      "isShellCommand": true,
       "args": [
         "clean",
         "--scope",
@@ -78,7 +86,8 @@
     },
     {
       "taskName": "Remove remoting dependencies",
-      "command": "lerna",
+      "command": "./node_modules/.bin/lerna",
+      "isShellCommand": true,
       "args": [
         "clean",
         "--scope",
@@ -88,7 +97,8 @@
     },
     {
       "taskName": "Remove testlab dependencies",
-      "command": "lerna",
+      "command": "./node_modules/.bin/lerna",
+      "isShellCommand": true,
       "args": [
         "clean",
         "--scope",
@@ -100,6 +110,7 @@
     {
       "taskName": "Run all tests",
       "command": "npm",
+      "isShellCommand": true,
       "args": [
         "run",
         "test",
@@ -111,10 +122,11 @@
     // running example-codehub tests
     {
       "taskName": "Run all example-codehub tests",
-      "command": "mocha",
+      "command": "./node_modules/.bin/mocha",
+      "isShellCommand": true,
       "args": [
         "--opts",
-        "test/mocha.opts.root",
+        "test/mocha.opts",
         "packages/example-codehub/test/unit/**/*.ts",
         "packages/example-codehub/test/integration/**/*.ts",
         "packages/example-codehub/test/acceptance/**/*.ts"
@@ -122,38 +134,42 @@
     },
     {
       "taskName": "Run example-codehub unit tests",
-      "command": "mocha",
+      "command": "./node_modules/.bin/mocha",
+      "isShellCommand": true,
       "args": [
         "--opts",
-        "test/mocha.opts.root",
+        "test/mocha.opts",
         "packages/example-codehub/test/unit/**/*.ts"
       ]
     },
     {
       "taskName": "Run example-codehub integration tests",
-      "command": "mocha",
+      "command": "./node_modules/.bin/mocha",
+      "isShellCommand": true,
       "args": [
         "--opts",
-        "test/mocha.opts.root",
+        "test/mocha.opts",
         "packages/example-codehub/test/integration/**/*.ts"
       ]
     },
     {
       "taskName": "Run example-codehub acceptance tests",
-      "command": "mocha",
+      "command": "./node_modules/.bin/mocha",
+      "isShellCommand": true,
       "args": [
         "--opts",
-        "test/mocha.opts.root",
+        "test/mocha.opts",
         "packages/example-codehub/test/acceptance/**/*.ts"
       ]
     },
     // running loopback tests
     {
       "taskName": "Run all loopback tests",
-      "command": "mocha",
+      "command": "./node_modules/.bin/mocha",
+      "isShellCommand": true,
       "args": [
         "--opts",
-        "test/mocha.opts.root",
+        "test/mocha.opts",
         "packages/loopback/test/unit/**/*.ts",
         "packages/loopback/test/integration/**/*.ts",
         "packages/loopback/test/acceptance/**/*.ts"
@@ -161,76 +177,84 @@
     },
     {
       "taskName": "Run loopback unit tests",
-      "command": "mocha",
+      "command": "./node_modules/.bin/mocha",
+      "isShellCommand": true,
       "args": [
         "--opts",
-        "test/mocha.opts.root",
+        "test/mocha.opts",
         "packages/loopback/test/unit/**/*.ts"
       ]
     },
     {
       "taskName": "Run loopback integration tests",
-      "command": "mocha",
+      "command": "./node_modules/.bin/mocha",
+      "isShellCommand": true,
       "args": [
         "--opts",
-        "test/mocha.opts.root",
+        "test/mocha.opts",
         "packages/loopback/test/integration/**/*.ts"
       ]
     },
     {
       "taskName": "Run loopback acceptance tests",
-      "command": "mocha",
+      "command": "./node_modules/.bin/mocha",
+      "isShellCommand": true,
       "args": [
         "--opts",
-        "test/mocha.opts.root",
+        "test/mocha.opts",
         "packages/loopback/test/acceptance/**/*.ts"
       ]
     },
-    // running juggler tests
+    // running repository tests
     {
-      "taskName": "Run all juggler tests",
-      "command": "mocha",
+      "taskName": "Run all repository tests",
+      "command": "./node_modules/.bin/mocha",
+      "isShellCommand": true,
       "args": [
         "--opts",
-        "test/mocha.opts.root",
-        "packages/juggler/test/unit/**/*.ts",
-        "packages/juggler/test/integration/**/*.ts",
-        "packages/juggler/test/acceptance/**/*.ts"
+        "test/mocha.opts",
+        "packages/repository/test/unit/**/*.ts",
+        "packages/repository/test/integration/**/*.ts",
+        "packages/repository/test/acceptance/**/*.ts"
       ]
     },
     {
-      "taskName": "Run juggler unit tests",
-      "command": "mocha",
+      "taskName": "Run repository unit tests",
+      "command": "./node_modules/.bin/mocha",
+      "isShellCommand": true,
       "args": [
         "--opts",
-        "test/mocha.opts.root",
-        "packages/juggler/test/unit/**/*.ts"
+        "test/mocha.opts",
+        "packages/repository/test/unit/**/*.ts"
       ]
     },
     {
-      "taskName": "Run juggler integration tests",
-      "command": "mocha",
+      "taskName": "Run repository integration tests",
+      "command": "./node_modules/.bin/mocha",
+      "isShellCommand": true,
       "args": [
         "--opts",
-        "test/mocha.opts.root",
-        "packages/juggler/test/integration/**/*.ts"
+        "test/mocha.opts",
+        "packages/repository/test/integration/**/*.ts"
       ]
     },
     {
-      "taskName": "Run juggler acceptance tests",
-      "command": "mocha",
+      "taskName": "Run repository acceptance tests",
+      "command": "./node_modules/.bin/mocha",
+      "isShellCommand": true,
       "args": [
         "--opts",
-        "test/mocha.opts.root",
-        "packages/juggler/test/acceptance/**/*.ts"
+        "test/mocha.opts",
+        "packages/repository/test/acceptance/**/*.ts"
       ]
     },
     {
       "taskName": "Run all remoting tests",
-      "command": "mocha",
+      "command": "./node_modules/.bin/mocha",
+      "isShellCommand": true,
       "args": [
         "--opts",
-        "test/mocha.opts.root",
+        "test/mocha.opts",
         "packages/remoting/test/unit/**/*.ts",
         "packages/remoting/test/integration/**/*.ts",
         "packages/remoting/test/acceptance/**/*.ts"
@@ -239,28 +263,31 @@
     // running remoting tests
     {
       "taskName": "Run remoting unit tests",
-      "command": "mocha",
+      "command": "./node_modules/.bin/mocha",
+      "isShellCommand": true,
       "args": [
         "--opts",
-        "test/mocha.opts.root",
+        "test/mocha.opts",
         "packages/remoting/test/unit/**/*.ts"
       ]
     },
     {
       "taskName": "Run remoting integration tests",
-      "command": "mocha",
+      "command": "./node_modules/.bin/mocha",
+      "isShellCommand": true,
       "args": [
         "--opts",
-        "test/mocha.opts.root",
+        "test/mocha.opts",
         "packages/remoting/test/integration/**/*.ts"
       ]
     },
     {
       "taskName": "Run remoting acceptance tests",
-      "command": "mocha",
+      "command": "./node_modules/.bin/mocha",
+      "isShellCommand": true,
       "args": [
         "--opts",
-        "test/mocha.opts.root",
+        "test/mocha.opts",
         "packages/remoting/test/acceptance/**/*.ts"
       ]
     },
@@ -268,6 +295,7 @@
     {
       "taskName": "Lint all packages",
       "command": "npm",
+      "isShellCommand": true,
       "args": [
         "run",
         "lint"
@@ -339,7 +367,7 @@
       "taskName": "Compile TypeScript sources",
       "isBuildCommand": true,
       "isShellCommand": true,
-      "command": "lerna",
+      "command": "./node_modules/.bin/lerna",
       "args": [
         "run",
         "--loglevel=silent",
