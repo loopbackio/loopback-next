@@ -31,8 +31,8 @@ export interface Server {
   start(): Promise<void>;
 }
 
-export function createClientForServer(server: Server): Client {
-  const dontWaitForListening = server.start();
+export async function createClientForServer(server: Server): Promise<Client> {
+  await server.start();
   const url = `http://127.0.0.1:${server.config.port}`;
   // TODO(bajtos) Find a way how to stop the server after all tests are done
   return supertest(url);

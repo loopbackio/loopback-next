@@ -20,19 +20,27 @@ export class Server extends Context {
     this.state = ServerState.cold;
   }
 
-  async start() {
+  async start() : Promise<void> {
     this.state = ServerState.starting;
 
     const server = createServer((req, res) => this._handleRequest(req, res));
     server.listen(this.config.port);
 
-    // FIXME(bajtos) The updated port number should be part of "status" object,
-    // we shouldn't be changing original config IMO.
-    // Consider exposing full base URL including http/https scheme prefix
-    this.config.port = server.address().port;
 
-    await new Promise(resolve => server.once('listening', resolve));
-    this.state = ServerState.listening;
+    return new Promise<void>((resolve, reject) => {
+      server.once('listening', () => {
+        // FIXME(bajtos) The updated port number should be part of "status"
+        // object, we shouldn't be changing original config IMO.
+        // Consider exposing full base URL including http/https scheme prefix
+        try {
+          this.config.port = server.address().port;
+          this.state = ServerState.listening;
+          resolve();
+        } catch (err) {
+          reject(err);
+        }
+      });
+    });
   }
 
   protected _handleRequest(req: ServerRequest, res: ServerResponse) {

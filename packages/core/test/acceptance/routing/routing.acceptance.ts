@@ -61,12 +61,11 @@ describe('Routing', () => {
     }
     givenControllerInApp(app, EchoController);
 
-    return (
-      whenIMakeRequestTo(app)
-        .get('/echo?msg=hello%20world')
-        // Then I get the result `hello world` from the `Method`
-        .expect('hello world')
-    );
+    return whenIMakeRequestTo(app).then(client => {
+      return client.get('/echo?msg=hello%20world')
+      // Then I get the result `hello world` from the `Method`
+      .expect('hello world');
+    });
   });
 
   it('injects controller constructor arguments', () => {
@@ -94,7 +93,10 @@ describe('Routing', () => {
     }
     givenControllerInApp(app, InfoController);
 
-    return whenIMakeRequestTo(app).get('/name').expect('TestApp');
+    return whenIMakeRequestTo(app).then(client => {
+      return client.get('/name')
+      .expect('TestApp');
+    });
   });
 
   it('creates a new child context for each request', async () => {
@@ -127,10 +129,16 @@ describe('Routing', () => {
     // Rebind "flag" to "modified". Since we are modifying
     // the per-request child context, the change should
     // be discarded after the request is done.
-    await whenIMakeRequestTo(app).put('/flag');
+    await whenIMakeRequestTo(app).then(client => {
+      return client.put('/flag');
     // Get the value "flag" is bound to.
     // This should return the original value.
-    await whenIMakeRequestTo(app).get('/flag').expect('original');
+
+    });
+    await whenIMakeRequestTo(app).then(client => {
+      return client.get('/flag')
+      .expect('original');
+    });
   });
 
   it('binds request and response objects', () => {
@@ -154,7 +162,10 @@ describe('Routing', () => {
     }
     givenControllerInApp(app, StatusController);
 
-    return whenIMakeRequestTo(app).get('/status').expect(202, 'GET');
+    return whenIMakeRequestTo(app).then(client => {
+      return client.get('/status')
+      .expect(202, 'GET');
+    });
   });
 
   it('binds controller constructor object and operation', () => {
@@ -182,9 +193,13 @@ describe('Routing', () => {
     }
     givenControllerInApp(app, GetCurrentController);
 
-    return whenIMakeRequestTo(app).get('/name').expect({
-      ctor: 'GetCurrentController',
-      operation: 'getControllerName',
+    return whenIMakeRequestTo(app).then(client => {
+      return client.get('/name')
+      .expect({
+        ctor: 'GetCurrentController',
+        operation: 'getControllerName',
+      });
+
     });
   });
 
@@ -201,8 +216,9 @@ describe('Routing', () => {
     app.controller(controller);
   }
 
-  function whenIMakeRequestTo(app: Application): Client {
+  function whenIMakeRequestTo(app: Application): Promise<Client> {
     const server = new Server(app, {port: 0});
-    return createClientForServer(server);
+    const result = createClientForServer(server);
+    return result;
   }
 });
