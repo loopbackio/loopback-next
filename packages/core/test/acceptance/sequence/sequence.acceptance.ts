@@ -32,7 +32,10 @@ describe('Sequence - ', () => {
   beforeEach(givenAppWithController);
 
   it('default sequence', () => {
-    return whenIMakeRequestTo().get('/name').expect('SequenceApp');
+    return whenIMakeRequestTo(app).then(client => {
+      return client.get('/name')
+        .expect('SequenceApp');
+    });
   });
 
   it('user defined sequence', () => {
@@ -59,7 +62,10 @@ describe('Sequence - ', () => {
     // bind user defined sequence
     app.bind('sequence').toClass(MySequence);
 
-    return whenIMakeRequestTo().get('/name').expect('MySequence SequenceApp');
+    return whenIMakeRequestTo(app).then(client => {
+      return client.get('/name')
+        .expect('MySequence SequenceApp');
+    });
   });
 
   function givenAppWithController() {
@@ -97,8 +103,8 @@ describe('Sequence - ', () => {
     app.controller(controller);
   }
 
-  function whenIMakeRequestTo(): Client {
-    const server = new Server(app, {port: 0});
+  function whenIMakeRequestTo(application: Application): Promise<Client> {
+    const server = new Server(application, {port: 0});
     return createClientForServer(server);
   }
 });
