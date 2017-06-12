@@ -6,7 +6,7 @@
 import { Context } from './context';
 import { Binding, BoundValue, ValueOrPromise } from './binding';
 import { isPromise } from './isPromise';
-import { describeInjectedArguments, describeInjectedProperties } from './inject';
+import { describeInjectedArguments, describeInjectedProperties, Injection } from './inject';
 
 // tslint:disable-next-line:no-any
 export type Constructor<T> = new(...args: any[]) => T;
@@ -54,6 +54,21 @@ export function instantiateClass<T>(ctor: Constructor<T>, ctx: Context): T | Pro
 }
 
 /**
+ * Resolve the value or promise for a given injection
+ * @param ctx Context
+ * @param injection Descriptor of the injection
+ */
+function resolve<T>(ctx: Context, injection: Injection): ValueOrPromise<T> {
+  if (injection.resolve) {
+    // A custom resolve function is provided
+    return injection.resolve(ctx, injection);
+  }
+  // Default to resolve the value from the context by binding key
+  const binding = ctx.getBinding(injection.bindingKey);
+  return binding.getValue(ctx);
+}
+
+/**
  * Given a function with arguments decorated with `@inject`,
  * return the list of arguments resolved using the values
  * bound in `ctx`.
@@ -75,15 +90,14 @@ export function resolveInjectedArguments(fn: Function, ctx: Context): BoundValue
   let asyncResolvers: Promise<void>[] | undefined = undefined;
 
   for (let ix = 0; ix < fn.length; ix++) {
-    const bindingKey = injectedArgs[ix].bindingKey;
-    if (!bindingKey) {
+    const injection = injectedArgs[ix];
+    if (!injection.bindingKey && !injection.resolve) {
       throw new Error(
         `Cannot resolve injected arguments for function ${fn.name}: ` +
         `The argument ${ix + 1} was not decorated for dependency injection.`);
     }
 
-    const binding = ctx.getBinding(bindingKey);
-    const valueOrPromise = binding.getValue(ctx);
+    const valueOrPromise = resolve(ctx, injection);
     if (isPromise(valueOrPromise)) {
       if (!asyncResolvers) asyncResolvers = [];
       asyncResolvers.push(valueOrPromise.then((v: BoundValue) => args[ix] = v));
@@ -110,14 +124,13 @@ export function resolveInjectedProperties(fn: Function, ctx: Context): KV | Prom
   const propertyResolver = (p: string) => ((v: BoundValue) => properties[p] = v);
 
   for (const p in injectedProperties) {
-    const bindingKey = injectedProperties[p].bindingKey;
-    if (!bindingKey) {
+    const injection = injectedProperties[p];
+    if (!injection.bindingKey && !injection.resolve) {
       throw new Error(
         `Cannot resolve injected property for class ${fn.name}: ` +
         `The property ${p} was not decorated for dependency injection.`);
     }
-    const binding = ctx.getBinding(bindingKey);
-    const valueOrPromise = binding.getValue(ctx);
+    const valueOrPromise = resolve(ctx, injection);
     if (isPromise(valueOrPromise)) {
       if (!asyncResolvers) asyncResolvers = [];
       asyncResolvers.push(valueOrPromise.then(propertyResolver(p)));

@@ -13,5 +13,5 @@ export {isPromise} from './isPromise';
 
 // internals for testing
 export {instantiateClass} from './resolver';
-export {describeInjectedArguments, describeInjectedProperties} from './inject';
+export {describeInjectedArguments, describeInjectedProperties, Injection} from './inject';
 export {Reflector} from './reflect';
