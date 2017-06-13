@@ -25,6 +25,26 @@ describe('function argument injection', () => {
     expect(meta.map(m => m.bindingKey)).to.deepEqual(['foo']);
   });
 
+  it('can retrieve information about injected method arguments', () => {
+    class TestClass {
+      test(@inject('foo') foo: string) {
+      }
+    }
+
+    const meta = describeInjectedArguments(TestClass.prototype, 'test');
+    expect(meta.map(m => m.bindingKey)).to.deepEqual(['foo']);
+  });
+
+  it('can retrieve information about injected static method arguments', () => {
+    class TestClass {
+      static test(@inject('foo') foo: string) {
+      }
+    }
+
+    const meta = describeInjectedArguments(TestClass, 'test');
+    expect(meta.map(m => m.bindingKey)).to.deepEqual(['foo']);
+  });
+
   it('returns an empty array when no ctor arguments are decorated', () => {
     class TestClass {
       constructor(foo: string) {
@@ -49,7 +69,7 @@ describe('property injection', () => {
       @inject('foo') foo: string;
     }
 
-    const meta = describeInjectedProperties(TestClass);
+    const meta = describeInjectedProperties(TestClass.prototype);
     expect(meta.foo.bindingKey).to.eql('foo');
   });
 
@@ -58,7 +78,16 @@ describe('property injection', () => {
       foo: string;
     }
 
-    const meta = describeInjectedProperties(TestClass);
+    const meta = describeInjectedProperties(TestClass.prototype);
     expect(meta).to.deepEqual({});
   });
+
+  it('cannot decorate static properties', () => {
+    expect(() => {
+      class TestClass {
+        @inject('foo') static foo: string;
+      }
+    }).to.throw(/@inject is not supported for a static property/);
+  });
+
 });
