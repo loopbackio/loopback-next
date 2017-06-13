@@ -24,6 +24,21 @@ type MaybeBody = any | undefined;
 
 const parseJsonBody: (req: ServerRequest) => Promise<MaybeBody> = promisify(jsonBody);
 
+/**
+ * Get the content-type header value from the request
+ * @param req Http request
+ */
+function getContentType(req: ServerRequest): string | undefined {
+  const val = req.headers['content-type'];
+  if (typeof val === 'string') {
+    return val;
+  } else if (Array.isArray(val)) {
+    // Assume only one value is present
+    return val[0];
+  }
+  return undefined;
+}
+
 export async function parseOperationArgs(request: ParsedRequest, operationSpec: OperationObject, pathParams: PathParameterValues): Promise<OperationArgs> {
   const args: OperationArgs = [];
   const body = await loadRequestBodyIfNeeded(operationSpec, request);
@@ -34,7 +49,7 @@ function loadRequestBodyIfNeeded(operationSpec: OperationObject, request: Server
   if (!hasArgumentsFromBody(operationSpec))
     return Promise.resolve();
 
-  const contentType = request.headers['content-type'];
+  const contentType = getContentType(request);
   if (contentType && !/json/.test(contentType)) {
     const err = new HttpErrors.UnsupportedMediaType(
       `Content-type ${contentType} is not supported.`);

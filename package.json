@@ -11,7 +11,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/mocha": "^2.2.39",
-    "@types/node": "^7.0.28",
+    "@types/node": "^7.0.31",
     "@types/request": "^0.0.43",
     "@types/request-promise": "^4.1.33",
     "coveralls": "^2.13.1",
