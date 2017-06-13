@@ -12,8 +12,12 @@ import { jugglerModule, bindModel, DataSourceConstructor, juggler, DefaultCrudRe
   from '../../../';
 
 class MyController {
-  constructor(@repository('noteRepo') public noteRepo: Repository<juggler.PersistedModel>) {
+  constructor(@repository('noteRepo')
+  public noteRepo: Repository<juggler.PersistedModel>) {
   }
+
+  @repository('noteRepo')
+  noteRepo2: Repository<juggler.PersistedModel>;
 }
 
 describe('repository decorator', () => {
@@ -35,8 +39,29 @@ describe('repository decorator', () => {
     ctx.bind('controllers:MyController').toClass(MyController);
   });
 
-  it('supports referencing predefined repository by name', async () => {
+  it('supports referencing predefined repository by name via constructor', async () => {
     const myController: MyController = await ctx.get('controllers:MyController');
     expect(myController.noteRepo).exactly(repo);
+  });
+
+  it('supports referencing predefined repository by name via property', async () => {
+    const myController: MyController = await ctx.get('controllers:MyController');
+    expect(myController.noteRepo2).exactly(repo);
+  });
+
+  it('throws not implemented for class-level @repository', () => {
+    expect(() => {
+      @repository('noteRepo')
+      class Controller1 {}
+    }).to.throw(/not implemented/);
+  });
+
+  it('throws not implemented for @repository(model, dataSource)', () => {
+    expect(() => {
+      class Controller2 {
+        constructor(@repository('customer', 'mysql')
+        public noteRepo: Repository<juggler.PersistedModel>) {}
+      }
+    }).to.throw(/not implemented/);
   });
 });
