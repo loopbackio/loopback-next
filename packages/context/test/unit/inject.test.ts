@@ -54,6 +54,34 @@ describe('function argument injection', () => {
     const meta = describeInjectedArguments(TestClass);
     expect(meta).to.deepEqual([]);
   });
+
+  it('supports inheritance without overriding constructor', () => {
+    class TestClass {
+      constructor(@inject('foo') foo: string) {
+      }
+    }
+
+    class SubTestClass extends TestClass {
+    }
+    const meta = describeInjectedArguments(SubTestClass);
+    expect(meta.map(m => m.bindingKey)).to.deepEqual(['foo']);
+  });
+
+  it('supports inheritance with overriding constructor', () => {
+    class TestClass {
+      constructor(@inject('foo') foo: string) {
+      }
+    }
+
+    class SubTestClass extends TestClass {
+      constructor(@inject('bar') foo: string) {
+        super(foo);
+      }
+    }
+    const meta = describeInjectedArguments(SubTestClass);
+    expect(meta.map(m => m.bindingKey)).to.deepEqual(['bar']);
+  });
+
 });
 
 describe('property injection', () => {
@@ -88,6 +116,42 @@ describe('property injection', () => {
         @inject('foo') static foo: string;
       }
     }).to.throw(/@inject is not supported for a static property/);
+  });
+
+  it('supports inheritance without overriding property', () => {
+    class TestClass {
+      @inject('foo') foo: string;
+    }
+
+    class SubTestClass extends TestClass {
+    }
+    const meta = describeInjectedProperties(SubTestClass.prototype);
+    expect(meta.foo.bindingKey).to.eql('foo');
+  });
+
+  it('supports inheritance with overriding property', () => {
+    class TestClass {
+      @inject('foo') foo: string;
+    }
+
+    class SubTestClass extends TestClass {
+      @inject('bar') foo: string;
+    }
+    const meta = describeInjectedProperties(SubTestClass.prototype);
+    expect(meta.foo.bindingKey).to.eql('bar');
+  });
+
+  it('supports inherited and own properties', () => {
+    class TestClass {
+      @inject('foo') foo: string;
+    }
+
+    class SubTestClass extends TestClass {
+      @inject('bar') bar: string;
+    }
+    const meta = describeInjectedProperties(SubTestClass.prototype);
+    expect(meta.foo.bindingKey).to.eql('foo');
+    expect(meta.bar.bindingKey).to.eql('bar');
   });
 
 });
