@@ -8,8 +8,8 @@ import { Reflector } from './reflect';
 import { BoundValue, ValueOrPromise } from './binding';
 import { Context } from './context';
 
-const REFLECTION_CDI_KEY = 'loopback:inject:constructor';
-const REFLECTION_PDI_KEY = 'loopback:inject:properties';
+const PARAMETERS_KEY = 'inject:parameters';
+const PROPERTIES_KEY = 'inject:properties';
 
 /**
  * A function to provide resolution of injected values
@@ -55,41 +55,51 @@ export interface Injection {
  */
 export function inject(bindingKey: string, metadata?: Object, resolve?: ResolverFunction) {
   // tslint:disable-next-line:no-any
-  return function markArgumentAsInjected(target: any, propertyKey?: string | symbol,
+  return function markParameterOrPropertyAsInjected(target: any, propertyKey?: string | symbol,
     propertyDescriptorOrParameterIndex?: TypedPropertyDescriptor<BoundValue> | number) {
-
     if (typeof propertyDescriptorOrParameterIndex === 'number') {
       // The decorator is applied to a method parameter
       // Please note propertyKey is `undefined` for constructor
       const injectedArgs: Injection[] =
-        Reflector.getOwnMetadata(REFLECTION_CDI_KEY, target, propertyKey!) || [];
+        Reflector.getOwnMetadata(PARAMETERS_KEY, target, propertyKey!) || [];
       injectedArgs[propertyDescriptorOrParameterIndex] = {bindingKey, metadata, resolve};
-      Reflector.defineMetadata(REFLECTION_CDI_KEY, injectedArgs, target, propertyKey!);
+      Reflector.defineMetadata(PARAMETERS_KEY, injectedArgs, target, propertyKey!);
     } else if (propertyKey) {
+      if (typeof Object.getPrototypeOf(target) === 'function') {
+        const prop = target.name + '.' + propertyKey.toString();
+        throw new Error('@inject is not supported for a static property: ' + prop);
+      }
       // The decorator is applied to a property
       const injections: { [p: string]: Injection } =
-        Reflector.getOwnMetadata(REFLECTION_PDI_KEY, target) || {};
+        Reflector.getOwnMetadata(PROPERTIES_KEY, target) || {};
       injections[propertyKey] = {bindingKey, metadata, resolve};
-      Reflector.defineMetadata(REFLECTION_PDI_KEY, injections, target);
+      Reflector.defineMetadata(PROPERTIES_KEY, injections, target);
     } else {
-      throw new Error('@inject can be used on properties or method parameters.');
+      throw new Error('@inject can only be used on properties or method parameters.');
     }
   };
 }
 
 /**
- * Return an array of injection objects for constructor parameters
- * @param target The target class
+ * Return an array of injection objects for parameters
+ * @param target The target class for constructor or static methods, or the prototype
+ * for instance methods
+ * @param methodName Method name, undefined for constructor
  */
-export function describeInjectedArguments(target: Function): Injection[] {
-  return Reflector.getOwnMetadata(REFLECTION_CDI_KEY, target) || [];
+// tslint:disable-next-line:no-any
+export function describeInjectedArguments(target: any, method?: string | symbol): Injection[] {
+  if (method) {
+    return Reflector.getOwnMetadata(PARAMETERS_KEY, target, method) || [];
+  } else {
+    return Reflector.getOwnMetadata(PARAMETERS_KEY, target) || [];
+  }
 }
 
 /**
  * Return a map of injection objects for properties
- * @param target The target class. Please note a property decorator function receives
- * the target.prototype
+ * @param target The target class for static properties or prototype for instance properties.
  */
-export function describeInjectedProperties(target: Function): { [p: string]: Injection } {
-  return Reflector.getOwnMetadata(REFLECTION_PDI_KEY, target.prototype) || {};
+// tslint:disable-next-line:no-any
+export function describeInjectedProperties(target: any): { [p: string]: Injection } {
+  return Reflector.getOwnMetadata(PROPERTIES_KEY, target) || {};
 }

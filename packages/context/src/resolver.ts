@@ -116,7 +116,7 @@ export function resolveInjectedArguments(fn: Function, ctx: Context): BoundValue
 export type KV = { [p: string]: BoundValue };
 
 export function resolveInjectedProperties(fn: Function, ctx: Context): KV | Promise<KV> {
-  const injectedProperties = describeInjectedProperties(fn);
+  const injectedProperties = describeInjectedProperties(fn.prototype);
 
   const properties: KV = {};
   let asyncResolvers: Promise<void>[] | undefined = undefined;
