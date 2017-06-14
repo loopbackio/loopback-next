@@ -15,7 +15,7 @@ export class DateType implements Type<Date> {
   readonly name = 'date';
 
   isInstance(value: any) {
-    return value == null || (value instanceof Date);
+    return value == null || value instanceof Date;
   }
 
   isCoercible(value: any): boolean {
@@ -54,7 +54,7 @@ export class DateType implements Type<Date> {
     return d;
   }
 
-  serialize(value: Date|null|undefined) {
+  serialize(value: Date | null | undefined) {
     if (value == null) return value;
     return value.toJSON();
   }

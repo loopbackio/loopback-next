@@ -12,7 +12,10 @@ const debug = require('debug')('loopback:core:server');
 export class Server extends Context {
   public state: ServerState;
 
-  constructor(public app: Application, public config: ServerConfig = {port: 3000}) {
+  constructor(
+    public app: Application,
+    public config: ServerConfig = {port: 3000},
+  ) {
     super();
     this.state = ServerState.cold;
   }
@@ -38,7 +41,11 @@ export class Server extends Context {
     });
   }
 
-  protected _onUnhandledError(req: ServerRequest, res: ServerResponse, err: Error): void {
+  protected _onUnhandledError(
+    req: ServerRequest,
+    res: ServerResponse,
+    err: Error,
+  ): void {
     if (!res.headersSent) {
       res.statusCode = 500;
       res.end();
@@ -47,7 +54,9 @@ export class Server extends Context {
     // It's the responsibility of the Application to handle any errors.
     // If an unhandled error escaped, then something very wrong happened
     // and it's best to crash the process immediately.
-    process.nextTick(() => { throw err; });
+    process.nextTick(() => {
+      throw err;
+    });
   }
 }
 

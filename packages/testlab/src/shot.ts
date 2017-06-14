@@ -13,7 +13,8 @@ import {ServerRequest, ServerResponse} from 'http';
 import {
   RequestOptions as ShotRequestOptions,
   ResponseObject,
-  inject} from 'shot';
+  inject,
+} from 'shot';
 
 export {inject, ShotRequestOptions};
 
@@ -24,11 +25,11 @@ export const ShotRequest: ShotRequestCtor = require('shot/lib/request');
 export const ShotResponse: ShotResponseCtor = require('shot/lib/response');
 
 export type ShotRequestCtor =
-  new(options: ShotRequestOptions) => ServerRequest;
+  new (options: ShotRequestOptions) => ServerRequest;
 
 export type ShotCallback = (response: ResponseObject) => void;
 
 export type ShotResponseCtor =
-  new(request: ServerRequest, onEnd: ShotCallback) => ServerResponse;
+  new (request: ServerRequest, onEnd: ShotCallback) => ServerResponse;
 
 export type ShotObservedResponse = ResponseObject;

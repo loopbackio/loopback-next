@@ -17,8 +17,7 @@ describe('constructor injection', () => {
 
   it('can resolve constructor arguments', () => {
     class TestClass {
-      constructor(@inject('foo') public foo: string) {
-      }
+      constructor(@inject('foo') public foo: string) {}
     }
 
     const t = instantiateClass(TestClass, ctx) as TestClass;
@@ -27,8 +26,10 @@ describe('constructor injection', () => {
 
   it('can report error for missing binding key', () => {
     class TestClass {
-      constructor(@inject('', {x: 'bar'}) public fooBar: string) {
-      }
+      constructor(
+        @inject('', {x: 'bar'})
+        public fooBar: string,
+      ) {}
     }
 
     expect(() => {
@@ -38,27 +39,32 @@ describe('constructor injection', () => {
 
   it('can resolve constructor arguments with custom resolve function', () => {
     class TestClass {
-      constructor(@inject('foo', {x: 'bar'},  (c: Context, injection: Injection) => {
-        const barKey = injection.metadata && injection.metadata.x;
-        const b = c.getSync(barKey);
-        const f = c.getSync(injection.bindingKey);
-        return f + ':' + b;
-      }) public fooBar: string) {
-      }
+      constructor(
+        @inject('foo', {x: 'bar'}, (c: Context, injection: Injection) => {
+          const barKey = injection.metadata && injection.metadata.x;
+          const b = c.getSync(barKey);
+          const f = c.getSync(injection.bindingKey);
+          return f + ':' + b;
+        })
+        public fooBar: string,
+      ) {}
     }
 
     const t = instantiateClass(TestClass, ctx) as TestClass;
     expect(t.fooBar).to.eql('FOO:BAR');
   });
 
+  // tslint:disable-next-line:max-line-length
   it('can resolve constructor arguments with custom resolve function and no binding key', () => {
     class TestClass {
-      constructor(@inject('', {x: 'bar'},  (c: Context, injection: Injection) => {
-        const barKey = injection.metadata && injection.metadata.x;
-        const b = c.getSync(barKey);
-        return 'foo' + ':' + b;
-      }) public fooBar: string) {
-      }
+      constructor(
+        @inject('', {x: 'bar'}, (c: Context, injection: Injection) => {
+          const barKey = injection.metadata && injection.metadata.x;
+          const b = c.getSync(barKey);
+          return 'foo' + ':' + b;
+        })
+        public fooBar: string,
+      ) {}
     }
 
     const t = instantiateClass(TestClass, ctx) as TestClass;
@@ -67,8 +73,10 @@ describe('constructor injection', () => {
 
   it('can resolve constructor arguments with custom decorator', () => {
     class TestClass {
-      constructor(@customDecorator({x: 'bar'}) public fooBar: string) {
-      }
+      constructor(
+        @customDecorator({x: 'bar'})
+        public fooBar: string,
+      ) {}
     }
 
     const t = instantiateClass(TestClass, ctx) as TestClass;
@@ -87,18 +95,20 @@ describe('async constructor injection', () => {
 
   it('can resolve constructor arguments', async () => {
     class TestClass {
-      constructor(@inject('foo') public foo: string) {
-      }
+      constructor(@inject('foo') public foo: string) {}
     }
 
     const t = await instantiateClass(TestClass, ctx);
     expect(t.foo).to.eql('FOO');
   });
 
+  // tslint:disable-next-line:max-line-length
   it('can resolve constructor arguments with custom async decorator', async () => {
     class TestClass {
-      constructor(@customAsyncDecorator({x: 'bar'}) public fooBar: string) {
-      }
+      constructor(
+        @customAsyncDecorator({x: 'bar'})
+        public fooBar: string,
+      ) {}
     }
 
     const t = await instantiateClass(TestClass, ctx);
@@ -136,7 +146,7 @@ describe('property injection', () => {
 
   it('can resolve injected properties with custom resolve function', () => {
     class TestClass {
-      @inject('foo', {x: 'bar'},  (c: Context, injection: Injection) => {
+      @inject('foo', {x: 'bar'}, (c: Context, injection: Injection) => {
         const barKey = injection.metadata && injection.metadata.x;
         const b = c.getSync(barKey);
         const f = c.getSync(injection.bindingKey);
@@ -149,9 +159,10 @@ describe('property injection', () => {
     expect(t.fooBar).to.eql('FOO:BAR');
   });
 
+  // tslint:disable-next-line:max-line-length
   it('can resolve inject properties with custom resolve function and no binding key', () => {
     class TestClass {
-      @inject('', {x: 'bar'},  (c: Context, injection: Injection) => {
+      @inject('', {x: 'bar'}, (c: Context, injection: Injection) => {
         const barKey = injection.metadata && injection.metadata.x;
         const b = c.getSync(barKey);
         return 'foo' + ':' + b;
@@ -215,8 +226,7 @@ describe('dependency injection', () => {
     class TestClass {
       @inject('bar') bar: string;
 
-      constructor(@inject('foo') public foo: string) {
-      }
+      constructor(@inject('foo') public foo: string) {}
     }
 
     const t = instantiateClass(TestClass, ctx) as TestClass;
@@ -238,8 +248,7 @@ describe('async dependency injection', () => {
     class TestClass {
       @inject('bar') bar: string;
 
-      constructor(@inject('foo') public foo: string) {
-      }
+      constructor(@inject('foo') public foo: string) {}
     }
 
     const t = await instantiateClass(TestClass, ctx);
@@ -261,8 +270,7 @@ describe('async constructor & sync property injection', () => {
     class TestClass {
       @inject('bar') bar: string;
 
-      constructor(@inject('foo') public foo: string) {
-      }
+      constructor(@inject('foo') public foo: string) {}
     }
 
     const t = await instantiateClass(TestClass, ctx);
@@ -284,8 +292,7 @@ describe('sync constructor & async property injection', () => {
     class TestClass {
       @inject('bar') bar: string;
 
-      constructor(@inject('foo') public foo: string) {
-      }
+      constructor(@inject('foo') public foo: string) {}
     }
 
     const t = await instantiateClass(TestClass, ctx);

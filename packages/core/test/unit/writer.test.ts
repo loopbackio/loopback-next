@@ -3,11 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  ServerResponse,
-  OperationRetval,
-  writeResultToResponse,
-} from '../..';
+import {ServerResponse, OperationRetval, writeResultToResponse} from '../..';
 
 import {
   expect,
@@ -26,7 +22,8 @@ describe('writer', () => {
     writeResultToResponse(response, 'Joe');
     const result = await observedResponse;
 
-    // content-type should be 'application/json' since it's set into the response in writer.writeResultToResponse()
+    // content-type should be 'application/json' since it's set
+    // into the response in writer.writeResultToResponse()
     expect(result.headers['content-type']).to.eql('text/plain');
     expect(result.payload).to.equal('Joe');
   });

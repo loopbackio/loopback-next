@@ -7,9 +7,8 @@ import {expect} from '@loopback/testlab';
 import * as types from '../../../';
 
 describe('types', () => {
-
   describe('string', () => {
-    const stringType  = new types.StringType();
+    const stringType = new types.StringType();
     it('checks isInstance', () => {
       expect(stringType.isInstance('str')).to.be.true();
       expect(stringType.isInstance(null)).to.be.true();
@@ -52,11 +51,10 @@ describe('types', () => {
       expect(stringType.serialize(null)).null();
       expect(stringType.serialize(undefined)).undefined();
     });
-
   });
 
   describe('boolean', () => {
-    const booleanType  = new types.BooleanType();
+    const booleanType = new types.BooleanType();
     it('checks isInstance', () => {
       expect(booleanType.isInstance('str')).to.be.false();
       expect(booleanType.isInstance(null)).to.be.true();
@@ -93,7 +91,8 @@ describe('types', () => {
       expect(booleanType.coerce([1, '2'])).to.equal(true);
       expect(booleanType.coerce('')).to.equal(false);
       expect(booleanType.coerce('true')).to.equal(true);
-      expect(booleanType.coerce('false')).to.equal(true); // string false is true
+      // string 'false' is boolean true
+      expect(booleanType.coerce('false')).to.equal(true);
       expect(booleanType.coerce(0)).to.equal(false);
       expect(booleanType.coerce(1)).to.equal(true);
       const date = new Date();
@@ -106,11 +105,10 @@ describe('types', () => {
       expect(booleanType.serialize(null)).null();
       expect(booleanType.serialize(undefined)).undefined();
     });
-
   });
 
   describe('number', () => {
-    const numberType  = new types.NumberType();
+    const numberType = new types.NumberType();
     it('checks isInstance', () => {
       expect(numberType.isInstance('str')).to.be.false();
       expect(numberType.isInstance(null)).to.be.true();
@@ -165,11 +163,10 @@ describe('types', () => {
       expect(numberType.serialize(null)).null();
       expect(numberType.serialize(undefined)).undefined();
     });
-
   });
 
   describe('date', () => {
-    const dateType  = new types.DateType();
+    const dateType = new types.DateType();
     it('checks isInstance', () => {
       expect(dateType.isInstance('str')).to.be.false();
       expect(dateType.isInstance(null)).to.be.true();
@@ -208,21 +205,17 @@ describe('types', () => {
     it('coerces values', () => {
       expect(() => dateType.coerce('str')).to.throw(/Invalid date/);
       // '1' will be parsed as local 2001-01-01
-      expect(dateType.coerce('1')).to.eql(
-        new Date('01/01/2001'));
+      expect(dateType.coerce('1')).to.eql(new Date('01/01/2001'));
       // '1.1' will be parsed as local 2001-01-01
-      expect(dateType.coerce('1.1')).to.eql(
-        new Date('01/01/2001'));
+      expect(dateType.coerce('1.1')).to.eql(new Date('01/01/2001'));
       expect(dateType.coerce(null)).to.equal(null);
       expect(dateType.coerce(undefined)).to.equal(undefined);
       expect(dateType.coerce(true)).to.eql(new Date(1));
       expect(dateType.coerce(false)).to.eql(new Date(0));
       expect(() => dateType.coerce({x: 1})).to.throw(/Invalid date/);
-      expect(dateType.coerce([1, '2'])).to.eql(
-        new Date('01/02/2001'));
+      expect(dateType.coerce([1, '2'])).to.eql(new Date('01/02/2001'));
       expect(dateType.coerce(1)).to.eql(new Date('1970-01-01T00:00:00.001Z'));
-      expect(dateType.coerce(1.1)).to.eql(
-        new Date('1970-01-01T00:00:00.001Z'));
+      expect(dateType.coerce(1.1)).to.eql(new Date('1970-01-01T00:00:00.001Z'));
       const date = new Date();
       expect(dateType.coerce(date)).to.equal(date);
     });
@@ -233,11 +226,10 @@ describe('types', () => {
       expect(dateType.serialize(null)).null();
       expect(dateType.serialize(undefined)).undefined();
     });
-
   });
 
   describe('buffer', () => {
-    const bufferType  = new types.BufferType();
+    const bufferType = new types.BufferType();
     it('checks isInstance', () => {
       expect(bufferType.isInstance(new Buffer([1]))).to.be.true();
       expect(bufferType.isInstance(new Buffer('123'))).to.be.true();
@@ -281,17 +273,17 @@ describe('types', () => {
     });
 
     it('serializes values', () => {
-      expect(bufferType.serialize(new Buffer('str'), {encoding: 'utf-8'})).
-        to.eql('str');
+      expect(
+        bufferType.serialize(new Buffer('str'), {encoding: 'utf-8'}),
+      ).to.eql('str');
       expect(bufferType.serialize(new Buffer('str'))).to.eql('c3Ry');
       expect(bufferType.serialize(null)).null();
       expect(bufferType.serialize(undefined)).undefined();
     });
-
   });
 
   describe('any', () => {
-    const anyType  = new types.AnyType();
+    const anyType = new types.AnyType();
     it('checks isInstance', () => {
       expect(anyType.isInstance('str')).to.be.true();
       expect(anyType.isInstance(null)).to.be.true();
@@ -350,12 +342,11 @@ describe('types', () => {
         x: 1,
         y: 2,
         toJSON() {
-          return { a: json.x + json.y };
+          return {a: json.x + json.y};
         },
       };
-      expect(anyType.serialize(json)).to.eql({ a: 3 });
+      expect(anyType.serialize(json)).to.eql({a: 3});
     });
-
   });
 
   describe('array', () => {
@@ -419,7 +410,11 @@ describe('types', () => {
 
       expect(arrayType.coerce([1, '2'])).to.eql(['1', '2']);
       expect(arrayType.coerce(['2'])).to.eql(['2']);
-      expect(arrayType.coerce([null, undefined, '2'])).to.eql([null, undefined, '2']);
+      expect(arrayType.coerce([null, undefined, '2'])).to.eql([
+        null,
+        undefined,
+        '2',
+      ]);
       expect(arrayType.coerce([true, '2'])).to.eql(['true', '2']);
       expect(arrayType.coerce([false, '2'])).to.eql(['false', '2']);
       expect(arrayType.coerce([date])).to.eql([date.toJSON()]);
@@ -488,7 +483,6 @@ describe('types', () => {
       const dateType = new types.DateType();
       const numberOrDateType = new types.UnionType([numberType, dateType]);
       expect(() => numberOrDateType.coerce('str')).to.throw(/Invalid union/);
-
     });
 
     it('serializes values', () => {
@@ -500,5 +494,4 @@ describe('types', () => {
       expect(unionType.serialize(undefined)).undefined();
     });
   });
-
 });

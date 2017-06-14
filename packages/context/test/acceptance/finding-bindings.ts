@@ -25,7 +25,6 @@ describe('Context bindings - Finding bindings', () => {
         expect(keys).to.containDeep(['foo', 'baz']);
       });
     });
-
   });
 
   describe('Finding bindings by pattern', () => {

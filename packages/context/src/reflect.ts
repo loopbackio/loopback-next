@@ -19,18 +19,22 @@ export class NamespacedReflect {
 
   private getMetadataKey(metadataKey: string): string {
     // prefix namespace, if provided, to the metadata key
-    return this.namespace? this.namespace + ':' + metadataKey : metadataKey;
+    return this.namespace ? this.namespace + ':' + metadataKey : metadataKey;
   }
 
   /**
    * define metadata for a target class or it's property/method
    */
-  defineMetadata(metadataKey: string, metadataValue: any, target: Object, propertyKey?: string | symbol) {
+  defineMetadata(
+    metadataKey: string,
+    metadataValue: any,
+    target: Object,
+    propertyKey?: string | symbol,
+  ) {
     metadataKey = this.getMetadataKey(metadataKey);
     if (propertyKey) {
       Reflect.defineMetadata(metadataKey, metadataValue, target, propertyKey);
-    }
-    else {
+    } else {
       Reflect.defineMetadata(metadataKey, metadataValue, target);
     }
   }
@@ -38,7 +42,11 @@ export class NamespacedReflect {
   /**
    * lookup metadata from a target object and its prototype chain
    */
-  getMetadata(metadataKey: string, target: Object, propertyKey?: string | symbol): any {
+  getMetadata(
+    metadataKey: string,
+    target: Object,
+    propertyKey?: string | symbol,
+  ): any {
     metadataKey = this.getMetadataKey(metadataKey);
     if (propertyKey) {
       return Reflect.getMetadata(metadataKey, target, propertyKey);
@@ -49,7 +57,11 @@ export class NamespacedReflect {
   /**
    * get own metadata for a target object or it's property/method
    */
-  getOwnMetadata(metadataKey: string, target: Object, propertyKey?: string | symbol): any {
+  getOwnMetadata(
+    metadataKey: string,
+    target: Object,
+    propertyKey?: string | symbol,
+  ): any {
     metadataKey = this.getMetadataKey(metadataKey);
     if (propertyKey) {
       return Reflect.getOwnMetadata(metadataKey, target, propertyKey);
@@ -63,7 +75,11 @@ export class NamespacedReflect {
    * @param target Target
    * @param propertyKey Optional property key
    */
-  hasMetadata(metadataKey: string, target: Object, propertyKey?: string | symbol): boolean {
+  hasMetadata(
+    metadataKey: string,
+    target: Object,
+    propertyKey?: string | symbol,
+  ): boolean {
     metadataKey = this.getMetadataKey(metadataKey);
     if (propertyKey) {
       return Reflect.hasMetadata(metadataKey, target, propertyKey);
@@ -71,7 +87,11 @@ export class NamespacedReflect {
     return Reflect.hasMetadata(metadataKey, target);
   }
 
-  hasOwnMetadata(metadataKey: string, target: Object, propertyKey?: string | symbol): boolean {
+  hasOwnMetadata(
+    metadataKey: string,
+    target: Object,
+    propertyKey?: string | symbol,
+  ): boolean {
     metadataKey = this.getMetadataKey(metadataKey);
     if (propertyKey) {
       return Reflect.hasOwnMetadata(metadataKey, target, propertyKey);
@@ -79,7 +99,11 @@ export class NamespacedReflect {
     return Reflect.hasOwnMetadata(metadataKey, target);
   }
 
-  deleteMetadata(metadataKey: string, target: Object, propertyKey?: string | symbol): boolean {
+  deleteMetadata(
+    metadataKey: string,
+    target: Object,
+    propertyKey?: string | symbol,
+  ): boolean {
     metadataKey = this.getMetadataKey(metadataKey);
     if (propertyKey) {
       return Reflect.deleteMetadata(metadataKey, target, propertyKey);
@@ -129,9 +153,12 @@ export class NamespacedReflect {
     return metaKeys;
   }
 
-  decorate(decorators: (PropertyDecorator | MethodDecorator)[] | ClassDecorator[],
-    target: Object, targetKey?: string | symbol, descriptor?: PropertyDescriptor):
-    PropertyDescriptor {
+  decorate(
+    decorators: (PropertyDecorator | MethodDecorator)[] | ClassDecorator[],
+    target: Object,
+    targetKey?: string | symbol,
+    descriptor?: PropertyDescriptor,
+  ): PropertyDescriptor {
     if (targetKey) {
       return Reflect.decorate(decorators, target, targetKey, descriptor);
     } else {
@@ -140,16 +167,17 @@ export class NamespacedReflect {
   }
 
   /* tslint:disable-next-line:no-any */
-  metadata(metadataKey: string, metadataValue: any): {
+  metadata(
+    metadataKey: string,
+    metadataValue: any,
+  ): {
     (target: Function): void;
     (target: Object, targetKey: string | symbol): void;
   } {
     metadataKey = this.getMetadataKey(metadataKey);
     return Reflect.metadata(metadataKey, metadataValue);
   }
-
 }
 
 /* tslint:disable-next-line:variable-name */
 export const Reflector = new NamespacedReflect('loopback');
-

@@ -23,7 +23,10 @@ const debug = require('debug')('loopback:core:http-handler');
 export class HttpHandler {
   protected _routes: RoutingTable<string> = new RoutingTable<string>();
 
-  public handleRequest: (request: ServerRequest, response: ServerResponse) => Promise<void>;
+  public handleRequest: (
+    request: ServerRequest,
+    response: ServerResponse,
+  ) => Promise<void>;
 
   constructor(protected _rootContext: Context) {
     this.handleRequest = (req, res) => this._handleRequest(req, res);
@@ -33,7 +36,10 @@ export class HttpHandler {
     this._routes.registerController(name, spec);
   }
 
-  protected async _handleRequest(request: ServerRequest, response: ServerResponse): Promise<void> {
+  protected async _handleRequest(
+    request: ServerRequest,
+    response: ServerResponse,
+  ): Promise<void> {
     const parsedRequest: ParsedRequest = parseRequestUrl(request);
     const requestContext = this._createRequestContext(request, response);
 
@@ -44,7 +50,10 @@ export class HttpHandler {
     return sequence.run(parsedRequest, response);
   }
 
-  protected _createRequestContext(req: ServerRequest, res: ServerResponse): Context {
+  protected _createRequestContext(
+    req: ServerRequest,
+    res: ServerResponse,
+  ): Context {
     const requestContext = new Context(this._rootContext);
     requestContext.bind('http.request').to(req);
     requestContext.bind('http.response').to(res);
@@ -57,12 +66,16 @@ export class HttpHandler {
         const req = context.getSync('http.request');
         const found = this._routes.find(req);
         if (!found)
-          throw new HttpErrors.NotFound(`Endpoint "${req.method} ${req.path}" not found.`);
+          throw new HttpErrors.NotFound(
+            `Endpoint "${req.method} ${req.path}" not found.`,
+          );
 
         // bind routing information to context
         const ctor = context.getBinding(found.controller).valueConstructor;
         if (!ctor)
-          throw new Error(`The controller ${found.controller} was not bound via .toClass()`);
+          throw new Error(
+            `The controller ${found.controller} was not bound via .toClass()`,
+          );
         context.bind('controller.current.ctor').to(ctor);
         context.bind('controller.current.operation').to(found.methodName);
 
@@ -73,8 +86,14 @@ export class HttpHandler {
 
   protected _bindInvokeMethod(context: Context) {
     context.bind('invokeMethod').toDynamicValue(() => {
-      return async (controllerName: string, method: string, args: OperationArgs) => {
-        const controller: { [opName: string]: Function } = await context.get(controllerName);
+      return async (
+        controllerName: string,
+        method: string,
+        args: OperationArgs,
+      ) => {
+        const controller: {[opName: string]: Function} = await context.get(
+          controllerName,
+        );
         const result = await controller[method](...args);
         return result;
       };

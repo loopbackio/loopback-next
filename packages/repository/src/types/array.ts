@@ -12,8 +12,7 @@ import * as util from 'util';
  * Array type, such as string[]
  */
 export class ArrayType<T> implements Type<Array<T>> {
-  constructor(public itemType: Type<T>) {
-  }
+  constructor(public itemType: Type<T>) {}
 
   readonly name = 'array';
 
@@ -22,8 +21,8 @@ export class ArrayType<T> implements Type<Array<T>> {
     if (!Array.isArray(value)) {
       return false;
     }
-    const list = value as Array<T|null|undefined>;
-    return list.every((i) => this.itemType.isInstance(i));
+    const list = value as Array<T | null | undefined>;
+    return list.every(i => this.itemType.isInstance(i));
   }
 
   isCoercible(value: any): boolean {
@@ -31,7 +30,7 @@ export class ArrayType<T> implements Type<Array<T>> {
     if (!Array.isArray(value)) {
       return false;
     }
-    return value.every((i) => this.itemType.isCoercible(i));
+    return value.every(i => this.itemType.isCoercible(i));
   }
 
   defaultValue(): Array<T> {
@@ -44,11 +43,11 @@ export class ArrayType<T> implements Type<Array<T>> {
       const msg = util.format('Invalid %s: %j', this.name, value);
       throw new TypeError(msg);
     }
-    return value.map((i) => this.itemType.coerce(i));
+    return value.map(i => this.itemType.coerce(i));
   }
 
-  serialize(value: Array<T>|null|undefined) {
+  serialize(value: Array<T> | null | undefined) {
     if (value == null) return value;
-    return value.map((i) => this.itemType.serialize(i));
+    return value.map(i => this.itemType.serialize(i));
   }
 }

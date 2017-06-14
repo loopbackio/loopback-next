@@ -23,7 +23,7 @@ describe('Context bindings - Locking bindings', () => {
       context('is locked', () => {
         before(lockBinding);
 
-        it('sets it\'s lock state to true', () => {
+        it("sets it's lock state to true", () => {
           expect(binding.isLocked).to.be.true();
         });
 
@@ -38,8 +38,11 @@ describe('Context bindings - Locking bindings', () => {
         it('throws a rebind error', () => {
           const key = 'foo';
           const operation = () => ctx.bind('foo');
-          expect(operation).to.throw(new RegExp(
-            `Cannot rebind key "${key}", associated binding is locked`));
+          expect(operation).to.throw(
+            new RegExp(
+              `Cannot rebind key "${key}", associated binding is locked`,
+            ),
+          );
         });
       });
     });

@@ -4,21 +4,23 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {inject, describeInjectedArguments, describeInjectedProperties} from '../..';
+import {
+  inject,
+  describeInjectedArguments,
+  describeInjectedProperties,
+} from '../..';
 
 describe('function argument injection', () => {
   it('can decorate class constructor arguments', () => {
     class TestClass {
-      constructor(@inject('foo') foo: string) {
-      }
+      constructor(@inject('foo') foo: string) {}
     }
     // the test passes when TypeScript Compiler is happy
   });
 
   it('can retrieve information about injected constructor arguments', () => {
     class TestClass {
-      constructor(@inject('foo') foo: string) {
-      }
+      constructor(@inject('foo') foo: string) {}
     }
 
     const meta = describeInjectedArguments(TestClass);
@@ -27,8 +29,7 @@ describe('function argument injection', () => {
 
   it('can retrieve information about injected method arguments', () => {
     class TestClass {
-      test(@inject('foo') foo: string) {
-      }
+      test(@inject('foo') foo: string) {}
     }
 
     const meta = describeInjectedArguments(TestClass.prototype, 'test');
@@ -37,8 +38,7 @@ describe('function argument injection', () => {
 
   it('can retrieve information about injected static method arguments', () => {
     class TestClass {
-      static test(@inject('foo') foo: string) {
-      }
+      static test(@inject('foo') foo: string) {}
     }
 
     const meta = describeInjectedArguments(TestClass, 'test');
@@ -47,8 +47,7 @@ describe('function argument injection', () => {
 
   it('returns an empty array when no ctor arguments are decorated', () => {
     class TestClass {
-      constructor(foo: string) {
-      }
+      constructor(foo: string) {}
     }
 
     const meta = describeInjectedArguments(TestClass);
@@ -57,20 +56,17 @@ describe('function argument injection', () => {
 
   it('supports inheritance without overriding constructor', () => {
     class TestClass {
-      constructor(@inject('foo') foo: string) {
-      }
+      constructor(@inject('foo') foo: string) {}
     }
 
-    class SubTestClass extends TestClass {
-    }
+    class SubTestClass extends TestClass {}
     const meta = describeInjectedArguments(SubTestClass);
     expect(meta.map(m => m.bindingKey)).to.deepEqual(['foo']);
   });
 
   it('supports inheritance with overriding constructor', () => {
     class TestClass {
-      constructor(@inject('foo') foo: string) {
-      }
+      constructor(@inject('foo') foo: string) {}
     }
 
     class SubTestClass extends TestClass {
@@ -81,7 +77,6 @@ describe('function argument injection', () => {
     const meta = describeInjectedArguments(SubTestClass);
     expect(meta.map(m => m.bindingKey)).to.deepEqual(['bar']);
   });
-
 });
 
 describe('property injection', () => {
@@ -123,8 +118,7 @@ describe('property injection', () => {
       @inject('foo') foo: string;
     }
 
-    class SubTestClass extends TestClass {
-    }
+    class SubTestClass extends TestClass {}
     const meta = describeInjectedProperties(SubTestClass.prototype);
     expect(meta.foo.bindingKey).to.eql('foo');
   });
@@ -153,5 +147,4 @@ describe('property injection', () => {
     expect(meta.foo.bindingKey).to.eql('foo');
     expect(meta.bar.bindingKey).to.eql('bar');
   });
-
 });

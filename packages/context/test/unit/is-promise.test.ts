@@ -37,6 +37,6 @@ describe('isPromise', () => {
   });
 
   it('returns false when .then() is not a function', () => {
-    expect(isPromise({ then: 'later' })).to.be.false();
+    expect(isPromise({then: 'later'})).to.be.false();
   });
 });

@@ -20,17 +20,20 @@ export class OpenApiSpecBuilder {
   }
 
   withOperation(verb: string, path: string, spec: OperationObject): this {
-    if (!this._spec.paths[path])
-      this._spec.paths[path] = {};
+    if (!this._spec.paths[path]) this._spec.paths[path] = {};
     this._spec.paths[path][verb] = spec;
     return this;
   }
 
-  withOperationReturningString(verb: string, path: string, operationName: string): this {
+  withOperationReturningString(
+    verb: string,
+    path: string,
+    operationName: string,
+  ): this {
     return this.withOperation(verb, path, {
       'x-operation-name': operationName,
       responses: {
-        '200': { type: 'string' },
+        '200': {type: 'string'},
       },
     });
   }

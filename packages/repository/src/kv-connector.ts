@@ -21,8 +21,11 @@ export interface KVConnector<T extends Entity> extends Connector {
    * @param key
    * @param options
    */
-  delete(modelClass: Class<Entity>, key: string, options?: Options):
-    Promise<boolean>;
+  delete(
+    modelClass: Class<Entity>,
+    key: string,
+    options?: Options,
+  ): Promise<boolean>;
 
   /**
    * Delete all entries
@@ -30,8 +33,7 @@ export interface KVConnector<T extends Entity> extends Connector {
    * @param key
    * @param options
    */
-  deleteAll(modelClass: Class<Entity>, options?: Options):
-    Promise<number>;
+  deleteAll(modelClass: Class<Entity>, options?: Options): Promise<number>;
 
   /**
    * Get an entry by key
@@ -39,8 +41,7 @@ export interface KVConnector<T extends Entity> extends Connector {
    * @param key
    * @param options
    */
-  get(modelClass: Class<Entity>, key: string, options?: Options):
-    Promise<T>;
+  get(modelClass: Class<Entity>, key: string, options?: Options): Promise<T>;
 
   /**
    * Set an entry with key/value
@@ -48,8 +49,12 @@ export interface KVConnector<T extends Entity> extends Connector {
    * @param key
    * @param options
    */
-  set(modelClass: Class<Entity>, key: string, value: EntityData,
-    options?: Options): Promise<boolean>;
+  set(
+    modelClass: Class<Entity>,
+    key: string,
+    value: EntityData,
+    options?: Options,
+  ): Promise<boolean>;
 
   /**
    * Set up ttl for an entry by key
@@ -57,8 +62,12 @@ export interface KVConnector<T extends Entity> extends Connector {
    * @param key
    * @param options
    */
-  expire(modelClass: Class<Entity>, key: string, ttl: number,
-    options?: Options): Promise<boolean>;
+  expire(
+    modelClass: Class<Entity>,
+    key: string,
+    ttl: number,
+    options?: Options,
+  ): Promise<boolean>;
 
   /**
    * Get ttl for an entry by key
@@ -66,8 +75,12 @@ export interface KVConnector<T extends Entity> extends Connector {
    * @param key
    * @param options
    */
-  ttl?(modelClass: Class<Entity>, key: string, ttl: number,
-    options?: Options): Promise<number>;
+  ttl?(
+    modelClass: Class<Entity>,
+    key: string,
+    ttl: number,
+    options?: Options,
+  ): Promise<number>;
 
   /**
    * Fetch all keys
@@ -83,6 +96,9 @@ export interface KVConnector<T extends Entity> extends Connector {
    * @param filter
    * @param options
    */
-  iterateKeys?(modelClass: Class<Entity>, filter?: Filter,
-    options?: Options): Promise<Iterator<T>>;
+  iterateKeys?(
+    modelClass: Class<Entity>,
+    filter?: Filter,
+    options?: Options,
+  ): Promise<Iterator<T>>;
 }

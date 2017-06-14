@@ -14,11 +14,16 @@ describe('Application', () => {
       expect(logError.length).to.equal(3); // (err, statusCode, request)
     });
 
+    // tslint:disable-next-line:max-line-length
     it('can be customized by overriding Application._logError() method', async () => {
       let lastLog: string = 'logError() was not called';
 
       class MyApp extends Application {
-        protected _logError(err: Error, statusCode: number, request: ServerRequest) {
+        protected _logError(
+          err: Error,
+          statusCode: number,
+          request: ServerRequest,
+        ) {
           lastLog = `${request.url} ${statusCode} ${err.message}`;
         }
       }
@@ -31,4 +36,3 @@ describe('Application', () => {
     });
   });
 });
-

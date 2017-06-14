@@ -51,8 +51,11 @@ export class ModelDefinition {
   // indexes: Map<string, any>;
   [attribute: string]: any; // Other attributes
 
-  constructor(name: string, properties?: {[name: string]: PropertyDefinition},
-    settings?: {[name: string]: any}) {
+  constructor(
+    name: string,
+    properties?: {[name: string]: PropertyDefinition},
+    settings?: {[name: string]: any},
+  ) {
     this.name = name;
     this.properties = properties || {};
     this.settings = settings || new Map();
@@ -63,7 +66,10 @@ export class ModelDefinition {
    * @param property Property definition or name (string)
    * @param type Property type
    */
-  addProperty(property: PropertyDefinition|string, type?: PropertyType): this {
+  addProperty(
+    property: PropertyDefinition | string,
+    type?: PropertyType,
+  ): this {
     if (property instanceof PropertyDefinition) {
       this.properties[property.name] = property;
     } else {
@@ -110,7 +116,8 @@ export class ModelDefinition {
       return ids.map(id => this.properties[id]);
     }
     const idProps = Object.keys(this.properties)
-      .map(p => this.properties[p]).filter(prop => prop.id);
+      .map(p => this.properties[p])
+      .filter(prop => prop.id);
     return idProps;
   }
 }
@@ -163,8 +170,7 @@ export interface Persistable {
  * Base class for value objects - An object that contains attributes but has no
  * conceptual identity. They should be treated as immutable.
  */
-export abstract class ValueObject extends Model implements Persistable {
-}
+export abstract class ValueObject extends Model implements Persistable {}
 
 /**
  * Base class for entities which have unique ids
@@ -188,7 +194,8 @@ export abstract class Entity extends Model implements Persistable {
   }
 
   /**
-   * Get the identity as an object, such as `{id: 1}` or `{schoolId: 1, studentId: 2}`
+   * Get the identity as an object, such as `{id: 1}` or
+   * `{schoolId: 1, studentId: 2}`
    */
   getIdObject(): Object {
     const definition = (this.constructor as typeof Entity).definition;

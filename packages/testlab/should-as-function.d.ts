@@ -65,7 +65,11 @@ interface ShouldAssertion {
   equal(expected: any, description?: string): ShouldAssertion;
   equalOneOf(...values: any[]): ShouldAssertion;
   within(start: number, finish: number, description?: string): ShouldAssertion;
-  approximately(value: number, delta: number, description?: string): ShouldAssertion;
+  approximately(
+    value: number,
+    delta: number,
+    description?: string,
+  ): ShouldAssertion;
   type(expected: any, description?: string): ShouldAssertion;
   instanceof(constructor: Function, description?: string): ShouldAssertion;
   above(n: number, description?: string): ShouldAssertion;
@@ -94,7 +98,10 @@ interface ShouldAssertion {
   properties(descriptor: any): ShouldAssertion;
   properties(...properties: string[]): ShouldAssertion;
   propertyByPath(...properties: string[]): ShouldAssertion;
-  propertyWithDescriptor(name: string, descriptor: PropertyDescriptor): ShouldAssertion;
+  propertyWithDescriptor(
+    name: string,
+    descriptor: PropertyDescriptor,
+  ): ShouldAssertion;
   oneOf(...values: any[]): ShouldAssertion;
   ownProperty(name: string, description?: string): ShouldAssertion;
   containEql(obj: any): ShouldAssertion;
@@ -112,7 +119,7 @@ interface ShouldAssertion {
   eventually: ShouldAssertion;
   finally: ShouldAssertion;
   fulfilled(): Promise<any>;
-  fulfilledWith(value: any): Promise<any>
+  fulfilledWith(value: any): Promise<any>;
   rejected(): Promise<any>;
   rejectedWith(err: Error | string | RegExp): Promise<any>;
 
@@ -202,6 +209,6 @@ interface Window {
   Should: Internal;
 }
 
-declare module "should" {
+declare module 'should' {
   export = should;
 }

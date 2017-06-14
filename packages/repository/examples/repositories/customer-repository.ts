@@ -18,7 +18,7 @@ export class CustomerRepository extends CrudRepositoryImpl<Customer, string> {
     super(dataSource, Customer);
   }
 
- /**
+  /**
   * Override deleteAll to disable the operation
   */
   deleteAll(where?: Where, options?: Options) {

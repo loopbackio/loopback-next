@@ -3,14 +3,23 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { expect } from '@loopback/testlab';
-import { model, property, MODEL_KEY, PROPERTY_KEY }
-  from '../../../';
-import { relation, hasOne, belongsTo, embedsOne, embedsMany, hasMany, referencesMany,
-  referencesOne, RELATION_KEY, RelationType } from '../../../';
+import {expect} from '@loopback/testlab';
+import {model, property, MODEL_KEY, PROPERTY_KEY} from '../../../';
+import {
+  relation,
+  hasOne,
+  belongsTo,
+  embedsOne,
+  embedsMany,
+  hasMany,
+  referencesMany,
+  referencesOne,
+  RELATION_KEY,
+  RelationType,
+} from '../../../';
 
-import { Entity, ValueObject } from '../../../';
-import { Reflector } from '@loopback/context';
+import {Entity, ValueObject} from '../../../';
+import {Reflector} from '@loopback/context';
 
 describe('model decorator', () => {
   @model()
@@ -42,21 +51,23 @@ describe('model decorator', () => {
 
   interface ICustomer {}
 
-  @model({ name: 'order' })
+  @model({name: 'order'})
   class Order extends Entity {
     @property({
-      name: 'qty', mysql: {
+      name: 'qty',
+      mysql: {
         column: 'QTY',
       },
     })
     quantity: number;
 
-    @property({ name: 'id', id: true, generated: true })
+    @property({name: 'id', id: true, generated: true})
     id: string;
     customerId: string;
 
-    @belongsTo({ target: 'Customer' })
-    customer: ICustomer; // TypeScript does not allow me to reference Customer here
+    @belongsTo({target: 'Customer'})
+    // TypeScript does not allow me to reference Customer here
+    customer: ICustomer;
   }
 
   @model()
@@ -66,23 +77,17 @@ describe('model decorator', () => {
     firstName: string;
     lastName: string;
 
-    @embedsOne()
-    address: Address;
+    @embedsOne() address: Address;
 
-    @embedsMany()
-    phones: Phone[];
+    @embedsMany() phones: Phone[];
 
-    @referencesMany()
-    accounts: Account[];
+    @referencesMany() accounts: Account[];
 
-    @referencesOne()
-    profile: Profile;
+    @referencesOne() profile: Profile;
 
-    @hasMany()
-    orders?: Order[];
+    @hasMany() orders?: Order[];
 
-    @hasOne()
-    lastOrder?: Order;
+    @hasOne() lastOrder?: Order;
 
     @relation({type: RelationType.hasMany})
     recentOrders?: Order[];
@@ -92,55 +97,84 @@ describe('model decorator', () => {
   // The tests are passing it run alone but fails with `npm test`
   it('adds model metadata', () => {
     const meta = Reflector.getOwnMetadata(MODEL_KEY, Order);
-    expect(meta).to.eql({ name: 'order' });
+    expect(meta).to.eql({name: 'order'});
   });
 
   it('adds property metadata', () => {
-    const meta = Reflector.getOwnMetadata(PROPERTY_KEY, Order.prototype, 'quantity');
+    const meta = Reflector.getOwnMetadata(
+      PROPERTY_KEY,
+      Order.prototype,
+      'quantity',
+    );
     expect(meta).to.eql({
-      name: 'qty', mysql: {
+      name: 'qty',
+      mysql: {
         column: 'QTY',
       },
     });
   });
 
   it('adds embedsOne metadata', () => {
-    const meta = Reflector.getOwnMetadata(RELATION_KEY, Customer.prototype, 'address');
+    const meta = Reflector.getOwnMetadata(
+      RELATION_KEY,
+      Customer.prototype,
+      'address',
+    );
     expect(meta).to.eql({
       type: RelationType.embedsOne,
     });
   });
 
   it('adds embedsMany metadata', () => {
-    const meta = Reflector.getOwnMetadata(RELATION_KEY, Customer.prototype, 'phones');
+    const meta = Reflector.getOwnMetadata(
+      RELATION_KEY,
+      Customer.prototype,
+      'phones',
+    );
     expect(meta).to.eql({
       type: RelationType.embedsMany,
     });
   });
 
   it('adds referencesMany metadata', () => {
-    const meta = Reflector.getOwnMetadata(RELATION_KEY, Customer.prototype, 'accounts');
+    const meta = Reflector.getOwnMetadata(
+      RELATION_KEY,
+      Customer.prototype,
+      'accounts',
+    );
     expect(meta).to.eql({
       type: RelationType.referencesMany,
     });
   });
 
   it('adds referencesOne metadata', () => {
-    const meta = Reflector.getOwnMetadata(RELATION_KEY, Customer.prototype, 'profile');
+    const meta = Reflector.getOwnMetadata(
+      RELATION_KEY,
+      Customer.prototype,
+      'profile',
+    );
     expect(meta).to.eql({
       type: RelationType.referencesOne,
     });
   });
 
   it('adds hasMany metadata', () => {
-    const meta = Reflector.getOwnMetadata(RELATION_KEY, Customer.prototype, 'orders');
+    const meta = Reflector.getOwnMetadata(
+      RELATION_KEY,
+      Customer.prototype,
+      'orders',
+    );
     expect(meta).to.eql({
       type: RelationType.hasMany,
     });
   });
 
   it('adds belongsTo metadata', () => {
-    const meta = Reflector.getOwnMetadata(RELATION_KEY, Order.prototype, 'customer');
+    const meta = Reflector.getOwnMetadata(
+      RELATION_KEY,
+      Order.prototype,
+      'customer',
+    );
     expect(meta).to.eql({
       type: RelationType.belongsTo,
       target: 'Customer',
@@ -148,17 +182,24 @@ describe('model decorator', () => {
   });
 
   it('adds hasOne metadata', () => {
-    const meta = Reflector.getOwnMetadata(RELATION_KEY, Customer.prototype, 'lastOrder');
+    const meta = Reflector.getOwnMetadata(
+      RELATION_KEY,
+      Customer.prototype,
+      'lastOrder',
+    );
     expect(meta).to.eql({
       type: RelationType.hasOne,
     });
   });
 
   it('adds relation metadata', () => {
-    const meta = Reflector.getOwnMetadata(RELATION_KEY, Customer.prototype, 'recentOrders');
+    const meta = Reflector.getOwnMetadata(
+      RELATION_KEY,
+      Customer.prototype,
+      'recentOrders',
+    );
     expect(meta).to.eql({
       type: RelationType.hasMany,
     });
   });
-
 });

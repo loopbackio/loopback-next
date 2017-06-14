@@ -7,6 +7,5 @@ import {expect} from '@loopback/testlab';
 import {Server, Application} from '../../..';
 
 describe('Bootstrapping - Single server', () => {
-  describe('Single application', () => {
-  });
+  describe('Single application', () => {});
 });

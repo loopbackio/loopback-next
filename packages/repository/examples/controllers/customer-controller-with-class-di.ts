@@ -18,9 +18,8 @@ import {repository} from '../../src/decorators/repository';
 // Style 1
 // Create a repository that binds Customer to mongodbDataSource
 @repository(Customer, 'mongodbDataSource')
-// Style 2
+export // Style 2
 // Reference a pre-configured repository by name. This is close to LoopBack
 // 3.x model-config.json
 // @repository('myCustomerRepository')
-export class CustomerController {
-}
+class CustomerController {}

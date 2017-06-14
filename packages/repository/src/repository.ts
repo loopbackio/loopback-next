@@ -3,19 +3,20 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { Entity, ValueObject, Model } from './model';
-import { Class, ObjectType, AnyObject, Options } from './common-types';
-import { DataSource } from './datasource';
-import { CrudConnector, EntityData } from './crud-connector';
-import { Fields, Filter, Where, Operators, Inclusion } from './query';
+import {Entity, ValueObject, Model} from './model';
+import {Class, ObjectType, AnyObject, Options} from './common-types';
+import {DataSource} from './datasource';
+import {CrudConnector, EntityData} from './crud-connector';
+import {Fields, Filter, Where, Operators, Inclusion} from './query';
 
-export interface Repository<T extends Model> {
-}
+export interface Repository<T extends Model> {}
 
 /**
  * Basic CRUD operations for ValueObject and Entity. No ID is required.
  */
-export interface CrudRepository<T extends (ValueObject | Entity)> extends Repository<T> {
+export interface CrudRepository<
+  T extends (ValueObject | Entity)
+> extends Repository<T> {
   /**
    * Create a new record
    * @param dataObject
@@ -47,7 +48,11 @@ export interface CrudRepository<T extends (ValueObject | Entity)> extends Reposi
    * @param options
    * @promise resolves the count of updated records
    */
-  updateAll(dataObject: ObjectType<T>, where?: Where, options?: Options): Promise<number>;
+  updateAll(
+    dataObject: ObjectType<T>,
+    where?: Where,
+    options?: Options,
+  ): Promise<number>;
 
   /**
    * Delete matching records
@@ -69,15 +74,15 @@ export interface CrudRepository<T extends (ValueObject | Entity)> extends Reposi
 /**
  * Base interface for a repository of entities
  */
-export interface EntityRepository<T extends Entity, ID> extends Repository<T> {
-}
+export interface EntityRepository<T extends Entity, ID> extends Repository<T> {}
 
 /**
  * CRUD operations for a repository of entities
  */
-export interface EntityCrudRepository<T extends Entity, ID>
-  extends EntityRepository<T, ID>, CrudRepository<T> {
-
+export interface EntityCrudRepository<
+  T extends Entity,
+  ID
+> extends EntityRepository<T, ID>, CrudRepository<T> {
   /**
    * Save an entity. If no id is present, create a new entity
    * @param entity
@@ -194,9 +199,12 @@ export class CrudRepositoryImpl<T extends Entity, ID>
       return this.connector.save(this.model, entity, options);
     } else {
       if (entity.getId() != null) {
-        return this.replaceById(entity.getId(), entity, options).
-          then((result: boolean) => result ? Promise.resolve(entity) :
-            Promise.reject(new Error('Not found')));
+        return this.replaceById(entity.getId(), entity, options).then(
+          (result: boolean) =>
+            result
+              ? Promise.resolve(entity)
+              : Promise.reject(new Error('Not found')),
+        );
       } else {
         return this.create(entity, options);
       }
@@ -212,8 +220,9 @@ export class CrudRepositoryImpl<T extends Entity, ID>
       return this.connector.findById(this.model, id, options);
     }
     const where = this.model.buildWhereForId(id);
-    return this.connector.find(this.model, {where: where}, options).
-      then((entities: T[]) => {
+    return this.connector
+      .find(this.model, {where: where}, options)
+      .then((entities: T[]) => {
         return entities[0];
       });
   }
@@ -226,7 +235,11 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     return this.deleteById(entity.getId(), options);
   }
 
-  updateAll(data: ObjectType<T>, where?: Where, options?: Options): Promise<number> {
+  updateAll(
+    data: ObjectType<T>,
+    where?: Where,
+    options?: Options,
+  ): Promise<number> {
     return this.connector.updateAll(this.model, data, where, options);
   }
 
@@ -235,19 +248,25 @@ export class CrudRepositoryImpl<T extends Entity, ID>
       return this.connector.updateById(this.model, id, data, options);
     }
     const where = this.model.buildWhereForId(id);
-    return this.updateAll(data, where, options).
-      then((count: number) => count > 0);
+    return this.updateAll(data, where, options).then(
+      (count: number) => count > 0,
+    );
   }
 
-  replaceById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean> {
+  replaceById(
+    id: ID,
+    data: ObjectType<T>,
+    options?: Options,
+  ): Promise<boolean> {
     if (typeof this.connector.replaceById === 'function') {
       return this.connector.replaceById(this.model, id, data, options);
     }
     // FIXME: populate inst with all properties
     const inst = data;
     const where = this.model.buildWhereForId(id);
-    return this.updateAll(data, where, options).
-      then((count: number) => count > 0);
+    return this.updateAll(data, where, options).then(
+      (count: number) => count > 0,
+    );
   }
 
   deleteAll(where?: Where, options?: Options): Promise<number> {
@@ -259,8 +278,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
       return this.connector.deleteById(this.model, id, options);
     } else {
       const where = this.model.buildWhereForId(id);
-      return this.deleteAll(where, options).
-        then((count: number) => count > 0);
+      return this.deleteAll(where, options).then((count: number) => count > 0);
     }
   }
 

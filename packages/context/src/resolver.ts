@@ -3,13 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { Context } from './context';
-import { Binding, BoundValue, ValueOrPromise } from './binding';
-import { isPromise } from './isPromise';
-import { describeInjectedArguments, describeInjectedProperties, Injection } from './inject';
+import {Context} from './context';
+import {Binding, BoundValue, ValueOrPromise} from './binding';
+import {isPromise} from './is-promise';
+import {
+  describeInjectedArguments,
+  describeInjectedProperties,
+  Injection,
+} from './inject';
 
 // tslint:disable-next-line:no-any
-export type Constructor<T> = new(...args: any[]) => T;
+export type Constructor<T> = new (...args: any[]) => T;
 
 /**
  * Create an instance of a class which constructor has arguments
@@ -21,7 +25,10 @@ export type Constructor<T> = new(...args: any[]) => T;
  * @param ctor The class constructor to call.
  * @param ctx The context containing values for `@inject` resolution
  */
-export function instantiateClass<T>(ctor: Constructor<T>, ctx: Context): T | Promise<T> {
+export function instantiateClass<T>(
+  ctor: Constructor<T>,
+  ctx: Context,
+): T | Promise<T> {
   const argsOrPromise = resolveInjectedArguments(ctor, ctx);
   const propertiesOrPromise = resolveInjectedProperties(ctor, ctx);
   let inst: T | Promise<T>;
@@ -33,7 +40,7 @@ export function instantiateClass<T>(ctor: Constructor<T>, ctx: Context): T | Pro
     inst = new ctor(...argsOrPromise);
   }
   if (isPromise(propertiesOrPromise)) {
-    return propertiesOrPromise.then((props) => {
+    return propertiesOrPromise.then(props => {
       if (isPromise(inst)) {
         // Inject the properties asynchrounously
         return inst.then(obj => Object.assign(obj, props));
@@ -79,7 +86,10 @@ function resolve<T>(ctx: Context, injection: Injection): ValueOrPromise<T> {
  * @param fn The function for which the arguments should be resolved.
  * @param ctx The context containing values for `@inject` resolution
  */
-export function resolveInjectedArguments(fn: Function, ctx: Context): BoundValue[] | Promise<BoundValue[]> {
+export function resolveInjectedArguments(
+  fn: Function,
+  ctx: Context,
+): BoundValue[] | Promise<BoundValue[]> {
   // NOTE: the array may be sparse, i.e.
   //   Object.keys(injectedArgs).length !== injectedArgs.length
   // Example value:
@@ -94,13 +104,16 @@ export function resolveInjectedArguments(fn: Function, ctx: Context): BoundValue
     if (!injection.bindingKey && !injection.resolve) {
       throw new Error(
         `Cannot resolve injected arguments for function ${fn.name}: ` +
-        `The argument ${ix + 1} was not decorated for dependency injection.`);
+          `The argument ${ix + 1} was not decorated for dependency injection.`,
+      );
     }
 
     const valueOrPromise = resolve(ctx, injection);
     if (isPromise(valueOrPromise)) {
       if (!asyncResolvers) asyncResolvers = [];
-      asyncResolvers.push(valueOrPromise.then((v: BoundValue) => args[ix] = v));
+      asyncResolvers.push(
+        valueOrPromise.then((v: BoundValue) => (args[ix] = v)),
+      );
     } else {
       args[ix] = valueOrPromise as BoundValue;
     }
@@ -113,22 +126,27 @@ export function resolveInjectedArguments(fn: Function, ctx: Context): BoundValue
   }
 }
 
-export type KV = { [p: string]: BoundValue };
+export type KV = {[p: string]: BoundValue};
 
-export function resolveInjectedProperties(fn: Function, ctx: Context): KV | Promise<KV> {
+export function resolveInjectedProperties(
+  fn: Function,
+  ctx: Context,
+): KV | Promise<KV> {
   const injectedProperties = describeInjectedProperties(fn.prototype);
 
   const properties: KV = {};
   let asyncResolvers: Promise<void>[] | undefined = undefined;
 
-  const propertyResolver = (p: string) => ((v: BoundValue) => properties[p] = v);
+  const propertyResolver = (p: string) => (v: BoundValue) =>
+    (properties[p] = v);
 
   for (const p in injectedProperties) {
     const injection = injectedProperties[p];
     if (!injection.bindingKey && !injection.resolve) {
       throw new Error(
         `Cannot resolve injected property for class ${fn.name}: ` +
-        `The property ${p} was not decorated for dependency injection.`);
+          `The property ${p} was not decorated for dependency injection.`,
+      );
     }
     const valueOrPromise = resolve(ctx, injection);
     if (isPromise(valueOrPromise)) {

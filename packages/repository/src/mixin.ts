@@ -18,8 +18,7 @@ export interface MixinFunc {
  * A builder to compose mixins
  */
 export class MixinBuilder {
-  constructor(public baseClass: Class<any>) {
-  }
+  constructor(public baseClass: Class<any>) {}
 
   with(...mixins: MixinFunc[]) {
     return mixins.reduce((c, mixin) => mixin(c), this.baseClass);

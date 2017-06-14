@@ -10,10 +10,7 @@ import {
 } from '@loopback/openapi-spec';
 import {ServerRequest} from 'http';
 
-import {
-  ParsedRequest,
-  PathParameterValues,
-} from '../internal-types';
+import {ParsedRequest, PathParameterValues} from '../internal-types';
 
 import * as assert from 'assert';
 import * as url from 'url';
@@ -37,7 +34,10 @@ export class RoutingTable<ControllerType> {
   private readonly _routes: RouteEntry<ControllerType>[] = [];
 
   registerController(controller: ControllerType, spec: OpenApiSpec) {
-    assert(typeof spec === 'object' && !!spec, 'API specification must be a non-null object');
+    assert(
+      typeof spec === 'object' && !!spec,
+      'API specification must be a non-null object',
+    );
     if (!spec.paths || !Object.keys(spec.paths).length) {
       return;
     }
@@ -48,14 +48,21 @@ export class RoutingTable<ControllerType> {
       for (const verb in spec.paths[path]) {
         const opSpec: OperationObject = spec.paths[path][verb];
         // TODO(bajtos) handle the case where opSpec.parameters contains $ref
-        debug('  %s %s -> %s(%s)', verb, path, opSpec['x-operation-name'],
-          (opSpec.parameters as ParameterObject[] || []).map(p => p.name).join(', '));
+        debug(
+          '  %s %s -> %s(%s)',
+          verb,
+          path,
+          opSpec['x-operation-name'],
+          ((opSpec.parameters as ParameterObject[]) || [])
+            .map(p => p.name)
+            .join(', '),
+        );
         this._routes.push(new RouteEntry(path, verb, opSpec, controller));
       }
     }
   }
 
-  find(request: ParsedRequest) : ResolvedRoute<ControllerType> | undefined {
+  find(request: ParsedRequest): ResolvedRoute<ControllerType> | undefined {
     for (const entry of this._routes) {
       const match = entry.match(request);
       if (match) return match;
@@ -76,11 +83,11 @@ class RouteEntry<ControllerType> {
   private readonly _pathRegexp: pathToRegexp.PathRegExp;
 
   constructor(
-      path: string,
-      verb: string,
-      private readonly _spec: OperationObject,
-      private readonly _controller: ControllerType) {
-
+    path: string,
+    verb: string,
+    private readonly _spec: OperationObject,
+    private readonly _controller: ControllerType,
+  ) {
     this._verb = verb.toLowerCase();
 
     // In Swagger, path parameters are wrapped in `{}`.
@@ -108,7 +115,9 @@ class RouteEntry<ControllerType> {
     return this._createResolvedRoute(pathParams);
   }
 
-  private _createResolvedRoute(pathParams: PathParameterValues): ResolvedRoute<ControllerType> {
+  private _createResolvedRoute(
+    pathParams: PathParameterValues,
+  ): ResolvedRoute<ControllerType> {
     return {
       controller: this._controller,
       methodName: this._spec['x-operation-name'],

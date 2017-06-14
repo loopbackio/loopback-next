@@ -19,17 +19,14 @@ import {HttpError} from 'http-errors';
 
 export class Sequence {
   constructor(
-    @inject('findRoute')
-    protected findRoute: FindRoute,
-    @inject('invokeMethod')
-    protected invoke: InvokeMethod,
-    @inject('logError')
-    protected logError: LogError) {
-  }
+    @inject('findRoute') protected findRoute: FindRoute,
+    @inject('invokeMethod') protected invoke: InvokeMethod,
+    @inject('logError') protected logError: LogError,
+  ) {}
 
   async run(req: ParsedRequest, res: ServerResponse) {
     try {
-      const { controller, methodName, spec, pathParams } = this.findRoute(req);
+      const {controller, methodName, spec, pathParams} = this.findRoute(req);
       const args = await parseOperationArgs(req, spec, pathParams);
       const result = await this.invoke(controller, methodName, args);
       debug('%s.%s() result -', controller, methodName, result);

@@ -18,7 +18,7 @@ describe('Bootstrapping the application', () => {
     });
 
     function givenAppWithUserDefinedSequence() {
-      class UserDefinedSequence extends Sequence { }
+      class UserDefinedSequence extends Sequence {}
       app = new Application({
         sequence: UserDefinedSequence,
       });
@@ -29,9 +29,7 @@ describe('Bootstrapping the application', () => {
     before(givenAppWithUserDefinedComponents);
 
     it('binds all user-defined components to the application context', () => {
-      expect(app.find('component.*'))
-        .to.be.instanceOf(Array)
-        .with.lengthOf(4);
+      expect(app.find('component.*')).to.be.instanceOf(Array).with.lengthOf(4);
     });
 
     function givenAppWithUserDefinedComponents() {

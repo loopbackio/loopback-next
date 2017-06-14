@@ -15,14 +15,19 @@ import {
 
 type HttpError = HttpErrors.HttpError;
 
-type jsonBodyFn = (req: ServerRequest, cb: (err?: Error, body?: {}) => void) => void;
+type jsonBodyFn = (
+  req: ServerRequest,
+  cb: (err?: Error, body?: {}) => void,
+) => void;
 const jsonBody: jsonBodyFn = require('body/json');
 
 // tslint:disable:no-any
 type MaybeBody = any | undefined;
 // tslint:enable:no-any
 
-const parseJsonBody: (req: ServerRequest) => Promise<MaybeBody> = promisify(jsonBody);
+const parseJsonBody: (req: ServerRequest) => Promise<MaybeBody> = promisify(
+  jsonBody,
+);
 
 /**
  * Get the content-type header value from the request
@@ -39,20 +44,27 @@ function getContentType(req: ServerRequest): string | undefined {
   return undefined;
 }
 
-export async function parseOperationArgs(request: ParsedRequest, operationSpec: OperationObject, pathParams: PathParameterValues): Promise<OperationArgs> {
+export async function parseOperationArgs(
+  request: ParsedRequest,
+  operationSpec: OperationObject,
+  pathParams: PathParameterValues,
+): Promise<OperationArgs> {
   const args: OperationArgs = [];
   const body = await loadRequestBodyIfNeeded(operationSpec, request);
   return buildOperationArguments(operationSpec, request, pathParams, body);
 }
 
-function loadRequestBodyIfNeeded(operationSpec: OperationObject, request: ServerRequest): Promise<MaybeBody> {
-  if (!hasArgumentsFromBody(operationSpec))
-    return Promise.resolve();
+function loadRequestBodyIfNeeded(
+  operationSpec: OperationObject,
+  request: ServerRequest,
+): Promise<MaybeBody> {
+  if (!hasArgumentsFromBody(operationSpec)) return Promise.resolve();
 
   const contentType = getContentType(request);
   if (contentType && !/json/.test(contentType)) {
     const err = new HttpErrors.UnsupportedMediaType(
-      `Content-type ${contentType} is not supported.`);
+      `Content-type ${contentType} is not supported.`,
+    );
     return Promise.reject(err);
   }
 
@@ -64,19 +76,22 @@ function loadRequestBodyIfNeeded(operationSpec: OperationObject, request: Server
 
 function hasArgumentsFromBody(operationSpec: OperationObject): boolean {
   if (!operationSpec.parameters || !operationSpec.parameters.length)
-   return false;
+    return false;
 
   for (const paramSpec of operationSpec.parameters) {
     if ('$ref' in paramSpec) continue;
     const source = (paramSpec as ParameterObject).in;
-    if (source === 'formData' || source === 'body')
-     return true;
+    if (source === 'formData' || source === 'body') return true;
   }
   return false;
 }
 
-function buildOperationArguments(operationSpec: OperationObject, request: ParsedRequest,
-    pathParams: PathParameterValues, body?: MaybeBody): OperationArgs {
+function buildOperationArguments(
+  operationSpec: OperationObject,
+  request: ParsedRequest,
+  pathParams: PathParameterValues,
+  body?: MaybeBody,
+): OperationArgs {
   const args: OperationArgs = [];
 
   for (const paramSpec of operationSpec.parameters || []) {
@@ -103,7 +118,8 @@ function buildOperationArguments(operationSpec: OperationObject, request: Parsed
         break;
       default:
         throw new HttpErrors.NotImplemented(
-          'Parameters with "in: ' + spec.in + '" are not supported yet.');
+          'Parameters with "in: ' + spec.in + '" are not supported yet.',
+        );
     }
   }
   return args;

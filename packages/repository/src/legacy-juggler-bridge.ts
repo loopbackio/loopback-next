@@ -14,9 +14,11 @@ import {juggler} from './loopback-datasource-juggler';
 export * from './loopback-datasource-juggler';
 
 /* tslint:disable-next-line:variable-name */
-export const DataSourceConstructor = jugglerModule.DataSource as typeof juggler.DataSource;
+export const DataSourceConstructor =
+  jugglerModule.DataSource as typeof juggler.DataSource;
 /* tslint:disable-next-line:variable-name */
-export const ModelBaseConstructor = jugglerModule.ModelBaseClass as typeof juggler.ModelBase;
+export const ModelBaseConstructor =
+  jugglerModule.ModelBaseClass as typeof juggler.ModelBase;
 
 /**
  * This is a bridge to the legacy DAO class. The function mixes DAO methods
@@ -25,8 +27,10 @@ export const ModelBaseConstructor = jugglerModule.ModelBaseClass as typeof juggl
  * @param ds {DataSource} Data source
  * @returns {} The new model class with DAO (CRUD) operations
  */
-export function bindModel<T extends typeof juggler.ModelBase>(modelClass: T,
-  ds: juggler.DataSource): T {
+export function bindModel<T extends typeof juggler.ModelBase>(
+  modelClass: T,
+  ds: juggler.DataSource,
+): T {
   const boundModelClass = class extends modelClass {};
   boundModelClass.attachTo(ds);
   return boundModelClass;
@@ -45,10 +49,13 @@ function ensurePromise<T>(p: juggler.PromiseOrVoid<T>): Promise<T> {
 }
 
 export class DefaultCrudRepository<T extends Entity, ID>
-implements EntityCrudRepository<T, ID> {
+  implements EntityCrudRepository<T, ID> {
   modelClass: typeof juggler.PersistedModel;
 
-  constructor( modelClass: typeof juggler.PersistedModel, dataSource: juggler.DataSource) {
+  constructor(
+    modelClass: typeof juggler.PersistedModel,
+    dataSource: juggler.DataSource,
+  ) {
     this.modelClass = bindModel(modelClass, dataSource);
   }
 
@@ -71,8 +78,9 @@ implements EntityCrudRepository<T, ID> {
     if (id == null) {
       return this.create(entity, options);
     } else {
-      return this.replaceById(id, entity, options).
-        then(result => result ? entity : null);
+      return this.replaceById(id, entity, options).then(
+        result => (result ? entity : null),
+      );
     }
   }
 
@@ -92,9 +100,14 @@ implements EntityCrudRepository<T, ID> {
     return this.deleteById(entity.getId(), options);
   }
 
-  updateAll(data: ObjectType<T>, where?: Where, options?: Options): Promise<number> {
-    return ensurePromise(this.modelClass.updateAll(where, data, options)).
-      then(result => result.count);
+  updateAll(
+    data: ObjectType<T>,
+    where?: Where,
+    options?: Options,
+  ): Promise<number> {
+    return ensurePromise(this.modelClass.updateAll(where, data, options)).then(
+      result => result.count,
+    );
   }
 
   updateById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean> {
@@ -104,18 +117,26 @@ implements EntityCrudRepository<T, ID> {
     return this.updateAll(data, where, options).then(count => count > 0);
   }
 
-  replaceById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean> {
-    return ensurePromise(this.modelClass.replaceById(id, data, options)).then(result => !!result);
+  replaceById(
+    id: ID,
+    data: ObjectType<T>,
+    options?: Options,
+  ): Promise<boolean> {
+    return ensurePromise(this.modelClass.replaceById(id, data, options)).then(
+      result => !!result,
+    );
   }
 
   deleteAll(where?: Where, options?: Options): Promise<number> {
-    return ensurePromise(this.modelClass.deleteAll(where, options)).
-      then(result => result.count);
+    return ensurePromise(this.modelClass.deleteAll(where, options)).then(
+      result => result.count,
+    );
   }
 
   deleteById(id: ID, options?: Options): Promise<boolean> {
-    return ensurePromise(this.modelClass.deleteById(id, options)).
-      then(result => result.count > 0);
+    return ensurePromise(this.modelClass.deleteById(id, options)).then(
+      result => result.count > 0,
+    );
   }
 
   count(where?: Where, options?: Options): Promise<number> {

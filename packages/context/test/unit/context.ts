@@ -63,7 +63,7 @@ describe('Context', () => {
     it('throws a helpful error when the binding is async', () => {
       ctx.bind('foo').toDynamicValue(() => Promise.resolve('bar'));
       expect(() => ctx.getSync('foo')).to.throw(/foo.*async/);
-   });
+    });
   });
 
   function createContext() {

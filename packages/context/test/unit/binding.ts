@@ -19,7 +19,7 @@ describe('Binding', () => {
       expect(result).to.equal(key);
     });
 
-    it('sets the binding lock state to unlocked by default',  () => {
+    it('sets the binding lock state to unlocked by default', () => {
       expect(binding.isLocked).to.be.false();
     });
   });

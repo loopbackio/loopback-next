@@ -44,6 +44,7 @@
     "class-name": true,
     "comment-format": [true, "check-space"],
     "file-header": [true, "Copyright IBM"],
+    "max-line-length": [true, 80],
     "no-consecutive-blank-lines": [true, 2],
     "no-unnecessary-callback-wrapper": true,
     "one-variable-per-declaration": [true, "ignore-for-loop"],

@@ -35,7 +35,8 @@ export class ShimRequest {
  */
 export class StrategyAdapter {
   /**
-   * @param strategyClass class which implements a passport-strategy;see: http://passportjs.org/
+   * @param strategyClass class which implements a passport-strategy
+   * see: http://passportjs.org/
    */
   constructor(private strategyClass: Strategy) {}
 
