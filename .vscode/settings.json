@@ -1,25 +1,25 @@
 {
-  "typescript.tsdk": "./node_modules/typescript/lib",
+  "editor.rulers": [80],
+  "editor.tabCompletion": true,
   "editor.tabSize": 2,
   "editor.trimAutoWhitespace": true,
-
   "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
     "**/.DS_Store": true,
-    "packages/*/lib": true,
-    "packages/*/lib6": true,
+    "**/.git": true,
+    "**/.hg": true,
+    "**/.svn": true,
+    "**/CVS": true,
+    ".nyc_output": true,
     "coverage": true,
-    ".nyc_output": true
+    "packages/*/lib": true,
+    "packages/*/lib6": true
   },
-  "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
-
-  "tslint.ignoreDefinitionFiles": true,
+  "files.trimTrailingWhitespace": true,
   // Temporarily disable linting & compilation of examples,
   // because they are depending on features/APIs that are
   // not implemented yet
-  "tslint.exclude": "packages/examples/**/*"
+  "tslint.exclude": "packages/examples/**/*",
+  "tslint.ignoreDefinitionFiles": true,
+  "typescript.tsdk": "./node_modules/typescript/lib"
 }
