@@ -5,7 +5,7 @@
 
 import {Context} from './context';
 import {Constructor, instantiateClass} from './resolver';
-import {isPromise} from './isPromise';
+import {isPromise} from './is-promise';
 import {Provider} from './provider';
 
 // tslint:disable-next-line:no-any
@@ -13,22 +13,32 @@ export type BoundValue = any;
 
 export type ValueOrPromise<T> = T | Promise<T>;
 
-// FIXME(bajtos) The binding class should be parameterized by the value type stored
+// FIXME(bajtos) The binding class should be parameterized by the value
+// type stored
 export class Binding {
   private _tagName: string;
 
-  // For bindings bound via toClass, this property contains the constructor function
+  // For bindings bound via toClass, this property contains the constructor
+  // function
   public valueConstructor: Constructor<BoundValue>;
 
-  constructor(private readonly _key: string, public isLocked: boolean = false) {}
-  get key() { return this._key; }
-  get tagName() { return this._tagName; }
+  constructor(
+    private readonly _key: string,
+    public isLocked: boolean = false,
+  ) {}
+  get key() {
+    return this._key;
+  }
+  get tagName() {
+    return this._tagName;
+  }
 
   /**
    * This is an internal function optimized for performance.
    * Users should use `@inject(key)` or `ctx.get(key)` instead.
    *
-   * Get the value bound to this key. Depending on `isSync`, this function returns either:
+   * Get the value bound to this key. Depending on `isSync`, this
+   * function returns either:
    *  - the bound value
    *  - a promise of the bound value
    *
@@ -45,7 +55,9 @@ export class Binding {
    * ```
    */
   getValue(ctx: Context): BoundValue | Promise<BoundValue> {
-    return Promise.reject(new Error(`No value was configured for binding ${this._key}.`));
+    return Promise.reject(
+      new Error(`No value was configured for binding ${this._key}.`),
+    );
   }
 
   lock(): this {
@@ -94,7 +106,7 @@ export class Binding {
    */
   toDynamicValue(factoryFn: () => BoundValue | Promise<BoundValue>): this {
     // TODO(bajtos) allow factoryFn with @inject arguments
-    this.getValue = (ctx) => factoryFn();
+    this.getValue = ctx => factoryFn();
     return this;
   }
 
@@ -103,7 +115,10 @@ export class Binding {
    */
   public toProvider<T>(providerClass: Constructor<Provider<T>>): this {
     this.getValue = ctx => {
-      const providerOrPromise = instantiateClass<Provider<T>>(providerClass, ctx);
+      const providerOrPromise = instantiateClass<Provider<T>>(
+        providerClass,
+        ctx,
+      );
       if (isPromise(providerOrPromise)) {
         return providerOrPromise.then(p => p.value());
       } else {

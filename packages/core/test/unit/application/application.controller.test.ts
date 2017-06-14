@@ -10,8 +10,7 @@ describe('Application.controller()', () => {
   it('binds the controller to "controllers.*" namespace', () => {
     const app = new Application();
 
-    class TestController {
-    }
+    class TestController {}
 
     app.controller(TestController);
 

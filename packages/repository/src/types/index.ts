@@ -26,8 +26,15 @@ import {ArrayType} from './array';
 import {UnionType} from './union';
 
 export {
-  Type, StringType, BooleanType, NumberType, DateType,
-  BufferType, AnyType, ArrayType, UnionType,
+  Type,
+  StringType,
+  BooleanType,
+  NumberType,
+  DateType,
+  BufferType,
+  AnyType,
+  ArrayType,
+  UnionType,
 };
 
 export const STRING = new StringType();

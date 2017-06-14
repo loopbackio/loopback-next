@@ -9,9 +9,13 @@ export {Constructor} from './resolver';
 export {inject} from './inject';
 export {NamespacedReflect} from './reflect';
 export {Provider} from './provider';
-export {isPromise} from './isPromise';
+export {isPromise} from './is-promise';
 
 // internals for testing
 export {instantiateClass} from './resolver';
-export {describeInjectedArguments, describeInjectedProperties, Injection} from './inject';
+export {
+  describeInjectedArguments,
+  describeInjectedProperties,
+  Injection,
+} from './inject';
 export {Reflector} from './reflect';

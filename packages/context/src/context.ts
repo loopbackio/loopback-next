@@ -5,7 +5,7 @@
 
 import {Binding, BoundValue} from './binding';
 import {inject} from './inject';
-import {isPromise} from './isPromise';
+import {isPromise} from './is-promise';
 
 export class Context {
   private registry: Map<string, Binding>;
@@ -20,7 +20,9 @@ export class Context {
       const existingBinding = this.registry.get(key);
       const bindingIsLocked = existingBinding && existingBinding.isLocked;
       if (bindingIsLocked)
-        throw new Error(`Cannot rebind key "${key}", associated binding is locked`);
+        throw new Error(
+          `Cannot rebind key "${key}", associated binding is locked`,
+        );
     }
 
     const binding = new Binding(key);
@@ -39,8 +41,7 @@ export class Context {
       const glob = new RegExp('^' + pattern.split('*').join('.*') + '$');
       this.registry.forEach(binding => {
         const isMatch = glob.test(binding.key);
-        if (isMatch)
-          bindings.push(binding);
+        if (isMatch) bindings.push(binding);
       });
     } else {
       bindings = Array.from(this.registry.values());
@@ -56,8 +57,7 @@ export class Context {
     const glob = new RegExp('^' + pattern.split('*').join('.*') + '$');
     this.registry.forEach(binding => {
       const isMatch = glob.test(binding.tagName);
-      if (isMatch)
-        bindings.push(binding);
+      if (isMatch) bindings.push(binding);
     });
 
     const parentBindings = this._parent && this._parent.findByTag(pattern);
@@ -68,7 +68,9 @@ export class Context {
     if (!parentList) return childList;
     const additions = parentList.filter(parentBinding => {
       // children bindings take precedence
-      return !childList.some(childBinding => childBinding.key === parentBinding.key);
+      return !childList.some(
+        childBinding => childBinding.key === parentBinding.key,
+      );
     });
     return childList.concat(additions);
   }
@@ -89,7 +91,8 @@ export class Context {
     if (isPromise(valueOrPromise)) {
       throw new Error(
         `Cannot get ${key} synchronously: ` +
-        `the value requires async computation`);
+          `the value requires async computation`,
+      );
     }
 
     return valueOrPromise;

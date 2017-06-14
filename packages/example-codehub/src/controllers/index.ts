@@ -3,5 +3,5 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export * from './HealthController';
-export * from './UserController';
+export * from './health-controller';
+export * from './user-controller';

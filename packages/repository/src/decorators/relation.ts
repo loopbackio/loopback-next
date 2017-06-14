@@ -3,10 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { Class } from '../common-types';
-import { Entity } from '../model';
+import {Class} from '../common-types';
+import {Entity} from '../model';
 
-import { Reflector } from '@loopback/context';
+import {Reflector} from '@loopback/context';
 
 // tslint:disable:no-any
 
@@ -91,7 +91,6 @@ export function embedsOne(definition?: Object) {
     Reflector.defineMetadata(RELATION_KEY, rel, target, key);
   };
 }
-
 
 /**
  * Decorator for embedsMany

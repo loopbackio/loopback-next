@@ -13,13 +13,20 @@ import * as util from 'util';
 
 const nativePromisify = (util as any).promisify;
 
-export function promisify<T>(func: (callback: (err: any, result: T) => void) => void): () => Promise<T>;
-export function promisify<T, A1>(func: (arg1: A1, callback: (err: any, result: T) => void) => void): (arg1: A1) => Promise<T>;
-export function promisify<T, A1, A2>(func: (arg1: A1, arg2: A2, callback: (err: any, result: T) => void) => void): (arg1: A1, arg2: A2) => Promise<T>;
+export function promisify<T>(
+  func: (callback: (err: any, result: T) => void) => void,
+): () => Promise<T>;
+export function promisify<T, A1>(
+  func: (arg1: A1, callback: (err: any, result: T) => void) => void,
+): (arg1: A1) => Promise<T>;
+export function promisify<T, A1, A2>(
+  func: (arg1: A1, arg2: A2, callback: (err: any, result: T) => void) => void,
+): (arg1: A1, arg2: A2) => Promise<T>;
 
-export function promisify<T>(func: (...args: any[]) => void): (...args: any[]) => Promise<T> {
-  if (nativePromisify)
-    return nativePromisify(func);
+export function promisify<T>(
+  func: (...args: any[]) => void,
+): (...args: any[]) => Promise<T> {
+  if (nativePromisify) return nativePromisify(func);
 
   // The simplest implementation of Promisify
   return (...args) => {

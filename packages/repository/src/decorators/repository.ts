@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { Class } from '../common-types';
-import { Model } from '../model';
-import { Repository } from '../repository';
-import { DataSource } from '../datasource';
-import { inject } from '@loopback/context';
+import {Class} from '../common-types';
+import {Model} from '../model';
+import {Repository} from '../repository';
+import {DataSource} from '../datasource';
+import {inject} from '@loopback/context';
 
 /**
  * Metadata for a repository
@@ -38,7 +38,8 @@ export class RepositoryMetadata {
    * Constructor for RepositoryMetadata
    *
    * @param model Name or class of the model. If the value is a string and
-   * `dataSource` is not present, it will treated as the name of a predefined repository
+   * `dataSource` is not present, it will treated as the name of a predefined
+   * repository
    * @param dataSource Name or instance of the data source
    *
    * For example:
@@ -49,17 +50,23 @@ export class RepositoryMetadata {
    * - new RepositoryMetadata(modelName, dataSourceInstance);
    * - new RepositoryMetadata(modelClass, dataSourceName);
    */
-  constructor(modelOrRepo: string | Class<Model>, dataSource?: string | DataSource) {
-    this.name = typeof modelOrRepo === 'string' && dataSource === undefined ?
-      modelOrRepo : undefined;
-    this.modelName = typeof modelOrRepo === 'string' && dataSource != null ?
-      modelOrRepo : undefined;
-    this.modelClass = typeof modelOrRepo === 'function' ?
-      modelOrRepo : undefined;
-    this.dataSourceName = typeof dataSource === 'string' ?
-      dataSource : undefined;
-    this.dataSource = typeof dataSource === 'object' ?
-      dataSource : undefined;
+  constructor(
+    modelOrRepo: string | Class<Model>,
+    dataSource?: string | DataSource,
+  ) {
+    this.name = typeof modelOrRepo === 'string' && dataSource === undefined
+      ? modelOrRepo
+      : undefined;
+    this.modelName = typeof modelOrRepo === 'string' && dataSource != null
+      ? modelOrRepo
+      : undefined;
+    this.modelClass = typeof modelOrRepo === 'function'
+      ? modelOrRepo
+      : undefined;
+    this.dataSourceName = typeof dataSource === 'string'
+      ? dataSource
+      : undefined;
+    this.dataSource = typeof dataSource === 'object' ? dataSource : undefined;
   }
 }
 
@@ -77,11 +84,16 @@ export class RepositoryMetadata {
  * - @repository('Customer', mysqlDataSource)
  * - @repository(Customer, 'mysqlDataSource')
  */
-export function repository<T extends Model>(model: string | Class<T>,
-  dataSource?: string | DataSource) {
+export function repository<T extends Model>(
+  model: string | Class<T>,
+  dataSource?: string | DataSource,
+) {
   const meta = new RepositoryMetadata(model, dataSource);
-  return function(target: Object, key?: symbol | string,
-    descriptor?: TypedPropertyDescriptor<Repository<T>> | number) {
+  return function(
+    target: Object,
+    key?: symbol | string,
+    descriptor?: TypedPropertyDescriptor<Repository<T>> | number,
+  ) {
     if (key || typeof descriptor === 'number') {
       if (meta.name) {
         // Make it shortcut to `@inject('repositories:MyRepo')`

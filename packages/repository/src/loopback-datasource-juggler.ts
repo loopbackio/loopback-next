@@ -3,10 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { Class, Options, Callback, AnyObject } from './common-types';
+import {Class, Options, Callback, AnyObject} from './common-types';
 import {EventEmitter} from 'events';
 
 // tslint:disable:no-any
+// tslint:disable:max-line-length
 
 export declare namespace juggler {
   /**
@@ -51,8 +52,7 @@ export declare namespace juggler {
   /**
    * Index definition
    */
-  export interface IndexDefinition extends AnyObject {
-  }
+  export interface IndexDefinition extends AnyObject {}
 
   /**
    * Column metadata
@@ -71,8 +71,12 @@ export declare namespace juggler {
     settings?: AnyObject;
     relations?: AnyObject[];
 
-    constructor(modelBuilder: ModelBuilder | null | undefined, name: string,
-      properties?: {[name: string]: PropertyDefinition}, settings?: AnyObject);
+    constructor(
+      modelBuilder: ModelBuilder | null | undefined,
+      name: string,
+      properties?: {[name: string]: PropertyDefinition},
+      settings?: AnyObject,
+    );
     constructor(modelBuidler: ModelBuilder | null | undefined, schema: Schema);
 
     tableName(connectorType: string): string;
@@ -84,7 +88,10 @@ export declare namespace juggler {
     idName(): string;
     idNames(): string[];
 
-    defineProperty(propertyName: string, propertyDefinition: PropertyDefinition): void;
+    defineProperty(
+      propertyName: string,
+      propertyDefinition: PropertyDefinition,
+    ): void;
     indexes(): {[name: string]: IndexDefinition};
     build(forceRebuild?: boolean): AnyObject;
     toJSON(forceRebuild?: boolean): AnyObject;
@@ -113,17 +120,32 @@ export declare namespace juggler {
     getModel(name: string, forceCreate?: boolean): typeof ModelBase;
     getModelDefinition(name: string): ModelDefinition | undefined;
 
-    define(className: string, properties?: AnyObject, settings?: AnyObject,
-      parent?: typeof ModelBase): typeof ModelBase;
+    define(
+      className: string,
+      properties?: AnyObject,
+      settings?: AnyObject,
+      parent?: typeof ModelBase,
+    ): typeof ModelBase;
 
-    defineProperty(modelName: string, propertyName: string, propertyDefinition: AnyObject): void;
+    defineProperty(
+      modelName: string,
+      propertyName: string,
+      propertyDefinition: AnyObject,
+    ): void;
     defineValueType(type: string, aliases?: string[]): void;
     extendModel(modelName: string, properties: AnyObject): void;
 
     getSchemaName(name?: string): string;
     resolveType(type: any): any;
-    buildModels(schemas: AnyObject, createModel?: Function): {[name: string]: typeof ModelBase};
-    buildModelFromInstance(name: string, json: AnyObject, options: Options): typeof ModelBase;
+    buildModels(
+      schemas: AnyObject,
+      createModel?: Function,
+    ): {[name: string]: typeof ModelBase};
+    buildModelFromInstance(
+      name: string,
+      json: AnyObject,
+      options: Options,
+    ): typeof ModelBase;
   }
 
   /**
@@ -133,7 +155,11 @@ export declare namespace juggler {
     name: string;
     settings: AnyObject;
 
-    constructor(name?: string, settings?: AnyObject, modelBuilder?: ModelBuilder);
+    constructor(
+      name?: string,
+      settings?: AnyObject,
+      modelBuilder?: ModelBuilder,
+    );
     constructor(settings?: AnyObject, modelBuilder?: ModelBuilder);
 
     /**
@@ -142,12 +168,16 @@ export declare namespace juggler {
      * @param properties An object of property definitions
      * @param options Options for model settings
      */
-    createModel<T extends typeof ModelBase>(name: string, properties?: AnyObject,
-      options?: Options): T;
+    createModel<T extends typeof ModelBase>(
+      name: string,
+      properties?: AnyObject,
+      options?: Options,
+    ): T;
   }
 
   /**
-   * Union type for model instance or plain object representing the model instance
+   * Union type for model instance or plain object representing the model
+   * instance
    */
   export type ModelData<T extends ModelBase> = T | AnyObject;
 
@@ -238,37 +268,46 @@ export declare namespace juggler {
   }
 
   export class PersistedModel extends ModelBase {
-
     /**
      * Create new instance of Model, and save to database.
      *
-     * @param {Object|Object[]} [data] Optional data argument.  Can be either a
+     * @param {Object|Object[]} [data] Optional data argument. Can be either a
      * single model instance or an array of instances.
      *
-     * @callback {Function} callback Callback function called with `cb(err, obj)`
-     * signature.
+     * @callback {Function} callback Callback function called with `cb(err, obj)` signature.
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Object} models Model instances or null.
      */
-    static create(data: PersistedData, options?: Options,
-      callback?: Callback<PersistedData>): PromiseOrVoid<PersistedData>;
+    static create(
+      data: PersistedData,
+      options?: Options,
+      callback?: Callback<PersistedData>,
+    ): PromiseOrVoid<PersistedData>;
 
     /**
      * Update or insert a model instance
      * @param {Object} data The model instance data to insert.
-     * @callback {Function} callback Callback function called with `cb(err, obj)`
-     * signature.
+     * @callback {Function} callback Callback function called with `cb(err, obj)` signature.
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Object} model Updated model instance.
      */
-    static upsert(data: PersistedData, options?: Options,
-      callback?: Callback<PersistedData>): PromiseOrVoid<PersistedData>;
+    static upsert(
+      data: PersistedData,
+      options?: Options,
+      callback?: Callback<PersistedData>,
+    ): PromiseOrVoid<PersistedData>;
 
-    static updateOrCreate(data: PersistedData, options?: Options,
-      callback?: Callback<PersistedData>): PromiseOrVoid<PersistedData>;
+    static updateOrCreate(
+      data: PersistedData,
+      options?: Options,
+      callback?: Callback<PersistedData>,
+    ): PromiseOrVoid<PersistedData>;
 
-    static patchOrCreate(data: PersistedData, options?: Options,
-      callback?: Callback<PersistedData>): PromiseOrVoid<PersistedData>;
+    static patchOrCreate(
+      data: PersistedData,
+      options?: Options,
+      callback?: Callback<PersistedData>,
+    ): PromiseOrVoid<PersistedData>;
 
     /**
      * Update or insert a model instance based on the search criteria.
@@ -286,10 +325,18 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Object} model Updated model instance.
      */
-    static upsertWithWhere(where: Where, data: PersistedData, options?: Options,
-      callback?: Callback<PersistedData>): PromiseOrVoid<PersistedData>;
-    static patchOrCreateWithWhere(where: Where, data: PersistedData, options?: Options,
-      callback?: Callback<PersistedData>): PromiseOrVoid<PersistedData>;
+    static upsertWithWhere(
+      where: Where,
+      data: PersistedData,
+      options?: Options,
+      callback?: Callback<PersistedData>,
+    ): PromiseOrVoid<PersistedData>;
+    static patchOrCreateWithWhere(
+      where: Where,
+      data: PersistedData,
+      options?: Options,
+      callback?: Callback<PersistedData>,
+    ): PromiseOrVoid<PersistedData>;
 
     /**
      * Replace or insert a model instance; replace existing record if one is found,
@@ -302,8 +349,11 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Object} model Replaced model instance.
      */
-    static replaceOrCreate(data: PersistedData, options?: Options,
-      callback?: Callback<PersistedData>): PromiseOrVoid<PersistedData>;
+    static replaceOrCreate(
+      data: PersistedData,
+      options?: Options,
+      callback?: Callback<PersistedData>,
+    ): PromiseOrVoid<PersistedData>;
 
     /**
      * Finds one record matching the optional filter object. If not found, creates
@@ -335,8 +385,12 @@ export declare namespace juggler {
      * @param {Object} instance Model instance matching the `where` filter, if found.
      * @param {Boolean} created True if the instance does not exist and gets created.
      */
-    static findOrCreate(filter: Filter, data: PersistedData, options?: Options,
-      callback?: Callback<PersistedData>): PromiseOrVoid<PersistedData>;
+    static findOrCreate(
+      filter: Filter,
+      data: PersistedData,
+      options?: Options,
+      callback?: Callback<PersistedData>,
+    ): PromiseOrVoid<PersistedData>;
 
     /**
      * Check whether a model instance exists in database.
@@ -347,8 +401,11 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Boolean} exists True if the instance with the specified ID exists; false otherwise.
      */
-    static exists(id: any, options?: Options,
-      callback?: Callback<boolean>): PromiseOrVoid<boolean>;
+    static exists(
+      id: any,
+      options?: Options,
+      callback?: Callback<boolean>,
+    ): PromiseOrVoid<boolean>;
 
     /**
      * Find object by ID with an optional filter for include/fields.
@@ -363,8 +420,12 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Object} instance Model instance matching the specified ID or null if no instance matches.
      */
-    static findById(id: any, filter?: Filter, options?: Options,
-      callback?: Callback<boolean>): PromiseOrVoid<PersistedData>;
+    static findById(
+      id: any,
+      filter?: Filter,
+      options?: Options,
+      callback?: Callback<boolean>,
+    ): PromiseOrVoid<PersistedData>;
 
     /**
      * Find all model instances that match `filter` specification.
@@ -393,8 +454,11 @@ export declare namespace juggler {
      * @param {Array} models Model instances matching the filter, or null if none found.
      */
 
-    static find(filter?: Filter, options?: Options,
-      callback?: Callback<PersistedData>): PromiseOrVoid<PersistedData>;
+    static find(
+      filter?: Filter,
+      options?: Options,
+      callback?: Callback<PersistedData>,
+    ): PromiseOrVoid<PersistedData>;
 
     /**
      * Find one model instance that matches `filter` specification.
@@ -421,8 +485,11 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Array} model First model instance that matches the filter or null if none found.
      */
-    static findOne(filter?: Filter, options?: Options,
-      callback?: Callback<PersistedData>): PromiseOrVoid<PersistedData>;
+    static findOne(
+      filter?: Filter,
+      options?: Options,
+      callback?: Callback<PersistedData>,
+    ): PromiseOrVoid<PersistedData>;
 
     /**
      * Destroy all model instances that match the optional `where` specification.
@@ -439,14 +506,23 @@ export declare namespace juggler {
      * @param {Object} info Additional information about the command outcome.
      * @param {Number} info.count Number of instances (rows, documents) destroyed.
      */
-    static destroyAll(where?: Where, options?: Options,
-      callback?: Callback<Count>): PromiseOrVoid<Count>;
+    static destroyAll(
+      where?: Where,
+      options?: Options,
+      callback?: Callback<Count>,
+    ): PromiseOrVoid<Count>;
 
-    static remove(where?: Where, options?: Options,
-      callback?: Callback<Count>): PromiseOrVoid<Count>;
+    static remove(
+      where?: Where,
+      options?: Options,
+      callback?: Callback<Count>,
+    ): PromiseOrVoid<Count>;
 
-    static deleteAll(where?: Where, options?: Options,
-      callback?: Callback<Count>): PromiseOrVoid<Count>;
+    static deleteAll(
+      where?: Where,
+      options?: Options,
+      callback?: Callback<Count>,
+    ): PromiseOrVoid<Count>;
 
     /**
      * Update multiple instances that match the where clause.
@@ -473,11 +549,19 @@ export declare namespace juggler {
      * @param {Number} info.count Number of instances (rows, documents) updated.
      *
      */
-    static updateAll(where?: Where, data?: PersistedData, options?: Options,
-      callback?: Callback<Count>): PromiseOrVoid<Count>;
+    static updateAll(
+      where?: Where,
+      data?: PersistedData,
+      options?: Options,
+      callback?: Callback<Count>,
+    ): PromiseOrVoid<Count>;
 
-    static update(where?: Where, data?: PersistedData, options?: Options,
-      callback?: Callback<Count>): PromiseOrVoid<Count>;
+    static update(
+      where?: Where,
+      data?: PersistedData,
+      options?: Options,
+      callback?: Callback<Count>,
+    ): PromiseOrVoid<Count>;
 
     /**
      * Destroy model instance with the specified ID.
@@ -485,14 +569,23 @@ export declare namespace juggler {
      * @callback {Function} callback Callback function called with `(err)` arguments.  Required.
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      */
-    static destroyById(id: any, options?: Options,
-      callback?: Callback<Count>): PromiseOrVoid<Count>;
+    static destroyById(
+      id: any,
+      options?: Options,
+      callback?: Callback<Count>,
+    ): PromiseOrVoid<Count>;
 
-    static removeById(id: any, options?: Options,
-      callback?: Callback<Count>): PromiseOrVoid<Count>;
+    static removeById(
+      id: any,
+      options?: Options,
+      callback?: Callback<Count>,
+    ): PromiseOrVoid<Count>;
 
-    static deleteById(id: any, options?: Options,
-      callback?: Callback<Count>): PromiseOrVoid<Count>;
+    static deleteById(
+      id: any,
+      options?: Options,
+      callback?: Callback<Count>,
+    ): PromiseOrVoid<Count>;
 
     /**
      * Replace attributes for a model instance whose id is the first input
@@ -507,8 +600,12 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Object} instance Replaced instance.
      */
-    static replaceById(id: any, data: PersistedData, options?: Options,
-      callback?: Callback<PersistedData>): PromiseOrVoid<PersistedData>;
+    static replaceById(
+      id: any,
+      data: PersistedData,
+      options?: Options,
+      callback?: Callback<PersistedData>,
+    ): PromiseOrVoid<PersistedData>;
 
     /**
      * Return the number of records that match the optional "where" filter.
@@ -522,8 +619,11 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Number} count Number of instances.
      */
-    static count(where?: Where, options?: Options,
-      callback?: Callback<number>): PromiseOrVoid<number>;
+    static count(
+      where?: Where,
+      options?: Options,
+      callback?: Callback<number>,
+    ): PromiseOrVoid<number>;
 
     /**
      * Save model instance. If the instance doesn't have an ID, then calls [create](#persistedmodelcreatedata-cb) instead.
@@ -536,7 +636,10 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Object} instance Model instance saved or created.
      */
-    save(options?: Options, callback?: Callback<boolean>): PromiseOrVoid<boolean>;
+    save(
+      options?: Options,
+      callback?: Callback<boolean>,
+    ): PromiseOrVoid<boolean>;
 
     /**
      * Determine if the data model is new.
@@ -549,11 +652,20 @@ export declare namespace juggler {
      * Triggers `destroy` hook (async) before and after destroying object.
      * @param {Function} callback Callback function.
      */
-    destroy(options?: Options, callback?: Callback<boolean>): PromiseOrVoid<boolean>;
+    destroy(
+      options?: Options,
+      callback?: Callback<boolean>,
+    ): PromiseOrVoid<boolean>;
 
-    remove(options?: Options, callback?: Callback<boolean>): PromiseOrVoid<boolean>;
+    remove(
+      options?: Options,
+      callback?: Callback<boolean>,
+    ): PromiseOrVoid<boolean>;
 
-    delete(options?: Options, callback?: Callback<boolean>): PromiseOrVoid<boolean>;
+    delete(
+      options?: Options,
+      callback?: Callback<boolean>,
+    ): PromiseOrVoid<boolean>;
 
     /**
      * Update a single attribute.
@@ -565,8 +677,12 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Object} instance Updated instance.
      */
-    updateAttribute(name: string, value: any, options?: Options,
-      callback?: Callback<boolean>): PromiseOrVoid<boolean>;
+    updateAttribute(
+      name: string,
+      value: any,
+      options?: Options,
+      callback?: Callback<boolean>,
+    ): PromiseOrVoid<boolean>;
 
     /**
      * Update set of attributes.  Performs validation before updating.
@@ -577,8 +693,11 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Object} instance Updated instance.
      */
-    updateAttributes(data: PersistedData, options?: Options,
-      callback?: Callback<boolean>): PromiseOrVoid<boolean>;
+    updateAttributes(
+      data: PersistedData,
+      options?: Options,
+      callback?: Callback<boolean>,
+    ): PromiseOrVoid<boolean>;
 
     /**
      * Replace attributes for a model instance and persist it into the datasource.
@@ -591,8 +710,11 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Object} instance Replaced instance.
      */
-    replaceAttributes(data: PersistedData, options?: Options,
-      callback?: Callback<boolean>): PromiseOrVoid<boolean>;
+    replaceAttributes(
+      data: PersistedData,
+      options?: Options,
+      callback?: Callback<boolean>,
+    ): PromiseOrVoid<boolean>;
 
     /**
      * Reload object from persistence.  Requires `id` member of `object` to be able to call `find`.
@@ -600,7 +722,10 @@ export declare namespace juggler {
      * @param {Error} err Error object; see [Error object](http://loopback.io/doc/en/lb2/Error-object.html).
      * @param {Object} instance Model instance.
      */
-    reload(options?: Options, callback?: Callback<PersistedData>): PromiseOrVoid<PersistedData>;
+    reload(
+      options?: Options,
+      callback?: Callback<PersistedData>,
+    ): PromiseOrVoid<PersistedData>;
 
     /**
      * Set the correct `id` property for the `PersistedModel`. Uses the `setId` method if the model is attached to
@@ -649,8 +774,11 @@ export declare namespace juggler {
      *
      * @header KeyValueModel.get(key, cb)
      */
-    get(key: string, options?: Options,
-      callback?: Callback<KVData>): PromiseOrVoid<KVData>;
+    get(
+      key: string,
+      options?: Options,
+      callback?: Callback<KVData>,
+    ): PromiseOrVoid<KVData>;
 
     /**
      * Persist a value and associate it with the given key.
@@ -667,8 +795,12 @@ export declare namespace juggler {
      *
      * @header KeyValueModel.set(key, value, cb)
      */
-    set(key: string, value: KVData, options?: Options,
-      callback?: Callback<boolean>): PromiseOrVoid<boolean>;
+    set(
+      key: string,
+      value: KVData,
+      options?: Options,
+      callback?: Callback<boolean>,
+    ): PromiseOrVoid<boolean>;
 
     /**
      * Set the TTL (time to live) in ms (milliseconds) for a given key. TTL is the
@@ -683,8 +815,12 @@ export declare namespace juggler {
      *
      * @header KeyValueModel.expire(key, ttl, cb)
      */
-    expire(key: string, ttl: number, options?: Options,
-      callback?: Callback<number>): PromiseOrVoid<number>;
+    expire(
+      key: string,
+      ttl: number,
+      options?: Options,
+      callback?: Callback<number>,
+    ): PromiseOrVoid<number>;
 
     /**
      * Return the TTL (time to live) for a given key. TTL is the remaining time
@@ -700,8 +836,11 @@ export declare namespace juggler {
      *
      * @header KeyValueModel.ttl(key, cb)
      */
-    ttl(key: string, options?: Options,
-      callback?: Callback<number>): PromiseOrVoid<number>;
+    ttl(
+      key: string,
+      options?: Options,
+      callback?: Callback<number>,
+    ): PromiseOrVoid<number>;
 
     /**
      * Return all keys in the database.
@@ -721,8 +860,11 @@ export declare namespace juggler {
      *
      * @header KeyValueModel.keys(filter, cb)
      */
-    keys(filter?: Filter, options?: Options, callback?: Callback<string[]>): PromiseOrVoid<string[]>;
-
+    keys(
+      filter?: Filter,
+      options?: Options,
+      callback?: Callback<string[]>,
+    ): PromiseOrVoid<string[]>;
 
     /**
      * Asynchronously iterate all keys in the database. Similar to `.keys()` but

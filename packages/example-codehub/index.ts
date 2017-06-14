@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {CodeHubApplication} from './src/CodeHubApplication';
+import {CodeHubApplication} from './src/codehub-application';
 
 // tslint:disable-next-line:no-floating-promises
 main().catch(err => {

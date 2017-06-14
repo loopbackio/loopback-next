@@ -65,16 +65,33 @@ describe('Reflect Context', () => {
     it('adds metadata to a static method', () => {
       const metadataValue: Object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
-      reflectContext.defineMetadata('key', metadataValue, SubClass, 'subStaticMethod');
+      reflectContext.defineMetadata(
+        'key',
+        metadataValue,
+        SubClass,
+        'subStaticMethod',
+      );
 
       // get the defined metadata using the namespaced reflectContext
-      let metadata = reflectContext.getMetadata('key', SubClass, 'subStaticMethod');
+      let metadata = reflectContext.getMetadata(
+        'key',
+        SubClass,
+        'subStaticMethod',
+      );
       expect(metadata).to.be.equal(metadataValue);
 
-      metadata = reflectContext.getOwnMetadata('key', SubClass, 'subStaticMethod');
+      metadata = reflectContext.getOwnMetadata(
+        'key',
+        SubClass,
+        'subStaticMethod',
+      );
       expect(metadata).to.be.equal(metadataValue);
 
-      let result = reflectContext.hasOwnMetadata('key', SubClass, 'subStaticMethod');
+      let result = reflectContext.hasOwnMetadata(
+        'key',
+        SubClass,
+        'subStaticMethod',
+      );
       expect(result).to.be.true();
 
       result = reflectContext.hasMetadata('key', SubClass, 'subStaticMethod');
@@ -84,19 +101,40 @@ describe('Reflect Context', () => {
     it('adds metadata to a prototype method', () => {
       const metadataValue: Object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
-      reflectContext.defineMetadata('key', metadataValue, SubClass.prototype, 'subMethod');
+      reflectContext.defineMetadata(
+        'key',
+        metadataValue,
+        SubClass.prototype,
+        'subMethod',
+      );
 
       // get the defined metadata using the namespaced reflectContext
-      let metadata = reflectContext.getMetadata('key', SubClass.prototype, 'subMethod');
+      let metadata = reflectContext.getMetadata(
+        'key',
+        SubClass.prototype,
+        'subMethod',
+      );
       expect(metadata).to.be.equal(metadataValue);
 
-      metadata = reflectContext.getOwnMetadata('key', SubClass.prototype, 'subMethod');
+      metadata = reflectContext.getOwnMetadata(
+        'key',
+        SubClass.prototype,
+        'subMethod',
+      );
       expect(metadata).to.be.equal(metadataValue);
 
-      let result = reflectContext.hasOwnMetadata('key', SubClass.prototype, 'subMethod');
+      let result = reflectContext.hasOwnMetadata(
+        'key',
+        SubClass.prototype,
+        'subMethod',
+      );
       expect(result).to.be.true();
 
-      result = reflectContext.hasMetadata('key', SubClass.prototype, 'subMethod');
+      result = reflectContext.hasMetadata(
+        'key',
+        SubClass.prototype,
+        'subMethod',
+      );
       expect(result).to.be.true();
     });
 
@@ -128,32 +166,66 @@ describe('Reflect Context', () => {
     it('deletes metadata from a class static menthod', () => {
       const metadataValue: Object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
-      reflectContext.defineMetadata('key', metadataValue, SubClass.prototype, 'staticSubMethod');
+      reflectContext.defineMetadata(
+        'key',
+        metadataValue,
+        SubClass.prototype,
+        'staticSubMethod',
+      );
 
       // get the defined metadata using the namespaced reflectContext
-      let metadata = reflectContext.getMetadata('key', SubClass.prototype, 'staticSubMethod');
+      let metadata = reflectContext.getMetadata(
+        'key',
+        SubClass.prototype,
+        'staticSubMethod',
+      );
       expect(metadata).to.be.equal(metadataValue);
 
-      let result = reflectContext.hasOwnMetadata('key', SubClass.prototype, 'staticSubMethod');
+      let result = reflectContext.hasOwnMetadata(
+        'key',
+        SubClass.prototype,
+        'staticSubMethod',
+      );
       expect(result).to.be.true();
 
-      result = reflectContext.deleteMetadata('key', SubClass.prototype, 'staticSubMethod');
+      result = reflectContext.deleteMetadata(
+        'key',
+        SubClass.prototype,
+        'staticSubMethod',
+      );
       expect(result).to.be.true();
 
-      result = reflectContext.hasOwnMetadata('key', SubClass.prototype, 'staticSubMethod');
+      result = reflectContext.hasOwnMetadata(
+        'key',
+        SubClass.prototype,
+        'staticSubMethod',
+      );
       expect(result).to.be.false();
 
-      result = reflectContext.deleteMetadata('key1', SubClass.prototype, 'staticSubMethod');
+      result = reflectContext.deleteMetadata(
+        'key1',
+        SubClass.prototype,
+        'staticSubMethod',
+      );
       expect(result).to.be.false();
 
-      metadata = reflectContext.getMetadata('key', SubClass.prototype, 'staticSubMethod');
+      metadata = reflectContext.getMetadata(
+        'key',
+        SubClass.prototype,
+        'staticSubMethod',
+      );
       expect(metadata).to.be.undefined();
     });
 
     it('deletes metadata from a class prototype menthod', () => {
       const metadataValue: Object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
-      reflectContext.defineMetadata('key', metadataValue, SubClass, 'subMethod');
+      reflectContext.defineMetadata(
+        'key',
+        metadataValue,
+        SubClass,
+        'subMethod',
+      );
 
       // get the defined metadata using the namespaced reflectContext
       let metadata = reflectContext.getMetadata('key', SubClass, 'subMethod');
@@ -197,42 +269,84 @@ describe('Reflect Context', () => {
     it('adds metadata to a base static method', () => {
       const metadataValue: Object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
-      reflectContext.defineMetadata('key', metadataValue, BaseClass, 'baseStaticMethod');
+      reflectContext.defineMetadata(
+        'key',
+        metadataValue,
+        BaseClass,
+        'baseStaticMethod',
+      );
 
       // get the defined metadata using the namespaced reflectContext
-      let metadata = reflectContext.getMetadata('key', BaseClass, 'baseStaticMethod');
+      let metadata = reflectContext.getMetadata(
+        'key',
+        BaseClass,
+        'baseStaticMethod',
+      );
       expect(metadata).to.be.equal(metadataValue);
 
-      metadata = reflectContext.getOwnMetadata('key', BaseClass, 'baseStaticMethod');
+      metadata = reflectContext.getOwnMetadata(
+        'key',
+        BaseClass,
+        'baseStaticMethod',
+      );
       expect(metadata).to.be.equal(metadataValue);
 
       // sub class should have the metadata too
-      metadata = reflectContext.getMetadata('key', SubClass, 'baseStaticMethod');
+      metadata = reflectContext.getMetadata(
+        'key',
+        SubClass,
+        'baseStaticMethod',
+      );
       expect(metadata).to.be.equal(metadataValue);
 
       // sub class should not own the metadata
-      metadata = reflectContext.getOwnMetadata('key', SubClass, 'baseStaticMethod');
+      metadata = reflectContext.getOwnMetadata(
+        'key',
+        SubClass,
+        'baseStaticMethod',
+      );
       expect(metadata).to.be.undefined();
     });
 
     it('adds metadata to a base prototype method', () => {
       const metadataValue: Object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
-      reflectContext.defineMetadata('key', metadataValue, BaseClass.prototype, 'baseMethod');
+      reflectContext.defineMetadata(
+        'key',
+        metadataValue,
+        BaseClass.prototype,
+        'baseMethod',
+      );
 
       // get the defined metadata using the namespaced reflectContext
-      let metadata = reflectContext.getMetadata('key', BaseClass.prototype, 'baseMethod');
+      let metadata = reflectContext.getMetadata(
+        'key',
+        BaseClass.prototype,
+        'baseMethod',
+      );
       expect(metadata).to.be.equal(metadataValue);
 
-      metadata = reflectContext.getOwnMetadata('key', BaseClass.prototype, 'baseMethod');
+      metadata = reflectContext.getOwnMetadata(
+        'key',
+        BaseClass.prototype,
+        'baseMethod',
+      );
       expect(metadata).to.be.equal(metadataValue);
 
       // sub class should have the metadata too
-      metadata = reflectContext.getMetadata('key', SubClass.prototype, 'baseMethod');
+      metadata = reflectContext.getMetadata(
+        'key',
+        SubClass.prototype,
+        'baseMethod',
+      );
       expect(metadata).to.be.equal(metadataValue);
 
       // sub class should not own the metadata
-      metadata = reflectContext.getOwnMetadata('key', SubClass.prototype, 'baseMethod');
+      metadata = reflectContext.getOwnMetadata(
+        'key',
+        SubClass.prototype,
+        'baseMethod',
+      );
       expect(metadata).to.be.undefined();
     });
 
@@ -258,12 +372,37 @@ describe('Reflect Context', () => {
     it('lists metadata keys of class methods', () => {
       const metadataValue: Object = {value: 'sample'};
 
-      reflectContext.defineMetadata('key3', metadataValue, SubClass, 'staticSubMethod');
-      reflectContext.defineMetadata('key4', metadataValue, BaseClass, 'staticBaseMethod');
+      reflectContext.defineMetadata(
+        'key3',
+        metadataValue,
+        SubClass,
+        'staticSubMethod',
+      );
+      reflectContext.defineMetadata(
+        'key4',
+        metadataValue,
+        BaseClass,
+        'staticBaseMethod',
+      );
 
-      reflectContext.defineMetadata('key5', metadataValue, SubClass.prototype, 'subMethod');
-      reflectContext.defineMetadata('key6', metadataValue, SubClass.prototype, 'baseMethod');
-      reflectContext.defineMetadata('abc:loopback:key7', metadataValue, BaseClass.prototype, 'baseMethod');
+      reflectContext.defineMetadata(
+        'key5',
+        metadataValue,
+        SubClass.prototype,
+        'subMethod',
+      );
+      reflectContext.defineMetadata(
+        'key6',
+        metadataValue,
+        SubClass.prototype,
+        'baseMethod',
+      );
+      reflectContext.defineMetadata(
+        'abc:loopback:key7',
+        metadataValue,
+        BaseClass.prototype,
+        'baseMethod',
+      );
 
       let keys = reflectContext.getOwnMetadataKeys(SubClass, 'staticSubMethod');
       expect(keys).to.eql(['key3']);
@@ -277,13 +416,19 @@ describe('Reflect Context', () => {
       keys = reflectContext.getOwnMetadataKeys(SubClass.prototype, 'subMethod');
       expect(keys).to.eql(['key5']);
 
-      keys = reflectContext.getOwnMetadataKeys(SubClass.prototype, 'baseMethod');
+      keys = reflectContext.getOwnMetadataKeys(
+        SubClass.prototype,
+        'baseMethod',
+      );
       expect(keys).to.eql(['key6']);
 
       keys = reflectContext.getMetadataKeys(SubClass.prototype, 'baseMethod');
       expect(keys).to.eql(['key6', 'abc:loopback:key7']);
 
-      keys = reflectContext.getOwnMetadataKeys(BaseClass.prototype, 'baseMethod');
+      keys = reflectContext.getOwnMetadataKeys(
+        BaseClass.prototype,
+        'baseMethod',
+      );
       expect(keys).to.eql(['abc:loopback:key7']);
     });
 
@@ -387,7 +532,11 @@ describe('Reflect Context', () => {
     it('adds metadata', () => {
       let meta = Reflector.getOwnMetadata('key1', TestClass);
       expect(meta).to.eql(val1);
-      meta = Reflector.getOwnMetadata('key2', TestClass.prototype, 'testMethod');
+      meta = Reflector.getOwnMetadata(
+        'key2',
+        TestClass.prototype,
+        'testMethod',
+      );
       expect(meta).to.eql(val2);
     });
   });
@@ -410,7 +559,11 @@ describe('Reflect Context', () => {
       let meta = Reflector.getOwnMetadata('key1', TestClass);
       expect(meta).to.eql(val1);
 
-      meta = Reflector.getOwnMetadata('key2', TestClass.prototype, 'testMethod');
+      meta = Reflector.getOwnMetadata(
+        'key2',
+        TestClass.prototype,
+        'testMethod',
+      );
       expect(meta).to.eql(val2);
     });
   });

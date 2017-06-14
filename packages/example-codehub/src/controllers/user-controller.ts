@@ -3,16 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-// The file name matches the exported class (UserController is defined in UserController.ts)
-// This is the convention used in C# and Java too.
-
 // https://www.npmjs.com/package/@types/http-errors
 // https://github.com/jshttp/http-errors
 
 import {HttpErrors} from '@loopback/core';
 
 // Load OpenAPI specification for this controller
-import {def} from './UserController.api';
+import {def} from './user-controller.api';
 
 // Initially, bajtos was proposing
 //   import {api} from '@loopback/controller-decorators';
@@ -26,20 +23,25 @@ import {api, inject} from '@loopback/core';
 // Notice that the controler is not required to extend any Controller base class
 @api(def)
 export class UserController {
-  // Remote methods are returning a Promise and should be implemented as async functions
-  // This is required because most real world methods need to talk to other services,
-  // which always takes more than a single tick of event loop
+  // Remote methods are returning a Promise and should be implemented as
+  // async functions
+  // This is required because most real world methods need to talk to
+  // other services, which always takes more than a single tick of event loop
   //
   // This method can be called from other controllers/method the following way:
-  //    const user: UserResponse = await userController.getUserByUsername('bajtos');
+  //    const user: UserResponse =
+  //      await userController.getUserByUsername('bajtos');
   //    console.log(user.email);
-  public async getUserByUsername(username : string) : Promise<UserResponse> {
-    return new UserResponse({ name: username });
+  public async getUserByUsername(username: string): Promise<UserResponse> {
+    return new UserResponse({name: username});
   }
 
-  public async getAuthenticatedUser(@inject('userId') userId : number) : Promise<UserResponse> {
+  public async getAuthenticatedUser(
+    @inject('userId') userId: number,
+  ): Promise<UserResponse> {
     if (userId !== 42) {
-      // using "return Promise.reject(err)" would be probably faster (a possible micro-optimization)
+      // using "return Promise.reject(err)" would be probably faster
+      // (a possible micro-optimization)
       throw new HttpErrors.NotFound('Current user not found (?!).');
     }
 
@@ -50,11 +52,13 @@ export class UserController {
     });
   }
 
-  public async updateAuthenticatedUser(@inject('userId') userId : number) : Promise<UserResponse> {
-    return new UserResponse({ id: userId });
+  public async updateAuthenticatedUser(
+    @inject('userId') userId: number,
+  ): Promise<UserResponse> {
+    return new UserResponse({id: userId});
   }
 
-  public async getAllUsers(since : string) : Promise<Array<UserResponse>> {
+  public async getAllUsers(since: string): Promise<Array<UserResponse>> {
     return [];
   }
 }

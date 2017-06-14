@@ -18,7 +18,7 @@ export const def = {
           {
             name: 'since',
             in: 'query',
-            description: 'The integer ID of the last User that you\'ve seen.',
+            description: "The integer ID of the last User that you've seen.",
             required: true,
             type: 'string',
           },
@@ -28,7 +28,8 @@ export const def = {
             schema: {
               type: 'array',
               items: {
-                // TODO(bajtos) We should $ref a shared definition of User Response/Model
+                // TODO(bajtos) We should $ref a shared definition
+                // of User Response/Model
                 type: 'object',
                 additionalProperties: true,
               },
@@ -43,7 +44,8 @@ export const def = {
         responses: {
           200: {
             schema: {
-              // TODO(bajtos) We should $ref a shared definition of User Response/Model
+              // TODO(bajtos) We should $ref a shared definition of User
+              // Response/Model
               type: 'object',
               additionalProperties: true,
             },
@@ -77,7 +79,8 @@ export const def = {
         responses: {
           200: {
             schema: {
-              // TODO(bajtos) We should $ref a shared definition of User Response/Model
+              // TODO(bajtos) We should $ref a shared definition of User
+              // Response/Model
               type: 'object',
               additionalProperties: true,
             },

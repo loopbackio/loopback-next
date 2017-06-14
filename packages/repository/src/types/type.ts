@@ -26,7 +26,7 @@ export interface Type<T> {
   /**
    * Generate the default value for this type
    */
-  defaultValue(): T|null|undefined;
+  defaultValue(): T | null | undefined;
 
   /**
    * Check if the given value can be coerced into this type
@@ -41,13 +41,12 @@ export interface Type<T> {
    * @param options Options for coercion
    * @returns Coerced value of this type
    */
-  coerce(value: any, options?: Options): T|null|undefined;
+  coerce(value: any, options?: Options): T | null | undefined;
 
   /**
    * Serialize a value into json
    * @param value The value of this type
    * @param options Options for serialization
    */
-  serialize(value: T|null|undefined, options?: Options): any;
+  serialize(value: T | null | undefined, options?: Options): any;
 }
-

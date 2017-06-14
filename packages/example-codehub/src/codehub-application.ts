@@ -23,7 +23,7 @@ export class CodeHubApplication extends Application {
     app.bind('servers.https.enabled').to(true);
   }
 
-  private _startTime : Date;
+  private _startTime: Date;
 
   async start() {
     this._startTime = new Date();
@@ -34,7 +34,7 @@ export class CodeHubApplication extends Application {
   }
 
   async info() {
-    const server = await this.get('servers.http.server') as Server;
+    const server = (await this.get('servers.http.server')) as Server;
     const port = server.config.port;
 
     return {

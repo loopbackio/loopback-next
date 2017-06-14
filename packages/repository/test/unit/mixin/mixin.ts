@@ -5,7 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 import {Class} from '../../../';
-import { MixinBuilder, ConstructorFunction } from '../../../';
+import {MixinBuilder, ConstructorFunction} from '../../../';
 
 // tslint:disable:no-any
 
@@ -16,8 +16,7 @@ class BaseClass {
     return 'static';
   }
 
-  method1() {
-  }
+  method1() {}
 }
 
 function Mixin1<T extends Class<any>>(superClass: T) {
@@ -77,5 +76,4 @@ describe('mixin builder', () => {
     const x = new newClass();
     expect(x instanceof BaseClass).to.true();
   });
-
 });

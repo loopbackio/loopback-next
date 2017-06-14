@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as assert from 'assert';
-import { Reflector } from '@loopback/context';
+import {Reflector} from '@loopback/context';
 
 import {OpenApiSpec} from '@loopback/openapi-spec';
 
@@ -19,8 +19,10 @@ import {OpenApiSpec} from '@loopback/openapi-spec';
  */
 export function api(spec: OpenApiSpec) {
   return function(constructor: Function) {
-    assert(typeof constructor === 'function',
-     'The @api decorator can be applied to constructors only.');
+    assert(
+      typeof constructor === 'function',
+      'The @api decorator can be applied to constructors only.',
+    );
     Reflector.defineMetadata('loopback:api-spec', spec, constructor);
   };
 }

@@ -12,17 +12,16 @@ import {Type} from './type';
  * Union type, such as string | number
  */
 export class UnionType implements Type<any> {
-  constructor(public itemTypes: Type<any>[]) {
-  }
+  constructor(public itemTypes: Type<any>[]) {}
 
   readonly name = 'union';
 
   isInstance(value: any) {
-    return this.itemTypes.some((t) => t.isInstance(value));
+    return this.itemTypes.some(t => t.isInstance(value));
   }
 
   isCoercible(value: any) {
-    return this.itemTypes.some((t) => t.isCoercible(value));
+    return this.itemTypes.some(t => t.isCoercible(value));
   }
 
   defaultValue() {

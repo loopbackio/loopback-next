@@ -29,7 +29,7 @@ export class BooleanType implements Type<boolean> {
     return value == null ? value : Boolean(value);
   }
 
-  serialize(value: boolean|null|undefined) {
+  serialize(value: boolean | null | undefined) {
     return value;
   }
 }

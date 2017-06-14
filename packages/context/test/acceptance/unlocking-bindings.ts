@@ -17,7 +17,7 @@ describe(`Context bindings - Unlocking bindings`, () => {
       context('is unlocked', () => {
         before(unlockBinding);
 
-        it('sets it\'s lock state to false', () => {
+        it("sets it's lock state to false", () => {
           expect(binding.isLocked).to.be.false();
         });
 

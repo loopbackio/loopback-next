@@ -10,7 +10,7 @@ export interface ParsedRequest extends ServerRequest {
   // see http://expressjs.com/en/4x/api.html#req.path
   path: string;
   // see http://expressjs.com/en/4x/api.html#req.query
-  query: { [key: string]: string };
+  query: {[key: string]: string};
   // see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/15808
   url: string;
   pathname: string;
@@ -18,12 +18,19 @@ export interface ParsedRequest extends ServerRequest {
 }
 
 export type FindRoute = (request: ParsedRequest) => ResolvedRoute<string>;
-export type InvokeMethod = (controller: string, method: string, args: OperationArgs) => Promise<OperationRetval>;
-export type LogError = (err: Error, statusCode: number, request: ServerRequest) => void;
+export type InvokeMethod = (
+  controller: string,
+  method: string,
+  args: OperationArgs,
+) => Promise<OperationRetval>;
+export type LogError = (
+  err: Error,
+  statusCode: number,
+  request: ServerRequest,
+) => void;
 
 // tslint:disable:no-any
 export type PathParameterValues = {[key: string]: any};
 export type OperationArgs = any[];
 export type OperationRetval = any;
 // tslint:enable:no-any
-

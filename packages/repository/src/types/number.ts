@@ -15,7 +15,7 @@ export class NumberType implements Type<number> {
   readonly name = 'number';
 
   isInstance(value: any) {
-    return value == null || (!isNaN(value) && (typeof value === 'number'));
+    return value == null || (!isNaN(value) && typeof value === 'number');
   }
 
   isCoercible(value: any): boolean {
@@ -36,7 +36,7 @@ export class NumberType implements Type<number> {
     return n;
   }
 
-  serialize(value: number|null|undefined) {
+  serialize(value: number | null | undefined) {
     return value;
   }
 }

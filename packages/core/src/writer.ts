@@ -7,8 +7,10 @@ import {ServerResponse as Response} from 'http';
 import {OperationRetval} from './internal-types';
 
 export function writeResultToResponse(
-  response: Response, // not needed and responsibility should be in the sequence.send
-  result: OperationRetval, // result returned back from invoking controller method
+  // not needed and responsibility should be in the sequence.send
+  response: Response,
+  // result returned back from invoking controller method
+  result: OperationRetval,
 ): void {
   if (result) {
     if (typeof result === 'object') {

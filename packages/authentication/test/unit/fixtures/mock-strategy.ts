@@ -25,16 +25,26 @@ export class MockStrategy implements Strategy {
   }
   /**
    * @param req
-   * mock verfication function; usually passed in as constructor argument for passport-strategy;
+   * mock verfication function; usually passed in as constructor argument for
+   * passport-strategy
+   *
    * For the purpose of mock tests we have this here
    * pass req.query.testState = 'fail' to mock failed authorization
    * pass req.query.testState = 'error' to mock unexpected error
    */
   async verify(req: http.ServerRequest) {
-    if (req.headers && req.headers.testState && req.headers.testState === 'fail') {
+    if (
+      req.headers &&
+      req.headers.testState &&
+      req.headers.testState === 'fail'
+    ) {
       this.returnUnAuthourized({error: 'authorization failed'});
       return;
-    } else if (req.headers && req.headers.testState && req.headers.testState === 'error') {
+    } else if (
+      req.headers &&
+      req.headers.testState &&
+      req.headers.testState === 'error'
+    ) {
       this.returnError('unexpected error');
       return;
     }

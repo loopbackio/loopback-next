@@ -4,9 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  Application, Server, api,
-  OpenApiSpec, ParameterObject, OperationObject,
-  ServerRequest, ServerResponse,
+  Application,
+  Server,
+  api,
+  OpenApiSpec,
+  ParameterObject,
+  OperationObject,
+  ServerRequest,
+  ServerResponse,
 } from '../../..';
 import {expect, Client, createClientForServer} from '@loopback/testlab';
 import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
@@ -56,9 +61,12 @@ describe('Routing', () => {
     }
     givenControllerInApp(app, EchoController);
 
-    return whenIMakeRequestTo(app).get('/echo?msg=hello%20world')
-      // Then I get the result `hello world` from the `Method`
-      .expect('hello world');
+    return (
+      whenIMakeRequestTo(app)
+        .get('/echo?msg=hello%20world')
+        // Then I get the result `hello world` from the `Method`
+        .expect('hello world')
+    );
   });
 
   it('injects controller constructor arguments', () => {
@@ -78,8 +86,7 @@ describe('Routing', () => {
 
     @api(spec)
     class InfoController {
-      constructor(@inject('application.name') public appName: string) {
-      }
+      constructor(@inject('application.name') public appName: string) {}
 
       async getName(): Promise<string> {
         return this.appName;
@@ -87,8 +94,7 @@ describe('Routing', () => {
     }
     givenControllerInApp(app, InfoController);
 
-    return whenIMakeRequestTo(app).get('/name')
-      .expect('TestApp');
+    return whenIMakeRequestTo(app).get('/name').expect('TestApp');
   });
 
   it('creates a new child context for each request', async () => {
@@ -105,8 +111,7 @@ describe('Routing', () => {
 
     @api(spec)
     class FlagController {
-      constructor(@inject('context') private ctx: Context) {
-      }
+      constructor(@inject('context') private ctx: Context) {}
 
       async setFlag(): Promise<string> {
         this.ctx.bind('flag').to('modified');
@@ -125,8 +130,7 @@ describe('Routing', () => {
     await whenIMakeRequestTo(app).put('/flag');
     // Get the value "flag" is bound to.
     // This should return the original value.
-    await whenIMakeRequestTo(app).get('/flag')
-      .expect('original');
+    await whenIMakeRequestTo(app).get('/flag').expect('original');
   });
 
   it('binds request and response objects', () => {
@@ -141,8 +145,7 @@ describe('Routing', () => {
       constructor(
         @inject('http.request') private request: ServerRequest,
         @inject('http.response') private response: ServerResponse,
-      ) {
-      }
+      ) {}
 
       async getStatus(): Promise<string> {
         this.response.statusCode = 202; // 202 Accepted
@@ -151,8 +154,7 @@ describe('Routing', () => {
     }
     givenControllerInApp(app, StatusController);
 
-    return whenIMakeRequestTo(app).get('/status')
-      .expect(202, 'GET');
+    return whenIMakeRequestTo(app).get('/status').expect(202, 'GET');
   });
 
   it('binds controller constructor object and operation', () => {
@@ -165,8 +167,8 @@ describe('Routing', () => {
     @api(spec)
     class GetCurrentController {
       constructor(
-        @inject('controller.current.ctor') private ctor : Function,
-        @inject('controller.current.operation') private operation : string,
+        @inject('controller.current.ctor') private ctor: Function,
+        @inject('controller.current.operation') private operation: string,
       ) {
         expect(GetCurrentController).eql(ctor);
       }
@@ -180,11 +182,10 @@ describe('Routing', () => {
     }
     givenControllerInApp(app, GetCurrentController);
 
-    return whenIMakeRequestTo(app).get('/name')
-      .expect({
-        ctor: 'GetCurrentController',
-        operation: 'getControllerName',
-      });
+    return whenIMakeRequestTo(app).get('/name').expect({
+      ctor: 'GetCurrentController',
+      operation: 'getControllerName',
+    });
   });
 
   /* ===== HELPERS ===== */
@@ -193,7 +194,10 @@ describe('Routing', () => {
     return new Application();
   }
 
-  function givenControllerInApp<T>(app: Application, controller: Constructor<T>) {
+  function givenControllerInApp<T>(
+    app: Application,
+    controller: Constructor<T>,
+  ) {
     app.controller(controller);
   }
 

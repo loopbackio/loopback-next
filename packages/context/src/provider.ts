@@ -6,8 +6,10 @@
 import {ValueOrPromise} from './binding';
 
 /**
- * @exports Provider<T> : interface definition for a provider of a value of type T
- * @summary Providers allow binding of a value provider class instead of the value itself
+ * @exports Provider<T> : interface definition for a provider of a value
+ * of type T
+ * @summary Providers allow binding of a value provider class instead of the
+ * value itself
  * @example:
  * ```ts
  * export class DateProvider implements Provider<Date> {

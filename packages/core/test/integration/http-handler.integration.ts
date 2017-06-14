@@ -30,7 +30,8 @@ describe('HttpHandler', () => {
     });
 
     it('handles simple "GET /hello" requests', () => {
-      return client.get('/hello')
+      return client
+        .get('/hello')
         .expect(200)
         .expect('content-type', 'text/plain')
         .expect('Hello world!');
@@ -85,7 +86,7 @@ describe('HttpHandler', () => {
     });
   });
 
-context('with an operation echoing a string parameter from query', () => {
+  context('with an operation echoing a string parameter from query', () => {
     beforeEach(function setupEchoController() {
       const spec = givenOpenApiSpec()
         .withOperation('get', '/echo', {
@@ -172,7 +173,8 @@ context('with an operation echoing a string parameter from query', () => {
     beforeEach(givenHeaderParamController);
 
     it('returns the value sent in the header', () => {
-      return client.get('/show-authorization')
+      return client
+        .get('/show-authorization')
         .set('authorization', 'admin')
         .expect('admin');
     });
@@ -214,21 +216,21 @@ context('with an operation echoing a string parameter from query', () => {
     beforeEach(givenFormDataParamController);
 
     it('returns the value sent in json-encoded body', () => {
-      return client.post('/show-formdata')
+      return client
+        .post('/show-formdata')
         .send({key: 'value'})
         .expect(200, 'value');
     });
 
     it('rejects url-encoded request body', () => {
       logErrorsExcept(415);
-      return client.post('/show-formdata')
-        .send('key=value')
-        .expect(415);
+      return client.post('/show-formdata').send('key=value').expect(415);
     });
 
     it('returns 400 for malformed JSON body', () => {
       logErrorsExcept(400);
-      return client.post('/show-formdata')
+      return client
+        .post('/show-formdata')
         .set('content-type', 'application/json')
         .send('malformed-json')
         .expect(400);
@@ -271,21 +273,21 @@ context('with an operation echoing a string parameter from query', () => {
     beforeEach(givenBodyParamController);
 
     it('returns the value sent in json-encoded body', () => {
-      return client.post('/show-body')
+      return client
+        .post('/show-body')
         .send({key: 'value'})
         .expect(200, {key: 'value'});
     });
 
     it('rejects url-encoded request body', () => {
       logErrorsExcept(415);
-      return client.post('/show-body')
-        .send('key=value')
-        .expect(415);
+      return client.post('/show-body').send('key=value').expect(415);
     });
 
     it('returns 400 for malformed JSON body', () => {
       logErrorsExcept(400);
-      return client.post('/show-body')
+      return client
+        .post('/show-body')
         .set('content-type', 'application/json')
         .send('malformed-json')
         .expect(400);
@@ -330,7 +332,7 @@ context('with an operation echoing a string parameter from query', () => {
         .withOperation('get', '/object', {
           'x-operation-name': 'getObject',
           responses: {
-            '200': { type: 'object' },
+            '200': {type: 'object'},
           },
         })
         .build();
@@ -343,7 +345,8 @@ context('with an operation echoing a string parameter from query', () => {
 
       givenControllerClass(TestController, spec);
 
-      return client.get('/object')
+      return client
+        .get('/object')
         .expect(200)
         .expect('content-type', /^application\/json($|;)/)
         .expect('{"key":"value"}');
@@ -365,8 +368,7 @@ context('with an operation echoing a string parameter from query', () => {
       givenControllerClass(ThrowingController, spec);
 
       logErrorsExcept(500);
-      return client.get('/hello')
-        .expect(500);
+      return client.get('/hello').expect(500);
     });
   });
 
@@ -378,15 +380,23 @@ context('with an operation echoing a string parameter from query', () => {
     rootContext.bind('sequence').toClass(Sequence);
 
     function logger(err: Error, statusCode: number, req: ServerRequest) {
-      console.error('Unhandled error in %s %s: %s %s',
-        req.method, req.url, statusCode, err.stack || err);
+      console.error(
+        'Unhandled error in %s %s: %s %s',
+        req.method,
+        req.url,
+        statusCode,
+        err.stack || err,
+      );
     }
 
     handler = new HttpHandler(rootContext);
   }
 
-  // tslint:disable-next-line:no-any
-  function givenControllerClass(ctor: new (...args: any[]) => Object, spec: OpenApiSpec) {
+  function givenControllerClass(
+    // tslint:disable-next-line:no-any
+    ctor: new (...args: any[]) => Object,
+    spec: OpenApiSpec,
+  ) {
     rootContext.bind('test-controller').toClass(ctor);
     handler.registerController('test-controller', spec);
   }
@@ -399,7 +409,11 @@ context('with an operation echoing a string parameter from query', () => {
     const oldLogger: Function = rootContext.getSync('logError');
     rootContext.bind('logError').to(conditionalLogger);
 
-    function conditionalLogger(err: Error, statusCode: number, req: ServerRequest) {
+    function conditionalLogger(
+      err: Error,
+      statusCode: number,
+      req: ServerRequest,
+    ) {
       if (statusCode === ignoreStatusCode) return;
       // tslint:disable-next-line:no-invalid-this
       oldLogger.apply(this, arguments);

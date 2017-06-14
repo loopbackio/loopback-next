@@ -4,11 +4,19 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  Application, Server, api,
-  OpenApiSpec, ParameterObject,
-  ServerRequest, ServerResponse, parseOperationArgs,
-  writeResultToResponse, ParsedRequest, OperationArgs,
-  FindRoute, InvokeMethod,
+  Application,
+  Server,
+  api,
+  OpenApiSpec,
+  ParameterObject,
+  ServerRequest,
+  ServerResponse,
+  parseOperationArgs,
+  writeResultToResponse,
+  ParsedRequest,
+  OperationArgs,
+  FindRoute,
+  InvokeMethod,
 } from '../../..';
 import {expect, Client, createClientForServer} from '@loopback/testlab';
 import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
@@ -24,33 +32,34 @@ describe('Sequence - ', () => {
   beforeEach(givenAppWithController);
 
   it('default sequence', () => {
-    return whenIMakeRequestTo().get('/name')
-      .expect('SequenceApp');
+    return whenIMakeRequestTo().get('/name').expect('SequenceApp');
   });
 
   it('user defined sequence', () => {
     class MySequence {
       constructor(
-        @inject('findRoute')
-        protected findRoute: FindRoute,
-        @inject('invokeMethod')
-        protected invoke: InvokeMethod) {
-      }
+        @inject('findRoute') protected findRoute: FindRoute,
+        @inject('invokeMethod') protected invoke: InvokeMethod,
+      ) {}
 
       async run(req: ParsedRequest, res: ServerResponse) {
-          const { controller, methodName, spec: routeSpec, pathParams } = this.findRoute(req);
-          const args = await parseOperationArgs(req, routeSpec, pathParams);
-          const result = await this.invoke(controller, methodName, args);
-          // Prepend 'MySequence' to the result of invoke to allow for
-          // execution verification of this user-defined sequence
-          writeResultToResponse(res, `MySequence ${result}`);
+        const {
+          controller,
+          methodName,
+          spec: routeSpec,
+          pathParams,
+        } = this.findRoute(req);
+        const args = await parseOperationArgs(req, routeSpec, pathParams);
+        const result = await this.invoke(controller, methodName, args);
+        // Prepend 'MySequence' to the result of invoke to allow for
+        // execution verification of this user-defined sequence
+        writeResultToResponse(res, `MySequence ${result}`);
       }
     }
     // bind user defined sequence
     app.bind('sequence').toClass(MySequence);
 
-    return whenIMakeRequestTo().get('/name')
-      .expect('MySequence SequenceApp');
+    return whenIMakeRequestTo().get('/name').expect('MySequence SequenceApp');
   });
 
   function givenAppWithController() {
@@ -70,8 +79,7 @@ describe('Sequence - ', () => {
 
     @api(apispec)
     class InfoController {
-      constructor(@inject('application.name') public appName: string) {
-      }
+      constructor(@inject('application.name') public appName: string) {}
 
       async getName(): Promise<string> {
         return this.appName;

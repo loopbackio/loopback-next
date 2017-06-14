@@ -40,7 +40,7 @@ switch (target) {
     outDir = 'lib';
     break;
   case 'es2015':
-    outDir = 'lib6'
+    outDir = 'lib6';
     break;
   default:
     console.error('Unknown build target %s. Supported values: es2015, es2017');
@@ -58,7 +58,7 @@ const args = [
   target,
   '--outDir',
   path.join(packageDir, outDir),
-  ...compilerOpts
+  ...compilerOpts,
 ];
 
 console.log('loopback-next$ tsc', args.slice(1).join(' '));
@@ -67,6 +67,6 @@ spawn(
   process.execPath, // Typically '/usr/local/bin/node'
   args,
   {
-    stdio: 'inherit'
-  })
-  .on('close', (number, signal) => process.exitCode = number);
+    stdio: 'inherit',
+  }
+).on('close', (number, signal) => (process.exitCode = number));

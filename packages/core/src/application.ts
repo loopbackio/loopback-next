@@ -58,13 +58,16 @@ export class Application extends Context {
   protected _bindSequence(): void {
     // TODO(bajtos, ritch, superkhau) figure out how to integrate this single
     // sequence with custom sequences contributed by components
-    const sequence = this.options && this.options.sequence ?
-      this.options.sequence :
-      Sequence;
+    const sequence = this.options && this.options.sequence
+      ? this.options.sequence
+      : Sequence;
     this.bind('sequence').toClass(sequence);
   }
 
-  protected _handleHttpRequest(request: ServerRequest, response: ServerResponse) {
+  protected _handleHttpRequest(
+    request: ServerRequest,
+    response: ServerResponse,
+  ) {
     this._setupHandlerIfNeeded();
     return this._httpHandler.handleRequest(request, response);
   }
@@ -89,9 +92,11 @@ export class Application extends Context {
   /**
    * Register a controller class with this application.
    *
-   * @param controllerCtor {Function} The controller class (constructor function).
-   * @return {Binding} The newly created binding, you can use the reference to further
-   * modify the binding, e.g. lock the value to prevent further modifications.
+   * @param controllerCtor {Function} The controller class
+   * (constructor function).
+   * @return {Binding} The newly created binding, you can use the reference to
+   * further modify the binding, e.g. lock the value to prevent further
+   * modifications.
    *
    * ```ts
    * @spec(apiSpec)
@@ -101,12 +106,23 @@ export class Application extends Context {
    * ```
    */
   public controller<T>(controllerCtor: Constructor<T>): Binding {
-    return this.bind('controllers.' + controllerCtor.name).toClass(controllerCtor);
+    return this.bind('controllers.' + controllerCtor.name).toClass(
+      controllerCtor,
+    );
   }
 
-  protected _logError(err: Error, statusCode: number, req: ServerRequest): void {
-    console.error('Unhandled error in %s %s: %s %s',
-      req.method, req.url, statusCode, err.stack || err);
+  protected _logError(
+    err: Error,
+    statusCode: number,
+    req: ServerRequest,
+  ): void {
+    console.error(
+      'Unhandled error in %s %s: %s %s',
+      req.method,
+      req.url,
+      statusCode,
+      err.stack || err,
+    );
   }
 }
 

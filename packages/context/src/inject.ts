@@ -4,9 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as assert from 'assert';
-import { Reflector } from './reflect';
-import { BoundValue, ValueOrPromise } from './binding';
-import { Context } from './context';
+import {Reflector} from './reflect';
+import {BoundValue, ValueOrPromise} from './binding';
+import {Context} from './context';
 
 const PARAMETERS_KEY = 'inject:parameters';
 const PROPERTIES_KEY = 'inject:properties';
@@ -23,7 +23,7 @@ export interface ResolverFunction {
  */
 export interface Injection {
   bindingKey: string; // Binding key
-  metadata?: { [attribute: string]: BoundValue; }; // Related metadata
+  metadata?: {[attribute: string]: BoundValue}; // Related metadata
   resolve?: ResolverFunction; // A custom resolve function
 }
 
@@ -53,41 +53,66 @@ export interface Injection {
  * @param resolve Optional function to resolve the injection
  *
  */
-export function inject(bindingKey: string, metadata?: Object, resolve?: ResolverFunction) {
-  // tslint:disable-next-line:no-any
-  return function markParameterOrPropertyAsInjected(target: any, propertyKey?: string | symbol,
-    propertyDescriptorOrParameterIndex?: TypedPropertyDescriptor<BoundValue> | number) {
+export function inject(
+  bindingKey: string,
+  metadata?: Object,
+  resolve?: ResolverFunction,
+) {
+  return function markParameterOrPropertyAsInjected(
+    // tslint:disable-next-line:no-any
+    target: any,
+    propertyKey?: string | symbol,
+    propertyDescriptorOrParameterIndex?:
+      | TypedPropertyDescriptor<BoundValue>
+      | number,
+  ) {
     if (typeof propertyDescriptorOrParameterIndex === 'number') {
       // The decorator is applied to a method parameter
       // Please note propertyKey is `undefined` for constructor
       const injectedArgs: Injection[] =
         Reflector.getOwnMetadata(PARAMETERS_KEY, target, propertyKey!) || [];
-      injectedArgs[propertyDescriptorOrParameterIndex] = {bindingKey, metadata, resolve};
-      Reflector.defineMetadata(PARAMETERS_KEY, injectedArgs, target, propertyKey!);
+      injectedArgs[propertyDescriptorOrParameterIndex] = {
+        bindingKey,
+        metadata,
+        resolve,
+      };
+      Reflector.defineMetadata(
+        PARAMETERS_KEY,
+        injectedArgs,
+        target,
+        propertyKey!,
+      );
     } else if (propertyKey) {
       if (typeof Object.getPrototypeOf(target) === 'function') {
         const prop = target.name + '.' + propertyKey.toString();
-        throw new Error('@inject is not supported for a static property: ' + prop);
+        throw new Error(
+          '@inject is not supported for a static property: ' + prop,
+        );
       }
       // The decorator is applied to a property
-      const injections: { [p: string]: Injection } =
+      const injections: {[p: string]: Injection} =
         Reflector.getOwnMetadata(PROPERTIES_KEY, target) || {};
       injections[propertyKey] = {bindingKey, metadata, resolve};
       Reflector.defineMetadata(PROPERTIES_KEY, injections, target);
     } else {
-      throw new Error('@inject can only be used on properties or method parameters.');
+      throw new Error(
+        '@inject can only be used on properties or method parameters.',
+      );
     }
   };
 }
 
 /**
  * Return an array of injection objects for parameters
- * @param target The target class for constructor or static methods, or the prototype
- * for instance methods
+ * @param target The target class for constructor or static methods,
+ * or the prototype for instance methods
  * @param methodName Method name, undefined for constructor
  */
-// tslint:disable-next-line:no-any
-export function describeInjectedArguments(target: any, method?: string | symbol): Injection[] {
+export function describeInjectedArguments(
+  // tslint:disable-next-line:no-any
+  target: any,
+  method?: string | symbol,
+): Injection[] {
   if (method) {
     return Reflector.getMetadata(PARAMETERS_KEY, target, method) || [];
   } else {
@@ -97,10 +122,13 @@ export function describeInjectedArguments(target: any, method?: string | symbol)
 
 /**
  * Return a map of injection objects for properties
- * @param target The target class for static properties or prototype for instance properties.
+ * @param target The target class for static properties or
+ * prototype for instance properties.
  */
-// tslint:disable-next-line:no-any
-export function describeInjectedProperties(target: any): { [p: string]: Injection } {
+export function describeInjectedProperties(
+  // tslint:disable-next-line:no-any
+  target: any,
+): {[p: string]: Injection} {
   const metadata: {[name: string]: Injection} = {};
   let obj = target;
   while (true) {

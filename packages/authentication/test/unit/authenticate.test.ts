@@ -4,21 +4,37 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {authenticate, getAuthenticateMetadata, AuthenticationMetadata} from '../..';
+import {
+  authenticate,
+  getAuthenticateMetadata,
+  AuthenticationMetadata,
+} from '../..';
 
 describe('Authentication', () => {
   describe('Class AuthenticationMetadata type', () => {
     it('can create authentication descriptor for a strategy', () => {
-      const metadataObj: AuthenticationMetadata = new AuthenticationMetadata('my-strategy', {option: 'my-options'});
+      const metadataObj: AuthenticationMetadata = new AuthenticationMetadata(
+        'my-strategy',
+        {option: 'my-options'},
+      );
       const metaData = metadataObj.getMetadata();
-      const expectedMetaDataObject = {strategy: 'my-strategy', options: {option: 'my-options'}};
+      const expectedMetaDataObject = {
+        strategy: 'my-strategy',
+        options: {option: 'my-options'},
+      };
       expect(metaData).to.deepEqual(expectedMetaDataObject);
     });
 
     it('can create authentication descriptor with strategy and options', () => {
-      const metadataObj: AuthenticationMetadata = new AuthenticationMetadata('my-strategy', {option: 'my-options'});
+      const metadataObj: AuthenticationMetadata = new AuthenticationMetadata(
+        'my-strategy',
+        {option: 'my-options'},
+      );
       const metaData = metadataObj.getMetadata();
-      const expectedMetaDataObject = {strategy: 'my-strategy', options: {option: 'my-options'}};
+      const expectedMetaDataObject = {
+        strategy: 'my-strategy',
+        options: {option: 'my-options'},
+      };
       expect(metaData).to.deepEqual(expectedMetaDataObject);
     });
   });
@@ -33,7 +49,10 @@ describe('Authentication', () => {
       const test: TestClass = new TestClass();
 
       const metaData = getAuthenticateMetadata(test, 'whoAmI');
-      const expectedMetaDataObject = {strategy: 'my-strategy', options: {option1: 'value1', option2: 'value2'}};
+      const expectedMetaDataObject = {
+        strategy: 'my-strategy',
+        options: {option1: 'value1', option2: 'value2'},
+      };
       expect(metaData).to.deepEqual(expectedMetaDataObject);
     });
 

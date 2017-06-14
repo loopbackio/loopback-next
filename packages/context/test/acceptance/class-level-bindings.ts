@@ -16,8 +16,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     ctx.bind('application.name').to('CodeHub');
 
     class InfoController {
-      constructor(@inject('application.name') public appName: string) {
-      }
+      constructor(@inject('application.name') public appName: string) {}
     }
     ctx.bind(INFO_CONTROLLER).toClass(InfoController);
 
@@ -27,28 +26,39 @@ describe('Context bindings - Injecting dependencies of classes', () => {
 
   it('throws helpful error when no ctor args are decorated', () => {
     class InfoController {
-      constructor(appName: string) {
-      }
+      constructor(appName: string) {}
     }
     ctx.bind(INFO_CONTROLLER).toClass(InfoController);
 
     return ctx.get(INFO_CONTROLLER).then(
-      function onSuccess() { throw new Error('ctx.get() should have failed'); },
-      function onError(err) { expect(err).to.match(/resolve.*InfoController.*argument 1/); });
+      function onSuccess() {
+        throw new Error('ctx.get() should have failed');
+      },
+      function onError(err) {
+        expect(err).to.match(/resolve.*InfoController.*argument 1/);
+      },
+    );
   });
 
   it('throws helpful error when some ctor args are not decorated', () => {
     ctx.bind('application.name').to('CodeHub');
 
     class InfoController {
-      constructor(argNotInjected: string, @inject('application.name') appName: string) {
-      }
+      constructor(
+        argNotInjected: string,
+        @inject('application.name') appName: string,
+      ) {}
     }
     ctx.bind(INFO_CONTROLLER).toClass(InfoController);
 
     return ctx.get(INFO_CONTROLLER).then(
-      function onSuccess() { throw new Error('ctx.get() should have failed'); },
-      function onError(err) { expect(err).to.match(/resolve.*InfoController.*argument 1/); });
+      function onSuccess() {
+        throw new Error('ctx.get() should have failed');
+      },
+      function onError(err) {
+        expect(err).to.match(/resolve.*InfoController.*argument 1/);
+      },
+    );
   });
 
   it('resolves promises before injecting parameters', async () => {
@@ -60,8 +70,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     });
 
     class InfoController {
-      constructor(@inject('authenticated') public isAuthenticated: boolean) {
-      }
+      constructor(@inject('authenticated') public isAuthenticated: boolean) {}
     }
     ctx.bind(INFO_CONTROLLER).toClass(InfoController);
 
@@ -69,17 +78,20 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     expect(instance).to.have.property('isAuthenticated', false);
   });
 
+  // tslint:disable-next-line:max-line-length
   it('creates instance synchronously when all dependencies are sync too', () => {
     ctx.bind('appName').to('CodeHub');
     class InfoController {
-      constructor(@inject('appName') public appName: string) {
-      }
+      constructor(@inject('appName') public appName: string) {}
     }
     const b = ctx.bind(INFO_CONTROLLER).toClass(InfoController);
 
     const valueOrPromise = b.getValue(ctx);
     expect(valueOrPromise).to.not.be.Promise();
-    expect(valueOrPromise as InfoController).to.have.property('appName', 'CodeHub');
+    expect(valueOrPromise as InfoController).to.have.property(
+      'appName',
+      'CodeHub',
+    );
   });
 
   it('resolves promises before injecting properties', async () => {
@@ -91,8 +103,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     });
 
     class InfoController {
-      @inject('authenticated')
-      public isAuthenticated: boolean;
+      @inject('authenticated') public isAuthenticated: boolean;
     }
     ctx.bind(INFO_CONTROLLER).toClass(InfoController);
 
@@ -100,22 +111,27 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     expect(instance).to.have.property('isAuthenticated', false);
   });
 
+  // tslint:disable-next-line:max-line-length
   it('creates instance synchronously when property/constructor dependencies are sync too', () => {
     ctx.bind('appName').to('CodeHub');
     ctx.bind('authenticated').to(false);
     class InfoController {
-      constructor(@inject('appName') public appName: string) {
-      }
+      constructor(@inject('appName') public appName: string) {}
 
-      @inject('authenticated')
-      public isAuthenticated: boolean;
+      @inject('authenticated') public isAuthenticated: boolean;
     }
     const b = ctx.bind(INFO_CONTROLLER).toClass(InfoController);
 
     const valueOrPromise = b.getValue(ctx);
     expect(valueOrPromise).to.not.be.Promise();
-    expect(valueOrPromise as InfoController).to.have.property('appName', 'CodeHub');
-    expect(valueOrPromise as InfoController).to.have.property('isAuthenticated', false);
+    expect(valueOrPromise as InfoController).to.have.property(
+      'appName',
+      'CodeHub',
+    );
+    expect(valueOrPromise as InfoController).to.have.property(
+      'isAuthenticated',
+      false,
+    );
   });
 
   function createContext() {

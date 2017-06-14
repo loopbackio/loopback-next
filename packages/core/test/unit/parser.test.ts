@@ -12,14 +12,15 @@ import {
 import {expect, ShotRequest, ShotRequestOptions} from '@loopback/testlab';
 import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
 
-
 describe('operationArgsParser', () => {
   it('parses path parameters', async () => {
-    const spec = givenOperationWithParameters([{
-      name: 'id',
-      type: 'number',
-      in: 'path',
-    }]);
+    const spec = givenOperationWithParameters([
+      {
+        name: 'id',
+        type: 'number',
+        in: 'path',
+      },
+    ]);
     const req = givenRequest();
 
     const args = await parseOperationArgs(req, spec, {id: 1});
@@ -28,11 +29,13 @@ describe('operationArgsParser', () => {
   });
 
   it('parsed body parameter', async () => {
-    const spec = givenOperationWithParameters([{
-      name: 'data',
-      type: 'object',
-      in: 'body',
-    }]);
+    const spec = givenOperationWithParameters([
+      {
+        name: 'data',
+        type: 'object',
+        in: 'body',
+      },
+    ]);
 
     const req = givenRequest({
       url: '/',

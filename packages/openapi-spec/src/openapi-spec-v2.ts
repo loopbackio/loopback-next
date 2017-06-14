@@ -12,6 +12,8 @@
 // tslint:disable-next-line:no-any
 export type ExtensionValue = any;
 
+
+// tslint:disable-next-line:max-line-length
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#swagger-object
 export interface OpenApiSpec {
   basePath: string;
@@ -23,11 +25,13 @@ export interface OpenApiSpec {
   [extension: string]: ExtensionValue;
 }
 
+// tslint:disable-next-line:max-line-length
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#swagger-object
 export interface PathsObject {
   [httpPathOrSwaggerExtension: string]: PathItemObject | ExtensionValue;
 }
 
+// tslint:disable-next-line:max-line-length
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#pathItemObject
 export interface PathItemObject {
   get: OperationObject;
@@ -43,6 +47,7 @@ export interface PathItemObject {
   [extension: string]: ExtensionValue;
 }
 
+// tslint:disable-next-line:max-line-length
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#operationObject
 export interface OperationObject {
   'x-operation-name': string;
@@ -54,6 +59,7 @@ export interface OperationObject {
   [extension: string]: ExtensionValue;
 }
 
+// tslint:disable-next-line:max-line-length
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#parameterObject
 export interface ParameterObject {
   name: string;
@@ -68,21 +74,33 @@ export interface ParameterObject {
   [extension: string]: ExtensionValue;
 }
 
+// tslint:disable-next-line:max-line-length
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#parameterIn
-export type ParameterLocation = 'query'| 'header'| 'path'| 'formData' | 'body';
+export type ParameterLocation =
+  | 'query'
+  | 'header'
+  | 'path'
+  | 'formData'
+  | 'body';
 
+// tslint:disable-next-line:max-line-length
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#referenceObject
 export interface ReferenceObject {
   $ref: string;
 }
 
+// tslint:disable-next-line:max-line-length
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#responsesObject
 export interface ResponsesObject {
   default?: ResponseObject | ReferenceObject;
 
-  [httpStatusCodeOrSwaggerExtension: string]: ResponseObject | ReferenceObject | ExtensionValue;
+  [httpStatusCodeOrSwaggerExtension: string]:
+    | ResponseObject
+    | ReferenceObject
+    | ExtensionValue;
 }
 
+// tslint:disable-next-line:max-line-length
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#responseObject
 export interface ResponseObject {
   description: string;
@@ -93,6 +111,7 @@ export interface ResponseObject {
   [extension: string]: ExtensionValue;
 }
 
+// tslint:disable-next-line:max-line-length
 // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject
 export interface SchemaObject {
   // TODO(bajtos) describe all properties,
