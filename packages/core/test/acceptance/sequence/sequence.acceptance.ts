@@ -47,7 +47,7 @@ describe('Sequence - ', () => {
       }
     }
     // bind user defined sequence
-    app.bind('sequence').toClass(MySequence);
+    app.sequence(MySequence);
 
     return whenIMakeRequestTo().get('/name')
       .expect('MySequence SequenceApp');

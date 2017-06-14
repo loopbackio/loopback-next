@@ -47,7 +47,7 @@ export class Application extends Context {
       }
     }
 
-    this._bindSequence();
+    this._bindSequence(options && options.sequence);
 
     this.handleHttp = (req: ServerRequest, res: ServerResponse) =>
       this._handleHttpRequest(req, res);
@@ -55,13 +55,14 @@ export class Application extends Context {
     this.bind('logError').to(this._logError.bind(this));
   }
 
-  protected _bindSequence(): void {
+  public sequence(sequence: Constructor<Sequence>) {
+    this._bindSequence(sequence);
+  }
+
+  protected _bindSequence(sequence?: Constructor<Sequence>): void {
     // TODO(bajtos, ritch, superkhau) figure out how to integrate this single
     // sequence with custom sequences contributed by components
-    const sequence = this.options && this.options.sequence ?
-      this.options.sequence :
-      Sequence;
-    this.bind('sequence').toClass(sequence);
+    this.bind('sequence').toClass(sequence || Sequence);
   }
 
   protected _handleHttpRequest(request: ServerRequest, response: ServerResponse) {
