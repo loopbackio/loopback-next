@@ -89,9 +89,9 @@ export function inject(bindingKey: string, metadata?: Object, resolve?: Resolver
 // tslint:disable-next-line:no-any
 export function describeInjectedArguments(target: any, method?: string | symbol): Injection[] {
   if (method) {
-    return Reflector.getOwnMetadata(PARAMETERS_KEY, target, method) || [];
+    return Reflector.getMetadata(PARAMETERS_KEY, target, method) || [];
   } else {
-    return Reflector.getOwnMetadata(PARAMETERS_KEY, target) || [];
+    return Reflector.getMetadata(PARAMETERS_KEY, target) || [];
   }
 }
 
@@ -101,5 +101,21 @@ export function describeInjectedArguments(target: any, method?: string | symbol)
  */
 // tslint:disable-next-line:no-any
 export function describeInjectedProperties(target: any): { [p: string]: Injection } {
-  return Reflector.getOwnMetadata(PROPERTIES_KEY, target) || {};
+  const metadata: {[name: string]: Injection} = {};
+  let obj = target;
+  while (true) {
+    const m = Reflector.getOwnMetadata(PROPERTIES_KEY, obj);
+    if (m) {
+      // Adding non-existent properties
+      for (const p in m) {
+        if (!(p in metadata)) {
+          metadata[p] = m[p];
+        }
+      }
+    }
+    // Recurse into the prototype chain
+    obj = Object.getPrototypeOf(obj);
+    if (!obj) break;
+  }
+  return metadata;
 }
