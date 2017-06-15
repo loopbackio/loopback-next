@@ -1,9 +1,9 @@
 {
     "content": [
-"index.ts",
-"src/index.ts",
-"src/openapi-spec-builder.ts"
-],
+        "index.ts",
+        "src/index.ts",
+        "src/openapi-spec-builder.ts"
+    ],
     "codeSectionDepth": 4,
     "assets": {
       "/": "/docs",
