@@ -12,16 +12,29 @@ describe('Context bindings - Tagged bindings', () => {
   before('given a context', createContext);
   before(createBinding);
 
-  describe('Single tag', () => {
+  describe('tag', () => {
     context('when the binding is tagged', () => {
       before(tagBinding);
 
       it('has a tag name', () => {
-        expect(binding.tagName).to.equal('qux');
+        expect(binding.tags.has('qux')).to.be.true();
       });
 
       function tagBinding() {
         binding.tag('qux');
+      }
+    });
+
+    context('when the binding is tagged with multiple names', () => {
+      before(tagBinding);
+
+      it('has tags', () => {
+        expect(binding.tags.has('x')).to.be.true();
+        expect(binding.tags.has('y')).to.be.true();
+      });
+
+      function tagBinding() {
+        binding.tag(['x', 'y']);
       }
     });
   });
