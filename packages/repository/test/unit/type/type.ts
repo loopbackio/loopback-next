@@ -199,7 +199,7 @@ describe('types', () => {
       const d = new Date();
       const v = dateType.defaultValue();
       expect(v.getTime()).to.aboveOrEqual(d.getTime());
-      expect(v.getTime()).to.approximately(d.getTime(), 1);
+      expect(v.getTime()).to.approximately(d.getTime(), 50);
     });
 
     it('coerces values', () => {
