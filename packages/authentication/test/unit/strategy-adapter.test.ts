@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {ShimRequest} from '../..';
 import {StrategyAdapter} from '../..';
 import {ParsedRequest, HttpErrors} from '@loopback/core';
 import {MockStrategy} from './fixtures/mock-strategy';
@@ -75,3 +74,4 @@ describe('Strategy Adapter', () => {
     });
   });
 });
+
