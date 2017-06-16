@@ -18,6 +18,15 @@ export interface ParsedRequest extends ServerRequest {
 }
 
 export type FindRoute = (request: ParsedRequest) => ResolvedRoute<string>;
+/**
+ * Invokes API which is defined in the Application Controller
+ *
+ * @param controller Name of End user's application controller
+ *  class which defines the APIs.
+ * @param method API method name in application controller class
+ * @param args Operation arguments for the API
+ * @returns OperationRetval Result from API invocation
+ */
 export type InvokeMethod = (
   controller: string,
   method: string,
