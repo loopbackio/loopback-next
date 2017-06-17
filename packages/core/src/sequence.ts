@@ -19,12 +19,13 @@ import {HttpError} from 'http-errors';
 /**
  * The default implementation of Sequence.
  *
- * This class implements default Sequence for the loopback framework.
+ * This class implements default Sequence for the LoopBack framework.
  * Default sequence is used if user hasn't defined their own Sequence
  * for their application.
  *
  * Sequence constructor() and run() methods are invoked from [[http-handler]]
- * when the API request comes in.
+ * when the API request comes in. User defines APIs in their Application
+ * Controller class.
  *
  * Sequence executes these steps
  *  - Finds the appropriate controller method, swagger spec
@@ -45,7 +46,7 @@ export class Sequence {
    *
    * @param findRoute Finds the appropriate controller method,
    *  spec and args for invocation
-   * @param invoke Invokes the API
+   * @param invoke Invokes the method
    * @param logError Logs error
    */
   constructor(
@@ -57,7 +58,8 @@ export class Sequence {
    * Runs the sequence
    *
    * @param req Parsed incoming HTTP request
-   * @param res HTTP server response with result from API invocation
+   * @param res HTTP server response with result from Application controller
+   *  method invocation
    */
   async run(req: ParsedRequest, res: ServerResponse) {
     try {
@@ -73,8 +75,8 @@ export class Sequence {
    /**
    * Sends API result in HTTP response
    *
-   * @param res HTTP server response to write the result of API invocation
-   * @param result Result from API invocation
+   * @param res HTTP server response to write the result of method invocation
+   * @param result Result from method invocation
    */
   sendResponse(response: ServerResponse, result: OperationRetval) {
     writeResultToResponse(response, result);

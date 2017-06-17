@@ -45,7 +45,8 @@ function getContentType(req: ServerRequest): string | undefined {
 }
 
 /**
- * Parses the request to derive arguments to be passed in for the API
+ * Parses the request to derive arguments to be passed in for the Application
+ * controller method
  *
  * @param request Incoming HTTP request
  * @param operationSpec Swagger spec defined in the controller
