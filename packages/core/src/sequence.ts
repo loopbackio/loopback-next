@@ -19,7 +19,7 @@ import {HttpError} from 'http-errors';
 /**
  * The default implementation of Sequence.
  *
- * This class implements default Sequence for the loopback-next framework.
+ * This class implements default Sequence for the loopback framework.
  * Default sequence is used if user hasn't defined their own Sequence
  * for their application.
  *
