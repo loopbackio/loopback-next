@@ -27,13 +27,6 @@ import {HttpError} from 'http-errors';
  * when the API request comes in. User defines APIs in their Application
  * Controller class.
  *
- * Sequence executes these steps
- *  - Finds the appropriate controller method, swagger spec
- *    and args for invocation
- *  - Parses HTTP request to get API argument list
- *  - Invokes the API which is defined in the Application Controller
- *  - Writes the result from API into the HTTP response
- *
  * User can bind their own Sequence to app as shown below
  * ```ts
  * app.bind('sequence').toClass(MySequence);
@@ -54,9 +47,20 @@ export class Sequence {
     @inject('invokeMethod') protected invoke: InvokeMethod,
     @inject('logError') protected logError: LogError,
   ) {}
+
+
   /**
-   * Runs the sequence
+   * Rus the default sequence. Given a request and response, running the
+   * sequence will produce a response or an error.
    *
+   * Default sequence executes these steps
+   *  - Finds the appropriate controller method, swagger spec
+   *    and args for invocation
+   *  - Parses HTTP request to get API argument list
+   *  - Invokes the API which is defined in the Application Controller
+   *  - Writes the result from API into the HTTP response
+   *  - Error is caught and logged using 'logError' if any of the above steps
+   *    in the sequence fails with an error.
    * @param req Parsed incoming HTTP request
    * @param res HTTP server response with result from Application controller
    *  method invocation
@@ -72,21 +76,11 @@ export class Sequence {
       this.sendError(res, req, err);
     }
   }
-   /**
-   * Sends API result in HTTP response
-   *
-   * @param res HTTP server response to write the result of method invocation
-   * @param result Result from method invocation
-   */
+
   sendResponse(response: ServerResponse, result: OperationRetval) {
     writeResultToResponse(response, result);
   }
-   /**
-   * Logs error
-   *
-   * @param res HTTP server response to write the error status and error code
-   * @param req Incoming HTTP request
-   */
+
   sendError(res: ServerResponse, req: ServerRequest, err: HttpError) {
     const statusCode = err.statusCode || err.status || 500;
     res.statusCode = statusCode;
