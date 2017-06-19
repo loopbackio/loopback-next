@@ -50,7 +50,7 @@ export class Sequence {
 
 
   /**
-   * Rus the default sequence. Given a request and response, running the
+   * Runs the default sequence. Given a request and response, running the
    * sequence will produce a response or an error.
    *
    * Default sequence executes these steps
