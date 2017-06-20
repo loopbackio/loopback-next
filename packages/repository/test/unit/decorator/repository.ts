@@ -27,21 +27,25 @@ class MyController {
 describe('repository decorator', () => {
   let ctx: Context;
   let repo: Repository<juggler.PersistedModel>;
+  /* tslint:disable-next-line:variable-name */
+  let Note: typeof juggler.PersistedModel;
+  let ds: juggler.DataSource;
 
   before(function() {
-    const ds: juggler.DataSource = new DataSourceConstructor({
+    ds = new DataSourceConstructor({
       name: 'db',
       connector: 'memory',
     });
 
-    /* tslint:disable-next-line:variable-name */
-    const Note = ds.createModel<typeof juggler.PersistedModel>(
+    Note = ds.createModel<typeof juggler.PersistedModel>(
       'note',
       {title: 'string', content: 'string'},
       {},
     );
     repo = new DefaultCrudRepository(Note, ds);
     ctx = new Context();
+    ctx.bind('models.Note').to(Note);
+    ctx.bind('datasources.memory').to(ds);
     ctx.bind('repositories.noteRepo').to(repo);
     ctx.bind('controllers.MyController').toClass(MyController);
   });
@@ -69,14 +73,27 @@ describe('repository decorator', () => {
     }).to.throw(/not implemented/);
   });
 
-  it('throws not implemented for @repository(model, dataSource)', () => {
-    expect(() => {
-      class Controller2 {
-        constructor(
-          @repository('customer', 'mysql')
-          public noteRepo: Repository<juggler.PersistedModel>,
-        ) {}
-      }
-    }).to.throw(/not implemented/);
+  it('supports @repository(model, dataSource) by names', async () => {
+    class Controller2 {
+      constructor(@repository('Note', 'memory')
+        public noteRepo: Repository<juggler.PersistedModel>) {}
+    }
+    ctx.bind('controllers.Controller2').toClass(Controller2);
+    const myController: MyController = await ctx.get(
+      'controllers.Controller2',
+    );
+    expect(myController.noteRepo).to.be.not.null();
+  });
+
+  it('supports @repository(model, dataSource)', async () => {
+    class Controller3 {
+      constructor(@repository(Note, ds)
+        public noteRepo: Repository<juggler.PersistedModel>) {}
+    }
+    ctx.bind('controllers.Controller3').toClass(Controller3);
+    const myController: MyController = await ctx.get(
+      'controllers.Controller3',
+    );
+    expect(myController.noteRepo).to.be.not.null();
   });
 });
