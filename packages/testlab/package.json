@@ -1,6 +1,6 @@
 {
   "name": "@loopback/testlab",
-  "version": "4.0.0-alpha.4",
+  "version": "4.0.0-alpha.5",
   "description": "A collection of test utilities we use to write LoopBack tests.",
   "scripts": {
     "build": "npm run build:lib && npm run build:lib6",
