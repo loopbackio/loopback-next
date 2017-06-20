@@ -44,6 +44,14 @@ function getContentType(req: ServerRequest): string | undefined {
   return undefined;
 }
 
+/**
+ * Parses the request to derive arguments to be passed in for the Application
+ * controller method
+ *
+ * @param request Incoming HTTP request
+ * @param operationSpec Swagger spec defined in the controller
+ * @param pathParams Path parameters in incoming HTTP request
+ */
 export async function parseOperationArgs(
   request: ParsedRequest,
   operationSpec: OperationObject,

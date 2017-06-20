@@ -5,6 +5,7 @@
 import * as http from 'http';
 import {HttpErrors, ParsedRequest} from '@loopback/core';
 import {Strategy} from 'passport';
+import {UserProfile} from './provider';
 
 /**
  * Shimmed Request to satisfy express requirements of passport strategies.
@@ -15,8 +16,7 @@ export class ShimRequest {
   url: string;
   path: string;
   method: string;
-  constructor(request?: ParsedRequest) {
-    if (!request) return;
+  constructor(request: ParsedRequest) {
     this.headers = request.headers;
     this.query = request.query;
     this.url = request.url;
@@ -35,10 +35,10 @@ export class ShimRequest {
  */
 export class StrategyAdapter {
   /**
-   * @param strategyClass class which implements a passport-strategy
-   * see: http://passportjs.org/
+   * @param strategy instance of a class which implements a passport-strategy;
+   * @description http://passportjs.org/
    */
-  constructor(private strategyClass: Strategy) {}
+  constructor(private readonly strategy: Strategy) {}
 
   /**
    * The function to invoke the contained passport strategy.
@@ -49,13 +49,12 @@ export class StrategyAdapter {
    */
   authenticate(req: ParsedRequest) {
     const shimReq = new ShimRequest(req);
-    return new Promise<Object>((resolve, reject) => {
-      // create an instance of the strategy
-      const strategy = Object.create(this.strategyClass);
-      const self = this;
+    return new Promise<UserProfile>((resolve, reject) => {
+      // create a prototype chain of an instance of a passport strategy
+      const strategy = Object.create(this.strategy);
 
       // add success state handler to strategy instance
-      strategy.success = function(user: object) {
+      strategy.success = function(user: UserProfile) {
         resolve(user);
       };
 

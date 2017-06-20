@@ -4,18 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {ShimRequest} from '../..';
-import {StrategyAdapter} from '../..';
+import {StrategyAdapter, UserProfile} from '../..';
 import {ParsedRequest, HttpErrors} from '@loopback/core';
 import {MockStrategy} from './fixtures/mock-strategy';
 import * as http from 'http';
 
 describe('Strategy Adapter', () => {
-  const mockUser: User = {id: 'mock-user', role: 'mock-role'};
-  interface User {
-    id: string;
-    role: string;
-  }
+  const mockUser: UserProfile = {name: 'user-name', id: 'mock-id'};
 
   describe('authenticate()', () => {
     it('calls the authenticate method of the strategy', async () => {
@@ -75,3 +70,4 @@ describe('Strategy Adapter', () => {
     });
   });
 });
+

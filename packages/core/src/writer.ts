@@ -5,7 +5,13 @@
 
 import {ServerResponse as Response} from 'http';
 import {OperationRetval} from './internal-types';
-
+/**
+ * Writes the result from Application controller method
+ * into the HTTP response
+ *
+ * @param response HTTP Response
+ * @param result Result from the API to write into HTTP Response
+ */
 export function writeResultToResponse(
   // not needed and responsibility should be in the sequence.send
   response: Response,

@@ -31,6 +31,22 @@ describe('Binding', () => {
     });
   });
 
+  describe('tag', () => {
+    it('tags the binding', () => {
+      binding.tag('t1');
+      expect(binding.tags.has('t1')).to.be.true();
+      binding.tag('t2');
+      expect(binding.tags.has('t1')).to.be.true();
+      expect(binding.tags.has('t2')).to.be.true();
+    });
+
+    it('tags the binding with an array', () => {
+      binding.tag(['t1', 't2']);
+      expect(binding.tags.has('t1')).to.be.true();
+      expect(binding.tags.has('t2')).to.be.true();
+    });
+  });
+
   describe('to(value)', () => {
     it('returns the value synchronously', () => {
       binding.to('value');

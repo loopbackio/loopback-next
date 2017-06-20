@@ -3,31 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Reflector} from '@loopback/context';
-
-/* interface to define authentication metadata structure expected in
- * json objects
- */
-export interface IMetadata {
-  // name of the passport strategy to use for authentication
-  strategy: string;
-  // options to configure the passport strategy
-  options: Object;
-}
+import {Reflector, Constructor} from '@loopback/context';
+import {BindingKeys} from './keys';
 
 /* class to hold authentication metadata
  */
-export class AuthenticationMetadata {
-  strategyName: string;
-  options: Object;
-
-  constructor(private strategy: string, private optionValues?: Object) {
-    this.strategyName = strategy;
-    this.options = optionValues || {};
-  }
-  getMetadata(): IMetadata {
-    return {strategy: this.strategyName, options: this.options};
-  }
+export interface AuthenticationMetadata {
+  strategy: string;
+  options?: Object;
 }
 
 /**
@@ -37,12 +20,12 @@ export class AuthenticationMetadata {
  */
 export function authenticate(strategyName: string, options?: Object) {
   return function(controllerClass: Object, methodName: string) {
-    const metadataObj: AuthenticationMetadata = new AuthenticationMetadata(
-      strategyName,
-      options || {},
-    );
+    const metadataObj: AuthenticationMetadata = {
+      strategy: strategyName,
+      options: options || {},
+    };
     Reflector.defineMetadata(
-      'loopback:authenticate',
+      BindingKeys.Authentication.METADATA,
       metadataObj,
       controllerClass,
       methodName,
@@ -56,13 +39,12 @@ export function authenticate(strategyName: string, options?: Object) {
  * @param methodName
  */
 export function getAuthenticateMetadata(
-  controllerObj: Object,
+  controllerClass: Constructor<{}>,
   methodName: string,
-): IMetadata {
-  const metadataObj: AuthenticationMetadata = Reflector.getMetadata(
-    'loopback:authenticate',
-    controllerObj,
+): AuthenticationMetadata | undefined {
+  return Reflector.getMetadata(
+    BindingKeys.Authentication.METADATA,
+    controllerClass.prototype,
     methodName,
   );
-  return metadataObj.getMetadata();
 }

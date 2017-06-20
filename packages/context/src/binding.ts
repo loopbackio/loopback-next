@@ -16,21 +16,60 @@ export type ValueOrPromise<T> = T | Promise<T>;
 // FIXME(bajtos) The binding class should be parameterized by the value
 // type stored
 export class Binding {
-  private _tagName: string;
+  static PROPERTY_SEPARATOR = '#';
+
+  /**
+   * Validate the binding key format. Please note that `#` is reserved.
+   * @param key Binding key, such as `a, a.b, a:b, a/b
+   */
+  static validateKey(key: string) {
+    if (!key) throw new Error('Binding key must be provided.');
+    if (key.indexOf(Binding.PROPERTY_SEPARATOR) !== -1) {
+      throw new Error(`Binding key ${key} cannot contain`
+        + ` '${Binding.PROPERTY_SEPARATOR}'.`);
+    }
+    return key;
+  }
+
+  /**
+   * Remove the segament that denotes a property path
+   * @param key Binding key, such as `a, a.b, a:b, a/b, a.b#x, a:b#x.y, a/b#x.y`
+   */
+  static normalizeKey(key: string) {
+    const index = key.indexOf(Binding.PROPERTY_SEPARATOR);
+    if (index !== -1) key = key.substr(0, index);
+    key = key.trim();
+    return key;
+  }
+
+  /**
+   * Get the property path separated by `#`
+   * @param key Binding key
+   */
+  static getKeyPath(key: string) {
+    const index = key.indexOf(Binding.PROPERTY_SEPARATOR);
+    if (index !== -1) return key.substr(index + 1);
+    return undefined;
+  }
+
+  private readonly _key: string;
+  private _tags: Set<string> = new Set();
 
   // For bindings bound via toClass, this property contains the constructor
   // function
   public valueConstructor: Constructor<BoundValue>;
 
-  constructor(
-    private readonly _key: string,
-    public isLocked: boolean = false,
-  ) {}
+  constructor(_key: string, public isLocked: boolean = false) {
+    Binding.validateKey(_key);
+    this._key = _key;
+  }
+
   get key() {
     return this._key;
   }
-  get tagName() {
-    return this._tagName;
+
+  get tags() {
+    return this._tags;
   }
 
   /**
@@ -65,8 +104,14 @@ export class Binding {
     return this;
   }
 
-  tag(tagName: string): this {
-    this._tagName = tagName;
+  tag(tagName: string | string[]): this {
+    if (typeof tagName === 'string') {
+      this._tags.add(tagName);
+    } else {
+      tagName.forEach(t => {
+        this._tags.add(t);
+      });
+    }
     return this;
   }
 

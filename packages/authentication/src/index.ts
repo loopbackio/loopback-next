@@ -5,3 +5,6 @@
 
 export * from './decorator';
 export * from './strategy-adapter';
+export * from './metadata-provider';
+export * from './provider';
+export * from './keys';
