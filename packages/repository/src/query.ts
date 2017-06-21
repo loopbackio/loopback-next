@@ -22,6 +22,9 @@ export enum Operators {
   or, // OR
 }
 
+/**
+ * Matching condition
+ */
 export interface Condition {
   eq?: any;
   neq?: any;
@@ -92,11 +95,32 @@ export interface Inclusion {
  * Query filter object
  */
 export interface Filter {
+  /**
+   * The matching criteria
+   */
   where?: Where;
+  /**
+   * To include/exclude fields
+   */
   fields?: Fields;
+  /**
+   * Sorting order for matched entities
+   */
   order?: Order[];
+  /**
+   * Maximum number of entities
+   */
   limit?: number;
+  /**
+   * Skip N number of entities
+   */
   skip?: number;
+  /**
+   * Offset N number of entities. An alias for `skip`
+   */
   offset?: number;
+  /**
+   * To include related objects
+   */
   include?: Inclusion[];
 }

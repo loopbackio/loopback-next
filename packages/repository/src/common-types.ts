@@ -43,6 +43,9 @@ export interface AnyObject {
   [property: string]: any;
 }
 
+/**
+ * Type alias for T or any object
+ */
 export type ObjectType<T> = T | AnyObject;
 
 /**
