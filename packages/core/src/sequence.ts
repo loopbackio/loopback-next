@@ -12,6 +12,7 @@ import {
   LogError,
   OperationRetval,
   ParsedRequest,
+  AuthenticateFn,
 } from './internal-types';
 import {parseOperationArgs} from './parser';
 import {writeResultToResponse} from './writer';
@@ -46,6 +47,7 @@ export class Sequence {
     @inject('findRoute') protected findRoute: FindRoute,
     @inject('invokeMethod') protected invoke: InvokeMethod,
     @inject('logError') protected logError: LogError,
+    @inject('authenticate') protected authenticate: AuthenticateFn,
   ) {}
 
 
@@ -68,6 +70,7 @@ export class Sequence {
   async run(req: ParsedRequest, res: ServerResponse) {
     try {
       const {controller, methodName, spec, pathParams} = this.findRoute(req);
+      await this.authenticate(req);
       const args = await parseOperationArgs(req, spec, pathParams);
       const result = await this.invoke(controller, methodName, args);
       debug('%s.%s() result -', controller, methodName, result);

@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context} from '@loopback/context';
+import {Context, Reflector, Constructor} from '@loopback/context';
 import {OpenApiSpec} from '@loopback/openapi-spec';
 import {ServerRequest, ServerResponse} from 'http';
 import {getApiSpec} from './router/metadata';
@@ -17,6 +17,7 @@ import {
   ParsedRequest,
   OperationArgs,
 } from './internal-types';
+import {BindingKeys} from './keys';
 
 const debug = require('debug')('loopback:core:http-handler');
 
@@ -45,6 +46,7 @@ export class HttpHandler {
 
     this._bindFindRoute(requestContext);
     this._bindInvokeMethod(requestContext);
+    this._bindAuthenticationFn(requestContext);
 
     const sequence: Sequence = await requestContext.get('sequence');
     return sequence.run(parsedRequest, response);
@@ -96,6 +98,19 @@ export class HttpHandler {
         );
         const result = await controller[method](...args);
         return result;
+      };
+    });
+  }
+
+  protected _bindAuthenticationFn(context: Context) {
+    context.bind('authenticate').toDynamicValue(() => {
+      return async (request : ParsedRequest) => {
+        if (context.contains(BindingKeys.Context.AUTHENTICATION_PROVIDER)) {
+          const provider =
+            await context.get(BindingKeys.Context.AUTHENTICATION_PROVIDER);
+          return await provider(request);
+        }
+        return;
       };
     });
   }

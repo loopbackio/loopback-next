@@ -6,6 +6,7 @@
 import {ServerRequest} from 'http';
 import {ResolvedRoute} from './router/routing-table';
 
+
 export interface ParsedRequest extends ServerRequest {
   // see http://expressjs.com/en/4x/api.html#req.path
   path: string;
@@ -43,3 +44,21 @@ export type PathParameterValues = {[key: string]: any};
 export type OperationArgs = any[];
 export type OperationRetval = any;
 // tslint:enable:no-any
+
+/**
+ * interface definition of a function which accepts a request
+ * and returns an authenticated user
+ */
+export interface AuthenticateFn {
+  (request: ParsedRequest): Promise<UserProfile>;
+}
+
+/**
+ * interface definition of a user profile
+ * http://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
+ */
+export interface UserProfile {
+  id: string;
+  name?: string;
+  email?: string;
+}
