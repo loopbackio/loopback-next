@@ -3,8 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export function isPromise<T>(value: T | Promise<T>): value is Promise<T> {
+export function isPromise<T>(value: T | PromiseLike<T>):
+  value is PromiseLike<T> {
   if (!value) return false;
   if (typeof value !== 'object' && typeof value !== 'function') return false;
-  return typeof (value as Promise<T>).then === 'function';
+  return typeof (value as PromiseLike<T>).then === 'function';
 }
