@@ -209,6 +209,7 @@ export abstract class Entity extends Model implements Persistable {
 
   /**
    * Build the where object for the given id
+   * @param id The id value
    */
   static buildWhereForId(id: any) {
     const where = {} as any;
