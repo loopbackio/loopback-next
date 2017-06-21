@@ -11,9 +11,9 @@
   "license": "MIT",
   "devDependencies": {
     "@types/mocha": "^2.2.39",
-    "@types/node": "^7.0.31",
-    "@types/request": "^0.0.43",
-    "@types/request-promise": "^4.1.33",
+    "@types/node": "^8.0.1",
+    "@types/request": "0.0.44",
+    "@types/request-promise": "^4.1.35",
     "coveralls": "^2.13.1",
     "lerna": "^2.0.0-rc.4",
     "mocha": "^3.2.0",
