@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Binding, Context, inject, Provider} from '../..';
+import {Binding, BindingScope, Context, inject, Provider} from '../..';
 
 const key = 'foo';
 
@@ -44,6 +44,27 @@ describe('Binding', () => {
       binding.tag(['t1', 't2']);
       expect(binding.tags.has('t1')).to.be.true();
       expect(binding.tags.has('t2')).to.be.true();
+    });
+  });
+
+  describe('inScope', () => {
+    it('defaults the transient binding scope', () => {
+      expect(binding.scope).to.equal(BindingScope.TRANSIENT);
+    });
+
+    it('sets the singleton binding scope', () => {
+      binding.inScope(BindingScope.SINGLETON);
+      expect(binding.scope).to.equal(BindingScope.SINGLETON);
+    });
+
+    it('sets the context binding scope', () => {
+      binding.inScope(BindingScope.CONTEXT);
+      expect(binding.scope).to.equal(BindingScope.CONTEXT);
+    });
+
+    it('sets the transient binding scope', () => {
+      binding.inScope(BindingScope.TRANSIENT);
+      expect(binding.scope).to.equal(BindingScope.TRANSIENT);
     });
   });
 
