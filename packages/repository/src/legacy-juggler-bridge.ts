@@ -8,9 +8,11 @@ export const jugglerModule = require('loopback-datasource-juggler');
 import {isPromise} from '@loopback/context';
 import {MixinBuilder} from './mixin';
 import {Class, ObjectType, Options} from './common-types';
+import {Entity} from './model';
+import {Filter, Where} from './query';
+import {EntityCrudRepository} from './repository';
 
 import {juggler} from './loopback-datasource-juggler';
-
 export * from './loopback-datasource-juggler';
 
 /* tslint:disable-next-line:variable-name */
@@ -36,10 +38,10 @@ export function bindModel<T extends typeof juggler.ModelBase>(
   return boundModelClass;
 }
 
-import {Entity} from './model';
-import {Filter, Where} from './query';
-import {EntityCrudRepository} from './repository';
-
+/**
+ * Ensure the value is a promise
+ * @param p Promise or void
+ */
 function ensurePromise<T>(p: juggler.PromiseOrVoid<T>): Promise<T> {
   if (p && isPromise(p)) {
     return p;
@@ -48,14 +50,25 @@ function ensurePromise<T>(p: juggler.PromiseOrVoid<T>): Promise<T> {
   }
 }
 
+/**
+ * Default implementation of CRUD repository using legacy juggler model
+ * and data source
+ */
 export class DefaultCrudRepository<T extends Entity, ID>
   implements EntityCrudRepository<T, ID> {
   modelClass: typeof juggler.PersistedModel;
 
+  /**
+   * Constructor of DefaultCrudRepository
+   * @param modelClass Legacy model class
+   * @param dataSource Legacy data source
+   */
   constructor(
     modelClass: typeof juggler.PersistedModel,
     dataSource: juggler.DataSource,
   ) {
+    // Bind the legacy model class to the datasource to create
+    // a subclass of the model
     this.modelClass = bindModel(modelClass, dataSource);
   }
 

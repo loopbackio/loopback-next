@@ -16,10 +16,12 @@
   },
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
-  // Temporarily disable linting & compilation of examples,
-  // because they are depending on features/APIs that are
-  // not implemented yet
-  "tslint.exclude": "packages/examples/**/*",
+
+  "prettier.eslintIntegration": true,
+  "prettier.bracketSpacing": false,
+  "prettier.singleQuote": true,
+  "prettier.printWidth": 80,
+
   "tslint.ignoreDefinitionFiles": true,
   "typescript.tsdk": "./node_modules/typescript/lib"
 }

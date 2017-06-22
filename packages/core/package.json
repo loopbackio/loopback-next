@@ -1,6 +1,6 @@
 {
   "name": "@loopback/core",
-  "version": "4.0.0-alpha.8",
+  "version": "4.0.0-alpha.9",
   "description": "",
   "scripts": {
     "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
@@ -18,8 +18,8 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^4.0.0-alpha.7",
-    "@loopback/openapi-spec": "^4.0.0-alpha.5",
+    "@loopback/context": "^4.0.0-alpha.9",
+    "@loopback/openapi-spec": "^4.0.0-alpha.6",
     "@types/bluebird": "^3.5.2",
     "@types/http-errors": "^1.5.34",
     "bluebird": "^3.5.0",
@@ -29,8 +29,8 @@
     "path-to-regexp": "^1.7.0"
   },
   "devDependencies": {
-    "@loopback/openapi-spec-builder": "^4.0.0-alpha.3",
-    "@loopback/testlab": "^4.0.0-alpha.4",
+    "@loopback/openapi-spec-builder": "^4.0.0-alpha.4",
+    "@loopback/testlab": "^4.0.0-alpha.5",
     "mocha": "^3.2.0",
     "typescript": "^2.3.2"
   },

@@ -14,39 +14,38 @@ export interface Repository<T extends Model> {}
 /**
  * Basic CRUD operations for ValueObject and Entity. No ID is required.
  */
-export interface CrudRepository<
-  T extends (ValueObject | Entity)
-> extends Repository<T> {
+export interface CrudRepository<T extends (ValueObject | Entity)>
+  extends Repository<T> {
   /**
    * Create a new record
-   * @param dataObject
-   * @param options
-   * @promise resolves a T
+   * @param dataObject The data to be created
+   * @param options Options for the operations
+   * @returns A promise of record created
    */
   create(dataObject: ObjectType<T>, options?: Options): Promise<T>;
 
   /**
    * Create all records
-   * @param entities
-   * @param options
-   * @promise resolves an array of created records
+   * @param dataObjects An array of data to be created
+   * @param options Options for the operations
+   * @returns A promise of an array of records created
    */
-  createAll(entities: ObjectType<T>[], options?: Options): Promise<T[]>;
+  createAll(dataObjects: ObjectType<T>[], options?: Options): Promise<T[]>;
 
   /**
    * Find matching records
-   * @param filter
-   * @param options
-   * @promise resolves an array retrieved matching records
+   * @param filter Query filter
+   * @param options Options for the operations
+   * @returns A promise of an array of records found
    */
   find(filter?: Filter, options?: Options): Promise<T[]>;
 
   /**
    * Updating matching records with attributes from the data object
-   * @param dataObject
-   * @param where
-   * @param options
-   * @promise resolves the count of updated records
+   * @param dataObject The data to be updated
+   * @param where Matching criteria
+   * @param options Options for the operations
+   * @returns A promise of number of records updated
    */
   updateAll(
     dataObject: ObjectType<T>,
@@ -56,17 +55,17 @@ export interface CrudRepository<
 
   /**
    * Delete matching records
-   * @param where
-   * @param options
-   * @promise resolves the count of deleted records
+   * @param where Matching criteria
+   * @param options Options for the operations
+   * @returns A promise of number of records deleted
    */
   deleteAll(where?: Where, options?: Options): Promise<number>;
 
   /**
    * Count matching records
-   * @param where
-   * @param options
-   * @promise resolves the count of matching records
+   * @param where Matching criteria
+   * @param options Options for the operations
+   * @returns A promise of number of records matched
    */
   count(where?: Where, options?: Options): Promise<number>;
 }
@@ -79,79 +78,77 @@ export interface EntityRepository<T extends Entity, ID> extends Repository<T> {}
 /**
  * CRUD operations for a repository of entities
  */
-export interface EntityCrudRepository<
-  T extends Entity,
-  ID
-> extends EntityRepository<T, ID>, CrudRepository<T> {
+export interface EntityCrudRepository<T extends Entity, ID>
+  extends EntityRepository<T, ID>, CrudRepository<T> {
   /**
    * Save an entity. If no id is present, create a new entity
-   * @param entity
-   * @param options
-   * @promise resolves the saved entity
+   * @param entity Entity to be saved
+   * @param options Options for the operations
+   * @returns A promise of an entity saved
    */
   save(entity: ObjectType<T>, options?: Options): Promise<T>;
 
   /**
    * Update an entity
-   * @param entity
-   * @param options
-   * @promise resolves a boolean represents update succeeds(true)
-   * or fails(false)
+   * @param entity Entity to be updated
+   * @param options Options for the operations
+   * @returns Promise<true> if the entity is updated, otherwise
+   * Promise<false>
    */
   update(entity: ObjectType<T>, options?: Options): Promise<boolean>;
 
   /**
    * Delete an entity
-   * @param entity
-   * @param options
-   * @promise resolves a boolean represents delete succeeds(true)
-   * or fails(false)
+   * @param entity Entity to be deleted
+   * @param options Options for the operations
+   * @returns Promise<true> if the entity is deleted, otherwise
+   * Promise<false>
    */
   delete(entity: ObjectType<T>, options?: Options): Promise<boolean>;
 
   /**
    * Find an entity by id
-   * @param id
-   * @param options
-   * @promise resolves the returned entity
+   * @param id Value for the entity id
+   * @param options Options for the operations
+   * @returns A promise of an entity found for the id
    */
   findById(id: ID, filter?: Filter, options?: Options): Promise<T>;
 
   /**
    * Update an entity by id with property/value pairs in the data object
-   * @param data
-   * @param id
-   * @param options
-   * @promise resolves a boolean represents update succeeds(true)
-   * or fails(false)
+   * @param data Data attributes to be updated
+   * @param id Value for the entity id
+   * @param options Options for the operations
+   * @returns Promise<true> if the entity is updated, otherwise
+   * Promise<false>
    */
   updateById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean>;
 
   /**
    * Replace an entity by id
-   * @param data
-   * @param id
-   * @param options
-   * @promise resolves a boolean represents replace succeeds(true)
-   * or fails(false)
+   * @param data Data attributes to be replaced
+   * @param id Value for the entity id
+   * @param options Options for the operations
+   * @returns Promise<true> if an entity is replaced, otherwise
+   * Promise<false>
    */
   replaceById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean>;
 
   /**
    * Delete an entity by id
-   * @param id
-   * @param options
-   * @promise resolves a boolean represents delete succeeds(true)
-   * or fails(false)
+   * @param id Value for the entity id
+   * @param options Options for the operations
+   * @returns Promise<true> if an entity is deleted for the id, otherwise
+   * Promise<false>
    */
   deleteById(id: ID, options?: Options): Promise<boolean>;
 
   /**
    * Check if an entity exists for the given id
-   * @param id
-   * @param options
-   * @promise resolves a boolean represents entity exists(true)
-   * or not(false)
+   * @param id Value for the entity id
+   * @param options Options for the operations
+   * @returns Promise<true> if an entity exists for the id, otherwise
+   * Promise<false>
    */
   exists(id: ID, options?: Options): Promise<boolean>;
 }
