@@ -5,7 +5,7 @@ A collection of test utilities we use to write LoopBack tests.
 ## `expect`
 
 [Should.js](https://shouldjs.github.io/) configured in "as-function" mode
-(global `Object.protype` is left intact) with an extra chaining word `to`.
+(global `Object.prototype` is left intact) with an extra chaining word `to`.
 
 #### Example usage
 
