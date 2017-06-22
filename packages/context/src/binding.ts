@@ -13,6 +13,78 @@ export type BoundValue = any;
 
 export type ValueOrPromise<T> = T | Promise<T>;
 
+/**
+ * Scope for binding values
+ */
+export enum BindingScope {
+  /**
+   * The binding provides a value that is calculated each time. This will be
+   * the default scope if not set.
+   *
+   * For example, with the following context hierarchy:
+   *
+   * - app (with a binding 'b1' that produces sequential values 0, 1, ...)
+   *   - req1
+   *   - req2
+   *
+   * // get('b1') produces a new value each time for app and its descendants
+   * app.get('b1') ==> 0
+   * req1.get('b1') ==> 1
+   * req2.get('b1') ==> 2
+   * req2.get('b1') ==> 3
+   * app.get('b1') ==> 4
+   */
+  TRANSIENT,
+
+  /**
+   * The binding provides a value as a singleton within each local context. The
+   * value is calculated only once per context and cached for subsequenicial
+   * uses. Child contexts have their own value and do not share with their
+   * ancestors.
+   *
+   * For example, with the following context hierarchy:
+   *
+   * - app (with a binding 'b1' that produces sequential values 0, 1, ...)
+   *   - req1
+   *   - req2
+   *
+   * // 0 is the singleton for app afterward
+   * app.get('b1') ==> 0
+   *
+   * // 'b1' is found in app but not in req1, a new value 1 is calculated.
+   * // 1 is the singleton for req1 afterward
+   * req1.get('b1') ==> 1
+   *
+   * // 'b1' is found in app but not in req2, a new value 2 is calculated.
+   * // 2 is the singleton for req2 afterward
+   * req2.get('b1') ==> 2
+   */
+  CONTEXT,
+
+  /**
+   * The binding provides a value as a singleton within the context hierarchy
+   * (the owning context and its descendants). The value is calculated only
+   * once for the owning context and cached for subsequenicial uses. Child
+   * contexts share the same value as their ancestors.
+   *
+   * For example, with the following context hierarchy:
+   *
+   * - app (with a binding 'b1' that produces sequential values 0, 1, ...)
+   *   - req1
+   *   - req2
+   *
+   * // 0 is the singleton for app afterward
+   * app.get('b1') ==> 0
+   *
+   * // 'b1' is found in app, reuse it
+   * req1.get('b1') ==> 0
+   *
+   * // 'b1' is found in app, reuse it
+   * req2.get('b1') ==> 0
+   */
+  SINGLETON,
+}
+
 // FIXME(bajtos) The binding class should be parameterized by the value
 // type stored
 export class Binding {
@@ -24,7 +96,7 @@ export class Binding {
    */
   static validateKey(key: string) {
     if (!key) throw new Error('Binding key must be provided.');
-    if (key.indexOf(Binding.PROPERTY_SEPARATOR) !== -1) {
+    if (key.includes(Binding.PROPERTY_SEPARATOR)) {
       throw new Error(`Binding key ${key} cannot contain`
         + ` '${Binding.PROPERTY_SEPARATOR}'.`);
     }
@@ -52,24 +124,64 @@ export class Binding {
     return undefined;
   }
 
-  private readonly _key: string;
-  private _tags: Set<string> = new Set();
+  public readonly key: string;
+  public readonly tags: Set<string> = new Set();
+  public scope: BindingScope = BindingScope.TRANSIENT;
+
+  private _cache: BoundValue;
+  private _getValue: (ctx?: Context) => BoundValue | Promise<BoundValue>;
 
   // For bindings bound via toClass, this property contains the constructor
   // function
   public valueConstructor: Constructor<BoundValue>;
 
-  constructor(_key: string, public isLocked: boolean = false) {
-    Binding.validateKey(_key);
-    this._key = _key;
+  constructor(key: string, public isLocked: boolean = false) {
+    Binding.validateKey(key);
+    this.key = key;
   }
 
-  get key() {
-    return this._key;
-  }
-
-  get tags() {
-    return this._tags;
+  /**
+   * Cache the resolved value by the binding scope
+   * @param ctx The current context
+   * @param result The calculated value for the binding
+   */
+  private _cacheValue(ctx: Context, result: BoundValue | Promise<BoundValue>):
+    BoundValue | Promise<BoundValue> {
+    if (isPromise(result)) {
+      if (this.scope === BindingScope.SINGLETON) {
+        // Cache the value
+        result = result.then(val => {
+          this._cache = val;
+          return val;
+        });
+      } else if (this.scope === BindingScope.CONTEXT) {
+        // Cache the value
+        result = result.then(val => {
+          if (ctx.contains(this.key)) {
+            // The ctx owns the binding
+            this._cache = val;
+          } else {
+            // Create a binding of the cached value for the current context
+            ctx.bind(this.key).to(val);
+          }
+          return val;
+        });
+      }
+    } else {
+      if (this.scope === BindingScope.SINGLETON) {
+        // Cache the value
+        this._cache = result;
+      } else if (this.scope === BindingScope.CONTEXT) {
+        if (ctx.contains(this.key)) {
+          // The ctx owns the binding
+          this._cache = result;
+        } else {
+          // Create a binding of the cached value for the current context
+          ctx.bind(this.key).to(result);
+        }
+      }
+    }
+    return result;
   }
 
   /**
@@ -94,8 +206,22 @@ export class Binding {
    * ```
    */
   getValue(ctx: Context): BoundValue | Promise<BoundValue> {
+    // First check cached value for non-transient
+    if (this._cache !== undefined) {
+      if (this.scope === BindingScope.SINGLETON) {
+        return this._cache;
+      } else if (this.scope === BindingScope.CONTEXT) {
+        if (ctx.contains(this.key)) {
+          return this._cache;
+        }
+      }
+    }
+    if (this._getValue) {
+      const result = this._getValue(ctx);
+      return this._cacheValue(ctx, result);
+    }
     return Promise.reject(
-      new Error(`No value was configured for binding ${this._key}.`),
+      new Error(`No value was configured for binding ${this.key}.`),
     );
   }
 
@@ -106,13 +232,17 @@ export class Binding {
 
   tag(tagName: string | string[]): this {
     if (typeof tagName === 'string') {
-      this._tags.add(tagName);
+      this.tags.add(tagName);
     } else {
       tagName.forEach(t => {
-        this._tags.add(t);
+        this.tags.add(t);
       });
     }
     return this;
+  }
+
+  inScope(scope: BindingScope) {
+    this.scope = scope;
   }
 
   /**
@@ -127,7 +257,7 @@ export class Binding {
    * ```
    */
   to(value: BoundValue): this {
-    this.getValue = () => value;
+    this._getValue = () => value;
     return this;
   }
 
@@ -151,7 +281,7 @@ export class Binding {
    */
   toDynamicValue(factoryFn: () => BoundValue | Promise<BoundValue>): this {
     // TODO(bajtos) allow factoryFn with @inject arguments
-    this.getValue = ctx => factoryFn();
+    this._getValue = ctx => factoryFn();
     return this;
   }
 
@@ -159,10 +289,10 @@ export class Binding {
    * Bind the key to a BindingProvider
    */
   public toProvider<T>(providerClass: Constructor<Provider<T>>): this {
-    this.getValue = ctx => {
+    this._getValue = ctx => {
       const providerOrPromise = instantiateClass<Provider<T>>(
         providerClass,
-        ctx,
+        ctx!,
       );
       if (isPromise(providerOrPromise)) {
         return providerOrPromise.then(p => p.value());
@@ -181,7 +311,7 @@ export class Binding {
    *   we can resolve them from the context.
    */
   toClass<T>(ctor: Constructor<T>): this {
-    this.getValue = context => instantiateClass(ctor, context);
+    this._getValue = ctx => instantiateClass(ctor, ctx!);
     this.valueConstructor = ctor;
     return this;
   }

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, Binding} from '../..';
+import {Context, Binding, BindingScope} from '../..';
 
 describe('Context', () => {
   let ctx: Context;
@@ -118,6 +118,88 @@ describe('Context', () => {
       ctx.bind('foo').toDynamicValue(() => Promise.resolve('bar'));
       expect(() => ctx.getSync('foo')).to.throw(/foo.*the value is a promise/);
     });
+
+    it('returns singleton value', () => {
+      let count = 0;
+      ctx
+        .bind('foo')
+        .toDynamicValue(() => count++)
+        .inScope(BindingScope.SINGLETON);
+      let result = ctx.getSync('foo');
+      expect(result).to.equal(0);
+      result = ctx.getSync('foo');
+      expect(result).to.equal(0);
+      const childCtx = new Context(ctx);
+      result = childCtx.getSync('foo');
+      expect(result).to.equal(0);
+    });
+
+    it('returns singleton value triggered by the child context', () => {
+      let count = 0;
+      ctx
+        .bind('foo')
+        .toDynamicValue(() => count++)
+        .inScope(BindingScope.SINGLETON);
+      const childCtx = new Context(ctx);
+      // Calculate the singleton value at child level 1st
+      let result = childCtx.getSync('foo');
+      expect(result).to.equal(0);
+      // Try twice from the parent ctx
+      result = ctx.getSync('foo');
+      expect(result).to.equal(0);
+      result = ctx.getSync('foo');
+      expect(result).to.equal(0);
+      // Try again from the child ctx
+      result = childCtx.getSync('foo');
+      expect(result).to.equal(0);
+    });
+
+    it('returns transient value', () => {
+      let count = 0;
+      ctx
+        .bind('foo')
+        .toDynamicValue(() => count++)
+        .inScope(BindingScope.TRANSIENT);
+      let result = ctx.getSync('foo');
+      expect(result).to.equal(0);
+      result = ctx.getSync('foo');
+      expect(result).to.equal(1);
+      const childCtx = new Context(ctx);
+      result = childCtx.getSync('foo');
+      expect(result).to.equal(2);
+    });
+
+    it('returns context value', () => {
+      let count = 0;
+      ctx
+        .bind('foo')
+        .toDynamicValue(() => count++)
+        .inScope(BindingScope.CONTEXT);
+      let result = ctx.getSync('foo');
+      expect(result).to.equal(0);
+      result = ctx.getSync('foo');
+      expect(result).to.equal(0);
+    });
+
+    it('returns context value from a child context', () => {
+      let count = 0;
+      ctx
+        .bind('foo')
+        .toDynamicValue(() => count++)
+        .inScope(BindingScope.CONTEXT);
+      let result = ctx.getSync('foo');
+      expect(result).to.equal(0);
+      const childCtx = new Context(ctx);
+      result = childCtx.getSync('foo');
+      expect(result).to.equal(1);
+      result = childCtx.getSync('foo');
+      expect(result).to.equal(1);
+      const childCtx2 = new Context(ctx);
+      result = childCtx2.getSync('foo');
+      expect(result).to.equal(2);
+      result = childCtx.getSync('foo');
+      expect(result).to.equal(1);
+    });
   });
 
   describe('get', () => {
@@ -141,6 +223,68 @@ describe('Context', () => {
       expect(result).to.be.undefined();
       result = await ctx.get(`foo${SEP}x.y.length`);
       expect(result).to.eql(1);
+    });
+
+    it('returns singleton value', async () => {
+      let count = 0;
+      ctx
+        .bind('foo')
+        .toDynamicValue(() => Promise.resolve(count++))
+        .inScope(BindingScope.SINGLETON);
+      let result = await ctx.get('foo');
+      expect(result).to.equal(0);
+      result = await ctx.get('foo');
+      expect(result).to.equal(0);
+      const childCtx = new Context(ctx);
+      result = await childCtx.get('foo');
+      expect(result).to.equal(0);
+    });
+
+    it('returns context value', async () => {
+      let count = 0;
+      ctx
+        .bind('foo')
+        .toDynamicValue(() => Promise.resolve(count++))
+        .inScope(BindingScope.CONTEXT);
+      let result = await ctx.get('foo');
+      expect(result).to.equal(0);
+      result = await ctx.get('foo');
+      expect(result).to.equal(0);
+    });
+
+    it('returns context value from a child context', async () => {
+      let count = 0;
+      ctx
+        .bind('foo')
+        .toDynamicValue(() => Promise.resolve(count++))
+        .inScope(BindingScope.CONTEXT);
+      let result = await ctx.get('foo');
+      const childCtx = new Context(ctx);
+      expect(result).to.equal(0);
+      result = await childCtx.get('foo');
+      expect(result).to.equal(1);
+      result = await childCtx.get('foo');
+      expect(result).to.equal(1);
+      const childCtx2 = new Context(ctx);
+      result = await childCtx2.get('foo');
+      expect(result).to.equal(2);
+      result = await childCtx.get('foo');
+      expect(result).to.equal(1);
+    });
+
+    it('returns transient value', async () => {
+      let count = 0;
+      ctx
+        .bind('foo')
+        .toDynamicValue(() => Promise.resolve(count++))
+        .inScope(BindingScope.TRANSIENT);
+      let result = await ctx.get('foo');
+      expect(result).to.equal(0);
+      result = await ctx.get('foo');
+      expect(result).to.equal(1);
+      const childCtx = new Context(ctx);
+      result = await childCtx.get('foo');
+      expect(result).to.equal(2);
     });
   });
 
