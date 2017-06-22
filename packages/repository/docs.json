@@ -1,0 +1,36 @@
+{
+    "content": [
+        "./index.ts",
+        "./src/common-types.ts",
+        "./src/connector.ts",
+        "./src/crud-connector.ts",
+        "./src/datasource.ts",
+        "./src/decorators/model.ts",
+        "./src/decorators/relation.ts",
+        "./src/decorators/repository.ts",
+        "./src/index.ts",
+        "./src/kv-connector.ts",
+        "./src/kv-repository.ts",
+        "./src/legacy-juggler-bridge.ts",
+        "./src/loopback-datasource-juggler.ts",
+        "./src/mixin.ts",
+        "./src/model.ts",
+        "./src/query.ts",
+        "./src/repository.ts",
+        "./src/types/any.ts",
+        "./src/types/array.ts",
+        "./src/types/boolean.ts",
+        "./src/types/buffer.ts",
+        "./src/types/date.ts",
+        "./src/types/index.ts",
+        "./src/types/number.ts",
+        "./src/types/string.ts",
+        "./src/types/type.ts",
+        "./src/types/union.ts"
+    ],
+    "codeSectionDepth": 4,
+    "assets": {
+      "/": "/docs",
+      "/docs": "/docs"
+    }
+}
