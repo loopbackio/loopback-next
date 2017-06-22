@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Binding, BoundValue, ValueOrPromise} from '@loopback/context';
 import {ServerRequest} from 'http';
 import {ResolvedRoute} from './router/routing-table';
 
@@ -43,3 +44,6 @@ export type PathParameterValues = {[key: string]: any};
 export type OperationArgs = any[];
 export type OperationRetval = any;
 // tslint:enable:no-any
+
+export type getFromContext = (key: string) => BoundValue;
+export type bindElement = (key: string) => Binding;

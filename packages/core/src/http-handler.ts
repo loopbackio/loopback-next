@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context} from '@loopback/context';
+import {Binding, Context, ValueOrPromise, BoundValue} from '@loopback/context';
 import {OpenApiSpec} from '@loopback/openapi-spec';
 import {ServerRequest, ServerResponse} from 'http';
 import {getApiSpec} from './router/metadata';
@@ -45,6 +45,8 @@ export class HttpHandler {
 
     this._bindFindRoute(requestContext);
     this._bindInvokeMethod(requestContext);
+    this._bindGetFromContext(requestContext);
+    this._bindBindElement(requestContext);
 
     const sequence: Sequence = await requestContext.get('sequence');
     return sequence.run(parsedRequest, response);
@@ -58,6 +60,15 @@ export class HttpHandler {
     requestContext.bind('http.request').to(req);
     requestContext.bind('http.response').to(res);
     return requestContext;
+  }
+
+  protected _bindGetFromContext(context: Context): void {
+    context.bind('getFromContext').to(
+      (key: string): Promise<BoundValue> => context.get(key));
+  }
+
+  protected _bindBindElement(context: Context): void {
+    context.bind('bindElement').to((key: string): Binding => context.bind(key));
   }
 
   protected _bindFindRoute(context: Context): void {

@@ -31,6 +31,8 @@ export {
   InvokeMethod,
   LogError,
   OperationArgs,
+  getFromContext,
+  bindElement,
 } from './internal-types';
 export {parseOperationArgs} from './parser';
 export {parseRequestUrl} from './router/routing-table';
