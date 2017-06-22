@@ -5,7 +5,8 @@ It contains the constructs for modeling and accessing data.
 
 **NOTE**: This module is experimental and evolving. It is likely going to be
 refactored and decomposed into multiple modules as we refine the story based on
-the legacy `loopback-datasource-juggler` and connector modules from LoopBack 3.x.
+the legacy `loopback-datasource-juggler` and connector modules from LoopBack
+3.x.
 
 # Concepts
 
@@ -16,9 +17,9 @@ strong-typed data access (for example, CRUD) operations of a domain model
 against the underlying database or service.
 
 `Repository` can be defined and implemented by application developers. LoopBack
-ships a few predefined `Repository` interfaces for typical CRUD and KV operations.
-Such `Repository` implements leverage `Model` definition and `DataSource`
-configuration to fulfill the logic for data access.
+ships a few predefined `Repository` interfaces for typical CRUD and KV
+operations. Such `Repository` implements leverage `Model` definition and
+`DataSource` configuration to fulfill the logic for data access.
 
 ```js
 interface Repository<T extends Model> {}
@@ -169,78 +170,182 @@ coercion. The following types are supported out of box.
 
 # Use Repository
 
-## Basic CRUD operations
+The `Repository` and other interfaces extended from `Repository` provide access
+to backend databases and services. Repositories can be used alone or as part
+of `Controller` implementation.
 
-```js
-export interface BasicCRUDRepository<T extends Model> {
-  create(data: ModelData, options?: Options): Promise<T>;
-  find(Filter, options?: Options);
-  delete(Where, options?: Options);
-  update(data: ModelData, where?: Where, options?: Options);
-  count(where?: Where, options?: Options);
-}
+At the moment, we only have implementations of `Repository` based on LoopBack
+3.x `loopback-datasource-juggler` and connectors. The following steps illustrate
+how to define repositories and use them with controllers.
+
+## Define legacy data sources and models
+
+The repository module provides APIs to define LoopBack 3.x data sources and
+models. For example,
+
+```ts
+import {
+  DataSourceConstructor,
+  juggler,
+} from '@loopback/repository';
+
+const ds: juggler.DataSource = new DataSourceConstructor({
+  name: 'db',
+  connector: 'memory',
+});
+
+/* tslint:disable-next-line:variable-name */
+const Note = ds.createModel<typeof juggler.PersistedModel>(
+  'note',
+  {title: 'string', content: 'string'},
+  {},
+);
 ```
 
-## Entity CRUD operations
-```js
-export interface EntityCRUDRepository<ID, T extends Entity> extends BasicCRUDRepository<T> {
-  findById(id: ID, filter?: Filter, options?: Options): Promise<T>;
-  deleteById(id: ID, options?: Options): Promise<boolean>;
-  updateById(id: ID, data: EntityData, options?: Options): Promise<boolean>;
-  replaceById(id: ID, data: EntityData, options?: Options): Promise<boolean>;
-  // ...
-}
+**NOTE**: There is no declarative support for data source and model yet in
+LoopBack Next. These constructs need to be created programmatically as
+illustrated above.
+
+## Define a repository
+
+A repository can be created directly using `DefaultCrudRepository`.
+
+```ts
+  const repo = new DefaultCrudRepository(Note, ds);
+
+  // Bind the repository instance
+  ctx.bind('repositories.noteRepo').to(repo);
 ```
 
-## KV operations
+Alternatively, we can define a new Repository subclass and use dependency
+injection to resolve the data source and model.
 
-# Default implementation of CRUD repository
-
-# Leverage loopback-datasource-juggler
-
-# Create specific repository interfaces
-
-# Bind repositories to the container
-
-# Use repositories in a controller
-
-## Use constructor injection
-```js
-import {EntityCrudRepository} from '../../src/repository';
-import {repository} from '../../src/decorator';
-import {Customer} from '../models/customer';
-
-export class CustomerController {
+```ts
+class MyNoteRepository extends DefaultCrudRepository<Entity, string> {
   constructor(
-    // Use constructor dependency injection
-    @repository(Customer, 'mongodbDataSource')
-    private repository: EntityCrudRepository<Customer, string>) {
+    @inject('models.Note') myModel: typeof juggler.PersistedModel,
+    // FIXME For some reason ts-node fails by complaining that
+    // juggler is undefined if the following is used:
+    // @inject('dataSources.memory') dataSource: juggler.DataSource
+    // tslint:disable-next-line:no-any
+    @inject('dataSources.memory') dataSource: any) {
+      super(myModel, dataSource);
+    }
+}
+```
+
+## Define a controller
+
+Controllers serve as handlers for API requests. We declare controllers as
+classes with optional dependency injection by decorating constructor parameters
+or properties.
+
+```ts
+import {Context, inject} from '@loopback/context';
+
+import {
+  repository,
+  Entity,
+  Options,
+  ObjectType,
+  Filter,
+  EntityCrudRepository,
+} from '@loopback/repository';
+
+// The Controller for Note
+class NoteController {
+  constructor(
+    // Use constructor dependency injection to set up the repository
+    @repository('noteRepo')
+    public noteRepo: EntityCrudRepository<Entity, number>,
+  ) {}
+
+  // Create a new note
+  create(data: ObjectType<Entity>, options?: Options) {
+    return this.noteRepo.create(data, options);
   }
 
-  find() {
-    return this.repository.find();
+  // Find notes by title
+  findByTitle(title: string, options?: Options) {
+    return this.noteRepo.find({where: {title}}, options);
   }
 }
 ```
 
-## Use property injection
-```js
-import {EntityCrudRepository} from '../../src/repository';
-import {repository} from '../../src/decorator';
-import {Customer} from '../models/customer';
+Alternatively, the controller can be declared using property injection:
 
-export class CustomerController {
-  // Use property dependency injection
-  @repository(Customer, 'mongodbDataSource')
-  private repository: EntityCrudRepository<Customer, string>;
-
-  find() {
-    return this.repository.find();
-  }
+```ts
+class NoteController {
+  @repository('noteRepo')
+  public noteRepo: EntityCrudRepository<Entity, number>;
 }
 ```
 
-## Use mixins
+## Run the controller and repository together
+
+### Bind the repository to context
+
+```ts
+// Create a context
+const ctx = new Context();
+
+// Mock up a predefined repository
+const repo = new DefaultCrudRepository(Note, ds);
+
+// Bind the repository instance
+ctx.bind('repositories.noteRepo').to(repo);
+```
+
+```ts
+// Create a context
+const ctx = new Context();
+
+// Bind model `Note`
+ctx.bind('models.Note').to(Note);
+
+// Bind the in-memory DB dataSource
+ctx.bind('dataSources.memory').to(ds);
+
+// Bind the repository class
+ctx.bind('repositories.noteRepo').toClass(MyNoteRepository);
+```
+
+## Compose repositories and controllers in a context
+
+```ts
+async function main() {
+  // Create a context
+  const ctx = new Context();
+
+  // Mock up a predefined repository
+  const repo = new DefaultCrudRepository(Note, ds);
+
+  // Bind the repository instance
+  ctx.bind('repositories.noteRepo').to(repo);
+
+  // Bind the controller class
+  ctx.bind('controllers.MyController').toClass(NoteController);
+
+  // Resolve the controller
+  const controller: NoteController = await ctx.get('controllers.MyController');
+
+  // Create some notes
+  await controller.create({title: 't1', content: 'Note 1'});
+  await controller.create({title: 't2', content: 'Note 2'});
+
+  // Find notes by title
+  const notes = await controller.findByTitle('t1');
+  return notes;
+}
+
+// Invoke the example
+main().then(notes => {
+  // It should print `Notes [ { title: 't1', content: 'Note 1', id: 1 } ]`
+  console.log('Notes', notes);
+});
+```
+
+## Mix in a repository into the controller (To be implemented)
 
 This style allows repository methods to be mixed into the controller class
 to mimic LoopBack 3.x style model classes with remote CRUD methods. It blends
