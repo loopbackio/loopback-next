@@ -42,14 +42,14 @@ describe('repository decorator', () => {
     );
     repo = new DefaultCrudRepository(Note, ds);
     ctx = new Context();
-    ctx.bind('repositories:noteRepo').to(repo);
-    ctx.bind('controllers:MyController').toClass(MyController);
+    ctx.bind('repositories.noteRepo').to(repo);
+    ctx.bind('controllers.MyController').toClass(MyController);
   });
 
   // tslint:disable-next-line:max-line-length
   it('supports referencing predefined repository by name via constructor', async () => {
     const myController: MyController = await ctx.get(
-      'controllers:MyController',
+      'controllers.MyController',
     );
     expect(myController.noteRepo).exactly(repo);
   });
@@ -57,7 +57,7 @@ describe('repository decorator', () => {
   // tslint:disable-next-line:max-line-length
   it('supports referencing predefined repository by name via property', async () => {
     const myController: MyController = await ctx.get(
-      'controllers:MyController',
+      'controllers.MyController',
     );
     expect(myController.noteRepo2).exactly(repo);
   });
