@@ -5,13 +5,24 @@
 
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-spec';
 
+/**
+ * Create a new instance of OpenApiSpecBuilder.
+ *
+ * @param basePath The base path on which the API is served.
+ */
 export function givenOpenApiSpec(basePath?: string) {
   return new OpenApiSpecBuilder(basePath);
 }
 
+/**
+ * A builder for creating OpenApiSpec documents.
+ */
 export class OpenApiSpecBuilder {
   private _spec: OpenApiSpec;
 
+  /**
+   * @param basePath The base path on which the API is served.
+   */
   constructor(basePath: string = '/') {
     this._spec = {
       basePath,
@@ -19,12 +30,27 @@ export class OpenApiSpecBuilder {
     };
   }
 
+  /**
+   * Define a new OperationObject at the given path and verb (method).
+   *
+   * @param verb The HTTP verb.
+   * @param path The path relative to basePath.
+   * @param spec Additional specification of the operation.
+   */
   withOperation(verb: string, path: string, spec: OperationObject): this {
     if (!this._spec.paths[path]) this._spec.paths[path] = {};
     this._spec.paths[path][verb] = spec;
     return this;
   }
 
+  /**
+   * Define a new operation that returns a string response.
+   *
+   * @param verb The HTTP verb.
+   * @param path The path relative to basePath.
+   * @param operationName The name of the controller method implementing
+   * this operation (`x-operation-name` field).
+   */
   withOperationReturningString(
     verb: string,
     path: string,
@@ -38,6 +64,9 @@ export class OpenApiSpecBuilder {
     });
   }
 
+  /**
+   * Build the OpenApiSpec object.
+   */
   build(): OpenApiSpec {
     // TODO(bajtos): deep-clone
     return this._spec;
