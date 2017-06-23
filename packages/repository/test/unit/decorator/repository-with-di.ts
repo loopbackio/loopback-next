@@ -53,14 +53,14 @@ describe('repository class', () => {
     ctx = new Context();
     ctx.bind('models.Note').to(Note);
     ctx.bind('dataSources.memory').to(ds);
-    ctx.bind('repositories:noteRepo').toClass(MyRepository);
-    ctx.bind('controllers:MyController').toClass(MyController);
+    ctx.bind('repositories.noteRepo').toClass(MyRepository);
+    ctx.bind('controllers.MyController').toClass(MyController);
   });
 
   // tslint:disable-next-line:max-line-length
   it('supports referencing predefined repository by name via constructor', async () => {
     const myController: MyController = await ctx.get(
-      'controllers:MyController',
+      'controllers.MyController',
     );
     expect(myController.noteRepo instanceof DefaultCrudRepository).to.be.true();
   });
