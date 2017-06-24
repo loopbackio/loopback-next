@@ -120,7 +120,7 @@ class RouteEntry<ControllerType> {
   ): ResolvedRoute<ControllerType> {
     return {
       controller: this._controller,
-      methodName: this._spec['x-operation-name'],
+      methodName: this._spec['x-operation-name']!,
       spec: this._spec,
       pathParams: pathParams,
     };
