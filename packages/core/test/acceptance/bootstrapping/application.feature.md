@@ -23,6 +23,5 @@ const app = new Application({
 });
 
 // get metadata about the registered components
-console.log(app.find('component.*')); // [Bindings] should match the 4 components registered above
 console.log(app.find('sequence.*')); // [Bindings] should match the 1 sequence registered above
 ```
