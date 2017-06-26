@@ -1,0 +1,47 @@
+{
+  "name": "@loopback/logging",
+  "version": "1.0.0",
+  "description": "A LoopBack component for logging support.",
+  "scripts": {
+    "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
+    "build": "npm run build:lib && npm run build:lib6",
+    "build:lib": "node ../../bin/compile-package es2017",
+    "build:lib6": "node ../../bin/compile-package es2015",
+    "clean": "rm -rf loopback-logging*.tgz lib* package",
+    "integration": "mocha --opts ../../test/mocha.opts 'test/integration/**/*.ts'",
+    "prepare": "npm run build",
+    "pretest": "npm run build",
+    "test": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts' 'test/integration/**/*.ts' 'test/acceptance/**/*.ts'",
+    "unit": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts'",
+    "verify": "npm pack && tar xf loopback-logging*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM",
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/context": "^4.0.0-alpha.9",
+    "@loopback/core": "^4.0.0-alpha.9",
+    "bunyan": "^1.8.10",
+    "finalhandler": "^1.0.3",
+    "morgan": "^1.8.2"
+  },
+  "devDependencies": {
+    "@loopback/openapi-spec-builder": "^4.0.0-alpha.4",
+    "@loopback/testlab": "^4.0.0-alpha.5",
+    "mocha": "^3.2.0"
+  },
+  "keywords": [
+    "LoopBack",
+    "Logging"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "lib",
+    "lib6"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
+}
