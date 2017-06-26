@@ -7,9 +7,9 @@ import {ServerResponse, OperationRetval, writeResultToResponse} from '../..';
 
 import {
   expect,
-  ShotRequest,
-  ShotResponse,
+  mockResponse,
   ShotObservedResponse,
+  ShotRequest,
 } from '@loopback/testlab';
 
 describe('writer', () => {
@@ -37,10 +37,9 @@ describe('writer', () => {
   });
 
   function setupResponseMock() {
-    const req = new ShotRequest({url: '/'});
-    observedResponse = new Promise(resolve => {
-      response = new ShotResponse(req, resolve);
-    });
+    const responseMock = mockResponse();
+    response = responseMock.response;
+    observedResponse = responseMock.result;
 
     // content-type should be undefined since it's not set in the response yet.
     expect(response.getHeader('content-type')).to.eql(undefined);

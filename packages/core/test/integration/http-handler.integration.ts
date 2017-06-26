@@ -3,7 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {HttpHandler, Sequence, ServerRequest} from '../..';
+import {
+  HttpHandler,
+  Sequence,
+  ServerRequest,
+  writeResultToResponse,
+  RejectProvider,
+} from '../..';
 import {Context} from '@loopback/context';
 import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {OpenApiSpec, ParameterObject} from '@loopback/openapi-spec';
@@ -377,6 +383,8 @@ describe('HttpHandler', () => {
   function givenHandler() {
     rootContext = new Context();
     rootContext.bind('logError').to(logger);
+    rootContext.bind('sequence.actions.send').to(writeResultToResponse);
+    rootContext.bind('sequence.actions.reject').toProvider(RejectProvider);
     rootContext.bind('sequence').toClass(Sequence);
 
     function logger(err: Error, statusCode: number, req: ServerRequest) {
@@ -402,7 +410,14 @@ describe('HttpHandler', () => {
   }
 
   function givenClient() {
-    client = createClientForHandler(handler.handleRequest);
+    client = createClientForHandler((req, res) => {
+      handler.handleRequest(req, res).catch(err => {
+        console.error('Request failed.', err.stack);
+        if (res.headersSent) return;
+        res.statusCode = 500;
+        res.end();
+      });
+    });
   }
 
   function logErrorsExcept(ignoreStatusCode: number) {

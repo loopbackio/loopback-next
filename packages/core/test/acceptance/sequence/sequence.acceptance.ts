@@ -17,6 +17,8 @@ import {
   OperationArgs,
   FindRoute,
   InvokeMethod,
+  Send,
+  Reject,
 } from '../../..';
 import {expect, Client, createClientForServer} from '@loopback/testlab';
 import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
@@ -66,6 +68,28 @@ describe('Sequence - ', () => {
       return client.get('/name')
         .expect('MySequence SequenceApp');
     });
+  });
+
+  it('user-defined Send', async () => {
+    const send: Send = (response, result) => {
+      response.setHeader('content-type', 'text/plain');
+      response.end(`CUSTOM FORMAT: ${result}`);
+    };
+    app.bind('sequence.actions.send').to(send);
+
+    const client = await whenIMakeRequestTo(app);
+    await client.get('/name').expect('CUSTOM FORMAT: SequenceApp');
+  });
+
+  it('user-defined Reject', async () => {
+    const reject: Reject = (response, request, error) => {
+      response.statusCode = 418; // I'm a teapot
+      response.end();
+    };
+    app.bind('sequence.actions.reject').to(reject);
+
+    const client = await whenIMakeRequestTo(app);
+    await client.get('/unknown-url').expect(418);
   });
 
   function givenAppWithController() {

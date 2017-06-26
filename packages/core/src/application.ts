@@ -9,7 +9,9 @@ import {ServerRequest, ServerResponse} from 'http';
 import {Component, mountComponent} from './component';
 import {getApiSpec} from './router/metadata';
 import {HttpHandler} from './http-handler';
+import {writeResultToResponse} from './writer';
 import {Sequence} from './sequence';
+import {RejectProvider} from './router/reject';
 
 const debug = require('debug')('loopback:core:application');
 
@@ -50,6 +52,8 @@ export class Application extends Context {
       this._handleHttpRequest(req, res);
 
     this.bind('logError').to(this._logError.bind(this));
+    this.bind('sequence.actions.send').to(writeResultToResponse);
+    this.bind('sequence.actions.reject').toProvider(RejectProvider);
   }
 
   protected _bindSequence(): void {

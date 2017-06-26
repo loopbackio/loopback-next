@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding, BoundValue, ValueOrPromise} from '@loopback/context';
-import {ServerRequest} from 'http';
+import {ServerRequest, ServerResponse} from 'http';
 import {ResolvedRoute} from './router/routing-table';
 
 export interface ParsedRequest extends ServerRequest {
@@ -18,7 +18,12 @@ export interface ParsedRequest extends ServerRequest {
   method: string;
 }
 
+/**
+ * Find a route matching the incoming request.
+ * Throw an error when no route was found.
+ */
 export type FindRoute = (request: ParsedRequest) => ResolvedRoute<string>;
+
 /**
  * Invokes a method defined in the Application Controller
  *
@@ -33,6 +38,38 @@ export type InvokeMethod = (
   method: string,
   args: OperationArgs,
 ) => Promise<OperationRetval>;
+
+/**
+ * Send the operation response back to the client.
+ *
+ * @param response The response the response to send to.
+ * @param result The operation result to send.
+ */
+export type Send = (
+  response: ServerResponse,
+  result: OperationRetval,
+) => void;
+
+/**
+ * Reject the request with an error.
+ *
+ * @param response The response the response to send to.
+ * @param request The request that triggered the error.
+ * @param err The error.
+ */
+export type Reject = (
+  response: ServerResponse,
+  request: ServerRequest,
+  err: Error,
+) => void;
+
+/**
+ * Log information about a failed request.
+ *
+ * @param err The error reported by request handling code.
+ * @param statusCode Status code of the HTTP response
+ * @param request The request that failed.
+ */
 export type LogError = (
   err: Error,
   statusCode: number,
