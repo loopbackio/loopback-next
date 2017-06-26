@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export {Binding, BindingScope, BoundValue} from './binding';
+export {Binding, BindingScope, BoundValue, ValueOrPromise} from './binding';
 export {Context} from './context';
 export {Constructor} from './resolver';
 export {inject} from './inject';

@@ -5,8 +5,9 @@
 
 export namespace BindingKeys {
   export namespace Context {
-    export const CONTROLLER_CLASS: string = 'controller.class';
-    export const CONTROLLER_METHOD_NAME: string = 'controller.method.name';
+    export const CONTROLLER_CLASS: string = 'controller.current.ctor';
+    export const CONTROLLER_METHOD_NAME: string =
+      'controller.current.operation';
     export const CONTROLLER_METHOD_META: string = 'controller.method.meta';
   }
 }
