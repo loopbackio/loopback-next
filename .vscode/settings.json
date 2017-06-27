@@ -21,6 +21,7 @@
   "prettier.bracketSpacing": false,
   "prettier.singleQuote": true,
   "prettier.printWidth": 80,
+  "prettier.trailingComma": "all",
 
   "tslint.ignoreDefinitionFiles": true,
   "typescript.tsdk": "./node_modules/typescript/lib"
