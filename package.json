@@ -53,8 +53,5 @@
       "html",
       "text"
     ]
-  },
-  "dependencies": {
-    "mocha": "^3.4.2"
   }
 }
