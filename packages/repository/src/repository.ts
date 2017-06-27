@@ -84,9 +84,9 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * Save an entity. If no id is present, create a new entity
    * @param entity Entity to be saved
    * @param options Options for the operations
-   * @returns A promise of an entity saved
+   * @returns A promise of an entity saved or null if the entity does not exist
    */
-  save(entity: ObjectType<T>, options?: Options): Promise<T>;
+  save(entity: ObjectType<T>, options?: Options): Promise<T | null>;
 
   /**
    * Update an entity
@@ -183,23 +183,32 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     this.connector = dataSource.connector as CrudConnector;
   }
 
+  private toModels(data: Promise<ObjectType<Entity>[]>): Promise<T[]> {
+    return data.then(items => items.map(i => new this.model(i)));
+  }
+
+  private toModel(data: Promise<ObjectType<Entity>>): Promise<T> {
+    return data.then(d => new this.model(d));
+  }
+
   create(entity: ObjectType<T>, options?: Options): Promise<T> {
-    return this.connector.create(this.model, entity, options);
+    return this.toModel(this.connector.create(this.model, entity, options));
   }
 
   createAll(entities: ObjectType<T>[], options?: Options): Promise<T[]> {
-    return this.connector.create(this.model, entities, options);
+    return this.toModels(
+      this.connector.createAll!(this.model, entities, options));
   }
 
-  save(entity: ObjectType<T>, options?: Options): Promise<T> {
+  save(entity: ObjectType<T>, options?: Options): Promise<T | null> {
     if (typeof this.connector.save === 'function') {
-      return this.connector.save(this.model, entity, options);
+      return this.toModel(this.connector.save(this.model, entity, options));
     } else {
       if (entity.getId() != null) {
         return this.replaceById(entity.getId(), entity, options).then(
           (result: boolean) =>
             result
-              ? Promise.resolve(entity)
+              ? this.toModel(Promise.resolve(entity))
               : Promise.reject(new Error('Not found')),
         );
       } else {
@@ -209,12 +218,12 @@ export class CrudRepositoryImpl<T extends Entity, ID>
   }
 
   find(filter?: Filter, options?: Options): Promise<T[]> {
-    return this.connector.find(this.model, filter, options);
+    return this.toModels(this.connector.find(this.model, filter, options));
   }
 
   findById(id: ID, options?: Options): Promise<T> {
     if (typeof this.connector.findById === 'function') {
-      return this.connector.findById(this.model, id, options);
+      return this.toModel(this.connector.findById(this.model, id, options));
     }
     const where = this.model.buildWhereForId(id);
     return this.connector

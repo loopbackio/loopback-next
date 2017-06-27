@@ -42,7 +42,8 @@ export function bindModel<T extends typeof juggler.ModelBase>(
  * Ensure the value is a promise
  * @param p Promise or void
  */
-function ensurePromise<T>(p: juggler.PromiseOrVoid<T>): Promise<T> {
+/* tslint:disable-next-line:no-any */
+function ensurePromise(p: juggler.PromiseOrVoid<any>): Promise<any> {
   if (p && isPromise(p)) {
     return p;
   } else {
@@ -80,7 +81,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
     return ensurePromise(this.modelClass.create(entities, options));
   }
 
-  save(entity: ObjectType<T>, options?: Options): Promise<T> {
+  save(entity: ObjectType<T>, options?: Options): Promise<T | null> {
     const idName = this.modelClass.definition.idName();
     let id;
     if (typeof entity.getId === 'function') {
@@ -92,7 +93,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
       return this.create(entity, options);
     } else {
       return this.replaceById(id, entity, options).then(
-        result => (result ? entity : null),
+        result => (result ? entity as T: null),
       );
     }
   }

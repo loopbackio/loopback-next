@@ -147,8 +147,8 @@ describe('DefaultCrudRepository', () => {
   it('implements Repository.save() without id', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
     const note = await repo.save({title: 't3', content: 'c3'});
-    const result = await repo.findById(note.id);
-    expect(result.toJSON()).to.eql(note.toJSON());
+    const result = await repo.findById(note!.id);
+    expect(result.toJSON()).to.eql(note!.toJSON());
   });
 
   it('implements Repository.save() with id', async () => {
@@ -156,7 +156,7 @@ describe('DefaultCrudRepository', () => {
     const note1 = await repo.create({title: 't3', content: 'c3'});
     note1.content = 'c4';
     const note = await repo.save(note1);
-    const result = await repo.findById(note.id);
+    const result = await repo.findById(note!.id);
     expect(result.toJSON()).to.eql(note1.toJSON());
   });
 
