@@ -18,12 +18,11 @@
   "author": "IBM",
   "license": "MIT",
   "devDependencies": {
-    "@loopback/testlab": "^4.0.0-alpha.5",
-    "mocha": "^3.2.0"
+    "@loopback/testlab": "^4.0.0-alpha.5"
   },
   "dependencies": {
     "@loopback/context": "^4.0.0-alpha.9",
-    "loopback-datasource-juggler": "^3.9.0"
+    "loopback-datasource-juggler": "^3.9.2"
   },
   "files": [
     "README.md",

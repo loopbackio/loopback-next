@@ -11,18 +11,18 @@
   "license": "MIT",
   "devDependencies": {
     "@types/mocha": "^2.2.39",
-    "@types/node": "^8.0.1",
-    "@types/request": "0.0.44",
+    "@types/node": "^8.0.4",
+    "@types/request": "0.0.45",
     "@types/request-promise": "^4.1.35",
     "coveralls": "^2.13.1",
-    "lerna": "^2.0.0-rc.4",
-    "mocha": "^3.2.0",
-    "nyc": "^11.0.1",
+    "lerna": "^2.0.0-rc.5",
+    "mocha": "^3.4.0",
+    "nyc": "^11.0.3",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
-    "ts-node": "^3.0.6",
+    "ts-node": "^3.1.0",
     "tslint": "^5.4.3",
-    "typescript": "^2.2.1"
+    "typescript": "^2.4.1"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
@@ -53,5 +53,8 @@
       "html",
       "text"
     ]
+  },
+  "dependencies": {
+    "mocha": "^3.4.2"
   }
 }

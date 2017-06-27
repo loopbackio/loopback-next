@@ -158,7 +158,7 @@ export class NamespacedReflect {
     target: Object,
     targetKey?: string | symbol,
     descriptor?: PropertyDescriptor,
-  ): PropertyDescriptor {
+  ): PropertyDescriptor | Function {
     if (targetKey) {
       return Reflect.decorate(decorators, target, targetKey, descriptor);
     } else {

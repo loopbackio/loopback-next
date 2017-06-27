@@ -15,7 +15,6 @@
     "@loopback/core": "^4.0.0-alpha.9"
   },
   "devDependencies": {
-    "@loopback/testlab": "^4.0.0-alpha.5",
-    "mocha": "^3.2.0"
+    "@loopback/testlab": "^4.0.0-alpha.5"
   }
 }

@@ -14,17 +14,13 @@
   },
   "author": "IBM",
   "license": "MIT",
-  "devDependencies": {
-    "mocha": "^3.3.0",
-    "typescript": "^2.2.2"
-  },
   "dependencies": {
     "@types/shot": "^3.4.0",
-    "@types/sinon": "^1.16.34",
+    "@types/sinon": "^2.3.2",
     "@types/supertest": "^2.0.0",
     "shot": "^3.4.0",
     "should": "^11.2.1",
-    "sinon": "^1.17.7",
+    "sinon": "^2.3.5",
     "supertest": "^3.0.0"
   },
   "files": [
