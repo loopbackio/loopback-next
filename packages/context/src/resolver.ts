@@ -12,8 +12,12 @@ import {
   Injection,
 } from './inject';
 
-// tslint:disable-next-line:no-any
-export type Constructor<T> = new (...args: any[]) => T;
+/**
+ * A class constructor accepting arbitrary arguments.
+ */
+export type Constructor<T> =
+  // tslint:disable-next-line:no-any
+  new (...args: any[]) => T;
 
 /**
  * Create an instance of a class which constructor has arguments

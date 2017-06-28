@@ -20,6 +20,15 @@ const debug = require('debug')('loopback:core:routing-table');
 // e.g. via wayfarer/trie or find-my-way
 import * as pathToRegexp from 'path-to-regexp';
 
+/**
+ * Parse the URL of the incoming request and set additional properties
+ * on this request object:
+ *  - `path`
+ *  - `query`
+ *
+ * @private
+ * @param request
+ */
 export function parseRequestUrl(request: ServerRequest): ParsedRequest {
   // TODO(bajtos) The following parsing can be skipped when the router
   // is mounted on an express app

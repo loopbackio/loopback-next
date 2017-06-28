@@ -79,6 +79,12 @@ export type LogError = (
 // tslint:disable:no-any
 export type PathParameterValues = {[key: string]: any};
 export type OperationArgs = any[];
+
+/**
+ * Return value of a controller method (a function implementing an operation).
+ * This is a type alias for "any", used to distinguish
+ * operation results from other "any" typed values.
+ */
 export type OperationRetval = any;
 // tslint:enable:no-any
 
