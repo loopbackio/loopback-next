@@ -20,6 +20,9 @@ import {
   getFromContext,
   bindElement,
   HttpErrors,
+  Send,
+  Reject,
+  SequenceHandler,
 } from '@loopback/core';
 import {expect, Client, createClientForServer} from '@loopback/testlab';
 import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
@@ -121,17 +124,19 @@ describe('Basic Authentication', () => {
   }
 
   function givenAuthenticatedSequence() {
-    class MySequence {
+    class MySequence implements SequenceHandler {
       constructor(
         @inject('findRoute') protected findRoute: FindRoute,
         @inject('getFromContext') protected getFromContext: getFromContext,
         @inject('invokeMethod') protected invoke: InvokeMethod,
+        @inject('sequence.actions.send') protected send: Send,
+        @inject('sequence.actions.reject') protected reject: Reject,
         @inject('bindElement') protected bindElement: bindElement,
         @inject('authentication.provider', {}, deferredResolver)
         protected authenticate: AuthenticateFn,
       ) {}
 
-      async run(req: ParsedRequest, res: ServerResponse) {
+      async handle(req: ParsedRequest, res: ServerResponse) {
         try {
           const {
             controller,
@@ -150,16 +155,11 @@ describe('Basic Authentication', () => {
           // Authentication successful, proceed to invoke controller
           const args = await parseOperationArgs(req, routeSpec, pathParams);
           const result = await this.invoke(controller, methodName, args);
-          writeResultToResponse(res, result);
+          this.send(res, result);
         } catch (err) {
-          this.sendError(res, req, err);
+          this.reject(res, req, err);
           return;
         }
-      }
-      sendError(res: ServerResponse, req: ServerRequest, err: HttpError) {
-        const statusCode = err.statusCode || err.status || 500;
-        res.statusCode = statusCode;
-        res.end(err.message);
       }
     }
     // bind user defined sequence

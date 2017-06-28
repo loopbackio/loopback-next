@@ -19,6 +19,7 @@ import {
   InvokeMethod,
   Send,
   Reject,
+  SequenceHandler,
 } from '../../..';
 import {expect, Client, createClientForServer} from '@loopback/testlab';
 import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
@@ -41,13 +42,13 @@ describe('Sequence - ', () => {
   });
 
   it('user defined sequence', () => {
-    class MySequence {
+    class MySequence implements SequenceHandler {
       constructor(
         @inject('findRoute') protected findRoute: FindRoute,
         @inject('invokeMethod') protected invoke: InvokeMethod,
       ) {}
 
-      async run(req: ParsedRequest, res: ServerResponse) {
+      async handle(req: ParsedRequest, res: ServerResponse) {
         const {
           controller,
           methodName,
