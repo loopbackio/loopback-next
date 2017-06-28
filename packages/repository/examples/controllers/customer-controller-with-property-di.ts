@@ -13,6 +13,6 @@ import {Customer} from '../models/customer';
 // @controller
 export class CustomerController {
   // Use property dependency injection
-  @repository(Customer, 'mongodbDataSource')
+  @repository('Customer', 'mongodbDataSource')
   private repository: EntityCrudRepository<Customer, string>;
 }

@@ -13,7 +13,7 @@ import {repository} from '../../src/decorators/repository';
 export class CustomerController {
   constructor(
     // Use constructor dependency injection
-    @repository(Customer, 'mongodbDataSource')
+    @repository('Customer', 'mongodbDataSource')
     private repository: EntityCrudRepository<Customer, string>,
   ) {}
 }
