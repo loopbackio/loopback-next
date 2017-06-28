@@ -22,7 +22,7 @@ export interface ParsedRequest extends ServerRequest {
  * Find a route matching the incoming request.
  * Throw an error when no route was found.
  */
-export type FindRoute = (request: ParsedRequest) => ResolvedRoute<string>;
+export type FindRoute = (request: ParsedRequest) => ResolvedRoute;
 
 /**
  * Invokes a method defined in the Application Controller

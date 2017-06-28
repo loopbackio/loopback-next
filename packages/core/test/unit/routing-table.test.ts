@@ -20,7 +20,7 @@ describe('RoutingTable', () => {
       .withOperationReturningString('get', '/hello', 'greet')
       .build();
 
-    const table = new RoutingTable<string>();
+    const table = new RoutingTable();
     table.registerController('TestController', spec);
 
     const request = givenRequest({

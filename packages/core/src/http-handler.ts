@@ -21,7 +21,7 @@ import {
 const debug = require('debug')('loopback:core:http-handler');
 
 export class HttpHandler {
-  protected _routes: RoutingTable<string> = new RoutingTable<string>();
+  protected _routes: RoutingTable = new RoutingTable();
 
   public handleRequest: (
     request: ServerRequest,

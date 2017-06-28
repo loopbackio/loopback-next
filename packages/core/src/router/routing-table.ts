@@ -39,10 +39,10 @@ export function parseRequestUrl(request: ServerRequest): ParsedRequest {
   return parsedRequest;
 }
 
-export class RoutingTable<ControllerType> {
-  private readonly _routes: RouteEntry<ControllerType>[] = [];
+export class RoutingTable {
+  private readonly _routes: RouteEntry[] = [];
 
-  registerController(controller: ControllerType, spec: OpenApiSpec) {
+  registerController(controller: string, spec: OpenApiSpec) {
     assert(
       typeof spec === 'object' && !!spec,
       'API specification must be a non-null object',
@@ -71,7 +71,7 @@ export class RoutingTable<ControllerType> {
     }
   }
 
-  find(request: ParsedRequest): ResolvedRoute<ControllerType> | undefined {
+  find(request: ParsedRequest): ResolvedRoute | undefined {
     for (const entry of this._routes) {
       const match = entry.match(request);
       if (match) return match;
@@ -80,14 +80,14 @@ export class RoutingTable<ControllerType> {
   }
 }
 
-export interface ResolvedRoute<ControllerType> {
-  readonly controller: ControllerType;
+export interface ResolvedRoute {
+  readonly controller: string;
   readonly methodName: string;
   readonly spec: OperationObject;
   readonly pathParams: PathParameterValues;
 }
 
-class RouteEntry<ControllerType> {
+class RouteEntry {
   private readonly _verb: string;
   private readonly _pathRegexp: pathToRegexp.PathRegExp;
 
@@ -95,7 +95,7 @@ class RouteEntry<ControllerType> {
     path: string,
     verb: string,
     private readonly _spec: OperationObject,
-    private readonly _controller: ControllerType,
+    private readonly _controller: string,
   ) {
     this._verb = verb.toLowerCase();
 
@@ -105,7 +105,7 @@ class RouteEntry<ControllerType> {
     this._pathRegexp = pathToRegexp(path, [], {strict: false, end: true});
   }
 
-  match(request: ParsedRequest): ResolvedRoute<ControllerType> | undefined {
+  match(request: ParsedRequest): ResolvedRoute | undefined {
     debug('trying endpoint', this);
     if (this._verb !== request.method!.toLowerCase()) {
       debug(' -> verb mismatch');
@@ -126,7 +126,7 @@ class RouteEntry<ControllerType> {
 
   private _createResolvedRoute(
     pathParams: PathParameterValues,
-  ): ResolvedRoute<ControllerType> {
+  ): ResolvedRoute {
     return {
       controller: this._controller,
       methodName: this._spec['x-operation-name']!,
