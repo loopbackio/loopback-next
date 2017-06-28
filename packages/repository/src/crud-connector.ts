@@ -6,9 +6,9 @@
 import {Connector} from './connector';
 import {Entity} from './model';
 import {Filter, Where} from './query';
-import {Class, ObjectType, Options} from './common-types';
+import {Class, DataObject, Options} from './common-types';
 
-export type EntityData = ObjectType<Entity>;
+export type EntityData = DataObject<Entity>;
 
 /**
  * CRUD operations for connector implementations

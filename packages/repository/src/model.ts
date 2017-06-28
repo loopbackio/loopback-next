@@ -135,6 +135,9 @@ export abstract class Model {
   toJSON(): Object {
     const json: AnyObject = {};
     const def = (<typeof Model> this.constructor).definition;
+    if (def == null) {
+      return this.toObject({ignoreUnknownProperties: false});
+    }
     for (const p in def.properties) {
       if (p in this) {
         json[p] = this[p];

@@ -7,7 +7,7 @@ export const jugglerModule = require('loopback-datasource-juggler');
 
 import {isPromise} from '@loopback/context';
 import {MixinBuilder} from './mixin';
-import {Class, ObjectType, Options} from './common-types';
+import {Class, DataObject, Options} from './common-types';
 import {Entity} from './model';
 import {Filter, Where} from './query';
 import {EntityCrudRepository} from './repository';
@@ -73,15 +73,15 @@ export class DefaultCrudRepository<T extends Entity, ID>
     this.modelClass = bindModel(modelClass, dataSource);
   }
 
-  create(entity: ObjectType<T>, options?: Options): Promise<T> {
+  create(entity: DataObject<T>, options?: Options): Promise<T> {
     return ensurePromise(this.modelClass.create(entity, options));
   }
 
-  createAll(entities: ObjectType<T>[], options?: Options): Promise<T[]> {
+  createAll(entities: DataObject<T>[], options?: Options): Promise<T[]> {
     return ensurePromise(this.modelClass.create(entities, options));
   }
 
-  save(entity: ObjectType<T>, options?: Options): Promise<T | null> {
+  save(entity: DataObject<T>, options?: Options): Promise<T | null> {
     const idName = this.modelClass.definition.idName();
     let id;
     if (typeof entity.getId === 'function') {
@@ -106,16 +106,16 @@ export class DefaultCrudRepository<T extends Entity, ID>
     return ensurePromise(this.modelClass.findById(id, filter, options));
   }
 
-  update(entity: ObjectType<T>, options?: Options): Promise<boolean> {
+  update(entity: DataObject<T>, options?: Options): Promise<boolean> {
     return this.updateById(entity.getId(), entity, options);
   }
 
-  delete(entity: ObjectType<T>, options?: Options): Promise<boolean> {
+  delete(entity: DataObject<T>, options?: Options): Promise<boolean> {
     return this.deleteById(entity.getId(), options);
   }
 
   updateAll(
-    data: ObjectType<T>,
+    data: DataObject<T>,
     where?: Where,
     options?: Options,
   ): Promise<number> {
@@ -124,7 +124,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
     );
   }
 
-  updateById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean> {
+  updateById(id: ID, data: DataObject<T>, options?: Options): Promise<boolean> {
     const idProp = this.modelClass.definition.idName();
     const where = {} as Where;
     where[idProp] = id;
@@ -133,7 +133,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
 
   replaceById(
     id: ID,
-    data: ObjectType<T>,
+    data: DataObject<T>,
     options?: Options,
   ): Promise<boolean> {
     return ensurePromise(this.modelClass.replaceById(id, data, options)).then(

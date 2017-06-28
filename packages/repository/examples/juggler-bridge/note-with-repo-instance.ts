@@ -12,7 +12,7 @@ import {
   juggler,
   Entity,
   Options,
-  ObjectType,
+  DataObject,
   Filter,
   EntityCrudRepository,
   DefaultCrudRepository,
@@ -25,7 +25,7 @@ class NoteController {
     public noteRepo: EntityCrudRepository<Entity, number>,
   ) {}
 
-  create(data: ObjectType<Entity>, options?: Options) {
+  create(data: DataObject<Entity>, options?: Options) {
     return this.noteRepo.create(data, options);
   }
 

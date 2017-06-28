@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Entity, ValueObject, Model} from './model';
-import {Class, ObjectType, AnyObject, Options} from './common-types';
+import {Class, DataObject, AnyObject, Options} from './common-types';
 import {DataSource} from './datasource';
 import {CrudConnector, EntityData} from './crud-connector';
 import {Fields, Filter, Where, Operators, Inclusion} from './query';
@@ -22,7 +22,7 @@ export interface CrudRepository<T extends (ValueObject | Entity)>
    * @param options Options for the operations
    * @returns A promise of record created
    */
-  create(dataObject: ObjectType<T>, options?: Options): Promise<T>;
+  create(dataObject: DataObject<T>, options?: Options): Promise<T>;
 
   /**
    * Create all records
@@ -30,7 +30,7 @@ export interface CrudRepository<T extends (ValueObject | Entity)>
    * @param options Options for the operations
    * @returns A promise of an array of records created
    */
-  createAll(dataObjects: ObjectType<T>[], options?: Options): Promise<T[]>;
+  createAll(dataObjects: DataObject<T>[], options?: Options): Promise<T[]>;
 
   /**
    * Find matching records
@@ -48,7 +48,7 @@ export interface CrudRepository<T extends (ValueObject | Entity)>
    * @returns A promise of number of records updated
    */
   updateAll(
-    dataObject: ObjectType<T>,
+    dataObject: DataObject<T>,
     where?: Where,
     options?: Options,
   ): Promise<number>;
@@ -86,7 +86,7 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * @param options Options for the operations
    * @returns A promise of an entity saved or null if the entity does not exist
    */
-  save(entity: ObjectType<T>, options?: Options): Promise<T | null>;
+  save(entity: DataObject<T>, options?: Options): Promise<T | null>;
 
   /**
    * Update an entity
@@ -95,7 +95,7 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * @returns Promise<true> if the entity is updated, otherwise
    * Promise<false>
    */
-  update(entity: ObjectType<T>, options?: Options): Promise<boolean>;
+  update(entity: DataObject<T>, options?: Options): Promise<boolean>;
 
   /**
    * Delete an entity
@@ -104,7 +104,7 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * @returns Promise<true> if the entity is deleted, otherwise
    * Promise<false>
    */
-  delete(entity: ObjectType<T>, options?: Options): Promise<boolean>;
+  delete(entity: DataObject<T>, options?: Options): Promise<boolean>;
 
   /**
    * Find an entity by id
@@ -122,7 +122,7 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * @returns Promise<true> if the entity is updated, otherwise
    * Promise<false>
    */
-  updateById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean>;
+  updateById(id: ID, data: DataObject<T>, options?: Options): Promise<boolean>;
 
   /**
    * Replace an entity by id
@@ -132,7 +132,7 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * @returns Promise<true> if an entity is replaced, otherwise
    * Promise<false>
    */
-  replaceById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean>;
+  replaceById(id: ID, data: DataObject<T>, options?: Options): Promise<boolean>;
 
   /**
    * Delete an entity by id
@@ -183,24 +183,24 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     this.connector = dataSource.connector as CrudConnector;
   }
 
-  private toModels(data: Promise<ObjectType<Entity>[]>): Promise<T[]> {
+  private toModels(data: Promise<DataObject<Entity>[]>): Promise<T[]> {
     return data.then(items => items.map(i => new this.model(i)));
   }
 
-  private toModel(data: Promise<ObjectType<Entity>>): Promise<T> {
+  private toModel(data: Promise<DataObject<Entity>>): Promise<T> {
     return data.then(d => new this.model(d));
   }
 
-  create(entity: ObjectType<T>, options?: Options): Promise<T> {
+  create(entity: DataObject<T>, options?: Options): Promise<T> {
     return this.toModel(this.connector.create(this.model, entity, options));
   }
 
-  createAll(entities: ObjectType<T>[], options?: Options): Promise<T[]> {
+  createAll(entities: DataObject<T>[], options?: Options): Promise<T[]> {
     return this.toModels(
       this.connector.createAll!(this.model, entities, options));
   }
 
-  save(entity: ObjectType<T>, options?: Options): Promise<T | null> {
+  save(entity: DataObject<T>, options?: Options): Promise<T | null> {
     if (typeof this.connector.save === 'function') {
       return this.toModel(this.connector.save(this.model, entity, options));
     } else {
@@ -233,23 +233,23 @@ export class CrudRepositoryImpl<T extends Entity, ID>
       });
   }
 
-  update(entity: ObjectType<T>, options?: Options): Promise<boolean> {
+  update(entity: DataObject<T>, options?: Options): Promise<boolean> {
     return this.updateById(entity.getId(), entity, options);
   }
 
-  delete(entity: ObjectType<T>, options?: Options): Promise<boolean> {
+  delete(entity: DataObject<T>, options?: Options): Promise<boolean> {
     return this.deleteById(entity.getId(), options);
   }
 
   updateAll(
-    data: ObjectType<T>,
+    data: DataObject<T>,
     where?: Where,
     options?: Options,
   ): Promise<number> {
     return this.connector.updateAll(this.model, data, where, options);
   }
 
-  updateById(id: ID, data: ObjectType<T>, options?: Options): Promise<boolean> {
+  updateById(id: ID, data: DataObject<T>, options?: Options): Promise<boolean> {
     if (typeof this.connector.updateById === 'function') {
       return this.connector.updateById(this.model, id, data, options);
     }
@@ -261,7 +261,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
 
   replaceById(
     id: ID,
-    data: ObjectType<T>,
+    data: DataObject<T>,
     options?: Options,
   ): Promise<boolean> {
     if (typeof this.connector.replaceById === 'function') {

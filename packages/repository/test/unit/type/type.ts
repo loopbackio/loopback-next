@@ -494,4 +494,83 @@ describe('types', () => {
       expect(unionType.serialize(undefined)).undefined();
     });
   });
+
+  describe('model', () => {
+    class Address extends types.ValueObject {
+      street: string;
+      city: string;
+      zipCode: string;
+    }
+
+    class Customer extends types.Entity {
+      id: string;
+      email: string;
+      address: Address;
+
+      constructor(data?: types.AnyObject) {
+        super();
+        if (data != null) {
+          this.id = data.id;
+          this.email = data.email;
+          this.address = data.address;
+        }
+      }
+    }
+
+    const modelType = new types.ModelType(Customer);
+    it('checks isInstance', () => {
+      expect(modelType.isInstance('str')).to.be.false();
+      expect(modelType.isInstance(null)).to.be.true();
+      expect(modelType.isInstance(undefined)).to.be.true();
+      expect(modelType.isInstance(NaN)).to.be.false();
+      expect(modelType.isInstance(true)).to.be.false();
+      expect(modelType.isInstance({id: 'c1'})).to.be.false();
+      expect(modelType.isInstance([1, 2])).to.be.false();
+      expect(modelType.isInstance(1)).to.be.false();
+      expect(modelType.isInstance(1.1)).to.be.false();
+      expect(modelType.isInstance(new Customer())).to.be.true();
+    });
+
+    it('checks isCoercible', () => {
+      expect(modelType.isCoercible('str')).to.be.false();
+      expect(modelType.isCoercible('1')).to.be.false();
+      expect(modelType.isCoercible('1.1')).to.be.false();
+      expect(modelType.isCoercible(null)).to.be.true();
+      expect(modelType.isCoercible(undefined)).to.be.true();
+      expect(modelType.isCoercible(true)).to.be.false();
+      expect(modelType.isCoercible(false)).to.be.false();
+      expect(modelType.isCoercible({x: 1})).to.be.true();
+      expect(modelType.isCoercible(1)).to.be.false();
+      expect(modelType.isCoercible(1.1)).to.be.false();
+      expect(modelType.isCoercible([1])).to.be.false();
+      expect(modelType.isCoercible(new Customer())).to.be.true();
+    });
+
+    it('creates defaultValue', () => {
+      const d = new Customer();
+      const v = modelType.defaultValue();
+      expect(d).to.be.eql(v);
+    });
+
+    it('coerces values', () => {
+      expect(() => modelType.coerce('str')).to.throw(/Invalid model/);
+      expect(modelType.coerce(null)).to.equal(null);
+      expect(modelType.coerce(undefined)).to.equal(undefined);
+      expect(() => modelType.coerce(true)).to.throw(/Invalid model/);
+      expect(() => modelType.coerce(false)).to.throw(/Invalid model/);
+      expect(() => modelType.coerce(1)).to.throw(/Invalid model/);
+      expect(() => modelType.coerce(1.1)).to.throw(/Invalid model/);
+      expect(() => modelType.coerce([1, '2'])).to.throw(/Invalid model/);
+
+      const customer = modelType.coerce({id: 'c1'});
+      expect(customer instanceof Customer).to.be.true();
+    });
+
+    it('serializes values', () => {
+      const customer = new Customer({id: 'c1'});
+      expect(modelType.serialize(customer)).to.eql(customer.toJSON());
+      expect(modelType.serialize(null)).null();
+      expect(modelType.serialize(undefined)).undefined();
+    });
+  });
 });
