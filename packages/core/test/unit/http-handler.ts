@@ -3,9 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {HttpHandler, bindElement, getFromContext, InvokeMethod} from '../..';
+import {
+  HttpHandler,
+  bindElement,
+  getFromContext,
+  InvokeMethod,
+  ResolvedRoute,
+  OperationRetval,
+} from '../..';
 import {Context, Binding, BoundValue} from '@loopback/context';
 import {expect} from '@loopback/testlab';
+import {givenOperationSpec} from '@loopback/openapi-spec-builder';
 
 describe('HttpHandler', () => {
   let requestContext: Context;
@@ -30,20 +38,40 @@ describe('HttpHandler', () => {
         expect(val).to.eql('bar');
       });
     });
+
     describe('invokeMethod()', () => {
-      class HelloController {
-        public async hello(): Promise<string> {
-          return 'hello';
-        }
-      }
       it('invokes a controller method', async () => {
+        class HelloController {
+          public async hello(): Promise<string> {
+            return 'hello';
+          }
+        }
+
         requestContext.bind('test-controller').toClass(HelloController);
         const fn: InvokeMethod = await requestContext.get('invokeMethod');
-        const val: BoundValue = await fn('test-controller', 'hello', []);
+        const route: ResolvedRoute = {
+          controllerName: 'test-controller',
+          methodName: 'hello',
+          spec: givenOperationSpec().withStringResponse(200).build(),
+          pathParams: [],
+        };
+        const val: OperationRetval = await fn(route, []);
+        expect(val).to.eql('hello');
+      });
+
+      it('invokes a route handler', async () => {
+        const fn: InvokeMethod = await requestContext.get('invokeMethod');
+        const route: ResolvedRoute = {
+          handler: () => Promise.resolve('hello'),
+          spec: givenOperationSpec().withStringResponse(200).build(),
+          pathParams: [],
+        };
+        const val: OperationRetval = await fn(route, []);
         expect(val).to.eql('hello');
       });
     });
   });
+
   function givenHandler() {
     const rootContext = new Context();
     requestContext = new Context(rootContext);

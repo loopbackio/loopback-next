@@ -138,12 +138,7 @@ describe('Basic Authentication', () => {
 
       async handle(req: ParsedRequest, res: ServerResponse) {
         try {
-          const {
-            controller,
-            methodName,
-            spec: routeSpec,
-            pathParams,
-          } = this.findRoute(req);
+          const route = this.findRoute(req);
 
           // Authenticate
           const user: UserProfile = await this.authenticate(req);
@@ -153,8 +148,8 @@ describe('Basic Authentication', () => {
           else throw new HttpErrors.InternalServerError('auth error');
 
           // Authentication successful, proceed to invoke controller
-          const args = await parseOperationArgs(req, routeSpec, pathParams);
-          const result = await this.invoke(controller, methodName, args);
+          const args = await parseOperationArgs(req, route);
+          const result = await this.invoke(route, args);
           this.send(res, result);
         } catch (err) {
           this.reject(res, req, err);

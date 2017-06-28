@@ -40,7 +40,7 @@ export function parseRequestUrl(request: ServerRequest): ParsedRequest {
 }
 
 export class RoutingTable {
-  private readonly _routes: RouteEntry[] = [];
+  private readonly _routes: Route[] = [];
 
   registerController(controller: string, spec: OpenApiSpec) {
     assert(
@@ -62,13 +62,20 @@ export class RoutingTable {
           verb,
           path,
           opSpec['x-operation-name'],
-          ((opSpec.parameters as ParameterObject[]) || [])
-            .map(p => p.name)
-            .join(', '),
+          describeOperationParameters(opSpec),
         );
-        this._routes.push(new RouteEntry(path, verb, opSpec, controller));
+        this._routes.push(new Route(verb, path, opSpec, undefined, controller));
       }
     }
+  }
+
+  registerRoute(route: Route) {
+    debug(
+      'Registering route %s %s with args',
+       route.verb,
+       route.path,
+       describeOperationParameters(route.spec));
+    this._routes.push(route);
   }
 
   find(request: ParsedRequest): ResolvedRoute | undefined {
@@ -80,24 +87,36 @@ export class RoutingTable {
   }
 }
 
-export interface ResolvedRoute {
-  readonly controller: string;
-  readonly methodName: string;
+export interface ResolvedRouteCommon {
   readonly spec: OperationObject;
   readonly pathParams: PathParameterValues;
 }
 
-class RouteEntry {
-  private readonly _verb: string;
+export interface ResolvedHandlerRoute extends ResolvedRouteCommon {
+  readonly handler: Function;
+}
+
+export interface ResolvedControllerRoute extends ResolvedRouteCommon {
+  readonly controllerName: string;
+  readonly methodName: string;
+}
+
+export type ResolvedRoute =  ResolvedHandlerRoute | ResolvedControllerRoute;
+
+export class Route {
+  public readonly verb: string;
+  public readonly path: string;
   private readonly _pathRegexp: pathToRegexp.PathRegExp;
 
   constructor(
-    path: string,
     verb: string,
-    private readonly _spec: OperationObject,
-    private readonly _controller: string,
+    path: string,
+    public readonly spec: OperationObject,
+    private readonly _handler?: Function,
+    private readonly _controllerName?: string,
   ) {
-    this._verb = verb.toLowerCase();
+    this.verb = verb.toLowerCase();
+    this.path = path;
 
     // In Swagger, path parameters are wrapped in `{}`.
     // In Express.js, path parameters are prefixed with `:`
@@ -107,7 +126,7 @@ class RouteEntry {
 
   match(request: ParsedRequest): ResolvedRoute | undefined {
     debug('trying endpoint', this);
-    if (this._verb !== request.method!.toLowerCase()) {
+    if (this.verb !== request.method!.toLowerCase()) {
       debug(' -> verb mismatch');
       return undefined;
     }
@@ -127,10 +146,28 @@ class RouteEntry {
   private _createResolvedRoute(
     pathParams: PathParameterValues,
   ): ResolvedRoute {
+    return this._handler ?
+      this._createResolvedHandlerRoute(pathParams) :
+      this._createResolvedControllerRoute(pathParams);
+  }
+
+  private _createResolvedHandlerRoute(
+    pathParams: PathParameterValues,
+  ): ResolvedHandlerRoute {
     return {
-      controller: this._controller,
-      methodName: this._spec['x-operation-name']!,
-      spec: this._spec,
+      handler: this._handler!,
+      spec: this.spec,
+      pathParams: pathParams,
+    };
+  }
+
+  private _createResolvedControllerRoute(
+    pathParams: PathParameterValues,
+  ): ResolvedControllerRoute {
+    return {
+      controllerName: this._controllerName!,
+      methodName: this.spec['x-operation-name']!,
+      spec: this.spec,
       pathParams: pathParams,
     };
   }
@@ -144,4 +181,22 @@ class RouteEntry {
     }
     return pathParams;
   }
+}
+
+export function isHandlerRoute(
+  route: ResolvedRoute,
+): route is ResolvedHandlerRoute {
+  return (route as ResolvedHandlerRoute).handler !== undefined;
+}
+
+export function getRouteName(route: ResolvedRoute) {
+  return isHandlerRoute(route) ?
+    route.handler.name : // TODO(bajtos) return VERB+PATH when name is not set
+    `${route.controllerName}.${route.methodName}()`;
+}
+
+function describeOperationParameters(opSpec: OperationObject) {
+  return ((opSpec.parameters as ParameterObject[]) || [])
+      .map(p => p.name)
+      .join(', ');
 }

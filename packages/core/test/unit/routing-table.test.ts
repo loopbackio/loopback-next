@@ -31,7 +31,7 @@ describe('RoutingTable', () => {
     const route = table.find(request);
 
     expect(route).to.deepEqual({
-      controller: 'TestController',
+      controllerName: 'TestController',
       methodName: 'greet',
       pathParams: Object.create(null),
       spec: spec.paths['/hello'].get,

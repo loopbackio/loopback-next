@@ -49,14 +49,9 @@ describe('Sequence - ', () => {
       ) {}
 
       async handle(req: ParsedRequest, res: ServerResponse) {
-        const {
-          controller,
-          methodName,
-          spec: routeSpec,
-          pathParams,
-        } = this.findRoute(req);
-        const args = await parseOperationArgs(req, routeSpec, pathParams);
-        const result = await this.invoke(controller, methodName, args);
+        const route = this.findRoute(req);
+        const args = await parseOperationArgs(req, route);
+        const result = await this.invoke(route, args);
         // Prepend 'MySequence' to the result of invoke to allow for
         // execution verification of this user-defined sequence
         writeResultToResponse(res, `MySequence ${result}`);

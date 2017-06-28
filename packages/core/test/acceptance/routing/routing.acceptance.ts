@@ -12,9 +12,14 @@ import {
   OperationObject,
   ServerRequest,
   ServerResponse,
+  ResponseObject,
+  Route,
 } from '../../..';
 import {expect, Client, createClientForServer} from '@loopback/testlab';
-import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
+import {
+  givenOpenApiSpec,
+  givenOperationSpec,
+} from '@loopback/openapi-spec-builder';
 import {inject, Constructor, Context} from '@loopback/context';
 
 /* # Feature: Routing
@@ -201,6 +206,32 @@ describe('Routing', () => {
       });
 
     });
+  });
+
+  it('supports function-based routes', async () => {
+    const app = givenAnApplication();
+
+    const routeSpec = <OperationObject> {
+      parameters: [
+        <ParameterObject> {name: 'name', in: 'query', type: 'string'},
+      ],
+      responses: {
+        '200': <ResponseObject> {
+          description: 'greeting text',
+          schema: {type: 'string'},
+        },
+      },
+    };
+
+    function greet(name: string) {
+      return `hello ${name}`;
+    }
+
+    const route = new Route('get', '/greet', routeSpec, greet);
+    app.route(route);
+
+    const client = await whenIMakeRequestTo(app);
+    await client.get('/greet?name=world').expect(200, 'hello world');
   });
 
   /* ===== HELPERS ===== */

@@ -308,7 +308,7 @@ export interface SchemaObject {
   // TODO(bajtos) describe all properties,
   // enforce polymorphic fields based on "type" value
   type: string;
-  items: SchemaItem;
+  items?: SchemaItem;
 
   [extension: string]: ExtensionValue;
 }

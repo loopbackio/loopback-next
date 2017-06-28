@@ -8,12 +8,15 @@ import {
   ServerRequest,
   ParsedRequest,
   parseRequestUrl,
+  ResolvedRoute,
+  PathParameterValues,
 } from '../..';
 import {expect, ShotRequest, ShotRequestOptions} from '@loopback/testlab';
 import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
 
 describe('operationArgsParser', () => {
   it('parses path parameters', async () => {
+    const req = givenRequest();
     const spec = givenOperationWithParameters([
       {
         name: 'id',
@@ -21,14 +24,19 @@ describe('operationArgsParser', () => {
         in: 'path',
       },
     ]);
-    const req = givenRequest();
+    const route = givenResolvedRoute(spec, {id: 1});
 
-    const args = await parseOperationArgs(req, spec, {id: 1});
+    const args = await parseOperationArgs(req, route);
 
     expect(args).to.eql([1]);
   });
 
   it('parsed body parameter', async () => {
+    const req = givenRequest({
+      url: '/',
+      payload: {key: 'value'},
+    });
+
     const spec = givenOperationWithParameters([
       {
         name: 'data',
@@ -36,13 +44,9 @@ describe('operationArgsParser', () => {
         in: 'body',
       },
     ]);
+    const route = givenResolvedRoute(spec, {});
 
-    const req = givenRequest({
-      url: '/',
-      payload: {key: 'value'},
-    });
-
-    const args = await parseOperationArgs(req, spec, {});
+    const args = await parseOperationArgs(req, route);
 
     expect(args).to.eql([{key: 'value'}]);
   });
@@ -57,5 +61,16 @@ describe('operationArgsParser', () => {
 
   function givenRequest(options?: ShotRequestOptions): ParsedRequest {
     return parseRequestUrl(new ShotRequest(options || {url: '/'}));
+  }
+
+  function givenResolvedRoute(
+    spec: OperationObject,
+    pathParams: PathParameterValues,
+  ): ResolvedRoute {
+    return {
+      handler: () => {},
+      spec: spec,
+      pathParams: pathParams,
+    };
   }
 });

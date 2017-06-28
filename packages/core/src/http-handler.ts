@@ -10,13 +10,18 @@ import {getApiSpec} from './router/metadata';
 import * as HttpErrors from 'http-errors';
 
 import {Sequence} from './sequence';
-import {RoutingTable, parseRequestUrl} from './router/routing-table';
+import {
+  RoutingTable,
+  parseRequestUrl,
+  isHandlerRoute,
+} from './router/routing-table';
 import {
   FindRoute,
   InvokeMethod,
   ParsedRequest,
   OperationArgs,
 } from './internal-types';
+import {ResolvedRoute, Route} from './index';
 
 const debug = require('debug')('loopback:core:http-handler');
 
@@ -34,6 +39,10 @@ export class HttpHandler {
 
   registerController(name: string, spec: OpenApiSpec) {
     this._routes.registerController(name, spec);
+  }
+
+  registerRoute(route: Route) {
+    this._routes.registerRoute(route);
   }
 
   protected async _handleRequest(
@@ -82,13 +91,16 @@ export class HttpHandler {
           );
 
         // bind routing information to context
-        const ctor = context.getBinding(found.controller).valueConstructor;
-        if (!ctor)
-          throw new Error(
-            `The controller ${found.controller} was not bound via .toClass()`,
-          );
-        context.bind('controller.current.ctor').to(ctor);
-        context.bind('controller.current.operation').to(found.methodName);
+        if (!isHandlerRoute(found)) {
+          const controllerName = found.controllerName;
+          const ctor = context.getBinding(controllerName).valueConstructor;
+          if (!ctor)
+            throw new Error(
+              `The controller ${controllerName} was not bound via .toClass()`,
+            );
+          context.bind('controller.current.ctor').to(ctor);
+          context.bind('controller.current.operation').to(found.methodName);
+        }
 
         return found;
       };
@@ -98,14 +110,24 @@ export class HttpHandler {
   protected _bindInvokeMethod(context: Context) {
     context.bind('invokeMethod').toDynamicValue(() => {
       return async (
-        controllerName: string,
-        method: string,
+        route: ResolvedRoute,
         args: OperationArgs,
       ) => {
+        if (isHandlerRoute(route)) {
+          const result = await route.handler(...args);
+          return result;
+        }
+
+        if (!(route.controllerName && route.methodName)) {
+          throw new Error(
+            'Invalid route: either handler or controllerName + methodName' +
+              ' is required.');
+        }
+
         const controller: {[opName: string]: Function} = await context.get(
-          controllerName,
+          route.controllerName,
         );
-        const result = await controller[method](...args);
+        const result = await controller[route.methodName](...args);
         return result;
       };
     });

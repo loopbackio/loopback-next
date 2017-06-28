@@ -3,7 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {OpenApiSpec, OperationObject} from '@loopback/openapi-spec';
+import {
+  OpenApiSpec,
+  OperationObject,
+  ResponseObject,
+  ParameterObject,
+} from '@loopback/openapi-spec';
 
 /**
  * Create a new instance of OpenApiSpecBuilder.
@@ -12,6 +17,13 @@ import {OpenApiSpec, OperationObject} from '@loopback/openapi-spec';
  */
 export function givenOpenApiSpec(basePath?: string) {
   return new OpenApiSpecBuilder(basePath);
+}
+
+/**
+ * Create a new instance of OperationSpecBuilder.
+ */
+export function givenOperationSpec() {
+  return new OperationSpecBuilder();
 }
 
 /**
@@ -37,7 +49,12 @@ export class OpenApiSpecBuilder {
    * @param path The path relative to basePath.
    * @param spec Additional specification of the operation.
    */
-  withOperation(verb: string, path: string, spec: OperationObject): this {
+  withOperation(
+    verb: string,
+     path: string,
+     spec: OperationObject | OperationSpecBuilder,
+  ): this {
+    if (spec instanceof OperationSpecBuilder) spec = spec.build();
     if (!this._spec.paths[path]) this._spec.paths[path] = {};
     this._spec.paths[path][verb] = spec;
     return this;
@@ -56,18 +73,73 @@ export class OpenApiSpecBuilder {
     path: string,
     operationName: string,
   ): this {
-    return this.withOperation(verb, path, {
-      'x-operation-name': operationName,
-      responses: {
-        '200': {type: 'string'},
-      },
-    });
+    return this.withOperation(verb, path, givenOperationSpec()
+        .withOperationName(operationName)
+        .withStringResponse(200));
   }
 
   /**
    * Build the OpenApiSpec object.
    */
   build(): OpenApiSpec {
+    // TODO(bajtos): deep-clone
+    return this._spec;
+  }
+}
+
+/**
+ * A builder for creating OperationObject specifications.
+ */
+export class OperationSpecBuilder {
+  private _spec: OperationObject = {
+    responses: {},
+  };
+
+  /**
+   * Describe a response for a given HTTP status code.
+   * @param status HTTP status code or string "default"
+   * @param responseSpec Specification of the response
+   */
+  withResponse(status: number | 'default', responseSpec: ResponseObject): this {
+    // OpenAPI spec uses string indices, i.e. 200 OK uses "200" as the index
+    this._spec.responses[status.toString()] = responseSpec;
+    return this;
+  }
+
+  withStringResponse(status: number | 'default'): this {
+    return this.withResponse(status, {
+      description: 'The string result.',
+      schema: {type: 'string'},
+    });
+  }
+
+  /**
+   * Describe a parameter accepted by the operation.
+   * Note that parameters are positional in OpenAPI Spec, therefore
+   * the first call of `withParameter` defines the first parameter,
+   * the second call defines the second parameter, etc.
+   * @param parameterSpec
+   */
+  withParameter(parameterSpec: ParameterObject): this {
+    if (!this._spec.parameters) this._spec.parameters = [];
+    this._spec.parameters.push(parameterSpec);
+    return this;
+  }
+
+  /**
+   * Define the operation name (controller method name).
+   *
+   * @param name The name of the controller method implementing this operation.
+   */
+  withOperationName(name: string): this {
+    this._spec['x-operation-name'] = name;
+    return this;
+  }
+
+  /**
+   * Build the OperationObject object.
+   */
+  build(): OperationObject {
     // TODO(bajtos): deep-clone
     return this._spec;
   }

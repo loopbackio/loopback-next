@@ -34,8 +34,7 @@ export type FindRoute = (request: ParsedRequest) => ResolvedRoute;
  * @returns OperationRetval Result from method invocation
  */
 export type InvokeMethod = (
-  controller: string,
-  method: string,
+  route: ResolvedRoute,
   args: OperationArgs,
 ) => Promise<OperationRetval>;
 
