@@ -20,6 +20,7 @@
     "@types/supertest": "^2.0.0",
     "shot": "^3.4.0",
     "should": "^11.2.1",
+    "should-sinon": "0.0.5",
     "sinon": "^2.3.5",
     "supertest": "^3.0.0"
   },

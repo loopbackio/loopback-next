@@ -12,6 +12,8 @@ import {
   LogError,
   OperationRetval,
   ParsedRequest,
+  Send,
+  Reject,
 } from './internal-types';
 import {parseOperationArgs} from './parser';
 import {writeResultToResponse} from './writer';
@@ -45,7 +47,8 @@ export class Sequence {
   constructor(
     @inject('findRoute') protected findRoute: FindRoute,
     @inject('invokeMethod') protected invoke: InvokeMethod,
-    @inject('logError') protected logError: LogError,
+    @inject('sequence.actions.send') protected send: Send,
+    @inject('sequence.actions.reject') protected reject: Reject,
   ) {}
 
 
@@ -71,21 +74,9 @@ export class Sequence {
       const args = await parseOperationArgs(req, spec, pathParams);
       const result = await this.invoke(controller, methodName, args);
       debug('%s.%s() result -', controller, methodName, result);
-      this.sendResponse(res, result);
+      this.send(res, result);
     } catch (err) {
-      this.sendError(res, req, err);
+      this.reject(res, req, err);
     }
-  }
-
-  sendResponse(response: ServerResponse, result: OperationRetval) {
-    writeResultToResponse(response, result);
-  }
-
-  sendError(res: ServerResponse, req: ServerRequest, err: HttpError) {
-    const statusCode = err.statusCode || err.status || 500;
-    res.statusCode = statusCode;
-    res.end();
-
-    this.logError(err, statusCode, req);
   }
 }
