@@ -1,12 +1,4 @@
 
-/*
-========
-
-Usage:
-  node ../../bin/generate-apidocs <target>
-
-========
-*/
 'use strict';
 
 // Call sdocs
