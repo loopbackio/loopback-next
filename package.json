@@ -50,8 +50,7 @@
       ".ts"
     ],
     "reporter": [
-      "html",
-      "text"
+      "html"
     ]
   }
 }
