@@ -6,7 +6,7 @@
 import {Repository} from './repository';
 import {Options} from './common-types';
 import {Model} from './model';
-import {Class, ObjectType} from './common-types';
+import {Class, DataObject} from './common-types';
 import {Filter} from './query';
 
 /**
@@ -50,7 +50,7 @@ export interface KVRepository<T extends Model> extends Repository<T> {
    * @returns Promise<true> if an entry is set for the key, otherwise
    * Promise<false>
    */
-  set(key: string, value: ObjectType<T>, options?: Options): Promise<boolean>;
+  set(key: string, value: DataObject<T>, options?: Options): Promise<boolean>;
 
   /**
    * Set up ttl for an entry by key

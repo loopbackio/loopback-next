@@ -46,7 +46,7 @@ export interface AnyObject {
 /**
  * Type alias for T or any object
  */
-export type ObjectType<T> = T | AnyObject;
+export type DataObject<T> = T | AnyObject;
 
 /**
  * Type alias for Node.js options object

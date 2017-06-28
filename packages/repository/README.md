@@ -247,7 +247,7 @@ import {
   repository,
   Entity,
   Options,
-  ObjectType,
+  DataObject,
   Filter,
   EntityCrudRepository,
 } from '@loopback/repository';
@@ -261,7 +261,7 @@ class NoteController {
   ) {}
 
   // Create a new note
-  create(data: ObjectType<Entity>, options?: Options) {
+  create(data: DataObject<Entity>, options?: Options) {
     return this.noteRepo.create(data, options);
   }
 

@@ -24,6 +24,8 @@ import {BufferType} from './buffer';
 import {AnyType} from './any';
 import {ArrayType} from './array';
 import {UnionType} from './union';
+import {ObjectType} from './object';
+import {ModelType} from './model';
 
 export {
   Type,
@@ -35,6 +37,8 @@ export {
   AnyType,
   ArrayType,
   UnionType,
+  ModelType,
+  ObjectType,
 };
 
 export const STRING = new StringType();
