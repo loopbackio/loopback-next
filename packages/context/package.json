@@ -8,6 +8,7 @@
     "build:current": "node ../../bin/compile-package",
     "build:lib": "node ../../bin/compile-package es2017",
     "build:lib6": "node ../../bin/compile-package es2015",
+    "build:sdocs": "node ../../bin/generate-apidocs",
     "clean": "rm -rf loopback-context*.tgz lib* package",
     "prepublish": "npm run build",
     "pretest": "npm run build:current",
@@ -39,7 +40,8 @@
     "index.js",
     "index.d.ts",
     "lib",
-    "lib6"
+    "lib6",
+    "api-docs"
   ],
   "repository": {
     "type": "git",

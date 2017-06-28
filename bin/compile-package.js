@@ -76,12 +76,4 @@ spawn(
   }
 ).on('close', (number, signal) => (process.exitCode = number));
 
-// Change to package dir
-process.chdir(packageDir);
-
-// Call sdocs
-spawn(
-  'sdocs', // Typically '/usr/local/bin/node'
-  ['-o', 'api-docs']
-).on('close', (number, signal) => (process.exitCode = number));
 
