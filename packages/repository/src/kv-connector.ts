@@ -4,12 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Connector} from './connector';
-import {Options} from './common-types';
-import {Entity} from './model';
-import {Class, DataObject} from './common-types';
+import {Entity, EntityData} from './model';
+import {Class, DataObject, Options} from './common-types';
 import {Filter} from './query';
-
-export type EntityData = DataObject<Entity>;
 
 /**
  * Key/Value operations for connector implementations

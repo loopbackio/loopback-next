@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Options, AnyObject} from './common-types';
+import {Options, AnyObject, DataObject} from './common-types';
 import {Type} from './types';
 
 /**
@@ -235,3 +235,5 @@ export class Event {
   source: any;
   type: string;
 }
+
+export type EntityData = DataObject<Entity>;

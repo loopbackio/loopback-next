@@ -6,7 +6,7 @@
 import {Entity, ValueObject, Model} from './model';
 import {Class, DataObject, AnyObject, Options} from './common-types';
 import {DataSource} from './datasource';
-import {CrudConnector, EntityData} from './crud-connector';
+import {CrudConnector} from './crud-connector';
 import {Fields, Filter, Where, Operators, Inclusion} from './query';
 
 export interface Repository<T extends Model> {}
