@@ -1,6 +1,5 @@
 
 'use strict';
-
 // Call sdocs
 require('child_process').spawn(
   '../../node_modules/strong-docs/bin/cli.js',
