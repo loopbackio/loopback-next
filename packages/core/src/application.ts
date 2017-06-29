@@ -112,13 +112,26 @@ export class Application extends Context {
    * app.controller(MyController).lock();
    * ```
    */
-  public controller<T>(controllerCtor: Constructor<T>): Binding {
+  controller<T>(controllerCtor: Constructor<T>): Binding {
     return this.bind('controllers.' + controllerCtor.name).toClass(
       controllerCtor,
     );
   }
 
-  public route(route: Route): Binding {
+  /**
+   * Register a new route.
+   *
+   * ```ts
+   * function greet(name: string) {
+   *  return `hello ${name}`;
+   * }
+   * const route = new Route('get', '/', operationSpec, greet);
+   * app.route(route);
+   * ```
+   *
+   * @param route The route to add.
+   */
+  route(route: Route): Binding {
     return this.bind(`routes.${route.verb} ${route.path}`).to(route);
   }
 

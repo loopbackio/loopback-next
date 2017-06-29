@@ -25,7 +25,7 @@ import {
   SequenceHandler,
 } from '@loopback/core';
 import {expect, Client, createClientForServer} from '@loopback/testlab';
-import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
+import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {inject,
   Provider,
   ValueOrPromise,
@@ -90,7 +90,7 @@ describe('Basic Authentication', () => {
   }
 
   function givenControllerInApp() {
-    const apispec = givenOpenApiSpec()
+    const apispec = anOpenApiSpec()
       .withOperation('get', '/whoAmI', {
         'x-operation-name': 'whoAmI',
         responses: {

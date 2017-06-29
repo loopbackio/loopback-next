@@ -13,7 +13,7 @@ import {
 import {Context} from '@loopback/context';
 import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {OpenApiSpec, ParameterObject} from '@loopback/openapi-spec';
-import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
+import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 
 describe('HttpHandler', () => {
   let client: Client;
@@ -22,7 +22,7 @@ describe('HttpHandler', () => {
 
   context('with a simple HelloWorld controller', () => {
     beforeEach(function setupHelloController() {
-      const spec = givenOpenApiSpec()
+      const spec = anOpenApiSpec()
         .withOperationReturningString('get', '/hello', 'greet')
         .build();
 
@@ -46,7 +46,7 @@ describe('HttpHandler', () => {
 
   context('with a controller with operations at different paths/verbs', () => {
     beforeEach(function setupHelloController() {
-      const spec = givenOpenApiSpec()
+      const spec = anOpenApiSpec()
         .withOperationReturningString('get', '/hello', 'hello')
         .withOperationReturningString('get', '/bye', 'bye')
         .withOperationReturningString('post', '/hello', 'postHello')
@@ -94,7 +94,7 @@ describe('HttpHandler', () => {
 
   context('with an operation echoing a string parameter from query', () => {
     beforeEach(function setupEchoController() {
-      const spec = givenOpenApiSpec()
+      const spec = anOpenApiSpec()
         .withOperation('get', '/echo', {
           'x-operation-name': 'echo',
           parameters: [
@@ -143,7 +143,7 @@ describe('HttpHandler', () => {
     });
 
     function givenRouteParamController() {
-      const spec = givenOpenApiSpec()
+      const spec = anOpenApiSpec()
         .withOperation('get', '/users/{username}', {
           'x-operation-name': 'getUserByUsername',
           parameters: [
@@ -186,7 +186,7 @@ describe('HttpHandler', () => {
     });
 
     function givenHeaderParamController() {
-      const spec = givenOpenApiSpec()
+      const spec = anOpenApiSpec()
         .withOperation('get', '/show-authorization', {
           'x-operation-name': 'showAuthorization',
           parameters: [
@@ -243,7 +243,7 @@ describe('HttpHandler', () => {
     });
 
     function givenFormDataParamController() {
-      const spec = givenOpenApiSpec()
+      const spec = anOpenApiSpec()
         .withOperation('post', '/show-formdata', {
           'x-operation-name': 'showFormData',
           parameters: [
@@ -300,7 +300,7 @@ describe('HttpHandler', () => {
     });
 
     function givenBodyParamController() {
-      const spec = givenOpenApiSpec()
+      const spec = anOpenApiSpec()
         .withOperation('post', '/show-body', {
           'x-operation-name': 'showBody',
           parameters: [
@@ -334,7 +334,7 @@ describe('HttpHandler', () => {
 
   context('response serialization', () => {
     it('converts object result to a JSON response', () => {
-      const spec = givenOpenApiSpec()
+      const spec = anOpenApiSpec()
         .withOperation('get', '/object', {
           'x-operation-name': 'getObject',
           responses: {
@@ -361,7 +361,7 @@ describe('HttpHandler', () => {
 
   context('error handling', () => {
     it('handles errors throws by controller constructor', () => {
-      const spec = givenOpenApiSpec()
+      const spec = anOpenApiSpec()
         .withOperationReturningString('get', '/hello', 'greet')
         .build();
 

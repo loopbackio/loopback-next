@@ -13,7 +13,7 @@ import {
 } from '../..';
 import {Context, Binding, BoundValue} from '@loopback/context';
 import {expect} from '@loopback/testlab';
-import {givenOperationSpec} from '@loopback/openapi-spec-builder';
+import {anOperationSpec} from '@loopback/openapi-spec-builder';
 
 describe('HttpHandler', () => {
   let requestContext: Context;
@@ -42,7 +42,7 @@ describe('HttpHandler', () => {
     describe('invokeMethod()', () => {
       it('invokes a controller method', async () => {
         class HelloController {
-          public async hello(): Promise<string> {
+          async hello(): Promise<string> {
             return 'hello';
           }
         }
@@ -52,7 +52,7 @@ describe('HttpHandler', () => {
         const route: ResolvedRoute = {
           controllerName: 'test-controller',
           methodName: 'hello',
-          spec: givenOperationSpec().withStringResponse(200).build(),
+          spec: anOperationSpec().withStringResponse(200).build(),
           pathParams: [],
         };
         const val: OperationRetval = await fn(route, []);
@@ -63,7 +63,7 @@ describe('HttpHandler', () => {
         const fn: InvokeMethod = await requestContext.get('invokeMethod');
         const route: ResolvedRoute = {
           handler: () => Promise.resolve('hello'),
-          spec: givenOperationSpec().withStringResponse(200).build(),
+          spec: anOperationSpec().withStringResponse(200).build(),
           pathParams: [],
         };
         const val: OperationRetval = await fn(route, []);

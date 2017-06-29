@@ -12,7 +12,7 @@ import {
   ParsedRequest,
   PathParameterValues,
 } from './internal-types';
-import {ResolvedRoute} from '../index';
+import {ResolvedRoute} from './router/routing-table';
 
 type HttpError = HttpErrors.HttpError;
 

@@ -17,8 +17,8 @@ import {
 } from '../../..';
 import {expect, Client, createClientForServer} from '@loopback/testlab';
 import {
-  givenOpenApiSpec,
-  givenOperationSpec,
+  anOpenApiSpec,
+  anOperationSpec,
 } from '@loopback/openapi-spec-builder';
 import {inject, Constructor, Context} from '@loopback/context';
 
@@ -39,23 +39,15 @@ describe('Routing', () => {
   it('supports basic usage', async () => {
     const app = givenAnApplication();
 
-    const spec = givenOpenApiSpec()
-      .withOperation('get', '/echo', {
-        'x-operation-name': 'echo',
-        parameters: [
-          // the type cast is not required, but improves Intellisense
-          <ParameterObject> {
+    const spec = anOpenApiSpec()
+      .withOperation('get', '/echo', anOperationSpec()
+        .withOperationName('echo')
+        .withParameter({
             name: 'msg',
             in: 'query',
             type: 'string',
-          },
-        ],
-        responses: {
-          '200': {
-            type: 'string',
-          },
-        },
-      })
+          })
+        .withStringResponse())
       .build();
 
     @api(spec)
@@ -77,15 +69,10 @@ describe('Routing', () => {
     const app = givenAnApplication();
     app.bind('application.name').to('TestApp');
 
-    const spec = givenOpenApiSpec()
-      .withOperation('get', '/name', {
-        'x-operation-name': 'getName',
-        responses: {
-          '200': {
-            type: 'string',
-          },
-        },
-      })
+    const spec = anOpenApiSpec()
+      .withOperation('get', '/name', anOperationSpec()
+        .withOperationName('getName')
+        .withStringResponse())
       .build();
 
     @api(spec)
@@ -111,7 +98,7 @@ describe('Routing', () => {
     // create a special binding returning the current context instance
     app.bind('context').getValue = ctx => ctx;
 
-    const spec = givenOpenApiSpec()
+    const spec = anOpenApiSpec()
       .withOperationReturningString('put', '/flag', 'setFlag')
       .withOperationReturningString('get', '/flag', 'getFlag')
       .build();
@@ -149,7 +136,7 @@ describe('Routing', () => {
   it('binds request and response objects', () => {
     const app = givenAnApplication();
 
-    const spec = givenOpenApiSpec()
+    const spec = anOpenApiSpec()
       .withOperationReturningString('get', '/status', 'getStatus')
       .build();
 
@@ -176,7 +163,7 @@ describe('Routing', () => {
   it('binds controller constructor object and operation', () => {
     const app = givenAnApplication();
 
-    const spec = givenOpenApiSpec()
+    const spec = anOpenApiSpec()
       .withOperationReturningString('get', '/name', 'getControllerName')
       .build();
 
@@ -216,7 +203,7 @@ describe('Routing', () => {
         <ParameterObject> {name: 'name', in: 'query', type: 'string'},
       ],
       responses: {
-        '200': <ResponseObject> {
+        200: <ResponseObject> {
           description: 'greeting text',
           schema: {type: 'string'},
         },

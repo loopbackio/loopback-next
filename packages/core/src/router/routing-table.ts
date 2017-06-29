@@ -87,16 +87,16 @@ export class RoutingTable {
   }
 }
 
-export interface ResolvedRouteCommon {
+export interface ResolvedRouteBase {
   readonly spec: OperationObject;
   readonly pathParams: PathParameterValues;
 }
 
-export interface ResolvedHandlerRoute extends ResolvedRouteCommon {
+export interface ResolvedHandlerRoute extends ResolvedRouteBase {
   readonly handler: Function;
 }
 
-export interface ResolvedControllerRoute extends ResolvedRouteCommon {
+export interface ResolvedControllerRoute extends ResolvedRouteBase {
   readonly controllerName: string;
   readonly methodName: string;
 }
@@ -143,9 +143,7 @@ export class Route {
     return this._createResolvedRoute(pathParams);
   }
 
-  private _createResolvedRoute(
-    pathParams: PathParameterValues,
-  ): ResolvedRoute {
+  private _createResolvedRoute(pathParams: PathParameterValues): ResolvedRoute {
     return this._handler ?
       this._createResolvedHandlerRoute(pathParams) :
       this._createResolvedControllerRoute(pathParams);

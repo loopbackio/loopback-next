@@ -15,14 +15,14 @@ import {
  *
  * @param basePath The base path on which the API is served.
  */
-export function givenOpenApiSpec(basePath?: string) {
+export function anOpenApiSpec(basePath?: string) {
   return new OpenApiSpecBuilder(basePath);
 }
 
 /**
  * Create a new instance of OperationSpecBuilder.
  */
-export function givenOperationSpec() {
+export function anOperationSpec() {
   return new OperationSpecBuilder();
 }
 
@@ -73,7 +73,7 @@ export class OpenApiSpecBuilder {
     path: string,
     operationName: string,
   ): this {
-    return this.withOperation(verb, path, givenOperationSpec()
+    return this.withOperation(verb, path, anOperationSpec()
         .withOperationName(operationName)
         .withStringResponse(200));
   }
@@ -106,7 +106,7 @@ export class OperationSpecBuilder {
     return this;
   }
 
-  withStringResponse(status: number | 'default'): this {
+  withStringResponse(status: number | 'default' = 200): this {
     return this.withResponse(status, {
       description: 'The string result.',
       schema: {type: 'string'},

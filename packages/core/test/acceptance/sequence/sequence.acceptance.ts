@@ -22,7 +22,7 @@ import {
   SequenceHandler,
 } from '../../..';
 import {expect, Client, createClientForServer} from '@loopback/testlab';
-import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
+import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {inject, Constructor, Context} from '@loopback/context';
 
 /* # Feature: Sequence
@@ -92,7 +92,7 @@ describe('Sequence - ', () => {
     givenAnApplication();
     app.bind('application.name').to('SequenceApp');
 
-    const apispec = givenOpenApiSpec()
+    const apispec = anOpenApiSpec()
       .withOperation('get', '/name', {
         'x-operation-name': 'getName',
         responses: {

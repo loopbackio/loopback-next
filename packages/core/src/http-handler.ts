@@ -14,6 +14,8 @@ import {
   RoutingTable,
   parseRequestUrl,
   isHandlerRoute,
+  ResolvedRoute,
+  Route,
 } from './router/routing-table';
 import {
   FindRoute,
@@ -21,7 +23,6 @@ import {
   ParsedRequest,
   OperationArgs,
 } from './internal-types';
-import {ResolvedRoute, Route} from './index';
 
 const debug = require('debug')('loopback:core:http-handler');
 
@@ -114,8 +115,7 @@ export class HttpHandler {
         args: OperationArgs,
       ) => {
         if (isHandlerRoute(route)) {
-          const result = await route.handler(...args);
-          return result;
+          return await route.handler(...args);
         }
 
         if (!(route.controllerName && route.methodName)) {
