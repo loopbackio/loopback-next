@@ -18,8 +18,23 @@ import {
 import {parseOperationArgs} from './parser';
 import {writeResultToResponse} from './writer';
 import {HttpError} from 'http-errors';
+
 /**
- * The default implementation of Sequence.
+ * A sequence handler is a class implementing sequence of actions
+ * required to handle an incoming request.
+ */
+export interface SequenceHandler {
+  /**
+   * Handle the request by running the configured sequence of actions.
+   *
+   * @param request The incoming HTTP request
+   * @param response The HTTP server response where to write the result
+   */
+  handle(request: ParsedRequest, response: ServerResponse): Promise<void>;
+}
+
+/**
+ * The default implementation of SequenceHandler.
  *
  * This class implements default Sequence for the LoopBack framework.
  * Default sequence is used if user hasn't defined their own Sequence
@@ -34,7 +49,7 @@ import {HttpError} from 'http-errors';
  * app.bind('sequence').toClass(MySequence);
  * ```
  */
-export class Sequence {
+export class Sequence implements SequenceHandler{
    /**
    * Constructor: Injects findRoute, invokeMethod & logError
    * methods as promises.
@@ -68,7 +83,7 @@ export class Sequence {
    * @param res HTTP server response with result from Application controller
    *  method invocation
    */
-  async run(req: ParsedRequest, res: ServerResponse) {
+  async handle(req: ParsedRequest, res: ServerResponse) {
     try {
       const {controller, methodName, spec, pathParams} = this.findRoute(req);
       const args = await parseOperationArgs(req, spec, pathParams);

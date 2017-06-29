@@ -10,7 +10,7 @@ import {Component, mountComponent} from './component';
 import {getApiSpec} from './router/metadata';
 import {HttpHandler} from './http-handler';
 import {writeResultToResponse} from './writer';
-import {Sequence} from './sequence';
+import {Sequence, SequenceHandler} from './sequence';
 import {RejectProvider} from './router/reject';
 
 const debug = require('debug')('loopback:core:application');
@@ -155,5 +155,5 @@ export class Application extends Context {
 
 export interface ApplicationOptions {
   components?: Array<Constructor<Component>>;
-  sequence?: Constructor<Sequence>;
+  sequence?: Constructor<SequenceHandler>;
 }

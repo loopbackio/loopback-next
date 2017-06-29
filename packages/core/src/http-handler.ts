@@ -49,7 +49,7 @@ export class HttpHandler {
     this._bindBindElement(requestContext);
 
     const sequence: Sequence = await requestContext.get('sequence');
-    return sequence.run(parsedRequest, response);
+    return sequence.handle(parsedRequest, response);
   }
 
   protected _createRequestContext(
