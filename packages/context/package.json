@@ -8,7 +8,7 @@
     "build:current": "node ../../bin/compile-package",
     "build:lib": "node ../../bin/compile-package es2017",
     "build:lib6": "node ../../bin/compile-package es2015",
-    "build:sdocs": "node ../../bin/generate-apidocs",
+    "build:apidocs": "node ../../bin/generate-apidocs",
     "clean": "rm -rf loopback-context*.tgz lib* package",
     "prepublish": "npm run build",
     "pretest": "npm run build:current",
