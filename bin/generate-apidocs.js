@@ -1,4 +1,3 @@
-
 'use strict';
 // Call sdocs
 require('child_process').spawn(
