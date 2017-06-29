@@ -5,7 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 import {Constructor, Provider, inject} from '@loopback/context';
-import {Application, Sequence} from '../../..';
+import {Application, DefaultSequence} from '../../..';
 
 describe('Bootstrapping the application', () => {
   context('with a user-defined sequence', () => {
@@ -18,7 +18,7 @@ describe('Bootstrapping the application', () => {
     });
 
     function givenAppWithUserDefinedSequence() {
-      class UserDefinedSequence extends Sequence {}
+      class UserDefinedSequence extends DefaultSequence {}
       app = new Application({
         sequence: UserDefinedSequence,
       });

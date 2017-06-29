@@ -18,8 +18,17 @@ import {
 import {parseOperationArgs} from './parser';
 import {writeResultToResponse} from './writer';
 import {HttpError} from 'http-errors';
-import {getRouteName, isHandlerRoute} from './router/routing-table';
+import {getRouteName} from './router/routing-table';
 
+/**
+ * A sequence function is a function implementing a custom
+ * sequence of actions to handle an incoming request.
+ */
+export type SequenceFunction = (
+  sequence: DefaultSequence,
+  request: ParsedRequest,
+  response: ServerResponse,
+) => Promise<void> | void;
 
 /**
  * A sequence handler is a class implementing sequence of actions
@@ -51,7 +60,7 @@ export interface SequenceHandler {
  * app.bind('sequence').toClass(MySequence);
  * ```
  */
-export class Sequence implements SequenceHandler{
+export class DefaultSequence implements SequenceHandler {
    /**
    * Constructor: Injects findRoute, invokeMethod & logError
    * methods as promises.
@@ -64,8 +73,8 @@ export class Sequence implements SequenceHandler{
   constructor(
     @inject('findRoute') protected findRoute: FindRoute,
     @inject('invokeMethod') protected invoke: InvokeMethod,
-    @inject('sequence.actions.send') protected send: Send,
-    @inject('sequence.actions.reject') protected reject: Reject,
+    @inject('sequence.actions.send') public send: Send,
+    @inject('sequence.actions.reject') public reject: Reject,
   ) {}
 
 

@@ -3,15 +3,26 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, Context, Constructor, Provider} from '@loopback/context';
-import {OpenApiSpec, Route} from '.';
+import {
+  Binding,
+  Context,
+  Constructor,
+  Provider,
+  inject,
+} from '@loopback/context';
+import {
+  OpenApiSpec,
+  Route,
+  ParsedRequest,
+} from '.';
 import {ServerRequest, ServerResponse} from 'http';
 import {Component, mountComponent} from './component';
 import {getApiSpec} from './router/metadata';
 import {HttpHandler} from './http-handler';
 import {writeResultToResponse} from './writer';
-import {Sequence, SequenceHandler} from './sequence';
+import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
 import {RejectProvider} from './router/reject';
+import {FindRoute, InvokeMethod, Send, Reject} from './internal-types';
 
 const debug = require('debug')('loopback:core:application');
 
@@ -59,10 +70,11 @@ export class Application extends Context {
   protected _bindSequence(): void {
     // TODO(bajtos, ritch, superkhau) figure out how to integrate this single
     // sequence with custom sequences contributed by components
-    const sequence = this.options && this.options.sequence
-      ? this.options.sequence
-      : Sequence;
-    this.bind('sequence').toClass(sequence);
+    const sequence: Constructor<SequenceHandler> =
+      this.options && this.options.sequence
+        ? this.options.sequence
+        : DefaultSequence;
+    this.sequence(sequence);
   }
 
   protected _handleHttpRequest(
@@ -173,6 +185,62 @@ export class Application extends Context {
     this.bind(componentKey).toClass(component);
     const instance = this.getSync(componentKey);
     mountComponent(this, instance);
+  }
+
+  /**
+   * Configure a custom sequence class for handling incoming requests.
+   *
+   * ```ts
+   * class MySequence implements SequenceHandler {
+   *   constructor(
+   *     @inject('send) public send: Send)) {
+   *   }
+   *
+   *   public async handle(request: ParsedRequest, response: ServerResponse) {
+   *     send(response, 'hello world');
+   *   }
+   * }
+   * ```
+   *
+   * @param value The sequence to invoke for each incoming request.
+   */
+  public sequence(value: Constructor<SequenceHandler>) {
+    this.bind('sequence').toClass(value);
+  }
+
+  /**
+   * Configure a custom sequence function for handling incoming requests.
+   *
+   * ```ts
+   * app.sequence((sequence, request, response) => {
+   *   sequence.send(response, 'hello world'));
+   * });
+   * ```
+   *
+   * @param handler The handler to invoke for each incoming request.
+   */
+  public handler(handler: SequenceFunction) {
+    class SequenceFromFunction extends DefaultSequence {
+      // NOTE(bajtos) Unfortunately, we have to duplicate the constructor
+      // in order for our DI/IoC framework to inject constructor arguments
+      constructor(
+        @inject('findRoute') protected findRoute: FindRoute,
+        @inject('invokeMethod') protected invoke: InvokeMethod,
+        @inject('sequence.actions.send') public send: Send,
+        @inject('sequence.actions.reject') public reject: Reject,
+      ) {
+        super(findRoute, invoke, send, reject);
+      }
+
+      async handle(
+        request: ParsedRequest,
+        response: ServerResponse,
+      ): Promise<void> {
+        await Promise.resolve(handler(this, request, response));
+      }
+    }
+
+    this.sequence(SequenceFromFunction);
   }
 }
 

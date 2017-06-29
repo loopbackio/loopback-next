@@ -5,7 +5,7 @@
 
 import {
   HttpHandler,
-  Sequence,
+  DefaultSequence,
   ServerRequest,
   writeResultToResponse,
   RejectProvider,
@@ -385,7 +385,7 @@ describe('HttpHandler', () => {
     rootContext.bind('logError').to(logger);
     rootContext.bind('sequence.actions.send').to(writeResultToResponse);
     rootContext.bind('sequence.actions.reject').toProvider(RejectProvider);
-    rootContext.bind('sequence').toClass(Sequence);
+    rootContext.bind('sequence').toClass(DefaultSequence);
 
     function logger(err: Error, statusCode: number, req: ServerRequest) {
       console.error(
