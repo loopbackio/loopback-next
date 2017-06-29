@@ -12,6 +12,7 @@ import {
   ParsedRequest,
   PathParameterValues,
 } from './internal-types';
+import {ResolvedRoute} from './router/routing-table';
 
 type HttpError = HttpErrors.HttpError;
 
@@ -54,10 +55,10 @@ function getContentType(req: ServerRequest): string | undefined {
  */
 export async function parseOperationArgs(
   request: ParsedRequest,
-  operationSpec: OperationObject,
-  pathParams: PathParameterValues,
+  route: ResolvedRoute,
 ): Promise<OperationArgs> {
-  const args: OperationArgs = [];
+  const operationSpec = route.spec;
+  const pathParams = route.pathParams;
   const body = await loadRequestBodyIfNeeded(operationSpec, request);
   return buildOperationArguments(operationSpec, request, pathParams, body);
 }

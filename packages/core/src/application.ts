@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding, Context, Constructor, Provider} from '@loopback/context';
-import {OpenApiSpec} from '.';
+import {OpenApiSpec, Route} from '.';
 import {ServerRequest, ServerResponse} from 'http';
 import {Component, mountComponent} from './component';
 import {getApiSpec} from './router/metadata';
@@ -88,6 +88,12 @@ export class Application extends Context {
       const apiSpec = getApiSpec(ctor);
       this._httpHandler.registerController(b.key, apiSpec);
     }
+
+    for (const b of this.find('routes.*')) {
+      // TODO(bajtos) should we support routes defined asynchronously?
+      const route = this.getSync(b.key);
+      this._httpHandler.registerRoute(route);
+    }
   }
 
   /**
@@ -106,10 +112,27 @@ export class Application extends Context {
    * app.controller(MyController).lock();
    * ```
    */
-  public controller<T>(controllerCtor: Constructor<T>): Binding {
+  controller<T>(controllerCtor: Constructor<T>): Binding {
     return this.bind('controllers.' + controllerCtor.name).toClass(
       controllerCtor,
     );
+  }
+
+  /**
+   * Register a new route.
+   *
+   * ```ts
+   * function greet(name: string) {
+   *  return `hello ${name}`;
+   * }
+   * const route = new Route('get', '/', operationSpec, greet);
+   * app.route(route);
+   * ```
+   *
+   * @param route The route to add.
+   */
+  route(route: Route): Binding {
+    return this.bind(`routes.${route.verb} ${route.path}`).to(route);
   }
 
   protected _logError(

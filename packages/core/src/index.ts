@@ -33,12 +33,18 @@ export {
   OperationArgs,
   getFromContext,
   bindElement,
+  PathParameterValues,
   Reject,
   Send,
 } from './internal-types';
 export {parseOperationArgs} from './parser';
 export {parseRequestUrl} from './router/routing-table';
-export {RoutingTable, ResolvedRoute} from './router/routing-table';
+export {
+  RoutingTable,
+  Route,
+  ResolvedRoute,
+  isHandlerRoute,
+} from './router/routing-table';
 export {HttpHandler} from './http-handler';
 export {writeResultToResponse} from './writer';
 export {RejectProvider} from './router/reject';

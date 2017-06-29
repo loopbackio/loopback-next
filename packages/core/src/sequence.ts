@@ -18,6 +18,8 @@ import {
 import {parseOperationArgs} from './parser';
 import {writeResultToResponse} from './writer';
 import {HttpError} from 'http-errors';
+import {getRouteName, isHandlerRoute} from './router/routing-table';
+
 
 /**
  * A sequence handler is a class implementing sequence of actions
@@ -85,10 +87,14 @@ export class Sequence implements SequenceHandler{
    */
   async handle(req: ParsedRequest, res: ServerResponse) {
     try {
-      const {controller, methodName, spec, pathParams} = this.findRoute(req);
-      const args = await parseOperationArgs(req, spec, pathParams);
-      const result = await this.invoke(controller, methodName, args);
-      debug('%s.%s() result -', controller, methodName, result);
+      const route = this.findRoute(req);
+      const args = await parseOperationArgs(req, route);
+      const result = await this.invoke(route, args);
+
+      if (debug.enabled) {
+        const routeName = getRouteName(route) || `"${req.method} ${req.path}"`;
+        debug('%s result -', routeName, result);
+      }
       this.send(res, result);
     } catch (err) {
       this.reject(res, req, err);

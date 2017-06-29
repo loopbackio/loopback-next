@@ -39,10 +39,10 @@ export function parseRequestUrl(request: ServerRequest): ParsedRequest {
   return parsedRequest;
 }
 
-export class RoutingTable<ControllerType> {
-  private readonly _routes: RouteEntry<ControllerType>[] = [];
+export class RoutingTable {
+  private readonly _routes: Route[] = [];
 
-  registerController(controller: ControllerType, spec: OpenApiSpec) {
+  registerController(controller: string, spec: OpenApiSpec) {
     assert(
       typeof spec === 'object' && !!spec,
       'API specification must be a non-null object',
@@ -62,16 +62,23 @@ export class RoutingTable<ControllerType> {
           verb,
           path,
           opSpec['x-operation-name'],
-          ((opSpec.parameters as ParameterObject[]) || [])
-            .map(p => p.name)
-            .join(', '),
+          describeOperationParameters(opSpec),
         );
-        this._routes.push(new RouteEntry(path, verb, opSpec, controller));
+        this._routes.push(new Route(verb, path, opSpec, undefined, controller));
       }
     }
   }
 
-  find(request: ParsedRequest): ResolvedRoute<ControllerType> | undefined {
+  registerRoute(route: Route) {
+    debug(
+      'Registering route %s %s with args',
+       route.verb,
+       route.path,
+       describeOperationParameters(route.spec));
+    this._routes.push(route);
+  }
+
+  find(request: ParsedRequest): ResolvedRoute | undefined {
     for (const entry of this._routes) {
       const match = entry.match(request);
       if (match) return match;
@@ -80,24 +87,36 @@ export class RoutingTable<ControllerType> {
   }
 }
 
-export interface ResolvedRoute<ControllerType> {
-  readonly controller: ControllerType;
-  readonly methodName: string;
+export interface ResolvedRouteBase {
   readonly spec: OperationObject;
   readonly pathParams: PathParameterValues;
 }
 
-class RouteEntry<ControllerType> {
-  private readonly _verb: string;
+export interface ResolvedHandlerRoute extends ResolvedRouteBase {
+  readonly handler: Function;
+}
+
+export interface ResolvedControllerRoute extends ResolvedRouteBase {
+  readonly controllerName: string;
+  readonly methodName: string;
+}
+
+export type ResolvedRoute =  ResolvedHandlerRoute | ResolvedControllerRoute;
+
+export class Route {
+  public readonly verb: string;
+  public readonly path: string;
   private readonly _pathRegexp: pathToRegexp.PathRegExp;
 
   constructor(
-    path: string,
     verb: string,
-    private readonly _spec: OperationObject,
-    private readonly _controller: ControllerType,
+    path: string,
+    public readonly spec: OperationObject,
+    private readonly _handler?: Function,
+    private readonly _controllerName?: string,
   ) {
-    this._verb = verb.toLowerCase();
+    this.verb = verb.toLowerCase();
+    this.path = path;
 
     // In Swagger, path parameters are wrapped in `{}`.
     // In Express.js, path parameters are prefixed with `:`
@@ -105,9 +124,9 @@ class RouteEntry<ControllerType> {
     this._pathRegexp = pathToRegexp(path, [], {strict: false, end: true});
   }
 
-  match(request: ParsedRequest): ResolvedRoute<ControllerType> | undefined {
+  match(request: ParsedRequest): ResolvedRoute | undefined {
     debug('trying endpoint', this);
-    if (this._verb !== request.method!.toLowerCase()) {
+    if (this.verb !== request.method!.toLowerCase()) {
       debug(' -> verb mismatch');
       return undefined;
     }
@@ -124,13 +143,29 @@ class RouteEntry<ControllerType> {
     return this._createResolvedRoute(pathParams);
   }
 
-  private _createResolvedRoute(
+  private _createResolvedRoute(pathParams: PathParameterValues): ResolvedRoute {
+    return this._handler ?
+      this._createResolvedHandlerRoute(pathParams) :
+      this._createResolvedControllerRoute(pathParams);
+  }
+
+  private _createResolvedHandlerRoute(
     pathParams: PathParameterValues,
-  ): ResolvedRoute<ControllerType> {
+  ): ResolvedHandlerRoute {
     return {
-      controller: this._controller,
-      methodName: this._spec['x-operation-name']!,
-      spec: this._spec,
+      handler: this._handler!,
+      spec: this.spec,
+      pathParams: pathParams,
+    };
+  }
+
+  private _createResolvedControllerRoute(
+    pathParams: PathParameterValues,
+  ): ResolvedControllerRoute {
+    return {
+      controllerName: this._controllerName!,
+      methodName: this.spec['x-operation-name']!,
+      spec: this.spec,
       pathParams: pathParams,
     };
   }
@@ -144,4 +179,22 @@ class RouteEntry<ControllerType> {
     }
     return pathParams;
   }
+}
+
+export function isHandlerRoute(
+  route: ResolvedRoute,
+): route is ResolvedHandlerRoute {
+  return (route as ResolvedHandlerRoute).handler !== undefined;
+}
+
+export function getRouteName(route: ResolvedRoute) {
+  return isHandlerRoute(route) ?
+    route.handler.name : // TODO(bajtos) return VERB+PATH when name is not set
+    `${route.controllerName}.${route.methodName}()`;
+}
+
+function describeOperationParameters(opSpec: OperationObject) {
+  return ((opSpec.parameters as ParameterObject[]) || [])
+      .map(p => p.name)
+      .join(', ');
 }

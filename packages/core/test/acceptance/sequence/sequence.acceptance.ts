@@ -22,7 +22,7 @@ import {
   SequenceHandler,
 } from '../../..';
 import {expect, Client, createClientForServer} from '@loopback/testlab';
-import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
+import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {inject, Constructor, Context} from '@loopback/context';
 
 /* # Feature: Sequence
@@ -49,14 +49,9 @@ describe('Sequence - ', () => {
       ) {}
 
       async handle(req: ParsedRequest, res: ServerResponse) {
-        const {
-          controller,
-          methodName,
-          spec: routeSpec,
-          pathParams,
-        } = this.findRoute(req);
-        const args = await parseOperationArgs(req, routeSpec, pathParams);
-        const result = await this.invoke(controller, methodName, args);
+        const route = this.findRoute(req);
+        const args = await parseOperationArgs(req, route);
+        const result = await this.invoke(route, args);
         // Prepend 'MySequence' to the result of invoke to allow for
         // execution verification of this user-defined sequence
         writeResultToResponse(res, `MySequence ${result}`);
@@ -97,7 +92,7 @@ describe('Sequence - ', () => {
     givenAnApplication();
     app.bind('application.name').to('SequenceApp');
 
-    const apispec = givenOpenApiSpec()
+    const apispec = anOpenApiSpec()
       .withOperation('get', '/name', {
         'x-operation-name': 'getName',
         responses: {

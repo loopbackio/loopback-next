@@ -12,15 +12,15 @@ import {
 } from '../..';
 import {expect, ShotRequestOptions, ShotRequest} from '@loopback/testlab';
 import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
-import {givenOpenApiSpec} from '@loopback/openapi-spec-builder';
+import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 
 describe('RoutingTable', () => {
   it('finds simple "GET /hello" endpoint', () => {
-    const spec = givenOpenApiSpec()
+    const spec = anOpenApiSpec()
       .withOperationReturningString('get', '/hello', 'greet')
       .build();
 
-    const table = new RoutingTable<string>();
+    const table = new RoutingTable();
     table.registerController('TestController', spec);
 
     const request = givenRequest({
@@ -31,7 +31,7 @@ describe('RoutingTable', () => {
     const route = table.find(request);
 
     expect(route).to.deepEqual({
-      controller: 'TestController',
+      controllerName: 'TestController',
       methodName: 'greet',
       pathParams: Object.create(null),
       spec: spec.paths['/hello'].get,
