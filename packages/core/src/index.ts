@@ -7,7 +7,7 @@
 export {Application} from './application';
 export {Component} from './component';
 export {api} from './router/metadata';
-export {Sequence, SequenceHandler} from './sequence';
+export * from './sequence';
 export {Server, ServerConfig, ServerState} from './server';
 
 // loopback dependencies

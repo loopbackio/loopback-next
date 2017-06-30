@@ -12,7 +12,6 @@ import {
   ServerRequest,
   ServerResponse,
   parseOperationArgs,
-  writeResultToResponse,
   ParsedRequest,
   OperationArgs,
   FindRoute,
@@ -30,40 +29,58 @@ import {inject, Constructor, Context} from '@loopback/context';
  * - As a framework developer
  * - I want the framework to handle default sequence and user defined sequence
  */
-describe('Sequence - ', () => {
+describe('Sequence', () => {
   let app: Application;
   beforeEach(givenAppWithController);
 
-  it('default sequence', () => {
-    return whenIMakeRequestTo(app).then(client => {
-      return client.get('/name')
-        .expect('SequenceApp');
-    });
+  it('provides a default sequence', async () => {
+    const client = await whenIMakeRequestTo(app);
+    await client.get('/name').expect('SequenceApp');
   });
 
-  it('user defined sequence', () => {
+  it('allows users to define a custom sequence as a function', async () => {
+    app.handler((sequence, request, response) => {
+      sequence.send(response, 'hello world');
+    });
+    const client = await whenIMakeRequestTo(app);
+    await client.get('/').expect('hello world');
+  });
+
+  it('allows users to define a custom sequence as a class', async () => {
     class MySequence implements SequenceHandler {
+      constructor(@inject('sequence.actions.send') private send: Send) {}
+
+      async handle(req: ParsedRequest, res: ServerResponse) {
+        this.send(res, 'hello world');
+      }
+    }
+    // bind user defined sequence
+    app.sequence(MySequence);
+
+    const client = await whenIMakeRequestTo(app);
+    await client.get('/').expect('hello world');
+  });
+
+  it('allows users to bind a custom sequence class', async () => {
+    class MySequence {
       constructor(
         @inject('findRoute') protected findRoute: FindRoute,
         @inject('invokeMethod') protected invoke: InvokeMethod,
+        @inject('sequence.actions.send') protected send: Send,
       ) {}
 
       async handle(req: ParsedRequest, res: ServerResponse) {
         const route = this.findRoute(req);
         const args = await parseOperationArgs(req, route);
         const result = await this.invoke(route, args);
-        // Prepend 'MySequence' to the result of invoke to allow for
-        // execution verification of this user-defined sequence
-        writeResultToResponse(res, `MySequence ${result}`);
+        this.send(res, `MySequence ${result}`);
       }
     }
-    // bind user defined sequence
-    app.bind('sequence').toClass(MySequence);
 
-    return whenIMakeRequestTo(app).then(client => {
-      return client.get('/name')
-        .expect('MySequence SequenceApp');
-    });
+    app.sequence(MySequence);
+
+    const client = await whenIMakeRequestTo(app);
+    await client.get('/name').expect('MySequence SequenceApp');
   });
 
   it('user-defined Send', async () => {

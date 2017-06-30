@@ -9,7 +9,7 @@ import {ServerRequest, ServerResponse} from 'http';
 import {getApiSpec} from './router/metadata';
 import * as HttpErrors from 'http-errors';
 
-import {Sequence} from './sequence';
+import {SequenceHandler} from './sequence';
 import {
   RoutingTable,
   parseRequestUrl,
@@ -58,8 +58,8 @@ export class HttpHandler {
     this._bindGetFromContext(requestContext);
     this._bindBindElement(requestContext);
 
-    const sequence: Sequence = await requestContext.get('sequence');
-    return sequence.handle(parsedRequest, response);
+    const sequence: SequenceHandler = await requestContext.get('sequence');
+    await sequence.handle(parsedRequest, response);
   }
 
   protected _createRequestContext(
