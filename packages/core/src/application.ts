@@ -51,13 +51,15 @@ export class Application extends Context {
   constructor(public options?: ApplicationOptions) {
     super();
 
-    if (options && options.components) {
+    if (!options) options = {};
+
+    if (options.components) {
       for (const component of options.components) {
         this.component(component);
       }
     }
 
-    this._bindSequence();
+    this.sequence(options.sequence ? options.sequence : DefaultSequence);
 
     this.handleHttp = (req: ServerRequest, res: ServerResponse) =>
       this._handleHttpRequest(req, res);
@@ -65,16 +67,6 @@ export class Application extends Context {
     this.bind('logError').to(this._logError.bind(this));
     this.bind('sequence.actions.send').to(writeResultToResponse);
     this.bind('sequence.actions.reject').toProvider(RejectProvider);
-  }
-
-  protected _bindSequence(): void {
-    // TODO(bajtos, ritch, superkhau) figure out how to integrate this single
-    // sequence with custom sequences contributed by components
-    const sequence: Constructor<SequenceHandler> =
-      this.options && this.options.sequence
-        ? this.options.sequence
-        : DefaultSequence;
-    this.sequence(sequence);
   }
 
   protected _handleHttpRequest(
@@ -212,14 +204,14 @@ export class Application extends Context {
    * Configure a custom sequence function for handling incoming requests.
    *
    * ```ts
-   * app.sequence((sequence, request, response) => {
+   * app.handler((sequence, request, response) => {
    *   sequence.send(response, 'hello world'));
    * });
    * ```
    *
-   * @param handler The handler to invoke for each incoming request.
+   * @param handlerFn The handler to invoke for each incoming request.
    */
-  public handler(handler: SequenceFunction) {
+  public handler(handlerFn: SequenceFunction) {
     class SequenceFromFunction extends DefaultSequence {
       // NOTE(bajtos) Unfortunately, we have to duplicate the constructor
       // in order for our DI/IoC framework to inject constructor arguments
@@ -236,7 +228,7 @@ export class Application extends Context {
         request: ParsedRequest,
         response: ServerResponse,
       ): Promise<void> {
-        await Promise.resolve(handler(this, request, response));
+        await Promise.resolve(handlerFn(this, request, response));
       }
     }
 

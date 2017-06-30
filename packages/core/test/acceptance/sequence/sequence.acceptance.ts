@@ -38,7 +38,7 @@ describe('Sequence', () => {
     await client.get('/name').expect('SequenceApp');
   });
 
-  it('allows user to define a custom sequence as a function', async () => {
+  it('allows users to define a custom sequence as a function', async () => {
     app.handler((sequence, request, response) => {
       sequence.send(response, 'hello world');
     });
@@ -46,7 +46,7 @@ describe('Sequence', () => {
     await client.get('/').expect('hello world');
   });
 
-  it('allows user to define a custom sequence as a class', async () => {
+  it('allows users to define a custom sequence as a class', async () => {
     class MySequence implements SequenceHandler {
       constructor(@inject('sequence.actions.send') private send: Send) {}
 
@@ -73,13 +73,10 @@ describe('Sequence', () => {
         const route = this.findRoute(req);
         const args = await parseOperationArgs(req, route);
         const result = await this.invoke(route, args);
-        // Prepend 'MySequence' to the result of invoke to allow for
-        // execution verification of this user-defined sequence
         this.send(res, `MySequence ${result}`);
       }
     }
 
-    // bind user defined sequence
     app.sequence(MySequence);
 
     const client = await whenIMakeRequestTo(app);
