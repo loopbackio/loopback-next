@@ -33,7 +33,8 @@
     "lint:fix": "npm run lint -- --fix",
     "clean": "lerna run --loglevel=silent clean",
     "build": "lerna run --loglevel=silent build",
-    "pretest": "npm run build",
+    "build:current": "lerna run --loglevel=silent build:current",
+    "pretest": "npm run build:current",
     "test": "nyc mocha --opts test/mocha.opts \"packages/*/test/**/*.ts\"",
     "posttest": "npm run lint"
   },
