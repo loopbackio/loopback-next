@@ -18,7 +18,6 @@ import {
 import {parseOperationArgs} from './parser';
 import {writeResultToResponse} from './writer';
 import {HttpError} from 'http-errors';
-import {getRouteName} from './router/routing-table';
 
 /**
  * A sequence function is a function implementing a custom
@@ -96,14 +95,11 @@ export class DefaultSequence implements SequenceHandler {
    */
   async handle(req: ParsedRequest, res: ServerResponse) {
     try {
-      const route = this.findRoute(req);
-      const args = await parseOperationArgs(req, route);
+      const {route, pathParams} = this.findRoute(req);
+      const args = await parseOperationArgs(req, route, pathParams);
       const result = await this.invoke(route, args);
 
-      if (debug.enabled) {
-        const routeName = getRouteName(route) || `"${req.method} ${req.path}"`;
-        debug('%s result -', routeName, result);
-      }
+      debug('%s result -', route.describe(), result);
       this.send(res, result);
     } catch (err) {
       this.reject(res, req, err);

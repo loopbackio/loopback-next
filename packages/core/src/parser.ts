@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ServerRequest} from 'http';
-import {HttpErrors} from './';
+import {HttpErrors, Route, RouteEntry} from './';
 import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
 import {promisify} from './promisify';
 import {
@@ -55,10 +55,10 @@ function getContentType(req: ServerRequest): string | undefined {
  */
 export async function parseOperationArgs(
   request: ParsedRequest,
-  route: ResolvedRoute,
+  route: RouteEntry,
+  pathParams: PathParameterValues,
 ): Promise<OperationArgs> {
   const operationSpec = route.spec;
-  const pathParams = route.pathParams;
   const body = await loadRequestBodyIfNeeded(operationSpec, request);
   return buildOperationArguments(operationSpec, request, pathParams, body);
 }

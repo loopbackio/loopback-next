@@ -9,6 +9,7 @@ import {
   parseRequestUrl,
   RoutingTable,
   ResolvedRoute,
+  ControllerRoute,
 } from '../..';
 import {expect, ShotRequestOptions, ShotRequest} from '@loopback/testlab';
 import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
@@ -28,14 +29,11 @@ describe('RoutingTable', () => {
       url: '/hello',
     });
 
-    const route = table.find(request);
+    const {route, pathParams} = table.find(request);
 
-    expect(route).to.deepEqual({
-      controllerName: 'TestController',
-      methodName: 'greet',
-      pathParams: Object.create(null),
-      spec: spec.paths['/hello'].get,
-    });
+    expect(route).to.be.instanceOf(ControllerRoute);
+    expect(route).to.have.property('spec', spec.paths['/hello'].get);
+    expect(route.describe()).to.equal('TestController.greet');
   });
 
   function givenRequest(options?: ShotRequestOptions): ParsedRequest {

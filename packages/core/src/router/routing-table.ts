@@ -8,9 +8,16 @@ import {
   OperationObject,
   ParameterObject,
 } from '@loopback/openapi-spec';
+import {Context} from '@loopback/context';
 import {ServerRequest} from 'http';
+import * as HttpErrors from 'http-errors';
 
-import {ParsedRequest, PathParameterValues} from '../internal-types';
+import {
+  ParsedRequest,
+  PathParameterValues,
+  OperationArgs,
+  OperationRetval,
+} from '../internal-types';
 
 import * as assert from 'assert';
 import * as url from 'url';
@@ -40,7 +47,7 @@ export function parseRequestUrl(request: ServerRequest): ParsedRequest {
 }
 
 export class RoutingTable {
-  private readonly _routes: Route[] = [];
+  private readonly _routes: RouteEntry[] = [];
 
   registerController(controller: string, spec: OpenApiSpec) {
     assert(
@@ -64,7 +71,7 @@ export class RoutingTable {
           opSpec['x-operation-name'],
           describeOperationParameters(opSpec),
         );
-        this._routes.push(new Route(verb, path, opSpec, undefined, controller));
+        this._routes.push(new ControllerRoute(verb, path, opSpec, controller));
       }
     }
   }
@@ -78,45 +85,37 @@ export class RoutingTable {
     this._routes.push(route);
   }
 
-  find(request: ParsedRequest): ResolvedRoute | undefined {
+  find(request: ParsedRequest): ResolvedRoute {
     for (const entry of this._routes) {
       const match = entry.match(request);
       if (match) return match;
     }
-    return undefined;
+
+    throw new HttpErrors.NotFound(
+      `Endpoint "${request.method} ${request.path}" not found.`,
+    );
   }
 }
 
-export interface ResolvedRouteBase {
-  readonly spec: OperationObject;
+export interface ResolvedRoute {
+  readonly route: RouteEntry;
   readonly pathParams: PathParameterValues;
 }
 
-export interface ResolvedHandlerRoute extends ResolvedRouteBase {
-  readonly handler: Function;
-}
-
-export interface ResolvedControllerRoute extends ResolvedRouteBase {
-  readonly controllerName: string;
-  readonly methodName: string;
-}
-
-export type ResolvedRoute =  ResolvedHandlerRoute | ResolvedControllerRoute;
-
-export class Route {
+export abstract class RouteEntry {
   public readonly verb: string;
-  public readonly path: string;
   private readonly _pathRegexp: pathToRegexp.PathRegExp;
+
+  get methodName(): string | undefined {
+    return this.spec['x-operation-name'];
+  }
 
   constructor(
     verb: string,
-    path: string,
+    public readonly path: string,
     public readonly spec: OperationObject,
-    private readonly _handler?: Function,
-    private readonly _controllerName?: string,
   ) {
     this.verb = verb.toLowerCase();
-    this.path = path;
 
     // In Swagger, path parameters are wrapped in `{}`.
     // In Express.js, path parameters are prefixed with `:`
@@ -140,34 +139,21 @@ export class Route {
     const pathParams = this._buildPathParams(match);
     debug(' -> found with params: %j', pathParams);
 
-    return this._createResolvedRoute(pathParams);
-  }
-
-  private _createResolvedRoute(pathParams: PathParameterValues): ResolvedRoute {
-    return this._handler ?
-      this._createResolvedHandlerRoute(pathParams) :
-      this._createResolvedControllerRoute(pathParams);
-  }
-
-  private _createResolvedHandlerRoute(
-    pathParams: PathParameterValues,
-  ): ResolvedHandlerRoute {
     return {
-      handler: this._handler!,
-      spec: this.spec,
+      route: this,
       pathParams: pathParams,
     };
   }
 
-  private _createResolvedControllerRoute(
-    pathParams: PathParameterValues,
-  ): ResolvedControllerRoute {
-    return {
-      controllerName: this._controllerName!,
-      methodName: this.spec['x-operation-name']!,
-      spec: this.spec,
-      pathParams: pathParams,
-    };
+  abstract updateBindings(requestContext: Context): void;
+
+  abstract invokeHandler(
+    requestContext: Context,
+    args: OperationArgs,
+  ): Promise<OperationRetval>;
+
+  describe(): string {
+    return `"${this.verb} ${this.path}"`;
   }
 
   private _buildPathParams(pathMatch: RegExpExecArray): PathParameterValues {
@@ -181,16 +167,66 @@ export class Route {
   }
 }
 
-export function isHandlerRoute(
-  route: ResolvedRoute,
-): route is ResolvedHandlerRoute {
-  return (route as ResolvedHandlerRoute).handler !== undefined;
+export class Route extends RouteEntry {
+  constructor(
+    verb: string,
+    path: string,
+    public readonly spec: OperationObject,
+    protected readonly _handler: Function,
+  ) {
+    super(verb, path, spec);
+  }
+
+  describe(): string {
+    return this._handler.name || super.describe();
+  }
+
+  updateBindings(requestContext: Context) {
+    // no-op
+  }
+
+  async invokeHandler(
+    requestContext: Context,
+    args: OperationArgs,
+  ): Promise<OperationRetval> {
+    return await this._handler(...args);
+  }
 }
 
-export function getRouteName(route: ResolvedRoute) {
-  return isHandlerRoute(route) ?
-    route.handler.name : // TODO(bajtos) return VERB+PATH when name is not set
-    `${route.controllerName}.${route.methodName}()`;
+export class ControllerRoute extends RouteEntry {
+  constructor(
+    verb: string,
+    path: string,
+    spec: OperationObject,
+    protected readonly _controllerName: string,
+  ) {
+    super(verb, path, spec);
+  }
+
+  describe(): string {
+    return `${this._controllerName}.${this.methodName}`;
+  }
+
+  updateBindings(requestContext: Context) {
+    const controllerName = this._controllerName;
+    const ctor = requestContext.getBinding(controllerName).valueConstructor;
+    if (!ctor)
+      throw new Error(
+        `The controller ${controllerName} was not bound via .toClass()`,
+      );
+    requestContext.bind('controller.current.ctor').to(ctor);
+    requestContext.bind('controller.current.operation').to(this.methodName);
+  }
+
+  async invokeHandler(
+    requestContext: Context,
+    args: OperationArgs,
+  ): Promise<OperationRetval> {
+    const controller: {[opName: string]: Function} = await requestContext.get(
+      this._controllerName,
+    );
+    return await controller[this.methodName!](...args);
+  }
 }
 
 function describeOperationParameters(opSpec: OperationObject) {
