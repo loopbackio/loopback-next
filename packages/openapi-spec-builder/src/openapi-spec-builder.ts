@@ -3,7 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import * as assert from 'assert';
 import {
+  ExtensionValue,
   OpenApiSpec,
   OperationObject,
   ResponseObject,
@@ -26,20 +28,52 @@ export function anOperationSpec() {
   return new OperationSpecBuilder();
 }
 
+export interface Extendable {
+  [extension: string]: ExtensionValue;
+}
+
+export class BuilderBase<T extends Extendable> {
+  protected _spec: T;
+
+  constructor(initialSpec: T) {
+    this._spec = initialSpec;
+  }
+
+  /**
+   * Add a custom (extension) property to the spec object.
+   *
+   * @param key The property name starting with "x-".
+   * @param value The property value.
+   */
+  withExtension(key: string, value: ExtensionValue): this {
+    assert(
+      key.startsWith('x-'),
+      `Invalid extension ${key}, extension keys must be prefixed with "x-"`);
+
+    this._spec[key] = value;
+    return this;
+  }
+
+  /**
+   * Build the spec object.
+   */
+  build(): T {
+    // TODO(bajtos): deep-clone
+    return this._spec;
+  }
+}
 /**
  * A builder for creating OpenApiSpec documents.
  */
-export class OpenApiSpecBuilder {
-  private _spec: OpenApiSpec;
-
+export class OpenApiSpecBuilder extends BuilderBase<OpenApiSpec> {
   /**
    * @param basePath The base path on which the API is served.
    */
   constructor(basePath: string = '/') {
-    this._spec = {
+    super({
       basePath,
       paths: {},
-    };
+    });
   }
 
   /**
@@ -77,23 +111,17 @@ export class OpenApiSpecBuilder {
         .withOperationName(operationName)
         .withStringResponse(200));
   }
-
-  /**
-   * Build the OpenApiSpec object.
-   */
-  build(): OpenApiSpec {
-    // TODO(bajtos): deep-clone
-    return this._spec;
-  }
 }
 
 /**
  * A builder for creating OperationObject specifications.
  */
-export class OperationSpecBuilder {
-  private _spec: OperationObject = {
-    responses: {},
-  };
+export class OperationSpecBuilder extends BuilderBase<OperationObject> {
+  constructor() {
+    super({
+      responses: {},
+    });
+  }
 
   /**
    * Describe a response for a given HTTP status code.
@@ -132,15 +160,6 @@ export class OperationSpecBuilder {
    * @param name The name of the controller method implementing this operation.
    */
   withOperationName(name: string): this {
-    this._spec['x-operation-name'] = name;
-    return this;
-  }
-
-  /**
-   * Build the OperationObject object.
-   */
-  build(): OperationObject {
-    // TODO(bajtos): deep-clone
-    return this._spec;
+    return this.withExtension('x-operation-name', name);
   }
 }
