@@ -10,6 +10,8 @@ import {
   InvokeMethod,
   ResolvedRoute,
   OperationRetval,
+  ControllerRoute,
+  Route,
 } from '../..';
 import {Context, Binding, BoundValue} from '@loopback/context';
 import {expect} from '@loopback/testlab';
@@ -49,23 +51,20 @@ describe('HttpHandler', () => {
 
         requestContext.bind('test-controller').toClass(HelloController);
         const fn: InvokeMethod = await requestContext.get('invokeMethod');
-        const route: ResolvedRoute = {
-          controllerName: 'test-controller',
-          methodName: 'hello',
-          spec: anOperationSpec().withStringResponse(200).build(),
-          pathParams: [],
-        };
+        const spec = anOperationSpec()
+          .withStringResponse(200)
+          .withOperationName('hello')
+          .build();
+        const route = new ControllerRoute('get', '/', spec, 'test-controller');
         const val: OperationRetval = await fn(route, []);
         expect(val).to.eql('hello');
       });
 
       it('invokes a route handler', async () => {
         const fn: InvokeMethod = await requestContext.get('invokeMethod');
-        const route: ResolvedRoute = {
-          handler: () => Promise.resolve('hello'),
-          spec: anOperationSpec().withStringResponse(200).build(),
-          pathParams: [],
-        };
+        const spec = anOperationSpec().withStringResponse(200).build();
+        function hello() { return 'hello'; }
+        const route = new Route('get', '/', spec, hello);
         const val: OperationRetval = await fn(route, []);
         expect(val).to.eql('hello');
       });

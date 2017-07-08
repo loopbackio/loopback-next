@@ -40,10 +40,11 @@ export {
 export {parseOperationArgs} from './parser';
 export {parseRequestUrl} from './router/routing-table';
 export {
+  ControllerRoute,
   RoutingTable,
   Route,
+  RouteEntry,
   ResolvedRoute,
-  isHandlerRoute,
 } from './router/routing-table';
 export {HttpHandler} from './http-handler';
 export {writeResultToResponse} from './writer';

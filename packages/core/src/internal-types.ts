@@ -5,7 +5,7 @@
 
 import {Binding, BoundValue, ValueOrPromise} from '@loopback/context';
 import {ServerRequest, ServerResponse} from 'http';
-import {ResolvedRoute} from './router/routing-table';
+import {ResolvedRoute, Route, RouteEntry} from './router/routing-table';
 
 export interface ParsedRequest extends ServerRequest {
   // see http://expressjs.com/en/4x/api.html#req.path
@@ -34,7 +34,7 @@ export type FindRoute = (request: ParsedRequest) => ResolvedRoute;
  * @returns OperationRetval Result from method invocation
  */
 export type InvokeMethod = (
-  route: ResolvedRoute,
+  route: RouteEntry,
   args: OperationArgs,
 ) => Promise<OperationRetval>;
 

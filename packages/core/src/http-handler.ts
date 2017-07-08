@@ -7,13 +7,11 @@ import {Binding, Context, ValueOrPromise, BoundValue} from '@loopback/context';
 import {OpenApiSpec} from '@loopback/openapi-spec';
 import {ServerRequest, ServerResponse} from 'http';
 import {getApiSpec} from './router/metadata';
-import * as HttpErrors from 'http-errors';
 
 import {SequenceHandler} from './sequence';
 import {
   RoutingTable,
   parseRequestUrl,
-  isHandlerRoute,
   ResolvedRoute,
   Route,
 } from './router/routing-table';
@@ -82,54 +80,18 @@ export class HttpHandler {
   }
 
   protected _bindFindRoute(context: Context): void {
-    context.bind('findRoute').toDynamicValue(() => {
-      return (request: ParsedRequest) => {
-        const req = context.getSync('http.request');
-        const found = this._routes.find(req);
-        if (!found)
-          throw new HttpErrors.NotFound(
-            `Endpoint "${req.method} ${req.path}" not found.`,
-          );
-
-        // bind routing information to context
-        if (!isHandlerRoute(found)) {
-          const controllerName = found.controllerName;
-          const ctor = context.getBinding(controllerName).valueConstructor;
-          if (!ctor)
-            throw new Error(
-              `The controller ${controllerName} was not bound via .toClass()`,
-            );
-          context.bind('controller.current.ctor').to(ctor);
-          context.bind('controller.current.operation').to(found.methodName);
-        }
-
-        return found;
-      };
-    });
+    const findRoute: FindRoute = (request) => {
+      const found = this._routes.find(request);
+      found.route.updateBindings(context);
+      return found;
+    };
+    context.bind('findRoute').to(findRoute);
   }
 
   protected _bindInvokeMethod(context: Context) {
-    context.bind('invokeMethod').toDynamicValue(() => {
-      return async (
-        route: ResolvedRoute,
-        args: OperationArgs,
-      ) => {
-        if (isHandlerRoute(route)) {
-          return await route.handler(...args);
-        }
-
-        if (!(route.controllerName && route.methodName)) {
-          throw new Error(
-            'Invalid route: either handler or controllerName + methodName' +
-              ' is required.');
-        }
-
-        const controller: {[opName: string]: Function} = await context.get(
-          route.controllerName,
-        );
-        const result = await controller[route.methodName](...args);
-        return result;
-      };
-    });
+    const invoke: InvokeMethod = async (route, args) => {
+      return await route.invokeHandler(context, args);
+    };
+    context.bind('invokeMethod').to(invoke);
   }
 }
