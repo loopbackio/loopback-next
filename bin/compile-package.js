@@ -32,7 +32,12 @@ const rootDir = path.resolve(__dirname, '..');
 const packageDir = path.relative(rootDir, process.cwd());
 
 const compilerOpts = process.argv.slice(2);
-const target = compilerOpts.shift();
+let target = compilerOpts.shift();
+
+if (!target) {
+  const nodeMajorVersion = +process.versions.node.split('.')[0];
+  target = nodeMajorVersion >= 7 ? 'es2017' : 'es2015';
+}
 
 let outDir;
 switch (target) {

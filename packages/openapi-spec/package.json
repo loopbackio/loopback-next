@@ -4,6 +4,7 @@
   "description": "TypeScript type definitions for OpenAPI Spec/Swagger documents.",
   "scripts": {
     "build": "npm run build:lib && npm run build:lib6",
+    "build:current": "node ../../bin/compile-package",
     "build:lib": "node ../../bin/compile-package es2017",
     "build:lib6": "node ../../bin/compile-package es2015",
     "clean": "rm -rf loopback-openapi-spec*.tgz lib* package",
