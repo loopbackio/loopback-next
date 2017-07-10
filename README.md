@@ -9,6 +9,12 @@ LoopBack makes it easy to build modern applications that require complex integra
 - Define your data and endpoints with OpenAPI
 - No maintenance of generated code
 
+# Status: ALPHA
+
+LoopBack Next is a work in progress, the public API is frequently changed in
+backwards-incompatible ways. See [Upcoming-Releases on wiki](https://github.com/strongloop/loopback-next/wiki/Upcoming-Releases)
+for more details.
+
 # Installation
 
 Make sure you have the following installed:
