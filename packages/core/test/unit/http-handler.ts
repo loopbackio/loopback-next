@@ -5,8 +5,8 @@
 
 import {
   HttpHandler,
-  bindElement,
-  getFromContext,
+  BindElement,
+  GetFromContext,
   InvokeMethod,
   ResolvedRoute,
   OperationRetval,
@@ -27,7 +27,7 @@ describe('HttpHandler', () => {
 
     describe('bindElement()', () => {
       it('returns a binding to a context', async () => {
-        const fn: bindElement = await requestContext.get('bindElement');
+        const fn: BindElement = await requestContext.get('bindElement');
         const binding: Binding = fn('foo').to('bar');
         expect(binding).to.be.instanceof(Binding);
       });
@@ -35,7 +35,7 @@ describe('HttpHandler', () => {
     describe('getFromContext()', () => {
       it('returns a value from the context', async () => {
         requestContext.bind('foo').to('bar');
-        const fn: getFromContext = await requestContext.get('getFromContext');
+        const fn: GetFromContext = await requestContext.get('getFromContext');
         const val: BoundValue = await fn('foo');
         expect(val).to.eql('bar');
       });

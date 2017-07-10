@@ -14,6 +14,6 @@ export class CustomerController {
   constructor(
     // Use constructor dependency injection
     @repository('Customer', 'mongodbDataSource')
-    private repository: EntityCrudRepository<Customer, string>,
+    private _repository: EntityCrudRepository<Customer, string>,
   ) {}
 }

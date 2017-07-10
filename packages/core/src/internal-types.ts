@@ -87,5 +87,5 @@ export type OperationArgs = any[];
 export type OperationRetval = any;
 // tslint:enable:no-any
 
-export type getFromContext = (key: string) => BoundValue;
-export type bindElement = (key: string) => Binding;
+export type GetFromContext = (key: string) => Promise<BoundValue>;
+export type BindElement = (key: string) => Binding;

@@ -17,8 +17,8 @@ import {
   OperationArgs,
   FindRoute,
   InvokeMethod,
-  getFromContext,
-  bindElement,
+  GetFromContext,
+  BindElement,
   HttpErrors,
   Send,
   Reject,
@@ -127,13 +127,13 @@ describe('Basic Authentication', () => {
     class MySequence implements SequenceHandler {
       constructor(
         @inject('findRoute') protected findRoute: FindRoute,
-        @inject('getFromContext') protected getFromContext: getFromContext,
+        @inject('getFromContext') protected getFromContext: GetFromContext,
         @inject('invokeMethod') protected invoke: InvokeMethod,
         @inject('sequence.actions.send') protected send: Send,
         @inject('sequence.actions.reject') protected reject: Reject,
-        @inject('bindElement') protected bindElement: bindElement,
+        @inject('bindElement') protected bindElement: BindElement,
         @inject('authentication.provider', {}, deferredResolver)
-        protected authenticate: AuthenticateFn,
+        protected authenticateRequest: AuthenticateFn,
       ) {}
 
       async handle(req: ParsedRequest, res: ServerResponse) {
@@ -141,7 +141,7 @@ describe('Basic Authentication', () => {
           const {route, pathParams} = this.findRoute(req);
 
           // Authenticate
-          const user: UserProfile = await this.authenticate(req);
+          const user: UserProfile = await this.authenticateRequest(req);
 
           // User is expected to be returned or an exception should be thrown
           if (user) this.bindElement('authentication.user').to(user);
@@ -204,9 +204,9 @@ class UserRepository {
     function search(key: string) {
       return userList[key].profile.id === username;
     }
-    const key = Object.keys(userList).find(search);
-    if (!key) return cb(null, false);
-    if (userList[key].password !== password) return cb(null, false);
-    cb(null, userList[key].profile);
+    const found = Object.keys(userList).find(search);
+    if (!found) return cb(null, false);
+    if (userList[found].password !== password) return cb(null, false);
+    cb(null, userList[found].profile);
   }
 }
