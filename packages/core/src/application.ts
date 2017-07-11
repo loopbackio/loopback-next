@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import * as assert from 'assert';
 import {
   Binding,
   Context,
@@ -10,11 +11,7 @@ import {
   Provider,
   inject,
 } from '@loopback/context';
-import {
-  OpenApiSpec,
-  Route,
-  ParsedRequest,
-} from '.';
+import {OpenApiSpec, Route, ParsedRequest, OperationObject} from '.';
 import {ServerRequest, ServerResponse} from 'http';
 import {Component, mountComponent} from './component';
 import {getApiSpec} from './router/metadata';
@@ -137,6 +134,21 @@ export class Application extends Context {
    */
   route(route: Route): Binding {
     return this.bind(`routes.${route.verb} ${route.path}`).to(route);
+  }
+
+  api(spec: OpenApiSpec) {
+    for (const path in spec.paths) {
+      for (const verb in spec.paths[path]) {
+        const routeSpec: OperationObject = spec.paths[path][verb];
+        const handler = routeSpec['x-operation'];
+        assert(
+          typeof handler === 'function',
+          `"x-operation" field of "${verb} ${path}" must be a function`);
+
+        const route = new Route(verb, path, routeSpec, handler);
+        this.route(route);
+      }
+    }
   }
 
   protected _logError(
