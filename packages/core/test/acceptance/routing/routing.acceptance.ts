@@ -5,7 +5,6 @@
 
 import {
   Application,
-  Server,
   api,
   OpenApiSpec,
   ParameterObject,
@@ -15,11 +14,8 @@ import {
   ResponseObject,
   Route,
 } from '../../..';
-import {expect, Client, createClientForServer} from '@loopback/testlab';
-import {
-  anOpenApiSpec,
-  anOperationSpec,
-} from '@loopback/openapi-spec-builder';
+import {expect, Client, createClientForApp} from '@loopback/testlab';
+import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 import {inject, Constructor, Context} from '@loopback/context';
 
 /* # Feature: Routing
@@ -36,7 +32,7 @@ describe('Routing', () => {
    * - When I make a request to the `Application` with `?msg=hello%20world`
    * - Then I get the result `hello world` from the `Method`
    */
-  it('supports basic usage', async () => {
+  it('supports basic usage', () => {
     const app = givenAnApplication();
 
     const spec = anOpenApiSpec()
@@ -58,11 +54,9 @@ describe('Routing', () => {
     }
     givenControllerInApp(app, EchoController);
 
-    return whenIMakeRequestTo(app).then(client => {
-      return client.get('/echo?msg=hello%20world')
+    return whenIMakeRequestTo(app).get('/echo?msg=hello%20world')
       // Then I get the result `hello world` from the `Method`
       .expect('hello world');
-    });
   });
 
   it('injects controller constructor arguments', () => {
@@ -85,10 +79,7 @@ describe('Routing', () => {
     }
     givenControllerInApp(app, InfoController);
 
-    return whenIMakeRequestTo(app).then(client => {
-      return client.get('/name')
-      .expect('TestApp');
-    });
+    return whenIMakeRequestTo(app).get('/name').expect('TestApp');
   });
 
   it('creates a new child context for each request', async () => {
@@ -121,16 +112,11 @@ describe('Routing', () => {
     // Rebind "flag" to "modified". Since we are modifying
     // the per-request child context, the change should
     // be discarded after the request is done.
-    await whenIMakeRequestTo(app).then(client => {
-      return client.put('/flag');
+    await whenIMakeRequestTo(app).put('/flag');
+
     // Get the value "flag" is bound to.
     // This should return the original value.
-
-    });
-    await whenIMakeRequestTo(app).then(client => {
-      return client.get('/flag')
-      .expect('original');
-    });
+    await whenIMakeRequestTo(app).get('/flag').expect('original');
   });
 
   it('binds request and response objects', () => {
@@ -154,10 +140,7 @@ describe('Routing', () => {
     }
     givenControllerInApp(app, StatusController);
 
-    return whenIMakeRequestTo(app).then(client => {
-      return client.get('/status')
-      .expect(202, 'GET');
-    });
+    return whenIMakeRequestTo(app).get('/status').expect(202, 'GET');
   });
 
   it('binds controller constructor object and operation', () => {
@@ -185,13 +168,9 @@ describe('Routing', () => {
     }
     givenControllerInApp(app, GetCurrentController);
 
-    return whenIMakeRequestTo(app).then(client => {
-      return client.get('/name')
-      .expect({
-        ctor: 'GetCurrentController',
-        operation: 'getControllerName',
-      });
-
+    return whenIMakeRequestTo(app).get('/name').expect({
+      ctor: 'GetCurrentController',
+      operation: 'getControllerName',
     });
   });
 
@@ -217,7 +196,7 @@ describe('Routing', () => {
     const route = new Route('get', '/greet', routeSpec, greet);
     app.route(route);
 
-    const client = await whenIMakeRequestTo(app);
+    const client = whenIMakeRequestTo(app);
     await client.get('/greet?name=world').expect(200, 'hello world');
   });
 
@@ -229,14 +208,18 @@ describe('Routing', () => {
     }
 
     const spec = anOpenApiSpec()
-      .withOperation('get', '/greet', anOperationSpec()
-        .withParameter({name: 'name', in: 'query', type: 'string'})
-        .withExtension('x-operation', greet))
+      .withOperation(
+        'get',
+        '/greet',
+        anOperationSpec()
+          .withParameter({name: 'name', in: 'query', type: 'string'})
+          .withExtension('x-operation', greet),
+      )
       .build();
 
     app.api(spec);
 
-    const client = await whenIMakeRequestTo(app);
+    const client = whenIMakeRequestTo(app);
     await client.get('/greet?name=world').expect(200, 'hello world');
   });
 
@@ -267,9 +250,7 @@ describe('Routing', () => {
     app.controller(controller);
   }
 
-  function whenIMakeRequestTo(app: Application): Promise<Client> {
-    const server = new Server(app, {port: 0});
-    const result = createClientForServer(server);
-    return result;
+  function whenIMakeRequestTo(app: Application): Client {
+    return createClientForApp(app);
   }
 });

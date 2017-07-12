@@ -37,3 +37,11 @@ export async function createClientForServer(server: Server): Promise<Client> {
   // TODO(bajtos) Find a way how to stop the server after all tests are done
   return supertest(url);
 }
+
+export interface Application {
+  handleHttp(req: http.ServerRequest, res: http.ServerResponse): void;
+}
+
+export function createClientForApp(app: Application): Client {
+  return createClientForHandler(app.handleHttp);
+}

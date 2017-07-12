@@ -12,7 +12,7 @@ import {
   inject,
 } from '@loopback/context';
 import {OpenApiSpec, Route, ParsedRequest, OperationObject} from '.';
-import {ServerRequest, ServerResponse} from 'http';
+import {ServerRequest, ServerResponse, createServer} from 'http';
 import {Component, mountComponent} from './component';
 import {getApiSpec} from './router/metadata';
 import {HttpHandler} from './http-handler';
@@ -41,7 +41,7 @@ export class Application extends Context {
    * @param req The request.
    * @param res The response.
    */
-  public handleHttp: (req: ServerRequest, res: ServerResponse) => Promise<void>;
+  public handleHttp: (req: ServerRequest, res: ServerResponse) => void;
 
   protected _httpHandler: HttpHandler;
 
@@ -49,6 +49,8 @@ export class Application extends Context {
     super();
 
     if (!options) options = {};
+
+    this.bind('http.port').to(options.http ? options.http.port : 3000);
 
     if (options.components) {
       for (const component of options.components) {
@@ -58,8 +60,14 @@ export class Application extends Context {
 
     this.sequence(options.sequence ? options.sequence : DefaultSequence);
 
-    this.handleHttp = (req: ServerRequest, res: ServerResponse) =>
-      this._handleHttpRequest(req, res);
+    this.handleHttp = (req: ServerRequest, res: ServerResponse) => {
+      try {
+        this._handleHttpRequest(req, res)
+          .catch(err => this._onUnhandledError(req, res, err));
+      } catch (err) {
+        this._onUnhandledError(req, res, err);
+      }
+    };
 
     this.bind('logError').to(this._logError.bind(this));
     this.bind('sequence.actions.send').to(writeResultToResponse);
@@ -246,9 +254,51 @@ export class Application extends Context {
 
     this.sequence(SequenceFromFunction);
   }
+
+  /**
+   * Start the application (e.g. HTTP/HTTPS servers).
+   */
+  async start(): Promise<void> {
+    const httpPort = await this.get('http.port');
+    const server = createServer(this.handleHttp);
+
+    // TODO(bajtos) support httpHostname too
+    server.listen(httpPort);
+
+    return new Promise<void>((resolve, reject) => {
+      server.once('listening', () => {
+        this.bind('http.port').to(server.address().port);
+        resolve();
+      });
+      server.once('error', reject);
+    });
+  }
+
+  protected _onUnhandledError(
+    req: ServerRequest,
+    res: ServerResponse,
+    err: Error,
+  ) {
+    if (!res.headersSent) {
+      res.statusCode = 500;
+      res.end();
+    }
+
+    // It's the responsibility of the Sequence to handle any errors.
+    // If an unhandled error escaped, then something very wrong happened
+    // and it's best to crash the process immediately.
+    process.nextTick(() => {
+      throw err;
+    });
+  }
 }
 
 export interface ApplicationOptions {
+  http?: HttpConfig;
   components?: Array<Constructor<Component>>;
   sequence?: Constructor<SequenceHandler>;
+}
+
+export interface HttpConfig {
+  port: number;
 }

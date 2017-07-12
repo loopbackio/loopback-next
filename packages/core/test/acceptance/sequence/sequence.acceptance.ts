@@ -5,7 +5,6 @@
 
 import {
   Application,
-  Server,
   api,
   OpenApiSpec,
   ParameterObject,
@@ -20,7 +19,7 @@ import {
   Reject,
   SequenceHandler,
 } from '../../..';
-import {expect, Client, createClientForServer} from '@loopback/testlab';
+import {expect, Client, createClientForApp} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {inject, Constructor, Context} from '@loopback/context';
 
@@ -34,19 +33,17 @@ describe('Sequence', () => {
   beforeEach(givenAppWithController);
 
   it('provides a default sequence', async () => {
-    const client = await whenIMakeRequestTo(app);
-    await client.get('/name').expect('SequenceApp');
+    whenIMakeRequestTo(app).get('/name').expect('SequenceApp');
   });
 
-  it('allows users to define a custom sequence as a function', async () => {
+  it('allows users to define a custom sequence as a function', () => {
     app.handler((sequence, request, response) => {
       sequence.send(response, 'hello world');
     });
-    const client = await whenIMakeRequestTo(app);
-    await client.get('/').expect('hello world');
+    return whenIMakeRequestTo(app).get('/').expect('hello world');
   });
 
-  it('allows users to define a custom sequence as a class', async () => {
+  it('allows users to define a custom sequence as a class', () => {
     class MySequence implements SequenceHandler {
       constructor(@inject('sequence.actions.send') private send: Send) {}
 
@@ -57,11 +54,10 @@ describe('Sequence', () => {
     // bind user defined sequence
     app.sequence(MySequence);
 
-    const client = await whenIMakeRequestTo(app);
-    await client.get('/').expect('hello world');
+    whenIMakeRequestTo(app).get('/').expect('hello world');
   });
 
-  it('allows users to bind a custom sequence class', async () => {
+  it('allows users to bind a custom sequence class', () => {
     class MySequence {
       constructor(
         @inject('findRoute') protected findRoute: FindRoute,
@@ -79,30 +75,31 @@ describe('Sequence', () => {
 
     app.sequence(MySequence);
 
-    const client = await whenIMakeRequestTo(app);
-    await client.get('/name').expect('MySequence SequenceApp');
+    return whenIMakeRequestTo(app)
+      .get('/name')
+      .expect('MySequence SequenceApp');
   });
 
-  it('user-defined Send', async () => {
+  it('user-defined Send', () => {
     const send: Send = (response, result) => {
       response.setHeader('content-type', 'text/plain');
       response.end(`CUSTOM FORMAT: ${result}`);
     };
     app.bind('sequence.actions.send').to(send);
 
-    const client = await whenIMakeRequestTo(app);
-    await client.get('/name').expect('CUSTOM FORMAT: SequenceApp');
+    return whenIMakeRequestTo(app)
+      .get('/name')
+      .expect('CUSTOM FORMAT: SequenceApp');
   });
 
-  it('user-defined Reject', async () => {
+  it('user-defined Reject', () => {
     const reject: Reject = (response, request, error) => {
       response.statusCode = 418; // I'm a teapot
       response.end();
     };
     app.bind('sequence.actions.reject').to(reject);
 
-    const client = await whenIMakeRequestTo(app);
-    await client.get('/unknown-url').expect(418);
+    return whenIMakeRequestTo(app).get('/unknown-url').expect(418);
   });
 
   function givenAppWithController() {
@@ -140,8 +137,7 @@ describe('Sequence', () => {
     app.controller(controller);
   }
 
-  function whenIMakeRequestTo(application: Application): Promise<Client> {
-    const server = new Server(application, {port: 0});
-    return createClientForServer(server);
+  function whenIMakeRequestTo(application: Application): Client {
+    return createClientForApp(app);
   }
 });

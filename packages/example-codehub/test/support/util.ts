@@ -13,7 +13,7 @@ export async function createClientForApp(app: CodeHubApplication) {
 
 export function createApp() {
   const app = new CodeHubApplication();
-  app.bind('servers.http.port').to(0);
+  app.bind('http.port').to(0);
   return app;
 }
 
