@@ -86,6 +86,7 @@ export class Application extends Context {
     // TODO(bajtos) support hot-reloading of controllers
     // after the app started. The idea is to rebuild the HttpHandler
     // instance whenever a controller was added/deleted.
+    // See https://github.com/strongloop/loopback-next/issues/433
     if (this._httpHandler) return;
 
     this._httpHandler = new HttpHandler(this);
@@ -263,6 +264,7 @@ export class Application extends Context {
     const server = createServer(this.handleHttp);
 
     // TODO(bajtos) support httpHostname too
+    // See https://github.com/strongloop/loopback-next/issues/434
     server.listen(httpPort);
 
     return new Promise<void>((resolve, reject) => {
