@@ -44,6 +44,7 @@ export {
   Route,
   RouteEntry,
   ResolvedRoute,
+  createResolvedRoute,
 } from './router/routing-table';
 export {HttpHandler} from './http-handler';
 export {writeResultToResponse} from './writer';
