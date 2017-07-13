@@ -29,10 +29,11 @@ describe('RoutingTable', () => {
       url: '/hello',
     });
 
-    const {route, pathParams} = table.find(request);
+    const route = table.find(request);
 
     expect(route).to.be.instanceOf(ControllerRoute);
     expect(route).to.have.property('spec', spec.paths['/hello'].get);
+    expect(route).to.have.property('pathParams');
     expect(route.describe()).to.equal('TestController.greet');
   });
 

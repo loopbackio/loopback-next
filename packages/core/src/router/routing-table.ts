@@ -99,12 +99,28 @@ export class RoutingTable {
   }
 }
 
-export interface ResolvedRoute {
-  readonly route: RouteEntry;
+export interface RouteEntry {
+  readonly verb: string;
+  readonly methodName: string | undefined;
+  readonly path: string;
+  readonly spec: OperationObject;
+
+  match(request: ParsedRequest): ResolvedRoute | undefined;
+
+  updateBindings(requestContext: Context): void;
+  invokeHandler(
+    requestContext: Context,
+    args: OperationArgs,
+  ): Promise<OperationRetval>;
+
+  describe(): string;
+}
+
+export interface ResolvedRoute extends RouteEntry {
   readonly pathParams: PathParameterValues;
 }
 
-export abstract class RouteEntry {
+export abstract class BaseRoute implements RouteEntry {
   public readonly verb: string;
   private readonly _pathRegexp: pathToRegexp.PathRegExp;
 
@@ -141,10 +157,7 @@ export abstract class RouteEntry {
     const pathParams = this._buildPathParams(match);
     debug(' -> found with params: %j', pathParams);
 
-    return {
-      route: this,
-      pathParams: pathParams,
-    };
+    return createResolvedRoute(this, pathParams);
   }
 
   abstract updateBindings(requestContext: Context): void;
@@ -169,7 +182,19 @@ export abstract class RouteEntry {
   }
 }
 
-export class Route extends RouteEntry {
+export function createResolvedRoute(
+  route: RouteEntry,
+  pathParams: PathParameterValues,
+): ResolvedRoute {
+  return Object.create(route, {
+    pathParams: {
+      writable: false,
+      value: pathParams,
+    },
+  });
+}
+
+export class Route extends BaseRoute {
   constructor(
     verb: string,
     path: string,
@@ -195,7 +220,7 @@ export class Route extends RouteEntry {
   }
 }
 
-export class ControllerRoute extends RouteEntry {
+export class ControllerRoute extends BaseRoute {
   constructor(
     verb: string,
     path: string,

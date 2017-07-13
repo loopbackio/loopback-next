@@ -66,8 +66,8 @@ describe('Sequence', () => {
       ) {}
 
       async handle(req: ParsedRequest, res: ServerResponse) {
-        const {route, pathParams} = this.findRoute(req);
-        const args = await parseOperationArgs(req, route, pathParams);
+        const route = this.findRoute(req);
+        const args = await parseOperationArgs(req, route);
         const result = await this.invoke(route, args);
         this.send(res, `MySequence ${result}`);
       }

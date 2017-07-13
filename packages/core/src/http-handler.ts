@@ -82,7 +82,7 @@ export class HttpHandler {
   protected _bindFindRoute(context: Context): void {
     const findRoute: FindRoute = (request) => {
       const found = this._routes.find(request);
-      found.route.updateBindings(context);
+      found.updateBindings(context);
       return found;
     };
     context.bind('findRoute').to(findRoute);
