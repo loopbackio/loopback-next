@@ -106,6 +106,7 @@ function buildOperationArguments(
   for (const paramSpec of operationSpec.parameters || []) {
     if ('$ref' in paramSpec) {
       // TODO(bajtos) implement $ref parameters
+      // See https://github.com/strongloop/loopback-next/issues/435
       throw new Error('$ref parameters are not supported yet.');
     }
     const spec = paramSpec as ParameterObject;

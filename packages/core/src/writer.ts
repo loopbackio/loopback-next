@@ -21,6 +21,7 @@ export function writeResultToResponse(
   if (result) {
     if (typeof result === 'object') {
       // TODO(ritch) remove this, should be configurable
+      // See https://github.com/strongloop/loopback-next/issues/436
       response.setHeader('Content-Type', 'application/json');
       // TODO(bajtos) handle errors - JSON.stringify can throw
       result = JSON.stringify(result);
