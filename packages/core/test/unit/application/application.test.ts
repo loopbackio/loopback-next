@@ -35,4 +35,16 @@ describe('Application', () => {
       expect(lastLog).to.equal('/ 400 test-error');
     });
   });
+
+  describe('configuration', () => {
+    it('uses http port 3000 by default', () => {
+      const app = new Application();
+      expect(app.getSync('http.port')).to.equal(3000);
+    });
+
+    it('can set port 0', () => {
+      const app = new Application({http: {port: 0}});
+      expect(app.getSync('http.port')).to.equal(0);
+    });
+  });
 });

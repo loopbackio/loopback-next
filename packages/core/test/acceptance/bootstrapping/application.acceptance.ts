@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect, supertest} from '@loopback/testlab';
 import {Constructor, Provider, inject} from '@loopback/context';
 import {Application, DefaultSequence} from '../../..';
 
@@ -109,5 +109,21 @@ describe('Bootstrapping the application', () => {
 
       expect(app.getSync('greeting')).to.equal('Hi!');
     });
+  });
+});
+
+describe('Starting the application', () => {
+  it('starts an HTTP server', async () => {
+    const app = new Application({http: {port: 0}});
+    app.handler((sequence, request, response) => {
+      sequence.send(response, 'hello world');
+    });
+
+    await app.start();
+    const port = app.getSync('http.port');
+
+    return supertest(`http://localhost:${port}`)
+      .get('/')
+      .expect(200, 'hello world');
   });
 });

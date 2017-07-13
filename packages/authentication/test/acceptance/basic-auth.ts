@@ -5,7 +5,6 @@
 
 import {
   Application,
-  Server,
   api,
   OpenApiSpec,
   ParameterObject,
@@ -24,7 +23,7 @@ import {
   Reject,
   SequenceHandler,
 } from '@loopback/core';
-import {expect, Client, createClientForServer} from '@loopback/testlab';
+import {expect, Client, createClientForApp} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {inject,
   Provider,
@@ -57,7 +56,7 @@ describe('Basic Authentication', () => {
   beforeEach(givenProviders);
 
   it ('authenticates successfully for correct credentials', async () => {
-    const client = await whenIMakeRequestTo(app);
+    const client = whenIMakeRequestTo(app);
     const credential =
       users.list.joe.profile.id + ':' + users.list.joe.password;
     const hash = new Buffer(credential).toString('base64');
@@ -67,7 +66,7 @@ describe('Basic Authentication', () => {
   });
 
   it('returns error for invalid credentials', async () => {
-    const client = await whenIMakeRequestTo(app);
+    const client = whenIMakeRequestTo(app);
     const credential = users.list.Simpson.profile.id + ':' + 'invalid';
     const hash = new Buffer(credential).toString('base64');
     await client.get('/whoAmI')
@@ -189,9 +188,8 @@ describe('Basic Authentication', () => {
       .toProvider(AuthenticationProvider);
   }
 
-  function whenIMakeRequestTo(application: Application): Promise<Client> {
-    const server = new Server(application, {port: 0});
-    return createClientForServer(server);
+  function whenIMakeRequestTo(application: Application): Client {
+    return createClientForApp(app);
   }
 });
 

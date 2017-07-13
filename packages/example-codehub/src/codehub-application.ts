@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, Server} from '@loopback/core';
+import {Application} from '@loopback/core';
 import {UserController, HealthController} from './controllers';
 
 export class CodeHubApplication extends Application {
@@ -25,20 +25,18 @@ export class CodeHubApplication extends Application {
 
   private _startTime: Date;
 
-  async start() {
+  async start(): Promise<void> {
     this._startTime = new Date();
-    const httpPort = await this.get('servers.http.port');
-    const server = new Server(this, {port: httpPort});
-    this.bind('servers.http.server').to(server);
-    return server.start();
+    return super.start();
   }
 
   async info() {
-    const server = (await this.get('servers.http.server')) as Server;
-    const port = server.config.port;
+    const port: Number = await this.get('http.port');
 
     return {
       uptime: Date.now() - this._startTime.getTime(),
+      // TODO(bajtos) move this code to Application, the URL should
+      // be accessible via this.get('http.url')
       url: 'http://127.0.0.1:' + port,
     };
   }
