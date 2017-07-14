@@ -200,7 +200,7 @@ describe('Routing', () => {
     await client.get('/greet?name=world').expect(200, 'hello world');
   });
 
-  it('supports routes declared via API specification', async () => {
+  it('supports handler routes declared via API specification', async () => {
     const app = givenAnApplication();
 
     function greet(name: string) {
@@ -235,6 +235,33 @@ describe('Routing', () => {
     const spec = anOpenApiSpec().build();
     spec.paths = {'/greet': {}};
     app.api(spec);
+  });
+
+  it('supports controller routes declared via API spec', async () => {
+    const app = givenAnApplication();
+
+    class MyController {
+      greet(name: string) {
+        return `hello ${name}`;
+      }
+    }
+
+    const spec = anOpenApiSpec()
+      .withOperation(
+        'get',
+        '/greet',
+        anOperationSpec()
+          .withParameter({name: 'name', in: 'query', type: 'string'})
+          .withExtension('x-operation-name', 'greet')
+          .withExtension('x-controller', 'MyController'),
+      )
+      .build();
+
+    app.api(spec);
+    app.controller(MyController);
+
+    const client = whenIMakeRequestTo(app);
+    await client.get('/greet?name=world').expect(200, 'hello world');
   });
 
   /* ===== HELPERS ===== */

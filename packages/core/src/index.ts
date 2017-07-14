@@ -39,10 +39,10 @@ export {
 export {parseOperationArgs} from './parser';
 export {parseRequestUrl} from './router/routing-table';
 export {
-  ControllerRoute,
+  RouteEntry,
   RoutingTable,
   Route,
-  RouteEntry,
+  ControllerRoute,
   ResolvedRoute,
   createResolvedRoute,
 } from './router/routing-table';

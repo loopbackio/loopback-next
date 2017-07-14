@@ -49,7 +49,8 @@ describe('HttpHandler', () => {
           }
         }
 
-        requestContext.bind('test-controller').toClass(HelloController);
+        requestContext.bind('controllers.test-controller')
+          .toClass(HelloController);
         const fn: InvokeMethod = await requestContext.get('invokeMethod');
         const spec = anOperationSpec()
           .withStringResponse(200)
