@@ -296,6 +296,10 @@ export class Application extends Context {
    * Start the application (e.g. HTTP/HTTPS servers).
    */
   async start(): Promise<void> {
+    // Setup the HTTP handler so that we can verify the configuration
+    // of API spec, controllers and routes at startup time.
+    this._setupHandlerIfNeeded();
+
     const httpPort = await this.get('http.port');
     const server = createServer(this.handleHttp);
 

@@ -264,6 +264,40 @@ describe('Routing', () => {
     await client.get('/greet?name=world').expect(200, 'hello world');
   });
 
+  it('reports operations bound to unknown controller', () => {
+    const app = givenAnApplication();
+    const spec = anOpenApiSpec()
+      .withOperation(
+        'get',
+        '/greet',
+        anOperationSpec()
+          .withOperationName('greet')
+          .withExtension('x-controller', 'UnknownController'),
+      )
+      .build();
+
+    app.api(spec);
+
+    return app.start().then(
+      ok => { throw new Error('app.start() should have failed'); },
+      err => expect(err.message).to.match(/UnknownController/),
+    );
+  });
+
+  it('reports operations with no handler', () => {
+    const app = givenAnApplication();
+    const spec = anOpenApiSpec()
+      .withOperationReturningString('get', '/greet')
+      .build();
+
+    app.api(spec);
+
+    return app.start().then(
+      ok => { throw new Error('app.start() should have failed'); },
+      err => expect(err.message).to.match(/no handler/),
+    );
+  });
+
   /* ===== HELPERS ===== */
 
   function givenAnApplication() {

@@ -105,11 +105,13 @@ export class OpenApiSpecBuilder extends BuilderBase<OpenApiSpec> {
   withOperationReturningString(
     verb: string,
     path: string,
-    operationName: string,
+    operationName?: string,
   ): this {
-    return this.withOperation(verb, path, anOperationSpec()
-        .withOperationName(operationName)
-        .withStringResponse(200));
+    const spec = anOperationSpec().withStringResponse(200);
+    if (operationName)
+        spec.withOperationName(operationName);
+
+    return this.withOperation(verb, path, spec);
   }
 }
 
