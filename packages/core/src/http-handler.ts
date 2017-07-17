@@ -13,7 +13,7 @@ import {
   RoutingTable,
   parseRequestUrl,
   ResolvedRoute,
-  Route,
+  RouteEntry,
 } from './router/routing-table';
 import {
   FindRoute,
@@ -40,7 +40,7 @@ export class HttpHandler {
     this._routes.registerController(name, spec);
   }
 
-  registerRoute(route: Route) {
+  registerRoute(route: RouteEntry) {
     this._routes.registerRoute(route);
   }
 

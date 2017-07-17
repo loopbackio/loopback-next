@@ -11,7 +11,13 @@ import {
   Provider,
   inject,
 } from '@loopback/context';
-import {OpenApiSpec, Route, ParsedRequest, OperationObject} from '.';
+import {
+  OpenApiSpec,
+  Route,
+  ParsedRequest,
+  OperationObject,
+  ControllerRoute,
+} from '.';
 import {ServerRequest, ServerResponse, createServer} from 'http';
 import {Component, mountComponent} from './component';
 import {getApiSpec} from './router/metadata';
@@ -51,6 +57,7 @@ export class Application extends Context {
     if (!options) options = {};
 
     this.bind('http.port').to(options.http ? options.http.port : 3000);
+    this.api({basePath: '/', paths: {}});
 
     if (options.components) {
       for (const component of options.components) {
@@ -91,12 +98,18 @@ export class Application extends Context {
 
     this._httpHandler = new HttpHandler(this);
     for (const b of this.find('controllers.*')) {
+      const controllerName = b.key.replace(/^controllers\./, '');
       const ctor = b.valueConstructor;
       if (!ctor) {
-        throw new Error(`The controller ${b.key} was not bound via .toClass()`);
+        throw new Error(
+          `The controller ${controllerName} was not bound via .toClass()`);
       }
       const apiSpec = getApiSpec(ctor);
-      this._httpHandler.registerController(b.key, apiSpec);
+      if (!apiSpec) {
+        // controller methods are specified through app.api() spec
+        continue;
+      }
+      this._httpHandler.registerController(controllerName, apiSpec);
     }
 
     for (const b of this.find('routes.*')) {
@@ -104,6 +117,40 @@ export class Application extends Context {
       const route = this.getSync(b.key);
       this._httpHandler.registerRoute(route);
     }
+
+    // TODO(bajtos) should we support API spec defined asynchronously?
+    const spec: OpenApiSpec = this.getSync('api-spec');
+    for (const path in spec.paths) {
+      for (const verb in spec.paths[path]) {
+        const routeSpec: OperationObject = spec.paths[path][verb];
+        this._setupOperation(verb, path, routeSpec);
+      }
+    }
+  }
+
+  private _setupOperation(verb: string, path: string, spec: OperationObject) {
+    const handler = spec['x-operation'];
+    if (typeof handler === 'function') {
+      const route = new Route(verb, path, spec, handler);
+      this._httpHandler.registerRoute(route);
+      return;
+    }
+
+    const controllerName = spec['x-controller'];
+    if (typeof controllerName === 'string') {
+      const b = this.find(`controllers.${controllerName}`)[0];
+      if (!b) {
+        throw new Error(
+          `Unknown controller ${controllerName} used by "${verb} ${path}"`);
+      }
+
+      const route = new ControllerRoute(verb, path, spec, controllerName);
+      this._httpHandler.registerRoute(route);
+      return;
+    }
+
+    throw new Error(
+      `There is no handler configured for operation "${verb} ${path}`);
   }
 
   /**
@@ -145,19 +192,8 @@ export class Application extends Context {
     return this.bind(`routes.${route.verb} ${route.path}`).to(route);
   }
 
-  api(spec: OpenApiSpec) {
-    for (const path in spec.paths) {
-      for (const verb in spec.paths[path]) {
-        const routeSpec: OperationObject = spec.paths[path][verb];
-        const handler = routeSpec['x-operation'];
-        assert(
-          typeof handler === 'function',
-          `"x-operation" field of "${verb} ${path}" must be a function`);
-
-        const route = new Route(verb, path, routeSpec, handler);
-        this.route(route);
-      }
-    }
+  api(spec: OpenApiSpec): Binding {
+    return this.bind('api-spec').to(spec);
   }
 
   protected _logError(
@@ -260,6 +296,10 @@ export class Application extends Context {
    * Start the application (e.g. HTTP/HTTPS servers).
    */
   async start(): Promise<void> {
+    // Setup the HTTP handler so that we can verify the configuration
+    // of API spec, controllers and routes at startup time.
+    this._setupHandlerIfNeeded();
+
     const httpPort = await this.get('http.port');
     const server = createServer(this.handleHttp);
 

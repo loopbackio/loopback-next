@@ -64,26 +64,22 @@ export class RoutingTable {
     for (const path in spec.paths) {
       for (const verb in spec.paths[path]) {
         const opSpec: OperationObject = spec.paths[path][verb];
-        // TODO(bajtos) handle the case where opSpec.parameters contains $ref
-        // See https://github.com/strongloop/loopback-next/issues/435
-        debug(
-          '  %s %s -> %s(%s)',
-          verb,
-          path,
-          opSpec['x-operation-name'],
-          describeOperationParameters(opSpec),
-        );
-        this._routes.push(new ControllerRoute(verb, path, opSpec, controller));
+        const route = new ControllerRoute(verb, path, opSpec, controller);
+        this.registerRoute(route);
       }
     }
   }
 
-  registerRoute(route: Route) {
+  registerRoute(route: RouteEntry) {
+    // TODO(bajtos) handle the case where opSpec.parameters contains $ref
+    // See https://github.com/strongloop/loopback-next/issues/435
     debug(
-      'Registering route %s %s with args',
-       route.verb,
-       route.path,
-       describeOperationParameters(route.spec));
+      'Registering route %s %s -> %s(%s)',
+      route.verb,
+      route.path,
+      route.describe(),
+      describeOperationParameters(route.spec),
+    );
     this._routes.push(route);
   }
 
@@ -230,16 +226,20 @@ export class ControllerRoute extends BaseRoute {
     super(verb, path, spec);
   }
 
+  private get _controllerBindingKey() {
+    return `controllers.${this._controllerName}`;
+  }
+
   describe(): string {
     return `${this._controllerName}.${this.methodName}`;
   }
 
   updateBindings(requestContext: Context) {
-    const controllerName = this._controllerName;
-    const ctor = requestContext.getBinding(controllerName).valueConstructor;
+    const b = requestContext.getBinding(this._controllerBindingKey);
+    const ctor = b.valueConstructor;
     if (!ctor)
       throw new Error(
-        `The controller ${controllerName} was not bound via .toClass()`,
+        `The controller ${this._controllerName} was not bound via .toClass()`,
       );
     requestContext.bind('controller.current.ctor').to(ctor);
     requestContext.bind('controller.current.operation').to(this.methodName);
@@ -250,7 +250,7 @@ export class ControllerRoute extends BaseRoute {
     args: OperationArgs,
   ): Promise<OperationRetval> {
     const controller: {[opName: string]: Function} = await requestContext.get(
-      this._controllerName,
+      this._controllerBindingKey,
     );
     return await controller[this.methodName!](...args);
   }
