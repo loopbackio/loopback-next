@@ -8,7 +8,7 @@ import {
   OperationObject,
   ParameterObject,
 } from '@loopback/openapi-spec';
-import {Context} from '@loopback/context';
+import {Context, Constructor, instantiateClass} from '@loopback/context';
 import {ServerRequest} from 'http';
 import * as HttpErrors from 'http-errors';
 
@@ -216,43 +216,66 @@ export class Route extends BaseRoute {
   }
 }
 
+type Controller = {[opName: string]: Function};
+
 export class ControllerRoute extends BaseRoute {
   constructor(
     verb: string,
     path: string,
     spec: OperationObject,
-    protected readonly _controllerName: string,
+    protected readonly _controller: string | Constructor<Object>,
   ) {
     super(verb, path, spec);
   }
 
   private get _controllerBindingKey() {
-    return `controllers.${this._controllerName}`;
+    assert(
+      typeof this._controller === 'string',
+      'Cannot access binding key of a controller that is not context bound',
+    );
+    return `controllers.${this._controller}`;
   }
 
   describe(): string {
-    return `${this._controllerName}.${this.methodName}`;
+    return `${this._controller}.${this.methodName}`;
   }
 
   updateBindings(requestContext: Context) {
+    const ctor = this._getControllerCtor(requestContext);
+    requestContext.bind('controller.current.ctor').to(ctor);
+    requestContext.bind('controller.current.operation').to(this.methodName);
+  }
+
+  private _getControllerCtor(requestContext: Context) {
+    if (typeof this._controller === 'function')
+      return this._controller;
+
     const b = requestContext.getBinding(this._controllerBindingKey);
     const ctor = b.valueConstructor;
     if (!ctor)
       throw new Error(
-        `The controller ${this._controllerName} was not bound via .toClass()`,
+        `The controller ${this._controller} was not bound via .toClass()`,
       );
-    requestContext.bind('controller.current.ctor').to(ctor);
-    requestContext.bind('controller.current.operation').to(this.methodName);
+    return ctor;
   }
 
   async invokeHandler(
     requestContext: Context,
     args: OperationArgs,
   ): Promise<OperationRetval> {
-    const controller: {[opName: string]: Function} = await requestContext.get(
-      this._controllerBindingKey,
-    );
+    const controller = await this._createControllerInstance(requestContext);
     return await controller[this.methodName!](...args);
+  }
+
+  private async _createControllerInstance(
+    requestContext: Context,
+  ): Promise<Controller> {
+    if (typeof this._controller === 'string') {
+      return await requestContext.get(this._controllerBindingKey);
+    }
+
+    return await Promise.resolve(
+      instantiateClass(this._controller, requestContext)) as Controller;
   }
 }
 

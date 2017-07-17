@@ -298,6 +298,25 @@ describe('Routing', () => {
     );
   });
 
+  it('supports controller routes defined via app.route()', async () => {
+    const app = givenAnApplication();
+
+    class MyController {
+      greet(name: string) {
+        return `hello ${name}`;
+      }
+    }
+
+    const spec = anOperationSpec()
+      .withParameter({name: 'name', in: 'query', type: 'string'})
+      .build();
+
+    app.route('get', '/greet', spec, MyController, 'greet');
+
+    const client = whenIMakeRequestTo(app);
+    await client.get('/greet?name=world').expect(200, 'hello world');
+  });
+
   /* ===== HELPERS ===== */
 
   function givenAnApplication() {

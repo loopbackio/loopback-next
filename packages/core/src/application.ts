@@ -17,6 +17,7 @@ import {
   ParsedRequest,
   OperationObject,
   ControllerRoute,
+  RouteEntry,
 } from '.';
 import {ServerRequest, ServerResponse, createServer} from 'http';
 import {Component, mountComponent} from './component';
@@ -176,6 +177,31 @@ export class Application extends Context {
   }
 
   /**
+   * Register a new Controller-based route.
+   *
+   * ```ts
+   * class MyController {
+   *   greet(name: string) {
+   *     return `hello ${name}`;
+   *   }
+   * }
+   * app.route('get', '/greet', operationSpec, MyController, 'greet');
+   * ```
+   *
+   * @param verb HTTP verb of the endpoint
+   * @param path URL path of the endpoint
+   * @param spec The OpenAPI spec describing the endpoint (operation)
+   * @param controller Controller constructor
+   * @param methodName The name of the controller method
+   */
+  route<T>(
+    verb: string,
+    path: string,
+    spec: OperationObject,
+    controller: Constructor<T>,
+    methodName: string): Binding;
+
+  /**
    * Register a new route.
    *
    * ```ts
@@ -188,8 +214,33 @@ export class Application extends Context {
    *
    * @param route The route to add.
    */
-  route(route: Route): Binding {
-    return this.bind(`routes.${route.verb} ${route.path}`).to(route);
+  route(route: RouteEntry): Binding;
+
+  route<T>(
+    routeOrVerb: RouteEntry | string,
+    path?: string,
+    spec?: OperationObject,
+    controller?: Constructor<T>,
+    methodName?: string,
+  ): Binding {
+    if (typeof routeOrVerb === 'object') {
+      const route = routeOrVerb;
+      return this.bind(`routes.${route.verb} ${route.path}`).to(route);
+    }
+
+    assert(!!path, 'path is required for a controller-based route');
+    assert(!!spec, 'spec is required for a controller-based route');
+    assert(!!controller, 'controller is required for a controller-based route');
+    assert(!!methodName, 'methodName is required for a controller-based route');
+
+    spec = Object.assign({}, spec!);
+    spec['x-operation-name'] = methodName;
+    const route = new ControllerRoute(
+      routeOrVerb,
+      path!,
+      spec,
+      controller!);
+    return this.route(route);
   }
 
   api(spec: OpenApiSpec): Binding {
