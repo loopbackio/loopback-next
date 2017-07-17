@@ -20,6 +20,7 @@ import {
   parseRequestUrl,
   ResolvedRoute,
   RouteEntry,
+  ControllerClass,
 } from './router/routing-table';
 import {
   FindRoute,
@@ -42,7 +43,7 @@ export class HttpHandler {
     this.handleRequest = (req, res) => this._handleRequest(req, res);
   }
 
-  registerController<T>(name: Constructor<T>, spec: OpenApiSpec) {
+  registerController(name: ControllerClass, spec: OpenApiSpec) {
     this._routes.registerController(name, spec);
   }
 

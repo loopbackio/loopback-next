@@ -47,10 +47,13 @@ export function parseRequestUrl(request: ServerRequest): ParsedRequest {
   return parsedRequest;
 }
 
+// tslint:disable-next-line:no-any
+export type ControllerClass = Constructor<any>;
+
 export class RoutingTable {
   private readonly _routes: RouteEntry[] = [];
 
-  registerController<T>(controller: Constructor<T>, spec: OpenApiSpec) {
+  registerController(controller: ControllerClass, spec: OpenApiSpec) {
     assert(
       typeof spec === 'object' && !!spec,
       'API specification must be a non-null object',
@@ -211,7 +214,7 @@ export class Route extends BaseRoute {
   }
 }
 
-type Controller = {[opName: string]: Function};
+type ControllerInstance = {[opName: string]: Function};
 
 export class ControllerRoute extends BaseRoute {
   protected readonly _methodName: string;
@@ -220,7 +223,7 @@ export class ControllerRoute extends BaseRoute {
     verb: string,
     path: string,
     spec: OperationObject,
-    protected readonly _controller: Constructor<Object>,
+    protected readonly _controllerCtor: ControllerClass,
     methodName?: string,
   ) {
     super(verb, path, spec);
@@ -233,18 +236,19 @@ export class ControllerRoute extends BaseRoute {
       throw new Error(
         'methodName must be provided either via the ControllerRoute argument ' +
         'or via "x-operation-name" extension field in OpenAPI spec. ' +
-        `Operation: "${verb} ${path}" Controller: ${this._controller.name}.`);
+        `Operation: "${verb} ${path}" ` +
+        `Controller: ${this._controllerCtor.name}.`);
     }
 
     this._methodName = methodName;
   }
 
   describe(): string {
-    return `${this._controller.name}.${this._methodName}`;
+    return `${this._controllerCtor.name}.${this._methodName}`;
   }
 
   updateBindings(requestContext: Context) {
-    const ctor = this._controller;
+    const ctor = this._controllerCtor;
     requestContext.bind('controller.current.ctor').to(ctor);
     requestContext.bind('controller.current.operation').to(this._methodName);
   }
@@ -259,9 +263,12 @@ export class ControllerRoute extends BaseRoute {
 
   private async _createControllerInstance(
     requestContext: Context,
-  ): Promise<Controller> {
-    const valueOrPromise = instantiateClass(this._controller, requestContext);
-    return await Promise.resolve(valueOrPromise) as Controller;
+  ): Promise<ControllerInstance> {
+    const valueOrPromise = instantiateClass(
+      this._controllerCtor,
+      requestContext,
+    );
+    return await Promise.resolve(valueOrPromise) as ControllerInstance;
   }
 }
 

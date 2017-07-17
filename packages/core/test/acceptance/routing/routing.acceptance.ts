@@ -17,6 +17,7 @@ import {
 import {expect, Client, createClientForApp} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 import {inject, Constructor, Context} from '@loopback/context';
+import {ControllerClass} from '../../../src/router/routing-table';
 
 /* # Feature: Routing
  * - In order to build REST APIs
@@ -323,9 +324,9 @@ describe('Routing', () => {
     return new Application();
   }
 
-  function givenControllerInApp<T>(
+  function givenControllerInApp(
     app: Application,
-    controller: Constructor<T>,
+    controller: ControllerClass,
   ) {
     app.controller(controller);
   }

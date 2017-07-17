@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as assert from 'assert';
+import {AssertionError} from 'assert';
 import {
   Binding,
   Context,
@@ -27,6 +27,7 @@ import {writeResultToResponse} from './writer';
 import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
 import {RejectProvider} from './router/reject';
 import {FindRoute, InvokeMethod, Send, Reject} from './internal-types';
+import {ControllerClass} from './router/routing-table';
 
 const debug = require('debug')('loopback:core:application');
 
@@ -177,7 +178,7 @@ export class Application extends Context {
    * app.controller(MyController).lock();
    * ```
    */
-  controller<T>(controllerCtor: Constructor<T>): Binding {
+  controller(controllerCtor: ControllerClass): Binding {
     return this.bind('controllers.' + controllerCtor.name).toClass(
       controllerCtor,
     );
@@ -201,11 +202,11 @@ export class Application extends Context {
    * @param controller Controller constructor
    * @param methodName The name of the controller method
    */
-  route<T>(
+  route(
     verb: string,
     path: string,
     spec: OperationObject,
-    controller: Constructor<T>,
+    controller: ControllerClass,
     methodName: string): Binding;
 
   /**
@@ -223,11 +224,11 @@ export class Application extends Context {
    */
   route(route: RouteEntry): Binding;
 
-  route<T>(
+  route(
     routeOrVerb: RouteEntry | string,
     path?: string,
     spec?: OperationObject,
-    controller?: Constructor<T>,
+    controller?: ControllerClass,
     methodName?: string,
   ): Binding {
     if (typeof routeOrVerb === 'object') {
@@ -235,16 +236,35 @@ export class Application extends Context {
       return this.bind(`routes.${r.verb} ${r.path}`).to(r);
     }
 
-    assert(!!path, 'path is required for a controller-based route');
-    assert(!!spec, 'spec is required for a controller-based route');
-    assert(!!controller, 'controller is required for a controller-based route');
-    assert(!!methodName, 'methodName is required for a controller-based route');
+    if (!path) {
+     throw new AssertionError({
+       message: 'path is required for a controller-based route',
+     });
+    }
+
+    if (!spec) {
+     throw new AssertionError({
+       message: 'spec is required for a controller-based route',
+     });
+    }
+
+    if (!controller) {
+     throw new AssertionError({
+       message: 'controller is required for a controller-based route',
+      });
+    }
+
+    if (!methodName) {
+      throw new AssertionError({
+        message: 'methodName is required for a controller-based route',
+      });
+    }
 
     return this.route(new ControllerRoute(
       routeOrVerb,
-      path!,
-      spec!,
-      controller!,
+      path,
+      spec,
+      controller,
       methodName));
   }
 
