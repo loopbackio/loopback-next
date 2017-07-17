@@ -50,7 +50,7 @@ export function parseRequestUrl(request: ServerRequest): ParsedRequest {
 export class RoutingTable {
   private readonly _routes: RouteEntry[] = [];
 
-  registerController(controller: string, spec: OpenApiSpec) {
+  registerController<T>(controller: Constructor<T>, spec: OpenApiSpec) {
     assert(
       typeof spec === 'object' && !!spec,
       'API specification must be a non-null object',
@@ -97,7 +97,6 @@ export class RoutingTable {
 
 export interface RouteEntry {
   readonly verb: string;
-  readonly methodName: string | undefined;
   readonly path: string;
   readonly spec: OperationObject;
 
@@ -119,10 +118,6 @@ export interface ResolvedRoute extends RouteEntry {
 export abstract class BaseRoute implements RouteEntry {
   public readonly verb: string;
   private readonly _pathRegexp: pathToRegexp.PathRegExp;
-
-  get methodName(): string | undefined {
-    return this.spec['x-operation-name'];
-  }
 
   constructor(
     verb: string,
@@ -219,44 +214,39 @@ export class Route extends BaseRoute {
 type Controller = {[opName: string]: Function};
 
 export class ControllerRoute extends BaseRoute {
+  protected readonly _methodName: string;
+
   constructor(
     verb: string,
     path: string,
     spec: OperationObject,
-    protected readonly _controller: string | Constructor<Object>,
+    protected readonly _controller: Constructor<Object>,
+    methodName?: string,
   ) {
     super(verb, path, spec);
-  }
 
-  private get _controllerBindingKey() {
-    assert(
-      typeof this._controller === 'string',
-      'Cannot access binding key of a controller that is not context bound',
-    );
-    return `controllers.${this._controller}`;
+    if (!methodName) {
+      methodName = this.spec['x-operation-name'];
+    }
+
+    if (!methodName) {
+      throw new Error(
+        'methodName must be provided either via the ControllerRoute argument ' +
+        'or via "x-operation-name" extension field in OpenAPI spec. ' +
+        `Operation: "${verb} ${path}" Controller: ${this._controller.name}.`);
+    }
+
+    this._methodName = methodName;
   }
 
   describe(): string {
-    return `${this._controller}.${this.methodName}`;
+    return `${this._controller.name}.${this._methodName}`;
   }
 
   updateBindings(requestContext: Context) {
-    const ctor = this._getControllerCtor(requestContext);
+    const ctor = this._controller;
     requestContext.bind('controller.current.ctor').to(ctor);
-    requestContext.bind('controller.current.operation').to(this.methodName);
-  }
-
-  private _getControllerCtor(requestContext: Context) {
-    if (typeof this._controller === 'function')
-      return this._controller;
-
-    const b = requestContext.getBinding(this._controllerBindingKey);
-    const ctor = b.valueConstructor;
-    if (!ctor)
-      throw new Error(
-        `The controller ${this._controller} was not bound via .toClass()`,
-      );
-    return ctor;
+    requestContext.bind('controller.current.operation').to(this._methodName);
   }
 
   async invokeHandler(
@@ -264,18 +254,14 @@ export class ControllerRoute extends BaseRoute {
     args: OperationArgs,
   ): Promise<OperationRetval> {
     const controller = await this._createControllerInstance(requestContext);
-    return await controller[this.methodName!](...args);
+    return await controller[this._methodName](...args);
   }
 
   private async _createControllerInstance(
     requestContext: Context,
   ): Promise<Controller> {
-    if (typeof this._controller === 'string') {
-      return await requestContext.get(this._controllerBindingKey);
-    }
-
-    return await Promise.resolve(
-      instantiateClass(this._controller, requestContext)) as Controller;
+    const valueOrPromise = instantiateClass(this._controller, requestContext);
+    return await Promise.resolve(valueOrPromise) as Controller;
   }
 }
 

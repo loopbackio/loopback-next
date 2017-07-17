@@ -3,7 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, Context, ValueOrPromise, BoundValue} from '@loopback/context';
+import {
+  Binding,
+  Context,
+  ValueOrPromise,
+  BoundValue,
+  Constructor,
+} from '@loopback/context';
 import {OpenApiSpec} from '@loopback/openapi-spec';
 import {ServerRequest, ServerResponse} from 'http';
 import {getApiSpec} from './router/metadata';
@@ -36,7 +42,7 @@ export class HttpHandler {
     this.handleRequest = (req, res) => this._handleRequest(req, res);
   }
 
-  registerController(name: string, spec: OpenApiSpec) {
+  registerController<T>(name: Constructor<T>, spec: OpenApiSpec) {
     this._routes.registerController(name, spec);
   }
 

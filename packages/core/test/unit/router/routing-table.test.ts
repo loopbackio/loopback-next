@@ -10,7 +10,7 @@ import {
   RoutingTable,
   ResolvedRoute,
   ControllerRoute,
-} from '../..';
+} from '../../..';
 import {expect, ShotRequestOptions, ShotRequest} from '@loopback/testlab';
 import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
@@ -21,8 +21,11 @@ describe('RoutingTable', () => {
       .withOperationReturningString('get', '/hello', 'greet')
       .build();
 
+    class TestController {
+    }
+
     const table = new RoutingTable();
-    table.registerController('TestController', spec);
+    table.registerController(TestController, spec);
 
     const request = givenRequest({
       method: 'get',

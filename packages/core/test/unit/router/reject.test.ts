@@ -9,7 +9,7 @@ import {
   Reject,
   RejectProvider,
   LogError,
-} from '../..';
+} from '../../..';
 
 import {
   expect,

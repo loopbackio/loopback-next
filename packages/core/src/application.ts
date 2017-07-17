@@ -110,7 +110,7 @@ export class Application extends Context {
         // controller methods are specified through app.api() spec
         continue;
       }
-      this._httpHandler.registerController(controllerName, apiSpec);
+      this._httpHandler.registerController(ctor, apiSpec);
     }
 
     for (const b of this.find('routes.*')) {
@@ -145,7 +145,14 @@ export class Application extends Context {
           `Unknown controller ${controllerName} used by "${verb} ${path}"`);
       }
 
-      const route = new ControllerRoute(verb, path, spec, controllerName);
+      const ctor = b.valueConstructor;
+      if (!ctor) {
+        throw new Error(
+          `The controller ${controllerName} was not bound via .toClass()`,
+        );
+      }
+
+      const route = new ControllerRoute(verb, path, spec, ctor);
       this._httpHandler.registerRoute(route);
       return;
     }
@@ -233,13 +240,12 @@ export class Application extends Context {
     assert(!!controller, 'controller is required for a controller-based route');
     assert(!!methodName, 'methodName is required for a controller-based route');
 
-    spec = Object.assign({}, spec!);
-    spec['x-operation-name'] = methodName;
     const route = new ControllerRoute(
       routeOrVerb,
       path!,
-      spec,
-      controller!);
+      spec!,
+      controller!,
+      methodName);
     return this.route(route);
   }
 
