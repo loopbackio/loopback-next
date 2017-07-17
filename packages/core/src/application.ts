@@ -231,8 +231,8 @@ export class Application extends Context {
     methodName?: string,
   ): Binding {
     if (typeof routeOrVerb === 'object') {
-      const route = routeOrVerb;
-      return this.bind(`routes.${route.verb} ${route.path}`).to(route);
+      const r = routeOrVerb;
+      return this.bind(`routes.${r.verb} ${r.path}`).to(r);
     }
 
     assert(!!path, 'path is required for a controller-based route');
@@ -240,13 +240,12 @@ export class Application extends Context {
     assert(!!controller, 'controller is required for a controller-based route');
     assert(!!methodName, 'methodName is required for a controller-based route');
 
-    const route = new ControllerRoute(
+    return this.route(new ControllerRoute(
       routeOrVerb,
       path!,
       spec!,
       controller!,
-      methodName);
-    return this.route(route);
+      methodName));
   }
 
   api(spec: OpenApiSpec): Binding {
