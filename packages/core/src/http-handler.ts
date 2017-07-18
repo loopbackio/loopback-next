@@ -92,7 +92,7 @@ export class HttpHandler {
       found.updateBindings(context);
       return found;
     };
-    context.bind('findRoute').to(findRoute);
+    context.bind('sequence.actions.findRoute').to(findRoute);
   }
 
   protected _bindInvokeMethod(context: Context) {

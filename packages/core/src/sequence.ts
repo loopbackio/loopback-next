@@ -70,7 +70,7 @@ export class DefaultSequence implements SequenceHandler {
    * @param logError Logs error
    */
   constructor(
-    @inject('findRoute') protected findRoute: FindRoute,
+    @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
     @inject('invokeMethod') protected invoke: InvokeMethod,
     @inject('sequence.actions.send') public send: Send,
     @inject('sequence.actions.reject') public reject: Reject,
