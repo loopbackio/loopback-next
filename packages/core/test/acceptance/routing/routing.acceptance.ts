@@ -6,6 +6,7 @@
 import {
   Application,
   api,
+  get,
   OpenApiSpec,
   ParameterObject,
   OperationObject,
@@ -58,6 +59,23 @@ describe('Routing', () => {
     return whenIMakeRequestTo(app).get('/echo?msg=hello%20world')
       // Then I get the result `hello world` from the `Method`
       .expect('hello world');
+  });
+
+  it('allows controllers to define the API using decorators', async () => {
+    const app = givenAnApplication();
+
+    const spec = anOperationSpec()
+      .withParameter({name: 'msg', in: 'query', type: 'string'})
+      .withStringResponse()
+      .build();
+
+      class MyController {
+        @get('/greet', spec)
+        greet(name: string) {
+          return `hello ${name}`;
+        }
+      }
+
   });
 
   it('injects controller constructor arguments', () => {
