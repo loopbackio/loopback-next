@@ -78,7 +78,7 @@ export class Application extends Context {
       }
     };
 
-    this.bind('logError').to(this._logError.bind(this));
+    this.bind('sequence.actions.logError').to(this._logError.bind(this));
     this.bind('sequence.actions.send').to(writeResultToResponse);
     this.bind('sequence.actions.reject').toProvider(RejectProvider);
   }

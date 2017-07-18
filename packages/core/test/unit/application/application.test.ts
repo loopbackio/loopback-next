@@ -10,7 +10,7 @@ describe('Application', () => {
   describe('"logError" binding', () => {
     it('provides a default', async () => {
       const app = new Application();
-      const logError = await app.get('logError');
+      const logError = await app.get('sequence.actions.logError');
       expect(logError.length).to.equal(3); // (err, statusCode, request)
     });
 
@@ -29,7 +29,7 @@ describe('Application', () => {
       }
 
       const app = new MyApp();
-      const logError = await app.get('logError');
+      const logError = await app.get('sequence.actions.logError');
       logError(new Error('test-error'), 400, new ShotRequest({url: '/'}));
 
       expect(lastLog).to.equal('/ 400 test-error');

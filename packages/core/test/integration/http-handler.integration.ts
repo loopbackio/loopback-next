@@ -382,7 +382,7 @@ describe('HttpHandler', () => {
   let handler: HttpHandler;
   function givenHandler() {
     rootContext = new Context();
-    rootContext.bind('logError').to(logger);
+    rootContext.bind('sequence.actions.logError').to(logger);
     rootContext.bind('sequence.actions.send').to(writeResultToResponse);
     rootContext.bind('sequence.actions.reject').toProvider(RejectProvider);
     rootContext.bind('sequence').toClass(DefaultSequence);
@@ -420,8 +420,10 @@ describe('HttpHandler', () => {
   }
 
   function logErrorsExcept(ignoreStatusCode: number) {
-    const oldLogger: Function = rootContext.getSync('logError');
-    rootContext.bind('logError').to(conditionalLogger);
+    const oldLogger: Function = rootContext.getSync(
+      'sequence.actions.logError',
+    );
+    rootContext.bind('sequence.actions.logError').to(conditionalLogger);
 
     function conditionalLogger(
       err: Error,
