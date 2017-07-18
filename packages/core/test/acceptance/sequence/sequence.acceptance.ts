@@ -62,7 +62,7 @@ describe('Sequence', () => {
     class MySequence {
       constructor(
         @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
-        @inject('invokeMethod') protected invoke: InvokeMethod,
+        @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
         @inject('sequence.actions.send') protected send: Send,
       ) {}
 

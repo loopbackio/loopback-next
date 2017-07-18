@@ -99,6 +99,6 @@ export class HttpHandler {
     const invoke: InvokeMethod = async (route, args) => {
       return await route.invokeHandler(context, args);
     };
-    context.bind('invokeMethod').to(invoke);
+    context.bind('sequence.actions.invokeMethod').to(invoke);
   }
 }

@@ -71,7 +71,7 @@ export class DefaultSequence implements SequenceHandler {
    */
   constructor(
     @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
-    @inject('invokeMethod') protected invoke: InvokeMethod,
+    @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
     @inject('sequence.actions.send') public send: Send,
     @inject('sequence.actions.reject') public reject: Reject,
   ) {}

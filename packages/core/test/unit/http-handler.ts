@@ -51,7 +51,9 @@ describe('HttpHandler', () => {
 
         requestContext.bind('controllers.test-controller')
           .toClass(HelloController);
-        const fn: InvokeMethod = await requestContext.get('invokeMethod');
+        const fn: InvokeMethod = await requestContext.get(
+          'sequence.actions.invokeMethod',
+        );
         const spec = anOperationSpec()
           .withStringResponse(200)
           .withOperationName('hello')
@@ -62,7 +64,9 @@ describe('HttpHandler', () => {
       });
 
       it('invokes a route handler', async () => {
-        const fn: InvokeMethod = await requestContext.get('invokeMethod');
+        const fn: InvokeMethod = await requestContext.get(
+          'sequence.actions.invokeMethod',
+        );
         const spec = anOperationSpec().withStringResponse(200).build();
         function hello() { return 'hello'; }
         const route = new Route('get', '/', spec, hello);
