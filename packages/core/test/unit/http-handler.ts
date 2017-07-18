@@ -24,7 +24,6 @@ describe('HttpHandler', () => {
 
   describe('has inbuilt methods to inject into a request context', ()=> {
     beforeEach(setupRequestContext);
-
     describe('bindElement()', () => {
       it('returns a binding to a context', async () => {
         const fn: BindElement = await requestContext.get('bindElement');
@@ -32,6 +31,7 @@ describe('HttpHandler', () => {
         expect(binding).to.be.instanceof(Binding);
       });
     });
+
     describe('getFromContext()', () => {
       it('returns a value from the context', async () => {
         requestContext.bind('foo').to('bar');
@@ -56,7 +56,7 @@ describe('HttpHandler', () => {
           .withStringResponse(200)
           .withOperationName('hello')
           .build();
-        const route = new ControllerRoute('get', '/', spec, 'test-controller');
+        const route = new ControllerRoute('get', '/', spec, HelloController);
         const val: OperationRetval = await fn(route, []);
         expect(val).to.eql('hello');
       });

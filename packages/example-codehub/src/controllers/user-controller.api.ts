@@ -60,9 +60,10 @@ export const def = {
           },
         },
       },
+      /* TODO(ritch) please fill in details
       patch: {
-        // TODO(ritch) please fill in details
       },
+      */
     },
     '/users/{username}': {
       get: {

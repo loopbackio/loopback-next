@@ -405,8 +405,7 @@ describe('HttpHandler', () => {
     ctor: new (...args: any[]) => Object,
     spec: OpenApiSpec,
   ) {
-    rootContext.bind('controllers.test-controller').toClass(ctor);
-    handler.registerController('test-controller', spec);
+    handler.registerController(ctor, spec);
   }
 
   function givenClient() {

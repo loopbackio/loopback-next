@@ -8,7 +8,7 @@ import {
   OperationObject,
   ParameterObject,
 } from '@loopback/openapi-spec';
-import {Context} from '@loopback/context';
+import {Context, Constructor, instantiateClass} from '@loopback/context';
 import {ServerRequest} from 'http';
 import * as HttpErrors from 'http-errors';
 
@@ -47,10 +47,13 @@ export function parseRequestUrl(request: ServerRequest): ParsedRequest {
   return parsedRequest;
 }
 
+// tslint:disable-next-line:no-any
+export type ControllerClass = Constructor<any>;
+
 export class RoutingTable {
   private readonly _routes: RouteEntry[] = [];
 
-  registerController(controller: string, spec: OpenApiSpec) {
+  registerController(controller: ControllerClass, spec: OpenApiSpec) {
     assert(
       typeof spec === 'object' && !!spec,
       'API specification must be a non-null object',
@@ -97,7 +100,6 @@ export class RoutingTable {
 
 export interface RouteEntry {
   readonly verb: string;
-  readonly methodName: string | undefined;
   readonly path: string;
   readonly spec: OperationObject;
 
@@ -119,10 +121,6 @@ export interface ResolvedRoute extends RouteEntry {
 export abstract class BaseRoute implements RouteEntry {
   public readonly verb: string;
   private readonly _pathRegexp: pathToRegexp.PathRegExp;
-
-  get methodName(): string | undefined {
-    return this.spec['x-operation-name'];
-  }
 
   constructor(
     verb: string,
@@ -216,43 +214,61 @@ export class Route extends BaseRoute {
   }
 }
 
+type ControllerInstance = {[opName: string]: Function};
+
 export class ControllerRoute extends BaseRoute {
+  protected readonly _methodName: string;
+
   constructor(
     verb: string,
     path: string,
     spec: OperationObject,
-    protected readonly _controllerName: string,
+    protected readonly _controllerCtor: ControllerClass,
+    methodName?: string,
   ) {
     super(verb, path, spec);
-  }
 
-  private get _controllerBindingKey() {
-    return `controllers.${this._controllerName}`;
+    if (!methodName) {
+      methodName = this.spec['x-operation-name'];
+    }
+
+    if (!methodName) {
+      throw new Error(
+        'methodName must be provided either via the ControllerRoute argument ' +
+        'or via "x-operation-name" extension field in OpenAPI spec. ' +
+        `Operation: "${verb} ${path}" ` +
+        `Controller: ${this._controllerCtor.name}.`);
+    }
+
+    this._methodName = methodName;
   }
 
   describe(): string {
-    return `${this._controllerName}.${this.methodName}`;
+    return `${this._controllerCtor.name}.${this._methodName}`;
   }
 
   updateBindings(requestContext: Context) {
-    const b = requestContext.getBinding(this._controllerBindingKey);
-    const ctor = b.valueConstructor;
-    if (!ctor)
-      throw new Error(
-        `The controller ${this._controllerName} was not bound via .toClass()`,
-      );
+    const ctor = this._controllerCtor;
     requestContext.bind('controller.current.ctor').to(ctor);
-    requestContext.bind('controller.current.operation').to(this.methodName);
+    requestContext.bind('controller.current.operation').to(this._methodName);
   }
 
   async invokeHandler(
     requestContext: Context,
     args: OperationArgs,
   ): Promise<OperationRetval> {
-    const controller: {[opName: string]: Function} = await requestContext.get(
-      this._controllerBindingKey,
+    const controller = await this._createControllerInstance(requestContext);
+    return await controller[this._methodName](...args);
+  }
+
+  private async _createControllerInstance(
+    requestContext: Context,
+  ): Promise<ControllerInstance> {
+    const valueOrPromise = instantiateClass(
+      this._controllerCtor,
+      requestContext,
     );
-    return await controller[this.methodName!](...args);
+    return await Promise.resolve(valueOrPromise) as ControllerInstance;
   }
 }
 

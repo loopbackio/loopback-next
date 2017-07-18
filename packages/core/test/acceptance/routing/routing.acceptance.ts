@@ -17,6 +17,7 @@ import {
 import {expect, Client, createClientForApp} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 import {inject, Constructor, Context} from '@loopback/context';
+import {ControllerClass} from '../../../src/router/routing-table';
 
 /* # Feature: Routing
  * - In order to build REST APIs
@@ -298,15 +299,34 @@ describe('Routing', () => {
     );
   });
 
+  it('supports controller routes defined via app.route()', async () => {
+    const app = givenAnApplication();
+
+    class MyController {
+      greet(name: string) {
+        return `hello ${name}`;
+      }
+    }
+
+    const spec = anOperationSpec()
+      .withParameter({name: 'name', in: 'query', type: 'string'})
+      .build();
+
+    app.route('get', '/greet', spec, MyController, 'greet');
+
+    const client = whenIMakeRequestTo(app);
+    await client.get('/greet?name=world').expect(200, 'hello world');
+  });
+
   /* ===== HELPERS ===== */
 
   function givenAnApplication() {
     return new Application();
   }
 
-  function givenControllerInApp<T>(
+  function givenControllerInApp(
     app: Application,
-    controller: Constructor<T>,
+    controller: ControllerClass,
   ) {
     app.controller(controller);
   }

@@ -22,6 +22,7 @@ import {
 import {expect, Client, createClientForApp} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {inject, Constructor, Context} from '@loopback/context';
+import {ControllerClass} from '../../../src/router/routing-table';
 
 /* # Feature: Sequence
  * - In order to build REST APIs
@@ -133,7 +134,7 @@ describe('Sequence', () => {
     app = new Application();
   }
 
-  function givenControllerInApp<T>(controller: Constructor<T>) {
+  function givenControllerInApp(controller: ControllerClass) {
     app.controller(controller);
   }
 

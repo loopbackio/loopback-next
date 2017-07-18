@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as assert from 'assert';
+import {AssertionError} from 'assert';
 import {
   Binding,
   Context,
@@ -17,6 +17,7 @@ import {
   ParsedRequest,
   OperationObject,
   ControllerRoute,
+  RouteEntry,
 } from '.';
 import {ServerRequest, ServerResponse, createServer} from 'http';
 import {Component, mountComponent} from './component';
@@ -26,6 +27,7 @@ import {writeResultToResponse} from './writer';
 import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
 import {RejectProvider} from './router/reject';
 import {FindRoute, InvokeMethod, Send, Reject} from './internal-types';
+import {ControllerClass} from './router/routing-table';
 
 const debug = require('debug')('loopback:core:application');
 
@@ -109,7 +111,7 @@ export class Application extends Context {
         // controller methods are specified through app.api() spec
         continue;
       }
-      this._httpHandler.registerController(controllerName, apiSpec);
+      this._httpHandler.registerController(ctor, apiSpec);
     }
 
     for (const b of this.find('routes.*')) {
@@ -144,7 +146,14 @@ export class Application extends Context {
           `Unknown controller ${controllerName} used by "${verb} ${path}"`);
       }
 
-      const route = new ControllerRoute(verb, path, spec, controllerName);
+      const ctor = b.valueConstructor;
+      if (!ctor) {
+        throw new Error(
+          `The controller ${controllerName} was not bound via .toClass()`,
+        );
+      }
+
+      const route = new ControllerRoute(verb, path, spec, ctor);
       this._httpHandler.registerRoute(route);
       return;
     }
@@ -169,11 +178,36 @@ export class Application extends Context {
    * app.controller(MyController).lock();
    * ```
    */
-  controller<T>(controllerCtor: Constructor<T>): Binding {
+  controller(controllerCtor: ControllerClass): Binding {
     return this.bind('controllers.' + controllerCtor.name).toClass(
       controllerCtor,
     );
   }
+
+  /**
+   * Register a new Controller-based route.
+   *
+   * ```ts
+   * class MyController {
+   *   greet(name: string) {
+   *     return `hello ${name}`;
+   *   }
+   * }
+   * app.route('get', '/greet', operationSpec, MyController, 'greet');
+   * ```
+   *
+   * @param verb HTTP verb of the endpoint
+   * @param path URL path of the endpoint
+   * @param spec The OpenAPI spec describing the endpoint (operation)
+   * @param controller Controller constructor
+   * @param methodName The name of the controller method
+   */
+  route(
+    verb: string,
+    path: string,
+    spec: OperationObject,
+    controller: ControllerClass,
+    methodName: string): Binding;
 
   /**
    * Register a new route.
@@ -188,8 +222,50 @@ export class Application extends Context {
    *
    * @param route The route to add.
    */
-  route(route: Route): Binding {
-    return this.bind(`routes.${route.verb} ${route.path}`).to(route);
+  route(route: RouteEntry): Binding;
+
+  route(
+    routeOrVerb: RouteEntry | string,
+    path?: string,
+    spec?: OperationObject,
+    controller?: ControllerClass,
+    methodName?: string,
+  ): Binding {
+    if (typeof routeOrVerb === 'object') {
+      const r = routeOrVerb;
+      return this.bind(`routes.${r.verb} ${r.path}`).to(r);
+    }
+
+    if (!path) {
+     throw new AssertionError({
+       message: 'path is required for a controller-based route',
+     });
+    }
+
+    if (!spec) {
+     throw new AssertionError({
+       message: 'spec is required for a controller-based route',
+     });
+    }
+
+    if (!controller) {
+     throw new AssertionError({
+       message: 'controller is required for a controller-based route',
+      });
+    }
+
+    if (!methodName) {
+      throw new AssertionError({
+        message: 'methodName is required for a controller-based route',
+      });
+    }
+
+    return this.route(new ControllerRoute(
+      routeOrVerb,
+      path,
+      spec,
+      controller,
+      methodName));
   }
 
   api(spec: OpenApiSpec): Binding {
