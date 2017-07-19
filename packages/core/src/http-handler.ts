@@ -92,13 +92,13 @@ export class HttpHandler {
       found.updateBindings(context);
       return found;
     };
-    context.bind('findRoute').to(findRoute);
+    context.bind('sequence.actions.findRoute').to(findRoute);
   }
 
   protected _bindInvokeMethod(context: Context) {
     const invoke: InvokeMethod = async (route, args) => {
       return await route.invokeHandler(context, args);
     };
-    context.bind('invokeMethod').to(invoke);
+    context.bind('sequence.actions.invokeMethod').to(invoke);
   }
 }

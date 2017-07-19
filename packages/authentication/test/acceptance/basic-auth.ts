@@ -125,9 +125,9 @@ describe('Basic Authentication', () => {
   function givenAuthenticatedSequence() {
     class MySequence implements SequenceHandler {
       constructor(
-        @inject('findRoute') protected findRoute: FindRoute,
+        @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
         @inject('getFromContext') protected getFromContext: GetFromContext,
-        @inject('invokeMethod') protected invoke: InvokeMethod,
+        @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
         @inject('sequence.actions.send') protected send: Send,
         @inject('sequence.actions.reject') protected reject: Reject,
         @inject('bindElement') protected bindElement: BindElement,

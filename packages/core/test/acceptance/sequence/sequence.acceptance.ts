@@ -61,8 +61,8 @@ describe('Sequence', () => {
   it('allows users to bind a custom sequence class', () => {
     class MySequence {
       constructor(
-        @inject('findRoute') protected findRoute: FindRoute,
-        @inject('invokeMethod') protected invoke: InvokeMethod,
+        @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
+        @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
         @inject('sequence.actions.send') protected send: Send,
       ) {}
 

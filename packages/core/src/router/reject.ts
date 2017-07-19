@@ -9,7 +9,9 @@ import {ServerResponse, ServerRequest} from '..';
 import {HttpError} from 'http-errors';
 
 export class RejectProvider {
-  constructor(@inject('logError') protected logError: LogError) {}
+  constructor(
+    @inject('sequence.actions.logError') protected logError: LogError,
+  ) {}
 
   value(): Reject {
     return (
