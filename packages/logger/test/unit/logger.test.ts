@@ -5,8 +5,8 @@
 
 import {expect} from '@loopback/testlab';
 
-describe('Logging', () => {
-  describe('Logging test 1', () => {
+describe('Logger', () => {
+  describe('Logger test 1', () => {
     it('can log', () => {
       var fake = 1;
       expect(fake).to.deepEqual(1);

@@ -1,19 +1,19 @@
 {
-  "name": "@loopback/logging",
+  "name": "@loopback/logger",
   "version": "1.0.0",
-  "description": "A LoopBack component for logging support.",
+  "description": "A LoopBack component for logger support.",
   "scripts": {
     "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
     "build": "npm run build:lib && npm run build:lib6",
     "build:lib": "node ../../bin/compile-package es2017",
     "build:lib6": "node ../../bin/compile-package es2015",
-    "clean": "rm -rf loopback-logging*.tgz lib* package",
+    "clean": "rm -rf loopback-logger*.tgz lib* package",
     "integration": "mocha --opts ../../test/mocha.opts 'test/integration/**/*.ts'",
     "prepare": "npm run build",
     "pretest": "npm run build",
     "test": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts' 'test/integration/**/*.ts' 'test/acceptance/**/*.ts'",
     "unit": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts'",
-    "verify": "npm pack && tar xf loopback-logging*.tgz && tree package && npm run clean"
+    "verify": "npm pack && tar xf loopback-logger*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
   "license": "MIT",

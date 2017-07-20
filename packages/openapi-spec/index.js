@@ -1,9 +1,7 @@
+"use strict";
 // Copyright IBM Corp. 2013,2017. All Rights Reserved.
-// Node module: @loopback/testlab
+// Node module: @loopback/openapi-spec
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-
-const nodeMajorVersion = +process.versions.node.split('.')[0];
-module.exports = nodeMajorVersion >= 7 ?
-  require('./lib') :
-  require('./lib6');
+Object.defineProperty(exports, "__esModule", { value: true });
+//# sourceMappingURL=index.js.map
