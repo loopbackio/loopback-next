@@ -10,13 +10,66 @@ const fs = require('fs');
 const morgan = require('morgan');
 const path = require('path');
 
-import {Application} from '../../core';
+import {Application, inject} from '../../../core';
+import {Constructor, Provider} from '../../../context';
 import {ServerRequest, ServerResponse} from 'http';
 
 const logPath = path.join(process.cwd(), 'LoopBackNext.log');
 
-export interface LoggingOptions {
-  http?: boolean;
+/**
+ * @description Type definition of an instance of logger implementation
+ * @example
+ * bunyan: https://www.npmjs.com/package/bunyan
+ * winston: https://www.npmjs.com/package/winston
+ */
+export type Logger = any;
+
+/**
+ * @description Provider of a logger
+ */
+export class LoggerProvider implements Provider<Logger> {
+  private logger: any;
+  constructor(logger?: Logger) {
+    if (!logger) {
+      let privateLogger = new PrivateLogger();
+      logger = privateLogger.log;
+    }
+    this.logger = logger;
+  }
+  value() {
+    return this.logger;
+  }
+}
+
+const logHttp = false;
+
+class PrivateLogger {
+  logger: any;
+  constructor(app?: Application) {
+    const logStream = fs.createWriteStream(logPath, {flags: 'a'});
+    this.logger = bunyan.createLogger({name: 'bunyanLOGGER',
+      streams: [{
+        stream: logStream,
+      }]
+    });
+    if (app && logHttp) {
+      const morganLogger = morgan(formatMorgan, {stream: logStream});
+      const handleHttpOrig =  app.handleHttp;
+      app.handleHttp = function(req: ServerRequest, res: ServerResponse): Promise<void> {
+        return morganLogger(req, res, function (err: Object) {
+          if (err) {
+            this.logger.error(err);
+            return finalhandler(req, res)(err);
+          }
+          return handleHttpOrig(req, res);
+        });
+      };
+    }
+    this.logger.info('*** LoopBack.Next Logger started.');
+  }
+  get log() {
+    return this.logger;
+  }  
 }
 
 interface MorganFormatFn {
@@ -49,33 +102,4 @@ function formatMorgan(tokens: MorganTokens, req: ServerRequest, res: ServerRespo
     pid: process.pid,
   };
   return JSON.stringify(data, null, 2);  
-}
-
-export class Logger {
-  private logger: any;
-  constructor(app: Application, options?: LoggingOptions) {
-    const logStream = fs.createWriteStream(logPath, {flags: 'a'});
-    this.logger = bunyan.createLogger({name: 'bunyanLOGGER',
-      streams: [{
-        stream: logStream,
-      }]
-    });
-    if (options.http) {
-      const morganLogger = morgan(formatMorgan, {stream: logStream});
-      const handleHttpOrig =  app.handleHttp;
-      app.handleHttp = function(req: ServerRequest, res: ServerResponse): Promise<void> {
-        return morganLogger(req, res, function (err: Object) {
-          if (err) {
-            this.logger.error(err);
-            return finalhandler(req, res)(err);
-          }
-          return handleHttpOrig(req, res);
-        });
-      };
-    }
-    this.logger.info('*** LoopBack.Next Logger started.');
-  }
-  get log() {
-    return this.logger;
-  }  
 }
