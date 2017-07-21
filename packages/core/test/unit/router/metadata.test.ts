@@ -3,10 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {get, api} from '../../..';
+import {get, api, param, ParameterObject, getApiSpec} from '../../..';
 import {expect} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
-import {getApiSpec} from '../../../src/router/metadata';
 
 describe('Routing metadata', () => {
   it('returns spec defined via @api()', () => {
@@ -101,7 +100,9 @@ describe('Routing metadata', () => {
 
     const actualSpec = getApiSpec(Child);
 
-    expect(actualSpec.paths['/name']['get'])
-      .to.have.property('x-operation-name', 'getChildName');
+    expect(actualSpec.paths['/name']['get']).to.have.property(
+      'x-operation-name',
+      'getChildName',
+    );
   });
 });

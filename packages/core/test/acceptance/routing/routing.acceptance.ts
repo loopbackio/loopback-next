@@ -14,6 +14,7 @@ import {
   ServerResponse,
   ResponseObject,
   Route,
+  param,
 } from '../../..';
 import {expect, Client, createClientForApp} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
@@ -62,10 +63,8 @@ describe('Routing', () => {
   });
 
   it('allows controllers to define the API using decorators', async () => {
-    const app = givenAnApplication();
-
     const spec = anOperationSpec()
-      .withParameter({name: 'msg', in: 'query', type: 'string'})
+      .withParameter({name: 'name', in: 'query', type: 'string'})
       .withStringResponse()
       .build();
 
@@ -76,6 +75,28 @@ describe('Routing', () => {
         }
       }
 
+    const app = givenAnApplication();
+    givenControllerInApp(app, MyController);
+
+    return whenIMakeRequestTo(app).get('/greet?name=world')
+      // Then I get the result `hello world` from the `Method`
+      .expect('hello world');
+  });
+
+  it('allows controllers to define params via decorators', async () => {
+    class MyController {
+      @get('/greet')
+      @param.query.string('name')
+      greet(name: string) {
+        return `hello ${name}`;
+      }
+    }
+
+    const app = givenAnApplication();
+    givenControllerInApp(app, MyController);
+    return whenIMakeRequestTo(app).get('/greet?name=world')
+      // Then I get the result `hello world` from the `Method`
+      .expect('hello world');
   });
 
   it('injects controller constructor arguments', () => {
