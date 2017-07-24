@@ -5,7 +5,11 @@
 
 import * as assert from 'assert';
 import {Reflector} from '@loopback/context';
-import {OpenApiSpec, OperationObject} from '@loopback/openapi-spec';
+import {
+  OpenApiSpec,
+  OperationObject,
+  ParameterObject,
+} from '@loopback/openapi-spec';
 
 const debug = require('debug')('loopback:core:router:metadata');
 
@@ -91,15 +95,16 @@ function addControllerMethodToSpec(
   const {verb, path} = endpoint;
   const endpointName = `${fullMethodName} (${verb} ${path})`;
 
-  const operationSpec = Reflector.getMetadata(
+  let operationSpec = Reflector.getMetadata(
     'loopback:operation-spec',
     proto,
     methodName,
   );
   if (!operationSpec) {
-    throw new Error(
-      `Missing OpenAPI specification for controller method ${endpointName}`,
-    );
+    // The operation was defined via @operation(verb, path) with no spec
+    operationSpec = {
+      responses: {},
+    };
   }
 
   if (!spec.paths[path]) {
@@ -125,7 +130,7 @@ function addControllerMethodToSpec(
  * @param spec The OpenAPI specification describing parameters and responses
  *   of this operation.
  */
-export function get(path: string, spec: OperationObject) {
+export function get(path: string, spec?: OperationObject) {
   return operation('get', path, spec);
 }
 
@@ -137,7 +142,7 @@ export function get(path: string, spec: OperationObject) {
  * @param spec The OpenAPI specification describing parameters and responses
  *   of this operation.
  */
-export function operation(verb: string, path: string, spec: OperationObject) {
+export function operation(verb: string, path: string, spec?: OperationObject) {
   // tslint:disable-next-line:no-any
   return function(
     target: object,
@@ -152,12 +157,10 @@ export function operation(verb: string, path: string, spec: OperationObject) {
       propertyKey,
     );
 
-    /* TODO(bajtos)
     if (!spec) {
       // Users can define parameters and responses using decorators
       return;
     }
-    */
 
     Reflector.defineMetadata(
       'loopback:operation-spec',
@@ -165,5 +168,105 @@ export function operation(verb: string, path: string, spec: OperationObject) {
       target,
       propertyKey,
     );
+  };
+}
+
+/**
+ * Describe an input parameter of a Controller method.
+ *
+ * @param paramSpec Parameter specification.
+ */
+export function param(paramSpec: ParameterObject) {
+  return function(
+    target: any,
+    propertyKey: string,
+    descriptor: PropertyDescriptor,
+  ) {
+    assert(
+      typeof target[propertyKey] === 'function',
+      '@param decorator can be applied to methods only',
+    );
+
+    let operationSpec: OperationObject = Reflector.getMetadata(
+      'loopback:operation-spec',
+      target,
+      propertyKey,
+    );
+
+    if (!operationSpec) {
+      operationSpec = {
+        responses: {},
+      };
+    }
+
+    if (!operationSpec.parameters) {
+      operationSpec.parameters = [];
+    }
+
+    operationSpec.parameters.unshift(paramSpec);
+
+    Reflector.defineMetadata(
+      'loopback:operation-spec',
+      operationSpec,
+      target,
+      propertyKey,
+    );
+  };
+}
+
+// TODO(bajtos) @param.IN.TYPE('foo', {required: true})
+export namespace param {
+  export const query = {
+    /**
+     * Define a parameter of "string" type that's read from the query string.
+     *
+     * @param name Parameter name.
+     */
+    string: (name: string) => {
+      return param({
+        name: name,
+        in: 'query',
+        type: 'string',
+      });
+    },
+
+    /**
+     * Define a parameter of "number" type that's read from the query string.
+     *
+     * @param name Parameter name.
+     */
+    number: (name: string) => {
+      return param({
+        name: name,
+        in: 'query',
+        type: 'number',
+      });
+    },
+
+    /**
+     * Define a parameter of "integer" type that's read from the query string.
+     *
+     * @param name Parameter name.
+     */
+    integer: (name: string) => {
+      return param({
+        name: name,
+        in: 'query',
+        type: 'integer',
+      });
+    },
+
+    /**
+     * Define a parameter of "boolean" type that's read from the query string.
+     *
+     * @param name Parameter name.
+     */
+    boolean: (name: string) => {
+      return param({
+        name: name,
+        in: 'query',
+        type: 'boolean',
+      });
+    },
   };
 }

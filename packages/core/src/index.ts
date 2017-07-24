@@ -6,7 +6,7 @@
 // package dependencies
 export {Application} from './application';
 export {Component} from './component';
-export {api, get, operation} from './router/metadata';
+export * from './router/metadata';
 export * from './sequence';
 
 // loopback dependencies
