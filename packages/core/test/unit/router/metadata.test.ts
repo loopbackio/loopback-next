@@ -3,7 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {get, api, param, ParameterObject, getApiSpec} from '../../..';
+import {
+  get,
+  api,
+  param,
+  ParameterObject,
+  getApiSpec,
+  operation,
+} from '../../..';
 import {expect} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 
@@ -24,7 +31,7 @@ describe('Routing metadata', () => {
     expect(actualSpec).to.eql(expectedSpec);
   });
 
-  it('returns spec defined via method decorators', () => {
+  it('returns spec defined via @get decorator', () => {
     const operationSpec = anOperationSpec().withStringResponse().build();
 
     class MyController {
@@ -44,6 +51,54 @@ describe('Routing metadata', () => {
       )
       .build();
     expect(actualSpec).to.eql(expectedSpec);
+  });
+
+  it('returns spec defined via @operation decorator', () => {
+    const operationSpec = anOperationSpec().withStringResponse().build();
+
+    class MyController {
+      @operation('post', '/greeting', operationSpec)
+      createGreeting() {}
+    }
+
+    const actualSpec = getApiSpec(MyController);
+
+    const expectedSpec = anOpenApiSpec()
+      .withOperation(
+        'post',
+        '/greeting',
+        Object.assign({'x-operation-name': 'createGreeting'}, operationSpec),
+      )
+      .build();
+    expect(actualSpec).to.eql(expectedSpec);
+  });
+
+  it('returns default spec for @get with no spec', () => {
+    class MyController {
+      @get('/greet')
+      greet() {}
+    }
+
+    const actualSpec = getApiSpec(MyController);
+
+    expect(actualSpec.paths['/greet']['get']).to.eql({
+      'x-operation-name': 'greet',
+      responses: {},
+    });
+  });
+
+  it('returns default spec for @operation with no spec', () => {
+    class MyController {
+      @operation('post', '/greeting')
+      createGreeting() {}
+    }
+
+    const actualSpec = getApiSpec(MyController);
+
+    expect(actualSpec.paths['/greeting']['post']).to.eql({
+      'x-operation-name': 'createGreeting',
+      responses: {},
+    });
   });
 
   it('honours specifications from inherited methods', () => {

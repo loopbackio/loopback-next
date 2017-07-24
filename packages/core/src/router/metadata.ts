@@ -95,15 +95,16 @@ function addControllerMethodToSpec(
   const {verb, path} = endpoint;
   const endpointName = `${fullMethodName} (${verb} ${path})`;
 
-  const operationSpec = Reflector.getMetadata(
+  let operationSpec = Reflector.getMetadata(
     'loopback:operation-spec',
     proto,
     methodName,
   );
   if (!operationSpec) {
-    throw new Error(
-      `Missing OpenAPI specification for controller method ${endpointName}`,
-    );
+    // The operation was defined via @operation(verb, path) with no spec
+    operationSpec = {
+      responses: {},
+    };
   }
 
   if (!spec.paths[path]) {
