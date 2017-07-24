@@ -203,7 +203,7 @@ export function param(paramSpec: ParameterObject) {
       operationSpec.parameters = [];
     }
 
-    operationSpec.parameters.push(paramSpec);
+    operationSpec.parameters.unshift(paramSpec);
 
     Reflector.defineMetadata(
       'loopback:operation-spec',

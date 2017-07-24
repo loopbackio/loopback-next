@@ -31,6 +31,34 @@ describe('Routing metadata for parameters', () => {
 
       expect(actualSpec.paths['/greet']['get']).to.eql(expectedSpec);
     });
+
+    it('can define multiple parameters in order', () => {
+      const offsetSpec: ParameterObject = {
+        name: 'offset',
+        type: 'number',
+        in: 'query',
+      };
+
+      const pageSizeSpec: ParameterObject = {
+        name: 'pageSize',
+        type: 'number',
+        in: 'query',
+      };
+
+      class MyController {
+        @get('/')
+        @param(offsetSpec)
+        @param(pageSizeSpec)
+        list(offset?: number, pageSize?: number) {}
+      }
+
+      const actualSpec = getApiSpec(MyController);
+
+      expect(actualSpec.paths['/']['get'].parameters).to.eql([
+        offsetSpec,
+        pageSizeSpec,
+      ]);
+    });
   });
 
   describe('@param.query.string', () => {
