@@ -4,17 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 declare function require(name:string): any;
-const bunyan = require('bunyan');
-const finalhandler = require('finalhandler');
-const fs = require('fs');
-const morgan = require('morgan');
-const path = require('path');
+var pino = require('pino');
 
-import {Application, inject} from '../../../core';
+import * as fs from 'fs';
+import * as path from 'path';
 import {Constructor, Provider} from '../../../context';
 import {ServerRequest, ServerResponse} from 'http';
 
-const logPath = path.join(process.cwd(), 'LoopBackNext.log');
 
 /**
  * @description Type definition of an instance of logger implementation
@@ -31,8 +27,8 @@ export class LoggerProvider implements Provider<Logger> {
   private logger: any;
   constructor(logger?: Logger) {
     if (!logger) {
-      let privateLogger = new PrivateLogger();
-      logger = privateLogger.log;
+      let pinoLogger = new PinoLogger();
+      logger = pinoLogger.log;
     }
     this.logger = logger;
   }
@@ -41,65 +37,25 @@ export class LoggerProvider implements Provider<Logger> {
   }
 }
 
-const logHttp = false;
+const logToFile = true;
+const logPath = path.join(process.cwd(), 'LoopBackNext.log');
 
-class PrivateLogger {
+class PinoLogger {
   logger: any;
-  constructor(app?: Application) {
-    const logStream = fs.createWriteStream(logPath, {flags: 'a'});
-    this.logger = bunyan.createLogger({name: 'bunyanLOGGER',
-      streams: [{
-        stream: logStream,
-      }]
-    });
-    if (app && logHttp) {
-      const morganLogger = morgan(formatMorgan, {stream: logStream});
-      const handleHttpOrig =  app.handleHttp;
-      app.handleHttp = function(req: ServerRequest, res: ServerResponse): Promise<void> {
-        return morganLogger(req, res, function (err: Object) {
-          if (err) {
-            this.logger.error(err);
-            return finalhandler(req, res)(err);
-          }
-          return handleHttpOrig(req, res);
-        });
-      };
-    }
+  constructor() {
+    this.logger = pino({
+      name: 'pinoLOGGER',
+      safe: true,
+      timestamp: pino.stdTimeFunctions.slowTime,
+      serializers: {
+        req: pino.stdSerializers.req,
+        res: pino.stdSerializers.res
+        }
+      }, logToFile ? fs.createWriteStream(logPath, {flags: 'a'}) :
+        pino.pretty({forceColor: true}).pipe(process.stdout));
     this.logger.info('*** LoopBack.Next Logger started.');
   }
   get log() {
     return this.logger;
   }  
-}
-
-interface MorganFormatFn {
-  (req: ServerRequest, res: ServerResponse, options?: any): string;
-}
-
-interface MorganTokens {
-  date: MorganFormatFn;
-  url: MorganFormatFn;
-  method: MorganFormatFn;
-  status: MorganFormatFn;
-  'http-version': MorganFormatFn;
-  'user-agent': MorganFormatFn;
-  referrer: MorganFormatFn;
-  'response-time': MorganFormatFn;
-}
-
-// {"name":"loopbackLogger","hostname":"tsetombp.usca.ibm.com","pid":21089,"level":30,"msg":"*** bunyan logger started.","time":"2017-07-06T19:52:40.267Z","v":0}
-function formatMorgan(tokens: MorganTokens, req: ServerRequest, res: ServerResponse): string {
-  const data = {
-    name: 'morganHTTP',
-    responseTime: tokens['response-time'](req, res),
-    url: tokens.url(req, res),
-    method: tokens.method(req, res),
-    status: tokens.status(req, res),
-    httpVersion: tokens['http-version'](req, res),
-    userAgent: tokens['user-agent'](req, res),
-    referrer: tokens.referrer(req, res),
-    time: tokens.date(req, res, 'iso'),
-    pid: process.pid,
-  };
-  return JSON.stringify(data, null, 2);  
 }

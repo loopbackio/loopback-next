@@ -20,9 +20,14 @@
   "dependencies": {
     "@loopback/context": "^4.0.0-alpha.9",
     "@loopback/core": "^4.0.0-alpha.9",
-    "bunyan": "^1.8.10",
-    "finalhandler": "^1.0.3",
-    "morgan": "^1.8.2"
+    "@types/pino": "^3.0.1",
+    "@types/shot": "^3.4.0",
+    "@types/sinon": "^2.3.3",
+    "@types/supertest": "^2.0.2",
+    "pino": "^4.7.1",
+    "shot": "^3.4.2",
+    "sinon": "^2.3.8",
+    "supertest": "^3.0.0"
   },
   "devDependencies": {
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.4",
