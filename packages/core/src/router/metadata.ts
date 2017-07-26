@@ -79,7 +79,6 @@ function addControllerMethodToSpec(
 ) {
   const className = proto.constructor.name || '<UnknownClass>';
   const fullMethodName = `${className}.${methodName}`;
-  console.log('    ADDING CONTROLLER METHOD %s', fullMethodName);
 
   const endpoint: RestEndpoint = Reflector.getMetadata(
     'loopback:operation-endpoint',
@@ -132,6 +131,54 @@ function addControllerMethodToSpec(
  */
 export function get(path: string, spec?: OperationObject) {
   return operation('get', path, spec);
+}
+
+/**
+ * Expose a Controller method as a REST API operation
+ * mapped to `POST` request method.
+ *
+ * @param path The URL path of this operation, e.g. `/product/{id}`
+ * @param spec The OpenAPI specification describing parameters and responses
+ *   of this operation.
+ */
+export function post(path: string, spec?: OperationObject) {
+  return operation('post', path, spec);
+}
+
+/**
+ * Expose a Controller method as a REST API operation
+ * mapped to `PUT` request method.
+ *
+ * @param path The URL path of this operation, e.g. `/product/{id}`
+ * @param spec The OpenAPI specification describing parameters and responses
+ *   of this operation.
+ */
+export function put(path: string, spec?: OperationObject) {
+  return operation('put', path, spec);
+}
+
+/**
+ * Expose a Controller method as a REST API operation
+ * mapped to `PATCH` request method.
+ *
+ * @param path The URL path of this operation, e.g. `/product/{id}`
+ * @param spec The OpenAPI specification describing parameters and responses
+ *   of this operation.
+ */
+export function patch(path: string, spec?: OperationObject) {
+  return operation('patch', path, spec);
+}
+
+/**
+ * Expose a Controller method as a REST API operation
+ * mapped to `DELETE` request method.
+ *
+ * @param path The URL path of this operation, e.g. `/product/{id}`
+ * @param spec The OpenAPI specification describing parameters and responses
+ *   of this operation.
+ */
+export function del(path: string, spec?: OperationObject) {
+  return operation('del', path, spec);
 }
 
 /**
