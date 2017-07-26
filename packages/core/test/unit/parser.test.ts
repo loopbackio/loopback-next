@@ -42,7 +42,7 @@ describe('operationArgsParser', () => {
     const spec = givenOperationWithParameters([
       {
         name: 'data',
-        type: 'object',
+        schema: {type: 'object'},
         in: 'body',
       },
     ]);

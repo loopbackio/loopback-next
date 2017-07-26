@@ -147,6 +147,14 @@ export interface OperationObject {
   [extension: string]: ExtensionValue;
 }
 
+export type ParameterTypeValue =
+  | 'string'
+  | 'number'
+  | 'integer'
+  | 'boolean'
+  | 'array'
+  | 'file';
+
 /**
  * Describes a single operation parameter.
  * <p>Specification:
@@ -197,7 +205,13 @@ export interface ParameterObject {
    * "multipart/form-data", " application/x-www-form-urlencoded" or both
    * and the parameter MUST be `in` "formData".
    */
-  type: string;
+  type?: ParameterTypeValue;
+
+  /**
+   * _If in is "body":_
+   * The schema defining the type used for the body parameter.
+   */
+  schema?: SchemaObject;
 
   [extension: string]: ExtensionValue;
 }
