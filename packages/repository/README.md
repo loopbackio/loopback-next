@@ -1,16 +1,60 @@
 # @loopback/repository
 
-This module provides data access facilities to various databases and services.
-It contains the constructs for modeling and accessing data.
+It provides a common set of interfaces for interacting with databases.
+
+## Overview
 
 **NOTE**: This module is experimental and evolving. It is likely going to be
 refactored and decomposed into multiple modules as we refine the story based on
 the legacy `loopback-datasource-juggler` and connector modules from LoopBack
 3.x.
 
-# Concepts
+This module provides data access facilities to various databases and services.
+It contains the constructs for modeling and accessing data. Repositories can be
+used alone or as part of `Controller` implementation.
 
-## Repository
+## Installation
+
+```
+$ npm install --save @loopback/repository
+```
+
+## Basic use
+
+The repository module provides APIs to define LoopBack 3.x data sources and
+models. For example,
+
+```ts
+import {
+  DataSourceConstructor,
+  juggler,
+} from '@loopback/repository';
+
+const ds: juggler.DataSource = new DataSourceConstructor({
+  name: 'db',
+  connector: 'memory',
+});
+
+/* tslint:disable-next-line:variable-name */
+const Note = ds.createModel<typeof juggler.PersistedModel>(
+  'note',
+  {title: 'string', content: 'string'},
+  {},
+);
+```
+A repository can be created directly using `DefaultCrudRepository`.
+
+```ts
+  const repo = new DefaultCrudRepository(Note, ds);
+
+  // Bind the repository instance
+  ctx.bind('repositories.noteRepo').to(repo);
+```
+Fore more detailed info about the repository usage and implementation with a controller, please refer to [Use Repository](#use-repository)
+
+## Concepts
+
+### Repository
 
 `Repository` represents a specialized `Service` interface that provides
 strong-typed data access (for example, CRUD) operations of a domain model
@@ -35,7 +79,7 @@ See more examples at:
 - [Repository/CrudRepository/EntityRepository](src/repository.ts)
 - [KVRepository](src/kv-repository.ts)
 
-## Model
+### Model
 
 A model describes business domain objects, for example, `Customer`, `Address`,
 and `Order`. It usually defines a list of properties with name, type, and other
@@ -84,7 +128,7 @@ There are two subtly different types of models for domain objects:
   }
   ```
 
-## DataSource
+### DataSource
 
 `DataSource` is a named configuration of a connector. The configuration
 properties vary by connectors. For example, a datasource for `MySQL` needs to
@@ -103,7 +147,7 @@ as:
 When a `DataSource` is instantiated, the configuration properties will be used
 to initialize the connector to connect to the backend system.
 
-## Connector
+### Connector
 
 `Connector` is a provider that implements data access or api calls with a
 specific backend system, such as a database, a REST service, a SOAP Web Service,
@@ -116,7 +160,7 @@ driver for the given backend. For example, a connector for `MySQL` will map
 `create` method to SQL INSERT statement, which can be executed through MySQL
 driver for Node.js.
 
-## Mixin
+### Mixin
 
 `Mixin` is a way of building up classes from reusable components by combining
 simpler partial classes, which can be modeled as `Mixin`.
@@ -153,7 +197,7 @@ const CustomerWithTS = timestampMixin(Customer);
 const CustomerWithTSAndFullName = fullNameMixin(CustomerWithTS);
 ```
 
-## Type
+### Type
 
 To support property and parameter typing, LoopBack Next introduces an extensible
 typing system to capture the metadata and perform corresponding checks and
@@ -168,8 +212,7 @@ coercion. The following types are supported out of box.
 - ArrayType
 - UnionType
 
-# Use Repository
-
+## Use Repository
 The `Repository` and other interfaces extended from `Repository` provide access
 to backend databases and services. Repositories can be used alone or as part
 of `Controller` implementation.
@@ -178,7 +221,7 @@ At the moment, we only have implementations of `Repository` based on LoopBack
 3.x `loopback-datasource-juggler` and connectors. The following steps illustrate
 how to define repositories and use them with controllers.
 
-## Define legacy data sources and models
+### Define legacy data sources and models
 
 The repository module provides APIs to define LoopBack 3.x data sources and
 models. For example,
@@ -206,7 +249,7 @@ const Note = ds.createModel<typeof juggler.PersistedModel>(
 LoopBack Next. These constructs need to be created programmatically as
 illustrated above.
 
-## Define a repository
+### Define a repository
 
 A repository can be created directly using `DefaultCrudRepository`.
 
@@ -234,7 +277,7 @@ class MyNoteRepository extends DefaultCrudRepository<Entity, string> {
 }
 ```
 
-## Define a controller
+### Define a controller
 
 Controllers serve as handlers for API requests. We declare controllers as
 classes with optional dependency injection by decorating constructor parameters
@@ -281,9 +324,9 @@ class NoteController {
 }
 ```
 
-## Run the controller and repository together
+### Run the controller and repository together
 
-### Bind the repository to context
+#### Bind the repository to context
 
 ```ts
 // Create a context
@@ -310,7 +353,7 @@ ctx.bind('dataSources.memory').to(ds);
 ctx.bind('repositories.noteRepo').toClass(MyNoteRepository);
 ```
 
-## Compose repositories and controllers in a context
+### Compose repositories and controllers in a context
 
 ```ts
 async function main() {
@@ -345,7 +388,7 @@ main().then(notes => {
 });
 ```
 
-## Mix in a repository into the controller (To be implemented)
+### Mix in a repository into the controller (To be implemented)
 
 This style allows repository methods to be mixed into the controller class
 to mimic LoopBack 3.x style model classes with remote CRUD methods. It blends
@@ -372,7 +415,7 @@ export class CustomerController {
 }
 ```
 
-# Declare pre-defined repositories in JSON/YAML (To be implemented)
+## Declare pre-defined repositories in JSON/YAML (To be implemented)
 
 Repositories can be declared in JSON/YAML files as follows:
 
@@ -386,9 +429,24 @@ server/repositories.json
   }
 }
 ```
-
-# References
+## Related resources
 - https://martinfowler.com/eaaCatalog/repository.html
 - https://msdn.microsoft.com/en-us/library/ff649690.aspx
 - http://docs.spring.io/spring-data/data-commons/docs/2.0.0.M3/reference/html/#repositories
 
+## Contributions
+
+- [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contributing##guidelines)
+- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+
+## Tests
+
+run 'npm test' from the root folder.
+
+## Contributors
+
+See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+
+## License
+
+MIT
