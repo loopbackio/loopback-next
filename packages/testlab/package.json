@@ -22,7 +22,7 @@
     "shot": "^3.4.0",
     "should": "^11.2.1",
     "should-sinon": "0.0.5",
-    "sinon": "^2.3.5",
+    "sinon": "^2.4.0",
     "supertest": "^3.0.0"
   },
   "files": [
