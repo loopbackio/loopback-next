@@ -3,7 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {get, param, ParameterObject, getApiSpec} from '../../../..';
+import {
+  get,
+  api,
+  param,
+  ParameterObject,
+  getApiSpec,
+  operation,
+  OperationObject,
+  ResponsesObject,
+} from '../../../..';
 import {expect} from '@loopback/testlab';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
 
@@ -58,6 +67,40 @@ describe('Routing metadata for parameters', () => {
         offsetSpec,
         pageSizeSpec,
       ]);
+    });
+
+    it('adds to existing spec provided via @operation', () => {
+      const offsetSpec: ParameterObject = {
+        name: 'offset',
+        type: 'number',
+        in: 'query',
+      };
+
+      const pageSizeSpec: ParameterObject = {
+        name: 'pageSize',
+        type: 'number',
+        in: 'query',
+      };
+
+      const responses: ResponsesObject = {
+        200: {
+          type: 'string',
+          description: 'a string response',
+        },
+      };
+
+      class MyController {
+        @operation('get', '/', {responses})
+        @param(offsetSpec)
+        @param(pageSizeSpec)
+        list(offset?: number, pageSize?: number) {}
+      }
+
+      const apiSpec = getApiSpec(MyController);
+      const opSpec: OperationObject = apiSpec.paths['/']['get'];
+
+      expect(opSpec.responses).to.eql(responses);
+      expect(opSpec.parameters).to.eql([offsetSpec, pageSizeSpec]);
     });
   });
 });

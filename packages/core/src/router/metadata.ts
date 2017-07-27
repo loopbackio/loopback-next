@@ -212,12 +212,23 @@ export function operation(verb: string, path: string, spec?: OperationObject) {
       return;
     }
 
-    Reflector.defineMetadata(
-      'loopback:operation-spec',
-      spec,
-      target,
-      propertyKey,
-    );
+    // Decorator are invoked in reverse order of their definition.
+    // For example, a method decorated with @operation() @param()
+    // will invoke param() decorator first and operation() second.
+    // As a result, we need to preserve any partial definitions
+    // already provided by other decorators.
+    editOperationSpec(target, propertyKey, overrides => {
+      const mergedSpec = Object.assign({}, spec, overrides);
+
+      // Merge "responses" definitions
+      mergedSpec.responses = Object.assign(
+        {},
+        spec.responses,
+        overrides.responses,
+      );
+
+      return mergedSpec;
+    });
   };
 }
 
@@ -237,31 +248,43 @@ export function param(paramSpec: ParameterObject) {
       '@param decorator can be applied to methods only',
     );
 
-    let operationSpec: OperationObject = Reflector.getMetadata(
-      'loopback:operation-spec',
-      target,
-      propertyKey,
-    );
+    editOperationSpec(target, propertyKey, operationSpec => {
+      if (!operationSpec.parameters) {
+        operationSpec.parameters = [];
+      }
 
-    if (!operationSpec) {
-      operationSpec = {
-        responses: {},
-      };
-    }
+      operationSpec.parameters.unshift(paramSpec);
 
-    if (!operationSpec.parameters) {
-      operationSpec.parameters = [];
-    }
-
-    operationSpec.parameters.unshift(paramSpec);
-
-    Reflector.defineMetadata(
-      'loopback:operation-spec',
-      operationSpec,
-      target,
-      propertyKey,
-    );
+      return operationSpec;
+    });
   };
+}
+
+function editOperationSpec(
+  target: any,
+  propertyKey: string,
+  updateFn: (spec: OperationObject) => OperationObject,
+) {
+  let spec: OperationObject = Reflector.getMetadata(
+    'loopback:operation-spec',
+    target,
+    propertyKey,
+  );
+
+  if (!spec) {
+    spec = {
+      responses: {},
+    };
+  }
+
+  spec = updateFn(spec);
+
+  Reflector.defineMetadata(
+    'loopback:operation-spec',
+    spec,
+    target,
+    propertyKey,
+  );
 }
 
 export namespace param {
