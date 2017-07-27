@@ -10,6 +10,10 @@ import {
   ParameterObject,
   getApiSpec,
   operation,
+  post,
+  put,
+  patch,
+  del,
 } from '../../..';
 import {expect} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
@@ -48,6 +52,86 @@ describe('Routing metadata', () => {
         'get',
         '/greet',
         Object.assign({'x-operation-name': 'greet'}, operationSpec),
+      )
+      .build();
+    expect(actualSpec).to.eql(expectedSpec);
+  });
+
+  it('returns spec defined via @post decorator', () => {
+    const operationSpec = anOperationSpec().withStringResponse().build();
+
+    class MyController {
+      @post('/greeting', operationSpec)
+      createGreeting() {}
+    }
+
+    const actualSpec = getApiSpec(MyController);
+
+    const expectedSpec = anOpenApiSpec()
+      .withOperation(
+        'post',
+        '/greeting',
+        Object.assign({'x-operation-name': 'createGreeting'}, operationSpec),
+      )
+      .build();
+    expect(actualSpec).to.eql(expectedSpec);
+  });
+
+  it('returns spec defined via @put decorator', () => {
+    const operationSpec = anOperationSpec().withStringResponse().build();
+
+    class MyController {
+      @put('/greeting', operationSpec)
+      updateGreeting() {}
+    }
+
+    const actualSpec = getApiSpec(MyController);
+
+    const expectedSpec = anOpenApiSpec()
+      .withOperation(
+        'put',
+        '/greeting',
+        Object.assign({'x-operation-name': 'updateGreeting'}, operationSpec),
+      )
+      .build();
+    expect(actualSpec).to.eql(expectedSpec);
+  });
+
+  it('returns spec defined via @patch decorator', () => {
+    const operationSpec = anOperationSpec().withStringResponse().build();
+
+    class MyController {
+      @patch('/greeting', operationSpec)
+      patchGreeting() {}
+    }
+
+    const actualSpec = getApiSpec(MyController);
+
+    const expectedSpec = anOpenApiSpec()
+      .withOperation(
+        'patch',
+        '/greeting',
+        Object.assign({'x-operation-name': 'patchGreeting'}, operationSpec),
+      )
+      .build();
+    expect(actualSpec).to.eql(expectedSpec);
+  });
+
+  it('returns spec defined via @del decorator', () => {
+    const operationSpec = anOperationSpec().withStringResponse().build();
+
+    class MyController {
+      @del('/greeting', operationSpec)
+      deleteGreeting() {}
+    }
+
+    const actualSpec = getApiSpec(MyController);
+
+    const expectedSpec = anOpenApiSpec()
+      .withOperation(
+        'del',
+        '/greeting',
+        Object.assign({'x-operation-name': 'deleteGreeting'}, operationSpec),
       )
       .build();
     expect(actualSpec).to.eql(expectedSpec);
