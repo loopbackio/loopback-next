@@ -1,5 +1,5 @@
 // Copyright IBM Corp. 2017. All Rights Reserved.
-// Node module: @loopback/logging
+// Node module: @loopback/logger
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
@@ -8,9 +8,7 @@ var pino = require('pino');
 
 import * as fs from 'fs';
 import * as path from 'path';
-import {Constructor, Provider} from '../../../context';
-import {ServerRequest, ServerResponse} from 'http';
-
+import {Provider} from '../../../context';
 
 /**
  * @description Type definition of an instance of logger implementation
@@ -23,21 +21,19 @@ export type Logger = any;
 /**
  * @description Provider of a logger
  */
-export class LoggerProvider implements Provider<Logger> {
+export class PinoLoggerProvider implements Provider<Logger> {
   private logger: any;
-  constructor(logger?: Logger) {
-    if (!logger) {
-      let pinoLogger = new PinoLogger();
-      logger = pinoLogger.log;
-    }
-    this.logger = logger;
+  constructor() {
+    let pinoLogger = new PinoLogger();
+    console.log('~~~ Provider of pino logger started.');
+    this.logger = pinoLogger.log;
   }
   value() {
     return this.logger;
   }
 }
 
-const logToFile = true;
+const logToFile = false;
 const logPath = path.join(process.cwd(), 'LoopBackNext.log');
 
 class PinoLogger {
@@ -53,7 +49,7 @@ class PinoLogger {
         }
       }, logToFile ? fs.createWriteStream(logPath, {flags: 'a'}) :
         pino.pretty({forceColor: true}).pipe(process.stdout));
-    this.logger.info('*** LoopBack.Next Logger started.');
+    console.log('~~~ Pino logger started.');
   }
   get log() {
     return this.logger;
