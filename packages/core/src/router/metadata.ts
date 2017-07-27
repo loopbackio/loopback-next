@@ -6,28 +6,43 @@
 import * as assert from 'assert';
 import {Reflector} from '@loopback/context';
 import {
-  OpenApiSpec,
   OperationObject,
   ParameterLocation,
   ParameterObject,
   SchemaObject,
   ParameterTypeValue,
+  createEmptyApiSpec,
+  PathsObject,
 } from '@loopback/openapi-spec';
 
 const debug = require('debug')('loopback:core:router:metadata');
 
 // tslint:disable:no-any
 
+export interface ControllerSpec {
+  /**
+   * The base path on which the Controller API is served.
+   * If it is not included, the API is served directly under the host.
+   * The value MUST start with a leading slash (/).
+   */
+  basePath?: string;
+
+  /**
+   * The available paths and operations for the API.
+   */
+  paths: PathsObject;
+}
+
 /**
  * Decorate the given Controller constructor with metadata describing
  * the HTTP/REST API the Controller implements/provides.
  *
- * @param {OpenApiSpec} spec OpenAPI specification describing the endpoints
+ * @param spec OpenAPI specification describing the endpoints
  * handled by this controller
  *
  * @decorator
  */
-export function api(spec: OpenApiSpec) {
+export function api(spec: ControllerSpec) {
   return function(constructor: Function) {
     assert(
       typeof constructor === 'function',
@@ -42,10 +57,10 @@ interface RestEndpoint {
   path: string;
 }
 
-export function getApiSpec(constructor: Function): OpenApiSpec {
+export function getControllerSpec(constructor: Function): ControllerSpec {
   debug(`Retrieving OpenAPI specification for controller ${constructor.name}`);
 
-  let spec: OpenApiSpec = Reflector.getMetadata(
+  let spec: ControllerSpec = Reflector.getMetadata(
     'loopback:api-spec',
     constructor,
   );
@@ -55,7 +70,7 @@ export function getApiSpec(constructor: Function): OpenApiSpec {
     return spec;
   }
 
-  spec = {basePath: '/', paths: {}};
+  spec = {paths: {}};
   for (
     let proto = constructor.prototype;
     proto && proto !== Object.prototype;
@@ -66,7 +81,7 @@ export function getApiSpec(constructor: Function): OpenApiSpec {
   return spec;
 }
 
-function addPrototypeMethodsToSpec(spec: OpenApiSpec, proto: any) {
+function addPrototypeMethodsToSpec(spec: ControllerSpec, proto: any) {
   const controllerMethods = Object.getOwnPropertyNames(proto).filter(
     key => key !== 'constructor' && typeof proto[key] === 'function',
   );
@@ -76,7 +91,7 @@ function addPrototypeMethodsToSpec(spec: OpenApiSpec, proto: any) {
 }
 
 function addControllerMethodToSpec(
-  spec: OpenApiSpec,
+  spec: ControllerSpec,
   proto: any,
   methodName: string,
 ) {
@@ -181,7 +196,7 @@ export function patch(path: string, spec?: OperationObject) {
  *   of this operation.
  */
 export function del(path: string, spec?: OperationObject) {
-  return operation('del', path, spec);
+  return operation('delete', path, spec);
 }
 
 /**

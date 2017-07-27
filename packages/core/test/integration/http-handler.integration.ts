@@ -9,10 +9,11 @@ import {
   ServerRequest,
   writeResultToResponse,
   RejectProvider,
+  ControllerSpec,
 } from '../..';
 import {Context} from '@loopback/context';
 import {expect, Client, createClientForHandler} from '@loopback/testlab';
-import {OpenApiSpec, ParameterObject} from '@loopback/openapi-spec';
+import {ParameterObject} from '@loopback/openapi-spec';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 
 describe('HttpHandler', () => {
@@ -403,7 +404,7 @@ describe('HttpHandler', () => {
   function givenControllerClass(
     // tslint:disable-next-line:no-any
     ctor: new (...args: any[]) => Object,
-    spec: OpenApiSpec,
+    spec: ControllerSpec,
   ) {
     handler.registerController(ctor, spec);
   }

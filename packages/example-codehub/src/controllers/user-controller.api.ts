@@ -3,8 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export const def = {
-  // IMPORTANT: this controller implements enpoints at different root paths
+import {ControllerSpec} from '@loopback/core';
+
+export const def: ControllerSpec = {
+  // IMPORTANT: this controller implements endpoints at different root paths
   // GET /users, GET /user, etc.
   basePath: '/',
   paths: {
@@ -25,6 +27,7 @@ export const def = {
         ],
         responses: {
           200: {
+            description: 'A list of user profiles.',
             schema: {
               type: 'array',
               items: {
@@ -43,6 +46,7 @@ export const def = {
         'x-operation-name': 'getAuthenticatedUser',
         responses: {
           200: {
+            description: 'User profile.',
             schema: {
               // TODO(bajtos) We should $ref a shared definition of User
               // Response/Model
@@ -51,6 +55,7 @@ export const def = {
             },
           },
           404: {
+            description: 'User not found error.',
             schema: {
               // TODO(bajtos) Refer to a shared definition of Error responses
               // as provided by strong-error-handler and/or API Connect
@@ -79,6 +84,7 @@ export const def = {
         ],
         responses: {
           200: {
+            description: 'User profile.',
             schema: {
               // TODO(bajtos) We should $ref a shared definition of User
               // Response/Model

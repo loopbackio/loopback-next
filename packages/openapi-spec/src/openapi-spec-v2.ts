@@ -23,6 +23,19 @@ export type ExtensionValue = any;
  */
 export interface OpenApiSpec {
   /**
+   * Specifies the Swagger Specification version being used.
+   * It can be used by the Swagger UI and other clients to interpret
+   * the API listing. The value MUST be "2.0".
+   */
+  swagger: '2.0';
+
+  /**
+   * Provides metadata about the API.
+   * The metadata can be used by the clients if needed.
+   */
+  info: InfoObject;
+
+  /**
    * The host (name or ip) serving the API.
    * This MUST be the host only and does not include the scheme nor sub-paths.
    * It MAY include a port. If the host is not included,
@@ -50,6 +63,40 @@ export interface OpenApiSpec {
 
   // Allow users to use extensions
   [extension: string]: ExtensionValue;
+}
+
+/**
+ * The object provides metadata about the API.
+ * The metadata can be used by the clients if needed,
+ * and can be presented in the Swagger-UI for convenience.
+ * <p>Specification:
+ * https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#infoObject
+ */
+export interface InfoObject {
+  /**
+   * The title of the application.
+   */
+  title: string;
+
+  /**
+   * A short description of the application.
+   * [GFM syntax](https://guides.github.com/features/mastering-markdown/#GitHub-flavored-markdown)
+   * can be used for rich text representation.
+   */
+  description?: string;
+
+  /**
+   * The Terms of Service for the API.
+   */
+  termsOfService?: string;
+
+  // TODO(bajtos) contact, license
+
+  /**
+   * Provides the version of the application API
+   * (not to be confused with the specification version).
+   */
+  version: string;
 }
 
 /**
@@ -338,4 +385,19 @@ export interface SchemaItem {
   additionalProperties: boolean;
 
   [extension: string]: ExtensionValue;
+}
+
+/**
+ * Create an empty OpenApiSpec object that's still a valid Swagger document.
+ */
+export function createEmptyApiSpec(): OpenApiSpec {
+  return {
+    swagger: '2.0',
+    basePath: '/',
+    info: {
+      title: 'LoopBack Application',
+      version: '1.0.0',
+    },
+    paths: {},
+  };
 }

@@ -7,7 +7,6 @@ import {
   Application,
   api,
   get,
-  OpenApiSpec,
   ParameterObject,
   OperationObject,
   ServerRequest,

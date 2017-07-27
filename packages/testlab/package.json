@@ -16,14 +16,17 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
+    "@loopback/openapi-spec": "^4.0.0-alpha.6",
     "@types/shot": "^3.4.0",
     "@types/sinon": "^2.3.2",
     "@types/supertest": "^2.0.0",
+    "@types/swagger-parser": "^4.0.1",
     "shot": "^3.4.0",
     "should": "^11.2.1",
     "should-sinon": "0.0.5",
     "sinon": "^2.4.0",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "swagger-parser": "^3.4.1"
   },
   "files": [
     "README.md",

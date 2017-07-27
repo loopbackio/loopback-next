@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {post, param, getApiSpec} from '../../../..';
+import {post, param, getControllerSpec} from '../../../..';
 import {expect} from '@loopback/testlab';
 
 describe('Routing metadata for parameters', () => {
@@ -15,7 +15,7 @@ describe('Routing metadata for parameters', () => {
         greet(name: string) {}
       }
 
-      const actualSpec = getApiSpec(MyController);
+      const actualSpec = getControllerSpec(MyController);
 
       expect(actualSpec.paths['/greeting']['post'].parameters).to.eql([
         {

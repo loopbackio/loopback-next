@@ -12,15 +12,15 @@ Test utilities to help writing loopback-next tests:
    - mocks: fake methods (like spies) with pre-programmed behavior (like stubs) as well as pre-programmed expectations
 - Helpers for creating `supertest` clients for LoopBack applications
 - HTTP request/response stubs for writing tests without a listening HTTP server
+- Swagger/OpenAPI spec validation
 
 ## Installation
 
 ```
 $ npm install --save-dev @loopback/testlab
 ```
-```
+
 _This package is typically used in tests, save it to `devDependencies` via `--save-dev`._
-```
 
 ## Basic use
 
@@ -45,6 +45,21 @@ Spies, mocks and stubs. Learn more at [http://sinonjs.org/](http://sinonjs.org/)
 ### `shot`
 
 Shot [API Reference](https://github.com/hapijs/shot/blob/master/API.md)
+
+### `validateApiSpec`
+
+Verify that your application API specification is a valid OpenAPI spec document.
+
+```js
+import {validateApiSpec} from '@loopback/testlab';
+
+describe('MyApp', () => {)
+  it('has valid spec', async () => {
+    const app = new MyApp();
+    await validateApiSpec(app.getApiSpec());
+  })
+});
+```
 
 ## Related resources
 

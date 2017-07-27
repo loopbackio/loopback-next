@@ -18,16 +18,23 @@ import {
   OperationObject,
   ControllerRoute,
   RouteEntry,
+  createEmptyApiSpec,
 } from '.';
 import {ServerRequest, ServerResponse, createServer} from 'http';
 import {Component, mountComponent} from './component';
-import {getApiSpec} from './router/metadata';
+import {getControllerSpec} from './router/metadata';
 import {HttpHandler} from './http-handler';
 import {writeResultToResponse} from './writer';
 import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
 import {RejectProvider} from './router/reject';
 import {FindRoute, InvokeMethod, Send, Reject} from './internal-types';
 import {ControllerClass} from './router/routing-table';
+
+// NOTE(bajtos) we cannot use `import * as cloneDeep from 'lodash/cloneDeep'
+// because it produces the following TypeScript error:
+//  Module '"(...)/node_modules/@types/lodash/cloneDeep/index"' resolves to
+//  a non-module entity and cannot be imported using this construct.
+const cloneDeep: <T>(value: T) => T = require('lodash/cloneDeep');
 
 const debug = require('debug')('loopback:core:application');
 
@@ -59,7 +66,7 @@ export class Application extends Context {
     if (!options) options = {};
 
     this.bind('http.port').to(options.http ? options.http.port : 3000);
-    this.api({basePath: '/', paths: {}});
+    this.api(createEmptyApiSpec());
 
     if (options.components) {
       for (const component of options.components) {
@@ -88,6 +95,16 @@ export class Application extends Context {
     response: ServerResponse,
   ) {
     this._setupHandlerIfNeeded();
+    if (request.method === 'GET' && request.url === '/openapi.json') {
+      // NOTE(bajtos) Regular routes are handled through Sequence.
+      // IMO, this built-in endpoint should not run through a Sequence,
+      // because it's not part of the application API itself.
+      // E.g. if the app implements access/audit logs, I don't want
+      // this endpoint to trigger a log entry. If the server implements
+      // content-negotiation to support XML clients, I don't want the OpenAPI
+      // spec to be converted into an XML response.
+      return this._serveOpenApiSpec(request, response);
+    }
     return this._httpHandler.handleRequest(request, response);
   }
 
@@ -106,7 +123,7 @@ export class Application extends Context {
         throw new Error(
           `The controller ${controllerName} was not bound via .toClass()`);
       }
-      const apiSpec = getApiSpec(ctor);
+      const apiSpec = getControllerSpec(ctor);
       if (!apiSpec) {
         // controller methods are specified through app.api() spec
         continue;
@@ -133,6 +150,12 @@ export class Application extends Context {
   private _setupOperation(verb: string, path: string, spec: OperationObject) {
     const handler = spec['x-operation'];
     if (typeof handler === 'function') {
+      // Remove a field value that cannot be represented in JSON.
+      // Start by creating a shallow-copy of the spec, so that we don't
+      // modify the original spec object provided by user.
+      spec = Object.assign({}, spec);
+      delete spec['x-operation'];
+
       const route = new Route(verb, path, spec, handler);
       this._httpHandler.registerRoute(route);
       return;
@@ -160,6 +183,15 @@ export class Application extends Context {
 
     throw new Error(
       `There is no handler configured for operation "${verb} ${path}`);
+  }
+
+  private async _serveOpenApiSpec(
+    request: ServerRequest,
+    response: ServerResponse,
+  ) {
+    const spec = JSON.stringify(this.getApiSpec(), null, 2);
+    response.setHeader('content-type', 'application/json; charset=utf-8');
+    response.end(spec, 'utf-8');
   }
 
   /**
@@ -270,6 +302,27 @@ export class Application extends Context {
 
   api(spec: OpenApiSpec): Binding {
     return this.bind('api-spec').to(spec);
+  }
+
+  /**
+   * Get the OpenAPI specification describing the REST API provided by
+   * this application.
+   *
+   * This method merges operations (HTTP endpoints) from the following sources:
+   *  - `app.api(spec)`
+   *  - `app.controller(MyController)`
+   *  - `app.route(route)`
+   *  - `app.route('get', '/greet', operationSpec, MyController, 'greet')`
+   */
+  getApiSpec(): OpenApiSpec {
+    const spec = this.getSync('api-spec');
+    this._setupHandlerIfNeeded();
+
+    // Apply deep clone to prevent getApiSpec() callers from
+    // accidentally modifying our internal routing data
+    spec.paths = cloneDeep(this._httpHandler.describeApiPaths());
+
+    return spec;
   }
 
   protected _logError(

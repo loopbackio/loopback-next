@@ -10,9 +10,9 @@ import {
   BoundValue,
   Constructor,
 } from '@loopback/context';
-import {OpenApiSpec} from '@loopback/openapi-spec';
+import {PathsObject} from '@loopback/openapi-spec';
 import {ServerRequest, ServerResponse} from 'http';
-import {getApiSpec} from './router/metadata';
+import {getControllerSpec, ControllerSpec} from './router/metadata';
 
 import {SequenceHandler} from './sequence';
 import {
@@ -43,12 +43,16 @@ export class HttpHandler {
     this.handleRequest = (req, res) => this._handleRequest(req, res);
   }
 
-  registerController(name: ControllerClass, spec: OpenApiSpec) {
+  registerController(name: ControllerClass, spec: ControllerSpec) {
     this._routes.registerController(name, spec);
   }
 
   registerRoute(route: RouteEntry) {
     this._routes.registerRoute(route);
+  }
+
+  describeApiPaths(): PathsObject {
+    return this._routes.describeApiPaths();
   }
 
   protected async _handleRequest(
