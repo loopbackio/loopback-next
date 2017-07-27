@@ -309,7 +309,7 @@ describe('HttpHandler', () => {
               in: 'body',
               description: 'Any object value.',
               required: true,
-              type: 'object',
+              schema: {type: 'object'},
             },
           ],
           responses: {

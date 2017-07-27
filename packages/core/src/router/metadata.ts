@@ -8,7 +8,10 @@ import {Reflector} from '@loopback/context';
 import {
   OpenApiSpec,
   OperationObject,
+  ParameterLocation,
   ParameterObject,
+  SchemaObject,
+  ParameterTypeValue,
 } from '@loopback/openapi-spec';
 
 const debug = require('debug')('loopback:core:router:metadata');
@@ -261,7 +264,6 @@ export function param(paramSpec: ParameterObject) {
   };
 }
 
-// TODO(bajtos) @param.IN.TYPE('foo', {required: true})
 export namespace param {
   export const query = {
     /**
@@ -269,51 +271,149 @@ export namespace param {
      *
      * @param name Parameter name.
      */
-    string: (name: string) => {
-      return param({
-        name: name,
-        in: 'query',
-        type: 'string',
-      });
-    },
+    string: createParamShortcut('query', 'string'),
 
     /**
      * Define a parameter of "number" type that's read from the query string.
      *
      * @param name Parameter name.
      */
-    number: (name: string) => {
-      return param({
-        name: name,
-        in: 'query',
-        type: 'number',
-      });
-    },
+    number: createParamShortcut('query', 'number'),
 
     /**
      * Define a parameter of "integer" type that's read from the query string.
      *
      * @param name Parameter name.
      */
-    integer: (name: string) => {
-      return param({
-        name: name,
-        in: 'query',
-        type: 'integer',
-      });
-    },
+    integer: createParamShortcut('query', 'integer'),
 
     /**
      * Define a parameter of "boolean" type that's read from the query string.
      *
      * @param name Parameter name.
      */
-    boolean: (name: string) => {
-      return param({
-        name: name,
-        in: 'query',
-        type: 'boolean',
-      });
-    },
+    boolean: createParamShortcut('query', 'boolean'),
+  };
+
+  export const header = {
+    /**
+     * Define a parameter of "string" type that's read from a request header.
+     *
+     * @param name Parameter name, it must match the header name
+     *   (e.g. `Content-Type`).
+     */
+    string: createParamShortcut('header', 'string'),
+
+    /**
+     * Define a parameter of "number" type that's read from a request header.
+     *
+     * @param name Parameter name, it must match the header name
+     *   (e.g. `Content-Length`).
+     */
+    number: createParamShortcut('header', 'number'),
+
+    /**
+     * Define a parameter of "integer" type that's read from a request header.
+     *
+     * @param name Parameter name, it must match the header name
+     *   (e.g. `Content-Length`).
+     */
+    integer: createParamShortcut('header', 'integer'),
+
+    /**
+     * Define a parameter of "boolean" type that's read from a request header.
+     *
+     * @param name Parameter name, it must match the header name,
+     *   (e.g. `DNT` or `X-Do-Not-Track`).
+     */
+    boolean: createParamShortcut('header', 'boolean'),
+  };
+
+  export const path = {
+    /**
+     * Define a parameter of "string" type that's read from request path.
+     *
+     * @param name Parameter name matching one of the placeholders in the path
+     *   string.
+     */
+    string: createParamShortcut('path', 'string'),
+
+    /**
+     * Define a parameter of "number" type that's read from request path.
+     *
+     * @param name Parameter name matching one of the placeholders in the path
+     *   string.
+     */
+    number: createParamShortcut('path', 'number'),
+
+    /**
+     * Define a parameter of "integer" type that's read from request path.
+     *
+     * @param name Parameter name matching one of the placeholders in the path
+     *   string.
+     */
+    integer: createParamShortcut('path', 'integer'),
+
+    /**
+     * Define a parameter of "boolean" type that's read from request path.
+     *
+     * @param name Parameter name matching one of the placeholders in the path
+     *   string.
+     */
+    boolean: createParamShortcut('path', 'boolean'),
+  };
+
+  export const formData = {
+    /**
+     * Define a parameter of "string" type that's read
+     * from a field in the request body.
+     *
+     * @param name Parameter name.
+     */
+    string: createParamShortcut('formData', 'string'),
+
+    /**
+     * Define a parameter of "number" type that's read
+     * from a field in the request body.
+     *
+     * @param name Parameter name.
+     */
+    number: createParamShortcut('formData', 'number'),
+
+    /**
+     * Define a parameter of "integer" type that's read
+     * from a field in the request body.
+     *
+     * @param name Parameter name.
+     */
+    integer: createParamShortcut('formData', 'integer'),
+
+    /**
+     * Define a parameter of "boolean" type that's read
+     * from a field in the request body.
+     *
+     * @param name Parameter name.
+     */
+    boolean: createParamShortcut('formData', 'boolean'),
+  };
+
+  /**
+   * Define a parameter that's set to the full request body.
+   *
+   * @param name Parameter name
+   * @param schema The schema defining the type used for the body parameter.
+   */
+  export const body = function(name: string, schema: SchemaObject) {
+    return param({name, in: 'body', schema});
+  };
+}
+
+function createParamShortcut(
+  source: ParameterLocation,
+  type: ParameterTypeValue,
+) {
+  // TODO(bajtos) @param.IN.TYPE('foo', {required: true})
+  return (name: string) => {
+    return param({name, in: source, type});
   };
 }
