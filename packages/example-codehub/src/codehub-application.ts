@@ -4,11 +4,15 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application} from '@loopback/core';
+import {PinoLoggerComponent, PinoHttpLoggerSequence} from '@loopback/logger';
 import {UserController, HealthController} from './controllers';
 
 export class CodeHubApplication extends Application {
   constructor() {
-    super();
+    super({
+      components: [PinoLoggerComponent],
+      sequence: PinoHttpLoggerSequence,
+    });
 
     const app = this;
 
