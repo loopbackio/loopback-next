@@ -39,7 +39,7 @@ IBM/StrongLoop is an active supporter of open source and welcomes contributions 
 
 # Tests
 
-run 'npm test' from the root folder.
+run `npm test` from the root folder.
 
 # Contributors
 
