@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application} from '@loopback/core';
-import {PinoLoggerComponent, PinoHttpLoggerSequence} from '@loopback/logger';
+import {PinoLoggerComponent, PinoHttpLoggerSequence, WinstonLoggerComponent} from '@loopback/logger';
 import {UserController, HealthController} from './controllers';
 
 export class CodeHubApplication extends Application {
@@ -12,6 +12,8 @@ export class CodeHubApplication extends Application {
     super({
       components: [PinoLoggerComponent],
       sequence: PinoHttpLoggerSequence,
+      // components: [WinstonLoggerComponent],
+      // PinoHttpLoggerSequence is incompatible with WinstonLoggerComponent.
     });
 
     const app = this;

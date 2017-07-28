@@ -8,7 +8,7 @@ const pinoHttp = require('pino-http');
 import {BindingKeys} from './keys';
 import {Component, DefaultSequence, inject} from '../../core';
 import {Provider} from '../../context';
-import {Logger, PinoLoggerProvider} from './providers/LoggerProvider';
+import {Logger, PinoLoggerProvider, WinstonLoggerProvider} from './providers/LoggerProvider';
 const providerKey = BindingKeys.System.LOGGER_PROVIDER;
 
 export {BindingKeys} from './keys';
@@ -41,5 +41,11 @@ export class PinoHttpLoggerSequence extends DefaultSequence {
     }
     this.httpLogger(req, res);
     this.defaultHandle(req, res);
+  }
+}
+
+export class WinstonLoggerComponent implements Component {
+  providers = {
+    [providerKey]: WinstonLoggerProvider,
   }
 }

@@ -28,7 +28,8 @@
     "pino-http": "^2.6.1",
     "shot": "^3.4.2",
     "sinon": "^2.3.8",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "winston": "^2.3.1"
   },
   "devDependencies": {
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.4",

@@ -5,6 +5,7 @@
 
 declare function require(name:string): any;
 var pino = require('pino');
+var winston = require('winston');
 
 import * as fs from 'fs';
 import * as path from 'path';
@@ -54,4 +55,27 @@ class PinoLogger {
   get log() {
     return this.logger;
   }  
+}
+
+export class WinstonLoggerProvider implements Provider<Logger> {
+  private logger: any;
+  constructor() {
+    let winstonLogger = new WinstonLogger();
+    console.log('~~~ Provider of winston logger started');
+    this.logger = winstonLogger.log;
+  }
+  value() {
+    return this.logger;
+  }
+}
+
+class WinstonLogger {
+  logger: any;
+  constructor() {
+    this.logger = winston;
+    console.log('~~~ Winston logger started.');
+  }
+  get log() {
+    return this.logger;
+  }
 }
