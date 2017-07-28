@@ -37,6 +37,14 @@ of OpenAPI Specification.
 
 IBM/StrongLoop is an active supporter of open source and welcomes contributions to our projects as well as those of the Node.js community in general. For more information on how to contribute please refer to the [Contribution Guide](https://loopback.io/doc/en/contrib/index.html).
 
-## License
+# Tests
+
+run 'npm test' from the root folder.
+
+# Contributors
+
+See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+
+# License
 
 MIT
