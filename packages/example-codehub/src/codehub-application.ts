@@ -3,9 +3,37 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application} from '@loopback/core';
-import {PinoLoggerComponent, PinoHttpLoggerSequence, WinstonLoggerComponent} from '@loopback/logger';
+declare function require(name:string): any;
+const pinoHttp = require('pino-http');
+import {Application, Component, DefaultSequence, inject} from '@loopback/core';
+import {Provider} from '@loopback/context';
+import {BindingKeys, Logger, PinoLoggerComponent, WinstonLoggerComponent} from '@loopback/logger';
 import {UserController, HealthController} from './controllers';
+
+const loggerProviderKey = BindingKeys.System.LOGGER_PROVIDER;
+
+// compatible with PinoLoggerComponent
+class PinoHttpLoggerSequence extends DefaultSequence {
+  private defaultHandle: Function;
+  @inject(loggerProviderKey)
+  private loggerProvider: Provider<Logger>;
+  private httpLogger: any;
+  constructor(a: any, b: any, c: any, d: any) {
+    super(a, b, c, d);
+    this.defaultHandle = super.handle;
+  }
+  async handle(req: any, res: any) {
+    if (!this.httpLogger) {
+      this.httpLogger = pinoHttp({
+        logger: this.loggerProvider,
+        genReqId: function(req: any) { return req.id },
+      });
+      console.log('~~~ PinoHttp logger initialized');
+    }
+    this.httpLogger(req, res);
+    this.defaultHandle(req, res);
+  }
+}
 
 export class CodeHubApplication extends Application {
   constructor() {
