@@ -3,35 +3,33 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-declare function require(name:string): any;
-const pinoHttp = require('pino-http');
-import {Application, Component, DefaultSequence, inject} from '@loopback/core';
 import {Provider} from '@loopback/context';
-import {BindingKeys, Logger, PinoLoggerComponent, WinstonLoggerComponent} from '@loopback/logger';
+import {Application, DefaultSequence, FindRoute, InvokeMethod,
+  ParsedRequest, Reject, Send, inject} from '@loopback/core';
+import {Logger, PinoLoggerComponent} from '@loopback/logger';
 import {UserController, HealthController} from './controllers';
+import {ServerResponse} from 'http';
 
-const loggerProviderKey = BindingKeys.System.LOGGER_PROVIDER;
+const setupLoggerKey = Logger.SequenceActions.SETUP_LOGGER;
 
-// compatible with PinoLoggerComponent
-class PinoHttpLoggerSequence extends DefaultSequence {
+class AppSequence extends DefaultSequence {
   private defaultHandle: Function;
-  @inject(loggerProviderKey)
-  private loggerProvider: Provider<Logger>;
   private httpLogger: any;
-  constructor(a: any, b: any, c: any, d: any) {
-    super(a, b, c, d);
+  constructor(
+    @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
+    @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
+    @inject('sequence.actions.send') public send: Send,
+    @inject('sequence.actions.reject') public reject: Reject,
+    @inject(setupLoggerKey) public setupLogger: any,
+  ) {
+    super(findRoute, invoke, send, reject);
+    this.httpLogger = setupLogger;
     this.defaultHandle = super.handle;
   }
-  async handle(req: any, res: any) {
-    if (!this.httpLogger) {
-      this.httpLogger = pinoHttp({
-        logger: this.loggerProvider,
-        genReqId: function(req: any) { return req.id },
-      });
-      console.log('~~~ PinoHttp logger initialized');
-    }
+
+  async handle(req: ParsedRequest, res: ServerResponse) {
     this.httpLogger(req, res);
-    this.defaultHandle(req, res);
+    await this.defaultHandle(req, res);
   }
 }
 
@@ -39,9 +37,7 @@ export class CodeHubApplication extends Application {
   constructor() {
     super({
       components: [PinoLoggerComponent],
-      sequence: PinoHttpLoggerSequence,
-      // components: [WinstonLoggerComponent],
-      // PinoHttpLoggerSequence is incompatible with WinstonLoggerComponent.
+      sequence: AppSequence,
     });
 
     const app = this;

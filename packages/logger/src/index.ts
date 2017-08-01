@@ -3,24 +3,23 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingKeys} from './keys';
+import {Logger} from './keys';
 import {Component} from '../../core';
-import {Logger, PinoLoggerProvider, WinstonLoggerProvider} from './providers/LoggerProvider';
-const providerKey = BindingKeys.System.LOGGER_PROVIDER;
+import {PinoLoggerProvider, SetupPinoHttpLogger} from './providers/LoggerProvider';
 
-export {BindingKeys} from './keys';
-export {Logger} from './providers/LoggerProvider';
+const setupLoggerKey = Logger.SequenceActions.SETUP_LOGGER;
+const loggerProviderKey = Logger.System.LOGGER_PROVIDER;
+
+export {Logger} from './keys';
+export {SimpleLogger} from './providers/LoggerProvider';
 
 export class PinoLoggerComponent implements Component {
-  // PinoLoggerProvider is bound to the key [providerKey]
-  // in the client's application context.
   providers = {
-    [providerKey]: PinoLoggerProvider,
-  }
-}
-
-export class WinstonLoggerComponent implements Component {
-  providers = {
-    [providerKey]: WinstonLoggerProvider,
+    // PinoLoggerProvider is bound to the key [loggerProviderKey]
+    // in the client's application context.
+    [loggerProviderKey]: PinoLoggerProvider,
+    // SetupPinoHttpLogger is bound to the key [setupLoggerKey]
+    // in the client's application context.
+    [setupLoggerKey]: SetupPinoHttpLogger,
   }
 }
