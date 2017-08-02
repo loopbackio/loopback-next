@@ -8,7 +8,7 @@ import {
   api,
   param,
   ParameterObject,
-  getApiSpec,
+  getControllerSpec,
   operation,
   OperationObject,
   ResponsesObject,
@@ -31,7 +31,7 @@ describe('Routing metadata for parameters', () => {
         greet(name: string) {}
       }
 
-      const actualSpec = getApiSpec(MyController);
+      const actualSpec = getControllerSpec(MyController);
 
       const expectedSpec = anOperationSpec()
         .withOperationName('greet')
@@ -61,7 +61,7 @@ describe('Routing metadata for parameters', () => {
         list(offset?: number, pageSize?: number) {}
       }
 
-      const actualSpec = getApiSpec(MyController);
+      const actualSpec = getControllerSpec(MyController);
 
       expect(actualSpec.paths['/']['get'].parameters).to.eql([
         offsetSpec,
@@ -96,7 +96,7 @@ describe('Routing metadata for parameters', () => {
         list(offset?: number, pageSize?: number) {}
       }
 
-      const apiSpec = getApiSpec(MyController);
+      const apiSpec = getControllerSpec(MyController);
       const opSpec: OperationObject = apiSpec.paths['/']['get'];
 
       expect(opSpec.responses).to.eql(responses);

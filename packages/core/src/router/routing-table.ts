@@ -4,9 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  OpenApiSpec,
   OperationObject,
   ParameterObject,
+  PathsObject,
 } from '@loopback/openapi-spec';
 import {Context, Constructor, instantiateClass} from '@loopback/context';
 import {ServerRequest} from 'http';
@@ -18,6 +18,8 @@ import {
   OperationArgs,
   OperationRetval,
 } from '../internal-types';
+
+import {ControllerSpec} from './metadata';
 
 import * as assert from 'assert';
 import * as url from 'url';
@@ -53,7 +55,7 @@ export type ControllerClass = Constructor<any>;
 export class RoutingTable {
   private readonly _routes: RouteEntry[] = [];
 
-  registerController(controller: ControllerClass, spec: OpenApiSpec) {
+  registerController(controller: ControllerClass, spec: ControllerSpec) {
     assert(
       typeof spec === 'object' && !!spec,
       'API specification must be a non-null object',
@@ -84,6 +86,20 @@ export class RoutingTable {
       describeOperationParameters(route.spec),
     );
     this._routes.push(route);
+  }
+
+  describeApiPaths(): PathsObject {
+    const paths: PathsObject = {};
+
+    for (const route of this._routes) {
+      if (!paths[route.path]) {
+        paths[route.path] = {};
+      }
+
+      paths[route.path][route.verb] = route.spec;
+    }
+
+    return paths;
   }
 
   find(request: ParsedRequest): ResolvedRoute {

@@ -4,7 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect, createClientForApp} from '@loopback/testlab';
-import {Application} from '../..';
+import {
+  Application,
+  Route,
+  ResponseObject,
+  SchemaObject,
+  ReferenceObject,
+} from '../..';
 import {Context} from '@loopback/context';
 
 describe('Application (integration)', () => {
@@ -31,5 +37,28 @@ describe('Application (integration)', () => {
     });
 
     return createClientForApp(app).get('/').expect(500);
+  });
+
+  it('exposes "GET /openapi.json" endpoint', async () => {
+    const app = new Application({http: {port: 0}});
+    const greetSpec = {
+      responses: {
+        200: {
+          type: 'string',
+          description: 'greeting of the day',
+        },
+      },
+    };
+    app.route(new Route('get', '/greet', greetSpec, function greet() {}));
+
+    const response = await createClientForApp(app).get('/openapi.json');
+    expect(response.body).to.containDeep({
+      basePath: '/',
+      paths: {
+        '/greet': {
+          get: greetSpec,
+        },
+      },
+    });
   });
 });

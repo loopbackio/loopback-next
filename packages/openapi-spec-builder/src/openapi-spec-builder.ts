@@ -10,6 +10,7 @@ import {
   OperationObject,
   ResponseObject,
   ParameterObject,
+  createEmptyApiSpec,
 } from '@loopback/openapi-spec';
 
 /**
@@ -17,8 +18,8 @@ import {
  *
  * @param basePath The base path on which the API is served.
  */
-export function anOpenApiSpec(basePath?: string) {
-  return new OpenApiSpecBuilder(basePath);
+export function anOpenApiSpec() {
+  return new OpenApiSpecBuilder();
 }
 
 /**
@@ -69,11 +70,8 @@ export class OpenApiSpecBuilder extends BuilderBase<OpenApiSpec> {
   /**
    * @param basePath The base path on which the API is served.
    */
-  constructor(basePath: string = '/') {
-    super({
-      basePath,
-      paths: {},
-    });
+  constructor() {
+    super(createEmptyApiSpec());
   }
 
   /**

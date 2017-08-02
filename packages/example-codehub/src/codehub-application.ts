@@ -11,6 +11,17 @@ export class CodeHubApplication extends Application {
     super();
 
     const app = this;
+
+    app.api({
+      swagger: '2.0',
+      info: {
+        title: 'CodeHub',
+        version: require('../package.json').version,
+      },
+      basePath: '/',
+      paths: {},
+    });
+
     app.controller(UserController);
     app.controller(HealthController);
 

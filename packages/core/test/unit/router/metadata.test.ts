@@ -8,7 +8,7 @@ import {
   api,
   param,
   ParameterObject,
-  getApiSpec,
+  getControllerSpec,
   operation,
   post,
   put,
@@ -31,7 +31,7 @@ describe('Routing metadata', () => {
       }
     }
 
-    const actualSpec = getApiSpec(MyController);
+    const actualSpec = getControllerSpec(MyController);
     expect(actualSpec).to.eql(expectedSpec);
   });
 
@@ -45,16 +45,18 @@ describe('Routing metadata', () => {
       }
     }
 
-    const actualSpec = getApiSpec(MyController);
+    const actualSpec = getControllerSpec(MyController);
 
-    const expectedSpec = anOpenApiSpec()
-      .withOperation(
-        'get',
-        '/greet',
-        Object.assign({'x-operation-name': 'greet'}, operationSpec),
-      )
-      .build();
-    expect(actualSpec).to.eql(expectedSpec);
+    expect(actualSpec).to.eql({
+      paths: {
+        '/greet': {
+          get: {
+            'x-operation-name': 'greet',
+            ...operationSpec,
+          },
+        },
+      },
+    });
   });
 
   it('returns spec defined via @post decorator', () => {
@@ -65,16 +67,18 @@ describe('Routing metadata', () => {
       createGreeting() {}
     }
 
-    const actualSpec = getApiSpec(MyController);
+    const actualSpec = getControllerSpec(MyController);
 
-    const expectedSpec = anOpenApiSpec()
-      .withOperation(
-        'post',
-        '/greeting',
-        Object.assign({'x-operation-name': 'createGreeting'}, operationSpec),
-      )
-      .build();
-    expect(actualSpec).to.eql(expectedSpec);
+    expect(actualSpec).to.eql({
+      paths: {
+        '/greeting': {
+          post: {
+            'x-operation-name': 'createGreeting',
+            ...operationSpec,
+          },
+        },
+      },
+    });
   });
 
   it('returns spec defined via @put decorator', () => {
@@ -85,16 +89,18 @@ describe('Routing metadata', () => {
       updateGreeting() {}
     }
 
-    const actualSpec = getApiSpec(MyController);
+    const actualSpec = getControllerSpec(MyController);
 
-    const expectedSpec = anOpenApiSpec()
-      .withOperation(
-        'put',
-        '/greeting',
-        Object.assign({'x-operation-name': 'updateGreeting'}, operationSpec),
-      )
-      .build();
-    expect(actualSpec).to.eql(expectedSpec);
+    expect(actualSpec).to.eql({
+      paths: {
+        '/greeting': {
+          put: {
+            'x-operation-name': 'updateGreeting',
+            ...operationSpec,
+          },
+        },
+      },
+    });
   });
 
   it('returns spec defined via @patch decorator', () => {
@@ -105,16 +111,18 @@ describe('Routing metadata', () => {
       patchGreeting() {}
     }
 
-    const actualSpec = getApiSpec(MyController);
+    const actualSpec = getControllerSpec(MyController);
 
-    const expectedSpec = anOpenApiSpec()
-      .withOperation(
-        'patch',
-        '/greeting',
-        Object.assign({'x-operation-name': 'patchGreeting'}, operationSpec),
-      )
-      .build();
-    expect(actualSpec).to.eql(expectedSpec);
+    expect(actualSpec).to.eql({
+      paths: {
+        '/greeting': {
+          patch: {
+            'x-operation-name': 'patchGreeting',
+            ...operationSpec,
+          },
+        },
+      },
+    });
   });
 
   it('returns spec defined via @del decorator', () => {
@@ -125,16 +133,18 @@ describe('Routing metadata', () => {
       deleteGreeting() {}
     }
 
-    const actualSpec = getApiSpec(MyController);
+    const actualSpec = getControllerSpec(MyController);
 
-    const expectedSpec = anOpenApiSpec()
-      .withOperation(
-        'del',
-        '/greeting',
-        Object.assign({'x-operation-name': 'deleteGreeting'}, operationSpec),
-      )
-      .build();
-    expect(actualSpec).to.eql(expectedSpec);
+    expect(actualSpec).to.eql({
+      paths: {
+        '/greeting': {
+          delete: {
+            'x-operation-name': 'deleteGreeting',
+            ...operationSpec,
+          },
+        },
+      },
+    });
   });
 
   it('returns spec defined via @operation decorator', () => {
@@ -145,16 +155,18 @@ describe('Routing metadata', () => {
       createGreeting() {}
     }
 
-    const actualSpec = getApiSpec(MyController);
+    const actualSpec = getControllerSpec(MyController);
 
-    const expectedSpec = anOpenApiSpec()
-      .withOperation(
-        'post',
-        '/greeting',
-        Object.assign({'x-operation-name': 'createGreeting'}, operationSpec),
-      )
-      .build();
-    expect(actualSpec).to.eql(expectedSpec);
+    expect(actualSpec).to.eql({
+      paths: {
+        '/greeting': {
+          post: {
+            'x-operation-name': 'createGreeting',
+            ...operationSpec,
+          },
+        },
+      },
+    });
   });
 
   it('returns default spec for @get with no spec', () => {
@@ -163,7 +175,7 @@ describe('Routing metadata', () => {
       greet() {}
     }
 
-    const actualSpec = getApiSpec(MyController);
+    const actualSpec = getControllerSpec(MyController);
 
     expect(actualSpec.paths['/greet']['get']).to.eql({
       'x-operation-name': 'greet',
@@ -177,7 +189,7 @@ describe('Routing metadata', () => {
       createGreeting() {}
     }
 
-    const actualSpec = getApiSpec(MyController);
+    const actualSpec = getControllerSpec(MyController);
 
     expect(actualSpec.paths['/greeting']['post']).to.eql({
       'x-operation-name': 'createGreeting',
@@ -202,22 +214,24 @@ describe('Routing metadata', () => {
       }
     }
 
-    const actualSpec = getApiSpec(Child);
+    const actualSpec = getControllerSpec(Child);
 
-    const expectedSpec = anOpenApiSpec()
-      .withOperation(
-        'get',
-        '/parent',
-        Object.assign({'x-operation-name': 'getParentName'}, operationSpec),
-      )
-      .withOperation(
-        'get',
-        '/child',
-        Object.assign({'x-operation-name': 'getChildName'}, operationSpec),
-      )
-      .build();
-
-    expect(actualSpec).to.eql(expectedSpec);
+    expect(actualSpec).to.eql({
+      paths: {
+        '/parent': {
+          get: {
+            'x-operation-name': 'getParentName',
+            ...operationSpec,
+          },
+        },
+        '/child': {
+          get: {
+            'x-operation-name': 'getChildName',
+            ...operationSpec,
+          },
+        },
+      },
+    });
   });
 
   it('allows children to override parent REST endpoints', () => {
@@ -237,7 +251,7 @@ describe('Routing metadata', () => {
       }
     }
 
-    const actualSpec = getApiSpec(Child);
+    const actualSpec = getControllerSpec(Child);
 
     expect(actualSpec.paths['/name']['get']).to.have.property(
       'x-operation-name',

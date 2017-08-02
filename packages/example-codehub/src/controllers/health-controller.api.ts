@@ -3,7 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export const def = {
+import {ControllerSpec} from '@loopback/core';
+
+export const def: ControllerSpec = {
   basePath: '/',
   paths: {
     '/health': {
@@ -11,10 +13,13 @@ export const def = {
         'x-operation-name': 'getHealth',
         responses: {
           200: {
+            description: 'Health status of the server',
             schema: {
-              uptime: {
-                type: 'number',
-                description: 'the uptime of the server',
+              properties: {
+                uptime: {
+                  type: 'number',
+                  description: 'the uptime of the server',
+                },
               },
             },
           },

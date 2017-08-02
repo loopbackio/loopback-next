@@ -28,6 +28,7 @@
     "body": "^5.1.0",
     "debug": "^2.6.0",
     "http-errors": "^1.6.1",
+    "lodash": "^4.17.4",
     "path-to-regexp": "^1.7.0"
   },
   "devDependencies": {
