@@ -161,7 +161,7 @@ export class Application extends Context {
       return;
     }
 
-    const controllerName = spec['x-controller'];
+    const controllerName = spec['x-controller-name'];
     if (typeof controllerName === 'string') {
       const b = this.find(`controllers.${controllerName}`)[0];
       if (!b) {
