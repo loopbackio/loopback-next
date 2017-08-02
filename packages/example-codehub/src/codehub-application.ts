@@ -12,24 +12,22 @@ import {ServerResponse} from 'http';
 
 const setupLoggerKey = Logger.SequenceActions.SETUP_LOGGER;
 
-class AppSequence extends DefaultSequence {
-  private defaultHandle: Function;
+// PinoLoggerSequence requires [setupLoggerKey] is bound to Pino HTTP logger.
+class PinoLoggerSequence extends DefaultSequence {
+  @inject(setupLoggerKey)
   private httpLogger: any;
   constructor(
     @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
     @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
     @inject('sequence.actions.send') public send: Send,
     @inject('sequence.actions.reject') public reject: Reject,
-    @inject(setupLoggerKey) public setupLogger: any,
   ) {
     super(findRoute, invoke, send, reject);
-    this.httpLogger = setupLogger;
-    this.defaultHandle = super.handle;
   }
 
   async handle(req: ParsedRequest, res: ServerResponse) {
     this.httpLogger(req, res);
-    await this.defaultHandle(req, res);
+    await super.handle(req, res);
   }
 }
 
@@ -37,7 +35,7 @@ export class CodeHubApplication extends Application {
   constructor() {
     super({
       components: [PinoLoggerComponent],
-      sequence: AppSequence,
+      sequence: PinoLoggerSequence,
     });
 
     const app = this;
