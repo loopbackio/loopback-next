@@ -13,7 +13,7 @@ main().catch(err => {
 
 async function main(): Promise<void> {
   const app = new CodeHubApplication();
-  const logger = app.getSync('logger.system.loggerProvider');
+  const logger = app.getSync('logger.simpleLogger');
 
   await app.start();
   logger.info('Application Info:', app.info());

@@ -5,21 +5,17 @@
 
 import {Logger} from './keys';
 import {Component} from '../../core';
-import {PinoLoggerProvider, SetupPinoHttpLogger} from './providers/LoggerProvider';
+import {LoggerProvider, SetupHttpLogger} from './providers/LoggerProvider';
 
 const setupLoggerKey = Logger.SequenceActions.SETUP_LOGGER;
-const loggerProviderKey = Logger.System.LOGGER_PROVIDER;
+const loggerKey = Logger.SIMPLE_LOGGER;
 
 export {Logger} from './keys';
 export {SimpleLogger} from './providers/LoggerProvider';
 
-export class PinoLoggerComponent implements Component {
+export class LoggerComponent implements Component {
   providers = {
-    // PinoLoggerProvider is bound to the key [loggerProviderKey]
-    // in the client's application context.
-    [loggerProviderKey]: PinoLoggerProvider,
-    // SetupPinoHttpLogger is bound to the key [setupLoggerKey]
-    // in the client's application context.
-    [setupLoggerKey]: SetupPinoHttpLogger,
+    [loggerKey]: LoggerProvider,
+    [setupLoggerKey]: SetupHttpLogger,
   }
 }

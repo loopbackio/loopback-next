@@ -6,16 +6,15 @@
 import {Provider} from '@loopback/context';
 import {Application, DefaultSequence, FindRoute, InvokeMethod,
   ParsedRequest, Reject, Send, inject} from '@loopback/core';
-import {Logger, PinoLoggerComponent} from '@loopback/logger';
+import {Logger, LoggerComponent} from '@loopback/logger';
 import {UserController, HealthController} from './controllers';
 import {ServerResponse} from 'http';
 
 const setupLoggerKey = Logger.SequenceActions.SETUP_LOGGER;
 
-// PinoLoggerSequence requires [setupLoggerKey] is bound to Pino HTTP logger.
-class PinoLoggerSequence extends DefaultSequence {
+class LoggerSequence extends DefaultSequence {
   @inject(setupLoggerKey)
-  private httpLogger: any;
+  private httpLogger: Function;
   constructor(
     @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
     @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
@@ -34,8 +33,8 @@ class PinoLoggerSequence extends DefaultSequence {
 export class CodeHubApplication extends Application {
   constructor() {
     super({
-      components: [PinoLoggerComponent],
-      sequence: PinoLoggerSequence,
+      components: [LoggerComponent],
+      sequence: LoggerSequence,
     });
 
     const app = this;

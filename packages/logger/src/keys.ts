@@ -4,10 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export namespace Logger {
+  export const SIMPLE_LOGGER  = 'logger.simpleLogger';
   export namespace SequenceActions {
     export const SETUP_LOGGER  = 'logger.sequenceActions.setupLogger';
-  }
-  export namespace System {
-    export const LOGGER_PROVIDER  = 'logger.system.loggerProvider';
   }
 }

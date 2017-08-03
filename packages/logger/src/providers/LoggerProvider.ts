@@ -13,20 +13,19 @@ import {Logger} from '../keys';
 import {Provider} from '../../../context';
 import {inject} from '../../../core';
 
-const loggerProviderKey = Logger.System.LOGGER_PROVIDER;
+const loggerKey = Logger.SIMPLE_LOGGER;
 
 /**
- * @description setup Pino HTTP logger
+ * @description setup HTTP logger
  */
-export class SetupPinoHttpLogger implements Provider<any> {
-  @inject(loggerProviderKey)
-  private loggerProvider: Provider<SimpleLogger>;
-  private httpLogger: any;
+export class SetupHttpLogger implements Provider<any> {
+  @inject(loggerKey)
+  private simpleLogger: Provider<SimpleLogger>;
+  private httpLogger: Function;
   constructor() {
     this.httpLogger = pinoHttp({
-      logger: this.loggerProvider,
+      logger: this.simpleLogger,
     });
-    console.log('~~~ Provider of Pino HTTP logger started.');
   }
   value() {
     return this.httpLogger;
@@ -36,11 +35,10 @@ export class SetupPinoHttpLogger implements Provider<any> {
 /**
  * @description Provider of a logger
  */
-export class PinoLoggerProvider implements Provider<any> {
+export class LoggerProvider implements Provider<SimpleLogger> {
   private logger: SimpleLogger;
   constructor() {
     this.logger = new PinoSimpleLogger();
-    console.log('~~~ Provider of Pino Simple logger started.');
   }
   value() {
     return this.logger;
@@ -85,7 +83,6 @@ class PinoSimpleLogger implements SimpleLogger {
   constructor() {
     let pinoLogger = new PinoLogger(false);
     this._logger = pinoLogger.logger;
-    console.log('~~~ Pino Simple logger started.');
   }
   error(s: string): void {
     this._logger.error(s);
@@ -109,7 +106,7 @@ class PinoLogger {
   constructor(logToFile?: boolean) {
     this._logToFile = logToFile || false;
     this._logger = pino({
-      name: 'pinoLOGGER',
+      name: 'simpleLogger',
       safe: true,
       timestamp: pino.stdTimeFunctions.slowTime,
       serializers: {
@@ -118,7 +115,6 @@ class PinoLogger {
         }
       }, this._logToFile ? fs.createWriteStream(logPath, {flags: 'a'}) :
         pino.pretty({forceColor: true}).pipe(process.stdout));
-    console.log('~~~ Pino logger started.');
   }
   get logger() {
     return this._logger;
