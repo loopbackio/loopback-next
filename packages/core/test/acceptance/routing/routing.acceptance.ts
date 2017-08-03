@@ -292,7 +292,7 @@ describe('Routing', () => {
         anOperationSpec()
           .withParameter({name: 'name', in: 'query', type: 'string'})
           .withExtension('x-operation-name', 'greet')
-          .withExtension('x-controller', 'MyController'),
+          .withExtension('x-controller-name', 'MyController'),
       )
       .build();
 
@@ -311,7 +311,7 @@ describe('Routing', () => {
         '/greet',
         anOperationSpec()
           .withOperationName('greet')
-          .withExtension('x-controller', 'UnknownController'),
+          .withExtension('x-controller-name', 'UnknownController'),
       )
       .build();
 
