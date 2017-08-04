@@ -9,7 +9,6 @@ import {
   ParameterObject,
   ServerRequest,
   ServerResponse,
-  parseOperationArgs,
   ParsedRequest,
   OperationArgs,
   FindRoute,
@@ -17,6 +16,7 @@ import {
   Send,
   Reject,
   SequenceHandler,
+  ParseParams,
 } from '../../..';
 import {expect, Client, createClientForApp} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
@@ -61,13 +61,15 @@ describe('Sequence', () => {
     class MySequence {
       constructor(
         @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
+        @inject('sequence.actions.parseParams')
+        protected parseParams: ParseParams,
         @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
         @inject('sequence.actions.send') protected send: Send,
       ) {}
 
       async handle(req: ParsedRequest, res: ServerResponse) {
         const route = this.findRoute(req);
-        const args = await parseOperationArgs(req, route);
+        const args = await this.parseParams(req, route);
         const result = await this.invoke(route, args);
         this.send(res, `MySequence ${result}`);
       }
