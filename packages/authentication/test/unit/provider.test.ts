@@ -16,29 +16,25 @@ import {
 import {MockStrategy} from './fixtures/mock-strategy';
 
 describe('AuthenticationProvider', () => {
-  let provider: Provider<AuthenticateFn>;
-  let strategy: MockStrategy;
-
-  const mockUser: UserProfile = {name: 'user-name', id: 'mock-id'};
-
-  beforeEach(givenAuthenticationProvider);
-
   describe('constructor()', () => {
     it('instantiateClass injects authentication.strategy in the constructor',
     async () => {
-      const context: Context = new Context();
+      const context = new Context();
+      const strategy = new MockStrategy();
       context.bind(BindingKeys.Authentication.STRATEGY).to(strategy);
-      provider = await instantiateClass<Provider<AuthenticateFn>>(
-        AuthenticationProvider,
-        context,
-      );
-      const authenticationProvider: AuthenticationProvider =
-        provider as AuthenticationProvider;
-      expect(authenticationProvider.strategy).to.be.equal(strategy);
+      const provider = await instantiateClass(AuthenticationProvider, context);
+      expect(await provider.getStrategy()).to.be.equal(strategy);
     });
   });
 
   describe('value()', () => {
+    let provider: AuthenticationProvider;
+    let strategy: MockStrategy;
+
+    const mockUser: UserProfile = {name: 'user-name', id: 'mock-id'};
+
+    beforeEach(givenAuthenticationProvider);
+
     it('returns a function which authenticates a request and returns a user',
     async () => {
       const authenticate: AuthenticateFn = await Promise.resolve(
@@ -55,11 +51,11 @@ describe('AuthenticationProvider', () => {
         const context: Context = new Context();
         context.bind(BindingKeys.Authentication.STRATEGY).to(strategy);
         context
-          .bind(BindingKeys.Authentication.PROVIDER)
+          .bind(BindingKeys.Authentication.AUTH_ACTION)
           .toProvider(AuthenticationProvider);
         const request = <ParsedRequest> {};
         const authenticate = await context.get(
-          BindingKeys.Authentication.PROVIDER,
+          BindingKeys.Authentication.AUTH_ACTION,
         );
         const user: UserProfile = await authenticate(request);
         expect(user).to.be.equal(mockUser);
@@ -70,10 +66,10 @@ describe('AuthenticationProvider', () => {
         const context: Context = new Context();
         context.bind(BindingKeys.Authentication.STRATEGY).to({});
         context
-          .bind(BindingKeys.Authentication.PROVIDER)
+          .bind(BindingKeys.Authentication.AUTH_ACTION)
           .toProvider(AuthenticationProvider);
         const authenticate = await context.get(
-          BindingKeys.Authentication.PROVIDER,
+          BindingKeys.Authentication.AUTH_ACTION,
         );
         const request = <ParsedRequest> {};
         let error;
@@ -90,10 +86,10 @@ describe('AuthenticationProvider', () => {
         const context: Context = new Context();
         context.bind(BindingKeys.Authentication.STRATEGY).to(strategy);
         context
-          .bind(BindingKeys.Authentication.PROVIDER)
+          .bind(BindingKeys.Authentication.AUTH_ACTION)
           .toProvider(AuthenticationProvider);
         const authenticate = await context.get(
-          BindingKeys.Authentication.PROVIDER,
+          BindingKeys.Authentication.AUTH_ACTION,
         );
         const request = <ParsedRequest> {};
         request.headers = {testState: 'fail'};
@@ -106,11 +102,11 @@ describe('AuthenticationProvider', () => {
         expect(error).to.have.property('statusCode', 401);
       });
     });
-  });
 
-  function givenAuthenticationProvider() {
-    strategy = new MockStrategy();
-    strategy.setMockUser(mockUser);
-    provider = new AuthenticationProvider(strategy);
-  }
+    function givenAuthenticationProvider() {
+      strategy = new MockStrategy();
+      strategy.setMockUser(mockUser);
+      provider = new AuthenticationProvider(() => Promise.resolve(strategy));
+    }
+  });
 });

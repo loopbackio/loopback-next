@@ -5,7 +5,10 @@
 
 import {BindingKeys} from '@loopback/core';
 import {Constructor, Provider, inject} from '@loopback/context';
-import {AuthenticationMetadata, getAuthenticateMetadata} from './decorator';
+import {
+  AuthenticationMetadata,
+  getAuthenticateMetadata,
+} from '../decorators/authenticate';
 
 /**
  * @description Provides authentication metadata of a controller method

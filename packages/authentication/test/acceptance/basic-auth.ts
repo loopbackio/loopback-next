@@ -6,14 +6,9 @@
 import {
   Application,
   api,
-  OpenApiSpec,
-  ParameterObject,
-  ServerRequest,
   ServerResponse,
   parseOperationArgs,
-  writeResultToResponse,
   ParsedRequest,
-  OperationArgs,
   FindRoute,
   InvokeMethod,
   GetFromContext,
@@ -25,31 +20,29 @@ import {
 } from '@loopback/core';
 import {expect, Client, createClientForApp} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
-import {inject,
+import {
+  inject,
   Provider,
   ValueOrPromise,
-  Context,
-  Injection,
-  BoundValue,
 } from '@loopback/context';
-import {authenticate,
+import {
+  authenticate,
   UserProfile,
   BindingKeys,
   AuthenticateFn,
-  AuthenticationProvider,
-  AuthenticationMetadata,
   AuthMetadataProvider,
+  AuthenticationMetadata,
+  AuthenticationComponent,
 } from '../..';
 import {Strategy} from 'passport';
 import {HttpError} from 'http-errors';
-
-const BasicStrategy = require('passport-http').BasicStrategy;
+import {BasicStrategy} from 'passport-http';
 
 describe('Basic Authentication', () => {
   let app: Application;
   let users: UserRepository;
 
-  beforeEach(givenUserRespository);
+  beforeEach(givenUserRepository);
   beforeEach(givenAnApplication);
   beforeEach(givenControllerInApp);
   beforeEach(givenAuthenticatedSequence);
@@ -74,7 +67,7 @@ describe('Basic Authentication', () => {
       .expect(401);
   });
 
-  function givenUserRespository() {
+  function givenUserRepository() {
     users = new UserRepository({
       joe : {profile: {id: 'joe'}, password: '12345'},
       Simpson: {profile: {id: 'sim123'}, password: 'alpha'},
@@ -84,8 +77,9 @@ describe('Basic Authentication', () => {
   }
 
   function givenAnApplication() {
-    app = new Application();
-    app.bind('application.name').to('SequenceApp');
+    app = new Application({
+      components: [AuthenticationComponent],
+    });
   }
 
   function givenControllerInApp() {
@@ -112,26 +106,15 @@ describe('Basic Authentication', () => {
     app.controller(MyController);
   }
 
-  function deferredResolver(
-    ctx: Context,
-    injection: Injection,
-  ):  BoundValue {
-    return async (...args: BoundValue[]) => {
-      const fn = await ctx.get(injection.bindingKey);
-      return await fn(...args);
-    };
-  }
-
   function givenAuthenticatedSequence() {
     class MySequence implements SequenceHandler {
       constructor(
         @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
-        @inject('getFromContext') protected getFromContext: GetFromContext,
         @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
         @inject('sequence.actions.send') protected send: Send,
         @inject('sequence.actions.reject') protected reject: Reject,
         @inject('bindElement') protected bindElement: BindElement,
-        @inject('authentication.provider', {}, deferredResolver)
+        @inject('authentication.actions.authenticate')
         protected authenticateRequest: AuthenticateFn,
       ) {}
 
@@ -157,7 +140,7 @@ describe('Basic Authentication', () => {
       }
     }
     // bind user defined sequence
-    app.bind('sequence').toClass(MySequence);
+    app.sequence(MySequence);
   }
 
   function givenProviders() {
@@ -166,11 +149,12 @@ describe('Basic Authentication', () => {
         @inject(BindingKeys.Authentication.METADATA)
         private metadata: AuthenticationMetadata,
       ) {}
-      value() : Promise<Strategy> {
-        if (this.metadata.strategy === 'BasicStrategy') {
+      value() : ValueOrPromise<Strategy> {
+        const name = this.metadata.strategy;
+        if (name === 'BasicStrategy') {
           return new BasicStrategy(this.verify);
         } else {
-          return Promise.reject('configured strategy is not available');
+          return Promise.reject(`The strategy ${name} is not available.`);
         }
       }
       // callback method for BasicStrategy
@@ -180,12 +164,8 @@ describe('Basic Authentication', () => {
         });
       }
     }
-    app.bind(BindingKeys.Authentication.METADATA)
-      .toProvider(AuthMetadataProvider);
     app.bind(BindingKeys.Authentication.STRATEGY)
       .toProvider(MyPassportStrategyProvider);
-    app.bind(BindingKeys.Authentication.PROVIDER)
-      .toProvider(AuthenticationProvider);
   }
 
   function whenIMakeRequestTo(application: Application): Client {

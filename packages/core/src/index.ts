@@ -5,7 +5,7 @@
 
 // package dependencies
 export {Application} from './application';
-export {Component} from './component';
+export {Component, ProviderMap} from './component';
 export * from './router/metadata';
 export * from './sequence';
 
