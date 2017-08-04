@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Reflector, Constructor} from '@loopback/context';
-import {BindingKeys} from './keys';
+import {BindingKeys} from '../keys';
 
 /**
  * Authentication metadata stored via Reflection API

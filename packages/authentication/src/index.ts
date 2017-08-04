@@ -3,8 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export * from './decorator';
-export * from './strategy-adapter';
-export * from './metadata-provider';
-export * from './provider';
+export * from './auth-component';
+export * from './decorators/authenticate';
 export * from './keys';
+export * from './strategy-adapter';
+
+// internals for tests
+export * from './providers/auth-metadata';
+export * from './providers/authenticate';

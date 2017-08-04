@@ -7,8 +7,8 @@ import * as http from 'http';
 import {HttpErrors, inject, ParsedRequest} from '@loopback/core';
 import {Provider} from '@loopback/context';
 import {Strategy} from 'passport';
-import {StrategyAdapter} from './strategy-adapter';
-import {BindingKeys} from './keys';
+import {StrategyAdapter} from '../strategy-adapter';
+import {BindingKeys} from '../keys';
 
 /**
  * interface definition of a function which accepts a request
@@ -35,15 +35,25 @@ export interface UserProfile {
  */
 export class AuthenticationProvider implements Provider<AuthenticateFn> {
   constructor(
-    @inject(BindingKeys.Authentication.STRATEGY) readonly strategy: Strategy,
+    // The provider is instantiated for Sequence constructor,
+    // at which time we don't have information about the current
+    // route yet. This information is needed to determine
+    // what auth strategy should be used.
+    // To solve this, we are injecting a getter function that will
+    // defer resolution of the strategy until authenticate() action
+    // is executed.
+    @inject.getter(BindingKeys.Authentication.STRATEGY)
+    readonly getStrategy: () => Promise<Strategy>,
   ) {}
 
   /**
    * @returns authenticateFn
    */
   value(): AuthenticateFn {
-    return async (request: ParsedRequest) =>
-      await getAuthenticatedUser(this.strategy, request);
+    return async (request: ParsedRequest) => {
+      const strategy = await this.getStrategy();
+      return await getAuthenticatedUser(strategy, request);
+    };
   }
 }
 

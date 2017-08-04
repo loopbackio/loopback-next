@@ -3,16 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor, Provider} from '@loopback/context';
+import {Constructor, Provider, BoundValue} from '@loopback/context';
 import {Application} from '.';
 
 // tslint:disable:no-any
 
+export interface ProviderMap {
+  [key: string]: Constructor<Provider<BoundValue>>;
+}
+
 export interface Component {
   controllers?: Constructor<any>[];
-  providers?: {
-    [key: string]: Constructor<Provider<any>>;
-  };
+  providers?: ProviderMap;
 }
 
 export function mountComponent(

@@ -5,7 +5,7 @@
 import * as http from 'http';
 import {HttpErrors, ParsedRequest} from '@loopback/core';
 import {Strategy} from 'passport';
-import {UserProfile} from './provider';
+import {UserProfile} from './providers/authenticate';
 
 /**
  * Shimmed Request to satisfy express requirements of passport strategies.

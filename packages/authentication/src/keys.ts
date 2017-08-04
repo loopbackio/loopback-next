@@ -9,7 +9,7 @@
 export namespace BindingKeys {
   export namespace Authentication {
     export const STRATEGY = 'authentication.strategy';
-    export const PROVIDER = 'authentication.provider';
-    export const METADATA = 'authenticate';
+    export const AUTH_ACTION = 'authentication.actions.authenticate';
+    export const METADATA = 'authentication.operationMetadata';
   }
 }

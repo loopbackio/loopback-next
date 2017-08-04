@@ -25,7 +25,7 @@ export class MockStrategy implements Strategy {
   }
   /**
    * @param req
-   * mock verfication function; usually passed in as constructor argument for
+   * mock verification function; usually passed in as constructor argument for
    * passport-strategy
    *
    * For the purpose of mock tests we have this here
@@ -38,7 +38,7 @@ export class MockStrategy implements Strategy {
       req.headers.testState &&
       req.headers.testState === 'fail'
     ) {
-      this.returnUnAuthourized({error: 'authorization failed'});
+      this.returnUnauthorized({error: 'authorization failed'});
       return;
     } else if (
       req.headers &&
@@ -51,18 +51,18 @@ export class MockStrategy implements Strategy {
     process.nextTick(this.returnMockUser.bind(this));
   }
   success(user: Object) {
-    throw new Error('should be overrided by adapter');
+    throw new Error('should be overridden by adapter');
   }
   fail(challenge: Object) {
-    throw new Error('should be overrided by adapter');
+    throw new Error('should be overridden by adapter');
   }
   error(error: string) {
-    throw new Error('should be overrided by adapter');
+    throw new Error('should be overridden by adapter');
   }
   returnMockUser() {
     this.success(this.mockUser);
   }
-  returnUnAuthourized(challenge: Object) {
+  returnUnauthorized(challenge: Object) {
     this.fail(challenge);
   }
   returnError(err: string) {
