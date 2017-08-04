@@ -134,6 +134,27 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     );
   });
 
+  it('injects a getter function', async () => {
+    ctx.bind('key').to('value');
+
+    class Store {
+      constructor(
+        @inject.getter('key')
+        public getter: Function,
+      ) {}
+    }
+
+    ctx.bind('store').toClass(Store);
+    const store = ctx.getSync('store');
+
+    expect(store.getter).to.be.Function();
+    expect(await store.getter()).to.equal('value');
+
+    // rebind the value to verify that getter always returns a fresh value
+    ctx.bind('key').to('new-value');
+    expect(await store.getter()).to.equal('new-value');
+  });
+
   function createContext() {
     ctx = new Context();
   }
