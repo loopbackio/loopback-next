@@ -6,11 +6,12 @@
 import {ValueOrPromise} from './binding';
 
 /**
- * @exports Provider<T> : interface definition for a provider of a value
- * of type T
- * @summary Providers allow binding of a value provider class instead of the
- * value itself
- * @example:
+ * Providers allow developers to compute injected values dynamically,
+ * with any dependencies required by the value getter injected automatically
+ * from the Context.
+ *
+ * @example
+ *
  * ```ts
  * export class DateProvider implements Provider<Date> {
  *   constructor(@inject('stringDate') private param: String){}
@@ -18,20 +19,19 @@ import {ValueOrPromise} from './binding';
  *     return new Date(param);
  *   }
  * }
- * ```
- * @example: Binding a context
- * ```ts
+ *
+ * ctx.bind('stringDate').to('2017-01-01')
  * ctx.bind('provider_key').toProvider(MyProvider);
- * ```
- * @example: getting a value dynamically
- * ```ts
- * ctx.get('provider_key');
- * ctx.getBinding('provider_key').getValue();
+ *
+ * const value = ctx.getAsync('provider_key');
+ * // value is a Date instance
  * ```
  */
 export interface Provider<T> {
   /**
-   * @returns a value or a promise
+   * @returns The value to inject to dependents.
+   * This method can return a promise too, in which case the IoC framework
+   * will resolve this promise to obtain the value to inject.
    */
   value(): ValueOrPromise<T>;
 }

@@ -286,7 +286,20 @@ export class Binding {
   }
 
   /**
-   * Bind the key to a BindingProvider
+   * Bind the key to a value computed by a Provider.
+   *
+   * * @example
+   *
+   * ```ts
+   * export class DateProvider implements Provider<Date> {
+   *   constructor(@inject('stringDate') private param: String){}
+   *   value(): Date {
+   *     return new Date(param);
+   *   }
+   * }
+   * ```
+   *
+   * @param provider The value provider to use.
    */
   public toProvider<T>(providerClass: Constructor<Provider<T>>): this {
     this._getValue = ctx => {

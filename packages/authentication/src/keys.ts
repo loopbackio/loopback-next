@@ -3,6 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+/**
+ * Binding keys used by this component.
+ */
 export namespace BindingKeys {
   export namespace Authentication {
     export const STRATEGY = 'authentication.strategy';

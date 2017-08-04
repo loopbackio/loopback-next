@@ -6,7 +6,8 @@
 import {Reflector, Constructor} from '@loopback/context';
 import {BindingKeys} from './keys';
 
-/* class to hold authentication metadata
+/**
+ * Authentication metadata stored via Reflection API
  */
 export interface AuthenticationMetadata {
   strategy: string;
@@ -14,9 +15,10 @@ export interface AuthenticationMetadata {
 }
 
 /**
- * decorator to add authentication metadata to controller methods
- * @param strategyName
- * @param options
+ * Mark a controller method as requiring authenticated user.
+ *
+ * @param strategyName The name of the authentication strategy to use.
+ * @param options Additional options to configure the authentication.
  */
 export function authenticate(strategyName: string, options?: Object) {
   return function(controllerClass: Object, methodName: string) {
@@ -34,9 +36,10 @@ export function authenticate(strategyName: string, options?: Object) {
 }
 
 /**
- * function to get stored authentication metadata in a controller method
- * @param controllerObj
- * @param methodName
+ * Fetch authentication metadata stored by `@authenticate` decorator.
+ *
+ * @param controllerClass Target controller
+ * @param methodName Target method
  */
 export function getAuthenticateMetadata(
   controllerClass: Constructor<{}>,
