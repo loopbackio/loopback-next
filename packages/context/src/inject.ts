@@ -102,6 +102,19 @@ export function inject(
   };
 }
 
+export namespace inject {
+  export const getter = function injectGetter(
+    bindingKey: string,
+    metadata?: Object,
+  ) {
+    return inject(bindingKey, metadata, resolveAsGetter);
+  };
+}
+
+function resolveAsGetter(ctx: Context, injection: Injection) {
+  return () => ctx.get(injection.bindingKey);
+}
+
 /**
  * Return an array of injection objects for parameters
  * @param target The target class for constructor or static methods,
