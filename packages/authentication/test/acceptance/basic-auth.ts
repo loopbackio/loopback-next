@@ -7,8 +7,8 @@ import {
   Application,
   api,
   ServerResponse,
-  parseOperationArgs,
   ParsedRequest,
+  ParseParams,
   FindRoute,
   InvokeMethod,
   GetFromContext,
@@ -110,6 +110,8 @@ describe('Basic Authentication', () => {
     class MySequence implements SequenceHandler {
       constructor(
         @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
+        @inject('sequence.actions.parseParams')
+        protected parseParams: ParseParams,
         @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
         @inject('sequence.actions.send') protected send: Send,
         @inject('sequence.actions.reject') protected reject: Reject,
@@ -130,7 +132,7 @@ describe('Basic Authentication', () => {
           else throw new HttpErrors.InternalServerError('auth error');
 
           // Authentication successful, proceed to invoke controller
-          const args = await parseOperationArgs(req, route);
+          const args = await this.parseParams(req, route);
           const result = await this.invoke(route, args);
           this.send(res, result);
         } catch (err) {

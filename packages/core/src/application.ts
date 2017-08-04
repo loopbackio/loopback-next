@@ -19,6 +19,7 @@ import {
   ControllerRoute,
   RouteEntry,
   createEmptyApiSpec,
+  parseOperationArgs,
 } from '.';
 import {ServerRequest, ServerResponse, createServer} from 'http';
 import {Component, mountComponent} from './component';
@@ -27,7 +28,13 @@ import {HttpHandler} from './http-handler';
 import {writeResultToResponse} from './writer';
 import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
 import {RejectProvider} from './router/reject';
-import {FindRoute, InvokeMethod, Send, Reject} from './internal-types';
+import {
+  FindRoute,
+  InvokeMethod,
+  Send,
+  Reject,
+  ParseParams,
+} from './internal-types';
 import {ControllerClass} from './router/routing-table';
 
 // NOTE(bajtos) we cannot use `import * as cloneDeep from 'lodash/cloneDeep'
@@ -85,6 +92,7 @@ export class Application extends Context {
       }
     };
 
+    this.bind('sequence.actions.parseParams').to(parseOperationArgs);
     this.bind('sequence.actions.logError').to(this._logError.bind(this));
     this.bind('sequence.actions.send').to(writeResultToResponse);
     this.bind('sequence.actions.reject').toProvider(RejectProvider);
@@ -403,11 +411,13 @@ export class Application extends Context {
       // in order for our DI/IoC framework to inject constructor arguments
       constructor(
         @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
+        @inject('sequence.actions.parseParams')
+        protected parseParams: ParseParams,
         @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
         @inject('sequence.actions.send') public send: Send,
         @inject('sequence.actions.reject') public reject: Reject,
       ) {
-        super(findRoute, invoke, send, reject);
+        super(findRoute, parseParams, invoke, send, reject);
       }
 
       async handle(

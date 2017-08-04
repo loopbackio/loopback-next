@@ -10,6 +10,7 @@ import {
   writeResultToResponse,
   RejectProvider,
   ControllerSpec,
+  parseOperationArgs,
 } from '../..';
 import {Context} from '@loopback/context';
 import {expect, Client, createClientForHandler} from '@loopback/testlab';
@@ -383,6 +384,7 @@ describe('HttpHandler', () => {
   let handler: HttpHandler;
   function givenHandler() {
     rootContext = new Context();
+    rootContext.bind('sequence.actions.parseParams').to(parseOperationArgs);
     rootContext.bind('sequence.actions.logError').to(logger);
     rootContext.bind('sequence.actions.send').to(writeResultToResponse);
     rootContext.bind('sequence.actions.reject').toProvider(RejectProvider);

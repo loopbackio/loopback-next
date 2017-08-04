@@ -14,8 +14,8 @@ import {
   ParsedRequest,
   Send,
   Reject,
+  ParseParams,
 } from './internal-types';
-import {parseOperationArgs} from './parser';
 import {writeResultToResponse} from './writer';
 import {HttpError} from 'http-errors';
 
@@ -71,6 +71,7 @@ export class DefaultSequence implements SequenceHandler {
    */
   constructor(
     @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
+    @inject('sequence.actions.parseParams') protected parseParams: ParseParams,
     @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
     @inject('sequence.actions.send') public send: Send,
     @inject('sequence.actions.reject') public reject: Reject,
@@ -96,7 +97,7 @@ export class DefaultSequence implements SequenceHandler {
   async handle(req: ParsedRequest, res: ServerResponse) {
     try {
       const route = this.findRoute(req);
-      const args = await parseOperationArgs(req, route);
+      const args = await this.parseParams(req, route);
       const result = await this.invoke(route, args);
 
       debug('%s result -', route.describe(), result);
