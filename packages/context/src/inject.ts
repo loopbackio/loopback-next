@@ -102,7 +102,30 @@ export function inject(
   };
 }
 
+/**
+ * The function injected by `@inject.getter(key)`.
+ */
+export type Getter<T> = () => Promise<T>;
+
+/**
+ * The function injected by `@inject.setter(key)`.
+ */
+export type Setter<T> = (value: T) => void;
+
 export namespace inject {
+  /**
+   * Inject a function for getting the actual bound value.
+   *
+   * This is useful when implementing Actions, where
+   * the action is instantiated for Sequence constructor, but some
+   * of action's dependencies become bound only after other actions
+   * have been executed by the sequence.
+   *
+   * See also `Getter<T>`.
+   *
+   * @param bindingKey The key of the value we want to eventually get.
+   * @param metadata Optional metadata to help the injection
+   */
   export const getter = function injectGetter(
     bindingKey: string,
     metadata?: Object,
@@ -110,6 +133,19 @@ export namespace inject {
     return inject(bindingKey, metadata, resolveAsGetter);
   };
 
+  /**
+   * Inject a function for setting (binding) the given key to a given
+   * value. (Only static/constant values are supported, it's not possible
+   * to bind a key to a class or a provider.)
+   *
+   * This is useful e.g. when implementing Actions that are contributing
+   * new Elements.
+   *
+   * See also `Setter<T>`.
+   *
+   * @param bindingKey The key of the value we want to set.
+   * @param metadata Optional metadata to help the injection
+   */
   export const setter = function injectSetter(
     bindingKey: string,
     metadata?: Object,
