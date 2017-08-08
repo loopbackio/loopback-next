@@ -5,7 +5,7 @@
 
 import * as http from 'http';
 import {HttpErrors, inject, ParsedRequest} from '@loopback/core';
-import {Provider} from '@loopback/context';
+import {Provider, Getter, Setter} from '@loopback/context';
 import {Strategy} from 'passport';
 import {StrategyAdapter} from '../strategy-adapter';
 import {BindingKeys} from '../keys';
@@ -44,6 +44,8 @@ export class AuthenticationProvider implements Provider<AuthenticateFn> {
     // is executed.
     @inject.getter(BindingKeys.Authentication.STRATEGY)
     readonly getStrategy: () => Promise<Strategy>,
+    @inject.setter(BindingKeys.Authentication.CURRENT_USER)
+    readonly setCurrentUser: (value: UserProfile) => void,
   ) {}
 
   /**
@@ -51,34 +53,33 @@ export class AuthenticationProvider implements Provider<AuthenticateFn> {
    */
   value(): AuthenticateFn {
     return async (request: ParsedRequest) => {
-      const strategy = await this.getStrategy();
-      return await getAuthenticatedUser(strategy, request);
+      return await authenticateRequest(
+        this.getStrategy,
+        request,
+        this.setCurrentUser,
+      );
     };
   }
 }
 
 /**
- * @description a function which accepts (passport-strategy, request)
- *   and returns a user
+ * The implementation of authenticate() sequence action.
  * @param strategy Passport strategy
  * @param request Parsed Request
- *
- * @example
- * ```ts
- *   const strategy = new BasicStrategy(async (username, password) => {
- *     return await findUser(username, password);
- *   };
- *   getAuthenticatedUser(strategy, ParsedRequest);
- * ```
+ * @param setCurrentUser The setter function to update the current user
+ *   in the per-request Context
  */
-export async function getAuthenticatedUser(
-  strategy: Strategy,
+async function authenticateRequest(
+  getStrategy: Getter<Strategy>,
   request: ParsedRequest,
+  setCurrentUser: Setter<UserProfile>,
 ): Promise<UserProfile> {
+  const strategy = await getStrategy();
   if (!strategy.authenticate) {
     return Promise.reject(new Error('invalid strategy parameter'));
   }
   const strategyAdapter = new StrategyAdapter(strategy);
-  const user: UserProfile = await strategyAdapter.authenticate(request);
+  const user = await strategyAdapter.authenticate(request);
+  setCurrentUser(user);
   return user;
 }

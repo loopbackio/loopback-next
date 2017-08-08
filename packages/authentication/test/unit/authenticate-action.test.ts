@@ -8,7 +8,6 @@ import {Context, Provider, instantiateClass} from '@loopback/context';
 import {ParsedRequest} from '@loopback/core';
 import {
   AuthenticationProvider,
-  getAuthenticatedUser,
   AuthenticateFn,
   UserProfile,
   BindingKeys,
@@ -30,6 +29,7 @@ describe('AuthenticationProvider', () => {
   describe('value()', () => {
     let provider: AuthenticationProvider;
     let strategy: MockStrategy;
+    let currentUser: UserProfile | undefined;
 
     const mockUser: UserProfile = {name: 'user-name', id: 'mock-id'};
 
@@ -44,6 +44,13 @@ describe('AuthenticationProvider', () => {
       const user: UserProfile = await authenticate(request);
       expect(user).to.be.equal(mockUser);
     });
+
+   it('updates current user', async () => {
+     const authenticate = await Promise.resolve(provider.value());
+     const request = <ParsedRequest> {};
+     await authenticate(request);
+     expect(currentUser).to.equal(mockUser);
+   });
 
     describe('context.get(provider_key)', () => {
       it('returns a function which authenticates a request and returns a user',
@@ -106,7 +113,10 @@ describe('AuthenticationProvider', () => {
     function givenAuthenticationProvider() {
       strategy = new MockStrategy();
       strategy.setMockUser(mockUser);
-      provider = new AuthenticationProvider(() => Promise.resolve(strategy));
+      provider = new AuthenticationProvider(
+        () => Promise.resolve(strategy),
+        u => currentUser = u);
+      currentUser = undefined;
     }
   });
 });
