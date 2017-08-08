@@ -6,7 +6,7 @@
 export {Binding, BindingScope, BoundValue, ValueOrPromise} from './binding';
 export {Context} from './context';
 export {Constructor} from './resolver';
-export {inject} from './inject';
+export {inject, Setter, Getter} from './inject';
 export {NamespacedReflect} from './reflect';
 export {Provider} from './provider';
 export {isPromise} from './is-promise';

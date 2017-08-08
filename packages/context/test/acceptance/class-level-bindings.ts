@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, inject, isPromise} from '../..';
+import {Context, inject, isPromise, Setter, Getter} from '../..';
 
 const INFO_CONTROLLER = 'controllers.info';
 
@@ -140,7 +140,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     class Store {
       constructor(
         @inject.getter('key')
-        public getter: Function,
+        public getter: Getter<string>,
       ) {}
     }
 
@@ -159,7 +159,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     class Store {
       constructor(
         @inject.setter('key')
-        public setter: (value: string) => void,
+        public setter: Setter<string>,
       ) {}
     }
 
