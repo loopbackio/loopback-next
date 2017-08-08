@@ -71,7 +71,7 @@ describe('Basic Authentication', () => {
     users = new UserRepository({
       joe : {profile: {id: 'joe'}, password: '12345'},
       Simpson: {profile: {id: 'sim123'}, password: 'alpha'},
-      Flintstone: {profile: {id: 'Flint'}, password: 'beta'},
+      Flinstone: {profile: {id: 'Flint'}, password: 'beta'},
       George: {profile: {id: 'Curious'}, password: 'gamma'},
     });
   }
@@ -96,7 +96,10 @@ describe('Basic Authentication', () => {
 
     @api(apispec)
     class MyController {
-      constructor(@inject('authentication.user') private user: UserProfile) {}
+      constructor(
+        @inject(BindingKeys.Authentication.CURRENT_USER)
+        private user: UserProfile,
+      ) {}
 
       @authenticate('BasicStrategy')
       async whoAmI() : Promise<string> {
@@ -126,10 +129,6 @@ describe('Basic Authentication', () => {
 
           // Authenticate
           const user: UserProfile = await this.authenticateRequest(req);
-
-          // User is expected to be returned or an exception should be thrown
-          if (user) this.bindElement('authentication.user').to(user);
-          else throw new HttpErrors.InternalServerError('auth error');
 
           // Authentication successful, proceed to invoke controller
           const args = await this.parseParams(req, route);

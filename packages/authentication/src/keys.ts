@@ -11,5 +11,6 @@ export namespace BindingKeys {
     export const STRATEGY = 'authentication.strategy';
     export const AUTH_ACTION = 'authentication.actions.authenticate';
     export const METADATA = 'authentication.operationMetadata';
+    export const CURRENT_USER = 'authentication.currentUser';
   }
 }
