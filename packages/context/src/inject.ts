@@ -109,10 +109,25 @@ export namespace inject {
   ) {
     return inject(bindingKey, metadata, resolveAsGetter);
   };
+
+  export const setter = function injectSetter(
+    bindingKey: string,
+    metadata?: Object,
+  ) {
+    return inject(bindingKey, metadata, resolveAsSetter);
+  };
 }
 
 function resolveAsGetter(ctx: Context, injection: Injection) {
-  return () => ctx.get(injection.bindingKey);
+  return function getter() {
+    return ctx.get(injection.bindingKey);
+  };
+}
+
+function resolveAsSetter(ctx: Context, injection: Injection) {
+  return function setter(value: BoundValue) {
+    ctx.bind(injection.bindingKey).to(value);
+  };
 }
 
 /**

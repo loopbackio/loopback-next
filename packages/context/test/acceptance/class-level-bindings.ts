@@ -155,6 +155,22 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     expect(await store.getter()).to.equal('new-value');
   });
 
+  it('injects a setter function', async () => {
+    class Store {
+      constructor(
+        @inject.setter('key')
+        public setter: (value: string) => void,
+      ) {}
+    }
+
+    ctx.bind('store').toClass(Store);
+    const store = ctx.getSync('store');
+
+    expect(store.setter).to.be.Function();
+    store.setter('a-value');
+    expect(ctx.getSync('key')).to.equal('a-value');
+  });
+
   function createContext() {
     ctx = new Context();
   }
