@@ -56,6 +56,25 @@ describe('Application.getApiSpec()', () => {
     });
   });
 
+  it('returns routes registered via app.route(..., Controller, method)', () => {
+    class MyController {
+      greet() {}
+    }
+
+    app.route('get', '/greet', {responses: {}}, MyController, 'greet');
+
+    const spec = app.getApiSpec();
+    expect(spec.paths).to.eql({
+      '/greet': {
+        get: {
+          responses: {},
+          'x-controller-name': 'MyController',
+          'x-operation-name': 'greet',
+        },
+      },
+    });
+  });
+
   it('returns routes registered via app.controller()', () => {
     class MyController {
       @get('/greet')
@@ -68,6 +87,7 @@ describe('Application.getApiSpec()', () => {
       '/greet': {
         get: {
           responses: {},
+          'x-controller-name': 'MyController',
           'x-operation-name': 'greet',
         },
       },

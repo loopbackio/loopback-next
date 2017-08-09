@@ -242,7 +242,18 @@ export class ControllerRoute extends BaseRoute {
     protected readonly _controllerCtor: ControllerClass,
     methodName?: string,
   ) {
-    super(verb, path, spec);
+    super(
+      verb,
+      path,
+      // Add x-controller-name and x-operation-name if not present
+      Object.assign(
+        {
+          'x-controller-name': _controllerCtor.name,
+          'x-operation-name': methodName,
+        },
+        spec,
+      ),
+    );
 
     if (!methodName) {
       methodName = this.spec['x-operation-name'];
