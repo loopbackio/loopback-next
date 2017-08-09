@@ -5,7 +5,7 @@
 
 const debug = require('debug')('loopback:core:sequence');
 import {ServerRequest, ServerResponse} from 'http';
-import {inject} from '@loopback/context';
+import {inject, Context} from '@loopback/context';
 import {
   FindRoute,
   InvokeMethod,
@@ -70,6 +70,7 @@ export class DefaultSequence implements SequenceHandler {
    * @param logError Logs error
    */
   constructor(
+    @inject('http.request.context') public ctx: Context,
     @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
     @inject('sequence.actions.parseParams') protected parseParams: ParseParams,
     @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,

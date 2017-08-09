@@ -410,6 +410,7 @@ export class Application extends Context {
       // NOTE(bajtos) Unfortunately, we have to duplicate the constructor
       // in order for our DI/IoC framework to inject constructor arguments
       constructor(
+        @inject('http.request.context') public ctx: Context,
         @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
         @inject('sequence.actions.parseParams')
         protected parseParams: ParseParams,
@@ -417,7 +418,7 @@ export class Application extends Context {
         @inject('sequence.actions.send') public send: Send,
         @inject('sequence.actions.reject') public reject: Reject,
       ) {
-        super(findRoute, parseParams, invoke, send, reject);
+        super(ctx, findRoute, parseParams, invoke, send, reject);
       }
 
       async handle(

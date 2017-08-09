@@ -78,6 +78,7 @@ export class HttpHandler {
     const requestContext = new Context(this._rootContext);
     requestContext.bind('http.request').to(req);
     requestContext.bind('http.response').to(res);
+    requestContext.bind('http.request.context').to(requestContext);
     return requestContext;
   }
 
