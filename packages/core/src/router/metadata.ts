@@ -247,8 +247,31 @@ export function operation(verb: string, path: string, spec?: OperationObject) {
   };
 }
 
+const paramDecoratorStyle = Symbol('ParamDecoratorStyle');
+
 /**
  * Describe an input parameter of a Controller method.
+ *
+ * `@param` can be applied to method itself or specific parameters. For example,
+ * ```
+ * class MyController {
+ *   @get('/')
+ *   @param(offsetSpec)
+ *   @param(pageSizeSpec)
+ *   list(offset?: number, pageSize?: number) {}
+ * }
+ * ```
+ * or
+ * ```
+ * class MyController {
+ *   @get('/')
+ *   list(
+ *     @param(offsetSpec) offset?: number,
+ *     @param(pageSizeSpec) pageSize?: number,
+ *   ) {}
+ * }
+ * ```
+ * Please note mixed usage of `@param` at method/parameter level is not allowed.
  *
  * @param paramSpec Parameter specification.
  */
@@ -256,7 +279,7 @@ export function param(paramSpec: ParameterObject) {
   return function(
     target: any,
     propertyKey: string,
-    descriptor: PropertyDescriptor,
+    descriptorOrParameterIndex: PropertyDescriptor | number,
   ) {
     assert(
       typeof target[propertyKey] === 'function',
@@ -264,11 +287,29 @@ export function param(paramSpec: ParameterObject) {
     );
 
     editOperationSpec(target, propertyKey, operationSpec => {
+      let decoratorStyle;
+      if (typeof descriptorOrParameterIndex === 'number') {
+        decoratorStyle = 'parameter';
+      } else {
+        decoratorStyle = 'method';
+      }
       if (!operationSpec.parameters) {
         operationSpec.parameters = [];
+        // Record the @param decorator style to ensure consistency
+        operationSpec[paramDecoratorStyle] = decoratorStyle;
+      } else {
+        // Mixed usage of @param at method/parameter level is not allowed
+        if (operationSpec[paramDecoratorStyle] !== decoratorStyle) {
+          throw new Error('Mixed usage of @param at method/parameter level' +
+          ' is not allowed.');
+        }
       }
 
-      operationSpec.parameters.unshift(paramSpec);
+      if (typeof descriptorOrParameterIndex === 'number') {
+        operationSpec.parameters[descriptorOrParameterIndex] = paramSpec;
+      } else {
+        operationSpec.parameters.unshift(paramSpec);
+      }
 
       return operationSpec;
     });

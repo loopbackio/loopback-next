@@ -69,6 +69,62 @@ describe('Routing metadata for parameters', () => {
       ]);
     });
 
+    it('can define multiple parameters by arguments', () => {
+      const offsetSpec: ParameterObject = {
+        name: 'offset',
+        type: 'number',
+        in: 'query',
+      };
+
+      const pageSizeSpec: ParameterObject = {
+        name: 'pageSize',
+        type: 'number',
+        in: 'query',
+      };
+
+      class MyController {
+        @get('/')
+        list(
+          @param(offsetSpec) offset?: number,
+          @param(pageSizeSpec) pageSize?: number,
+        ) {}
+      }
+
+      const actualSpec = getControllerSpec(MyController);
+
+      expect(actualSpec.paths['/']['get'].parameters).to.eql([
+        offsetSpec,
+        pageSizeSpec,
+      ]);
+    });
+
+    it('throws an error if @param is used at both method and parameter level',
+      () => {
+        expect(() => {
+          const offsetSpec: ParameterObject = {
+          name: 'offset',
+          type: 'number',
+          in: 'query',
+        };
+
+        const pageSizeSpec: ParameterObject = {
+          name: 'pageSize',
+          type: 'number',
+          in: 'query',
+        };
+
+        class MyController {
+          @get('/')
+          @param(offsetSpec)
+          list(
+            offset?: number,
+            @param(pageSizeSpec) pageSize?: number,
+          ) {}
+        }
+      }).to.throw(
+        /Mixed usage of @param at method\/parameter level is not allowed/);
+    });
+
     it('adds to existing spec provided via @operation', () => {
       const offsetSpec: ParameterObject = {
         name: 'offset',
