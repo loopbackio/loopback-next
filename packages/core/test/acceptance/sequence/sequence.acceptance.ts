@@ -17,6 +17,7 @@ import {
   Reject,
   SequenceHandler,
   ParseParams,
+  DefaultSequence,
 } from '../../..';
 import {expect, Client, createClientForApp} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
@@ -102,6 +103,41 @@ describe('Sequence', () => {
     app.bind('sequence.actions.reject').to(reject);
 
     return whenIMakeRequestTo(app).get('/unknown-url').expect(418);
+  });
+
+  it('makes ctx available in a custom sequence handler function', () => {
+    app.bind('test').to('hello world');
+    app.handler((sequence, request, response) => {
+      expect.exists(sequence.ctx);
+      sequence.send(response, sequence.ctx.getSync('test'));
+    });
+
+    return whenIMakeRequestTo(app).get('/').expect('hello world');
+  });
+
+  it('makes ctx available in a custom sequence class', () => {
+    class MySequence extends DefaultSequence {
+      constructor(
+        @inject('http.request.context') public ctx: Context,
+        @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
+        @inject('sequence.actions.parseParams')
+        protected parseParams: ParseParams,
+        @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
+        @inject('sequence.actions.send') public send: Send,
+        @inject('sequence.actions.reject') public reject: Reject,
+      ) {
+        super(ctx, findRoute, parseParams, invoke, send, reject);
+      }
+
+      async handle(req: ParsedRequest, res: ServerResponse) {
+        this.send(res, this.ctx.getSync('test'));
+      }
+    }
+
+    app.sequence(MySequence);
+    app.bind('test').to('hello world');
+
+    return whenIMakeRequestTo(app).get('/').expect('hello world');
   });
 
   function givenAppWithController() {
