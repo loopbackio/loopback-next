@@ -16,6 +16,8 @@ import {Context} from '@loopback/context';
 import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {ParameterObject} from '@loopback/openapi-spec';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
+import {FindRouteProvider} from '../../src/router/providers/find-route';
+import {InvokeMethodProvider} from '../../src/router/providers/invoke-method';
 
 describe('HttpHandler', () => {
   let client: Client;
@@ -384,7 +386,13 @@ describe('HttpHandler', () => {
   let handler: HttpHandler;
   function givenHandler() {
     rootContext = new Context();
+    rootContext
+      .bind('sequence.actions.findRoute')
+      .toProvider(FindRouteProvider);
     rootContext.bind('sequence.actions.parseParams').to(parseOperationArgs);
+    rootContext
+      .bind('sequence.actions.invokeMethod')
+      .toProvider(InvokeMethodProvider);
     rootContext.bind('sequence.actions.logError').to(logger);
     rootContext.bind('sequence.actions.send').to(writeResultToResponse);
     rootContext.bind('sequence.actions.reject').toProvider(RejectProvider);
@@ -401,6 +409,7 @@ describe('HttpHandler', () => {
     }
 
     handler = new HttpHandler(rootContext);
+    rootContext.bind('http.handler').to(handler);
   }
 
   function givenControllerClass(

@@ -49,5 +49,5 @@ export {
 } from './router/routing-table';
 export {HttpHandler} from './http-handler';
 export {writeResultToResponse} from './writer';
-export {RejectProvider} from './router/reject';
+export {RejectProvider} from './router/providers/reject';
 export * from './keys';

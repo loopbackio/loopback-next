@@ -4,7 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect, ShotRequest} from '@loopback/testlab';
-import {Application, ServerRequest} from '../../..';
+import {anOperationSpec} from '@loopback/openapi-spec-builder';
+import {Binding, Context} from '@loopback/context';
+import {
+  Application,
+  ServerRequest,
+  BindElement,
+  GetFromContext,
+  Route,
+  InvokeMethod,
+} from '../../..';
 
 describe('Application', () => {
   describe('"logError" binding', () => {
@@ -36,6 +45,48 @@ describe('Application', () => {
     });
   });
 
+  describe('"bindElement" binding', () => {
+    it('returns a function for creating new bindings', async () => {
+      const ctx = givenRequestContext();
+      const bindElement: BindElement = await ctx.get('bindElement');
+      const binding = bindElement('foo').to('bar');
+      expect(binding).to.be.instanceOf(Binding);
+      expect(ctx.getSync('foo')).to.equal('bar');
+    });
+  });
+
+  describe('"getFromContext" binding', () => {
+    it('returns a function for getting a value from the context', async () => {
+      const ctx = givenRequestContext();
+      const getFromContext: GetFromContext = await ctx.get('getFromContext');
+      ctx.bind('foo').to('bar');
+      expect(await getFromContext('foo')).to.equal('bar');
+    });
+  });
+
+  describe('"invokeMethod" binding', () => {
+    it('returns a function for invoking a route handler', async () => {
+      function greet() {
+        return 'Hello world';
+      }
+
+      const route = new Route(
+        'get',
+        '/greet',
+        anOperationSpec().build(),
+        greet,
+      );
+
+      const ctx = givenRequestContext();
+      const invokeMethod: InvokeMethod = await ctx.get(
+        'sequence.actions.invokeMethod',
+      );
+
+      const result = await invokeMethod(route, []);
+      expect(result).to.equal('Hello world');
+    });
+  });
+
   describe('configuration', () => {
     it('uses http port 3000 by default', () => {
       const app = new Application();
@@ -47,4 +98,10 @@ describe('Application', () => {
       expect(app.getSync('http.port')).to.equal(0);
     });
   });
+
+  function givenRequestContext(rootContext: Context = new Application()) {
+    const requestContext = new Context(rootContext);
+    requestContext.bind('http.request.context').to(requestContext);
+    return requestContext;
+  }
 });
