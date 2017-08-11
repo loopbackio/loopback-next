@@ -43,9 +43,9 @@ export class AuthenticationProvider implements Provider<AuthenticateFn> {
     // defer resolution of the strategy until authenticate() action
     // is executed.
     @inject.getter(BindingKeys.Authentication.STRATEGY)
-    readonly getStrategy: () => Promise<Strategy>,
+    readonly getStrategy: Getter<Strategy>,
     @inject.setter(BindingKeys.Authentication.CURRENT_USER)
-    readonly setCurrentUser: (value: UserProfile) => void,
+    readonly setCurrentUser: Setter<UserProfile>,
   ) {}
 
   /**
