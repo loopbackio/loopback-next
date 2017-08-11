@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {LogError, Reject} from '../internal-types';
+import {LogError, Reject} from '../../internal-types';
 import {inject} from '@loopback/context';
-import {ServerResponse, ServerRequest} from '..';
+import {ServerResponse, ServerRequest} from 'http';
 import {HttpError} from 'http-errors';
 
 export class RejectProvider {

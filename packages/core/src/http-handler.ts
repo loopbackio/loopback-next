@@ -55,17 +55,16 @@ export class HttpHandler {
     return this._routes.describeApiPaths();
   }
 
+  findRoute(request: ParsedRequest) {
+    return this._routes.find(request);
+  }
+
   protected async _handleRequest(
     request: ServerRequest,
     response: ServerResponse,
   ): Promise<void> {
     const parsedRequest: ParsedRequest = parseRequestUrl(request);
     const requestContext = this._createRequestContext(request, response);
-
-    this._bindFindRoute(requestContext);
-    this._bindInvokeMethod(requestContext);
-    this._bindGetFromContext(requestContext);
-    this._bindBindElement(requestContext);
 
     const sequence: SequenceHandler = await requestContext.get('sequence');
     await sequence.handle(parsedRequest, response);
@@ -80,30 +79,5 @@ export class HttpHandler {
     requestContext.bind('http.response').to(res);
     requestContext.bind('http.request.context').to(requestContext);
     return requestContext;
-  }
-
-  protected _bindGetFromContext(context: Context): void {
-    context.bind('getFromContext').to(
-      (key: string): Promise<BoundValue> => context.get(key));
-  }
-
-  protected _bindBindElement(context: Context): void {
-    context.bind('bindElement').to((key: string): Binding => context.bind(key));
-  }
-
-  protected _bindFindRoute(context: Context): void {
-    const findRoute: FindRoute = (request) => {
-      const found = this._routes.find(request);
-      found.updateBindings(context);
-      return found;
-    };
-    context.bind('sequence.actions.findRoute').to(findRoute);
-  }
-
-  protected _bindInvokeMethod(context: Context) {
-    const invoke: InvokeMethod = async (route, args) => {
-      return await route.invokeHandler(context, args);
-    };
-    context.bind('sequence.actions.invokeMethod').to(invoke);
   }
 }

@@ -27,7 +27,7 @@ import {getControllerSpec} from './router/metadata';
 import {HttpHandler} from './http-handler';
 import {writeResultToResponse} from './writer';
 import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
-import {RejectProvider} from './router/reject';
+import {RejectProvider} from './router/providers/reject';
 import {
   FindRoute,
   InvokeMethod,
@@ -36,6 +36,10 @@ import {
   ParseParams,
 } from './internal-types';
 import {ControllerClass} from './router/routing-table';
+import {GetFromContextProvider} from './router/providers/get-from-context';
+import {BindElementProvider} from './router/providers/bind-element';
+import {InvokeMethodProvider} from './router/providers/invoke-method';
+import {FindRouteProvider} from './router/providers/find-route';
 
 // NOTE(bajtos) we cannot use `import * as cloneDeep from 'lodash/cloneDeep'
 // because it produces the following TypeScript error:
@@ -66,6 +70,10 @@ export class Application extends Context {
   public handleHttp: (req: ServerRequest, res: ServerResponse) => void;
 
   protected _httpHandler: HttpHandler;
+  protected get httpHandler(): HttpHandler {
+    this._setupHandlerIfNeeded();
+    return this._httpHandler;
+  }
 
   constructor(public options?: ApplicationOptions) {
     super();
@@ -92,17 +100,22 @@ export class Application extends Context {
       }
     };
 
+    this.bind('http.handler').toDynamicValue(() => this.httpHandler);
+
+    this.bind('sequence.actions.findRoute').toProvider(FindRouteProvider);
     this.bind('sequence.actions.parseParams').to(parseOperationArgs);
+    this.bind('sequence.actions.invokeMethod').toProvider(InvokeMethodProvider);
     this.bind('sequence.actions.logError').to(this._logError.bind(this));
     this.bind('sequence.actions.send').to(writeResultToResponse);
     this.bind('sequence.actions.reject').toProvider(RejectProvider);
+    this.bind('getFromContext').toProvider(GetFromContextProvider);
+    this.bind('bindElement').toProvider(BindElementProvider);
   }
 
   protected _handleHttpRequest(
     request: ServerRequest,
     response: ServerResponse,
   ) {
-    this._setupHandlerIfNeeded();
     if (request.method === 'GET' && request.url === '/openapi.json') {
       // NOTE(bajtos) Regular routes are handled through Sequence.
       // IMO, this built-in endpoint should not run through a Sequence,
@@ -113,7 +126,7 @@ export class Application extends Context {
       // spec to be converted into an XML response.
       return this._serveOpenApiSpec(request, response);
     }
-    return this._httpHandler.handleRequest(request, response);
+    return this.httpHandler.handleRequest(request, response);
   }
 
   protected _setupHandlerIfNeeded() {
@@ -324,11 +337,10 @@ export class Application extends Context {
    */
   getApiSpec(): OpenApiSpec {
     const spec = this.getSync('api-spec');
-    this._setupHandlerIfNeeded();
 
     // Apply deep clone to prevent getApiSpec() callers from
     // accidentally modifying our internal routing data
-    spec.paths = cloneDeep(this._httpHandler.describeApiPaths());
+    spec.paths = cloneDeep(this.httpHandler.describeApiPaths());
 
     return spec;
   }
