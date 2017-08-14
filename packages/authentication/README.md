@@ -45,7 +45,7 @@ import {
   ValueOrPromise,
 } from '@loopback/context';
 import {
-  BindingKeys,
+  AuthenticationBindings,
   AuthenticationMetadata,
 } from '@loopback/authentication';
 
@@ -54,7 +54,7 @@ import {BasicStrategy} from 'passport-http';
 
 export class MyAuthStrategyProvider implements Provider<Strategy> {
   constructor(
-    @inject(BindingKeys.Authentication.METADATA)
+    @inject(AuthenticationBindings.METADATA)
     private metadata: AuthenticationMetadata,
   ) {}
 
@@ -127,7 +127,10 @@ Finally, put it all together in your application object:
 
 ```ts
 import {Application} from '@loopback/core';
-import {AuthenticationComponent, BindingKeys} from '@loopback/authentication';
+import {
+  AuthenticationComponent,
+  AuthenticationBindings,
+} from '@loopback/authentication';
 import {MyAuthStrategyProvider} from './providers/auth-strategy';
 import {MyController} from './controllers/my-controller';
 import {MySequence} from './sequence';
@@ -138,7 +141,7 @@ class MyApp extends Application {
       components: [AuthenticationComponent],
     });
 
-    this.bind(BindingKeys.Authentication.STRATEGY)
+    this.bind(AuthenticationBindings.STRATEGY)
       .toProvider(MyAuthStrategyProvider);
     this.sequence(MySequence);
 

@@ -6,11 +6,9 @@
 /**
  * Binding keys used by this component.
  */
-export namespace BindingKeys {
-  export namespace Authentication {
-    export const STRATEGY = 'authentication.strategy';
-    export const AUTH_ACTION = 'authentication.actions.authenticate';
-    export const METADATA = 'authentication.operationMetadata';
-    export const CURRENT_USER = 'authentication.currentUser';
-  }
+export namespace AuthenticationBindings {
+  export const STRATEGY = 'authentication.strategy';
+  export const AUTH_ACTION = 'authentication.actions.authenticate';
+  export const METADATA = 'authentication.operationMetadata';
+  export const CURRENT_USER = 'authentication.currentUser';
 }

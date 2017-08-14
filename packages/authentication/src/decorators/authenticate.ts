@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Reflector, Constructor} from '@loopback/context';
-import {BindingKeys} from '../keys';
+import {AuthenticationBindings} from '../keys';
 
 /**
  * Authentication metadata stored via Reflection API
@@ -27,7 +27,7 @@ export function authenticate(strategyName: string, options?: Object) {
       options: options || {},
     };
     Reflector.defineMetadata(
-      BindingKeys.Authentication.METADATA,
+      AuthenticationBindings.METADATA,
       metadataObj,
       controllerClass,
       methodName,
@@ -46,7 +46,7 @@ export function getAuthenticateMetadata(
   methodName: string,
 ): AuthenticationMetadata | undefined {
   return Reflector.getMetadata(
-    BindingKeys.Authentication.METADATA,
+    AuthenticationBindings.METADATA,
     controllerClass.prototype,
     methodName,
   );

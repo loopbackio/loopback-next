@@ -8,7 +8,7 @@ import {HttpErrors, inject, ParsedRequest} from '@loopback/core';
 import {Provider, Getter, Setter} from '@loopback/context';
 import {Strategy} from 'passport';
 import {StrategyAdapter} from '../strategy-adapter';
-import {BindingKeys} from '../keys';
+import {AuthenticationBindings} from '../keys';
 
 /**
  * interface definition of a function which accepts a request
@@ -42,9 +42,9 @@ export class AuthenticationProvider implements Provider<AuthenticateFn> {
     // To solve this, we are injecting a getter function that will
     // defer resolution of the strategy until authenticate() action
     // is executed.
-    @inject.getter(BindingKeys.Authentication.STRATEGY)
+    @inject.getter(AuthenticationBindings.STRATEGY)
     readonly getStrategy: Getter<Strategy>,
-    @inject.setter(BindingKeys.Authentication.CURRENT_USER)
+    @inject.setter(AuthenticationBindings.CURRENT_USER)
     readonly setCurrentUser: Setter<UserProfile>,
   ) {}
 

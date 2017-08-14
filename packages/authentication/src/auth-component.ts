@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingKeys} from './keys';
+import {AuthenticationBindings} from './keys';
 import {Constructor} from '@loopback/context';
 import {Component, ProviderMap} from '@loopback/core';
 import {AuthenticationProvider} from './providers/authenticate';
@@ -15,8 +15,8 @@ export class AuthenticationComponent implements Component {
   // TODO(bajtos) inject configuration
   constructor() {
     this.providers = {
-      [BindingKeys.Authentication.AUTH_ACTION]: AuthenticationProvider,
-      [BindingKeys.Authentication.METADATA]: AuthMetadataProvider,
+      [AuthenticationBindings.AUTH_ACTION]: AuthenticationProvider,
+      [AuthenticationBindings.METADATA]: AuthMetadataProvider,
     };
   }
 }
