@@ -5,7 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 import {Context, Provider} from '@loopback/context';
-import {ParsedRequest, BindingKeys} from '@loopback/core';
+import {ParsedRequest, CoreBindings} from '@loopback/core';
 import {
   AuthMetadataProvider,
   AuthenticationMetadata,
@@ -42,13 +42,13 @@ describe('AuthMetadataProvider', () => {
       it('returns the authentication metadata of a controller method',
       async () => {
         const context: Context = new Context();
-        context.bind(BindingKeys.Context.CONTROLLER_CLASS).to(TestController);
-        context.bind(BindingKeys.Context.CONTROLLER_METHOD_NAME).to('whoAmI');
+        context.bind(CoreBindings.CONTROLLER_CLASS).to(TestController);
+        context.bind(CoreBindings.CONTROLLER_METHOD_NAME).to('whoAmI');
         context
-          .bind(BindingKeys.Context.CONTROLLER_METHOD_META)
+          .bind(CoreBindings.CONTROLLER_METHOD_META)
           .toProvider(AuthMetadataProvider);
         const authMetadata = await context.get(
-          BindingKeys.Context.CONTROLLER_METHOD_META,
+          CoreBindings.CONTROLLER_METHOD_META,
         );
         expect(authMetadata).to.be.eql({
           strategy: 'my-strategy',
@@ -60,14 +60,14 @@ describe('AuthMetadataProvider', () => {
       async () => {
         const context: Context = new Context();
         context
-          .bind(BindingKeys.Context.CONTROLLER_CLASS)
+          .bind(CoreBindings.CONTROLLER_CLASS)
           .to(ControllerWithNoMetadata);
-        context.bind(BindingKeys.Context.CONTROLLER_METHOD_NAME).to('whoAmI');
+        context.bind(CoreBindings.CONTROLLER_METHOD_NAME).to('whoAmI');
         context
-          .bind(BindingKeys.Context.CONTROLLER_METHOD_META)
+          .bind(CoreBindings.CONTROLLER_METHOD_META)
           .toProvider(AuthMetadataProvider);
         const authMetadata = await context.get(
-          BindingKeys.Context.CONTROLLER_METHOD_META,
+          CoreBindings.CONTROLLER_METHOD_META,
         );
         expect(authMetadata).to.be.undefined();
       });
