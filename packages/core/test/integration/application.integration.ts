@@ -10,6 +10,7 @@ import {
   ResponseObject,
   SchemaObject,
   ReferenceObject,
+  CoreBindings,
 } from '../..';
 import {Context} from '@loopback/context';
 
@@ -17,7 +18,7 @@ describe('Application (integration)', () => {
   it('updates http.port binding when listening on ephemeral port', async () => {
     const app = new Application({http: {port: 0}});
     await app.start();
-    expect(app.getSync('http.port')).to.be.above(0);
+    expect(app.getSync(CoreBindings.HTTP_PORT)).to.be.above(0);
   });
 
   it('responds with 500 when Sequence fails with unhandled error', () => {

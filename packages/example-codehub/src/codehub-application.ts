@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application} from '@loopback/core';
+import {Application, CoreBindings} from '@loopback/core';
 import {UserController, HealthController} from './controllers';
 
 export class CodeHubApplication extends Application {
@@ -42,7 +42,7 @@ export class CodeHubApplication extends Application {
   }
 
   async info() {
-    const port: Number = await this.get('http.port');
+    const port: Number = await this.get(CoreBindings.HTTP_PORT);
 
     return {
       uptime: Date.now() - this._startTime.getTime(),

@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {supertest} from '@loopback/testlab';
+import {CoreBindings} from '@loopback/core';
 import {CodeHubApplication} from '../../src/codehub-application';
 
 export async function createClientForApp(app: CodeHubApplication) {
@@ -13,7 +14,7 @@ export async function createClientForApp(app: CodeHubApplication) {
 
 export function createApp() {
   const app = new CodeHubApplication();
-  app.bind('http.port').to(0);
+  app.bind(CoreBindings.HTTP_PORT).to(0);
   return app;
 }
 

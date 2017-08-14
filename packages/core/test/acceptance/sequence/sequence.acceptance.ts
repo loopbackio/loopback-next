@@ -18,11 +18,14 @@ import {
   SequenceHandler,
   ParseParams,
   DefaultSequence,
+  CoreBindings,
 } from '../../..';
 import {expect, Client, createClientForApp} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {inject, Constructor, Context} from '@loopback/context';
 import {ControllerClass} from '../../../src/router/routing-table';
+
+const SequenceActions = CoreBindings.SequenceActions;
 
 /* # Feature: Sequence
  * - In order to build REST APIs
@@ -46,7 +49,7 @@ describe('Sequence', () => {
 
   it('allows users to define a custom sequence as a class', () => {
     class MySequence implements SequenceHandler {
-      constructor(@inject('sequence.actions.send') private send: Send) {}
+      constructor(@inject(SequenceActions.SEND) private send: Send) {}
 
       async handle(req: ParsedRequest, res: ServerResponse) {
         this.send(res, 'hello world');
@@ -61,11 +64,11 @@ describe('Sequence', () => {
   it('allows users to bind a custom sequence class', () => {
     class MySequence {
       constructor(
-        @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
-        @inject('sequence.actions.parseParams')
+        @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
+        @inject(SequenceActions.PARSE_PARAMS)
         protected parseParams: ParseParams,
-        @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
-        @inject('sequence.actions.send') protected send: Send,
+        @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
+        @inject(SequenceActions.SEND) protected send: Send,
       ) {}
 
       async handle(req: ParsedRequest, res: ServerResponse) {
@@ -88,7 +91,7 @@ describe('Sequence', () => {
       response.setHeader('content-type', 'text/plain');
       response.end(`CUSTOM FORMAT: ${result}`);
     };
-    app.bind('sequence.actions.send').to(send);
+    app.bind(SequenceActions.SEND).to(send);
 
     return whenIMakeRequestTo(app)
       .get('/name')
@@ -100,7 +103,7 @@ describe('Sequence', () => {
       response.statusCode = 418; // I'm a teapot
       response.end();
     };
-    app.bind('sequence.actions.reject').to(reject);
+    app.bind(SequenceActions.REJECT).to(reject);
 
     return whenIMakeRequestTo(app).get('/unknown-url').expect(418);
   });
@@ -118,13 +121,13 @@ describe('Sequence', () => {
   it('makes ctx available in a custom sequence class', () => {
     class MySequence extends DefaultSequence {
       constructor(
-        @inject('http.request.context') public ctx: Context,
-        @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
-        @inject('sequence.actions.parseParams')
+        @inject(CoreBindings.Http.CONTEXT) public ctx: Context,
+        @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
+        @inject(SequenceActions.PARSE_PARAMS)
         protected parseParams: ParseParams,
-        @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
-        @inject('sequence.actions.send') public send: Send,
-        @inject('sequence.actions.reject') public reject: Reject,
+        @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
+        @inject(SequenceActions.SEND) public send: Send,
+        @inject(SequenceActions.REJECT) public reject: Reject,
       ) {
         super(ctx, findRoute, parseParams, invoke, send, reject);
       }

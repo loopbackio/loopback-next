@@ -5,9 +5,10 @@
 
 import {Context, inject, Provider} from '@loopback/context';
 import {GetFromContext} from '../../internal-types';
+import {CoreBindings} from '../../keys';
 
 export class GetFromContextProvider implements Provider<GetFromContext> {
-  constructor(@inject('http.request.context') protected context: Context) {}
+  constructor(@inject(CoreBindings.Http.CONTEXT) protected context: Context) {}
 
   value() {
     return (key: string) => this.context.get(key);

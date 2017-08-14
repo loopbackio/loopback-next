@@ -16,8 +16,11 @@ import {
   Reject,
   ParseParams,
 } from './internal-types';
+import {CoreBindings} from './keys';
 import {writeResultToResponse} from './writer';
 import {HttpError} from 'http-errors';
+
+const SequenceActions = CoreBindings.SequenceActions;
 
 /**
  * A sequence function is a function implementing a custom
@@ -56,7 +59,7 @@ export interface SequenceHandler {
  *
  * User can bind their own Sequence to app as shown below
  * ```ts
- * app.bind('sequence').toClass(MySequence);
+ * app.bind(CoreBindings.SEQUENCE).toClass(MySequence);
  * ```
  */
 export class DefaultSequence implements SequenceHandler {
@@ -70,12 +73,13 @@ export class DefaultSequence implements SequenceHandler {
    * @param logError Logs error
    */
   constructor(
-    @inject('http.request.context') public ctx: Context,
-    @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
-    @inject('sequence.actions.parseParams') protected parseParams: ParseParams,
-    @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
-    @inject('sequence.actions.send') public send: Send,
-    @inject('sequence.actions.reject') public reject: Reject,
+    @inject(CoreBindings.Http.CONTEXT) public ctx: Context,
+    @inject(SequenceActions.FIND_ROUTE)
+    protected findRoute: FindRoute,
+    @inject(SequenceActions.PARSE_PARAMS) protected parseParams: ParseParams,
+    @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
+    @inject(SequenceActions.SEND) public send: Send,
+    @inject(SequenceActions.REJECT) public reject: Reject,
   ) {}
 
 

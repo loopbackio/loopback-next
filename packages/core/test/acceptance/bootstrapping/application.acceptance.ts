@@ -5,7 +5,7 @@
 
 import {expect, supertest} from '@loopback/testlab';
 import {Constructor, Provider, inject} from '@loopback/context';
-import {Application, DefaultSequence} from '../../..';
+import {Application, DefaultSequence, CoreBindings} from '../../..';
 
 describe('Bootstrapping the application', () => {
   context('with a user-defined sequence', () => {
@@ -13,7 +13,7 @@ describe('Bootstrapping the application', () => {
     before(givenAppWithUserDefinedSequence);
 
     it('binds the `sequence` key to the user-defined sequence', async () => {
-      const binding = await app.get('sequence');
+      const binding = await app.get(CoreBindings.SEQUENCE);
       expect(binding.constructor.name).to.equal('UserDefinedSequence');
     });
 
@@ -120,7 +120,7 @@ describe('Starting the application', () => {
     });
 
     await app.start();
-    const port = app.getSync('http.port');
+    const port = app.getSync(CoreBindings.HTTP_PORT);
 
     return supertest(`http://localhost:${port}`)
       .get('/')

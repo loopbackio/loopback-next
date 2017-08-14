@@ -11,6 +11,7 @@ import {
   RejectProvider,
   ControllerSpec,
   parseOperationArgs,
+  CoreBindings,
 } from '../..';
 import {Context} from '@loopback/context';
 import {expect, Client, createClientForHandler} from '@loopback/testlab';
@@ -18,6 +19,8 @@ import {ParameterObject} from '@loopback/openapi-spec';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {FindRouteProvider} from '../../src/router/providers/find-route';
 import {InvokeMethodProvider} from '../../src/router/providers/invoke-method';
+
+const SequenceActions = CoreBindings.SequenceActions;
 
 describe('HttpHandler', () => {
   let client: Client;
@@ -387,16 +390,17 @@ describe('HttpHandler', () => {
   function givenHandler() {
     rootContext = new Context();
     rootContext
-      .bind('sequence.actions.findRoute')
+      .bind(SequenceActions.FIND_ROUTE)
       .toProvider(FindRouteProvider);
-    rootContext.bind('sequence.actions.parseParams').to(parseOperationArgs);
+    rootContext.bind(SequenceActions.PARSE_PARAMS).to(parseOperationArgs);
     rootContext
-      .bind('sequence.actions.invokeMethod')
+      .bind(SequenceActions.INVOKE_METHOD)
       .toProvider(InvokeMethodProvider);
-    rootContext.bind('sequence.actions.logError').to(logger);
-    rootContext.bind('sequence.actions.send').to(writeResultToResponse);
-    rootContext.bind('sequence.actions.reject').toProvider(RejectProvider);
-    rootContext.bind('sequence').toClass(DefaultSequence);
+    rootContext.bind(SequenceActions.LOG_ERROR).to(logger);
+    rootContext.bind(SequenceActions.SEND).to(writeResultToResponse);
+    rootContext.bind(SequenceActions.REJECT).toProvider(RejectProvider);
+
+    rootContext.bind(CoreBindings.SEQUENCE).toClass(DefaultSequence);
 
     function logger(err: Error, statusCode: number, req: ServerRequest) {
       console.error(
@@ -409,7 +413,7 @@ describe('HttpHandler', () => {
     }
 
     handler = new HttpHandler(rootContext);
-    rootContext.bind('http.handler').to(handler);
+    rootContext.bind(CoreBindings.HTTP_HANDLER).to(handler);
   }
 
   function givenControllerClass(
@@ -433,9 +437,9 @@ describe('HttpHandler', () => {
 
   function logErrorsExcept(ignoreStatusCode: number) {
     const oldLogger: Function = rootContext.getSync(
-      'sequence.actions.logError',
+      SequenceActions.LOG_ERROR,
     );
-    rootContext.bind('sequence.actions.logError').to(conditionalLogger);
+    rootContext.bind(SequenceActions.LOG_ERROR).to(conditionalLogger);
 
     function conditionalLogger(
       err: Error,

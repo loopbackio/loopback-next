@@ -40,6 +40,9 @@ import {GetFromContextProvider} from './router/providers/get-from-context';
 import {BindElementProvider} from './router/providers/bind-element';
 import {InvokeMethodProvider} from './router/providers/invoke-method';
 import {FindRouteProvider} from './router/providers/find-route';
+import {CoreBindings} from './keys';
+
+const SequenceActions = CoreBindings.SequenceActions;
 
 // NOTE(bajtos) we cannot use `import * as cloneDeep from 'lodash/cloneDeep'
 // because it produces the following TypeScript error:
@@ -80,7 +83,9 @@ export class Application extends Context {
 
     if (!options) options = {};
 
-    this.bind('http.port').to(options.http ? options.http.port : 3000);
+    this.bind(CoreBindings.HTTP_PORT).to(
+      options.http ? options.http.port : 3000,
+    );
     this.api(createEmptyApiSpec());
 
     if (options.components) {
@@ -100,16 +105,16 @@ export class Application extends Context {
       }
     };
 
-    this.bind('http.handler').toDynamicValue(() => this.httpHandler);
+    this.bind(CoreBindings.HTTP_HANDLER).toDynamicValue(() => this.httpHandler);
 
-    this.bind('sequence.actions.findRoute').toProvider(FindRouteProvider);
-    this.bind('sequence.actions.parseParams').to(parseOperationArgs);
-    this.bind('sequence.actions.invokeMethod').toProvider(InvokeMethodProvider);
-    this.bind('sequence.actions.logError').to(this._logError.bind(this));
-    this.bind('sequence.actions.send').to(writeResultToResponse);
-    this.bind('sequence.actions.reject').toProvider(RejectProvider);
-    this.bind('getFromContext').toProvider(GetFromContextProvider);
-    this.bind('bindElement').toProvider(BindElementProvider);
+    this.bind(SequenceActions.FIND_ROUTE).toProvider(FindRouteProvider);
+    this.bind(SequenceActions.PARSE_PARAMS).to(parseOperationArgs);
+    this.bind(SequenceActions.INVOKE_METHOD).toProvider(InvokeMethodProvider);
+    this.bind(SequenceActions.LOG_ERROR).to(this._logError.bind(this));
+    this.bind(SequenceActions.SEND).to(writeResultToResponse);
+    this.bind(SequenceActions.REJECT).toProvider(RejectProvider);
+    this.bind(CoreBindings.GET_FROM_CONTEXT).toProvider(GetFromContextProvider);
+    this.bind(CoreBindings.BIND_ELEMENT).toProvider(BindElementProvider);
   }
 
   protected _handleHttpRequest(
@@ -159,7 +164,7 @@ export class Application extends Context {
     }
 
     // TODO(bajtos) should we support API spec defined asynchronously?
-    const spec: OpenApiSpec = this.getSync('api-spec');
+    const spec: OpenApiSpec = this.getSync(CoreBindings.API_SPEC);
     for (const path in spec.paths) {
       for (const verb in spec.paths[path]) {
         const routeSpec: OperationObject = spec.paths[path][verb];
@@ -322,7 +327,7 @@ export class Application extends Context {
   }
 
   api(spec: OpenApiSpec): Binding {
-    return this.bind('api-spec').to(spec);
+    return this.bind(CoreBindings.API_SPEC).to(spec);
   }
 
   /**
@@ -336,7 +341,7 @@ export class Application extends Context {
    *  - `app.route('get', '/greet', operationSpec, MyController, 'greet')`
    */
   getApiSpec(): OpenApiSpec {
-    const spec = this.getSync('api-spec');
+    const spec = this.getSync(CoreBindings.API_SPEC);
 
     // Apply deep clone to prevent getApiSpec() callers from
     // accidentally modifying our internal routing data
@@ -403,7 +408,7 @@ export class Application extends Context {
    * @param value The sequence to invoke for each incoming request.
    */
   public sequence(value: Constructor<SequenceHandler>) {
-    this.bind('sequence').toClass(value);
+    this.bind(CoreBindings.SEQUENCE).toClass(value);
   }
 
   /**
@@ -422,13 +427,14 @@ export class Application extends Context {
       // NOTE(bajtos) Unfortunately, we have to duplicate the constructor
       // in order for our DI/IoC framework to inject constructor arguments
       constructor(
-        @inject('http.request.context') public ctx: Context,
-        @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
-        @inject('sequence.actions.parseParams')
+        @inject(CoreBindings.Http.CONTEXT) public ctx: Context,
+        @inject(SequenceActions.FIND_ROUTE)
+        protected findRoute: FindRoute,
+        @inject(SequenceActions.PARSE_PARAMS)
         protected parseParams: ParseParams,
-        @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
-        @inject('sequence.actions.send') public send: Send,
-        @inject('sequence.actions.reject') public reject: Reject,
+        @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
+        @inject(SequenceActions.SEND) public send: Send,
+        @inject(SequenceActions.REJECT) public reject: Reject,
       ) {
         super(ctx, findRoute, parseParams, invoke, send, reject);
       }
@@ -452,7 +458,7 @@ export class Application extends Context {
     // of API spec, controllers and routes at startup time.
     this._setupHandlerIfNeeded();
 
-    const httpPort = await this.get('http.port');
+    const httpPort = await this.get(CoreBindings.HTTP_PORT);
     const server = createServer(this.handleHttp);
 
     // TODO(bajtos) support httpHostname too
@@ -461,7 +467,7 @@ export class Application extends Context {
 
     return new Promise<void>((resolve, reject) => {
       server.once('listening', () => {
-        this.bind('http.port').to(server.address().port);
+        this.bind(CoreBindings.HTTP_PORT).to(server.address().port);
         resolve();
       });
       server.once('error', reject);

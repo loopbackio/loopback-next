@@ -28,6 +28,7 @@ import {
   ParsedRequest,
   OperationArgs,
 } from './internal-types';
+import {CoreBindings} from './keys';
 
 const debug = require('debug')('loopback:core:http-handler');
 
@@ -66,7 +67,9 @@ export class HttpHandler {
     const parsedRequest: ParsedRequest = parseRequestUrl(request);
     const requestContext = this._createRequestContext(request, response);
 
-    const sequence: SequenceHandler = await requestContext.get('sequence');
+    const sequence: SequenceHandler = await requestContext.get(
+      CoreBindings.SEQUENCE,
+    );
     await sequence.handle(parsedRequest, response);
   }
 
@@ -75,9 +78,9 @@ export class HttpHandler {
     res: ServerResponse,
   ): Context {
     const requestContext = new Context(this._rootContext);
-    requestContext.bind('http.request').to(req);
-    requestContext.bind('http.response').to(res);
-    requestContext.bind('http.request.context').to(requestContext);
+    requestContext.bind(CoreBindings.Http.REQUEST).to(req);
+    requestContext.bind(CoreBindings.Http.RESPONSE).to(res);
+    requestContext.bind(CoreBindings.Http.CONTEXT).to(requestContext);
     return requestContext;
   }
 }

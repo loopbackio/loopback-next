@@ -5,9 +5,10 @@
 
 import {Binding, Context, inject, Provider} from '@loopback/context';
 import {BindElement} from '../../internal-types';
+import {CoreBindings} from '../../keys';
 
 export class BindElementProvider implements Provider<BindElement> {
-  constructor(@inject('http.request.context') protected context: Context) {}
+  constructor(@inject(CoreBindings.Http.CONTEXT) protected context: Context) {}
 
   value() {
     return (key: string) => this.context.bind(key);

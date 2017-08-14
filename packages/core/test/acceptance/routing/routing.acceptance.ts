@@ -14,6 +14,7 @@ import {
   ResponseObject,
   Route,
   param,
+  CoreBindings,
 } from '../../..';
 import {expect, Client, createClientForApp} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
@@ -168,8 +169,8 @@ describe('Routing', () => {
     @api(spec)
     class StatusController {
       constructor(
-        @inject('http.request') private request: ServerRequest,
-        @inject('http.response') private response: ServerResponse,
+        @inject(CoreBindings.Http.REQUEST) private request: ServerRequest,
+        @inject(CoreBindings.Http.RESPONSE) private response: ServerResponse,
       ) {}
 
       async getStatus(): Promise<string> {
