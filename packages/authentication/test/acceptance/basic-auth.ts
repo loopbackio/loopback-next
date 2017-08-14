@@ -28,7 +28,7 @@ import {
 import {
   authenticate,
   UserProfile,
-  BindingKeys,
+  AuthenticationBindings,
   AuthenticateFn,
   AuthMetadataProvider,
   AuthenticationMetadata,
@@ -97,7 +97,7 @@ describe('Basic Authentication', () => {
     @api(apispec)
     class MyController {
       constructor(
-        @inject(BindingKeys.Authentication.CURRENT_USER)
+        @inject(AuthenticationBindings.CURRENT_USER)
         private user: UserProfile,
       ) {}
 
@@ -147,7 +147,7 @@ describe('Basic Authentication', () => {
   function givenProviders() {
     class MyPassportStrategyProvider implements Provider<Strategy> {
       constructor(
-        @inject(BindingKeys.Authentication.METADATA)
+        @inject(AuthenticationBindings.METADATA)
         private metadata: AuthenticationMetadata,
       ) {}
       value() : ValueOrPromise<Strategy> {
@@ -165,7 +165,7 @@ describe('Basic Authentication', () => {
         });
       }
     }
-    app.bind(BindingKeys.Authentication.STRATEGY)
+    app.bind(AuthenticationBindings.STRATEGY)
       .toProvider(MyPassportStrategyProvider);
   }
 

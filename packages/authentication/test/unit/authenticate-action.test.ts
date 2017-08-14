@@ -10,7 +10,7 @@ import {
   AuthenticationProvider,
   AuthenticateFn,
   UserProfile,
-  BindingKeys,
+  AuthenticationBindings,
 } from '../..';
 import {MockStrategy} from './fixtures/mock-strategy';
 
@@ -20,7 +20,7 @@ describe('AuthenticationProvider', () => {
     async () => {
       const context = new Context();
       const strategy = new MockStrategy();
-      context.bind(BindingKeys.Authentication.STRATEGY).to(strategy);
+      context.bind(AuthenticationBindings.STRATEGY).to(strategy);
       const provider = await instantiateClass(AuthenticationProvider, context);
       expect(await provider.getStrategy()).to.be.equal(strategy);
     });
@@ -56,13 +56,13 @@ describe('AuthenticationProvider', () => {
       it('returns a function which authenticates a request and returns a user',
       async () => {
         const context: Context = new Context();
-        context.bind(BindingKeys.Authentication.STRATEGY).to(strategy);
+        context.bind(AuthenticationBindings.STRATEGY).to(strategy);
         context
-          .bind(BindingKeys.Authentication.AUTH_ACTION)
+          .bind(AuthenticationBindings.AUTH_ACTION)
           .toProvider(AuthenticationProvider);
         const request = <ParsedRequest> {};
         const authenticate = await context.get(
-          BindingKeys.Authentication.AUTH_ACTION,
+          AuthenticationBindings.AUTH_ACTION,
         );
         const user: UserProfile = await authenticate(request);
         expect(user).to.be.equal(mockUser);
@@ -71,12 +71,12 @@ describe('AuthenticationProvider', () => {
       it('throws an error if the injected passport strategy is not valid',
       async () => {
         const context: Context = new Context();
-        context.bind(BindingKeys.Authentication.STRATEGY).to({});
+        context.bind(AuthenticationBindings.STRATEGY).to({});
         context
-          .bind(BindingKeys.Authentication.AUTH_ACTION)
+          .bind(AuthenticationBindings.AUTH_ACTION)
           .toProvider(AuthenticationProvider);
         const authenticate = await context.get(
-          BindingKeys.Authentication.AUTH_ACTION,
+          AuthenticationBindings.AUTH_ACTION,
         );
         const request = <ParsedRequest> {};
         let error;
@@ -91,12 +91,12 @@ describe('AuthenticationProvider', () => {
       it('throws Unauthorized error when authentication fails',
       async () => {
         const context: Context = new Context();
-        context.bind(BindingKeys.Authentication.STRATEGY).to(strategy);
+        context.bind(AuthenticationBindings.STRATEGY).to(strategy);
         context
-          .bind(BindingKeys.Authentication.AUTH_ACTION)
+          .bind(AuthenticationBindings.AUTH_ACTION)
           .toProvider(AuthenticationProvider);
         const authenticate = await context.get(
-          BindingKeys.Authentication.AUTH_ACTION,
+          AuthenticationBindings.AUTH_ACTION,
         );
         const request = <ParsedRequest> {};
         request.headers = {testState: 'fail'};
