@@ -6,11 +6,12 @@
 import {Context, inject, Provider} from '@loopback/context';
 import {FindRoute} from '../../internal-types';
 import {HttpHandler} from '../../http-handler';
+import {CoreBindings} from '../../keys';
 
 export class FindRouteProvider implements Provider<FindRoute> {
   constructor(
-    @inject('http.request.context') protected context: Context,
-    @inject('http.handler') protected handler: HttpHandler) {}
+    @inject(CoreBindings.Http.CONTEXT) protected context: Context,
+    @inject(CoreBindings.HTTP_HANDLER) protected handler: HttpHandler) {}
 
   value(): FindRoute {
     return (request) => {

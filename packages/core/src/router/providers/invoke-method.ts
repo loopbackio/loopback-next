@@ -5,9 +5,10 @@
 
 import {Context, inject, Provider} from '@loopback/context';
 import {InvokeMethod} from '../../internal-types';
+import {CoreBindings} from '../../keys';
 
 export class InvokeMethodProvider implements Provider<InvokeMethod> {
-  constructor(@inject('http.request.context') protected context: Context) {}
+  constructor(@inject(CoreBindings.Http.CONTEXT) protected context: Context) {}
 
   value(): InvokeMethod {
     return async (route, args) => {

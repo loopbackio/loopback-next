@@ -17,6 +17,7 @@ import {
   Send,
   Reject,
   SequenceHandler,
+  CoreBindings,
 } from '@loopback/core';
 import {expect, Client, createClientForApp} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
@@ -37,6 +38,8 @@ import {
 import {Strategy} from 'passport';
 import {HttpError} from 'http-errors';
 import {BasicStrategy} from 'passport-http';
+
+const SequenceActions = CoreBindings.SequenceActions;
 
 describe('Basic Authentication', () => {
   let app: Application;
@@ -112,14 +115,13 @@ describe('Basic Authentication', () => {
   function givenAuthenticatedSequence() {
     class MySequence implements SequenceHandler {
       constructor(
-        @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
-        @inject('sequence.actions.parseParams')
+        @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
+        @inject(SequenceActions.PARSE_PARAMS)
         protected parseParams: ParseParams,
-        @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
-        @inject('sequence.actions.send') protected send: Send,
-        @inject('sequence.actions.reject') protected reject: Reject,
-        @inject('bindElement') protected bindElement: BindElement,
-        @inject('authentication.actions.authenticate')
+        @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
+        @inject(SequenceActions.SEND) protected send: Send,
+        @inject(SequenceActions.REJECT) protected reject: Reject,
+        @inject(AuthenticationBindings.AUTH_ACTION)
         protected authenticateRequest: AuthenticateFn,
       ) {}
 

@@ -7,10 +7,12 @@ import {LogError, Reject} from '../../internal-types';
 import {inject} from '@loopback/context';
 import {ServerResponse, ServerRequest} from 'http';
 import {HttpError} from 'http-errors';
+import {CoreBindings} from '../../keys';
 
 export class RejectProvider {
   constructor(
-    @inject('sequence.actions.logError') protected logError: LogError,
+    @inject(CoreBindings.SequenceActions.LOG_ERROR)
+    protected logError: LogError,
   ) {}
 
   value(): Reject {

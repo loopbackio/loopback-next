@@ -81,11 +81,12 @@ invoking the authentication at the right time during the request handling.
 ```ts
 // sequence.ts
 import {
+  CoreBindings,
   FindRoute,
   inject,
   InvokeMethod,
   ParsedRequest,
-  parseOperationArgs,
+  ParseParams,
   Reject,
   Send,
   ServerResponse,
@@ -94,15 +95,19 @@ import {
 
 import {
   AuthenticateFn,
+  AuthenticationBindings,
 } from '@loopback/authentication';
+
+const CoreSequenceActions = CoreBindings.SequenceActions;
 
 export class MySequence implements SequenceHandler {
   constructor(
-    @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
-    @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
-    @inject('sequence.actions.send') protected send: Send,
-    @inject('sequence.actions.reject') protected reject: Reject,
-    @inject('authentication.actions.authenticate')
+    @inject(CoreSequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
+    @inject(CoreSequenceActions.PARSE_PARAMS) protected parseParams: ParseParams,
+    @inject(CoreSequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
+    @inject(CoreSequenceActions.SEND) protected send: Send,
+    @inject(CoreSequenceActions.REJECT) protected reject: Reject,
+    @inject(AuthenticationBindings.AUTH_ACTION)
     protected authenticateRequest: AuthenticateFn,
   ) {}
 
@@ -113,7 +118,7 @@ export class MySequence implements SequenceHandler {
       // This is the important line added to the default sequence implementation
       const user = await this.authenticateRequest(req);
 
-      const args = await parseOperationArgs(req, route);
+      const args = await this.parseParams(req, route);
       const result = await this.invoke(route, args);
       this.send(res, result);
     } catch (err) {
