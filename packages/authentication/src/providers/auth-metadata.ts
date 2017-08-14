@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingKeys} from '@loopback/core';
+import {CoreBindings} from '@loopback/core';
 import {Constructor, Provider, inject} from '@loopback/context';
 import {
   AuthenticationMetadata,
@@ -18,9 +18,9 @@ import {
 export class AuthMetadataProvider
   implements Provider<AuthenticationMetadata | undefined> {
   constructor(
-    @inject(BindingKeys.Context.CONTROLLER_CLASS)
+    @inject(CoreBindings.CONTROLLER_CLASS)
     private readonly controllerClass: Constructor<{}>,
-    @inject(BindingKeys.Context.CONTROLLER_METHOD_NAME)
+    @inject(CoreBindings.CONTROLLER_METHOD_NAME)
     private readonly methodName: string,
   ) {}
 
