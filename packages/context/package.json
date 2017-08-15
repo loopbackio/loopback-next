@@ -1,6 +1,6 @@
 {
   "name": "@loopback/context",
-  "version": "4.0.0-alpha.10",
+  "version": "4.0.0-alpha.11",
   "description": "LoopBack's container for Inversion of Control",
   "scripts": {
     "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
@@ -22,7 +22,7 @@
     "reflect-metadata": "^0.1.10"
   },
   "devDependencies": {
-    "@loopback/testlab": "^4.0.0-alpha.5",
+    "@loopback/testlab": "^4.0.0-alpha.6",
     "@types/bluebird": "^3.5.8",
     "bluebird": "^3.5.0"
   },
