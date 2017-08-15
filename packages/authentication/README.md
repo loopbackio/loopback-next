@@ -25,7 +25,7 @@ the request to be authenticated.
 import {UserProfile, authenticate} from '@loopback/authentication';
 
 class MyController {
-  constructor(@inject('authentication.user') private user: UserProfile) {}
+  constructor(@inject('authentication.currentUser') private user: UserProfile) {}
 
   @authenticate('BasicStrategy')
   whoAmI() {
