@@ -1,0 +1,48 @@
+{
+  "name": "@loopback/hello-world",
+  "version": "4.0.0-alpha.1",
+  "description": "A starting point for LoopBack.next apps using TypeScript",
+  "main": "lib/index.js",
+  "private": true,
+  "scripts": {
+    "prestart": "npm run build:current",
+    "start": "node .",
+    "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
+    "build": "npm run build:lib && npm run build:lib6",
+    "build:current": "node ../../bin/compile-package",
+    "build:lib": "node ../../bin/compile-package es2017",
+    "build:lib6": "node ../../bin/compile-package es2015",
+    "build:apidocs": "node ../../bin/generate-apidocs",
+    "clean": "rm -rf loopback-authentication*.tgz lib* package",
+    "integration": "mocha --opts ../../test/mocha.opts 'test/integration/**/*.ts'",
+    "prepublish": "npm run build && npm run build:apidocs",
+    "pretest": "npm run build:current",
+    "test": "mocha --opts ../../test/mocha.opts 'test/**/*.js' 'test/unit/**/*.ts' 'test/integration/**/*.ts' 'test/acceptance/**/*.ts'",
+    "unit": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts'",
+    "verify": "npm pack && tar xf loopback-authentication*.tgz && tree package && npm run clean"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "keywords": [
+    "loopback-next",
+    "typescript",
+    "starter",
+    "hello-world"
+  ],
+  "author": "IBM",
+  "license": "MIT",
+  "devDependencies": {
+    "@loopback/testlab": "^4.0.0-alpha.5",
+    "mocha": "^3.3.0",
+    "typescript": "^2.4.2"
+  },
+  "dependencies": {
+    "@loopback/authentication": "^4.0.0-alpha.4",
+    "@loopback/context": "^4.0.0-alpha.10",
+    "@loopback/core": "^4.0.0-alpha.10",
+    "@types/passport-http": "^0.3.2",
+    "passport": "^0.3.2",
+    "passport-http": "^0.3.0"
+  }
+}
