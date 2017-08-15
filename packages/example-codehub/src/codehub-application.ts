@@ -3,12 +3,39 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application} from '@loopback/core';
+import {Provider} from '@loopback/context';
+import {Application, DefaultSequence, FindRoute, InvokeMethod,
+  ParsedRequest, Reject, Send, inject} from '@loopback/core';
+import {Logger, LoggerComponent} from '@loopback/logger';
 import {UserController, HealthController} from './controllers';
+import {ServerResponse} from 'http';
+
+const setupLoggerKey = Logger.SequenceActions.SETUP_LOGGER;
+
+class LoggerSequence extends DefaultSequence {
+  @inject(setupLoggerKey)
+  private httpLogger: Function;
+  constructor(
+    @inject('sequence.actions.findRoute') protected findRoute: FindRoute,
+    @inject('sequence.actions.invokeMethod') protected invoke: InvokeMethod,
+    @inject('sequence.actions.send') public send: Send,
+    @inject('sequence.actions.reject') public reject: Reject,
+  ) {
+    super(findRoute, invoke, send, reject);
+  }
+
+  async handle(req: ParsedRequest, res: ServerResponse) {
+    this.httpLogger(req, res);
+    await super.handle(req, res);
+  }
+}
 
 export class CodeHubApplication extends Application {
   constructor() {
-    super();
+    super({
+      components: [LoggerComponent],
+      sequence: LoggerSequence,
+    });
 
     const app = this;
 
