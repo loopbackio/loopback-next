@@ -36,7 +36,7 @@
     "build": "lerna run --loglevel=silent build",
     "build:current": "lerna run --loglevel=silent build:current",
     "pretest": "npm run build:current",
-    "test": "nyc mocha --opts test/mocha.opts \"packages/*/test/**/*.ts\"",
+    "test": "nyc mocha --opts test/mocha.opts \"packages/*/test/**/*.ts\" \"packages/hello-world/test/*.js\"",
     "posttest": "npm run lint"
   },
   "nyc": {
