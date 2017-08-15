@@ -1,6 +1,6 @@
 {
   "name": "@loopback/testlab",
-  "version": "4.0.0-alpha.5",
+  "version": "4.0.0-alpha.6",
   "description": "A collection of test utilities we use to write LoopBack tests.",
   "scripts": {
     "build": "npm run build:lib && npm run build:lib6",
@@ -16,7 +16,7 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
-    "@loopback/openapi-spec": "^4.0.0-alpha.6",
+    "@loopback/openapi-spec": "^4.0.0-alpha.8",
     "@types/shot": "^3.4.0",
     "@types/sinon": "^2.3.2",
     "@types/supertest": "^2.0.0",
