@@ -45,7 +45,9 @@ describe('Application (integration)', () => {
     const greetSpec = {
       responses: {
         200: {
-          type: 'string',
+          schema: {
+            type: 'string',
+          },
           description: 'greeting of the day',
         },
       },

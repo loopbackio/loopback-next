@@ -140,7 +140,9 @@ describe('Routing metadata for parameters', () => {
 
       const responses: ResponsesObject = {
         200: {
-          type: 'string',
+          schema: {
+            type: 'string',
+          },
           description: 'a string response',
         },
       };

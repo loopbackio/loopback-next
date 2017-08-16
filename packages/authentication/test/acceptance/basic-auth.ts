@@ -90,7 +90,10 @@ describe('Basic Authentication', () => {
         'x-operation-name': 'whoAmI',
         responses: {
           '200': {
-            type: 'string',
+            description: '',
+            schema: {
+              type: 'string',
+            },
           },
         },
       })

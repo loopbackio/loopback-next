@@ -152,7 +152,10 @@ describe('Sequence', () => {
         'x-operation-name': 'getName',
         responses: {
           '200': {
-            type: 'string',
+            schema: {
+              type: 'string',
+            },
+            description: '',
           },
         },
       })
