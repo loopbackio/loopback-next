@@ -11,7 +11,7 @@
     "build:apidocs": "node ../../bin/generate-apidocs",
     "clean": "rm -rf loopback-authentication*.tgz lib* package",
     "integration": "mocha --opts ../../test/mocha.opts 'test/integration/**/*.ts'",
-    "prepublish": "npm run build && npm run build:apidocs",
+    "prepublishOnly": "npm run build && npm run build:apidocs",
     "pretest": "npm run build:current",
     "test": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts' 'test/integration/**/*.ts' 'test/acceptance/**/*.ts'",
     "unit": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts'",

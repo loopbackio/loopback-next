@@ -10,7 +10,7 @@
     "build:lib6": "node ../../bin/compile-package es2015",
     "build:apidocs": "node ../../bin/generate-apidocs",
     "clean": "rm -rf loopback-context*.tgz lib* package",
-    "prepublish": "npm run build && npm run build:apidocs",
+    "prepublishOnly": "npm run build && npm run build:apidocs",
     "pretest": "npm run build:current",
     "test": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts' 'test/acceptance/**/*.ts'",
     "unit": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts'",
