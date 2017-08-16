@@ -114,7 +114,10 @@ describe('HttpHandler', () => {
           ],
           responses: {
             '200': {
-              type: 'string',
+              schema: {
+                type: 'string',
+              },
+              description: '',
             },
           },
         })
@@ -167,6 +170,7 @@ describe('HttpHandler', () => {
               schema: {
                 type: 'string',
               },
+              description: '',
             },
           },
         })
@@ -210,6 +214,7 @@ describe('HttpHandler', () => {
               schema: {
                 type: 'string',
               },
+              description: '',
             },
           },
         })
@@ -267,6 +272,7 @@ describe('HttpHandler', () => {
               schema: {
                 type: 'string',
               },
+              description: '',
             },
           },
         })
@@ -324,6 +330,7 @@ describe('HttpHandler', () => {
               schema: {
                 type: 'object',
               },
+              description: '',
             },
           },
         })
@@ -345,7 +352,7 @@ describe('HttpHandler', () => {
         .withOperation('get', '/object', {
           'x-operation-name': 'getObject',
           responses: {
-            '200': {type: 'object'},
+            '200': {schema: {type: 'object'}, description: ''},
           },
         })
         .build();

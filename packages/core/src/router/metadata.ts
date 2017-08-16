@@ -10,7 +10,7 @@ import {
   ParameterLocation,
   ParameterObject,
   SchemaObject,
-  ParameterTypeValue,
+  ParameterType,
   createEmptyApiSpec,
   PathsObject,
 } from '@loopback/openapi-spec';
@@ -489,7 +489,7 @@ export namespace param {
 
 function createParamShortcut(
   source: ParameterLocation,
-  type: ParameterTypeValue,
+  type: ParameterType,
 ) {
   // TODO(bajtos) @param.IN.TYPE('foo', {required: true})
   return (name: string) => {
