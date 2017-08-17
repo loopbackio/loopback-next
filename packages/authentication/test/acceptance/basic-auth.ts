@@ -36,7 +36,6 @@ import {
   AuthenticationComponent,
 } from '../..';
 import {Strategy} from 'passport';
-import {HttpError} from 'http-errors';
 import {BasicStrategy} from 'passport-http';
 
 const SequenceActions = CoreBindings.SequenceActions;
