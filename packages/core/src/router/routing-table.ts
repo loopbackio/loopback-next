@@ -285,6 +285,11 @@ export class ControllerRoute extends BaseRoute {
     args: OperationArgs,
   ): Promise<OperationRetval> {
     const controller = await this._createControllerInstance(requestContext);
+    if (typeof controller[this._methodName] !== 'function') {
+      throw new HttpErrors.NotFound(
+        `Controller method not found: ${this.describe()}`,
+      );
+    }
     return await controller[this._methodName](...args);
   }
 
