@@ -41,7 +41,7 @@ describe('AuthenticationProvider', () => {
         provider.value(),
       );
       const request = <ParsedRequest> {};
-      const user: UserProfile = await authenticate(request);
+      const user = await authenticate(request);
       expect(user).to.be.equal(mockUser);
     });
 

@@ -18,6 +18,7 @@ import {
   Reject,
   SequenceHandler,
   CoreBindings,
+  get,
 } from '@loopback/core';
 import {expect, Client, createClientForApp} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
@@ -67,6 +68,18 @@ describe('Basic Authentication', () => {
     await client.get('/whoAmI')
       .set('Authorization', 'Basic ' + hash)
       .expect(401);
+  });
+
+  it('allows anonymous requests to methods with no decorator', async () => {
+    class InfoController {
+      @get('/status')
+      status() {
+        return {running: true};
+      }
+    }
+
+    app.controller(InfoController);
+    await whenIMakeRequestTo(app).get('/status').expect(200, {running: true});
   });
 
   function givenUserRepository() {
@@ -129,7 +142,7 @@ describe('Basic Authentication', () => {
           const route = this.findRoute(req);
 
           // Authenticate
-          const user: UserProfile = await this.authenticateRequest(req);
+          const user = await this.authenticateRequest(req);
 
           // Authentication successful, proceed to invoke controller
           const args = await this.parseParams(req, route);
@@ -146,12 +159,15 @@ describe('Basic Authentication', () => {
   }
 
   function givenProviders() {
-    class MyPassportStrategyProvider implements Provider<Strategy> {
+    class MyPassportStrategyProvider implements Provider<Strategy | undefined> {
       constructor(
         @inject(AuthenticationBindings.METADATA)
         private metadata: AuthenticationMetadata,
       ) {}
-      value() : ValueOrPromise<Strategy> {
+      value() : ValueOrPromise<Strategy | undefined> {
+        if (!this.metadata) {
+          return undefined;
+        }
         const name = this.metadata.strategy;
         if (name === 'BasicStrategy') {
           return new BasicStrategy(this.verify);
