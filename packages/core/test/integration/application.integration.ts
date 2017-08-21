@@ -40,21 +40,19 @@ describe('Application (integration)', () => {
     return createClientForApp(app).get('/').expect(500);
   });
 
-  it('exposes "GET /openapi.json" endpoint', async () => {
+  it('exposes "GET /swagger.json" endpoint', async () => {
     const app = new Application({http: {port: 0}});
     const greetSpec = {
       responses: {
         200: {
-          schema: {
-            type: 'string',
-          },
+          schema: { type: 'string' },
           description: 'greeting of the day',
         },
       },
     };
     app.route(new Route('get', '/greet', greetSpec, function greet() {}));
 
-    const response = await createClientForApp(app).get('/openapi.json');
+    const response = await createClientForApp(app).get('/swagger.json');
     expect(response.body).to.containDeep({
       basePath: '/',
       paths: {
@@ -63,5 +61,105 @@ describe('Application (integration)', () => {
         },
       },
     });
+  });
+
+  it('exposes "GET /swagger.yaml" endpoint', async () => {
+    const app = new Application({http: {port: 0}});
+    const greetSpec = {
+      responses: {
+        200: {
+          schema: { type: 'string' },
+          description: 'greeting of the day',
+        },
+      },
+    };
+    app.route(new Route('get', '/greet', greetSpec, function greet() {}));
+
+    const response = await createClientForApp(app).get('/swagger.yaml');
+    expect(response.text).to.eql(`swagger: '2.0'
+basePath: /
+info:
+  title: LoopBack Application
+  version: 1.0.0
+paths:
+  /greet:
+    get:
+      responses:
+        '200':
+          schema:
+            type: string
+          description: greeting of the day
+`);
+  });
+
+  it('exposes "GET /openapi.json" endpoint', async () => {
+    const app = new Application({http: {port: 0}});
+    const greetSpec = {
+      responses: {
+        200: {
+          schema: { type: 'string' },
+          description: 'greeting of the day',
+        },
+      },
+    };
+    app.route(new Route('get', '/greet', greetSpec, function greet() {}));
+
+    const response = await createClientForApp(app).get('/openapi.json');
+    expect(response.body).to.containDeep({
+      openapi: '3.0.0',
+      servers: [ { url: '/' } ],
+      info: { title: 'LoopBack Application', version: '1.0.0' },
+      paths: {
+        '/greet': {
+          get: {
+            responses: {
+              '200': {
+                content: {
+                  '*/*': {
+                    schema: { type: 'string' },
+                  },
+                },
+                description: 'greeting of the day',
+              },
+            },
+          },
+        },
+      },
+      components: { schemas:  {} },
+    });
+  });
+
+  it('exposes "GET /openapi.yaml" endpoint', async () => {
+    const app = new Application({http: {port: 0}});
+    const greetSpec = {
+      responses: {
+        200: {
+          schema: { type: 'string' },
+          description: 'greeting of the day',
+        },
+      },
+    };
+    app.route(new Route('get', '/greet', greetSpec, function greet() {}));
+
+    const response = await createClientForApp(app).get('/openapi.yaml');
+    expect(response.text).to.eql(`openapi: 3.0.0
+servers:
+  - url: /
+info:
+  title: LoopBack Application
+  version: 1.0.0
+paths:
+  /greet:
+    get:
+      responses:
+        '200':
+          description: greeting of the day
+          content:
+            '*/*':
+              schema:
+                type: string
+components:
+  schemas: {}
+`);
   });
 });

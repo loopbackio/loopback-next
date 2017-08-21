@@ -23,11 +23,14 @@
     "@loopback/context": "^4.0.0-alpha.12",
     "@loopback/openapi-spec": "^4.0.0-alpha.10",
     "@types/http-errors": "^1.5.34",
+    "@types/js-yaml": "^3.9.1",
     "body": "^5.1.0",
     "debug": "^2.6.0",
     "http-errors": "^1.6.1",
+    "js-yaml": "^3.9.1",
     "lodash": "^4.17.4",
-    "path-to-regexp": "^1.7.0"
+    "path-to-regexp": "^1.7.0",
+    "swagger2openapi": "^2.6.4"
   },
   "devDependencies": {
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.7",
