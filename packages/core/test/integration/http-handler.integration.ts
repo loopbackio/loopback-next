@@ -16,7 +16,7 @@ import {
 import {Context} from '@loopback/context';
 import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {ParameterObject} from '@loopback/openapi-spec';
-import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
+import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 import {FindRouteProvider} from '../../src/router/providers/find-route';
 import {InvokeMethodProvider} from '../../src/router/providers/invoke-method';
 
@@ -382,6 +382,23 @@ describe('HttpHandler', () => {
 
       logErrorsExcept(500);
       return client.get('/hello').expect(500);
+    });
+
+    it('handles invocation of an unknown method', async () => {
+      const spec = anOpenApiSpec()
+        .withOperation(
+          'get',
+          '/hello',
+          anOperationSpec().withOperationName('unknownMethod'),
+        )
+        .build();
+
+      class TestController {}
+
+      givenControllerClass(TestController, spec);
+      logErrorsExcept(404);
+
+      await client.get('/hello').expect(404);
     });
   });
 
