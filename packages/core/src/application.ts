@@ -4,6 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {AssertionError} from 'assert';
+const swagger2openapi = require('swagger2openapi');
+import {safeDump} from 'js-yaml';
 import {
   Binding,
   Context,
@@ -51,6 +53,18 @@ const SequenceActions = CoreBindings.SequenceActions;
 const cloneDeep: <T>(value: T) => T = require('lodash/cloneDeep');
 
 const debug = require('debug')('loopback:core:application');
+
+interface OpenApiSpecOptions {
+  version?: string;
+  format?: string;
+}
+
+const OPENAPI_SPEC_MAPPING: { [key: string] : OpenApiSpecOptions; } = {
+  '/openapi.json': {version: '3.0.0', format: 'json'},
+  '/openapi.yaml': {version: '3.0.0', format: 'yaml'},
+  '/swagger.json': {version: '2.0', format: 'json'},
+  '/swagger.yaml': {version: '2.0', format: 'yaml'},
+};
 
 export class Application extends Context {
   /**
@@ -121,7 +135,8 @@ export class Application extends Context {
     request: ServerRequest,
     response: ServerResponse,
   ) {
-    if (request.method === 'GET' && request.url === '/openapi.json') {
+    if (request.method === 'GET' && request.url &&
+        request.url in OPENAPI_SPEC_MAPPING) {
       // NOTE(bajtos) Regular routes are handled through Sequence.
       // IMO, this built-in endpoint should not run through a Sequence,
       // because it's not part of the application API itself.
@@ -129,7 +144,8 @@ export class Application extends Context {
       // this endpoint to trigger a log entry. If the server implements
       // content-negotiation to support XML clients, I don't want the OpenAPI
       // spec to be converted into an XML response.
-      return this._serveOpenApiSpec(request, response);
+      const options = OPENAPI_SPEC_MAPPING[request.url];
+      return this._serveOpenApiSpec(request, response, options);
     }
     return this.httpHandler.handleRequest(request, response);
   }
@@ -214,10 +230,22 @@ export class Application extends Context {
   private async _serveOpenApiSpec(
     request: ServerRequest,
     response: ServerResponse,
+    options?: OpenApiSpecOptions,
   ) {
-    const spec = JSON.stringify(this.getApiSpec(), null, 2);
-    response.setHeader('content-type', 'application/json; charset=utf-8');
-    response.end(spec, 'utf-8');
+    options = options || {version: '2.0', format: 'json'};
+    let specObj = this.getApiSpec();
+    if (options.version === '3.0.0') {
+      specObj = await swagger2openapi.convertObj(specObj, {direct: true});
+    }
+    if (options.format === 'json') {
+      const spec = JSON.stringify(specObj, null, 2);
+      response.setHeader('content-type', 'application/json; charset=utf-8');
+      response.end(spec, 'utf-8');
+    } else {
+      const yaml = safeDump(specObj, {});
+      response.setHeader('content-type', 'text/yaml; charset=utf-8');
+      response.end(yaml, 'utf-8');
+    }
   }
 
   /**
