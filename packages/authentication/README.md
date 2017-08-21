@@ -52,13 +52,17 @@ import {
 import {Strategy} from 'passport';
 import {BasicStrategy} from 'passport-http';
 
-export class MyAuthStrategyProvider implements Provider<Strategy> {
+export class MyAuthStrategyProvider implements Provider<Strategy | undefined> {
   constructor(
     @inject(AuthenticationBindings.METADATA)
     private metadata: AuthenticationMetadata,
   ) {}
 
   value() : ValueOrPromise<Strategy> {
+    if (!this.metadata) {
+      return undefined;
+    }
+
     const name = this.metadata.strategy;
     if (name === 'BasicStrategy') {
       return new BasicStrategy(this.verify);

@@ -15,7 +15,7 @@ import {AuthenticationBindings} from '../keys';
  * and returns an authenticated user
  */
 export interface AuthenticateFn {
-  (request: ParsedRequest): Promise<UserProfile>;
+  (request: ParsedRequest): Promise<UserProfile | undefined>;
 }
 
 /**
@@ -73,8 +73,12 @@ async function authenticateRequest(
   getStrategy: Getter<Strategy>,
   request: ParsedRequest,
   setCurrentUser: Setter<UserProfile>,
-): Promise<UserProfile> {
+): Promise<UserProfile | undefined> {
   const strategy = await getStrategy();
+  if (!strategy) {
+    // The invoked operation does not require authentication.
+    return undefined;
+  }
   if (!strategy.authenticate) {
     return Promise.reject(new Error('invalid strategy parameter'));
   }
