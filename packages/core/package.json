@@ -1,6 +1,6 @@
 {
   "name": "@loopback/core",
-  "version": "4.0.0-alpha.11",
+  "version": "4.0.0-alpha.12",
   "description": "",
   "scripts": {
     "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
@@ -20,8 +20,8 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^4.0.0-alpha.11",
-    "@loopback/openapi-spec": "^4.0.0-alpha.8",
+    "@loopback/context": "^4.0.0-alpha.12",
+    "@loopback/openapi-spec": "^4.0.0-alpha.10",
     "@types/http-errors": "^1.5.34",
     "body": "^5.1.0",
     "debug": "^2.6.0",
@@ -30,8 +30,8 @@
     "path-to-regexp": "^1.7.0"
   },
   "devDependencies": {
-    "@loopback/openapi-spec-builder": "^4.0.0-alpha.6",
-    "@loopback/testlab": "^4.0.0-alpha.6"
+    "@loopback/openapi-spec-builder": "^4.0.0-alpha.7",
+    "@loopback/testlab": "^4.0.0-alpha.7"
   },
   "files": [
     "README.md",
