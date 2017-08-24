@@ -18,3 +18,4 @@ export * from './crud-connector';
 export * from './kv-connector';
 export * from './kv-repository';
 export * from './legacy-juggler-bridge';
+export * from './loopback-datasource-juggler';

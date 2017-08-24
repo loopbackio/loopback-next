@@ -77,7 +77,7 @@ export declare namespace juggler {
       properties?: {[name: string]: PropertyDefinition},
       settings?: AnyObject,
     );
-    constructor(modelBuidler: ModelBuilder | null | undefined, schema: Schema);
+    constructor(modelBuilder: ModelBuilder | null | undefined, schema: Schema);
 
     tableName(connectorType: string): string;
     columnName(connectorType: string, propertyName: string): string;

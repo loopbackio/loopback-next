@@ -10,41 +10,36 @@ import {Model, Entity, ModelDefinition, PropertyDefinition} from '../../../';
 describe('model', () => {
   const customerDef = new ModelDefinition('Customer');
   customerDef
-    .addProperty(new PropertyDefinition('id', 'string'))
+    .addProperty('id', 'string')
     .addProperty('email', 'string')
     .addProperty('firstName', String)
     .addProperty('lastName', STRING)
     .addSetting('id', 'id');
 
-  const relamCustomerDef = new ModelDefinition('RealmCustomer');
-  relamCustomerDef
-    .addProperty(new PropertyDefinition('realm', 'string'))
+  const realmCustomerDef = new ModelDefinition('RealmCustomer');
+  realmCustomerDef
+    .addProperty('realm', 'string')
     .addProperty('email', 'string')
     .addProperty('firstName', String)
     .addProperty('lastName', STRING)
     .addSetting('id', ['realm', 'email']);
 
   const userDef = new ModelDefinition('User');
-  const idProp = new PropertyDefinition('id', 'string');
-  idProp.id = true;
   userDef
-    .addProperty(idProp)
+    .addProperty('id', {type: 'string', id: true})
     .addProperty('email', 'string')
     .addProperty('firstName', String)
     .addProperty('lastName', STRING);
 
   class Customer extends Entity {
-    static modelName = 'Customer';
     static definition = customerDef;
   }
 
   class RealmCustomer extends Entity {
-    static modelName = 'RealmCustomer';
-    static definition = relamCustomerDef;
+    static definition = realmCustomerDef;
   }
 
   class User extends Entity {
-    static modelName = 'User';
     static definition = userDef;
   }
 
@@ -70,9 +65,7 @@ describe('model', () => {
       'lastName',
       'firstName',
     );
-    expect(customerDef.properties.lastName).to.eql(
-      new PropertyDefinition('lastName', STRING),
-    );
+    expect(customerDef.properties.lastName).to.eql({type: STRING});
   });
 
   it('adds settings', () => {
@@ -80,12 +73,9 @@ describe('model', () => {
   });
 
   it('lists id properties', () => {
-    expect(customerDef.idProperties()).to.eql([customerDef.properties.id]);
-    expect(userDef.idProperties()).to.eql([userDef.properties.id]);
-    expect(relamCustomerDef.idProperties()).to.eql([
-      relamCustomerDef.properties.realm,
-      relamCustomerDef.properties.email,
-    ]);
+    expect(customerDef.idProperties()).to.eql(['id']);
+    expect(userDef.idProperties()).to.eql(['id']);
+    expect(realmCustomerDef.idProperties()).to.eql(['realm', 'email']);
   });
 
   it('converts to json', () => {

@@ -14,22 +14,28 @@ import {
   DataSourceConstructor,
   juggler,
   DefaultCrudRepository,
+  Entity,
+  ModelDefinition,
 } from '../../../';
 
 class MyController {
   constructor(
-    @repository('noteRepo') public noteRepo: Repository<juggler.PersistedModel>,
+    @repository('noteRepo') public noteRepo: Repository<Entity>,
   ) {}
 
-  @repository('noteRepo') noteRepo2: Repository<juggler.PersistedModel>;
+  @repository('noteRepo') noteRepo2: Repository<Entity>;
 }
 
 describe('repository decorator', () => {
   let ctx: Context;
-  let repo: Repository<juggler.PersistedModel>;
-  /* tslint:disable-next-line:variable-name */
-  let Note: typeof juggler.PersistedModel;
+  let repo: Repository<Note>;
   let ds: juggler.DataSource;
+
+  class Note extends Entity {
+    static definition = new ModelDefinition('note',
+      {title: 'string', content: 'string', id: {type: 'number', id: true}},
+      {});
+  }
 
   before(function() {
     ds = new DataSourceConstructor({
@@ -37,11 +43,6 @@ describe('repository decorator', () => {
       connector: 'memory',
     });
 
-    Note = ds.createModel<typeof juggler.PersistedModel>(
-      'note',
-      {title: 'string', content: 'string'},
-      {},
-    );
     repo = new DefaultCrudRepository(Note, ds);
     ctx = new Context();
     ctx.bind('models.Note').to(Note);
@@ -76,7 +77,7 @@ describe('repository decorator', () => {
   it('supports @repository(model, dataSource) by names', async () => {
     class Controller2 {
       constructor(@repository('Note', 'memory')
-        public noteRepo: Repository<juggler.PersistedModel>) {}
+        public noteRepo: Repository<Note>) {}
     }
     ctx.bind('controllers.Controller2').toClass(Controller2);
     const myController: MyController = await ctx.get(
@@ -88,7 +89,7 @@ describe('repository decorator', () => {
   it('supports @repository(model, dataSource)', async () => {
     class Controller3 {
       constructor(@repository(Note, ds)
-        public noteRepo: Repository<juggler.PersistedModel>) {}
+        public noteRepo: Repository<Note>) {}
     }
     ctx.bind('controllers.Controller3').toClass(Controller3);
     const myController: MyController = await ctx.get(

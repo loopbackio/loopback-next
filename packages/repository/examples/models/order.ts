@@ -11,14 +11,14 @@ import {Customer} from './customer';
 @model()
 class Order extends Entity {
   @property({
-    name: 'qty',
+    type: 'number',
     mysql: {
       column: 'QTY',
     },
   })
   quantity: number;
 
-  @property({name: 'id', id: true, generated: true})
+  @property({type: 'string', id: true, generated: true})
   id: string;
   customerId: string;
 

@@ -11,6 +11,8 @@ import {
   DataSourceConstructor,
   juggler,
   DefaultCrudRepository,
+  Entity,
+  ModelDefinition,
 } from '../../../';
 
 /* tslint:disable-next-line:variable-name */
@@ -32,7 +34,7 @@ describe('legacy loopback-datasource-juggler', () => {
     /* tslint:disable-next-line:variable-name */
     const Note = ds.createModel<PersistedModelClass>(
       'note',
-      {title: 'string', content: 'string'},
+      {title: 'string', content: 'string', id: {type: 'number', id: true}},
       {},
     );
     /* tslint:disable-next-line:variable-name */
@@ -45,27 +47,26 @@ describe('legacy loopback-datasource-juggler', () => {
 
 describe('DefaultCrudRepository', () => {
   let ds: juggler.DataSource;
-  /* tslint:disable-next-line:variable-name */
-  let Note: PersistedModelClass;
+
+  class Note extends Entity {
+    static definition = new ModelDefinition('note3', {
+      title: 'string',
+      content: 'string',
+      id: {name: 'id', type: 'number', id: true},
+    });
+  }
 
   beforeEach(() => {
     ds = new DataSourceConstructor({
       name: 'db',
       connector: 'memory',
     });
-    Note = ds.createModel<PersistedModelClass>(
-      'note3',
-      {title: 'string', content: 'string'},
-      {},
-    );
-    Note.prototype.getId = function() {
-      /* tslint:disable-next-line:no-invalid-this */
-      return this.id;
-    };
   });
 
   afterEach(async () => {
-    await Note.deleteAll();
+    const model = ds.createModel<typeof juggler.PersistedModel>('note3');
+    model.attachTo(ds);
+    await model.deleteAll();
   });
 
   it('implements Repository.create()', async () => {
@@ -146,7 +147,7 @@ describe('DefaultCrudRepository', () => {
 
   it('implements Repository.save() without id', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
-    const note = await repo.save({title: 't3', content: 'c3'});
+    const note = await repo.save(new Note({title: 't3', content: 'c3'}));
     const result = await repo.findById(note!.id);
     expect(result.toJSON()).to.eql(note!.toJSON());
   });
@@ -164,7 +165,7 @@ describe('DefaultCrudRepository', () => {
     const repo = new DefaultCrudRepository(Note, ds);
     const note1 = await repo.create({title: 't3', content: 'c3'});
     note1.title = 't4';
-    delete note1.content;
+    note1.content = undefined;
     const ok = await repo.replaceById(note1.id, note1);
     expect(ok).to.be.true();
     const result = await repo.findById(note1.id);

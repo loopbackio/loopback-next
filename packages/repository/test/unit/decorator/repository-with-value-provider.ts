@@ -10,33 +10,30 @@ import {
   Repository,
   Entity,
   repository,
-  jugglerModule,
   bindModel,
   DataSourceConstructor,
-  juggler,
+  DataSourceType,
   DefaultCrudRepository,
+  ModelDefinition,
 } from '../../../';
 
 class MyController {
   constructor(
-    @repository('noteRepo') public noteRepo: Repository<juggler.PersistedModel>,
+    @repository('noteRepo') public noteRepo: Repository<Entity>,
   ) {}
 }
 
 class MyRepositoryProvider implements
   Provider<DefaultCrudRepository<Entity, string>> {
   constructor(
-    @inject('models.Note') private myModel: typeof juggler.PersistedModel,
-    // FIXME For some reason ts-node fails by complaining that
-    // juggler is undefined if the following is used:
-    // @inject('dataSources.memory') dataSource: juggler.DataSource
-    // tslint:disable-next-line:no-any
-    @inject('dataSources.memory') private dataSource: any) {}
+    @inject('models.Note') private myModel: typeof Entity,
+    @inject('dataSources.memory')
+    private dataSource: DataSourceType) {}
 
   value(): ValueOrPromise<DefaultCrudRepository<Entity, string>> {
     return new DefaultCrudRepository(
       this.myModel,
-      this.dataSource as juggler.DataSource,
+      this.dataSource as DataSourceType,
       );
   }
 }
@@ -45,17 +42,16 @@ describe('repository class', () => {
   let ctx: Context;
 
   before(function() {
-    const ds: juggler.DataSource = new DataSourceConstructor({
+    const ds = new DataSourceConstructor({
       name: 'db',
       connector: 'memory',
     });
 
-    /* tslint:disable-next-line:variable-name */
-    const Note = ds.createModel<typeof juggler.PersistedModel>(
-      'note',
-      {title: 'string', content: 'string'},
-      {},
-    );
+    class Note extends Entity {
+      static definition = new ModelDefinition('note',
+        {title: 'string', content: 'string', id: {type: 'number', id: true}},
+        {});
+    }
 
     ctx = new Context();
     ctx.bind('models.Note').to(Note);
@@ -71,5 +67,4 @@ describe('repository class', () => {
     );
     expect(myController.noteRepo instanceof DefaultCrudRepository).to.be.true();
   });
-
 });

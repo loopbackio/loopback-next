@@ -16,6 +16,7 @@ import {
   Filter,
   EntityCrudRepository,
   DefaultCrudRepository,
+  ModelDefinition,
 } from '../../';
 
 // The Controller for Note
@@ -39,12 +40,11 @@ const ds: juggler.DataSource = new DataSourceConstructor({
   connector: 'memory',
 });
 
-/* tslint:disable-next-line:variable-name */
-const Note = ds.createModel<typeof juggler.PersistedModel>(
-  'note',
-  {title: 'string', content: 'string'},
-  {},
-);
+class Note extends Entity {
+  static definition = new ModelDefinition('note',
+    {title: 'string', content: 'string'},
+    {});
+}
 
 async function main() {
   // Create a context
