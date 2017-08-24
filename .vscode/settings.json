@@ -12,7 +12,8 @@
     ".nyc_output": true,
     "coverage": true,
     "packages/*/lib": true,
-    "packages/*/lib6": true
+    "packages/*/lib6": true,
+    "packages/*/api-docs": true
   },
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
