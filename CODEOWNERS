@@ -1,0 +1,14 @@
+# Lines starting with '#' are comments.
+# Each line is a file pattern followed by one or more owners,
+# the last matching pattern has the most precedence.
+
+# Core team members from IBM
+* @bajtos @raymondfeng
+packages/authentication/* @bajtos
+packages/context/* @bajtos @raymondfeng @superkhau
+packages/core/* @bajtos @superkhau
+packages/example-codehub/* @bajtos
+packages/openapi-spec-builder/*  @bajtos
+packages/openapi-spec/*  @bajtos
+packages/repository/* @raymondfeng
+packages/testlab/* @bajtos @rashmihunt
