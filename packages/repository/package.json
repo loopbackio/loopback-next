@@ -20,6 +20,7 @@
   "author": "IBM",
   "license": "MIT",
   "devDependencies": {
+    "@loopback/core": "^4.0.0-alpha.12",
     "@loopback/testlab": "^4.0.0-alpha.7"
   },
   "dependencies": {

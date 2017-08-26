@@ -525,6 +525,9 @@ export interface ApplicationOptions {
   http?: HttpConfig;
   components?: Array<Constructor<Component>>;
   sequence?: Constructor<SequenceHandler>;
+
+  // tslint:disable-next-line:no-any
+  [prop: string]: any;
 }
 
 export interface HttpConfig {
