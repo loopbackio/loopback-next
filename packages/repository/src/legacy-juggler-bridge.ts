@@ -115,7 +115,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
     const models = await ensurePromise(
       this.modelClass.create(entities, options),
     );
-    return this.toEntities(models);
+    return this.toEntities(models as DataObject<T>[]);
   }
 
   save(entity: T, options?: Options): Promise<T | null> {
@@ -206,7 +206,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
     return new this.entityClass(model.toObject()) as T;
   }
 
-  protected toEntities(models: AnyObject): T[] {
-    return models.map((m: DataObject<T>) => this.toEntity(m));
+  protected toEntities(models: DataObject<T>[]): T[] {
+    return models.map(m => this.toEntity(m));
   }
 }

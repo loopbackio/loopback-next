@@ -458,7 +458,7 @@ export declare namespace juggler {
       filter?: Filter,
       options?: Options,
       callback?: Callback<PersistedData>,
-    ): PromiseOrVoid<PersistedData>;
+    ): PromiseOrVoid<PersistedData[]>;
 
     /**
      * Find one model instance that matches `filter` specification.

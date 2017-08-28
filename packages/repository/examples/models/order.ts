@@ -11,6 +11,8 @@ import {Customer} from './customer';
 @model()
 class Order extends Entity {
   @property({
+    // TODO(bajtos) type should be optional for TypeScript based properties,
+    // as simple types string, number, boolean can be inferred
     type: 'number',
     mysql: {
       column: 'QTY',
@@ -18,6 +20,8 @@ class Order extends Entity {
   })
   quantity: number;
 
+  // TODO(bajtos) type should be optional for TypeScript based properties,
+  // as simple types string, number, boolean can be inferred
   @property({type: 'string', id: true, generated: true})
   id: string;
   customerId: string;
