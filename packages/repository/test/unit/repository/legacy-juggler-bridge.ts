@@ -49,10 +49,13 @@ describe('DefaultCrudRepository', () => {
   let ds: juggler.DataSource;
 
   class Note extends Entity {
-    static definition = new ModelDefinition('note3', {
-      title: 'string',
-      content: 'string',
-      id: {name: 'id', type: 'number', id: true},
+    static definition = new ModelDefinition({
+      name: 'note3',
+      properties: {
+        title: 'string',
+        content: 'string',
+        id: {name: 'id', type: 'number', id: true},
+      },
     });
   }
 

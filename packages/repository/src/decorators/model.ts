@@ -5,7 +5,7 @@
 
 import {Class} from '../common-types';
 import {Reflector} from '@loopback/context';
-import {ModelDefinition, PropertyType} from '../model';
+import {ModelDefinition, PropertyType, ModelDefinitionSyntax} from '../model';
 import {PropertyDefinition} from '../index';
 
 export const MODEL_KEY = 'loopback:model';
@@ -21,11 +21,7 @@ type PropertyMap = {[name: string]: PropertyDefinition};
  * @param definition
  * @returns {(target:any)}
  */
-export function model(definition?: {
-  name: string;
-  properties?: {[name: string]: PropertyDefinition | PropertyType};
-  settings?: {[name: string]: any};
-}) {
+export function model(definition?: ModelDefinitionSyntax) {
   return function(target: any) {
     if (!definition) {
       definition = {name: target.name};
@@ -35,11 +31,7 @@ export function model(definition?: {
     Reflector.defineMetadata(MODEL_KEY, definition, target);
 
     // Build "ModelDefinition" and store it on model constructor
-    const modelDef = new ModelDefinition(
-      definition.name,
-      definition.properties,
-      definition.settings,
-    );
+    const modelDef = new ModelDefinition(definition);
 
     const propertyMap: PropertyMap = Reflector.getMetadata(
       MODEL_PROPERTIES_KEY,

@@ -36,6 +36,19 @@ export interface PropertyForm {
   name?: string; // Custom name for this form
 }
 
+export interface PropertyDefinitionMap {
+}
+
+/**
+ * DSL for building a model definition.
+ */
+export interface ModelDefinitionSyntax {
+  name: string;
+  properties?: {[name: string]: PropertyDefinition | PropertyType};
+  settings?: {[name: string]: any};
+}
+
+
 /**
  * Definition for a model
  */
@@ -46,11 +59,12 @@ export class ModelDefinition {
   // indexes: Map<string, any>;
   [attribute: string]: any; // Other attributes
 
-  constructor(
-    name: string,
-    properties?: {[name: string]: PropertyDefinition | PropertyType},
-    settings?: {[name: string]: any},
-  ) {
+  constructor(nameOrDef: string | ModelDefinitionSyntax) {
+    if (typeof nameOrDef === 'string') {
+      nameOrDef = {name: nameOrDef};
+    }
+    const {name, properties, settings} = nameOrDef;
+
     this.name = name;
 
     this.properties = {};

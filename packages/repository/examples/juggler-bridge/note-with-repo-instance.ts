@@ -41,9 +41,10 @@ const ds: juggler.DataSource = new DataSourceConstructor({
 });
 
 class Note extends Entity {
-  static definition = new ModelDefinition('note',
-    {title: 'string', content: 'string'},
-    {});
+  static definition = new ModelDefinition({
+    name: 'note',
+    properties: {title: 'string', content: 'string'},
+  });
 }
 
 async function main() {

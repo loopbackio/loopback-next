@@ -34,9 +34,14 @@ describe('repository class', () => {
     });
 
     class Note extends Entity {
-      static definition = new ModelDefinition('note',
-        {title: 'string', content: 'string', id: {type: 'number', id: true}},
-        {});
+      static definition = new ModelDefinition({
+        name: 'note',
+        properties: {
+          title: 'string',
+          content: 'string',
+          id: {type: 'number', id: true},
+        },
+      });
 
       title: string;
       content: string;
