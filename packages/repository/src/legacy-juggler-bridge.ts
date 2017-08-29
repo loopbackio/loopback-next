@@ -98,7 +98,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
       properties[p] = Object.assign({}, definition.properties[p]);
     }
 
-    this.modelClass = dataSource.createModel(
+    this.modelClass = dataSource.createModel<typeof juggler.PersistedModel>(
       definition.name,
       properties,
       definition.settings,
