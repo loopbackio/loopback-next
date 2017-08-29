@@ -13,6 +13,7 @@ import {
   Entity,
   EntityCrudRepository,
   DefaultCrudRepository,
+  ModelDefinition,
 } from '../../';
 
 class NoteController {
@@ -25,16 +26,16 @@ const ds: juggler.DataSource = new DataSourceConstructor({
     connector: 'memory',
   });
 
-/* tslint:disable-next-line:variable-name */
-const Note = ds.createModel<typeof juggler.PersistedModel>(
-  'note',
-  {title: 'string', content: 'string'},
-  {},
-);
+class Note extends Entity {
+  static definition = new ModelDefinition({
+    name: 'note',
+    properties: {title: 'string', content: 'string'},
+  });
+}
 
-class MyNoteRepository extends DefaultCrudRepository<Entity, string> {
+class MyNoteRepository extends DefaultCrudRepository<Note, string> {
   constructor(
-    @inject('models.Note') myModel: typeof juggler.PersistedModel,
+    @inject('models.Note') myModel: typeof Note,
     // FIXME For some reason ts-node fails by complaining that
     // juggler is undefined if the following is used:
     // @inject('dataSources.memory') dataSource: juggler.DataSource

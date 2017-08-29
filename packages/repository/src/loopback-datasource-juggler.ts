@@ -77,7 +77,7 @@ export declare namespace juggler {
       properties?: {[name: string]: PropertyDefinition},
       settings?: AnyObject,
     );
-    constructor(modelBuidler: ModelBuilder | null | undefined, schema: Schema);
+    constructor(modelBuilder: ModelBuilder | null | undefined, schema: Schema);
 
     tableName(connectorType: string): string;
     columnName(connectorType: string, propertyName: string): string;
@@ -458,7 +458,7 @@ export declare namespace juggler {
       filter?: Filter,
       options?: Options,
       callback?: Callback<PersistedData>,
-    ): PromiseOrVoid<PersistedData>;
+    ): PromiseOrVoid<PersistedData[]>;
 
     /**
      * Find one model instance that matches `filter` specification.

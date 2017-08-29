@@ -13,13 +13,14 @@ import {
   jugglerModule,
   bindModel,
   DataSourceConstructor,
-  juggler,
   DefaultCrudRepository,
+  ModelDefinition,
+  DataSourceType,
 } from '../../../';
 
 class MyController {
   constructor(
-    @repository('noteRepo') public noteRepo: Repository<juggler.PersistedModel>,
+    @repository('noteRepo') public noteRepo: Repository<Entity>,
   ) {}
 }
 
@@ -27,26 +28,33 @@ describe('repository class', () => {
   let ctx: Context;
 
   before(function() {
-    const ds: juggler.DataSource = new DataSourceConstructor({
+    const ds: DataSourceType = new DataSourceConstructor({
       name: 'db',
       connector: 'memory',
     });
 
-    /* tslint:disable-next-line:variable-name */
-    const Note = ds.createModel<typeof juggler.PersistedModel>(
-      'note',
-      {title: 'string', content: 'string'},
-      {},
-    );
+    class Note extends Entity {
+      static definition = new ModelDefinition({
+        name: 'note',
+        properties: {
+          title: 'string',
+          content: 'string',
+          id: {type: 'number', id: true},
+        },
+      });
+
+      title: string;
+      content: string;
+
+      constructor(data?: Partial<Note>) {
+        super(data);
+      }
+    }
 
     class MyRepository extends DefaultCrudRepository<Entity, string> {
       constructor(
-        @inject('models.Note') myModel: typeof juggler.PersistedModel,
-        // FIXME For some reason ts-node fails by complaining that
-        // juggler is undefined if the following is used:
-        // @inject('dataSources.memory') dataSource: juggler.DataSource
-        // tslint:disable-next-line:no-any
-        @inject('dataSources.memory') dataSource: any) {
+        @inject('models.Note') myModel: typeof Note,
+        @inject('dataSources.memory') dataSource: DataSourceType) {
         super(myModel, dataSource);
       }
     }
@@ -64,5 +72,4 @@ describe('repository class', () => {
     );
     expect(myController.noteRepo instanceof DefaultCrudRepository).to.be.true();
   });
-
 });

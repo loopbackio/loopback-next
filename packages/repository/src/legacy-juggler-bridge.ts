@@ -5,15 +5,24 @@
 
 export const jugglerModule = require('loopback-datasource-juggler');
 
+import * as assert from 'assert';
 import {isPromise} from '@loopback/context';
 import {MixinBuilder} from './mixin';
-import {Class, DataObject, Options} from './common-types';
+import {
+  Class,
+  DataObject,
+  Options,
+  AnyObject,
+} from './common-types';
 import {Entity} from './model';
 import {Filter, Where} from './query';
 import {EntityCrudRepository} from './repository';
 
-import {juggler} from './loopback-datasource-juggler';
 export * from './loopback-datasource-juggler';
+import {juggler} from './loopback-datasource-juggler';
+
+type DataSourceType = juggler.DataSource;
+export {DataSourceType};
 
 /* tslint:disable-next-line:variable-name */
 export const DataSourceConstructor =
@@ -43,7 +52,7 @@ export function bindModel<T extends typeof juggler.ModelBase>(
  * @param p Promise or void
  */
 /* tslint:disable-next-line:no-any */
-function ensurePromise(p: juggler.PromiseOrVoid<any>): Promise<any> {
+function ensurePromise<T>(p: juggler.PromiseOrVoid<T>): Promise<T> {
   if (p && isPromise(p)) {
     return p;
   } else {
@@ -65,23 +74,51 @@ export class DefaultCrudRepository<T extends Entity, ID>
    * @param dataSource Legacy data source
    */
   constructor(
-    modelClass: typeof juggler.PersistedModel,
+    // entityClass should have type "typeof T", but that's not supported by TSC
+    public entityClass: typeof Entity & {prototype: T},
     dataSource: juggler.DataSource,
   ) {
-    // Bind the legacy model class to the datasource to create
-    // a subclass of the model
-    this.modelClass = bindModel(modelClass, dataSource);
+    const definition = entityClass.definition;
+    assert(
+      !!definition,
+      `Entity ${entityClass.name} must have valid model definition.`,
+    );
+
+    assert(
+      definition.idProperties().length > 0,
+      `Entity ${entityClass.name} must have at least one id/pk property.`,
+    );
+
+    // Create an internal legacy Model attached to the datasource
+
+    // We need to convert property definitions from PropertyDefinition
+    // to plain data object because of a juggler limitation
+    const properties: {[name: string]: object} = {};
+    for (const p in definition.properties) {
+      properties[p] = Object.assign({}, definition.properties[p]);
+    }
+
+    this.modelClass = dataSource.createModel(
+      definition.name,
+      properties,
+      definition.settings,
+    );
+    this.modelClass.attachTo(dataSource);
   }
 
-  create(entity: DataObject<T>, options?: Options): Promise<T> {
-    return ensurePromise(this.modelClass.create(entity, options));
+  async create(entity: Partial<T>, options?: Options): Promise<T> {
+    const model = await ensurePromise(this.modelClass.create(entity, options));
+    return this.toEntity(model);
   }
 
-  createAll(entities: DataObject<T>[], options?: Options): Promise<T[]> {
-    return ensurePromise(this.modelClass.create(entities, options));
+  async createAll(entities: Partial<T>[], options?: Options): Promise<T[]> {
+    const models = await ensurePromise(
+      this.modelClass.create(entities, options),
+    );
+    return this.toEntities(models as DataObject<T>[]);
   }
 
-  save(entity: DataObject<T>, options?: Options): Promise<T | null> {
+  save(entity: T, options?: Options): Promise<T | null> {
     const idName = this.modelClass.definition.idName();
     let id;
     if (typeof entity.getId === 'function') {
@@ -93,29 +130,33 @@ export class DefaultCrudRepository<T extends Entity, ID>
       return this.create(entity, options);
     } else {
       return this.replaceById(id, entity, options).then(
-        result => (result ? entity as T: null),
+        result => (result ? this.toEntity(entity): null),
       );
     }
   }
 
-  find(filter?: Filter, options?: Options): Promise<T[]> {
-    return ensurePromise(this.modelClass.find(filter, options));
+  async find(filter?: Filter, options?: Options): Promise<T[]> {
+    const models = await ensurePromise(this.modelClass.find(filter, options));
+    return this.toEntities(models);
   }
 
-  findById(id: ID, filter?: Filter, options?: Options): Promise<T> {
-    return ensurePromise(this.modelClass.findById(id, filter, options));
+  async findById(id: ID, filter?: Filter, options?: Options): Promise<T> {
+    const model = await ensurePromise(
+      this.modelClass.findById(id, filter, options),
+    );
+    return this.toEntity(model);
   }
 
-  update(entity: DataObject<T>, options?: Options): Promise<boolean> {
+  update(entity: T, options?: Options): Promise<boolean> {
     return this.updateById(entity.getId(), entity, options);
   }
 
-  delete(entity: DataObject<T>, options?: Options): Promise<boolean> {
+  delete(entity: T, options?: Options): Promise<boolean> {
     return this.deleteById(entity.getId(), options);
   }
 
   updateAll(
-    data: DataObject<T>,
+    data: Partial<T>,
     where?: Where,
     options?: Options,
   ): Promise<number> {
@@ -124,7 +165,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
     );
   }
 
-  updateById(id: ID, data: DataObject<T>, options?: Options): Promise<boolean> {
+  updateById(id: ID, data: Partial<T>, options?: Options): Promise<boolean> {
     const idProp = this.modelClass.definition.idName();
     const where = {} as Where;
     where[idProp] = id;
@@ -133,7 +174,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
 
   replaceById(
     id: ID,
-    data: DataObject<T>,
+    data: Partial<T>,
     options?: Options,
   ): Promise<boolean> {
     return ensurePromise(this.modelClass.replaceById(id, data, options)).then(
@@ -159,5 +200,13 @@ export class DefaultCrudRepository<T extends Entity, ID>
 
   exists(id: ID, options?: Options): Promise<boolean> {
     return ensurePromise(this.modelClass.exists(id, options));
+  }
+
+  protected toEntity(model: DataObject<T>): T {
+    return new this.entityClass(model.toObject()) as T;
+  }
+
+  protected toEntities(models: DataObject<T>[]): T[] {
+    return models.map(m => this.toEntity(m));
   }
 }

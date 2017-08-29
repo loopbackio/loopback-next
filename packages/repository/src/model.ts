@@ -19,17 +19,12 @@ export type PropertyType = string | Function | Object | Type<any>;
 /**
  * Property definition for a model
  */
-export class PropertyDefinition {
-  readonly name: string;
+export interface PropertyDefinition {
   type: PropertyType; // For example, 'string', String, or {}
+  id?: boolean;
   json?: PropertyForm;
   store?: PropertyForm;
   [attribute: string]: any; // Other attributes
-
-  constructor(name: string, type: PropertyType = String) {
-    this.name = name;
-    this.type = type;
-  }
 }
 
 /**
@@ -41,6 +36,19 @@ export interface PropertyForm {
   name?: string; // Custom name for this form
 }
 
+export interface PropertyDefinitionMap {
+}
+
+/**
+ * DSL for building a model definition.
+ */
+export interface ModelDefinitionSyntax {
+  name: string;
+  properties?: {[name: string]: PropertyDefinition | PropertyType};
+  settings?: {[name: string]: any};
+}
+
+
 /**
  * Definition for a model
  */
@@ -51,13 +59,21 @@ export class ModelDefinition {
   // indexes: Map<string, any>;
   [attribute: string]: any; // Other attributes
 
-  constructor(
-    name: string,
-    properties?: {[name: string]: PropertyDefinition},
-    settings?: {[name: string]: any},
-  ) {
+  constructor(nameOrDef: string | ModelDefinitionSyntax) {
+    if (typeof nameOrDef === 'string') {
+      nameOrDef = {name: nameOrDef};
+    }
+    const {name, properties, settings} = nameOrDef;
+
     this.name = name;
-    this.properties = properties || {};
+
+    this.properties = {};
+    if (properties) {
+      for (const p in properties) {
+        this.addProperty(p, properties[p]);
+      }
+    }
+
     this.settings = settings || new Map();
   }
 
@@ -67,14 +83,13 @@ export class ModelDefinition {
    * @param type Property type
    */
   addProperty(
-    property: PropertyDefinition | string,
-    type?: PropertyType,
+    name: string,
+    definitionOrType: PropertyDefinition | PropertyType,
   ): this {
-    if (property instanceof PropertyDefinition) {
-      this.properties[property.name] = property;
-    } else {
-      this.properties[property] = new PropertyDefinition(property, type);
-    }
+    const definition = (definitionOrType as PropertyDefinition).type ?
+      definitionOrType as PropertyDefinition :
+      {type: definitionOrType};
+    this.properties[name] = definition;
     return this;
   }
 
@@ -89,7 +104,7 @@ export class ModelDefinition {
   }
 
   /**
-   * Get an array of definitions for ID properties, which are specified in
+   * Get an array of names of ID properties, which are specified in
    * the model settings or properties with `id` attribute. For example,
    * ```
    * {
@@ -105,19 +120,14 @@ export class ModelDefinition {
    * }
    * ```
    */
-  idProperties(): PropertyDefinition[] {
-    let ids: string[] | null = null;
+  idProperties(): string[] {
     if (typeof this.settings.id === 'string') {
-      ids = [this.settings.id];
+      return [this.settings.id];
     } else if (Array.isArray(this.settings.id)) {
-      ids = this.settings.id;
-    }
-    if (ids) {
-      return ids.map(id => this.properties[id]);
+      return this.settings.id;
     }
     const idProps = Object.keys(this.properties)
-      .map(p => this.properties[p])
-      .filter(prop => prop.id);
+      .filter(prop => this.properties[prop].id);
     return idProps;
   }
 }
@@ -163,6 +173,10 @@ export abstract class Model {
   }
 
   [prop: string]: any;
+
+  constructor(data?: Partial<Model>) {
+    Object.assign(this, data);
+  }
 }
 
 export interface Persistable {
@@ -187,13 +201,15 @@ export abstract class Entity extends Model implements Persistable {
     const definition = (this.constructor as typeof Entity).definition;
     const idProps = definition.idProperties();
     if (idProps.length === 1) {
-      return this[idProps[0].name];
+      return this[idProps[0]];
     }
-    const idObj = {} as any;
-    for (const idProp of idProps) {
-      idObj[idProp.name] = this[idProp.name];
+    if (!idProps.length) {
+      throw new Error(
+        `Invalid Entity ${this.constructor.name}:` +
+          'missing primary key (id) property',
+      );
     }
-    return idObj;
+    return this.getIdObject();
   }
 
   /**
@@ -205,7 +221,7 @@ export abstract class Entity extends Model implements Persistable {
     const idProps = definition.idProperties();
     const idObj = {} as any;
     for (const idProp of idProps) {
-      idObj[idProp.name] = this[idProp.name];
+      idObj[idProp] = this[idProp];
     }
     return idObj;
   }
@@ -218,10 +234,10 @@ export abstract class Entity extends Model implements Persistable {
     const where = {} as any;
     const idProps = this.definition.idProperties();
     if (idProps.length === 1) {
-      where[idProps[0].name] = id;
+      where[idProps[0]] = id;
     } else {
       for (const idProp of idProps) {
-        where[idProp.name] = id[idProp.name];
+        where[idProp] = id[idProp];
       }
     }
     return where;
