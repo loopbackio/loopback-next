@@ -444,7 +444,7 @@ export class Application extends Context {
    *
    * ```ts
    * app.handler((sequence, request, response) => {
-   *   sequence.send(response, 'hello world'));
+   *   sequence.send(response, 'hello world');
    * });
    * ```
    *
