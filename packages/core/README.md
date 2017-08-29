@@ -24,7 +24,7 @@ $ npm install --save @loopback/core
 
   const app = new Application();
   app.handler((sequence, request, response) => {
-    sequence.send(response, 'hello world'));
+    sequence.send(response, 'hello world');
   });
 
   (async function start() {
