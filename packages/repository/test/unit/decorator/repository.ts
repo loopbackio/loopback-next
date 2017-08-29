@@ -102,4 +102,18 @@ describe('repository decorator', () => {
     );
     expect(myController.noteRepo).to.be.not.null();
   });
+
+  it('rejects @repository("")', async () => {
+    class Controller4 {
+      constructor(@repository('') public noteRepo: Repository<Note>) {}
+    }
+    ctx.bind('controllers.Controller4').toClass(Controller4);
+
+    try {
+      await ctx.get('controllers.Controller4');
+      throw new Error('Repository resolver should have thrown an error.');
+    } catch (err) {
+      expect(err).to.match(/invalid repository/i);
+    }
+  });
 });

@@ -129,4 +129,13 @@ describe('model', () => {
     });
     expect(where).to.eql({realm: 'org1', email: 'xyz@example.com'});
   });
+
+  it('reports helpful error when getting ids of a model with no ids', () => {
+    class NoId extends Entity {
+      static definition = new ModelDefinition('NoId');
+    }
+
+    const instance = new NoId();
+    expect(() => instance.getId()).to.throw(/missing.*id/);
+  });
 });

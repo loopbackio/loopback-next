@@ -209,11 +209,7 @@ export abstract class Entity extends Model implements Persistable {
           'missing primary key (id) property',
       );
     }
-    const idObj = {} as any;
-    for (const idProp of idProps) {
-      idObj[idProp] = this[idProp];
-    }
-    return idObj;
+    return this.getIdObject();
   }
 
   /**
