@@ -8,7 +8,7 @@
     "build:lib": "node ../../bin/compile-package es2017",
     "build:lib6": "node ../../bin/compile-package es2015",
     "clean": "rm -rf loopback-testlab*.tgz lib* package",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "pretest": "npm run build:current",
     "test": "mocha",
     "verify": "npm pack && tar xf loopback-testlab*.tgz && tree package && npm run clean"
