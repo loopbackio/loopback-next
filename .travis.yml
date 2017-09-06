@@ -9,3 +9,13 @@ before_script:
 
 after_success:
   - npm run coverage:ci
+
+jobs:
+  include:
+    - stage: commit linting
+      before_install: git fetch --unshallow
+      before_script: skip
+      script: /bin/bash ./bin/lint-commits.sh
+      after_success: skip
+      node_js:
+        - "8"
