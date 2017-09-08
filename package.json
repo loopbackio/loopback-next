@@ -10,20 +10,20 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/mocha": "^2.2.39",
-    "@types/node": "^8.0.16",
-    "@types/request": "^2.0.0",
-    "@types/request-promise": "^4.1.36",
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^8.0.27",
+    "@types/request": "^2.0.3",
+    "@types/request-promise": "^4.1.37",
     "coveralls": "^2.13.1",
-    "lerna": "^2.0.0-rc.5",
+    "lerna": "^2.1.2",
     "mocha": "^3.4.0",
-    "nyc": "^11.0.3",
+    "nyc": "^11.2.1",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
     "strong-docs": "^1.4.0",
     "ts-node": "^3.3.0",
-    "tslint": "^5.5.0",
-    "typescript": "^2.4.2"
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.2"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
