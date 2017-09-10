@@ -23,11 +23,13 @@ the request to be authenticated.
 ```ts
 // controllers/my-controller.ts
 import {UserProfile, authenticate} from '@loopback/authentication';
+import {inject, get} from '@loopback/core'
 
-class MyController {
+export class MyController {
   constructor(@inject('authentication.currentUser') private user: UserProfile) {}
 
   @authenticate('BasicStrategy')
+  @get('/whoAmI')
   whoAmI() {
     return this.user.id;
   }
@@ -60,7 +62,7 @@ export class MyAuthStrategyProvider implements Provider<Strategy | undefined> {
 
   value() : ValueOrPromise<Strategy> {
     if (!this.metadata) {
-      return undefined;
+      return Promise.reject('Authentication metadata not found');
     }
 
     const name = this.metadata.strategy;
