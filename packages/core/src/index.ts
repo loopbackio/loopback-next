@@ -22,6 +22,9 @@ import * as HttpErrors from 'http-errors';
 // http errors
 export {HttpErrors};
 
+// gRPC
+export * from './grpc/decorators/service.decorator';
+
 // internals used by unit-tests
 export {
   ParsedRequest,

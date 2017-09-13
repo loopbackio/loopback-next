@@ -54,6 +54,8 @@ const cloneDeep: <T>(value: T) => T = require('lodash/cloneDeep');
 
 const debug = require('debug')('loopback:core:application');
 
+const grpc = require('grpc');
+
 interface OpenApiSpecOptions {
   version?: string;
   format?: string;
@@ -481,7 +483,7 @@ export class Application extends Context {
   /**
    * Start the application (e.g. HTTP/HTTPS servers).
    */
-  async start(): Promise<void> {
+  async _startHttp(): Promise<void> {
     // Setup the HTTP handler so that we can verify the configuration
     // of API spec, controllers and routes at startup time.
     this._setupHandlerIfNeeded();
@@ -500,6 +502,105 @@ export class Application extends Context {
       });
       server.once('error', reject);
     });
+  }
+
+  async start(): Promise<void> {
+    await Promise.all([
+      this._startHttp(),
+      this._startGrpc(),
+    ]);
+  }
+
+  async _startGrpc(): Promise<void> {
+    debug('Setting up gRPC server');
+    const server = new grpc.Server();
+
+    for (const b of this.find('controllers.*')) {
+      const controllerName = b.key.replace(/^controllers\./, '');
+      const ctor = b.valueConstructor;
+      if (!ctor) {
+        throw new Error(
+          `The controller ${controllerName} was not bound via .toClass()`);
+      }
+
+      // tslint:disable-next-line:no-any
+      const spec: any = (ctor as {grpcService?: object}).grpcService;
+      if (!spec) {
+        debug(
+          `  skipping controller ${controllerName} - no gRPC API was specified`,
+        );
+        continue;
+      }
+
+      debug('  adding controller %s with spec %j', controllerName, spec);
+      for (const key in spec) {
+        const methodName = key;
+        const opSpec = spec[key];
+        // FIXME(bajtos) handle the case when the controller method is using
+        // opSpec.originalName
+
+        if (!ctor.prototype[methodName]) {
+          debug(
+            '   - skipping method %s - %s.%s not implemented',
+            opSpec.originalName,
+            controllerName,
+            methodName);
+          continue;
+        }
+
+        debug(
+          '   - added %s as %s.%s',
+          opSpec.originalName,
+          controllerName,
+          methodName,
+        );
+
+        // TODO: support stream method types
+        server.register(
+          opSpec.path,
+          createHandlerFor(controllerName, methodName, this),
+          opSpec.responseSerialize,
+          opSpec.requestDeserialize,
+          'unary',
+        );
+
+      }
+    }
+
+    function createHandlerFor(
+      controllerName: string,
+      methodName: string,
+      rootContext: Context,
+    ) {
+      // TODO(bajtos) support metadata?
+      // tslint:disable-next-line:no-any
+      return function(request: any, callback: any) {
+        debug('gRPC invoke %s.%s(%j)', controllerName, methodName, request);
+
+        // FIXME(bajtos) Create new per-request child context
+        // FIXME(bajtos) Use Sequence to allow custom request processing
+        handle().then(
+          result => callback(null, result),
+          callback,
+        );
+
+        async function handle() {
+          const controllerKey = `controllers.${controllerName}`;
+          const controller = await rootContext.get(controllerKey);
+          return await controller[methodName](request.request);
+        }
+      };
+    }
+
+    // TODO(bajtos) Make the hostname & port configurable
+    const port = server.bind(
+      '0.0.0.0:50051',
+       grpc.ServerCredentials.createInsecure(),
+    );
+    this.bind('grpc.port').to(port);
+
+    // NOTE(bajtos) Looks like gRPC server starts synchronously
+    server.start();
   }
 
   protected _onUnhandledError(
