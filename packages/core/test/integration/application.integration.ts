@@ -61,6 +61,9 @@ describe('Application (integration)', () => {
         },
       },
     });
+    expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
+    expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
+    expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
   });
 
   it('exposes "GET /swagger.yaml" endpoint', async () => {
@@ -90,6 +93,9 @@ paths:
             type: string
           description: greeting of the day
 `);
+    expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
+    expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
+    expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
   });
 
   it('exposes "GET /openapi.json" endpoint', async () => {
@@ -127,6 +133,9 @@ paths:
       },
       components: { schemas:  {} },
     });
+    expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
+    expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
+    expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
   });
 
   it('exposes "GET /openapi.yaml" endpoint', async () => {
@@ -161,5 +170,30 @@ paths:
 components:
   schemas: {}
 `);
+    expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
+    expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
+    expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
   });
+  it('exposes "GET /swagger-ui" endpoint', async () => {
+    const app = new Application({http: {port: 0}});
+    const greetSpec = {
+      responses: {
+        200: {
+          schema: { type: 'string' },
+          description: 'greeting of the day',
+        },
+      },
+    };
+    app.route(new Route('get', '/greet', greetSpec, function greet() {}));
+
+    const response = await createClientForApp(app).get('/swagger-ui');
+    const port = await app.get('http.port');
+    const url = new RegExp(['http:\/\/petstore.swagger.io',
+      '\/\\?url=http:\/\/\\d+\.\\d+\.\\d+\.\\d+\:\\d+\/swagger.json'].join(''));
+    expect(response.get('Location')).match(url);
+    expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
+    expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
+    expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
+  });
+
 });
