@@ -4,9 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application, service} from '../../..';
-import {ValueOrPromise} from '@loopback/context';
 import {expect} from '@loopback/testlab';
 import * as path from 'path';
+import {Greeter, HelloRequest, HelloResponse} from './hello.proto';
 
 // NOTE(bajtos) There is no type definition for grpc yet, see
 // https://github.com/grpc/grpc/issues/8233
@@ -15,17 +15,6 @@ const grpc = require('grpc');
 describe('gRPC', () => {
   describe('Hello Service', () => {
     const helloService = grpc.load(path.join(__dirname, 'hello.proto')).hello;
-
-    // TODO(bajtos) Generate the following three interfaces from hello.proto
-    interface HelloRequest {
-      name: string;
-    }
-    interface HelloResponse {
-      message: string;
-    }
-    interface Greeter {
-      hello(request: HelloRequest): ValueOrPromise<HelloResponse>;
-    }
 
     it('provides gRPC interface for decorated controllers', async () => {
       @service(helloService.Greeter.service)
