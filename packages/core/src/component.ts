@@ -15,6 +15,7 @@ export interface ProviderMap {
 export interface Component {
   controllers?: Constructor<any>[];
   providers?: ProviderMap;
+  [prop: string]: any;
 }
 
 export function mountComponent(
