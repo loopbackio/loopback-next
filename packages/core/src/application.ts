@@ -135,6 +135,12 @@ export class Application extends Context {
     request: ServerRequest,
     response: ServerResponse,
   ) {
+    // allow CORS support for all endpoints so that users
+    // can test with online SwaggerUI instance
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Credentials', 'true');
+    response.setHeader('Access-Control-Allow-Max-Age', '86400');
+
     if (request.method === 'GET' && request.url &&
         request.url in OPENAPI_SPEC_MAPPING) {
       // NOTE(bajtos) Regular routes are handled through Sequence.
@@ -146,6 +152,10 @@ export class Application extends Context {
       // spec to be converted into an XML response.
       const options = OPENAPI_SPEC_MAPPING[request.url];
       return this._serveOpenApiSpec(request, response, options);
+    }
+    if (request.method === 'GET' && request.url &&
+        request.url === '/swagger-ui') {
+      return this._redirectToSwaggerUI(request, response);
     }
     return this.httpHandler.handleRequest(request, response);
   }
@@ -246,6 +256,18 @@ export class Application extends Context {
       response.setHeader('content-type', 'text/yaml; charset=utf-8');
       response.end(yaml, 'utf-8');
     }
+  }
+
+  private async _redirectToSwaggerUI(
+    request: ServerRequest,
+    response: ServerResponse,
+  ) {
+    response.statusCode = 308;
+    response.setHeader('Location',
+    'http://petstore.swagger.io/?url=' +
+    'http://' + request.headers.host +
+    '/swagger.json');
+    response.end();
   }
 
   /**
