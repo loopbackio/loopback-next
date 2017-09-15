@@ -7,10 +7,10 @@ export namespace CoreBindings {
   // application-wide bindings
 
   export const HTTP_PORT = 'http.port';
+  export const GRPC_PORT = 'grpc.port';
   export const HTTP_HANDLER = 'http.handler';
 
   export const API_SPEC = 'application.apiSpec';
-  export const SEQUENCE = 'sequence';
 
   export namespace SequenceActions {
     export const FIND_ROUTE = 'sequence.actions.findRoute';
@@ -26,13 +26,21 @@ export namespace CoreBindings {
 
   // request-specific bindings
 
+  export const CONTROLLER_NAME = 'controller.current.name';
   export const CONTROLLER_CLASS = 'controller.current.ctor';
   export const CONTROLLER_METHOD_NAME = 'controller.current.operation';
   export const CONTROLLER_METHOD_META = 'controller.method.meta';
 
   export namespace Http {
+    export const SEQUENCE = 'http.sequence';
     export const REQUEST = 'http.request';
     export const RESPONSE = 'http.response';
     export const CONTEXT = 'http.request.context';
+  }
+
+  export namespace Grpc {
+    export const PORT = 'grpc.port';
+    export const CONTEXT = 'grpc.request.context';
+    export const SEQUENCE = 'grpc.sequence';
   }
 }

@@ -22,13 +22,18 @@ import {
   RouteEntry,
   createEmptyApiSpec,
   parseOperationArgs,
+  UnaryResult,
 } from '.';
 import {ServerRequest, ServerResponse, createServer} from 'http';
 import {Component, mountComponent} from './component';
 import {getControllerSpec} from './router/metadata';
 import {HttpHandler} from './http-handler';
 import {writeResultToResponse} from './writer';
-import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
+import {
+  DefaultSequence,
+  SequenceHandler as HttpSequenceHandler,
+  SequenceFunction,
+} from './sequence';
 import {RejectProvider} from './router/providers/reject';
 import {
   FindRoute,
@@ -43,6 +48,11 @@ import {BindElementProvider} from './router/providers/bind-element';
 import {InvokeMethodProvider} from './router/providers/invoke-method';
 import {FindRouteProvider} from './router/providers/find-route';
 import {CoreBindings} from './keys';
+
+import {
+  SequenceHandler as GrpcSequenceHandler,
+  DefaultSequence as DefaultGrpcSequence,
+} from './grpc/sequence';
 
 const SequenceActions = CoreBindings.SequenceActions;
 
@@ -102,6 +112,9 @@ export class Application extends Context {
     this.bind(CoreBindings.HTTP_PORT).to(
       options.http ? options.http.port : 3000,
     );
+    this.bind(CoreBindings.Grpc.PORT).to(
+      options.grpc ? options.grpc.port : 50051,
+    );
     this.api(createEmptyApiSpec());
 
     if (options.components) {
@@ -110,7 +123,7 @@ export class Application extends Context {
       }
     }
 
-    this.sequence(options.sequence ? options.sequence : DefaultSequence);
+    this.httpSequence(options.sequence ? options.sequence : DefaultSequence);
 
     this.handleHttp = (req: ServerRequest, res: ServerResponse) => {
       try {
@@ -131,6 +144,8 @@ export class Application extends Context {
     this.bind(SequenceActions.REJECT).toProvider(RejectProvider);
     this.bind(CoreBindings.GET_FROM_CONTEXT).toProvider(GetFromContextProvider);
     this.bind(CoreBindings.BIND_ELEMENT).toProvider(BindElementProvider);
+
+    this.grpcSequence(DefaultGrpcSequence);
   }
 
   protected _handleHttpRequest(
@@ -437,8 +452,12 @@ export class Application extends Context {
    *
    * @param value The sequence to invoke for each incoming request.
    */
-  public sequence(value: Constructor<SequenceHandler>) {
-    this.bind(CoreBindings.SEQUENCE).toClass(value);
+  public httpSequence(value: Constructor<HttpSequenceHandler>) {
+    this.bind(CoreBindings.Http.SEQUENCE).toClass(value);
+  }
+
+  public grpcSequence(value: Constructor<GrpcSequenceHandler>) {
+    this.bind(CoreBindings.Grpc.SEQUENCE).toClass(value);
   }
 
   /**
@@ -477,7 +496,7 @@ export class Application extends Context {
       }
     }
 
-    this.sequence(SequenceFromFunction);
+    this.httpSequence(SequenceFromFunction);
   }
 
   /**
@@ -514,6 +533,7 @@ export class Application extends Context {
   async _startGrpc(): Promise<void> {
     debug('Setting up gRPC server');
     const server = new grpc.Server();
+    let hasGrpcServices = false;
 
     for (const b of this.find('controllers.*')) {
       const controllerName = b.key.replace(/^controllers\./, '');
@@ -558,45 +578,62 @@ export class Application extends Context {
         // TODO: support stream method types
         server.register(
           opSpec.path,
-          createHandlerFor(controllerName, methodName, this),
+          createUnaryHandlerFor(ctor, controllerName, methodName, this),
           opSpec.responseSerialize,
           opSpec.requestDeserialize,
           'unary',
         );
-
+        hasGrpcServices = true;
       }
     }
 
-    function createHandlerFor(
+    function createUnaryHandlerFor(
+      // tslint:disable-next-line:no-any
+      controllerCtor: Constructor<any>,
       controllerName: string,
       methodName: string,
       rootContext: Context,
     ) {
-      // TODO(bajtos) support metadata?
       // tslint:disable-next-line:no-any
       return function(request: any, callback: any) {
         debug('gRPC invoke %s.%s(%j)', controllerName, methodName, request);
-
-        // FIXME(bajtos) Create new per-request child context
-        // FIXME(bajtos) Use Sequence to allow custom request processing
-        handle().then(
-          result => callback(null, result),
-          callback,
+        handleUnary().then(
+          result => callback(null, result.value, result.trailer, result.flags),
+          error => {
+            debugger;
+            callback(error);
+          },
         );
 
-        async function handle() {
-          const controllerKey = `controllers.${controllerName}`;
-          const controller = await rootContext.get(controllerKey);
-          return await controller[methodName](request.request);
+        async function handleUnary(): Promise<UnaryResult> {
+          const context = new Context(rootContext);
+          context.bind(CoreBindings.Grpc.CONTEXT).to(context);
+          context.bind(CoreBindings.CONTROLLER_NAME).to(controllerName);
+          context.bind(CoreBindings.CONTROLLER_CLASS).to(controllerCtor);
+          context.bind(CoreBindings.CONTROLLER_METHOD_NAME).to(methodName);
+          const sequence: GrpcSequenceHandler = await context.get(
+            CoreBindings.Grpc.SEQUENCE,
+          );
+          return sequence.handleUnaryCall(request);
         }
       };
     }
 
-    // TODO(bajtos) Make the hostname & port configurable
+    if (!hasGrpcServices) {
+      debug('No gRPC services are configured - server not started.');
+      return;
+    }
+
+    // TODO(bajtos) Make the hostname configurable
+    const bindPort = await this.getSync(CoreBindings.Grpc.PORT);
     const port = server.bind(
-      '0.0.0.0:50051',
-       grpc.ServerCredentials.createInsecure(),
+      `0.0.0.0:${bindPort}`,
+      grpc.ServerCredentials.createInsecure(),
     );
+    if (!port) {
+      throw new Error(`Cannot start gRPC server on port ${bindPort}`);
+    }
+    debug(`GRPC server listening at port ${port}`);
     this.bind('grpc.port').to(port);
 
     // NOTE(bajtos) Looks like gRPC server starts synchronously
@@ -624,10 +661,15 @@ export class Application extends Context {
 
 export interface ApplicationOptions {
   http?: HttpConfig;
+  grpc?: GrpcConfig;
   components?: Array<Constructor<Component>>;
-  sequence?: Constructor<SequenceHandler>;
+  sequence?: Constructor<HttpSequenceHandler>;
 }
 
 export interface HttpConfig {
+  port: number;
+}
+
+export interface GrpcConfig {
   port: number;
 }

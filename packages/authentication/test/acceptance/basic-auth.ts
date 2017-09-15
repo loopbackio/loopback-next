@@ -158,7 +158,7 @@ describe('Basic Authentication', () => {
       }
     }
     // bind user defined sequence
-    app.sequence(MySequence);
+    app.httpSequence(MySequence);
   }
 
   function givenProviders() {

@@ -424,7 +424,7 @@ describe('HttpHandler', () => {
     rootContext.bind(SequenceActions.SEND).to(writeResultToResponse);
     rootContext.bind(SequenceActions.REJECT).toProvider(RejectProvider);
 
-    rootContext.bind(CoreBindings.SEQUENCE).toClass(DefaultSequence);
+    rootContext.bind(CoreBindings.Http.SEQUENCE).toClass(DefaultSequence);
 
     function logger(err: Error, statusCode: number, req: ServerRequest) {
       console.error(

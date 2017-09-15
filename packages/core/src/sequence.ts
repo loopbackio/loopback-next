@@ -59,7 +59,7 @@ export interface SequenceHandler {
  *
  * User can bind their own Sequence to app as shown below
  * ```ts
- * app.bind(CoreBindings.SEQUENCE).toClass(MySequence);
+ * app.bind(CoreBindings.Http.SEQUENCE).toClass(MySequence);
  * ```
  */
 export class DefaultSequence implements SequenceHandler {

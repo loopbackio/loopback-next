@@ -56,7 +56,7 @@ describe('Sequence', () => {
       }
     }
     // bind user defined sequence
-    app.sequence(MySequence);
+    app.httpSequence(MySequence);
 
     whenIMakeRequestTo(app).get('/').expect('hello world');
   });
@@ -79,7 +79,7 @@ describe('Sequence', () => {
       }
     }
 
-    app.sequence(MySequence);
+    app.httpSequence(MySequence);
 
     return whenIMakeRequestTo(app)
       .get('/name')
@@ -137,7 +137,7 @@ describe('Sequence', () => {
       }
     }
 
-    app.sequence(MySequence);
+    app.httpSequence(MySequence);
     app.bind('test').to('hello world');
 
     return whenIMakeRequestTo(app).get('/').expect('hello world');

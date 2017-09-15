@@ -68,7 +68,7 @@ export class HttpHandler {
     const requestContext = this._createRequestContext(request, response);
 
     const sequence: SequenceHandler = await requestContext.get(
-      CoreBindings.SEQUENCE,
+      CoreBindings.Http.SEQUENCE,
     );
     await sequence.handle(parsedRequest, response);
   }

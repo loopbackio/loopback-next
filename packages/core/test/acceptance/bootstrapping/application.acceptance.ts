@@ -13,7 +13,7 @@ describe('Bootstrapping the application', () => {
     before(givenAppWithUserDefinedSequence);
 
     it('binds the `sequence` key to the user-defined sequence', async () => {
-      const binding = await app.get(CoreBindings.SEQUENCE);
+      const binding = await app.get(CoreBindings.Http.SEQUENCE);
       expect(binding.constructor.name).to.equal('UserDefinedSequence');
     });
 

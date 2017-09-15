@@ -22,8 +22,15 @@ import * as HttpErrors from 'http-errors';
 // http errors
 export {HttpErrors};
 
-// gRPC
 export * from './grpc/decorators/service.decorator';
+export * from './grpc/grpc-types';
+import {
+  SequenceHandler as GrpcSequenceHandler,
+  DefaultSequence as GrpcDefaultSequence,
+} from './grpc/sequence';
+export {GrpcSequenceHandler, GrpcDefaultSequence};
+// NOTE(bajtos) ^^ that's a hack for this spike so that I don't have to start
+// a new grpc package yet. This will not make it into `master` branch.
 
 // internals used by unit-tests
 export {
