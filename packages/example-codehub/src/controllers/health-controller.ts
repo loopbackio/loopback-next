@@ -4,7 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {def} from './health-controller.api';
-import {api, inject} from '@loopback/core';
+import {api} from '@loopback/rest';
+import {inject} from '@loopback/core';
 
 @api(def)
 export class HealthController {

@@ -3,9 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Application, Server, mountComponent} from '@loopback/core';
 import {
-  Application,
   api,
+  RestBindings,
   ServerResponse,
   ParsedRequest,
   ParseParams,
@@ -16,17 +17,15 @@ import {
   HttpErrors,
   Send,
   Reject,
+  HttpHandler,
   SequenceHandler,
-  CoreBindings,
   get,
-} from '@loopback/core';
-import {expect, Client, createClientForApp} from '@loopback/testlab';
+  RestServer,
+  RestComponent,
+} from '@loopback/rest';
+import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
-import {
-  inject,
-  Provider,
-  ValueOrPromise,
-} from '@loopback/context';
+import {inject, Provider, ValueOrPromise} from '@loopback/context';
 import {
   authenticate,
   UserProfile,
@@ -39,33 +38,35 @@ import {
 import {Strategy} from 'passport';
 import {BasicStrategy} from 'passport-http';
 
-const SequenceActions = CoreBindings.SequenceActions;
+const SequenceActions = RestBindings.SequenceActions;
 
 describe('Basic Authentication', () => {
   let app: Application;
+  let server: RestServer;
   let users: UserRepository;
-
+  beforeEach(givenAServer);
   beforeEach(givenUserRepository);
-  beforeEach(givenAnApplication);
   beforeEach(givenControllerInApp);
   beforeEach(givenAuthenticatedSequence);
   beforeEach(givenProviders);
 
-  it ('authenticates successfully for correct credentials', async () => {
-    const client = whenIMakeRequestTo(app);
+  it('authenticates successfully for correct credentials', async () => {
+    const client = whenIMakeRequestTo(server);
     const credential =
       users.list.joe.profile.id + ':' + users.list.joe.password;
     const hash = new Buffer(credential).toString('base64');
-    await client.get('/whoAmI')
+    await client
+      .get('/whoAmI')
       .set('Authorization', 'Basic ' + hash)
       .expect(users.list.joe.profile.id);
   });
 
   it('returns error for invalid credentials', async () => {
-    const client = whenIMakeRequestTo(app);
+    const client = whenIMakeRequestTo(server);
     const credential = users.list.Simpson.profile.id + ':' + 'invalid';
     const hash = new Buffer(credential).toString('base64');
-    await client.get('/whoAmI')
+    await client
+      .get('/whoAmI')
       .set('Authorization', 'Basic ' + hash)
       .expect(401);
   });
@@ -79,22 +80,25 @@ describe('Basic Authentication', () => {
     }
 
     app.controller(InfoController);
-    await whenIMakeRequestTo(app).get('/status').expect(200, {running: true});
+    await whenIMakeRequestTo(server)
+      .get('/status')
+      .expect(200, {running: true});
   });
 
   function givenUserRepository() {
     users = new UserRepository({
-      joe : {profile: {id: 'joe'}, password: '12345'},
+      joe: {profile: {id: 'joe'}, password: '12345'},
       Simpson: {profile: {id: 'sim123'}, password: 'alpha'},
       Flinstone: {profile: {id: 'Flint'}, password: 'beta'},
       George: {profile: {id: 'Curious'}, password: 'gamma'},
     });
   }
 
-  function givenAnApplication() {
+  async function givenAServer() {
     app = new Application({
-      components: [AuthenticationComponent],
+      components: [AuthenticationComponent, RestComponent],
     });
+    server = await app.getServer(RestServer);
   }
 
   function givenControllerInApp() {
@@ -115,12 +119,11 @@ describe('Basic Authentication', () => {
     @api(apispec)
     class MyController {
       constructor(
-        @inject(AuthenticationBindings.CURRENT_USER)
-        private user: UserProfile,
+        @inject(AuthenticationBindings.CURRENT_USER) private user: UserProfile,
       ) {}
 
       @authenticate('BasicStrategy')
-      async whoAmI() : Promise<string> {
+      async whoAmI(): Promise<string> {
         return this.user.id;
       }
     }
@@ -158,7 +161,7 @@ describe('Basic Authentication', () => {
       }
     }
     // bind user defined sequence
-    app.sequence(MySequence);
+    server.sequence(MySequence);
   }
 
   function givenProviders() {
@@ -167,7 +170,7 @@ describe('Basic Authentication', () => {
         @inject(AuthenticationBindings.METADATA)
         private metadata: AuthenticationMetadata,
       ) {}
-      value() : ValueOrPromise<Strategy | undefined> {
+      value(): ValueOrPromise<Strategy | undefined> {
         if (!this.metadata) {
           return undefined;
         }
@@ -185,18 +188,19 @@ describe('Basic Authentication', () => {
         });
       }
     }
-    app.bind(AuthenticationBindings.STRATEGY)
+    server
+      .bind(AuthenticationBindings.STRATEGY)
       .toProvider(MyPassportStrategyProvider);
   }
 
-  function whenIMakeRequestTo(application: Application): Client {
-    return createClientForApp(app);
+  function whenIMakeRequestTo(restServer: RestServer): Client {
+    return createClientForHandler(restServer.handleHttp);
   }
 });
 
 class UserRepository {
   constructor(
-    readonly list: {[key: string] : {profile: UserProfile, password: string}},
+    readonly list: {[key: string]: {profile: UserProfile; password: string}},
   ) {}
   find(username: string, password: string, cb: Function): void {
     const userList = this.list;

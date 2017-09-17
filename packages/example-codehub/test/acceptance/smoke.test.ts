@@ -5,10 +5,12 @@
 
 import {CodeHubApplication} from '../../src/codehub-application';
 import {validateApiSpec} from '@loopback/testlab';
+import {RestServer, RestComponent} from '@loopback/rest';
 
-describe('Application', () => {
+describe('Server', () => {
   it('has a valid OpenAPI spec', async () => {
     const app = new CodeHubApplication();
-    await validateApiSpec(app.getApiSpec());
+    const server = await app.getServer(RestServer);
+    await validateApiSpec(server.getApiSpec());
   });
 });

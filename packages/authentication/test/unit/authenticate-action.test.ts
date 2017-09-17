@@ -5,7 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 import {Context, Provider, instantiateClass} from '@loopback/context';
-import {ParsedRequest} from '@loopback/core';
+import {ParsedRequest} from '@loopback/rest';
 import {
   AuthenticationProvider,
   AuthenticateFn,

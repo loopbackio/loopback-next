@@ -6,7 +6,7 @@
 // https://www.npmjs.com/package/@types/http-errors
 // https://github.com/jshttp/http-errors
 
-import {HttpErrors} from '@loopback/core';
+import {api, HttpErrors} from '@loopback/rest';
 
 // Load OpenAPI specification for this controller
 import {def} from './user-controller.api';
@@ -18,7 +18,7 @@ import {def} from './user-controller.api';
 // After discussion with @ritch, we decided this is preliminary optimization
 // that can be left for later
 
-import {api, inject} from '@loopback/core';
+import {inject} from '@loopback/core';
 
 // Notice that the controler is not required to extend any Controller base class
 @api(def)

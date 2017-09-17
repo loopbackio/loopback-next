@@ -69,8 +69,9 @@ export class Context {
     if (!parentList) return childList;
     const additions = parentList.filter(parentBinding => {
       // children bindings take precedence
-      return !childList.some(childBinding =>
-        childBinding.key === parentBinding.key);
+      return !childList.some(
+        childBinding => childBinding.key === parentBinding.key,
+      );
     });
     return childList.concat(additions);
   }
@@ -132,7 +133,8 @@ export class Context {
 
     if (isPromise(valueOrPromise)) {
       throw new Error(
-        `Cannot get ${key} synchronously: the value is a promise`);
+        `Cannot get ${key} synchronously: the value is a promise`,
+      );
     }
 
     return valueOrPromise;

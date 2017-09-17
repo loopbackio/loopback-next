@@ -4,22 +4,24 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {supertest} from '@loopback/testlab';
-import {CoreBindings} from '@loopback/core';
+import {RestBindings, RestComponent} from '@loopback/rest';
 import {CodeHubApplication} from '../../src/codehub-application';
+import {RestServer} from '../../../rest/src/rest-server';
 
 export async function createClientForApp(app: CodeHubApplication) {
   const url = (await app.info()).url;
   return supertest(url);
 }
 
-export function createApp() {
+export async function createApp() {
   const app = new CodeHubApplication();
-  app.bind(CoreBindings.HTTP_PORT).to(0);
+  const server = await app.getServer(RestServer);
+  server.bind(RestBindings.PORT).to(0);
   return app;
 }
 
 export async function createAppAndClient() {
-  const app = createApp();
+  const app = await createApp();
   await app.start();
   const client = await createClientForApp(app);
   return {app, client};

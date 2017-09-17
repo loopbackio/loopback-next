@@ -26,22 +26,23 @@ export function createClientForHandler(
   return supertest(server);
 }
 
-export interface Server {
-  config: {port: number};
-  start(): Promise<void>;
-}
-
-export async function createClientForServer(server: Server): Promise<Client> {
+export async function createClientForRestServer(
+  server: RestServer,
+): Promise<Client> {
   await server.start();
-  const url = `http://127.0.0.1:${server.config.port}`;
+  const port =
+    server.options && server.options.http ? server.options.http.port : 3000;
+  const url = `http://127.0.0.1:${port}`;
   // TODO(bajtos) Find a way how to stop the server after all tests are done
   return supertest(url);
 }
 
-export interface Application {
-  handleHttp(req: http.ServerRequest, res: http.ServerResponse): void;
-}
-
-export function createClientForApp(app: Application): Client {
-  return createClientForHandler(app.handleHttp);
+// These interfaces are meant to partially mirror the formats provided
+// in our other libraries to avoid circular imports.
+export interface RestServer {
+  start(): Promise<void>;
+  options?: {
+    // tslint:disable-next-line:no-any
+    [prop: string]: any;
+  };
 }
