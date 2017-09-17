@@ -1,0 +1,28 @@
+{
+  "content": [
+    "index.ts",
+    "src/http-handler.ts",
+    "src/index.ts",
+    "src/internal-types.ts",
+    "src/parser.ts",
+    "src/providers/bind-element.ts",
+    "src/providers/find-route.ts",
+    "src/providers/get-from-context.ts",
+    "src/providers/invoke-method.ts",
+    "src/providers/log-error-provider.ts",
+    "src/providers/parse-params.ts",
+    "src/providers/reject.ts",
+    "src/providers/send.ts",
+    "src/rest-component.ts",
+    "src/rest-server.ts",
+    "src/router/metadata.ts",
+    "src/router/routing-table.ts",
+    "src/sequence.ts",
+    "src/writer.ts"
+  ],
+  "codeSectionDepth": 4,
+  "assets": {
+    "/": "/docs",
+    "/docs": "/docs"
+  }
+}

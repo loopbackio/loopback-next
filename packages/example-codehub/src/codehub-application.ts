@@ -3,23 +3,38 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, CoreBindings} from '@loopback/core';
+import {Application, ApplicationConfig} from '@loopback/core';
+import {RestServer, RestBindings, RestComponent} from '@loopback/rest';
 import {UserController, HealthController} from './controllers';
 
 export class CodeHubApplication extends Application {
-  constructor() {
-    super();
+  constructor(options?: ApplicationConfig) {
+    options = Object.assign(
+      {
+        components: [RestComponent],
+      },
+      options,
+    );
+    super(options);
 
     const app = this;
+    app.server(RestServer);
+    // We can't use the async version in the ctor!
+    const server = app.getServer(RestServer);
 
-    app.api({
-      swagger: '2.0',
-      info: {
-        title: 'CodeHub',
-        version: require('../package.json').version,
-      },
-      basePath: '/',
-      paths: {},
+    // tslint:disable-next-line:no-floating-promises
+    server.then(s => {
+      s.api({
+        swagger: '2.0',
+        info: {
+          title: 'CodeHub',
+          version: require('../package.json').version,
+        },
+        basePath: '/',
+        paths: {},
+      });
+
+      s.bind(RestBindings.PORT).to(3000);
     });
 
     app.controller(UserController);
@@ -28,10 +43,6 @@ export class CodeHubApplication extends Application {
     app.bind('userId').to(42);
 
     app.bind('app.info').toDynamicValue(() => this.info());
-
-    app.bind('servers.http.enabled').to(true);
-    app.bind('servers.http.port').to(3000);
-    app.bind('servers.https.enabled').to(true);
   }
 
   private _startTime: Date;
@@ -42,7 +53,8 @@ export class CodeHubApplication extends Application {
   }
 
   async info() {
-    const port: Number = await this.get(CoreBindings.HTTP_PORT);
+    const server: RestServer = await this.getServer(RestServer);
+    const port: Number = await server.get(RestBindings.PORT);
 
     return {
       uptime: Date.now() - this._startTime.getTime(),

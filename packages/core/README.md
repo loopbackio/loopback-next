@@ -17,21 +17,57 @@ integrations.
 $ npm install --save @loopback/core
 ```
 
-## Basic use
+## Basic Use
 
-  ```ts
-  import {Application} from '@loopback/core';
+`@loopback/core` provides the foundation for your LoopBack app, but unlike
+previous versions, it no longer contains the implementation for listening
+servers.
 
-  const app = new Application();
-  app.handler((sequence, request, response) => {
-    sequence.send(response, 'hello world');
-  });
+For a typical example of how to create a REST server with your application,
+see the [@loopback/rest package.](https://github.com/strongloop/loopback-next/tree/master/packages/rest)
 
-  (async function start() {
-    await app.start();
-    console.log(`The app is running on port ${app.getSync('http.port')}`);
-  })();
-  ```
+## Advanced Use
+
+Since `@loopback/core` is decoupled from the listening server implementation,
+LoopBack applications are now able to work with any components that provide
+this functionality.
+
+```ts
+// index.ts
+import {Application} from '@loopback/core';
+import {RestComponent} from '@loopback/rest';
+import {GrpcComponent} from '@loopback/grpc';
+
+const app = new Application({
+  components: [
+    RestComponent, // REST Server
+    GrpcComponent, // GRPC Server
+  ],
+  rest: {
+    port: 3000,
+  },
+  grpc: {
+    port: 3001,
+  },
+});
+
+// Let's retrieve the bound instances of our servers.
+const rest = await app.getServer('RestServer');
+const grpc = await app.getServer('GrpcServer');
+
+// Define all sorts of bindings here to pass configuration or data
+// between your server instances, define controllers and datasources for them,
+// etc...
+
+(async function start() {
+  await app.start(); // This automatically spins up all your servers, too!
+  console.log(`REST server running on port: ${rest.getSync('http.port')}`);
+  console.log(`GRPC server running on port: ${grpc.getSync('grpc.port')}`);
+})();
+```
+In the above example, having a GRPC server mounted on your Application could
+enable communication with other GRPC-enabled microservices, allowing things like
+dynamic configuration updates.
 
 ## Contributions
 

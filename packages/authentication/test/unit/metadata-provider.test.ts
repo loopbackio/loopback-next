@@ -4,8 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
+import {CoreBindings} from '@loopback/core';
 import {Context, Provider} from '@loopback/context';
-import {ParsedRequest, CoreBindings} from '@loopback/core';
+import {ParsedRequest} from '@loopback/rest';
 import {
   AuthMetadataProvider,
   AuthenticationMetadata,

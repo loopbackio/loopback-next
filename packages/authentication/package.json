@@ -22,6 +22,7 @@
   "dependencies": {
     "@loopback/context": "^4.0.0-alpha.12",
     "@loopback/core": "^4.0.0-alpha.14",
+    "@loopback/rest": "^4.0.0-alpha.1",
     "@types/passport": "^0.3.3",
     "@types/passport-http": "^0.3.2",
     "passport": "^0.3.2",

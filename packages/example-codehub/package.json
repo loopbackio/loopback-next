@@ -12,7 +12,8 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
-    "@loopback/core": "^4.0.0-alpha.14"
+    "@loopback/core": "^4.0.0-alpha.14",
+    "@loopback/rest": "^4.0.0-alpha.1"
   },
   "devDependencies": {
     "@loopback/testlab": "^4.0.0-alpha.7"

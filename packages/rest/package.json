@@ -1,0 +1,52 @@
+{
+  "name": "@loopback/rest",
+  "version": "4.0.0-alpha.1",
+  "description": "",
+  "scripts": {
+    "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
+    "build": "npm run build:lib && npm run build:lib6",
+    "build:current": "node ../../bin/compile-package",
+    "build:lib": "node ../../bin/compile-package es2017",
+    "build:lib6": "node ../../bin/compile-package es2015",
+    "build:apidocs": "node ../../bin/generate-apidocs",
+    "clean": "rm -rf loopback-rest*.tgz lib* package",
+    "prepublish": "npm run build && npm run build:apidocs",
+    "pretest": "npm run build:current",
+    "integration": "mocha --opts ../../test/mocha.opts 'test/integration/**/*.ts'",
+    "test": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts' 'test/integration/**/*.ts' 'test/acceptance/**/*.ts'",
+    "unit": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts'",
+    "verify": "npm pack && tar xf loopback-rest*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM",
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/context": "^4.0.0-alpha.12",
+    "@loopback/core": "^4.0.0-alpha.13",
+    "@loopback/openapi-spec": "^4.0.0-alpha.10",
+    "@types/http-errors": "^1.5.34",
+    "@types/js-yaml": "^3.9.1",
+    "body": "^5.1.0",
+    "debug": "^2.6.0",
+    "http-errors": "^1.6.1",
+    "js-yaml": "^3.9.1",
+    "lodash": "^4.17.4",
+    "path-to-regexp": "^1.7.0",
+    "swagger2openapi": "^2.6.4"
+  },
+  "devDependencies": {
+    "@loopback/openapi-spec-builder": "^4.0.0-alpha.7",
+    "@loopback/testlab": "^4.0.0-alpha.7"
+  },
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "lib",
+    "lib6",
+    "api-docs"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
+}

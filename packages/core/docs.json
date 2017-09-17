@@ -1,24 +1,15 @@
 {
-    "content": [
-        "index.ts",
-        "src/application.ts",
-        "src/component.ts",
-        "src/http-handler.ts",
-        "src/index.ts",
-        "src/internal-types.ts",
-        "src/parser.ts",
-        "src/promisify.ts",
-        "src/router/metadata.ts",
-        "src/router/routing-table.ts",
-        "src/sequence.ts",
-        "src/server.ts",
-        "src/writer.ts"
-    ],
-    "codeSectionDepth": 4,
-    "assets": {
-      "/": "/docs",
-      "/docs": "/docs"
-    }
+  "content": [
+    "index.ts",
+    "src/application.ts",
+    "src/component.ts",
+    "src/index.ts",
+    "src/promisify.ts",
+    "src/server.ts"
+  ],
+  "codeSectionDepth": 4,
+  "assets": {
+    "/": "/docs",
+    "/docs": "/docs"
+  }
 }
-
-

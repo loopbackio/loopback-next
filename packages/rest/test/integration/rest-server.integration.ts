@@ -1,0 +1,224 @@
+// Copyright IBM Corp. 2013,2017. All Rights Reserved.
+// Node module: @loopback/rest
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+import {Application, ApplicationConfig} from '@loopback/core';
+import {expect, createClientForHandler} from '@loopback/testlab';
+import {Route, RestBindings, RestServer, RestComponent} from '../..';
+import {
+  ResponseObject,
+  SchemaObject,
+  ReferenceObject,
+} from '@loopback/openapi-spec';
+import {Context} from '@loopback/context';
+
+describe('RestServer (integration)', () => {
+  it('updates rest.port binding when listening on ephemeral port', async () => {
+    const server = await givenAServer({rest: {port: 0}});
+    await server.start();
+    expect(server.getSync(RestBindings.PORT)).to.be.above(0);
+    await server.stop();
+  });
+
+  it('responds with 500 when Sequence fails with unhandled error', async () => {
+    const server = await givenAServer({rest: {port: 0}});
+    server.handler((sequence, request, response) => {
+      return Promise.reject(new Error('unhandled test error'));
+    });
+
+    // Temporarily disable Mocha's handling of uncaught exceptions
+    const mochaListeners = process.listeners('uncaughtException');
+    process.removeAllListeners('uncaughtException');
+    process.once('uncaughtException', err => {
+      expect(err).to.have.property('message', 'unhandled test error');
+      for (const l of mochaListeners) {
+        process.on('uncaughtException', l);
+      }
+    });
+
+    return createClientForHandler(server.handleHttp)
+      .get('/')
+      .expect(500);
+  });
+
+  it('exposes "GET /swagger.json" endpoint', async () => {
+    const server = await givenAServer({rest: {port: 0}});
+    const greetSpec = {
+      responses: {
+        200: {
+          schema: {type: 'string'},
+          description: 'greeting of the day',
+        },
+      },
+    };
+    server.route(new Route('get', '/greet', greetSpec, function greet() {}));
+
+    const response = await createClientForHandler(server.handleHttp).get(
+      '/swagger.json',
+    );
+    expect(response.body).to.containDeep({
+      basePath: '/',
+      paths: {
+        '/greet': {
+          get: greetSpec,
+        },
+      },
+    });
+    expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
+    expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
+    expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
+  });
+
+  it('exposes "GET /swagger.yaml" endpoint', async () => {
+    const server = await givenAServer({rest: {port: 0}});
+    const greetSpec = {
+      responses: {
+        200: {
+          schema: {type: 'string'},
+          description: 'greeting of the day',
+        },
+      },
+    };
+    server.route(new Route('get', '/greet', greetSpec, function greet() {}));
+
+    const response = await createClientForHandler(server.handleHttp).get(
+      '/swagger.yaml',
+    );
+    expect(response.text).to.eql(`swagger: '2.0'
+basePath: /
+info:
+  title: LoopBack Application
+  version: 1.0.0
+paths:
+  /greet:
+    get:
+      responses:
+        '200':
+          schema:
+            type: string
+          description: greeting of the day
+`);
+    expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
+    expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
+    expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
+  });
+
+  it('exposes "GET /openapi.json" endpoint', async () => {
+    const server = await givenAServer({rest: {port: 0}});
+    const greetSpec = {
+      responses: {
+        200: {
+          schema: {type: 'string'},
+          description: 'greeting of the day',
+        },
+      },
+    };
+    server.route(new Route('get', '/greet', greetSpec, function greet() {}));
+
+    const response = await createClientForHandler(server.handleHttp).get(
+      '/openapi.json',
+    );
+    expect(response.body).to.containDeep({
+      openapi: '3.0.0',
+      servers: [{url: '/'}],
+      info: {title: 'LoopBack Application', version: '1.0.0'},
+      paths: {
+        '/greet': {
+          get: {
+            responses: {
+              '200': {
+                content: {
+                  '*/*': {
+                    schema: {type: 'string'},
+                  },
+                },
+                description: 'greeting of the day',
+              },
+            },
+          },
+        },
+      },
+      components: {schemas: {}},
+    });
+    expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
+    expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
+    expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
+  });
+
+  it('exposes "GET /openapi.yaml" endpoint', async () => {
+    const server = await givenAServer({rest: {port: 0}});
+    const greetSpec = {
+      responses: {
+        200: {
+          schema: {type: 'string'},
+          description: 'greeting of the day',
+        },
+      },
+    };
+    server.route(new Route('get', '/greet', greetSpec, function greet() {}));
+
+    const response = await createClientForHandler(server.handleHttp).get(
+      '/openapi.yaml',
+    );
+    expect(response.text).to.eql(`openapi: 3.0.0
+servers:
+  - url: /
+info:
+  title: LoopBack Application
+  version: 1.0.0
+paths:
+  /greet:
+    get:
+      responses:
+        '200':
+          description: greeting of the day
+          content:
+            '*/*':
+              schema:
+                type: string
+components:
+  schemas: {}
+`);
+    expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
+    expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
+    expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
+  });
+  it('exposes "GET /swagger-ui" endpoint', async () => {
+    const app = new Application({
+      components: [RestComponent],
+    });
+    const server = await app.getServer(RestServer);
+    const greetSpec = {
+      responses: {
+        200: {
+          schema: {type: 'string'},
+          description: 'greeting of the day',
+        },
+      },
+    };
+    server.route(new Route('get', '/greet', greetSpec, function greet() {}));
+
+    const response = await createClientForHandler(server.handleHttp).get(
+      '/swagger-ui',
+    );
+    const port = await server.get(RestBindings.PORT);
+    const url = new RegExp(
+      [
+        'http://petstore.swagger.io',
+        '/\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/swagger.json',
+      ].join(''),
+    );
+    expect(response.get('Location')).match(url);
+    expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
+    expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
+    expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
+  });
+
+  async function givenAServer(options?: ApplicationConfig) {
+    if (!options) options = {};
+    options.components = [RestComponent];
+    const app = new Application(options);
+    return await app.getServer(RestServer);
+  }
+});

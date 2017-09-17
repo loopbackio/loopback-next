@@ -5,7 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 import {StrategyAdapter, UserProfile} from '../..';
-import {ParsedRequest, HttpErrors} from '@loopback/core';
+import {ParsedRequest, HttpErrors} from '@loopback/rest';
 import {MockStrategy} from './fixtures/mock-strategy';
 import * as http from 'http';
 

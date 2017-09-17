@@ -3,104 +3,21 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {AssertionError} from 'assert';
-const swagger2openapi = require('swagger2openapi');
-import {safeDump} from 'js-yaml';
-import {
-  Binding,
-  Context,
-  Constructor,
-  Provider,
-  inject,
-} from '@loopback/context';
-import {
-  OpenApiSpec,
-  Route,
-  ParsedRequest,
-  OperationObject,
-  ControllerRoute,
-  RouteEntry,
-  createEmptyApiSpec,
-  parseOperationArgs,
-} from '.';
-import {ServerRequest, ServerResponse, createServer} from 'http';
+import {Context, Binding, BindingScope, Constructor} from '@loopback/context';
+import {Server} from './server';
 import {Component, mountComponent} from './component';
-import {getControllerSpec} from './router/metadata';
-import {HttpHandler} from './http-handler';
-import {writeResultToResponse} from './writer';
-import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
-import {RejectProvider} from './router/providers/reject';
-import {
-  FindRoute,
-  InvokeMethod,
-  Send,
-  Reject,
-  ParseParams,
-} from './internal-types';
-import {ControllerClass} from './router/routing-table';
-import {GetFromContextProvider} from './router/providers/get-from-context';
-import {BindElementProvider} from './router/providers/bind-element';
-import {InvokeMethodProvider} from './router/providers/invoke-method';
-import {FindRouteProvider} from './router/providers/find-route';
 import {CoreBindings} from './keys';
 
-const SequenceActions = CoreBindings.SequenceActions;
-
-// NOTE(bajtos) we cannot use `import * as cloneDeep from 'lodash/cloneDeep'
-// because it produces the following TypeScript error:
-//  Module '"(...)/node_modules/@types/lodash/cloneDeep/index"' resolves to
-//  a non-module entity and cannot be imported using this construct.
-const cloneDeep: <T>(value: T) => T = require('lodash/cloneDeep');
-
-const debug = require('debug')('loopback:core:application');
-
-interface OpenApiSpecOptions {
-  version?: string;
-  format?: string;
-}
-
-const OPENAPI_SPEC_MAPPING: { [key: string] : OpenApiSpecOptions; } = {
-  '/openapi.json': {version: '3.0.0', format: 'json'},
-  '/openapi.yaml': {version: '3.0.0', format: 'yaml'},
-  '/swagger.json': {version: '2.0', format: 'json'},
-  '/swagger.yaml': {version: '2.0', format: 'yaml'},
-};
-
 export class Application extends Context {
-  /**
-   * Handle incoming HTTP(S) request by invoking the corresponding
-   * Controller method via the configured Sequence.
-   *
-   * @example
-   *
-   * ```ts
-   * const app = new Application();
-   * // setup controllers, etc.
-   *
-   * const server = http.createServer(app.handleHttp);
-   * server.listen(3000);
-   * ```
-   *
-   * @param req The request.
-   * @param res The response.
-   */
-  public handleHttp: (req: ServerRequest, res: ServerResponse) => void;
-
-  protected _httpHandler: HttpHandler;
-  protected get httpHandler(): HttpHandler {
-    this._setupHandlerIfNeeded();
-    return this._httpHandler;
-  }
-
-  constructor(public options?: ApplicationOptions) {
+  constructor(public options?: ApplicationConfig) {
     super();
-
     if (!options) options = {};
 
-    this.bind(CoreBindings.HTTP_PORT).to(
-      options.http ? options.http.port : 3000,
-    );
-    this.api(createEmptyApiSpec());
+    // Bind to self to allow injection of application context in other
+    // modules.
+    this.bind(CoreBindings.APPLICATION_INSTANCE).to(this);
+    // Make options available to other modules as well.
+    this.bind(CoreBindings.APPLICATION_CONFIG).to(options);
 
     if (options.components) {
       for (const component of options.components) {
@@ -108,166 +25,11 @@ export class Application extends Context {
       }
     }
 
-    this.sequence(options.sequence ? options.sequence : DefaultSequence);
-
-    this.handleHttp = (req: ServerRequest, res: ServerResponse) => {
-      try {
-        this._handleHttpRequest(req, res)
-          .catch(err => this._onUnhandledError(req, res, err));
-      } catch (err) {
-        this._onUnhandledError(req, res, err);
-      }
-    };
-
-    this.bind(CoreBindings.HTTP_HANDLER).toDynamicValue(() => this.httpHandler);
-
-    this.bind(SequenceActions.FIND_ROUTE).toProvider(FindRouteProvider);
-    this.bind(SequenceActions.PARSE_PARAMS).to(parseOperationArgs);
-    this.bind(SequenceActions.INVOKE_METHOD).toProvider(InvokeMethodProvider);
-    this.bind(SequenceActions.LOG_ERROR).to(this._logError.bind(this));
-    this.bind(SequenceActions.SEND).to(writeResultToResponse);
-    this.bind(SequenceActions.REJECT).toProvider(RejectProvider);
-    this.bind(CoreBindings.GET_FROM_CONTEXT).toProvider(GetFromContextProvider);
-    this.bind(CoreBindings.BIND_ELEMENT).toProvider(BindElementProvider);
-  }
-
-  protected _handleHttpRequest(
-    request: ServerRequest,
-    response: ServerResponse,
-  ) {
-    // allow CORS support for all endpoints so that users
-    // can test with online SwaggerUI instance
-    response.setHeader('Access-Control-Allow-Origin', '*');
-    response.setHeader('Access-Control-Allow-Credentials', 'true');
-    response.setHeader('Access-Control-Allow-Max-Age', '86400');
-
-    if (request.method === 'GET' && request.url &&
-        request.url in OPENAPI_SPEC_MAPPING) {
-      // NOTE(bajtos) Regular routes are handled through Sequence.
-      // IMO, this built-in endpoint should not run through a Sequence,
-      // because it's not part of the application API itself.
-      // E.g. if the app implements access/audit logs, I don't want
-      // this endpoint to trigger a log entry. If the server implements
-      // content-negotiation to support XML clients, I don't want the OpenAPI
-      // spec to be converted into an XML response.
-      const options = OPENAPI_SPEC_MAPPING[request.url];
-      return this._serveOpenApiSpec(request, response, options);
-    }
-    if (request.method === 'GET' && request.url &&
-        request.url === '/swagger-ui') {
-      return this._redirectToSwaggerUI(request, response);
-    }
-    return this.httpHandler.handleRequest(request, response);
-  }
-
-  protected _setupHandlerIfNeeded() {
-    // TODO(bajtos) support hot-reloading of controllers
-    // after the app started. The idea is to rebuild the HttpHandler
-    // instance whenever a controller was added/deleted.
-    // See https://github.com/strongloop/loopback-next/issues/433
-    if (this._httpHandler) return;
-
-    this._httpHandler = new HttpHandler(this);
-    for (const b of this.find('controllers.*')) {
-      const controllerName = b.key.replace(/^controllers\./, '');
-      const ctor = b.valueConstructor;
-      if (!ctor) {
-        throw new Error(
-          `The controller ${controllerName} was not bound via .toClass()`);
-      }
-      const apiSpec = getControllerSpec(ctor);
-      if (!apiSpec) {
-        // controller methods are specified through app.api() spec
-        continue;
-      }
-      this._httpHandler.registerController(ctor, apiSpec);
-    }
-
-    for (const b of this.find('routes.*')) {
-      // TODO(bajtos) should we support routes defined asynchronously?
-      const route = this.getSync(b.key);
-      this._httpHandler.registerRoute(route);
-    }
-
-    // TODO(bajtos) should we support API spec defined asynchronously?
-    const spec: OpenApiSpec = this.getSync(CoreBindings.API_SPEC);
-    for (const path in spec.paths) {
-      for (const verb in spec.paths[path]) {
-        const routeSpec: OperationObject = spec.paths[path][verb];
-        this._setupOperation(verb, path, routeSpec);
+    if (options.servers) {
+      for (const name in options.servers) {
+        this.server(options.servers[name], name);
       }
     }
-  }
-
-  private _setupOperation(verb: string, path: string, spec: OperationObject) {
-    const handler = spec['x-operation'];
-    if (typeof handler === 'function') {
-      // Remove a field value that cannot be represented in JSON.
-      // Start by creating a shallow-copy of the spec, so that we don't
-      // modify the original spec object provided by user.
-      spec = Object.assign({}, spec);
-      delete spec['x-operation'];
-
-      const route = new Route(verb, path, spec, handler);
-      this._httpHandler.registerRoute(route);
-      return;
-    }
-
-    const controllerName = spec['x-controller-name'];
-    if (typeof controllerName === 'string') {
-      const b = this.find(`controllers.${controllerName}`)[0];
-      if (!b) {
-        throw new Error(
-          `Unknown controller ${controllerName} used by "${verb} ${path}"`);
-      }
-
-      const ctor = b.valueConstructor;
-      if (!ctor) {
-        throw new Error(
-          `The controller ${controllerName} was not bound via .toClass()`,
-        );
-      }
-
-      const route = new ControllerRoute(verb, path, spec, ctor);
-      this._httpHandler.registerRoute(route);
-      return;
-    }
-
-    throw new Error(
-      `There is no handler configured for operation "${verb} ${path}`);
-  }
-
-  private async _serveOpenApiSpec(
-    request: ServerRequest,
-    response: ServerResponse,
-    options?: OpenApiSpecOptions,
-  ) {
-    options = options || {version: '2.0', format: 'json'};
-    let specObj = this.getApiSpec();
-    if (options.version === '3.0.0') {
-      specObj = await swagger2openapi.convertObj(specObj, {direct: true});
-    }
-    if (options.format === 'json') {
-      const spec = JSON.stringify(specObj, null, 2);
-      response.setHeader('content-type', 'application/json; charset=utf-8');
-      response.end(spec, 'utf-8');
-    } else {
-      const yaml = safeDump(specObj, {});
-      response.setHeader('content-type', 'text/yaml; charset=utf-8');
-      response.end(yaml, 'utf-8');
-    }
-  }
-
-  private async _redirectToSwaggerUI(
-    request: ServerRequest,
-    response: ServerResponse,
-  ) {
-    response.statusCode = 308;
-    response.setHeader('Location',
-    'http://petstore.swagger.io/?url=' +
-    'http://' + request.headers.host +
-    '/swagger.json');
-    response.end();
   }
 
   /**
@@ -280,7 +42,6 @@ export class Application extends Context {
    * modifications.
    *
    * ```ts
-   * @spec(apiSpec)
    * class MyController {
    * }
    * app.controller(MyController).lock();
@@ -293,124 +54,110 @@ export class Application extends Context {
   }
 
   /**
-   * Register a new Controller-based route.
+   * Bind a Server constructor to the Application's master context.
+   * Each server constructor added in this way must provide a unique prefix
+   * to prevent binding overlap.
    *
    * ```ts
-   * class MyController {
-   *   greet(name: string) {
-   *     return `hello ${name}`;
-   *   }
-   * }
-   * app.route('get', '/greet', operationSpec, MyController, 'greet');
+   * app.server(RestServer);
+   * // This server constructor will be bound under "servers.RestServer".
+   * app.server(RestServer, "v1API");
+   * // This server instance will be bound under "servers.v1API".
    * ```
    *
-   * @param verb HTTP verb of the endpoint
-   * @param path URL path of the endpoint
-   * @param spec The OpenAPI spec describing the endpoint (operation)
-   * @param controller Controller constructor
-   * @param methodName The name of the controller method
+   * @param {Constructor<Server>} server The server constructor.
+   * @param {string=} name Optional override for key name.
+   * @memberof Application
    */
-  route(
-    verb: string,
-    path: string,
-    spec: OperationObject,
-    controller: ControllerClass,
-    methodName: string): Binding;
-
-  /**
-   * Register a new route.
-   *
-   * ```ts
-   * function greet(name: string) {
-   *  return `hello ${name}`;
-   * }
-   * const route = new Route('get', '/', operationSpec, greet);
-   * app.route(route);
-   * ```
-   *
-   * @param route The route to add.
-   */
-  route(route: RouteEntry): Binding;
-
-  route(
-    routeOrVerb: RouteEntry | string,
-    path?: string,
-    spec?: OperationObject,
-    controller?: ControllerClass,
-    methodName?: string,
-  ): Binding {
-    if (typeof routeOrVerb === 'object') {
-      const r = routeOrVerb;
-      return this.bind(`routes.${r.verb} ${r.path}`).to(r);
-    }
-
-    if (!path) {
-     throw new AssertionError({
-       message: 'path is required for a controller-based route',
-     });
-    }
-
-    if (!spec) {
-     throw new AssertionError({
-       message: 'spec is required for a controller-based route',
-     });
-    }
-
-    if (!controller) {
-     throw new AssertionError({
-       message: 'controller is required for a controller-based route',
-      });
-    }
-
-    if (!methodName) {
-      throw new AssertionError({
-        message: 'methodName is required for a controller-based route',
-      });
-    }
-
-    return this.route(new ControllerRoute(
-      routeOrVerb,
-      path,
-      spec,
-      controller,
-      methodName));
-  }
-
-  api(spec: OpenApiSpec): Binding {
-    return this.bind(CoreBindings.API_SPEC).to(spec);
+  public server<T extends Server>(ctor: Constructor<T>, name?: string) {
+    const suffix = name || ctor.name;
+    const key = `${CoreBindings.SERVERS}.${suffix}`;
+    this.bind(key)
+      .toClass(ctor)
+      .inScope(BindingScope.SINGLETON);
   }
 
   /**
-   * Get the OpenAPI specification describing the REST API provided by
-   * this application.
+   * Bind an array of Server constructors to the Application's master
+   * context.
+   * Each server added in this way will automatically be named based on the
+   * class constructor name with the "servers." prefix.
    *
-   * This method merges operations (HTTP endpoints) from the following sources:
-   *  - `app.api(spec)`
-   *  - `app.controller(MyController)`
-   *  - `app.route(route)`
-   *  - `app.route('get', '/greet', operationSpec, MyController, 'greet')`
+   * If you wish to control the binding keys for particular server instances,
+   * use the app.server function instead.
+   * ```ts
+   * app.servers([
+   *  RestServer,
+   *  GRPCServer,
+   * ]);
+   * // Creates a binding for "servers.RestServer" and a binding for
+   * // "servers.GRPCServer";
+   * ```
+   *
+   * @param {Constructor<Server>[]} ctors An array of Server constructors.
+   * @memberof Application
    */
-  getApiSpec(): OpenApiSpec {
-    const spec = this.getSync(CoreBindings.API_SPEC);
-
-    // Apply deep clone to prevent getApiSpec() callers from
-    // accidentally modifying our internal routing data
-    spec.paths = cloneDeep(this.httpHandler.describeApiPaths());
-
-    return spec;
+  public servers<T extends Server>(ctors: Constructor<T>[]) {
+    ctors.map(ctor => this.server(ctor));
   }
 
-  protected _logError(
-    err: Error,
-    statusCode: number,
-    req: ServerRequest,
-  ): void {
-    console.error(
-      'Unhandled error in %s %s: %s %s',
-      req.method,
-      req.url,
-      statusCode,
-      err.stack || err,
+  /**
+   * Retrieve the singleton instance for a bound constructor.
+   *
+   * @template T
+   * @param {Constructor<T>=} ctor The constructor that was used to make the
+   * binding.
+   * @returns {Promise<T>}
+   * @memberof Application
+   */
+  public async getServer<T extends Server>(
+    target: Constructor<T> | String,
+  ): Promise<T> {
+    let key: string;
+    // instanceof check not reliable for string.
+    if (typeof target === 'string') {
+      key = `${CoreBindings.SERVERS}.${target}`;
+    } else {
+      const ctor = target as Constructor<T>;
+      key = `servers.${ctor.name}`;
+    }
+    return (await this.get(key)) as T;
+  }
+
+  /**
+   * Start the application, and all of its registered servers.
+   *
+   * @returns {Promise}
+   * @memberof Application
+   */
+  public async start(): Promise<void> {
+    await this._forEachServer(s => s.start());
+  }
+
+  /**
+   * Stop the application instance and all of its registered servers.
+   * @returns {Promise}
+   * @memberof Application
+   */
+  public async stop(): Promise<void> {
+    await this._forEachServer(s => s.stop());
+  }
+
+  /**
+   * Helper function for iterating across all registered server components.
+   * @protected
+   * @template T
+   * @param {(s: Server) => Promise<T>} fn The function to run against all
+   * registered servers
+   * @memberof Application
+   */
+  protected async _forEachServer<T>(fn: (s: Server) => Promise<T>) {
+    const bindings = this.find(`${CoreBindings.SERVERS}.*`);
+    await Promise.all(
+      bindings.map(async binding => {
+        const server = (await this.get(binding.key)) as Server;
+        return await fn(server);
+      }),
     );
   }
 
@@ -439,119 +186,16 @@ export class Application extends Context {
     const instance = this.getSync(componentKey);
     mountComponent(this, instance);
   }
-
-  /**
-   * Configure a custom sequence class for handling incoming requests.
-   *
-   * ```ts
-   * class MySequence implements SequenceHandler {
-   *   constructor(
-   *     @inject('send) public send: Send)) {
-   *   }
-   *
-   *   public async handle(request: ParsedRequest, response: ServerResponse) {
-   *     send(response, 'hello world');
-   *   }
-   * }
-   * ```
-   *
-   * @param value The sequence to invoke for each incoming request.
-   */
-  public sequence(value: Constructor<SequenceHandler>) {
-    this.bind(CoreBindings.SEQUENCE).toClass(value);
-  }
-
-  /**
-   * Configure a custom sequence function for handling incoming requests.
-   *
-   * ```ts
-   * app.handler((sequence, request, response) => {
-   *   sequence.send(response, 'hello world');
-   * });
-   * ```
-   *
-   * @param handlerFn The handler to invoke for each incoming request.
-   */
-  public handler(handlerFn: SequenceFunction) {
-    class SequenceFromFunction extends DefaultSequence {
-      // NOTE(bajtos) Unfortunately, we have to duplicate the constructor
-      // in order for our DI/IoC framework to inject constructor arguments
-      constructor(
-        @inject(CoreBindings.Http.CONTEXT) public ctx: Context,
-        @inject(SequenceActions.FIND_ROUTE)
-        protected findRoute: FindRoute,
-        @inject(SequenceActions.PARSE_PARAMS)
-        protected parseParams: ParseParams,
-        @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
-        @inject(SequenceActions.SEND) public send: Send,
-        @inject(SequenceActions.REJECT) public reject: Reject,
-      ) {
-        super(ctx, findRoute, parseParams, invoke, send, reject);
-      }
-
-      async handle(
-        request: ParsedRequest,
-        response: ServerResponse,
-      ): Promise<void> {
-        await Promise.resolve(handlerFn(this, request, response));
-      }
-    }
-
-    this.sequence(SequenceFromFunction);
-  }
-
-  /**
-   * Start the application (e.g. HTTP/HTTPS servers).
-   */
-  async start(): Promise<void> {
-    // Setup the HTTP handler so that we can verify the configuration
-    // of API spec, controllers and routes at startup time.
-    this._setupHandlerIfNeeded();
-
-    const httpPort = await this.get(CoreBindings.HTTP_PORT);
-    const server = createServer(this.handleHttp);
-
-    // TODO(bajtos) support httpHostname too
-    // See https://github.com/strongloop/loopback-next/issues/434
-    server.listen(httpPort);
-
-    return new Promise<void>((resolve, reject) => {
-      server.once('listening', () => {
-        this.bind(CoreBindings.HTTP_PORT).to(server.address().port);
-        resolve();
-      });
-      server.once('error', reject);
-    });
-  }
-
-  protected _onUnhandledError(
-    req: ServerRequest,
-    res: ServerResponse,
-    err: Error,
-  ) {
-    if (!res.headersSent) {
-      res.statusCode = 500;
-      res.end();
-    }
-
-    // It's the responsibility of the Sequence to handle any errors.
-    // If an unhandled error escaped, then something very wrong happened
-    // and it's best to crash the process immediately.
-    process.nextTick(() => {
-      throw err;
-    });
-  }
 }
 
-export interface ApplicationOptions {
-  http?: HttpConfig;
+export interface ApplicationConfig {
   components?: Array<Constructor<Component>>;
-  sequence?: Constructor<SequenceHandler>;
-
+  servers?: {
+    [name: string]: Constructor<Server>;
+  };
   // tslint:disable-next-line:no-any
   [prop: string]: any;
 }
 
-export interface HttpConfig {
-  port: number;
-}
+// tslint:disable-next-line:no-any
+export type ControllerClass = Constructor<any>;
