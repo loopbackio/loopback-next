@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, Provider, instantiateClass} from '@loopback/context';
+import {Context, instantiateClass} from '@loopback/context';
 import {ParsedRequest} from '@loopback/rest';
 import {
   AuthenticationProvider,
@@ -13,11 +13,12 @@ import {
   AuthenticationBindings,
 } from '../..';
 import {MockStrategy} from './fixtures/mock-strategy';
-
+// FIXME: All of these BDD titles are too verbose and should be reworded
+// to not run afoul of the lint rules!
+// tslint:disable:max-line-length
 describe('AuthenticationProvider', () => {
   describe('constructor()', () => {
-    it('instantiateClass injects authentication.strategy in the constructor',
-    async () => {
+    it('instantiateClass injects authentication.strategy in the constructor', async () => {
       const context = new Context();
       const strategy = new MockStrategy();
       context.bind(AuthenticationBindings.STRATEGY).to(strategy);
@@ -35,8 +36,7 @@ describe('AuthenticationProvider', () => {
 
     beforeEach(givenAuthenticationProvider);
 
-    it('returns a function which authenticates a request and returns a user',
-    async () => {
+    it('returns a function which authenticates a request and returns a user', async () => {
       const authenticate: AuthenticateFn = await Promise.resolve(
         provider.value(),
       );
@@ -45,16 +45,15 @@ describe('AuthenticationProvider', () => {
       expect(user).to.be.equal(mockUser);
     });
 
-   it('updates current user', async () => {
-     const authenticate = await Promise.resolve(provider.value());
-     const request = <ParsedRequest> {};
-     await authenticate(request);
-     expect(currentUser).to.equal(mockUser);
-   });
+    it('updates current user', async () => {
+      const authenticate = await Promise.resolve(provider.value());
+      const request = <ParsedRequest> {};
+      await authenticate(request);
+      expect(currentUser).to.equal(mockUser);
+    });
 
     describe('context.get(provider_key)', () => {
-      it('returns a function which authenticates a request and returns a user',
-      async () => {
+      it('returns a function which authenticates a request and returns a user', async () => {
         const context: Context = new Context();
         context.bind(AuthenticationBindings.STRATEGY).to(strategy);
         context
@@ -68,8 +67,7 @@ describe('AuthenticationProvider', () => {
         expect(user).to.be.equal(mockUser);
       });
 
-      it('throws an error if the injected passport strategy is not valid',
-      async () => {
+      it('throws an error if the injected passport strategy is not valid', async () => {
         const context: Context = new Context();
         context.bind(AuthenticationBindings.STRATEGY).to({});
         context
@@ -88,8 +86,7 @@ describe('AuthenticationProvider', () => {
         expect(error).to.have.property('message', 'invalid strategy parameter');
       });
 
-      it('throws Unauthorized error when authentication fails',
-      async () => {
+      it('throws Unauthorized error when authentication fails', async () => {
         const context: Context = new Context();
         context.bind(AuthenticationBindings.STRATEGY).to(strategy);
         context
@@ -115,7 +112,8 @@ describe('AuthenticationProvider', () => {
       strategy.setMockUser(mockUser);
       provider = new AuthenticationProvider(
         () => Promise.resolve(strategy),
-        u => currentUser = u);
+        u => (currentUser = u),
+      );
       currentUser = undefined;
     }
   });

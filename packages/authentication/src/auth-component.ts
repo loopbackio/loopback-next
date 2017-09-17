@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {AuthenticationBindings} from './keys';
-import {Constructor} from '@loopback/context';
 import {Component, ProviderMap} from '@loopback/core';
 import {AuthenticationProvider} from './providers/authenticate';
 import {AuthMetadataProvider} from './providers/auth-metadata';

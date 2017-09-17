@@ -6,7 +6,6 @@
 import {
   get,
   api,
-  param,
   getControllerSpec,
   operation,
   post,
@@ -14,7 +13,6 @@ import {
   patch,
   del,
 } from '../../..';
-import {ParameterObject} from '@loopback/openapi-spec';
 import {expect} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 
@@ -36,7 +34,9 @@ describe('Routing metadata', () => {
   });
 
   it('returns spec defined via @get decorator', () => {
-    const operationSpec = anOperationSpec().withStringResponse().build();
+    const operationSpec = anOperationSpec()
+      .withStringResponse()
+      .build();
 
     class MyController {
       @get('/greet', operationSpec)
@@ -60,7 +60,9 @@ describe('Routing metadata', () => {
   });
 
   it('returns spec defined via @post decorator', () => {
-    const operationSpec = anOperationSpec().withStringResponse().build();
+    const operationSpec = anOperationSpec()
+      .withStringResponse()
+      .build();
 
     class MyController {
       @post('/greeting', operationSpec)
@@ -82,7 +84,9 @@ describe('Routing metadata', () => {
   });
 
   it('returns spec defined via @put decorator', () => {
-    const operationSpec = anOperationSpec().withStringResponse().build();
+    const operationSpec = anOperationSpec()
+      .withStringResponse()
+      .build();
 
     class MyController {
       @put('/greeting', operationSpec)
@@ -104,7 +108,9 @@ describe('Routing metadata', () => {
   });
 
   it('returns spec defined via @patch decorator', () => {
-    const operationSpec = anOperationSpec().withStringResponse().build();
+    const operationSpec = anOperationSpec()
+      .withStringResponse()
+      .build();
 
     class MyController {
       @patch('/greeting', operationSpec)
@@ -126,7 +132,9 @@ describe('Routing metadata', () => {
   });
 
   it('returns spec defined via @del decorator', () => {
-    const operationSpec = anOperationSpec().withStringResponse().build();
+    const operationSpec = anOperationSpec()
+      .withStringResponse()
+      .build();
 
     class MyController {
       @del('/greeting', operationSpec)
@@ -148,7 +156,9 @@ describe('Routing metadata', () => {
   });
 
   it('returns spec defined via @operation decorator', () => {
-    const operationSpec = anOperationSpec().withStringResponse().build();
+    const operationSpec = anOperationSpec()
+      .withStringResponse()
+      .build();
 
     class MyController {
       @operation('post', '/greeting', operationSpec)
@@ -198,7 +208,9 @@ describe('Routing metadata', () => {
   });
 
   it('honours specifications from inherited methods', () => {
-    const operationSpec = anOperationSpec().withStringResponse().build();
+    const operationSpec = anOperationSpec()
+      .withStringResponse()
+      .build();
 
     class Parent {
       @get('/parent', operationSpec)
@@ -235,7 +247,9 @@ describe('Routing metadata', () => {
   });
 
   it('allows children to override parent REST endpoints', () => {
-    const operationSpec = anOperationSpec().withStringResponse().build();
+    const operationSpec = anOperationSpec()
+      .withStringResponse()
+      .build();
 
     class Parent {
       @get('/name', operationSpec)

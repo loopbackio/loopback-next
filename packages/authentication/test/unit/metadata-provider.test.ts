@@ -6,7 +6,6 @@
 import {expect} from '@loopback/testlab';
 import {CoreBindings} from '@loopback/core';
 import {Context, Provider} from '@loopback/context';
-import {ParsedRequest} from '@loopback/rest';
 import {
   AuthMetadataProvider,
   AuthenticationMetadata,
@@ -28,8 +27,7 @@ describe('AuthMetadataProvider', () => {
   beforeEach(givenAuthMetadataProvider);
 
   describe('value()', () => {
-    it('returns the authentication metadata of a controller method',
-    async () => {
+    it('returns the auth metadata of a controller method', async () => {
       const authMetadata:
         | AuthenticationMetadata
         | undefined = await provider.value();
@@ -40,8 +38,7 @@ describe('AuthMetadataProvider', () => {
     });
 
     describe('context.get(provider_key)', () => {
-      it('returns the authentication metadata of a controller method',
-      async () => {
+      it('returns the auth metadata of a controller method', async () => {
         const context: Context = new Context();
         context.bind(CoreBindings.CONTROLLER_CLASS).to(TestController);
         context.bind(CoreBindings.CONTROLLER_METHOD_NAME).to('whoAmI');
@@ -57,8 +54,7 @@ describe('AuthMetadataProvider', () => {
         });
       });
 
-      it('returns undefined if no authentication metadata is defined',
-      async () => {
+      it('returns undefined if no auth metadata is defined', async () => {
         const context: Context = new Context();
         context
           .bind(CoreBindings.CONTROLLER_CLASS)

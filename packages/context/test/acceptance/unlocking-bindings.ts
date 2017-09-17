@@ -30,7 +30,6 @@ describe(`Context bindings - Unlocking bindings`, () => {
     describe('when the context', () => {
       context('rebinds the duplicate key with an unlocked binding', () => {
         it('does not throw a rebinding error', () => {
-          const key = 'foo';
           const operation = () => ctx.bind('foo').to('baz');
           expect(operation).to.not.throw();
         });

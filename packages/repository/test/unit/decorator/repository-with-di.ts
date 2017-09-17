@@ -10,8 +10,6 @@ import {
   Repository,
   Entity,
   repository,
-  jugglerModule,
-  bindModel,
   DataSourceConstructor,
   DefaultCrudRepository,
   ModelDefinition,

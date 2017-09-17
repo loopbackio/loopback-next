@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect, supertest} from '@loopback/testlab';
+import {expect} from '@loopback/testlab';
 import {Constructor, Provider, inject} from '@loopback/context';
 
 import {Application, ControllerClass} from '../..';

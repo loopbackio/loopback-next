@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding, BoundValue, ValueOrPromise} from './binding';
-import {inject} from './inject';
 import {isPromise} from './is-promise';
 
 export class Context {

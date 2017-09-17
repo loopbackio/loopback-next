@@ -4,14 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect, supertest} from '@loopback/testlab';
-import {Constructor, Provider, inject} from '@loopback/context';
 import {
   DefaultSequence,
   RestBindings,
   RestServer,
   RestComponent,
 } from '../../..';
-import {Application, ControllerClass} from '@loopback/core';
+import {Application} from '@loopback/core';
 
 describe('Bootstrapping with RestComponent', () => {
   context('with a user-defined sequence', () => {

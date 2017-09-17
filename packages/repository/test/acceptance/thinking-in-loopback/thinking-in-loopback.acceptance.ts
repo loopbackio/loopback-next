@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {juggler, DataSourceConstructor} from '../../..';
+import {DataSourceConstructor} from '../../..';
 import {Product} from './models/product.model';
 import {ProductRepository} from './repositories/product.repository';
 import {expect} from '@loopback/testlab';
@@ -30,7 +30,7 @@ describe('Repository in Thinking in LoopBack', () => {
     p.name = 'Red Pencil';
     await repo.save(p);
 
-    const saved = await repo.findById(p.id);
+    await repo.findById(p.id);
     expect(p).to.have.properties({
       slug: 'pencil',
       name: 'Red Pencil',

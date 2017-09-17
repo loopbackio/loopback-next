@@ -5,7 +5,6 @@
 
 import {
   parseOperationArgs,
-  ServerRequest,
   ParsedRequest,
   parseRequestUrl,
   ResolvedRoute,

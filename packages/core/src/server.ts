@@ -3,8 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor} from '@loopback/context';
-
 /**
  * Defines the requirements to implement a Server for LoopBack applications:
  * start() : Promise<void>

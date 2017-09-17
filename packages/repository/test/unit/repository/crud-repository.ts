@@ -128,8 +128,8 @@ describe('CrudRepositoryImpl', () => {
   });
 
   it('updates all entities', async () => {
-    const c1 = await repo.create({id: 1, email: 'john@example.com'});
-    const c2 = await repo.create({id: 2, email: 'mary@example.com'});
+    await repo.create({id: 1, email: 'john@example.com'});
+    await repo.create({id: 2, email: 'mary@example.com'});
     const count = await repo.updateAll({email: 'xyz@example.com'});
     expect(count).to.be.eql(2);
   });
@@ -149,7 +149,7 @@ describe('CrudRepositoryImpl', () => {
   });
 
   it('count all entities', async () => {
-    const customer = await repo.create({id: 1, email: 'john@example.com'});
+    await repo.create({id: 1, email: 'john@example.com'});
     const count = await repo.count();
     expect(count).to.be.eql(1);
   });

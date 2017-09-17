@@ -3,17 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {get, param, getControllerSpec, operation} from '../../../..';
 import {
-  get,
-  api,
-  param,
-  getControllerSpec,
-  operation,
-} from '../../../..';
-import {
- OperationObject,
- ParameterObject,
- ResponsesObject,
+  OperationObject,
+  ParameterObject,
+  ResponsesObject,
 } from '@loopback/openapi-spec';
 import {expect} from '@loopback/testlab';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
@@ -99,11 +93,10 @@ describe('Routing metadata for parameters', () => {
         pageSizeSpec,
       ]);
     });
-
-    it('throws an error if @param is used at both method and parameter level',
-      () => {
-        expect(() => {
-          const offsetSpec: ParameterObject = {
+    // tslint:disable-next-line:max-line-length
+    it('throws an error if @param is used at both method and parameter level', () => {
+      expect(() => {
+        const offsetSpec: ParameterObject = {
           name: 'offset',
           type: 'number',
           in: 'query',
@@ -114,17 +107,15 @@ describe('Routing metadata for parameters', () => {
           type: 'number',
           in: 'query',
         };
-
+        // tslint:disable-next-line:no-unused-variable
         class MyController {
           @get('/')
           @param(offsetSpec)
-          list(
-            offset?: number,
-            @param(pageSizeSpec) pageSize?: number,
-          ) {}
+          list(offset?: number, @param(pageSizeSpec) pageSize?: number) {}
         }
       }).to.throw(
-        /Mixed usage of @param at method\/parameter level is not allowed/);
+        /Mixed usage of @param at method\/parameter level is not allowed/,
+      );
     });
 
     it('adds to existing spec provided via @operation', () => {

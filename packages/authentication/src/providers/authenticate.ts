@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as http from 'http';
-import {HttpErrors, ParsedRequest} from '@loopback/rest';
+import {ParsedRequest} from '@loopback/rest';
 import {inject} from '@loopback/core';
 import {Provider, Getter, Setter} from '@loopback/context';
 import {Strategy} from 'passport';

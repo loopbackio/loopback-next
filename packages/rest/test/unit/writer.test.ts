@@ -3,13 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ServerResponse, OperationRetval, writeResultToResponse} from '../..';
+import {ServerResponse, writeResultToResponse} from '../..';
 
 import {
   expect,
   mockResponse,
   ShotObservedResponse,
-  ShotRequest,
 } from '@loopback/testlab';
 
 describe('writer', () => {

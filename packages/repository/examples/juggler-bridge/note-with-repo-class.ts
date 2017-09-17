@@ -7,7 +7,6 @@ import {Context, inject} from '@loopback/context';
 
 import {
   repository,
-  Repository,
   DataSourceConstructor,
   juggler,
   Entity,

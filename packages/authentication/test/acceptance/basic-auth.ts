@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, Server, mountComponent} from '@loopback/core';
+import {Application} from '@loopback/core';
 import {
   api,
   RestBindings,
@@ -12,18 +12,14 @@ import {
   ParseParams,
   FindRoute,
   InvokeMethod,
-  GetFromContext,
-  BindElement,
-  HttpErrors,
   Send,
   Reject,
-  HttpHandler,
   SequenceHandler,
   get,
   RestServer,
   RestComponent,
 } from '@loopback/rest';
-import {expect, Client, createClientForHandler} from '@loopback/testlab';
+import {Client, createClientForHandler} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {inject, Provider, ValueOrPromise} from '@loopback/context';
 import {
@@ -31,7 +27,6 @@ import {
   UserProfile,
   AuthenticationBindings,
   AuthenticateFn,
-  AuthMetadataProvider,
   AuthenticationMetadata,
   AuthenticationComponent,
 } from '../..';
@@ -148,7 +143,7 @@ describe('Basic Authentication', () => {
           const route = this.findRoute(req);
 
           // Authenticate
-          const user = await this.authenticateRequest(req);
+          await this.authenticateRequest(req);
 
           // Authentication successful, proceed to invoke controller
           const args = await this.parseParams(req, route);

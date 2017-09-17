@@ -3,13 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  ServerRequest,
-  ParsedRequest,
-  Reject,
-  RejectProvider,
-  LogError,
-} from '../../..';
+import {Reject, RejectProvider, LogError} from '../../..';
 
 import {
   expect,
@@ -39,7 +33,7 @@ describe('reject', () => {
     const reject = new RejectProvider(logger).value();
 
     reject(mock.response, mock.request, testError);
-    const result = await mock.result;
+    await mock.result;
 
     expect(logger).to.be.calledWith(testError, 500, mock.request);
   });

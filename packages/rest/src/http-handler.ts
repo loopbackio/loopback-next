@@ -3,13 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  Binding,
-  Context,
-  ValueOrPromise,
-  BoundValue,
-  Constructor,
-} from '@loopback/context';
+import {Context} from '@loopback/context';
 import {PathsObject} from '@loopback/openapi-spec';
 import {ServerRequest, ServerResponse} from 'http';
 import {ControllerSpec} from './router/metadata';
@@ -22,15 +16,9 @@ import {
   RouteEntry,
   ControllerClass,
 } from './router/routing-table';
-import {
-  FindRoute,
-  OperationArgs,
-  ParsedRequest,
-} from './internal-types';
+import {ParsedRequest} from './internal-types';
 
 import {RestBindings} from './keys';
-
-const debug = require('debug')('loopback:core:http-handler');
 
 export class HttpHandler {
   protected _routes: RoutingTable = new RoutingTable();

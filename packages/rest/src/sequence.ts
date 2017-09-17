@@ -4,21 +4,17 @@
 // License text available at https://opensource.org/licenses/MIT
 
 const debug = require('debug')('loopback:core:sequence');
-import {ServerRequest, ServerResponse} from 'http';
+import {ServerResponse} from 'http';
 import {inject, Context} from '@loopback/context';
 import {
   FindRoute,
   InvokeMethod,
-  LogError,
-  OperationRetval,
   ParsedRequest,
   Send,
   Reject,
   ParseParams,
 } from './internal-types';
 import {RestBindings} from './keys';
-import {writeResultToResponse} from './writer';
-import {HttpError} from 'http-errors';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -63,7 +59,7 @@ export interface SequenceHandler {
  * ```
  */
 export class DefaultSequence implements SequenceHandler {
-   /**
+  /**
    * Constructor: Injects findRoute, invokeMethod & logError
    * methods as promises.
    *
@@ -74,14 +70,12 @@ export class DefaultSequence implements SequenceHandler {
    */
   constructor(
     @inject(RestBindings.Http.CONTEXT) public ctx: Context,
-    @inject(SequenceActions.FIND_ROUTE)
-    protected findRoute: FindRoute,
+    @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
     @inject(SequenceActions.PARSE_PARAMS) protected parseParams: ParseParams,
     @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
     @inject(SequenceActions.SEND) public send: Send,
     @inject(SequenceActions.REJECT) public reject: Reject,
   ) {}
-
 
   /**
    * Runs the default sequence. Given a request and response, running the

@@ -9,8 +9,6 @@ import {repository} from '../../../';
 
 import {Repository} from '../../../';
 import {
-  jugglerModule,
-  bindModel,
   DataSourceConstructor,
   juggler,
   DefaultCrudRepository,
@@ -19,9 +17,7 @@ import {
 } from '../../../';
 
 class MyController {
-  constructor(
-    @repository('noteRepo') public noteRepo: Repository<Entity>,
-  ) {}
+  constructor(@repository('noteRepo') public noteRepo: Repository<Entity>) {}
 
   @repository('noteRepo') noteRepo2: Repository<Entity>;
 }
@@ -75,31 +71,32 @@ describe('repository decorator', () => {
   it('throws not implemented for class-level @repository', () => {
     expect(() => {
       @repository('noteRepo')
+      // tslint:disable-next-line:no-unused-variable
       class Controller1 {}
     }).to.throw(/not implemented/);
   });
 
   it('supports @repository(model, dataSource) by names', async () => {
     class Controller2 {
-      constructor(@repository('Note', 'memory')
-        public noteRepo: Repository<Note>) {}
+      constructor(
+        @repository('Note', 'memory')
+        public noteRepo: Repository<Note>,
+      ) {}
     }
     ctx.bind('controllers.Controller2').toClass(Controller2);
-    const myController: MyController = await ctx.get(
-      'controllers.Controller2',
-    );
+    const myController: MyController = await ctx.get('controllers.Controller2');
     expect(myController.noteRepo).to.be.not.null();
   });
 
   it('supports @repository(model, dataSource)', async () => {
     class Controller3 {
-      constructor(@repository(Note, ds)
-        public noteRepo: Repository<Note>) {}
+      constructor(
+        @repository(Note, ds)
+        public noteRepo: Repository<Note>,
+      ) {}
     }
     ctx.bind('controllers.Controller3').toClass(Controller3);
-    const myController: MyController = await ctx.get(
-      'controllers.Controller3',
-    );
+    const myController: MyController = await ctx.get('controllers.Controller3');
     expect(myController.noteRepo).to.be.not.null();
   });
 

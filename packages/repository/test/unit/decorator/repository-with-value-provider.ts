@@ -10,7 +10,6 @@ import {
   Repository,
   Entity,
   repository,
-  bindModel,
   DataSourceConstructor,
   DataSourceType,
   DefaultCrudRepository,

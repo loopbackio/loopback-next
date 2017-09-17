@@ -7,9 +7,7 @@ export const jugglerModule = require('loopback-datasource-juggler');
 
 import * as assert from 'assert';
 import {isPromise} from '@loopback/context';
-import {MixinBuilder} from './mixin';
 import {
-  Class,
   DataObject,
   Options,
   AnyObject,

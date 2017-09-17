@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ServerRequest} from 'http';
-import {HttpErrors, Route, RouteEntry} from './';
+import {HttpErrors} from './';
 import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
 import {promisify} from '@loopback/core';
 import {
@@ -13,7 +13,6 @@ import {
   PathParameterValues,
 } from './internal-types';
 import {ResolvedRoute} from './router/routing-table';
-import {RestBindings} from './keys';
 type HttpError = HttpErrors.HttpError;
 
 type jsonBodyFn = (
