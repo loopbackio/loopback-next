@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Class, Options, Callback, AnyObject} from './common-types';
+import {Options, Callback, AnyObject} from './common-types';
 import {EventEmitter} from 'events';
 
 // tslint:disable:no-any

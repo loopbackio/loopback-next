@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  ServerRequest,
   ParsedRequest,
   parseRequestUrl,
   RoutingTable,
@@ -12,7 +11,6 @@ import {
   ControllerRoute,
 } from '../../..';
 import {expect, ShotRequestOptions, ShotRequest} from '@loopback/testlab';
-import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 
 describe('RoutingTable', () => {

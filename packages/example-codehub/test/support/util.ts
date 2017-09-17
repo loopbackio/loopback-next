@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {supertest} from '@loopback/testlab';
-import {RestBindings, RestComponent} from '@loopback/rest';
+import {RestBindings} from '@loopback/rest';
 import {CodeHubApplication} from '../../src/codehub-application';
 import {RestServer} from '../../../rest/src/rest-server';
 

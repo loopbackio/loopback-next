@@ -5,13 +5,7 @@
 
 import {expect, ShotRequest} from '@loopback/testlab';
 import {Application, ProviderMap, CoreBindings} from '@loopback/core';
-import {
-  inject,
-  Provider,
-  BoundValue,
-  Constructor,
-  Context,
-} from '@loopback/context';
+import {inject, Provider, BoundValue, Context} from '@loopback/context';
 
 import {
   RestComponent,

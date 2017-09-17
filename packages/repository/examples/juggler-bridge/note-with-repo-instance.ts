@@ -3,17 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, inject} from '@loopback/context';
+import {Context} from '@loopback/context';
 
 import {
   repository,
-  Repository,
   DataSourceConstructor,
   juggler,
   Entity,
   Options,
   DataObject,
-  Filter,
   EntityCrudRepository,
   DefaultCrudRepository,
   ModelDefinition,

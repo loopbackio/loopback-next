@@ -3,29 +3,19 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect, ShotRequest} from '@loopback/testlab';
+import {expect} from '@loopback/testlab';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
-import {
-  Binding,
-  Context,
-  Provider,
-  BoundValue,
-  inject,
-} from '@loopback/context';
-import {Application, ProviderMap, CoreBindings} from '@loopback/core';
+import {Binding, Context} from '@loopback/context';
+import {Application} from '@loopback/core';
 import {
   RestServer,
-  ServerRequest,
   BindElement,
   GetFromContext,
   Route,
   InvokeMethod,
   RestBindings,
   RestComponent,
-  RestComponentConfig,
 } from '../../..';
-
-const SequenceActions = RestBindings.SequenceActions;
 
 describe('RestServer', () => {
   describe('"bindElement" binding', () => {

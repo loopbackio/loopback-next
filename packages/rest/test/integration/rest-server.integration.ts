@@ -6,12 +6,6 @@
 import {Application, ApplicationConfig} from '@loopback/core';
 import {expect, createClientForHandler} from '@loopback/testlab';
 import {Route, RestBindings, RestServer, RestComponent} from '../..';
-import {
-  ResponseObject,
-  SchemaObject,
-  ReferenceObject,
-} from '@loopback/openapi-spec';
-import {Context} from '@loopback/context';
 
 describe('RestServer (integration)', () => {
   it('updates rest.port binding when listening on ephemeral port', async () => {
@@ -202,7 +196,7 @@ components:
     const response = await createClientForHandler(server.handleHttp).get(
       '/swagger-ui',
     );
-    const port = await server.get(RestBindings.PORT);
+    await server.get(RestBindings.PORT);
     const url = new RegExp(
       [
         'http://petstore.swagger.io',

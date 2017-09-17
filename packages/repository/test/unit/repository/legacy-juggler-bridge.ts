@@ -6,7 +6,6 @@
 import {expect} from '@loopback/testlab';
 
 import {
-  jugglerModule,
   bindModel,
   DataSourceConstructor,
   juggler,
@@ -114,8 +113,8 @@ describe('DefaultCrudRepository', () => {
 
   it('implements Repository.deleteAll()', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
-    const note1 = await repo.create({title: 't3', content: 'c3'});
-    const note2 = await repo.create({title: 't4', content: 'c4'});
+    await repo.create({title: 't3', content: 'c3'});
+    await repo.create({title: 't4', content: 'c4'});
     const result = await repo.deleteAll({title: 't3'});
     expect(result).to.eql(1);
   });
@@ -132,8 +131,8 @@ describe('DefaultCrudRepository', () => {
 
   it('implements Repository.updateAll()', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
-    const note1 = await repo.create({title: 't3', content: 'c3'});
-    const note2 = await repo.create({title: 't4', content: 'c4'});
+    await repo.create({title: 't3', content: 'c3'});
+    await repo.create({title: 't4', content: 'c4'});
     const result = await repo.updateAll({content: 'c5'}, {});
     expect(result).to.eql(2);
     const notes = await repo.find({where: {title: 't3'}});
@@ -142,8 +141,8 @@ describe('DefaultCrudRepository', () => {
 
   it('implements Repository.count()', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
-    const note1 = await repo.create({title: 't3', content: 'c3'});
-    const note2 = await repo.create({title: 't4', content: 'c4'});
+    await repo.create({title: 't3', content: 'c3'});
+    await repo.create({title: 't4', content: 'c4'});
     const result = await repo.count();
     expect(result).to.eql(2);
   });

@@ -11,7 +11,6 @@ import {
   ParameterObject,
   SchemaObject,
   ParameterType,
-  createEmptyApiSpec,
   PathsObject,
 } from '@loopback/openapi-spec';
 

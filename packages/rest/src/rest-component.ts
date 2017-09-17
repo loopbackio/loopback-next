@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  ApplicationConfig,
   Component,
   CoreBindings,
   ProviderMap,
@@ -12,10 +11,6 @@ import {
   Application,
 } from '@loopback/core';
 import {
-  BoundValue,
-  Context,
-  Injection,
-  ValueOrPromise,
   inject,
   Constructor,
 } from '@loopback/context';

@@ -33,7 +33,7 @@ describe('constructor injection', () => {
     }
 
     expect(() => {
-      const t = instantiateClass(TestClass, ctx) as TestClass;
+      instantiateClass(TestClass, ctx);
     }).to.throw(/Cannot resolve injected arguments/);
   });
 
@@ -140,7 +140,7 @@ describe('property injection', () => {
     }
 
     expect(() => {
-      const t = instantiateClass(TestClass, ctx) as TestClass;
+      instantiateClass(TestClass, ctx);
     }).to.throw(/Cannot resolve injected property/);
   });
 

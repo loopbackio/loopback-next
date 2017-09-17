@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as assert from 'assert';
-import {Class} from '../common-types';
 import {Model, Entity} from '../model';
 import {Repository} from '../repository';
 import {DataSource} from '../datasource';

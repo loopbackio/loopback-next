@@ -8,6 +8,8 @@ import {property, model} from '../../src/decorators/model';
 import {belongsTo} from '../../src/decorators/relation';
 import {Customer} from './customer';
 
+// tslint:disable:no-unused-variable
+
 @model()
 class Order extends Entity {
   @property({

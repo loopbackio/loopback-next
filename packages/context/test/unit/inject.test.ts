@@ -12,6 +12,7 @@ import {
 
 describe('function argument injection', () => {
   it('can decorate class constructor arguments', () => {
+    // tslint:disable-next-line:no-unused-variable
     class TestClass {
       constructor(@inject('foo') foo: string) {}
     }
@@ -28,6 +29,7 @@ describe('function argument injection', () => {
   });
 
   it('can retrieve information about injected method arguments', () => {
+    // tslint:disable-next-line:no-unused-variable
     class TestClass {
       test(@inject('foo') foo: string) {}
     }
@@ -81,6 +83,7 @@ describe('function argument injection', () => {
 
 describe('property injection', () => {
   it('can decorate properties', () => {
+    // tslint:disable-next-line:no-unused-variable
     class TestClass {
       @inject('foo') foo: string;
     }
@@ -107,6 +110,7 @@ describe('property injection', () => {
 
   it('cannot decorate static properties', () => {
     expect(() => {
+      // tslint:disable-next-line:no-unused-variable
       class TestClass {
         @inject('foo') static foo: string;
       }

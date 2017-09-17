@@ -4,17 +4,19 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Entity, ValueObject, Model} from './model';
-import {Class, DataObject, AnyObject, Options} from './common-types';
+import {Class, DataObject, Options} from './common-types';
 import {DataSource} from './datasource';
 import {CrudConnector} from './crud-connector';
-import {Fields, Filter, Where, Operators, Inclusion} from './query';
+import {Filter, Where} from './query';
+
+// tslint:disable:no-unused-variable
 
 export interface Repository<T extends Model> {}
 
 /**
  * Basic CRUD operations for ValueObject and Entity. No ID is required.
  */
-export interface CrudRepository<T extends (ValueObject | Entity)>
+export interface CrudRepository<T extends ValueObject | Entity>
   extends Repository<T> {
   /**
    * Create a new record
@@ -79,7 +81,8 @@ export interface EntityRepository<T extends Entity, ID> extends Repository<T> {}
  * CRUD operations for a repository of entities
  */
 export interface EntityCrudRepository<T extends Entity, ID>
-  extends EntityRepository<T, ID>, CrudRepository<T> {
+  extends EntityRepository<T, ID>,
+    CrudRepository<T> {
   /**
    * Save an entity. If no id is present, create a new entity
    * @param entity Entity to be saved
@@ -197,7 +200,8 @@ export class CrudRepositoryImpl<T extends Entity, ID>
 
   createAll(entities: DataObject<T>[], options?: Options): Promise<T[]> {
     return this.toModels(
-      this.connector.createAll!(this.model, entities, options));
+      this.connector.createAll!(this.model, entities, options),
+    );
   }
 
   save(entity: DataObject<T>, options?: Options): Promise<T | null> {
@@ -268,6 +272,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
       return this.connector.replaceById(this.model, id, data, options);
     }
     // FIXME: populate inst with all properties
+    // tslint:disable-next-line:no-unused-variable
     const inst = data;
     const where = this.model.buildWhereForId(id);
     return this.updateAll(data, where, options).then(

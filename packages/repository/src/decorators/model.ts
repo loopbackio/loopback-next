@@ -3,9 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Class} from '../common-types';
 import {Reflector} from '@loopback/context';
-import {ModelDefinition, PropertyType, ModelDefinitionSyntax} from '../model';
+import {ModelDefinition, ModelDefinitionSyntax} from '../model';
 import {PropertyDefinition} from '../index';
 
 export const MODEL_KEY = 'loopback:model';

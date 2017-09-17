@@ -5,10 +5,8 @@
 
 import {
   api,
-  ServerRequest,
   ServerResponse,
   ParsedRequest,
-  OperationArgs,
   FindRoute,
   InvokeMethod,
   Send,
@@ -21,10 +19,9 @@ import {
   RestComponent,
 } from '../../..';
 import {Application} from '@loopback/core';
-import {ParameterObject} from '@loopback/openapi-spec';
 import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
-import {inject, Constructor, Context} from '@loopback/context';
+import {inject, Context} from '@loopback/context';
 import {ControllerClass} from '../../../src/router/routing-table';
 
 const SequenceActions = RestBindings.SequenceActions;

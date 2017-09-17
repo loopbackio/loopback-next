@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, isPromise} from '../..';
+import {Context} from '../..';
 
 describe('Context bindings - Creating and resolving bindings', () => {
   let ctx: Context;

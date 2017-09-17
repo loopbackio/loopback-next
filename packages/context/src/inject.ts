@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as assert from 'assert';
 import {Reflector} from './reflect';
 import {BoundValue, ValueOrPromise} from './binding';
 import {Context} from './context';

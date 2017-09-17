@@ -44,7 +44,7 @@ describe('Context', () => {
   describe('find', () => {
     it('returns matching binding', () => {
       const b1 = ctx.bind('foo');
-      const b2 = ctx.bind('bar');
+      ctx.bind('bar');
       const result = ctx.find('foo');
       expect(result).to.be.eql([b1]);
     });
@@ -63,7 +63,7 @@ describe('Context', () => {
   describe('findByTag', () => {
     it('returns matching binding', () => {
       const b1 = ctx.bind('foo').tag('t1');
-      const b2 = ctx.bind('bar').tag('t2');
+      ctx.bind('bar').tag('t2');
       const result = ctx.findByTag('t1');
       expect(result).to.be.eql([b1]);
     });

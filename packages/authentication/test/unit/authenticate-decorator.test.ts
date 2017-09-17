@@ -7,7 +7,6 @@ import {expect} from '@loopback/testlab';
 import {
   authenticate,
   getAuthenticateMetadata,
-  AuthenticationMetadata,
 } from '../..';
 
 describe('Authentication', () => {

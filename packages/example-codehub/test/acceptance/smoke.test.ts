@@ -5,7 +5,7 @@
 
 import {CodeHubApplication} from '../../src/codehub-application';
 import {validateApiSpec} from '@loopback/testlab';
-import {RestServer, RestComponent} from '@loopback/rest';
+import {RestServer} from '@loopback/rest';
 
 describe('Server', () => {
   it('has a valid OpenAPI spec', async () => {

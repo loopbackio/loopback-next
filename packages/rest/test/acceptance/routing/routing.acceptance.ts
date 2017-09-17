@@ -14,7 +14,7 @@ import {
   RestServer,
   RestComponent,
 } from '../../..';
-import {Application, Server} from '@loopback/core';
+import {Application} from '@loopback/core';
 
 import {
   ParameterObject,
@@ -24,7 +24,7 @@ import {
 
 import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
-import {inject, Constructor, Context} from '@loopback/context';
+import {inject, Context} from '@loopback/context';
 import {ControllerClass} from '../../../src/router/routing-table';
 
 /* # Feature: Routing

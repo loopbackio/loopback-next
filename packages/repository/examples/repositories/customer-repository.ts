@@ -7,7 +7,7 @@ import {Options} from '../../src/common-types';
 import {Where} from '../../src/query';
 import {DataSource} from '../../src/datasource';
 
-import {EntityCrudRepository, CrudRepositoryImpl} from '../../src/repository';
+import {CrudRepositoryImpl} from '../../src/repository';
 import {Customer} from '../models/customer';
 
 /**

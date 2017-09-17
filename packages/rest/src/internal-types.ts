@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, BoundValue, ValueOrPromise} from '@loopback/context';
+import {Binding, BoundValue} from '@loopback/context';
 import {ServerRequest, ServerResponse} from 'http';
-import {ResolvedRoute, Route, RouteEntry} from './router/routing-table';
+import {ResolvedRoute, RouteEntry} from './router/routing-table';
 
 export interface ParsedRequest extends ServerRequest {
   // see http://expressjs.com/en/4x/api.html#req.path

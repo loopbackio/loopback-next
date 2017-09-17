@@ -5,7 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 import {Class} from '../../../';
-import {MixinBuilder, ConstructorFunction} from '../../../';
+import {MixinBuilder} from '../../../';
 
 // tslint:disable:no-any
 

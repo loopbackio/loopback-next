@@ -28,7 +28,7 @@ echo "TRAVIS_PULL_REQUEST => $TRAVIS_PULL_REQUEST"
 echo "TRAVIS_PULL_REQUEST_BRANCH => $TRAVIS_PULL_REQUEST_BRANCH"
 echo "TRAVIS_PULL_REQUEST_SHA => $TRAVIS_PULL_REQUEST_SHA"
 echo "TRAVIS_PULL_REQUEST_SLUG => $TRAVIS_PULL_REQUEST_SLUG"
-echo "TRAVIS_REPO_SLUG => $TRAVIS_REPO_SLUG"  
+echo "TRAVIS_REPO_SLUG => $TRAVIS_REPO_SLUG"
 
 # Lint all commits in the PR
 # - Covers fork pull requests (when TO=slug/branch)
@@ -37,4 +37,9 @@ echo "TRAVIS_REPO_SLUG => $TRAVIS_REPO_SLUG"
 
 # Always lint the triggering commit
 # - Covers direct commits
-./node_modules/.bin/commitlint --from="$TRAVIS_COMMIT"
+COMMIT=$TRAVIS_COMMIT
+if [[ $TRAVIS_PULL_REQUEST_SHA != "" && $TRAVIS_PULL_REQUEST_SHA != $TRAVIS_COMMIT ]]; then
+  COMMIT=$TRAVIS_PULL_REQUEST_SHA
+fi
+
+./node_modules/.bin/commitlint --from="$COMMIT"

@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import { Class } from './common-types';
-import { MixinBuilder } from './mixin';
 import { Repository } from './repository';
 
 // tslint:disable:no-any

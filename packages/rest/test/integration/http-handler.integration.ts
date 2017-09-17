@@ -13,7 +13,7 @@ import {
   RestBindings,
 } from '../..';
 import {Context} from '@loopback/context';
-import {expect, Client, createClientForHandler} from '@loopback/testlab';
+import {Client, createClientForHandler} from '@loopback/testlab';
 import {ParameterObject} from '@loopback/openapi-spec';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 import {

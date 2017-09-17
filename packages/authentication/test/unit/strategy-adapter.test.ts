@@ -47,7 +47,7 @@ describe('Strategy Adapter', () => {
       request.headers = {testState: 'fail'};
       let error;
       try {
-        const user: Object = await adapter.authenticate(request);
+        await adapter.authenticate(request);
       } catch (err) {
         error = err;
       }
@@ -62,7 +62,7 @@ describe('Strategy Adapter', () => {
       request.headers = {testState: 'error'};
       let error;
       try {
-        const user: Object = await adapter.authenticate(request);
+        await adapter.authenticate(request);
       } catch (err) {
         error = err;
       }
@@ -70,4 +70,3 @@ describe('Strategy Adapter', () => {
     });
   });
 });
-

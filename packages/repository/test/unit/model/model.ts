@@ -5,7 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 import {STRING} from '../../../';
-import {Model, Entity, ModelDefinition, PropertyDefinition} from '../../../';
+import {Entity, ModelDefinition} from '../../../';
 
 describe('model', () => {
   const customerDef = new ModelDefinition('Customer');
@@ -39,6 +39,7 @@ describe('model', () => {
     static definition = realmCustomerDef;
   }
 
+  // tslint:disable-next-line:no-unused-variable
   class User extends Entity {
     static definition = userDef;
   }

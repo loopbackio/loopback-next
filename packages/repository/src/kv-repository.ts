@@ -6,7 +6,7 @@
 import {Repository} from './repository';
 import {Options} from './common-types';
 import {Model} from './model';
-import {Class, DataObject} from './common-types';
+import {DataObject} from './common-types';
 import {Filter} from './query';
 
 /**

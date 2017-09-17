@@ -20,12 +20,9 @@
     "no-shadowed-variable": true,
     "no-string-throw": true,
     "no-unused-expression": true,
+    "no-unused-variable": true,
     "no-var-keyword": true,
-    "triple-equals": [
-      true,
-      "allow-null-check",
-      "allow-undefined-check"
-    ],
+    "triple-equals": [true, "allow-null-check", "allow-undefined-check"],
     "typeof-compare": true,
 
     // These rules make code maintenance easier
@@ -34,10 +31,13 @@
     "no-default-export": true,
     "no-trailing-whitespace": true,
     "prefer-const": true,
-    "trailing-comma": [true, {
-      "multiline": "always",
-      "singleline": "never"
-    }],
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "always",
+        "singleline": "never"
+      }
+    ],
 
     // These rules enforce consistent style across your codebase:
     "arrow-return-shorthand": [true],
@@ -51,14 +51,22 @@
     "prefer-method-signature": true,
     "quotemark": [true, "single", "avoid-escape"],
     "semicolon": [true, "always"],
-    "space-before-function-paren": [true, {
-      "anonymous": "never",
-      "named": "never",
-      "asyncArrow": "always",
-      "method": "never",
-      "constructor": "never"
-    }],
-    "variable-name": [true, "allow-leading-underscore", "ban-keywords", "check-format"],
+    "space-before-function-paren": [
+      true,
+      {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always",
+        "method": "never",
+        "constructor": "never"
+      }
+    ],
+    "variable-name": [
+      true,
+      "allow-leading-underscore",
+      "ban-keywords",
+      "check-format"
+    ],
     "whitespace": [
       true,
       "check-branch",

@@ -6,20 +6,8 @@
 import {AssertionError} from 'assert';
 const swagger2openapi = require('swagger2openapi');
 import {safeDump} from 'js-yaml';
-import {
-  Binding,
-  Context,
-  Constructor,
-  Provider,
-  inject,
-} from '@loopback/context';
-import {
-  Route,
-  ControllerRoute,
-  RouteEntry,
-  parseOperationArgs,
-  ParsedRequest,
-} from '.';
+import {Binding, Context, Constructor, inject} from '@loopback/context';
+import {Route, ControllerRoute, RouteEntry, ParsedRequest} from '.';
 import {
   OpenApiSpec,
   createEmptyApiSpec,
@@ -27,17 +15,9 @@ import {
 } from '@loopback/openapi-spec';
 import {ServerRequest, ServerResponse, createServer} from 'http';
 import * as Http from 'http';
-import {
-  Application,
-  Component,
-  CoreBindings,
-  Server,
-  mountComponent,
-  ProviderMap,
-} from '@loopback/core';
+import {Application, CoreBindings, Server} from '@loopback/core';
 import {getControllerSpec} from './router/metadata';
 import {HttpHandler} from './http-handler';
-import {writeResultToResponse} from './writer';
 import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
 import {
   FindRoute,
@@ -56,8 +36,6 @@ const SequenceActions = RestBindings.SequenceActions;
 //  Module '"(...)/node_modules/@types/lodash/cloneDeep/index"' resolves to
 //  a non-module entity and cannot be imported using this construct.
 const cloneDeep: <T>(value: T) => T = require('lodash/cloneDeep');
-
-const debug = require('debug')('loopback:core:application');
 
 interface OpenApiSpecOptions {
   version?: string;
