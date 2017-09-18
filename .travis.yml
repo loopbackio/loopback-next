@@ -4,6 +4,9 @@ node_js:
   - "6"
   - "8"
 
+git:
+  depth: 300
+
 before_script:
   - npm run bootstrap
 
@@ -13,7 +16,8 @@ after_success:
 jobs:
   include:
     - stage: commit linting
-      before_install: git fetch --unshallow
+      before_install:
+        - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
       before_script: skip
       script: /bin/bash ./bin/lint-commits.sh
       after_success: skip
