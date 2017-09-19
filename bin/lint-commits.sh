@@ -3,15 +3,20 @@ set -e
 set -u
 
 if [[ $TRAVIS_PULL_REQUEST_SLUG != "" && $TRAVIS_PULL_REQUEST_SLUG != $TRAVIS_REPO_SLUG ]]; then
-	# This is a Pull Request from a different slug, hence a forked repository
-	git remote add "$TRAVIS_PULL_REQUEST_SLUG" "https://github.com/$TRAVIS_PULL_REQUEST_SLUG.git"
-	git fetch "$TRAVIS_PULL_REQUEST_SLUG"
+  # This is a Pull Request from a different slug, hence a forked repository
+  git remote add "$TRAVIS_PULL_REQUEST_SLUG" "https://github.com/$TRAVIS_PULL_REQUEST_SLUG.git"
+  git fetch "$TRAVIS_PULL_REQUEST_SLUG"
 
-	# Use the fetched remote pointing to the source clone for comparison
-	TO="$TRAVIS_PULL_REQUEST_SLUG/$TRAVIS_PULL_REQUEST_BRANCH"
+  # Use the fetched remote pointing to the source clone for comparison
+  TO="$TRAVIS_PULL_REQUEST_SLUG/$TRAVIS_PULL_REQUEST_BRANCH"
 else
-	# This is a Pull Request from the same remote, no clone repository
-	TO=$TRAVIS_COMMIT
+  # This is a Pull Request from the same remote, no clone repository
+  TO=$TRAVIS_COMMIT
+
+  if [[ $TRAVIS_PULL_REQUEST_SHA != "" && $TRAVIS_PULL_REQUEST_SHA != $TRAVIS_COMMIT ]]; then
+    echo "TO => TRAVIS_PULL_REQUEST_SHA"
+    TO=$TRAVIS_PULL_REQUEST_SHA
+  fi
 fi
 
 echo "TRAVIS_BRANCH => $TRAVIS_BRANCH"
