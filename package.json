@@ -30,7 +30,7 @@
     "typescript": "^2.5.2"
   },
   "scripts": {
-    "bootstrap": "lerna bootstrap",
+    "bootstrap": "npm i && lerna bootstrap",
     "coverage:ci": "nyc report --reporter=text-lcov | coveralls",
     "precoverage": "npm test",
     "coverage": "open coverage/index.html",
