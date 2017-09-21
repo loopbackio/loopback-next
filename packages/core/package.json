@@ -1,6 +1,6 @@
 {
   "name": "@loopback/core",
-  "version": "4.0.0-alpha.13",
+  "version": "4.0.0-alpha.14",
   "description": "",
   "scripts": {
     "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",

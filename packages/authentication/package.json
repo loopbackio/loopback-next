@@ -1,6 +1,6 @@
 {
   "name": "@loopback/authentication",
-  "version": "4.0.0-alpha.7",
+  "version": "4.0.0-alpha.8",
   "description": "A LoopBack component for authentication support.",
   "scripts": {
     "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
@@ -21,7 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "@loopback/context": "^4.0.0-alpha.12",
-    "@loopback/core": "^4.0.0-alpha.13",
+    "@loopback/core": "^4.0.0-alpha.14",
     "@types/passport": "^0.3.3",
     "@types/passport-http": "^0.3.2",
     "passport": "^0.3.2",
