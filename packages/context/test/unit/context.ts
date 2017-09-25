@@ -4,14 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, Binding, BindingScope} from '../..';
+import {Context, Binding, BindingScope, isPromise} from '../..';
 
 describe('Context', () => {
   let ctx: Context;
   beforeEach('given a context', createContext);
 
   describe('bind', () => {
-
     it('adds a binding into the registry', () => {
       ctx.bind('foo');
       const result = ctx.contains('foo');
@@ -25,10 +24,8 @@ describe('Context', () => {
 
     it('rejects a key containing property separator', () => {
       const key = 'a' + Binding.PROPERTY_SEPARATOR + 'b';
-      expect(() =>
-        ctx.bind(key)).to.throw(/Binding key .* cannot contain/);
+      expect(() => ctx.bind(key)).to.throw(/Binding key .* cannot contain/);
     });
-
   });
 
   describe('contains', () => {
@@ -89,6 +86,13 @@ describe('Context', () => {
     it('reports an error when binding was not found', () => {
       expect(() => ctx.getBinding('unknown-key')).to.throw(/unknown-key/);
     });
+
+    it('rejects a key containing property separator', () => {
+      const key = 'a' + Binding.PROPERTY_SEPARATOR + 'b';
+      expect(() => ctx.getBinding(key)).to.throw(
+        /Binding key .* cannot contain/,
+      );
+    });
   });
 
   describe('getSync', () => {
@@ -102,16 +106,8 @@ describe('Context', () => {
       const SEP = Binding.PROPERTY_SEPARATOR;
       const val = {x: {y: 'Y'}};
       ctx.bind('foo').to(val);
-      let result = ctx.getSync('foo');
-      expect(result).to.equal(val);
-      result = ctx.getSync(`foo${SEP}x`);
-      expect(result).to.eql({y: `Y`});
-      result = ctx.getSync(`foo${SEP}x.y`);
-      expect(result).to.eql('Y');
-      result = ctx.getSync(`foo${SEP}z`);
-      expect(result).to.be.undefined();
-      result = ctx.getSync(`foo${SEP}x.y.length`);
-      expect(result).to.eql(1);
+      const value = ctx.getSync(`foo${SEP}x`);
+      expect(value).to.eql({y: 'Y'});
     });
 
     it('throws a helpful error when the binding is async', () => {
@@ -213,16 +209,8 @@ describe('Context', () => {
       const SEP = Binding.PROPERTY_SEPARATOR;
       const val = {x: {y: 'Y'}};
       ctx.bind('foo').to(Promise.resolve(val));
-      let result = await ctx.get('foo');
-      expect(result).to.equal(val);
-      result = await ctx.get(`foo${SEP}x`);
-      expect(result).to.eql({y: `Y`});
-      result = await ctx.get(`foo${SEP}x.y`);
-      expect(result).to.eql('Y');
-      result = await ctx.get(`foo${SEP}z`);
-      expect(result).to.be.undefined();
-      result = await ctx.get(`foo${SEP}x.y.length`);
-      expect(result).to.eql(1);
+      const value = await ctx.get(`foo${SEP}x`);
+      expect(value).to.eql({y: 'Y'});
     });
 
     it('returns singleton value', async () => {
@@ -285,6 +273,105 @@ describe('Context', () => {
       const childCtx = new Context(ctx);
       result = await childCtx.get('foo');
       expect(result).to.equal(2);
+    });
+  });
+
+  describe('getValueOrPromise', () => {
+    it('returns synchronously for constant values', () => {
+      ctx.bind('key').to('value');
+      const valueOrPromise = ctx.getValueOrPromise('key');
+      expect(valueOrPromise).to.equal('value');
+    });
+
+    it('returns promise for async values', async () => {
+      ctx.bind('key').toDynamicValue(() => Promise.resolve('value'));
+      const valueOrPromise = ctx.getValueOrPromise('key');
+      expect(isPromise(valueOrPromise)).to.be.true();
+      const value = await valueOrPromise;
+      expect(value).to.equal('value');
+    });
+
+    it('returns nested property (synchronously)', () => {
+      ctx.bind('key').to({test: 'test-value'});
+      const value = ctx.getValueOrPromise('key#test');
+      expect(value).to.equal('test-value');
+    });
+
+    it('returns nested property (asynchronously)', async () => {
+      ctx.bind('key').to(Promise.resolve({test: 'test-value'}));
+      const value = await ctx.getValueOrPromise('key#test');
+      expect(value).to.equal('test-value');
+    });
+
+    it('supports deeply nested property path', () => {
+      ctx.bind('key').to({x: {y: 'z'}});
+      const value = ctx.getValueOrPromise('key#x.y');
+      expect(value).to.equal('z');
+    });
+
+    it('returns undefined when nested property does not exist', () => {
+      ctx.bind('key').to({test: 'test-value'});
+      const value = ctx.getValueOrPromise('key#x.y');
+      expect(value).to.equal(undefined);
+    });
+
+    it('honours TRANSIENT scope when retrieving a nested property', () => {
+      const state = {count: 0};
+      ctx
+        .bind('state')
+        .toDynamicValue(() => {
+          state.count++;
+          return state;
+        })
+        .inScope(BindingScope.TRANSIENT);
+      // verify the initial state & populate the cache
+      expect(ctx.getSync('state')).to.deepEqual({count: 1});
+      // retrieve a nested property (expect a new value)
+      expect(ctx.getSync('state#count')).to.equal(2);
+      // retrieve the full object again (expect another new value)
+      expect(ctx.getSync('state')).to.deepEqual({count: 3});
+    });
+
+    it('honours CONTEXT scope when retrieving a nested property', () => {
+      const state = {count: 0};
+      ctx
+        .bind('state')
+        .toDynamicValue(() => {
+          state.count++;
+          return state;
+        })
+        .inScope(BindingScope.CONTEXT);
+      // verify the initial state & populate the cache
+      expect(ctx.getSync('state')).to.deepEqual({count: 1});
+      // retrieve a nested property (expect the cached value)
+      expect(ctx.getSync('state#count')).to.equal(1);
+      // retrieve the full object again (verify that cache was not modified)
+      expect(ctx.getSync('state')).to.deepEqual({count: 1});
+    });
+
+    it('honours SINGLETON scope when retrieving a nested property', () => {
+      const state = {count: 0};
+      ctx
+        .bind('state')
+        .toDynamicValue(() => {
+          state.count++;
+          return state;
+        })
+        .inScope(BindingScope.SINGLETON);
+
+      // verify the initial state & populate the cache
+      expect(ctx.getSync('state')).to.deepEqual({count: 1});
+
+      // retrieve a nested property from a child context
+      const childContext1 = new Context(ctx);
+      expect(childContext1.getValueOrPromise('state#count')).to.equal(1);
+
+      // retrieve a nested property from another child context
+      const childContext2 = new Context(ctx);
+      expect(childContext2.getValueOrPromise('state#count')).to.equal(1);
+
+      // retrieve the full object again (verify that cache was not modified)
+      expect(ctx.getSync('state')).to.deepEqual({count: 1});
     });
   });
 

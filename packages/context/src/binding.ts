@@ -97,31 +97,31 @@ export class Binding {
   static validateKey(key: string) {
     if (!key) throw new Error('Binding key must be provided.');
     if (key.includes(Binding.PROPERTY_SEPARATOR)) {
-      throw new Error(`Binding key ${key} cannot contain`
-        + ` '${Binding.PROPERTY_SEPARATOR}'.`);
+      throw new Error(
+        `Binding key ${key} cannot contain` +
+          ` '${Binding.PROPERTY_SEPARATOR}'.`,
+      );
     }
     return key;
   }
 
   /**
-   * Remove the segament that denotes a property path
-   * @param key Binding key, such as `a, a.b, a:b, a/b, a.b#x, a:b#x.y, a/b#x.y`
+   * Parse a string containing both the binding key and the path to the deeply
+   * nested property to retrieve.
+   *
+   * @param keyWithPath The key with an optional path,
+   *  e.g. "application.instance" or "config#rest.port".
    */
-  static normalizeKey(key: string) {
-    const index = key.indexOf(Binding.PROPERTY_SEPARATOR);
-    if (index !== -1) key = key.substr(0, index);
-    key = key.trim();
-    return key;
-  }
+  static parseKeyWithPath(keyWithPath: string) {
+    const index = keyWithPath.indexOf(Binding.PROPERTY_SEPARATOR);
+    if (index === -1) {
+      return {key: keyWithPath, path: undefined};
+    }
 
-  /**
-   * Get the property path separated by `#`
-   * @param key Binding key
-   */
-  static getKeyPath(key: string) {
-    const index = key.indexOf(Binding.PROPERTY_SEPARATOR);
-    if (index !== -1) return key.substr(index + 1);
-    return undefined;
+    return {
+      key: keyWithPath.substr(0, index).trim(),
+      path: keyWithPath.substr(index+1),
+    };
   }
 
   public readonly key: string;
@@ -145,8 +145,10 @@ export class Binding {
    * @param ctx The current context
    * @param result The calculated value for the binding
    */
-  private _cacheValue(ctx: Context, result: BoundValue | Promise<BoundValue>):
-    BoundValue | Promise<BoundValue> {
+  private _cacheValue(
+    ctx: Context,
+    result: BoundValue | Promise<BoundValue>,
+  ): BoundValue | Promise<BoundValue> {
     if (isPromise(result)) {
       if (this.scope === BindingScope.SINGLETON) {
         // Cache the value

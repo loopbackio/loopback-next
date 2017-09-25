@@ -171,6 +171,21 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     expect(ctx.getSync('key')).to.equal('a-value');
   });
 
+  it('injects a nested property', async () => {
+    class TestComponent {
+      constructor(
+        @inject('config#test')
+        public config: string,
+      ) {}
+    }
+
+    ctx.bind('config').to({test: 'test-config'});
+    ctx.bind('component').toClass(TestComponent);
+
+    const resolved = await ctx.get('component');
+    expect(resolved.config).to.equal('test-config');
+  });
+
   function createContext() {
     ctx = new Context();
   }
