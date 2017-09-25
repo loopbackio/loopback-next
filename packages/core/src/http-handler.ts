@@ -12,7 +12,7 @@ import {
 } from '@loopback/context';
 import {PathsObject} from '@loopback/openapi-spec';
 import {ServerRequest, ServerResponse} from 'http';
-import {getControllerSpec, ControllerSpec} from './router/metadata';
+import {ControllerSpec} from './router/metadata';
 
 import {SequenceHandler} from './sequence';
 import {
