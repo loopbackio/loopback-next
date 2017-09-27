@@ -4,7 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Binding, BindingScope, Context, inject, Provider} from '../..';
+import {
+  Binding,
+  BindingScope,
+  BindingType,
+  Context,
+  inject,
+  Provider,
+} from '../..';
 
 const key = 'foo';
 
@@ -73,28 +80,85 @@ describe('Binding', () => {
       binding.to('value');
       expect(binding.getValue(ctx)).to.equal('value');
     });
+
+    it('sets the type to CONSTANT', () => {
+      binding.to('value');
+      expect(binding.type).to.equal(BindingType.CONSTANT);
+    });
+  });
+
+  describe('toDynamicValue(dynamicValueFn)', () => {
+    it('support a factory', async () => {
+      const b = ctx.bind('msg').toDynamicValue(() => Promise.resolve('hello'));
+      const value: string = await ctx.get('msg');
+      expect(value).to.equal('hello');
+      expect(b.type).to.equal(BindingType.DYNAMIC_VALUE);
+    });
+  });
+
+  describe('toClass(cls)', () => {
+    it('support a class', async () => {
+      ctx.bind('msg').toDynamicValue(() => Promise.resolve('world'));
+      const b = ctx.bind('myService').toClass(MyService);
+      expect(b.type).to.equal(BindingType.CLASS);
+      const myService: MyService = await ctx.get('myService');
+      expect(myService.getMessage()).to.equal('hello world');
+    });
   });
 
   describe('toProvider(provider)', () => {
     it('binding returns the expected value', async () => {
       ctx.bind('msg').to('hello');
       ctx.bind('provider_key').toProvider(MyProvider);
-      const value: String = await ctx.get('provider_key');
+      const value: string = await ctx.get('provider_key');
       expect(value).to.equal('hello world');
     });
 
     it('can resolve provided value synchronously', () => {
       ctx.bind('msg').to('hello');
       ctx.bind('provider_key').toProvider(MyProvider);
-      const value: String = ctx.getSync('provider_key');
+      const value: string = ctx.getSync('provider_key');
       expect(value).to.equal('hello world');
     });
 
     it('support asynchronous dependencies of provider class', async () => {
       ctx.bind('msg').toDynamicValue(() => Promise.resolve('hello'));
       ctx.bind('provider_key').toProvider(MyProvider);
-      const value: String = await ctx.get('provider_key');
+      const value: string = await ctx.get('provider_key');
       expect(value).to.equal('hello world');
+    });
+
+    it('sets the type to PROVIDER', () => {
+      ctx.bind('msg').to('hello');
+      const b = ctx.bind('provider_key').toProvider(MyProvider);
+      expect(b.type).to.equal(BindingType.PROVIDER);
+    });
+  });
+
+  describe('toJSON()', () => {
+    it('converts a keyed binding to plain JSON object', () => {
+      const json = binding.toJSON();
+      expect(json).to.eql({
+        key: key,
+        scope: BindingScope.TRANSIENT,
+        tags: [],
+        isLocked: false,
+      });
+    });
+
+    it('converts a binding with more attributes to plain JSON object', () => {
+      const myBinding = new Binding(key, true)
+        .inScope(BindingScope.CONTEXT)
+        .tag('model')
+        .to('a');
+      const json = myBinding.toJSON();
+      expect(json).to.eql({
+        key: key,
+        scope: BindingScope.CONTEXT,
+        tags: ['model'],
+        isLocked: true,
+        type: BindingType.CONSTANT,
+      });
     });
   });
 
@@ -103,10 +167,18 @@ describe('Binding', () => {
     binding = new Binding(key);
   }
 
-  class MyProvider implements Provider<String> {
+  class MyProvider implements Provider<string> {
     constructor(@inject('msg') private _msg: string) {}
-    value(): String {
+    value(): string {
       return this._msg + ' world';
+    }
+  }
+
+  class MyService {
+    constructor(@inject('msg') private _msg: string) {}
+
+    getMessage(): string {
+      return 'hello ' + this._msg;
     }
   }
 });

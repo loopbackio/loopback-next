@@ -192,6 +192,17 @@ export class Context {
 
     return getDeepProperty(boundValue, path);
   }
+
+  /**
+   * Create a plain JSON object for the context
+   */
+  toJSON(): Object {
+    const json: {[key: string]: Object} = {};
+    for (const [k, v] of this.registry) {
+      json[k] = v.toJSON();
+    }
+    return json;
+  }
 }
 
 function getDeepProperty(value: BoundValue, path: string) {

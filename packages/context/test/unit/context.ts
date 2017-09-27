@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, Binding, BindingScope, isPromise} from '../..';
+import {Context, Binding, BindingScope, BindingType, isPromise} from '../..';
 
 describe('Context', () => {
   let ctx: Context;
@@ -372,6 +372,47 @@ describe('Context', () => {
 
       // retrieve the full object again (verify that cache was not modified)
       expect(ctx.getSync('state')).to.deepEqual({count: 1});
+    });
+  });
+
+  describe('toJSON()', () => {
+    it('converts to plain JSON object', () => {
+      ctx
+        .bind('a')
+        .to('1')
+        .lock();
+      ctx
+        .bind('b')
+        .toDynamicValue(() => 2)
+        .inScope(BindingScope.SINGLETON)
+        .tag(['X', 'Y']);
+      ctx
+        .bind('c')
+        .to(3)
+        .tag('Z');
+      expect(ctx.toJSON()).to.eql({
+        a: {
+          key: 'a',
+          scope: BindingScope.TRANSIENT,
+          tags: [],
+          isLocked: true,
+          type: BindingType.CONSTANT,
+        },
+        b: {
+          key: 'b',
+          scope: BindingScope.SINGLETON,
+          tags: ['X', 'Y'],
+          isLocked: false,
+          type: BindingType.DYNAMIC_VALUE,
+        },
+        c: {
+          key: 'c',
+          scope: BindingScope.TRANSIENT,
+          tags: ['Z'],
+          isLocked: false,
+          type: BindingType.CONSTANT,
+        },
+      });
     });
   });
 
