@@ -65,9 +65,14 @@ describe('Application', () => {
 });
 
 class FakeComponent implements Component {
-  servers: Constructor<Server>[] = [];
+  servers: {
+    [name: string]: Constructor<Server>;
+  };
   constructor() {
-    this.servers.push(FakeServer);
+    this.servers = {
+      FakeServer,
+      FakeServer2: FakeServer,
+    };
   }
 }
 
