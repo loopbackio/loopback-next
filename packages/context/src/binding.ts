@@ -34,7 +34,7 @@ export enum BindingScope {
    * req2.get('b1') ==> 3
    * app.get('b1') ==> 4
    */
-  TRANSIENT,
+  TRANSIENT = 'Transient',
 
   /**
    * The binding provides a value as a singleton within each local context. The
@@ -59,7 +59,7 @@ export enum BindingScope {
    * // 2 is the singleton for req2 afterward
    * req2.get('b1') ==> 2
    */
-  CONTEXT,
+  CONTEXT = 'Context',
 
   /**
    * The binding provides a value as a singleton within the context hierarchy
@@ -82,7 +82,14 @@ export enum BindingScope {
    * // 'b1' is found in app, reuse it
    * req2.get('b1') ==> 0
    */
-  SINGLETON,
+  SINGLETON = 'Singleton',
+}
+
+export enum BindingType {
+  CONSTANT = 'Constant',
+  DYNAMIC_VALUE = 'DynamicValue',
+  CLASS = 'Class',
+  PROVIDER = 'Provider',
 }
 
 // FIXME(bajtos) The binding class should be parameterized by the value
@@ -127,6 +134,7 @@ export class Binding {
   public readonly key: string;
   public readonly tags: Set<string> = new Set();
   public scope: BindingScope = BindingScope.TRANSIENT;
+  public type: BindingType;
 
   private _cache: BoundValue;
   private _getValue: (ctx?: Context) => BoundValue | Promise<BoundValue>;
@@ -243,8 +251,9 @@ export class Binding {
     return this;
   }
 
-  inScope(scope: BindingScope) {
+  inScope(scope: BindingScope): this {
     this.scope = scope;
+    return this;
   }
 
   /**
@@ -259,6 +268,7 @@ export class Binding {
    * ```
    */
   to(value: BoundValue): this {
+    this.type = BindingType.CONSTANT;
     this._getValue = () => value;
     return this;
   }
@@ -282,7 +292,7 @@ export class Binding {
    * ```
    */
   toDynamicValue(factoryFn: () => BoundValue | Promise<BoundValue>): this {
-    // TODO(bajtos) allow factoryFn with @inject arguments
+    this.type = BindingType.DYNAMIC_VALUE;
     this._getValue = ctx => factoryFn();
     return this;
   }
@@ -304,6 +314,7 @@ export class Binding {
    * @param provider The value provider to use.
    */
   public toProvider<T>(providerClass: Constructor<Provider<T>>): this {
+    this.type = BindingType.PROVIDER;
     this._getValue = ctx => {
       const providerOrPromise = instantiateClass<Provider<T>>(
         providerClass,
@@ -326,6 +337,7 @@ export class Binding {
    *   we can resolve them from the context.
    */
   toClass<T>(ctor: Constructor<T>): this {
+    this.type = BindingType.CLASS;
     this._getValue = ctx => instantiateClass(ctor, ctx!);
     this.valueConstructor = ctor;
     return this;
@@ -334,5 +346,19 @@ export class Binding {
   unlock(): this {
     this.isLocked = false;
     return this;
+  }
+
+  toJSON(): Object {
+    // tslint:disable-next-line:no-any
+    const json: {[name: string]: any} = {
+      key: this.key,
+      scope: this.scope,
+      tags: Array.from(this.tags),
+      isLocked: this.isLocked,
+    };
+    if (this.type != null) {
+      json.type = this.type;
+    }
+    return json;
   }
 }
