@@ -43,13 +43,18 @@ export class RestComponent implements Component {
     [RestBindings.SequenceActions.PARSE_PARAMS]: ParseParamsProvider,
     [RestBindings.SequenceActions.SEND]: SendProvider,
   };
-  servers: Constructor<Server>[] = [];
+  servers: {
+    [name: string]: Constructor<Server>;
+  };
+
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE) app: Application,
     @inject(RestBindings.CONFIG) config?: RestComponentConfig,
   ) {
     if (!config) config = {};
-    this.servers.push(RestServer);
+    this.servers = {
+      RestServer: RestServer,
+    };
   }
 }
 

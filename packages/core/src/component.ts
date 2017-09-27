@@ -14,7 +14,9 @@ export interface Component {
   // tslint:disable-next-line:no-any
   controllers?: Constructor<any>[];
   providers?: ProviderMap;
-  servers?: Constructor<Server>[];
+  servers?: {
+    [name: string]: Constructor<Server>;
+  };
 
   // tslint:disable-next-line:no-any
   [prop: string]: any;
@@ -41,8 +43,8 @@ export function mountComponent(app: Application, component: Component) {
   }
 
   if (component.servers) {
-    for (const server of component.servers) {
-      app.server(server);
+    for (const serverKey in component.servers) {
+      app.server(component.servers[serverKey], serverKey);
     }
   }
 }
