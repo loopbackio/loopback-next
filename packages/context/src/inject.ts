@@ -6,7 +6,7 @@
 import * as assert from 'assert';
 import {Reflector} from './reflect';
 import {BoundValue, ValueOrPromise} from './binding';
-import {Context} from './context';
+import {Context, GetValueOptions} from './context';
 
 const PARAMETERS_KEY = 'inject:parameters';
 const PROPERTIES_KEY = 'inject:properties';
@@ -18,13 +18,29 @@ export interface ResolverFunction {
   (ctx: Context, injection: Injection): ValueOrPromise<BoundValue>;
 }
 
+export type InjectMetadata = GetValueOptions & {
+  [attribute: string]: BoundValue;
+};
+
 /**
  * Descriptor for an injection point
  */
 export interface Injection {
-  bindingKey: string; // Binding key
-  metadata?: {[attribute: string]: BoundValue}; // Related metadata
-  resolve?: ResolverFunction; // A custom resolve function
+  /**
+   * The binding key to use.
+   */
+  bindingKey: string;
+
+  /**
+   * Metadata to customize resolution of this dependency.
+   */
+  metadata?: InjectMetadata;
+
+  /**
+   * A custom resolver function that should be used instead of the built-in
+   * resolver provided by the framework.
+   */
+  resolve?: ResolverFunction;
 }
 
 /**
@@ -55,7 +71,7 @@ export interface Injection {
  */
 export function inject(
   bindingKey: string,
-  metadata?: Object,
+  metadata?: InjectMetadata,
   resolve?: ResolverFunction,
 ) {
   return function markParameterOrPropertyAsInjected(

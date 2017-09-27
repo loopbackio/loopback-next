@@ -7,6 +7,18 @@ import {Binding, BoundValue, ValueOrPromise} from './binding';
 import {inject} from './inject';
 import {isPromise} from './is-promise';
 
+/**
+ * Options supported by Context#get and Context#getSync methods,
+ * @inject decorator, etc.
+ */
+export interface GetValueOptions {
+  /**
+   * When resolving the bound value, return a (deeply) nested property.
+   * Use dot character to build a deep path, e.g. "rest.port".
+   */
+  property?: string;
+}
+
 export class Context {
   private registry: Map<string, Binding>;
 
@@ -97,9 +109,9 @@ export class Context {
    *   (deeply) nested property to retrieve.
    * @returns A promise of the bound value.
    */
-  get(key: string): Promise<BoundValue> {
+  get(key: string, options?: GetValueOptions): Promise<BoundValue> {
     try {
-      return Promise.resolve(this.getValueOrPromise(key));
+      return Promise.resolve(this.getValueOrPromise(key, options));
     } catch (err) {
       return Promise.reject(err);
     }
@@ -127,8 +139,8 @@ export class Context {
    *   (deeply) nested property to retrieve.
    * @returns A promise of the bound value.
    */
-  getSync(key: string): BoundValue {
-    const valueOrPromise = this.getValueOrPromise(key);
+  getSync(key: string, options?: GetValueOptions): BoundValue {
+    const valueOrPromise = this.getValueOrPromise(key, options);
 
     if (isPromise(valueOrPromise)) {
       throw new Error(
@@ -178,8 +190,11 @@ export class Context {
    *   on how the binding was configured.
    * @internal
    */
-  getValueOrPromise(keyWithPath: string): ValueOrPromise<BoundValue> {
-    const {key, path} = Binding.parseKeyWithPath(keyWithPath);
+  getValueOrPromise(
+    key: string,
+    options?: GetValueOptions,
+  ): ValueOrPromise<BoundValue> {
+    const path = options && options.property;
     const boundValue = this.getBinding(key).getValue(this);
     if (path === undefined || path === '') {
       return boundValue;

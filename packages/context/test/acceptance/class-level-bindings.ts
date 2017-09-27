@@ -174,7 +174,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
   it('injects a nested property', async () => {
     class TestComponent {
       constructor(
-        @inject('config#test')
+        @inject('config', {property: 'test'})
         public config: string,
       ) {}
     }
