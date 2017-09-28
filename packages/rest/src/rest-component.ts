@@ -46,23 +46,11 @@ export class RestComponent implements Component {
   servers: Constructor<Server>[] = [];
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE) app: Application,
-    @inject(CoreBindings.APPLICATION_CONFIG, undefined, getRestConfig)
-    config?: RestComponentConfig,
+    @inject(RestBindings.CONFIG) config?: RestComponentConfig,
   ) {
     if (!config) config = {};
-    app.bind(RestBindings.CONFIG).to(config);
     this.servers.push(RestServer);
   }
-}
-
-function getRestConfig(
-  ctx: Context,
-  injection: Injection,
-): ValueOrPromise<BoundValue> {
-  // FIXME(kevin): This is a workaround for the hash (#) keyed property
-  // resolving not working!
-  const conf = ctx.getSync(injection.bindingKey) as ApplicationConfig;
-  return conf.rest || {};
 }
 
 export interface RestComponentConfig extends RestServerConfig {
