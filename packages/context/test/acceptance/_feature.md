@@ -16,11 +16,11 @@ ctx.bind('foo').to('bar');
 child.get('foo'); // => 'bar'
 ```
 
-## Scenario: Simple Paramaterized Binding
+## Scenario: Simple Parameterized Binding
 
 - Given a simple parameterized binding
 - When I get the value with a specific key
-- The binding is resovled
+- The binding is resolved
 
 ```ts
 let ctx = new Context();
@@ -30,11 +30,11 @@ await ctx.get('foo'); // => hello world
 await ctx.get('bat'); // => hello world
 ```
 
-## Scenario: Simple Dynamic Paramaterized Binding
+## Scenario: Simple Dynamic Parameterized Binding
 
 - Given a simple parameterized binding
 - When I get the value with a specific key
-- The binding is resovled with the corresponding value
+- The binding is resolved with the corresponding value
 
 ```ts
 let ctx = new Context();
@@ -51,11 +51,11 @@ await ctx.get('foo'); // => bar
 await ctx.get('bat'); // => baz
 ```
 
-## Scenario: Namespaced Paramaterized Binding
+## Scenario: Namespaced Parameterized Binding
 
 - Given a complex parameterized binding
 - When I get the value with a specific key
-- The binding is resovled
+- The binding is resolved
 
 ```ts
 let ctx = new Context();

@@ -169,7 +169,7 @@ function resolveAsSetter(ctx: Context, injection: Injection) {
  * Return an array of injection objects for parameters
  * @param target The target class for constructor or static methods,
  * or the prototype for instance methods
- * @param methodName Method name, undefined for constructor
+ * @param method Method name, undefined for constructor
  */
 export function describeInjectedArguments(
   // tslint:disable-next-line:no-any
