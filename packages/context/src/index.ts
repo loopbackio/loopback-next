@@ -19,7 +19,7 @@ export {Provider} from './provider';
 export {isPromise} from './is-promise';
 
 // internals for testing
-export {instantiateClass} from './resolver';
+export {instantiateClass, invokeMethod} from './resolver';
 export {
   describeInjectedArguments,
   describeInjectedProperties,
