@@ -4,7 +4,7 @@ LoopBack uses Context to manage state and dependencies in your application.
 
 ## Overview
 
-LoopBack implements the concept of a Context to represent a global registry in your application to manage config, state, dependencies, classes, etc. Context also serves as an IoC container used to inject dependencies into your code. 
+LoopBack implements the concept of a Context to represent a global registry in your application to manage config, state, dependencies, classes, etc. Context also serves as an IoC container used to inject dependencies into your code.
 
 ## Installation
 
@@ -13,7 +13,7 @@ $ npm install --save @loopback/context
 ```
 
 ## Basic use
-```
+```ts
 // app level
 const app = new Application(); // `app` is a "Context"
 app.bind('hello').to('world'); // ContextKey='hello', ContextValue='world'
@@ -21,10 +21,10 @@ console.log(app.getSync('hello')); // => 'world'
 ```
 
 Dependency injection using context
-```
+```ts
 const Application = require('@loopback/core');
 const app = new Application();
-const app.bind('defaultName').to('John'); // setting context
+app.bind('defaultName').to('John'); // setting context
 
 class HelloController {
   // consider this.ctx here
