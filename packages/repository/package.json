@@ -1,6 +1,6 @@
 {
   "name": "@loopback/repository",
-  "version": "4.0.0-alpha.8",
+  "version": "4.0.0-alpha.10",
   "description": "Repository for LoopBack.next",
   "main": "index",
   "scripts": {
@@ -20,11 +20,11 @@
   "author": "IBM",
   "license": "MIT",
   "devDependencies": {
-    "@loopback/core": "^4.0.0-alpha.14",
-    "@loopback/testlab": "^4.0.0-alpha.7"
+    "@loopback/core": "^4.0.0-alpha.16",
+    "@loopback/testlab": "^4.0.0-alpha.9"
   },
   "dependencies": {
-    "@loopback/context": "^4.0.0-alpha.12",
+    "@loopback/context": "^4.0.0-alpha.14",
     "loopback-datasource-juggler": "^3.9.2"
   },
   "files": [

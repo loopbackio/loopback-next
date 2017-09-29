@@ -1,6 +1,6 @@
 {
   "name": "@loopback/core",
-  "version": "4.0.0-alpha.14",
+  "version": "4.0.0-alpha.16",
   "description": "",
   "scripts": {
     "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
@@ -20,11 +20,11 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^4.0.0-alpha.12",
+    "@loopback/context": "^4.0.0-alpha.14",
     "lodash": "^4.17.4"
   },
   "devDependencies": {
-    "@loopback/testlab": "^4.0.0-alpha.7"
+    "@loopback/testlab": "^4.0.0-alpha.9"
   },
   "files": [
     "README.md",
