@@ -35,14 +35,14 @@ Here's a basic "Hello World" application using `@loopback/core` and
       RestComponent,
     ]
   });
-  const rest = await app.getServer(RestServer);
-  rest.handler((sequence, request, response) => {
-    sequence.send(response, 'hello world');
-  });
 
   (async function start() {
+    const rest = await app.getServer(RestServer);
+    rest.handler((sequence, request, response) => {
+      sequence.send(response, 'hello world');
+    });
     await app.start();
-    console.log(`REST server running on port: ${rest.getSync('http.port')}`);
+    console.log(`REST server running on port: ${rest.getSync('rest.port')}`);
   })();
   ```
 
