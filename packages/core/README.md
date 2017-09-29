@@ -51,17 +51,16 @@ const app = new Application({
   },
 });
 
-// Let's retrieve the bound instances of our servers.
-const rest = await app.getServer('RestServer');
-const grpc = await app.getServer('GrpcServer');
-
-// Define all sorts of bindings here to pass configuration or data
-// between your server instances, define controllers and datasources for them,
-// etc...
-
 (async function start() {
+  // Let's retrieve the bound instances of our servers.
+  const rest = await app.getServer('RestServer');
+  const grpc = await app.getServer('GrpcServer');
+
+  // Define all sorts of bindings here to pass configuration or data
+  // between your server instances, define controllers and datasources for them,
+  // etc...
   await app.start(); // This automatically spins up all your servers, too!
-  console.log(`REST server running on port: ${rest.getSync('http.port')}`);
+  console.log(`REST server running on port: ${rest.getSync('rest.port')}`);
   console.log(`GRPC server running on port: ${grpc.getSync('grpc.port')}`);
 })();
 ```
