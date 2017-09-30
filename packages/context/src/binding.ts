@@ -105,25 +105,6 @@ export class Binding {
     return key;
   }
 
-  /**
-   * Parse a string containing both the binding key and the path to the deeply
-   * nested property to retrieve.
-   *
-   * @param keyWithPath The key with an optional path,
-   *  e.g. "application.instance" or "config#rest.port".
-   */
-  static parseKeyWithPath(keyWithPath: string) {
-    const index = keyWithPath.indexOf(Binding.PROPERTY_SEPARATOR);
-    if (index === -1) {
-      return {key: keyWithPath, path: undefined};
-    }
-
-    return {
-      key: keyWithPath.substr(0, index).trim(),
-      path: keyWithPath.substr(index+1),
-    };
-  }
-
   public readonly key: string;
   public readonly tags: Set<string> = new Set();
   public scope: BindingScope = BindingScope.TRANSIENT;

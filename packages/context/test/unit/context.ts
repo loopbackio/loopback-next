@@ -102,11 +102,10 @@ describe('Context', () => {
       expect(result).to.equal('bar');
     });
 
-    it('returns the value with property separator', () => {
-      const SEP = Binding.PROPERTY_SEPARATOR;
+    it('returns a nested property of the value', () => {
       const val = {x: {y: 'Y'}};
       ctx.bind('foo').to(val);
-      const value = ctx.getSync(`foo${SEP}x`);
+      const value = ctx.getSync('foo', {property: 'x'});
       expect(value).to.eql({y: 'Y'});
     });
 
@@ -205,11 +204,10 @@ describe('Context', () => {
       expect(result).to.equal('bar');
     });
 
-    it('returns the value with property separator', async () => {
-      const SEP = Binding.PROPERTY_SEPARATOR;
+    it('returns a nested property of the value', async () => {
       const val = {x: {y: 'Y'}};
       ctx.bind('foo').to(Promise.resolve(val));
-      const value = await ctx.get(`foo${SEP}x`);
+      const value = await ctx.get('foo', {property: 'x'});
       expect(value).to.eql({y: 'Y'});
     });
 
@@ -293,25 +291,25 @@ describe('Context', () => {
 
     it('returns nested property (synchronously)', () => {
       ctx.bind('key').to({test: 'test-value'});
-      const value = ctx.getValueOrPromise('key#test');
+      const value = ctx.getValueOrPromise('key', {property: 'test'});
       expect(value).to.equal('test-value');
     });
 
     it('returns nested property (asynchronously)', async () => {
       ctx.bind('key').to(Promise.resolve({test: 'test-value'}));
-      const value = await ctx.getValueOrPromise('key#test');
+      const value = await ctx.getValueOrPromise('key', {property: 'test'});
       expect(value).to.equal('test-value');
     });
 
     it('supports deeply nested property path', () => {
       ctx.bind('key').to({x: {y: 'z'}});
-      const value = ctx.getValueOrPromise('key#x.y');
+      const value = ctx.getValueOrPromise('key', {property: 'x.y'});
       expect(value).to.equal('z');
     });
 
     it('returns undefined when nested property does not exist', () => {
       ctx.bind('key').to({test: 'test-value'});
-      const value = ctx.getValueOrPromise('key#x.y');
+      const value = ctx.getValueOrPromise('key', {property: 'x.y'});
       expect(value).to.equal(undefined);
     });
 
@@ -325,11 +323,11 @@ describe('Context', () => {
         })
         .inScope(BindingScope.TRANSIENT);
       // verify the initial state & populate the cache
-      expect(ctx.getSync('state')).to.deepEqual({count: 1});
+      expect(ctx.getValueOrPromise('state')).to.deepEqual({count: 1});
       // retrieve a nested property (expect a new value)
-      expect(ctx.getSync('state#count')).to.equal(2);
+      expect(ctx.getValueOrPromise('state', {property: 'count'})).to.equal(2);
       // retrieve the full object again (expect another new value)
-      expect(ctx.getSync('state')).to.deepEqual({count: 3});
+      expect(ctx.getValueOrPromise('state')).to.deepEqual({count: 3});
     });
 
     it('honours CONTEXT scope when retrieving a nested property', () => {
@@ -342,11 +340,11 @@ describe('Context', () => {
         })
         .inScope(BindingScope.CONTEXT);
       // verify the initial state & populate the cache
-      expect(ctx.getSync('state')).to.deepEqual({count: 1});
+      expect(ctx.getValueOrPromise('state')).to.deepEqual({count: 1});
       // retrieve a nested property (expect the cached value)
-      expect(ctx.getSync('state#count')).to.equal(1);
+      expect(ctx.getValueOrPromise('state', {property: 'count'})).to.equal(1);
       // retrieve the full object again (verify that cache was not modified)
-      expect(ctx.getSync('state')).to.deepEqual({count: 1});
+      expect(ctx.getValueOrPromise('state')).to.deepEqual({count: 1});
     });
 
     it('honours SINGLETON scope when retrieving a nested property', () => {
@@ -360,18 +358,22 @@ describe('Context', () => {
         .inScope(BindingScope.SINGLETON);
 
       // verify the initial state & populate the cache
-      expect(ctx.getSync('state')).to.deepEqual({count: 1});
+      expect(ctx.getValueOrPromise('state')).to.deepEqual({count: 1});
 
       // retrieve a nested property from a child context
       const childContext1 = new Context(ctx);
-      expect(childContext1.getValueOrPromise('state#count')).to.equal(1);
+      expect(
+        childContext1.getValueOrPromise('state', {property: 'count'}),
+      ).to.equal(1);
 
       // retrieve a nested property from another child context
       const childContext2 = new Context(ctx);
-      expect(childContext2.getValueOrPromise('state#count')).to.equal(1);
+      expect(
+        childContext2.getValueOrPromise('state', {property: 'count'}),
+      ).to.equal(1);
 
       // retrieve the full object again (verify that cache was not modified)
-      expect(ctx.getSync('state')).to.deepEqual({count: 1});
+      expect(ctx.getValueOrPromise('state')).to.deepEqual({count: 1});
     });
   });
 

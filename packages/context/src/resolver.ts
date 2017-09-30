@@ -75,7 +75,7 @@ function resolve<T>(ctx: Context, injection: Injection): ValueOrPromise<T> {
     return injection.resolve(ctx, injection);
   }
   // Default to resolve the value from the context by binding key
-  return ctx.getValueOrPromise(injection.bindingKey);
+  return ctx.getValueOrPromise(injection.bindingKey, injection.metadata);
 }
 
 /**
