@@ -10,10 +10,7 @@ import {
   Server,
   Application,
 } from '@loopback/core';
-import {
-  inject,
-  Constructor,
-} from '@loopback/context';
+import {inject, Constructor} from '@loopback/context';
 import {RestBindings} from './keys';
 import {LogErrorProvider} from './providers';
 import {
@@ -40,6 +37,8 @@ export class RestComponent implements Component {
   };
   servers: {
     [name: string]: Constructor<Server>;
+  } = {
+    RestServer,
   };
 
   constructor(
@@ -47,9 +46,6 @@ export class RestComponent implements Component {
     @inject(RestBindings.CONFIG) config?: RestComponentConfig,
   ) {
     if (!config) config = {};
-    this.servers = {
-      RestServer: RestServer,
-    };
   }
 }
 
