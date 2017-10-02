@@ -26,6 +26,33 @@ describe('Application', () => {
   });
 
   describe('configuration', () => {
+    it('allows bindings to be set via config method', async () => {
+      // tslint:disable-next-line:no-any
+      const samoflange: any = {
+        vertices: 'many',
+        usefulness: 0,
+      };
+      const app = new Application({
+        magicCode: 'foobar',
+        servers: {
+          abc123: FakeServer,
+        },
+        CustomComponentCo: {
+          samoflange: samoflange,
+        },
+      });
+      const code = await app.get('magicCode');
+      const server = (await app.getServer('abc123')) as FakeServer;
+      expect(code).to.equal('foobar');
+      expect(server.constructor.name).to.equal(FakeServer.name);
+      const samo = await app.get('CustomComponentCo.samoflange');
+      for (const key in samo) {
+        expect(samo[key]).to.equal(samoflange[key]);
+      }
+      const vertices = await app.get('CustomComponentCo.samoflange#vertices');
+      expect(vertices).to.equal('many');
+    });
+
     it('allows servers to be provided via config', async () => {
       const name = 'abc123';
       const app = new Application({
