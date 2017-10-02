@@ -1,8 +1,8 @@
-const assert = require('assert');
+import * as assert from 'assert';
+import * as testlab from '..';
 
 describe('testlab smoke test', () => {
   it('exports expect interface', () => {
-    const testlab = require('..');
     assert.equal(typeof testlab.expect, 'function');
   });
 });

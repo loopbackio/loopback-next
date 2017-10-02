@@ -42,10 +42,10 @@ if (!target) {
 let outDir;
 switch (target) {
   case 'es2017':
-    outDir = 'lib';
+    outDir = 'dist';
     break;
   case 'es2015':
-    outDir = 'lib6';
+    outDir = 'dist6';
     break;
   default:
     console.error('Unknown build target %s. Supported values: es2015, es2017');

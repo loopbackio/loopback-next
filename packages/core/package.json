@@ -6,18 +6,18 @@
     "node": ">=6"
   },
   "scripts": {
-    "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
-    "build": "npm run build:lib && npm run build:lib6",
+    "acceptance": "node ../../bin/select-dist mocha --opts ../../test/mocha.opts 'DIST/test/acceptance/**/*.js'",
+    "build": "npm run build:dist && npm run build:dist6",
     "build:current": "node ../../bin/compile-package",
-    "build:lib": "node ../../bin/compile-package es2017",
-    "build:lib6": "node ../../bin/compile-package es2015",
+    "build:dist": "node ../../bin/compile-package es2017",
+    "build:dist6": "node ../../bin/compile-package es2015",
     "build:apidocs": "node ../../bin/generate-apidocs",
-    "clean": "rm -rf loopback-core*.tgz lib* package",
+    "clean": "rm -rf loopback-core*.tgz dist* package",
     "prepublish": "npm run build && npm run build:apidocs",
     "pretest": "npm run build:current",
-    "integration": "mocha --opts ../../test/mocha.opts 'test/integration/**/*.ts'",
-    "test": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts' 'test/integration/**/*.ts' 'test/acceptance/**/*.ts'",
-    "unit": "mocha --opts ../../test/mocha.opts 'test/unit/**/*.ts'",
+    "integration": "node ../../bin/select-dist mocha --opts ../../test/mocha.opts 'DIST/test/integration/**/*.js'",
+    "test": "node ../../bin/select-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js' 'DIST/test/integration/**/*.js' 'DIST/test/acceptance/**/*.js'",
+    "unit": "node ../../bin/select-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js'",
     "verify": "npm pack && tar xf loopback-core*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
@@ -33,8 +33,8 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "lib",
-    "lib6",
+    "dist/src",
+    "dist6/src",
     "api-docs"
   ],
   "repository": {
