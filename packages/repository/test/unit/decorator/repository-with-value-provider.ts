@@ -17,23 +17,19 @@ import {
 } from '../../../';
 
 class MyController {
-  constructor(
-    @repository('noteRepo') public noteRepo: Repository<Entity>,
-  ) {}
+  constructor(@repository('noteRepo') public noteRepo: Repository<Entity>) {}
 }
 
-class MyRepositoryProvider implements
-  Provider<DefaultCrudRepository<Entity, string>> {
+class MyRepositoryProvider
+  implements Provider<DefaultCrudRepository<Entity, string>> {
   constructor(
     @inject('models.Note') private myModel: typeof Entity,
-    @inject('dataSources.memory')
-    private dataSource: DataSourceType) {}
+    @inject('dataSources.memory') private dataSource: DataSourceType,
+  ) {}
 
   value(): ValueOrPromise<DefaultCrudRepository<Entity, string>> {
-    return new DefaultCrudRepository(
-      this.myModel,
-      this.dataSource as DataSourceType,
-      );
+    return new DefaultCrudRepository(this.myModel, this
+      .dataSource as DataSourceType);
   }
 }
 

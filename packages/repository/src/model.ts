@@ -36,8 +36,7 @@ export interface PropertyForm {
   name?: string; // Custom name for this form
 }
 
-export interface PropertyDefinitionMap {
-}
+export interface PropertyDefinitionMap {}
 
 /**
  * DSL for building a model definition.
@@ -47,7 +46,6 @@ export interface ModelDefinitionSyntax {
   properties?: {[name: string]: PropertyDefinition | PropertyType};
   settings?: {[name: string]: any};
 }
-
 
 /**
  * Definition for a model
@@ -86,9 +84,9 @@ export class ModelDefinition {
     name: string,
     definitionOrType: PropertyDefinition | PropertyType,
   ): this {
-    const definition = (definitionOrType as PropertyDefinition).type ?
-      definitionOrType as PropertyDefinition :
-      {type: definitionOrType};
+    const definition = (definitionOrType as PropertyDefinition).type
+      ? definitionOrType as PropertyDefinition
+      : {type: definitionOrType};
     this.properties[name] = definition;
     return this;
   }
@@ -126,8 +124,9 @@ export class ModelDefinition {
     } else if (Array.isArray(this.settings.id)) {
       return this.settings.id;
     }
-    const idProps = Object.keys(this.properties)
-      .filter(prop => this.properties[prop].id);
+    const idProps = Object.keys(this.properties).filter(
+      prop => this.properties[prop].id,
+    );
     return idProps;
   }
 }
@@ -144,7 +143,7 @@ export abstract class Model {
    */
   toJSON(): Object {
     const json: AnyObject = {};
-    const def = (<typeof Model> this.constructor).definition;
+    const def = (<typeof Model>this.constructor).definition;
     if (def == null) {
       return this.toObject({ignoreUnknownProperties: false});
     }

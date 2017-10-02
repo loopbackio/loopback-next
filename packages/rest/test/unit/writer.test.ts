@@ -5,11 +5,7 @@
 
 import {ServerResponse, writeResultToResponse} from '../..';
 
-import {
-  expect,
-  mockResponse,
-  ShotObservedResponse,
-} from '@loopback/testlab';
+import {expect, mockResponse, ShotObservedResponse} from '@loopback/testlab';
 
 describe('writer', () => {
   let response: ServerResponse;

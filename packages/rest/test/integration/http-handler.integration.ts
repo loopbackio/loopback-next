@@ -108,7 +108,7 @@ describe('HttpHandler', () => {
           'x-operation-name': 'echo',
           parameters: [
             // the type cast is not required, but improves Intellisense
-            <ParameterObject> {
+            <ParameterObject>{
               name: 'msg',
               in: 'query',
               type: 'string',
@@ -159,7 +159,7 @@ describe('HttpHandler', () => {
         .withOperation('get', '/users/{username}', {
           'x-operation-name': 'getUserByUsername',
           parameters: [
-            <ParameterObject> {
+            <ParameterObject>{
               name: 'username',
               in: 'path',
               description: 'The name of the user to look up.',
@@ -203,7 +203,7 @@ describe('HttpHandler', () => {
         .withOperation('get', '/show-authorization', {
           'x-operation-name': 'showAuthorization',
           parameters: [
-            <ParameterObject> {
+            <ParameterObject>{
               name: 'Authorization',
               in: 'header',
               description: 'Authorization credentials.',
@@ -264,7 +264,7 @@ describe('HttpHandler', () => {
         .withOperation('post', '/show-formdata', {
           'x-operation-name': 'showFormData',
           parameters: [
-            <ParameterObject> {
+            <ParameterObject>{
               name: 'key',
               in: 'formData',
               description: 'Any value.',
@@ -325,7 +325,7 @@ describe('HttpHandler', () => {
         .withOperation('post', '/show-body', {
           'x-operation-name': 'showBody',
           parameters: [
-            <ParameterObject> {
+            <ParameterObject>{
               name: 'data',
               in: 'body',
               description: 'Any object value.',

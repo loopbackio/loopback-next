@@ -7,11 +7,7 @@ export const jugglerModule = require('loopback-datasource-juggler');
 
 import * as assert from 'assert';
 import {isPromise} from '@loopback/context';
-import {
-  DataObject,
-  Options,
-  AnyObject,
-} from './common-types';
+import {DataObject, Options, AnyObject} from './common-types';
 import {Entity} from './model';
 import {Filter, Where} from './query';
 import {EntityCrudRepository} from './repository';
@@ -23,11 +19,9 @@ type DataSourceType = juggler.DataSource;
 export {DataSourceType};
 
 /* tslint:disable-next-line:variable-name */
-export const DataSourceConstructor =
-  jugglerModule.DataSource as typeof juggler.DataSource;
+export const DataSourceConstructor = jugglerModule.DataSource as typeof juggler.DataSource;
 /* tslint:disable-next-line:variable-name */
-export const ModelBaseConstructor =
-  jugglerModule.ModelBaseClass as typeof juggler.ModelBase;
+export const ModelBaseConstructor = jugglerModule.ModelBaseClass as typeof juggler.ModelBase;
 
 /**
  * This is a bridge to the legacy DAO class. The function mixes DAO methods
@@ -128,7 +122,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
       return this.create(entity, options);
     } else {
       return this.replaceById(id, entity, options).then(
-        result => (result ? this.toEntity(entity): null),
+        result => (result ? this.toEntity(entity) : null),
       );
     }
   }
@@ -170,11 +164,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
     return this.updateAll(data, where, options).then(count => count > 0);
   }
 
-  replaceById(
-    id: ID,
-    data: Partial<T>,
-    options?: Options,
-  ): Promise<boolean> {
+  replaceById(id: ID, data: Partial<T>, options?: Options): Promise<boolean> {
     return ensurePromise(this.modelClass.replaceById(id, data, options)).then(
       result => !!result,
     );

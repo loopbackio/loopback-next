@@ -299,8 +299,10 @@ export function param(paramSpec: ParameterObject) {
       } else {
         // Mixed usage of @param at method/parameter level is not allowed
         if (operationSpec[paramDecoratorStyle] !== decoratorStyle) {
-          throw new Error('Mixed usage of @param at method/parameter level' +
-          ' is not allowed.');
+          throw new Error(
+            'Mixed usage of @param at method/parameter level' +
+              ' is not allowed.',
+          );
         }
       }
 
@@ -486,10 +488,7 @@ export namespace param {
   };
 }
 
-function createParamShortcut(
-  source: ParameterLocation,
-  type: ParameterType,
-) {
+function createParamShortcut(source: ParameterLocation, type: ParameterType) {
   // TODO(bajtos) @param.IN.TYPE('foo', {required: true})
   return (name: string) => {
     return param({name, in: source, type});

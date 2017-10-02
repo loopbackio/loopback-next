@@ -19,8 +19,7 @@ describe('RoutingTable', () => {
       .withOperationReturningString('get', '/hello', 'greet')
       .build();
 
-    class TestController {
-    }
+    class TestController {}
 
     const table = new RoutingTable();
     table.registerController(TestController, spec);
@@ -33,7 +32,9 @@ describe('RoutingTable', () => {
     const route = table.find(request);
 
     expect(route).to.be.instanceOf(ControllerRoute);
-    expect(route).to.have.property('spec').containEql(spec.paths['/hello'].get);
+    expect(route)
+      .to.have.property('spec')
+      .containEql(spec.paths['/hello'].get);
     expect(route).to.have.property('pathParams');
     expect(route.describe()).to.equal('TestController.greet');
   });

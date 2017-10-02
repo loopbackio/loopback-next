@@ -25,7 +25,7 @@ describe('Strategy Adapter', () => {
       }
       const strategy = new Strategy();
       const adapter = new StrategyAdapter(strategy);
-      const request = <ParsedRequest> {};
+      const request = <ParsedRequest>{};
       await adapter.authenticate(request);
       expect(calledFlag).to.be.true();
     });
@@ -34,7 +34,7 @@ describe('Strategy Adapter', () => {
       const strategy = new MockStrategy();
       strategy.setMockUser(mockUser);
       const adapter = new StrategyAdapter(strategy);
-      const request = <ParsedRequest> {};
+      const request = <ParsedRequest>{};
       const user: Object = await adapter.authenticate(request);
       expect(user).to.be.eql(mockUser);
     });
@@ -43,7 +43,7 @@ describe('Strategy Adapter', () => {
       const strategy = new MockStrategy();
       strategy.setMockUser(mockUser);
       const adapter = new StrategyAdapter(strategy);
-      const request = <ParsedRequest> {};
+      const request = <ParsedRequest>{};
       request.headers = {testState: 'fail'};
       let error;
       try {
@@ -58,7 +58,7 @@ describe('Strategy Adapter', () => {
       const strategy = new MockStrategy();
       strategy.setMockUser(mockUser);
       const adapter = new StrategyAdapter(strategy);
-      const request = <ParsedRequest> {};
+      const request = <ParsedRequest>{};
       request.headers = {testState: 'error'};
       let error;
       try {

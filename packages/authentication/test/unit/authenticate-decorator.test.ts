@@ -4,10 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {
-  authenticate,
-  getAuthenticateMetadata,
-} from '../..';
+import {authenticate, getAuthenticateMetadata} from '../..';
 
 describe('Authentication', () => {
   describe('@authenticate decorator', () => {

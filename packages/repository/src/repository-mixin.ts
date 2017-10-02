@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { Class } from './common-types';
-import { Repository } from './repository';
+import {Class} from './common-types';
+import {Repository} from './repository';
 
 // tslint:disable:no-any
 

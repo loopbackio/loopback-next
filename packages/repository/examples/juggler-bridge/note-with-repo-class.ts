@@ -16,14 +16,13 @@ import {
 } from '../../';
 
 class NoteController {
-  @repository('noteRepo')
-  public noteRepo: EntityCrudRepository<Entity, number>;
+  @repository('noteRepo') public noteRepo: EntityCrudRepository<Entity, number>;
 }
 
 const ds: juggler.DataSource = new DataSourceConstructor({
-    name: 'db',
-    connector: 'memory',
-  });
+  name: 'db',
+  connector: 'memory',
+});
 
 class Note extends Entity {
   static definition = new ModelDefinition({
@@ -39,9 +38,10 @@ class MyNoteRepository extends DefaultCrudRepository<Note, string> {
     // juggler is undefined if the following is used:
     // @inject('dataSources.memory') dataSource: juggler.DataSource
     // tslint:disable-next-line:no-any
-    @inject('dataSources.memory') dataSource: any) {
-      super(myModel, dataSource);
-    }
+    @inject('dataSources.memory') dataSource: any,
+  ) {
+    super(myModel, dataSource);
+  }
 }
 
 async function main() {
@@ -72,14 +72,16 @@ async function main() {
 }
 
 // Invoke the example
-main().then(notes => {
-  // It should print out:
-  // ```
-  // Notes [ { title: 't1', content: 'Note 1', id: 1 },
-  // { title: 't2', content: 'Note 2', id: 2 } ]
-  // ```
-  console.log('Notes', notes);
-}).catch(err => {
-  // It should not happen
-  console.error(err);
-});
+main()
+  .then(notes => {
+    // It should print out:
+    // ```
+    // Notes [ { title: 't1', content: 'Note 1', id: 1 },
+    // { title: 't2', content: 'Note 2', id: 2 } ]
+    // ```
+    console.log('Notes', notes);
+  })
+  .catch(err => {
+    // It should not happen
+    console.error(err);
+  });

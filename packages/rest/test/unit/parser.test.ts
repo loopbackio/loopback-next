@@ -53,7 +53,7 @@ describe('operationArgsParser', () => {
   });
 
   function givenOperationWithParameters(params?: ParameterObject[]) {
-    return <OperationObject> {
+    return <OperationObject>{
       'x-operation-name': 'testOp',
       parameters: params,
       responses: {},

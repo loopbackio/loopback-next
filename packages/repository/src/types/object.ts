@@ -22,8 +22,9 @@ export class ObjectType<T extends AnyObject> implements Type<T> {
   }
 
   isCoercible(value: any): boolean {
-    return value == null ||
-      (typeof value === 'object' && !Array.isArray(value));
+    return (
+      value == null || (typeof value === 'object' && !Array.isArray(value))
+    );
   }
 
   defaultValue() {

@@ -138,10 +138,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     ctx.bind('key').to('value');
 
     class Store {
-      constructor(
-        @inject.getter('key')
-        public getter: Getter<string>,
-      ) {}
+      constructor(@inject.getter('key') public getter: Getter<string>) {}
     }
 
     ctx.bind('store').toClass(Store);
@@ -157,10 +154,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
 
   it('injects a setter function', async () => {
     class Store {
-      constructor(
-        @inject.setter('key')
-        public setter: Setter<string>,
-      ) {}
+      constructor(@inject.setter('key') public setter: Setter<string>) {}
     }
 
     ctx.bind('store').toClass(Store);
@@ -173,10 +167,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
 
   it('injects a nested property', async () => {
     class TestComponent {
-      constructor(
-        @inject('config#test')
-        public config: string,
-      ) {}
+      constructor(@inject('config#test') public config: string) {}
     }
 
     ctx.bind('config').to({test: 'test-config'});

@@ -17,9 +17,7 @@ import {
 } from '../../../';
 
 class MyController {
-  constructor(
-    @repository('noteRepo') public noteRepo: Repository<Entity>,
-  ) {}
+  constructor(@repository('noteRepo') public noteRepo: Repository<Entity>) {}
 }
 
 describe('repository class', () => {
@@ -52,7 +50,8 @@ describe('repository class', () => {
     class MyRepository extends DefaultCrudRepository<Entity, string> {
       constructor(
         @inject('models.Note') myModel: typeof Note,
-        @inject('dataSources.memory') dataSource: DataSourceType) {
+        @inject('dataSources.memory') dataSource: DataSourceType,
+      ) {
         super(myModel, dataSource);
       }
     }
