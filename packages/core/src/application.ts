@@ -27,7 +27,12 @@ export class Application extends Context {
 
     if (options.servers) {
       for (const name in options.servers) {
-        this.server(options.servers[name], name);
+        const opts = options.servers[name];
+        const ctor = options.servers[name].type;
+        if (!ctor || !(ctor instanceof Function)) {
+          throw new Error(`${name}.type must be a valid constructor!`);
+        }
+        this.server(ctor, name, opts);
       }
     }
   }
@@ -69,11 +74,16 @@ export class Application extends Context {
    * @param {string=} name Optional override for key name.
    * @memberof Application
    */
-  public server<T extends Server>(ctor: Constructor<T>, name?: string) {
+  public server<T extends Server>(
+    ctor: Constructor<T>,
+    name?: string,
+    options?: {},
+  ) {
     const suffix = name || ctor.name;
     const key = `${CoreBindings.SERVERS}.${suffix}`;
+    const instance = new ctor(this, options);
     this.bind(key)
-      .toClass(ctor)
+      .to(instance)
       .inScope(BindingScope.SINGLETON);
   }
 
@@ -191,7 +201,11 @@ export class Application extends Context {
 export interface ApplicationConfig {
   components?: Array<Constructor<Component>>;
   servers?: {
-    [name: string]: Constructor<Server>;
+    [name: string]: {
+      type: Constructor<Server>;
+      // tslint:disable-next-line:no-any
+      [key: string]: any;
+    };
   };
   // tslint:disable-next-line:no-any
   [prop: string]: any;

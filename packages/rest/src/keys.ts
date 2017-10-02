@@ -3,11 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {CoreBindings} from '@loopback/core';
-
 export namespace RestBindings {
   // RestServer-specific bindings
-  export const CONFIG = `${CoreBindings.APPLICATION_CONFIG}#rest`;
   export const PORT = 'rest.port';
   export const HANDLER = 'rest.handler';
 

@@ -43,7 +43,7 @@ export class RestComponent implements Component {
 
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE) app: Application,
-    @inject(RestBindings.CONFIG) config?: RestComponentConfig,
+    @inject(CoreBindings.APPLICATION_CONFIG) config?: RestComponentConfig,
   ) {
     if (!config) config = {};
   }

@@ -78,7 +78,7 @@ export class RestServer extends Context implements Server {
 
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE) app: Application,
-    @inject(RestBindings.CONFIG) options?: RestServerConfig,
+    options?: RestServerConfig,
   ) {
     super(app);
 

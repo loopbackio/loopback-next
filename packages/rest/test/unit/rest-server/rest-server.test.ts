@@ -74,7 +74,12 @@ describe('RestServer', () => {
     it('can set port 0', async () => {
       const app = new Application({
         components: [RestComponent],
-        rest: {port: 0},
+        servers: {
+          RestServer: {
+            type: RestServer,
+            port: 0,
+          },
+        },
       });
       const server = await app.getServer(RestServer);
       expect(server.getSync(RestBindings.PORT)).to.equal(0);

@@ -30,7 +30,9 @@ describe('Application', () => {
       const name = 'abc123';
       const app = new Application({
         servers: {
-          abc123: FakeServer,
+          abc123: {
+            type: FakeServer,
+          },
         },
       });
       const result = await app.getServer(name);
