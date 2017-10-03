@@ -2,6 +2,9 @@
   "name": "@loopback/example-codehub",
   "version": "4.0.0-alpha.9",
   "description": "",
+  "engines": {
+    "node": ">=6"
+  },
   "private": true,
   "scripts": {
     "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
