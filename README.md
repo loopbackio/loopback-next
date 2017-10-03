@@ -30,8 +30,8 @@ npm install -S @loopback/core
 ```
 
 > Make sure you set `"target": "es6"` in your compiler options in your
-> `tsconfig.json` if you're using a TypeScript project. See the [installation
-> wiki](https://github.com/strongloop/loopback-next/wiki/installation) for
+> `tsconfig.json` if you're using a TypeScript project. See [Installation
+> ](http://loopback.io/doc/en/lb4/Installation.html) for
 > detailed information.
 
 # Example
@@ -55,11 +55,10 @@ See [loopback-next-example](https://github.com/strongloop/loopback-next-example)
 
 # Documentation
 
-- [API documentation](https://github.com/strongloop/loopback-next/wiki/API-documentation)
-- [FAQ](https://github.com/strongloop/loopback-next/wiki/FAQ)
-- [LoopBack 3 vs LoopBack 4](https://github.com/strongloop/loopback-next/wiki/LoopBack-3-vs-LoopBack-4)
-- [Official documentation](https://github.com/strongloop/loopback-next/wiki)
-- [Tutorials and examples](https://github.com/strongloop/loopback-next/wiki/Tutorials-and-examples)
+- [API documentation](http://apidocs.loopback.io/)
+- [FAQ](http://loopback.io/doc/en/lb4/FAQ.html)
+- [LoopBack 3 vs LoopBack 4](http://loopback.io/doc/en/lb4/Migration-guide.html)
+- [Tutorials and examples](http://loopback.io/doc/en/lb4/Examples-and-tutorials.html)
 
 # Team
 

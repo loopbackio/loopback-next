@@ -37,7 +37,7 @@ class HelloController {
 }
 ```
 
-For additional information, please refer to the [wiki](https://github.com/strongloop/loopback-next/wiki/Context).
+For additional information, please refer to the [Context page](http://loopback.io/doc/en/lb4/Context.html).
 
 ## Contributions
 
