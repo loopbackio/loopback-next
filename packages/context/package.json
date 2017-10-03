@@ -2,6 +2,9 @@
   "name": "@loopback/context",
   "version": "4.0.0-alpha.14",
   "description": "LoopBack's container for Inversion of Control",
+  "engines": {
+    "node": ">=6"
+  },
   "scripts": {
     "acceptance": "mocha --opts ../../test/mocha.opts 'test/acceptance/**/*.ts'",
     "build": "npm run build:lib && npm run build:lib6",
