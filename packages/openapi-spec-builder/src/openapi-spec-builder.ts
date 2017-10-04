@@ -49,7 +49,8 @@ export class BuilderBase<T extends Extendable> {
   withExtension(key: string, value: ExtensionValue): this {
     assert(
       key.startsWith('x-'),
-      `Invalid extension ${key}, extension keys must be prefixed with "x-"`);
+      `Invalid extension ${key}, extension keys must be prefixed with "x-"`,
+    );
 
     this._spec[key] = value;
     return this;
@@ -83,8 +84,8 @@ export class OpenApiSpecBuilder extends BuilderBase<OpenApiSpec> {
    */
   withOperation(
     verb: string,
-     path: string,
-     spec: OperationObject | OperationSpecBuilder,
+    path: string,
+    spec: OperationObject | OperationSpecBuilder,
   ): this {
     if (spec instanceof OperationSpecBuilder) spec = spec.build();
     if (!this._spec.paths[path]) this._spec.paths[path] = {};
@@ -106,8 +107,7 @@ export class OpenApiSpecBuilder extends BuilderBase<OpenApiSpec> {
     operationName?: string,
   ): this {
     const spec = anOperationSpec().withStringResponse(200);
-    if (operationName)
-        spec.withOperationName(operationName);
+    if (operationName) spec.withOperationName(operationName);
 
     return this.withOperation(verb, path, spec);
   }

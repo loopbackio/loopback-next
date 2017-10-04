@@ -8,10 +8,7 @@ import {ServerRequest} from '../';
 
 export class LogErrorProvider implements Provider<BoundValue> {
   value() {
-    return (err: Error,
-      statusCode: number,
-      req: ServerRequest,
-    ) => {
+    return (err: Error, statusCode: number, req: ServerRequest) => {
       console.error(
         'Unhandled error in %s %s: %s %s',
         req.method,

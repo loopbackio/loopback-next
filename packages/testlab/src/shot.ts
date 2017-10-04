@@ -25,13 +25,16 @@ export const ShotRequest: ShotRequestCtor = require('shot/lib/request');
 // tslint:disable-next-line:variable-name
 export const ShotResponse: ShotResponseCtor = require('shot/lib/response');
 
-export type ShotRequestCtor =
-  new (options: ShotRequestOptions) => ServerRequest;
+export type ShotRequestCtor = new (
+  options: ShotRequestOptions,
+) => ServerRequest;
 
 export type ShotCallback = (response: ResponseObject) => void;
 
-export type ShotResponseCtor =
-  new (request: ServerRequest, onEnd: ShotCallback) => ServerResponse;
+export type ShotResponseCtor = new (
+  request: ServerRequest,
+  onEnd: ShotCallback,
+) => ServerResponse;
 
 export type ShotObservedResponse = ResponseObject;
 

@@ -39,9 +39,7 @@ describe('Context bindings - Locking bindings', () => {
           const key = 'foo';
           const operation = () => ctx.bind('foo');
           expect(operation).to.throw(
-            new RegExp(
-              `Cannot rebind key "${key}" to a locked binding`,
-            ),
+            new RegExp(`Cannot rebind key "${key}" to a locked binding`),
           );
         });
       });

@@ -262,9 +262,10 @@ export class ControllerRoute extends BaseRoute {
     if (!methodName) {
       throw new Error(
         'methodName must be provided either via the ControllerRoute argument ' +
-        'or via "x-operation-name" extension field in OpenAPI spec. ' +
-        `Operation: "${verb} ${path}" ` +
-        `Controller: ${this._controllerCtor.name}.`);
+          'or via "x-operation-name" extension field in OpenAPI spec. ' +
+          `Operation: "${verb} ${path}" ` +
+          `Controller: ${this._controllerCtor.name}.`,
+      );
     }
 
     this._methodName = methodName;
@@ -300,12 +301,12 @@ export class ControllerRoute extends BaseRoute {
       this._controllerCtor,
       requestContext,
     );
-    return await Promise.resolve(valueOrPromise) as ControllerInstance;
+    return (await Promise.resolve(valueOrPromise)) as ControllerInstance;
   }
 }
 
 function describeOperationParameters(opSpec: OperationObject) {
   return ((opSpec.parameters as ParameterObject[]) || [])
-      .map(p => p.name)
-      .join(', ');
+    .map(p => p.name)
+    .join(', ');
 }

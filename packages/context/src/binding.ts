@@ -120,7 +120,7 @@ export class Binding {
 
     return {
       key: keyWithPath.substr(0, index).trim(),
-      path: keyWithPath.substr(index+1),
+      path: keyWithPath.substr(index + 1),
     };
   }
 

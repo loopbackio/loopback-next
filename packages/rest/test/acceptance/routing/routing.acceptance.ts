@@ -253,12 +253,12 @@ describe('Routing', () => {
     const app = givenAnApplication();
     const server = await givenAServer(app);
 
-    const routeSpec = <OperationObject> {
+    const routeSpec = <OperationObject>{
       parameters: [
-        <ParameterObject> {name: 'name', in: 'query', type: 'string'},
+        <ParameterObject>{name: 'name', in: 'query', type: 'string'},
       ],
       responses: {
-        200: <ResponseObject> {
+        200: <ResponseObject>{
           description: 'greeting text',
           schema: {type: 'string'},
         },

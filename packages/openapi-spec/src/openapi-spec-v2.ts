@@ -282,7 +282,7 @@ export interface SecuritySchemeObject extends Extensible {
   /**
    * The location of the API key. Valid values are "query" or "header".
    */
-  'in'?: 'query' | 'header';
+  in?: 'query' | 'header';
 
   /**
    * The flow used by the OAuth2 security scheme. Valid values are "implicit",
@@ -350,8 +350,7 @@ export interface SecurityDefinitionsObject
  * The name used for each property MUST correspond to a security scheme declared
  * in the Security Definitions.
  */
-export interface SecurityRequirementObject
-  extends MapObject<Array<string>> {
+export interface SecurityRequirementObject extends MapObject<Array<string>> {
   /**
    * Each name must correspond to a security scheme which is declared in the
    * Security Definitions. If the security scheme is of type "oauth2", then the
@@ -393,8 +392,7 @@ export interface ParametersDefinitionsObject
  *
  * This does not define global operation responses.
  */
-export interface ResponsesDefinitionsObject
-  extends MapObject<ResponseObject> {
+export interface ResponsesDefinitionsObject extends MapObject<ResponseObject> {
   /**
    * A single response definition, mapping a "name" to the response it defines.
    */
@@ -575,8 +573,13 @@ export interface OperationObject extends Extensible {
   security?: SecurityRequirementObject;
 }
 
-export type ParameterType = 'string' | 'number' | 'integer' | 'boolean' |
-  'array' | 'file';
+export type ParameterType =
+  | 'string'
+  | 'number'
+  | 'integer'
+  | 'boolean'
+  | 'array'
+  | 'file';
 
 /**
  * Simple type - primitive types or array of such types. It is used by parameter
@@ -636,7 +639,7 @@ export interface SimpleType {
    * Unlike JSON Schema this value MUST conform to the defined type for this
    * parameter.
    */
-  'default'?: ExtensionValue;
+  default?: ExtensionValue;
 
   /**
    * See https://tools.ietf.org/html/draft-fge-json-schema-validation-00#section-5.1.2.
@@ -704,8 +707,7 @@ export interface SimpleType {
  * "number", "integer", "boolean", or "array". Files and models are not
  * allowed.
  */
-export type ItemType = 'string' | 'number' | 'integer' | 'boolean' |
-  'array';
+export type ItemType = 'string' | 'number' | 'integer' | 'boolean' | 'array';
 
 /**
  * A limited subset of JSON-Schema's items object. It is used by parameter
@@ -817,14 +819,15 @@ export interface ReferenceObject {
  * https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#responsesObject
  */
 export interface ResponsesObject
-  extends MapObject<ResponseObject | ReferenceObject | undefined>, Extensible {
+  extends MapObject<ResponseObject | ReferenceObject | undefined>,
+    Extensible {
   /**
    * The documentation of responses other than the ones declared for specific
    * HTTP response codes. It can be used to cover undeclared responses.
    * Reference Object can be used to link to a response that is defined at
    * the Swagger Object's responses section.
    */
-  'default'?: ResponseObject | ReferenceObject;
+  default?: ResponseObject | ReferenceObject;
 }
 
 /**
@@ -909,7 +912,7 @@ export interface SchemaObject extends Extensible {
   format?: string;
   title?: string;
   description?: string;
-  'default'?: ExtensionValue;
+  default?: ExtensionValue;
   multipleOf?: number;
   maximum?: number;
   exclusiveMaximum?: number;

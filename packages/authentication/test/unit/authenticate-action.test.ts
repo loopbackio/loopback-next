@@ -40,14 +40,14 @@ describe('AuthenticationProvider', () => {
       const authenticate: AuthenticateFn = await Promise.resolve(
         provider.value(),
       );
-      const request = <ParsedRequest> {};
+      const request = <ParsedRequest>{};
       const user = await authenticate(request);
       expect(user).to.be.equal(mockUser);
     });
 
     it('updates current user', async () => {
       const authenticate = await Promise.resolve(provider.value());
-      const request = <ParsedRequest> {};
+      const request = <ParsedRequest>{};
       await authenticate(request);
       expect(currentUser).to.equal(mockUser);
     });
@@ -59,7 +59,7 @@ describe('AuthenticationProvider', () => {
         context
           .bind(AuthenticationBindings.AUTH_ACTION)
           .toProvider(AuthenticationProvider);
-        const request = <ParsedRequest> {};
+        const request = <ParsedRequest>{};
         const authenticate = await context.get(
           AuthenticationBindings.AUTH_ACTION,
         );
@@ -76,7 +76,7 @@ describe('AuthenticationProvider', () => {
         const authenticate = await context.get(
           AuthenticationBindings.AUTH_ACTION,
         );
-        const request = <ParsedRequest> {};
+        const request = <ParsedRequest>{};
         let error;
         try {
           await authenticate(request);
@@ -95,7 +95,7 @@ describe('AuthenticationProvider', () => {
         const authenticate = await context.get(
           AuthenticationBindings.AUTH_ACTION,
         );
-        const request = <ParsedRequest> {};
+        const request = <ParsedRequest>{};
         request.headers = {testState: 'fail'};
         let error;
         try {

@@ -161,7 +161,7 @@ export class NamespacedReflect {
     if (targetKey) {
       return Reflect.decorate(decorators, target, targetKey, descriptor);
     } else {
-      return Reflect.decorate(<ClassDecorator[]> decorators, <Function> target);
+      return Reflect.decorate(<ClassDecorator[]>decorators, <Function>target);
     }
   }
 

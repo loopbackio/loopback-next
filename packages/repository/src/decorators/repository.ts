@@ -59,18 +59,18 @@ export class RepositoryMetadata {
     modelOrRepo: string | typeof Entity,
     dataSource?: string | juggler.DataSource | DataSource,
   ) {
-    this.name = typeof modelOrRepo === 'string' && dataSource === undefined
-      ? modelOrRepo
-      : undefined;
-    this.modelName = typeof modelOrRepo === 'string' && dataSource != null
-      ? modelOrRepo
-      : undefined;
-    this.modelClass = typeof modelOrRepo === 'function'
-      ? modelOrRepo
-      : undefined;
-    this.dataSourceName = typeof dataSource === 'string'
-      ? dataSource
-      : undefined;
+    this.name =
+      typeof modelOrRepo === 'string' && dataSource === undefined
+        ? modelOrRepo
+        : undefined;
+    this.modelName =
+      typeof modelOrRepo === 'string' && dataSource != null
+        ? modelOrRepo
+        : undefined;
+    this.modelClass =
+      typeof modelOrRepo === 'function' ? modelOrRepo : undefined;
+    this.dataSourceName =
+      typeof dataSource === 'string' ? dataSource : undefined;
     this.dataSource = typeof dataSource === 'object' ? dataSource : undefined;
   }
 }
@@ -128,7 +128,7 @@ async function resolve(ctx: Context, injection: Injection) {
   const meta = injection.metadata as RepositoryMetadata;
   let modelClass = meta.modelClass;
   if (meta.modelName) {
-    modelClass = await ctx.get('models.' + meta.modelName) as typeof Entity;
+    modelClass = (await ctx.get('models.' + meta.modelName)) as typeof Entity;
   }
   if (!modelClass) {
     throw new Error(
@@ -141,9 +141,12 @@ async function resolve(ctx: Context, injection: Injection) {
   if (meta.dataSourceName) {
     dataSource = await ctx.get('datasources.' + meta.dataSourceName);
   }
-  assert(dataSource instanceof DataSourceConstructor,
-    'DataSource must be provided');
+  assert(
+    dataSource instanceof DataSourceConstructor,
+    'DataSource must be provided',
+  );
   return new DefaultCrudRepository(
     modelClass,
-    dataSource! as juggler.DataSource);
+    dataSource! as juggler.DataSource,
+  );
 }

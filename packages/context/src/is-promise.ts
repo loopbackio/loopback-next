@@ -9,8 +9,9 @@
  *
  * @param value The value to check.
  */
-export function isPromise<T>(value: T | PromiseLike<T>):
-  value is PromiseLike<T> {
+export function isPromise<T>(
+  value: T | PromiseLike<T>,
+): value is PromiseLike<T> {
   if (!value) return false;
   if (typeof value !== 'object' && typeof value !== 'function') return false;
   return typeof (value as PromiseLike<T>).then === 'function';

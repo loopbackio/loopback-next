@@ -71,11 +71,12 @@ async function main() {
 }
 
 // Invoke the example
-main().then(notes => {
-  // It should print `Notes [ { title: 't1', content: 'Note 1', id: 1 } ]`
-  console.log('Notes', notes);
-}).catch(err => {
-  // It should not happen
-  console.error(err);
-});
-
+main()
+  .then(notes => {
+    // It should print `Notes [ { title: 't1', content: 'Note 1', id: 1 } ]`
+    console.log('Notes', notes);
+  })
+  .catch(err => {
+    // It should not happen
+    console.error(err);
+  });

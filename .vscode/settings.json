@@ -3,6 +3,8 @@
   "editor.tabCompletion": true,
   "editor.tabSize": 2,
   "editor.trimAutoWhitespace": true,
+  "editor.formatOnSave": true,
+
   "files.exclude": {
     "**/.DS_Store": true,
     "**/.git": true,
@@ -19,10 +21,6 @@
   "files.trimTrailingWhitespace": true,
 
   "prettier.eslintIntegration": true,
-  "prettier.bracketSpacing": false,
-  "prettier.singleQuote": true,
-  "prettier.printWidth": 80,
-  "prettier.trailingComma": "all",
 
   "tslint.ignoreDefinitionFiles": true,
   "typescript.tsdk": "./node_modules/typescript/lib"
