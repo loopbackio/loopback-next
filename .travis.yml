@@ -23,3 +23,7 @@ jobs:
       after_success: skip
       node_js:
         - "8"
+
+branches:
+  only:
+    - master
