@@ -14,3 +14,4 @@ test_script:
   - npm test
 
 build: off
+skip_branch_with_pr: true
