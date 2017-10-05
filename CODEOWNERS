@@ -4,11 +4,11 @@
 
 # Core team members from IBM
 * @bajtos @raymondfeng
-packages/authentication/* @bajtos
-packages/context/* @bajtos @raymondfeng @superkhau
-packages/core/* @bajtos @superkhau
+packages/authentication/* @bajtos @kjdelisle
+packages/context/* @bajtos @raymondfeng  @kjdelisle
+packages/core/* @bajtos @raymondfeng @kjdelisle
 packages/example-codehub/* @bajtos
 packages/openapi-spec-builder/*  @bajtos
 packages/openapi-spec/*  @bajtos
-packages/repository/* @raymondfeng
-packages/testlab/* @bajtos @rashmihunt
+packages/repository/* @raymondfeng @kjdelisle
+packages/testlab/* @bajtos @kjdelisle
