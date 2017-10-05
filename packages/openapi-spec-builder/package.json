@@ -6,12 +6,12 @@
     "node": ">=6"
   },
   "scripts": {
-    "build": "npm run build:lib && npm run build:lib6",
+    "build": "npm run build:dist && npm run build:dist6",
     "build:current": "node ../../bin/compile-package",
-    "build:lib": "node ../../bin/compile-package es2017",
-    "build:lib6": "node ../../bin/compile-package es2015",
+    "build:dist": "node ../../bin/compile-package es2017",
+    "build:dist6": "node ../../bin/compile-package es2015",
     "build:apidocs": "node ../../bin/generate-apidocs",
-    "clean": "rm -rf loopback-openapi-spec*.tgz lib* package",
+    "clean": "rm -rf loopback-openapi-spec*.tgz dist* package",
     "prepublish": "npm run build && npm run build:apidocs",
     "verify": "npm pack && tar xf loopback-openapi-spec*.tgz && tree package && npm run clean"
   },
@@ -31,8 +31,8 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "lib",
-    "lib6",
+    "dist/src",
+    "dist6/src",
     "api-docs"
   ],
   "repository": {

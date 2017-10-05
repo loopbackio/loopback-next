@@ -1,3 +1,3 @@
-packages/*/lib
-packages/*/lib6
+packages/*/dist
+packages/*/dist6
 packages/*/api-docs

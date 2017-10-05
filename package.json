@@ -9,6 +9,7 @@
     "node": ">=6"
   },
   "license": "MIT",
+  "dependencies": {},
   "devDependencies": {
     "@commitlint/cli": "^3.2.0",
     "@commitlint/config-angular": "^3.1.1",
@@ -26,7 +27,6 @@
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
     "strong-docs": "^1.4.0",
-    "ts-node": "^3.3.0",
     "tslint": "^5.7.0",
     "typescript": "^2.5.2"
   },
@@ -47,7 +47,7 @@
     "build:current": "lerna run --loglevel=silent build:current",
     "pretest": "npm run build:current",
     "test": "nyc npm run mocha",
-    "mocha": "mocha --opts test/mocha.opts \"packages/*/test/**/*.ts\"",
+    "mocha": "node bin/select-dist mocha --opts test/mocha.opts \"packages/*/DIST/test/**/*.js\"",
     "posttest": "npm run lint"
   },
   "nyc": {

@@ -6,14 +6,14 @@
     "node": ">=6"
   },
   "scripts": {
-    "build": "npm run build:lib && npm run build:lib6",
+    "build": "npm run build:dist && npm run build:dist6",
     "build:current": "node ../../bin/compile-package",
-    "build:lib": "node ../../bin/compile-package es2017",
-    "build:lib6": "node ../../bin/compile-package es2015",
-    "clean": "rm -rf loopback-testlab*.tgz lib* package",
+    "build:dist": "node ../../bin/compile-package es2017",
+    "build:dist6": "node ../../bin/compile-package es2015",
+    "clean": "rm -rf loopback-testlab*.tgz dist* package",
     "prepublish": "npm run build",
     "pretest": "npm run build:current",
-    "test": "mocha",
+    "test": "node ../../bin/select-dist mocha --recursive DIST/test",
     "verify": "npm pack && tar xf loopback-testlab*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
@@ -35,8 +35,8 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "lib",
-    "lib6",
+    "dist/src",
+    "dist6/src",
     "should-as-function.d.ts"
   ],
   "repository": {
