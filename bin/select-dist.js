@@ -37,7 +37,9 @@ console.log(command, args.join(' '));
 
 spawn(
   command,
-  args,
+  // wrap all arguments in double-quotes to prevent Unix shell from
+  // incorrectly resolving '**' as '*'
+  args.map(a => JSON.stringify(a)),
   {
     stdio: 'inherit',
     // On Windows, npm creates `.cmd` files instead of symlinks in
