@@ -55,6 +55,7 @@ See [loopback-next-example](https://github.com/strongloop/loopback-next-example)
 
 # Documentation
 
+- [Official documentation](http://http://loopback.io/doc/en/lb4/)
 - [API documentation](http://apidocs.loopback.io/)
 - [FAQ](http://loopback.io/doc/en/lb4/FAQ.html)
 - [LoopBack 3 vs LoopBack 4](http://loopback.io/doc/en/lb4/Migration-guide.html)
@@ -62,9 +63,21 @@ See [loopback-next-example](https://github.com/strongloop/loopback-next-example)
 
 # Team
 
-Ritchie Martori|Raymond Feng|Miroslav Bajtos|Rand McKinney|Simon Ho
-:-:|:-:|:-:|:-:|:-:
-[<img src="https://avatars2.githubusercontent.com/u/462228?v=3&s=60">](http://github.com/ritch)|[<img src="https://avatars0.githubusercontent.com/u/540892?v=3&s=60">](http://github.com/raymondfeng)|[<img src="https://avatars2.githubusercontent.com/u/1140553?v=3&s=60">](http://github.com/bajtos)|[<img src="https://avatars2.githubusercontent.com/u/2925364?v=3&s=60">](http://github.com/crandmck)|[<img src="https://avatars1.githubusercontent.com/u/1617364?v=3&s=60">](http://github.com/superkhau)
+## Project Architects:
+
+Miroslav Bajtos|Raymond Feng|Ritchie Martori|Simon Ho
+:-:|:-:|:-:|:-:
+[<img src="https://avatars2.githubusercontent.com/u/1140553?v=3&s=60">](http://github.com/bajtos)|[<img src="https://avatars0.githubusercontent.com/u/540892?v=3&s=60">](http://github.com/raymondfeng)|[<img src="https://avatars2.githubusercontent.com/u/462228?v=3&s=60">](http://github.com/ritch)|[<img src="https://avatars1.githubusercontent.com/u/1617364?v=3&s=60">](http://github.com/superkhau)
+
+## Project Maintainers:
+
+Biniam Admikew|Diana Lau|Janny Hou|Kevin Delisle
+:-:|:-:|:-:|:-:
+[<img src="https://avatars0.githubusercontent.com/u/13950637?v=3&s=60">](http://github.com/b-admike)|[<img src="https://avatars2.githubusercontent.com/u/25489897?v=3&s=60">](http://github.com/dhmlau)|[<img src="https://avatars2.githubusercontent.com/u/12554153?v=3&s=60">](http://github.com/jannyHou)|[<img src="https://avatars3.githubusercontent.com/u/2053534?v=3&s=60">](http://github.com/kjdelisle)
+
+Kyu Shim|Loay Gewily|Rand McKinney|Taranveer Virk
+:-:|:-:|:-:|:-:
+[<img src="https://avatars3.githubusercontent.com/u/18518689?v=3&s=60" height=60>](http://github.com/shimks)|[<img src="https://avatars3.githubusercontent.com/u/1986928?v=3&s=60">](http://github.com/loay)|[<img src="https://avatars2.githubusercontent.com/u/2925364?v=3&s=60">](http://github.com/crandmck)|[<img src="https://avatars1.githubusercontent.com/u/3311536?v=3&s=60">](http://github.com/virkt25)
 
 See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
