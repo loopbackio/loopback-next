@@ -27,9 +27,12 @@ describe('Bootstrapping with RestComponent', () => {
       class UserDefinedSequence extends DefaultSequence {}
       app = new Application({
         components: [RestComponent],
-        rest: {
-          sequence: UserDefinedSequence,
-          port: 0,
+        servers: {
+          RestServer: {
+            type: RestServer,
+            sequence: UserDefinedSequence,
+            port: 0,
+          },
         },
       });
       server = await app.getServer(RestServer);
@@ -38,17 +41,19 @@ describe('Bootstrapping with RestComponent', () => {
 });
 
 describe('Starting the application', () => {
+  // tslint:disable-next-line:no-any
+  function helloHandler(sequence: any, request: any, response: any) {
+    sequence.send(response, 'hello world');
+  }
   it('starts an HTTP server', async () => {
     const app = new Application({
       components: [RestComponent],
-      rest: {
+      RestServer: {
         port: 0,
       },
     });
     const server = await app.getServer(RestServer);
-    server.handler((sequence, request, response) => {
-      sequence.send(response, 'hello world');
-    });
+    server.handler(helloHandler);
 
     await app.start();
     const port = await server.get(RestBindings.PORT);
@@ -58,4 +63,41 @@ describe('Starting the application', () => {
       .expect(200, 'hello world');
     await app.stop();
   });
+
+  it('can configure multiple HTTP servers', async () => {
+    const app = new Application({
+      components: [CustomRestComponent],
+      servers: {
+        first: {
+          type: RestServer,
+          port: 0,
+        },
+        second: {
+          type: RestServer,
+          port: 0,
+        },
+      },
+    });
+    const server1 = (await app.getServer('first')) as RestServer;
+    const server2 = (await app.getServer('second')) as RestServer;
+
+    server1.handler(helloHandler);
+    server2.handler(helloHandler);
+
+    await app.start();
+    const port1 = await server1.get(RestBindings.PORT);
+    const port2 = await server2.get(RestBindings.PORT);
+
+    await supertest(`http://localhost:${port1}`)
+      .get('/')
+      .expect(200, 'hello world');
+    await supertest(`http://localhost:${port2}`)
+      .get('/')
+      .expect(200, 'hello world');
+    await app.stop();
+  });
+
+  class CustomRestComponent extends RestComponent {
+    servers = {};
+  }
 });
