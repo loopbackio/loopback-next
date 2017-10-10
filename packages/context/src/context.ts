@@ -203,6 +203,27 @@ export class Context {
     }
     return json;
   }
+
+  /**
+   * Whether or not this context instance has a parent context instance.
+   *
+   * @returns {boolean}
+   * @memberof Context
+   */
+  hasParent(): boolean {
+    return !!this._parent;
+  }
+
+  /**
+   * Directly set the parent context of this context.
+   *
+   * @param {Context} ctx
+   * @memberof Context
+   */
+  setParent(ctx: Context) {
+    // FIXME(kev): This is definitely open to circular linking (bad!)
+    this._parent = ctx;
+  }
 }
 
 function getDeepProperty(value: BoundValue, path: string) {
