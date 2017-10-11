@@ -22,11 +22,12 @@ the request to be authenticated.
 
 ```ts
 // controllers/my-controller.ts
-import {UserProfile, authenticate} from '@loopback/authentication';
-import {inject, get} from '@loopback/core'
+import {UserProfile, authenticate, AuthenticationBindings} from '@loopback/authentication';
+import {inject} from '@loopback/core';
+import {get} from '@loopback/rest';
 
 export class MyController {
-  constructor(@inject('authentication.currentUser') private user: UserProfile) {}
+  constructor(@inject(AuthenticationBindings.CURRENT_USER) private user: UserProfile) {}
 
   @authenticate('BasicStrategy')
   @get('/whoAmI')
@@ -87,9 +88,11 @@ invoking the authentication at the right time during the request handling.
 ```ts
 // sequence.ts
 import {
-  CoreBindings,
-  FindRoute,
   inject,
+} from '@loopback/core';
+
+import {
+  FindRoute,
   InvokeMethod,
   ParsedRequest,
   ParseParams,
@@ -97,22 +100,23 @@ import {
   Send,
   ServerResponse,
   SequenceHandler,
-} from '@loopback/core';
+  RestBindings,
+} from '@loopback/rest';
 
 import {
   AuthenticateFn,
   AuthenticationBindings,
 } from '@loopback/authentication';
 
-const CoreSequenceActions = CoreBindings.SequenceActions;
+const SequenceActions = RestBindings.SequenceActions;
 
 export class MySequence implements SequenceHandler {
   constructor(
-    @inject(CoreSequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
-    @inject(CoreSequenceActions.PARSE_PARAMS) protected parseParams: ParseParams,
-    @inject(CoreSequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
-    @inject(CoreSequenceActions.SEND) protected send: Send,
-    @inject(CoreSequenceActions.REJECT) protected reject: Reject,
+    @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
+    @inject(SequenceActions.PARSE_PARAMS) protected parseParams: ParseParams,
+    @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
+    @inject(SequenceActions.SEND) protected send: Send,
+    @inject(SequenceActions.REJECT) protected reject: Reject,
     @inject(AuthenticationBindings.AUTH_ACTION)
     protected authenticateRequest: AuthenticateFn,
   ) {}
@@ -142,6 +146,7 @@ import {
   AuthenticationComponent,
   AuthenticationBindings,
 } from '@loopback/authentication';
+import {RestComponent, RestServer} from '@loopback/rest';
 import {MyAuthStrategyProvider} from './providers/auth-strategy';
 import {MyController} from './controllers/my-controller';
 import {MySequence} from './sequence';
@@ -149,14 +154,24 @@ import {MySequence} from './sequence';
 class MyApp extends Application {
   constructor() {
     super({
-      components: [AuthenticationComponent],
+      components: [AuthenticationComponent, RestComponent],
+      rest: {
+        sequence: MySequence
+      },
+      controllers: [MyController],
     });
 
-    this.bind(AuthenticationBindings.STRATEGY)
-      .toProvider(MyAuthStrategyProvider);
-    this.sequence(MySequence);
-
     this.controller(MyController);
+  }
+
+  async start() {
+    const server = await this.getServer(RestServer);
+
+    server.bind(AuthenticationBindings.STRATEGY)
+    .toProvider(MyAuthStrategyProvider);
+    await super.start();
+
+    console.log(`REST server running on port: ${server.getSync('rest.port')}`);
   }
 }
 ```
