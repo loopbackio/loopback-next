@@ -51,14 +51,15 @@ export class UserController {
 }
 ```
 
-See [loopback-next-example](https://github.com/strongloop/loopback-next-example) for more.
+To create your first LoopBack 4 application, See [Getting Started](http://loopback.io/doc/en/lb4/Getting-started.html).
+
 
 # Documentation
 
 - [Official documentation](http://http://loopback.io/doc/en/lb4/)
 - [API documentation](http://apidocs.loopback.io/)
 - [FAQ](http://loopback.io/doc/en/lb4/FAQ.html)
-- [LoopBack 3 vs LoopBack 4](http://loopback.io/doc/en/lb4/Migration-guide.html)
+- [LoopBack 3 vs LoopBack 4](http://loopback.io/doc/en/lb4/LoopBack-3.x.html)
 - [Tutorials and examples](http://loopback.io/doc/en/lb4/Examples-and-tutorials.html)
 
 # Team
