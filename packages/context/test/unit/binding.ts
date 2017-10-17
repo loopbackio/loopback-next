@@ -186,26 +186,26 @@ describe('Binding', () => {
       const product1 = (await ctx.get(key)) as FakeProduct;
       const product2 = (await ctx.get(otherKey)) as FakeProduct;
 
-      function checkConfig(prod: FakeProduct, expected: string) {
-        expect(prod).to.not.be.null();
-        expect(prod.config).to.not.be.null();
-        expect(prod.config.foo).to.equal(expected);
-      }
-
       // Check in reverse order (in case the 2nd binding is masking the 1st)
       checkConfig(product2, 'baz');
       checkConfig(product1, 'bar');
     });
-
-    class FakeProduct {
-      // tslint:disable-next-line:no-any
-      constructor(@inject('config') public config: any) {}
-    }
   });
 
   function givenBinding() {
     ctx = new Context();
     binding = new Binding(key);
+  }
+
+  class FakeProduct {
+    // tslint:disable-next-line:no-any
+    constructor(@inject('config') public config: any) {}
+  }
+
+  function checkConfig(prod: FakeProduct, expected: string) {
+    expect(prod).to.not.be.null();
+    expect(prod.config).to.not.be.null();
+    expect(prod.config.foo).to.equal(expected);
   }
 
   class MyProvider implements Provider<string> {
