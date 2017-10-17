@@ -9,7 +9,7 @@ import {isPromise} from './is-promise';
 export class Context {
   private registry: Map<string, Binding>;
 
-  constructor(private _parent?: Context) {
+  constructor(protected _parent?: Context) {
     this.registry = new Map();
   }
 
@@ -221,8 +221,26 @@ export class Context {
    * @memberof Context
    */
   setParent(ctx: Context) {
-    // FIXME(kev): This is definitely open to circular linking (bad!)
+    const circular = 'circular parent reference detected';
+    if (this === ctx) {
+      throw new Error(circular);
+    }
+    const currentParent = this._parent;
+    let parent = ctx._parent;
+    // For now, set the parent.
     this._parent = ctx;
+    // Ensure that this instance is not the parent/grandparent/etc of ctx.
+    while (parent) {
+      if (parent === ctx) {
+        this._parent = currentParent; // Restore the previous parent (if any);
+        throw new Error(circular);
+      }
+      if (parent._parent) {
+        parent = parent._parent;
+      } else {
+        parent = undefined;
+      }
+    }
   }
 }
 
