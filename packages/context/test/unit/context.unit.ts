@@ -300,14 +300,18 @@ describe('Context', () => {
   describe('configure()', () => {
     it('configures options for a binding before it is bound', () => {
       const bindingForConfig = ctx.configure('foo').to({x: 1});
-      expect(bindingForConfig.key).to.equal(BindingKey.buildKeyForConfig('foo'));
+      expect(bindingForConfig.key).to.equal(
+        BindingKey.buildKeyForConfig('foo'),
+      );
       expect(bindingForConfig.tags.has('config:foo')).to.be.true();
     });
 
     it('configures options for a binding after it is bound', () => {
       ctx.bind('foo').to('bar');
       const bindingForConfig = ctx.configure('foo').to({x: 1});
-      expect(bindingForConfig.key).to.equal(BindingKey.buildKeyForConfig('foo'));
+      expect(bindingForConfig.key).to.equal(
+        BindingKey.buildKeyForConfig('foo'),
+      );
       expect(bindingForConfig.tags.has('config:foo')).to.be.true();
     });
   });

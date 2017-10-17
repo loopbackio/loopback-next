@@ -7,6 +7,7 @@ import {Context, Binding, BindingScope, Constructor} from '@loopback/context';
 import {Server} from './server';
 import {Component, mountComponent} from './component';
 import {CoreBindings} from './keys';
+import {ExtensionPoint} from './extension-point';
 
 /**
  * Application is the container for various types of artifacts, such as
@@ -194,10 +195,50 @@ export class Application extends Context {
     const instance = this.getSync<Component>(componentKey);
     mountComponent(this, instance);
   }
+
+  /**
+   * Register an extension point
+   * @param extensionPointClass Extension point class
+   * @param extensionPointName Name of the extension point, if not present,
+   * default to extensionPoints.<extensionPoint-class-name>
+   */
+  public extensionPoint(
+    // tslint:disable-next-line:no-any
+    extensionPointClass: Constructor<ExtensionPoint<any>>,
+    extensionPointName?: string,
+  ): Binding {
+    extensionPointName =
+      extensionPointName || `extensionPoints.${extensionPointClass.name}`;
+    return this.bind(extensionPointName)
+      .toClass(extensionPointClass)
+      .inScope(BindingScope.CONTEXT)
+      .tag('extensionPoint')
+      .tag(`name:${extensionPointName}`);
+  }
+
+  /**
+   * Register an extension of the given extension point
+   * @param extensionPointName Name of the extension point
+   * @param extensionClass Extension class
+   * @param extensionName Name of the extension. If not present, default to
+   * the name of extension class
+   */
+  public extension(
+    extensionPointName: string,
+    // tslint:disable-next-line:no-any
+    extensionClass: Constructor<any>,
+    extensionName?: string,
+  ): Binding {
+    extensionName = extensionName || extensionClass.name;
+    return this.bind(`${extensionPointName}.${extensionName}`)
+      .toClass(extensionClass)
+      .tag(`extensionPoint:${extensionPointName}`)
+      .tag(`name:${extensionName}`);
+  }
 }
 
 /**
- * Configuration for application
+ * Configuration for an application
  */
 export interface ApplicationConfig {
   /**

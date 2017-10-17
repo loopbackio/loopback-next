@@ -181,7 +181,7 @@ export class Context {
     };
 
     const required = resolutionOptions && resolutionOptions.optional === false;
-    const valueOrPromise = resolveUntil<string, T>(
+    const valueOrPromise = resolveUntil<BindingAddress<BoundValue>, T>(
       keys[Symbol.iterator](),
       resolveConfig,
       evaluateConfig,

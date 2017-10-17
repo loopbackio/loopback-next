@@ -4,8 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Strategy} from 'passport';
-import {AuthenticateFn, UserProfile} from './providers/authentication.provider';
-import {AuthenticationMetadata} from './decorators/authenticate.decorator';
+import {
+  AuthenticateFn,
+  UserProfile,
+  AuthenticationMetadata,
+} from './authentication';
 import {BindingKey, MetadataAccessor} from '@loopback/context';
 
 /**

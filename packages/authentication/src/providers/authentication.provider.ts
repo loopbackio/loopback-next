@@ -9,30 +9,7 @@ import {Provider, Getter, Setter} from '@loopback/context';
 import {Strategy} from 'passport';
 import {StrategyAdapter} from '../strategy-adapter';
 import {AuthenticationBindings} from '../keys';
-
-/**
- * Passport monkey-patches Node.js' IncomingMessage prototype
- * and adds extra methods like "login" and "isAuthenticated"
- */
-export type PassportRequest = ParsedRequest & Express.Request;
-
-/**
- * interface definition of a function which accepts a request
- * and returns an authenticated user
- */
-export interface AuthenticateFn {
-  (request: ParsedRequest): Promise<UserProfile | undefined>;
-}
-
-/**
- * interface definition of a user profile
- * http://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
- */
-export interface UserProfile {
-  id: string;
-  name?: string;
-  email?: string;
-}
+import {AuthenticateFn, UserProfile} from '../authentication';
 
 /**
  * @description Provider of a function which authenticates

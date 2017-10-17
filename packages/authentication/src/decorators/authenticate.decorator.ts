@@ -9,14 +9,7 @@ import {
   MethodDecoratorFactory,
 } from '@loopback/context';
 import {AUTHENTICATION_METADATA_KEY} from '../keys';
-
-/**
- * Authentication metadata stored via Reflection API
- */
-export interface AuthenticationMetadata {
-  strategy: string;
-  options?: Object;
-}
+import {AuthenticationMetadata} from '../authentication';
 
 /**
  * Mark a controller method as requiring authenticated user.
