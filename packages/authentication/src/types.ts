@@ -22,3 +22,44 @@ export interface UserProfile {
   name?: string;
   email?: string;
 }
+
+/**
+ * Authentication metadata stored via Reflection API
+ */
+export interface AuthenticationMetadata {
+  /**
+   * Name of the authentication strategy
+   */
+  strategy: string;
+  /**
+   * Options for authentication
+   */
+  options?: Object;
+}
+
+/**
+ * Interface for authentication providers
+ */
+export interface Authenticator {
+  /**
+   * Check if the given strategy is supported by the authenticator
+   * @param stragety Name of the authentication strategy
+   */
+  isSupported(strategy: string): boolean;
+
+  /**
+   * Authenticate a request with given options
+   * @param request HTTP request
+   * @param metadata Authentication metadata
+   */
+  authenticate(
+    request: Request,
+    metadata?: AuthenticationMetadata,
+  ): Promise<UserProfile | undefined>;
+}
+
+/**
+ * Passport monkey-patches Node.js' IncomingMessage prototype
+ * and adds extra methods like "login" and "isAuthenticated"
+ */
+export type PassportRequest = Request;

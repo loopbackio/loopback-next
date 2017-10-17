@@ -9,9 +9,10 @@
 
 - Given a `Context`
 - Given a class RestServer with a constructor accepting a single argument
-`config: RestServerConfig`
+  `config: RestServerConfig`
 - Given `RestServer` ctor argument is decorated with `@inject.config()`
-- When I bind a configuration object `{port: 3000}` to `$config:servers.rest.server1`
+- When I bind a configuration object `{port: 3000}` to
+  `$config:servers.rest.server1`
 - And bind the rest server to `servers.rest.server1`
 - And resolve the binding for `servers.rest.server1`
 - Then I get a new instance of `RestServer`
@@ -19,8 +20,8 @@
 
 ```ts
 class RestServer {
-   constructor(@inject.config() public config: RestServerConfig) {}
- }
+  constructor(@inject.config() public config: RestServerConfig) {}
+}
 
 const ctx = new Context();
 
@@ -39,9 +40,10 @@ const server1 = await ctx.get('servers.rest.server1');
 
 - Given a `Context`
 - Given a class RestServer with a constructor accepting a single argument
-`config: RestServerConfig`
+  `config: RestServerConfig`
 - Given `RestServer` ctor argument is decorated with `@inject.config()`
-- When I bind a configuration factory of `{port: 3000}` to `$config:servers.rest.server1`
+- When I bind a configuration factory of `{port: 3000}` to
+  `$config:servers.rest.server1`
 - And bind the rest server to `servers.rest.server1`
 - And resolve the binding for `servers.rest.server1`
 - Then I get a new instance of `RestServer`
@@ -49,13 +51,14 @@ const server1 = await ctx.get('servers.rest.server1');
 
 ```ts
 class RestServer {
-   constructor(@inject.config() public config: RestServerConfig) {}
- }
+  constructor(@inject.config() public config: RestServerConfig) {}
+}
 
 const ctx = new Context();
 
 // Bind configuration
-ctx.configure('servers.rest.server1')
+ctx
+  .configure('servers.rest.server1')
   .toDynamicValue(() => Promise.resolve({port: 3000}));
 
 // Bind RestServer
@@ -70,9 +73,10 @@ const server1 = await ctx.get('servers.rest.server1');
 
 - Given a `Context`
 - Given a class RestServer with a constructor accepting a single argument
-`config: RestServerConfig`
+  `config: RestServerConfig`
 - Given `RestServer` ctor argument is decorated with `@inject.config()`
-- When I bind a configuration object `{server1: {port: 3000}}` to `$config:servers.rest`
+- When I bind a configuration object `{server1: {port: 3000}}` to
+  `$config:servers.rest`
 - And bind the rest server to `servers.rest.server1`
 - And resolve the binding for `servers.rest.server1`
 - Then I get a new instance of `RestServer`
@@ -100,21 +104,22 @@ const server1 = await ctx.get('servers.rest.server1');
 
 - Given a `Context`
 - Given a class RestServer with a constructor accepting a single argument
-`config: RestServerConfig`
+  `config: RestServerConfig`
 - Given `RestServer` ctor argument is decorated with `@inject.config()`
-- When I bind a configuration object `{port: 3000}` to `$config.test:servers.rest.server1`
-- And I bind a configuration object `{port: 4000}` to `$config.dev:servers.rest.server1`
+- When I bind a configuration object `{port: 3000}` to
+  `$config.test:servers.rest.server1`
+- And I bind a configuration object `{port: 4000}` to
+  `$config.dev:servers.rest.server1`
 - And bind the rest server to `servers.rest.server1`
 - And bind the env `'dev'` to `env`
 - And resolve the binding for `servers.rest.server1`
 - Then I get a new instance of `RestServer`
 - And the instance was created with `config` set to `{port: 4000}`
 
-
 ```ts
 class RestServer {
-   constructor(@inject.config() public config: RestServerConfig) {}
- }
+  constructor(@inject.config() public config: RestServerConfig) {}
+}
 
 const ctx = new Context();
 

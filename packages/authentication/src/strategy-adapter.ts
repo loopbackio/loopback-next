@@ -5,7 +5,7 @@
 
 import {HttpErrors, Request} from '@loopback/rest';
 import {Strategy} from 'passport';
-import {UserProfile} from './types';
+import {UserProfile, Authenticator, AuthenticationMetadata} from './types';
 
 const passportRequestMixin = require('passport/lib/http/request');
 
@@ -17,7 +17,7 @@ const passportRequestMixin = require('passport/lib/http/request');
  *   3. provides state methods to the strategy instance
  * see: https://github.com/jaredhanson/passport
  */
-export class StrategyAdapter {
+export class StrategyAdapter implements Authenticator {
   /**
    * @param strategy instance of a class which implements a passport-strategy;
    * @description http://passportjs.org/
@@ -31,7 +31,7 @@ export class StrategyAdapter {
    *     3. authenticate using the strategy
    * @param request The incoming request.
    */
-  authenticate(request: Request): Promise<UserProfile> {
+  authenticate(request: Request, metadata?: AuthenticationMetadata) {
     return new Promise<UserProfile>((resolve, reject) => {
       // mix-in passport additions like req.logIn and req.logOut
       for (const key in passportRequestMixin) {
@@ -58,7 +58,11 @@ export class StrategyAdapter {
       };
 
       // authenticate
-      strategy.authenticate(request);
+      strategy.authenticate(request, metadata && metadata.options);
     });
+  }
+
+  isSupported(strategy: string) {
+    return strategy.startsWith('passport:');
   }
 }

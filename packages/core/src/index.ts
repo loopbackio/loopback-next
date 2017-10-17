@@ -11,3 +11,4 @@ export * from './keys';
 
 // Re-export public Core API coming from dependencies
 export * from '@loopback/context';
+export * from './extension-point';

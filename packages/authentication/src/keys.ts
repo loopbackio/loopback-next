@@ -4,10 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Strategy} from 'passport';
-import {AuthenticateFn, UserProfile} from './types';
-import {AuthenticationMetadata} from './decorators';
-import {BindingKey} from '@loopback/context';
-import {MetadataAccessor} from '@loopback/metadata';
+import {AuthenticateFn, UserProfile, AuthenticationMetadata} from './types';
+import {BindingKey, MetadataAccessor} from '@loopback/context';
 
 /**
  * Binding keys used by this component.

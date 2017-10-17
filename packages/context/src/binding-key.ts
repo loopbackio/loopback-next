@@ -116,7 +116,9 @@ export class BindingKey<ValueType> {
     const namespace = env
       ? `${BindingKey.CONFIG_NAMESPACE}.${env}`
       : BindingKey.CONFIG_NAMESPACE;
-    const bindingKey = key ? `${namespace}.${key}` : BindingKey.CONFIG_NAMESPACE;
+    const bindingKey = key
+      ? `${namespace}.${key}`
+      : BindingKey.CONFIG_NAMESPACE;
     return bindingKey;
   }
 }
