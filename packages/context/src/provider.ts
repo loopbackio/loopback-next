@@ -21,7 +21,7 @@ import {ValueOrPromise} from './binding';
  * }
  *
  * ctx.bind('stringDate').to('2017-01-01')
- * ctx.bind('provider_key').toProvider(MyProvider);
+ * ctx.bind('provider_key').toProvider(DateProvider);
  *
  * const value = ctx.getAsync('provider_key');
  * // value is a Date instance
