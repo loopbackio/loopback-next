@@ -92,6 +92,11 @@ export enum BindingType {
   PROVIDER = 'Provider',
 }
 
+export type BindingDependencies = {
+  // tslint:disable-next-line:no-any
+  [key: string]: any;
+};
+
 // FIXME(bajtos) The binding class should be parameterized by the value
 // type stored
 export class Binding {
@@ -133,12 +138,16 @@ export class Binding {
 
   public readonly key: string;
   public readonly tags: Set<string> = new Set();
+
   public scope: BindingScope = BindingScope.TRANSIENT;
   public type: BindingType;
 
   private _cache: BoundValue;
   private _getValue: (ctx?: Context) => BoundValue | Promise<BoundValue>;
 
+  // Used to provide a child context at resolution time if .options
+  // is called.
+  protected subcontext: Context;
   // For bindings bound via toClass, this property contains the constructor
   // function
   public valueConstructor: Constructor<BoundValue>;
@@ -216,8 +225,16 @@ export class Binding {
    * ```
    */
   getValue(ctx: Context): BoundValue | Promise<BoundValue> {
-    // First check cached value for non-transient
+    // Make sure we're not endlessly looping over our subcontext.
+    if (this.subcontext && this.subcontext !== ctx) {
+      // If the subcontext hasn't been bound to a parent, do so now.
+      if (!this.subcontext.hasParent()) {
+        this.subcontext.setParent(ctx);
+      }
+      return this.getValue(this.subcontext);
+    }
     if (this._cache !== undefined) {
+      // First check cached value for non-transient
       if (this.scope === BindingScope.SINGLETON) {
         return this._cache;
       } else if (this.scope === BindingScope.CONTEXT) {
@@ -253,6 +270,22 @@ export class Binding {
 
   inScope(scope: BindingScope): this {
     this.scope = scope;
+    return this;
+  }
+
+  /**
+   * Override any existing configuration on the context for
+   * this given binding and provide the given values for injection instead
+   * Any bindings not defined in the given dependencies will be resolved from
+   * the binding's context.
+   * @param deps
+   */
+  options(deps: BindingDependencies): this {
+    // This context is currently unbound.
+    this.subcontext = new Context();
+    for (const key in deps) {
+      this.subcontext.bind(key).to(deps[key]);
+    }
     return this;
   }
 

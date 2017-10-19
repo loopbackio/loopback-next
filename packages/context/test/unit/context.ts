@@ -375,6 +375,51 @@ describe('Context', () => {
     });
   });
 
+  describe('getParent', () => {
+    it('links parent to child', () => {
+      const parent = new TestContext();
+      const child = new TestContext();
+      child.setParent(parent);
+
+      expect(child.getParent()).to.equal(parent);
+    });
+
+    it('throws on self-linking', () => {
+      const context = new Context();
+      expect.throws(() => {
+        context.setParent(context);
+      });
+      expect(context.hasParent()).to.be.false();
+    });
+
+    it('throws on circular linking', () => {
+      const grandparent = new TestContext();
+      grandparent.name = 'grandma';
+      const parent = new TestContext();
+      parent.setParent(grandparent);
+      parent.name = 'mom';
+      const child = new TestContext();
+      child.name = 'daughter';
+      child.setParent(parent);
+      expect.throws(() => {
+        grandparent.setParent(child);
+      });
+      expect(grandparent.hasParent()).to.be.false();
+    });
+
+    /**
+     * Custom extension to allow retrieval of parent for testing.
+     * @class TestContext
+     * @extends {Context}
+     */
+    class TestContext extends Context {
+      public name: string;
+      getParent() {
+        return this._parent;
+      }
+    }
+  });
+
   describe('toJSON()', () => {
     it('converts to plain JSON object', () => {
       ctx

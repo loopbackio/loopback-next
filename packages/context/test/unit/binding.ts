@@ -162,9 +162,50 @@ describe('Binding', () => {
     });
   });
 
+  describe('options(Dependencies))', () => {
+    it('binds dependencies without overlap', async () => {
+      const otherKey = 'bar';
+      ctx
+        .bind(key)
+        .toClass(FakeProduct)
+        .options({
+          config: {
+            foo: 'bar',
+          },
+        });
+
+      ctx
+        .bind(otherKey)
+        .toClass(FakeProduct)
+        .options({
+          config: {
+            foo: 'baz',
+          },
+        });
+
+      const product1 = (await ctx.get(key)) as FakeProduct;
+      const product2 = (await ctx.get(otherKey)) as FakeProduct;
+
+      // Check in reverse order (in case the 2nd binding is masking the 1st)
+      checkConfig(product2, 'baz');
+      checkConfig(product1, 'bar');
+    });
+  });
+
   function givenBinding() {
     ctx = new Context();
     binding = new Binding(key);
+  }
+
+  class FakeProduct {
+    // tslint:disable-next-line:no-any
+    constructor(@inject('config') public config: any) {}
+  }
+
+  function checkConfig(prod: FakeProduct, expected: string) {
+    expect(prod).to.not.be.null();
+    expect(prod.config).to.not.be.null();
+    expect(prod.config.foo).to.equal(expected);
   }
 
   class MyProvider implements Provider<string> {
