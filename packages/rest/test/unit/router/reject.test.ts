@@ -35,7 +35,7 @@ describe('reject', () => {
     reject(mock.response, mock.request, testError);
     await mock.result;
 
-    expect(logger).to.be.calledWith(testError, 500, mock.request);
+    sinon.assert.calledWith(logger, testError, 500, mock.request);
   });
 
   function givenMockedResponse() {
