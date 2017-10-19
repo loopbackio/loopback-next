@@ -133,7 +133,6 @@ paths:
           },
         },
       },
-      components: {schemas: {}},
     });
     expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
@@ -171,8 +170,6 @@ paths:
             '*/*':
               schema:
                 type: string
-components:
-  schemas: {}
 `);
     expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');

@@ -136,7 +136,8 @@ export interface ResolvedRoute extends RouteEntry {
 
 export abstract class BaseRoute implements RouteEntry {
   public readonly verb: string;
-  private readonly _pathRegexp: pathToRegexp.PathRegExp;
+  private readonly _keys: pathToRegexp.Key[] = [];
+  private readonly _pathRegexp: RegExp;
 
   constructor(
     verb: string,
@@ -148,7 +149,10 @@ export abstract class BaseRoute implements RouteEntry {
     // In Swagger, path parameters are wrapped in `{}`.
     // In Express.js, path parameters are prefixed with `:`
     path = path.replace(/{([^}]*)}(\/|$)/g, ':$1$2');
-    this._pathRegexp = pathToRegexp(path, [], {strict: false, end: true});
+    this._pathRegexp = pathToRegexp(path, this._keys, {
+      strict: false,
+      end: true,
+    });
   }
 
   match(request: ParsedRequest): ResolvedRoute | undefined {
@@ -183,8 +187,8 @@ export abstract class BaseRoute implements RouteEntry {
 
   private _buildPathParams(pathMatch: RegExpExecArray): PathParameterValues {
     const pathParams = Object.create(null);
-    for (const ix in this._pathRegexp.keys) {
-      const key = this._pathRegexp.keys[ix];
+    for (const ix in this._keys) {
+      const key = this._keys[ix];
       const matchIndex = +ix + 1;
       pathParams[key.name] = pathMatch[matchIndex];
     }
