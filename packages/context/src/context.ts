@@ -6,13 +6,26 @@
 import {Binding, BoundValue, ValueOrPromise} from './binding';
 import {isPromise} from './is-promise';
 
+/**
+ * Context provides an implementation of Inversion of Control (IoC) container
+ */
 export class Context {
   private registry: Map<string, Binding>;
 
+  /**
+   * Create a new context
+   * @param _parent The optional parent context
+   */
   constructor(private _parent?: Context) {
     this.registry = new Map();
   }
 
+  /**
+   * Create a binding with the given key in the context. If a locked binding
+   * already exists with the same key, an error will be thrown.
+   *
+   * @param key Binding key
+   */
   bind(key: string): Binding {
     Binding.validateKey(key);
     const keyExists = this.registry.has(key);
@@ -28,11 +41,32 @@ export class Context {
     return binding;
   }
 
+  /**
+   * Check if a binding exists with the given key in the local context without
+   * delegating to the parent context
+   * @param key Binding key
+   */
   contains(key: string): boolean {
     Binding.validateKey(key);
     return this.registry.has(key);
   }
 
+  /**
+   * Check if a key is bound in the context or its ancestors
+   * @param key Binding key
+   */
+  isBound(key: string): boolean {
+    if (this.contains(key)) return true;
+    if (this._parent) {
+      return this._parent.isBound(key);
+    }
+    return false;
+  }
+
+  /**
+   * Find bindings using the key pattern
+   * @param pattern Key pattern with optional `*` wildcards
+   */
   find(pattern?: string): Binding[] {
     let bindings: Binding[] = [];
     if (pattern) {
@@ -51,6 +85,10 @@ export class Context {
     return this._mergeWithParent(bindings, parentBindings);
   }
 
+  /**
+   * Find bindings using the tag pattern
+   * @param pattern Tag pattern with optional `*` wildcards
+   */
   findByTag(pattern: string): Binding[] {
     const bindings: Binding[] = [];
     // TODO(@superkhau): swap with production grade glob to regex lib
@@ -139,6 +177,12 @@ export class Context {
     return valueOrPromise;
   }
 
+  /**
+   * Look up a binding by key in the context and its ancestors. If no matching
+   * binding is found, an error will be thrown.
+   *
+   * @param key Binding key
+   */
   getBinding(key: string): Binding {
     Binding.validateKey(key);
     const binding = this.registry.get(key);
@@ -205,6 +249,11 @@ export class Context {
   }
 }
 
+/**
+ * Get nested properties by path
+ * @param value Value of an object
+ * @param path Path to the property
+ */
 function getDeepProperty(value: BoundValue, path: string) {
   const props = path.split('.');
   for (const p of props) {

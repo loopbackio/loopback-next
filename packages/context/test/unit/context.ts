@@ -39,6 +39,40 @@ describe('Context', () => {
       const result = ctx.contains('bar');
       expect(result).to.be.false();
     });
+
+    it('returns false when the key is only in the parent context', () => {
+      ctx.bind('foo');
+      const childCtx = new Context(ctx);
+      const result = childCtx.contains('foo');
+      expect(result).to.be.false();
+    });
+  });
+
+  describe('isBound', () => {
+    it('returns true when the key is bound in the context', () => {
+      ctx.bind('foo');
+      const result = ctx.isBound('foo');
+      expect(result).to.be.true();
+    });
+
+    it('returns false when the key is not bound in the context', () => {
+      const result = ctx.isBound('bar');
+      expect(result).to.be.false();
+    });
+
+    it('returns true when the key is bound in the context hierarchy', () => {
+      ctx.bind('foo');
+      const childCtx = new Context(ctx);
+      const result = childCtx.isBound('foo');
+      expect(result).to.be.true();
+    });
+
+    it('returns false when the key is not bound in the context hierarchy', () => {
+      ctx.bind('foo');
+      const childCtx = new Context(ctx);
+      const result = childCtx.isBound('bar');
+      expect(result).to.be.false();
+    });
   });
 
   describe('find', () => {
