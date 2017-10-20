@@ -10,7 +10,7 @@ import {
   PropertyDecoratorFactory,
   MetadataMap,
 } from '@loopback/metadata';
-import {BoundValue, ValueOrPromise} from './binding';
+import {Binding, BoundValue, ValueOrPromise} from './binding';
 import {Context} from './context';
 import {ResolutionSession} from './resolution-session';
 import {isPromise} from './is-promise';
@@ -202,6 +202,44 @@ export namespace inject {
   export const tag = function injectTag(bindingTag: string | RegExp) {
     return inject('', {tag: bindingTag}, resolveByTag);
   };
+
+  /**
+   * Inject an option from `options` of the parent binding. If no corresponding
+   * option value is present, `undefined` will be injected.
+   *
+   * @example
+   * ```ts
+   * class Store {
+   *   constructor(
+   *     @inject.options('x') public optionX: number,
+   *     @inject.options('y') public optionY: string,
+   *   ) { }
+   * }
+   *
+   * ctx.bind('store1').toClass(Store).withOptions({ x: 1, y: 'a' });
+   * ctx.bind('store2').toClass(Store).withOptions({ x: 2, y: 'b' });
+   *
+   *  const store1 = ctx.getSync('store1');
+   *  expect(store1.optionX).to.eql(1);
+   *  expect(store1.optionY).to.eql('a');
+
+   * const store2 = ctx.getSync('store2');
+   * expect(store2.optionX).to.eql(2);
+   * expect(store2.optionY).to.eql('b');
+   * ```
+   *
+   * @param optionPath Optional property path of the option. If is `''` or not
+   * present, the `options` object will be returned.
+   * @param metadata Optional metadata to help the injection
+   */
+  export const options = function injectOptions(
+    optionPath?: string,
+    metadata?: Object,
+  ) {
+    optionPath = optionPath || '';
+    metadata = Object.assign({optionPath}, metadata);
+    return inject('', metadata, resolveAsOptions);
+  };
 }
 
 function resolveAsGetter(
@@ -223,6 +261,47 @@ function resolveAsSetter(ctx: Context, injection: Injection) {
   };
 }
 
+function resolveAsOptions(
+  ctx: Context,
+  injection: Injection,
+  session?: ResolutionSession,
+) {
+  if (!(session && session.currentBinding)) {
+    // No binding is available
+    return undefined;
+  }
+
+  const meta = injection.metadata || {};
+  const options = session.currentBinding.options;
+  if (!options) return undefined;
+  const keyAndPath = Binding.parseKeyWithPath(meta.optionPath);
+  if (!keyAndPath.key) {
+    // Map array values to an object keyed by binding keys
+    const mapValues = (vals: BoundValue[]) => {
+      const obj: {
+        [name: string]: BoundValue;
+      } = {};
+      let index = 0;
+      for (const v of vals) {
+        obj[bindings[index].key] = v;
+        index++;
+      }
+      return Binding.getDeepProperty(obj, keyAndPath.path);
+    };
+    // Default to all options
+    const bindings = options.find(/.*/);
+    const result = resolveBindings(options, bindings, session);
+    if (isPromise(result)) {
+      return result.then(vals => mapValues(vals));
+    } else {
+      return mapValues(result);
+    }
+  }
+
+  if (!options.isBound(keyAndPath.key)) return undefined;
+  return options.getValueOrPromise(meta.optionPath, session);
+}
+
 /**
  * Return an array of injection objects for parameters
  * @param target The target class for constructor or static methods,
@@ -242,13 +321,11 @@ export function describeInjectedArguments(
   return meta || [];
 }
 
-function resolveByTag(
+function resolveBindings(
   ctx: Context,
-  injection: Injection,
+  bindings: Binding[],
   session?: ResolutionSession,
 ) {
-  const tag: string | RegExp = injection.metadata!.tag;
-  const bindings = ctx.findByTag(tag);
   const values: BoundValue[] = new Array(bindings.length);
 
   // A closure to set a value by index
@@ -257,6 +334,10 @@ function resolveByTag(
   let asyncResolvers: PromiseLike<BoundValue>[] = [];
   // tslint:disable-next-line:prefer-for-of
   for (let i = 0; i < bindings.length; i++) {
+    if (!ctx.isBound(bindings[i].key)) {
+      values[i] = undefined;
+      continue;
+    }
     // We need to clone the session so that resolution of multiple bindings
     // can be tracked in parallel
     const val = bindings[i].getValue(ctx, ResolutionSession.fork(session));
@@ -271,6 +352,16 @@ function resolveByTag(
   } else {
     return values;
   }
+}
+
+function resolveByTag(
+  ctx: Context,
+  injection: Injection,
+  session?: ResolutionSession,
+) {
+  const tag: string | RegExp = injection.metadata!.tag;
+  const bindings = ctx.findByTag(tag);
+  return resolveBindings(ctx, bindings, session);
 }
 
 /**

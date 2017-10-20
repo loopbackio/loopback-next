@@ -271,16 +271,32 @@ export class Context {
     }
 
     if (isPromise(boundValue)) {
-      return boundValue.then(v => getDeepProperty(v, path));
+      return boundValue.then(v => Binding.getDeepProperty(v, path));
     }
 
-    return getDeepProperty(boundValue, path);
+    return Binding.getDeepProperty(boundValue, path);
   }
 
-  clone() {
+  /**
+   * Clone the context with an optional new parent context
+   * @param parent Optional parent context
+   */
+  clone(parent?: Context) {
     const copy = new Context();
-    copy._parent = this._parent;
+    copy._parent = parent || this._parent;
     copy.registry = new Map(this.registry);
+    return copy;
+  }
+
+  /**
+   * Merge bindings from the given context into this one
+   * @param ctx Another context
+   */
+  mergeWith(ctx: Context) {
+    for (const kv of ctx.registry.entries()) {
+      this.registry.set(kv[0], kv[1]);
+    }
+    return this;
   }
 
   /**
@@ -293,20 +309,4 @@ export class Context {
     }
     return json;
   }
-}
-
-/**
- * Get nested properties by path
- * @param value Value of an object
- * @param path Path to the property
- */
-function getDeepProperty(value: BoundValue, path: string) {
-  const props = path.split('.');
-  for (const p of props) {
-    value = value[p];
-    if (value === undefined || value === null) {
-      return value;
-    }
-  }
-  return value;
 }

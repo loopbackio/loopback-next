@@ -184,7 +184,7 @@ export function resolveInjectedArguments(
 
   let nonInjectedIndex = 0;
   for (let ix = 0; ix < argLength; ix++) {
-    const injection = ix < injectedArgs.length ? injectedArgs[ix] : undefined;
+    let injection = ix < injectedArgs.length ? injectedArgs[ix] : undefined;
     if (injection == null || (!injection.bindingKey && !injection.resolve)) {
       if (nonInjectedIndex < nonInjectedArgs.length) {
         // Set the argument from the non-injected list
@@ -309,7 +309,7 @@ export function resolveInjectedProperties(
     (properties[p] = v);
 
   for (const p in injectedProperties) {
-    const injection = injectedProperties[p];
+    let injection = injectedProperties[p];
     if (!injection.bindingKey && !injection.resolve) {
       const name = getTargetName(constructor, p);
       throw new Error(
@@ -324,6 +324,7 @@ export function resolveInjectedProperties(
       injection,
       ResolutionSession.fork(session),
     );
+
     if (isPromise(valueOrPromise)) {
       if (!asyncResolvers) asyncResolvers = [];
       asyncResolvers.push(valueOrPromise.then(propertyResolver(p)));
