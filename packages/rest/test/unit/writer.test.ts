@@ -31,6 +31,22 @@ describe('writer', () => {
     expect(result.payload).to.equal('{"name":"Joe"}');
   });
 
+  it('writes boolean result to response as text', async () => {
+    writeResultToResponse(response, true);
+    const result = await observedResponse;
+
+    expect(result.headers['content-type']).to.eql('text/plain');
+    expect(result.payload).to.equal('true');
+  });
+
+  it('writes number result to response as text', async () => {
+    writeResultToResponse(response, 2);
+    const result = await observedResponse;
+
+    expect(result.headers['content-type']).to.eql('text/plain');
+    expect(result.payload).to.equal('2');
+  });
+
   function setupResponseMock() {
     const responseMock = mockResponse();
     response = responseMock.response;
