@@ -44,7 +44,7 @@ export class HttpHandler {
     return this._routes.describeApiPaths();
   }
 
-  findRoute(request: ParsedRequest) {
+  findRoute(request: ParsedRequest): ResolvedRoute {
     return this._routes.find(request);
   }
 

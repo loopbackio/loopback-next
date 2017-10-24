@@ -19,14 +19,18 @@ export function writeResultToResponse(
   result: OperationRetval,
 ): void {
   if (result) {
-    if (typeof result === 'object') {
-      // TODO(ritch) remove this, should be configurable
-      // See https://github.com/strongloop/loopback-next/issues/436
-      response.setHeader('Content-Type', 'application/json');
-      // TODO(bajtos) handle errors - JSON.stringify can throw
-      result = JSON.stringify(result);
-    } else if (typeof result === 'string') {
-      response.setHeader('Content-Type', 'text/plain');
+    switch (typeof result) {
+      case 'object':
+        // TODO(ritch) remove this, should be configurable
+        // See https://github.com/strongloop/loopback-next/issues/436
+        response.setHeader('Content-Type', 'application/json');
+        // TODO(bajtos) handle errors - JSON.stringify can throw
+        result = JSON.stringify(result);
+        break;
+      default:
+        response.setHeader('Content-Type', 'text/plain');
+        result = result.toString();
+        break;
     }
     response.write(result);
   }
