@@ -37,7 +37,7 @@
     "coverage": "open coverage/index.html",
     "lint": "npm run prettier:check && npm run tslint",
     "lint:fix": "npm run prettier:fix && npm run tslint:fix",
-    "tslint": "tslint -c tslint.full.json --project tsconfig.json --type-check",
+    "tslint": "tslint -c tslint.full.json --project tsconfig.json",
     "tslint:fix": "npm run tslint -- --fix",
     "prettier:cli": "prettier \"**/*.ts\"",
     "prettier:check": "npm run prettier:cli -- -l",
