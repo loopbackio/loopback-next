@@ -37,6 +37,12 @@ const SequenceActions = RestBindings.SequenceActions;
 //  a non-module entity and cannot be imported using this construct.
 const cloneDeep: <T>(value: T) => T = require('lodash/cloneDeep');
 
+/**
+ * The object format used for building the template bases of our OpenAPI spec
+ * files.
+ *
+ * @interface OpenApiSpecOptions
+ */
 interface OpenApiSpecOptions {
   version?: string;
   format?: string;
@@ -49,6 +55,39 @@ const OPENAPI_SPEC_MAPPING: {[key: string]: OpenApiSpecOptions} = {
   '/swagger.yaml': {version: '2.0', format: 'yaml'},
 };
 
+/**
+ * A REST API server for use with Loopback.
+ * Add this server to your application by importing the RestComponent.
+ * ```ts
+ * const app = new MyApplication({
+ *   components: [RestComponent]
+ * });
+ * // OR
+ * app.component(RestComponent);
+ * ```
+ *
+ * To add additional instances of RestServer to your application, use the
+ * `.server` function:
+ * ```ts
+ * app.server(RestServer, 'nameOfYourServer');
+ * ```
+ *
+ * By default, one instance of RestServer will be created when the RestComponent
+ * is bootstrapped. This instance can be retrieved with
+ * `app.getServer(RestServer)`, or by calling `app.get('servers.RestServer')`
+ * Note that retrieving other instances of RestServer must be done using the
+ * server's name:
+ * ```ts
+ * const server = await app.getServer('foo')
+ * // OR
+ * const server = await app.get('servers.foo');
+ * ```
+ *
+ * @export
+ * @class RestServer
+ * @extends {Context}
+ * @implements {Server}
+ */
 export class RestServer extends Context implements Server {
   /**
    * Handle incoming HTTP(S) request by invoking the corresponding
@@ -76,6 +115,16 @@ export class RestServer extends Context implements Server {
   }
   protected _httpServer: Http.Server;
 
+  /**
+   * @memberof RestServer
+   * Creates an instance of RestServer.
+   *
+   * @param {Application} app The application instance (injected via
+   * CoreBindings.APPLICATION_INSTANCE).
+   * @param {RestServerConfig=} options The configuration options (injected via
+   * RestBindings.CONFIG).
+   *
+   */
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE) app: Application,
     @inject(RestBindings.CONFIG) options?: RestServerConfig,
@@ -258,20 +307,20 @@ export class RestServer extends Context implements Server {
   }
 
   /**
-   * Register a controller class with this application.
+   * Register a controller class with this server.
    *
-   * @param controllerCtor {Function} The controller class
+   * @param {Constructor} controllerCtor The controller class
    * (constructor function).
-   * @return {Binding} The newly created binding, you can use the reference to
+   * @returns {Binding} The newly created binding, you can use the reference to
    * further modify the binding, e.g. lock the value to prevent further
    * modifications.
    *
    * ```ts
-   * @spec(apiSpec)
    * class MyController {
    * }
    * app.controller(MyController).lock();
    * ```
+   *
    */
   controller(controllerCtor: ControllerClass): Binding {
     return this.bind('controllers.' + controllerCtor.name).toClass(
@@ -361,6 +410,18 @@ export class RestServer extends Context implements Server {
     );
   }
 
+  /**
+   * Set the OpenAPI specification that defines the REST API schema for this
+   * server. All routes, parameter definitions and return types will be defined
+   * in this way.
+   *
+   * Note that this will override any routes defined via decorators at the
+   * controller level (this function takes precedent).
+   *
+   * @param {OpenApiSpec} spec The OpenAPI specification, as an object.
+   * @returns {Binding}
+   * @memberof RestServer
+   */
   api(spec: OpenApiSpec): Binding {
     return this.bind(RestBindings.API_SPEC).to(spec);
   }
@@ -445,7 +506,10 @@ export class RestServer extends Context implements Server {
   }
 
   /**
-   * Start the application (e.g. HTTP/HTTPS servers).
+   * Start this REST API's HTTP/HTTPS server.
+   *
+   * @returns {Promise<void>}
+   * @memberof RestServer
    */
   async start(): Promise<void> {
     // Setup the HTTP handler so that we can verify the configuration
@@ -469,6 +533,12 @@ export class RestServer extends Context implements Server {
     });
   }
 
+  /**
+   * Stop this REST API's HTTP/HTTPS server.
+   *
+   * @returns {Promise<void>}
+   * @memberof RestServer
+   */
   async stop() {
     // Kill the server instance.
     const server = this._httpServer;
@@ -502,6 +572,12 @@ export class RestServer extends Context implements Server {
   }
 }
 
+/**
+ * Valid configuration for the RestServer constructor.
+ *
+ * @export
+ * @interface RestServerConfig
+ */
 export interface RestServerConfig {
   port?: number;
   sequence?: Constructor<SequenceHandler>;
