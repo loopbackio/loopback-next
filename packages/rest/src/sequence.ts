@@ -63,10 +63,18 @@ export class DefaultSequence implements SequenceHandler {
    * Constructor: Injects findRoute, invokeMethod & logError
    * methods as promises.
    *
-   * @param findRoute Finds the appropriate controller method,
-   *  spec and args for invocation
-   * @param invoke Invokes the method
-   * @param logError Logs error
+   * @param {Context} ctx The context for the sequence (injected via
+   * RestBindings.Http.CONTEXT).
+   * @param {FindRoute} findRoute Finds the appropriate controller method,
+   *  spec and args for invocation (injected via SequenceActions.FIND_ROUTE).
+   * @param {ParseParams} parseParams The parameter parsing function (injected
+   * via SequenceActions.PARSE_PARAMS).
+   * @param {InvokeMethod} invoke Invokes the method specified by the route
+   * (injected via SequenceActions.INVOKE_METHOD).
+   * @param {Send} send The action to merge the invoke result with the response
+   * (injected via SequenceActions.SEND)
+   * @param {Reject} reject The action to take if the invoke returns a rejected
+   * promise result (injected via SequenceActions.REJECT).
    */
   constructor(
     @inject(RestBindings.Http.CONTEXT) public ctx: Context,
