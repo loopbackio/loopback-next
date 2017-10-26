@@ -1,0 +1,57 @@
+{
+  "name": "@loopback/build",
+  "description": "Build scripts and configuration files for LoopBack 4 modules",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback4-build.git"
+  },
+  "version": "4.0.0-alpha.1",
+  "engines": {
+    "node": ">=6"
+  },
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@commitlint/cli": "^4.2.0",
+    "@commitlint/config-angular": "^4.2.0",
+    "@commitlint/config-lerna-scopes": "^4.2.0",
+    "@types/mocha": "^2.2.43",
+    "@types/node": "^8.0.32",
+    "coveralls": "^3.0.0",
+    "cz-conventional-changelog": "^2.0.0",
+    "mocha": "^4.0.0",
+    "nyc": "^11.2.1",
+    "prettier": "^1.7.3",
+    "strong-docs": "^1.6.0",
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.3"
+  },
+  "bin": {
+    "lb-tsc": "./bin/compile-package.js",
+    "lb-tslint": "./bin/run-tslint.js",
+    "lb-prettier": "./bin/run-prettier.js",
+    "lb-dist": "./bin/select-dist.js",
+    "lb-apidocs": "./bin/generate-apidocs.js"
+  },
+  "scripts": {
+    "coverage:ci": "nyc report --reporter=text-lcov | coveralls",
+    "precoverage": "npm test",
+    "coverage": "open coverage/index.html",
+    "lint": "npm run prettier:check",
+    "lint:fix": "npm run prettier:fix",
+    "prettier:cli": "node bin/run-prettier \"bin/**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "test": "nyc npm run mocha",
+    "mocha": "node bin/select-dist mocha --timeout 15000 --opts test/mocha.opts \"test/**/*.js\"",
+    "posttest": "npm run lint"
+  },
+  "nyc": {
+    "extends": "./config/nyc.common.json"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
