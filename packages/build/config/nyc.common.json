@@ -1,6 +1,0 @@
-{
-  "include": ["packages/example-codehub/src/**", "packages/*/dist*/*"],
-  "exclude": ["packages/core/*/promisify.*"],
-  "extension": [".js", ".ts"],
-  "reporter": ["html"]
-}

@@ -6,18 +6,18 @@
     "node": ">=6"
   },
   "scripts": {
-    "acceptance": "node ../../bin/select-dist mocha --opts ../../test/mocha.opts 'DIST/test/acceptance/**/*.js'",
+    "acceptance": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/acceptance/**/*.js'",
     "build": "npm run build:dist && npm run build:dist6",
-    "build:current": "node ../../bin/compile-package",
-    "build:dist": "node ../../bin/compile-package es2017",
-    "build:dist6": "node ../../bin/compile-package es2015",
-    "build:apidocs": "node ../../bin/generate-apidocs",
+    "build:current": "lb-tsc",
+    "build:dist": "lb-tsc es2017",
+    "build:dist6": "lb-tsc es2015",
+    "build:apidocs": "lb-apidocs",
     "clean": "rm -rf loopback-rest*.tgz dist* package",
     "prepublish": "npm run build && npm run build:apidocs",
     "pretest": "npm run build:current",
-    "integration": "node ../../bin/select-dist mocha --opts ../../test/mocha.opts 'DIST/test/integration/**/*.js'",
-    "test": "node ../../bin/select-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js' 'DIST/test/integration/**/*.js' 'DIST/test/acceptance/**/*.js'",
-    "unit": "node ../../bin/select-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js'",
+    "integration": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/integration/**/*.js'",
+    "test": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js' 'DIST/test/integration/**/*.js' 'DIST/test/acceptance/**/*.js'",
+    "unit": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js'",
     "verify": "npm pack && tar xf loopback-rest*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
@@ -37,6 +37,7 @@
     "swagger2openapi": "^2.9.2"
   },
   "devDependencies": {
+    "@loopback/build": "^4.0.0-alpha.1",
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.8",
     "@loopback/testlab": "^4.0.0-alpha.10"
   },

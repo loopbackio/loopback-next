@@ -15,15 +15,31 @@ Usage:
 
 'use strict';
 
-function run(argv) {
+function run(argv, dryRun) {
   const utils = require('./utils');
 
   const tslintOpts = argv.slice(2);
-  const tsConfigFile = utils.getConfigFile('tsconfig.build.json');
 
-  const args = ['-p', tsConfigFile, ...tslintOpts];
+  const isConfigSet = utils.isOptionSet(tslintOpts, '-c', '--config');
+  const isProjectSet = utils.isOptionSet(tslintOpts, '-p', '--project');
 
-  return utils.runCLI('tslint/bin/tslint', args);
+  const tslintConfigFile = isConfigSet
+    ? null
+    : utils.getConfigFile('tslint.build.json', 'tslint.json');
+  const tsConfigFile = isProjectSet
+    ? null
+    : utils.getConfigFile('tsconfig.build.json', 'tsconfig.json');
+
+  const args = [];
+  if (tsConfigFile) {
+    args.push('-p', tsConfigFile);
+  }
+  if (tslintConfigFile) {
+    args.push('-c', tslintConfigFile);
+  }
+  args.push(...tslintOpts);
+
+  return utils.runCLI('tslint/bin/tslint', args, dryRun);
 }
 
 module.exports = run;

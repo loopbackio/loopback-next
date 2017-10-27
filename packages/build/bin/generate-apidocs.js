@@ -5,7 +5,7 @@
 // License text available at https://opensource.org/licenses/MIT
 'use strict';
 
-function run(argv) {
+function run(argv, dryRun) {
   const utils = require('./utils');
   const fs = require('fs');
   const path = require('path');
@@ -26,7 +26,7 @@ function run(argv) {
     }
   }
 
-  return utils.runCLI('strong-docs/bin/cli', ['-o', 'api-docs']);
+  return utils.runCLI('strong-docs/bin/cli', ['-o', 'api-docs'], dryRun);
 }
 
 module.exports = run;

@@ -1,3 +1,5 @@
 packages/*/dist
 packages/*/dist6
 packages/*/api-docs
+package.json
+packages/*/package.json

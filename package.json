@@ -22,49 +22,28 @@
     "cz-conventional-changelog": "^2.0.0",
     "lerna": "^2.4.0",
     "mocha": "^4.0.0",
-    "nyc": "^11.2.1",
-    "prettier": "^1.7.3",
     "request": "^2.83.0",
-    "request-promise": "^4.2.2",
-    "strong-docs": "^1.6.0",
-    "tslint": "^5.7.0",
-    "typescript": "^2.5.3"
+    "request-promise": "^4.2.2"
   },
   "scripts": {
     "bootstrap": "npm i && lerna bootstrap",
-    "coverage:ci": "nyc report --reporter=text-lcov | coveralls",
+    "coverage:ci": "node packages/build/bin/run-nyc report --reporter=text-lcov | coveralls",
     "precoverage": "npm test",
     "coverage": "open coverage/index.html",
     "lint": "npm run prettier:check && npm run tslint",
     "lint:fix": "npm run prettier:fix && npm run tslint:fix",
-    "tslint": "tslint -c tslint.full.json --project tsconfig.json",
+    "tslint": "node packages/build/bin/run-tslint --project tsconfig.json",
     "tslint:fix": "npm run tslint -- --fix",
-    "prettier:cli": "prettier \"**/*.ts\"",
+    "prettier:cli": "node packages/build/bin/run-prettier \"**/*.ts\"",
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
     "clean": "lerna run --loglevel=silent clean",
     "build": "lerna run --loglevel=silent build",
     "build:current": "lerna run --loglevel=silent build:current",
     "pretest": "npm run build:current",
-    "test": "nyc npm run mocha",
-    "mocha": "node bin/select-dist mocha --exit --opts test/mocha.opts \"packages/*/DIST/test/**/*.js\"",
+    "test": "node packages/build/bin/run-nyc npm run mocha",
+    "mocha": "node packages/build/bin/select-dist mocha --exit --opts test/mocha.opts \"packages/*/DIST/test/**/*.js\"",
     "posttest": "npm run lint"
-  },
-  "nyc": {
-    "include": [
-      "packages/example-codehub/src/**",
-      "packages/*/dist*/*"
-    ],
-    "exclude": [
-      "packages/core/*/promisify.*"
-    ],
-    "extension": [
-      ".js",
-      ".ts"
-    ],
-    "reporter": [
-      "html"
-    ]
   },
   "config": {
     "commitizen": {
