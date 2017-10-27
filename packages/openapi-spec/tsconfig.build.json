@@ -1,11 +1,8 @@
 {
   "$schema": "http://json.schemastore.org/tsconfig",
-  "extends": "../../tsconfig.common.json",
+  "extends": "../build/config/tsconfig.common.json",
   "compilerOptions": {
     "rootDir": "."
   },
-  "include": [
-    "src",
-    "test"
-  ]
+  "include": ["src", "test"]
 }

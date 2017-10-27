@@ -25,19 +25,14 @@ Example usage:
 
 'use strict';
 
-function run(argv) {
+function run(argv, dryRun) {
   const utils = require('./utils');
   const dist = utils.getDistribution();
 
-  const args = argv
-    .slice(2)
-    .map(a => a.replace(/\bDIST\b/g, dist))
-    // wrap all arguments in double-quotes to prevent Unix shell from
-    // incorrectly resolving '**' as '*'
-    .map(a => JSON.stringify(a));
+  const args = argv.slice(2).map(a => a.replace(/\bDIST\b/g, dist));
   const command = args.shift();
 
-  return utils.runShell(command, args);
+  return utils.runShell(command, args, dryRun);
 }
 
 module.exports = run;

@@ -7,13 +7,13 @@
   },
   "scripts": {
     "build": "npm run build:dist && npm run build:dist6",
-    "build:current": "node ../../bin/compile-package",
-    "build:dist": "node ../../bin/compile-package es2017",
-    "build:dist6": "node ../../bin/compile-package es2015",
+    "build:current": "lb-tsc",
+    "build:dist": "lb-tsc es2017",
+    "build:dist6": "lb-tsc es2015",
     "clean": "rm -rf loopback-testlab*.tgz dist* package",
     "prepublish": "npm run build",
     "pretest": "npm run build:current",
-    "test": "node ../../bin/select-dist mocha --recursive DIST/test",
+    "test": "lb-dist mocha --recursive DIST/test",
     "verify": "npm pack && tar xf loopback-testlab*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
@@ -29,6 +29,9 @@
     "sinon": "^4.0.1",
     "supertest": "^3.0.0",
     "swagger-parser": "^3.4.1"
+  },
+  "devDependencies": {
+    "@loopback/build": "^4.0.0-alpha.1"
   },
   "files": [
     "README.md",

@@ -5,24 +5,22 @@
   "engines": {
     "node": ">=6"
   },
+  "devDependencies": {
+    "@loopback/build": "^4.0.0-alpha.1"
+  },
   "scripts": {
     "build": "npm run build:dist && npm run build:dist6",
-    "build:current": "node ../../bin/compile-package",
-    "build:dist": "node ../../bin/compile-package es2017",
-    "build:dist6": "node ../../bin/compile-package es2015",
-    "build:apidocs": "node ../../bin/generate-apidocs",
+    "build:current": "lb-tsc",
+    "build:dist": "lb-tsc es2017",
+    "build:dist6": "lb-tsc es2015",
+    "build:apidocs": "lb-apidocs",
     "clean": "rm -rf loopback-openapi-spec*.tgz dist* package",
     "prepublish": "npm run build && npm run build:apidocs",
     "verify": "npm pack && tar xf loopback-openapi-spec*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
   "license": "MIT",
-  "keywords": [
-    "Swagger",
-    "OpenAPI Spec",
-    "TypeScript",
-    "Typings"
-  ],
+  "keywords": ["Swagger", "OpenAPI Spec", "TypeScript", "Typings"],
   "files": [
     "README.md",
     "index.js",
