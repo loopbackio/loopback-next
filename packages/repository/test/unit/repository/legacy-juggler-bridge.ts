@@ -180,4 +180,15 @@ describe('DefaultCrudRepository', () => {
     const ok = await repo.exists(note1.id);
     expect(ok).to.be.true();
   });
+
+  it('throws if findById does not return a value', async () => {
+    const repo = new DefaultCrudRepository(Note, ds);
+    try {
+      await repo.findById(999999);
+    } catch (err) {
+      expect(err).to.match(/no Note was found with id/);
+      return;
+    }
+    throw new Error('No error was returned!');
+  });
 });
