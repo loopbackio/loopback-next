@@ -3,12 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {CodeHubApplication} from '../../src/codehub-application';
 import {expect, supertest as request} from '@loopback/testlab';
 import * as util from '../support/util';
 
 describe('health', () => {
-  let app: CodeHubApplication;
   let client: request.SuperTest<request.Test>;
 
   before(givenClientAndApp);
@@ -24,6 +22,5 @@ describe('health', () => {
   async function givenClientAndApp() {
     const result = await util.createAppAndClient();
     client = result.client;
-    app = result.app;
   }
 });
