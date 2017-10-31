@@ -1,7 +1,6 @@
 # @loopback/build
 
-The module contains a set of common scripts and default configurations to
-build LoopBack 4 modules, including:
+This module contains a set of common scripts and default configurations to build LoopBack 4 or other TypeScript modules, including:
 
 - lb-tsc: Use [`tsc`](https://www.typescriptlang.org/docs/handbook/compiler-options.html) to compile typescript files
 - lb-dist: Detect the correct distribution target: `dist` => ES2017, `dist6` => ES2015
@@ -22,7 +21,6 @@ To use `@loopback/build` for your package:
 2. Configure your project package.json as follows:
 ```json
 "scripts": {
-    "acceptance": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/acceptance/**/*.js'",
     "build": "npm run build:dist && npm run build:dist6",
     "build:current": "lb-tsc",
     "build:dist": "lb-tsc es2017",
@@ -33,9 +31,12 @@ To use `@loopback/build` for your package:
     "prettier:cli": "lb-prettier \"**/*.ts\"",
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
-    "clean": "rm -rf loopback-grpc*.tgz dist*",
-    "prepublish": "npm run build && npm run build:apidocs",
+    "lint": "npm run prettier:check && npm run tslint",
+    "lint:fix": "npm run prettier:fix && npm run tslint:fix",
+    "clean": "lb-clean loopback-grpc*.tgz dist*",
+    "prepare": "npm run build && npm run build:apidocs",
     "pretest": "npm run build:current",
+    "acceptance": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/acceptance/**/*.js'",
     "integration": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/integration/**/*.js'",
     "test": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js' 'DIST/test/integration/**/*.js' 'DIST/test/acceptance/**/*.js'",
     "unit": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js'",
@@ -43,10 +44,21 @@ To use `@loopback/build` for your package:
   },
 ```
 
+Now you run the scripts, such as:
+
+- `npm run build` - Compile TypeScript files
+- `npm test` - Run all mocha tests
+- `npm run lint` - Run `tslint` and `prettier` on source files
+
 3. Override default configurations in your project
 
 - lb-tsc
-  - Create `tsconfig.build.json` in your project's root directory
+  
+  By default, `lb-tsc` searches your project's root directory for `tsconfig.build.json` then `tsconfig.json`. If neither of them exists, a `tsconfig.json` will be created to extend from `./node_modules/@loopback/build/config/tsconfig.common.json`.
+
+  To customize the configuration:
+
+  - Create `tsconfig.build.json` or `tsconfig.json` in your project's root directory
     ```json
     {
       "$schema": "http://json.schemastore.org/tsconfig",
@@ -57,13 +69,23 @@ To use `@loopback/build` for your package:
       "include": ["src", "test"]
     }
     ```
-  - Set options for the script
+
+  - Set options explicity for the script
     ```
-    lb-tsc -p tsconfig.json
+    lb-tsc -p tsconfig.json --target es2017 --outDir dist
     ```
 
+    For more information, see https://www.typescriptlang.org/docs/handbook/compiler-options.html.
+
 - lb-tslint
-  - Create `tslint.build.json` in your project's root directory
+
+  By default, `lb-tslint` searches your project's root directory for `tslint.build.json` then `tslint.json`. If neither of them exists, it falls back to `./node_modules/@loopback/build/config/tslint.common.json`.
+
+  `lb-tslint` also depends on `tsconfig.build.json` or `tsconfig.json` to reference the project.
+
+  To customize the configuration:
+
+  - Create `tslint.build.json` in your project's root directory, for example:
     ```json
     {
       "$schema": "http://json.schemastore.org/tslint",
@@ -86,10 +108,13 @@ To use `@loopback/build` for your package:
       }
     }
     ```
-  - Set options for the script
-    ``
+
+  - Set options explicitly for the script
+    ```
     lb-tslint -c tslint.json -p tsconfig.json
     ```
+
+    For more information, see https://palantir.github.io/tslint/usage/cli/.
 
 4. Run builds
 
