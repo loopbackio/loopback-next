@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.12"></a>
+# [4.0.0-alpha.12](https://github.com/strongloop/loopback-next/compare/@loopback/example-codehub@4.0.0-alpha.11...@loopback/example-codehub@4.0.0-alpha.12) (2017-10-31)
+
+
+
+
+**Note:** Version bump only for package @loopback/example-codehub
+
 <a name="4.0.0-alpha.11"></a>
 # [4.0.0-alpha.11](https://github.com/strongloop/loopback-next/compare/@loopback/example-codehub@4.0.0-alpha.10...@loopback/example-codehub@4.0.0-alpha.11) (2017-10-31)
 

@@ -1,6 +1,6 @@
 {
   "name": "@loopback/testlab",
-  "version": "4.0.0-alpha.11",
+  "version": "4.0.0-alpha.12",
   "description": "A collection of test utilities we use to write LoopBack tests.",
   "engines": {
     "node": ">=6"
@@ -19,7 +19,7 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
-    "@loopback/openapi-spec": "^4.0.0-alpha.12",
+    "@loopback/openapi-spec": "^4.0.0-alpha.13",
     "@types/shot": "^3.4.0",
     "@types/sinon": "^2.3.6",
     "@types/supertest": "^2.0.0",
@@ -31,7 +31,7 @@
     "swagger-parser": "^3.4.1"
   },
   "devDependencies": {
-    "@loopback/build": "^4.0.0-alpha.2"
+    "@loopback/build": "^4.0.0-alpha.3"
   },
   "files": [
     "README.md",
