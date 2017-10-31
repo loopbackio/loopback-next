@@ -39,6 +39,18 @@ describe('Bootstrapping the application', () => {
       expect(value).to.equal('bar');
     });
 
+    it('registers controllers from constructor', () => {
+      class ProductController {}
+
+      const app = new Application({
+        controllers: [ProductController],
+      });
+
+      expect(app.find('controllers.*').map(b => b.key)).to.eql([
+        'controllers.ProductController',
+      ]);
+    });
+
     it('registers all controllers from components', async () => {
       // TODO(bajtos) Beef up this test. Create a real controller with
       // a public API endpoint and verify that this endpoint can be invoked
