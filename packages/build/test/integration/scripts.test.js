@@ -15,15 +15,22 @@ describe('build', () => {
 
   function cleanup() {
     var run = require('../../bin/run-clean');
-    run(['node', 'bin/run-clean', 'tsconfig.json', 'dist', 'api-docs']);
+    run([
+      'node',
+      'bin/run-clean',
+      'tsconfig.json',
+      'tsconfig.build.json',
+      'dist',
+      'api-docs',
+    ]);
   }
 
-  before(() => {
+  beforeEach(() => {
     process.chdir(projectDir);
     cleanup();
   });
 
-  after(() => {
+  afterEach(() => {
     cleanup();
     process.chdir(cwd);
   });
@@ -41,8 +48,44 @@ describe('build', () => {
         fs.existsSync(path.join(projectDir, 'tsconfig.json')),
         'tsconfig.json should have been created'
       );
+      var tsConfig = fs.readJSONSync(path.join(projectDir, 'tsconfig.json'));
+      assert.equal(tsConfig.extends, '../../config/tsconfig.common.json');
       done();
     });
+  });
+
+  it('honors tsconfig.build.json over tsconfig.json', () => {
+    fs.writeJSONSync('tsconfig.build.json', {
+      extends: '../../config/tsconfig.common.json',
+      include: ['src', 'test'],
+      exclude: ['node_modules/**', 'packages/*/node_modules/**', '**/*.d.ts'],
+    });
+    fs.writeJSONSync('tsconfig.json', {
+      extends: '../../config/tsconfig.common.json',
+      include: ['src', 'test'],
+      exclude: ['node_modules/**', 'packages/*/node_modules/**', '**/*.d.ts'],
+    });
+    var run = require('../../bin/compile-package');
+    var command = run(['node', 'bin/compile-package'], true);
+    assert(
+      command.indexOf('-p ' + path.join(projectDir, 'tsconfig.build.json')) !==
+        -1,
+      'project level tsconfig.build.json should be honored'
+    );
+  });
+
+  it('honors tsconfig.json if tsconfig.build.json is not present', () => {
+    fs.writeJSONSync('tsconfig.json', {
+      extends: '../../config/tsconfig.common.json',
+      include: ['src', 'test'],
+      exclude: ['node_modules/**', 'packages/*/node_modules/**', '**/*.d.ts'],
+    });
+    var run = require('../../bin/compile-package');
+    var command = run(['node', 'bin/compile-package'], true);
+    assert(
+      command.indexOf('-p ' + path.join(projectDir, 'tsconfig.json')) !== -1,
+      'project level tsconfig.json should be honored'
+    );
   });
 
   it('honors -p option for tsc', () => {

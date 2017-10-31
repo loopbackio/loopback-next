@@ -72,6 +72,10 @@ function run(argv, dryRun) {
       // No local tsconfig.build.json or tsconfig.json found
       var baseConfigFile = path.join(rootDir, 'config/tsconfig.common.json');
       baseConfigFile = path.relative(packageDir, baseConfigFile);
+      if (baseConfigFile.indexOf('../') !== 0) {
+        // tsconfig only supports relative or rooted path
+        baseConfigFile = './' + baseConfigFile;
+      }
       // Create tsconfig.json under the package as it's required to parse
       // include/exclude correctly
       tsConfigFile = path.join(packageDir, 'tsconfig.json');

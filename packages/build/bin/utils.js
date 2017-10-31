@@ -67,15 +67,22 @@ function getConfigFile(name, defaultName) {
   var dir = getPackageDir();
   var configFile = path.join(dir, name);
   if (!fs.existsSync(configFile)) {
+    debug('%s does not exist', configFile);
     if (defaultName) {
-      configFile = path.join(dir, name);
+      configFile = path.join(dir, defaultName);
       if (!fs.existsSync(configFile)) {
+        debug('%s does not exist', configFile);
         configFile = path.join(getRootDir(), 'config/' + name);
+      } else {
+        debug('%s found', configFile);
       }
     } else {
       // Fall back to config/
       configFile = path.join(getRootDir(), 'config/' + name);
+      debug('%s found', configFile);
     }
+  } else {
+    debug('%s found', configFile);
   }
   return configFile;
 }
