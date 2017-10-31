@@ -1,6 +1,6 @@
 {
   "name": "@loopback/openapi-spec-builder",
-  "version": "4.0.0-alpha.8",
+  "version": "4.0.0-alpha.9",
   "description": "Make it easy to create OpenAPI (Swagger) specification documents in your tests using the builder pattern.",
   "engines": {
     "node": ">=6"
@@ -17,12 +17,18 @@
   },
   "author": "IBM",
   "license": "MIT",
-  "keywords": ["Swagger", "OpenAPI Spec", "TypeScript", "Builder", "Testing"],
+  "keywords": [
+    "Swagger",
+    "OpenAPI Spec",
+    "TypeScript",
+    "Builder",
+    "Testing"
+  ],
   "dependencies": {
-    "@loopback/openapi-spec": "^4.0.0-alpha.11"
+    "@loopback/openapi-spec": "^4.0.0-alpha.12"
   },
   "devDependencies": {
-    "@loopback/build": "^4.0.0-alpha.1"
+    "@loopback/build": "^4.0.0-alpha.2"
   },
   "files": [
     "README.md",

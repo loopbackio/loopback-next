@@ -1,6 +1,6 @@
 {
   "name": "@loopback/core",
-  "version": "4.0.0-alpha.17",
+  "version": "4.0.0-alpha.18",
   "description": "",
   "engines": {
     "node": ">=6"
@@ -23,12 +23,12 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^4.0.0-alpha.15",
+    "@loopback/context": "^4.0.0-alpha.16",
     "lodash": "^4.17.4"
   },
   "devDependencies": {
-    "@loopback/build": "^4.0.0-alpha.1",
-    "@loopback/testlab": "^4.0.0-alpha.10"
+    "@loopback/build": "^4.0.0-alpha.2",
+    "@loopback/testlab": "^4.0.0-alpha.11"
   },
   "files": [
     "README.md",
