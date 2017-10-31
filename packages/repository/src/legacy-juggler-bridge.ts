@@ -7,7 +7,7 @@ export const jugglerModule = require('loopback-datasource-juggler');
 
 import * as assert from 'assert';
 import {isPromise} from '@loopback/context';
-import {DataObject, Options, AnyObject} from './common-types';
+import {DataObject, Options} from './common-types';
 import {Entity} from './model';
 import {Filter, Where} from './query';
 import {EntityCrudRepository} from './repository';
