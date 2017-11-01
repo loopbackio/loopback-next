@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  <% if (project.loopbackBuild) { %>
+  "extends": "./node_modules/@loopback/build/config/tsconfig.common.json",
+  <% } else { %>
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+  
+    "lib": ["es2017", "dom"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es6",
+    "sourceMap": true,
+    "declaration": true
+  },
+  <% } %>
+  "include": [
+    "src",
+    "test"
+  ],
+  "exclude": [
+    "node_modules/**",
+    "packages/*/node_modules/**",
+    "**/*.d.ts"
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "name": "<%= project.name %>",
+  "version": "1.0.0",
+  "description": "<%= project.description %>",
+  "keywords": [
+    "loopback-<%= project.projectType %>",
+    "loopback"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=8"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean",
+    <% if (project.prettier && project.tslint) { %>
+    "lint": "npm run prettier:check && npm run tslint",
+    "lint:fix": "npm run prettier:fix && npm run tslint:fix",
+    <% } else if (project.prettier) { %>
+    "lint": "npm run prettier:check",
+    "lint:fix": "npm run prettier:fix",
+    <% } else if (project.tslint) { %>
+    "lint": "npm run tslint",
+    "lint:fix": "npm run tslint:fix",
+    <% } %>
+    <% if (project.prettier) { %>
+    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    <% } %>
+    <% if (project.tslint) { %>
+    "tslint": "lb-tslint",
+    "tslint:fix": "npm run tslint -- --fix",
+    <% } %>
+    "pretest": "npm run clean && npm run build",
+    <% if (project.mocha) { %>
+    "test": "lb-dist mocha DIST/test",
+    <% } %>
+    <% if (project.prettier || project.tslint) { %>
+    "posttest": "npm run lint",
+    <% } %>
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "author": "",
+  "license": "MIT",
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "dist6"
+  ],
+  "dependencies": {
+    "@loopback/context": "^4.0.0-alpha.14",
+    "@loopback/core": "^4.0.0-alpha.16"
+  },
+  "devDependencies": {
+    "@loopback/build": "^4.0.0-alpha.3",
+    <% if (project.mocha) { %>
+    "@loopback/testlab": "^4.0.0-alpha.9",
+    "@types/mocha": "^2.2.43",
+    "mocha": "^4.0.1"
+    <% } else { %>
+    "@loopback/testlab": "^4.0.0-alpha.9"
+    <% } %>
+  }
+}
