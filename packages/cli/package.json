@@ -1,0 +1,47 @@
+{
+  "name": "@loopback/cli",
+  "version": "4.0.0-alpha.1",
+  "description": "Yeoman generator for LoopBack 4",
+  "homepage": "https://github.com/strongloop/loopback-next/tree/master/packages/cli",
+  "author": {
+    "name": "IBM"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "generators"
+  ],
+  "bin": {
+    "lb4": "bin/cli.js"
+  },
+  "main": "generators/app/index.js",
+  "keywords": [
+    "LoopBack",
+    "CLI",
+    "yeoman-generator"
+  ],
+  "devDependencies": {
+    "mocha": "^4.0.1",
+    "nsp": "^2.6.3",
+    "yeoman-assert": "^3.1.0",
+    "yeoman-test": "^1.7.0"
+  },
+  "dependencies": {
+    "camelcase-keys": "^4.1.0",
+    "debug": "^3.1.0",
+    "minimist": "^1.2.0",
+    "yeoman-generator": "^2.0.1"
+  },
+  "scripts": {
+    "prepublishOnly": "nsp check",
+    "test": "mocha test/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next"
+  },
+  "license": "MIT"
+}

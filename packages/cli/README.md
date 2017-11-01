@@ -1,0 +1,57 @@
+# @loopback/cli
+
+This module contains the experimental CLI for LoopBack 4.
+
+## Installation
+
+Run the following command to install the CLI.
+
+`npm install -g @loopback/cli`
+
+## Usage
+
+1. To scaffold a LoopBack 4 application
+
+    `lb4 app`
+
+```
+Usage:
+  lb4 app [options] [<name>]
+
+Options:
+  -h,   --help             # Print the generator's options and usage
+        --skip-cache       # Do not remember prompt answers              Default: false
+        --skip-install     # Do not automatically install dependencies   Default: false
+        --applicationName  # Application name
+        --description      # Description for the application
+        --outdir           # Project root directory for the application
+        --tslint           # Enable tslint
+        --prettier         # Enable prettier
+        --mocha            # Enable mocha
+        --loopbackBuild    # Use @loopback/build
+
+Arguments:
+  name  # Project name for the application  Type: String  Required: false
+```
+
+2. To scaffold a LoopBack 4 extension
+
+    `lb4 extension`
+
+```
+Usage:
+  lb4 extension [options] [<name>]
+
+Options:
+  -h,   --help           # Print the generator's options and usage
+        --skip-cache     # Do not remember prompt answers             Default: false
+        --skip-install   # Do not automatically install dependencies  Default: false
+        --description    # Description for the extension
+        --outdir         # Project root directory for the extension
+        --tslint         # Enable tslint
+        --prettier       # Enable prettier
+        --mocha          # Enable mocha
+        --loopbackBuild  # Use @loopback/build
+        --componentName  # Component name
+
+```
