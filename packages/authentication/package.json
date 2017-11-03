@@ -14,7 +14,7 @@
     "build:apidocs": "lb-apidocs",
     "clean": "rm -rf loopback-authentication*.tgz dist* package",
     "integration": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/integration/**/*.js'",
-    "prepublish": "npm run build && npm run build:apidocs",
+    "prepare": "npm run build && npm run build:apidocs",
     "pretest": "npm run build:current",
     "test": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js' 'DIST/test/integration/**/*.js' 'DIST/test/acceptance/**/*.js'",
     "unit": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js'",
@@ -47,7 +47,8 @@
     "index.d.ts",
     "dist/src",
     "dist6/src",
-    "api-docs"
+    "api-docs",
+    "src"
   ],
   "repository": {
     "type": "git",
