@@ -11,7 +11,7 @@
     "build:dist": "lb-tsc es2017",
     "build:dist6": "lb-tsc es2015",
     "clean": "rm -rf loopback-testlab*.tgz dist* package",
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "pretest": "npm run build:current",
     "test": "lb-dist mocha --recursive DIST/test",
     "verify": "npm pack && tar xf loopback-testlab*.tgz && tree package && npm run clean"
@@ -39,7 +39,8 @@
     "index.d.ts",
     "dist/src",
     "dist6/src",
-    "should-as-function.d.ts"
+    "should-as-function.d.ts",
+    "src"
   ],
   "repository": {
     "type": "git",
