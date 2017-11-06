@@ -1,9 +1,9 @@
 {
-  "name": "<%= project.name %>",
+  "name": "<%= project.name -%>",
   "version": "1.0.0",
-  "description": "<%= project.description %>",
+  "description": "<%= project.description -%>",
   "keywords": [
-    "loopback-<%= project.projectType %>",
+    "loopback-<%= project.projectType -%>",
     "loopback"
   ],
   "main": "index.js",
@@ -14,32 +14,32 @@
     "build": "tsc --outDir dist --target es2017",
     "build:watch": "tsc --outDir dist --target es2017 --watch",
     "clean": "rm -rf dist",
-    <% if (project.prettier && project.tslint) { %>
+    <% if (project.prettier && project.tslint) { -%>
     "lint": "npm run prettier:check && npm run tslint",
     "lint:fix": "npm run prettier:fix && npm run tslint:fix",
-    <% } else if (project.prettier) { %>
+    <% } else if (project.prettier) { -%>
     "lint": "npm run prettier:check",
     "lint:fix": "npm run prettier:fix",
-    <% } else if (project.tslint) { %>
+    <% } else if (project.tslint) { -%>
     "lint": "npm run tslint",
     "lint:fix": "npm run tslint:fix",
-    <% } %>
-    <% if (project.prettier) { %>
+    <% } -%>
+    <% if (project.prettier) { -%>
     "prettier:cli": "prettier \"**/*.ts\" \"**/*.js\"",
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
-    <% } %>
-    <% if (project.tslint) { %>
+    <% } -%>
+    <% if (project.tslint) { -%>
     "tslint": "tslint",
     "tslint:fix": "npm run tslint -- --fix",
-    <% } %>
+    <% } -%>
     "pretest": "npm run clean && npm run build",
-    <% if (project.mocha) { %>
+    <% if (project.mocha) { -%>
     "test": "mocha dist/test",
-    <% } %>
-    <% if (project.prettier || project.tslint) { %>
+    <% } -%>
+    <% if (project.prettier || project.tslint) { -%>
     "posttest": "npm run lint",
-    <% } %>
+    <% } -%>
     "prepare": "npm run build"
   },
   "repository": {
@@ -54,21 +54,26 @@
     "dist"
   ],
   "dependencies": {
-    "@loopback/context": "^4.0.0-alpha.14",
-    "@loopback/core": "^4.0.0-alpha.16"
+    "@loopback/context": "^4.0.0-alpha.18",
+    <% if (project.projectType === 'application') { -%>
+    "@loopback/core": "^4.0.0-alpha.20",
+    "@loopback/rest": "^4.0.0-alpha.7"
+    <% } else { -%>
+    "@loopback/core": "^4.0.0-alpha.20"
+    <% } -%>
   },
   "devDependencies": {
-    <% if (project.prettier) { %>
+    <% if (project.prettier) { -%>
     "prettier": "^1.7.3",
-    <% } %>
-    <% if (project.tslint) { %>
+    <% } -%>
+    <% if (project.tslint) { -%>
     "tslint": "^5.7.0",
-    <% } %>
-    "@loopback/testlab": "^4.0.0-alpha.9",
-    <% if (project.mocha) { %>
+    <% } -%>
+    "@loopback/testlab": "^4.0.0-alpha.13",
+    <% if (project.mocha) { -%>
     "@types/mocha": "^2.2.43",
     "mocha": "^4.0.1",
-    <% } %>
+    <% } -%>
     "typescript": "^2.5.3"
   }
 }

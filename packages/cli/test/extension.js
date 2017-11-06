@@ -12,6 +12,6 @@ const props = {
   description: 'My extension for LoopBack 4',
 };
 
-const tests = require('./project')(generator, props);
+const tests = require('./project')(generator, props, 'extension');
 
 describe('generator-loopback4:extension', tests);
