@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.14"></a>
+# [4.0.0-alpha.14](https://github.com/strongloop/loopback-next/compare/@loopback/repository@4.0.0-alpha.13...@loopback/repository@4.0.0-alpha.14) (2017-11-06)
+
+
+### Bug Fixes
+
+* **repository:** findById will reject on no result ([04077dc](https://github.com/strongloop/loopback-next/commit/04077dc))
+
+
+
+
 <a name="4.0.0-alpha.13"></a>
 # [4.0.0-alpha.13](https://github.com/strongloop/loopback-next/compare/@loopback/repository@4.0.0-alpha.12...@loopback/repository@4.0.0-alpha.13) (2017-10-31)
 
