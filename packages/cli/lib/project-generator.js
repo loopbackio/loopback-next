@@ -53,6 +53,14 @@ module.exports = class extends Generator {
     });
   }
 
+  /**
+   * Override the usage text by replacing `yo loopback4:` with `lb4 `.
+   */
+  usage() {
+    const text = super.usage();
+    return text.replace(/^yo loopback4:/g, 'lb4 ');
+  }
+
   setOptions() {
     this.projectInfo = {};
     [

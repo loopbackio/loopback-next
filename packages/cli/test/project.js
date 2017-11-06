@@ -7,9 +7,22 @@
 const path = require('path');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
+const yeoman = require('yeoman-environment');
 
 module.exports = function(appGenerator, props) {
   return function() {
+    describe('help', () => {
+      it('prints lb4', () => {
+        const env = yeoman.createEnv();
+        const name = appGenerator.substring(appGenerator.lastIndexOf('/') + 1);
+        env.register(appGenerator, 'loopback4:' + name);
+        const generator = env.create('loopback4:' + name);
+        const helpText = generator.help();
+        assert(helpText.match(/lb4 /));
+        assert(!helpText.match(/loopback4:/));
+      });
+    });
+
     describe('without settings', () => {
       before(() => {
         return helpers.run(appGenerator).withPrompts(props);
