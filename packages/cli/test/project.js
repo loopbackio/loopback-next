@@ -9,13 +9,15 @@ const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 const yeoman = require('yeoman-environment');
 
-module.exports = function(appGenerator, props) {
+module.exports = function(projGenerator, props, projectType) {
   return function() {
     describe('help', () => {
       it('prints lb4', () => {
         const env = yeoman.createEnv();
-        const name = appGenerator.substring(appGenerator.lastIndexOf('/') + 1);
-        env.register(appGenerator, 'loopback4:' + name);
+        const name = projGenerator.substring(
+          projGenerator.lastIndexOf('/') + 1
+        );
+        env.register(projGenerator, 'loopback4:' + name);
         const generator = env.create('loopback4:' + name);
         const helpText = generator.help();
         assert(helpText.match(/lb4 /));
@@ -25,7 +27,7 @@ module.exports = function(appGenerator, props) {
 
     describe('without settings', () => {
       before(() => {
-        return helpers.run(appGenerator).withPrompts(props);
+        return helpers.run(projGenerator).withPrompts(props);
       });
 
       it('creates files', () => {
@@ -49,12 +51,23 @@ module.exports = function(appGenerator, props) {
           ['tslint.json', '"rules"'],
           ['tsconfig.json', '"compilerOptions"'],
         ]);
+
+        if (projectType === 'application') {
+          assert.fileContent('package.json', '"@loopback/core"');
+          assert.fileContent('package.json', '"@loopback/context"');
+          assert.fileContent('package.json', '"@loopback/rest"');
+        }
+        if (projectType === 'extension') {
+          assert.fileContent('package.json', '"@loopback/core"');
+          assert.fileContent('package.json', '"@loopback/context"');
+          assert.noFileContent('package.json', '"@loopback/rest"');
+        }
       });
     });
 
     describe('with loopbackBuild disabled', () => {
       before(() => {
-        return helpers.run(appGenerator).withPrompts(
+        return helpers.run(projGenerator).withPrompts(
           Object.assign(
             {
               settings: [
@@ -89,7 +102,7 @@ module.exports = function(appGenerator, props) {
 
     describe('with prettier disabled', () => {
       before(() => {
-        return helpers.run(appGenerator).withPrompts(
+        return helpers.run(projGenerator).withPrompts(
           Object.assign(
             {
               settings: [
@@ -112,7 +125,7 @@ module.exports = function(appGenerator, props) {
 
     describe('with tslint disabled', () => {
       before(() => {
-        return helpers.run(appGenerator).withPrompts(
+        return helpers.run(projGenerator).withPrompts(
           Object.assign(
             {
               settings: [
@@ -135,7 +148,7 @@ module.exports = function(appGenerator, props) {
 
     describe('with loopbackBuild & tslint disabled', () => {
       before(() => {
-        return helpers.run(appGenerator).withPrompts(
+        return helpers.run(projGenerator).withPrompts(
           Object.assign(
             {
               settings: [

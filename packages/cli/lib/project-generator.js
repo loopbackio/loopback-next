@@ -62,7 +62,7 @@ module.exports = class extends Generator {
   }
 
   setOptions() {
-    this.projectInfo = {};
+    this.projectInfo = {projectType: this.projectType};
     [
       'name',
       'description',
