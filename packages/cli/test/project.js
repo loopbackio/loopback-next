@@ -56,11 +56,19 @@ module.exports = function(projGenerator, props, projectType) {
           assert.fileContent('package.json', '"@loopback/core"');
           assert.fileContent('package.json', '"@loopback/context"');
           assert.fileContent('package.json', '"@loopback/rest"');
+          assert.jsonFileContent('package.json', {
+            scripts: {
+              start: 'npm run build && node .',
+            },
+          });
         }
         if (projectType === 'extension') {
           assert.fileContent('package.json', '"@loopback/core"');
           assert.fileContent('package.json', '"@loopback/context"');
           assert.noFileContent('package.json', '"@loopback/rest"');
+          assert.noJsonFileContent('package.json', {
+            start: 'npm run build && node .',
+          });
         }
       });
     });

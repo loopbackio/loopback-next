@@ -40,6 +40,9 @@
     <% if (project.prettier || project.tslint) { -%>
     "posttest": "npm run lint",
     <% } -%>
+    <% if (project.projectType === 'application') { -%>
+    "start": "npm run build && node .",
+    <% } -%>
     "prepare": "npm run build"
   },
   "repository": {
