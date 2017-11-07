@@ -42,7 +42,7 @@
     "build:current": "lerna run --loglevel=silent build:current",
     "pretest": "npm run build:current",
     "test": "node packages/build/bin/run-nyc npm run mocha",
-    "mocha": "node packages/build/bin/select-dist mocha --exit --opts test/mocha.opts \"packages/*/DIST/test/**/*.js\"",
+    "mocha": "node packages/build/bin/select-dist mocha --opts test/mocha.opts \"packages/*/DIST/test/**/*.js\"",
     "posttest": "npm run lint"
   },
   "config": {

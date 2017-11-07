@@ -5,6 +5,7 @@
 
 import {ServerResponse as Response} from 'http';
 import {OperationRetval} from './internal-types';
+import {HttpError} from 'http-errors';
 /**
  * Writes the result from Application controller method
  * into the HTTP response
@@ -34,5 +35,41 @@ export function writeResultToResponse(
     }
     response.write(result);
   }
+  response.end();
+}
+
+/**
+ * Write an error into the HTTP response
+ * @param response HTTP response
+ * @param error Error
+ */
+export function writeErrorToResponse(response: Response, error: Error) {
+  const e = <HttpError>error;
+  const statusCode = (response.statusCode = e.statusCode || e.status || 500);
+  if (e.headers) {
+    // Set response headers for the error
+    for (const h in e.headers) {
+      response.setHeader(h, e.headers[h]);
+    }
+  }
+  // Build an error object
+  const errObj: Partial<HttpError> = {
+    statusCode,
+  };
+  if (e.expose) {
+    // Expose other properties if the `expose` flag is set to `true`
+    for (const p in e) {
+      if (
+        p === 'headers' ||
+        p === 'expose' ||
+        p === 'status' ||
+        p === 'statusCode'
+      )
+        continue;
+      errObj[p] = e[p];
+    }
+  }
+  response.setHeader('Content-Type', 'application/json');
+  response.write(JSON.stringify(errObj));
   response.end();
 }

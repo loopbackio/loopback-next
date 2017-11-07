@@ -11,9 +11,11 @@ import {
   ControllerSpec,
   parseOperationArgs,
   RestBindings,
+  get,
 } from '../..';
 import {Context} from '@loopback/context';
 import {Client, createClientForHandler} from '@loopback/testlab';
+import * as HttpErrors from 'http-errors';
 import {ParameterObject} from '@loopback/openapi-spec';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 import {
@@ -308,7 +310,11 @@ describe('HttpHandler', () => {
       return client
         .post('/show-body')
         .send('key=value')
-        .expect(415);
+        .expect(415, {
+          message:
+            'Content-type application/x-www-form-urlencoded is not supported.',
+          statusCode: 415,
+        });
     });
 
     it('returns 400 for malformed JSON body', () => {
@@ -317,7 +323,7 @@ describe('HttpHandler', () => {
         .post('/show-body')
         .set('content-type', 'application/json')
         .send('malformed-json')
-        .expect(400);
+        .expect(400, {statusCode: 400});
     });
 
     function givenBodyParamController() {
@@ -396,7 +402,9 @@ describe('HttpHandler', () => {
       givenControllerClass(ThrowingController, spec);
 
       logErrorsExcept(500);
-      return client.get('/hello').expect(500);
+      return client.get('/hello').expect(500, {
+        statusCode: 500,
+      });
     });
 
     it('handles invocation of an unknown method', async () => {
@@ -413,7 +421,64 @@ describe('HttpHandler', () => {
       givenControllerClass(TestController, spec);
       logErrorsExcept(404);
 
-      await client.get('/hello').expect(404);
+      await client.get('/hello').expect(404, {
+        message: 'Controller method not found: TestController.unknownMethod',
+        statusCode: 404,
+      });
+    });
+
+    it('handles errors thrown from the method', async () => {
+      const spec = anOpenApiSpec()
+        .withOperation(
+          'get',
+          '/hello',
+          anOperationSpec().withOperationName('hello'),
+        )
+        .build();
+
+      class TestController {
+        @get('/hello')
+        hello() {
+          const err = new HttpErrors.BadRequest('Bad hello');
+          err.headers = {'X-BAD-REQ': 'hello'};
+          throw err;
+        }
+      }
+
+      givenControllerClass(TestController, spec);
+      logErrorsExcept(400);
+
+      await client
+        .get('/hello')
+        .expect('X-BAD-REQ', 'hello')
+        .expect(400, {
+          message: 'Bad hello',
+          statusCode: 400,
+        });
+    });
+
+    it('handles 500 error thrown from the method', async () => {
+      const spec = anOpenApiSpec()
+        .withOperation(
+          'get',
+          '/hello',
+          anOperationSpec().withOperationName('hello'),
+        )
+        .build();
+
+      class TestController {
+        @get('/hello')
+        hello() {
+          throw new HttpErrors.InternalServerError('Bad hello');
+        }
+      }
+
+      givenControllerClass(TestController, spec);
+      logErrorsExcept(400);
+
+      await client.get('/hello').expect(500, {
+        statusCode: 500,
+      });
     });
   });
 
