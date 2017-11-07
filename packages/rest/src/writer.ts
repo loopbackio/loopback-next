@@ -6,6 +6,8 @@
 import {ServerResponse as Response} from 'http';
 import {OperationRetval} from './internal-types';
 import {HttpError} from 'http-errors';
+import {Readable} from 'stream';
+
 /**
  * Writes the result from Application controller method
  * into the HTTP response
@@ -20,13 +22,26 @@ export function writeResultToResponse(
   result: OperationRetval,
 ): void {
   if (result) {
+    if (result instanceof Readable || typeof result.pipe === 'function') {
+      response.setHeader('Content-Type', 'application/octet-stream');
+      // Stream
+      result.pipe(response);
+      return;
+    }
     switch (typeof result) {
       case 'object':
-        // TODO(ritch) remove this, should be configurable
-        // See https://github.com/strongloop/loopback-next/issues/436
-        response.setHeader('Content-Type', 'application/json');
-        // TODO(bajtos) handle errors - JSON.stringify can throw
-        result = JSON.stringify(result);
+      case 'boolean':
+      case 'number':
+        if (Buffer.isBuffer(result)) {
+          // Buffer for binary data
+          response.setHeader('Content-Type', 'application/octet-stream');
+        } else {
+          // TODO(ritch) remove this, should be configurable
+          // See https://github.com/strongloop/loopback-next/issues/436
+          response.setHeader('Content-Type', 'application/json');
+          // TODO(bajtos) handle errors - JSON.stringify can throw
+          result = JSON.stringify(result);
+        }
         break;
       default:
         response.setHeader('Content-Type', 'text/plain');

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ServerResponse, writeResultToResponse} from '../..';
-
+import {Duplex} from 'stream';
 import {expect, mockResponse, ShotObservedResponse} from '@loopback/testlab';
 
 describe('writer', () => {
@@ -31,20 +31,41 @@ describe('writer', () => {
     expect(result.payload).to.equal('{"name":"Joe"}');
   });
 
-  it('writes boolean result to response as text', async () => {
+  it('writes boolean result to response as json', async () => {
     writeResultToResponse(response, true);
     const result = await observedResponse;
 
-    expect(result.headers['content-type']).to.eql('text/plain');
+    expect(result.headers['content-type']).to.eql('application/json');
     expect(result.payload).to.equal('true');
   });
 
-  it('writes number result to response as text', async () => {
+  it('writes number result to response as json', async () => {
     writeResultToResponse(response, 2);
     const result = await observedResponse;
 
-    expect(result.headers['content-type']).to.eql('text/plain');
+    expect(result.headers['content-type']).to.eql('application/json');
     expect(result.payload).to.equal('2');
+  });
+
+  it('writes buffer result to response as binary', async () => {
+    const buf = Buffer.from('ABC123');
+    writeResultToResponse(response, buf);
+    const result = await observedResponse;
+
+    expect(result.headers['content-type']).to.eql('application/octet-stream');
+    expect(result.payload).to.equal('ABC123');
+  });
+
+  it('writes stream result to response as binary', async () => {
+    const buf = Buffer.from('ABC123');
+    const stream = new Duplex();
+    stream.push(buf);
+    stream.push(null);
+    writeResultToResponse(response, stream);
+    const result = await observedResponse;
+
+    expect(result.headers['content-type']).to.eql('application/octet-stream');
+    expect(result.payload).to.equal('ABC123');
   });
 
   function setupResponseMock() {
