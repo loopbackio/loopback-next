@@ -25,7 +25,7 @@
   ],
   "devDependencies": {
     "mocha": "^4.0.1",
-    "nsp": "^2.6.3",
+    "nsp": "^3.1.0",
     "yeoman-assert": "^3.1.0",
     "yeoman-test": "^1.7.0"
   },
