@@ -16,6 +16,9 @@ import {
 
 const debug = require('debug')('loopback:core:router:metadata');
 
+const ENDPOINTS_KEY = 'rest:endpoints';
+const API_SPEC_KEY = 'rest:api-spec';
+
 // tslint:disable:no-any
 
 export interface ControllerSpec {
@@ -36,6 +39,14 @@ export interface ControllerSpec {
  * Decorate the given Controller constructor with metadata describing
  * the HTTP/REST API the Controller implements/provides.
  *
+ * `@api` can be applied to controller classes. For example,
+ * ```
+ * @api({basePath: '/my'})
+ * class MyController {
+ *   // ...
+ * }
+ * ```
+ *
  * @param spec OpenAPI specification describing the endpoints
  * handled by this controller
  *
@@ -47,95 +58,89 @@ export function api(spec: ControllerSpec) {
       typeof constructor === 'function',
       'The @api decorator can be applied to constructors only.',
     );
-    Reflector.defineMetadata('loopback:api-spec', spec, constructor);
+    const apiSpec = resolveControllerSpec(constructor, spec);
+    Reflector.defineMetadata(API_SPEC_KEY, apiSpec, constructor);
   };
 }
 
+/**
+ * Data structure for REST related metadata
+ */
 interface RestEndpoint {
   verb: string;
   path: string;
+  spec?: OperationObject;
+  target: any;
 }
 
-export function getControllerSpec(constructor: Function): ControllerSpec {
+/**
+ * Build the api spec from class and method level decorations
+ * @param constructor Controller class
+ * @param spec API spec
+ */
+function resolveControllerSpec(
+  constructor: Function,
+  spec?: ControllerSpec,
+): ControllerSpec {
   debug(`Retrieving OpenAPI specification for controller ${constructor.name}`);
-
-  let spec: ControllerSpec = Reflector.getMetadata(
-    'loopback:api-spec',
-    constructor,
-  );
 
   if (spec) {
     debug('  using class-level spec defined via @api()', spec);
-    return spec;
+    spec = Object.assign({}, spec);
+  } else {
+    spec = {paths: {}};
   }
 
-  spec = {paths: {}};
-  for (
-    let proto = constructor.prototype;
-    proto && proto !== Object.prototype;
-    proto = Object.getPrototypeOf(proto)
-  ) {
-    addPrototypeMethodsToSpec(spec, proto);
+  const endpoints =
+    Reflector.getMetadata(ENDPOINTS_KEY, constructor.prototype) || {};
+
+  for (const op in endpoints) {
+    const endpoint = endpoints[op];
+    const className =
+      endpoint.target.constructor.name ||
+      constructor.name ||
+      '<AnonymousClass>';
+    const fullMethodName = `${className}.${op}`;
+
+    const {verb, path} = endpoint;
+    const endpointName = `${fullMethodName} (${verb} ${path})`;
+
+    let operationSpec = endpoint.spec;
+    if (!operationSpec) {
+      // The operation was defined via @operation(verb, path) with no spec
+      operationSpec = {
+        responses: {},
+      };
+    }
+
+    if (!spec.paths[path]) {
+      spec.paths[path] = {};
+    }
+
+    if (spec.paths[path][verb]) {
+      // Operations from subclasses override those from the base
+      debug(`  Overriding ${endpointName} - endpoint was already defined`);
+    }
+
+    debug(`  adding ${endpointName}`, operationSpec);
+    spec.paths[path][verb] = Object.assign({}, operationSpec, {
+      'x-operation-name': op,
+    });
   }
   return spec;
 }
 
-function addPrototypeMethodsToSpec(spec: ControllerSpec, proto: any) {
-  const controllerMethods = Object.getOwnPropertyNames(proto).filter(
-    key => key !== 'constructor' && typeof proto[key] === 'function',
-  );
-  for (const methodName of controllerMethods) {
-    addControllerMethodToSpec(spec, proto, methodName);
+/**
+ * Get the controller spec for the given class
+ * @param constructor Controller class
+ */
+export function getControllerSpec(constructor: Function): ControllerSpec {
+  let spec = Reflector.getMetadata(API_SPEC_KEY, constructor);
+  if (!spec) {
+    spec = resolveControllerSpec(constructor, spec);
+    Reflector.defineMetadata(API_SPEC_KEY, spec, constructor);
   }
-}
-
-function addControllerMethodToSpec(
-  spec: ControllerSpec,
-  proto: any,
-  methodName: string,
-) {
-  const className = proto.constructor.name || '<UnknownClass>';
-  const fullMethodName = `${className}.${methodName}`;
-
-  const endpoint: RestEndpoint = Reflector.getMetadata(
-    'loopback:operation-endpoint',
-    proto,
-    methodName,
-  );
-
-  if (!endpoint) {
-    debug(`  skipping ${fullMethodName} - no endpoint is defined`);
-    return;
-  }
-
-  const {verb, path} = endpoint;
-  const endpointName = `${fullMethodName} (${verb} ${path})`;
-
-  let operationSpec = Reflector.getMetadata(
-    'loopback:operation-spec',
-    proto,
-    methodName,
-  );
-  if (!operationSpec) {
-    // The operation was defined via @operation(verb, path) with no spec
-    operationSpec = {
-      responses: {},
-    };
-  }
-
-  if (!spec.paths[path]) {
-    spec.paths[path] = {};
-  }
-
-  if (spec.paths[path][verb]) {
-    debug(`  skipping ${endpointName} - endpoint was already defined`);
-    return;
-  }
-
-  debug(`  adding ${endpointName}`, operationSpec);
-  spec.paths[path][verb] = Object.assign({}, operationSpec, {
-    'x-operation-name': methodName,
-  });
+  return spec;
 }
 
 /**
@@ -207,19 +212,34 @@ export function del(path: string, spec?: OperationObject) {
  *   of this operation.
  */
 export function operation(verb: string, path: string, spec?: OperationObject) {
-  // tslint:disable-next-line:no-any
   return function(
-    target: object,
+    target: any,
     propertyKey: string,
     descriptor: PropertyDescriptor,
   ) {
-    const endpoint: RestEndpoint = {verb, path};
-    Reflector.defineMetadata(
-      'loopback:operation-endpoint',
-      endpoint,
-      target,
-      propertyKey,
+    assert(
+      typeof target[propertyKey] === 'function',
+      '@operation decorator can be applied to methods only',
     );
+
+    let endpoints = Object.assign(
+      {},
+      Reflector.getMetadata(ENDPOINTS_KEY, target),
+    );
+    Reflector.defineMetadata(ENDPOINTS_KEY, endpoints, target);
+
+    let endpoint: Partial<RestEndpoint> = endpoints[propertyKey];
+    if (!endpoint) {
+      // Add the new endpoint metadata for the method
+      endpoint = {verb, path, spec, target};
+      endpoints[propertyKey] = endpoint;
+    } else {
+      // Update the endpoint metadata
+      // It can be created by @param
+      endpoint.verb = verb;
+      endpoint.path = path;
+      endpoint.target = target;
+    }
 
     if (!spec) {
       // Users can define parameters and responses using decorators
@@ -231,7 +251,7 @@ export function operation(verb: string, path: string, spec?: OperationObject) {
     // will invoke param() decorator first and operation() second.
     // As a result, we need to preserve any partial definitions
     // already provided by other decorators.
-    editOperationSpec(target, propertyKey, overrides => {
+    editOperationSpec(endpoint, overrides => {
       const mergedSpec = Object.assign({}, spec, overrides);
 
       // Merge "responses" definitions
@@ -285,7 +305,20 @@ export function param(paramSpec: ParameterObject) {
       '@param decorator can be applied to methods only',
     );
 
-    editOperationSpec(target, propertyKey, operationSpec => {
+    let endpoints = Object.assign(
+      {},
+      Reflector.getMetadata(ENDPOINTS_KEY, target),
+    );
+    Reflector.defineMetadata(ENDPOINTS_KEY, endpoints, target);
+
+    let endpoint: Partial<RestEndpoint> = endpoints[propertyKey];
+    if (!endpoint) {
+      // Add the new endpoint metadata for the method
+      endpoint = {target};
+      endpoints[propertyKey] = endpoint;
+    }
+
+    editOperationSpec(endpoint, operationSpec => {
       let decoratorStyle;
       if (typeof descriptorOrParameterIndex === 'number') {
         decoratorStyle = 'parameter';
@@ -318,16 +351,10 @@ export function param(paramSpec: ParameterObject) {
 }
 
 function editOperationSpec(
-  target: any,
-  propertyKey: string,
+  endpoint: Partial<RestEndpoint>,
   updateFn: (spec: OperationObject) => OperationObject,
 ) {
-  let spec: OperationObject = Reflector.getMetadata(
-    'loopback:operation-spec',
-    target,
-    propertyKey,
-  );
-
+  let spec = endpoint.spec;
   if (!spec) {
     spec = {
       responses: {},
@@ -335,13 +362,7 @@ function editOperationSpec(
   }
 
   spec = updateFn(spec);
-
-  Reflector.defineMetadata(
-    'loopback:operation-spec',
-    spec,
-    target,
-    propertyKey,
-  );
+  endpoint.spec = spec;
 }
 
 export namespace param {
