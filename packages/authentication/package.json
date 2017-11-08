@@ -26,15 +26,15 @@
     "@loopback/context": "^4.0.0-alpha.18",
     "@loopback/core": "^4.0.0-alpha.20",
     "@loopback/rest": "^4.0.0-alpha.7",
-    "@types/passport": "^0.3.3",
-    "@types/passport-http": "^0.3.2",
-    "passport": "^0.3.2",
+    "passport": "^0.4.0",
     "passport-strategy": "^1.0.0"
   },
   "devDependencies": {
     "@loopback/build": "^4.0.0-alpha.4",
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.11",
     "@loopback/testlab": "^4.0.0-alpha.13",
+    "@types/passport": "^0.3.5",
+    "@types/passport-http": "^0.3.3",
     "passport-http": "^0.3.0"
   },
   "keywords": [
