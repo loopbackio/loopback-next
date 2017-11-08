@@ -27,7 +27,7 @@
   "devDependencies": {
     "@loopback/build": "^4.0.0-alpha.4",
     "@loopback/testlab": "^4.0.0-alpha.13",
-    "@types/bluebird": "^3.5.8",
+    "@types/bluebird": "^3.5.18",
     "bluebird": "^3.5.0"
   },
   "keywords": [

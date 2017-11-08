@@ -13,12 +13,12 @@
   "license": "MIT",
   "dependencies": {
     "@types/mocha": "^2.2.43",
-    "@types/node": "^8.0.32",
+    "@types/node": "^8.0.50",
     "cross-spawn": "^5.1.0",
     "debug": "^3.1.0",
     "mocha": "^4.0.0",
-    "nyc": "^11.2.1",
-    "prettier": "^1.7.3",
+    "nyc": "^11.3.0",
+    "prettier": "^1.8.1",
     "strong-docs": "^1.6.0",
     "tslint": "^5.7.0",
     "typescript": "^2.5.3"

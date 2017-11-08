@@ -34,7 +34,7 @@
     "js-yaml": "^3.9.1",
     "lodash": "^4.17.4",
     "path-to-regexp": "^2.0.0",
-    "swagger2openapi": "^2.9.2"
+    "swagger2openapi": "^2.10.7"
   },
   "devDependencies": {
     "@loopback/build": "^4.0.0-alpha.4",
