@@ -168,6 +168,14 @@ module.exports = class extends Generator {
       {globOptions: {dot: true}}
     );
 
+    // Rename `_.gitignore` back to `.gitignore`.
+    // Please note `.gitignore` will be renamed to `.npmignore` during publish
+    // if it's there in the templates.
+    this.fs.move(
+      this.destinationPath('_.gitignore'),
+      this.destinationPath('.gitignore')
+    );
+
     // Copy project type specific files from ./templates
     this.fs.copyTpl(
       this.templatePath('**/*'),
