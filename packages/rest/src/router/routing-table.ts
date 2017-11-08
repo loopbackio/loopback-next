@@ -66,13 +66,24 @@ export class RoutingTable {
 
     debug('Registering Controller with API', spec);
 
-    for (const path in spec.paths) {
-      for (const verb in spec.paths[path]) {
-        const opSpec: OperationObject = spec.paths[path][verb];
-        const route = new ControllerRoute(verb, path, opSpec, controller);
+    const basePath = spec.basePath || '/';
+    for (const p in spec.paths) {
+      for (const verb in spec.paths[p]) {
+        const opSpec: OperationObject = spec.paths[p][verb];
+        const fullPath = RoutingTable.joinPath(basePath, p);
+        const route = new ControllerRoute(verb, fullPath, opSpec, controller);
         this.registerRoute(route);
       }
     }
+  }
+
+  static joinPath(basePath: string, path: string) {
+    const fullPath = [basePath, path]
+      .join('/') // Join by /
+      .replace(/(\/){2,}/g, '/') // Remove extra /
+      .replace(/\/$/, '') // Remove trailing /
+      .replace(/^(\/)?/, '/'); // Add leading /
+    return fullPath;
   }
 
   registerRoute(route: RouteEntry) {

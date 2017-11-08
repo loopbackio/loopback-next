@@ -344,6 +344,24 @@ describe('Routing', () => {
     await client.get('/greet?name=world').expect(200, 'hello world');
   });
 
+  it('supports controller routes declared via API spec with basePath', async () => {
+    const app = givenAnApplication();
+    const server = await givenAServer(app);
+
+    @api({basePath: '/my', paths: {}})
+    class MyController {
+      @get('/greet')
+      greet(@param.query.string('name') name: string) {
+        return `hello ${name}`;
+      }
+    }
+
+    app.controller(MyController);
+
+    const client = whenIMakeRequestTo(server);
+    await client.get('/my/greet?name=world').expect(200, 'hello world');
+  });
+
   it('reports operations bound to unknown controller', async () => {
     const app = givenAnApplication();
     const server = await givenAServer(app);
