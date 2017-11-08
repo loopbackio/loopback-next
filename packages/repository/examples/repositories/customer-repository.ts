@@ -19,8 +19,8 @@ export class CustomerRepository extends CrudRepositoryImpl<Customer, string> {
   }
 
   /**
-  * Override deleteAll to disable the operation
-  */
+   * Override deleteAll to disable the operation
+   */
   deleteAll(where?: Where, options?: Options) {
     return Promise.reject(new Error('deleteAll is disabled'));
   }

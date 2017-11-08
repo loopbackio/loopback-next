@@ -85,7 +85,7 @@ export class ModelDefinition {
     definitionOrType: PropertyDefinition | PropertyType,
   ): this {
     const definition = (definitionOrType as PropertyDefinition).type
-      ? definitionOrType as PropertyDefinition
+      ? (definitionOrType as PropertyDefinition)
       : {type: definitionOrType};
     this.properties[name] = definition;
     return this;
