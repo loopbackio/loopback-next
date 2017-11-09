@@ -16,6 +16,12 @@
  * @interface Server
  */
 export interface Server {
+  /**
+   * Start the server
+   */
   start(): Promise<void>;
+  /**
+   * Stop the server
+   */
   stop(): Promise<void>;
 }

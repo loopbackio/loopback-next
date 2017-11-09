@@ -23,6 +23,10 @@ export function promisify<T, A1, A2>(
   func: (arg1: A1, arg2: A2, callback: (err: any, result: T) => void) => void,
 ): (arg1: A1, arg2: A2) => Promise<T>;
 
+/**
+ * Polyfill promisify and use `util.promisify` if available
+ * @param func A callback-style function
+ */
 export function promisify<T>(
   func: (...args: any[]) => void,
 ): (...args: any[]) => Promise<T> {
