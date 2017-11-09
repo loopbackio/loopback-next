@@ -78,12 +78,16 @@ export class Application extends Context {
    *
    * @param {Constructor<Server>} server The server constructor.
    * @param {string=} name Optional override for key name.
+   * @returns {Binding} Binding for the server class
    * @memberof Application
    */
-  public server<T extends Server>(ctor: Constructor<T>, name?: string) {
+  public server<T extends Server>(
+    ctor: Constructor<T>,
+    name?: string,
+  ): Binding {
     const suffix = name || ctor.name;
     const key = `${CoreBindings.SERVERS}.${suffix}`;
-    this.bind(key)
+    return this.bind(key)
       .toClass(ctor)
       .inScope(BindingScope.SINGLETON);
   }
@@ -106,10 +110,11 @@ export class Application extends Context {
    * ```
    *
    * @param {Constructor<Server>[]} ctors An array of Server constructors.
+   * @returns {Binding[]} An array of bindings for the registered server classes
    * @memberof Application
    */
-  public servers<T extends Server>(ctors: Constructor<T>[]) {
-    ctors.map(ctor => this.server(ctor));
+  public servers<T extends Server>(ctors: Constructor<T>[]): Binding[] {
+    return ctors.map(ctor => this.server(ctor));
   }
 
   /**
