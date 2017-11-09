@@ -8,6 +8,11 @@ import {Server} from './server';
 import {Component, mountComponent} from './component';
 import {CoreBindings} from './keys';
 
+/**
+ * Application is the container for various types of artifacts, such as
+ * components, servers, controllers, repositories, datasources, connectors,
+ * and models.
+ */
 export class Application extends Context {
   constructor(public options?: ApplicationConfig) {
     super();
@@ -168,9 +173,10 @@ export class Application extends Context {
   }
 
   /**
-   * Add a component to this application.
+   * Add a component to this application and register extensions such as
+   * controllers, providers, and servers from the component.
    *
-   * @param component The component to add.
+   * @param component The component class to add.
    *
    * ```ts
    *
@@ -189,17 +195,33 @@ export class Application extends Context {
   public component(component: Constructor<Component>) {
     const componentKey = `components.${component.name}`;
     this.bind(componentKey).toClass(component);
+    // Assuming components can be synchronously instantiated
     const instance = this.getSync(componentKey);
     mountComponent(this, instance);
   }
 }
 
+/**
+ * Configuration for application
+ */
 export interface ApplicationConfig {
+  /**
+   * An array of component classes
+   */
   components?: Array<Constructor<Component>>;
+  /**
+   * An array of controller classes
+   */
   controllers?: Array<ControllerClass>;
+  /**
+   * A map of server name/class pairs
+   */
   servers?: {
     [name: string]: Constructor<Server>;
   };
+  /**
+   * Other properties
+   */
   // tslint:disable-next-line:no-any
   [prop: string]: any;
 }

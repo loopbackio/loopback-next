@@ -4,20 +4,38 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Constructor, Provider, BoundValue} from '@loopback/context';
-import {Server, Application} from '.';
+import {Server, Application, ControllerClass} from '.';
 
+/**
+ * A map of name/class pairs for binding providers
+ */
 export interface ProviderMap {
   [key: string]: Constructor<Provider<BoundValue>>;
 }
 
+/**
+ * A component declares a set of artifacts so that they cane be contributed to
+ * an application as a group
+ */
 export interface Component {
-  // tslint:disable-next-line:no-any
-  controllers?: Constructor<any>[];
+  /**
+   * An array of controller classes
+   */
+  controllers?: ControllerClass[];
+  /**
+   * A map of name/class pairs for binding providers
+   */
   providers?: ProviderMap;
+  /**
+   * A map of name/class pairs for servers
+   */
   servers?: {
     [name: string]: Constructor<Server>;
   };
 
+  /**
+   * Other properties
+   */
   // tslint:disable-next-line:no-any
   [prop: string]: any;
 }
