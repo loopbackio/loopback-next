@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.6"></a>
+# [4.0.0-alpha.6](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.5...@loopback/cli@4.0.0-alpha.6) (2017-11-09)
+
+
+### Bug Fixes
+
+* Fix CLI to include .gitignore in the templates ([842a191](https://github.com/strongloop/loopback-next/commit/842a191))
+
+
+
+
 <a name="4.0.0-alpha.5"></a>
 # [4.0.0-alpha.5](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.4...@loopback/cli@4.0.0-alpha.5) (2017-11-06)
 

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.5"></a>
+# [4.0.0-alpha.5](https://github.com/strongloop/loopback4-build/compare/@loopback/build@4.0.0-alpha.4...@loopback/build@4.0.0-alpha.5) (2017-11-09)
+
+
+
+
+**Note:** Version bump only for package @loopback/build
+
 <a name="4.0.0-alpha.4"></a>
 # [4.0.0-alpha.4](https://github.com/strongloop/loopback4-build/compare/@loopback/build@4.0.0-alpha.3...@loopback/build@4.0.0-alpha.4) (2017-11-06)
 

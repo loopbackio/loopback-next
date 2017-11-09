@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.15"></a>
+# [4.0.0-alpha.15](https://github.com/strongloop/loopback-next/compare/@loopback/repository@4.0.0-alpha.14...@loopback/repository@4.0.0-alpha.15) (2017-11-09)
+
+
+### Bug Fixes
+
+* Fix lint errors by newer version of prettier ([d6c5404](https://github.com/strongloop/loopback-next/commit/d6c5404))
+
+
+
+
 <a name="4.0.0-alpha.14"></a>
 # [4.0.0-alpha.14](https://github.com/strongloop/loopback-next/compare/@loopback/repository@4.0.0-alpha.13...@loopback/repository@4.0.0-alpha.14) (2017-11-06)
 
