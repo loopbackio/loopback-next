@@ -195,7 +195,10 @@ export namespace inject {
     bindingKey: string,
     metadata?: InjectionMetadata,
   ) {
-    metadata = Object.assign({decorator: '@inject.getter'}, metadata);
+    metadata = Object.assign(
+      {decorator: '@inject.getter', getter: true},
+      metadata,
+    );
     return inject(bindingKey, metadata, resolveAsGetter);
   };
 
@@ -216,7 +219,10 @@ export namespace inject {
     bindingKey: string,
     metadata?: InjectionMetadata,
   ) {
-    metadata = Object.assign({decorator: '@inject.setter'}, metadata);
+    metadata = Object.assign(
+      {decorator: '@inject.setter', setter: true},
+      metadata,
+    );
     return inject(bindingKey, metadata, resolveAsSetter);
   };
 
