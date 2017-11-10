@@ -65,16 +65,21 @@ export class Context {
 
   /**
    * Find bindings using the key pattern
-   * @param pattern Key pattern with optional `*` wildcards
+   * @param pattern Key regexp or pattern with optional `*` wildcards
    */
-  find(pattern?: string): Binding[] {
+  find(pattern?: string | RegExp): Binding[] {
     let bindings: Binding[] = [];
-    if (pattern) {
+    let glob: RegExp | undefined = undefined;
+    if (typeof pattern === 'string') {
       // TODO(@superkhau): swap with production grade glob to regex lib
       Binding.validateKey(pattern);
-      const glob = new RegExp('^' + pattern.split('*').join('.*') + '$');
+      glob = new RegExp('^' + pattern.split('*').join('.*') + '$');
+    } else if (pattern instanceof RegExp) {
+      glob = pattern;
+    }
+    if (glob) {
       this.registry.forEach(binding => {
-        const isMatch = glob.test(binding.key);
+        const isMatch = glob!.test(binding.key);
         if (isMatch) bindings.push(binding);
       });
     } else {
@@ -87,12 +92,15 @@ export class Context {
 
   /**
    * Find bindings using the tag pattern
-   * @param pattern Tag pattern with optional `*` wildcards
+   * @param pattern Tag name regexp or pattern with optional `*` wildcards
    */
-  findByTag(pattern: string): Binding[] {
+  findByTag(pattern: string | RegExp): Binding[] {
     const bindings: Binding[] = [];
     // TODO(@superkhau): swap with production grade glob to regex lib
-    const glob = new RegExp('^' + pattern.split('*').join('.*') + '$');
+    const glob =
+      typeof pattern === 'string'
+        ? new RegExp('^' + pattern.split('*').join('.*') + '$')
+        : pattern;
     this.registry.forEach(binding => {
       const isMatch = Array.from(binding.tags).some(tag => glob.test(tag));
       if (isMatch) bindings.push(binding);
