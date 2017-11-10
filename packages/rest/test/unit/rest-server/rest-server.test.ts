@@ -71,6 +71,15 @@ describe('RestServer', () => {
       expect(server.getSync(RestBindings.PORT)).to.equal(3000);
     });
 
+    it('uses http host localhost by default', async () => {
+      const app = new Application({
+        components: [RestComponent],
+      });
+      const server = await app.getServer(RestServer);
+      const host = await server.getSync(RestBindings.HOST);
+      expect(host).to.equal('localhost');
+    });
+
     it('can set port 0', async () => {
       const app = new Application({
         components: [RestComponent],
@@ -78,6 +87,16 @@ describe('RestServer', () => {
       });
       const server = await app.getServer(RestServer);
       expect(server.getSync(RestBindings.PORT)).to.equal(0);
+    });
+
+    it('honors host/port', async () => {
+      const app = new Application({
+        components: [RestComponent],
+        rest: {port: 4000, host: 'my-host'},
+      });
+      const server = await app.getServer(RestServer);
+      expect(server.getSync(RestBindings.PORT)).to.equal(4000);
+      expect(server.getSync(RestBindings.HOST)).to.equal('my-host');
     });
   });
 

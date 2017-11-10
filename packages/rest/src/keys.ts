@@ -8,6 +8,7 @@ import {CoreBindings} from '@loopback/core';
 export namespace RestBindings {
   // RestServer-specific bindings
   export const CONFIG = `${CoreBindings.APPLICATION_CONFIG}#rest`;
+  export const HOST = 'rest.host';
   export const PORT = 'rest.port';
   export const HANDLER = 'rest.handler';
 
