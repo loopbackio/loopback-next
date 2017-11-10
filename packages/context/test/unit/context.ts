@@ -92,6 +92,16 @@ describe('Context', () => {
       result = ctx.find('ba*');
       expect(result).to.be.eql([b2, b3]);
     });
+
+    it('returns matching binding with regexp', () => {
+      const b1 = ctx.bind('foo');
+      const b2 = ctx.bind('bar');
+      const b3 = ctx.bind('baz');
+      let result = ctx.find(/\w+/);
+      expect(result).to.be.eql([b1, b2, b3]);
+      result = ctx.find(/ba/);
+      expect(result).to.be.eql([b2, b3]);
+    });
   });
 
   describe('findByTag', () => {
@@ -107,6 +117,15 @@ describe('Context', () => {
       const b2 = ctx.bind('bar').tag('t2');
       const result = ctx.findByTag('t*');
       expect(result).to.be.eql([b1, b2]);
+    });
+
+    it('returns matching binding with regexp', () => {
+      const b1 = ctx.bind('foo').tag('t1');
+      const b2 = ctx.bind('bar').tag('t2');
+      let result = ctx.findByTag(/t/);
+      expect(result).to.be.eql([b1, b2]);
+      result = ctx.findByTag(/t1/);
+      expect(result).to.be.eql([b1]);
     });
   });
 
