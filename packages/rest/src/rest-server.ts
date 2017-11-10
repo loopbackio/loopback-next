@@ -131,20 +131,24 @@ export class RestServer extends Context implements Server {
   ) {
     super(app);
 
-    if (!options) options = {};
+    options = options || {};
 
     // Can't check falsiness, 0 is a valid port.
-    if (options.port === null || options.port === undefined) {
+    if (options.port == null) {
       options.port = 3000;
     }
+    if (options.host == null) {
+      options.host = 'localhost';
+    }
     this.bind(RestBindings.PORT).to(options.port);
+    this.bind(RestBindings.HOST).to(options.host);
     this.api(createEmptyApiSpec());
 
     this.sequence(options.sequence ? options.sequence : DefaultSequence);
 
     this.handleHttp = (req: ServerRequest, res: ServerResponse) => {
       try {
-        this._handleHttpRequest(req, res).catch(err =>
+        this._handleHttpRequest(req, res, options!).catch(err =>
           this._onUnhandledError(req, res, err),
         );
       } catch (err) {
@@ -158,6 +162,7 @@ export class RestServer extends Context implements Server {
   protected _handleHttpRequest(
     request: ServerRequest,
     response: ServerResponse,
+    options: RestServerConfig,
   ) {
     // allow CORS support for all endpoints so that users
     // can test with online SwaggerUI instance
@@ -177,15 +182,15 @@ export class RestServer extends Context implements Server {
       // this endpoint to trigger a log entry. If the server implements
       // content-negotiation to support XML clients, I don't want the OpenAPI
       // spec to be converted into an XML response.
-      const options = OPENAPI_SPEC_MAPPING[request.url];
-      return this._serveOpenApiSpec(request, response, options);
+      const settings = OPENAPI_SPEC_MAPPING[request.url];
+      return this._serveOpenApiSpec(request, response, settings);
     }
     if (
       request.method === 'GET' &&
       request.url &&
       request.url === '/swagger-ui'
     ) {
-      return this._redirectToSwaggerUI(request, response);
+      return this._redirectToSwaggerUI(request, response, options);
     }
     return this.httpHandler.handleRequest(request, response);
   }
@@ -294,14 +299,14 @@ export class RestServer extends Context implements Server {
   private async _redirectToSwaggerUI(
     request: ServerRequest,
     response: ServerResponse,
+    options: RestServerConfig,
   ) {
     response.statusCode = 308;
+    const baseUrl =
+      options.apiExplorerUrl || 'https://loopback.io/api-explorer';
     response.setHeader(
       'Location',
-      'http://petstore.swagger.io/?url=' +
-        'http://' +
-        request.headers.host +
-        '/swagger.json',
+      `${baseUrl}?url=http://${request.headers.host}/swagger.json`,
     );
     response.end();
   }
@@ -517,12 +522,13 @@ export class RestServer extends Context implements Server {
     this._setupHandlerIfNeeded();
 
     const httpPort = await this.get(RestBindings.PORT);
+    const httpHost = await this.get(RestBindings.HOST);
     this._httpServer = createServer(this.handleHttp);
     const httpServer = this._httpServer;
 
     // TODO(bajtos) support httpHostname too
     // See https://github.com/strongloop/loopback-next/issues/434
-    httpServer.listen(httpPort);
+    httpServer.listen(httpPort, httpHost);
 
     return new Promise<void>((resolve, reject) => {
       httpServer.once('listening', () => {
@@ -579,6 +585,8 @@ export class RestServer extends Context implements Server {
  * @interface RestServerConfig
  */
 export interface RestServerConfig {
+  host?: string;
   port?: number;
+  apiExplorerUrl?: string;
   sequence?: Constructor<SequenceHandler>;
 }

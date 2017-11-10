@@ -175,6 +175,7 @@ paths:
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
     expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
   });
+
   it('exposes "GET /swagger-ui" endpoint', async () => {
     const app = new Application({
       components: [RestComponent],
@@ -196,8 +197,40 @@ paths:
     await server.get(RestBindings.PORT);
     const url = new RegExp(
       [
+        'https://loopback.io/api-explorer',
+        '\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/swagger.json',
+      ].join(''),
+    );
+    expect(response.get('Location')).match(url);
+    expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
+    expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
+    expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
+  });
+
+  it('exposes "GET /swagger-ui" endpoint with apiExplorerUrl', async () => {
+    const app = new Application({
+      components: [RestComponent],
+      rest: {apiExplorerUrl: 'http://petstore.swagger.io'},
+    });
+    const server = await app.getServer(RestServer);
+    const greetSpec = {
+      responses: {
+        200: {
+          schema: {type: 'string'},
+          description: 'greeting of the day',
+        },
+      },
+    };
+    server.route(new Route('get', '/greet', greetSpec, function greet() {}));
+
+    const response = await createClientForHandler(server.handleHttp).get(
+      '/swagger-ui',
+    );
+    await server.get(RestBindings.PORT);
+    const url = new RegExp(
+      [
         'http://petstore.swagger.io',
-        '/\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/swagger.json',
+        '\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/swagger.json',
       ].join(''),
     );
     expect(response.get('Location')).match(url);
