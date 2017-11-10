@@ -48,6 +48,7 @@ export class Application extends Context {
    *
    * @param controllerCtor {Function} The controller class
    * (constructor function).
+   * @param {string=} name Optional controller name, default to the class name
    * @return {Binding} The newly created binding, you can use the reference to
    * further modify the binding, e.g. lock the value to prevent further
    * modifications.
@@ -58,10 +59,11 @@ export class Application extends Context {
    * app.controller(MyController).lock();
    * ```
    */
-  controller(controllerCtor: ControllerClass): Binding {
-    return this.bind('controllers.' + controllerCtor.name).toClass(
-      controllerCtor,
-    );
+  controller(controllerCtor: ControllerClass, name?: string): Binding {
+    name = name || controllerCtor.name;
+    return this.bind(`controllers.${name}`)
+      .toClass(controllerCtor)
+      .tag('controller');
   }
 
   /**
@@ -89,6 +91,7 @@ export class Application extends Context {
     const key = `${CoreBindings.SERVERS}.${suffix}`;
     return this.bind(key)
       .toClass(ctor)
+      .tag('server')
       .inScope(BindingScope.SINGLETON);
   }
 
@@ -181,7 +184,8 @@ export class Application extends Context {
    * Add a component to this application and register extensions such as
    * controllers, providers, and servers from the component.
    *
-   * @param component The component class to add.
+   * @param componentCtor The component class to add.
+   * @param {string=} name Optional component name, default to the class name
    *
    * ```ts
    *
@@ -197,9 +201,13 @@ export class Application extends Context {
    * app.component(ProductComponent);
    * ```
    */
-  public component(component: Constructor<Component>) {
-    const componentKey = `components.${component.name}`;
-    this.bind(componentKey).toClass(component);
+  public component(componentCtor: Constructor<Component>, name?: string) {
+    name = name || componentCtor.name;
+    const componentKey = `components.${name}`;
+    this.bind(componentKey)
+      .toClass(componentCtor)
+      .inScope(BindingScope.SINGLETON)
+      .tag('component');
     // Assuming components can be synchronously instantiated
     const instance = this.getSync(componentKey);
     mountComponent(this, instance);
