@@ -8,10 +8,64 @@ import {Application, Server, Component} from '../../index';
 import {Context, Constructor} from '@loopback/context';
 
 describe('Application', () => {
+  describe('controller binding', () => {
+    let app: Application;
+    class MyController {}
+
+    beforeEach(givenApp);
+
+    it('binds a controller', () => {
+      const binding = app.controller(MyController);
+      expect(Array.from(binding.tags)).to.containEql('controller');
+      expect(binding.key).to.equal('controllers.MyController');
+      expect(findKeysByTag(app, 'controller')).to.containEql(binding.key);
+    });
+
+    it('binds a controller with custom name', () => {
+      const binding = app.controller(MyController, 'my-controller');
+      expect(Array.from(binding.tags)).to.containEql('controller');
+      expect(binding.key).to.equal('controllers.my-controller');
+      expect(findKeysByTag(app, 'controller')).to.containEql(binding.key);
+    });
+
+    function givenApp() {
+      app = new Application();
+    }
+  });
+
+  describe('component binding', () => {
+    let app: Application;
+    class MyController {}
+    class MyComponent implements Component {
+      controllers = [MyController];
+    }
+
+    beforeEach(givenApp);
+
+    it('binds a component', () => {
+      app.component(MyComponent);
+      expect(findKeysByTag(app, 'component')).to.containEql(
+        'components.MyComponent',
+      );
+    });
+
+    it('binds a component', () => {
+      app.component(MyComponent, 'my-component');
+      expect(findKeysByTag(app, 'component')).to.containEql(
+        'components.my-component',
+      );
+    });
+
+    function givenApp() {
+      app = new Application();
+    }
+  });
+
   describe('server binding', () => {
     it('defaults to constructor name', async () => {
       const app = new Application();
-      app.server(FakeServer);
+      const binding = app.server(FakeServer);
+      expect(Array.from(binding.tags)).to.containEql('server');
       const result = await app.getServer(FakeServer.name);
       expect(result.constructor.name).to.equal(FakeServer.name);
     });
@@ -62,6 +116,10 @@ describe('Application', () => {
       });
     });
   });
+
+  function findKeysByTag(ctx: Context, tag: string | RegExp) {
+    return ctx.findByTag(tag).map(binding => binding.key);
+  }
 });
 
 class FakeComponent implements Component {

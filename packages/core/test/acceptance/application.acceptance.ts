@@ -49,6 +49,10 @@ describe('Bootstrapping the application', () => {
       expect(app.find('controllers.*').map(b => b.key)).to.eql([
         'controllers.ProductController',
       ]);
+
+      expect(app.findByTag('controller').map(b => b.key)).to.eql([
+        'controllers.ProductController',
+      ]);
     });
 
     it('registers all controllers from components', async () => {
