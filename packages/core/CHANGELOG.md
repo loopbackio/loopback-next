@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.22"></a>
+# [4.0.0-alpha.22](https://github.com/strongloop/loopback-next/compare/@loopback/core@4.0.0-alpha.21...@loopback/core@4.0.0-alpha.22) (2017-11-14)
+
+
+### Bug Fixes
+
+* **core:** Return binding(s) for app.server/servers ([c506b26](https://github.com/strongloop/loopback-next/commit/c506b26))
+
+
+### Features
+
+* **context:** Add support for method dependency injection ([df1c879](https://github.com/strongloop/loopback-next/commit/df1c879))
+
+
+
+
 <a name="4.0.0-alpha.21"></a>
 # [4.0.0-alpha.21](https://github.com/strongloop/loopback-next/compare/@loopback/core@4.0.0-alpha.20...@loopback/core@4.0.0-alpha.21) (2017-11-09)
 

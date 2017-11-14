@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.20"></a>
+# [4.0.0-alpha.20](https://github.com/strongloop/loopback-next/compare/@loopback/context@4.0.0-alpha.19...@loopback/context@4.0.0-alpha.20) (2017-11-14)
+
+
+### Features
+
+* **context:** Add support for method dependency injection ([df1c879](https://github.com/strongloop/loopback-next/commit/df1c879))
+
+
+
+
 <a name="4.0.0-alpha.19"></a>
 # [4.0.0-alpha.19](https://github.com/strongloop/loopback-next/compare/@loopback/context@4.0.0-alpha.18...@loopback/context@4.0.0-alpha.19) (2017-11-09)
 
