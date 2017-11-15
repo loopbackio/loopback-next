@@ -1,0 +1,46 @@
+{
+  "name": "@loopback/repository-rest",
+  "version": "0.1.0",
+  "description": "Repository REST APIs for LoopBack",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "main": "index",
+  "scripts": {
+    "build:all-dist": "npm run build:dist8 && npm run build:dist10",
+    "build:apidocs": "lb-apidocs",
+    "build": "lb-tsc",
+    "build:dist8": "lb-tsc es2017",
+    "build:dist10": "lb-tsc es2018",
+    "clean": "lb-clean loopback-repository-rest*.tgz dist* package api-docs",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/integration/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-repository-rest*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM",
+  "license": "MIT",
+  "devDependencies": {
+    "@loopback/build": "^0.7.3",
+    "@loopback/testlab": "^0.12.2"
+  },
+  "dependencies": {
+    "@loopback/context": "^0.12.8",
+    "@loopback/core": "^0.11.9",
+    "@loopback/dist-util": "^0.3.7",
+    "@loopback/repository": "^0.16.5",
+    "@loopback/rest": "^0.22.2"
+  },
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist/src",
+    "dist6/src",
+    "api-docs",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
+}
