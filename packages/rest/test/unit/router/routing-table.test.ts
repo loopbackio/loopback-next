@@ -7,7 +7,6 @@ import {
   ParsedRequest,
   parseRequestUrl,
   RoutingTable,
-  ResolvedRoute,
   ControllerRoute,
 } from '../../..';
 import {expect, ShotRequestOptions, ShotRequest} from '@loopback/testlab';
