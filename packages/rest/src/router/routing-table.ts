@@ -89,13 +89,15 @@ export class RoutingTable {
   registerRoute(route: RouteEntry) {
     // TODO(bajtos) handle the case where opSpec.parameters contains $ref
     // See https://github.com/strongloop/loopback-next/issues/435
-    debug(
-      'Registering route %s %s -> %s(%s)',
-      route.verb,
-      route.path,
-      route.describe(),
-      describeOperationParameters(route.spec),
-    );
+    if (debug.enabled) {
+      debug(
+        'Registering route %s %s -> %s(%s)',
+        route.verb,
+        route.path,
+        route.describe(),
+        describeOperationParameters(route.spec),
+      );
+    }
     this._routes.push(route);
   }
 
@@ -322,6 +324,6 @@ export class ControllerRoute extends BaseRoute {
 
 function describeOperationParameters(opSpec: OperationObject) {
   return ((opSpec.parameters as ParameterObject[]) || [])
-    .map(p => p.name)
+    .map(p => (p && p.name) || '')
     .join(', ');
 }
