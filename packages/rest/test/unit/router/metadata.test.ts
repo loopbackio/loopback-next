@@ -12,6 +12,7 @@ import {
   put,
   patch,
   del,
+  param,
 } from '../../..';
 import {expect} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
@@ -271,5 +272,86 @@ describe('Routing metadata', () => {
       'x-operation-name',
       'getChildName',
     );
+  });
+
+  it('allows children to override parent REST operations', () => {
+    const operationSpec = anOperationSpec()
+      .withStringResponse()
+      .build();
+
+    class Parent {
+      @get('/parent-name', operationSpec)
+      getName() {
+        return 'The Parent';
+      }
+    }
+
+    class Child extends Parent {
+      @get('/child-name', operationSpec)
+      getName() {
+        return 'The Child';
+      }
+    }
+
+    const childSpec = getControllerSpec(Child);
+    const parentSpec = getControllerSpec(Parent);
+
+    expect(childSpec.paths['/child-name']['get']).to.have.property(
+      'x-operation-name',
+      'getName',
+    );
+
+    // The parent endpoint has been overridden
+    expect(childSpec.paths).to.not.have.property('/parent-name');
+
+    expect(parentSpec.paths['/parent-name']['get']).to.have.property(
+      'x-operation-name',
+      'getName',
+    );
+
+    // The parent endpoint should not be polluted
+    expect(parentSpec.paths).to.not.have.property('/child-name');
+  });
+
+  it('allows children to override parent REST parameters', () => {
+    const operationSpec = anOperationSpec()
+      .withStringResponse()
+      .build();
+
+    class Parent {
+      @get('/greet', operationSpec)
+      greet(@param.query.string('msg') msg: string) {
+        return `Parent: ${msg}`;
+      }
+    }
+
+    class Child extends Parent {
+      greet(@param.query.string('message') msg: string) {
+        return `Child: ${msg}`;
+      }
+    }
+
+    const childSpec = getControllerSpec(Child);
+    const parentSpec = getControllerSpec(Parent);
+
+    const childGreet = childSpec.paths['/greet']['get'];
+    expect(childGreet).to.have.property('x-operation-name', 'greet');
+
+    expect(childGreet.parameters).to.have.property('length', 1);
+
+    expect(childGreet.parameters[0]).to.containEql({
+      name: 'message',
+      in: 'query',
+    });
+
+    const parentGreet = parentSpec.paths['/greet']['get'];
+    expect(parentGreet).to.have.property('x-operation-name', 'greet');
+
+    expect(parentGreet.parameters).to.have.property('length', 1);
+
+    expect(parentGreet.parameters[0]).to.containEql({
+      name: 'msg',
+      in: 'query',
+    });
   });
 });
