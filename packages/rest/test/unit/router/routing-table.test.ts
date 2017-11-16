@@ -8,6 +8,9 @@ import {
   parseRequestUrl,
   RoutingTable,
   ControllerRoute,
+  getControllerSpec,
+  param,
+  get,
 } from '../../..';
 import {expect, ShotRequestOptions, ShotRequest} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
@@ -28,6 +31,27 @@ describe('RoutingTable', () => {
     expect(RoutingTable.joinPath('//root//x', '//a///b////c')).to.equal(
       '/root/x/a/b/c',
     );
+  });
+
+  it('does not fail if some of the parameters are not decorated', () => {
+    class TestController {
+      @get('/greet')
+      greet(prefix: string, @param.query.string('message') message: string) {
+        return prefix + ': ' + message;
+      }
+    }
+    const spec = getControllerSpec(TestController);
+    const table = new RoutingTable();
+    table.registerController(TestController, spec);
+    const paths = table.describeApiPaths();
+    const params = paths['/greet']['get'].parameters;
+    expect(params).to.have.property('length', 2);
+    expect(params[0]).to.be.undefined();
+    expect(params[1]).to.have.properties({
+      name: 'message',
+      in: 'query',
+      type: 'string',
+    });
   });
 
   it('finds simple "GET /hello" endpoint', () => {
