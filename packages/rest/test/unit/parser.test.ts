@@ -7,7 +7,6 @@ import {
   parseOperationArgs,
   ParsedRequest,
   parseRequestUrl,
-  ResolvedRoute,
   PathParameterValues,
   Route,
   createResolvedRoute,
