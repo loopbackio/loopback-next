@@ -4,6 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as assert from 'assert';
+import * as _ from 'lodash';
+
 import {Reflector} from '@loopback/context';
 import {
   OperationObject,
@@ -20,6 +22,17 @@ const ENDPOINTS_KEY = 'rest:endpoints';
 const API_SPEC_KEY = 'rest:api-spec';
 
 // tslint:disable:no-any
+
+function cloneDeep<T>(val: T): T {
+  if (val === undefined) {
+    return {} as T;
+  }
+  return _.cloneDeepWith(val, v => {
+    // Do not clone functions
+    if (typeof v === 'function') return v;
+    return undefined;
+  });
+}
 
 export interface ControllerSpec {
   /**
@@ -73,6 +86,20 @@ interface RestEndpoint {
   target: any;
 }
 
+function getEndpoints(
+  target: any,
+): {[property: string]: Partial<RestEndpoint>} {
+  let endpoints = Reflector.getOwnMetadata(ENDPOINTS_KEY, target);
+  if (!endpoints) {
+    // Clone the endpoints so that subclasses won't mutate the metadata
+    // in the base class
+    const baseEndpoints = Reflector.getMetadata(ENDPOINTS_KEY, target);
+    endpoints = cloneDeep(baseEndpoints);
+    Reflector.defineMetadata(ENDPOINTS_KEY, endpoints, target);
+  }
+  return endpoints;
+}
+
 /**
  * Build the api spec from class and method level decorations
  * @param constructor Controller class
@@ -86,24 +113,27 @@ function resolveControllerSpec(
 
   if (spec) {
     debug('  using class-level spec defined via @api()', spec);
-    spec = Object.assign({}, spec);
+    spec = cloneDeep(spec);
   } else {
     spec = {paths: {}};
   }
 
-  const endpoints =
-    Reflector.getMetadata(ENDPOINTS_KEY, constructor.prototype) || {};
+  const endpoints = getEndpoints(constructor.prototype);
 
   for (const op in endpoints) {
     const endpoint = endpoints[op];
-    const className =
-      endpoint.target.constructor.name ||
-      constructor.name ||
-      '<AnonymousClass>';
-    const fullMethodName = `${className}.${op}`;
+    const verb = endpoint.verb!;
+    const path = endpoint.path!;
 
-    const {verb, path} = endpoint;
-    const endpointName = `${fullMethodName} (${verb} ${path})`;
+    let endpointName = '';
+    if (debug.enabled) {
+      const className =
+        endpoint.target.constructor.name ||
+        constructor.name ||
+        '<AnonymousClass>';
+      const fullMethodName = `${className}.${op}`;
+      endpointName = `${fullMethodName} (${verb} ${path})`;
+    }
 
     let operationSpec = endpoint.spec;
     if (!operationSpec) {
@@ -111,7 +141,10 @@ function resolveControllerSpec(
       operationSpec = {
         responses: {},
       };
+      endpoint.spec = operationSpec;
     }
+
+    operationSpec['x-operation-name'] = op;
 
     if (!spec.paths[path]) {
       spec.paths[path] = {};
@@ -123,9 +156,7 @@ function resolveControllerSpec(
     }
 
     debug(`  adding ${endpointName}`, operationSpec);
-    spec.paths[path][verb] = Object.assign({}, operationSpec, {
-      'x-operation-name': op,
-    });
+    spec.paths[path][verb] = operationSpec;
   }
   return spec;
 }
@@ -135,7 +166,7 @@ function resolveControllerSpec(
  * @param constructor Controller class
  */
 export function getControllerSpec(constructor: Function): ControllerSpec {
-  let spec = Reflector.getMetadata(API_SPEC_KEY, constructor);
+  let spec = Reflector.getOwnMetadata(API_SPEC_KEY, constructor);
   if (!spec) {
     spec = resolveControllerSpec(constructor, spec);
     Reflector.defineMetadata(API_SPEC_KEY, spec, constructor);
@@ -222,14 +253,9 @@ export function operation(verb: string, path: string, spec?: OperationObject) {
       '@operation decorator can be applied to methods only',
     );
 
-    let endpoints = Object.assign(
-      {},
-      Reflector.getMetadata(ENDPOINTS_KEY, target),
-    );
-    Reflector.defineMetadata(ENDPOINTS_KEY, endpoints, target);
-
-    let endpoint: Partial<RestEndpoint> = endpoints[propertyKey];
-    if (!endpoint) {
+    const endpoints = getEndpoints(target);
+    let endpoint = endpoints[propertyKey];
+    if (!endpoint || endpoint.target !== target) {
       // Add the new endpoint metadata for the method
       endpoint = {verb, path, spec, target};
       endpoints[propertyKey] = endpoint;
@@ -305,16 +331,13 @@ export function param(paramSpec: ParameterObject) {
       '@param decorator can be applied to methods only',
     );
 
-    let endpoints = Object.assign(
-      {},
-      Reflector.getMetadata(ENDPOINTS_KEY, target),
-    );
-    Reflector.defineMetadata(ENDPOINTS_KEY, endpoints, target);
-
-    let endpoint: Partial<RestEndpoint> = endpoints[propertyKey];
-    if (!endpoint) {
+    const endpoints = getEndpoints(target);
+    let endpoint = endpoints[propertyKey];
+    if (!endpoint || endpoint.target !== target) {
+      const baseEndpoint = endpoint;
       // Add the new endpoint metadata for the method
-      endpoint = {target};
+      endpoint = cloneDeep(baseEndpoint);
+      endpoint.target = target;
       endpoints[propertyKey] = endpoint;
     }
 
