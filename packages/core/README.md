@@ -1,4 +1,4 @@
-# @loopback.core
+# @loopback/core
 
 LoopBack makes it easy to build modern applications that require complex
 integrations.

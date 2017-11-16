@@ -27,8 +27,12 @@ _This package is typically used in tests, save it to `devDependencies` via `--sa
 ```ts
 import { expect } from '@loopback/testlab';
 
-expect({key:'value'}).to.deepEqual({key: 'value'});
-expect.exists(1);
+describe('Basic assertions', => {
+  it('asserts equal values', => {
+    expect({key:'value'}).to.deepEqual({key: 'value'});
+    expect.exists(1);
+  })
+});
 ```
 
 ## API documentation
@@ -52,11 +56,13 @@ Verify that your application API specification is a valid OpenAPI spec document.
 
 ```js
 import {validateApiSpec} from '@loopback/testlab';
+import {RestServer} from '@loopback/rest';
 
-describe('MyApp', () => {)
+describe('MyApp', () => {
   it('has valid spec', async () => {
     const app = new MyApp();
-    await validateApiSpec(app.getApiSpec());
+    const server = await app.getServer(RestServer);
+    await validateApiSpec(server.getApiSpec());
   })
 });
 ```

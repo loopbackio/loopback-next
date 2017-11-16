@@ -28,8 +28,7 @@ app.bind('defaultName').to('John'); // setting context
 
 class HelloController {
   // consider this.ctx here
-  constructor(@inject('defaultName') name) { // injecting dependency using context
-    this.name = name;
+  constructor(@inject('defaultName') private name: string) { // injecting dependency using context
   }
   greet(name) {
     return `Hello ${name || this.name}`;
