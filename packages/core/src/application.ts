@@ -161,13 +161,12 @@ export class Application extends Context {
 
   /**
    * Helper function for iterating across all registered server components.
-   * @protected
    * @template T
    * @param {(s: Server) => Promise<T>} fn The function to run against all
    * registered servers
    * @memberof Application
    */
-  protected async _forEachServer<T>(fn: (s: Server) => Promise<T>) {
+  public async _forEachServer<T>(fn: (s: Server) => Promise<T>) {
     const bindings = this.find(`${CoreBindings.SERVERS}.*`);
     await Promise.all(
       bindings.map(async binding => {
