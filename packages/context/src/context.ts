@@ -10,7 +10,7 @@ import {isPromise} from './is-promise';
  * Context provides an implementation of Inversion of Control (IoC) container
  */
 export class Context {
-  private registry: Map<string, Binding>;
+  registry: Map<string, Binding>;
 
   /**
    * Create a new context
@@ -102,7 +102,7 @@ export class Context {
     return this._mergeWithParent(bindings, parentBindings);
   }
 
-  protected _mergeWithParent(childList: Binding[], parentList?: Binding[]) {
+  _mergeWithParent(childList: Binding[], parentList?: Binding[]) {
     if (!parentList) return childList;
     const additions = parentList.filter(parentBinding => {
       // children bindings take precedence
