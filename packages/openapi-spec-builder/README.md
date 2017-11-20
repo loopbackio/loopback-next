@@ -26,9 +26,9 @@ _This package is typically used in tests, save it to `devDependencies` via `--sa
 ## Basic use
 
 ```ts
-import {givenOpenApiSpec, OpenApiSpecBuilder} from '@loopback/openapi-spec-builder';
+import {anOpenApiSpec, OpenApiSpecBuilder} from '@loopback/openapi-spec-builder';
 
-const spec = givenOpenApiSpec()
+const spec = anOpenApiSpec()
   .withOperationReturningString('get', '/hello', 'greet')
   .build();
 
@@ -47,12 +47,19 @@ const spec = new OpenApiSpecBuilder()
 
 const spec = {
   basePath: '/',
+  swagger: '2.0',
+  info: { title: 'LoopBack Application', version: '1.0.0' },
   paths: {
     '/hello': {
       get: {
         'x-operation-name': 'greet',
         responses: {
-          '200': { type: 'string' },
+          '200': {
+            description: 'The string result.',
+            schema: {
+              type: 'string'
+            }
+            },
         },
       }
     }

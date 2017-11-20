@@ -7,7 +7,7 @@ A LoopBack component for authentication support.
 ## Overview
 
 The component demonstrates how to leverage Passport module and extension points
-provided by LoopBack Next to implement authentication layer.
+provided by LoopBack Next to implement an authentication layer.
 
 ## Installation
 
@@ -39,6 +39,8 @@ export class MyController {
 
 Next, implement a Strategy provider to map strategy names specified
 in `@authenticate` decorators into Passport Strategy instances.
+Remember to install `passport`, `passport-http`, `@types/passport`, and
+`@types/passport-http` modules beforehand.
 
 ```ts
 // providers/auth-strategy.ts
@@ -126,7 +128,7 @@ export class MySequence implements SequenceHandler {
       const route = this.findRoute(req);
 
       // This is the important line added to the default sequence implementation
-      const user = await this.authenticateRequest(req);
+      await this.authenticateRequest(req);
 
       const args = await this.parseParams(req, route);
       const result = await this.invoke(route, args);
@@ -138,7 +140,7 @@ export class MySequence implements SequenceHandler {
 }
 ```
 
-Finally, put it all together in your application object:
+Finally, put it all together in your application class:
 
 ```ts
 import {Application} from '@loopback/core';
@@ -174,6 +176,15 @@ class MyApp extends Application {
     console.log(`REST server running on port: ${server.getSync('rest.port')}`);
   }
 }
+```
+
+You can try your authentication component by using your favourite REST client
+and by setting the `authorization` header. Here is an example of what your
+request might look like using curl:
+```
+curl -X GET \
+  http://localhost:3000/whoami \
+  -H 'authorization: Basic Zm9vOmJhcg=='
 ```
 
 ## Related resources

@@ -1,6 +1,6 @@
 # @loopback/repository
 
-It provides a common set of interfaces for interacting with databases.
+This module provides a common set of interfaces for interacting with databases.
 
 ## Overview
 
@@ -11,7 +11,7 @@ the legacy `loopback-datasource-juggler` and connector modules from LoopBack
 
 This module provides data access facilities to various databases and services.
 It contains the constructs for modeling and accessing data. Repositories can be
-used alone or as part of `Controller` implementation.
+used alone or as part of a `Controller` implementation.
 
 ## Installation
 
@@ -28,26 +28,37 @@ models. For example,
 import {
   DataSourceConstructor,
   juggler,
+  Entity,
+  model,
+  ModelDefinition
 } from '@loopback/repository';
 
-const ds: juggler.DataSource = new DataSourceConstructor({
+export const ds: juggler.DataSource = new DataSourceConstructor({
   name: 'db',
   connector: 'memory',
 });
 
-/* tslint:disable-next-line:variable-name */
-const Note = ds.createModel<typeof juggler.PersistedModel>(
-  'note',
-  {title: 'string', content: 'string'},
-  {},
-);
+@model()
+export class Note extends Entity {
+  static definition = new ModelDefinition({
+    name: 'note',
+    properties: {
+      id: {name: 'id', type: 'number', id: true},
+      title: 'string',
+      content: 'string'
+    }
+  })
+};
 ```
 A repository can be created directly using `DefaultCrudRepository`.
 
 ```ts
+import {DefaultCrudRepository} from '@loopback/repository';
+// also import Note and ds from wherever you defined them
+
   const repo = new DefaultCrudRepository(Note, ds);
 
-  // Bind the repository instance
+  // Bind the repository instance to the 'ctx' Context.
   ctx.bind('repositories.noteRepo').to(repo);
 ```
 Fore more detailed info about the repository usage and implementation with a controller, please refer to [Use Repository](#use-repository)
@@ -168,7 +179,7 @@ simpler partial classes, which can be modeled as `Mixin`.
 For example, the mixins belows add methods and properties to a base class to
 create a new one.
 
-```js
+```ts
 // Mixin as a function
 function timestampMixin(Base) {
   return class extends Base {
@@ -230,19 +241,27 @@ models. For example,
 import {
   DataSourceConstructor,
   juggler,
+  Entity,
+  model,
+  ModelDefinition
 } from '@loopback/repository';
 
-const ds: juggler.DataSource = new DataSourceConstructor({
+export const ds: juggler.DataSource = new DataSourceConstructor({
   name: 'db',
   connector: 'memory',
 });
 
-/* tslint:disable-next-line:variable-name */
-const Note = ds.createModel<typeof juggler.PersistedModel>(
-  'note',
-  {title: 'string', content: 'string'},
-  {},
-);
+@model()
+export class Note extends Entity {
+  static definition = new ModelDefinition({
+    name: 'note',
+    properties: {
+      id: {name: 'id', type: 'number', id: true},
+      title: 'string',
+      content: 'string'
+    }
+  })
+};
 ```
 
 **NOTE**: There is no declarative support for data source and model yet in
@@ -254,9 +273,12 @@ illustrated above.
 A repository can be created directly using `DefaultCrudRepository`.
 
 ```ts
+import {DefaultCrudRepository} from '@loopback/repository';
+// also import Note and ds from wherever you defined them
+
   const repo = new DefaultCrudRepository(Note, ds);
 
-  // Bind the repository instance
+  // Bind the repository instance to the 'ctx' Context.
   ctx.bind('repositories.noteRepo').to(repo);
 ```
 
@@ -264,14 +286,12 @@ Alternatively, we can define a new Repository subclass and use dependency
 injection to resolve the data source and model.
 
 ```ts
+import {DataSourceType} from '@loopback/repository';
+
 class MyNoteRepository extends DefaultCrudRepository<Entity, string> {
   constructor(
-    @inject('models.Note') myModel: typeof juggler.PersistedModel,
-    // FIXME For some reason ts-node fails by complaining that
-    // juggler is undefined if the following is used:
-    // @inject('dataSources.memory') dataSource: juggler.DataSource
-    // tslint:disable-next-line:no-any
-    @inject('dataSources.memory') dataSource: any) {
+    @inject('models.Note') myModel: typeof Note,
+    @inject('dataSources.memory') dataSource: DataSourceType) {
       super(myModel, dataSource);
     }
 }
@@ -291,7 +311,6 @@ import {
   Entity,
   Options,
   DataObject,
-  Filter,
   EntityCrudRepository,
 } from '@loopback/repository';
 
@@ -412,7 +431,7 @@ This style allows repository methods to be mixed into the controller class
 to mimic LoopBack 3.x style model classes with remote CRUD methods. It blends
 the repository responsibility/capability into the controller.
 
-```js
+```ts
 import {EntityCrudRepository} from '../../src/repository';
 import {Customer} from '../models/customer';
 import {repository} from "../../src/decorator";

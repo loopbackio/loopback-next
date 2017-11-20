@@ -53,7 +53,7 @@ Now you run the scripts, such as:
 3. Override default configurations in your project
 
 - lb-tsc
-  
+
   By default, `lb-tsc` searches your project's root directory for `tsconfig.build.json` then `tsconfig.json`. If neither of them exists, a `tsconfig.json` will be created to extend from `./node_modules/@loopback/build/config/tsconfig.common.json`.
 
   To customize the configuration:
@@ -121,6 +121,15 @@ Now you run the scripts, such as:
 ```
 npm run build
 ```
+
+# Tests
+
+run `npm test` from the root folder.
+
+# Contributors
+
+See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+
 # License
 
 MIT
