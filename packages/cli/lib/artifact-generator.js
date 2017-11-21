@@ -6,13 +6,11 @@
 'use strict';
 const Generator = require('yeoman-generator');
 const utils = require('./utils');
-const Conflicter = require('./conflicter.js');
 
 module.exports = class extends Generator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);
-    this.conflicter = new Conflicter(this.env.adapter, this.options.force);
     this._setupGenerator();
   }
 
