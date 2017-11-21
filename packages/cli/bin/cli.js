@@ -30,7 +30,14 @@ if (opts.version) {
 var env = yeoman.createEnv();
 
 env.register(path.join(__dirname, '../generators/app'), 'loopback4:app');
-env.register(path.join(__dirname, '../generators/extension'), 'loopback4:extension');
+env.register(
+  path.join(__dirname, '../generators/extension'),
+  'loopback4:extension'
+);
+env.register(
+  path.join(__dirname, '../generators/controller'),
+  'loopback4:controller'
+);
 
 // list generators
 if (opts.commands) {
