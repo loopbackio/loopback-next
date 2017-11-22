@@ -46,30 +46,30 @@ exports.validRegex = validRegex;
  */
 exports.validateClassName = function(name) {
   if (!name || name === '') {
-    return 'Application name cannot be empty';
+    return 'Class name cannot be empty';
   }
   if (name.match(validRegex)) {
     return true;
   }
   if (!isNaN(name.charAt(0))) {
-    return util.format('Application name cannot start with a number: %s', name);
+    return util.format('Class name cannot start with a number: %s', name);
   }
   if (name.includes('.')) {
-    return util.format('Application name cannot contain .: %s', name);
+    return util.format('Class name cannot contain .: %s', name);
+  }
+  if (name.includes(' ')) {
+    return util.format('Class name cannot contain spaces: %s', name);
+  }
+  if (name.includes('-')) {
+    return util.format('Class name cannot contain hyphens: %s', name);
   }
   if (name.match(/[\/@\s\+%:]/)) {
     return util.format(
-      'Application name cannot contain special characters (/@+%: ): %s',
+      'Class name cannot contain special characters (/@+%: ): %s',
       name
     );
   }
-  if (name.toLowerCase() === 'node_modules') {
-    return util.format('Application name cannot be node_modules');
-  }
-  if (name.toLowerCase() === 'favicon.ico') {
-    return util.format('Application name cannot be favicon.ico');
-  }
-  return util.format('Application name is invalid: %s', name);
+  return util.format('Class name is invalid: %s', name);
 };
 
 /**
@@ -81,11 +81,6 @@ exports.validateyNotExisting = function(path) {
   }
   return true;
 };
-
-/**
- * Validation for file name and existing directory
- */
-exports.validateNameExistance = function() {};
 
 /**
  * Converts a name to class name after validation

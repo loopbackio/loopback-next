@@ -35,13 +35,18 @@ describe('Utils', () => {
         /name cannot contain \./
       );
       testValidateName(
-        'if the class name contains special characters',
-        'Foo%bar',
-        /name cannot contain special character/
+        'if the class name contains a space',
+        'foo bar',
+        /name cannot contain space/
       );
       testValidateName(
-        'if the class name contain two or more words',
-        'foo bar',
+        'if the class name contains a hyphen',
+        'foo-bar',
+        /name cannot contain hyphen/
+      );
+      testValidateName(
+        'if the class name contains special characters',
+        'Foo%bar',
         /name cannot contain special character/
       );
       testValidateName(
