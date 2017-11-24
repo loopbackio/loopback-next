@@ -7,7 +7,7 @@
 const Generator = require('yeoman-generator');
 const utils = require('./utils');
 
-module.exports = class extends Generator {
+module.exports = class ArtifactGenerator extends Generator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);
@@ -15,13 +15,18 @@ module.exports = class extends Generator {
   }
 
   _setupGenerator() {
-    this.artifactInfo.name = this.args[0];
-    this.artifactInfo.defaultName = 'new';
     this.argument('name', {
       type: String,
       required: false,
-      description: 'Name for the ' + this.artifactType,
+      description: 'Name for the ' + this.artifactInfo.artifactType,
     });
+    // argument validation
+    if (this.args.length) {
+      const validationMsg = utils.validateClassName(this.args[0]);
+      if (typeof validationMsg === 'string') throw new Error(validationMsg);
+    }
+    this.artifactInfo.name = this.args[0];
+    this.artifactInfo.defaultName = 'new';
   }
 
   /**
@@ -32,13 +37,29 @@ module.exports = class extends Generator {
     return text.replace(/^yo loopback4:/g, 'lb4 ');
   }
 
+  /**
+   * Checks if current directory is a LoopBack project by checking for
+   * keyword 'loopback-application' under 'keywords' attribute in package.json.
+   * 'keywords' is an array
+   */
+  checkLoopBackProject() {
+    const pkg = this.fs.readJSON(this.destinationPath('package.json'));
+    const key = 'loopback-application';
+    if (!pkg) throw new Error('unable to load package.json');
+    if (!pkg.keywords || !pkg.keywords.includes(key))
+      throw new Error(
+        'keywords does not map to loopback-application in package.json'
+      );
+    return;
+  }
+
   promptArtifactName() {
     const prompts = [
       {
         type: 'input',
         name: 'name',
         message: utils.toClassName(this.artifactInfo.artifactType) + ' name:', // capitalization
-        when: this.artifactInfo.name == undefined,
+        when: this.artifactInfo.name === undefined,
         default: utils.toClassName(this.artifactInfo.defaultName),
         validate: utils.validateClassName,
       },
@@ -50,7 +71,6 @@ module.exports = class extends Generator {
   }
 
   scaffold() {
-    this.destinationRoot(this.artifactInfo.outdir);
     const originalName = this.artifactInfo.name;
 
     // Capitalize class name
@@ -61,7 +81,8 @@ module.exports = class extends Generator {
       this.templatePath('new.' + this.artifactInfo.artifactType + '.ts'),
       // name.artifactName.ts (ex: new.controller.ts)
       this.destinationPath(
-        utils.toFileName(originalName) +
+        this.artifactInfo.outdir +
+          utils.toFileName(originalName) +
           '.' +
           this.artifactInfo.artifactType +
           '.ts'

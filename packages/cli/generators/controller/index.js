@@ -7,7 +7,7 @@
 const ArtifactGenerator = require('../../lib/artifact-generator');
 const utils = require('../../lib/utils');
 
-module.exports = class extends ArtifactGenerator {
+module.exports = class ControllerGenerator extends ArtifactGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);
@@ -16,9 +16,13 @@ module.exports = class extends ArtifactGenerator {
   _setupGenerator() {
     this.artifactInfo = {
       artifactType: 'controller',
-      outdir: 'src/controllers',
+      outdir: 'src/controllers/',
     };
     return super._setupGenerator();
+  }
+
+  checkLoopBackProject() {
+    return super.checkLoopBackProject();
   }
 
   promptArtifactName() {
