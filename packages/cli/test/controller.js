@@ -15,7 +15,7 @@ const validProps = {
   name: 'fooBar',
   description: 'My controller for LoopBack 4',
 };
-const fileName = '/src/controllers/fooBar.controller.ts';
+const fileName = '/src/controllers/foo-bar.controller.ts';
 const tests = require('./artifact')(generator);
 
 describe('generator-loopback4:controller', tests);

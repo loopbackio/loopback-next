@@ -82,7 +82,7 @@ module.exports = class ArtifactGenerator extends Generator {
       // name.artifactName.ts (ex: new.controller.ts)
       this.destinationPath(
         this.artifactInfo.outdir +
-          utils.toFileName(originalName) +
+          utils.kebabCase(originalName) +
           '.' +
           this.artifactInfo.artifactType +
           '.ts'

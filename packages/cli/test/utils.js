@@ -116,38 +116,4 @@ describe('Utils', () => {
       });
     }
   });
-  describe('toFileName', () => {
-    describe('should error', () => {
-      testExpectError('if input is empty', '', /no input/);
-      testExpectError('if input is null', null, /bad input/);
-      testExpectError('if input is not a string', 42, /bad input/);
-    });
-    describe('should have no effect', () => {
-      testExpectNoChange('if first letter is lower case', 'fooBar');
-      testExpectNoChange('if first letter is not convertible', '$fooBar');
-    });
-    describe('should convert first letter to lower case', () => {
-      testExpectLowerCase('if first letter is upper case', 'FooBar', 'fooBar');
-      testExpectLowerCase(
-        'if first letter is upper case in different language',
-        'ÓooBar',
-        'óooBar'
-      );
-    });
-    function testExpectError(testName, input, expected) {
-      it(testName, () => {
-        expect(utils.toFileName(input)).to.match(expected);
-      });
-    }
-    function testExpectNoChange(testName, input) {
-      it(testName, () => {
-        expect(utils.toFileName(input)).to.equal(input);
-      });
-    }
-    function testExpectLowerCase(testName, input, expected) {
-      it(testName, () => {
-        expect(utils.toFileName(input)).to.equal(expected);
-      });
-    }
-  });
 });

@@ -8,7 +8,7 @@
 const fs = require('fs');
 const util = require('util');
 const regenerate = require('regenerate');
-const template = require('lodash.template');
+const _ = require('lodash');
 
 /**
  * Returns a valid variable name regex;
@@ -20,7 +20,7 @@ function generateValidRegex() {
   };
   const ID_Start = get('Binary_Property/ID_Start');
   const ID_Continue = get('Binary_Property/ID_Continue');
-  const compileRegex = template(
+  const compileRegex = _.template(
     '^(?:<%= identifierStart %>)(?:<%= identifierPart %>)*$'
   );
   const identifierStart = regenerate(ID_Start).add('$', '_');
@@ -91,11 +91,4 @@ exports.toClassName = function(name) {
   return name.substring(0, 1).toUpperCase() + name.substring(1);
 };
 
-/**
- * Converts a name to file name after validation
- */
-exports.toFileName = function(name) {
-  if (name == '') return new Error('no input');
-  if (typeof name != 'string' || name == null) return new Error('bad input');
-  return name.substring(0, 1).toLowerCase() + name.substring(1);
-};
+exports.kebabCase = _.kebabCase;
