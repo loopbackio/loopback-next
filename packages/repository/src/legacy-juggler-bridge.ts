@@ -14,6 +14,12 @@ import {EntityCrudRepository} from './repository';
 
 export * from './loopback-datasource-juggler';
 import {juggler} from './loopback-datasource-juggler';
+import {
+  AnyObject,
+  Command,
+  NamedParameters,
+  PositionalParameters,
+} from '../index';
 
 type DataSourceType = juggler.DataSource;
 export {DataSourceType};
@@ -193,6 +199,16 @@ export class DefaultCrudRepository<T extends Entity, ID>
 
   exists(id: ID, options?: Options): Promise<boolean> {
     return ensurePromise(this.modelClass.exists(id, options));
+  }
+
+  async execute(
+    command: Command,
+    // tslint:disable:no-any
+    parameters: NamedParameters | PositionalParameters,
+    options?: Options,
+  ): Promise<AnyObject> {
+    /* istanbul ignore next */
+    throw new Error('Not implemented');
   }
 
   protected toEntity(model: DataObject<T>): T {

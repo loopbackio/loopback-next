@@ -60,3 +60,19 @@ export type Callback<T> = (
   err: Error | string | null | undefined,
   result?: T,
 ) => void;
+
+/**
+ * Type for a command
+ */
+export type Command = string | AnyObject;
+
+/**
+ * Named parameters, such as `{x: 1, y: 'a'}`
+ */
+export type NamedParameters = AnyObject;
+
+/**
+ * Positional parameters, such as [1, 'a']
+ */
+// tslint:disable-next-line:no-any
+export type PositionalParameters = any[];

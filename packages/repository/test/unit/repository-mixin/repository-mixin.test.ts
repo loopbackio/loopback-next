@@ -9,6 +9,12 @@ import {
   juggler,
   DataSourceConstructor,
   Class,
+  Options,
+  Repository,
+  AnyObject,
+  Command,
+  NamedParameters,
+  PositionalParameters,
 } from '../../../';
 import {Application, Component} from '@loopback/core';
 
@@ -69,8 +75,8 @@ describe('RepositoryMixin', () => {
 
   class AppWithRepoMixin extends RepositoryMixin(Application) {}
 
-  class NoteRepo {
-    model: any;
+  class NoteRepo implements Repository<juggler.PersistedModel> {
+    model: typeof juggler.PersistedModel;
 
     constructor() {
       const ds: juggler.DataSource = new DataSourceConstructor({
@@ -83,6 +89,16 @@ describe('RepositoryMixin', () => {
         {title: 'string', content: 'string'},
         {},
       );
+    }
+
+    async execute(
+      query: Command,
+      // tslint:disable:no-any
+      parameters: NamedParameters | PositionalParameters,
+      options?: Options,
+    ): Promise<AnyObject> {
+      /* istanbul ignore next */
+      throw Error('Not implemented');
     }
   }
 
