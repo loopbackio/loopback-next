@@ -60,17 +60,17 @@ module.exports = function(artiGenerator) {
       testCheckLoopBack(
         'throws an error if "keywords" key does not exist',
         {foobar: 'test'},
-        /does not map to loopback-application/
+        /does not map to loopback/
       );
       testCheckLoopBack(
-        'throws an error if "keywords" key does not map to an array with "loopback-application" as a member',
+        'throws an error if "keywords" key does not map to an array with "loopback" as a member',
         {keywords: ['foobar', 'test']},
-        /does not map to loopback-application/
+        /does not map to loopback/
       );
-      it('passes if "keywords" maps to "loopback-application"', () => {
+      it('passes if "keywords" maps to "loopback"', () => {
         let gen = testSetUpGen();
         gen.fs.readJSON = sinon.stub(fs, 'readJSON');
-        gen.fs.readJSON.returns({keywords: ['test', 'loopback-application']});
+        gen.fs.readJSON.returns({keywords: ['test', 'loopback']});
         assert.doesNotThrow(() => {
           gen.checkLoopBackProject();
         }, Error);

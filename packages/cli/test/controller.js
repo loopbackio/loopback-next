@@ -30,7 +30,7 @@ describe('lb4 controller', () => {
         fs.writeFileSync(
           path.join(tmpDir, 'package.json'),
           JSON.stringify({
-            keywords: ['loopback-application'],
+            keywords: ['loopback'],
           })
         );
         tmpDir = path.join(dir, fileName);

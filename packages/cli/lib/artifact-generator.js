@@ -44,12 +44,10 @@ module.exports = class ArtifactGenerator extends Generator {
    */
   checkLoopBackProject() {
     const pkg = this.fs.readJSON(this.destinationPath('package.json'));
-    const key = 'loopback-application';
+    const key = 'loopback';
     if (!pkg) throw new Error('unable to load package.json');
     if (!pkg.keywords || !pkg.keywords.includes(key))
-      throw new Error(
-        'keywords does not map to loopback-application in package.json'
-      );
+      throw new Error('keywords does not map to loopback in package.json');
     return;
   }
 
