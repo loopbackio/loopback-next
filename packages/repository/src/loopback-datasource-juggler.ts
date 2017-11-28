@@ -202,7 +202,7 @@ export declare namespace juggler {
     eq?: any;
     neq?: any;
     gt?: any;
-    get?: any;
+    gte?: any;
     lt?: any;
     lte?: any;
     inq?: any[];
@@ -222,18 +222,6 @@ export declare namespace juggler {
   }
 
   /**
-   * Order by direction
-   */
-  export type Direction = 'ASC' | 'DESC';
-
-  /**
-   * Order by
-   */
-  export interface Order {
-    [property: string]: Direction;
-  }
-
-  /**
    * Selection of fields
    */
   export interface Fields {
@@ -245,7 +233,7 @@ export declare namespace juggler {
    */
   export interface Inclusion {
     relation: string;
-    scope: Filter;
+    scope?: Filter;
   }
 
   /**
@@ -254,7 +242,7 @@ export declare namespace juggler {
   export interface Filter {
     where?: Where;
     fields?: Fields;
-    order?: Order[];
+    order?: string[];
     limit?: number;
     skip?: number;
     offset?: number;
