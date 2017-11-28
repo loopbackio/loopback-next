@@ -217,7 +217,16 @@ export class RestServer extends Context implements Server {
         // controller methods are specified through app.api() spec
         continue;
       }
-      this._httpHandler.registerController(ctor, apiSpec);
+      // If the controller has been scoped to a particular server...
+      if (ctor.prototype._server) {
+        // Check if this binding returns the same instance.
+        const server = this.getSync(`servers.${ctor.prototype._server}`);
+        if (server === this) {
+          this._httpHandler.registerController(ctor, apiSpec);
+        }
+      } else {
+        this._httpHandler.registerController(ctor, apiSpec);
+      }
     }
 
     for (const b of this.find('routes.*')) {

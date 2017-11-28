@@ -13,6 +13,7 @@ import {
   patch,
   del,
   param,
+  server,
 } from '../../..';
 import {expect} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
@@ -32,6 +33,40 @@ describe('Routing metadata', () => {
 
     const actualSpec = getControllerSpec(MyController);
     expect(actualSpec).to.eql(expectedSpec);
+  });
+
+  it('correctly scopes spec to specified server', () => {
+    const specOne = anOpenApiSpec()
+      .withOperationReturningString('get', '/greet', 'greet')
+      .build();
+
+    const specTwo = anOpenApiSpec()
+      .withOperationReturningString('get', '/feet', 'feet')
+      .build();
+
+    @server('foo')
+    @api(specOne)
+    class ControllerOne {
+      greet() {
+        return 'Hello world!';
+      }
+    }
+
+    @api(specTwo)
+    @server('bar')
+    class ControllerTwo {
+      feet() {
+        return '\|/ \|/';
+      }
+    }
+
+    const actualSpecOne = getControllerSpec(ControllerOne);
+    const actualSpecTwo = getControllerSpec(ControllerTwo);
+
+    // References are different
+    expect(actualSpecOne).to.not.equal(actualSpecTwo);
+    expect(actualSpecOne).to.eql(specOne);
+    expect(actualSpecTwo).to.eql(specTwo);
   });
 
   it('returns spec defined via @get decorator', () => {

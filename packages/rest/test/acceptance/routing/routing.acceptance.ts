@@ -13,8 +13,9 @@ import {
   RestBindings,
   RestServer,
   RestComponent,
+  server,
 } from '../../..';
-import {Application} from '@loopback/core';
+import {Application, ApplicationConfig} from '@loopback/core';
 
 import {
   ParameterObject,
@@ -43,7 +44,7 @@ describe('Routing', () => {
    */
   it('supports basic usage', async () => {
     const app = givenAnApplication();
-    const server = await givenAServer(app);
+    const restServer = await givenAServer(app);
     const spec = anOpenApiSpec()
       .withOperation(
         'get',
@@ -68,7 +69,7 @@ describe('Routing', () => {
     givenControllerInApp(app, EchoController);
 
     return (
-      whenIMakeRequestTo(server)
+      whenIMakeRequestTo(restServer)
         .get('/echo?msg=hello%20world')
         // Then I get the result `hello world` from the `Method`
         .expect('hello world')
@@ -89,11 +90,11 @@ describe('Routing', () => {
     }
 
     const app = givenAnApplication();
-    const server = await givenAServer(app);
+    const restServer = await givenAServer(app);
     givenControllerInApp(app, MyController);
 
     return (
-      whenIMakeRequestTo(server)
+      whenIMakeRequestTo(restServer)
         .get('/greet?name=world')
         // Then I get the result `hello world` from the `Method`
         .expect('hello world')
@@ -109,10 +110,10 @@ describe('Routing', () => {
       }
     }
     const app = givenAnApplication();
-    const server = await givenAServer(app);
+    const restServer = await givenAServer(app);
     givenControllerInApp(app, MyController);
     return (
-      whenIMakeRequestTo(server)
+      whenIMakeRequestTo(restServer)
         .get('/greet?name=world')
         // Then I get the result `hello world` from the `Method`
         .expect('hello world')
@@ -121,8 +122,8 @@ describe('Routing', () => {
 
   it('injects controller constructor arguments', async () => {
     const app = givenAnApplication();
-    const server = await givenAServer(app);
-    server.bind('application.name').to('TestApp');
+    const restServer = await givenAServer(app);
+    restServer.bind('application.name').to('TestApp');
 
     const spec = anOpenApiSpec()
       .withOperation(
@@ -144,18 +145,18 @@ describe('Routing', () => {
     }
     givenControllerInApp(app, InfoController);
 
-    return whenIMakeRequestTo(server)
+    return whenIMakeRequestTo(restServer)
       .get('/name')
       .expect('TestApp');
   });
 
   it('creates a new child context for each request', async () => {
     const app = givenAnApplication();
-    const server = await givenAServer(app);
-    server.bind('flag').to('original');
+    const restServer = await givenAServer(app);
+    restServer.bind('flag').to('original');
 
     // create a special binding returning the current context instance
-    server.bind('context').getValue = ctx => ctx;
+    restServer.bind('context').getValue = ctx => ctx;
 
     const spec = anOpenApiSpec()
       .withOperationReturningString('put', '/flag', 'setFlag')
@@ -180,18 +181,18 @@ describe('Routing', () => {
     // Rebind "flag" to "modified". Since we are modifying
     // the per-request child context, the change should
     // be discarded after the request is done.
-    await whenIMakeRequestTo(server).put('/flag');
+    await whenIMakeRequestTo(restServer).put('/flag');
 
     // Get the value "flag" is bound to.
     // This should return the original value.
-    await whenIMakeRequestTo(server)
+    await whenIMakeRequestTo(restServer)
       .get('/flag')
       .expect('original');
   });
 
   it('binds request and response objects', async () => {
     const app = givenAnApplication();
-    const server = await givenAServer(app);
+    const restServer = await givenAServer(app);
 
     const spec = anOpenApiSpec()
       .withOperationReturningString('get', '/status', 'getStatus')
@@ -211,14 +212,14 @@ describe('Routing', () => {
     }
     givenControllerInApp(app, StatusController);
 
-    return whenIMakeRequestTo(server)
+    return whenIMakeRequestTo(restServer)
       .get('/status')
       .expect(202, 'GET');
   });
 
   it('binds controller constructor object and operation', async () => {
     const app = givenAnApplication();
-    const server = await givenAServer(app);
+    const restServer = await givenAServer(app);
     const spec = anOpenApiSpec()
       .withOperationReturningString('get', '/name', 'getControllerName')
       .build();
@@ -241,7 +242,7 @@ describe('Routing', () => {
     }
     givenControllerInApp(app, GetCurrentController);
 
-    return whenIMakeRequestTo(server)
+    return whenIMakeRequestTo(restServer)
       .get('/name')
       .expect({
         ctor: 'GetCurrentController',
@@ -251,7 +252,7 @@ describe('Routing', () => {
 
   it('supports function-based routes', async () => {
     const app = givenAnApplication();
-    const server = await givenAServer(app);
+    const restServer = await givenAServer(app);
 
     const routeSpec = <OperationObject>{
       parameters: [
@@ -270,15 +271,15 @@ describe('Routing', () => {
     }
 
     const route = new Route('get', '/greet', routeSpec, greet);
-    server.route(route);
+    restServer.route(route);
 
-    const client = whenIMakeRequestTo(server);
+    const client = whenIMakeRequestTo(restServer);
     await client.get('/greet?name=world').expect(200, 'hello world');
   });
 
   it('supports handler routes declared via API specification', async () => {
     const app = givenAnApplication();
-    const server = await givenAServer(app);
+    const restServer = await givenAServer(app);
 
     function greet(name: string) {
       return `hello ${name}`;
@@ -294,31 +295,31 @@ describe('Routing', () => {
       )
       .build();
 
-    server.api(spec);
+    restServer.api(spec);
 
-    const client = whenIMakeRequestTo(server);
+    const client = whenIMakeRequestTo(restServer);
     await client.get('/greet?name=world').expect(200, 'hello world');
   });
 
   it('supports API spec with no paths property', async () => {
     const app = givenAnApplication();
-    const server = await givenAServer(app);
+    const restServer = await givenAServer(app);
     const spec = anOpenApiSpec().build();
     delete spec.paths;
-    server.api(spec);
+    restServer.api(spec);
   });
 
   it('supports API spec with a path with no verbs', async () => {
     const app = givenAnApplication();
-    const server = await givenAServer(app);
+    const restServer = await givenAServer(app);
     const spec = anOpenApiSpec().build();
     spec.paths = {'/greet': {}};
-    server.api(spec);
+    restServer.api(spec);
   });
 
   it('supports controller routes declared via API spec', async () => {
     const app = givenAnApplication();
-    const server = await givenAServer(app);
+    const restServer = await givenAServer(app);
 
     class MyController {
       greet(name: string) {
@@ -337,16 +338,16 @@ describe('Routing', () => {
       )
       .build();
 
-    server.api(spec);
+    restServer.api(spec);
     app.controller(MyController);
 
-    const client = whenIMakeRequestTo(server);
+    const client = whenIMakeRequestTo(restServer);
     await client.get('/greet?name=world').expect(200, 'hello world');
   });
 
   it('supports controller routes declared via API spec with basePath', async () => {
     const app = givenAnApplication();
-    const server = await givenAServer(app);
+    const restServer = await givenAServer(app);
 
     @api({basePath: '/my', paths: {}})
     class MyController {
@@ -358,13 +359,13 @@ describe('Routing', () => {
 
     app.controller(MyController);
 
-    const client = whenIMakeRequestTo(server);
+    const client = whenIMakeRequestTo(restServer);
     await client.get('/my/greet?name=world').expect(200, 'hello world');
   });
 
   it('reports operations bound to unknown controller', async () => {
     const app = givenAnApplication();
-    const server = await givenAServer(app);
+    const restServer = await givenAServer(app);
     const spec = anOpenApiSpec()
       .withOperation(
         'get',
@@ -375,11 +376,11 @@ describe('Routing', () => {
       )
       .build();
 
-    server.api(spec);
+    restServer.api(spec);
 
-    return server.start().then(
+    return restServer.start().then(
       ok => {
-        throw new Error('server.start() should have failed');
+        throw new Error('restServer.start() should have failed');
       },
       err => expect(err.message).to.match(/UnknownController/),
     );
@@ -387,24 +388,24 @@ describe('Routing', () => {
 
   it('reports operations with no handler', async () => {
     const app = givenAnApplication();
-    const server = await givenAServer(app);
+    const restServer = await givenAServer(app);
     const spec = anOpenApiSpec()
       .withOperationReturningString('get', '/greet')
       .build();
 
-    server.api(spec);
+    restServer.api(spec);
 
-    return server.start().then(
+    return restServer.start().then(
       ok => {
-        throw new Error('server.start() should have failed');
+        throw new Error('restServer.start() should have failed');
       },
       err => expect(err.message).to.match(/no handler/),
     );
   });
 
-  it('supports controller routes defined via server.route()', async () => {
+  it('supports controller routes defined via restServer.route()', async () => {
     const app = givenAnApplication();
-    const server = await givenAServer(app);
+    const restServer = await givenAServer(app);
 
     class MyController {
       greet(name: string) {
@@ -416,28 +417,175 @@ describe('Routing', () => {
       .withParameter({name: 'name', in: 'query', type: 'string'})
       .build();
 
-    server.route('get', '/greet', spec, MyController, 'greet');
+    restServer.route('get', '/greet', spec, MyController, 'greet');
 
-    const client = whenIMakeRequestTo(server);
+    const client = whenIMakeRequestTo(restServer);
     await client.get('/greet?name=world').expect(200, 'hello world');
+  });
+
+  describe('multiple servers', async () => {
+    let app: Application;
+    beforeEach(async () => {
+      app = givenAnApplication();
+    });
+    afterEach(async () => {
+      await app.stop(); // Cleanup.
+    });
+    it('correctly separates routes for decorated controllers', async () => {
+      app.server(RestServer, 'OtherRestServer');
+
+      const serverOne = await givenAServer(app);
+      serverOne.bind('rest.port').to(0);
+      const serverTwo = await givenAServer(app, 'OtherRestServer');
+      serverTwo.bind('rest.port').to(0);
+
+      @server('RestServer')
+      class GreetController {
+        @get('/greet')
+        greet() {
+          return `hello, world`;
+        }
+
+        @get('/neat')
+        neat() {
+          return 'that is neat';
+        }
+      }
+
+      @server('OtherRestServer')
+      class OtherGreetController {
+        @get('/greet')
+        greet() {
+          return `nice to meet you, world`;
+        }
+
+        @get('/treat')
+        treat() {
+          return 'have a treat!';
+        }
+      }
+
+      app.controller(GreetController);
+      app.controller(OtherGreetController);
+      await app.start();
+      const clientOne = whenIMakeRequestTo(serverOne);
+      const clientTwo = whenIMakeRequestTo(serverTwo);
+
+      // Overlapping definitions should work.
+      await clientOne
+        .get('/greet')
+        .send()
+        .expect(200, /hello/);
+      await clientTwo
+        .get('/greet')
+        .send()
+        .expect(200, /nice to meet you/);
+
+      // Distinct definitions should not be shared across servers.
+      await clientOne
+        .get('/treat')
+        .send()
+        .expect(404);
+      await clientTwo
+        .get('/neat')
+        .send()
+        .expect(404);
+    });
+
+    it('correctly routes when using server and api decorators', async () => {
+      const specOne = anOpenApiSpec()
+        .withOperationReturningString('get', '/greet', 'greet')
+        .withOperationReturningString('get', '/neat', 'neat')
+        .build();
+
+      const specTwo = anOpenApiSpec()
+        .withOperationReturningString('get', '/greet', 'greet')
+        .withOperationReturningString('get', '/treat', 'treat')
+        .build();
+
+      app.server(RestServer, 'OtherRestServer');
+
+      const serverOne = await givenAServer(app);
+      serverOne.bind('rest.port').to(0);
+      const serverTwo = await givenAServer(app, 'OtherRestServer');
+      serverTwo.bind('rest.port').to(0);
+
+      @server('RestServer')
+      @api(specOne)
+      class GreetController {
+        greet() {
+          return 'hello, world';
+        }
+
+        neat() {
+          return 'that is neat';
+        }
+      }
+
+      // Using different ordering to validate that this is still handled
+      // correctly.
+      @api(specTwo)
+      @server('OtherRestServer')
+      class OtherGreetController {
+        greet() {
+          return 'nice to meet you, world';
+        }
+
+        treat() {
+          return 'have a treat';
+        }
+      }
+
+      app.controller(GreetController);
+      app.controller(OtherGreetController);
+      await app.start();
+      const clientOne = whenIMakeRequestTo(serverOne);
+      const clientTwo = whenIMakeRequestTo(serverTwo);
+
+      // Overlapping definitions should work.
+      await clientOne
+        .get('/greet')
+        .send()
+        .expect(200, /hello/);
+      await clientTwo
+        .get('/greet')
+        .send()
+        .expect(200, /nice to meet you/);
+
+      // Distinct definitions should not be shared across servers.
+      await clientOne
+        .get('/treat')
+        .send()
+        .expect(404);
+      await clientTwo
+        .get('/neat')
+        .send()
+        .expect(404);
+    });
   });
 
   /* ===== HELPERS ===== */
 
-  function givenAnApplication() {
-    return new Application({
-      components: [RestComponent],
-    });
+  function givenAnApplication(options?: ApplicationConfig) {
+    const opts = Object.assign(
+      {
+        components: [RestComponent],
+      },
+      options,
+    );
+    return new Application(opts);
   }
-  async function givenAServer(app: Application) {
-    return await app.getServer(RestServer);
+  async function givenAServer(app: Application, name?: string) {
+    return name
+      ? ((await app.getServer(name)) as RestServer)
+      : await app.getServer(RestServer);
   }
 
   function givenControllerInApp(app: Application, controller: ControllerClass) {
     app.controller(controller);
   }
 
-  function whenIMakeRequestTo(server: RestServer): Client {
-    return createClientForHandler(server.handleHttp);
+  function whenIMakeRequestTo(restServer: RestServer): Client {
+    return createClientForHandler(restServer.handleHttp);
   }
 });

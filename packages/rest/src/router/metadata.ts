@@ -6,7 +6,7 @@
 import * as assert from 'assert';
 import * as _ from 'lodash';
 
-import {Reflector} from '@loopback/context';
+import {Reflector, Constructor} from '@loopback/context';
 import {
   OperationObject,
   ParameterLocation,
@@ -72,8 +72,57 @@ export function api(spec: ControllerSpec) {
       'The @api decorator can be applied to constructors only.',
     );
     const apiSpec = resolveControllerSpec(constructor, spec);
-    Reflector.defineMetadata(API_SPEC_KEY, apiSpec, constructor);
+    const key = constructor.prototype._server
+      ? `${API_SPEC_KEY}:${constructor.prototype._server}`
+      : API_SPEC_KEY;
+    Reflector.defineMetadata(key, apiSpec, constructor);
   };
+}
+
+/**
+ * A decorator to mark a controller as belonging to a specific server.
+ * ```ts
+ * // In your application...
+ * class MyApplication extends Application {
+ *   constructor() {
+ *     super();
+ *     this.server(RestServer, 'foo');
+ *   }
+ * }
+ *
+ * // In one of your controllers
+ * @server('foo')
+ * class MyController {
+ *  // ...
+ * }
+ * ```
+ * @param name The name of the server bound to your application context.
+ */
+export function server(name: string) {
+  return function(constructor: Constructor<any>) {
+    const endpoints = Reflector.getOwnMetadata(ENDPOINTS_KEY, constructor);
+    if (endpoints) {
+      rescopeMetadata(ENDPOINTS_KEY, name, constructor, endpoints);
+    }
+    const spec = getControllerSpec(constructor);
+    if (spec) {
+      rescopeMetadata(API_SPEC_KEY, name, constructor, spec);
+    }
+    constructor.prototype._server = name;
+  };
+}
+
+function rescopeMetadata(
+  key: string,
+  scope: string,
+  constructor: Constructor<any>,
+  value: any,
+) {
+  // Replace the default binding with a server-scoped one, if it exists.
+  if (Reflector.hasMetadata(key, constructor)) {
+    Reflector.deleteMetadata(key, constructor);
+  }
+  Reflector.defineMetadata(`${key}:${scope}`, value, constructor);
 }
 
 /**
@@ -89,13 +138,17 @@ interface RestEndpoint {
 function getEndpoints(
   target: any,
 ): {[property: string]: Partial<RestEndpoint>} {
-  let endpoints = Reflector.getOwnMetadata(ENDPOINTS_KEY, target);
+  const key =
+    target && target.prototype && target.prototype._server
+      ? `${ENDPOINTS_KEY}:${target.prototype._server}`
+      : ENDPOINTS_KEY;
+  let endpoints = Reflector.getOwnMetadata(key, target);
   if (!endpoints) {
     // Clone the endpoints so that subclasses won't mutate the metadata
     // in the base class
-    const baseEndpoints = Reflector.getMetadata(ENDPOINTS_KEY, target);
+    const baseEndpoints = Reflector.getMetadata(key, target);
     endpoints = cloneDeep(baseEndpoints);
-    Reflector.defineMetadata(ENDPOINTS_KEY, endpoints, target);
+    Reflector.defineMetadata(key, endpoints, target);
   }
   return endpoints;
 }
@@ -166,10 +219,14 @@ function resolveControllerSpec(
  * @param constructor Controller class
  */
 export function getControllerSpec(constructor: Function): ControllerSpec {
-  let spec = Reflector.getOwnMetadata(API_SPEC_KEY, constructor);
+  const key =
+    constructor && constructor.prototype && constructor.prototype._server
+      ? `${API_SPEC_KEY}:${constructor.prototype._server}`
+      : API_SPEC_KEY;
+  let spec = Reflector.getOwnMetadata(key, constructor);
   if (!spec) {
     spec = resolveControllerSpec(constructor, spec);
-    Reflector.defineMetadata(API_SPEC_KEY, spec, constructor);
+    Reflector.defineMetadata(key, spec, constructor);
   }
   return spec;
 }
