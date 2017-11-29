@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Model} from './model';
+import {AnyObject, Options} from '../index';
 
 /**
  * Common properties/operations for connectors
@@ -15,4 +16,10 @@ export interface Connector {
   connect(): Promise<void>; // Connect to the underlying system
   disconnect(): Promise<void>; // Disconnect from the underlying system
   ping(): Promise<void>; // Ping the underlying system
+  execute?(
+    query: string | AnyObject,
+    // tslint:disable:no-any
+    parameters: AnyObject | any[],
+    options?: Options,
+  ): Promise<AnyObject>;
 }

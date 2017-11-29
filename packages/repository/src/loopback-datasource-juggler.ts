@@ -101,6 +101,7 @@ export declare namespace juggler {
    * Base model class
    */
   export class ModelBase {
+    static dataSource?: DataSource;
     static modelName: string;
     static definition: ModelDefinition;
     static attachTo(ds: DataSource): void;

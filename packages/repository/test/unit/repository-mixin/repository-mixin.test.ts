@@ -9,6 +9,9 @@ import {
   juggler,
   DataSourceConstructor,
   Class,
+  Options,
+  Repository,
+  AnyObject,
 } from '../../../';
 import {Application, Component} from '@loopback/core';
 
@@ -69,7 +72,7 @@ describe('RepositoryMixin', () => {
 
   class AppWithRepoMixin extends RepositoryMixin(Application) {}
 
-  class NoteRepo {
+  class NoteRepo implements Repository<any> {
     model: any;
 
     constructor() {
@@ -83,6 +86,15 @@ describe('RepositoryMixin', () => {
         {title: 'string', content: 'string'},
         {},
       );
+    }
+
+    execute(
+      query: string | AnyObject,
+      // tslint:disable:no-any
+      parameters: AnyObject | any[],
+      options?: Options,
+    ): Promise<AnyObject> {
+      throw Error('Not implemented');
     }
   }
 
