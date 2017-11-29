@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.21"></a>
+# [4.0.0-alpha.21](https://github.com/strongloop/loopback-next/compare/@loopback/context@4.0.0-alpha.20...@loopback/context@4.0.0-alpha.21) (2017-11-29)
+
+
+### Features
+
+* **context:** Allow patterns to be RegExp ([991cf38](https://github.com/strongloop/loopback-next/commit/991cf38))
+
+
+
+
 <a name="4.0.0-alpha.20"></a>
 # [4.0.0-alpha.20](https://github.com/strongloop/loopback-next/compare/@loopback/context@4.0.0-alpha.19...@loopback/context@4.0.0-alpha.20) (2017-11-14)
 

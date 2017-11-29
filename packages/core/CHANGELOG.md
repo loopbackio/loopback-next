@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.23"></a>
+# [4.0.0-alpha.23](https://github.com/strongloop/loopback-next/compare/@loopback/core@4.0.0-alpha.22...@loopback/core@4.0.0-alpha.23) (2017-11-29)
+
+
+### Features
+
+* **core:** Set tags to group bound artifacts ([aa9812f](https://github.com/strongloop/loopback-next/commit/aa9812f))
+
+
+
+
 <a name="4.0.0-alpha.22"></a>
 # [4.0.0-alpha.22](https://github.com/strongloop/loopback-next/compare/@loopback/core@4.0.0-alpha.21...@loopback/core@4.0.0-alpha.22) (2017-11-14)
 
