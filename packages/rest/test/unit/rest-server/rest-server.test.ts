@@ -71,13 +71,13 @@ describe('RestServer', () => {
       expect(server.getSync(RestBindings.PORT)).to.equal(3000);
     });
 
-    it('uses http host localhost by default', async () => {
+    it('uses undefined http host by default', async () => {
       const app = new Application({
         components: [RestComponent],
       });
       const server = await app.getServer(RestServer);
       const host = await server.getSync(RestBindings.HOST);
-      expect(host).to.equal('localhost');
+      expect(host).to.be.undefined();
     });
 
     it('can set port 0', async () => {
