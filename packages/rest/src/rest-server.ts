@@ -138,7 +138,8 @@ export class RestServer extends Context implements Server {
       options.port = 3000;
     }
     if (options.host == null) {
-      options.host = 'localhost';
+      // Set it to '' so that the http server will listen on all interfaces
+      options.host = undefined;
     }
     this.bind(RestBindings.PORT).to(options.port);
     this.bind(RestBindings.HOST).to(options.host);
