@@ -15,7 +15,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
 
   _setupGenerator() {
     this.artifactInfo = {
-      artifactType: 'controller',
+      type: 'controller',
       outdir: 'src/controllers/',
     };
     return super._setupGenerator();
@@ -30,13 +30,33 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   }
 
   scaffold() {
-    return super.scaffold();
-  }
-  end() {
-    this.log();
-    this.log(
-      'Controller %s is now created in src/controllers/',
-      this.artifactInfo.name
+    // this.fs.move breaks if the first two args are the same
+    if (this.artifactInfo.name === this.artifactInfo.defaultName) {
+      return super.scaffold();
+    }
+    super.scaffold();
+    this.fs.move(
+      this.destinationPath(this.artifactInfo.outdir + 'new.controller.ts'),
+      this.destinationPath(
+        this.artifactInfo.outdir +
+          utils.kebabCase(this.artifactInfo.name) +
+          '.controller.ts'
+      ),
+      {globOptions: {dot: true}}
     );
+    return;
+  }
+
+  end() {
+    if (
+      this.generationStatus.controller !== 'skip' &&
+      this.generationStatus.controller !== 'identical'
+    ) {
+      this.log();
+      this.log(
+        'Controller %s is now created in src/controllers/',
+        this.artifactInfo.name
+      );
+    }
   }
 };

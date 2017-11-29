@@ -6,6 +6,8 @@
 'use strict';
 const Generator = require('yeoman-generator');
 const utils = require('./utils');
+const path = require('path');
+const through = require('through2');
 
 module.exports = class ArtifactGenerator extends Generator {
   // Note: arguments and options should be defined in the constructor.
@@ -18,7 +20,7 @@ module.exports = class ArtifactGenerator extends Generator {
     this.argument('name', {
       type: String,
       required: false,
-      description: 'Name for the ' + this.artifactInfo.artifactType,
+      description: 'Name for the ' + this.artifactInfo.type,
     });
     // argument validation
     if (this.args.length) {
@@ -27,6 +29,7 @@ module.exports = class ArtifactGenerator extends Generator {
     }
     this.artifactInfo.name = this.args[0];
     this.artifactInfo.defaultName = 'new';
+    this.generationStatus = {};
   }
 
   /**
@@ -39,7 +42,7 @@ module.exports = class ArtifactGenerator extends Generator {
 
   /**
    * Checks if current directory is a LoopBack project by checking for
-   * keyword 'loopback-application' under 'keywords' attribute in package.json.
+   * keyword 'loopback' under 'keywords' attribute in package.json.
    * 'keywords' is an array
    */
   checkLoopBackProject() {
@@ -56,9 +59,9 @@ module.exports = class ArtifactGenerator extends Generator {
       {
         type: 'input',
         name: 'name',
-        message: utils.toClassName(this.artifactInfo.artifactType) + ' name:', // capitalization
+        message: utils.toClassName(this.artifactInfo.type) + ' name:', // capitalization
         when: this.artifactInfo.name === undefined,
-        default: utils.toClassName(this.artifactInfo.defaultName),
+        default: this.artifactInfo.defaultName,
         validate: utils.validateClassName,
       },
     ];
@@ -69,25 +72,70 @@ module.exports = class ArtifactGenerator extends Generator {
   }
 
   scaffold() {
-    const originalName = this.artifactInfo.name;
-
     // Capitalize class name
     this.artifactInfo.name = utils.toClassName(this.artifactInfo.name);
 
     // Copy template files from ./templates
     this.fs.copyTpl(
-      this.templatePath('new.' + this.artifactInfo.artifactType + '.ts'),
-      // name.artifactName.ts (ex: new.controller.ts)
-      this.destinationPath(
-        this.artifactInfo.outdir +
-          utils.kebabCase(originalName) +
-          '.' +
-          this.artifactInfo.artifactType +
-          '.ts'
-      ),
+      this.templatePath('**/*'),
+      this.destinationPath(),
       this.artifactInfo,
       {},
       {globOptions: {dot: true}}
     );
+    return;
+  }
+
+  /**
+   * Overrides _writeFiles so that it keeps track of whether file
+   * conflicts have been skipped or not. Tracked in 'generationStatus'
+   * key.
+   * @private
+   */
+  _writeFiles(done) {
+    const self = this;
+
+    const conflictChecker = through.obj(function(file, enc, cb) {
+      const stream = this;
+
+      // If the file has no state requiring action, move on
+      if (file.state === null) {
+        return cb();
+      }
+
+      // Config file should not be processed by the conflicter. Just pass through
+      const filename = path.basename(file.path);
+
+      if (filename === '.yo-rc.json' || filename === '.yo-rc-global.json') {
+        this.push(file);
+        return cb();
+      }
+
+      self.conflicter.checkForCollision(
+        file.path,
+        file.contents,
+        (err, status) => {
+          if (err) {
+            cb(err);
+            return;
+          }
+
+          self.generationStatus[self.artifactInfo.type] = status;
+          if (status === 'skip') {
+            delete file.state;
+          } else {
+            stream.push(file);
+          }
+
+          cb();
+        }
+      );
+      self.conflicter.resolve();
+    });
+
+    const transformStreams = this._transformStreams.concat([conflictChecker]);
+    this.fs.commit(transformStreams, () => {
+      done();
+    });
   }
 };
