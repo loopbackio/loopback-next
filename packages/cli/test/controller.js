@@ -51,31 +51,6 @@ describe('lb4 controller', () => {
       assert.fileContent(tmpDir + withInputName, /constructor\(\) {}/);
     });
   });
-  describe('without input', () => {
-    let tmpDir;
-    before(() => {
-      return helpers
-        .run(generator)
-        .inTmpDir(dir => {
-          tmpDir = dir;
-          fs.writeFileSync(
-            path.join(tmpDir, 'package.json'),
-            JSON.stringify({
-              keywords: ['loopback'],
-            })
-          );
-        })
-        .withPrompts(noInputProps);
-    });
-    it('writes correct file name', () => {
-      assert.file(tmpDir + noInputName);
-      assert.noFile(tmpDir + templateName);
-    });
-    it('scaffolds correct files', () => {
-      assert.fileContent(tmpDir + noInputName, /class NewController/);
-      assert.fileContent(tmpDir + noInputName, /constructor\(\) {}/);
-    });
-  });
   describe('with arg', () => {
     let tmpDir;
     before(() => {

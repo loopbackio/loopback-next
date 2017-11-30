@@ -61,9 +61,8 @@ module.exports = class ArtifactGenerator extends Generator {
       {
         type: 'input',
         name: 'name',
-        message: utils.toClassName(this.artifactInfo.type) + ' name:', // capitalization
+        message: utils.toClassName(this.artifactInfo.type) + ' class name:', // capitalization
         when: this.artifactInfo.name === undefined,
-        default: this.artifactInfo.defaultName,
         validate: utils.validateClassName,
       },
     ];
