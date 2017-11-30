@@ -39,6 +39,7 @@ module.exports = class extends ProjectGenerator {
   }
 
   promptComponent() {
+    if (this.shouldExit()) return false;
     const prompts = [
       {
         type: 'input',
@@ -64,5 +65,9 @@ module.exports = class extends ProjectGenerator {
 
   install() {
     return super.install();
+  }
+
+  end() {
+    return super.end();
   }
 };

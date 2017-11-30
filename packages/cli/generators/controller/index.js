@@ -31,6 +31,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
 
   scaffold() {
     super.scaffold();
+    if (this.shouldExit()) return false;
     this.artifactInfo.filename =
       utils.kebabCase(this.artifactInfo.name) + '.controller.ts';
 
@@ -46,6 +47,8 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   }
 
   end() {
+    super.end();
+    if (this.shouldExit()) return false;
     // logs a message if there is no file conflict
     if (
       this.conflicter.generationStatus[this.artifactInfo.filename] !== 'skip' &&

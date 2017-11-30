@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-const Generator = require('yeoman-generator');
+const BaseGenerator = require('./base-generator');
 const path = require('path');
 const utils = require('./utils');
 
-module.exports = class extends Generator {
+module.exports = class ProjectGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);
@@ -53,14 +53,6 @@ module.exports = class extends Generator {
     });
   }
 
-  /**
-   * Override the usage text by replacing `yo loopback4:` with `lb4 `.
-   */
-  usage() {
-    const text = super.usage();
-    return text.replace(/^yo loopback4:/g, 'lb4 ');
-  }
-
   setOptions() {
     this.projectInfo = {projectType: this.projectType};
     [
@@ -80,6 +72,7 @@ module.exports = class extends Generator {
   }
 
   promptProjectName() {
+    if (this.shouldExit()) return false;
     const prompts = [
       {
         type: 'input',
@@ -103,6 +96,7 @@ module.exports = class extends Generator {
   }
 
   promptProjectDir() {
+    if (this.shouldExit()) return false;
     const prompts = [
       {
         type: 'input',
@@ -122,6 +116,7 @@ module.exports = class extends Generator {
   }
 
   promptOptions() {
+    if (this.shouldExit()) return false;
     const choices = [];
     ['tslint', 'prettier', 'mocha', 'loopbackBuild'].forEach(f => {
       if (!this.options[f]) {
@@ -155,6 +150,7 @@ module.exports = class extends Generator {
   }
 
   scaffold() {
+    if (this.shouldExit()) return false;
     this.destinationRoot(this.projectInfo.outdir);
 
     // First copy common files from ../../project/templates
@@ -210,6 +206,7 @@ module.exports = class extends Generator {
   }
 
   install() {
+    if (this.shouldExit()) return false;
     this.npmInstall(null, {}, {cwd: this.destinationRoot()});
   }
 };

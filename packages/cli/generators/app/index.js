@@ -35,6 +35,7 @@ module.exports = class extends ProjectGenerator {
   }
 
   promptApplication() {
+    if (this.shouldExit()) return false;
     const prompts = [
       {
         type: 'input',
@@ -62,6 +63,7 @@ module.exports = class extends ProjectGenerator {
   }
 
   end() {
+    if (!super.end()) return false;
     this.log();
     this.log(
       'Application %s is now created in %s.',

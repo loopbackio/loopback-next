@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-const Generator = require('yeoman-generator');
+const BaseGenerator = require('./base-generator');
 const utils = require('./utils');
 const StatusConflicter = utils.StatusConflicter;
 
-module.exports = class ArtifactGenerator extends Generator {
+module.exports = class ArtifactGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);
@@ -35,33 +35,43 @@ module.exports = class ArtifactGenerator extends Generator {
   }
 
   /**
-   * Override the usage text by replacing `yo loopback4:` with `lb4 `.
-   */
-  usage() {
-    const text = super.usage();
-    return text.replace(/^yo loopback4:/g, 'lb4 ');
-  }
-
-  /**
    * Checks if current directory is a LoopBack project by checking for
    * keyword 'loopback' under 'keywords' attribute in package.json.
    * 'keywords' is an array
    */
   checkLoopBackProject() {
+    if (this.shouldExit()) return false;
     const pkg = this.fs.readJSON(this.destinationPath('package.json'));
     const key = 'loopback';
-    if (!pkg) throw new Error('unable to load package.json');
-    if (!pkg.keywords || !pkg.keywords.includes(key))
-      throw new Error('keywords does not map to loopback in package.json');
-    return;
+    if (!pkg) {
+      const err = new Error(
+        'No package.json found in ' +
+          this.destinationRoot() +
+          '. ' +
+          'The command must be run in a LoopBack project.'
+      );
+      this.exit(err);
+      return;
+    }
+    if (!pkg.keywords || !pkg.keywords.includes(key)) {
+      const err = new Error(
+        'No `loopback` keyword found in ' +
+          this.destinationPath('package.json') +
+          '. ' +
+          'The command must be run in a LoopBack project.'
+      );
+      this.exit(err);
+    }
   }
 
   promptArtifactName() {
+    if (this.shouldExit()) return false;
     const prompts = [
       {
         type: 'input',
         name: 'name',
-        message: utils.toClassName(this.artifactInfo.type) + ' class name:', // capitalization
+        // capitalization
+        message: utils.toClassName(this.artifactInfo.type) + ' class name:',
         when: this.artifactInfo.name === undefined,
         validate: utils.validateClassName,
       },
@@ -73,6 +83,7 @@ module.exports = class ArtifactGenerator extends Generator {
   }
 
   scaffold() {
+    if (this.shouldExit()) return false;
     // Capitalize class name
     this.artifactInfo.name = utils.toClassName(this.artifactInfo.name);
 
@@ -85,6 +96,5 @@ module.exports = class ArtifactGenerator extends Generator {
       {},
       {globOptions: {dot: true}}
     );
-    return;
   }
 };
