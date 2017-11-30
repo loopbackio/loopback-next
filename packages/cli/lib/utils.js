@@ -9,6 +9,7 @@ const fs = require('fs');
 const util = require('util');
 const regenerate = require('regenerate');
 const _ = require('lodash');
+const Conflicter = require('yeoman-generator/lib/util/conflicter');
 
 /**
  * Returns a valid variable name regex;
@@ -92,3 +93,21 @@ exports.toClassName = function(name) {
 };
 
 exports.kebabCase = _.kebabCase;
+
+/**
+ * Extends conflicter so that it keeps track of conflict status
+ */
+exports.StatusConflicter = class StatusConflicter extends Conflicter {
+  constructor(adapter, force) {
+    super(adapter, force);
+    this.generationStatus = {}; // keeps track of file conflict history
+  }
+
+  checkForCollision(filepath, contents, callback) {
+    super.checkForCollision(filepath, contents, (err, status) => {
+      let filename = filepath.split('/').pop();
+      this.generationStatus[filename] = status;
+      callback(err, status);
+    });
+  }
+};

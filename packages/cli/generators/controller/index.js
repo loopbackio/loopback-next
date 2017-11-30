@@ -30,17 +30,15 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   }
 
   scaffold() {
-    // this.fs.move breaks if the first two args are the same
-    if (this.artifactInfo.name === this.artifactInfo.defaultName) {
-      return super.scaffold();
-    }
     super.scaffold();
+    this.artifactInfo.filename =
+      utils.kebabCase(this.artifactInfo.name) + '.controller.ts';
+
+    // renames the file
     this.fs.move(
-      this.destinationPath(this.artifactInfo.outdir + 'new.controller.ts'),
+      this.destinationPath(this.artifactInfo.outdir + 'controller-template.ts'),
       this.destinationPath(
-        this.artifactInfo.outdir +
-          utils.kebabCase(this.artifactInfo.name) +
-          '.controller.ts'
+        this.artifactInfo.outdir + this.artifactInfo.filename
       ),
       {globOptions: {dot: true}}
     );
@@ -48,9 +46,11 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   }
 
   end() {
+    // logs a message if there is no file conflict
     if (
-      this.generationStatus.controller !== 'skip' &&
-      this.generationStatus.controller !== 'identical'
+      this.conflicter.generationStatus[this.artifactInfo.filename] !== 'skip' &&
+      this.conflicter.generationStatus[this.artifactInfo.filename] !==
+        'identical'
     ) {
       this.log();
       this.log(

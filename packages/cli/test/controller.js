@@ -11,37 +11,94 @@ const helpers = require('yeoman-test');
 const fs = require('fs');
 
 const generator = path.join(__dirname, '../generators/controller');
-const validProps = {
-  name: 'fooBar',
-  description: 'My controller for LoopBack 4',
-};
-const fileName = '/src/controllers/foo-bar.controller.ts';
 const tests = require('./artifact')(generator);
+
+const templateName = '/src/controllers/controller-template.ts';
+const withInputProps = {
+  name: 'fooBar',
+};
+const withInputName = '/src/controllers/foo-bar.controller.ts';
+const noInputProps = {
+  name: '',
+};
+const noInputName = '/src/controllers/new.controller.ts';
 
 describe('generator-loopback4:controller', tests);
 
 describe('lb4 controller', () => {
-  let tmpDir;
-  before(() => {
-    return helpers
-      .run(generator)
-      .inTmpDir(dir => {
-        tmpDir = dir;
-        fs.writeFileSync(
-          path.join(tmpDir, 'package.json'),
-          JSON.stringify({
-            keywords: ['loopback'],
-          })
-        );
-        tmpDir = path.join(dir, fileName);
-      })
-      .withPrompts(validProps);
+  describe('with input', () => {
+    let tmpDir;
+    before(() => {
+      return helpers
+        .run(generator)
+        .inTmpDir(dir => {
+          tmpDir = dir;
+          fs.writeFileSync(
+            path.join(tmpDir, 'package.json'),
+            JSON.stringify({
+              keywords: ['loopback'],
+            })
+          );
+        })
+        .withPrompts(withInputProps);
+    });
+    it('writes correct file name', () => {
+      assert.file(tmpDir + withInputName);
+      assert.noFile(tmpDir + templateName);
+    });
+    it('scaffolds correct files', () => {
+      assert.fileContent(tmpDir + withInputName, /class FooBarController/);
+      assert.fileContent(tmpDir + withInputName, /constructor\(\) {}/);
+    });
   });
-  it('writes correct file name', () => {
-    assert.file(tmpDir);
+  describe('without input', () => {
+    let tmpDir;
+    before(() => {
+      return helpers
+        .run(generator)
+        .inTmpDir(dir => {
+          tmpDir = dir;
+          fs.writeFileSync(
+            path.join(tmpDir, 'package.json'),
+            JSON.stringify({
+              keywords: ['loopback'],
+            })
+          );
+        })
+        .withPrompts(noInputProps);
+    });
+    it('writes correct file name', () => {
+      assert.file(tmpDir + noInputName);
+      assert.noFile(tmpDir + templateName);
+    });
+    it('scaffolds correct files', () => {
+      assert.fileContent(tmpDir + noInputName, /class NewController/);
+      assert.fileContent(tmpDir + noInputName, /constructor\(\) {}/);
+    });
   });
-  it('scaffolds correct files', () => {
-    assert.fileContent(tmpDir, /class FooBarController/);
-    assert.fileContent(tmpDir, /constructor\(\) {}/);
+  describe('with arg', () => {
+    let tmpDir;
+    before(() => {
+      return helpers
+        .run(generator)
+        .inTmpDir(dir => {
+          tmpDir = dir;
+          fs.writeFileSync(
+            path.join(tmpDir, 'package.json'),
+            JSON.stringify({
+              keywords: ['loopback'],
+            })
+          );
+        })
+        .withArguments('fooBar');
+    });
+    it('writes correct file name', () => {
+      assert.file(tmpDir + withInputName);
+      assert.noFile(tmpDir + templateName);
+    });
+    it('scaffolds correct files', () => {
+      assert.fileContent(tmpDir + withInputName, /class FooBarController/);
+      assert.fileContent(tmpDir + withInputName, /constructor\(\) {}/);
+    });
   });
 });
