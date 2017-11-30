@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.8"></a>
+# [4.0.0-alpha.8](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.7...@loopback/cli@4.0.0-alpha.8) (2017-11-30)
+
+
+### Features
+
+* **cli:** Tooling for empty controller ([#762](https://github.com/strongloop/loopback-next/issues/762)) ([14e7897](https://github.com/strongloop/loopback-next/commit/14e7897))
+
+
+
+
 <a name="4.0.0-alpha.7"></a>
 # [4.0.0-alpha.7](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.6...@loopback/cli@4.0.0-alpha.7) (2017-11-29)
 
