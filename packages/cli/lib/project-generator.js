@@ -104,6 +104,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
         message: 'Project root directory:',
         when:
           this.projectInfo.outdir == null ||
+          // prompts if option was set to a directory that already exists
           utils.validateyNotExisting(this.projectInfo.outdir) !== true,
         validate: utils.validateyNotExisting,
         default: this.projectInfo.name,
