@@ -220,9 +220,14 @@ export class RestServer extends Context implements Server {
       // If the controller has been scoped to a particular server...
       if (ctor.prototype._server) {
         // Check if this binding returns the same instance.
-        const server = this.getSync(`servers.${ctor.prototype._server}`);
-        if (server === this) {
-          this._httpHandler.registerController(ctor, apiSpec);
+        try {
+          const server = this.getSync(`servers.${ctor.prototype._server}`);
+          if (server === this) {
+            this._httpHandler.registerController(ctor, apiSpec);
+          }
+        } catch (e) {
+          e.message = `invalid use of @server decorator: ${e.message}`;
+          throw e;
         }
       } else {
         this._httpHandler.registerController(ctor, apiSpec);

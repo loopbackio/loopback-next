@@ -423,6 +423,26 @@ describe('Routing', () => {
     await client.get('/greet?name=world').expect(200, 'hello world');
   });
 
+  it('throws when @server is used with invalid name', async () => {
+    const app = givenAnApplication();
+    const specOne = anOpenApiSpec()
+      .withOperationReturningString('get', '/greet', 'greet')
+      .withOperationReturningString('get', '/neat', 'neat')
+      .build();
+
+    @server('RustServer')
+    @api(specOne)
+    class MyController {}
+
+    app.controller(MyController);
+    try {
+      await app.start();
+      throw new Error('did not fail as expected');
+    } catch (e) {
+      expect(e.message).to.match(/invalid use of \@server/);
+    }
+  });
+
   describe('multiple servers', async () => {
     let app: Application;
     beforeEach(async () => {
