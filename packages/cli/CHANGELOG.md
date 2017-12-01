@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.9"></a>
+# [4.0.0-alpha.9](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.8...@loopback/cli@4.0.0-alpha.9) (2017-12-01)
+
+
+### Features
+
+* **cli:** remove default option for controller ([#768](https://github.com/strongloop/loopback-next/issues/768)) ([cc41fd6](https://github.com/strongloop/loopback-next/commit/cc41fd6))
+
+
+
+
 <a name="4.0.0-alpha.8"></a>
 # [4.0.0-alpha.8](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.7...@loopback/cli@4.0.0-alpha.8) (2017-11-30)
 

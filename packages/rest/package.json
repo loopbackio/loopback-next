@@ -1,6 +1,6 @@
 {
   "name": "@loopback/rest",
-  "version": "4.0.0-alpha.11",
+  "version": "4.0.0-alpha.12",
   "description": "",
   "engines": {
     "node": ">=6"
