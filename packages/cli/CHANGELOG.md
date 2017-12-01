@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.11"></a>
+# [4.0.0-alpha.11](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.10...@loopback/cli@4.0.0-alpha.11) (2017-12-01)
+
+
+### Bug Fixes
+
+* **cli:** use prerelease versioning for templates ([81aaa6f](https://github.com/strongloop/loopback-next/commit/81aaa6f))
+
+
+
+
 <a name="4.0.0-alpha.10"></a>
 # [4.0.0-alpha.10](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.9...@loopback/cli@4.0.0-alpha.10) (2017-12-01)
 
