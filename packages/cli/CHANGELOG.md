@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.10"></a>
+# [4.0.0-alpha.10](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.9...@loopback/cli@4.0.0-alpha.10) (2017-12-01)
+
+
+### Features
+
+* Add exit() to abort generation ([c95aa23](https://github.com/strongloop/loopback-next/commit/c95aa23))
+
+
+
+
 <a name="4.0.0-alpha.9"></a>
 # [4.0.0-alpha.9](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.8...@loopback/cli@4.0.0-alpha.9) (2017-12-01)
 
