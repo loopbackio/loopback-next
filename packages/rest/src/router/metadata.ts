@@ -20,6 +20,7 @@ const debug = require('debug')('loopback:core:router:metadata');
 
 const ENDPOINTS_KEY = 'rest:endpoints';
 const API_SPEC_KEY = 'rest:api-spec';
+const CONTROLLER_SCOPES_KEY = 'rest:controller-scopes';
 
 // tslint:disable:no-any
 
@@ -72,9 +73,8 @@ export function api(spec: ControllerSpec) {
       'The @api decorator can be applied to constructors only.',
     );
     const apiSpec = resolveControllerSpec(constructor, spec);
-    const key = constructor.prototype._server
-      ? `${API_SPEC_KEY}:${constructor.prototype._server}`
-      : API_SPEC_KEY;
+    const scope = Reflector.getOwnMetadata(CONTROLLER_SCOPES_KEY, constructor);
+    const key = scope ? `${API_SPEC_KEY}:${scope}` : API_SPEC_KEY;
     Reflector.defineMetadata(key, apiSpec, constructor);
   };
 }
@@ -100,6 +100,7 @@ export function api(spec: ControllerSpec) {
  */
 export function server(name: string) {
   return function(constructor: Constructor<any>) {
+    // Set the value for this scope.
     const endpoints = Reflector.getOwnMetadata(ENDPOINTS_KEY, constructor);
     if (endpoints) {
       rescopeMetadata(ENDPOINTS_KEY, name, constructor, endpoints);
@@ -108,17 +109,23 @@ export function server(name: string) {
     if (spec) {
       rescopeMetadata(API_SPEC_KEY, name, constructor, spec);
     }
-    constructor.prototype._server = name;
+    Reflector.defineMetadata(CONTROLLER_SCOPES_KEY, name, constructor);
   };
 }
 
+/**
+ * Replace an existing metadata definition with a scoped version.
+ * @param key The key for the metadata (if it already exists).
+ * @param scope The new scope to constrain the metadata definition.
+ * @param constructor The constructor for which the metadata is defined.
+ * @param value The metadata itself.
+ */
 function rescopeMetadata(
   key: string,
   scope: string,
   constructor: Constructor<any>,
   value: any,
 ) {
-  // Replace the default binding with a server-scoped one, if it exists.
   if (Reflector.hasMetadata(key, constructor)) {
     Reflector.deleteMetadata(key, constructor);
   }
@@ -138,10 +145,8 @@ interface RestEndpoint {
 function getEndpoints(
   target: any,
 ): {[property: string]: Partial<RestEndpoint>} {
-  const key =
-    target && target.prototype && target.prototype._server
-      ? `${ENDPOINTS_KEY}:${target.prototype._server}`
-      : ENDPOINTS_KEY;
+  const scope = Reflector.getMetadata(CONTROLLER_SCOPES_KEY, target);
+  const key = scope ? `${ENDPOINTS_KEY}:${scope}` : ENDPOINTS_KEY;
   let endpoints = Reflector.getOwnMetadata(key, target);
   if (!endpoints) {
     // Clone the endpoints so that subclasses won't mutate the metadata
@@ -219,16 +224,18 @@ function resolveControllerSpec(
  * @param constructor Controller class
  */
 export function getControllerSpec(constructor: Function): ControllerSpec {
-  const key =
-    constructor && constructor.prototype && constructor.prototype._server
-      ? `${API_SPEC_KEY}:${constructor.prototype._server}`
-      : API_SPEC_KEY;
+  const scope = Reflector.getOwnMetadata(CONTROLLER_SCOPES_KEY, constructor);
+  const key = scope ? `${API_SPEC_KEY}:${scope}` : API_SPEC_KEY;
   let spec = Reflector.getOwnMetadata(key, constructor);
   if (!spec) {
     spec = resolveControllerSpec(constructor, spec);
     Reflector.defineMetadata(key, spec, constructor);
   }
   return spec;
+}
+
+export function getControllerScope(constructor: Function): string {
+  return Reflector.getOwnMetadata(CONTROLLER_SCOPES_KEY, constructor);
 }
 
 /**

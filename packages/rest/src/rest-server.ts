@@ -16,7 +16,7 @@ import {
 import {ServerRequest, ServerResponse, createServer} from 'http';
 import * as Http from 'http';
 import {Application, CoreBindings, Server} from '@loopback/core';
-import {getControllerSpec} from './router/metadata';
+import {getControllerSpec, getControllerScope} from './router/metadata';
 import {HttpHandler} from './http-handler';
 import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
 import {
@@ -218,10 +218,11 @@ export class RestServer extends Context implements Server {
         continue;
       }
       // If the controller has been scoped to a particular server...
-      if (ctor.prototype._server) {
+      const scope = getControllerScope(ctor);
+      if (scope) {
         // Check if this binding returns the same instance.
         try {
-          const server = this.getSync(`servers.${ctor.prototype._server}`);
+          const server = this.getSync(`servers.${scope}`);
           if (server === this) {
             this._httpHandler.registerController(ctor, apiSpec);
           }
