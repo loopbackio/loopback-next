@@ -13,7 +13,7 @@ import {
   patch,
   del,
   param,
-  server,
+  servers,
 } from '../../..';
 import {expect} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
@@ -44,7 +44,7 @@ describe('Routing metadata', () => {
       .withOperationReturningString('get', '/feet', 'feet')
       .build();
 
-    @server('foo')
+    @servers(['foo'])
     @api(specOne)
     class ControllerOne {
       greet() {
@@ -53,7 +53,7 @@ describe('Routing metadata', () => {
     }
 
     @api(specTwo)
-    @server('bar')
+    @servers(['bar'])
     class ControllerTwo {
       feet() {
         return '\|/ \|/';

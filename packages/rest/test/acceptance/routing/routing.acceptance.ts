@@ -13,7 +13,7 @@ import {
   RestBindings,
   RestServer,
   RestComponent,
-  server,
+  servers,
 } from '../../..';
 import {Application, ApplicationConfig} from '@loopback/core';
 
@@ -430,7 +430,7 @@ describe('Routing', () => {
       .withOperationReturningString('get', '/neat', 'neat')
       .build();
 
-    @server('RustServer')
+    @servers(['RustServer'])
     @api(specOne)
     class MyController {}
 
@@ -459,39 +459,38 @@ describe('Routing', () => {
       const serverTwo = await givenAServer(app, 'OtherRestServer');
       serverTwo.bind('rest.port').to(0);
 
-      @server('RestServer')
+      @servers(['RestServer', 'OtherRestServer'])
       class GreetController {
         @get('/greet')
         greet() {
           return `hello, world`;
         }
+      }
 
+      @servers(['RestServer'])
+      class NeatController {
         @get('/neat')
         neat() {
           return 'that is neat';
         }
       }
 
-      @server('OtherRestServer')
-      class OtherGreetController {
-        @get('/greet')
-        greet() {
-          return `nice to meet you, world`;
-        }
-
+      @servers(['OtherRestServer'])
+      class TreatController {
         @get('/treat')
         treat() {
-          return 'have a treat!';
+          return 'have a treat';
         }
       }
 
       app.controller(GreetController);
-      app.controller(OtherGreetController);
+      app.controller(NeatController);
+      app.controller(TreatController);
       await app.start();
       const clientOne = whenIMakeRequestTo(serverOne);
       const clientTwo = whenIMakeRequestTo(serverTwo);
 
-      // Overlapping definitions should work.
+      // Servers share controller definitions correctly.
       await clientOne
         .get('/greet')
         .send()
@@ -499,7 +498,17 @@ describe('Routing', () => {
       await clientTwo
         .get('/greet')
         .send()
-        .expect(200, /nice to meet you/);
+        .expect(200, /hello/);
+
+      // Distinct definitions are correctly defined as well.
+      await clientOne
+        .get('/neat')
+        .send()
+        .expect(200, /that is neat/);
+      await clientTwo
+        .get('/treat')
+        .send()
+        .expect(200, /have a treat/);
 
       // Distinct definitions should not be shared across servers.
       await clientOne
@@ -515,11 +524,13 @@ describe('Routing', () => {
     it('correctly routes when using server and api decorators', async () => {
       const specOne = anOpenApiSpec()
         .withOperationReturningString('get', '/greet', 'greet')
-        .withOperationReturningString('get', '/neat', 'neat')
         .build();
 
       const specTwo = anOpenApiSpec()
-        .withOperationReturningString('get', '/greet', 'greet')
+        .withOperationReturningString('get', '/neat', 'neat')
+        .build();
+
+      const specThree = anOpenApiSpec()
         .withOperationReturningString('get', '/treat', 'treat')
         .build();
 
@@ -530,13 +541,17 @@ describe('Routing', () => {
       const serverTwo = await givenAServer(app, 'OtherRestServer');
       serverTwo.bind('rest.port').to(0);
 
-      @server('RestServer')
+      @servers(['RestServer', 'OtherRestServer'])
       @api(specOne)
       class GreetController {
         greet() {
           return 'hello, world';
         }
+      }
 
+      @servers(['RestServer'])
+      @api(specTwo)
+      class NeatController {
         neat() {
           return 'that is neat';
         }
@@ -544,25 +559,22 @@ describe('Routing', () => {
 
       // Using different ordering to validate that this is still handled
       // correctly.
-      @api(specTwo)
-      @server('OtherRestServer')
-      class OtherGreetController {
-        greet() {
-          return 'nice to meet you, world';
-        }
-
+      @api(specThree)
+      @servers(['OtherRestServer'])
+      class TreatController {
         treat() {
           return 'have a treat';
         }
       }
 
       app.controller(GreetController);
-      app.controller(OtherGreetController);
+      app.controller(NeatController);
+      app.controller(TreatController);
       await app.start();
       const clientOne = whenIMakeRequestTo(serverOne);
       const clientTwo = whenIMakeRequestTo(serverTwo);
 
-      // Overlapping definitions should work.
+      // Servers share controller definitions correctly.
       await clientOne
         .get('/greet')
         .send()
@@ -570,7 +582,17 @@ describe('Routing', () => {
       await clientTwo
         .get('/greet')
         .send()
-        .expect(200, /nice to meet you/);
+        .expect(200, /hello/);
+
+      // Distinct definitions are correctly defined as well.
+      await clientOne
+        .get('/neat')
+        .send()
+        .expect(200, /that is neat/);
+      await clientTwo
+        .get('/treat')
+        .send()
+        .expect(200, /have a treat/);
 
       // Distinct definitions should not be shared across servers.
       await clientOne

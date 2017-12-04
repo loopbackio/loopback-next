@@ -73,9 +73,7 @@ export function api(spec: ControllerSpec) {
       'The @api decorator can be applied to constructors only.',
     );
     const apiSpec = resolveControllerSpec(constructor, spec);
-    const scope = Reflector.getOwnMetadata(CONTROLLER_SCOPES_KEY, constructor);
-    const key = scope ? `${API_SPEC_KEY}:${scope}` : API_SPEC_KEY;
-    Reflector.defineMetadata(key, apiSpec, constructor);
+    Reflector.defineMetadata(API_SPEC_KEY, apiSpec, constructor);
   };
 }
 
@@ -98,18 +96,16 @@ export function api(spec: ControllerSpec) {
  * ```
  * @param name The name of the server bound to your application context.
  */
-export function server(name: string) {
+export function servers(names: string[]) {
   return function(constructor: Constructor<any>) {
-    // Set the value for this scope.
-    const endpoints = Reflector.getOwnMetadata(ENDPOINTS_KEY, constructor);
-    if (endpoints) {
-      rescopeMetadata(ENDPOINTS_KEY, name, constructor, endpoints);
+    for (const name of names) {
+      // Set the value for this scope.
+      const endpoints = Reflector.getOwnMetadata(ENDPOINTS_KEY, constructor);
+      if (endpoints) {
+        rescopeMetadata(ENDPOINTS_KEY, name, constructor, endpoints);
+      }
     }
-    const spec = getControllerSpec(constructor);
-    if (spec) {
-      rescopeMetadata(API_SPEC_KEY, name, constructor, spec);
-    }
-    Reflector.defineMetadata(CONTROLLER_SCOPES_KEY, name, constructor);
+    Reflector.defineMetadata(CONTROLLER_SCOPES_KEY, names, constructor);
   };
 }
 
@@ -142,11 +138,12 @@ interface RestEndpoint {
   target: any;
 }
 
-function getEndpoints(
+function getEndpointsForKey(
   target: any,
+  key?: string,
 ): {[property: string]: Partial<RestEndpoint>} {
-  const scope = Reflector.getMetadata(CONTROLLER_SCOPES_KEY, target);
-  const key = scope ? `${ENDPOINTS_KEY}:${scope}` : ENDPOINTS_KEY;
+  // If the key is not provided, the controller is globally-scoped.
+  key = key || ENDPOINTS_KEY;
   let endpoints = Reflector.getOwnMetadata(key, target);
   if (!endpoints) {
     // Clone the endpoints so that subclasses won't mutate the metadata
@@ -154,6 +151,24 @@ function getEndpoints(
     const baseEndpoints = Reflector.getMetadata(key, target);
     endpoints = cloneDeep(baseEndpoints);
     Reflector.defineMetadata(key, endpoints, target);
+  }
+  return endpoints;
+}
+
+function getEndpoints(
+  target: any,
+): {[property: string]: Partial<RestEndpoint>} {
+  const scope = Reflector.getMetadata(CONTROLLER_SCOPES_KEY, target);
+  let endpoints: {[property: string]: Partial<RestEndpoint>} = {};
+  if (scope) {
+    for (const name of scope) {
+      endpoints = Object.assign(
+        endpoints,
+        getEndpointsForKey(target, `${ENDPOINTS_KEY}:${name}`),
+      );
+    }
+  } else {
+    endpoints = getEndpointsForKey(target);
   }
   return endpoints;
 }
@@ -224,17 +239,16 @@ function resolveControllerSpec(
  * @param constructor Controller class
  */
 export function getControllerSpec(constructor: Function): ControllerSpec {
-  const scope = Reflector.getOwnMetadata(CONTROLLER_SCOPES_KEY, constructor);
-  const key = scope ? `${API_SPEC_KEY}:${scope}` : API_SPEC_KEY;
-  let spec = Reflector.getOwnMetadata(key, constructor);
+  // All of the API specs for a controller are identical.
+  let spec = Reflector.getOwnMetadata(API_SPEC_KEY, constructor);
   if (!spec) {
     spec = resolveControllerSpec(constructor, spec);
-    Reflector.defineMetadata(key, spec, constructor);
+    Reflector.defineMetadata(API_SPEC_KEY, spec, constructor);
   }
   return spec;
 }
 
-export function getControllerScope(constructor: Function): string {
+export function getControllerScope(constructor: Function): string[] {
   return Reflector.getOwnMetadata(CONTROLLER_SCOPES_KEY, constructor);
 }
 
