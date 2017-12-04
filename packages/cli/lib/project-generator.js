@@ -5,7 +5,6 @@
 
 'use strict';
 const BaseGenerator = require('./base-generator');
-const path = require('path');
 const utils = require('./utils');
 
 module.exports = class ProjectGenerator extends BaseGenerator {
@@ -51,6 +50,11 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       type: Boolean,
       description: 'Use @loopback/build',
     });
+    // argument validation
+    if (this.args.length) {
+      const validationMsg = utils.validateClassName(this.args[0]);
+      if (typeof validationMsg === 'string') throw new Error(validationMsg);
+    }
   }
 
   setOptions() {
@@ -59,7 +63,6 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       'name',
       'description',
       'outdir',
-      'componentName',
       'tslint',
       'prettier',
       'mocha',

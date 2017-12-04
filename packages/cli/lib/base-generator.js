@@ -5,8 +5,6 @@
 
 'use strict';
 const Generator = require('yeoman-generator');
-const path = require('path');
-const utils = require('./utils');
 const chalk = require('chalk');
 
 /**
@@ -16,7 +14,6 @@ module.exports = class BaseGenerator extends Generator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);
-    this._setupGenerator();
   }
 
   /**

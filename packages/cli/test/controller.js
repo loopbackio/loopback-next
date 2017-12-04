@@ -12,20 +12,45 @@ const fs = require('fs');
 
 const generator = path.join(__dirname, '../generators/controller');
 const tests = require('./artifact')(generator);
+const baseTests = require('./base-generator')(generator);
 
 const templateName = '/src/controllers/controller-template.ts';
 const withInputProps = {
   name: 'fooBar',
 };
 const withInputName = '/src/controllers/foo-bar.controller.ts';
-const noInputProps = {
-  name: '',
-};
-const noInputName = '/src/controllers/new.controller.ts';
 
+describe('controller-generator extending BaseGenerator', baseTests);
 describe('generator-loopback4:controller', tests);
 
 describe('lb4 controller', () => {
+  it('does not run without package.json', () => {
+    helpers
+      .run(generator)
+      .withPrompts(withInputProps)
+      .then(() => {
+        assert.noFile(withInputName);
+      });
+  });
+  it('does not run without the loopback keyword', () => {
+    let tmpDir;
+    helpers
+      .run(generator)
+      .inTmpDir(dir => {
+        tmpDir = dir;
+        fs.writeFileSync(
+          path.join(tmpDir, 'package.json'),
+          JSON.stringify({
+            keywords: ['foobar'],
+          })
+        );
+      })
+      .withPrompts(withInputProps)
+      .then(() => {
+        assert.noFile(withInputName);
+      });
+  });
+
   describe('with input', () => {
     let tmpDir;
     before(() => {

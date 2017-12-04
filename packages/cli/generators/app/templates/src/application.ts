@@ -1,5 +1,5 @@
 import {Application, ApplicationConfig} from '@loopback/core';
-import {RestComponent} from '@loopback/rest';
+import {RestComponent, RestServer} from '@loopback/rest';
 import {PingController} from './controllers/ping.controller';
 
 export class <%= project.applicationName %> extends Application {
@@ -13,7 +13,16 @@ export class <%= project.applicationName %> extends Application {
       options,
     );
     super(options);
+    this.server(RestServer);
     this.setupControllers();
+  }
+
+  async start() {
+    const server = await this.getServer(RestServer);
+    const port = await server.get('rest.port');
+    console.log(`Server is running at http://127.0.0.1:${port}`);
+    console.log(`Try http://127.0.0.1:${port}/ping`);
+    return await super.start();
   }
 
   setupControllers() {
