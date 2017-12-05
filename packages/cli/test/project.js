@@ -29,7 +29,7 @@ module.exports = function(projGenerator, props, projectType) {
       describe('args validation', () => {
         it('errors out if validation fails', () => {
           assert.throws(() => {
-            testUtils.testSetUpGen(projGenerator, {args: '2foobar'});
+            testUtils.testSetUpGen(projGenerator, {args: 'fooBar'});
           }, Error);
         });
 

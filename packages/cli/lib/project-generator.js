@@ -49,10 +49,11 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       type: Boolean,
       description: 'Use @loopback/build',
     });
+
     // argument validation
     if (this.args.length) {
-      const validationMsg = utils.validateClassName(this.args[0]);
-      if (typeof validationMsg === 'string') throw new Error(validationMsg);
+      const isValid = utils.validate(this.args[0]);
+      if (typeof isValid === 'string') throw new Error(isValid);
     }
   }
 
@@ -82,7 +83,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
         message: 'Project name:',
         when: this.projectInfo.name == null,
         default: this.options.name || this.appname,
-        validate: utils.validateClassName,
+        validate: utils.validate,
       },
       {
         type: 'input',
@@ -110,7 +111,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
           // prompts if option was set to a directory that already exists
           utils.validateyNotExisting(this.projectInfo.outdir) !== true,
         validate: utils.validateyNotExisting,
-        default: this.projectInfo.name,
+        default: utils.kebabCase(this.projectInfo.name),
       },
     ];
 
