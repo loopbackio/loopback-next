@@ -1,3 +1,3 @@
 # Datasources
 
-This directory contains code for datasources provided by this app.
+This directory contains config for datasources used by this app.
