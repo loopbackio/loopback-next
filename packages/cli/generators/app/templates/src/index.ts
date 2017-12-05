@@ -1,5 +1,4 @@
 import {<%= project.applicationName %>} from './application';
-import {RestServer} from '@loopback/rest';
 import {ApplicationConfig} from '@loopback/core';
 
 export {<%= project.applicationName %>};

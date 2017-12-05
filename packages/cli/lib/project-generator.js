@@ -83,6 +83,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
         message: 'Project name:',
         when: this.projectInfo.name == null,
         default: this.options.name || this.appname,
+        validate: utils.validateClassName,
       },
       {
         type: 'input',
