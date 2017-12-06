@@ -117,6 +117,16 @@ describe('property injection', () => {
     }).to.throw(/@inject is not supported for a static property/);
   });
 
+  it('cannot decorate a method', () => {
+    expect(() => {
+      // tslint:disable-next-line:no-unused-variable
+      class TestClass {
+        @inject('bar')
+        foo() {}
+      }
+    }).to.throw(/@inject cannot be used on a method/);
+  });
+
   it('supports inheritance without overriding property', () => {
     class TestClass {
       @inject('foo') foo: string;

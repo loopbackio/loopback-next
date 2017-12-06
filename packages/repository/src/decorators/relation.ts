@@ -6,7 +6,7 @@
 import {Class} from '../common-types';
 import {Entity} from '../model';
 
-import {Reflector} from '@loopback/context';
+import {PropertyDecoratorFactory} from '@loopback/context';
 
 // tslint:disable:no-any
 
@@ -20,7 +20,7 @@ export enum RelationType {
   referencesMany,
 }
 
-export const RELATION_KEY = 'loopback:relation';
+export const RELATIONS_KEY = 'loopback:relations';
 
 export class RelationMetadata {
   type: RelationType;
@@ -34,10 +34,8 @@ export class RelationMetadata {
  * @returns {(target:any, key:string)}
  */
 export function relation(definition?: Object) {
-  return function(target: any, key: string) {
-    // Apply model definition to the model class
-    Reflector.defineMetadata(RELATION_KEY, definition, target, key);
-  };
+  // Apply relation definition to the model class
+  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, definition);
 }
 
 /**
@@ -46,11 +44,9 @@ export function relation(definition?: Object) {
  * @returns {(target:any, key:string)}
  */
 export function belongsTo(definition?: Object) {
-  return function(target: any, key: string) {
-    // Apply model definition to the model class
-    const rel = Object.assign({type: RelationType.belongsTo}, definition);
-    Reflector.defineMetadata(RELATION_KEY, rel, target, key);
-  };
+  // Apply model definition to the model class
+  const rel = Object.assign({type: RelationType.belongsTo}, definition);
+  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
 }
 
 /**
@@ -59,11 +55,8 @@ export function belongsTo(definition?: Object) {
  * @returns {(target:any, key:string)}
  */
 export function hasOne(definition?: Object) {
-  return function(target: any, key: string) {
-    // Apply model definition to the model class
-    const rel = Object.assign({type: RelationType.hasOne}, definition);
-    Reflector.defineMetadata(RELATION_KEY, rel, target, key);
-  };
+  const rel = Object.assign({type: RelationType.hasOne}, definition);
+  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
 }
 
 /**
@@ -72,11 +65,8 @@ export function hasOne(definition?: Object) {
  * @returns {(target:any, key:string)}
  */
 export function hasMany(definition?: Object) {
-  return function(target: any, key: string) {
-    // Apply model definition to the model class
-    const rel = Object.assign({type: RelationType.hasMany}, definition);
-    Reflector.defineMetadata(RELATION_KEY, rel, target, key);
-  };
+  const rel = Object.assign({type: RelationType.hasMany}, definition);
+  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
 }
 
 /**
@@ -85,11 +75,8 @@ export function hasMany(definition?: Object) {
  * @returns {(target:any, key:string)}
  */
 export function embedsOne(definition?: Object) {
-  return function(target: any, key: string) {
-    // Apply model definition to the model class
-    const rel = Object.assign({type: RelationType.embedsOne}, definition);
-    Reflector.defineMetadata(RELATION_KEY, rel, target, key);
-  };
+  const rel = Object.assign({type: RelationType.embedsOne}, definition);
+  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
 }
 
 /**
@@ -98,11 +85,8 @@ export function embedsOne(definition?: Object) {
  * @returns {(target:any, key:string)}
  */
 export function embedsMany(definition?: Object) {
-  return function(target: any, key: string) {
-    // Apply model definition to the model class
-    const rel = Object.assign({type: RelationType.embedsMany}, definition);
-    Reflector.defineMetadata(RELATION_KEY, rel, target, key);
-  };
+  const rel = Object.assign({type: RelationType.embedsMany}, definition);
+  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
 }
 
 /**
@@ -111,11 +95,8 @@ export function embedsMany(definition?: Object) {
  * @returns {(target:any, key:string)}
  */
 export function referencesOne(definition?: Object) {
-  return function(target: any, key: string) {
-    // Apply model definition to the model class
-    const rel = Object.assign({type: RelationType.referencesOne}, definition);
-    Reflector.defineMetadata(RELATION_KEY, rel, target, key);
-  };
+  const rel = Object.assign({type: RelationType.referencesOne}, definition);
+  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
 }
 
 /**
@@ -124,9 +105,6 @@ export function referencesOne(definition?: Object) {
  * @returns {(target:any, key:string)}
  */
 export function referencesMany(definition?: Object) {
-  return function(target: any, key: string) {
-    // Apply model definition to the model class
-    const rel = Object.assign({type: RelationType.referencesMany}, definition);
-    Reflector.defineMetadata(RELATION_KEY, rel, target, key);
-  };
+  const rel = Object.assign({type: RelationType.referencesMany}, definition);
+  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
 }

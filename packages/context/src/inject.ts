@@ -64,15 +64,15 @@ export function inject(
   return function markParameterOrPropertyAsInjected(
     // tslint:disable-next-line:no-any
     target: any,
-    propertyKey?: string | symbol,
-    propertyDescriptorOrParameterIndex?:
+    propertyKey: string | symbol,
+    methodDescriptorOrParameterIndex?:
       | TypedPropertyDescriptor<BoundValue>
       | number,
   ) {
-    if (typeof propertyDescriptorOrParameterIndex === 'number') {
+    if (typeof methodDescriptorOrParameterIndex === 'number') {
       // The decorator is applied to a method parameter
       // Please note propertyKey is `undefined` for constructor
-      const paramDecorator: ParameterDecorator = ParameterDecoratorFactory.getDecorator(
+      const paramDecorator: ParameterDecorator = ParameterDecoratorFactory.createDecorator(
         PARAMETERS_KEY,
         {
           bindingKey,
@@ -80,19 +80,22 @@ export function inject(
           resolve,
         },
       );
-      return paramDecorator(
-        target,
-        propertyKey!,
-        propertyDescriptorOrParameterIndex,
-      );
+      paramDecorator(target, propertyKey!, methodDescriptorOrParameterIndex);
     } else if (propertyKey) {
+      // Property or method
       if (typeof Object.getPrototypeOf(target) === 'function') {
         const prop = target.name + '.' + propertyKey.toString();
         throw new Error(
           '@inject is not supported for a static property: ' + prop,
         );
       }
-      const propDecorator: PropertyDecorator = PropertyDecoratorFactory.getDecorator(
+      if (methodDescriptorOrParameterIndex) {
+        // Method
+        throw new Error(
+          '@inject cannot be used on a method: ' + propertyKey.toString(),
+        );
+      }
+      const propDecorator: PropertyDecorator = PropertyDecoratorFactory.createDecorator(
         PROPERTIES_KEY,
         {
           bindingKey,
@@ -100,11 +103,9 @@ export function inject(
           resolve,
         },
       );
-      return propDecorator(target, propertyKey!);
+      propDecorator(target, propertyKey!);
     } else {
-      throw new Error(
-        '@inject can only be used on properties or method parameters.',
-      );
+      // It won't happen here as `@inject` is not compatible with ClassDecorator
     }
   };
 }
