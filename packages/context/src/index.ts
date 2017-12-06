@@ -26,3 +26,5 @@ export {
   Injection,
 } from './inject';
 export {Reflector} from './reflect';
+
+export * from './decorator-factory';

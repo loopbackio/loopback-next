@@ -6,6 +6,10 @@
 import {Reflector} from './reflect';
 import {BoundValue, ValueOrPromise} from './binding';
 import {Context} from './context';
+import {
+  ParameterDecoratorFactory,
+  PropertyDecoratorFactory,
+} from './decorator-factory';
 
 const PARAMETERS_KEY = 'inject:parameters';
 const PROPERTIES_KEY = 'inject:properties';
@@ -68,18 +72,18 @@ export function inject(
     if (typeof propertyDescriptorOrParameterIndex === 'number') {
       // The decorator is applied to a method parameter
       // Please note propertyKey is `undefined` for constructor
-      const injectedArgs: Injection[] =
-        Reflector.getOwnMetadata(PARAMETERS_KEY, target, propertyKey!) || [];
-      injectedArgs[propertyDescriptorOrParameterIndex] = {
-        bindingKey,
-        metadata,
-        resolve,
-      };
-      Reflector.defineMetadata(
+      const paramDecorator: ParameterDecorator = ParameterDecoratorFactory.getDecorator(
         PARAMETERS_KEY,
-        injectedArgs,
+        {
+          bindingKey,
+          metadata,
+          resolve,
+        },
+      );
+      return paramDecorator(
         target,
         propertyKey!,
+        propertyDescriptorOrParameterIndex,
       );
     } else if (propertyKey) {
       if (typeof Object.getPrototypeOf(target) === 'function') {
@@ -88,11 +92,15 @@ export function inject(
           '@inject is not supported for a static property: ' + prop,
         );
       }
-      // The decorator is applied to a property
-      const injections: {[p: string]: Injection} =
-        Reflector.getOwnMetadata(PROPERTIES_KEY, target) || {};
-      injections[propertyKey] = {bindingKey, metadata, resolve};
-      Reflector.defineMetadata(PROPERTIES_KEY, injections, target);
+      const propDecorator: PropertyDecorator = PropertyDecoratorFactory.getDecorator(
+        PROPERTIES_KEY,
+        {
+          bindingKey,
+          metadata,
+          resolve,
+        },
+      );
+      return propDecorator(target, propertyKey!);
     } else {
       throw new Error(
         '@inject can only be used on properties or method parameters.',
@@ -176,11 +184,10 @@ export function describeInjectedArguments(
   target: any,
   method?: string | symbol,
 ): Injection[] {
-  if (method) {
-    return Reflector.getMetadata(PARAMETERS_KEY, target, method) || [];
-  } else {
-    return Reflector.getMetadata(PARAMETERS_KEY, target) || [];
-  }
+  method = method || '';
+  const meta = Reflector.getMetadata(PARAMETERS_KEY, target);
+  if (meta == null) return [];
+  return meta[method] || [];
 }
 
 /**
@@ -192,21 +199,7 @@ export function describeInjectedProperties(
   // tslint:disable-next-line:no-any
   target: any,
 ): {[p: string]: Injection} {
-  const metadata: {[name: string]: Injection} = {};
-  let obj = target;
-  while (true) {
-    const m = Reflector.getOwnMetadata(PROPERTIES_KEY, obj);
-    if (m) {
-      // Adding non-existent properties
-      for (const p in m) {
-        if (!(p in metadata)) {
-          metadata[p] = m[p];
-        }
-      }
-    }
-    // Recurse into the prototype chain
-    obj = Object.getPrototypeOf(obj);
-    if (!obj) break;
-  }
+  const metadata: {[name: string]: Injection} =
+    Reflector.getMetadata(PROPERTIES_KEY, target) || {};
   return metadata;
 }
