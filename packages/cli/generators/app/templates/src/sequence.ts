@@ -1,36 +1,36 @@
-import {Context} from '@loopback/context';
+import {Context, inject} from '@loopback/context';
 import {
-  DefaultSequence,
   FindRoute,
   InvokeMethod,
   ParsedRequest,
   ParseParams,
   Reject,
+  RestBindings,
   Send,
+  SequenceHandler,
 } from '@loopback/rest';
 import {ServerResponse} from 'http';
 
-export class MySequence extends DefaultSequence {
-  constructor(
-    public ctx: Context,
-    protected findRoute: FindRoute,
-    protected parseParams: ParseParams,
-    protected invoke: InvokeMethod,
-    public send: Send,
-    public reject: Reject
-  ) {
-    super(ctx, findRoute, parseParams, invoke, send, reject);
-  }
+const SequenceActions = RestBindings.SequenceActions;
 
-  // Handle your request routing here:
+export class MySequence implements SequenceHandler {
+  constructor(
+    @inject(RestBindings.Http.CONTEXT) public ctx: Context,
+    @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
+    @inject(SequenceActions.PARSE_PARAMS) protected parseParams: ParseParams,
+    @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
+    @inject(SequenceActions.SEND) public send: Send,
+    @inject(SequenceActions.REJECT) public reject: Reject
+  ) {}
+
   async handle(req: ParsedRequest, res: ServerResponse) {
-    // findRoute() produces an element
-    const route = this.findRoute(req);
-    // parseParams() uses the route element and produces the params element
-    const params = await this.parseParams(req, route);
-    // invoke() uses both the route and params elements to produce the result (OperationRetVal) element
-    const result = await this.invoke(route, params);
-    // send() uses the result element
-    await this.send(res, result);
+    try {
+      const route = this.findRoute(req);
+      const args = await this.parseParams(req, route);
+      const result = await this.invoke(route, args);
+      this.send(res, result);
+    } catch (err) {
+      this.reject(res, req, err);
+    }
   }
 }

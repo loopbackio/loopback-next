@@ -15,7 +15,6 @@ const yeoman = require('yeoman-environment');
 
 const opts = minimist(process.argv.slice(2), {
   alias: {
-    help: 'h',
     version: 'v',
     commands: 'l',
   },
@@ -30,8 +29,14 @@ if (opts.version) {
 var env = yeoman.createEnv();
 
 env.register(path.join(__dirname, '../generators/app'), 'loopback4:app');
-env.register(path.join(__dirname, '../generators/extension'), 'loopback4:extension');
-env.register(path.join(__dirname, '../generators/controller'), 'loopback4:controller');
+env.register(
+  path.join(__dirname, '../generators/extension'),
+  'loopback4:extension'
+);
+env.register(
+  path.join(__dirname, '../generators/controller'),
+  'loopback4:controller'
+);
 
 // list generators
 if (opts.commands) {
