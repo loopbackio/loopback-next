@@ -22,12 +22,16 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
+    "debug": "^3.1.0",
+    "lodash": "^4.17.4",
     "reflect-metadata": "^0.1.10"
   },
   "devDependencies": {
     "@loopback/build": "^4.0.0-alpha.7",
     "@loopback/testlab": "^4.0.0-alpha.16",
     "@types/bluebird": "^3.5.18",
+    "@types/debug": "0.0.30",
+    "@types/lodash": "^4.14.87",
     "bluebird": "^3.5.0"
   },
   "keywords": [
