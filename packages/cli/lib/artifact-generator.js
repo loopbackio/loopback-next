@@ -8,6 +8,7 @@ const BaseGenerator = require('./base-generator');
 const debug = require('./debug')('artifact-generator');
 const utils = require('./utils');
 const StatusConflicter = utils.StatusConflicter;
+const semver = require('semver');
 
 module.exports = class ArtifactGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -37,33 +38,24 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
 
   /**
    * Checks if current directory is a LoopBack project by checking for
-   * keyword 'loopback' under 'keywords' attribute in package.json.
-   * 'keywords' is an array
+   * .yo-rc.json and the lbVersion is specified.
    */
   checkLoopBackProject() {
     debug('Checking for loopback project');
     if (this.shouldExit()) return false;
-    const pkg = this.fs.readJSON(this.destinationPath('package.json'));
-    const key = 'loopback';
-    if (!pkg) {
-      const err = new Error(
-        'No package.json found in ' +
-          this.destinationRoot() +
-          '. ' +
-          'The command must be run in a LoopBack project.'
+    let retErr;
+
+    const version = this.config.get('lbVersion');
+    if (
+      semver.valid(version) === null ||
+      semver.satisfies(version, '< 4.0.0')
+    ) {
+      retErr = new Error(
+        'Invalid version. The command must be run in a LoopBack 4 project.'
       );
-      this.exit(err);
-      return;
     }
-    if (!pkg.keywords || !pkg.keywords.includes(key)) {
-      const err = new Error(
-        'No `loopback` keyword found in ' +
-          this.destinationPath('package.json') +
-          '. ' +
-          'The command must be run in a LoopBack project.'
-      );
-      this.exit(err);
-    }
+
+    if (retErr) this.exit(retErr);
   }
 
   promptArtifactName() {

@@ -6,6 +6,7 @@
 'use strict';
 const BaseGenerator = require('./base-generator');
 const utils = require('./utils');
+const pkg = require('../package.json');
 
 module.exports = class ProjectGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -208,10 +209,23 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     if (!this.projectInfo.mocha) {
       this.fs.delete(this.destinationPath('test/mocha.opts'));
     }
+
+    this.writeConfig();
   }
 
   install() {
     if (this.shouldExit()) return false;
     this.npmInstall(null, {}, {cwd: this.destinationRoot()});
+  }
+
+  /**
+   * Write the default config for a generated project
+   */
+  writeConfig() {
+    return this.config.defaults({
+      cliVersion: pkg.version,
+      lbVersion: '4.0.0',
+      type: this.projectInfo.projectType,
+    });
   }
 };

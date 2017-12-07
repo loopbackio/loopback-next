@@ -24,7 +24,7 @@ describe('controller-generator extending BaseGenerator', baseTests);
 describe('generator-loopback4:controller', tests);
 
 describe('lb4 controller', () => {
-  it('does not run without package.json', () => {
+  it('does not run without .yo-rc.json', () => {
     helpers
       .run(generator)
       .withPrompts(withInputProps)
@@ -32,16 +32,18 @@ describe('lb4 controller', () => {
         assert.noFile(withInputName);
       });
   });
-  it('does not run without the loopback keyword', () => {
+  it('does not run without the correct lbVersion', () => {
     let tmpDir;
     helpers
       .run(generator)
       .inTmpDir(dir => {
         tmpDir = dir;
         fs.writeFileSync(
-          path.join(tmpDir, 'package.json'),
+          path.join(tmpDir, '.yo-rc.json'),
           JSON.stringify({
-            keywords: ['foobar'],
+            '@loopback/cli': {
+              lbVersion: '4.0.0',
+            },
           })
         );
       })
@@ -59,9 +61,11 @@ describe('lb4 controller', () => {
         .inTmpDir(dir => {
           tmpDir = dir;
           fs.writeFileSync(
-            path.join(tmpDir, 'package.json'),
+            path.join(tmpDir, '.yo-rc.json'),
             JSON.stringify({
-              keywords: ['loopback'],
+              '@loopback/cli': {
+                lbVersion: '4.0.0',
+              },
             })
           );
         })
@@ -84,9 +88,11 @@ describe('lb4 controller', () => {
         .inTmpDir(dir => {
           tmpDir = dir;
           fs.writeFileSync(
-            path.join(tmpDir, 'package.json'),
+            path.join(tmpDir, '.yo-rc.json'),
             JSON.stringify({
-              keywords: ['loopback'],
+              '@loopback/cli': {
+                lbVersion: '4.0.0',
+              },
             })
           );
         })
