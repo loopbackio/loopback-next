@@ -45,7 +45,13 @@ export function parseRequestUrl(request: ServerRequest): ParsedRequest {
   const parsedRequest = request as ParsedRequest;
   const parsedUrl = url.parse(parsedRequest.url, true);
   parsedRequest.path = parsedUrl.pathname || '/';
-  parsedRequest.query = parsedUrl.query;
+  // parsedUrl.query cannot be a string as it is parsed with
+  // parseQueryString = true
+  if (parsedUrl.query != null && typeof parsedUrl.query !== 'string') {
+    parsedRequest.query = parsedUrl.query;
+  } else {
+    parsedRequest.query = {};
+  }
   return parsedRequest;
 }
 

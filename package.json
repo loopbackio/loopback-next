@@ -15,7 +15,7 @@
     "@commitlint/config-angular": "^4.3.0",
     "@commitlint/config-lerna-scopes": "^4.3.0",
     "@types/mocha": "^2.2.44",
-    "@types/node": "^8.0.50",
+    "@types/node": "^8.0.56",
     "@types/request": "^2.0.7",
     "@types/request-promise": "^4.1.39",
     "coveralls": "^3.0.0",
