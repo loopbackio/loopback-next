@@ -11,7 +11,7 @@ export interface ParsedRequest extends ServerRequest {
   // see http://expressjs.com/en/4x/api.html#req.path
   path: string;
   // see http://expressjs.com/en/4x/api.html#req.query
-  query: {[key: string]: string};
+  query: {[key: string]: string | string[]};
   // see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/15808
   url: string;
   pathname: string;
