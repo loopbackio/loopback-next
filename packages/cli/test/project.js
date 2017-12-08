@@ -4,10 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-const path = require('path');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 const yeoman = require('yeoman-environment');
+const testUtils = require('./test-utils');
+const sinon = require('sinon');
 
 module.exports = function(projGenerator, props, projectType) {
   return function() {
@@ -22,6 +23,159 @@ module.exports = function(projGenerator, props, projectType) {
         const helpText = generator.help();
         assert(helpText.match(/lb4 /));
         assert(!helpText.match(/loopback4:/));
+      });
+    });
+    describe('_setupGenerator', () => {
+      describe('args validation', () => {
+        it('errors out if validation fails', () => {
+          assert.throws(() => {
+            testUtils.testSetUpGen(projGenerator, {args: 'fooBar'});
+          }, Error);
+        });
+
+        it('succeeds if no arg is provided', () => {
+          assert.doesNotThrow(() => {
+            testUtils.testSetUpGen(projGenerator);
+          }, Error);
+        });
+
+        it('succeeds if arg is valid', () => {
+          assert.doesNotThrow(() => {
+            testUtils.testSetUpGen(projGenerator, {args: ['foobar']});
+          }, Error);
+        });
+      });
+      describe('argument and options setup', () => {
+        it('has name argument set up', () => {
+          let gen = testUtils.testSetUpGen(projGenerator);
+          let helpText = gen.help();
+          assert(helpText.match(/\[<name>\]/));
+          assert(helpText.match(/# Project name for the /));
+          assert(helpText.match(/Type: String/));
+          assert(helpText.match(/Required: false/));
+        });
+
+        it('has description option set up', () => {
+          let gen = testUtils.testSetUpGen(projGenerator);
+          let helpText = gen.help();
+          assert(helpText.match(/--description/));
+          assert(helpText.match(/# Description for the /));
+        });
+
+        it('has outdir option set up', () => {
+          let gen = testUtils.testSetUpGen(projGenerator);
+          let helpText = gen.help();
+          assert(helpText.match(/--outdir/));
+          assert(helpText.match(/# Project root directory /));
+        });
+
+        it('has tslint option set up', () => {
+          let gen = testUtils.testSetUpGen(projGenerator);
+          let helpText = gen.help();
+          assert(helpText.match(/--tslint/));
+          assert(helpText.match(/# Enable tslint/));
+        });
+
+        it('has prettier option set up', () => {
+          let gen = testUtils.testSetUpGen(projGenerator);
+          let helpText = gen.help();
+          assert(helpText.match(/--prettier/));
+          assert(helpText.match(/# Enable prettier/));
+        });
+
+        it('has mocha option set up', () => {
+          let gen = testUtils.testSetUpGen(projGenerator);
+          let helpText = gen.help();
+          assert(helpText.match(/--mocha/));
+          assert(helpText.match(/# Enable mocha/));
+        });
+
+        it('has loopbackBuild option set up', () => {
+          let gen = testUtils.testSetUpGen(projGenerator);
+          let helpText = gen.help();
+          assert(helpText.match(/--loopbackBuild/));
+          assert(helpText.match(/# Use @loopback\/build/));
+        });
+      });
+    });
+
+    describe('setOptions', () => {
+      it('has projectInfo set up', () => {
+        let gen = testUtils.testSetUpGen(projGenerator);
+        gen.options = {
+          name: 'foobar',
+          description: null,
+          outdir: null,
+          tslint: null,
+          prettier: true,
+          mocha: null,
+          loopbackBuild: null,
+        };
+        gen.setOptions();
+        assert(gen.projectInfo.name === 'foobar');
+        assert(gen.projectInfo.description !== null);
+        assert(gen.projectInfo.prettier === true);
+      });
+    });
+
+    describe('promptProjectName', () => {
+      it('incorporates user input into projectInfo', () => {
+        let gen = testUtils.testSetUpGen(projGenerator);
+        return testPrompt(
+          gen,
+          {
+            name: 'foobar',
+            description: 'foobar description',
+          },
+          'promptProjectName'
+        ).then(() => {
+          gen.prompt.restore();
+          assert(gen.projectInfo.name);
+          assert(gen.projectInfo.description);
+          assert(gen.projectInfo.name === 'foobar');
+          assert(gen.projectInfo.description === 'foobar description');
+        });
+      });
+    });
+
+    describe('promptProjectDir', () => {
+      it('incorporates user input into projectInfo', () => {
+        let gen = testUtils.testSetUpGen(projGenerator);
+        return testPrompt(
+          gen,
+          {
+            outdir: 'foobar',
+          },
+          'promptProjectDir'
+        ).then(() => {
+          gen.prompt.restore();
+          assert(gen.projectInfo.outdir);
+          assert(gen.projectInfo.outdir === 'foobar');
+        });
+      });
+    });
+
+    describe('promptOptions', () => {
+      it('incorporates user input into projectInfo', () => {
+        let gen = testUtils.testSetUpGen(projGenerator);
+        return testPrompt(
+          gen,
+          {
+            settings: [
+              'Enable tslint',
+              'Enable prettier',
+              'Enable mocha',
+              'Enable loopbackBuild',
+            ],
+          },
+          'promptOptions'
+        ).then(() => {
+          gen.prompt.restore();
+          assert(gen.projectInfo.tslint === true);
+          assert(gen.projectInfo.prettier === true);
+          assert(gen.projectInfo.mocha === true);
+          assert(gen.projectInfo.loopbackBuild === true);
+        });
       });
     });
 
@@ -188,5 +342,12 @@ module.exports = function(projGenerator, props, projectType) {
         assert.noFileContent([['package.json', '"tslint"']]);
       });
     });
+
+    function testPrompt(gen, props, fnName) {
+      gen.setOptions();
+      gen.prompt = sinon.stub(gen, 'prompt');
+      gen.prompt.resolves(props);
+      return gen[fnName]();
+    }
   };
 };

@@ -41,11 +41,13 @@ module.exports = class extends ProjectGenerator {
         type: 'input',
         name: 'applicationName',
         message: 'Application class name:',
-        default: utils.toClassName(this.projectInfo.name) + 'Application',
+        default: utils.pascalCase(this.projectInfo.name) + 'Application',
+        validate: utils.validateClassName,
       },
     ];
 
     return this.prompt(prompts).then(props => {
+      props.applicationName = utils.toClassName(props.applicationName);
       Object.assign(this.projectInfo, props);
     });
   }

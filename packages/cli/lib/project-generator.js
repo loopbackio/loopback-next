@@ -5,14 +5,12 @@
 
 'use strict';
 const BaseGenerator = require('./base-generator');
-const path = require('path');
 const utils = require('./utils');
 
 module.exports = class ProjectGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);
-    this._setupGenerator();
   }
 
   _setupGenerator() {
@@ -51,6 +49,12 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       type: Boolean,
       description: 'Use @loopback/build',
     });
+
+    // argument validation
+    if (this.args.length) {
+      const isValid = utils.validate(this.args[0]);
+      if (typeof isValid === 'string') throw new Error(isValid);
+    }
   }
 
   setOptions() {
@@ -59,7 +63,6 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       'name',
       'description',
       'outdir',
-      'componentName',
       'tslint',
       'prettier',
       'mocha',
@@ -80,6 +83,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
         message: 'Project name:',
         when: this.projectInfo.name == null,
         default: this.options.name || this.appname,
+        validate: utils.validate,
       },
       {
         type: 'input',
@@ -104,9 +108,10 @@ module.exports = class ProjectGenerator extends BaseGenerator {
         message: 'Project root directory:',
         when:
           this.projectInfo.outdir == null ||
+          // prompts if option was set to a directory that already exists
           utils.validateyNotExisting(this.projectInfo.outdir) !== true,
         validate: utils.validateyNotExisting,
-        default: this.projectInfo.name,
+        default: utils.kebabCase(this.projectInfo.name),
       },
     ];
 

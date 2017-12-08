@@ -14,35 +14,35 @@
     "build": "lb-tsc",
     "build:watch": "lb-tsc --watch",
     "clean": "lb-clean",
-    <% if (project.prettier && project.tslint) { -%>
+<% if (project.prettier && project.tslint) { -%>
     "lint": "npm run prettier:check && npm run tslint",
     "lint:fix": "npm run prettier:fix && npm run tslint:fix",
-    <% } else if (project.prettier) { -%>
+<% } else if (project.prettier) { -%>
     "lint": "npm run prettier:check",
     "lint:fix": "npm run prettier:fix",
-    <% } else if (project.tslint) { -%>
+<% } else if (project.tslint) { -%>
     "lint": "npm run tslint",
     "lint:fix": "npm run tslint:fix",
-    <% } -%>
-    <% if (project.prettier) { -%>
+<% } -%>
+<% if (project.prettier) { -%>
     "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
-    <% } -%>
-    <% if (project.tslint) { -%>
+<% } -%>
+<% if (project.tslint) { -%>
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
-    <% } -%>
+<% } -%>
     "pretest": "npm run clean && npm run build",
-    <% if (project.mocha) { -%>
+<% if (project.mocha) { -%>
     "test": "lb-dist mocha DIST/test",
-    <% } -%>
-    <% if (project.prettier || project.tslint) { -%>
+<% } -%>
+<% if (project.prettier || project.tslint) { -%>
     "posttest": "npm run lint",
-    <% } -%>
-    <% if (project.projectType === 'application') { -%>
+<% } -%>
+<% if (project.projectType === 'application') { -%>
     "start": "npm run build && node .",
-    <% } -%>
+<% } -%>
     "prepare": "npm run build"
   },
   "repository": {
@@ -59,21 +59,21 @@
   ],
   "dependencies": {
     "@loopback/context": ">=4.0.0-alpha.18",
-    <% if (project.projectType === 'application') { -%>
+<% if (project.projectType === 'application') { -%>
     "@loopback/core": ">=4.0.0-alpha.20",
     "@loopback/rest": ">=4.0.0-alpha.7"
-    <% } else { -%>
+<% } else { -%>
     "@loopback/core": ">=4.0.0-alpha.20"
-    <% } -%>
+<% } -%>
   },
   "devDependencies": {
     "@loopback/build": ">=4.0.0-alpha.4",
-    <% if (project.mocha) { -%>
+<% if (project.mocha) { -%>
     "@loopback/testlab": ">=4.0.0-alpha.13",
     "@types/mocha": "^2.2.43",
     "mocha": "^4.0.1"
-    <% } else { -%>
+<% } else { -%>
     "@loopback/testlab": ">=4.0.0-alpha.13"
-    <% } -%>
+<% } -%>
   }
 }

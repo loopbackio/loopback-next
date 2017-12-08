@@ -1,11 +1,7 @@
-// Copyright IBM Corp. 2017. All Rights Reserved.
-// Node module: <%= project.name %>
-// This file is licensed under the MIT License.
-// License text available at https://opensource.org/licenses/MIT
-
 import {Application, ApplicationConfig} from '@loopback/core';
-import {RestComponent} from '@loopback/rest';
-import {PingController} from './controllers/ping-controller';
+import {RestComponent, RestServer} from '@loopback/rest';
+import {PingController} from './controllers/ping.controller';
+import {MySequence} from './sequence';
 
 export class <%= project.applicationName %> extends Application {
   constructor(options?: ApplicationConfig) {
@@ -18,7 +14,17 @@ export class <%= project.applicationName %> extends Application {
       options,
     );
     super(options);
+    this.server(RestServer);
     this.setupControllers();
+  }
+
+  async start() {
+    const server = await this.getServer(RestServer);
+    server.sequence(MySequence);
+    const port = await server.get('rest.port');
+    console.log(`Server is running at http://127.0.0.1:${port}`);
+    console.log(`Try http://127.0.0.1:${port}/ping`);
+    return await super.start();
   }
 
   setupControllers() {

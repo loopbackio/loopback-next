@@ -12,7 +12,6 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);
-    this._setupGenerator();
   }
 
   _setupGenerator() {

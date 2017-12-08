@@ -1,8 +1,8 @@
 {
   "$schema": "http://json.schemastore.org/tslint",
-  <% if (project.loopbackBuild) { -%>
+<% if (project.loopbackBuild) { -%>
   "extends": ["./node_modules/@loopback/build/config/tslint.common.json"]
-  <% } else { -%>
+<% } else { -%>
   // See https://palantir.github.io/tslint/rules/
   "rules": {
     // These rules find errors related to TypeScript features.
@@ -29,5 +29,5 @@
     "triple-equals": [true, "allow-null-check", "allow-undefined-check"],
     "typeof-compare": true
   }
-  <% } -%>
+<% } -%>
 }

@@ -1,8 +1,3 @@
-// Copyright IBM Corp. 2017. All Rights Reserved.
-// Node module: <%= project.name %>
-// This file is licensed under the MIT License.
-// License text available at https://opensource.org/licenses/MIT
-
 // NOTE(bajtos) This file is used by TypeScript compiler to resolve imports
 // from "test" files against original TypeScript sources in "src" directory.
 // As a side effect, `tsc` also produces "dist/index.{js,d.ts,map} files

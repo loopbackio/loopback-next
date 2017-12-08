@@ -9,6 +9,8 @@ const fs = require('fs');
 const util = require('util');
 const regenerate = require('regenerate');
 const _ = require('lodash');
+const pascalCase = require('change-case').pascalCase;
+const validate = require('validate-npm-package-name');
 const Conflicter = require('yeoman-generator/lib/util/conflicter');
 
 /**
@@ -93,6 +95,14 @@ exports.toClassName = function(name) {
 };
 
 exports.kebabCase = _.kebabCase;
+
+exports.pascalCase = pascalCase;
+
+exports.validate = function(name) {
+  const isValid = validate(name).validForNewPackages;
+  if (!isValid) return 'Not a valid npm package name';
+  return isValid;
+};
 
 /**
  * Extends conflicter so that it keeps track of conflict status
