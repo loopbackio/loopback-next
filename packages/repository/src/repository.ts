@@ -4,14 +4,28 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Entity, ValueObject, Model} from './model';
-import {Class, DataObject, Options} from './common-types';
+import {Class, DataObject, Options, AnyObject} from './common-types';
 import {DataSource} from './datasource';
 import {CrudConnector} from './crud-connector';
 import {Filter, Where} from './query';
 
 // tslint:disable:no-unused-variable
 
-export interface Repository<T extends Model> {}
+export interface Repository<T extends Model> {
+  /**
+   * Execute a query with the given parameter object or an array of parameters
+   * @param query The query string or command
+   * @param parameters The object with name/value pairs or an array of parameter
+   * values
+   * @param options Options
+   */
+  execute(
+    query: string | AnyObject,
+    // tslint:disable:no-any
+    parameters: AnyObject | any[],
+    options?: Options,
+  ): Promise<AnyObject>;
+}
 
 /**
  * Basic CRUD operations for ValueObject and Entity. No ID is required.
@@ -304,5 +318,17 @@ export class CrudRepositoryImpl<T extends Entity, ID>
       const where = this.model.buildWhereForId(id);
       return this.count(where, options).then(result => result > 0);
     }
+  }
+
+  execute(
+    query: string | AnyObject,
+    // tslint:disable:no-any
+    parameters: AnyObject | any[],
+    options?: Options,
+  ): Promise<AnyObject> {
+    if (typeof this.connector.execute !== 'function') {
+      throw new Error('Not implemented');
+    }
+    return this.connector.execute(query, parameters, options);
   }
 }
