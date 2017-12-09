@@ -3,13 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Reflector} from './reflect';
-import {BoundValue, ValueOrPromise} from './binding';
-import {Context} from './context';
 import {
+  Reflector,
   ParameterDecoratorFactory,
   PropertyDecoratorFactory,
-} from './decorator-factory';
+} from '@loopback/metadata';
+import {BoundValue, ValueOrPromise} from './binding';
+import {Context} from './context';
 
 const PARAMETERS_KEY = 'inject:parameters';
 const PROPERTIES_KEY = 'inject:properties';
