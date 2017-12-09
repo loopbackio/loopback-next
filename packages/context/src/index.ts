@@ -14,7 +14,6 @@ export {
 export {Context} from './context';
 export {Constructor} from './resolver';
 export {inject, Setter, Getter} from './inject';
-export {NamespacedReflect} from './reflect';
 export {Provider} from './provider';
 export {isPromise} from './is-promise';
 
@@ -25,6 +24,5 @@ export {
   describeInjectedProperties,
   Injection,
 } from './inject';
-export {Reflector} from './reflect';
 
-export * from './decorator-factory';
+export * from '@loopback/metadata';

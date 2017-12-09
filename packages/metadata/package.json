@@ -1,7 +1,7 @@
 {
-  "name": "@loopback/context",
-  "version": "4.0.0-alpha.22",
-  "description": "LoopBack's container for Inversion of Control",
+  "name": "@loopback/metadata",
+  "version": "4.0.0-alpha.1",
+  "description": "LoopBack's metadata utilities for reflection and decoration",
   "engines": {
     "node": ">=6"
   },
@@ -12,32 +12,32 @@
     "build:dist": "lb-tsc es2017",
     "build:dist6": "lb-tsc es2015",
     "build:apidocs": "lb-apidocs",
-    "clean": "rm -rf loopback-context*.tgz dist* package",
+    "clean": "rm -rf loopback-metadata*.tgz dist* package",
     "prepare": "npm run build && npm run build:apidocs",
     "pretest": "npm run build:current",
     "test": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js' 'DIST/test/acceptance/**/*.js'",
     "unit": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js'",
-    "verify": "npm pack && tar xf loopback-context*.tgz && tree package && npm run clean"
+    "verify": "npm pack && tar xf loopback-metadata*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
-    "@loopback/metadata": "^4.0.0-alpha.1"
+    "debug": "^3.1.0",
+    "lodash": "^4.17.4",
+    "reflect-metadata": "^0.1.10"
   },
   "devDependencies": {
-    "@loopback/build": "^4.0.0-alpha.7",
-    "@loopback/testlab": "^4.0.0-alpha.16",
+    "@loopback/build": "^4.0.0-alpha.6",
+    "@loopback/testlab": "^4.0.0-alpha.15",
     "@types/bluebird": "^3.5.18",
+    "@types/debug": "0.0.30",
+    "@types/lodash": "^4.14.87",
     "bluebird": "^3.5.0"
   },
   "keywords": [
     "LoopBack",
-    "IoC",
-    "Inversion",
-    "Control",
-    "Container",
     "Decorators",
-    "Context"
+    "Reflect"
   ],
   "files": [
     "README.md",
@@ -48,6 +48,9 @@
     "api-docs",
     "src"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git"
