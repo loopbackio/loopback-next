@@ -5,13 +5,14 @@
 
 import {expect} from '@loopback/testlab';
 import {
-  Reflector,
   ClassDecoratorFactory,
   PropertyDecoratorFactory,
   MethodDecoratorFactory,
   ParameterDecoratorFactory,
   DecoratorFactory,
 } from '../..';
+
+import {Reflector} from '../../src/reflect';
 
 describe('ClassDecoratorFactory', () => {
   /**

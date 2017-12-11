@@ -4,9 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  Reflector,
+  MetadataInspector,
   ClassDecoratorFactory,
   PropertyDecoratorFactory,
+  MetadataMap,
 } from '@loopback/context';
 import {ModelDefinition, ModelDefinitionSyntax} from '../model';
 import {PropertyDefinition} from '../index';
@@ -14,7 +15,7 @@ import {PropertyDefinition} from '../index';
 export const MODEL_KEY = 'loopback:model';
 export const MODEL_PROPERTIES_KEY = 'loopback:model-properties';
 
-type PropertyMap = {[name: string]: PropertyDefinition};
+type PropertyMap = MetadataMap<PropertyDefinition>;
 
 // tslint:disable:no-any
 
@@ -39,13 +40,22 @@ export function model(definition?: ModelDefinitionSyntax) {
     // Build "ModelDefinition" and store it on model constructor
     const modelDef = new ModelDefinition(definition);
 
-    const propertyMap: PropertyMap = Reflector.getMetadata(
-      MODEL_PROPERTIES_KEY,
-      target.prototype,
-    );
+    const propertyMap: PropertyMap =
+      MetadataInspector.getAllPropertyMetadata(
+        MODEL_PROPERTIES_KEY,
+        target.prototype,
+      ) || {};
 
     for (const p in propertyMap) {
-      modelDef.addProperty(p, propertyMap[p]);
+      const propertyDef = propertyMap[p];
+      const designType = MetadataInspector.getDesignTypeForProperty(
+        target.prototype,
+        p,
+      );
+      if (!propertyDef.type) {
+        propertyDef.type = designType;
+      }
+      modelDef.addProperty(p, propertyDef);
     }
 
     target.definition = modelDef;
@@ -57,7 +67,7 @@ export function model(definition?: ModelDefinitionSyntax) {
  * @param definition
  * @returns {(target:any, key:string)}
  */
-export function property(definition: PropertyDefinition) {
+export function property(definition: Partial<PropertyDefinition>) {
   return PropertyDecoratorFactory.createDecorator(
     MODEL_PROPERTIES_KEY,
     definition,

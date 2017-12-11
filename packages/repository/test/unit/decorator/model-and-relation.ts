@@ -19,7 +19,7 @@ import {
 } from '../../../';
 
 import {Entity, ValueObject} from '../../../';
-import {Reflector} from '@loopback/context';
+import {MetadataInspector} from '@loopback/context';
 
 describe('model decorator', () => {
   @model()
@@ -54,7 +54,6 @@ describe('model decorator', () => {
   @model({name: 'order'})
   class Order extends Entity {
     @property({
-      type: 'number',
       mysql: {
         column: 'QTY',
       },
@@ -96,60 +95,86 @@ describe('model decorator', () => {
   // Skip the tests before we resolve the issue around global `Reflector`
   // The tests are passing it run alone but fails with `npm test`
   it('adds model metadata', () => {
-    const meta = Reflector.getOwnMetadata(MODEL_KEY, Order);
+    const meta = MetadataInspector.getClassMetadata(MODEL_KEY, Order);
     expect(meta).to.eql({name: 'order'});
   });
 
   it('adds property metadata', () => {
-    const meta = Reflector.getOwnMetadata(
-      MODEL_PROPERTIES_KEY,
-      Order.prototype,
-    );
+    const meta =
+      MetadataInspector.getAllPropertyMetadata(
+        MODEL_PROPERTIES_KEY,
+        Order.prototype,
+      ) || {};
     expect(meta.quantity).to.eql({
-      type: 'number',
+      type: Number,
       mysql: {
         column: 'QTY',
       },
     });
+    expect(meta.id).to.eql({type: 'string', id: true, generated: true});
   });
 
   it('adds embedsOne metadata', () => {
-    const meta = Reflector.getOwnMetadata(RELATIONS_KEY, Customer.prototype);
+    const meta =
+      MetadataInspector.getAllPropertyMetadata(
+        RELATIONS_KEY,
+        Customer.prototype,
+      ) || {};
     expect(meta.address).to.eql({
       type: RelationType.embedsOne,
     });
   });
 
   it('adds embedsMany metadata', () => {
-    const meta = Reflector.getOwnMetadata(RELATIONS_KEY, Customer.prototype);
+    const meta =
+      MetadataInspector.getAllPropertyMetadata(
+        RELATIONS_KEY,
+        Customer.prototype,
+      ) || {};
     expect(meta.phones).to.eql({
       type: RelationType.embedsMany,
     });
   });
 
   it('adds referencesMany metadata', () => {
-    const meta = Reflector.getOwnMetadata(RELATIONS_KEY, Customer.prototype);
+    const meta =
+      MetadataInspector.getAllPropertyMetadata(
+        RELATIONS_KEY,
+        Customer.prototype,
+      ) || {};
     expect(meta.accounts).to.eql({
       type: RelationType.referencesMany,
     });
   });
 
   it('adds referencesOne metadata', () => {
-    const meta = Reflector.getOwnMetadata(RELATIONS_KEY, Customer.prototype);
+    const meta =
+      MetadataInspector.getAllPropertyMetadata(
+        RELATIONS_KEY,
+        Customer.prototype,
+      ) || {};
     expect(meta.profile).to.eql({
       type: RelationType.referencesOne,
     });
   });
 
   it('adds hasMany metadata', () => {
-    const meta = Reflector.getOwnMetadata(RELATIONS_KEY, Customer.prototype);
+    const meta =
+      MetadataInspector.getAllPropertyMetadata(
+        RELATIONS_KEY,
+        Customer.prototype,
+      ) || {};
     expect(meta.orders).to.eql({
       type: RelationType.hasMany,
     });
   });
 
   it('adds belongsTo metadata', () => {
-    const meta = Reflector.getOwnMetadata(RELATIONS_KEY, Order.prototype);
+    const meta =
+      MetadataInspector.getAllPropertyMetadata(
+        RELATIONS_KEY,
+        Order.prototype,
+      ) || {};
     expect(meta.customer).to.eql({
       type: RelationType.belongsTo,
       target: 'Customer',
@@ -157,14 +182,22 @@ describe('model decorator', () => {
   });
 
   it('adds hasOne metadata', () => {
-    const meta = Reflector.getOwnMetadata(RELATIONS_KEY, Customer.prototype);
+    const meta =
+      MetadataInspector.getAllPropertyMetadata(
+        RELATIONS_KEY,
+        Customer.prototype,
+      ) || {};
     expect(meta.lastOrder).to.eql({
       type: RelationType.hasOne,
     });
   });
 
   it('adds relation metadata', () => {
-    const meta = Reflector.getOwnMetadata(RELATIONS_KEY, Customer.prototype);
+    const meta =
+      MetadataInspector.getAllPropertyMetadata(
+        RELATIONS_KEY,
+        Customer.prototype,
+      ) || {};
     expect(meta.recentOrders).to.eql({
       type: RelationType.hasMany,
     });

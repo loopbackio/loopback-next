@@ -3,7 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Reflector, Constructor} from '@loopback/context';
+import {
+  MetadataInspector,
+  Constructor,
+  MethodDecoratorFactory,
+} from '@loopback/context';
 import {AuthenticationBindings} from '../keys';
 
 /**
@@ -21,18 +25,13 @@ export interface AuthenticationMetadata {
  * @param options Additional options to configure the authentication.
  */
 export function authenticate(strategyName: string, options?: Object) {
-  return function(controllerClass: Object, methodName: string) {
-    const metadataObj: AuthenticationMetadata = {
+  return MethodDecoratorFactory.createDecorator<AuthenticationMetadata>(
+    AuthenticationBindings.METADATA,
+    {
       strategy: strategyName,
       options: options || {},
-    };
-    Reflector.defineMetadata(
-      AuthenticationBindings.METADATA,
-      metadataObj,
-      controllerClass,
-      methodName,
-    );
-  };
+    },
+  );
 }
 
 /**
@@ -45,7 +44,7 @@ export function getAuthenticateMetadata(
   controllerClass: Constructor<{}>,
   methodName: string,
 ): AuthenticationMetadata | undefined {
-  return Reflector.getMetadata(
+  return MetadataInspector.getMethodMetadata<AuthenticationMetadata>(
     AuthenticationBindings.METADATA,
     controllerClass.prototype,
     methodName,

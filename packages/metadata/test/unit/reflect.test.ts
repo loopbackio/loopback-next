@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {NamespacedReflect, Reflector} from '../..';
+import {NamespacedReflect, Reflector} from '../../src/reflect';
 import 'reflect-metadata';
 
 function givenReflectContextWithNameSpace(): NamespacedReflect {
