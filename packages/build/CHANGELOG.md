@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.7"></a>
+# [4.0.0-alpha.7](https://github.com/strongloop/loopback4-build/compare/@loopback/build@4.0.0-alpha.6...@loopback/build@4.0.0-alpha.7) (2017-12-11)
+
+
+### Bug Fixes
+
+* Fix node module names in source code headers ([0316f28](https://github.com/strongloop/loopback4-build/commit/0316f28))
+
+
+
+
 <a name="4.0.0-alpha.6"></a>
 # [4.0.0-alpha.6](https://github.com/strongloop/loopback4-build/compare/@loopback/build@4.0.0-alpha.5...@loopback/build@4.0.0-alpha.6) (2017-11-29)
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.12"></a>
+# [4.0.0-alpha.12](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.11...@loopback/cli@4.0.0-alpha.12) (2017-12-11)
+
+
+### Features
+
+* **cli:** Cleanup REST application tooling ([#774](https://github.com/strongloop/loopback-next/issues/774)) ([dc50ed8](https://github.com/strongloop/loopback-next/commit/dc50ed8))
+
+
+
+
 <a name="4.0.0-alpha.11"></a>
 # [4.0.0-alpha.11](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.10...@loopback/cli@4.0.0-alpha.11) (2017-12-01)
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.19"></a>
+# [4.0.0-alpha.19](https://github.com/strongloop/loopback-next/compare/@loopback/example-codehub@4.0.0-alpha.18...@loopback/example-codehub@4.0.0-alpha.19) (2017-12-11)
+
+
+### Bug Fixes
+
+* Fix node module names in source code headers ([0316f28](https://github.com/strongloop/loopback-next/commit/0316f28))
+
+
+
+
 <a name="4.0.0-alpha.18"></a>
 # [4.0.0-alpha.18](https://github.com/strongloop/loopback-next/compare/@loopback/example-codehub@4.0.0-alpha.17...@loopback/example-codehub@4.0.0-alpha.18) (2017-12-01)
 
