@@ -5,3 +5,4 @@
 
 export * from './reflect';
 export * from './decorator-factory';
+export * from './inspector';

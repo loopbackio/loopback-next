@@ -4,9 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  Reflector,
+  MetadataInspector,
   ParameterDecoratorFactory,
   PropertyDecoratorFactory,
+  MetadataMap,
 } from '@loopback/metadata';
 import {BoundValue, ValueOrPromise} from './binding';
 import {Context} from './context';
@@ -186,9 +187,12 @@ export function describeInjectedArguments(
   method?: string | symbol,
 ): Injection[] {
   method = method || '';
-  const meta = Reflector.getMetadata(PARAMETERS_KEY, target);
-  if (meta == null) return [];
-  return meta[method] || [];
+  const meta = MetadataInspector.getAllParameterMetadata<Injection>(
+    PARAMETERS_KEY,
+    target,
+    method,
+  );
+  return meta || [];
 }
 
 /**
@@ -199,8 +203,11 @@ export function describeInjectedArguments(
 export function describeInjectedProperties(
   // tslint:disable-next-line:no-any
   target: any,
-): {[p: string]: Injection} {
-  const metadata: {[name: string]: Injection} =
-    Reflector.getMetadata(PROPERTIES_KEY, target) || {};
+): MetadataMap<Injection> {
+  const metadata =
+    MetadataInspector.getAllPropertyMetadata<Injection>(
+      PROPERTIES_KEY,
+      target,
+    ) || {};
   return metadata;
 }

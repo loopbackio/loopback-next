@@ -6,7 +6,7 @@
 import {Reflector} from './reflect';
 import * as _ from 'lodash';
 import * as debugModule from 'debug';
-const debug = debugModule('loopback:decorator');
+const debug = debugModule('loopback:metadata:decorator');
 
 // tslint:disable:no-any
 
