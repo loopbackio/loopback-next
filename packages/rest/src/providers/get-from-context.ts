@@ -3,14 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, inject, Provider} from '@loopback/context';
+import {Context, inject, Provider, BoundValue} from '@loopback/context';
 import {GetFromContext} from '../internal-types';
 import {RestBindings} from '../keys';
 
 export class GetFromContextProvider implements Provider<GetFromContext> {
   constructor(@inject(RestBindings.Http.CONTEXT) protected context: Context) {}
 
-  value() {
-    return (key: string) => this.context.get(key);
+  value(): GetFromContext {
+    return key => this.action(key);
+  }
+
+  action(key: string): Promise<BoundValue> {
+    return this.context.get(key);
   }
 }
