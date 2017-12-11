@@ -63,9 +63,11 @@ export class MyAuthStrategyProvider implements Provider<Strategy | undefined> {
     private metadata: AuthenticationMetadata,
   ) {}
 
-  value() : ValueOrPromise<Strategy> {
+  value() : ValueOrPromise<Strategy | undefined> {
+
+    // The function was not decorated, so we shouldn't attempt authentication
     if (!this.metadata) {
-      return Promise.reject('Authentication metadata not found');
+      return undefined;
     }
 
     const name = this.metadata.strategy;
