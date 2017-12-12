@@ -2,13 +2,15 @@
 # Each line is a file pattern followed by one or more owners,
 # the last matching pattern has the most precedence.
 
-# Core team members from IBM
-* @bajtos @raymondfeng
+* @bajtos @raymondfeng @kjdelisle
+
 packages/authentication/* @bajtos @kjdelisle
+packages/cli/* @raymondfeng @kjdelisle @shimks
 packages/context/* @bajtos @raymondfeng  @kjdelisle
 packages/core/* @bajtos @raymondfeng @kjdelisle
 packages/example-codehub/* @bajtos
 packages/openapi-spec-builder/*  @bajtos
 packages/openapi-spec/*  @bajtos
 packages/repository/* @raymondfeng @kjdelisle
+packages/rest/* @bajtos @kjdelisle
 packages/testlab/* @bajtos @kjdelisle
