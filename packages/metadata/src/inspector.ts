@@ -25,6 +25,8 @@ export class MetadataInspector {
    * Get the metadata associated with the given key for a given class
    * @param key Metadata key
    * @param target Class that contains the metadata
+   * @param ownOnly Optional flag to control if only own metadata is inspected.
+   * The default value is `false` and inherited metadata is inspected.
    */
   static getClassMetadata<T>(
     key: string,
@@ -41,6 +43,8 @@ export class MetadataInspector {
    * target class or prototype
    * @param key Metadata key
    * @param target Class for static methods or prototype for instance methods
+   * @param ownOnly Optional flag to control if only own metadata is inspected.
+   * The default value is `false` and inherited metadata is inspected.
    */
   static getAllMethodMetadata<T>(
     key: string,
@@ -59,6 +63,8 @@ export class MetadataInspector {
    * @param target Class for static methods or prototype for instance methods
    * @param methodName Method name. If not present, default to '' to use
    * the constructor
+   * @param ownOnly Optional flag to control if only own metadata is inspected.
+   * The default value is `false` and inherited metadata is inspected.
    */
   static getMethodMetadata<T>(
     key: string,
@@ -78,6 +84,8 @@ export class MetadataInspector {
    * target class or prototype
    * @param key Metadata key
    * @param target Class for static methods or prototype for instance methods
+   * @param ownOnly Optional flag to control if only own metadata is inspected.
+   * The default value is `false` and inherited metadata is inspected.
    */
   static getAllPropertyMetadata<T>(
     key: string,
@@ -96,6 +104,8 @@ export class MetadataInspector {
    * @param target Class for static properties or prototype for instance
    * properties
    * @param propertyName Property name
+   * @param ownOnly Optional flag to control if only own metadata is inspected.
+   * The default value is `false` and inherited metadata is inspected.
    */
   static getPropertyMetadata<T>(
     key: string,
@@ -116,6 +126,8 @@ export class MetadataInspector {
    * @param target Class for static methods or prototype for instance methods
    * @param methodName Method name. If not present, default to '' to use
    * the constructor
+   * @param ownOnly Optional flag to control if only own metadata is inspected.
+   * The default value is `false` and inherited metadata is inspected.
    */
   static getAllParameterMetadata<T>(
     key: string,
@@ -138,6 +150,8 @@ export class MetadataInspector {
    * @param methodName Method name. If not present, default to '' to use
    * the constructor
    * @param index Index of the parameter, starting with 0
+   * @param ownOnly Optional flag to control if only own metadata is inspected.
+   * The default value is `false` and inherited metadata is inspected.
    */
   static getParameterMetadata<T>(
     key: string,
@@ -155,7 +169,7 @@ export class MetadataInspector {
   }
 
   /**
-   * Get TypeScript design time type for the property
+   * Get TypeScript design time type for a property
    * @param target Class or prototype
    * @param propertyName Property name
    */
@@ -166,6 +180,11 @@ export class MetadataInspector {
     return TSReflector.getMetadata('design:type', target, propertyName);
   }
 
+  /**
+   * Get TypeScript design time type for a method
+   * @param target Class or prototype
+   * @param methodName Method name
+   */
   static getDesignTypeForMethod(
     target: Object,
     methodName: string | symbol,

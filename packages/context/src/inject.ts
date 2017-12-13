@@ -107,6 +107,10 @@ export function inject(
       propDecorator(target, propertyKey!);
     } else {
       // It won't happen here as `@inject` is not compatible with ClassDecorator
+      /* istanbul ignore next */
+      throw new Error(
+        '@inject can only be used on a property or a method parameter',
+      );
     }
   };
 }

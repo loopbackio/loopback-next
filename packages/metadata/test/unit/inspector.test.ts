@@ -45,6 +45,51 @@ describe('Inspector for a class', () => {
   });
 });
 
+describe('Inspector for a class for its own metadata', () => {
+  /**
+   * Define `@classDecorator(spec)`
+   * @param spec
+   */
+  function classDecorator(spec: object): ClassDecorator {
+    return ClassDecoratorFactory.createDecorator('test', spec);
+  }
+
+  @classDecorator({x: 1})
+  class BaseController {}
+
+  @classDecorator({y: 2})
+  class SubController extends BaseController {}
+
+  class AnotherController extends BaseController {}
+
+  it('inspects metadata of a base class', () => {
+    const meta = MetadataInspector.getClassMetadata(
+      'test',
+      BaseController,
+      true,
+    );
+    expect(meta).to.eql({x: 1});
+  });
+
+  it('inspects metadata of a sub class', () => {
+    const meta = MetadataInspector.getClassMetadata(
+      'test',
+      SubController,
+      true,
+    );
+    expect(meta).to.eql({x: 1, y: 2});
+  });
+
+  it('inspects metadata of a sub class without override', () => {
+    const meta = MetadataInspector.getClassMetadata(
+      'test',
+      AnotherController,
+      true,
+    );
+    expect(meta).to.be.undefined();
+  });
+});
+
 describe('Inspector for instance properties', () => {
   /**
    * Define `@propertyDecorator(spec)`
@@ -61,6 +106,10 @@ describe('Inspector for instance properties', () => {
 
   class SubController extends BaseController {
     @propertyDecorator({y: 2})
+    myProp: string;
+  }
+
+  class AnotherController extends BaseController {
     myProp: string;
   }
 
@@ -88,6 +137,23 @@ describe('Inspector for instance properties', () => {
     );
     expect(meta).to.eql({myProp: {x: 1, y: 2}});
   });
+
+  it('inspects own metadata of all properties of a sub class', () => {
+    const meta = MetadataInspector.getAllPropertyMetadata(
+      'test',
+      AnotherController.prototype,
+      true,
+    );
+    expect(meta).to.be.undefined();
+
+    const propertyMeta = MetadataInspector.getPropertyMetadata(
+      'test',
+      AnotherController.prototype,
+      'myProp',
+      true,
+    );
+    expect(propertyMeta).to.be.undefined();
+  });
 });
 
 describe('Inspector for static properties', () => {
@@ -106,6 +172,10 @@ describe('Inspector for static properties', () => {
 
   class SubController extends BaseController {
     @propertyDecorator({y: 2})
+    static myProp: string;
+  }
+
+  class AnotherController extends BaseController {
     static myProp: string;
   }
 
@@ -133,6 +203,23 @@ describe('Inspector for static properties', () => {
     );
     expect(meta).to.eql({myProp: {x: 1, y: 2}});
   });
+
+  it('inspects own metadata of all properties of a sub class', () => {
+    const meta = MetadataInspector.getAllPropertyMetadata(
+      'test',
+      AnotherController,
+      true,
+    );
+    expect(meta).to.be.undefined();
+
+    const propertyMeta = MetadataInspector.getPropertyMetadata(
+      'test',
+      AnotherController,
+      'myProp',
+      true,
+    );
+    expect(propertyMeta).to.be.undefined();
+  });
 });
 
 describe('Inspector for instance methods', () => {
@@ -153,6 +240,8 @@ describe('Inspector for instance methods', () => {
     @methodDecorator({y: 2})
     myMethod() {}
   }
+
+  class AnotherController extends BaseController {}
 
   it('inspects metadata of all methods of a base class', () => {
     const meta = MetadataInspector.getAllMethodMetadata(
@@ -178,6 +267,23 @@ describe('Inspector for instance methods', () => {
     );
     expect(meta).to.eql({myMethod: {x: 1, y: 2}});
   });
+
+  it('inspects own metadata of all methods of a sub class', () => {
+    const meta = MetadataInspector.getAllMethodMetadata(
+      'test',
+      AnotherController.prototype,
+      true,
+    );
+    expect(meta).to.be.undefined();
+
+    const methodMeta = MetadataInspector.getMethodMetadata(
+      'test',
+      AnotherController.prototype,
+      'myMethod',
+      true,
+    );
+    expect(methodMeta).to.be.undefined();
+  });
 });
 
 describe('Inspector for static methods', () => {
@@ -199,6 +305,8 @@ describe('Inspector for static methods', () => {
     static myMethod() {}
   }
 
+  class AnotherController extends BaseController {}
+
   it('inspects metadata of all methods of a base class', () => {
     const meta = MetadataInspector.getAllMethodMetadata('test', BaseController);
     expect(meta).to.eql({myMethod: {x: 1}});
@@ -216,6 +324,29 @@ describe('Inspector for static methods', () => {
   it('inspects metadata of all properties of a sub class', () => {
     const meta = MetadataInspector.getAllMethodMetadata('test', SubController);
     expect(meta).to.eql({myMethod: {x: 1, y: 2}});
+  });
+
+  it('inspects own metadata of all methods of a sub class', () => {
+    const meta = MetadataInspector.getAllMethodMetadata(
+      'test',
+      AnotherController,
+      true,
+    );
+    expect(meta).to.be.undefined();
+
+    const methodMeta = MetadataInspector.getMethodMetadata(
+      'test',
+      AnotherController,
+      'myMethod',
+      true,
+    );
+    expect(methodMeta).to.be.undefined();
+
+    const inherited = MetadataInspector.getAllMethodMetadata(
+      'test',
+      AnotherController,
+    );
+    expect(inherited).to.eql({myMethod: {x: 1}});
   });
 });
 
@@ -245,6 +376,8 @@ describe('Inspector for parameters of an instance method', () => {
     ) {}
   }
 
+  class AnotherController extends BaseController {}
+
   it('inspects metadata of all parameters of a method of the base class', () => {
     const meta = MetadataInspector.getAllParameterMetadata(
       'test',
@@ -271,6 +404,31 @@ describe('Inspector for parameters of an instance method', () => {
       0,
     );
     expect(meta).to.eql({x: 1, y: 2});
+  });
+
+  it('inspects own metadata of all method parameters of a sub class', () => {
+    const meta = MetadataInspector.getAllParameterMetadata(
+      'test',
+      AnotherController.prototype,
+      'myMethod',
+      true,
+    );
+    expect(meta).to.be.undefined();
+
+    const paramsMeta = MetadataInspector.getParameterMetadata(
+      'test',
+      AnotherController.prototype,
+      'myMethod',
+      0,
+      true,
+    );
+    expect(paramsMeta).to.be.undefined();
+
+    const inherited = MetadataInspector.getAllMethodMetadata(
+      'test',
+      AnotherController.prototype,
+    );
+    expect(inherited).to.eql({myMethod: [{x: 1}, undefined]});
   });
 });
 
@@ -300,6 +458,8 @@ describe('Inspector for parameters of a static method', () => {
     ) {}
   }
 
+  class AnotherController extends BaseController {}
+
   it('inspects metadata of all parameters of a method of the base class', () => {
     const meta = MetadataInspector.getAllParameterMetadata(
       'test',
@@ -326,6 +486,31 @@ describe('Inspector for parameters of a static method', () => {
       0,
     );
     expect(meta).to.eql({x: 1, y: 2});
+  });
+
+  it('inspects own metadata of all method parameters of a sub class', () => {
+    const meta = MetadataInspector.getAllParameterMetadata(
+      'test',
+      AnotherController,
+      'myMethod',
+      true,
+    );
+    expect(meta).to.be.undefined();
+
+    const paramsMeta = MetadataInspector.getParameterMetadata(
+      'test',
+      AnotherController,
+      'myMethod',
+      0,
+      true,
+    );
+    expect(paramsMeta).to.be.undefined();
+
+    const inherited = MetadataInspector.getAllMethodMetadata(
+      'test',
+      AnotherController,
+    );
+    expect(inherited).to.eql({myMethod: [{x: 1}, undefined]});
   });
 });
 
