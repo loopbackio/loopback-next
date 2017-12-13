@@ -104,7 +104,7 @@ describe('model decorator', () => {
       MetadataInspector.getAllPropertyMetadata(
         MODEL_PROPERTIES_KEY,
         Order.prototype,
-      ) || {};
+      ) || /* istanbul ignore next */ {};
     expect(meta.quantity).to.eql({
       type: Number,
       mysql: {
@@ -119,7 +119,7 @@ describe('model decorator', () => {
       MetadataInspector.getAllPropertyMetadata(
         RELATIONS_KEY,
         Customer.prototype,
-      ) || {};
+      ) || /* istanbul ignore next */ {};
     expect(meta.address).to.eql({
       type: RelationType.embedsOne,
     });
@@ -130,7 +130,7 @@ describe('model decorator', () => {
       MetadataInspector.getAllPropertyMetadata(
         RELATIONS_KEY,
         Customer.prototype,
-      ) || {};
+      ) || /* istanbul ignore next */ {};
     expect(meta.phones).to.eql({
       type: RelationType.embedsMany,
     });
@@ -141,7 +141,7 @@ describe('model decorator', () => {
       MetadataInspector.getAllPropertyMetadata(
         RELATIONS_KEY,
         Customer.prototype,
-      ) || {};
+      ) || /* istanbul ignore next */ {};
     expect(meta.accounts).to.eql({
       type: RelationType.referencesMany,
     });
@@ -152,7 +152,7 @@ describe('model decorator', () => {
       MetadataInspector.getAllPropertyMetadata(
         RELATIONS_KEY,
         Customer.prototype,
-      ) || {};
+      ) || /* istanbul ignore next */ {};
     expect(meta.profile).to.eql({
       type: RelationType.referencesOne,
     });
@@ -163,7 +163,7 @@ describe('model decorator', () => {
       MetadataInspector.getAllPropertyMetadata(
         RELATIONS_KEY,
         Customer.prototype,
-      ) || {};
+      ) || /* istanbul ignore next */ {};
     expect(meta.orders).to.eql({
       type: RelationType.hasMany,
     });
@@ -174,7 +174,7 @@ describe('model decorator', () => {
       MetadataInspector.getAllPropertyMetadata(
         RELATIONS_KEY,
         Order.prototype,
-      ) || {};
+      ) || /* istanbul ignore next */ {};
     expect(meta.customer).to.eql({
       type: RelationType.belongsTo,
       target: 'Customer',
@@ -186,7 +186,7 @@ describe('model decorator', () => {
       MetadataInspector.getAllPropertyMetadata(
         RELATIONS_KEY,
         Customer.prototype,
-      ) || {};
+      ) || /* istanbul ignore next */ {};
     expect(meta.lastOrder).to.eql({
       type: RelationType.hasOne,
     });
@@ -197,7 +197,7 @@ describe('model decorator', () => {
       MetadataInspector.getAllPropertyMetadata(
         RELATIONS_KEY,
         Customer.prototype,
-      ) || {};
+      ) || /* istanbul ignore next */ {};
     expect(meta.recentOrders).to.eql({
       type: RelationType.hasMany,
     });
