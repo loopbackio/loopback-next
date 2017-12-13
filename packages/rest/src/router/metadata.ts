@@ -3,10 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as assert from 'assert';
-import * as _ from 'lodash';
+import {
+  Reflector,
+  MetadataInspector,
+  ClassDecoratorFactory,
+  MethodDecoratorFactory,
+  ParameterDecoratorFactory,
+  DecoratorFactory,
+  MethodParameterDecoratorFactory,
+} from '@loopback/context';
 
-import {Reflector} from '@loopback/context';
 import {
   OperationObject,
   ParameterLocation,
@@ -16,23 +22,15 @@ import {
   PathsObject,
 } from '@loopback/openapi-spec';
 
-const debug = require('debug')('loopback:core:router:metadata');
+const debug = require('debug')('loopback:rest:router:metadata');
 
-const ENDPOINTS_KEY = 'rest:endpoints';
-const API_SPEC_KEY = 'rest:api-spec';
+const REST_METHODS_KEY = 'rest:methods';
+const REST_METHODS_WITH_PARAMETERS_KEY = 'rest:methods:parameters';
+const REST_PARAMETERS_KEY = 'rest:parameters';
+const REST_CLASS_KEY = 'rest:class';
+const REST_API_SPEC_KEY = 'rest:api-spec';
 
 // tslint:disable:no-any
-
-function cloneDeep<T>(val: T): T {
-  if (val === undefined) {
-    return {} as T;
-  }
-  return _.cloneDeepWith(val, v => {
-    // Do not clone functions
-    if (typeof v === 'function') return v;
-    return undefined;
-  });
-}
 
 export interface ControllerSpec {
   /**
@@ -66,14 +64,10 @@ export interface ControllerSpec {
  * @decorator
  */
 export function api(spec: ControllerSpec) {
-  return function(constructor: Function) {
-    assert(
-      typeof constructor === 'function',
-      'The @api decorator can be applied to constructors only.',
-    );
-    const apiSpec = resolveControllerSpec(constructor, spec);
-    Reflector.defineMetadata(API_SPEC_KEY, apiSpec, constructor);
-  };
+  return ClassDecoratorFactory.createDecorator<ControllerSpec>(
+    REST_CLASS_KEY,
+    spec,
+  );
 }
 
 /**
@@ -83,54 +77,43 @@ interface RestEndpoint {
   verb: string;
   path: string;
   spec?: OperationObject;
-  target: any;
-}
-
-function getEndpoints(
-  target: any,
-): {[property: string]: Partial<RestEndpoint>} {
-  let endpoints = Reflector.getOwnMetadata(ENDPOINTS_KEY, target);
-  if (!endpoints) {
-    // Clone the endpoints so that subclasses won't mutate the metadata
-    // in the base class
-    const baseEndpoints = Reflector.getMetadata(ENDPOINTS_KEY, target);
-    endpoints = cloneDeep(baseEndpoints);
-    Reflector.defineMetadata(ENDPOINTS_KEY, endpoints, target);
-  }
-  return endpoints;
 }
 
 /**
  * Build the api spec from class and method level decorations
  * @param constructor Controller class
- * @param spec API spec
  */
-function resolveControllerSpec(
-  constructor: Function,
-  spec?: ControllerSpec,
-): ControllerSpec {
+function resolveControllerSpec(constructor: Function): ControllerSpec {
   debug(`Retrieving OpenAPI specification for controller ${constructor.name}`);
 
+  let spec = MetadataInspector.getClassMetadata<ControllerSpec>(
+    REST_CLASS_KEY,
+    constructor,
+  );
   if (spec) {
     debug('  using class-level spec defined via @api()', spec);
-    spec = cloneDeep(spec);
+    spec = DecoratorFactory.cloneDeep(spec);
   } else {
     spec = {paths: {}};
   }
 
-  const endpoints = getEndpoints(constructor.prototype);
+  let endpoints =
+    MetadataInspector.getAllMethodMetadata<RestEndpoint>(
+      REST_METHODS_KEY,
+      constructor.prototype,
+    ) || {};
 
+  endpoints = DecoratorFactory.cloneDeep(endpoints);
   for (const op in endpoints) {
+    debug('  processing method %s', op);
+
     const endpoint = endpoints[op];
     const verb = endpoint.verb!;
     const path = endpoint.path!;
 
     let endpointName = '';
     if (debug.enabled) {
-      const className =
-        endpoint.target.constructor.name ||
-        constructor.name ||
-        '<AnonymousClass>';
+      const className = constructor.name || '<AnonymousClass>';
       const fullMethodName = `${className}.${op}`;
       endpointName = `${fullMethodName} (${verb} ${path})`;
     }
@@ -143,7 +126,26 @@ function resolveControllerSpec(
       };
       endpoint.spec = operationSpec;
     }
+    debug('  operation for method %s: %j', op, endpoint);
 
+    debug('  processing parameters for method %s', op);
+    let params = MetadataInspector.getAllParameterMetadata<ParameterObject>(
+      REST_PARAMETERS_KEY,
+      constructor.prototype,
+      op,
+    );
+    if (params == null) {
+      params = MetadataInspector.getMethodMetadata<ParameterObject[]>(
+        REST_METHODS_WITH_PARAMETERS_KEY,
+        constructor.prototype,
+        op,
+      );
+    }
+    debug('  parameters for method %s: %j', op, params);
+    if (params != null) {
+      params = DecoratorFactory.cloneDeep(params);
+      operationSpec.parameters = params;
+    }
     operationSpec['x-operation-name'] = op;
 
     if (!spec.paths[path]) {
@@ -166,10 +168,10 @@ function resolveControllerSpec(
  * @param constructor Controller class
  */
 export function getControllerSpec(constructor: Function): ControllerSpec {
-  let spec = Reflector.getOwnMetadata(API_SPEC_KEY, constructor);
+  let spec = Reflector.getOwnMetadata(REST_API_SPEC_KEY, constructor);
   if (!spec) {
-    spec = resolveControllerSpec(constructor, spec);
-    Reflector.defineMetadata(API_SPEC_KEY, spec, constructor);
+    spec = resolveControllerSpec(constructor);
+    Reflector.defineMetadata(REST_API_SPEC_KEY, spec, constructor);
   }
   return spec;
 }
@@ -243,53 +245,14 @@ export function del(path: string, spec?: OperationObject) {
  *   of this operation.
  */
 export function operation(verb: string, path: string, spec?: OperationObject) {
-  return function(
-    target: any,
-    propertyKey: string,
-    descriptor: PropertyDescriptor,
-  ) {
-    assert(
-      typeof target[propertyKey] === 'function',
-      '@operation decorator can be applied to methods only',
-    );
-
-    const endpoints = getEndpoints(target);
-    let endpoint = endpoints[propertyKey];
-    if (!endpoint || endpoint.target !== target) {
-      // Add the new endpoint metadata for the method
-      endpoint = {verb, path, spec, target};
-      endpoints[propertyKey] = endpoint;
-    } else {
-      // Update the endpoint metadata
-      // It can be created by @param
-      endpoint.verb = verb;
-      endpoint.path = path;
-      endpoint.target = target;
-    }
-
-    if (!spec) {
-      // Users can define parameters and responses using decorators
-      return;
-    }
-
-    // Decorator are invoked in reverse order of their definition.
-    // For example, a method decorated with @operation() @param()
-    // will invoke param() decorator first and operation() second.
-    // As a result, we need to preserve any partial definitions
-    // already provided by other decorators.
-    editOperationSpec(endpoint, overrides => {
-      const mergedSpec = Object.assign({}, spec, overrides);
-
-      // Merge "responses" definitions
-      mergedSpec.responses = Object.assign(
-        {},
-        spec.responses,
-        overrides.responses,
-      );
-
-      return mergedSpec;
-    });
-  };
+  return MethodDecoratorFactory.createDecorator<Partial<RestEndpoint>>(
+    REST_METHODS_KEY,
+    {
+      verb,
+      path,
+      spec,
+    },
+  );
 }
 
 const paramDecoratorStyle = Symbol('ParamDecoratorStyle');
@@ -322,71 +285,41 @@ const paramDecoratorStyle = Symbol('ParamDecoratorStyle');
  */
 export function param(paramSpec: ParameterObject) {
   return function(
-    target: any,
-    propertyKey: string,
-    descriptorOrParameterIndex: PropertyDescriptor | number,
+    target: Object,
+    member: string | symbol,
+    descriptorOrIndex: TypedPropertyDescriptor<any> | number,
   ) {
-    assert(
-      typeof target[propertyKey] === 'function',
-      '@param decorator can be applied to methods only',
-    );
-
-    const endpoints = getEndpoints(target);
-    let endpoint = endpoints[propertyKey];
-    if (!endpoint || endpoint.target !== target) {
-      const baseEndpoint = endpoint;
-      // Add the new endpoint metadata for the method
-      endpoint = cloneDeep(baseEndpoint);
-      endpoint.target = target;
-      endpoints[propertyKey] = endpoint;
+    if (typeof descriptorOrIndex === 'number') {
+      if ((<any>target)[paramDecoratorStyle] === 'method') {
+        throw new Error(
+          'Mixed usage of @param at method/parameter level' +
+            ' is not allowed.',
+        );
+      }
+      (<any>target)[paramDecoratorStyle] = 'parameter';
+      ParameterDecoratorFactory.createDecorator<ParameterObject>(
+        REST_PARAMETERS_KEY,
+        paramSpec,
+      )(target, member, descriptorOrIndex);
+    } else {
+      if ((<any>target)[paramDecoratorStyle] === 'parameter') {
+        throw new Error(
+          'Mixed usage of @param at method/parameter level' +
+            ' is not allowed.',
+        );
+      }
+      (<any>target)[paramDecoratorStyle] = 'method';
+      RestMethodParameterDecoratorFactory.createDecorator<ParameterObject>(
+        REST_METHODS_WITH_PARAMETERS_KEY,
+        paramSpec,
+      )(target, member, descriptorOrIndex);
     }
-
-    editOperationSpec(endpoint, operationSpec => {
-      let decoratorStyle;
-      if (typeof descriptorOrParameterIndex === 'number') {
-        decoratorStyle = 'parameter';
-      } else {
-        decoratorStyle = 'method';
-      }
-      if (!operationSpec.parameters) {
-        operationSpec.parameters = [];
-        // Record the @param decorator style to ensure consistency
-        operationSpec[paramDecoratorStyle] = decoratorStyle;
-      } else {
-        // Mixed usage of @param at method/parameter level is not allowed
-        if (operationSpec[paramDecoratorStyle] !== decoratorStyle) {
-          throw new Error(
-            'Mixed usage of @param at method/parameter level' +
-              ' is not allowed.',
-          );
-        }
-      }
-
-      if (typeof descriptorOrParameterIndex === 'number') {
-        operationSpec.parameters[descriptorOrParameterIndex] = paramSpec;
-      } else {
-        operationSpec.parameters.unshift(paramSpec);
-      }
-
-      return operationSpec;
-    });
   };
 }
 
-function editOperationSpec(
-  endpoint: Partial<RestEndpoint>,
-  updateFn: (spec: OperationObject) => OperationObject,
-) {
-  let spec = endpoint.spec;
-  if (!spec) {
-    spec = {
-      responses: {},
-    };
-  }
-
-  spec = updateFn(spec);
-  endpoint.spec = spec;
-}
+class RestMethodParameterDecoratorFactory extends MethodParameterDecoratorFactory<
+  ParameterObject
+> {}
 
 export namespace param {
   export const query = {
