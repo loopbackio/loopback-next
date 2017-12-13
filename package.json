@@ -27,6 +27,7 @@
   },
   "scripts": {
     "bootstrap": "npm i && lerna bootstrap",
+    "release": "lerna publish --cd-version=prerelease --preid=alpha",
     "coverage:ci": "node packages/build/bin/run-nyc report --reporter=text-lcov | coveralls",
     "precoverage": "npm test",
     "coverage": "open coverage/index.html",
