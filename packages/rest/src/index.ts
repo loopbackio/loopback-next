@@ -16,7 +16,7 @@ export {
   parseRequestUrl,
 } from './router/routing-table';
 
-export * from './router/metadata';
+export * from '@loopback/openapi-spec';
 export * from './providers';
 
 // import all errors from external http-errors package

@@ -16,7 +16,8 @@ import {
 import {ServerRequest, ServerResponse, createServer} from 'http';
 import * as Http from 'http';
 import {Application, CoreBindings, Server} from '@loopback/core';
-import {getControllerSpec} from './router/metadata';
+import {getControllerSpec} from '@loopback/openapi-spec';
+// import {getControllerSpec} from './router/metadata';
 import {HttpHandler} from './http-handler';
 import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
 import {

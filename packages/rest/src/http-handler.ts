@@ -4,9 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from '@loopback/context';
-import {PathsObject} from '@loopback/openapi-spec';
+import {PathsObject, ControllerSpec} from '@loopback/openapi-spec';
 import {ServerRequest, ServerResponse} from 'http';
-import {ControllerSpec} from './router/metadata';
+// import {ControllerSpec} from './router/metadata';
 
 import {SequenceHandler} from './sequence';
 import {
