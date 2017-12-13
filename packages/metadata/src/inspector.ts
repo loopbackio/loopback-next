@@ -6,6 +6,12 @@
 import {Reflector, NamespacedReflect} from './reflect';
 import {MetadataMap} from './decorator-factory';
 
+/**
+ * TypeScript reflector without a namespace. The TypeScript compiler can be
+ * configured to add design time metadata.
+ *
+ * See https://www.typescriptlang.org/docs/handbook/decorators.html
+ */
 const TSReflector = new NamespacedReflect();
 
 /**
@@ -21,6 +27,9 @@ export interface DesignTimeMethodMetadata {
  * Inspector for metadata applied by decorators
  */
 export class MetadataInspector {
+  static readonly Reflector = Reflector;
+  static readonly DesignTimeReflector = TSReflector;
+
   /**
    * Get the metadata associated with the given key for a given class
    * @param key Metadata key

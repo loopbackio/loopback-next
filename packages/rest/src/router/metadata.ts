@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  Reflector,
   MetadataInspector,
   ClassDecoratorFactory,
   MethodDecoratorFactory,
@@ -168,10 +167,18 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
  * @param constructor Controller class
  */
 export function getControllerSpec(constructor: Function): ControllerSpec {
-  let spec = Reflector.getOwnMetadata(REST_API_SPEC_KEY, constructor);
+  let spec = MetadataInspector.getClassMetadata<ControllerSpec>(
+    REST_API_SPEC_KEY,
+    constructor,
+    true,
+  );
   if (!spec) {
     spec = resolveControllerSpec(constructor);
-    Reflector.defineMetadata(REST_API_SPEC_KEY, spec, constructor);
+    MetadataInspector.Reflector.defineMetadata(
+      REST_API_SPEC_KEY,
+      spec,
+      constructor,
+    );
   }
   return spec;
 }
