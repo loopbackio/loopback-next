@@ -155,7 +155,7 @@ export class DecoratorFactory<
       return target.length;
     } else {
       // target[member] is a function
-      return (<any>target)[member!].length;
+      return (<{[methodName: string]: Function}>target)[member!].length;
     }
   }
 
@@ -168,9 +168,8 @@ export class DecoratorFactory<
    */
   withTarget(spec: T, target: Object) {
     if (typeof spec === 'object' && spec != null) {
-      const specWithTarget = spec as any;
       // Add a hidden property for the `target`
-      Object.defineProperty(specWithTarget, DecoratorFactory.TARGET, {
+      Object.defineProperty(spec, DecoratorFactory.TARGET, {
         value: target,
         enumerable: false,
       });
@@ -184,7 +183,7 @@ export class DecoratorFactory<
    */
   getTarget(spec: T) {
     if (typeof spec === 'object' && spec != null) {
-      const specWithTarget = spec as any;
+      const specWithTarget = spec as {[name: string]: any};
       return specWithTarget[DecoratorFactory.TARGET];
     } else {
       return undefined;
