@@ -4,3 +4,4 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './openapi-spec-v2';
+export * from './decorators/controller-decorators/metadata';
