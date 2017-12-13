@@ -34,6 +34,23 @@ describe('Routing metadata', () => {
     expect(actualSpec).to.eql(expectedSpec);
   });
 
+  it('caches controller spec', () => {
+    const expectedSpec = anOpenApiSpec()
+      .withOperationReturningString('get', '/greet', 'greet')
+      .build();
+
+    @api(expectedSpec)
+    class MyController {
+      greet() {
+        return 'Hello world!';
+      }
+    }
+
+    const spec1 = getControllerSpec(MyController);
+    const spec2 = getControllerSpec(MyController);
+    expect(spec2).to.be.exactly(spec1);
+  });
+
   it('returns spec defined via @get decorator', () => {
     const operationSpec = anOperationSpec()
       .withStringResponse()

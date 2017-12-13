@@ -111,6 +111,7 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     const path = endpoint.path!;
 
     let endpointName = '';
+    /* istanbul ignore if */
     if (debug.enabled) {
       const className = constructor.name || '<AnonymousClass>';
       const fullMethodName = `${className}.${op}`;
@@ -296,26 +297,30 @@ export function param(paramSpec: ParameterObject) {
     member: string | symbol,
     descriptorOrIndex: TypedPropertyDescriptor<any> | number,
   ) {
+    const targetWithParamStyle = target as any;
     if (typeof descriptorOrIndex === 'number') {
-      if ((<any>target)[paramDecoratorStyle] === 'method') {
+      if (targetWithParamStyle[paramDecoratorStyle] === 'method') {
+        // This should not happen as parameter decorators are applied before
+        // the method decorator
+        /* istanbul ignore next */
         throw new Error(
           'Mixed usage of @param at method/parameter level' +
             ' is not allowed.',
         );
       }
-      (<any>target)[paramDecoratorStyle] = 'parameter';
+      targetWithParamStyle[paramDecoratorStyle] = 'parameter';
       ParameterDecoratorFactory.createDecorator<ParameterObject>(
         REST_PARAMETERS_KEY,
         paramSpec,
       )(target, member, descriptorOrIndex);
     } else {
-      if ((<any>target)[paramDecoratorStyle] === 'parameter') {
+      if (targetWithParamStyle[paramDecoratorStyle] === 'parameter') {
         throw new Error(
           'Mixed usage of @param at method/parameter level' +
             ' is not allowed.',
         );
       }
-      (<any>target)[paramDecoratorStyle] = 'method';
+      targetWithParamStyle[paramDecoratorStyle] = 'method';
       RestMethodParameterDecoratorFactory.createDecorator<ParameterObject>(
         REST_METHODS_WITH_PARAMETERS_KEY,
         paramSpec,
