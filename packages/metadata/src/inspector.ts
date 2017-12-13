@@ -26,8 +26,14 @@ export class MetadataInspector {
    * @param key Metadata key
    * @param target Class that contains the metadata
    */
-  static getClassMetadata<T>(key: string, target: Function): T | undefined {
-    return Reflector.getMetadata(key, target);
+  static getClassMetadata<T>(
+    key: string,
+    target: Function,
+    ownOnly?: boolean,
+  ): T | undefined {
+    return ownOnly
+      ? Reflector.getOwnMetadata(key, target)
+      : Reflector.getMetadata(key, target);
   }
 
   /**
@@ -39,8 +45,11 @@ export class MetadataInspector {
   static getAllMethodMetadata<T>(
     key: string,
     target: Object,
+    ownOnly?: boolean,
   ): MetadataMap<T> | undefined {
-    return Reflector.getMetadata(key, target);
+    return ownOnly
+      ? Reflector.getOwnMetadata(key, target)
+      : Reflector.getMetadata(key, target);
   }
 
   /**
@@ -55,9 +64,12 @@ export class MetadataInspector {
     key: string,
     target: Object,
     methodName?: string | symbol,
+    ownOnly?: boolean,
   ): T | undefined {
     methodName = methodName || '';
-    const meta: MetadataMap<T> = Reflector.getMetadata(key, target);
+    const meta: MetadataMap<T> = ownOnly
+      ? Reflector.getOwnMetadata(key, target)
+      : Reflector.getMetadata(key, target);
     return meta && meta[methodName];
   }
 
@@ -70,8 +82,11 @@ export class MetadataInspector {
   static getAllPropertyMetadata<T>(
     key: string,
     target: Object,
+    ownOnly?: boolean,
   ): MetadataMap<T> | undefined {
-    return Reflector.getMetadata(key, target);
+    return ownOnly
+      ? Reflector.getOwnMetadata(key, target)
+      : Reflector.getMetadata(key, target);
   }
 
   /**
@@ -86,8 +101,11 @@ export class MetadataInspector {
     key: string,
     target: Object,
     propertyName: string | symbol,
+    ownOnly?: boolean,
   ): T | undefined {
-    const meta: MetadataMap<T> = Reflector.getMetadata(key, target);
+    const meta: MetadataMap<T> = ownOnly
+      ? Reflector.getOwnMetadata(key, target)
+      : Reflector.getMetadata(key, target);
     return meta && meta[propertyName];
   }
 
@@ -103,9 +121,12 @@ export class MetadataInspector {
     key: string,
     target: Object,
     methodName?: string | symbol,
+    ownOnly?: boolean,
   ): T[] | undefined {
     methodName = methodName || '';
-    const meta: MetadataMap<T[]> = Reflector.getMetadata(key, target);
+    const meta: MetadataMap<T[]> = ownOnly
+      ? Reflector.getOwnMetadata(key, target)
+      : Reflector.getMetadata(key, target);
     return meta && meta[methodName];
   }
 
@@ -123,9 +144,12 @@ export class MetadataInspector {
     target: Object,
     methodName: string | symbol,
     index: number,
+    ownOnly?: boolean,
   ): T | undefined {
     methodName = methodName || '';
-    const meta: MetadataMap<T[]> = Reflector.getMetadata(key, target);
+    const meta: MetadataMap<T[]> = ownOnly
+      ? Reflector.getOwnMetadata(key, target)
+      : Reflector.getMetadata(key, target);
     const params = meta && meta[methodName];
     return params && params[index];
   }

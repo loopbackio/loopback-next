@@ -10,17 +10,6 @@ const debug = debugModule('loopback:metadata:decorator');
 
 // tslint:disable:no-any
 
-function cloneDeep<T>(val: T): T {
-  if (val === undefined) {
-    return {} as T;
-  }
-  return _.cloneDeepWith(val, v => {
-    // Do not clone functions
-    if (typeof v === 'function') return v;
-    return undefined;
-  });
-}
-
 /**
  * An object mapping keys to corresponding metadata
  */
@@ -197,6 +186,8 @@ export class DecoratorFactory<
     if (typeof spec === 'object' && spec != null) {
       const specWithTarget = spec as any;
       return specWithTarget[DecoratorFactory.TARGET];
+    } else {
+      return undefined;
     }
   }
 
@@ -256,7 +247,9 @@ export class DecoratorFactory<
     if (meta == null && this.allowInheritance()) {
       // Clone the base metadata so that it won't be accidentally
       // mutated by sub classes
-      meta = cloneDeep(Reflector.getMetadata(this.key, target));
+      meta = DecoratorFactory.cloneDeep(
+        Reflector.getMetadata(this.key, target),
+      );
       meta = this.processInherited(meta, target, member, descriptorOrIndex);
       if (debug.enabled) {
         debug('%s: %j', targetName, meta);
@@ -284,6 +277,17 @@ export class DecoratorFactory<
   >(key: string, spec: T, options?: DecoratorOptions): D {
     const inst = new this<T, M, D>(key, spec, options);
     return inst.create();
+  }
+
+  static cloneDeep<T>(val: T): T {
+    if (val === undefined) {
+      return {} as T;
+    }
+    return _.cloneDeepWith(val, v => {
+      // Do not clone functions
+      if (typeof v === 'function') return v;
+      return undefined;
+    });
   }
 }
 
@@ -422,7 +426,8 @@ export class MethodDecoratorFactory<T> extends DecoratorFactory<
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
   ) {
     if (localMeta == null) localMeta = {};
-    if (localMeta[methodName!] != null) {
+    const methodMeta = localMeta[methodName!];
+    if (this.getTarget(methodMeta) === target) {
       throw new Error(
         'Decorator cannot be applied more than once on ' +
           this.getTargetName(target, methodName, methodDescriptor),
@@ -536,6 +541,67 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
    */
   static createDecorator<T>(key: string, spec: T, options?: DecoratorOptions) {
     return super._createDecorator<T, MetadataMap<T[]>, ParameterDecorator>(
+      key,
+      spec,
+      options,
+    );
+  }
+}
+
+/**
+ * Factory for method level parameter decorator. For example, the following
+ * code uses `@param` to declare two parameters for `greet()`.
+ * ```ts
+ * class MyController {
+ *   @param('name') // Parameter 0
+ *   @param('msg')  // Parameter 1
+ *   greet() {}
+ * }
+ * ```
+ */
+export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
+  T,
+  MetadataMap<T[]>,
+  MethodDecorator
+> {
+  protected processInherited(
+    baseMeta: MetadataMap<T[]>,
+    target: Object,
+    methodName?: string | symbol,
+    methodDescriptor?: TypedPropertyDescriptor<any> | number,
+  ) {
+    return {[methodName!]: [this.spec]};
+  }
+
+  protected processLocal(
+    localMeta: MetadataMap<T[]>,
+    target: Object,
+    methodName?: string | symbol,
+    methodDescriptor?: TypedPropertyDescriptor<any> | number,
+  ) {
+    if (localMeta == null) localMeta = {};
+    let params = localMeta[methodName!];
+    params = [this.spec].concat(params);
+    localMeta[methodName!] = params;
+    return localMeta;
+  }
+
+  create(): MethodDecorator {
+    return (
+      target: Object,
+      methodName: string | symbol,
+      descriptor: TypedPropertyDescriptor<any>,
+    ) => this.decorate(target, methodName, descriptor);
+  }
+
+  /**
+   * Create a method decorator function
+   * @param key Metadata key
+   * @param spec Metadata object from the decorator function
+   * @param options Options for the decorator
+   */
+  static createDecorator<T>(key: string, spec: T, options?: DecoratorOptions) {
+    return super._createDecorator<T, MetadataMap<T[]>, MethodDecorator>(
       key,
       spec,
       options,
