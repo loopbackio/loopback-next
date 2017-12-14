@@ -63,29 +63,23 @@ describe('Inspector for a class for its own metadata', () => {
   class AnotherController extends BaseController {}
 
   it('inspects metadata of a base class', () => {
-    const meta = MetadataInspector.getClassMetadata(
-      'test',
-      BaseController,
-      true,
-    );
+    const meta = MetadataInspector.getClassMetadata('test', BaseController, {
+      ownMetadataOnly: true,
+    });
     expect(meta).to.eql({x: 1});
   });
 
   it('inspects metadata of a sub class', () => {
-    const meta = MetadataInspector.getClassMetadata(
-      'test',
-      SubController,
-      true,
-    );
+    const meta = MetadataInspector.getClassMetadata('test', SubController, {
+      ownMetadataOnly: true,
+    });
     expect(meta).to.eql({x: 1, y: 2});
   });
 
   it('inspects metadata of a sub class without override', () => {
-    const meta = MetadataInspector.getClassMetadata(
-      'test',
-      AnotherController,
-      true,
-    );
+    const meta = MetadataInspector.getClassMetadata('test', AnotherController, {
+      ownMetadataOnly: true,
+    });
     expect(meta).to.be.undefined();
   });
 });
@@ -142,7 +136,7 @@ describe('Inspector for instance properties', () => {
     const meta = MetadataInspector.getAllPropertyMetadata(
       'test',
       AnotherController.prototype,
-      true,
+      {ownMetadataOnly: true},
     );
     expect(meta).to.be.undefined();
 
@@ -150,7 +144,7 @@ describe('Inspector for instance properties', () => {
       'test',
       AnotherController.prototype,
       'myProp',
-      true,
+      {ownMetadataOnly: true},
     );
     expect(propertyMeta).to.be.undefined();
   });
@@ -208,7 +202,7 @@ describe('Inspector for static properties', () => {
     const meta = MetadataInspector.getAllPropertyMetadata(
       'test',
       AnotherController,
-      true,
+      {ownMetadataOnly: true},
     );
     expect(meta).to.be.undefined();
 
@@ -216,7 +210,7 @@ describe('Inspector for static properties', () => {
       'test',
       AnotherController,
       'myProp',
-      true,
+      {ownMetadataOnly: true},
     );
     expect(propertyMeta).to.be.undefined();
   });
@@ -272,7 +266,7 @@ describe('Inspector for instance methods', () => {
     const meta = MetadataInspector.getAllMethodMetadata(
       'test',
       AnotherController.prototype,
-      true,
+      {ownMetadataOnly: true},
     );
     expect(meta).to.be.undefined();
 
@@ -280,7 +274,7 @@ describe('Inspector for instance methods', () => {
       'test',
       AnotherController.prototype,
       'myMethod',
-      true,
+      {ownMetadataOnly: true},
     );
     expect(methodMeta).to.be.undefined();
   });
@@ -330,7 +324,7 @@ describe('Inspector for static methods', () => {
     const meta = MetadataInspector.getAllMethodMetadata(
       'test',
       AnotherController,
-      true,
+      {ownMetadataOnly: true},
     );
     expect(meta).to.be.undefined();
 
@@ -338,7 +332,7 @@ describe('Inspector for static methods', () => {
       'test',
       AnotherController,
       'myMethod',
-      true,
+      {ownMetadataOnly: true},
     );
     expect(methodMeta).to.be.undefined();
 
@@ -411,7 +405,7 @@ describe('Inspector for parameters of an instance method', () => {
       'test',
       AnotherController.prototype,
       'myMethod',
-      true,
+      {ownMetadataOnly: true},
     );
     expect(meta).to.be.undefined();
 
@@ -420,7 +414,7 @@ describe('Inspector for parameters of an instance method', () => {
       AnotherController.prototype,
       'myMethod',
       0,
-      true,
+      {ownMetadataOnly: true},
     );
     expect(paramsMeta).to.be.undefined();
 
@@ -493,7 +487,7 @@ describe('Inspector for parameters of a static method', () => {
       'test',
       AnotherController,
       'myMethod',
-      true,
+      {ownMetadataOnly: true},
     );
     expect(meta).to.be.undefined();
 
@@ -502,7 +496,7 @@ describe('Inspector for parameters of a static method', () => {
       AnotherController,
       'myMethod',
       0,
-      true,
+      {ownMetadataOnly: true},
     );
     expect(paramsMeta).to.be.undefined();
 

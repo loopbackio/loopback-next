@@ -15,36 +15,101 @@ import {MetadataMap} from './decorator-factory';
 const TSReflector = new NamespacedReflect();
 
 /**
- * Design time metadata for a method
+ * Design time metadata for a method.
+ *
+ * @example
+ * ```ts
+ * class MyController
+ * {
+ *   myMethod(x: string, y: number, z: MyClass): boolean {
+ *     // ...
+ *     return true;
+ *   }
+ * }
+ * ```
+ *
+ * The `myMethod` above has design-time metadata as follows:
+ * ```ts
+ * {
+ *   type: Function,
+ *   parameterTypes: [String, Number, MyClass],
+ *   returnType: Boolean
+ * }
+ * ```
  */
 export interface DesignTimeMethodMetadata {
+  /**
+   * Type of the method itself. It is `Function`
+   */
   type: Function;
+  /**
+   * An array of parameter types
+   */
   parameterTypes: Function[];
+  /**
+   * Return type
+   */
   returnType: Function;
+}
+
+/**
+ * Options for inspection
+ */
+export interface InspectionOptions {
+  /**
+   * Only inspect own metadata of a given target. The prototype chain will not
+   * be checked. The implementation uses `Reflect.getOwnMetadata()` if the flag
+   * is set to `true`. Otherwise, it uses `Reflect.getMetadata()`.
+   *
+   * The flag is `false` by default for `MetadataInspector`.
+   */
+  ownMetadataOnly?: boolean;
 }
 
 /**
  * Inspector for metadata applied by decorators
  */
 export class MetadataInspector {
+  /**
+   * Expose Reflector, which is a wrapper of `Reflect` and it uses `loopback`
+   * as the namespace prefix for all metadata keys
+   */
   static readonly Reflector = Reflector;
+  /**
+   * Expose the reflector for TypeScript design-time metadata
+   */
   static readonly DesignTimeReflector = TSReflector;
 
   /**
    * Get the metadata associated with the given key for a given class
    * @param key Metadata key
    * @param target Class that contains the metadata
-   * @param ownOnly Optional flag to control if only own metadata is inspected.
-   * The default value is `false` and inherited metadata is inspected.
+   * @param options Options for inspection
    */
   static getClassMetadata<T>(
     key: string,
     target: Function,
-    ownOnly?: boolean,
+    options?: InspectionOptions,
   ): T | undefined {
-    return ownOnly
+    return options && options.ownMetadataOnly
       ? Reflector.getOwnMetadata(key, target)
       : Reflector.getMetadata(key, target);
+  }
+
+  /**
+   * Define metadata for the given target
+   * @param key Metadata key
+   * @param value Metadata value
+   * @param target Target for the metadata
+   * @param member Optional property or method name
+   */
+  static defineMetadata<T>(
+    key: string,
+    value: T,
+    target: Object,
+    member?: string | symbol,
+  ) {
+    Reflector.defineMetadata(key, value, target, member);
   }
 
   /**
@@ -52,15 +117,14 @@ export class MetadataInspector {
    * target class or prototype
    * @param key Metadata key
    * @param target Class for static methods or prototype for instance methods
-   * @param ownOnly Optional flag to control if only own metadata is inspected.
-   * The default value is `false` and inherited metadata is inspected.
+   * @param options Options for inspection
    */
   static getAllMethodMetadata<T>(
     key: string,
     target: Object,
-    ownOnly?: boolean,
+    options?: InspectionOptions,
   ): MetadataMap<T> | undefined {
-    return ownOnly
+    return options && options.ownMetadataOnly
       ? Reflector.getOwnMetadata(key, target)
       : Reflector.getMetadata(key, target);
   }
@@ -72,19 +136,19 @@ export class MetadataInspector {
    * @param target Class for static methods or prototype for instance methods
    * @param methodName Method name. If not present, default to '' to use
    * the constructor
-   * @param ownOnly Optional flag to control if only own metadata is inspected.
-   * The default value is `false` and inherited metadata is inspected.
+   * @param options Options for inspection
    */
   static getMethodMetadata<T>(
     key: string,
     target: Object,
     methodName?: string | symbol,
-    ownOnly?: boolean,
+    options?: InspectionOptions,
   ): T | undefined {
     methodName = methodName || '';
-    const meta: MetadataMap<T> = ownOnly
-      ? Reflector.getOwnMetadata(key, target)
-      : Reflector.getMetadata(key, target);
+    const meta: MetadataMap<T> =
+      options && options.ownMetadataOnly
+        ? Reflector.getOwnMetadata(key, target)
+        : Reflector.getMetadata(key, target);
     return meta && meta[methodName];
   }
 
@@ -93,15 +157,14 @@ export class MetadataInspector {
    * target class or prototype
    * @param key Metadata key
    * @param target Class for static methods or prototype for instance methods
-   * @param ownOnly Optional flag to control if only own metadata is inspected.
-   * The default value is `false` and inherited metadata is inspected.
+   * @param options Options for inspection
    */
   static getAllPropertyMetadata<T>(
     key: string,
     target: Object,
-    ownOnly?: boolean,
+    options?: InspectionOptions,
   ): MetadataMap<T> | undefined {
-    return ownOnly
+    return options && options.ownMetadataOnly
       ? Reflector.getOwnMetadata(key, target)
       : Reflector.getMetadata(key, target);
   }
@@ -113,18 +176,18 @@ export class MetadataInspector {
    * @param target Class for static properties or prototype for instance
    * properties
    * @param propertyName Property name
-   * @param ownOnly Optional flag to control if only own metadata is inspected.
-   * The default value is `false` and inherited metadata is inspected.
+   * @param options Options for inspection
    */
   static getPropertyMetadata<T>(
     key: string,
     target: Object,
     propertyName: string | symbol,
-    ownOnly?: boolean,
+    options?: InspectionOptions,
   ): T | undefined {
-    const meta: MetadataMap<T> = ownOnly
-      ? Reflector.getOwnMetadata(key, target)
-      : Reflector.getMetadata(key, target);
+    const meta: MetadataMap<T> =
+      options && options.ownMetadataOnly
+        ? Reflector.getOwnMetadata(key, target)
+        : Reflector.getMetadata(key, target);
     return meta && meta[propertyName];
   }
 
@@ -135,19 +198,19 @@ export class MetadataInspector {
    * @param target Class for static methods or prototype for instance methods
    * @param methodName Method name. If not present, default to '' to use
    * the constructor
-   * @param ownOnly Optional flag to control if only own metadata is inspected.
-   * The default value is `false` and inherited metadata is inspected.
+   * @param options Options for inspection
    */
   static getAllParameterMetadata<T>(
     key: string,
     target: Object,
     methodName?: string | symbol,
-    ownOnly?: boolean,
+    options?: InspectionOptions,
   ): T[] | undefined {
     methodName = methodName || '';
-    const meta: MetadataMap<T[]> = ownOnly
-      ? Reflector.getOwnMetadata(key, target)
-      : Reflector.getMetadata(key, target);
+    const meta: MetadataMap<T[]> =
+      options && options.ownMetadataOnly
+        ? Reflector.getOwnMetadata(key, target)
+        : Reflector.getMetadata(key, target);
     return meta && meta[methodName];
   }
 
@@ -159,20 +222,20 @@ export class MetadataInspector {
    * @param methodName Method name. If not present, default to '' to use
    * the constructor
    * @param index Index of the parameter, starting with 0
-   * @param ownOnly Optional flag to control if only own metadata is inspected.
-   * The default value is `false` and inherited metadata is inspected.
+   * @param options Options for inspection
    */
   static getParameterMetadata<T>(
     key: string,
     target: Object,
     methodName: string | symbol,
     index: number,
-    ownOnly?: boolean,
+    options?: InspectionOptions,
   ): T | undefined {
     methodName = methodName || '';
-    const meta: MetadataMap<T[]> = ownOnly
-      ? Reflector.getOwnMetadata(key, target)
-      : Reflector.getMetadata(key, target);
+    const meta: MetadataMap<T[]> =
+      options && options.ownMetadataOnly
+        ? Reflector.getOwnMetadata(key, target)
+        : Reflector.getMetadata(key, target);
     const params = meta && meta[methodName];
     return params && params[index];
   }
