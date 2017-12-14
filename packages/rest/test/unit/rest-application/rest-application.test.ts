@@ -1,0 +1,65 @@
+import {
+  RestApplication,
+  RestServer,
+  RestComponent,
+  ERR_NO_MULTI_SERVER,
+} from '../../..';
+import {expect} from '@loopback/testlab';
+
+describe('RestApplication', () => {
+  describe('throws', () => {
+    it('when attempting to bind another server', () => {
+      // tslint:disable-next-line:no-unused-variable
+      const app = new RestApplication();
+      expect.throws(
+        () => {
+          app.server(RestServer, 'oops');
+        },
+        Error,
+        ERR_NO_MULTI_SERVER,
+      );
+    });
+
+    it('when attempting to bind an array of servers', () => {
+      // tslint:disable-next-line:no-unused-variable
+      const app = new RestApplication();
+      expect.throws(
+        () => {
+          app.servers([RestServer, RestServer]);
+        },
+        Error,
+        ERR_NO_MULTI_SERVER,
+      );
+    });
+
+    it('when attempting to bind servers via configuration', () => {
+      expect.throws(
+        () => {
+          // tslint:disable-next-line:no-unused-variable
+          const app = new RestApplication({
+            servers: {
+              foo: RestServer,
+              bar: RestServer,
+            },
+          });
+        },
+        Error,
+        ERR_NO_MULTI_SERVER,
+      );
+    });
+
+    it('when attempting bind multiple servers via RestComponent', () => {
+      class OtherRestComponent extends RestComponent {}
+      expect.throws(
+        () => {
+          // tslint:disable-next-line:no-unused-variable
+          const app = new RestApplication({
+            components: [RestComponent, OtherRestComponent],
+          });
+        },
+        Error,
+        ERR_NO_MULTI_SERVER,
+      );
+    });
+  });
+});

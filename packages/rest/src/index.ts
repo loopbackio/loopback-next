@@ -32,6 +32,7 @@ export {HttpErrors};
 export * from './http-handler';
 export * from './internal-types';
 export * from './keys';
+export * from './rest-application';
 export * from './rest-component';
 export * from './rest-server';
 export * from './sequence';
