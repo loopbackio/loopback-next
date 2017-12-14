@@ -171,15 +171,11 @@ export function getControllerSpec(constructor: Function): ControllerSpec {
   let spec = MetadataInspector.getClassMetadata<ControllerSpec>(
     REST_API_SPEC_KEY,
     constructor,
-    true,
+    {ownMetadataOnly: true},
   );
   if (!spec) {
     spec = resolveControllerSpec(constructor);
-    MetadataInspector.Reflector.defineMetadata(
-      REST_API_SPEC_KEY,
-      spec,
-      constructor,
-    );
+    MetadataInspector.defineMetadata(REST_API_SPEC_KEY, spec, constructor);
   }
   return spec;
 }

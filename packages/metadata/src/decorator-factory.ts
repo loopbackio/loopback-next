@@ -93,18 +93,18 @@ export class DecoratorFactory<
    * metadata into the spec if `allowInheritance` is set to `true`. To customize
    * the behavior, this method can be overridden by sub classes.
    *
-   * @param baseMeta Metadata from base classes for the member
+   * @param inheritedMetadata Metadata from base classes for the member
    */
-  protected inherit(baseMeta: T | undefined | null): T {
+  protected inherit(inheritedMetadata: T | undefined | null): T {
     if (!this.allowInheritance()) return this.spec;
-    if (baseMeta == null) return this.spec;
-    if (this.spec == undefined) return baseMeta;
-    if (typeof baseMeta !== 'object') return this.spec;
-    if (Array.isArray(baseMeta) || Array.isArray(this.spec)) {
+    if (inheritedMetadata == null) return this.spec;
+    if (this.spec == undefined) return inheritedMetadata;
+    if (typeof inheritedMetadata !== 'object') return this.spec;
+    if (Array.isArray(inheritedMetadata) || Array.isArray(this.spec)) {
       // For arrays, we don't merge
       return this.spec;
     }
-    return Object.assign(baseMeta, this.spec);
+    return Object.assign(inheritedMetadata, this.spec);
   }
 
   /**
@@ -191,35 +191,47 @@ export class DecoratorFactory<
   }
 
   /**
-   * To be overridden by subclasses to process inherited metadata
-   * @param meta Metadata inherited from the base
+   * This method is called by the default implementation of the decorator
+   * function to merge the spec argument from the decoration with the inherited
+   * metadata for a class, all properties, all methods, or all method
+   * parameters that are decorated by this decorator.
+   *
+   * It MUST be overridden by subclasses to process inherited metadata.
+   *
+   * @param inheritedMetadata Metadata inherited from the base classes
    * @param target Decoration target
    * @param member Optional property or method
    * @param descriptorOrIndex Optional parameter index or method descriptor
    */
-  protected processInherited(
-    baseMeta: M,
+  protected mergeWithInherited(
+    inheritedMetadata: M,
     target: Object,
     member?: string | symbol,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ): M {
-    return baseMeta;
+    throw new Error('mergeWithInherited() is not implemented');
   }
 
   /**
-   * To be overridden by subclasses to process local metadata
-   * @param meta Metadata exists on the target
+   * This method is called by the default implementation of the decorator
+   * function to merge the spec argument from the decoration with the own
+   * metadata for a class, all properties, all methods, or all method
+   * parameters that are decorated by this decorator.
+   *
+   * It MUST be overridden by subclasses to process own metadata.
+   *
+   * @param ownMetadata Own Metadata exists locally on the target
    * @param target Decoration target
    * @param member Optional property or method
    * @param descriptorOrIndex Optional parameter index or method descriptor
    */
-  protected processLocal(
-    localMeta: M,
+  protected mergeWithOwn(
+    ownMetadata: M,
     target: Object,
     member?: string | symbol,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ): M {
-    return localMeta;
+    throw new Error('mergeWithOwn() is not implemented');
   }
 
   /**
@@ -249,13 +261,13 @@ export class DecoratorFactory<
       meta = DecoratorFactory.cloneDeep(
         Reflector.getMetadata(this.key, target),
       );
-      meta = this.processInherited(meta, target, member, descriptorOrIndex);
+      meta = this.mergeWithInherited(meta, target, member, descriptorOrIndex);
       if (debug.enabled) {
         debug('%s: %j', targetName, meta);
       }
       Reflector.defineMetadata(this.key, meta, target);
     } else {
-      meta = this.processLocal(meta, target, member, descriptorOrIndex);
+      meta = this.mergeWithOwn(meta, target, member, descriptorOrIndex);
       if (debug.enabled) {
         debug('%s: %j', targetName, meta);
       }
@@ -298,22 +310,22 @@ export class ClassDecoratorFactory<T> extends DecoratorFactory<
   T,
   ClassDecorator
 > {
-  protected processInherited(
-    baseMeta: T,
+  protected mergeWithInherited(
+    inheritedMetadata: T,
     target: Object,
     member?: string | symbol,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ) {
-    return this.withTarget(<T>this.inherit(baseMeta), target);
+    return this.withTarget(<T>this.inherit(inheritedMetadata), target);
   }
 
-  protected processLocal(
-    localMeta: T,
+  protected mergeWithOwn(
+    ownMetadata: T,
     target: Object,
     member?: string | symbol,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ) {
-    if (localMeta != null) {
+    if (ownMetadata != null) {
       throw new Error(
         'Decorator cannot be applied more than once on ' +
           this.getTargetName(target),
@@ -345,35 +357,35 @@ export class PropertyDecoratorFactory<T> extends DecoratorFactory<
   MetadataMap<T>,
   PropertyDecorator
 > {
-  protected processInherited(
-    baseMeta: MetadataMap<T>,
+  protected mergeWithInherited(
+    inheritedMetadata: MetadataMap<T>,
     target: Object,
     propertyName?: string | symbol,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ) {
     const propertyMeta: T = this.withTarget(
-      <T>this.inherit(baseMeta[propertyName!]),
+      <T>this.inherit(inheritedMetadata[propertyName!]),
       target,
     );
-    baseMeta[propertyName!] = propertyMeta;
-    return baseMeta;
+    inheritedMetadata[propertyName!] = propertyMeta;
+    return inheritedMetadata;
   }
 
-  protected processLocal(
-    localMeta: MetadataMap<T>,
+  protected mergeWithOwn(
+    ownMetadata: MetadataMap<T>,
     target: Object,
     propertyName?: string | symbol,
     descriptorOrParameterIndex?: TypedPropertyDescriptor<any> | number,
   ) {
-    if (localMeta == null) localMeta = {};
-    if (localMeta[propertyName!] != null) {
+    if (ownMetadata == null) ownMetadata = {};
+    if (ownMetadata[propertyName!] != null) {
       const targetName = this.getTargetName(target, propertyName);
       throw new Error(
         'Decorator cannot be applied more than once on ' + targetName,
       );
     }
-    localMeta[propertyName!] = this.withTarget(this.spec, target);
-    return localMeta;
+    ownMetadata[propertyName!] = this.withTarget(this.spec, target);
+    return ownMetadata;
   }
 
   create(): PropertyDecorator {
@@ -404,28 +416,28 @@ export class MethodDecoratorFactory<T> extends DecoratorFactory<
   MetadataMap<T>,
   MethodDecorator
 > {
-  protected processInherited(
-    baseMeta: MetadataMap<T>,
+  protected mergeWithInherited(
+    inheritedMetadata: MetadataMap<T>,
     target: Object,
     methodName?: string | symbol,
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
   ) {
     const methodMeta = this.withTarget(
-      <T>this.inherit(baseMeta[methodName!]),
+      <T>this.inherit(inheritedMetadata[methodName!]),
       target,
     );
-    baseMeta[methodName!] = methodMeta;
-    return baseMeta;
+    inheritedMetadata[methodName!] = methodMeta;
+    return inheritedMetadata;
   }
 
-  protected processLocal(
-    localMeta: MetadataMap<T>,
+  protected mergeWithOwn(
+    ownMetadata: MetadataMap<T>,
     target: Object,
     methodName?: string | symbol,
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
   ) {
-    if (localMeta == null) localMeta = {};
-    const methodMeta = localMeta[methodName!];
+    if (ownMetadata == null) ownMetadata = {};
+    const methodMeta = ownMetadata[methodName!];
     if (this.getTarget(methodMeta) === target) {
       throw new Error(
         'Decorator cannot be applied more than once on ' +
@@ -433,8 +445,8 @@ export class MethodDecoratorFactory<T> extends DecoratorFactory<
       );
     }
     // Set the method metadata
-    localMeta[methodName!] = this.withTarget(this.spec, target);
-    return localMeta;
+    ownMetadata[methodName!] = this.withTarget(this.spec, target);
+    return ownMetadata;
   }
 
   create(): MethodDecorator {
@@ -485,30 +497,34 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
     return methodMeta;
   }
 
-  protected processInherited(
-    baseMeta: MetadataMap<T[]>,
+  protected mergeWithInherited(
+    inheritedMetadata: MetadataMap<T[]>,
     target: Object,
     methodName?: string | symbol,
     parameterIndex?: TypedPropertyDescriptor<any> | number,
   ) {
-    const methodMeta = this.getOrInitMetadata(baseMeta, target, methodName);
+    const methodMeta = this.getOrInitMetadata(
+      inheritedMetadata,
+      target,
+      methodName,
+    );
     const index = parameterIndex as number;
     methodMeta[index] = this.withTarget(
       <T>this.inherit(methodMeta[index]),
       target,
     );
-    return baseMeta;
+    return inheritedMetadata;
   }
 
-  protected processLocal(
-    localMeta: MetadataMap<T[]>,
+  protected mergeWithOwn(
+    ownMetadata: MetadataMap<T[]>,
     target: Object,
     methodName?: string | symbol,
     parameterIndex?: TypedPropertyDescriptor<any> | number,
   ) {
-    if (localMeta == null) localMeta = {};
+    if (ownMetadata == null) ownMetadata = {};
     // Find the method metadata
-    const methodMeta = this.getOrInitMetadata(localMeta, target, methodName);
+    const methodMeta = this.getOrInitMetadata(ownMetadata, target, methodName);
     const index = parameterIndex as number;
     if (this.getTarget(methodMeta[index]) === target) {
       throw new Error(
@@ -521,7 +537,7 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
       <T>this.inherit(methodMeta[index]),
       target,
     );
-    return localMeta;
+    return ownMetadata;
   }
 
   create(): ParameterDecorator {
@@ -563,8 +579,8 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
   MetadataMap<T[]>,
   MethodDecorator
 > {
-  protected processInherited(
-    baseMeta: MetadataMap<T[]>,
+  protected mergeWithInherited(
+    inheritedMetadata: MetadataMap<T[]>,
     target: Object,
     methodName?: string | symbol,
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
@@ -572,17 +588,17 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
     return {[methodName!]: [this.spec]};
   }
 
-  protected processLocal(
-    localMeta: MetadataMap<T[]>,
+  protected mergeWithOwn(
+    ownMetadata: MetadataMap<T[]>,
     target: Object,
     methodName?: string | symbol,
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
   ) {
-    if (localMeta == null) localMeta = {};
-    let params = localMeta[methodName!];
+    if (ownMetadata == null) ownMetadata = {};
+    let params = ownMetadata[methodName!];
     params = [this.spec].concat(params);
-    localMeta[methodName!] = params;
-    return localMeta;
+    ownMetadata[methodName!] = params;
+    return ownMetadata;
   }
 
   create(): MethodDecorator {

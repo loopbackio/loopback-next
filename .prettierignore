@@ -4,3 +4,4 @@ packages/*/api-docs
 packages/cli/generators/*/templates
 package.json
 packages/*/package.json
+*.md
