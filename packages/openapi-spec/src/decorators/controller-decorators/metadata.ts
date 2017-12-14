@@ -14,7 +14,7 @@ import {
   SchemaObject,
   ParameterType,
   PathsObject,
-} from '../../openapi-spec-v2';
+} from '../../openapi-spec-v3';
 
 const debug = require('debug')('loopback:core:router:metadata');
 
