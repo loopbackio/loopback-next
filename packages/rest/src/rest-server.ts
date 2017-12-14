@@ -16,7 +16,7 @@ import {
 import {ServerRequest, ServerResponse, createServer} from 'http';
 import * as Http from 'http';
 import {Application, CoreBindings, Server} from '@loopback/core';
-import {getControllerSpec} from './router/metadata';
+import {getControllerSpec, getControllerScope} from './router/metadata';
 import {HttpHandler} from './http-handler';
 import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
 import {
@@ -217,7 +217,24 @@ export class RestServer extends Context implements Server {
         // controller methods are specified through app.api() spec
         continue;
       }
-      this._httpHandler.registerController(ctor, apiSpec);
+      // If the controller has been scoped to a particular server...
+      const scope = getControllerScope(ctor);
+      if (scope) {
+        try {
+          for (const name of scope) {
+            const server = this.getSync(`servers.${name}`);
+            if (server === this) {
+              this._httpHandler.registerController(ctor, apiSpec);
+              break;
+            }
+          }
+        } catch (e) {
+          e.message = `invalid use of @server decorator: ${e.message}`;
+          throw e;
+        }
+      } else {
+        this._httpHandler.registerController(ctor, apiSpec);
+      }
     }
 
     for (const b of this.find('routes.*')) {

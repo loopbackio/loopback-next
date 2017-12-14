@@ -6,7 +6,7 @@
 import * as assert from 'assert';
 import * as _ from 'lodash';
 
-import {Reflector} from '@loopback/context';
+import {Reflector, Constructor} from '@loopback/context';
 import {
   OperationObject,
   ParameterLocation,
@@ -20,6 +20,7 @@ const debug = require('debug')('loopback:core:router:metadata');
 
 const ENDPOINTS_KEY = 'rest:endpoints';
 const API_SPEC_KEY = 'rest:api-spec';
+const CONTROLLER_SCOPES_KEY = 'rest:controller-scopes';
 
 // tslint:disable:no-any
 
@@ -77,6 +78,57 @@ export function api(spec: ControllerSpec) {
 }
 
 /**
+ * A decorator to mark a controller as belonging to a specific server.
+ * ```ts
+ * // In your application...
+ * class MyApplication extends Application {
+ *   constructor() {
+ *     super();
+ *     this.server(RestServer, 'foo');
+ *   }
+ * }
+ *
+ * // In one of your controllers
+ * @server('foo')
+ * class MyController {
+ *  // ...
+ * }
+ * ```
+ * @param name The name of the server bound to your application context.
+ */
+export function servers(names: string[]) {
+  return function(constructor: Constructor<any>) {
+    for (const name of names) {
+      // Set the value for this scope.
+      const endpoints = Reflector.getOwnMetadata(ENDPOINTS_KEY, constructor);
+      if (endpoints) {
+        rescopeMetadata(ENDPOINTS_KEY, name, constructor, endpoints);
+      }
+    }
+    Reflector.defineMetadata(CONTROLLER_SCOPES_KEY, names, constructor);
+  };
+}
+
+/**
+ * Replace an existing metadata definition with a scoped version.
+ * @param key The key for the metadata (if it already exists).
+ * @param scope The new scope to constrain the metadata definition.
+ * @param constructor The constructor for which the metadata is defined.
+ * @param value The metadata itself.
+ */
+function rescopeMetadata(
+  key: string,
+  scope: string,
+  constructor: Constructor<any>,
+  value: any,
+) {
+  if (Reflector.hasMetadata(key, constructor)) {
+    Reflector.deleteMetadata(key, constructor);
+  }
+  Reflector.defineMetadata(`${key}:${scope}`, value, constructor);
+}
+
+/**
  * Data structure for REST related metadata
  */
 interface RestEndpoint {
@@ -86,16 +138,37 @@ interface RestEndpoint {
   target: any;
 }
 
-function getEndpoints(
+function getEndpointsForKey(
   target: any,
+  key?: string,
 ): {[property: string]: Partial<RestEndpoint>} {
-  let endpoints = Reflector.getOwnMetadata(ENDPOINTS_KEY, target);
+  // If the key is not provided, the controller is globally-scoped.
+  key = key || ENDPOINTS_KEY;
+  let endpoints = Reflector.getOwnMetadata(key, target);
   if (!endpoints) {
     // Clone the endpoints so that subclasses won't mutate the metadata
     // in the base class
-    const baseEndpoints = Reflector.getMetadata(ENDPOINTS_KEY, target);
+    const baseEndpoints = Reflector.getMetadata(key, target);
     endpoints = cloneDeep(baseEndpoints);
-    Reflector.defineMetadata(ENDPOINTS_KEY, endpoints, target);
+    Reflector.defineMetadata(key, endpoints, target);
+  }
+  return endpoints;
+}
+
+function getEndpoints(
+  target: any,
+): {[property: string]: Partial<RestEndpoint>} {
+  const scope = Reflector.getMetadata(CONTROLLER_SCOPES_KEY, target);
+  let endpoints: {[property: string]: Partial<RestEndpoint>} = {};
+  if (scope) {
+    for (const name of scope) {
+      endpoints = Object.assign(
+        endpoints,
+        getEndpointsForKey(target, `${ENDPOINTS_KEY}:${name}`),
+      );
+    }
+  } else {
+    endpoints = getEndpointsForKey(target);
   }
   return endpoints;
 }
@@ -166,12 +239,17 @@ function resolveControllerSpec(
  * @param constructor Controller class
  */
 export function getControllerSpec(constructor: Function): ControllerSpec {
+  // All of the API specs for a controller are identical.
   let spec = Reflector.getOwnMetadata(API_SPEC_KEY, constructor);
   if (!spec) {
     spec = resolveControllerSpec(constructor, spec);
     Reflector.defineMetadata(API_SPEC_KEY, spec, constructor);
   }
   return spec;
+}
+
+export function getControllerScope(constructor: Function): string[] {
+  return Reflector.getOwnMetadata(CONTROLLER_SCOPES_KEY, constructor);
 }
 
 /**

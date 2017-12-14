@@ -13,6 +13,7 @@ import {
   patch,
   del,
   param,
+  servers,
 } from '../../..';
 import {expect} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
@@ -353,5 +354,73 @@ describe('Routing metadata', () => {
       name: 'msg',
       in: 'query',
     });
+  });
+
+  it('correctly scopes spec to specified server', () => {
+    const specOne = anOpenApiSpec()
+      .withOperationReturningString('get', '/greet', 'greet')
+      .build();
+
+    const specTwo = anOpenApiSpec()
+      .withOperationReturningString('get', '/feet', 'feet')
+      .build();
+
+    @servers(['foo'])
+    @api(specOne)
+    class ControllerOne {
+      greet() {
+        return 'Hello world!';
+      }
+    }
+
+    @api(specTwo)
+    @servers(['bar'])
+    class ControllerTwo {
+      feet() {
+        return '\|/ \|/';
+      }
+    }
+
+    const actualSpecOne = getControllerSpec(ControllerOne);
+    const actualSpecTwo = getControllerSpec(ControllerTwo);
+
+    // References are different
+    expect(actualSpecOne).to.not.equal(actualSpecTwo);
+    expect(actualSpecOne).to.eql(specOne);
+    expect(actualSpecTwo).to.eql(specTwo);
+  });
+
+  it('correctly assigns controller endpoints to specific servers', () => {
+    @servers(['foo'])
+    class ControllerOne {
+      @get('/greet')
+      greet() {
+        return 'Hello world!';
+      }
+    }
+
+    @servers(['bar'])
+    class ControllerTwo {
+      @get('/feet')
+      feet() {
+        return '\|/ \|/';
+      }
+    }
+
+    const actualSpecOne = getControllerSpec(ControllerOne);
+    const actualSpecTwo = getControllerSpec(ControllerTwo);
+
+    expect(actualSpecOne).to.not.equal(actualSpecTwo);
+    expect(actualSpecOne.paths['/greet']['get']).to.have.property(
+      'x-operation-name',
+      'greet',
+    );
+    expect(actualSpecTwo.paths['/feet']['get']).to.have.property(
+      'x-operation-name',
+      'feet',
+    );
+    // The controller functions should be constrained to their individual specs.
+    expect(actualSpecOne.paths['/feet']).to.be.undefined();
+    expect(actualSpecTwo.paths['/greet']).to.be.undefined();
   });
 });
