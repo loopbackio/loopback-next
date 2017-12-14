@@ -14,7 +14,7 @@ import {
   SchemaObject,
   ParameterType,
   PathsObject,
-} from '@loopback/openapi-spec';
+} from '../../openapi-spec-v3';
 
 const debug = require('debug')('loopback:core:router:metadata');
 
@@ -34,6 +34,7 @@ function cloneDeep<T>(val: T): T {
   });
 }
 
+// !!!!!!! Need to be changed in openapi3
 export interface ControllerSpec {
   /**
    * The base path on which the Controller API is served.

@@ -19,7 +19,7 @@ describe('RestServer.getApiSpec()', () => {
 
   it('honours API defined via app.api()', () => {
     server.api({
-      swagger: '2.0',
+      openapi: '3.0.0',
       info: {
         title: 'Test API',
         version: '1.0.0',
@@ -32,7 +32,7 @@ describe('RestServer.getApiSpec()', () => {
 
     const spec = server.getApiSpec();
     expect(spec).to.deepEqual({
-      swagger: '2.0',
+      openapi: '3.0.0',
       info: {
         title: 'Test API',
         version: '1.0.0',

@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {get, param, getControllerSpec} from '../../../..';
+import {get, param, getControllerSpec} from '../../..';
 import {expect} from '@loopback/testlab';
 
 describe('Routing metadata for parameters', () => {

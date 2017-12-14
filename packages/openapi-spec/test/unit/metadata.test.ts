@@ -13,7 +13,7 @@ import {
   patch,
   del,
   param,
-} from '../../..';
+} from '../..';
 import {expect} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 

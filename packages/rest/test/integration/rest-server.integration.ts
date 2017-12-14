@@ -79,7 +79,7 @@ describe('RestServer (integration)', () => {
     const response = await createClientForHandler(server.handleHttp).get(
       '/swagger.yaml',
     );
-    expect(response.text).to.eql(`swagger: '2.0'
+    expect(response.text).to.eql(`openapi: '3.0.0'
 basePath: /
 info:
   title: LoopBack Application

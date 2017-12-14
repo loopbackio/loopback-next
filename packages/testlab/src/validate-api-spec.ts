@@ -16,8 +16,8 @@ export async function validateApiSpec(spec: OpenApiSpec): Promise<void> {
 
   // workaround for unhelpful message returned by SwaggerParser
   // TODO(bajtos) contribute these improvements to swagger-parser
-  if (!spec.swagger) {
-    throw new Error('Missing required property: swagger at #/');
+  if (!spec.openapi) {
+    throw new Error('Missing required property: openapi at #/');
   }
 
   if (!spec.info) {
