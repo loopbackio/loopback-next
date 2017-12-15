@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  api,
   ServerResponse,
   ParsedRequest,
   FindRoute,
@@ -18,6 +17,7 @@ import {
   RestServer,
   RestComponent,
 } from '../../..';
+import {api} from '@loopback/openapi-specgen';
 import {Application} from '@loopback/core';
 import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';

@@ -1,0 +1,50 @@
+{
+  "name": "@loopback/openapi-specgen",
+  "version": "1.0.0-alpha1",
+  "description": "Spec gen",
+  "engines": {
+    "node": ">=6"
+  },
+  "devDependencies": {
+    "@loopback/build": "^4.0.0-alpha.7",
+    "@loopback/testlab": "^4.0.0-alpha.16",
+    "@loopback/openapi-spec-builder": "^4.0.0-alpha.14"
+  },
+  "scripts": {
+    "build": "npm run build:dist && npm run build:dist6",
+    "build:current": "lb-tsc",
+    "build:dist": "lb-tsc es2017",
+    "build:dist6": "lb-tsc es2015",
+    "build:apidocs": "lb-apidocs",
+    "clean": "rm -rf loopback-openapi-specgen*.tgz dist* package",
+    "prepare": "npm run build && npm run build:apidocs",
+    "pretest": "npm run build:current",
+    "unit": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js'",
+    "verify": "npm pack && tar xf loopback-openapi-specgen*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM",
+  "license": "MIT",
+  "keywords": [
+    "Swagger",
+    "OpenAPI Spec",
+    "TypeScript"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist/src",
+    "dist6/src",
+    "api-docs",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
+  "dependencies": {
+    "@loopback/context": "^4.0.0-alpha.22",
+    "lodash": "^4.17.4",
+    "@loopback/openapi-spec": "^4.0.0-alpha.17"
+  }
+}

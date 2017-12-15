@@ -4,16 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  api,
-  get,
   ServerRequest,
   ServerResponse,
   Route,
-  param,
   RestBindings,
   RestServer,
   RestComponent,
 } from '../../..';
+
+import {api, get, param} from '@loopback/openapi-specgen';
+
 import {Application} from '@loopback/core';
 
 import {

@@ -19,7 +19,7 @@ import {
   OperationRetval,
 } from '../internal-types';
 
-import {ControllerSpec} from './metadata';
+import {ControllerSpec} from '@loopback/openapi-specgen';
 
 import * as assert from 'assert';
 import * as url from 'url';

@@ -3,85 +3,85 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {post, param, getControllerSpec} from '../../../..';
+import {get, param, getControllerSpec} from '../../../../..';
 import {expect} from '@loopback/testlab';
 
 describe('Routing metadata for parameters', () => {
-  describe('@param.formData.string', () => {
-    it('defines a parameter with in:formData type:string', () => {
+  describe('@param.header.string', () => {
+    it('defines a parameter with in:header type:string', () => {
       class MyController {
-        @post('/greeting')
-        @param.formData.string('name')
+        @get('/greet')
+        @param.header.string('name')
         greet(name: string) {}
       }
 
       const actualSpec = getControllerSpec(MyController);
 
-      expect(actualSpec.paths['/greeting']['post'].parameters).to.eql([
+      expect(actualSpec.paths['/greet']['get'].parameters).to.eql([
         {
           name: 'name',
           type: 'string',
-          in: 'formData',
+          in: 'header',
         },
       ]);
     });
   });
 
-  describe('@param.formData.number', () => {
-    it('defines a parameter with in:formData type:number', () => {
+  describe('@param.header.number', () => {
+    it('defines a parameter with in:header type:number', () => {
       class MyController {
-        @post('/greeting')
-        @param.formData.number('name')
+        @get('/greet')
+        @param.header.number('name')
         greet(name: string) {}
       }
 
       const actualSpec = getControllerSpec(MyController);
 
-      expect(actualSpec.paths['/greeting']['post'].parameters).to.eql([
+      expect(actualSpec.paths['/greet']['get'].parameters).to.eql([
         {
           name: 'name',
           type: 'number',
-          in: 'formData',
+          in: 'header',
         },
       ]);
     });
   });
 
-  describe('@param.formData.integer', () => {
-    it('defines a parameter with in:formData type:integer', () => {
+  describe('@param.header.integer', () => {
+    it('defines a parameter with in:header type:integer', () => {
       class MyController {
-        @post('/greeting')
-        @param.formData.integer('name')
+        @get('/greet')
+        @param.header.integer('name')
         greet(name: string) {}
       }
 
       const actualSpec = getControllerSpec(MyController);
 
-      expect(actualSpec.paths['/greeting']['post'].parameters).to.eql([
+      expect(actualSpec.paths['/greet']['get'].parameters).to.eql([
         {
           name: 'name',
           type: 'integer',
-          in: 'formData',
+          in: 'header',
         },
       ]);
     });
   });
 
-  describe('@param.formData.boolean', () => {
-    it('defines a parameter with in:formData type:boolean', () => {
+  describe('@param.header.boolean', () => {
+    it('defines a parameter with in:header type:boolean', () => {
       class MyController {
-        @post('/greeting')
-        @param.formData.boolean('name')
+        @get('/greet')
+        @param.header.boolean('name')
         greet(name: string) {}
       }
 
       const actualSpec = getControllerSpec(MyController);
 
-      expect(actualSpec.paths['/greeting']['post'].parameters).to.eql([
+      expect(actualSpec.paths['/greet']['get'].parameters).to.eql([
         {
           name: 'name',
           type: 'boolean',
-          in: 'formData',
+          in: 'header',
         },
       ]);
     });

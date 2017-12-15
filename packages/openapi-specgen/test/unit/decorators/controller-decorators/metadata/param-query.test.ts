@@ -3,85 +3,85 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {get, param, getControllerSpec} from '../../../..';
+import {get, param, getControllerSpec} from '../../../../..';
 import {expect} from '@loopback/testlab';
 
 describe('Routing metadata for parameters', () => {
-  describe('@param.path.string', () => {
-    it('defines a parameter with in:path type:string', () => {
+  describe('@param.query.string', () => {
+    it('defines a parameter with in:query type:string', () => {
       class MyController {
-        @get('/greet/{name}')
-        @param.path.string('name')
+        @get('/greet')
+        @param.query.string('name')
         greet(name: string) {}
       }
 
       const actualSpec = getControllerSpec(MyController);
 
-      expect(actualSpec.paths['/greet/{name}']['get'].parameters).to.eql([
+      expect(actualSpec.paths['/greet']['get'].parameters).to.eql([
         {
           name: 'name',
           type: 'string',
-          in: 'path',
+          in: 'query',
         },
       ]);
     });
   });
 
-  describe('@param.path.number', () => {
-    it('defines a parameter with in:path type:number', () => {
+  describe('@param.query.number', () => {
+    it('defines a parameter with in:query type:number', () => {
       class MyController {
-        @get('/greet/{name}')
-        @param.path.number('name')
+        @get('/greet')
+        @param.query.number('name')
         greet(name: string) {}
       }
 
       const actualSpec = getControllerSpec(MyController);
 
-      expect(actualSpec.paths['/greet/{name}']['get'].parameters).to.eql([
+      expect(actualSpec.paths['/greet']['get'].parameters).to.eql([
         {
           name: 'name',
           type: 'number',
-          in: 'path',
+          in: 'query',
         },
       ]);
     });
   });
 
-  describe('@param.path.integer', () => {
-    it('defines a parameter with in:path type:integer', () => {
+  describe('@param.query.integer', () => {
+    it('defines a parameter with in:query type:integer', () => {
       class MyController {
-        @get('/greet/{name}')
-        @param.path.integer('name')
+        @get('/greet')
+        @param.query.integer('name')
         greet(name: string) {}
       }
 
       const actualSpec = getControllerSpec(MyController);
 
-      expect(actualSpec.paths['/greet/{name}']['get'].parameters).to.eql([
+      expect(actualSpec.paths['/greet']['get'].parameters).to.eql([
         {
           name: 'name',
           type: 'integer',
-          in: 'path',
+          in: 'query',
         },
       ]);
     });
   });
 
-  describe('@param.path.boolean', () => {
-    it('defines a parameter with in:path type:boolean', () => {
+  describe('@param.query.boolean', () => {
+    it('defines a parameter with in:query type:boolean', () => {
       class MyController {
-        @get('/greet/{name}')
-        @param.path.boolean('name')
+        @get('/greet')
+        @param.query.boolean('name')
         greet(name: string) {}
       }
 
       const actualSpec = getControllerSpec(MyController);
 
-      expect(actualSpec.paths['/greet/{name}']['get'].parameters).to.eql([
+      expect(actualSpec.paths['/greet']['get'].parameters).to.eql([
         {
           name: 'name',
           type: 'boolean',
-          in: 'path',
+          in: 'query',
         },
       ]);
     });
