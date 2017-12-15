@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-codehub",
-  "version": "4.0.0-alpha.19",
+  "version": "4.0.0-alpha.20",
   "description": "",
   "engines": {
     "node": ">=6"
@@ -15,8 +15,8 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
-    "@loopback/core": "^4.0.0-alpha.24",
-    "@loopback/rest": "^4.0.0-alpha.13"
+    "@loopback/core": "^4.0.0-alpha.25",
+    "@loopback/rest": "^4.0.0-alpha.14"
   },
   "devDependencies": {
     "@loopback/testlab": "^4.0.0-alpha.16",

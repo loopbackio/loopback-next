@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.19"></a>
+# [4.0.0-alpha.19](https://github.com/strongloop/loopback-next/compare/@loopback/repository@4.0.0-alpha.18...@loopback/repository@4.0.0-alpha.19) (2017-12-15)
+
+
+### Features
+
+* **repository:** Add builders and execute() ([89eaf5f](https://github.com/strongloop/loopback-next/commit/89eaf5f))
+* Add metadata inspector ([c683019](https://github.com/strongloop/loopback-next/commit/c683019))
+* Use decorator factories ([88ebd21](https://github.com/strongloop/loopback-next/commit/88ebd21))
+
+
+
+
 <a name="4.0.0-alpha.18"></a>
 # [4.0.0-alpha.18](https://github.com/strongloop/loopback-next/compare/@loopback/repository@4.0.0-alpha.17...@loopback/repository@4.0.0-alpha.18) (2017-12-11)
 

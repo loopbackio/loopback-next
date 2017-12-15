@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.21"></a>
+# [4.0.0-alpha.21](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.0.0-alpha.20...@loopback/authentication@4.0.0-alpha.21) (2017-12-15)
+
+
+### Bug Fixes
+
+* **authentication:** fix misleading example ([#794](https://github.com/strongloop/loopback-next/issues/794)) ([3a6057b](https://github.com/strongloop/loopback-next/commit/3a6057b))
+
+
+### Features
+
+* Add metadata inspector ([c683019](https://github.com/strongloop/loopback-next/commit/c683019))
+
+
+
+
 <a name="4.0.0-alpha.20"></a>
 # [4.0.0-alpha.20](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.0.0-alpha.19...@loopback/authentication@4.0.0-alpha.20) (2017-12-11)
 

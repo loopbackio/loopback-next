@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.23"></a>
+# [4.0.0-alpha.23](https://github.com/strongloop/loopback-next/compare/@loopback/context@4.0.0-alpha.22...@loopback/context@4.0.0-alpha.23) (2017-12-15)
+
+
+### Bug Fixes
+
+* Improve test coverage for metadata inspector ([3b4b552](https://github.com/strongloop/loopback-next/commit/3b4b552))
+
+
+### Features
+
+* **context:** Add decorator factories ([f517570](https://github.com/strongloop/loopback-next/commit/f517570))
+* Add metadata inspector ([c683019](https://github.com/strongloop/loopback-next/commit/c683019))
+* Use decorator factories ([88ebd21](https://github.com/strongloop/loopback-next/commit/88ebd21))
+
+
+
+
 <a name="4.0.0-alpha.22"></a>
 # [4.0.0-alpha.22](https://github.com/strongloop/loopback-next/compare/@loopback/context@4.0.0-alpha.21...@loopback/context@4.0.0-alpha.22) (2017-12-11)
 
