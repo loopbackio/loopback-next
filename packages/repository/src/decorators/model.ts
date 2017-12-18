@@ -9,8 +9,11 @@ import {
   PropertyDecoratorFactory,
   MetadataMap,
 } from '@loopback/context';
-import {ModelDefinition, ModelDefinitionSyntax} from '../model';
-import {PropertyDefinition} from '../index';
+import {
+  ModelDefinition,
+  ModelDefinitionSyntax,
+  PropertyDefinition,
+} from '../model';
 
 export const MODEL_KEY = 'loopback:model';
 export const MODEL_PROPERTIES_KEY = 'loopback:model-properties';
@@ -72,4 +75,36 @@ export function property(definition?: Partial<PropertyDefinition>) {
     MODEL_PROPERTIES_KEY,
     Object.assign({}, definition),
   );
+}
+
+export namespace property {
+  export const ERR_PROP_NOT_ARRAY =
+    '@property.array can only decorate array properties!';
+
+  /**
+   *
+   * @param itemType The class of the array to decorate
+   * @param definition Optional PropertyDefinition object for additional
+   * metadata
+   */
+  export const array = function(
+    itemType: Function,
+    definition?: Partial<PropertyDefinition>,
+  ) {
+    return function(target: Object, propertyName: string) {
+      const propType = MetadataInspector.getDesignTypeForProperty(
+        target,
+        propertyName,
+      );
+      if (propType !== Array) {
+        throw new Error(ERR_PROP_NOT_ARRAY);
+      } else {
+        property(
+          Object.assign({array: true}, definition, {
+            type: itemType,
+          }),
+        )(target, propertyName);
+      }
+    };
+  };
 }
