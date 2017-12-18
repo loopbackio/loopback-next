@@ -51,6 +51,15 @@ describe('model decorator', () => {
 
   interface ICustomer {}
 
+  @model()
+  class Product extends Entity {
+    @property() id: string;
+
+    @property() name: string;
+
+    @property() price: number;
+  }
+
   @model({name: 'order'})
   class Order extends Entity {
     @property({
@@ -70,6 +79,8 @@ describe('model decorator', () => {
 
     // Validates that property no longer requires a parameter
     @property() isShipped: boolean;
+
+    @property.array(Product) items: Product[];
   }
 
   @model()
@@ -116,6 +127,7 @@ describe('model decorator', () => {
     });
     expect(meta.id).to.eql({type: 'string', id: true, generated: true});
     expect(meta.isShipped).to.eql({type: Boolean});
+    expect(meta.items).to.eql({type: Product, array: true});
   });
 
   it('adds embedsOne metadata', () => {
@@ -205,5 +217,18 @@ describe('model decorator', () => {
     expect(meta.recentOrders).to.eql({
       type: RelationType.hasMany,
     });
+  });
+
+  it('throws when @property.array is used on a non-array property', () => {
+    expect.throws(
+      () => {
+        // tslint:disable-next-line:no-unused-variable
+        class Oops {
+          @property.array(Product) product: Product;
+        }
+      },
+      Error,
+      property.ERR_PROP_NOT_ARRAY,
+    );
   });
 });
