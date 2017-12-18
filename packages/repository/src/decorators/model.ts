@@ -67,9 +67,9 @@ export function model(definition?: ModelDefinitionSyntax) {
  * @param definition
  * @returns {(target:any, key:string)}
  */
-export function property(definition: Partial<PropertyDefinition>) {
+export function property(definition?: Partial<PropertyDefinition>) {
   return PropertyDecoratorFactory.createDecorator(
     MODEL_PROPERTIES_KEY,
-    definition,
+    Object.assign({}, definition),
   );
 }
