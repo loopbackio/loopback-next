@@ -590,6 +590,8 @@ describe('Inspector for design time metadata', () => {
 
     @propertyDecorator() myType: MyClass;
 
+    @propertyDecorator() myArray: string[];
+
     @methodDecorator()
     myMethod(x: string, y: number): boolean {
       return false;
@@ -609,6 +611,16 @@ describe('Inspector for design time metadata', () => {
       'myProp',
     );
     expect(meta).to.eql(String);
+  });
+
+  it('inspects design time type for properties with array type', () => {
+    const meta = MetadataInspector.getDesignTypeForProperty(
+      MyController.prototype,
+      'myArray',
+    );
+    // Unfortunately, we cannot access `string[]` as the item type of an array
+    // is not emitted by TypeScript
+    expect(meta).to.eql(Array);
   });
 
   it('inspects design time type for properties with class type', () => {
