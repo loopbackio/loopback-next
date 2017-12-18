@@ -67,6 +67,9 @@ describe('model decorator', () => {
     @belongsTo({target: 'Customer'})
     // TypeScript does not allow me to reference Customer here
     customer: ICustomer;
+
+    // Validates that property no longer requires a parameter
+    @property() isShipped: boolean;
   }
 
   @model()
@@ -112,6 +115,7 @@ describe('model decorator', () => {
       },
     });
     expect(meta.id).to.eql({type: 'string', id: true, generated: true});
+    expect(meta.isShipped).to.eql({type: Boolean});
   });
 
   it('adds embedsOne metadata', () => {
