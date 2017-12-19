@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {get, param, getControllerSpec, operation} from '../../../..';
+import {get, param, getControllerSpec, operation, patch} from '../../../..';
 import {
   OperationObject,
   ParameterObject,
@@ -11,6 +11,7 @@ import {
 } from '@loopback/openapi-spec';
 import {expect} from '@loopback/testlab';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
+import * as stream from 'stream';
 
 describe('Routing metadata for parameters', () => {
   describe('@param', () => {
@@ -32,6 +33,238 @@ describe('Routing metadata for parameters', () => {
       const expectedSpec = anOperationSpec()
         .withOperationName('greet')
         .withParameter(paramSpec)
+        .build();
+
+      expect(actualSpec.paths['/greet']['get']).to.eql(expectedSpec);
+    });
+
+    it('infers non-body parameter type', () => {
+      class MyController {
+        @patch('/update/{id}')
+        update(
+          @param({
+            name: 'id',
+            in: 'path',
+          })
+          id: string,
+          @param({
+            name: 'name',
+            in: 'query',
+          })
+          name: string,
+          @param({
+            name: 'age',
+            in: 'query',
+          })
+          age: number,
+          @param({
+            name: 'vip',
+            in: 'query',
+          })
+          vip: boolean,
+          @param.array('tags', 'query', {type: 'string'})
+          tags: string[],
+          @param({
+            name: 'picture',
+            in: 'body',
+          })
+          picture: stream.Readable,
+        ) {}
+      }
+
+      const actualSpec = getControllerSpec(MyController);
+
+      const expectedSpec = anOperationSpec()
+        .withOperationName('update')
+        .withParameter({
+          name: 'id',
+          type: 'string',
+          in: 'path',
+        })
+        .withParameter({
+          name: 'name',
+          type: 'string',
+          in: 'query',
+        })
+        .withParameter({
+          name: 'age',
+          type: 'number',
+          in: 'query',
+        })
+        .withParameter({
+          name: 'vip',
+          type: 'boolean',
+          in: 'query',
+        })
+        .withParameter({
+          name: 'tags',
+          type: 'array',
+          items: {
+            type: 'string',
+          },
+          in: 'query',
+        })
+        .withParameter({
+          name: 'picture',
+          schema: {
+            type: 'file',
+          },
+          in: 'body',
+        })
+        .build();
+
+      expect(actualSpec.paths['/update/{id}']['patch']).to.eql(expectedSpec);
+    });
+
+    it('infers array non-body parameter type', () => {
+      class MyController {
+        @get('/greet')
+        greet(
+          @param.array('names', 'query', 'string')
+          names: string[],
+        ) {}
+      }
+
+      const actualSpec = getControllerSpec(MyController);
+
+      const expectedSpec = anOperationSpec()
+        .withOperationName('greet')
+        .withParameter({
+          name: 'names',
+          type: 'array',
+          items: {
+            type: 'string',
+          },
+          in: 'query',
+        })
+        .build();
+
+      expect(actualSpec.paths['/greet']['get']).to.eql(expectedSpec);
+    });
+
+    it('infers array non-body parameter type without explict type', () => {
+      class MyController {
+        @get('/greet')
+        greet(
+          @param({name: 'names', in: 'query', items: {type: 'string'}})
+          names: string[],
+        ) {}
+      }
+
+      const actualSpec = getControllerSpec(MyController);
+
+      const expectedSpec = anOperationSpec()
+        .withOperationName('greet')
+        .withParameter({
+          name: 'names',
+          type: 'array',
+          items: {
+            type: 'string',
+          },
+          in: 'query',
+        })
+        .build();
+
+      expect(actualSpec.paths['/greet']['get']).to.eql(expectedSpec);
+    });
+
+    it('reports error if an array parameter type is not Array', () => {
+      expect.throws(
+        () => {
+          // tslint:disable-next-line:no-unused-variable
+          class MyController {
+            @get('/greet')
+            greet(
+              @param.array('names', 'query', 'string')
+              names: string,
+            ) {}
+          }
+        },
+        Error,
+        `The parameter type is set to 'array' but the JavaScript type is String`,
+      );
+    });
+
+    it('infers array parameter type with `any`', () => {
+      class MyController {
+        @get('/greet')
+        greet(
+          @param.array('names', 'query', 'string')
+          names: /* tslint:disable-next-line:no-any */
+          any,
+        ) {}
+      }
+
+      const actualSpec = getControllerSpec(MyController);
+
+      const expectedSpec = anOperationSpec()
+        .withOperationName('greet')
+        .withParameter({
+          name: 'names',
+          type: 'array',
+          items: {
+            type: 'string',
+          },
+          in: 'query',
+        })
+        .build();
+
+      expect(actualSpec.paths['/greet']['get']).to.eql(expectedSpec);
+    });
+
+    it('infers simple body parameter type', () => {
+      const paramSpec: ParameterObject = {
+        name: 'name',
+        in: 'body',
+      };
+
+      class MyController {
+        @get('/greet')
+        greet(@param(paramSpec) name: string) {}
+      }
+
+      const actualSpec = getControllerSpec(MyController);
+
+      const expectedSpec = anOperationSpec()
+        .withOperationName('greet')
+        .withParameter({
+          name: 'name',
+          schema: {
+            type: 'string',
+          },
+          in: 'body',
+        })
+        .build();
+
+      expect(actualSpec.paths['/greet']['get']).to.eql(expectedSpec);
+    });
+
+    it('infers complex body parameter type', () => {
+      const paramSpec: ParameterObject = {
+        name: 'name',
+        in: 'body',
+      };
+
+      class MyBody {
+        name: string;
+      }
+
+      class MyController {
+        @get('/greet')
+        greet(@param(paramSpec) name: MyBody) {}
+      }
+
+      const actualSpec = getControllerSpec(MyController);
+
+      const expectedSpec = anOperationSpec()
+        .withOperationName('greet')
+        .withParameter({
+          name: 'name',
+          schema: {
+            $ref: '#/definitions/MyBody',
+          },
+          in: 'body',
+        })
         .build();
 
       expect(actualSpec.paths['/greet']['get']).to.eql(expectedSpec);

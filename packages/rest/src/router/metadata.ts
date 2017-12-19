@@ -19,7 +19,10 @@ import {
   SchemaObject,
   ParameterType,
   PathsObject,
+  ItemType,
+  ItemsObject,
 } from '@loopback/openapi-spec';
+import {Stream} from 'stream';
 
 const debug = require('debug')('loopback:rest:router:metadata');
 
@@ -143,6 +146,10 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     }
     debug('  parameters for method %s: %j', op, params);
     if (params != null) {
+      const bodyParams = params.filter(p => p && p.in === 'body');
+      if (bodyParams.length > 1) {
+        throw new Error('More than one body parameters found: ' + bodyParams);
+      }
       params = DecoratorFactory.cloneDeep(params);
       operationSpec.parameters = params;
     }
@@ -262,6 +269,65 @@ export function operation(verb: string, path: string, spec?: OperationObject) {
 const paramDecoratorStyle = Symbol('ParamDecoratorStyle');
 
 /**
+ * Check if the given type is `stream.Readable` or a subclasses of
+ * `stream.Readable`
+ * @param type JavaScript type function
+ */
+function isReadableStream(type: Object): boolean {
+  if (typeof type !== 'function') return false;
+  if (type === Stream.Readable) return true;
+  return isReadableStream(Object.getPrototypeOf(type));
+}
+
+/**
+ * Get openapi type name for a JavaScript type
+ * @param type JavaScript type
+ */
+function getTypeForNonBodyParam(type: Function): ParameterType {
+  if (type === String) {
+    return 'string';
+  } else if (type === Number) {
+    return 'number';
+  } else if (type === Boolean) {
+    return 'boolean';
+  } else if (type === Array) {
+    return 'array';
+  } else if (isReadableStream(type)) {
+    return 'file';
+  }
+  return 'string';
+}
+
+/**
+ * Get openapi schema for a JavaScript type for a body parameter
+ * @param type JavaScript type
+ */
+function getSchemaForBodyParam(type: Function): SchemaObject {
+  const schema: SchemaObject = {};
+  let typeName;
+  if (type === String) {
+    typeName = 'string';
+  } else if (type === Number) {
+    typeName = 'number';
+  } else if (type === Boolean) {
+    typeName = 'boolean';
+  } else if (type === Array) {
+    // item type cannot be inspected
+    typeName = 'array';
+  } else if (isReadableStream(type)) {
+    typeName = 'file';
+  } else if (type === Object) {
+    typeName = 'object';
+  }
+  if (typeName) {
+    schema.type = typeName;
+  } else {
+    schema.$ref = '#/definitions/' + type.name;
+  }
+  return schema;
+}
+
+/**
  * Describe an input parameter of a Controller method.
  *
  * `@param` can be applied to method itself or specific parameters. For example,
@@ -293,6 +359,11 @@ export function param(paramSpec: ParameterObject) {
     member: string | symbol,
     descriptorOrIndex: TypedPropertyDescriptor<any> | number,
   ) {
+    paramSpec = paramSpec || {};
+    // Get the design time method parameter metadata
+    const methodSig = MetadataInspector.getDesignTypeForMethod(target, member);
+    const paramTypes = (methodSig && methodSig.parameterTypes) || [];
+
     const targetWithParamStyle = target as any;
     if (typeof descriptorOrIndex === 'number') {
       if (targetWithParamStyle[paramDecoratorStyle] === 'method') {
@@ -303,6 +374,36 @@ export function param(paramSpec: ParameterObject) {
           'Mixed usage of @param at method/parameter level' +
             ' is not allowed.',
         );
+      }
+      // Map design-time parameter type to the OpenAPI param type
+
+      let paramType = paramTypes[descriptorOrIndex];
+      if (paramType) {
+        if (paramSpec.in !== 'body') {
+          if (!paramSpec.type) {
+            paramSpec.type = getTypeForNonBodyParam(paramType);
+          }
+        } else {
+          paramSpec.schema = Object.assign(
+            getSchemaForBodyParam(paramType),
+            paramSpec.schema,
+          );
+        }
+      }
+
+      if (
+        paramSpec.type === 'array' ||
+        (paramSpec.schema && paramSpec.schema.type === 'array')
+      ) {
+        paramType = paramTypes[descriptorOrIndex];
+        // The design-time type is `Object` for `any`
+        if (paramType != null && paramType !== Object && paramType !== Array) {
+          throw new Error(
+            `The parameter type is set to 'array' but the JavaScript type is ${
+              paramType.name
+            }`,
+          );
+        }
       }
       targetWithParamStyle[paramDecoratorStyle] = 'parameter';
       ParameterDecoratorFactory.createDecorator<ParameterObject>(
@@ -468,8 +569,37 @@ export namespace param {
    * @param name Parameter name
    * @param schema The schema defining the type used for the body parameter.
    */
-  export const body = function(name: string, schema: SchemaObject) {
+  export const body = function(name: string, schema?: SchemaObject) {
     return param({name, in: 'body', schema});
+  };
+
+  /**
+   * Define a parameter of `array` type
+   *
+   * @example
+   * ```ts
+   * export class MyController {
+   *   @get('/greet')
+   *   greet(@param.array('names', 'query', 'string') names: string[]): string {
+   *     return `Hello, ${names}`;
+   *   }
+   * }
+   * ```
+   * @param name Parameter name
+   * @param source Source of the parameter value
+   * @param itemSpec Item type for the array or the full item object
+   */
+  export const array = function(
+    name: string,
+    source: ParameterLocation,
+    itemSpec: ItemType | ItemsObject,
+  ) {
+    const items = typeof itemSpec === 'string' ? {type: itemSpec} : itemSpec;
+    if (source !== 'body') {
+      return param({name, in: source, type: 'array', items});
+    } else {
+      return param({name, in: source, schema: {type: 'array', items}});
+    }
   };
 }
 
