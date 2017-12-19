@@ -22,9 +22,18 @@ export interface MetadataMap<T> {
  */
 export interface DecoratorOptions {
   /**
-   * Inheritance will be honored
+   * Controls if inherited metadata will be honored. Default to `true`.
    */
-  allowsInheritance?: boolean;
+  allowInheritance?: boolean;
+  /**
+   * Controls if the value of `spec` argument will be cloned. Sometimes we
+   * use shared spec for the decoration, but the decorator function might need
+   * to mutate the object. Cloning the input spec makes it safe to use the same
+   * spec (`template`) to decorate different members.
+   *
+   * Default to `true`.
+   */
+  cloneInputSpec?: boolean;
   [name: string]: any;
 }
 
@@ -81,11 +90,17 @@ export class DecoratorFactory<
     protected spec: T,
     protected options?: DecoratorOptions,
   ) {
-    this.options = Object.assign({allowInheritance: true}, options);
+    this.options = Object.assign(
+      {allowInheritance: true, cloneInputSpec: true},
+      options,
+    );
+    if (this.options.cloneInputSpec) {
+      this.spec = DecoratorFactory.cloneDeep(spec);
+    }
   }
 
   protected allowInheritance(): boolean {
-    return this.options && this.options.allowInheritance;
+    return !!(this.options && this.options.allowInheritance);
   }
 
   /**
@@ -291,9 +306,7 @@ export class DecoratorFactory<
   }
 
   static cloneDeep<T>(val: T): T {
-    if (val === undefined) {
-      return {} as T;
-    }
+    if (typeof val !== 'object') return val;
     return _.cloneDeepWith(val, v => {
       // Do not clone functions
       if (typeof v === 'function') return v;
@@ -363,6 +376,7 @@ export class PropertyDecoratorFactory<T> extends DecoratorFactory<
     propertyName?: string | symbol,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ) {
+    inheritedMetadata = inheritedMetadata || {};
     const propertyMeta: T = this.withTarget(
       <T>this.inherit(inheritedMetadata[propertyName!]),
       target,
@@ -377,7 +391,7 @@ export class PropertyDecoratorFactory<T> extends DecoratorFactory<
     propertyName?: string | symbol,
     descriptorOrParameterIndex?: TypedPropertyDescriptor<any> | number,
   ) {
-    if (ownMetadata == null) ownMetadata = {};
+    ownMetadata = ownMetadata || {};
     if (ownMetadata[propertyName!] != null) {
       const targetName = this.getTargetName(target, propertyName);
       throw new Error(
@@ -422,6 +436,7 @@ export class MethodDecoratorFactory<T> extends DecoratorFactory<
     methodName?: string | symbol,
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
   ) {
+    inheritedMetadata = inheritedMetadata || {};
     const methodMeta = this.withTarget(
       <T>this.inherit(inheritedMetadata[methodName!]),
       target,
@@ -436,7 +451,7 @@ export class MethodDecoratorFactory<T> extends DecoratorFactory<
     methodName?: string | symbol,
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
   ) {
-    if (ownMetadata == null) ownMetadata = {};
+    ownMetadata = ownMetadata || {};
     const methodMeta = ownMetadata[methodName!];
     if (this.getTarget(methodMeta) === target) {
       throw new Error(
@@ -503,6 +518,7 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
     methodName?: string | symbol,
     parameterIndex?: TypedPropertyDescriptor<any> | number,
   ) {
+    inheritedMetadata = inheritedMetadata || {};
     const methodMeta = this.getOrInitMetadata(
       inheritedMetadata,
       target,
@@ -522,7 +538,7 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
     methodName?: string | symbol,
     parameterIndex?: TypedPropertyDescriptor<any> | number,
   ) {
-    if (ownMetadata == null) ownMetadata = {};
+    ownMetadata = ownMetadata || {};
     // Find the method metadata
     const methodMeta = this.getOrInitMetadata(ownMetadata, target, methodName);
     const index = parameterIndex as number;
@@ -594,7 +610,7 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
     methodName?: string | symbol,
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
   ) {
-    if (ownMetadata == null) ownMetadata = {};
+    ownMetadata = ownMetadata || {};
     let params = ownMetadata[methodName!];
     params = [this.spec].concat(params);
     ownMetadata[methodName!] = params;

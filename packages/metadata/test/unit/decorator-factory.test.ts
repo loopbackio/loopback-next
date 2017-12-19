@@ -23,7 +23,8 @@ describe('ClassDecoratorFactory', () => {
     return ClassDecoratorFactory.createDecorator('test', spec);
   }
 
-  @classDecorator({x: 1})
+  const xSpec = {x: 1};
+  @classDecorator(xSpec)
   class BaseController {}
 
   @classDecorator({y: 2})
@@ -31,13 +32,17 @@ describe('ClassDecoratorFactory', () => {
 
   it('applies metadata to a class', () => {
     const meta = Reflector.getOwnMetadata('test', BaseController);
-    expect(meta).to.eql({x: 1});
+    expect(meta).to.eql(xSpec);
+    // By default, the input spec is cloned
+    expect(meta).to.not.exactly(xSpec);
     expect(meta[DecoratorFactory.TARGET]).to.equal(BaseController);
   });
 
   it('merges with base class metadata', () => {
     const meta = Reflector.getOwnMetadata('test', SubController);
     expect(meta).to.eql({x: 1, y: 2});
+    // The subclass spec should not the same instance as the input spec
+    expect(meta).to.not.exactly(xSpec);
     expect(meta[DecoratorFactory.TARGET]).to.equal(SubController);
   });
 
@@ -126,6 +131,28 @@ describe('ClassDecoratorFactory without inheritance', () => {
   it('does not mutate base class metadata', () => {
     const meta = Reflector.getOwnMetadata('test', BaseController);
     expect(meta).to.eql({x: 1});
+  });
+});
+
+describe('ClassDecoratorFactory with cloneInputSpec set to false', () => {
+  /**
+   * Define `@classDecorator(spec)`
+   * @param spec
+   */
+  function classDecorator(spec: object): ClassDecorator {
+    return ClassDecoratorFactory.createDecorator('test', spec, {
+      cloneInputSpec: false,
+    });
+  }
+
+  const mySpec = {x: 1};
+  @classDecorator(mySpec)
+  class BaseController {}
+
+  it('clones input spec', () => {
+    const meta = Reflector.getOwnMetadata('test', BaseController);
+    expect(meta).to.exactly(mySpec);
+    expect(meta).to.eql(mySpec);
   });
 });
 
