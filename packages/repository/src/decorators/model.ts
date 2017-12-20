@@ -17,6 +17,7 @@ import {
 
 export const MODEL_KEY = 'loopback:model';
 export const MODEL_PROPERTIES_KEY = 'loopback:model-properties';
+export const MODEL_WITH_PROPERTIES_KEY = 'loopback:model-and-properties';
 
 type PropertyMap = MetadataMap<PropertyDefinition>;
 
