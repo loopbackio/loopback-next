@@ -12,7 +12,7 @@
     "build:dist": "lb-tsc es2017",
     "build:dist6": "lb-tsc es2015",
     "build:apidocs": "lb-apidocs",
-    "clean": "rm -rf loopback-rest*.tgz dist* package",
+    "clean": "lb-clean loopback-rest*.tgz dist dist6 package api-docs",
     "prepare": "npm run build && npm run build:apidocs",
     "pretest": "npm run build:current",
     "integration": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/integration/**/*.js'",

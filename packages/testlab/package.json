@@ -10,7 +10,7 @@
     "build:current": "lb-tsc",
     "build:dist": "lb-tsc es2017",
     "build:dist6": "lb-tsc es2015",
-    "clean": "rm -rf loopback-testlab*.tgz dist* package",
+    "clean": "lb-clean loopback-testlab*.tgz dist dist6 package api-docs",
     "prepare": "npm run build",
     "pretest": "npm run build:current",
     "test": "lb-dist mocha --recursive DIST/test",
