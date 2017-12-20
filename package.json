@@ -11,19 +11,15 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "@commitlint/cli": "^4.3.0",
-    "@commitlint/config-angular": "^4.3.0",
-    "@commitlint/config-lerna-scopes": "^4.3.0",
+    "@commitlint/cli": "^5.2.5",
+    "@commitlint/config-angular": "^5.1.1",
+    "@commitlint/config-lerna-scopes": "^5.2.0",
     "@types/mocha": "^2.2.44",
     "@types/node": "^8.0.56",
-    "@types/request": "^2.0.7",
-    "@types/request-promise": "^4.1.39",
     "coveralls": "^3.0.0",
     "cz-conventional-changelog": "^2.1.0",
     "lerna": "^2.5.1",
-    "mocha": "^4.0.0",
-    "request": "^2.83.0",
-    "request-promise": "^4.2.2"
+    "mocha": "^4.0.0"
   },
   "scripts": {
     "bootstrap": "npm i && lerna bootstrap",
