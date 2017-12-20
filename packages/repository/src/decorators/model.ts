@@ -27,12 +27,12 @@ type PropertyMap = MetadataMap<PropertyDefinition>;
  * @param definition
  * @returns {(target:any)}
  */
-export function model(definition?: ModelDefinitionSyntax) {
+export function model(definition?: Partial<ModelDefinitionSyntax>) {
   return function(target: Function & {definition?: ModelDefinition}) {
-    if (!definition) {
-      definition = {name: target.name};
-    }
-
+    definition = definition || {};
+    const def: ModelDefinitionSyntax = Object.assign(definition, {
+      name: definition.name || target.name,
+    });
     const decorator = ClassDecoratorFactory.createDecorator(
       MODEL_KEY,
       definition,
@@ -41,7 +41,7 @@ export function model(definition?: ModelDefinitionSyntax) {
     decorator(target);
 
     // Build "ModelDefinition" and store it on model constructor
-    const modelDef = new ModelDefinition(definition);
+    const modelDef = new ModelDefinition(def);
 
     const propertyMap: PropertyMap =
       MetadataInspector.getAllPropertyMetadata(

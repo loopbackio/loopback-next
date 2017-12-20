@@ -36,6 +36,22 @@ describe('model decorator', () => {
     number: string;
   }
 
+  @model({
+    properties: {
+      id: {
+        type: 'number',
+        required: true,
+      },
+    },
+  })
+  class Receipt extends Entity {
+    id: number;
+    customerId: number;
+    orderId: number;
+    subtotal: number;
+    tax: number;
+  }
+
   @model()
   class Account extends Entity {
     id: string;
@@ -111,6 +127,29 @@ describe('model decorator', () => {
   it('adds model metadata', () => {
     const meta = MetadataInspector.getClassMetadata(MODEL_KEY, Order);
     expect(meta).to.eql({name: 'order'});
+  });
+
+  it('adds model metadata without name', () => {
+    const meta = MetadataInspector.getClassMetadata(MODEL_KEY, Receipt);
+    expect(meta).to.eql({
+      name: 'Receipt',
+      properties: {
+        id: {
+          type: 'number',
+          required: true,
+        },
+      },
+    });
+  });
+
+  it('adds model metadata with custom name', () => {
+    @model({name: 'foo'})
+    class Doohickey {
+      name: string;
+    }
+
+    const meta = MetadataInspector.getClassMetadata(MODEL_KEY, Doohickey);
+    expect(meta).to.eql({name: 'foo'});
   });
 
   it('adds property metadata', () => {
