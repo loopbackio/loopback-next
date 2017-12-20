@@ -7,6 +7,7 @@ export * from './common-types';
 export * from './decorators/model';
 export * from './decorators/repository';
 export * from './decorators/relation';
+export * from './decorators/metadata';
 export * from './types';
 export * from './model';
 export * from './query';
