@@ -310,6 +310,14 @@ export class DecoratorFactory<
     return _.cloneDeepWith(val, v => {
       // Do not clone functions
       if (typeof v === 'function') return v;
+      if (
+        v &&
+        typeof v.constructor === 'function' &&
+        v.constructor.prototype === v
+      ) {
+        // Do not clone class prototype
+        return v;
+      }
       return undefined;
     });
   }
