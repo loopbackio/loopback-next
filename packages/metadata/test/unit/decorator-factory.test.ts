@@ -9,10 +9,10 @@ import {
   PropertyDecoratorFactory,
   MethodDecoratorFactory,
   ParameterDecoratorFactory,
+  MethodParameterDecoratorFactory,
   DecoratorFactory,
+  Reflector,
 } from '../..';
-
-import {Reflector} from '../../src/reflect';
 
 describe('ClassDecoratorFactory', () => {
   /**
@@ -573,6 +573,66 @@ describe('ParameterDecoratorFactory for a static method', () => {
       }
     }).to.throw(
       /Decorator cannot be applied more than once on parameter MyController\.myMethod\[0\]/,
+    );
+  });
+});
+
+describe('MethodParameterDecoratorFactory', () => {
+  /**
+   * Define `@parameterDecorator(spec)`
+   * @param spec
+   */
+  function methodParameterDecorator(spec: object): MethodDecorator {
+    return MethodParameterDecoratorFactory.createDecorator('test', spec);
+  }
+
+  class BaseController {
+    @methodParameterDecorator({x: 1}) // Will be applied to b
+    myMethod(a: string, b: number) {}
+  }
+
+  class SubController extends BaseController {
+    @methodParameterDecorator({x: 2}) // For a
+    @methodParameterDecorator({y: 2}) // For b
+    myMethod(a: string, b: number) {}
+  }
+
+  it('applies metadata to a method parameter', () => {
+    const meta = Reflector.getOwnMetadata('test', BaseController.prototype);
+    expect(meta.myMethod).to.eql([undefined, {x: 1}]);
+  });
+
+  it('merges with base method metadata', () => {
+    const meta = Reflector.getOwnMetadata('test', SubController.prototype);
+    expect(meta.myMethod).to.eql([{x: 2}, {x: 1, y: 2}]);
+  });
+
+  it('does not mutate base method parameter metadata', () => {
+    const meta = Reflector.getOwnMetadata('test', BaseController.prototype);
+    expect(meta.myMethod).to.eql([undefined, {x: 1}]);
+  });
+});
+
+describe('MethodParameterDecoratorFactory with invalid decorations', () => {
+  /**
+   * Define `@parameterDecorator(spec)`
+   * @param spec
+   */
+  function methodParameterDecorator(spec: object): MethodDecorator {
+    return MethodParameterDecoratorFactory.createDecorator('test', spec);
+  }
+
+  it('reports error if the # of decorations exceeeds the # of params', () => {
+    expect(() => {
+      // tslint:disable-next-line:no-unused-variable
+      class MyController {
+        @methodParameterDecorator({x: 1}) // Causing error
+        @methodParameterDecorator({x: 2}) // For a
+        @methodParameterDecorator({x: 3}) // For b
+        myMethod(a: string, b: number) {}
+      }
+    }).to.throw(
+      /The decorator is used more than 2 time\(s\) on method MyController\.prototype\.myMethod/,
     );
   });
 });

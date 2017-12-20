@@ -595,13 +595,63 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
   MetadataMap<T[]>,
   MethodDecorator
 > {
+  /**
+   * Find the corresponding parameter index for the decoration
+   * @param target
+   * @param methodName
+   * @param methodDescriptor
+   */
+  private getParameterIndex(
+    target: Object,
+    methodName?: string | symbol,
+    methodDescriptor?: TypedPropertyDescriptor<any> | number,
+  ) {
+    const numOfParams = this.getNumberOfParameters(target, methodName);
+    // Fetch the cached parameter index
+    let index = Reflector.getOwnMetadata(
+      this.key + ':index',
+      target,
+      methodName,
+    );
+    // Default to the last parameter
+    if (index == null) index = numOfParams - 1;
+    if (index < 0) {
+      // Excessive decorations than the number of parameters detected
+      const method = this.getTargetName(target, methodName, methodDescriptor);
+      throw new Error(
+        `The decorator is used more than ${numOfParams} time(s) on ${method}`,
+      );
+    }
+    return index;
+  }
+
   protected mergeWithInherited(
     inheritedMetadata: MetadataMap<T[]>,
     target: Object,
     methodName?: string | symbol,
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
   ) {
-    return {[methodName!]: [this.spec]};
+    inheritedMetadata = inheritedMetadata || {};
+    const index = this.getParameterIndex(target, methodName, methodDescriptor);
+
+    const inheritedParams =
+      inheritedMetadata[methodName!] || new Array(index + 1).fill(undefined);
+    if (inheritedParams.length) {
+      // First time applied to a method. This is the last parameter of the method
+      inheritedParams[index] = this.withTarget(
+        <T>this.inherit(inheritedParams[index]),
+        target,
+      );
+    }
+    // Cache the index to help us position the next parameter
+    Reflector.defineMetadata(
+      this.key + ':index',
+      index - 1,
+      target,
+      methodName,
+    );
+    inheritedMetadata[methodName!] = inheritedParams;
+    return inheritedMetadata;
   }
 
   protected mergeWithOwn(
@@ -611,9 +661,19 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
   ) {
     ownMetadata = ownMetadata || {};
-    let params = ownMetadata[methodName!];
-    params = [this.spec].concat(params);
+    const index = this.getParameterIndex(target, methodName, methodDescriptor);
+
+    let params =
+      ownMetadata[methodName!] || new Array(index + 1).fill(undefined);
+    params[index] = this.withTarget(<T>this.inherit(params[index]), target);
     ownMetadata[methodName!] = params;
+    // Cache the index to help us position the next parameter
+    Reflector.defineMetadata(
+      this.key + ':index',
+      index - 1,
+      target,
+      methodName,
+    );
     return ownMetadata;
   }
 
