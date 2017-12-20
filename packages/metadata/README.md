@@ -204,6 +204,17 @@ strongly discouraged for a few reasons:
 
 We recommend that `ParameterDecorator` be used instead.
 
+## Decorator options
+
+An object of type `DecoratorOptions` can be passed in to create decorator
+functions. There are two flags for the options:
+
+- allowInheritance: Controls if inherited metadata will be honored. Default to `true`.
+- cloneInputSpec: Controls if the value of `spec` argument will be cloned.
+Sometimes we use shared spec for the decoration, but the decorator function
+might need to mutate the object. Cloning the input spec makes it safe to use
+the same spec (`template`) to decorate different members. Default to `true`.
+
 ## Customize inheritance of metadata
 
 By default, the decorator factories allow inheritance with the following rules:

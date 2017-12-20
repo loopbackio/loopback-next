@@ -14,6 +14,65 @@ import {
   Reflector,
 } from '../..';
 
+describe('DecoratorFactory.cloneDeep', () => {
+  it('keeps functions/classes', () => {
+    class MyController {}
+    const val = {
+      target: MyController,
+      fn: function() {},
+      spec: {x: 1},
+    };
+    const copy = DecoratorFactory.cloneDeep(val);
+    expect(copy.target).to.be.exactly(val.target);
+    expect(copy.fn).to.be.exactly(val.fn);
+    expect(copy.spec).to.not.exactly(val.spec);
+    expect(copy).to.be.eql(val);
+  });
+
+  it('keeps class prototypes', () => {
+    class MyController {}
+    const val = {
+      target: MyController.prototype,
+      spec: {x: 1},
+    };
+    const copy = DecoratorFactory.cloneDeep(val);
+    expect(copy.target).to.be.exactly(val.target);
+    expect(copy.spec).to.not.exactly(val.spec);
+    expect(copy).to.be.eql(val);
+  });
+
+  it('clones class instances', () => {
+    class MyController {
+      constructor(public x: string) {}
+    }
+    const val = {
+      target: new MyController('A'),
+    };
+    const copy = DecoratorFactory.cloneDeep(val);
+    expect(copy.target).to.not.exactly(val.target);
+    expect(copy).to.be.eql(val);
+    expect(copy.target).to.be.instanceof(MyController);
+  });
+
+  it('clones dates', () => {
+    const val = {
+      d: new Date(),
+    };
+    const copy = DecoratorFactory.cloneDeep(val);
+    expect(copy.d).to.not.exactly(val.d);
+    expect(copy).to.be.eql(val);
+  });
+
+  it('clones regexp', () => {
+    const val = {
+      re: /Ab/,
+    };
+    const copy = DecoratorFactory.cloneDeep(val);
+    expect(copy.re).to.not.exactly(val.re);
+    expect(copy).to.be.eql(val);
+  });
+});
+
 describe('ClassDecoratorFactory', () => {
   /**
    * Define `@classDecorator(spec)`
