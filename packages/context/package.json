@@ -1,6 +1,6 @@
 {
   "name": "@loopback/context",
-  "version": "4.0.0-alpha.23",
+  "version": "4.0.0-alpha.24",
   "description": "LoopBack's container for Inversion of Control",
   "engines": {
     "node": ">=6"
@@ -22,11 +22,11 @@
   "author": "IBM",
   "license": "MIT",
   "dependencies": {
-    "@loopback/metadata": "^4.0.0-alpha.2"
+    "@loopback/metadata": "^4.0.0-alpha.3"
   },
   "devDependencies": {
     "@loopback/build": "^4.0.0-alpha.7",
-    "@loopback/testlab": "^4.0.0-alpha.16",
+    "@loopback/testlab": "^4.0.0-alpha.17",
     "@types/bluebird": "^3.5.18",
     "bluebird": "^3.5.0"
   },

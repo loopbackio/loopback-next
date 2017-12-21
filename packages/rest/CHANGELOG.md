@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.15"></a>
+# [4.0.0-alpha.15](https://github.com/strongloop/loopback-next/compare/@loopback/rest@4.0.0-alpha.14...@loopback/rest@4.0.0-alpha.15) (2017-12-21)
+
+
+### Features
+
+* **rest:** Improve decorators to infer param types ([37d881f](https://github.com/strongloop/loopback-next/commit/37d881f))
+* **rest:** Single-server RestApplication ([80638b4](https://github.com/strongloop/loopback-next/commit/80638b4))
+
+
+
+
 <a name="4.0.0-alpha.14"></a>
 # [4.0.0-alpha.14](https://github.com/strongloop/loopback-next/compare/@loopback/rest@4.0.0-alpha.13...@loopback/rest@4.0.0-alpha.14) (2017-12-15)
 

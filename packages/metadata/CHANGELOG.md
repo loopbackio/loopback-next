@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.3"></a>
+# [4.0.0-alpha.3](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@4.0.0-alpha.2...@loopback/metadata@4.0.0-alpha.3) (2017-12-21)
+
+
+### Bug Fixes
+
+* **metadata:** fix method-level parameter decorators ([c5127d4](https://github.com/strongloop/loopback-next/commit/c5127d4))
+* **metadata:** keep class prototypes untouched during clone ([195e421](https://github.com/strongloop/loopback-next/commit/195e421))
+
+
+### Features
+
+* **metadata:** Add a flag to keep args of decorators safe ([3782192](https://github.com/strongloop/loopback-next/commit/3782192))
+
+
+
+
 <a name="4.0.0-alpha.2"></a>
 # 4.0.0-alpha.2 (2017-12-15)
 
