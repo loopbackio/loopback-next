@@ -621,7 +621,10 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
     methodName?: string | symbol,
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
   ) {
-    const numOfParams = this.getNumberOfParameters(target, methodName);
+    const numOfParams = DecoratorFactory.getNumberOfParameters(
+      target,
+      methodName,
+    );
     // Fetch the cached parameter index
     let index = Reflector.getOwnMetadata(
       this.key + ':index',
@@ -632,7 +635,11 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
     if (index == null) index = numOfParams - 1;
     if (index < 0) {
       // Excessive decorations than the number of parameters detected
-      const method = this.getTargetName(target, methodName, methodDescriptor);
+      const method = DecoratorFactory.getTargetName(
+        target,
+        methodName,
+        methodDescriptor,
+      );
       throw new Error(
         `The decorator is used more than ${numOfParams} time(s) on ${method}`,
       );

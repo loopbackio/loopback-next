@@ -691,7 +691,7 @@ describe('MethodParameterDecoratorFactory with invalid decorations', () => {
         myMethod(a: string, b: number) {}
       }
     }).to.throw(
-      /The decorator is used more than 2 time\(s\) on method MyController\.prototype\.myMethod/,
+      /The decorator is used more than 2 time\(s\) on MyController\.prototype\.myMethod\(\)/,
     );
   });
 });
