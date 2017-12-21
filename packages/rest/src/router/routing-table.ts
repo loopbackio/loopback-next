@@ -60,6 +60,7 @@ export type ControllerClass = Constructor<any>;
 
 export class RoutingTable {
   private readonly _routes: RouteEntry[] = [];
+  private readonly _staticRoutes: StaticRouteEntry[] = [];
 
   registerController(controller: ControllerClass, spec: ControllerSpec) {
     assert(
@@ -127,19 +128,28 @@ export class RoutingTable {
       if (match) return match;
     }
 
+    for (const entry of this._staticRoutes) {
+      const match = entry.match(request);
+      if (match) return match as ResolvedRoute;
+    }
+
     throw new HttpErrors.NotFound(
       `Endpoint "${request.method} ${request.path}" not found.`,
     );
   }
 }
 
-export interface RouteEntry {
+export interface RouteEntry extends StaticRouteEntry {
   readonly verb: string;
-  readonly path: string;
   readonly spec: OperationObject;
 
   match(request: ParsedRequest): ResolvedRoute | undefined;
+}
 
+export interface StaticRouteEntry {
+  readonly path: string;
+
+  match(request: ParsedRequest): StaticRouteEntry | undefined;
   updateBindings(requestContext: Context): void;
   invokeHandler(
     requestContext: Context,
