@@ -273,6 +273,7 @@ export class ControllerRoute extends BaseRoute {
         {
           'x-controller-name': _controllerCtor.name,
           'x-operation-name': methodName,
+          tags: [_controllerCtor.name],
         },
         spec,
       ),

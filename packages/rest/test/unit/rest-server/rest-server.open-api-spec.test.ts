@@ -72,6 +72,27 @@ describe('RestServer.getApiSpec()', () => {
           responses: {},
           'x-controller-name': 'MyController',
           'x-operation-name': 'greet',
+          tags: ['MyController'],
+        },
+      },
+    });
+  });
+
+  it('honors tags in the operation spec', () => {
+    class MyController {
+      @get('/greet', {responses: {}, tags: ['MyTag']})
+      greet() {}
+    }
+    app.controller(MyController);
+
+    const spec = server.getApiSpec();
+    expect(spec.paths).to.eql({
+      '/greet': {
+        get: {
+          responses: {},
+          'x-controller-name': 'MyController',
+          'x-operation-name': 'greet',
+          tags: ['MyTag'],
         },
       },
     });
@@ -91,6 +112,7 @@ describe('RestServer.getApiSpec()', () => {
           responses: {},
           'x-controller-name': 'MyController',
           'x-operation-name': 'greet',
+          tags: ['MyController'],
         },
       },
     });
