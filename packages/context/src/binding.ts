@@ -3,10 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context} from './context';
-import {Constructor, instantiateClass} from './resolver';
-import {isPromise} from './is-promise';
-import {Provider} from './provider';
+import { Context } from './context';
+import { Constructor, instantiateClass } from './resolver';
+import { isPromise } from './is-promise';
+import { Provider } from './provider';
 
 // tslint:disable-next-line:no-any
 export type BoundValue = any;
@@ -106,10 +106,31 @@ export class Binding {
     if (key.includes(Binding.PROPERTY_SEPARATOR)) {
       throw new Error(
         `Binding key ${key} cannot contain` +
-          ` '${Binding.PROPERTY_SEPARATOR}'.`,
+        ` '${Binding.PROPERTY_SEPARATOR}'.`,
       );
     }
     return key;
+  }
+
+
+  /**
+   * Concat the key and path to form a valid binding key
+   * @param key The key
+   * @param path the path
+   *
+   */
+  static concatKeyAndPath(key: string, path: string) {
+    return `${key}${Binding.PROPERTY_SEPARATOR}${path}`;
+  }
+
+  /**
+   * Concat the key and path to form a valid binding key
+   * @param key The key
+   * @param path the path
+   *
+   */
+  static concatKeyAndPath(key: string, path: string) {
+    return `${key}${Binding.PROPERTY_SEPARATOR}${path}`;
   }
 
   /**
@@ -122,7 +143,7 @@ export class Binding {
   static parseKeyWithPath(keyWithPath: string) {
     const index = keyWithPath.indexOf(Binding.PROPERTY_SEPARATOR);
     if (index === -1) {
-      return {key: keyWithPath, path: undefined};
+      return { key: keyWithPath, path: undefined };
     }
 
     return {
@@ -350,7 +371,7 @@ export class Binding {
 
   toJSON(): Object {
     // tslint:disable-next-line:no-any
-    const json: {[name: string]: any} = {
+    const json: { [name: string]: any } = {
       key: this.key,
       scope: this.scope,
       tags: Array.from(this.tags),
