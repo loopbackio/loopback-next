@@ -113,6 +113,16 @@ export class Binding {
   }
 
   /**
+   * Concat the key and path to form a valid binding key
+   * @param key The key
+   * @param path the path
+   *
+   */
+  static concatKeyAndPath(key: string, path: string) {
+    return `${key}${Binding.PROPERTY_SEPARATOR}${path}`;
+  }
+
+  /**
    * Parse a string containing both the binding key and the path to the deeply
    * nested property to retrieve.
    *
