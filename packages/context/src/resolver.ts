@@ -131,7 +131,7 @@ export function resolveInjectedArguments(
       } else {
         throw new Error(
           `Cannot resolve injected arguments for function ${name}: ` +
-            `The arguments[${ix}] is decorated for dependency injection, ` +
+            `The arguments[${ix}] is not decorated for dependency injection, ` +
             `but a value is not supplied`,
         );
       }
