@@ -113,5 +113,16 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
         }
       }
     }
+
+    /**
+     * If @loopback/boot is enabled, find and mount all repositories
+     * automatically at boot time.
+     */
+    async boot() {
+      const repoDir = this.options.boot.repoDir || 'repositories';
+      const repoExt = this.options.boot.repoExt || 'repository.js';
+      await this.bootClassArtifacts(repoDir, repoExt, this.repository);
+      if (super.boot) await super.boot();
+    }
   };
 }
