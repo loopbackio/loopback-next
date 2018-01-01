@@ -1,7 +1,7 @@
 {
-  "name": "@loopback/openapi-specgen",
+  "name": "@loopback/openapi-v2",
   "version": "1.0.0-alpha1",
-  "description": "Spec gen",
+  "description": "Processes openapi v2 related metadata",
   "engines": {
     "node": ">=6"
   },
@@ -16,11 +16,11 @@
     "build:dist": "lb-tsc es2017",
     "build:dist6": "lb-tsc es2015",
     "build:apidocs": "lb-apidocs",
-    "clean": "rm -rf loopback-openapi-specgen*.tgz dist* package",
+    "clean": "rm -rf loopback-openapi-v2*.tgz dist* package",
     "prepare": "npm run build && npm run build:apidocs",
     "pretest": "npm run build:current",
     "unit": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js'",
-    "verify": "npm pack && tar xf loopback-openapi-specgen*.tgz && tree package && npm run clean"
+    "verify": "npm pack && tar xf loopback-openapi-v2*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
   "license": "MIT",

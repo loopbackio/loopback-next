@@ -6,7 +6,7 @@
 import {expect, validateApiSpec} from '@loopback/testlab';
 import {Application} from '@loopback/core';
 import {RestServer, Route, RestComponent} from '../../..';
-import {get} from '@loopback/openapi-specgen';
+import {get} from '@loopback/openapi-v2';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 
 describe('RestServer.getApiSpec()', () => {

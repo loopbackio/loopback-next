@@ -11,7 +11,7 @@ import {
   parseOperationArgs,
   RestBindings,
 } from '../..';
-import {ControllerSpec, get} from '@loopback/openapi-specgen';
+import {ControllerSpec, get} from '@loopback/openapi-v2';
 import {Context} from '@loopback/context';
 import {Client, createClientForHandler} from '@loopback/testlab';
 import * as HttpErrors from 'http-errors';

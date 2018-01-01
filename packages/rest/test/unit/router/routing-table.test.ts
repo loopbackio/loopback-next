@@ -9,7 +9,7 @@ import {
   RoutingTable,
   ControllerRoute,
 } from '../../..';
-import {getControllerSpec, param, get} from '@loopback/openapi-specgen';
+import {getControllerSpec, param, get} from '@loopback/openapi-v2';
 import {expect, ShotRequestOptions, ShotRequest} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 

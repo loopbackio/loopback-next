@@ -12,7 +12,7 @@ import {
   RestComponent,
 } from '../../..';
 
-import {api, get, param} from '@loopback/openapi-specgen';
+import {api, get, param} from '@loopback/openapi-v2';
 
 import {Application} from '@loopback/core';
 
