@@ -9,6 +9,7 @@ const helpers = require('yeoman-test');
 const yeoman = require('yeoman-environment');
 const testUtils = require('./test-utils');
 const sinon = require('sinon');
+const path = require('path');
 
 module.exports = function(projGenerator, props, projectType) {
   return function() {
@@ -16,7 +17,7 @@ module.exports = function(projGenerator, props, projectType) {
       it('prints lb4', () => {
         const env = yeoman.createEnv();
         const name = projGenerator.substring(
-          projGenerator.lastIndexOf('/') + 1
+          projGenerator.lastIndexOf(path.sep) + 1
         );
         env.register(projGenerator, 'loopback4:' + name);
         const generator = env.create('loopback4:' + name);
