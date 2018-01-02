@@ -19,8 +19,17 @@ const debug = require('debug')('@loopback/boot:mixin');
  * ```
  */
 // tslint:disable-next-line:no-any
-export function BootMixin<T extends Constructor<any>>(superClass: T) {
-  return class extends superClass {
+export function BootMixin<T extends Constructor<any>>(
+  superClass: T,
+  mixins?: Function[],
+) {
+  let finalClass = superClass;
+  if (mixins) {
+    mixins.forEach(mixin => {
+      finalClass = mixin(finalClass);
+    });
+  }
+  return class extends finalClass {
     // tslint:disable-next-line:no-any
     constructor(...args: any[]) {
       super(...args);

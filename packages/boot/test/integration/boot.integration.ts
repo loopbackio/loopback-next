@@ -16,7 +16,7 @@ import {AdminController} from '../fakeApp/controllers/admin/admin.controller';
 import {TestRepository} from '../fakeApp/repositories/test.repository';
 
 describe('@loopback/boot integration', () => {
-  class BootWithTestMixin extends TestMixin(BootMixin(NormalApplication)) {}
+  class BootWithTestMixin extends BootMixin(NormalApplication, [TestMixin]) {}
   class BootWithTestMixinReverse extends BootMixin(
     TestMixin(NormalApplication),
   ) {}
