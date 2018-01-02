@@ -2,8 +2,15 @@
 
 This package contains:
 
-- Decorators that describe LoopBack artifacts as metadata.
-- Uilities that tranfer LoopBack remoting metadata to swagger specifications. 
+- Decorators that describe LoopBack artifacts as OpenAPI v2 (Swagger) metadata.
+- Utilities that tranfer LoopBack metadata to OpenAPI v2 (Swagger) swagger specifications. 
+
+## Overview
+
+The package has functions described above for LoopBack controller classes.
+Decorators apply REST api mapping metadata to controller classes and their members. And utilities that inspect controller classes to build OpenAPI v2 (Swagger) specifications from REST api mapping metadata.
+
+Functions for more artifacts will be added when we need.
 
 ## Installation
 
