@@ -3,7 +3,7 @@
   "version": "1.0.0-alpha1",
   "description": "Processes openapi v2 related metadata",
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "devDependencies": {
     "@loopback/build": "^4.0.0-alpha.7",

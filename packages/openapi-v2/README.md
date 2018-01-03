@@ -3,7 +3,7 @@
 This package contains:
 
 - Decorators that describe LoopBack artifacts as OpenAPI v2 (Swagger) metadata.
-- Utilities that tranfer LoopBack metadata to OpenAPI v2 (Swagger) swagger specifications. 
+- Utilities that transfer LoopBack metadata to OpenAPI v2 (Swagger) swagger specifications. 
 
 ## Overview
 

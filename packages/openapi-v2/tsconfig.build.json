@@ -5,5 +5,4 @@
       "rootDir": "."
     },
     "include": ["src", "test"]
-  }
-  
+}
