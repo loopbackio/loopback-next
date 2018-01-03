@@ -38,6 +38,9 @@
     "api-docs",
     "src"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git"
