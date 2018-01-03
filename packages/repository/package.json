@@ -1,6 +1,6 @@
 {
   "name": "@loopback/repository",
-  "version": "4.0.0-alpha.21",
+  "version": "4.0.0-alpha.22",
   "description": "Repository based persistence for LoopBack 4",
   "engines": {
     "node": ">=6"

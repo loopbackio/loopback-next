@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.22"></a>
+# [4.0.0-alpha.22](https://github.com/strongloop/loopback-next/compare/@loopback/repository@4.0.0-alpha.21...@loopback/repository@4.0.0-alpha.22) (2018-01-03)
+
+
+### Bug Fixes
+
+* update description for [@loopback](https://github.com/loopback)/repository ([6e2377a](https://github.com/strongloop/loopback-next/commit/6e2377a))
+
+
+
+
 <a name="4.0.0-alpha.21"></a>
 # [4.0.0-alpha.21](https://github.com/strongloop/loopback-next/compare/@loopback/repository@4.0.0-alpha.20...@loopback/repository@4.0.0-alpha.21) (2018-01-03)
 
