@@ -1,4 +1,5 @@
-import {get, ServerRequest} from '@loopback/rest';
+import {ServerRequest} from '@loopback/rest';
+import {get} from '@loopback/openapi-v2';
 import {inject} from '@loopback/context';
 
 /**
