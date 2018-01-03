@@ -1,5 +1,6 @@
 require('mocha');
 const expect = require('@loopback/testlab').expect;
+const path = require('path');
 const utils = require('../lib/utils');
 
 describe('Utils', () => {
@@ -114,6 +115,110 @@ describe('Utils', () => {
       it(testName, () => {
         expect(utils.toClassName(input)).to.equal(expected);
       });
+    }
+  });
+  describe('findArtifactPaths', () => {
+    it('returns all matching paths of type', () => {
+      const expected = [
+        path.join('tmp', 'app', 'models', 'foo.model.js'),
+        path.join('tmp', 'app', 'models', 'baz.model.js'),
+      ];
+
+      const reader = () => {
+        // Add the expected values to some extras.
+        return [
+          path.join('tmp', 'app', 'models', 'bar.js'),
+          path.join('tmp', 'app', 'models', 'README.js'),
+        ].concat(expected);
+      };
+
+      return utils
+        .findArtifactPaths(path.join('fake', 'path'), 'model', reader)
+        .then(results => {
+          expect(results).to.eql(expected);
+        });
+    });
+  });
+  describe('getArtifactList', () => {
+    const expectedModels = ['Foo', 'Bar'];
+    const expectedRepos = ['FooRepository', 'BarRepository'];
+    it('finds JS models', () => {
+      const files = [
+        path.join('tmp', 'app', 'foo.model.js'),
+        path.join('tmp', 'app', 'bar.model.js'),
+        path.join('tmp', 'app', 'README.md'),
+      ];
+      return verifyArtifactList('model', 'models', false, files).then(
+        results => {
+          expect(results).to.eql(expectedModels);
+        }
+      );
+    });
+
+    it('finds TS models', () => {
+      const files = [
+        path.join('tmp', 'app', 'foo.model.ts'),
+        path.join('tmp', 'app', 'bar.model.ts'),
+        path.join('tmp', 'app', 'README.md'),
+      ];
+      return verifyArtifactList('model', 'models', false, files).then(
+        results => {
+          expect(results).to.eql(expectedModels);
+        }
+      );
+    });
+
+    it('finds JS repositories', () => {
+      const files = [
+        path.join('tmp', 'app', 'foo.repository.js'),
+        path.join('tmp', 'app', 'bar.repository.js'),
+        path.join('tmp', 'app', 'foo.model.js'),
+      ];
+      return verifyArtifactList(
+        'repository',
+        'repositories',
+        true,
+        files,
+        expectedRepos
+      ).then(results => {
+        expect(results).to.eql(expectedRepos);
+      });
+    });
+
+    it('finds TS repositories', () => {
+      const files = [
+        path.join('tmp', 'app', 'foo.repository.ts'),
+        path.join('tmp', 'app', 'bar.repository.ts'),
+        path.join('tmp', 'app', 'foo.model.ts'),
+      ];
+      return verifyArtifactList(
+        'repository',
+        'repositories',
+        true,
+        files,
+        expectedRepos
+      ).then(results => {
+        expect(results).to.eql(expectedRepos);
+      });
+    });
+
+    /**
+     * Testing function for evaluating the lists returned from
+     * the getArtifactList function.
+     *
+     * @param {string} artifactType The artifact type under test
+     * @param {string} folder The name of the folder (usually the plural of the
+     * artifactType)
+     * @param {boolean} suffix Whether or not to expect the artifactType as the suffix
+     * (ex. the "foo" repository is FooRepository)
+     * @param {string[]} files An array of fake filepaths to test with
+     */
+    function verifyArtifactList(artifactType, folder, suffix, files) {
+      const reader = () => {
+        return files;
+      };
+      const artifactPath = path.join('tmp', 'app', folder);
+      return utils.getArtifactList(artifactPath, artifactType, suffix, reader);
     }
   });
 });
