@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.15"></a>
+# [4.0.0-alpha.15](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.14...@loopback/cli@4.0.0-alpha.15) (2018-01-03)
+
+
+### Bug Fixes
+
+* add new openapi package ([#829](https://github.com/strongloop/loopback-next/issues/829)) ([dac9320](https://github.com/strongloop/loopback-next/commit/dac9320))
+
+
+
+
 <a name="4.0.0-alpha.14"></a>
 # [4.0.0-alpha.14](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.13...@loopback/cli@4.0.0-alpha.14) (2018-01-03)
 
