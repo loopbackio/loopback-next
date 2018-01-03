@@ -48,6 +48,7 @@ describe('app-generator specfic files', () => {
       /@get\('\/ping'\)/
     );
     assert.fileContent('src/controllers/ping.controller.ts', /ping\(\)/);
+    assert.fileContent('src/controllers/ping.controller.ts', /\'\@loopback\/openapi\-v2\'/);
 
     assert.file;
   });
