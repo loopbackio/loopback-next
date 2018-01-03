@@ -56,6 +56,27 @@ Options:
 
 ```
 
+3. To scaffold a controller into your application
+
+```sh
+  cd <your-project-directory>
+  lb4 controller
+```
+
+```
+Usage:
+  lb4 controller [options] [<name>]
+
+Options:
+  -h,   --help            # Print the generator's options and usage
+        --skip-cache      # Do not remember prompt answers             Default: false
+        --skip-install    # Do not automatically install dependencies  Default: false
+        --controllerType  # Type for the controller
+
+Arguments:
+  name  # Name for the controller  Type: String  Required: false
+```
+
 # Tests
 
 run `npm test` from the root folder.

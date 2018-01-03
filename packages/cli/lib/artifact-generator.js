@@ -82,6 +82,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
 
     return this.prompt(prompts).then(props => {
       Object.assign(this.artifactInfo, props);
+      return props;
     });
   }
 
