@@ -8,7 +8,7 @@
 
 const assert = require('assert');
 const camelCaseKeys = require('camelcase-keys');
-const debug = require('debug')('loopback:cli');
+const debug = require('../lib/debug')();
 const minimist = require('minimist');
 const path = require('path');
 const yeoman = require('yeoman-environment');
