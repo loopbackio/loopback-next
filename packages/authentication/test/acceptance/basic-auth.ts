@@ -5,7 +5,6 @@
 
 import {Application} from '@loopback/core';
 import {
-  api,
   RestBindings,
   ServerResponse,
   ParsedRequest,
@@ -15,10 +14,10 @@ import {
   Send,
   Reject,
   SequenceHandler,
-  get,
   RestServer,
   RestComponent,
 } from '@loopback/rest';
+import {api, get} from '@loopback/openapi-v2';
 import {Client, createClientForHandler} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {inject, Provider, ValueOrPromise} from '@loopback/context';

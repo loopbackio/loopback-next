@@ -6,7 +6,7 @@
 import {Context} from '@loopback/context';
 import {PathsObject} from '@loopback/openapi-spec';
 import {ServerRequest, ServerResponse} from 'http';
-import {ControllerSpec} from './router/metadata';
+import {ControllerSpec} from '@loopback/openapi-v2';
 
 import {SequenceHandler} from './sequence';
 import {

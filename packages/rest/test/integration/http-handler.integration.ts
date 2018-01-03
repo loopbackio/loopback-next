@@ -8,11 +8,10 @@ import {
   DefaultSequence,
   ServerRequest,
   writeResultToResponse,
-  ControllerSpec,
   parseOperationArgs,
   RestBindings,
-  get,
 } from '../..';
+import {ControllerSpec, get} from '@loopback/openapi-v2';
 import {Context} from '@loopback/context';
 import {Client, createClientForHandler} from '@loopback/testlab';
 import * as HttpErrors from 'http-errors';

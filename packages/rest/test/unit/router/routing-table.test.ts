@@ -8,10 +8,8 @@ import {
   parseRequestUrl,
   RoutingTable,
   ControllerRoute,
-  getControllerSpec,
-  param,
-  get,
 } from '../../..';
+import {getControllerSpec, param, get} from '@loopback/openapi-v2';
 import {expect, ShotRequestOptions, ShotRequest} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 
