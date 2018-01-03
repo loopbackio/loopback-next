@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.24"></a>
+# [4.0.0-alpha.24](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.0.0-alpha.23...@loopback/authentication@4.0.0-alpha.24) (2018-01-03)
+
+
+### Bug Fixes
+
+* fix version for [@loopback](https://github.com/loopback)/openapi-v2 ([d032129](https://github.com/strongloop/loopback-next/commit/d032129))
+
+
+
+
 <a name="4.0.0-alpha.23"></a>
 # [4.0.0-alpha.23](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.0.0-alpha.22...@loopback/authentication@4.0.0-alpha.23) (2018-01-03)
 

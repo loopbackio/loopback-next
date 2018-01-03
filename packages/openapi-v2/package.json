@@ -1,6 +1,6 @@
 {
   "name": "@loopback/openapi-v2",
-  "version": "4.0.0-alpha.1",
+  "version": "4.0.0-alpha.2",
   "description": "Processes openapi v2 related metadata",
   "engines": {
     "node": ">=8"
