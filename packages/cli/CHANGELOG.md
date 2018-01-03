@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.14"></a>
+# [4.0.0-alpha.14](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.13...@loopback/cli@4.0.0-alpha.14) (2018-01-03)
+
+
+### Features
+
+* **cli:** add scoped debug function ([8535c5e](https://github.com/strongloop/loopback-next/commit/8535c5e))
+
+
+
+
 <a name="4.0.0-alpha.13"></a>
 # [4.0.0-alpha.13](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.12...@loopback/cli@4.0.0-alpha.13) (2017-12-21)
 

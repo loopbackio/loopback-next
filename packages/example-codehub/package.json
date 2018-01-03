@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-codehub",
-  "version": "4.0.0-alpha.21",
+  "version": "4.0.0-alpha.22",
   "description": "",
   "engines": {
     "node": ">=6"
@@ -16,7 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "@loopback/core": "^4.0.0-alpha.26",
-    "@loopback/rest": "^4.0.0-alpha.15"
+    "@loopback/rest": "^4.0.0-alpha.16"
   },
   "devDependencies": {
     "@loopback/testlab": "^4.0.0-alpha.17",

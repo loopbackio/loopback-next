@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.21"></a>
+# [4.0.0-alpha.21](https://github.com/strongloop/loopback-next/compare/@loopback/repository@4.0.0-alpha.20...@loopback/repository@4.0.0-alpha.21) (2018-01-03)
+
+
+### Features
+
+* **repository:** helper function for getting Model metadata ([b19635d](https://github.com/strongloop/loopback-next/commit/b19635d))
+
+
+
+
 <a name="4.0.0-alpha.20"></a>
 # [4.0.0-alpha.20](https://github.com/strongloop/loopback-next/compare/@loopback/repository@4.0.0-alpha.19...@loopback/repository@4.0.0-alpha.20) (2017-12-21)
 
