@@ -5,6 +5,7 @@
 
 'use strict';
 const BaseGenerator = require('./base-generator');
+const debug = require('./debug')('artifact-generator');
 const utils = require('./utils');
 const StatusConflicter = utils.StatusConflicter;
 
@@ -15,6 +16,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
   }
 
   _setupGenerator() {
+    debug('Setting up generator');
     this.argument('name', {
       type: String,
       required: false,
@@ -39,6 +41,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
    * 'keywords' is an array
    */
   checkLoopBackProject() {
+    debug('Checking for loopback project');
     if (this.shouldExit()) return false;
     const pkg = this.fs.readJSON(this.destinationPath('package.json'));
     const key = 'loopback';
@@ -64,6 +67,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
   }
 
   promptArtifactName() {
+    debug('Prompting for artifact name');
     if (this.shouldExit()) return false;
     const prompts = [
       {
@@ -82,6 +86,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
   }
 
   scaffold() {
+    debug('Scaffolding artifact(s)');
     if (this.shouldExit()) return false;
     // Capitalize class name
     this.artifactInfo.name = utils.toClassName(this.artifactInfo.name);
