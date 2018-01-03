@@ -67,6 +67,27 @@ export class Application extends Context {
   }
 
   /**
+   * Register a model class with this application.
+   *
+   * @param modelCtor {Function} The model class
+   * (constructor function).
+   * @return {Binding} The newly created binding, you can use the reference to
+   * further modify the binding, e.g. lock the value to prevent further
+   * modifications.
+   *
+   * ```ts
+   * class MyModel {
+   * }
+   * app.model(MyModel).lock();
+   * ```
+   */
+  model(modelCtor: Constructor<{}>): Binding {
+    return this.bind(`models.${modelCtor.name}`)
+      .toClass(modelCtor)
+      .tag('model');
+  }
+
+  /**
    * Bind a Server constructor to the Application's master context.
    * Each server constructor added in this way must provide a unique prefix
    * to prevent binding overlap.

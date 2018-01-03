@@ -54,6 +54,12 @@ export function mountComponent(app: Application, component: Component) {
     }
   }
 
+  if (component.models) {
+    for (const modelCtor of component.models) {
+      app.model(modelCtor);
+    }
+  }
+
   if (component.providers) {
     for (const providerKey in component.providers) {
       app.bind(providerKey).toProvider(component.providers[providerKey]);

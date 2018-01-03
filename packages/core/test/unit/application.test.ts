@@ -33,6 +33,24 @@ describe('Application', () => {
     }
   });
 
+  describe('model binding', () => {
+    let app: Application;
+    class MyModel {}
+
+    beforeEach(givenApp);
+
+    it('binds a model', () => {
+      const binding = app.model(MyModel);
+      expect(Array.from(binding.tags)).to.containEql('model');
+      expect(binding.key).to.equal('models.MyModel');
+      expect(findKeysByTag(app, 'model')).to.containEql(binding.key);
+    });
+
+    function givenApp() {
+      app = new Application();
+    }
+  });
+
   describe('component binding', () => {
     let app: Application;
     class MyController {}

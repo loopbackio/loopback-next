@@ -75,6 +75,22 @@ describe('Bootstrapping the application', () => {
       ]);
     });
 
+    it('registers all models from components', async () => {
+      class ProductModel {}
+
+      class ProductComponent {
+        models = [ProductModel];
+      }
+
+      const app = new Application({
+        components: [ProductComponent],
+      });
+
+      expect(app.find('models.*').map(b => b.key)).to.eql([
+        'models.ProductModel',
+      ]);
+    });
+
     it('injects component dependencies', () => {
       class ConfigComponent {
         providers = {
