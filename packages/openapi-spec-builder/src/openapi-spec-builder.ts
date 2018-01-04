@@ -162,4 +162,16 @@ export class OperationSpecBuilder extends BuilderBase<OperationObject> {
   withOperationName(name: string): this {
     return this.withExtension('x-operation-name', name);
   }
+
+  /**
+   * Describe tags associated with the operation
+   * @param tags
+   */
+  withTags(tags: string | string[]): this {
+    if (typeof tags === 'string') this._spec.tags = [tags];
+    else {
+      this._spec.tags = tags;
+    }
+    return this;
+  }
 }
