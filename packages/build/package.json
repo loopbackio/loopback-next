@@ -3,7 +3,7 @@
   "description": "Build scripts and configuration files for LoopBack 4 modules",
   "repository": {
     "type": "git",
-    "url": "https://github.com/strongloop/loopback4-build.git"
+    "url": "https://github.com/strongloop/loopback-next.git"
   },
   "version": "4.0.0-alpha.7",
   "engines": {
