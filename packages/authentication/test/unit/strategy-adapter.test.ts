@@ -7,11 +7,7 @@ import {expect} from '@loopback/testlab';
 import {StrategyAdapter, UserProfile} from '../..';
 import {ParsedRequest, HttpErrors} from '@loopback/rest';
 import {MockStrategy} from './fixtures/mock-strategy';
-import {
-  StrategyCreated,
-  StrategyCreatedStatic,
-  AuthenticateOptions,
-} from 'passport';
+import {StrategyCreated, AuthenticateOptions} from 'passport';
 
 describe('Strategy Adapter', () => {
   const mockUser: UserProfile = {name: 'user-name', id: 'mock-id'};
@@ -23,7 +19,7 @@ describe('Strategy Adapter', () => {
       class Strategy extends MockStrategy {
         // override authenticate method to set calledFlag
         async authenticate(
-          this: StrategyCreated<this, this & StrategyCreatedStatic> & this,
+          this: StrategyCreated<this> & this,
           req: Express.Request,
           options?: AuthenticateOptions,
         ) {
