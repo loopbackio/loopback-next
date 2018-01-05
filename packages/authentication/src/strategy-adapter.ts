@@ -6,15 +6,18 @@ import {HttpErrors, ParsedRequest} from '@loopback/rest';
 import {Strategy} from 'passport';
 import {UserProfile} from './providers/authenticate';
 
+const PassportRequestExtras: Express.Request = require('passport/lib/http/request');
+
 /**
  * Shimmed Request to satisfy express requirements of passport strategies.
  */
-export class ShimRequest {
+export class ShimRequest implements Express.Request {
   headers: Object;
   query: Object;
   url: string;
   path: string;
   method: string;
+
   constructor(request: ParsedRequest) {
     this.headers = request.headers;
     this.query = request.query;
@@ -22,6 +25,35 @@ export class ShimRequest {
     this.path = request.path;
     this.method = request.method;
   }
+
+  // tslint:disable:no-any
+  login(user: any, done: (err: any) => void): void;
+  login(user: any, options: any, done: (err: any) => void): void;
+  login(user: any, options: any, done?: any) {
+    PassportRequestExtras.login.apply(this, arguments);
+  }
+
+  logIn(user: any, done: (err: any) => void): void;
+  logIn(user: any, options: any, done: (err: any) => void): void;
+  logIn(user: any, options: any, done?: any) {
+    PassportRequestExtras.logIn.apply(this, arguments);
+  }
+
+  logout(): void {
+    PassportRequestExtras.logout.apply(this, arguments);
+  }
+
+  logOut(): void {
+    PassportRequestExtras.logOut.apply(this, arguments);
+  }
+
+  isAuthenticated(): boolean {
+    return PassportRequestExtras.isAuthenticated.apply(this, arguments);
+  }
+  isUnauthenticated(): boolean {
+    return PassportRequestExtras.isUnauthenticated.apply(this, arguments);
+  }
+  // tslint:enable:no-any
 }
 
 /**

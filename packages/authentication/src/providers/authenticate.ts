@@ -11,6 +11,12 @@ import {StrategyAdapter} from '../strategy-adapter';
 import {AuthenticationBindings} from '../keys';
 
 /**
+ * Passport monkey-patches Node.js' IncomingMessage prototype
+ * and adds extra methods like "login" and "isAuthenticated"
+ */
+export type PassportRequest = ParsedRequest & Express.Request;
+
+/**
  * interface definition of a function which accepts a request
  * and returns an authenticated user
  */

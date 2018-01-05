@@ -2,8 +2,13 @@
 // Node module: @loopback/authentication
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-import {Strategy} from 'passport';
-import * as http from 'http';
+import {
+  Strategy,
+  StrategyCreated,
+  StrategyCreatedStatic,
+  AuthenticateOptions,
+} from 'passport';
+import {PassportRequest} from '../../..';
 
 /**
  * Test fixture for a mock asynchronous passport-strategy
@@ -19,7 +24,11 @@ export class MockStrategy implements Strategy {
    * authenticate() function similar to passport-strategy packages
    * @param req
    */
-  async authenticate(req: http.ServerRequest) {
+  async authenticate(
+    this: StrategyCreated<this, this & StrategyCreatedStatic> & this,
+    req: Express.Request,
+    options?: AuthenticateOptions,
+  ) {
     await this.verify(req);
   }
   /**
@@ -31,13 +40,19 @@ export class MockStrategy implements Strategy {
    * pass req.query.testState = 'fail' to mock failed authorization
    * pass req.query.testState = 'error' to mock unexpected error
    */
-  async verify(req: http.ServerRequest) {
+  async verify(
+    this: StrategyCreated<this, this & StrategyCreatedStatic> & this,
+    request: Express.Request,
+  ) {
+    // A workaround for buggy typings provided by @types/passport
+    const req = request as PassportRequest;
+
     if (
       req.headers &&
       req.headers.testState &&
       req.headers.testState === 'fail'
     ) {
-      this.returnUnauthorized({error: 'authorization failed'});
+      this.returnUnauthorized('authorization failed');
       return;
     } else if (
       req.headers &&
@@ -49,22 +64,25 @@ export class MockStrategy implements Strategy {
     }
     process.nextTick(this.returnMockUser.bind(this));
   }
-  success(user: Object) {
-    throw new Error('should be overridden by adapter');
-  }
-  fail(challenge: Object) {
-    throw new Error('should be overridden by adapter');
-  }
-  error(error: string) {
-    throw new Error('should be overridden by adapter');
-  }
-  returnMockUser() {
+
+  returnMockUser(
+    this: StrategyCreated<this, this & StrategyCreatedStatic> & this,
+  ) {
     this.success(this.mockUser);
   }
-  returnUnauthorized(challenge: Object) {
-    this.fail(challenge);
+
+  returnUnauthorized(
+    this: StrategyCreated<this, this & StrategyCreatedStatic> & this,
+    challenge?: string | number,
+    status?: number,
+  ) {
+    this.fail(challenge, status);
   }
-  returnError(err: string) {
+
+  returnError(
+    this: StrategyCreated<this, this & StrategyCreatedStatic> & this,
+    err: string,
+  ) {
     this.error(err);
   }
 }
