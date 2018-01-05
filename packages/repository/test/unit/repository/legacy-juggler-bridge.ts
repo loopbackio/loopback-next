@@ -96,6 +96,16 @@ describe('DefaultCrudRepository', () => {
     const notes = await repo.find({where: {title: 't1'}});
     expect(notes.length).to.eql(1);
   });
+  
+  it('implements Repository.findOne()', async () => {
+    const repo = new DefaultCrudRepository(Note, ds);
+    await repo.createAll([
+      {title: 't1', content: 'c1'},
+      {title: 't1', content: 'c2'},
+    ]);
+    const notes = await repo.findOne({where: {title: 't1'}});
+    expect(notes.length).to.eql(1);
+  });
 
   it('implements Repository.delete()', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
