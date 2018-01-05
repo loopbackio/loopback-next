@@ -17,7 +17,7 @@ import {
   RestServer,
   RestComponent,
 } from '@loopback/rest';
-import {api, get} from '@loopback/openapi-v2';
+import {api, get} from '@loopback/openapi-v3';
 import {Client, createClientForHandler} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {inject, Provider, ValueOrPromise} from '@loopback/context';

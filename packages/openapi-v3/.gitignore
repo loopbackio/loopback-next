@@ -1,0 +1,3 @@
+*.tgz
+dist*
+package

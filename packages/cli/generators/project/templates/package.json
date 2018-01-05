@@ -61,7 +61,7 @@
 <% if (project.projectType === 'application') { -%>
     "@loopback/core": ">=4.0.0-alpha.20",
     "@loopback/rest": ">=4.0.0-alpha.7",
-    "@loopback/openapi-v2": ">=4.0.0-alpha.2"
+    "@loopback/openapi-v3": ">=4.0.0-alpha.1"
 <% } else { -%>
     "@loopback/core": ">=4.0.0-alpha.20"
 <% } -%>

@@ -1,4 +1,12 @@
-import {post, param, get, put, patch, del} from '@loopback/openapi-v2';
+import {
+  post,
+  param,
+  get,
+  put,
+  patch,
+  del,
+  requestBody,
+} from '@loopback/openapi-v3';
 import {HttpErrors} from '@loopback/rest';
 import {TodoSchema, Todo} from '../models';
 import {repository} from '@loopback/repository';
@@ -13,7 +21,10 @@ export class TodoController {
   ) {}
   @post('/todo')
   async createTodo(
-    @param.body('todo', TodoSchema)
+    // TODO(janny) The requestBody Spec will be empty after we
+    // 1. update to generate schema from bottom-up
+    // 2. decide the default content type
+    @requestBody({content: {'application/json': {schema: TodoSchema}}})
     todo: Todo,
   ) {
     // TODO(bajtos) This should be handled by the framework
@@ -40,7 +51,7 @@ export class TodoController {
   @put('/todo/{id}')
   async replaceTodo(
     @param.path.number('id') id: number,
-    @param.body('todo', TodoSchema)
+    @requestBody({content: {'application/json': {schema: TodoSchema}}})
     todo: Todo,
   ): Promise<boolean> {
     // REST adapter does not coerce parameter values coming from string sources
@@ -48,14 +59,13 @@ export class TodoController {
     // ourselves.
     // See https://github.com/strongloop/loopback-next/issues/750
     id = +id;
-
     return await this.todoRepo.replaceById(id, todo);
   }
 
   @patch('/todo/{id}')
   async updateTodo(
     @param.path.number('id') id: number,
-    @param.body('todo', TodoSchema)
+    @requestBody({content: {'application/json': {schema: TodoSchema}}})
     todo: Todo,
   ): Promise<boolean> {
     // REST adapter does not coerce parameter values coming from string sources
@@ -63,7 +73,6 @@ export class TodoController {
     // ourselves.
     // See https://github.com/strongloop/loopback-next/issues/750
     id = +id;
-
     return await this.todoRepo.updateById(id, todo);
   }
 

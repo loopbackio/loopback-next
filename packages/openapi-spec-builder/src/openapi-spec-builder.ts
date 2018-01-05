@@ -11,7 +11,8 @@ import {
   ResponseObject,
   ParameterObject,
   createEmptyApiSpec,
-} from '@loopback/openapi-spec';
+  RequestBodyObject,
+} from '@loopback/openapi-spec-types';
 
 /**
  * Create a new instance of OpenApiSpecBuilder.
@@ -137,7 +138,13 @@ export class OperationSpecBuilder extends BuilderBase<OperationObject> {
   withStringResponse(status: number | 'default' = 200): this {
     return this.withResponse(status, {
       description: 'The string result.',
-      schema: {type: 'string'},
+      content: {
+        // TODO(janny) will change it to a default value
+        // after we figure out the plan for content type
+        '*/*': {
+          schema: {type: 'string'},
+        },
+      },
     });
   }
 
@@ -151,6 +158,11 @@ export class OperationSpecBuilder extends BuilderBase<OperationObject> {
   withParameter(parameterSpec: ParameterObject): this {
     if (!this._spec.parameters) this._spec.parameters = [];
     this._spec.parameters.push(parameterSpec);
+    return this;
+  }
+
+  withRequestBody(requestBodySpec: RequestBodyObject): this {
+    this._spec.requestBody = requestBodySpec;
     return this;
   }
 

@@ -14,12 +14,12 @@ import {
   InvokeMethodProvider,
   RejectProvider,
 } from '../..';
-import {ControllerSpec, get} from '@loopback/openapi-v2';
+import {ControllerSpec, get} from '@loopback/openapi-v3';
 import {Context} from '@loopback/context';
 import {Client, createClientForHandler} from '@loopback/testlab';
 import * as HttpErrors from 'http-errors';
 import * as debugModule from 'debug';
-import {ParameterObject} from '@loopback/openapi-spec';
+import {ParameterObject, RequestBodyObject} from '@loopback/openapi-spec-types';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 
 const debug = debugModule('loopback:rest:test');
@@ -233,42 +233,32 @@ describe('HttpHandler', () => {
     }
   });
 
-  context('with a formData-parameter route', () => {
-    beforeEach(givenFormDataParamController);
+  context('with a cookie-parameter route', () => {
+    beforeEach(givenCookieParamController);
 
-    it('returns the value sent in json-encoded body', () => {
+    it('returns the value sent in the cookie', () => {
       return client
-        .post('/show-formdata')
-        .send({key: 'value'})
-        .expect(200, 'value');
+        .post('/login')
+        .set('Cookie', 'username=loopback; password=l00pback')
+        .expect({username: 'loopback', password: 'l00pback'});
     });
 
-    it('rejects url-encoded request body', () => {
-      logErrorsExcept(415);
-      return client
-        .post('/show-formdata')
-        .send('key=value')
-        .expect(415);
-    });
-
-    it('returns 400 for malformed JSON body', () => {
-      logErrorsExcept(400);
-      return client
-        .post('/show-formdata')
-        .set('content-type', 'application/json')
-        .send('malformed-json')
-        .expect(400);
-    });
-
-    function givenFormDataParamController() {
+    function givenCookieParamController() {
       const spec = anOpenApiSpec()
-        .withOperation('post', '/show-formdata', {
-          'x-operation-name': 'showFormData',
+        .withOperation('post', '/login', {
+          'x-operation-name': 'login',
           parameters: [
             <ParameterObject>{
-              name: 'key',
-              in: 'formData',
-              description: 'Any value.',
+              name: 'username',
+              in: 'cookie',
+              description: 'username for login',
+              required: true,
+              type: 'string',
+            },
+            <ParameterObject>{
+              name: 'password',
+              in: 'cookie',
+              description: 'password for login',
               required: true,
               type: 'string',
             },
@@ -285,8 +275,8 @@ describe('HttpHandler', () => {
         .build();
 
       class RouteParamController {
-        async showFormData(key: string): Promise<string> {
-          return key;
+        async login(username: string, password: string): Promise<object> {
+          return {username, password};
         }
       }
 
@@ -294,7 +284,7 @@ describe('HttpHandler', () => {
     }
   });
 
-  context('with a body-parameter route', () => {
+  context('with a body request route', () => {
     beforeEach(givenBodyParamController);
 
     it('returns the value sent in json-encoded body', () => {
@@ -329,19 +319,23 @@ describe('HttpHandler', () => {
       const spec = anOpenApiSpec()
         .withOperation('post', '/show-body', {
           'x-operation-name': 'showBody',
-          parameters: [
-            <ParameterObject>{
-              name: 'data',
-              in: 'body',
-              description: 'Any object value.',
-              required: true,
-              schema: {type: 'object'},
+          requestBody: <RequestBodyObject>{
+            description: 'Any object value.',
+            required: true,
+            content: {
+              'application/json': {
+                schema: {type: 'object'},
+              },
             },
-          ],
+          },
           responses: {
             200: {
-              schema: {
-                type: 'object',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                  },
+                },
               },
               description: '',
             },
