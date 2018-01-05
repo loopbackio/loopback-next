@@ -42,7 +42,9 @@
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.17",
     "@loopback/testlab": "^4.0.0-alpha.19",
     "@types/js-yaml": "^3.9.1",
-    "@types/lodash": "^4.14.85"
+    "@types/lodash": "^4.14.85",
+    "@types/mime": "^2.0.0",
+    "mime": "^2.2.0"
   },
   "files": [
     "README.md",
