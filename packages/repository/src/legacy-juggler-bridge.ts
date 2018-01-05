@@ -138,6 +138,11 @@ export class DefaultCrudRepository<T extends Entity, ID>
     return this.toEntities(models);
   }
 
+  async findOne(filter?: Filter, options?: Options): Promise<T> {
+    const model = await ensurePromise(this.modelClass.findOne(filter, options));
+    return this.toEntity(model);
+  }
+
   async findById(id: ID, filter?: Filter, options?: Options): Promise<T> {
     const model = await ensurePromise(
       this.modelClass.findById(id, filter, options),
