@@ -1,9 +1,17 @@
 {
+<<<<<<< HEAD:packages/openapi-spec/package.json
   "name": "@loopback/openapi-spec",
   "version": "4.0.0-alpha.20",
+=======
+  "name": "@loopback/openapi-spec-types",
+  "version": "4.0.0-alpha.18",
+>>>>>>> 7936b95c... feat: 1:packages/openapi-spec-types/package.json
   "description": "TypeScript type definitions for OpenAPI Spec/Swagger documents.",
   "engines": {
     "node": ">=6"
+  },
+  "dependencies": {
+    "openapi3-ts": "^0.6.2"
   },
   "devDependencies": {
     "@loopback/build": "^4.0.0-alpha.9"

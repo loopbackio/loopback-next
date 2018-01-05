@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD:packages/openapi-v2/package.json
   "name": "@loopback/openapi-v2",
   "version": "4.0.0-alpha.4",
+=======
+  "name": "@loopback/openapi-v3",
+  "version": "4.0.0-alpha.2",
+>>>>>>> 7936b95c... feat: 1:packages/openapi-v3/package.json
   "description": "Processes openapi v2 related metadata",
   "engines": {
     "node": ">=8"
@@ -47,8 +52,13 @@
     "url": "https://github.com/strongloop/loopback-next.git"
   },
   "dependencies": {
+<<<<<<< HEAD:packages/openapi-v2/package.json
     "@loopback/context": "^4.0.0-alpha.26",
     "@loopback/openapi-spec": "^4.0.0-alpha.20",
+=======
+    "@loopback/context": "^4.0.0-alpha.22",
+    "@loopback/openapi-spec-types": "^4.0.0-alpha.17",
+>>>>>>> 7936b95c... feat: 1:packages/openapi-v3/package.json
     "lodash": "^4.17.4"
   }
 }

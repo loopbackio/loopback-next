@@ -21,9 +21,15 @@ import {
   PathsObject,
   ItemType,
   ItemsObject,
+<<<<<<< HEAD:packages/openapi-v2/src/controller-spec.ts
 } from '@loopback/openapi-spec';
 
 import * as stream from 'stream';
+=======
+  ServerObject,
+} from '@loopback/openapi-spec-types';
+import {Stream} from 'stream';
+>>>>>>> 7936b95c... feat: 1:packages/openapi-v3/src/controller-spec.ts
 
 const debug = require('debug')('loopback:rest:router:metadata');
 
@@ -41,7 +47,7 @@ export interface ControllerSpec {
    * If it is not included, the API is served directly under the host.
    * The value MUST start with a leading slash (/).
    */
-  basePath?: string;
+  servers?: ServerObject[];
 
   /**
    * The available paths and operations for the API.
@@ -394,7 +400,7 @@ export function param(paramSpec: ParameterObject) {
 
       if (
         paramSpec.type === 'array' ||
-        (paramSpec.schema && paramSpec.schema.type === 'array')
+        (paramSpec.schema && (<SchemaObject>paramSpec.schema).type === 'array')
       ) {
         paramType = paramTypes[descriptorOrIndex];
         // The design-time type is `Object` for `any`

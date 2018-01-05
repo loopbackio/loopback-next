@@ -48,3 +48,34 @@ See [all contributors](https://github.com/strongloop/loopback-next/graphs/contri
 # License
 
 MIT
+
+# One repo vs multiple repo
+
+## One repo
+
+### Pros
+
+- easy to extract common suger interfaces
+- less packages to maintain, clearier layout to manage different versions
+- if we only support one version, export types from one package, no need to update each dependant
+
+# Items to change
+
+- path related repos --> rest & openapi-v2 & ?
+- components.schema related repo --> repository/decorators/metadata?
+- update path decorator's KEY
+- explain more in openapi-v2's readme
+- openapi-spec-builder
+  - 
+- verification --> testlab
+- shall we merge openapi-spec-builder and openapi-v2?
+
+#Questions
+
+- default server: set default port and host?
+  - Yes. default is required
+  - wrap 3000 with double quotes?
+
+# Type validation repo
+
+https://github.com/hanlindev/interface-validator

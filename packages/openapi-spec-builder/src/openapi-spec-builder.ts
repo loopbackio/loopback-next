@@ -11,7 +11,7 @@ import {
   ResponseObject,
   ParameterObject,
   createEmptyApiSpec,
-} from '@loopback/openapi-spec';
+} from '@loopback/openapi-spec-types';
 
 /**
  * Create a new instance of OpenApiSpecBuilder.
