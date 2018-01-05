@@ -22,7 +22,8 @@ import {
   ItemType,
   ItemsObject,
 } from '@loopback/openapi-spec';
-import {Stream} from 'stream';
+
+import * as stream from 'stream';
 
 const debug = require('debug')('loopback:rest:router:metadata');
 
@@ -275,7 +276,7 @@ const paramDecoratorStyle = Symbol('ParamDecoratorStyle');
  */
 function isReadableStream(type: Object): boolean {
   if (typeof type !== 'function') return false;
-  if (type === Stream.Readable) return true;
+  if (type === stream.Readable) return true;
   return isReadableStream(Object.getPrototypeOf(type));
 }
 
