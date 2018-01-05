@@ -2,12 +2,7 @@
 // Node module: @loopback/authentication
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-import {
-  Strategy,
-  StrategyCreated,
-  StrategyCreatedStatic,
-  AuthenticateOptions,
-} from 'passport';
+import {Strategy, StrategyCreated, AuthenticateOptions} from 'passport';
 import {PassportRequest} from '../../..';
 
 /**
@@ -25,7 +20,7 @@ export class MockStrategy implements Strategy {
    * @param req
    */
   async authenticate(
-    this: StrategyCreated<this, this & StrategyCreatedStatic> & this,
+    this: StrategyCreated<this> & this,
     req: Express.Request,
     options?: AuthenticateOptions,
   ) {
@@ -40,10 +35,7 @@ export class MockStrategy implements Strategy {
    * pass req.query.testState = 'fail' to mock failed authorization
    * pass req.query.testState = 'error' to mock unexpected error
    */
-  async verify(
-    this: StrategyCreated<this, this & StrategyCreatedStatic> & this,
-    request: Express.Request,
-  ) {
+  async verify(this: StrategyCreated<this> & this, request: Express.Request) {
     // A workaround for buggy typings provided by @types/passport
     const req = request as PassportRequest;
 
@@ -65,24 +57,19 @@ export class MockStrategy implements Strategy {
     process.nextTick(this.returnMockUser.bind(this));
   }
 
-  returnMockUser(
-    this: StrategyCreated<this, this & StrategyCreatedStatic> & this,
-  ) {
+  returnMockUser(this: StrategyCreated<this> & this) {
     this.success(this.mockUser);
   }
 
   returnUnauthorized(
-    this: StrategyCreated<this, this & StrategyCreatedStatic> & this,
+    this: StrategyCreated<this> & this,
     challenge?: string | number,
     status?: number,
   ) {
     this.fail(challenge, status);
   }
 
-  returnError(
-    this: StrategyCreated<this, this & StrategyCreatedStatic> & this,
-    err: string,
-  ) {
+  returnError(this: StrategyCreated<this> & this, err: string) {
     this.error(err);
   }
 }
