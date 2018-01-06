@@ -13,11 +13,11 @@ import {
   OpenApiSpec,
   createEmptyApiSpec,
   OperationObject,
-} from '@loopback/openapi-spec';
+} from '@loopback/openapi-spec-types';
 import {ServerRequest, ServerResponse, createServer} from 'http';
 import * as Http from 'http';
 import {Application, CoreBindings, Server} from '@loopback/core';
-import {getControllerSpec} from '@loopback/openapi-v2';
+import {getControllerSpec} from '@loopback/openapi-v3';
 import {HttpHandler} from './http-handler';
 import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
 import {
@@ -144,7 +144,8 @@ export class RestServer extends Context implements Server {
     }
     this.bind(RestBindings.PORT).to(options.port);
     this.bind(RestBindings.HOST).to(options.host);
-    this.api(createEmptyApiSpec());
+    this.api(createEmptyApiSpec({port: options.port, hostname: options.host}));
+    // this.api(createEmptyApiSpec());
 
     this.sequence(options.sequence ? options.sequence : DefaultSequence);
 
@@ -521,10 +522,10 @@ export class RestServer extends Context implements Server {
   async start(): Promise<void> {
     // Setup the HTTP handler so that we can verify the configuration
     // of API spec, controllers and routes at startup time.
-    this._setupHandlerIfNeeded();
-
     const httpPort = await this.get(RestBindings.PORT);
     const httpHost = await this.get(RestBindings.HOST);
+    this._setupHandlerIfNeeded();
+
     this._httpServer = createServer(this.handleHttp);
     const httpServer = this._httpServer;
 

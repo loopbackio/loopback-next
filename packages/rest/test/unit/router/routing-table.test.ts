@@ -9,9 +9,10 @@ import {
   RoutingTable,
   ControllerRoute,
 } from '../../..';
-import {getControllerSpec, param, get} from '@loopback/openapi-v2';
+import {getControllerSpec, param, get} from '@loopback/openapi-v3';
 import {expect, ShotRequestOptions, ShotRequest} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
+import {createDefaultServer} from '@loopback/openapi-spec-types';
 
 describe('RoutingTable', () => {
   it('joins basePath and path', () => {
@@ -82,7 +83,8 @@ describe('RoutingTable', () => {
       .withOperationReturningString('get', '/hello', 'greet')
       .build();
 
-    spec.basePath = '/my';
+    // spec.basePath = '/my';
+    spec.servers = [createDefaultServer({basePath: '/my'})];
 
     class TestController {}
 

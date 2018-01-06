@@ -11,11 +11,11 @@ import {
   parseOperationArgs,
   RestBindings,
 } from '../..';
-import {ControllerSpec, get} from '@loopback/openapi-v2';
+import {ControllerSpec, get} from '@loopback/openapi-v3';
 import {Context} from '@loopback/context';
 import {Client, createClientForHandler} from '@loopback/testlab';
 import * as HttpErrors from 'http-errors';
-import {ParameterObject} from '@loopback/openapi-spec';
+import {ParameterObject} from '@loopback/openapi-spec-types';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 import {
   FindRouteProvider,

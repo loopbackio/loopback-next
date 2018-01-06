@@ -280,10 +280,16 @@ export interface ItemsObject extends SimpleType {
     type: ItemType;
   }
 
+export interface RestServerOpt {
+  port? :number
+  hostname? :string
+  basePath? :string
+}
+
 /**
  * Create an empty OpenApiSpec object that's still a valid openapi document.
  */
-export function createEmptyApiSpec(): OpenApiSpec {
+export function createEmptyApiSpec(restServerOptions: RestServerOpt): OpenApiSpec {
   return {
     openapi: '3.0.0',
     info: {
@@ -292,24 +298,28 @@ export function createEmptyApiSpec(): OpenApiSpec {
     },
     paths: {},
     servers: [
-        {
-            "url": "{protocal}://{host}:{port}{basePath}",
-            "description": "The default LoopBack rest server",
-            "variables": {
-                "protocal": {
-                    "default": "http"
-                },
-                "basePath": {
-                    "default": "/"
-                },
-                "port": {
-                    "default": 3000
-                },
-                "host": {
-                    "default": "localhost"
-                }
-            }
-        }
+      createDefaultServer(restServerOptions)
     ]
   };
+}
+
+export function createDefaultServer(restServerOptions: RestServerOpt): OAS3.ServerObject {
+  return {
+    "url": "{protocal}://{hostname}:{port}{basePath}",
+    "description": "The default LoopBack rest server",
+    "variables": {
+        "protocal": {
+            "default": "http"
+        },
+        "basePath": {
+            "default": (restServerOptions && restServerOptions.basePath) || "/"
+        },
+        "port": {
+            "default": (restServerOptions && restServerOptions.port) || 3000
+        },
+        "hostname": {
+            "default": (restServerOptions && restServerOptions.hostname) || "localhost"
+        }
+    }
+  }
 }

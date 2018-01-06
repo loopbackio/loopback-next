@@ -12,7 +12,7 @@ import {
   createResolvedRoute,
 } from '../..';
 import {expect, ShotRequest, ShotRequestOptions} from '@loopback/testlab';
-import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
+import {OperationObject, ParameterObject} from '@loopback/openapi-spec-types';
 
 describe('operationArgsParser', () => {
   it('parses path parameters', async () => {

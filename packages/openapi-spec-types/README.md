@@ -69,6 +69,8 @@ MIT
   - 
 - verification --> testlab
 - shall we merge openapi-spec-builder and openapi-v2?
+- fix the inconsistency caused by basePath --> servers
+  - check port, host
 
 #Questions
 

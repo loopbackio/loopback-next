@@ -21,15 +21,10 @@ import {
   PathsObject,
   ItemType,
   ItemsObject,
-<<<<<<< HEAD:packages/openapi-v2/src/controller-spec.ts
-} from '@loopback/openapi-spec';
+  ServerObject
+} from '@loopback/openapi-spec-types';
 
 import * as stream from 'stream';
-=======
-  ServerObject,
-} from '@loopback/openapi-spec-types';
-import {Stream} from 'stream';
->>>>>>> 7936b95c... feat: 1:packages/openapi-v3/src/controller-spec.ts
 
 const debug = require('debug')('loopback:rest:router:metadata');
 

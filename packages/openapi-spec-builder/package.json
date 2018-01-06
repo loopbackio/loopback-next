@@ -26,11 +26,7 @@
     "Testing"
   ],
   "dependencies": {
-<<<<<<< HEAD
-    "@loopback/openapi-spec": "^4.0.0-alpha.20"
-=======
-    "@loopback/openapi-spec-types": "^4.0.0-alpha.18"
->>>>>>> 7936b95c... feat: 1
+    "@loopback/openapi-spec-types": "^4.0.0-alpha.20"
   },
   "devDependencies": {
     "@loopback/build": "^4.0.0-alpha.9"

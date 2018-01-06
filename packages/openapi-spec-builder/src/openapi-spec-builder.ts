@@ -72,7 +72,7 @@ export class OpenApiSpecBuilder extends BuilderBase<OpenApiSpec> {
    * @param basePath The base path on which the API is served.
    */
   constructor() {
-    super(createEmptyApiSpec());
+    super(createEmptyApiSpec({}));
   }
 
   /**
