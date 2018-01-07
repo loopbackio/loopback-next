@@ -7,7 +7,7 @@ import {expect} from '@loopback/testlab';
 import {StrategyAdapter, UserProfile} from '../..';
 import {ParsedRequest, HttpErrors} from '@loopback/rest';
 import {MockStrategy} from './fixtures/mock-strategy';
-import * as http from 'http';
+import {StrategyCreated, AuthenticateOptions} from 'passport';
 
 describe('Strategy Adapter', () => {
   const mockUser: UserProfile = {name: 'user-name', id: 'mock-id'};
@@ -18,9 +18,13 @@ describe('Strategy Adapter', () => {
       // TODO: (as suggested by @bajtos) use sinon spy
       class Strategy extends MockStrategy {
         // override authenticate method to set calledFlag
-        async authenticate(req: http.ServerRequest) {
+        async authenticate(
+          this: StrategyCreated<this> & this,
+          req: Express.Request,
+          options?: AuthenticateOptions,
+        ) {
           calledFlag = true;
-          await super.authenticate(req);
+          await MockStrategy.prototype.authenticate.call(this, req, options);
         }
       }
       const strategy = new Strategy();

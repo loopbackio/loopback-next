@@ -19,7 +19,7 @@
     "clean": "rm -rf loopback-openapi-v2*.tgz dist* package",
     "prepare": "npm run build && npm run build:apidocs",
     "pretest": "npm run build:current",
-    "unit": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js'",
+    "test": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js'",
     "verify": "npm pack && tar xf loopback-openapi-v2*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
