@@ -3,9 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-// TODO(bajtos) Move this file to a standalone module, or find an existing
-// npm module that we could use instead. Just make sure the existing
-// module is using native utils.promisify() when available.
+// A temporary polyfill for util.promisify on Node.js 6.x
+// Remove it as part of https://github.com/strongloop/loopback-next/issues/611
 
 // tslint:disable:no-any
 
