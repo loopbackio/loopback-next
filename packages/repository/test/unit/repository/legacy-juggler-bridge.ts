@@ -103,8 +103,9 @@ describe('DefaultCrudRepository', () => {
       {title: 't1', content: 'c1'},
       {title: 't1', content: 'c2'},
     ]);
-    const notes = await repo.findOne({where: {title: 't1'}});
-    expect(notes.length).to.eql(1);
+    const note = await repo.findOne({where: {title: 't1'}, order: 'content DESC'});
+    expect(note.title).to.eql('t1');
+    expect(note.content).to.eql('c2');
   });
 
   it('implements Repository.delete()', async () => {
