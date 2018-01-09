@@ -37,6 +37,10 @@ env.register(
   path.join(__dirname, '../generators/controller'),
   'loopback4:controller'
 );
+env.register(
+  path.join(__dirname, '../generators/example'),
+  'loopback4:example'
+);
 
 // list generators
 if (opts.commands) {
