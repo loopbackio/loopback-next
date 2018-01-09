@@ -113,6 +113,16 @@ export class Binding {
   }
 
   /**
+   * Build a binding key from a key and a path
+   * @param key The key
+   * @param path The path
+   *
+   */
+  static buildKeyWithPath(key: string, path: string) {
+    return `${key}${Binding.PROPERTY_SEPARATOR}${path}`;
+  }
+
+  /**
    * Parse a string containing both the binding key and the path to the deeply
    * nested property to retrieve.
    *
