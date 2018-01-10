@@ -96,14 +96,17 @@ describe('DefaultCrudRepository', () => {
     const notes = await repo.find({where: {title: 't1'}});
     expect(notes.length).to.eql(1);
   });
-  
+
   it('implements Repository.findOne()', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
     await repo.createAll([
       {title: 't1', content: 'c1'},
       {title: 't1', content: 'c2'},
     ]);
-    const note = await repo.findOne({where: {title: 't1'}, order: ['content DESC']});
+    const note = await repo.findOne({
+      where: {title: 't1'},
+      order: ['content DESC'],
+    });
     expect(note.title).to.eql('t1');
     expect(note.content).to.eql('c2');
   });
