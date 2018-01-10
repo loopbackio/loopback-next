@@ -5,3 +5,4 @@
 
 // NOTE(bajtos) This file is used by VSCode/TypeScriptServer at dev time only
 export * from './src';
+export * from '@loopback/openapi-v2';
