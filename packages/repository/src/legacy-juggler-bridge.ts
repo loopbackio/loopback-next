@@ -19,7 +19,7 @@ import {
   Command,
   NamedParameters,
   PositionalParameters,
-} from '../index';
+} from './common-types';
 
 type DataSourceType = juggler.DataSource;
 export {DataSourceType};

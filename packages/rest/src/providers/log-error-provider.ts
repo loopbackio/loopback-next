@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Provider} from '@loopback/context';
-import {ServerRequest} from '../';
+import {ServerRequest} from 'http';
 import {LogError} from '../internal-types';
 
 export class LogErrorProvider implements Provider<LogError> {

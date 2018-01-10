@@ -10,7 +10,7 @@ import {
   Command,
   NamedParameters,
   PositionalParameters,
-} from '..';
+} from './common-types';
 
 /**
  * Common properties/operations for connectors

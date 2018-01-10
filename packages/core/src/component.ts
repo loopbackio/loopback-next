@@ -4,7 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Constructor, Provider, BoundValue} from '@loopback/context';
-import {Server, Application, ControllerClass} from '.';
+import {Server} from './server';
+import {Application, ControllerClass} from './application';
 
 /**
  * A map of name/class pairs for binding providers

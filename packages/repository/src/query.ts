@@ -1,4 +1,4 @@
-import {AnyObject} from '..';
+import {AnyObject} from './common-types';
 import * as assert from 'assert';
 
 // Copyright IBM Corp. 2017. All Rights Reserved.
