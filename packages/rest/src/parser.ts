@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ServerRequest} from 'http';
-import {HttpErrors} from './';
+import * as HttpErrors from 'http-errors';
 import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
 import {promisify} from '@loopback/core';
 import {

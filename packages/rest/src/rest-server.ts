@@ -7,7 +7,8 @@ import {AssertionError} from 'assert';
 const swagger2openapi = require('swagger2openapi');
 import {safeDump} from 'js-yaml';
 import {Binding, Context, Constructor, inject} from '@loopback/context';
-import {Route, ControllerRoute, RouteEntry, ParsedRequest} from '.';
+import {Route, ControllerRoute, RouteEntry} from './router/routing-table';
+import {ParsedRequest} from './internal-types';
 import {
   OpenApiSpec,
   createEmptyApiSpec,

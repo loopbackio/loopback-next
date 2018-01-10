@@ -3,7 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Model, Class} from '..';
+import {Class} from '../common-types';
+import {Model} from '../model';
 import {ObjectType} from './object';
 
 // tslint:disable:no-any

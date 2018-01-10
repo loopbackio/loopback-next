@@ -1,6 +1,6 @@
 import {InspectionOptions, MetadataInspector} from '@loopback/context';
-import {MODEL_PROPERTIES_KEY, MODEL_WITH_PROPERTIES_KEY} from '../';
-import {ModelDefinition, PropertyDefinition} from '../../index';
+import {MODEL_PROPERTIES_KEY, MODEL_WITH_PROPERTIES_KEY} from './model';
+import {ModelDefinition, PropertyDefinition} from '../model';
 export class ModelMetadataHelper {
   /**
    * A utility function to simplify retrieving metadata from a target model and

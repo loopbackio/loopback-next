@@ -1,5 +1,6 @@
 import {Application, ApplicationConfig, Server} from '@loopback/core';
-import {RestComponent, SequenceHandler, SequenceFunction} from './index';
+import {RestComponent} from './rest-component';
+import {SequenceHandler, SequenceFunction} from './sequence';
 import {Binding, Constructor} from '@loopback/context';
 import {format} from 'util';
 import {RestBindings} from './keys';
