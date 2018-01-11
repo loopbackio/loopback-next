@@ -3,20 +3,21 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {DecoratorFactory} from '@loopback/metadata';
 import {Context} from './context';
-import {BoundValue, ValueOrPromise, Binding} from './binding';
+import {BoundValue, ValueOrPromise} from './binding';
 import {isPromise} from './is-promise';
 import {
   describeInjectedArguments,
   describeInjectedProperties,
   Injection,
 } from './inject';
+import {ResolutionSession} from './resolution-session';
+
 import * as assert from 'assert';
 import * as debugModule from 'debug';
-import {DecoratorFactory} from '@loopback/metadata';
 
 const debug = debugModule('loopback:context:resolver');
-const debugSession = debugModule('loopback:context:resolver:session');
 const getTargetName = DecoratorFactory.getTargetName;
 
 /**
@@ -25,175 +26,6 @@ const getTargetName = DecoratorFactory.getTargetName;
 export type Constructor<T> =
   // tslint:disable-next-line:no-any
   new (...args: any[]) => T;
-
-/**
- * Object to keep states for a session to resolve bindings and their
- * dependencies within a context
- */
-export class ResolutionSession {
-  /**
-   * A stack of bindings for the current resolution session. It's used to track
-   * the path of dependency resolution and detect circular dependencies.
-   */
-  readonly bindings: Binding[] = [];
-
-  readonly injections: Injection[] = [];
-
-  /**
-   * Take a snapshot of the ResolutionSession so that we can pass it to
-   * `@inject.getter` without interferring with the current session
-   */
-  clone() {
-    const copy = new ResolutionSession();
-    copy.bindings.push(...this.bindings);
-    copy.injections.push(...this.injections);
-    return copy;
-  }
-
-  /**
-   * Start to resolve a binding within the session
-   * @param binding Binding
-   * @param session Resolution session
-   */
-  static enterBinding(
-    binding: Binding,
-    session?: ResolutionSession,
-  ): ResolutionSession {
-    session = session || new ResolutionSession();
-    session.enter(binding);
-    return session;
-  }
-
-  /**
-   * Push an injection into the session
-   * @param injection Injection
-   * @param session Resolution session
-   */
-  static enterInjection(
-    injection: Injection,
-    session?: ResolutionSession,
-  ): ResolutionSession {
-    session = session || new ResolutionSession();
-    session.enterInjection(injection);
-    return session;
-  }
-
-  static describeInjection(injection?: Injection) {
-    /* istanbul ignore if */
-    if (injection == null) return injection;
-    const name = getTargetName(
-      injection.target,
-      injection.member,
-      injection.methodDescriptorOrParameterIndex,
-    );
-    return {
-      targetName: name,
-      bindingKey: injection.bindingKey,
-      metadata: injection.metadata,
-    };
-  }
-
-  /**
-   * Push the injection onto the session
-   * @param injection Injection
-   */
-  enterInjection(injection: Injection) {
-    /* istanbul ignore if */
-    if (debugSession.enabled) {
-      debugSession(
-        'Enter injection:',
-        ResolutionSession.describeInjection(injection),
-      );
-    }
-    this.injections.push(injection);
-    /* istanbul ignore if */
-    if (debugSession.enabled) {
-      debugSession('Injection path:', this.getInjectionPath());
-    }
-  }
-
-  /**
-   * Pop the last injection
-   */
-  exitInjection() {
-    const injection = this.injections.pop();
-    /* istanbul ignore if */
-    if (debugSession.enabled) {
-      debugSession(
-        'Exit injection:',
-        ResolutionSession.describeInjection(injection),
-      );
-      debugSession('Injection path:', this.getInjectionPath() || '<empty>');
-    }
-    return injection;
-  }
-
-  /**
-   * Getter for the current binding
-   */
-  get injection() {
-    return this.injections[this.injections.length - 1];
-  }
-
-  /**
-   * Getter for the current binding
-   */
-  get binding() {
-    return this.bindings[this.bindings.length - 1];
-  }
-
-  /**
-   * Enter the resolution of the given binding. If
-   * @param binding Binding
-   */
-  enter(binding: Binding) {
-    /* istanbul ignore if */
-    if (debugSession.enabled) {
-      debugSession('Enter binding:', binding.toJSON());
-    }
-    if (this.bindings.indexOf(binding) !== -1) {
-      throw new Error(
-        `Circular dependency detected on path '${this.getBindingPath()} --> ${
-          binding.key
-        }'`,
-      );
-    }
-    this.bindings.push(binding);
-    /* istanbul ignore if */
-    if (debugSession.enabled) {
-      debugSession('Binding path:', this.getBindingPath());
-    }
-  }
-
-  /**
-   * Exit the resolution of a binding
-   */
-  exit() {
-    const binding = this.bindings.pop();
-    /* istanbul ignore if */
-    if (debugSession.enabled) {
-      debugSession('Exit binding:', binding && binding.toJSON());
-      debugSession('Binding path:', this.getBindingPath() || '<empty>');
-    }
-    return binding;
-  }
-
-  /**
-   * Get the binding path as `bindingA --> bindingB --> bindingC`.
-   */
-  getBindingPath() {
-    return this.bindings.map(b => b.key).join(' --> ');
-  }
-
-  /**
-   * Get the injection path as `injectionA->injectionB->injectionC`.
-   */
-  getInjectionPath() {
-    return this.injections
-      .map(i => ResolutionSession.describeInjection(i)!.targetName)
-      .join(' --> ');
-  }
-}
 
 /**
  * Create an instance of a class which constructor has arguments
@@ -292,23 +124,29 @@ function resolve<T>(
   let resolved: ValueOrPromise<T>;
   // Push the injection onto the session
   session = ResolutionSession.enterInjection(injection, session);
-  if (injection.resolve) {
-    // A custom resolve function is provided
-    resolved = injection.resolve(ctx, injection, session);
-  } else {
-    // Default to resolve the value from the context by binding key
-    resolved = ctx.getValueOrPromise(injection.bindingKey, session);
+  try {
+    if (injection.resolve) {
+      // A custom resolve function is provided
+      resolved = injection.resolve(ctx, injection, session);
+    } else {
+      // Default to resolve the value from the context by binding key
+      resolved = ctx.getValueOrPromise(injection.bindingKey, session);
+    }
+  } catch (e) {
+    session.exit();
+    throw e;
   }
   if (isPromise(resolved)) {
-    resolved = resolved
-      .then(r => {
+    resolved = resolved.then(
+      r => {
         session!.exitInjection();
         return r;
-      })
-      .catch(e => {
+      },
+      e => {
         session!.exitInjection();
         throw e;
-      });
+      },
+    );
   } else {
     session.exitInjection();
   }

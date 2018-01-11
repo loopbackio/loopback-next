@@ -4,7 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from './context';
-import {Constructor, instantiateClass, ResolutionSession} from './resolver';
+import {ResolutionSession} from './resolution-session';
+import {Constructor, instantiateClass} from './resolver';
 import {isPromise} from './is-promise';
 import {Provider} from './provider';
 
@@ -254,21 +255,24 @@ export class Binding {
     }
     if (this._getValue) {
       const resolutionSession = ResolutionSession.enterBinding(this, session);
-      let result: ValueOrPromise<BoundValue> = this._getValue(
-        ctx,
-        resolutionSession,
-      );
+      let result: ValueOrPromise<BoundValue>;
+      try {
+        result = this._getValue(ctx, resolutionSession);
+      } catch (e) {
+        resolutionSession.exit();
+        throw e;
+      }
       if (isPromise(result)) {
-        if (result instanceof Promise) {
-          result = result.catch(err => {
+        result = result.then(
+          (val: BoundValue) => {
+            resolutionSession.exit();
+            return val;
+          },
+          err => {
             resolutionSession.exit();
             throw err;
-          });
-        }
-        result = result.then((val: BoundValue) => {
-          resolutionSession.exit();
-          return val;
-        });
+          },
+        );
       } else {
         resolutionSession.exit();
       }

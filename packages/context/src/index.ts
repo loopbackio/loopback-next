@@ -12,7 +12,8 @@ export {
 } from './binding';
 
 export {Context} from './context';
-export {Constructor, ResolutionSession} from './resolver';
+export {Constructor} from './resolver';
+export {ResolutionSession} from './resolution-session';
 export {inject, Setter, Getter} from './inject';
 export {Provider} from './provider';
 export {isPromise} from './is-promise';

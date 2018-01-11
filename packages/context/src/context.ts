@@ -5,7 +5,7 @@
 
 import {Binding, BoundValue, ValueOrPromise} from './binding';
 import {isPromise} from './is-promise';
-import {ResolutionSession} from './resolver';
+import {ResolutionSession} from './resolution-session';
 
 import * as debugModule from 'debug';
 const debug = debugModule('loopback:context');
