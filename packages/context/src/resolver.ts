@@ -142,9 +142,9 @@ export class ResolutionSession {
     }
     if (this.bindings.indexOf(binding) !== -1) {
       throw new Error(
-        `Circular dependency detected for '${
+        `Circular dependency detected on path '${this.getBindingPath()} --> ${
           binding.key
-        }' on path '${this.getBindingPath()}'`,
+        }'`,
       );
     }
     this.bindings.push(binding);
