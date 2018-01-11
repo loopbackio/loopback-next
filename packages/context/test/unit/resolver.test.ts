@@ -185,7 +185,7 @@ describe('constructor injection', () => {
     context.bind('y').toClass(YClass);
     context.bind('z').toClass(ZClass);
     context.getSync('x');
-    expect(bindingPath).to.eql('x->y->z');
+    expect(bindingPath).to.eql('x --> y --> z');
   });
 
   it('tracks path of injections', () => {
@@ -217,7 +217,7 @@ describe('constructor injection', () => {
     context.bind('z').toClass(ZClass);
     context.getSync('x');
     expect(injectionPath).to.eql(
-      'XClass.constructor[0]->YClass.constructor[0]->ZClass.prototype.myProp',
+      'XClass.constructor[0] --> YClass.constructor[0] --> ZClass.prototype.myProp',
     );
   });
 });
