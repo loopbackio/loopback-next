@@ -5,9 +5,6 @@
 
 'use strict';
 
-// TODO(kjdelisle): Drop this shim once we drop Node 6.
-require('util.promisify/shim')();
-
 const debug = require('../lib/debug')('utils');
 const fs = require('fs');
 const path = require('path');
@@ -15,11 +12,19 @@ const util = require('util');
 const regenerate = require('regenerate');
 const _ = require('lodash');
 const pascalCase = require('change-case').pascalCase;
+const promisify = util.promisify || require('util.promisify/implementation');
 const camelCase = require('change-case').camelCase;
 const validate = require('validate-npm-package-name');
 const Conflicter = require('yeoman-generator/lib/util/conflicter');
 
-const readdirAsync = util.promisify(fs.readdir);
+const readdirAsync = promisify(fs.readdir);
+
+/**
+ * Either a reference to util.promisify or its polyfill, depending on
+ * your version of Node.
+ */
+exports.promisify = promisify;
+
 /**
  * Returns a valid variable name regex;
  * taken from https://gist.github.com/mathiasbynens/6334847
