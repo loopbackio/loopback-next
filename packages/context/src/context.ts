@@ -7,6 +7,9 @@ import {Binding, BoundValue, ValueOrPromise} from './binding';
 import {isPromise} from './is-promise';
 import {ResolutionSession} from './resolver';
 
+import * as debugModule from 'debug';
+const debug = debugModule('loopback:context');
+
 /**
  * Context provides an implementation of Inversion of Control (IoC) container
  */
@@ -28,6 +31,10 @@ export class Context {
    * @param key Binding key
    */
   bind(key: string): Binding {
+    /* istanbul ignore if */
+    if (debug.enabled) {
+      debug('Adding binding: %s', key);
+    }
     Binding.validateKey(key);
     const keyExists = this.registry.has(key);
     if (keyExists) {
@@ -145,6 +152,10 @@ export class Context {
    * @returns A promise of the bound value.
    */
   get(key: string, session?: ResolutionSession): Promise<BoundValue> {
+    /* istanbul ignore if */
+    if (debug.enabled) {
+      debug('Resolving binding: %s', key);
+    }
     try {
       return Promise.resolve(this.getValueOrPromise(key, session));
     } catch (err) {
@@ -175,6 +186,10 @@ export class Context {
    * @returns A promise of the bound value.
    */
   getSync(key: string, session?: ResolutionSession): BoundValue {
+    /* istanbul ignore if */
+    if (debug.enabled) {
+      debug('Resolving binding synchronously: %s', key);
+    }
     const valueOrPromise = this.getValueOrPromise(key, session);
 
     if (isPromise(valueOrPromise)) {

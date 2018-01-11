@@ -16,6 +16,8 @@ import * as debugModule from 'debug';
 import {DecoratorFactory} from '@loopback/metadata';
 
 const debug = debugModule('loopback:context:resolver');
+const debugSession = debugModule('loopback:context:resolver:session');
+const getTargetName = DecoratorFactory.getTargetName;
 
 /**
  * A class constructor accepting arbitrary arguments.
@@ -65,9 +67,10 @@ export class ResolutionSession {
     return session;
   }
 
-  private describeInjection(injection?: Injection) {
+  static describeInjection(injection?: Injection) {
+    /* istanbul ignore if */
     if (injection == null) return injection;
-    const name = DecoratorFactory.getTargetName(
+    const name = getTargetName(
       injection.target,
       injection.member,
       injection.methodDescriptorOrParameterIndex,
@@ -84,12 +87,17 @@ export class ResolutionSession {
    * @param injection Injection
    */
   enterInjection(injection: Injection) {
-    if (debug.enabled) {
-      debug('Enter injection:', this.describeInjection(injection));
+    /* istanbul ignore if */
+    if (debugSession.enabled) {
+      debugSession(
+        'Enter injection:',
+        ResolutionSession.describeInjection(injection),
+      );
     }
     this.injections.push(injection);
-    if (debug.enabled) {
-      debug('Injection path:', this.getInjectionPath());
+    /* istanbul ignore if */
+    if (debugSession.enabled) {
+      debugSession('Injection path:', this.getInjectionPath());
     }
   }
 
@@ -98,9 +106,13 @@ export class ResolutionSession {
    */
   exitInjection() {
     const injection = this.injections.pop();
-    if (debug.enabled) {
-      debug('Exit injection:', this.describeInjection(injection));
-      debug('Injection path:', this.getInjectionPath() || '<empty>');
+    /* istanbul ignore if */
+    if (debugSession.enabled) {
+      debugSession(
+        'Exit injection:',
+        ResolutionSession.describeInjection(injection),
+      );
+      debugSession('Injection path:', this.getInjectionPath() || '<empty>');
     }
     return injection;
   }
@@ -124,8 +136,9 @@ export class ResolutionSession {
    * @param binding Binding
    */
   enter(binding: Binding) {
-    if (debug.enabled) {
-      debug('Enter binding:', binding.toJSON());
+    /* istanbul ignore if */
+    if (debugSession.enabled) {
+      debugSession('Enter binding:', binding.toJSON());
     }
     if (this.bindings.indexOf(binding) !== -1) {
       throw new Error(
@@ -135,8 +148,9 @@ export class ResolutionSession {
       );
     }
     this.bindings.push(binding);
-    if (debug.enabled) {
-      debug('Binding path:', this.getBindingPath());
+    /* istanbul ignore if */
+    if (debugSession.enabled) {
+      debugSession('Binding path:', this.getBindingPath());
     }
   }
 
@@ -145,18 +159,19 @@ export class ResolutionSession {
    */
   exit() {
     const binding = this.bindings.pop();
-    if (debug.enabled) {
-      debug('Exit binding:', binding && binding.toJSON());
-      debug('Binding path:', this.getBindingPath() || '<empty>');
+    /* istanbul ignore if */
+    if (debugSession.enabled) {
+      debugSession('Exit binding:', binding && binding.toJSON());
+      debugSession('Binding path:', this.getBindingPath() || '<empty>');
     }
     return binding;
   }
 
   /**
-   * Get the binding path as `bindingA->bindingB->bindingC`.
+   * Get the binding path as `bindingA --> bindingB --> bindingC`.
    */
   getBindingPath() {
-    return this.bindings.map(b => b.key).join('->');
+    return this.bindings.map(b => b.key).join(' --> ');
   }
 
   /**
@@ -164,8 +179,8 @@ export class ResolutionSession {
    */
   getInjectionPath() {
     return this.injections
-      .map(i => this.describeInjection(i)!.targetName)
-      .join('->');
+      .map(i => ResolutionSession.describeInjection(i)!.targetName)
+      .join(' --> ');
   }
 }
 
@@ -188,19 +203,40 @@ export function instantiateClass<T>(
   // tslint:disable-next-line:no-any
   nonInjectedArgs?: any[],
 ): T | Promise<T> {
+  /* istanbul ignore if */
+  if (debug.enabled) {
+    debug('Instantiating %s', getTargetName(ctor));
+    if (nonInjectedArgs && nonInjectedArgs.length) {
+      debug('Non-injected arguments:', nonInjectedArgs);
+    }
+  }
   session = session || new ResolutionSession();
   const argsOrPromise = resolveInjectedArguments(ctor, '', ctx, session);
   const propertiesOrPromise = resolveInjectedProperties(ctor, ctx, session);
   let inst: T | Promise<T>;
   if (isPromise(argsOrPromise)) {
     // Instantiate the class asynchronously
-    inst = argsOrPromise.then(args => new ctor(...args));
+    inst = argsOrPromise.then(args => {
+      /* istanbul ignore if */
+      if (debug.enabled) {
+        debug('Injected arguments for %s():', ctor.name, args);
+      }
+      return new ctor(...args);
+    });
   } else {
+    /* istanbul ignore if */
+    if (debug.enabled) {
+      debug('Injected arguments for %s():', ctor.name, argsOrPromise);
+    }
     // Instantiate the class synchronously
     inst = new ctor(...argsOrPromise);
   }
   if (isPromise(propertiesOrPromise)) {
     return propertiesOrPromise.then(props => {
+      /* istanbul ignore if */
+      if (debug.enabled) {
+        debug('Injected properties for %s:', ctor.name, props);
+      }
       if (isPromise(inst)) {
         // Inject the properties asynchronously
         return inst.then(obj => Object.assign(obj, props));
@@ -211,6 +247,10 @@ export function instantiateClass<T>(
     });
   } else {
     if (isPromise(inst)) {
+      /* istanbul ignore if */
+      if (debug.enabled) {
+        debug('Injected properties for %s:', ctor.name, propertiesOrPromise);
+      }
       // Inject the properties asynchronously
       return inst.then(obj => Object.assign(obj, propertiesOrPromise));
     } else {
@@ -231,6 +271,13 @@ function resolve<T>(
   injection: Injection,
   session?: ResolutionSession,
 ): ValueOrPromise<T> {
+  /* istanbul ignore if */
+  if (debug.enabled) {
+    debug(
+      'Resolving an injection:',
+      ResolutionSession.describeInjection(injection),
+    );
+  }
   let resolved: ValueOrPromise<T>;
   // Push the injection onto the session
   session = ResolutionSession.enterInjection(injection, session);
@@ -281,6 +328,10 @@ export function resolveInjectedArguments(
   // tslint:disable-next-line:no-any
   nonInjectedArgs?: any[],
 ): BoundValue[] | Promise<BoundValue[]> {
+  /* istanbul ignore if */
+  if (debug.enabled) {
+    debug('Resolving injected arguments for %s', getTargetName(target, method));
+  }
   const targetWithMethods = <{[method: string]: Function}>target;
   if (method) {
     assert(
@@ -308,7 +359,7 @@ export function resolveInjectedArguments(
         args[ix] = nonInjectedArgs[nonInjectedIndex++];
         continue;
       } else {
-        const name = DecoratorFactory.getTargetName(target, method, ix);
+        const name = getTargetName(target, method, ix);
         throw new Error(
           `Cannot resolve injected arguments for ${name}: ` +
             `The arguments[${ix}] is not decorated for dependency injection, ` +
@@ -350,6 +401,14 @@ export function invokeMethod(
   // tslint:disable-next-line:no-any
   nonInjectedArgs?: any[],
 ): ValueOrPromise<BoundValue> {
+  const methodName = getTargetName(target, method);
+  /* istanbul ignore if */
+  if (debug.enabled) {
+    debug('Invoking method %s', methodName);
+    if (nonInjectedArgs && nonInjectedArgs.length) {
+      debug('Non-injected arguments:', nonInjectedArgs);
+    }
+  }
   const argsOrPromise = resolveInjectedArguments(
     target,
     method,
@@ -364,8 +423,18 @@ export function invokeMethod(
   );
   if (isPromise(argsOrPromise)) {
     // Invoke the target method asynchronously
-    return argsOrPromise.then(args => targetWithMethods[method](...args));
+    return argsOrPromise.then(args => {
+      /* istanbul ignore if */
+      if (debug.enabled) {
+        debug('Injected arguments for %s:', methodName, args);
+      }
+      return targetWithMethods[method](...args);
+    });
   } else {
+    /* istanbul ignore if */
+    if (debug.enabled) {
+      debug('Injected arguments for %s:', methodName, argsOrPromise);
+    }
     // Invoke the target method synchronously
     return targetWithMethods[method](...argsOrPromise);
   }
@@ -390,6 +459,10 @@ export function resolveInjectedProperties(
   ctx: Context,
   session?: ResolutionSession,
 ): KV | Promise<KV> {
+  /* istanbul ignore if */
+  if (debug.enabled) {
+    debug('Resolving injected properties for %s', getTargetName(constructor));
+  }
   const injectedProperties = describeInjectedProperties(constructor.prototype);
 
   const properties: KV = {};
@@ -401,9 +474,10 @@ export function resolveInjectedProperties(
   for (const p in injectedProperties) {
     const injection = injectedProperties[p];
     if (!injection.bindingKey && !injection.resolve) {
+      const name = getTargetName(constructor, p);
       throw new Error(
-        `Cannot resolve injected property for class ${constructor.name}: ` +
-          `The property ${p} was not decorated for dependency injection.`,
+        `Cannot resolve injected property ${name}: ` +
+          `The property ${p} is not decorated for dependency injection.`,
       );
     }
 
