@@ -254,28 +254,11 @@ export class Binding {
       }
     }
     if (this._getValue) {
-      const resolutionSession = ResolutionSession.enterBinding(this, session);
-      let result: ValueOrPromise<BoundValue>;
-      try {
-        result = this._getValue(ctx, resolutionSession);
-      } catch (e) {
-        resolutionSession.popBinding();
-        throw e;
-      }
-      if (isPromise(result)) {
-        result = result.then(
-          (val: BoundValue) => {
-            resolutionSession.popBinding();
-            return val;
-          },
-          err => {
-            resolutionSession.popBinding();
-            throw err;
-          },
-        );
-      } else {
-        resolutionSession.popBinding();
-      }
+      let result = ResolutionSession.runWithBinding(
+        s => this._getValue(ctx, s),
+        this,
+        session,
+      );
       return this._cacheValue(ctx, result);
     }
     return Promise.reject(

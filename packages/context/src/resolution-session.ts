@@ -3,13 +3,59 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding} from './binding';
+import {Binding, ValueOrPromise, BoundValue} from './binding';
 import {Injection} from './inject';
+import {isPromise} from './is-promise';
 import * as debugModule from 'debug';
 import {DecoratorFactory} from '@loopback/metadata';
 
 const debugSession = debugModule('loopback:context:resolver:session');
 const getTargetName = DecoratorFactory.getTargetName;
+
+/**
+ * A function to be executed with the resolution session
+ */
+export type ResolutionAction = (
+  session?: ResolutionSession,
+) => ValueOrPromise<BoundValue>;
+
+/**
+ * Try to run an action that returns a promise or a value
+ * @param action A function that returns a promise or a value
+ * @param finalAction A function to be called once the action
+ * is fulfilled or rejected (synchronously or asynchronously)
+ */
+function tryWithFinally(
+  action: () => ValueOrPromise<BoundValue>,
+  finalAction: () => void,
+) {
+  let result: ValueOrPromise<BoundValue>;
+  try {
+    result = action();
+  } catch (err) {
+    finalAction();
+    throw err;
+  }
+  if (isPromise(result)) {
+    // Once (promise.finally)[https://github.com/tc39/proposal-promise-finally
+    // is supported, the following can be simplifed as
+    // `result = result.finally(finalAction);`
+    result = result.then(
+      val => {
+        finalAction();
+        return val;
+      },
+      err => {
+        finalAction();
+        throw err;
+      },
+    );
+  } else {
+    finalAction();
+  }
+  return result;
+}
+
 /**
  * Object to keep states for a session to resolve bindings and their
  * dependencies within a context
@@ -42,7 +88,7 @@ export class ResolutionSession {
    * @param binding Binding
    * @param session Resolution session
    */
-  static enterBinding(
+  private static enterBinding(
     binding: Binding,
     session?: ResolutionSession,
   ): ResolutionSession {
@@ -52,17 +98,56 @@ export class ResolutionSession {
   }
 
   /**
+   * Run the given action with the given binding and session
+   * @param action A function to do some work with the resolution session
+   * @param binding The current binding
+   * @param session The current resolution session
+   */
+  static runWithBinding(
+    action: ResolutionAction,
+    binding: Binding,
+    session?: ResolutionSession,
+  ) {
+    const resolutionSession = ResolutionSession.enterBinding(binding, session);
+    return tryWithFinally(
+      () => action(resolutionSession),
+      () => resolutionSession.popBinding(),
+    );
+  }
+
+  /**
    * Push an injection into the session
    * @param injection Injection
    * @param session Resolution session
    */
-  static enterInjection(
+  private static enterInjection(
     injection: Injection,
     session?: ResolutionSession,
   ): ResolutionSession {
     session = session || new ResolutionSession();
     session.pushInjection(injection);
     return session;
+  }
+
+  /**
+   * Run the given action with the given injection and session
+   * @param action A function to do some work with the resolution session
+   * @param binding The current injection
+   * @param session The current resolution session
+   */
+  static runWithInjection(
+    action: ResolutionAction,
+    injection: Injection,
+    session?: ResolutionSession,
+  ) {
+    const resolutionSession = ResolutionSession.enterInjection(
+      injection,
+      session,
+    );
+    return tryWithFinally(
+      () => action(resolutionSession),
+      () => resolutionSession.popInjection(),
+    );
   }
 
   /**
