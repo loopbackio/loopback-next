@@ -123,12 +123,22 @@ export class DecoratorFactory<
   }
 
   /**
-   * Get name of a decoration target
+   * Get the qualified name of a decoration target. For example:
+   * ```
+   * class MyClass
+   * MyClass.constructor[0] // First parameter of the constructor
+   * MyClass.myStaticProperty
+   * MyClass.myStaticMethod()
+   * MyClass.myStaticMethod[0] // First parameter of the myStaticMethod
+   * MyClass.prototype.myProperty
+   * MyClass.prototype.myMethod()
+   * MyClass.prototype.myMethod[1] // Second parameter of myMethod
+   * ```
    * @param target Class or prototype of a class
    * @param member Optional property/method name
    * @param descriptorOrIndex Optional method descriptor or parameter index
    */
-  getTargetName(
+  static getTargetName(
     target: Object,
     member?: string | symbol,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
@@ -143,18 +153,11 @@ export class DecoratorFactory<
     if (member == null) member = 'constructor';
     if (typeof descriptorOrIndex === 'number') {
       // Parameter
-      name =
-        'parameter ' +
-        name +
-        '.' +
-        member.toString() +
-        '[' +
-        descriptorOrIndex +
-        ']';
+      name = name + '.' + member.toString() + '[' + descriptorOrIndex + ']';
     } else if (descriptorOrIndex != null) {
-      name = 'method ' + name + '.' + member.toString();
+      name = name + '.' + member.toString() + '()';
     } else {
-      name = 'property ' + name + '.' + member.toString();
+      name = name + '.' + member.toString();
     }
     return name;
   }
@@ -164,8 +167,8 @@ export class DecoratorFactory<
    * @param target Class or the prototype
    * @param member Method name
    */
-  getNumberOfParameters(target: Object, member?: string | symbol) {
-    if (target instanceof Function && member == null) {
+  static getNumberOfParameters(target: Object, member?: string | symbol) {
+    if (target instanceof Function && !member) {
       // constructor
       return target.length;
     } else {
@@ -268,7 +271,11 @@ export class DecoratorFactory<
     member?: string | symbol,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ) {
-    const targetName = this.getTargetName(target, member, descriptorOrIndex);
+    const targetName = DecoratorFactory.getTargetName(
+      target,
+      member,
+      descriptorOrIndex,
+    );
     let meta: M = Reflector.getOwnMetadata(this.key, target);
     if (meta == null && this.allowInheritance()) {
       // Clone the base metadata so that it won't be accidentally
@@ -349,7 +356,7 @@ export class ClassDecoratorFactory<T> extends DecoratorFactory<
     if (ownMetadata != null) {
       throw new Error(
         'Decorator cannot be applied more than once on ' +
-          this.getTargetName(target),
+          DecoratorFactory.getTargetName(target),
       );
     }
     return this.withTarget(this.spec, target);
@@ -401,7 +408,7 @@ export class PropertyDecoratorFactory<T> extends DecoratorFactory<
   ) {
     ownMetadata = ownMetadata || {};
     if (ownMetadata[propertyName!] != null) {
-      const targetName = this.getTargetName(target, propertyName);
+      const targetName = DecoratorFactory.getTargetName(target, propertyName);
       throw new Error(
         'Decorator cannot be applied more than once on ' + targetName,
       );
@@ -464,7 +471,7 @@ export class MethodDecoratorFactory<T> extends DecoratorFactory<
     if (this.getTarget(methodMeta) === target) {
       throw new Error(
         'Decorator cannot be applied more than once on ' +
-          this.getTargetName(target, methodName, methodDescriptor),
+          DecoratorFactory.getTargetName(target, methodName, methodDescriptor),
       );
     }
     // Set the method metadata
@@ -513,7 +520,7 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
     if (methodMeta == null) {
       // Initialize the method metadata
       methodMeta = new Array(
-        this.getNumberOfParameters(target, methodName),
+        DecoratorFactory.getNumberOfParameters(target, methodName),
       ).fill(undefined);
       meta[method] = methodMeta;
     }
@@ -553,7 +560,7 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
     if (this.getTarget(methodMeta[index]) === target) {
       throw new Error(
         'Decorator cannot be applied more than once on ' +
-          this.getTargetName(target, methodName, parameterIndex),
+          DecoratorFactory.getTargetName(target, methodName, parameterIndex),
       );
     }
     // Set the parameter metadata

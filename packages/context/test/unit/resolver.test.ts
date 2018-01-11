@@ -11,6 +11,7 @@ import {
   invokeMethod,
   Injection,
 } from '../..';
+import {ResolutionSession} from '../../src/resolver';
 
 describe('constructor injection', () => {
   let ctx: Context;
@@ -154,6 +155,70 @@ describe('constructor injection', () => {
     const y: YClass = context.getSync('y');
     expect(y.a).to.be.instanceof(XClass);
     expect(y.b).to.be.instanceof(XClass);
+  });
+
+  it('tracks path of bindings', () => {
+    const context = new Context();
+    let bindingPath = '';
+
+    class ZClass {
+      @inject(
+        'p',
+        {},
+        // Set up a custom resolve() to access information from the session
+        (c: Context, injection: Injection, session: ResolutionSession) => {
+          bindingPath = session.getBindingPath();
+        },
+      )
+      myProp: string;
+    }
+
+    class YClass {
+      constructor(@inject('z') public z: ZClass) {}
+    }
+
+    class XClass {
+      constructor(@inject('y') public y: YClass) {}
+    }
+
+    context.bind('x').toClass(XClass);
+    context.bind('y').toClass(YClass);
+    context.bind('z').toClass(ZClass);
+    context.getSync('x');
+    expect(bindingPath).to.eql('x->y->z');
+  });
+
+  it('tracks path of injections', () => {
+    const context = new Context();
+    let injectionPath = '';
+
+    class ZClass {
+      @inject(
+        'p',
+        {},
+        // Set up a custom resolve() to access information from the session
+        (c: Context, injection: Injection, session: ResolutionSession) => {
+          injectionPath = session.getInjectionPath();
+        },
+      )
+      myProp: string;
+    }
+
+    class YClass {
+      constructor(@inject('z') public z: ZClass) {}
+    }
+
+    class XClass {
+      constructor(@inject('y') public y: YClass) {}
+    }
+
+    context.bind('x').toClass(XClass);
+    context.bind('y').toClass(YClass);
+    context.bind('z').toClass(ZClass);
+    context.getSync('x');
+    expect(injectionPath).to.eql(
+      'XClass.constructor[0]->YClass.constructor[0]->ZClass.prototype.myProp',
+    );
   });
 });
 
