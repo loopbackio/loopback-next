@@ -5,6 +5,7 @@
 
 import {Binding, BoundValue, ValueOrPromise} from './binding';
 import {isPromise} from './is-promise';
+import {ResolutionSession} from './resolver';
 
 /**
  * Context provides an implementation of Inversion of Control (IoC) container
@@ -143,9 +144,9 @@ export class Context {
    *   (deeply) nested property to retrieve.
    * @returns A promise of the bound value.
    */
-  get(key: string): Promise<BoundValue> {
+  get(key: string, session?: ResolutionSession): Promise<BoundValue> {
     try {
-      return Promise.resolve(this.getValueOrPromise(key));
+      return Promise.resolve(this.getValueOrPromise(key, session));
     } catch (err) {
       return Promise.reject(err);
     }
@@ -173,8 +174,8 @@ export class Context {
    *   (deeply) nested property to retrieve.
    * @returns A promise of the bound value.
    */
-  getSync(key: string): BoundValue {
-    const valueOrPromise = this.getValueOrPromise(key);
+  getSync(key: string, session?: ResolutionSession): BoundValue {
+    const valueOrPromise = this.getValueOrPromise(key, session);
 
     if (isPromise(valueOrPromise)) {
       throw new Error(
@@ -227,13 +228,17 @@ export class Context {
    *
    * @param keyWithPath The binding key, optionally suffixed with a path to the
    *   (deeply) nested property to retrieve.
+   * @param session An object to keep states of the resolution
    * @returns The bound value or a promise of the bound value, depending
    *   on how the binding was configured.
    * @internal
    */
-  getValueOrPromise(keyWithPath: string): ValueOrPromise<BoundValue> {
+  getValueOrPromise(
+    keyWithPath: string,
+    session?: ResolutionSession,
+  ): ValueOrPromise<BoundValue> {
     const {key, path} = Binding.parseKeyWithPath(keyWithPath);
-    const boundValue = this.getBinding(key).getValue(this);
+    const boundValue = this.getBinding(key).getValue(this, session);
     if (path === undefined || path === '') {
       return boundValue;
     }

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from './context';
-import {BoundValue, ValueOrPromise} from './binding';
+import {BoundValue, ValueOrPromise, Binding} from './binding';
 import {isPromise} from './is-promise';
 import {
   describeInjectedArguments,
@@ -21,6 +21,68 @@ export type Constructor<T> =
   new (...args: any[]) => T;
 
 /**
+ * Object to keep states for a session to resolve bindings and their
+ * dependencies within a context
+ */
+export class ResolutionSession {
+  /**
+   * A stack of bindings for the current resolution session. It's used to track
+   * the path of dependency resolution and detect circular dependencies.
+   */
+  readonly bindings: Binding[] = [];
+
+  /**
+   * Start to resolve a binding within the session
+   * @param binding Binding
+   * @param session Resolution session
+   */
+  static enterBinding(
+    binding: Binding,
+    session?: ResolutionSession,
+  ): ResolutionSession {
+    session = session || new ResolutionSession();
+    session.enter(binding);
+    return session;
+  }
+
+  /**
+   * Getter for the current binding
+   */
+  get binding() {
+    return this.bindings[this.bindings.length - 1];
+  }
+
+  /**
+   * Enter the resolution of the given binding. If
+   * @param binding Binding
+   */
+  enter(binding: Binding) {
+    if (this.bindings.indexOf(binding) !== -1) {
+      throw new Error(
+        `Circular dependency detected for '${
+          binding.key
+        }' on path '${this.getBindingPath()}'`,
+      );
+    }
+    this.bindings.push(binding);
+  }
+
+  /**
+   * Exit the resolution of a binding
+   */
+  exit() {
+    return this.bindings.pop();
+  }
+
+  /**
+   * Get the binding path as `bindingA->bindingB->bindingC`.
+   */
+  getBindingPath() {
+    return this.bindings.map(b => b.key).join('->');
+  }
+}
+
+/**
  * Create an instance of a class which constructor has arguments
  * decorated with `@inject`.
  *
@@ -29,16 +91,19 @@ export type Constructor<T> =
  *
  * @param ctor The class constructor to call.
  * @param ctx The context containing values for `@inject` resolution
+ * @param session Optional session for binding and dependency resolution
  * @param nonInjectedArgs Optional array of args for non-injected parameters
  */
 export function instantiateClass<T>(
   ctor: Constructor<T>,
   ctx: Context,
+  session?: ResolutionSession,
   // tslint:disable-next-line:no-any
   nonInjectedArgs?: any[],
 ): T | Promise<T> {
-  const argsOrPromise = resolveInjectedArguments(ctor, ctx, '');
-  const propertiesOrPromise = resolveInjectedProperties(ctor, ctx);
+  session = session || new ResolutionSession();
+  const argsOrPromise = resolveInjectedArguments(ctor, '', ctx, session);
+  const propertiesOrPromise = resolveInjectedProperties(ctor, ctx, session);
   let inst: T | Promise<T>;
   if (isPromise(argsOrPromise)) {
     // Instantiate the class asynchronously
@@ -72,14 +137,19 @@ export function instantiateClass<T>(
  * Resolve the value or promise for a given injection
  * @param ctx Context
  * @param injection Descriptor of the injection
+ * @param session Optional session for binding and dependency resolution
  */
-function resolve<T>(ctx: Context, injection: Injection): ValueOrPromise<T> {
+function resolve<T>(
+  ctx: Context,
+  injection: Injection,
+  session?: ResolutionSession,
+): ValueOrPromise<T> {
   if (injection.resolve) {
     // A custom resolve function is provided
-    return injection.resolve(ctx, injection);
+    return injection.resolve(ctx, injection, session);
   }
   // Default to resolve the value from the context by binding key
-  return ctx.getValueOrPromise(injection.bindingKey);
+  return ctx.getValueOrPromise(injection.bindingKey, session);
 }
 
 /**
@@ -92,16 +162,18 @@ function resolve<T>(ctx: Context, injection: Injection): ValueOrPromise<T> {
  *
  * @param target The class for constructor injection or prototype for method
  * injection
- * @param ctx The context containing values for `@inject` resolution
  * @param method The method name. If set to '', the constructor will
  * be used.
+ * @param ctx The context containing values for `@inject` resolution
+ * @param session Optional session for binding and dependency resolution
  * @param nonInjectedArgs Optional array of args for non-injected parameters
  */
 export function resolveInjectedArguments(
   // tslint:disable-next-line:no-any
   target: any,
-  ctx: Context,
   method: string,
+  ctx: Context,
+  session?: ResolutionSession,
   // tslint:disable-next-line:no-any
   nonInjectedArgs?: any[],
 ): BoundValue[] | Promise<BoundValue[]> {
@@ -137,7 +209,7 @@ export function resolveInjectedArguments(
       }
     }
 
-    const valueOrPromise = resolve(ctx, injection);
+    const valueOrPromise = resolve(ctx, injection, session);
     if (isPromise(valueOrPromise)) {
       if (!asyncResolvers) asyncResolvers = [];
       asyncResolvers.push(
@@ -173,8 +245,9 @@ export function invokeMethod(
 ): ValueOrPromise<BoundValue> {
   const argsOrPromise = resolveInjectedArguments(
     target,
-    ctx,
     method,
+    ctx,
+    undefined,
     nonInjectedArgs,
   );
   assert(typeof target[method] === 'function', `Method ${method} not found`);
@@ -189,11 +262,24 @@ export function invokeMethod(
 
 export type KV = {[p: string]: BoundValue};
 
+/**
+ * Given a class with properties decorated with `@inject`,
+ * return the map of properties resolved using the values
+ * bound in `ctx`.
+
+ * The function returns an argument array when all dependencies were
+ * resolved synchronously, or a Promise otherwise.
+ *
+ * @param constructor The class for which properties should be resolved.
+ * @param ctx The context containing values for `@inject` resolution
+ * @param session Optional session for binding and dependency resolution
+ */
 export function resolveInjectedProperties(
-  fn: Function,
+  constructor: Function,
   ctx: Context,
+  session?: ResolutionSession,
 ): KV | Promise<KV> {
-  const injectedProperties = describeInjectedProperties(fn.prototype);
+  const injectedProperties = describeInjectedProperties(constructor.prototype);
 
   const properties: KV = {};
   let asyncResolvers: Promise<void>[] | undefined = undefined;
@@ -205,11 +291,12 @@ export function resolveInjectedProperties(
     const injection = injectedProperties[p];
     if (!injection.bindingKey && !injection.resolve) {
       throw new Error(
-        `Cannot resolve injected property for class ${fn.name}: ` +
+        `Cannot resolve injected property for class ${constructor.name}: ` +
           `The property ${p} was not decorated for dependency injection.`,
       );
     }
-    const valueOrPromise = resolve(ctx, injection);
+
+    const valueOrPromise = resolve(ctx, injection, session);
     if (isPromise(valueOrPromise)) {
       if (!asyncResolvers) asyncResolvers = [];
       asyncResolvers.push(valueOrPromise.then(propertyResolver(p)));

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from './context';
-import {Constructor, instantiateClass} from './resolver';
+import {Constructor, instantiateClass, ResolutionSession} from './resolver';
 import {isPromise} from './is-promise';
 import {Provider} from './provider';
 
@@ -147,7 +147,10 @@ export class Binding {
   public type: BindingType;
 
   private _cache: BoundValue;
-  private _getValue: (ctx?: Context) => BoundValue | Promise<BoundValue>;
+  private _getValue: (
+    ctx?: Context,
+    session?: ResolutionSession,
+  ) => BoundValue | Promise<BoundValue>;
 
   // For bindings bound via toClass, this property contains the constructor
   // function
@@ -224,8 +227,14 @@ export class Binding {
    *   doSomething(result);
    * }
    * ```
+   *
+   * @param ctx Context for the resolution
+   * @param session Optional session for binding and dependency resolution
    */
-  getValue(ctx: Context): BoundValue | Promise<BoundValue> {
+  getValue(
+    ctx: Context,
+    session?: ResolutionSession,
+  ): BoundValue | Promise<BoundValue> {
     // First check cached value for non-transient
     if (this._cache !== undefined) {
       if (this.scope === BindingScope.SINGLETON) {
@@ -237,7 +246,22 @@ export class Binding {
       }
     }
     if (this._getValue) {
-      const result = this._getValue(ctx);
+      const resolutionSession = ResolutionSession.enterBinding(this, session);
+      const result = this._getValue(ctx, resolutionSession);
+      if (isPromise(result)) {
+        if (result instanceof Promise) {
+          result.catch(err => {
+            resolutionSession.exit();
+            return Promise.reject(err);
+          });
+        }
+        result.then(val => {
+          resolutionSession.exit();
+          return val;
+        });
+      } else {
+        resolutionSession.exit();
+      }
       return this._cacheValue(ctx, result);
     }
     return Promise.reject(
@@ -347,10 +371,11 @@ export class Binding {
    */
   public toProvider<T>(providerClass: Constructor<Provider<T>>): this {
     this.type = BindingType.PROVIDER;
-    this._getValue = ctx => {
+    this._getValue = (ctx, session) => {
       const providerOrPromise = instantiateClass<Provider<T>>(
         providerClass,
         ctx!,
+        session,
       );
       if (isPromise(providerOrPromise)) {
         return providerOrPromise.then(p => p.value());
@@ -370,7 +395,7 @@ export class Binding {
    */
   toClass<T>(ctor: Constructor<T>): this {
     this.type = BindingType.CLASS;
-    this._getValue = ctx => instantiateClass(ctor, ctx!);
+    this._getValue = (ctx, session) => instantiateClass(ctor, ctx!, session);
     this.valueConstructor = ctor;
     return this;
   }
