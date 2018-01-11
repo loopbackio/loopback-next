@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.16"></a>
+# [4.0.0-alpha.16](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-spec-builder@4.0.0-alpha.15...@loopback/openapi-spec-builder@4.0.0-alpha.16) (2018-01-11)
+
+
+### Features
+
+* **openapi-spec-builder:** add withTags function to spec-builder ([#826](https://github.com/strongloop/loopback-next/issues/826)) ([b70f55a](https://github.com/strongloop/loopback-next/commit/b70f55a))
+
+
+
+
 <a name="4.0.0-alpha.15"></a>
 # [4.0.0-alpha.15](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-spec-builder@4.0.0-alpha.14...@loopback/openapi-spec-builder@4.0.0-alpha.15) (2017-12-21)
 

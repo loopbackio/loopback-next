@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.8"></a>
+# [4.0.0-alpha.8](https://github.com/strongloop/loopback-next/compare/@loopback/build@4.0.0-alpha.7...@loopback/build@4.0.0-alpha.8) (2018-01-11)
+
+
+### Bug Fixes
+
+* fix build break and upgrade dependencies ([917da5d](https://github.com/strongloop/loopback-next/commit/917da5d))
+* update git repo url ([444f06b](https://github.com/strongloop/loopback-next/commit/444f06b))
+
+
+
+
 <a name="4.0.0-alpha.7"></a>
 # [4.0.0-alpha.7](https://github.com/strongloop/loopback4-build/compare/@loopback/build@4.0.0-alpha.6...@loopback/build@4.0.0-alpha.7) (2017-12-11)
 

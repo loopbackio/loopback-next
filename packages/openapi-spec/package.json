@@ -1,12 +1,12 @@
 {
   "name": "@loopback/openapi-spec",
-  "version": "4.0.0-alpha.18",
+  "version": "4.0.0-alpha.19",
   "description": "TypeScript type definitions for OpenAPI Spec/Swagger documents.",
   "engines": {
     "node": ">=6"
   },
   "devDependencies": {
-    "@loopback/build": "^4.0.0-alpha.7"
+    "@loopback/build": "^4.0.0-alpha.8"
   },
   "scripts": {
     "build": "npm run build:dist && npm run build:dist6",

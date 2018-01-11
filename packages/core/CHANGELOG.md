@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.27"></a>
+# [4.0.0-alpha.27](https://github.com/strongloop/loopback-next/compare/@loopback/core@4.0.0-alpha.26...@loopback/core@4.0.0-alpha.27) (2018-01-11)
+
+
+### Bug Fixes
+
+* fix imports to use files owning the definitions ([a50405a](https://github.com/strongloop/loopback-next/commit/a50405a))
+
+
+
+
 <a name="4.0.0-alpha.26"></a>
 # [4.0.0-alpha.26](https://github.com/strongloop/loopback-next/compare/@loopback/core@4.0.0-alpha.25...@loopback/core@4.0.0-alpha.26) (2017-12-21)
 

@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.25"></a>
+# [4.0.0-alpha.25](https://github.com/strongloop/loopback-next/compare/@loopback/context@4.0.0-alpha.24...@loopback/context@4.0.0-alpha.25) (2018-01-11)
+
+
+### Bug Fixes
+
+* resolve injected arguments ([#821](https://github.com/strongloop/loopback-next/issues/821)) ([ca9e4dd](https://github.com/strongloop/loopback-next/commit/ca9e4dd))
+
+
+### Features
+
+* **context:** export function to build binding key with path ([fd804a5](https://github.com/strongloop/loopback-next/commit/fd804a5))
+
+
+### Reverts
+
+* revert error message ([#823](https://github.com/strongloop/loopback-next/issues/823)) ([f83c502](https://github.com/strongloop/loopback-next/commit/f83c502))
+
+
+
+
 <a name="4.0.0-alpha.24"></a>
 # [4.0.0-alpha.24](https://github.com/strongloop/loopback-next/compare/@loopback/context@4.0.0-alpha.23...@loopback/context@4.0.0-alpha.24) (2017-12-21)
 
