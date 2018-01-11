@@ -21,9 +21,12 @@ import {
   PathsObject,
   ItemType,
   ItemsObject,
+  DefinitionsObject,
 } from '@loopback/openapi-spec';
 
 import * as stream from 'stream';
+import {includes} from 'lodash';
+import {modelToJsonDef} from '@loopback/json-schema';
 
 const debug = require('debug')('loopback:rest:router:metadata');
 
@@ -31,7 +34,7 @@ const REST_METHODS_KEY = 'rest:methods';
 const REST_METHODS_WITH_PARAMETERS_KEY = 'rest:methods:parameters';
 const REST_PARAMETERS_KEY = 'rest:parameters';
 const REST_CLASS_KEY = 'rest:class';
-const REST_API_SPEC_KEY = 'rest:api-spec';
+const REST_CONTROLLER_SPEC_KEY = 'rest:controller-spec';
 
 // tslint:disable:no-any
 
@@ -47,8 +50,12 @@ export interface ControllerSpec {
    * The available paths and operations for the API.
    */
   paths: PathsObject;
-}
 
+  /**
+   * JSON Schema definitions of models used by the controller
+   */
+  definitions?: DefinitionsObject;
+}
 /**
  * Decorate the given Controller constructor with metadata describing
  * the HTTP/REST API the Controller implements/provides.
@@ -167,6 +174,25 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
 
     debug(`  adding ${endpointName}`, operationSpec);
     spec.paths[path][verb] = operationSpec;
+
+    debug(`  inferring schema definition for method %s`, op);
+    const paramTypes = MetadataInspector.getDesignTypeForMethod(
+      constructor.prototype,
+      op,
+    ).parameterTypes;
+
+    for (const p of paramTypes) {
+      if (
+        !includes([String, Number, Boolean, Array, Object], p) &&
+        !isReadableStream(p)
+      ) {
+        if (!spec.definitions) {
+          spec.definitions = {};
+        }
+        spec.definitions[p.name] = modelToJsonDef(p) as SchemaObject;
+        break;
+      }
+    }
   }
   return spec;
 }
@@ -177,13 +203,17 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
  */
 export function getControllerSpec(constructor: Function): ControllerSpec {
   let spec = MetadataInspector.getClassMetadata<ControllerSpec>(
-    REST_API_SPEC_KEY,
+    REST_CONTROLLER_SPEC_KEY,
     constructor,
     {ownMetadataOnly: true},
   );
   if (!spec) {
     spec = resolveControllerSpec(constructor);
-    MetadataInspector.defineMetadata(REST_API_SPEC_KEY, spec, constructor);
+    MetadataInspector.defineMetadata(
+      REST_CONTROLLER_SPEC_KEY,
+      spec,
+      constructor,
+    );
   }
   return spec;
 }

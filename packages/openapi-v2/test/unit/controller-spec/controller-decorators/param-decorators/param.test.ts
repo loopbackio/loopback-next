@@ -3,15 +3,24 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {get, param, getControllerSpec, operation, patch} from '../../../../..';
+import {
+  get,
+  param,
+  getControllerSpec,
+  operation,
+  patch,
+  post,
+} from '../../../../..';
 import {
   OperationObject,
   ParameterObject,
   ResponsesObject,
+  DefinitionsObject,
 } from '@loopback/openapi-spec';
 import {expect} from '@loopback/testlab';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
 import * as stream from 'stream';
+import {model, property} from '@loopback/repository';
 
 describe('Routing metadata for parameters', () => {
   describe('@param', () => {
@@ -268,6 +277,97 @@ describe('Routing metadata for parameters', () => {
         .build();
 
       expect(actualSpec.paths['/greet']['get']).to.eql(expectedSpec);
+    });
+
+    it('infers complex body parameter definition into the controller spec', () => {
+      const fooSpec: ParameterObject = {
+        name: 'foo',
+        in: 'body',
+      };
+      const barSpec: ParameterObject = {
+        name: 'bar',
+        in: 'body',
+      };
+      @model()
+      class Foo {
+        @property() price: number;
+      }
+      @model()
+      class Bar {
+        @property() name: string;
+        @property() foo: Foo;
+      }
+      class MyController {
+        @post('/foo')
+        foo(@param(fooSpec) foo: Foo) {}
+
+        @post('/bar')
+        bar(@param(barSpec) bar: Bar) {}
+      }
+
+      const defs = getControllerSpec(MyController)
+        .definitions as DefinitionsObject;
+
+      // tslint:disable-next-line:no-any
+      expect(Object.keys(defs)).to.deepEqual(['Foo', 'Bar']);
+      expect(defs.Foo).to.deepEqual({
+        properties: {
+          price: {
+            type: 'number',
+          },
+        },
+      });
+      expect(defs.Bar).to.deepEqual({
+        properties: {
+          name: {
+            type: 'string',
+          },
+          foo: {
+            $ref: '#definitions/Foo',
+          },
+        },
+      });
+    });
+
+    it('infers empty body parameter definition if no property metadata is present', () => {
+      const paramSpec: ParameterObject = {
+        name: 'foo',
+        in: 'body',
+      };
+      @model()
+      class MyBody {
+        name: string;
+      }
+      class MyController {
+        @post('/foo')
+        foo(@param(paramSpec) foo: MyBody) {}
+      }
+
+      const defs = getControllerSpec(MyController)
+        .definitions as DefinitionsObject;
+
+      expect(Object.keys(defs)).to.deepEqual(['MyBody']);
+      expect(defs.MyBody).to.deepEqual({});
+    });
+
+    it('does not infer definition if no class metadata is present', () => {
+      const paramSpec: ParameterObject = {
+        name: 'foo',
+        in: 'body',
+      };
+      class MyBody {
+        @property() name: string;
+      }
+      class MyController {
+        @post('/foo')
+        foo(@param(paramSpec) foo: MyBody) {}
+      }
+
+      const defs = getControllerSpec(MyController)
+        .definitions as DefinitionsObject;
+
+      expect(Object.keys(defs)).to.deepEqual(['MyBody']);
+      expect(defs.MyBody).to.deepEqual({});
     });
 
     it('can define multiple parameters in order', () => {

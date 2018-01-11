@@ -6,8 +6,9 @@
 import {expect, validateApiSpec} from '@loopback/testlab';
 import {Application} from '@loopback/core';
 import {RestServer, Route, RestComponent} from '../../..';
-import {get} from '@loopback/openapi-v2';
+import {get, post, param} from '@loopback/openapi-v2';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
+import {model, property} from '@loopback/repository';
 
 describe('RestServer.getApiSpec()', () => {
   let app: Application;
@@ -29,6 +30,7 @@ describe('RestServer.getApiSpec()', () => {
       basePath: '/api',
       paths: {},
       'x-foo': 'bar',
+      definitions: {},
     });
 
     const spec = server.getApiSpec();
@@ -42,6 +44,7 @@ describe('RestServer.getApiSpec()', () => {
       basePath: '/api',
       paths: {},
       'x-foo': 'bar',
+      definitions: {},
     });
   });
 
@@ -114,6 +117,29 @@ describe('RestServer.getApiSpec()', () => {
           'x-controller-name': 'MyController',
           'x-operation-name': 'greet',
           tags: ['MyController'],
+        },
+      },
+    });
+  });
+
+  it('returns definitions inferred via app.controller()', () => {
+    @model()
+    class MyModel {
+      @property() bar: string;
+    }
+    class MyController {
+      @post('/foo')
+      createFoo(@param.body('foo') foo: MyModel) {}
+    }
+    app.controller(MyController);
+
+    const spec = server.getApiSpec();
+    expect(spec.definitions).to.deepEqual({
+      MyModel: {
+        properties: {
+          bar: {
+            type: 'string',
+          },
         },
       },
     });

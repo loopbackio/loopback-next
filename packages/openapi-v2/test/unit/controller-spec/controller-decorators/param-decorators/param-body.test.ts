@@ -5,6 +5,7 @@
 
 import {post, param, getControllerSpec} from '../../../../..';
 import {expect} from '@loopback/testlab';
+import {model, property} from '@loopback/repository';
 
 describe('Routing metadata for parameters', () => {
   describe('@param.body', () => {
@@ -45,6 +46,28 @@ describe('Routing metadata for parameters', () => {
         schema: {$ref: '#/definitions/MyData'},
       },
     ]);
+  });
+
+  it('infers a complex parameter definition with in:body', () => {
+    @model()
+    class MyData {
+      @property() name: string;
+    }
+    class MyController {
+      @post('/greeting')
+      greet(@param.body('data') data: MyData) {}
+    }
+
+    const actualSpec = getControllerSpec(MyController);
+    expect(actualSpec.definitions).to.deepEqual({
+      MyData: {
+        properties: {
+          name: {
+            type: 'string',
+          },
+        },
+      },
+    });
   });
 
   it('infers a string parameter type with in:body', () => {

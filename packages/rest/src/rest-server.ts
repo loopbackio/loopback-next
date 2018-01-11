@@ -218,6 +218,9 @@ export class RestServer extends Context implements Server {
         // controller methods are specified through app.api() spec
         continue;
       }
+      if (apiSpec.definitions) {
+        this._httpHandler.registerApiDefinitions(apiSpec.definitions);
+      }
       this._httpHandler.registerController(ctor, apiSpec);
     }
 
@@ -445,11 +448,14 @@ export class RestServer extends Context implements Server {
    */
   getApiSpec(): OpenApiSpec {
     const spec = this.getSync(RestBindings.API_SPEC);
+    const defs = this.httpHandler.getApiDefinitions();
 
     // Apply deep clone to prevent getApiSpec() callers from
     // accidentally modifying our internal routing data
     spec.paths = cloneDeep(this.httpHandler.describeApiPaths());
-
+    if (Object.keys(defs).length > 0) {
+      spec.definitions = cloneDeep(defs);
+    }
     return spec;
   }
 

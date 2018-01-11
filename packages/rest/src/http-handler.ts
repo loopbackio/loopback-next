@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from '@loopback/context';
-import {PathsObject} from '@loopback/openapi-spec';
+import {PathsObject, DefinitionsObject} from '@loopback/openapi-spec';
 import {ServerRequest, ServerResponse} from 'http';
 import {ControllerSpec} from '@loopback/openapi-v2';
 
@@ -22,6 +22,7 @@ import {RestBindings} from './keys';
 
 export class HttpHandler {
   protected _routes: RoutingTable = new RoutingTable();
+  protected _apiDefinitions: DefinitionsObject = {};
 
   public handleRequest: (
     request: ServerRequest,
@@ -38,6 +39,14 @@ export class HttpHandler {
 
   registerRoute(route: RouteEntry) {
     this._routes.registerRoute(route);
+  }
+
+  registerApiDefinitions(defs: DefinitionsObject) {
+    Object.assign(this._apiDefinitions, defs);
+  }
+
+  getApiDefinitions() {
+    return this._apiDefinitions;
   }
 
   describeApiPaths(): PathsObject {
