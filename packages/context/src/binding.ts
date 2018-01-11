@@ -267,7 +267,8 @@ export class Binding {
   }
 
   /**
-   * Bind the key to a constant value.
+   * Bind the key to a constant value. The value must be already available
+   * at binding time, it is not allowed to pass a Promise instance.
    *
    * @param value The bound value.
    *
@@ -278,6 +279,27 @@ export class Binding {
    * ```
    */
   to(value: BoundValue): this {
+    if (isPromise(value)) {
+      // Promises are a construct primarily intended for flow control:
+      // In an algorithm with steps 1 and 2, we want to wait for the outcome
+      // of step 1 before starting step 2.
+      //
+      // Promises are NOT a tool for storing values that may become available
+      // in the future, depending on the success or a failure of a background
+      // async task.
+      //
+      // Values stored in bindings are typically accessed only later,
+      // in a different turn of the event loop or the Promise micro-queue.
+      // As a result, when a promise is stored via `.to()` and is rejected
+      // later, then more likely than not, there will be no error (catch)
+      // handler registered yet, and Node.js will print
+      // "Unhandled Rejection Warning".
+      throw new Error(
+        'Promise instances are not allowed for constant values ' +
+          'bound via ".to()". Register an async getter function ' +
+          'via ".toDynamicValue()" instead.',
+      );
+    }
     this.type = BindingType.CONSTANT;
     this._getValue = () => value;
     return this;

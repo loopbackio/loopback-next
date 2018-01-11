@@ -95,8 +95,8 @@ describe('async constructor injection', () => {
 
   before(function() {
     ctx = new Context();
-    ctx.bind('foo').to(Promise.resolve('FOO'));
-    ctx.bind('bar').to(Promise.resolve('BAR'));
+    ctx.bind('foo').toDynamicValue(() => Promise.resolve('FOO'));
+    ctx.bind('bar').toDynamicValue(() => Promise.resolve('BAR'));
   });
 
   it('resolves constructor arguments', async () => {
@@ -196,8 +196,8 @@ describe('async property injection', () => {
 
   before(function() {
     ctx = new Context();
-    ctx.bind('foo').to(Promise.resolve('FOO'));
-    ctx.bind('bar').to(Promise.resolve('BAR'));
+    ctx.bind('foo').toDynamicValue(() => Promise.resolve('FOO'));
+    ctx.bind('bar').toDynamicValue(() => Promise.resolve('BAR'));
   });
 
   it('resolves injected properties', async () => {
@@ -246,8 +246,8 @@ describe('async dependency injection', () => {
 
   before(function() {
     ctx = new Context();
-    ctx.bind('foo').to(Promise.resolve('FOO'));
-    ctx.bind('bar').to(Promise.resolve('BAR'));
+    ctx.bind('foo').toDynamicValue(() => Promise.resolve('FOO'));
+    ctx.bind('bar').toDynamicValue(() => Promise.resolve('BAR'));
   });
 
   it('resolves properties and constructor arguments', async () => {
@@ -268,7 +268,7 @@ describe('async constructor & sync property injection', () => {
 
   before(function() {
     ctx = new Context();
-    ctx.bind('foo').to(Promise.resolve('FOO'));
+    ctx.bind('foo').toDynamicValue(() => Promise.resolve('FOO'));
     ctx.bind('bar').to('BAR');
   });
 
@@ -291,7 +291,7 @@ describe('sync constructor & async property injection', () => {
   before(function() {
     ctx = new Context();
     ctx.bind('foo').to('FOO');
-    ctx.bind('bar').to(Promise.resolve('BAR'));
+    ctx.bind('bar').toDynamicValue(() => Promise.resolve('BAR'));
   });
 
   it('resolves properties and constructor arguments', async () => {
@@ -396,8 +396,8 @@ describe('async method injection', () => {
 
   before(function() {
     ctx = new Context();
-    ctx.bind('foo').to(Promise.resolve('FOO'));
-    ctx.bind('bar').to(Promise.resolve('BAR'));
+    ctx.bind('foo').toDynamicValue(() => Promise.resolve('FOO'));
+    ctx.bind('bar').toDynamicValue(() => Promise.resolve('BAR'));
   });
 
   it('resolves arguments for a prototype method', async () => {
