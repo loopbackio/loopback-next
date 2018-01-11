@@ -12,7 +12,6 @@ import {
 } from '@loopback/metadata';
 import {BoundValue, ValueOrPromise} from './binding';
 import {Context} from './context';
-import {isPromise} from './is-promise';
 import {ResolutionSession} from './resolver';
 
 const PARAMETERS_KEY = 'inject:parameters';
