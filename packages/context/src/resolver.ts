@@ -133,22 +133,22 @@ function resolve<T>(
       resolved = ctx.getValueOrPromise(injection.bindingKey, session);
     }
   } catch (e) {
-    session.exit();
+    session.popBinding();
     throw e;
   }
   if (isPromise(resolved)) {
     resolved = resolved.then(
       r => {
-        session!.exitInjection();
+        session!.popInjection();
         return r;
       },
       e => {
-        session!.exitInjection();
+        session!.popInjection();
         throw e;
       },
     );
   } else {
-    session.exitInjection();
+    session.popInjection();
   }
   return resolved;
 }
