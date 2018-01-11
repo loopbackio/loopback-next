@@ -259,22 +259,22 @@ export class Binding {
       try {
         result = this._getValue(ctx, resolutionSession);
       } catch (e) {
-        resolutionSession.exit();
+        resolutionSession.popBinding();
         throw e;
       }
       if (isPromise(result)) {
         result = result.then(
           (val: BoundValue) => {
-            resolutionSession.exit();
+            resolutionSession.popBinding();
             return val;
           },
           err => {
-            resolutionSession.exit();
+            resolutionSession.popBinding();
             throw err;
           },
         );
       } else {
-        resolutionSession.exit();
+        resolutionSession.popBinding();
       }
       return this._cacheValue(ctx, result);
     }

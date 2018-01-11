@@ -21,6 +21,9 @@ export class ResolutionSession {
    */
   readonly bindings: Binding[] = [];
 
+  /**
+   * A stack of injections for the current resolution session.
+   */
   readonly injections: Injection[] = [];
 
   /**
@@ -44,7 +47,7 @@ export class ResolutionSession {
     session?: ResolutionSession,
   ): ResolutionSession {
     session = session || new ResolutionSession();
-    session.enter(binding);
+    session.pushBinding(binding);
     return session;
   }
 
@@ -58,10 +61,14 @@ export class ResolutionSession {
     session?: ResolutionSession,
   ): ResolutionSession {
     session = session || new ResolutionSession();
-    session.enterInjection(injection);
+    session.pushInjection(injection);
     return session;
   }
 
+  /**
+   * Describe the injection for debugging purpose
+   * @param injection
+   */
   static describeInjection(injection?: Injection) {
     /* istanbul ignore if */
     if (injection == null) return injection;
@@ -81,7 +88,7 @@ export class ResolutionSession {
    * Push the injection onto the session
    * @param injection Injection
    */
-  enterInjection(injection: Injection) {
+  pushInjection(injection: Injection) {
     /* istanbul ignore if */
     if (debugSession.enabled) {
       debugSession(
@@ -99,7 +106,7 @@ export class ResolutionSession {
   /**
    * Pop the last injection
    */
-  exitInjection() {
+  popInjection() {
     const injection = this.injections.pop();
     /* istanbul ignore if */
     if (debugSession.enabled) {
@@ -130,7 +137,7 @@ export class ResolutionSession {
    * Enter the resolution of the given binding. If
    * @param binding Binding
    */
-  enter(binding: Binding) {
+  pushBinding(binding: Binding) {
     /* istanbul ignore if */
     if (debugSession.enabled) {
       debugSession('Enter binding:', binding.toJSON());
@@ -152,7 +159,7 @@ export class ResolutionSession {
   /**
    * Exit the resolution of a binding
    */
-  exit() {
+  popBinding() {
     const binding = this.bindings.pop();
     /* istanbul ignore if */
     if (debugSession.enabled) {
