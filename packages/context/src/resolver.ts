@@ -121,35 +121,19 @@ function resolve<T>(
       ResolutionSession.describeInjection(injection),
     );
   }
-  let resolved: ValueOrPromise<T>;
-  // Push the injection onto the session
-  session = ResolutionSession.enterInjection(injection, session);
-  try {
-    if (injection.resolve) {
-      // A custom resolve function is provided
-      resolved = injection.resolve(ctx, injection, session);
-    } else {
-      // Default to resolve the value from the context by binding key
-      resolved = ctx.getValueOrPromise(injection.bindingKey, session);
-    }
-  } catch (e) {
-    session.popBinding();
-    throw e;
-  }
-  if (isPromise(resolved)) {
-    resolved = resolved.then(
-      r => {
-        session!.popInjection();
-        return r;
-      },
-      e => {
-        session!.popInjection();
-        throw e;
-      },
-    );
-  } else {
-    session.popInjection();
-  }
+  let resolved = ResolutionSession.runWithInjection(
+    s => {
+      if (injection.resolve) {
+        // A custom resolve function is provided
+        return injection.resolve(ctx, injection, s);
+      } else {
+        // Default to resolve the value from the context by binding key
+        return ctx.getValueOrPromise(injection.bindingKey, s);
+      }
+    },
+    injection,
+    session,
+  );
   return resolved;
 }
 
