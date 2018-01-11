@@ -51,40 +51,35 @@ module.exports = function(artiGenerator) {
 
     describe('checkLoopBackProject', () => {
       testCheckLoopBack(
-        'throws an error if no package.json is present',
+        'throws an error if lbVersion is undefined',
         undefined,
-        /No package.json found/
+        /Invalid version./
       );
       testCheckLoopBack(
-        'throws an error if "keywords" key does not exist',
-        {foobar: 'test'},
-        /No `loopback` keyword found/
-      );
-      testCheckLoopBack(
-        'throws an error if "keywords" key does not map to an array with "loopback" as a member',
-        {keywords: ['foobar', 'test']},
-        /No `loopback` keyword found/
+        'throws an error if version is below 4.0.0',
+        '3.9.9',
+        /Invalid version./
       );
 
-      it('passes if "keywords" maps to "loopback"', () => {
+      it('passes if "lbVersion" is "4.0.0" or greater', () => {
         let gen = testUtils.testSetUpGen(artiGenerator);
-        gen.fs.readJSON = sinon.stub(fs, 'readJSON');
-        gen.fs.readJSON.returns({keywords: ['test', 'loopback']});
+        gen.config.get = sinon.stub(gen.config, 'get');
+        gen.config.get.withArgs('lbVersion').returns('4.0.0');
         assert.doesNotThrow(() => {
           gen.checkLoopBackProject();
         }, Error);
-        gen.fs.readJSON.restore();
+        gen.config.get.restore();
       });
 
-      function testCheckLoopBack(testName, obj, expected) {
+      function testCheckLoopBack(testName, str, expected) {
         it(testName, () => {
           let gen = testUtils.testSetUpGen(artiGenerator);
           let logs = [];
           gen.log = function(...args) {
             logs = logs.concat(args);
           };
-          gen.fs.readJSON = sinon.stub(fs, 'readJSON');
-          gen.fs.readJSON.returns(obj);
+          gen.config.get = sinon.stub(gen.config, 'get');
+          gen.config.get.withArgs('lbVersion').returns(str);
           gen.checkLoopBackProject();
           assert(gen.exitGeneration instanceof Error);
           assert(gen.exitGeneration.message.match(expected));
@@ -92,7 +87,7 @@ module.exports = function(artiGenerator) {
           assert.deepEqual(logs, [
             chalk.red('Generation is aborted:', gen.exitGeneration),
           ]);
-          gen.fs.readJSON.restore();
+          gen.config.get.restore();
         });
       }
     });
