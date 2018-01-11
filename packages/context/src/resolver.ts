@@ -40,6 +40,17 @@ export class ResolutionSession {
   readonly injections: Injection[] = [];
 
   /**
+   * Take a snapshot of the ResolutionSession so that we can pass it to
+   * `@inject.getter` without interferring with the current session
+   */
+  clone() {
+    const copy = new ResolutionSession();
+    copy.bindings.push(...this.bindings);
+    copy.injections.push(...this.injections);
+    return copy;
+  }
+
+  /**
    * Start to resolve a binding within the session
    * @param binding Binding
    * @param session Resolution session
