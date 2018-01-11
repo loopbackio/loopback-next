@@ -307,7 +307,7 @@ function resolve<T>(
       })
       .catch(e => {
         session!.exitInjection();
-        return Promise.reject(e);
+        throw e;
       });
   } else {
     session.exitInjection();

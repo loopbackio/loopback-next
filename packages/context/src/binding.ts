@@ -254,15 +254,18 @@ export class Binding {
     }
     if (this._getValue) {
       const resolutionSession = ResolutionSession.enterBinding(this, session);
-      const result = this._getValue(ctx, resolutionSession);
+      let result: ValueOrPromise<BoundValue> = this._getValue(
+        ctx,
+        resolutionSession,
+      );
       if (isPromise(result)) {
         if (result instanceof Promise) {
-          result.catch(err => {
+          result = result.catch(err => {
             resolutionSession.exit();
-            return Promise.reject(err);
+            throw err;
           });
         }
-        result.then(val => {
+        result = result.then((val: BoundValue) => {
           resolutionSession.exit();
           return val;
         });

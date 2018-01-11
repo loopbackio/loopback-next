@@ -10,7 +10,6 @@ import {
   instantiateClass,
   invokeMethod,
   Injection,
-  Constructor,
   Getter,
   ResolutionSession,
 } from '../..';
