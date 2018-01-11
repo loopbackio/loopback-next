@@ -9,6 +9,9 @@
 // tslint:disable:no-any
 
 import * as util from 'util';
+// The @types/util.promisify conflicts with @types/node due to rescoping
+// issues, so falling back to legacy import.
+const promisifyPolyfill = require('util.promisify/implementation');
 
 const nativePromisify = (util as any).promisify;
 
@@ -31,17 +34,7 @@ export function promisify<T>(
 ): (...args: any[]) => Promise<T> {
   if (nativePromisify) return nativePromisify(func);
 
-  // The simplest implementation of Promisify
-  return (...args) => {
-    return new Promise((resolve, reject) => {
-      try {
-        func(...args, (err?: any, result?: any) => {
-          if (err) reject(err);
-          else resolve(result);
-        });
-      } catch (err) {
-        reject(err);
-      }
-    });
-  };
+  // TODO(kjdelisle): Once Node 6 has been dropped, we can remove this
+  // compatibility support.
+  return promisifyPolyfill(func);
 }
