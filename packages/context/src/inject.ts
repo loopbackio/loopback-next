@@ -188,10 +188,15 @@ export namespace inject {
   };
 }
 
-function resolveAsGetter(ctx: Context, injection: Injection) {
-  // No resolution session should be propagated into the getter
+function resolveAsGetter(
+  ctx: Context,
+  injection: Injection,
+  session?: ResolutionSession,
+) {
+  // We need to clone the session for the getter as it will be resolved later
+  if (session != null) session = session.clone();
   return function getter() {
-    return ctx.get(injection.bindingKey);
+    return ctx.get(injection.bindingKey, session);
   };
 }
 

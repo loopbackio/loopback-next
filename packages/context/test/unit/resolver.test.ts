@@ -10,8 +10,10 @@ import {
   instantiateClass,
   invokeMethod,
   Injection,
+  Constructor,
+  Getter,
+  ResolutionSession,
 } from '../..';
-import {ResolutionSession} from '../../src/resolver';
 
 describe('constructor injection', () => {
   let ctx: Context;
@@ -193,6 +195,38 @@ describe('constructor injection', () => {
     context.bind('y').toClass(YClass);
     context.bind('z').toClass(ZClass);
     context.getSync('x');
+    expect(bindingPath).to.eql('x --> y --> z');
+  });
+
+  it('tracks path of bindings for @inject.getter', async () => {
+    const context = new Context();
+    let bindingPath = '';
+
+    class ZClass {
+      @inject(
+        'p',
+        {},
+        // Set up a custom resolve() to access information from the session
+        (c: Context, injection: Injection, session: ResolutionSession) => {
+          bindingPath = session.getBindingPath();
+        },
+      )
+      myProp: string;
+    }
+
+    class YClass {
+      constructor(@inject.getter('z') public z: Getter<ZClass>) {}
+    }
+
+    class XClass {
+      constructor(@inject('y') public y: YClass) {}
+    }
+
+    context.bind('x').toClass(XClass);
+    context.bind('y').toClass(YClass);
+    context.bind('z').toClass(ZClass);
+    const x: XClass = context.getSync('x');
+    await x.y.z();
     expect(bindingPath).to.eql('x --> y --> z');
   });
 
