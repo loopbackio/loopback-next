@@ -12,6 +12,10 @@ import {
   Injection,
 } from './inject';
 import * as assert from 'assert';
+import * as debugModule from 'debug';
+import {DecoratorFactory} from '@loopback/metadata';
+
+const debug = debugModule('loopback:context:resolver');
 
 /**
  * A class constructor accepting arbitrary arguments.
@@ -31,6 +35,8 @@ export class ResolutionSession {
    */
   readonly bindings: Binding[] = [];
 
+  readonly injections: Injection[] = [];
+
   /**
    * Start to resolve a binding within the session
    * @param binding Binding
@@ -46,6 +52,67 @@ export class ResolutionSession {
   }
 
   /**
+   * Push an injection into the session
+   * @param injection Injection
+   * @param session Resolution session
+   */
+  static enterInjection(
+    injection: Injection,
+    session?: ResolutionSession,
+  ): ResolutionSession {
+    session = session || new ResolutionSession();
+    session.enterInjection(injection);
+    return session;
+  }
+
+  private describeInjection(injection?: Injection) {
+    if (injection == null) return injection;
+    const name = DecoratorFactory.getTargetName(
+      injection.target,
+      injection.member,
+      injection.methodDescriptorOrParameterIndex,
+    );
+    return {
+      targetName: name,
+      bindingKey: injection.bindingKey,
+      metadata: injection.metadata,
+    };
+  }
+
+  /**
+   * Push the injection onto the session
+   * @param injection Injection
+   */
+  enterInjection(injection: Injection) {
+    if (debug.enabled) {
+      debug('Enter injection:', this.describeInjection(injection));
+    }
+    this.injections.push(injection);
+    if (debug.enabled) {
+      debug('Injection path:', this.getInjectionPath());
+    }
+  }
+
+  /**
+   * Pop the last injection
+   */
+  exitInjection() {
+    const injection = this.injections.pop();
+    if (debug.enabled) {
+      debug('Exit injection:', this.describeInjection(injection));
+      debug('Injection path:', this.getInjectionPath() || '<empty>');
+    }
+    return injection;
+  }
+
+  /**
+   * Getter for the current binding
+   */
+  get injection() {
+    return this.injections[this.injections.length - 1];
+  }
+
+  /**
    * Getter for the current binding
    */
   get binding() {
@@ -57,6 +124,9 @@ export class ResolutionSession {
    * @param binding Binding
    */
   enter(binding: Binding) {
+    if (debug.enabled) {
+      debug('Enter binding:', binding.toJSON());
+    }
     if (this.bindings.indexOf(binding) !== -1) {
       throw new Error(
         `Circular dependency detected for '${
@@ -65,13 +135,21 @@ export class ResolutionSession {
       );
     }
     this.bindings.push(binding);
+    if (debug.enabled) {
+      debug('Binding path:', this.getBindingPath());
+    }
   }
 
   /**
    * Exit the resolution of a binding
    */
   exit() {
-    return this.bindings.pop();
+    const binding = this.bindings.pop();
+    if (debug.enabled) {
+      debug('Exit binding:', binding && binding.toJSON());
+      debug('Binding path:', this.getBindingPath() || '<empty>');
+    }
+    return binding;
   }
 
   /**
@@ -79,6 +157,15 @@ export class ResolutionSession {
    */
   getBindingPath() {
     return this.bindings.map(b => b.key).join('->');
+  }
+
+  /**
+   * Get the injection path as `injectionA->injectionB->injectionC`.
+   */
+  getInjectionPath() {
+    return this.injections
+      .map(i => this.describeInjection(i)!.targetName)
+      .join('->');
   }
 }
 
@@ -144,12 +231,30 @@ function resolve<T>(
   injection: Injection,
   session?: ResolutionSession,
 ): ValueOrPromise<T> {
+  let resolved: ValueOrPromise<T>;
+  // Push the injection onto the session
+  session = ResolutionSession.enterInjection(injection, session);
   if (injection.resolve) {
     // A custom resolve function is provided
-    return injection.resolve(ctx, injection, session);
+    resolved = injection.resolve(ctx, injection, session);
+  } else {
+    // Default to resolve the value from the context by binding key
+    resolved = ctx.getValueOrPromise(injection.bindingKey, session);
   }
-  // Default to resolve the value from the context by binding key
-  return ctx.getValueOrPromise(injection.bindingKey, session);
+  if (isPromise(resolved)) {
+    resolved = resolved
+      .then(r => {
+        session!.exitInjection();
+        return r;
+      })
+      .catch(e => {
+        session!.exitInjection();
+        return Promise.reject(e);
+      });
+  } else {
+    session.exitInjection();
+  }
+  return resolved;
 }
 
 /**
@@ -169,16 +274,19 @@ function resolve<T>(
  * @param nonInjectedArgs Optional array of args for non-injected parameters
  */
 export function resolveInjectedArguments(
-  // tslint:disable-next-line:no-any
-  target: any,
+  target: Object,
   method: string,
   ctx: Context,
   session?: ResolutionSession,
   // tslint:disable-next-line:no-any
   nonInjectedArgs?: any[],
 ): BoundValue[] | Promise<BoundValue[]> {
+  const targetWithMethods = <{[method: string]: Function}>target;
   if (method) {
-    assert(typeof target[method] === 'function', `Method ${method} not found`);
+    assert(
+      typeof targetWithMethods[method] === 'function',
+      `Method ${method} not found`,
+    );
   }
   // NOTE: the array may be sparse, i.e.
   //   Object.keys(injectedArgs).length !== injectedArgs.length
@@ -187,7 +295,7 @@ export function resolveInjectedArguments(
   const injectedArgs = describeInjectedArguments(target, method);
   nonInjectedArgs = nonInjectedArgs || [];
 
-  const argLength = method ? target[method].length : target.length;
+  const argLength = DecoratorFactory.getNumberOfParameters(target, method);
   const args: BoundValue[] = new Array(argLength);
   let asyncResolvers: Promise<void>[] | undefined = undefined;
 
@@ -195,14 +303,14 @@ export function resolveInjectedArguments(
   for (let ix = 0; ix < argLength; ix++) {
     const injection = ix < injectedArgs.length ? injectedArgs[ix] : undefined;
     if (injection == null || (!injection.bindingKey && !injection.resolve)) {
-      const name = method || target.name;
       if (nonInjectedIndex < nonInjectedArgs.length) {
         // Set the argument from the non-injected list
         args[ix] = nonInjectedArgs[nonInjectedIndex++];
         continue;
       } else {
+        const name = DecoratorFactory.getTargetName(target, method, ix);
         throw new Error(
-          `Cannot resolve injected arguments for function ${name}: ` +
+          `Cannot resolve injected arguments for ${name}: ` +
             `The arguments[${ix}] is not decorated for dependency injection, ` +
             `but a value is not supplied`,
         );
@@ -236,8 +344,7 @@ export function resolveInjectedArguments(
  * @param nonInjectedArgs Optional array of args for non-injected parameters
  */
 export function invokeMethod(
-  // tslint:disable-next-line:no-any
-  target: any,
+  target: Object,
   method: string,
   ctx: Context,
   // tslint:disable-next-line:no-any
@@ -250,13 +357,17 @@ export function invokeMethod(
     undefined,
     nonInjectedArgs,
   );
-  assert(typeof target[method] === 'function', `Method ${method} not found`);
+  const targetWithMethods = <{[method: string]: Function}>target;
+  assert(
+    typeof targetWithMethods[method] === 'function',
+    `Method ${method} not found`,
+  );
   if (isPromise(argsOrPromise)) {
     // Invoke the target method asynchronously
-    return argsOrPromise.then(args => target[method](...args));
+    return argsOrPromise.then(args => targetWithMethods[method](...args));
   } else {
     // Invoke the target method synchronously
-    return target[method](...argsOrPromise);
+    return targetWithMethods[method](...argsOrPromise);
   }
 }
 

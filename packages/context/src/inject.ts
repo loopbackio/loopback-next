@@ -5,6 +5,7 @@
 
 import {
   MetadataInspector,
+  DecoratorFactory,
   ParameterDecoratorFactory,
   PropertyDecoratorFactory,
   MetadataMap,
@@ -32,6 +33,12 @@ export interface ResolverFunction {
  * Descriptor for an injection point
  */
 export interface Injection {
+  target: Object;
+  member?: string | symbol;
+  methodDescriptorOrParameterIndex?:
+    | TypedPropertyDescriptor<BoundValue>
+    | number;
+
   bindingKey: string; // Binding key
   metadata?: {[attribute: string]: BoundValue}; // Related metadata
   resolve?: ResolverFunction; // A custom resolve function
@@ -69,9 +76,8 @@ export function inject(
   resolve?: ResolverFunction,
 ) {
   return function markParameterOrPropertyAsInjected(
-    // tslint:disable-next-line:no-any
-    target: any,
-    propertyKey: string | symbol,
+    target: Object,
+    member: string | symbol,
     methodDescriptorOrParameterIndex?:
       | TypedPropertyDescriptor<BoundValue>
       | number,
@@ -79,38 +85,47 @@ export function inject(
     if (typeof methodDescriptorOrParameterIndex === 'number') {
       // The decorator is applied to a method parameter
       // Please note propertyKey is `undefined` for constructor
-      const paramDecorator: ParameterDecorator = ParameterDecoratorFactory.createDecorator(
-        PARAMETERS_KEY,
-        {
-          bindingKey,
-          metadata,
-          resolve,
-        },
-      );
-      paramDecorator(target, propertyKey!, methodDescriptorOrParameterIndex);
-    } else if (propertyKey) {
+      const paramDecorator: ParameterDecorator = ParameterDecoratorFactory.createDecorator<
+        Injection
+      >(PARAMETERS_KEY, {
+        target,
+        member,
+        methodDescriptorOrParameterIndex,
+        bindingKey,
+        metadata,
+        resolve,
+      });
+      paramDecorator(target, member!, methodDescriptorOrParameterIndex);
+    } else if (member) {
       // Property or method
-      if (typeof Object.getPrototypeOf(target) === 'function') {
-        const prop = target.name + '.' + propertyKey.toString();
+      if (target instanceof Function) {
         throw new Error(
-          '@inject is not supported for a static property: ' + prop,
+          '@inject is not supported for a static property: ' +
+            DecoratorFactory.getTargetName(target, member),
         );
       }
       if (methodDescriptorOrParameterIndex) {
         // Method
         throw new Error(
-          '@inject cannot be used on a method: ' + propertyKey.toString(),
+          '@inject cannot be used on a method: ' +
+            DecoratorFactory.getTargetName(
+              target,
+              member,
+              methodDescriptorOrParameterIndex,
+            ),
         );
       }
-      const propDecorator: PropertyDecorator = PropertyDecoratorFactory.createDecorator(
-        PROPERTIES_KEY,
-        {
-          bindingKey,
-          metadata,
-          resolve,
-        },
-      );
-      propDecorator(target, propertyKey!);
+      const propDecorator: PropertyDecorator = PropertyDecoratorFactory.createDecorator<
+        Injection
+      >(PROPERTIES_KEY, {
+        target,
+        member,
+        methodDescriptorOrParameterIndex,
+        bindingKey,
+        metadata,
+        resolve,
+      });
+      propDecorator(target, member!);
     } else {
       // It won't happen here as `@inject` is not compatible with ClassDecorator
       /* istanbul ignore next */
@@ -194,8 +209,7 @@ function resolveAsSetter(ctx: Context, injection: Injection) {
  * @param method Method name, undefined for constructor
  */
 export function describeInjectedArguments(
-  // tslint:disable-next-line:no-any
-  target: any,
+  target: Object,
   method?: string | symbol,
 ): Injection[] {
   method = method || '';
@@ -213,8 +227,7 @@ export function describeInjectedArguments(
  * prototype for instance properties.
  */
 export function describeInjectedProperties(
-  // tslint:disable-next-line:no-any
-  target: any,
+  target: Object,
 ): MetadataMap<Injection> {
   const metadata =
     MetadataInspector.getAllPropertyMetadata<Injection>(
