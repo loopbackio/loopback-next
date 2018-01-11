@@ -148,7 +148,8 @@ describe('constructor injection', () => {
     );
   });
 
-  it('will not report circular dependencies if two bindings', () => {
+  // tslint:disable-next-line:max-line-length
+  it('will not report circular dependencies if a binding is injected twice', () => {
     const context = new Context();
     class XClass {}
 
