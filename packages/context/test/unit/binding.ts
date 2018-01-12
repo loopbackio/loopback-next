@@ -111,9 +111,14 @@ describe('Binding', () => {
     });
 
     it('rejects rejected promise values', () => {
-      expect(() => binding.to(Promise.reject('error'))).to.throw(
+      const p = Promise.reject('error');
+      expect(() => binding.to(p)).to.throw(
         /Promise instances are not allowed.*toDynamicValue/,
       );
+      // Catch the rejected promise to avoid
+      // (node:60994) UnhandledPromiseRejectionWarning: Unhandled promise
+      // rejection (rejection id: 1): error
+      p.catch(e => {});
     });
   });
 
