@@ -193,7 +193,7 @@ function resolveAsGetter(
   session?: ResolutionSession,
 ) {
   // We need to clone the session for the getter as it will be resolved later
-  if (session != null) session = session.clone();
+  session = ResolutionSession.fork(session);
   return function getter() {
     return ctx.get(injection.bindingKey, session);
   };

@@ -170,6 +170,7 @@ describe('constructor injection', () => {
   it('tracks path of bindings', () => {
     const context = new Context();
     let bindingPath = '';
+    let resolutionPath = '';
 
     class ZClass {
       @inject(
@@ -178,6 +179,7 @@ describe('constructor injection', () => {
         // Set up a custom resolve() to access information from the session
         (c: Context, injection: Injection, session: ResolutionSession) => {
           bindingPath = session.getBindingPath();
+          resolutionPath = session.getResolutionPath();
         },
       )
       myProp: string;
@@ -196,11 +198,16 @@ describe('constructor injection', () => {
     context.bind('z').toClass(ZClass);
     context.getSync('x');
     expect(bindingPath).to.eql('x --> y --> z');
+    expect(resolutionPath).to.eql(
+      'x --> @XClass.constructor[0] --> y --> @YClass.constructor[0]' +
+        ' --> z --> @ZClass.prototype.myProp',
+    );
   });
 
   it('tracks path of bindings for @inject.getter', async () => {
     const context = new Context();
     let bindingPath = '';
+    let resolutionPath = '';
 
     class ZClass {
       @inject(
@@ -209,6 +216,7 @@ describe('constructor injection', () => {
         // Set up a custom resolve() to access information from the session
         (c: Context, injection: Injection, session: ResolutionSession) => {
           bindingPath = session.getBindingPath();
+          resolutionPath = session.getResolutionPath();
         },
       )
       myProp: string;
@@ -228,6 +236,10 @@ describe('constructor injection', () => {
     const x: XClass = context.getSync('x');
     await x.y.z();
     expect(bindingPath).to.eql('x --> y --> z');
+    expect(resolutionPath).to.eql(
+      'x --> @XClass.constructor[0] --> y --> @YClass.constructor[0]' +
+        ' --> z --> @ZClass.prototype.myProp',
+    );
   });
 
   it('tracks path of injections', () => {

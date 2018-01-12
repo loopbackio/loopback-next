@@ -57,6 +57,27 @@ function tryWithFinally(
 }
 
 /**
+ * Wrapper for bindings tracked by resolution sessions
+ */
+export interface BindingElement {
+  type: 'binding';
+  value: Binding;
+}
+
+/**
+ * Wrapper for injections tracked by resolution sessions
+ */
+export interface InjectionElement {
+  type: 'injection';
+  value: Injection;
+}
+
+/**
+ * Binding or injection elements tracked by resolution sessions
+ */
+export type ResolutionElement = BindingElement | InjectionElement;
+
+/**
  * Object to keep states for a session to resolve bindings and their
  * dependencies within a context
  */
@@ -65,28 +86,25 @@ export class ResolutionSession {
    * A stack of bindings for the current resolution session. It's used to track
    * the path of dependency resolution and detect circular dependencies.
    */
-  readonly bindings: Binding[] = [];
+  readonly stack: ResolutionElement[] = [];
 
   /**
-   * A stack of injections for the current resolution session.
+   * Fork the current session so that a new one with the same stack can be used
+   * in parallel or future resolutions, such as multiple method arguments,
+   * multiple properties, or a getter function
+   * @param session The current session
    */
-  readonly injections: Injection[] = [];
-
-  /**
-   * Take a snapshot of the ResolutionSession so that we can pass it to
-   * `@inject.getter` without interferring with the current session
-   */
-  clone() {
+  static fork(session?: ResolutionSession): ResolutionSession | undefined {
+    if (session === undefined) return undefined;
     const copy = new ResolutionSession();
-    copy.bindings.push(...this.bindings);
-    copy.injections.push(...this.injections);
+    copy.stack.push(...session.stack);
     return copy;
   }
 
   /**
    * Start to resolve a binding within the session
-   * @param binding Binding
-   * @param session Resolution session
+   * @param binding The current binding
+   * @param session The current resolution session
    */
   private static enterBinding(
     binding: Binding,
@@ -117,8 +135,8 @@ export class ResolutionSession {
 
   /**
    * Push an injection into the session
-   * @param injection Injection
-   * @param session Resolution session
+   * @param injection The current injection
+   * @param session The current resolution session
    */
   private static enterInjection(
     injection: Injection,
@@ -152,7 +170,7 @@ export class ResolutionSession {
 
   /**
    * Describe the injection for debugging purpose
-   * @param injection
+   * @param injection Injection object
    */
   static describeInjection(injection?: Injection) {
     /* istanbul ignore if */
@@ -171,7 +189,7 @@ export class ResolutionSession {
 
   /**
    * Push the injection onto the session
-   * @param injection Injection
+   * @param injection Injection The current injection
    */
   pushInjection(injection: Injection) {
     /* istanbul ignore if */
@@ -181,10 +199,10 @@ export class ResolutionSession {
         ResolutionSession.describeInjection(injection),
       );
     }
-    this.injections.push(injection);
+    this.stack.push({type: 'injection', value: injection});
     /* istanbul ignore if */
     if (debugSession.enabled) {
-      debugSession('Injection path:', this.getInjectionPath());
+      debugSession('Resolution path:', this.getResolutionPath());
     }
   }
 
@@ -192,14 +210,19 @@ export class ResolutionSession {
    * Pop the last injection
    */
   popInjection() {
-    const injection = this.injections.pop();
+    const top = this.stack.pop();
+    if (top === undefined || top.type !== 'injection') {
+      throw new Error('The top element must be an injection');
+    }
+
+    const injection = top.value;
     /* istanbul ignore if */
     if (debugSession.enabled) {
       debugSession(
         'Exit injection:',
         ResolutionSession.describeInjection(injection),
       );
-      debugSession('Injection path:', this.getInjectionPath() || '<empty>');
+      debugSession('Resolution path:', this.getResolutionPath() || '<empty>');
     }
     return injection;
   }
@@ -207,15 +230,29 @@ export class ResolutionSession {
   /**
    * Getter for the current injection
    */
-  get currentInjection() {
-    return this.injections[this.injections.length - 1];
+  get currentInjection(): Injection | undefined {
+    for (let i = this.stack.length - 1; i >= 0; i--) {
+      const element = this.stack[i];
+      switch (element.type) {
+        case 'injection':
+          return element.value;
+      }
+    }
+    return undefined;
   }
 
   /**
    * Getter for the current binding
    */
-  get currentBinding() {
-    return this.bindings[this.bindings.length - 1];
+  get currentBinding(): Binding | undefined {
+    for (let i = this.stack.length - 1; i >= 0; i--) {
+      const element = this.stack[i];
+      switch (element.type) {
+        case 'binding':
+          return element.value;
+      }
+    }
+    return undefined;
   }
 
   /**
@@ -227,17 +264,17 @@ export class ResolutionSession {
     if (debugSession.enabled) {
       debugSession('Enter binding:', binding.toJSON());
     }
-    if (this.bindings.indexOf(binding) !== -1) {
+    if (this.stack.find(i => i.type === 'binding' && i.value === binding)) {
       throw new Error(
         `Circular dependency detected on path '${this.getBindingPath()} --> ${
           binding.key
         }'`,
       );
     }
-    this.bindings.push(binding);
+    this.stack.push({type: 'binding', value: binding});
     /* istanbul ignore if */
     if (debugSession.enabled) {
-      debugSession('Binding path:', this.getBindingPath());
+      debugSession('Resolution path:', this.getResolutionPath());
     }
   }
 
@@ -245,11 +282,15 @@ export class ResolutionSession {
    * Exit the resolution of a binding
    */
   popBinding() {
-    const binding = this.bindings.pop();
+    const top = this.stack.pop();
+    if (top === undefined || top.type !== 'binding') {
+      throw new Error('The top element must be a binding');
+    }
+    const binding = top.value;
     /* istanbul ignore if */
     if (debugSession.enabled) {
       debugSession('Exit binding:', binding && binding.toJSON());
-      debugSession('Binding path:', this.getBindingPath() || '<empty>');
+      debugSession('Resolution path:', this.getResolutionPath() || '<empty>');
     }
     return binding;
   }
@@ -258,15 +299,40 @@ export class ResolutionSession {
    * Get the binding path as `bindingA --> bindingB --> bindingC`.
    */
   getBindingPath() {
-    return this.bindings.map(b => b.key).join(' --> ');
+    return this.stack
+      .filter(i => i.type === 'binding')
+      .map(b => (<Binding>b.value).key)
+      .join(' --> ');
   }
 
   /**
-   * Get the injection path as `injectionA->injectionB->injectionC`.
+   * Get the injection path as `injectionA --> injectionB --> injectionC`.
    */
   getInjectionPath() {
-    return this.injections
-      .map(i => ResolutionSession.describeInjection(i)!.targetName)
+    return this.stack
+      .filter(i => i.type === 'injection')
+      .map(
+        i =>
+          ResolutionSession.describeInjection(<Injection>i.value)!.targetName,
+      )
       .join(' --> ');
+  }
+
+  private static describe(e: ResolutionElement) {
+    switch (e.type) {
+      case 'injection':
+        return '@' + ResolutionSession.describeInjection(e.value)!.targetName;
+      case 'binding':
+        return e.value.key;
+    }
+  }
+
+  /**
+   * Get the resolution path including bindings and injections, for example:
+   * `bindingA --> @ClassA[0] --> bindingB --> @ClassB.prototype.prop1
+   * --> bindingC`.
+   */
+  getResolutionPath() {
+    return this.stack.map(i => ResolutionSession.describe(i)).join(' --> ');
   }
 }

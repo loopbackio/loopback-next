@@ -53,7 +53,6 @@ export function instantiateClass<T>(
       debug('Non-injected arguments:', nonInjectedArgs);
     }
   }
-  session = session || new ResolutionSession();
   const argsOrPromise = resolveInjectedArguments(ctor, '', ctx, session);
   const propertiesOrPromise = resolveInjectedProperties(ctor, ctx, session);
   let inst: T | Promise<T>;
@@ -201,7 +200,12 @@ export function resolveInjectedArguments(
       }
     }
 
-    const valueOrPromise = resolve(ctx, injection, session);
+    // Clone the session so that multiple arguments can be resolved in parallel
+    const valueOrPromise = resolve(
+      ctx,
+      injection,
+      ResolutionSession.fork(session),
+    );
     if (isPromise(valueOrPromise)) {
       if (!asyncResolvers) asyncResolvers = [];
       asyncResolvers.push(
@@ -314,7 +318,12 @@ export function resolveInjectedProperties(
       );
     }
 
-    const valueOrPromise = resolve(ctx, injection, session);
+    // Clone the session so that multiple properties can be resolved in parallel
+    const valueOrPromise = resolve(
+      ctx,
+      injection,
+      ResolutionSession.fork(session),
+    );
     if (isPromise(valueOrPromise)) {
       if (!asyncResolvers) asyncResolvers = [];
       asyncResolvers.push(valueOrPromise.then(propertyResolver(p)));
