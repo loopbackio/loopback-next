@@ -21,5 +21,6 @@
   "files.trimTrailingWhitespace": true,
 
   "tslint.ignoreDefinitionFiles": true,
+  "tslint.nodePath": "./packages/build/node_modules",
   "typescript.tsdk": "./packages/build/node_modules/typescript/lib"
 }
