@@ -253,7 +253,7 @@ describe('Context', () => {
 
   describe('get', () => {
     it('returns a promise when the binding is async', async () => {
-      ctx.bind('foo').to(Promise.resolve('bar'));
+      ctx.bind('foo').toDynamicValue(() => Promise.resolve('bar'));
       const result = await ctx.get('foo');
       expect(result).to.equal('bar');
     });
@@ -261,7 +261,7 @@ describe('Context', () => {
     it('returns the value with property separator', async () => {
       const SEP = Binding.PROPERTY_SEPARATOR;
       const val = {x: {y: 'Y'}};
-      ctx.bind('foo').to(Promise.resolve(val));
+      ctx.bind('foo').toDynamicValue(() => Promise.resolve(val));
       const value = await ctx.get(`foo${SEP}x`);
       expect(value).to.eql({y: 'Y'});
     });
@@ -351,7 +351,9 @@ describe('Context', () => {
     });
 
     it('returns nested property (asynchronously)', async () => {
-      ctx.bind('key').to(Promise.resolve({test: 'test-value'}));
+      ctx
+        .bind('key')
+        .toDynamicValue(() => Promise.resolve({test: 'test-value'}));
       const value = await ctx.getValueOrPromise('key#test');
       expect(value).to.equal('test-value');
     });

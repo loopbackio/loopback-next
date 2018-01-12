@@ -103,6 +103,18 @@ describe('Binding', () => {
       binding.to('value');
       expect(binding.type).to.equal(BindingType.CONSTANT);
     });
+
+    it('rejects promise values', () => {
+      expect(() => binding.to(Promise.resolve('value'))).to.throw(
+        /Promise instances are not allowed.*toDynamicValue/,
+      );
+    });
+
+    it('rejects rejected promise values', () => {
+      expect(() => binding.to(Promise.reject('error'))).to.throw(
+        /Promise instances are not allowed.*toDynamicValue/,
+      );
+    });
   });
 
   describe('toDynamicValue(dynamicValueFn)', () => {
