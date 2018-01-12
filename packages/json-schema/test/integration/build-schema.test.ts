@@ -1,5 +1,5 @@
 // Copyright IBM Corp. 2013,2018. All Rights Reserved.
-// Node module: @loopback/openapi-spec-builder
+// Node module: @loopback/json-schema
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
@@ -26,10 +26,11 @@ describe('build-schema', () => {
         @property() nul: null;
         @property() undef: undefined;
       }
-      expect(modelToJsonDef(TestModel).properties).to.not.containEql({
+      const jsonDef = modelToJsonDef(TestModel);
+      expect(jsonDef.properties).to.not.containEql({
         nul: {type: 'null'},
       });
-      expect(modelToJsonDef(TestModel).properties).to.not.containEql({
+      expect(jsonDef.properties).to.not.containEql({
         undef: {type: 'undefined'},
       });
     });
