@@ -146,18 +146,18 @@ export class DecoratorFactory<
     let name =
       target instanceof Function
         ? target.name
-        : target.constructor.name + '.prototype';
+        : `${target.constructor.name}.prototype`;
     if (member == null && descriptorOrIndex == null) {
-      return 'class ' + name;
+      return `class ${name}`;
     }
     if (member == null) member = 'constructor';
     if (typeof descriptorOrIndex === 'number') {
       // Parameter
-      name = name + '.' + member.toString() + '[' + descriptorOrIndex + ']';
+      name = `${name}.${member}[${descriptorOrIndex}]`;
     } else if (descriptorOrIndex != null) {
-      name = name + '.' + member.toString() + '()';
+      name = `${name}.${member}()`;
     } else {
-      name = name + '.' + member.toString();
+      name = `${name}.${member}`;
     }
     return name;
   }
@@ -627,7 +627,7 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
     );
     // Fetch the cached parameter index
     let index = Reflector.getOwnMetadata(
-      this.key + ':index',
+      `${this.key}:index`,
       target,
       methodName,
     );
@@ -667,7 +667,7 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
     }
     // Cache the index to help us position the next parameter
     Reflector.defineMetadata(
-      this.key + ':index',
+      `${this.key}:index`,
       index - 1,
       target,
       methodName,
@@ -691,7 +691,7 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
     ownMetadata[methodName!] = params;
     // Cache the index to help us position the next parameter
     Reflector.defineMetadata(
-      this.key + ':index',
+      `${this.key}:index`,
       index - 1,
       target,
       methodName,
