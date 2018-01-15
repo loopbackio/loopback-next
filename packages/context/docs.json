@@ -8,6 +8,7 @@
         "src/is-promise.ts",
         "src/provider.ts",
         "src/reflect.ts",
+        "src/resolution-session.ts",
         "src/resolver.ts"
     ],
     "codeSectionDepth": 4,
