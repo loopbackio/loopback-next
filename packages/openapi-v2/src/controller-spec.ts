@@ -22,11 +22,12 @@ import {
   ItemType,
   ItemsObject,
   DefinitionsObject,
+  MapObject,
 } from '@loopback/openapi-spec';
 
 import * as stream from 'stream';
 import {includes} from 'lodash';
-import {modelToJsonDef} from '@loopback/json-schema';
+import {modelToJsonDef, JsonDefinition} from '@loopback/repository-json-schema';
 
 const debug = require('debug')('loopback:rest:router:metadata');
 
@@ -181,15 +182,17 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
       op,
     ).parameterTypes;
 
+    const isComplexType = (p: Function) =>
+      !includes([String, Number, Boolean, Array, Object], p) &&
+      !isReadableStream(p);
+
     for (const p of paramTypes) {
-      if (
-        !includes([String, Number, Boolean, Array, Object], p) &&
-        !isReadableStream(p)
-      ) {
+      if (isComplexType(p)) {
         if (!spec.definitions) {
           spec.definitions = {};
         }
-        spec.definitions[p.name] = modelToJsonDef(p) as SchemaObject;
+        const jsonDef = modelToJsonDef(p);
+        spec.definitions[p.name] = jsonToSchemaObject(jsonDef);
         break;
       }
     }
@@ -216,6 +219,69 @@ export function getControllerSpec(constructor: Function): ControllerSpec {
     );
   }
   return spec;
+}
+
+export function jsonToSchemaObject(json: JsonDefinition): SchemaObject {
+  const emptySchemaObj: SchemaObject = {};
+  // tslint:disable-next-line:no-any
+  const def: {[key: string]: any} = json;
+  for (const property in def) {
+    const val = def[property];
+    switch (property) {
+      // converts excepted properties to SchemaObject definitions
+      case 'type': {
+        if (def.type === 'array' && !def.items) {
+          throw new Error(
+            '"items" property must be present if "type" is an array',
+          );
+        }
+        emptySchemaObj.type = Array.isArray(json.type)
+          ? json.type[0]
+          : json.type;
+        break;
+      }
+      case 'allOf': {
+        const collector: SchemaObject[] = [];
+        for (const item of def.allOf) {
+          collector.push(jsonToSchemaObject(item));
+        }
+        emptySchemaObj.allOf = collector;
+        break;
+      }
+      case 'properties': {
+        const properties: {[key: string]: JsonDefinition} = def.properties;
+        const collector: MapObject<SchemaObject> = {};
+        for (const item in properties) {
+          collector[item] = jsonToSchemaObject(properties[item]);
+        }
+        emptySchemaObj.properties = collector;
+        break;
+      }
+      case 'additionalProperties': {
+        if (json.additionalProperties) {
+          if (json.additionalProperties === true) {
+            emptySchemaObj.additionalProperties = {};
+          } else {
+            emptySchemaObj.additionalProperties = jsonToSchemaObject(
+              json.additionalProperties,
+            );
+          }
+        }
+        break;
+      }
+      case 'items': {
+        def.items = Array.isArray(def.items) ? def.items[0] : def.items;
+        emptySchemaObj.items = jsonToSchemaObject(def.items);
+        break;
+      }
+      default: {
+        emptySchemaObj[property] = val;
+        break;
+      }
+    }
+  }
+
+  return <SchemaObject>emptySchemaObj;
 }
 
 /**

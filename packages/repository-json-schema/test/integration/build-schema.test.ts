@@ -1,24 +1,19 @@
 // Copyright IBM Corp. 2013,2018. All Rights Reserved.
-// Node module: @loopback/json-schema
+// Node module: @loopback/repository-json-schema
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {model, property, ModelMetadataHelper} from '@loopback/repository';
+import {
+  model,
+  property,
+  ModelMetadataHelper,
+  ModelDefinition,
+  PropertyMap,
+} from '@loopback/repository';
 import {modelToJsonDef, toJsonProperty} from '../../src/build-schema';
 import {expect} from '@loopback/testlab';
 
 describe('build-schema', () => {
-  context('exception', () => {
-    it('errors out when "@property.array" is not used on an array', () => {
-      @model()
-      class BadArray {
-        @property() badArr: string[];
-      }
-      expect(() => {
-        modelToJsonDef(BadArray);
-      }).to.throw(/type is defined as an array/);
-    });
-  });
   describe('modelToJSON', () => {
     it('does not convert null or undefined property', () => {
       @model()
@@ -26,14 +21,11 @@ describe('build-schema', () => {
         @property() nul: null;
         @property() undef: undefined;
       }
+
       const jsonDef = modelToJsonDef(TestModel);
-      expect(jsonDef.properties).to.not.containEql({
-        nul: {type: 'null'},
-      });
-      expect(jsonDef.properties).to.not.containEql({
-        undef: {type: 'undefined'},
-      });
+      expect(jsonDef.properties).to.not.have.keys(['nul', 'undef']);
     });
+
     it('does not convert properties that have not been decorated', () => {
       @model()
       class NoPropertyMeta {
@@ -45,6 +37,7 @@ describe('build-schema', () => {
         bar: boolean;
         baz: number;
       }
+
       expect(modelToJsonDef(NoPropertyMeta)).to.eql({});
       expect(modelToJsonDef(OnePropertyDecorated)).to.deepEqual({
         properties: {
@@ -54,15 +47,18 @@ describe('build-schema', () => {
         },
       });
     });
+
     it('does not convert models that have not been decorated with @model()', () => {
       class Empty {}
       class NoModelMeta {
         @property() foo: string;
         bar: number;
       }
+
       expect(modelToJsonDef(Empty)).to.eql({});
       expect(modelToJsonDef(NoModelMeta)).to.eql({});
     });
+
     it('properly converts string, number, and boolean properties', () => {
       @model()
       class TestModel {
@@ -84,6 +80,7 @@ describe('build-schema', () => {
         },
       });
     });
+
     it('properly converts object properties', () => {
       @model()
       class TestModel {
@@ -97,6 +94,7 @@ describe('build-schema', () => {
         },
       });
     });
+
     it('properly converts custom type properties', () => {
       class CustomType {
         prop: string;
@@ -114,6 +112,7 @@ describe('build-schema', () => {
         },
       });
     });
+
     it('properly converts primitive arrays properties', () => {
       @model()
       class TestModel {
@@ -130,6 +129,7 @@ describe('build-schema', () => {
         },
       });
     });
+
     it('properly converts custom type arrays properties', () => {
       class CustomType {
         prop: string;
@@ -150,6 +150,18 @@ describe('build-schema', () => {
         },
       });
     });
+
+    it('errors out when "@property.array" is not used on an array', () => {
+      @model()
+      class BadArray {
+        @property() badArr: string[];
+      }
+
+      expect(() => {
+        modelToJsonDef(BadArray);
+      }).to.throw(/type is defined as an array/);
+    });
+
     describe('toJSONProperty', () => {
       class Bar {
         barA: number;
@@ -166,45 +178,49 @@ describe('build-schema', () => {
         @property() bar: Bar;
         @property.array(Bar) arrBar: Bar[];
       }
-      // tslint:disable-next-line:no-any
-      let meta: any;
-      // tslint:disable-next-line:no-any
-      let propMeta: any;
+      let meta: ModelDefinition;
+      let propMeta: PropertyMap;
+
       before(() => {
         meta = ModelMetadataHelper.getModelMetadata(Foo);
         propMeta = meta.properties;
       });
+
       it('converts primitively typed property correctly', () => {
-        expect(toJsonProperty(propMeta['str'])).to.deepEqual({
+        expect(toJsonProperty(propMeta.str)).to.deepEqual({
           type: 'string',
         });
-        expect(toJsonProperty(propMeta['num'])).to.deepEqual({
+        expect(toJsonProperty(propMeta.num)).to.deepEqual({
           type: 'number',
         });
-        expect(toJsonProperty(propMeta['bool'])).to.deepEqual({
+        expect(toJsonProperty(propMeta.bool)).to.deepEqual({
           type: 'boolean',
         });
       });
+
       it('converts object property correctly', () => {
-        expect(toJsonProperty(propMeta['obj'])).to.deepEqual({
+        expect(toJsonProperty(propMeta.obj)).to.deepEqual({
           type: 'object',
         });
       });
+
       it('converts customly typed property correctly', () => {
-        expect(toJsonProperty(propMeta['bar'])).to.deepEqual({
+        expect(toJsonProperty(propMeta.bar)).to.deepEqual({
           $ref: '#definitions/Bar',
         });
       });
+
       it('converts arrays of primitives correctly', () => {
-        expect(toJsonProperty(propMeta['arrStr'])).to.deepEqual({
+        expect(toJsonProperty(propMeta.arrStr)).to.deepEqual({
           type: 'array',
           items: {
             type: 'string',
           },
         });
       });
+
       it('converts arrays of custom types correctly', () => {
-        expect(toJsonProperty(propMeta['arrBar'])).to.deepEqual({
+        expect(toJsonProperty(propMeta.arrBar)).to.deepEqual({
           type: 'array',
           items: {
             $ref: '#definitions/Bar',

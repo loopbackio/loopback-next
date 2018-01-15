@@ -1,24 +1,22 @@
 // Copyright IBM Corp. 2013,2018. All Rights Reserved.
-// Node module: @loopback/json-schema
+// Node module: @loopback/repository-json-schema
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {SchemaObject, MapObject} from '@loopback/openapi-spec';
-import {ModelMetadataHelper, PropertyDefinition} from '@loopback/repository';
+import {
+  ModelMetadataHelper,
+  PropertyDefinition,
+  ModelDefinition,
+} from '@loopback/repository';
 import {includes} from 'lodash';
+import {Definition} from 'typescript-json-schema';
 
 /**
- * Type definition for a JSON Schema Definition
- * Currently, objects of type JSONDefinition can also be cast as a SchemaObject,
- * a property of OpenAPI-v2's specification
+ * Type definition for JSON Schema
  */
-export type JsonDefinition = {
-  $ref?: string;
-  required?: Array<String>;
-  type?: string;
-  properties?: {[property: string]: JsonDefinition} | MapObject<SchemaObject>;
-  items?: JsonDefinition | SchemaObject;
-};
+export interface JsonDefinition extends Definition {
+  properties?: {[property: string]: JsonDefinition};
+}
 
 // NOTE(shimks) no metadata for: union, optional, nested array, any, enum,
 // string literal, anonymous types, and inherited properties
@@ -29,8 +27,7 @@ export type JsonDefinition = {
  * @param ctor Constructor of class to convert from
  */
 export function modelToJsonDef(ctor: Function): JsonDefinition {
-  // tslint:disable-next-line:no-any
-  const meta = ModelMetadataHelper.getModelMetadata(ctor) as any;
+  const meta: ModelDefinition = ModelMetadataHelper.getModelMetadata(ctor);
   const schema: JsonDefinition = {};
 
   for (const p in meta.properties) {

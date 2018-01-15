@@ -51,7 +51,7 @@
   "dependencies": {
     "@loopback/context": "^4.0.0-alpha.26",
     "@loopback/openapi-spec": "^4.0.0-alpha.20",
-    "@loopback/json-schema": "^4.0.0-alpha.1",
+    "@loopback/repository-json-schema": "^4.0.0-alpha.1",
     "lodash": "^4.17.4"
   }
 }

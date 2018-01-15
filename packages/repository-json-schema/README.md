@@ -1,4 +1,4 @@
-# @loopback/json-schema
+# @loopback/repository-json-schema
 
 Convert a TypeScript class/model to a JSON Schema for users, leveraging LoopBack4's decorators, metadata, and reflection system.
 
@@ -9,13 +9,13 @@ This package provides modules to easily convert LoopBack4 models that have been 
 ## Installation
 
 ```shell
-$ npm install --save @loopback/json-schema
+$ npm install --save @loopback/repository-json-schema
 ```
 
 ## Basic use
 
 ```ts
-import {modelToJsonDef} from '@loopback/json-schema';
+import {modelToJsonDef} from '@loopback/repository-json-schema';
 import {model, property} from '@loopback/repository';
 
 @model()

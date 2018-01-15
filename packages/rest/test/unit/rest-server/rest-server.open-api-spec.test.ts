@@ -30,7 +30,6 @@ describe('RestServer.getApiSpec()', () => {
       basePath: '/api',
       paths: {},
       'x-foo': 'bar',
-      definitions: {},
     });
 
     const spec = server.getApiSpec();
@@ -44,7 +43,6 @@ describe('RestServer.getApiSpec()', () => {
       basePath: '/api',
       paths: {},
       'x-foo': 'bar',
-      definitions: {},
     });
   });
 

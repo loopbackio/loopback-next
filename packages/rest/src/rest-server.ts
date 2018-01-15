@@ -453,7 +453,7 @@ export class RestServer extends Context implements Server {
     // Apply deep clone to prevent getApiSpec() callers from
     // accidentally modifying our internal routing data
     spec.paths = cloneDeep(this.httpHandler.describeApiPaths());
-    if (Object.keys(defs).length > 0) {
+    if (defs) {
       spec.definitions = cloneDeep(defs);
     }
     return spec;

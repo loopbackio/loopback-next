@@ -22,7 +22,7 @@ import {RestBindings} from './keys';
 
 export class HttpHandler {
   protected _routes: RoutingTable = new RoutingTable();
-  protected _apiDefinitions: DefinitionsObject = {};
+  protected _apiDefinitions: DefinitionsObject;
 
   public handleRequest: (
     request: ServerRequest,
@@ -42,7 +42,7 @@ export class HttpHandler {
   }
 
   registerApiDefinitions(defs: DefinitionsObject) {
-    Object.assign(this._apiDefinitions, defs);
+    this._apiDefinitions = Object.assign({}, this._apiDefinitions, defs);
   }
 
   getApiDefinitions() {
