@@ -270,60 +270,6 @@ describe('lb4 controller', () => {
 
   /**
    * Assertions against the template to determine if it contains the
-   * required signatures for a CRUD controller.
-   * @param {String} tmpDir The temporary directory path to check. Uses
-   * withInputName to determine the file name.
-   */
-  function checkCrudContents(tmpDir) {
-    assert.fileContent(tmpDir + withInputName, /class FooBarController/);
-
-    // Repository and injection
-    assert.fileContent(
-      tmpDir + withInputName,
-      /\@inject\('repositories.foo'\)/
-    );
-    assert.fileContent(
-      tmpDir + withInputName,
-      /barRepository \: BarRepository/
-    );
-    // Check function signatures
-    assert.fileContent(
-      tmpDir + withInputName,
-      /async create\(obj\: Foo\) \: Promise\<Foo\>/
-    );
-    assert.fileContent(
-      tmpDir + withInputName,
-      /async count\(where\: Where\) \: Promise\<number\>/
-    );
-    assert.fileContent(
-      tmpDir + withInputName,
-      /async find\(filter\: Filter\) \: Promise\<Foo\[\]\>/
-    );
-    assert.fileContent(
-      tmpDir + withInputName,
-      /async updateAll\(where\: Where, obj\: Foo\) \: Promise\<number\>/
-    );
-    assert.fileContent(
-      tmpDir + withInputName,
-      /async deleteAll\(where\: Where\) \: Promise\<number\>/
-    );
-    assert.fileContent(
-      tmpDir + withInputName,
-      /async findById\(id\: number\) \: Promise\<Foo\>/
-    );
-    assert.fileContent(
-      tmpDir + withInputName,
-      /async updateById\(id\: number, obj\: Foo\) \: Promise\<boolean\>/
-    );
-    assert.fileContent(
-      tmpDir + withInputName,
-      /async deleteById\(id\: number\) \: Promise\<boolean\>/,
-      ''
-    );
-  }
-
-  /**
-   * Assertions against the template to determine if it contains the
    * required signatures for a REST CRUD controller, specifically to ensure
    * that decorators are grouped correctly (for their corresponding
    * target functions)
@@ -332,42 +278,52 @@ describe('lb4 controller', () => {
    * @param {String} tmpDir
    */
   function checkRestCrudContents(tmpDir) {
-    checkCrudContents(tmpDir);
+    assert.fileContent(tmpDir + withInputName, /class FooBarController/);
+
+    // Repository and injection
+    assert.fileContent(
+      tmpDir + withInputName,
+      /\@inject\('repositories.BarRepository'\)/
+    );
+    assert.fileContent(
+      tmpDir + withInputName,
+      /barRepository \: BarRepository/
+    );
 
     // Assert that the decorators are present in the correct groupings!
     assert.fileContent(
       tmpDir + withInputName,
-      /\@post\('\/foo'\)\s{1,}\@param.body\('obj', Foo\)\s{1,}async create/
+      /\@post\('\/foo'\)\s{1,}async create\(\@param.body\('obj'\)/
     );
 
     assert.fileContent(
       tmpDir + withInputName,
-      /\@get\('\/foo\/count'\)\s{1,}\@param.query.string\('where'\)\s{1,}async count/
+      /\@get\('\/foo\/count'\)\s{1,}async count\(\@param.query.string\('where'\)/
     );
 
     assert.fileContent(
       tmpDir + withInputName,
-      /\@get\('\/foo'\)\s{1,}\@param.query.string\('filter'\)\s{1,}async find/
+      /\@get\('\/foo'\)\s{1,}async find\(\@param.query.string\('filter'\)/
     );
     assert.fileContent(
       tmpDir + withInputName,
-      /\@patch\('\/foo'\)\s{1,}\@param.query.string\('where'\)\s{1,}\@param.body\('obj', Foo\)\s{1,}async updateAll/
+      /\@patch\('\/foo'\)\s{1,}async updateAll\(\@param.query.string\('where'\) where: Where,\s{1,}\@param.body\('obj'\)/
     );
     assert.fileContent(
       tmpDir + withInputName,
-      /\@del\('\/foo'\)\s{1,}\@param.query.string\('where'\)\s{1,}async deleteAll/
+      /\@del\('\/foo'\)\s{1,}async deleteAll\(\@param.query.string\('where'\)/
     );
     assert.fileContent(
       tmpDir + withInputName,
-      /\@get\('\/foo\/{id}'\)\s{1,}async findById/
+      /\@get\('\/foo\/{id}'\)\s{1,}async findById\(\@param.path.number\('id'\)/
     );
     assert.fileContent(
       tmpDir + withInputName,
-      /\@patch\('\/foo\/{id}'\)\s{1,}\@param.body\('obj', Foo\)\s{1,}async updateById/
+      /\@patch\('\/foo\/{id}'\)\s{1,}async updateById\(\@param.path.number\('id'\) id: number, \@param.body\('obj'\)/
     );
     assert.fileContent(
       tmpDir + withInputName,
-      /\@del\('\/foo\/{id}'\)\s{1,}async deleteById/
+      /\@del\('\/foo\/{id}'\)\s{1,}async deleteById\(\@param.path.number\('id'\) id: number\)/
     );
   }
 });

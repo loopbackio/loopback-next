@@ -7,54 +7,51 @@ import {<%= repositoryName %>} from '../repositories';
 export class <%= name %>Controller {
 
   constructor(
-    @inject('repositories.<%= modelNameCamel %>')
+    @inject('repositories.<%= repositoryName %>')
     public <%= repositoryNameCamel %> : <%= repositoryName %>,
   ) {}
 
   @post('/<%= modelNameCamel %>')
-  @param.body('obj', <%= modelName %>)
-  async create(obj: <%= modelName %>) : Promise<<%= modelName %>> {
+  async create(@param.body('obj') obj: <%= modelName %>)
+    : Promise<<%= modelName %>> {
     return await this.<%= repositoryNameCamel %>.create(obj);
   }
 
   @get('/<%= modelNameCamel %>/count')
-  @param.query.string('where')
-  async count(where: Where) : Promise<number> {
+  async count(@param.query.string('where') where: Where) : Promise<number> {
     return await this.<%= repositoryNameCamel %>.count(where);
   }
 
   @get('/<%= modelNameCamel %>')
-  @param.query.string('filter')
-  async find(filter: Filter) : Promise<<%= modelName %>[]> {
-    return await this.<%= repositoryNameCamel %>.find(filter);
+  async find(@param.query.string('filter') filter: Filter)
+    : Promise<<%= modelName %>[]> {
+      return await this.<%= repositoryNameCamel %>.find(filter);
   }
 
   @patch('/<%= modelNameCamel %>')
-  @param.query.string('where')
-  @param.body('obj', <%= modelName %>)
-  async updateAll(where: Where, obj: <%= modelName %>) : Promise<number> {
-    return await this.<%= repositoryNameCamel %>.updateAll(where, obj);
+  async updateAll(@param.query.string('where') where: Where,
+    @param.body('obj') obj: <%= modelName %>) : Promise<number> {
+      return await this.<%= repositoryNameCamel %>.updateAll(where, obj);
   }
 
   @del('/<%= modelNameCamel %>')
-  @param.query.string('where')
-  async deleteAll(where: Where) : Promise<number> {
+  async deleteAll(@param.query.string('where') where: Where) : Promise<number> {
     return await this.<%= repositoryNameCamel %>.deleteAll(where);
   }
 
   @get('/<%= modelNameCamel %>/{id}')
-  async findById(id: <%= idType %>) : Promise<<%= modelName %>> {
+  async findById(@param.path.number('id') id: <%= idType %>) : Promise<<%= modelName %>> {
     return await this.<%= repositoryNameCamel %>.findById(id);
   }
 
   @patch('/<%= modelNameCamel %>/{id}')
-  @param.body('obj', <%= modelName %>)
-  async updateById(id: <%= idType %>, obj: <%= modelName %>) : Promise<boolean> {
+  async updateById(@param.path.number('id') id: <%= idType %>, @param.body('obj')
+   obj: <%= modelName %>) : Promise<boolean> {
     return await this.<%= repositoryNameCamel %>.updateById(id, obj);
   }
 
   @del('/<%= modelNameCamel %>/{id}')
-  async deleteById(id: <%= idType %>) : Promise<boolean> {
+  async deleteById(@param.path.number('id') id: <%= idType %>) : Promise<boolean> {
     return await this.<%= repositoryNameCamel %>.deleteById(id);
   }
 }
