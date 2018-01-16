@@ -3,9 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, ValueOrPromise, BoundValue} from './binding';
+import {Binding} from './binding';
 import {Injection} from './inject';
-import {isPromise} from './is-promise';
+import {
+  isPromise,
+  ValueOrPromise,
+  BoundValue,
+  tryWithFinally,
+} from './value-promise';
 import * as debugModule from 'debug';
 import {DecoratorFactory} from '@loopback/metadata';
 
@@ -18,43 +23,6 @@ const getTargetName = DecoratorFactory.getTargetName;
 export type ResolutionAction = (
   session?: ResolutionSession,
 ) => ValueOrPromise<BoundValue>;
-
-/**
- * Try to run an action that returns a promise or a value
- * @param action A function that returns a promise or a value
- * @param finalAction A function to be called once the action
- * is fulfilled or rejected (synchronously or asynchronously)
- */
-function tryWithFinally(
-  action: () => ValueOrPromise<BoundValue>,
-  finalAction: () => void,
-) {
-  let result: ValueOrPromise<BoundValue>;
-  try {
-    result = action();
-  } catch (err) {
-    finalAction();
-    throw err;
-  }
-  if (isPromise(result)) {
-    // Once (promise.finally)[https://github.com/tc39/proposal-promise-finally
-    // is supported, the following can be simplifed as
-    // `result = result.finally(finalAction);`
-    result = result.then(
-      val => {
-        finalAction();
-        return val;
-      },
-      err => {
-        finalAction();
-        throw err;
-      },
-    );
-  } else {
-    finalAction();
-  }
-  return result;
-}
 
 /**
  * Wrapper for bindings tracked by resolution sessions

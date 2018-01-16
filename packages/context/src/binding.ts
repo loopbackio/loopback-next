@@ -6,16 +6,11 @@
 import {Context} from './context';
 import {ResolutionSession} from './resolution-session';
 import {Constructor, instantiateClass} from './resolver';
-import {isPromise} from './is-promise';
+import {isPromise, BoundValue, ValueOrPromise} from './value-promise';
 import {Provider} from './provider';
 
 import * as debugModule from 'debug';
 const debug = debugModule('loopback:context:binding');
-
-// tslint:disable-next-line:no-any
-export type BoundValue = any;
-
-export type ValueOrPromise<T> = T | Promise<T>;
 
 /**
  * Scope for binding values

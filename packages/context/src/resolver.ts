@@ -5,8 +5,15 @@
 
 import {DecoratorFactory} from '@loopback/metadata';
 import {Context} from './context';
-import {BoundValue, ValueOrPromise} from './binding';
-import {isPromise} from './is-promise';
+import {
+  BoundValue,
+  ValueOrPromise,
+  MapObject,
+  isPromise,
+  resolveList,
+  resolveMap,
+} from './value-promise';
+
 import {
   describeInjectedArguments,
   describeInjectedProperties,
@@ -45,7 +52,7 @@ export function instantiateClass<T>(
   session?: ResolutionSession,
   // tslint:disable-next-line:no-any
   nonInjectedArgs?: any[],
-): T | Promise<T> {
+): ValueOrPromise<T> {
   /* istanbul ignore if */
   if (debug.enabled) {
     debug('Instantiating %s', getTargetName(ctor));
@@ -55,7 +62,7 @@ export function instantiateClass<T>(
   }
   const argsOrPromise = resolveInjectedArguments(ctor, '', ctx, session);
   const propertiesOrPromise = resolveInjectedProperties(ctor, ctx, session);
-  let inst: T | Promise<T>;
+  let inst: ValueOrPromise<T>;
   if (isPromise(argsOrPromise)) {
     // Instantiate the class asynchronously
     inst = argsOrPromise.then(args => {
@@ -159,7 +166,7 @@ export function resolveInjectedArguments(
   session?: ResolutionSession,
   // tslint:disable-next-line:no-any
   nonInjectedArgs?: any[],
-): BoundValue[] | Promise<BoundValue[]> {
+): ValueOrPromise<BoundValue[]> {
   /* istanbul ignore if */
   if (debug.enabled) {
     debug('Resolving injected arguments for %s', getTargetName(target, method));
@@ -176,20 +183,19 @@ export function resolveInjectedArguments(
   // Example value:
   //   [ , 'key1', , 'key2']
   const injectedArgs = describeInjectedArguments(target, method);
-  nonInjectedArgs = nonInjectedArgs || [];
+  const extraArgs = nonInjectedArgs || [];
 
   const argLength = DecoratorFactory.getNumberOfParameters(target, method);
-  const args: BoundValue[] = new Array(argLength);
-  let asyncResolvers: Promise<void>[] | undefined = undefined;
 
   let nonInjectedIndex = 0;
-  for (let ix = 0; ix < argLength; ix++) {
+  return resolveList(new Array(argLength), (val, ix) => {
+    // The `val` argument is not used as the resolver only uses `injectedArgs`
+    // and `extraArgs` to return the new value
     const injection = ix < injectedArgs.length ? injectedArgs[ix] : undefined;
     if (injection == null || (!injection.bindingKey && !injection.resolve)) {
-      if (nonInjectedIndex < nonInjectedArgs.length) {
+      if (nonInjectedIndex < extraArgs.length) {
         // Set the argument from the non-injected list
-        args[ix] = nonInjectedArgs[nonInjectedIndex++];
-        continue;
+        return extraArgs[nonInjectedIndex++];
       } else {
         const name = getTargetName(target, method, ix);
         throw new Error(
@@ -200,27 +206,13 @@ export function resolveInjectedArguments(
       }
     }
 
-    // Clone the session so that multiple arguments can be resolved in parallel
-    const valueOrPromise = resolve(
+    return resolve(
       ctx,
       injection,
+      // Clone the session so that multiple arguments can be resolved in parallel
       ResolutionSession.fork(session),
     );
-    if (isPromise(valueOrPromise)) {
-      if (!asyncResolvers) asyncResolvers = [];
-      asyncResolvers.push(
-        valueOrPromise.then((v: BoundValue) => (args[ix] = v)),
-      );
-    } else {
-      args[ix] = valueOrPromise as BoundValue;
-    }
-  }
-
-  if (asyncResolvers) {
-    return Promise.all(asyncResolvers).then(() => args);
-  } else {
-    return args;
-  }
+  });
 }
 
 /**
@@ -277,8 +269,6 @@ export function invokeMethod(
   }
 }
 
-export type KV = {[p: string]: BoundValue};
-
 /**
  * Given a class with properties decorated with `@inject`,
  * return the map of properties resolved using the values
@@ -295,21 +285,14 @@ export function resolveInjectedProperties(
   constructor: Function,
   ctx: Context,
   session?: ResolutionSession,
-): KV | Promise<KV> {
+): ValueOrPromise<MapObject<BoundValue>> {
   /* istanbul ignore if */
   if (debug.enabled) {
     debug('Resolving injected properties for %s', getTargetName(constructor));
   }
   const injectedProperties = describeInjectedProperties(constructor.prototype);
 
-  const properties: KV = {};
-  let asyncResolvers: Promise<void>[] | undefined = undefined;
-
-  const propertyResolver = (p: string) => (v: BoundValue) =>
-    (properties[p] = v);
-
-  for (const p in injectedProperties) {
-    const injection = injectedProperties[p];
+  return resolveMap(injectedProperties, (injection, p) => {
     if (!injection.bindingKey && !injection.resolve) {
       const name = getTargetName(constructor, p);
       throw new Error(
@@ -318,23 +301,11 @@ export function resolveInjectedProperties(
       );
     }
 
-    // Clone the session so that multiple properties can be resolved in parallel
-    const valueOrPromise = resolve(
+    return resolve(
       ctx,
       injection,
+      // Clone the session so that multiple properties can be resolved in parallel
       ResolutionSession.fork(session),
     );
-    if (isPromise(valueOrPromise)) {
-      if (!asyncResolvers) asyncResolvers = [];
-      asyncResolvers.push(valueOrPromise.then(propertyResolver(p)));
-    } else {
-      properties[p] = valueOrPromise as BoundValue;
-    }
-  }
-
-  if (asyncResolvers) {
-    return Promise.all(asyncResolvers).then(() => properties);
-  } else {
-    return properties;
-  }
+  });
 }

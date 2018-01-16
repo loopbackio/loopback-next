@@ -4,10 +4,15 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, inject, Setter, Getter} from '../..';
-import {Provider} from '../../src/provider';
-import {Injection} from '../../src/inject';
-import {ResolutionSession} from '../../src/resolution-session';
+import {
+  Context,
+  inject,
+  Setter,
+  Getter,
+  Provider,
+  Injection,
+  ResolutionSession,
+} from '../..';
 
 const INFO_CONTROLLER = 'controllers.info';
 

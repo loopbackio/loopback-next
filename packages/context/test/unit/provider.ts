@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Provider} from '../../src';
+import {Provider} from '../../';
 
 describe('Provider', () => {
   let provider: Provider<String>;

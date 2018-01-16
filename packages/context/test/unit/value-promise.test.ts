@@ -1,0 +1,188 @@
+// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Node module: @loopback/context
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+import {expect} from '@loopback/testlab';
+import {
+  BoundValue,
+  ValueOrPromise,
+  resolveList,
+  resolveMap,
+  tryWithFinally,
+  getDeepProperty,
+} from '../..';
+
+describe('tryWithFinally', () => {
+  it('performs final action for a fulfilled promise', async () => {
+    let finalActionInvoked = false;
+    const action = () => Promise.resolve(1);
+    const finalAction = () => (finalActionInvoked = true);
+    await tryWithFinally(action, finalAction);
+    expect(finalActionInvoked).to.be.true();
+  });
+
+  it('performs final action for a resolved value', () => {
+    let finalActionInvoked = false;
+    const action = () => 1;
+    const finalAction = () => (finalActionInvoked = true);
+    tryWithFinally(action, finalAction);
+    expect(finalActionInvoked).to.be.true();
+  });
+
+  it('performs final action for a rejected promise', async () => {
+    let finalActionInvoked = false;
+    const action = () => Promise.reject(new Error('error'));
+    const finalAction = () => (finalActionInvoked = true);
+    await expect(tryWithFinally(action, finalAction)).be.rejectedWith('error');
+    expect(finalActionInvoked).to.be.true();
+  });
+
+  it('performs final action for an action that throws an error', () => {
+    let finalActionInvoked = false;
+    const action = () => {
+      throw new Error('error');
+    };
+    const finalAction = () => (finalActionInvoked = true);
+    expect(() => tryWithFinally(action, finalAction)).to.throw('error');
+    expect(finalActionInvoked).to.be.true();
+  });
+});
+
+describe('getDeepProperty', () => {
+  it('gets the root value if path is empty', () => {
+    const obj = {x: {y: 1}};
+    expect(getDeepProperty(obj, '')).to.eql(obj);
+  });
+
+  it('gets the root value with a name', () => {
+    const obj = {x: {y: 1}};
+    expect(getDeepProperty(obj, 'x')).to.eql({y: 1});
+  });
+
+  it('gets the root value with a path', () => {
+    const obj = {x: {y: 1}};
+    expect(getDeepProperty(obj, 'x.y')).to.eql(1);
+  });
+
+  it('returns undefined for non-existent path', () => {
+    const obj = {x: {y: 1}};
+    expect(getDeepProperty(obj, 'x.z')).to.be.undefined();
+  });
+
+  it('allows undefined value', () => {
+    expect(getDeepProperty(undefined, 'x.z')).to.be.undefined();
+  });
+
+  it('allows null value', () => {
+    expect(getDeepProperty(null, 'x.z')).to.be.null();
+  });
+
+  it('allows boolean value', () => {
+    expect(getDeepProperty(true, 'x.z')).to.be.undefined();
+  });
+
+  it('allows number value', () => {
+    expect(getDeepProperty(1, 'x.z')).to.be.undefined();
+    expect(getDeepProperty(NaN, 'x.z')).to.be.undefined();
+  });
+
+  it('allows to get length string value', () => {
+    expect(getDeepProperty('xyz', 'length')).to.eql(3);
+  });
+
+  it('allows to get length and items of an array by index', () => {
+    const arr = ['x', 'y'];
+    expect(getDeepProperty(arr, 'length')).to.eql(2);
+    expect(getDeepProperty(arr, '0')).to.eql('x');
+    expect(getDeepProperty(arr, '1')).to.eql('y');
+  });
+
+  it('allows to get items of a nested array by index', () => {
+    const obj = {a: ['x', 'y']};
+    expect(getDeepProperty(obj, 'a.0')).to.eql('x');
+    expect(getDeepProperty(obj, 'a.1')).to.eql('y');
+  });
+});
+
+describe('resolveList', () => {
+  it('resolves an array of values', () => {
+    const source = ['a', 'b'];
+    const result = resolveList(source, v => v.toUpperCase());
+    expect(result).to.eql(['A', 'B']);
+  });
+
+  it('resolves an array of promises', async () => {
+    const source = ['a', 'b'];
+    const result = await resolveList(source, v =>
+      Promise.resolve(v.toUpperCase()),
+    );
+    expect(result).to.eql(['A', 'B']);
+  });
+
+  it('resolves an array of promises or values', async () => {
+    const source = ['a', 'b'];
+    const result = await resolveList(
+      source,
+      v => (v === 'a' ? 'A' : Promise.resolve(v.toUpperCase())),
+    );
+    expect(result).to.eql(['A', 'B']);
+  });
+
+  it('resolves an array of promises or values with index', async () => {
+    const source = ['a', 'b'];
+    const result = await resolveList(
+      source,
+      (v, i) => (v === 'a' ? 'A' + i : Promise.resolve(v.toUpperCase() + i)),
+    );
+    expect(result).to.eql(['A0', 'B1']);
+  });
+
+  it('resolves an object of values with index and array', () => {
+    const result = resolveList(['a', 'b'], (v, i, list) => {
+      return v.toUpperCase() + i + list.length;
+    });
+    expect(result).to.eql(['A02', 'B12']);
+  });
+});
+
+describe('resolveMap', () => {
+  it('resolves an object of values', () => {
+    const source = {a: 'x', b: 'y'};
+    const result = resolveMap(source, v => v.toUpperCase());
+    expect(result).to.eql({a: 'X', b: 'Y'});
+  });
+
+  it('resolves an object of promises', async () => {
+    const source = {a: 'x', b: 'y'};
+    const result = await resolveMap(source, v =>
+      Promise.resolve(v.toUpperCase()),
+    );
+    expect(result).to.eql({a: 'X', b: 'Y'});
+  });
+
+  it('resolves an object of promises or values', async () => {
+    const source = {a: 'x', b: 'y'};
+    const result = await resolveMap(
+      source,
+      v => (v === 'x' ? 'X' : Promise.resolve(v.toUpperCase())),
+    );
+    expect(result).to.eql({a: 'X', b: 'Y'});
+  });
+
+  it('resolves an object of promises or values with key', async () => {
+    const source = {a: 'x', b: 'y'};
+    const result = await resolveMap(
+      source,
+      (v, p) => (v === 'x' ? 'X' + p : Promise.resolve(v.toUpperCase() + p)),
+    );
+    expect(result).to.eql({a: 'Xa', b: 'Yb'});
+  });
+
+  it('resolves an object of values with key and object', () => {
+    const result = resolveMap({a: 'x', b: 'y'}, (v, p, map) => {
+      return v.toUpperCase() + p + Object.keys(map).length;
+    });
+    expect(result).to.eql({a: 'Xa2', b: 'Yb2'});
+  });
+});
