@@ -5,7 +5,7 @@
 
 module.exports = {
   extends: [
-    '@commitlint/config-angular',
+    '@commitlint/config-conventional',
     '@commitlint/config-lerna-scopes'
   ],
   rules: {

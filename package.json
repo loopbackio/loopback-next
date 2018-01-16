@@ -12,7 +12,7 @@
   "dependencies": {},
   "devDependencies": {
     "@commitlint/cli": "^5.2.5",
-    "@commitlint/config-angular": "^5.1.1",
+    "@commitlint/config-conventional": "^6.0.2",
     "@commitlint/config-lerna-scopes": "^5.2.0",
     "@types/mocha": "^2.2.44",
     "@types/node": "^8.0.56",
