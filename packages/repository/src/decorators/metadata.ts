@@ -35,6 +35,7 @@ export class ModelMetadataHelper {
     if (classDef) {
       return classDef;
     } else {
+      // sets the metadata to a dedicated key if cached value does not exist
       const meta = new ModelDefinition(
         Object.assign({name: target.name}, classDef),
       );

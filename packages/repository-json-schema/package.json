@@ -3,17 +3,18 @@
   "version": "4.0.0-alpha.1",
   "description": "Converts TS classes into JSON Schemas using TypeScript's reflection API",
   "engines": {
-    "node": ">=8"
+    "node": ">=6"
   },
   "scripts": {
     "build": "npm run build:dist",
     "build:current": "lb-tsc",
     "build:dist": "lb-tsc es2017",
+    "build:dist6": "lb-tsc es2015",
     "build:apidocs": "lb-apidocs",
-    "clean": "lb-clean loopback-repository-json-schema*.tgz dist package api-docs",
+    "clean": "lb-clean loopback-json-schema*.tgz dist dist6 package api-docs",
     "prepare": "npm run build && npm run build:apidocs",
     "pretest": "npm run build:current",
-    "test": "mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js' 'DIST/test/integration/**/*.js' 'DIST/test/acceptance/**/*.js'",
+    "test": "lb-dist mocha --opts ../../test/mocha.opts 'dist/test/unit/**/*.js' 'dist/test/integration/**/*.js' 'dist/test/acceptance/**/*.js'",
     "verify": "npm pack && tar xf loopback-jsons-schema*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
@@ -38,6 +39,7 @@
     "index.js",
     "index.d.ts",
     "dist/src",
+    "dist6/src",
     "api-docs",
     "src"
   ],

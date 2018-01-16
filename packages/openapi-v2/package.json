@@ -8,8 +8,8 @@
   "devDependencies": {
     "@loopback/build": "^4.0.0-alpha.9",
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.17",
+    "@loopback/repository": "^4.0.0-alpha.23",
     "@loopback/testlab": "^4.0.0-alpha.19",
-    "@loopback/repository": "^4.0.0-alpha.22",
     "@types/lodash": "^4.14.92"
   },
   "scripts": {
