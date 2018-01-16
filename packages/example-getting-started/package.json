@@ -1,0 +1,53 @@
+{
+  "name": "@loopback/example-getting-started",
+  "version": "1.0.0",
+  "description": "An application and tutorial on how to build with LoopBack 4.",
+  "private": true,
+  "main": "index.js",
+  "engines": {
+    "node": ">=8"
+  },
+  "scripts": {
+    "acceptance": "lb-dist mocha --opts node_modules/@loopback/build/mocha.opts 'DIST/test/acceptance/**/*.js'",
+    "build": "npm run build:dist && npm run build:dist6",
+    "build:current": "lb-tsc",
+    "build:dist": "lb-tsc es2017",
+    "build:dist6": "lb-tsc es2015",
+    "build:apidocs": "lb-apidocs",
+    "clean": "lb-clean loopback-getting-started*.tgz dist dist6 package api-docs",
+    "prepare": "npm run build && npm run build:apidocs",
+    "pretest": "npm run build:current",
+    "test": "lb-dist mocha --opts node_modules/@loopback/build/mocha.opts 'DIST/test/unit/**/*.js' 'DIST/test/acceptance/**/*.js'",
+    "unit": "lb-dist mocha --opts node_modules/@loopback/build/mocha.opts 'DIST/test/unit/**/*.js'",
+    "verify": "npm pack && tar xf loopback-getting-started*.tgz && tree package && npm run clean",
+    "start": "npm run build && node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/context": "^4.0.0-alpha.25",
+    "@loopback/core": "^4.0.0-alpha.27",
+    "@loopback/openapi-v2": "^4.0.0-alpha.3",
+    "@loopback/repository": "^4.0.0-alpha.23",
+    "@loopback/rest": "^4.0.0-alpha.18",
+    "@types/sinon": "^2.3.6",
+    "sinon": "^4.1.5"
+  },
+  "devDependencies": {
+    "@loopback/build": "^4.0.0-alpha.8",
+    "@loopback/testlab": "^4.0.0-alpha.18",
+    "@types/mocha": "^2.2.46",
+    "@types/node": "^8.5.8",
+    "mocha": "^4.1.0",
+    "typescript": "^2.5.2"
+  },
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "tutorial"
+  ]
+}

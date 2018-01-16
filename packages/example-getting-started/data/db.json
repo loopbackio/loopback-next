@@ -1,0 +1,17 @@
+{
+  "ids": {
+    "Todo": 2,
+    "TodoItem": 5
+  },
+  "models": {
+    "Todo": {
+      "1": "{\"title\":\"Take over the galaxy\",\"desc\":\"MWAHAHAHAHAHAHAHAHAHAHAHAHAMWAHAHAHAHAHAHAHAHAHAHAHAHA\",\"id\":1}"
+    },
+    "TodoItem": {
+      "1": "{\"title\":\"build death star\",\"todoId\":1,\"id\":1,\"checklist\":[{\"title\":\"create death star\"},{\"title\":\"destroy alderaan\"},{\"title\":\"terrorize senate\"}]}",
+      "2": "{\"title\":\"destroy alderaan\",\"todoId\":1,\"id\":2,\"checklist\":[{\"title\":\"create death star\"},{\"title\":\"destroy alderaan\"},{\"title\":\"terrorize senate\"}]}",
+      "3": "{\"title\":\"terrorize senate\",\"todoId\":1,\"id\":3,\"checklist\":[{\"title\":\"create death star\"},{\"title\":\"destroy alderaan\"},{\"title\":\"terrorize senate\"}]}",
+      "4": "{\"title\":\"crush rebel scum\",\"todoId\":1,\"id\":4}"
+    }
+  }
+}
