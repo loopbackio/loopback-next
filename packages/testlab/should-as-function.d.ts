@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Node module: @loopback/testlab
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 // Type definitions for should.js v8.1.1
 // Project: https://github.com/shouldjs/should.js
 // Definitions by: Alex Varju <https://github.com/varju/>, Maxime LUCE <https://github.com/SomaticIT/>

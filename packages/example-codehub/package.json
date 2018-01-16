@@ -13,6 +13,7 @@
     "unit": "mocha 'test/unit/**/*.ts'"
   },
   "author": "IBM",
+  "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
     "@loopback/core": "^4.0.0-alpha.27",

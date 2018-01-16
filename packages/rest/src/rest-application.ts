@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Node module: @loopback/rest
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {Application, ApplicationConfig, Server} from '@loopback/core';
 import {RestComponent} from './rest-component';
 import {SequenceHandler, SequenceFunction} from './sequence';

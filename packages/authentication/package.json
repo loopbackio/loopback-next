@@ -21,6 +21,7 @@
     "verify": "npm pack && tar xf loopback-authentication*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
+  "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
     "@loopback/context": "^4.0.0-alpha.25",

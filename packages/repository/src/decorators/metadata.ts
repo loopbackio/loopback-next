@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Node module: @loopback/repository
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {InspectionOptions, MetadataInspector} from '@loopback/context';
 import {MODEL_PROPERTIES_KEY, MODEL_WITH_PROPERTIES_KEY} from './model';
 import {ModelDefinition, PropertyDefinition} from '../model';
