@@ -29,7 +29,7 @@
     "@loopback/build": "^4.0.0-alpha.8",
     "@loopback/testlab": "^4.0.0-alpha.18",
     "@types/bluebird": "^3.5.18",
-    "@types/debug": "0.0.30",
+    "@types/debug": "^0.0.30",
     "bluebird": "^3.5.0"
   },
   "keywords": [
