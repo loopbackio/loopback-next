@@ -5,7 +5,7 @@
 
 'use strict';
 
-const promisify = require('../lib/promisify');
+const promisify = require('../lib/utils').promisify;
 
 const cloneExampleFromGitHub = require('../generators/example/clone-example');
 const expect = require('@loopback/testlab').expect;
