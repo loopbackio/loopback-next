@@ -10,10 +10,14 @@ import {
   PropertyDecoratorFactory,
   MetadataMap,
 } from '@loopback/metadata';
-import {BoundValue, ValueOrPromise} from './binding';
+import {
+  BoundValue,
+  ValueOrPromise,
+  isPromise,
+  resolveList,
+} from './value-promise';
 import {Context} from './context';
 import {ResolutionSession} from './resolution-session';
-import {isPromise} from './is-promise';
 
 const PARAMETERS_KEY = 'inject:parameters';
 const PROPERTIES_KEY = 'inject:properties';
@@ -249,28 +253,12 @@ function resolveByTag(
 ) {
   const tag: string | RegExp = injection.metadata!.tag;
   const bindings = ctx.findByTag(tag);
-  const values: BoundValue[] = new Array(bindings.length);
 
-  // A closure to set a value by index
-  const valSetter = (i: number) => (val: BoundValue) => (values[i] = val);
-
-  let asyncResolvers: PromiseLike<BoundValue>[] = [];
-  // tslint:disable-next-line:prefer-for-of
-  for (let i = 0; i < bindings.length; i++) {
+  return resolveList(bindings, b => {
     // We need to clone the session so that resolution of multiple bindings
     // can be tracked in parallel
-    const val = bindings[i].getValue(ctx, ResolutionSession.fork(session));
-    if (isPromise(val)) {
-      asyncResolvers.push(val.then(valSetter(i)));
-    } else {
-      values[i] = val;
-    }
-  }
-  if (asyncResolvers.length) {
-    return Promise.all(asyncResolvers).then(vals => values);
-  } else {
-    return values;
-  }
+    return b.getValue(ctx, ResolutionSession.fork(session));
+  });
 }
 
 /**

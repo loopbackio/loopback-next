@@ -3,20 +3,23 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export {
-  Binding,
-  BindingScope,
-  BindingType,
-  BoundValue,
-  ValueOrPromise,
-} from './binding';
+export {Binding, BindingScope, BindingType} from './binding';
 
 export {Context} from './context';
 export {Constructor} from './resolver';
 export {ResolutionSession} from './resolution-session';
 export {inject, Setter, Getter} from './inject';
 export {Provider} from './provider';
-export {isPromise} from './is-promise';
+export {
+  isPromise,
+  BoundValue,
+  ValueOrPromise,
+  MapObject,
+  resolveList,
+  resolveMap,
+  tryWithFinally,
+  getDeepProperty,
+} from './value-promise';
 
 // internals for testing
 export {instantiateClass, invokeMethod} from './resolver';

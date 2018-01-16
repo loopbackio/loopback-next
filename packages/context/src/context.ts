@@ -3,8 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, BoundValue, ValueOrPromise} from './binding';
-import {isPromise} from './is-promise';
+import {Binding} from './binding';
+import {
+  isPromise,
+  BoundValue,
+  ValueOrPromise,
+  getDeepProperty,
+} from './value-promise';
 import {ResolutionSession} from './resolution-session';
 
 import * as debugModule from 'debug';
@@ -275,20 +280,4 @@ export class Context {
     }
     return json;
   }
-}
-
-/**
- * Get nested properties by path
- * @param value Value of an object
- * @param path Path to the property
- */
-function getDeepProperty(value: BoundValue, path: string) {
-  const props = path.split('.');
-  for (const p of props) {
-    value = value[p];
-    if (value === undefined || value === null) {
-      return value;
-    }
-  }
-  return value;
 }
