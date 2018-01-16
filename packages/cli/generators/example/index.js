@@ -13,6 +13,8 @@ const utils = require('../../lib/utils');
 
 const EXAMPLES = {
   codehub: 'A GitHub-like application we used to use to model LB4 API.',
+  'getting-started':
+    'An application and tutorial on how to build with LoopBack 4.',
 };
 Object.freeze(EXAMPLES);
 

@@ -34,9 +34,9 @@ describe('lb4 example', function() {
 
     it('lists all example names in help', () => {
       const helpText = getHelpText();
-      expect(helpText).to.match(
-        new RegExp(Object.keys(ALL_EXAMPLES).join('.*'))
-      );
+      for (const key of Object.keys(ALL_EXAMPLES)) {
+        expect(helpText).to.match(new RegExp(`${key}: (.*?)`));
+      }
     });
 
     function getHelpText() {
