@@ -174,7 +174,7 @@ export class ResolutionSession {
    */
   static describeInjection(injection?: Injection) {
     /* istanbul ignore if */
-    if (injection == null) return injection;
+    if (injection == null) return undefined;
     const name = getTargetName(
       injection.target,
       injection.member,
