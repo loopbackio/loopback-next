@@ -72,6 +72,18 @@ export class Context {
   }
 
   /**
+   * Get the owning context for a binding key
+   * @param key Binding key
+   */
+  getOwner(key: string): Context | undefined {
+    if (this.contains(key)) return this;
+    if (this._parent) {
+      return this._parent.getOwner(key);
+    }
+    return undefined;
+  }
+
+  /**
    * Find bindings using the key pattern
    * @param pattern Key regexp or pattern with optional `*` wildcards
    */
@@ -263,6 +275,12 @@ export class Context {
     }
 
     return getDeepProperty(boundValue, path);
+  }
+
+  clone() {
+    const copy = new Context();
+    copy._parent = this._parent;
+    copy.registry = new Map(this.registry);
   }
 
   /**
