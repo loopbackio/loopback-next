@@ -10,6 +10,7 @@
     "node": ">=6"
   },
   "main": "index.js",
+  "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
     "@types/mocha": "^2.2.43",

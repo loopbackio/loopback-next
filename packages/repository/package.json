@@ -21,6 +21,7 @@
     "verify": "npm pack && tar xf loopback-juggler*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
+  "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "devDependencies": {
     "@loopback/build": "^4.0.0-alpha.8",

@@ -17,6 +17,7 @@
     "verify": "npm pack && tar xf loopback-testlab*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
+  "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
     "@loopback/openapi-spec": "^4.0.0-alpha.19",

@@ -20,6 +20,7 @@
     "verify": "npm pack && tar xf loopback-metadata*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
+  "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
     "debug": "^3.1.0",

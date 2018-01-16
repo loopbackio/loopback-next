@@ -16,6 +16,7 @@
     "verify": "npm pack && tar xf loopback-openapi-spec*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
+  "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "keywords": [
     "Swagger",
