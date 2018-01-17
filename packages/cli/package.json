@@ -12,7 +12,8 @@
   "files": [
     "bin",
     "lib",
-    "generators"
+    "generators",
+    "api-docs"
   ],
   "bin": {
     "lb4": "bin/cli.js"
@@ -53,6 +54,8 @@
     "yeoman-generator": "^2.0.1"
   },
   "scripts": {
+    "build:apidocs": "lb-apidocs",
+    "prepare": "npm run build:apidocs",
     "prepublishOnly": "nsp check",
     "test": "mocha test/**/*.js"
   },
