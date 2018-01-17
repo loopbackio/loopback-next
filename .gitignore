@@ -5,3 +5,7 @@ npm-debug.log
 coverage
 .nyc_output
 api-docs
+packages/*/*.tgz
+packages/*/dist*
+packages/*/package
+packages/cli/test/sandbox
