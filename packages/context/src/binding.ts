@@ -145,16 +145,35 @@ export class Binding {
     };
   }
 
+  /**
+   * Get nested properties by path
+   * @param value Value of an object
+   * @param path Path to the property. If not present, the root value will be
+   * returned.
+   */
+  static getDeepProperty(value: BoundValue, path?: string) {
+    path = path || '';
+    const props = path.split('.').filter(Boolean);
+    for (const p of props) {
+      value = value[p];
+      if (value === undefined || value === null) {
+        return value;
+      }
+    }
+    return value;
+  }
+
   public readonly key: string;
   public readonly tags: Set<string> = new Set();
   public scope: BindingScope = BindingScope.TRANSIENT;
   public type: BindingType;
+  public options: Context;
 
-  private _cache: BoundValue;
+  private _cache: WeakMap<Context, BoundValue>;
   private _getValue: (
     ctx?: Context,
     session?: ResolutionSession,
-  ) => BoundValue | Promise<BoundValue>;
+  ) => ValueOrPromise<BoundValue>;
 
   // For bindings bound via toClass, this property contains the constructor
   // function
@@ -172,40 +191,31 @@ export class Binding {
    */
   private _cacheValue(
     ctx: Context,
-    result: BoundValue | Promise<BoundValue>,
-  ): BoundValue | Promise<BoundValue> {
+    result: ValueOrPromise<BoundValue>,
+  ): ValueOrPromise<BoundValue> {
+    // Initialize the cache as a weakmap keyed by context
+    if (!this._cache) this._cache = new WeakMap<Context, BoundValue>();
     if (isPromise(result)) {
       if (this.scope === BindingScope.SINGLETON) {
-        // Cache the value
+        // Cache the value at owning context level
         result = result.then(val => {
-          this._cache = val;
+          this._cache.set(ctx.getOwner(this.key)!, val);
           return val;
         });
       } else if (this.scope === BindingScope.CONTEXT) {
-        // Cache the value
+        // Cache the value at the current context
         result = result.then(val => {
-          if (ctx.contains(this.key)) {
-            // The ctx owns the binding
-            this._cache = val;
-          } else {
-            // Create a binding of the cached value for the current context
-            ctx.bind(this.key).to(val);
-          }
+          this._cache.set(ctx, val);
           return val;
         });
       }
     } else {
       if (this.scope === BindingScope.SINGLETON) {
         // Cache the value
-        this._cache = result;
+        this._cache.set(ctx.getOwner(this.key)!, result);
       } else if (this.scope === BindingScope.CONTEXT) {
-        if (ctx.contains(this.key)) {
-          // The ctx owns the binding
-          this._cache = result;
-        } else {
-          // Create a binding of the cached value for the current context
-          ctx.bind(this.key).to(result);
-        }
+        // Cache the value at the current context
+        this._cache.set(ctx, result);
       }
     }
     return result;
@@ -238,21 +248,25 @@ export class Binding {
   getValue(
     ctx: Context,
     session?: ResolutionSession,
-  ): BoundValue | Promise<BoundValue> {
+  ): ValueOrPromise<BoundValue> {
     /* istanbul ignore if */
     if (debug.enabled) {
       debug('Get value for binding %s', this.key);
     }
+    let isCached = false; // Use a flag to see the ctx key exists in the cache
+    let cachedValue: BoundValue;
     // First check cached value for non-transient
-    if (this._cache !== undefined) {
+    if (this._cache) {
       if (this.scope === BindingScope.SINGLETON) {
-        return this._cache;
+        const ownerCtx = ctx.getOwner(this.key)!;
+        isCached = this._cache.has(ownerCtx);
+        cachedValue = isCached && this._cache.get(ownerCtx);
       } else if (this.scope === BindingScope.CONTEXT) {
-        if (ctx.contains(this.key)) {
-          return this._cache;
-        }
+        isCached = this._cache.has(ctx);
+        cachedValue = isCached && this._cache.get(ctx);
       }
     }
+    if (isCached) return cachedValue;
     if (this._getValue) {
       let result = ResolutionSession.runWithBinding(
         s => this._getValue(ctx, s),
@@ -266,11 +280,18 @@ export class Binding {
     );
   }
 
+  /**
+   * Lock the binding so that it cannot be rebound
+   */
   lock(): this {
     this.isLocked = true;
     return this;
   }
 
+  /**
+   * Add a tag to the binding
+   * @param tagName Tag name or an array of tag names
+   */
   tag(tagName: string | string[]): this {
     if (typeof tagName === 'string') {
       this.tags.add(tagName);
@@ -282,6 +303,26 @@ export class Binding {
     return this;
   }
 
+  /**
+   * Set options for the binding
+   * @param options Options object or a context object that binds all options
+   */
+  withOptions(options: {[name: string]: BoundValue} | Context): this {
+    if (!this.options) this.options = new Context();
+    if (options instanceof Context) {
+      this.options.mergeWith(options);
+    } else {
+      for (const p in options) {
+        this.options.bind(p).to(options[p]);
+      }
+    }
+    return this;
+  }
+
+  /**
+   * Set the binding scope
+   * @param scope Binding scope
+   */
   inScope(scope: BindingScope): this {
     this.scope = scope;
     return this;
@@ -348,7 +389,7 @@ export class Binding {
    * );
    * ```
    */
-  toDynamicValue(factoryFn: () => BoundValue | Promise<BoundValue>): this {
+  toDynamicValue(factoryFn: () => ValueOrPromise<BoundValue>): this {
     /* istanbul ignore if */
     if (debug.enabled) {
       debug('Bind %s to dynamic value:', this.key, factoryFn);
@@ -413,11 +454,17 @@ export class Binding {
     return this;
   }
 
+  /**
+   * Unlock the binding
+   */
   unlock(): this {
     this.isLocked = false;
     return this;
   }
 
+  /**
+   * Convert to a plain JSON object
+   */
   toJSON(): Object {
     // tslint:disable-next-line:no-any
     const json: {[name: string]: any} = {

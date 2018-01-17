@@ -8,7 +8,7 @@ import {
   ParameterObject,
   PathsObject,
 } from '@loopback/openapi-spec';
-import {Context, Constructor, instantiateClass} from '@loopback/context';
+import {Context, Constructor, BindingScope} from '@loopback/context';
 import {ServerRequest} from 'http';
 import * as HttpErrors from 'http-errors';
 
@@ -301,6 +301,10 @@ export class ControllerRoute extends BaseRoute {
 
   updateBindings(requestContext: Context) {
     const ctor = this._controllerCtor;
+    requestContext
+      .bind('controller.current')
+      .toClass(ctor)
+      .inScope(BindingScope.SINGLETON);
     requestContext.bind('controller.current.ctor').to(ctor);
     requestContext.bind('controller.current.operation').to(this._methodName);
   }
@@ -318,14 +322,10 @@ export class ControllerRoute extends BaseRoute {
     return await controller[this._methodName](...args);
   }
 
-  private async _createControllerInstance(
+  private _createControllerInstance(
     requestContext: Context,
   ): Promise<ControllerInstance> {
-    const valueOrPromise = instantiateClass(
-      this._controllerCtor,
-      requestContext,
-    );
-    return (await Promise.resolve(valueOrPromise)) as ControllerInstance;
+    return requestContext.get('controller.current');
   }
 }
 
