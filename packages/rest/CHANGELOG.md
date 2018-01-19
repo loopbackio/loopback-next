@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.19"></a>
+# [4.0.0-alpha.19](https://github.com/strongloop/loopback-next/compare/@loopback/rest@4.0.0-alpha.18...@loopback/rest@4.0.0-alpha.19) (2018-01-19)
+
+
+### Bug Fixes
+
+* **rest:** export decorators for backward compatibility ([#850](https://github.com/strongloop/loopback-next/issues/850)) ([5166388](https://github.com/strongloop/loopback-next/commit/5166388))
+
+
+
+
 <a name="4.0.0-alpha.18"></a>
 # [4.0.0-alpha.18](https://github.com/strongloop/loopback-next/compare/@loopback/rest@4.0.0-alpha.17...@loopback/rest@4.0.0-alpha.18) (2018-01-11)
 

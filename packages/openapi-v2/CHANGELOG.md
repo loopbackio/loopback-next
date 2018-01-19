@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.4"></a>
+# [4.0.0-alpha.4](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v2@4.0.0-alpha.3...@loopback/openapi-v2@4.0.0-alpha.4) (2018-01-19)
+
+
+
+
+**Note:** Version bump only for package @loopback/openapi-v2
+
 <a name="4.0.0-alpha.3"></a>
 # [4.0.0-alpha.3](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v2@4.0.0-alpha.2...@loopback/openapi-v2@4.0.0-alpha.3) (2018-01-11)
 

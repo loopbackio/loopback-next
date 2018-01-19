@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.9"></a>
+# [4.0.0-alpha.9](https://github.com/strongloop/loopback-next/compare/@loopback/build@4.0.0-alpha.8...@loopback/build@4.0.0-alpha.9) (2018-01-19)
+
+
+### Bug Fixes
+
+* **build:** move no-unused-variables to tslint.build.json ([15dd2db](https://github.com/strongloop/loopback-next/commit/15dd2db))
+
+
+
+
 <a name="4.0.0-alpha.8"></a>
 # [4.0.0-alpha.8](https://github.com/strongloop/loopback-next/compare/@loopback/build@4.0.0-alpha.7...@loopback/build@4.0.0-alpha.8) (2018-01-11)
 

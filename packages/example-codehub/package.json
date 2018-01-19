@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-codehub",
-  "version": "4.0.0-alpha.24",
+  "version": "4.0.0-alpha.25",
   "description": "",
   "engines": {
     "node": ">=6"
@@ -16,11 +16,11 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/core": "^4.0.0-alpha.27",
-    "@loopback/rest": "^4.0.0-alpha.18"
+    "@loopback/core": "^4.0.0-alpha.28",
+    "@loopback/rest": "^4.0.0-alpha.19"
   },
   "devDependencies": {
-    "@loopback/testlab": "^4.0.0-alpha.18",
+    "@loopback/testlab": "^4.0.0-alpha.19",
     "ts-node": "^3.3.0"
   }
 }

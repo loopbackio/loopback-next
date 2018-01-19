@@ -1,0 +1,17 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+<a name="1.0.1-alpha.0"></a>
+## 1.0.1-alpha.0 (2018-01-19)
+
+
+### Bug Fixes
+
+* **example-getting-started:** fix "extends" path to point to [@loopback](https://github.com/loopback)/build module ([5b37148](https://github.com/strongloop/loopback-next/commit/5b37148))
+
+
+### Features
+
+* **example-getting-started:** migrate into monorepo ([9478d8b](https://github.com/strongloop/loopback-next/commit/9478d8b))

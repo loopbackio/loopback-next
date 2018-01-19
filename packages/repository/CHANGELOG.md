@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.24"></a>
+# [4.0.0-alpha.24](https://github.com/strongloop/loopback-next/compare/@loopback/repository@4.0.0-alpha.23...@loopback/repository@4.0.0-alpha.24) (2018-01-19)
+
+
+### Features
+
+* add findOne function into legacy juggler bridge ([ee0df08](https://github.com/strongloop/loopback-next/commit/ee0df08))
+
+
+
+
 <a name="4.0.0-alpha.23"></a>
 # [4.0.0-alpha.23](https://github.com/strongloop/loopback-next/compare/@loopback/repository@4.0.0-alpha.22...@loopback/repository@4.0.0-alpha.23) (2018-01-11)
 

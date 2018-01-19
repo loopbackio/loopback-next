@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.5"></a>
+# [4.0.0-alpha.5](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@4.0.0-alpha.4...@loopback/metadata@4.0.0-alpha.5) (2018-01-19)
+
+
+### Bug Fixes
+
+* **metadata:** use static methods ([eea3c08](https://github.com/strongloop/loopback-next/commit/eea3c08))
+* simplify string formatting ([4ea0485](https://github.com/strongloop/loopback-next/commit/4ea0485))
+* use version range for [@types](https://github.com/types)/debug ([3adbc0b](https://github.com/strongloop/loopback-next/commit/3adbc0b))
+
+
+### Features
+
+* **context:** track injections with ResolutionSession ([cd4848e](https://github.com/strongloop/loopback-next/commit/cd4848e))
+
+
+
+
 <a name="4.0.0-alpha.4"></a>
 # [4.0.0-alpha.4](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@4.0.0-alpha.3...@loopback/metadata@4.0.0-alpha.4) (2018-01-11)
 

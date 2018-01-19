@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.26"></a>
+# [4.0.0-alpha.26](https://github.com/strongloop/loopback-next/compare/@loopback/context@4.0.0-alpha.25...@loopback/context@4.0.0-alpha.26) (2018-01-19)
+
+
+### Bug Fixes
+
+* address review comments ([76d3ec3](https://github.com/strongloop/loopback-next/commit/76d3ec3))
+* **context:** add resolution-session.ts for api docs ([25a9e91](https://github.com/strongloop/loopback-next/commit/25a9e91))
+* **context:** allow session to be passed into [@inject](https://github.com/inject).getter ([0517ea1](https://github.com/strongloop/loopback-next/commit/0517ea1))
+* **context:** clean up the circular dependency tests ([5c35ccd](https://github.com/strongloop/loopback-next/commit/5c35ccd))
+* **context:** fix the test to avoid UnhandledPromiseRejectionWarning ([6a82c4d](https://github.com/strongloop/loopback-next/commit/6a82c4d))
+* make sure TS compiler infer undefined ([4c48ece](https://github.com/strongloop/loopback-next/commit/4c48ece))
+* propagate errors via promises ([204c1b7](https://github.com/strongloop/loopback-next/commit/204c1b7))
+* use version range for [@types](https://github.com/types)/debug ([3adbc0b](https://github.com/strongloop/loopback-next/commit/3adbc0b))
+
+
+### Features
+
+* **context:** add [@inject](https://github.com/inject).tag to allow injection by a tag ([fc8f260](https://github.com/strongloop/loopback-next/commit/fc8f260))
+* **context:** add more debug statements ([38eab3e](https://github.com/strongloop/loopback-next/commit/38eab3e))
+* **context:** enable detection of circular dependencies ([72b4190](https://github.com/strongloop/loopback-next/commit/72b4190))
+* **context:** forbid bind().to() a Promise instance ([#854](https://github.com/strongloop/loopback-next/issues/854)) ([85ffa8b](https://github.com/strongloop/loopback-next/commit/85ffa8b))
+* **context:** track injections with ResolutionSession ([cd4848e](https://github.com/strongloop/loopback-next/commit/cd4848e))
+* **context:** use one stack to track bindings and injections ([b2f7eda](https://github.com/strongloop/loopback-next/commit/b2f7eda))
+
+
+### BREAKING CHANGES
+
+* **context:** It is no longer possible to pass a promise instance
+to `.to()` method of a Binding. Use `.toDynamicValue()` instead.
+Consider deferring the async computation (that produced the promise
+instance you are binding) into the dynamic value getter function,
+i.e. start the async computation only from the getter function.
+
+An example diff showing how to upgrade your existing code:
+
+-    ctx.bind('bar').to(Promise.resolve('BAR'));
++    ctx.bind('bar').toDynamicValue(() => Promise.resolve('BAR'));
+
+
+
+
 <a name="4.0.0-alpha.25"></a>
 # [4.0.0-alpha.25](https://github.com/strongloop/loopback-next/compare/@loopback/context@4.0.0-alpha.24...@loopback/context@4.0.0-alpha.25) (2018-01-11)
 

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.17"></a>
+# [4.0.0-alpha.17](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.16...@loopback/cli@4.0.0-alpha.17) (2018-01-19)
+
+
+### Bug Fixes
+
+* **cli:** rework template to use inline param decoration ([e3ef86b](https://github.com/strongloop/loopback-next/commit/e3ef86b))
+
+
+### Features
+
+* **cli:** generate REST controller with CRUD methods ([57fe858](https://github.com/strongloop/loopback-next/commit/57fe858))
+* **cli:** lb4 example [<example-name>] ([4286c0d](https://github.com/strongloop/loopback-next/commit/4286c0d))
+* **example-getting-started:** migrate into monorepo ([9478d8b](https://github.com/strongloop/loopback-next/commit/9478d8b))
+
+
+
+
 <a name="4.0.0-alpha.16"></a>
 # [4.0.0-alpha.16](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.15...@loopback/cli@4.0.0-alpha.16) (2018-01-11)
 
