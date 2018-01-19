@@ -3,27 +3,29 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-'use strict';
+('use strict');
 
 const promisify = require('../lib/utils').promisify;
 
 const cloneExampleFromGitHub = require('../generators/example/clone-example');
 const expect = require('@loopback/testlab').expect;
+const TestSandbox = require('@loopback/testlab').TestSandbox;
 const fs = require('fs');
 const glob = promisify(require('glob'));
 const path = require('path');
 const rimraf = promisify(require('rimraf'));
 
 const VALID_EXAMPLE = 'codehub';
-const SANDBOX = path.resolve(__dirname, 'sandbox');
+const SANDBOX_PATH = path.resolve(__dirname, 'sandbox');
+let sandbox;
 
 describe('cloneExampleFromGitHub', function() {
   this.timeout(10000);
-
+  before(createSandbox);
   beforeEach(resetSandbox);
 
   it('extracts all project files', () => {
-    return cloneExampleFromGitHub(VALID_EXAMPLE, SANDBOX)
+    return cloneExampleFromGitHub(VALID_EXAMPLE, SANDBOX_PATH)
       .then(outDir => {
         return Promise.all([
           glob('**', {
@@ -42,7 +44,11 @@ describe('cloneExampleFromGitHub', function() {
       });
   });
 
+  function createSandbox() {
+    sandbox = new TestSandbox(SANDBOX_PATH);
+  }
+
   function resetSandbox() {
-    return rimraf(SANDBOX);
+    sandbox.reset();
   }
 });

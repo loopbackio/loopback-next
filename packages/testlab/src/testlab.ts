@@ -20,3 +20,4 @@ export {sinon, SinonSpy};
 export * from './client';
 export * from './shot';
 export * from './validate-api-spec';
+export * from './test-sandbox';
