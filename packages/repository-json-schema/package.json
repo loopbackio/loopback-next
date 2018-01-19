@@ -24,7 +24,7 @@
     "JSON Schema"
   ],
   "dependencies": {
-    "@loopback/openapi-spec": "^4.0.0-alpha.18",
+    "@loopback/context": "^4.0.0-alpha.25",
     "@loopback/repository": "^4.0.0-alpha.22",
     "lodash": "^4.17.4",
     "typescript-json-schema": "^0.20.0"

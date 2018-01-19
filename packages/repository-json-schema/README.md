@@ -15,7 +15,7 @@ $ npm install --save @loopback/repository-json-schema
 ## Basic use
 
 ```ts
-import {modelToJsonDef} from '@loopback/repository-json-schema';
+import {getJsonDef} from '@loopback/repository-json-schema';
 import {model, property} from '@loopback/repository';
 
 @model()
@@ -23,7 +23,7 @@ MyModel {
   @property() name: string;
 }
 
-const jsonDef = modelToJsonDef(MyModel);
+const jsonDef = getJsonDef(MyModel);
 ```
 
 The value of `jsonDef` will be:

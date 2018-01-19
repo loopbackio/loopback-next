@@ -10,12 +10,26 @@ import {
 } from '@loopback/repository';
 import {includes} from 'lodash';
 import {Definition} from 'typescript-json-schema';
+import {MetadataInspector} from '@loopback/context';
+
+export const JSON_SCHEMA_KEY = 'loopback:json-schema';
 
 /**
  * Type definition for JSON Schema
  */
 export interface JsonDefinition extends Definition {
   properties?: {[property: string]: JsonDefinition};
+}
+
+export function getJsonDef(ctor: Function): JsonDefinition {
+  const jsonDef = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor);
+  if (jsonDef) {
+    return jsonDef;
+  } else {
+    const newDef = modelToJsonDef(ctor);
+    MetadataInspector.defineMetadata(JSON_SCHEMA_KEY, newDef, ctor);
+    return newDef;
+  }
 }
 
 // NOTE(shimks) no metadata for: union, optional, nested array, any, enum,

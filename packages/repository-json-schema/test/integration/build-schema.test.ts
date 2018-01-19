@@ -12,6 +12,8 @@ import {
 } from '@loopback/repository';
 import {modelToJsonDef, toJsonProperty} from '../../src/build-schema';
 import {expect} from '@loopback/testlab';
+import {MetadataInspector} from '@loopback/context';
+import {JSON_SCHEMA_KEY, getJsonDef} from '../../index';
 
 describe('build-schema', () => {
   describe('modelToJSON', () => {
@@ -226,6 +228,40 @@ describe('build-schema', () => {
             $ref: '#definitions/Bar',
           },
         });
+      });
+    });
+  });
+
+  describe('getJsonDef', () => {
+    it('gets cached JSON definition if one exists', () => {
+      @model()
+      class TestModel {
+        @property() foo: number;
+      }
+      const cachedDef = {
+        properties: {
+          cachedProperty: {
+            type: 'string',
+          },
+        },
+      };
+      MetadataInspector.defineMetadata(JSON_SCHEMA_KEY, cachedDef, TestModel);
+
+      const jsonDef = getJsonDef(TestModel);
+      expect(jsonDef).to.eql(cachedDef);
+    });
+
+    it('creates JSON definition if one does not already exist', () => {
+      @model()
+      class NewModel {
+        @property() newProperty: string;
+      }
+
+      const jsonDef = getJsonDef(NewModel);
+      expect(jsonDef.properties).to.containDeep({
+        newProperty: {
+          type: 'string',
+        },
       });
     });
   });

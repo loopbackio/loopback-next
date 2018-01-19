@@ -27,7 +27,7 @@ import {
 
 import * as stream from 'stream';
 import {includes} from 'lodash';
-import {modelToJsonDef, JsonDefinition} from '@loopback/repository-json-schema';
+import {getJsonDef, JsonDefinition} from '@loopback/repository-json-schema';
 
 const debug = require('debug')('loopback:rest:router:metadata');
 
@@ -191,7 +191,7 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
         if (!spec.definitions) {
           spec.definitions = {};
         }
-        const jsonDef = modelToJsonDef(p);
+        const jsonDef = getJsonDef(p);
         spec.definitions[p.name] = jsonToSchemaObject(jsonDef);
         break;
       }
