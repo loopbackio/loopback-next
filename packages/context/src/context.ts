@@ -3,10 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {map, takeUntil, reduce} from './iteratable';
 import {Binding} from './binding';
 import {
   isPromise,
   BoundValue,
+  Constructor,
   ValueOrPromise,
   getDeepProperty,
 } from './value-promise';
@@ -25,19 +27,35 @@ export class Context {
    * Name of the context
    */
   readonly name: string;
+  /**
+   * Parent contexts to form a graph of contexts for binding resolution
+   */
+  protected readonly parents: Context[] = [];
+
+  /**
+   * Registry of bindings
+   */
   protected readonly registry: Map<string, Binding> = new Map();
-  protected _parent?: Context;
 
   /**
    * Create a new context
-   * @param _parent The optional parent context
+   * @param parents The optional parent contexts. If multiple parent contexts
+   * are provided, they will be used to resolve bindings following breadth first
+   * traversal.
+   * @name name The optional context name. If not present, a uuid is generated as
+   * the name.
    */
-  constructor(_parent?: Context | string, name?: string) {
-    if (typeof _parent === 'string') {
-      name = _parent;
-      _parent = undefined;
+  constructor(parents?: Context | Context[] | string, name?: string) {
+    if (typeof parents === 'string') {
+      // constructor(name)
+      name = parents;
+      parents = undefined;
     }
-    this._parent = _parent;
+    if (Array.isArray(parents)) {
+      this.parents.push(...parents);
+    } else if (parents) {
+      this.parents.push(parents);
+    }
     this.name = name || uuidv1();
   }
 
@@ -96,15 +114,71 @@ export class Context {
   }
 
   /**
+   * Iterate all contexts by breadth first traversal of the graph following
+   * `parents`. For example, with the following context graph:
+   * - reqCtx -> [serverCtx, connectorCtx]
+   * - serverCtx -> [appCtx]
+   * - connectorCtx -> [appCtx]
+   * `reqCtx.contexts()` returns an iterator of `[reqCtx, serverCtx,
+   * connectorCtx, appCtx]`.
+   */
+  protected *contexts(): IterableIterator<Context> {
+    const visited: Set<Context> = new Set();
+    const queue: Context[] = [];
+    // Enqueue the current context
+    queue.push(this);
+    while (queue.length) {
+      // Dequeue the head context
+      const c = queue.shift()!;
+      // Skip a context if it has been visited
+      if (visited.has(c)) continue;
+      visited.add(c);
+      yield c;
+      // Enqueue the parent contexts
+      queue.push(...c.parents);
+    }
+  }
+
+  /**
+   * Visit all contexts in the graph to resolve values following the context
+   * chain connected by `parents`.
+   *
+   * @param mapper A function to produce a result from the context object
+   * locally without consulting the parents
+   * @param predicator A function to control when the iteration stops
+   * @param reducer A function to reduce the previous result and current value
+   * into a new result
+   * @param initialValue The initial result
+   */
+  protected visitAllContexts<T, V>(
+    mapper: (ctx: Context) => T,
+    predicator: (value: T) => boolean,
+    reducer: (accumulator: V, currentValue: T) => V,
+    initialValue: V,
+  ): V {
+    return reduce(
+      // Iterate until the predicator returns `true`
+      takeUntil(
+        // Visit a context to produce a result locally
+        map(this.contexts(), mapper),
+        predicator,
+      ),
+      reducer,
+      initialValue,
+    );
+  }
+
+  /**
    * Check if a key is bound in the context or its ancestors
    * @param key Binding key
    */
   isBound(key: string): boolean {
-    if (this.contains(key)) return true;
-    if (this._parent) {
-      return this._parent.isBound(key);
-    }
-    return false;
+    return this.visitAllContexts(
+      ctx => ctx.contains(key),
+      value => value === true,
+      (accumulator, currentValue) => currentValue,
+      false,
+    );
   }
 
   /**
@@ -112,11 +186,28 @@ export class Context {
    * @param key Binding key
    */
   getOwnerContext(key: string): Context | undefined {
-    if (this.contains(key)) return this;
-    if (this._parent) {
-      return this._parent.getOwnerContext(key);
-    }
-    return undefined;
+    return this.visitAllContexts<Context, Context | undefined>(
+      ctx => ctx,
+      value => value.contains(key),
+      (accumulator, currentValue) => currentValue,
+      undefined,
+    );
+  }
+
+  /**
+   * Compose this context with additional parent contexts. The newly created
+   * context will have this context and the provided parent contexts as its
+   * parents.
+   * @param parents Optional parent contexts to be added to the graph
+   * @param name Name of the newly composed context
+   */
+  composeWith(parents?: Context | Context[], name?: string): this {
+    // Construct a new instance with the same class of this instance
+    const ctor = this.constructor as Constructor<this>;
+    const copy = new ctor(parents, name);
+    // Add this context as the 1st parent for the new one
+    copy.parents.unshift(this);
+    return copy;
   }
 
   /**
@@ -124,26 +215,33 @@ export class Context {
    * @param pattern Key regexp or pattern with optional `*` wildcards
    */
   find(pattern?: string | RegExp): Binding[] {
-    let bindings: Binding[] = [];
-    let glob: RegExp | undefined = undefined;
-    if (typeof pattern === 'string') {
-      // TODO(@superkhau): swap with production grade glob to regex lib
-      Binding.validateKey(pattern);
-      glob = new RegExp('^' + pattern.split('*').join('.*') + '$');
-    } else if (pattern instanceof RegExp) {
-      glob = pattern;
-    }
-    if (glob) {
-      this.registry.forEach(binding => {
-        const isMatch = glob!.test(binding.key);
-        if (isMatch) bindings.push(binding);
-      });
-    } else {
-      bindings = Array.from(this.registry.values());
-    }
-
-    const parentBindings = this._parent && this._parent.find(pattern);
-    return this._mergeWithParent(bindings, parentBindings);
+    const mapper = (ctx: Context) => {
+      let bindings: Binding[] = [];
+      let glob: RegExp | undefined = undefined;
+      if (typeof pattern === 'string') {
+        // TODO(@superkhau): swap with production grade glob to regex lib
+        Binding.validateKey(pattern);
+        glob = new RegExp('^' + pattern.split('*').join('.*') + '$');
+      } else if (pattern instanceof RegExp) {
+        glob = pattern;
+      }
+      if (glob) {
+        ctx.registry.forEach(binding => {
+          const isMatch = glob!.test(binding.key);
+          if (isMatch) bindings.push(binding);
+        });
+      } else {
+        bindings = Array.from(ctx.registry.values());
+      }
+      return bindings;
+    };
+    return this.visitAllContexts<Binding[], Binding[]>(
+      mapper,
+      () => false,
+      (bindings, parentBindings) =>
+        this._mergeWithParent(bindings, parentBindings),
+      [],
+    );
   }
 
   /**
@@ -151,21 +249,35 @@ export class Context {
    * @param pattern Tag name regexp or pattern with optional `*` wildcards
    */
   findByTag(pattern: string | RegExp): Binding[] {
-    const bindings: Binding[] = [];
-    // TODO(@superkhau): swap with production grade glob to regex lib
-    const glob =
-      typeof pattern === 'string'
-        ? new RegExp('^' + pattern.split('*').join('.*') + '$')
-        : pattern;
-    this.registry.forEach(binding => {
-      const isMatch = Array.from(binding.tags).some(tag => glob.test(tag));
-      if (isMatch) bindings.push(binding);
-    });
+    const mapper = (ctx: Context) => {
+      const bindings: Binding[] = [];
+      // TODO(@superkhau): swap with production grade glob to regex lib
+      const glob =
+        typeof pattern === 'string'
+          ? new RegExp('^' + pattern.split('*').join('.*') + '$')
+          : pattern;
+      ctx.registry.forEach(binding => {
+        const isMatch = Array.from(binding.tags).some(tag => glob.test(tag));
+        if (isMatch) bindings.push(binding);
+      });
+      return bindings;
+    };
 
-    const parentBindings = this._parent && this._parent.findByTag(pattern);
-    return this._mergeWithParent(bindings, parentBindings);
+    return this.visitAllContexts<Binding[], Binding[]>(
+      mapper,
+      () => false,
+      (bindings, parentBindings) =>
+        this._mergeWithParent(bindings, parentBindings),
+      [],
+    );
   }
 
+  /**
+   * Merge bindings from a parent context with those from a child context.
+   * For bindings with the same key, the one from the child will be kept.
+   * @param childList An array of bindings from the child
+   * @param parentList An array of bindings from the parent
+   */
   protected _mergeWithParent(childList: Binding[], parentList?: Binding[]) {
     if (!parentList) return childList;
     const additions = parentList.filter(parentBinding => {
@@ -269,6 +381,9 @@ export class Context {
    * binding is found, an error will be thrown.
    *
    * @param key Binding key
+   * @param options Options to control if the binding is optional. If
+   * `options.optional` is set to true, the method will return `undefined`
+   * instead of throwing an error if the binding key is not found.
    */
   getBinding(key: string): Binding;
 
@@ -286,16 +401,16 @@ export class Context {
 
   getBinding(key: string, options?: {optional?: boolean}): Binding | undefined {
     Binding.validateKey(key);
-    const binding = this.registry.get(key);
-    if (binding) {
-      return binding;
-    }
-
-    if (this._parent) {
-      return this._parent.getBinding(key, options);
-    }
-
-    if (options && options.optional) return undefined;
+    const result = this.visitAllContexts<
+      Binding | undefined,
+      Binding | undefined
+    >(
+      ctx => ctx.registry.get(key),
+      binding => binding != null,
+      (accumulator, currentValue) => currentValue,
+      undefined,
+    );
+    if ((options && options.optional) || result != null) return result;
     throw new Error(`The key ${key} was not bound to any value.`);
   }
 

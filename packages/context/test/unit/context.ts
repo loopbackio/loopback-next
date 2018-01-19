@@ -11,8 +11,8 @@ import {Context, Binding, BindingScope, BindingType, isPromise} from '../..';
  * for assertions
  */
 class TestContext extends Context {
-  get parent() {
-    return this._parent;
+  get parentList() {
+    return this.parents;
   }
   get bindingMap() {
     const map = new Map(this.registry);
@@ -42,14 +42,21 @@ describe('Context constructor', () => {
   it('accepts a parent context', () => {
     const c1 = new Context('c1');
     const ctx = new TestContext(c1);
-    expect(ctx.parent).to.eql(c1);
+    expect(ctx.parentList).to.eql([c1]);
+  });
+
+  it('accepts multiple parent contexts', () => {
+    const c1 = new Context('c1');
+    const c2 = new Context('c2');
+    const ctx = new TestContext([c1, c2]);
+    expect(ctx.parentList).to.eql([c1, c2]);
   });
 
   it('accepts a parent context and a name', () => {
     const c1 = new Context('c1');
     const ctx = new TestContext(c1, 'c2');
     expect(ctx.name).to.eql('c2');
-    expect(ctx.parent).to.eql(c1);
+    expect(ctx.parentList).to.eql([c1]);
   });
 });
 
@@ -567,6 +574,27 @@ describe('Context', () => {
           type: BindingType.CONSTANT,
         },
       });
+    });
+  });
+
+  describe('composeWith()', () => {
+    it('creates a new context with additional parents', () => {
+      const c1 = new TestContext('c1');
+      c1.bind('a').to(1);
+      const c2 = new Context('c2');
+      const c3 = c1.composeWith(c2, 'c3');
+      expect(c3.name).to.be.eql('c3');
+      expect(c3.parentList).to.eql([c1, c2]);
+      expect(c3.bindingMap.size).to.eql(0);
+    });
+
+    it('adds additional parents', () => {
+      const c0 = new Context('c0'); // c0
+      const c1 = new TestContext(c0, 'c1'); // c1 -> c0
+      const c2 = new Context('c2'); // c2
+      const c3 = c1.composeWith(c2, 'c3');
+      expect(c3.name).to.be.eql('c3');
+      expect(c3.parentList).to.eql([c1, c2]);
     });
   });
 
