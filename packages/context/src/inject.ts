@@ -260,6 +260,8 @@ export namespace inject {
    *  constructor(@inject.context() private ctx: Context) {}
    * }
    * ```
+   * @param bindingTag Tag name or regex
+   * @param metadata Optional metadata to help the injection
    */
   export const context = function injectContext() {
     return inject('', {decorator: '@inject.context'}, ctx => ctx);
