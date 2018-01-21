@@ -5,13 +5,18 @@
 
 import {Binding} from './binding';
 import {BindingKey, BindingAddress} from './binding-key';
-import {isPromiseLike, getDeepProperty, BoundValue} from './value-promise';
+import {
+  isPromiseLike,
+  getDeepProperty,
+  ValueOrPromise,
+  BoundValue,
+} from './value-promise';
 import {ResolutionOptions, ResolutionSession} from './resolution-session';
 
 import {v1 as uuidv1} from 'uuid';
 
 import * as debugModule from 'debug';
-import {ValueOrPromise} from '.';
+
 const debug = debugModule('loopback:context');
 
 /**
@@ -63,6 +68,157 @@ export class Context {
     const binding = new Binding<ValueType>(key);
     this.registry.set(key, binding);
     return binding;
+  }
+
+  /**
+   * Creates a corresponding binding for `options` (configuration) of the
+   * target in the context bound by the key.
+   *
+   * For example, `ctx.bindOptions('controllers.MyController', {x: 1})` will
+   * create binding `controllers.MyController:$options` with `{x: 1}`.
+   *
+   * @param key The key for the binding that accepts the options
+   * @param options Options object
+   */
+  bindOptions(key: string, options?: BoundValue): Binding {
+    const keyForOptions = BindingKey.buildKeyForOptions(key);
+    const bindingForOptions = this.bind(keyForOptions);
+    if (options != null) {
+      bindingForOptions.to(options).tag(`options:${key}`);
+    }
+    return bindingForOptions;
+  }
+
+  /**
+   * Resolve options from the binding key hierarchy using namespaces
+   * separated by `.`
+   *
+   * For example, if the binding key is `servers.rest.server1`, we'll try the
+   * following entries:
+   * 1. servers.rest.server1:$options#host (namespace: server1)
+   * 2. servers.rest:$options#server1.host (namespace: rest)
+   * 3. servers.$options#rest.server1.host` (namespace: server)
+   * 4. $options#servers.rest.server1.host (namespace: '' - root)
+   *
+   * @param key Binding key with namespaces separated by `.`
+   * @param optionPath Property path for the option. For example, `x.y`
+   * requests for `options.x.y`. If not set, the `options` object will be
+   * returned.
+   * @param resolutionOptions Options for the resolution. If `localOnly` is
+   * set to true, no parent namespaces will be looked up.
+   */
+  getOptionsAsValueOrPromise(
+    key: string,
+    optionPath?: string,
+    resolutionOptions?: ResolutionOptions & {localOnly?: boolean},
+  ): ValueOrPromise<BoundValue> {
+    optionPath = optionPath || '';
+    const optionKeyAndPath = BindingKey.create(
+      BindingKey.buildKeyForOptions(key),
+      optionPath || '',
+    );
+    let valueOrPromise = this.getValueOrPromise(
+      optionKeyAndPath,
+      resolutionOptions,
+    );
+
+    const checkResult = (val: BoundValue) => {
+      // Found the corresponding options
+      if (val !== undefined) return val;
+
+      // We have tried all levels
+      if (!key) return undefined;
+
+      if (resolutionOptions && resolutionOptions.localOnly) {
+        // Local only, not trying parent namespaces
+        return undefined;
+      }
+
+      // Shift last part of the key into the path as we'll try the parent
+      // namespace in the next iteration
+      const index = key.lastIndexOf('.');
+      optionPath = `${key.substring(index + 1)}.${optionPath}`;
+      key = key.substring(0, index);
+      // Continue to try the parent namespace
+      return this.getOptionsAsValueOrPromise(
+        key,
+        optionPath,
+        resolutionOptions,
+      );
+    };
+
+    if (isPromiseLike(valueOrPromise)) {
+      return valueOrPromise.then(checkResult);
+    } else {
+      return checkResult(valueOrPromise);
+    }
+  }
+
+  /**
+   * Resolve options from the binding key hierarchy using namespaces
+   * separated by `.`
+   *
+   * For example, if the binding key is `servers.rest.server1`, we'll try the
+   * following entries:
+   * 1. servers.rest.server1:$options#host (namespace: server1)
+   * 2. servers.rest:$options#server1.host (namespace: rest)
+   * 3. servers.$options#rest.server1.host` (namespace: server)
+   * 4. $options#servers.rest.server1.host (namespace: '' - root)
+   *
+   * @param key Binding key with namespaces separated by `.`
+   * @param optionPath Property path for the option. For example, `x.y`
+   * requests for `options.x.y`. If not set, the `options` object will be
+   * returned.
+   * @param resolutionOptions Options for the resolution. If `localOnly` is
+   * set to true, no parent namespaces will be looked up.
+   */
+  async getOptions(
+    key: string,
+    optionPath?: string,
+    resolutionOptions?: ResolutionOptions & {localOnly?: boolean},
+  ): Promise<BoundValue> {
+    return await this.getOptionsAsValueOrPromise(
+      key,
+      optionPath,
+      resolutionOptions,
+    );
+  }
+
+  /**
+   * Resolve options synchronously from the binding key hierarchy using
+   * namespaces separated by `.`
+   *
+   * For example, if the binding key is `servers.rest.server1`, we'll try the
+   * following entries:
+   * 1. servers.rest.server1:$options#host (namespace: server1)
+   * 2. servers.rest:$options#server1.host (namespace: rest)
+   * 3. servers.$options#rest.server1.host` (namespace: server)
+   * 4. $options#servers.rest.server1.host (namespace: '' - root)
+   *
+   * @param key Binding key with namespaces separated by `.`
+   * @param optionPath Property path for the option. For example, `x.y`
+   * requests for `options.x.y`. If not set, the `options` object will be
+   * returned.
+   * @param resolutionOptions Options for the resolution. If `localOnly` is
+   * set to true, no parent namespaces will be looked up.
+   */
+  getOptionsSync(
+    key: string,
+    optionPath?: string,
+    resolutionOptions?: ResolutionOptions & {localOnly?: boolean},
+  ): BoundValue {
+    const valueOrPromise = this.getOptionsAsValueOrPromise(
+      key,
+      optionPath,
+      resolutionOptions,
+    );
+    if (isPromiseLike(valueOrPromise)) {
+      throw new Error(
+        `Cannot get options[${optionPath ||
+          ''}] for ${key} synchronously: the value is a promise`,
+      );
+    }
+    return valueOrPromise;
   }
 
   /**

@@ -103,4 +103,9 @@ export class BindingKey<ValueType> {
       keyWithPath.substr(index + 1),
     );
   }
+
+  static OPTIONS_KEY = '$options';
+  static buildKeyForOptions(key?: string) {
+    return key ? `${key}:${BindingKey.OPTIONS_KEY}` : BindingKey.OPTIONS_KEY;
+  }
 }

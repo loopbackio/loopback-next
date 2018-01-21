@@ -296,6 +296,53 @@ describe('Context', () => {
     });
   });
 
+  describe('bindOptions()', () => {
+    it('binds options for a binding before it is bound', () => {
+      const bindingForOptions = ctx.bindOptions('foo', {x: 1});
+      expect(bindingForOptions.key).to.equal(Binding.buildKeyForOptions('foo'));
+    });
+
+    it('binds options for a binding after it is bound', () => {
+      ctx.bind('foo').to('bar');
+      const bindingForOptions = ctx.bindOptions('foo').to({x: 1});
+      expect(bindingForOptions.key).to.equal(Binding.buildKeyForOptions('foo'));
+    });
+  });
+
+  describe('getOptions()', () => {
+    it('gets options for a binding', async () => {
+      ctx.bindOptions('foo').toDynamicValue(() => Promise.resolve({x: 1}));
+      expect(await ctx.getOptions('foo')).to.eql({x: 1});
+    });
+
+    it('gets local options for a binding', async () => {
+      ctx
+        .bindOptions('foo')
+        .toDynamicValue(() => Promise.resolve({a: {x: 0, y: 0}}));
+      ctx.bindOptions('foo.a').toDynamicValue(() => Promise.resolve({x: 1}));
+      expect(await ctx.getOptions('foo.a', 'x', {localOnly: true})).to.eql(1);
+      expect(
+        await ctx.getOptions('foo.a', 'y', {localOnly: true}),
+      ).to.be.undefined();
+    });
+
+    it('gets parent options for a binding', async () => {
+      ctx
+        .bindOptions('foo')
+        .toDynamicValue(() => Promise.resolve({a: {x: 0, y: 0}}));
+      ctx.bindOptions('foo.a').toDynamicValue(() => Promise.resolve({x: 1}));
+      expect(await ctx.getOptions('foo.a', 'x')).to.eql(1);
+      expect(await ctx.getOptions('foo.a', 'y')).to.eql(0);
+    });
+  });
+
+  describe('getOptionsSync()', () => {
+    it('gets options for a binding', () => {
+      ctx.bindOptions('foo').to({x: 1});
+      expect(ctx.getOptionsSync('foo')).to.eql({x: 1});
+    });
+  });
+
   describe('getSync', () => {
     it('returns the value immediately when the binding is sync', () => {
       ctx.bind('foo').to('bar');

@@ -12,6 +12,7 @@ import {
   MetadataAccessor,
 } from '@loopback/metadata';
 import {BoundValue, ValueOrPromise, resolveList} from './value-promise';
+import {Binding} from './binding';
 import {Context} from './context';
 import {BindingKey, BindingAddress} from './binding-key';
 import {ResolutionSession} from './resolution-session';
@@ -264,6 +265,49 @@ export namespace inject {
   export const context = function injectContext() {
     return inject('', {decorator: '@inject.context'}, ctx => ctx);
   };
+
+  /**
+   * Inject an option from `options` of the parent binding. If no corresponding
+   * option value is present, `undefined` will be injected.
+   *
+   * @example
+   * ```ts
+   * class Store {
+   *   constructor(
+   *     @inject.options('x') public optionX: number,
+   *     @inject.options('y') public optionY: string,
+   *   ) { }
+   * }
+   *
+   * ctx.bind('store1').toClass(Store).withOptions({ x: 1, y: 'a' });
+   * ctx.bind('store2').toClass(Store).withOptions({ x: 2, y: 'b' });
+   *
+   *  const store1 = ctx.getSync('store1');
+   *  expect(store1.optionX).to.eql(1);
+   *  expect(store1.optionY).to.eql('a');
+
+   * const store2 = ctx.getSync('store2');
+   * expect(store2.optionX).to.eql(2);
+   * expect(store2.optionY).to.eql('b');
+   * ```
+   *
+   * @param optionPath Optional property path of the option. If is `''` or not
+   * present, the `options` object will be returned.
+   * @param metadata Optional metadata to help the injection:
+   * - localOnly: only look up from the configuration local to the current
+   * binding. Default to false.
+   */
+  export const options = function injectOptions(
+    optionPath?: string,
+    metadata?: InjectionMetadata,
+  ) {
+    optionPath = optionPath || '';
+    metadata = Object.assign(
+      {optionPath, decorator: '@inject.options', optional: true},
+      metadata,
+    );
+    return inject('', metadata, resolveAsOptions);
+  };
 }
 
 function resolveAsGetter(
@@ -288,6 +332,26 @@ function resolveAsSetter(ctx: Context, injection: Injection) {
   };
 }
 
+function resolveAsOptions(
+  ctx: Context,
+  injection: Injection,
+  session?: ResolutionSession,
+) {
+  if (!(session && session.currentBinding)) {
+    // No binding is available
+    return undefined;
+  }
+
+  const meta = injection.metadata || {};
+  const binding = session.currentBinding;
+
+  return ctx.getOptionsAsValueOrPromise(binding.key, meta.optionPath, {
+    session,
+    optional: meta.optional,
+    localOnly: meta.localOnly,
+  });
+}
+
 /**
  * Return an array of injection objects for parameters
  * @param target The target class for constructor or static methods,
@@ -307,19 +371,26 @@ export function describeInjectedArguments(
   return meta || [];
 }
 
-function resolveByTag(
+function resolveBindings(
   ctx: Context,
-  injection: Readonly<Injection>,
+  bindings: Readonly<Binding>[],
   session?: ResolutionSession,
 ) {
-  const tag: string | RegExp = injection.metadata!.tag;
-  const bindings = ctx.findByTag(tag);
-
   return resolveList(bindings, b => {
     // We need to clone the session so that resolution of multiple bindings
     // can be tracked in parallel
     return b.getValue(ctx, ResolutionSession.fork(session));
   });
+}
+
+function resolveByTag(
+  ctx: Context,
+  injection: Injection,
+  session?: ResolutionSession,
+) {
+  const tag: string | RegExp = injection.metadata!.tag;
+  const bindings = ctx.findByTag(tag);
+  return resolveBindings(ctx, bindings, session);
 }
 
 /**

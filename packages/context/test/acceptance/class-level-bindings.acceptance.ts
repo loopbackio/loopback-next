@@ -12,6 +12,7 @@ import {
   Provider,
   Injection,
   ResolutionSession,
+  instantiateClass,
 } from '../..';
 
 const INFO_CONTROLLER = 'controllers.info';
@@ -315,6 +316,193 @@ describe('Context bindings - Injecting dependencies of classes', () => {
       .toDynamicValue(() => Promise.reject(new Error('Bad')))
       .tag('store:location');
     await expect(ctx.get('store')).to.be.rejectedWith('Bad');
+  });
+
+  it('injects an option', () => {
+    class Store {
+      constructor(
+        @inject.options('x') public optionX: number,
+        @inject.options('y') public optionY: string,
+      ) {}
+    }
+
+    ctx.bindOptions('store', {x: 1, y: 'a'});
+    ctx.bind('store').toClass(Store);
+    const store = ctx.getSync('store');
+    expect(store.optionX).to.eql(1);
+    expect(store.optionY).to.eql('a');
+  });
+
+  it('injects an option with promise value', async () => {
+    class Store {
+      constructor(@inject.options('x') public optionX: number) {}
+    }
+
+    ctx.bindOptions('store').toDynamicValue(async () => {
+      return {x: 1};
+    });
+    ctx.bind('store').toClass(Store);
+    const store = await ctx.get('store');
+    expect(store.optionX).to.eql(1);
+  });
+
+  it('injects an option with a binding provider', async () => {
+    class MyOptionsProvider implements Provider<{}> {
+      constructor(@inject('prefix') private prefix: string) {}
+      value() {
+        return {
+          myOption: this.prefix + 'my-option',
+        };
+      }
+    }
+
+    class Store {
+      constructor(@inject.options('myOption') public myOption: string) {}
+    }
+
+    ctx.bind('options.MyOptionProvider').toProvider(MyOptionsProvider);
+    ctx.bindOptions('store').toProvider(MyOptionsProvider);
+    ctx.bind('prefix').to('hello-');
+    ctx.bind('store').toClass(Store);
+
+    const store = await ctx.get('store');
+    expect(store.myOption).to.eql('hello-my-option');
+  });
+
+  it('injects an option with a rejected promise', async () => {
+    class Store {
+      constructor(@inject.options('x') public optionX: number) {}
+    }
+
+    ctx
+      .bindOptions('store')
+      .toDynamicValue(() => Promise.reject(Error('invalid')));
+
+    ctx.bind('store').toClass(Store);
+
+    await expect(ctx.get('store')).to.be.rejectedWith('invalid');
+  });
+
+  it('injects an option with nested property', () => {
+    class Store {
+      constructor(@inject.options('x.y') public optionXY: string) {}
+    }
+
+    ctx.bindOptions('store', {x: {y: 'y'}});
+    ctx.bind('store').toClass(Store);
+    const store = ctx.getSync('store');
+    expect(store.optionXY).to.eql('y');
+  });
+
+  it('injects options if the binding key is not present', () => {
+    class Store {
+      constructor(@inject.options() public options: object) {}
+    }
+
+    ctx.bindOptions('store', {x: 1, y: 'a'});
+    ctx.bind('store').toClass(Store);
+    const store = ctx.getSync('store');
+    expect(store.options).to.eql({x: 1, y: 'a'});
+  });
+
+  it("injects options if the binding key is ''", () => {
+    class Store {
+      constructor(@inject.options('') public options: object) {}
+    }
+
+    ctx.bindOptions('store', {x: 1, y: 'a'});
+    ctx.bind('store').toClass(Store);
+    const store = ctx.getSync('store');
+    expect(store.options).to.eql({x: 1, y: 'a'});
+  });
+
+  it('injects options if the binding key is a path', () => {
+    class Store {
+      constructor(@inject.options('x') public optionX: number) {}
+    }
+
+    ctx.bindOptions('store', {x: 1, y: 'a'});
+    ctx.bind('store').toClass(Store);
+    const store = ctx.getSync('store');
+    expect(store.optionX).to.eql(1);
+  });
+
+  it('injects undefined option if key not found', () => {
+    class Store {
+      constructor(
+        // tslint:disable-next-line:no-any
+        @inject.options('not-exist') public option: string | undefined,
+      ) {}
+    }
+
+    ctx.bindOptions('store', {x: 1, y: 'a'});
+    ctx.bind('store').toClass(Store);
+    const store = ctx.getSync('store');
+    expect(store.option).to.be.undefined();
+  });
+
+  it('injects an option based on the parent binding', async () => {
+    class Store {
+      constructor(
+        @inject.options('x') public optionX: number,
+        @inject.options('y') public optionY: string,
+      ) {}
+    }
+
+    ctx.bindOptions('store1', {x: 1, y: 'a'});
+    ctx.bindOptions('store2', {x: 2, y: 'b'});
+
+    ctx.bind('store1').toClass(Store);
+    ctx.bind('store2').toClass(Store);
+
+    const store1 = await ctx.get('store1');
+    expect(store1.optionX).to.eql(1);
+    expect(store1.optionY).to.eql('a');
+
+    const store2 = await ctx.get('store2');
+    expect(store2.optionX).to.eql(2);
+    expect(store2.optionY).to.eql('b');
+  });
+
+  it('injects undefined option if no binding is present', async () => {
+    class Store {
+      constructor(
+        // tslint:disable-next-line:no-any
+        @inject.options('x') public option: string | undefined,
+      ) {}
+    }
+
+    const store = await instantiateClass(Store, ctx);
+    expect(store.option).to.be.undefined();
+  });
+
+  it('injects options from options binding', () => {
+    class MyStore {
+      constructor(@inject.options('x') public optionX: number) {}
+    }
+
+    ctx.bind('stores.MyStore:$options').to({x: 1, y: 'a'});
+    ctx.bind('stores.MyStore').toClass(MyStore);
+
+    const store = ctx.getSync('stores.MyStore');
+    expect(store.optionX).to.eql(1);
+  });
+
+  it('injects options from options binding by key namespaces', () => {
+    class MyStore {
+      constructor(
+        @inject.options('x') public optionX: number,
+        @inject.options('y') public optionY: string,
+      ) {}
+    }
+
+    ctx.bind('stores:$options').to({MyStore: {y: 'a'}});
+    ctx.bind('stores.MyStore:$options').to({x: 1});
+    ctx.bind('stores.MyStore').toClass(MyStore);
+
+    const store = ctx.getSync('stores.MyStore');
+    expect(store.optionX).to.eql(1);
+    expect(store.optionY).to.eql('a');
   });
 
   function createContext() {
