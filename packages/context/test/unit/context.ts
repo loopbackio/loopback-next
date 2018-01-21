@@ -116,6 +116,39 @@ describe('Context', () => {
     });
   });
 
+  describe('unbind', () => {
+    it('removes a binding', () => {
+      ctx.bind('foo');
+      const result = ctx.unbind('foo');
+      expect(result).to.be.true();
+      expect(ctx.contains('foo')).to.be.false();
+    });
+
+    it('returns false if the binding key does not exist', () => {
+      ctx.bind('foo');
+      const result = ctx.unbind('bar');
+      expect(result).to.be.false();
+    });
+
+    it('cannot unbind a locked binding', () => {
+      ctx
+        .bind('foo')
+        .to('a')
+        .lock();
+      expect(() => ctx.unbind('foo')).to.throw(
+        `Cannot unbind key "foo" of a locked binding`,
+      );
+    });
+
+    it('does not remove a binding from parent contexts', () => {
+      ctx.bind('foo');
+      const childCtx = new Context(ctx);
+      const result = childCtx.unbind('foo');
+      expect(result).to.be.false();
+      expect(ctx.contains('foo')).to.be.true();
+    });
+  });
+
   describe('find', () => {
     it('returns matching binding', () => {
       const b1 = ctx.bind('foo');
