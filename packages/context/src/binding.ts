@@ -145,11 +145,11 @@ export class Binding {
   public scope: BindingScope = BindingScope.TRANSIENT;
   public type: BindingType;
 
-  private _cache: BoundValue;
+  private _cache: WeakMap<Context, BoundValue>;
   private _getValue: (
     ctx?: Context,
     session?: ResolutionSession,
-  ) => BoundValue | Promise<BoundValue>;
+  ) => ValueOrPromise<BoundValue>;
 
   // For bindings bound via toClass, this property contains the constructor
   // function
@@ -167,40 +167,31 @@ export class Binding {
    */
   private _cacheValue(
     ctx: Context,
-    result: BoundValue | Promise<BoundValue>,
-  ): BoundValue | Promise<BoundValue> {
+    result: ValueOrPromise<BoundValue>,
+  ): ValueOrPromise<BoundValue> {
+    // Initialize the cache as a weakmap keyed by context
+    if (!this._cache) this._cache = new WeakMap<Context, BoundValue>();
     if (isPromise(result)) {
       if (this.scope === BindingScope.SINGLETON) {
-        // Cache the value
+        // Cache the value at owning context level
         result = result.then(val => {
-          this._cache = val;
+          this._cache.set(ctx.getOwnerContext(this.key)!, val);
           return val;
         });
       } else if (this.scope === BindingScope.CONTEXT) {
-        // Cache the value
+        // Cache the value at the current context
         result = result.then(val => {
-          if (ctx.contains(this.key)) {
-            // The ctx owns the binding
-            this._cache = val;
-          } else {
-            // Create a binding of the cached value for the current context
-            ctx.bind(this.key).to(val);
-          }
+          this._cache.set(ctx, val);
           return val;
         });
       }
     } else {
       if (this.scope === BindingScope.SINGLETON) {
         // Cache the value
-        this._cache = result;
+        this._cache.set(ctx.getOwnerContext(this.key)!, result);
       } else if (this.scope === BindingScope.CONTEXT) {
-        if (ctx.contains(this.key)) {
-          // The ctx owns the binding
-          this._cache = result;
-        } else {
-          // Create a binding of the cached value for the current context
-          ctx.bind(this.key).to(result);
-        }
+        // Cache the value at the current context
+        this._cache.set(ctx, result);
       }
     }
     return result;
@@ -233,21 +224,25 @@ export class Binding {
   getValue(
     ctx: Context,
     session?: ResolutionSession,
-  ): BoundValue | Promise<BoundValue> {
+  ): ValueOrPromise<BoundValue> {
     /* istanbul ignore if */
     if (debug.enabled) {
       debug('Get value for binding %s', this.key);
     }
+    let isCached = false; // Use a flag to see the ctx key exists in the cache
+    let cachedValue: BoundValue;
     // First check cached value for non-transient
-    if (this._cache !== undefined) {
+    if (this._cache) {
       if (this.scope === BindingScope.SINGLETON) {
-        return this._cache;
+        const ownerCtx = ctx.getOwnerContext(this.key)!;
+        isCached = this._cache.has(ownerCtx);
+        cachedValue = isCached && this._cache.get(ownerCtx);
       } else if (this.scope === BindingScope.CONTEXT) {
-        if (ctx.contains(this.key)) {
-          return this._cache;
-        }
+        isCached = this._cache.has(ctx);
+        cachedValue = isCached && this._cache.get(ctx);
       }
     }
+    if (isCached) return cachedValue;
     if (this._getValue) {
       let result = ResolutionSession.runWithBinding(
         s => this._getValue(ctx, s),
@@ -343,7 +338,7 @@ export class Binding {
    * );
    * ```
    */
-  toDynamicValue(factoryFn: () => BoundValue | Promise<BoundValue>): this {
+  toDynamicValue(factoryFn: () => ValueOrPromise<BoundValue>): this {
     /* istanbul ignore if */
     if (debug.enabled) {
       debug('Bind %s to dynamic value:', this.key, factoryFn);
