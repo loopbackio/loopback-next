@@ -7,10 +7,10 @@ import {map, takeUntil, reduce} from './iteratable';
 import {Binding} from './binding';
 import {
   isPromise,
+  getDeepProperty,
   BoundValue,
   Constructor,
   ValueOrPromise,
-  getDeepProperty,
 } from './value-promise';
 import {ResolutionOptions, ResolutionSession} from './resolution-session';
 
