@@ -68,6 +68,25 @@ export class Context {
   }
 
   /**
+   * Unbind a binding from the context. No parent contexts will be checked. If
+   * you need to unbind a binding owned by a parent context, use the code below:
+   * ```ts
+   * const ownerCtx = ctx.getOwnerContext(key);
+   * return ownerCtx != null && ownerCtx.unbind(key);
+   * ```
+   * @param key Binding key
+   * @returns true if the binding key is found and removed from this context
+   */
+  unbind(key: string): boolean {
+    Binding.validateKey(key);
+    const binding = this.registry.get(key);
+    if (binding == null) return false;
+    if (binding && binding.isLocked)
+      throw new Error(`Cannot unbind key "${key}" of a locked binding`);
+    return this.registry.delete(key);
+  }
+
+  /**
    * Check if a binding exists with the given key in the local context without
    * delegating to the parent context
    * @param key Binding key
