@@ -45,6 +45,17 @@ describe('ContextView', () => {
     expect(await taggedAsFoo.asGetter()()).to.eql(['BAR', 'FOO']);
   });
 
+  it('reports error on singleValue() if multiple values exist', async () => {
+    return expect(taggedAsFoo.singleValue()).to.be.rejectedWith(
+      /The ContextView has more than one value\. Use values\(\) to access them\./,
+    );
+  });
+
+  it('supports singleValue() if only one value exist', async () => {
+    server.unbind('bar');
+    expect(await taggedAsFoo.singleValue()).to.eql('FOO');
+  });
+
   it('reloads bindings after refresh', async () => {
     taggedAsFoo.refresh();
     const abcBinding = server

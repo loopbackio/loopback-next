@@ -157,6 +157,18 @@ export class ContextView<T = unknown> extends EventEmitter
   asGetter(session?: ResolutionSession): Getter<T[]> {
     return () => this.values(session);
   }
+
+  /**
+   * Get the single value
+   */
+  async singleValue(session?: ResolutionSession): Promise<T | undefined> {
+    const values = await this.values(session);
+    if (values.length === 0) return undefined;
+    if (values.length === 1) return values[0];
+    throw new Error(
+      'The ContextView has more than one value. Use values() to access them.',
+    );
+  }
 }
 
 /**
