@@ -13,6 +13,7 @@ import {
   InspectionOptions,
 } from '@loopback/metadata';
 import {BoundValue, ValueOrPromise, resolveList} from './value-promise';
+import {Binding} from './binding';
 import {Context} from './context';
 import {BindingKey, BindingAddress} from './binding-key';
 import {ResolutionSession} from './resolution-session';
@@ -45,9 +46,14 @@ export interface InjectionMetadata {
    */
   decorator?: string;
   /**
-   * Control if the dependency is optional, default to false
+   * Control if the dependency is optional. Default to `false`.
    */
   optional?: boolean;
+  /**
+   * Control if the resolution only looks up properties from
+   * the local configuration of the target binding itself. Default to `false`.
+   */
+  localConfigOnly?: boolean;
   /**
    * Other attributes
    */
@@ -68,6 +74,12 @@ export interface Injection<ValueType = BoundValue> {
   metadata?: InjectionMetadata; // Related metadata
   resolve?: ResolverFunction; // A custom resolve function
 }
+
+/**
+ * A special binding key for the execution environment, typically set
+ * by `NODE_ENV` environment variable
+ */
+export const ENVIRONMENT_KEY = '$environment';
 
 /**
  * A decorator to annotate method arguments for automatic injection
@@ -275,6 +287,52 @@ export namespace inject {
   export const context = function injectContext() {
     return inject('', {decorator: '@inject.context'}, ctx => ctx);
   };
+
+  /**
+   * Inject a property from `config` of the current binding. If no corresponding
+   * config value is present, `undefined` will be injected.
+   *
+   * @example
+   * ```ts
+   * class Store {
+   *   constructor(
+   *     @inject.config('x') public optionX: number,
+   *     @inject.config('y') public optionY: string,
+   *   ) { }
+   * }
+   *
+   * ctx.configure('store1', { x: 1, y: 'a' });
+   * ctx.configure('store2', { x: 2, y: 'b' });
+   *
+   * ctx.bind('store1').toClass(Store);
+   * ctx.bind('store2').toClass(Store);
+   *
+   *  const store1 = ctx.getSync('store1');
+   *  expect(store1.optionX).to.eql(1);
+   *  expect(store1.optionY).to.eql('a');
+
+   * const store2 = ctx.getSync('store2');
+   * expect(store2.optionX).to.eql(2);
+   * expect(store2.optionY).to.eql('b');
+   * ```
+   *
+   * @param configPath Optional property path of the config. If is `''` or not
+   * present, the `config` object will be returned.
+   * @param metadata Optional metadata to help the injection:
+   * - localConfigOnly: only look up from the configuration local to the current
+   * binding. Default to false.
+   */
+  export const config = function injectConfig(
+    configPath?: string,
+    metadata?: InjectionMetadata,
+  ) {
+    configPath = configPath || '';
+    metadata = Object.assign(
+      {configPath, decorator: '@inject.config', optional: true},
+      metadata,
+    );
+    return inject('', metadata, resolveFromConfig);
+  };
 }
 
 function resolveAsGetter(
@@ -297,6 +355,31 @@ function resolveAsSetter(ctx: Context, injection: Injection) {
   return function setter(value: BoundValue) {
     ctx.bind(injection.bindingKey).to(value);
   };
+}
+
+function resolveFromConfig(
+  ctx: Context,
+  injection: Injection,
+  session?: ResolutionSession,
+) {
+  if (!(session && session.currentBinding)) {
+    // No binding is available
+    return undefined;
+  }
+
+  const meta = injection.metadata || {};
+  const binding = session.currentBinding;
+
+  const env =
+    ctx.getSync<string>(ENVIRONMENT_KEY, {optional: true}) ||
+    process.env.NODE_ENV;
+
+  return ctx.getConfigAsValueOrPromise(binding.key, meta.configPath, {
+    session,
+    optional: meta.optional,
+    localConfigOnly: meta.localConfigOnly,
+    environment: env,
+  });
 }
 
 /**
@@ -331,19 +414,26 @@ export function describeInjectedArguments(
   return meta || [];
 }
 
-function resolveByTag(
+function resolveBindings(
   ctx: Context,
-  injection: Readonly<Injection>,
+  bindings: Readonly<Binding>[],
   session?: ResolutionSession,
 ) {
-  const tag: string | RegExp = injection.metadata!.tag;
-  const bindings = ctx.findByTag(tag);
-
   return resolveList(bindings, b => {
     // We need to clone the session so that resolution of multiple bindings
     // can be tracked in parallel
     return b.getValue(ctx, ResolutionSession.fork(session));
   });
+}
+
+function resolveByTag(
+  ctx: Context,
+  injection: Injection,
+  session?: ResolutionSession,
+) {
+  const tag: string | RegExp = injection.metadata!.tag;
+  const bindings = ctx.findByTag(tag);
+  return resolveBindings(ctx, bindings, session);
 }
 
 /**

@@ -3,15 +3,19 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, TagMap} from './binding';
-import {BindingKey, BindingAddress} from './binding-key';
-import {isPromiseLike, getDeepProperty, BoundValue} from './value-promise';
-import {ResolutionOptions, ResolutionSession} from './resolution-session';
-
-import {v1 as uuidv1} from 'uuid';
-
 import * as debugModule from 'debug';
-import {ValueOrPromise} from '.';
+import {v1 as uuidv1} from 'uuid';
+import {Binding, TagMap} from './binding';
+import {BindingAddress, BindingKey} from './binding-key';
+import {ConfigurationResolver, DefaultConfigurationResolver} from './config';
+import {ResolutionOptions, ResolutionSession} from './resolution-session';
+import {
+  BoundValue,
+  ValueOrPromise,
+  getDeepProperty,
+  isPromiseLike,
+} from './value-promise';
+
 const debug = debugModule('loopback:context');
 
 /**
@@ -24,6 +28,8 @@ export class Context {
   readonly name: string;
   protected readonly registry: Map<string, Binding> = new Map();
   protected _parent?: Context;
+
+  private configResolver: ConfigurationResolver;
 
   /**
    * Create a new context
@@ -73,6 +79,134 @@ export class Context {
     }
     this.registry.set(key, binding);
     return this;
+  }
+
+  /**
+   * Create a corresponding binding for configuration of the target bound by
+   * the given key in the context.
+   *
+   * For example, `ctx.configure('controllers.MyController').to({x: 1})` will
+   * create binding `controllers.MyController:$config` with value `{x: 1}`.
+   *
+   * @param key The key for the binding that accepts the config
+   * @param env The env (such as `dev`, `test`, and `prod`) for the config
+   */
+  configure<ConfigValueType = BoundValue>(
+    key: BindingAddress<BoundValue> = '',
+    env: string = '',
+  ): Binding<ConfigValueType> {
+    const keyForConfig = BindingKey.buildKeyForConfig(key, env);
+    const bindingForConfig = this.bind<ConfigValueType>(keyForConfig).tag({
+      config: key,
+    });
+    return bindingForConfig;
+  }
+
+  /**
+   * Resolve config from the binding key hierarchy using namespaces
+   * separated by `.`
+   *
+   * For example, if the binding key is `servers.rest.server1`, we'll try the
+   * following entries:
+   * 1. servers.rest.server1:$config#host (namespace: server1)
+   * 2. servers.rest:$config#server1.host (namespace: rest)
+   * 3. servers.$config#rest.server1.host` (namespace: server)
+   * 4. $config#servers.rest.server1.host (namespace: '' - root)
+   *
+   * @param key Binding key with namespaces separated by `.`
+   * @param configPath Property path for the option. For example, `x.y`
+   * requests for `config.x.y`. If not set, the `config` object will be
+   * returned.
+   * @param resolutionOptions Options for the resolution.
+   * - localConfigOnly: if set to `true`, no parent namespaces will be checked
+   * - optional: if not set or set to `true`, `undefined` will be returned if
+   * no corresponding value is found. Otherwise, an error will be thrown.
+   */
+  getConfigAsValueOrPromise<ConfigValueType>(
+    key: BindingAddress<BoundValue>,
+    configPath?: string,
+    resolutionOptions?: ResolutionOptions,
+  ): ValueOrPromise<ConfigValueType | undefined> {
+    return this.getConfigResolver().getConfigAsValueOrPromise(
+      key,
+      configPath,
+      resolutionOptions,
+    );
+  }
+
+  private getConfigResolver() {
+    if (!this.configResolver) {
+      // TODO: Check bound ConfigurationResolver
+      this.configResolver = new DefaultConfigurationResolver(this);
+    }
+    return this.configResolver;
+  }
+
+  /**
+   * Resolve config from the binding key hierarchy using namespaces
+   * separated by `.`
+   *
+   * For example, if the binding key is `servers.rest.server1`, we'll try the
+   * following entries:
+   * 1. servers.rest.server1:$config#host (namespace: server1)
+   * 2. servers.rest:$config#server1.host (namespace: rest)
+   * 3. servers.$config#rest.server1.host` (namespace: server)
+   * 4. $config#servers.rest.server1.host (namespace: '' - root)
+   *
+   * @param key Binding key with namespaces separated by `.`
+   * @param configPath Property path for the option. For example, `x.y`
+   * requests for `config.x.y`. If not set, the `config` object will be
+   * returned.
+   * @param resolutionOptions Options for the resolution. If `localConfigOnly` is
+   * set to true, no parent namespaces will be looked up.
+   */
+  async getConfig<ConfigValueType>(
+    key: BindingAddress<BoundValue>,
+    configPath?: string,
+    resolutionOptions?: ResolutionOptions,
+  ): Promise<ConfigValueType | undefined> {
+    return await this.getConfigAsValueOrPromise<ConfigValueType>(
+      key,
+      configPath,
+      resolutionOptions,
+    );
+  }
+
+  /**
+   * Resolve config synchronously from the binding key hierarchy using
+   * namespaces separated by `.`
+   *
+   * For example, if the binding key is `servers.rest.server1`, we'll try the
+   * following entries:
+   * 1. servers.rest.server1:$config#host (namespace: server1)
+   * 2. servers.rest:$config#server1.host (namespace: rest)
+   * 3. servers.$config#rest.server1.host` (namespace: server)
+   * 4. $config#servers.rest.server1.host (namespace: '' - root)
+   *
+   * @param key Binding key with namespaces separated by `.`
+   * @param configPath Property path for the option. For example, `x.y`
+   * requests for `config.x.y`. If not set, the `config` object will be
+   * returned.
+   * @param resolutionOptions Options for the resolution. If `localConfigOnly`
+   * is set to `true`, no parent namespaces will be looked up.
+   */
+  getConfigSync<ConfigValueType>(
+    key: BindingAddress<BoundValue>,
+    configPath?: string,
+    resolutionOptions?: ResolutionOptions,
+  ): ConfigValueType | undefined {
+    const valueOrPromise = this.getConfigAsValueOrPromise<ConfigValueType>(
+      key,
+      configPath,
+      resolutionOptions,
+    );
+    if (isPromiseLike(valueOrPromise)) {
+      throw new Error(
+        `Cannot get config[${configPath ||
+          ''}] for ${key} synchronously: the value is a promise`,
+      );
+    }
+    return valueOrPromise;
   }
 
   /**

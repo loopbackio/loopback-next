@@ -342,4 +342,25 @@ export interface ResolutionOptions {
    * will return `undefined` instead of throwing an error.
    */
   optional?: boolean;
+
+  /**
+   * A boolean flag to control if the resolution only looks up properties from
+   * the local configuration of the target binding itself. If not set to `true`,
+   * all namespaces of a binding key will be checked.
+   *
+   * For example, if the binding key is `servers.rest.server1`, we'll try the
+   * following entries:
+   * 1. servers.rest.server1:$config#host (namespace: server1)
+   * 2. servers.rest:$config#server1.host (namespace: rest)
+   * 3. servers.$config#rest.server1.host` (namespace: server)
+   * 4. $config#servers.rest.server1.host (namespace: '' - root)
+   *
+   * The default value is `false`.
+   */
+  localConfigOnly?: boolean;
+
+  /**
+   * Environment for resolution, such as `dev`, `test`, `staging`, and `prod`
+   */
+  environment?: string;
 }

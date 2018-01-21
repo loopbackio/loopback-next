@@ -11,6 +11,7 @@ import {
   BindingType,
   isPromiseLike,
   BindingKey,
+  BoundValue,
 } from '../..';
 
 /**
@@ -342,6 +343,106 @@ describe('Context', () => {
     });
   });
 
+  describe('configure()', () => {
+    it('configures options for a binding before it is bound', () => {
+      const bindingForConfig = ctx.configure('foo').to({x: 1});
+      expect(bindingForConfig.key).to.equal(
+        BindingKey.buildKeyForConfig('foo'),
+      );
+      expect(bindingForConfig.tagMap).to.eql({config: 'foo'});
+    });
+
+    it('configures options for a binding after it is bound', () => {
+      ctx.bind('foo').to('bar');
+      const bindingForConfig = ctx.configure('foo').to({x: 1});
+      expect(bindingForConfig.key).to.equal(
+        BindingKey.buildKeyForConfig('foo'),
+      );
+      expect(bindingForConfig.tagMap).to.eql({config: 'foo'});
+    });
+  });
+
+  describe('getConfig()', () => {
+    it('gets config for a binding', async () => {
+      ctx.configure('foo').toDynamicValue(() => Promise.resolve({x: 1}));
+      expect(await ctx.getConfig('foo')).to.eql({x: 1});
+    });
+
+    it('gets local config for a binding', async () => {
+      ctx
+        .configure('foo')
+        .toDynamicValue(() => Promise.resolve({a: {x: 0, y: 0}}));
+      ctx.configure('foo.a').toDynamicValue(() => Promise.resolve({x: 1}));
+      expect(
+        await ctx.getConfig<number>('foo.a', 'x', {localConfigOnly: true}),
+      ).to.eql(1);
+      expect(
+        await ctx.getConfig<number>('foo.a', 'y', {localConfigOnly: true}),
+      ).to.be.undefined();
+    });
+
+    it('gets parent config for a binding', async () => {
+      ctx
+        .configure('foo')
+        .toDynamicValue(() => Promise.resolve({a: {x: 0, y: 0}}));
+      ctx.configure('foo.a').toDynamicValue(() => Promise.resolve({x: 1}));
+      expect(await ctx.getConfig<number>('foo.a', 'x')).to.eql(1);
+      expect(await ctx.getConfig<number>('foo.a', 'y')).to.eql(0);
+    });
+
+    it('defaults optional to true for config resolution', async () => {
+      ctx.configure('servers').to({rest: {port: 80}});
+      // `servers.rest` does not exist yet
+      let server1port = await ctx.getConfig<number>('servers.rest', 'port');
+      // The port is resolved at `servers` level
+      expect(server1port).to.eql(80);
+
+      // Now add `servers.rest`
+      ctx.configure('servers.rest').to({port: 3000});
+      const servers: BoundValue = await ctx.getConfig('servers');
+      server1port = await ctx.getConfig<number>('servers.rest', 'port');
+      // We don't add magic to merge `servers.rest` level into `servers`
+      expect(servers.rest.port).to.equal(80);
+      expect(server1port).to.eql(3000);
+    });
+
+    it('throws error if a required config cannot be resolved', async () => {
+      ctx.configure('servers').to({rest: {port: 80}});
+      // `servers.rest` does not exist yet
+      let server1port = await ctx.getConfig<number>('servers.rest', 'port', {
+        optional: false,
+      });
+      // The port is resolved at `servers` level
+      expect(server1port).to.eql(80);
+
+      expect(
+        ctx.getConfig('servers.rest', 'host', {
+          optional: false,
+        }),
+      )
+        .to.be.rejectedWith(
+          `Configuration 'servers.rest#host' cannot be resolved`,
+        )
+        .catch(e => {
+          // Sink the error to avoid UnhandledPromiseRejectionWarning
+        });
+    });
+  });
+
+  describe('getConfigSync()', () => {
+    it('gets config for a binding', () => {
+      ctx.configure('foo').to({x: 1});
+      expect(ctx.getConfigSync('foo')).to.eql({x: 1});
+    });
+
+    it('throws a helpful error when the config is async', () => {
+      ctx.configure('foo').toDynamicValue(() => Promise.resolve('bar'));
+      expect(() => ctx.getConfigSync('foo')).to.throw(
+        /Cannot get config\[\] for foo synchronously: the value is a promise/,
+      );
+    });
+  });
+
   describe('getSync', () => {
     it('returns the value immediately when the binding is sync', () => {
       ctx.bind('foo').to('bar');
@@ -446,6 +547,21 @@ describe('Context', () => {
       expect(result).to.equal(2);
       result = childCtx.getSync('foo');
       expect(result).to.equal(1);
+    });
+  });
+
+  describe('getOwnerContext', () => {
+    it('returns owner context', () => {
+      ctx.bind('foo').to('bar');
+      expect(ctx.getOwnerContext('foo')).to.equal(ctx);
+    });
+
+    it('returns owner context with parent', () => {
+      ctx.bind('foo').to('bar');
+      const childCtx = new Context(ctx, 'child');
+      childCtx.bind('xyz').to('abc');
+      expect(childCtx.getOwnerContext('foo')).to.equal(ctx);
+      expect(childCtx.getOwnerContext('xyz')).to.equal(childCtx);
     });
   });
 
