@@ -12,64 +12,144 @@ describe('jsonToSchemaObject', () => {
   it('does nothing when given an empty object', () => {
     expect({}).to.eql({});
   });
-  const typeDef = {type: ['string', 'number']};
-  const expectedType = {type: 'string'};
-  propertyConversionTest('type', typeDef, expectedType);
+  const typeDef: JsonDefinition = {type: ['string', 'number']};
+  const expectedType: SchemaObject = {type: 'string'};
+  it('converts type', () => {
+    propertyConversionTest(typeDef, expectedType);
+  });
 
-  const allOfDef: JsonDefinition = {
-    allOf: [typeDef, typeDef],
-  };
-  const expectedAllOf: SchemaObject = {
-    allOf: [expectedType, expectedType],
-  };
-  propertyConversionTest('allOf', allOfDef, expectedAllOf);
+  it('ignores non-compatible JSON schema properties', () => {
+    const nonCompatibleDef: JsonDefinition = {
+      anyOf: [],
+      oneOf: [],
+      additionalItems: {
+        anyOf: [],
+      },
+      defaultProperties: [],
+      typeof: 'function',
+    };
+    const expectedDef: SchemaObject = {};
+    propertyConversionTest(nonCompatibleDef, expectedDef);
+  });
 
-  const propertyDef: JsonDefinition = {
-    type: 'object',
-    properties: {
-      foo: typeDef,
-    },
-  };
-  const expectedProperties: SchemaObject = {
-    type: 'object',
-    properties: {
-      foo: expectedType,
-    },
-  };
-  propertyConversionTest('properties', propertyDef, expectedProperties);
+  it('converts allOf', () => {
+    const allOfDef: JsonDefinition = {
+      allOf: [typeDef, typeDef],
+    };
+    const expectedAllOf: SchemaObject = {
+      allOf: [expectedType, expectedType],
+    };
+    propertyConversionTest(allOfDef, expectedAllOf);
+  });
 
-  const additionalDef: JsonDefinition = {
-    type: 'object',
-    additionalProperties: typeDef,
-  };
-  const expectedAdditional: SchemaObject = {
-    type: 'object',
-    additionalProperties: expectedType,
-  };
-  propertyConversionTest(
-    'additionalProperties',
-    additionalDef,
-    expectedAdditional,
-  );
+  it('converts definitions', () => {
+    const definitionsDef: JsonDefinition = {
+      definitions: {foo: typeDef, bar: typeDef},
+    };
+    const expectedDef: SchemaObject = {
+      definitions: {foo: expectedType, bar: expectedType},
+    };
+    propertyConversionTest(definitionsDef, expectedDef);
+  });
 
-  const itemsDef: JsonDefinition = {
-    type: 'array',
-    items: typeDef,
-  };
-  const expectedItems: SchemaObject = {
-    type: 'array',
-    items: expectedType,
-  };
-  propertyConversionTest('items', itemsDef, expectedItems);
+  it('converts properties', () => {
+    const propertyDef: JsonDefinition = {
+      properties: {
+        foo: typeDef,
+      },
+    };
+    const expectedProperties: SchemaObject = {
+      properties: {
+        foo: expectedType,
+      },
+    };
+    propertyConversionTest(propertyDef, expectedProperties);
+  });
+
+  context('additionalProperties', () => {
+    it('is converted properly when the type is JsonDefinition', () => {
+      const additionalDef: JsonDefinition = {
+        additionalProperties: typeDef,
+      };
+      const expectedAdditional: SchemaObject = {
+        additionalProperties: expectedType,
+      };
+      propertyConversionTest(additionalDef, expectedAdditional);
+    });
+
+    it('is converted properly when it is "false"', () => {
+      const noAdditionalDef: JsonDefinition = {
+        additionalProperties: false,
+      };
+      const expectedDef: SchemaObject = {};
+      propertyConversionTest(noAdditionalDef, expectedDef);
+    });
+  });
+
+  it('converts items', () => {
+    const itemsDef: JsonDefinition = {
+      type: 'array',
+      items: typeDef,
+    };
+    const expectedItems: SchemaObject = {
+      type: 'array',
+      items: expectedType,
+    };
+    propertyConversionTest(itemsDef, expectedItems);
+  });
+
+  context('enum', () => {
+    it('is converted properly when the type is primitive', () => {
+      const enumStringDef: JsonDefinition = {
+        enum: ['foo', 'bar'],
+      };
+      const expectedStringDef: SchemaObject = {
+        enum: ['foo', 'bar'],
+      };
+      propertyConversionTest(enumStringDef, expectedStringDef);
+    });
+
+    it('is converted properly when it is null', () => {
+      const enumNullDef: JsonDefinition = {
+        enum: [null, null],
+      };
+      const expectedNullDef: JsonDefinition = {
+        enum: [null, null],
+      };
+      propertyConversionTest(enumNullDef, expectedNullDef);
+    });
+
+    it('is converted properly when the type is complex', () => {
+      const enumCustomDef: JsonDefinition = {
+        enum: [typeDef, typeDef],
+      };
+      const expectedCustomDef: SchemaObject = {
+        enum: [expectedType, expectedType],
+      };
+      propertyConversionTest(enumCustomDef, expectedCustomDef);
+    });
+  });
 
   it('retains given properties in the conversion', () => {
     const inputDef: JsonDefinition = {
       title: 'foo',
       type: 'object',
+      properties: {
+        foo: {
+          type: 'string',
+        },
+      },
+      default: 'Default string',
     };
     const expectedDef: SchemaObject = {
       title: 'foo',
       type: 'object',
+      properties: {
+        foo: {
+          type: 'string',
+        },
+      },
+      default: 'Default string',
     };
     expect(jsonToSchemaObject(inputDef)).to.eql(expectedDef);
   });
@@ -86,13 +166,7 @@ describe('jsonToSchemaObject', () => {
 
   // Helper function to check conversion of JSON Schema properties
   // to Swagger versions
-  function propertyConversionTest(
-    name: string,
-    property: Object,
-    expected: Object,
-  ) {
-    it(name, () => {
-      expect(jsonToSchemaObject(property)).to.eql(expected);
-    });
+  function propertyConversionTest(property: Object, expected: Object) {
+    expect(jsonToSchemaObject(property)).to.deepEqual(expected);
   }
 });

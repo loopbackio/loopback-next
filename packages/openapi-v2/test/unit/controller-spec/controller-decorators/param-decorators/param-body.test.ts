@@ -48,7 +48,7 @@ describe('Routing metadata for parameters', () => {
     ]);
   });
 
-  it('infers a complex parameter definition with in:body', () => {
+  it('infers a complex parameter schema with in:body', () => {
     @model()
     class MyData {
       @property() name: string;

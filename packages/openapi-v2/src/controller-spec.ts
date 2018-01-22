@@ -26,8 +26,8 @@ import {
 } from '@loopback/openapi-spec';
 
 import * as stream from 'stream';
-import {includes} from 'lodash';
-import {getJsonDef, JsonDefinition} from '@loopback/repository-json-schema';
+import {getJsonSchema, JsonDefinition} from '@loopback/repository-json-schema';
+import * as _ from 'lodash';
 
 const debug = require('debug')('loopback:rest:router:metadata');
 
@@ -176,23 +176,32 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     debug(`  adding ${endpointName}`, operationSpec);
     spec.paths[path][verb] = operationSpec;
 
-    debug(`  inferring schema definition for method %s`, op);
+    debug(`  inferring schema object for method %s`, op);
     const paramTypes = MetadataInspector.getDesignTypeForMethod(
       constructor.prototype,
       op,
     ).parameterTypes;
 
-    const isComplexType = (p: Function) =>
-      !includes([String, Number, Boolean, Array, Object], p) &&
-      !isReadableStream(p);
+    const isComplexType = (ctor: Function) =>
+      !_.includes([String, Number, Boolean, Array, Object], ctor) &&
+      !isReadableStream(ctor);
 
     for (const p of paramTypes) {
       if (isComplexType(p)) {
         if (!spec.definitions) {
           spec.definitions = {};
         }
-        const jsonDef = getJsonDef(p);
-        spec.definitions[p.name] = jsonToSchemaObject(jsonDef);
+        const jsonSchema = getJsonSchema(p);
+        const openapiSchema = jsonToSchemaObject(jsonSchema);
+
+        if (openapiSchema.definitions) {
+          for (const key in openapiSchema.definitions) {
+            spec.definitions[key] = openapiSchema.definitions[key];
+          }
+          delete openapiSchema.definitions;
+        }
+
+        spec.definitions[p.name] = openapiSchema;
         break;
       }
     }
@@ -221,67 +230,82 @@ export function getControllerSpec(constructor: Function): ControllerSpec {
   return spec;
 }
 
-export function jsonToSchemaObject(json: JsonDefinition): SchemaObject {
-  const emptySchemaObj: SchemaObject = {};
-  // tslint:disable-next-line:no-any
-  const def: {[key: string]: any} = json;
-  for (const property in def) {
-    const val = def[property];
+export function jsonToSchemaObject(jsonDef: JsonDefinition): SchemaObject {
+  const json = jsonDef as {[name: string]: any}; // gets around index signature error
+  const result: SchemaObject = {};
+  const propsToIgnore = [
+    'anyOf',
+    'oneOf',
+    'additionalItems',
+    'defaultProperties',
+    'typeof',
+  ];
+  for (const property in json) {
+    if (propsToIgnore.includes(property)) {
+      continue;
+    }
     switch (property) {
-      // converts excepted properties to SchemaObject definitions
       case 'type': {
-        if (def.type === 'array' && !def.items) {
+        if (json.type === 'array' && !json.items) {
           throw new Error(
             '"items" property must be present if "type" is an array',
           );
         }
-        emptySchemaObj.type = Array.isArray(json.type)
-          ? json.type[0]
-          : json.type;
+        result.type = Array.isArray(json.type) ? json.type[0] : json.type;
         break;
       }
       case 'allOf': {
-        const collector: SchemaObject[] = [];
-        for (const item of def.allOf) {
-          collector.push(jsonToSchemaObject(item));
-        }
-        emptySchemaObj.allOf = collector;
+        result.allOf = _.map(json.allOf, item => jsonToSchemaObject(item));
+        break;
+      }
+      case 'definitions': {
+        result.definitions = _.mapValues(json.definitions, def =>
+          jsonToSchemaObject(def),
+        );
         break;
       }
       case 'properties': {
-        const properties: {[key: string]: JsonDefinition} = def.properties;
-        const collector: MapObject<SchemaObject> = {};
-        for (const item in properties) {
-          collector[item] = jsonToSchemaObject(properties[item]);
-        }
-        emptySchemaObj.properties = collector;
+        result.properties = _.mapValues(json.properties, item =>
+          jsonToSchemaObject(item),
+        );
         break;
       }
       case 'additionalProperties': {
-        if (json.additionalProperties) {
-          if (json.additionalProperties === true) {
-            emptySchemaObj.additionalProperties = {};
-          } else {
-            emptySchemaObj.additionalProperties = jsonToSchemaObject(
-              json.additionalProperties,
-            );
-          }
+        if (typeof json.additionalProperties !== 'boolean') {
+          result.additionalProperties = jsonToSchemaObject(
+            json.additionalProperties as JsonDefinition,
+          );
         }
         break;
       }
       case 'items': {
-        def.items = Array.isArray(def.items) ? def.items[0] : def.items;
-        emptySchemaObj.items = jsonToSchemaObject(def.items);
+        const items = Array.isArray(json.items) ? json.items[0] : json.items;
+        result.items = jsonToSchemaObject(items as JsonDefinition);
+        break;
+      }
+      case 'enum': {
+        const newEnum = [];
+        const primitives = ['string', 'number', 'boolean'];
+        for (const element of json.enum) {
+          if (primitives.includes(typeof element) || element === null) {
+            newEnum.push(element);
+          } else {
+            // if element is JsonDefinition, convert to SchemaObject
+            newEnum.push(jsonToSchemaObject(element as JsonDefinition));
+          }
+        }
+        result.enum = newEnum;
+
         break;
       }
       default: {
-        emptySchemaObj[property] = val;
+        result[property] = json[property];
         break;
       }
     }
   }
 
-  return <SchemaObject>emptySchemaObj;
+  return result;
 }
 
 /**

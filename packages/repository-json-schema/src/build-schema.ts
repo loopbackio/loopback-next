@@ -9,7 +9,7 @@ import {
   ModelDefinition,
 } from '@loopback/repository';
 import {includes} from 'lodash';
-import {Definition} from 'typescript-json-schema';
+import {Definition, PrimitiveType} from 'typescript-json-schema';
 import {MetadataInspector} from '@loopback/context';
 
 export const JSON_SCHEMA_KEY = 'loopback:json-schema';
@@ -18,17 +18,33 @@ export const JSON_SCHEMA_KEY = 'loopback:json-schema';
  * Type definition for JSON Schema
  */
 export interface JsonDefinition extends Definition {
+  allOf?: JsonDefinition[];
+  oneOf?: JsonDefinition[];
+  anyOf?: JsonDefinition[];
+  items?: JsonDefinition | JsonDefinition[];
+  additionalItems?: {
+    anyOf: JsonDefinition[];
+  };
+  enum?: PrimitiveType[] | JsonDefinition[];
+  additionalProperties?: JsonDefinition | boolean;
+  definitions?: {[definition: string]: JsonDefinition};
   properties?: {[property: string]: JsonDefinition};
 }
 
-export function getJsonDef(ctor: Function): JsonDefinition {
-  const jsonDef = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor);
-  if (jsonDef) {
-    return jsonDef;
+/**
+ * Gets the JSON Schema of a TypeScript model/class by seeing if one exists
+ * in a cache. If not, one is generated and then cached.
+ * @param ctor Contructor of class to get JSON Schema from
+ */
+export function getJsonSchema(ctor: Function): JsonDefinition {
+  // NOTE(shimks) currently impossible to dynamically update
+  const jsonSchema = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor);
+  if (jsonSchema) {
+    return jsonSchema;
   } else {
-    const newDef = modelToJsonDef(ctor);
-    MetadataInspector.defineMetadata(JSON_SCHEMA_KEY, newDef, ctor);
-    return newDef;
+    const newSchema = modelToJsonSchema(ctor);
+    MetadataInspector.defineMetadata(JSON_SCHEMA_KEY, newSchema, ctor);
+    return newSchema;
   }
 }
 
@@ -40,46 +56,81 @@ export function getJsonDef(ctor: Function): JsonDefinition {
  * reflection API
  * @param ctor Constructor of class to convert from
  */
-export function modelToJsonDef(ctor: Function): JsonDefinition {
+export function modelToJsonSchema(ctor: Function): JsonDefinition {
   const meta: ModelDefinition = ModelMetadataHelper.getModelMetadata(ctor);
   const schema: JsonDefinition = {};
 
+  const isComplexType = (constructor: Function) =>
+    !includes([String, Number, Boolean, Object], constructor);
+
+  const determinePropertyDef = (constructor: Function) =>
+    isComplexType(constructor)
+      ? {$ref: `#definitions/${constructor.name}`}
+      : {type: constructor.name.toLowerCase()};
+
   for (const p in meta.properties) {
     const propMeta = meta.properties[p];
-    if (propMeta.type) {
+    let propCtor = propMeta.type;
+    if (typeof propCtor === 'string') {
+      const type = propCtor.toLowerCase();
+      switch (type) {
+        case 'number': {
+          propCtor = Number;
+          break;
+        }
+        case 'string': {
+          propCtor = String;
+          break;
+        }
+        case 'boolean': {
+          propCtor = Boolean;
+          break;
+        }
+        default: {
+          throw new Error('Unsupported type');
+        }
+      }
+    }
+    if (propCtor && typeof propCtor === 'function') {
+      // errors out if @property.array() is not used on a property of array
+      if (propCtor === Array) {
+        throw new Error('type is defined as an array');
+      }
+
+      const propDef: JsonDefinition = determinePropertyDef(propCtor);
+
       if (!schema.properties) {
         schema.properties = {};
       }
-      schema.properties[p] = toJsonProperty(propMeta);
+
+      if (propMeta.array === true) {
+        schema.properties[p] = {
+          type: 'array',
+          items: propDef,
+        };
+      } else {
+        schema.properties[p] = propDef;
+      }
+
+      if (isComplexType(propCtor)) {
+        const propSchema = getJsonSchema(propCtor);
+
+        if (propSchema && Object.keys(propSchema).length > 0) {
+          if (!schema.definitions) {
+            schema.definitions = {};
+          }
+
+          if (propSchema.definitions) {
+            for (const key in propSchema.definitions) {
+              schema.definitions[key] = propSchema.definitions[key];
+            }
+            delete propSchema.definitions;
+          }
+
+          schema.definitions[propCtor.name] = propSchema;
+        }
+      }
     }
   }
   return schema;
-}
-
-/**
- * Converts a property in metadata form to a JSON schema property definition
- * @param propMeta Property in metadata to convert from
- */
-export function toJsonProperty(propMeta: PropertyDefinition): JsonDefinition {
-  const ctor = propMeta.type as Function;
-
-  // errors out if @property.array() is not used on a property of array
-  if (ctor === Array) {
-    throw new Error('type is defined as an array');
-  }
-
-  let prop: JsonDefinition = {};
-
-  if (propMeta.array === true) {
-    prop.type = 'array';
-    prop.items = toJsonProperty({
-      array: ctor === Array ? true : false,
-      type: ctor,
-    });
-  } else if (includes([String, Number, Boolean, Object], ctor)) {
-    prop.type = ctor.name.toLowerCase();
-  } else {
-    prop.$ref = `#definitions/${ctor.name}`;
-  }
-  return prop;
 }

@@ -10,13 +10,13 @@ import {
   ModelDefinition,
   PropertyMap,
 } from '@loopback/repository';
-import {modelToJsonDef, toJsonProperty} from '../../src/build-schema';
+import {modelToJsonSchema} from '../../src/build-schema';
 import {expect} from '@loopback/testlab';
 import {MetadataInspector} from '@loopback/context';
-import {JSON_SCHEMA_KEY, getJsonDef} from '../../index';
+import {JSON_SCHEMA_KEY, getJsonSchema} from '../../index';
 
 describe('build-schema', () => {
-  describe('modelToJSON', () => {
+  describe('modelToJsonSchema', () => {
     it('does not convert null or undefined property', () => {
       @model()
       class TestModel {
@@ -24,8 +24,8 @@ describe('build-schema', () => {
         @property() undef: undefined;
       }
 
-      const jsonDef = modelToJsonDef(TestModel);
-      expect(jsonDef.properties).to.not.have.keys(['nul', 'undef']);
+      const jsonSchema = modelToJsonSchema(TestModel);
+      expect(jsonSchema.properties).to.not.have.keys(['nul', 'undef']);
     });
 
     it('does not convert properties that have not been decorated', () => {
@@ -40,8 +40,8 @@ describe('build-schema', () => {
         baz: number;
       }
 
-      expect(modelToJsonDef(NoPropertyMeta)).to.eql({});
-      expect(modelToJsonDef(OnePropertyDecorated)).to.deepEqual({
+      expect(modelToJsonSchema(NoPropertyMeta)).to.eql({});
+      expect(modelToJsonSchema(OnePropertyDecorated)).to.deepEqual({
         properties: {
           foo: {
             type: 'string',
@@ -57,8 +57,8 @@ describe('build-schema', () => {
         bar: number;
       }
 
-      expect(modelToJsonDef(Empty)).to.eql({});
-      expect(modelToJsonDef(NoModelMeta)).to.eql({});
+      expect(modelToJsonSchema(Empty)).to.eql({});
+      expect(modelToJsonSchema(NoModelMeta)).to.eql({});
     });
 
     it('properly converts string, number, and boolean properties', () => {
@@ -69,8 +69,8 @@ describe('build-schema', () => {
         @property() bool: boolean;
       }
 
-      const jsonDef = modelToJsonDef(TestModel);
-      expect(jsonDef.properties).to.deepEqual({
+      const jsonSchema = modelToJsonSchema(TestModel);
+      expect(jsonSchema.properties).to.deepEqual({
         str: {
           type: 'string',
         },
@@ -89,29 +89,105 @@ describe('build-schema', () => {
         @property() obj: object;
       }
 
-      const jsonDef = modelToJsonDef(TestModel);
-      expect(jsonDef.properties).to.deepEqual({
+      const jsonSchema = modelToJsonSchema(TestModel);
+      expect(jsonSchema.properties).to.deepEqual({
         obj: {
           type: 'object',
         },
       });
     });
 
-    it('properly converts custom type properties', () => {
-      class CustomType {
-        prop: string;
-      }
+    context('with custom type properties', () => {
+      it('properly converts undecorated custom type properties', () => {
+        class CustomType {
+          prop: string;
+        }
 
-      @model()
-      class TestModel {
-        @property() cusType: CustomType;
-      }
+        @model()
+        class TestModel {
+          @property() cusType: CustomType;
+        }
 
-      const jsonDef = modelToJsonDef(TestModel);
-      expect(jsonDef.properties).to.deepEqual({
-        cusType: {
-          $ref: '#definitions/CustomType',
-        },
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema.properties).to.deepEqual({
+          cusType: {
+            $ref: '#definitions/CustomType',
+          },
+        });
+        expect(jsonSchema).to.not.have.key('definitions');
+      });
+
+      it('properly converts decorated custom type properties', () => {
+        @model()
+        class CustomType {
+          @property() prop: string;
+        }
+
+        @model()
+        class TestModel {
+          @property() cusType: CustomType;
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema.properties).to.deepEqual({
+          cusType: {
+            $ref: '#definitions/CustomType',
+          },
+        });
+        expect(jsonSchema.definitions).to.deepEqual({
+          CustomType: {
+            properties: {
+              prop: {
+                type: 'string',
+              },
+            },
+          },
+        });
+      });
+
+      it('creates definitions only at the root level of the schema', () => {
+        @model()
+        class CustomTypeFoo {
+          @property() prop: string;
+        }
+
+        @model()
+        class CustomTypeBar {
+          @property.array(CustomTypeFoo) prop: CustomTypeFoo[];
+        }
+
+        @model()
+        class TestModel {
+          @property() cusBar: CustomTypeBar;
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        const schemaProps = jsonSchema.properties;
+        const schemaDefs = jsonSchema.definitions;
+        expect(schemaProps).to.deepEqual({
+          cusBar: {
+            $ref: '#definitions/CustomTypeBar',
+          },
+        });
+        expect(schemaDefs).to.deepEqual({
+          CustomTypeFoo: {
+            properties: {
+              prop: {
+                type: 'string',
+              },
+            },
+          },
+          CustomTypeBar: {
+            properties: {
+              prop: {
+                type: 'array',
+                items: {
+                  $ref: '#definitions/CustomTypeFoo',
+                },
+              },
+            },
+          },
+        });
       });
     });
 
@@ -121,8 +197,8 @@ describe('build-schema', () => {
         @property.array(Number) numArr: number[];
       }
 
-      const jsonDef = modelToJsonDef(TestModel);
-      expect(jsonDef.properties).to.deepEqual({
+      const jsonSchema = modelToJsonSchema(TestModel);
+      expect(jsonSchema.properties).to.deepEqual({
         numArr: {
           type: 'array',
           items: {
@@ -142,8 +218,8 @@ describe('build-schema', () => {
         @property.array(CustomType) cusArr: CustomType[];
       }
 
-      const jsonDef = modelToJsonDef(TestModel);
-      expect(jsonDef.properties).to.deepEqual({
+      const jsonSchema = modelToJsonSchema(TestModel);
+      expect(jsonSchema.properties).to.deepEqual({
         cusArr: {
           type: 'array',
           items: {
@@ -153,6 +229,41 @@ describe('build-schema', () => {
       });
     });
 
+    it('supports explicit primitive type decoration via strings', () => {
+      @model()
+      class TestModel {
+        @property({type: 'string'})
+        hardStr: Number;
+        @property({type: 'boolean'})
+        hardBool: String;
+        @property({type: 'number'})
+        hardNum: Boolean;
+      }
+
+      const jsonSchema = modelToJsonSchema(TestModel);
+      expect(jsonSchema.properties).to.deepEqual({
+        hardStr: {
+          type: 'string',
+        },
+        hardBool: {
+          type: 'boolean',
+        },
+        hardNum: {
+          type: 'number',
+        },
+      });
+    });
+
+    it('errors out when explicit type decoration is not primitive', () => {
+      @model()
+      class TestModel {
+        @property({type: 'NotPrimitive'})
+        bad: String;
+      }
+
+      expect(() => modelToJsonSchema(TestModel)).to.throw(/Unsupported type/);
+    });
+
     it('errors out when "@property.array" is not used on an array', () => {
       @model()
       class BadArray {
@@ -160,105 +271,53 @@ describe('build-schema', () => {
       }
 
       expect(() => {
-        modelToJsonDef(BadArray);
+        modelToJsonSchema(BadArray);
       }).to.throw(/type is defined as an array/);
     });
 
-    describe('toJSONProperty', () => {
-      class Bar {
-        barA: number;
-      }
+    it('errors out if "@property.array" is given "Array" as parameter', () => {
       @model()
-      class Foo {
-        @property() str: string;
-        @property() num: number;
-        @property() bool: boolean;
-        @property() obj: object;
-        @property() nul: null;
-        @property() undef: undefined;
-        @property.array(String) arrStr: string[];
-        @property() bar: Bar;
-        @property.array(Bar) arrBar: Bar[];
+      class BadArray {
+        @property.array(Array) badArr: string[][];
       }
-      let meta: ModelDefinition;
-      let propMeta: PropertyMap;
 
-      before(() => {
-        meta = ModelMetadataHelper.getModelMetadata(Foo);
-        propMeta = meta.properties;
-      });
-
-      it('converts primitively typed property correctly', () => {
-        expect(toJsonProperty(propMeta.str)).to.deepEqual({
-          type: 'string',
-        });
-        expect(toJsonProperty(propMeta.num)).to.deepEqual({
-          type: 'number',
-        });
-        expect(toJsonProperty(propMeta.bool)).to.deepEqual({
-          type: 'boolean',
-        });
-      });
-
-      it('converts object property correctly', () => {
-        expect(toJsonProperty(propMeta.obj)).to.deepEqual({
-          type: 'object',
-        });
-      });
-
-      it('converts customly typed property correctly', () => {
-        expect(toJsonProperty(propMeta.bar)).to.deepEqual({
-          $ref: '#definitions/Bar',
-        });
-      });
-
-      it('converts arrays of primitives correctly', () => {
-        expect(toJsonProperty(propMeta.arrStr)).to.deepEqual({
-          type: 'array',
-          items: {
-            type: 'string',
-          },
-        });
-      });
-
-      it('converts arrays of custom types correctly', () => {
-        expect(toJsonProperty(propMeta.arrBar)).to.deepEqual({
-          type: 'array',
-          items: {
-            $ref: '#definitions/Bar',
-          },
-        });
-      });
+      expect(() => {
+        modelToJsonSchema(BadArray);
+      }).to.throw(/type is defined as an array/);
     });
   });
 
-  describe('getJsonDef', () => {
-    it('gets cached JSON definition if one exists', () => {
+  describe('getjsonSchema', () => {
+    it('gets cached JSON schema if one exists', () => {
       @model()
       class TestModel {
         @property() foo: number;
       }
-      const cachedDef = {
+      const cachedSchema = {
         properties: {
           cachedProperty: {
             type: 'string',
           },
         },
       };
-      MetadataInspector.defineMetadata(JSON_SCHEMA_KEY, cachedDef, TestModel);
+      MetadataInspector.defineMetadata(
+        JSON_SCHEMA_KEY,
+        cachedSchema,
+        TestModel,
+      );
 
-      const jsonDef = getJsonDef(TestModel);
-      expect(jsonDef).to.eql(cachedDef);
+      const jsonSchema = getJsonSchema(TestModel);
+      expect(jsonSchema).to.eql(cachedSchema);
     });
 
-    it('creates JSON definition if one does not already exist', () => {
+    it('creates JSON schema if one does not already exist', () => {
       @model()
       class NewModel {
         @property() newProperty: string;
       }
 
-      const jsonDef = getJsonDef(NewModel);
-      expect(jsonDef.properties).to.containDeep({
+      const jsonSchema = getJsonSchema(NewModel);
+      expect(jsonSchema.properties).to.deepEqual({
         newProperty: {
           type: 'string',
         },

@@ -279,7 +279,7 @@ describe('Routing metadata for parameters', () => {
       expect(actualSpec.paths['/greet']['get']).to.eql(expectedSpec);
     });
 
-    it('infers complex body parameter definition into the controller spec', () => {
+    it('infers complex body parameter schema into the controller spec', () => {
       const fooSpec: ParameterObject = {
         name: 'foo',
         in: 'body',
@@ -309,7 +309,7 @@ describe('Routing metadata for parameters', () => {
         .definitions as DefinitionsObject;
 
       // tslint:disable-next-line:no-any
-      expect(Object.keys(defs)).to.deepEqual(['Foo', 'Bar']);
+      expect(defs).to.have.keys('Foo', 'Bar');
       expect(defs.Foo).to.deepEqual({
         properties: {
           price: {
@@ -329,7 +329,32 @@ describe('Routing metadata for parameters', () => {
       });
     });
 
-    it('infers empty body parameter definition if no property metadata is present', () => {
+    it('does not produce nested definitions', () => {
+      const paramSpec: ParameterObject = {
+        name: 'foo',
+        in: 'body',
+      };
+      @model()
+      class Foo {
+        @property() bar: number;
+      }
+      @model()
+      class MyBody {
+        @property() name: string;
+        @property() foo: Foo;
+      }
+      class MyController {
+        @post('/foo')
+        foo(@param(paramSpec) body: MyBody) {}
+      }
+
+      const defs = getControllerSpec(MyController)
+        .definitions as DefinitionsObject;
+      expect(defs).to.have.keys('MyBody', 'Foo');
+      expect(defs.MyBody).to.not.have.key('definitions');
+    });
+
+    it('infers empty body parameter schema if no property metadata is present', () => {
       const paramSpec: ParameterObject = {
         name: 'foo',
         in: 'body',
@@ -346,7 +371,7 @@ describe('Routing metadata for parameters', () => {
       const defs = getControllerSpec(MyController)
         .definitions as DefinitionsObject;
 
-      expect(Object.keys(defs)).to.deepEqual(['MyBody']);
+      expect(defs).to.have.key('MyBody');
       expect(defs.MyBody).to.deepEqual({});
     });
 
@@ -366,7 +391,7 @@ describe('Routing metadata for parameters', () => {
       const defs = getControllerSpec(MyController)
         .definitions as DefinitionsObject;
 
-      expect(Object.keys(defs)).to.deepEqual(['MyBody']);
+      expect(defs).to.have.key('MyBody');
       expect(defs.MyBody).to.deepEqual({});
     });
 
