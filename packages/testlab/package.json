@@ -13,7 +13,7 @@
     "clean": "lb-clean loopback-testlab*.tgz dist dist6 package api-docs",
     "prepare": "npm run build",
     "pretest": "npm run build:current",
-    "test": "lb-dist mocha --recursive DIST/test",
+    "test": "lb-dist mocha --opts node_modules/@loopback/build/mocha.ts.opts DIST/test",
     "verify": "npm pack && tar xf loopback-testlab*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
