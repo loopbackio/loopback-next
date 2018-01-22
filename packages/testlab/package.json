@@ -40,6 +40,7 @@
     "README.md",
     "index.js",
     "index.d.ts",
+    "index.ts",
     "dist/src",
     "dist6/src",
     "should-as-function.d.ts",

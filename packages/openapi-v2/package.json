@@ -36,6 +36,7 @@
     "README.md",
     "index.js",
     "index.d.ts",
+    "index.ts",
     "dist/src",
     "dist6/src",
     "api-docs",

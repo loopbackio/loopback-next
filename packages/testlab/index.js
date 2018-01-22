@@ -4,6 +4,4 @@
 // License text available at https://opensource.org/licenses/MIT
 
 const nodeMajorVersion = +process.versions.node.split('.')[0];
-module.exports = nodeMajorVersion >= 7 ?
-  require('./dist/src/testlab') :
-  require('./dist6/src/testlab');
+module.exports = nodeMajorVersion >= 7 ? require('./dist') : require('./dist6');

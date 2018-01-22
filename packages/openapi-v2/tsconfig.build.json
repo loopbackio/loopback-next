@@ -4,5 +4,5 @@
     "compilerOptions": {
       "rootDir": "."
     },
-    "include": ["src", "test"]
+    "include": ["index.ts", "src", "test"]
 }
