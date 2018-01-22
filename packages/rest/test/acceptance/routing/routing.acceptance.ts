@@ -20,7 +20,7 @@ import {
   ParameterObject,
   OperationObject,
   ResponseObject,
-  createDefaultServer
+  createDefaultServer,
 } from '@loopback/openapi-spec-types';
 
 import {expect, Client, createClientForHandler} from '@loopback/testlab';

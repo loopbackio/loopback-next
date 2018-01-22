@@ -60,19 +60,21 @@ export function parseRequestUrl(request: ServerRequest): ParsedRequest {
 export type ControllerClass = Constructor<any>;
 
 function getServerBasePath(servers: ServerObject[]) {
-   let basePath:string;
-   if (!servers || servers.length < 1) return undefined;
+  let basePath: string;
+  if (!servers || servers.length < 1) return undefined;
   //  if (servers.length < 1) throw new Error('The default server is missing!');
-   let defaultServer: ServerObject = servers[0];
-   // read it from variables at this moment
-   if (defaultServer.variables && 
-    defaultServer.variables.basePath && 
-    defaultServer.variables.basePath.default) {
-      basePath = <string>defaultServer.variables.basePath.default;
-    } else {
-      throw new Error('The basePath is missing!');
-    }
-    return basePath;
+  let defaultServer: ServerObject = servers[0];
+  // read it from variables at this moment
+  if (
+    defaultServer.variables &&
+    defaultServer.variables.basePath &&
+    defaultServer.variables.basePath.default
+  ) {
+    basePath = <string>defaultServer.variables.basePath.default;
+  } else {
+    throw new Error('The basePath is missing!');
+  }
+  return basePath;
 }
 
 export class RoutingTable {

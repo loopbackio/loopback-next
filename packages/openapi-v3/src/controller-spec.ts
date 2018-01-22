@@ -21,7 +21,7 @@ import {
   PathsObject,
   ItemType,
   ItemsObject,
-  ServerObject
+  ServerObject,
 } from '@loopback/openapi-spec-types';
 
 import * as stream from 'stream';

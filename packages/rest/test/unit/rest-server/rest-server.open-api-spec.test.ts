@@ -27,23 +27,23 @@ describe('RestServer.getApiSpec()', () => {
       },
       servers: [
         {
-            "url": "{protocal}://{hostname}:{port}{basePath}",
-            "description": "The default LoopBack rest server",
-            "variables": {
-                "protocal": {
-                    "default": "http"
-                },
-                "basePath": {
-                    "default": "/"
-                },
-                "port": {
-                    "default": 8080
-                },
-                "hostname": {
-                    "default": "example.com"
-                }
-            }
-        }
+          url: '{protocal}://{hostname}:{port}{basePath}',
+          description: 'The default LoopBack rest server',
+          variables: {
+            protocal: {
+              default: 'http',
+            },
+            basePath: {
+              default: '/',
+            },
+            port: {
+              default: 8080,
+            },
+            hostname: {
+              default: 'example.com',
+            },
+          },
+        },
       ],
       paths: {},
       'x-foo': 'bar',
@@ -58,23 +58,23 @@ describe('RestServer.getApiSpec()', () => {
       },
       servers: [
         {
-            "url": "{protocal}://{hostname}:{port}{basePath}",
-            "description": "The default LoopBack rest server",
-            "variables": {
-                "protocal": {
-                    "default": "http"
-                },
-                "basePath": {
-                    "default": "/"
-                },
-                "port": {
-                    "default": 8080
-                },
-                "hostname": {
-                    "default": "example.com"
-                }
-            }
-        }
+          url: '{protocal}://{hostname}:{port}{basePath}',
+          description: 'The default LoopBack rest server',
+          variables: {
+            protocal: {
+              default: 'http',
+            },
+            basePath: {
+              default: '/',
+            },
+            port: {
+              default: 8080,
+            },
+            hostname: {
+              default: 'example.com',
+            },
+          },
+        },
       ],
       paths: {},
       'x-foo': 'bar',
