@@ -1,9 +1,12 @@
 {
-  "name": "@loopback/openapi-spec",
+  "name": "@loopback/openapi-spec-types",
   "version": "4.0.0-alpha.20",
   "description": "TypeScript type definitions for OpenAPI Spec/Swagger documents.",
   "engines": {
     "node": ">=6"
+  },
+  "dependencies": {
+    "openapi3-ts": "^0.6.2"
   },
   "devDependencies": {
     "@loopback/build": "^4.0.0-alpha.9"

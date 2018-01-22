@@ -5,7 +5,7 @@
 
 import {ServerRequest} from 'http';
 import * as HttpErrors from 'http-errors';
-import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
+import {OperationObject, ParameterObject} from '@loopback/openapi-spec-types';
 import {promisify} from '@loopback/core';
 import {
   OperationArgs,

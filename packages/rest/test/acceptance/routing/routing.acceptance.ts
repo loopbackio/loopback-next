@@ -12,7 +12,7 @@ import {
   RestComponent,
 } from '../../..';
 
-import {api, get, param} from '@loopback/openapi-v2';
+import {api, get, param} from '@loopback/openapi-v3';
 
 import {Application} from '@loopback/core';
 
@@ -20,7 +20,8 @@ import {
   ParameterObject,
   OperationObject,
   ResponseObject,
-} from '@loopback/openapi-spec';
+  createDefaultServer,
+} from '@loopback/openapi-spec-types';
 
 import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
@@ -348,7 +349,7 @@ describe('Routing', () => {
     const app = givenAnApplication();
     const server = await givenAServer(app);
 
-    @api({basePath: '/my', paths: {}})
+    @api({servers: [createDefaultServer({basePath: '/my'})], paths: {}})
     class MyController {
       @get('/greet')
       greet(@param.query.string('name') name: string) {

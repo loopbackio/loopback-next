@@ -7,7 +7,8 @@ import {
   OperationObject,
   ParameterObject,
   PathsObject,
-} from '@loopback/openapi-spec';
+  ServerObject,
+} from '@loopback/openapi-spec-types';
 import {Context, Constructor, instantiateClass} from '@loopback/context';
 import {ServerRequest} from 'http';
 import * as HttpErrors from 'http-errors';
@@ -19,7 +20,7 @@ import {
   OperationRetval,
 } from '../internal-types';
 
-import {ControllerSpec} from '@loopback/openapi-v2';
+import {ControllerSpec} from '@loopback/openapi-v3';
 
 import * as assert from 'assert';
 import * as url from 'url';
@@ -58,6 +59,24 @@ export function parseRequestUrl(request: ServerRequest): ParsedRequest {
 // tslint:disable-next-line:no-any
 export type ControllerClass = Constructor<any>;
 
+function getServerBasePath(servers: ServerObject[]) {
+  let basePath: string;
+  if (!servers || servers.length < 1) return undefined;
+  //  if (servers.length < 1) throw new Error('The default server is missing!');
+  let defaultServer: ServerObject = servers[0];
+  // read it from variables at this moment
+  if (
+    defaultServer.variables &&
+    defaultServer.variables.basePath &&
+    defaultServer.variables.basePath.default
+  ) {
+    basePath = <string>defaultServer.variables.basePath.default;
+  } else {
+    throw new Error('The basePath is missing!');
+  }
+  return basePath;
+}
+
 export class RoutingTable {
   private readonly _routes: RouteEntry[] = [];
 
@@ -72,7 +91,7 @@ export class RoutingTable {
 
     debug('Registering Controller with API', spec);
 
-    const basePath = spec.basePath || '/';
+    const basePath = getServerBasePath(<ServerObject[]>spec.servers) || '/';
     for (const p in spec.paths) {
       for (const verb in spec.paths[p]) {
         const opSpec: OperationObject = spec.paths[p][verb];

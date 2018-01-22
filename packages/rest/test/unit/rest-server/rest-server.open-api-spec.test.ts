@@ -6,7 +6,7 @@
 import {expect, validateApiSpec} from '@loopback/testlab';
 import {Application} from '@loopback/core';
 import {RestServer, Route, RestComponent} from '../../..';
-import {get} from '@loopback/openapi-v2';
+import {get} from '@loopback/openapi-v3';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 
 describe('RestServer.getApiSpec()', () => {
@@ -20,26 +20,62 @@ describe('RestServer.getApiSpec()', () => {
 
   it('honours API defined via app.api()', () => {
     server.api({
-      swagger: '2.0',
+      openapi: '3.0.0',
       info: {
         title: 'Test API',
         version: '1.0.0',
       },
-      host: 'example.com:8080',
-      basePath: '/api',
+      servers: [
+        {
+          url: '{protocal}://{hostname}:{port}{basePath}',
+          description: 'The default LoopBack rest server',
+          variables: {
+            protocal: {
+              default: 'http',
+            },
+            basePath: {
+              default: '/',
+            },
+            port: {
+              default: 8080,
+            },
+            hostname: {
+              default: 'example.com',
+            },
+          },
+        },
+      ],
       paths: {},
       'x-foo': 'bar',
     });
 
     const spec = server.getApiSpec();
     expect(spec).to.deepEqual({
-      swagger: '2.0',
+      openapi: '3.0.0',
       info: {
         title: 'Test API',
         version: '1.0.0',
       },
-      host: 'example.com:8080',
-      basePath: '/api',
+      servers: [
+        {
+          url: '{protocal}://{hostname}:{port}{basePath}',
+          description: 'The default LoopBack rest server',
+          variables: {
+            protocal: {
+              default: 'http',
+            },
+            basePath: {
+              default: '/',
+            },
+            port: {
+              default: 8080,
+            },
+            hostname: {
+              default: 'example.com',
+            },
+          },
+        },
+      ],
       paths: {},
       'x-foo': 'bar',
     });

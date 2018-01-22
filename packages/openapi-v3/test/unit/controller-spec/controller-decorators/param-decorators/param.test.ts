@@ -8,7 +8,7 @@ import {
   OperationObject,
   ParameterObject,
   ResponsesObject,
-} from '@loopback/openapi-spec';
+} from '@loopback/openapi-spec-types';
 import {expect} from '@loopback/testlab';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
 import * as stream from 'stream';

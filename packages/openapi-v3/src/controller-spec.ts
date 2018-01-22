@@ -21,7 +21,8 @@ import {
   PathsObject,
   ItemType,
   ItemsObject,
-} from '@loopback/openapi-spec';
+  ServerObject,
+} from '@loopback/openapi-spec-types';
 
 import * as stream from 'stream';
 
@@ -41,7 +42,7 @@ export interface ControllerSpec {
    * If it is not included, the API is served directly under the host.
    * The value MUST start with a leading slash (/).
    */
-  basePath?: string;
+  servers?: ServerObject[];
 
   /**
    * The available paths and operations for the API.
@@ -394,7 +395,7 @@ export function param(paramSpec: ParameterObject) {
 
       if (
         paramSpec.type === 'array' ||
-        (paramSpec.schema && paramSpec.schema.type === 'array')
+        (paramSpec.schema && (<SchemaObject>paramSpec.schema).type === 'array')
       ) {
         paramType = paramTypes[descriptorOrIndex];
         // The design-time type is `Object` for `any`
