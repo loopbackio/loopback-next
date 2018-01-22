@@ -9,7 +9,6 @@
     "node": ">=6"
   },
   "license": "MIT",
-  "dependencies": {},
   "devDependencies": {
     "@commitlint/cli": "^6.0.2",
     "@commitlint/config-conventional": "^6.0.2",
@@ -19,7 +18,8 @@
     "coveralls": "^3.0.0",
     "cz-conventional-changelog": "^2.1.0",
     "lerna": "^2.5.1",
-    "mocha": "^5.0.0"
+    "mocha": "^5.0.0",
+    "source-map-support": "^0.5.2"
   },
   "scripts": {
     "bootstrap": "npm i && lerna bootstrap",
@@ -41,7 +41,7 @@
     "build:full": "npm run clean:full && npm run bootstrap && npm run build && npm run mocha && npm run lint",
     "pretest": "npm run clean && npm run build:current",
     "test": "node packages/build/bin/run-nyc npm run mocha",
-    "mocha": "node packages/build/bin/select-dist mocha --opts packages/build/mocha.opts \"packages/*/DIST/test/**/*.js\" \"packages/cli/test\"",
+    "mocha": "node packages/build/bin/select-dist mocha --opts packages/build/mocha.ts.opts \"packages/*/DIST/test/**/*.js\" \"packages/cli/test\"",
     "posttest": "npm run lint"
   },
   "config": {

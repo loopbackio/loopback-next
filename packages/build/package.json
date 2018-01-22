@@ -40,7 +40,7 @@
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
     "test": "npm run mocha",
-    "mocha": "node bin/select-dist mocha --timeout 30000 --opts mocha.opts \"test/integration/*.js\"",
+    "mocha": "node bin/select-dist mocha --opts mocha.js.opts --timeout 30000 \"test/integration/*.js\"",
     "posttest": "npm run lint"
   },
   "devDependencies": {
