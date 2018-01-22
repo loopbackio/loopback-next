@@ -434,6 +434,13 @@ export class RestServer extends Context implements Server {
   }
 
   /**
+   * Create an internal controller which sets up static routes with RestServer.
+   *
+   * @param {string[] | string} path The path on disk to static resource/s
+   */
+  static(path: string[] | string) {}
+
+  /**
    * Get the OpenAPI specification describing the REST API provided by
    * this application.
    *

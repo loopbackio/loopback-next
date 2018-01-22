@@ -34,5 +34,6 @@ export namespace RestBindings {
     export const REQUEST = 'rest.http.request';
     export const RESPONSE = 'rest.http.response';
     export const CONTEXT = 'rest.http.request.context';
+    export const INSTANCE = 'rest.http.instance';
   }
 }
