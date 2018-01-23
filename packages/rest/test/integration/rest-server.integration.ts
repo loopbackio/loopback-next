@@ -6,6 +6,7 @@
 import {Application, ApplicationConfig} from '@loopback/core';
 import {expect, createClientForHandler} from '@loopback/testlab';
 import {Route, RestBindings, RestServer, RestComponent} from '../..';
+import * as yaml from 'js-yaml';
 
 describe('RestServer (integration)', () => {
   it('updates rest.port binding when listening on ephemeral port', async () => {
@@ -79,7 +80,8 @@ describe('RestServer (integration)', () => {
     const response = await createClientForHandler(server.handleHttp).get(
       '/swagger.yaml',
     );
-    expect(response.text).to.eql(`swagger: '2.0'
+    const expected = yaml.safeLoad(`
+swagger: '2.0'
 basePath: /
 info:
   title: LoopBack Application
@@ -92,7 +94,9 @@ paths:
           schema:
             type: string
           description: greeting of the day
-`);
+    `);
+    // Use json for comparison to tolerate textual diffs
+    expect(yaml.safeLoad(response.text)).to.eql(expected);
     expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
     expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
@@ -154,7 +158,8 @@ paths:
     const response = await createClientForHandler(server.handleHttp).get(
       '/openapi.yaml',
     );
-    expect(response.text).to.eql(`openapi: 3.0.0
+    const expected = yaml.safeLoad(`
+openapi: 3.0.0
 info:
   title: LoopBack Application
   version: 1.0.0
@@ -170,7 +175,9 @@ paths:
                 type: string
 servers:
   - url: /
-`);
+    `);
+    // Use json for comparison to tolerate textual diffs
+    expect(yaml.safeLoad(response.text)).to.eql(expected);
     expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
     expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
