@@ -34,7 +34,7 @@
     "lb-clean": "./bin/run-clean.js"
   },
   "scripts": {
-    "build:apidocs": "lb-apidocs",
+    "build:apidocs": "node bin/generate-apidocs",
     "lint": "npm run prettier:check",
     "lint:fix": "npm run prettier:fix",
     "prepare": "npm run build:apidocs",
@@ -45,9 +45,6 @@
     "mocha": "node bin/select-dist mocha --timeout 30000 --opts mocha.opts \"test/integration/*.js\"",
     "posttest": "npm run lint"
   },
-  "files": [
-    "api-docs"
-  ],
   "devDependencies": {
     "fs-extra": "^5.0.0"
   }
