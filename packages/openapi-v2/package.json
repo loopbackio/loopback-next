@@ -8,7 +8,9 @@
   "devDependencies": {
     "@loopback/build": "^4.0.0-alpha.9",
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.17",
-    "@loopback/testlab": "^4.0.0-alpha.19"
+    "@loopback/repository": "^4.0.0-alpha.23",
+    "@loopback/testlab": "^4.0.0-alpha.19",
+    "@types/lodash": "^4.14.92"
   },
   "scripts": {
     "build": "npm run build:dist && npm run build:dist6",
@@ -49,6 +51,7 @@
   "dependencies": {
     "@loopback/context": "^4.0.0-alpha.26",
     "@loopback/openapi-spec": "^4.0.0-alpha.20",
+    "@loopback/repository-json-schema": "^4.0.0-alpha.1",
     "lodash": "^4.17.4"
   }
 }

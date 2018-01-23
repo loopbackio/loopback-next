@@ -4,8 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {InspectionOptions, MetadataInspector} from '@loopback/context';
-import {MODEL_PROPERTIES_KEY, MODEL_WITH_PROPERTIES_KEY} from './model';
-import {ModelDefinition, PropertyDefinition} from '../model';
+import {
+  MODEL_PROPERTIES_KEY,
+  MODEL_WITH_PROPERTIES_KEY,
+  PropertyMap,
+} from './model';
+import {ModelDefinition} from '../model';
+
 export class ModelMetadataHelper {
   /**
    * A utility function to simplify retrieving metadata from a target model and
@@ -14,8 +19,12 @@ export class ModelMetadataHelper {
    * @param options An options object for the MetadataInspector to customize
    * the output of the metadata retrieval functions.
    */
-  static getModelMetadata(target: Function, options?: InspectionOptions) {
-    let classDef = MetadataInspector.getClassMetadata(
+  static getModelMetadata(
+    target: Function,
+    options?: InspectionOptions,
+  ): ModelDefinition {
+    let classDef: ModelDefinition | undefined;
+    classDef = MetadataInspector.getClassMetadata(
       MODEL_WITH_PROPERTIES_KEY,
       target,
       options,
@@ -26,11 +35,12 @@ export class ModelMetadataHelper {
     if (classDef) {
       return classDef;
     } else {
+      // sets the metadata to a dedicated key if cached value does not exist
       const meta = new ModelDefinition(
         Object.assign({name: target.name}, classDef),
       );
       meta.properties = Object.assign(
-        <PropertyDefinition>{},
+        <PropertyMap>{},
         MetadataInspector.getAllPropertyMetadata(
           MODEL_PROPERTIES_KEY,
           target.prototype,

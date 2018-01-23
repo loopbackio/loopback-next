@@ -1,0 +1,50 @@
+{
+  "name": "@loopback/repository-json-schema",
+  "version": "4.0.0-alpha.1",
+  "description": "Converts TS classes into JSON Schemas using TypeScript's reflection API",
+  "engines": {
+    "node": ">=6"
+  },
+  "scripts": {
+    "build": "npm run build:dist",
+    "build:current": "lb-tsc",
+    "build:dist": "lb-tsc es2017",
+    "build:dist6": "lb-tsc es2015",
+    "build:apidocs": "lb-apidocs",
+    "clean": "lb-clean loopback-json-schema*.tgz dist dist6 package api-docs",
+    "prepare": "npm run build && npm run build:apidocs",
+    "pretest": "npm run build:current",
+    "test": "lb-dist mocha --opts node_modules/@loopback/build/mocha.opts 'dist/test/unit/**/*.js' 'dist/test/integration/**/*.js' 'dist/test/acceptance/**/*.js'",
+    "verify": "npm pack && tar xf loopback-json-schema*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM",
+  "license": "MIT",
+  "keywords": [
+    "TypeScript",
+    "JSON Schema"
+  ],
+  "dependencies": {
+    "@loopback/context": "^4.0.0-alpha.25",
+    "@loopback/repository": "^4.0.0-alpha.22",
+    "lodash": "^4.17.4",
+    "typescript-json-schema": "^0.20.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^4.0.0-alpha.7",
+    "@loopback/testlab": "^4.0.0-alpha.17",
+    "@types/lodash": "^4.14.92"
+  },
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist/src",
+    "dist6/src",
+    "api-docs",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
+}
