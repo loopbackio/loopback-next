@@ -155,8 +155,6 @@ paths:
       '/openapi.yaml',
     );
     expect(response.text).to.eql(`openapi: 3.0.0
-servers:
-  - url: /
 info:
   title: LoopBack Application
   version: 1.0.0
@@ -170,6 +168,8 @@ paths:
             '*/*':
               schema:
                 type: string
+servers:
+  - url: /
 `);
     expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
