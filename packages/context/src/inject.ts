@@ -211,7 +211,7 @@ export namespace inject {
       {decorator: '@inject.tag', tag: bindingTag},
       metadata,
     );
-    return inject('', {tag: bindingTag}, resolveByTag);
+    return inject('', metadata, resolveByTag);
   };
 
   /**
