@@ -43,9 +43,8 @@ describe('RoutingTable', () => {
     table.registerController(TestController, spec);
     const paths = table.describeApiPaths();
     const params = paths['/greet']['get'].parameters;
-    expect(params).to.have.property('length', 2);
-    expect(params[0]).to.be.undefined();
-    expect(params[1]).to.have.properties({
+    expect(params).to.have.property('length', 1);
+    expect(params[0]).to.have.properties({
       name: 'message',
       in: 'query',
       type: 'string',

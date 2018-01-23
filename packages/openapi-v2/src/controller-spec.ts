@@ -160,7 +160,19 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
         throw new Error('More than one body parameters found: ' + bodyParams);
       }
       params = DecoratorFactory.cloneDeep(params);
-      operationSpec.parameters = params;
+      /**
+       * If a controller method uses dependency injection, the parameters
+       * might be sparsed. For example,
+       * ```ts
+       * class MyController {
+       *   greet(
+       *     @inject('prefix') prefix: string,
+       *     @param.query.string('name) name: string) {
+       *      return `${prefix}`, ${name}`;
+       *   }
+       * ```
+       */
+      operationSpec.parameters = params.filter(p => p != null);
     }
     operationSpec['x-operation-name'] = op;
 
