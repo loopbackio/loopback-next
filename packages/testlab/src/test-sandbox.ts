@@ -7,17 +7,12 @@ import {tmpdir} from 'os';
 import {createHash} from 'crypto';
 import {resolve, join, parse} from 'path';
 import * as util from 'util';
-import {
-  mkdirSync,
-  existsSync,
-  mkdir as mkdir_,
-  copyFile as copyFile_,
-} from 'fs';
+import {mkdirSync, existsSync, mkdir, copyFile} from 'fs';
 const promisify = util.promisify || require('util.promisify/implementation');
 
-const rimraf = promisify(require('rimraf'));
-const mkdir = promisify(mkdir_);
-const copyFile = promisify(copyFile_);
+const rimrafAsync = promisify(require('rimraf'));
+const mkdirAsync = promisify(mkdir);
+const copyFileAsync = promisify(copyFile);
 
 /**
  * TestSandbox class provides a convenient way to get a reference to a
@@ -74,7 +69,7 @@ export class TestSandbox {
    */
   async reset(): Promise<void> {
     this.validateInst();
-    await rimraf(this.path);
+    await rimrafAsync(this.path);
     this.create();
   }
 
@@ -83,7 +78,7 @@ export class TestSandbox {
    */
   async delete(): Promise<void> {
     this.validateInst();
-    await rimraf(this.path);
+    await rimrafAsync(this.path);
     delete this.path;
   }
 
@@ -93,7 +88,7 @@ export class TestSandbox {
    */
   async mkdir(dir: string): Promise<void> {
     this.validateInst();
-    await mkdir(resolve(this.path, dir));
+    await mkdirAsync(resolve(this.path, dir));
   }
 
   /**
@@ -107,6 +102,6 @@ export class TestSandbox {
     dest = dest
       ? resolve(this.path, dest)
       : resolve(this.path, parse(src).base);
-    await copyFile(src, dest);
+    await copyFileAsync(src, dest);
   }
 }
