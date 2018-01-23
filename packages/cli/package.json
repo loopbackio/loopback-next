@@ -54,7 +54,7 @@
   },
   "scripts": {
     "prepublishOnly": "nsp check",
-    "test": "mocha --opts node_modules/@loopback/build/mocha.js.opts test/**/*.js"
+    "test": "mocha --opts node_modules/@loopback/build/mocha.js.opts \"test/*.js\""
   },
   "repository": {
     "type": "git",

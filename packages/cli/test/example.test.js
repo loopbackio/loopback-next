@@ -14,8 +14,8 @@ const generator = path.join(__dirname, '../generators/example');
 const baseTests = require('./base-generator')(generator);
 const testUtils = require('./test-utils');
 
-const ALL_EXAMPLES = require(generator).getAllExamples();
-const VALID_EXAMPLE = 'codehub';
+const ALL_EXAMPLES = require('../generators/example').getAllExamples();
+const VALID_EXAMPLE = 'getting-started';
 
 describe('lb4 example', function() {
   this.timeout(10000);
@@ -50,7 +50,7 @@ describe('lb4 example', function() {
       .withPrompts({name: VALID_EXAMPLE})
       .then(() => {
         const targetPkgFile = `loopback4-example-${VALID_EXAMPLE}/package.json`;
-        const originalPkgMeta = require('../../example-codehub/package.json');
+        const originalPkgMeta = require(`../../example-${VALID_EXAMPLE}/package.json`);
         assert.file(targetPkgFile);
         assert.jsonFileContent(targetPkgFile, {
           name: originalPkgMeta.name,
@@ -65,7 +65,7 @@ describe('lb4 example', function() {
       .withArguments([VALID_EXAMPLE])
       .then(() => {
         const targetPkgFile = `loopback4-example-${VALID_EXAMPLE}/package.json`;
-        const originalPkgMeta = require('../../example-codehub/package.json');
+        const originalPkgMeta = require(`../../example-${VALID_EXAMPLE}/package.json`);
         assert.file(targetPkgFile);
         assert.jsonFileContent(targetPkgFile, {
           name: originalPkgMeta.name,

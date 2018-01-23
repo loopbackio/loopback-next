@@ -8,7 +8,7 @@ packages/authentication/* @bajtos @kjdelisle
 packages/cli/* @raymondfeng @kjdelisle @shimks
 packages/context/* @bajtos @raymondfeng  @kjdelisle
 packages/core/* @bajtos @raymondfeng @kjdelisle
-packages/example-codehub/* @bajtos
+packages/example-getting-started/* @bajtos @kjdelisle
 packages/openapi-spec-builder/*  @bajtos
 packages/openapi-spec/*  @bajtos
 packages/repository/* @raymondfeng @kjdelisle
