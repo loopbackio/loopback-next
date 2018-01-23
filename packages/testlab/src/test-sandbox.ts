@@ -94,7 +94,7 @@ export class TestSandbox {
   /**
    * Copies a file from src to the TestSandbox.
    * @param src Absolute path of file to be copied to the TestSandbox
-   * @param dest Optional. Destination filename of the copy operation
+   * @param [dest] Optional. Destination filename of the copy operation
    * (relative to TestSandbox). Original filename used if not specified.
    */
   async copy(src: string, dest?: string): Promise<void> {

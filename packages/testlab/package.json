@@ -20,7 +20,7 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/openapi-spec": "^4.0.0-alpha.19",
+    "@loopback/openapi-spec": "^4.0.0-alpha.20",
     "@types/rimraf": "^2.0.2",
     "@types/shot": "^3.4.0",
     "@types/sinon": "^2.3.7",
