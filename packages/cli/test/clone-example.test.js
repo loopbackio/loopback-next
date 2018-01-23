@@ -15,7 +15,7 @@ const glob = promisify(require('glob'));
 const path = require('path');
 const rimraf = promisify(require('rimraf'));
 
-const VALID_EXAMPLE = 'codehub';
+const VALID_EXAMPLE = 'getting-started';
 const SANDBOX_PATH = path.resolve(__dirname, 'sandbox');
 let sandbox;
 
@@ -30,7 +30,7 @@ describe('cloneExampleFromGitHub', function() {
         return Promise.all([
           glob('**', {
             cwd: path.join(__dirname, `../../example-${VALID_EXAMPLE}`),
-            ignore: 'node_modules/**',
+            ignore: '@(node_modules|dist*)/**',
           }),
           glob('**', {
             cwd: outDir,
