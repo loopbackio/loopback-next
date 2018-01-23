@@ -13,7 +13,7 @@
       "args": [
         "--opts",
         "${workspaceRoot}/test/mocha.opts",
-        "packages/*/test/**/*.ts",
+        "packages/*/dist/test/**/*.js",
         "-t",
         "0"
       ]
