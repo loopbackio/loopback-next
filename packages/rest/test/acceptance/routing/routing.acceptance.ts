@@ -119,6 +119,47 @@ describe('Routing', () => {
     );
   });
 
+  it('allows controllers to use method DI with mixed params', async () => {
+    class MyController {
+      @get('/greet')
+      greet(
+        @param.query.string('name') name: string,
+        @inject('hello.prefix') prefix: string,
+      ) {
+        return `${prefix} ${name}`;
+      }
+    }
+    const app = givenAnApplication();
+    app.bind('hello.prefix').to('Hello');
+    const server = await givenAServer(app);
+    givenControllerInApp(app, MyController);
+    return (
+      whenIMakeRequestTo(server)
+        .get('/greet?name=world')
+        // Then I get the result `hello world` from the `Method`
+        .expect('Hello world')
+    );
+  });
+
+  it('allows controllers to use method DI without rest params', async () => {
+    class MyController {
+      @get('/greet')
+      greet(@inject('hello.prefix') prefix: string) {
+        return `${prefix} world`;
+      }
+    }
+    const app = givenAnApplication();
+    app.bind('hello.prefix').to('Hello');
+    const server = await givenAServer(app);
+    givenControllerInApp(app, MyController);
+    return (
+      whenIMakeRequestTo(server)
+        .get('/greet')
+        // Then I get the result `hello world` from the `Method`
+        .expect('Hello world')
+    );
+  });
+
   it('injects controller constructor arguments', async () => {
     const app = givenAnApplication();
     const server = await givenAServer(app);

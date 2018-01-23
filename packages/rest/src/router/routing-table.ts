@@ -8,7 +8,12 @@ import {
   ParameterObject,
   PathsObject,
 } from '@loopback/openapi-spec';
-import {Context, Constructor, instantiateClass} from '@loopback/context';
+import {
+  Context,
+  Constructor,
+  instantiateClass,
+  invokeMethod,
+} from '@loopback/context';
 import {ServerRequest} from 'http';
 import * as HttpErrors from 'http-errors';
 
@@ -315,7 +320,13 @@ export class ControllerRoute extends BaseRoute {
         `Controller method not found: ${this.describe()}`,
       );
     }
-    return await controller[this._methodName](...args);
+    // Invoke the method with dependency injection
+    return await invokeMethod(
+      controller,
+      this._methodName,
+      requestContext,
+      args,
+    );
   }
 
   private async _createControllerInstance(
