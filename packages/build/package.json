@@ -34,8 +34,10 @@
     "lb-clean": "./bin/run-clean.js"
   },
   "scripts": {
+    "build:apidocs": "node bin/generate-apidocs",
     "lint": "npm run prettier:check",
     "lint:fix": "npm run prettier:fix",
+    "prepare": "npm run build:apidocs",
     "prettier:cli": "node bin/run-prettier \"bin/**/*.js\"",
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
