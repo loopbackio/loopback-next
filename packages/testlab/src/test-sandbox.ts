@@ -7,12 +7,24 @@ import {tmpdir} from 'os';
 import {createHash} from 'crypto';
 import {resolve, join, parse} from 'path';
 import * as util from 'util';
-import {mkdirSync, existsSync, mkdir, copyFile} from 'fs';
+import {mkdirSync, existsSync, mkdir, copyFile, readFile, writeFile} from 'fs';
 const promisify = util.promisify || require('util.promisify/implementation');
-
 const rimrafAsync = promisify(require('rimraf'));
 const mkdirAsync = promisify(mkdir);
-const copyFileAsync = promisify(copyFile);
+
+// tslint:disable-next-line:no-any
+let copyFileAsync: any;
+if (copyFile) {
+  copyFileAsync = promisify(copyFile);
+} else {
+  // Node 6 PolyFill for copyFile!
+  copyFileAsync = async function(src: string, target: string) {
+    const readFileAsync = promisify(readFile);
+    const writeFileAsync = promisify(writeFile);
+    const data = await readFileAsync(src);
+    await writeFileAsync(target, data);
+  };
+}
 
 /**
  * TestSandbox class provides a convenient way to get a reference to a
