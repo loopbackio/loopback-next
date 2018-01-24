@@ -81,6 +81,20 @@ export function property(definition?: Partial<PropertyDefinition>) {
 export namespace property {
   export const ERR_PROP_NOT_ARRAY =
     '@property.array can only decorate array properties!';
+  export const ERR_NO_ARGS = 'Should have at least one argument';
+  export const ERR_PROP_IS_ARRAY = 'Cannot use @property.union on arrays';
+
+  /**
+   * Decorator for union type properties
+   */
+  export function oneOf(...ctors: Function[]) {
+    if (ctors.length < 1) {
+      throw new Error(ERR_NO_ARGS);
+    }
+    return function(target: Object, propertyName: string) {
+      property({type: ctors, validationKey: 'oneOf'})(target, propertyName);
+    };
+  }
 
   /**
    *
@@ -88,7 +102,7 @@ export namespace property {
    * @param definition Optional PropertyDefinition object for additional
    * metadata
    */
-  export const array = function(
+  export function array(
     itemType: Function,
     definition?: Partial<PropertyDefinition>,
   ) {
@@ -107,5 +121,23 @@ export namespace property {
         )(target, propertyName);
       }
     };
-  };
+  }
+
+  export namespace array {
+    /**
+     * Decorator for properties with type union of arrays
+     */
+    // tslint:disable-next-line:no-shadowed-variable
+    export function oneOf(...ctors: Function[]) {
+      if (ctors.length < 1) {
+        throw new Error(ERR_NO_ARGS);
+      }
+      return function(target: Object, propertyName: string) {
+        property({type: ctors, validationKey: 'oneOf', array: true})(
+          target,
+          propertyName,
+        );
+      };
+    }
+  }
 }

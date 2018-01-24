@@ -14,7 +14,12 @@ import {Type} from './types';
 
 // tslint:disable:no-any
 
-export type PropertyType = string | Function | Object | Type<any>;
+export type PropertyType =
+  | string
+  | Array<Function>
+  | Function
+  | Object
+  | Type<any>;
 
 /**
  * Property definition for a model
@@ -45,6 +50,7 @@ export interface ModelDefinitionSyntax {
   name: string;
   properties?: {[name: string]: PropertyDefinition | PropertyType};
   settings?: {[name: string]: any};
+  [attribute: string]: any;
 }
 
 /**

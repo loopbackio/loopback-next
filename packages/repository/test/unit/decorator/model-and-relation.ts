@@ -95,8 +95,6 @@ describe('model decorator', () => {
 
     // Validates that property no longer requires a parameter
     @property() isShipped: boolean;
-
-    @property.array(Product) items: Product[];
   }
 
   @model()
@@ -152,6 +150,18 @@ describe('model decorator', () => {
     expect(meta).to.eql({name: 'foo'});
   });
 
+  it('adds model metadata with arbitrary properties', () => {
+    @model({arbitrary: 'property'})
+    class Arbitrary {
+      name: string;
+    }
+
+    const meta: {[props: string]: string} =
+      MetadataInspector.getClassMetadata(MODEL_KEY, Arbitrary) ||
+      /* istanbul ignore next */ {};
+    expect(meta.arbitrary).to.eql('property');
+  });
+
   it('adds property metadata', () => {
     const meta =
       MetadataInspector.getAllPropertyMetadata(
@@ -166,7 +176,6 @@ describe('model decorator', () => {
     });
     expect(meta.id).to.eql({type: 'string', id: true, generated: true});
     expect(meta.isShipped).to.eql({type: Boolean});
-    expect(meta.items).to.eql({type: Product, array: true});
   });
 
   it('adds embedsOne metadata', () => {
@@ -258,16 +267,97 @@ describe('model decorator', () => {
     });
   });
 
-  it('throws when @property.array is used on a non-array property', () => {
-    expect.throws(
-      () => {
-        // tslint:disable-next-line:no-unused-variable
-        class Oops {
-          @property.array(Product) product: Product;
+  describe('property namespace', () => {
+    describe('array', () => {
+      it('"@property.array" adds array metadata', () => {
+        @model()
+        class TestModel {
+          @property.array(Product) items: Product[];
         }
-      },
-      Error,
-      property.ERR_PROP_NOT_ARRAY,
-    );
+
+        const meta =
+          MetadataInspector.getAllPropertyMetadata(
+            MODEL_PROPERTIES_KEY,
+            TestModel.prototype,
+          ) || /* istanbul ignore next */ {};
+        expect(meta.items).to.eql({type: Product, array: true});
+      });
+
+      it('throws when @property.array is used on a non-array property', () => {
+        expect.throws(
+          () => {
+            // tslint:disable-next-line:no-unused-variable
+            class Oops {
+              @property.array(Product) product: Product;
+            }
+          },
+          Error,
+          property.ERR_PROP_NOT_ARRAY,
+        );
+      });
+    });
+  });
+
+  describe('oneOf', () => {
+    it('throws when parameters are empty', () => {
+      expect(() => {
+        @model()
+        class TestModel {
+          @property.oneOf() one: number | string;
+        }
+      }).to.throw(/at least one argument/);
+    });
+
+    it("persists parameters into metadata's type key", () => {
+      @model()
+      class TestModel {
+        @property.oneOf(Number, String)
+        one: number | string;
+      }
+
+      const meta =
+        MetadataInspector.getAllPropertyMetadata(
+          MODEL_PROPERTIES_KEY,
+          TestModel.prototype,
+        ) || /* istanbul ignore next */ {};
+
+      expect(meta.one).to.deepEqual({
+        type: [Number, String],
+        validationKey: 'oneOf',
+      });
+    });
+
+    describe('array namespace', () => {
+      describe('oneOf', () => {
+        it('throws when parameters are empty', () => {
+          expect(() => {
+            @model()
+            class TestModel {
+              @property.array.oneOf() one: number | string;
+            }
+          }).to.throw(/at least one argument/);
+        });
+
+        it("persists parameters into metadata's type key", () => {
+          @model()
+          class TestModel {
+            @property.array.oneOf(Number, String)
+            one: number[] | string[];
+          }
+
+          const meta =
+            MetadataInspector.getAllPropertyMetadata(
+              MODEL_PROPERTIES_KEY,
+              TestModel.prototype,
+            ) || /* istanbul ignore next */ {};
+
+          expect(meta.one).to.deepEqual({
+            type: [Number, String],
+            array: true,
+            validationKey: 'oneOf',
+          });
+        });
+      });
+    });
   });
 });

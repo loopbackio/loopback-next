@@ -8,7 +8,7 @@ import {
   PropertyDefinition,
   ModelDefinition,
 } from '@loopback/repository';
-import {includes} from 'lodash';
+import {includes, forEach} from 'lodash';
 import {Definition, PrimitiveType} from 'typescript-json-schema';
 import {MetadataInspector} from '@loopback/context';
 
@@ -58,19 +58,24 @@ export function getJsonSchema(ctor: Function): JsonDefinition {
  */
 export function modelToJsonSchema(ctor: Function): JsonDefinition {
   const meta: ModelDefinition = ModelMetadataHelper.getModelMetadata(ctor);
-  const schema: JsonDefinition = {};
+  const result: JsonDefinition = {};
 
-  const isComplexType = (constructor: Function) =>
-    !includes([String, Number, Boolean, Object], constructor);
+  const defineSchemaProperty = (
+    schema: JsonDefinition,
+    prop: string,
+    propCtor: Function | string,
+  ) => {
+    const isComplexType = (constructor: Function) =>
+      !includes([String, Number, Boolean, Object], constructor);
 
-  const determinePropertyDef = (constructor: Function) =>
-    isComplexType(constructor)
-      ? {$ref: `#definitions/${constructor.name}`}
-      : {type: constructor.name.toLowerCase()};
+    const determinePropertyDef = (constructor: Function) =>
+      isComplexType(constructor)
+        ? {$ref: `#definitions/${constructor.name}`}
+        : {type: constructor.name.toLowerCase()};
 
-  for (const p in meta.properties) {
-    const propMeta = meta.properties[p];
-    let propCtor = propMeta.type;
+    const propMeta = meta.properties[prop];
+
+    // changes the type reference to its wrapper class
     if (typeof propCtor === 'string') {
       const type = propCtor.toLowerCase();
       switch (type) {
@@ -91,46 +96,90 @@ export function modelToJsonSchema(ctor: Function): JsonDefinition {
         }
       }
     }
-    if (propCtor && typeof propCtor === 'function') {
-      // errors out if @property.array() is not used on a property of array
-      if (propCtor === Array) {
-        throw new Error('type is defined as an array');
-      }
 
-      const propDef: JsonDefinition = determinePropertyDef(propCtor);
+    // errors out if @property.array() is not used on a property of array
+    if (propCtor === Array) {
+      throw new Error('type is defined as an array');
+    }
 
-      if (!schema.properties) {
-        schema.properties = {};
-      }
+    const propDef: JsonDefinition = determinePropertyDef(propCtor);
 
-      if (propMeta.array === true) {
-        schema.properties[p] = {
-          type: 'array',
-          items: propDef,
-        };
-      } else {
-        schema.properties[p] = propDef;
-      }
+    if (!schema.properties) {
+      schema.properties = {};
+    }
 
-      if (isComplexType(propCtor)) {
-        const propSchema = getJsonSchema(propCtor);
-
-        if (propSchema && Object.keys(propSchema).length > 0) {
-          if (!schema.definitions) {
-            schema.definitions = {};
-          }
-
-          if (propSchema.definitions) {
-            for (const key in propSchema.definitions) {
-              schema.definitions[key] = propSchema.definitions[key];
-            }
-            delete propSchema.definitions;
-          }
-
-          schema.definitions[propCtor.name] = propSchema;
+    if (propMeta.validationKey) {
+      if (propMeta.validationKey === 'oneOf') {
+        let property: JsonDefinition = (schema.properties[prop] =
+          schema.properties[prop] || {});
+        if (!property.oneOf) {
+          property.oneOf = [];
+        }
+        if (propMeta.array) {
+          property.oneOf.push({type: 'array', items: propDef});
+        } else {
+          property.oneOf.push(propDef);
         }
       }
+    } else if (propMeta.array) {
+      schema.properties[prop] = {
+        type: 'array',
+        items: propDef,
+      };
+    } else {
+      schema.properties[prop] = propDef;
+    }
+
+    // populating JSON Schema 'definitions'
+    if (isComplexType(propCtor)) {
+      const propSchema = getJsonSchema(propCtor);
+
+      if (propSchema && Object.keys(propSchema).length > 0) {
+        if (!schema.definitions) {
+          schema.definitions = {};
+        }
+
+        if (propSchema.definitions) {
+          for (const key in propSchema.definitions) {
+            schema.definitions[key] = propSchema.definitions[key];
+          }
+          delete propSchema.definitions;
+        }
+
+        schema.definitions[propCtor.name] = propSchema;
+      }
+    }
+  };
+
+  if (meta.title) {
+    result.title = meta.title;
+  }
+
+  if (meta.description) {
+    result.description = meta.description;
+  }
+
+  for (const p in meta.properties) {
+    const currentPropMeta = meta.properties[p];
+    const propCtor = currentPropMeta.type;
+
+    if (propCtor) {
+      if (Array.isArray(propCtor)) {
+        forEach(propCtor, (constructor: Function) =>
+          defineSchemaProperty(result, p, constructor),
+        );
+      } else {
+        defineSchemaProperty(result, p, propCtor as Function | string);
+      }
+    }
+
+    // handling 'required' metadata
+    if (currentPropMeta.required) {
+      if (!result.required) {
+        result.required = [];
+      }
+      result.required.push(p);
     }
   }
-  return schema;
+  return result;
 }
