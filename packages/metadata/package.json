@@ -31,7 +31,7 @@
     "@loopback/build": "^4.0.0-alpha.9",
     "@loopback/testlab": "^4.0.0-alpha.19",
     "@types/debug": "^0.0.30",
-    "@types/lodash": "^4.14.87"
+    "@types/lodash": "^4.14.96"
   },
   "keywords": [
     "LoopBack",
