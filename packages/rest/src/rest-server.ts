@@ -29,6 +29,7 @@ import {
 } from './internal-types';
 import {ControllerClass} from './router/routing-table';
 import {RestBindings} from './keys';
+// const util = require('util');
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -283,10 +284,14 @@ export class RestServer extends Context implements Server {
     response: ServerResponse,
     options?: OpenApiSpecOptions,
   ) {
-    options = options || {version: '2.0', format: 'json'};
+    // options = options || {version: '2.0', format: 'json'};
+    options = options || {version: '3.0.0', format: 'json'};
     let specObj = this.getApiSpec();
-    if (options.version === '3.0.0') {
-      specObj = await swagger2openapi.convertObj(specObj, {direct: true});
+
+    if (options.version !== '3.0.0') {
+      // console.log(util.inspect(specObj, {depth: null}));
+      // specObj = await swagger2openapi.convertObj(specObj, {direct: true});
+      throw new Error('openapi 3 only, thanks');
     }
     if (options.format === 'json') {
       const spec = JSON.stringify(specObj, null, 2);

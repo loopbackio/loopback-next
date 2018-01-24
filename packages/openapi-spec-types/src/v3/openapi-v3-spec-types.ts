@@ -319,7 +319,7 @@ export function createDefaultServer(
         default: (restServerOptions && restServerOptions.basePath) || '/',
       },
       port: {
-        default: (restServerOptions && restServerOptions.port) || 3000,
+        default: (restServerOptions && restServerOptions.port && restServerOptions.port.toString()) || "3000",
       },
       hostname: {
         default:

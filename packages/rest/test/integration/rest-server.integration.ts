@@ -99,12 +99,12 @@ paths:
     expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
   });
 
-  it.skip('exposes "GET /openapi.json" endpoint', async () => {
+  it('exposes "GET /openapi.json" endpoint', async () => {
     const server = await givenAServer({rest: {port: 0}});
     const greetSpec = {
       responses: {
         200: {
-          schema: {type: 'string'},
+          content: {'*/*': {schema: {type: 'string'}}},
           description: 'greeting of the day',
         },
       },
@@ -145,7 +145,11 @@ paths:
     const greetSpec = {
       responses: {
         200: {
-          schema: {type: 'string'},
+          content: {
+            '*/*': {
+              schema: {type: 'string'},
+            },
+          },
           description: 'greeting of the day',
         },
       },
