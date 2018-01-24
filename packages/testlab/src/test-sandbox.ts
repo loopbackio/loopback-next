@@ -7,27 +7,7 @@ import {tmpdir} from 'os';
 import {createHash} from 'crypto';
 import {resolve, join, parse} from 'path';
 import * as util from 'util';
-import {mkdirSync, existsSync, mkdir, copyFile, readFile, writeFile} from 'fs';
-const promisify = util.promisify || require('util.promisify/implementation');
-const rimrafAsync = promisify(require('rimraf'));
-const mkdirAsync = promisify(mkdir);
-
-// tslint:disable-next-line:no-any
-let copyFileAsync: any;
-if (copyFile) {
-  copyFileAsync = promisify(copyFile);
-} else {
-  /**
-   * Taranveer: fs.copyFile wasn't made available till Node 8.5.0. As such this
-   * polyfill is needed for versions of Node prior to that.
-   */
-  copyFileAsync = async function(src: string, target: string) {
-    const readFileAsync = promisify(readFile);
-    const writeFileAsync = promisify(writeFile);
-    const data = await readFileAsync(src);
-    await writeFileAsync(target, data);
-  };
-}
+import {copy, ensureDirSync, emptyDir, remove, ensureDir} from 'fs-extra';
 
 /**
  * TestSandbox class provides a convenient way to get a reference to a
@@ -46,18 +26,7 @@ export class TestSandbox {
   constructor(path: string) {
     // resolve ensures path is absolute / makes it absolute (relative to cwd())
     this.path = resolve(path);
-    // Create directory if it doesn't already exist.
-    if (!existsSync(this.path)) {
-      this.create();
-    }
-  }
-
-  /**
-   * Syncronously creates the TestSandbox directory. It is syncronous because
-   * it is called by the constructor.
-   */
-  private create(): void {
-    mkdirSync(this.path);
+    ensureDirSync(this.path);
   }
 
   /**
@@ -84,8 +53,7 @@ export class TestSandbox {
    */
   async reset(): Promise<void> {
     this.validateInst();
-    await rimrafAsync(this.path);
-    this.create();
+    await emptyDir(this.path);
   }
 
   /**
@@ -93,7 +61,7 @@ export class TestSandbox {
    */
   async delete(): Promise<void> {
     this.validateInst();
-    await rimrafAsync(this.path);
+    await remove(this.path);
     delete this.path;
   }
 
@@ -103,7 +71,7 @@ export class TestSandbox {
    */
   async mkdir(dir: string): Promise<void> {
     this.validateInst();
-    await mkdirAsync(resolve(this.path, dir));
+    await ensureDir(resolve(this.path, dir));
   }
 
   /**
@@ -112,11 +80,11 @@ export class TestSandbox {
    * @param [dest] Optional. Destination filename of the copy operation
    * (relative to TestSandbox). Original filename used if not specified.
    */
-  async copy(src: string, dest?: string): Promise<void> {
+  async copyFile(src: string, dest?: string): Promise<void> {
     this.validateInst();
     dest = dest
       ? resolve(this.path, dest)
       : resolve(this.path, parse(src).base);
-    await copyFileAsync(src, dest);
+    await copy(src, dest);
   }
 }
