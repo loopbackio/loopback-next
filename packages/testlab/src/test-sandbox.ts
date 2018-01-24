@@ -17,7 +17,10 @@ let copyFileAsync: any;
 if (copyFile) {
   copyFileAsync = promisify(copyFile);
 } else {
-  // Node 6 PolyFill for copyFile!
+  /**
+   * Taranveer: fs.copyFile wasn't made available till Node 8.5.0. As such this
+   * polyfill is needed for versions of Node prior to that.
+   */
   copyFileAsync = async function(src: string, target: string) {
     const readFileAsync = promisify(readFile);
     const writeFileAsync = promisify(writeFile);
