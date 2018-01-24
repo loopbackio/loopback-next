@@ -29,10 +29,10 @@
     "glob": "^7.1.2",
     "mem-fs": "^1.1.3",
     "mem-fs-editor": "^3.0.2",
-    "mocha": "^4.0.1",
+    "mocha": "^5.0.0",
     "nsp": "^3.1.0",
     "rimraf": "^2.6.2",
-    "sinon": "^4.1.2",
+    "sinon": "^4.1.5",
     "yeoman-assert": "^3.1.0",
     "yeoman-test": "^1.7.0"
   },

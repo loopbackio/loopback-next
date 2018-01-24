@@ -14,15 +14,15 @@
     "@commitlint/cli": "^5.2.5",
     "@commitlint/config-conventional": "^6.0.2",
     "@commitlint/config-lerna-scopes": "^5.2.0",
-    "@types/mocha": "^2.2.44",
-    "@types/node": "^8.0.56",
+    "@types/mocha": "^2.2.46",
+    "@types/node": "^8.5.8",
     "coveralls": "^3.0.0",
     "cz-conventional-changelog": "^2.1.0",
     "lerna": "^2.5.1",
-    "mocha": "^4.0.0"
+    "mocha": "^5.0.0"
   },
   "scripts": {
-    "bootstrap": "npm i && lerna bootstrap",
+    "bootstrap": "npm i && lerna bootstrap --hoist",
     "release": "npm run build:full && lerna publish --cd-version=prerelease --preid=alpha",
     "coverage:ci": "node packages/build/bin/run-nyc report --reporter=text-lcov | coveralls",
     "precoverage": "npm test",

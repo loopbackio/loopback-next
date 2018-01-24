@@ -43,7 +43,7 @@
     "@loopback/testlab": "^4.0.0-alpha.19",
     "@loopback/repository": "^4.0.0-alpha.23",
     "@types/js-yaml": "^3.9.1",
-    "@types/lodash": "^4.14.85"
+    "@types/lodash": "^4.14.87"
   },
   "files": [
     "README.md",
