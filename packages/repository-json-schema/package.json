@@ -32,7 +32,7 @@
   "devDependencies": {
     "@loopback/build": "^4.0.0-alpha.7",
     "@loopback/testlab": "^4.0.0-alpha.17",
-    "@types/lodash": "^4.14.92"
+    "@types/lodash": "^4.14.96"
   },
   "files": [
     "README.md",

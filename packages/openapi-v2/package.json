@@ -10,7 +10,7 @@
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.17",
     "@loopback/repository": "^4.0.0-alpha.23",
     "@loopback/testlab": "^4.0.0-alpha.19",
-    "@types/lodash": "^4.14.92"
+    "@types/lodash": "^4.14.96"
   },
   "scripts": {
     "build": "npm run build:dist && npm run build:dist6",
