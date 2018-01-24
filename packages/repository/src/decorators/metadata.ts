@@ -5,6 +5,7 @@
 
 import {InspectionOptions, MetadataInspector} from '@loopback/context';
 import {
+  MODEL_KEY,
   MODEL_PROPERTIES_KEY,
   MODEL_WITH_PROPERTIES_KEY,
   PropertyMap,
@@ -39,6 +40,8 @@ export class ModelMetadataHelper {
       const meta = new ModelDefinition(
         Object.assign({name: target.name}, classDef),
       );
+      const modelMeta = MetadataInspector.getClassMetadata(MODEL_KEY, target);
+      Object.assign(meta, modelMeta);
       meta.properties = Object.assign(
         <PropertyMap>{},
         MetadataInspector.getAllPropertyMetadata(
