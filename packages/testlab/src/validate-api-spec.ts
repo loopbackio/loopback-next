@@ -3,9 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as SwaggerParser from 'swagger-parser';
 import {OpenApiSpec} from '@loopback/openapi-spec-types';
-
+const validator = require('swagger2openapi/validate.js');
 // export async function validateApiSpec(spec: OpenApiSpec): Promise<void> {
 //   const opts: SwaggerParser.Options = {
 //     $refs: {
@@ -32,6 +31,7 @@ import {OpenApiSpec} from '@loopback/openapi-spec-types';
 // }
 
 export async function validateApiSpec(spec: OpenApiSpec): Promise<void> {
+  const opts = {};
   if (!spec.openapi) {
     throw new Error('Missing required property: swagger at #/');
   }
@@ -43,5 +43,6 @@ export async function validateApiSpec(spec: OpenApiSpec): Promise<void> {
   if (!spec.paths) {
     throw new Error('Missing required property: paths at #/');
   }
-  return Promise.resolve();
+
+  await validator.validate(spec, opts);
 }
