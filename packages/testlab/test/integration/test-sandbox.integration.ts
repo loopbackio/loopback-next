@@ -4,13 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {TestSandbox, expect} from '../..';
-import {existsSync, readFile as readFile_} from 'fs';
 import {resolve} from 'path';
 import {createHash} from 'crypto';
 import * as util from 'util';
-const promisify = util.promisify || require('util.promisify/implementation');
-const rimraf = require('rimraf');
-const readFile = promisify(readFile_);
+import {remove, pathExists, readFile} from 'fs-extra';
 
 describe('TestSandbox integration tests', () => {
   let sandbox: TestSandbox;
@@ -28,28 +25,28 @@ describe('TestSandbox integration tests', () => {
   beforeEach(givenPath);
   afterEach(deleteSandbox);
 
-  it('returns path of sandbox and it exists', () => {
+  it('returns path of sandbox and it exists', async () => {
     expect(path).to.be.a.String();
-    expect(existsSync(path)).to.be.True();
+    expect(await pathExists(path)).to.be.True();
   });
 
   it('creates a directory in the sandbox', async () => {
     const dir = 'controllers';
     await sandbox.mkdir(dir);
-    expect(existsSync(resolve(path, dir))).to.be.True();
+    expect(await pathExists(resolve(path, dir))).to.be.True();
   });
 
   it('copies a file to the sandbox', async () => {
-    await sandbox.copy(COPY_FILE_PATH);
-    expect(existsSync(resolve(path, COPY_FILE))).to.be.True();
+    await sandbox.copyFile(COPY_FILE_PATH);
+    expect(await pathExists(resolve(path, COPY_FILE))).to.be.True();
     await compareFiles(resolve(path, COPY_FILE));
   });
 
   it('copies and renames the file to the sandbox', async () => {
     const rename = 'copy.me.js';
-    await sandbox.copy(COPY_FILE_PATH, rename);
-    expect(existsSync(resolve(path, COPY_FILE))).to.be.False();
-    expect(existsSync(resolve(path, rename))).to.be.True();
+    await sandbox.copyFile(COPY_FILE_PATH, rename);
+    expect(await pathExists(resolve(path, COPY_FILE))).to.be.False();
+    expect(await pathExists(resolve(path, rename))).to.be.True();
     await compareFiles(resolve(path, rename));
   });
 
@@ -57,14 +54,14 @@ describe('TestSandbox integration tests', () => {
     const dir = 'test';
     await sandbox.mkdir(dir);
     const rename = `${dir}/${COPY_FILE}`;
-    await sandbox.copy(COPY_FILE_PATH, rename);
-    expect(existsSync(resolve(path, rename))).to.be.True();
+    await sandbox.copyFile(COPY_FILE_PATH, rename);
+    expect(await pathExists(resolve(path, rename))).to.be.True();
     await compareFiles(resolve(path, rename));
   });
 
   it('deletes the test sandbox', async () => {
     await sandbox.delete();
-    expect(existsSync(path)).to.be.False();
+    expect(await pathExists(path)).to.be.False();
   });
 
   describe('after deleting sandbox', () => {
@@ -82,7 +79,7 @@ describe('TestSandbox integration tests', () => {
     });
 
     it('throws an error when trying to call copy()', async () => {
-      await expect(sandbox.copy(COPY_FILE_PATH)).to.be.rejectedWith(ERR);
+      await expect(sandbox.copyFile(COPY_FILE_PATH)).to.be.rejectedWith(ERR);
     });
 
     it('throws an error when trying to call reset()', async () => {
@@ -111,13 +108,9 @@ describe('TestSandbox integration tests', () => {
     path = sandbox.getPath();
   }
 
-  function deleteSandbox() {
-    if (!existsSync(path)) return;
-    try {
-      rimraf.sync(sandbox.getPath());
-    } catch (err) {
-      console.log(`Failed to delete sandbox because: ${err}`);
-    }
+  async function deleteSandbox() {
+    if (!await pathExists(path)) return;
+    await remove(sandbox.getPath());
   }
 
   async function getCopyFileContents() {
