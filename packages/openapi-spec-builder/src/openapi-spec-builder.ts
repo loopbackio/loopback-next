@@ -137,7 +137,11 @@ export class OperationSpecBuilder extends BuilderBase<OperationObject> {
   withStringResponse(status: number | 'default' = 200): this {
     return this.withResponse(status, {
       description: 'The string result.',
-      schema: {type: 'string'},
+      content: {
+        '*/*': {
+          schema: {type: 'string'},
+        },
+      },
     });
   }
 
