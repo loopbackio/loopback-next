@@ -11,6 +11,7 @@ export namespace RestBindings {
   export const HOST = 'rest.host';
   export const PORT = 'rest.port';
   export const HANDLER = 'rest.handler';
+  export const DIR = 'rest.dir';
 
   export const API_SPEC = 'rest.apiSpec';
   export const SEQUENCE = 'rest.sequence';
@@ -33,5 +34,6 @@ export namespace RestBindings {
     export const REQUEST = 'rest.http.request';
     export const RESPONSE = 'rest.http.response';
     export const CONTEXT = 'rest.http.request.context';
+    export const INSTANCE = 'rest.http.instance';
   }
 }
