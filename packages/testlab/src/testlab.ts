@@ -6,7 +6,6 @@
 /// <reference path="../should-as-function.d.ts" />
 
 const shouldAsFunction: Internal = require('should/as-function');
-
 import sinon = require('sinon');
 import {SinonSpy} from 'sinon';
 
