@@ -46,7 +46,6 @@
   "files": [
     "README.md",
     "index.js",
-    "index.ts",
     "index.d.ts",
     "dist/src",
     "dist6/src",
