@@ -29,7 +29,6 @@ export function createClientForHandler(
 export async function createClientForRestServer(
   server: RestServer,
 ): Promise<Client> {
-  await server.start();
   const port =
     server.options && server.options.http ? server.options.http.port : 3000;
   const url = `http://127.0.0.1:${port}`;
