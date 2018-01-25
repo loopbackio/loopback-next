@@ -160,6 +160,30 @@ describe('Routing', () => {
     );
   });
 
+  it('reports an error if not all parameters can be resolved', async () => {
+    class MyController {
+      @get('/greet')
+      greet(
+        @param.query.string('firstName') firstName: string,
+        lastName: string,
+        @inject('hello.prefix') prefix: string,
+      ) {
+        return `${prefix} ${firstName} ${lastName}`;
+      }
+    }
+    const app = givenAnApplication();
+    app.bind('hello.prefix').to('Hello');
+    const server = await givenAServer(app);
+    givenControllerInApp(app, MyController);
+    return expect(whenIMakeRequestTo(server).get('/greet?firstName=John'))
+      .to.be.rejectedWith(
+        'Cannot resolve injected arguments for ' +
+          'MyController.prototype.greet[1]: The arguments[1] is not ' +
+          'decorated for dependency injection, but a value is not supplied',
+      )
+      .catch(err => {});
+  });
+
   it('injects controller constructor arguments', async () => {
     const app = givenAnApplication();
     const server = await givenAServer(app);
