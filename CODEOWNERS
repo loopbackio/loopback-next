@@ -5,12 +5,16 @@
 * @bajtos @raymondfeng @kjdelisle
 
 packages/authentication/* @bajtos @kjdelisle
+packages/build/* @bajtos @raymondfeng
 packages/cli/* @raymondfeng @kjdelisle @shimks
 packages/context/* @bajtos @raymondfeng  @kjdelisle
 packages/core/* @bajtos @raymondfeng @kjdelisle
 packages/example-getting-started/* @bajtos @kjdelisle
-packages/openapi-spec-builder/*  @bajtos
-packages/openapi-spec/*  @bajtos
+packages/metadata/* @raymondfeng
+packages/openapi-spec/*  @bajtos @jannyHou
+packages/openapi-spec-builder/* @bajtos @raymondfeng
+packages/openapi-v2/* @jannyHou
 packages/repository/* @raymondfeng @kjdelisle
+packages/repository-json-schema/* @shimks
 packages/rest/* @bajtos @kjdelisle
 packages/testlab/* @bajtos @kjdelisle
