@@ -592,6 +592,8 @@ describe('Inspector for design time metadata', () => {
 
     @propertyDecorator() myArray: string[];
 
+    @propertyDecorator() myUnionType: string | number;
+
     @methodDecorator()
     myMethod(x: string, y: number): boolean {
       return false;
@@ -629,6 +631,15 @@ describe('Inspector for design time metadata', () => {
       'myType',
     );
     expect(meta).to.eql(MyClass);
+  });
+
+  it('inspects design time type for properties with union type', () => {
+    const meta = MetadataInspector.getDesignTypeForProperty(
+      MyController.prototype,
+      'myUnionType',
+    );
+    // Union type is recorded as Object
+    expect(meta).to.eql(Object);
   });
 
   it('inspects design time type for static properties', () => {

@@ -6,18 +6,18 @@
     "node": ">=6"
   },
   "scripts": {
-    "acceptance": "lb-dist mocha --opts node_modules/@loopback/build/mocha.ts.opts 'DIST/test/acceptance/**/*.js'",
+    "acceptance": "lb-mocha \"DIST/test/acceptance/**/*.js\"",
     "build": "npm run build:dist && npm run build:dist6",
     "build:current": "lb-tsc",
     "build:dist": "lb-tsc es2017",
     "build:dist6": "lb-tsc es2015",
     "build:apidocs": "lb-apidocs",
     "clean": "lb-clean loopback-authentication*.tgz dist dist6 package api-docs",
-    "integration": "lb-dist mocha --opts node_modules/@loopback/build/mocha.ts.opts 'DIST/test/integration/**/*.js'",
+    "integration": "lb-mocha \"DIST/test/integration/**/*.js\"",
     "prepare": "npm run build && npm run build:apidocs",
     "pretest": "npm run build:current",
-    "test": "lb-dist mocha --opts node_modules/@loopback/build/mocha.ts.opts 'DIST/test/unit/**/*.js' 'DIST/test/integration/**/*.js' 'DIST/test/acceptance/**/*.js'",
-    "unit": "lb-dist mocha --opts node_modules/@loopback/build/mocha.ts.opts 'DIST/test/unit/**/*.js'",
+    "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/integration/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
+    "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-authentication*.tgz && tree package && npm run clean"
   },
   "author": "IBM",

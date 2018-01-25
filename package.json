@@ -17,9 +17,7 @@
     "@types/node": "^8.5.9",
     "coveralls": "^3.0.0",
     "cz-conventional-changelog": "^2.1.0",
-    "lerna": "^2.5.1",
-    "mocha": "^5.0.0",
-    "source-map-support": "^0.5.2"
+    "lerna": "^2.8.0"
   },
   "scripts": {
     "bootstrap": "npm i && lerna bootstrap",
@@ -41,7 +39,7 @@
     "build:full": "npm run clean:full && npm run bootstrap && npm run build && npm run mocha && npm run lint",
     "pretest": "npm run clean && npm run build:current",
     "test": "node packages/build/bin/run-nyc npm run mocha",
-    "mocha": "node packages/build/bin/select-dist mocha --opts packages/build/mocha.ts.opts \"packages/*/DIST/test/**/*.js\" \"packages/cli/test/*.js\"",
+    "mocha": "node packages/build/bin/run-mocha \"packages/*/DIST/test/**/*.js\" \"packages/cli/test/*.js\"",
     "posttest": "npm run lint"
   },
   "config": {
