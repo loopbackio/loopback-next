@@ -10,6 +10,9 @@ git:
 before_script:
   - npm run bootstrap
 
+script:
+  - npm run test:ci
+
 after_success:
   - npm run coverage:ci
 
