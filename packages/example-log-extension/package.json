@@ -23,7 +23,7 @@
     "tslint:fix": "npm run tslint -- --fix",
     "prepare": "npm run build",
     "pretest": "npm run clean && npm run build:current",
-    "test": "lb-dist mocha --opts node_modules/@loopback/build/mocha.ts.opts 'DIST/test/unit/**/*.js' 'DIST/test/acceptance/**/*.js'",
+    "test": "lb-dist mocha \"DIST/test/unit/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
     "posttest": "npm run lint",
     "verify": "npm pack && tar xf *example-log-extension*.tgz && tree package && npm run clean"
   },

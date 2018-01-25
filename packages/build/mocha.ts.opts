@@ -1,4 +1,0 @@
---recursive
---exit
---reporter dot
---require source-map-support/register

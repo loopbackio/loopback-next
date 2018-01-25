@@ -3,10 +3,12 @@
 This module contains a set of common scripts and default configurations to build LoopBack 4 or other TypeScript modules, including:
 
 - lb-tsc: Use [`tsc`](https://www.typescriptlang.org/docs/handbook/compiler-options.html) to compile typescript files
-- lb-dist: Detect the correct distribution target: `dist` => ES2017, `dist6` => ES2015
 - lb-tslint: Run [`tslint`](https://github.com/palantir/tslint)
 - lb-prettier: Run [`prettier`](https://github.com/prettier/prettier)
+- lb-mocha: Run [`mocha`](https://mochajs.org/) to execute test cases
 - lb-nyc: Run [`nyc`](https://github.com/istanbuljs/nyc)
+- lb-dist: Detect the correct distribution target: `dist` => ES2017, `dist6` => ES2015.
+  The command is deprecated as `lb-mocha` detects the distribution target now.
 
 These scripts first try to locate the CLI from target project dependencies and fall back to bundled ones in `@loopback/build`.
 
@@ -19,6 +21,7 @@ To use `@loopback/build` for your package:
 `npm i @loopback/build --save-dev`
 
 2. Configure your project package.json as follows:
+
 ```json
 "scripts": {
     "build": "npm run build:dist && npm run build:dist6",
@@ -33,16 +36,18 @@ To use `@loopback/build` for your package:
     "prettier:fix": "npm run prettier:cli -- --write",
     "lint": "npm run prettier:check && npm run tslint",
     "lint:fix": "npm run prettier:fix && npm run tslint:fix",
-    "clean": "lb-clean loopback-grpc*.tgz dist*",
+    "clean": "lb-clean your-module-name*.tgz dist* api-docs",
     "prepare": "npm run build && npm run build:apidocs",
     "pretest": "npm run build:current",
-    "acceptance": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/acceptance/**/*.js'",
-    "integration": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/integration/**/*.js'",
-    "test": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js' 'DIST/test/integration/**/*.js' 'DIST/test/acceptance/**/*.js'",
-    "unit": "lb-dist mocha --opts ../../test/mocha.opts 'DIST/test/unit/**/*.js'",
-    "verify": "npm pack && tar xf loopback-grpc*.tgz && tree package && npm run clean"
+    "acceptance": "lb-mocha \"DIST/test/acceptance/**/*.js\"",
+    "integration": "lb-mocha \"DIST/test/integration/**/*.js\"",
+    "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/integration/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
+    "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",
+    "verify": "npm pack && tar xf your-module-name*.tgz && tree package && npm run clean"
   },
 ```
+
+Please remember to replace `your-module-name` with the name of your module.
 
 Now you run the scripts, such as:
 

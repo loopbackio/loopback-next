@@ -30,7 +30,7 @@ describe('cloneExampleFromGitHub', function() {
         return Promise.all([
           glob('**', {
             cwd: path.join(__dirname, `../../example-${VALID_EXAMPLE}`),
-            ignore: '@(node_modules|dist*)/**',
+            ignore: '@(node_modules|dist*|api-docs)/**',
           }),
           glob('**', {
             cwd: outDir,
