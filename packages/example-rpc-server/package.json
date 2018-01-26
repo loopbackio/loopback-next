@@ -1,6 +1,6 @@
 {
-  "name": "loopback4-example-rpc-server",
-  "version": "1.0.0",
+  "name": "@loopback/example-rpc-server",
+  "version": "4.0.0-alpha.0",
   "description": "A basic RPC server using a made-up protocol.",
   "keywords": [
     "loopback-application",
@@ -8,10 +8,13 @@
   ],
   "main": "./dist/src/index.js",
   "engines": {
-    "node": ">=8"
+    "node": ">=6"
   },
   "scripts": {
-    "build": "lb-tsc",
+    "build": "npm run build:dist && npm run build:dist6",
+    "build:current": "lb-tsc",
+    "build:dist": "lb-tsc es2017",
+    "build:dist6": "lb-tsc es2015",
     "build:watch": "lb-tsc --watch",
     "clean": "lb-clean",
     "lint": "npm run prettier:check && npm run tslint",
@@ -21,14 +24,15 @@
     "prettier:fix": "npm run prettier:cli -- --write",
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
-    "pretest": "npm run clean && npm run build",
-    "test": "lb-dist mocha DIST/test",
+    "pretest": "npm run clean && npm run build:current",
+    "test": "lb-dist mocha --opts node_modules/@loopback/build/mocha.ts.opts DIST/test",
     "posttest": "npm run lint",
     "start": "npm run build && node .",
     "prepare": "npm run build"
   },
   "repository": {
-    "type": "git"
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
   },
   "author": "",
   "license": "MIT",
@@ -52,6 +56,7 @@
     "@loopback/build": "^4.0.0-alpha.5",
     "@loopback/testlab": "^4.0.0-alpha.13",
     "@types/mocha": "^2.2.43",
-    "mocha": "^4.0.1"
+    "mocha": "^5.0.0",
+    "source-map-support": "^0.5.2"
   }
 }

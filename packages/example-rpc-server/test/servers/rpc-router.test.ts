@@ -1,8 +1,12 @@
+// Copyright IBM Corp. 2018. All Rights Reserved.
+// Node module: @loopback/example-rpc-server
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import 'mocha';
 import * as express from 'express';
-import * as sinon from 'sinon';
 import {RPCServer, routeHandler} from '../../src/servers';
-import {expect} from '@loopback/testlab';
+import {expect, sinon} from '@loopback/testlab';
 
 describe('rpcRouter', () => {
   describe('routeHandler', () => {
