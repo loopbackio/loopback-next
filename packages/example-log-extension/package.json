@@ -2,6 +2,7 @@
   "name": "@loopback/example-log-extension",
   "version": "4.0.0-alpha.0",
   "description": "An example extension project for LoopBack 4",
+  "private": true,
   "main": "index.js",
   "engines": {
     "node": ">=6"
