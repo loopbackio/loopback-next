@@ -15,6 +15,7 @@ import {
   InvokeMethod,
   RestBindings,
   RestComponent,
+  RestApplication,
 } from '../../..';
 
 describe('RestServer', () => {
@@ -97,6 +98,13 @@ describe('RestServer', () => {
       const server = await app.getServer(RestServer);
       expect(server.getSync(RestBindings.PORT)).to.equal(4000);
       expect(server.getSync(RestBindings.HOST)).to.equal('my-host');
+    });
+
+    it('uses default basePath of "/"', async () => {
+      const app = new RestApplication();
+      const server = await app.getServer(RestServer);
+      const basePath = await server.get(RestBindings.BASE_PATH);
+      expect(basePath).to.equal('/');
     });
   });
 
