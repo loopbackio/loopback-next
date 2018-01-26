@@ -1,12 +1,12 @@
 {
   "name": "@loopback/openapi-spec",
-  "version": "4.0.0-alpha.20",
+  "version": "4.0.0-alpha.21",
   "description": "TypeScript type definitions for OpenAPI Spec/Swagger documents.",
   "engines": {
     "node": ">=6"
   },
   "devDependencies": {
-    "@loopback/build": "^4.0.0-alpha.9"
+    "@loopback/build": "^4.0.0-alpha.10"
   },
   "scripts": {
     "build": "npm run build:dist && npm run build:dist6",
@@ -39,6 +39,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git"
-  },
-  "dependencies": {}
+  }
 }

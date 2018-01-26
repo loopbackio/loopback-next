@@ -1,6 +1,6 @@
 {
   "name": "@loopback/metadata",
-  "version": "4.0.0-alpha.5",
+  "version": "4.0.0-alpha.6",
   "description": "LoopBack's metadata utilities for reflection and decoration",
   "engines": {
     "node": ">=6"
@@ -28,8 +28,8 @@
     "reflect-metadata": "^0.1.10"
   },
   "devDependencies": {
-    "@loopback/build": "^4.0.0-alpha.9",
-    "@loopback/testlab": "^4.0.0-alpha.19",
+    "@loopback/build": "^4.0.0-alpha.10",
+    "@loopback/testlab": "^4.0.0-alpha.20",
     "@types/debug": "^0.0.30",
     "@types/lodash": "^4.14.96"
   },

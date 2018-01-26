@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.20"></a>
+# [4.0.0-alpha.20](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@4.0.0-alpha.19...@loopback/testlab@4.0.0-alpha.20) (2018-01-26)
+
+
+### Bug Fixes
+
+* **testlab:** switch to fs-extra instead of using fs ([#905](https://github.com/strongloop/loopback-next/issues/905)) ([06cdaaf](https://github.com/strongloop/loopback-next/commit/06cdaaf))
+* apply source-maps to test errors ([76a7f56](https://github.com/strongloop/loopback-next/commit/76a7f56)), closes [#602](https://github.com/strongloop/loopback-next/issues/602)
+* make mocha self-contained with the source map support ([7c6d869](https://github.com/strongloop/loopback-next/commit/7c6d869))
+
+
+### Features
+
+* **testlab:** create a test sandbox utility ([#877](https://github.com/strongloop/loopback-next/issues/877)) ([9526ba3](https://github.com/strongloop/loopback-next/commit/9526ba3))
+
+
+
+
 <a name="4.0.0-alpha.19"></a>
 # [4.0.0-alpha.19](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@4.0.0-alpha.18...@loopback/testlab@4.0.0-alpha.19) (2018-01-19)
 

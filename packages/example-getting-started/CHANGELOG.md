@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.0.1-alpha.1"></a>
+## [1.0.1-alpha.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-getting-started@1.0.1-alpha.0...@loopback/example-getting-started@1.0.1-alpha.1) (2018-01-26)
+
+
+### Bug Fixes
+
+* apply source-maps to test errors ([76a7f56](https://github.com/strongloop/loopback-next/commit/76a7f56)), closes [#602](https://github.com/strongloop/loopback-next/issues/602)
+* make mocha self-contained with the source map support ([7c6d869](https://github.com/strongloop/loopback-next/commit/7c6d869))
+
+
+
+
 <a name="1.0.1-alpha.0"></a>
 ## 1.0.1-alpha.0 (2018-01-19)
 

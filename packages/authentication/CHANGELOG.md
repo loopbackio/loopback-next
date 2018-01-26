@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.27"></a>
+# [4.0.0-alpha.27](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.0.0-alpha.26...@loopback/authentication@4.0.0-alpha.27) (2018-01-26)
+
+
+### Bug Fixes
+
+* apply source-maps to test errors ([76a7f56](https://github.com/strongloop/loopback-next/commit/76a7f56)), closes [#602](https://github.com/strongloop/loopback-next/issues/602)
+* make mocha self-contained with the source map support ([7c6d869](https://github.com/strongloop/loopback-next/commit/7c6d869))
+
+
+
+
 <a name="4.0.0-alpha.26"></a>
 # [4.0.0-alpha.26](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.0.0-alpha.25...@loopback/authentication@4.0.0-alpha.26) (2018-01-19)
 
