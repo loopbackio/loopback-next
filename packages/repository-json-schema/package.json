@@ -20,9 +20,13 @@
   "author": "IBM",
   "license": "MIT",
   "keywords": [
+    "LoopBack",
     "TypeScript",
     "JSON Schema"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@loopback/context": "^4.0.0-alpha.27",
     "@loopback/repository": "^4.0.0-alpha.25",
