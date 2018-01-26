@@ -14,12 +14,12 @@
     "build:dist": "lb-tsc es2017",
     "build:dist6": "lb-tsc es2015",
     "build:apidocs": "lb-apidocs",
-    "clean": "lb-clean loopback-getting-started*.tgz dist dist6 package api-docs",
+    "clean": "lb-clean *example-getting-started*.tgz dist dist6 package api-docs",
     "prepare": "npm run build && npm run build:apidocs",
     "pretest": "npm run build:current",
     "test": "lb-dist mocha --opts node_modules/@loopback/build/mocha.ts.opts 'DIST/test/unit/**/*.js' 'DIST/test/acceptance/**/*.js'",
     "unit": "lb-dist mocha --opts node_modules/@loopback/build/mocha.ts.opts 'DIST/test/unit/**/*.js'",
-    "verify": "npm pack && tar xf loopback-getting-started*.tgz && tree package && npm run clean",
+    "verify": "npm pack && tar xf *example-getting-started*.tgz && tree package && npm run clean",
     "start": "npm run build && node ."
   },
   "repository": {

@@ -14,6 +14,8 @@ const utils = require('../../lib/utils');
 const EXAMPLES = {
   'getting-started':
     'An application and tutorial on how to build with LoopBack 4.',
+  'log-extension':
+    'An example extension project for LoopBack 4',
 };
 Object.freeze(EXAMPLES);
 
