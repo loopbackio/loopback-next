@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.28"></a>
+# [4.0.0-alpha.28](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.0.0-alpha.27...@loopback/authentication@4.0.0-alpha.28) (2018-01-26)
+
+
+
+
+**Note:** Version bump only for package @loopback/authentication
+
 <a name="4.0.0-alpha.27"></a>
 # [4.0.0-alpha.27](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@4.0.0-alpha.26...@loopback/authentication@4.0.0-alpha.27) (2018-01-26)
 

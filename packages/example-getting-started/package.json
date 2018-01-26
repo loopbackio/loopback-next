@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-getting-started",
-  "version": "1.0.1-alpha.1",
+  "version": "1.0.1-alpha.2",
   "description": "An application and tutorial on how to build with LoopBack 4.",
   "private": true,
   "main": "index.js",
@@ -30,9 +30,9 @@
   "dependencies": {
     "@loopback/context": "^4.0.0-alpha.27",
     "@loopback/core": "^4.0.0-alpha.29",
-    "@loopback/openapi-v2": "^4.0.0-alpha.5",
+    "@loopback/openapi-v2": "^4.0.0-alpha.6",
     "@loopback/repository": "^4.0.0-alpha.25",
-    "@loopback/rest": "^4.0.0-alpha.20",
+    "@loopback/rest": "^4.0.0-alpha.21",
     "@types/sinon": "^4.1.3",
     "sinon": "^4.1.5"
   },

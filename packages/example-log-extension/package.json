@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-log-extension",
-  "version": "4.0.0-alpha.1",
+  "version": "4.0.0-alpha.2",
   "description": "An example extension project for LoopBack 4",
   "private": true,
   "main": "index.js",
@@ -50,7 +50,7 @@
   "dependencies": {
     "@loopback/context": "^4.0.0-alpha.27",
     "@loopback/core": "^4.0.0-alpha.29",
-    "@loopback/rest": "^4.0.0-alpha.20",
+    "@loopback/rest": "^4.0.0-alpha.21",
     "chalk": "^2.3.0"
   }
 }
