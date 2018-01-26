@@ -1,10 +1,27 @@
 # @loopback/context
 
-LoopBack uses Context to manage state and dependencies in your application.
+This module provides facilities to manage artifacts and their dependencies using
+`Context` in your Node.js applications. It can be used independent of the
+LoopBack framework.
 
 ## Overview
 
-LoopBack implements the concept of a Context to represent a global registry in your application to manage config, state, dependencies, classes, etc. Context also serves as an IoC container used to inject dependencies into your code.
+The `@loopback/context` package exposes TypeScript/JavaScript APIs and
+decorators to register artifacts, declare dependencies, and resolve artifacts
+by keys. The `Context` also serves as an [IoC container](https://en.wikipedia.org/wiki/Inversion_of_control) to support [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection).
+
+`Context` and `Binding` are the two core concepts. A context is a registry of
+bindings and each binding represents a resolvable artifact by the key.
+
+- Bindings can be fulfilled by a constant, a factory function, a class, or a
+  provider.
+- Bindings can be grouped by tags and searched by tags.
+- Binding scopes can be used to control how a resolved binding value is shared.
+- Bindings can be resolved synchronously or asynchronously.
+- Provide `@inject` and other variants of decorators to express dependencies.
+- Support Constructor, property, and method injections.
+- Allow contexts to form a hierarchy to share or override bindings.
+- Track bindings and injections during resolution to detect circular dependencies.
 
 ## Installation
 
@@ -13,27 +30,54 @@ $ npm install --save @loopback/context
 ```
 
 ## Basic use
-```ts
-// app level
-const app = new Application(); // `app` is a "Context"
-app.bind('hello').to('world'); // ContextKey='hello', ContextValue='world'
-console.log(app.getSync('hello')); // => 'world'
+
+### Locate an artifact by key
+
+```js
+const Context = require('@loopback/context').Context;
+const ctx = new Context();
+ctx.bind('hello').to('world'); // BindingKey='hello', BindingValue='world'
+const helloVal = ctx.getSync('hello');
+console.log(helloVal); // => 'world'
 ```
 
-Dependency injection using context
+The binding can also be located asynchronously:
 ```ts
-const Application = require('@loopback/core');
-const app = new Application();
-app.bind('defaultName').to('John'); // setting context
+const helloVal = await ctx.get('hello');
+console.log(helloVal); // => 'world'
+```
+
+### Dependency injection using context
+
+```ts
+import {Context, inject} from '@loopback/context';
+const ctx = new Context();
+
+// bind 'greeting' to 'Hello' as the constant value
+ctx.bind('greeting').to('Hello');
 
 class HelloController {
-  // consider this.ctx here
-  constructor(@inject('defaultName') private name: string) { // injecting dependency using context
+  constructor(
+    // injecting the value bound to `greeting` using context
+    @inject('greeting') private greeting: string) {
   }
+
   greet(name) {
-    return `Hello ${name || this.name}`;
+    return `${this.greeting}, ${name}`;
   }
 }
+
+// Bind 'HelloController' to class HelloController
+ctx.bind('HelloController').toClass(HelloController);
+
+async function hello() {
+  // Get an instance of HelloController
+  const helloController: HelloController = await ctx.get('HelloController');
+  // helloController now has the `greeting` property injected with `Hello`
+  console.log(helloController.greet('John')); // => Hello, John
+}
+
+hello();
 ```
 
 For additional information, please refer to the [Context page](http://loopback.io/doc/en/lb4/Context.html).
