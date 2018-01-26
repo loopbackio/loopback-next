@@ -40,7 +40,7 @@
     "pretest": "npm run clean && npm run build:current",
     "test": "node packages/build/bin/run-nyc npm run mocha",
     "test:ci": "node packages/build/bin/run-nyc npm run mocha && npm run posttest",
-    "mocha": "node packages/build/bin/select-dist mocha --opts packages/build/mocha.ts.opts \"packages/*/DIST/test/**/*.js\" \"packages/cli/test/*.js\"",
+    "mocha": "node packages/build/bin/run-mocha \"packages/*/DIST/test/**/*.js\" \"packages/cli/test/*.js\"",
     "posttest": "npm run lint"
   },
   "config": {
