@@ -3,9 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor, Context} from '@loopback/context';
 import {expect} from '@loopback/testlab';
-import {Application, Component, Server} from '../..';
+import {Application, Server, Component, CoreBindings} from '../..';
+import {
+  Context,
+  Constructor,
+  Binding,
+  Provider,
+  inject,
+} from '@loopback/context';
 
 describe('Application', () => {
   describe('controller binding', () => {
@@ -35,10 +41,8 @@ describe('Application', () => {
 
   describe('component binding', () => {
     let app: Application;
-    class MyController {}
-    class MyComponent implements Component {
-      controllers = [MyController];
-    }
+
+    class MyComponent implements Component {}
 
     beforeEach(givenApp);
 
@@ -54,6 +58,73 @@ describe('Application', () => {
       expect(findKeysByTag(app, 'component')).to.containEql(
         'components.my-component',
       );
+    });
+
+    it('binds controllers from a component', () => {
+      class MyController {}
+
+      class MyComponentWithControllers implements Component {
+        controllers = [MyController];
+      }
+
+      app.component(MyComponentWithControllers);
+      expect(
+        app.getBinding('controllers.MyController').valueConstructor,
+      ).to.be.exactly(MyController);
+    });
+
+    it('binds bindings from a component', () => {
+      const binding = new Binding('foo');
+      class MyComponentWithBindings implements Component {
+        bindings = [binding];
+      }
+
+      app.component(MyComponentWithBindings);
+      expect(app.getBinding('foo')).to.be.exactly(binding);
+    });
+
+    it('binds classes from a component', () => {
+      class MyClass {}
+
+      class MyComponentWithClasses implements Component {
+        classes = {'my-class': MyClass};
+      }
+
+      app.component(MyComponentWithClasses);
+      expect(app.contains('my-class')).to.be.true();
+      expect(app.getBinding('my-class').valueConstructor).to.be.exactly(
+        MyClass,
+      );
+      expect(app.getSync('my-class')).to.be.instanceof(MyClass);
+    });
+
+    it('binds providers from a component', () => {
+      class MyProvider implements Provider<string> {
+        value() {
+          return 'my-str';
+        }
+      }
+
+      class MyComponentWithProviders implements Component {
+        providers = {'my-provider': MyProvider};
+      }
+
+      app.component(MyComponentWithProviders);
+      expect(app.contains('my-provider')).to.be.true();
+      expect(app.getSync('my-provider')).to.be.eql('my-str');
+    });
+
+    it('binds from a component constructor', () => {
+      class MyComponentWithDI implements Component {
+        constructor(@inject(CoreBindings.APPLICATION_INSTANCE) ctx: Context) {
+          // Programmatically bind to the context
+          ctx.bind('foo').to('bar');
+        }
+      }
+
+      app.component(MyComponentWithDI);
+      expect(app.contains('foo')).to.be.true();
+      expect(app.getSync('foo')).to.be.eql('bar');
     });
 
     function givenApp() {
