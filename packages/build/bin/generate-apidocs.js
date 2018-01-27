@@ -8,7 +8,7 @@
 
 function run(argv, dryRun) {
   const utils = require('./utils');
-  const fs = require('fs');
+  const fs = require('fs-extra');
   const path = require('path');
   var tsPath;
   try {
@@ -22,6 +22,8 @@ function run(argv, dryRun) {
     // typescript version for our projects
     try {
       fs.renameSync(tsPath, tsPath + '.bak');
+      // Clean up the symbolic links (tsc & tsserver)
+      fs.removeSync(path.join(tsPath, '../.bin'));
     } catch (e) {
       // Ignore the error
     }
