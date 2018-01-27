@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor, Provider, BoundValue} from '@loopback/context';
+import {Constructor, Provider, BoundValue, Binding} from '@loopback/context';
 import {Server} from './server';
 import {Application, ControllerClass} from './application';
 
@@ -12,6 +12,10 @@ import {Application, ControllerClass} from './application';
  */
 export interface ProviderMap {
   [key: string]: Constructor<Provider<BoundValue>>;
+}
+
+export interface ClassMap {
+  [key: string]: Constructor<BoundValue>;
 }
 
 /**
@@ -27,12 +31,20 @@ export interface Component {
    * A map of name/class pairs for binding providers
    */
   providers?: ProviderMap;
+
+  classes?: ClassMap;
+
   /**
    * A map of name/class pairs for servers
    */
   servers?: {
     [name: string]: Constructor<Server>;
   };
+
+  /**
+   * An array of bindings
+   */
+  bindings?: Binding[];
 
   /**
    * Other properties
@@ -49,15 +61,33 @@ export interface Component {
  * @param {Component} component
  */
 export function mountComponent(app: Application, component: Component) {
-  if (component.controllers) {
-    for (const controllerCtor of component.controllers) {
-      app.controller(controllerCtor);
+  if (component.classes) {
+    for (const classKey in component.classes) {
+      const binding = Binding.bind(classKey).toClass(
+        component.classes[classKey],
+      );
+      app.add(binding);
     }
   }
 
   if (component.providers) {
     for (const providerKey in component.providers) {
-      app.bind(providerKey).toProvider(component.providers[providerKey]);
+      const binding = Binding.bind(providerKey).toProvider(
+        component.providers[providerKey],
+      );
+      app.add(binding);
+    }
+  }
+
+  if (component.bindings) {
+    for (const binding of component.bindings) {
+      app.add(binding);
+    }
+  }
+
+  if (component.controllers) {
+    for (const controllerCtor of component.controllers) {
+      app.controller(controllerCtor);
     }
   }
 
