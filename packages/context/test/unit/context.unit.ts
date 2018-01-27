@@ -71,6 +71,13 @@ describe('Context', () => {
       expect(result).to.be.true();
     });
 
+    it('accepts a binding', () => {
+      const binding = new Binding('foo').to('bar');
+      expect(ctx.bind(binding)).to.be.exactly(binding);
+      const result = ctx.contains('foo');
+      expect(result).to.be.true();
+    });
+
     it('returns a binding', () => {
       const binding = ctx.bind('foo');
       expect(binding).to.be.instanceOf(Binding);
