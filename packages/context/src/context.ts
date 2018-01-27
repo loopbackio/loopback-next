@@ -42,21 +42,23 @@ export class Context {
    * Create a binding with the given key in the context. If a locked binding
    * already exists with the same key, an error will be thrown.
    *
-   * @param keyOrBinding Binding key or a binding
+   * @param key Binding key
    */
   bind<ValueType = BoundValue>(
-    keyOrBinding: BindingAddress<ValueType> | Binding,
+    key: BindingAddress<ValueType>,
   ): Binding<ValueType> {
-    let key: string;
-    let binding: Binding<ValueType>;
-    if (keyOrBinding instanceof Binding) {
-      key = keyOrBinding.key;
-      binding = keyOrBinding;
-    } else {
-      key = keyOrBinding.toString();
-      binding = new Binding<ValueType>(key);
-    }
+    const binding = new Binding<ValueType>(key.toString());
+    this.add(binding);
+    return binding;
+  }
 
+  /**
+   * Add a binding to the context. If a locked binding already exists with the
+   * same key, an error will be thrown.
+   * @param binding The configured binding to be added
+   */
+  add<ValueType = BoundValue>(binding: Binding<ValueType>): this {
+    const key = binding.key;
     /* istanbul ignore if */
     if (debug.enabled) {
       debug('Adding binding: %s', key);
@@ -70,7 +72,7 @@ export class Context {
         throw new Error(`Cannot rebind key "${key}" to a locked binding`);
     }
     this.registry.set(key, binding);
-    return binding;
+    return this;
   }
 
   /**
