@@ -10,6 +10,7 @@ export namespace RestBindings {
   export const CONFIG = `${CoreBindings.APPLICATION_CONFIG}#rest`;
   export const HOST = 'rest.host';
   export const PORT = 'rest.port';
+  export const BASE_PATH = 'rest.basePath';
   export const HANDLER = 'rest.handler';
 
   export const API_SPEC = 'rest.apiSpec';

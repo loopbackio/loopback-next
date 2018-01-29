@@ -142,8 +142,12 @@ export class RestServer extends Context implements Server {
       // Set it to '' so that the http server will listen on all interfaces
       options.host = undefined;
     }
+    if (!options.basePath) {
+      options.basePath = '/';
+    }
     this.bind(RestBindings.PORT).to(options.port);
     this.bind(RestBindings.HOST).to(options.host);
+    this.bind(RestBindings.BASE_PATH).to(options.basePath);
     this.api(createEmptyApiSpec());
 
     this.sequence(options.sequence ? options.sequence : DefaultSequence);
@@ -595,6 +599,7 @@ export class RestServer extends Context implements Server {
 export interface RestServerConfig {
   host?: string;
   port?: number;
+  basePath?: string;
   apiExplorerUrl?: string;
   sequence?: Constructor<SequenceHandler>;
 }
