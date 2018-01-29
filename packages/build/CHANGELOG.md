@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.11"></a>
+# [4.0.0-alpha.11](https://github.com/strongloop/loopback-next/compare/@loopback/build@4.0.0-alpha.10...@loopback/build@4.0.0-alpha.11) (2018-01-29)
+
+
+### Bug Fixes
+
+* remove typedoc/node_modules/.bin from local typescript dep ([877d6a5](https://github.com/strongloop/loopback-next/commit/877d6a5))
+
+
+
+
 <a name="4.0.0-alpha.10"></a>
 # [4.0.0-alpha.10](https://github.com/strongloop/loopback-next/compare/@loopback/build@4.0.0-alpha.9...@loopback/build@4.0.0-alpha.10) (2018-01-26)
 
