@@ -11,6 +11,7 @@ packages/context/* @bajtos @raymondfeng  @kjdelisle
 packages/core/* @bajtos @raymondfeng @kjdelisle
 packages/example-getting-started/* @bajtos @kjdelisle
 packages/example-log-extension/* @virkt25
+packages/example-rpc-server/* @kjdelisle
 packages/metadata/* @raymondfeng
 packages/openapi-spec/*  @bajtos @jannyHou
 packages/openapi-spec-builder/* @bajtos @raymondfeng
