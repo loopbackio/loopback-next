@@ -12,14 +12,14 @@ own custom server.
 npm i -g @loopback/cli
 ```
 
-2. Download the "getting-started" application.
+2. Download the "rpc-server" application.
 ```
-lb4 example getting-started
+lb4 example rpc-server
 ```
 
 3. Switch to the directory and install dependencies.
 ```
-cd loopback4-example-getting-started && npm i
+cd loopback-example-rpc-server && npm i
 ```
 
 4. Start the app!

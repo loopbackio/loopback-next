@@ -6,7 +6,6 @@
     "loopback-application",
     "loopback"
   ],
-  "main": "./dist/src/index.js",
   "engines": {
     "node": ">=6"
   },
