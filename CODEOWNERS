@@ -12,6 +12,7 @@ packages/core/* @bajtos @raymondfeng @kjdelisle
 packages/example-getting-started/* @bajtos @kjdelisle
 packages/example-hello-world/* @b-admike
 packages/example-log-extension/* @virkt25
+packages/example-microservices/* @raymondfeng @virkt25 @kjdelisle
 packages/example-rpc-server/* @kjdelisle
 packages/metadata/* @raymondfeng
 packages/openapi-spec/*  @bajtos @jannyHou
