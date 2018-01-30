@@ -6,7 +6,7 @@
 import {ServerRequest} from 'http';
 import * as HttpErrors from 'http-errors';
 import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
-import {promisify} from '@loopback/core';
+import {promisify} from 'util';
 import {
   OperationArgs,
   ParsedRequest,
@@ -15,19 +15,10 @@ import {
 import {ResolvedRoute} from './router/routing-table';
 type HttpError = HttpErrors.HttpError;
 
-type jsonBodyFn = (
-  req: ServerRequest,
-  cb: (err?: Error, body?: {}) => void,
-) => void;
-const jsonBody: jsonBodyFn = require('body/json');
-
-// tslint:disable:no-any
+// tslint:disable-next-line:no-any
 type MaybeBody = any | undefined;
-// tslint:enable:no-any
 
-const parseJsonBody: (req: ServerRequest) => Promise<MaybeBody> = promisify(
-  jsonBody,
-);
+const jsonBodyAsync = promisify(require('body/json'));
 
 /**
  * Get the content-type header value from the request
@@ -76,7 +67,7 @@ function loadRequestBodyIfNeeded(
     return Promise.reject(err);
   }
 
-  return parseJsonBody(request).catch((err: HttpError) => {
+  return jsonBodyAsync(request).catch((err: HttpError) => {
     err.statusCode = 400;
     return Promise.reject(err);
   });

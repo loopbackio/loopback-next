@@ -10,6 +10,5 @@ export {Component, ProviderMap} from './component';
 export {inject, Context} from '@loopback/context';
 export {Server} from './server';
 export * from './application';
-export * from './promisify';
 export * from './component';
 export * from './keys';

@@ -26,8 +26,7 @@
   "dependencies": {
     "@loopback/context": "^4.0.0-alpha.29",
     "lodash": "^4.17.4",
-    "topo": "^3.0.0",
-    "util.promisify": "^1.0.0"
+    "topo": "^3.0.0"
   },
   "devDependencies": {
     "@loopback/build": "^4.0.0-alpha.12",

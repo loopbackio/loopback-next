@@ -49,7 +49,6 @@
     "request": "^2.83.0",
     "tar-fs": "^1.16.0",
     "unicode-10.0.0": "^0.7.4",
-    "util.promisify": "^1.0.0",
     "validate-npm-package-name": "^3.0.0",
     "yeoman-generator": "^2.0.1"
   },
