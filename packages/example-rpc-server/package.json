@@ -28,7 +28,7 @@
     "test": "lb-dist mocha --opts node_modules/@loopback/build/mocha.opts DIST/test",
     "posttest": "npm run lint",
     "start": "npm run build && node .",
-    "prepare": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",

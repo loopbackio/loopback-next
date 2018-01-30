@@ -11,7 +11,7 @@ before_script:
   - npm run bootstrap
 
 script:
-  - npm run test:ci
+  - npm test
 
 after_success:
   - npm run coverage:ci

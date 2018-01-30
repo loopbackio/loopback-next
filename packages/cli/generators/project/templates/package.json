@@ -43,7 +43,7 @@
 <% if (project.projectType === 'application') { -%>
     "start": "npm run build && node .",
 <% } -%>
-    "prepare": "npm run build"
+    "prepublishOnly": "npm run test"
   },
   "repository": {
     "type": "git"
