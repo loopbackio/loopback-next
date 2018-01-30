@@ -1,6 +1,6 @@
 {
-  "name": "loopback-next-example",
-  "version": "1.0.0",
+  "name": "@loopback/example-microservices",
+  "version": "4.0.0-alpha.0",
   "description": "How to use LoopBack.next and some recommended best practices.",
   "main": "facade/index.js",
   "scripts": {

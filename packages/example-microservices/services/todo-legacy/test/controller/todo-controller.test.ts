@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2018. All Rights Reserved.
+// Node module: @loopback/example-microservices
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import 'mocha';
 import * as _ from 'lodash';
 import { expect, sinon } from '@loopback/testlab';

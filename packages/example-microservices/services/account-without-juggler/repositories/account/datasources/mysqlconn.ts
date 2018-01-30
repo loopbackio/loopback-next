@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2018. All Rights Reserved.
+// Node module: @loopback/example-microservices
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 const debug = require('debug')('loopback:repositories:account:datasources:connections:mysql');
 const mysql = require('mysql');
 const db = require('mysql-promise')();
