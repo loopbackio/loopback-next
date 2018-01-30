@@ -18,7 +18,7 @@ export class TodoController {
   constructor() {}
 
   async get(title?: string): Promise<Todo[]> {
-    let filter = title ? {where: {title: title}} : {};
+    const filter = title ? {where: {title: title}} : {};
     return await this.repository.find(filter);
   }
 
@@ -33,14 +33,14 @@ export class TodoController {
   async update(id: number, body: Object): Promise<AffectedItems> {
     let success: boolean;
     if (id) {
-      let todo = new Todo(body);
+      const todo = new Todo(body);
       todo.id = id;
       success = await this.repository.updateById(id, todo);
       // FIXME(kev): Unhandled error is thrown if you attempt to return
       // the boolean value that the repository.update method returns.
       return Promise.resolve({count: success ? 1 : 0});
     } else if (body) {
-      let result = await this.repository.updateAll(new Todo(body));
+      const result = await this.repository.updateAll(new Todo(body));
       return Promise.resolve({count: result});
     } else {
       return Promise.reject(
@@ -50,7 +50,7 @@ export class TodoController {
   }
 
   async replace(id: number, body: Todo): Promise<AffectedItems> {
-    let success = await this.repository.replaceById(id, new Todo(body));
+    const success = await this.repository.replaceById(id, new Todo(body));
     // FIXME(kev): Unhandled error is thrown if you attempt to return
     // the boolean value that the repository.replaceById method returns.
     return Promise.resolve({count: success ? 1 : 0});
@@ -60,13 +60,13 @@ export class TodoController {
     if (!title) {
       return Promise.reject(new Error('You must provide a filter query!'));
     }
-    let filter = {where: {title: title}};
-    let result = await this.repository.deleteAll(filter);
+    const filter = {where: {title: title}};
+    const result = await this.repository.deleteAll(filter);
     return Promise.resolve({count: result});
   }
 
   async deleteById(id: number): Promise<AffectedItems> {
-    let success = await this.repository.deleteById(id);
+    const success = await this.repository.deleteById(id);
     // FIXME(kev): Unhandled error is thrown if you attempt to return
     // the boolean value that the repository.replaceById method returns.
     return Promise.resolve({count: success ? 1 : 0});

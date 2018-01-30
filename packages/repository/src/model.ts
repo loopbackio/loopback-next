@@ -158,7 +158,7 @@ export abstract class Model {
   /**
    * Convert to a plain object as DTO
    */
-  toObject(options?: Options): Object {
+  toObject(options?: Options): AnyObject {
     let obj: AnyObject;
     if (options && options.ignoreUnknownProperties === false) {
       obj = {};

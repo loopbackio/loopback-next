@@ -3,9 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {api} from '@loopback/core';
+import {api} from '@loopback/rest';
 import {def} from './TransactionController.api';
 import {TransactionRepository} from '../repositories/transaction';
+
+// tslint:disable:no-any
 
 @api(def)
 export class TransactionController {

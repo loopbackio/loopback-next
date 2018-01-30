@@ -18,11 +18,11 @@ export class TodoApplication extends Application {
   constructor() {
     super();
     const app = this;
-    let ds = datasources['ds'];
+    const ds = datasources['ds'];
     // Controller bindings
     app.controller(TodoController);
 
-    let datasource = new DataSourceConstructor('ds', ds);
+    const datasource = new DataSourceConstructor('ds', ds);
     app.bind('datasources.ds').to(datasource);
 
     // Server protocol bindings

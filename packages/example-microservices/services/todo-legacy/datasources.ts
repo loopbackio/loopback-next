@@ -3,6 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+// tslint:disable:no-any
+
 export const datasources: DataSourceConfig = {
   ds: {
     name: 'ds',

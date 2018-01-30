@@ -10,12 +10,10 @@ import {
   PropertyDefinition,
 } from '@loopback/repository';
 
-@model(require('./account/model-definition'))
+const definition = require('./account/model-definition');
+@model(definition)
 export class Account extends Entity {
-  static definition = new ModelDefinition(
-    'Account',
-    require('./account/model-definition').properties,
-  );
+  static definition = new ModelDefinition(definition);
   static modelName = 'Account';
 
   id: string;

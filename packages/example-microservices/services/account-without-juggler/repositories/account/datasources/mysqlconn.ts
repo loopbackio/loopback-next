@@ -3,6 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+// tslint:disable:no-any
+
 const debug = require('debug')(
   'loopback:repositories:account:datasources:connections:mysql',
 );
@@ -54,17 +56,18 @@ export class MySqlConn implements CrudConnector {
     entity: EntityData,
     options: Options,
   ): Promise<EntityData> {
-    let self = this;
-    let placeHolders = [];
-    for (var prop in modelClass.definition.properties) {
+    const self = this;
+    const placeHolders = [];
+    for (const prop in modelClass.definition.properties) {
       placeHolders.push('?');
     }
-    let createQuery = 'INSERT INTO ?? VALUES (' + placeHolders.join(',') + ')';
-    var vals = [modelClass.modelName];
-    for (var prop in entity) {
+    const createQuery =
+      'INSERT INTO ?? VALUES (' + placeHolders.join(',') + ')';
+    const vals = [modelClass.modelName];
+    for (const prop in entity) {
       vals.push(entity[prop]);
     }
-    let sqlStmt = mysql.format(createQuery, vals);
+    const sqlStmt = mysql.format(createQuery, vals);
     debug('Insert ', sqlStmt);
 
     return self.connection.query(sqlStmt).spread(function(result: any) {
@@ -89,12 +92,12 @@ export class MySqlConn implements CrudConnector {
     filter: Filter,
     options: Options,
   ): Promise<EntityData[]> {
-    let self = this;
+    const self = this;
     let findQuery = 'SELECT * FROM ?? ';
     findQuery = mysql.format(findQuery, [modelClass.modelName]);
     if (filter.where) {
       let whereClause = '?? = ?';
-      for (var key in filter.where) {
+      for (const key in filter.where) {
         whereClause = mysql.format(whereClause, [key, filter.where[key]]);
       }
       findQuery += ' WHERE ' + whereClause;
@@ -143,15 +146,15 @@ export class MySqlConn implements CrudConnector {
     data: EntityData,
     options: Options,
   ): Promise<boolean> {
-    let self = this;
+    const self = this;
     let updateQuery = 'UPDATE ?? SET ';
     updateQuery = mysql.format(updateQuery, [modelClass.modelName]);
-    let updateClause = [];
-    for (var prop in data) {
+    const updateClause = [];
+    for (const prop in data) {
       updateClause.push(mysql.format('??=?', [prop, data[prop]]));
     }
     updateQuery += updateClause.join(',');
-    let whereClause = mysql.format(' WHERE ??=?', ['id', id]);
+    const whereClause = mysql.format(' WHERE ??=?', ['id', id]);
     updateQuery += whereClause;
 
     debug('updateById ', updateQuery);
@@ -182,10 +185,10 @@ export class MySqlConn implements CrudConnector {
     id: any,
     options: Options,
   ): Promise<boolean> {
-    let self = this;
+    const self = this;
     let deleteQuery = 'DELETE FROM ?? ';
     deleteQuery = mysql.format(deleteQuery, modelClass.modelName);
-    let whereClause = mysql.format(' WHERE ??=?', ['id', id]);
+    const whereClause = mysql.format(' WHERE ??=?', ['id', id]);
     deleteQuery += whereClause;
 
     debug('deleteById ', deleteQuery);

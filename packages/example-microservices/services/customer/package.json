@@ -11,6 +11,7 @@
   "dependencies": {
     "@loopback/core": "^4.0.0-alpha.10",
     "@loopback/repository": "^4.0.0-alpha.5",
+    "@loopback/rest": "^4.0.0-alpha.22",
     "loopback-datasource-juggler": "^3.4.1"
   },
   "devDependencies": {

@@ -3,12 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {api} from '@loopback/core';
+import {api} from '@loopback/rest';
 import {def} from './AccountManagementController.api';
 import {AccountRepository} from '../repositories/account';
 import {CustomerRepository} from '../repositories/customer';
 import {TransactionRepository} from '../repositories/transaction';
 import bluebird = require('bluebird');
+
+// tslint:disable:no-any
 
 @api(def)
 export class AccountController {

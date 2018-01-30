@@ -9,11 +9,12 @@
     "url": "https://github.com/strongloop/loopback-next.git"
   },
   "dependencies": {
-    "mysql": "^2.13.0",
-    "mysql-promise": "^4.1.0",
     "@loopback/core": "^4.0.0-alpha.10",
     "@loopback/repository": "^4.0.0-alpha.5",
-    "loopback-datasource-juggler": "^3.4.1"
+    "@loopback/rest": "^4.0.0-alpha.22",
+    "loopback-datasource-juggler": "^3.4.1",
+    "mysql": "^2.13.0",
+    "mysql-promise": "^4.1.0"
   },
   "devDependencies": {
     "@loopback/testlab": "^4.0.0-alpha.6",

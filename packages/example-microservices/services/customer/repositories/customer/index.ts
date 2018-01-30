@@ -6,6 +6,8 @@
 import {juggler, DataSourceConstructor} from '@loopback/repository';
 const modelDefinition = require('./models/customer/model-definition.json');
 
+// tslint:disable:no-any
+
 export class CustomerRepository {
   model;
 

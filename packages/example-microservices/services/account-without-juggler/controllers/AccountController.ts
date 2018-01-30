@@ -3,16 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {api} from '@loopback/core';
+import {api} from '@loopback/rest';
 import {def} from './AccountController.api';
 import {AccountRepository} from '../repositories/account';
-import {inject} from '@loopback/context';
+import {inject} from '@loopback/core';
 import {Account} from '../repositories/account/models/Account';
 
 @api(def)
 export class AccountController {
-  @inject('repositories.account') private repository: AccountRepository;
-  constructor() {}
+  constructor(
+    @inject('repositories.account') private repository: AccountRepository,
+  ) {}
 
   //fixme figure out how to use Filter interface
   //fixme filter is string even though swagger spec

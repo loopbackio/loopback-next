@@ -116,33 +116,35 @@ export const def = {
   },
   definitions: {
     Account: {
-      id: {
-        type: 'string',
-        description: 'The ID for the account instance.',
-      },
-      customerNumber: {
-        type: 'string',
-        description: 'The customer ID for the account instance.',
-      },
-      balance: {
-        type: 'number',
-        description: 'The current balance for the account instance.',
-      },
-      branch: {
-        type: 'string',
-        description: 'The branch location for the account instance.',
-      },
-      type: {
-        type: 'string',
-        description: 'The type of banking account.',
-      },
-      avgBalance: {
-        type: 'number',
-        description: 'The average balance for the account instance.',
-      },
-      minimumBalance: {
-        type: 'number',
-        description: 'The minimum balance for the account instance.',
+      properties: {
+        id: {
+          type: 'string',
+          description: 'The ID for the account instance.',
+        },
+        customerNumber: {
+          type: 'string',
+          description: 'The customer ID for the account instance.',
+        },
+        balance: {
+          type: 'number',
+          description: 'The current balance for the account instance.',
+        },
+        branch: {
+          type: 'string',
+          description: 'The branch location for the account instance.',
+        },
+        type: {
+          type: 'string',
+          description: 'The type of banking account.',
+        },
+        avgBalance: {
+          type: 'number',
+          description: 'The average balance for the account instance.',
+        },
+        minimumBalance: {
+          type: 'number',
+          description: 'The minimum balance for the account instance.',
+        },
       },
     },
   },
