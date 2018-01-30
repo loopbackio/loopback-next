@@ -21,7 +21,7 @@
     "nyc": "^11.4.1",
     "prettier": "^1.10.2",
     "source-map-support": "^0.5.3",
-    "strong-docs": "^1.6.0",
+    "strong-docs": "^1.7.1",
     "tslint": "^5.9.1",
     "typescript": "^2.6.2"
   },
