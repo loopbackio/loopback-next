@@ -29,7 +29,23 @@ function run(argv, dryRun) {
     }
   }
 
-  return utils.runCLI('strong-docs/bin/cli', ['-o', 'api-docs'], dryRun);
+  const apidocsOpts = argv.slice(2);
+
+  const args = [];
+
+  if (!utils.isOptionSet(apidocsOpts, '--tstarget')) {
+    const target = utils.getCompilationTarget();
+    args.push('--tstarget', target);
+  }
+  if (!utils.isOptionSet(apidocsOpts, '--tsconfig')) {
+    const config = utils.getConfigFile('tsconfig.build.json', 'tsconfig.json');
+    args.push('--tsconfig', config);
+  }
+  if (!utils.isOptionSet(apidocsOpts, '--out', '-o')) {
+    args.push('-o', 'api-docs');
+  }
+  args.push(...apidocsOpts);
+  return utils.runCLI('strong-docs/bin/cli', args, dryRun);
 }
 
 module.exports = run;

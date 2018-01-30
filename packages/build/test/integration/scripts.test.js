@@ -185,6 +185,30 @@ describe('build', () => {
     });
   });
 
+  it('honors --tsconfig for apidocs', () => {
+    var run = require('../../bin/generate-apidocs');
+    var command = run(
+      ['node', 'bin/generate-apidocs', '--tsconfig', 'tsconfig.my.json'],
+      true
+    );
+    assert(
+      command.indexOf('--tsconfig tsconfig.my.json') !== -1,
+      '--tsconfig should be honored'
+    );
+  });
+
+  it('honors --tstarget for apidocs', () => {
+    var run = require('../../bin/generate-apidocs');
+    var command = run(
+      ['node', 'bin/generate-apidocs', '--tstarget', 'es2017'],
+      true
+    );
+    assert(
+      command.indexOf('--tstarget es2017') !== -1,
+      '--tstarget should be honored'
+    );
+  });
+
   it('runs tslint against ts files', done => {
     var run = require('../../bin/run-tslint');
     var childProcess = run(['node', 'bin/run-tslint']);
