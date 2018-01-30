@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-hello-world",
-  "version": "1.0.1-alpha.0",
+  "version": "4.0.0-alpha.0",
   "description": "A simple hello-world Application using LoopBack 4",
   "private": true,
   "main": "index.js",
@@ -15,7 +15,7 @@
     "build:dist6": "lb-tsc es2015",
     "build:apidocs": "lb-apidocs",
     "clean": "lb-clean *example-hello-world*.tgz dist dist6 package api-docs",
-    "prepare": "npm run build && npm run build:apidocs",
+    "prepublishOnly": "npm run build && npm run build:apidocs",
     "verify": "npm pack && tar xf *example-hello-world*.tgz && tree package && npm run clean",
     "start": "npm run build && node ."
   },

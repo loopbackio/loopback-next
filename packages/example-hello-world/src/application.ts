@@ -9,6 +9,11 @@ import {RestApplication, RestServer} from '@loopback/rest';
 export class HelloWorldApplication extends RestApplication {
   constructor() {
     super();
+
+    // In this example project, we configure a sequence that always
+    // returns the same HTTP response: Hello World!
+    // Learn more about the concept of Sequence in our docs:
+    //   http://loopback.io/doc/en/lb4/Sequence.html
     this.handler((sequence, request, response) => {
       sequence.send(response, 'Hello World!');
     });

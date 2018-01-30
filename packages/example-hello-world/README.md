@@ -1,8 +1,12 @@
 # @loopback/example-hello-world
 
+A simple hello-world application using LoopBack 4!
+
 ## Summary
 
-A simple hello-world application using LoopBack 4!
+This project shows how to write the simplest LoopBack 4 application possible.
+Check out [src/application.ts](src/application.ts) to learn how we configured
+our application to always respond with "Hello World!".
 
 ## Prerequisites
 
