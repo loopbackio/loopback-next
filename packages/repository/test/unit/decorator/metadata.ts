@@ -16,6 +16,10 @@ import {MetadataInspector} from '@loopback/context';
 
 describe('Repository', () => {
   describe('getAllClassMetadata', () => {
+    class Oops {
+      @property() oopsie: string;
+    }
+
     @model()
     class Colour {
       @property({})
@@ -40,6 +44,11 @@ describe('Repository', () => {
       @property() canFlap: boolean;
       @property.array(Colour) colours: Colour[];
     }
+
+    it('returns empty object for classes without @model', () => {
+      const meta = ModelMetadataHelper.getModelMetadata(Oops);
+      expect(meta).to.deepEqual({});
+    });
 
     it('retrieves metadata for classes with @model', () => {
       const meta = ModelMetadataHelper.getModelMetadata(Samoflange);

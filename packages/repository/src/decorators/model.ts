@@ -81,14 +81,14 @@ export function property(definition?: Partial<PropertyDefinition>) {
 export namespace property {
   export const ERR_PROP_NOT_ARRAY =
     '@property.array can only decorate array properties!';
-  export const ERR_NO_ARGS = 'Should have at least one argument';
-  export const ERR_PROP_IS_ARRAY = 'Cannot use @property.union on arrays';
+  export const ERR_NO_ARGS = 'decorator received less than two parameters';
+  export const ERR_PROP_IS_ARRAY = 'Cannot use @property.oneOf on arrays';
 
   /**
    * Decorator for union type properties
    */
   export function oneOf(...ctors: Function[]) {
-    if (ctors.length < 1) {
+    if (ctors.length < 2) {
       throw new Error(ERR_NO_ARGS);
     }
     return function(target: Object, propertyName: string) {

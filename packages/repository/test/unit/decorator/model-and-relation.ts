@@ -305,7 +305,7 @@ describe('model decorator', () => {
         class TestModel {
           @property.oneOf() one: number | string;
         }
-      }).to.throw(/at least one argument/);
+      }).to.throw(/less than two parameters/);
     });
 
     it("persists parameters into metadata's type key", () => {
@@ -335,7 +335,7 @@ describe('model decorator', () => {
             class TestModel {
               @property.array.oneOf() one: number | string;
             }
-          }).to.throw(/at least one argument/);
+          }).to.throw(/less than two parameters/);
         });
 
         it("persists parameters into metadata's type key", () => {

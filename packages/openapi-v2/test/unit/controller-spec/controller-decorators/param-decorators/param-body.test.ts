@@ -61,6 +61,7 @@ describe('Routing metadata for parameters', () => {
     const actualSpec = getControllerSpec(MyController);
     expect(actualSpec.definitions).to.deepEqual({
       MyData: {
+        title: 'MyData',
         properties: {
           name: {
             type: 'string',

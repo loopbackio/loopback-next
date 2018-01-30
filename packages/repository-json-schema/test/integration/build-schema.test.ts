@@ -41,12 +41,12 @@ describe('build-schema', () => {
           baz: number;
         }
 
-        expect(modelToJsonSchema(NoPropertyMeta)).to.eql({});
-        expect(modelToJsonSchema(OnePropertyDecorated)).to.deepEqual({
-          properties: {
-            foo: {
-              type: 'string',
-            },
+        const noPropJson = modelToJsonSchema(NoPropertyMeta);
+        const onePropJson = modelToJsonSchema(OnePropertyDecorated);
+        expect(noPropJson).to.not.have.key('properties');
+        expect(onePropJson.properties).to.deepEqual({
+          foo: {
+            type: 'string',
           },
         });
       });
@@ -62,9 +62,18 @@ describe('build-schema', () => {
         expect(modelToJsonSchema(NoModelMeta)).to.eql({});
       });
 
-      it('retains "title and "description" properties from top-level metadata', () => {
+      it('infers "title" property from constructor name', () => {
+        @model()
+        class TestModel {
+          @property() foo: string;
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema.title).to.eql('TestModel');
+      });
+
+      it('retains "description" properties from top-level metadata', () => {
         const topMeta = {
-          title: 'Test title',
           description: 'Test description',
         };
         @model(topMeta)
@@ -73,7 +82,6 @@ describe('build-schema', () => {
         }
 
         const jsonSchema = modelToJsonSchema(TestModel);
-        expect(jsonSchema.title).to.eql(topMeta.title);
         expect(jsonSchema.description).to.eql(topMeta.description);
       });
 
@@ -152,6 +160,7 @@ describe('build-schema', () => {
           });
           expect(jsonSchema.definitions).to.deepEqual({
             CustomType: {
+              title: 'CustomType',
               properties: {
                 prop: {
                   type: 'string',
@@ -187,6 +196,7 @@ describe('build-schema', () => {
           });
           expect(schemaDefs).to.deepEqual({
             CustomTypeFoo: {
+              title: 'CustomTypeFoo',
               properties: {
                 prop: {
                   type: 'string',
@@ -194,6 +204,7 @@ describe('build-schema', () => {
               },
             },
             CustomTypeBar: {
+              title: 'CustomTypeBar',
               properties: {
                 prop: {
                   type: 'array',
@@ -341,6 +352,7 @@ describe('build-schema', () => {
         });
         expect(jsonSchema.definitions).to.eql({
           CustomType: {
+            title: 'CustomType',
             properties: {
               num: {
                 type: 'number',
@@ -388,6 +400,7 @@ describe('build-schema', () => {
         });
         expect(jsonSchema.definitions).to.eql({
           CustomType: {
+            title: 'CustomType',
             properties: {
               num: {
                 type: 'number',

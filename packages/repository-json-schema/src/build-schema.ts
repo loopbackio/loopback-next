@@ -8,7 +8,7 @@ import {
   PropertyDefinition,
   ModelDefinition,
 } from '@loopback/repository';
-import {includes, forEach} from 'lodash';
+import {isEmpty, includes, forEach} from 'lodash';
 import {Definition, PrimitiveType} from 'typescript-json-schema';
 import {MetadataInspector} from '@loopback/context';
 
@@ -48,6 +48,69 @@ export function getJsonSchema(ctor: Function): JsonDefinition {
   }
 }
 
+export function stringTypeToWrapper(type: string): Function {
+  type = type.toLowerCase();
+  let wrapper;
+  switch (type) {
+    case 'number': {
+      wrapper = Number;
+      break;
+    }
+    case 'string': {
+      wrapper = String;
+      break;
+    }
+    case 'boolean': {
+      wrapper = Boolean;
+      break;
+    }
+    default: {
+      throw new Error('Unsupported type');
+    }
+  }
+  return wrapper;
+}
+
+export function isComplexType(ctor: Function) {
+  return !includes([String, Number, Boolean, Object], ctor);
+}
+
+export function metaToJsonProperty(
+  meta: PropertyDefinition,
+): JsonDefinition | JsonDefinition[] {
+  let ctor = meta.type as string | Function | Function[];
+  let def: JsonDefinition | JsonDefinition[] = {};
+
+  // errors out if @property.array() is not used on a property of array
+  if (ctor === Array) {
+    throw new Error('type is defined as an array');
+  }
+
+  // if an array (oneOf)
+  if (ctor instanceof Array) {
+    def = [];
+    for (const c of ctor) {
+      def.push(metaToJsonProperty({type: c}) as JsonDefinition);
+    }
+  } else {
+    if (typeof ctor === 'string') {
+      ctor = stringTypeToWrapper(ctor);
+    }
+
+    const propDef = isComplexType(ctor)
+      ? {$ref: `#definitions/${ctor.name}`}
+      : {type: ctor.name.toLowerCase()};
+
+    if (meta.array) {
+      def.type = 'array';
+      def.items = propDef;
+    } else {
+      Object.assign(def, propDef);
+    }
+  }
+  return def;
+}
+
 // NOTE(shimks) no metadata for: union, optional, nested array, any, enum,
 // string literal, anonymous types, and inherited properties
 
@@ -57,124 +120,129 @@ export function getJsonSchema(ctor: Function): JsonDefinition {
  * @param ctor Constructor of class to convert from
  */
 export function modelToJsonSchema(ctor: Function): JsonDefinition {
-  const meta: ModelDefinition = ModelMetadataHelper.getModelMetadata(ctor);
+  const meta: ModelDefinition | {} = ModelMetadataHelper.getModelMetadata(ctor);
   const result: JsonDefinition = {};
 
-  const defineSchemaProperty = (
-    schema: JsonDefinition,
-    prop: string,
-    propCtor: Function | string,
-  ) => {
-    const isComplexType = (constructor: Function) =>
-      !includes([String, Number, Boolean, Object], constructor);
-
-    const determinePropertyDef = (constructor: Function) =>
-      isComplexType(constructor)
-        ? {$ref: `#definitions/${constructor.name}`}
-        : {type: constructor.name.toLowerCase()};
-
-    const propMeta = meta.properties[prop];
-
-    // changes the type reference to its wrapper class
-    if (typeof propCtor === 'string') {
-      const type = propCtor.toLowerCase();
-      switch (type) {
-        case 'number': {
-          propCtor = Number;
-          break;
-        }
-        case 'string': {
-          propCtor = String;
-          break;
-        }
-        case 'boolean': {
-          propCtor = Boolean;
-          break;
-        }
-        default: {
-          throw new Error('Unsupported type');
-        }
-      }
-    }
-
-    // errors out if @property.array() is not used on a property of array
-    if (propCtor === Array) {
-      throw new Error('type is defined as an array');
-    }
-
-    const propDef: JsonDefinition = determinePropertyDef(propCtor);
-
-    if (!schema.properties) {
-      schema.properties = {};
-    }
-
-    if (propMeta.validationKey) {
-      if (propMeta.validationKey === 'oneOf') {
-        let property: JsonDefinition = (schema.properties[prop] =
-          schema.properties[prop] || {});
-        if (!property.oneOf) {
-          property.oneOf = [];
-        }
-        if (propMeta.array) {
-          property.oneOf.push({type: 'array', items: propDef});
-        } else {
-          property.oneOf.push(propDef);
-        }
-      }
-    } else if (propMeta.array) {
-      schema.properties[prop] = {
-        type: 'array',
-        items: propDef,
-      };
-    } else {
-      schema.properties[prop] = propDef;
-    }
-
-    // populating JSON Schema 'definitions'
-    if (isComplexType(propCtor)) {
-      const propSchema = getJsonSchema(propCtor);
-
-      if (propSchema && Object.keys(propSchema).length > 0) {
-        if (!schema.definitions) {
-          schema.definitions = {};
-        }
-
-        if (propSchema.definitions) {
-          for (const key in propSchema.definitions) {
-            schema.definitions[key] = propSchema.definitions[key];
-          }
-          delete propSchema.definitions;
-        }
-
-        schema.definitions[propCtor.name] = propSchema;
-      }
-    }
-  };
-
-  if (meta.title) {
-    result.title = meta.title;
+  if (!(meta instanceof ModelDefinition)) {
+    return {};
   }
+
+  // const defineSchemaProperty = (
+  //   schema: JsonDefinition,
+  //   prop: string,
+  //   propCtor: Function | string,
+  // ) => {
+  //   const propMeta = meta.properties[prop];
+
+  //   const propDef: JsonDefinition = determinePropertyDef(propCtor);
+
+  //   if (!schema.properties) {
+  //     schema.properties = {};
+  //   }
+
+  //   if (propMeta.validationKey) {
+  //     if (propMeta.validationKey === 'oneOf') {
+  //       let property: JsonDefinition = (schema.properties[prop] =
+  //         schema.properties[prop] || {});
+  //       if (!property.oneOf) {
+  //         property.oneOf = [];
+  //       }
+  //       if (propMeta.array) {
+  //         property.oneOf.push({type: 'array', items: propDef});
+  //       } else {
+  //         property.oneOf.push(propDef);
+  //       }
+  //     }
+  //   } else if (propMeta.array) {
+  //     schema.properties[prop] = {
+  //       type: 'array',
+  //       items: propDef,
+  //     };
+  //   } else {
+  //     schema.properties[prop] = propDef;
+  //   }
+
+  //   // populating JSON Schema 'definitions'
+  //   if (isComplexType(propCtor)) {
+  //     const propSchema = getJsonSchema(propCtor);
+
+  //     if (propSchema && Object.keys(propSchema).length > 0) {
+  //       if (!schema.definitions) {
+  //         schema.definitions = {};
+  //       }
+
+  //       // delete nested definition
+  //       if (propSchema.definitions) {
+  //         for (const key in propSchema.definitions) {
+  //           schema.definitions[key] = propSchema.definitions[key];
+  //         }
+  //         delete propSchema.definitions;
+  //       }
+
+  //       schema.definitions[propCtor.name] = propSchema;
+  //     }
+  //   }
+  // };
+
+  // if (meta.title) {
+  //   result.title = meta.title;
+  // }
+  result.title = ctor.name;
 
   if (meta.description) {
     result.description = meta.description;
   }
 
   for (const p in meta.properties) {
-    const currentPropMeta = meta.properties[p];
-    const propCtor = currentPropMeta.type;
+    if (!meta.properties[p].type) {
+      continue;
+    }
+    if (!result.properties) {
+      result.properties = {};
+    }
+    if (!result.properties[p]) {
+      result.properties[p] = {};
+    }
+    const property = result.properties[p];
+    const metaProperty = meta.properties[p];
+    const metaType = metaProperty.type;
 
-    if (propCtor) {
-      if (Array.isArray(propCtor)) {
-        forEach(propCtor, (constructor: Function) =>
-          defineSchemaProperty(result, p, constructor),
-        );
-      } else {
-        defineSchemaProperty(result, p, propCtor as Function | string);
+    // populating "properties" key
+    if (metaProperty.validationKey) {
+      if (metaProperty.validationKey === 'oneOf') {
+        if (!(metaProperty.type instanceof Array)) {
+          throw new Error('i cant believe uve done this'); // write test for this
+        }
+
+        property.oneOf = metaToJsonProperty(metaProperty) as JsonDefinition[];
+      }
+    } else {
+      result.properties[p] = metaToJsonProperty(metaProperty) as JsonDefinition;
+    }
+
+    // populating JSON Schema 'definitions'
+    if (typeof metaType === 'function' && isComplexType(metaType)) {
+      const propSchema = getJsonSchema(metaType);
+
+      if (propSchema && Object.keys(propSchema).length > 0) {
+        if (!result.definitions) {
+          result.definitions = {};
+        }
+
+        // delete nested definition
+        if (propSchema.definitions) {
+          for (const key in propSchema.definitions) {
+            result.definitions[key] = propSchema.definitions[key];
+          }
+          delete propSchema.definitions;
+        }
+
+        result.definitions[metaType.name] = propSchema;
       }
     }
 
     // handling 'required' metadata
-    if (currentPropMeta.required) {
+    if (metaProperty.required) {
       if (!result.required) {
         result.required = [];
       }
