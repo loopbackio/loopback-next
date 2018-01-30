@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.27"></a>
+# [4.0.0-alpha.27](https://github.com/strongloop/loopback-next/compare/@loopback/repository@4.0.0-alpha.26...@loopback/repository@4.0.0-alpha.27) (2018-01-30)
+
+
+### Features
+
+* **repository-json-schema:** add in top-level metadata for json schema ([#907](https://github.com/strongloop/loopback-next/issues/907)) ([fe59e6b](https://github.com/strongloop/loopback-next/commit/fe59e6b))
+
+
+
+
 <a name="4.0.0-alpha.26"></a>
 # [4.0.0-alpha.26](https://github.com/strongloop/loopback-next/compare/@loopback/repository@4.0.0-alpha.25...@loopback/repository@4.0.0-alpha.26) (2018-01-29)
 

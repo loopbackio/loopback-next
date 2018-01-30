@@ -1,6 +1,6 @@
 {
   "name": "@loopback/openapi-spec-builder",
-  "version": "4.0.0-alpha.19",
+  "version": "4.0.0-alpha.20",
   "description": "Make it easy to create OpenAPI (Swagger) specification documents in your tests using the builder pattern.",
   "engines": {
     "node": ">=6"
@@ -26,10 +26,10 @@
     "Testing"
   ],
   "dependencies": {
-    "@loopback/openapi-spec": "^4.0.0-alpha.22"
+    "@loopback/openapi-spec": "^4.0.0-alpha.23"
   },
   "devDependencies": {
-    "@loopback/build": "^4.0.0-alpha.11"
+    "@loopback/build": "^4.0.0-alpha.12"
   },
   "files": [
     "README.md",

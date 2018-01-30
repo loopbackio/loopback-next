@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.31"></a>
+# [4.0.0-alpha.31](https://github.com/strongloop/loopback-next/compare/@loopback/core@4.0.0-alpha.30...@loopback/core@4.0.0-alpha.31) (2018-01-30)
+
+
+
+
+**Note:** Version bump only for package @loopback/core
+
 <a name="4.0.0-alpha.30"></a>
 # [4.0.0-alpha.30](https://github.com/strongloop/loopback-next/compare/@loopback/core@4.0.0-alpha.29...@loopback/core@4.0.0-alpha.30) (2018-01-29)
 

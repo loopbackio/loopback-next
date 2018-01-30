@@ -5,7 +5,7 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git"
   },
-  "version": "4.0.0-alpha.11",
+  "version": "4.0.0-alpha.12",
   "engines": {
     "node": ">=6"
   },

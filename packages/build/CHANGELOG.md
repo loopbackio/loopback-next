@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.12"></a>
+# [4.0.0-alpha.12](https://github.com/strongloop/loopback-next/compare/@loopback/build@4.0.0-alpha.11...@loopback/build@4.0.0-alpha.12) (2018-01-30)
+
+
+### Bug Fixes
+
+* **build:** upgrade to strong-docs@1.7.1 ([fd02e1b](https://github.com/strongloop/loopback-next/commit/fd02e1b))
+
+
+
+
 <a name="4.0.0-alpha.11"></a>
 # [4.0.0-alpha.11](https://github.com/strongloop/loopback-next/compare/@loopback/build@4.0.0-alpha.10...@loopback/build@4.0.0-alpha.11) (2018-01-29)
 
