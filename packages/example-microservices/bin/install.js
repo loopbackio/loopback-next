@@ -13,6 +13,13 @@ const spawn = require('child_process').spawn;
 const servicesRoot = path.resolve(__dirname, '..', 'services');
 const services = fs.readdirSync(servicesRoot);
 
+if (process.env.LERNA_ROOT_PATH) {
+  console.log(
+    '**Lerna was detected, skipping "npm install" in individual services**'
+  );
+  process.exit(0);
+}
+
 let p = Promise.resolve();
 for (const s of services) {
   p = p.then(() => {
@@ -31,6 +38,9 @@ function execNpmInstall(cwd) {
     const child = spawn('npm', ['install'], {
       cwd: cwd,
       stdio: 'inherit',
+      // On Windows, `npm` is not an executable filea
+      // we have to execute it via shell
+      shell: true,
     });
     child.once('error', err => reject(err));
     child.once('exit', (code, signal) => {
