@@ -1,0 +1,30 @@
+{
+  "extends": "./tsconfig.common.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "*"
+      ]
+    },
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es6",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "inlineSources": true
+  },
+  "include": [
+    "**/*"
+  ],
+  "exclude": [
+    "**/*.d.ts"
+  ]
+}

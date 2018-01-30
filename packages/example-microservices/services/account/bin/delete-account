@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+curl -g -H "Content-Type: application/json" -X DELETE 'http://localhost:3001/accounts/delete?where={"id":"test1"}' | jq

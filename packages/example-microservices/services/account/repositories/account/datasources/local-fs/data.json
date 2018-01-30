@@ -1,0 +1,13 @@
+{
+  "ids": {
+    "Account": 4
+  },
+  "models": {
+    "Account": {
+      "CHK52321122": "{\"id\":\"CHK52321122\",\"customerNumber\":\"000343223\",\"balance\":85.84,\"branch\":\"Foster City\",\"type\":\"Checking\",\"avgBalance\":398.93,\"minimumBalance\":10}",
+      "CHK54520000": "{\"id\":\"CHK54520000\",\"customerNumber\":\"003499223\",\"balance\":99.99,\"branch\":\"Foster City\",\"type\":\"Checking\",\"avgBalance\":500.93,\"minimumBalance\":10}",
+      "CHK52321199": "{\"id\":\"CHK52321199\",\"customerNumber\":\"000343223\",\"balance\":109.89,\"branch\":\"Foster City\",\"type\":\"Checking\",\"avgBalance\":100.93,\"minimumBalance\":10}",
+      "CHK99999999": "{\"id\":\"CHK99999999\",\"customerNumber\":\"0002444422\",\"balance\":100.89,\"branch\":\"Foster City\",\"type\":\"Checking\",\"avgBalance\":100.93,\"minimumBalance\":10}"
+    }
+  }
+}

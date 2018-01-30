@@ -1,0 +1,36 @@
+{
+  "name": "loopback-next-example",
+  "version": "1.0.0",
+  "description": "How to use LoopBack.next and some recommended best practices.",
+  "main": "facade/index.js",
+  "scripts": {
+    "build": "bin/build",
+    "restart": "npm run stop && npm run build && npm run start",
+    "start": "bin/start",
+    "stop": "bin/stop",
+    "test": "node bin/test.js"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "keywords": [
+    "loopback-next",
+    "example"
+  ],
+  "author": "IBM",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/strongloop/loopback-next-example.git"
+  },
+  "bugs": {
+    "url": "https://github.com/strongloop/loopback-next-example/issues"
+  },
+  "homepage": "https://github.com/strongloop/loopback-next-example#readme",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "mocha": "^4.0.0",
+    "ts-node": "^3.1.0",
+    "typescript": "^2.4.1"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "ids": {
+    "Customer": 2
+  },
+  "models": {
+    "Customer": {
+      "000343223": "{\"id\":\"000343223\",\"firstName\":\"Ron\",\"lastName\":\"Simpson\",\"ssn\":\"141-XX-X800\",\"customerSince\":\"2017-03-14T23:05:18.779Z\",\"street\":\"742 Evergreen Terrace\",\"state\":\"OR\",\"city\":\"Springfield\",\"zip\":\"95555\",\"lastUpdated\":\"2017-03-14T23:05:18.599Z\"}",
+      "003499223": "{\"id\":\"003499223\",\"firstName\":\"Raymond\",\"lastName\":\"Freerich\",\"ssn\":\"342-XX-XX24\",\"customerSince\":\"2017-03-14T23:26:45.225Z\",\"street\":\"3005 chapel ave\",\"state\":\"NewJersey\",\"city\":\"Chapel Ave\",\"zip\":\"08002\",\"lastUpdated\":\"2017-03-14T23:26:45.225Z\"}"
+    }
+  }
+}

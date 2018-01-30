@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+curl -s localhost:3002/customers | jq

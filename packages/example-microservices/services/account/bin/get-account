@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+curl -g 'http://localhost:3001/accounts?filter={"where":{"id":"test1"}}' | jq
