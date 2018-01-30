@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // Copyright IBM Corp. 2018. All Rights Reserved.
 // Node module: @loopback/example-microservices
 // This file is licensed under the MIT License.
@@ -14,7 +15,7 @@ let path = require('path');
 let cmd = path.resolve(__dirname, '..', 'node_modules', '.bin', '_mocha');
 let args = ['--compilers', 'ts:ts-node/register,tsx:ts-node/register'];
 
-let services = path.resolve('services');
+let services = path.resolve(__dirname, '..', 'services');
 return fs.readdirAsync(services).then(folders => {
   return Promise.each(folders, f => {
     let dir = path.resolve(services, f);
@@ -25,19 +26,7 @@ return fs.readdirAsync(services).then(folders => {
           return new Promise((resolve, reject) => {
             console.log('RUN TESTS - %s:', f);
             let testArgs = args.push(path.resolve(dir, 'test/**/*test.ts'));
-            // Install dependencies
-            exec('npm i', {
-              cwd: dir
-            });
-            let test = spawn(cmd, args);
-            test.stdout.on('data', out => {
-              console.log(out.toString());
-            });
-
-            test.stderr.on('data', out => {
-              console.error(out.toString());
-            });
-
+            let test = spawn(cmd, args, {stdio: 'inherit'});
             test.on('close', code => {
               if (code) {
                 return reject(code);
@@ -53,10 +42,12 @@ return fs.readdirAsync(services).then(folders => {
         }
       })
       .catch(code => {
-        console.error('TESTS FAILED - %s, exit code %s', f, code);
-        return process.exit(code);
+        return Promise.reject(`TESTS FAILED - ${f}, exit code ${code}`);
       });
   }).then(() => {
     console.log('TESTS COMPLETE');
   });
+}).catch(err => {
+  console.log(err);
+  process.exit(1);
 });

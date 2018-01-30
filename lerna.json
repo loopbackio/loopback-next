@@ -1,6 +1,9 @@
 {
   "lerna": "2.5.1",
-  "packages": ["packages/*"],
+  "packages": [
+    "packages/*",
+    "packages/example-microservices/services/*"
+  ],
   "command": {
     "publish": {
       "conventionalCommits": true

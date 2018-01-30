@@ -1,11 +1,17 @@
 {
-  "name": "account",
+  "name": "@loopback-example-microservices/account",
   "version": "1.0.0",
   "description": "The Account microservice.",
+  "private": true,
   "main": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
   "dependencies": {
     "@loopback/core": "^4.0.0-alpha.10",
     "@loopback/repository": "^4.0.0-alpha.5",
+    "@loopback/rest": "^4.0.0-alpha.22",
     "loopback-connector-mysql": "^4.2.0",
     "loopback-datasource-juggler": "^3.4.1",
     "ts-node": "^3.1.0",

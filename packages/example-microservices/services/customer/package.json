@@ -1,7 +1,12 @@
 {
-  "name": "customer",
+  "name": "@loopback-example-microservices/customer",
   "version": "1.0.0",
   "description": "The Customer microservice.",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
   "main": "index.ts",
   "dependencies": {
     "@loopback/core": "^4.0.0-alpha.10",

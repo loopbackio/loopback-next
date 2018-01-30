@@ -11,15 +11,21 @@ How to build scalable microservices using LoopBack.next.
 
 Make sure you have the following installed:
 
-- [Node.js](https://nodejs.org/en/download/) >= 7.0.0
-- [TypeScript](https://www.typescriptlang.org/index.html#download-links) >= 2.0.0 `npm i -g typescript`
-- [TypeScript Node](https://github.com/TypeStrong/ts-node#installation) >= 3.0.0 `npm i -g ts-node`
+- [Node.js](https://nodejs.org/en/download/) at v6.x or greater
 
-```shell
-# install loopback-next-example
-git clone https://github.com/strongloop/loopback-next-example
-cd loopback-next-example
-npm run build
+1. Install the new loopback CLI toolkit.
+```
+npm i -g @loopback/cli
+```
+
+2. Download the "microservices" example.
+```
+lb4 example microservices
+```
+
+3. Switch to the directory and install dependencies.
+```
+cd loopback-example-microservices && npm install
 ```
 
 ## Basic use
@@ -40,14 +46,6 @@ npm stop
 
 > Helper scripts for the above commands are in [`/bin`](https://github.com/strongloop/loopback-next-example/tree/master/bin)
 directory.
-
-# Team
-
-Ritchie Martori|Simon Ho|Siddhi Pai|Mahesh Patsute|Deepak Rajamohan
-:-:|:-:|:-:|:-:|:-:
-[<img src="https://avatars2.githubusercontent.com/u/462228?v=3&s=60">](http://github.com/ritch)|[<img src="https://avatars1.githubusercontent.com/u/1617364?v=3&s=60">](http://github.com/superkhau)|[<img src="https://avatars0.githubusercontent.com/u/15273582?v=3&u=d53eb3a459e72484c0ffed865c4e41f9ed9b4fdf&s=60">](http://github.com/siddhipai)|[<img src="https://avatars3.githubusercontent.com/u/24725376?v=3&s=60">](http://github.com/mpatsute)|[<img src="https://avatars2.githubusercontent.com/u/7688315?v=3&s=60">](http://github.com/deepakrkris)
-
-[See all contributors](https://github.com/strongloop/loopback-next-example/graphs/contributors)
 
 # Contributing
 

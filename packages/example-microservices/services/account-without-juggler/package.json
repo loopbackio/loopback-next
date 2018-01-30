@@ -1,8 +1,13 @@
 {
-  "name": "account",
+  "name": "@loopback-example-microservices/account-without-juggler",
   "version": "1.0.0",
   "description": "The Account microservice.",
+  "private": true,
   "main": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
   "dependencies": {
     "mysql": "^2.13.0",
     "mysql-promise": "^4.1.0",

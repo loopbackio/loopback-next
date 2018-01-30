@@ -39,7 +39,7 @@
     "build:full": "npm run clean:lerna && npm run bootstrap && npm run build && npm run mocha && npm run lint",
     "pretest": "npm run clean && npm run build:current",
     "test": "node packages/build/bin/run-nyc npm run mocha",
-    "mocha": "node packages/build/bin/run-mocha \"packages/*/DIST/test/**/*.js\" \"packages/cli/test/*.js\"",
+    "mocha": "node packages/build/bin/run-mocha \"packages/*/DIST/test/**/*.js\" \"packages/cli/test/*.js\" && node packages/example-microservices/bin/test",
     "posttest": "npm run lint"
   },
   "config": {

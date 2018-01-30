@@ -2,16 +2,18 @@
   "name": "@loopback/example-microservices",
   "version": "4.0.0-alpha.0",
   "description": "How to use LoopBack.next and some recommended best practices.",
+  "private": true,
   "main": "facade/index.js",
   "scripts": {
-    "build": "bin/build",
-    "restart": "npm run stop && npm run build && npm run start",
+    "postinstall": "node bin/install.js",
+    "restart": "npm run stop && npm run start",
     "start": "bin/start",
     "stop": "bin/stop",
-    "test": "node bin/test.js"
+    "test": "npm run mocha",
+    "mocha": "node bin/test.js"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=6"
   },
   "keywords": [
     "loopback-next",
@@ -29,8 +31,10 @@
   "homepage": "https://github.com/strongloop/loopback-next-example#readme",
   "dependencies": {
     "bluebird": "^3.5.0",
-    "mocha": "^4.0.0",
     "ts-node": "^3.1.0",
     "typescript": "^2.4.1"
+  },
+  "devDependencies": {
+    "mocha": "^4.0.0"
   }
 }

@@ -1,8 +1,13 @@
 {
-  "name": "todo",
+  "name": "@loopback-example-microservices/todo",
   "version": "1.0.0",
   "description": "Example Todo list application",
+  "private": true,
   "main": "index",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
   "scripts": {
     "start": "ts-node index.ts",
     "test": "mocha --compilers ts:ts-node/register,tsx:ts-node/register test/**/*.test.ts"
@@ -21,6 +26,7 @@
   "dependencies": {
     "@loopback/core": "^4.0.0-alpha.13",
     "@loopback/repository": "^4.0.0-alpha.5",
+    "@loopback/rest": "^4.0.0-alpha.22",
     "@types/lodash": "^4.14.67",
     "loopback-connector-mysql": "^4.2.0",
     "ts-node": "^3.0.4",
