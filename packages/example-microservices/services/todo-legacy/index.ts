@@ -3,9 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { Application } from '@loopback/core';
-import { TodoApplication } from './application';
-
+import {Application} from '@loopback/core';
+import {TodoApplication} from './application';
 
 async function main(): Promise<void> {
   const app = new TodoApplication();

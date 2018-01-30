@@ -16,16 +16,17 @@ export const def = {
             description: 'The transaction id',
             required: true,
             type: 'string',
-            format: 'JSON'
+            format: 'JSON',
           },
           {
             name: 'filter',
             in: 'query',
-            description: 'The criteria used to narrow down the number of transactions returned.',
+            description:
+              'The criteria used to narrow down the number of transactions returned.',
             required: false,
             type: 'string',
-            format: 'JSON'
-          }
+            format: 'JSON',
+          },
         ],
         responses: {
           200: {
@@ -36,20 +37,21 @@ export const def = {
               },
               dateTime: {
                 type: 'date',
-                description: 'The date and time of the transaction.'
+                description: 'The date and time of the transaction.',
               },
               accountNo: {
                 type: 'string',
-                description: 'The associated account number.'
+                description: 'The associated account number.',
               },
               amount: {
                 type: 'number',
-                description: 'The amount being consider in the transaction.'
+                description: 'The amount being consider in the transaction.',
               },
               transactionType: {
                 type: 'string',
-                description: 'The type of transaction. Can be "credit" or "debit".'
-              }
+                description:
+                  'The type of transaction. Can be "credit" or "debit".',
+              },
             },
           },
         },

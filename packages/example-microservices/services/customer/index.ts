@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { Application } from '@loopback/core';
-import { CustomerController } from './controllers/CustomerController';
+import {Application} from '@loopback/core';
+import {CustomerController} from './controllers/CustomerController';
 
 class CustomerApplication extends Application {
   private _startTime: Date;
@@ -25,7 +25,7 @@ class CustomerApplication extends Application {
     const port: Number = await this.get('http.port');
 
     return {
-      appName: "customer",
+      appName: 'customer',
       uptime: Date.now() - this._startTime.getTime(),
       url: 'http://127.0.0.1:' + port,
     };

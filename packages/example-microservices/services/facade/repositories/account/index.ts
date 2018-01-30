@@ -3,14 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { juggler, DataSourceConstructor } from '@loopback/repository';
+import {juggler, DataSourceConstructor} from '@loopback/repository';
 
 // mixin of data source into service is not yet available, swagger.json needs to
 // be loaded synchronously (ie. can't instantiate in the class constructor)
 
 const ds = new DataSourceConstructor('AccountService', {
   connector: 'swagger',
-  spec: 'repositories/account/swagger.json'
+  spec: 'repositories/account/swagger.json',
 });
 
 export class AccountRepository {
@@ -22,7 +22,7 @@ export class AccountRepository {
 
   async find(accountNumber) {
     const response = await this.model.findById({id: accountNumber});
-    const accounts = response && response.obj || [];
+    const accounts = (response && response.obj) || [];
     return accounts.length ? accounts[0] : {};
   }
 

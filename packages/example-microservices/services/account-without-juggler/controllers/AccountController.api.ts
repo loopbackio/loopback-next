@@ -16,18 +16,18 @@ export const def = {
             description:
               'The criteria used to narrow down the number of accounts returned.',
             required: true,
-            type: 'object'
-          }
+            type: 'object',
+          },
         ],
         responses: {
           200: {
             schema: {
               type: 'array',
-              $ref: '#/definitions/Account'
-            }
-          }
-        }
-      }
+              $ref: '#/definitions/Account',
+            },
+          },
+        },
+      },
     },
     '/accounts/create': {
       post: {
@@ -38,17 +38,17 @@ export const def = {
             in: 'body',
             description: 'The account instance to create.',
             required: true,
-            type: 'object'
-          }
+            type: 'object',
+          },
         ],
         responses: {
           200: {
             schema: {
-              $ref: '#/definitions/Account'
-            }
-          }
-        }
-      }
+              $ref: '#/definitions/Account',
+            },
+          },
+        },
+      },
     },
     '/accounts/update': {
       post: {
@@ -59,15 +59,15 @@ export const def = {
             in: 'query',
             description: 'The id of the model instance to be updated.',
             required: true,
-            type: 'string'
+            type: 'string',
           },
           {
             name: 'data',
             in: 'body',
             description: 'An object of model property name/value pairs.',
             required: true,
-            type: 'object'
-          }
+            type: 'object',
+          },
         ],
         responses: {
           200: {
@@ -77,13 +77,13 @@ export const def = {
               properties: {
                 count: {
                   type: 'number',
-                  description: 'The number of records updated.'
-                }
-              }
-            }
-          }
-        }
-      }
+                  description: 'The number of records updated.',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     '/accounts/delete': {
       delete: {
@@ -94,8 +94,8 @@ export const def = {
             in: 'query',
             description: 'The ID for the model instance to be deleted.',
             required: true,
-            type: 'object'
-          }
+            type: 'object',
+          },
         ],
         responses: {
           200: {
@@ -105,45 +105,45 @@ export const def = {
               properties: {
                 count: {
                   type: 'number',
-                  description: 'The number of records deleted.'
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+                  description: 'The number of records deleted.',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
   definitions: {
     Account: {
       id: {
         type: 'string',
-        description: 'The ID for the account instance.'
+        description: 'The ID for the account instance.',
       },
       customerNumber: {
         type: 'string',
-        description: 'The customer ID for the account instance.'
+        description: 'The customer ID for the account instance.',
       },
       balance: {
         type: 'number',
-        description: 'The current balance for the account instance.'
+        description: 'The current balance for the account instance.',
       },
       branch: {
         type: 'string',
-        description: 'The branch location for the account instance.'
+        description: 'The branch location for the account instance.',
       },
       type: {
         type: 'string',
-        description: 'The type of banking account.'
+        description: 'The type of banking account.',
       },
       avgBalance: {
         type: 'number',
-        description: 'The average balance for the account instance.'
+        description: 'The average balance for the account instance.',
       },
       minimumBalance: {
         type: 'number',
-        description: 'The minimum balance for the account instance.'
-      }
-    }
-  }
+        description: 'The minimum balance for the account instance.',
+      },
+    },
+  },
 };

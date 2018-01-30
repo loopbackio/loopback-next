@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { Application } from '@loopback/core';
-import { TransactionController } from './controllers/TransactionController';
+import {Application} from '@loopback/core';
+import {TransactionController} from './controllers/TransactionController';
 
 class TransactionApplication extends Application {
   private _startTime: Date;
@@ -25,7 +25,7 @@ class TransactionApplication extends Application {
     const port: Number = await this.get('http.port');
 
     return {
-      appName: "transaction",
+      appName: 'transaction',
       uptime: Date.now() - this._startTime.getTime(),
       url: 'http://127.0.0.1:' + port,
     };

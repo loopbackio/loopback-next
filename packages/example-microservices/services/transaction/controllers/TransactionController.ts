@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { api } from '@loopback/core';
-import { def } from './TransactionController.api';
-import { TransactionRepository } from '../repositories/transaction';
+import {api} from '@loopback/core';
+import {def} from './TransactionController.api';
+import {TransactionRepository} from '../repositories/transaction';
 
 @api(def)
 export class TransactionController {

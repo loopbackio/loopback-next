@@ -5,14 +5,14 @@
 
 import 'mocha';
 import * as _ from 'lodash';
-import { expect, sinon } from '@loopback/testlab';
+import {expect, sinon} from '@loopback/testlab';
 import {
   DefaultCrudRepository,
   DataSourceConstructor,
   ModelBaseConstructor,
 } from '@loopback/repository';
-import { TodoController } from '../../controllers/todo-controller';
-import { Todo } from '../../models/todo';
+import {TodoController} from '../../controllers/todo-controller';
+import {Todo} from '../../models/todo';
 
 import * as util from 'util';
 
@@ -23,12 +23,9 @@ describe('TodoController', () => {
   // building the stubs and fakes by hand!
   let datasource = new DataSourceConstructor({
     name: 'ds',
-    connector: 'memory'
+    connector: 'memory',
   });
-  let repository = new DefaultCrudRepository<Todo, number>(
-    Todo,
-    datasource
-  );
+  let repository = new DefaultCrudRepository<Todo, number>(Todo, datasource);
   controller.repository = repository;
 
   describe('getTodo', () => {
@@ -55,10 +52,10 @@ describe('TodoController', () => {
         stub.getCall(0).args,
         [
           {
-            where: { title: 'test2' }
-          }
+            where: {title: 'test2'},
+          },
         ],
-        'controller created correct filter object'
+        'controller created correct filter object',
       );
     });
   });
@@ -72,7 +69,7 @@ describe('TodoController', () => {
       let stub = sandbox.stub(repository, 'create');
       let result = await controller.create({
         title: 'foo',
-        body: 'bar'
+        body: 'bar',
       });
       expect.ok(stub.called, 'create was called');
     });
@@ -89,7 +86,7 @@ describe('TodoController', () => {
       Object.assign(replacement, {
         id: 1,
         title: 'foo',
-        body: 'bar'
+        body: 'bar',
       });
       let result = await controller.replace(1, replacement);
       expect.ok(stub.called, 'replace was called');
@@ -105,9 +102,9 @@ describe('TodoController', () => {
       let stub = sandbox.stub(controller.repository, 'updateById');
       let replacement = {
         id: 1,
-        title: 'foo'
+        title: 'foo',
       };
-      let expected = _.merge({ id: 1 }, replacement);
+      let expected = _.merge({id: 1}, replacement);
       let result = await controller.update(1, replacement);
       expect.ok(stub.called, 'update was called');
     });
@@ -138,11 +135,11 @@ describe('TodoController', () => {
         [
           {
             where: {
-              title: 'test2'
-            }
-          }
+              title: 'test2',
+            },
+          },
         ],
-        'controller created correct filter object'
+        'controller created correct filter object',
       );
     });
   });

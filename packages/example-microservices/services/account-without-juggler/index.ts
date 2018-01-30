@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { Application } from '@loopback/core';
-import { AccountController } from './controllers/AccountController';
-import { AccountRepository } from './repositories/account';
+import {Application} from '@loopback/core';
+import {AccountController} from './controllers/AccountController';
+import {AccountRepository} from './repositories/account';
 
 class AccountMicroservice extends Application {
   private _startTime: Date;
@@ -28,7 +28,7 @@ class AccountMicroservice extends Application {
     const port: Number = await this.get('http.port');
 
     return {
-      appName: "account-without-juggler",
+      appName: 'account-without-juggler',
       uptime: Date.now() - this._startTime.getTime(),
       url: 'http://127.0.0.1:' + port,
     };
