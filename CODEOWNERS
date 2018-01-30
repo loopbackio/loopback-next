@@ -10,6 +10,7 @@ packages/cli/* @raymondfeng @kjdelisle @shimks
 packages/context/* @bajtos @raymondfeng  @kjdelisle
 packages/core/* @bajtos @raymondfeng @kjdelisle
 packages/example-getting-started/* @bajtos @kjdelisle
+packages/example-hello-world/* @b-admike
 packages/example-log-extension/* @virkt25
 packages/example-rpc-server/* @kjdelisle
 packages/metadata/* @raymondfeng

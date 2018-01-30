@@ -1,0 +1,41 @@
+{
+  "name": "@loopback/example-hello-world",
+  "version": "4.0.0-alpha.0",
+  "description": "A simple hello-world Application using LoopBack 4",
+  "private": true,
+  "main": "index.js",
+  "engines": {
+    "node": ">=6"
+  },
+  "scripts": {
+    "acceptance": "lb-mocha \"DIST/test/acceptance/**/*.js\"",
+    "build": "npm run build:dist && npm run build:dist6",
+    "build:current": "lb-tsc",
+    "build:dist": "lb-tsc es2017",
+    "build:dist6": "lb-tsc es2015",
+    "build:apidocs": "lb-apidocs",
+    "clean": "lb-clean *example-hello-world*.tgz dist dist6 package api-docs",
+    "prepublishOnly": "npm run build && npm run build:apidocs",
+    "verify": "npm pack && tar xf *example-hello-world*.tgz && tree package && npm run clean",
+    "start": "npm run build && node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/core": "^4.0.0-alpha.29",
+    "@loopback/rest": "^4.0.0-alpha.21"
+  },
+  "devDependencies": {
+    "@loopback/build": "^4.0.0-alpha.10",
+    "@types/node": "^8.5.9"
+  },
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "tutorial"
+  ]
+}
