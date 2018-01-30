@@ -11,11 +11,8 @@
     "node": ">=8"
   },
   "scripts": {
-    "build": "npm run build:dist && npm run build:dist6",
-    "build:current": "lb-tsc",
-    "build:dist": "lb-tsc es2017",
-    "build:dist6": "lb-tsc es2015",
-    "build:watch": "lb-tsc --watch",
+    "build": "lb-tsc es2017",
+    "build:watch": "lb-tsc es2017 --watch",
     "clean": "lb-clean",
     "lint": "npm run prettier:check && npm run tslint",
     "lint:fix": "npm run prettier:fix && npm run tslint:fix",
@@ -24,7 +21,7 @@
     "prettier:fix": "npm run prettier:cli -- --write",
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
-    "pretest": "npm run clean && npm run build:current",
+    "pretest": "npm run clean && npm run build",
     "test": "lb-dist mocha --opts node_modules/@loopback/build/mocha.opts DIST/test",
     "posttest": "npm run lint",
     "start": "npm run build && node .",
@@ -40,8 +37,7 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist",
-    "dist6"
+    "dist"
   ],
   "dependencies": {
     "@loopback/context": "^4.0.0-alpha.30",

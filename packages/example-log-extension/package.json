@@ -8,13 +8,10 @@
     "node": ">=8"
   },
   "scripts": {
-    "build": "npm run build:dist && npm run build:dist6",
-    "build:current": "lb-tsc",
-    "build:dist": "lb-tsc es2017",
-    "build:dist6": "lb-tsc es2015",
+    "build": "lb-tsc es2017",
     "build:apidocs": "lb-apidocs",
-    "build:watch": "lb-tsc --watch",
-    "clean": "lb-clean *example-log-extension-*.tgz dist dist6 package api-docs",
+    "build:watch": "lb-tsc es2017 --watch",
+    "clean": "lb-clean *example-log-extension-*.tgz dist package api-docs",
     "lint": "npm run prettier:check && npm run tslint",
     "lint:fix": "npm run prettier:fix && npm run tslint",
     "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
@@ -23,7 +20,7 @@
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
     "prepublishOnly": "npm run build",
-    "pretest": "npm run clean && npm run build:current",
+    "pretest": "npm run clean && npm run build",
     "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
     "posttest": "npm run lint",
     "verify": "npm pack && tar xf *example-log-extension*.tgz && tree package && npm run clean"

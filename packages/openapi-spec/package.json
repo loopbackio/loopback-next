@@ -9,12 +9,9 @@
     "@loopback/build": "^4.0.0-alpha.13"
   },
   "scripts": {
-    "build": "npm run build:dist && npm run build:dist6",
-    "build:current": "lb-tsc",
-    "build:dist": "lb-tsc es2017",
-    "build:dist6": "lb-tsc es2015",
+    "build": "lb-tsc es2017",
     "build:apidocs": "lb-apidocs",
-    "clean": "lb-clean loopback-openapi-spec*.tgz dist dist6 package api-docs",
+    "clean": "lb-clean loopback-openapi-spec*.tgz dist package api-docs",
     "prepublishOnly": "npm run build && npm run build:apidocs",
     "verify": "npm pack && tar xf loopback-openapi-spec*.tgz && tree package && npm run clean"
   },
@@ -32,7 +29,6 @@
     "index.js",
     "index.d.ts",
     "dist/src",
-    "dist6/src",
     "api-docs",
     "src"
   ],
