@@ -7,7 +7,7 @@
     "name": "IBM"
   },
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "files": [
     "bin",

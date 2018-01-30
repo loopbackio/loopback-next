@@ -5,7 +5,7 @@
   "private": true,
   "main": "index.js",
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "scripts": {
     "acceptance": "lb-mocha \"DIST/test/acceptance/**/*.js\"",
