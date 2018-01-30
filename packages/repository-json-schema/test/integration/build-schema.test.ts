@@ -3,13 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  model,
-  property,
-  ModelMetadataHelper,
-  ModelDefinition,
-  PropertyMap,
-} from '@loopback/repository';
+import {model, property} from '@loopback/repository';
 import {modelToJsonSchema} from '../../src/build-schema';
 import {expect} from '@loopback/testlab';
 import {MetadataInspector} from '@loopback/context';
@@ -41,12 +35,12 @@ describe('build-schema', () => {
           baz: number;
         }
 
-        expect(modelToJsonSchema(NoPropertyMeta)).to.eql({});
-        expect(modelToJsonSchema(OnePropertyDecorated)).to.deepEqual({
-          properties: {
-            foo: {
-              type: 'string',
-            },
+        const noPropJson = modelToJsonSchema(NoPropertyMeta);
+        const onePropJson = modelToJsonSchema(OnePropertyDecorated);
+        expect(noPropJson).to.not.have.key('properties');
+        expect(onePropJson.properties).to.deepEqual({
+          foo: {
+            type: 'string',
           },
         });
       });
@@ -62,9 +56,28 @@ describe('build-schema', () => {
         expect(modelToJsonSchema(NoModelMeta)).to.eql({});
       });
 
-      it('retains "title and "description" properties from top-level metadata', () => {
+      it('infers "title" property from constructor name', () => {
+        @model()
+        class TestModel {
+          @property() foo: string;
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema.title).to.eql('TestModel');
+      });
+
+      it('overrides "title" property if explicitly given', () => {
+        @model({title: 'NewName'})
+        class TestModel {
+          @property() foo: string;
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema.title).to.eql('NewName');
+      });
+
+      it('retains "description" properties from top-level metadata', () => {
         const topMeta = {
-          title: 'Test title',
           description: 'Test description',
         };
         @model(topMeta)
@@ -73,7 +86,6 @@ describe('build-schema', () => {
         }
 
         const jsonSchema = modelToJsonSchema(TestModel);
-        expect(jsonSchema.title).to.eql(topMeta.title);
         expect(jsonSchema.description).to.eql(topMeta.description);
       });
 
@@ -152,6 +164,7 @@ describe('build-schema', () => {
           });
           expect(jsonSchema.definitions).to.deepEqual({
             CustomType: {
+              title: 'CustomType',
               properties: {
                 prop: {
                   type: 'string',
@@ -187,6 +200,7 @@ describe('build-schema', () => {
           });
           expect(schemaDefs).to.deepEqual({
             CustomTypeFoo: {
+              title: 'CustomTypeFoo',
               properties: {
                 prop: {
                   type: 'string',
@@ -194,6 +208,7 @@ describe('build-schema', () => {
               },
             },
             CustomTypeBar: {
+              title: 'CustomTypeBar',
               properties: {
                 prop: {
                   type: 'array',
@@ -314,87 +329,6 @@ describe('build-schema', () => {
         expect(() => {
           modelToJsonSchema(BadArray);
         }).to.throw(/type is defined as an array/);
-      });
-    });
-
-    context('oneOf conversion', () => {
-      it('properly converts primitive union types', () => {
-        @model()
-        class CustomType {
-          @property() num: number;
-        }
-        @model()
-        class TestModel {
-          @property.oneOf(String, CustomType, Number)
-          union: string | CustomType | number;
-        }
-
-        const jsonSchema = modelToJsonSchema(TestModel);
-        expect(jsonSchema.properties).to.eql({
-          union: {
-            oneOf: [
-              {type: 'string'},
-              {$ref: '#definitions/CustomType'},
-              {type: 'number'},
-            ],
-          },
-        });
-        expect(jsonSchema.definitions).to.eql({
-          CustomType: {
-            properties: {
-              num: {
-                type: 'number',
-              },
-            },
-          },
-        });
-      });
-
-      it('properly converts complex union types', () => {
-        @model()
-        class CustomType {
-          @property() num: number;
-        }
-        @model()
-        class TestModel {
-          @property.array.oneOf(String, CustomType, Number)
-          union: String[] | CustomType[] | Number[];
-        }
-
-        const jsonSchema = modelToJsonSchema(TestModel);
-        expect(jsonSchema.properties).to.eql({
-          union: {
-            oneOf: [
-              {
-                type: 'array',
-                items: {
-                  type: 'string',
-                },
-              },
-              {
-                type: 'array',
-                items: {
-                  $ref: '#definitions/CustomType',
-                },
-              },
-              {
-                type: 'array',
-                items: {
-                  type: 'number',
-                },
-              },
-            ],
-          },
-        });
-        expect(jsonSchema.definitions).to.eql({
-          CustomType: {
-            properties: {
-              num: {
-                type: 'number',
-              },
-            },
-          },
-        });
       });
     });
   });

@@ -23,7 +23,7 @@ export class ModelMetadataHelper {
   static getModelMetadata(
     target: Function,
     options?: InspectionOptions,
-  ): ModelDefinition {
+  ): ModelDefinition | {} {
     let classDef: ModelDefinition | undefined;
     classDef = MetadataInspector.getClassMetadata(
       MODEL_WITH_PROPERTIES_KEY,
@@ -36,22 +36,37 @@ export class ModelMetadataHelper {
     if (classDef) {
       return classDef;
     } else {
-      // sets the metadata to a dedicated key if cached value does not exist
-      const meta = new ModelDefinition(
-        Object.assign({name: target.name}, classDef),
+      const modelMeta = MetadataInspector.getClassMetadata<ModelDefinition>(
+        MODEL_KEY,
+        target,
+        options,
       );
-      const modelMeta = MetadataInspector.getClassMetadata(MODEL_KEY, target);
-      Object.assign(meta, modelMeta);
-      meta.properties = Object.assign(
-        <PropertyMap>{},
-        MetadataInspector.getAllPropertyMetadata(
-          MODEL_PROPERTIES_KEY,
-          target.prototype,
-          options,
-        ),
-      );
-      MetadataInspector.defineMetadata(MODEL_WITH_PROPERTIES_KEY, meta, target);
-      return meta;
+      if (!modelMeta) {
+        return {};
+      } else {
+        // sets the metadata to a dedicated key if cached value does not exist
+
+        // set ModelDefinition properties if they don't already exist
+        const meta = new ModelDefinition(Object.assign({}, modelMeta));
+
+        // set properies lost from creating instance of ModelDefinition
+        Object.assign(meta, modelMeta);
+
+        meta.properties = Object.assign(
+          <PropertyMap>{},
+          MetadataInspector.getAllPropertyMetadata(
+            MODEL_PROPERTIES_KEY,
+            target.prototype,
+            options,
+          ),
+        );
+        MetadataInspector.defineMetadata(
+          MODEL_WITH_PROPERTIES_KEY,
+          meta,
+          target,
+        );
+        return meta;
+      }
     }
   }
 }

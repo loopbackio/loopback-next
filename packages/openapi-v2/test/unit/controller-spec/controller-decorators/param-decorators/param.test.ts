@@ -311,6 +311,7 @@ describe('Routing metadata for parameters', () => {
       // tslint:disable-next-line:no-any
       expect(defs).to.have.keys('Foo', 'Bar');
       expect(defs.Foo).to.deepEqual({
+        title: 'Foo',
         properties: {
           price: {
             type: 'number',
@@ -318,6 +319,7 @@ describe('Routing metadata for parameters', () => {
         },
       });
       expect(defs.Bar).to.deepEqual({
+        title: 'Bar',
         properties: {
           name: {
             type: 'string',
@@ -354,7 +356,7 @@ describe('Routing metadata for parameters', () => {
       expect(defs.MyBody).to.not.have.key('definitions');
     });
 
-    it('infers empty body parameter schema if no property metadata is present', () => {
+    it('infers no properties if no property metadata is present', () => {
       const paramSpec: ParameterObject = {
         name: 'foo',
         in: 'body',
@@ -372,7 +374,7 @@ describe('Routing metadata for parameters', () => {
         .definitions as DefinitionsObject;
 
       expect(defs).to.have.key('MyBody');
-      expect(defs.MyBody).to.deepEqual({});
+      expect(defs.MyBody).to.not.have.key('properties');
     });
 
     it('does not infer definition if no class metadata is present', () => {
