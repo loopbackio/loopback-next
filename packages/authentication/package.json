@@ -14,7 +14,7 @@
     "build:apidocs": "lb-apidocs",
     "clean": "lb-clean loopback-authentication*.tgz dist dist6 package api-docs",
     "integration": "lb-mocha \"DIST/test/integration/**/*.js\"",
-    "prepublishOnly": "npm run build && npm run build:apidocs",
+    "prepare": "npm run build && npm run build:apidocs",
     "pretest": "npm run build:current",
     "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/integration/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
     "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",

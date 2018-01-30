@@ -11,7 +11,7 @@ install:
 test_script:
   - node --version
   - npm --version
-  - npm test
+  - npm run test:ci
 
 build: off
 skip_branch_with_pr: true

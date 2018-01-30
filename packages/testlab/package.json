@@ -11,7 +11,7 @@
     "build:dist": "lb-tsc es2017",
     "build:dist6": "lb-tsc es2015",
     "clean": "lb-clean loopback-testlab*.tgz dist dist6 package api-docs",
-    "prepublishOnly": "npm run build",
+    "prepare": "npm run build",
     "pretest": "npm run build:current",
     "test": "lb-mocha \"DIST/test\"",
     "verify": "npm pack && tar xf loopback-testlab*.tgz && tree package && npm run clean"
