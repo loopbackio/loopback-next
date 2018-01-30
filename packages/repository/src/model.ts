@@ -45,6 +45,7 @@ export interface ModelDefinitionSyntax {
   name: string;
   properties?: {[name: string]: PropertyDefinition | PropertyType};
   settings?: {[name: string]: any};
+  [attribute: string]: any;
 }
 
 /**

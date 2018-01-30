@@ -134,6 +134,7 @@ describe('RestServer.getApiSpec()', () => {
     const spec = server.getApiSpec();
     expect(spec.definitions).to.deepEqual({
       MyModel: {
+        title: 'MyModel',
         properties: {
           bar: {
             type: 'string',

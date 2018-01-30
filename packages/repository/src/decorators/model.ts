@@ -81,6 +81,7 @@ export function property(definition?: Partial<PropertyDefinition>) {
 export namespace property {
   export const ERR_PROP_NOT_ARRAY =
     '@property.array can only decorate array properties!';
+  export const ERR_NO_ARGS = 'decorator received less than two parameters';
 
   /**
    *
@@ -88,7 +89,7 @@ export namespace property {
    * @param definition Optional PropertyDefinition object for additional
    * metadata
    */
-  export const array = function(
+  export function array(
     itemType: Function,
     definition?: Partial<PropertyDefinition>,
   ) {
@@ -107,5 +108,5 @@ export namespace property {
         )(target, propertyName);
       }
     };
-  };
+  }
 }
