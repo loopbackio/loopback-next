@@ -33,28 +33,29 @@ export class Context {
   protected readonly parents: Context[] = [];
 
   /**
+   * Cached contexts for delegation
+   */
+  private contexts: Context[];
+
+  /**
    * Registry of bindings
    */
   protected readonly registry: Map<string, Binding> = new Map();
 
   /**
    * Create a new context
-   * @param parents The optional parent contexts. If multiple parent contexts
-   * are provided, they will be used to resolve bindings following breadth first
-   * traversal.
-   * @name name The optional context name. If not present, a uuid is generated as
-   * the name.
+   * @param parent The optional parent contexts.
+   * @name name The optional context name. If not present, a uuid is generated
+   * as the name.
    */
-  constructor(parents?: Context | Context[] | string, name?: string) {
-    if (typeof parents === 'string') {
+  constructor(parent?: Context | string, name?: string) {
+    if (typeof parent === 'string') {
       // constructor(name)
-      name = parents;
-      parents = undefined;
+      name = parent;
+      parent = undefined;
     }
-    if (Array.isArray(parents)) {
-      this.parents.push(...parents);
-    } else if (parents) {
-      this.parents.push(parents);
+    if (parent) {
+      this.parents.push(parent);
     }
     this.name = name || uuidv1();
   }
@@ -119,10 +120,12 @@ export class Context {
    * - reqCtx -> [serverCtx, connectorCtx]
    * - serverCtx -> [appCtx]
    * - connectorCtx -> [appCtx]
-   * `reqCtx.contexts()` returns an iterator of `[reqCtx, serverCtx,
+   * `reqCtx.getAllContexts()` returns an iterator of `[reqCtx, serverCtx,
    * connectorCtx, appCtx]`.
    */
-  protected *contexts(): IterableIterator<Context> {
+  protected getAllContexts(): Context[] {
+    if (this.contexts) return this.contexts;
+    this.contexts = [];
     const visited: Set<Context> = new Set();
     const queue: Context[] = [];
     // Enqueue the current context
@@ -133,10 +136,11 @@ export class Context {
       // Skip a context if it has been visited
       if (visited.has(c)) continue;
       visited.add(c);
-      yield c;
+      this.contexts.push(c);
       // Enqueue the parent contexts
       queue.push(...c.parents);
     }
+    return this.contexts;
   }
 
   /**
@@ -160,7 +164,7 @@ export class Context {
       // Iterate until the predicator returns `true`
       takeUntil(
         // Visit a context to produce a result locally
-        map(this.contexts(), mapper),
+        map(this.getAllContexts(), mapper),
         predicator,
       ),
       reducer,
@@ -201,12 +205,16 @@ export class Context {
    * @param parents Optional parent contexts to be added to the graph
    * @param name Name of the newly composed context
    */
-  composeWith(parents?: Context | Context[], name?: string): this {
+  composeWith(parents: Context | Context[], name?: string): this {
     // Construct a new instance with the same class of this instance
     const ctor = this.constructor as Constructor<this>;
-    const copy = new ctor(parents, name);
-    // Add this context as the 1st parent for the new one
-    copy.parents.unshift(this);
+    const copy = new ctor(this, name);
+
+    if (Array.isArray(parents)) {
+      copy.parents.push(...parents);
+    } else {
+      copy.parents.push(parents);
+    }
     return copy;
   }
 

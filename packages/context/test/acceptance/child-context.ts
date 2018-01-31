@@ -55,7 +55,7 @@ describe('Context bindings - contexts with a single parent', () => {
   }
 });
 
-describe('Context bindings - contexts with multiple parents', () => {
+describe('Context bindings - contexts composed with other ones', () => {
   let appCtx: Context;
   let serverCtx: Context;
   let connectorCtx: Context;
@@ -152,6 +152,6 @@ describe('Context bindings - contexts with multiple parents', () => {
     appCtx = new Context(undefined, 'app'); // The root
     serverCtx = new Context(appCtx, 'server'); // server -> app
     connectorCtx = new Context(appCtx, 'connector'); // connector -> app
-    reqCtx = new Context([serverCtx, connectorCtx], 'req'); // req -> [server, connector]
+    reqCtx = new Context().composeWith([serverCtx, connectorCtx], 'req'); // req -> [server, connector]
   }
 });

@@ -45,13 +45,6 @@ describe('Context constructor', () => {
     expect(ctx.parentList).to.eql([c1]);
   });
 
-  it('accepts multiple parent contexts', () => {
-    const c1 = new Context('c1');
-    const c2 = new Context('c2');
-    const ctx = new TestContext([c1, c2]);
-    expect(ctx.parentList).to.eql([c1, c2]);
-  });
-
   it('accepts a parent context and a name', () => {
     const c1 = new Context('c1');
     const ctx = new TestContext(c1, 'c2');
