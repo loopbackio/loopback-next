@@ -48,7 +48,7 @@ describe('constructor injection', () => {
   it('allows optional constructor injection', () => {
     class TestClass {
       constructor(
-        @inject('optional-bindng-key', {optional: true})
+        @inject('optional-binding-key', {optional: true})
         public fooBar: string | undefined,
       ) {}
     }

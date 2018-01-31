@@ -11,7 +11,7 @@ import {
   ValueOrPromise,
   getDeepProperty,
 } from './value-promise';
-import {ResolutionSession} from './resolution-session';
+import {ResolutionOptions, ResolutionSession} from './resolution-session';
 
 import {v1 as uuidv1} from 'uuid';
 
@@ -198,15 +198,22 @@ export class Context {
    *
    * @param keyWithPath The binding key, optionally suffixed with a path to the
    *   (deeply) nested property to retrieve.
+   * @param optionsOrSession Options or session for resolution. An instance of
+   * `ResolutionSession` is accepted for backward compatibility.
    * @returns A promise of the bound value.
    */
-  get(key: string, session?: ResolutionSession): Promise<BoundValue> {
+  get(
+    keyWithPath: string,
+    optionsOrSession?: ResolutionOptions | ResolutionSession,
+  ): Promise<BoundValue> {
     /* istanbul ignore if */
     if (debug.enabled) {
-      debug('Resolving binding: %s', key);
+      debug('Resolving binding: %s', keyWithPath);
     }
     try {
-      return Promise.resolve(this.getValueOrPromise(key, session));
+      return Promise.resolve(
+        this.getValueOrPromise(keyWithPath, optionsOrSession),
+      );
     } catch (err) {
       return Promise.reject(err);
     }
@@ -232,18 +239,26 @@ export class Context {
    *
    * @param keyWithPath The binding key, optionally suffixed with a path to the
    *   (deeply) nested property to retrieve.
+   * * @param optionsOrSession Options or session for resolution. An instance of
+   * `ResolutionSession` is accepted for backward compatibility.
    * @returns A promise of the bound value.
    */
-  getSync(key: string, session?: ResolutionSession): BoundValue {
+  getSync(
+    keyWithPath: string,
+    optionsOrSession?: ResolutionOptions | ResolutionSession,
+  ): BoundValue {
     /* istanbul ignore if */
     if (debug.enabled) {
-      debug('Resolving binding synchronously: %s', key);
+      debug('Resolving binding synchronously: %s', keyWithPath);
     }
-    const valueOrPromise = this.getValueOrPromise(key, session);
+    const valueOrPromise = this.getValueOrPromise(
+      keyWithPath,
+      optionsOrSession,
+    );
 
     if (isPromise(valueOrPromise)) {
       throw new Error(
-        `Cannot get ${key} synchronously: the value is a promise`,
+        `Cannot get ${keyWithPath} synchronously: the value is a promise`,
       );
     }
 
@@ -255,8 +270,11 @@ export class Context {
    * binding is found, an error will be thrown.
    *
    * @param key Binding key
+   * @param options Options to control if the binding is optional. If
+   * `options.optional` is set to true, the method will return `undefined`
+   * instead of throwing an error if the binding key is not found.
    */
-  getBinding(key: string): Binding {
+  getBinding(key: string, options?: {optional?: boolean}): Binding | undefined {
     Binding.validateKey(key);
     const binding = this.registry.get(key);
     if (binding) {
@@ -264,9 +282,10 @@ export class Context {
     }
 
     if (this._parent) {
-      return this._parent.getBinding(key);
+      return this._parent.getBinding(key, options);
     }
 
+    if (options && options.optional) return undefined;
     throw new Error(`The key ${key} was not bound to any value.`);
   }
 
@@ -292,17 +311,25 @@ export class Context {
    *
    * @param keyWithPath The binding key, optionally suffixed with a path to the
    *   (deeply) nested property to retrieve.
-   * @param session An object to keep states of the resolution
+   * @param optionsOrSession Options for resolution or a session
    * @returns The bound value or a promise of the bound value, depending
    *   on how the binding was configured.
    * @internal
    */
   getValueOrPromise(
     keyWithPath: string,
-    session?: ResolutionSession,
+    optionsOrSession?: ResolutionOptions | ResolutionSession,
   ): ValueOrPromise<BoundValue> {
     const {key, path} = Binding.parseKeyWithPath(keyWithPath);
-    const boundValue = this.getBinding(key).getValue(this, session);
+    if (optionsOrSession instanceof ResolutionSession) {
+      optionsOrSession = {session: optionsOrSession};
+    }
+    const binding = this.getBinding(key, optionsOrSession);
+    if (binding == null) return undefined;
+    const boundValue = binding.getValue(
+      this,
+      optionsOrSession && optionsOrSession.session,
+    );
     if (path === undefined || path === '') {
       return boundValue;
     }

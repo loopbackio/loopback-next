@@ -21,11 +21,17 @@ class TestContext extends Context {
 }
 
 describe('Context constructor', () => {
-  it('generates a unique name', () => {
+  it('generates uuid name if not provided', () => {
     const ctx = new Context();
     expect(ctx.name).to.match(
       /^[0-9A-F]{8}-[0-9A-F]{4}-[1][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
     );
+  });
+
+  it('generates unique names for different instances', () => {
+    const ctx1 = new Context();
+    const ctx2 = new Context();
+    expect(ctx1.name).to.not.eql(ctx2.name);
   });
 
   it('accepts a name', () => {
@@ -210,8 +216,12 @@ describe('Context', () => {
       expect(actual).to.equal(expected);
     });
 
-    it('reports an error when binding was not found', () => {
+    it('reports an error when binding is not found', () => {
       expect(() => ctx.getBinding('unknown-key')).to.throw(/unknown-key/);
+    });
+
+    it('returns undefined if an optional binding is not found', () => {
+      expect(ctx.getBinding('unknown-key', {optional: true})).to.be.undefined();
     });
 
     it('rejects a key containing property separator', () => {
@@ -227,6 +237,10 @@ describe('Context', () => {
       ctx.bind('foo').to('bar');
       const result = ctx.getSync('foo');
       expect(result).to.equal('bar');
+    });
+
+    it('returns undefined if an optional binding is not found', () => {
+      expect(ctx.getSync('unknown-key', {optional: true})).to.be.undefined();
     });
 
     it('returns the value with property separator', () => {
@@ -332,6 +346,10 @@ describe('Context', () => {
       expect(result).to.equal('bar');
     });
 
+    it('returns undefined if an optional binding is not found', async () => {
+      expect(await ctx.get('unknown-key', {optional: true})).to.be.undefined();
+    });
+
     it('returns the value with property separator', async () => {
       const SEP = Binding.PROPERTY_SEPARATOR;
       const val = {x: {y: 'Y'}};
@@ -408,6 +426,12 @@ describe('Context', () => {
       ctx.bind('key').to('value');
       const valueOrPromise = ctx.getValueOrPromise('key');
       expect(valueOrPromise).to.equal('value');
+    });
+
+    it('returns undefined if an optional binding is not found', () => {
+      expect(
+        ctx.getValueOrPromise('unknown-key', {optional: true}),
+      ).to.be.undefined();
     });
 
     it('returns promise for async values', async () => {

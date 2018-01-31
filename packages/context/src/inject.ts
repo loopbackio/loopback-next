@@ -197,7 +197,7 @@ export namespace inject {
    * class AuthenticationManager {
    *   constructor(
    *     @inject.tag('authentication.strategy') public strategies: Strategy[],
-   *   ) { }
+   *   ) {}
    * }
    * ```
    * @param bindingTag Tag name or regex
@@ -214,6 +214,16 @@ export namespace inject {
     return inject('', {tag: bindingTag}, resolveByTag);
   };
 
+  /**
+   * Inject the context object.
+   *
+   * @example
+   * ```ts
+   * class MyProvider {
+   *  constructor(@inject.context() private ctx: Context) {}
+   * }
+   * ```
+   */
   export const context = function injectContext() {
     return inject('', {decorator: '@inject.context'}, ctx => ctx);
   };
@@ -227,7 +237,10 @@ function resolveAsGetter(
   // We need to clone the session for the getter as it will be resolved later
   session = ResolutionSession.fork(session);
   return function getter() {
-    return ctx.get(injection.bindingKey, session);
+    return ctx.get(injection.bindingKey, {
+      session,
+      optional: injection.metadata && injection.metadata.optional,
+    });
   };
 }
 
