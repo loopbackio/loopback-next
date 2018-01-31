@@ -107,10 +107,12 @@ describe('constructor injection', () => {
     context.bind('x').toClass(XClass);
     context.bind('y').toClass(YClass);
     expect(() => context.getSync('x')).to.throw(
-      "Circular dependency detected on path 'x --> y --> x'",
+      'Circular dependency detected: x --> @XClass.prototype.y ' +
+        '--> y --> @YClass.prototype.x --> x',
     );
     expect(() => context.getSync('y')).to.throw(
-      "Circular dependency detected on path 'y --> x --> y'",
+      'Circular dependency detected: y --> @YClass.prototype.x ' +
+        '--> x --> @XClass.prototype.y --> y',
     );
   });
 
@@ -138,13 +140,16 @@ describe('constructor injection', () => {
     context.bind('y').toClass(YClass);
     context.bind('z').toClass(ZClass);
     expect(() => context.getSync('x')).to.throw(
-      "Circular dependency detected on path 'x --> y --> z --> x'",
+      'Circular dependency detected: x --> @XClass.constructor[0] --> y ' +
+        '--> @YClass.constructor[0] --> z --> @ZClass.constructor[0] --> x',
     );
     expect(() => context.getSync('y')).to.throw(
-      "Circular dependency detected on path 'y --> z --> x --> y'",
+      'Circular dependency detected: y --> @YClass.constructor[0] --> z ' +
+        '--> @ZClass.constructor[0] --> x --> @XClass.constructor[0] --> y',
     );
     expect(() => context.getSync('z')).to.throw(
-      "Circular dependency detected on path 'z --> x --> y --> z'",
+      'Circular dependency detected: z --> @ZClass.constructor[0] --> x ' +
+        '--> @XClass.constructor[0] --> y --> @YClass.constructor[0] --> z',
     );
   });
 

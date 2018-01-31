@@ -228,11 +228,11 @@ export class ResolutionSession {
       debugSession('Enter binding:', binding.toJSON());
     }
     if (this.stack.find(i => i.type === 'binding' && i.value === binding)) {
-      throw new Error(
-        `Circular dependency detected on path '${this.getBindingPath()} --> ${
-          binding.key
-        }'`,
-      );
+      const msg =
+        `Circular dependency detected: ` +
+        `${this.getResolutionPath()} --> ${binding.key}`;
+      debugSession(msg);
+      throw new Error(msg);
     }
     this.stack.push({type: 'binding', value: binding});
     /* istanbul ignore if */
