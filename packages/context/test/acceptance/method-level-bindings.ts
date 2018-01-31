@@ -5,23 +5,25 @@
 
 import {expect} from '@loopback/testlab';
 import {Context, inject, invokeMethod} from '../..';
+import * as debugModule from 'debug';
+const debug = debugModule('loopback:context:test');
 
 class InfoController {
   static sayHello(@inject('user') user: string): string {
     const msg = `Hello ${user}`;
-    console.log(msg);
+    debug(msg);
     return msg;
   }
 
   hello(@inject('user') user: string): string {
     const msg = `Hello ${user}`;
-    console.log(msg);
+    debug(msg);
     return msg;
   }
 
   greet(prefix: string, @inject('user') user: string): string {
     const msg = `[${prefix}] Hello ${user}`;
-    console.log(msg);
+    debug(msg);
     return msg;
   }
 }

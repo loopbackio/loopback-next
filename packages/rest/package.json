@@ -42,6 +42,7 @@
     "@loopback/openapi-spec-builder": "^4.0.0-alpha.20",
     "@loopback/repository": "^4.0.0-alpha.27",
     "@loopback/testlab": "^4.0.0-alpha.22",
+    "@types/debug": "0.0.30",
     "@types/js-yaml": "^3.9.1",
     "@types/lodash": "^4.14.96"
   },

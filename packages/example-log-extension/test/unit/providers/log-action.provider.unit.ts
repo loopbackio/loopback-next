@@ -22,10 +22,10 @@ describe('LogActionProvider (unit)', () => {
   let logger: LogFn;
   const req = <ParsedRequest>{url: '/test'};
 
-  beforeEach(createConsoleSpy);
+  beforeEach(createLogSpy);
   beforeEach(getLogger);
 
-  afterEach(restoreConsoleSpy);
+  afterEach(restoreLogSpy);
 
   it('logs a value without a start time', async () => {
     const match = chalk.red('ERROR: /test :: TestClass.test() => test message');
@@ -68,11 +68,11 @@ describe('LogActionProvider (unit)', () => {
     logger = await context.get(EXAMPLE_LOG_BINDINGS.LOG_ACTION);
   }
 
-  function createConsoleSpy() {
-    spy = sinon.spy(console, 'log');
+  function createLogSpy() {
+    spy = sinon.spy(LogActionProvider.prototype, 'log');
   }
 
-  function restoreConsoleSpy() {
+  function restoreLogSpy() {
     spy.restore();
   }
 

@@ -21,6 +21,7 @@ import {
 } from '@loopback/rest';
 import {
   LogComponent,
+  LogActionProvider,
   LogLevelMixin,
   LOG_LEVEL,
   log,
@@ -66,9 +67,9 @@ describe('log extension acceptance test', () => {
   beforeEach(createApp);
   beforeEach(createController);
   beforeEach(createSequence);
-  beforeEach(createConsoleSpy);
+  beforeEach(createLogSpy);
 
-  afterEach(restoreConsoleSpy);
+  afterEach(restoreLogSpy);
 
   it('logs information at DEBUG or higher', async () => {
     setAppLogToDebug();
@@ -317,11 +318,11 @@ describe('log extension acceptance test', () => {
     return [2, 2];
   }
 
-  function createConsoleSpy() {
-    spy = sinon.spy(console, 'log');
+  function createLogSpy() {
+    spy = sinon.spy(LogActionProvider.prototype, 'log');
   }
 
-  function restoreConsoleSpy() {
+  function restoreLogSpy() {
     spy.restore();
   }
 });

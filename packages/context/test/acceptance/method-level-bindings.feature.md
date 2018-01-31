@@ -20,19 +20,19 @@
 
    static say(@inject('user') user: string):string {
      const msg = `Hello ${user}`;
-     console.log(msg);
+     debug(msg);
      return msg;
    }
 
    hello(@inject('user') user: string):string {
      const msg = `Hello ${user}`;
-     console.log(msg);
+     debug(msg);
      return msg;
    }
 
    greet(prefix: string, @inject('user') user: string):string {
      const msg = `[${prefix}] Hello ${user}`;
-     console.log(msg);
+     debug(msg);
      return msg;
    }
  }
