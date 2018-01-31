@@ -22,6 +22,7 @@ export * from './providers';
 import * as HttpErrors from 'http-errors';
 
 export * from './parser';
+export * from './deserializer';
 
 export {writeResultToResponse} from './writer';
 
