@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+curl -g -H "Content-Type: application/json" -X POST -d '{"balance":2000}' 'http://localhost:3001/accounts/update?where={"id":"test1"}' | jq

@@ -1,0 +1,7 @@
+{
+    "host":"localhost",
+    "user":"root",
+    "password": "pass",
+    "database": "testdb",
+    "port": 3306
+}

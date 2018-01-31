@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+curl -H "Content-Type: application/json" -X POST -d '{"id":"test1", "customerNumber": "1234", "balance":1000, "branch":"Toronto", "type":"Chequing", "avgBalance":500, "minimumBalance":0}' 'http://localhost:3001/accounts/create' | jq

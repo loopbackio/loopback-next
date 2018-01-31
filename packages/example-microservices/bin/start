@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+./bin/stop
+
+echo "Starting microservices..."
+cd services/account
+ts-node index.ts lb-next-account-micro-serv &
+echo "Started Account microservice, PID: $!"
+cd ../customer && \
+ts-node index.ts lb-next-customer-micro-serv &
+echo "Started Customer microservice, PID: $!"
+cd ../transaction && \
+ts-node index.ts lb-next-transaction-micro-serv &
+echo "Started Transaction microservice, PID: $!"
+cd ../facade && \
+ts-node index.ts lb-next-facade-micro-serv &
+echo "Started Facade microservice, PID: $!"
+
+sleep 5
+
+echo 'All microservices started successfully.'
+echo 'To test the application, run "npm test".'

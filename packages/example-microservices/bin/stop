@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+ps -ef | grep "[l]b-next" | awk '{print $2}' | xargs kill -9
+echo "All microservices stopped successfully."

@@ -16,6 +16,7 @@ const EXAMPLES = {
     'An application and tutorial on how to build with LoopBack 4.',
   'hello-world': 'A simple hello-world Application using LoopBack 4',
   'log-extension': 'An example extension project for LoopBack 4',
+  'microservices': 'How to build scalable microservices using LoopBack',
   'rpc-server': 'A basic RPC server using a made-up protocol.',
 };
 Object.freeze(EXAMPLES);

@@ -1,0 +1,41 @@
+{
+  "name": "@loopback-example-microservices/account-without-juggler",
+  "version": "1.0.0",
+  "description": "The Account microservice.",
+  "private": true,
+  "main": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
+  "dependencies": {
+    "@loopback/core": "^4.0.0-alpha.10",
+    "@loopback/repository": "^4.0.0-alpha.5",
+    "@loopback/rest": "^4.0.0-alpha.22",
+    "loopback-datasource-juggler": "^3.4.1",
+    "mysql": "^2.13.0",
+    "mysql-promise": "^4.1.0"
+  },
+  "devDependencies": {
+    "@loopback/testlab": "^4.0.0-alpha.6",
+    "@types/node": "^7.0.12",
+    "debug": "^2.6.8",
+    "lodash": "^4.17.4",
+    "mocha": "^3.4.2",
+    "ts-node": "^3.0.4",
+    "tslint": "^5.4.3",
+    "typescript": "^2.4.1"
+  },
+  "scripts": {
+    "start": "ts-node index.ts",
+    "test": "mocha --opts test/mocha.opts 'test/unit/*.ts'"
+  },
+  "keywords": [
+    "loopback-next",
+    "example",
+    "account",
+    "microservice"
+  ],
+  "author": "IBM",
+  "license": "MIT"
+}

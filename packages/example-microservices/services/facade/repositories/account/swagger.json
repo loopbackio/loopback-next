@@ -1,0 +1,69 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "account"
+  },
+  "host": "localhost:3001",
+  "basePath": "/",
+  "paths": {
+    "/accounts": {
+      "get": {
+        "summary": "Find all instances of the model matched by filter from the data source.",
+        "operationId": "findById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Model id",
+            "required": true,
+            "type": "string",
+            "format": "JSON"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter defining fields and include - must be a JSON-encoded string ({\"something\":\"value\"})",
+            "required": false,
+            "type": "string",
+            "format": "JSON"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request was successful",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }, 
+    "/accounts/create": {
+      "post": {
+        "summary": "Create an account instance.",
+        "operationId": "create",
+        "parameters": [
+          {
+            "name": "accountInstance",
+            "in": "body",
+            "description": "The account instance.",
+            "required": true,
+            "type": "object",
+            "format": "JSON"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request was successful",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  }
+}

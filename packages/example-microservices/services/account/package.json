@@ -1,0 +1,38 @@
+{
+  "name": "@loopback-example-microservices/account",
+  "version": "1.0.0",
+  "description": "The Account microservice.",
+  "private": true,
+  "main": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
+  "dependencies": {
+    "@loopback/core": "^4.0.0-alpha.10",
+    "@loopback/repository": "^4.0.0-alpha.5",
+    "@loopback/rest": "^4.0.0-alpha.22",
+    "loopback-connector-mysql": "^4.2.0",
+    "loopback-datasource-juggler": "^3.4.1",
+    "ts-node": "^3.1.0",
+    "typescript": "^2.3.4"
+  },
+  "devDependencies": {
+    "@loopback/testlab": "^4.0.0-alpha.6",
+    "@types/node": "^7.0.12",
+    "mocha": "^3.4.2",
+    "@types/mocha": "^2.2.41"
+  },
+  "scripts": {
+    "start": "ts-node index.ts",
+    "test": "mocha --opts test/mocha.opts 'test/unit/*.ts'"
+  },
+  "keywords": [
+    "loopback-next",
+    "example",
+    "account",
+    "microservice"
+  ],
+  "author": "IBM",
+  "license": "MIT"
+}

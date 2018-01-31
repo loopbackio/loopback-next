@@ -1,0 +1,32 @@
+{
+  "name": "@loopback-example-microservices/customer",
+  "version": "1.0.0",
+  "description": "The Customer microservice.",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
+  "main": "index.ts",
+  "dependencies": {
+    "@loopback/core": "^4.0.0-alpha.10",
+    "@loopback/repository": "^4.0.0-alpha.5",
+    "@loopback/rest": "^4.0.0-alpha.22",
+    "loopback-datasource-juggler": "^3.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.12"
+  },
+  "scripts": {
+    "start": "ts-node index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "loopback-next",
+    "example",
+    "customer",
+    "microservice"
+  ],
+  "author": "IBM",
+  "license": "MIT"
+}
