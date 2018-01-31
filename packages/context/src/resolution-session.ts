@@ -321,3 +321,20 @@ export class ResolutionSession {
     return this.stack.map(i => ResolutionSession.describe(i)).join(' --> ');
   }
 }
+
+/**
+ * Options for binding/dependency resolution
+ */
+export interface ResolutionOptions {
+  /**
+   * A session to track bindings and injections
+   */
+  session?: ResolutionSession;
+
+  /**
+   * A boolean flag to indicate if the dependency is optional. If it's set to
+   * `true` and the binding is not bound in a context, the resolution
+   * will return `undefined` instead of throwing an error.
+   */
+  optional?: boolean;
+}

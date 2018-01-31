@@ -6,7 +6,12 @@
 import {Context} from './context';
 import {ResolutionSession} from './resolution-session';
 import {instantiateClass} from './resolver';
-import {Constructor, isPromise, BoundValue} from './value-promise';
+import {
+  Constructor,
+  isPromise,
+  BoundValue,
+  ValueOrPromise,
+} from './value-promise';
 import {Provider} from './provider';
 
 import * as debugModule from 'debug';
@@ -229,20 +234,19 @@ export class Binding {
     if (debug.enabled) {
       debug('Get value for binding %s', this.key);
     }
-    let isCached = false; // Use a flag to see the ctx key exists in the cache
-    let cachedValue: BoundValue;
     // First check cached value for non-transient
     if (this._cache) {
       if (this.scope === BindingScope.SINGLETON) {
-        const ownerCtx = ctx.getOwnerContext(this.key)!;
-        isCached = this._cache.has(ownerCtx);
-        cachedValue = isCached && this._cache.get(ownerCtx);
+        const ownerCtx = ctx.getOwnerContext(this.key);
+        if (ownerCtx && this._cache.has(ownerCtx)) {
+          return this._cache.get(ownerCtx);
+        }
       } else if (this.scope === BindingScope.CONTEXT) {
-        isCached = this._cache.has(ctx);
-        cachedValue = isCached && this._cache.get(ctx);
+        if (this._cache.has(ctx)) {
+          return this._cache.get(ctx);
+        }
       }
     }
-    if (isCached) return cachedValue;
     if (this._getValue) {
       let result = ResolutionSession.runWithBinding(
         s => this._getValue(ctx, s),
