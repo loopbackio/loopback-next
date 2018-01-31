@@ -8,6 +8,13 @@
  * utility methods to handle values and/or promises.
  */
 
+/**
+ * A class constructor accepting arbitrary arguments.
+ */
+export type Constructor<T> =
+  // tslint:disable-next-line:no-any
+  new (...args: any[]) => T;
+
 // tslint:disable-next-line:no-any
 export type BoundValue = any;
 
