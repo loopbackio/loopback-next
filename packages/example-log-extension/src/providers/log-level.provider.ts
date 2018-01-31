@@ -10,6 +10,8 @@ export class LogLevelProvider implements Provider<number> {
   constructor() {}
 
   value(): number {
+    const level = Number(process.env.LOG_LEVEL);
+    if (!isNaN(level) && typeof level === 'number') return level;
     return LOG_LEVEL.WARN;
   }
 }

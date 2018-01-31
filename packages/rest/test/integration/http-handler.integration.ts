@@ -10,19 +10,19 @@ import {
   writeResultToResponse,
   parseOperationArgs,
   RestBindings,
+  FindRouteProvider,
+  InvokeMethodProvider,
+  RejectProvider,
 } from '../..';
 import {ControllerSpec, get} from '@loopback/openapi-v2';
 import {Context} from '@loopback/context';
 import {Client, createClientForHandler} from '@loopback/testlab';
 import * as HttpErrors from 'http-errors';
+import * as debugModule from 'debug';
 import {ParameterObject} from '@loopback/openapi-spec';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
-import {
-  FindRouteProvider,
-  InvokeMethodProvider,
-  RejectProvider,
-} from '../../src/providers';
 
+const debug = debugModule('loopback:rest:test');
 const SequenceActions = RestBindings.SequenceActions;
 
 describe('HttpHandler', () => {
@@ -496,18 +496,24 @@ describe('HttpHandler', () => {
 
     rootContext.bind(RestBindings.SEQUENCE).toClass(DefaultSequence);
 
-    function logger(err: Error, statusCode: number, req: ServerRequest) {
-      console.error(
-        'Unhandled error in %s %s: %s %s',
-        req.method,
-        req.url,
-        statusCode,
-        err.stack || err,
-      );
-    }
-
     handler = new HttpHandler(rootContext);
     rootContext.bind(RestBindings.HANDLER).to(handler);
+  }
+
+  let skipStatusCode = 200;
+  function logger(err: Error, statusCode: number, req: ServerRequest) {
+    if (statusCode === skipStatusCode) return;
+    debug(
+      'Unhandled error in %s %s: %s %s',
+      req.method,
+      req.url,
+      statusCode,
+      err.stack || err,
+    );
+  }
+
+  function logErrorsExcept(ignoreStatusCode: number) {
+    skipStatusCode = ignoreStatusCode;
   }
 
   function givenControllerClass(
@@ -521,26 +527,11 @@ describe('HttpHandler', () => {
   function givenClient() {
     client = createClientForHandler((req, res) => {
       handler.handleRequest(req, res).catch(err => {
-        console.error('Request failed.', err.stack);
+        debug('Request failed.', err.stack);
         if (res.headersSent) return;
         res.statusCode = 500;
         res.end();
       });
     });
-  }
-
-  function logErrorsExcept(ignoreStatusCode: number) {
-    const oldLogger: Function = rootContext.getSync(SequenceActions.LOG_ERROR);
-    rootContext.bind(SequenceActions.LOG_ERROR).to(conditionalLogger);
-
-    function conditionalLogger(
-      err: Error,
-      statusCode: number,
-      req: ServerRequest,
-    ) {
-      if (statusCode === ignoreStatusCode) return;
-      // tslint:disable-next-line:no-invalid-this
-      oldLogger.apply(this, arguments);
-    }
   }
 });

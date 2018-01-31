@@ -10,6 +10,8 @@ import {getLogMetadata} from '../decorators/log.decorator';
 import {EXAMPLE_LOG_BINDINGS, LOG_LEVEL} from '../keys';
 import {LogFn, TimerFn, HighResTime, LevelMetadata} from '../types';
 import chalk from 'chalk';
+import * as debugModule from 'debug';
+const debug = debugModule('loopback:example:extension:log');
 
 export class LogActionProvider implements Provider<LogFn> {
   constructor(
@@ -60,33 +62,37 @@ export class LogActionProvider implements Provider<LogFn> {
       level !== LOG_LEVEL.OFF
     ) {
       if (!args) args = [];
-      let log = `${req.url} :: ${controllerClass.name}.`;
-      log += `${methodName}(${args.join(', ')}) => `;
+      let msg = `${req.url} :: ${controllerClass.name}.`;
+      msg += `${methodName}(${args.join(', ')}) => `;
 
-      if (typeof result === 'object') log += JSON.stringify(result);
-      else log += result;
+      if (typeof result === 'object') msg += JSON.stringify(result);
+      else msg += result;
 
       if (start) {
         const timeDiff: HighResTime = this.timer(start);
         const time: number =
           timeDiff[0] * 1000 + Math.round(timeDiff[1] * 1e-4) / 100;
-        log = `${time}ms: ${log}`;
+        msg = `${time}ms: ${msg}`;
       }
 
       switch (level) {
         case LOG_LEVEL.DEBUG:
-          console.log(chalk.white(`DEBUG: ${log}`));
+          this.log(chalk.white(`DEBUG: ${msg}`));
           break;
         case LOG_LEVEL.INFO:
-          console.log(chalk.green(`INFO: ${log}`));
+          this.log(chalk.green(`INFO: ${msg}`));
           break;
         case LOG_LEVEL.WARN:
-          console.log(chalk.yellow(`WARN: ${log}`));
+          this.log(chalk.yellow(`WARN: ${msg}`));
           break;
         case LOG_LEVEL.ERROR:
-          console.log(chalk.red(`ERROR: ${log}`));
+          this.log(chalk.red(`ERROR: ${msg}`));
           break;
       }
     }
+  }
+
+  log(msg: string) {
+    debug(msg);
   }
 }
