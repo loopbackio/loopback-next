@@ -12,8 +12,10 @@ export class TodoController {
     @repository(TodoRepository.name) protected todoRepo: TodoRepository,
   ) {}
   @post('/todo')
-  @param.body('todo', TodoSchema)
-  async createTodo(todo: Todo) {
+  async createTodo(
+    @param.body('todo', TodoSchema)
+    todo: Todo,
+  ) {
     // TODO(bajtos) This should be handled by the framework
     // See https://github.com/strongloop/loopback-next/issues/118
     if (!todo.title) {
@@ -23,9 +25,10 @@ export class TodoController {
   }
 
   @get('/todo/{id}')
-  @param.path.number('id')
-  @param.query.boolean('items')
-  async findTodoById(id: number, items?: boolean): Promise<Todo> {
+  async findTodoById(
+    @param.path.number('id') id: number,
+    @param.query.boolean('items') items?: boolean,
+  ): Promise<Todo> {
     return await this.todoRepo.findById(id);
   }
 
@@ -35,22 +38,25 @@ export class TodoController {
   }
 
   @put('/todo/{id}')
-  @param.path.number('id')
-  @param.body('todo', TodoSchema)
-  async replaceTodo(id: number, todo: Todo): Promise<boolean> {
+  async replaceTodo(
+    @param.path.number('id') id: number,
+    @param.body('todo', TodoSchema)
+    todo: Todo,
+  ): Promise<boolean> {
     return await this.todoRepo.replaceById(id, todo);
   }
 
   @patch('/todo/{id}')
-  @param.path.number('id')
-  @param.body('todo', TodoSchema)
-  async updateTodo(id: number, todo: Todo): Promise<boolean> {
+  async updateTodo(
+    @param.path.number('id') id: number,
+    @param.body('todo', TodoSchema)
+    todo: Todo,
+  ): Promise<boolean> {
     return await this.todoRepo.updateById(id, todo);
   }
 
   @del('/todo/{id}')
-  @param.path.number('id')
-  async deleteTodo(id: number): Promise<boolean> {
+  async deleteTodo(@param.path.number('id') id: number): Promise<boolean> {
     return await this.todoRepo.deleteById(id);
   }
 }

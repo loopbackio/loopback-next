@@ -1,9 +1,9 @@
 import {createClientForHandler, expect, supertest} from '@loopback/testlab';
 import {RestServer} from '@loopback/rest';
 import {TodoApplication} from '../../src/application';
-import {TodoRepository} from '../../src/repositories/index';
+import {TodoRepository} from '../../src/repositories/';
 import {givenTodo} from '../helpers';
-import {Todo} from '../../src/models/index';
+import {Todo} from '../../src/models/';
 
 describe('Application', () => {
   let app: TodoApplication;
