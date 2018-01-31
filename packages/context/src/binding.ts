@@ -5,8 +5,8 @@
 
 import {Context} from './context';
 import {ResolutionSession} from './resolution-session';
-import {Constructor, instantiateClass} from './resolver';
-import {isPromise, BoundValue} from './value-promise';
+import {instantiateClass} from './resolver';
+import {Constructor, isPromise, BoundValue} from './value-promise';
 import {Provider} from './provider';
 
 import * as debugModule from 'debug';

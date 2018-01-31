@@ -7,6 +7,7 @@ import {DecoratorFactory} from '@loopback/metadata';
 import {Context} from './context';
 import {
   BoundValue,
+  Constructor,
   ValueOrPromise,
   MapObject,
   isPromise,
@@ -26,13 +27,6 @@ import * as debugModule from 'debug';
 
 const debug = debugModule('loopback:context:resolver');
 const getTargetName = DecoratorFactory.getTargetName;
-
-/**
- * A class constructor accepting arbitrary arguments.
- */
-export type Constructor<T> =
-  // tslint:disable-next-line:no-any
-  new (...args: any[]) => T;
 
 /**
  * Create an instance of a class which constructor has arguments
