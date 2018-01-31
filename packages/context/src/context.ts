@@ -7,10 +7,13 @@ import {Binding} from './binding';
 import {
   isPromise,
   BoundValue,
+  Constructor,
   ValueOrPromise,
   getDeepProperty,
 } from './value-promise';
 import {ResolutionSession} from './resolution-session';
+
+import {v1 as uuidv1} from 'uuid';
 
 import * as debugModule from 'debug';
 const debug = debugModule('loopback:context');
@@ -19,14 +22,24 @@ const debug = debugModule('loopback:context');
  * Context provides an implementation of Inversion of Control (IoC) container
  */
 export class Context {
-  private registry: Map<string, Binding>;
+  /**
+   * Name of the context
+   */
+  readonly name: string;
+  protected readonly registry: Map<string, Binding> = new Map();
+  protected _parent?: Context;
 
   /**
    * Create a new context
    * @param _parent The optional parent context
    */
-  constructor(private _parent?: Context) {
-    this.registry = new Map();
+  constructor(_parent?: Context | string, name?: string) {
+    if (typeof _parent === 'string') {
+      name = _parent;
+      _parent = undefined;
+    }
+    this._parent = _parent;
+    this.name = name || uuidv1();
   }
 
   /**
@@ -74,6 +87,18 @@ export class Context {
       return this._parent.isBound(key);
     }
     return false;
+  }
+
+  /**
+   * Get the owning context for a binding key
+   * @param key Binding key
+   */
+  getOwnerContext(key: string): Context | undefined {
+    if (this.contains(key)) return this;
+    if (this._parent) {
+      return this._parent.getOwnerContext(key);
+    }
+    return undefined;
   }
 
   /**

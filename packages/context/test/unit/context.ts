@@ -6,6 +6,47 @@
 import {expect} from '@loopback/testlab';
 import {Context, Binding, BindingScope, BindingType, isPromise} from '../..';
 
+/**
+ * Create a subclass of context so that we can access parents and registry
+ * for assertions
+ */
+class TestContext extends Context {
+  get parent() {
+    return this._parent;
+  }
+  get bindingMap() {
+    const map = new Map(this.registry);
+    return map;
+  }
+}
+
+describe('Context constructor', () => {
+  it('generates a unique name', () => {
+    const ctx = new Context();
+    expect(ctx.name).to.match(
+      /^[0-9A-F]{8}-[0-9A-F]{4}-[1][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
+    );
+  });
+
+  it('accepts a name', () => {
+    const ctx = new Context('my-context');
+    expect(ctx.name).to.eql('my-context');
+  });
+
+  it('accepts a parent context', () => {
+    const c1 = new Context('c1');
+    const ctx = new TestContext(c1);
+    expect(ctx.parent).to.eql(c1);
+  });
+
+  it('accepts a parent context and a name', () => {
+    const c1 = new Context('c1');
+    const ctx = new TestContext(c1, 'c2');
+    expect(ctx.name).to.eql('c2');
+    expect(ctx.parent).to.eql(c1);
+  });
+});
+
 describe('Context', () => {
   let ctx: Context;
   beforeEach('given a context', createContext);
