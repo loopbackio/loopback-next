@@ -185,6 +185,15 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     expect(resolved.config).to.equal('test-config');
   });
 
+  it('injects context with @inject.context', () => {
+    class Store {
+      constructor(@inject.context() public context: Context) {}
+    }
+    ctx.bind('store').toClass(Store);
+    const store: Store = ctx.getSync('store');
+    expect(store.context).to.be.exactly(ctx);
+  });
+
   it('injects values by tag', () => {
     class Store {
       constructor(@inject.tag('store:location') public locations: string[]) {}

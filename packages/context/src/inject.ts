@@ -213,6 +213,10 @@ export namespace inject {
     );
     return inject('', {tag: bindingTag}, resolveByTag);
   };
+
+  export const context = function injectContext() {
+    return inject('', {decorator: '@inject.context'}, ctx => ctx);
+  };
 }
 
 function resolveAsGetter(
