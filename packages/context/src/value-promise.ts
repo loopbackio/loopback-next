@@ -83,7 +83,11 @@ export function resolveMap<T, V>(
   let asyncResolvers: PromiseLike<void>[] | undefined = undefined;
 
   const setter = (key: string) => (val: V) => {
-    result[key] = val;
+    if (val !== undefined) {
+      // Only set the value if it's not undefined so that the default value
+      // for a key will be honored
+      result[key] = val;
+    }
   };
 
   for (const key in map) {
@@ -92,7 +96,11 @@ export function resolveMap<T, V>(
       if (!asyncResolvers) asyncResolvers = [];
       asyncResolvers.push(valueOrPromise.then(setter(key)));
     } else {
-      result[key] = valueOrPromise;
+      if (valueOrPromise !== undefined) {
+        // Only set the value if it's not undefined so that the default value
+        // for a key will be honored
+        result[key] = valueOrPromise;
+      }
     }
   }
 

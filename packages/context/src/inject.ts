@@ -74,6 +74,7 @@ export function inject(
   metadata?: Object,
   resolve?: ResolverFunction,
 ) {
+  metadata = Object.assign({decorator: '@inject'}, metadata);
   return function markParameterOrPropertyAsInjected(
     target: Object,
     member: string | symbol,
@@ -163,6 +164,7 @@ export namespace inject {
     bindingKey: string,
     metadata?: Object,
   ) {
+    metadata = Object.assign({decorator: '@inject.getter'}, metadata);
     return inject(bindingKey, metadata, resolveAsGetter);
   };
 
@@ -183,12 +185,13 @@ export namespace inject {
     bindingKey: string,
     metadata?: Object,
   ) {
+    metadata = Object.assign({decorator: '@inject.setter'}, metadata);
     return inject(bindingKey, metadata, resolveAsSetter);
   };
 
   /**
-   * Inject an array of values by a tag
-   * @param bindingTag Tag name or regex
+   * Inject an array of values by a tag pattern string or regexp
+   *
    * @example
    * ```ts
    * class AuthenticationManager {
@@ -197,8 +200,17 @@ export namespace inject {
    *   ) { }
    * }
    * ```
+   * @param bindingTag Tag name or regex
+   * @param metadata Optional metadata to help the injection
    */
-  export const tag = function injectTag(bindingTag: string | RegExp) {
+  export const tag = function injectTag(
+    bindingTag: string | RegExp,
+    metadata?: Object,
+  ) {
+    metadata = Object.assign(
+      {decorator: '@inject.tag', tag: bindingTag},
+      metadata,
+    );
     return inject('', {tag: bindingTag}, resolveByTag);
   };
 }

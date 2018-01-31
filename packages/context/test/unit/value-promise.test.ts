@@ -146,12 +146,28 @@ describe('resolveMap', () => {
     expect(result).to.eql({a: 'X', b: 'Y'});
   });
 
+  it('does not set a key with value undefined', () => {
+    const source = {a: 'x', b: undefined};
+    const result = resolveMap(source, v => v && v.toUpperCase());
+    expect(result).to.not.have.property('b');
+    expect(result).to.eql({a: 'X'});
+  });
+
   it('resolves an object of promises', async () => {
     const source = {a: 'x', b: 'y'};
     const result = await resolveMap(source, v =>
       Promise.resolve(v.toUpperCase()),
     );
     expect(result).to.eql({a: 'X', b: 'Y'});
+  });
+
+  it('does not set a key with promise resolved to undefined', async () => {
+    const source = {a: 'x', b: undefined};
+    const result = await resolveMap(source, v =>
+      Promise.resolve(v && v.toUpperCase()),
+    );
+    expect(result).to.not.have.property('b');
+    expect(result).to.eql({a: 'X'});
   });
 
   it('resolves an object of promises or values', async () => {

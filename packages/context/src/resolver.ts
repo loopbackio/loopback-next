@@ -134,6 +134,13 @@ function resolve<T>(
         return injection.resolve(ctx, injection, s);
       } else {
         // Default to resolve the value from the context by binding key
+        if (injection.metadata && injection.metadata.optional) {
+          // If the `optional` flag is set for the injection, the resolution
+          // will return `undefined` instead of throwing an error
+          if (!ctx.isBound(injection.bindingKey)) {
+            return undefined;
+          }
+        }
         return ctx.getValueOrPromise(injection.bindingKey, s);
       }
     },

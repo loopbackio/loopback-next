@@ -41,6 +41,26 @@ export interface InjectionElement {
 export type ResolutionElement = BindingElement | InjectionElement;
 
 /**
+ * Type guard for binding elements
+ * @param element A resolution element
+ */
+function isBinding(
+  element: ResolutionElement | undefined,
+): element is BindingElement {
+  return element != null && element.type === 'binding';
+}
+
+/**
+ * Type guard for injection elements
+ * @param element A resolution element
+ */
+function isInjection(
+  element: ResolutionElement | undefined,
+): element is InjectionElement {
+  return element != null && element.type === 'injection';
+}
+
+/**
  * Object to keep states for a session to resolve bindings and their
  * dependencies within a context
  */
@@ -174,7 +194,7 @@ export class ResolutionSession {
    */
   popInjection() {
     const top = this.stack.pop();
-    if (top === undefined || top.type !== 'injection') {
+    if (!isInjection(top)) {
       throw new Error('The top element must be an injection');
     }
 
@@ -196,10 +216,7 @@ export class ResolutionSession {
   get currentInjection(): Injection | undefined {
     for (let i = this.stack.length - 1; i >= 0; i--) {
       const element = this.stack[i];
-      switch (element.type) {
-        case 'injection':
-          return element.value;
-      }
+      if (isInjection(element)) return element.value;
     }
     return undefined;
   }
@@ -210,10 +227,7 @@ export class ResolutionSession {
   get currentBinding(): Binding | undefined {
     for (let i = this.stack.length - 1; i >= 0; i--) {
       const element = this.stack[i];
-      switch (element.type) {
-        case 'binding':
-          return element.value;
-      }
+      if (isBinding(element)) return element.value;
     }
     return undefined;
   }
@@ -227,7 +241,8 @@ export class ResolutionSession {
     if (debugSession.enabled) {
       debugSession('Enter binding:', binding.toJSON());
     }
-    if (this.stack.find(i => i.type === 'binding' && i.value === binding)) {
+
+    if (this.stack.find(i => isBinding(i) && i.value === binding)) {
       const msg =
         `Circular dependency detected: ` +
         `${this.getResolutionPath()} --> ${binding.key}`;
@@ -246,7 +261,7 @@ export class ResolutionSession {
    */
   popBinding() {
     const top = this.stack.pop();
-    if (top === undefined || top.type !== 'binding') {
+    if (!isBinding(top)) {
       throw new Error('The top element must be a binding');
     }
     const binding = top.value;
@@ -259,25 +274,32 @@ export class ResolutionSession {
   }
 
   /**
+   * Getter for bindings on the stack
+   */
+  get bindingStack(): Binding[] {
+    return this.stack.filter(isBinding).map(e => e.value);
+  }
+
+  /**
+   * Getter for injections on the stack
+   */
+  get injectionStack(): Injection[] {
+    return this.stack.filter(isInjection).map(e => e.value);
+  }
+
+  /**
    * Get the binding path as `bindingA --> bindingB --> bindingC`.
    */
   getBindingPath() {
-    return this.stack
-      .filter(i => i.type === 'binding')
-      .map(b => (<Binding>b.value).key)
-      .join(' --> ');
+    return this.bindingStack.map(b => b.key).join(' --> ');
   }
 
   /**
    * Get the injection path as `injectionA --> injectionB --> injectionC`.
    */
   getInjectionPath() {
-    return this.stack
-      .filter(i => i.type === 'injection')
-      .map(
-        i =>
-          ResolutionSession.describeInjection(<Injection>i.value)!.targetName,
-      )
+    return this.injectionStack
+      .map(i => ResolutionSession.describeInjection(i)!.targetName)
       .join(' --> ');
   }
 

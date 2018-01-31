@@ -45,6 +45,40 @@ describe('constructor injection', () => {
     }).to.throw(/Cannot resolve injected arguments/);
   });
 
+  it('allows optional constructor injection', () => {
+    class TestClass {
+      constructor(
+        @inject('optional-bindng-key', {optional: true})
+        public fooBar: string | undefined,
+      ) {}
+    }
+
+    const test = instantiateClass(TestClass, ctx) as TestClass;
+    expect(test.fooBar).to.be.undefined();
+  });
+
+  it('allows optional constructor injection with default value', () => {
+    class TestClass {
+      constructor(
+        @inject('optional-binding-key', {optional: true})
+        public fooBar: string = 'fooBar',
+      ) {}
+    }
+
+    const test = instantiateClass(TestClass, ctx) as TestClass;
+    expect(test.fooBar).to.be.eql('fooBar');
+  });
+
+  it('allows optional property injection with default value', () => {
+    class TestClass {
+      @inject('optional-binding-key', {optional: true})
+      public fooBar: string = 'fooBar';
+    }
+
+    const test = instantiateClass(TestClass, ctx) as TestClass;
+    expect(test.fooBar).to.be.eql('fooBar');
+  });
+
   it('resolves constructor arguments with custom resolve function', () => {
     class TestClass {
       constructor(
@@ -213,6 +247,7 @@ describe('constructor injection', () => {
     const context = new Context();
     let bindingPath = '';
     let resolutionPath = '';
+    let decorators: string[] = [];
 
     class ZClass {
       @inject(
@@ -222,6 +257,7 @@ describe('constructor injection', () => {
         (c: Context, injection: Injection, session: ResolutionSession) => {
           bindingPath = session.getBindingPath();
           resolutionPath = session.getResolutionPath();
+          decorators = session.injectionStack.map(i => i.metadata!.decorator);
         },
       )
       myProp: string;
@@ -245,6 +281,7 @@ describe('constructor injection', () => {
       'x --> @XClass.constructor[0] --> y --> @YClass.constructor[0]' +
         ' --> z --> @ZClass.prototype.myProp',
     );
+    expect(decorators).to.eql(['@inject', '@inject.getter', '@inject']);
   });
 
   it('tracks path of injections', () => {
