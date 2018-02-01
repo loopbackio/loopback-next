@@ -4,7 +4,15 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {resolve, parse} from 'path';
-import {copy, ensureDirSync, emptyDir, remove, ensureDir} from 'fs-extra';
+import {
+  copy,
+  ensureDirSync,
+  emptyDir,
+  remove,
+  ensureDir,
+  pathExists,
+  appendFile,
+} from 'fs-extra';
 
 /**
  * TestSandbox class provides a convenient way to get a reference to a
@@ -64,6 +72,7 @@ export class TestSandbox {
 
   /**
    * Makes a directory in the TestSandbox
+   *
    * @param dir Name of directory to create (relative to TestSandbox path)
    */
   async mkdir(dir: string): Promise<void> {
@@ -72,7 +81,11 @@ export class TestSandbox {
   }
 
   /**
-   * Copies a file from src to the TestSandbox.
+   * Copies a file from src to the TestSandbox. If copying a `.js` file which
+   * has an accompanying `.js.map` file in the src file location, the dest file
+   * will have its sourceMappingURL updated to point to the original file as
+   * an absolute path so you don't need to copy the map file.
+   *
    * @param src Absolute path of file to be copied to the TestSandbox
    * @param [dest] Optional. Destination filename of the copy operation
    * (relative to TestSandbox). Original filename used if not specified.
@@ -82,6 +95,12 @@ export class TestSandbox {
     dest = dest
       ? resolve(this.path, dest)
       : resolve(this.path, parse(src).base);
+
     await copy(src, dest);
+
+    if (parse(src).ext === '.js' && pathExists(src + '.map')) {
+      const srcMap = src + '.map';
+      await appendFile(dest, `\n//# sourceMappingURL=${srcMap}`);
+    }
   }
 }

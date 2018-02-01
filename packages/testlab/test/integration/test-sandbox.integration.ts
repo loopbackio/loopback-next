@@ -16,9 +16,7 @@ describe('TestSandbox integration tests', () => {
     '../../../test/fixtures',
     COPY_FILE,
   );
-  let fileContent: string;
 
-  before(getCopyFileContents);
   beforeEach(createSandbox);
   beforeEach(givenPath);
   afterEach(deleteSandbox);
@@ -37,7 +35,7 @@ describe('TestSandbox integration tests', () => {
   it('copies a file to the sandbox', async () => {
     await sandbox.copyFile(COPY_FILE_PATH);
     expect(await pathExists(resolve(path, COPY_FILE))).to.be.True();
-    await compareFiles(resolve(path, COPY_FILE));
+    await expectFilesToBeIdentical(COPY_FILE_PATH, resolve(path, COPY_FILE));
   });
 
   it('copies and renames the file to the sandbox', async () => {
@@ -45,16 +43,28 @@ describe('TestSandbox integration tests', () => {
     await sandbox.copyFile(COPY_FILE_PATH, rename);
     expect(await pathExists(resolve(path, COPY_FILE))).to.be.False();
     expect(await pathExists(resolve(path, rename))).to.be.True();
-    await compareFiles(resolve(path, rename));
+    await expectFilesToBeIdentical(COPY_FILE_PATH, resolve(path, rename));
   });
 
   it('copies file to a directory', async () => {
     const dir = 'test';
-    await sandbox.mkdir(dir);
     const rename = `${dir}/${COPY_FILE}`;
     await sandbox.copyFile(COPY_FILE_PATH, rename);
     expect(await pathExists(resolve(path, rename))).to.be.True();
-    await compareFiles(resolve(path, rename));
+    await expectFilesToBeIdentical(COPY_FILE_PATH, resolve(path, rename));
+  });
+
+  it('updates source map path for a copied file', async () => {
+    const file = 'test.js';
+    const resolvedFile = resolve(__dirname, '../fixtures/test.js');
+    const sourceMapString = `//# sourceMappingURL=${resolvedFile}.map`;
+
+    await sandbox.copyFile(resolvedFile);
+    let fileContents = (await readFile(resolve(path, file), 'utf8')).split(
+      '\n',
+    );
+
+    expect(fileContents.pop()).to.equal(sourceMapString);
   });
 
   it('deletes the test sandbox', async () => {
@@ -93,13 +103,14 @@ describe('TestSandbox integration tests', () => {
     await sandbox.delete();
   }
 
-  async function compareFiles(path1: string) {
-    const file = await readFile(path1, 'utf8');
-    expect(file).to.equal(fileContent);
+  async function expectFilesToBeIdentical(original: string, copied: string) {
+    const originalContent = await readFile(original, 'utf8');
+    const copiedContent = await readFile(copied, 'utf8');
+    expect(copiedContent).to.equal(originalContent);
   }
 
   function createSandbox() {
-    sandbox = new TestSandbox(resolve(__dirname, 'sandbox'));
+    sandbox = new TestSandbox(resolve(__dirname, '../../.sandbox'));
   }
 
   function givenPath() {
@@ -109,9 +120,5 @@ describe('TestSandbox integration tests', () => {
   async function deleteSandbox() {
     if (!await pathExists(path)) return;
     await remove(sandbox.getPath());
-  }
-
-  async function getCopyFileContents() {
-    fileContent = await readFile(COPY_FILE_PATH, 'utf8');
   }
 });

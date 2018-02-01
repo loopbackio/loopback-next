@@ -35,15 +35,8 @@ describe('repository booter integration tests', () => {
   async function getApp() {
     await sandbox.copyFile(resolve(__dirname, '../fixtures/application.js'));
     await sandbox.copyFile(
-      resolve(__dirname, '../fixtures/application.js.map'),
-    );
-    await sandbox.copyFile(
       resolve(__dirname, '../fixtures/multiple.artifact.js'),
       'repositories/multiple.repository.js',
-    );
-    await sandbox.copyFile(
-      resolve(__dirname, '../fixtures/multiple.artifact.js.map'),
-      'repositories/multiple.artifact.js.map',
     );
 
     const MyApp = require(resolve(SANDBOX_PATH, 'application.js')).BooterApp;
