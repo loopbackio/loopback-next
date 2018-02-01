@@ -18,7 +18,9 @@ type HttpError = HttpErrors.HttpError;
 // tslint:disable-next-line:no-any
 type MaybeBody = any | undefined;
 
-const jsonBodyAsync = promisify(require('body/json'));
+const parseJsonBody: (req: ServerRequest) => Promise<MaybeBody> = promisify(
+  require('body/json'),
+);
 
 /**
  * Get the content-type header value from the request
@@ -67,7 +69,7 @@ function loadRequestBodyIfNeeded(
     return Promise.reject(err);
   }
 
-  return jsonBodyAsync(request).catch((err: HttpError) => {
+  return parseJsonBody(request).catch((err: HttpError) => {
     err.statusCode = 400;
     return Promise.reject(err);
   });
