@@ -8,19 +8,28 @@ import {CoreBindings} from '@loopback/core';
 import {OperationArgs, ParsedRequest} from '@loopback/rest';
 import {getLogMetadata} from '../decorators/log.decorator';
 import {EXAMPLE_LOG_BINDINGS, LOG_LEVEL} from '../keys';
-import {LogFn, TimerFn, HighResTime, LevelMetadata} from '../types';
+import {
+  LogFn,
+  TimerFn,
+  HighResTime,
+  LevelMetadata,
+  LogWriterFn,
+} from '../types';
 import chalk from 'chalk';
-import * as debugModule from 'debug';
-const debug = debugModule('loopback:example:extension:log');
 
 export class LogActionProvider implements Provider<LogFn> {
+  // LogWriteFn is an optional dependency and it falls back to `logToConsole`
+  @inject(EXAMPLE_LOG_BINDINGS.LOGGER, {optional: true})
+  writeLog: LogWriterFn = logToConsole;
+
+  @inject(EXAMPLE_LOG_BINDINGS.APP_LOG_LEVEL, {optional: true})
+  logLevel: number = LOG_LEVEL.WARN;
+
   constructor(
     @inject.getter(CoreBindings.CONTROLLER_CLASS)
     private readonly getController: Getter<Constructor<{}>>,
     @inject.getter(CoreBindings.CONTROLLER_METHOD_NAME)
     private readonly getMethod: Getter<string>,
-    @inject(EXAMPLE_LOG_BINDINGS.APP_LOG_LEVEL)
-    private readonly logLevel: number,
     @inject(EXAMPLE_LOG_BINDINGS.TIMER) public timer: TimerFn,
   ) {}
 
@@ -75,24 +84,26 @@ export class LogActionProvider implements Provider<LogFn> {
         msg = `${time}ms: ${msg}`;
       }
 
-      switch (level) {
-        case LOG_LEVEL.DEBUG:
-          this.log(chalk.white(`DEBUG: ${msg}`));
-          break;
-        case LOG_LEVEL.INFO:
-          this.log(chalk.green(`INFO: ${msg}`));
-          break;
-        case LOG_LEVEL.WARN:
-          this.log(chalk.yellow(`WARN: ${msg}`));
-          break;
-        case LOG_LEVEL.ERROR:
-          this.log(chalk.red(`ERROR: ${msg}`));
-          break;
-      }
+      this.writeLog(msg, level);
     }
   }
+}
 
-  log(msg: string) {
-    debug(msg);
+function logToConsole(msg: string, level: number) {
+  let output;
+  switch (level) {
+    case LOG_LEVEL.DEBUG:
+      output = chalk.white(`DEBUG: ${msg}`);
+      break;
+    case LOG_LEVEL.INFO:
+      output = chalk.green(`INFO: ${msg}`);
+      break;
+    case LOG_LEVEL.WARN:
+      output = chalk.yellow(`WARN: ${msg}`);
+      break;
+    case LOG_LEVEL.ERROR:
+      output = chalk.red(`ERROR: ${msg}`);
+      break;
   }
+  if (output) console.log(output);
 }

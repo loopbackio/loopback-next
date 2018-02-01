@@ -4,7 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {LOG_LEVEL, EXAMPLE_LOG_BINDINGS} from '../keys';
-import {Constructor, Reflector} from '@loopback/context';
+import {
+  Constructor,
+  MethodDecoratorFactory,
+  MetadataInspector,
+} from '@loopback/context';
 import {LevelMetadata} from '../types';
 
 /**
@@ -15,15 +19,13 @@ import {LevelMetadata} from '../types';
  * @param level The Log Level at or above it should log
  */
 export function log(level?: number) {
-  return function(target: Object, methodName: string): void {
-    if (level === undefined) level = LOG_LEVEL.WARN;
-    Reflector.defineMetadata(
-      EXAMPLE_LOG_BINDINGS.METADATA,
-      {level},
-      target,
-      methodName,
-    );
-  };
+  if (level === undefined) level = LOG_LEVEL.WARN;
+  return MethodDecoratorFactory.createDecorator<LevelMetadata>(
+    EXAMPLE_LOG_BINDINGS.METADATA,
+    {
+      level,
+    },
+  );
 }
 
 /**
@@ -36,9 +38,11 @@ export function getLogMetadata(
   controllerClass: Constructor<{}>,
   methodName: string,
 ): LevelMetadata {
-  return Reflector.getMetadata(
-    EXAMPLE_LOG_BINDINGS.METADATA,
-    controllerClass.prototype,
-    methodName,
+  return (
+    MetadataInspector.getMethodMetadata<LevelMetadata>(
+      EXAMPLE_LOG_BINDINGS.METADATA,
+      controllerClass.prototype,
+      methodName,
+    ) || {level: LOG_LEVEL.OFF}
   );
 }

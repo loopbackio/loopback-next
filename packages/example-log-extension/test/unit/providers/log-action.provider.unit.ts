@@ -5,27 +5,28 @@
 
 import {sinon} from '@loopback/testlab';
 import {ParsedRequest} from '@loopback/rest';
-import {Context} from '@loopback/context';
 import {
   LogActionProvider,
   LogFn,
+  LogWriterFn,
   log,
-  EXAMPLE_LOG_BINDINGS,
   LOG_LEVEL,
   HighResTime,
 } from '../../..';
-import {CoreBindings} from '@loopback/core';
 import chalk from 'chalk';
 
-describe('LogActionProvider (unit)', () => {
+import {createLogSpy, restoreLogSpy, createConsoleStub} from '../../log-spy';
+import {logToMemory} from '../../in-memory-logger';
+
+describe('LogActionProvider with in-memory logger', () => {
   let spy: sinon.SinonSpy;
   let logger: LogFn;
   const req = <ParsedRequest>{url: '/test'};
 
-  beforeEach(createLogSpy);
-  beforeEach(getLogger);
+  beforeEach(() => (spy = createLogSpy()));
+  beforeEach(async () => (logger = await getLogger(logToMemory)));
 
-  afterEach(restoreLogSpy);
+  afterEach(() => restoreLogSpy(spy));
 
   it('logs a value without a start time', async () => {
     const match = chalk.red('ERROR: /test :: TestClass.test() => test message');
@@ -52,32 +53,63 @@ describe('LogActionProvider (unit)', () => {
     await logger(req, ['test', 'message'], 'test message');
     sinon.assert.calledWith(spy, match);
   });
-
-  async function getLogger() {
-    class TestClass {
-      @log(LOG_LEVEL.ERROR)
-      test() {}
-    }
-
-    const context: Context = new Context();
-    context.bind(CoreBindings.CONTROLLER_CLASS).to(TestClass);
-    context.bind(CoreBindings.CONTROLLER_METHOD_NAME).to('test');
-    context.bind(EXAMPLE_LOG_BINDINGS.APP_LOG_LEVEL).to(LOG_LEVEL.WARN);
-    context.bind(EXAMPLE_LOG_BINDINGS.TIMER).to(timer);
-    context.bind(EXAMPLE_LOG_BINDINGS.LOG_ACTION).toProvider(LogActionProvider);
-    logger = await context.get(EXAMPLE_LOG_BINDINGS.LOG_ACTION);
-  }
-
-  function createLogSpy() {
-    spy = sinon.spy(LogActionProvider.prototype, 'log');
-  }
-
-  function restoreLogSpy() {
-    spy.restore();
-  }
-
-  function timer(startTime?: HighResTime): HighResTime {
-    if (!startTime) return [3, 3];
-    else return [0, 100000002];
-  }
 });
+
+describe('LogActionProvider with default logger', () => {
+  let stub: sinon.SinonSpy;
+  let logger: LogFn;
+  const req = <ParsedRequest>{url: '/test'};
+
+  beforeEach(() => (stub = createConsoleStub()));
+  beforeEach(async () => (logger = await getLogger()));
+
+  afterEach(() => restoreLogSpy(stub));
+
+  it('logs a value without a start time', async () => {
+    const match = chalk.red('ERROR: /test :: TestClass.test() => test message');
+
+    await logger(req, [], 'test message');
+    sinon.assert.calledWith(stub, match);
+  });
+
+  it('logs a value with a start time', async () => {
+    const match = chalk.red(
+      'ERROR: 100ms: /test :: TestClass.test() => test message',
+    );
+    const startTime: HighResTime = logger.startTimer();
+
+    await logger(req, [], 'test message', startTime);
+    sinon.assert.calledWith(stub, match);
+  });
+
+  it('logs a value with args present', async () => {
+    const match = chalk.red(
+      'ERROR: /test :: TestClass.test(test, message) => test message',
+    );
+
+    await logger(req, ['test', 'message'], 'test message');
+    sinon.assert.calledWith(stub, match);
+  });
+});
+
+async function getLogger(logWriter?: LogWriterFn) {
+  class TestClass {
+    @log(LOG_LEVEL.ERROR)
+    test() {}
+  }
+
+  const provider = new LogActionProvider(
+    () => Promise.resolve(TestClass),
+    () => Promise.resolve('test'),
+    timer,
+  );
+
+  if (logWriter) provider.writeLog = logWriter;
+
+  return provider.value();
+}
+
+function timer(startTime?: HighResTime): HighResTime {
+  if (!startTime) return [3, 3];
+  else return [0, 100000002];
+}
