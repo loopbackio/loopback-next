@@ -46,15 +46,8 @@ describe('booter-utils unit tests', () => {
         resolve(__dirname, '../../fixtures/empty.artifact.js'),
       );
       await sandbox.copyFile(
-        resolve(__dirname, '../../fixtures/empty.artifact.js.map'),
-      );
-      await sandbox.copyFile(
         resolve(__dirname, '../../fixtures/multiple.artifact.js'),
         'nested/multiple.artifact.js',
-      );
-      await sandbox.copyFile(
-        resolve(__dirname, '../../fixtures/multiple.artifact.js.map'),
-        'nested/multiple.artifact.js.map',
       );
     }
   });
@@ -71,9 +64,6 @@ describe('booter-utils unit tests', () => {
       await sandbox.copyFile(
         resolve(__dirname, '../../fixtures/multiple.artifact.js'),
       );
-      await sandbox.copyFile(
-        resolve(__dirname, '../../fixtures/multiple.artifact.js.map'),
-      );
       const files = [resolve(SANDBOX_PATH, 'multiple.artifact.js')];
       const NUM_CLASSES = 2; // Number of classes in above file
 
@@ -86,9 +76,6 @@ describe('booter-utils unit tests', () => {
     it('returns an empty array given an empty file', async () => {
       await sandbox.copyFile(
         resolve(__dirname, '../../fixtures/empty.artifact.js'),
-      );
-      await sandbox.copyFile(
-        resolve(__dirname, '../../fixtures/empty.artifact.js.map'),
       );
       const files = [resolve(SANDBOX_PATH, 'empty.artifact.js')];
 
