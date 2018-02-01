@@ -86,13 +86,20 @@ Define `Binding` keys here for the component as well as any constants for the
 user (for this extension that'll be the logLevel `enum`).
 
 ```ts
+/**
+ * Binding keys used by this component.
+ */
 export namespace EXAMPLE_LOG_BINDINGS {
   export const METADATA = 'example.log.metadata';
   export const APP_LOG_LEVEL = 'example.log.level';
   export const TIMER = 'example.log.timer';
+  export const LOGGER = 'example.log.logger';
   export const LOG_ACTION = 'example.log.action';
 }
 
+/**
+ * Enum to define the supported log levels
+ */
 export enum LOG_LEVEL {
   DEBUG,
   INFO,
@@ -108,10 +115,14 @@ Define TypeScript type definitions / interfaces for complex types and functions 
 ```ts
 import {ParsedRequest, OperationArgs} from '@loopback/rest';
 
+/**
+ * A function to perform REST req/res logging action
+ */
 export interface LogFn {
   (
     req: ParsedRequest,
     args: OperationArgs,
+    // tslint:disable-next-line:no-any
     result: any,
     startTime?: HighResTime,
   ): Promise<void>;
@@ -119,45 +130,78 @@ export interface LogFn {
   startTimer(): HighResTime;
 }
 
+/**
+ * Log level metadata
+ */
 export type LevelMetadata = {level: number};
+
+/**
+ * High resolution time as [seconds, nanoseconds]. Used by process.hrtime().
+ */
 export type HighResTime = [number, number]; // [seconds, nanoseconds]
+
+/**
+ * Log writing function
+ */
+export type LogWriterFn = (msg: string, level: number) => void;
+
+/**
+ * Timer function for logging
+ */
 export type TimerFn = (start?: HighResTime) => HighResTime;
 ```
 
 ### `src/decorators/log.decorator.ts`
-Extension users can use decorators to provide "hints" (or metadata) for our
-component. These "hints" allow the extension to modify behaviour accordingly.
+Extension developers can create decorators to provide "hints" (or metadata) to
+user artifacts such as controllers and their methods. These "hints" allow the
+extension to add extra processing accordingly.
 
 For this extension, the decorator marks which controller methods should be
-logged (and optionally at which level they should be logged).
-`Reflector` from `@loopback/context` is used to store and retrieve the metadata
-by the extension.
+logged (and optionally at which level they should be logged). We leverage
+`@loopback/metadata` module to implement the decorator and inspection function.
 
 ```ts
 import {LOG_LEVEL, EXAMPLE_LOG_BINDINGS} from '../keys';
-import {Constructor, Reflector} from '@loopback/context';
+import {
+  Constructor,
+  MethodDecoratorFactory,
+  MetadataInspector,
+} from '@loopback/context';
 import {LevelMetadata} from '../types';
 
+/**
+ * Mark a controller method as requiring logging (input, output & timing)
+ * if it is set at or greater than Application LogLevel.
+ * LOG_LEVEL.DEBUG < LOG_LEVEL.INFO < LOG_LEVEL.WARN < LOG_LEVEL.ERROR < LOG_LEVEL.OFF
+ *
+ * @param level The Log Level at or above it should log
+ */
 export function log(level?: number) {
-  return function(target: Object, methodName: string): void {
-    if (level === undefined) level = LOG_LEVEL.WARN;
-    Reflector.defineMetadata(
-      EXAMPLE_LOG_BINDINGS.METADATA,
-      {level},
-      target,
-      methodName,
-    );
-  };
+  if (level === undefined) level = LOG_LEVEL.WARN;
+  return MethodDecoratorFactory.createDecorator<LevelMetadata>(
+    EXAMPLE_LOG_BINDINGS.METADATA,
+    {
+      level,
+    },
+  );
 }
 
+/**
+ * Fetch log level stored by `@log` decorator.
+ *
+ * @param controllerClass Target controller
+ * @param methodName Target method
+ */
 export function getLogMetadata(
   controllerClass: Constructor<{}>,
   methodName: string,
 ): LevelMetadata {
-  return Reflector.getMetadata(
-    EXAMPLE_LOG_BINDINGS.METADATA,
-    controllerClass.prototype,
-    methodName,
+  return (
+    MetadataInspector.getMethodMetadata<LevelMetadata>(
+      EXAMPLE_LOG_BINDINGS.METADATA,
+      controllerClass.prototype,
+      methodName,
+    ) || {level: LOG_LEVEL.OFF}
   );
 }
 ```
@@ -214,23 +258,6 @@ export class TimerProvider implements Provider<TimerFn> {
 }
 ```
 
-### `src/providers/log-level.provider.ts`
-A provider can set the default binding value for `example.log.level` so it's
-easier to get started with the extension. User's can override the value by
-binding a new value or using the mixin.
-
-```ts
-import {Provider} from '@loopback/context';
-import {LOG_LEVEL} from '../keys';
-
-export class LogLevelProvider implements Provider<number> {
-  constructor() {}
-  value(): number {
-    return LOG_LEVEL.WARN;
-  }
-}
-```
-
 ### `src/providers/log-action.provider.ts`
 This will be the most important provider for the extension as it is responsible
 for actually logging the request. The extension will retrieve the metadata
@@ -245,17 +272,28 @@ import {CoreBindings} from '@loopback/core';
 import {OperationArgs, ParsedRequest} from '@loopback/rest';
 import {getLogMetadata} from '../decorators/log.decorator';
 import {EXAMPLE_LOG_BINDINGS, LOG_LEVEL} from '../keys';
-import {LogFn, TimerFn, HighResTime, LevelMetadata} from '../types';
+import {
+  LogFn,
+  TimerFn,
+  HighResTime,
+  LevelMetadata,
+  LogWriterFn,
+} from '../types';
 import chalk from 'chalk';
 
 export class LogActionProvider implements Provider<LogFn> {
+  // LogWriteFn is an optional dependency and it falls back to `logToConsole`
+  @inject(EXAMPLE_LOG_BINDINGS.LOGGER, {optional: true})
+  private logWriter: LogWriterFn = logToConsole;
+
+  @inject(EXAMPLE_LOG_BINDINGS.APP_LOG_LEVEL, {optional: true})
+  private logLevel: number = LOG_LEVEL.WARN;
+
   constructor(
     @inject.getter(CoreBindings.CONTROLLER_CLASS)
     private readonly getController: Getter<Constructor<{}>>,
     @inject.getter(CoreBindings.CONTROLLER_METHOD_NAME)
     private readonly getMethod: Getter<string>,
-    @inject(EXAMPLE_LOG_BINDINGS.APP_LOG_LEVEL)
-    private readonly logLevel: number,
     @inject(EXAMPLE_LOG_BINDINGS.TIMER) public timer: TimerFn,
   ) {}
 
@@ -263,6 +301,7 @@ export class LogActionProvider implements Provider<LogFn> {
     const fn = <LogFn>((
       req: ParsedRequest,
       args: OperationArgs,
+      // tslint:disable-next-line:no-any
       result: any,
       start?: HighResTime,
     ) => {
@@ -279,11 +318,13 @@ export class LogActionProvider implements Provider<LogFn> {
   private async action(
     req: ParsedRequest,
     args: OperationArgs,
+    // tslint:disable-next-line:no-any
     result: any,
     start?: HighResTime,
   ): Promise<void> {
     const controllerClass = await this.getController();
     const methodName: string = await this.getMethod();
+
     const metadata: LevelMetadata = getLogMetadata(controllerClass, methodName);
     const level: number | undefined = metadata ? metadata.level : undefined;
 
@@ -294,35 +335,41 @@ export class LogActionProvider implements Provider<LogFn> {
       level !== LOG_LEVEL.OFF
     ) {
       if (!args) args = [];
-      let log = `${req.url} :: ${controllerClass.name}.`;
-      log += `${methodName}(${args.join(', ')}) => `;
+      let msg = `${req.url} :: ${controllerClass.name}.`;
+      msg += `${methodName}(${args.join(', ')}) => `;
 
-      if (typeof result === 'object') log += JSON.stringify(result);
-      else log += result;
+      if (typeof result === 'object') msg += JSON.stringify(result);
+      else msg += result;
 
       if (start) {
         const timeDiff: HighResTime = this.timer(start);
         const time: number =
           timeDiff[0] * 1000 + Math.round(timeDiff[1] * 1e-4) / 100;
-        log = `${time}ms: ${log}`;
+        msg = `${time}ms: ${msg}`;
       }
 
-      switch (level) {
-        case LOG_LEVEL.DEBUG:
-          console.log(chalk.white(`DEBUG: ${log}`));
-          break;
-        case LOG_LEVEL.INFO:
-          console.log(chalk.green(`INFO: ${log}`));
-          break;
-        case LOG_LEVEL.WARN:
-          console.log(chalk.yellow(`WARN: ${log}`));
-          break;
-        case LOG_LEVEL.ERROR:
-          console.log(chalk.red(`ERROR: ${log}`));
-          break;
-      }
+      this.logWriter(msg, level);
     }
   }
+}
+
+function logToConsole(msg: string, level: number) {
+  let output;
+  switch (level) {
+    case LOG_LEVEL.DEBUG:
+      output = chalk.white(`DEBUG: ${msg}`);
+      break;
+    case LOG_LEVEL.INFO:
+      output = chalk.green(`INFO: ${msg}`);
+      break;
+    case LOG_LEVEL.WARN:
+      output = chalk.yellow(`WARN: ${msg}`);
+      break;
+    case LOG_LEVEL.ERROR:
+      output = chalk.red(`ERROR: ${msg}`);
+      break;
+  }
+  if (output) console.log(output);
 }
 ```
 
@@ -333,7 +380,6 @@ Export all the files to ensure a user can import the necessary components.
 export * from './decorators/log.decorator';
 export * from './mixins/log-level.mixin';
 export * from './providers/log-action.provider';
-export * from './providers/log-level.provider';
 export * from './providers/timer.provider';
 export * from './component';
 export * from './types';
@@ -347,13 +393,12 @@ they are automatically bound when a user adds the component to their application
 ```ts
 import {EXAMPLE_LOG_BINDINGS} from './keys';
 import {Component, ProviderMap} from '@loopback/core';
-import {TimerProvider, LogActionProvider, LogLevelProvider} from './';
+import {TimerProvider, LogActionProvider} from './';
 
 export class LogComponent implements Component {
   providers?: ProviderMap = {
     [EXAMPLE_LOG_BINDINGS.TIMER]: TimerProvider,
     [EXAMPLE_LOG_BINDINGS.LOG_ACTION]: LogActionProvider,
-    [EXAMPLE_LOG_BINDINGS.APP_LOG_LEVEL]: LogLevelProvider,
   };
 }
 ```

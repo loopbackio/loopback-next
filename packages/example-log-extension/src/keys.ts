@@ -10,6 +10,7 @@ export namespace EXAMPLE_LOG_BINDINGS {
   export const METADATA = 'example.log.metadata';
   export const APP_LOG_LEVEL = 'example.log.level';
   export const TIMER = 'example.log.timer';
+  export const LOGGER = 'example.log.logger';
   export const LOG_ACTION = 'example.log.action';
 }
 

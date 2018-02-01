@@ -6,7 +6,6 @@
 export * from './decorators/log.decorator';
 export * from './mixins/log-level.mixin';
 export * from './providers/log-action.provider';
-export * from './providers/log-level.provider';
 export * from './providers/timer.provider';
 export * from './component';
 export * from './types';
