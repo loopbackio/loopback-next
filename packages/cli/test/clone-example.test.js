@@ -5,15 +5,13 @@
 
 ('use strict');
 
-const promisify = require('../lib/utils').promisify;
+const promisify = require('util').promisify;
 
 const cloneExampleFromGitHub = require('../generators/example/clone-example');
 const expect = require('@loopback/testlab').expect;
 const TestSandbox = require('@loopback/testlab').TestSandbox;
-const fs = require('fs');
 const glob = promisify(require('glob'));
 const path = require('path');
-const rimraf = promisify(require('rimraf'));
 
 const VALID_EXAMPLE = 'getting-started';
 const SANDBOX_PATH = path.resolve(__dirname, 'sandbox');

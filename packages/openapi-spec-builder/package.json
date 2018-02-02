@@ -3,7 +3,7 @@
   "version": "4.0.0-alpha.20",
   "description": "Make it easy to create OpenAPI (Swagger) specification documents in your tests using the builder pattern.",
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "scripts": {
     "build": "npm run build:dist && npm run build:dist6",

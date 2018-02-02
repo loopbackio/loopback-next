@@ -3,7 +3,7 @@
   "version": "4.0.0-alpha.27",
   "description": "Repository based persistence for LoopBack 4",
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "main": "index",
   "scripts": {

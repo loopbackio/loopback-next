@@ -5,8 +5,6 @@
 
 'use strict';
 
-const promisify = require('../../lib/utils').promisify;
-
 const gunzip = require('gunzip-maybe');
 const path = require('path');
 const request = require('request');
