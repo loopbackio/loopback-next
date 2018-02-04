@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.21"></a>
+# [4.0.0-alpha.21](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-spec-builder@4.0.0-alpha.20...@loopback/openapi-spec-builder@4.0.0-alpha.21) (2018-02-04)
+
+
+
+
+**Note:** Version bump only for package @loopback/openapi-spec-builder
+
 <a name="4.0.0-alpha.20"></a>
 # [4.0.0-alpha.20](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-spec-builder@4.0.0-alpha.19...@loopback/openapi-spec-builder@4.0.0-alpha.20) (2018-01-30)
 

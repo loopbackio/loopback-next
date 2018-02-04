@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.24"></a>
+# [4.0.0-alpha.24](https://github.com/strongloop/loopback-next/compare/@loopback/rest@4.0.0-alpha.23...@loopback/rest@4.0.0-alpha.24) (2018-02-04)
+
+
+### Bug Fixes
+
+* remove console output from tests ([ff4a320](https://github.com/strongloop/loopback-next/commit/ff4a320))
+
+
+
+
 <a name="4.0.0-alpha.23"></a>
 # [4.0.0-alpha.23](https://github.com/strongloop/loopback-next/compare/@loopback/rest@4.0.0-alpha.22...@loopback/rest@4.0.0-alpha.23) (2018-01-30)
 
