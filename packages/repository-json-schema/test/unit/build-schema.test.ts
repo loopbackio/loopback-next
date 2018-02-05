@@ -63,7 +63,7 @@ describe('build-schema', () => {
     it('converts complex types', () => {
       class CustomType {}
       expect(metaToJsonProperty({type: CustomType})).to.eql({
-        $ref: '#definitions/CustomType',
+        $ref: '#/definitions/CustomType',
       });
     });
 
@@ -78,7 +78,7 @@ describe('build-schema', () => {
       class CustomType {}
       expect(metaToJsonProperty({array: true, type: CustomType})).to.eql({
         type: 'array',
-        items: {$ref: '#definitions/CustomType'},
+        items: {$ref: '#/definitions/CustomType'},
       });
     });
   });

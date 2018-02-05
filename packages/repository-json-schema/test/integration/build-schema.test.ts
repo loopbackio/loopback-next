@@ -139,7 +139,7 @@ describe('build-schema', () => {
           const jsonSchema = modelToJsonSchema(TestModel);
           expect(jsonSchema.properties).to.deepEqual({
             cusType: {
-              $ref: '#definitions/CustomType',
+              $ref: '#/definitions/CustomType',
             },
           });
           expect(jsonSchema).to.not.have.key('definitions');
@@ -159,7 +159,7 @@ describe('build-schema', () => {
           const jsonSchema = modelToJsonSchema(TestModel);
           expect(jsonSchema.properties).to.deepEqual({
             cusType: {
-              $ref: '#definitions/CustomType',
+              $ref: '#/definitions/CustomType',
             },
           });
           expect(jsonSchema.definitions).to.deepEqual({
@@ -195,7 +195,7 @@ describe('build-schema', () => {
           const schemaDefs = jsonSchema.definitions;
           expect(schemaProps).to.deepEqual({
             cusBar: {
-              $ref: '#definitions/CustomTypeBar',
+              $ref: '#/definitions/CustomTypeBar',
             },
           });
           expect(schemaDefs).to.deepEqual({
@@ -213,7 +213,7 @@ describe('build-schema', () => {
                 prop: {
                   type: 'array',
                   items: {
-                    $ref: '#definitions/CustomTypeFoo',
+                    $ref: '#/definitions/CustomTypeFoo',
                   },
                 },
               },
@@ -254,7 +254,7 @@ describe('build-schema', () => {
           cusArr: {
             type: 'array',
             items: {
-              $ref: '#definitions/CustomType',
+              $ref: '#/definitions/CustomType',
             },
           },
         });
