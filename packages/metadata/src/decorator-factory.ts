@@ -284,12 +284,14 @@ export class DecoratorFactory<
         Reflector.getMetadata(this.key, target),
       );
       meta = this.mergeWithInherited(meta, target, member, descriptorOrIndex);
+      /* istanbul ignore if  */
       if (debug.enabled) {
         debug('%s: %j', targetName, meta);
       }
       Reflector.defineMetadata(this.key, meta, target);
     } else {
       meta = this.mergeWithOwn(meta, target, member, descriptorOrIndex);
+      /* istanbul ignore if  */
       if (debug.enabled) {
         debug('%s: %j', targetName, meta);
       }

@@ -123,6 +123,38 @@ describe('ClassDecoratorFactory', () => {
   });
 });
 
+describe('ClassDecoratorFactory for primitive types', () => {
+  /**
+   * Define `@classDecorator(spec)`
+   * @param spec
+   */
+  function classDecorator(spec: number): ClassDecorator {
+    return ClassDecoratorFactory.createDecorator('test', spec);
+  }
+
+  const xSpec = 1;
+  @classDecorator(xSpec)
+  class BaseController {}
+
+  @classDecorator(2)
+  class SubController extends BaseController {}
+
+  it('applies metadata to a class', () => {
+    const meta = Reflector.getOwnMetadata('test', BaseController);
+    expect(meta).to.equal(xSpec);
+  });
+
+  it('merges with base class metadata', () => {
+    const meta = Reflector.getOwnMetadata('test', SubController);
+    expect(meta).to.equal(2);
+  });
+
+  it('does not mutate base class metadata', () => {
+    const meta = Reflector.getOwnMetadata('test', BaseController);
+    expect(meta).to.equal(1);
+  });
+});
+
 describe('ClassDecoratorFactory with create', () => {
   interface MySpec {
     x?: number;
