@@ -3,10 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {tmpdir} from 'os';
-import {createHash} from 'crypto';
-import {resolve, join, parse} from 'path';
-import * as util from 'util';
+import {resolve, parse} from 'path';
 import {copy, ensureDirSync, emptyDir, remove, ensureDir} from 'fs-extra';
 
 /**

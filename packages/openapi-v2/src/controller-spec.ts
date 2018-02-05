@@ -22,7 +22,6 @@ import {
   ItemType,
   ItemsObject,
   DefinitionsObject,
-  MapObject,
 } from '@loopback/openapi-spec';
 
 import * as stream from 'stream';

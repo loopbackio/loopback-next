@@ -5,8 +5,6 @@
 
 import {TestSandbox, expect} from '../..';
 import {resolve} from 'path';
-import {createHash} from 'crypto';
-import * as util from 'util';
 import {remove, pathExists, readFile} from 'fs-extra';
 
 describe('TestSandbox integration tests', () => {

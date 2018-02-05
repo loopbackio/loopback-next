@@ -5,12 +5,7 @@
 
 import {Binding} from './binding';
 import {Injection} from './inject';
-import {
-  isPromise,
-  ValueOrPromise,
-  BoundValue,
-  tryWithFinally,
-} from './value-promise';
+import {ValueOrPromise, BoundValue, tryWithFinally} from './value-promise';
 import * as debugModule from 'debug';
 import {DecoratorFactory} from '@loopback/metadata';
 

@@ -145,7 +145,6 @@ export function modelToJsonSchema(ctor: Function): JsonDefinition {
     result.properties = result.properties || {};
     result.properties[p] = result.properties[p] || {};
 
-    const property = result.properties[p];
     const metaProperty = meta.properties[p];
     const metaType = metaProperty.type;
 
