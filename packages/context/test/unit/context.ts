@@ -212,7 +212,7 @@ describe('Context', () => {
   describe('getBinding', () => {
     it('returns the binding object registered under the given key', () => {
       const expected = ctx.bind('foo');
-      const actual = ctx.getBinding('foo');
+      const actual: Binding = ctx.getBinding('foo');
       expect(actual).to.equal(expected);
     });
 
@@ -221,7 +221,8 @@ describe('Context', () => {
     });
 
     it('returns undefined if an optional binding is not found', () => {
-      expect(ctx.getBinding('unknown-key', {optional: true})).to.be.undefined();
+      const actual = ctx.getBinding('unknown-key', {optional: true});
+      expect(actual).to.be.undefined();
     });
 
     it('rejects a key containing property separator', () => {
