@@ -90,21 +90,13 @@ the `RepositoryMixin`:
 
 #### src/application.ts
 ```ts
-import {Application, ApplicationConfig} from '@loopback/core';
-import {RestComponent} from '@loopback/rest';
+import {ApplicationConfig} from '@loopback/core';
+import {RestApplication} from '@loopback/rest';
 import {PingController} from './controllers/ping-controller';
 import {Class, Repository, RepositoryMixin} from '@loopback/repository';
 
-export class TodoApplication extends RepositoryMixin(Application) {
+export class TodoApplication extends RepositoryMixin(RestApplication) {
   constructor(options?: ApplicationConfig) {
-    // Allow options to replace the defined components array, if desired.
-    options = Object.assign(
-      {},
-      {
-        components: [RestComponent],
-      },
-      options,
-    );
     super(options);
     this.setupControllers();
   }
@@ -356,8 +348,8 @@ as adding in our new controller binding.
 
 #### src/application.ts
 ```ts
-import {Application, ApplicationConfig} from '@loopback/core';
-import {RestComponent} from '@loopback/rest';
+import {ApplicationConfig} from '@loopback/core';
+import {RestApplication} from '@loopback/rest';
 import {TodoController, PingController} from './controllers';
 import {
   Class,
@@ -368,16 +360,8 @@ import {
 import {db} from './datasources/db.datasource';
 import {TodoRepository} from './repositories';
 
-export class TodoApplication extends RepositoryMixin(Application) {
+export class TodoApplication extends RepositoryMixin(RestApplication) {
   constructor(options?: ApplicationConfig) {
-    // Allow options to replace the defined components array, if desired.
-    options = Object.assign(
-      {},
-      {
-        components: [RestComponent],
-      },
-      options,
-    );
     super(options);
     this.setupControllers();
     this.setupRepositories();
