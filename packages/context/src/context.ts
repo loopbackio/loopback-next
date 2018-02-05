@@ -270,10 +270,21 @@ export class Context {
    * binding is found, an error will be thrown.
    *
    * @param key Binding key
+   */
+  getBinding(key: string): Binding;
+
+  /**
+   * Look up a binding by key in the context and its ancestors. If no matching
+   * binding is found and `options.optional` is not set to true, an error will
+   * be thrown.
+   *
+   * @param key Binding key
    * @param options Options to control if the binding is optional. If
    * `options.optional` is set to true, the method will return `undefined`
    * instead of throwing an error if the binding key is not found.
    */
+  getBinding(key: string, options?: {optional?: boolean}): Binding | undefined;
+
   getBinding(key: string, options?: {optional?: boolean}): Binding | undefined {
     Binding.validateKey(key);
     const binding = this.registry.get(key);
