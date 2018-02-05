@@ -3,7 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+// tslint:disable-next-line:no-unused-variable
 import {Application} from '@loopback/core';
+
 import {RestApplication, RestServer} from '@loopback/rest';
 
 export class HelloWorldApplication extends RestApplication {

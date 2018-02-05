@@ -10,12 +10,7 @@ import {
   PropertyDecoratorFactory,
   MetadataMap,
 } from '@loopback/metadata';
-import {
-  BoundValue,
-  ValueOrPromise,
-  isPromise,
-  resolveList,
-} from './value-promise';
+import {BoundValue, ValueOrPromise, resolveList} from './value-promise';
 import {Context} from './context';
 import {ResolutionSession} from './resolution-session';
 

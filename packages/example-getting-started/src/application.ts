@@ -8,7 +8,7 @@ import {RestApplication} from '@loopback/rest';
 import {TodoController} from './controllers';
 import {TodoRepository} from './repositories';
 import {db} from './datasources/db.datasource';
-/* tslint:disable:no-unused-imports */
+/* tslint:disable:no-unused-variable */
 // Class and Repository imports required to infer types in consuming code!
 // Do not remove them!
 import {
@@ -17,7 +17,7 @@ import {
   DataSourceConstructor,
   RepositoryMixin,
 } from '@loopback/repository';
-/* tslint:enable:no-unused-imports */
+/* tslint:enable:no-unused-variable */
 export class TodoApplication extends RepositoryMixin(RestApplication) {
   constructor(options?: ApplicationConfig) {
     // TODO(bajtos) The comment below does not make sense to me.

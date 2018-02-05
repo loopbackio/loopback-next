@@ -6,7 +6,7 @@
 import * as path from 'path';
 // The juggler reference must exist for consuming code to correctly infer
 // type info used in the "db" export (contained in DataSourceConstructor).
-/* tslint:disable-next-line:no-unused-imports */
+// tslint:disable-next-line:no-unused-variable
 import {juggler, DataSourceConstructor} from '@loopback/repository';
 
 const dsConfigPath = path.resolve(

@@ -4,14 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {
-  BoundValue,
-  ValueOrPromise,
-  resolveList,
-  resolveMap,
-  tryWithFinally,
-  getDeepProperty,
-} from '../..';
+import {resolveList, resolveMap, tryWithFinally, getDeepProperty} from '../..';
 
 describe('tryWithFinally', () => {
   it('performs final action for a fulfilled promise', async () => {
