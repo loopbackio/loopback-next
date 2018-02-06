@@ -7,7 +7,6 @@ import {Binding} from './binding';
 import {
   isPromise,
   BoundValue,
-  Constructor,
   ValueOrPromise,
   getDeepProperty,
 } from './value-promise';
