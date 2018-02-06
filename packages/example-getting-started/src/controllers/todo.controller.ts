@@ -43,6 +43,12 @@ export class TodoController {
     @param.body('todo', TodoSchema)
     todo: Todo,
   ): Promise<boolean> {
+    // REST adapter does not coerce parameter values coming from string sources
+    // like path & query. As a workaround, we have to cast the value to a number
+    // ourselves.
+    // See https://github.com/strongloop/loopback-next/issues/750
+    id = +id;
+
     return await this.todoRepo.replaceById(id, todo);
   }
 
@@ -52,6 +58,12 @@ export class TodoController {
     @param.body('todo', TodoSchema)
     todo: Todo,
   ): Promise<boolean> {
+    // REST adapter does not coerce parameter values coming from string sources
+    // like path & query. As a workaround, we have to cast the value to a number
+    // ourselves.
+    // See https://github.com/strongloop/loopback-next/issues/750
+    id = +id;
+
     return await this.todoRepo.updateById(id, todo);
   }
 
