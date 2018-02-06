@@ -4,32 +4,24 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application, ApplicationConfig} from '@loopback/core';
-import {RestComponent, RestServer} from '@loopback/rest';
+import {RestApplication, RestServer} from '@loopback/rest';
 import {PingController} from './controllers/ping.controller';
 import {MySequence} from './sequence';
 
-export class <%= project.applicationName %> extends Application {
+export class <%= project.applicationName %> extends RestApplication {
   constructor(options?: ApplicationConfig) {
-    // Allow options to replace the defined components array, if desired.
-    options = Object.assign(
-      {},
-      {
-        components: [RestComponent],
-      },
-      options,
-    );
     super(options);
-    this.server(RestServer);
+    this.sequence(MySequence);
     this.setupControllers();
   }
 
   async start() {
+    await super.start();
+
     const server = await this.getServer(RestServer);
-    server.sequence(MySequence);
     const port = await server.get('rest.port');
     console.log(`Server is running at http://127.0.0.1:${port}`);
     console.log(`Try http://127.0.0.1:${port}/ping`);
-    return await super.start();
   }
 
   setupControllers() {

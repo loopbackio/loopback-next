@@ -155,26 +155,27 @@ import {MyAuthStrategyProvider} from './providers/auth-strategy';
 import {MyController} from './controllers/my-controller';
 import {MySequence} from './sequence';
 
-class MyApp extends Application {
+class MyApp extends RestApplication {
   constructor() {
     super({
-      components: [AuthenticationComponent, RestComponent],
+      components: [AuthenticationComponent],
       rest: {
         sequence: MySequence
       },
       controllers: [MyController],
     });
 
+    this
+      .bind(AuthenticationBindings.STRATEGY)
+      .toProvider(MyAuthStrategyProvider);
+
     this.controller(MyController);
   }
 
   async start() {
-    const server = await this.getServer(RestServer);
-
-    server.bind(AuthenticationBindings.STRATEGY)
-    .toProvider(MyAuthStrategyProvider);
     await super.start();
 
+    const server = await this.getServer(RestServer);
     console.log(`REST server running on port: ${server.getSync('rest.port')}`);
   }
 }

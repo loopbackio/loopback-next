@@ -27,20 +27,17 @@ Here's a basic "Hello World" application using `@loopback/core` and
 
   ```ts
   import {Application} from '@loopback/core';
-  import {RestComponent, RestServer} from '@loopback/rest';
+  import {RestApplication, RestServer} from '@loopback/rest';
 
-  const app = new Application({
-    components: [
-      RestComponent,
-    ]
+  const app = new RestApplication();
+  app.handler((sequence, request, response) => {
+    sequence.send(response, 'hello world');
   });
 
   (async function start() {
-    const rest = await app.getServer(RestServer);
-    rest.handler((sequence, request, response) => {
-      sequence.send(response, 'hello world');
-    });
     await app.start();
+
+    const rest = await app.getServer(RestServer);
     console.log(`REST server running on port: ${rest.getSync('rest.port')}`);
   })();
   ```
