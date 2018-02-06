@@ -325,7 +325,7 @@ describe('Routing metadata for parameters', () => {
             type: 'string',
           },
           foo: {
-            $ref: '#definitions/Foo',
+            $ref: '#/definitions/Foo',
           },
         },
       });

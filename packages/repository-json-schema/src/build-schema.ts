@@ -101,7 +101,7 @@ export function metaToJsonProperty(meta: PropertyDefinition): JsonDefinition {
   }
 
   const propDef = isComplexType(ctor)
-    ? {$ref: `#definitions/${ctor.name}`}
+    ? {$ref: `#/definitions/${ctor.name}`}
     : {type: ctor.name.toLowerCase()};
 
   if (meta.array) {

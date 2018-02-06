@@ -30,6 +30,7 @@ The value of `jsonSchema` will be:
 
 ```json
 {
+  "title": "MyModel",
   "properties": {
     "name": {
       "type": "string"
