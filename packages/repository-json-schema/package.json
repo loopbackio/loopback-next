@@ -6,14 +6,11 @@
     "node": ">=8"
   },
   "scripts": {
-    "build": "npm run build:dist && npm run build:dist6",
-    "build:current": "lb-tsc",
-    "build:dist": "lb-tsc es2017",
-    "build:dist6": "lb-tsc es2015",
+    "build": "lb-tsc es2017",
     "build:apidocs": "lb-apidocs",
-    "clean": "lb-clean loopback-json-schema*.tgz dist dist6 package api-docs",
+    "clean": "lb-clean loopback-json-schema*.tgz dist package api-docs",
     "prepublishOnly": "npm run build && npm run build:apidocs",
-    "pretest": "npm run build:current",
+    "pretest": "npm run build",
     "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/integration/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
     "verify": "npm pack && tar xf loopback-json-schema*.tgz && tree package && npm run clean"
   },
@@ -43,7 +40,6 @@
     "index.js",
     "index.d.ts",
     "dist/src",
-    "dist6/src",
     "api-docs",
     "src"
   ],

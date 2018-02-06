@@ -35,9 +35,8 @@
     "clean": "lerna run clean --loglevel=silent --parallel",
     "clean:lerna": "lerna clean --yes --parallel --loglevel=silent",
     "build": "lerna run build --parallel --loglevel=silent",
-    "build:current": "lerna run build:current --parallel --loglevel=silent",
     "build:full": "npm run clean:lerna && npm run bootstrap && npm run build && npm run mocha && npm run lint",
-    "pretest": "npm run clean && npm run build:current",
+    "pretest": "npm run clean && npm run build",
     "test": "node packages/build/bin/run-nyc npm run mocha",
     "mocha": "node packages/build/bin/run-mocha \"packages/*/DIST/test/**/*.js\" \"packages/cli/test/*.js\"",
     "posttest": "npm run lint"

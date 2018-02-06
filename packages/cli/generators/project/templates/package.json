@@ -11,8 +11,8 @@
     "node": ">=8"
   },
   "scripts": {
-    "build": "lb-tsc",
-    "build:watch": "lb-tsc --watch",
+    "build": "lb-tsc es2017",
+    "build:watch": "lb-tsc es2017 --watch",
     "clean": "lb-clean",
 <% if (project.prettier && project.tslint) { -%>
     "lint": "npm run prettier:check && npm run tslint",
@@ -54,8 +54,7 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist",
-    "dist6"
+    "dist"
   ],
   "dependencies": {
     "@loopback/context": ">=4.0.0-alpha.18",
