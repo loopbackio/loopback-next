@@ -247,7 +247,7 @@ describe('constructor injection', () => {
     const context = new Context();
     let bindingPath = '';
     let resolutionPath = '';
-    let decorators: string[] = [];
+    let decorators: (string | undefined)[] = [];
 
     class ZClass {
       @inject(
