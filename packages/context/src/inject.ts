@@ -29,6 +29,25 @@ export interface ResolverFunction {
 }
 
 /**
+ * An object to provide metadata for `@inject`
+ */
+export interface InjectionMetadata {
+  /**
+   * Name of the decorator function, such as `@inject` or `@inject.setter`.
+   * It's usually set by the decorator implementation.
+   */
+  decorator?: string;
+  /**
+   * Control if the dependency is optional, default to false
+   */
+  optional?: boolean;
+  /**
+   * Other attributes
+   */
+  [attribute: string]: BoundValue;
+}
+
+/**
  * Descriptor for an injection point
  */
 export interface Injection {
@@ -39,7 +58,7 @@ export interface Injection {
     | number;
 
   bindingKey: string; // Binding key
-  metadata?: {[attribute: string]: BoundValue}; // Related metadata
+  metadata?: InjectionMetadata; // Related metadata
   resolve?: ResolverFunction; // A custom resolve function
 }
 
@@ -71,7 +90,7 @@ export interface Injection {
  */
 export function inject(
   bindingKey: string,
-  metadata?: Object,
+  metadata?: InjectionMetadata,
   resolve?: ResolverFunction,
 ) {
   metadata = Object.assign({decorator: '@inject'}, metadata);
@@ -162,7 +181,7 @@ export namespace inject {
    */
   export const getter = function injectGetter(
     bindingKey: string,
-    metadata?: Object,
+    metadata?: InjectionMetadata,
   ) {
     metadata = Object.assign({decorator: '@inject.getter'}, metadata);
     return inject(bindingKey, metadata, resolveAsGetter);
@@ -183,7 +202,7 @@ export namespace inject {
    */
   export const setter = function injectSetter(
     bindingKey: string,
-    metadata?: Object,
+    metadata?: InjectionMetadata,
   ) {
     metadata = Object.assign({decorator: '@inject.setter'}, metadata);
     return inject(bindingKey, metadata, resolveAsSetter);
@@ -205,7 +224,7 @@ export namespace inject {
    */
   export const tag = function injectTag(
     bindingTag: string | RegExp,
-    metadata?: Object,
+    metadata?: InjectionMetadata,
   ) {
     metadata = Object.assign(
       {decorator: '@inject.tag', tag: bindingTag},

@@ -166,7 +166,8 @@ export class ResolutionSession {
     return {
       targetName: name,
       bindingKey: injection.bindingKey,
-      metadata: injection.metadata,
+      // Cast to Object so that we don't have to expose InjectionMetadata
+      metadata: injection.metadata as Object,
     };
   }
 
