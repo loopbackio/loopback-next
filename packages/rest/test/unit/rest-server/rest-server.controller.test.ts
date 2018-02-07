@@ -9,9 +9,8 @@ import {RestServer, RestComponent} from '../../..';
 
 describe('Application.controller()', () => {
   it('binds the controller to "controllers.*" namespace', async () => {
-    const app = new Application({
-      components: [RestComponent],
-    });
+    const app = new Application();
+    app.component(RestComponent);
     const server = await app.getServer(RestServer);
 
     class TestController {}

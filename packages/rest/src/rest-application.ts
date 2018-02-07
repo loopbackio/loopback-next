@@ -28,17 +28,8 @@ export const SequenceActions = RestBindings.SequenceActions;
 export class RestApplication extends Application {
   constructor(config?: ApplicationConfig) {
     const cfg = Object.assign({}, config);
-
-    // If the configuration provides an array of components, we want
-    // to preserve that collection, but also ensure that it contains
-    // RestComponent.
-    if (!cfg.components) {
-      cfg.components = [];
-    }
-    if (!cfg.components.includes(RestComponent)) {
-      cfg.components.push(RestComponent);
-    }
     super(cfg);
+    this.component(RestComponent);
   }
 
   server(server: Constructor<Server>, name?: string): Binding {

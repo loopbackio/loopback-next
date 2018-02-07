@@ -490,9 +490,9 @@ describe('Routing', () => {
   /* ===== HELPERS ===== */
 
   function givenAnApplication() {
-    return new Application({
-      components: [RestComponent],
-    });
+    const app = new Application();
+    app.component(RestComponent);
+    return app;
   }
   async function givenAServer(app: Application) {
     return await app.getServer(RestServer);

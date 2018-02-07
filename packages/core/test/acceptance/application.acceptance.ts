@@ -12,9 +12,8 @@ describe('Bootstrapping the application', () => {
   context('with user-defined components', () => {
     it('binds all user-defined components to the application context', () => {
       class AuditComponent {}
-      const app = new Application({
-        components: [AuditComponent],
-      });
+      const app = new Application();
+      app.component(AuditComponent);
       const componentKeys = app.find('component.*').map(b => b.key);
       expect(componentKeys).to.containEql('components.AuditComponent');
 
@@ -32,27 +31,10 @@ describe('Bootstrapping the application', () => {
       class FooComponent {
         providers = {foo: FooProvider};
       }
-      const app = new Application({
-        components: [FooComponent],
-      });
+      const app = new Application();
+      app.component(FooComponent);
       const value = app.getSync('foo');
       expect(value).to.equal('bar');
-    });
-
-    it('registers controllers from constructor', () => {
-      class ProductController {}
-
-      const app = new Application({
-        controllers: [ProductController],
-      });
-
-      expect(app.find('controllers.*').map(b => b.key)).to.eql([
-        'controllers.ProductController',
-      ]);
-
-      expect(app.findByTag('controller').map(b => b.key)).to.eql([
-        'controllers.ProductController',
-      ]);
     });
 
     it('registers all controllers from components', async () => {
@@ -66,9 +48,8 @@ describe('Bootstrapping the application', () => {
         controllers: ControllerClass[] = [ProductController];
       }
 
-      const app = new Application({
-        components: [ProductComponent],
-      });
+      const app = new Application();
+      app.component(ProductComponent);
 
       expect(app.find('controllers.*').map(b => b.key)).to.eql([
         'controllers.ProductController',
@@ -111,9 +92,8 @@ describe('Bootstrapping the application', () => {
           };
         }
       }
-      const app = new Application({
-        components: [ConfigComponent, GreetingComponent],
-      });
+      const app = new Application();
+      app.components([ConfigComponent, GreetingComponent]);
 
       expect(app.getSync('greeting')).to.equal('Hi!');
     });

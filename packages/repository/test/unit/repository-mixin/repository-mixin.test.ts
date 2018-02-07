@@ -26,14 +26,6 @@ describe('RepositoryMixin', () => {
     expect(typeof myApp.repository).to.be.eql('function');
   });
 
-  it('binds repository from constructor', () => {
-    const myApp = new AppWithRepoMixin({
-      repositories: [NoteRepo],
-    });
-
-    expectNoteRepoToBeBound(myApp);
-  });
-
   it('binds repository from app.repository()', () => {
     const myApp = new AppWithRepoMixin();
 
@@ -45,19 +37,10 @@ describe('RepositoryMixin', () => {
   it('binds user defined component without repository', () => {
     class EmptyTestComponent {}
 
-    const myApp = new AppWithRepoMixin({
-      components: [EmptyTestComponent],
-    });
+    const myApp = new AppWithRepoMixin();
+    myApp.component(EmptyTestComponent);
 
     expectComponentToBeBound(myApp, EmptyTestComponent);
-  });
-
-  it('binds user defined component with repository in constructor', () => {
-    const myApp = new AppWithRepoMixin({
-      components: [TestComponent],
-    });
-
-    expectNoteRepoToBeBound(myApp);
   });
 
   it('binds user defined component with repository from .component()', () => {

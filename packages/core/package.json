@@ -21,9 +21,7 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^4.0.0-alpha.31",
-    "lodash": "^4.17.4",
-    "topo": "^3.0.0"
+    "@loopback/context": "^4.0.0-alpha.31"
   },
   "devDependencies": {
     "@loopback/build": "^4.0.0-alpha.13",

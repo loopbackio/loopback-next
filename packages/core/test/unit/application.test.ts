@@ -5,12 +5,13 @@
 
 import {expect} from '@loopback/testlab';
 import {Application, Server, Component} from '../../index';
-import {Context, Constructor} from '@loopback/context';
+import {Context} from '@loopback/context';
 
 describe('Application', () => {
   describe('controller binding', () => {
     let app: Application;
     class MyController {}
+    class MySecondController {}
 
     beforeEach(givenApp);
 
@@ -28,6 +29,21 @@ describe('Application', () => {
       expect(findKeysByTag(app, 'controller')).to.containEql(binding.key);
     });
 
+    it('binds multiple controllers passed in as an array', () => {
+      const controllers = [MyController, MySecondController];
+      const bindings = app.controllers(controllers);
+
+      const bindA = bindings[0];
+      expect(Array.from(bindA.tags)).to.containEql('controller');
+      expect(bindA.key).to.equal('controllers.MyController');
+      expect(findKeysByTag(app, 'controller')).to.containEql(bindA.key);
+
+      const bindB = bindings[1];
+      expect(Array.from(bindB.tags)).to.containEql('controller');
+      expect(bindB.key).to.equal('controllers.MySecondController');
+      expect(findKeysByTag(app, 'controller')).to.containEql(bindB.key);
+    });
+
     function givenApp() {
       app = new Application();
     }
@@ -37,6 +53,9 @@ describe('Application', () => {
     let app: Application;
     class MyController {}
     class MyComponent implements Component {
+      controllers = [MyController];
+    }
+    class MySecondComponent implements Component {
       controllers = [MyController];
     }
 
@@ -49,10 +68,20 @@ describe('Application', () => {
       );
     });
 
-    it('binds a component', () => {
+    it('binds a component with custom name', () => {
       app.component(MyComponent, 'my-component');
       expect(findKeysByTag(app, 'component')).to.containEql(
         'components.my-component',
+      );
+    });
+
+    it('binds multiple components passed in as an array', () => {
+      app.components([MyComponent, MySecondComponent]);
+      expect(findKeysByTag(app, 'component')).to.containEql(
+        'components.MyComponent',
+      );
+      expect(findKeysByTag(app, 'component')).to.containEql(
+        'components.MySecondComponent',
       );
     });
 
@@ -77,43 +106,16 @@ describe('Application', () => {
       const result = await app.getServer(name);
       expect(result.constructor.name).to.equal(FakeServer.name);
     });
-  });
 
-  describe('configuration', () => {
-    it('allows servers to be provided via config', async () => {
-      const name = 'abc123';
-      const app = new Application({
-        servers: {
-          abc123: FakeServer,
-        },
-      });
-      const result = await app.getServer(name);
-      expect(result.constructor.name).to.equal(FakeServer.name);
-    });
-
-    describe('start', () => {
-      it('starts all injected servers', async () => {
-        const app = new Application({
-          components: [FakeComponent],
-        });
-
-        await app.start();
-        const server = await app.getServer(FakeServer);
-        expect(server).to.not.be.null();
-        expect(server.running).to.equal(true);
-        await app.stop();
-      });
-
-      it('does not attempt to start poorly named bindings', async () => {
-        const app = new Application({
-          components: [FakeComponent],
-        });
-
-        // The app.start should not attempt to start this binding.
-        app.bind('controllers.servers').to({});
-        await app.start();
-        await app.stop();
-      });
+    it('allows binding of multiple servers as an array', async () => {
+      const app = new Application();
+      const bindings = app.servers([FakeServer, FakerServer]);
+      expect(Array.from(bindings[0].tags)).to.containEql('server');
+      expect(Array.from(bindings[1].tags)).to.containEql('server');
+      const fakeResult = await app.getServer(FakeServer);
+      expect(fakeResult.constructor.name).to.equal(FakeServer.name);
+      const fakerResult = await app.getServer(FakerServer);
+      expect(fakerResult.constructor.name).to.equal(FakerServer.name);
     });
   });
 
@@ -121,18 +123,6 @@ describe('Application', () => {
     return ctx.findByTag(tag).map(binding => binding.key);
   }
 });
-
-class FakeComponent implements Component {
-  servers: {
-    [name: string]: Constructor<Server>;
-  };
-  constructor() {
-    this.servers = {
-      FakeServer,
-      FakeServer2: FakeServer,
-    };
-  }
-}
 
 class FakeServer extends Context implements Server {
   running: boolean = false;
@@ -147,3 +137,5 @@ class FakeServer extends Context implements Server {
     this.running = false;
   }
 }
+
+class FakerServer extends FakeServer {}
