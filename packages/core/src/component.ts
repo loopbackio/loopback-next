@@ -6,6 +6,7 @@
 import {Constructor, Provider, BoundValue} from '@loopback/context';
 import {Server} from './server';
 import {Application, ControllerClass} from './application';
+import {Booter} from './booter';
 
 /**
  * A map of name/class pairs for binding providers
@@ -27,6 +28,10 @@ export interface Component {
    * A map of name/class pairs for binding providers
    */
   providers?: ProviderMap;
+  /**
+   * An array of booter classes
+   */
+  booters?: Constructor<Booter>[];
   /**
    * A map of name/class pairs for servers
    */
@@ -65,5 +70,9 @@ export function mountComponent(app: Application, component: Component) {
     for (const serverKey in component.servers) {
       app.server(component.servers[serverKey], serverKey);
     }
+  }
+
+  if (component.booters) {
+    app.booter(component.booters);
   }
 }
