@@ -31,6 +31,7 @@ describe('app-generator specfic files', () => {
     );
     assert.fileContent('src/application.ts', /constructor\(/);
     assert.fileContent('src/application.ts', /async start\(/);
+    assert.fileContent('src/application.ts', /BootComponent/);
 
     assert.file('src/index.ts');
     assert.fileContent('src/index.ts', /new MyAppApplication/);

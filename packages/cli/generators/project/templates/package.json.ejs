@@ -57,6 +57,9 @@
     "dist"
   ],
   "dependencies": {
+<% if (project.loopbackBoot) { -%>
+    "@loopback/boot": ">=4.0.0-alpha.1",
+<% } -%>
     "@loopback/context": ">=4.0.0-alpha.18",
 <% if (project.projectType === 'application') { -%>
     "@loopback/core": ">=4.0.0-alpha.20",

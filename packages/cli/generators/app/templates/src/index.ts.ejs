@@ -7,6 +7,9 @@ export async function main(options?: ApplicationConfig) {
   const app = new <%= project.applicationName %>(options);
 
   try {
+  <% if (project.loopbackBoot) { -%>
+    await app.boot();
+  <% } -%>
     await app.start();
   } catch (err) {
     console.error(`Unable to start application: ${err}`);
