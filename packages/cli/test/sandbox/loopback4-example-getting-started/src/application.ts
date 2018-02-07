@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ApplicationConfig, BootOptions} from '@loopback/core';
+import {ApplicationConfig} from '@loopback/core';
 import {RestApplication} from '@loopback/rest';
-import {BootComponent} from '@loopback/boot';
+import {TodoController} from './controllers';
 import {TodoRepository} from './repositories';
 import {db} from './datasources/db.datasource';
 /* tslint:disable:no-unused-variable */
@@ -21,13 +21,8 @@ import {
 export class TodoApplication extends RepositoryMixin(RestApplication) {
   constructor(options?: ApplicationConfig) {
     super(options);
-    this.component(BootComponent);
     this.setupRepositories();
-  }
-
-  async boot(): Promise<void> {
-    const bootOptions: BootOptions = {projectRoot: __dirname};
-    await super.boot(bootOptions);
+    this.setupControllers();
   }
 
   // Helper functions (just to keep things organized)
@@ -43,5 +38,10 @@ export class TodoApplication extends RepositoryMixin(RestApplication) {
     // See https://github.com/strongloop/loopback-next/issues/743
     this.bind('datasource').to(datasource);
     this.repository(TodoRepository);
+  }
+
+  setupControllers() {
+    // TODO(bajtos) Automate controller registration via @loopback/boot
+    this.controller(TodoController);
   }
 }

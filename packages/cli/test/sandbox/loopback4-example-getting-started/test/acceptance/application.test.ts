@@ -15,7 +15,6 @@ describe('Application', () => {
   before(givenARestServer);
   before(givenTodoRepository);
   before(async () => {
-    await app.boot();
     await app.start();
   });
   before(() => {

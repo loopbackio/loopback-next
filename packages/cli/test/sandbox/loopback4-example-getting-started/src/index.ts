@@ -9,7 +9,6 @@ import {RestServer} from '@loopback/rest';
 export async function main() {
   const app = new TodoApplication();
   try {
-    await app.boot();
     await app.start();
   } catch (err) {
     console.error(`Unable to start application: ${err}`);
