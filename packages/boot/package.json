@@ -1,0 +1,50 @@
+{
+  "name": "@loopback/boot",
+  "version": "4.0.0-alpha.1",
+  "description": "A collection of Booters for LoopBack 4 Applications",
+  "engines": {
+    "node": ">=8"
+  },
+  "scripts": {
+    "acceptance": "lb-mocha \"DIST/test/acceptance/**/*.js\"",
+    "build": "npm run build:dist",
+    "build:current": "lb-tsc",
+    "build:dist": "lb-tsc es2017",
+    "build:apidocs": "lb-apidocs",
+    "clean": "lb-clean loopback-boot*.tgz dist package api-docs",
+    "prepublishOnly": "npm run build && npm run build:apidocs",
+    "pretest": "npm run build:current",
+    "integration": "lb-mocha \"DIST/test/integration/**/*.js\"",
+    "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/integration/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
+    "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-boot*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM",
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/context": "^4.0.0-alpha.27",
+    "@loopback/core": "^4.0.0-alpha.29",
+    "@types/debug": "0.0.30",
+    "@types/glob": "^5.0.34",
+    "debug": "^3.1.0",
+    "glob": "^7.1.2"
+  },
+  "devDependencies": {
+    "@loopback/build": "^4.0.0-alpha.10",
+    "@loopback/openapi-v2": "^4.0.0-alpha.3",
+    "@loopback/rest": "^4.0.0-alpha.18",
+    "@loopback/testlab": "^4.0.0-alpha.20"
+  },
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist/src",
+    "api-docs",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
+}
