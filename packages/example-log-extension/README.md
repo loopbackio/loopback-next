@@ -37,8 +37,9 @@ class LogApp extends LogLevelMixin(RestApplication) {
     super({
       components: [LogComponent],
       logLevel: LOG_LEVEL.ERROR,
-      controllers: [MyController]
     });
+    this.components(LogComponent);
+    this.controller(MyController);
   };
 }
 

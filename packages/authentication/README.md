@@ -165,6 +165,7 @@ class MyApp extends RestApplication {
 
     this.sequence(MySequence);
 
+    this.components([AuthenticationComponent, RestComponent]);
     this.controller(MyController);
   }
 
