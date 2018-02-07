@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.0.1-alpha.6"></a>
+## [1.0.1-alpha.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-getting-started@1.0.1-alpha.5...@loopback/example-getting-started@1.0.1-alpha.6) (2018-02-07)
+
+
+### Bug Fixes
+
+* **build:** fix tslint config and slipped violations ([22f8e05](https://github.com/strongloop/loopback-next/commit/22f8e05))
+* **example-getting-started:** update readme to use RestApplication ([#961](https://github.com/strongloop/loopback-next/issues/961)) ([b3e2c0e](https://github.com/strongloop/loopback-next/commit/b3e2c0e))
+* **example-getting-started:** use RestApplication ([#955](https://github.com/strongloop/loopback-next/issues/955)) ([3829878](https://github.com/strongloop/loopback-next/commit/3829878))
+* use parameter level decorators for openapi params ([c29dd19](https://github.com/strongloop/loopback-next/commit/c29dd19))
+
+
+### build
+
+* drop dist6 related targets ([#945](https://github.com/strongloop/loopback-next/issues/945)) ([a2368ce](https://github.com/strongloop/loopback-next/commit/a2368ce))
+
+
+### BREAKING CHANGES
+
+* Support for Node.js version lower than 8.0 has been dropped.
+Please upgrade to the latest Node.js 8.x LTS version.
+
+Co-Authored-by: Taranveer Virk <taranveer@virk.cc>
+
+
+
+
 <a name="1.0.1-alpha.5"></a>
 ## [1.0.1-alpha.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-getting-started@1.0.1-alpha.4...@loopback/example-getting-started@1.0.1-alpha.5) (2018-02-04)
 

@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.10"></a>
+# [4.0.0-alpha.10](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v2@4.0.0-alpha.9...@loopback/openapi-v2@4.0.0-alpha.10) (2018-02-07)
+
+
+### Bug Fixes
+
+* **build:** fix tslint config and slipped violations ([22f8e05](https://github.com/strongloop/loopback-next/commit/22f8e05))
+* **repository-json-schema:** fix $ref typo ([#963](https://github.com/strongloop/loopback-next/issues/963)) ([a438729](https://github.com/strongloop/loopback-next/commit/a438729))
+
+
+### build
+
+* drop dist6 related targets ([#945](https://github.com/strongloop/loopback-next/issues/945)) ([a2368ce](https://github.com/strongloop/loopback-next/commit/a2368ce))
+
+
+### BREAKING CHANGES
+
+* Support for Node.js version lower than 8.0 has been dropped.
+Please upgrade to the latest Node.js 8.x LTS version.
+
+Co-Authored-by: Taranveer Virk <taranveer@virk.cc>
+
+
+
+
 <a name="4.0.0-alpha.9"></a>
 # [4.0.0-alpha.9](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v2@4.0.0-alpha.8...@loopback/openapi-v2@4.0.0-alpha.9) (2018-02-04)
 

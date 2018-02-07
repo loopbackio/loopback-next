@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.4"></a>
+# [4.0.0-alpha.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-rpc-server@4.0.0-alpha.3...@loopback/example-rpc-server@4.0.0-alpha.4) (2018-02-07)
+
+
+### build
+
+* drop dist6 related targets ([#945](https://github.com/strongloop/loopback-next/issues/945)) ([a2368ce](https://github.com/strongloop/loopback-next/commit/a2368ce))
+
+
+### BREAKING CHANGES
+
+* Support for Node.js version lower than 8.0 has been dropped.
+Please upgrade to the latest Node.js 8.x LTS version.
+
+Co-Authored-by: Taranveer Virk <taranveer@virk.cc>
+
+
+
+
 <a name="4.0.0-alpha.3"></a>
 # [4.0.0-alpha.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-rpc-server@4.0.0-alpha.2...@loopback/example-rpc-server@4.0.0-alpha.3) (2018-02-04)
 

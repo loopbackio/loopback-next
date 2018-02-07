@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.7"></a>
+# [4.0.0-alpha.7](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@4.0.0-alpha.6...@loopback/repository-json-schema@4.0.0-alpha.7) (2018-02-07)
+
+
+### Bug Fixes
+
+* **build:** fix tslint config and slipped violations ([22f8e05](https://github.com/strongloop/loopback-next/commit/22f8e05))
+* **repository-json-schema:** fix $ref typo ([#963](https://github.com/strongloop/loopback-next/issues/963)) ([a438729](https://github.com/strongloop/loopback-next/commit/a438729))
+
+
+### build
+
+* drop dist6 related targets ([#945](https://github.com/strongloop/loopback-next/issues/945)) ([a2368ce](https://github.com/strongloop/loopback-next/commit/a2368ce))
+
+
+### BREAKING CHANGES
+
+* Support for Node.js version lower than 8.0 has been dropped.
+Please upgrade to the latest Node.js 8.x LTS version.
+
+Co-Authored-by: Taranveer Virk <taranveer@virk.cc>
+
+
+
+
 <a name="4.0.0-alpha.6"></a>
 # [4.0.0-alpha.6](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@4.0.0-alpha.5...@loopback/repository-json-schema@4.0.0-alpha.6) (2018-02-04)
 

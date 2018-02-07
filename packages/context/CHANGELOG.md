@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.31"></a>
+# [4.0.0-alpha.31](https://github.com/strongloop/loopback-next/compare/@loopback/context@4.0.0-alpha.30...@loopback/context@4.0.0-alpha.31) (2018-02-07)
+
+
+### Bug Fixes
+
+* **build:** fix tslint config and slipped violations ([22f8e05](https://github.com/strongloop/loopback-next/commit/22f8e05))
+* **context:** address review comments ([3925296](https://github.com/strongloop/loopback-next/commit/3925296))
+* **context:** pass metadata to `[@inject](https://github.com/inject).tag` ([27e26e9](https://github.com/strongloop/loopback-next/commit/27e26e9))
+
+
+### build
+
+* drop dist6 related targets ([#945](https://github.com/strongloop/loopback-next/issues/945)) ([a2368ce](https://github.com/strongloop/loopback-next/commit/a2368ce))
+
+
+### Features
+
+* **context:** add [@inject](https://github.com/inject).context for context injection ([6e0deaf](https://github.com/strongloop/loopback-next/commit/6e0deaf))
+* **context:** add decorator & optional attrs to injection metadata ([3a1c7de](https://github.com/strongloop/loopback-next/commit/3a1c7de))
+* **context:** add name to context ([21e1daf](https://github.com/strongloop/loopback-next/commit/21e1daf))
+* **context:** add unbind() to allow remove bindings by key ([b9c3893](https://github.com/strongloop/loopback-next/commit/b9c3893))
+* **context:** enhance binding caching to be context aware ([7b7eb30](https://github.com/strongloop/loopback-next/commit/7b7eb30))
+* **context:** reports the resolution path for circular deps ([bc4ce20](https://github.com/strongloop/loopback-next/commit/bc4ce20))
+
+
+### BREAKING CHANGES
+
+* Support for Node.js version lower than 8.0 has been dropped.
+Please upgrade to the latest Node.js 8.x LTS version.
+
+Co-Authored-by: Taranveer Virk <taranveer@virk.cc>
+
+
+
+
 <a name="4.0.0-alpha.30"></a>
 # [4.0.0-alpha.30](https://github.com/strongloop/loopback-next/compare/@loopback/context@4.0.0-alpha.29...@loopback/context@4.0.0-alpha.30) (2018-02-04)
 

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.29"></a>
+# [4.0.0-alpha.29](https://github.com/strongloop/loopback-next/compare/@loopback/repository@4.0.0-alpha.28...@loopback/repository@4.0.0-alpha.29) (2018-02-07)
+
+
+### build
+
+* drop dist6 related targets ([#945](https://github.com/strongloop/loopback-next/issues/945)) ([a2368ce](https://github.com/strongloop/loopback-next/commit/a2368ce))
+
+
+### BREAKING CHANGES
+
+* Support for Node.js version lower than 8.0 has been dropped.
+Please upgrade to the latest Node.js 8.x LTS version.
+
+Co-Authored-by: Taranveer Virk <taranveer@virk.cc>
+
+
+
+
 <a name="4.0.0-alpha.28"></a>
 # [4.0.0-alpha.28](https://github.com/strongloop/loopback-next/compare/@loopback/repository@4.0.0-alpha.27...@loopback/repository@4.0.0-alpha.28) (2018-02-04)
 
