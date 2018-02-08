@@ -14,7 +14,6 @@
     ".nyc_output": true,
     "coverage": true,
     "packages/*/dist": true,
-    "packages/*/dist6": true,
     "packages/*/api-docs": true
   },
   "files.insertFinalNewline": true,

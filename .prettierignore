@@ -1,5 +1,4 @@
 packages/*/dist
-packages/*/dist6
 packages/*/api-docs
 packages/cli/generators/*/templates
 package.json

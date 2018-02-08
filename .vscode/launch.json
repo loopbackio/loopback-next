@@ -8,7 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "Run Mocha tests",
-      "program": "${workspaceRoot}/node_modules/.bin/_mocha",
+      "program": "${workspaceRoot}/packages/build/node_modules/.bin/_mocha",
       "cwd": "${workspaceRoot}",
       "args": [
         "--opts",
