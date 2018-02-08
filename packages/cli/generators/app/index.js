@@ -11,13 +11,6 @@ module.exports = class extends ProjectGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);
-    this.buildOptions = [
-      'tslint',
-      'prettier',
-      'mocha',
-      'loopbackBuild',
-      'loopbackBoot',
-    ];
   }
 
   _setupGenerator() {
@@ -26,11 +19,6 @@ module.exports = class extends ProjectGenerator {
     this.option('applicationName', {
       type: String,
       description: 'Application name',
-    });
-
-    this.option('loopbackBoot', {
-      type: Boolean,
-      description: 'Use @loopback/boot',
     });
 
     return super._setupGenerator();

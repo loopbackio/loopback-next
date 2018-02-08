@@ -1,31 +1,21 @@
-import {Application, ApplicationConfig<% if (project.loopbackBoot) { %>, BootOptions<% } %>} from '@loopback/core';
+import {Application, ApplicationConfig, BootOptions} from '@loopback/core';
 import {RestApplication, RestServer} from '@loopback/rest';
-<% if (project.loopbackBoot) { -%>
 import {BootComponent} from '@loopback/boot';
-<% } else {-%>
-import {PingController} from './controllers/ping.controller';
-<% } -%>
 import {MySequence} from './sequence';
 
 export class <%= project.applicationName %> extends RestApplication {
   constructor(options?: ApplicationConfig) {
     // Allow options to replace the defined components array, if desired.
     super(options);
-<% if (project.loopbackBoot) { -%>
     this.component(BootComponent);
-<% } else {-%>
-    this.setupControllers();
-<% } -%>
   }
 
-<% if (project.loopbackBoot) { -%>
   async boot(): Promise<void> {
     const bootOptions: BootOptions = {
       projectRoot: __dirname,
     };
     await super.boot(bootOptions);
   }
-<% } -%>
 
   async start() {
     await super.start();
@@ -35,10 +25,4 @@ export class <%= project.applicationName %> extends RestApplication {
     console.log(`Server is running at http://127.0.0.1:${port}`);
     console.log(`Try http://127.0.0.1:${port}/ping`);
   }
-
-<% if(!project.loopbackBoot) { -%>
-  setupControllers() {
-    this.controller(PingController);
-  }
-<% } -%>
 }
