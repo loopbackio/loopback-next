@@ -1,6 +1,5 @@
 {
     "include": [
-      "packages/example-codehub/src/**",
       "packages/*/dist*/*"
     ],
     "extension": [
