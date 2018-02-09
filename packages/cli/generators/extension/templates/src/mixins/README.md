@@ -154,7 +154,6 @@ class LoggingComponent implements Component{
   loggers: [ColorLogger];
 }
 
-const app = new LoggingApplication({
-  components: [LoggingComponent] // Logger from MyComponent will be bound to loggers.ColorLogger
-});
+const app = new LoggingApplication();
+app.component(LoggingComponent); // Logger from MyComponent will be bound to loggers.ColorLogger
 ```

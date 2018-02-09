@@ -43,7 +43,8 @@ describe('RestApplication', () => {
         () => {
           // tslint:disable-next-line:no-unused-variable
           const app = new RestApplication();
-          app.components([RestComponent, OtherRestComponent]);
+          app.component(RestComponent);
+          app.component(OtherRestComponent);
         },
         Error,
         ERR_NO_MULTI_SERVER,

@@ -93,7 +93,8 @@ describe('Bootstrapping the application', () => {
         }
       }
       const app = new Application();
-      app.components([ConfigComponent, GreetingComponent]);
+      app.component(ConfigComponent);
+      app.component(GreetingComponent);
 
       expect(app.getSync('greeting')).to.equal('Hi!');
     });

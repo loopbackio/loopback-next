@@ -51,7 +51,7 @@ Application options.
       port: 3001
     }
   });
-  app.components(RestComponent);
+  app.component(RestComponent);
 ```
 
 ### `rest` options

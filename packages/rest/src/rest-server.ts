@@ -60,10 +60,7 @@ const OPENAPI_SPEC_MAPPING: {[key: string]: OpenApiSpecOptions} = {
  * A REST API server for use with Loopback.
  * Add this server to your application by importing the RestComponent.
  * ```ts
- * const app = new MyApplication({
- *   components: [RestComponent]
- * });
- * // OR
+ * const app = new MyApplication();
  * app.component(RestComponent);
  * ```
  *

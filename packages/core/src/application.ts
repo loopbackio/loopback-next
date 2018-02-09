@@ -49,30 +49,6 @@ export class Application extends Context {
   }
 
   /**
-   * Bind an array of controllers to the Application's master
-   * context.
-   * Each controller added in this way will automatically be named based on
-   * the class constructor name with the "controllers." prefix.
-   *
-   * If you wish to control the binding keys for particular controller
-   * instances, use the app.controller function instead.
-   * ```ts
-   * app.controllers([
-   *  FooController,
-   *  BarController,
-   * ]);
-   * // Creates a binding for "controllers.FooController" and a binding for
-   * // "controllers.BarController";
-   * ```
-   *
-   * @param ctors Array of controller classes.
-   * @returns {Binding[]} An array of bindings for the registered controllers.
-   */
-  controllers(ctors: ControllerClass[]): Binding[] {
-    return ctors.map(ctor => this.controller(ctor));
-  }
-
-  /**
    * Bind a Server constructor to the Application's master context.
    * Each server constructor added in this way must provide a unique prefix
    * to prevent binding overlap.
@@ -217,29 +193,6 @@ export class Application extends Context {
     // Assuming components can be synchronously instantiated
     const instance = this.getSync(componentKey);
     mountComponent(this, instance);
-  }
-
-  /**
-   * Add multiple components to this application and register their
-   * extensions.
-   *
-   * Each component added in this way will automatically be named based on the
-   * class constructor name with the "components." prefix.
-   *
-   * If you wish to control the binding keys for particular instances,
-   * use the app.component function instead.
-   * ```ts
-   * app.components([
-   *  RestComponent,
-   *  GRPCComponent,
-   * ]);
-   * // Creates a binding for "components.RestComponent" and a binding for
-   * // "components.GRPCComponent";
-   * ```
-   * @param ctors Array of components to add.
-   */
-  public components(ctors: Constructor<Component>[]) {
-    ctors.map(ctor => this.component(ctor));
   }
 }
 
