@@ -26,7 +26,6 @@ Here's a basic "Hello World" application using `@loopback/core` and
 `@loopback/rest`:
 
   ```ts
-  import {Application} from '@loopback/core';
   import {RestApplication, RestServer} from '@loopback/rest';
 
   const app = new RestApplication();

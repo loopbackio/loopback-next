@@ -32,10 +32,10 @@ import {
 } from 'loopback4-example-log-extension';
 // Other imports ...
 
-class LogApp extends LogLevelMixin(Application) {
+class LogApp extends LogLevelMixin(RestApplication) {
   constructor() {
     super({
-      components: [RestComponent, LogComponent],
+      components: [LogComponent],
       logLevel: LOG_LEVEL.ERROR,
       controllers: [MyController]
     });

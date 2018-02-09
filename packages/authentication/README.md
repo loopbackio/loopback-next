@@ -145,29 +145,25 @@ export class MySequence implements SequenceHandler {
 Finally, put it all together in your application class:
 
 ```ts
-import {Application} from '@loopback/core';
 import {
   AuthenticationComponent,
   AuthenticationBindings,
 } from '@loopback/authentication';
-import {RestComponent, RestServer} from '@loopback/rest';
+import {RestApplication, RestServer} from '@loopback/rest';
 import {MyAuthStrategyProvider} from './providers/auth-strategy';
 import {MyController} from './controllers/my-controller';
 import {MySequence} from './sequence';
 
 class MyApp extends RestApplication {
   constructor() {
-    super({
-      components: [AuthenticationComponent],
-      rest: {
-        sequence: MySequence
-      },
-      controllers: [MyController],
-    });
+    super();
 
+    this.component(AuthenticationComponent);
     this
       .bind(AuthenticationBindings.STRATEGY)
       .toProvider(MyAuthStrategyProvider);
+
+    this.sequence(MySequence);
 
     this.controller(MyController);
   }
