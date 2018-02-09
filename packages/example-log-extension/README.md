@@ -35,7 +35,6 @@ import {
 class LogApp extends LogLevelMixin(RestApplication) {
   constructor() {
     super({
-      components: [LogComponent],
       logLevel: LOG_LEVEL.ERROR,
     });
     this.components(LogComponent);
