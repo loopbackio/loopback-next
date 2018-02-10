@@ -24,6 +24,8 @@ export class Application extends Context {
     // Make options available to other modules as well.
     this.bind(CoreBindings.APPLICATION_CONFIG).to(options);
 
+    this.config(options);
+
     if (options.components) {
       for (const component of options.components) {
         this.component(component);
@@ -178,6 +180,36 @@ export class Application extends Context {
         return await fn(server);
       }),
     );
+  }
+
+  // tslint:disable-next-line:no-any
+  private config(cfg: {[key: string]: any}) {
+    for (const key in cfg) {
+      const item = cfg[key];
+      // Iterate through the keys one level down (not recursively!)
+      if (item instanceof Object) {
+        for (const subkey in item) {
+          this.bindItemOrClass(`${key}.${subkey}`, item[subkey]);
+        }
+      }
+      this.bindItemOrClass(key, item);
+    }
+  }
+  /**
+   * Helper function for either binding an item or a class, depending.
+   * @private
+   * @param key The key of the configuration element.
+   * @param itemOrClass The item or class to bind.
+   */
+  // tslint:disable-next-line:no-any
+  private bindItemOrClass(key: string, itemOrClass: any) {
+    if (itemOrClass instanceof Function) {
+      this.bind(key)
+        .toClass(itemOrClass)
+        .inScope(BindingScope.SINGLETON);
+    } else {
+      this.bind(key).to(itemOrClass);
+    }
   }
 
   /**
