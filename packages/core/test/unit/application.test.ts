@@ -77,6 +77,13 @@ describe('Application', () => {
       const result = await app.getServer(name);
       expect(result.constructor.name).to.equal(FakeServer.name);
     });
+
+    it('works synchronously', () => {
+      const app = new Application();
+      app.server(FakeServer);
+      const result = app.getServerSync(FakeServer.name);
+      expect(result.constructor.name).to.equal(FakeServer.name);
+    });
   });
 
   describe('configuration', () => {

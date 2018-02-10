@@ -124,23 +124,44 @@ export class Application extends Context {
    * Retrieve the singleton instance for a bound constructor.
    *
    * @template T
-   * @param {Constructor<T>=} ctor The constructor that was used to make the
-   * binding.
+   * @param {Constructor<T>|String=} target The constructor or key that was used
+   * to make the binding.
    * @returns {Promise<T>}
    * @memberof Application
    */
   public async getServer<T extends Server>(
     target: Constructor<T> | String,
   ): Promise<T> {
-    let key: string;
+    return (await this.get(this._getServerKey(target))) as T;
+  }
+
+  /**
+   * Synchronously retrieve the singleton instance for a bound constructor.
+   *
+   * @template T
+   * @param {Constructor<T>|String=} target The constructor or key that was used
+   * to make the binding.
+   * @returns {T}
+   * @memberof Application
+   */
+  public getServerSync<T extends Server>(target: Constructor<T> | String): T {
+    return this.getSync(this._getServerKey(target)) as T;
+  }
+
+  /**
+   * @private
+   * @param {Constructor<T>|String=} target The constructor or key that was used
+   * to make the binding.
+   * @returns {String} The key of the server binding.
+   */
+  private _getServerKey<T>(target: Constructor<T> | String): string {
     // instanceof check not reliable for string.
     if (typeof target === 'string') {
-      key = `${CoreBindings.SERVERS}.${target}`;
+      return `${CoreBindings.SERVERS}.${target}`;
     } else {
       const ctor = target as Constructor<T>;
-      key = `servers.${ctor.name}`;
+      return `servers.${ctor.name}`;
     }
-    return (await this.get(key)) as T;
   }
 
   /**
