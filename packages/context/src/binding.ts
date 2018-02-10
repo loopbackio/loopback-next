@@ -149,6 +149,7 @@ export class Binding {
   public readonly tags: Set<string> = new Set();
   public scope: BindingScope = BindingScope.TRANSIENT;
   public type: BindingType;
+  public options: Context;
 
   private _cache: WeakMap<Context, BoundValue>;
   private _getValue: (
@@ -260,11 +261,18 @@ export class Binding {
     );
   }
 
+  /**
+   * Lock the binding so that it cannot be rebound
+   */
   lock(): this {
     this.isLocked = true;
     return this;
   }
 
+  /**
+   * Add a tag to the binding
+   * @param tagName Tag name or an array of tag names
+   */
   tag(tagName: string | string[]): this {
     if (typeof tagName === 'string') {
       this.tags.add(tagName);
@@ -276,6 +284,32 @@ export class Binding {
     return this;
   }
 
+  /**
+   * Set options for the binding
+   * @param options Options object or a context object that binds all options
+   */
+  withOptions(options: {[name: string]: BoundValue} | Context): this {
+    if (isPromise(options)) {
+      throw new Error(
+        'Promises are not allowed for options. Use a plain object or ' +
+          'an instance of Context to support asynchronous resolutions.',
+      );
+    }
+    if (!this.options) this.options = new Context();
+    if (options instanceof Context) {
+      this.options = this.options.composeWith(options);
+    } else {
+      for (const p in options) {
+        this.options.bind(p).to(options[p]);
+      }
+    }
+    return this;
+  }
+
+  /**
+   * Set the binding scope
+   * @param scope Binding scope
+   */
   inScope(scope: BindingScope): this {
     this.scope = scope;
     return this;
@@ -407,11 +441,17 @@ export class Binding {
     return this;
   }
 
+  /**
+   * Unlock the binding
+   */
   unlock(): this {
     this.isLocked = false;
     return this;
   }
 
+  /**
+   * Convert to a plain JSON object
+   */
   toJSON(): Object {
     // tslint:disable-next-line:no-any
     const json: {[name: string]: any} = {

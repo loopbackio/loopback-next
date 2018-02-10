@@ -10,7 +10,14 @@ import {
   PropertyDecoratorFactory,
   MetadataMap,
 } from '@loopback/metadata';
-import {BoundValue, ValueOrPromise, resolveList} from './value-promise';
+import {
+  BoundValue,
+  ValueOrPromise,
+  isPromise,
+  getDeepProperty,
+  resolveList,
+} from './value-promise';
+import {Binding} from './binding';
 import {Context} from './context';
 import {ResolutionSession} from './resolution-session';
 
@@ -242,9 +249,52 @@ export namespace inject {
    *  constructor(@inject.context() private ctx: Context) {}
    * }
    * ```
+   * @param bindingTag Tag name or regex
+   * @param metadata Optional metadata to help the injection
    */
   export const context = function injectContext() {
     return inject('', {decorator: '@inject.context'}, ctx => ctx);
+  };
+
+  /**
+   * Inject an option from `options` of the parent binding. If no corresponding
+   * option value is present, `undefined` will be injected.
+   *
+   * @example
+   * ```ts
+   * class Store {
+   *   constructor(
+   *     @inject.options('x') public optionX: number,
+   *     @inject.options('y') public optionY: string,
+   *   ) { }
+   * }
+   *
+   * ctx.bind('store1').toClass(Store).withOptions({ x: 1, y: 'a' });
+   * ctx.bind('store2').toClass(Store).withOptions({ x: 2, y: 'b' });
+   *
+   *  const store1 = ctx.getSync('store1');
+   *  expect(store1.optionX).to.eql(1);
+   *  expect(store1.optionY).to.eql('a');
+
+   * const store2 = ctx.getSync('store2');
+   * expect(store2.optionX).to.eql(2);
+   * expect(store2.optionY).to.eql('b');
+   * ```
+   *
+   * @param optionPath Optional property path of the option. If is `''` or not
+   * present, the `options` object will be returned.
+   * @param metadata Optional metadata to help the injection
+   */
+  export const options = function injectOptions(
+    optionPath?: string,
+    metadata?: Object,
+  ) {
+    optionPath = optionPath || '';
+    metadata = Object.assign(
+      {optionPath, decorator: '@inject.options', optional: true},
+      metadata,
+    );
+    return inject('', metadata, resolveAsOptions);
   };
 }
 
@@ -271,6 +321,106 @@ function resolveAsSetter(ctx: Context, injection: Injection) {
 }
 
 /**
+ * Try to resolve key/path from the binding key hierarchy
+ * For example, if the binding key is `servers.rest.server1`, we'll try the
+ * following entries:
+ * 1. servers.rest.server1:$options#host
+ * 2. servers.rest:$options#server1.host
+ * 3. servers.$options#rest.server1.host`
+ * 4. $options#servers.rest.server1.host
+ *
+ * @param ctx Context object
+ * @param key Binding key with namespaces as prefixes separated by `.`)
+ * @param path The property path
+ * @param session ResolutionSession
+ */
+function resolveOptionsByNamespaces(
+  ctx: Context,
+  key: string,
+  path: string,
+  session?: ResolutionSession,
+) {
+  let options;
+  while (true) {
+    const optionKeyAndPath = Binding.buildKeyWithPath(
+      key ? `${key}:$options` : '$options',
+      path,
+    );
+    options = ctx.getValueOrPromise(optionKeyAndPath, {
+      session,
+      optional: true,
+    });
+    // Found the corresponding options
+    if (options !== undefined) return options;
+
+    // We have tried all levels
+    if (!key) return undefined;
+
+    // Move last part of the key into the path
+    const index = key.lastIndexOf('.');
+    path = `${key.substring(index + 1)}.${path}`;
+    key = key.substring(0, index);
+  }
+}
+
+function resolveFromOptions(
+  options: Context,
+  path: string,
+  session?: ResolutionSession,
+) {
+  // Default to all options
+  const bindings = options.find(/.*/);
+  // Map array values to an object keyed by binding keys
+  const mapValues = (values: BoundValue[]) => {
+    const obj: {
+      [name: string]: BoundValue;
+    } = {};
+    let index = 0;
+    for (const v of values) {
+      obj[bindings[index].key] = v;
+      index++;
+    }
+    return getDeepProperty(obj, path);
+  };
+  const result = resolveBindings(options, bindings, session);
+  if (isPromise(result)) {
+    return result.then(mapValues);
+  } else {
+    return mapValues(result);
+  }
+}
+
+function resolveAsOptions(
+  ctx: Context,
+  injection: Injection,
+  session?: ResolutionSession,
+) {
+  if (!(session && session.currentBinding)) {
+    // No binding is available
+    return undefined;
+  }
+
+  const meta = injection.metadata || {};
+  const binding = session.currentBinding;
+  let options = binding.options;
+  const keyAndPath = Binding.parseKeyWithPath(meta.optionPath);
+  if (!options) {
+    /**
+     * No local options found, try to resolve it from the corresponding binding.
+     */
+    let key = binding.key;
+    let path = [keyAndPath.key, keyAndPath.path].join('.');
+    return resolveOptionsByNamespaces(ctx, key, path, session);
+  }
+
+  if (!keyAndPath.key) {
+    return resolveFromOptions(options, keyAndPath.path || '', session);
+  }
+
+  return options.getValueOrPromise(meta.optionPath, {session, optional: true});
+}
+
+/**
  * Return an array of injection objects for parameters
  * @param target The target class for constructor or static methods,
  * or the prototype for instance methods
@@ -289,6 +439,18 @@ export function describeInjectedArguments(
   return meta || [];
 }
 
+function resolveBindings(
+  ctx: Context,
+  bindings: Binding[],
+  session?: ResolutionSession,
+) {
+  return resolveList(bindings, b => {
+    // We need to clone the session so that resolution of multiple bindings
+    // can be tracked in parallel
+    return b.getValue(ctx, ResolutionSession.fork(session));
+  });
+}
+
 function resolveByTag(
   ctx: Context,
   injection: Injection,
@@ -296,12 +458,7 @@ function resolveByTag(
 ) {
   const tag: string | RegExp = injection.metadata!.tag;
   const bindings = ctx.findByTag(tag);
-
-  return resolveList(bindings, b => {
-    // We need to clone the session so that resolution of multiple bindings
-    // can be tracked in parallel
-    return b.getValue(ctx, ResolutionSession.fork(session));
-  });
+  return resolveBindings(ctx, bindings, session);
 }
 
 /**

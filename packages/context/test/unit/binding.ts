@@ -11,6 +11,7 @@ import {
   Context,
   inject,
   Provider,
+  BoundValue,
 } from '../..';
 
 const key = 'foo';
@@ -69,6 +70,85 @@ describe('Binding', () => {
         key: 'foo',
         path: 'bar',
       });
+    });
+  });
+
+  describe('withOptions', () => {
+    /**
+     * Get a plain object for all options of the given binding
+     */
+    async function getOptions(b: Binding) {
+      const obj: {[name: string]: BoundValue} = {};
+      if (!b.options) return obj;
+      const bindings = b.options.find('*');
+
+      for (const i of bindings) {
+        obj[i.key] = await b.options.get(i.key);
+      }
+      return obj;
+    }
+
+    it('sets options for the binding', async () => {
+      binding.withOptions({x: 1});
+      expect(await getOptions(binding)).to.eql({x: 1});
+    });
+
+    it('rejects promises as options for the binding', async () => {
+      expect(() => binding.withOptions(Promise.resolve({x: 1}))).to.throw(
+        'Promises are not allowed for options. Use a plain object or ' +
+          'an instance of Context to support asynchronous resolutions.',
+      );
+    });
+
+    it('clones options', () => {
+      const options = {x: 1};
+      binding.withOptions(options);
+      expect(binding.options).to.not.exactly(options);
+    });
+
+    it('merges options for the binding if called more than once', async () => {
+      binding.withOptions({x: 1});
+      binding.withOptions({y: 2});
+      expect(await getOptions(binding)).to.eql({x: 1, y: 2});
+    });
+
+    it('accepts options as context', async () => {
+      const options = new Context();
+      options.bind('x').toDynamicValue(async () => 1);
+      binding.withOptions(options);
+      const val = await getOptions(binding);
+      expect(val).to.eql({x: 1});
+    });
+
+    it('merges an object and a context for options', async () => {
+      binding.withOptions({y: 'a'});
+      const options = new Context();
+      options.bind('x').toDynamicValue(() => 1);
+      binding.withOptions(options);
+      const val = await getOptions(binding);
+      expect(val).to.eql({x: 1, y: 'a'});
+    });
+
+    it('merges a context and an object of options', async () => {
+      const options = new Context();
+      options.bind('x').toDynamicValue(() => 1);
+      binding.withOptions(options);
+      binding.withOptions({y: 'a'});
+      const val = await getOptions(binding);
+      expect(val).to.eql({x: 1, y: 'a'});
+    });
+
+    it('merges a context and another context of options', async () => {
+      const options = new Context();
+      options.bind('x').toDynamicValue(() => 1);
+      binding.withOptions(options);
+
+      const anotherOptions = new Context();
+      anotherOptions.bind('y').to('a');
+      binding.withOptions(anotherOptions);
+
+      const val = await getOptions(binding);
+      expect(val).to.eql({x: 1, y: 'a'});
     });
   });
 
