@@ -9,10 +9,12 @@ import {
   PathsObject,
 } from '@loopback/openapi-v3-types';
 import {
+  BindingScope,
   Context,
   Constructor,
-  instantiateClass,
   invokeMethod,
+  instantiateClass,
+  ValueOrPromise,
 } from '@loopback/context';
 import {ServerRequest} from 'http';
 import * as HttpErrors from 'http-errors';
@@ -61,13 +63,42 @@ export function parseRequestUrl(request: ServerRequest): ParsedRequest {
   return parsedRequest;
 }
 
+/**
+ * A controller instance with open properties/methods
+ */
 // tslint:disable-next-line:no-any
-export type ControllerClass = Constructor<any>;
+export type ControllerInstance = {[name: string]: any};
 
+/**
+ * A factory function to create controller instances synchronously or
+ * asynchronously
+ */
+export type ControllerFactory = (
+  ctx: Context,
+) => ValueOrPromise<ControllerInstance>;
+
+/**
+ * Controller class
+ */
+export type ControllerClass = Constructor<ControllerInstance>;
+
+/**
+ * Routing table
+ */
 export class RoutingTable {
   private readonly _routes: RouteEntry[] = [];
 
-  registerController(controller: ControllerClass, spec: ControllerSpec) {
+  /**
+   * Register a controller as the route
+   * @param controller
+   * @param spec
+   * @param controllerFactory
+   */
+  registerController(
+    controller: ControllerClass,
+    spec: ControllerSpec,
+    controllerFactory?: ControllerFactory,
+  ) {
     assert(
       typeof spec === 'object' && !!spec,
       'API specification must be a non-null object',
@@ -83,7 +114,14 @@ export class RoutingTable {
       for (const verb in spec.paths[p]) {
         const opSpec: OperationObject = spec.paths[p][verb];
         const fullPath = RoutingTable.joinPath(basePath, p);
-        const route = new ControllerRoute(verb, fullPath, opSpec, controller);
+        const route = new ControllerRoute(
+          verb,
+          fullPath,
+          opSpec,
+          controller,
+          undefined,
+          controllerFactory,
+        );
         this.registerRoute(route);
       }
     }
@@ -98,6 +136,10 @@ export class RoutingTable {
     return fullPath;
   }
 
+  /**
+   * Register a route
+   * @param route A route entry
+   */
   registerRoute(route: RouteEntry) {
     // TODO(bajtos) handle the case where opSpec.parameters contains $ref
     // See https://github.com/strongloop/loopback-next/issues/435
@@ -127,6 +169,10 @@ export class RoutingTable {
     return paths;
   }
 
+  /**
+   * Map a request to a route
+   * @param request
+   */
   find(request: ParsedRequest): ResolvedRoute {
     for (const entry of this._routes) {
       const match = entry.match(request);
@@ -139,14 +185,40 @@ export class RoutingTable {
   }
 }
 
+/**
+ * An entry in the routing table
+ */
 export interface RouteEntry {
+  /**
+   * http verb
+   */
   readonly verb: string;
+  /**
+   * http path
+   */
   readonly path: string;
+  /**
+   * OpenAPI operation spec
+   */
   readonly spec: OperationObject;
 
+  /**
+   * Map an http request to a route
+   * @param request
+   */
   match(request: ParsedRequest): ResolvedRoute | undefined;
 
+  /**
+   * Update bindings for the request context
+   * @param requestContext
+   */
   updateBindings(requestContext: Context): void;
+
+  /**
+   * A handler to invoke the resolved controller method
+   * @param requestContext
+   * @param args
+   */
   invokeHandler(
     requestContext: Context,
     args: OperationArgs,
@@ -155,15 +227,27 @@ export interface RouteEntry {
   describe(): string;
 }
 
+/**
+ * A route with path parameters resolved
+ */
 export interface ResolvedRoute extends RouteEntry {
   readonly pathParams: PathParameterValues;
 }
 
+/**
+ * Base implementation of RouteEntry
+ */
 export abstract class BaseRoute implements RouteEntry {
   public readonly verb: string;
   private readonly _keys: pathToRegexp.Key[] = [];
   private readonly _pathRegexp: RegExp;
 
+  /**
+   * Construct a new route
+   * @param verb http verb
+   * @param path http request path pattern
+   * @param spec OpenAPI operation spec
+   */
   constructor(
     verb: string,
     public readonly path: string,
@@ -259,55 +343,78 @@ export class Route extends BaseRoute {
   }
 }
 
-type ControllerInstance = {[opName: string]: Function};
-
+/**
+ * A route backed by a controller
+ */
 export class ControllerRoute extends BaseRoute {
+  protected readonly _controllerCtor: ControllerClass;
+  protected readonly _controllerName: string;
   protected readonly _methodName: string;
+  protected readonly _controllerFactory: ControllerFactory;
 
+  /**
+   * Construct a controller based route
+   * @param verb http verb
+   * @param path http request path
+   * @param spec OpenAPI operation spec
+   * @param controllerCtor Controller class
+   * @param methodName Controller method name, default to `x-operation-name`
+   * @param controllerFactory A factory function to create a controller instance
+   */
   constructor(
     verb: string,
     path: string,
     spec: OperationObject,
-    protected readonly _controllerCtor: ControllerClass,
+    controllerCtor: ControllerClass,
     methodName?: string,
+    controllerFactory?: ControllerFactory,
   ) {
-    super(
-      verb,
-      path,
-      // Add x-controller-name and x-operation-name if not present
-      Object.assign(
-        {
-          'x-controller-name': _controllerCtor.name,
-          'x-operation-name': methodName,
-          tags: [_controllerCtor.name],
-        },
-        spec,
-      ),
-    );
-
-    if (!methodName) {
-      methodName = this.spec['x-operation-name'];
-    }
+    const controllerName = spec['x-controller-name'] || controllerCtor.name;
+    methodName = methodName || spec['x-operation-name'];
 
     if (!methodName) {
       throw new Error(
         'methodName must be provided either via the ControllerRoute argument ' +
           'or via "x-operation-name" extension field in OpenAPI spec. ' +
           `Operation: "${verb} ${path}" ` +
-          `Controller: ${this._controllerCtor.name}.`,
+          `Controller: ${controllerName}.`,
       );
     }
 
+    super(
+      verb,
+      path,
+      // Add x-controller-name and x-operation-name if not present
+      Object.assign(
+        {
+          'x-controller-name': controllerName,
+          'x-operation-name': methodName,
+          tags: [controllerName],
+        },
+        spec,
+      ),
+    );
+
+    this._controllerCtor = controllerCtor;
+    this._controllerName = controllerName || controllerCtor.name;
     this._methodName = methodName;
+
+    if (controllerFactory == null) {
+      controllerFactory = createControllerFactory(controllerCtor);
+    }
+    this._controllerFactory = controllerFactory;
   }
 
   describe(): string {
-    return `${this._controllerCtor.name}.${this._methodName}`;
+    return `${this._controllerName}.${this._methodName}`;
   }
 
   updateBindings(requestContext: Context) {
-    const ctor = this._controllerCtor;
-    requestContext.bind(CoreBindings.CONTROLLER_CLASS).to(ctor);
+    requestContext
+      .bind(CoreBindings.CONTROLLER_CURRENT)
+      .toDynamicValue(() => this._controllerFactory(requestContext))
+      .inScope(BindingScope.SINGLETON);
+    requestContext.bind(CoreBindings.CONTROLLER_CLASS).to(this._controllerCtor);
     requestContext
       .bind(CoreBindings.CONTROLLER_METHOD_NAME)
       .to(this._methodName);
@@ -317,7 +424,9 @@ export class ControllerRoute extends BaseRoute {
     requestContext: Context,
     args: OperationArgs,
   ): Promise<OperationRetval> {
-    const controller = await this._createControllerInstance(requestContext);
+    const controller = await requestContext.get<ControllerInstance>(
+      'controller.current',
+    );
     if (typeof controller[this._methodName] !== 'function') {
       throw new HttpErrors.NotFound(
         `Controller method not found: ${this.describe()}`,
@@ -331,20 +440,40 @@ export class ControllerRoute extends BaseRoute {
       args,
     );
   }
-
-  private async _createControllerInstance(
-    requestContext: Context,
-  ): Promise<ControllerInstance> {
-    const valueOrPromise = instantiateClass(
-      this._controllerCtor,
-      requestContext,
-    );
-    return (await Promise.resolve(valueOrPromise)) as ControllerInstance;
-  }
 }
 
 function describeOperationParameters(opSpec: OperationObject) {
   return ((opSpec.parameters as ParameterObject[]) || [])
     .map(p => (p && p.name) || '')
     .join(', ');
+}
+
+/**
+ * Create a controller factory function
+ * @param source The source can be one of the following:
+ * - A binding key
+ * - A controller class
+ * - A controller instance
+ */
+export function createControllerFactory(
+  source: ControllerClass | string | ControllerInstance,
+): ControllerFactory {
+  if (typeof source === 'string') {
+    return ctx => ctx.get<ControllerInstance>(source);
+  } else if (typeof source === 'function') {
+    const ctor = source as ControllerClass;
+    return async ctx => {
+      // By default, we get an instance of the controller from the context
+      // using `controllers.<controllerName>` as the key
+      let inst = await ctx.get<ControllerInstance>(`controllers.${ctor.name}`, {
+        optional: true,
+      });
+      if (inst === undefined) {
+        inst = await instantiateClass<ControllerInstance>(ctor, ctx);
+      }
+      return inst;
+    };
+  } else {
+    return ctx => source;
+  }
 }

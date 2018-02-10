@@ -13,6 +13,9 @@ import {
   RestApplication,
   SequenceActions,
   HttpServerLike,
+  ControllerClass,
+  createControllerFactory,
+  ControllerFactory,
 } from '../../..';
 
 import {api, get, post, param, requestBody} from '@loopback/openapi-v3';
@@ -27,8 +30,8 @@ import {
 
 import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
-import {inject, Context} from '@loopback/context';
-import {ControllerClass} from '../../../src/router/routing-table';
+import {inject, Context, BindingScope} from '@loopback/context';
+
 import {createUnexpectedHttpErrorLogger} from '../../helpers';
 
 /* # Feature: Routing
@@ -357,6 +360,32 @@ describe('Routing', () => {
       });
   });
 
+  it('binds the current controller', async () => {
+    const app = givenAnApplication();
+    const server = await givenAServer(app);
+    const spec = anOpenApiSpec()
+      .withOperationReturningString('get', '/name', 'checkController')
+      .build();
+
+    @api(spec)
+    class GetCurrentController {
+      async checkController(
+        @inject('controllers.GetCurrentController') inst: GetCurrentController,
+      ): Promise<object> {
+        return {
+          result: this === inst,
+        };
+      }
+    }
+    givenControllerInApp(app, GetCurrentController);
+
+    return whenIMakeRequestTo(server)
+      .get('/name')
+      .expect({
+        result: true,
+      });
+  });
+
   it('supports function-based routes', async () => {
     const app = givenAnApplication();
     const server = await givenAServer(app);
@@ -530,6 +559,27 @@ describe('Routing', () => {
     await client.get('/greet?name=world').expect(200, 'hello world');
   });
 
+  it('supports controller routes with factory defined via server.route()', async () => {
+    const app = givenAnApplication();
+    const server = await givenAServer(app);
+
+    class MyController {
+      greet(name: string) {
+        return `hello ${name}`;
+      }
+    }
+
+    const spec = anOperationSpec()
+      .withParameter({name: 'name', in: 'query', type: 'string'})
+      .build();
+
+    const factory = createControllerFactory(MyController);
+    server.route('get', '/greet', spec, MyController, 'greet', factory);
+
+    const client = whenIMakeRequestTo(server);
+    await client.get('/greet?name=world').expect(200, 'hello world');
+  });
+
   describe('RestApplication', () => {
     it('supports function-based routes declared via app.route()', async () => {
       const app = new RestApplication();
@@ -606,6 +656,33 @@ describe('Routing', () => {
         .expect(200, 'hello world');
     });
 
+    it('supports controller routes via app.route() with a factory', async () => {
+      const app = new RestApplication();
+
+      class MyController {
+        greet(name: string) {
+          return `hello ${name}`;
+        }
+      }
+
+      class MySubController extends MyController {
+        greet(name: string) {
+          return super.greet(name) + '!';
+        }
+      }
+
+      const spec = anOperationSpec()
+        .withParameter({name: 'name', in: 'query', type: 'string'})
+        .build();
+
+      const factory: ControllerFactory = ctx => new MySubController();
+      app.route('get', '/greet', spec, MyController, 'greet', factory);
+
+      await whenIMakeRequestTo(app)
+        .get('/greet?name=world')
+        .expect(200, 'hello world!');
+    });
+
     it('provides httpHandler compatible with HTTP server API', async () => {
       const app = new RestApplication();
       app.handler((sequence, req, res) => res.end('hello'));
@@ -638,7 +715,7 @@ describe('Routing', () => {
   }
 
   function givenControllerInApp(app: Application, controller: ControllerClass) {
-    app.controller(controller);
+    app.controller(controller).inScope(BindingScope.CONTEXT);
   }
 
   function whenIMakeRequestTo(serverOrApp: HttpServerLike): Client {
