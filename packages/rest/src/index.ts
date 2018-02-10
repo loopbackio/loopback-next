@@ -14,6 +14,10 @@ export {
   ResolvedRoute,
   createResolvedRoute,
   parseRequestUrl,
+  ControllerClass,
+  ControllerInstance,
+  ControllerFactory,
+  createControllerFactory,
 } from './router/routing-table';
 
 export * from './providers';

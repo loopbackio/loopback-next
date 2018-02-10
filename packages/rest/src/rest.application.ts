@@ -10,7 +10,11 @@ import {Binding, Constructor} from '@loopback/context';
 import {format} from 'util';
 import {RestBindings} from './keys';
 import {RestServer, HttpRequestListener, HttpServerLike} from './rest.server';
-import {ControllerClass, RouteEntry} from './router/routing-table';
+import {
+  RouteEntry,
+  ControllerClass,
+  ControllerFactory,
+} from './router/routing-table';
 import {OperationObject, OpenApiSpec} from '@loopback/openapi-v3-types';
 
 export const ERR_NO_MULTI_SERVER = format(
@@ -97,6 +101,7 @@ export class RestApplication extends Application implements HttpServerLike {
    * @param spec The OpenAPI spec describing the endpoint (operation)
    * @param controller Controller constructor
    * @param methodName The name of the controller method
+   * @param factory A factory function to create controller instance
    */
   route(
     verb: string,
@@ -104,6 +109,7 @@ export class RestApplication extends Application implements HttpServerLike {
     spec: OperationObject,
     controller: ControllerClass,
     methodName: string,
+    factory?: ControllerFactory,
   ): Binding;
 
   /**
@@ -127,12 +133,20 @@ export class RestApplication extends Application implements HttpServerLike {
     spec?: OperationObject,
     controller?: ControllerClass,
     methodName?: string,
+    factory?: ControllerFactory,
   ): Binding {
     const server = this.restServer;
     if (typeof routeOrVerb === 'object') {
       return server.route(routeOrVerb);
     } else {
-      return server.route(routeOrVerb, path!, spec!, controller!, methodName!);
+      return server.route(
+        routeOrVerb,
+        path!,
+        spec!,
+        controller!,
+        methodName!,
+        factory,
+      );
     }
   }
 
