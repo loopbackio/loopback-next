@@ -5,16 +5,13 @@ import {MySequence} from './sequence';
 
 export class <%= project.applicationName %> extends RestApplication {
   constructor(options?: ApplicationConfig) {
-    // Allow options to replace the defined components array, if desired.
+    options = Object.assign({bootOptions: {projectRoot: __dirname}}, options);
     super(options);
     this.component(BootComponent);
   }
 
   async boot(): Promise<void> {
-    const bootOptions: BootOptions = {
-      projectRoot: __dirname,
-    };
-    await super.boot(bootOptions);
+    await super.boot();
   }
 
   async start() {

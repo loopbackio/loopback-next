@@ -8,6 +8,7 @@ import {Server} from './server';
 import {Component, mountComponent} from './component';
 import {CoreBindings} from './keys';
 import {Booter, BootOptions} from './booter';
+import {BootExecutionOptions} from '../index';
 
 /**
  * Application is the container for various types of artifacts, such as
@@ -99,13 +100,26 @@ export class Application extends Context {
    * Function is responsible for calling all registered Booter classes that
    * are bound to the Application instance. Each phase of an instance must
    * complete before the next phase is started.
-   * @param {BootOptions} bootOptions Options to use to boot the Application
+   *
+   * @param {BootExecutionOptions} execOptions Options to control the boot
+   * process for the Application
    */
-  async boot(bootOptions: BootOptions): Promise<void> {
-    try {
-      const bootstrapper = await this.get(CoreBindings.BOOTSTRAPPER);
-      await bootstrapper.boot(bootOptions);
-    } catch (err) {
+  async boot(execOptions?: BootExecutionOptions): Promise<void> {
+    // Get a instance of the BootStrapper
+    const bootstrapper = await this.get(CoreBindings.BOOTSTRAPPER, {
+      optional: true,
+    });
+    // Since bootstrapper is optional, we check to see if instance was returned
+    if (bootstrapper) {
+      // this.options can never be undefined but TypeScript complains so we add
+      // a check (and throw an error message just to be safe but it should never
+      // be thrown).
+      if (this.options) {
+        await bootstrapper.boot(this.options.bootOptions, execOptions);
+      } else {
+        throw new Error(`Application.options need to be defined to use boot`);
+      }
+    } else {
       console.warn(`No bootstrapper was bound to ${CoreBindings.BOOTSTRAPPER}`);
     }
   }
@@ -262,6 +276,10 @@ export class Application extends Context {
  * Configuration for application
  */
 export interface ApplicationConfig {
+  /**
+   * Boot Configuration
+   */
+  bootOptions?: BootOptions;
   /**
    * Other properties
    */

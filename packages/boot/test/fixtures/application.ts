@@ -4,20 +4,18 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {RestApplication} from '@loopback/rest';
-import {ApplicationConfig, BootOptions} from '@loopback/core';
+import {ApplicationConfig} from '@loopback/core';
 import {BootComponent} from '../../index';
 
 export class ControllerBooterApp extends RestApplication {
   constructor(options?: ApplicationConfig) {
+    options = Object.assign({bootOptions: {projectRoot: __dirname}}, options);
     super(options);
     this.component(BootComponent);
   }
 
   async boot(): Promise<void> {
-    const bootOptions: BootOptions = {
-      projectRoot: __dirname,
-    };
-    await super.boot(bootOptions);
+    await super.boot();
   }
 
   async start() {

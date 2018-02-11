@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ApplicationConfig, BootOptions} from '@loopback/core';
+import {ApplicationConfig} from '@loopback/core';
 import {RestApplication} from '@loopback/rest';
 import {BootComponent} from '@loopback/boot';
 import {TodoRepository} from './repositories';
@@ -20,14 +20,14 @@ import {
 /* tslint:enable:no-unused-variable */
 export class TodoApplication extends RepositoryMixin(RestApplication) {
   constructor(options?: ApplicationConfig) {
+    options = Object.assign({bootOptions: {projectRoot: __dirname}}, options);
     super(options);
     this.component(BootComponent);
     this.setupRepositories();
   }
 
   async boot(): Promise<void> {
-    const bootOptions: BootOptions = {projectRoot: __dirname};
-    await super.boot(bootOptions);
+    await super.boot();
   }
 
   // Helper functions (just to keep things organized)

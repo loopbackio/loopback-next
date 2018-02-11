@@ -24,31 +24,39 @@ describe('boot-strapper unit tests', () => {
   });
 
   it('binds booters passed in BootOptions', async () => {
-    const ctx = await bootstrapper.boot({
-      projectRoot: __dirname,
-      booters: [TestBooter2],
-    });
+    const ctx = await bootstrapper.boot(
+      {
+        projectRoot: __dirname,
+      },
+      {booters: [TestBooter2]},
+    );
     const booterInst2 = await ctx.get(booterKey2);
     expect(booterInst2).to.be.instanceof(TestBooter2);
     expect(booterInst2.configureCalled).to.be.True();
   });
 
   it('no booters run when BootOptions.filter.booters is []', async () => {
-    const ctx = await bootstrapper.boot({
-      projectRoot: __dirname,
-      filter: {booters: []},
-    });
+    const ctx = await bootstrapper.boot(
+      {
+        projectRoot: __dirname,
+      },
+      {filter: {booters: []}},
+    );
     const booterInst = await ctx.get(booterKey);
     expect(booterInst.configureCalled).to.be.False();
     expect(booterInst.loadCalled).to.be.False();
   });
 
   it('only runs booters passed in via BootOptions.filter.booters', async () => {
-    const ctx = await bootstrapper.boot({
-      projectRoot: __dirname,
-      booters: [TestBooter2],
-      filter: {booters: ['TestBooter2']},
-    });
+    const ctx = await bootstrapper.boot(
+      {
+        projectRoot: __dirname,
+      },
+      {
+        booters: [TestBooter2],
+        filter: {booters: ['TestBooter2']},
+      },
+    );
     const booterInst = await ctx.get(booterKey);
     const booterInst2 = await ctx.get(booterKey2);
     expect(booterInst.configureCalled).to.be.False();
@@ -57,10 +65,12 @@ describe('boot-strapper unit tests', () => {
   });
 
   it('only runs phases passed in via BootOptions.filter.phases', async () => {
-    const ctx = await bootstrapper.boot({
-      projectRoot: __dirname,
-      filter: {phases: ['configure']},
-    });
+    const ctx = await bootstrapper.boot(
+      {
+        projectRoot: __dirname,
+      },
+      {filter: {phases: ['configure']}},
+    );
     const booterInst = await ctx.get(booterKey);
     expect(booterInst.configureCalled).to.be.True();
     expect(booterInst.loadCalled).to.be.False();

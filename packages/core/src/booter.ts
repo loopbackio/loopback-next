@@ -51,6 +51,14 @@ export type BootOptions = {
    */
   projectRoot: string;
   /**
+   * Additional Properties
+   */
+  // tslint:disable-next-line:no-any
+  [prop: string]: any;
+};
+
+export type BootExecutionOptions = {
+  /**
    * Optional array of Booter Classes to bind to the application before running bootstrapper.
    */
   booters?: Constructor<Booter>[];

@@ -11,6 +11,7 @@ import {
   CoreBindings,
   Booter,
   BootOptions,
+  BootExecutionOptions,
 } from '../..';
 import {Context, Constructor, BindingScope} from '@loopback/context';
 
@@ -37,14 +38,12 @@ describe('Application', () => {
   });
 
   describe('boot function', () => {
-    const bootOptions: BootOptions = {projectRoot: __dirname};
-
     it('calls .boot() if a BootComponent is bound', async () => {
       app
         .bind(CoreBindings.BOOTSTRAPPER)
         .toClass(FakeBootComponent)
         .inScope(BindingScope.SINGLETON);
-      await app.boot(bootOptions);
+      await app.boot();
       const bootComponent = await app.get(CoreBindings.BOOTSTRAPPER);
       expect(bootComponent.bootCalled).to.be.True();
     });
@@ -154,7 +153,7 @@ describe('Application', () => {
   });
 
   function givenApp() {
-    app = new Application();
+    app = new Application({projectRoot: __dirname});
   }
 
   function findKeysByTag(ctx: Context, tag: string | RegExp) {
@@ -177,7 +176,7 @@ class FakeComponent implements Component {
 class FakeBootComponent implements Component {
   bootCalled = false;
 
-  async boot(options: BootOptions) {
+  async boot(options: BootOptions, execOptions?: BootExecutionOptions) {
     this.bootCalled = true;
   }
 }
