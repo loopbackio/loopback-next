@@ -45,9 +45,14 @@ export interface InjectionMetadata {
    */
   decorator?: string;
   /**
-   * Control if the dependency is optional, default to false
+   * Control if the dependency is optional. Default to `false`.
    */
   optional?: boolean;
+  /**
+   * Control if the resolution only looks up properties from
+   * the local configuration of the target binding itself. Default to `false`.
+   */
+  localConfigOnly?: boolean;
   /**
    * Other attributes
    */
@@ -267,20 +272,23 @@ export namespace inject {
   };
 
   /**
-   * Inject an option from `options` of the parent binding. If no corresponding
-   * option value is present, `undefined` will be injected.
+   * Inject a property from `config` of the current binding. If no corresponding
+   * config value is present, `undefined` will be injected.
    *
    * @example
    * ```ts
    * class Store {
    *   constructor(
-   *     @inject.options('x') public optionX: number,
-   *     @inject.options('y') public optionY: string,
+   *     @inject.config('x') public optionX: number,
+   *     @inject.config('y') public optionY: string,
    *   ) { }
    * }
    *
-   * ctx.bind('store1').toClass(Store).withOptions({ x: 1, y: 'a' });
-   * ctx.bind('store2').toClass(Store).withOptions({ x: 2, y: 'b' });
+   * ctx.configure('store1', { x: 1, y: 'a' });
+   * ctx.configure('store2', { x: 2, y: 'b' });
+   *
+   * ctx.bind('store1').toClass(Store);
+   * ctx.bind('store2').toClass(Store);
    *
    *  const store1 = ctx.getSync('store1');
    *  expect(store1.optionX).to.eql(1);
@@ -291,22 +299,22 @@ export namespace inject {
    * expect(store2.optionY).to.eql('b');
    * ```
    *
-   * @param optionPath Optional property path of the option. If is `''` or not
-   * present, the `options` object will be returned.
+   * @param configPath Optional property path of the config. If is `''` or not
+   * present, the `config` object will be returned.
    * @param metadata Optional metadata to help the injection:
-   * - localOnly: only look up from the configuration local to the current
+   * - localConfigOnly: only look up from the configuration local to the current
    * binding. Default to false.
    */
-  export const options = function injectOptions(
-    optionPath?: string,
+  export const config = function injectConfig(
+    configPath?: string,
     metadata?: InjectionMetadata,
   ) {
-    optionPath = optionPath || '';
+    configPath = configPath || '';
     metadata = Object.assign(
-      {optionPath, decorator: '@inject.options', optional: true},
+      {configPath, decorator: '@inject.config', optional: true},
       metadata,
     );
-    return inject('', metadata, resolveAsOptions);
+    return inject('', metadata, resolveFromConfig);
   };
 }
 
@@ -332,7 +340,7 @@ function resolveAsSetter(ctx: Context, injection: Injection) {
   };
 }
 
-function resolveAsOptions(
+function resolveFromConfig(
   ctx: Context,
   injection: Injection,
   session?: ResolutionSession,
@@ -345,10 +353,10 @@ function resolveAsOptions(
   const meta = injection.metadata || {};
   const binding = session.currentBinding;
 
-  return ctx.getOptionsAsValueOrPromise(binding.key, meta.optionPath, {
+  return ctx.getConfigAsValueOrPromise(binding.key, meta.configPath, {
     session,
     optional: meta.optional,
-    localOnly: meta.localOnly,
+    localConfigOnly: meta.localConfigOnly,
   });
 }
 

@@ -296,50 +296,92 @@ describe('Context', () => {
     });
   });
 
-  describe('bindOptions()', () => {
-    it('binds options for a binding before it is bound', () => {
-      const bindingForOptions = ctx.bindOptions('foo', {x: 1});
-      expect(bindingForOptions.key).to.equal(Binding.buildKeyForOptions('foo'));
+  describe('configure()', () => {
+    it('configures options for a binding before it is bound', () => {
+      const bindingForConfig = ctx.configure('foo').to({x: 1});
+      expect(bindingForConfig.key).to.equal(Binding.buildKeyForConfig('foo'));
+      expect(bindingForConfig.tags.has('config:foo')).to.be.true();
     });
 
-    it('binds options for a binding after it is bound', () => {
+    it('configures options for a binding after it is bound', () => {
       ctx.bind('foo').to('bar');
-      const bindingForOptions = ctx.bindOptions('foo').to({x: 1});
-      expect(bindingForOptions.key).to.equal(Binding.buildKeyForOptions('foo'));
+      const bindingForConfig = ctx.configure('foo').to({x: 1});
+      expect(bindingForConfig.key).to.equal(Binding.buildKeyForConfig('foo'));
+      expect(bindingForConfig.tags.has('config:foo')).to.be.true();
     });
   });
 
-  describe('getOptions()', () => {
-    it('gets options for a binding', async () => {
-      ctx.bindOptions('foo').toDynamicValue(() => Promise.resolve({x: 1}));
-      expect(await ctx.getOptions('foo')).to.eql({x: 1});
+  describe('getConfig()', () => {
+    it('gets config for a binding', async () => {
+      ctx.configure('foo').toDynamicValue(() => Promise.resolve({x: 1}));
+      expect(await ctx.getConfig('foo')).to.eql({x: 1});
     });
 
-    it('gets local options for a binding', async () => {
+    it('gets local config for a binding', async () => {
       ctx
-        .bindOptions('foo')
+        .configure('foo')
         .toDynamicValue(() => Promise.resolve({a: {x: 0, y: 0}}));
-      ctx.bindOptions('foo.a').toDynamicValue(() => Promise.resolve({x: 1}));
-      expect(await ctx.getOptions('foo.a', 'x', {localOnly: true})).to.eql(1);
+      ctx.configure('foo.a').toDynamicValue(() => Promise.resolve({x: 1}));
+      expect(await ctx.getConfig('foo.a', 'x', {localConfigOnly: true})).to.eql(
+        1,
+      );
       expect(
-        await ctx.getOptions('foo.a', 'y', {localOnly: true}),
+        await ctx.getConfig('foo.a', 'y', {localConfigOnly: true}),
       ).to.be.undefined();
     });
 
-    it('gets parent options for a binding', async () => {
+    it('gets parent config for a binding', async () => {
       ctx
-        .bindOptions('foo')
+        .configure('foo')
         .toDynamicValue(() => Promise.resolve({a: {x: 0, y: 0}}));
-      ctx.bindOptions('foo.a').toDynamicValue(() => Promise.resolve({x: 1}));
-      expect(await ctx.getOptions('foo.a', 'x')).to.eql(1);
-      expect(await ctx.getOptions('foo.a', 'y')).to.eql(0);
+      ctx.configure('foo.a').toDynamicValue(() => Promise.resolve({x: 1}));
+      expect(await ctx.getConfig('foo.a', 'x')).to.eql(1);
+      expect(await ctx.getConfig('foo.a', 'y')).to.eql(0);
+    });
+
+    it('defaults optional to true for config resolution', async () => {
+      ctx.configure('servers').to({rest: {port: 80}});
+      // `servers.rest` does not exist yet
+      let server1port = await ctx.getConfig('servers.rest', 'port');
+      // The port is resolved at `servers` level
+      expect(server1port).to.eql(80);
+
+      // Now add `servers.rest`
+      ctx.configure('servers.rest').to({port: 3000});
+      const servers = await ctx.getConfig('servers');
+      server1port = await ctx.getConfig('servers.rest', 'port');
+      // We don't add magic to merge `servers.rest` level into `servers`
+      expect(servers.rest.port).to.equal(80);
+      expect(server1port).to.eql(3000);
+    });
+
+    it('throws error if a required config cannot be resolved', async () => {
+      ctx.configure('servers').to({rest: {port: 80}});
+      // `servers.rest` does not exist yet
+      let server1port = await ctx.getConfig('servers.rest', 'port', {
+        optional: false,
+      });
+      // The port is resolved at `servers` level
+      expect(server1port).to.eql(80);
+
+      expect(
+        ctx.getConfig('servers.rest', 'host', {
+          optional: false,
+        }),
+      )
+        .to.be.rejectedWith(
+          `Configuration 'servers.rest#host' cannot be resolved`,
+        )
+        .catch(e => {
+          // Sink the error to avoid UnhandledPromiseRejectionWarning
+        });
     });
   });
 
-  describe('getOptionsSync()', () => {
-    it('gets options for a binding', () => {
-      ctx.bindOptions('foo').to({x: 1});
-      expect(ctx.getOptionsSync('foo')).to.eql({x: 1});
+  describe('getConfigSync()', () => {
+    it('gets config for a binding', () => {
+      ctx.configure('foo').to({x: 1});
+      expect(ctx.getConfigSync('foo')).to.eql({x: 1});
     });
   });
 

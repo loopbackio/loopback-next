@@ -104,8 +104,8 @@ export class BindingKey<ValueType> {
     );
   }
 
-  static OPTIONS_KEY = '$options';
-  static buildKeyForOptions(key?: string) {
-    return key ? `${key}:${BindingKey.OPTIONS_KEY}` : BindingKey.OPTIONS_KEY;
+  static CONFIG_KEY = '$config';
+  static buildKeyForConfig(key?: string) {
+    return key ? `${key}:${BindingKey.CONFIG_KEY}` : BindingKey.CONFIG_KEY;
   }
 }
