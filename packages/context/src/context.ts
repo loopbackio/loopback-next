@@ -71,150 +71,158 @@ export class Context {
   }
 
   /**
-   * Creates a corresponding binding for `options` (configuration) of the
-   * target in the context bound by the key.
+   * Create a corresponding binding for configuration of the target bound by
+   * the given key in the context.
    *
-   * For example, `ctx.bindOptions('controllers.MyController', {x: 1})` will
-   * create binding `controllers.MyController:$options` with `{x: 1}`.
+   * For example, `ctx.configure('controllers.MyController').to({x: 1})` will
+   * create binding `controllers.MyController:$config` with value `{x: 1}`.
    *
-   * @param key The key for the binding that accepts the options
-   * @param options Options object
+   * @param key The key for the binding that accepts the config
    */
-  bindOptions(key: string, options?: BoundValue): Binding {
-    const keyForOptions = BindingKey.buildKeyForOptions(key);
-    const bindingForOptions = this.bind(keyForOptions);
-    if (options != null) {
-      bindingForOptions.to(options).tag(`options:${key}`);
-    }
-    return bindingForOptions;
+  configure(key: string = ''): Binding {
+    const keyForConfig = BindingKey.buildKeyForConfig(key);
+    const bindingForConfig = this.bind(keyForConfig).tag(`config:${key}`);
+    return bindingForConfig;
   }
 
   /**
-   * Resolve options from the binding key hierarchy using namespaces
+   * Resolve config from the binding key hierarchy using namespaces
    * separated by `.`
    *
    * For example, if the binding key is `servers.rest.server1`, we'll try the
    * following entries:
-   * 1. servers.rest.server1:$options#host (namespace: server1)
-   * 2. servers.rest:$options#server1.host (namespace: rest)
-   * 3. servers.$options#rest.server1.host` (namespace: server)
-   * 4. $options#servers.rest.server1.host (namespace: '' - root)
+   * 1. servers.rest.server1:$config#host (namespace: server1)
+   * 2. servers.rest:$config#server1.host (namespace: rest)
+   * 3. servers.$config#rest.server1.host` (namespace: server)
+   * 4. $config#servers.rest.server1.host (namespace: '' - root)
    *
    * @param key Binding key with namespaces separated by `.`
-   * @param optionPath Property path for the option. For example, `x.y`
-   * requests for `options.x.y`. If not set, the `options` object will be
+   * @param configPath Property path for the option. For example, `x.y`
+   * requests for `config.x.y`. If not set, the `config` object will be
    * returned.
-   * @param resolutionOptions Options for the resolution. If `localOnly` is
-   * set to true, no parent namespaces will be looked up.
+   * @param resolutionOptions Options for the resolution.
+   * - localConfigOnly: if set to `true`, no parent namespaces will be checked
+   * - optional: if not set or set to `true`, `undefined` will be returned if
+   * no corresponding value is found. Otherwise, an error will be thrown.
    */
-  getOptionsAsValueOrPromise(
+  getConfigAsValueOrPromise(
     key: string,
-    optionPath?: string,
-    resolutionOptions?: ResolutionOptions & {localOnly?: boolean},
+    configPath?: string,
+    resolutionOptions?: ResolutionOptions,
   ): ValueOrPromise<BoundValue> {
-    optionPath = optionPath || '';
-    const optionKeyAndPath = BindingKey.create(
-      BindingKey.buildKeyForOptions(key),
-      optionPath || '',
+    configPath = configPath || '';
+    const configKeyAndPath = BindingKey.create(
+      BindingKey.buildKeyForConfig(key),
+      configPath || '',
+    );
+    // Set `optional` to `true` to resolve config locally
+    const configBindingResolutionOptions = Object.assign(
+      {}, // Make sure resolutionOptions is copied
+      resolutionOptions,
+      {optional: true}, // Force optional to be true
     );
     let valueOrPromise = this.getValueOrPromise(
-      optionKeyAndPath,
-      resolutionOptions,
+      configKeyAndPath,
+      configBindingResolutionOptions,
     );
 
-    const checkResult = (val: BoundValue) => {
-      // Found the corresponding options
+    const evaluateConfig = (val: BoundValue) => {
+      // Found the corresponding config
       if (val !== undefined) return val;
 
       // We have tried all levels
-      if (!key) return undefined;
+      if (!key) {
+        if (resolutionOptions && resolutionOptions.optional === false) {
+          throw Error(`Configuration '${configKeyAndPath}' cannot be resolved`);
+        }
+        return undefined;
+      }
 
-      if (resolutionOptions && resolutionOptions.localOnly) {
+      if (resolutionOptions && resolutionOptions.localConfigOnly) {
         // Local only, not trying parent namespaces
+        if (resolutionOptions && resolutionOptions.optional === false) {
+          throw Error(`Configuration '${configKeyAndPath}' cannot be resolved`);
+        }
         return undefined;
       }
 
       // Shift last part of the key into the path as we'll try the parent
       // namespace in the next iteration
       const index = key.lastIndexOf('.');
-      optionPath = `${key.substring(index + 1)}.${optionPath}`;
+      configPath = `${key.substring(index + 1)}.${configPath}`;
       key = key.substring(0, index);
       // Continue to try the parent namespace
-      return this.getOptionsAsValueOrPromise(
-        key,
-        optionPath,
-        resolutionOptions,
-      );
+      return this.getConfigAsValueOrPromise(key, configPath, resolutionOptions);
     };
 
     if (isPromiseLike(valueOrPromise)) {
-      return valueOrPromise.then(checkResult);
+      return valueOrPromise.then(evaluateConfig);
     } else {
-      return checkResult(valueOrPromise);
+      return evaluateConfig(valueOrPromise);
     }
   }
 
   /**
-   * Resolve options from the binding key hierarchy using namespaces
+   * Resolve config from the binding key hierarchy using namespaces
    * separated by `.`
    *
    * For example, if the binding key is `servers.rest.server1`, we'll try the
    * following entries:
-   * 1. servers.rest.server1:$options#host (namespace: server1)
-   * 2. servers.rest:$options#server1.host (namespace: rest)
-   * 3. servers.$options#rest.server1.host` (namespace: server)
-   * 4. $options#servers.rest.server1.host (namespace: '' - root)
+   * 1. servers.rest.server1:$config#host (namespace: server1)
+   * 2. servers.rest:$config#server1.host (namespace: rest)
+   * 3. servers.$config#rest.server1.host` (namespace: server)
+   * 4. $config#servers.rest.server1.host (namespace: '' - root)
    *
    * @param key Binding key with namespaces separated by `.`
-   * @param optionPath Property path for the option. For example, `x.y`
-   * requests for `options.x.y`. If not set, the `options` object will be
+   * @param configPath Property path for the option. For example, `x.y`
+   * requests for `config.x.y`. If not set, the `config` object will be
    * returned.
    * @param resolutionOptions Options for the resolution. If `localOnly` is
    * set to true, no parent namespaces will be looked up.
    */
-  async getOptions(
+  async getConfig(
     key: string,
-    optionPath?: string,
-    resolutionOptions?: ResolutionOptions & {localOnly?: boolean},
+    configPath?: string,
+    resolutionOptions?: ResolutionOptions,
   ): Promise<BoundValue> {
-    return await this.getOptionsAsValueOrPromise(
+    return await this.getConfigAsValueOrPromise(
       key,
-      optionPath,
+      configPath,
       resolutionOptions,
     );
   }
 
   /**
-   * Resolve options synchronously from the binding key hierarchy using
+   * Resolve config synchronously from the binding key hierarchy using
    * namespaces separated by `.`
    *
    * For example, if the binding key is `servers.rest.server1`, we'll try the
    * following entries:
-   * 1. servers.rest.server1:$options#host (namespace: server1)
-   * 2. servers.rest:$options#server1.host (namespace: rest)
-   * 3. servers.$options#rest.server1.host` (namespace: server)
-   * 4. $options#servers.rest.server1.host (namespace: '' - root)
+   * 1. servers.rest.server1:$config#host (namespace: server1)
+   * 2. servers.rest:$config#server1.host (namespace: rest)
+   * 3. servers.$config#rest.server1.host` (namespace: server)
+   * 4. $config#servers.rest.server1.host (namespace: '' - root)
    *
    * @param key Binding key with namespaces separated by `.`
-   * @param optionPath Property path for the option. For example, `x.y`
-   * requests for `options.x.y`. If not set, the `options` object will be
+   * @param configPath Property path for the option. For example, `x.y`
+   * requests for `config.x.y`. If not set, the `config` object will be
    * returned.
    * @param resolutionOptions Options for the resolution. If `localOnly` is
    * set to true, no parent namespaces will be looked up.
    */
-  getOptionsSync(
+  getConfigSync(
     key: string,
-    optionPath?: string,
-    resolutionOptions?: ResolutionOptions & {localOnly?: boolean},
+    configPath?: string,
+    resolutionOptions?: ResolutionOptions,
   ): BoundValue {
-    const valueOrPromise = this.getOptionsAsValueOrPromise(
+    const valueOrPromise = this.getConfigAsValueOrPromise(
       key,
-      optionPath,
+      configPath,
       resolutionOptions,
     );
     if (isPromiseLike(valueOrPromise)) {
       throw new Error(
-        `Cannot get options[${optionPath ||
+        `Cannot get config[${configPath ||
           ''}] for ${key} synchronously: the value is a promise`,
       );
     }
