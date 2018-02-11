@@ -23,7 +23,7 @@ describe('boot-strapper unit tests', () => {
     expect(booterInst.loadCalled).to.be.True();
   });
 
-  it('binds booters passed in BootOptions', async () => {
+  it('binds booters passed in BootExecutionOptions', async () => {
     const ctx = await bootstrapper.boot(
       {
         projectRoot: __dirname,
