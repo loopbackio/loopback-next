@@ -49,23 +49,29 @@ const tscChild = build.tsc([
 process.on('uncaughtException', onError);
 
 function copyFile(filePath, callback) {
-  debug('<update> %j', filePath);
-  const parts = filePath.split(/[\/\\]/g);
-  const pkg = parts.shift();
-  const localPath = parts.join('/');
-
-  const target = path.join(MONOREPO_DIR, 'packages', pkg, 'dist', localPath);
+  const source = path.join(BUILD_DIR, filePath);
+  const target = getTargetPath(filePath);
+  debug('update %j', target);
 
   mkdirp(path.dirname(target), err => {
     if (err) return callback(err);
 
-    fs.copyFile(path.join(BUILD_DIR, filePath), target, callback);
+    fs.copyFile(source, target, callback);
   });
 }
 
 function removeFile(filePath, callback) {
-  debug('<remove> %j', filePath);
-  fs.unlink(filePath, callback);
+  const target = getTargetPath(filePath);
+  debug('remove %j', target);
+  fs.unlink(target, callback);
+}
+
+function getTargetPath(filePath) {
+  const parts = filePath.split(/[\/\\]/g);
+  const packageName = parts.shift();
+  const localPath = parts.join('/');
+  const dist = build.utils.getDistribution();
+  return path.join(MONOREPO_DIR, 'packages', packageName, dist, localPath);
 }
 
 function onError(err) {
