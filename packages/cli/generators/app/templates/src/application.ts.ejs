@@ -5,12 +5,15 @@ import {MySequence} from './sequence';
 
 export class <%= project.applicationName %> extends RestApplication {
   constructor(options?: ApplicationConfig) {
+    // You can set Booter convetions on the BootOptions Object below
     options = Object.assign({bootOptions: {projectRoot: __dirname}}, options);
     super(options);
     this.component(BootComponent);
   }
 
   async boot(): Promise<void> {
+    // You can pass in BootExecutionOptions to super.boot() here which
+    // controls how Boot is run.
     await super.boot();
   }
 
