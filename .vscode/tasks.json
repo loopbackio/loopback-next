@@ -125,6 +125,37 @@
         "run",
         "clean"
       ]
+    },
+    {
+      "label": "Watch and compile source files",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "command": "node",
+      "args": ["./bin/tsc-watch-monorepo"],
+      "isBackground": true,
+      "problemMatcher": "$tsc-watch",
+      "presentation": {
+        "reveal": "silent",
+        "focus": false,
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Run all tests",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "mocha", "-s"],
+      "presentation": {
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      }
     }
   ]
 }

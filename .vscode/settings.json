@@ -12,6 +12,7 @@
     "**/.svn": true,
     "**/CVS": true,
     ".nyc_output": true,
+    ".build": true,
     "coverage": true,
     "packages/*/dist": true,
     "packages/*/api-docs": true

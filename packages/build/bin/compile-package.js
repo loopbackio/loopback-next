@@ -17,14 +17,12 @@ Where <target> is either es2017 or es2015.
 
 'use strict';
 
-function run(argv, dryRun) {
+function run(compilerOpts, dryRun) {
   const utils = require('./utils');
   const path = require('path');
   const fs = require('fs');
 
   const packageDir = utils.getPackageDir();
-
-  const compilerOpts = argv.slice(2);
 
   const isTargetSet = utils.isOptionSet(compilerOpts, '--target');
   const isOutDirSet = utils.isOptionSet(compilerOpts, '--outDir');
@@ -118,4 +116,4 @@ function run(argv, dryRun) {
 }
 
 module.exports = run;
-if (require.main === module) run(process.argv);
+if (require.main === module) run(process.argv.slice(2));

@@ -1,5 +1,11 @@
 {
   "extends": "./packages/build/config/tsconfig.common.json",
   "include": ["packages"],
-  "exclude": ["node_modules/**", "packages/*/node_modules/**", "**/*.d.ts"]
+  "exclude": [
+    "node_modules/**",
+    "packages/*/node_modules/**",
+    "**/*.d.ts",
+    "packages/*/test/sandbox/**",
+    "packages/cli/generators/*/templates/**"
+  ]
 }
