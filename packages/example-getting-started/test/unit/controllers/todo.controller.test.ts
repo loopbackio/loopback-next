@@ -1,7 +1,6 @@
-import {expect} from '@loopback/testlab';
+import {expect, sinon} from '@loopback/testlab';
 import {TodoController} from '../../../src/controllers';
 import {TodoRepository} from '../../../src/repositories';
-import * as sinon from 'sinon';
 import {Todo} from '../../../src/models/index';
 import {givenTodo} from '../../helpers';
 
