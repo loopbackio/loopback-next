@@ -109,8 +109,11 @@ export class Application extends Context {
     const bootstrapper = await this.get(CoreBindings.BOOTSTRAPPER, {
       optional: true,
     });
+
     // Since bootstrapper is optional, we check to see if instance was returned
-    if (bootstrapper) {
+    if (!bootstrapper) {
+      console.warn(`No bootstrapper was bound to ${CoreBindings.BOOTSTRAPPER}`);
+    } else {
       // this.options can never be undefined but TypeScript complains so we add
       // a check (and throw an error message just to be safe but it should never
       // be thrown).
@@ -119,8 +122,6 @@ export class Application extends Context {
       } else {
         throw new Error(`Application.options need to be defined to use boot`);
       }
-    } else {
-      console.warn(`No bootstrapper was bound to ${CoreBindings.BOOTSTRAPPER}`);
     }
   }
 
