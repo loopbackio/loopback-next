@@ -6,31 +6,34 @@
     {
       "label": "Install all dependencies",
       "group": "build",
-      "command": "./node_modules/.bin/lerna",
-      "type": "shell",
-      "args": [
-        "bootstrap"
-      ]
-    },
-    {
-      "label": "Remove all dependencies",
-      "group": "build",
-      "command": "./node_modules/.bin/lerna",
-      "type": "shell",
-      "args": [
-        "clean",
-        "--yes"
-      ]
-    },
-    {
-      "label": "Build and run and lint",
-      "group": "test",
       "command": "npm",
       "type": "shell",
       "args": [
         "run",
-        "test",
-        "-s"
+        "-s",
+        "bootstrap"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Remove all dependencies",
+      "group": "build",
+      "command": "npm",
+      "type": "shell",
+      "args": [
+        "run",
+        "-s",
+        "clean:lerna"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Build, test and lint",
+      "group": "test",
+      "command": "npm",
+      "type": "shell",
+      "args": [
+        "test"
       ],
       "problemMatcher": ["$tsc", "$tslint5"]
     },
@@ -41,6 +44,7 @@
       "type": "shell",
       "args": [
         "run",
+        "-s",
         "lint"
       ],
       "problemMatcher": [
@@ -82,7 +86,7 @@
           ],
           "severity": "error",
           "pattern": {
-            "regexp": "^Error at ([^\/]\\S.*):(\\d+):(\\d+):\\s+(.*)$",
+            "regexp": "^Error at ([^/]\\S.*):(\\d+):(\\d+):\\s+(.*)$",
             "file": 1,
             "line": 2,
             "column": 3,
@@ -105,26 +109,28 @@
       ]
     },
     {
-      "label": "Compile TypeScript sources",
-      "group": "build",
-      "type": "shell",
-      "command": "./node_modules/.bin/lerna",
-      "args": [
-        "run",
-        "--loglevel=silent",
-        "build"
-      ],
-      "problemMatcher": "$tsc"
-    },
-    {
-      "label": "Clean all generated files",
+      "label": "Build project",
       "group": "build",
       "type": "shell",
       "command": "npm",
       "args": [
         "run",
+        "-s",
+        "build"
+      ],
+      "problemMatcher": "$tsc"
+    },
+    {
+      "label": "Clean project",
+      "group": "build",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "-s",
         "clean"
-      ]
+      ],
+      "problemMatcher": []
     }
   ]
 }
