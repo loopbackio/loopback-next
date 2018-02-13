@@ -17,8 +17,8 @@ const VALID_EXAMPLE = 'getting-started';
 const SANDBOX_PATH = path.resolve(__dirname, 'sandbox');
 let sandbox;
 
-describe('cloneExampleFromGitHub', function() {
-  this.timeout(10000);
+describe('cloneExampleFromGitHub (SLOW)', function() {
+  this.timeout(20000);
   before(createSandbox);
   beforeEach(resetSandbox);
 
