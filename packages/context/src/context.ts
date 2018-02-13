@@ -3,15 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, TagMap} from './binding';
-import {BindingKey, BindingAddress} from './binding-key';
-import {isPromiseLike, getDeepProperty, BoundValue} from './value-promise';
-import {ResolutionOptions, ResolutionSession} from './resolution-session';
-
-import {v1 as uuidv1} from 'uuid';
-
 import * as debugModule from 'debug';
+import {v1 as uuidv1} from 'uuid';
 import {ValueOrPromise} from '.';
+import {Binding, BindingTag} from './binding';
+import {BindingAddress, BindingKey} from './binding-key';
+import {ResolutionOptions, ResolutionSession} from './resolution-session';
+import {BoundValue, getDeepProperty, isPromiseLike} from './value-promise';
+
 const debug = debugModule('loopback:context');
 
 /**
@@ -207,7 +206,7 @@ export class Context {
    * `{name: 'my-controller'}`
    */
   findByTag<ValueType = BoundValue>(
-    tagFilter: string | RegExp | TagMap,
+    tagFilter: BindingTag | RegExp,
   ): Readonly<Binding<ValueType>>[] {
     if (typeof tagFilter === 'string' || tagFilter instanceof RegExp) {
       const regexp =

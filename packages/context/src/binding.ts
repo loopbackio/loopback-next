@@ -119,6 +119,16 @@ export enum BindingType {
 export type TagMap = MapObject<any>;
 
 /**
+ * Binding tag can be a simple name or name/value pairs
+ */
+export type BindingTag = TagMap | string;
+
+/**
+ * A function as the template to configure bindings
+ */
+export type BindingTemplate<T = unknown> = (binding: Binding<T>) => void;
+
+/**
  * Binding represents an entry in the `Context`. Each binding has a key and a
  * corresponding value getter.
  */
@@ -269,7 +279,7 @@ export class Binding<T = BoundValue> {
    *
    * ```
    */
-  tag(...tags: (string | TagMap)[]): this {
+  tag(...tags: BindingTag[]): this {
     for (const t of tags) {
       if (typeof t === 'string') {
         this.tagMap[t] = t;
@@ -438,7 +448,7 @@ export class Binding<T = BoundValue> {
    * ```
    * @param templateFn A function to configure the binding
    */
-  apply(templateFn: (binding: Binding<T>) => void): this {
+  apply(templateFn: BindingTemplate<T>): this {
     templateFn(this);
     return this;
   }
