@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-require('mocha');
 const expect = require('@loopback/testlab').expect;
 const path = require('path');
 const utils = require('../lib/utils');

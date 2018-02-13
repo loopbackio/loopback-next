@@ -42,7 +42,6 @@
     "@loopback/build": "^4.0.0-alpha.13",
     "@loopback/testlab": "^4.0.0-alpha.24",
     "@types/debug": "0.0.30",
-    "mocha": "^4.0.0",
     "source-map-support": "^0.5.2"
   },
   "dependencies": {
