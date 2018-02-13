@@ -1,41 +1,44 @@
 {
   // See https://go.microsoft.com/fwlink/?LinkId=733558
   // for the documentation about the tasks.json format
-  "version": "0.1.0",
+  "version": "2.0.0",
   "tasks": [
     {
-      "taskName": "Install all dependencies",
+      "label": "Install all dependencies",
+      "group": "build",
       "command": "./node_modules/.bin/lerna",
-      "isShellCommand": true,
+      "type": "shell",
       "args": [
         "bootstrap"
       ]
     },
     {
-      "taskName": "Remove all dependencies",
+      "label": "Remove all dependencies",
+      "group": "build",
       "command": "./node_modules/.bin/lerna",
-      "isShellCommand": true,
+      "type": "shell",
       "args": [
         "clean",
         "--yes"
       ]
     },
     {
-      "taskName": "Run all tests",
+      "label": "Build and run and lint",
+      "group": "test",
       "command": "npm",
-      "isShellCommand": true,
+      "type": "shell",
       "args": [
         "run",
         "test",
         "-s"
       ],
-      "problemMatcher": ["$tsc", "$tslint5"],
-      "isTestCommand": true
+      "problemMatcher": ["$tsc", "$tslint5"]
     },
     {
-      "taskName": "Lint all packages",
+      "label": "Lint all packages",
+      "group": "test",
       "command": "npm",
-      "isShellCommand": true,
+      "type": "shell",
       "args": [
         "run",
         "lint"
@@ -102,9 +105,9 @@
       ]
     },
     {
-      "taskName": "Compile TypeScript sources",
-      "isBuildCommand": true,
-      "isShellCommand": true,
+      "label": "Compile TypeScript sources",
+      "group": "build",
+      "type": "shell",
       "command": "./node_modules/.bin/lerna",
       "args": [
         "run",
@@ -114,13 +117,45 @@
       "problemMatcher": "$tsc"
     },
     {
-      "taskName": "Clean all generated files",
-      "isShellCommand": true,
+      "label": "Clean all generated files",
+      "group": "build",
+      "type": "shell",
       "command": "npm",
       "args": [
         "run",
         "clean"
       ]
+    },
+    {
+      "label": "Watch and compile source files",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "command": "node",
+      "args": ["./bin/tsc-watch-monorepo"],
+      "isBackground": true,
+      "problemMatcher": "$tsc-watch",
+      "presentation": {
+        "reveal": "silent",
+        "focus": false,
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Run all tests",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "mocha", "-s"],
+      "presentation": {
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      }
     }
   ]
 }

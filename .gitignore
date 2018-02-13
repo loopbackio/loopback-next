@@ -9,3 +9,4 @@ packages/*/*.tgz
 packages/*/dist*
 packages/*/package
 packages/cli/test/sandbox
+.build
