@@ -64,17 +64,15 @@ describe('RestServer', () => {
 
   describe('configuration', () => {
     it('uses http port 3000 by default', async () => {
-      const app = new Application({
-        components: [RestComponent],
-      });
+      const app = new Application();
+      app.component(RestComponent);
       const server = await app.getServer(RestServer);
       expect(server.getSync(RestBindings.PORT)).to.equal(3000);
     });
 
     it('uses undefined http host by default', async () => {
-      const app = new Application({
-        components: [RestComponent],
-      });
+      const app = new Application();
+      app.component(RestComponent);
       const server = await app.getServer(RestServer);
       const host = await server.getSync(RestBindings.HOST);
       expect(host).to.be.undefined();
@@ -82,18 +80,18 @@ describe('RestServer', () => {
 
     it('can set port 0', async () => {
       const app = new Application({
-        components: [RestComponent],
         rest: {port: 0},
       });
+      app.component(RestComponent);
       const server = await app.getServer(RestServer);
       expect(server.getSync(RestBindings.PORT)).to.equal(0);
     });
 
     it('honors host/port', async () => {
       const app = new Application({
-        components: [RestComponent],
         rest: {port: 4000, host: 'my-host'},
       });
+      app.component(RestComponent);
       const server = await app.getServer(RestServer);
       expect(server.getSync(RestBindings.PORT)).to.equal(4000);
       expect(server.getSync(RestBindings.HOST)).to.equal('my-host');
@@ -101,9 +99,8 @@ describe('RestServer', () => {
   });
 
   async function givenRequestContext() {
-    const app = new Application({
-      components: [RestComponent],
-    });
+    const app = new Application();
+    app.component(RestComponent);
     const server = await app.getServer(RestServer);
     const requestContext = new Context(server);
     requestContext.bind(RestBindings.Http.CONTEXT).to(requestContext);

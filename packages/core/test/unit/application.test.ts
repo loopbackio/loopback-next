@@ -49,7 +49,7 @@ describe('Application', () => {
       );
     });
 
-    it('binds a component', () => {
+    it('binds a component with custom name', () => {
       app.component(MyComponent, 'my-component');
       expect(findKeysByTag(app, 'component')).to.containEql(
         'components.my-component',
@@ -77,43 +77,39 @@ describe('Application', () => {
       const result = await app.getServer(name);
       expect(result.constructor.name).to.equal(FakeServer.name);
     });
+
+    it('allows binding of multiple servers as an array', async () => {
+      const app = new Application();
+      const bindings = app.servers([FakeServer, AnotherServer]);
+      expect(Array.from(bindings[0].tags)).to.containEql('server');
+      expect(Array.from(bindings[1].tags)).to.containEql('server');
+      const fakeResult = await app.getServer(FakeServer);
+      expect(fakeResult.constructor.name).to.equal(FakeServer.name);
+      const AnotherResult = await app.getServer(AnotherServer);
+      expect(AnotherResult.constructor.name).to.equal(AnotherServer.name);
+    });
   });
 
-  describe('configuration', () => {
-    it('allows servers to be provided via config', async () => {
-      const name = 'abc123';
-      const app = new Application({
-        servers: {
-          abc123: FakeServer,
-        },
-      });
-      const result = await app.getServer(name);
-      expect(result.constructor.name).to.equal(FakeServer.name);
+  describe('start', () => {
+    it('starts all injected servers', async () => {
+      const app = new Application();
+      app.component(FakeComponent);
+
+      await app.start();
+      const server = await app.getServer(FakeServer);
+      expect(server).to.not.be.null();
+      expect(server.running).to.equal(true);
+      await app.stop();
     });
 
-    describe('start', () => {
-      it('starts all injected servers', async () => {
-        const app = new Application({
-          components: [FakeComponent],
-        });
+    it('does not attempt to start poorly named bindings', async () => {
+      const app = new Application();
+      app.component(FakeComponent);
 
-        await app.start();
-        const server = await app.getServer(FakeServer);
-        expect(server).to.not.be.null();
-        expect(server.running).to.equal(true);
-        await app.stop();
-      });
-
-      it('does not attempt to start poorly named bindings', async () => {
-        const app = new Application({
-          components: [FakeComponent],
-        });
-
-        // The app.start should not attempt to start this binding.
-        app.bind('controllers.servers').to({});
-        await app.start();
-        await app.stop();
-      });
+      // The app.start should not attempt to start this binding.
+      app.bind('controllers.servers').to({});
+      await app.start();
+      await app.stop();
     });
   });
 
@@ -147,3 +143,5 @@ class FakeServer extends Context implements Server {
     this.running = false;
   }
 }
+
+class AnotherServer extends FakeServer {}

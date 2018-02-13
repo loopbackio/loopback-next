@@ -3,9 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application} from '@loopback/core';
 import {
-  RestComponent,
+  RestApplication,
   RestServer,
   get,
   param,
@@ -46,7 +45,7 @@ describe('log extension acceptance test', () => {
   let server: RestServer;
   let spy: SinonSpy;
 
-  class LogApp extends LogLevelMixin(Application) {}
+  class LogApp extends LogLevelMixin(RestApplication) {}
 
   const debugMatch: string = chalk.white(
     'DEBUG: /debug :: MyController.debug() => debug called',
@@ -238,9 +237,8 @@ describe('log extension acceptance test', () => {
   }
 
   async function createApp() {
-    app = new LogApp({
-      components: [RestComponent, LogComponent],
-    });
+    app = new LogApp();
+    app.component(LogComponent);
 
     app.bind(EXAMPLE_LOG_BINDINGS.TIMER).to(timer);
     server = await app.getServer(RestServer);

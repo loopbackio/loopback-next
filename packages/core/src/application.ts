@@ -23,24 +23,6 @@ export class Application extends Context {
     this.bind(CoreBindings.APPLICATION_INSTANCE).to(this);
     // Make options available to other modules as well.
     this.bind(CoreBindings.APPLICATION_CONFIG).to(options);
-
-    if (options.components) {
-      for (const component of options.components) {
-        this.component(component);
-      }
-    }
-
-    if (options.servers) {
-      for (const name in options.servers) {
-        this.server(options.servers[name], name);
-      }
-    }
-
-    if (options.controllers) {
-      for (const ctor of options.controllers) {
-        this.controller(ctor);
-      }
-    }
   }
 
   /**
@@ -218,20 +200,6 @@ export class Application extends Context {
  * Configuration for application
  */
 export interface ApplicationConfig {
-  /**
-   * An array of component classes
-   */
-  components?: Array<Constructor<Component>>;
-  /**
-   * An array of controller classes
-   */
-  controllers?: Array<ControllerClass>;
-  /**
-   * A map of server name/class pairs
-   */
-  servers?: {
-    [name: string]: Constructor<Server>;
-  };
   /**
    * Other properties
    */

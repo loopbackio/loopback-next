@@ -16,18 +16,18 @@ The logger will log the URL, the parsed request parameters, and the result. The 
 
 TimerProvider is automatically bound to your Application's [Context](http://loopback.io/doc/en/lb4/Context.html) using the LogComponent which exports this provider with a binding key of `extension-starter.timer`. You can learn more about components in the [related resources section](#related-resources).
 
-This provider makes availble to your application a timer function which given a start time _(given as an array [seconds, nanoseconds])_ can give you a total time elapsed since the start in milliseconds. The timer can also start timing if no start time is given. This is used by LogComponent to allow a user to time a Sequence. 
+This provider makes availble to your application a timer function which given a start time _(given as an array [seconds, nanoseconds])_ can give you a total time elapsed since the start in milliseconds. The timer can also start timing if no start time is given. This is used by LogComponent to allow a user to time a Sequence.
 
 *NOTE:* _You can get the start time in the required format by using `this.logger.startTimer()`._
 
 You can provide your own implementation of the elapsed time function by binding it to the binding key (accessible via `ExtensionStarterBindings`) as follows:
 ```ts
 app.bind(ExtensionStarterBindings.TIMER).to(timerFn);
-``` 
+```
 
 ### LogProvider
 
-LogProvider can automatically be bound to your Application's Context using the LogComponent which exports the provider with a binding key of `extension-starter.actions.log`. 
+LogProvider can automatically be bound to your Application's Context using the LogComponent which exports the provider with a binding key of `extension-starter.actions.log`.
 
 The key can be accessed by importing `ExtensionStarterBindings` as follows:
 
@@ -38,7 +38,7 @@ import {ExtensionStarterBindings} from 'HelloExtensions';
 const key = ExtensionStarterBindings.LOG_ACTION;
 ```
 
-LogProvider gives us a seuqence action and a `startTimer` function. In order to use the sequence action, you must define your own sequence as shown below. 
+LogProvider gives us a seuqence action and a `startTimer` function. In order to use the sequence action, you must define your own sequence as shown below.
 
 **Example: Sequence**
 ```ts
@@ -85,9 +85,9 @@ Once a sequence has been written, we can just use that in our Application as fol
 **Example: Application**
 ```ts
 const app = new Application({
-  sequence: LogSequence,
-  components: [LogComponent]
+  sequence: LogSequence
 });
+app.component(LogComponent);
 
 // Now all requests handled by our sequence will be logged.
 ```

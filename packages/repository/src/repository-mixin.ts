@@ -23,20 +23,6 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
     // A mixin class has to take in a type any[] argument!
     constructor(...args: any[]) {
       super(...args);
-      if (!this.options) this.options = {};
-
-      if (this.options.repositories) {
-        for (const repo of this.options.repositories) {
-          this.repository(repo);
-        }
-      }
-
-      if (this.options.components) {
-        // Super would have already mounted the component
-        for (const component of this.options.components) {
-          this.mountComponentRepository(component);
-        }
-      }
     }
 
     /**

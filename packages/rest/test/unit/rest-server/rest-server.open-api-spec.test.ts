@@ -174,9 +174,8 @@ describe('RestServer.getApiSpec()', () => {
   });
 
   async function givenApplication() {
-    app = new Application({
-      components: [RestComponent],
-    });
+    app = new Application();
+    app.component(RestComponent);
     server = await app.getServer(RestServer);
   }
 });

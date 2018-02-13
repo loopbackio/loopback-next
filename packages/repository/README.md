@@ -373,7 +373,7 @@ ctx.bind('repositories.noteRepo').toClass(MyNoteRepository);
 ```
 
 #### Using the Repository Mixin for Application
-A Repository Mixin is available for Application that provides convenience methods for binding and instantiating a repository class. Bound instances can be used anywhere in your application using Dependency Injection. An array set to the key `repositories` can be passed to the constructor or the `.repository(RepositoryClass)` function can be used. The mixin will also instantiate any repositories declared by a component in its constructor using the `repositories` key.
+A Repository Mixin is available for Application that provides convenience methods for binding and instantiating a repository class. Bound instances can be used anywhere in your application using Dependency Injection. The `.repository(RepositoryClass)` function can be used to bind a repository class to an Application. The mixin will also instantiate any repositories declared by a component in its constructor using the `repositories` key.
 
 Repositories will be bound to the key `repositories.RepositoryClass` where `RepositoryClass` is the name of the Repository class being bound.
 ```ts

@@ -20,13 +20,6 @@ import {
 /* tslint:enable:no-unused-variable */
 export class TodoApplication extends RepositoryMixin(RestApplication) {
   constructor(options?: ApplicationConfig) {
-    // TODO(bajtos) The comment below does not make sense to me.
-    // Consumers of TodoApplication object should not be changing the shape
-    // of the app (what components are mounted, etc.) The config object should
-    // be used only to configure what ports the app is listening on,
-    // which database to connect to, etc.
-    // See https://github.com/strongloop/loopback-next/issues/742
-
     super(options);
     this.setupRepositories();
     this.setupControllers();

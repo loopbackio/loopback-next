@@ -184,9 +184,8 @@ servers:
   });
 
   it('exposes "GET /swagger-ui" endpoint', async () => {
-    const app = new Application({
-      components: [RestComponent],
-    });
+    const app = new Application();
+    app.component(RestComponent);
     const server = await app.getServer(RestServer);
     const greetSpec = {
       responses: {
@@ -216,9 +215,9 @@ servers:
 
   it('exposes "GET /swagger-ui" endpoint with apiExplorerUrl', async () => {
     const app = new Application({
-      components: [RestComponent],
       rest: {apiExplorerUrl: 'http://petstore.swagger.io'},
     });
+    app.component(RestComponent);
     const server = await app.getServer(RestServer);
     const greetSpec = {
       responses: {
@@ -247,9 +246,8 @@ servers:
   });
 
   async function givenAServer(options?: ApplicationConfig) {
-    if (!options) options = {};
-    options.components = [RestComponent];
     const app = new Application(options);
+    app.component(RestComponent);
     return await app.getServer(RestServer);
   }
 });

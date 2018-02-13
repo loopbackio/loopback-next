@@ -37,30 +37,14 @@ describe('RestApplication', () => {
       );
     });
 
-    it('when attempting to bind servers via configuration', () => {
-      expect.throws(
-        () => {
-          // tslint:disable-next-line:no-unused-variable
-          const app = new RestApplication({
-            servers: {
-              foo: RestServer,
-              bar: RestServer,
-            },
-          });
-        },
-        Error,
-        ERR_NO_MULTI_SERVER,
-      );
-    });
-
     it('when attempting bind multiple servers via RestComponent', () => {
       class OtherRestComponent extends RestComponent {}
       expect.throws(
         () => {
           // tslint:disable-next-line:no-unused-variable
-          const app = new RestApplication({
-            components: [RestComponent, OtherRestComponent],
-          });
+          const app = new RestApplication();
+          app.component(RestComponent);
+          app.component(OtherRestComponent);
         },
         Error,
         ERR_NO_MULTI_SERVER,

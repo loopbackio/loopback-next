@@ -20,9 +20,8 @@ const SequenceActions = RestBindings.SequenceActions;
 describe('RestComponent', () => {
   describe('Providers', () => {
     describe('Default implementations are bound', () => {
-      const app = new Application({
-        components: [RestComponent],
-      });
+      const app = new Application();
+      app.component(RestComponent);
 
       // Stub constructor requirements for some providers.
       app.bind(RestBindings.Http.CONTEXT).to(new Context());
@@ -40,9 +39,8 @@ describe('RestComponent', () => {
     });
     describe('LOG_ERROR', () => {
       it('matches expected argument signature', async () => {
-        const app = new Application({
-          components: [RestComponent],
-        });
+        const app = new Application();
+        app.component(RestComponent);
         const server = await app.getServer(RestServer);
         const logError = await server.get(SequenceActions.LOG_ERROR);
         expect(logError.length).to.equal(3); // (err, statusCode, request)
@@ -73,9 +71,8 @@ describe('RestComponent', () => {
           }
         }
 
-        const app = new Application({
-          components: [CustomRestComponent],
-        });
+        const app = new Application();
+        app.component(CustomRestComponent);
         const server = await app.getServer(RestServer);
         const logError = await server.get(SequenceActions.LOG_ERROR);
         logError(new Error('test-error'), 400, new ShotRequest({url: '/'}));

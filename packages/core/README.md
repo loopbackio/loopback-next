@@ -39,10 +39,6 @@ import {RestComponent} from '@loopback/rest';
 import {GrpcComponent} from '@loopback/grpc';
 
 const app = new Application({
-  components: [
-    RestComponent, // REST Server
-    GrpcComponent, // GRPC Server
-  ],
   rest: {
     port: 3000,
   },
@@ -50,6 +46,8 @@ const app = new Application({
     port: 3001,
   },
 });
+app.component(RestComponent) // REST Server
+app.component(GrpcComponent) // GRPC Server
 
 (async function start() {
   // Let's retrieve the bound instances of our servers.

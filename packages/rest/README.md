@@ -47,13 +47,11 @@ Application options.
 
 ```ts
   const app = new Application({
-    components: [
-      RestComponent,
-    ],
     rest: {
       port: 3001
     }
   });
+  app.component(RestComponent);
 ```
 
 ### `rest` options
