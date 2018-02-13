@@ -67,10 +67,12 @@ module.exports = class ProjectGenerator extends BaseGenerator {
   setupRenameTransformer() {
     this.registerTransformStream(
       rename(function(file) {
-        if (file.extname === '.template') {
-          const split = file.basename.split('.');
-          file.extname = `.${split.pop()}`;
-          file.basename = split.join('.');
+        // extname already contains a leading '.'
+        const fileName = `${file.basename}${file.extname}`;
+        const result = fileName.match(/(.+)(.ts|.js)\.template$/);
+        if (result) {
+          file.extname = result[2];
+          file.basename = result[1];
         }
       })
     );
