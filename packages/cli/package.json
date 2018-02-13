@@ -42,6 +42,7 @@
     "chalk": "^2.3.0",
     "change-case": "^3.0.1",
     "debug": "^3.1.0",
+    "gulp-rename": "^1.2.2",
     "gunzip-maybe": "^1.4.1",
     "lodash": "^4.17.4",
     "minimist": "^1.2.0",
