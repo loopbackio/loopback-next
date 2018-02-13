@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import 'mocha';
 import * as express from 'express';
 import {RPCServer, routeHandler} from '../../src/servers';
 import {expect, sinon} from '@loopback/testlab';
