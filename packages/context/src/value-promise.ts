@@ -28,7 +28,8 @@ export type BoundValue = any;
  */
 export type ValueOrPromise<T> = T | PromiseLike<T>;
 
-export type MapObject<T> = {[name: string]: T};
+// tslint:disable-next-line:no-any
+export type MapObject<T = any> = {[name: string]: T};
 
 /**
  * Check whether a value is a Promise-like instance.

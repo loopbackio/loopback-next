@@ -6,6 +6,7 @@
     "src/context.ts",
     "src/index.ts",
     "src/inject.ts",
+    "src/injectable.ts",
     "src/is-promise.ts",
     "src/provider.ts",
     "src/reflect.ts",
