@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
+const rename = require('gulp-rename');
 const BaseGenerator = require('./base-generator');
 const utils = require('./utils');
 
@@ -55,6 +56,26 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       const isValid = utils.validate(this.args[0]);
       if (typeof isValid === 'string') throw new Error(isValid);
     }
+
+    this.setupRenameTransformer();
+  }
+
+  /**
+   * Registers a Transform Stream with Yeoman. Removes `.template` extension
+   * from files that have it during project generation.
+   */
+  setupRenameTransformer() {
+    this.registerTransformStream(
+      rename(function(file) {
+        // extname already contains a leading '.'
+        const fileName = `${file.basename}${file.extname}`;
+        const result = fileName.match(/(.+)(.ts|.js)\.template$/);
+        if (result) {
+          file.extname = result[2];
+          file.basename = result[1];
+        }
+      })
+    );
   }
 
   setOptions() {

@@ -186,10 +186,10 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       debug(`Artifact filename set to: ${this.artifactInfo.filename}`);
     }
     // renames the file
-    let template = 'controller-template.ts';
+    let template = 'controller-template.ts.template';
     switch (this.artifactInfo.controllerType) {
       case ControllerGenerator.REST:
-        template = 'controller-rest-template.ts';
+        template = 'controller-rest-template.ts.template';
         break;
       default:
         break;
