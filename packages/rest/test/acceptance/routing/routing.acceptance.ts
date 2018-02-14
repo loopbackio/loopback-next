@@ -12,7 +12,7 @@ import {
   RestComponent,
 } from '../../..';
 
-import {api, get, param} from '@loopback/openapi-v2';
+import {api, get, param} from '@loopback/openapi-v3';
 
 import {Application} from '@loopback/core';
 
@@ -20,7 +20,7 @@ import {
   ParameterObject,
   OperationObject,
   ResponseObject,
-} from '@loopback/openapi-spec';
+} from '@loopback/openapi-spec-types';
 
 import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
@@ -103,8 +103,7 @@ describe('Routing', () => {
   it('allows controllers to define params via decorators', async () => {
     class MyController {
       @get('/greet')
-      @param.query.string('name')
-      greet(name: string) {
+      greet(@param.query.string('name') name: string) {
         return `hello ${name}`;
       }
     }

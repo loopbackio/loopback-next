@@ -29,6 +29,7 @@ export interface JsonDefinition extends Definition {
   additionalProperties?: JsonDefinition | boolean;
   definitions?: {[definition: string]: JsonDefinition};
   properties?: {[property: string]: JsonDefinition};
+  $ref?: string;
 }
 
 /**

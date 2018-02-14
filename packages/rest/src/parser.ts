@@ -5,14 +5,20 @@
 
 import {ServerRequest} from 'http';
 import * as HttpErrors from 'http-errors';
-import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
 import {promisify} from 'util';
+import {
+  OperationObject,
+  ParameterObject,
+  RequestBodyObject,
+} from '@loopback/openapi-spec-types';
 import {
   OperationArgs,
   ParsedRequest,
   PathParameterValues,
 } from './internal-types';
 import {ResolvedRoute} from './router/routing-table';
+import {REQUEST_BODY_INDEX} from '@loopback/openapi-v3';
+const cookieParser = require('cookie').parse;
 type HttpError = HttpErrors.HttpError;
 
 // tslint:disable-next-line:no-any
@@ -76,15 +82,7 @@ function loadRequestBodyIfNeeded(
 }
 
 function hasArgumentsFromBody(operationSpec: OperationObject): boolean {
-  if (!operationSpec.parameters || !operationSpec.parameters.length)
-    return false;
-
-  for (const paramSpec of operationSpec.parameters) {
-    if ('$ref' in paramSpec) continue;
-    const source = (paramSpec as ParameterObject).in;
-    if (source === 'formData' || source === 'body') return true;
-  }
-  return false;
+  return !!operationSpec.requestBody;
 }
 
 function buildOperationArguments(
@@ -95,34 +93,59 @@ function buildOperationArguments(
 ): OperationArgs {
   const args: OperationArgs = [];
 
+  let requestBodyIndex: number = -1;
+  if (hasArgumentsFromBody(operationSpec)) {
+    const i = (<RequestBodyObject>operationSpec.requestBody)[
+      REQUEST_BODY_INDEX
+    ];
+    requestBodyIndex = i ? i : 0;
+  }
+
+  const paramArgs: OperationArgs = [];
   for (const paramSpec of operationSpec.parameters || []) {
     if ('$ref' in paramSpec) {
       // TODO(bajtos) implement $ref parameters
       // See https://github.com/strongloop/loopback-next/issues/435
       throw new Error('$ref parameters are not supported yet.');
     }
+
     const spec = paramSpec as ParameterObject;
     switch (spec.in) {
       case 'query':
-        args.push(request.query[spec.name]);
+        paramArgs.push(request.query[spec.name]);
         break;
       case 'path':
-        args.push(pathParams[spec.name]);
+        paramArgs.push(pathParams[spec.name]);
         break;
       case 'header':
-        args.push(request.headers[spec.name.toLowerCase()]);
+        paramArgs.push(request.headers[spec.name.toLowerCase()]);
         break;
-      case 'formData':
-        args.push(body ? body[spec.name] : undefined);
+      case 'cookie':
+        // For details about cookie format, please check:
+        // https://www.npmjs.com/package/cookie
+        let cookies = cookieParser(request.headers.cookie || '');
+        paramArgs.push(cookies[spec.name]);
         break;
-      case 'body':
-        args.push(body);
-        break;
+      // 'file' is not supported yet
       default:
         throw new HttpErrors.NotImplemented(
           'Parameters with "in: ' + spec.in + '" are not supported yet.',
         );
     }
   }
+
+  insertRequestBody();
   return args;
+
+  function insertRequestBody() {
+    if (paramArgs.length === 0 && requestBodyIndex > -1) {
+      args.push(body);
+      return;
+    }
+    for (const arg of paramArgs) {
+      if (paramArgs.indexOf(arg) === requestBodyIndex) args.push(body);
+      args.push(arg);
+    }
+    if (paramArgs.length === requestBodyIndex) args.push(body);
+  }
 }
