@@ -9,11 +9,7 @@ import {safeDump} from 'js-yaml';
 import {Binding, Context, Constructor, inject} from '@loopback/context';
 import {Route, ControllerRoute, RouteEntry} from './router/routing-table';
 import {ParsedRequest} from './internal-types';
-import {
-  OpenApiSpec,
-  createEmptyApiSpec,
-  OperationObject,
-} from '@loopback/openapi-spec';
+import {OpenApiSpec, OperationObject} from '@loopback/openapi-spec';
 import {ServerRequest, ServerResponse, createServer} from 'http';
 import * as Http from 'http';
 import {Application, CoreBindings, Server} from '@loopback/core';
@@ -141,9 +137,10 @@ export class RestServer extends Context implements Server {
     }
     this.bind(RestBindings.PORT).to(options.port);
     this.bind(RestBindings.HOST).to(options.host);
-    this.api(createEmptyApiSpec());
 
-    this.sequence(options.sequence ? options.sequence : DefaultSequence);
+    if (options.sequence) {
+      this.sequence(options.sequence);
+    }
 
     this.handleHttp = (req: ServerRequest, res: ServerResponse) => {
       try {

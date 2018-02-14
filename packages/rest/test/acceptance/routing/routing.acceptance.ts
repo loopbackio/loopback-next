@@ -10,6 +10,7 @@ import {
   RestBindings,
   RestServer,
   RestComponent,
+  RestApplication,
 } from '../../..';
 
 import {api, get, param} from '@loopback/openapi-v2';
@@ -485,6 +486,83 @@ describe('Routing', () => {
 
     const client = whenIMakeRequestTo(server);
     await client.get('/greet?name=world').expect(200, 'hello world');
+  });
+
+  describe('RestApplication', () => {
+    it('supports function-based routes declared via app.route()', async () => {
+      const app = new RestApplication();
+
+      const routeSpec = <OperationObject>{
+        parameters: [
+          <ParameterObject>{name: 'name', in: 'query', type: 'string'},
+        ],
+        responses: {
+          200: <ResponseObject>{
+            description: 'greeting text',
+            schema: {type: 'string'},
+          },
+        },
+      };
+
+      function greet(name: string) {
+        return `hello ${name}`;
+      }
+
+      const route = new Route('get', '/greet', routeSpec, greet);
+      app.route(route);
+
+      const server = await givenAServer(app);
+      const client = whenIMakeRequestTo(server);
+      await client.get('/greet?name=world').expect(200, 'hello world');
+    });
+
+    it('supports controller routes declared via app.api()', async () => {
+      const app = new RestApplication();
+
+      class MyController {
+        greet(name: string) {
+          return `hello ${name}`;
+        }
+      }
+
+      const spec = anOpenApiSpec()
+        .withOperation(
+          'get',
+          '/greet',
+          anOperationSpec()
+            .withParameter({name: 'name', in: 'query', type: 'string'})
+            .withExtension('x-operation-name', 'greet')
+            .withExtension('x-controller-name', 'MyController'),
+        )
+        .build();
+
+      app.api(spec);
+      app.controller(MyController);
+
+      const server = await givenAServer(app);
+      const client = whenIMakeRequestTo(server);
+      await client.get('/greet?name=world').expect(200, 'hello world');
+    });
+
+    it('supports controller routes defined via app.route()', async () => {
+      const app = new RestApplication();
+
+      class MyController {
+        greet(name: string) {
+          return `hello ${name}`;
+        }
+      }
+
+      const spec = anOperationSpec()
+        .withParameter({name: 'name', in: 'query', type: 'string'})
+        .build();
+
+      app.route('get', '/greet', spec, MyController, 'greet');
+
+      const server = await givenAServer(app);
+      const client = whenIMakeRequestTo(server);
+      await client.get('/greet?name=world').expect(200, 'hello world');
+    });
   });
 
   /* ===== HELPERS ===== */
