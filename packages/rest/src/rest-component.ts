@@ -23,6 +23,8 @@ import {
   SendProvider,
 } from './providers';
 import {RestServer, RestServerConfig} from './rest-server';
+import {DefaultSequence} from '.';
+import {createEmptyApiSpec} from '@loopback/openapi-spec';
 
 export class RestComponent implements Component {
   providers: ProviderMap = {
@@ -45,7 +47,8 @@ export class RestComponent implements Component {
     @inject(CoreBindings.APPLICATION_INSTANCE) app: Application,
     @inject(RestBindings.CONFIG) config?: RestComponentConfig,
   ) {
-    if (!config) config = {};
+    app.bind(RestBindings.SEQUENCE).toClass(DefaultSequence);
+    app.bind(RestBindings.API_SPEC).to(createEmptyApiSpec());
   }
 }
 

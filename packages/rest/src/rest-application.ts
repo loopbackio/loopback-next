@@ -9,6 +9,9 @@ import {SequenceHandler, SequenceFunction} from './sequence';
 import {Binding, Constructor} from '@loopback/context';
 import {format} from 'util';
 import {RestBindings} from './keys';
+import {RouteEntry, RestServer} from '.';
+import {ControllerClass} from './router/routing-table';
+import {OperationObject, OpenApiSpec} from '@loopback/openapi-spec';
 
 export const ERR_NO_MULTI_SERVER = format(
   'RestApplication does not support multiple servers!',
@@ -46,7 +49,79 @@ export class RestApplication extends Application {
   handler(handlerFn: SequenceFunction) {
     // FIXME(kjdelisle): I attempted to mimic the pattern found in RestServer
     // with no success, so until I've got a better way, this is functional.
-    const server = this.getSync('servers.RestServer');
+    const server: RestServer = this.getSync('servers.RestServer');
     server.handler(handlerFn);
+  }
+
+  /**
+   * Register a new Controller-based route.
+   *
+   * ```ts
+   * class MyController {
+   *   greet(name: string) {
+   *     return `hello ${name}`;
+   *   }
+   * }
+   * app.route('get', '/greet', operationSpec, MyController, 'greet');
+   * ```
+   *
+   * @param verb HTTP verb of the endpoint
+   * @param path URL path of the endpoint
+   * @param spec The OpenAPI spec describing the endpoint (operation)
+   * @param controller Controller constructor
+   * @param methodName The name of the controller method
+   */
+  route(
+    verb: string,
+    path: string,
+    spec: OperationObject,
+    controller: ControllerClass,
+    methodName: string,
+  ): Binding;
+
+  /**
+   * Register a new route.
+   *
+   * ```ts
+   * function greet(name: string) {
+   *  return `hello ${name}`;
+   * }
+   * const route = new Route('get', '/', operationSpec, greet);
+   * app.route(route);
+   * ```
+   *
+   * @param route The route to add.
+   */
+  route(route: RouteEntry): Binding;
+
+  route(
+    routeOrVerb: RouteEntry | string,
+    path?: string,
+    spec?: OperationObject,
+    controller?: ControllerClass,
+    methodName?: string,
+  ): Binding {
+    // FIXME(bajtos): This is a workaround based on app.handler() above
+    const server: RestServer = this.getSync('servers.RestServer');
+    if (typeof routeOrVerb === 'object') {
+      return server.route(routeOrVerb);
+    } else {
+      return server.route(routeOrVerb, path!, spec!, controller!, methodName!);
+    }
+  }
+
+  /**
+   * Set the OpenAPI specification that defines the REST API schema for this
+   * application. All routes, parameter definitions and return types will be
+   * defined in this way.
+   *
+   * Note that this will override any routes defined via decorators at the
+   * controller level (this function takes precedent).
+   *
+   * @param {OpenApiSpec} spec The OpenAPI specification, as an object.
+   * @returns {Binding}
+   */
+  api(spec: OpenApiSpec): Binding {
+    return this.bind(RestBindings.API_SPEC).to(spec);
   }
 }

@@ -16,6 +16,7 @@ import {
   RestBindings,
   RestServer,
   RestComponent,
+  RestApplication,
 } from '../../..';
 import {api} from '@loopback/openapi-v2';
 import {Application} from '@loopback/core';
@@ -36,7 +37,7 @@ describe('Sequence', () => {
   let server: RestServer;
   beforeEach(givenAppWithController);
   it('provides a default sequence', async () => {
-    whenIMakeRequestTo(app)
+    whenIRequest()
       .get('/name')
       .expect('SequenceApp');
   });
@@ -45,7 +46,7 @@ describe('Sequence', () => {
     server.handler((sequence, request, response) => {
       sequence.send(response, 'hello world');
     });
-    return whenIMakeRequestTo(app)
+    return whenIRequest()
       .get('/')
       .expect('hello world');
   });
@@ -61,7 +62,7 @@ describe('Sequence', () => {
     // bind user defined sequence
     server.sequence(MySequence);
 
-    whenIMakeRequestTo(app)
+    whenIRequest()
       .get('/')
       .expect('hello world');
   });
@@ -86,9 +87,27 @@ describe('Sequence', () => {
 
     server.sequence(MySequence);
 
-    return whenIMakeRequestTo(app)
+    return whenIRequest()
       .get('/name')
       .expect('MySequence SequenceApp');
+  });
+
+  it('allows users to bind a custom sequence class via app.sequence()', async () => {
+    class MySequence {
+      constructor(@inject(SequenceActions.SEND) protected send: Send) {}
+
+      async handle(req: ParsedRequest, res: ServerResponse) {
+        this.send(res, 'MySequence was invoked.');
+      }
+    }
+
+    const restApp = new RestApplication();
+    restApp.sequence(MySequence);
+
+    const appServer = await restApp.getServer(RestServer);
+    await whenIRequest(appServer)
+      .get('/name')
+      .expect('MySequence was invoked.');
   });
 
   it('user-defined Send', () => {
@@ -98,7 +117,7 @@ describe('Sequence', () => {
     };
     server.bind(SequenceActions.SEND).to(send);
 
-    return whenIMakeRequestTo(app)
+    return whenIRequest()
       .get('/name')
       .expect('CUSTOM FORMAT: SequenceApp');
   });
@@ -110,7 +129,7 @@ describe('Sequence', () => {
     };
     server.bind(SequenceActions.REJECT).to(reject);
 
-    return whenIMakeRequestTo(app)
+    return whenIRequest()
       .get('/unknown-url')
       .expect(418);
   });
@@ -122,7 +141,7 @@ describe('Sequence', () => {
       sequence.send(response, sequence.ctx.getSync('test'));
     });
 
-    return whenIMakeRequestTo(app)
+    return whenIRequest()
       .get('/')
       .expect('hello world');
   });
@@ -149,7 +168,7 @@ describe('Sequence', () => {
     server.sequence(MySequence);
     app.bind('test').to('hello world');
 
-    return whenIMakeRequestTo(app)
+    return whenIRequest()
       .get('/')
       .expect('hello world');
   });
@@ -194,7 +213,7 @@ describe('Sequence', () => {
     app.controller(controller);
   }
 
-  function whenIMakeRequestTo(application: Application): Client {
-    return createClientForHandler(server.handleHttp);
+  function whenIRequest(restServer: RestServer = server): Client {
+    return createClientForHandler(restServer.handleHttp);
   }
 });
