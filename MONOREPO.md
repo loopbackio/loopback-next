@@ -17,6 +17,7 @@ The [loopback-next](https://github.com/strongloop/loopback-next) repository uses
 |[openapi-spec](packages/openapi-spec)                      |@loopback/openapi-spec          | TypeScript type definitions for OpenAPI Spec/Swagger documents |
 |[openapi-spec-builder](packages/openapi-spec-builder)      |@loopback/openapi-spec-builder  | Builders to create OpenAPI (Swagger) specification documents in tests |
 |[openapi-v2](packages/openapi-v2)                          |@loopback/openapi-v2            | Decorators that annotate LoopBack artifacts with OpenAPI v2 (Swagger) metadata and utilities that transform LoopBack metadata to OpenAPI v2 (Swagger) specifications|
+|[openapi-v3-types](packages/openapi-v3-types)              |@loopback/openapi-v3-types      | TypeScript type definitions for OpenAPI Specifications |
 |[rest](packages/rest)                                      |@loopback/rest                  | Expose controllers as  REST endpoints and route REST API requests to controller methods |
 |[repository](packages/repository)                          |@loopback/repository            | Define and implement a common set of interfaces for interacting with databases|
 |[repository-json-schema](packages/repository-json-schema)  |@loopback/repository-json-schema| Convert a TypeScript class/model to a JSON Schema |

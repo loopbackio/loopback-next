@@ -1,0 +1,4 @@
+{
+  "content": ["index.ts", "src/index.ts", "src/openapi-v3-types.ts", "src/type-guards.ts"],
+  "codeSectionDepth": 4
+}

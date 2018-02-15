@@ -1,0 +1,44 @@
+{
+  "name": "@loopback/openapi-v3-types",
+  "version": "0.1.0",
+  "description": "TypeScript type definitions for OpenAPI Specifications.",
+  "engines": {
+    "node": ">=8"
+  },
+  "dependencies": {
+    "openapi3-ts": "^0.7.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^4.0.0-alpha.13"
+  },
+  "scripts": {
+    "build": "lb-tsc es2017",
+    "build:apidocs": "lb-apidocs",
+    "clean": "lb-clean loopback-openapi-v3-types*.tgz dist package api-docs",
+    "prepublishOnly": "npm run build && npm run build:apidocs",
+    "verify": "npm pack && tar xf loopback-openapi-v3-types*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "keywords": [
+    "OpenAPI Spec",
+    "TypeScript",
+    "Typings"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist/src",
+    "api-docs",
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }, 
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
+}
