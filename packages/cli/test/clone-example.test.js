@@ -17,11 +17,23 @@ const VALID_EXAMPLE = 'getting-started';
 const SANDBOX_PATH = path.resolve(__dirname, 'sandbox');
 let sandbox;
 
-describe('cloneExampleFromGitHub (SLOW)', function() {
+describe.skip('cloneExampleFromGitHub (SLOW)', function() {
   this.timeout(20000);
   before(createSandbox);
   beforeEach(resetSandbox);
 
+  /**
+   * FIXME(kjdelisle): This test will prevent any meaningful changes from
+   * landing in example repositories, since it will always fail the equality
+   * test provided when new files are added, or when existing files are
+   * removed as a part of refactor/cleanup.
+   *
+   * While I do value the idea of verifying that the example packages are
+   * being cloned properly, we can't hang that idea on validating the
+   * particular presence of any content that isn't perpetually required.
+   *
+   * This test can be removed once strongloop/loopback-next#932 is complete.
+   */
   it('extracts all project files', () => {
     return cloneExampleFromGitHub(VALID_EXAMPLE, SANDBOX_PATH)
       .then(outDir => {
