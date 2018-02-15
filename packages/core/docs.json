@@ -2,7 +2,6 @@
   "content": [
     "index.ts",
     "src/application.ts",
-    "src/booter.ts",
     "src/component.ts",
     "src/index.ts",
     "src/keys.ts",

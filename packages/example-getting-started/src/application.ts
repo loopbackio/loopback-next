@@ -5,12 +5,14 @@
 
 import {ApplicationConfig} from '@loopback/core';
 import {RestApplication} from '@loopback/rest';
-import {BootComponent} from '@loopback/boot';
 import {TodoRepository} from './repositories';
 import {db} from './datasources/db.datasource';
+
 /* tslint:disable:no-unused-variable */
+// Do not remove!
 // Class and Repository imports required to infer types in consuming code!
-// Do not remove them!
+// Binding and Booter imports are required to infer types for BootMixin!
+import {BootMixin, Booter, Binding} from '@loopback/boot';
 import {
   Class,
   Repository,
@@ -18,16 +20,14 @@ import {
   RepositoryMixin,
 } from '@loopback/repository';
 /* tslint:enable:no-unused-variable */
-export class TodoApplication extends RepositoryMixin(RestApplication) {
-  constructor(options?: ApplicationConfig) {
-    options = Object.assign({bootOptions: {projectRoot: __dirname}}, options);
-    super(options);
-    this.component(BootComponent);
-    this.setupRepositories();
-  }
 
-  async boot(): Promise<void> {
-    await super.boot();
+export class TodoApplication extends BootMixin(
+  RepositoryMixin(RestApplication),
+) {
+  constructor(options?: ApplicationConfig) {
+    super(options);
+    this.projectRoot = __dirname;
+    this.setupRepositories();
   }
 
   // Helper functions (just to keep things organized)

@@ -12,11 +12,6 @@ describe('base-artifact booter unit tests', () => {
 
   beforeEach(getBaseBooter);
 
-  it('sets the projectRoot property from bootConfig', () => {
-    booterInst = new BaseArtifactBooter({projectRoot: __dirname});
-    expect(booterInst.projectRoot).to.equal(__dirname);
-  });
-
   describe('configure()', () => {
     const options = {
       dirs: ['test', 'test2'],
@@ -55,6 +50,7 @@ describe('base-artifact booter unit tests', () => {
 
   describe('discover()', () => {
     it(`sets 'discovered' property`, async () => {
+      booterInst.projectRoot = __dirname;
       // Fake glob pattern so we get an empty array
       booterInst.glob = '/abc.xyz';
       await booterInst.discover();
@@ -74,6 +70,6 @@ describe('base-artifact booter unit tests', () => {
   });
 
   async function getBaseBooter() {
-    booterInst = new BaseArtifactBooter({projectRoot: __dirname});
+    booterInst = new BaseArtifactBooter();
   }
 });

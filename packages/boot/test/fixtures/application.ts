@@ -5,20 +5,15 @@
 
 import {RestApplication} from '@loopback/rest';
 import {ApplicationConfig} from '@loopback/core';
-import {BootComponent} from '../../index';
 
-export class ControllerBooterApp extends RestApplication {
+/* tslint:disable:no-unused-variable */
+// Binding and Booter imports are required to infer types for BootMixin!
+import {BootMixin, Booter, Binding} from '../../index';
+/* tslint:enable:no-unused-variable */
+
+export class ControllerBooterApp extends BootMixin(RestApplication) {
   constructor(options?: ApplicationConfig) {
-    options = Object.assign({bootOptions: {projectRoot: __dirname}}, options);
     super(options);
-    this.component(BootComponent);
-  }
-
-  async boot(): Promise<void> {
-    await super.boot();
-  }
-
-  async start() {
-    await super.start();
+    this.projectRoot = __dirname;
   }
 }

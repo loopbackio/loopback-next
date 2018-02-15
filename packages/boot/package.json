@@ -5,6 +5,9 @@
   "engines": {
     "node": ">=8"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "acceptance": "lb-mocha \"DIST/test/acceptance/**/*.js\"",
     "build": "npm run build:dist",
@@ -20,6 +23,7 @@
     "verify": "npm pack && tar xf loopback-boot*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
+  "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
     "@loopback/context": "^4.0.0-alpha.27",
@@ -38,8 +42,12 @@
   "files": [
     "README.md",
     "index.js",
+    "index.js.map",
     "index.d.ts",
     "dist/src",
+    "dist/index.js",
+    "dist/index.js.map",
+    "dist/index.d.ts",
     "api-docs",
     "src"
   ],

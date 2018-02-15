@@ -1,20 +1,25 @@
 import {Application, ApplicationConfig, BootOptions} from '@loopback/core';
 import {RestApplication, RestServer} from '@loopback/rest';
-import {BootComponent} from '@loopback/boot';
 import {MySequence} from './sequence';
 
-export class <%= project.applicationName %> extends RestApplication {
-  constructor(options?: ApplicationConfig) {
-    // You can set Booter convetions on the BootOptions Object below
-    options = Object.assign({bootOptions: {projectRoot: __dirname}}, options);
-    super(options);
-    this.component(BootComponent);
-  }
+/* tslint:disable:no-unused-variable */
+// Binding and Booter imports are required to infer types for BootMixin!
+import {BootMixin, Booter, Binding} from '@loopback/boot';
+/* tslint:enable:no-unused-variable */
 
-  async boot(): Promise<void> {
-    // You can pass in BootExecutionOptions to super.boot() here which
-    // controls how Boot is run.
-    await super.boot();
+export class <%= project.applicationName %> extends BootMixin(RestApplication) {
+  constructor(options?: ApplicationConfig) {
+    super(options);
+    this.projectRoot = __dirname;
+    // Customize @loopback/boot Booter Conventions here
+    this.bootOptions = {
+      controllers: {
+        // Customize ControllerBooter Conventions here
+        dirs: ['controllers'],
+        extensions: ['.controller.js'],
+        nested: true,
+      }
+    }
   }
 
   async start() {

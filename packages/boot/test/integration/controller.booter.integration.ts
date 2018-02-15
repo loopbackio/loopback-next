@@ -4,13 +4,17 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect, TestSandbox} from '@loopback/testlab';
-import {CoreBindings} from '@loopback/core';
 import {resolve} from 'path';
 import {ControllerBooterApp} from '../fixtures/application';
 
 describe('controller booter integration tests', () => {
   const SANDBOX_PATH = resolve(__dirname, '../../.sandbox');
   const sandbox = new TestSandbox(SANDBOX_PATH);
+
+  // Remnants from Refactor -- need to add these to core
+  const CONTROLLERS_PREFIX = 'controllers';
+  const CONTROLLERS_TAG = 'controller';
+
   let app: ControllerBooterApp;
 
   beforeEach(resetSandbox);
@@ -18,15 +22,13 @@ describe('controller booter integration tests', () => {
 
   it('boots controllers when app.boot() is called', async () => {
     const expectedBindings = [
-      `${CoreBindings.CONTROLLERS_PREFIX}.ControllerOne`,
-      `${CoreBindings.CONTROLLERS_PREFIX}.ControllerTwo`,
+      `${CONTROLLERS_PREFIX}.ControllerOne`,
+      `${CONTROLLERS_PREFIX}.ControllerTwo`,
     ];
 
     await app.boot();
 
-    const bindings = app
-      .findByTag(CoreBindings.CONTROLLERS_TAG)
-      .map(b => b.key);
+    const bindings = app.findByTag(CONTROLLERS_TAG).map(b => b.key);
     expect(bindings.sort()).to.eql(expectedBindings.sort());
   });
 

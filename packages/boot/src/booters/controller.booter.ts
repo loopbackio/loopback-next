@@ -3,10 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {CoreBindings, Application, BootOptions} from '@loopback/core';
+import {CoreBindings, Application} from '@loopback/core';
 import {inject} from '@loopback/context';
+import {ArtifactOptions} from '../interfaces';
+import {BaseArtifactBooter} from './base-artifact.booter';
 import {BootBindings} from '../keys';
-import {BaseArtifactBooter, ArtifactOptions} from './base-artifact.booter';
 
 /**
  * A class that extends BaseArtifactBooter to boot the 'Controller' artifact type.
@@ -15,18 +16,19 @@ import {BaseArtifactBooter, ArtifactOptions} from './base-artifact.booter';
  * Supported phases: configure, discover, load
  *
  * @param app Application instance
- * @param bootConfig BootStrapper Config Options
+ * @param projectRoot Root of User Project relative to which all paths are resolved
+ * @param [bootConfig] Controller Artifact Options Object
  */
 export class ControllerBooter extends BaseArtifactBooter {
   constructor(
-    @inject(BootBindings.BOOT_OPTIONS) public bootConfig: BootOptions,
     @inject(CoreBindings.APPLICATION_INSTANCE) public app: Application,
+    @inject(BootBindings.PROJECT_ROOT) public projectRoot: string,
+    @inject(`${BootBindings.BOOT_OPTIONS}#controllers`)
+    public controllerConfig: ArtifactOptions = {},
   ) {
-    super(bootConfig);
+    super();
     // Set Controller Booter Options if passed in via bootConfig
-    this.options = bootConfig.controllers
-      ? Object.assign({}, ControllerDefaults, bootConfig.controllers)
-      : Object.assign({}, ControllerDefaults);
+    this.options = Object.assign({}, ControllerDefaults, controllerConfig);
   }
 
   /**

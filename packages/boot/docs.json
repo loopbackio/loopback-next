@@ -6,8 +6,10 @@
     "src/booters/controller.booter.ts",
     "src/booters/index.ts",
     "src/boot.component.ts",
+    "src/boot.mixin.ts",
     "src/bootstrapper.ts",
     "src/index.ts",
+    "src/interfaces.ts",
     "src/keys.ts"
   ],
   "codeSectionDepth": 4

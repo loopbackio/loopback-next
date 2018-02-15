@@ -4,34 +4,30 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Application, CoreBindings} from '@loopback/core';
-import {
-  BootComponent,
-  BootBindings,
-  Bootstrapper,
-  ControllerBooter,
-} from '../../index';
+import {Application} from '@loopback/core';
+import {BootBindings, Bootstrapper, ControllerBooter, BootMixin} from '../../';
 
 describe('boot.component unit tests', () => {
-  let app: Application;
+  class BootableApp extends BootMixin(Application) {}
+
+  let app: BootableApp;
 
   beforeEach(getApp);
 
   it('binds BootStrapper class', async () => {
-    const bootstrapper = await app.get(CoreBindings.BOOTSTRAPPER);
+    const bootstrapper = await app.get(BootBindings.BOOTSTRAPPER_KEY);
     expect(bootstrapper).to.be.an.instanceOf(Bootstrapper);
   });
 
   it('ControllerBooter is bound as a booter by default', async () => {
-    app.bind(BootBindings.BOOT_OPTIONS).to({projectRoot: __dirname});
     const ctrlBooter = await app.get(
-      `${CoreBindings.BOOTER_PREFIX}.ControllerBooter`,
+      `${BootBindings.BOOTER_PREFIX}.ControllerBooter`,
     );
     expect(ctrlBooter).to.be.an.instanceOf(ControllerBooter);
   });
 
   function getApp() {
-    app = new Application();
-    app.component(BootComponent);
+    app = new BootableApp();
+    app.bind(BootBindings.PROJECT_ROOT).to(__dirname);
   }
 });

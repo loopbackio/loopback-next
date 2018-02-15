@@ -4,23 +4,15 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {
-  Application,
-  Server,
-  Component,
-  CoreBindings,
-  Booter,
-  BootOptions,
-  BootExecutionOptions,
-} from '../..';
-import {Context, Constructor, BindingScope} from '@loopback/context';
+import {Application, Server, Component} from '../../index';
+import {Context, Constructor} from '@loopback/context';
 
 describe('Application', () => {
-  let app: Application;
-  beforeEach(givenApp);
-
   describe('controller binding', () => {
+    let app: Application;
     class MyController {}
+
+    beforeEach(givenApp);
 
     it('binds a controller', () => {
       const binding = app.controller(MyController);
@@ -35,50 +27,20 @@ describe('Application', () => {
       expect(binding.key).to.equal('controllers.my-controller');
       expect(findKeysByTag(app, 'controller')).to.containEql(binding.key);
     });
-  });
 
-  describe('boot function', () => {
-    it('calls .boot() if a BootComponent is bound', async () => {
-      app
-        .bind(CoreBindings.BOOTSTRAPPER)
-        .toClass(FakeBootComponent)
-        .inScope(BindingScope.SINGLETON);
-      await app.boot();
-      const bootComponent = await app.get(CoreBindings.BOOTSTRAPPER);
-      expect(bootComponent.bootCalled).to.be.True();
-    });
-  });
-
-  describe('booter binding', () => {
-    it('binds a booter', async () => {
-      const binding = app.booter(TestBooter);
-
-      expect(Array.from(binding.tags)).to.containEql('booter');
-      expect(binding.key).to.equal(`${CoreBindings.BOOTER_PREFIX}.TestBooter`);
-      expect(findKeysByTag(app, CoreBindings.BOOTER_TAG)).to.containEql(
-        binding.key,
-      );
-    });
-
-    it('binds an array of booters', async () => {
-      const bindings = app.booter([TestBooter, TestBooter2]);
-      const keys = bindings.map(binding => binding.key);
-      const expected = [
-        `${CoreBindings.BOOTER_PREFIX}.TestBooter`,
-        `${CoreBindings.BOOTER_PREFIX}.TestBooter2`,
-      ];
-      expect(keys.sort()).to.eql(expected.sort());
-      expect(findKeysByTag(app, CoreBindings.BOOTER_TAG).sort()).to.eql(
-        keys.sort(),
-      );
-    });
+    function givenApp() {
+      app = new Application();
+    }
   });
 
   describe('component binding', () => {
+    let app: Application;
     class MyController {}
     class MyComponent implements Component {
       controllers = [MyController];
     }
+
+    beforeEach(givenApp);
 
     it('binds a component', () => {
       app.component(MyComponent);
@@ -94,16 +56,14 @@ describe('Application', () => {
       );
     });
 
-    it('binds a booter from a component', () => {
-      app.component(FakeBooterComponent);
-      expect(findKeysByTag(app, CoreBindings.BOOTER_TAG)).to.containEql(
-        `${CoreBindings.BOOTER_PREFIX}.TestBooter`,
-      );
-    });
+    function givenApp() {
+      app = new Application();
+    }
   });
 
   describe('server binding', () => {
     it('defaults to constructor name', async () => {
+      const app = new Application();
       const binding = app.server(FakeServer);
       expect(Array.from(binding.tags)).to.containEql('server');
       const result = await app.getServer(FakeServer.name);
@@ -111,6 +71,7 @@ describe('Application', () => {
     });
 
     it('allows custom name', async () => {
+      const app = new Application();
       const name = 'customName';
       app.server(FakeServer, name);
       const result = await app.getServer(name);
@@ -118,7 +79,7 @@ describe('Application', () => {
     });
 
     it('allows binding of multiple servers as an array', async () => {
-      app = new Application();
+      const app = new Application();
       const bindings = app.servers([FakeServer, AnotherServer]);
       expect(Array.from(bindings[0].tags)).to.containEql('server');
       expect(Array.from(bindings[1].tags)).to.containEql('server');
@@ -131,7 +92,7 @@ describe('Application', () => {
 
   describe('start', () => {
     it('starts all injected servers', async () => {
-      app = new Application();
+      const app = new Application();
       app.component(FakeComponent);
 
       await app.start();
@@ -142,7 +103,7 @@ describe('Application', () => {
     });
 
     it('does not attempt to start poorly named bindings', async () => {
-      app = new Application();
+      const app = new Application();
       app.component(FakeComponent);
 
       // The app.start should not attempt to start this binding.
@@ -151,10 +112,6 @@ describe('Application', () => {
       await app.stop();
     });
   });
-
-  function givenApp() {
-    app = new Application({projectRoot: __dirname});
-  }
 
   function findKeysByTag(ctx: Context, tag: string | RegExp) {
     return ctx.findByTag(tag).map(binding => binding.key);
@@ -173,14 +130,6 @@ class FakeComponent implements Component {
   }
 }
 
-class FakeBootComponent implements Component {
-  bootCalled = false;
-
-  async boot(options: BootOptions, execOptions?: BootExecutionOptions) {
-    this.bootCalled = true;
-  }
-}
-
 class FakeServer extends Context implements Server {
   running: boolean = false;
   constructor() {
@@ -196,15 +145,3 @@ class FakeServer extends Context implements Server {
 }
 
 class AnotherServer extends FakeServer {}
-
-class TestBooter implements Booter {
-  async configure() {}
-}
-
-class TestBooter2 implements Booter {
-  async configure() {}
-}
-
-class FakeBooterComponent implements Component {
-  booters = [TestBooter];
-}

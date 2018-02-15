@@ -27,11 +27,11 @@ describe('app-generator specfic files', () => {
     assert.file('src/application.ts');
     assert.fileContent(
       'src/application.ts',
-      /class MyAppApplication extends RestApplication/
+      /class MyAppApplication extends BootMixin\(RestApplication/
     );
     assert.fileContent('src/application.ts', /constructor\(/);
     assert.fileContent('src/application.ts', /async start\(/);
-    assert.fileContent('src/application.ts', /BootComponent/);
+    assert.fileContent('src/application.ts', /this.projectRoot = __dirname/);
 
     assert.file('src/index.ts');
     assert.fileContent('src/index.ts', /new MyAppApplication/);

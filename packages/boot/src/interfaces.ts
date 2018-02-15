@@ -3,7 +3,27 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor} from '@loopback/context';
+import {Constructor, Binding} from '@loopback/context';
+
+/**
+ * Type definition for ArtifactOptions. These are the options supported by
+ * this Booter.
+ *
+ * @param dirs String / String Array of directories to check for artifacts.
+ * Paths must be relative. Defaults to ['controllers']
+ * @param extensions String / String Array of file extensions to match artifact
+ * files in dirs. Defaults to ['.controller.js']
+ * @param nested Boolean to control if artifact discovery should check nested
+ * folders or not. Default to true
+ * @param glob  Optional. A `glob` string to use when searching for files. This takes
+ * precendence over other options.
+ */
+export type ArtifactOptions = {
+  dirs?: string | string[];
+  extensions?: string | string[];
+  nested?: boolean;
+  glob?: string;
+};
 
 /**
  * Defines the requirements to implement a Booter for LoopBack applications:
@@ -46,10 +66,7 @@ export const BOOTER_PHASES = ['configure', 'discover', 'load'];
  * @property filter.phases An array of phases that should be run
  */
 export type BootOptions = {
-  /**
-   * Root of the project. All other artifacts are resolved relative to this.
-   */
-  projectRoot: string;
+  controllers?: ArtifactOptions;
   /**
    * Additional Properties
    */
@@ -81,3 +98,14 @@ export type BootExecutionOptions = {
   // tslint:disable-next-line:no-any
   [prop: string]: any;
 };
+
+/**
+ * Interface to describe the additions made available to an Application
+ * that uses BootMixin.
+ */
+export interface Bootable {
+  projectRoot: string;
+  bootOptions?: BootOptions;
+  boot(): Promise<void>;
+  booters(...booterCls: Constructor<Booter>[]): Binding[];
+}

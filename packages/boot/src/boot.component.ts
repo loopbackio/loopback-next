@@ -7,6 +7,7 @@ import {Bootstrapper} from './bootstrapper';
 import {Component, Application, CoreBindings} from '@loopback/core';
 import {inject, BindingScope} from '@loopback/context';
 import {ControllerBooter} from './booters';
+import {BootBindings} from './keys';
 
 /**
  * BootComponent is used to export the default list of Booter's made
@@ -25,7 +26,7 @@ export class BootComponent implements Component {
   constructor(@inject(CoreBindings.APPLICATION_INSTANCE) app: Application) {
     // Bound as a SINGLETON so it can be cached as it has no state
     app
-      .bind(CoreBindings.BOOTSTRAPPER)
+      .bind(BootBindings.BOOTSTRAPPER_KEY)
       .toClass(Bootstrapper)
       .inScope(BindingScope.SINGLETON);
   }

@@ -7,3 +7,5 @@ export * from './booters';
 export * from './bootstrapper';
 export * from './boot.component';
 export * from './keys';
+export * from './boot.mixin';
+export * from './interfaces';

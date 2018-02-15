@@ -13,6 +13,7 @@ The [loopback-next](https://github.com/strongloop/loopback-next) repository uses
 |[metadata](packages/metadata)                              |@loopback/metadata              | Utilities to help developers implement TypeScript decorators, define/merge metadata, and inspect metadata |
 |[context](packages/context)                                |@loopback/context               | Facilities to manage artifacts and their dependencies in your Node.js applications. The module exposes TypeScript/JavaScript APIs and decorators to register artifacts, declare dependencies, and resolve artifacts by keys. It also serves as an IoC container to support dependency injection. |
 |[core](packages/core)                                      |@loopback/core                  | Define and implement core constructs such as Application and Component |
+|[boot](packages/boot)                                      |@loopback/boot                  | Convention based Bootstrapper and Booters |
 |[openapi-spec](packages/openapi-spec)                      |@loopback/openapi-spec          | TypeScript type definitions for OpenAPI Spec/Swagger documents |
 |[openapi-spec-builder](packages/openapi-spec-builder)      |@loopback/openapi-spec-builder  | Builders to create OpenAPI (Swagger) specification documents in tests |
 |[openapi-v2](packages/openapi-v2)                          |@loopback/openapi-v2            | Decorators that annotate LoopBack artifacts with OpenAPI v2 (Swagger) metadata and utilities that transform LoopBack metadata to OpenAPI v2 (Swagger) specifications|

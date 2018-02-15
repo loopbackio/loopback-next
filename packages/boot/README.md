@@ -1,6 +1,6 @@
 # @loopback/boot
 
-A collection of Booters for LoopBack Applications
+A convention based project Bootstrapper and Booters for LoopBack Applications
 
 # Overview
 
@@ -11,9 +11,12 @@ phases to complete its task.
 An example task of a Booter may be to discover and bind all artifacts of a
 given type.
 
-A BootStrapper is needed to manage the Booters and to run them. This is packaged
-in BootComponent. Add `BootComponent` to your `Application` to use the default
-`BootStrapper` and `Booters`.
+A Bootstrapper is needed to manage the Booters and execute them. This is provided
+in this package. For ease of use, everything needed is packages using a BootMixin.
+This Mixin will add convenience methods such as `boot` and `booter`, as well as
+properties needed for Bootstrapper such as `projectRoot`. The Mixin also adds the
+`BootComponent` to your `Application` which binds the `Bootstrapper` and default
+`Booters` made available by this package.
 
 ## Installation
 
@@ -25,19 +28,19 @@ $ npm i @loopback/boot
 
 ```ts
 import {Application} from '@loopback/core';
-import {BootComponent} from '@loopback/boot';
-const app = new Application();
-app.component(BootComponent);
+import {BootMixin} from '@loopback/boot';
+class BootApp extends BootMixin(Application) {}
 
-await app.boot({
-  projectRoot: __dirname,
-  booters: [RepositoryBooter], // Register Booters as part of call to app.boot()
-  controllers: {
-    dirs: ['ctrl'],
-    extensions: ['.ctrl.js'],
-    nested: true
+const app = new BootApp();
+app.projectRoot = __dirname;
+app.bootOptions = {
+  controlles: {
+    // Configure ControllerBooter Conventiones here.
   }
-}); // Booter gets run by the Application
+}
+
+await app.boot();
+await app.start();
 ```
 
 ### BootOptions
@@ -45,11 +48,15 @@ List of Options available on BootOptions Object.
 
 |Option|Type|Description|
 |-|-|-|
-|`projectRoot`|`string`|Absolute path to the root of the LoopBack 4 Project. **Required**|
-|`booters`|`Constructor<Booter>[]`|Array of Booters to bind before booting. *Optional*|
-|`filter`|`Object`|An Object to filter Booters and phases for finer control over the boot process. *Optional*|
-|`filter.booters`|`string[]`|Names of Booters that should be run (all other bound booters will be ignored).|
-|`filter.phases`|`string[]`|Names of phases and order that they should be run in.|
+|`controllers`|`ArtifactOptions`|ControllerBooter convention options|
+
+### ArtifactOptions
+
+**Add Table for ArtifactOptions**
+
+### BootExecOptions
+
+**Add Table for BootExecOptions**
 
 ## Available Booters
 

@@ -4,59 +4,46 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Application, Booter, CoreBindings} from '@loopback/core';
-import {Bootstrapper} from '../../index';
+import {Application} from '@loopback/core';
+import {Bootstrapper, Booter, BootBindings, BootMixin} from '../../index';
 
 describe('boot-strapper unit tests', () => {
-  let app: Application;
+  class BootApp extends BootMixin(Application) {}
+
+  let app: BootApp;
   let bootstrapper: Bootstrapper;
-  const booterKey = `${CoreBindings.BOOTER_PREFIX}.TestBooter`;
-  const booterKey2 = `${CoreBindings.BOOTER_PREFIX}.TestBooter2`;
+  const booterKey = `${BootBindings.BOOTER_PREFIX}.TestBooter`;
+  const booterKey2 = `${BootBindings.BOOTER_PREFIX}.TestBooter2`;
 
   beforeEach(getApplication);
   beforeEach(getBootStrapper);
 
   it('finds and runs registered booters', async () => {
-    const ctx = await bootstrapper.boot({projectRoot: __dirname});
+    const ctx = await bootstrapper.boot();
     const booterInst = await ctx.get(booterKey);
     expect(booterInst.configureCalled).to.be.True();
     expect(booterInst.loadCalled).to.be.True();
   });
 
   it('binds booters passed in BootExecutionOptions', async () => {
-    const ctx = await bootstrapper.boot(
-      {
-        projectRoot: __dirname,
-      },
-      {booters: [TestBooter2]},
-    );
+    const ctx = await bootstrapper.boot({booters: [TestBooter2]});
     const booterInst2 = await ctx.get(booterKey2);
     expect(booterInst2).to.be.instanceof(TestBooter2);
     expect(booterInst2.configureCalled).to.be.True();
   });
 
   it('no booters run when BootOptions.filter.booters is []', async () => {
-    const ctx = await bootstrapper.boot(
-      {
-        projectRoot: __dirname,
-      },
-      {filter: {booters: []}},
-    );
+    const ctx = await bootstrapper.boot({filter: {booters: []}});
     const booterInst = await ctx.get(booterKey);
     expect(booterInst.configureCalled).to.be.False();
     expect(booterInst.loadCalled).to.be.False();
   });
 
   it('only runs booters passed in via BootOptions.filter.booters', async () => {
-    const ctx = await bootstrapper.boot(
-      {
-        projectRoot: __dirname,
-      },
-      {
-        booters: [TestBooter2],
-        filter: {booters: ['TestBooter2']},
-      },
-    );
+    const ctx = await bootstrapper.boot({
+      booters: [TestBooter2],
+      filter: {booters: ['TestBooter2']},
+    });
     const booterInst = await ctx.get(booterKey);
     const booterInst2 = await ctx.get(booterKey2);
     expect(booterInst.configureCalled).to.be.False();
@@ -65,12 +52,7 @@ describe('boot-strapper unit tests', () => {
   });
 
   it('only runs phases passed in via BootOptions.filter.phases', async () => {
-    const ctx = await bootstrapper.boot(
-      {
-        projectRoot: __dirname,
-      },
-      {filter: {phases: ['configure']}},
-    );
+    const ctx = await bootstrapper.boot({filter: {phases: ['configure']}});
     const booterInst = await ctx.get(booterKey);
     expect(booterInst.configureCalled).to.be.True();
     expect(booterInst.loadCalled).to.be.False();
@@ -80,15 +62,15 @@ describe('boot-strapper unit tests', () => {
    * Sets 'app' as a new instance of Application. Registers TestBooter as a booter.
    */
   function getApplication() {
-    app = new Application();
-    app.booter(TestBooter);
+    app = new BootApp();
+    app.booters(TestBooter);
   }
 
   /**
    * Sets 'bootstrapper' as a new instance of a Bootstrapper
    */
   function getBootStrapper() {
-    bootstrapper = new Bootstrapper(app);
+    bootstrapper = new Bootstrapper(app, __dirname);
   }
 
   /**
