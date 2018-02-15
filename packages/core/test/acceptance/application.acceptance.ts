@@ -14,7 +14,7 @@ describe('Bootstrapping the application', () => {
       class AuditComponent {}
       const app = new Application();
       app.component(AuditComponent);
-      const componentKeys = app.find('component.*').map(b => b.key);
+      const componentKeys = app.find('components.*').map(b => b.key);
       expect(componentKeys).to.containEql('components.AuditComponent');
 
       const componentInstance = app.getSync('components.AuditComponent');

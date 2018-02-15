@@ -173,6 +173,46 @@ describe('Context', () => {
       expect(result).to.be.eql([b2, b3]);
     });
 
+    it('returns matching binding with * respecting key separators', () => {
+      const b1 = ctx.bind('foo');
+      const b2 = ctx.bind('foo.bar');
+      const b3 = ctx.bind('foo:bar');
+      let result = ctx.find('*');
+      expect(result).to.be.eql([b1]);
+      result = ctx.find('*.*');
+      expect(result).to.be.eql([b2]);
+      result = ctx.find('*:ba*');
+      expect(result).to.be.eql([b3]);
+    });
+
+    it('returns matching binding with ? respecting separators', () => {
+      const b1 = ctx.bind('foo');
+      const b2 = ctx.bind('foo.bar');
+      const b3 = ctx.bind('foo:bar');
+      let result = ctx.find('???');
+      expect(result).to.be.eql([b1]);
+      result = ctx.find('???.???');
+      expect(result).to.be.eql([b2]);
+      result = ctx.find('???:???');
+      expect(result).to.be.eql([b3]);
+      result = ctx.find('?');
+      expect(result).to.be.eql([]);
+      result = ctx.find('???????');
+      expect(result).to.be.eql([]);
+    });
+
+    it('escapes reserved chars for regexp', () => {
+      const b1 = ctx.bind('foo');
+      const b2 = ctx.bind('foo+bar');
+      const b3 = ctx.bind('foo|baz');
+      let result = ctx.find('fo+');
+      expect(result).to.be.eql([]);
+      result = ctx.find('foo+bar');
+      expect(result).to.be.eql([b2]);
+      result = ctx.find('foo|baz');
+      expect(result).to.be.eql([b3]);
+    });
+
     it('returns matching binding with regexp', () => {
       const b1 = ctx.bind('foo');
       const b2 = ctx.bind('bar');
@@ -180,6 +220,22 @@ describe('Context', () => {
       let result = ctx.find(/\w+/);
       expect(result).to.be.eql([b1, b2, b3]);
       result = ctx.find(/ba/);
+      expect(result).to.be.eql([b2, b3]);
+    });
+
+    it('returns matching binding with filter', () => {
+      const b1 = ctx.bind('foo').inScope(BindingScope.SINGLETON);
+      const b2 = ctx.bind('bar').tag('b');
+      const b3 = ctx.bind('baz').tag('b');
+      let result = ctx.find(() => true);
+      expect(result).to.be.eql([b1, b2, b3]);
+      result = ctx.find(() => false);
+      expect(result).to.be.eql([]);
+      result = ctx.find(binding => binding.key.startsWith('ba'));
+      expect(result).to.be.eql([b2, b3]);
+      result = ctx.find(binding => binding.scope === BindingScope.SINGLETON);
+      expect(result).to.be.eql([b1]);
+      result = ctx.find(binding => binding.tags.has('b'));
       expect(result).to.be.eql([b2, b3]);
     });
   });

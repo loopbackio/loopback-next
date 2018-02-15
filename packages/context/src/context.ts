@@ -120,50 +120,72 @@ export class Context {
   }
 
   /**
-   * Find bindings using the key pattern
-   * @param pattern Key regexp or pattern with optional `*` wildcards
+   * Convert a wildcard pattern to RegExp
+   * @param pattern A wildcard string with `*` and `?` as special characters.
+   * - `*` matches zero or more characters except `.` and `:`
+   * - `?` matches exactly one character except `.` and `:`
    */
-  find(pattern?: string | RegExp): Binding[] {
+  private wildcardToRegExp(pattern: string): RegExp {
+    // Escape reserved chars for RegExp:
+    // `- \ ^ $ + . ( ) | { } [ ] :`
+    let regexp = pattern.replace(/[\-\[\]\/\{\}\(\)\+\.\\\^\$\|\:]/g, '\\$&');
+    // Replace wildcard chars `*` and `?`
+    // `*` matches zero or more characters except `.` and `:`
+    // `?` matches one character except `.` and `:`
+    regexp = regexp.replace(/\*/g, '[^.:]*').replace(/\?/g, '[^.:]');
+    return new RegExp(`^${regexp}$`);
+  }
+
+  /**
+   * Find bindings using the key pattern
+   * @param pattern A regexp or wildcard pattern with optional `*` and `?`. If
+   * it matches the binding key, the binding is included. For a wildcard:
+   * - `*` matches zero or more characters except `.` and `:`
+   * - `?` matches exactly one character except `.` and `:`
+   */
+  find(pattern?: string | RegExp): Binding[];
+
+  /**
+   * Find bindings using a filter function
+   * @param filter A function to test on the binding. It returns `true` to
+   * include the binding or `false` to exclude the binding.
+   */
+  find(filter: (binding: Binding) => boolean): Binding[];
+
+  find(pattern?: string | RegExp | ((binding: Binding) => boolean)): Binding[] {
     let bindings: Binding[] = [];
-    let glob: RegExp | undefined = undefined;
-    if (typeof pattern === 'string') {
-      // TODO(@superkhau): swap with production grade glob to regex lib
-      Binding.validateKey(pattern);
-      glob = new RegExp('^' + pattern.split('*').join('.*') + '$');
+    let filter: (binding: Binding) => boolean;
+    if (!pattern) {
+      filter = binding => true;
+    } else if (typeof pattern === 'string') {
+      const regex = this.wildcardToRegExp(pattern);
+      filter = binding => regex.test(binding.key);
     } else if (pattern instanceof RegExp) {
-      glob = pattern;
-    }
-    if (glob) {
-      this.registry.forEach(binding => {
-        const isMatch = glob!.test(binding.key);
-        if (isMatch) bindings.push(binding);
-      });
+      filter = binding => pattern.test(binding.key);
     } else {
-      bindings = Array.from(this.registry.values());
+      filter = pattern;
     }
 
-    const parentBindings = this._parent && this._parent.find(pattern);
+    for (const b of this.registry.values()) {
+      if (filter(b)) bindings.push(b);
+    }
+
+    const parentBindings = this._parent && this._parent.find(filter);
     return this._mergeWithParent(bindings, parentBindings);
   }
 
   /**
    * Find bindings using the tag pattern
-   * @param pattern Tag name regexp or pattern with optional `*` wildcards
+   * @param pattern  A regexp or wildcard pattern with optional `*` and `?`. If
+   * it matches one of the binding tags, the binding is included. For a
+   * wildcard:
+   * - `*` matches zero or more characters except `.` and `:`
+   * - `?` matches exactly one character except `.` and `:`
    */
   findByTag(pattern: string | RegExp): Binding[] {
-    const bindings: Binding[] = [];
-    // TODO(@superkhau): swap with production grade glob to regex lib
-    const glob =
-      typeof pattern === 'string'
-        ? new RegExp('^' + pattern.split('*').join('.*') + '$')
-        : pattern;
-    this.registry.forEach(binding => {
-      const isMatch = Array.from(binding.tags).some(tag => glob.test(tag));
-      if (isMatch) bindings.push(binding);
-    });
-
-    const parentBindings = this._parent && this._parent.findByTag(pattern);
-    return this._mergeWithParent(bindings, parentBindings);
+    const regexp =
+      typeof pattern === 'string' ? this.wildcardToRegExp(pattern) : pattern;
+    return this.find(b => Array.from(b.tags).some(t => regexp.test(t)));
   }
 
   protected _mergeWithParent(childList: Binding[], parentList?: Binding[]) {
