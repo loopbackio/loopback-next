@@ -69,7 +69,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       rename(function(file) {
         // extname already contains a leading '.'
         const fileName = `${file.basename}${file.extname}`;
-        const result = fileName.match(/(.+)(.ts|.js)\.template$/);
+        const result = fileName.match(/(.+)(.ts|.json|.js|.md)\.ejs$/);
         if (result) {
           file.extname = result[2];
           file.basename = result[1];
@@ -210,7 +210,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     );
 
     if (!this.projectInfo.tslint) {
-      this.fs.delete(this.destinationPath('tslint.*json'));
+      this.fs.delete(this.destinationPath('tslint.*json.ejs'));
     }
 
     if (!this.projectInfo.prettier) {
@@ -219,11 +219,11 @@ module.exports = class ProjectGenerator extends BaseGenerator {
 
     if (!this.projectInfo.loopbackBuild) {
       this.fs.move(
-        this.destinationPath('package.plain.json'),
-        this.destinationPath('package.json')
+        this.destinationPath('package.plain.json.ejs'),
+        this.destinationPath('package.json.ejs')
       );
     } else {
-      this.fs.delete(this.destinationPath('package.plain.json'));
+      this.fs.delete(this.destinationPath('package.plain.json.ejs'));
     }
 
     if (!this.projectInfo.mocha) {
