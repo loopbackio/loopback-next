@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.7"></a>
+# [4.0.0-alpha.7](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@4.0.0-alpha.6...@loopback/example-log-extension@4.0.0-alpha.7) (2018-02-15)
+
+
+### Bug Fixes
+
+* clean up example-log-extension ([f13f603](https://github.com/strongloop/loopback-next/commit/f13f603))
+
+
+
+
 <a name="4.0.0-alpha.6"></a>
 # [4.0.0-alpha.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@4.0.0-alpha.5...@loopback/example-log-extension@4.0.0-alpha.6) (2018-02-07)
 

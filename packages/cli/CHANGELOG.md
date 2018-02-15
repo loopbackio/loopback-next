@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="4.0.0-alpha.23"></a>
+# [4.0.0-alpha.23](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.22...@loopback/cli@4.0.0-alpha.23) (2018-02-15)
+
+
+### Bug Fixes
+
+* **cli:** remove copyright header from generated app ([#991](https://github.com/strongloop/loopback-next/issues/991)) ([c987b28](https://github.com/strongloop/loopback-next/commit/c987b28)), closes [#944](https://github.com/strongloop/loopback-next/issues/944)
+
+
+### Features
+
+* **cli:** switch .template to .ejs ([#996](https://github.com/strongloop/loopback-next/issues/996)) ([a27e856](https://github.com/strongloop/loopback-next/commit/a27e856))
+
+
+
+
 <a name="4.0.0-alpha.22"></a>
 # [4.0.0-alpha.22](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.21...@loopback/cli@4.0.0-alpha.22) (2018-02-07)
 

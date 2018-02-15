@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.0.1-alpha.7"></a>
+## [1.0.1-alpha.7](https://github.com/strongloop/loopback-next/compare/@loopback/example-getting-started@1.0.1-alpha.6...@loopback/example-getting-started@1.0.1-alpha.7) (2018-02-15)
+
+
+### Bug Fixes
+
+* **example-getting-started:** remove juggler warning ([86139f6](https://github.com/strongloop/loopback-next/commit/86139f6))
+* **example-getting-started:** use sinon from testlab ([#984](https://github.com/strongloop/loopback-next/issues/984)) ([09fc791](https://github.com/strongloop/loopback-next/commit/09fc791))
+
+
+
+
 <a name="1.0.1-alpha.6"></a>
 ## [1.0.1-alpha.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-getting-started@1.0.1-alpha.5...@loopback/example-getting-started@1.0.1-alpha.6) (2018-02-07)
 
