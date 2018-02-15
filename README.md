@@ -9,6 +9,11 @@ LoopBack makes it easy to build modern applications that require complex integra
 - Define your data and endpoints with OpenAPI
 - No maintenance of generated code
 
+# Work with this repository
+
+This repository uses [lerna](https://lernajs.io/) to manage multiple packages/modules
+for LoopBack 4. Please see [MONOREPO.md](MONOREPO.md) for instructions to work with this monorepo.
+
 # Status: Developer Preview #1
 
 LoopBack 4 is a work in progress, the public API is frequently changed in
@@ -82,6 +87,7 @@ See [all contributors](https://github.com/strongloop/loopback-next/graphs/contri
 
 # Contributing
 
+- [Working with this repository](MONOREPO.md)
 - [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contributing#guidelines)
 - [Join the team](https://github.com/strongloop/loopback-next/issues/110)
 
