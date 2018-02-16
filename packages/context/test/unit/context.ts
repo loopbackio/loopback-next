@@ -202,7 +202,7 @@ describe('Context', () => {
     });
 
     it('escapes reserved chars for regexp', () => {
-      const b1 = ctx.bind('foo');
+      ctx.bind('foo');
       const b2 = ctx.bind('foo+bar');
       const b3 = ctx.bind('foo|baz');
       let result = ctx.find('fo+');
