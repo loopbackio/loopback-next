@@ -261,6 +261,10 @@ export class Binding {
     );
   }
 
+  /**
+   * Lock the binding. A locked binding cannot be overridden by future `bind`
+   * with the same key.
+   */
   lock(): this {
     this.isLocked = true;
     return this;
@@ -284,6 +288,10 @@ export class Binding {
     return this;
   }
 
+  /**
+   * Set the binding scope
+   * @param scope Binding scope
+   */
   inScope(scope: BindingScope): this {
     this.scope = scope;
     return this;
@@ -376,7 +384,7 @@ export class Binding {
    *
    * @param provider The value provider to use.
    */
-  public toProvider<T>(providerClass: Constructor<Provider<T>>): this {
+  toProvider<T>(providerClass: Constructor<Provider<T>>): this {
     /* istanbul ignore if */
     if (debug.enabled) {
       debug('Bind %s to provider %s', this.key, providerClass.name);
@@ -415,11 +423,17 @@ export class Binding {
     return this;
   }
 
+  /**
+   * Unlock a binding
+   */
   unlock(): this {
     this.isLocked = false;
     return this;
   }
 
+  /**
+   * Create plain json object
+   */
   toJSON(): Object {
     // tslint:disable-next-line:no-any
     const json: {[name: string]: any} = {
