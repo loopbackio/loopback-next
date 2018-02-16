@@ -382,7 +382,11 @@ export class RestServer extends Context implements Server {
   ): Binding {
     if (typeof routeOrVerb === 'object') {
       const r = routeOrVerb;
-      return this.bind(`routes.${r.verb} ${r.path}`).to(r);
+      // Encode the path to escape special chars
+      const encodedPath = encodeURIComponent(r.path).replace(/\./g, '%2E');
+      return this.bind(`routes.${r.verb} ${encodedPath}`)
+        .to(r)
+        .tag('route');
     }
 
     if (!path) {

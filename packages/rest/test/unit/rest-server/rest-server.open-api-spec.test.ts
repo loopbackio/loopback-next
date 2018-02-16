@@ -46,6 +46,31 @@ describe('RestServer.getApiSpec()', () => {
     });
   });
 
+  it('binds a route via app.route(route)', () => {
+    function greet() {}
+    const binding = server.route(
+      new Route('get', '/greet', {responses: {}}, greet),
+    );
+    expect(binding.key).to.eql('routes.get %2Fgreet');
+    expect(binding.tags.has('route')).to.be.true();
+  });
+
+  it('binds a route via app.route(..., Controller, method)', () => {
+    class MyController {
+      greet() {}
+    }
+
+    const binding = server.route(
+      'get',
+      '/greet.json',
+      {responses: {}},
+      MyController,
+      'greet',
+    );
+    expect(binding.key).to.eql('routes.get %2Fgreet%2Ejson');
+    expect(binding.tags.has('route')).to.be.true();
+  });
+
   it('returns routes registered via app.route(route)', () => {
     function greet() {}
     server.route(new Route('get', '/greet', {responses: {}}, greet));
