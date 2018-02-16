@@ -1,9 +1,10 @@
 {
-  "lerna": "2.5.1",
+  "lerna": "2.8.0",
   "packages": ["packages/*"],
   "command": {
     "publish": {
-      "conventionalCommits": true
+      "conventionalCommits": true,
+      "message": "chore(release): publish"
     }
   },
   "version": "independent"
