@@ -209,3 +209,23 @@ export function tryWithFinally<T>(
   }
   return result;
 }
+
+/**
+ * Normalize array or rest parameters into a flat array of arguments
+ * @param params An array or rest parameters of values. For example,
+ * - tag('t1') // A single param
+ * - tag('t1', 't2') // Rest params
+ * - tag(['t1', 't2']) // A param with array value
+ * - tag('t1', ['t2', 't3'], 't4') // Mixed usage of values and arrays
+ */
+export function getArrayOrRestArgs<T>(...params: (T | T[])[]): T[] {
+  const args: T[] = [];
+  for (const p of params) {
+    if (Array.isArray(p)) {
+      args.push(...p);
+    } else {
+      args.push(p);
+    }
+  }
+  return args;
+}

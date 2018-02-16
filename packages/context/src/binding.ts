@@ -11,6 +11,7 @@ import {
   isPromise,
   BoundValue,
   ValueOrPromise,
+  getArrayOrRestArgs,
 } from './value-promise';
 import {Provider} from './provider';
 
@@ -265,14 +266,21 @@ export class Binding {
     return this;
   }
 
-  tag(tagName: string | string[]): this {
-    if (typeof tagName === 'string') {
-      this.tags.add(tagName);
-    } else {
-      tagName.forEach(t => {
-        this.tags.add(t);
-      });
-    }
+  /**
+   * Tag the binding with name(s).
+   *
+   * @example
+   * - tag('t1')
+   * - tag('t1', 't2')
+   * - tag(['t1', 't2'])
+   * - tag('t1', ['t2', t3'], 't4')
+   *
+   * @param tagNames A list of names as rest parameters or array
+   */
+  tag(...tagNames: (string | string[])[]): this {
+    getArrayOrRestArgs<string>(...tagNames).forEach(t => {
+      this.tags.add(t);
+    });
     return this;
   }
 
