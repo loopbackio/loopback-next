@@ -3,55 +3,55 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-('use strict');
+'use strict';
 
 const promisify = require('util').promisify;
 
 const cloneExampleFromGitHub = require('../generators/example/clone-example');
 const expect = require('@loopback/testlab').expect;
+const fs = require('fs');
 const TestSandbox = require('@loopback/testlab').TestSandbox;
 const glob = promisify(require('glob'));
 const path = require('path');
 
 const VALID_EXAMPLE = 'getting-started';
-const SANDBOX_PATH = path.resolve(__dirname, 'sandbox');
+const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
 let sandbox;
 
-describe.skip('cloneExampleFromGitHub (SLOW)', function() {
+describe('cloneExampleFromGitHub (SLOW)', function() {
   this.timeout(20000);
   before(createSandbox);
   beforeEach(resetSandbox);
 
-  /**
-   * FIXME(kjdelisle): This test will prevent any meaningful changes from
-   * landing in example repositories, since it will always fail the equality
-   * test provided when new files are added, or when existing files are
-   * removed as a part of refactor/cleanup.
-   *
-   * While I do value the idea of verifying that the example packages are
-   * being cloned properly, we can't hang that idea on validating the
-   * particular presence of any content that isn't perpetually required.
-   *
-   * This test can be removed once strongloop/loopback-next#932 is complete.
-   */
-  it('extracts all project files', () => {
-    return cloneExampleFromGitHub(VALID_EXAMPLE, SANDBOX_PATH)
-      .then(outDir => {
-        return Promise.all([
-          glob('**', {
-            cwd: path.join(__dirname, `../../example-${VALID_EXAMPLE}`),
-            ignore: '@(node_modules|dist*|api-docs)/**',
-          }),
-          glob('**', {
-            cwd: outDir,
-            ignore: 'node_modules/**',
-          }),
-        ]);
-      })
-      .then(found => {
-        const [expected, actual] = found;
-        expect(actual).to.deepEqual(expected);
-      });
+  it('extracts project files', async () => {
+    const outDir = await cloneExampleFromGitHub(VALID_EXAMPLE, SANDBOX_PATH);
+    const actualFiles = await glob('**', {
+      cwd: outDir,
+      ignore: 'node_modules/**',
+    });
+
+    // We must not assume that the files downloaded from the current master
+    // branch are the same as the files we have in our current branch.
+    // By doing so, we would prevent any meaningful changes from
+    // landing in example repositories, since it will always fail the equality
+    // test provided when new files are added, or when existing files are
+    // removed as a part of refactor/cleanup.
+    expect(actualFiles).to.containDeep([
+      // These files are required in all our packages,
+      // therefore it's safe to assume they will be always around.
+      'README.md',
+      'package.json',
+
+      // We need to check a nested file to verify that directory structure
+      // is preserved. Hopefully `src/index.ts will be always around,
+      // independently on any refactorings and cleanups.
+      'src/index.ts',
+    ]);
+
+    const packageJson = JSON.parse(fs.readFileSync(`${outDir}/package.json`));
+    expect(packageJson).to.have.properties({
+      name: `@loopback/example-${VALID_EXAMPLE}`,
+    });
   });
 
   function createSandbox() {
