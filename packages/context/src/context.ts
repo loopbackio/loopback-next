@@ -143,18 +143,20 @@ export class Context {
    * - `*` matches zero or more characters except `.` and `:`
    * - `?` matches exactly one character except `.` and `:`
    */
-  find(pattern?: string | RegExp): Binding[];
+  find(pattern?: string | RegExp): Readonly<Binding>[];
 
   /**
    * Find bindings using a filter function
    * @param filter A function to test on the binding. It returns `true` to
    * include the binding or `false` to exclude the binding.
    */
-  find(filter: (binding: Binding) => boolean): Binding[];
+  find(filter: (binding: Readonly<Binding>) => boolean): Readonly<Binding>[];
 
-  find(pattern?: string | RegExp | ((binding: Binding) => boolean)): Binding[] {
-    let bindings: Binding[] = [];
-    let filter: (binding: Binding) => boolean;
+  find(
+    pattern?: string | RegExp | ((binding: Binding) => boolean),
+  ): Readonly<Binding>[] {
+    let bindings: Readonly<Binding>[] = [];
+    let filter: (binding: Readonly<Binding>) => boolean;
     if (!pattern) {
       filter = binding => true;
     } else if (typeof pattern === 'string') {
@@ -182,13 +184,16 @@ export class Context {
    * - `*` matches zero or more characters except `.` and `:`
    * - `?` matches exactly one character except `.` and `:`
    */
-  findByTag(pattern: string | RegExp): Binding[] {
+  findByTag(pattern: string | RegExp): Readonly<Binding>[] {
     const regexp =
       typeof pattern === 'string' ? this.wildcardToRegExp(pattern) : pattern;
     return this.find(b => Array.from(b.tags).some(t => regexp.test(t)));
   }
 
-  protected _mergeWithParent(childList: Binding[], parentList?: Binding[]) {
+  protected _mergeWithParent(
+    childList: Readonly<Binding>[],
+    parentList?: Readonly<Binding>[],
+  ) {
     if (!parentList) return childList;
     const additions = parentList.filter(parentBinding => {
       // children bindings take precedence

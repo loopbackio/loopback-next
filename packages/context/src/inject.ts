@@ -23,7 +23,7 @@ const PROPERTIES_KEY = 'inject:properties';
 export interface ResolverFunction {
   (
     ctx: Context,
-    injection: Injection,
+    injection: Readonly<Injection>,
     session?: ResolutionSession,
   ): ValueOrPromise<BoundValue>;
 }
@@ -250,7 +250,7 @@ export namespace inject {
 
 function resolveAsGetter(
   ctx: Context,
-  injection: Injection,
+  injection: Readonly<Injection>,
   session?: ResolutionSession,
 ) {
   // We need to clone the session for the getter as it will be resolved later
@@ -279,9 +279,9 @@ function resolveAsSetter(ctx: Context, injection: Injection) {
 export function describeInjectedArguments(
   target: Object,
   method?: string | symbol,
-): Injection[] {
+): Readonly<Injection>[] {
   method = method || '';
-  const meta = MetadataInspector.getAllParameterMetadata<Injection>(
+  const meta = MetadataInspector.getAllParameterMetadata<Readonly<Injection>>(
     PARAMETERS_KEY,
     target,
     method,
@@ -291,7 +291,7 @@ export function describeInjectedArguments(
 
 function resolveByTag(
   ctx: Context,
-  injection: Injection,
+  injection: Readonly<Injection>,
   session?: ResolutionSession,
 ) {
   const tag: string | RegExp = injection.metadata!.tag;
@@ -311,9 +311,9 @@ function resolveByTag(
  */
 export function describeInjectedProperties(
   target: Object,
-): MetadataMap<Injection> {
+): MetadataMap<Readonly<Injection>> {
   const metadata =
-    MetadataInspector.getAllPropertyMetadata<Injection>(
+    MetadataInspector.getAllPropertyMetadata<Readonly<Injection>>(
       PROPERTIES_KEY,
       target,
     ) || {};

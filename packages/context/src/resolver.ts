@@ -111,7 +111,7 @@ export function instantiateClass<T>(
  */
 function resolve<T>(
   ctx: Context,
-  injection: Injection,
+  injection: Readonly<Injection>,
   session?: ResolutionSession,
 ): ValueOrPromise<T> {
   /* istanbul ignore if */

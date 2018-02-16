@@ -24,7 +24,7 @@ export type ResolutionAction = (
  */
 export interface BindingElement {
   type: 'binding';
-  value: Binding;
+  value: Readonly<Binding>;
 }
 
 /**
@@ -32,7 +32,7 @@ export interface BindingElement {
  */
 export interface InjectionElement {
   type: 'injection';
-  value: Injection;
+  value: Readonly<Injection>;
 }
 
 /**
@@ -90,7 +90,7 @@ export class ResolutionSession {
    * @param session The current resolution session
    */
   private static enterBinding(
-    binding: Binding,
+    binding: Readonly<Binding>,
     session?: ResolutionSession,
   ): ResolutionSession {
     session = session || new ResolutionSession();
@@ -106,7 +106,7 @@ export class ResolutionSession {
    */
   static runWithBinding(
     action: ResolutionAction,
-    binding: Binding,
+    binding: Readonly<Binding>,
     session?: ResolutionSession,
   ) {
     const resolutionSession = ResolutionSession.enterBinding(binding, session);
@@ -122,7 +122,7 @@ export class ResolutionSession {
    * @param session The current resolution session
    */
   private static enterInjection(
-    injection: Injection,
+    injection: Readonly<Injection>,
     session?: ResolutionSession,
   ): ResolutionSession {
     session = session || new ResolutionSession();
@@ -138,7 +138,7 @@ export class ResolutionSession {
    */
   static runWithInjection(
     action: ResolutionAction,
-    injection: Injection,
+    injection: Readonly<Injection>,
     session?: ResolutionSession,
   ) {
     const resolutionSession = ResolutionSession.enterInjection(
@@ -155,7 +155,7 @@ export class ResolutionSession {
    * Describe the injection for debugging purpose
    * @param injection Injection object
    */
-  static describeInjection(injection?: Injection) {
+  static describeInjection(injection?: Readonly<Injection>) {
     /* istanbul ignore if */
     if (injection == null) return undefined;
     const name = getTargetName(
@@ -175,7 +175,7 @@ export class ResolutionSession {
    * Push the injection onto the session
    * @param injection Injection The current injection
    */
-  pushInjection(injection: Injection) {
+  pushInjection(injection: Readonly<Injection>) {
     /* istanbul ignore if */
     if (debugSession.enabled) {
       debugSession(
@@ -214,7 +214,7 @@ export class ResolutionSession {
   /**
    * Getter for the current injection
    */
-  get currentInjection(): Injection | undefined {
+  get currentInjection(): Readonly<Injection> | undefined {
     for (let i = this.stack.length - 1; i >= 0; i--) {
       const element = this.stack[i];
       if (isInjection(element)) return element.value;
@@ -225,7 +225,7 @@ export class ResolutionSession {
   /**
    * Getter for the current binding
    */
-  get currentBinding(): Binding | undefined {
+  get currentBinding(): Readonly<Binding> | undefined {
     for (let i = this.stack.length - 1; i >= 0; i--) {
       const element = this.stack[i];
       if (isBinding(element)) return element.value;
@@ -237,7 +237,7 @@ export class ResolutionSession {
    * Enter the resolution of the given binding. If
    * @param binding Binding
    */
-  pushBinding(binding: Binding) {
+  pushBinding(binding: Readonly<Binding>) {
     /* istanbul ignore if */
     if (debugSession.enabled) {
       debugSession('Enter binding:', binding.toJSON());
@@ -260,7 +260,7 @@ export class ResolutionSession {
   /**
    * Exit the resolution of a binding
    */
-  popBinding() {
+  popBinding(): Readonly<Binding> {
     const top = this.stack.pop();
     if (!isBinding(top)) {
       throw new Error('The top element must be a binding');
@@ -277,14 +277,14 @@ export class ResolutionSession {
   /**
    * Getter for bindings on the stack
    */
-  get bindingStack(): Binding[] {
+  get bindingStack(): Readonly<Binding>[] {
     return this.stack.filter(isBinding).map(e => e.value);
   }
 
   /**
    * Getter for injections on the stack
    */
-  get injectionStack(): Injection[] {
+  get injectionStack(): Readonly<Injection>[] {
     return this.stack.filter(isInjection).map(e => e.value);
   }
 
