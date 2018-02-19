@@ -141,6 +141,7 @@ The **type** must be one of the following:
 
 The **scope** must be a list of one or more packages contained in this monorepo. Each scope name must match a directory name in [packages/](../packages), e.g. `core` or `context`.
 
+_Note: If multiple packages are affected by a pull request, don't list the scopes as the commit linter currently only supports only one scope being listed at most. The `CHANGELOG` for each affected package will still show the commit. Commit linter will be updated to allow listing of multiple affected scopes, see [issue #581](https://github.com/strongloop/loopback-next/issues/581)_
 
 #### subject
 
@@ -156,11 +157,23 @@ The **body** provides more details, it should include the motivation for the cha
 
 Just as in the subject, use the imperative, present tense: "change" not "changed" nor "changes"a
 
+Paragraphs or bullet points are ok (must not exceed 100 characters per line). Typically a hyphen or asterisk is used for the bullet, followed by a single space, with blank lines in between.
+
 #### footer (optional)
 
 The **footer** should contain any information about Breaking Changes introduced by this commit.
 
 This section must start with the upper case text `BREAKING CHANGE` followed by a colon (`:`) and a space (` `). A description must be provided, describing what has changed and how to migrate from older versions.
+
+### Tools to help generate a commit message
+
+This repository has [commitizen](https://github.com/commitizen/cz-cli) support enabled. Commitizen can help you generate your commit messages automatically. You must install it globally as follows:
+
+```sh
+$ npm i -g commitizen
+```
+
+And to use it, simply call `git cz` instead of `git commit`. The tool will help you generate a commit message that follows the above guidelines.
 
 ## Releasing new versions
 
