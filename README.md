@@ -9,10 +9,6 @@ LoopBack makes it easy to build modern applications that require complex integra
 - Define your data and endpoints with OpenAPI
 - No maintenance of generated code
 
-# Work with this repository
-
-This repository uses [lerna](https://lernajs.io/) to manage multiple packages/modules for LoopBack 4. Please see [Monorepo overview](MONOREPO.md) and [Developing LoopBack](./docs/DEVELOPING.md) for instructions to work with this monorepo.
-
 # Status: Developer Preview #1
 
 LoopBack 4 is a work in progress, the public API is frequently changed in
@@ -32,7 +28,7 @@ Then in your Node.js project root, run:
 npm install -S @loopback/core
 ```
 
-> Make sure you set `"target": "es6"` in your compiler options in your
+> Make sure you set `"target": "es2017"` in your compiler options in your
 > `tsconfig.json` if you're using a TypeScript project. See [Installation
 > ](http://loopback.io/doc/en/lb4/Installation.html) for
 > detailed information.
@@ -60,10 +56,20 @@ To create your first LoopBack 4 application, See [Getting Started](http://loopba
 # Documentation
 
 - [Official documentation](http://loopback.io/doc/en/lb4/)
-- [API documentation](http://apidocs.loopback.io/)
+- [API documentation](http://apidocs.loopback.io/#LoopBack4)
 - [FAQ](http://loopback.io/doc/en/lb4/FAQ.html)
 - [LoopBack 3 vs LoopBack 4](http://loopback.io/doc/en/lb4/LoopBack-3.x.html)
 - [Tutorials and examples](http://loopback.io/doc/en/lb4/Examples-and-tutorials.html)
+
+# Contributing
+
+See the following resources to get your started:
+
+ - [Contributing Guidelines](./CONTRIBUTING.md)
+ - [Monorepo overview](./MONOREPO.md)
+ - [Developing LoopBack](./docs/DEVELOPING.md)
+
+You can join the team by posting a comment to [issue #110](https://github.com/strongloop/loopback-next/issues/110.).
 
 # Team
 
@@ -83,12 +89,6 @@ Raymond Feng|Miroslav Bajtos|Ritchie Martori|Kevin Delisle
 |[<img src="https://avatars3.githubusercontent.com/u/18518689?v=3&s=60" height=60>](http://github.com/shimks)|[<img src="https://avatars3.githubusercontent.com/u/1986928?v=3&s=60">](http://github.com/loay)|[<img src="https://avatars2.githubusercontent.com/u/2925364?v=3&s=60">](http://github.com/crandmck)|[<img src="https://avatars1.githubusercontent.com/u/3311536?v=3&s=60">](http://github.com/virkt25)|
 
 See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
-
-# Contributing
-
-- [Working with this repository](MONOREPO.md)
-- [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contributing#guidelines)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
 
 # License
 
