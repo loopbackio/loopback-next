@@ -1,6 +1,6 @@
 # Developing LoopBack
 
-This document describes how to develop modules living in loopback-next monorepo.
+This document describes how to develop modules living in loopback-next monorepo. See [Monorepo overview](../MONOREPO.md) for a list of all packages.
 
  - [Setting up development environment](#setting-up-development-environment)
  - [Building the project](#building-the-project)
@@ -8,6 +8,7 @@ This document describes how to develop modules living in loopback-next monorepo.
  - [Coding rules](#coding-rules)
  - [API documentation](#api-documentation)
  - [Commit message guidelines](#commit-message-guidelines)
+ - [Releasing new versions](#releasing-new-versions)
  - [How to test infrastructure changes](#how-to-test-infrastructure-changes)
 
 ## Setting up development environment
@@ -35,11 +36,10 @@ Please make sure this local email is also added to your [GitHub email list](http
 
 ## Building the project
 
-Whenever you pull updates from GitHub or switch between feature branches,
-we recommend to do a full reinstall of all npm dependencies:
+Whenever you pull updates from GitHub or switch between feature branches, make sure to updated installed dependencies in all monorepo packages. The following command will install npm dependencies for all packages and create symbolic links for intra-dependencies:
 
 ```sh
-$ npm run clean:lerna && npm run bootstrap
+$ npm run bootstrap
 ```
 
 The next step is to compile all packages from TypeScript to JavaScript:
@@ -73,9 +73,26 @@ It does all you need:
 
 - All public methods must be documented with typedoc comments (see [API Documentation](#api-documentation) below).
 
-- Code should be formatted using [Prettier](https://prettier.io/), see our [prettierrc](../prettierrc).
-
 - Follow our style guide as documented on loopback.io: [Code style guide](http://loopback.io/doc/en/contrib/style-guide.html).
+
+### Linting and formatting
+
+We use two tools to help keep our codebase healthy:
+
+ - [TSLint](https://palantir.github.io/tslint/) to statically analyse our source code and detect common problems.
+ - [Prettier](https://prettier.io/) to keep our code always formatted the same way, avoid style discussions in code reviews, and save everybody's time an energy.
+
+You can run both linters via the following npm script, just keep in mind that `npm test` is already running them for you.
+
+```sh
+$ npm run lint
+```
+
+Many problems (especially formatting) can be automatically fixed by running the npm script `lint:fix`.
+
+```sh
+$ npm run lint:fix
+```
 
 ## API Documentation
 
@@ -143,6 +160,27 @@ Just as in the subject, use the imperative, present tense: "change" not "changed
 The **footer** should contain any information about Breaking Changes introduced by this commit.
 
 This section must start with the upper case text `BREAKING CHANGE` followed by a colon (`:`) and a space (` `). A description must be provided, describing what has changed and how to migrate from older versions.
+
+## Releasing new versions
+
+When we are ready to tag and publish a release, run the following commands:
+
+```sh
+$ cd loopback-next
+$ git checkout master
+$ git pull
+$ npm run release
+```
+
+The `release` script will automatically perform the tasks for all packages:
+
+- Clean up `node_modules`
+- Install/link dependencies
+- Transpile TypeScript files into JavaScript
+- Run mocha tests
+- Check lint (tslint and prettier) issues
+
+If all steps are successful, it prompts you to publish packages into npm repository.
 
 ## How to test infrastructure changes
 

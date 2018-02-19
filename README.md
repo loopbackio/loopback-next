@@ -11,8 +11,7 @@ LoopBack makes it easy to build modern applications that require complex integra
 
 # Work with this repository
 
-This repository uses [lerna](https://lernajs.io/) to manage multiple packages/modules
-for LoopBack 4. Please see [MONOREPO.md](MONOREPO.md) for instructions to work with this monorepo.
+This repository uses [lerna](https://lernajs.io/) to manage multiple packages/modules for LoopBack 4. Please see [Monorepo overview](MONOREPO.md) and [Developing LoopBack](./docs/DEVELOPING.md) for instructions to work with this monorepo.
 
 # Status: Developer Preview #1
 
