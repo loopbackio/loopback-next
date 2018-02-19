@@ -14,6 +14,8 @@ const TestSandbox = require('@loopback/testlab').TestSandbox;
 const glob = promisify(require('glob'));
 const path = require('path');
 
+const readFile = promisify(fs.readFile);
+
 const VALID_EXAMPLE = 'getting-started';
 const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
 let sandbox;
@@ -48,7 +50,7 @@ describe('cloneExampleFromGitHub (SLOW)', function() {
       'src/index.ts',
     ]);
 
-    const packageJson = JSON.parse(fs.readFileSync(`${outDir}/package.json`));
+    const packageJson = JSON.parse(await readFile(`${outDir}/package.json`));
     expect(packageJson).to.have.properties({
       name: `@loopback/example-${VALID_EXAMPLE}`,
     });
