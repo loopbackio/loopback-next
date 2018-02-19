@@ -14,7 +14,8 @@
     ".nyc_output": true,
     "coverage": true,
     "packages/*/dist": true,
-    "packages/*/api-docs": true
+    "packages/*/api-docs": true,
+    "**/.sandbox": true
   },
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
