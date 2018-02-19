@@ -78,7 +78,7 @@ It does all you need:
 
 ### Linting and formatting
 
-We use two tools to help keep our codebase healthy:
+We use two tools to keep our codebase healthy:
 
  - [TSLint](https://palantir.github.io/tslint/) to statically analyse our source code and detect common problems.
  - [Prettier](https://prettier.io/) to keep our code always formatted the same way, avoid style discussions in code reviews, and save everybody's time an energy.
@@ -232,7 +232,7 @@ Please register the new package in the following files:
  - Update [MONOREPO.md](../MONOREPO.md) - insert a new table row to describe the new package, please keep the rows sorted by package name.
  - Update [docs/apidocs.html](./docs/apidocs.html) - add a link to API docs for this new package.
  - Update [CODEOWNERS](./CODEOWNERS) - add a new entry listing the primary maintainers (owners) of the new package
- - Ask somebody from the IBM team (e.g. @bajtos, @raymondfeng or @kjdelisle) to add enlist the new package on http://apidocs.loopback.io/
+ - Ask somebody from the IBM team (e.g. [@bajtos](https://github.com/bajtos), [@raymondfeng](https://github.com/raymondfeng) or [@kjdelisle](https://github.com/kjdelisle)) to enlist the new package on http://apidocs.loopback.io/
 
 ## How to test infrastructure changes
 
