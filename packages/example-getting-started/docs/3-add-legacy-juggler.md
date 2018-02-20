@@ -55,4 +55,5 @@ export class TodoApplication extends RepositoryMixin(RestApplication) {
 ### Navigation
 
 Previous step: [Scaffolding your application](2-scaffold-app.md)
+
 Next step: [Add your Todo model](4-todo-model.md)
