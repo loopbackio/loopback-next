@@ -32,3 +32,8 @@ export const db = new DataSourceConstructor(config);
 
 This will give us a strongly-typed datasource export that we can work with to
 construct our TodoRepository definition.
+
+### Navigation
+
+Previous step: [Add your Todo model](4-todo-model.html)
+Next step: [Add a repository](6-repository.html)

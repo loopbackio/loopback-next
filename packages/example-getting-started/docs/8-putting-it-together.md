@@ -52,3 +52,15 @@ Start the app (`npm start`) and then make some REST requests:
 - `POST /todo` with a body of `{ "title": "get the milk" }`
 - `GET /todo/1` and see if you get your Todo object back.
 - `PATCH /todo/1` with a body of `{ "desc": "need milk for cereal" }`
+
+### Navigation
+
+Previous step: [Add a controller](7-controller.html)
+
+### More examples and tutorials
+
+Eager to continue learning about LoopBack 4? Check out our
+[examples and tutorials](https://loopback.io/doc/en/lb4/Examples-and-tutorials.html)
+section to find examples for creating your own custom components, sequences and
+more!
+

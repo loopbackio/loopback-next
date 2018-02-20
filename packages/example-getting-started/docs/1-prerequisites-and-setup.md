@@ -28,3 +28,7 @@ cd loopback-example-getting-started && npm i
 ```
 npm start
 ```
+
+### Navigation
+
+Next step: [Scaffolding your application](2-scaffold-app.html)

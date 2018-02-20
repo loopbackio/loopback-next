@@ -11,3 +11,8 @@ not to enable certain project features (loopback's build, tslint, mocha, etc.),
 leave them all enabled.
 
 <!-- TODO: Add screenshot of terminal here to illustrate what we mean. -->
+
+### Navigation
+
+Previous step: [Prerequisites and setup](1-prerequisites-and-setup.html)
+Next step: [Adding the legacy juggler](3-add-legacy-juggler.html)

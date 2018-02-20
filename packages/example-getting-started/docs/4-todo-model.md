@@ -102,3 +102,7 @@ export const TodoSchema: SchemaObject = {
   required: ['title'],
 };
 ```
+### Navigation
+
+Previous step: [Adding the Legacy Juggler](3-add-legacy-juggler.html)
+Next step: [Add a datasource](5-datasource.html)
