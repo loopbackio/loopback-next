@@ -1,4 +1,4 @@
-### Adding Legacy Juggler Capabilities
+### Adding the Legacy Juggler
 
 Jump into the directory for your new application. You'll see a folder structure
 similar to this:
@@ -52,3 +52,7 @@ export class TodoApplication extends RepositoryMixin(RestApplication) {
   }
 }
 ```
+### Navigation
+
+Previous step: [Scaffolding your application](2-scaffold-app.html)
+Next step: [Add your Todo model](4-todo-model.html)

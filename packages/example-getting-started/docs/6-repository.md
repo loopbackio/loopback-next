@@ -26,3 +26,7 @@ export class TodoRepository extends DefaultCrudRepository<
   }
 }
 ```
+### Navigation
+
+Previous step: [Add a datasource](5-datasource.html)
+Next step: [Add a controller](7-controller.html)

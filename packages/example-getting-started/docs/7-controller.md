@@ -63,3 +63,8 @@ export class TodoController {
   }
 }
 ```
+
+### Navigation
+
+Previous step: [Add a repository](6-repository.html)
+Final step: [Putting it all together](8-putting-it-together.html)
