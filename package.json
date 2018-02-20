@@ -4,7 +4,7 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git"
   },
-  "version": "4.0.0-alpha.1",
+  "version": "0.1.0",
   "engines": {
     "node": ">=8"
   },
@@ -21,7 +21,7 @@
   },
   "scripts": {
     "bootstrap": "npm i && lerna bootstrap",
-    "release": "npm run build:full && lerna publish --cd-version=prerelease --preid=alpha",
+    "release": "npm run build:full && lerna publish",
     "coverage:ci": "node packages/build/bin/run-nyc report --reporter=text-lcov | coveralls",
     "precoverage": "npm test",
     "coverage": "open coverage/index.html",
