@@ -21,7 +21,7 @@ describe('RestServer', () => {
   describe('"bindElement" binding', () => {
     it('returns a function for creating new bindings', async () => {
       const ctx = await givenRequestContext();
-      const bindElement: BindElement = await ctx.get(RestBindings.BIND_ELEMENT);
+      const bindElement = await ctx.get<BindElement>(RestBindings.BIND_ELEMENT);
       const binding = bindElement('foo').to('bar');
       expect(binding).to.be.instanceOf(Binding);
       expect(ctx.getSync('foo')).to.equal('bar');
@@ -31,7 +31,7 @@ describe('RestServer', () => {
   describe('"getFromContext" binding', () => {
     it('returns a function for getting a value from the context', async () => {
       const ctx = await givenRequestContext();
-      const getFromContext: GetFromContext = await ctx.get(
+      const getFromContext = await ctx.get<GetFromContext>(
         RestBindings.GET_FROM_CONTEXT,
       );
       ctx.bind('foo').to('bar');
@@ -53,7 +53,7 @@ describe('RestServer', () => {
       );
 
       const ctx = await givenRequestContext();
-      const invokeMethod: InvokeMethod = await ctx.get(
+      const invokeMethod = await ctx.get<InvokeMethod>(
         RestBindings.SequenceActions.INVOKE_METHOD,
       );
 

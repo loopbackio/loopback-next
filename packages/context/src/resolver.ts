@@ -10,7 +10,7 @@ import {
   Constructor,
   ValueOrPromise,
   MapObject,
-  isPromise,
+  isPromiseLike,
   resolveList,
   resolveMap,
 } from './value-promise';
@@ -57,7 +57,7 @@ export function instantiateClass<T>(
   const argsOrPromise = resolveInjectedArguments(ctor, '', ctx, session);
   const propertiesOrPromise = resolveInjectedProperties(ctor, ctx, session);
   let inst: ValueOrPromise<T>;
-  if (isPromise(argsOrPromise)) {
+  if (isPromiseLike(argsOrPromise)) {
     // Instantiate the class asynchronously
     inst = argsOrPromise.then(args => {
       /* istanbul ignore if */
@@ -74,13 +74,13 @@ export function instantiateClass<T>(
     // Instantiate the class synchronously
     inst = new ctor(...argsOrPromise);
   }
-  if (isPromise(propertiesOrPromise)) {
+  if (isPromiseLike(propertiesOrPromise)) {
     return propertiesOrPromise.then(props => {
       /* istanbul ignore if */
       if (debug.enabled) {
         debug('Injected properties for %s:', ctor.name, props);
       }
-      if (isPromise(inst)) {
+      if (isPromiseLike(inst)) {
         // Inject the properties asynchronously
         return inst.then(obj => Object.assign(obj, props));
       } else {
@@ -89,7 +89,7 @@ export function instantiateClass<T>(
       }
     });
   } else {
-    if (isPromise(inst)) {
+    if (isPromiseLike(inst)) {
       /* istanbul ignore if */
       if (debug.enabled) {
         debug('Injected properties for %s:', ctor.name, propertiesOrPromise);
@@ -257,7 +257,7 @@ export function invokeMethod(
     typeof targetWithMethods[method] === 'function',
     `Method ${method} not found`,
   );
-  if (isPromise(argsOrPromise)) {
+  if (isPromiseLike(argsOrPromise)) {
     // Invoke the target method asynchronously
     return argsOrPromise.then(args => {
       /* istanbul ignore if */

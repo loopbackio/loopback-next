@@ -109,7 +109,10 @@ export class Bootstrapper {
 
     // Resolve Booter Instances
     const booterInsts = await resolveList(filteredBindings, binding =>
-      bootCtx.get(binding.key),
+      // We cannot use Booter interface here because "filter.booters"
+      // allows arbitrary string values, not only the phases defined
+      // by Booter interface
+      bootCtx.get<{[phase: string]: () => Promise<void>}>(binding.key),
     );
 
     // Run phases of booters

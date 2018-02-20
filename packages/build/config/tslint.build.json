@@ -12,7 +12,10 @@
     // These rules catch common errors in JS programming or otherwise
     // confusing constructs that are prone to producing bugs.
 
-    "await-promise": true,
+    // User-land promises like Bluebird implement "PromiseLike" (not "Promise")
+    // interface only. The string "PromiseLike" bellow is needed to
+    // tell tslint that it's ok to `await` such promises.
+    "await-promise": [true, "PromiseLike"],
     "no-floating-promises": true,
     "no-unused-variable": true,
     "no-void-expression": [true, "ignore-arrow-function-shorthand"]

@@ -6,7 +6,7 @@
 export * from '@loopback/metadata';
 
 export {
-  isPromise,
+  isPromiseLike,
   BoundValue,
   Constructor,
   ValueOrPromise,

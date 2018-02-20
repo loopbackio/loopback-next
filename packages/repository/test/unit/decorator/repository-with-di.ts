@@ -64,7 +64,7 @@ describe('repository class', () => {
 
   // tslint:disable-next-line:max-line-length
   it('supports referencing predefined repository by name via constructor', async () => {
-    const myController: MyController = await ctx.get(
+    const myController = await ctx.get<MyController>(
       'controllers.MyController',
     );
     expect(myController.noteRepo instanceof DefaultCrudRepository).to.be.true();

@@ -6,7 +6,7 @@
 export const jugglerModule = require('loopback-datasource-juggler');
 
 import * as assert from 'assert';
-import {isPromise} from '@loopback/context';
+import {isPromiseLike} from '@loopback/context';
 import {DataObject, Options} from './common-types';
 import {Entity} from './model';
 import {Filter, Where} from './query';
@@ -51,8 +51,11 @@ export function bindModel<T extends typeof juggler.ModelBase>(
  */
 /* tslint:disable-next-line:no-any */
 function ensurePromise<T>(p: juggler.PromiseOrVoid<T>): Promise<T> {
-  if (p && isPromise(p)) {
-    return p;
+  if (p && isPromiseLike(p)) {
+    // Juggler uses promise-like Bluebird instead of native Promise
+    // implementation. We need to convert the promise returned by juggler
+    // methods to proper native Promise instance.
+    return Promise.resolve(p);
   } else {
     return Promise.reject(new Error('The value should be a Promise: ' + p));
   }

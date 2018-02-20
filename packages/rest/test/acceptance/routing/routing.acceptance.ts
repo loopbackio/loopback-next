@@ -242,7 +242,7 @@ describe('Routing', () => {
       }
 
       async getFlag(): Promise<string> {
-        return this.ctx.get('flag');
+        return this.ctx.get<string>('flag');
       }
     }
     givenControllerInApp(app, FlagController);

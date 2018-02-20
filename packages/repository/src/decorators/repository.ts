@@ -139,7 +139,9 @@ async function resolve(ctx: Context, injection: Injection) {
 
   let dataSource = meta.dataSource;
   if (meta.dataSourceName) {
-    dataSource = await ctx.get('datasources.' + meta.dataSourceName);
+    dataSource = await ctx.get<DataSource>(
+      'datasources.' + meta.dataSourceName,
+    );
   }
   assert(
     dataSource instanceof DataSourceConstructor,

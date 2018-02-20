@@ -22,9 +22,9 @@ export async function routeHandler(
   const ctrl = request.body.controller;
   const method = request.body.method;
   const input = request.body.input;
-  let controller;
+  let controller: Controller;
   try {
-    controller = await server.get(`controllers.${ctrl}`);
+    controller = await server.get<Controller>(`controllers.${ctrl}`);
     if (!controller[method]) {
       throw new Error(
         `No method was found on controller "${ctrl}" with name "${method}".`,

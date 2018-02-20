@@ -11,9 +11,11 @@ import {EventEmitter} from 'events';
 
 export declare namespace juggler {
   /**
-   * Return type for promisified Node.js async methods
+   * Return type for promisified Node.js async methods.
+   *
+   * Note that juggler uses Bluebird, not the native Promise.
    */
-  export type PromiseOrVoid<T> = Promise<T> | void;
+  export type PromiseOrVoid<T> = PromiseLike<T> | void;
 
   /**
    * Property definition

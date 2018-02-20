@@ -220,7 +220,7 @@ export class RestServer extends Context implements Server {
 
     for (const b of this.find('routes.*')) {
       // TODO(bajtos) should we support routes defined asynchronously?
-      const route = this.getSync(b.key);
+      const route = this.getSync<RouteEntry>(b.key);
       this._httpHandler.registerRoute(route);
     }
 
@@ -445,7 +445,7 @@ export class RestServer extends Context implements Server {
    *  - `app.route('get', '/greet', operationSpec, MyController, 'greet')`
    */
   getApiSpec(): OpenApiSpec {
-    const spec = this.getSync(RestBindings.API_SPEC);
+    const spec = this.getSync<OpenApiSpec>(RestBindings.API_SPEC);
     const defs = this.httpHandler.getApiDefinitions();
 
     // Apply deep clone to prevent getApiSpec() callers from
@@ -527,8 +527,8 @@ export class RestServer extends Context implements Server {
     // of API spec, controllers and routes at startup time.
     this._setupHandlerIfNeeded();
 
-    const httpPort = await this.get(RestBindings.PORT);
-    const httpHost = await this.get(RestBindings.HOST);
+    const httpPort = await this.get<number>(RestBindings.PORT);
+    const httpHost = await this.get<string | undefined>(RestBindings.HOST);
     this._httpServer = createServer(this.handleHttp);
     const httpServer = this._httpServer;
 

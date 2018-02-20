@@ -150,7 +150,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     }
 
     ctx.bind('store').toClass(Store);
-    const store = ctx.getSync('store');
+    const store = ctx.getSync<Store>('store');
 
     expect(store.getter).to.be.Function();
     expect(await store.getter()).to.equal('value');
@@ -166,7 +166,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     }
 
     ctx.bind('store').toClass(Store);
-    const store = ctx.getSync('store');
+    const store = ctx.getSync<Store>('store');
 
     expect(store.setter).to.be.Function();
     store.setter('a-value');
@@ -181,7 +181,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     ctx.bind('config').to({test: 'test-config'});
     ctx.bind('component').toClass(TestComponent);
 
-    const resolved = await ctx.get('component');
+    const resolved = await ctx.get<TestComponent>('component');
     expect(resolved.config).to.equal('test-config');
   });
 
@@ -257,7 +257,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
       .bind('store.locations.sj')
       .toDynamicValue(async () => 'San Jose')
       .tag('store:location');
-    const store: Store = await ctx.get('store');
+    const store = await ctx.get<Store>('store');
     expect(store.locations).to.eql(['San Francisco', 'San Jose']);
   });
 
@@ -292,7 +292,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
       .bind('store.locations.sj')
       .toProvider(LocationProvider)
       .tag('store:location');
-    const store: Store = await ctx.get('store');
+    const store = await ctx.get<Store>('store');
     expect(store.locations).to.eql(['San Francisco', 'San Jose']);
     expect(resolutionPath).to.eql(
       'store --> @Store.constructor[0] --> store.locations.sj --> ' +
