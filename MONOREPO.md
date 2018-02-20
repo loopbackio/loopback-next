@@ -65,3 +65,40 @@ The `release` script will automatically perform the tasks for all packages:
 - Check lint (tslint and prettier) issues
 
 If all steps are successful, it prompts you to publish packages into npm repository.
+
+### Add a new package
+
+To add a new package, create a folder in [`packages`](packages) as the root directory of your module. For example,
+```sh
+cd loopback-next/packages
+mkdir <a-new-package>
+```
+The package follows the node/npm module layout. You can use `npm init` or `lb4 extension` command to scaffold the module, copy/paste from an existing package, or manually add files including `package.json`.
+
+We have some configuration files at the top level (**loopback-next/**):
+
+- `.gitignore`
+- `.prettierignore`
+- `.nycrc.yml`
+
+For consistency across all packages, do not add them at package level unless specific customization is needed.
+
+Please also register the new package in the following files:
+- Add the new package and your name as its owner in [CODEOWNERS](CODEOWNERS). 
+- Add the new module in the `packages` list in [MONOREPO#packages](MONOREPO#packages).
+
+By default, npm publishes scoped packages with private access. There are two options to make a new scoped package with public access.
+
+Add the following section to `package.json`:
+```json
+  "publishConfig": {
+    "access": "public"
+  },
+```
+Explicitly publish the package with --access=public.
+```sh
+cd packages/<a-new-package>
+npm publish --access=public
+```
+
+Make sure you add LICENSE file properly and all the files are began with copyrights declaration.
