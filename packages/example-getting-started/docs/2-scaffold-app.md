@@ -14,5 +14,5 @@ leave them all enabled.
 
 ### Navigation
 
-Previous step: [Prerequisites and setup](1-prerequisites-and-setup.html)
-Next step: [Adding the legacy juggler](3-add-legacy-juggler.html)
+Previous step: [Prerequisites and setup](1-prerequisites-and-setup.md)
+Next step: [Adding the legacy juggler](3-add-legacy-juggler.md)

@@ -35,5 +35,5 @@ construct our TodoRepository definition.
 
 ### Navigation
 
-Previous step: [Add your Todo model](4-todo-model.html)
-Next step: [Add a repository](6-repository.html)
+Previous step: [Add your Todo model](4-todo-model.md)
+Next step: [Add a repository](6-repository.md)

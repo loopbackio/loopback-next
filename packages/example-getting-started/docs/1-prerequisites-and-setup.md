@@ -31,4 +31,4 @@ npm start
 
 ### Navigation
 
-Next step: [Scaffolding your application](2-scaffold-app.html)
+Next step: [Scaffolding your application](2-scaffold-app.md)
