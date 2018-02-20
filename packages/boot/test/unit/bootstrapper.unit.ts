@@ -16,49 +16,50 @@ describe('boot-strapper unit tests', () => {
   let app: BootApp;
   let bootstrapper: Bootstrapper;
   const booterKey = `${BootBindings.BOOTER_PREFIX}.TestBooter`;
-  const booterKey2 = `${BootBindings.BOOTER_PREFIX}.TestBooter2`;
+  const anotherBooterKey = `${BootBindings.BOOTER_PREFIX}.AnotherBooter`;
 
   beforeEach(getApplication);
   beforeEach(getBootStrapper);
 
   it('finds and runs registered booters', async () => {
     const ctx = await bootstrapper.boot();
-    const booterInst = await ctx.get(booterKey);
-    expect(booterInst.configureCalled).to.be.True();
-    expect(booterInst.loadCalled).to.be.True();
+    const booterInst = await ctx.get<TestBooter>(booterKey);
+    expect(booterInst.phasesCalled).to.eql([
+      'TestBooter:configure',
+      'TestBooter:load',
+    ]);
   });
 
   it('binds booters passed in BootExecutionOptions', async () => {
-    const ctx = await bootstrapper.boot({booters: [TestBooter2]});
-    const booterInst2 = await ctx.get(booterKey2);
-    expect(booterInst2).to.be.instanceof(TestBooter2);
-    expect(booterInst2.configureCalled).to.be.True();
+    const ctx = await bootstrapper.boot({booters: [AnotherBooter]});
+    const anotherBooterInst = await ctx.get<AnotherBooter>(anotherBooterKey);
+    expect(anotherBooterInst).to.be.instanceof(AnotherBooter);
+    expect(anotherBooterInst.phasesCalled).to.eql(['AnotherBooter:configure']);
   });
 
   it('no booters run when BootOptions.filter.booters is []', async () => {
     const ctx = await bootstrapper.boot({filter: {booters: []}});
-    const booterInst = await ctx.get(booterKey);
-    expect(booterInst.configureCalled).to.be.False();
-    expect(booterInst.loadCalled).to.be.False();
+    const booterInst = await ctx.get<TestBooter>(booterKey);
+    expect(booterInst.phasesCalled).to.eql([]);
   });
 
   it('only runs booters passed in via BootOptions.filter.booters', async () => {
     const ctx = await bootstrapper.boot({
-      booters: [TestBooter2],
-      filter: {booters: ['TestBooter2']},
+      booters: [AnotherBooter],
+      filter: {booters: ['AnotherBooter']},
     });
-    const booterInst = await ctx.get(booterKey);
-    const booterInst2 = await ctx.get(booterKey2);
-    expect(booterInst.configureCalled).to.be.False();
-    expect(booterInst.loadCalled).to.be.False();
-    expect(booterInst2.configureCalled).to.be.True();
+    const testBooterInst = await ctx.get<TestBooter>(booterKey);
+    const anotherBooterInst = await ctx.get<AnotherBooter>(anotherBooterKey);
+    const phasesCalled = testBooterInst.phasesCalled.concat(
+      anotherBooterInst.phasesCalled,
+    );
+    expect(phasesCalled).to.eql(['AnotherBooter:configure']);
   });
 
   it('only runs phases passed in via BootOptions.filter.phases', async () => {
     const ctx = await bootstrapper.boot({filter: {phases: ['configure']}});
-    const booterInst = await ctx.get(booterKey);
-    expect(booterInst.configureCalled).to.be.True();
-    expect(booterInst.loadCalled).to.be.False();
+    const booterInst = await ctx.get<TestBooter>(booterKey);
+    expect(booterInst.phasesCalled).to.eql(['TestBooter:configure']);
   });
 
   /**
@@ -80,8 +81,8 @@ describe('boot-strapper unit tests', () => {
    * A TestBooter for testing purposes. Implements configure and load.
    */
   class TestBooter implements Booter {
-    configureCalled = false;
-    loadCalled = false;
+    private configureCalled = false;
+    private loadCalled = false;
     async configure() {
       this.configureCalled = true;
     }
@@ -89,15 +90,28 @@ describe('boot-strapper unit tests', () => {
     async load() {
       this.loadCalled = true;
     }
+
+    get phasesCalled() {
+      const result = [];
+      if (this.configureCalled) result.push('TestBooter:configure');
+      if (this.loadCalled) result.push('TestBooter:load');
+      return result;
+    }
   }
 
   /**
    * A TestBooter for testing purposes. Implements configure.
    */
-  class TestBooter2 implements Booter {
-    configureCalled = false;
+  class AnotherBooter implements Booter {
+    private configureCalled = false;
     async configure() {
       this.configureCalled = true;
+    }
+
+    get phasesCalled() {
+      const result = [];
+      if (this.configureCalled) result.push('AnotherBooter:configure');
+      return result;
     }
   }
 });

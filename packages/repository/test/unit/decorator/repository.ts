@@ -54,7 +54,7 @@ describe('repository decorator', () => {
 
   // tslint:disable-next-line:max-line-length
   it('supports referencing predefined repository by name via constructor', async () => {
-    const myController: MyController = await ctx.get(
+    const myController = await ctx.get<MyController>(
       'controllers.MyController',
     );
     expect(myController.noteRepo).exactly(repo);
@@ -62,7 +62,7 @@ describe('repository decorator', () => {
 
   // tslint:disable-next-line:max-line-length
   it('supports referencing predefined repository by name via property', async () => {
-    const myController: MyController = await ctx.get(
+    const myController = await ctx.get<MyController>(
       'controllers.MyController',
     );
     expect(myController.noteRepo2).exactly(repo);
@@ -84,7 +84,8 @@ describe('repository decorator', () => {
       ) {}
     }
     ctx.bind('controllers.Controller2').toClass(Controller2);
-    const myController: MyController = await ctx.get('controllers.Controller2');
+
+    const myController = await ctx.get<MyController>('controllers.Controller2');
     expect(myController.noteRepo).to.be.not.null();
   });
 
@@ -96,7 +97,7 @@ describe('repository decorator', () => {
       ) {}
     }
     ctx.bind('controllers.Controller3').toClass(Controller3);
-    const myController: MyController = await ctx.get('controllers.Controller3');
+    const myController = await ctx.get<MyController>('controllers.Controller3');
     expect(myController.noteRepo).to.be.not.null();
   });
 

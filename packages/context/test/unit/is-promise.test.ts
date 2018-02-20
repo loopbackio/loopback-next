@@ -5,38 +5,38 @@
 
 import * as bluebird from 'bluebird';
 import {expect} from '@loopback/testlab';
-import {isPromise} from '../..';
+import {isPromiseLike} from '../..';
 
 describe('isPromise', () => {
   it('returns false for undefined', () => {
-    expect(isPromise(undefined)).to.be.false();
+    expect(isPromiseLike(undefined)).to.be.false();
   });
 
   it('returns false for a string value', () => {
-    expect(isPromise('string-value')).to.be.false();
+    expect(isPromiseLike('string-value')).to.be.false();
   });
 
   it('returns false for a plain object', () => {
-    expect(isPromise({foo: 'bar'})).to.be.false();
+    expect(isPromiseLike({foo: 'bar'})).to.be.false();
   });
 
   it('returns false for an array', () => {
-    expect(isPromise([1, 2, 3])).to.be.false();
+    expect(isPromiseLike([1, 2, 3])).to.be.false();
   });
 
   it('returns false for a Date', () => {
-    expect(isPromise(new Date())).to.be.false();
+    expect(isPromiseLike(new Date())).to.be.false();
   });
 
   it('returns true for a native Promise', () => {
-    expect(isPromise(Promise.resolve())).to.be.true();
+    expect(isPromiseLike(Promise.resolve())).to.be.true();
   });
 
   it('returns true for a Bluebird Promise', () => {
-    expect(isPromise(bluebird.resolve())).to.be.true();
+    expect(isPromiseLike(bluebird.resolve())).to.be.true();
   });
 
   it('returns false when .then() is not a function', () => {
-    expect(isPromise({then: 'later'})).to.be.false();
+    expect(isPromiseLike({then: 'later'})).to.be.false();
   });
 });

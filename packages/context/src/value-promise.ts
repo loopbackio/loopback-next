@@ -32,8 +32,8 @@ export type MapObject<T> = {[name: string]: T};
  *
  * @param value The value to check.
  */
-export function isPromise<T>(
-  value: T | PromiseLike<T>,
+export function isPromiseLike<T>(
+  value: T | PromiseLike<T> | undefined,
 ): value is PromiseLike<T> {
   if (!value) return false;
   if (typeof value !== 'object' && typeof value !== 'function') return false;
@@ -45,7 +45,7 @@ export function isPromise<T>(
  * @param value Value of an object
  * @param path Path to the property
  */
-export function getDeepProperty(value: BoundValue, path: string) {
+export function getDeepProperty(value: BoundValue, path: string): BoundValue {
   const props = path.split('.').filter(Boolean);
   for (const p of props) {
     if (value == null) {
@@ -99,7 +99,7 @@ export function resolveMap<T, V>(
 
   for (const key in map) {
     const valueOrPromise = resolver(map[key], key, map);
-    if (isPromise(valueOrPromise)) {
+    if (isPromiseLike(valueOrPromise)) {
       if (!asyncResolvers) asyncResolvers = [];
       asyncResolvers.push(valueOrPromise.then(setter(key)));
     } else {
@@ -158,7 +158,7 @@ export function resolveList<T, V>(
   // tslint:disable-next-line:prefer-for-of
   for (let ix = 0; ix < list.length; ix++) {
     const valueOrPromise = resolver(list[ix], ix, list);
-    if (isPromise(valueOrPromise)) {
+    if (isPromiseLike(valueOrPromise)) {
       if (!asyncResolvers) asyncResolvers = [];
       asyncResolvers.push(valueOrPromise.then(setter(ix)));
     } else {
@@ -190,7 +190,7 @@ export function tryWithFinally<T>(
     finalAction();
     throw err;
   }
-  if (isPromise(result)) {
+  if (isPromiseLike(result)) {
     // Once (promise.finally)[https://github.com/tc39/proposal-promise-finally
     // is supported, the following can be simplifed as
     // `result = result.finally(finalAction);`

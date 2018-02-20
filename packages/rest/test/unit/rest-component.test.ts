@@ -4,7 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect, ShotRequest} from '@loopback/testlab';
-import {Application, ProviderMap, CoreBindings} from '@loopback/core';
+import {
+  Application,
+  ProviderMap,
+  CoreBindings,
+  Component,
+} from '@loopback/core';
 import {inject, Provider, BoundValue, Context} from '@loopback/context';
 
 import {
@@ -14,12 +19,13 @@ import {
   RestComponentConfig,
   ServerRequest,
   HttpHandler,
+  LogError,
 } from '../..';
 
 const SequenceActions = RestBindings.SequenceActions;
 describe('RestComponent', () => {
   describe('Providers', () => {
-    describe('Default implementations are bound', () => {
+    describe('Default implementations are bound', async () => {
       const app = new Application();
       app.component(RestComponent);
 
@@ -27,12 +33,11 @@ describe('RestComponent', () => {
       app.bind(RestBindings.Http.CONTEXT).to(new Context());
       app.bind(RestBindings.HANDLER).to(new HttpHandler(app));
 
-      // Mocha can't dynamically generate the tests if we use app.get(...)
-      const comp = app.getSync('components.RestComponent');
-      for (const key in comp.providers) {
+      const comp = await app.get<Component>('components.RestComponent');
+      for (const key in comp.providers || {}) {
         it(key, async () => {
           const result = await app.get(key);
-          const expected: Provider<BoundValue> = new comp.providers[key]();
+          const expected: Provider<BoundValue> = new comp.providers![key]();
           expect(result).to.deepEqual(expected.value());
         });
       }
@@ -42,7 +47,7 @@ describe('RestComponent', () => {
         const app = new Application();
         app.component(RestComponent);
         const server = await app.getServer(RestServer);
-        const logError = await server.get(SequenceActions.LOG_ERROR);
+        const logError = await server.get<LogError>(SequenceActions.LOG_ERROR);
         expect(logError.length).to.equal(3); // (err, statusCode, request)
       });
 
@@ -74,7 +79,7 @@ describe('RestComponent', () => {
         const app = new Application();
         app.component(CustomRestComponent);
         const server = await app.getServer(RestServer);
-        const logError = await server.get(SequenceActions.LOG_ERROR);
+        const logError = await server.get<LogError>(SequenceActions.LOG_ERROR);
         logError(new Error('test-error'), 400, new ShotRequest({url: '/'}));
 
         expect(lastLog).to.equal('/ 400 test-error');

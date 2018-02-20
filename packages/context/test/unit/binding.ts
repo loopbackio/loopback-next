@@ -125,7 +125,7 @@ describe('Binding', () => {
   describe('toDynamicValue(dynamicValueFn)', () => {
     it('support a factory', async () => {
       const b = ctx.bind('msg').toDynamicValue(() => Promise.resolve('hello'));
-      const value: string = await ctx.get('msg');
+      const value = await ctx.get<string>('msg');
       expect(value).to.equal('hello');
       expect(b.type).to.equal(BindingType.DYNAMIC_VALUE);
     });
@@ -136,7 +136,7 @@ describe('Binding', () => {
       ctx.bind('msg').toDynamicValue(() => Promise.resolve('world'));
       const b = ctx.bind('myService').toClass(MyService);
       expect(b.type).to.equal(BindingType.CLASS);
-      const myService: MyService = await ctx.get('myService');
+      const myService = await ctx.get<MyService>('myService');
       expect(myService.getMessage()).to.equal('hello world');
     });
   });
@@ -145,7 +145,7 @@ describe('Binding', () => {
     it('binding returns the expected value', async () => {
       ctx.bind('msg').to('hello');
       ctx.bind('provider_key').toProvider(MyProvider);
-      const value: string = await ctx.get('provider_key');
+      const value = await ctx.get<string>('provider_key');
       expect(value).to.equal('hello world');
     });
 
@@ -159,7 +159,7 @@ describe('Binding', () => {
     it('support asynchronous dependencies of provider class', async () => {
       ctx.bind('msg').toDynamicValue(() => Promise.resolve('hello'));
       ctx.bind('provider_key').toProvider(MyProvider);
-      const value: string = await ctx.get('provider_key');
+      const value = await ctx.get<string>('provider_key');
       expect(value).to.equal('hello world');
     });
 

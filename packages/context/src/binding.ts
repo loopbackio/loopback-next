@@ -8,7 +8,7 @@ import {ResolutionSession} from './resolution-session';
 import {instantiateClass} from './resolver';
 import {
   Constructor,
-  isPromise,
+  isPromiseLike,
   BoundValue,
   ValueOrPromise,
 } from './value-promise';
@@ -176,7 +176,7 @@ export class Binding {
   ): ValueOrPromise<BoundValue> {
     // Initialize the cache as a weakmap keyed by context
     if (!this._cache) this._cache = new WeakMap<Context, BoundValue>();
-    if (isPromise(result)) {
+    if (isPromiseLike(result)) {
       if (this.scope === BindingScope.SINGLETON) {
         // Cache the value at owning context level
         result = result.then(val => {
@@ -294,7 +294,7 @@ export class Binding {
    * ```
    */
   to(value: BoundValue): this {
-    if (isPromise(value)) {
+    if (isPromiseLike(value)) {
       // Promises are a construct primarily intended for flow control:
       // In an algorithm with steps 1 and 2, we want to wait for the outcome
       // of step 1 before starting step 2.
@@ -380,7 +380,7 @@ export class Binding {
         ctx!,
         session,
       );
-      if (isPromise(providerOrPromise)) {
+      if (isPromiseLike(providerOrPromise)) {
         return providerOrPromise.then(p => p.value());
       } else {
         return providerOrPromise.value();

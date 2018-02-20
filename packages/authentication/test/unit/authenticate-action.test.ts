@@ -60,10 +60,10 @@ describe('AuthenticationProvider', () => {
           .bind(AuthenticationBindings.AUTH_ACTION)
           .toProvider(AuthenticationProvider);
         const request = <ParsedRequest>{};
-        const authenticate = await context.get(
+        const authenticate = await context.get<AuthenticateFn>(
           AuthenticationBindings.AUTH_ACTION,
         );
-        const user: UserProfile = await authenticate(request);
+        const user: UserProfile | undefined = await authenticate(request);
         expect(user).to.be.equal(mockUser);
       });
 
@@ -73,7 +73,7 @@ describe('AuthenticationProvider', () => {
         context
           .bind(AuthenticationBindings.AUTH_ACTION)
           .toProvider(AuthenticationProvider);
-        const authenticate = await context.get(
+        const authenticate = await context.get<AuthenticateFn>(
           AuthenticationBindings.AUTH_ACTION,
         );
         const request = <ParsedRequest>{};
@@ -92,7 +92,7 @@ describe('AuthenticationProvider', () => {
         context
           .bind(AuthenticationBindings.AUTH_ACTION)
           .toProvider(AuthenticationProvider);
-        const authenticate = await context.get(
+        const authenticate = await context.get<AuthenticateFn>(
           AuthenticationBindings.AUTH_ACTION,
         );
         const request = <ParsedRequest>{};

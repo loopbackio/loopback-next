@@ -4,7 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, Binding, BindingScope, BindingType, isPromise} from '../..';
+import {
+  Context,
+  Binding,
+  BindingScope,
+  BindingType,
+  isPromiseLike,
+} from '../..';
 
 /**
  * Create a subclass of context so that we can access parents and registry
@@ -493,8 +499,8 @@ describe('Context', () => {
 
     it('returns promise for async values', async () => {
       ctx.bind('key').toDynamicValue(() => Promise.resolve('value'));
-      const valueOrPromise = ctx.getValueOrPromise('key');
-      expect(isPromise(valueOrPromise)).to.be.true();
+      const valueOrPromise = ctx.getValueOrPromise<string>('key');
+      expect(isPromiseLike(valueOrPromise)).to.be.true();
       const value = await valueOrPromise;
       expect(value).to.equal('value');
     });
@@ -509,7 +515,9 @@ describe('Context', () => {
       ctx
         .bind('key')
         .toDynamicValue(() => Promise.resolve({test: 'test-value'}));
-      const value = await ctx.getValueOrPromise('key#test');
+      const valueOrPromise = ctx.getValueOrPromise<string>('key#test');
+      expect(isPromiseLike(valueOrPromise)).to.be.true();
+      const value = await valueOrPromise;
       expect(value).to.equal('test-value');
     });
 
