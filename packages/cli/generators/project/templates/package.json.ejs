@@ -57,25 +57,25 @@
     "dist"
   ],
   "dependencies": {
-    "@loopback/boot": ">=4.0.0-alpha.1",
-    "@loopback/context": ">=4.0.0-alpha.18",
+    "@loopback/context": "^0.1.0",
+    "@loopback/boot": "^0.1.0",
 <% if (project.projectType === 'application') { -%>
-    "@loopback/core": ">=4.0.0-alpha.20",
-    "@loopback/rest": ">=4.0.0-alpha.7",
-    "@loopback/openapi-v2": ">=4.0.0-alpha.2"
+    "@loopback/core": "^0.1.0",
+    "@loopback/rest": "^0.1.0",
+    "@loopback/openapi-v2": "^0.1.0"
 <% } else { -%>
-    "@loopback/core": ">=4.0.0-alpha.20"
+    "@loopback/core": "^0.1.0"
 <% } -%>
   },
   "devDependencies": {
-    "@loopback/build": ">=4.0.0-alpha.4",
+    "@loopback/build": "^0.1.0",
 <% if (project.mocha) { -%>
-    "@loopback/testlab": ">=4.0.0-alpha.13",
+    "@loopback/testlab": "^0.1.0",
     "@types/mocha": "^2.2.43",
     "mocha": "^4.0.1",
     "source-map-support": "^0.5.2"
 <% } else { -%>
-    "@loopback/testlab": ">=4.0.0-alpha.13"
+    "@loopback/testlab": "^0.1.0"
 <% } -%>
   }
 }
