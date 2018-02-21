@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.0"></a>
+# [0.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-getting-started@1.0.1-alpha.7...@loopback/example-getting-started@0.1.0) (2018-02-21)
+
+
+### Bug Fixes
+
+* **example-getting-started:** correct spacing on navigation sections ([0dde314](https://github.com/strongloop/loopback-next/commit/0dde314))
+
+
+### Features
+
+* [@loopback](https://github.com/loopback)/boot ([#858](https://github.com/strongloop/loopback-next/issues/858)) ([c2ca8be](https://github.com/strongloop/loopback-next/commit/c2ca8be))
+
+
+
+
 <a name="1.0.1-alpha.7"></a>
 ## [1.0.1-alpha.7](https://github.com/strongloop/loopback-next/compare/@loopback/example-getting-started@1.0.1-alpha.6...@loopback/example-getting-started@1.0.1-alpha.7) (2018-02-15)
 

@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-getting-started",
-  "version": "1.0.1-alpha.7",
+  "version": "0.1.0",
   "description": "An application and tutorial on how to build with LoopBack 4.",
   "private": true,
   "main": "index.js",

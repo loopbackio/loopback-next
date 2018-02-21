@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.0"></a>
+# [0.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@4.0.0-alpha.26...@loopback/rest@0.1.0) (2018-02-21)
+
+
+### Features
+
+* **rest:** app.route() and app.api() ([5c3fd62](https://github.com/strongloop/loopback-next/commit/5c3fd62))
+
+
+
+
 <a name="4.0.0-alpha.26"></a>
 # [4.0.0-alpha.26](https://github.com/strongloop/loopback-next/compare/@loopback/rest@4.0.0-alpha.25...@loopback/rest@4.0.0-alpha.26) (2018-02-15)
 
