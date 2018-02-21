@@ -5,12 +5,14 @@
 
 import {ApplicationConfig} from '@loopback/core';
 import {RestApplication} from '@loopback/rest';
-import {TodoController} from './controllers';
 import {TodoRepository} from './repositories';
 import {db} from './datasources/db.datasource';
+
 /* tslint:disable:no-unused-variable */
+// Do not remove!
 // Class and Repository imports required to infer types in consuming code!
-// Do not remove them!
+// Binding and Booter imports are required to infer types for BootMixin!
+import {BootMixin, Booter, Binding} from '@loopback/boot';
 import {
   Class,
   Repository,
@@ -18,11 +20,14 @@ import {
   RepositoryMixin,
 } from '@loopback/repository';
 /* tslint:enable:no-unused-variable */
-export class TodoApplication extends RepositoryMixin(RestApplication) {
+
+export class TodoApplication extends BootMixin(
+  RepositoryMixin(RestApplication),
+) {
   constructor(options?: ApplicationConfig) {
     super(options);
+    this.projectRoot = __dirname;
     this.setupRepositories();
-    this.setupControllers();
   }
 
   // Helper functions (just to keep things organized)
@@ -38,10 +43,5 @@ export class TodoApplication extends RepositoryMixin(RestApplication) {
     // See https://github.com/strongloop/loopback-next/issues/743
     this.bind('datasource').to(datasource);
     this.repository(TodoRepository);
-  }
-
-  setupControllers() {
-    // TODO(bajtos) Automate controller registration via @loopback/boot
-    this.controller(TodoController);
   }
 }

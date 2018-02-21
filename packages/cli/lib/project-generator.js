@@ -12,6 +12,10 @@ module.exports = class ProjectGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);
+    // The default list of build options available for a project
+    // This list gets shown to users to let them select the appropriate
+    // build settings for their project.
+    this.buildOptions = ['tslint', 'prettier', 'mocha', 'loopbackBuild'];
   }
 
   _setupGenerator() {
@@ -80,15 +84,10 @@ module.exports = class ProjectGenerator extends BaseGenerator {
 
   setOptions() {
     this.projectInfo = {projectType: this.projectType};
-    [
-      'name',
-      'description',
-      'outdir',
-      'tslint',
-      'prettier',
-      'mocha',
-      'loopbackBuild',
-    ].forEach(n => {
+    this.projectOptions = ['name', 'description', 'outdir'].concat(
+      this.buildOptions
+    );
+    this.projectOptions.forEach(n => {
       if (this.options[n]) {
         this.projectInfo[n] = this.options[n];
       }
@@ -144,7 +143,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
   promptOptions() {
     if (this.shouldExit()) return false;
     const choices = [];
-    ['tslint', 'prettier', 'mocha', 'loopbackBuild'].forEach(f => {
+    this.buildOptions.forEach(f => {
       if (!this.options[f]) {
         choices.push({
           name: 'Enable ' + f,

@@ -1,13 +1,25 @@
-import {ApplicationConfig} from '@loopback/core';
+import {Application, ApplicationConfig, BootOptions} from '@loopback/core';
 import {RestApplication, RestServer} from '@loopback/rest';
-import {PingController} from './controllers/ping.controller';
 import {MySequence} from './sequence';
 
-export class <%= project.applicationName %> extends RestApplication {
+/* tslint:disable:no-unused-variable */
+// Binding and Booter imports are required to infer types for BootMixin!
+import {BootMixin, Booter, Binding} from '@loopback/boot';
+/* tslint:enable:no-unused-variable */
+
+export class <%= project.applicationName %> extends BootMixin(RestApplication) {
   constructor(options?: ApplicationConfig) {
     super(options);
-    this.sequence(MySequence);
-    this.setupControllers();
+    this.projectRoot = __dirname;
+    // Customize @loopback/boot Booter Conventions here
+    this.bootOptions = {
+      controllers: {
+        // Customize ControllerBooter Conventions here
+        dirs: ['controllers'],
+        extensions: ['.controller.js'],
+        nested: true,
+      }
+    }
   }
 
   async start() {
@@ -17,9 +29,5 @@ export class <%= project.applicationName %> extends RestApplication {
     const port = await server.get('rest.port');
     console.log(`Server is running at http://127.0.0.1:${port}`);
     console.log(`Try http://127.0.0.1:${port}/ping`);
-  }
-
-  setupControllers() {
-    this.controller(PingController);
   }
 }

@@ -15,10 +15,12 @@ module.exports = class extends ProjectGenerator {
 
   _setupGenerator() {
     this.projectType = 'application';
+
     this.option('applicationName', {
       type: String,
       description: 'Application name',
     });
+
     return super._setupGenerator();
   }
 
