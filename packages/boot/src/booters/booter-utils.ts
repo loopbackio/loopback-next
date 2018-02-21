@@ -27,7 +27,8 @@ export async function discoverFiles(
  * @param target The function to check if it's a class or not.
  * @returns {boolean} True if target is a class. False otherwise.
  */
-export function isClass(target: Constructor<{}>): boolean {
+// tslint:disable-next-line:no-any
+export function isClass(target: any): target is Constructor<any> {
   return (
     typeof target === 'function' && target.toString().indexOf('class') === 0
   );
@@ -39,20 +40,18 @@ export function isClass(target: Constructor<{}>): boolean {
  * and then testing each exported member to see if it's a class or not.
  *
  * @param files An array of string of absolute file paths
- * @returns {Promise<Array<Constructor<{}>>>} An array of Class Construtors from a file
+ * @returns {Constructor<{}>[]} An array of Class constructors from a file
  */
-export async function loadClassesFromFiles(
-  files: string[],
-): Promise<Array<Constructor<{}>>> {
+export function loadClassesFromFiles(files: string[]): Constructor<{}>[] {
   const classes: Array<Constructor<{}>> = [];
-  files.forEach(file => {
+  for (const file of files) {
     const data = require(file);
-    Object.keys(data).forEach(cls => {
-      if (isClass(data[cls])) {
-        classes.push(data[cls]);
+    for (const cls of Object.values(data)) {
+      if (isClass(cls)) {
+        classes.push(cls);
       }
-    });
-  });
+    }
+  }
 
   return classes;
 }
