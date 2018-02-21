@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.1"></a>
+## [0.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.1.0...@loopback/cli@0.1.1) (2018-02-21)
+
+
+### Bug Fixes
+
+* **cli:** fix app templates with boot and sequence ([81272e8](https://github.com/strongloop/loopback-next/commit/81272e8))
+
+
+
+
 <a name="0.1.0"></a>
 # [0.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@4.0.0-alpha.23...@loopback/cli@0.1.0) (2018-02-21)
 
