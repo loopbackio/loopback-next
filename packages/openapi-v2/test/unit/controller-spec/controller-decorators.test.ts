@@ -12,6 +12,7 @@ import {
   put,
   patch,
   del,
+  head,
   param,
 } from '../../..';
 import {expect} from '@loopback/testlab';
@@ -26,7 +27,8 @@ describe('Routing metadata', () => {
     @api(expectedSpec)
     class MyController {
       greet() {
-        return 'Hello world!';
+        /* istanbul ignore next*/
+        return 'Hello World!';
       }
     }
 
@@ -42,7 +44,8 @@ describe('Routing metadata', () => {
     @api(expectedSpec)
     class MyController {
       greet() {
-        return 'Hello world!';
+        /* istanbul ignore next*/
+        return 'Hello World!';
       }
     }
 
@@ -52,14 +55,13 @@ describe('Routing metadata', () => {
   });
 
   it('returns spec defined via @get decorator', () => {
-    const operationSpec = anOperationSpec()
-      .withStringResponse()
-      .build();
+    const operationSpec = givenAnOperationSpec();
 
     class MyController {
       @get('/greet', operationSpec)
       greet() {
-        return 'Hello world!';
+        /* istanbul ignore next*/
+        return 'Hello World!';
       }
     }
 
@@ -78,9 +80,7 @@ describe('Routing metadata', () => {
   });
 
   it('returns spec defined via @post decorator', () => {
-    const operationSpec = anOperationSpec()
-      .withStringResponse()
-      .build();
+    const operationSpec = givenAnOperationSpec();
 
     class MyController {
       @post('/greeting', operationSpec)
@@ -102,9 +102,7 @@ describe('Routing metadata', () => {
   });
 
   it('returns spec defined via @put decorator', () => {
-    const operationSpec = anOperationSpec()
-      .withStringResponse()
-      .build();
+    const operationSpec = givenAnOperationSpec();
 
     class MyController {
       @put('/greeting', operationSpec)
@@ -126,9 +124,7 @@ describe('Routing metadata', () => {
   });
 
   it('returns spec defined via @patch decorator', () => {
-    const operationSpec = anOperationSpec()
-      .withStringResponse()
-      .build();
+    const operationSpec = givenAnOperationSpec();
 
     class MyController {
       @patch('/greeting', operationSpec)
@@ -150,9 +146,7 @@ describe('Routing metadata', () => {
   });
 
   it('returns spec defined via @del decorator', () => {
-    const operationSpec = anOperationSpec()
-      .withStringResponse()
-      .build();
+    const operationSpec = givenAnOperationSpec();
 
     class MyController {
       @del('/greeting', operationSpec)
@@ -173,10 +167,30 @@ describe('Routing metadata', () => {
     });
   });
 
+  it('returns spec defined via @head decorator', () => {
+    const operationSpec = givenAnOperationSpec();
+
+    class MyController {
+      @head('/greeting', operationSpec)
+      greet() {}
+    }
+
+    const actualSpec = getControllerSpec(MyController);
+
+    expect(actualSpec).to.eql({
+      paths: {
+        '/greeting': {
+          head: {
+            'x-operation-name': 'greet',
+            ...operationSpec,
+          },
+        },
+      },
+    });
+  });
+
   it('returns spec defined via @operation decorator', () => {
-    const operationSpec = anOperationSpec()
-      .withStringResponse()
-      .build();
+    const operationSpec = givenAnOperationSpec();
 
     class MyController {
       @operation('post', '/greeting', operationSpec)
@@ -233,6 +247,7 @@ describe('Routing metadata', () => {
     class Parent {
       @get('/parent', operationSpec)
       getParentName() {
+        /* istanbul ignore next*/
         return 'The Parent';
       }
     }
@@ -240,6 +255,7 @@ describe('Routing metadata', () => {
     class Child extends Parent {
       @get('/child', operationSpec)
       getChildName() {
+        /* istanbul ignore next*/
         return 'The Child';
       }
     }
@@ -265,13 +281,12 @@ describe('Routing metadata', () => {
   });
 
   it('allows children to override parent REST endpoints', () => {
-    const operationSpec = anOperationSpec()
-      .withStringResponse()
-      .build();
+    const operationSpec = givenAnOperationSpec();
 
     class Parent {
       @get('/name', operationSpec)
       getParentName() {
+        /* istanbul ignore next*/
         return 'The Parent';
       }
     }
@@ -279,6 +294,7 @@ describe('Routing metadata', () => {
     class Child extends Parent {
       @get('/name', operationSpec)
       getChildName() {
+        /* istanbul ignore next*/
         return 'The Child';
       }
     }
@@ -299,6 +315,7 @@ describe('Routing metadata', () => {
     class Parent {
       @get('/parent-name', operationSpec)
       getName() {
+        /* istanbul ignore next*/
         return 'The Parent';
       }
     }
@@ -306,6 +323,7 @@ describe('Routing metadata', () => {
     class Child extends Parent {
       @get('/child-name', operationSpec)
       getName() {
+        /* istanbul ignore next*/
         return 'The Child';
       }
     }
@@ -338,12 +356,14 @@ describe('Routing metadata', () => {
     class Parent {
       @get('/greet', operationSpec)
       greet(@param.query.string('msg') msg: string) {
+        /* istanbul ignore next*/
         return `Parent: ${msg}`;
       }
     }
 
     class Child extends Parent {
       greet(@param.query.string('message') msg: string) {
+        /* istanbul ignore next*/
         return `Child: ${msg}`;
       }
     }
@@ -371,4 +391,10 @@ describe('Routing metadata', () => {
       in: 'query',
     });
   });
+
+  function givenAnOperationSpec() {
+    return anOperationSpec()
+      .withStringResponse()
+      .build();
+  }
 });

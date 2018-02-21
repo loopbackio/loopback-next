@@ -380,6 +380,18 @@ export function del(path: string, spec?: OperationObject) {
 }
 
 /**
+ * Expose a Controller method as a REST API operation
+ * mapped to `HEAD` request method.
+ *
+ * @param path The URL path of this operation, e.g. `/product/{id}`
+ * @param spec The OpenAPI specification describing parameters and responses
+ *   of this operation.
+ */
+export function head(path: string, spec?: OperationObject) {
+  return operation('head', path, spec);
+}
+
+/**
  * Expose a Controller method as a REST API operation.
  *
  * @param verb HTTP verb, e.g. `GET` or `POST`.
