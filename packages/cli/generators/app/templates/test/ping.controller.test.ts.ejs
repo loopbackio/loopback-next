@@ -12,6 +12,7 @@ describe('PingController', () => {
   before(givenARestServer);
 
   before(async () => {
+    await app.boot();
     await app.start();
   });
 
