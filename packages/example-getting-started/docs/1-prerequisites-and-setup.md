@@ -21,7 +21,7 @@ lb4 example getting-started
 
 3. Switch to the directory and install dependencies.
 ```
-cd loopback-example-getting-started && npm i
+cd loopback4-example-getting-started && npm i
 ```
 
 4. Start the app!
