@@ -55,7 +55,7 @@ Start the app (`npm start`) and then make some REST requests:
 
 ### Navigation
 
-Previous step: [Add a controller](7-controller.md)
+Previous step: [Add a controller](7-controller)
 
 ### More examples and tutorials
 

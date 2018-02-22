@@ -104,6 +104,6 @@ export const TodoSchema: SchemaObject = {
 ```
 ### Navigation
 
-Previous step: [Adding the Legacy Juggler](3-add-legacy-juggler.md)
+Previous step: [Adding the Legacy Juggler](3-add-legacy-juggler)
 
-Next step: [Add a datasource](5-datasource.md)
+Next step: [Add a datasource](5-datasource)
