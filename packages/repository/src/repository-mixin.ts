@@ -5,6 +5,7 @@
 
 import {Class} from './common-types';
 import {Repository} from './repository';
+import {juggler} from './loopback-datasource-juggler';
 
 // tslint:disable:no-any
 
@@ -55,6 +56,32 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
     repository(repo: Class<Repository<any>>) {
       const repoKey = `repositories.${repo.name}`;
       this.bind(repoKey).toClass(repo);
+    }
+
+    /**
+     * Add the dataSource to this application.
+     *
+     * @param dataSource The dataSource to add.
+     * @param name The binding name of the datasource; defaults to dataSource.name
+     *
+     * ```ts
+     *
+     * const ds: juggler.DataSource = new DataSourceConstructor({
+     *   name: 'db',
+     *   connector: 'memory',
+     * });
+     *
+     * app.dataSource(ds);
+     *
+     * // The datasource can be injected with
+     * constructor(@inject('datasources.db') protected datasource: DataSourceType) {
+     *
+     * }
+     * ```
+     */
+    dataSource(dataSource: juggler.DataSource, name?: string) {
+      const dataSourceKey = `datasources.${name || dataSource.name}`;
+      this.bind(dataSourceKey).to(dataSource);
     }
 
     /**
