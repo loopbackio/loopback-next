@@ -11,7 +11,7 @@ our application to always respond with "Hello World!".
 ## Prerequisites
 
 Before we can begin, you'll need to make sure you have some things installed:
-- [Node.js](https://nodejs.org/en/) at v6.x or greater
+- [Node.js](https://nodejs.org/en/) at v8.x or greater
 
 Additionally, this tutorial assumes that you are comfortable with
 certain technologies, languages and concepts.
@@ -33,7 +33,7 @@ lb4 example hello-world
 
 3. Switch to the directory and install dependencies.
 ```
-cd loopback-example-hello-world && npm i
+cd loopback4-example-hello-world && npm i
 ```
 
 ## Use
