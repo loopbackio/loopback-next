@@ -15,7 +15,10 @@ class InfoController {
     return msg;
   }
 
-  hello(@inject('user') user: string): string {
+  hello(
+    @inject('user', {optional: true})
+    user: string = 'Mary',
+  ): string {
     const msg = `Hello ${user}`;
     debug(msg);
     return msg;
@@ -39,6 +42,15 @@ describe('Context bindings - Injecting dependencies of method', () => {
     // Invoke the `hello` method => Hello John
     const msg = await invokeMethod(instance, 'hello', ctx);
     expect(msg).to.eql('Hello John');
+  });
+
+  it('injects optional prototype method args', async () => {
+    ctx = new Context();
+    ctx.bind(INFO_CONTROLLER).toClass(InfoController);
+    const instance = await ctx.get(INFO_CONTROLLER);
+    // Invoke the `hello` method => Hello Mary
+    const msg = await invokeMethod(instance, 'hello', ctx);
+    expect(msg).to.eql('Hello Mary');
   });
 
   it('injects prototype method args with non-injected ones', async () => {
