@@ -20,9 +20,11 @@ describe('Bootstrapping with RestComponent', () => {
     let server: RestServer;
     before(givenAppWithUserDefinedSequence);
 
-    it('binds the `sequence` key to the user-defined sequence', async () => {
-      const binding = await server.get(RestBindings.SEQUENCE);
-      expect(binding.constructor.name).to.equal('UserDefinedSequence');
+    it('binds the `sequence` key to the user-defined sequence', () => {
+      // At this moment, the Sequence is not ready to be resolved
+      // as RestBindings.Http.CONTEXT is not bound
+      const binding = server.getBinding(RestBindings.SEQUENCE);
+      expect(binding.valueConstructor.name).to.equal('UserDefinedSequence');
     });
 
     async function givenAppWithUserDefinedSequence() {

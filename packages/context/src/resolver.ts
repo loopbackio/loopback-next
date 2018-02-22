@@ -184,7 +184,15 @@ export function resolveInjectedArguments(
   const injectedArgs = describeInjectedArguments(target, method);
   const extraArgs = nonInjectedArgs || [];
 
-  const argLength = DecoratorFactory.getNumberOfParameters(target, method);
+  let argLength = DecoratorFactory.getNumberOfParameters(target, method);
+  if (argLength < injectedArgs.length) {
+    /**
+     * `Function.prototype.length` excludes the rest parameter and only includes
+     * parameters before the first one with a default value. For example,
+     * `hello(@inject('name') name: string)` gives 0 for argLength
+     */
+    argLength = injectedArgs.length;
+  }
 
   let nonInjectedIndex = 0;
   return resolveList(new Array(argLength), (val, ix) => {
