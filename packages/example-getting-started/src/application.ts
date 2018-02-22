@@ -18,6 +18,7 @@ import {
   Repository,
   DataSourceConstructor,
   RepositoryMixin,
+  juggler,
 } from '@loopback/repository';
 /* tslint:enable:no-unused-variable */
 
@@ -38,10 +39,7 @@ export class TodoApplication extends BootMixin(
       this.options && this.options.datasource
         ? new DataSourceConstructor(this.options.datasource)
         : db;
-    // TODO(bajtos) use app.dataSource() from @loopback/repository mixin
-    // (app.dataSource() is not implemented there yet)
-    // See https://github.com/strongloop/loopback-next/issues/743
-    this.bind('datasource').to(datasource);
+    this.dataSource(datasource);
     this.repository(TodoRepository);
   }
 }

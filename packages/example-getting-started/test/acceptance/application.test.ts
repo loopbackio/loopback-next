@@ -105,6 +105,7 @@ describe('Application', () => {
         port: 0,
       },
       datasource: {
+        name: 'db',
         connector: 'memory',
       },
     });
