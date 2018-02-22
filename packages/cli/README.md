@@ -12,11 +12,11 @@ Run the following command to install the CLI.
 
 1. To scaffold a LoopBack 4 application
 
-    `lb4 app`
+    `lb4`
 
 ```
 Usage:
-  lb4 app [options] [<name>]
+  lb4 [options] [<name>]
 
 Options:
   -h,   --help             # Print the generator's options and usage
@@ -76,6 +76,21 @@ Options:
 Arguments:
   name  # Name for the controller  Type: String  Required: false
 ```
+
+4. To download one of LoopBack example projects
+
+    `lb4 example`
+
+```
+Usage:
+  lb4 example [options] [<example-name>]
+
+Options:
+  -h,   --help           # Print the generator's options and usage
+        --skip-cache     # Do not remember prompt answers             Default: false
+        --skip-install   # Do not automatically install dependencies  Default: false
+```
+
 
 # Tests
 
