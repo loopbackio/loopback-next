@@ -11,7 +11,7 @@ describe('booter-utils unit tests', () => {
   const SANDBOX_PATH = resolve(__dirname, '../../../.sandbox');
   const sandbox = new TestSandbox(SANDBOX_PATH);
 
-  beforeEach(resetSandbox);
+  beforeEach('reset sandbox', () => sandbox.reset());
 
   describe('discoverFiles()', () => {
     beforeEach(setupSandbox);
@@ -102,8 +102,4 @@ describe('booter-utils unit tests', () => {
       expect(() => loadClassesFromFiles(files)).to.throw(/Cannot find module/);
     });
   });
-
-  async function resetSandbox() {
-    await sandbox.reset();
-  }
 });

@@ -18,12 +18,12 @@ const readFile = promisify(fs.readFile);
 
 const VALID_EXAMPLE = 'getting-started';
 const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
-let sandbox;
+const sandbox = new TestSandbox(SANDBOX_PATH);
 
 describe('cloneExampleFromGitHub (SLOW)', function() {
   this.timeout(20000);
-  before(createSandbox);
-  beforeEach(resetSandbox);
+
+  beforeEach('reset sandbox', () => sandbox.reset());
 
   it('extracts project files', async () => {
     const outDir = await cloneExampleFromGitHub(VALID_EXAMPLE, SANDBOX_PATH);
@@ -55,12 +55,4 @@ describe('cloneExampleFromGitHub (SLOW)', function() {
       name: `@loopback/example-${VALID_EXAMPLE}`,
     });
   });
-
-  function createSandbox() {
-    sandbox = new TestSandbox(SANDBOX_PATH);
-  }
-
-  function resetSandbox() {
-    sandbox.reset();
-  }
 });
