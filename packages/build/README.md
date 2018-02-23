@@ -24,26 +24,21 @@ To use `@loopback/build` for your package:
 
 ```json
 "scripts": {
-    "build": "npm run build:dist && npm run build:dist6",
-    "build:current": "lb-tsc",
-    "build:dist": "lb-tsc es2017",
-    "build:dist6": "lb-tsc es2015",
-    "build:apidocs": "lb-apidocs",
-    "tslint": "lb-tslint",
-    "tslint:fix": "npm run tslint -- --fix",
-    "prettier:cli": "lb-prettier \"**/*.ts\"",
-    "prettier:check": "npm run prettier:cli -- -l",
-    "prettier:fix": "npm run prettier:cli -- --write",
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean",
     "lint": "npm run prettier:check && npm run tslint",
     "lint:fix": "npm run prettier:fix && npm run tslint:fix",
-    "clean": "lb-clean your-module-name*.tgz dist* api-docs",
-    "prepare": "npm run build && npm run build:apidocs",
-    "pretest": "npm run build:current",
-    "acceptance": "lb-mocha \"DIST/test/acceptance/**/*.js\"",
-    "integration": "lb-mocha \"DIST/test/integration/**/*.js\"",
-    "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/integration/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
-    "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",
-    "verify": "npm pack && tar xf your-module-name*.tgz && tree package && npm run clean"
+    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "tslint": "lb-tslint",
+    "tslint:fix": "npm run tslint -- --fix",
+    "pretest": "npm run clean && npm run build",
+    "test": "lb-mocha \"DIST/test\"",
+    "posttest": "npm run lint",
+    "start": "npm run build && node .",
+    "prepublishOnly": "npm run test"
   },
 ```
 
