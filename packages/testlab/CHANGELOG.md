@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.1"></a>
+## [0.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.1.0...@loopback/testlab@0.1.1) (2018-02-23)
+
+
+### Bug Fixes
+
+* remove extra index from export ([#1029](https://github.com/strongloop/loopback-next/issues/1029)) ([e1303a9](https://github.com/strongloop/loopback-next/commit/e1303a9))
+
+
+
+
 <a name="0.1.0"></a>
 # [0.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@4.0.0-alpha.24...@loopback/testlab@0.1.0) (2018-02-21)
 

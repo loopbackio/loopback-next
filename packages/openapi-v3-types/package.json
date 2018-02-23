@@ -1,6 +1,6 @@
 {
   "name": "@loopback/openapi-v3-types",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "TypeScript type definitions for OpenAPI Specifications.",
   "engines": {
     "node": ">=8"
@@ -9,7 +9,7 @@
     "openapi3-ts": "^0.7.0"
   },
   "devDependencies": {
-    "@loopback/build": "^0.1.0"
+    "@loopback/build": "^0.1.1"
   },
   "scripts": {
     "build": "lb-tsc es2017",
@@ -36,7 +36,7 @@
   ],
   "publishConfig": {
     "access": "public"
-  }, 
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git"
