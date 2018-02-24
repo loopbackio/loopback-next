@@ -4,7 +4,7 @@ A collection of test utilities we use to write LoopBack tests.
 
 ## Overview
 
-Test utilities to help writing loopback-next tests:
+Test utilities to help writing LoopBack 4 tests:
 - `expect` - behavior-driven development (BDD) style assertions
 - `sinon`
    - test spies: functions recording arguments and other information for all of their calls
@@ -73,7 +73,7 @@ For more info about `supertest`, please refer to [supertest](https://www.npmjs.c
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contributing##guidelines)
+- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/DEVELOPING.md)
 - [Join the team](https://github.com/strongloop/loopback-next/issues/110)
 
 ## Tests
