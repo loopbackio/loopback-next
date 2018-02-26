@@ -10,6 +10,10 @@ import {BootMixin, Booter, Binding} from '@loopback/boot';
 export class <%= project.applicationName %> extends BootMixin(RestApplication) {
   constructor(options?: ApplicationConfig) {
     super(options);
+
+    // Set up the custom sequence
+    this.sequence(MySequence);
+
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
     this.bootOptions = {
@@ -23,12 +27,9 @@ export class <%= project.applicationName %> extends BootMixin(RestApplication) {
   }
 
   async start() {
-    const server = await this.getServer(RestServer);
-    // Set up the custom sequence
-    server.sequence(MySequence);
-
     await super.start();
 
+    const server = await this.getServer(RestServer);
     const port = await server.get('rest.port');
     console.log(`Server is running at http://127.0.0.1:${port}`);
     console.log(`Try http://127.0.0.1:${port}/ping`);
