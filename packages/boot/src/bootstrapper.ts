@@ -25,7 +25,7 @@ const debug = debugModule('loopback:boot:bootstrapper');
  * NOTE: Bootstrapper should be bound as a SINGLETON so it can be cached as
  * it does not maintain any state of it's own.
  *
- * @param app Appliaction instance
+ * @param app Application instance
  * @param projectRoot The root directory of the project, relative to which all other paths are resolved
  * @param [bootOptions] The BootOptions describing the conventions to be used by various Booters
  */
@@ -41,7 +41,7 @@ export class Bootstrapper {
     app.bind(BootBindings.PROJECT_ROOT).to(this.projectRoot);
 
     // This is re-bound for testing reasons where this value may be passed directly
-    // and needs to be propogated to the Booters via DI
+    // and needs to be propagated to the Booters via DI
     app.bind(BootBindings.BOOT_OPTIONS).to(this.bootOptions);
   }
 
