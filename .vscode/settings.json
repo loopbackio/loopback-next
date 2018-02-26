@@ -4,7 +4,9 @@
   "editor.tabSize": 2,
   "editor.trimAutoWhitespace": true,
   "editor.formatOnSave": true,
-
+  "[html]": {
+    "editor.formatOnSave": false
+  },
   "files.exclude": {
     "**/.DS_Store": true,
     "**/.git": true,
