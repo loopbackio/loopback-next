@@ -37,6 +37,19 @@ function run(argv, dryRun) {
     );
     mochaOpts.unshift('--require', sourceMapRegisterPath);
   }
+
+  const allowConsoleLogsIx = mochaOpts.indexOf('--allow-console-logs');
+  if (allowConsoleLogsIx === -1) {
+    // Fail any tests that are printing to console.
+    mochaOpts.unshift(
+      '--require',
+      require.resolve('../src/fail-on-console-logs')
+    );
+  } else {
+    // Allow tests to print to console, remove --allow-console-logs argument
+    mochaOpts.splice(allowConsoleLogsIx, 1);
+  }
+
   const args = [...mochaOpts];
 
   return utils.runCLI('mocha/bin/mocha', args, dryRun);
