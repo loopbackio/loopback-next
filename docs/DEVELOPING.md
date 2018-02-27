@@ -1,6 +1,6 @@
 # Developing LoopBack
 
-This document describes how to develop modules living in loopback-next monorepo.
+This document describes how to develop modules living in loopback-next monorepo. See [Monorepo overview](../MONOREPO.md) for a list of all packages.
 
  - [Setting up development environment](#setting-up-development-environment)
  - [Building the project](#building-the-project)
@@ -8,6 +8,8 @@ This document describes how to develop modules living in loopback-next monorepo.
  - [Coding rules](#coding-rules)
  - [API documentation](#api-documentation)
  - [Commit message guidelines](#commit-message-guidelines)
+ - [Releasing new versions](#releasing-new-versions)
+ - [Adding a new package](#adding-a-new-package)
  - [How to test infrastructure changes](#how-to-test-infrastructure-changes)
 
 ## Setting up development environment
@@ -35,11 +37,10 @@ Please make sure this local email is also added to your [GitHub email list](http
 
 ## Building the project
 
-Whenever you pull updates from GitHub or switch between feature branches,
-we recommend to do a full reinstall of all npm dependencies:
+Whenever you pull updates from GitHub or switch between feature branches, make sure to updated installed dependencies in all monorepo packages. The following command will install npm dependencies for all packages and create symbolic links for intra-dependencies:
 
 ```sh
-$ npm run clean:lerna && npm run bootstrap
+$ npm run bootstrap
 ```
 
 The next step is to compile all packages from TypeScript to JavaScript:
@@ -73,9 +74,26 @@ It does all you need:
 
 - All public methods must be documented with typedoc comments (see [API Documentation](#api-documentation) below).
 
-- Code should be formatted using [Prettier](https://prettier.io/), see our [prettierrc](../prettierrc).
-
 - Follow our style guide as documented on loopback.io: [Code style guide](http://loopback.io/doc/en/contrib/style-guide.html).
+
+### Linting and formatting
+
+We use two tools to keep our codebase healthy:
+
+ - [TSLint](https://palantir.github.io/tslint/) to statically analyse our source code and detect common problems.
+ - [Prettier](https://prettier.io/) to keep our code always formatted the same way, avoid style discussions in code reviews, and save everybody's time an energy.
+
+You can run both linters via the following npm script, just keep in mind that `npm test` is already running them for you.
+
+```sh
+$ npm run lint
+```
+
+Many problems (especially formatting) can be automatically fixed by running the npm script `lint:fix`.
+
+```sh
+$ npm run lint:fix
+```
 
 ## API Documentation
 
@@ -123,6 +141,7 @@ The **type** must be one of the following:
 
 The **scope** must be a list of one or more packages contained in this monorepo. Each scope name must match a directory name in [packages/](../packages), e.g. `core` or `context`.
 
+_Note: If multiple packages are affected by a pull request, don't list the scopes as the commit linter currently only supports only one scope being listed at most. The `CHANGELOG` for each affected package will still show the commit. Commit linter will be updated to allow listing of multiple affected scopes, see [issue #581](https://github.com/strongloop/loopback-next/issues/581)_
 
 #### subject
 
@@ -138,11 +157,95 @@ The **body** provides more details, it should include the motivation for the cha
 
 Just as in the subject, use the imperative, present tense: "change" not "changed" nor "changes"a
 
+Paragraphs or bullet points are ok (must not exceed 100 characters per line). Typically a hyphen or asterisk is used for the bullet, followed by a single space, with blank lines in between.
+
 #### footer (optional)
 
 The **footer** should contain any information about Breaking Changes introduced by this commit.
 
 This section must start with the upper case text `BREAKING CHANGE` followed by a colon (`:`) and a space (` `). A description must be provided, describing what has changed and how to migrate from older versions.
+
+### Tools to help generate a commit message
+
+This repository has [commitizen](https://github.com/commitizen/cz-cli) support enabled. Commitizen can help you generate your commit messages automatically. You must install it globally as follows:
+
+```sh
+$ npm i -g commitizen
+```
+
+And to use it, simply call `git cz` instead of `git commit`. The tool will help you generate a commit message that follows the above guidelines.
+
+## Releasing new versions
+
+When we are ready to tag and publish a release, run the following commands:
+
+```sh
+$ cd loopback-next
+$ git checkout master
+$ git pull
+$ npm run release
+```
+
+The `release` script will automatically perform the tasks for all packages:
+
+- Clean up `node_modules`
+- Install/link dependencies
+- Transpile TypeScript files into JavaScript
+- Run mocha tests
+- Check lint (tslint and prettier) issues
+
+If all steps are successful, it prompts you to publish packages into npm repository.
+
+## Adding a new package
+
+### Create a new package
+
+To add a new package, create a folder in [`packages`](packages) as the root directory of your module. For example,
+```sh
+$ cd loopback-next/packages
+$ mkdir <a-new-package>
+```
+
+The package follows the node/npm module layout. You can use `npm init` or `lb4 extension` command to scaffold the module, copy/paste from an existing package, or manually add files including `package.json`.
+
+Make sure you add LICENSE file properly and all source code files have the correct copyright header.
+
+### Keep shared configuration in root
+
+We have some configuration files at the top level (**loopback-next/**):
+
+- `.gitignore`
+- `.prettierignore`
+- `.nycrc.yml`
+
+For consistency across all packages, do not add them at package level unless specific customization is needed.
+
+### Make a scoped package public
+
+By default, npm publishes scoped packages with private access. There are two options to make a new scoped package with public access.
+
+Either add the following section to `package.json`:
+```json
+  "publishConfig": {
+    "access": "public"
+  },
+```
+
+Or explicitly publish the package with `--access=public`:
+
+```sh
+$ cd packages/<a-new-package>
+$ npm publish --access=public
+```
+
+### Register the new package
+
+Please register the new package in the following files:
+
+ - Update [MONOREPO.md](../MONOREPO.md) - insert a new table row to describe the new package, please keep the rows sorted by package name.
+ - Update [docs/apidocs.html](./docs/apidocs.html) - add a link to API docs for this new package.
+ - Update [CODEOWNERS](./CODEOWNERS) - add a new entry listing the primary maintainers (owners) of the new package
+ - Ask somebody from the IBM team (e.g. [@bajtos](https://github.com/bajtos), [@raymondfeng](https://github.com/raymondfeng) or [@kjdelisle](https://github.com/kjdelisle)) to enlist the new package on http://apidocs.loopback.io/
 
 ## How to test infrastructure changes
 

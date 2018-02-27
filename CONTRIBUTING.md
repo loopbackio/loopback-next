@@ -19,6 +19,7 @@ Issues in [strongloop/loopback-next](https://github.com/strongloop/loopback-next
 
 Pull Requests are the way concrete changes are made to the code, documentation and tools contained in LoopBack repositories.
 
+ - [Monorepo overview](./MONOREPO.md)
  - [Setting up development environment](./docs/DEVELOPING.md#setting-up-development-environment)
  - [How to contribute the code](http://loopback.io/doc/en/contrib/code-contrib.html#how-to-contribute-to-the-code)
  - [Building the project](./docs/DEVELOPING.md#building-the-project)
