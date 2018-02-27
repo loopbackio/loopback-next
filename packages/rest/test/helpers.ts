@@ -3,19 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Provider} from '@loopback/context';
 import {ServerRequest} from 'http';
-import {LogError} from '../internal-types';
+import {LogError} from '..';
 
-export class LogErrorProvider implements Provider<LogError> {
-  value(): LogError {
-    return (err, statusCode, req) => this.action(err, statusCode, req);
-  }
-
-  action(err: Error, statusCode: number, req: ServerRequest) {
-    if (statusCode < 500) {
-      return;
-    }
+export function createUnexpectedHttpErrorLogger(
+  expectedStatusCode: number = 0,
+): LogError {
+  return function logUnexpectedHttpError(
+    err: Error,
+    statusCode: number,
+    req: ServerRequest,
+  ) {
+    if (statusCode === expectedStatusCode) return;
 
     console.error(
       'Unhandled error in %s %s: %s %s',
@@ -24,5 +23,5 @@ export class LogErrorProvider implements Provider<LogError> {
       statusCode,
       err.stack || err,
     );
-  }
+  };
 }
