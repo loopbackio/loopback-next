@@ -11,6 +11,7 @@ import {
   RestServer,
   RestComponent,
   RestApplication,
+  SequenceActions,
 } from '../../..';
 
 import {api, get, param} from '@loopback/openapi-v2';
@@ -27,6 +28,7 @@ import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 import {inject, Context} from '@loopback/context';
 import {ControllerClass} from '../../../src/router/routing-table';
+import {createUnexpectedHttpErrorLogger} from '../../helpers';
 
 /* # Feature: Routing
  * - In order to build REST APIs
@@ -176,6 +178,8 @@ describe('Routing', () => {
     app.bind('hello.prefix').to('Hello');
     const server = await givenAServer(app);
     givenControllerInApp(app, MyController);
+    suppressErrorLogsForExpectedHttpError(app, 500);
+
     return expect(whenIMakeRequestTo(server).get('/greet?firstName=John'))
       .to.be.rejectedWith(
         'Cannot resolve injected arguments for ' +
@@ -572,6 +576,16 @@ describe('Routing', () => {
     app.component(RestComponent);
     return app;
   }
+
+  function suppressErrorLogsForExpectedHttpError(
+    app: Application,
+    skipStatusCode: number,
+  ) {
+    app
+      .bind(SequenceActions.LOG_ERROR)
+      .to(createUnexpectedHttpErrorLogger(skipStatusCode));
+  }
+
   async function givenAServer(app: Application) {
     return await app.getServer(RestServer);
   }

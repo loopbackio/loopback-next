@@ -6,7 +6,6 @@
 import {
   HttpHandler,
   DefaultSequence,
-  ServerRequest,
   writeResultToResponse,
   parseOperationArgs,
   RestBindings,
@@ -18,11 +17,10 @@ import {ControllerSpec, get} from '@loopback/openapi-v2';
 import {Context} from '@loopback/context';
 import {Client, createClientForHandler} from '@loopback/testlab';
 import * as HttpErrors from 'http-errors';
-import * as debugModule from 'debug';
 import {ParameterObject} from '@loopback/openapi-spec';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
+import {createUnexpectedHttpErrorLogger} from '../helpers';
 
-const debug = debugModule('loopback:rest:test');
 const SequenceActions = RestBindings.SequenceActions;
 
 describe('HttpHandler', () => {
@@ -473,7 +471,7 @@ describe('HttpHandler', () => {
       }
 
       givenControllerClass(TestController, spec);
-      logErrorsExcept(400);
+      logErrorsExcept(500);
 
       await client.get('/hello').expect(500, {
         statusCode: 500,
@@ -490,7 +488,9 @@ describe('HttpHandler', () => {
     rootContext
       .bind(SequenceActions.INVOKE_METHOD)
       .toProvider(InvokeMethodProvider);
-    rootContext.bind(SequenceActions.LOG_ERROR).to(logger);
+    rootContext
+      .bind(SequenceActions.LOG_ERROR)
+      .to(createUnexpectedHttpErrorLogger());
     rootContext.bind(SequenceActions.SEND).to(writeResultToResponse);
     rootContext.bind(SequenceActions.REJECT).toProvider(RejectProvider);
 
@@ -500,20 +500,10 @@ describe('HttpHandler', () => {
     rootContext.bind(RestBindings.HANDLER).to(handler);
   }
 
-  let skipStatusCode = 200;
-  function logger(err: Error, statusCode: number, req: ServerRequest) {
-    if (statusCode === skipStatusCode) return;
-    debug(
-      'Unhandled error in %s %s: %s %s',
-      req.method,
-      req.url,
-      statusCode,
-      err.stack || err,
-    );
-  }
-
   function logErrorsExcept(ignoreStatusCode: number) {
-    skipStatusCode = ignoreStatusCode;
+    rootContext
+      .bind(SequenceActions.LOG_ERROR)
+      .to(createUnexpectedHttpErrorLogger(ignoreStatusCode));
   }
 
   function givenControllerClass(
@@ -527,7 +517,10 @@ describe('HttpHandler', () => {
   function givenClient() {
     client = createClientForHandler((req, res) => {
       handler.handleRequest(req, res).catch(err => {
-        debug('Request failed.', err.stack);
+        // This should never happen. If we ever get here,
+        // then it means "handler.handlerRequest()" crashed unexpectedly.
+        // We need to make a lot of helpful noise in such case.
+        console.error('Request failed.', err.stack);
         if (res.headersSent) return;
         res.statusCode = 500;
         res.end();
