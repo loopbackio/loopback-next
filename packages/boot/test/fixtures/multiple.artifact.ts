@@ -5,14 +5,14 @@
 
 import {get} from '@loopback/openapi-v2';
 
-export class ControllerOne {
+export class ArtifactOne {
   @get('/one')
   one() {
     return 'ControllerOne.one()';
   }
 }
 
-export class ControllerTwo {
+export class ArtifactTwo {
   @get('/two')
   two() {
     return 'ControllerTwo.two()';

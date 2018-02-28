@@ -40,8 +40,8 @@ describe('controller booter unit tests', () => {
 
   it('binds controllers during load phase', async () => {
     const expected = [
-      `${CONTROLLERS_PREFIX}.ControllerOne`,
-      `${CONTROLLERS_PREFIX}.ControllerTwo`,
+      `${CONTROLLERS_PREFIX}.ArtifactOne`,
+      `${CONTROLLERS_PREFIX}.ArtifactTwo`,
     ];
     await sandbox.copyFile(
       resolve(__dirname, '../../fixtures/multiple.artifact.js'),

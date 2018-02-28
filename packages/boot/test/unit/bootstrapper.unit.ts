@@ -6,9 +6,12 @@
 import {expect} from '@loopback/testlab';
 import {Application} from '@loopback/core';
 import {Bootstrapper, Booter, BootBindings, BootMixin} from '../../index';
+import {RepositoryMixin} from '@loopback/repository';
 
 describe('boot-strapper unit tests', () => {
-  class BootApp extends BootMixin(Application) {}
+  // RepositoryMixin is added to avoid warning message printed logged to console
+  // due to the fact that RepositoryBooter is a default Booter loaded via BootMixin.
+  class BootApp extends BootMixin(RepositoryMixin(Application)) {}
 
   let app: BootApp;
   let bootstrapper: Bootstrapper;

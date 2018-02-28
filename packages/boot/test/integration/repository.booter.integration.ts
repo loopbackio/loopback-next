@@ -7,28 +7,28 @@ import {expect, TestSandbox} from '@loopback/testlab';
 import {resolve} from 'path';
 import {BooterApp} from '../fixtures/application';
 
-describe('controller booter integration tests', () => {
+describe('repository booter integration tests', () => {
   const SANDBOX_PATH = resolve(__dirname, '../../.sandbox');
   const sandbox = new TestSandbox(SANDBOX_PATH);
 
   // Remnants from Refactor -- need to add these to core
-  const CONTROLLERS_PREFIX = 'controllers';
-  const CONTROLLERS_TAG = 'controller';
+  const REPOSITORIES_PREFIX = 'repositories';
+  const REPOSITORIES_TAG = 'repository';
 
   let app: BooterApp;
 
-  beforeEach(async () => await sandbox.reset());
+  beforeEach(() => sandbox.reset());
   beforeEach(getApp);
 
-  it('boots controllers when app.boot() is called', async () => {
+  it('boots repositories when app.boot() is called', async () => {
     const expectedBindings = [
-      `${CONTROLLERS_PREFIX}.ArtifactOne`,
-      `${CONTROLLERS_PREFIX}.ArtifactTwo`,
+      `${REPOSITORIES_PREFIX}.ArtifactOne`,
+      `${REPOSITORIES_PREFIX}.ArtifactTwo`,
     ];
 
     await app.boot();
 
-    const bindings = app.findByTag(CONTROLLERS_TAG).map(b => b.key);
+    const bindings = app.findByTag(REPOSITORIES_TAG).map(b => b.key);
     expect(bindings.sort()).to.eql(expectedBindings.sort());
   });
 
@@ -39,11 +39,11 @@ describe('controller booter integration tests', () => {
     );
     await sandbox.copyFile(
       resolve(__dirname, '../fixtures/multiple.artifact.js'),
-      'controllers/multiple.controller.js',
+      'repositories/multiple.repository.js',
     );
     await sandbox.copyFile(
       resolve(__dirname, '../fixtures/multiple.artifact.js.map'),
-      'controllers/multiple.artifact.js.map',
+      'repositories/multiple.artifact.js.map',
     );
 
     const MyApp = require(resolve(SANDBOX_PATH, 'application.js')).BooterApp;

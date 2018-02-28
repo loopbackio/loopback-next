@@ -12,12 +12,12 @@ describe('Application', () => {
   let todoRepo: TodoRepository;
 
   before(givenAnApplication);
-  before(givenARestServer);
-  before(givenTodoRepository);
   before(async () => {
     await app.boot();
     await app.start();
   });
+  before(givenARestServer);
+  before(givenTodoRepository);
   before(() => {
     client = createClientForHandler(server.handleHttp);
   });

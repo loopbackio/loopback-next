@@ -67,6 +67,7 @@ export const BOOTER_PHASES = ['configure', 'discover', 'load'];
  */
 export type BootOptions = {
   controllers?: ArtifactOptions;
+  repositories?: ArtifactOptions;
   /**
    * Additional Properties
    */
