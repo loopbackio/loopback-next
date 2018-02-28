@@ -44,7 +44,7 @@ export class ControllerBooter extends BaseArtifactBooter {
 }
 
 /**
- * Default ArtifactOptions for a ControllerBooter.
+ * Default ArtifactOptions for ControllerBooter.
  */
 export const ControllerDefaults: ArtifactOptions = {
   dirs: ['controllers'],

@@ -4,6 +4,7 @@
     "src/booters/base-artifact.booter.ts",
     "src/booters/booter-utils.ts",
     "src/booters/controller.booter.ts",
+    "src/booters/repository.booter.ts",
     "src/booters/index.ts",
     "src/boot.component.ts",
     "src/boot.mixin.ts",

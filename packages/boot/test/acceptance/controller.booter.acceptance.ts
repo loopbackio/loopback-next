@@ -6,10 +6,10 @@
 import {Client, createClientForHandler, TestSandbox} from '@loopback/testlab';
 import {RestServer} from '@loopback/rest';
 import {resolve} from 'path';
-import {ControllerBooterApp} from '../fixtures/application';
+import {BooterApp} from '../fixtures/application';
 
 describe('controller booter acceptance tests', () => {
-  let app: ControllerBooterApp;
+  let app: BooterApp;
   const SANDBOX_PATH = resolve(__dirname, '../../.sandbox');
   const sandbox = new TestSandbox(SANDBOX_PATH);
 
@@ -44,10 +44,8 @@ describe('controller booter acceptance tests', () => {
       'controllers/multiple.artifact.js.map',
     );
 
-    const BooterApp = require(resolve(SANDBOX_PATH, 'application.js'))
-      .ControllerBooterApp;
-
-    app = new BooterApp();
+    const MyApp = require(resolve(SANDBOX_PATH, 'application.js')).BooterApp;
+    app = new MyApp();
   }
 
   async function stopApp() {

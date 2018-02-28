@@ -28,6 +28,7 @@
   "dependencies": {
     "@loopback/context": "^0.1.1",
     "@loopback/core": "^0.1.1",
+    "@loopback/repository": "^0.1.1",
     "@types/debug": "0.0.30",
     "@types/glob": "^5.0.34",
     "debug": "^3.1.0",
