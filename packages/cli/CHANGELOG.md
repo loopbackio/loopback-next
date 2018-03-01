@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.3"></a>
+## [0.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.1.2...@loopback/cli@0.1.3) (2018-03-01)
+
+
+### Bug Fixes
+
+* **cli:** move sequence customization to app constructor ([4ee3429](https://github.com/strongloop/loopback-next/commit/4ee3429))
+
+
+
+
 <a name="0.1.2"></a>
 ## [0.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.1.1...@loopback/cli@0.1.2) (2018-02-23)
 

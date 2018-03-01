@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-getting-started",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "An application and tutorial on how to build with LoopBack 4.",
   "private": true,
   "main": "index.js",
@@ -25,17 +25,17 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/boot": "^0.1.1",
-    "@loopback/context": "^0.1.1",
-    "@loopback/core": "^0.1.1",
-    "@loopback/openapi-spec": "^0.1.1",
-    "@loopback/openapi-v2": "^0.1.1",
-    "@loopback/repository": "^0.1.1",
-    "@loopback/rest": "^0.1.1"
+    "@loopback/boot": "^0.1.2",
+    "@loopback/context": "^0.1.2",
+    "@loopback/core": "^0.1.2",
+    "@loopback/openapi-spec": "^0.1.2",
+    "@loopback/openapi-v2": "^0.1.2",
+    "@loopback/repository": "^0.1.2",
+    "@loopback/rest": "^0.1.2"
   },
   "devDependencies": {
-    "@loopback/build": "^0.1.1",
-    "@loopback/testlab": "^0.1.1",
+    "@loopback/build": "^0.1.2",
+    "@loopback/testlab": "^0.1.2",
     "@types/node": "^8.5.9",
     "source-map-support": "^0.5.2",
     "typescript": "^2.5.2"

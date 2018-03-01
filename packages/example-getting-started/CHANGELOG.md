@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.2"></a>
+## [0.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-getting-started@0.1.1...@loopback/example-getting-started@0.1.2) (2018-03-01)
+
+
+### Features
+
+* **repository:** add datasource method in repository mixin ([85347fa](https://github.com/strongloop/loopback-next/commit/85347fa))
+* add repository booter ([#1030](https://github.com/strongloop/loopback-next/issues/1030)) ([43ea7a8](https://github.com/strongloop/loopback-next/commit/43ea7a8))
+
+
+
+
 <a name="0.1.1"></a>
 ## [0.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-getting-started@0.1.0...@loopback/example-getting-started@0.1.1) (2018-02-23)
 
