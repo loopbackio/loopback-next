@@ -1,37 +1,15 @@
-<!--
-Questions:
-  https://groups.google.com/forum/#!forum/loopbackjs
-  https://gitter.im/strongloop/loopback
-Immediate support:
-  https://strongloop.com/api-connect-faqs/
-  https://strongloop.com/node-js/subscription-plans/
--->
+## Description / Steps to reproduce / Feature proposal
 
-# Description/Steps to reproduce
+## Current Behavior
+
+## Expected Behavior
+
 
 <!--
-If feature: A description of the feature
-If bug: Steps to reproduce
+HELP US HELP YOU, PLEASE
+- Do a quick search to avoid duplicate issues
+- Provide as much information as possible (reproduction sandbox, use case for features, etc.)
+- Consider using a more suitable venue for questions such as Stack Overflow, Gitter, etc.
 -->
 
-# Link to reproduction sandbox
-
-<!--
-Link to an app sandbox for reproduction
-
-Note: Failure to provide a sandbox application for reproduction purposes will result in the issue being closed.
--->
-
-# Expected result
-
-<!--
-Also include actual results if bug
--->
-
-# Additional information
-
-<!--
-Copy+paste the output of these two commands:
-  node -e 'console.log(process.platform, process.arch, process.versions.node)'
-  npm ls --prod --depth 0 | grep loopback
--->
+_See [Reporting Issues](http://loopback.io/doc/en/contrib/Reporting-issues.html) for more tips on writing good issues_
