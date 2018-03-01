@@ -18,6 +18,7 @@ packages/metadata/* @raymondfeng
 packages/openapi-spec/*  @bajtos @jannyHou
 packages/openapi-spec-builder/* @bajtos @raymondfeng
 packages/openapi-v2/* @jannyHou
+packages/openapi-v3/* @jannyHou
 packages/openapi-v3-types/* @jannyHou
 packages/repository/* @raymondfeng @kjdelisle
 packages/repository-json-schema/* @shimks

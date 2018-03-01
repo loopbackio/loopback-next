@@ -259,6 +259,13 @@ export interface MapObject<T> {
 }
 
 /**
+ * Schemas Object in components
+ */
+export interface SchemasObject extends MapObject<SchemaObject> {
+  [name: string]: SchemaObject;
+}
+
+/**
  * Lists the available scopes for an OAuth2 security scheme.
  */
 export interface ScopesObject
