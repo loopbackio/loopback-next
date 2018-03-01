@@ -328,7 +328,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
 
     ctx.configure('store').to({x: 1, y: 'a'});
     ctx.bind('store').toClass(Store);
-    const store = ctx.getSync('store');
+    const store: Store = ctx.getSync('store');
     expect(store.optionX).to.eql(1);
     expect(store.optionY).to.eql('a');
   });
@@ -342,7 +342,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
       return {x: 1};
     });
     ctx.bind('store').toClass(Store);
-    const store = await ctx.get('store');
+    const store = await ctx.get<Store>('store');
     expect(store.optionX).to.eql(1);
   });
 
@@ -365,7 +365,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     ctx.bind('prefix').to('hello-');
     ctx.bind('store').toClass(Store);
 
-    const store = await ctx.get('store');
+    const store = await ctx.get<Store>('store');
     expect(store.myOption).to.eql('hello-my-option');
   });
 
@@ -390,7 +390,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
 
     ctx.configure('store').to({x: {y: 'y'}});
     ctx.bind('store').toClass(Store);
-    const store = ctx.getSync('store');
+    const store: Store = ctx.getSync('store');
     expect(store.optionXY).to.eql('y');
   });
 
@@ -401,7 +401,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
 
     ctx.configure('store').to({x: 1, y: 'a'});
     ctx.bind('store').toClass(Store);
-    const store = ctx.getSync('store');
+    const store: Store = ctx.getSync('store');
     expect(store.config).to.eql({x: 1, y: 'a'});
   });
 
@@ -412,7 +412,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
 
     ctx.configure('store').to({x: 1, y: 'a'});
     ctx.bind('store').toClass(Store);
-    const store = ctx.getSync('store');
+    const store: Store = ctx.getSync('store');
     expect(store.config).to.eql({x: 1, y: 'a'});
   });
 
@@ -423,7 +423,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
 
     ctx.configure('store').to({x: 1, y: 'a'});
     ctx.bind('store').toClass(Store);
-    const store = ctx.getSync('store');
+    const store: Store = ctx.getSync('store');
     expect(store.optionX).to.eql(1);
   });
 
@@ -437,7 +437,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
 
     ctx.configure('store').to({x: 1, y: 'a'});
     ctx.bind('store').toClass(Store);
-    const store = ctx.getSync('store');
+    const store: Store = ctx.getSync('store');
     expect(store.option).to.be.undefined();
   });
 
@@ -455,11 +455,11 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     ctx.bind('store1').toClass(Store);
     ctx.bind('store2').toClass(Store);
 
-    const store1 = await ctx.get('store1');
+    const store1 = await ctx.get<Store>('store1');
     expect(store1.optionX).to.eql(1);
     expect(store1.optionY).to.eql('a');
 
-    const store2 = await ctx.get('store2');
+    const store2 = await ctx.get<Store>('store2');
     expect(store2.optionX).to.eql(2);
     expect(store2.optionY).to.eql('b');
   });
@@ -484,7 +484,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     ctx.configure('stores.MyStore').to({x: 1, y: 'a'});
     ctx.bind('stores.MyStore').toClass(MyStore);
 
-    const store = ctx.getSync('stores.MyStore');
+    const store: MyStore = ctx.getSync('stores.MyStore');
     expect(store.optionX).to.eql(1);
   });
 
@@ -500,7 +500,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     ctx.configure('stores.MyStore').to({x: 1});
     ctx.bind('stores.MyStore').toClass(MyStore);
 
-    const store = ctx.getSync('stores.MyStore');
+    const store: MyStore = ctx.getSync('stores.MyStore');
     expect(store.optionX).to.eql(1);
     expect(store.optionY).to.eql('a');
   });

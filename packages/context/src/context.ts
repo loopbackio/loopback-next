@@ -105,11 +105,11 @@ export class Context {
    * - optional: if not set or set to `true`, `undefined` will be returned if
    * no corresponding value is found. Otherwise, an error will be thrown.
    */
-  getConfigAsValueOrPromise(
+  getConfigAsValueOrPromise<T>(
     key: string,
     configPath?: string,
     resolutionOptions?: ResolutionOptions,
-  ): ValueOrPromise<BoundValue> {
+  ): ValueOrPromise<T | undefined> {
     configPath = configPath || '';
     const configKeyAndPath = BindingKey.create(
       BindingKey.buildKeyForConfig(key),
@@ -180,12 +180,12 @@ export class Context {
    * @param resolutionOptions Options for the resolution. If `localOnly` is
    * set to true, no parent namespaces will be looked up.
    */
-  async getConfig(
+  async getConfig<T>(
     key: string,
     configPath?: string,
     resolutionOptions?: ResolutionOptions,
-  ): Promise<BoundValue> {
-    return await this.getConfigAsValueOrPromise(
+  ): Promise<T | undefined> {
+    return await this.getConfigAsValueOrPromise<T>(
       key,
       configPath,
       resolutionOptions,
@@ -210,12 +210,12 @@ export class Context {
    * @param resolutionOptions Options for the resolution. If `localOnly` is
    * set to true, no parent namespaces will be looked up.
    */
-  getConfigSync(
+  getConfigSync<T>(
     key: string,
     configPath?: string,
     resolutionOptions?: ResolutionOptions,
-  ): BoundValue {
-    const valueOrPromise = this.getConfigAsValueOrPromise(
+  ): T | undefined {
+    const valueOrPromise = this.getConfigAsValueOrPromise<T>(
       key,
       configPath,
       resolutionOptions,
