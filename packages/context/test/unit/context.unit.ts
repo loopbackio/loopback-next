@@ -11,6 +11,7 @@ import {
   BindingType,
   isPromiseLike,
   BindingKey,
+  BoundValue,
 } from '../..';
 
 /**
@@ -299,14 +300,14 @@ describe('Context', () => {
   describe('configure()', () => {
     it('configures options for a binding before it is bound', () => {
       const bindingForConfig = ctx.configure('foo').to({x: 1});
-      expect(bindingForConfig.key).to.equal(Binding.buildKeyForConfig('foo'));
+      expect(bindingForConfig.key).to.equal(BindingKey.buildKeyForConfig('foo'));
       expect(bindingForConfig.tags.has('config:foo')).to.be.true();
     });
 
     it('configures options for a binding after it is bound', () => {
       ctx.bind('foo').to('bar');
       const bindingForConfig = ctx.configure('foo').to({x: 1});
-      expect(bindingForConfig.key).to.equal(Binding.buildKeyForConfig('foo'));
+      expect(bindingForConfig.key).to.equal(BindingKey.buildKeyForConfig('foo'));
       expect(bindingForConfig.tags.has('config:foo')).to.be.true();
     });
   });
@@ -322,11 +323,11 @@ describe('Context', () => {
         .configure('foo')
         .toDynamicValue(() => Promise.resolve({a: {x: 0, y: 0}}));
       ctx.configure('foo.a').toDynamicValue(() => Promise.resolve({x: 1}));
-      expect(await ctx.getConfig('foo.a', 'x', {localConfigOnly: true})).to.eql(
-        1,
-      );
       expect(
-        await ctx.getConfig('foo.a', 'y', {localConfigOnly: true}),
+        await ctx.getConfig<number>('foo.a', 'x', {localConfigOnly: true}),
+      ).to.eql(1);
+      expect(
+        await ctx.getConfig<number>('foo.a', 'y', {localConfigOnly: true}),
       ).to.be.undefined();
     });
 
@@ -335,21 +336,21 @@ describe('Context', () => {
         .configure('foo')
         .toDynamicValue(() => Promise.resolve({a: {x: 0, y: 0}}));
       ctx.configure('foo.a').toDynamicValue(() => Promise.resolve({x: 1}));
-      expect(await ctx.getConfig('foo.a', 'x')).to.eql(1);
-      expect(await ctx.getConfig('foo.a', 'y')).to.eql(0);
+      expect(await ctx.getConfig<number>('foo.a', 'x')).to.eql(1);
+      expect(await ctx.getConfig<number>('foo.a', 'y')).to.eql(0);
     });
 
     it('defaults optional to true for config resolution', async () => {
       ctx.configure('servers').to({rest: {port: 80}});
       // `servers.rest` does not exist yet
-      let server1port = await ctx.getConfig('servers.rest', 'port');
+      let server1port = await ctx.getConfig<number>('servers.rest', 'port');
       // The port is resolved at `servers` level
       expect(server1port).to.eql(80);
 
       // Now add `servers.rest`
       ctx.configure('servers.rest').to({port: 3000});
-      const servers = await ctx.getConfig('servers');
-      server1port = await ctx.getConfig('servers.rest', 'port');
+      const servers: BoundValue = await ctx.getConfig('servers');
+      server1port = await ctx.getConfig<number>('servers.rest', 'port');
       // We don't add magic to merge `servers.rest` level into `servers`
       expect(servers.rest.port).to.equal(80);
       expect(server1port).to.eql(3000);
@@ -358,7 +359,7 @@ describe('Context', () => {
     it('throws error if a required config cannot be resolved', async () => {
       ctx.configure('servers').to({rest: {port: 80}});
       // `servers.rest` does not exist yet
-      let server1port = await ctx.getConfig('servers.rest', 'port', {
+      let server1port = await ctx.getConfig<number>('servers.rest', 'port', {
         optional: false,
       });
       // The port is resolved at `servers` level
