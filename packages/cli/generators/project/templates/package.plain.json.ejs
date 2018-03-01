@@ -57,29 +57,29 @@
     "dist"
   ],
   "dependencies": {
-    "@loopback/context": "^0.1.0",
-    "@loopback/boot": "^0.1.0",
+    "@loopback/context": "<%= project.dependencies['@loopback/context'] -%>",
+    "@loopback/boot": "<%= project.dependencies['@loopback/boot'] -%>",
 <% if (project.projectType === 'application') { -%>
-    "@loopback/core": "^0.1.0",
-    "@loopback/rest": "^0.1.0",
-    "@loopback/openapi-v2": "^0.1.0"
+    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
+    "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>",
+    "@loopback/openapi-v2": "<%= project.dependencies['@loopback/openapi-v2'] -%>"
 <% } else { -%>
-    "@loopback/core": "^0.1.0"
+    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>"
 <% } -%>
   },
   "devDependencies": {
 <% if (project.prettier) { -%>
-    "prettier": "^1.7.3",
+    "prettier": "<%= project.dependencies['prettier'] -%>",
 <% } -%>
 <% if (project.tslint) { -%>
-    "tslint": "^5.7.0",
+    "tslint": "<%= project.dependencies['tslint'] -%>",
 <% } -%>
-    "@loopback/testlab": "^0.1.0",
+    "@loopback/testlab": "<%= project.dependencies['@loopback/testlab'] -%>",
 <% if (project.mocha) { -%>
-    "@types/mocha": "^2.2.43",
-    "mocha": "^4.0.1",
-    "source-map-support": "^0.5.2",
+    "@types/mocha": "<%= project.dependencies['@types/mocha'] -%>",
+    "mocha": "<%= project.dependencies['mocha'] -%>",
+    "source-map-support": "<%= project.dependencies['source-map-support'] -%>",
 <% } -%>
-    "typescript": "^2.5.3"
+    "typescript": "<%= project.dependencies['typescript'] -%>"
   }
 }

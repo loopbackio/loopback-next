@@ -83,7 +83,10 @@ module.exports = class ProjectGenerator extends BaseGenerator {
   }
 
   setOptions() {
-    this.projectInfo = {projectType: this.projectType};
+    this.projectInfo = {
+      projectType: this.projectType,
+      dependencies: utils.getDependencies(),
+    };
     this.projectOptions = ['name', 'description', 'outdir'].concat(
       this.buildOptions
     );
