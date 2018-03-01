@@ -37,77 +37,12 @@ describe('RestServer (integration)', () => {
       .expect(500);
   });
 
-  it('exposes "GET /swagger.json" endpoint', async () => {
-    const server = await givenAServer({rest: {port: 0}});
-    const greetSpec = {
-      responses: {
-        200: {
-          schema: {type: 'string'},
-          description: 'greeting of the day',
-        },
-      },
-    };
-    server.route(new Route('get', '/greet', greetSpec, function greet() {}));
-
-    const response = await createClientForHandler(server.handleHttp).get(
-      '/swagger.json',
-    );
-    expect(response.body).to.containDeep({
-      basePath: '/',
-      paths: {
-        '/greet': {
-          get: greetSpec,
-        },
-      },
-    });
-    expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
-    expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
-    expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
-  });
-
-  it('exposes "GET /swagger.yaml" endpoint', async () => {
-    const server = await givenAServer({rest: {port: 0}});
-    const greetSpec = {
-      responses: {
-        200: {
-          schema: {type: 'string'},
-          description: 'greeting of the day',
-        },
-      },
-    };
-    server.route(new Route('get', '/greet', greetSpec, function greet() {}));
-
-    const response = await createClientForHandler(server.handleHttp).get(
-      '/swagger.yaml',
-    );
-    const expected = yaml.safeLoad(`
-swagger: '2.0'
-basePath: /
-info:
-  title: LoopBack Application
-  version: 1.0.0
-paths:
-  /greet:
-    get:
-      responses:
-        '200':
-          schema:
-            type: string
-          description: greeting of the day
-    `);
-    // Use json for comparison to tolerate textual diffs
-    expect(yaml.safeLoad(response.text)).to.eql(expected);
-    expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
-    expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
-    expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
-  });
-
   it('exposes "GET /openapi.json" endpoint', async () => {
     const server = await givenAServer({rest: {port: 0}});
     const greetSpec = {
       responses: {
         200: {
-          schema: {type: 'string'},
+          content: {'text/plain': {schema: {type: 'string'}}},
           description: 'greeting of the day',
         },
       },
@@ -127,7 +62,7 @@ paths:
             responses: {
               '200': {
                 content: {
-                  '*/*': {
+                  'text/plain': {
                     schema: {type: 'string'},
                   },
                 },
@@ -148,7 +83,7 @@ paths:
     const greetSpec = {
       responses: {
         200: {
-          schema: {type: 'string'},
+          content: {'text/plain': {schema: {type: 'string'}}},
           description: 'greeting of the day',
         },
       },
@@ -170,7 +105,7 @@ paths:
         '200':
           description: greeting of the day
           content:
-            '*/*':
+            'text/plain':
               schema:
                 type: string
 servers:
@@ -204,7 +139,7 @@ servers:
     const url = new RegExp(
       [
         'https://loopback.io/api-explorer',
-        '\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/swagger.json',
+        '\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/openapi.json',
       ].join(''),
     );
     expect(response.get('Location')).match(url);
@@ -236,7 +171,7 @@ servers:
     const url = new RegExp(
       [
         'http://petstore.swagger.io',
-        '\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/swagger.json',
+        '\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/openapi.json',
       ].join(''),
     );
     expect(response.get('Location')).match(url);

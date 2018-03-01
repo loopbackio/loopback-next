@@ -1,3 +1,7 @@
+## DEPRECATION NOTICE
+
+This package has been deprecated in favor of OpenAPI Spec version 3.0.0, we are no longer maintaining it.
+
 @loopback/openapi-v2
 
 This package contains:

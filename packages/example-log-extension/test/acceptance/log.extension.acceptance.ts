@@ -6,8 +6,6 @@
 import {
   RestApplication,
   RestServer,
-  get,
-  param,
   SequenceHandler,
   RestBindings,
   FindRoute,
@@ -18,6 +16,7 @@ import {
   ParsedRequest,
   ServerResponse,
 } from '@loopback/rest';
+import {get, param} from '@loopback/openapi-v3';
 import {
   LogComponent,
   LogLevelMixin,

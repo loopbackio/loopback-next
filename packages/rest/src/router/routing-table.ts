@@ -7,7 +7,7 @@ import {
   OperationObject,
   ParameterObject,
   PathsObject,
-} from '@loopback/openapi-spec';
+} from '@loopback/openapi-v3-types';
 import {
   Context,
   Constructor,
@@ -24,7 +24,7 @@ import {
   OperationRetval,
 } from '../internal-types';
 
-import {ControllerSpec} from '@loopback/openapi-v2';
+import {ControllerSpec} from '@loopback/openapi-v3';
 
 import * as assert from 'assert';
 import * as url from 'url';

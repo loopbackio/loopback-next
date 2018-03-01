@@ -35,6 +35,4 @@ export * from './rest-application';
 export * from './rest-component';
 export * from './rest-server';
 export * from './sequence';
-
-// Re-export decorators like @get for easier use
-export * from '@loopback/openapi-v2';
+export * from '@loopback/openapi-v3';

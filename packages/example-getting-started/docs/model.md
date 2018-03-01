@@ -63,7 +63,6 @@ the `getId` function, so that it can retrieve a Todo model's ID as needed.
 #### src/models/todo.model.ts
 ```ts
 import {Entity, property, model} from '@loopback/repository';
-import {SchemaObject} from '@loopback/openapi-spec';
 
 @model()
 export class Todo extends Entity {
@@ -95,44 +94,7 @@ export class Todo extends Entity {
 }
 ```
 
-<!--
-  TODO: Remove this section once v3 is live; ideally, this won't be required
-  any longer!
--->
-Additionally, we'll define a `SchemaObject` that represents our Todo model
-as an [OpenAPI Schema Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#schema-object).
-This will give the OpenAPI spec builder the information it needs to describe the
-Todo model on your app's OpenAPI endpoints.
-
-#### src/models/todo.model.ts
-```ts
-// Note: This is in the same file as the Todo model class.
-// This should come *after* the model class definition!
-export const TodoSchema: SchemaObject = {
-  title: 'todoItem',
-  properties: {
-    id: {
-      type: 'number',
-      description: 'ID number of the Todo entry.'
-    },
-    title: {
-      type: 'string',
-      description: 'Title of the Todo entry.'
-    },
-    desc: {
-      type: 'number',
-      description: 'ID number of the Todo entry.'
-    },
-    isComplete: {
-      type: 'boolean',
-      description: 'Whether or not the Todo entry is complete.'
-    }
-  },
-  required: ['title'],
-};
-```
-
-Now that we have our model and schema, it's time to add a
+Now that we have our model, it's time to add a
 [datasource](datasource.md) so we can perform real CRUD operations!
 
 ### Navigation

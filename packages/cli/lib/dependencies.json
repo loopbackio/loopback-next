@@ -5,7 +5,7 @@
   "@loopback/boot": "^0.2.0",
   "@loopback/core": "^0.2.0",
   "@loopback/rest": "^0.2.0",
-  "@loopback/openapi-v2": "^0.2.0",
+  "@loopback/openapi-v3": "^0.2.0",
   "@loopback/build": "^0.2.0",
   "@loopback/testlab": "^0.2.0",
   "@types/mocha": "^2.2.43",

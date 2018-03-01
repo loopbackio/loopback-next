@@ -23,8 +23,8 @@
   "dependencies": {
     "@loopback/context": "^0.2.0",
     "@loopback/core": "^0.2.0",
-    "@loopback/openapi-spec": "^0.2.0",
-    "@loopback/openapi-v2": "^0.2.0",
+    "@loopback/openapi-v3-types": "^0.2.0",
+    "@loopback/openapi-v3": "^0.2.0",
     "@types/http-errors": "^1.6.1",
     "@types/node": "^8.5.9",
     "body": "^5.1.0",
@@ -32,8 +32,7 @@
     "http-errors": "^1.6.1",
     "js-yaml": "^3.9.1",
     "lodash": "^4.17.4",
-    "path-to-regexp": "^2.0.0",
-    "swagger2openapi": "^2.10.7"
+    "path-to-regexp": "^2.0.0"
   },
   "devDependencies": {
     "@loopback/build": "^0.2.0",

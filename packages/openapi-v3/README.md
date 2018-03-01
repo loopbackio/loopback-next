@@ -29,8 +29,8 @@ Here is an example of calling function `getControllerSpec` to generate the OpenA
 ```js
 import {api, getControllerSpec} from '@loopback/openapi-v3';
 
-@api(somePathSpec)
 class MyController {
+  @get('/greet')
   greet() {
     return 'Hello world!';
   }
@@ -43,24 +43,13 @@ then the `myControllerSpec` will be:
 
 ```js
 {
-    openapi: '3.0.0',
-    info: { title: 'LoopBack Application', version: '1.0.0' },
     paths: {
         '/greet': {
             get: {
-                responses:  {
-                    '200': {
-                        description: 'The string result.',
-                        schema: { type: 'string' }
-                    }
-                },
                 'x-operation-name': 'greet'
             }
         }
     },
-    servers: [
-        {url: '/'}
-    ]
 }
 ```
 

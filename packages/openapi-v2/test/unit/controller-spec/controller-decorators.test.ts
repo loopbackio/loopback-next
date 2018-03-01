@@ -15,7 +15,10 @@ import {
   param,
 } from '../../..';
 import {expect} from '@loopback/testlab';
-import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
+import {
+  anOpenApiSpec,
+  anOperationSpec,
+} from '../../../src/openapi-spec-builder';
 
 describe('Routing metadata', () => {
   it('returns spec defined via @api()', () => {

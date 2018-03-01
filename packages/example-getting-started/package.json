@@ -28,8 +28,8 @@
     "@loopback/boot": "^0.2.0",
     "@loopback/context": "^0.2.0",
     "@loopback/core": "^0.2.0",
-    "@loopback/openapi-spec": "^0.2.0",
-    "@loopback/openapi-v2": "^0.2.0",
+    "@loopback/openapi-v3-types": "^0.2.0",
+    "@loopback/openapi-v3": "^0.2.0",
     "@loopback/repository": "^0.2.0",
     "@loopback/rest": "^0.2.0"
   },

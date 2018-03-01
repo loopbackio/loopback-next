@@ -9,7 +9,7 @@ import {
   OperationObject,
 } from '@loopback/openapi-v3-types';
 import {param, get, patch, operation, getControllerSpec} from '../../../../../';
-import {anOperationSpec} from '../../../../../';
+import {anOperationSpec} from '@loopback/openapi-spec-builder';
 import {expect} from '@loopback/testlab';
 
 describe('Routing metadata for parameters', () => {
