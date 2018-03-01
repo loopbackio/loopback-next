@@ -10,6 +10,7 @@ const yeoman = require('yeoman-environment');
 const testUtils = require('./test-utils');
 const sinon = require('sinon');
 const path = require('path');
+const deps = require('../lib/utils').getDependencies();
 
 module.exports = function(projGenerator, props, projectType) {
   return function() {
@@ -114,6 +115,14 @@ module.exports = function(projGenerator, props, projectType) {
         };
         gen.setOptions();
         assert(gen.projectInfo.name === 'foobar');
+        assert(
+          gen.projectInfo.dependencies['@loopback/context'] ===
+            deps['@loopback/context']
+        );
+        assert(
+          gen.projectInfo.dependencies['@loopback/core'] ===
+            deps['@loopback/core']
+        );
         assert(gen.projectInfo.description !== null);
         assert(gen.projectInfo.prettier === true);
       });
@@ -208,10 +217,22 @@ module.exports = function(projGenerator, props, projectType) {
         ]);
 
         if (projectType === 'application') {
-          assert.fileContent('package.json', '"@loopback/core"');
-          assert.fileContent('package.json', '"@loopback/context"');
-          assert.fileContent('package.json', '"@loopback/rest"');
-          assert.fileContent('package.json', '"@loopback/openapi-v2"');
+          assert.fileContent(
+            'package.json',
+            `"@loopback/core": "${deps['@loopback/core']}"`
+          );
+          assert.fileContent(
+            'package.json',
+            `"@loopback/context": "${deps['@loopback/context']}"`
+          );
+          assert.fileContent(
+            'package.json',
+            `"@loopback/rest": "${deps['@loopback/rest']}"`
+          );
+          assert.fileContent(
+            'package.json',
+            `"@loopback/openapi-v2": "${deps['@loopback/openapi-v2']}"`
+          );
           assert.jsonFileContent('package.json', {
             scripts: {
               start: 'npm run build && node .',
@@ -219,8 +240,14 @@ module.exports = function(projGenerator, props, projectType) {
           });
         }
         if (projectType === 'extension') {
-          assert.fileContent('package.json', '"@loopback/core"');
-          assert.fileContent('package.json', '"@loopback/context"');
+          assert.fileContent(
+            'package.json',
+            `"@loopback/core": "${deps['@loopback/core']}"`
+          );
+          assert.fileContent(
+            'package.json',
+            `"@loopback/context": "${deps['@loopback/context']}"`
+          );
           assert.noFileContent('package.json', '"@loopback/rest"');
           assert.noFileContent('package.json', '"@loopback/openapi-v2"');
           assert.noJsonFileContent('package.json', {
@@ -250,6 +277,14 @@ module.exports = function(projGenerator, props, projectType) {
 
       it('creates files', () => {
         assert.jsonFileContent('package.json', props);
+        assert.fileContent(
+          'package.json',
+          `"@loopback/core": "${deps['@loopback/core']}"`
+        );
+        assert.fileContent(
+          'package.json',
+          `"@loopback/context": "${deps['@loopback/context']}"`
+        );
         assert.noFileContent([
           ['package.json', '@loopback/build'],
           ['tslint.json', '@loopback/build'],

@@ -57,25 +57,25 @@
     "dist"
   ],
   "dependencies": {
-    "@loopback/context": "^0.1.0",
-    "@loopback/boot": "^0.1.0",
+    "@loopback/context": "<%= project.dependencies['@loopback/context'] -%>",
+    "@loopback/boot": "<%= project.dependencies['@loopback/boot'] -%>",
 <% if (project.projectType === 'application') { -%>
-    "@loopback/core": "^0.1.0",
-    "@loopback/rest": "^0.1.0",
-    "@loopback/openapi-v2": "^0.1.0"
+    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
+    "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>",
+    "@loopback/openapi-v2": "<%= project.dependencies['@loopback/openapi-v2'] -%>"
 <% } else { -%>
-    "@loopback/core": "^0.1.0"
+    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>"
 <% } -%>
   },
   "devDependencies": {
-    "@loopback/build": "^0.1.0",
+    "@loopback/build": "<%= project.dependencies['@loopback/build'] -%>",
 <% if (project.mocha) { -%>
-    "@loopback/testlab": "^0.1.0",
-    "@types/mocha": "^2.2.43",
-    "mocha": "^4.0.1",
-    "source-map-support": "^0.5.2"
+    "@loopback/testlab": "<%= project.dependencies['@loopback/testlab'] -%>",
+    "@types/mocha": "<%= project.dependencies['@types/mocha'] -%>",
+    "mocha": "<%= project.dependencies['mocha'] -%>",
+    "source-map-support": "<%= project.dependencies['source-map-support'] -%>"
 <% } else { -%>
-    "@loopback/testlab": "^0.1.0"
+    "@loopback/testlab": "<%= project.dependencies['@loopback/testlab'] -%>"
 <% } -%>
   }
 }

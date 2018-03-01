@@ -9,6 +9,7 @@ const debug = require('../lib/debug')('utils');
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
+var semver = require('semver');
 const regenerate = require('regenerate');
 const _ = require('lodash');
 const pascalCase = require('change-case').pascalCase;
@@ -182,4 +183,28 @@ exports.getArtifactList = function(dir, artifactType, addSuffix, reader) {
         : exports.toClassName(result);
     });
   });
+};
+
+/**
+ * Check package.json and dependencies.json to find out versions for generated
+ * dependencies
+ */
+exports.getDependencies = function() {
+  const pkg = require('../package.json');
+  let version = pkg.version;
+  // First look for config.loopbackVersion
+  if (pkg.config && pkg.config.loopbackVersion) {
+    version = pkg.config.loopbackVersion;
+  }
+  // Set it to be `^x.y.0`
+  let loopbackVersion =
+    '^' + semver.major(version) + '.' + semver.minor(version) + '.0';
+
+  const deps = {};
+  const dependencies = require('./dependencies.json');
+  for (const i in dependencies) {
+    // Default to loopback version if the version for a given dependency is ""
+    deps[i] = dependencies[i] || loopbackVersion;
+  }
+  return deps;
 };
