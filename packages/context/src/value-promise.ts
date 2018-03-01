@@ -21,8 +21,13 @@ export type BoundValue = any;
 /**
  * Representing a value or promise. This type is used to represent results of
  * synchronous/asynchronous resolution of values.
+ *
+ * Note that we are using PromiseLike instead of native Promise to describe
+ * the asynchronous variant. This allows producers of async values to use
+ * any Promise implementation (e.g. Bluebird) instead of native Promises
+ * provided by JavaScript runtime.
  */
-export type ValueOrPromise<T> = T | Promise<T>;
+export type ValueOrPromise<T> = T | PromiseLike<T>;
 
 export type MapObject<T> = {[name: string]: T};
 

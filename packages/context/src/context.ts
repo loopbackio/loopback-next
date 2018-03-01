@@ -10,6 +10,7 @@ import {ResolutionOptions, ResolutionSession} from './resolution-session';
 import {v1 as uuidv1} from 'uuid';
 
 import * as debugModule from 'debug';
+import {ValueOrPromise} from '.';
 const debug = debugModule('loopback:context');
 
 /**
@@ -408,12 +409,7 @@ export class Context {
   getValueOrPromise<T>(
     keyWithPath: string,
     optionsOrSession?: ResolutionOptions | ResolutionSession,
-  ): T | PromiseLike<T> | undefined {
-    // ^^^ Note that boundValue can be any Promise-like implementation,
-    // not necessarily the native Promise instance. As such, it may be
-    // missing newer APIs like Promise#catch() and cannot be casted
-    // directly to a Promise. Callers of this method should use
-    // Promise.resolve() to convert the result into a native Promise.
+  ): ValueOrPromise<T | undefined> {
     const {key, path} = Binding.parseKeyWithPath(keyWithPath);
 
     // backwards compatibility
