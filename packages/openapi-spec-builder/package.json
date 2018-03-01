@@ -8,9 +8,9 @@
   "scripts": {
     "build": "lb-tsc es2017",
     "build:apidocs": "lb-apidocs",
-    "clean": "lb-clean loopback-openapi-spec*.tgz dist package api-docs",
+    "clean": "lb-clean loopback-openapi-spec-builder*.tgz dist package api-docs",
     "prepublishOnly": "npm run build && npm run build:apidocs",
-    "verify": "npm pack && tar xf loopback-openapi-spec*.tgz && tree package && npm run clean"
+    "verify": "npm pack && tar xf loopback-openapi-spec-builder*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
   "copyright.owner": "IBM Corp.",
@@ -23,7 +23,7 @@
     "Testing"
   ],
   "dependencies": {
-    "@loopback/openapi-spec": "^0.2.0"
+    "@loopback/openapi-v3-types": "^0.2.0"
   },
   "devDependencies": {
     "@loopback/build": "^0.2.0"

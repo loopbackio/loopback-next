@@ -1,6 +1,14 @@
-import {post, param, get, put, patch, del} from '@loopback/openapi-v2';
+import {
+  post,
+  param,
+  get,
+  put,
+  patch,
+  del,
+  requestBody,
+} from '@loopback/openapi-v3';
 import {HttpErrors} from '@loopback/rest';
-import {TodoSchema, Todo} from '../models';
+import {Todo} from '../models';
 import {repository} from '@loopback/repository';
 import {TodoRepository} from '../repositories';
 
@@ -11,11 +19,9 @@ export class TodoController {
   constructor(
     @repository(TodoRepository.name) protected todoRepo: TodoRepository,
   ) {}
+
   @post('/todo')
-  async createTodo(
-    @param.body('todo', TodoSchema)
-    todo: Todo,
-  ) {
+  async createTodo(@requestBody() todo: Todo) {
     // TODO(bajtos) This should be handled by the framework
     // See https://github.com/strongloop/loopback-next/issues/118
     if (!todo.title) {
@@ -40,8 +46,7 @@ export class TodoController {
   @put('/todo/{id}')
   async replaceTodo(
     @param.path.number('id') id: number,
-    @param.body('todo', TodoSchema)
-    todo: Todo,
+    @requestBody() todo: Todo,
   ): Promise<boolean> {
     // REST adapter does not coerce parameter values coming from string sources
     // like path & query. As a workaround, we have to cast the value to a number
@@ -55,8 +60,7 @@ export class TodoController {
   @patch('/todo/{id}')
   async updateTodo(
     @param.path.number('id') id: number,
-    @param.body('todo', TodoSchema)
-    todo: Todo,
+    @requestBody() todo: Todo,
   ): Promise<boolean> {
     // REST adapter does not coerce parameter values coming from string sources
     // like path & query. As a workaround, we have to cast the value to a number

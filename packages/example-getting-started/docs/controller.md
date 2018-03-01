@@ -51,9 +51,9 @@ Now that we have the repository wireup, let's create our first handler function.
 
 #### src/controllers/todo.controller.ts
 ```ts
-import {post, param} from '@loopback/openapi-v2';
+import {post, param} from '@loopback/openapi-v3';
 import {HttpErrors} from '@loopback/rest';
-import {TodoSchema, Todo} from '../models';
+import {Todo} from '../models';
 import {repository} from '@loopback/repository';
 import {TodoRepository} from '../repositories/index';
 
@@ -63,8 +63,7 @@ export class TodoController {
   ) {}
 
   @post('/todo')
-  @param.body('todo', TodoSchema)
-  async createTodo(todo: Todo) {
+  async createTodo(@requestBody() todo: Todo) {
     if (!todo.title) {
       return Promise.reject(new HttpErrors.BadRequest('title is required'));
     }
@@ -78,7 +77,7 @@ metadata about the route, verb and the format of the incoming request body:
 
 - `@post('/todo')` creates metadata for LoopBack's [RestServer]() so that it can
 redirect requests to this function when the path and verb match.
-- `@param.body('todo', TodoSchema)` associates the OpenAPI schema for a Todo
+- `@requestBody()` associates the OpenAPI schema for a Todo
 with the body of the request so that LoopBack can validate the format of an
 incoming request (**Note**: As of this writing, schematic validation is not yet
 functional).
@@ -95,9 +94,9 @@ verbs:
 
 #### src/controllers/todo.controller.ts
 ```ts
-import {post, param, get, put, patch, del} from '@loopback/openapi-v2';
+import {post, param, requestBody, get, put, patch, del} from '@loopback/openapi-v3';
 import {HttpErrors} from '@loopback/rest';
-import {TodoSchema, Todo} from '../models';
+import {Todo} from '../models';
 import {repository} from '@loopback/repository';
 import {TodoRepository} from '../repositories/index';
 
@@ -107,8 +106,7 @@ export class TodoController {
   ) {}
 
   @post('/todo')
-  @param.body('todo', TodoSchema)
-  async createTodo(todo: Todo) {
+  async createTodo(@requestBody()todo: Todo) {
     if (!todo.title) {
       return Promise.reject(new HttpErrors.BadRequest('title is required'));
     }
@@ -116,9 +114,9 @@ export class TodoController {
   }
 
   @get('/todo/{id}')
-  @param.path.number('id')
-  @param.query.boolean('items')
-  async findTodoById(id: number, items?: boolean): Promise<Todo> {
+  async findTodoById(
+    @param.path.number('id') id: number, 
+    @param.query.boolean('items') items?: boolean): Promise<Todo> {
     return await this.todoRepo.findById(id);
   }
 
@@ -128,22 +126,21 @@ export class TodoController {
   }
 
   @put('/todo/{id}')
-  @param.path.number('id')
-  @param.body('todo', TodoSchema)
-  async replaceTodo(id: number, todo: Todo): Promise<boolean> {
+  async replaceTodo(
+    @param.path.number('id') id: number,
+    @requestBody() todo: Todo): Promise<boolean> {
     return await this.todoRepo.replaceById(id, todo);
   }
 
   @patch('/todo/{id}')
-  @param.path.number('id')
-  @param.body('todo', TodoSchema)
-  async updateTodo(id: number, todo: Todo): Promise<boolean> {
+  async updateTodo(
+    @param.path.number('id') id: number,
+    @param.body() todo: Todo): Promise<boolean> {
     return await this.todoRepo.updateById(id, todo);
   }
 
   @del('/todo/{id}')
-  @param.path.number('id')
-  async deleteTodo(id: number): Promise<boolean> {
+  async deleteTodo(@param.path.number('id') id: number): Promise<boolean> {
     return await this.todoRepo.deleteById(id);
   }
 }

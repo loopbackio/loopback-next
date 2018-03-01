@@ -11,7 +11,7 @@ import {format} from 'util';
 import {RestBindings} from './keys';
 import {RouteEntry, RestServer} from '.';
 import {ControllerClass} from './router/routing-table';
-import {OperationObject, OpenApiSpec} from '@loopback/openapi-spec';
+import {OperationObject, OpenApiSpec} from '@loopback/openapi-v3-types';
 
 export const ERR_NO_MULTI_SERVER = format(
   'RestApplication does not support multiple servers!',

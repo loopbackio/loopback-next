@@ -231,7 +231,7 @@ module.exports = function(projGenerator, props, projectType) {
           );
           assert.fileContent(
             'package.json',
-            `"@loopback/openapi-v2": "${deps['@loopback/openapi-v2']}"`
+            `"@loopback/openapi-v3": "${deps['@loopback/openapi-v3']}"`
           );
           assert.jsonFileContent('package.json', {
             scripts: {
@@ -249,7 +249,7 @@ module.exports = function(projGenerator, props, projectType) {
             `"@loopback/context": "${deps['@loopback/context']}"`
           );
           assert.noFileContent('package.json', '"@loopback/rest"');
-          assert.noFileContent('package.json', '"@loopback/openapi-v2"');
+          assert.noFileContent('package.json', '"@loopback/openapi-v3"');
           assert.noJsonFileContent('package.json', {
             start: 'npm run build && node .',
           });

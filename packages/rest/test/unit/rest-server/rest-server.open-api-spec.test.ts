@@ -6,7 +6,7 @@
 import {expect, validateApiSpec} from '@loopback/testlab';
 import {Application} from '@loopback/core';
 import {RestServer, Route, RestComponent} from '../../..';
-import {get, post, param} from '@loopback/openapi-v2';
+import {get, post, requestBody} from '@loopback/openapi-v3';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {model, property} from '@loopback/repository';
 
@@ -21,26 +21,24 @@ describe('RestServer.getApiSpec()', () => {
 
   it('honours API defined via app.api()', () => {
     server.api({
-      swagger: '2.0',
+      openapi: '3.0.0',
       info: {
         title: 'Test API',
         version: '1.0.0',
       },
-      host: 'example.com:8080',
-      basePath: '/api',
+      servers: [{url: 'example.com:8080/api'}],
       paths: {},
       'x-foo': 'bar',
     });
 
     const spec = server.getApiSpec();
     expect(spec).to.deepEqual({
-      swagger: '2.0',
+      openapi: '3.0.0',
       info: {
         title: 'Test API',
         version: '1.0.0',
       },
-      host: 'example.com:8080',
-      basePath: '/api',
+      servers: [{url: 'example.com:8080/api'}],
       paths: {},
       'x-foo': 'bar',
     });
@@ -152,12 +150,12 @@ describe('RestServer.getApiSpec()', () => {
     }
     class MyController {
       @post('/foo')
-      createFoo(@param.body('foo') foo: MyModel) {}
+      createFoo(@requestBody() foo: MyModel) {}
     }
     app.controller(MyController);
 
     const spec = server.getApiSpec();
-    expect(spec.definitions).to.deepEqual({
+    expect(spec.components && spec.components.schemas).to.deepEqual({
       MyModel: {
         title: 'MyModel',
         properties: {

@@ -4,16 +4,15 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {AssertionError} from 'assert';
-const swagger2openapi = require('swagger2openapi');
 import {safeDump} from 'js-yaml';
 import {Binding, Context, Constructor, inject} from '@loopback/context';
 import {Route, ControllerRoute, RouteEntry} from './router/routing-table';
 import {ParsedRequest} from './internal-types';
-import {OpenApiSpec, OperationObject} from '@loopback/openapi-spec';
+import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
 import {ServerRequest, ServerResponse, createServer} from 'http';
 import * as Http from 'http';
 import {Application, CoreBindings, Server} from '@loopback/core';
-import {getControllerSpec} from '@loopback/openapi-v2';
+import {getControllerSpec} from '@loopback/openapi-v3';
 import {HttpHandler} from './http-handler';
 import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
 import {
@@ -48,8 +47,6 @@ interface OpenApiSpecOptions {
 const OPENAPI_SPEC_MAPPING: {[key: string]: OpenApiSpecOptions} = {
   '/openapi.json': {version: '3.0.0', format: 'json'},
   '/openapi.yaml': {version: '3.0.0', format: 'yaml'},
-  '/swagger.json': {version: '2.0', format: 'json'},
-  '/swagger.yaml': {version: '2.0', format: 'yaml'},
 };
 
 /**
@@ -212,8 +209,8 @@ export class RestServer extends Context implements Server {
         // controller methods are specified through app.api() spec
         continue;
       }
-      if (apiSpec.definitions) {
-        this._httpHandler.registerApiDefinitions(apiSpec.definitions);
+      if (apiSpec.components && apiSpec.components.schemas) {
+        this._httpHandler.registerApiDefinitions(apiSpec.components.schemas);
       }
       this._httpHandler.registerController(ctor, apiSpec);
     }
@@ -279,11 +276,8 @@ export class RestServer extends Context implements Server {
     response: ServerResponse,
     options?: OpenApiSpecOptions,
   ) {
-    options = options || {version: '2.0', format: 'json'};
+    options = options || {version: '3.0.0', format: 'json'};
     let specObj = this.getApiSpec();
-    if (options.version === '3.0.0') {
-      specObj = await swagger2openapi.convertObj(specObj, {direct: true});
-    }
     if (options.format === 'json') {
       const spec = JSON.stringify(specObj, null, 2);
       response.setHeader('content-type', 'application/json; charset=utf-8');
@@ -305,7 +299,7 @@ export class RestServer extends Context implements Server {
       options.apiExplorerUrl || 'https://loopback.io/api-explorer';
     response.setHeader(
       'Location',
-      `${baseUrl}?url=http://${request.headers.host}/swagger.json`,
+      `${baseUrl}?url=http://${request.headers.host}/openapi.json`,
     );
     response.end();
   }
@@ -452,7 +446,8 @@ export class RestServer extends Context implements Server {
     // accidentally modifying our internal routing data
     spec.paths = cloneDeep(this.httpHandler.describeApiPaths());
     if (defs) {
-      spec.definitions = cloneDeep(defs);
+      spec.components = spec.components || {};
+      spec.components.schemas = cloneDeep(defs);
     }
     return spec;
   }

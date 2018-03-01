@@ -5,7 +5,12 @@
 
 import {ServerRequest} from 'http';
 import * as HttpErrors from 'http-errors';
-import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
+import {
+  OperationObject,
+  ParameterObject,
+  isReferenceObject,
+} from '@loopback/openapi-v3-types';
+import {REQUEST_BODY_INDEX} from '@loopback/openapi-v3';
 import {promisify} from 'util';
 import {
   OperationArgs,
@@ -59,7 +64,7 @@ function loadRequestBodyIfNeeded(
   operationSpec: OperationObject,
   request: ServerRequest,
 ): Promise<MaybeBody> {
-  if (!hasArgumentsFromBody(operationSpec)) return Promise.resolve();
+  if (!operationSpec.requestBody) return Promise.resolve();
 
   const contentType = getContentType(request);
   if (contentType && !/json/.test(contentType)) {
@@ -75,28 +80,27 @@ function loadRequestBodyIfNeeded(
   });
 }
 
-function hasArgumentsFromBody(operationSpec: OperationObject): boolean {
-  if (!operationSpec.parameters || !operationSpec.parameters.length)
-    return false;
-
-  for (const paramSpec of operationSpec.parameters) {
-    if ('$ref' in paramSpec) continue;
-    const source = (paramSpec as ParameterObject).in;
-    if (source === 'formData' || source === 'body') return true;
-  }
-  return false;
-}
-
 function buildOperationArguments(
   operationSpec: OperationObject,
   request: ParsedRequest,
   pathParams: PathParameterValues,
   body?: MaybeBody,
 ): OperationArgs {
-  const args: OperationArgs = [];
+  let requestBodyIndex: number = -1;
+  if (operationSpec.requestBody) {
+    // the type of `operationSpec.requestBody` could be `RequestBodyObject`
+    // or `ReferenceObject`, resolving a `$ref` value is not supported yet.
+    if (isReferenceObject(operationSpec.requestBody)) {
+      throw new Error('$ref requestBody is not supported yet.');
+    }
+    const i = operationSpec.requestBody[REQUEST_BODY_INDEX];
+    requestBodyIndex = i ? i : 0;
+  }
+
+  const paramArgs: OperationArgs = [];
 
   for (const paramSpec of operationSpec.parameters || []) {
-    if ('$ref' in paramSpec) {
+    if (isReferenceObject(paramSpec)) {
       // TODO(bajtos) implement $ref parameters
       // See https://github.com/strongloop/loopback-next/issues/435
       throw new Error('$ref parameters are not supported yet.');
@@ -104,25 +108,22 @@ function buildOperationArguments(
     const spec = paramSpec as ParameterObject;
     switch (spec.in) {
       case 'query':
-        args.push(request.query[spec.name]);
+        paramArgs.push(request.query[spec.name]);
         break;
       case 'path':
-        args.push(pathParams[spec.name]);
+        paramArgs.push(pathParams[spec.name]);
         break;
       case 'header':
-        args.push(request.headers[spec.name.toLowerCase()]);
+        paramArgs.push(request.headers[spec.name.toLowerCase()]);
         break;
-      case 'formData':
-        args.push(body ? body[spec.name] : undefined);
-        break;
-      case 'body':
-        args.push(body);
-        break;
+      // TODO(jannyhou) to support `cookie`,
+      // see issue https://github.com/strongloop/loopback-next/issues/997
       default:
         throw new HttpErrors.NotImplemented(
           'Parameters with "in: ' + spec.in + '" are not supported yet.',
         );
     }
   }
-  return args;
+  if (requestBodyIndex > -1) paramArgs.splice(requestBodyIndex, 0, body);
+  return paramArgs;
 }

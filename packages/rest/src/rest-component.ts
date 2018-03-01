@@ -24,7 +24,7 @@ import {
 } from './providers';
 import {RestServer, RestServerConfig} from './rest-server';
 import {DefaultSequence} from '.';
-import {createEmptyApiSpec} from '@loopback/openapi-spec';
+import {createEmptyApiSpec} from '@loopback/openapi-v3-types';
 
 export class RestComponent implements Component {
   providers: ProviderMap = {

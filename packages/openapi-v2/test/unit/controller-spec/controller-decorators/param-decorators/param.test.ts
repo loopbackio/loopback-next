@@ -18,7 +18,7 @@ import {
   DefinitionsObject,
 } from '@loopback/openapi-spec';
 import {expect} from '@loopback/testlab';
-import {anOperationSpec} from '@loopback/openapi-spec-builder';
+import {anOperationSpec} from '../../../../../src/openapi-spec-builder';
 import * as stream from 'stream';
 import {model, property} from '@loopback/repository';
 

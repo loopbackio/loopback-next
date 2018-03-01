@@ -1,8 +1,5 @@
-// This is just a temporary file, in the next PR it will be moved to
-// @loopback/openapi-spec-builder
-
 // Copyright IBM Corp. 2017,2018. All Rights Reserved.
-// Node module: @loopback/openapi-spec-builder
+// Node module: @loopback/openapi-v2
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
@@ -14,8 +11,7 @@ import {
   ResponseObject,
   ParameterObject,
   createEmptyApiSpec,
-  RequestBodyObject,
-} from '@loopback/openapi-v3-types';
+} from '@loopback/openapi-spec';
 
 /**
  * Create a new instance of OpenApiSpecBuilder.
@@ -141,13 +137,7 @@ export class OperationSpecBuilder extends BuilderBase<OperationObject> {
   withStringResponse(status: number | 'default' = 200): this {
     return this.withResponse(status, {
       description: 'The string result.',
-      content: {
-        // TODO(janny) will change it to a default value
-        // after we figure out the plan for content type
-        '*/*': {
-          schema: {type: 'string'},
-        },
-      },
+      schema: {type: 'string'},
     });
   }
 
@@ -161,11 +151,6 @@ export class OperationSpecBuilder extends BuilderBase<OperationObject> {
   withParameter(parameterSpec: ParameterObject): this {
     if (!this._spec.parameters) this._spec.parameters = [];
     this._spec.parameters.push(parameterSpec);
-    return this;
-  }
-
-  withRequestBody(requestBodySpec: RequestBodyObject): this {
-    this._spec.requestBody = requestBodySpec;
     return this;
   }
 

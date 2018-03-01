@@ -12,7 +12,11 @@ import {
   createResolvedRoute,
 } from '../..';
 import {expect, ShotRequest, ShotRequestOptions} from '@loopback/testlab';
-import {OperationObject, ParameterObject} from '@loopback/openapi-spec';
+import {
+  OperationObject,
+  ParameterObject,
+  RequestBodyObject,
+} from '@loopback/openapi-v3-types';
 
 describe('operationArgsParser', () => {
   it('parses path parameters', async () => {
@@ -37,13 +41,10 @@ describe('operationArgsParser', () => {
       payload: {key: 'value'},
     });
 
-    const spec = givenOperationWithParameters([
-      {
-        name: 'data',
-        schema: {type: 'object'},
-        in: 'body',
-      },
-    ]);
+    const spec = givenOperationWithRequestBody({
+      description: 'data',
+      content: {'application/json': {schema: {type: 'object'}}},
+    });
     const route = givenResolvedRoute(spec);
 
     const args = await parseOperationArgs(req, route);
@@ -55,6 +56,14 @@ describe('operationArgsParser', () => {
     return <OperationObject>{
       'x-operation-name': 'testOp',
       parameters: params,
+      responses: {},
+    };
+  }
+
+  function givenOperationWithRequestBody(requestBody?: RequestBodyObject) {
+    return <OperationObject>{
+      'x-operation-name': 'testOp',
+      requestBody: requestBody,
       responses: {},
     };
   }

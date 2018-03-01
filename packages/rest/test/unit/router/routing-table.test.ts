@@ -9,7 +9,7 @@ import {
   RoutingTable,
   ControllerRoute,
 } from '../../..';
-import {getControllerSpec, param, get} from '@loopback/openapi-v2';
+import {getControllerSpec, param, get} from '@loopback/openapi-v3';
 import {expect, ShotRequestOptions, ShotRequest} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 
@@ -47,7 +47,7 @@ describe('RoutingTable', () => {
     expect(params[0]).to.have.properties({
       name: 'message',
       in: 'query',
-      type: 'string',
+      schema: {type: 'string'},
     });
   });
 
@@ -81,6 +81,10 @@ describe('RoutingTable', () => {
       .withOperationReturningString('get', '/hello', 'greet')
       .build();
 
+    // @jannyHou: please note ` anOpenApiSpec()` returns an openapi spec,
+    // not controller spec, should be FIXED
+    // the routing table test expects an empty spec for
+    // interface `ControllerSpec`
     spec.basePath = '/my';
 
     class TestController {}
