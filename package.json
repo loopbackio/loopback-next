@@ -22,6 +22,7 @@
   "scripts": {
     "bootstrap": "npm i && lerna bootstrap",
     "release": "npm run build:full && lerna publish",
+    "update-template-deps": "node bin/update-template-deps -f",
     "coverage:ci": "node packages/build/bin/run-nyc report --reporter=text-lcov | coveralls",
     "precoverage": "npm test",
     "coverage": "open coverage/index.html",
