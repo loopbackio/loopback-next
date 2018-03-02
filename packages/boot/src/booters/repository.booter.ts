@@ -29,31 +29,8 @@ export class RepositoryBooter extends BaseArtifactBooter {
     public repositoryOptions: ArtifactOptions = {},
   ) {
     super();
-
-    /**
-     * Repository Booter requires the use of RepositoryMixin (so we have `app.repository`)
-     * for binding a Repository Class. We check for it's presence and run
-     * accordingly.
-     */
-    // tslint:disable-next-line:no-any
-    if (!this.app.repository) {
-      console.warn(
-        'app.repository() function is needed for RepositoryBooter. You can add ' +
-          'it to your Application using RepositoryMixin from @loopback/repository.',
-      );
-
-      /**
-       * If RepositoryMixin is not used and a `.repository()` function is not
-       * available, we change the methods to be empty so bootstrapper can
-       * still run without any side-effects of loading this Booter.
-       */
-      this.configure = async () => {};
-      this.discover = async () => {};
-      this.load = async () => {};
-    } else {
-      // Set Repository Booter Options if passed in via bootConfig
-      this.options = Object.assign({}, RepositoryDefaults, repositoryOptions);
-    }
+    // Set Repository Booter Options if passed in via bootConfig
+    this.options = Object.assign({}, RepositoryDefaults, repositoryOptions);
   }
 
   /**
@@ -62,10 +39,24 @@ export class RepositoryBooter extends BaseArtifactBooter {
    */
   async load() {
     await super.load();
-    this.classes.forEach(cls => {
-      // tslint:disable-next-line:no-any
-      this.app.repository(cls);
-    });
+    /**
+     * If Repository Classes were discovered, we need to make sure RepositoryMixin
+     * was used (so we have `app.repository()`) to perform the binding of a
+     * Repository Class.
+     */
+    if (this.classes.length > 0) {
+      if (!this.app.repository) {
+        console.warn(
+          'app.repository() function is needed for RepositoryBooter. You can add ' +
+            'it to your Application using RepositoryMixin from @loopback/repository.',
+        );
+      } else {
+        this.classes.forEach(cls => {
+          // tslint:disable-next-line:no-any
+          this.app.repository(cls);
+        });
+      }
+    }
   }
 }
 
