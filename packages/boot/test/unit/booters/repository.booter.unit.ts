@@ -23,13 +23,24 @@ describe('repository booter unit tests', () => {
 
   beforeEach(() => sandbox.reset());
   beforeEach(getApp);
-  before(createStub);
-  after(restoreStub);
+  beforeEach(createStub);
+  afterEach(restoreStub);
 
   it('gives a warning if called on an app without RepositoryMixin', async () => {
     const normalApp = new Application();
-    // tslint:disable-next-line:no-unused-expression
-    new RepositoryBooter(normalApp as AppWithRepository, SANDBOX_PATH);
+    await sandbox.copyFile(
+      resolve(__dirname, '../../fixtures/multiple.artifact.js'),
+    );
+
+    const booterInst = new RepositoryBooter(
+      normalApp as AppWithRepository,
+      SANDBOX_PATH,
+    );
+
+    // Load uses discovered property
+    booterInst.discovered = [resolve(SANDBOX_PATH, 'multiple.artifact.js')];
+    await booterInst.load();
+
     sinon.assert.calledOnce(stub);
     sinon.assert.calledWith(
       stub,
