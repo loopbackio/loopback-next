@@ -5,12 +5,7 @@ export {<%= project.applicationName %>};
 
 export async function main(options?: ApplicationConfig) {
   const app = new <%= project.applicationName %>(options);
-
-  try {
-    await app.boot();
-    await app.start();
-  } catch (err) {
-    console.error(`Unable to start application: ${err}`);
-  }
+  await app.boot();
+  await app.start();
   return app;
 }
