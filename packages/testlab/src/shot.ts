@@ -8,7 +8,7 @@
  * https://github.com/hapijs/shot
  */
 
-import {ServerRequest, ServerResponse} from 'http';
+import {Request, Response} from 'express';
 import * as util from 'util';
 
 import {
@@ -25,22 +25,20 @@ export const ShotRequest: ShotRequestCtor = require('shot/lib/request');
 // tslint:disable-next-line:variable-name
 export const ShotResponse: ShotResponseCtor = require('shot/lib/response');
 
-export type ShotRequestCtor = new (
-  options: ShotRequestOptions,
-) => ServerRequest;
+export type ShotRequestCtor = new (options: ShotRequestOptions) => Request;
 
 export type ShotCallback = (response: ResponseObject) => void;
 
 export type ShotResponseCtor = new (
-  request: ServerRequest,
+  request: Request,
   onEnd: ShotCallback,
-) => ServerResponse;
+) => Response;
 
 export type ShotObservedResponse = ResponseObject;
 
 export interface ShotResponseMock {
-  request: ServerRequest;
-  response: ServerResponse;
+  request: Request;
+  response: Response;
   result: Promise<ShotObservedResponse>;
 }
 
@@ -48,7 +46,7 @@ export function mockResponse(
   requestOptions: ShotRequestOptions = {url: '/'},
 ): ShotResponseMock {
   const request = new ShotRequest(requestOptions);
-  let response: ServerResponse | undefined;
+  let response: Response | undefined;
   let result = new Promise<ShotObservedResponse>(resolve => {
     response = new ShotResponse(request, resolve);
   });

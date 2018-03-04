@@ -3,12 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ServerResponse} from 'http';
 import {CoreBindings} from '@loopback/core';
 import {BindingKey, Context} from '@loopback/context';
 import {OpenApiSpec} from '@loopback/openapi-v3-types';
-
-import {HttpHandler} from './http-handler';
+import {RestHttpHandler} from './http-handler';
 import {SequenceHandler} from './sequence';
 import {
   BindElement,
@@ -16,7 +14,8 @@ import {
   GetFromContext,
   InvokeMethod,
   LogError,
-  ParsedRequest,
+  Request,
+  Response,
   ParseParams,
   Reject,
   Send,
@@ -30,8 +29,10 @@ export namespace RestBindings {
   // RestServer-specific bindings
   export const CONFIG = CoreBindings.APPLICATION_CONFIG.deepProperty('rest');
   export const HOST = BindingKey.create<string | undefined>('rest.host');
-  export const PORT = BindingKey.create<number>('rest.port');
-  export const HANDLER = BindingKey.create<HttpHandler>('rest.handler');
+  export const PORT = BindingKey.create<number | undefined>('rest.port');
+  export const HANDLER = BindingKey.create<RestHttpHandler>('rest.handler');
+  export const TRANSPORT = 'rest.transport';
+  export const URL = BindingKey.create<string>('rest.url');
 
   export const API_SPEC = BindingKey.create<OpenApiSpec>('rest.apiSpec');
   export const SEQUENCE = BindingKey.create<SequenceHandler>('rest.sequence');
@@ -63,12 +64,8 @@ export namespace RestBindings {
   // request-specific bindings
 
   export namespace Http {
-    export const REQUEST = BindingKey.create<ParsedRequest>(
-      'rest.http.request',
-    );
-    export const RESPONSE = BindingKey.create<ServerResponse>(
-      'rest.http.response',
-    );
+    export const REQUEST = BindingKey.create<Request>('rest.http.request');
+    export const RESPONSE = BindingKey.create<Response>('rest.http.response');
     export const CONTEXT = BindingKey.create<Context>(
       'rest.http.request.context',
     );

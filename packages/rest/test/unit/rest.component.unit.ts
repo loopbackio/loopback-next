@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect, ShotRequest} from '@loopback/testlab';
+import {expect, ShotRequest, mockResponse} from '@loopback/testlab';
 import {
   Application,
   ProviderMap,
@@ -17,9 +17,9 @@ import {
   RestServer,
   RestBindings,
   RestComponentConfig,
-  ServerRequest,
-  HttpHandler,
+  RestHttpHandler,
   LogError,
+  HTTP_FACTORY,
 } from '../..';
 
 const SequenceActions = RestBindings.SequenceActions;
@@ -31,7 +31,7 @@ describe('RestComponent', () => {
 
       // Stub constructor requirements for some providers.
       app.bind(RestBindings.Http.CONTEXT).to(new Context());
-      app.bind(RestBindings.HANDLER).to(new HttpHandler(app));
+      app.bind(RestBindings.HANDLER).to(new RestHttpHandler(app));
 
       const comp = await app.get<Component>('components.RestComponent');
       for (const key in comp.providers || {}) {
@@ -70,7 +70,7 @@ describe('RestComponent', () => {
 
         class CustomLogger implements Provider<BoundValue> {
           value() {
-            return (err: Error, statusCode: number, request: ServerRequest) => {
+            return (err: Error, statusCode: number, request: Request) => {
               lastLog = `${request.url} ${statusCode} ${err.message}`;
             };
           }
@@ -80,7 +80,12 @@ describe('RestComponent', () => {
         app.component(CustomRestComponent);
         const server = await app.getServer(RestServer);
         const logError = await server.get<LogError>(SequenceActions.LOG_ERROR);
-        logError(new Error('test-error'), 400, new ShotRequest({url: '/'}));
+        const httpCtx = HTTP_FACTORY.createHttpContext(
+          new ShotRequest({url: '/'}),
+          mockResponse().response,
+          HTTP_FACTORY.createApp(),
+        );
+        logError(new Error('test-error'), 400, httpCtx.request);
 
         expect(lastLog).to.equal('/ 400 test-error');
       });

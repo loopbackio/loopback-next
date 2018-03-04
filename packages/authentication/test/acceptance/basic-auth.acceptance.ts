@@ -6,8 +6,6 @@
 import {Application} from '@loopback/core';
 import {
   RestBindings,
-  ServerResponse,
-  ParsedRequest,
   ParseParams,
   FindRoute,
   InvokeMethod,
@@ -16,6 +14,7 @@ import {
   SequenceHandler,
   RestServer,
   RestComponent,
+  HttpContext,
 } from '@loopback/rest';
 import {api, get} from '@loopback/openapi-v3';
 import {Client, createClientForHandler} from '@loopback/testlab';
@@ -137,7 +136,7 @@ describe('Basic Authentication', () => {
         protected authenticateRequest: AuthenticateFn,
       ) {}
 
-      async handle(req: ParsedRequest, res: ServerResponse) {
+      async handle({request: req, response: res}: HttpContext) {
         try {
           const route = this.findRoute(req);
 
@@ -188,7 +187,7 @@ describe('Basic Authentication', () => {
   }
 
   function whenIMakeRequestTo(restServer: RestServer): Client {
-    return createClientForHandler(restServer.requestHandler);
+    return createClientForHandler(restServer.requestListener);
   }
 });
 

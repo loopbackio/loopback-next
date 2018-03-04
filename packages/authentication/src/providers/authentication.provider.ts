@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ParsedRequest} from '@loopback/rest';
+import {Request} from '@loopback/rest';
 import {inject} from '@loopback/core';
 import {Provider, Getter, Setter} from '@loopback/context';
 import {Strategy} from 'passport';
@@ -14,14 +14,14 @@ import {AuthenticationBindings} from '../keys';
  * Passport monkey-patches Node.js' IncomingMessage prototype
  * and adds extra methods like "login" and "isAuthenticated"
  */
-export type PassportRequest = ParsedRequest & Express.Request;
+export type PassportRequest = Request & Express.Request;
 
 /**
  * interface definition of a function which accepts a request
  * and returns an authenticated user
  */
 export interface AuthenticateFn {
-  (request: ParsedRequest): Promise<UserProfile | undefined>;
+  (request: Request): Promise<UserProfile | undefined>;
 }
 
 /**
@@ -65,7 +65,7 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
    * The implementation of authenticate() sequence action.
    * @param request Parsed Request
    */
-  async action(request: ParsedRequest): Promise<UserProfile | undefined> {
+  async action(request: Request): Promise<UserProfile | undefined> {
     const strategy = await this.getStrategy();
     if (!strategy) {
       // The invoked operation does not require authentication.

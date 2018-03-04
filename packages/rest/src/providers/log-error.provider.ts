@@ -4,15 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Provider} from '@loopback/context';
-import {ServerRequest} from 'http';
-import {LogError} from '../internal-types';
+import {LogError, Request} from '../internal-types';
 
 export class LogErrorProvider implements Provider<LogError> {
   value(): LogError {
     return (err, statusCode, req) => this.action(err, statusCode, req);
   }
 
-  action(err: Error, statusCode: number, req: ServerRequest) {
+  action(err: Error, statusCode: number, req: Request) {
     if (statusCode < 500) {
       return;
     }

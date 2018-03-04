@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ServerRequest} from 'http';
 import * as HttpErrors from 'http-errors';
 import {
   OperationObject,
@@ -12,18 +11,14 @@ import {
 } from '@loopback/openapi-v3-types';
 import {REQUEST_BODY_INDEX} from '@loopback/openapi-v3';
 import {promisify} from 'util';
-import {
-  OperationArgs,
-  ParsedRequest,
-  PathParameterValues,
-} from './internal-types';
+import {OperationArgs, Request, PathParameterValues} from './internal-types';
 import {ResolvedRoute} from './router/routing-table';
 type HttpError = HttpErrors.HttpError;
 
 // tslint:disable-next-line:no-any
 type MaybeBody = any | undefined;
 
-const parseJsonBody: (req: ServerRequest) => Promise<MaybeBody> = promisify(
+const parseJsonBody: (req: Request) => Promise<MaybeBody> = promisify(
   require('body/json'),
 );
 
@@ -31,7 +26,7 @@ const parseJsonBody: (req: ServerRequest) => Promise<MaybeBody> = promisify(
  * Get the content-type header value from the request
  * @param req Http request
  */
-function getContentType(req: ServerRequest): string | undefined {
+function getContentType(req: Request): string | undefined {
   const val = req.headers['content-type'];
   if (typeof val === 'string') {
     return val;
@@ -51,7 +46,7 @@ function getContentType(req: ServerRequest): string | undefined {
  * @param pathParams Path parameters in incoming HTTP request
  */
 export async function parseOperationArgs(
-  request: ParsedRequest,
+  request: Request,
   route: ResolvedRoute,
 ): Promise<OperationArgs> {
   const operationSpec = route.spec;
@@ -62,7 +57,7 @@ export async function parseOperationArgs(
 
 function loadRequestBodyIfNeeded(
   operationSpec: OperationObject,
-  request: ServerRequest,
+  request: Request,
 ): Promise<MaybeBody> {
   if (!operationSpec.requestBody) return Promise.resolve();
 
@@ -82,7 +77,7 @@ function loadRequestBodyIfNeeded(
 
 function buildOperationArguments(
   operationSpec: OperationObject,
-  request: ParsedRequest,
+  request: Request,
   pathParams: PathParameterValues,
   body?: MaybeBody,
 ): OperationArgs {

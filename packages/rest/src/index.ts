@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 // external dependencies
-export {ServerRequest, ServerResponse} from 'http';
 
 export {
   RouteEntry,
@@ -13,7 +12,6 @@ export {
   ControllerRoute,
   ResolvedRoute,
   createResolvedRoute,
-  parseRequestUrl,
   ControllerClass,
   ControllerInstance,
   ControllerFactory,
@@ -34,6 +32,7 @@ export {writeResultToResponse} from './writer';
 // http errors
 export {HttpErrors};
 
+export * from './http-server';
 export * from './http-handler';
 export * from './internal-types';
 export * from './keys';
