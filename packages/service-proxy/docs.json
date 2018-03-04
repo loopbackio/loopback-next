@@ -1,0 +1,9 @@
+{
+  "content": [
+    "./index.ts",
+    "./src/index.ts",
+    "./src/decorators/service.decorator.ts",
+    "./src/legacy-juggler-bridge.ts"
+  ],
+  "codeSectionDepth": 4
+}
