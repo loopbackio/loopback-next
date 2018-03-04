@@ -15,7 +15,7 @@
     "pretest": "npm run build",
     "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
     "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",
-    "verify": "npm pack && tar xf loopback-juggler*.tgz && tree package && npm run clean"
+    "verify": "npm pack && tar xf loopback-repository*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
   "copyright.owner": "IBM Corp.",
