@@ -9,11 +9,7 @@ import {ApplicationConfig} from '@loopback/core';
 export async function main(options?: ApplicationConfig) {
   const app = new MyApplication(options);
 
-  try {
-    await app.start();
-  } catch (err) {
-    console.error(`Unable to start application: ${err}`);
-  }
+  await app.start();
   return app;
 }
 

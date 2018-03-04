@@ -7,10 +7,6 @@ import {HelloWorldApplication} from './application';
 
 export async function main() {
   const app = new HelloWorldApplication();
-  try {
-    await app.start();
-  } catch (err) {
-    console.error(`Unable to start application: ${err}`);
-  }
+  await app.start();
   return app;
 }
