@@ -1,0 +1,46 @@
+{
+  "name": "@loopback/service-proxy-proxy",
+  "version": "0.2.0",
+  "description": "Service integration for LoopBack 4",
+  "engines": {
+    "node": ">=8"
+  },
+  "main": "index",
+  "scripts": {
+    "acceptance": "lb-mocha \"DIST/test/acceptance/**/*.js\"",
+    "build": "lb-tsc es2017",
+    "build:apidocs": "lb-apidocs",
+    "clean": "lb-clean loopback-service-proxy*.tgz dist package api-docs",
+    "integration": "lb-mocha \"DIST/test/integration/**/*.js\"",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/acceptance/**/*.js\" \"DIST/test/integration/**/*.js\"",
+    "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-service-proxy*.tgz && tree package && npm run clean"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "IBM",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "devDependencies": {
+    "@loopback/build": "^0.2.0",
+    "@loopback/testlab": "^0.2.0"
+  },
+  "dependencies": {
+    "@loopback/context": "^0.8.1",
+    "@loopback/core": "^0.6.1",
+    "loopback-datasource-juggler": "^3.15.2"
+  },
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist/src",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
+}
