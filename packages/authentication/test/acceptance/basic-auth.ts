@@ -188,7 +188,7 @@ describe('Basic Authentication', () => {
   }
 
   function whenIMakeRequestTo(restServer: RestServer): Client {
-    return createClientForHandler(restServer.handleHttp);
+    return createClientForHandler(restServer.requestHandler);
   }
 });
 

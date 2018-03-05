@@ -17,6 +17,7 @@ import {
   RestServer,
   RestComponent,
   RestApplication,
+  HttpServerLike,
 } from '../../..';
 import {api} from '@loopback/openapi-v3';
 import {Application} from '@loopback/core';
@@ -104,8 +105,7 @@ describe('Sequence', () => {
     const restApp = new RestApplication();
     restApp.sequence(MySequence);
 
-    const appServer = await restApp.getServer(RestServer);
-    await whenIRequest(appServer)
+    await whenIRequest(restApp)
       .get('/name')
       .expect('MySequence was invoked.');
   });
@@ -213,7 +213,7 @@ describe('Sequence', () => {
     app.controller(controller);
   }
 
-  function whenIRequest(restServer: RestServer = server): Client {
-    return createClientForHandler(restServer.handleHttp);
+  function whenIRequest(restServerOrApp: HttpServerLike = server): Client {
+    return createClientForHandler(restServerOrApp.requestHandler);
   }
 });

@@ -11,7 +11,7 @@ const helpers = require('yeoman-test');
 const lerna = require('lerna');
 const build = require('@loopback/build');
 
-describe('app-generator', function() {
+describe('app-generator (SLOW)', function() {
   const generator = path.join(__dirname, '../generators/app');
   const rootDir = path.join(__dirname, '../../..');
   const sandbox = path.join(__dirname, '../../_sandbox');
