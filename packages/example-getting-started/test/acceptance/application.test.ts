@@ -19,7 +19,7 @@ describe('Application', () => {
   before(givenARestServer);
   before(givenTodoRepository);
   before(() => {
-    client = createClientForHandler(server.handleHttp);
+    client = createClientForHandler(server.requestHandler);
   });
   after(async () => {
     await app.stop();

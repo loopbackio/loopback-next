@@ -12,6 +12,7 @@ import {
   RestComponent,
   RestApplication,
   SequenceActions,
+  HttpServerLike,
 } from '../../..';
 
 import {api, get, post, param, requestBody} from '@loopback/openapi-v3';
@@ -552,9 +553,9 @@ describe('Routing', () => {
       const route = new Route('get', '/greet', routeSpec, greet);
       app.route(route);
 
-      const server = await givenAServer(app);
-      const client = whenIMakeRequestTo(server);
-      await client.get('/greet?name=world').expect(200, 'hello world');
+      await whenIMakeRequestTo(app)
+        .get('/greet?name=world')
+        .expect(200, 'hello world');
     });
 
     it('supports controller routes declared via app.api()', async () => {
@@ -580,9 +581,9 @@ describe('Routing', () => {
       app.api(spec);
       app.controller(MyController);
 
-      const server = await givenAServer(app);
-      const client = whenIMakeRequestTo(server);
-      await client.get('/greet?name=world').expect(200, 'hello world');
+      await whenIMakeRequestTo(app)
+        .get('/greet?name=world')
+        .expect(200, 'hello world');
     });
 
     it('supports controller routes defined via app.route()', async () => {
@@ -600,9 +601,18 @@ describe('Routing', () => {
 
       app.route('get', '/greet', spec, MyController, 'greet');
 
-      const server = await givenAServer(app);
-      const client = whenIMakeRequestTo(server);
-      await client.get('/greet?name=world').expect(200, 'hello world');
+      await whenIMakeRequestTo(app)
+        .get('/greet?name=world')
+        .expect(200, 'hello world');
+    });
+
+    it('provides httpHandler compatible with HTTP server API', async () => {
+      const app = new RestApplication();
+      app.handler((sequence, req, res) => res.end('hello'));
+
+      await createClientForHandler(app.requestHandler)
+        .get('/')
+        .expect(200, 'hello');
     });
   });
 
@@ -631,7 +641,7 @@ describe('Routing', () => {
     app.controller(controller);
   }
 
-  function whenIMakeRequestTo(server: RestServer): Client {
-    return createClientForHandler(server.handleHttp);
+  function whenIMakeRequestTo(serverOrApp: HttpServerLike): Client {
+    return createClientForHandler(serverOrApp.requestHandler);
   }
 });

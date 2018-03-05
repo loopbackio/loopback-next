@@ -9,7 +9,7 @@ import {SequenceHandler, SequenceFunction} from './sequence';
 import {Binding, Constructor} from '@loopback/context';
 import {format} from 'util';
 import {RestBindings} from './keys';
-import {RouteEntry, RestServer} from '.';
+import {RouteEntry, RestServer, HttpRequestListener, HttpServerLike} from '.';
 import {ControllerClass} from './router/routing-table';
 import {OperationObject, OpenApiSpec} from '@loopback/openapi-v3-types';
 
@@ -28,7 +28,37 @@ export const SequenceActions = RestBindings.SequenceActions;
  * will throw an error.
  *
  */
-export class RestApplication extends Application {
+export class RestApplication extends Application implements HttpServerLike {
+  /**
+   * The main REST server instance providing REST API for this application.
+   */
+  get restServer(): RestServer {
+    // FIXME(kjdelisle): I attempted to mimic the pattern found in RestServer
+    // with no success, so until I've got a better way, this is functional.
+    return this.getSync<RestServer>('servers.RestServer');
+  }
+
+  /**
+   * Handle incoming HTTP(S) request by invoking the corresponding
+   * Controller method via the configured Sequence.
+   *
+   * @example
+   *
+   * ```ts
+   * const app = new RestApplication();
+   * // setup controllers, etc.
+   *
+   * const server = http.createServer(app.requestHandler);
+   * server.listen(3000);
+   * ```
+   *
+   * @param req The request.
+   * @param res The response.
+   */
+  get requestHandler(): HttpRequestListener {
+    return this.restServer.requestHandler;
+  }
+
   constructor(config?: ApplicationConfig) {
     const cfg = Object.assign({}, config);
     super(cfg);
@@ -47,10 +77,7 @@ export class RestApplication extends Application {
   }
 
   handler(handlerFn: SequenceFunction) {
-    // FIXME(kjdelisle): I attempted to mimic the pattern found in RestServer
-    // with no success, so until I've got a better way, this is functional.
-    const server: RestServer = this.getSync('servers.RestServer');
-    server.handler(handlerFn);
+    this.restServer.handler(handlerFn);
   }
 
   /**
@@ -101,8 +128,7 @@ export class RestApplication extends Application {
     controller?: ControllerClass,
     methodName?: string,
   ): Binding {
-    // FIXME(bajtos): This is a workaround based on app.handler() above
-    const server: RestServer = this.getSync('servers.RestServer');
+    const server = this.restServer;
     if (typeof routeOrVerb === 'object') {
       return server.route(routeOrVerb);
     } else {

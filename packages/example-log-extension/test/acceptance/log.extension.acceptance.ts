@@ -5,7 +5,6 @@
 
 import {
   RestApplication,
-  RestServer,
   SequenceHandler,
   RestBindings,
   FindRoute,
@@ -42,7 +41,6 @@ import {logToMemory, resetLogs} from '../in-memory-logger';
 
 describe('log extension acceptance test', () => {
   let app: LogApp;
-  let server: RestServer;
   let spy: SinonSpy;
 
   class LogApp extends LogMixin(RestApplication) {}
@@ -73,7 +71,7 @@ describe('log extension acceptance test', () => {
 
   it('logs information at DEBUG or higher', async () => {
     setAppLogToDebug();
-    const client: Client = createClientForHandler(server.handleHttp);
+    const client: Client = createClientForHandler(app.requestHandler);
 
     await client.get('/nolog').expect(200, 'nolog called');
     expect(spy.called).to.be.False();
@@ -99,7 +97,7 @@ describe('log extension acceptance test', () => {
 
   it('logs information at INFO or higher', async () => {
     setAppLogToInfo();
-    const client: Client = createClientForHandler(server.handleHttp);
+    const client: Client = createClientForHandler(app.requestHandler);
 
     await client.get('/nolog').expect(200, 'nolog called');
     expect(spy.called).to.be.False();
@@ -125,7 +123,7 @@ describe('log extension acceptance test', () => {
 
   it('logs information at WARN or higher', async () => {
     setAppLogToWarn();
-    const client: Client = createClientForHandler(server.handleHttp);
+    const client: Client = createClientForHandler(app.requestHandler);
 
     await client.get('/nolog').expect(200, 'nolog called');
     expect(spy.called).to.be.False();
@@ -151,7 +149,7 @@ describe('log extension acceptance test', () => {
 
   it('logs information at ERROR', async () => {
     setAppLogToError();
-    const client: Client = createClientForHandler(server.handleHttp);
+    const client: Client = createClientForHandler(app.requestHandler);
 
     await client.get('/nolog').expect(200, 'nolog called');
     expect(spy.called).to.be.False();
@@ -177,7 +175,7 @@ describe('log extension acceptance test', () => {
 
   it('logs no information when logLevel is set to OFF', async () => {
     setAppLogToOff();
-    const client: Client = createClientForHandler(server.handleHttp);
+    const client: Client = createClientForHandler(app.requestHandler);
 
     await client.get('/nolog').expect(200, 'nolog called');
     expect(spy.called).to.be.False();
@@ -234,14 +232,13 @@ describe('log extension acceptance test', () => {
       }
     }
 
-    server.sequence(LogSequence);
+    app.sequence(LogSequence);
   }
 
   async function createApp() {
     app = new LogApp();
     app.bind(EXAMPLE_LOG_BINDINGS.TIMER).to(timer);
     app.bind(EXAMPLE_LOG_BINDINGS.LOGGER).to(logToMemory);
-    server = await app.getServer(RestServer);
   }
 
   function setAppLogToDebug() {

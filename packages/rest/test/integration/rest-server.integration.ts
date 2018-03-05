@@ -32,7 +32,7 @@ describe('RestServer (integration)', () => {
       }
     });
 
-    return createClientForHandler(server.handleHttp)
+    return createClientForHandler(server.requestHandler)
       .get('/')
       .expect(500);
   });
@@ -44,7 +44,7 @@ describe('RestServer (integration)', () => {
       response.end();
     });
 
-    await createClientForHandler(server.handleHttp)
+    await createClientForHandler(server.requestHandler)
       .get('/')
       .expect(200, 'Hello')
       .expect('Access-Control-Allow-Origin', '*')
@@ -58,7 +58,7 @@ describe('RestServer (integration)', () => {
       response.end();
     });
 
-    await createClientForHandler(server.handleHttp)
+    await createClientForHandler(server.requestHandler)
       .options('/')
       .expect(204)
       .expect('Access-Control-Allow-Origin', '*')
@@ -78,7 +78,7 @@ describe('RestServer (integration)', () => {
     };
     server.route(new Route('get', '/greet', greetSpec, function greet() {}));
 
-    const response = await createClientForHandler(server.handleHttp).get(
+    const response = await createClientForHandler(server.requestHandler).get(
       '/openapi.json',
     );
     expect(response.body).to.containDeep({
@@ -118,7 +118,7 @@ describe('RestServer (integration)', () => {
     };
     server.route(new Route('get', '/greet', greetSpec, function greet() {}));
 
-    const response = await createClientForHandler(server.handleHttp).get(
+    const response = await createClientForHandler(server.requestHandler).get(
       '/openapi.yaml',
     );
     const expected = yaml.safeLoad(`
@@ -159,7 +159,7 @@ servers:
     };
     server.route(new Route('get', '/greet', greetSpec, function greet() {}));
 
-    const response = await createClientForHandler(server.handleHttp).get(
+    const response = await createClientForHandler(server.requestHandler).get(
       '/swagger-ui',
     );
     await server.get(RestBindings.PORT);
@@ -190,7 +190,7 @@ servers:
     };
     server.route(new Route('get', '/greet', greetSpec, function greet() {}));
 
-    const response = await createClientForHandler(server.handleHttp).get(
+    const response = await createClientForHandler(server.requestHandler).get(
       '/swagger-ui',
     );
     await server.get(RestBindings.PORT);
