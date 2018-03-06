@@ -18,8 +18,6 @@ The [loopback-next](https://github.com/strongloop/loopback-next) repository uses
 |[example-rpc-server](packages/example-rpc-server)          | _(private)_                    | An example RPC server and application to demonstrate the creation of your own custom server |
 |[metadata](packages/metadata)                              |@loopback/metadata              | Utilities to help developers implement TypeScript decorators, define/merge metadata, and inspect metadata |
 |[openapi-spec-builder](packages/openapi-spec-builder)      |@loopback/openapi-spec-builder  | Builders to create OpenAPI (Swagger) specification documents in tests |
-|[openapi-spec](packages/openapi-spec)                      |@loopback/openapi-spec          | TypeScript type definitions for OpenAPI Spec/Swagger documents |
-|[openapi-v2](packages/openapi-v2)                          |@loopback/openapi-v2            | Decorators that annotate LoopBack artifacts with OpenAPI v2 (Swagger) metadata and utilities that transform LoopBack metadata to OpenAPI v2 (Swagger) specifications|
 |[openapi-v3](packages/openapi-v3)                          |@loopback/openapi-v3            | Decorators that annotate LoopBack artifacts with OpenAPI v3 metadata and utilities that transform LoopBack metadata to OpenAPI v3 specifications|
 |[openapi-v3-types](packages/openapi-v3-types)              |@loopback/openapi-v3-types      | TypeScript type definitions for OpenAPI Specifications |
 |[repository-json-schema](packages/repository-json-schema)  |@loopback/repository-json-schema| Convert a TypeScript class/model to a JSON Schema |

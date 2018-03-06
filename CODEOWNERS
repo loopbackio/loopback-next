@@ -15,9 +15,7 @@ packages/example-hello-world/* @b-admike
 packages/example-log-extension/* @virkt25
 packages/example-rpc-server/* @kjdelisle
 packages/metadata/* @raymondfeng
-packages/openapi-spec/* @bajtos @jannyHou
 packages/openapi-spec-builder/* @bajtos @raymondfeng
-packages/openapi-v2/* @bajtos @jannyHou
 packages/openapi-v3/* @bajtos @jannyHou
 packages/openapi-v3-types/* @bajtos @jannyHou
 packages/repository/* @raymondfeng @kjdelisle
