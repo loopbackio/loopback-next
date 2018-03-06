@@ -19,7 +19,7 @@ const baseTests = require('./base-generator')(generator);
 
 describe('app-generator extending BaseGenerator', baseTests);
 describe('generator-loopback4:app', tests);
-describe('app-generator specfic files', () => {
+describe('app-generator specific files', () => {
   before(() => {
     return helpers.run(generator).withPrompts(props);
   });
