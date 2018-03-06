@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.1"></a>
+## [0.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.2.0...@loopback/repository@0.2.1) (2018-03-06)
+
+
+### Bug Fixes
+
+* fix package name for `repository` ([e5f7aca](https://github.com/strongloop/loopback-next/commit/e5f7aca))
+* fix typo of `additional` ([2fd7610](https://github.com/strongloop/loopback-next/commit/2fd7610))
+
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.1.2...@loopback/repository@0.2.0) (2018-03-01)
 

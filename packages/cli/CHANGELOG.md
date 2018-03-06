@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.2.0...@loopback/cli@0.3.0) (2018-03-06)
+
+
+### Bug Fixes
+
+* use lerna to collect versions for loopback modules ([2956bf9](https://github.com/strongloop/loopback-next/commit/2956bf9))
+
+
+### Features
+
+* **cli:** replace hard-coded loopback module version in templates ([0a742d7](https://github.com/strongloop/loopback-next/commit/0a742d7))
+* upgrade from swagger 2 to openapi 3 ([71e5af1](https://github.com/strongloop/loopback-next/commit/71e5af1))
+
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.1.3...@loopback/cli@0.2.0) (2018-03-01)
 
