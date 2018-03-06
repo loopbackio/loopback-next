@@ -6,11 +6,14 @@ import {
   patch,
   del,
   requestBody,
+  operation,
 } from '@loopback/openapi-v3';
-import {HttpErrors} from '@loopback/rest';
+import {HttpErrors, RestBindings} from '@loopback/rest';
 import {Todo} from '../models';
 import {repository} from '@loopback/repository';
 import {TodoRepository} from '../repositories';
+import {inject} from '@loopback/core';
+import {ServerResponse} from 'http';
 
 export class TodoController {
   // TODO(bajtos) Fix documentation (and argument names?) of @repository()
@@ -18,6 +21,7 @@ export class TodoController {
   // See https://github.com/strongloop/loopback-next/issues/744
   constructor(
     @repository(TodoRepository.name) protected todoRepo: TodoRepository,
+    @inject(RestBindings.Http.RESPONSE) public res: ServerResponse,
   ) {}
 
   @post('/todo')
@@ -74,5 +78,33 @@ export class TodoController {
   @del('/todo/{id}')
   async deleteTodo(@param.path.number('id') id: number): Promise<boolean> {
     return await this.todoRepo.deleteById(id);
+  }
+
+  /**
+   * Swagger UI is not a local component, hence we need to enable CORS support
+   * for complex requests by returning a OPTIONS header with the appropriate
+   * headers. When a CORS request is made for a complex request, a pre-flight
+   * request is performed (also known as a OPTIONS request) to ensure access is
+   * allowed. The following two methods set the required headers for CORS pre-flight check.
+   */
+  @operation('options', '/todo')
+  async allowCors() {
+    this.res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    this.res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Content-Type, Access-Control-Allow-Headers',
+    );
+  }
+
+  @operation('options', '/todo/{id}')
+  async allowCorsOnID() {
+    this.res.setHeader(
+      'Access-Control-Allow-Methods',
+      'GET, PUT, PATCH, DELETE, OPTIONS',
+    );
+    this.res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Content-Type, Access-Control-Allow-Headers',
+    );
   }
 }

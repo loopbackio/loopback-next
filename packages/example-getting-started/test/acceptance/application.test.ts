@@ -88,6 +88,39 @@ describe('Application', () => {
     throw new Error('No error was thrown!');
   });
 
+  it('returns 200 for OPTIONS request for /todo', async () => {
+    await client
+      .options('/todo')
+      .send()
+      .expect('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+      .expect(
+        'Access-Control-Allow-Headers',
+        'Content-Type, Access-Control-Allow-Headers',
+      )
+      .expect(200);
+  });
+
+  it('returns 200 for OPTIONS request for /todo/{id}', async () => {
+    const todo = givenTodo();
+    await client
+      .post('/todo')
+      .send(todo)
+      .expect(200);
+
+    await client
+      .options(`/todo/${todo.id}`)
+      .send()
+      .expect(
+        'Access-Control-Allow-Methods',
+        'GET, PUT, PATCH, DELETE, OPTIONS',
+      )
+      .expect(
+        'Access-Control-Allow-Headers',
+        'Content-Type, Access-Control-Allow-Headers',
+      )
+      .expect(200);
+  });
+
   /*
    ============================================================================
    TEST HELPERS

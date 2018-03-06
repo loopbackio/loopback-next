@@ -9,3 +9,4 @@ packages/*/*.tgz
 packages/*/dist*
 packages/*/package
 .sandbox
+packages/example-getting-started/data/db.json
