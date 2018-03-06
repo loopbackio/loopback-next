@@ -3,6 +3,7 @@ import {TodoController} from '../../../src/controllers';
 import {TodoRepository} from '../../../src/repositories';
 import {Todo} from '../../../src/models/index';
 import {givenTodo} from '../../helpers';
+import {ServerResponse} from 'http';
 
 describe('TodoController', () => {
   let todoRepo: TodoRepository;
@@ -38,6 +39,7 @@ describe('TodoController', () => {
   let aTodoWithId: Todo;
   let aChangedTodo: Todo;
   let aTodoList: Todo[];
+  let fakeResponse: ServerResponse;
 
   const noError = 'No error was thrown!';
 
@@ -145,6 +147,7 @@ describe('TodoController', () => {
     updateById = todoRepo.updateById as sinon.SinonStub;
     replaceById = todoRepo.replaceById as sinon.SinonStub;
     deleteById = todoRepo.deleteById as sinon.SinonStub;
-    controller = new TodoController(todoRepo);
+    fakeResponse = <ServerResponse>{};
+    controller = new TodoController(todoRepo, fakeResponse);
   }
 });
