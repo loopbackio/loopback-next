@@ -10,3 +10,7 @@ exports.prettier = require('./bin/run-prettier');
 exports.tslint = require('./bin/run-tslint');
 exports.nyc = require('./bin/run-nyc');
 exports.dist = require('./bin/select-dist');
+
+const utils = require('./bin/utils');
+exports.runCLI = utils.runCLI;
+exports.runShell = utils.runShell;

@@ -8,4 +8,5 @@ api-docs
 packages/*/*.tgz
 packages/*/dist*
 packages/*/package
+packages/_sandbox
 .sandbox
