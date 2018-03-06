@@ -37,6 +37,35 @@ describe('RestServer (integration)', () => {
       .expect(500);
   });
 
+  it('allows cors', async () => {
+    const server = await givenAServer({rest: {port: 0}});
+    server.handler((sequence, request, response) => {
+      response.write('Hello');
+      response.end();
+    });
+
+    await createClientForHandler(server.handleHttp)
+      .get('/')
+      .expect(200, 'Hello')
+      .expect('Access-Control-Allow-Origin', '*')
+      .expect('Access-Control-Allow-Credentials', 'true');
+  });
+
+  it('allows cors preflight', async () => {
+    const server = await givenAServer({rest: {port: 0}});
+    server.handler((sequence, request, response) => {
+      response.write('Hello');
+      response.end();
+    });
+
+    await createClientForHandler(server.handleHttp)
+      .options('/')
+      .expect(204)
+      .expect('Access-Control-Allow-Origin', '*')
+      .expect('Access-Control-Allow-Credentials', 'true')
+      .expect('Access-Control-Max-Age', '86400');
+  });
+
   it('exposes "GET /openapi.json" endpoint', async () => {
     const server = await givenAServer({rest: {port: 0}});
     const greetSpec = {
@@ -75,7 +104,6 @@ describe('RestServer (integration)', () => {
     });
     expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
-    expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
   });
 
   it('exposes "GET /openapi.yaml" endpoint', async () => {
@@ -115,7 +143,6 @@ servers:
     expect(yaml.safeLoad(response.text)).to.eql(expected);
     expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
-    expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
   });
 
   it('exposes "GET /swagger-ui" endpoint', async () => {
@@ -145,7 +172,6 @@ servers:
     expect(response.get('Location')).match(url);
     expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
-    expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
   });
 
   it('exposes "GET /swagger-ui" endpoint with apiExplorerUrl', async () => {
@@ -177,7 +203,6 @@ servers:
     expect(response.get('Location')).match(url);
     expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
-    expect(response.get('Access-Control-Allow-Max-Age')).to.equal('86400');
   });
 
   async function givenAServer(options?: ApplicationConfig) {

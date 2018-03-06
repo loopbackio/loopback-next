@@ -11,6 +11,7 @@ import {ParsedRequest} from './internal-types';
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
 import {ServerRequest, ServerResponse, createServer} from 'http';
 import * as Http from 'http';
+import * as cors from 'cors';
 import {Application, CoreBindings, Server} from '@loopback/core';
 import {getControllerSpec} from '@loopback/openapi-v3';
 import {HttpHandler} from './http-handler';
@@ -159,9 +160,24 @@ export class RestServer extends Context implements Server {
   ) {
     // allow CORS support for all endpoints so that users
     // can test with online SwaggerUI instance
-    response.setHeader('Access-Control-Allow-Origin', '*');
-    response.setHeader('Access-Control-Allow-Credentials', 'true');
-    response.setHeader('Access-Control-Allow-Max-Age', '86400');
+
+    const corsOptions = options.cors || {
+      origin: '*',
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      preflightContinue: false,
+      optionsSuccessStatus: 204,
+      maxAge: 86400,
+      credentials: true,
+    };
+
+    // FIXME: `cors` expects Express Request/Response but the implementation
+    // at https://github.com/expressjs/cors/blob/master/lib/index.js only uses
+    // http.ServerRequest/ServerResponse
+    // tslint:disable-next-line:no-any
+    cors(corsOptions)(request as any, response as any, () => {});
+    if (request.method === 'OPTIONS') {
+      return Promise.resolve();
+    }
 
     if (
       request.method === 'GET' &&
@@ -588,6 +604,7 @@ export class RestServer extends Context implements Server {
 export interface RestServerConfig {
   host?: string;
   port?: number;
+  cors?: cors.CorsOptions;
   apiExplorerUrl?: string;
   sequence?: Constructor<SequenceHandler>;
 }
