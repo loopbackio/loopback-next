@@ -8,50 +8,61 @@
 const path = require('path');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
-
 const lerna = require('lerna');
-function lernaBootstrap() {
-  const cmd = new lerna.BootstrapCommand('', {
-    loglevel: 'silent',
-  });
-  return cmd.run();
-}
-
-const runShell = require('@loopback/build').runShell;
+const build = require('@loopback/build');
 
 describe('app-generator', function() {
   const generator = path.join(__dirname, '../generators/app');
   const rootDir = path.join(__dirname, '../../..');
   const sandbox = path.join(__dirname, '../../_sandbox');
   const cwd = process.cwd();
+  const appName = '@loopback/sandbox-app';
   const props = {
-    name: 'myApp',
-    description: 'My app for LoopBack 4',
+    name: appName,
+    description: 'My sandbox app for LoopBack 4',
     outdir: sandbox,
   };
 
-  // WARNING: It takes a while to run `lerna bootstrap`
-  this.timeout(0);
-  before(() => {
-    return helpers
+  before(async () => {
+    await helpers
       .run(generator)
       .inDir(sandbox)
+      // Mark it private to prevent accidental npm publication
+      .withOptions({private: true})
       .withPrompts(props);
   });
 
-  it('passes `npm test` for the generated project', async () => {
+  // Run `lerna bootstrap --scope @loopback/sandbox-app`
+  // WARNING: It takes a while to run `lerna bootstrap`
+  this.timeout(0);
+  before(async () => {
     process.chdir(rootDir);
-    await lernaBootstrap();
+    await lernaBootstrap(appName);
+  });
+
+  it('passes `npm test` for the generated project', () => {
     process.chdir(sandbox);
     return new Promise((resolve, reject) => {
-      runShell('npm', ['test', '--', '--allow-console-logs']).on(
-        'close',
-        code => {
-          process.chdir(cwd);
+      build
+        .runShell('npm', ['test', '--', '--allow-console-logs'])
+        .on('close', code => {
           assert.equal(code, 0);
           resolve();
-        }
-      );
+        });
     });
   });
+
+  after(() => {
+    process.chdir(rootDir);
+    build.clean(['node', 'run-clean', sandbox]);
+    process.chdir(cwd);
+  });
 });
+
+function lernaBootstrap(scope) {
+  const cmd = new lerna.BootstrapCommand('', {
+    scope: scope,
+    loglevel: 'silent',
+  });
+  return cmd.run();
+}
