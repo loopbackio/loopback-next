@@ -243,7 +243,7 @@ $ npm publish --access=public
 Please register the new package in the following files:
 
  - Update [MONOREPO.md](../MONOREPO.md) - insert a new table row to describe the new package, please keep the rows sorted by package name.
- - Update [docs/apidocs.html](./docs/apidocs.html) - add a link to API docs for this new package.
+ - Update [docs/apidocs.html](./apidocs.html) - add a link to API docs for this new package.
  - Update [CODEOWNERS](./CODEOWNERS) - add a new entry listing the primary maintainers (owners) of the new package
  - Ask somebody from the IBM team (e.g. [@bajtos](https://github.com/bajtos), [@raymondfeng](https://github.com/raymondfeng) or [@kjdelisle](https://github.com/kjdelisle)) to enlist the new package on http://apidocs.loopback.io/
 
