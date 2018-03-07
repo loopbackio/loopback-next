@@ -71,6 +71,17 @@ module.exports = function(projGenerator, props, projectType) {
           assert(helpText.match(/# Project root directory /));
         });
 
+        it('has private option set up', () => {
+          let gen = testUtils.testSetUpGen(projGenerator);
+          let helpText = gen.help();
+          assert(helpText.match(/--private/));
+          assert(
+            helpText.match(
+              /# Mark the project private \(excluded from npm publish\)/
+            )
+          );
+        });
+
         it('has tslint option set up', () => {
           let gen = testUtils.testSetUpGen(projGenerator);
           let helpText = gen.help();

@@ -55,6 +55,11 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       description: 'Use @loopback/build',
     });
 
+    this.option('private', {
+      type: Boolean,
+      description: 'Mark the project private (excluded from npm publish)',
+    });
+
     // argument validation
     if (this.args.length) {
       const isValid = utils.validate(this.args[0]);
@@ -87,7 +92,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       projectType: this.projectType,
       dependencies: utils.getDependencies(),
     };
-    this.projectOptions = ['name', 'description', 'outdir'].concat(
+    this.projectOptions = ['name', 'description', 'outdir', 'private'].concat(
       this.buildOptions
     );
     this.projectOptions.forEach(n => {

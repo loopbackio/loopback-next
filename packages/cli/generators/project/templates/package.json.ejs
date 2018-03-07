@@ -48,13 +48,17 @@
   "repository": {
     "type": "git"
   },
+<% if (project.private) { -%>
+  "private": true,
+<% } -%>
   "author": "",
   "license": "MIT",
   "files": [
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist"
+    "dist",
+    "src"
   ],
   "dependencies": {
     "@loopback/context": "<%= project.dependencies['@loopback/context'] -%>",
