@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.1"></a>
+## [0.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.3.0...@loopback/rest@0.3.1) (2018-03-07)
+
+
+### Bug Fixes
+
+* **rest:** enable cors preflight ([d05bdae](https://github.com/strongloop/loopback-next/commit/d05bdae))
+
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.2.0...@loopback/rest@0.3.0) (2018-03-06)
 

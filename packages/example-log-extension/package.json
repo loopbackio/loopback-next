@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-log-extension",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "An example extension project for LoopBack 4",
   "private": true,
   "main": "index.js",
@@ -48,7 +48,7 @@
     "@loopback/context": "^0.2.1",
     "@loopback/core": "^0.2.1",
     "@loopback/openapi-v3": "^0.3.0",
-    "@loopback/rest": "^0.3.0",
+    "@loopback/rest": "^0.3.1",
     "chalk": "^2.3.0",
     "debug": "^3.1.0"
   }

@@ -1,6 +1,6 @@
 {
   "name": "@loopback/boot",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A collection of Booters for LoopBack 4 Applications",
   "engines": {
     "node": ">=8"
@@ -37,7 +37,7 @@
   "devDependencies": {
     "@loopback/build": "^0.2.0",
     "@loopback/openapi-v3": "^0.3.0",
-    "@loopback/rest": "^0.3.0",
+    "@loopback/rest": "^0.3.1",
     "@loopback/testlab": "^0.3.0"
   },
   "files": [
