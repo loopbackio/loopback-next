@@ -19,7 +19,7 @@ import {getJsonSchema} from '@loopback/repository-json-schema';
 import {model, property} from '@loopback/repository';
 
 @model()
-MyModel {
+class MyModel {
   @property() name: string;
 }
 
