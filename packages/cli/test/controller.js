@@ -293,7 +293,7 @@ describe('lb4 controller', () => {
     // Assert that the decorators are present in the correct groupings!
     assert.fileContent(
       tmpDir + withInputName,
-      /\@post\('\/foo'\)\s{1,}async create\(\@param.body\('obj'\)/
+      /\@post\('\/foo'\)\s{1,}async create\(\@requestBody\(\)/
     );
 
     assert.fileContent(
@@ -307,7 +307,7 @@ describe('lb4 controller', () => {
     );
     assert.fileContent(
       tmpDir + withInputName,
-      /\@patch\('\/foo'\)\s{1,}async updateAll\(\@param.query.string\('where'\) where: Where,\s{1,}\@param.body\('obj'\)/
+      /\@patch\('\/foo'\)\s{1,}async updateAll\(\@param.query.string\('where'\) where: Where,\s{1,}\@requestBody\(\)/
     );
     assert.fileContent(
       tmpDir + withInputName,
@@ -319,7 +319,7 @@ describe('lb4 controller', () => {
     );
     assert.fileContent(
       tmpDir + withInputName,
-      /\@patch\('\/foo\/{id}'\)\s{1,}async updateById\(\@param.path.number\('id'\) id: number, \@param.body\('obj'\)/
+      /\@patch\('\/foo\/{id}'\)\s{1,}async updateById\(\@param.path.number\('id'\) id: number, \@requestBody\(\)/
     );
     assert.fileContent(
       tmpDir + withInputName,

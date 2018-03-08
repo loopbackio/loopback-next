@@ -1,5 +1,13 @@
 import {Filter, Where} from '@loopback/repository';
-import {post, param, get, put, patch, del} from '@loopback/openapi-v3';
+import {
+  post,
+  param,
+  get,
+  put,
+  patch,
+  del,
+  requestBody
+} from '@loopback/openapi-v3';
 import {inject} from '@loopback/context';
 import {<%= modelName %>} from '../models';
 import {<%= repositoryName %>} from '../repositories';
@@ -12,7 +20,7 @@ export class <%= name %>Controller {
   ) {}
 
   @post('/<%= modelNameCamel %>')
-  async create(@param.body('obj') obj: <%= modelName %>)
+  async create(@requestBody() obj: <%= modelName %>)
     : Promise<<%= modelName %>> {
     return await this.<%= repositoryNameCamel %>.create(obj);
   }
@@ -30,7 +38,7 @@ export class <%= name %>Controller {
 
   @patch('/<%= modelNameCamel %>')
   async updateAll(@param.query.string('where') where: Where,
-    @param.body('obj') obj: <%= modelName %>) : Promise<number> {
+    @requestBody() obj: <%= modelName %>) : Promise<number> {
       return await this.<%= repositoryNameCamel %>.updateAll(where, obj);
   }
 
@@ -45,7 +53,7 @@ export class <%= name %>Controller {
   }
 
   @patch('/<%= modelNameCamel %>/{id}')
-  async updateById(@param.path.number('id') id: <%= idType %>, @param.body('obj')
+  async updateById(@param.path.number('id') id: <%= idType %>, @requestBody()
    obj: <%= modelName %>) : Promise<boolean> {
     return await this.<%= repositoryNameCamel %>.updateById(id, obj);
   }
