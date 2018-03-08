@@ -35,7 +35,7 @@
 <% } -%>
     "pretest": "npm run clean && npm run build",
 <% if (project.mocha) { -%>
-    "test": "lb-mocha \"DIST/test\"",
+    "test": "lb-mocha --allow-console-logs \"DIST/test\"",
 <% } -%>
 <% if (project.prettier || project.tslint) { -%>
     "posttest": "npm run lint",
