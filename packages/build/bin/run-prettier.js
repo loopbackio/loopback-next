@@ -34,7 +34,7 @@ function run(argv, dryRun) {
   }
   args.push(...prettierOpts);
 
-  return utils.runCLI('prettier/bin-prettier', args, dryRun);
+  return utils.runCLI('prettier/bin-prettier', args, {dryRun});
 }
 
 module.exports = run;

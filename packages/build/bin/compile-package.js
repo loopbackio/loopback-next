@@ -114,7 +114,7 @@ function run(argv, dryRun) {
 
   args.push(...compilerOpts);
 
-  return utils.runCLI('typescript/lib/tsc', args, dryRun);
+  return utils.runCLI('typescript/lib/tsc', args, {dryRun});
 }
 
 module.exports = run;

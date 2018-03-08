@@ -104,23 +104,30 @@ function resolveCLI(cli) {
  * Run a command with the given arguments
  * @param {string} cli Path of the cli command
  * @param {string[]} args The arguments
- * @param {boolean} dryRun Controls if the cli will be executed or not. If set
+ * @param {object} options Options to control dryRun and spawn
+ * - dryRun Controls if the cli will be executed or not. If set
  * to true, the command itself will be returned without running it
  */
-function runCLI(cli, args, dryRun) {
+function runCLI(cli, args, options) {
   cli = resolveCLI(cli);
   args = [cli].concat(args);
   debug('%s', args.join(' '));
-  if (dryRun) {
+  // Keep it backward compatible as dryRun
+  if (typeof options === 'boolean') options = {dryRun: options};
+  options = options || {};
+  if (options.dryRun) {
     return util.format('%s %s', process.execPath, args.join(' '));
   }
   var child = spawn(
     process.execPath, // Typically '/usr/local/bin/node'
     args,
-    {
-      stdio: 'inherit',
-      env: Object.create(process.env),
-    }
+    Object.assign(
+      {
+        stdio: 'inherit',
+        env: Object.create(process.env),
+      },
+      options
+    )
   );
   child.on('close', (code, signal) => {
     debug('%s exits: %d', cli, code);
@@ -133,23 +140,34 @@ function runCLI(cli, args, dryRun) {
  * Run the command in a shell
  * @param {string} command The command
  * @param {string[]} args The arguments
- * @param {boolean} dryRun Controls if the cli will be executed or not. If set
+ * @param {object} options Options to control dryRun and spawn
+ * - dryRun Controls if the cli will be executed or not. If set
  * to true, the command itself will be returned without running it
  */
-function runShell(command, args, dryRun) {
+function runShell(command, args, options) {
   args = args.map(a => JSON.stringify(a));
   debug('%s %s', command, args.join(' '));
-  if (dryRun) {
+  // Keep it backward compatible as dryRun
+  if (typeof options === 'boolean') options = {dryRun: options};
+  options = options || {};
+  if (options.dryRun) {
     return util.format('%s %s', command, args.join(' '));
   }
-  var child = spawn(command, args, {
-    stdio: 'inherit',
-    env: Object.create(process.env),
-    // On Windows, npm creates `.cmd` files instead of symlinks in
-    // `node_modules/.bin` folder. These files cannot be executed directly,
-    // only via a shell.
-    shell: true,
-  });
+  var child = spawn(
+    command,
+    args,
+    Object.assign(
+      {
+        stdio: 'inherit',
+        env: Object.create(process.env),
+        // On Windows, npm creates `.cmd` files instead of symlinks in
+        // `node_modules/.bin` folder. These files cannot be executed directly,
+        // only via a shell.
+        shell: true,
+      },
+      options
+    )
+  );
   child.on('close', (code, signal) => {
     debug('%s exits: %d', command, code);
     process.exitCode = code;

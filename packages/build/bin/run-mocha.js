@@ -52,7 +52,7 @@ function run(argv, dryRun) {
 
   const args = [...mochaOpts];
 
-  return utils.runCLI('mocha/bin/mocha', args, dryRun);
+  return utils.runCLI('mocha/bin/mocha', args, {dryRun});
 }
 
 module.exports = run;

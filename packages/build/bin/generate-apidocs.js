@@ -45,7 +45,7 @@ function run(argv, dryRun) {
     args.push('-o', 'api-docs');
   }
   args.push(...apidocsOpts);
-  return utils.runCLI('strong-docs/bin/cli', args, dryRun);
+  return utils.runCLI('strong-docs/bin/cli', args, {dryRun});
 }
 
 module.exports = run;
