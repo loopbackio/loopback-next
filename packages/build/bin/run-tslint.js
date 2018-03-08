@@ -39,7 +39,7 @@ function run(argv, dryRun) {
   }
   args.push(...tslintOpts);
 
-  return utils.runCLI('tslint/bin/tslint', args, dryRun);
+  return utils.runCLI('tslint/bin/tslint', args, {dryRun});
 }
 
 module.exports = run;

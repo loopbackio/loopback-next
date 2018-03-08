@@ -43,10 +43,15 @@ describe('app-generator', function() {
   it('passes `npm test` for the generated project', () => {
     process.chdir(sandbox);
     return new Promise((resolve, reject) => {
-      build.runShell('npm', ['test']).on('close', code => {
-        assert.equal(code, 0);
-        resolve();
-      });
+      build
+        .runShell('npm', ['test'], {
+          // Disable stdout
+          stdio: [process.stdin, 'ignore', process.stderr],
+        })
+        .on('close', code => {
+          assert.equal(code, 0);
+          resolve();
+        });
     });
   });
 

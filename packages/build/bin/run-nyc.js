@@ -22,7 +22,7 @@ function run(argv, dryRun) {
   const nycOpts = argv.slice(2);
   const args = [...nycOpts];
 
-  return utils.runCLI('nyc/bin/nyc', args, dryRun);
+  return utils.runCLI('nyc/bin/nyc', args, {dryRun});
 }
 
 module.exports = run;

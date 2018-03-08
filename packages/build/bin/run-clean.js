@@ -35,7 +35,9 @@ function run(argv, dryRun) {
   files.forEach(f => {
     var file = path.relative(process.cwd(), f);
     if (file.indexOf('..') !== -1) {
-      console.error('Skipping ' + f + ' as it is not inside the project');
+      if (!dryRun) {
+        console.error('Skipping ' + f + ' as it is not inside the project');
+      }
     } else {
       if (!dryRun) fs.removeSync(f);
       removed.push(f);
