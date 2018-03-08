@@ -1,6 +1,6 @@
 {
   "name": "@loopback/authentication",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A LoopBack component for authentication support.",
   "engines": {
     "node": ">=8"
@@ -21,17 +21,17 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^0.2.1",
-    "@loopback/core": "^0.2.1",
-    "@loopback/openapi-v3": "^0.3.0",
-    "@loopback/rest": "^0.3.1",
+    "@loopback/context": "^0.2.2",
+    "@loopback/core": "^0.2.2",
+    "@loopback/openapi-v3": "^0.3.1",
+    "@loopback/rest": "^0.3.2",
     "passport": "^0.4.0",
     "passport-strategy": "^1.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^0.2.0",
-    "@loopback/openapi-spec-builder": "^0.3.0",
-    "@loopback/testlab": "^0.3.0",
+    "@loopback/build": "^0.3.0",
+    "@loopback/openapi-spec-builder": "^0.3.1",
+    "@loopback/testlab": "^0.3.1",
     "@types/passport": "^0.4.0",
     "@types/passport-http": "^0.3.3",
     "passport-http": "^0.3.0"

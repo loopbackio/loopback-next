@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.2"></a>
+## [0.2.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@0.2.1...@loopback/repository-json-schema@0.2.2) (2018-03-08)
+
+
+### Bug Fixes
+
+* **repository-json-schema:** change model to be a class ([4104e13](https://github.com/strongloop/loopback-next/commit/4104e13))
+
+
+
+
 <a name="0.2.1"></a>
 ## [0.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@0.2.0...@loopback/repository-json-schema@0.2.1) (2018-03-06)
 

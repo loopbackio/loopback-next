@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.2.0...@loopback/build@0.3.0) (2018-03-08)
+
+
+### Bug Fixes
+
+* clean up the app run test ([c0d3731](https://github.com/strongloop/loopback-next/commit/c0d3731))
+
+
+### Features
+
+* **build:** use options to control cli/shell run ([c4e8bce](https://github.com/strongloop/loopback-next/commit/c4e8bce))
+
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.1.2...@loopback/build@0.2.0) (2018-03-01)
 

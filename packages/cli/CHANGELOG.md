@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.3.1...@loopback/cli@0.4.0) (2018-03-08)
+
+
+### Bug Fixes
+
+* clean up the app run test ([c0d3731](https://github.com/strongloop/loopback-next/commit/c0d3731))
+* **cli:** add `--allow-console-logs` to app npm test script ([5823a18](https://github.com/strongloop/loopback-next/commit/5823a18))
+* template ([cf9cf04](https://github.com/strongloop/loopback-next/commit/cf9cf04))
+
+
+### Features
+
+* add private option for project generartion ([5c42be4](https://github.com/strongloop/loopback-next/commit/5c42be4))
+* **build:** use options to control cli/shell run ([c4e8bce](https://github.com/strongloop/loopback-next/commit/c4e8bce))
+
+
+
+
 <a name="0.3.1"></a>
 ## [0.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.3.0...@loopback/cli@0.3.1) (2018-03-07)
 
