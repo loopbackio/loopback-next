@@ -70,7 +70,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
   }
 
   /**
-   * Registers a Transform Stream with Yeoman. Removes `.template` extension
+   * Registers a Transform Stream with Yeoman. Removes `.ejs` extension
    * from files that have it during project generation.
    */
   setupRenameTransformer() {
