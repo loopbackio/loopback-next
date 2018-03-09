@@ -1,13 +1,13 @@
 # @loopback/authentication
 
-A LoopBack component for authentication support.
+A LoopBack 4 component for authentication support.
 
 **This is a reference implementation showing how to implement an authentication component, it is not production ready.**
 
 ## Overview
 
 The component demonstrates how to leverage Passport module and extension points
-provided by LoopBack Next to implement an authentication layer.
+provided by LoopBack 4 to implement an authentication layer.
 
 ## Installation
 
@@ -20,18 +20,27 @@ npm install --save @loopback/authentication
 Start by decorating your controller methods with `@authenticate` to require
 the request to be authenticated.
 
+In this example, we make the user profile available via dependency injection
+using a key available from `@loopback/authentication` package.
+
 ```ts
-// controllers/my-controller.ts
-import {UserProfile, authenticate, AuthenticationBindings} from '@loopback/authentication';
-import {inject} from '@loopback/core';
+// src/controllers/who-am-i.controller.ts
+import {inject} from '@loopback/context';
+import {
+  AuthenticationBindings,
+  UserProfile,
+  authenticate,
+} from '@loopback/authentication';
 import {get} from '@loopback/rest';
 
-export class MyController {
-  constructor(@inject(AuthenticationBindings.CURRENT_USER) private user: UserProfile) {}
+export class WhoAmIController {
+  constructor(
+    @inject(AuthenticationBindings.CURRENT_USER) private user: UserProfile,
+  ) {}
 
   @authenticate('BasicStrategy')
-  @get('/whoAmI')
-  whoAmI() {
+  @get('/whoami')
+  whoAmI(): string {
     return this.user.id;
   }
 }
@@ -42,19 +51,20 @@ in `@authenticate` decorators into Passport Strategy instances.
 Remember to install `passport`, `passport-http`, `@types/passport`, and
 `@types/passport-http` modules beforehand.
 
+```shell
+npm install --save passport passport-http
+npm install --save-dev @types/passport @types/passport-http
+```
+
 ```ts
-// providers/auth-strategy.ts
-import {
-  inject,
-  Provider,
-  ValueOrPromise,
-} from '@loopback/context';
+// src/providers/auth-strategy.provider.ts
+import {Provider, inject, ValueOrPromise} from '@loopback/context';
+import {Strategy} from 'passport';
 import {
   AuthenticationBindings,
   AuthenticationMetadata,
+  UserProfile,
 } from '@loopback/authentication';
-
-import {Strategy} from 'passport';
 import {BasicStrategy} from 'passport-http';
 
 export class MyAuthStrategyProvider implements Provider<Strategy | undefined> {
@@ -63,8 +73,7 @@ export class MyAuthStrategyProvider implements Provider<Strategy | undefined> {
     private metadata: AuthenticationMetadata,
   ) {}
 
-  value() : ValueOrPromise<Strategy | undefined> {
-
+  value(): ValueOrPromise<Strategy | undefined> {
     // The function was not decorated, so we shouldn't attempt authentication
     if (!this.metadata) {
       return undefined;
@@ -78,10 +87,14 @@ export class MyAuthStrategyProvider implements Provider<Strategy | undefined> {
     }
   }
 
-  verify(username: string, password: string, cb: Function) {
+  verify(
+    username: string,
+    password: string,
+    cb: (err: Error | null, user?: UserProfile | false) => void,
+  ) {
     // find user by name & password
     // call cb(null, false) when user not found
-    // call cb(null, userProfile) when user is authenticated
+    // call cb(null, user) when user is authenticated
   }
 }
 ```
@@ -90,27 +103,20 @@ In order to perform authentication, we need to implement a custom Sequence
 invoking the authentication at the right time during the request handling.
 
 ```ts
-// sequence.ts
+// src/sequence.ts
 import {
-  inject,
-} from '@loopback/core';
-
-import {
-  FindRoute,
-  InvokeMethod,
-  ParsedRequest,
-  ParseParams,
-  Reject,
-  Send,
-  ServerResponse,
-  SequenceHandler,
   RestBindings,
+  SequenceHandler,
+  FindRoute,
+  ParseParams,
+  InvokeMethod,
+  Send,
+  Reject,
+  ParsedRequest,
 } from '@loopback/rest';
-
-import {
-  AuthenticateFn,
-  AuthenticationBindings,
-} from '@loopback/authentication';
+import {inject} from '@loopback/context';
+import {AuthenticationBindings, AuthenticateFn} from '@loopback/authentication';
+import {ServerResponse} from 'http';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -145,34 +151,37 @@ export class MySequence implements SequenceHandler {
 Finally, put it all together in your application class:
 
 ```ts
+// src/application.ts
+import {BootMixin, Binding, Booter} from '@loopback/boot';
+import {RestApplication, RestServer} from '@loopback/rest';
 import {
   AuthenticationComponent,
   AuthenticationBindings,
 } from '@loopback/authentication';
-import {RestApplication, RestServer} from '@loopback/rest';
-import {MyAuthStrategyProvider} from './providers/auth-strategy';
-import {MyController} from './controllers/my-controller';
+import {MyAuthStrategyProvider} from './providers/auth-strategy.provider';
 import {MySequence} from './sequence';
+import {ApplicationConfig} from '@loopback/core';
 
-class MyApp extends RestApplication {
-  constructor() {
-    super();
+export class MyApp extends BootMixin(RestApplication) {
+  constructor(options?: ApplicationConfig) {
+    super(options);
+
+    this.projectRoot = __dirname;
 
     this.component(AuthenticationComponent);
-    this
-      .bind(AuthenticationBindings.STRATEGY)
-      .toProvider(MyAuthStrategyProvider);
+    this.bind(AuthenticationBindings.STRATEGY).toProvider(
+      MyAuthStrategyProvider,
+    );
 
     this.sequence(MySequence);
-
-    this.controller(MyController);
   }
 
   async start() {
     await super.start();
 
     const server = await this.getServer(RestServer);
-    console.log(`REST server running on port: ${server.getSync('rest.port')}`);
+    const port = await server.get('rest.port');
+    console.log(`REST server running on port: ${port}`);
   }
 }
 ```
@@ -180,10 +189,17 @@ class MyApp extends RestApplication {
 You can try your authentication component by using your favourite REST client
 and by setting the `authorization` header. Here is an example of what your
 request might look like using curl:
+
+```shell
+curl -u username:password http://localhost:3000/whoami
 ```
+
+or if you'd like to manually set the headers:
+
+```shell
 curl -X GET \
-  http://localhost:3000/whoami \
-  -H 'authorization: Basic Zm9vOmJhcg=='
+  http:/localhost:3000/whoami \
+  -H 'Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ='
 ```
 
 ## Related resources
@@ -192,7 +208,7 @@ For more info about passport, see [passport.js](http://passportjs.org/).
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contributing#guidelines)
+- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/site/DEVELOPING.md)
 - [Join the team](https://github.com/strongloop/loopback-next/issues/110)
 
 ## Tests
