@@ -17,7 +17,7 @@ Where <target> is either es2017 or es2015.
 
 'use strict';
 
-function run(argv, dryRun) {
+function run(argv, options) {
   const utils = require('./utils');
   const path = require('path');
   const fs = require('fs');
@@ -114,7 +114,7 @@ function run(argv, dryRun) {
 
   args.push(...compilerOpts);
 
-  return utils.runCLI('typescript/lib/tsc', args, {dryRun});
+  return utils.runCLI('typescript/lib/tsc', args, options);
 }
 
 module.exports = run;

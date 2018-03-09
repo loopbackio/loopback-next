@@ -15,7 +15,7 @@ Usage:
 
 'use strict';
 
-function run(argv, dryRun) {
+function run(argv, options) {
   const utils = require('./utils');
   const path = require('path');
 
@@ -52,7 +52,7 @@ function run(argv, dryRun) {
 
   const args = [...mochaOpts];
 
-  return utils.runCLI('mocha/bin/mocha', args, {dryRun});
+  return utils.runCLI('mocha/bin/mocha', args, options);
 }
 
 module.exports = run;

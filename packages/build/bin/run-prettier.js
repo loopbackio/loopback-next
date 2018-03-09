@@ -15,7 +15,7 @@ Usage:
 
 'use strict';
 
-function run(argv, dryRun) {
+function run(argv, options) {
   const utils = require('./utils');
 
   const prettierOpts = argv.slice(2);
@@ -34,7 +34,7 @@ function run(argv, dryRun) {
   }
   args.push(...prettierOpts);
 
-  return utils.runCLI('prettier/bin-prettier', args, {dryRun});
+  return utils.runCLI('prettier/bin-prettier', args, options);
 }
 
 module.exports = run;

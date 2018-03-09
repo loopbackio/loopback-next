@@ -6,7 +6,7 @@
 
 'use strict';
 
-function run(argv, dryRun) {
+function run(argv, options) {
   const utils = require('./utils');
   const fs = require('fs-extra');
   const path = require('path');
@@ -45,7 +45,7 @@ function run(argv, dryRun) {
     args.push('-o', 'api-docs');
   }
   args.push(...apidocsOpts);
-  return utils.runCLI('strong-docs/bin/cli', args, {dryRun});
+  return utils.runCLI('strong-docs/bin/cli', args, options);
 }
 
 module.exports = run;

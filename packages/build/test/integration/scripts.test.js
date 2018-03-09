@@ -9,7 +9,8 @@ const assert = require('assert');
 const path = require('path');
 const fs = require('fs-extra');
 
-describe('build', () => {
+describe('build', function() {
+  this.timeout(30000);
   var cwd = process.cwd();
   var projectDir = path.resolve(__dirname, '../fixtures');
 
@@ -163,7 +164,9 @@ describe('build', () => {
 
   it('generates apidocs', done => {
     var run = require('../../bin/generate-apidocs');
-    var childProcess = run(['node', 'bin/generate-apidocs']);
+    var childProcess = run(['node', 'bin/generate-apidocs'], {
+      stdio: [process.stdin, 'ignore', process.stderr],
+    });
     childProcess.on('close', code => {
       assert.equal(code, 0);
       assert(
@@ -256,13 +259,12 @@ describe('build', () => {
 
   it('runs prettier against ts files', done => {
     var run = require('../../bin/run-prettier');
-    var childProcess = run([
-      'node',
-      'bin/run-prettier',
-      '**/src/*.ts',
-      '--',
-      '-l',
-    ]);
+    var childProcess = run(
+      ['node', 'bin/run-prettier', '**/src/*.ts', '--', '-l'],
+      {
+        stdio: [process.stdin, 'ignore', process.stderr],
+      }
+    );
     childProcess.on('close', code => {
       assert.equal(code, 0);
       done();
