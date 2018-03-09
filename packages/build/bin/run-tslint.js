@@ -15,7 +15,7 @@ Usage:
 
 'use strict';
 
-function run(argv, dryRun) {
+function run(argv, options) {
   const utils = require('./utils');
 
   const tslintOpts = argv.slice(2);
@@ -39,7 +39,7 @@ function run(argv, dryRun) {
   }
   args.push(...tslintOpts);
 
-  return utils.runCLI('tslint/bin/tslint', args, {dryRun});
+  return utils.runCLI('tslint/bin/tslint', args, options);
 }
 
 module.exports = run;

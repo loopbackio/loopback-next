@@ -15,14 +15,14 @@ Usage:
 
 'use strict';
 
-function run(argv, dryRun) {
+function run(argv, options) {
   const utils = require('./utils');
   const path = require('path');
 
   const nycOpts = argv.slice(2);
   const args = [...nycOpts];
 
-  return utils.runCLI('nyc/bin/nyc', args, {dryRun});
+  return utils.runCLI('nyc/bin/nyc', args, options);
 }
 
 module.exports = run;

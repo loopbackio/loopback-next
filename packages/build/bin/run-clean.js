@@ -23,7 +23,7 @@ Example usage:
 
 'use strict';
 
-function run(argv, dryRun) {
+function run(argv, options) {
   const fs = require('fs-extra');
   const path = require('path');
   const utils = require('./utils');
@@ -32,14 +32,17 @@ function run(argv, dryRun) {
   if (!files.length) {
     files = [utils.getDistribution()];
   }
+  // Keep it backward compatible as dryRun
+  if (typeof options === 'boolean') options = {dryRun: options};
+  options = options || {};
   files.forEach(f => {
     var file = path.relative(process.cwd(), f);
     if (file.indexOf('..') !== -1) {
-      if (!dryRun) {
+      if (!options.dryRun) {
         console.error('Skipping ' + f + ' as it is not inside the project');
       }
     } else {
-      if (!dryRun) fs.removeSync(f);
+      if (!options.dryRun) fs.removeSync(f);
       removed.push(f);
     }
   });
