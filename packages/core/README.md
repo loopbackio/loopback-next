@@ -10,7 +10,6 @@ integrations.
 - Define your data and endpoints with OpenAPI
 - No maintenance of generated code
 
-
 ## Installation
 
 ```shell
@@ -29,7 +28,7 @@ see the [@loopback/rest package.](https://github.com/strongloop/loopback-next/tr
 ## Advanced Use
 
 Since `@loopback/core` is decoupled from the listening server implementation,
-LoopBack applications are now able to work with any components that provide
+LoopBack applications are now able to work with any component that provides
 this functionality.
 
 ```ts
@@ -51,8 +50,8 @@ app.component(GrpcComponent) // GRPC Server
 
 (async function start() {
   // Let's retrieve the bound instances of our servers.
-  const rest = await app.getServer('RestServer');
-  const grpc = await app.getServer('GrpcServer');
+  const rest = await app.getServer<RestServer>('RestServer');
+  const grpc = await app.getServer<GrpcServer>('GrpcServer');
 
   // Define all sorts of bindings here to pass configuration or data
   // between your server instances, define controllers and datasources for them,
@@ -68,7 +67,7 @@ dynamic configuration updates.
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contributing#guidelines)
+- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/DEVELOPING.md)
 - [Join the team](https://github.com/strongloop/loopback-next/issues/110)
 
 ## Tests
