@@ -5,32 +5,42 @@
 
 import {expect} from '@loopback/testlab';
 import {Application} from '@loopback/core';
-import {LogLevelMixin, LOG_LEVEL, EXAMPLE_LOG_BINDINGS} from '../../..';
+import {LogMixin, LOG_LEVEL, EXAMPLE_LOG_BINDINGS} from '../../..';
 
-describe('LogLevelMixin (unit)', () => {
+describe('LogMixin (unit)', () => {
+  let myApp: AppWithLogMixin;
+
+  beforeEach(getApp);
+
   it('mixed class has .logLevel()', () => {
-    const myApp = new AppWithLogLevel();
-    expect(typeof myApp.logLevel).to.be.eql('function');
+    expect(myApp.logLevel).to.be.a.Function();
   });
 
   it('binds LogLevel from constructor', () => {
-    const myApp = new AppWithLogLevel({
+    myApp = new AppWithLogMixin({
       logLevel: LOG_LEVEL.ERROR,
     });
-
-    expectLogLevelToBeBound(myApp);
+    expectLogLevelToBeBound();
   });
 
   it('bind logLevel from app.logLevel()', () => {
-    const myApp = new AppWithLogLevel();
     myApp.logLevel(LOG_LEVEL.ERROR);
-    expectLogLevelToBeBound(myApp);
+    expectLogLevelToBeBound();
   });
 
-  class AppWithLogLevel extends LogLevelMixin(Application) {}
+  it('adds LogComponent to target class', () => {
+    const boundComponent = myApp.find('components.*').map(b => b.key);
+    expect(boundComponent).to.containEql('components.LogComponent');
+  });
 
-  function expectLogLevelToBeBound(myApp: Application) {
+  class AppWithLogMixin extends LogMixin(Application) {}
+
+  function expectLogLevelToBeBound() {
     const logLevel = myApp.getSync(EXAMPLE_LOG_BINDINGS.APP_LOG_LEVEL);
     expect(logLevel).to.be.eql(LOG_LEVEL.ERROR);
+  }
+
+  function getApp() {
+    myApp = new AppWithLogMixin();
   }
 });
