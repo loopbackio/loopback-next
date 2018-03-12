@@ -8,37 +8,38 @@ This repository shows you how to use [@loopback/cli](https://github.com/stronglo
 to write a complex logging extension that requires a [Component](http://loopback.io/doc/en/lb4/Using-components.html),
 [Decorator](http://loopback.io/doc/en/lb4/Decorators.html), and a [Mixin](http://loopback.io/doc/en/lb4/Mixin.html).
 
-To use the extension, load the component to get access to a `LogFn` that can be
-used in a sequence to log information. A Mixin allows you to set the
-application wide logLevel. Only Controller methods configured at or above the
+To use this extension you can add the `LogMixin` to your Application which will
+provide you a function to set the Application wide log level as well as automatically
+load the `LogComponent`. Only Controller methods configured at or above the
 logLevel will be logged.
+
+_You may alternatively load `LogComponent` yourself and set the log level using
+the appropriate binding keys manually if you don't wish to use the `LogMixin`._
 
 Possible levels are: DEBUG < INFO < WARN < ERROR < OFF
 
 *Possible levels are represented as numbers but users can use `LOG_LEVEL.${level}`
 to specify the value instead of using numbers.*
 
-A decorator enables you to provide metadata for Controller methods to set the
-minimum logLevel.
+A decorator enables you to set the log level for Controller methods, at or
+above which it should be logged.
 
 ### Example Usage
 
 ```ts
 import {
-  LogLevelMixin,
-  LogComponent,
+  LogMixin,
   LOG_LEVEL,
   log
 } from 'loopback4-example-log-extension';
 // Other imports ...
 
-class LogApp extends LogLevelMixin(RestApplication) {
-  constructor() {
-    super({
-      logLevel: LOG_LEVEL.ERROR,
-    });
-    this.component(LogComponent);
-    this.controller(MyController);
+class LogApp extends LogMixin(BootMixin(RestApplication)) {
+  constructor(options?: ApplicationConfig) {
+    super(options);
+
+    this.projectRoot = __dirname;
+    this.logLevel(LOG_LEVEL.ERROR);
   };
 }
 
@@ -109,8 +110,16 @@ export enum LOG_LEVEL {
 }
 ```
 
+
 ### `src/types.ts`
-Define TypeScript type definitions / interfaces for complex types and functions here.
+Before we continue, we will need to install a new dependecy as follows:
+
+```shell
+npm i @loopback/rest
+```
+
+Now we define TypeScript type definitions / interfaces for complex types and
+functions here.
 
 ```ts
 import {ParsedRequest, OperationArgs} from '@loopback/rest';
@@ -217,16 +226,18 @@ providing it via `ApplicationOptions` or using a helper method `app.logLevel(lev
 ```ts
 import {Constructor} from '@loopback/context';
 import {EXAMPLE_LOG_BINDINGS} from '../keys';
+import {LogComponent} from '../component';
 
-export function LogLevelMixin<T extends Constructor<any>>(superClass: T) {
+// tslint:disable-next-line:no-any
+export function LogMixin<T extends Constructor<any>>(superClass: T) {
   return class extends superClass {
+    // tslint:disable-next-line:no-any
     constructor(...args: any[]) {
       super(...args);
-      if (!this.options) this.options = {};
-
-      if (this.options.logLevel) {
+      if (this.options && this.options.logLevel) {
         this.logLevel(this.options.logLevel);
       }
+      this.component(LogComponent);
     }
 
     logLevel(level: number) {
@@ -391,9 +402,10 @@ Package the providers in the component to their appropriate `Binding` keys so
 they are automatically bound when a user adds the component to their application.
 
 ```ts
-import {EXAMPLE_LOG_BINDINGS} from './keys';
 import {Component, ProviderMap} from '@loopback/core';
-import {TimerProvider, LogActionProvider} from './';
+import {EXAMPLE_LOG_BINDINGS} from './keys';
+import {LogActionProvider} from './providers/log-action.provider';
+import {TimerProvider} from './providers/timer.provider';
 
 export class LogComponent implements Component {
   providers?: ProviderMap = {
