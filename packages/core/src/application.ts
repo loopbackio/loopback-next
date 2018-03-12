@@ -120,9 +120,9 @@ export class Application extends Context {
       key = `${CoreBindings.SERVERS}.${target}`;
     } else {
       const ctor = target as Constructor<T>;
-      key = `servers.${ctor.name}`;
+      key = `${CoreBindings.SERVERS}.${ctor.name}`;
     }
-    return (await this.get(key)) as T;
+    return await this.get<T>(key);
   }
 
   /**
@@ -156,7 +156,7 @@ export class Application extends Context {
     const bindings = this.find(`${CoreBindings.SERVERS}.*`);
     await Promise.all(
       bindings.map(async binding => {
-        const server = (await this.get(binding.key)) as Server;
+        const server = await this.get<Server>(binding.key);
         return await fn(server);
       }),
     );
@@ -191,7 +191,7 @@ export class Application extends Context {
       .inScope(BindingScope.SINGLETON)
       .tag('component');
     // Assuming components can be synchronously instantiated
-    const instance = this.getSync(componentKey);
+    const instance = this.getSync<Component>(componentKey);
     mountComponent(this, instance);
   }
 }
