@@ -18,8 +18,7 @@ import {
 } from '@loopback/rest';
 import {get, param} from '@loopback/openapi-v3';
 import {
-  LogComponent,
-  LogLevelMixin,
+  LogMixin,
   LOG_LEVEL,
   log,
   EXAMPLE_LOG_BINDINGS,
@@ -46,7 +45,7 @@ describe('log extension acceptance test', () => {
   let server: RestServer;
   let spy: SinonSpy;
 
-  class LogApp extends LogLevelMixin(RestApplication) {}
+  class LogApp extends LogMixin(RestApplication) {}
 
   const debugMatch: string = chalk.white(
     'DEBUG: /debug :: MyController.debug() => debug called',
@@ -240,8 +239,6 @@ describe('log extension acceptance test', () => {
 
   async function createApp() {
     app = new LogApp();
-    app.component(LogComponent);
-
     app.bind(EXAMPLE_LOG_BINDINGS.TIMER).to(timer);
     app.bind(EXAMPLE_LOG_BINDINGS.LOGGER).to(logToMemory);
     server = await app.getServer(RestServer);

@@ -3,9 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {EXAMPLE_LOG_BINDINGS} from './keys';
 import {Component, ProviderMap} from '@loopback/core';
-import {TimerProvider, LogActionProvider} from './';
+import {EXAMPLE_LOG_BINDINGS} from './keys';
+import {LogActionProvider} from './providers/log-action.provider';
+import {TimerProvider} from './providers/timer.provider';
 
 export class LogComponent implements Component {
   providers?: ProviderMap = {
