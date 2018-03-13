@@ -3,7 +3,8 @@
     "extends": "./node_modules/@loopback/build/config/tsconfig.common.json",
     "include": [
     "src",
-    "test"
+    "test",
+    "index.ts"
   ],
   "exclude": [
     "node_modules/**",
