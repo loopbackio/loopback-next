@@ -1,6 +1,6 @@
 {
   "name": "@loopback/docs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Documentation for LoopBack 4",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/docs",
   "author": {
@@ -16,12 +16,7 @@
     "LoopBack",
     "docs"
   ],
-  "devDependencies": {
-  },
-  "dependencies": {
-  },
-  "scripts": {
-  },
+  "scripts": {},
   "publishConfig": {
     "access": "public"
   },

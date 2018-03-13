@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.1"></a>
+## [0.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.3.0...@loopback/build@0.3.1) (2018-03-13)
+
+
+### Bug Fixes
+
+* **build:** use options for `run` and disable stdout for tests ([0065eab](https://github.com/strongloop/loopback-next/commit/0065eab))
+
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.2.0...@loopback/build@0.3.0) (2018-03-08)
 

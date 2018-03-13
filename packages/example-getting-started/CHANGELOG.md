@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.3"></a>
+## [0.3.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-getting-started@0.3.2...@loopback/example-getting-started@0.3.3) (2018-03-13)
+
+
+
+
+**Note:** Version bump only for package @loopback/example-getting-started
+
 <a name="0.3.2"></a>
 ## [0.3.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-getting-started@0.3.1...@loopback/example-getting-started@0.3.2) (2018-03-08)
 
