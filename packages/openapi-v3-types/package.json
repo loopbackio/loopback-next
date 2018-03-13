@@ -6,7 +6,7 @@
     "node": ">=8"
   },
   "dependencies": {
-    "openapi3-ts": "^0.7.0"
+    "openapi3-ts": "^0.8.0"
   },
   "devDependencies": {
     "@loopback/build": "^0.3.1"
