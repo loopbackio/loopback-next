@@ -20,7 +20,7 @@ The IoC container decouples service providers and consumers. A service provider 
 
 The diagram below shows how the Context manages services and their dependencies.
 
-![loopback-ioc](./img/loopback-ioc.png)
+![loopback-ioc](./imgs/loopback-ioc.png)
 
 In the example above, there are three services in the Context and each of them are bound to a unique key.
 
@@ -75,7 +75,7 @@ Now you might wonder why the IoC container is fundamental to extensibility. Here
 
 2. Services can be organized as extension points and extensions. For example, to allow multiple authentication strategies, the `authentication` component can define an extension point as `authentication-manager` and various authentication strategies such as user/password, LDAP, oAuth2 can be contributed to the extension point as extensions. The relation will look like:
 
-![loopback-extension](./img/loopback-extension.png)
+![loopback-extension](./imgs/loopback-extension.png)
 
 To allow a list of extensions to be contributed to LoopBack framework and applications, we introduce `Component` as the packaging model to bundle extensions. A component is either a npm module or a local folder structure that contains one or more extensions. It's then exported as a class implementing the `Component` interface. For example:
 
@@ -99,7 +99,7 @@ export class UserManagementComponent implements Component {
 
 The interaction between the application context and `UserManagement` component is illustrated below:
 
-![loopback-component](./img/loopback-component.png)
+![loopback-component](./imgs/loopback-component.png)
 
 For more information about components, see:
 

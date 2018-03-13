@@ -65,9 +65,9 @@ To create your first LoopBack 4 application, See [Getting Started](http://loopba
 
 See the following resources to get your started:
 
- - [Contributing Guidelines](./CONTRIBUTING.md)
- - [Monorepo overview](./MONOREPO.md)
- - [Developing LoopBack](./docs/DEVELOPING.md)
+ - [Contributing Guidelines](./docs/CONTRIBUTING.md)
+ - [Monorepo overview](./docs/site/MONOREPO.md)
+ - [Developing LoopBack](./docs/site/DEVELOPING.md)
 
 You can join the team by posting a comment to [issue #110](https://github.com/strongloop/loopback-next/issues/110.).
 
