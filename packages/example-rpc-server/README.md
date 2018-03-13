@@ -3,7 +3,7 @@
 An example RPC server and application to demonstrate the creation of your
 own custom server.
 
-[![LoopBack](http://loopback.io/images/overview/powered-by-LB-xs.png)](http://loopback.io/)
+[![LoopBack]https://github.com/strongloop/loopback-next/blob/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-%402x.png](http://loopback.io/)
 
 ## Usage
 
