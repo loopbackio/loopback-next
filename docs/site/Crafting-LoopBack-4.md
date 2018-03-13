@@ -11,7 +11,7 @@ summary:
 
 [LoopBack](http://loopback.io) is an open-source [Node.js](https://nodejs.org) framework built for API developers. Its primary goal is to help create APIs as microservices from existing services/databases and expose them as endpoints for client applications, such as web, mobile, and IoT. LoopBack connects the dots between accepting API requests and interacting with backend resources. By facilitating developers to implement API logic with out of box integration capabilities, LoopBack establishes itself as the API composition layer to [differentiate](http://loopback.io/resources/#compare) from other frameworks, such as [Express](https://expressjs.com), [Hapi](https://hapijs.com), and [Sails](http://sailsjs.com).
 
-![loopback-composition](./img/loopback-composition.png)
+![loopback-composition](./imgs/loopback-composition.png)
 
 Up to version 3.x, LoopBack built on the popular [Express framework](https://expressjs.com). In retrospect, basing LoopBack on Express was the right decision: Standing on the shoulders of Express enabled LoopBack to focus on adding value for API creation experience without reinventing the wheel. LoopBack also has benefitted from the Express ecosystem, especially ready-to-use middleware modules from npm as well as valuable knowledge and support by the community.
 
@@ -19,7 +19,7 @@ With LoopBack, developers can create and expose APIs just like following a recip
 
 LoopBack uses Express routing and middleware as the plumbing to a request/response pipeline for API use cases, such as authentication, authorization, and routing. Beyond inbound HTTP processing, LoopBack provides integration facilities such as models, datasources, and connectors to allow API logic to interact with various backend systems, including but not limited to, databases, REST APIs, SOAP web services and gRPC microservices. The ability to glue inbound communication and outbound integration makes LoopBack a very powerful framework for API developers. The diagram below illustrates how LoopBack fits into a typical end-to-end API processing flow.
 
-![loopback-overview](./img/loopback-overview.png)
+![loopback-overview](./imgs/loopback-overview.png)
 
 LoopBack has grown significantly in features and users with many years of development and multiple releases. LoopBack has been well-recieved by the developer community. As an indication, the community has developed [many extensions](https://github.com/pasindud/awesome-loopback). The core team has also learned a lot from what we have done as well as great feedback from the community.
 
@@ -65,7 +65,7 @@ LoopBack has gained traction among a spectrum of users beyond Node.js applicatio
 - **Extension developers** - Contribute extensions to LoopBack to augment the framework.
 - **Platform developers** - Leverage LoopBack as the base to build their value-added offerings.
 
-![loopback-ecosystem](./img/loopback-ecosystem.png)
+![loopback-ecosystem](./imgs/loopback-ecosystem.png)
 
 The core team decided to make a bold move and rebuild LoopBack to meet the needs of all the above groups.
 The decision led to the inception of LoopBack 4, a new generation of API creation platform.
@@ -199,7 +199,7 @@ Here are the stages we are marching through toward the final version of LoopBack
 
 The following diagram illustrates the high-level building blocks of LoopBack 4:
 
-![loopback-stack](./img/loopback-stack.png)
+![loopback-stack](./imgs/loopback-stack.png)
 
 Please note there is a common layer below the different functional areas in the stack. Let's examine the need to build a new core foundation for LoopBack 4.
 
