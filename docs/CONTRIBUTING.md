@@ -19,14 +19,14 @@ Issues in [strongloop/loopback-next](https://github.com/strongloop/loopback-next
 
 Pull Requests are the way concrete changes are made to the code, documentation and tools contained in LoopBack repositories.
 
- - [Monorepo overview](./MONOREPO.md)
- - [Setting up development environment](./docs/DEVELOPING.md#setting-up-development-environment)
+ - [Monorepo overview](./site/MONOREPO.md)
+ - [Setting up development environment](./site/DEVELOPING.md#setting-up-development-environment)
  - [How to contribute the code](http://loopback.io/doc/en/contrib/code-contrib.html#how-to-contribute-to-the-code)
- - [Building the project](./docs/DEVELOPING.md#building-the-project)
- - [Running tests](./docs/DEVELOPING.md#running-tests)
- - [Coding rules](./docs/DEVELOPING.md#coding-rules)
- - [API documentation](./docs/DEVELOPING.md#api-documentation)
- - [Git commit messages](./docs/DEVELOPING.md#commit-message-guidelines)
+ - [Building the project](./site/DEVELOPING.md#building-the-project)
+ - [Running tests](./site/DEVELOPING.md#running-tests)
+ - [Coding rules](./site/DEVELOPING.md#coding-rules)
+ - [API documentation](./site/DEVELOPING.md#api-documentation)
+ - [Git commit messages](./site/DEVELOPING.md#commit-message-guidelines)
  - [Reviewing pull requests](http://loopback.io/doc/en/contrib/triaging-pull-requests.html)
  - [Contributor License Agreement (CLA)](http://loopback.io/doc/en/contrib/code-contrib.html#agreeing-to-the-cla)
 
