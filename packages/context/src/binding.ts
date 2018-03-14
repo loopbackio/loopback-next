@@ -13,6 +13,7 @@ import {
   BoundValue,
   ValueOrPromise,
   MapObject,
+  transformValueOrPromise,
 } from './value-promise';
 import {Provider} from './provider';
 
@@ -170,30 +171,16 @@ export class Binding<T = BoundValue> {
   ): ValueOrPromise<T> {
     // Initialize the cache as a weakmap keyed by context
     if (!this._cache) this._cache = new WeakMap<Context, T>();
-    if (isPromiseLike(result)) {
-      if (this.scope === BindingScope.SINGLETON) {
-        // Cache the value at owning context level
-        result = result.then(val => {
-          this._cache.set(ctx.getOwnerContext(this.key)!, val);
-          return val;
-        });
-      } else if (this.scope === BindingScope.CONTEXT) {
-        // Cache the value at the current context
-        result = result.then(val => {
-          this._cache.set(ctx, val);
-          return val;
-        });
-      }
-    } else {
+    return transformValueOrPromise(result, val => {
       if (this.scope === BindingScope.SINGLETON) {
         // Cache the value
-        this._cache.set(ctx.getOwnerContext(this.key)!, result);
+        this._cache.set(ctx.getOwnerContext(this.key)!, val);
       } else if (this.scope === BindingScope.CONTEXT) {
         // Cache the value at the current context
-        this._cache.set(ctx, result);
+        this._cache.set(ctx, val);
       }
-    }
-    return result;
+      return val;
+    });
   }
 
   /**
@@ -210,7 +197,7 @@ export class Binding<T = BoundValue> {
    *
    * ```
    * const result = binding.getValue(ctx);
-   * if (isPromise(result)) {
+   * if (isPromiseLike(result)) {
    *   result.then(doSomething)
    * } else {
    *   doSomething(result);
@@ -408,11 +395,7 @@ export class Binding<T = BoundValue> {
         ctx!,
         session,
       );
-      if (isPromiseLike(providerOrPromise)) {
-        return providerOrPromise.then(p => p.value());
-      } else {
-        return providerOrPromise.value();
-      }
+      return transformValueOrPromise(providerOrPromise, p => p.value());
     };
     return this;
   }
