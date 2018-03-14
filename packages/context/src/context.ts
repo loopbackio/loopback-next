@@ -8,8 +8,10 @@ import {BindingKey, BindingAddress} from './binding-key';
 import {
   isPromiseLike,
   getDeepProperty,
-  ValueOrPromise,
   BoundValue,
+  ValueOrPromise,
+  resolveUntil,
+  resolveValueOrPromise,
 } from './value-promise';
 import {ResolutionOptions, ResolutionSession} from './resolution-session';
 
@@ -78,9 +80,10 @@ export class Context {
    * create binding `controllers.MyController:$config` with value `{x: 1}`.
    *
    * @param key The key for the binding that accepts the config
+   * @param env The env (such as `dev`, `test`, and `prod`) for the config
    */
-  configure(key: string = ''): Binding {
-    const keyForConfig = BindingKey.buildKeyForConfig(key);
+  configure(key: string = '', env: string = ''): Binding {
+    const keyForConfig = BindingKey.buildKeyForConfig(key, env);
     const bindingForConfig = this.bind(keyForConfig).tag(`config:${key}`);
     return bindingForConfig;
   }
@@ -110,56 +113,88 @@ export class Context {
     configPath?: string,
     resolutionOptions?: ResolutionOptions,
   ): ValueOrPromise<T | undefined> {
+    const env = resolutionOptions && resolutionOptions.environment;
     configPath = configPath || '';
-    const configKeyAndPath = BindingKey.create(
-      BindingKey.buildKeyForConfig(key),
-      configPath || '',
-    );
-    // Set `optional` to `true` to resolve config locally
-    const configBindingResolutionOptions = Object.assign(
-      {}, // Make sure resolutionOptions is copied
-      resolutionOptions,
-      {optional: true}, // Force optional to be true
-    );
-    let valueOrPromise = this.getValueOrPromise(
-      configKeyAndPath,
-      configBindingResolutionOptions,
+    const configKey = BindingKey.create(
+      BindingKey.buildKeyForConfig(key, env),
+      configPath,
     );
 
-    const evaluateConfig = (val: BoundValue) => {
-      // Found the corresponding config
-      if (val !== undefined) return val;
+    const localConfigOnly =
+      resolutionOptions && resolutionOptions.localConfigOnly;
 
-      // We have tried all levels
-      if (!key) {
-        if (resolutionOptions && resolutionOptions.optional === false) {
-          throw Error(`Configuration '${configKeyAndPath}' cannot be resolved`);
-        }
-        return undefined;
+    /**
+     * Set up possible keys to resolve the config value
+     */
+    const keys = [];
+    while (true) {
+      const configKeyAndPath = BindingKey.create(
+        BindingKey.buildKeyForConfig(key, env),
+        configPath,
+      );
+      keys.push(configKeyAndPath);
+      if (env) {
+        // The `environment` is set, let's try the non env specific binding too
+        keys.push(
+          BindingKey.create(BindingKey.buildKeyForConfig(key), configPath),
+        );
       }
-
-      if (resolutionOptions && resolutionOptions.localConfigOnly) {
-        // Local only, not trying parent namespaces
-        if (resolutionOptions && resolutionOptions.optional === false) {
-          throw Error(`Configuration '${configKeyAndPath}' cannot be resolved`);
-        }
-        return undefined;
+      if (!key || localConfigOnly) {
+        // No more keys
+        break;
       }
-
       // Shift last part of the key into the path as we'll try the parent
       // namespace in the next iteration
       const index = key.lastIndexOf('.');
-      configPath = `${key.substring(index + 1)}.${configPath}`;
+      configPath = configPath
+        ? `${key.substring(index + 1)}.${configPath}`
+        : `${key.substring(index + 1)}`;
       key = key.substring(0, index);
-      // Continue to try the parent namespace
-      return this.getConfigAsValueOrPromise(key, configPath, resolutionOptions);
+    }
+    /* istanbul ignore if */
+    if (debug.enabled) {
+      debug('Configuration keyWithPaths: %j', keys);
+    }
+
+    const resolveConfig = (keyWithPath: string) => {
+      // Set `optional` to `true` to resolve config locally
+      const options = Object.assign(
+        {}, // Make sure resolutionOptions is copied
+        resolutionOptions,
+        {optional: true}, // Force optional to be true
+      );
+      return this.getValueOrPromise<T>(keyWithPath, options);
     };
 
-    if (isPromiseLike(valueOrPromise)) {
-      return valueOrPromise.then(evaluateConfig);
-    } else {
-      return evaluateConfig(valueOrPromise);
-    }
+    const evaluateConfig = (keyWithPath: string, val: T) => {
+      /* istanbul ignore if */
+      if (debug.enabled) {
+        debug('Configuration keyWithPath: %s => value: %j', keyWithPath, val);
+      }
+      // Found the corresponding config
+      if (val !== undefined) return true;
+
+      if (localConfigOnly) {
+        return true;
+      }
+      return false;
+    };
+
+    const required = resolutionOptions && resolutionOptions.optional === false;
+    const valueOrPromise = resolveUntil<BindingAddress<T>, T>(
+      keys[Symbol.iterator](),
+      resolveConfig,
+      evaluateConfig,
+    );
+    return resolveValueOrPromise<T | undefined, T | undefined>(
+      valueOrPromise,
+      val => {
+        if (val === undefined && required) {
+          throw Error(`Configuration '${configKey}' cannot be resolved`);
+        }
+        return val;
+      },
+    );
   }
 
   /**
@@ -177,7 +212,7 @@ export class Context {
    * @param configPath Property path for the option. For example, `x.y`
    * requests for `config.x.y`. If not set, the `config` object will be
    * returned.
-   * @param resolutionOptions Options for the resolution. If `localOnly` is
+   * @param resolutionOptions Options for the resolution. If `localConfigOnly` is
    * set to true, no parent namespaces will be looked up.
    */
   async getConfig<T>(
@@ -207,8 +242,8 @@ export class Context {
    * @param configPath Property path for the option. For example, `x.y`
    * requests for `config.x.y`. If not set, the `config` object will be
    * returned.
-   * @param resolutionOptions Options for the resolution. If `localOnly` is
-   * set to true, no parent namespaces will be looked up.
+   * @param resolutionOptions Options for the resolution. If `localConfigOnly`
+   * is set to `true`, no parent namespaces will be looked up.
    */
   getConfigSync<T>(
     key: string,
