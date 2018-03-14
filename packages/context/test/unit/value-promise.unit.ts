@@ -4,7 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {resolveList, resolveMap, tryWithFinally, getDeepProperty} from '../..';
+import {
+  resolveList,
+  resolveMap,
+  resolveUntil,
+  transformValueOrPromise,
+  tryWithFinally,
+  getDeepProperty,
+} from '../..';
 
 describe('tryWithFinally', () => {
   it('performs final action for a fulfilled promise', async () => {
@@ -203,5 +210,147 @@ describe('resolveMap', () => {
       return v.toUpperCase() + p + Object.keys(map).length;
     });
     expect(result).to.eql({a: 'Xa2', b: 'Yb2'});
+  });
+});
+
+describe('resolveUntil', () => {
+  it('resolves an iterator of values', () => {
+    const source = ['a', 'b', 'c'];
+    const result = resolveUntil<string, string>(
+      source[Symbol.iterator](),
+      v => v.toUpperCase(),
+      (s, v) => s === 'a',
+    );
+    expect(result).to.eql('A');
+  });
+
+  it('resolves an iterator of values until the end', () => {
+    const source = ['a', 'b', 'c'];
+    const result = resolveUntil<string, string>(
+      source[Symbol.iterator](),
+      v => v.toUpperCase(),
+      (s, v) => false,
+    );
+    expect(result).to.be.undefined();
+  });
+
+  it('resolves an iterator of promises', async () => {
+    const source = ['a', 'b', 'c'];
+    const result = await resolveUntil<string, string>(
+      source[Symbol.iterator](),
+      v => Promise.resolve(v.toUpperCase()),
+      (s, v) => true,
+    );
+    expect(result).to.eql('A');
+  });
+
+  it('handles a rejected promise from resolver', () => {
+    const source = ['a', 'b', 'c'];
+    const result = resolveUntil<string, string>(
+      source[Symbol.iterator](),
+      v => Promise.reject(new Error(v)),
+      (s, v) => true,
+    );
+    expect(result).be.rejectedWith('a');
+  });
+
+  it('reports an error thrown from resolver', () => {
+    const source = ['a', 'b', 'c'];
+    const task = () =>
+      resolveUntil<string, string>(
+        source[Symbol.iterator](),
+        v => {
+          throw new Error(v);
+        },
+        (s, v) => true,
+      );
+    expect(task).throw('a');
+  });
+
+  it('handles a rejected promise from evaluator', () => {
+    const source = ['a', 'b', 'c'];
+    const result = resolveUntil<string, string>(
+      source[Symbol.iterator](),
+      async v => v.toUpperCase(),
+      (s, v) => {
+        throw new Error(v);
+      },
+    );
+    expect(result).be.rejectedWith('A');
+  });
+
+  it('handles mixed value and promise items ', async () => {
+    const source = ['b', 'C', 'B', 'c', 'a', 'A'];
+
+    const result = await resolveUntil<string, string>(
+      source[Symbol.iterator](),
+      v => {
+        const up = v.toUpperCase();
+        if (up === v) return up;
+        // Produces a value for upper case
+        else return Promise.resolve(up); // Produces a promise for lower case
+      },
+      (s, v) => s === 'a',
+    );
+    expect(result).to.eql('A');
+  });
+
+  it('does not cause stack overflow for large # of value items', () => {
+    // Create a large array of 1000 items
+    const source = new Array<string>(1000);
+    // Fill 0-949 with 'b'
+    source.fill('b', 0, 950);
+    // Fill 950-999 with 'a'
+    source.fill('a', 950);
+    const result = resolveUntil<string, string>(
+      source[Symbol.iterator](),
+      v => v.toUpperCase(),
+      (s, v) => s === 'a',
+    );
+    expect(result).to.eql('A');
+  });
+
+  it('does not cause stack overflow for large # of promise items', async () => {
+    // Create a large array of 1000 items
+    const source = new Array<string>(1000);
+    // Fill 0-949 with 'b'
+    source.fill('b', 0, 950);
+    // Fill 950-999 with 'a'
+    source.fill('a', 950);
+    const result = await resolveUntil<string, string>(
+      source[Symbol.iterator](),
+      v => Promise.resolve(v.toUpperCase()),
+      (s, v) => s === 'a',
+    );
+    expect(result).to.eql('A');
+  });
+});
+
+describe('transformValueOrPromise', () => {
+  it('transforms a value', () => {
+    const result = transformValueOrPromise('a', v => v && v.toUpperCase());
+    expect(result).to.eql('A');
+  });
+
+  it('transforms a promise', async () => {
+    const result = await transformValueOrPromise('a', v =>
+      Promise.resolve(v && v.toUpperCase()),
+    );
+    expect(result).to.eql('A');
+  });
+
+  it('handles a rejected promise from the transformer', () => {
+    const result = transformValueOrPromise('a', v =>
+      Promise.reject(new Error(v)),
+    );
+    expect(result).be.rejectedWith('a');
+  });
+
+  it('handles an error thrown from the transformer', () => {
+    expect(() =>
+      transformValueOrPromise('a', v => {
+        throw new Error(v);
+      }),
+    ).to.throw('a');
   });
 });

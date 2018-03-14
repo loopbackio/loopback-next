@@ -2,7 +2,6 @@
 // Node module: @loopback/context
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-
 /**
  * This module contains types for values and/or promises as well as a set of
  * utility methods to handle values and/or promises.
@@ -217,4 +216,56 @@ export function tryWithFinally<T>(
     finalAction();
   }
   return result;
+}
+
+/**
+ * Resolve an iterator of source values into a result until the evaluator
+ * returns `true`
+ * @param source The iterator of source values
+ * @param resolver The resolve function that maps the source value to a result
+ * @param evaluator The evaluate function that decides when to stop
+ */
+export function resolveUntil<T, V>(
+  source: Iterator<T>,
+  resolver: (sourceVal: T) => ValueOrPromise<V | undefined>,
+  evaluator: (sourceVal: T, targetVal: V | undefined) => boolean,
+): ValueOrPromise<V | undefined> {
+  // Do iteration in loop for synchronous values to avoid stack overflow
+  while (true) {
+    const next = source.next();
+    if (next.done) return undefined; // End of the iterator
+    const sourceVal = next.value;
+    const valueOrPromise = resolver(sourceVal);
+    if (isPromiseLike(valueOrPromise)) {
+      return valueOrPromise.then(v => {
+        if (evaluator(sourceVal, v)) {
+          return v;
+        } else {
+          return resolveUntil(source, resolver, evaluator);
+        }
+      });
+    } else {
+      if (evaluator(sourceVal, valueOrPromise)) {
+        return valueOrPromise;
+      }
+      // Continue with the while loop
+    }
+  }
+}
+
+/**
+ * Transform a value or promise with a function that produces a new value or
+ * promise
+ * @param valueOrPromise The value or promise
+ * @param transformer A function that maps the source value to a value or promise
+ */
+export function transformValueOrPromise<T, V>(
+  valueOrPromise: ValueOrPromise<T>,
+  transformer: (val: T) => ValueOrPromise<V>,
+): ValueOrPromise<V> {
+  if (isPromiseLike(valueOrPromise)) {
+    return valueOrPromise.then(transformer);
+  } else {
+    return transformer(valueOrPromise);
+  }
 }
