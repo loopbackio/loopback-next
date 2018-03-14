@@ -384,6 +384,13 @@ describe('Context', () => {
       ctx.configure('foo').to({x: 1});
       expect(ctx.getConfigSync('foo')).to.eql({x: 1});
     });
+
+    it('throws a helpful error when the config is async', () => {
+      ctx.configure('foo').toDynamicValue(() => Promise.resolve('bar'));
+      expect(() => ctx.getConfigSync('foo')).to.throw(
+        /Cannot get config\[\] for foo synchronously: the value is a promise/,
+      );
+    });
   });
 
   describe('getSync', () => {
@@ -490,6 +497,21 @@ describe('Context', () => {
       expect(result).to.equal(2);
       result = childCtx.getSync('foo');
       expect(result).to.equal(1);
+    });
+  });
+
+  describe('getOwnerContext', () => {
+    it('returns owner context', () => {
+      ctx.bind('foo').to('bar');
+      expect(ctx.getOwnerContext('foo')).to.equal(ctx);
+    });
+
+    it('returns owner context with parent', () => {
+      ctx.bind('foo').to('bar');
+      const childCtx = new Context(ctx, 'child');
+      childCtx.bind('xyz').to('abc');
+      expect(childCtx.getOwnerContext('foo')).to.equal(ctx);
+      expect(childCtx.getOwnerContext('xyz')).to.equal(childCtx);
     });
   });
 

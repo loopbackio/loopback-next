@@ -358,4 +358,9 @@ export interface ResolutionOptions {
    * The default value is `false`.
    */
   localConfigOnly?: boolean;
+
+  /**
+   * Environment for resolution, such as `dev`, `test`, `staging`, and `prod`
+   */
+  environment?: string;
 }

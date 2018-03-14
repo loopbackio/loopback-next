@@ -75,6 +75,12 @@ export interface Injection<ValueType = BoundValue> {
 }
 
 /**
+ * A special binding key for the execution environment, typically set
+ * by `NODE_ENV` environment variable
+ */
+export const ENVIRONMENT_KEY = '$environment';
+
+/**
  * A decorator to annotate method arguments for automatic injection
  * by LoopBack IoC container.
  *
@@ -353,10 +359,15 @@ function resolveFromConfig(
   const meta = injection.metadata || {};
   const binding = session.currentBinding;
 
+  const env =
+    ctx.getSync<string>(ENVIRONMENT_KEY, {optional: true}) ||
+    process.env.NODE_ENV;
+
   return ctx.getConfigAsValueOrPromise(binding.key, meta.configPath, {
     session,
     optional: meta.optional,
     localConfigOnly: meta.localConfigOnly,
+    environment: env,
   });
 }
 

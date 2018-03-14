@@ -24,7 +24,14 @@ export {Binding, BindingScope, BindingType} from './binding';
 export {Context} from './context';
 export {BindingKey, BindingAddress} from './binding-key';
 export {ResolutionSession} from './resolution-session';
-export {inject, Setter, Getter, Injection, InjectionMetadata} from './inject';
+export {
+  inject,
+  Setter,
+  Getter,
+  Injection,
+  InjectionMetadata,
+  ENVIRONMENT_KEY,
+} from './inject';
 export {Provider} from './provider';
 
 export {instantiateClass, invokeMethod} from './resolver';

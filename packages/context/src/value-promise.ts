@@ -220,9 +220,9 @@ export function tryWithFinally<T>(
 }
 
 /**
- * Resolve iterable source values into a result until the evaluator returns
- * `true`
- * @param source The iterable source values
+ * Resolve an iterator of source values into a result until the evaluator
+ * returns `true`
+ * @param source The iterator of source values
  * @param resolver The resolve function that maps the source value to a result
  * @param evaluator The evaluate function that decides when to stop
  */
@@ -232,26 +232,25 @@ export function resolveUntil<T, V>(
   evaluator: (sourceVal: T, targetVal: V | undefined) => boolean,
 ): ValueOrPromise<V | undefined> {
   const next = source.next();
-  if (next.done) return undefined;
+  if (next.done) return undefined; // End of the iterator
   const sourceVal = next.value;
   const valueOrPromise = resolver(sourceVal);
-  return resolveValueOrPromise<V, V>(valueOrPromise, v => {
+  return resolveValueOrPromise(valueOrPromise, v => {
     if (evaluator(sourceVal, v)) return v;
-    else {
-      return resolveUntil(source, resolver, evaluator);
-    }
+    else return resolveUntil(source, resolver, evaluator);
   });
 }
 
 /**
- * Resolve a value or promise with a function
+ * Resolve a value or promise with a function that produces a new value or
+ * promise
  * @param valueOrPromise The value or promise
- * @param resolver A function that maps the source value to a result
+ * @param resolver A function that maps the source value to a value or promise
  */
 export function resolveValueOrPromise<T, V>(
-  valueOrPromise: ValueOrPromise<T | undefined>,
-  resolver: (val: T | undefined) => ValueOrPromise<V | undefined>,
-): ValueOrPromise<V | undefined> {
+  valueOrPromise: ValueOrPromise<T>,
+  resolver: (val: T) => ValueOrPromise<V>,
+): ValueOrPromise<V> {
   if (isPromiseLike(valueOrPromise)) {
     return valueOrPromise.then(resolver);
   } else {
