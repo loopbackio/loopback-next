@@ -1,6 +1,6 @@
 {
   "name": "@loopback/core",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "",
   "engines": {
     "node": ">=8"
@@ -21,11 +21,11 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^0.2.3"
+    "@loopback/context": "^0.2.4"
   },
   "devDependencies": {
-    "@loopback/build": "^0.3.1",
-    "@loopback/testlab": "^0.3.2"
+    "@loopback/build": "^0.3.2",
+    "@loopback/testlab": "^0.3.3"
   },
   "files": [
     "README.md",
