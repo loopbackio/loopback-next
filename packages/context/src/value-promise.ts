@@ -218,3 +218,43 @@ export function tryWithFinally<T>(
   }
   return result;
 }
+
+/**
+ * Resolve iterable source values into a result until the evaluator returns
+ * `true`
+ * @param source The iterable source values
+ * @param resolver The resolve function that maps the source value to a result
+ * @param evaluator The evaluate function that decides when to stop
+ */
+export function resolveUntil<T, V>(
+  source: Iterator<T>,
+  resolver: (sourceVal: T) => ValueOrPromise<V | undefined>,
+  evaluator: (sourceVal: T, targetVal: V | undefined) => boolean,
+): ValueOrPromise<V | undefined> {
+  const next = source.next();
+  if (next.done) return undefined;
+  const sourceVal = next.value;
+  const valueOrPromise = resolver(sourceVal);
+  return resolveValueOrPromise<V, V>(valueOrPromise, v => {
+    if (evaluator(sourceVal, v)) return v;
+    else {
+      return resolveUntil(source, resolver, evaluator);
+    }
+  });
+}
+
+/**
+ * Resolve a value or promise with a function
+ * @param valueOrPromise The value or promise
+ * @param resolver A function that maps the source value to a result
+ */
+export function resolveValueOrPromise<T, V>(
+  valueOrPromise: ValueOrPromise<T | undefined>,
+  resolver: (val: T | undefined) => ValueOrPromise<V | undefined>,
+): ValueOrPromise<V | undefined> {
+  if (isPromiseLike(valueOrPromise)) {
+    return valueOrPromise.then(resolver);
+  } else {
+    return resolver(valueOrPromise);
+  }
+}

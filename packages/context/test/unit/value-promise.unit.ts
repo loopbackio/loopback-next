@@ -4,7 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {resolveList, resolveMap, tryWithFinally, getDeepProperty} from '../..';
+import {
+  resolveList,
+  resolveMap,
+  resolveUntil,
+  resolveValueOrPromise,
+  tryWithFinally,
+  getDeepProperty,
+} from '../..';
 
 describe('tryWithFinally', () => {
   it('performs final action for a fulfilled promise', async () => {
@@ -203,5 +210,80 @@ describe('resolveMap', () => {
       return v.toUpperCase() + p + Object.keys(map).length;
     });
     expect(result).to.eql({a: 'Xa2', b: 'Yb2'});
+  });
+});
+
+describe('resolveUntil', () => {
+  it('resolves an iterator of values', () => {
+    const source = ['a', 'b', 'c'];
+    const result = resolveUntil<string, string>(
+      source[Symbol.iterator](),
+      v => v.toUpperCase(),
+      (s, v) => s === 'a',
+    );
+    expect(result).to.eql('A');
+  });
+
+  it('resolves an iterator of values until the end', () => {
+    const source = ['a', 'b', 'c'];
+    const result = resolveUntil<string, string>(
+      source[Symbol.iterator](),
+      v => v.toUpperCase(),
+      (s, v) => false,
+    );
+    expect(result).to.be.undefined();
+  });
+
+  it('resolves an iterator of promises', async () => {
+    const source = ['a', 'b', 'c'];
+    const result = await resolveUntil<string, string>(
+      source[Symbol.iterator](),
+      v => Promise.resolve(v.toUpperCase()),
+      (s, v) => true,
+    );
+    expect(result).to.eql('A');
+  });
+
+  it('handles a rejected promise from resolver', () => {
+    const source = ['a', 'b', 'c'];
+    const result = resolveUntil<string, string>(
+      source[Symbol.iterator](),
+      v => Promise.reject(new Error(v)),
+      (s, v) => true,
+    );
+    expect(result).be.rejectedWith('a');
+  });
+
+  it('handles a rejected promise from evaluator', () => {
+    const source = ['a', 'b', 'c'];
+    const result = resolveUntil<string, string>(
+      source[Symbol.iterator](),
+      async v => v.toUpperCase(),
+      (s, v) => {
+        throw new Error(v);
+      },
+    );
+    expect(result).be.rejectedWith('A');
+  });
+});
+
+describe('resolveValueOrPromise', () => {
+  it('resolves a value', () => {
+    const result = resolveValueOrPromise('a', v => v && v.toUpperCase());
+    expect(result).to.eql('A');
+  });
+
+  it('resolves a promise', async () => {
+    const result = await resolveValueOrPromise('a', v =>
+      Promise.resolve(v && v.toUpperCase()),
+    );
+    expect(result).to.eql('A');
+  });
+
+  it('handles a rejected promise', () => {
+    const result = resolveValueOrPromise('a', v =>
+      Promise.reject(new Error(v)),
+    );
+    expect(result).be.rejectedWith('a');
   });
 });

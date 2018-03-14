@@ -13,6 +13,8 @@ export {
   MapObject,
   resolveList,
   resolveMap,
+  resolveUntil,
+  resolveValueOrPromise,
   tryWithFinally,
   getDeepProperty,
 } from './value-promise';
