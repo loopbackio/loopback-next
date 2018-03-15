@@ -135,7 +135,7 @@ export class TodoController {
   @patch('/todo/{id}')
   async updateTodo(
     @param.path.number('id') id: number,
-    @param.body() todo: Todo): Promise<boolean> {
+    @requestBody() todo: Todo): Promise<boolean> {
     return await this.todoRepo.updateById(id, todo);
   }
 
