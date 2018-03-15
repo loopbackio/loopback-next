@@ -79,7 +79,6 @@ application.
 import {RestApplication, RestServer, Route} from '@loopback/rest';
 import {OperationObject} from '@loopback/openapi-spec';
 
-const app = new RestApplication();
 const spec: OperationObject = {
   parameters: [{name: 'name', in: 'query', type: 'string'}],
   responses: {
@@ -95,12 +94,11 @@ function greet(name: string) {
   return `hello ${name}`;
 }
 
-(async function start() {
-  const server = await app.getServer(RestServer);
-  const route = new Route('get', '/', spec, greet);
-  server.route(route);
-  await app.start();
-})();
+const app = new RestApplication();
+const route = new Route('get', '/', spec, greet);
+app.route(route); // attaches route to RestServer
+
+app.start();
 ```
 
 ### Using Route decorators with controller methods
@@ -140,9 +138,7 @@ const app = new RestApplication();
 
 app.controller(GreetController);
 
-(async function start() {
-  await app.start();
-})();
+app.start();
 ```
 
 ## Invoking operations using Routes

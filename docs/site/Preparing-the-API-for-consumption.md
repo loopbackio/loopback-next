@@ -9,27 +9,19 @@ summary:
 ---
 
 {% include previous.html content="
-This article continues off from [Implementing features](./Implementing-features.md).
+This article continues from [Implementing features](./Implementing-features.md).
 " %}
 
 ## Preparing your API for consumption
 
 ### Interacting with your API
 
-We'll use the [@loopback/example-getting-started](https://github.com/strongloop/loopback-next/tree/master/packages/example-getting-started)
-package to demonstrate how Swagger UI can be used to test your endpoints.
+We'll use the repo [loopback4-example-getting-started](https://github.com/strongloop/loopback4-example-getting-started) to demonstrate how Swagger UI can be used to test your endpoints.
 
-First, use the [@loopback/cli tooling](https://github.com/strongloop/loopback-next/tree/master/packages/cli)
-to install the example-getting-started, and then run the application:
+First, git clone the repository, install its dependencies, and run the application:
 
 ```
-$ npm i -g @loopback/cli
-$ lb4 example
-? What example would you like to clone? (Use arrow keys)
-❯ getting-started: An application and tutorial on how to build with LoopBack 4.
-  hello-world: A simple hello-world Application using LoopBack 4
-  log-extension: An example extension project for LoopBack 4
-  rpc-server: A basic RPC server using a made-up protocol
+$ git clone https://github.com/strongloop/loopback4-example-getting-started
 $ cd loopback4-example-getting-started
 $ npm i
 $ npm start
@@ -38,8 +30,8 @@ $ npm start
 Open [http://localhost:3000/swagger-ui](http://localhost:3000/swagger-ui) to see the API endpoints defined by `swagger.json`.
 
 {% include note.html content="
-  Swagger UI provides users with interactive environment to test the API endpoints defined by the raw spec found at [http://localhost:3000/swagger.json](http://localhost:3000/swagger.json).
-  The API spec is also available in YAML flavour at [http://localhost:3000/swagger.yaml](http://localhost:3000/swagger.yaml)
+  Swagger UI provides users with interactive environment to test the API endpoints defined by the raw spec found at [http://localhost:3000/openapi.json](http://localhost:3000/openapi.json).
+  The API spec is also available in YAML flavour at [http://localhost:3000/openapi.yaml](http://localhost:3000/openapi.yaml)
 " %}
 
 {% include image.html file="lb4/10000000.png" alt="" %}

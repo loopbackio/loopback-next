@@ -9,7 +9,7 @@ summary:
 ---
 
 {% include previous.html content="
-This article continues off from [Testing the API](./Testing-the-API.md).
+This article continues from [Testing the API](./Testing-the-API.md) and [Defining the API using code-first approach](./Defining-the-API-using-code-first-approach.md).
 " %}
 
 ## Define your testing strategy
