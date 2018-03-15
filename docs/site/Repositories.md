@@ -12,7 +12,7 @@ A Repository is a type of _Service_ that represents a collection of data within 
 
 
 ## Example Application
-You can look at [the account application as an example.](https://github.com/strongloop/loopback-next-example/tree/master/services/account)
+You can look at [the account application as an example.](https://github.com/strongloop/loopback4-example-microservices/tree/master/services/account)
 
 ## Installation
 Legacy juggler support has been enabled in `loopback-next` and can be imported from the `@loopback/repository` package. In order to do this, save `@loopback/repository` as a dependency in your application.
