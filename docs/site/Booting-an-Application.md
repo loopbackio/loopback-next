@@ -185,7 +185,7 @@ a part of the `@loopback/boot` package and loaded automatically via `BootMixin`.
 
 ### Controller Booter
 
-This Booter's purpose is to discover [Controller](Controllers.html) type Artifacts and to bind
+This Booter's purpose is to discover [Controller](Controllers.md) type Artifacts and to bind
 them to the Application's Context.
 
 You can configure the conventions used in your
@@ -201,7 +201,7 @@ of your Application. The `controllers` object supports the following options:
 
 ### Repository Booter
 
-This Booter's purpose is to discover [Repository](Repository.html) type Artifacts and to bind
+This Booter's purpose is to discover [Repository](Repositories.md) type Artifacts and to bind
 them to the Application's Context. The use of this Booter requires `RepositoryMixin`
 from `@loopback/repository` to be mixed into your Application class.
 

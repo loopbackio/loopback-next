@@ -28,8 +28,8 @@ or [`given/when/then`](https://martinfowler.com/bliki/GivenWhenThen.html).
 Both styles work well, so pick one that you're comfortable with and
 start writing tests!
 
-For an introduction to automated testing, see [Define your testing strategy](Defining-your-testing-strategy.html).
-For a step-by-step tutorial, see [Incrementally implement features](Implementing-features.html).
+For an introduction to automated testing, see [Define your testing strategy](Defining-your-testing-strategy.md).
+For a step-by-step tutorial, see [Incrementally implement features](Implementing-features.md).
 
 {% include important.html content="
 A great test suite requires you to think smaller and favor fast and focused
@@ -318,9 +318,9 @@ produces code that's difficult to comprehend.
 #### Create a stub Repository
 
 When writing an application that accesses data in a database, the best
-practice is to use [repositories](Repositories.html) to encapsulate all
+practice is to use [repositories](Repositories.md) to encapsulate all
 data-access/persistence-related code. Other parts of the application
-(typically [controllers](Controllers.html)) can then depend on these
+(typically [controllers](Controllers.md)) can then depend on these
 repositories for data access. To test Repository dependents
 (for example, Controllers) in isolation, we need to provide a test double,
 usually as a test stub.
