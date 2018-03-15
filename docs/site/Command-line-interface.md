@@ -20,8 +20,8 @@ npm install -g @loopback/cli
 
 ## Generating LoopBack projects
 
-{% include content/lb4-project-commands.html %}
+{% include_relative tables/lb4-project-commands.html %}
 
 ## Generating LoopBack artifacts
 
-{% include content/lb4-artifact-commands.html %}
+{% include_relative tables/lb4-artifact-commands.html %}

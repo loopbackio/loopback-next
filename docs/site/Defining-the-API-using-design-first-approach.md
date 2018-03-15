@@ -1,19 +1,20 @@
 ---
 lang: en
-title: 'Defining and validating the API'
+title: 'Defining the API using design-first approach'
 keywords: LoopBack 4.0, LoopBack 4
 tags:
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/Defining-and-validating-the-API.html
+permalink: /doc/en/lb4/Defining-the-API-using-design-first-approach.html
 summary:
 ---
+
 {% include important.html content="The top-down approach for building LoopBack
 applications is not yet fully supported. Therefore, the steps outlined in this
 page are outdated and may not work out of the box. They will be revisited after
 our MVP release.
 "%}
 
-## Define the API
+## Define the API from top to bottom (design-first)
 
 ### Start with data
 
@@ -289,9 +290,17 @@ _.merge(spec, CategoryAPI);
 export default spec;
 ```
 
-You can then bind the full spec to the application using `server.spec()`. This is done on the server level, because each server instance can expose a different (sub)set of API.
+You can then bind the full spec to the application using `app.api()`.
+This works well for applications with a single REST server, because
+there is only one API definition involved.
 
-You also need to associate the controllers implementing the spec with the app using `app.controller(GreetController)`. This is not done on the server level because a controller may be used with multiple server instances, and types!
+If you are building an application with multiple REST servers,
+where each server provides a different API, then you need
+to call `server.api()` instead.
+
+You also need to associate the controllers implementing the spec with the app
+using `app.controller(GreetController)`. This is not done on the server level
+because a controller may be used with multiple server instances, and types!
 
 ```ts
 // application.ts
@@ -302,20 +311,18 @@ import { ProductController, DealController, CategoryController } from "./control
 export class YourMicroservice extends RestApplication {
 
   constructor() {
-    super();
+    super({
+      rest: {
+        port: 3001
+      }
+    });
     const app = this;
 
     app.controller(ProductController);
     app.controller(DealController);
     app.controller(CategoryController);
-
-  }
-  async start() {
-    const server = await app.getServer(RestServer);
-    // inject your spec here!
-    server.api(spec);
-    server.bind("rest.port").to(3001);
-    await super.start();
+    //inject your spec
+    app.api(spec);
   }
   // etc...
 }
@@ -345,6 +352,12 @@ describe('API specification', () => {
 ```
 
 See [Validate your OpenAPI specification](Testing-your-application.md#validate-your-openapi-specification) from [Testing your application](Testing-your-application.md) for more details.
+
+{% include note.html content="
+  If you would like to make tweaks to your API as you develop your application,
+  refer to [Defining the API using code-first approach](Defining-the-API-using-code-first-approach.md)
+  page for best practices.
+" %}
 
 {% include next.html content= "
 [Testing the API](./Testing-the-API.md)

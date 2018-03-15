@@ -132,7 +132,7 @@ store along with the key. For example:
 // app level
 const app = new Application();
 app.bind('hello').to('world'); // ContextKey='hello', ContextValue='world'
-console.log(app.getSync('hello')); // => 'world'
+console.log(app.getSync<string>('hello')); // => 'world'
 ```
 
 In this case, we bind the 'world' string ContextValue to the 'hello' ContextKey.

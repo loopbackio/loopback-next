@@ -290,7 +290,7 @@ Syntax: `@inject.tag(tag: string | RegExp)`.
     .bind('store.locations.sj')
     .to('San Jose')
     .tag('store:location');
-  const store: Store = ctx.getSync('store');
+  const store = ctx.getSync<Store>('store');
   // `store.locations` is now `['San Francisco', 'San Jose']`
 ```
 
@@ -305,13 +305,13 @@ Syntax: `@inject.context()`.
 
   const ctx = new Context();
   ctx.bind('my-component').toClass(MyComponent);
-  const component: MyComponent = ctx.getSync('my-component');
+  const component = ctx.getSync<MyComponent>('my-component');
   // `component.ctx` should be the same as `ctx`
 ```
 
 **NOTE**: It's recommended to use `@inject` with specific keys for dependency injection if possible. Use `@inject.context` only when the code need to access the current context object for advanced use cases.
 
-For more information, see the [Dependency Injection](Dependency-Injection.htm) section under [LoopBack Core Concepts](Concepts.md)
+For more information, see the [Dependency Injection](Dependency-Injection.md) section under [LoopBack Core Concepts](Concepts.md)
 
 ## Authentication Decorator
 

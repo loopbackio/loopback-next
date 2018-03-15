@@ -9,7 +9,7 @@ summary:
 ---
 
 {% include previous.html content="
-This article continues off from [Defining your testing stategy(./Defining-your-testing-strategy.md$2).
+This article continues from [Defining your testing stategy(./Defining-your-testing-strategy.md).
 " %}
 
 ## Incrementally implement features

@@ -86,20 +86,16 @@ class MySequence extends DefaultSequence {
 }
 ```
 
-In order for LoopBack to use your custom sequence, you must register it on any
-applicable `Server` instances before starting your `Application`:
+In order for LoopBack to use your custom sequence, you must register it
+before starting your `Application`:
 
 ```js
 import {RestApplication, RestServer} from '@loopback/rest';
 
 const app = new RestApplication();
+app.sequence(MySequencce);
 
-// or
-(async function start() {
-  const server = await app.getServer(RestServer);
-  server.sequence(MySequence);
-  await app.start();
-})();
+app.start();
 ```
 
 ## Advanced topics

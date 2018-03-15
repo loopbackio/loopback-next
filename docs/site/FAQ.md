@@ -16,6 +16,8 @@ summary: LoopBack 4 is a completely new framework, sometimes referred to as Loop
 - Suitable for small and large teams
 - Minimally opinionated, enforce your team's opinions instead
 
+See [Crafting LoopBack 4](Crafting-LoopBack-4.md) for more details.
+
 ### What’s the timeline for LoopBack 4?
 
 See [Upcoming releases](https://github.com/strongloop/loopback-next/wiki/Upcoming-Releases).
