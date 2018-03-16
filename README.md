@@ -75,18 +75,18 @@ You can join the team by posting a comment to [issue #110](https://github.com/st
 
 ## Project Architects:
 
-Raymond Feng|Miroslav Bajtos|Ritchie Martori|Kevin Delisle
-:-:|:-:|:-:|:-:
-[<img src="https://avatars0.githubusercontent.com/u/540892?v=3&s=60">](http://github.com/raymondfeng)|[<img src="https://avatars2.githubusercontent.com/u/1140553?v=3&s=60">](http://github.com/bajtos)|[<img src="https://avatars2.githubusercontent.com/u/462228?v=3&s=60">](http://github.com/ritch)|[<img src="https://avatars3.githubusercontent.com/u/2053534?v=3&s=60">](http://github.com/kjdelisle)
+Raymond Feng|Miroslav Bajtos|Ritchie Martori
+:-:|:-:|:-:
+[<img src="https://avatars0.githubusercontent.com/u/540892?v=3&s=60">](http://github.com/raymondfeng)|[<img src="https://avatars2.githubusercontent.com/u/1140553?v=3&s=60">](http://github.com/bajtos)|[<img src="https://avatars2.githubusercontent.com/u/462228?v=3&s=60">](http://github.com/ritch)
 
 ## Project Maintainers:
 
 |||||
 |:-:|:-:|:-:|:-:|
-|Biniam Admikew|Diana Lau|Janny Hou|Simon Ho|
-|[<img src="https://avatars0.githubusercontent.com/u/13950637?v=3&s=60">](http://github.com/b-admike)|[<img src="https://avatars2.githubusercontent.com/u/25489897?v=3&s=60">](http://github.com/dhmlau)|[<img src="https://avatars2.githubusercontent.com/u/12554153?v=3&s=60">](http://github.com/jannyHou)|[<img src="https://avatars1.githubusercontent.com/u/1617364?v=3&s=60">](http://github.com/superkhau)|
-|Kyu Shim|Loay Gewily|Rand McKinney|Taranveer Virk|
-|[<img src="https://avatars3.githubusercontent.com/u/18518689?v=3&s=60" height=60>](http://github.com/shimks)|[<img src="https://avatars3.githubusercontent.com/u/1986928?v=3&s=60">](http://github.com/loay)|[<img src="https://avatars2.githubusercontent.com/u/2925364?v=3&s=60">](http://github.com/crandmck)|[<img src="https://avatars1.githubusercontent.com/u/3311536?v=3&s=60">](http://github.com/virkt25)|
+|Taranveer Virk|Biniam Admikew|Kyu Shim|Diana Lau|
+|[<img src="https://avatars1.githubusercontent.com/u/3311536?v=3&s=60">](http://github.com/virkt25)|[<img src="https://avatars0.githubusercontent.com/u/13950637?v=3&s=60">](http://github.com/b-admike)|[<img src="https://avatars3.githubusercontent.com/u/18518689?v=3&s=60" height=60>](http://github.com/shimks)|[<img src="https://avatars2.githubusercontent.com/u/25489897?v=3&s=60">](http://github.com/dhmlau)|
+|Janny Hou|Simon Ho|Kevin Delisle|Rand McKinney|
+|[<img src="https://avatars2.githubusercontent.com/u/12554153?v=3&s=60">](http://github.com/jannyHou)|[<img src="https://avatars1.githubusercontent.com/u/1617364?v=3&s=60">](http://github.com/superkhau)|[<img src="https://avatars3.githubusercontent.com/u/2053534?v=3&s=60">](http://github.com/kjdelisle)|[<img src="https://avatars2.githubusercontent.com/u/2925364?v=3&s=60">](http://github.com/crandmck)|
 
 See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
