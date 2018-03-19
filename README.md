@@ -12,46 +12,26 @@ LoopBack makes it easy to build modern applications that require complex integra
 # Status: Developer Preview #1
 
 LoopBack 4 is a work in progress, the public API is frequently changed in
-backwards-incompatible ways. See [Upcoming-Releases on wiki](https://github.com/strongloop/loopback-next/wiki/Upcoming-Releases)
+backward incompatible ways. See [Upcoming-Releases on wiki](https://github.com/strongloop/loopback-next/wiki/Upcoming-Releases)
 for more details.
+
+Learn about the latest and greatest [features and technologies in LoopBack 4](https://loopback.io/doc/en/lb4/Crafting-LoopBack-4.html) by using it for your next project. Start by having a look at [Getting Started](https://loopback.io/doc/en/lb4/Getting-started.html).
+
+**NOTE:** _It is not recommended for production use yet._ For production, use [LoopBack 3](https://loopback.io/doc/en/lb3/index.html).
 
 # Installation
 
 Make sure you have the following installed:
 
 - [Node.js](https://nodejs.org/en/download/) >= 8.0.0
-- [TypeScript](https://www.typescriptlang.org/index.html#download-links) >= 2.5.0 `npm i -g typescript`
 
-Then in your Node.js project root, run:
+Install LoopBack 4 CLI to help create new projects as follows:
 
 ```shell
-npm install -S @loopback/core
+npm i -g @loopback/cli
 ```
 
-> Make sure you set `"target": "es2017"` in your compiler options in your
-> `tsconfig.json` if you're using a TypeScript project. See [Installation
-> ](http://loopback.io/doc/en/lb4/Installation.html) for
-> detailed information.
-
-# Example
-
-A basic controller:
-
-```ts
-export class UserController {
-  async getUserByName(username: string): Promise<UserResponse> {
-    const users = new UserRepository();
-    const user = await users.findOne({where: {username: username}});
-    if (!user) {
-      throw createHttpError.NotFound(`User ${username} not found.`);
-    }
-    return new UserResponse(user);
-  }
-}
-```
-
-To create your first LoopBack 4 application, See [Getting Started](http://loopback.io/doc/en/lb4/Getting-started.html).
-
+To create your first LoopBack 4 application, see [Getting Started](http://loopback.io/doc/en/lb4/Getting-started.html).
 
 # Documentation
 
@@ -69,7 +49,7 @@ See the following resources to get your started:
  - [Monorepo overview](./docs/site/MONOREPO.md)
  - [Developing LoopBack](./docs/site/DEVELOPING.md)
 
-You can join the team by posting a comment to [issue #110](https://github.com/strongloop/loopback-next/issues/110.).
+You can join the team by posting a comment to [issue #110](https://github.com/strongloop/loopback-next/issues/110).
 
 # Team
 
