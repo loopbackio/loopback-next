@@ -141,58 +141,182 @@ For more usage, refer to
 [Routing to Controllers](controllers.htm#routing-to-controllers)
 
 ### Parameter Decorator
+ 
+  Syntax: see [API documentation](https://github.com/strongloop/loopback-next/blob/0739ffcfe3ef50e0bfd86055c0f4e29fd6925be0/packages/openapi-v3/src/parameter-decorator.ts#L17-L29)
 
-Syntax: [`@param(paramSpec: ParameterObject)`](<>)
+  `@param` is applied to controller method parameters to generate OpenAPI parameter specification for them.
 
-Optional Pattern: `@param.${in}.${type}(${name})`
+  For example:
 
-`@param` can be applied to method itself or specific parameters, it describes an
-input parameter of a Controller method.
+  ```ts
+  import {get, param} from '@loopback/rest';
 
-For example:
+  const categorySpec = {
+    name: 'category',
+    in: 'path',
+    required: true,
+    schema: {type: 'string'}
+  }
 
-```ts
-// example 1: decorator `@param ` applied on method level
-class MyController {
-  @get('/')
-  @param(offsetSpec)
-  @param(pageSizeSpec)
-  list(offset?: number, pageSize?: number) {}
-}
-```
+  const pageSizeSpec = {
+    name: 'pageSize',
+    in: 'query',
+    required: false,
+    schema: {type: 'integer', format: 'int32'}
+  }
 
-or
+  class MyController {
+    @get('Pets/{category}')
+    list(
+      @param(categorySpec) category: string,
+      @param(pageSizeSpec) pageSize?: number,
+    ) {}
+  }
+  ```
 
-```ts
-// example 2: decorator `@param` applied on parameter level
-class MyController {
-  @get('/')
-  list(
-    @param(offsetSpec) offset?: number,
-    @param(pageSizeSpec) pageSize?: number,
-  ) {}
-}
-```
+  Writing the whole parameter specification is tedious, so we've created shortcuts to define
+  the params with the pattern `@param.${in}.${type}(${name})`:
 
-In the first example, we apply multiple decorators to a single declaration. The
-order in which the decorators are called is important because a `@param`
-decorator must be applied after an operation decorator. To learn more about
-TypeScript decorator composition, refer to
-[TypeScript Decorator Documentation](https://www.typescriptlang.org/docs/handbook/decorators.html)
+  - in: The parameter location. It can be one of the following values: `query`, `header`, `path`.
+  - type: A [common name of OpenAPI primitive data type](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#data-types). 
+  - name: Name of the parameter. It should be a `string`.
 
-Please note method level `@param` and parameter level `@param` are mutually
-exclusive, you can not mix and apply them to the same parameter.
+  A list of available shortcuts for `query` can be found in [API document](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#param.query),
+  along with the shortcuts for `path` and `header`.
 
-You can also use this pattern to make it quicker to define params:
-`@param.${in}.${type}(${name})`
+  An equivalent example using the shortcut decorator would be:
+  
+  ```ts
+    class MyController {
+      @get('/Pets/{category}')
+      list(
+        @param.path.string('category') category: string,
+        @param.query.number('pageSizes') pageSize?: number,
+      ) {}
+    }
+  ```
 
-- in: one of the following values: `query`, `header`, `path`, `formData`, `body`
-- type: one of the following values: `string`, `number`, `boolean`, `integer`
-- name: a `string`, name of the parameter
+  You can find specific use cases in [Writing Controller methods](Controllers.md#writing-controller-methods)
 
-So an example would be `@param.query.number('offset')`. You can find the
-specific usage in
-[Writing Controller methods](controller.md#writing-controller-methods)
+  *The parameter location cookie is not supported yet, see*
+  *https://github.com/strongloop/loopback-next/issues/997*
+
+### RequestBody Decorator
+
+  Syntax: see [API documentation](https://github.com/strongloop/loopback-next/blob/0739ffcfe3ef50e0bfd86055c0f4e29fd6925be0/packages/openapi-v3/src/request-body-decorator.ts#L20-L79)
+
+  `@requestBody()` is applied to a controller method parameter to generate OpenAPI requestBody specification for it.
+  
+  *Only one parameter can be decorated by `@requestBody` per controller method.*
+
+  A typical [OpenAPI requestBody specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#requestBodyObject)
+  contains properties `description`, `required`, and `content`:
+
+  ```ts
+    requestBodySpec: {
+    description: 'a user',
+    required: true,
+    content: {
+      'application/json': {...schemaSpec},
+      'application/text': {...schemaSpec},
+    },
+  }
+  ```
+
+  In order to use `@requestBody`, the parameter type it's decorating needs to have its model decorated with `@model` and `@property`:
+  
+  ```ts
+  import {model, property} from '@loopback/repository';
+  import {Address} from './address.model';
+
+  @model()
+  class User {
+    @property()
+    firstname: string
+    @property()
+    lastname: string
+    @property()
+    address: Address
+  }
+  ```
+  *To learn more about decorating models and the corresponding OpenAPI schema, please check
+  [model decorators](#model-decorators).*
+
+  This allows type information of the model to be visible to the spec generator so that `@requestBody` can be used on the parameter:
+
+  ```ts
+  // in file '/src/controllers/user.controller.ts'
+  import {User} from '../models/user'
+  import {put} from '@loopback/rest'
+
+  class UserController {
+    @put('/Users/{id}')
+    async replaceUser(
+      @param.path.string('id') id: string,
+      @requestBody() user: User
+    ) {}
+  }
+  ```
+
+  For the simplest use case, you can leave the input of `@requestBody` empty
+  since we automatically detect the type of `user` and generate the corresponding schema for it. 
+  The default content type is set to be `application/json`.
+
+  You can also customize the generated `requestBody` specification in 3 ways:
+
+  * add optional fields `description` and `required`
+
+  ```ts
+  class MyController {
+    @put('/Users/{id}')
+    async replaceUser(
+      @param.path.string('id') id: string,
+      @requestBody({
+        description: 'a modified user',
+        required: true
+      }) user: User
+    ) {}
+  }
+  ```
+  
+  * override the content type or define multiple content types
+
+  ```ts
+  class MyController {
+    @put('/Users/{id}')
+    async replaceUser(
+      @param.path.string('id') id: string,
+      @requestBody({
+        content: {
+          // leave the schema as empty object, the decorator will generate it for both.
+          'application/text': {},
+          'application/xml': {},
+        } 
+      }) user: User
+    ) {}
+  }
+  ```
+
+  * override the schema specification
+
+  ```ts
+  import {UserSchema, User} from '../model/user-schema';
+  
+  class MyController {
+    @put('/Users/{id}')
+    async replaceUser(
+      @param.path.string('id') id: string,
+      @requestBody({
+        content: {
+          'application/json': UserSchema
+        } 
+      }) user: User
+    ) {}
+  }
+  ```
+
+  *We are supporting more `@requestBody` shortcuts in the future, track the feature in story*
+  *https://github.com/strongloop/loopback-next/issues/1064*
 
 ## Dependency Injection
 
@@ -285,7 +409,7 @@ class HelloController {
 ```
 
 - `@inject.tag`: inject an array of values by a pattern or regexp to match
-  bindng tags
+  binding tags
 
 Syntax: `@inject.tag(tag: string | RegExp)`.
 
@@ -363,7 +487,7 @@ object and data mapping layers using a collection-like interface for accessing
 domain objects.
 
 In LoopBack, a domain object is usually a TypeScript/JavaScript Class instance,
-and a typical example of a data mappting layer module could be a database's
+and a typical example of a data mapping layer module could be a database's
 node.js driver.
 
 LoopBack repository encapsulates your TypeScript/JavaScript Class instance, and
@@ -434,7 +558,7 @@ Syntax: `@relation`
 
 Register a general relation.
 
-#### Specfic Relation Decorator
+#### Specific Relation Decorator
 
 Syntax:
 
