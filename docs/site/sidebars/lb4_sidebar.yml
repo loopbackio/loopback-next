@@ -149,6 +149,10 @@ children:
     url: Creating-decorators.html
     output: 'web, pdf'
 
+  - title: 'Creating Servers'
+    url: Creating-servers.html
+    output: 'web, pdf'
+
   - title: 'Testing your extension'
     url: Testing-your-extension.html
     output: 'web, pdf'
