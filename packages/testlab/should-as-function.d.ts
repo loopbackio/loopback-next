@@ -118,7 +118,8 @@ interface ShouldAssertion {
   enumerables(...properties: string[]): ShouldAssertion;
   startWith(expected: string, message?: any): ShouldAssertion;
   endWith(expected: string, message?: any): ShouldAssertion;
-  throw(message?: any): ShouldAssertion;
+  throw(propereties?: {}): ShouldAssertion;
+  throw(message: Function | string | RegExp, properties?: {}): ShouldAssertion;
 
   //promises
   eventually: ShouldAssertion;
@@ -126,7 +127,8 @@ interface ShouldAssertion {
   fulfilled(): Promise<any>;
   fulfilledWith(value: any): Promise<any>;
   rejected(): Promise<any>;
-  rejectedWith(err: Error | string | RegExp): Promise<any>;
+  rejectedWith(err: Function | string | RegExp, properties?: {}): Promise<any>;
+  rejectedWith(properties: {}): Promise<any>;
 
   //http
   header(field: string, val?: string): ShouldAssertion;
