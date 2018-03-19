@@ -33,7 +33,7 @@
     "prettier:cli": "node packages/build/bin/run-prettier \"**/*.ts\"",
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
-    "clean": "lerna run clean --loglevel=silent --parallel",
+    "clean": "lerna run clean --loglevel=silent --parallel && node packages/build/bin/run-clean \"packages/*/dist*\"",
     "clean:lerna": "lerna clean --yes --parallel --loglevel=silent",
     "build": "lerna run build --parallel --loglevel=silent",
     "build:full": "npm run clean:lerna && npm run bootstrap && npm test",
