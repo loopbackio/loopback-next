@@ -18,7 +18,7 @@ LoopBack 4 extensions are often used by other teams. A thorough test suite for y
 
 ## Project Setup
 
-We recommend that you use `@loopback/cli` to create the extension, as it installs several tools you can use for testing, such as `mocha`, assertion libraries, and a swagger validator.
+We recommend that you use `@loopback/cli` to create the extension, as it installs several tools you can use for testing, such as `mocha`, assertion libraries, linters, etc.
 
 The `@loopback/cli` includes the `mocha` automated test runner and a
 `test` folder containing recommended folders for various types of tests.
@@ -26,7 +26,7 @@ The `@loopback/cli` includes the `mocha` automated test runner and a
 create the extension project. The `@loopback/cli` installs and configures `mocha`, creates the `test` folder, and also enters a `test` command in your `package.json`.
 
 Assertion libraries such as [ShouldJS](http://shouldjs.github.io/) (as `expect`),
-[SinonJS](http://sinonjs.org/), and a swagger validator are made available
+[SinonJS](http://sinonjs.org/), and a test sandbox are made available
 through the convenient `@loopback/testlab` package. The `testlab` is also installed by `@loopback/cli`.
 
 ### Manual Setup - Using Mocha
@@ -167,7 +167,7 @@ a test double for any constructor arguments.
 import {Provider} from '@loopback/context';
 
 export class RandomNumberProvider implements Provider<number> {
-  value(): number {
+  value() {
     return (max: number): number => {
       return Math.floor(Math.random() * max) + 1;
     };
@@ -275,6 +275,6 @@ Acceptance test. This is a black box test where you don't know or care about the
 internals of the extensions. You will be using the extension as if you were the consumer.
 
 Due to the complexity of an Acceptance test, there is no example given here.
-Have a look at [loopback4-example-log-extension](https://github.com/strongloop/loopback4-example-log-extension)
+Have a look at [loopback4-example-log-extension](https://github.com/strongloop/loopback-next/tree/master/packages/example-log-extension)
 to understand the extension artifacts and their usage. An Acceptance test can
-be seen here: [test/acceptance/log.extension.acceptance.ts](https://github.com/strongloop/loopback4-example-log-extension/blob/master/test/acceptance/log.extension.acceptance.ts).
+be seen here: [test/acceptance/log.extension.acceptance.ts](https://github.com/strongloop/loopback-next/blob/master/packages/example-log-extension/test/acceptance/log.extension.acceptance.ts).

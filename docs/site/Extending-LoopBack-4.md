@@ -49,7 +49,7 @@ class UserController {
    * Login a user with name and password
    */
   async login(userName: string, password: String): boolean {
-    const hash = this.passHasher.hash(password);
+    const hash = this.passwordHasher.hash(password);
     const user = await this.userRepository.findById(userName);
     return user && user.passwordHash === hash;
   }
@@ -59,19 +59,19 @@ const ctx = new Context();
 // Bind repositories.UserRepository to UserRepository class
 ctx.bind('repositories.UserRepository').toClass(MySQLUserRepository);
 // Bind utilities.PasswordHash to a function
-ctx.bind('utilities.PasswordHash').to((password) => { /* ... */ })
+ctx.bind('utilities.PasswordHash').to(PasswordHasher)
 // Bind the UserController class as the user management implementation
 ctx.bind('controllers.UserController').toClass(UserController);
 
 // Locate the an instance of UserController from the context
-const userController= await ctx.get<UserController>('controller.UserController');
-// Run the log()
-const ok = await logger.login('John', 'MyPassWord');
+const userController: UserController = await ctx.get<UserController>('controller.UserController');
+// Run the login()
+const ok = await userController.login('John', 'MyPassWord');
 ```
 
 Now you might wonder why the IoC container is fundamental to extensibility. Here's how it's achieved.
 
-1. An alternative implementation of the service provider can be bound the context to replace the existing one. For example, we can implement different hashing functions for password encryption. The user management system can then receive a custom password hashing.
+1. An alternative implementation of the service provider can be bound the context to replace the existing one. For example, we can implement different hashing functions for password encryption. The user management system can then receive custom password hashing functions.
 
 2. Services can be organized as extension points and extensions. For example, to allow multiple authentication strategies, the `authentication` component can define an extension point as `authentication-manager` and various authentication strategies such as user/password, LDAP, oAuth2 can be contributed to the extension point as extensions. The relation will look like:
 
@@ -87,11 +87,8 @@ export class UserManagementComponent implements Component {
   providers?: ProviderMap;
 
   constructor() {
-    this.controllers = {
-      [UserBindings.CONTROLLER]: UserController,
-    };
-    this.repositories = {
-      [UserBindings.REPOSITORY]: UserRepository,
+    this.controllers = [UserController];
+    this.repositories = [UserRepository];
     };
   }
 }
@@ -110,7 +107,7 @@ For more information about components, see:
 
 - Binding providers
 - Decorators
-- Sequence & Actions
+- Sequence Actions
 - Connectors
 - Utility functions
 - Controllers
@@ -151,3 +148,7 @@ An application-level component usually contributes:
 
 - [loopback4-example-log-extension](https://github.com/strongloop/loopback-next/tree/master/packages/example-log-extension)
 - [@loopback/authentication](https://github.com/strongloop/loopback-next/tree/master/packages/authentication)
+
+### Create your own extension
+
+You can scaffold a LoopBack 4 extension project using `@loopback/cli`'s `lb4 extension` command.

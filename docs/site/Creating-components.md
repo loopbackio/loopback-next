@@ -8,14 +8,14 @@ permalink: /doc/en/lb4/Creating-components.html
 summary:
 ---
 
-
 As explained in [Using Components](Using-components.md), a typical LoopBack component is an npm package exporting a Component class.
 
-```js
-import MyController from './controllers/my-controller';
-import MyValueProvider from './providers/my-value-provider';
+```ts
+import {MyController} from './controllers/my-controller';
+import {MyValueProvider} from './providers/my-value-provider';
+import {Component} from '@loopback/core';
 
-export class MyComponent {
+export class MyComponent implements Component {
   constructor() {
     this.controllers = [MyController];
     this.providers = {
@@ -33,12 +33,12 @@ The example `MyComponent` above will add `MyController` to application's API and
 
 ## Providers
 
-Providers enable components to export values that can be used by the target application or other components. The `Provider`  class provides a `value()` function called by [Context](Context.md) when another entity requests a value to be injected.
+Providers enable components to export values that can be used by the target application or other components. The `Provider` class provides a `value()` function called by [Context](Context.md) when another entity requests a value to be injected.
 
-```js
+```ts
 import {Provider} from '@loopback/context';
 
-export class MyValueProvider {
+export class MyValueProvider implements Provider<string> {
   value() {
     return 'Hello world';
   }
@@ -49,10 +49,10 @@ export class MyValueProvider {
 
 Notice that the provider class itself does not specify any binding key, the key is assigned by the component class.
 
-```js
-import MyValueProvider from './providers/my-value-provider';
+```ts
+import {MyValueProvider} from './providers/my-value-provider';
 
-export class MyComponent {
+export class MyComponent implements Component {
   constructor() {
     this.providers = {
       'my-component.my-value': MyValueProvider
@@ -66,15 +66,12 @@ export class MyComponent {
 Applications can use `@inject` decorators to access the value of an exported Provider.
 If you’re not familiar with decorators in TypeScript, see [Key Concepts: Decorators](Decorators.md)
 
-```js
+```ts
 const app = new Application();
 app.component(MyComponent);
 
 class MyController {
-  constructor(@inject('my-component.my-value') greeting) {
-    // LoopBack sets greeting to 'Hello World' when creating a controller instance
-    this.greeting = greeting;
-  }
+  constructor(@inject('my-component.my-value') private greeting: string) {}
 
   @get('/greet')
   greet() {
@@ -90,14 +87,15 @@ class MyController {
 
 Provider's `value()` method can be asynchronous too:
 
-```js
+```ts
+import {Provider} from '@loopback/context';
 const request = require('request-promise-native');
 const weatherUrl =
   'http://samples.openweathermap.org/data/2.5/weather?appid=b1b15e88fa797225412429c1c50c122a1'
 
-export class CurrentTemperatureProvider {
+export class CurrentTemperatureProvider implements Provider<number> {
   async value() {
-    const data = await(request(`${weatherUrl}&q=Prague,CZ`, {json:true});
+    const data = await request(`${weatherUrl}&q=Prague,CZ`, {json:true});
     return data.main.temp;
   }
 }
@@ -109,13 +107,14 @@ In this case, LoopBack will wait until the promise returned by `value()` is reso
 
 In some cases, the Provider may depend on other parts of LoopBack; for example the current `request` object. The Provider's constructor should list such dependencies annotated with `@inject` keyword, so that LoopBack runtime can resolve them automatically.
 
-```js
+```ts
+import {Provider} from '@loopback/context';
+import {RestBindings} from '@loopback/rest';
+import {ServerRequest} from 'http';
 const uuid = require('uuid/v4');
 
-class CorrelationIdProvider {
-  constructor(@inject('http.request') request) {
-    this.request = request;
-  }
+class CorrelationIdProvider implements Provider<string>{
+  constructor(@inject(RestBindings.Http.REQUEST) private request: ServerRequest) {}
 
   value() {
     return this.request.headers['X-Correlation-Id'] || uuid();
@@ -131,8 +130,10 @@ The idiomatic solution has two parts:
 
  1. The component should define and bind a new [Sequence action](Sequence.md#actions), for example `authentication.actions.authenticate`:
 
-    ```js
-    class AuthenticationComponent {
+    ```ts
+    import {Component} from '@loopback/core';
+
+    class AuthenticationComponent implements Component{
       constructor() {
         this.providers = {
           'authentication.actions.authenticate': AuthenticateActionProvider
@@ -143,15 +144,15 @@ The idiomatic solution has two parts:
 
     A sequence action is typically implemented as an `action()` method in the provider.
 
-    ```js
-    class AuthenticateActionProvider {
+    ```ts
+    class AuthenticateActionProvider implements Provider<AuthenticateFn>{
       // Provider interface
       value() {
         return request => this.action(request);
       }
 
       // The sequence action
-      action(request) {
+      action(request): UserProfile | undefined {
         // authenticate the user
       }
     }
@@ -162,22 +163,18 @@ The idiomatic solution has two parts:
 
  2. The application should use a custom `Sequence` class which calls this new sequence action in an appropriate place.
 
-    ```js
+    ```ts
     class AppSequence implements SequenceHandler {
       constructor(
-        @inject('sequence.actions.findRoute') findRoute,
-        @inject('sequence.actions.invokeMethod') invoke,
-        @inject('sequence.actions.send') send: Send,
-        @inject('sequence.actions.reject') reject: Reject,
+        @inject(RestBindings.Http.CONTEXT) protected ctx: Context,
+        @inject(RestBindings.SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
+        @inject(RestBindings.SequenceActions.PARSE_PARAMS) protected parseParams: ParseParams,
+        @inject(RestBindings.SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
+        @inject(RestBindings.SequenceActions.SEND) public send: Send,
+        @inject(RestBindings.SequenceActions.REJECT) public reject: Reject,
         // Inject the new action here:
-        @inject('authentication.actions.authenticate') authenticate
-      ) {
-        this.findRoute = findRoute;
-        this.invoke = invoke;
-        this.send = send;
-        this.reject = reject;
-        this.authenticate = authenticate;
-      }
+        @inject('authentication.actions.authenticate') protected authenticate: AuthenticateFn
+      ) {}
 
       async handle(req: ParsedRequest, res: ServerResponse) {
         try {
@@ -202,57 +199,51 @@ When writing a custom sequence action, you need to access Elements contributed b
 
 Because all Actions are resolved before the Sequence `handle` function is run, Elements contributed by Actions are not available for injection yet. To solve this problem, use `@inject.getter` decorator to obtain a getter function instead of the actual value. This allows you to defer resolution of your dependency only until the sequence action contributing this value has already finished.
 
-```js
-export class AuthenticationProvider {
+```ts
+export class AuthenticationProvider implements Provider<AuthenticateFn> {
   constructor(
     @inject.getter(BindingKeys.Authentication.STRATEGY)
     readonly getStrategy
-  ) {
-    this.getStrategy = getStrategy;
-  }
+  ) {}
 
   value() {
     return request => this.action(request);
   }
 
-  async action(request) {
-    const strategy = await getStrategy();
+  async action(request): UserProfile | undefined {
+    const strategy = await this.getStrategy();
     // ...
   }
 }
 ```
 
-
 ### Contributing Elements from Sequence Actions
 
 Use `@inject.setter` decorator to obtain a setter function that can be used to contribute new Elements to the request context.
 
-```js
-export class AuthenticationProvider {
+```ts
+export class AuthenticationProvider implements Provider<AuthenticateFn> {
   constructor(
     @inject.getter(BindingKeys.Authentication.STRATEGY)
     readonly getStrategy,
     @inject.setter(BindingKeys.Authentication.CURRENT_USER)
     readonly setCurrentUser,
-  ) {
-    this.getStrategy = getStrategy;
-    this.setCurrentUser = setCurrentUser;
-  }
+  ) {}
 
   value() {
     return request => this.action(request);
   }
 
-  async action(request) {
-    const strategy = await getStrategy();
+  async action(request): UserProfile | undefined {
+    const strategy = await this.getStrategy();
     const user = // ... authenticate
-    setCurrentUser(user);
+    this.setCurrentUser(user);
     return user;
   }
 }
 ```
 
-## Extends Application with Mixin
+## Extending Application with Mixins
 
 When binding a component to an app, you may want to extend the app with the component's
 properties and methods by using mixins.
@@ -265,7 +256,7 @@ The following snippet is an abbreviated function
 [`RepositoryMixin`](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repository-mixin.ts):
 
 {% include code-caption.html content="mixins/src/repository-mixin.ts" %}
-```js
+```ts
 export function RepositoryMixin<T extends Class<any>>(superClass: T) {
   return class extends superClass {
     constructor(...args: any[]) {
@@ -300,7 +291,7 @@ Then you can extend the app with repositories in a component:
 
 {% include code-caption.html content="index.ts" %}
 
-```js
+```ts
 import {RepositoryMixin} from 'mixins/src/repository-mixin';
 import {Application} from '@loopback/core';
 import {FooComponent} from 'components/src/Foo';
@@ -319,91 +310,14 @@ More often than not, the component may want to offer different value providers d
 
 Components should use constructor-level [Dependency Injection](Context.md#dependency-injection) to receive the configuration from the application.
 
-```js
+```ts
 class EmailComponent {
   constructor(@inject('config#components.email') config) {
-    this.config = config;
     this.providers = {
-      'sendEmail': config.transport == 'stub' ?
+      'sendEmail': this.config.transport == 'stub' ?
         StubTransportProvider :
         SmtpTransportProvider,
     };
   }
 }
 ```
-
-## Creating your own servers
-
-LoopBack 4 has the concept of a Server, which you can use to create your own
-implementations of REST, SOAP, gRPC, MQTT and more. For an overview, see
-[Server](Server.md).
-
-Typically, you'll want server instances that listen for traffic on one or more
-ports (this is why they're called "servers", after all). This leads into a key
-concept to leverage for creating your custom servers.
-
-### Controllers and routing
-LoopBack 4 developers are strongly encouraged to use controllers for their
-modules, and this naturally leads to the concept of routing.
-
-No matter what protocol you intend to use for your custom server, you'll need
-to use some algorithm to determine _which_ controller and function to send
-request data to, and that means you need a router.
-
-For example, consider a "toy protocol" similar to the JSON RPC
-specification (but nowhere near as complete or robust).
-
-The toy protocol will require a JSON payload with three properties: `controller`,
-`method`, and `input`.
-
-An example request would look something like this:
-```json
-{
-  "controller": "GreetController",
-  "method": "basicHello",
-  "input": {
-    "name": "world",
-  }
-}
-```
-
-You can find the code for our sample RPC server implementation
-[over here](https://github.com/strongloop/loopback4-example-rpc-server).
-
-### Trying it out
-First, install your dependencies and then start the application:
-```
-npm i && npm start
-```
-
-Now, try it out: start the server and run a few REST requests. Feel free to use
-whatever REST client you'd prefer (this example will use `curl`).
-```sh
-# Basic Greeting Calls
-$ curl -X POST -d '{ "controller": "GreetController", "method": "basicHello" }' -H "Content-Type: application/json" http://localhost:3000/
-Hello, World!
-$ curl -X POST -d '{ "controller": "GreetController", "method": "basicHello", "input": { "name": "Nadine" } }' -H "Content-Type: application/json" http://localhost:3000/
-Hello, Nadine!
-# Advanced Greeting Calls
-$ curl -X POST -d '{ "controller": "GreetController", "method": "hobbyHello", "input": { "name": "Nadine" } }' -H "Content-Type: application/json" http://localhost:3000/
-Hello, Nadine! I heard you like underwater basket weaving.
-$ curl -X POST -d '{ "controller": "GreetController", "method": "hobbyHello", "input": { "name": "Nadine", "hobby": "extreme mountain biking" } }' -H "Content-Type: application/json" http://localhost:3000/
-Hello, Nadine! I heard you like extreme mountain biking.
-```
-
-While a typical protocol server would be a lot more involved in the
-implementation of both its router and server, the general concept remains
-the same, and you can use these tools to make whatever server you'd like.
-
-### Other considerations
-Some additional concepts to add to your server could include:
-- Pre-processing of requests (changing content types, checking the request body,
-etc)
-- Post-processing of responses (removing sensitive/useless information)
-- Caching
-- Logging
-- Automatic creation of default endpoints
-- and more...
-
-LoopBack 4's modularity allows for custom servers of all kinds, while still
-providing key utilities like context and injection to make your work easier.
