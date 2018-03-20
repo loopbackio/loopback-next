@@ -13,6 +13,7 @@ import {
   createControllerFactory,
   ControllerFactory,
   ControllerClass,
+  ControllerInstance,
 } from './router/routing-table';
 import {ParsedRequest} from './internal-types';
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
@@ -362,7 +363,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * ```
    *
    */
-  controller(controllerCtor: ControllerClass): Binding {
+  controller(controllerCtor: ControllerClass<ControllerInstance>): Binding {
     return this.bind('controllers.' + controllerCtor.name).toClass(
       controllerCtor,
     );
@@ -383,17 +384,17 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * @param verb HTTP verb of the endpoint
    * @param path URL path of the endpoint
    * @param spec The OpenAPI spec describing the endpoint (operation)
-   * @param controller Controller constructor
+   * @param controllerCtor Controller constructor
    * @param methodName The name of the controller method
-   * @param factory A factory function to create controller instance
+   * @param controllerFactory A factory function to create controller instance
    */
-  route(
+  route<I>(
     verb: string,
     path: string,
     spec: OperationObject,
-    controller: ControllerClass,
+    controllerCtor: ControllerClass<I>,
     methodName: string,
-    factory?: ControllerFactory,
+    controllerFactory?: ControllerFactory<I>,
   ): Binding;
 
   /**
@@ -411,13 +412,13 @@ export class RestServer extends Context implements Server, HttpServerLike {
    */
   route(route: RouteEntry): Binding;
 
-  route(
+  route<I>(
     routeOrVerb: RouteEntry | string,
     path?: string,
     spec?: OperationObject,
-    controller?: ControllerClass,
+    controllerCtor?: ControllerClass<I>,
     methodName?: string,
-    controllerFactory?: ControllerFactory,
+    controllerFactory?: ControllerFactory<I>,
   ): Binding {
     if (typeof routeOrVerb === 'object') {
       const r = routeOrVerb;
@@ -440,7 +441,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
       });
     }
 
-    if (!controller) {
+    if (!controllerCtor) {
       throw new AssertionError({
         message: 'controller is required for a controller-based route',
       });
@@ -457,7 +458,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
         routeOrVerb,
         path,
         spec,
-        controller,
+        controllerCtor,
         methodName,
         controllerFactory,
       ),

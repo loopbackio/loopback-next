@@ -34,10 +34,10 @@ export class HttpHandler {
     this.handleRequest = (req, res) => this._handleRequest(req, res);
   }
 
-  registerController(
-    controllerCtor: ControllerClass,
+  registerController<T>(
+    controllerCtor: ControllerClass<T>,
     spec: ControllerSpec,
-    controllerFactory?: ControllerFactory,
+    controllerFactory?: ControllerFactory<T>,
   ) {
     this._routes.registerController(controllerCtor, spec, controllerFactory);
   }

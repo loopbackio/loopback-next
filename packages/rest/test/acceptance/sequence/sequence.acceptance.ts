@@ -24,7 +24,10 @@ import {Application} from '@loopback/core';
 import {expect, Client, createClientForHandler} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {inject, Context} from '@loopback/context';
-import {ControllerClass} from '../../../src/router/routing-table';
+import {
+  ControllerClass,
+  ControllerInstance,
+} from '../../../src/router/routing-table';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -209,7 +212,9 @@ describe('Sequence', () => {
     server = await app.getServer(RestServer);
   }
 
-  function givenControllerInServer(controller: ControllerClass) {
+  function givenControllerInServer(
+    controller: ControllerClass<ControllerInstance>,
+  ) {
     app.controller(controller);
   }
 

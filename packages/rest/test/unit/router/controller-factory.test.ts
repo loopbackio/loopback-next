@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {ControllerFactory, createControllerFactory} from '../../..';
+import {createControllerFactory} from '../../..';
 import {Context} from '@loopback/core';
 
 describe('createControllerFactory', () => {
@@ -16,7 +16,9 @@ describe('createControllerFactory', () => {
 
   it('creates a factory with binding key', async () => {
     ctx.bind('controllers.my-controller').toClass(MyController);
-    const factory = createControllerFactory('controllers.my-controller');
+    const factory = createControllerFactory<MyController>(
+      'controllers.my-controller',
+    );
     const inst = await factory(ctx);
     expect(inst).to.be.instanceof(MyController);
   });
