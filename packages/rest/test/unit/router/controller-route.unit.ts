@@ -28,7 +28,9 @@ describe('ControllerRoute', () => {
   it('honors a factory', () => {
     const spec = anOperationSpec().build();
 
-    const factory = createControllerFactory('controllers.my-controller');
+    const factory = createControllerFactory<MyController>(
+      'controllers.my-controller',
+    );
     const route = new MyRoute(
       'get',
       '/greet',
@@ -64,8 +66,8 @@ describe('ControllerRoute', () => {
     }
   }
 
-  class MyRoute extends ControllerRoute {
-    _controllerFactory: ControllerFactory;
+  class MyRoute extends ControllerRoute<MyController> {
+    _controllerFactory: ControllerFactory<MyController>;
     _controllerName: string;
   }
 });

@@ -16,6 +16,7 @@ import {
   ControllerClass,
   createControllerFactory,
   ControllerFactory,
+  ControllerInstance,
 } from '../../..';
 
 import {api, get, post, param, requestBody} from '@loopback/openapi-v3';
@@ -675,7 +676,8 @@ describe('Routing', () => {
         .withParameter({name: 'name', in: 'query', type: 'string'})
         .build();
 
-      const factory: ControllerFactory = ctx => new MySubController();
+      const factory: ControllerFactory<MyController> = ctx =>
+        new MySubController();
       app.route('get', '/greet', spec, MyController, 'greet', factory);
 
       await whenIMakeRequestTo(app)
@@ -714,7 +716,10 @@ describe('Routing', () => {
     return await app.getServer(RestServer);
   }
 
-  function givenControllerInApp(app: Application, controller: ControllerClass) {
+  function givenControllerInApp(
+    app: Application,
+    controller: ControllerClass<ControllerInstance>,
+  ) {
     app.controller(controller).inScope(BindingScope.CONTEXT);
   }
 

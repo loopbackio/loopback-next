@@ -67,20 +67,20 @@ export function parseRequestUrl(request: ServerRequest): ParsedRequest {
  * A controller instance with open properties/methods
  */
 // tslint:disable-next-line:no-any
-export type ControllerInstance = {[name: string]: any};
+export type ControllerInstance = {[name: string]: any} & object;
 
 /**
  * A factory function to create controller instances synchronously or
  * asynchronously
  */
-export type ControllerFactory = (
+export type ControllerFactory<T extends ControllerInstance> = (
   ctx: Context,
-) => ValueOrPromise<ControllerInstance>;
+) => ValueOrPromise<T>;
 
 /**
  * Controller class
  */
-export type ControllerClass = Constructor<ControllerInstance>;
+export type ControllerClass<T extends ControllerInstance> = Constructor<T>;
 
 /**
  * Routing table
@@ -90,14 +90,14 @@ export class RoutingTable {
 
   /**
    * Register a controller as the route
-   * @param controller
+   * @param controllerCtor
    * @param spec
    * @param controllerFactory
    */
-  registerController(
-    controller: ControllerClass,
+  registerController<T>(
+    controllerCtor: ControllerClass<T>,
     spec: ControllerSpec,
-    controllerFactory?: ControllerFactory,
+    controllerFactory?: ControllerFactory<T>,
   ) {
     assert(
       typeof spec === 'object' && !!spec,
@@ -118,7 +118,7 @@ export class RoutingTable {
           verb,
           fullPath,
           opSpec,
-          controller,
+          controllerCtor,
           undefined,
           controllerFactory,
         );
@@ -346,11 +346,11 @@ export class Route extends BaseRoute {
 /**
  * A route backed by a controller
  */
-export class ControllerRoute extends BaseRoute {
-  protected readonly _controllerCtor: ControllerClass;
+export class ControllerRoute<T> extends BaseRoute {
+  protected readonly _controllerCtor: ControllerClass<T>;
   protected readonly _controllerName: string;
   protected readonly _methodName: string;
-  protected readonly _controllerFactory: ControllerFactory;
+  protected readonly _controllerFactory: ControllerFactory<T>;
 
   /**
    * Construct a controller based route
@@ -365,9 +365,9 @@ export class ControllerRoute extends BaseRoute {
     verb: string,
     path: string,
     spec: OperationObject,
-    controllerCtor: ControllerClass,
+    controllerCtor: ControllerClass<T>,
     methodName?: string,
-    controllerFactory?: ControllerFactory,
+    controllerFactory?: ControllerFactory<T>,
   ) {
     const controllerName = spec['x-controller-name'] || controllerCtor.name;
     methodName = methodName || spec['x-operation-name'];
@@ -455,21 +455,21 @@ function describeOperationParameters(opSpec: OperationObject) {
  * - A controller class
  * - A controller instance
  */
-export function createControllerFactory(
-  source: ControllerClass | string | ControllerInstance,
-): ControllerFactory {
+export function createControllerFactory<T>(
+  source: ControllerClass<T> | string | T,
+): ControllerFactory<T> {
   if (typeof source === 'string') {
-    return ctx => ctx.get<ControllerInstance>(source);
+    return ctx => ctx.get<T>(source);
   } else if (typeof source === 'function') {
-    const ctor = source as ControllerClass;
+    const ctor = source as ControllerClass<T>;
     return async ctx => {
       // By default, we get an instance of the controller from the context
       // using `controllers.<controllerName>` as the key
-      let inst = await ctx.get<ControllerInstance>(`controllers.${ctor.name}`, {
+      let inst = await ctx.get<T>(`controllers.${ctor.name}`, {
         optional: true,
       });
       if (inst === undefined) {
-        inst = await instantiateClass<ControllerInstance>(ctor, ctx);
+        inst = await instantiateClass<T>(ctor, ctx);
       }
       return inst;
     };
