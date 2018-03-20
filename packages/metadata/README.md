@@ -31,7 +31,7 @@ function myClassDecorator(spec: MyClassMetadata): ClassDecorator {
 }
 ```
 
-Alternativley, we can instantiate the factory and create a decorator:
+Alternatively, we can instantiate the factory and create a decorator:
 
 ```ts
 function myClassDecorator(spec: MyClassMetadata): ClassDecorator {
@@ -95,7 +95,7 @@ export interface MyPropertyMetadata {
   description?: string;
 }
 
-function myPropertydDecorator(spec: MyPropertyMetadata): PropertyDecorator {
+function myPropertyDecorator(spec: MyPropertyMetadata): PropertyDecorator {
   return PropertyDecoratorFactory.createDecorator<MyPropertyMetadata>(
     'metadata-key-for-my-property-decorator',
     spec,
@@ -128,7 +128,7 @@ export interface MyParameterMetadata {
   description?: string;
 }
 
-function myParameterdDecorator(spec: MyParameterMetadata): ParameterDecorator {
+function myParameterDecorator(spec: MyParameterMetadata): ParameterDecorator {
   return ParameterDecoratorFactory.createDecorator<MyParameterMetadata>(
     'metadata-key-for-my-parameter-decorator',
     spec,
@@ -245,7 +245,7 @@ By default, the decorator factories allow inheritance with the following rules:
     {
       // Class level metadata
       'my-class-decorator-key': MyClassMetadata,
-      // Static method (including the construtor) parameter metadata
+      // Static method (including the constructor) parameter metadata
       'my-static-parameter-decorator-key': {
         '': [MyConstructorParameterMetadata], // Constructor parameter metadata
         'myStaticMethod1': [MyStaticMethodParameterMetadata],
@@ -310,7 +310,7 @@ By default, the decorator factories allow inheritance with the following rules:
     }
     ```
 
-3. The default implemention throws errors if the same decorator function is applied
+3. The default implementation throws errors if the same decorator function is applied
 to a given target member (class/method/property/parameter) more than once.
 For example, the following usage will report an error at runtime.
 
