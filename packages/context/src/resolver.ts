@@ -10,9 +10,9 @@ import {
   Constructor,
   ValueOrPromise,
   MapObject,
-  isPromiseLike,
   resolveList,
   resolveMap,
+  resolveValueOrPromise,
 } from './value-promise';
 
 import {
@@ -56,51 +56,20 @@ export function instantiateClass<T>(
   }
   const argsOrPromise = resolveInjectedArguments(ctor, '', ctx, session);
   const propertiesOrPromise = resolveInjectedProperties(ctor, ctx, session);
-  let inst: ValueOrPromise<T>;
-  if (isPromiseLike(argsOrPromise)) {
-    // Instantiate the class asynchronously
-    inst = argsOrPromise.then(args => {
-      /* istanbul ignore if */
-      if (debug.enabled) {
-        debug('Injected arguments for %s():', ctor.name, args);
-      }
-      return new ctor(...args);
-    });
-  } else {
+  const inst: ValueOrPromise<T> = resolveValueOrPromise(argsOrPromise, args => {
     /* istanbul ignore if */
     if (debug.enabled) {
-      debug('Injected arguments for %s():', ctor.name, argsOrPromise);
+      debug('Injected arguments for %s():', ctor.name, args);
     }
-    // Instantiate the class synchronously
-    inst = new ctor(...argsOrPromise);
-  }
-  if (isPromiseLike(propertiesOrPromise)) {
-    return propertiesOrPromise.then(props => {
-      /* istanbul ignore if */
-      if (debug.enabled) {
-        debug('Injected properties for %s:', ctor.name, props);
-      }
-      if (isPromiseLike(inst)) {
-        // Inject the properties asynchronously
-        return inst.then(obj => Object.assign(obj, props));
-      } else {
-        // Inject the properties synchronously
-        return Object.assign(inst, props);
-      }
-    });
-  } else {
-    if (isPromiseLike(inst)) {
-      /* istanbul ignore if */
-      if (debug.enabled) {
-        debug('Injected properties for %s:', ctor.name, propertiesOrPromise);
-      }
-      // Inject the properties asynchronously
-      return inst.then(obj => Object.assign(obj, propertiesOrPromise));
-    } else {
-      // Inject the properties synchronously
-      return Object.assign(inst, propertiesOrPromise);
+    return new ctor(...args);
+  });
+  return resolveValueOrPromise(propertiesOrPromise, props => {
+    /* istanbul ignore if */
+    if (debug.enabled) {
+      debug('Injected properties for %s:', ctor.name, props);
     }
-  }
+    return resolveValueOrPromise(inst, obj => Object.assign(obj, props));
+  });
 }
 
 /**
@@ -257,23 +226,13 @@ export function invokeMethod(
     typeof targetWithMethods[method] === 'function',
     `Method ${method} not found`,
   );
-  if (isPromiseLike(argsOrPromise)) {
-    // Invoke the target method asynchronously
-    return argsOrPromise.then(args => {
-      /* istanbul ignore if */
-      if (debug.enabled) {
-        debug('Injected arguments for %s:', methodName, args);
-      }
-      return targetWithMethods[method](...args);
-    });
-  } else {
+  return resolveValueOrPromise(argsOrPromise, args => {
     /* istanbul ignore if */
     if (debug.enabled) {
-      debug('Injected arguments for %s:', methodName, argsOrPromise);
+      debug('Injected arguments for %s:', methodName, args);
     }
-    // Invoke the target method synchronously
-    return targetWithMethods[method](...argsOrPromise);
-  }
+    return targetWithMethods[method](...args);
+  });
 }
 
 /**
