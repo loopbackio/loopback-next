@@ -2,4 +2,5 @@ packages/*/dist
 packages/*/api-docs
 packages/cli/generators/*/templates
 *.json
-*.md
+CHANGELOG.md
+.sandbox
