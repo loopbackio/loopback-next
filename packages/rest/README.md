@@ -11,19 +11,18 @@ This component provides a REST server for your application instances, complete
 with:
 - new custom routing engine (special thanks to @bajtos)!
 - tools for defining your application routes
-- OpenAPI 2.0 spec (`swagger.json`/`swagger.yaml`) generation
+- OpenAPI 3.0 spec (`openapi.json`/`openapi.yaml`) generation using `@loopback/openapi-v3`
 - a default sequence implementation to manage the request and response lifecycle
-## Installation
-To use this package, you'll need to install both `@loopback/core` and
-`@loopback/rest`.
 
-```shell
-$ npm install --save @loopback/core @loopback/rest
+## Installation
+To use this package, you'll need to install `@loopback/rest`.
+
+```sh
+npm i @loopback/rest
 ```
 
 ## Basic Use
-Here's a basic "Hello World" application using `@loopback/core` and
-`@loopback/rest`:
+Here's a basic "Hello World" application using `@loopback/rest`:
 
   ```ts
   import {RestApplication, RestServer} from '@loopback/rest';
@@ -37,7 +36,8 @@ Here's a basic "Hello World" application using `@loopback/core` and
     await app.start();
 
     const rest = await app.getServer(RestServer);
-    console.log(`REST server running on port: ${rest.getSync('rest.port')}`);
+    const port = await server.get('rest.port');
+    console.log(`Server is running at http://127.0.0.1:${port}`);
   })();
   ```
 
@@ -46,12 +46,11 @@ The rest package is configured by passing a `rest` property inside of your
 Application options.
 
 ```ts
-  const app = new Application({
+  const app = new RestApplication({
     rest: {
       port: 3001
     }
   });
-  app.component(RestComponent);
 ```
 
 ### `rest` options
@@ -59,19 +58,11 @@ Application options.
 | Property | Type | Purpose |
 |----------|------|---------|
 | port | number | Specify the port on which the RestServer will listen for traffic. |
-| secure (NOT YET IMPLEMENTED) | HttpsConfiguration | Provide a collection of secure key materials to the RestServer, which switches it to HTTPS mode. |
-| sequence | SequenceHandler | Use a custom SequenceHandler to change the behaviour of the RestServer for the request-response lifecycle. |
-
-#### HttpsConfiguration
-<!-- TODO(@kjdelisle): Define the contents of this type for users. -->
-
-#### SequenceHandler
-<!-- TODO(@kjdelisle): Point to the request-response lifecycle doc
-(or migrate it here?) -->
+| sequence | SequenceHandler | Use a custom SequenceHandler to change the behavior of the RestServer for the request-response lifecycle. |
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contributing#guidelines)
+- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
 - [Join the team](https://github.com/strongloop/loopback-next/issues/110)
 
 ## Tests
