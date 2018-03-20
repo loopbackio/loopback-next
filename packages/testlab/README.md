@@ -5,14 +5,17 @@ A collection of test utilities we use to write LoopBack tests.
 ## Overview
 
 Test utilities to help writing LoopBack 4 tests:
-- `expect` - behavior-driven development (BDD) style assertions
-- `sinon`
-   - test spies: functions recording arguments and other information for all of their calls
-   - stubs: functions (spies) with pre-programmed behavior
-   - mocks: fake methods (like spies) with pre-programmed behavior (like stubs) as well as pre-programmed expectations
-- Helpers for creating `supertest` clients for LoopBack applications
-- HTTP request/response stubs for writing tests without a listening HTTP server
-- Swagger/OpenAPI spec validation
+
+* `expect` - behavior-driven development (BDD) style assertions
+* `sinon`
+  * test spies: functions recording arguments and other information for all of
+    their calls
+  * stubs: functions (spies) with pre-programmed behavior
+  * mocks: fake methods (like spies) with pre-programmed behavior (like stubs)
+    as well as pre-programmed expectations
+* Helpers for creating `supertest` clients for LoopBack applications
+* HTTP request/response stubs for writing tests without a listening HTTP server
+* Swagger/OpenAPI spec validation
 
 ## Installation
 
@@ -20,7 +23,8 @@ Test utilities to help writing LoopBack 4 tests:
 $ npm install --save-dev @loopback/testlab
 ```
 
-_This package is typically used in tests, save it to `devDependencies` via `--save-dev`._
+_This package is typically used in tests, save it to `devDependencies` via
+`--save-dev`._
 
 ## Basic use
 
@@ -44,7 +48,8 @@ describe('Basic assertions', => {
 
 ### `sinon`
 
-Spies, mocks and stubs. Learn more at [http://sinonjs.org/](http://sinonjs.org/).
+Spies, mocks and stubs. Learn more at
+[http://sinonjs.org/](http://sinonjs.org/).
 
 ### `shot`
 
@@ -63,18 +68,19 @@ describe('MyApp', () => {
     const app = new MyApp();
     const server = await app.getServer(RestServer);
     await validateApiSpec(server.getApiSpec());
-  })
+  });
 });
 ```
 
 ## Related resources
 
-For more info about `supertest`, please refer to [supertest](https://www.npmjs.com/package/supertest)
+For more info about `supertest`, please refer to
+[supertest](https://www.npmjs.com/package/supertest)
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/DEVELOPING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+* [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/DEVELOPING.md)
+* [Join the team](https://github.com/strongloop/loopback-next/issues/110)
 
 ## Tests
 
@@ -82,7 +88,8 @@ run 'npm test' from the root folder.
 
 ## Contributors
 
-See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+See
+[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
 ## License
 

@@ -30,7 +30,7 @@ import {
   juggler,
   Entity,
   model,
-  ModelDefinition
+  ModelDefinition,
 } from '@loopback/repository';
 
 export const ds: juggler.DataSource = new DataSourceConstructor({
@@ -45,23 +45,26 @@ export class Note extends Entity {
     properties: {
       id: {name: 'id', type: 'number', id: true},
       title: 'string',
-      content: 'string'
-    }
-  })
-};
+      content: 'string',
+    },
+  });
+}
 ```
+
 A repository can be created directly using `DefaultCrudRepository`.
 
 ```ts
 import {DefaultCrudRepository} from '@loopback/repository';
 // also import Note and ds from wherever you defined them
 
-  const repo = new DefaultCrudRepository(Note, ds);
+const repo = new DefaultCrudRepository(Note, ds);
 
-  // Bind the repository instance to the 'ctx' Context.
-  ctx.bind('repositories.noteRepo').to(repo);
+// Bind the repository instance to the 'ctx' Context.
+ctx.bind('repositories.noteRepo').to(repo);
 ```
-Fore more detailed info about the repository usage and implementation with a controller, please refer to [Use Repository](#use-repository)
+
+Fore more detailed info about the repository usage and implementation with a
+controller, please refer to [Use Repository](#use-repository)
 
 ## Concepts
 
@@ -87,8 +90,9 @@ interface CustomerRepository extends Repository<Customer> {
 ```
 
 See more examples at:
-- [Repository/CrudRepository/EntityRepository](src/repository.ts)
-- [KVRepository](src/kv-repository.ts)
+
+* [Repository/CrudRepository/EntityRepository](src/repository.ts)
+* [KVRepository](src/kv-repository.ts)
 
 ### Model
 
@@ -105,10 +109,11 @@ gRPC message definition, and vice versa.
 
 There are two subtly different types of models for domain objects:
 
-- Value Object: A domain object that does not have an identity (ID). Its
+* Value Object: A domain object that does not have an identity (ID). Its
   equality is based on the structural value. For example, `Address` can be
   modeled as `Value Object` as two US addresses are equal if they have the same
   street number, street name, city, and zip code values. For example:
+
   ```json
   {
     "name": "Address",
@@ -121,7 +126,7 @@ There are two subtly different types of models for domain objects:
   }
   ```
 
-- Entity: A domain object that has an identity (ID). Its equality is based on
+* Entity: A domain object that has an identity (ID). Its equality is based on
   the identity. For example, `Customer` can be modeled as `Entity` as each
   customer should have a unique customer id. Two instances of `Customer` with
   the same customer id are equal since they refer to the same customer. For
@@ -145,6 +150,7 @@ There are two subtly different types of models for domain objects:
 properties vary by connectors. For example, a datasource for `MySQL` needs to
 set the `connector` property to `loopback-connector-mysql` with settings such
 as:
+
 ```json
 {
   "host": "localhost",
@@ -165,11 +171,10 @@ specific backend system, such as a database, a REST service, a SOAP Web Service,
 or a gRPC micro-service. It abstracts such interactions as a list of operations
 in the form of Node.js methods.
 
-Typically, a connector translates LoopBack query
-and mutation requests into native api calls supported by the underlying Node.js
-driver for the given backend. For example, a connector for `MySQL` will map
-`create` method to SQL INSERT statement, which can be executed through MySQL
-driver for Node.js.
+Typically, a connector translates LoopBack query and mutation requests into
+native api calls supported by the underlying Node.js driver for the given
+backend. For example, a connector for `MySQL` will map `create` method to SQL
+INSERT statement, which can be executed through MySQL driver for Node.js.
 
 ### Mixin
 
@@ -185,15 +190,16 @@ function timestampMixin(Base) {
   return class extends Base {
     created: Date = new Date();
     modified: Date = new Date();
-  }
+  };
 }
 
 // Mixin as an arrow function
-const fullNameMixin = Base => class extends Base {
-  fullName() {
-    return `${this.firstName} ${this.lastName}`;
-  }
-};
+const fullNameMixin = Base =>
+  class extends Base {
+    fullName() {
+      return `${this.firstName} ${this.lastName}`;
+    }
+  };
 
 // The base class
 class Customer {
@@ -214,19 +220,20 @@ To support property and parameter typing, LoopBack Next introduces an extensible
 typing system to capture the metadata and perform corresponding checks and
 coercion. The following types are supported out of box.
 
-- StringType
-- BooleanType
-- NumberType
-- DateType
-- BufferType
-- AnyType
-- ArrayType
-- UnionType
+* StringType
+* BooleanType
+* NumberType
+* DateType
+* BufferType
+* AnyType
+* ArrayType
+* UnionType
 
 ## Use Repository
+
 The `Repository` and other interfaces extended from `Repository` provide access
-to backend databases and services. Repositories can be used alone or as part
-of `Controller` implementation.
+to backend databases and services. Repositories can be used alone or as part of
+`Controller` implementation.
 
 At the moment, we only have implementations of `Repository` based on LoopBack
 3.x `loopback-datasource-juggler` and connectors. The following steps illustrate
@@ -243,7 +250,7 @@ import {
   juggler,
   Entity,
   model,
-  ModelDefinition
+  ModelDefinition,
 } from '@loopback/repository';
 
 export const ds: juggler.DataSource = new DataSourceConstructor({
@@ -258,10 +265,10 @@ export class Note extends Entity {
     properties: {
       id: {name: 'id', type: 'number', id: true},
       title: 'string',
-      content: 'string'
-    }
-  })
-};
+      content: 'string',
+    },
+  });
+}
 ```
 
 **NOTE**: There is no declarative support for data source and model yet in
@@ -276,10 +283,10 @@ A repository can be created directly using `DefaultCrudRepository`.
 import {DefaultCrudRepository} from '@loopback/repository';
 // also import Note and ds from wherever you defined them
 
-  const repo = new DefaultCrudRepository(Note, ds);
+const repo = new DefaultCrudRepository(Note, ds);
 
-  // Bind the repository instance to the 'ctx' Context.
-  ctx.bind('repositories.noteRepo').to(repo);
+// Bind the repository instance to the 'ctx' Context.
+ctx.bind('repositories.noteRepo').to(repo);
 ```
 
 Alternatively, we can define a new Repository subclass and use dependency
@@ -291,9 +298,10 @@ import {DataSourceType} from '@loopback/repository';
 class MyNoteRepository extends DefaultCrudRepository<Entity, string> {
   constructor(
     @inject('models.Note') myModel: typeof Note,
-    @inject('dataSources.memory') dataSource: DataSourceType) {
-      super(myModel, dataSource);
-    }
+    @inject('dataSources.memory') dataSource: DataSourceType,
+  ) {
+    super(myModel, dataSource);
+  }
 }
 ```
 
@@ -338,8 +346,7 @@ Alternatively, the controller can be declared using property injection:
 
 ```ts
 class NoteController {
-  @repository('noteRepo')
-  public noteRepo: EntityCrudRepository<Entity, number>;
+  @repository('noteRepo') public noteRepo: EntityCrudRepository<Entity, number>;
 }
 ```
 
@@ -373,13 +380,21 @@ ctx.bind('repositories.noteRepo').toClass(MyNoteRepository);
 ```
 
 #### Using the Repository Mixin for Application
-A Repository Mixin is available for Application that provides convenience methods for binding and instantiating a repository class. Bound instances can be used anywhere in your application using Dependency Injection. The `.repository(RepositoryClass)` function can be used to bind a repository class to an Application. The mixin will also instantiate any repositories declared by a component in its constructor using the `repositories` key.
 
-Repositories will be bound to the key `repositories.RepositoryClass` where `RepositoryClass` is the name of the Repository class being bound.
+A Repository Mixin is available for Application that provides convenience
+methods for binding and instantiating a repository class. Bound instances can be
+used anywhere in your application using Dependency Injection. The
+`.repository(RepositoryClass)` function can be used to bind a repository class
+to an Application. The mixin will also instantiate any repositories declared by
+a component in its constructor using the `repositories` key.
+
+Repositories will be bound to the key `repositories.RepositoryClass` where
+`RepositoryClass` is the name of the Repository class being bound.
+
 ```ts
-import { Application } from '@loopback/core';
-import { RepositoryMixin } from '@loopback/repository';
-import { ProductRepository, CategoryRepository } from './repository';
+import {Application} from '@loopback/core';
+import {RepositoryMixin} from '@loopback/repository';
+import {ProductRepository, CategoryRepository} from './repository';
 
 // Using the Mixin
 class MyApplication extends RepositoryMixin(Application) {}
@@ -427,14 +442,14 @@ main().then(notes => {
 
 ### Mix in a repository into the controller (To be implemented)
 
-This style allows repository methods to be mixed into the controller class
-to mimic LoopBack 3.x style model classes with remote CRUD methods. It blends
-the repository responsibility/capability into the controller.
+This style allows repository methods to be mixed into the controller class to
+mimic LoopBack 3.x style model classes with remote CRUD methods. It blends the
+repository responsibility/capability into the controller.
 
 ```ts
 import {EntityCrudRepository} from '../../src/repository';
 import {Customer} from '../models/customer';
-import {repository} from "../../src/decorator";
+import {repository} from '../../src/decorator';
 
 /**
  * Use class level @repository decorator to mixin repository methods into the
@@ -457,6 +472,7 @@ export class CustomerController {
 Repositories can be declared in JSON/YAML files as follows:
 
 server/repositories.json
+
 ```json
 {
   "customerRepo": {
@@ -466,15 +482,17 @@ server/repositories.json
   }
 }
 ```
+
 ## Related resources
-- https://martinfowler.com/eaaCatalog/repository.html
-- https://msdn.microsoft.com/en-us/library/ff649690.aspx
-- http://docs.spring.io/spring-data/data-commons/docs/2.0.0.M3/reference/html/#repositories
+
+* https://martinfowler.com/eaaCatalog/repository.html
+* https://msdn.microsoft.com/en-us/library/ff649690.aspx
+* http://docs.spring.io/spring-data/data-commons/docs/2.0.0.M3/reference/html/#repositories
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contributing##guidelines)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+* [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contributing##guidelines)
+* [Join the team](https://github.com/strongloop/loopback-next/issues/110)
 
 ## Tests
 
@@ -482,7 +500,8 @@ run 'npm test' from the root folder.
 
 ## Contributors
 
-See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+See
+[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
 ## License
 

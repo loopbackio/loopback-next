@@ -10,59 +10,73 @@ summary:
 
 ## Overview
 
-LoopBack 4 extensions are often used by other teams. A thorough test suite for your extension brings powerful benefits to all your users, including:
+LoopBack 4 extensions are often used by other teams. A thorough test suite for
+your extension brings powerful benefits to all your users, including:
 
 * Validating the behavior of the extension
 * Preventing unwanted changes to the API or functionality of the extension
-* Providing working samples and code snippets that serve as functional documentation for your users
+* Providing working samples and code snippets that serve as functional
+  documentation for your users
 
 ## Project Setup
 
-We recommend that you use `@loopback/cli` to create the extension, as it installs several tools you can use for testing, such as `mocha`, assertion libraries, and a swagger validator.
+We recommend that you use `@loopback/cli` to create the extension, as it
+installs several tools you can use for testing, such as `mocha`, assertion
+libraries, and a swagger validator.
 
-The `@loopback/cli` includes the `mocha` automated test runner and a
-`test` folder containing recommended folders for various types of tests.
-`Mocha` is enabled by default if `@loopback/cli` is used to
-create the extension project. The `@loopback/cli` installs and configures `mocha`, creates the `test` folder, and also enters a `test` command in your `package.json`.
+The `@loopback/cli` includes the `mocha` automated test runner and a `test`
+folder containing recommended folders for various types of tests. `Mocha` is
+enabled by default if `@loopback/cli` is used to create the extension project.
+The `@loopback/cli` installs and configures `mocha`, creates the `test` folder,
+and also enters a `test` command in your `package.json`.
 
-Assertion libraries such as [ShouldJS](http://shouldjs.github.io/) (as `expect`),
-[SinonJS](http://sinonjs.org/), and a swagger validator are made available
-through the convenient `@loopback/testlab` package. The `testlab` is also installed by `@loopback/cli`.
+Assertion libraries such as [ShouldJS](http://shouldjs.github.io/) (as
+`expect`), [SinonJS](http://sinonjs.org/), and a swagger validator are made
+available through the convenient `@loopback/testlab` package. The `testlab` is
+also installed by `@loopback/cli`.
 
 ### Manual Setup - Using Mocha
 
-* Install `mocha` by running `npm i --save-dev mocha`. This will save the `mocha` package in
-`package.json` as well.
+* Install `mocha` by running `npm i --save-dev mocha`. This will save the
+  `mocha` package in `package.json` as well.
 * Under `scripts` in `package.json` add the following:
-`test: npm run build && mocha --recursive ./dist/test`
+  `test: npm run build && mocha --recursive ./dist/test`
 
 ## Types of tests
 
-A comprehensive test suite tests many aspects of your code. We recommend that you write unit, integration, and acceptance tests to test your application from a variety of perspectives. Comprehensive testing
-ensures correctness, integration, and future compatibility.
+A comprehensive test suite tests many aspects of your code. We recommend that
+you write unit, integration, and acceptance tests to test your application from
+a variety of perspectives. Comprehensive testing ensures correctness,
+integration, and future compatibility.
 
 You may use any development methodology you want to write your extension; the
-important thing is to test it with an automated test suite. In Traditional development methodology, you write the code first and then write the tests. In Test-driven development methodology, you write the tests first, see them fail, then write the code to pass the tests.
+important thing is to test it with an automated test suite. In Traditional
+development methodology, you write the code first and then write the tests. In
+Test-driven development methodology, you write the tests first, see them fail,
+then write the code to pass the tests.
 
 ### Unit Tests
 
-A unit test tests the smallest unit of code possible, which in this case is a function.
-Unit tests ensure variable and state changes by outside actors don't affect the
-results. [Test doubles](https://en.wikipedia.org/wiki/Test_double) should be
-used to substitute function dependencies. You can learn more about test doubles
-and Unit testing here: [Testing your Application: Unit testing](Testing-your-application.md#unit-testing).
+A unit test tests the smallest unit of code possible, which in this case is a
+function. Unit tests ensure variable and state changes by outside actors don't
+affect the results. [Test doubles](https://en.wikipedia.org/wiki/Test_double)
+should be used to substitute function dependencies. You can learn more about
+test doubles and Unit testing here:
+[Testing your Application: Unit testing](Testing-your-application.md#unit-testing).
 
 #### Controllers
 
 At its core, a controller is a simple class that is responsible for related
-actions on an object. Performing unit tests on a controller in an extension is the same as
-performing unit tests on a controller in an application.
+actions on an object. Performing unit tests on a controller in an extension is
+the same as performing unit tests on a controller in an application.
 
-To test a controller, you instantiate a new instance of your controller
-class and test a function, providing a test double for constructor arguments as
-needed. Following are examples that illustrate how to perform a unit test on a controller class:
+To test a controller, you instantiate a new instance of your controller class
+and test a function, providing a test double for constructor arguments as
+needed. Following are examples that illustrate how to perform a unit test on a
+controller class:
 
 **`src/controllers/ping.controller.ts`**
+
 ```ts
 export class PingController {
   @get('/ping')
@@ -73,6 +87,7 @@ export class PingController {
 ```
 
 **`test/unit/controllers/ping.controller.ts`**
+
 ```ts
 import {PingController} from '../../..';
 import {expect} from '@loopback/testlab';
@@ -84,7 +99,7 @@ describe('PingController() unit', () => {
     expect(result).to.equal('You pinged with undefined');
   });
 
-  it('pings with msg \'hello\'', () => {
+  it("pings with msg 'hello'", () => {
     const controller = new PingController();
     const result = controller.ping('hello');
     expect(result).to.equal('You pinged with hello');
@@ -92,19 +107,22 @@ describe('PingController() unit', () => {
 });
 ```
 
-You can find an advanced example on testing controllers in [Unit test your Controllers](Testing-your-application.md#unit-test-your-controllers).
+You can find an advanced example on testing controllers in
+[Unit test your Controllers](Testing-your-application.md#unit-test-your-controllers).
 
 #### Decorators
 
 The recommended usage of a decorator is to store metadata about a class or a
-class method. The decorator implementation usually provides a function
-to retrieve the related metadata based on the class name and method name.
-For a unit test for a decorator, it is important to test that that it stores and retrieves the correct metadata. *The retrieval gets tested as a
-result of validating whether the metadata was stored or not.*
+class method. The decorator implementation usually provides a function to
+retrieve the related metadata based on the class name and method name. For a
+unit test for a decorator, it is important to test that that it stores and
+retrieves the correct metadata. _The retrieval gets tested as a result of
+validating whether the metadata was stored or not._
 
 Following is an example for testing a decorator:
 
 **`src/decorators/test.decorator.ts`**
+
 ```ts
 export function test(file: string) {
   return function(target: Object, methodName: string): void {
@@ -130,6 +148,7 @@ export function getTestMetadata(
 ```
 
 **`test/unit/decorators/test.decorator.ts`**
+
 ```ts
 import {test, getTestMetadata} from '../../..';
 import {expect} from '@loopback/testlab';
@@ -153,16 +172,18 @@ describe('test.decorator (unit)', () => {
 A Mixin is a TypeScript function that extends the `Application` Class, adding
 new constructor properties, methods, etc. It is difficult to write a unit test
 for a Mixin without the `Application` Class dependency. The recommended practice
-is to write an integration test is described in [Mixin Integration Tests](#mixin-integration-tests).
+is to write an integration test is described in
+[Mixin Integration Tests](#mixin-integration-tests).
 
 #### Providers
 
 A Provider is a Class that implements the `Provider` interface. This interface
 requires the Class to have a `value()` function. A unit test for a provider
-should test the `value()` function by instantiating a new `Provider` class, using
-a test double for any constructor arguments.
+should test the `value()` function by instantiating a new `Provider` class,
+using a test double for any constructor arguments.
 
 **`src/providers/random-number.provider.ts`**
+
 ```ts
 import {Provider} from '@loopback/context';
 
@@ -176,6 +197,7 @@ export class RandomNumberProvider implements Provider<number> {
 ```
 
 **`test/unit/providers/random-number.unit.test.ts`**
+
 ```ts
 import {RandomNumberProvider} from '../../..';
 import {expect} from '@loopback/testlab';
@@ -187,29 +209,31 @@ describe('RandomNumberProvider (unit)', () => {
 
     expect(random).to.be.a.Number();
     expect(random).to.equalOneOf([1, 2, 3]);
-  })
-})
+  });
+});
 ```
 
 #### Repositories
 
-*This section will be provided in a future version.*
+_This section will be provided in a future version._
 
 ### Integration Tests
 
 An integration test plays an important part in your test suite by ensuring your
-extension artifacts work together as well as `@loopback`. It is
-recommended to test two items together and substitute other integrations as test doubles so it becomes apparent where the integration errors may occur.
+extension artifacts work together as well as `@loopback`. It is recommended to
+test two items together and substitute other integrations as test doubles so it
+becomes apparent where the integration errors may occur.
 
 #### Mixin Integration Tests
 
-A Mixin extends a base Class by returning an anonymous class. Thus, a Mixin is tested by actually
-using the Mixin with its base Class. Since this requires two Classes to work
-together, an integration test is needed. A Mixin test checks that
-new or overridden methods exist and work as expected in the new Mixed class. Following is an example for an
-integration test for a Mixin:
+A Mixin extends a base Class by returning an anonymous class. Thus, a Mixin is
+tested by actually using the Mixin with its base Class. Since this requires two
+Classes to work together, an integration test is needed. A Mixin test checks
+that new or overridden methods exist and work as expected in the new Mixed
+class. Following is an example for an integration test for a Mixin:
 
 **`src/mixins/time.mixin.ts`**
+
 ```ts
 import {Constructor} from '@loopback/context';
 export function TimeMixin<T extends Constructor<any>>(superClass: T) {
@@ -234,6 +258,7 @@ export function TimeMixin<T extends Constructor<any>>(superClass: T) {
 ```
 
 **`test/integration/mixins/time.intg.test.ts`**
+
 ```ts
 import {expect} from '@loopback/testlab';
 import {Application} from '@loopback/core';
@@ -267,14 +292,16 @@ describe('TimeMixin (integration)', () => {
 
 ### Acceptance Test
 
-An Acceptance test for an extension is a comprehensive test written
-end-to-end. Acceptance tests cover the user scenarios. An acceptance
-test uses all of the extension artifacts such as decorators, mixins,
-providers, repositories, etc. No test doubles are needed for an
-Acceptance test. This is a black box test where you don't know or care about the
-internals of the extensions. You will be using the extension as if you were the consumer.
+An Acceptance test for an extension is a comprehensive test written end-to-end.
+Acceptance tests cover the user scenarios. An acceptance test uses all of the
+extension artifacts such as decorators, mixins, providers, repositories, etc. No
+test doubles are needed for an Acceptance test. This is a black box test where
+you don't know or care about the internals of the extensions. You will be using
+the extension as if you were the consumer.
 
 Due to the complexity of an Acceptance test, there is no example given here.
-Have a look at [loopback4-example-log-extension](https://github.com/strongloop/loopback4-example-log-extension)
-to understand the extension artifacts and their usage. An Acceptance test can
-be seen here: [test/acceptance/log.extension.acceptance.ts](https://github.com/strongloop/loopback4-example-log-extension/blob/master/test/acceptance/log.extension.acceptance.ts).
+Have a look at
+[loopback4-example-log-extension](https://github.com/strongloop/loopback4-example-log-extension)
+to understand the extension artifacts and their usage. An Acceptance test can be
+seen here:
+[test/acceptance/log.extension.acceptance.ts](https://github.com/strongloop/loopback4-example-log-extension/blob/master/test/acceptance/log.extension.acceptance.ts).

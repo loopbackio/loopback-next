@@ -4,7 +4,6 @@
 
 ## Expected Behavior
 
-
 <!--
 HELP US HELP YOU, PLEASE
 - Do a quick search to avoid duplicate issues

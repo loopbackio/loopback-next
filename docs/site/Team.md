@@ -10,11 +10,11 @@ summary: The people working on LoopBack 4
 
 # IBM
 
-- Core members/leads
-- All internal members (including docs, etc)
+* Core members/leads
+* All internal members (including docs, etc)
 
 # Community contributors
 
-- loopback-maintaineres
-- loopback-swagger-maintainers
-- etc
+* loopback-maintaineres
+* loopback-swagger-maintainers
+* etc
