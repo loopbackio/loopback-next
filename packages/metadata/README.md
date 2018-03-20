@@ -1,7 +1,8 @@
 # @loopback/metadata
 
-This module contains utilities to help developers implement [TypeScript decorators](https://www.typescriptlang.org/docs/handbook/decorators.html), define/merge
-metadata, and inspect metadata.
+This module contains utilities to help developers implement
+[TypeScript decorators](https://www.typescriptlang.org/docs/handbook/decorators.html),
+define/merge metadata, and inspect metadata.
 
 * Reflector: Wrapper of
   [reflect-metadata](https://github.com/rbuckton/reflect-metadata)
@@ -136,7 +137,8 @@ function myParameterDecorator(spec: MyParameterMetadata): ParameterDecorator {
 }
 ```
 
-Now we can use `@myParameterDecorator` to add metadata to a parameter as follows:
+Now we can use `@myParameterDecorator` to add metadata to a parameter as
+follows:
 
 ```ts
 class MyController {
@@ -183,8 +185,8 @@ function myMethodParameterDecorator(
 }
 ```
 
-Now we can use `@myMethodParameterDecorator` to add metadata to a parameter
-as follows:
+Now we can use `@myMethodParameterDecorator` to add metadata to a parameter as
+follows:
 
 ```ts
 class MyController {
@@ -199,8 +201,8 @@ class MyController {
 **WARNING**: Using method decorators to provide metadata for parameters is
 strongly discouraged for a few reasons:
 
-1. Method decorators cannot be applied to a constructor
-2. Method decorators depends on the positions to match parameters
+1.  Method decorators cannot be applied to a constructor
+2.  Method decorators depends on the positions to match parameters
 
 We recommend that `ParameterDecorator` be used instead.
 
@@ -209,22 +211,24 @@ We recommend that `ParameterDecorator` be used instead.
 An object of type `DecoratorOptions` can be passed in to create decorator
 functions. There are two flags for the options:
 
-- allowInheritance: Controls if inherited metadata will be honored. Default to `true`.
-- cloneInputSpec: Controls if the value of `spec` argument will be cloned.
-Sometimes we use shared spec for the decoration, but the decorator function
-might need to mutate the object. Cloning the input spec makes it safe to use
-the same spec (`template`) to decorate different members. Default to `true`.
+* allowInheritance: Controls if inherited metadata will be honored. Default to
+  `true`.
+* cloneInputSpec: Controls if the value of `spec` argument will be cloned.
+  Sometimes we use shared spec for the decoration, but the decorator function
+  might need to mutate the object. Cloning the input spec makes it safe to use
+  the same spec (`template`) to decorate different members. Default to `true`.
 
 ## Customize inheritance of metadata
 
 By default, the decorator factories allow inheritance with the following rules:
 
-1. If the metadata is an object, we merge the `spec` argument from the decorator
-   function into the inherited value from base classes. For metadata of array and
-   other primitive types, the `spec` argument is used if provided.
+1.  If the metadata is an object, we merge the `spec` argument from the
+    decorator function into the inherited value from base classes. For metadata
+    of array and other primitive types, the `spec` argument is used if provided.
 
-    - We can override `inherit` method of the decorator factory to customize
-    how to resolve `spec` against the inherited metadata. For example:
+    * We can override `inherit` method of the decorator factory to customize how
+      to resolve `spec` against the inherited metadata. For example:
+
 
     ```ts
     protected inherit(inheritedMetadata: T | undefined | null): T {
@@ -233,13 +237,14 @@ By default, the decorator factories allow inheritance with the following rules:
     }
     ```
 
-2. Method/property/parameter level metadata is applied to the class or its
-   prototype as a map keyed method/property names. We think this approach is better
-   than keeping metadata at method/property level as it's not easy to inspect a
-   class to find static/instance methods and properties with decorations. The
-   metadata for a class is illustrated below:
+2.  Method/property/parameter level metadata is applied to the class or its
+    prototype as a map keyed method/property names. We think this approach is
+    better than keeping metadata at method/property level as it's not easy to
+    inspect a class to find static/instance methods and properties with
+    decorations. The metadata for a class is illustrated below:
 
-    - MyClass (the constructor function itself)
+    * MyClass (the constructor function itself)
+
 
     ```ts
     {
@@ -264,7 +269,8 @@ By default, the decorator factories allow inheritance with the following rules:
     }
     ```
 
-    - MyClass.prototype
+    * MyClass.prototype
+
 
     ```ts
     {
@@ -286,9 +292,10 @@ By default, the decorator factories allow inheritance with the following rules:
     }
     ```
 
-    The following methods in `DecoratorFactory` allow subclasses to customize how
-    to merge the `spec` with existing metadata for a class, methods, properties, and
-    method parameters. Please note `M` is a map for methods/properties/parameters.
+    The following methods in `DecoratorFactory` allow subclasses to customize
+    how to merge the `spec` with existing metadata for a class, methods,
+    properties, and method parameters. Please note `M` is a map for
+    methods/properties/parameters.
 
     ```ts
     protected mergeWithInherited(
@@ -310,15 +317,15 @@ By default, the decorator factories allow inheritance with the following rules:
     }
     ```
 
-3. The default implementation throws errors if the same decorator function is applied
-to a given target member (class/method/property/parameter) more than once.
-For example, the following usage will report an error at runtime.
+3.  The default implementation throws errors if the same decorator function is
+    applied to a given target member (class/method/property/parameter) more than
+    once. For example, the following usage will report an error at runtime.
 
-  ```ts
-  @myClassDecorator({name: 'my-controller'})
-  @myClassDecorator({name: 'your-controller'})
-  class MyController {}
-  ```
+```ts
+@myClassDecorator({name: 'my-controller'})
+@myClassDecorator({name: 'your-controller'})
+class MyController {}
+```
 
 ## Inspect metadata
 
@@ -389,27 +396,26 @@ const myProp = MetadataInspector.getMethodMetaData<MyMethodMetadata>(
 ```ts
 import {MetadataInspector} from '@loopback/metadata';
 
-const allParamsForMyMethod =
-  MetadataInspector.getAllParameterMetaData<MyParameterMetadata>(
-    'my-parameter-decorator-key',
-    MyController.prototype, // Use MyController for static methods,
-    'myMethod',
-  );
+const allParamsForMyMethod = MetadataInspector.getAllParameterMetaData<
+  MyParameterMetadata
+>(
+  'my-parameter-decorator-key',
+  MyController.prototype, // Use MyController for static methods,
+  'myMethod',
+);
 
-const firstParamForMyMethod =
-  MetadataInspector.getMyParameterMetaData<MyParameterMetadata>(
-    'my-parameter-decorator-key',
-    MyController.prototype, // Use MyController for static methods
-    'myMethod',
-    0, // parameter index
-  );
+const firstParamForMyMethod = MetadataInspector.getMyParameterMetaData<
+  MyParameterMetadata
+>(
+  'my-parameter-decorator-key',
+  MyController.prototype, // Use MyController for static methods
+  'myMethod',
+  0, // parameter index
+);
 
-const allParamsForConstructor =
-  MetadataInspector.getAllParameterMetaData<MyParameterMetadata>(
-    'my-parameter-decorator-key',
-    MyController,
-    '',
-  );
+const allParamsForConstructor = MetadataInspector.getAllParameterMetaData<
+  MyParameterMetadata
+>('my-parameter-decorator-key', MyController, '');
 ```
 
 ## Inspect design-time metadata of properties/methods

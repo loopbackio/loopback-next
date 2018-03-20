@@ -7,21 +7,24 @@ LoopBack framework.
 ## Overview
 
 The `@loopback/context` package exposes TypeScript/JavaScript APIs and
-decorators to register artifacts, declare dependencies, and resolve artifacts
-by keys. The `Context` also serves as an [IoC container](https://en.wikipedia.org/wiki/Inversion_of_control) to support [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection).
+decorators to register artifacts, declare dependencies, and resolve artifacts by
+keys. The `Context` also serves as an
+[IoC container](https://en.wikipedia.org/wiki/Inversion_of_control) to support
+[dependency injection](https://en.wikipedia.org/wiki/Dependency_injection).
 
 `Context` and `Binding` are the two core concepts. A context is a registry of
 bindings and each binding represents a resolvable artifact by the key.
 
-- Bindings can be fulfilled by a constant, a factory function, a class, or a
+* Bindings can be fulfilled by a constant, a factory function, a class, or a
   provider.
-- Bindings can be grouped by tags and searched by tags.
-- Binding scopes can be used to control how a resolved binding value is shared.
-- Bindings can be resolved synchronously or asynchronously.
-- Provide `@inject` and other variants of decorators to express dependencies.
-- Support Constructor, property, and method injections.
-- Allow contexts to form a hierarchy to share or override bindings.
-- Track bindings and injections during resolution to detect circular dependencies.
+* Bindings can be grouped by tags and searched by tags.
+* Binding scopes can be used to control how a resolved binding value is shared.
+* Bindings can be resolved synchronously or asynchronously.
+* Provide `@inject` and other variants of decorators to express dependencies.
+* Support Constructor, property, and method injections.
+* Allow contexts to form a hierarchy to share or override bindings.
+* Track bindings and injections during resolution to detect circular
+  dependencies.
 
 ## Installation
 
@@ -42,6 +45,7 @@ console.log(helloVal); // => 'world'
 ```
 
 The binding can also be located asynchronously:
+
 ```ts
 const helloVal = await ctx.get('hello');
 console.log(helloVal); // => 'world'
@@ -59,8 +63,8 @@ ctx.bind('greeting').to('Hello');
 class HelloController {
   constructor(
     // injecting the value bound to `greeting` using context
-    @inject('greeting') private greeting: string) {
-  }
+    @inject('greeting') private greeting: string,
+  ) {}
 
   greet(name) {
     return `${this.greeting}, ${name}`;
@@ -80,11 +84,15 @@ async function hello() {
 hello();
 ```
 
-For additional information, please refer to the [Context page](http://loopback.io/doc/en/lb4/Context.html).
+For additional information, please refer to the
+[Context page](http://loopback.io/doc/en/lb4/Context.html).
 
 ## Contributions
 
-IBM/StrongLoop is an active supporter of open source and welcomes contributions to our projects as well as those of the Node.js community in general. For more information on how to contribute please refer to the [Contribution Guide](https://loopback.io/doc/en/contrib/index.html).
+IBM/StrongLoop is an active supporter of open source and welcomes contributions
+to our projects as well as those of the Node.js community in general. For more
+information on how to contribute please refer to the
+[Contribution Guide](https://loopback.io/doc/en/contrib/index.html).
 
 ## Tests
 
@@ -92,7 +100,8 @@ Run `npm test` from the root folder.
 
 ## Contributors
 
-See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+See
+[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
 ## License
 

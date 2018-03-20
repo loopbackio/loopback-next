@@ -25,18 +25,22 @@ export function validateSpec(spec: OpenApiSpec) {
 }
 ```
 
-IDEs like Visual Studio Code will offer auto-completion for spec properties
-when constructing a spec argument value.
+IDEs like Visual Studio Code will offer auto-completion for spec properties when
+constructing a spec argument value.
 
 ## Related resources
 
-See https://www.openapis.org/ and [version 3.0.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md)
-of OpenAPI Specification.
-For the types missing in this package, they are exported from https://www.npmjs.com/package/openapi3-ts
+See https://www.openapis.org/ and
+[version 3.0.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md)
+of OpenAPI Specification. For the types missing in this package, they are
+exported from https://www.npmjs.com/package/openapi3-ts
 
 ## Contributions
 
-IBM/StrongLoop is an active supporter of open source and welcomes contributions to our projects as well as those of the Node.js community in general. For more information on how to contribute please refer to the [Contribution Guide](https://loopback.io/doc/en/contrib/index.html).
+IBM/StrongLoop is an active supporter of open source and welcomes contributions
+to our projects as well as those of the Node.js community in general. For more
+information on how to contribute please refer to the
+[Contribution Guide](https://loopback.io/doc/en/contrib/index.html).
 
 # Tests
 
@@ -44,7 +48,8 @@ run `npm test` from the root folder.
 
 # Contributors
 
-See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+See
+[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
 # License
 

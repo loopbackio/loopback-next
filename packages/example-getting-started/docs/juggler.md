@@ -18,6 +18,7 @@ Next, modify `src/application.ts` to change the base class of your app to use
 the `RepositoryMixin`:
 
 #### src/application.ts
+
 ```ts
 import {ApplicationConfig} from '@loopback/core';
 import {RestApplication} from '@loopback/rest';
@@ -27,11 +28,7 @@ import {RestApplication} from '@loopback/rest';
 // Class and Repository imports required to infer types in consuming code!
 // Binding and Booter imports are required to infer types for BootMixin!
 import {BootMixin, Booter, Binding} from '@loopback/boot';
-import {
-  Class,
-  Repository,
-  RepositoryMixin,
-} from '@loopback/repository';
+import {Class, Repository, RepositoryMixin} from '@loopback/repository';
 /* tslint:enable:no-unused-variable */
 export class TodoApplication extends BootMixin(
   RepositoryMixin(RestApplication),
@@ -52,13 +49,13 @@ export class TodoApplication extends BootMixin(
 }
 ```
 
-Once you're ready, we'll move on to the [Add your Todo model](model.md)
-section.
+Once you're ready, we'll move on to the [Add your Todo model](model.md) section.
 
 For more information on the Legacy Juggler, check out the
 [@loopback/repository package](https://github.com/strongloop/loopback-next/tree/master/packages/repository)
-or see the [Repositories section](http://loopback.io/doc/en/lb4/Repositories.html)
-of our docs.
+or see the
+[Repositories section](http://loopback.io/doc/en/lb4/Repositories.html) of our
+docs.
 
 ### Navigation
 

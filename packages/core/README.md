@@ -5,10 +5,10 @@ integrations.
 
 # Overview
 
-- Fast, small, powerful, extensible core
-- Generate real APIs with a single command
-- Define your data and endpoints with OpenAPI
-- No maintenance of generated code
+* Fast, small, powerful, extensible core
+* Generate real APIs with a single command
+* Define your data and endpoints with OpenAPI
+* No maintenance of generated code
 
 ## Installation
 
@@ -22,14 +22,15 @@ $ npm install --save @loopback/core
 previous versions, it no longer contains the implementation for listening
 servers.
 
-For a typical example of how to create a REST server with your application,
-see the [@loopback/rest package.](https://github.com/strongloop/loopback-next/tree/master/packages/rest)
+For a typical example of how to create a REST server with your application, see
+the
+[@loopback/rest package.](https://github.com/strongloop/loopback-next/tree/master/packages/rest)
 
 ## Advanced Use
 
 Since `@loopback/core` is decoupled from the listening server implementation,
-LoopBack applications are now able to work with any component that provides
-this functionality.
+LoopBack applications are now able to work with any component that provides this
+functionality.
 
 ```ts
 // index.ts
@@ -45,30 +46,33 @@ const app = new Application({
     port: 3001,
   },
 });
-app.component(RestComponent) // REST Server
-app.component(GrpcComponent) // GRPC Server
+app.component(RestComponent); // REST Server
+app.component(GrpcComponent)(
+  // GRPC Server
 
-(async function start() {
-  // Let's retrieve the bound instances of our servers.
-  const rest = await app.getServer<RestServer>('RestServer');
-  const grpc = await app.getServer<GrpcServer>('GrpcServer');
+  async function start() {
+    // Let's retrieve the bound instances of our servers.
+    const rest = await app.getServer<RestServer>('RestServer');
+    const grpc = await app.getServer<GrpcServer>('GrpcServer');
 
-  // Define all sorts of bindings here to pass configuration or data
-  // between your server instances, define controllers and datasources for them,
-  // etc...
-  await app.start(); // This automatically spins up all your servers, too!
-  console.log(`REST server running on port: ${rest.getSync('rest.port')}`);
-  console.log(`GRPC server running on port: ${grpc.getSync('grpc.port')}`);
-})();
+    // Define all sorts of bindings here to pass configuration or data
+    // between your server instances, define controllers and datasources for them,
+    // etc...
+    await app.start(); // This automatically spins up all your servers, too!
+    console.log(`REST server running on port: ${rest.getSync('rest.port')}`);
+    console.log(`GRPC server running on port: ${grpc.getSync('grpc.port')}`);
+  },
+)();
 ```
+
 In the above example, having a GRPC server mounted on your Application could
 enable communication with other GRPC-enabled microservices, allowing things like
 dynamic configuration updates.
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/DEVELOPING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+* [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/DEVELOPING.md)
+* [Join the team](https://github.com/strongloop/loopback-next/issues/110)
 
 ## Tests
 
@@ -76,7 +80,8 @@ Run `npm test` from the root folder.
 
 ## Contributors
 
-See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+See
+[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
 ## License
 

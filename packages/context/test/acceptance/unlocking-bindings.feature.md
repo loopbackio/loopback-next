@@ -1,17 +1,17 @@
 # Feature: Context bindings - Unlocking Bindings
 
-- In order to reuse names for stale bindings
-- As a developer
-- I want to "unlock" bindings
-- So that new values can be bound using the same names
+* In order to reuse names for stale bindings
+* As a developer
+* I want to "unlock" bindings
+* So that new values can be bound using the same names
 
 ## Scenario: Unlocking a locked binding
 
-- Given an empty `Context` (binding container)
-- And a binding that is `locked`
-- When I unlock the binding
-- And create another binding with the same name
-- Then my new binding overwrites the old binding
+* Given an empty `Context` (binding container)
+* And a binding that is `locked`
+* When I unlock the binding
+* And create another binding with the same name
+* Then my new binding overwrites the old binding
 
 ```ts
 // create a container for bindings

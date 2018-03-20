@@ -1,9 +1,9 @@
 # Feature: Authentication
 
-- In order to add security to my app
-- As an app developer
-- I want the extension to authenticate requests
-- So that I can determine who is allowed to do what with my app
+* In order to add security to my app
+* As an app developer
+* I want the extension to authenticate requests
+* So that I can determine who is allowed to do what with my app
 
 ## Scenario: Basic Usage
 
