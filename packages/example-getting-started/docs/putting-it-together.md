@@ -38,6 +38,8 @@ import {
   Class,
   Repository,
   RepositoryMixin,
+  DataSourceConstructor,
+  juggler
 } from '@loopback/repository';
 /* tslint:enable:no-unused-variable */
 
