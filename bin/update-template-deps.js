@@ -36,30 +36,26 @@ const rootPath = ls.repository.rootPath;
 const buildDeps = require(path.join(rootPath, 'packages/build/package.json'))
   .dependencies;
 
-// Load dependencies from `packages/cli/lib/dependencies.json`
-const dependenciesFile = path.join(
-  rootPath,
-  'packages/cli/lib/dependencies.json',
-);
+// Load dependencies from `packages/cli/package.json`
+const cliPackageJson = path.join(rootPath, 'packages/cli/package.json');
 
-// Loading existing dependencies from `packages/cli/lib/dependencies.json`
-let currentDeps = {};
-try {
-  currentDeps = require(dependenciesFile);
-} catch (e) {
-  // Ignore error
-}
+// Loading existing dependencies from `packages/cli/package.json`
+const cliPkg = require(cliPackageJson);
+cliPkg.config = cliPkg.config || {};
+const currentDeps = cliPkg.config.templateDependencies || {};
 
 // Merge all entries
 const deps = Object.assign({}, currentDeps, buildDeps, lbModules);
 
+cliPkg.config.templateDependencies = deps;
+
 // Convert to JSON
-const json = JSON.stringify(deps, null, 2);
+const json = JSON.stringify(cliPkg, null, 2);
 
 if (process.argv[2] === '-f') {
   // Using `-f` to overwrite packages/cli/lib/dependencies.json
-  fs.writeFileSync(dependenciesFile, json + '\n', {encoding: 'utf-8'});
-  console.log('%s has been updated.', dependenciesFile);
+  fs.writeFileSync(cliPackageJson, json + '\n', {encoding: 'utf-8'});
+  console.log('%s has been updated.', cliPackageJson);
 } else {
   // Otherwise write to console
   console.log(json);
