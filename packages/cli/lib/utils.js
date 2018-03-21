@@ -201,7 +201,7 @@ exports.getDependencies = function() {
     '^' + semver.major(version) + '.' + semver.minor(version) + '.0';
 
   const deps = {};
-  const dependencies = require('./dependencies.json');
+  const dependencies = (pkg.config && pkg.config.templateDependencies) || {};
   for (const i in dependencies) {
     // Default to loopback version if the version for a given dependency is ""
     deps[i] = dependencies[i] || loopbackVersion;
