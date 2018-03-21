@@ -10,83 +10,120 @@ summary:
 
 ## Overview
 
-A `Route` is the mapping between your API specification and an Operation (JavaScript implementation). It tells LoopBack which function to `invoke()` given an HTTP request.
+A `Route` is the mapping between your API specification and an Operation. It
+tells LoopBack which Operation to `invoke()` given an HTTP request.
 
 The `Route` object and its associated types are provided as a part of the
-[(`@loopback/rest`)](https://github.com/strongloop/loopback-next/blob/master/packages/rest) package.
+[`@loopback/rest`](https://github.com/strongloop/loopback-next/blob/master/packages/rest)
+package.
 
 ## Operations
 
-Operations are JavaScript functions that accept Parameters. They can be implemented as plain JavaScript functions or as methods in [Controllers](Controllers.md).
+Operations are functions that accept Parameters. They can be implemented as
+plain JavaScript/TypeScript functions (like http handler functions) or as
+methods in [Controllers](Controllers.md).
 
-```js
+```ts
 // greet is a basic operation
-function greet(name) {
+function greet(name: string) {
   return `hello ${name}`;
 }
 ```
 
 ## Parameters
 
-In the example above, `name` is a Parameter. Parameters are values, usually parsed from a `Request` by a `Sequence`, passed as arguments to an Operation. Parameters are defined as part of a `Route` using the OpenAPI specification. They can be parsed from the following parts of the `Request`:
+In the example above, `name` is a Parameter. Parameters are values which are
+usually parsed from a `Request` by a `Sequence` and then passed as arguments to
+an Operation. Parameters are defined as part of a `Route` using the OpenAPI
+specification. They can be parsed from the following parts of the `Request`:
 
- - `body`
- - `query` string
- - `header`
- - `path` (url)
+- `body`
+- `form data`
+- `query` string
+- `header`
+- `path` (url)
 
 ## Creating REST Routes
 
 There are three distinct approaches for defining your REST Routes:
+
 - With an OpenAPI specification object
 - Using partial OpenAPI spec fragments with the `Route` constructor
 - Using route decorators on controller methods
 
 ### Declaring REST Routes with API specifications
 
-Below is an example [Open API Specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#swagger-object) that defines the same operation as the example above. This a declarative approach to defining operations. The `x-operation` field in the example below references the handler JavaScript function for the API operation, and should not be confused with `x-operation-name`, which is a string for the Controller method name.
+Below is an example of an
+[Open API Specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#oasObject)
+that defines the same operation as the example above. This is the declarative
+approach to defining operations. The `x-operation` field in the example below
+references the handler JavaScript function for the API operation, and should not
+be confused with `x-operation-name`, which is a string for the Controller method
+name.
 
-```js
+```ts
+import {RestApplication} from '@loopback/rest';
+import {OpenApiSpec} from '@loopback/openapi-v3-types';
 
-const server = await app.getServer(RestServer);
-const spec = {
-  basePath: '/',
+function greet(name: string) {
+  return `hello ${name}`;
+}
+
+const spec: OpenApiSpec = {
+  openapi: '3.0.0',
+  info: {
+    title: 'LoopBack Application',
+    version: '1.0.0',
+  },
   paths: {
     '/': {
       get: {
         'x-operation': greet,
-        parameters: [{name: 'name', in: 'query', type: 'string'}],
+        parameters: [{name: 'name', in: 'query', schema: {type: 'string'}}],
         responses: {
           '200': {
             description: 'greeting text',
-            schema: {type: 'string'},
-          }
-        }
-      }
-    }
-  }
+            content: {
+              'application/json': {
+                schema: {type: 'string'},
+              },
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
-server.api(spec);
+const app = new RestApplication();
+app.api(spec);
 ```
 
 ### Using partial OpenAPI spec fragments
 
-The example below defines a `Route` that will be matched for `GET /`. When the `Route` is matched, the `greet` Operation (above) will be called. It accepts an OpenAPI [OperationObject](https://github.com/OAI/OpenAPI-Specification/blob/0e51e2a1b2d668f434e44e5818a0cdad1be090b4/versions/2.0.md#operationObject) which is defined using `spec`.
-The route is then attached to a valid server context running underneath the
-application.
+The example below defines a `Route` that will be matched for `GET /`. When the
+`Route` is matched, the `greet` Operation (above) will be called. It accepts an
+OpenAPI
+[OperationObject](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#operationObject)
+which is defined using `spec`. The route is then attached to a valid server
+context running underneath the application.
+
 ```ts
-import {RestApplication, RestServer, Route} from '@loopback/rest';
-import {OperationObject} from '@loopback/openapi-spec';
+import {RestApplication, Route} from '@loopback/rest';
+import {OperationObject} from '@loopback/openapi-v3-types';
 
 const spec: OperationObject = {
-  parameters: [{name: 'name', in: 'query', type: 'string'}],
+  parameters: [{name: 'name', in: 'query', schema: {type: 'string'}}],
   responses: {
     '200': {
       description: 'greeting text',
-      schema: {type: 'string'}
-    }
-  }
+      content: {
+        'application/json': {
+          schema: {type: 'string'},
+        },
+      },
+    },
+  },
 };
 
 // greet is a basic operation
@@ -106,9 +143,10 @@ app.start();
 You can decorate your controller functions using the verb decorator functions
 within `@loopback/rest` to determine which routes they will handle.
 
-{% include code-caption.html content="/src/controllers/greet.controller.ts" %}
+{% include code-caption.html content="src/controllers/greet.controller.ts" %}
+
 ```ts
-import { get, param } from '@loopback/rest';
+import {get, param} from '@loopback/rest';
 
 export class GreetController {
   // Note that we can still use OperationObject fragments with the
@@ -118,21 +156,25 @@ export class GreetController {
     responses: {
       '200': {
         description: 'greeting text',
-        schema: { type: 'string' }
-      }
-    }
+        content: {
+          'application/json': {
+            schema: {type: 'string'},
+          },
+        },
+      },
+    },
   })
-  @param.query.string('name')
-  greet(name: string) {
+  greet(@param.query.string('name') name: string) {
     return `hello ${name}`;
   }
 }
 ```
 
-{% include code-caption.html content="index.ts" %}
+{% include code-caption.html content="src/index.ts" %}
+
 ```ts
-import { RestApplication } from '@loopback/rest';
-import { GreetController } from './src/controllers/greet.controller';
+import {RestApplication} from '@loopback/rest';
+import {GreetController} from './src/controllers/greet.controller';
 
 const app = new RestApplication();
 
@@ -143,7 +185,8 @@ app.start();
 
 ## Invoking operations using Routes
 
-This example breaks down how `Sequences` determine and call the matching operation for any given request.
+This example breaks down how [`Sequences`](Sequence.md) determine and call the matching
+operation for any given request.
 
 ```js
 class MySequence extends DefaultSequence {
