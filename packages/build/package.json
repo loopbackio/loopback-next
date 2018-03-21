@@ -17,9 +17,11 @@
     "@types/node": "^8.9.5",
     "cross-spawn": "^6.0.3",
     "debug": "^3.1.0",
+    "fs-extra": "^5.0.0",
     "mocha": "^5.0.0",
     "nyc": "^11.4.1",
     "prettier": "^1.10.2",
+    "rimraf": "^2.6.2",
     "source-map-support": "^0.5.3",
     "strong-docs": "^1.9.1",
     "tslint": "^5.9.1",
@@ -44,8 +46,5 @@
     "test": "npm run mocha",
     "mocha": "node bin/run-mocha --timeout 30000 \"test/integration/*.js\"",
     "posttest": "npm run lint"
-  },
-  "devDependencies": {
-    "fs-extra": "^5.0.0"
   }
 }
