@@ -24,7 +24,7 @@ Example usage:
 'use strict';
 
 function run(argv, options) {
-  const fs = require('fs-extra');
+  const rimraf = require('rimraf');
   const path = require('path');
   const utils = require('./utils');
   var files = argv.slice(2);
@@ -42,7 +42,7 @@ function run(argv, options) {
         console.error('Skipping ' + f + ' as it is not inside the project');
       }
     } else {
-      if (!options.dryRun) fs.removeSync(f);
+      if (!options.dryRun) rimraf.sync(f);
       removed.push(f);
     }
   });
