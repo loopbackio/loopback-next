@@ -70,20 +70,6 @@ Let's add a simple "Hello World" controller as follows:
   }
   ```
 
-* Update `/src/application.ts` to load the controller:
-    * Import `HelloController` at the top of the file
-      ```ts
-      import {HelloController} from './controllers/hello.controller';
-      ```
-
-    * Add controller in `setupControllers()`
-      ```ts
-      setupControllers() {
-        this.controller(PingController);
-        this.controller(HelloController);
-      }
-      ```
-
 * Start the application using `npm start`.
     * *Note: If your application is still running, press **CTRL+C** to stop it before restarting it*
 
