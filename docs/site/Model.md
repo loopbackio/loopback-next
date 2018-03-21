@@ -30,7 +30,7 @@ export class Customer {
 Extensibility is a core feature of LoopBack. There are external packages that
 add additional features, for example, integration with the legacy juggler or
 JSON Schema generation. These features become available to a LoopBack model
-through the ~~usage of~~ `@model` and `@property` decorators from the
+through the `@model` and `@property` decorators from the
 `@loopback/repository` module.
 
 ```ts
@@ -122,7 +122,7 @@ class Product extends Entity {
 ```
 
 The complete list of valid attributes for property definitions can be found in
-LoopBack 3's [Model definition section](https://loopback.io/doc/en/lb3/Model-definition-JSON-file.md#properties)
+LoopBack 3's [Model definition section](https://loopback.io/doc/en/lb3/Model-definition-JSON-file.md#properties).
 
 <!-- NOTE(kjdelisle): Until we have a metadata docs section, link to the
 package in the repository. -->
@@ -257,12 +257,12 @@ to better tailor towards the JSON Schema being produced.
 
 ## Other ORMs
 You might decide to use an alternative ORM/ODM in your LoopBack application.
-Loopback v4 no longer expects you to provide your data in its own custom Model
+LoopBack 4 no longer expects you to provide your data in its own custom Model
 format for routing purposes, which means you are free to alter your classes
 to suit these ORMs/ODMs.
 
 However, this also means that the provided schema decorators will serve no
 purpose for these ORMs/ODMs. Some of these frameworks may also provide
-decorators with conflicting names (ex. another `@model` decorator), which might
+decorators with conflicting names (e.g. another `@model` decorator), which might
 warrant avoiding the provided juggler decorators.
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-rpc-server@0.2.4...@loopback/example-rpc-server@0.3.0) (2018-03-21)
+
+
+### Bug Fixes
+
+* **example-rpc-server:** include index.ts in tsconfig ([a219da3](https://github.com/strongloop/loopback-next/commit/a219da3))
+
+
+
+
 <a name="0.2.4"></a>
 ## [0.2.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-rpc-server@0.2.3...@loopback/example-rpc-server@0.2.4) (2018-03-14)
 

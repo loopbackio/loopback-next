@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.3.3...@loopback/testlab@0.4.0) (2018-03-21)
+
+
+### Bug Fixes
+
+* **testlab:** fix throw() and rejectedWith() types ([8ad9f66](https://github.com/strongloop/loopback-next/commit/8ad9f66))
+
+
+
+
 <a name="0.3.3"></a>
 ## [0.3.3](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.3.2...@loopback/testlab@0.3.3) (2018-03-14)
 
