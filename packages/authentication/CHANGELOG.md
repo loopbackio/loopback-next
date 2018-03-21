@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@0.3.4...@loopback/authentication@0.4.0) (2018-03-21)
+
+
+### Bug Fixes
+
+* **authentication:** update broken code in Readme ([3423f6e](https://github.com/strongloop/loopback-next/commit/3423f6e))
+
+
+### Features
+
+* **rest:** expose app.requestHandler function ([20a41ac](https://github.com/strongloop/loopback-next/commit/20a41ac))
+
+
+### BREAKING CHANGES
+
+* **rest:** `RestServer#handleHttp` was renamed to
+`RestServer#requestHandler`.
+
+
+
+
 <a name="0.3.4"></a>
 ## [0.3.4](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@0.3.3...@loopback/authentication@0.3.4) (2018-03-14)
 

@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.4.3...@loopback/cli@0.5.0) (2018-03-21)
+
+
+### Bug Fixes
+
+* **cli:** update tsconfig.json to include index.ts ([dc5107c](https://github.com/strongloop/loopback-next/commit/dc5107c))
+
+
+### Features
+
+* **rest:** expose app.requestHandler function ([20a41ac](https://github.com/strongloop/loopback-next/commit/20a41ac))
+
+
+### BREAKING CHANGES
+
+* **rest:** `RestServer#handleHttp` was renamed to
+`RestServer#requestHandler`.
+
+
+
+
 <a name="0.4.3"></a>
 ## [0.4.3](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.4.2...@loopback/cli@0.4.3) (2018-03-14)
 
