@@ -22,7 +22,7 @@
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
     "pretest": "npm run clean && npm run build",
-    "test": "lb-dist mocha --opts node_modules/@loopback/build/mocha.opts DIST/test",
+    "test": "lb-mocha DIST/test",
     "posttest": "npm run lint",
     "start": "npm run build && node .",
     "prepublishOnly": "npm run build"

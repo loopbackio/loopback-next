@@ -32,7 +32,7 @@ function run(argv, options) {
   const args = argv.slice(2).map(a => a.replace(/\bDIST\b/g, dist));
   const command = args.shift();
 
-  return utils.runShell(command, args, option);
+  return utils.runShell(command, args, options);
 }
 
 module.exports = run;
