@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.1"></a>
+## [0.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.2.0...@loopback/docs@0.2.1) (2018-03-21)
+
+
+### Bug Fixes
+
+* remove obsolete steps in getting started ([2bd8b5d](https://github.com/strongloop/loopback-next/commit/2bd8b5d))
+
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.1.2...@loopback/docs@0.2.0) (2018-03-21)
 
