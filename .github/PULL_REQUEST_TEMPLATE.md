@@ -14,6 +14,7 @@ See also #23
 - [ ] `npm test` passes on your machine
 - [ ] New tests added or existing tests modified to cover all changes
 - [ ] Code conforms with the [style guide](http://loopback.io/doc/en/contrib/style-guide.html)
-- [ ] Related API Documentation was updated
+- [ ] API Documentation in code was updated
+- [ ] Documentation in [/docs/site](../tree/master/docs/site) was updated
 - [ ] Affected artifact templates in `packages/cli` were updated
 - [ ] Affected example projects in `packages/example-*` were updated
