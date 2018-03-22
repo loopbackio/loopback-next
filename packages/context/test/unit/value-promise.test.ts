@@ -65,10 +65,12 @@ describe('getDeepProperty', () => {
 
   it('allows undefined value', () => {
     expect(getDeepProperty(undefined, 'x.z')).to.be.undefined();
+    expect(getDeepProperty(null, 'x.z')).to.be.undefined();
   });
 
   it('allows null value', () => {
-    expect(getDeepProperty(null, 'x.z')).to.be.null();
+    expect(getDeepProperty({x: {z: null}}, 'x.z')).to.be.null();
+    expect(getDeepProperty(null, '')).to.be.null();
   });
 
   it('allows boolean value', () => {
@@ -95,6 +97,14 @@ describe('getDeepProperty', () => {
     const obj = {a: ['x', 'y']};
     expect(getDeepProperty(obj, 'a.0')).to.eql('x');
     expect(getDeepProperty(obj, 'a.1')).to.eql('y');
+  });
+
+  it('allows to use parameter types', () => {
+    const arr = ['x', 'y'];
+    expect(getDeepProperty<number>(arr, 'length')).to.eql(2);
+    expect(getDeepProperty<string>(arr, '0')).to.eql('x');
+    expect(getDeepProperty<string, string[]>(arr, '1')).to.eql('y');
+    expect(getDeepProperty<string>(arr, '1')).to.eql('y');
   });
 });
 

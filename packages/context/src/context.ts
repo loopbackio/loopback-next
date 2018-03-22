@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding} from './binding';
-import {isPromiseLike, getDeepProperty} from './value-promise';
+import {isPromiseLike, getDeepProperty, BoundValue} from './value-promise';
 import {ResolutionOptions, ResolutionSession} from './resolution-session';
 
 import {v1 as uuidv1} from 'uuid';
@@ -43,7 +43,7 @@ export class Context {
    *
    * @param key Binding key
    */
-  bind(key: string): Binding {
+  bind<T = BoundValue>(key: string): Binding<T> {
     /* istanbul ignore if */
     if (debug.enabled) {
       debug('Adding binding: %s', key);
@@ -57,7 +57,7 @@ export class Context {
         throw new Error(`Cannot rebind key "${key}" to a locked binding`);
     }
 
-    const binding = new Binding(key);
+    const binding = new Binding<T>(key);
     this.registry.set(key, binding);
     return binding;
   }
@@ -429,10 +429,10 @@ export class Context {
     }
 
     if (isPromiseLike(boundValue)) {
-      return boundValue.then(v => getDeepProperty(v, path) as T);
+      return boundValue.then(v => getDeepProperty<BoundValue, T>(v, path));
     }
 
-    return getDeepProperty(boundValue, path) as T;
+    return getDeepProperty<BoundValue, T>(boundValue, path);
   }
 
   /**
