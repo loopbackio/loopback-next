@@ -11,7 +11,7 @@
     "@loopback/repository": "^0.3.0",
     "@loopback/testlab": "^0.4.0",
     "@types/debug": "0.0.30",
-    "@types/lodash": "^4.14.96"
+    "@types/lodash": "^4.14.106"
   },
   "scripts": {
     "build": "lb-tsc es2017",

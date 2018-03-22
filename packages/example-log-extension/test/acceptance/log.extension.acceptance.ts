@@ -66,7 +66,9 @@ describe('log extension acceptance test', () => {
   beforeEach(createSequence);
 
   beforeEach(resetLogs);
-  beforeEach(() => (spy = createLogSpy()));
+  beforeEach(() => {
+    spy = createLogSpy();
+  });
   afterEach(() => restoreLogSpy(spy));
 
   it('logs information at DEBUG or higher', async () => {
