@@ -154,7 +154,7 @@ Finally, put it all together in your application class:
 ```ts
 // src/application.ts
 import {BootMixin, Binding, Booter} from '@loopback/boot';
-import {RestApplication, RestServer} from '@loopback/rest';
+import {RestApplication, RestServer, RestBindings} from '@loopback/rest';
 import {
   AuthenticationComponent,
   AuthenticationBindings,
@@ -181,7 +181,7 @@ export class MyApp extends BootMixin(RestApplication) {
     await super.start();
 
     const server = await this.getServer(RestServer);
-    const port = await server.get('rest.port');
+    const port = await server.get(RestBindings.PORT);
     console.log(`REST server running on port: ${port}`);
   }
 }

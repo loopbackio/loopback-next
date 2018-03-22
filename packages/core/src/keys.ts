@@ -3,6 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {BindingKey} from '@loopback/context';
+import {Application, ControllerClass} from './application';
+
 /**
  * Namespace for core binding keys
  */
@@ -11,11 +14,16 @@ export namespace CoreBindings {
   /**
    * Binding key for application instance itself
    */
-  export const APPLICATION_INSTANCE = 'application.instance';
+  export const APPLICATION_INSTANCE = BindingKey.create<Application>(
+    'application.instance',
+  );
+
   /**
    * Binding key for application configuration
    */
-  export const APPLICATION_CONFIG = 'application.config';
+  export const APPLICATION_CONFIG = BindingKey.create<object>(
+    'application.config',
+  );
 
   // server
   /**
@@ -28,12 +36,18 @@ export namespace CoreBindings {
    * Binding key for the controller class resolved in the current request
    * context
    */
-  export const CONTROLLER_CLASS = 'controller.current.ctor';
+  export const CONTROLLER_CLASS = BindingKey.create<ControllerClass>(
+    'controller.current.ctor',
+  );
+
   /**
    * Binding key for the controller method resolved in the current request
    * context
    */
-  export const CONTROLLER_METHOD_NAME = 'controller.current.operation';
+  export const CONTROLLER_METHOD_NAME = BindingKey.create<string>(
+    'controller.current.operation',
+  );
+
   /**
    * Binding key for the controller method metadata resolved in the current
    * request context

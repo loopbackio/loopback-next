@@ -10,6 +10,7 @@ import {
   BindingScope,
   BindingType,
   isPromiseLike,
+  BindingKey,
 } from '../..';
 
 /**
@@ -76,7 +77,7 @@ describe('Context', () => {
     });
 
     it('rejects a key containing property separator', () => {
-      const key = 'a' + Binding.PROPERTY_SEPARATOR + 'b';
+      const key = 'a' + BindingKey.PROPERTY_SEPARATOR + 'b';
       expect(() => ctx.bind(key)).to.throw(/Binding key .* cannot contain/);
     });
   });
@@ -288,7 +289,7 @@ describe('Context', () => {
     });
 
     it('rejects a key containing property separator', () => {
-      const key = 'a' + Binding.PROPERTY_SEPARATOR + 'b';
+      const key = 'a' + BindingKey.PROPERTY_SEPARATOR + 'b';
       expect(() => ctx.getBinding(key)).to.throw(
         /Binding key .* cannot contain/,
       );
@@ -307,7 +308,7 @@ describe('Context', () => {
     });
 
     it('returns the value with property separator', () => {
-      const SEP = Binding.PROPERTY_SEPARATOR;
+      const SEP = BindingKey.PROPERTY_SEPARATOR;
       const val = {x: {y: 'Y'}};
       ctx.bind('foo').to(val);
       const value = ctx.getSync(`foo${SEP}x`);
@@ -414,7 +415,7 @@ describe('Context', () => {
     });
 
     it('returns the value with property separator', async () => {
-      const SEP = Binding.PROPERTY_SEPARATOR;
+      const SEP = BindingKey.PROPERTY_SEPARATOR;
       const val = {x: {y: 'Y'}};
       ctx.bind('foo').toDynamicValue(() => Promise.resolve(val));
       const value = await ctx.get(`foo${SEP}x`);

@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding} from './binding';
+import {BindingKey, BindingAddress} from './BindingKey';
 import {isPromiseLike, getDeepProperty, BoundValue} from './value-promise';
 import {ResolutionOptions, ResolutionSession} from './resolution-session';
 
@@ -43,12 +44,14 @@ export class Context {
    *
    * @param key Binding key
    */
-  bind<T = BoundValue>(key: string): Binding<T> {
+  bind<ValueType = BoundValue>(
+    key: BindingAddress<ValueType>,
+  ): Binding<ValueType> {
     /* istanbul ignore if */
     if (debug.enabled) {
       debug('Adding binding: %s', key);
     }
-    Binding.validateKey(key);
+    key = BindingKey.validate(key);
     const keyExists = this.registry.has(key);
     if (keyExists) {
       const existingBinding = this.registry.get(key);
@@ -57,7 +60,7 @@ export class Context {
         throw new Error(`Cannot rebind key "${key}" to a locked binding`);
     }
 
-    const binding = new Binding<T>(key);
+    const binding = new Binding<ValueType>(key);
     this.registry.set(key, binding);
     return binding;
   }
@@ -72,8 +75,8 @@ export class Context {
    * @param key Binding key
    * @returns true if the binding key is found and removed from this context
    */
-  unbind(key: string): boolean {
-    Binding.validateKey(key);
+  unbind<ValueType = BoundValue>(key: BindingAddress<ValueType>): boolean {
+    key = BindingKey.validate(key);
     const binding = this.registry.get(key);
     if (binding == null) return false;
     if (binding && binding.isLocked)
@@ -86,8 +89,8 @@ export class Context {
    * delegating to the parent context
    * @param key Binding key
    */
-  contains(key: string): boolean {
-    Binding.validateKey(key);
+  contains<ValueType = BoundValue>(key: BindingAddress<ValueType>): boolean {
+    key = BindingKey.validate(key);
     return this.registry.has(key);
   }
 
@@ -95,7 +98,7 @@ export class Context {
    * Check if a key is bound in the context or its ancestors
    * @param key Binding key
    */
-  isBound(key: string): boolean {
+  isBound<ValueType = BoundValue>(key: BindingAddress<ValueType>): boolean {
     if (this.contains(key)) return true;
     if (this._parent) {
       return this._parent.isBound(key);
@@ -107,7 +110,9 @@ export class Context {
    * Get the owning context for a binding key
    * @param key Binding key
    */
-  getOwnerContext(key: string): Context | undefined {
+  getOwnerContext<ValueType = BoundValue>(
+    key: BindingAddress<ValueType>,
+  ): Context | undefined {
     if (this.contains(key)) return this;
     if (this._parent) {
       return this._parent.getOwnerContext(key);
@@ -139,18 +144,25 @@ export class Context {
    * - `*` matches zero or more characters except `.` and `:`
    * - `?` matches exactly one character except `.` and `:`
    */
-  find(pattern?: string | RegExp): Readonly<Binding>[];
+  find<ValueType = BoundValue>(
+    pattern?: string | RegExp,
+  ): Readonly<Binding<ValueType>>[];
 
   /**
    * Find bindings using a filter function
    * @param filter A function to test on the binding. It returns `true` to
    * include the binding or `false` to exclude the binding.
    */
-  find(filter: (binding: Readonly<Binding>) => boolean): Readonly<Binding>[];
+  find<ValueType = BoundValue>(
+    filter: (binding: Readonly<Binding<ValueType>>) => boolean,
+  ): Readonly<Binding<ValueType>>[];
 
-  find(
-    pattern?: string | RegExp | ((binding: Binding) => boolean),
-  ): Readonly<Binding>[] {
+  find<ValueType = BoundValue>(
+    pattern?:
+      | string
+      | RegExp
+      | ((binding: Readonly<Binding<ValueType>>) => boolean),
+  ): Readonly<Binding<ValueType>>[] {
     let bindings: Readonly<Binding>[] = [];
     let filter: (binding: Readonly<Binding>) => boolean;
     if (!pattern) {
@@ -180,15 +192,17 @@ export class Context {
    * - `*` matches zero or more characters except `.` and `:`
    * - `?` matches exactly one character except `.` and `:`
    */
-  findByTag(pattern: string | RegExp): Readonly<Binding>[] {
+  findByTag<ValueType = BoundValue>(
+    pattern: string | RegExp,
+  ): Readonly<Binding<ValueType>>[] {
     const regexp =
       typeof pattern === 'string' ? this.wildcardToRegExp(pattern) : pattern;
     return this.find(b => Array.from(b.tags).some(t => regexp.test(t)));
   }
 
-  protected _mergeWithParent(
-    childList: Readonly<Binding>[],
-    parentList?: Readonly<Binding>[],
+  protected _mergeWithParent<ValueType>(
+    childList: Readonly<Binding<ValueType>>[],
+    parentList?: Readonly<Binding<ValueType>>[],
   ) {
     if (!parentList) return childList;
     const additions = parentList.filter(parentBinding => {
@@ -222,7 +236,7 @@ export class Context {
    *   (deeply) nested property to retrieve.
    * @returns A promise of the bound value.
    */
-  get<T>(keyWithPath: string): Promise<T>;
+  get<ValueType>(keyWithPath: BindingAddress<ValueType>): Promise<ValueType>;
 
   /**
    * Get the value bound to the given key, optionally return a (deep) property
@@ -245,22 +259,21 @@ export class Context {
    * @returns A promise of the bound value, or a promise of undefined when
    * the optional binding was not found.
    */
-  get<T>(
-    keyWithPath: string,
+  get<ValueType>(
+    keyWithPath: BindingAddress<ValueType>,
     optionsOrSession?: ResolutionOptions | ResolutionSession,
-  ): Promise<T | undefined>;
+  ): Promise<ValueType | undefined>;
 
   // Implementation
-  async get<T>(
-    keyWithPath: string,
+  async get<ValueType>(
+    keyWithPath: BindingAddress<ValueType>,
     optionsOrSession?: ResolutionOptions | ResolutionSession,
-  ): Promise<T | undefined> {
+  ): Promise<ValueType | undefined> {
     /* istanbul ignore if */
     if (debug.enabled) {
       debug('Resolving binding: %s', keyWithPath);
     }
-
-    return await this.getValueOrPromise<T | undefined>(
+    return await this.getValueOrPromise<ValueType | undefined>(
       keyWithPath,
       optionsOrSession,
     );
@@ -290,7 +303,7 @@ export class Context {
    * `ResolutionSession` is accepted for backward compatibility.
    * @returns A promise of the bound value.
    */
-  getSync<T>(keyWithPath: string): T;
+  getSync<ValueType>(keyWithPath: BindingAddress<ValueType>): ValueType;
 
   /**
    * Get the synchronous value bound to the given key, optionally
@@ -316,21 +329,21 @@ export class Context {
    * `ResolutionSession` is accepted for backward compatibility.
    * @returns The bound value, or undefined when an optional binding was not found.
    */
-  getSync<T>(
-    keyWithPath: string,
+  getSync<ValueType>(
+    keyWithPath: BindingAddress<ValueType>,
     optionsOrSession?: ResolutionOptions | ResolutionSession,
-  ): T | undefined;
+  ): ValueType | undefined;
 
   // Implementation
-  getSync<T>(
-    keyWithPath: string,
+  getSync<ValueType>(
+    keyWithPath: BindingAddress<ValueType>,
     optionsOrSession?: ResolutionOptions | ResolutionSession,
-  ): T | undefined {
+  ): ValueType | undefined {
     /* istanbul ignore if */
     if (debug.enabled) {
       debug('Resolving binding synchronously: %s', keyWithPath);
     }
-    const valueOrPromise = this.getValueOrPromise<T>(
+    const valueOrPromise = this.getValueOrPromise<ValueType>(
       keyWithPath,
       optionsOrSession,
     );
@@ -350,7 +363,9 @@ export class Context {
    *
    * @param key Binding key
    */
-  getBinding(key: string): Binding;
+  getBinding<ValueType = BoundValue>(
+    key: BindingAddress<ValueType>,
+  ): Binding<ValueType>;
 
   /**
    * Look up a binding by key in the context and its ancestors. If no matching
@@ -362,17 +377,23 @@ export class Context {
    * `options.optional` is set to true, the method will return `undefined`
    * instead of throwing an error if the binding key is not found.
    */
-  getBinding(key: string, options?: {optional?: boolean}): Binding | undefined;
+  getBinding<ValueType>(
+    key: BindingAddress<ValueType>,
+    options?: {optional?: boolean},
+  ): Binding<ValueType> | undefined;
 
-  getBinding(key: string, options?: {optional?: boolean}): Binding | undefined {
-    Binding.validateKey(key);
+  getBinding<ValueType>(
+    key: BindingAddress<ValueType>,
+    options?: {optional?: boolean},
+  ): Binding<ValueType> | undefined {
+    key = BindingKey.validate(key);
     const binding = this.registry.get(key);
     if (binding) {
       return binding;
     }
 
     if (this._parent) {
-      return this._parent.getBinding(key, options);
+      return this._parent.getBinding<ValueType>(key, options);
     }
 
     if (options && options.optional) return undefined;
@@ -406,33 +427,33 @@ export class Context {
    *   on how the binding was configured.
    * @internal
    */
-  getValueOrPromise<T>(
-    keyWithPath: string,
+  getValueOrPromise<ValueType>(
+    keyWithPath: BindingAddress<ValueType>,
     optionsOrSession?: ResolutionOptions | ResolutionSession,
-  ): ValueOrPromise<T | undefined> {
-    const {key, path} = Binding.parseKeyWithPath(keyWithPath);
+  ): ValueOrPromise<ValueType | undefined> {
+    const {key, propertyPath} = BindingKey.parseKeyWithPath(keyWithPath);
 
     // backwards compatibility
     if (optionsOrSession instanceof ResolutionSession) {
       optionsOrSession = {session: optionsOrSession};
     }
 
-    const binding = this.getBinding(key, optionsOrSession);
+    const binding = this.getBinding<ValueType>(key, optionsOrSession);
     if (binding == null) return undefined;
 
     const boundValue = binding.getValue(
       this,
       optionsOrSession && optionsOrSession.session,
     );
-    if (path === undefined || path === '') {
+    if (propertyPath === undefined || propertyPath === '') {
       return boundValue;
     }
 
     if (isPromiseLike(boundValue)) {
-      return boundValue.then(v => getDeepProperty<BoundValue, T>(v, path));
+      return boundValue.then(v => getDeepProperty<ValueType>(v, propertyPath));
     }
 
-    return getDeepProperty<BoundValue, T>(boundValue, path);
+    return getDeepProperty<ValueType>(boundValue, propertyPath);
   }
 
   /**

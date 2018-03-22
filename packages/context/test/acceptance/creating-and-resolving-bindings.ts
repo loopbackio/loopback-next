@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context} from '../..';
+import {Context, BindingKey} from '../..';
 
 describe('Context bindings - Creating and resolving bindings', () => {
   let ctx: Context;
@@ -32,6 +32,36 @@ describe('Context bindings - Creating and resolving bindings', () => {
         function createBinding() {
           ctx.bind('foo').to('bar');
         }
+      });
+    });
+
+    context('with type information', () => {
+      it('infers correct type when getting the value', async () => {
+        const key = BindingKey.create<string>('foo');
+        ctx.bind(key).to('value');
+        const value = await ctx.get(key);
+        // The following line is accessing a String property as a way
+        // of verifying the value type at compile time
+        expect(value.length).to.equal(5);
+      });
+
+      it('allows access to a deep property', async () => {
+        const key = BindingKey.create<object>('foo');
+        ctx.bind(key).to({rest: {port: 80}});
+        const value = await ctx.get(key.deepProperty<number>('rest.port'));
+        // The following line is accessing a Number property as a way
+        // of verifying the value type at compile time
+        expect(value.toFixed()).to.equal('80');
+      });
+
+      it('infers a complex type when getting the value', async () => {
+        interface SomeData {
+          foo: string;
+        }
+        const key = BindingKey.create<SomeData>('foo');
+        ctx.bind(key).to({foo: 'bar'});
+        const value = await ctx.get(key);
+        expect(value.foo).to.equal('bar');
       });
     });
   });
@@ -64,7 +94,7 @@ describe('Context bindings - Creating and resolving bindings', () => {
       function createDynamicBinding() {
         const data = ['a', 'b', 'c'];
         ctx.bind('data').toDynamicValue(function() {
-          return data.shift();
+          return data.shift() || '(empty)';
         });
       }
     });

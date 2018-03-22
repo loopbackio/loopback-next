@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {LOG_LEVEL, EXAMPLE_LOG_BINDINGS} from '../keys';
+import {LOG_LEVEL, EXAMPLE_LOG_METADATA_KEY} from '../keys';
 import {
   Constructor,
   MethodDecoratorFactory,
@@ -21,7 +21,7 @@ import {LevelMetadata} from '../types';
 export function log(level?: number) {
   if (level === undefined) level = LOG_LEVEL.WARN;
   return MethodDecoratorFactory.createDecorator<LevelMetadata>(
-    EXAMPLE_LOG_BINDINGS.METADATA,
+    EXAMPLE_LOG_METADATA_KEY,
     {
       level,
     },
@@ -40,7 +40,7 @@ export function getLogMetadata(
 ): LevelMetadata {
   return (
     MetadataInspector.getMethodMetadata<LevelMetadata>(
-      EXAMPLE_LOG_BINDINGS.METADATA,
+      EXAMPLE_LOG_METADATA_KEY,
       controllerClass.prototype,
       methodName,
     ) || {level: LOG_LEVEL.OFF}

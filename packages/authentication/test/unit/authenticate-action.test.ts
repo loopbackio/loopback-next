@@ -7,32 +7,36 @@ import {expect} from '@loopback/testlab';
 import {Context, instantiateClass} from '@loopback/context';
 import {ParsedRequest} from '@loopback/rest';
 import {
-  AuthenticationProvider,
+  AuthenticateActionProvider,
   AuthenticateFn,
   UserProfile,
   AuthenticationBindings,
 } from '../..';
 import {MockStrategy} from './fixtures/mock-strategy';
+import {Strategy} from 'passport';
 
-describe('AuthenticationProvider', () => {
+describe('AuthenticateActionProvider', () => {
   describe('constructor()', () => {
     it('instantiateClass injects authentication.strategy in the constructor', async () => {
       const context = new Context();
       const strategy = new MockStrategy();
       context.bind(AuthenticationBindings.STRATEGY).to(strategy);
-      const provider = await instantiateClass(AuthenticationProvider, context);
+      const provider = await instantiateClass(
+        AuthenticateActionProvider,
+        context,
+      );
       expect(await provider.getStrategy()).to.be.equal(strategy);
     });
   });
 
   describe('value()', () => {
-    let provider: AuthenticationProvider;
+    let provider: AuthenticateActionProvider;
     let strategy: MockStrategy;
     let currentUser: UserProfile | undefined;
 
     const mockUser: UserProfile = {name: 'user-name', id: 'mock-id'};
 
-    beforeEach(givenAuthenticationProvider);
+    beforeEach(givenAuthenticateActionProvider);
 
     it('returns a function which authenticates a request and returns a user', async () => {
       const authenticate: AuthenticateFn = await Promise.resolve(
@@ -56,7 +60,7 @@ describe('AuthenticationProvider', () => {
         context.bind(AuthenticationBindings.STRATEGY).to(strategy);
         context
           .bind(AuthenticationBindings.AUTH_ACTION)
-          .toProvider(AuthenticationProvider);
+          .toProvider(AuthenticateActionProvider);
         const request = <ParsedRequest>{};
         const authenticate = await context.get<AuthenticateFn>(
           AuthenticationBindings.AUTH_ACTION,
@@ -67,10 +71,10 @@ describe('AuthenticationProvider', () => {
 
       it('throws an error if the injected passport strategy is not valid', async () => {
         const context: Context = new Context();
-        context.bind(AuthenticationBindings.STRATEGY).to({});
+        context.bind(AuthenticationBindings.STRATEGY).to({} as Strategy);
         context
           .bind(AuthenticationBindings.AUTH_ACTION)
-          .toProvider(AuthenticationProvider);
+          .toProvider(AuthenticateActionProvider);
         const authenticate = await context.get<AuthenticateFn>(
           AuthenticationBindings.AUTH_ACTION,
         );
@@ -89,7 +93,7 @@ describe('AuthenticationProvider', () => {
         context.bind(AuthenticationBindings.STRATEGY).to(strategy);
         context
           .bind(AuthenticationBindings.AUTH_ACTION)
-          .toProvider(AuthenticationProvider);
+          .toProvider(AuthenticateActionProvider);
         const authenticate = await context.get<AuthenticateFn>(
           AuthenticationBindings.AUTH_ACTION,
         );
@@ -105,10 +109,10 @@ describe('AuthenticationProvider', () => {
       });
     });
 
-    function givenAuthenticationProvider() {
+    function givenAuthenticateActionProvider() {
       strategy = new MockStrategy();
       strategy.setMockUser(mockUser);
-      provider = new AuthenticationProvider(
+      provider = new AuthenticateActionProvider(
         () => Promise.resolve(strategy),
         u => (currentUser = u),
       );

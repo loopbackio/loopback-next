@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from './context';
+import {BindingKey} from './BindingKey';
 import {ResolutionSession} from './resolution-session';
 import {instantiateClass} from './resolver';
 import {
@@ -97,52 +98,6 @@ export enum BindingType {
 }
 
 export class Binding<T = BoundValue> {
-  static PROPERTY_SEPARATOR = '#';
-
-  /**
-   * Validate the binding key format. Please note that `#` is reserved.
-   * @param key Binding key, such as `a, a.b, a:b, a/b
-   */
-  static validateKey(key: string) {
-    if (!key) throw new Error('Binding key must be provided.');
-    if (key.includes(Binding.PROPERTY_SEPARATOR)) {
-      throw new Error(
-        `Binding key ${key} cannot contain` +
-          ` '${Binding.PROPERTY_SEPARATOR}'.`,
-      );
-    }
-    return key;
-  }
-
-  /**
-   * Build a binding key from a key and a path
-   * @param key The key
-   * @param path The path
-   *
-   */
-  static buildKeyWithPath(key: string, path: string) {
-    return `${key}${Binding.PROPERTY_SEPARATOR}${path}`;
-  }
-
-  /**
-   * Parse a string containing both the binding key and the path to the deeply
-   * nested property to retrieve.
-   *
-   * @param keyWithPath The key with an optional path,
-   *  e.g. "application.instance" or "config#rest.port".
-   */
-  static parseKeyWithPath(keyWithPath: string) {
-    const index = keyWithPath.indexOf(Binding.PROPERTY_SEPARATOR);
-    if (index === -1) {
-      return {key: keyWithPath, path: undefined};
-    }
-
-    return {
-      key: keyWithPath.substr(0, index).trim(),
-      path: keyWithPath.substr(index + 1),
-    };
-  }
-
   public readonly key: string;
   public readonly tags: Set<string> = new Set();
   public scope: BindingScope = BindingScope.TRANSIENT;
@@ -159,7 +114,7 @@ export class Binding<T = BoundValue> {
   public valueConstructor: Constructor<T>;
 
   constructor(key: string, public isLocked: boolean = false) {
-    Binding.validateKey(key);
+    BindingKey.validate(key);
     this.key = key;
   }
 

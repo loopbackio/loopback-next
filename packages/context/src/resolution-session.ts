@@ -12,6 +12,10 @@ import {DecoratorFactory} from '@loopback/metadata';
 const debugSession = debugModule('loopback:context:resolver:session');
 const getTargetName = DecoratorFactory.getTargetName;
 
+// NOTE(bajtos) The following import is required to satisfy TypeScript compiler
+// tslint:disable-next-line:no-unused-variable
+import {BindingKey} from './BindingKey';
+
 /**
  * A function to be executed with the resolution session
  */

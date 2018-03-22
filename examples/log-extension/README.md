@@ -91,11 +91,12 @@ user (for this extension that'll be the logLevel `enum`).
  * Binding keys used by this component.
  */
 export namespace EXAMPLE_LOG_BINDINGS {
-  export const METADATA = 'example.log.metadata';
-  export const APP_LOG_LEVEL = 'example.log.level';
-  export const TIMER = 'example.log.timer';
-  export const LOGGER = 'example.log.logger';
-  export const LOG_ACTION = 'example.log.action';
+  export const APP_LOG_LEVEL = BindingKey.create<LOG_LEVEL>(
+    'example.log.level',
+  );
+  export const TIMER = BindingKey.create<TimerFn>('example.log.timer');
+  export const LOGGER = BindingKey.create<LogWriterFn>('example.log.logger');
+  export const LOG_ACTION = BindingKey.create<LogFn>('example.log.action');
 }
 
 /**
@@ -243,7 +244,7 @@ export function LogMixin<T extends Constructor<any>>(superClass: T) {
       this.component(LogComponent);
     }
 
-    logLevel(level: number) {
+    logLevel(level: LOG_LEVEL) {
       this.bind(EXAMPLE_LOG_BINDINGS.APP_LOG_LEVEL).to(level);
     }
   };
@@ -418,8 +419,8 @@ import {TimerProvider} from './providers/timer.provider';
 
 export class LogComponent implements Component {
   providers?: ProviderMap = {
-    [EXAMPLE_LOG_BINDINGS.TIMER]: TimerProvider,
-    [EXAMPLE_LOG_BINDINGS.LOG_ACTION]: LogActionProvider,
+    [EXAMPLE_LOG_BINDINGS.TIMER.key]: TimerProvider,
+    [EXAMPLE_LOG_BINDINGS.LOG_ACTION.key]: LogActionProvider,
   };
 }
 ```

@@ -10,7 +10,7 @@ import {TimerProvider} from './providers/timer.provider';
 
 export class LogComponent implements Component {
   providers?: ProviderMap = {
-    [EXAMPLE_LOG_BINDINGS.TIMER]: TimerProvider,
-    [EXAMPLE_LOG_BINDINGS.LOG_ACTION]: LogActionProvider,
+    [EXAMPLE_LOG_BINDINGS.TIMER.key]: TimerProvider,
+    [EXAMPLE_LOG_BINDINGS.LOG_ACTION.key]: LogActionProvider,
   };
 }
