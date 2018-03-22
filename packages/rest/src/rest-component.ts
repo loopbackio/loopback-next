@@ -28,14 +28,14 @@ import {createEmptyApiSpec} from '@loopback/openapi-v3-types';
 
 export class RestComponent implements Component {
   providers: ProviderMap = {
-    [RestBindings.SequenceActions.LOG_ERROR]: LogErrorProvider,
-    [RestBindings.SequenceActions.FIND_ROUTE]: FindRouteProvider,
-    [RestBindings.SequenceActions.INVOKE_METHOD]: InvokeMethodProvider,
-    [RestBindings.SequenceActions.REJECT]: RejectProvider,
-    [RestBindings.BIND_ELEMENT]: BindElementProvider,
-    [RestBindings.GET_FROM_CONTEXT]: GetFromContextProvider,
-    [RestBindings.SequenceActions.PARSE_PARAMS]: ParseParamsProvider,
-    [RestBindings.SequenceActions.SEND]: SendProvider,
+    [RestBindings.SequenceActions.LOG_ERROR.key]: LogErrorProvider,
+    [RestBindings.SequenceActions.FIND_ROUTE.key]: FindRouteProvider,
+    [RestBindings.SequenceActions.INVOKE_METHOD.key]: InvokeMethodProvider,
+    [RestBindings.SequenceActions.REJECT.key]: RejectProvider,
+    [RestBindings.BIND_ELEMENT.key]: BindElementProvider,
+    [RestBindings.GET_FROM_CONTEXT.key]: GetFromContextProvider,
+    [RestBindings.SequenceActions.PARSE_PARAMS.key]: ParseParamsProvider,
+    [RestBindings.SequenceActions.SEND.key]: SendProvider,
   };
   servers: {
     [name: string]: Constructor<Server>;

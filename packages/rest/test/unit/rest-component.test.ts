@@ -57,7 +57,7 @@ describe('RestComponent', () => {
 
         class CustomRestComponent extends RestComponent {
           providers: ProviderMap = {
-            [RestBindings.SequenceActions.LOG_ERROR]: CustomLogger,
+            [RestBindings.SequenceActions.LOG_ERROR.key]: CustomLogger,
           };
           constructor(
             @inject(CoreBindings.APPLICATION_INSTANCE) application: Application,

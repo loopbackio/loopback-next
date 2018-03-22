@@ -17,7 +17,7 @@ import {
 
 import {api, get, post, param, requestBody} from '@loopback/openapi-v3';
 
-import {Application} from '@loopback/core';
+import {Application, CoreBindings} from '@loopback/core';
 
 import {
   ParameterObject,
@@ -334,8 +334,8 @@ describe('Routing', () => {
     @api(spec)
     class GetCurrentController {
       constructor(
-        @inject('controller.current.ctor') private ctor: Function,
-        @inject('controller.current.operation') private operation: string,
+        @inject(CoreBindings.CONTROLLER_CLASS) private ctor: Function,
+        @inject(CoreBindings.CONTROLLER_METHOD_NAME) private operation: string,
       ) {
         expect(GetCurrentController).eql(ctor);
       }

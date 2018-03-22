@@ -12,6 +12,7 @@ import {
 } from '@loopback/metadata';
 import {BoundValue, ValueOrPromise, resolveList} from './value-promise';
 import {Context} from './context';
+import {BindingKey, BindingAddress} from './BindingKey';
 import {ResolutionSession} from './resolution-session';
 
 const PARAMETERS_KEY = 'inject:parameters';
@@ -50,14 +51,14 @@ export interface InjectionMetadata {
 /**
  * Descriptor for an injection point
  */
-export interface Injection {
+export interface Injection<ValueType = BoundValue> {
   target: Object;
   member?: string | symbol;
   methodDescriptorOrParameterIndex?:
-    | TypedPropertyDescriptor<BoundValue>
+    | TypedPropertyDescriptor<ValueType>
     | number;
 
-  bindingKey: string; // Binding key
+  bindingKey: BindingAddress<ValueType>; // Binding key
   metadata?: InjectionMetadata; // Related metadata
   resolve?: ResolverFunction; // A custom resolve function
 }
@@ -89,7 +90,7 @@ export interface Injection {
  *
  */
 export function inject(
-  bindingKey: string,
+  bindingKey: string | BindingKey<BoundValue>,
   metadata?: InjectionMetadata,
   resolve?: ResolverFunction,
 ) {
@@ -192,7 +193,7 @@ export namespace inject {
    * @param metadata Optional metadata to help the injection
    */
   export const getter = function injectGetter(
-    bindingKey: string,
+    bindingKey: BindingAddress<BoundValue>,
     metadata?: InjectionMetadata,
   ) {
     metadata = Object.assign({decorator: '@inject.getter'}, metadata);
@@ -213,7 +214,7 @@ export namespace inject {
    * @param metadata Optional metadata to help the injection
    */
   export const setter = function injectSetter(
-    bindingKey: string,
+    bindingKey: BindingAddress<BoundValue>,
     metadata?: InjectionMetadata,
   ) {
     metadata = Object.assign({decorator: '@inject.setter'}, metadata);

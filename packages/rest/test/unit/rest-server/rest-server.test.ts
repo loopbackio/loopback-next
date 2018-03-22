@@ -7,21 +7,13 @@ import {expect} from '@loopback/testlab';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
 import {Binding, Context} from '@loopback/context';
 import {Application} from '@loopback/core';
-import {
-  RestServer,
-  BindElement,
-  GetFromContext,
-  Route,
-  InvokeMethod,
-  RestBindings,
-  RestComponent,
-} from '../../..';
+import {RestServer, Route, RestBindings, RestComponent} from '../../..';
 
 describe('RestServer', () => {
   describe('"bindElement" binding', () => {
     it('returns a function for creating new bindings', async () => {
       const ctx = await givenRequestContext();
-      const bindElement = await ctx.get<BindElement>(RestBindings.BIND_ELEMENT);
+      const bindElement = await ctx.get(RestBindings.BIND_ELEMENT);
       const binding = bindElement('foo').to('bar');
       expect(binding).to.be.instanceOf(Binding);
       expect(ctx.getSync('foo')).to.equal('bar');
@@ -31,9 +23,7 @@ describe('RestServer', () => {
   describe('"getFromContext" binding', () => {
     it('returns a function for getting a value from the context', async () => {
       const ctx = await givenRequestContext();
-      const getFromContext = await ctx.get<GetFromContext>(
-        RestBindings.GET_FROM_CONTEXT,
-      );
+      const getFromContext = await ctx.get(RestBindings.GET_FROM_CONTEXT);
       ctx.bind('foo').to('bar');
       expect(await getFromContext('foo')).to.equal('bar');
     });
@@ -53,7 +43,7 @@ describe('RestServer', () => {
       );
 
       const ctx = await givenRequestContext();
-      const invokeMethod = await ctx.get<InvokeMethod>(
+      const invokeMethod = await ctx.get(
         RestBindings.SequenceActions.INVOKE_METHOD,
       );
 

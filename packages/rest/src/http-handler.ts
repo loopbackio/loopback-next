@@ -62,7 +62,7 @@ export class HttpHandler {
     response: ServerResponse,
   ): Promise<void> {
     const parsedRequest: ParsedRequest = parseRequestUrl(request);
-    const requestContext = this._createRequestContext(request, response);
+    const requestContext = this._createRequestContext(parsedRequest, response);
 
     const sequence = await requestContext.get<SequenceHandler>(
       RestBindings.SEQUENCE,
@@ -71,7 +71,7 @@ export class HttpHandler {
   }
 
   protected _createRequestContext(
-    req: ServerRequest,
+    req: ParsedRequest,
     res: ServerResponse,
   ): Context {
     const requestContext = new Context(this._rootContext);

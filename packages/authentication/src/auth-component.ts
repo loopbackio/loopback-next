@@ -5,7 +5,7 @@
 
 import {AuthenticationBindings} from './keys';
 import {Component, ProviderMap} from '@loopback/core';
-import {AuthenticationProvider} from './providers/authenticate';
+import {AuthenticateActionProvider} from './providers/authenticate';
 import {AuthMetadataProvider} from './providers/auth-metadata';
 
 export class AuthenticationComponent implements Component {
@@ -14,8 +14,8 @@ export class AuthenticationComponent implements Component {
   // TODO(bajtos) inject configuration
   constructor() {
     this.providers = {
-      [AuthenticationBindings.AUTH_ACTION]: AuthenticationProvider,
-      [AuthenticationBindings.METADATA]: AuthMetadataProvider,
+      [AuthenticationBindings.AUTH_ACTION.key]: AuthenticateActionProvider,
+      [AuthenticationBindings.METADATA.key]: AuthMetadataProvider,
     };
   }
 }

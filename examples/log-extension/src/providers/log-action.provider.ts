@@ -23,7 +23,7 @@ export class LogActionProvider implements Provider<LogFn> {
   writeLog: LogWriterFn = logToConsole;
 
   @inject(EXAMPLE_LOG_BINDINGS.APP_LOG_LEVEL, {optional: true})
-  logLevel: number = LOG_LEVEL.WARN;
+  logLevel: LOG_LEVEL = LOG_LEVEL.WARN;
 
   constructor(
     @inject.getter(CoreBindings.CONTROLLER_CLASS)

@@ -54,24 +54,6 @@ describe('Binding', () => {
     });
   });
 
-  describe('key', () => {
-    it('build key with path', () => {
-      expect(Binding.buildKeyWithPath('foo', 'bar')).to.equal('foo#bar');
-    });
-    it('parse key without path', () => {
-      expect(Binding.parseKeyWithPath('foo')).to.eql({
-        key: 'foo',
-        path: undefined,
-      });
-    });
-    it('parse key with path', () => {
-      expect(Binding.parseKeyWithPath('foo#bar')).to.eql({
-        key: 'foo',
-        path: 'bar',
-      });
-    });
-  });
-
   describe('inScope', () => {
     it('defaults the transient binding scope', () => {
       expect(binding.scope).to.equal(BindingScope.TRANSIENT);

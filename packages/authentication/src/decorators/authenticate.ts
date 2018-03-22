@@ -8,7 +8,7 @@ import {
   Constructor,
   MethodDecoratorFactory,
 } from '@loopback/context';
-import {AuthenticationBindings} from '../keys';
+import {AUTHENTICATION_METADATA_KEY} from '../keys';
 
 /**
  * Authentication metadata stored via Reflection API
@@ -26,7 +26,7 @@ export interface AuthenticationMetadata {
  */
 export function authenticate(strategyName: string, options?: Object) {
   return MethodDecoratorFactory.createDecorator<AuthenticationMetadata>(
-    AuthenticationBindings.METADATA,
+    AUTHENTICATION_METADATA_KEY,
     {
       strategy: strategyName,
       options: options || {},
@@ -45,7 +45,7 @@ export function getAuthenticateMetadata(
   methodName: string,
 ): AuthenticationMetadata | undefined {
   return MetadataInspector.getMethodMetadata<AuthenticationMetadata>(
-    AuthenticationBindings.METADATA,
+    AUTHENTICATION_METADATA_KEY,
     controllerClass.prototype,
     methodName,
   );

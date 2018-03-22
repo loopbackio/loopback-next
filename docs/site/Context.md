@@ -118,14 +118,14 @@ as an example, we can create custom sequences that:
 Let's see this in action:
 
 ```ts
-import {DefaultSequence, ParsedRequest, ServerResponse} from '@loopback/rest';
+import {DefaultSequence, RestBindings} from '@loopback/rest';
 
 class MySequence extends DefaultSequence {
   async handle(request: ParsedRequest, response: ServerResponse) {
     // we provide these value for convenience (taken from the Context)
     // but they are still available in the sequence/request context
-    const req = await this.ctx.get<ParsedRequest>('rest.http.request');
-    const res = await this.ctx.get<ServerResponse>('rest.http.response');
+    const req = await this.ctx.get(RestBindings.Http.REQUEST);
+    const res = await this.ctx.get(RestBindings.Http.RESPONSE);
     this.send(res, `hello ${req.query.name}`);
   }
 }
@@ -141,7 +141,7 @@ Items in the Context are indexed via a key and bound to a `ContextValue`. A
 `ContextKey` is simply a string value and is used to look up whatever you store
 along with the key. For example:
 
-```js
+```ts
 // app level
 const app = new Application();
 app.bind('hello').to('world'); // ContextKey='hello', ContextValue='world'
@@ -158,6 +158,68 @@ _binding_. Sequence-level bindings work the same way.
 
 For a list of the available functions you can use for binding, visit the
 [Context API Docs](http://apidocs.loopback.io/@loopback%2fcontext).
+
+### Encoding value types in binding keys
+
+Consider the example from the previous section:
+
+```ts
+app.bind('hello').to('world');
+console.log(app.getSync<string>('hello'));
+```
+
+The code obtaining the bound value is explicitly specifying the type of this
+value. Such solution is far from ideal:
+
+1. Consumers have to know the exact name of the type that's associated with each binding key and also where to import it from.
+2. Consumers must explicitly provide this type to the compiler when calling ctx.get in order to benefit from compile-type checks.
+3. It's easy to accidentally provide a wrong type when retrieving the value and get a false sense of security.
+
+The third point is important because the bugs can be subtle and difficult to spot.
+
+Consider the following REST binding key:
+
+```ts
+export const HOST = 'rest.host';
+```
+
+The binding key does not provide any indication that `undefined` is a valid
+value for the HOST binding. Without that knowledge, one could write
+the following code and get it accepted by TypeScript compiler, only to learn
+at runtime that HOST may be also undefined and the code needs to find the
+server's host name using a different way.:
+
+```ts
+const resolve = promisify(dns.resolve);
+
+const host = await ctx.get<string>(RestBindings.HOST);
+const records = await resolve(host);
+// etc.
+```
+
+To address this problem, LoopBack provides a templated wrapper class allowing
+binding keys to encode the value type too. The `HOST` binding described above
+can be defined as follows:
+
+```ts
+export const HOST = new BindingKey<string | undefined>('rest.host');
+```
+
+Context methods like `.get()` and `.getSync()` understand this wrapper
+and use the value type from the binding key to describe the type of the value
+they are returning themselves. This allows binding consumers to omit
+the expected value type when calling `.get()` and `.getSync()`.
+
+When we rewrite the failing snippet resolving HOST names to use the new API,
+the TypeScript compiler immediatelly tells us about the problem:
+
+```ts
+const host = await ctx.get(RestBindings.HOST);
+const records = await resolve(host);
+// Compiler complains:
+// - cannot convert string | undefined to string
+//  - cannot convert undefined to string
+```
 
 ## Dependency injection
 
@@ -193,6 +255,13 @@ Notice we just use the default name as though it were available to the
 constructor. Context allows LoopBack to give you the necessary information at
 runtime even if you do not know the value when writing up the Controller. The
 above will print `Hello John` at run time.
+
+{% include note.html content="
+  `@inject` decorator is not able to leverage the value-type information
+  associated with a binding key yet, therefore the TypeScript compiler will not
+  check that the injection target (e.g. a constructor argument) was declared
+  with a type that the bound value can be assigned to.
+"}
 
 Please refer to [Dependency injection](Dependency-injection.md) for further
 details.

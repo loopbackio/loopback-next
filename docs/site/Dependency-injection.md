@@ -21,19 +21,25 @@ hard-coding some sort of a lookup table to find the right strategy instance,
 `authenticate` uses dependency injection to let the caller specify which
 strategy to use.
 
+The example below shows a simplified implementation of `authenticate` action,
+please refer to the source code of `@loopback/authenticate` for the full working
+version.
+
 ```ts
-class AuthenticationProvider {
-  constructor(@inject('authentication.strategy') strategy) {
+class AuthenticateActionProvider {
+  constructor(@inject(AuthenticationBindings.STRATEGY) strategy) {
     this.strategy = strategy;
   }
 
-  value() {
-    // this is the function invoked by "authenticate()" sequence action
-    return async request => {
-      const adapter = new StrategyAdapter(this.strategy);
-      const user = await adapter.authenticate(request);
-      return user;
-    };
+  value(): AuthenticateFn {
+    return request => this.action(request);
+  }
+
+  // this is the function invoked by "authenticate()" sequence action
+  action(request: ParsedRequest) {
+    const adapter = new StrategyAdapter(this.strategy);
+    const user = await adapter.authenticate(request);
+    return user;
   }
 }
 ```
@@ -69,8 +75,9 @@ import {BasicStrategy} from 'passport-http';
 import {RestApplication, RestServer} from '@loopback/rest';
 // basic scaffolding stuff happens in between...
 
-const server = await app.getServer(RestServer); // The REST server has its own context!
-server.bind('authentication.strategy').to(new BasicStrategy(loginUser));
+// The REST server has its own context!
+const server = await app.getServer(RestServer);
+server.bind(AuthenticationBindings.STRATEGY).to(new BasicStrategy(loginUser));
 
 function loginUser(username, password, cb) {
   // check that username + password are valid
@@ -82,11 +89,14 @@ automatically inject required dependencies, then you need to use `.toClass()`
 method:
 
 ```ts
-server.bind('authentication.provider').toClass(AuthenticationProvider);
+server
+  .bind(AuthenticationBindings.AUTH_ACTION)
+  .toClass(AuthenticateActionProvider);
 
-const provider = await server.get('authentication.provider');
-// provider is an AuthenticationProvider instance
-// provider.strategy was set to the value returned by server.get('authentication.strategy')
+const provider = await server.get(AuthenticationBindings.AUTH_ACTION);
+// provider is an AuthenticateActionProvider instance
+// provider.strategy was set to the value returned
+// by server.get('authentication.strategy')
 ```
 
 When a binding is created via `.toClass()`, [Context](Context.md) will create a
@@ -103,10 +113,11 @@ way how a value is created by the Context, possibly depending on other Context
 values. A provider is typically bound using `.toProvider()` API:
 
 ```js
-app.bind('authentication.provider').toProvider(AuthenticationProvider);
+app
+  .bind(AuthenticationBindings.AUTH_ACTION)
+  .toProvider(AuthenticateActionProvider);
 
-const authenticate = await app.get('authentication.provider');
-
+const authenticate = await app.get(AuthenticationBindings.AUTH_ACTION);
 // authenticate is the function returned by provider's value() method
 ```
 
@@ -167,7 +178,7 @@ dependencies as method arguments.
 
 ```ts
 class InfoController {
-  greet(@inject('authentication.currentUser') user: UserProfile) {
+  greet(@inject(AuthenticationBindings.CURRENT_USER) user: UserProfile) {
     return `Hello, ${userProfile.name}`;
   }
 }
@@ -183,7 +194,8 @@ To resolve an optional dependency, set `optional` flag to true:
 
 ```ts
 const ctx = new Context();
-await ctx.get('optional-key', {optional: true}); // Return `undefined` instead of throwing an error
+await ctx.get('optional-key', {optional: true});
+// returns `undefined` instead of throwing an error
 ```
 
 Here is another example showing optional dependency injection using properties

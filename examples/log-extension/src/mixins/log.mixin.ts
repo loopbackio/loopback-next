@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Constructor} from '@loopback/context';
-import {EXAMPLE_LOG_BINDINGS} from '../keys';
+import {EXAMPLE_LOG_BINDINGS, LOG_LEVEL} from '../keys';
 import {LogComponent} from '../component';
 
 /**
@@ -35,10 +35,10 @@ export function LogMixin<T extends Constructor<any>>(superClass: T) {
      * @param level The log level to set for @log decorator
      *
      * ```ts
-     * app.logLevel(LogLevel.INFO);
+     * app.logLevel(LOG_LEVEL.INFO);
      * ```
      */
-    logLevel(level: number) {
+    logLevel(level: LOG_LEVEL) {
       this.bind(EXAMPLE_LOG_BINDINGS.APP_LOG_LEVEL).to(level);
     }
   };

@@ -34,6 +34,7 @@ const debug = require('debug')('loopback:core:routing-table');
 // e.g. via wayfarer/trie or find-my-way
 // See https://github.com/strongloop/loopback-next/issues/98
 import * as pathToRegexp from 'path-to-regexp';
+import {CoreBindings} from '@loopback/core';
 
 /**
  * Parse the URL of the incoming request and set additional properties
@@ -306,8 +307,10 @@ export class ControllerRoute extends BaseRoute {
 
   updateBindings(requestContext: Context) {
     const ctor = this._controllerCtor;
-    requestContext.bind('controller.current.ctor').to(ctor);
-    requestContext.bind('controller.current.operation').to(this._methodName);
+    requestContext.bind(CoreBindings.CONTROLLER_CLASS).to(ctor);
+    requestContext
+      .bind(CoreBindings.CONTROLLER_METHOD_NAME)
+      .to(this._methodName);
   }
 
   async invokeHandler(
