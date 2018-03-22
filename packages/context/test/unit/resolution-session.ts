@@ -21,7 +21,9 @@ describe('ResolutionSession', () => {
 
   let session: ResolutionSession;
 
-  beforeEach(() => (session = new ResolutionSession()));
+  beforeEach(() => {
+    session = new ResolutionSession();
+  });
 
   it('tracks bindings', () => {
     const binding = new Binding('a');

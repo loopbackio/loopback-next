@@ -23,7 +23,9 @@ describe('LogActionProvider with in-memory logger', () => {
   let logger: LogFn;
   const req = <ParsedRequest>{url: '/test'};
 
-  beforeEach(() => (spy = createLogSpy()));
+  beforeEach(() => {
+    spy = createLogSpy();
+  });
   beforeEach(async () => (logger = await getLogger(logToMemory)));
 
   afterEach(() => restoreLogSpy(spy));
@@ -60,7 +62,9 @@ describe('LogActionProvider with default logger', () => {
   let logger: LogFn;
   const req = <ParsedRequest>{url: '/test'};
 
-  beforeEach(() => (stub = createConsoleStub()));
+  beforeEach(() => {
+    stub = createConsoleStub();
+  });
   beforeEach(async () => (logger = await getLogger()));
 
   afterEach(() => restoreLogSpy(stub));

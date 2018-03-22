@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@loopback/build": "^0.3.2",
-    "@types/node": "^8.9.5"
+    "@types/node": "^8.10.0"
   },
   "keywords": [
     "loopback",

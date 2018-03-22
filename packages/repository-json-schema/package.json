@@ -33,7 +33,7 @@
   "devDependencies": {
     "@loopback/build": "^0.3.2",
     "@loopback/testlab": "^0.4.0",
-    "@types/lodash": "^4.14.96"
+    "@types/lodash": "^4.14.106"
   },
   "files": [
     "README.md",
