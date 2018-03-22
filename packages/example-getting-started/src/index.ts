@@ -3,11 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {TodoApplication} from './application';
+import {TodoListApplication} from './application';
+import {ApplicationConfig} from '@loopback/core';
 import {RestServer} from '@loopback/rest';
 
-export async function main() {
-  const app = new TodoApplication();
+export async function main(options?: ApplicationConfig) {
+  const app = new TodoListApplication(options);
   try {
     await app.boot();
     await app.start();
