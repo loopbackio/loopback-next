@@ -157,15 +157,6 @@ children:
   url: Crafting-LoopBack-4.html
   output: 'web, pdf'
 
-- title: 'Language-related concepts'
-  url: Language-related-concepts.html
-  output: 'web, pdf'
-  children:
-
-  - title: 'Mixin'
-    url: Mixin.html
-    output: 'web, pdf'
-
 - title: 'FAQ'
   url: FAQ.html
   output: 'web, pdf'
