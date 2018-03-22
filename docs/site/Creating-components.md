@@ -257,8 +257,6 @@ export class AuthenticationProvider {
 When binding a component to an app, you may want to extend the app with the component's
 properties and methods by using mixins.
 
-For an overview of mixins, see [Mixin](Mixin.md).
-
 An example of how a mixin leverages a component is `RepositoryMixin`.
 Suppose an app has multiple components with repositories bound to each of them.
 You can use function `RepositoryMixin()` to mount those repositories to application level context.
