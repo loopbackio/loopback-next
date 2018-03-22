@@ -3,11 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {TodoApplication} from './application';
+import {TodoListApplication} from './application';
+import {ApplicationConfig} from '@loopback/core';
 import {RestServer} from '@loopback/rest';
 
-export async function main() {
-  const app = new TodoApplication();
+export async function main(options?: ApplicationConfig) {
+  const app = new TodoListApplication(options);
   try {
     await app.boot();
     await app.start();
@@ -15,6 +16,7 @@ export async function main() {
     console.error(`Unable to start application: ${err}`);
   }
   const server = await app.getServer(RestServer);
-  console.log(`Server is running on port ${await server.get('rest.port')}`);
+  const port = await server.get<number>('rest.port');
+  console.log(`Server is running at http://127.0.0.1:${port}`);
   return app;
 }
