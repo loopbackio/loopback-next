@@ -1,16 +1,16 @@
+import {repository} from '@loopback/repository';
+import {TodoRepository} from '../repositories';
+import {Todo} from '../models';
 import {
+  HttpErrors,
   post,
   param,
+  requestBody,
   get,
   put,
   patch,
   del,
-  requestBody,
-} from '@loopback/openapi-v3';
-import {HttpErrors} from '@loopback/rest';
-import {Todo} from '../models';
-import {repository} from '@loopback/repository';
-import {TodoRepository} from '../repositories';
+} from '@loopback/rest';
 
 export class TodoController {
   // TODO(bajtos) Fix documentation (and argument names?) of @repository()

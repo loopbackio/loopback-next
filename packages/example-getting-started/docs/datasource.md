@@ -26,8 +26,7 @@ of this tutorial, we'll be using the memory connector provided with the Juggler.
 }
 ```
 
-Create another folder called `datasources` in the `src` directory, and inside
-that folder, create a new file called `db.datasource.ts`. This file will create
+Inside the `src/datasources` directory create a new file called `db.datasource.ts`. This file will create
 a strongly-typed export of our datasource using the `DataSourceConstructor`,
 which we can consume in our application via injection.
 
@@ -35,7 +34,6 @@ which we can consume in our application via injection.
 
 ```ts
 import * as path from 'path';
-import * as fs from 'fs';
 import { DataSourceConstructor, juggler } from '@loopback/repository';
 
 const dsConfigPath = path.resolve('config', 'datasources.json');

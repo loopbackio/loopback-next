@@ -26,8 +26,7 @@ For our Todo model to represent our Todo instances, it will need:
 - a description that details what the todo is all about
 - a boolean flag for whether or not we've completed the task
 
-Create another folder in `src` called `models` and inside of that folder,
-create two files:
+Inside the `src/models` folder, create two files:
 - `index.ts`
 - `todo.model.ts`
 

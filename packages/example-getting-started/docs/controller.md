@@ -10,8 +10,8 @@ logic will live_!
 
 ### Create your controller
 
-So, let's create a controller to handle our Todo routes. Create the
-`src/controllers` directory and two files inside:
+So, let's create a controller to handle our Todo routes. Inside the
+`src/controllers` directory create the following two files:
 - `index.ts` (export helper)
 - `todo.controller.ts`
 
@@ -25,7 +25,7 @@ repository, which we'll use to perform our operations against the datasource.
 #### src/controllers/todo.controller.ts
 ```ts
 import {repository} from '@loopback/repository';
-import {TodoRepository} from '../repositories/index';
+import {TodoRepository} from '../repositories';
 
 export class TodoController {
   constructor(
@@ -51,11 +51,10 @@ Now that we have the repository wireup, let's create our first handler function.
 
 #### src/controllers/todo.controller.ts
 ```ts
-import {post, param} from '@loopback/openapi-v3';
-import {HttpErrors} from '@loopback/rest';
-import {Todo} from '../models';
 import {repository} from '@loopback/repository';
-import {TodoRepository} from '../repositories/index';
+import {TodoRepository} from '../repositories';
+import {Todo} from '../models';
+import {HttpErrors, post, param, requestBody} from '@loopback/rest';
 
 export class TodoController {
   constructor(
@@ -94,11 +93,19 @@ verbs:
 
 #### src/controllers/todo.controller.ts
 ```ts
-import {post, param, requestBody, get, put, patch, del} from '@loopback/openapi-v3';
-import {HttpErrors} from '@loopback/rest';
-import {Todo} from '../models';
 import {repository} from '@loopback/repository';
-import {TodoRepository} from '../repositories/index';
+import {TodoRepository} from '../repositories';
+import {Todo} from '../models';
+import {
+  HttpErrors,
+  post,
+  param,
+  requestBody,
+  get,
+  put,
+  patch,
+  del,
+} from '@loopback/rest';
 
 export class TodoController {
   constructor(
@@ -106,7 +113,7 @@ export class TodoController {
   ) {}
 
   @post('/todo')
-  async createTodo(@requestBody()todo: Todo) {
+  async createTodo(@requestBody() todo: Todo) {
     if (!todo.title) {
       return Promise.reject(new HttpErrors.BadRequest('title is required'));
     }
@@ -114,9 +121,7 @@ export class TodoController {
   }
 
   @get('/todo/{id}')
-  async findTodoById(
-    @param.path.number('id') id: number, 
-    @param.query.boolean('items') items?: boolean): Promise<Todo> {
+  async findTodoById(@param.path.number('id') id: number): Promise<Todo> {
     return await this.todoRepo.findById(id);
   }
 
@@ -128,14 +133,20 @@ export class TodoController {
   @put('/todo/{id}')
   async replaceTodo(
     @param.path.number('id') id: number,
-    @requestBody() todo: Todo): Promise<boolean> {
+    @requestBody() todo: Todo,
+  ): Promise<boolean> {
+    // REST adapter does not coerce parameter values coming from string sources
+    // like path & query, so we cast the value to a number ourselves.
+    id = +id;
     return await this.todoRepo.replaceById(id, todo);
   }
 
   @patch('/todo/{id}')
   async updateTodo(
     @param.path.number('id') id: number,
-    @requestBody() todo: Todo): Promise<boolean> {
+    @requestBody() todo: Todo,
+  ): Promise<boolean> {
+    id = +id;
     return await this.todoRepo.updateById(id, todo);
   }
 
@@ -150,7 +161,7 @@ Some additional things to note about this example:
 - Routes like `@get('/todo/{id}')` can be paired with the `@param.path`
 decorators to inject those values at request time into the handler function.
 - LoopBack's `@param` decorator also contains a namespace full of other
-"subdecorators" like `@param.path`, `@param.query`, and `@param.body` that
+"subdecorators" like `@param.path`, `@param.query`, and `@param.header` that
 allow specification of metadata for those parts of a REST request.
 - LoopBack's `@param.path` and `@param.query` also provide subdecorators for
 specifying the type of certain value primitives, such as

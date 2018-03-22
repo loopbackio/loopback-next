@@ -26,28 +26,33 @@ other artifacts and inject them into our application for use.
 #### src/application.ts
 ```ts
 import {ApplicationConfig} from '@loopback/core';
-import {RestApplication} from '@loopback/rest';
+import {RestApplication, RestServer} from '@loopback/rest';
+import {MySequence} from './sequence';
 import {db} from './datasources/db.datasource';
 
 /* tslint:disable:no-unused-variable */
-// Do not remove!
-// Class and Repository imports required to infer types in consuming code!
 // Binding and Booter imports are required to infer types for BootMixin!
 import {BootMixin, Booter, Binding} from '@loopback/boot';
+
+// juggler and DataSourceConstructor imports are required to infer types for RepositoryMixin!
 import {
   Class,
   Repository,
   RepositoryMixin,
+  juggler,
   DataSourceConstructor,
-  juggler
 } from '@loopback/repository';
 /* tslint:enable:no-unused-variable */
 
-export class TodoApplication extends BootMixin(
+export class TodoListApplication extends BootMixin(
   RepositoryMixin(RestApplication),
 ) {
   constructor(options?: ApplicationConfig) {
     super(options);
+
+    // Set up the custom sequence
+    this.sequence(MySequence);
+
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
     this.bootOptions = {
@@ -58,19 +63,30 @@ export class TodoApplication extends BootMixin(
         nested: true,
       },
     };
+
     this.setupDatasources();
   }
 
   setupDatasources() {
     // This will allow you to test your application without needing to
-    // use the "real" datasource!
+    // use a "real" datasource!
     const datasource =
       this.options && this.options.datasource
         ? new DataSourceConstructor(this.options.datasource)
         : db;
-    this.bind('datasource').to(datasource);
+    this.dataSource(datasource);
   }
-}}
+
+  async start() {
+    await super.start();
+
+    const server = await this.getServer(RestServer);
+    const port = await server.get<number>('rest.port');
+    console.log(`Server is running at http://127.0.0.1:${port}`);
+    console.log(`Try http://127.0.0.1:${port}/ping`);
+  }
+}
+
 ```
 
 ### Try it out
