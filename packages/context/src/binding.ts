@@ -96,9 +96,7 @@ export enum BindingType {
   PROVIDER = 'Provider',
 }
 
-// FIXME(bajtos) The binding class should be parameterized by the value
-// type stored
-export class Binding {
+export class Binding<T = BoundValue> {
   static PROPERTY_SEPARATOR = '#';
 
   /**
@@ -150,15 +148,15 @@ export class Binding {
   public scope: BindingScope = BindingScope.TRANSIENT;
   public type: BindingType;
 
-  private _cache: WeakMap<Context, BoundValue>;
+  private _cache: WeakMap<Context, T>;
   private _getValue: (
     ctx?: Context,
     session?: ResolutionSession,
-  ) => ValueOrPromise<BoundValue>;
+  ) => ValueOrPromise<T>;
 
   // For bindings bound via toClass, this property contains the constructor
   // function
-  public valueConstructor: Constructor<BoundValue>;
+  public valueConstructor: Constructor<T>;
 
   constructor(key: string, public isLocked: boolean = false) {
     Binding.validateKey(key);
@@ -172,10 +170,10 @@ export class Binding {
    */
   private _cacheValue(
     ctx: Context,
-    result: ValueOrPromise<BoundValue>,
-  ): ValueOrPromise<BoundValue> {
+    result: ValueOrPromise<T>,
+  ): ValueOrPromise<T> {
     // Initialize the cache as a weakmap keyed by context
-    if (!this._cache) this._cache = new WeakMap<Context, BoundValue>();
+    if (!this._cache) this._cache = new WeakMap<Context, T>();
     if (isPromiseLike(result)) {
       if (this.scope === BindingScope.SINGLETON) {
         // Cache the value at owning context level
@@ -226,10 +224,7 @@ export class Binding {
    * @param ctx Context for the resolution
    * @param session Optional session for binding and dependency resolution
    */
-  getValue(
-    ctx: Context,
-    session?: ResolutionSession,
-  ): ValueOrPromise<BoundValue> {
+  getValue(ctx: Context, session?: ResolutionSession): ValueOrPromise<T> {
     /* istanbul ignore if */
     if (debug.enabled) {
       debug('Get value for binding %s', this.key);
@@ -239,11 +234,11 @@ export class Binding {
       if (this.scope === BindingScope.SINGLETON) {
         const ownerCtx = ctx.getOwnerContext(this.key);
         if (ownerCtx && this._cache.has(ownerCtx)) {
-          return this._cache.get(ownerCtx);
+          return this._cache.get(ownerCtx)!;
         }
       } else if (this.scope === BindingScope.CONTEXT) {
         if (this._cache.has(ctx)) {
-          return this._cache.get(ctx);
+          return this._cache.get(ctx)!;
         }
       }
     }
@@ -293,7 +288,7 @@ export class Binding {
    * ctx.bind('appName').to('CodeHub');
    * ```
    */
-  to(value: BoundValue): this {
+  to(value: T): this {
     if (isPromiseLike(value)) {
       // Promises are a construct primarily intended for flow control:
       // In an algorithm with steps 1 and 2, we want to wait for the outcome
@@ -342,7 +337,7 @@ export class Binding {
    * );
    * ```
    */
-  toDynamicValue(factoryFn: () => ValueOrPromise<BoundValue>): this {
+  toDynamicValue(factoryFn: () => ValueOrPromise<T>): this {
     /* istanbul ignore if */
     if (debug.enabled) {
       debug('Bind %s to dynamic value:', this.key, factoryFn);
@@ -368,7 +363,7 @@ export class Binding {
    *
    * @param provider The value provider to use.
    */
-  public toProvider<T>(providerClass: Constructor<Provider<T>>): this {
+  public toProvider(providerClass: Constructor<Provider<T>>): this {
     /* istanbul ignore if */
     if (debug.enabled) {
       debug('Bind %s to provider %s', this.key, providerClass.name);
@@ -396,7 +391,7 @@ export class Binding {
    *   arguments must be annotated with `@inject` so that
    *   we can resolve them from the context.
    */
-  toClass<T>(ctor: Constructor<T>): this {
+  toClass(ctor: Constructor<T>): this {
     /* istanbul ignore if */
     if (debug.enabled) {
       debug('Bind %s to class %s', this.key, ctor.name);

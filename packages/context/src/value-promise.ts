@@ -46,19 +46,23 @@ export function isPromiseLike<T>(
 }
 
 /**
- * Get nested properties by path
- * @param value Value of an object
+ * Get nested properties of an object by path
+ * @param value Value of the source object
  * @param path Path to the property
  */
-export function getDeepProperty(value: BoundValue, path: string): BoundValue {
+export function getDeepProperty<OUT = BoundValue, IN = BoundValue>(
+  value: IN,
+  path: string,
+): OUT | undefined {
+  let result: BoundValue = value;
   const props = path.split('.').filter(Boolean);
   for (const p of props) {
-    if (value == null) {
-      return value;
+    if (result == null) {
+      return undefined;
     }
-    value = value[p];
+    result = result[p];
   }
-  return value;
+  return <OUT>result;
 }
 
 /**
