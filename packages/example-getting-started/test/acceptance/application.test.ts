@@ -1,12 +1,12 @@
 import {createClientForHandler, expect, supertest} from '@loopback/testlab';
 import {RestServer} from '@loopback/rest';
-import {TodoListApplication} from '../../src/application';
+import {TodoApplication} from '../../src/application';
 import {TodoRepository} from '../../src/repositories/';
 import {givenTodo} from '../helpers';
 import {Todo} from '../../src/models/';
 
 describe('Application', () => {
-  let app: TodoListApplication;
+  let app: TodoApplication;
   let server: RestServer;
   let client: supertest.SuperTest<supertest.Test>;
   let todoRepo: TodoRepository;
@@ -100,7 +100,7 @@ describe('Application', () => {
    ============================================================================
    */
   function givenAnApplication() {
-    app = new TodoListApplication({
+    app = new TodoApplication({
       rest: {
         port: 0,
       },
@@ -120,7 +120,7 @@ describe('Application', () => {
     // Example usage:
     //  todoRepo = await app.getRepository<TodoRepository>(TodoRepository.name)
     // See https://github.com/strongloop/loopback-next/issues/745
-    todoRepo = await app.get<TodoRepository>('repositories.TodoRepository');
+    todoRepo = (await app.get('repositories.TodoRepository')) as TodoRepository;
   }
 
   async function givenTodoInstance(todo?: Partial<Todo>) {

@@ -8,7 +8,7 @@ To generate your application using the toolkit, run the `lb4 app` command
 and fill out the on-screen prompts:
 ```
 $ lb4 app
-? Project name: todo-list
+? Project name: (todo-list)
 ? Project description: A todo list API made with LoopBack 4.
 ? Project root directory: (todo-list)
 ? Application class name: (TodoListApplication)

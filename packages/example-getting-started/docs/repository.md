@@ -8,7 +8,8 @@ layer.
 
 ### Create your repository
 
-In the `src/repositories` directory create two files:
+Create another folder in `src` called `repositories` and inside of that folder,
+create two files:
 - `index.ts` (our export helper)
 - `todo.repository.ts`
 

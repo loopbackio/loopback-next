@@ -26,7 +26,8 @@ of this tutorial, we'll be using the memory connector provided with the Juggler.
 }
 ```
 
-Inside the `src/datasources` directory create a new file called `db.datasource.ts`. This file will create
+Create another folder called `datasources` in the `src` directory, and inside
+that folder, create a new file called `db.datasource.ts`. This file will create
 a strongly-typed export of our datasource using the `DataSourceConstructor`,
 which we can consume in our application via injection.
 

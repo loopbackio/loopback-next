@@ -1,16 +1,16 @@
-import {repository} from '@loopback/repository';
-import {TodoRepository} from '../repositories';
-import {Todo} from '../models';
 import {
-  HttpErrors,
   post,
   param,
-  requestBody,
   get,
   put,
   patch,
   del,
-} from '@loopback/rest';
+  requestBody,
+} from '@loopback/openapi-v3';
+import {HttpErrors} from '@loopback/rest';
+import {Todo} from '../models';
+import {repository} from '@loopback/repository';
+import {TodoRepository} from '../repositories';
 
 export class TodoController {
   // TODO(bajtos) Fix documentation (and argument names?) of @repository()
@@ -35,7 +35,6 @@ export class TodoController {
     @param.path.number('id') id: number,
     @param.query.boolean('items') items?: boolean,
   ): Promise<Todo> {
-    id = +id;
     return await this.todoRepo.findById(id);
   }
 
