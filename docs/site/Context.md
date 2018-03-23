@@ -13,18 +13,20 @@ summary:
 - An abstraction of all state and dependencies in your application.
 - Context is what LoopBack uses to "manage" everything.
 - A global registry for anything/everything in your app (all configs, state,
-dependencies, classes, etc).
-- An [inversion of control](https://en.wikipedia.org/wiki/Inversion_of_control) container used to inject dependencies into your code. container used to inject dependencies into your code.
+  dependencies, classes, etc).
+- An [inversion of control](https://en.wikipedia.org/wiki/Inversion_of_control)
+  container used to inject dependencies into your code. container used to inject
+  dependencies into your code.
 
 ### Why is it important?
 
 - You can use the context as a way to give loopback more "info" so that other
-dependencies in your app may retrieve it (ie. a centralized place/global
-builtin/in-memory storage mechanism).
+  dependencies in your app may retrieve it (ie. a centralized place/global
+  builtin/in-memory storage mechanism).
 - LoopBack can help "manage" your resources automatically (through
-[Dependency Injection](Dependency-injection.md) and decorators).
+  [Dependency Injection](Dependency-injection.md) and decorators).
 - You have full access to updated/real-time application+request state at all
-times.
+  times.
 
 ## How to create a context?
 
@@ -40,16 +42,16 @@ const serverCtx = new Context(rootCtx, 'server-ctx'); // rootCtx as the parent
 const reqCtx = new Context(serverCtx); // No explicit name, a UUID will be generated
 ```
 
-LoopBack's context system allows an unlimited amount of Context instances,
-each of which may have a parent Context. However, an application typically
-has three "levels" of context: application-level, server-level and request-level.
+LoopBack's context system allows an unlimited amount of Context instances, each
+of which may have a parent Context. However, an application typically has three
+"levels" of context: application-level, server-level and request-level.
 
 ## Application-level context (global)
 
 - stores all the initial and modified app state throughout the entire life of
-the app (while the process is alive)
+  the app (while the process is alive)
 - Generally configured when the application is created (though other things may
-modify things in the context while alive/running)
+  modify things in the context while alive/running)
 
 Here is a simple example:
 
@@ -68,15 +70,17 @@ into the Application Context (`app` is a Context).
 ## Server-level context
 
 Server-level context:
+
 - Is a child of application-level context
 - Holds configuration specific to a particular server instance
 
 Your application will typically contain one or more server instances, each of
-which will have the application-level context as its parent. This means that
-any bindings that are defined on the application will also be available to the
+which will have the application-level context as its parent. This means that any
+bindings that are defined on the application will also be available to the
 server(s), unless you replace these bindings on the server instance(s) directly.
 
-For example, [`@loopback/rest`](https://github.com/strongloop/loopback-next/blob/master/packages/rest)
+For example,
+[`@loopback/rest`](https://github.com/strongloop/loopback-next/blob/master/packages/rest)
 has the `RestServer` class, which sets up a running HTTP/S server on a port, as
 well as defining routes on that server for a REST API. To set the port binding
 for the `RestServer`, you would bind the `RestBindings.PORT` key to a number.
@@ -98,10 +102,13 @@ async start() {
 
 ## Request-level context (request)
 
-Using [`@loopback/rest`](https://github.com/strongloop/loopback-next/blob/master/packages/rest) as an
-example, we can create custom sequences that:
+Using
+[`@loopback/rest`](https://github.com/strongloop/loopback-next/blob/master/packages/rest)
+as an example, we can create custom sequences that:
+
 - are dynamically created for each incoming server request
-- extend the application level context (to give you access to application level dependencies during the request/response lifecycle)
+- extend the application level context (to give you access to application level
+  dependencies during the request/response lifecycle)
 - are garbage collected once the response is sent (memory management)
 
 Let's see this in action:
@@ -118,21 +125,21 @@ class MySequence extends DefaultSequence {
 
 - `this.ctx` is available to your sequence
 - allows you to craft your response using resources from the app in addition to
-the resources available to the request in real-time (right when you need it)
+  the resources available to the request in real-time (right when you need it)
 - `getSync` is one way to get stuff out of the context, there are many others,
-see below
+  see below
 
 ## Storing and retrieving items from a Context
 
-Items in the Context are indexed via a key and bound to a `ContextValue`.
-A `ContextKey` is simply a string value and is used to look up whatever you
-store along with the key. For example:
+Items in the Context are indexed via a key and bound to a `ContextValue`. A
+`ContextKey` is simply a string value and is used to look up whatever you store
+along with the key. For example:
 
 ```js
 // app level
 const app = new Application();
 app.bind('hello').to('world'); // ContextKey='hello', ContextValue='world'
-console.log(app.getSync<string>('hello')); // => 'world'
+console.log(app.getSync < string > 'hello'); // => 'world'
 ```
 
 In this case, we bind the 'world' string ContextValue to the 'hello' ContextKey.
@@ -143,14 +150,15 @@ too -- ie. instantiate your classes, etc)
 The process of registering a ContextValue into the Context is known as
 _binding_. Sequence-level bindings work the same way (shown 2 examples before).
 
-For a list of the available functions you can use for binding, visit
-the [Context API Docs](http://apidocs.loopback.io/@loopback%2fcontext).
+For a list of the available functions you can use for binding, visit the
+[Context API Docs](http://apidocs.loopback.io/@loopback%2fcontext).
 
 ## Dependency injection
 
-- Many configs are adding to the Context during app instantiation/boot time by you/developer.
+- Many configs are adding to the Context during app instantiation/boot time by
+  you/developer.
 - When things are registered, the Context provides a way to use your
-dependencies during runtime.
+  dependencies during runtime.
 
 How you access these things is via low level helpers like `app.getSync` or the
 `sequence` class that is provided to you as shown in the example in the previous
@@ -177,8 +185,8 @@ class HelloController {
 
 Notice we just use the default name as though it were available to the
 constructor. Context allows LoopBack to give you the necessary information at
-runtime even if you do not know the value when writing up the Controller.
-The above will print `Hello John` at run time.
+runtime even if you do not know the value when writing up the Controller. The
+above will print `Hello John` at run time.
 
 Please refer to [Dependency injection](Dependency-injection.md) for further
 details.
@@ -200,13 +208,13 @@ class HelloController {
     // tell LoopBack you want to accept
     // the name parameter as a string from
     // the query string
-    @param.query.string('name')
-    name: string) {
+    @param.query.string('name') name: string,
+  ) {
     return `Hello ${name}`;
   }
 }
 ```
 
 These "sugar" decorators allow you to quickly build up your application without
-having to code up all the additional logic by simply giving LoopBack hints
-(in the form of metadata) to your intent.
+having to code up all the additional logic by simply giving LoopBack hints (in
+the form of metadata) to your intent.

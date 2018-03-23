@@ -4,34 +4,33 @@ An example repo showing how to write a complex log extension for LoopBack 4
 
 ## Overview
 
-This repository shows you how to use [@loopback/cli](https://github.com/strongloop/loopback-next/tree/master/packages/cli)
-to write a complex logging extension that requires a [Component](http://loopback.io/doc/en/lb4/Using-components.html),
-[Decorator](http://loopback.io/doc/en/lb4/Decorators.html), and a [Mixin](http://loopback.io/doc/en/lb4/Mixin.html).
+This repository shows you how to use
+[@loopback/cli](https://github.com/strongloop/loopback-next/tree/master/packages/cli)
+to write a complex logging extension that requires a
+[Component](http://loopback.io/doc/en/lb4/Using-components.html),
+[Decorator](http://loopback.io/doc/en/lb4/Decorators.html), and a
+[Mixin](http://loopback.io/doc/en/lb4/Mixin.html).
 
 To use this extension you can add the `LogMixin` to your Application which will
-provide you a function to set the Application wide log level as well as automatically
-load the `LogComponent`. Only Controller methods configured at or above the
-logLevel will be logged.
+provide you a function to set the Application wide log level as well as
+automatically load the `LogComponent`. Only Controller methods configured at or
+above the logLevel will be logged.
 
 _You may alternatively load `LogComponent` yourself and set the log level using
 the appropriate binding keys manually if you don't wish to use the `LogMixin`._
 
-Possible levels are: DEBUG < INFO < WARN < ERROR < OFF
+Possible levels are: DEBUG &lt; INFO &lt; WARN &lt; ERROR &lt; OFF
 
-*Possible levels are represented as numbers but users can use `LOG_LEVEL.${level}`
-to specify the value instead of using numbers.*
+_Possible levels are represented as numbers but users can use
+`LOG_LEVEL.${level}` to specify the value instead of using numbers._
 
-A decorator enables you to set the log level for Controller methods, at or
-above which it should be logged.
+A decorator enables you to set the log level for Controller methods, at or above
+which it should be logged.
 
 ### Example Usage
 
 ```ts
-import {
-  LogMixin,
-  LOG_LEVEL,
-  log
-} from 'loopback4-example-log-extension';
+import {LogMixin, LOG_LEVEL, log} from 'loopback4-example-log-extension';
 // Other imports ...
 
 class LogApp extends LogMixin(BootMixin(RestApplication)) {
@@ -40,7 +39,7 @@ class LogApp extends LogMixin(BootMixin(RestApplication)) {
 
     this.projectRoot = __dirname;
     this.logLevel(LOG_LEVEL.ERROR);
-  };
+  }
 }
 
 class MyController {
@@ -53,7 +52,7 @@ class MyController {
   @log(LOG_LEVEL.ERROR)
   @get('/name')
   helloName() {
-    return 'Hello Name'
+    return 'Hello Name';
   }
 }
 ```
@@ -63,7 +62,7 @@ class MyController {
 You can obtain a local clone of this project (without the rest of our monorepo)
 using the following command:
 
-```
+```sh
 lb4 example getting-started
 ```
 
@@ -71,18 +70,19 @@ lb4 example getting-started
 
 Install `@loopback/cli` by running `npm i -g @loopback/cli`.
 
-Initialize your new extension project as follows:
-`lb4 extension`
+Initialize your new extension project as follows: `lb4 extension`
 
 - Project name: `loopback4-example-log-extension`
 - Project description: `An example extension project for LoopBack 4`
 - Project root directory: `(loopback4-example-log-extension)`
 - Component class name: `LogComponent`
-- Select project build settings: `Enable tslint, Enable prettier, Enable mocha, Enable loopbackBuild`
+- Select project build settings:
+  `Enable tslint, Enable prettier, Enable mocha, Enable loopbackBuild`
 
 Now you can write the extension as follows:
 
 ### `/src/keys.ts`
+
 Define `Binding` keys here for the component as well as any constants for the
 user (for this extension that'll be the logLevel `enum`).
 
@@ -110,8 +110,8 @@ export enum LOG_LEVEL {
 }
 ```
 
-
 ### `src/types.ts`
+
 Before we continue, we will need to install a new dependecy as follows:
 
 ```shell
@@ -161,6 +161,7 @@ export type TimerFn = (start?: HighResTime) => HighResTime;
 ```
 
 ### `src/decorators/log.decorator.ts`
+
 Extension developers can create decorators to provide "hints" (or metadata) to
 user artifacts such as controllers and their methods. These "hints" allow the
 extension to add extra processing accordingly.
@@ -216,12 +217,14 @@ export function getLogMetadata(
 ```
 
 ### `src/mixins/log-level.mixin.ts`
+
 Extension users must set an app wide log level at or above which the decorated
 controller methods will be logged. A user can do so by binding the level to
 `example.log.level` but this can be a hassle.
 
 A mixin makes it easier for the user to set the application wide log level by
-providing it via `ApplicationOptions` or using a helper method `app.logLevel(level: number)`.
+providing it via `ApplicationOptions` or using a helper method
+`app.logLevel(level: number)`.
 
 ```ts
 import {Constructor} from '@loopback/context';
@@ -248,10 +251,12 @@ export function LogMixin<T extends Constructor<any>>(superClass: T) {
 ```
 
 ### Providers
+
 A Providers is a class that returns a `value()` function that can be invoked by
 LoopBack 4.
 
 ### `src/providers/timer.provider.ts`
+
 A timer than can be used to time the function that is being logged.
 
 ```ts
@@ -270,10 +275,11 @@ export class TimerProvider implements Provider<TimerFn> {
 ```
 
 ### `src/providers/log-action.provider.ts`
+
 This will be the most important provider for the extension as it is responsible
 for actually logging the request. The extension will retrieve the metadata
-stored by the `@log()` decorator using the controller and method name.
-Since bindings are resolved at runtime and these values change with each request,
+stored by the `@log()` decorator using the controller and method name. Since
+bindings are resolved at runtime and these values change with each request,
 `inject.getter()` must be used to get a function capable of resolving the value
 when called. The action provider will look as follows:
 
@@ -385,6 +391,7 @@ function logToConsole(msg: string, level: number) {
 ```
 
 ### `src/index.ts`
+
 Export all the files to ensure a user can import the necessary components.
 
 ```ts
@@ -398,8 +405,10 @@ export * from './keys';
 ```
 
 ### `src/component.ts`
+
 Package the providers in the component to their appropriate `Binding` keys so
-they are automatically bound when a user adds the component to their application.
+they are automatically bound when a user adds the component to their
+application.
 
 ```ts
 import {Component, ProviderMap} from '@loopback/core';
@@ -418,13 +427,13 @@ export class LogComponent implements Component {
 ## Testing
 
 Tests should be written to ensure the behaviour implemented is correct and
-future modifications don't break this expected behavior *(unless it's
-intentional in which case the tests should be updated as well)*.
+future modifications don't break this expected behavior _(unless it's
+intentional in which case the tests should be updated as well)_.
 
 Take a look at the test folder to see the variety of tests written for this
-extension. There are unit tests to test functionality of individual functions
-as well as an extension acceptance test which tests the entire extension as a
-whole (everything working together).
+extension. There are unit tests to test functionality of individual functions as
+well as an extension acceptance test which tests the entire extension as a whole
+(everything working together).
 
 ## Contributions
 

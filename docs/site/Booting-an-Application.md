@@ -13,17 +13,18 @@ summary:
 A typical LoopBack application is made up of many artifacts in different files,
 organized in different folders. **Booting an Application** means:
 
-* Discovering artifacts automatically based on a convention (a specific folder
+- Discovering artifacts automatically based on a convention (a specific folder
   containing files with a given suffix)
-* Processing those artifacts (this usually means automatically binding them to the Application's Context)
+- Processing those artifacts (this usually means automatically binding them to
+  the Application's Context)
 
 `@loopback/boot` provides a Bootstrapper that uses Booters to automatically
 discover and bind artifacts, all packaged in an easy-to-use Mixin.
 
 ### What is an artifact?
 
-An artifact is any LoopBack construct usually defined in code as a Class. LoopBack
-constructs include Controllers, Repositories, Models, etc.
+An artifact is any LoopBack construct usually defined in code as a Class.
+LoopBack constructs include Controllers, Repositories, Models, etc.
 
 ## Usage
 
@@ -35,34 +36,37 @@ followed by the CLI.
 
 ### Adding to existing project
 
-See [Using the BootMixin](#using-the-bootmixin) to add Boot to your Project manually.
+See [Using the BootMixin](#using-the-bootmixin) to add Boot to your Project
+manually.
 
 ---
 
-The rest of this page describes the inner workings of `@loopback/boot` for advanced use
-cases, manual usage or using `@loopback/boot` as a standalone package (with custom
-booters).
+The rest of this page describes the inner workings of `@loopback/boot` for
+advanced use cases, manual usage or using `@loopback/boot` as a standalone
+package (with custom booters).
 
 ## BootMixin
 
-Boot functionality can be added to a LoopBack 4 Application by mixing it with the
-`BootMixin`. The Mixin adds the `BootComponent` to your Application as well as
-convenience methods such as `app.boot()` and `app.booters()`. The Mixin also allows
-Components to set the property `booters` as an Array of `Booters`. They will be bound
-to the Application and called by the `Bootstrapper`.
+Boot functionality can be added to a LoopBack 4 Application by mixing it with
+the `BootMixin`. The Mixin adds the `BootComponent` to your Application as well
+as convenience methods such as `app.boot()` and `app.booters()`. The Mixin also
+allows Components to set the property `booters` as an Array of `Booters`. They
+will be bound to the Application and called by the `Bootstrapper`.
 
-Since this is a convention-based Bootstrapper, it is important to set a `projectRoot`,
-as all other artifact paths will be resolved relative to this path.
+Since this is a convention-based Bootstrapper, it is important to set a
+`projectRoot`, as all other artifact paths will be resolved relative to this
+path.
 
-_Tip_: `application.ts` will likely be at the root of your project, so its path can be
-used to set the `projectRoot` by using the `__dirname` variable. _(See example below)_
+_Tip_: `application.ts` will likely be at the root of your project, so its path
+can be used to set the `projectRoot` by using the `__dirname` variable. _(See
+example below)_
 
 ### Using the BootMixin
 
-`Booter` and `Binding` types must be imported alongside `BootMixin` to allow TypeScript
-to infer types and avoid errors. _If using `tslint` with the `no-unused-variable` rule,
-you can disable it for the import line by adding `// tslint:disable-next-line:no-unused-variable`
-above the import statement_.
+`Booter` and `Binding` types must be imported alongside `BootMixin` to allow
+TypeScript to infer types and avoid errors. _If using `tslint` with the
+`no-unused-variable` rule, you can disable it for the import line by adding
+`// tslint:disable-next-line:no-unused-variable` above the import statement_.
 
 ```ts
 import {BootMixin, Booter, Binding} from "@loopback/boot";
@@ -84,14 +88,15 @@ class MyApplication extends BootMixin(Application) {
 }
 ```
 
-Now just call `app.boot()` from `index.ts` before starting your Application using `app.start()`.
+Now just call `app.boot()` from `index.ts` before starting your Application
+using `app.start()`.
 
 #### app.boot()
 
 A convenience method to retrieve the `Bootstrapper` instance bound to the
 Application and calls its `boot` function. This should be called before an
-Application's `start()` method is called. _This is an `async` function and should
-be called with `await`._
+Application's `start()` method is called. _This is an `async` function and
+should be called with `await`._
 
 ```ts
 class MyApp extends BootMixin(Application) {}
@@ -106,9 +111,9 @@ async main() {
 
 #### app.booters()
 
-A convenience method to manually bind `Booters`. You can pass any number of `Booter`
-classes to this method and they will all be bound to the Application using the
-prefix (`booters.`) and tag (`booter`) used by the `Bootstrapper`.
+A convenience method to manually bind `Booters`. You can pass any number of
+`Booter` classes to this method and they will all be bound to the Application
+using the prefix (`booters.`) and tag (`booter`) used by the `Bootstrapper`.
 
 ```ts
 // Binds MyCustomBooter to `booters.MyCustomBooter`
@@ -119,13 +124,14 @@ app.booters(MyCustomBooter, AnotherCustomBooter);
 
 ## BootComponent
 
-This component is added to an Application by `BootMixin` if used. This Component:
+This component is added to an Application by `BootMixin` if used. This
+Component:
 
-* Provides a list of default `booters` as a property of the component
-* Binds the conventional Bootstrapper to the Application
+- Provides a list of default `booters` as a property of the component
+- Binds the conventional Bootstrapper to the Application
 
-_If using this as a standalone component without the `BootMixin`, you will need to
-bind the `booters` of a component manually._
+_If using this as a standalone component without the `BootMixin`, you will need
+to bind the `booters` of a component manually._
 
 ```ts
 app.component(BootComponent);
@@ -133,22 +139,24 @@ app.component(BootComponent);
 
 ## Bootstrapper
 
-A Class that acts as the "manager" for Booters. The Bootstrapper is designed to be
-bound to an Application as a `SINGLETON`. The Bootstrapper class provides a `boot()`
-method. This method is responsible for getting all bound `Booters` and running
-their `phases`. A `phase` is a method on a `Booter` class.
+A Class that acts as the "manager" for Booters. The Bootstrapper is designed to
+be bound to an Application as a `SINGLETON`. The Bootstrapper class provides a
+`boot()` method. This method is responsible for getting all bound `Booters` and
+running their `phases`. A `phase` is a method on a `Booter` class.
 
-Each `boot()` method call creates a new `Context` that sets the `app` context
-as its parent. This is done so each `Context` for `boot` gets a new instance of
-`booters` but the same context can be passed into `boot` so selective `phases` can be
-run in different calls of `boot`.
+Each `boot()` method call creates a new `Context` that sets the `app` context as
+its parent. This is done so each `Context` for `boot` gets a new instance of
+`booters` but the same context can be passed into `boot` so selective `phases`
+can be run in different calls of `boot`.
 
-The Bootstrapper can be configured to run specific booters or boot phases
-by passing in `BootExecOptions`. **This is experimental and subject to change. Hence,
-this functionality is not exposed when calling `boot()` via `BootMixin`**.
+The Bootstrapper can be configured to run specific booters or boot phases by
+passing in `BootExecOptions`. **This is experimental and subject to change.
+Hence, this functionality is not exposed when calling `boot()` via
+`BootMixin`**.
 
-To use `BootExecOptions`, you must directly call `bootstrapper.boot()` instead of `app.boot()`.
-You can pass in the `BootExecOptions` object with the following properties:
+To use `BootExecOptions`, you must directly call `bootstrapper.boot()` instead
+of `app.boot()`. You can pass in the `BootExecOptions` object with the following
+properties:
 
 | Property         | Type                    | Description                                      |
 | ---------------- | ----------------------- | ------------------------------------------------ |
@@ -159,38 +167,39 @@ You can pass in the `BootExecOptions` object with the following properties:
 ### Example
 
 ```ts
-import { BootMixin, Booter, Binding, Bootstrapper } from "@loopback/boot";
+import {BootMixin, Booter, Binding, Bootstrapper} from '@loopback/boot';
 
 class MyApp extends BootMixin(Application) {}
 const app = new MyApp();
 app.projectRoot = __dirname;
 
 const bootstrapper: Bootstrapper = await this.get(
-  BootBindings.BOOTSTRAPPER_KEY
+  BootBindings.BOOTSTRAPPER_KEY,
 );
 bootstrapper.boot({
   booters: [MyCustomBooter],
   filter: {
-    booters: ["MyCustomBooter"],
-    phases: ["configure", "discover"] // Skip the `load` phase.
-  }
+    booters: ['MyCustomBooter'],
+    phases: ['configure', 'discover'], // Skip the `load` phase.
+  },
 });
 ```
 
 ## Booters
 
-A Booter is a class that is responsible for booting an artifact. A Booter does its
-work in `phases` which are called by the Bootstrapper. The following Booters are
-a part of the `@loopback/boot` package and loaded automatically via `BootMixin`.
+A Booter is a class that is responsible for booting an artifact. A Booter does
+its work in `phases` which are called by the Bootstrapper. The following Booters
+are a part of the `@loopback/boot` package and loaded automatically via
+`BootMixin`.
 
 ### Controller Booter
 
-This Booter's purpose is to discover [Controller](Controllers.md) type Artifacts and to bind
-them to the Application's Context.
+This Booter's purpose is to discover [Controller](Controllers.md) type Artifacts
+and to bind them to the Application's Context.
 
-You can configure the conventions used in your
-project for a Controller by passing a `controllers` object on `BootOptions` property
-of your Application. The `controllers` object supports the following options:
+You can configure the conventions used in your project for a Controller by
+passing a `controllers` object on `BootOptions` property of your Application.
+The `controllers` object supports the following options:
 
 | Options      | Type                 | Default              | Description                                                                                                   |
 | ------------ | -------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------- |
@@ -201,13 +210,14 @@ of your Application. The `controllers` object supports the following options:
 
 ### Repository Booter
 
-This Booter's purpose is to discover [Repository](Repositories.md) type Artifacts and to bind
-them to the Application's Context. The use of this Booter requires `RepositoryMixin`
-from `@loopback/repository` to be mixed into your Application class.
+This Booter's purpose is to discover [Repository](Repositories.md) type
+Artifacts and to bind them to the Application's Context. The use of this Booter
+requires `RepositoryMixin` from `@loopback/repository` to be mixed into your
+Application class.
 
-You can configure the conventions used in your
-project for a Repository by passing a `repositories` object on `BootOptions` property
-of your Application. The `repositories` object supports the following options:
+You can configure the conventions used in your project for a Repository by
+passing a `repositories` object on `BootOptions` property of your Application.
+The `repositories` object supports the following options:
 
 | Options      | Type                 | Default              | Description                                                                                                   |
 | ------------ | -------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------- |
@@ -218,10 +228,11 @@ of your Application. The `repositories` object supports the following options:
 
 ### Custom Booters
 
-A custom Booter can be written as a Class that implements the `Booter` interface. The Class
-must implement methods that corresponds to a `phase` name. The `phases` are called
-by the Bootstrapper in a pre-determined order (unless overridden by `BootExecOptions`).
-The next phase is only called once the previous phase has been completed for all Booters.
+A custom Booter can be written as a Class that implements the `Booter`
+interface. The Class must implement methods that corresponds to a `phase` name.
+The `phases` are called by the Bootstrapper in a pre-determined order (unless
+overridden by `BootExecOptions`). The next phase is only called once the
+previous phase has been completed for all Booters.
 
 #### Phases
 

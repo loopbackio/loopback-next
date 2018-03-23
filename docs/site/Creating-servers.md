@@ -19,6 +19,7 @@ ports (this is why they're called "servers", after all). This leads into a key
 concept to leverage for creating your custom servers.
 
 ### Controllers and routing
+
 LoopBack 4 developers are strongly encouraged to use controllers for their
 modules, and this naturally leads to the concept of routing.
 
@@ -33,12 +34,13 @@ The toy protocol will require a JSON payload with three properties: `controller`
 `method`, and `input`.
 
 An example request would look something like this:
+
 ```json
 {
   "controller": "GreetController",
   "method": "basicHello",
   "input": {
-    "name": "world",
+    "name": "world"
   }
 }
 ```
@@ -47,13 +49,16 @@ You can find the code for our sample RPC server implementation
 [over here](https://github.com/strongloop/loopback4-example-rpc-server).
 
 ### Trying it out
+
 First, install your dependencies and then start the application:
+
 ```
 npm i && npm start
 ```
 
 Now, try it out: start the server and run a few REST requests. Feel free to use
 whatever REST client you'd prefer (this example will use `curl`).
+
 ```sh
 # Basic Greeting Calls
 $ curl -X POST -d '{ "controller": "GreetController", "method": "basicHello" }' -H "Content-Type: application/json" http://localhost:3000/
@@ -72,9 +77,11 @@ implementation of both its router and server, the general concept remains
 the same, and you can use these tools to make whatever server you'd like.
 
 ### Other considerations
+
 Some additional concepts to add to your server could include:
+
 - Pre-processing of requests (changing content types, checking the request body,
-etc)
+  etc)
 - Post-processing of responses (removing sensitive/useless information)
 - Caching
 - Logging

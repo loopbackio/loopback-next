@@ -41,7 +41,7 @@ console.log(keys); // => ['foo', 'baz']
 ```ts
 // create a container for bindings
 const ctx = new Context({
-  delimiter: '.' // default
+  delimiter: '.', // default
 });
 
 // creating three simple bindings
@@ -52,7 +52,7 @@ ctx.bind('ur.quux').to('quuz');
 // find all bindings
 const bindings = ctx.find('my.*');
 
-const keys = bindings.map(binding => binding.key)
+const keys = bindings.map(binding => binding.key);
 console.log(keys); // => ['my.foo', 'my.baz']
 ```
 
@@ -69,13 +69,22 @@ console.log(keys); // => ['my.foo', 'my.baz']
 const ctx = new Context();
 
 // bind some animals and tag them as dogs
-ctx.bind('spot').to(new Dog()).tag('dog');
-ctx.bind('fido').to(new Dog()).tag('dog');
-ctx.bind('mew').to(new Dog()).tag('cat');
+ctx
+  .bind('spot')
+  .to(new Dog())
+  .tag('dog');
+ctx
+  .bind('fido')
+  .to(new Dog())
+  .tag('dog');
+ctx
+  .bind('mew')
+  .to(new Dog())
+  .tag('cat');
 
 // find by dog tag
 const bindings = ctx.findByTag('dog');
 
-const dogs = bindings.map(binding => binding.key)
+const dogs = bindings.map(binding => binding.key);
 console.log(dogs); // => ['spot', 'fido']
 ```

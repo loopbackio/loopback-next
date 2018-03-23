@@ -65,10 +65,9 @@ app.bind('definitions.controllers').to({
   foo: {
     path: './foo.controller.ts',
     name: 'FooController',
-    baseUrl: '/foo'
-  }
+    baseUrl: '/foo',
+  },
 });
-
 
 app
   .bind(':type.:name')
@@ -100,7 +99,6 @@ app.bind('currentMethod').toDynamicValue(() => {
   return remoteMethod;
 });
 
-
 server.on('request', async (req, res) => {
   let ctx = new Context();
   ctx.bind('url').to(req.url);
@@ -114,7 +112,8 @@ server.on('request', async (req, res) => {
   // allow apps to create / customize bindings
   controller.bind();
 
-  ctx.bind('result')
+  ctx
+    .bind('result')
     .toPromise(async (reject, resolve, ctx) => {
       let method = await ctx.get('currentMethod');
       let methodArgs = await ctx.get('currentArgs');

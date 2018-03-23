@@ -25,7 +25,7 @@ binding.lock();
 // and binding another value with the same key
 try {
   ctx.bind('foo');
-} catch(e) {
+} catch (e) {
   // e => Rebind error
 }
 ```

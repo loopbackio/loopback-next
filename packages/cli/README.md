@@ -12,9 +12,9 @@ Run the following command to install the CLI.
 
 1. To scaffold a LoopBack 4 application
 
-    `lb4`
+   `lb4`
 
-```
+```sh
 Usage:
   lb4 [options] [<name>]
 
@@ -36,9 +36,9 @@ Arguments:
 
 2. To scaffold a LoopBack 4 extension
 
-    `lb4 extension`
+   `lb4 extension`
 
-```
+```sh
 Usage:
   lb4 extension [options] [<name>]
 
@@ -53,7 +53,6 @@ Options:
         --mocha          # Enable mocha
         --loopbackBuild  # Use @loopback/build
         --componentName  # Component name
-
 ```
 
 3. To scaffold a controller into your application
@@ -63,7 +62,7 @@ Options:
   lb4 controller
 ```
 
-```
+```sh
 Usage:
   lb4 controller [options] [<name>]
 
@@ -79,9 +78,9 @@ Arguments:
 
 4. To download one of LoopBack example projects
 
-    `lb4 example`
+   `lb4 example`
 
-```
+```sh
 Usage:
   lb4 example [options] [<example-name>]
 
@@ -102,7 +101,8 @@ run `npm test` from the root folder.
 
 ## Contributors
 
-See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+See
+[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
 ## License
 

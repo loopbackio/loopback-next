@@ -13,7 +13,6 @@ summary:
 Downloads a LoopBack example project from our
 [GitHub monorepo](https://github.com/strongloop/loopback-next).
 
-
 ```text
 lb4 example [options] [<example-name>]
 ```
@@ -35,10 +34,10 @@ available examples.
 The tool will prompt you for:
 
 - Name of the example to download. If the name had been supplied from the
-command-line, the prompt is skipped.
+  command-line, the prompt is skipped.
 
 ### Output
 
 The example project is downloaded to a new directory. For example, when
-downloading `getting-started` example, the tool stores the files
-under the newly created `loopback4-example-getting-started` directory.
+downloading `getting-started` example, the tool stores the files under the newly
+created `loopback4-example-getting-started` directory.

@@ -21,6 +21,7 @@ instances handle requests and responses. The `DefaultSequence` looks like this:
   FIXME(kev): Should we be copying this logic into the docs directly?
   What if this code changes?
 -->
+
 ```js
 class DefaultSequence {
   async handle(request: ParsedRequest, response: ServerResponse) {
@@ -29,7 +30,7 @@ class DefaultSequence {
       const params = await this.parseParams(request, route);
       const result = await this.invoke(route, params);
       await this.send(response, result);
-    } catch(err) {
+    } catch (err) {
       await this.reject(response, err);
     }
   }
@@ -38,21 +39,31 @@ class DefaultSequence {
 
 ## Elements
 
-In the example above, `route`, `params`, and `result` are all Elements. When building sequences, you use LoopBack Elements to respond to a request:
+In the example above, `route`, `params`, and `result` are all Elements. When
+building sequences, you use LoopBack Elements to respond to a request:
 
 - [`Route`](http://apidocs.loopback.io/@loopback%2frest/#Route)
-- [`Request`](http://apidocs.strongloop.com/loopback-next/)  - (TBD) missing API docs link
-- [`Response`](http://apidocs.strongloop.com/loopback-next/) - (TBD) missing API docs link
+- [`Request`](http://apidocs.strongloop.com/loopback-next/) - (TBD) missing API
+  docs link
+- [`Response`](http://apidocs.strongloop.com/loopback-next/) - (TBD) missing API
+  docs link
 - [`OperationRetVal`](http://apidocs.loopback.io/@loopback%2frest/#OperationRetval)
-- [`Params`](http://apidocs.strongloop.com/loopback-next/) - (TBD) missing API docs link
+- [`Params`](http://apidocs.strongloop.com/loopback-next/) - (TBD) missing API
+  docs link
 - [`OpenAPISpec`](http://apidocs.loopback.io/@loopback%2fopenapi-spec/)
-- [`OperationError`](http://apidocs.strongloop.com/loopback-next/OperationError) - (TBD) missing API docs link
-- [`OperationMeta`](http://apidocs.strongloop.com/loopback-next/OperationMeta) - (TBD) missing API docs link
-- [`OperationRetMeta`](http://apidocs.strongloop.com/loopback-next/OperationRetMeta) - (TBD) missing API docs link
+- [`OperationError`](http://apidocs.strongloop.com/loopback-next/OperationError) -
+  (TBD) missing API docs link
+- [`OperationMeta`](http://apidocs.strongloop.com/loopback-next/OperationMeta) -
+  (TBD) missing API docs link
+- [`OperationRetMeta`](http://apidocs.strongloop.com/loopback-next/OperationRetMeta) -
+  (TBD) missing API docs link
 
 ## Actions
 
-Actions are JavaScript functions that only accept or return `Elements`. Since the input of one action (an Element) is the output of another action (Element) you can easily compose them. Below is an example that uses several built-in Actions:
+Actions are JavaScript functions that only accept or return `Elements`. Since
+the input of one action (an Element) is the output of another action (Element)
+you can easily compose them. Below is an example that uses several built-in
+Actions:
 
 ```js
 class MySequence extends DefaultSequence {
@@ -71,7 +82,8 @@ class MySequence extends DefaultSequence {
 
 ## Custom Sequences
 
-Most use cases can be accomplished with `DefaultSequence` or by slightly customizing it:
+Most use cases can be accomplished with `DefaultSequence` or by slightly
+customizing it:
 
 ```js
 class MySequence extends DefaultSequence {
@@ -86,8 +98,8 @@ class MySequence extends DefaultSequence {
 }
 ```
 
-In order for LoopBack to use your custom sequence, you must register it
-before starting your `Application`:
+In order for LoopBack to use your custom sequence, you must register it before
+starting your `Application`:
 
 ```js
 import {RestApplication, RestServer} from '@loopback/rest';
@@ -102,28 +114,31 @@ app.start();
 
 ### Custom routing
 
-A custom `Sequence` enables you to control exactly how requests are routed to endpoints such as `Controller` methods, plain JavaScript functions, Express applications, and so on.
+A custom `Sequence` enables you to control exactly how requests are routed to
+endpoints such as `Controller` methods, plain JavaScript functions, Express
+applications, and so on.
 
-This example demonstrates determining which endpoint (controller method) to invoke based on an API specification.
+This example demonstrates determining which endpoint (controller method) to
+invoke based on an API specification.
 
 ```ts
-import {findRoute} from '@loopback/rest'
+import {findRoute} from '@loopback/rest';
 
 const API_SPEC = {
   basePath: '/',
   paths: {
     '/greet': {
       get: {
-        'x-operation-name': "greet",
+        'x-operation-name': 'greet',
         responses: {
           200: {
-            description: "greeting text",
-            schema: { type: "string" }
-          }
-        }
-      }
-    }
-  }
+            description: 'greeting text',
+            schema: {type: 'string'},
+          },
+        },
+      },
+    },
+  },
 };
 
 class MySequence extends DefaultSequence {
@@ -151,25 +166,26 @@ To do this, we'll register a custom send action by binding a
 [Provider](http://apidocs.strongloop.com/@loopback%2fcontext/#Provider) to the
 `RestBindings.SequenceActions.SEND` key.
 
-First, let's create our `CustomSendProvider` class, which will provide the
-send function upon injection.
+First, let's create our `CustomSendProvider` class, which will provide the send
+function upon injection.
 
 {% include code-caption.html content="/src/providers/custom-send-provider.ts" %}
 **custom-send-provider.ts**
+
 ```ts
-import {Send, ServerResponse} from "@loopback/rest";
-import {Provider, BoundValue, inject} from "@loopback/context";
-import {writeResultToResponse, RestBindings} from "@loopback/rest";
+import {Send, ServerResponse} from '@loopback/rest';
+import {Provider, BoundValue, inject} from '@loopback/context';
+import {writeResultToResponse, RestBindings} from '@loopback/rest';
 
 // Note: This is an example class; we do not provide this for you.
-import {Formatter} from "../utils";
+import {Formatter} from '../utils';
 
 export class CustomSendProvider implements Provider<BoundValue> {
   // In this example, the injection key for formatter is simple
   constructor(
-      @inject('utils.formatter') public formatter: Formatter,
-      @inject(RestBindings.Http.REQUEST) public request: Request,
-    ) {}
+    @inject('utils.formatter') public formatter: Formatter,
+    @inject(RestBindings.Http.REQUEST) public request: Request,
+  ) {}
 
   value(): Send | Promise<Send> {
     // Use the lambda syntax to preserve the "this" scope for future calls!
@@ -188,10 +204,9 @@ export class CustomSendProvider implements Provider<BoundValue> {
   action(response: ServerResponse, result: OperationRetVal) {
     if (result) {
       // Currently, the headers interface doesn't allow arbitrary string keys!
-      const headers = this.request.headers as any || {};
+      const headers = (this.request.headers as any) || {};
       const header = headers.accept || 'application/json';
-      const formattedResult =
-        this.formatter.convertToMimeType(result, header);
+      const formattedResult = this.formatter.convertToMimeType(result, header);
       response.setHeader('Content-Type', header);
       response.end(formattedResult);
     } else {
@@ -209,6 +224,7 @@ Next, in our application class, we'll inject this provider on the
 `RestBindings.SequenceActions.SEND` key.
 
 {% include code-caption.html content="/src/application.ts" %}
+
 ```ts
 import {Application} from '@loopback/core';
 import {RestApplication, RestBindings} from '@loopback/rest';
@@ -249,28 +265,28 @@ Parsing and validating arguments from the request url, headers, and body.
 
 {% include content/tbd.html %}
 
- - How to use `invoke()` in simple and advanced use cases.
- - Explain what happens when you call `invoke()`
- - Mention caching use case
- - Can I call invoke multiple times?
+- How to use `invoke()` in simple and advanced use cases.
+- Explain what happens when you call `invoke()`
+- Mention caching use case
+- Can I call invoke multiple times?
 
 ### Writing the response
 
 {% include content/tbd.html %}
 
- - Must call `sendResponse()` exactly once
- - Streams?
+- Must call `sendResponse()` exactly once
+- Streams?
 
 ### Sending errors
 
 {% include content/tbd.html %}
 
- - try/catch details
+- try/catch details
 
 ### Keeping your Sequences
 
 {% include content/tbd.html %}
 
- - Try and use existing actions
- - Implement your own version of built in actions
- - Publish reusable actions to npm
+- Try and use existing actions
+- Implement your own version of built in actions
+- Publish reusable actions to npm

@@ -11,10 +11,12 @@ our application to always respond with "Hello World!".
 ## Prerequisites
 
 Before we can begin, you'll need to make sure you have some things installed:
+
 - [Node.js](https://nodejs.org/en/) at v8.x or greater
 
-Additionally, this tutorial assumes that you are comfortable with
-certain technologies, languages and concepts.
+Additionally, this tutorial assumes that you are comfortable with certain
+technologies, languages and concepts.
+
 - JavaScript (ES6)
 - [npm](https://www.npmjs.com/)
 - [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)
@@ -22,17 +24,20 @@ certain technologies, languages and concepts.
 ## Installation
 
 1. Install the new loopback CLI toolkit.
-```
+
+```sh
 npm i -g @loopback/cli
 ```
 
 2. Download the "hello-world" application.
-```
+
+```sh
 lb4 example hello-world
 ```
 
 3. Switch to the directory and install dependencies.
-```
+
+```sh
 cd loopback4-example-hello-world && npm i
 ```
 
@@ -40,7 +45,7 @@ cd loopback4-example-hello-world && npm i
 
 Start the app:
 
-```
+```sh
 npm start
 ```
 
