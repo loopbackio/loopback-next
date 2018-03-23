@@ -73,12 +73,12 @@ For more info about `supertest`, please refer to [supertest](https://www.npmjs.c
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/DEVELOPING.md)
+- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
 - [Join the team](https://github.com/strongloop/loopback-next/issues/110)
 
 ## Tests
 
-run 'npm test' from the root folder.
+Run `npm test` from the root folder.
 
 ## Contributors
 

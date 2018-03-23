@@ -426,6 +426,19 @@ extension. There are unit tests to test functionality of individual functions
 as well as an extension acceptance test which tests the entire extension as a
 whole (everything working together).
 
+## Contributions
+
+- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+
+## Tests
+
+Run `npm test` from the root folder.
+
+## Contributors
+
+See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+
 ## License
 
-MIT License
+MIT
