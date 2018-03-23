@@ -72,7 +72,7 @@ ctx.bind('HelloController').toClass(HelloController);
 
 async function hello() {
   // Get an instance of HelloController
-  const helloController: HelloController = await ctx.get('HelloController');
+  const helloController = await ctx.get<HelloController>('HelloController');
   // helloController now has the `greeting` property injected with `Hello`
   console.log(helloController.greet('John')); // => Hello, John
 }
