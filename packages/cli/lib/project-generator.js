@@ -60,20 +60,14 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       description: 'Mark the project private (excluded from npm publish)',
     });
 
-    // argument validation
-    if (this.args.length) {
-      const isValid = utils.validate(this.args[0]);
-      if (typeof isValid === 'string') throw new Error(isValid);
-    }
-
-    this.setupRenameTransformer();
+    this._setupRenameTransformer();
   }
 
   /**
    * Registers a Transform Stream with Yeoman. Removes `.ejs` extension
    * from files that have it during project generation.
    */
-  setupRenameTransformer() {
+  _setupRenameTransformer() {
     this.registerTransformStream(
       rename(function(file) {
         // extname already contains a leading '.'
@@ -88,6 +82,14 @@ module.exports = class ProjectGenerator extends BaseGenerator {
   }
 
   setOptions() {
+    if (this.options.name) {
+      const msg = utils.validate(this.options.name);
+      if (typeof msg === 'string') {
+        this.exit(msg);
+        return false;
+      }
+    }
+
     this.projectInfo = {
       projectType: this.projectType,
       dependencies: utils.getDependencies(),
@@ -137,8 +139,8 @@ module.exports = class ProjectGenerator extends BaseGenerator {
         when:
           this.projectInfo.outdir == null ||
           // prompts if option was set to a directory that already exists
-          utils.validateyNotExisting(this.projectInfo.outdir) !== true,
-        validate: utils.validateyNotExisting,
+          utils.validateNotExisting(this.projectInfo.outdir) !== true,
+        validate: utils.validateNotExisting,
         default: utils.kebabCase(this.projectInfo.name),
       },
     ];
