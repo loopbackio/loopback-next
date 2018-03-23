@@ -27,23 +27,27 @@ function run(argv, options) {
   const rimraf = require('rimraf');
   const path = require('path');
   const utils = require('./utils');
-  var files = argv.slice(2);
+  var globPatterns = argv.slice(2);
   var removed = [];
-  if (!files.length) {
-    files = [utils.getDistribution()];
+  if (!globPatterns.length) {
+    globPatterns = [utils.getDistribution()];
   }
   // Keep it backward compatible as dryRun
   if (typeof options === 'boolean') options = {dryRun: options};
   options = options || {};
-  files.forEach(f => {
-    var file = path.relative(process.cwd(), f);
-    if (file.indexOf('..') !== -1) {
+  globPatterns.forEach(pattern => {
+    var relativePath = path.relative(process.cwd(), pattern);
+    if (relativePath.indexOf('..') !== -1) {
       if (!options.dryRun) {
-        console.error('Skipping ' + f + ' as it is not inside the project');
+        console.error(
+          'Skipping ' +
+            pattern +
+            ' as it is not inside the project root directory.'
+        );
       }
     } else {
-      if (!options.dryRun) rimraf.sync(f);
-      removed.push(f);
+      if (!options.dryRun) rimraf.sync(pattern);
+      removed.push(pattern);
     }
   });
   return 'rm -rf ' + removed.join(' ');
