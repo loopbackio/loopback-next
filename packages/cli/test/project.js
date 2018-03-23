@@ -11,6 +11,7 @@ const testUtils = require('./test-utils');
 const sinon = require('sinon');
 const path = require('path');
 const deps = require('../lib/utils').getDependencies();
+const expect = require('@loopback/testlab').expect;
 
 module.exports = function(projGenerator, props, projectType) {
   return function() {
@@ -27,12 +28,24 @@ module.exports = function(projGenerator, props, projectType) {
         assert(!helpText.match(/loopback4:/));
       });
     });
+
     describe('_setupGenerator', () => {
       describe('args validation', () => {
         it('errors out if validation fails', () => {
-          assert.throws(() => {
-            testUtils.testSetUpGen(projGenerator, {args: 'fooBar'});
-          }, Error);
+          const result = testUtils.executeGenerator(projGenerator)
+            .withArguments(['fooBar']);
+          return expect(result).to.be.rejectedWith(
+            /Invalid npm package name\: fooBar/
+          );
+        });
+
+        it('errors out if validation fails', () => {
+          const result = testUtils.executeGenerator(projGenerator)
+            .withOptions({name: 'fooBar'})
+            .toPromise();
+          return expect(result).to.be.rejectedWith(
+            /Invalid npm package name\: fooBar/
+          );
         });
 
         it('succeeds if no arg is provided', () => {

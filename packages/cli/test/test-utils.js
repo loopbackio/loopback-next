@@ -36,8 +36,10 @@ exports.executeGenerator = function(GeneratorOrNamespace, settings) {
   runner.toPromise = function() {
     return new Promise((resolve, reject) => {
       this.on('end', () => {
-        if (this.generator.exitGeneration) {
+        if (this.generator.exitGeneration instanceof Error) {
           reject(this.generator.exitGeneration);
+        } else if (this.generator.exitGeneration) {
+          reject(new Error(this.generator.exitGeneration));
         } else {
           resolve(this.targetDirectory);
         }

@@ -91,7 +91,7 @@ exports.validateClassName = function(name) {
 /**
  * Validate project directory to not exist
  */
-exports.validateyNotExisting = function(path) {
+exports.validateNotExisting = function(path) {
   if (fs.existsSync(path)) {
     return util.format('Directory %s already exists.', path);
   }
@@ -114,7 +114,7 @@ exports.camelCase = camelCase;
 
 exports.validate = function(name) {
   const isValid = validate(name).validForNewPackages;
-  if (!isValid) return 'Not a valid npm package name';
+  if (!isValid) return 'Invalid npm package name: ' + name;
   return isValid;
 };
 
