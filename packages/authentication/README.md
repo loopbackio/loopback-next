@@ -208,7 +208,7 @@ For more info about passport, see [passport.js](http://passportjs.org/).
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/site/DEVELOPING.md)
+- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
 - [Join the team](https://github.com/strongloop/loopback-next/issues/110)
 
 ## Tests

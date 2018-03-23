@@ -8,7 +8,7 @@ Run the following command to install the CLI.
 
 `npm install -g @loopback/cli`
 
-## Usage
+## Basic Use
 
 1. To scaffold a LoopBack 4 application
 
@@ -91,15 +91,19 @@ Options:
         --skip-install   # Do not automatically install dependencies  Default: false
 ```
 
+## Contributions
 
-# Tests
+- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+
+## Tests
 
 run `npm test` from the root folder.
 
-# Contributors
+## Contributors
 
 See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
-# License
+## License
 
 MIT

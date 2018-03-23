@@ -320,7 +320,7 @@ coercion. The following types are supported out of box.
 
 ## Tests
 
-run `npm test` from the root folder.
+Run `npm test` from the root folder.
 
 ## Contributors
 

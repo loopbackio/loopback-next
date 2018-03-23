@@ -57,19 +57,29 @@ You can join the team by posting a comment to [issue #110](https://github.com/st
 
 Raymond Feng|Miroslav Bajtos|Ritchie Martori
 :-:|:-:|:-:
-[<img src="https://avatars0.githubusercontent.com/u/540892?v=3&s=60">](http://github.com/raymondfeng)|[<img src="https://avatars2.githubusercontent.com/u/1140553?v=3&s=60">](http://github.com/bajtos)|[<img src="https://avatars2.githubusercontent.com/u/462228?v=3&s=60">](http://github.com/ritch)
+[![raymondfeng]](http://github.com/raymondfeng)|[![bajtos]](http://github.com/bajtos)|[![ritch]](http://github.com/ritch)
 
 ## Project Maintainers:
 
 |||||
 |:-:|:-:|:-:|:-:|
 |Taranveer Virk|Biniam Admikew|Kyu Shim|Diana Lau|
-|[<img src="https://avatars1.githubusercontent.com/u/3311536?v=3&s=60">](http://github.com/virkt25)|[<img src="https://avatars0.githubusercontent.com/u/13950637?v=3&s=60">](http://github.com/b-admike)|[<img src="https://avatars3.githubusercontent.com/u/18518689?v=3&s=60" height=60>](http://github.com/shimks)|[<img src="https://avatars2.githubusercontent.com/u/25489897?v=3&s=60">](http://github.com/dhmlau)|
+|[![virkt25]](http://github.com/virkt25)|[![b-admike]](http://github.com/b-admike)|[<img src="https://avatars3.githubusercontent.com/u/18518689?v=3&s=60" height=60>](http://github.com/shimks)|[![dhmlau]](http://github.com/dhmlau)|
 |Janny Hou|Simon Ho|Kevin Delisle|Rand McKinney|
-|[<img src="https://avatars2.githubusercontent.com/u/12554153?v=3&s=60">](http://github.com/jannyHou)|[<img src="https://avatars1.githubusercontent.com/u/1617364?v=3&s=60">](http://github.com/superkhau)|[<img src="https://avatars3.githubusercontent.com/u/2053534?v=3&s=60">](http://github.com/kjdelisle)|[<img src="https://avatars2.githubusercontent.com/u/2925364?v=3&s=60">](http://github.com/crandmck)|
+|[![jannyhou]](http://github.com/jannyHou)|[![superkhau]](http://github.com/superkhau)|
 
 See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
 # License
 
 [MIT](LICENSE)
+
+[raymondfeng]: https://avatars0.githubusercontent.com/u/540892?v=3&s=60
+[bajtos]: https://avatars2.githubusercontent.com/u/1140553?v=3&s=60
+[ritch]: https://avatars2.githubusercontent.com/u/462228?v=3&s=60
+[b-admike]: https://avatars0.githubusercontent.com/u/13950637?v=3&s=60
+[dhmlau]: https://avatars2.githubusercontent.com/u/25489897?v=3&s=60
+[jannyhou]: https://avatars2.githubusercontent.com/u/12554153?v=3&s=60
+[superkhau]: https://avatars1.githubusercontent.com/u/1617364?v=3&s=60
+[loay]: https://avatars3.githubusercontent.com/u/1986928?v=3&s=60
+[virkt25]: https://avatars1.githubusercontent.com/u/3311536?v=3&s=60

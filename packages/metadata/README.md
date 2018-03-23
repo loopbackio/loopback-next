@@ -11,9 +11,9 @@ metadata, and inspect metadata.
 * MetadataInspector: High level APIs to inspect a class and/or its members to
   get metadata applied by decorators.
 
-# Usage
+## Basic Use
 
-## To create a class decorator
+### To create a class decorator
 
 ```ts
 import {ClassDecoratorFactory} from '@loopback/metadata';
@@ -50,7 +50,7 @@ Now we can use `@myClassDecorator` to add metadata to a class as follows:
 class MyController {}
 ```
 
-## To create a method decorator
+### To create a method decorator
 
 ```ts
 import {MethodDecoratorFactory} from '@loopback/metadata';
@@ -85,7 +85,7 @@ class MyController {
 }
 ```
 
-## To create a property decorator
+### To create a property decorator
 
 ```ts
 import {PropertyDecoratorFactory} from '@loopback/metadata';
@@ -118,7 +118,7 @@ class MyController {
 }
 ```
 
-## To create a parameter decorator
+### To create a parameter decorator
 
 ```ts
 import {ParameterDecoratorFactory} from '@loopback/metadata';
@@ -163,7 +163,7 @@ class MyController {
 }
 ```
 
-## To create method decorator for parameters
+### To create method decorator for parameters
 
 ```ts
 import {MethodParameterDecoratorFactory} from '@loopback/metadata';
@@ -194,6 +194,7 @@ class MyController {
     x: number,
     y: number,
   ) {}
+}
 ```
 
 **WARNING**: Using method decorators to provide metadata for parameters is
@@ -204,7 +205,7 @@ strongly discouraged for a few reasons:
 
 We recommend that `ParameterDecorator` be used instead.
 
-## Decorator options
+### Decorator options
 
 An object of type `DecoratorOptions` can be passed in to create decorator
 functions. There are two flags for the options:
@@ -215,7 +216,7 @@ Sometimes we use shared spec for the decoration, but the decorator function
 might need to mutate the object. Cloning the input spec makes it safe to use
 the same spec (`template`) to decorate different members. Default to `true`.
 
-## Customize inheritance of metadata
+### Customize inheritance of metadata
 
 By default, the decorator factories allow inheritance with the following rules:
 
@@ -320,12 +321,12 @@ For example, the following usage will report an error at runtime.
   class MyController {}
   ```
 
-## Inspect metadata
+### Inspect metadata
 
 `MetadataInspector` provides API to inspect metadata from a class and its
 members.
 
-## Inspect metadata of a class
+### Inspect metadata of a class
 
 ```ts
 import {MetadataInspector} from '@loopback/metadata';
@@ -350,7 +351,7 @@ const meta = MetadataInspector.getClassMetadata<MyClassMetaData>(
 );
 ```
 
-## Inspect metadata of a method
+### Inspect metadata of a method
 
 ```ts
 import {MetadataInspector} from '@loopback/metadata';
@@ -367,7 +368,7 @@ const myMethod = MetadataInspector.getMethodMetaData<MyMethodMetadata>(
 );
 ```
 
-## Inspect metadata of a property
+### Inspect metadata of a property
 
 ```ts
 import {MetadataInspector} from '@loopback/metadata';
@@ -384,7 +385,7 @@ const myProp = MetadataInspector.getMethodMetaData<MyMethodMetadata>(
 );
 ```
 
-## Inspect metadata of method parameters
+### Inspect metadata of method parameters
 
 ```ts
 import {MetadataInspector} from '@loopback/metadata';
@@ -412,7 +413,7 @@ const allParamsForConstructor =
   );
 ```
 
-## Inspect design-time metadata of properties/methods
+### Inspect design-time metadata of properties/methods
 
 ```ts
 import {MetadataInspector} from '@loopback/metadata';
@@ -441,10 +442,8 @@ $ npm install --save @loopback/metadata
 
 ## Contributions
 
-IBM/StrongLoop is an active supporter of open source and welcomes contributions
-to our projects as well as those of the Node.js community in general. For more
-information on how to contribute please refer to the
-[Contribution Guide](https://loopback.io/doc/en/contrib/index.html).
+- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
 
 ## Tests
 
@@ -452,8 +451,7 @@ Run `npm test` from the root folder.
 
 ## Contributors
 
-See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
 ## License
 

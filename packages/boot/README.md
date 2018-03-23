@@ -54,7 +54,7 @@ List of Options available on BootOptions Object.
 |`dirs`|`string \| string[]`|Paths relative to projectRoot to look in for Artifact|
 |`extensions`|`string \| string[]`|File extensions to match for Artifact|
 |`nested`|`boolean`|Look in nested directories in `dirs` for Artifact|
-|`glob`|`string`|A `glob` pattern string. This takes precendence over above 3 options (which are used to make a glob pattern).|
+|`glob`|`string`|A `glob` pattern string. This takes precedence over above 3 options (which are used to make a glob pattern).|
 
 ### BootExecOptions
 
@@ -122,11 +122,11 @@ Available Options on the `repositories` object on `BootOptions` are as follows:
 |`dirs`|`string \| string[]`|`['repositories']`|Paths relative to projectRoot to look in for Repository artifacts|
 |`extensions`|`string \| string[]`|`['.repository.js']`|File extensions to match for Repository artifacts|
 |`nested`|`boolean`|`true`|Look in nested directories in `dirs` for Repository artifacts|
-|`glob`|`string`||A `glob` pattern string. This takes precendence over above 3 options (which are used to make a glob pattern).|
+|`glob`|`string`||A `glob` pattern string. This takes precedence over above 3 options (which are used to make a glob pattern).|
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contributing#guidelines)
+- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
 - [Join the team](https://github.com/strongloop/loopback-next/issues/110)
 
 ## Tests

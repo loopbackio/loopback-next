@@ -75,3 +75,20 @@ for help with this tutorial!
 ### Bugs/Feedback
 Open an issue in [loopback-next](https://github.com/strongloop/loopback-next)
 and we'll take a look!
+
+## Contributions
+
+- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+
+## Tests
+
+Run `npm test` from the root folder.
+
+## Contributors
+
+See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+
+## License
+
+MIT

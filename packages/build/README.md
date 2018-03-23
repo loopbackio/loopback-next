@@ -12,7 +12,7 @@ This module contains a set of common scripts and default configurations to build
 
 These scripts first try to locate the CLI from target project dependencies and fall back to bundled ones in `@loopback/build`.
 
-# Usage
+## Basic use
 
 To use `@loopback/build` for your package:
 
@@ -122,14 +122,19 @@ Now you run the scripts, such as:
 npm run build
 ```
 
-# Tests
+## Contributions
+
+- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+
+## Tests
 
 run `npm test` from the root folder.
 
-# Contributors
+## Contributors
 
 See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
-# License
+## License
 
 MIT

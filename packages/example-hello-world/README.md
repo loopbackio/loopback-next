@@ -47,3 +47,19 @@ npm start
 The application will start on port `3000`. Use your favourite browser or REST
 client to access any path with a GET request, and watch it return `Hello world!`.
 
+## Contributions
+
+- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
+- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
+
+## Tests
+
+Run `npm test` from the root folder.
+
+## Contributors
+
+See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+
+## License
+
+MIT
