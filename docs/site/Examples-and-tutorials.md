@@ -25,9 +25,8 @@ LoopBack 4 comes with the following example projects:
 
 You can download any of the example projects usig our CLI tool `lb4`:
 
-
-```
-$ lb4 example
+```sh
+lb4 example
 ? What example would you like to clone? (Use arrow keys)
 ❯ getting-started: An application and tutorial on how to build with LoopBack 4.
   hello-world: A simple hello-world Application using LoopBack 4
@@ -35,4 +34,6 @@ $ lb4 example
   rpc-server: A basic RPC server using a made-up protocol.
 ```
 
-Please follow the instructions in [Install LoopBack4 CLI](Getting-started.md#install-loopback-4-cli) if you don't have `lb4` installed yet.
+Please follow the instructions in
+[Install LoopBack4 CLI](Getting-started.md#install-loopback-4-cli) if you don't
+have `lb4` installed yet.

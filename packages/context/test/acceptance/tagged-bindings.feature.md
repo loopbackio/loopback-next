@@ -17,7 +17,10 @@
 let ctx = new Context();
 
 // create a tagged binding
-let binding = ctx.bind('foo').to('bar').tag('qux');
+let binding = ctx
+  .bind('foo')
+  .to('bar')
+  .tag('qux');
 
-console.log(binding.tags) // => Set { 'qux' }
+console.log(binding.tags); // => Set { 'qux' }
 ```

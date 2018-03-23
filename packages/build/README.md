@@ -1,16 +1,21 @@
 # @loopback/build
 
-This module contains a set of common scripts and default configurations to build LoopBack 4 or other TypeScript modules, including:
+This module contains a set of common scripts and default configurations to build
+LoopBack 4 or other TypeScript modules, including:
 
-- lb-tsc: Use [`tsc`](https://www.typescriptlang.org/docs/handbook/compiler-options.html) to compile typescript files
+- lb-tsc: Use
+  [`tsc`](https://www.typescriptlang.org/docs/handbook/compiler-options.html) to
+  compile typescript files
 - lb-tslint: Run [`tslint`](https://github.com/palantir/tslint)
 - lb-prettier: Run [`prettier`](https://github.com/prettier/prettier)
 - lb-mocha: Run [`mocha`](https://mochajs.org/) to execute test cases
 - lb-nyc: Run [`nyc`](https://github.com/istanbuljs/nyc)
-- lb-dist: Detect the correct distribution target: `dist` => ES2017, `dist6` => ES2015.
-  The command is deprecated as `lb-mocha` detects the distribution target now.
+- lb-dist: Detect the correct distribution target: `dist` => ES2017, `dist6` =>
+  ES2015. The command is deprecated as `lb-mocha` detects the distribution
+  target now.
 
-These scripts first try to locate the CLI from target project dependencies and fall back to bundled ones in `@loopback/build`.
+These scripts first try to locate the CLI from target project dependencies and
+fall back to bundled ones in `@loopback/build`.
 
 ## Basic use
 
@@ -54,11 +59,16 @@ Now you run the scripts, such as:
 
 - lb-tsc
 
-  By default, `lb-tsc` searches your project's root directory for `tsconfig.build.json` then `tsconfig.json`. If neither of them exists, a `tsconfig.json` will be created to extend from `./node_modules/@loopback/build/config/tsconfig.common.json`.
+  By default, `lb-tsc` searches your project's root directory for
+  `tsconfig.build.json` then `tsconfig.json`. If neither of them exists, a
+  `tsconfig.json` will be created to extend from
+  `./node_modules/@loopback/build/config/tsconfig.common.json`.
 
   To customize the configuration:
 
-  - Create `tsconfig.build.json` or `tsconfig.json` in your project's root directory
+  - Create `tsconfig.build.json` or `tsconfig.json` in your project's root
+    directory
+
     ```json
     {
       "$schema": "http://json.schemastore.org/tsconfig",
@@ -71,17 +81,22 @@ Now you run the scripts, such as:
     ```
 
   - Set options explicity for the script
-    ```
+
+    ```sh
     lb-tsc -p tsconfig.json --target es2017 --outDir dist
     ```
 
-    For more information, see https://www.typescriptlang.org/docs/handbook/compiler-options.html.
+    For more information, see
+    <https://www.typescriptlang.org/docs/handbook/compiler-options.html>.
 
 - lb-tslint
 
-  By default, `lb-tslint` searches your project's root directory for `tslint.build.json` then `tslint.json`. If neither of them exists, it falls back to `./node_modules/@loopback/build/config/tslint.common.json`.
+  By default, `lb-tslint` searches your project's root directory for
+  `tslint.build.json` then `tslint.json`. If neither of them exists, it falls
+  back to `./node_modules/@loopback/build/config/tslint.common.json`.
 
-  `lb-tslint` also depends on `tsconfig.build.json` or `tsconfig.json` to reference the project.
+  `lb-tslint` also depends on `tsconfig.build.json` or `tsconfig.json` to
+  reference the project.
 
   To customize the configuration:
 
@@ -97,28 +112,30 @@ Now you run the scripts, such as:
       // See https://github.com/Microsoft/vscode-tslint/issues/70
       "rules": {
         // These rules find errors related to TypeScript features.
-
-
-        // These rules catch common errors in JS programming or otherwise
-        // confusing constructs that are prone to producing bugs.
-
-        "await-promise": true,
-        "no-floating-promises": true,
-        "no-void-expression": [true, "ignore-arrow-function-shorthand"]
-      }
-    }
     ```
 
-  - Set options explicitly for the script
-    ```
-    lb-tslint -c tslint.json -p tsconfig.json
-    ```
+```json
+    // These rules catch common errors in JS programming or otherwise
+    // confusing constructs that are prone to producing bugs.
 
-    For more information, see https://palantir.github.io/tslint/usage/cli/.
+    "await-promise": true,
+    "no-floating-promises": true,
+    "no-void-expression": [true, "ignore-arrow-function-shorthand"]
+  }
+}
+```
+
+- Set options explicitly for the script
+
+  ```sh
+  lb-tslint -c tslint.json -p tsconfig.json
+  ```
+
+  For more information, see <https://palantir.github.io/tslint/usage/cli/>.
 
 4. Run builds
 
-```
+```sh
 npm run build
 ```
 
@@ -133,7 +150,8 @@ run `npm test` from the root folder.
 
 ## Contributors
 
-See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+See
+[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
 ## License
 

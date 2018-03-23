@@ -9,7 +9,8 @@
 
 - Given a Node.js project
 - And LoopBack.next installed as a project dependency
-- When I import LoopBack.next's Application construct via Node.js's require syntax
+- When I import LoopBack.next's Application construct via Node.js's require
+  syntax
 - Then I get an instantiable Application object
 
 ```js

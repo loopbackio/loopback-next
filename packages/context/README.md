@@ -7,8 +7,10 @@ LoopBack framework.
 ## Overview
 
 The `@loopback/context` package exposes TypeScript/JavaScript APIs and
-decorators to register artifacts, declare dependencies, and resolve artifacts
-by keys. The `Context` also serves as an [IoC container](https://en.wikipedia.org/wiki/Inversion_of_control) to support [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection).
+decorators to register artifacts, declare dependencies, and resolve artifacts by
+keys. The `Context` also serves as an
+[IoC container](https://en.wikipedia.org/wiki/Inversion_of_control) to support
+[dependency injection](https://en.wikipedia.org/wiki/Dependency_injection).
 
 `Context` and `Binding` are the two core concepts. A context is a registry of
 bindings and each binding represents a resolvable artifact by the key.
@@ -21,12 +23,13 @@ bindings and each binding represents a resolvable artifact by the key.
 - Provide `@inject` and other variants of decorators to express dependencies.
 - Support Constructor, property, and method injections.
 - Allow contexts to form a hierarchy to share or override bindings.
-- Track bindings and injections during resolution to detect circular dependencies.
+- Track bindings and injections during resolution to detect circular
+  dependencies.
 
 ## Installation
 
-```
-$ npm install --save @loopback/context
+```sh
+npm install --save @loopback/context
 ```
 
 ## Basic use
@@ -42,6 +45,7 @@ console.log(helloVal); // => 'world'
 ```
 
 The binding can also be located asynchronously:
+
 ```ts
 const helloVal = await ctx.get('hello');
 console.log(helloVal); // => 'world'
@@ -59,8 +63,8 @@ ctx.bind('greeting').to('Hello');
 class HelloController {
   constructor(
     // injecting the value bound to `greeting` using context
-    @inject('greeting') private greeting: string) {
-  }
+    @inject('greeting') private greeting: string,
+  ) {}
 
   greet(name) {
     return `${this.greeting}, ${name}`;
@@ -80,7 +84,8 @@ async function hello() {
 hello();
 ```
 
-For additional information, please refer to the [Context page](http://loopback.io/doc/en/lb4/Context.html).
+For additional information, please refer to the
+[Context page](http://loopback.io/doc/en/lb4/Context.html).
 
 ## Contributions
 
@@ -93,7 +98,8 @@ Run `npm test` from the root folder.
 
 ## Contributors
 
-See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+See
+[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
 ## License
 

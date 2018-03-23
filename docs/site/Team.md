@@ -8,13 +8,13 @@ permalink: /doc/en/lb4/Team.html
 summary: The people working on LoopBack 4
 ---
 
-# IBM
+## IBM
 
 - Core members/leads
 - All internal members (including docs, etc)
 
-# Community contributors
+## Community contributors
 
-- loopback-maintaineres
+- loopback-maintainers
 - loopback-swagger-maintainers
 - etc

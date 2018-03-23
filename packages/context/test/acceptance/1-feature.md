@@ -24,7 +24,7 @@ child.get('foo'); // => 'bar'
 
 ```ts
 let ctx = new Context();
-ctx.bind(':name').to('hello world')
+ctx.bind(':name').to('hello world');
 
 await ctx.get('foo'); // => hello world
 await ctx.get('bat'); // => hello world
@@ -40,10 +40,10 @@ await ctx.get('bat'); // => hello world
 let ctx = new Context();
 let data = {
   foo: 'bar',
-  bat: 'baz'
+  bat: 'baz',
 };
 
-ctx.bind(':name').to((name) => {
+ctx.bind(':name').to(name => {
   return data[name];
 });
 

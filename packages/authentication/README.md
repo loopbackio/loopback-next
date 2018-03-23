@@ -2,7 +2,8 @@
 
 A LoopBack 4 component for authentication support.
 
-**This is a reference implementation showing how to implement an authentication component, it is not production ready.**
+**This is a reference implementation showing how to implement an authentication
+component, it is not production ready.**
 
 ## Overview
 
@@ -17,8 +18,8 @@ npm install --save @loopback/authentication
 
 ## Basic use
 
-Start by decorating your controller methods with `@authenticate` to require
-the request to be authenticated.
+Start by decorating your controller methods with `@authenticate` to require the
+request to be authenticated.
 
 In this example, we make the user profile available via dependency injection
 using a key available from `@loopback/authentication` package.
@@ -46,10 +47,10 @@ export class WhoAmIController {
 }
 ```
 
-Next, implement a Strategy provider to map strategy names specified
-in `@authenticate` decorators into Passport Strategy instances.
-Remember to install `passport`, `passport-http`, `@types/passport`, and
-`@types/passport-http` modules beforehand.
+Next, implement a Strategy provider to map strategy names specified in
+`@authenticate` decorators into Passport Strategy instances. Remember to install
+`passport`, `passport-http`, `@types/passport`, and `@types/passport-http`
+modules beforehand.
 
 ```shell
 npm install --save passport passport-http
@@ -217,7 +218,8 @@ run `npm test` from the root folder.
 
 ## Contributors
 
-See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+See
+[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
 ## License
 

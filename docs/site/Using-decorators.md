@@ -10,9 +10,11 @@ summary:
 
 {% include content/tbd.html %}
 
-> This will describe how to use existing decorators to build apps per [#552](https://github.com/strongloop/loopback-next/issues/552)
+> This will describe how to use existing decorators to build apps per
+> [#552](https://github.com/strongloop/loopback-next/issues/552)
 
 Potential topics:
+
 - What is a decorator? Allows you annotate your classes with metadata.
   - simple example `@authenticate`
 - How to use decorators (what are the features)

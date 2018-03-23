@@ -165,7 +165,7 @@ When you want to define new CRUD methods for your application, you will need to
 modify the API Definitions and their corresponding methods in your controller.
 Here are examples of some basic CRUD methods:
 
-1.  Create API Definition:
+1. Create API Definition:
 
 ```json
 {
@@ -208,7 +208,7 @@ async createAccount(accountInstance: Account) {
 }
 ```
 
-2.  Find API Definition:
+2. Find API Definition:
 
 ```json
 {
@@ -256,7 +256,7 @@ application.
 examples may not work out of the box." %}
 
 LoopBack 4 gives you the flexibility to create your own custom Datasources which
-utilize your own custom connector for your favourite back end database. You can
+utilize your own custom connector for your favorite back end database. You can
 then fine tune your CRUD methods to your liking.
 
 ### Example Application
@@ -264,43 +264,43 @@ then fine tune your CRUD methods to your liking.
 You can look at
 [the account-without-juggler application as an example.](https://github.com/strongloop/loopback-next-example/tree/master/services/account-without-juggler)
 
-### Steps to create your own concrete DataSource
+<!--lint enable no-duplicate-headings -->
 
-1.  Implement the `CrudConnector` interface from `@loopback/repository` package.
-    [Here is one way to do it](https://github.com/strongloop/loopback-next-example/blob/master/services/account-without-juggler/repositories/account/datasources/mysqlconn.ts)
+1. Implement the `CrudConnector` interface from `@loopback/repository` package.
+   [Here is one way to do it](https://github.com/strongloop/loopback-next-example/blob/master/services/account-without-juggler/repositories/account/datasources/mysqlconn.ts)
 
-2.  Implement the `DataSource` interface from `@loopback/repository`. To
-    implement the `DataSource` interface, you must give it a name, supply your
-    custom connector class created in the previous step, and instantiate it:
+2. Implement the `DataSource` interface from `@loopback/repository`. To
+   implement the `DataSource` interface, you must give it a name, supply your
+   custom connector class created in the previous step, and instantiate it:
 
-    ```ts
-    export class MySQLDs implements DataSource {
-      name: 'mysqlDs';
-      connector: MySqlConn;
-      settings: Object;
+   ```ts
+   export class MySQLDs implements DataSource {
+     name: 'mysqlDs';
+     connector: MySqlConn;
+     settings: Object;
 
-      constructor() {
-        this.settings = require('./mysql.json'); // connection configuration
-        this.connector = new MySqlConn(this.settings);
-      }
-    }
-    ```
+     constructor() {
+       this.settings = require('./mysql.json'); // connection configuration
+       this.connector = new MySqlConn(this.settings);
+     }
+   }
+   ```
 
-3.  Extend `CrudRepositoryImpl` class from `@loopback/repository` and supply
-    your custom DataSource and model to it:
+3. Extend `CrudRepositoryImpl` class from `@loopback/repository` and supply
+   your custom DataSource and model to it:
 
-    ```ts
-    import {CrudRepositoryImpl} from '@loopback/repository';
-    import {MySQLDs} from './datasources/mysqlds';
-    import {Account} from './models/Account';
+   ```ts
+   import {CrudRepositoryImpl} from '@loopback/repository';
+   import {MySQLDs} from './datasources/mysqlds';
+   import {Account} from './models/Account';
 
-    export class NewRepository extends CrudRepositoryImpl<Account, string> {
-      constructor() {
-        const ds = new MySQLDs();
-        super(ds, Account);
-      }
-    }
-    ```
+   export class NewRepository extends CrudRepositoryImpl<Account, string> {
+     constructor() {
+       const ds = new MySQLDs();
+       super(ds, Account);
+     }
+   }
+   ```
 
 You can override the functions it provides, which ultimately call on your
 connector's implementation of them, or write new ones.
@@ -311,28 +311,28 @@ The next step is to wire your new DataSource to your controller. This step is
 essentially the same as above, but can also be done as follows using Dependency
 Injection:
 
-1.  Bind instance of your repository to a certain key in your application class
+1. Bind instance of your repository to a certain key in your application class
 
-    ```ts
-    class AccountMicroservice extends Application {
-      private _startTime: Date;
+   ```ts
+   class AccountMicroservice extends Application {
+     private _startTime: Date;
 
-      constructor() {
-        super();
-        const app = this;
-        app.controller(AccountController);
-        app.bind('repositories.NewRepository').toClass(NewRepository);
-      }
-    ```
+     constructor() {
+       super();
+       const app = this;
+       app.controller(AccountController);
+       app.bind('repositories.NewRepository').toClass(NewRepository);
+     }
+   ```
 
-2.  Inject the bound instance into the repository property of your controller.
-    `inject` can be imported from `@loopback/context`.
+2. Inject the bound instance into the repository property of your controller.
+   `inject` can be imported from `@loopback/context`.
 
-    ```ts
-    export class AccountController {
-      @repository(NewRepository.name) private repository: NewRepository;
-    }
-    ```
+   ```ts
+   export class AccountController {
+     @repository(NewRepository.name) private repository: NewRepository;
+   }
+   ```
 
 ### Example custom connector CRUD methods
 

@@ -7,23 +7,24 @@ system can tie it all together for us!
 
 LoopBack's
 [boot module](https://github.com/strongloop/loopback-next/tree/master/packages/boot)
-will automatically discover our controllers, repositories, datasources and
-other artifacts and inject them into our application for use.
+will automatically discover our controllers, repositories, datasources and other
+artifacts and inject them into our application for use.
 
->**NOTE**: The boot module will discover and inject artifacts that
-> follow our established conventions for artifact directories.
->Here are some examples:
->* Controllers: `./src/controllers`
->* Datasources: `./src/datasources`
->* Models: `./src/models`
->* Repositories: `./src/repositories`
+> **NOTE**: The boot module will discover and inject artifacts that follow our
+> established conventions for artifact directories. Here are some examples:
 >
->To find out how to customize this behaviour, see the
->[Booters](http://loopback.io/doc/en/lb4/Booting-an-Application.html#booters)
->section of
->[Booting an Application](http://loopback.io/doc/en/lb4/Booting-an-Application.html).
+> - Controllers: `./src/controllers`
+> - Datasources: `./src/datasources`
+> - Models: `./src/models`
+> - Repositories: `./src/repositories`
+>
+> To find out how to customize this behaviour, see the
+> [Booters](http://loopback.io/doc/en/lb4/Booting-an-Application.html#booters)
+> section of
+> [Booting an Application](http://loopback.io/doc/en/lb4/Booting-an-Application.html).
 
 #### src/application.ts
+
 ```ts
 import {ApplicationConfig} from '@loopback/core';
 import {RestApplication, RestServer} from '@loopback/rest';
@@ -86,14 +87,13 @@ export class TodoListApplication extends BootMixin(
     console.log(`Try http://127.0.0.1:${port}/ping`);
   }
 }
-
 ```
 
 ### Try it out
 
-Let's try out our application!
-First, you'll want to start the app.
-```
+Let's try out our application! First, you'll want to start the app.
+
+```sh
 $ npm start
 Server is running on port 3000
 ```
@@ -102,9 +102,10 @@ Next, you can use the [API Explorer](http://localhost:3000/swagger-ui) to browse
 your API and make requests!
 
 Here are some requests you can try:
+
 - `POST /todo` with a body of `{ "title": "get the milk" }`
 - `GET /todo/{id}` using the ID you received from your `POST`, and see if you
-get your Todo object back.
+  get your Todo object back.
 - `PATCH /todo/{id}` with a body of `{ "desc": "need milk for cereal" }`
 
 That's it! You've just created your first LoopBack 4 application!

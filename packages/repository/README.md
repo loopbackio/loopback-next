@@ -14,8 +14,8 @@ well as the constructs for modeling and accessing those data.
 
 ## Installation
 
-```
-$ npm install --save @loopback/repository
+```sh
+npm install --save @loopback/repository
 ```
 
 ## Basic use
@@ -176,6 +176,7 @@ interface CustomerRepository extends Repository<Customer> {
 ```
 
 See more examples at:
+
 - [Repository/CrudRepository/EntityRepository](src/repository.ts)
 - [KVRepository](src/kv-repository.ts)
 
@@ -198,6 +199,7 @@ There are two subtly different types of models for domain objects:
   equality is based on the structural value. For example, `Address` can be
   modeled as `Value Object` as two US addresses are equal if they have the same
   street number, street name, city, and zip code values. For example:
+
   ```json
   {
     "name": "Address",
@@ -255,11 +257,10 @@ specific backend system, such as a database, a REST service, a SOAP Web Service,
 or a gRPC micro-service. It abstracts such interactions as a list of operations
 in the form of Node.js methods.
 
-Typically, a connector translates LoopBack query
-and mutation requests into native api calls supported by the underlying Node.js
-driver for the given backend. For example, a connector for `MySQL` will map
-`create` method to SQL INSERT statement, which can be executed through MySQL
-driver for Node.js.
+Typically, a connector translates LoopBack query and mutation requests into
+native api calls supported by the underlying Node.js driver for the given
+backend. For example, a connector for `MySQL` will map `create` method to SQL
+INSERT statement, which can be executed through MySQL driver for Node.js.
 
 ### Mixin
 
@@ -309,9 +310,9 @@ coercion. The following types are supported out of box.
 
 ## Related resources
 
-- https://martinfowler.com/eaaCatalog/repository.html
-- https://msdn.microsoft.com/en-us/library/ff649690.aspx
-- http://docs.spring.io/spring-data/data-commons/docs/2.0.0.M3/reference/html/#repositories
+- <https://martinfowler.com/eaaCatalog/repository.html>
+- <https://msdn.microsoft.com/en-us/library/ff649690.aspx>
+- <http://docs.spring.io/spring-data/data-commons/docs/2.0.0.M3/reference/html/#repositories>
 
 ## Contributions
 
@@ -324,7 +325,8 @@ Run `npm test` from the root folder.
 
 ## Contributors
 
-See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+See
+[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
 ## License
 
