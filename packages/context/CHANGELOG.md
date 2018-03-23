@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@0.3.0...@loopback/context@0.4.0) (2018-03-23)
+
+
+### Features
+
+* **context:** add optional typing for Binding ([3c494fa](https://github.com/strongloop/loopback-next/commit/3c494fa))
+
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@0.2.4...@loopback/context@0.3.0) (2018-03-21)
 

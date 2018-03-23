@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.3"></a>
+## [0.3.3](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.3.2...@loopback/build@0.3.3) (2018-03-23)
+
+
+### Bug Fixes
+
+* **build:** fix select-dist script ([e91e810](https://github.com/strongloop/loopback-next/commit/e91e810))
+* use rimraf to remove files with glob patterns ([50d847c](https://github.com/strongloop/loopback-next/commit/50d847c))
+* **build:** use variable names to reflect the accepted args ([c9350b9](https://github.com/strongloop/loopback-next/commit/c9350b9))
+
+
+
+
 <a name="0.3.2"></a>
 ## [0.3.2](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.3.1...@loopback/build@0.3.2) (2018-03-14)
 

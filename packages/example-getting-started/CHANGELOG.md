@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.1"></a>
+## [0.4.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-getting-started@0.4.0...@loopback/example-getting-started@0.4.1) (2018-03-23)
+
+
+### Bug Fixes
+
+* **example-getting-started:** remove old model from sample data ([4fee3b1](https://github.com/strongloop/loopback-next/commit/4fee3b1))
+
+
+### Reverts
+
+* **example-getting-started:** sync code and docs ([5f54b96](https://github.com/strongloop/loopback-next/commit/5f54b96))
+
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-getting-started@0.3.4...@loopback/example-getting-started@0.4.0) (2018-03-21)
 
