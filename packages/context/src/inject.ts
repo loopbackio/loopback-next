@@ -106,14 +106,20 @@ export function inject(
       // Please note propertyKey is `undefined` for constructor
       const paramDecorator: ParameterDecorator = ParameterDecoratorFactory.createDecorator<
         Injection
-      >(PARAMETERS_KEY, {
-        target,
-        member,
-        methodDescriptorOrParameterIndex,
-        bindingKey,
-        metadata,
-        resolve,
-      });
+      >(
+        PARAMETERS_KEY,
+        {
+          target,
+          member,
+          methodDescriptorOrParameterIndex,
+          bindingKey,
+          metadata,
+          resolve,
+        },
+        // Do not deep clone the spec as only metadata is mutable and it's
+        // shallowly cloned
+        {cloneInputSpec: false},
+      );
       paramDecorator(target, member!, methodDescriptorOrParameterIndex);
     } else if (member) {
       // Property or method
@@ -136,14 +142,20 @@ export function inject(
       }
       const propDecorator: PropertyDecorator = PropertyDecoratorFactory.createDecorator<
         Injection
-      >(PROPERTIES_KEY, {
-        target,
-        member,
-        methodDescriptorOrParameterIndex,
-        bindingKey,
-        metadata,
-        resolve,
-      });
+      >(
+        PROPERTIES_KEY,
+        {
+          target,
+          member,
+          methodDescriptorOrParameterIndex,
+          bindingKey,
+          metadata,
+          resolve,
+        },
+        // Do not deep clone the spec as only metadata is mutable and it's
+        // shallowly cloned
+        {cloneInputSpec: false},
+      );
       propDecorator(target, member!);
     } else {
       // It won't happen here as `@inject` is not compatible with ClassDecorator

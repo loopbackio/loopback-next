@@ -145,8 +145,12 @@ describe('property injection', () => {
     class SubTestClass extends TestClass {
       @inject('bar') foo: string;
     }
-    const meta = describeInjectedProperties(SubTestClass.prototype);
-    expect(meta.foo.bindingKey).to.eql('bar');
+
+    const base = describeInjectedProperties(TestClass.prototype);
+    expect(base.foo.bindingKey).to.eql('foo');
+
+    const sub = describeInjectedProperties(SubTestClass.prototype);
+    expect(sub.foo.bindingKey).to.eql('bar');
   });
 
   it('supports inherited and own properties', () => {
@@ -160,5 +164,16 @@ describe('property injection', () => {
     const meta = describeInjectedProperties(SubTestClass.prototype);
     expect(meta.foo.bindingKey).to.eql('foo');
     expect(meta.bar.bindingKey).to.eql('bar');
+  });
+
+  it('does not clone metadata deeply', () => {
+    const options = {x: 1};
+    class TestClass {
+      @inject('foo', options)
+      foo: string;
+    }
+    const meta = describeInjectedProperties(TestClass.prototype);
+    expect(meta.foo.metadata).to.be.not.exactly(options);
+    expect(meta.foo.metadata).to.eql({x: 1, decorator: '@inject'});
   });
 });
