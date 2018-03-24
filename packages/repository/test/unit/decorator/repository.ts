@@ -5,7 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 import {Context} from '@loopback/context';
-import {repository} from '../../../';
+import {repository, EntityCrudRepository} from '../../../';
 
 import {Repository} from '../../../';
 import {
@@ -85,7 +85,7 @@ describe('repository decorator', () => {
     }
     ctx.bind('controllers.Controller2').toClass(Controller2);
 
-    const myController = await ctx.get<MyController>('controllers.Controller2');
+    const myController = await ctx.get<Controller2>('controllers.Controller2');
     expect(myController.noteRepo).to.be.not.null();
   });
 
@@ -93,12 +93,16 @@ describe('repository decorator', () => {
     class Controller3 {
       constructor(
         @repository(Note, ds)
-        public noteRepo: Repository<Note>,
+        public noteRepo: EntityCrudRepository<Note, number>,
       ) {}
     }
     ctx.bind('controllers.Controller3').toClass(Controller3);
-    const myController = await ctx.get<MyController>('controllers.Controller3');
-    expect(myController.noteRepo).to.be.not.null();
+    const myController = await ctx.get<Controller3>('controllers.Controller3');
+    const r = myController.noteRepo;
+    expect(r).to.be.instanceof(DefaultCrudRepository);
+    expect((r as DefaultCrudRepository<Note, number>).dataSource).to.be.exactly(
+      ds,
+    );
   });
 
   it('rejects @repository("")', async () => {

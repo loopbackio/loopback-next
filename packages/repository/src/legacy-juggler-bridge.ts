@@ -77,7 +77,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
   constructor(
     // entityClass should have type "typeof T", but that's not supported by TSC
     public entityClass: typeof Entity & {prototype: T},
-    dataSource: juggler.DataSource,
+    public dataSource: juggler.DataSource,
   ) {
     const definition = entityClass.definition;
     assert(

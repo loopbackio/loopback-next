@@ -108,7 +108,7 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
 
     debug('  parameters for method %s: %j', op, params);
     if (params != null) {
-      params = DecoratorFactory.cloneDeep(params);
+      params = DecoratorFactory.cloneDeep<ParameterObject[]>(params);
       /**
        * If a controller method uses dependency injection, the parameters
        * might be sparsed. For example,

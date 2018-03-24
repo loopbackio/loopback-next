@@ -158,6 +158,9 @@ export declare namespace juggler {
     name: string;
     settings: AnyObject;
 
+    connected?: boolean;
+    connecting?: boolean;
+
     constructor(
       name?: string,
       settings?: AnyObject,
