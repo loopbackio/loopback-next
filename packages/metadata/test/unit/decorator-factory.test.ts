@@ -41,7 +41,7 @@ describe('DecoratorFactory.cloneDeep', () => {
     expect(copy).to.be.eql(val);
   });
 
-  it('clones class instances', () => {
+  it('keeps user-defined class instances', () => {
     class MyController {
       constructor(public x: string) {}
     }
@@ -49,9 +49,7 @@ describe('DecoratorFactory.cloneDeep', () => {
       target: new MyController('A'),
     };
     const copy = DecoratorFactory.cloneDeep(val);
-    expect(copy.target).to.not.exactly(val.target);
-    expect(copy).to.be.eql(val);
-    expect(copy.target).to.be.instanceof(MyController);
+    expect(copy.target).to.exactly(val.target);
   });
 
   it('clones dates', () => {

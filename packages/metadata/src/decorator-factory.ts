@@ -190,6 +190,8 @@ export class DecoratorFactory<
       Object.defineProperty(spec, DecoratorFactory.TARGET, {
         value: target,
         enumerable: false,
+        // Make sure it won't be redefined on the same object
+        configurable: false,
       });
     }
     return spec;
@@ -314,17 +316,37 @@ export class DecoratorFactory<
     return inst.create();
   }
 
-  static cloneDeep<T>(val: T): T {
+  // See https://github.com/lodash/lodash/blob/master/.internal/baseClone.js
+  private static _cloneableTypes = [
+    Object,
+    Array,
+    Set,
+    Map,
+    RegExp,
+    Date,
+    Buffer,
+    ArrayBuffer,
+    Float32Array,
+    Float64Array,
+    Int8Array,
+    Int16Array,
+    Int32Array,
+    Uint8Array,
+    Uint8ClampedArray,
+    Uint16Array,
+    Uint32Array,
+  ];
+
+  static cloneDeep<V>(val: Readonly<V>): V {
     if (typeof val !== 'object') return val;
     return _.cloneDeepWith(val, v => {
-      // Do not clone functions
-      if (typeof v === 'function') return v;
+      if (typeof v !== 'object') return v;
+      if (v == null) return v;
       if (
-        v &&
-        typeof v.constructor === 'function' &&
-        v.constructor.prototype === v
+        v.constructor != null &&
+        !DecoratorFactory._cloneableTypes.includes(v.constructor)
       ) {
-        // Do not clone class prototype
+        // Do not clone instances of classes/constructors, such as Date
         return v;
       }
       return undefined;
