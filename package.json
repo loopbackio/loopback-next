@@ -36,7 +36,7 @@
     "prettier:fix": "npm run prettier:cli -- --write",
     "clean": "lerna run clean --loglevel=silent --parallel && node packages/build/bin/run-clean \"packages/*/dist*\"",
     "clean:lerna": "lerna clean --yes --parallel --loglevel=silent",
-    "build": "lerna run build --parallel --loglevel=silent",
+    "build": "node bin/run-lerna run build --parallel --loglevel=silent",
     "build:full": "npm run clean:lerna && npm run bootstrap && npm test",
     "pretest": "npm run clean && npm run build",
     "test": "node packages/build/bin/run-nyc npm run mocha --scripts-prepend-node-path",

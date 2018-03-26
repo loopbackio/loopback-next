@@ -100,8 +100,10 @@ function run(argv, options) {
 
   const args = [];
 
+  const cwd = process.env.LERNA_ROOT_PATH || process.cwd();
   if (tsConfigFile) {
-    args.push('-p', tsConfigFile);
+    // Make the config file relative the current directory
+    args.push('-p', path.relative(cwd, tsConfigFile));
   }
 
   if (outDir) {
@@ -114,7 +116,12 @@ function run(argv, options) {
 
   args.push(...compilerOpts);
 
-  return utils.runCLI('typescript/lib/tsc', args, options);
+  if (options === true) {
+    options = {dryRun: true};
+  } else {
+    options = options || {};
+  }
+  return utils.runCLI('typescript/lib/tsc', args, {cwd, ...options});
 }
 
 module.exports = run;
