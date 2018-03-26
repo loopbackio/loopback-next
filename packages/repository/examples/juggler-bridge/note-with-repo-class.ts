@@ -61,7 +61,7 @@ async function main() {
   ctx.bind('controllers.MyController').toClass(NoteController);
 
   // Resolve the controller
-  const controller: NoteController = await ctx.get('controllers.MyController');
+  const controller = await ctx.get<NoteController>('controllers.MyController');
 
   // Create some notes
   await controller.noteRepo.create({title: 't1', content: 'Note 1'});
