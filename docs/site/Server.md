@@ -27,17 +27,18 @@ export class HelloWorldApp extends RestApplication {
     // returns the Hello World string for all requests
     // with RestApplication, handler function can be registered
     // at app level
-    app.handler((sequence, request, response) => {
+    this.handler((sequence, request, response) => {
       sequence.send(response, 'Hello World!');
     });
   }
 
   async start() {
-    // get a singleton HTTP server instance
-    const rest = await this.getServer(RestServer);
     // call start on application class, which in turn starts all registered
     // servers
     await super.start();
+
+    // get a singleton HTTP server instance
+    const rest = await this.getServer(RestServer);
     console.log(`REST server running on port: ${await rest.get('rest.port')}`);
   }
 }
