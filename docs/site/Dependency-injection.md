@@ -100,7 +100,7 @@ resolving their dependencies as needed.
 In this particular example, the class is a
 [Provider](Writing-Components#providers). Providers allow you to customize the
 way how a value is created by the Context, possibly depending on other Context
-values. A provider is typically bound using `.toProvider(.md)` API:
+values. A provider is typically bound using `.toProvider()` API:
 
 ```js
 app.bind('authentication.provider').toProvider(AuthenticationProvider);
@@ -149,7 +149,8 @@ default.
 
 ```ts
 class InfoController {
-  @inject('logger') private logger = ConsoleLogger();
+  @inject('logger', {optional: true})
+  private logger = ConsoleLogger();
 
   status() {
     this.logger.info('Status endpoint accessed.');
@@ -202,15 +203,16 @@ export class LoggerProvider implements Provider<Logger> {
 ```
 
 Optional dependencies can also be used with constructor and method injections.
-For example:
+
+An example showing optional constructor injection in action:
 
 ```ts
-// Optional constructor injection
 export class LoggerProvider implements Provider<Logger> {
   constructor(
     // Log writer is an optional dependency and it falls back to `logToConsole`
     @inject('log.writer', {optional: true})
     private logWriter: LogWriterFn = logToConsole,
+
     // Log level is an optional dependency with a default value `WARN`
     @inject('log.level', {optional: true})
     private logLevel: string = 'WARN',
@@ -218,10 +220,11 @@ export class LoggerProvider implements Provider<Logger> {
 }
 ```
 
+An example of optional method injection, where the `prefix` argument is
+optional:
+
 ```ts
-// Optional method injection
 export class MyController {
-  // prefix is optional
   greet(
     @inject('hello.prefix', {optional: true})
     prefix: string = 'Hello',
@@ -234,7 +237,9 @@ export class MyController {
 ## Circular dependencies
 
 LoopBack can detect circular dependencies and report the path which leads to the
-problem. For example,
+problem.
+
+Consider the following example:
 
 ```ts
 import {Context, inject} from '@loopback/context';
@@ -277,10 +282,18 @@ try {
   context.getSync('lead');
 } catch (e) {
   console.error(e.toString());
-  // Error: Circular dependency detected: lead --> @DeveloperImpl.constructor[0]
-  // --> team --> @TeamImpl.constructor[0] --> project --> @ProjectImpl.constructor[0]
-  // --> lead
 }
+```
+
+When the user attempts to resolve "lead" binding, LoopBack detects a circular
+dependency and prints the following error:
+
+```text
+Error: Circular dependency detected:
+  lead --> @DeveloperImpl.constructor[0] -->
+  team --> @TeamImpl.constructor[0] -->
+  project --> @ProjectImpl.constructor[0] -->
+  lead
 ```
 
 ## Additional resources
