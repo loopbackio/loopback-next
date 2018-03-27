@@ -73,10 +73,6 @@ children:
   url: Using-components.html
   output: 'web, pdf'
 
-- title: 'Calling other APIs'
-  url: Calling-other-APIs-and-web-services.html
-  output: 'web, pdf'
-
 - title: 'Testing your application'
   url: Testing-your-application.html
   output: 'web, pdf'
