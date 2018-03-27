@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-npm i
-npm i -g lerna
-lerna bootstrap
-npm link
