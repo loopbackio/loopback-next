@@ -11,7 +11,7 @@ summary:
 ## What is an Application?
 
 In LoopBack 4, the
-[`Application`](http://apidocs.strongloop.com/@loopback%2fcore/#Application)
+[`Application`](http://apidocs.loopback.io/@loopback%2fcore/#Application)
 class is the central class for setting up all of your module's components,
 controllers, servers and bindings. The `Application` class extends
 [Context](Context.md), and provides the controls for starting and stopping
@@ -33,8 +33,8 @@ as a part of your setup:
 
 ```ts
 import {Application} from '@loopback/core';
-import {RestComponent, RestServer} from '@loopback/rest';
-import {SamoflangeController, DoohickeyController} from './controllers';
+import {RestComponent} from '@loopback/rest';
+import {UserController, ShoppingCartController} from './controllers';
 
 export class WidgetApplication extends Application {
   constructor() {
@@ -50,8 +50,8 @@ export class WidgetApplication extends Application {
     // You can bind to the Application-level context here.
     // app.bind('foo').to(bar);
     app.component(RestComponent);
-    app.controller(SamoflangeController);
-    app.controller(DoohickeyController);
+    app.controller(UserController);
+    app.controller(ShoppingCartController);
   }
 
   async stop() {
@@ -168,9 +168,9 @@ context under the keys `servers.public`, and `servers.private` respectively.
 ### Constructor configuration
 
 The `Application` class constructor also accepts an
-[`ApplicationConfig`](http://apidocs.strongloop.com/@loopback%2fcore/#ApplicationConfig)
+[`ApplicationConfig`](http://apidocs.loopback.io/@loopback%2fcore/#ApplicationConfig)
 object which contains component-level configurations such as
-[`RestServerConfig`](http://apidocs.strongloop.com/@loopback%2frest/#RestServerConfig).
+[`RestServerConfig`](http://apidocs.loopback.io/@loopback%2frest/#RestServerConfig).
 It will automatically create bindings for these configurations and later be
 injected through dependency injections. Visit
 [Dependency Injection](Dependency-injection.md) for more details.
@@ -198,8 +198,8 @@ Here are some tips to help avoid common pitfalls and mistakes.
 
 ### Extend from `RestApplication` when using `RestServer`
 
-If you want to use `RestServer` from our `@loopback/rest` package, we recommend
-you extend `RestApplication` in your app instead of manually binding
+If you want to use `RestServer` from `@loopback/rest` package, we recommend
+extending `RestApplication` in your app instead of manually binding
 `RestServer` or `RestComponent`. `RestApplication` already uses `RestComponent`
 and makes useful functions in `RestServer` like `handler()` available at the app
 level. This means you can call these `RestServer` functions to do all of your
