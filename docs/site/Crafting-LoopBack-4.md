@@ -502,7 +502,7 @@ LoopBack 4.
 
 ### Intermediate example
 
-[@loopback/example-log-getting-started](https://github.com/strongloop/loopback-next/tree/master/packages/example-getting-started)
+[@loopback/example-todo](https://github.com/strongloop/loopback-next/tree/master/packages/example-todo)
 
 ## Example for extension developers
 

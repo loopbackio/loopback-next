@@ -16,9 +16,41 @@ children:
   output: 'web, pdf'
   children:
 
-  - title: 'Examples and tutorials'
-    url: Examples-and-tutorials.html
+- title: 'Examples and tutorials'
+  url: Examples-and-tutorials.html
+  output: 'web, pdf'
+
+  - title: 'Todo Tutorial'
+    url: todo-tutorial.html
     output: 'web, pdf'
+
+    - title: 'Create your app scaffolding'
+      url: 'todo-tutorial/create-app-scaffolding.html'
+      output: 'web, pdf'
+
+    - title: 'Adding legacy juggler'
+      url: 'todo-tutorial/adding-legacy-juggler.html'
+      output: 'web, pdf'
+
+    - title: 'Add your Todo model'
+      url: 'todo-tutorial/add-todo-model.html'
+      output: 'web, pdf'
+
+    - title: 'Add a Datasource'
+      url: 'todo-tutorial/add-datasource.html'
+      output: 'web, pdf'
+
+    - title: 'Add a Repository'
+      url: 'todo-tutorial/add-repository.html'
+      output: 'web, pdf'
+
+    - title: 'Add a Controller'
+      url: 'todo-tutorial/add-controller.html'
+      output: 'web, pdf'
+
+    - title: 'Putting it all together'
+      url: 'todo-tutorial/putting-it-all-together.html'
+      output: 'web, pdf'
 
 - title: 'Key concepts'
   url: Concepts.html
