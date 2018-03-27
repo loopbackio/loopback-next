@@ -16,7 +16,7 @@ const path = require('path');
 
 const readFile = promisify(fs.readFile);
 
-const VALID_EXAMPLE = 'getting-started';
+const VALID_EXAMPLE = 'todo';
 const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
 const sandbox = new TestSandbox(SANDBOX_PATH);
 

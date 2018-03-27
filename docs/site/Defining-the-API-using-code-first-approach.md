@@ -47,7 +47,7 @@ manipulation of models and their properties, they will be the first to be
 defined.
 
 {% include note.html content=" `Todo` model from
-[tutorial](https://github.com/strongloop/loopback-next/blob/master/packages/example-getting-started/docs/model.md#srcmodelstodomodelts)
+[tutorial](https://github.com/strongloop/loopback-next/blob/master/packages/example-todo/docs/model.md#srcmodelstodomodelts)
 is used for demonstration here. " %}
 
 First, write a simple TypeScript class describing your model and its properties:
@@ -97,7 +97,7 @@ export class Todo {
 ### Define your routes
 
 {% include note.html content=" `TodoController` from
-[tutorial](https://github.com/strongloop/loopback-next/blob/master/packages/example-getting-started/docs/controller.md#srccontrollerstodocontrollerts-2)
+[tutorial](https://github.com/strongloop/loopback-next/blob/master/packages/example-todo/docs/controller.md#srccontrollerstodocontrollerts-2)
 is used for demonstration here. " %}
 
 Once your models are defined, create a controller to host your routes for each
@@ -169,7 +169,7 @@ the `getApiSpec()` function from your `RestServer` instance.
 
 For a complete walkthrough of developing an application with the bottom-up
 approach, see our
-[Todo application](https://github.com/strongloop/loopback-next/blob/master/packages/example-getting-started/README.md#loopbackexample-getting-started)
+[Todo application](https://github.com/strongloop/loopback-next/blob/master/packages/example-todo/README.md)
 tutorial.
 
 {% include note.html content=" If you would like to create your API manually or

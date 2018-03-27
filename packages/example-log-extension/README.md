@@ -63,7 +63,7 @@ You can obtain a local clone of this project (without the rest of our monorepo)
 using the following command:
 
 ```sh
-lb4 example getting-started
+lb4 example todo
 ```
 
 ## Tutorial
