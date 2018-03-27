@@ -21,7 +21,7 @@ this tutorial, we'll be using the memory connector provided with the Juggler.
 
 ```json
 {
-  "name": "ds",
+  "name": "db",
   "connector": "memory"
 }
 ```
