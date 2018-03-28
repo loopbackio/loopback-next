@@ -1,0 +1,12 @@
+{
+  "content": [
+    "index.ts",
+    "src/index.ts",
+    "src/decorators/authorize.ts",
+    "src/providers/authorization-metadata.ts",
+    "src/providers/authorize.ts",
+    "src/authorization-component.ts",
+    "src/keys.ts"
+  ],
+  "codeSectionDepth": 4
+}
