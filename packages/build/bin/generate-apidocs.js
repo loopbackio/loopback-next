@@ -42,7 +42,32 @@ function run(argv, options) {
     args.push('--tsconfig', config);
   }
   if (!utils.isOptionSet(apidocsOpts, '--out', '-o')) {
-    args.push('-o', 'api-docs');
+    let out = 'api-docs';
+    if (process.env.LERNA_ROOT_PATH) {
+      out = path.join(process.env.LERNA_ROOT_PATH, `docs/${out}`);
+    }
+    args.push('-o', out);
+  }
+  if (process.env.LERNA_ROOT_PATH) {
+    const pkg = require(path.join(utils.getPackageDir(), 'package.json'));
+    // Skip private packages for repo level apidocs
+    if (pkg.private) return;
+    if (!utils.isOptionSet(apidocsOpts, '--html-file')) {
+      // Generate api docs into loopback-next/docs/api-docs/<pkg-name>
+      let name = pkg.name;
+
+      const index = pkg.name.lastIndexOf('/');
+      if (index !== -1) {
+        name = pkg.name.substring(index + 1);
+      }
+      args.push('--html-file', `${name}.html`);
+    }
+
+    if (!utils.isOptionSet(apidocsOpts, '--skip-public-assets')) {
+      if (pkg.name !== '@loopback/docs') {
+        args.push('--skip-public-assets');
+      }
+    }
   }
   args.push(...apidocsOpts);
   return utils.runCLI('strong-docs/bin/cli', args, options);

@@ -12,7 +12,7 @@ const fs = require('fs-extra');
 describe('build', function() {
   this.timeout(30000);
   var cwd = process.cwd();
-  var projectDir = path.resolve(__dirname, '../fixtures');
+  var projectDir = path.resolve(__dirname, './fixtures');
 
   function cleanup() {
     var run = require('../../bin/run-clean');
@@ -50,41 +50,40 @@ describe('build', function() {
         'tsconfig.json should have been created'
       );
       var tsConfig = fs.readJSONSync(path.join(projectDir, 'tsconfig.json'));
-      assert.equal(tsConfig.extends, '../../config/tsconfig.common.json');
+      assert.equal(tsConfig.extends, '../../../config/tsconfig.common.json');
       done();
     });
   });
 
   it('honors tsconfig.build.json over tsconfig.json', () => {
     fs.writeJSONSync('tsconfig.build.json', {
-      extends: '../../config/tsconfig.common.json',
+      extends: '../../../config/tsconfig.common.json',
       include: ['src', 'test'],
       exclude: ['node_modules/**', 'packages/*/node_modules/**', '**/*.d.ts'],
     });
     fs.writeJSONSync('tsconfig.json', {
-      extends: '../../config/tsconfig.common.json',
+      extends: '../../../config/tsconfig.common.json',
       include: ['src', 'test'],
       exclude: ['node_modules/**', 'packages/*/node_modules/**', '**/*.d.ts'],
     });
     var run = require('../../bin/compile-package');
     var command = run(['node', 'bin/compile-package'], true);
     assert(
-      command.indexOf('-p ' + path.join(projectDir, 'tsconfig.build.json')) !==
-        -1,
+      command.indexOf('-p tsconfig.build.json') !== -1,
       'project level tsconfig.build.json should be honored'
     );
   });
 
   it('honors tsconfig.json if tsconfig.build.json is not present', () => {
     fs.writeJSONSync('tsconfig.json', {
-      extends: '../../config/tsconfig.common.json',
+      extends: '../../../config/tsconfig.common.json',
       include: ['src', 'test'],
       exclude: ['node_modules/**', 'packages/*/node_modules/**', '**/*.d.ts'],
     });
     var run = require('../../bin/compile-package');
     var command = run(['node', 'bin/compile-package'], true);
     assert(
-      command.indexOf('-p ' + path.join(projectDir, 'tsconfig.json')) !== -1,
+      command.indexOf('-p tsconfig.json') !== -1,
       'project level tsconfig.json should be honored'
     );
   });
@@ -212,6 +211,30 @@ describe('build', function() {
     );
   });
 
+  it('honors --skip-public-assets for apidocs', () => {
+    var run = require('../../bin/generate-apidocs');
+    var command = run(
+      ['node', 'bin/generate-apidocs', '--skip-public-assets'],
+      true
+    );
+    assert(
+      command.indexOf('--skip-public-assets') !== -1,
+      '--skip-public-assets should be honored'
+    );
+  });
+
+  it('honors --html-file for apidocs', () => {
+    var run = require('../../bin/generate-apidocs');
+    var command = run(
+      ['node', 'bin/generate-apidocs', '--html-file=my.html'],
+      true
+    );
+    assert(
+      command.indexOf('--html-file=my.html') !== -1,
+      '--html-file should be honored'
+    );
+  });
+
   it('runs tslint against ts files', done => {
     var run = require('../../bin/run-tslint');
     var childProcess = run(['node', 'bin/run-tslint']);
@@ -293,5 +316,43 @@ describe('build', function() {
       true
     );
     assert(command.indexOf('rm -rf ./dist') !== -1);
+  });
+
+  describe('with LERNA_ROOT_PATH', () => {
+    const repoRoot = path.join(__dirname, '../../../..');
+    before(() => (process.env.LERNA_ROOT_PATH = repoRoot));
+
+    it('sets --skip-public-assets for apidocs', () => {
+      var run = require('../../bin/generate-apidocs');
+      var command = run(['node', 'bin/generate-apidocs'], true);
+      assert(
+        command.indexOf('--skip-public-assets') !== -1,
+        '--skip-public-assets should be set by default'
+      );
+    });
+
+    it('sets --html-file for apidocs', () => {
+      var run = require('../../bin/generate-apidocs');
+      var command = run(['node', 'bin/generate-apidocs'], true);
+      assert(
+        command.indexOf('--html-file ts-test-proj.html') !== -1,
+        '--html-file should be set to the package name by default'
+      );
+    });
+
+    it('sets --project option for tsc', () => {
+      var run = require('../../bin/compile-package');
+      var command = run(['node', 'bin/compile-package'], true);
+      const tsConfig = path.relative(
+        repoRoot,
+        path.join(__dirname, './fixtures/tsconfig.json')
+      );
+      assert(
+        command.indexOf(`-p ${tsConfig}`) !== -1,
+        '-p should be set relative to the monorepo root'
+      );
+    });
+
+    after(() => delete process.env.LERNA_ROOT_PATH);
   });
 });
