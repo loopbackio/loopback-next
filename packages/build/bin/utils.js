@@ -181,7 +181,10 @@ function runShell(command, args, options) {
  * @param {string[]} optionNames
  */
 function isOptionSet(opts, ...optionNames) {
-  return opts.some(o => optionNames.indexOf(o) !== -1);
+  return opts.some(opt =>
+    // It can be --my-opt or --my-opt=my-value
+    optionNames.some(name => name === opt || opt.startsWith(`${name}=`))
+  );
 }
 
 exports.getCompilationTarget = getCompilationTarget;

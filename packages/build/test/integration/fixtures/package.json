@@ -1,5 +1,5 @@
 {
-  "name": "ts-test-proj",
+  "name": "@loopback/ts-test-proj",
   "version": "1.0.0",
   "description": "Test",
   "scripts": {
