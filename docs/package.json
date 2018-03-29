@@ -17,6 +17,7 @@
     "docs"
   ],
   "scripts": {
+    "build:apidocs": "lb-apidocs --html-file=index.html",
     "clean": "lb-clean loopback-docs*.tgz package api-docs"
   },
   "devDependencies": {
