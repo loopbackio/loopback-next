@@ -7,6 +7,7 @@ See [Monorepo overview](./MONOREPO.md) for a list of all packages.
 - [Building the project](#building-the-project)
 - [Running tests](#running-tests)
 - [Coding rules](#coding-rules)
+- [File naming convention](#file-naming-convention)
 - [API documentation](#api-documentation)
 - [Commit message guidelines](#commit-message-guidelines)
 - [Releasing new versions](#releasing-new-versions)
@@ -112,6 +113,30 @@ npm script `lint:fix`.
 
 ```sh
 npm run lint:fix
+```
+## File naming convention
+
+For consistency, we follow
+[Angular's file naming convention](https://angular.io/guide/styleguide#separate-file-names-with-dots-and-dashes).
+It helps to derive the usage of files by inspecting the names.
+Besides the LoopBack 4 codebase, we also follow this naming convention in our generated artifacts from the CLI tooling:
+`{name}`.`{artifact-type}`.ts
+
+Examples are:
+```
+src/decorators/authenticate.decorator.ts
+src/boot.component.ts
+```
+
+In addition, files under `test` folder are categorized
+according to the type of tests (unit, acceptance and integration),
+with the convention `{name}.{test-type}.ts`.
+
+Examples are:
+```
+test/acceptance/application.acceptance.ts
+test/integration/user.controller.integration.ts
+test/unit/application.unit.ts
 ```
 
 ## API Documentation
