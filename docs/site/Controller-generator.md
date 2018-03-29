@@ -76,7 +76,15 @@ Here's an example of what the template will produce given a `Todo` model and a
 
 ```ts
 import {Filter, Where} from '@loopback/repository';
-import {post, param, get, put, patch, del} from '@loopback/openapi-v2';
+import {
+  post,
+  param,
+  get,
+  put,
+  patch,
+  del,
+  requestBody
+} from '@loopback/rest';
 import {inject} from '@loopback/context';
 import {Todo} from '../models';
 import {TodoRepository} from '../repositories';
@@ -88,7 +96,7 @@ export class TodoController {
   ) {}
 
   @post('/todo')
-  async create(@param.body('obj') obj: Todo): Promise<Todo> {
+  async create(@requestBody() obj: Todo): Promise<Todo> {
     return await this.todoRepository.create(obj);
   }
 
@@ -105,7 +113,7 @@ export class TodoController {
   @patch('/todo')
   async updateAll(
     @param.query.string('where') where: Where,
-    @param.body('obj') obj: Todo,
+    @reqeustBody() obj: Todo,
   ): Promise<number> {
     return await this.todoRepository.updateAll(where, obj);
   }
@@ -123,7 +131,7 @@ export class TodoController {
   @patch('/todo/{id}')
   async updateById(
     @param.path.number('id') id: number,
-    @param.body('obj') obj: Todo,
+    @requestBody() obj: Todo,
   ): Promise<boolean> {
     return await this.todoRepository.updateById(id, obj);
   }
