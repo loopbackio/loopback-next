@@ -100,16 +100,16 @@ export class RestApplication extends Application implements HttpServerLike {
    * @param path URL path of the endpoint
    * @param spec The OpenAPI spec describing the endpoint (operation)
    * @param controllerCtor Controller constructor
-   * @param methodName The name of the controller method
    * @param controllerFactory A factory function to create controller instance
+   * @param methodName The name of the controller method
    */
   route<T>(
     verb: string,
     path: string,
     spec: OperationObject,
     controllerCtor: ControllerClass<T>,
+    controllerFactory: ControllerFactory<T>,
     methodName: string,
-    controllerFactory?: ControllerFactory<T>,
   ): Binding;
 
   /**
@@ -132,8 +132,8 @@ export class RestApplication extends Application implements HttpServerLike {
     path?: string,
     spec?: OperationObject,
     controllerCtor?: ControllerClass<T>,
-    methodName?: string,
     controllerFactory?: ControllerFactory<T>,
+    methodName?: string,
   ): Binding {
     const server = this.restServer;
     if (typeof routeOrVerb === 'object') {
@@ -144,8 +144,8 @@ export class RestApplication extends Application implements HttpServerLike {
         path!,
         spec!,
         controllerCtor!,
+        controllerFactory!,
         methodName!,
-        controllerFactory,
       );
     }
   }

@@ -3,10 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ControllerRoute} from '../../..';
+import {
+  ControllerRoute,
+  createControllerFactoryForClass,
+  createControllerFactoryForBinding,
+} from '../../..';
 import {expect} from '@loopback/testlab';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
-import {ControllerFactory, createControllerFactory} from '../../..';
+import {ControllerFactory} from '../../..';
 
 describe('ControllerRoute', () => {
   it('rejects routes with no methodName', () => {
@@ -20,7 +24,14 @@ describe('ControllerRoute', () => {
   it('creates a factory', () => {
     const spec = anOperationSpec().build();
 
-    const route = new MyRoute('get', '/greet', spec, MyController, 'greet');
+    const route = new MyRoute(
+      'get',
+      '/greet',
+      spec,
+      MyController,
+      myControllerFactory,
+      'greet',
+    );
 
     expect(route._controllerFactory).to.be.a.Function();
   });
@@ -28,7 +39,7 @@ describe('ControllerRoute', () => {
   it('honors a factory', () => {
     const spec = anOperationSpec().build();
 
-    const factory = createControllerFactory<MyController>(
+    const factory = createControllerFactoryForBinding<MyController>(
       'controllers.my-controller',
     );
     const route = new MyRoute(
@@ -36,8 +47,8 @@ describe('ControllerRoute', () => {
       '/greet',
       spec,
       MyController,
-      'greet',
       factory,
+      'greet',
     );
 
     expect(route._controllerFactory).to.be.exactly(factory);
@@ -46,7 +57,14 @@ describe('ControllerRoute', () => {
   it('infers controllerName from the class', () => {
     const spec = anOperationSpec().build();
 
-    const route = new MyRoute('get', '/greet', spec, MyController, 'greet');
+    const route = new MyRoute(
+      'get',
+      '/greet',
+      spec,
+      MyController,
+      myControllerFactory,
+      'greet',
+    );
 
     expect(route._controllerName).to.eql(MyController.name);
   });
@@ -55,7 +73,14 @@ describe('ControllerRoute', () => {
     const spec = anOperationSpec().build();
     spec['x-controller-name'] = 'my-controller';
 
-    const route = new MyRoute('get', '/greet', spec, MyController, 'greet');
+    const route = new MyRoute(
+      'get',
+      '/greet',
+      spec,
+      MyController,
+      myControllerFactory,
+      'greet',
+    );
 
     expect(route._controllerName).to.eql('my-controller');
   });
@@ -65,6 +90,8 @@ describe('ControllerRoute', () => {
       return 'Hello';
     }
   }
+
+  const myControllerFactory = createControllerFactoryForClass(MyController);
 
   class MyRoute extends ControllerRoute<MyController> {
     _controllerFactory: ControllerFactory<MyController>;

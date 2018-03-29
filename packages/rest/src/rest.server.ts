@@ -10,10 +10,10 @@ import {
   Route,
   ControllerRoute,
   RouteEntry,
-  createControllerFactory,
   ControllerFactory,
   ControllerClass,
   ControllerInstance,
+  createControllerFactoryForBinding,
 } from './router/routing-table';
 import {ParsedRequest} from './internal-types';
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
@@ -246,8 +246,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
       if (apiSpec.components && apiSpec.components.schemas) {
         this._httpHandler.registerApiDefinitions(apiSpec.components.schemas);
       }
-      const controllerFactory = createControllerFactory(b.key);
-      this._httpHandler.registerController(ctor, apiSpec, controllerFactory);
+      const controllerFactory = createControllerFactoryForBinding(b.key);
+      this._httpHandler.registerController(apiSpec, ctor, controllerFactory);
     }
 
     for (const b of this.find('routes.*')) {
@@ -296,13 +296,12 @@ export class RestServer extends Context implements Server, HttpServerLike {
         );
       }
 
-      const controllerFactory = createControllerFactory(b.key);
+      const controllerFactory = createControllerFactoryForBinding(b.key);
       const route = new ControllerRoute(
         verb,
         path,
         spec,
         ctor,
-        undefined,
         controllerFactory,
       );
       this._httpHandler.registerRoute(route);
@@ -385,16 +384,16 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * @param path URL path of the endpoint
    * @param spec The OpenAPI spec describing the endpoint (operation)
    * @param controllerCtor Controller constructor
-   * @param methodName The name of the controller method
    * @param controllerFactory A factory function to create controller instance
+   * @param methodName The name of the controller method
    */
   route<I>(
     verb: string,
     path: string,
     spec: OperationObject,
     controllerCtor: ControllerClass<I>,
+    controllerFactory: ControllerFactory<I>,
     methodName: string,
-    controllerFactory?: ControllerFactory<I>,
   ): Binding;
 
   /**
@@ -417,8 +416,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
     path?: string,
     spec?: OperationObject,
     controllerCtor?: ControllerClass<I>,
-    methodName?: string,
     controllerFactory?: ControllerFactory<I>,
+    methodName?: string,
   ): Binding {
     if (typeof routeOrVerb === 'object') {
       const r = routeOrVerb;
@@ -459,8 +458,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
         path,
         spec,
         controllerCtor,
-        methodName,
         controllerFactory,
+        methodName,
       ),
     );
   }

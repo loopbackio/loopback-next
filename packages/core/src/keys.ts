@@ -5,7 +5,6 @@
 
 import {BindingKey} from '@loopback/context';
 import {Application, ControllerClass} from './application';
-import {ControllerInstance} from '../../rest/src';
 
 /**
  * Namespace for core binding keys
@@ -59,7 +58,5 @@ export namespace CoreBindings {
    * Binding key for the controller instance resolved in the current request
    * context
    */
-  export const CONTROLLER_CURRENT = BindingKey.create<ControllerInstance>(
-    'controller.current',
-  );
+  export const CONTROLLER_CURRENT = BindingKey.create('controller.current');
 }
