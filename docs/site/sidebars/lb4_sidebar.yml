@@ -14,15 +14,16 @@ children:
 - title: 'Getting started'
   url: Getting-started.html
   output: 'web, pdf'
-  children:
 
 - title: 'Examples and tutorials'
   url: Examples-and-tutorials.html
   output: 'web, pdf'
+  children:
 
   - title: 'Todo Tutorial'
     url: todo-tutorial.html
     output: 'web, pdf'
+    children:
 
     - title: 'Create your app scaffolding'
       url: 'todo-tutorial/create-app-scaffolding.html'
