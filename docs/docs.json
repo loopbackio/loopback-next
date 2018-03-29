@@ -1,0 +1,6 @@
+{
+  "content": ["README.md"],
+  "assets": {
+    "/apidocs.html": "apidocs.html"
+  }
+}
