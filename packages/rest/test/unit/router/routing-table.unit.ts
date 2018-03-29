@@ -40,7 +40,7 @@ describe('RoutingTable', () => {
     }
     const spec = getControllerSpec(TestController);
     const table = new RoutingTable();
-    table.registerController(TestController, spec);
+    table.registerController(spec, TestController);
     const paths = table.describeApiPaths();
     const params = paths['/greet']['get'].parameters;
     expect(params).to.have.property('length', 1);
@@ -59,7 +59,7 @@ describe('RoutingTable', () => {
     class TestController {}
 
     const table = new RoutingTable();
-    table.registerController(TestController, spec);
+    table.registerController(spec, TestController);
 
     const request = givenRequest({
       method: 'get',
@@ -90,7 +90,7 @@ describe('RoutingTable', () => {
     class TestController {}
 
     const table = new RoutingTable();
-    table.registerController(TestController, spec);
+    table.registerController(spec, TestController);
 
     const request = givenRequest({
       method: 'get',

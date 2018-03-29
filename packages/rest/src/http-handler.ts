@@ -35,11 +35,11 @@ export class HttpHandler {
   }
 
   registerController<T>(
-    controllerCtor: ControllerClass<T>,
     spec: ControllerSpec,
+    controllerCtor: ControllerClass<T>,
     controllerFactory?: ControllerFactory<T>,
   ) {
-    this._routes.registerController(controllerCtor, spec, controllerFactory);
+    this._routes.registerController(spec, controllerCtor, controllerFactory);
   }
 
   registerRoute(route: RouteEntry) {

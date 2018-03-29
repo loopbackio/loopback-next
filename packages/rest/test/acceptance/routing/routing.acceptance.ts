@@ -14,9 +14,9 @@ import {
   SequenceActions,
   HttpServerLike,
   ControllerClass,
-  createControllerFactory,
-  ControllerFactory,
   ControllerInstance,
+  createControllerFactoryForClass,
+  createControllerFactoryForInstance,
 } from '../../..';
 
 import {api, get, post, param, requestBody} from '@loopback/openapi-v3';
@@ -554,7 +554,14 @@ describe('Routing', () => {
       .withParameter({name: 'name', in: 'query', type: 'string'})
       .build();
 
-    server.route('get', '/greet', spec, MyController, 'greet');
+    server.route(
+      'get',
+      '/greet',
+      spec,
+      MyController,
+      createControllerFactoryForClass(MyController),
+      'greet',
+    );
 
     const client = whenIMakeRequestTo(server);
     await client.get('/greet?name=world').expect(200, 'hello world');
@@ -574,8 +581,8 @@ describe('Routing', () => {
       .withParameter({name: 'name', in: 'query', type: 'string'})
       .build();
 
-    const factory = createControllerFactory(MyController);
-    server.route('get', '/greet', spec, MyController, 'greet', factory);
+    const factory = createControllerFactoryForClass(MyController);
+    server.route('get', '/greet', spec, MyController, factory, 'greet');
 
     const client = whenIMakeRequestTo(server);
     await client.get('/greet?name=world').expect(200, 'hello world');
@@ -650,7 +657,8 @@ describe('Routing', () => {
         .withParameter({name: 'name', in: 'query', type: 'string'})
         .build();
 
-      app.route('get', '/greet', spec, MyController, 'greet');
+      const factory = createControllerFactoryForClass(MyController);
+      app.route('get', '/greet', spec, MyController, factory, 'greet');
 
       await whenIMakeRequestTo(app)
         .get('/greet?name=world')
@@ -676,9 +684,8 @@ describe('Routing', () => {
         .withParameter({name: 'name', in: 'query', type: 'string'})
         .build();
 
-      const factory: ControllerFactory<MyController> = ctx =>
-        new MySubController();
-      app.route('get', '/greet', spec, MyController, 'greet', factory);
+      const factory = createControllerFactoryForInstance(new MySubController());
+      app.route('get', '/greet', spec, MyController, factory, 'greet');
 
       await whenIMakeRequestTo(app)
         .get('/greet?name=world')

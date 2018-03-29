@@ -454,7 +454,7 @@ describe('HttpHandler', () => {
     ctor: new (...args: any[]) => Object,
     spec: ControllerSpec,
   ) {
-    handler.registerController(ctor, spec);
+    handler.registerController(spec, ctor);
   }
 
   function givenClient() {

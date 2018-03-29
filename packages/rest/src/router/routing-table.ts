@@ -90,13 +90,13 @@ export class RoutingTable {
 
   /**
    * Register a controller as the route
-   * @param controllerCtor
    * @param spec
+   * @param controllerCtor
    * @param controllerFactory
    */
   registerController<T>(
-    controllerCtor: ControllerClass<T>,
     spec: ControllerSpec,
+    controllerCtor: ControllerClass<T>,
     controllerFactory?: ControllerFactory<T>,
   ) {
     assert(
@@ -119,7 +119,6 @@ export class RoutingTable {
           fullPath,
           opSpec,
           controllerCtor,
-          undefined,
           controllerFactory,
         );
         this.registerRoute(route);
@@ -358,16 +357,16 @@ export class ControllerRoute<T> extends BaseRoute {
    * @param path http request path
    * @param spec OpenAPI operation spec
    * @param controllerCtor Controller class
-   * @param methodName Controller method name, default to `x-operation-name`
    * @param controllerFactory A factory function to create a controller instance
+   * @param methodName Controller method name, default to `x-operation-name`
    */
   constructor(
     verb: string,
     path: string,
     spec: OperationObject,
     controllerCtor: ControllerClass<T>,
-    methodName?: string,
     controllerFactory?: ControllerFactory<T>,
+    methodName?: string,
   ) {
     const controllerName = spec['x-controller-name'] || controllerCtor.name;
     methodName = methodName || spec['x-operation-name'];
@@ -395,14 +394,11 @@ export class ControllerRoute<T> extends BaseRoute {
       ),
     );
 
+    this._controllerFactory =
+      controllerFactory || createControllerFactoryForClass(controllerCtor);
     this._controllerCtor = controllerCtor;
     this._controllerName = controllerName || controllerCtor.name;
     this._methodName = methodName;
-
-    if (controllerFactory == null) {
-      controllerFactory = createControllerFactory(controllerCtor);
-    }
-    this._controllerFactory = controllerFactory;
   }
 
   describe(): string {
@@ -449,31 +445,41 @@ function describeOperationParameters(opSpec: OperationObject) {
 }
 
 /**
- * Create a controller factory function
- * @param source The source can be one of the following:
- * - A binding key
- * - A controller class
- * - A controller instance
+ * Create a controller factory function for a given binding key
+ * @param key Binding key
  */
-export function createControllerFactory<T>(
-  source: ControllerClass<T> | string | T,
+export function createControllerFactoryForBinding<T>(
+  key: string,
 ): ControllerFactory<T> {
-  if (typeof source === 'string') {
-    return ctx => ctx.get<T>(source);
-  } else if (typeof source === 'function') {
-    const ctor = source as ControllerClass<T>;
-    return async ctx => {
-      // By default, we get an instance of the controller from the context
-      // using `controllers.<controllerName>` as the key
-      let inst = await ctx.get<T>(`controllers.${ctor.name}`, {
-        optional: true,
-      });
-      if (inst === undefined) {
-        inst = await instantiateClass<T>(ctor, ctx);
-      }
-      return inst;
-    };
-  } else {
-    return ctx => source;
-  }
+  return ctx => ctx.get<T>(key);
+}
+
+/**
+ * Create a controller factory function for a given class
+ * @param controllerCtor Controller class
+ */
+export function createControllerFactoryForClass<T>(
+  controllerCtor: ControllerClass<T>,
+): ControllerFactory<T> {
+  return async ctx => {
+    // By default, we get an instance of the controller from the context
+    // using `controllers.<controllerName>` as the key
+    let inst = await ctx.get<T>(`controllers.${controllerCtor.name}`, {
+      optional: true,
+    });
+    if (inst === undefined) {
+      inst = await instantiateClass<T>(controllerCtor, ctx);
+    }
+    return inst;
+  };
+}
+
+/**
+ * Create a controller factory function for a given instance
+ * @param controllerCtor Controller instance
+ */
+export function createControllerFactoryForInstance<T>(
+  controllerInst: T,
+): ControllerFactory<T> {
+  return ctx => controllerInst;
 }

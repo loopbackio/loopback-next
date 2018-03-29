@@ -17,7 +17,9 @@ export {
   ControllerClass,
   ControllerInstance,
   ControllerFactory,
-  createControllerFactory,
+  createControllerFactoryForBinding,
+  createControllerFactoryForClass,
+  createControllerFactoryForInstance,
 } from './router/routing-table';
 
 export * from './providers';

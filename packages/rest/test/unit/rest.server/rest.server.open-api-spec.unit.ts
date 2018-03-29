@@ -5,7 +5,12 @@
 
 import {expect, validateApiSpec} from '@loopback/testlab';
 import {Application} from '@loopback/core';
-import {RestServer, Route, RestComponent} from '../../..';
+import {
+  RestServer,
+  Route,
+  RestComponent,
+  createControllerFactoryForClass,
+} from '../../..';
 import {get, post, requestBody} from '@loopback/openapi-v3';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {model, property} from '@loopback/repository';
@@ -63,6 +68,7 @@ describe('RestServer.getApiSpec()', () => {
       '/greet.json',
       {responses: {}},
       MyController,
+      createControllerFactoryForClass(MyController),
       'greet',
     );
     expect(binding.key).to.eql('routes.get %2Fgreet%2Ejson');
@@ -88,7 +94,14 @@ describe('RestServer.getApiSpec()', () => {
       greet() {}
     }
 
-    server.route('get', '/greet', {responses: {}}, MyController, 'greet');
+    server.route(
+      'get',
+      '/greet',
+      {responses: {}},
+      MyController,
+      createControllerFactoryForClass(MyController),
+      'greet',
+    );
 
     const spec = server.getApiSpec();
     expect(spec.paths).to.eql({
