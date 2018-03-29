@@ -4,8 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as assert from 'assert';
-import {Model, Entity} from '../model';
-import {Repository} from '../repository';
+import {Entity} from '../model';
 import {DataSource} from '../datasource';
 import {
   DefaultCrudRepository,
@@ -13,6 +12,19 @@ import {
 } from '../legacy-juggler-bridge';
 import {juggler} from '../loopback-datasource-juggler';
 import {inject, Context, Injection} from '@loopback/context';
+import {Class} from '../common-types';
+import {Repository} from '../repository';
+import {Model} from '../model';
+
+/**
+ * Type definition for decorators returned by `@repository` decorator factory
+ */
+export type RepositoryDecorator = (
+  target: Object,
+  key?: string | symbol,
+  // tslint:disable-next-line:no-any
+  descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
+) => void;
 
 /**
  * Metadata for a repository
@@ -42,7 +54,7 @@ export class RepositoryMetadata {
   /**
    * Constructor for RepositoryMetadata
    *
-   * @param model Name or class of the model. If the value is a string and
+   * @param modelOrRepo Name or class of the model. If the value is a string and
    * `dataSource` is not present, it will treated as the name of a predefined
    * repository
    * @param dataSource Name or instance of the data source
@@ -76,41 +88,85 @@ export class RepositoryMetadata {
 }
 
 /**
- * Decorator for model definitions
- * @param model Name of the repo or name/class of the model
- * @param dataSource Name or instance of the data source
- * @returns {(target:AnyType)}
+ * Decorator for repository injections on properties or method arguments
  *
- * For example:
+ * ```ts
+ * class CustomerController {
+ *   @repository(CustomerRepository) public custRepo: CustomerRepository;
  *
- * - @repository('myCustomerRepo')
- * - @repository('Customer', 'mysqlDataSource')
- * - @repository(Customer, mysqlDataSource)
- * - @repository('Customer', mysqlDataSource)
- * - @repository(Customer, 'mysqlDataSource')
+ *   constructor(
+ *     @repository(ProductRepository) public prodRepo: ProductRepository,
+ *   ) {}
+ *   // ...
+ * }
+ * ```
+ *
+ * @param repositoryName Name of the repo
  */
-export function repository<T extends Model>(
+export function repository(
+  repositoryName: string | Class<Repository<Model>>,
+): RepositoryDecorator;
+
+/**
+ * Decorator for DefaultCrudRepository generation and injection on properties
+ * or method arguments based on the given model and dataSource (or their names)
+ *
+ * ```ts
+ * class CustomerController {
+ *   @repository('Customer', 'mySqlDataSource')
+ *   public custRepo: DefaultCrudRepository<
+ *     Customer,
+ *     typeof Customer.prototype.id
+ *   >;
+ *
+ *   constructor(
+ *     @repository(Product, mySqlDataSource)
+ *     public prodRepo: DefaultCrudRepository<
+ *       Product,
+ *       typeof Product.prototype.id
+ *     >,
+ *   ) {}
+ *   // ...
+ * }
+ * ```
+ *
+ * @param model Name/class of the model
+ * @param dataSource Name/instance of the dataSource
+ */
+export function repository(
   model: string | typeof Entity,
+  dataSource: string | juggler.DataSource,
+): RepositoryDecorator;
+
+export function repository(
+  modelOrRepo: string | Class<Repository<Model>> | typeof Entity,
   dataSource?: string | juggler.DataSource,
 ) {
-  const meta = new RepositoryMetadata(model, dataSource);
+  const stringOrModel =
+    typeof modelOrRepo !== 'string' && modelOrRepo.prototype.execute
+      ? modelOrRepo.name
+      : (modelOrRepo as typeof Entity);
+  const meta = new RepositoryMetadata(stringOrModel, dataSource);
   return function(
     target: Object,
     key?: symbol | string,
-    descriptor?: TypedPropertyDescriptor<Repository<T>> | number,
+    // tslint:disable-next-line:no-any
+    descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ) {
-    if (key || typeof descriptor === 'number') {
+    if (key || typeof descriptorOrIndex === 'number') {
       if (meta.name) {
         // Make it shortcut to `@inject('repositories.MyRepo')`
         // Please note key is undefined for constructor. If strictNullChecks
         // is true, the compiler will complain as reflect-metadata won't
         // accept undefined or null for key. Use ! to fool the compiler.
-        inject('repositories.' + meta.name, meta)(target, key!, descriptor);
+        inject('repositories.' + meta.name, meta)(
+          target,
+          key!,
+          descriptorOrIndex,
+        );
       } else {
         // Use repository-factory to create a repository from model + dataSource
-        // inject('repository-factory', meta)(target, key!, descriptor);
-        inject('', meta, resolve)(target, key!, descriptor);
-        // throw new Error('@repository(model, dataSource) is not implemented');
+        inject('', meta, resolve)(target, key!, descriptorOrIndex);
       }
       return;
     }

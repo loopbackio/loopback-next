@@ -18,12 +18,7 @@ import {
 } from '@loopback/rest';
 
 export class TodoController {
-  // TODO(bajtos) Fix documentation (and argument names?) of @repository()
-  // to allow the usage below.
-  // See https://github.com/strongloop/loopback-next/issues/744
-  constructor(
-    @repository(TodoRepository.name) protected todoRepo: TodoRepository,
-  ) {}
+  constructor(@repository(TodoRepository) protected todoRepo: TodoRepository) {}
 
   @post('/todo')
   async createTodo(@requestBody() todo: Todo) {

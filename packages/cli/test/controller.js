@@ -281,10 +281,7 @@ describe('lb4 controller', () => {
     assert.fileContent(tmpDir + withInputName, /class FooBarController/);
 
     // Repository and injection
-    assert.fileContent(
-      tmpDir + withInputName,
-      /\@inject\('repositories.BarRepository'\)/
-    );
+    assert.fileContent(tmpDir + withInputName, /\@repository\(BarRepository\)/);
     assert.fileContent(
       tmpDir + withInputName,
       /barRepository \: BarRepository/

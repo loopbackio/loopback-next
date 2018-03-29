@@ -1,4 +1,4 @@
-import {Filter, Where} from '@loopback/repository';
+import {Filter, Where, repository} from '@loopback/repository';
 import {
   post,
   param,
@@ -8,14 +8,13 @@ import {
   del,
   requestBody
 } from '@loopback/openapi-v3';
-import {inject} from '@loopback/context';
 import {<%= modelName %>} from '../models';
 import {<%= repositoryName %>} from '../repositories';
 
 export class <%= name %>Controller {
 
   constructor(
-    @inject('repositories.<%= repositoryName %>')
+    @repository(<%= repositoryName %>)
     public <%= repositoryNameCamel %> : <%= repositoryName %>,
   ) {}
 
