@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.5.2...@loopback/cli@0.6.0) (2018-03-29)
+
+
+### Bug Fixes
+
+* **cli:** exit gracefully if the project name fails validation ([dfdf090](https://github.com/strongloop/loopback-next/commit/dfdf090))
+* **cli:** remove automatic license generation ([537ff86](https://github.com/strongloop/loopback-next/commit/537ff86))
+
+
+### Code Refactoring
+
+* renamed example-getting-started to example-todo ([7a09f1b](https://github.com/strongloop/loopback-next/commit/7a09f1b))
+
+
+### BREAKING CHANGES
+
+* example-getting-started is now example-todo
+
+
+
+
 <a name="0.5.2"></a>
 ## [0.5.2](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.5.1...@loopback/cli@0.5.2) (2018-03-23)
 

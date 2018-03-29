@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-rpc-server@0.3.1...@loopback/example-rpc-server@0.4.0) (2018-03-29)
+
+
+### Code Refactoring
+
+* renamed example-getting-started to example-todo ([7a09f1b](https://github.com/strongloop/loopback-next/commit/7a09f1b))
+
+
+### BREAKING CHANGES
+
+* example-getting-started is now example-todo
+
+
+
+
 <a name="0.3.1"></a>
 ## [0.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-rpc-server@0.3.0...@loopback/example-rpc-server@0.3.1) (2018-03-23)
 

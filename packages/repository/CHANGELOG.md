@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.3.1...@loopback/repository@0.4.0) (2018-03-29)
+
+
+### Bug Fixes
+
+* **metadata:** refine clone of decoration spec ([544052e](https://github.com/strongloop/loopback-next/commit/544052e))
+* **repository:** make sure examples are compiled ([b95f1dc](https://github.com/strongloop/loopback-next/commit/b95f1dc))
+
+
+### BREAKING CHANGES
+
+* **metadata:** instances of user-defined classes are not cloned any more.
+
+See https://github.com/strongloop/loopback-next/issues/1182. The root
+cause is that DataSource instances are cloned incorrectly.
+
+
+
+
 <a name="0.3.1"></a>
 ## [0.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.3.0...@loopback/repository@0.3.1) (2018-03-23)
 

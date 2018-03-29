@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@0.4.0...@loopback/context@0.5.0) (2018-03-29)
+
+
+### Bug Fixes
+
+* **context:** disable deep clone of injection metadata ([7d8a84c](https://github.com/strongloop/loopback-next/commit/7d8a84c))
+
+
+### BREAKING CHANGES
+
+* **context:** the `metadata` parameter of `@inject` is no longer
+cloned deeply. It's still cloned shallowly.
+
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@0.3.0...@loopback/context@0.4.0) (2018-03-23)
 

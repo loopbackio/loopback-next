@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@0.4.1...@loopback/openapi-v3@0.5.0) (2018-03-29)
+
+
+### Bug Fixes
+
+* **metadata:** refine clone of decoration spec ([544052e](https://github.com/strongloop/loopback-next/commit/544052e))
+
+
+### BREAKING CHANGES
+
+* **metadata:** instances of user-defined classes are not cloned any more.
+
+See https://github.com/strongloop/loopback-next/issues/1182. The root
+cause is that DataSource instances are cloned incorrectly.
+
+
+
+
 <a name="0.4.1"></a>
 ## [0.4.1](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@0.4.0...@loopback/openapi-v3@0.4.1) (2018-03-23)
 
