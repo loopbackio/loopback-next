@@ -93,7 +93,7 @@ import {post, requestBody, get, param} from '@loopback/openapi-v3';
 export class NoteController {
   constructor(
     // Use constructor dependency injection to set up the repository
-    @repository(NoteRepository.name) public noteRepo: NoteRepository,
+    @repository(NoteRepository) public noteRepo: NoteRepository,
   ) {}
 
   // Create a new note

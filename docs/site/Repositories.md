@@ -155,7 +155,7 @@ DataSource for in the constructor of your controller class as follows:
 ```ts
 export class AccountController {
   constructor(
-    @repository(AccountRepository.name) public repository: AccountRepository,
+    @repository(AccountRepository) public repository: AccountRepository,
   ) {}
 ```
 
@@ -331,7 +331,7 @@ Injection:
 
    ```ts
    export class AccountController {
-     @repository(NewRepository.name) private repository: NewRepository;
+     @repository(NewRepository) private repository: NewRepository;
    }
    ```
 

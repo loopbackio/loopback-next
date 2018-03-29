@@ -76,7 +76,7 @@ Here's an example of what the template will produce given a `Todo` model and a
 `TodoRepository`:
 
 ```ts
-import {Filter, Where} from '@loopback/repository';
+import {Filter, Where, repository} from '@loopback/repository';
 import {
   post,
   param,
@@ -86,13 +86,12 @@ import {
   del,
   requestBody
 } from '@loopback/rest';
-import {inject} from '@loopback/context';
 import {Todo} from '../models';
 import {TodoRepository} from '../repositories';
 
 export class TodoController {
   constructor(
-    @inject('repositories.TodoRepository')
+    @repository(TodoRepository)
     public todoRepository: TodoRepository,
   ) {}
 

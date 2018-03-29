@@ -195,7 +195,7 @@ import {repository} from '@loopback/repository';
 
 export class HelloController {
   constructor(
-    @repository(HelloRepository.name) protected repository: HelloRepository,
+    @repository(HelloRepository) protected repository: HelloRepository,
   ) {}
 
   // returns a list of our objects
@@ -273,7 +273,7 @@ import {repository} from '@loopback/repository';
 
 export class HelloController {
   constructor(
-    @repository(HelloRepository.name) protected repo: HelloRepository,
+    @repository(HelloRepository) protected repo: HelloRepository,
   ) {}
 
   // returns a list of our objects

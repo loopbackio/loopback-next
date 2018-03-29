@@ -41,7 +41,7 @@ import {TodoRepository} from '../repositories';
 
 export class TodoController {
   constructor(
-    @repository(TodoRepository.name) protected todoRepo: TodoRepository,
+    @repository(TodoRepository) protected todoRepo: TodoRepository,
   ) {}
 }
 ```
@@ -71,7 +71,7 @@ import {HttpErrors, post, param, requestBody} from '@loopback/rest';
 
 export class TodoController {
   constructor(
-    @repository(TodoRepository.name) protected todoRepo: TodoRepository,
+    @repository(TodoRepository) protected todoRepo: TodoRepository,
   ) {}
 
   @post('/todo')
@@ -121,7 +121,7 @@ import {
 
 export class TodoController {
   constructor(
-    @repository(TodoRepository.name) protected todoRepo: TodoRepository,
+    @repository(TodoRepository) protected todoRepo: TodoRepository,
   ) {}
 
   @post('/todo')
