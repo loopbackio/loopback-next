@@ -16,7 +16,12 @@
     "LoopBack",
     "docs"
   ],
-  "scripts": {},
+  "scripts": {
+    "clean": "lb-clean loopback-docs*.tgz package api-docs"
+  },
+  "devDependencies": {
+    "@loopback/build": "^0.3.3"
+  },
   "publishConfig": {
     "access": "public"
   },

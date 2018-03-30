@@ -36,7 +36,6 @@
     "index.js",
     "index.d.ts",
     "dist/src",
-    "api-docs",
     "src"
   ],
   "publishConfig": {

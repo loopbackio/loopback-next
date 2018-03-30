@@ -8,7 +8,6 @@
   "scripts": {
     "build": "lb-tsc es2017",
     "clean": "lb-clean loopback-testlab*.tgz dist package api-docs",
-    "prepublishOnly": "npm run build",
     "pretest": "npm run build",
     "test": "lb-mocha \"DIST/test\"",
     "verify": "npm pack && tar xf loopback-testlab*.tgz && tree package && npm run clean"

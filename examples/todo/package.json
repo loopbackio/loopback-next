@@ -12,7 +12,6 @@
     "build": "lb-tsc es2017",
     "build:apidocs": "lb-apidocs",
     "clean": "lb-clean *example-todo*.tgz dist package api-docs",
-    "prepublishOnly": "npm run build && npm run build:apidocs",
     "pretest": "npm run build",
     "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
     "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",
