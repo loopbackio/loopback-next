@@ -1,10 +1,20 @@
 {
-  "lerna": "2.8.0",
+  "lerna": "2.9.1",
   "packages": ["packages/*", "docs"],
   "command": {
     "publish": {
       "conventionalCommits": true,
       "message": "chore: publish release"
+    },
+    "run": {
+      "prefix": false,
+      "loglevel": "silent",
+      "parallel": true
+    },
+    "clean": {
+      "loglevel": "silent",
+      "concurrency": 8,
+      "yes": true
     }
   },
   "version": "independent"
