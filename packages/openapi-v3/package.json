@@ -19,7 +19,6 @@
     "build:apidocs": "lb-apidocs",
     "clean": "lb-clean loopback-openapi-v3*.tgz dist* package",
     "integration": "lb-mocha \"DIST/test/integration/**/*.js\"",
-    "prepublishOnly": "npm run build && npm run build:apidocs",
     "pretest": "npm run build",
     "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/integration/**/*.js\"",
     "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",
@@ -38,7 +37,6 @@
     "index.js",
     "index.d.ts",
     "dist/src",
-    "api-docs",
     "src"
   ],
   "publishConfig": {

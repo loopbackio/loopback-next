@@ -15,7 +15,6 @@
     "build:dist": "lb-tsc es2017",
     "build:apidocs": "lb-apidocs",
     "clean": "lb-clean loopback-boot*.tgz dist package api-docs",
-    "prepublishOnly": "npm run build && npm run build:apidocs",
     "pretest": "npm run build:current",
     "integration": "lb-mocha \"DIST/test/integration/**/*.js\"",
     "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/integration/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
@@ -50,7 +49,6 @@
     "dist/index.js",
     "dist/index.js.map",
     "dist/index.d.ts",
-    "api-docs",
     "src"
   ],
   "repository": {

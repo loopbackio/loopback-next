@@ -24,8 +24,7 @@
     "pretest": "npm run clean && npm run build",
     "test": "lb-mocha DIST/test",
     "posttest": "npm run lint",
-    "start": "npm run build && node .",
-    "prepublishOnly": "npm run build"
+    "start": "npm run build && node ."
   },
   "repository": {
     "type": "git",

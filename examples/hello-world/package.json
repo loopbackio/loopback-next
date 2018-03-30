@@ -12,7 +12,6 @@
     "build": "lb-tsc es2017",
     "build:apidocs": "lb-apidocs",
     "clean": "lb-clean *example-hello-world*.tgz dist package api-docs",
-    "prepublishOnly": "npm run build && npm run build:apidocs",
     "verify": "npm pack && tar xf *example-hello-world*.tgz && tree package && npm run clean",
     "start": "npm run build && node ."
   },
