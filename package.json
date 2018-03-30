@@ -17,7 +17,7 @@
     "@types/node": "^8.10.0",
     "coveralls": "^3.0.0",
     "cz-conventional-changelog": "^2.1.0",
-    "lerna": "^2.9.0"
+    "lerna": "^2.9.1"
   },
   "scripts": {
     "bootstrap": "npm i && lerna bootstrap",
@@ -34,9 +34,9 @@
     "prettier:cli": "node packages/build/bin/run-prettier \"**/*.ts\"",
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
-    "clean": "lerna run clean --loglevel=silent --parallel && node packages/build/bin/run-clean \"packages/*/dist*\"",
-    "clean:lerna": "lerna clean --yes --parallel --loglevel=silent",
-    "build": "node bin/run-lerna run build --parallel --loglevel=silent",
+    "clean": "lerna run clean && node packages/build/bin/run-clean \"packages/*/dist*\"",
+    "clean:lerna": "lerna clean",
+    "build": "node bin/run-lerna run build",
     "build:full": "npm run clean:lerna && npm run bootstrap && npm test",
     "pretest": "npm run clean && npm run build",
     "test": "node packages/build/bin/run-nyc npm run mocha --scripts-prepend-node-path",
