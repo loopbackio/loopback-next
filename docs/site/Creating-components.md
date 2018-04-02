@@ -176,44 +176,38 @@ The idiomatic solution has two parts:
 
    It may be tempting to put action implementation directly inside the anonymous arrow function returned by provider's `value()` method. We consider that as a bad practice though, because when an error occurs, the stack trace will contain only an anonymous function that makes it more difficult to link the entry with the sequence action.
 
-2)  The application should use a custom `Sequence` class which calls this new sequence action in an appropriate place.
+2. The application should use a custom `Sequence` class which calls this new sequence action in an appropriate place.
 
-````
-```ts
-class AppSequence implements SequenceHandler {
-  constructor(
-    @inject(RestBindings.Http.CONTEXT) protected ctx: Context,
-    @inject(RestBindings.SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
-    @inject(RestBindings.SequenceActions.PARSE_PARAMS) protected parseParams: ParseParams,
-    @inject(RestBindings.SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
-    @inject(RestBindings.SequenceActions.SEND) public send: Send,
-    @inject(RestBindings.SequenceActions.REJECT) public reject: Reject,
-    // Inject the new action here:
-    @inject('authentication.actions.authenticate') protected authenticate: AuthenticateFn
-  ) {}
-```
-````
+   ```ts
+   class AppSequence implements SequenceHandler {
+     constructor(
+       @inject(RestBindings.Http.CONTEXT) protected ctx: Context,
+       @inject(RestBindings.SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
+       @inject(RestBindings.SequenceActions.PARSE_PARAMS) protected parseParams: ParseParams,
+       @inject(RestBindings.SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
+       @inject(RestBindings.SequenceActions.SEND) public send: Send,
+       @inject(RestBindings.SequenceActions.REJECT) public reject: Reject,
+       // Inject the new action here:
+       @inject('authentication.actions.authenticate') protected authenticate: AuthenticateFn
+     ) {}
 
-async handle(req: ParsedRequest, res: ServerResponse) {
-try {
-const route = this.findRoute(req);
+     async handle(req: ParsedRequest, res: ServerResponse) {
+       try {
+         const route = this.findRoute(req);
 
-```
-  // Invoke the new action:
-  const user = await this.authenticate(req);
+         // Invoke the new action:
+         const user = await this.authenticate(req);
 
-  const args = await parseOperationArgs(req, route);
-  const result = await this.invoke(route, args);
-  this.send(res, result);
-} catch (err) {
-  this.reject(res, req, err);
-}
-```
+         const args = await parseOperationArgs(req, route);
+         const result = await this.invoke(route, args);
+         this.send(res, result);
+       } catch (err) {
+         this.reject(res, req, err);
+       }
+     }
+   }
+   ```
 
-}
-}
-
-````
 ### Accessing Elements contributed by other Sequence Actions
 
 When writing a custom sequence action, you need to access Elements contributed
@@ -243,7 +237,7 @@ export class AuthenticationProvider implements Provider<AuthenticateFn> {
     // ...
   }
 }
-````
+```
 
 ### Contributing Elements from Sequence Actions
 
