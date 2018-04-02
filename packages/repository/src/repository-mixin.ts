@@ -63,6 +63,16 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
     }
 
     /**
+     * Retrieve the repository instance from the given Repository class
+     *
+     * @param repo The repository class to retrieve the instance of
+     */
+    // tslint:disable-next-line:no-any
+    async getRepository<R extends Repository<any>>(repo: Class<R>): Promise<R> {
+      return await this.get(`repositories.${repo.name}`);
+    }
+
+    /**
      * Add the dataSource to this application.
      *
      * @param dataSource The dataSource to add.
@@ -139,5 +149,9 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
 export interface AppWithRepository extends Application {
   // tslint:disable-next-line:no-any
   repository(repo: Class<any>): void;
+  // tslint:disable-next-line:no-any
+  getRepository<R extends Repository<any>>(repo: Class<R>): Promise<R>;
+  dataSource(dataSource: juggler.DataSource, name?: string): void;
+  component(component: Class<{}>): void;
   mountComponentRepository(component: Class<{}>): void;
 }

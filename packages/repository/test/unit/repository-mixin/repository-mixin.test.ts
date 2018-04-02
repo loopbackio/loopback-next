@@ -34,6 +34,23 @@ describe('RepositoryMixin', () => {
     expectNoteRepoToBeBound(myApp);
   });
 
+  it('mixed class has .getRepository()', () => {
+    const myApp = new AppWithRepoMixin();
+    expect(typeof myApp.getRepository).to.eql('function');
+  });
+
+  it('gets repository instance from app.getRepository()', async () => {
+    const myApp = new AppWithRepoMixin();
+    myApp
+      .bind('repositories.NoteRepo')
+      .toClass(NoteRepo)
+      .tag('repository');
+
+    const repoInstance = await myApp.getRepository(NoteRepo);
+
+    expect(repoInstance).to.be.instanceOf(NoteRepo);
+  });
+
   it('binds user defined component without repository', () => {
     class EmptyTestComponent {}
 
