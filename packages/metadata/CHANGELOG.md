@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.1"></a>
+## [0.4.1](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@0.4.0...@loopback/metadata@0.4.1) (2018-04-02)
+
+
+
+
+**Note:** Version bump only for package @loopback/metadata
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@0.3.1...@loopback/metadata@0.4.0) (2018-03-29)
 
