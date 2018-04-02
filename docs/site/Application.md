@@ -154,7 +154,7 @@ app.servers([MyServer, GrpcServer]);
 ```
 
 The `server` function is much like the previous functions, but with
-[Servers](server.md) bulk bindings are possible through the function `servers`.
+[Servers](Server.md) bulk bindings are possible through the function `servers`.
 
 ```ts
 const app = new Application();
