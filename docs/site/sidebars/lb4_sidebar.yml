@@ -26,31 +26,31 @@ children:
     children:
 
     - title: 'Create your app scaffolding'
-      url: 'todo-tutorial/create-app-scaffolding.html'
+      url: 'todo-tutorial/scaffolding.html'
       output: 'web, pdf'
 
     - title: 'Adding legacy juggler'
-      url: 'todo-tutorial/adding-legacy-juggler.html'
+      url: 'todo-tutorial/juggler.html'
       output: 'web, pdf'
 
     - title: 'Add your Todo model'
-      url: 'todo-tutorial/add-todo-model.html'
+      url: 'todo-tutorial/model.html'
       output: 'web, pdf'
 
     - title: 'Add a Datasource'
-      url: 'todo-tutorial/add-datasource.html'
+      url: 'todo-tutorial/datasource.html'
       output: 'web, pdf'
 
     - title: 'Add a Repository'
-      url: 'todo-tutorial/add-repository.html'
+      url: 'todo-tutorial/repository.html'
       output: 'web, pdf'
 
     - title: 'Add a Controller'
-      url: 'todo-tutorial/add-controller.html'
+      url: 'todo-tutorial/controller.html'
       output: 'web, pdf'
 
     - title: 'Putting it all together'
-      url: 'todo-tutorial/putting-it-all-together.html'
+      url: 'todo-tutorial/putting-it-together.html'
       output: 'web, pdf'
 
 - title: 'Key concepts'
