@@ -1,11 +1,21 @@
+---
+lang: en
+title: 'Add a Datasource'
+keywords: LoopBack 4.0, LoopBack 4
+tags:
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/todo-tutorial/datasource.html
+summary: LoopBack 4 Todo Application Tutorial - Add a Datasource
+---
+
 ### Datasources
 
 Datasources are LoopBack's way of connecting to various sources of data, such as
 databases, APIs, message queues and more. In LoopBack 4, datasources can be
 represented as strongly-typed objects and freely made available for
-[injection](http://loopback.io/doc/en/lb4/Dependency-injection.html) throughout
+[injection](../Dependency-injection.md) throughout
 the application. Typically, in LoopBack 4, datasources are used in conjunction
-with [Repositories](http://loopback.io/doc/en/lb4/Repositories.html) to provide
+with [Repositories](../Repositories.md) to provide
 access to data.
 
 Since our Todo API will need to persist instances of Todo items, we'll need to

@@ -28,17 +28,17 @@ npm i -g @loopback/cli
 ## Tutorial
 
 To follow this tutorial, begin with the
-[Create your app scaffolding](docs/scaffolding.md) section.
+[Create your app scaffolding](http://loopback.io/doc/en/lb4/todo-tutorial/scaffolding.html) section.
 
 ### Steps
 
-1. [Create your app scaffolding](docs/scaffolding.md)
-2. [Adding legacy juggler](docs/juggler.md)
-3. [Add your Todo model](docs/model.md)
-4. [Add a datasource](docs/datasource.md)
-5. [Add a repository](docs/repository.md)
-6. [Add a controller](docs/controller.md)
-7. [Putting it all together](docs/putting-it-together.md)
+1. [Create your app scaffolding](http://loopback.io/doc/en/lb4/todo-tutorial/scaffolding.html)
+2. [Adding legacy juggler](http://loopback.io/doc/en/lb4/todo-tutorial/juggler.html)
+3. [Add your Todo model](http://loopback.io/doc/en/lb4/todo-tutorial/model.html)
+4. [Add a datasource](http://loopback.io/doc/en/lb4/todo-tutorial/datasource.html)
+5. [Add a repository](http://loopback.io/doc/en/lb4/todo-tutorial/repository.html)
+6. [Add a controller](http://loopback.io/doc/en/lb4/todo-tutorial/controller.html)
+7. [Putting it all together](http://loopback.io/doc/en/lb4/todo-tutorial/putting-it-together.html)
 
 ## Try it out
 
