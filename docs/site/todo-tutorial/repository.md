@@ -1,3 +1,13 @@
+---
+lang: en
+title: 'Add a Repository'
+keywords: LoopBack 4.0, LoopBack 4
+tags:
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/todo-tutorial/repository.html
+summary: LoopBack 4 Todo Application Tutorial - Add a Repository
+---
+
 ### Repositories
 
 The repository pattern is one of the more fundamental differences between

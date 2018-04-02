@@ -1,3 +1,13 @@
+---
+lang: en
+title: 'Add a Controller'
+keywords: LoopBack 4.0, LoopBack 4
+tags:
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/todo-tutorial/controller.html
+summary: LoopBack 4 Todo Application Tutorial - Add a Controller
+---
+
 ### Controllers
 
 In LoopBack 4, controllers handle the request-response lifecycle for your API.
@@ -46,7 +56,7 @@ new controller instances.
 > **NOTE**: You can customize the lifecycle of _all_ bindings in LoopBack 4!
 > Controllers can easily be made to use singleton lifecycles to minimize startup
 > costs. For more information, see the
-> [Dependency injection](http://loopback.io/doc/en/lb4/Dependency-injection.html)
+> [Dependency injection](../Dependency-injection.md)
 > section of our docs.
 
 Now that we have the repository wireup, let's create our first handler function.

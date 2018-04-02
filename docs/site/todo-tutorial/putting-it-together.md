@@ -1,8 +1,18 @@
+---
+lang: en
+title: 'Putting it all together'
+keywords: LoopBack 4.0, LoopBack 4
+tags:
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/todo-tutorial/putting-it-together.html
+summary: LoopBack 4 Todo Application Tutorial - Putting it all together
+---
+
 ### Putting it all together
 
 We've got all of our artifacts now, and all that's left is to bind them to our
-[Application](http://loopback.io/doc/en/lb4/Application.html) so that LoopBack's
-[Dependency injection](http://loopback.io/doc/en/lb4/Dependency-injection.html)
+[Application](../Application.md) so that LoopBack's
+[Dependency injection](../Dependency-injection.md)
 system can tie it all together for us!
 
 LoopBack's
@@ -18,10 +28,10 @@ artifacts and inject them into our application for use.
 > - Models: `./src/models`
 > - Repositories: `./src/repositories`
 >
-> To find out how to customize this behaviour, see the
-> [Booters](http://loopback.io/doc/en/lb4/Booting-an-Application.html#booters)
+> To find out how to customize this behavior, see the
+> [Booters](../Booting-an-Application.md#booters)
 > section of
-> [Booting an Application](http://loopback.io/doc/en/lb4/Booting-an-Application.html).
+> [Booting an Application](../Booting-an-Application.md).
 
 #### src/application.ts
 
@@ -113,7 +123,7 @@ That's it! You've just created your first LoopBack 4 application!
 ### More examples and tutorials
 
 Eager to continue learning about LoopBack 4? Check out our
-[examples and tutorials](https://loopback.io/doc/en/lb4/Examples-and-tutorials.html)
+[examples and tutorials](../Examples-and-tutorials.md)
 section to find examples for creating your own custom components, sequences and
 more!
 
