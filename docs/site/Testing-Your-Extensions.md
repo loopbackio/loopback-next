@@ -83,7 +83,7 @@ export class PingController {
 }
 ```
 
-**`test/unit/controllers/ping.controller.ts`**
+**`test/unit/controllers/ping.controller.unit.ts`**
 
 ```ts
 import {PingController} from '../../..';
@@ -144,7 +144,7 @@ export function getTestMetadata(
 }
 ```
 
-**`test/unit/decorators/test.decorator.ts`**
+**`test/unit/decorators/test.decorator.unit.ts`**
 
 ```ts
 import {test, getTestMetadata} from '../../..';
@@ -193,7 +193,7 @@ export class RandomNumberProvider implements Provider<number> {
 }
 ```
 
-**`test/unit/providers/random-number.unit.test.ts`**
+**`test/unit/providers/random-number.provider.unit.ts`**
 
 ```ts
 import {RandomNumberProvider} from '../../..';
@@ -254,7 +254,7 @@ export function TimeMixin<T extends Constructor<any>>(superClass: T) {
 }
 ```
 
-**`test/integration/mixins/time.intg.test.ts`**
+**`test/integration/mixins/time.mixin.integration.ts`**
 
 ```ts
 import {expect} from '@loopback/testlab';

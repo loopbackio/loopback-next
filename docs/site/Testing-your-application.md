@@ -124,7 +124,7 @@ export async function givenEmptyDatabase() {
 }
 ```
 
-{% include code-caption.html content="test/integration/controllers/product.controller.test.ts" %}
+{% include code-caption.html content="test/integration/controllers/product.controller.integration.ts" %}
 
 ```ts
 // in your test file
@@ -394,7 +394,7 @@ repository's `find()` method with a correct query, and returns back the query
 results. See [Create a stub repository](#create-a-stub-repository) for a
 detailed explanation.
 
-{% include code-caption.html content="test/unit/controllers/product.controller.test.ts" %}
+{% include code-caption.html content="test/unit/controllers/product.controller.unit.ts" %}
 
 ```ts
 import {expect, sinon} from '@loopback/testlab';
@@ -438,7 +438,7 @@ unit tests to verify the implementation of this additional method.
 Remember to use [Test data builders](#use-test-data-builders) whenever you need
 valid data to create a new model instance.
 
-{% include code-caption.html content="test/unit/models/person.model.test.ts" %}
+{% include code-caption.html content="test/unit/models/person.model.unit.ts" %}
 
 ```ts
 import {Person} from '../../../src/models';
@@ -538,7 +538,7 @@ Integration tests are one of the places to put the best practices in
 Here is an example showing how to write an integration test for a custom
 repository method `findByName`:
 
-{% include code-caption.html content="test/integration/repositories/category.repository.test.ts" %}
+{% include code-caption.html content="test/integration/repositories/category.repository.integration.ts" %}
 
 ```ts
 import {
@@ -573,7 +573,7 @@ commands and queries produce expected results when executed on a real database.
 These tests are similar to repository tests with controllers added as another
 ingredient.
 
-{% include code-caption.html content="test/integration/controllers/product.controller.test.ts" %}
+{% include code-caption.html content="test/integration/controllers/product.controller.integration.ts" %}
 
 ```ts
 import {expect} from '@loopback/testlab';
@@ -635,7 +635,7 @@ provides a helper method `validateApiSpec` that builds on top of the popular
 
 Example usage:
 
-{% include code-caption.html content= "test/acceptance/api-spec.test.ts" %}
+{% include code-caption.html content= "test/acceptance/api-spec.acceptance.ts" %}
 
 ```ts
 // test/acceptance/api-spec.test.ts
@@ -678,7 +678,7 @@ developers consuming your API will find them useful too.
 
 Here is an example showing how to run Dredd to test your API against the spec:
 
-{% include code-caption.html content= "test/acceptance/api-spec.test.ts" %}
+{% include code-caption.html content= "test/acceptance/api-spec.acceptance.ts" %}
 
 ```ts
 import {expect} from '@loopback/testlab';
@@ -750,7 +750,7 @@ two tests (one test for each user role).
 
 Here is an example of an acceptance test:
 
-{% include code-caption.html content= "test/acceptance/product.test.ts" %}
+{% include code-caption.html content= "test/acceptance/product.acceptance.ts" %}
 
 ```ts
 import {HelloWorldApplication} from '../..';

@@ -242,7 +242,7 @@ The example below shows the previous controller revamped with `HttpErrors` along
 with a test to verify that the error is thrown properly.
 
 ```ts
-// test/integration/controllers/hello.controller.test.ts
+// test/integration/controllers/hello.controller.integration.ts
 import {HelloController} from '../../../src/controllers';
 import {HelloRepository} from '../../../src/repositories';
 import {testdb} from '../../fixtures/datasources/testdb.datasource';

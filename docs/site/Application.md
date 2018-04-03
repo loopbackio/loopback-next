@@ -29,7 +29,7 @@ as a part of your setup:
 - Perform some asynchronous wireup before application start
 - Perform some graceful cleanup on application stop
 
-{% include code-caption.html content="src/widget-application.ts" %}
+{% include code-caption.html content="src/widget.application.ts" %}
 
 ```ts
 import {Application} from '@loopback/core';

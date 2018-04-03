@@ -37,7 +37,7 @@ usage.
 ```ts
 import {Application} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
-import {AccountRepository, CategoryRepository} from './repository';
+import {AccountRepository, CategoryRepository} from './repositories';
 
 // Using the Mixin
 class MyApplication extends RepositoryMixin(Application) {}
@@ -292,8 +292,8 @@ You can look at
 
    ```ts
    import {CrudRepositoryImpl} from '@loopback/repository';
-   import {MySQLDs} from './datasources/mysqlds';
-   import {Account} from './models/Account';
+   import {MySQLDs} from './datasources/mysqlds.datasource';
+   import {Account} from './models/account.model';
 
    export class NewRepository extends CrudRepositoryImpl<Account, string> {
      constructor() {

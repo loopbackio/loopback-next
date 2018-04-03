@@ -13,7 +13,7 @@ import {
   Bootable,
 } from './interfaces';
 import {BootBindings} from './keys';
-import {_bindBooter} from './boot.mixin';
+import {_bindBooter} from './mixins';
 
 import * as debugModule from 'debug';
 const debug = debugModule('loopback:boot:bootstrapper');

@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export * from './bind-element';
-export * from './find-route';
-export * from './get-from-context';
-export * from './invoke-method';
-export * from './log-error-provider';
-export * from './reject';
-export * from './parse-params';
-export * from './send';
+export * from './bind-element.provider';
+export * from './find-route.provider';
+export * from './get-from-context.provider';
+export * from './invoke-method.provider';
+export * from './log-error.provider';
+export * from './reject.provider';
+export * from './parse-params.provider';
+export * from './send.provider';

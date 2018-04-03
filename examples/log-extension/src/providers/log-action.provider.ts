@@ -6,7 +6,7 @@
 import {inject, Provider, Constructor, Getter} from '@loopback/context';
 import {CoreBindings} from '@loopback/core';
 import {OperationArgs, ParsedRequest} from '@loopback/rest';
-import {getLogMetadata} from '../decorators/log.decorator';
+import {getLogMetadata} from '../decorators';
 import {EXAMPLE_LOG_BINDINGS, LOG_LEVEL} from '../keys';
 import {
   LogFn,

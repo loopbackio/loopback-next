@@ -31,7 +31,7 @@ mixed to it.
 For example you have a simple controller which only has a greeter function
 prints out 'hi!':
 
-{% include code-caption.html content="Controllers/myController.ts" %}
+{% include code-caption.html content="src/controllers/using-mixin.controller.ts" %}
 
 ```ts
 class SimpleController {
@@ -49,14 +49,14 @@ Now let's add mixins to it:
 
 - A logger mixin to provide logging tools.
 
-Define mixin `timeStampMixin`:
+Define mixin `TimeStampMixin`:
 
-{% include code-caption.html content="Mixins/timeStampMixin.ts" %}
+{% include code-caption.html content="src/mixins/time-stamp.mixin.ts" %}
 
 ```ts
 import {Class} from '@loopback/repository';
 
-export function timeStampMixin<T extends Class<any>>(baseClass: T) {
+export function TimeStampMixin<T extends Class<any>>(baseClass: T) {
   return class extends baseClass {
     // add a new property `createdAt`
     public createdAt: Date;
@@ -71,14 +71,14 @@ export function timeStampMixin<T extends Class<any>>(baseClass: T) {
 }
 ```
 
-And define mixin `loggerMixin`:
+And define mixin `LoggerMixin`:
 
-{% include code-caption.html content="Mixins/loggerMixin.ts" %}
+{% include code-caption.html content="src/mixins/logger.mixin.ts" %}
 
 ```ts
 import {Class} from '@loopback/repository';
 
-function loggerMixin<T extends Class<any>>(baseClass: T) {
+function LoggerMixin<T extends Class<any>>(baseClass: T) {
   return class extends baseClass {
     // add a new method `log()`
     log(str: string) {
@@ -90,11 +90,11 @@ function loggerMixin<T extends Class<any>>(baseClass: T) {
 
 Now you can extend `SimpleController` with the two mixins:
 
-{% include code-caption.html content="Controllers/myController.ts" %}
+{% include code-caption.html content="src/controllers/using-mixin.controller.ts" %}
 
 ```ts
-import {timeStampMixin} from 'Mixins/timeStampMixin.ts';
-import {loggerMixin} from 'Mixins/loggerMixin.ts';
+import {timeStampMixin} from '../mixins/time-stamp.mixin.ts';
+import {loggerMixin} from '../mixins/logger.mixin.ts';
 
 class SimpleController {
   constructor() {}
@@ -103,8 +103,8 @@ class SimpleController {
   }
 }
 
-class AdvancedController extends loggerMixin(
-  timeStampMixin(SimpleController),
+class AdvancedController extends LoggerMixin(
+  TimeStampMixin(SimpleController),
 ) {}
 
 // verify new method and property are added to `AdvancedController`:

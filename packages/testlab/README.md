@@ -29,13 +29,13 @@ _This package is typically used in tests, save it to `devDependencies` via
 ## Basic use
 
 ```ts
-import { expect } from '@loopback/testlab';
+import {expect} from '@loopback/testlab';
 
 describe('Basic assertions', => {
   it('asserts equal values', => {
-    expect({key:'value'}).to.deepEqual({key: 'value'});
+    expect({key: 'value'}).to.deepEqual({key: 'value'});
     expect.exists(1);
-  })
+  });
 });
 ```
 

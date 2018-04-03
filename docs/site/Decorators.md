@@ -147,7 +147,7 @@ class MyController {
 
 ### Parameter Decorator
 
-Syntax: see [API documentation](https://github.com/strongloop/loopback-next/blob/0739ffcfe3ef50e0bfd86055c0f4e29fd6925be0/packages/openapi-v3/src/parameter-decorator.ts#L17-L29)
+Syntax: see [API documentation](https://github.com/strongloop/loopback-next/tree/master/packages/openapi-v3/src/decorators/parameter.decorator.ts#L17-L29)
 
 `@param` is applied to controller method parameters to generate OpenAPI parameter specification for them.
 
@@ -208,7 +208,7 @@ You can find specific use cases in [Writing Controller methods](Controllers.md#w
 
 ### RequestBody Decorator
 
-Syntax: see [API documentation](https://github.com/strongloop/loopback-next/blob/0739ffcfe3ef50e0bfd86055c0f4e29fd6925be0/packages/openapi-v3/src/request-body-decorator.ts#L20-L79)
+Syntax: see [API documentation](https://github.com/strongloop/loopback-next/tree/master/packages/openapi-v3/src/decorators/request-body.decorator.ts#L20-L79)
 
 `@requestBody()` is applied to a controller method parameter to generate OpenAPI requestBody specification for it.
 
@@ -251,7 +251,7 @@ This allows type information of the model to be visible to the spec generator so
 
 ```ts
 // in file '/src/controllers/user.controller.ts'
-import {User} from '../models/user'
+import {User} from '../models/user.model'
 import {put} from '@loopback/rest'
 
 class UserController {
@@ -305,7 +305,7 @@ class MyController {
 - override the schema specification
 
 ```ts
-import {UserSchema, User} from '../model/user-schema';
+import {UserSchema, User} from '../model/user.schema';
 
 class MyController {
   @put('/Users/{id}')
@@ -364,7 +364,7 @@ Now that we've bound the 'config.widget' key to our configuration object, and
 WidgetController:
 
 ```ts
-// widget-controller.ts
+// src/controllers/widget.controller.ts
 import {inject} from '@loopback/context';
 
 export class WidgetController {
