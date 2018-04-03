@@ -3,7 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {DefaultCrudRepository, DataSourceType} from '../../../../../';
+import {
+  DefaultCrudRepository,
+  DataSourceType,
+} from '../../../../../src/repositories';
 import {Order} from '../models/order.model';
 import {inject} from '@loopback/core';
 

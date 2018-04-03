@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {DataSourceConstructor, FilterBuilder} from '../../../..';
+import {FilterBuilder} from '../../../..';
 import {expect} from '@loopback/testlab';
 import {OrderRepository} from './repositories/order.repository';
 import {CustomerRepository} from './repositories/customer.repository';
@@ -21,7 +21,7 @@ describe('hasMany relationship', () => {
       name: 'John Smith',
       slug: 'johnsmith@yahoo.com',
     });
-    const order = await c1.orders.create({
+    const order = await c1.customerOrders.create({
       // customerId should be enforced
       desc: 'order1 description',
       date: new Date().toISOString(),

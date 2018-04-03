@@ -3,9 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {model, property, Entity, hasMany} from '../../../../../';
+import {Entity, Class} from '../../../../../';
 import {Order} from './order.model';
 import {OrderRepository} from '../repositories/order.repository';
+import {Repository} from '../../../../../src/repositories';
+import {model, property, hasMany} from '../../../../../src/decorators';
 
 @model()
 export class Customer extends Entity {
@@ -26,5 +28,9 @@ export class Customer extends Entity {
   })
   email: string;
 
-  @hasMany() customerOrders: OrderRepository;
+  @hasMany({
+    target: 'Order',
+    as: 'orders',
+  })
+  customerOrders: OrderRepository;
 }

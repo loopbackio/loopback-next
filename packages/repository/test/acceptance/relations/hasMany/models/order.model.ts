@@ -3,7 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {model, property, Entity} from '../../../../../';
+import {Entity} from '../../../../../';
+import {model, property, belongsTo} from '../../../../../src/decorators';
 
 @model()
 export class Order extends Entity {
@@ -27,6 +28,11 @@ export class Order extends Entity {
   @property({
     type: 'string',
     required: true,
+  })
+  @belongsTo({
+    target: 'Customer',
+    as: 'customer',
+    foreignKey: 'customerId',
   })
   customerId: string;
 }

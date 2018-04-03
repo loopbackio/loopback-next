@@ -3,17 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  DefaultCrudRepository,
-  DataSourceType,
-  ModelMetadataHelper,
-  RelationMetadata,
-  RepositoryMetadata,
-} from '../../../../../';
+import {ModelMetadataHelper} from '../../../../../';
 import {Customer} from '../models/customer.model';
 import {Order} from '../models/order.model';
 import {inject, Context} from '@loopback/core';
 import {OrderRepository} from './order.repository';
+import {
+  DefaultCrudRepository,
+  DataSourceType,
+} from '../../../../../src/repositories';
 
 export class CustomerRepository extends DefaultCrudRepository<
   Customer,
