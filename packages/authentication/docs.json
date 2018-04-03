@@ -2,10 +2,10 @@
   "content": [
     "index.ts",
     "src/index.ts",
-    "src/decorators/authenticate.ts",
-    "src/providers/auth-metadata.ts",
-    "src/providers/authenticate.ts",
-    "src/auth-component.ts",
+    "src/decorators/authenticate.decorator.ts",
+    "src/providers/auth-metadata.provider.ts",
+    "src/providers/authentication.provider.ts",
+    "src/authentication.component.ts",
     "src/keys.ts",
     "src/strategy-adapter.ts"
   ],

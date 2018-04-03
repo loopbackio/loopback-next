@@ -1,6 +1,7 @@
 {
   "content": [
     "index.ts",
+    "src/binding-key.ts",
     "src/binding.ts",
     "src/context.ts",
     "src/index.ts",

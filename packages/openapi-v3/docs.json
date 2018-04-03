@@ -1,14 +1,14 @@
 {
   "content": [
-    "src/api-decorator.ts",
+    "src/decorators/api.decorator.ts",
+    "src/decorators/operation.decorator.ts",
+    "src/decorators/parameter.decorator.ts",
+    "src/decorators/request-body.decorator.ts",
     "src/controller-spec.ts",
     "src/generate-schema.ts",
     "src/index.ts",
     "src/json-to-schema.ts",
-    "src/keys.ts",
-    "src/operation-decorator.ts",
-    "src/parameter-decorator.ts",
-    "src/request-body-decorator.ts"
+    "src/keys.ts"
   ],
   "codeSectionDepth": 6
 }

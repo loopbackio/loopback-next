@@ -3,9 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export * from './api-decorator';
+export * from './decorators';
 export * from './controller-spec';
 export * from './json-to-schema';
-export * from './operation-decorator';
-export * from './parameter-decorator';
-export * from './request-body-decorator';

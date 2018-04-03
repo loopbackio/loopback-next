@@ -58,7 +58,8 @@ src/
 test/
   README.md
   mocha.opts
-  ping.controller.test.ts
+  acceptance/
+    ping.controller.acceptance.ts
 node_modules/
   ***
 LICENSE
@@ -91,7 +92,7 @@ tslint.json
 | src/repositories/README.md         | Provides information about the repositories directory, how to generate new repositories, and where to find more information.                                                                                                                          |
 | test/README.md                     | Please place your tests in this folder.                                                                                                                                                                                                               |
 | test/mocha.opts                    | [Mocha](https://mochajs.org/) configuration for running your application's tests.                                                                                                                                                                     |
-| test/ping.controller.test.ts       | An example test to go with the ping controller in `src/controllers`.                                                                                                                                                                                  |
+| test/acceptance/ping.controller.acceptance.ts       | An example test to go with the ping controller in `src/controllers`.                                                                                                                                                                                  |
 
 ### Navigation
 

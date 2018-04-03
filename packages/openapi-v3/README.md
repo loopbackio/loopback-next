@@ -29,8 +29,8 @@ OpenAPI specifications for a given decorated controller class, including
 Here is an example of calling function `getControllerSpec` to generate the
 OpenAPI spec:
 
-```js
-import {api, getControllerSpec} from '@loopback/openapi-v3';
+```ts
+import {get, getControllerSpec} from '@loopback/openapi-v3';
 
 class MyController {
   @get('/greet')
@@ -44,15 +44,15 @@ const myControllerSpec = getControllerSpec(MyController);
 
 then the `myControllerSpec` will be:
 
-```js
+```ts
 {
-    paths: {
-        '/greet': {
-            get: {
-                'x-operation-name': 'greet'
-            }
-        }
-    },
+  paths: {
+    '/greet': {
+      get: {
+        'x-operation-name': 'greet'
+      }
+    }
+  },
 }
 ```
 

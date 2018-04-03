@@ -5,7 +5,7 @@
 
 import {HttpErrors, ParsedRequest} from '@loopback/rest';
 import {Strategy} from 'passport';
-import {UserProfile} from './providers/authenticate';
+import {UserProfile} from './providers/authentication.provider';
 
 const PassportRequestExtras: Express.Request = require('passport/lib/http/request');
 

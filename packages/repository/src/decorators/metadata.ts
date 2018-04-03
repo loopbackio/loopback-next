@@ -9,7 +9,7 @@ import {
   MODEL_PROPERTIES_KEY,
   MODEL_WITH_PROPERTIES_KEY,
   PropertyMap,
-} from './model';
+} from './model.decorator';
 import {ModelDefinition} from '../model';
 
 export class ModelMetadataHelper {

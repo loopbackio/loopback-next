@@ -3,10 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export * from './decorators/log.decorator';
-export * from './mixins/log.mixin';
-export * from './providers/log-action.provider';
-export * from './providers/timer.provider';
+export * from './decorators';
+export * from './mixins';
+export * from './providers';
 export * from './component';
 export * from './types';
 export * from './keys';

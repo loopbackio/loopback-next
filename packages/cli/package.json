@@ -56,7 +56,7 @@
   },
   "scripts": {
     "prepublishOnly": "nsp check",
-    "test": "lb-mocha \"test/*.js\""
+    "test": "lb-mocha \"test/**/*.js\""
   },
   "repository": {
     "type": "git",

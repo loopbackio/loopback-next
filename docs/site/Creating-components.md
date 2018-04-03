@@ -11,15 +11,15 @@ summary:
 As explained in [Using Components](Using-components.md), a typical LoopBack component is an npm package exporting a Component class.
 
 ```ts
-import {MyController} from './controllers/my-controller';
-import {MyValueProvider} from './providers/my-value-provider';
+import {MyController} from './controllers/my.controller';
+import {MyValueProvider} from './providers/my-value.provider';
 import {Component} from '@loopback/core';
 
 export class MyComponent implements Component {
   constructor() {
     this.controllers = [MyController];
     this.providers = {
-      'my.value': MyValueProvider,
+      'my-value': MyValueProvider,
     };
   }
 }
@@ -32,7 +32,7 @@ class is created and then:
 - Each Provider is bound to its key in `providers` object.
 
 The example `MyComponent` above will add `MyController` to application's API and
-create a new binding `my.value` that will be resolved using `MyValueProvider`.
+create a new binding `my-value` that will be resolved using `MyValueProvider`.
 
 ## Providers
 
@@ -54,7 +54,7 @@ Notice that the provider class itself does not specify any binding key, the key
 is assigned by the component class.
 
 ```ts
-import {MyValueProvider} from './providers/my-value-provider';
+import {MyValueProvider} from './providers/my-value.provider';
 
 export class MyComponent implements Component {
   constructor() {
@@ -307,9 +307,9 @@ Suppose an app has multiple components with repositories bound to each of them.
 You can use function `RepositoryMixin()` to mount those repositories to application level context.
 
 The following snippet is an abbreviated function
-[`RepositoryMixin`](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repository-mixin.ts):
+[`RepositoryMixin`](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/mixins/repository.mixin.ts):
 
-{% include code-caption.html content="mixins/src/repository-mixin.ts" %}
+{% include code-caption.html content="src/mixins/repository.mixin.ts" %}
 
 ```ts
 export function RepositoryMixin<T extends Class<any>>(superClass: T) {
@@ -347,9 +347,9 @@ Then you can extend the app with repositories in a component:
 {% include code-caption.html content="index.ts" %}
 
 ```ts
-import {RepositoryMixin} from 'mixins/src/repository-mixin';
+import {RepositoryMixin} from 'src/mixins/repository.mixin';
 import {Application} from '@loopback/core';
-import {FooComponent} from 'components/src/Foo';
+import {FooComponent} from 'src/foo.component';
 
 class AppWithRepoMixin extends RepositoryMixin(Application) {}
 let app = new AppWithRepoMixin();

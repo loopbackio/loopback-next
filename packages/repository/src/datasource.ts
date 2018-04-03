@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {AnyObject} from './common-types';
-import {Connector} from './connector';
+import {Connector} from './connectors';
 
 /**
  * DataSource denotes a configured connector
