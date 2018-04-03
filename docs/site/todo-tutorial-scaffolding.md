@@ -4,7 +4,7 @@ title: 'Create your app scaffolding'
 keywords: LoopBack 4.0, LoopBack 4
 tags:
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/todo-tutorial/scaffolding.html
+permalink: /doc/en/lb4/todo-tutorial-scaffolding.html
 summary: LoopBack 4 Todo Application Tutorial - Create app scaffolding
 ---
 
@@ -83,7 +83,7 @@ tslint.json
 | LICENSE                            | A copy of the MIT license. If you do not wish to use this license, please delete this file.                                                                                                                                                           |
 | src/application.ts                 | The application class, which extends [`RestApplication`](http://apidocs.strongloop.com/@loopback%2frest/#RestApplication) by default. This is the root of your application, and is where your application will be configured.                         |
 | src/index.ts                       | The starting point of your microservice. This file creates an instance of your application, runs the booter, then attempts to start the [`RestServer`](http://apidocs.strongloop.com/@loopback%2frest/#RestServer) instance bound to the application. |
-| src/sequence.ts                    | An extension of the [Sequence](http://loopback.io/doc/en/lb4/Sequence.html) class used to define the set of actions to take during a REST request/response.                                                                                           |
+| src/sequence.ts                    | An extension of the [Sequence](Sequence.md) class used to define the set of actions to take during a REST request/response.                                                                                           |
 | src/controllers/README.md          | Provides information about the controller directory, how to generate new controllers, and where to find more information.                                                                                                                             |
 | src/controllers/ping.controller.ts | A basic controller that responds to GET requests at `/ping`.                                                                                                                                                                                          |
 | src/datasources/README.md          | Provides information about the datasources directory, how to generate new datasources, and where to find more information.                                                                                                                            |
@@ -95,4 +95,4 @@ tslint.json
 
 ### Navigation
 
-Next step: [Adding the legacy juggler](juggler.md)
+Next step: [Adding the legacy juggler](todo-tutorial-juggler.md)

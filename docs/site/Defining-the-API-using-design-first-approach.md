@@ -11,7 +11,8 @@ summary:
 {% include important.html content="The top-down approach for building LoopBack
 applications is not yet fully supported. Therefore, the steps outlined in this
 page are outdated and may not work out of the box. They will be revisited after
-our MVP release. "%}
+our MVP release.
+"%}
 
 ## Define the API from top to bottom (design-first)
 
@@ -433,6 +434,8 @@ from [Testing your application](Testing-your-application.md) for more details.
 {% include note.html content=" If you would like to make tweaks to your API as
 you develop your application, refer to
 [Defining the API using code-first approach](Defining-the-API-using-code-first-approach.md)
-page for best practices. " %}
+page for best practices.
+" %}
 
-{% include next.html content= " [Testing the API](./Testing-the-API.md) " %}
+{% include next.html content= " [Testing the API](./Testing-the-API.md)
+" %}

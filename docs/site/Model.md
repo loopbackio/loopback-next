@@ -255,9 +255,7 @@ illustrates this point by having the custom type `Category` as a property of our
 #### Supported JSON keywords
 
 {% include note.html content="
-
 This feature is still a work in progress and is incomplete.
-
 " %}
 
 Following are the supported keywords that can be explicitly passed into the

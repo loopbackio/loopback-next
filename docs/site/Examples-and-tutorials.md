@@ -13,7 +13,7 @@ LoopBack 4 comes with the following example projects:
 - **[hello-world](https://github.com/strongloop/loopback-next/tree/master/packages/example-hello-world)**:
   Tutorial on setting up a simple hello-world application using LoopBack 4.
 
-- **[todo](https://loopback.io/doc/en/lb4/todo-tutorial.html)**:
+- **[todo](todo-tutorial.md)**:
   Tutorial on building a simple application with LoopBack 4 key concepts using
   bottom-up approach.
 

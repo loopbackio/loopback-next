@@ -8,14 +8,15 @@ permalink: /doc/en/lb4/Testing-the-API.html
 summary:
 ---
 
-{% include previous.md content=" This article continues off
-from [Defining and validating the API](./Defining-and-validating-the-API.md). "
-%}
+{% include previous.html content=" This article continues off
+from [Defining and validating the API](./Defining-and-validating-the-API.md).
+" %}
 
 {% include important.html content="The top-down approach for building LoopBack
 applications is not yet fully supported. Therefore, the steps outlined in this
 page are outdated and may not work out of the box. They will be revisited after
-our MVP release. "%}
+our MVP release.
+" %}
 
 ## Smoke test API input/output
 
@@ -222,4 +223,5 @@ Please refer to
 from [Testing your application](Testing-your-application.md) for more details.
 
 {% include next.html content= "
-[Defining your testing strategy](./Defining-your-testing-strategy.md) " %}
+[Defining your testing strategy](./Defining-your-testing-strategy.md)
+" %}

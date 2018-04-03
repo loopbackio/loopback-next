@@ -4,7 +4,7 @@ title: 'Add Todo Model'
 keywords: LoopBack 4.0, LoopBack 4
 tags:
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/todo-tutorial/model.html
+permalink: /doc/en/lb4/todo-tutorial-model.html
 summary: LoopBack 4 Todo Application Tutorial - Add Todo Model
 ---
 
@@ -105,11 +105,11 @@ export class Todo extends Entity {
 }
 ```
 
-Now that we have our model, it's time to add a [datasource](datasource.md) so we
+Now that we have our model, it's time to add a [datasource](todo-tutorial-datasource.md) so we
 can perform real CRUD operations!
 
 ### Navigation
 
-Previous step: [Adding the Legacy Juggler](juggler.md)
+Previous step: [Adding the Legacy Juggler](todo-tutorial-juggler.md)
 
-Next step: [Add a datasource](datasource.md)
+Next step: [Add a datasource](todo-tutorial-datasource.md)

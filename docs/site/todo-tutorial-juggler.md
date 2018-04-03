@@ -4,7 +4,7 @@ title: 'Adding legacy juggler'
 keywords: LoopBack 4.0, LoopBack 4
 tags:
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/todo-tutorial/juggler.html
+permalink: /doc/en/lb4/todo-tutorial-juggler.html
 summary: LoopBack 4 Todo Application Tutorial - Adding legacy juggler
 ---
 
@@ -85,11 +85,11 @@ Once you're ready, we'll move on to the [Add your Todo model](model.md) section.
 For more information on the Legacy Juggler, check out the
 [@loopback/repository package](https://github.com/strongloop/loopback-next/tree/master/packages/repository)
 or see the
-[Repositories section](../Repositories.md) of our
+[Repositories section](Repositories.md) of our
 docs.
 
 ### Navigation
 
-Previous step: [Scaffolding your application](scaffolding.md)
+Previous step: [Scaffolding your application](todo-tutorial-scaffolding.md)
 
-Next step: [Add your Todo model](model.md)
+Next step: [Add your Todo model](todo-tutorial-model.md)

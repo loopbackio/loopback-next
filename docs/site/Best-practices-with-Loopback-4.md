@@ -11,7 +11,8 @@ summary:
 {% include important.html content=" The API-first approach for building LoopBack
 applications is not yet fully supported. Therefore, some of the sections in this
 page are outdated and may not work out of the box. They will be revisited after
-our MVP release. " %}
+our MVP release.
+" %}
 
 LoopBack 4 is more than just a framework: It’s an ecosystem that encourages
 developers to follow best practices through predefined standards. This section

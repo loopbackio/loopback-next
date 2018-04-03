@@ -132,4 +132,5 @@ See [Testing Your Application](Testing-Your-application.md) for a reference
 manual on automated tests.
 
 {% include next.html content= "
-[Implementing features](./Implementing-features.md) " %}
+[Implementing features](./Implementing-features.md)
+" %}

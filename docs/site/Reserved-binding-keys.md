@@ -36,7 +36,8 @@ app.bind(BindKeyNameSpace.KeyName).to('value');
 developers creating a new Binding, to avoid conflict with other packages, it is
 recommended that the binding key start with the package name as the prefix.
 Example: `@loopback/authentication` component uses the prefix `authentication`
-for its binding keys. " %}
+for its binding keys.
+" %}
 
 ## Package: authentication
 

@@ -253,7 +253,8 @@ application.
 ## Persisting Data without Juggler [Using MySQL database]
 
 {% include important.html content="This section has not been updated and code
-examples may not work out of the box." %}
+examples may not work out of the box.
+" %}
 
 LoopBack 4 gives you the flexibility to create your own custom Datasources which
 utilize your own custom connector for your favorite back end database. You can

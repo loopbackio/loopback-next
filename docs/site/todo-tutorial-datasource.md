@@ -4,7 +4,7 @@ title: 'Add a Datasource'
 keywords: LoopBack 4.0, LoopBack 4
 tags:
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/todo-tutorial/datasource.html
+permalink: /doc/en/lb4/todo-tutorial-datasource.html
 summary: LoopBack 4 Todo Application Tutorial - Add a Datasource
 ---
 
@@ -13,9 +13,9 @@ summary: LoopBack 4 Todo Application Tutorial - Add a Datasource
 Datasources are LoopBack's way of connecting to various sources of data, such as
 databases, APIs, message queues and more. In LoopBack 4, datasources can be
 represented as strongly-typed objects and freely made available for
-[injection](../Dependency-injection.md) throughout
+[injection](Dependency-injection.md) throughout
 the application. Typically, in LoopBack 4, datasources are used in conjunction
-with [Repositories](../Repositories.md) to provide
+with [Repositories](Repositories.md) to provide
 access to data.
 
 Since our Todo API will need to persist instances of Todo items, we'll need to
@@ -51,11 +51,11 @@ const config = require(dsConfigPath);
 export const db = new DataSourceConstructor(config);
 ```
 
-Once you're ready, we'll move onto adding a [repository](repository.md) for the
+Once you're ready, we'll move onto adding a [repository](todo-tutorial-repository.md) for the
 datasource.
 
 ### Navigation
 
-Previous step: [Add your Todo model](model.md)
+Previous step: [Add your Todo model](todo-tutorial-model.md)
 
-Next step: [Add a repository](repository.md)
+Next step: [Add a repository](todo-tutorial-repository.md)

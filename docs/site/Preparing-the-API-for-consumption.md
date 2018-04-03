@@ -9,7 +9,8 @@ summary:
 ---
 
 {% include previous.html content=" This article continues
-from [Implementing features](./Implementing-features.md). " %}
+from [Implementing features](./Implementing-features.md).
+" %}
 
 ## Preparing your API for consumption
 
@@ -35,7 +36,8 @@ Open <http://localhost:3000/swagger-ui> to see the API endpoints defined by
 {% include note.html content=" Swagger UI provides users with interactive
 environment to test the API endpoints defined by the raw spec found at
 <http://localhost:3000/openapi.json>. The API spec is also available in YAML
-flavour at <http://localhost:3000/openapi.yaml> " %}
+flavour at <http://localhost:3000/openapi.yaml>
+" %}
 
 {% include image.html file="lb4/10000000.png" alt="" %}
 

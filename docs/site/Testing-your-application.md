@@ -36,7 +36,8 @@ step-by-step tutorial, see
 [Incrementally implement features](Implementing-features.md).
 
 {% include important.html content=" A great test suite requires you to think
-smaller and favor fast and focused unit tests over slow end-to-end tests. " %}
+smaller and favor fast and focused unit tests over slow end-to-end tests.
+" %}
 
 This article is a reference guide for common types of tests and test helpers.
 
@@ -123,8 +124,7 @@ export async function givenEmptyDatabase() {
 }
 ```
 
-{% include code-caption.html
-content="test/integration/controllers/product.controller.test.ts" %}
+{% include code-caption.html content="test/integration/controllers/product.controller.test.ts" %}
 
 ```ts
 // in your test file
@@ -314,7 +314,8 @@ There are three kinds of test doubles provided by Sinon.JS:
 {% include note.html content=" We recommend against using test mocks. With test
 mocks, the expectations must be defined before the tested scenario is executed,
 which breaks the recommended test layout 'arrange-act-assert' (or
-'given-when-then') and also produces code that's difficult to comprehend. " %}
+'given-when-then') and also produces code that's difficult to comprehend.
+" %}
 
 #### Create a stub Repository
 
@@ -393,8 +394,7 @@ repository's `find()` method with a correct query, and returns back the query
 results. See [Create a stub repository](#create-a-stub-repository) for a
 detailed explanation.
 
-{% include code-caption.html
-content="test/unit/controllers/product.controller.test.ts" %}
+{% include code-caption.html content="test/unit/controllers/product.controller.test.ts" %}
 
 ```ts
 import {expect, sinon} from '@loopback/testlab';
@@ -538,8 +538,7 @@ Integration tests are one of the places to put the best practices in
 Here is an example showing how to write an integration test for a custom
 repository method `findByName`:
 
-{% include code-caption.html content=
-"test/integration/repositories/category.repository.test.ts" %}
+{% include code-caption.html content="test/integration/repositories/category.repository.test.ts" %}
 
 ```ts
 import {
@@ -574,8 +573,7 @@ commands and queries produce expected results when executed on a real database.
 These tests are similar to repository tests with controllers added as another
 ingredient.
 
-{% include code-caption.html content=
-"test/integration/controllers/product.controller.test.ts" %}
+{% include code-caption.html content="test/integration/controllers/product.controller.test.ts" %}
 
 ```ts
 import {expect} from '@loopback/testlab';
@@ -660,7 +658,8 @@ describe('API specification', () => {
 {% include important.html content=" The top-down approach for building LoopBack
 applications is not yet fully supported. Therefore, the code outlined in this
 section is outdated and may not work out of the box. It will be revisitedafter
-our MVP release. " %}
+our MVP release.
+" %}
 
 The formal validity of your application's spec does not guarantee that your
 implementation is actually matching the specified behavior. To keep your spec in
