@@ -13,9 +13,7 @@ import {
   AuthenticationBindings,
 } from '../..';
 import {MockStrategy} from './fixtures/mock-strategy';
-// FIXME: All of these BDD titles are too verbose and should be reworded
-// to not run afoul of the lint rules!
-// tslint:disable:max-line-length
+
 describe('AuthenticationProvider', () => {
   describe('constructor()', () => {
     it('instantiateClass injects authentication.strategy in the constructor', async () => {
