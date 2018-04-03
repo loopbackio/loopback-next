@@ -4,7 +4,7 @@ title: 'Add a Repository'
 keywords: LoopBack 4.0, LoopBack 4
 tags:
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/todo-tutorial/repository.html
+permalink: /doc/en/lb4/todo-tutorial-repository.html
 summary: LoopBack 4 Todo Application Tutorial - Add a Repository
 ---
 
@@ -51,11 +51,11 @@ export class TodoRepository extends DefaultCrudRepository<
 ```
 
 Now we have everything we need to perform CRUD operations for our Todo list,
-we'll need to build the [Controller](controller.md) to handle our incoming
+we'll need to build the [Controller](todo-tutorial-controller.md) to handle our incoming
 requests.
 
 ### Navigation
 
-Previous step: [Add a datasource](datasource.md)
+Previous step: [Add a datasource](todo-tutorial-datasource.md)
 
-Next step: [Add a controller](controller.md)
+Next step: [Add a controller](todo-tutorial-controller.md)

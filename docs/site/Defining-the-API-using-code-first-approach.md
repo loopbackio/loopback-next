@@ -48,7 +48,8 @@ defined.
 
 {% include note.html content=" `Todo` model from
 [tutorial](https://github.com/strongloop/loopback-next/blob/master/packages/example-todo/docs/model.md#srcmodelstodomodelts)
-is used for demonstration here. " %}
+is used for demonstration here.
+" %}
 
 First, write a simple TypeScript class describing your model and its properties:
 
@@ -175,7 +176,9 @@ tutorial.
 {% include note.html content=" If you would like to create your API manually or
 already have one designed, refer to
 [Defining the API using design-first approach](Defining-the-API-using-design-first-approach.md)
-page for best practices. " %}
+page for best practices.
+" %}
 
 {% include next.html content= "
-[Defining your testing strategy](./Defining-your-testing-strategy.md) " %}
+[Defining your testing strategy](./Defining-your-testing-strategy.md)
+" %}

@@ -4,7 +4,7 @@ title: 'Add a Controller'
 keywords: LoopBack 4.0, LoopBack 4
 tags:
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/todo-tutorial/controller.html
+permalink: /doc/en/lb4/todo-tutorial-controller.html
 summary: LoopBack 4 Todo Application Tutorial - Add a Controller
 ---
 
@@ -56,7 +56,7 @@ new controller instances.
 > **NOTE**: You can customize the lifecycle of _all_ bindings in LoopBack 4!
 > Controllers can easily be made to use singleton lifecycles to minimize startup
 > costs. For more information, see the
-> [Dependency injection](../Dependency-injection.md)
+> [Dependency injection](Dependency-injection.md)
 > section of our docs.
 
 Now that we have the repository wireup, let's create our first handler function.
@@ -181,10 +181,10 @@ Some additional things to note about this example:
   `@param.path.number('id')`.
 
 Now that we've wired up the controller, our last step is to tie it all into the
-[Application](putting-it-together.md)!
+[Application](todo-tutorial-putting-it-together.md)!
 
 ### Navigation
 
-Previous step: [Add a repository](repository.md)
+Previous step: [Add a repository](todo-tutorial-repository.md)
 
-Final step: [Putting it all together](putting-it-together.md)
+Final step: [Putting it all together](todo-tutorial-putting-it-together.md)

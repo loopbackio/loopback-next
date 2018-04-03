@@ -89,7 +89,7 @@ the following files and directories:
 
 `ping.controller.ts` is a file used to provide the application with a responsive
 endpoint. It contains logic to respond with a greeting message when the
-appliaction receives a `GET` request from endpoint `/ping`.
+application receives a `GET` request from endpoint `/ping`.
 
 `cd` to the application's newly created directory and run `npm start` to see the
 application running at `localhost:3000`. Go to `localhost:3000/ping` to be

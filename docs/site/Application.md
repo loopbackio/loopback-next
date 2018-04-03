@@ -177,7 +177,8 @@ injected through dependency injections. Visit
 
 {% include note.html content=" Binding configuration such as component binding,
 provider binding, or binding scopes are not possible with the constructor-based
-configuration approach. " %}
+configuration approach.
+" %}
 
 ```ts
 export class MyApplication extends RestApplication {

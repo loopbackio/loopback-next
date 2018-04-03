@@ -92,7 +92,7 @@
       "@loopback/repository-json-schema": "^0.4.1",
       "@loopback/repository": "^0.4.1",
       "@loopback/openapi-v2": "^0.3.0",
-      "@loopback/docs": "^0.3.2",
+      "@loopback/docs": "^0.3.3",
       "fs-extra": "^5.0.0",
       "rimraf": "^2.6.2"
     }

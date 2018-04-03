@@ -9,7 +9,8 @@ summary:
 ---
 
 {% include previous.html content=" This article continues from \[Defining your
-testing stategy(./Defining-your-testing-strategy.md). " %}
+testing stategy(./Defining-your-testing-strategy.md).
+" %}
 
 ## Incrementally implement features
 
@@ -452,7 +453,8 @@ only the methods actually used by the controller. This will allow you to
 discover the best repository API that serves the need of the controller.
 However, you don't want to design a new repository API, you want to re-use the
 repository implementation provided by LoopBack. Therefore using the actual
-Repository class/interface is the right approach. " %}
+Repository class/interface is the right approach.
+" %}
 
 In traditional object-oriented languages like Java or C#, in order to allow the
 unit tests to provide a custom implementation of the repository API, the
@@ -703,4 +705,5 @@ to print a common log entry too. Start by writing a unit-test that invokes
 `MySequence` directly.
 
 {% include next.html content= "
-[Preparing the API for consumption](./Preparing-the-API-for-consumption.md) " %}
+[Preparing the API for consumption](./Preparing-the-API-for-consumption.md)
+" %}

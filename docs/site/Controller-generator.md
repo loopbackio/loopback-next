@@ -69,7 +69,8 @@ to select:
 - The repository for this model that provides datasource connectivity
 
 {% include warning.html content= " If you do not have a model and repository to
-select, then you will receive an error! " lang=page.lang %}
+select, then you will receive an error! " lang=page.lang
+%}
 
 Here's an example of what the template will produce given a `Todo` model and a
 `TodoRepository`:

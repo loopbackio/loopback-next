@@ -88,7 +88,8 @@ class MyController {
 {% include note.html title="A note on binding names" content="To avoid name
 conflicts, add a unique prefix to your binding key (for example, `my-component.`
 in the example above). See [Reserved binding keys](Reserved-binding-keys.md) for
-the list of keys reserved for the framework use. " %}
+the list of keys reserved for the framework use.
+" %}
 
 ### Asynchronous providers
 
