@@ -498,17 +498,17 @@ LoopBack 4.
 
 ### Basic Hello-World
 
-[@loopback/example-hello-world](https://github.com/strongloop/loopback-next/tree/master/packages/example-hello-world)
+[@loopback/example-hello-world](https://github.com/strongloop/loopback-next/tree/master/examples/hello-world)
 
 ### Intermediate example
 
-[@loopback/example-todo](https://github.com/strongloop/loopback-next/tree/master/packages/example-todo)
+[@loopback/example-todo](https://github.com/strongloop/loopback-next/tree/master/examples/todo)
 
 ## Example for extension developers
 
 ### Learn from existing ones
 
-- [@loopback/example-log-extension](https://github.com/strongloop/loopback-next/tree/master/packages/example-log-extension)
+- [@loopback/example-log-extension](https://github.com/strongloop/loopback-next/tree/master/examples/log-extension)
 - [@loopback/authentication](https://github.com/strongloop/loopback-next/tree/master/packages/authentication)
 
 ## References

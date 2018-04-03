@@ -88,6 +88,7 @@ function run(argv, options) {
             exclude: [
               'node_modules/**',
               'packages/*/node_modules/**',
+              'examples/*/node_modules/**',
               '**/*.d.ts',
             ],
           },

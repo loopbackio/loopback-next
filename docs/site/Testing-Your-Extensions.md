@@ -297,6 +297,6 @@ you don't know or care about the internals of the extensions. You will be using
 the extension as if you were the consumer.
 
 Due to the complexity of an Acceptance test, there is no example given here.
-Have a look at [loopback4-example-log-extension](https://github.com/strongloop/loopback-next/tree/master/packages/example-log-extension)
+Have a look at [loopback4-example-log-extension](https://github.com/strongloop/loopback-next/tree/master/examples/log-extension)
 to understand the extension artifacts and their usage. An Acceptance test can
-be seen here: [test/acceptance/log.extension.acceptance.ts](https://github.com/strongloop/loopback-next/blob/master/packages/example-log-extension/test/acceptance/log.extension.acceptance.ts).
+be seen here: [test/acceptance/log.extension.acceptance.ts](https://github.com/strongloop/loopback-next/blob/master/examples/log-extension/test/acceptance/log.extension.acceptance.ts).

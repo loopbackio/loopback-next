@@ -33,7 +33,7 @@ function untar(outDir, exampleName) {
   // characters.
   const matchTopDir = /^strongloop-loopback[^\/]*\//;
 
-  const sourceDir = `packages/example-${exampleName}/`;
+  const sourceDir = `examples/${exampleName}/`;
 
   // Unfortunately the tar-fs is designed in such way that "map" is called
   // before "ignore" and there is no way how "map" can mark an entry for
@@ -50,7 +50,7 @@ function untar(outDir, exampleName) {
       // Remove the top dir like "strongloop-loopback-next-a50405a"
       let name = header.name.replace(matchTopDir, '');
 
-      // Remove "packages/example-{name}" of files we want to keep,
+      // Remove "examples/{name}" of files we want to keep,
       // rename the entry to a special value for files we want to discard.
       header.name = name.startsWith(sourceDir)
         ? name.slice(sourceDir.length)

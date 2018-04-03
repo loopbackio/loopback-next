@@ -17,6 +17,7 @@
     "coverage": true,
     "packages/*/dist": true,
     "packages/*/api-docs": true,
+    "examples/*/dist": true,
     "**/.sandbox": true
   },
   "files.insertFinalNewline": true,

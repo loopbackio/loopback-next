@@ -17,7 +17,7 @@ from [Implementing features](./Implementing-features.md).
 ### Interacting with your API
 
 We'll use the repo
-[loopback4-example-todo](https://github.com/strongloop/loopback-next/blob/master/packages/example-todo)
+[loopback4-example-todo](https://github.com/strongloop/loopback-next/blob/master/examples/todo)
 to demonstrate how Swagger UI can be used to test your endpoints.
 
 First, git clone the repository, install its dependencies, and run the

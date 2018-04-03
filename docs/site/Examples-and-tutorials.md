@@ -10,17 +10,17 @@ summary:
 
 LoopBack 4 comes with the following example projects:
 
-- **[hello-world](https://github.com/strongloop/loopback-next/tree/master/packages/example-hello-world)**:
+- **[hello-world](https://github.com/strongloop/loopback-next/tree/master/examples/hello-world)**:
   Tutorial on setting up a simple hello-world application using LoopBack 4.
 
 - **[todo](todo-tutorial.md)**:
   Tutorial on building a simple application with LoopBack 4 key concepts using
   bottom-up approach.
 
-- **[log-extension](https://github.com/strongloop/loopback-next/tree/master/packages/example-log-extension)**:
+- **[log-extension](https://github.com/strongloop/loopback-next/tree/master/examples/log-extension)**:
   Tutorial on building a log extension.
 
-- **[rpc-server](https://github.com/strongloop/loopback-next/tree/master/packages/example-rpc-server)**:
+- **[rpc-server](https://github.com/strongloop/loopback-next/tree/master/examples/rpc-server)**:
   An example showing how to implement a made-up RPC protocol.
 
 You can download any of the example projects usig our CLI tool `lb4`:

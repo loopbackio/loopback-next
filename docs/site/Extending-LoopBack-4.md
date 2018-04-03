@@ -175,7 +175,7 @@ An application-level component usually contributes:
 
 ### Learn from existing ones
 
-- [loopback4-example-log-extension](https://github.com/strongloop/loopback-next/tree/master/packages/example-log-extension)
+- [loopback4-example-log-extension](https://github.com/strongloop/loopback-next/tree/master/examples/log-extension)
 - [@loopback/authentication](https://github.com/strongloop/loopback-next/tree/master/packages/authentication)
 
 ### Create your own extension

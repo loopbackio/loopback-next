@@ -12,10 +12,6 @@ packages/build/* @bajtos @raymondfeng
 packages/cli/* @raymondfeng @shimks
 packages/context/* @bajtos @raymondfeng
 packages/core/* @bajtos @raymondfeng
-packages/example-todo/* @bajtos @virkt25
-packages/example-hello-world/* @b-admike
-packages/example-log-extension/* @virkt25
-packages/example-rpc-server/* @virkt25
 packages/metadata/* @raymondfeng
 packages/openapi-spec-builder/* @bajtos @raymondfeng
 packages/openapi-v3/* @bajtos @jannyHou
@@ -24,4 +20,8 @@ packages/repository/* @raymondfeng
 packages/repository-json-schema/* @shimks
 packages/rest/* @bajtos @raymondfeng
 packages/testlab/* @bajtos
+examples/todo/* @bajtos @virkt25
+examples/hello-world/* @b-admike
+examples/log-extension/* @virkt25
+examples/rpc-server/* @virkt25
 docs/* @bajtos @raymondfeng @virkt25 @b-admike @shimks @jannyHou

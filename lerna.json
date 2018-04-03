@@ -1,6 +1,6 @@
 {
   "lerna": "2.9.1",
-  "packages": ["packages/*", "docs"],
+  "packages": ["packages/*", "examples/*", "docs"],
   "command": {
     "publish": {
       "conventionalCommits": true,

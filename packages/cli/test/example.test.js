@@ -50,7 +50,7 @@ describe('lb4 example', function() {
       .withPrompts({name: VALID_EXAMPLE})
       .then(() => {
         const targetPkgFile = `loopback4-example-${VALID_EXAMPLE}/package.json`;
-        const originalPkgMeta = require(`../../example-${VALID_EXAMPLE}/package.json`);
+        const originalPkgMeta = require(`../../../examples/${VALID_EXAMPLE}/package.json`);
         assert.file(targetPkgFile);
         assert.jsonFileContent(targetPkgFile, {
           name: originalPkgMeta.name,
@@ -65,7 +65,7 @@ describe('lb4 example', function() {
       .withArguments([VALID_EXAMPLE])
       .then(() => {
         const targetPkgFile = `loopback4-example-${VALID_EXAMPLE}/package.json`;
-        const originalPkgMeta = require(`../../example-${VALID_EXAMPLE}/package.json`);
+        const originalPkgMeta = require(`../../../examples/${VALID_EXAMPLE}/package.json`);
         assert.file(targetPkgFile);
         assert.jsonFileContent(targetPkgFile, {
           name: originalPkgMeta.name,

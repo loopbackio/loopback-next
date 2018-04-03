@@ -37,7 +37,7 @@
   "bugs": {
     "url": "https://github.com/strongloop/loopback-next/issues"
   },
-  "homepage": "https://github.com/strongloop/loopback-next/tree/master/packages/example-log-extension",
+  "homepage": "https://github.com/strongloop/loopback-next/tree/master/examples/log-extension",
   "devDependencies": {
     "@loopback/build": "^0.4.1",
     "@loopback/testlab": "^0.5.2",
