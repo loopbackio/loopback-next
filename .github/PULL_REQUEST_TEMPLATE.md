@@ -17,4 +17,4 @@ See also #23
 - [ ] API Documentation in code was updated
 - [ ] Documentation in [/docs/site](../tree/master/docs/site) was updated
 - [ ] Affected artifact templates in `packages/cli` were updated
-- [ ] Affected example projects in `packages/example-*` were updated
+- [ ] Affected example projects in `examples/*` were updated

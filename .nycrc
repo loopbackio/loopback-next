@@ -1,6 +1,7 @@
 {
     "include": [
-      "packages/*/dist*/*"
+      "packages/*/dist*/*",
+      "examples/*/dist*/*"
     ],
     "extension": [
       ".js",
