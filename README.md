@@ -73,8 +73,8 @@ You can join the team by posting a comment to
 | :---------------------------------------: | :-----------------------------------------: | :----------------------------------------------------------------------------------------------------------: | :-----------------------------------: |
 |               Taranveer Virk              |                Biniam Admikew               |                                                   Kyu Shim                                                   |               Diana Lau               |
 |  [![virkt25]](http://github.com/virkt25)  |  [![b-admike]](http://github.com/b-admike)  | [<img src="https://avatars3.githubusercontent.com/u/18518689?v=3&s=60" height=60>](http://github.com/shimks) | [![dhmlau]](http://github.com/dhmlau) |
-|                 Janny Hou                 |                   Simon Ho                  |                                                                                                              |                                       |
-| [![jannyhou]](http://github.com/jannyHou) | [![superkhau]](http://github.com/superkhau) |                                                                                                              |                                       |
+|                 Janny Hou                 |                   Simon Ho                  |       Yappa Hage                                                                                                      |                                       |
+| [![jannyhou]](http://github.com/jannyHou) | [![superkhau]](http://github.com/superkhau) | [![hacksparrow]](https://github.com/hacksparrow)                                                                                                             |                                       |
 
 See
 [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
@@ -100,3 +100,5 @@ See
 [loay]: https://avatars3.githubusercontent.com/u/1986928?v=3&s=60
 
 [virkt25]: https://avatars1.githubusercontent.com/u/3311536?v=3&s=60
+
+[hacksparrow]: https://avatars2.githubusercontent.com/u/950112?v=3&s=60
