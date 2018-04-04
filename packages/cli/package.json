@@ -30,20 +30,20 @@
     "glob": "^7.1.2",
     "mem-fs": "^1.1.3",
     "mem-fs-editor": "^4.0.0",
-    "nsp": "^3.1.0",
+    "nsp": "^3.2.1",
     "rimraf": "^2.6.2",
-    "sinon": "^4.4.8",
-    "yeoman-assert": "^3.1.0",
+    "sinon": "^4.5.0",
+    "yeoman-assert": "^3.1.1",
     "yeoman-test": "^1.7.0"
   },
   "dependencies": {
-    "camelcase-keys": "^4.1.0",
-    "chalk": "^2.3.0",
-    "change-case": "^3.0.1",
+    "camelcase-keys": "^4.2.0",
+    "chalk": "^2.3.2",
+    "change-case": "^3.0.2",
     "debug": "^3.1.0",
     "gulp-rename": "^1.2.2",
     "gunzip-maybe": "^1.4.1",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.5",
     "minimist": "^1.2.0",
     "regenerate": "^1.3.3",
     "request": "^2.85.0",
@@ -51,7 +51,7 @@
     "tar-fs": "^1.16.0",
     "unicode-10.0.0": "^0.7.4",
     "validate-npm-package-name": "^3.0.0",
-    "yeoman-generator": "^2.0.1"
+    "yeoman-generator": "^2.0.3"
   },
   "scripts": {
     "prepublishOnly": "nsp check",

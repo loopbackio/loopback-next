@@ -52,6 +52,6 @@
     "@loopback/openapi-v3-types": "^0.3.2",
     "@loopback/repository-json-schema": "^0.4.2",
     "debug": "^3.1.0",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.5"
   }
 }

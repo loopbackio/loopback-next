@@ -27,10 +27,10 @@
   "devDependencies": {
     "@loopback/build": "^0.4.1",
     "@loopback/testlab": "^0.5.2",
-    "@types/bluebird": "^3.5.18",
+    "@types/bluebird": "^3.5.20",
     "@types/debug": "^0.0.30",
     "@types/uuid": "^3.4.3",
-    "bluebird": "^3.5.0"
+    "bluebird": "^3.5.1"
   },
   "keywords": [
     "LoopBack",
