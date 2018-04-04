@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.2"></a>
+## [0.3.2](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3-types@0.3.1...@loopback/openapi-v3-types@0.3.2) (2018-04-04)
+
+
+### Bug Fixes
+
+* include openapi-v3-spec-types.ts in docs.json ([6dc7c23](https://github.com/strongloop/loopback-next/commit/6dc7c23))
+
+
+
+
 <a name="0.3.1"></a>
 ## [0.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3-types@0.3.0...@loopback/openapi-v3-types@0.3.1) (2018-04-02)
 

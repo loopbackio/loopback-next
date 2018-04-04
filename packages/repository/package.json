@@ -1,6 +1,6 @@
 {
   "name": "@loopback/repository",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Repository based persistence for LoopBack 4",
   "engines": {
     "node": ">=8"
@@ -22,11 +22,11 @@
   "license": "MIT",
   "devDependencies": {
     "@loopback/build": "^0.4.1",
-    "@loopback/testlab": "^0.5.1"
+    "@loopback/testlab": "^0.5.2"
   },
   "dependencies": {
-    "@loopback/context": "^0.5.1",
-    "@loopback/core": "^0.4.1",
+    "@loopback/context": "^0.5.2",
+    "@loopback/core": "^0.4.2",
     "loopback-datasource-juggler": "^3.16.0"
   },
   "files": [
