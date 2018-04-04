@@ -30,7 +30,7 @@
     "@loopback/core": "^0.4.2",
     "@loopback/repository": "^0.4.2",
     "@types/debug": "0.0.30",
-    "@types/glob": "^5.0.34",
+    "@types/glob": "^5.0.35",
     "debug": "^3.1.0",
     "glob": "^7.1.2"
   },

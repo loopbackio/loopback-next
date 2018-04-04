@@ -27,8 +27,8 @@
   "dependencies": {
     "@loopback/context": "^0.5.2",
     "@loopback/repository": "^0.4.2",
-    "lodash": "^4.17.4",
-    "typescript-json-schema": "^0.21.0"
+    "lodash": "^4.17.5",
+    "typescript-json-schema": "^0.22.0"
   },
   "devDependencies": {
     "@loopback/build": "^0.4.1",
