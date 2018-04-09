@@ -93,7 +93,7 @@ describe('Repository', () => {
       // Intentionally change the metadata to be different from the Phlange
       // class metadata
       MetadataInspector.defineMetadata(
-        MODEL_WITH_PROPERTIES_KEY,
+        MODEL_WITH_PROPERTIES_KEY.key,
         classMeta,
         Phlange,
       );

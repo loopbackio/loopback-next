@@ -8,6 +8,7 @@ import {
   ClassDecoratorFactory,
   PropertyDecoratorFactory,
   MetadataMap,
+  MetadataAccessor,
 } from '@loopback/context';
 import {
   ModelDefinition,
@@ -15,9 +16,18 @@ import {
   PropertyDefinition,
 } from '../model';
 
-export const MODEL_KEY = 'loopback:model';
-export const MODEL_PROPERTIES_KEY = 'loopback:model-properties';
-export const MODEL_WITH_PROPERTIES_KEY = 'loopback:model-and-properties';
+export const MODEL_KEY = MetadataAccessor.create<
+  Partial<ModelDefinitionSyntax>,
+  ClassDecorator
+>('loopback:model');
+export const MODEL_PROPERTIES_KEY = MetadataAccessor.create<
+  PropertyDefinition,
+  PropertyDecorator
+>('loopback:model-properties');
+export const MODEL_WITH_PROPERTIES_KEY = MetadataAccessor.create<
+  ModelDefinition,
+  ClassDecorator
+>('loopback:model-and-properties');
 
 export type PropertyMap = MetadataMap<PropertyDefinition>;
 

@@ -61,7 +61,7 @@ export class ModelMetadataHelper {
           ),
         );
         MetadataInspector.defineMetadata(
-          MODEL_WITH_PROPERTIES_KEY,
+          MODEL_WITH_PROPERTIES_KEY.key,
           meta,
           target,
         );

@@ -9,14 +9,19 @@ import {
   ParameterDecoratorFactory,
   PropertyDecoratorFactory,
   MetadataMap,
+  MetadataAccessor,
 } from '@loopback/metadata';
 import {BoundValue, ValueOrPromise, resolveList} from './value-promise';
 import {Context} from './context';
 import {BindingKey, BindingAddress} from './binding-key';
 import {ResolutionSession} from './resolution-session';
 
-const PARAMETERS_KEY = 'inject:parameters';
-const PROPERTIES_KEY = 'inject:properties';
+const PARAMETERS_KEY = MetadataAccessor.create<Injection, ParameterDecorator>(
+  'inject:parameters',
+);
+const PROPERTIES_KEY = MetadataAccessor.create<Injection, PropertyDecorator>(
+  'inject:properties',
+);
 
 /**
  * A function to provide resolution of injected values
