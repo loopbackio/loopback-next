@@ -47,7 +47,7 @@ manipulation of models and their properties, they will be the first to be
 defined.
 
 {% include note.html content=" `Todo` model from
-[tutorial](https://github.com/strongloop/loopback-next/blob/master/examples/todo/docs/model.md#srcmodelstodomodelts)
+[tutorial](https://github.com/strongloop/loopback-next/blob/master/docs/site/todo-tutorial-model.md#srcmodelstodomodelts)
 is used for demonstration here.
 " %}
 
@@ -98,7 +98,7 @@ export class Todo {
 ### Define your routes
 
 {% include note.html content=" `TodoController` from
-[tutorial](https://github.com/strongloop/loopback-next/blob/master/examples/todo/docs/controller.md#srccontrollerstodocontrollerts-2)
+[tutorial](https://github.com/strongloop/loopback-next/blob/master/docs/site/todo-tutorial-controller.md#srccontrollerstodocontrollerts-2)
 is used for demonstration here. " %}
 
 Once your models are defined, create a controller to host your routes for each
