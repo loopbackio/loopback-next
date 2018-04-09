@@ -334,9 +334,8 @@ Please register the new package in the following files:
   new package.
 - Update [CODEOWNERS](../../CODEOWNERS) - add a new entry listing the primary
   maintainers (owners) of the new package
-- Ask somebody from the IBM team (e.g. [@bajtos](https://github.com/bajtos),
-  [@raymondfeng](https://github.com/raymondfeng) or
-  [@kjdelisle](https://github.com/kjdelisle)) to enlist the new package on
+- Ask somebody from the IBM team (e.g. [@bajtos](https://github.com/bajtos) or
+  [@raymondfeng](https://github.com/raymondfeng) to enlist the new package on
   <http://apidocs.loopback.io/>
 
 ## How to test infrastructure changes

@@ -27,5 +27,5 @@ The [loopback-next](https://github.com/strongloop/loopback-next) repository uses
 | [testlab](packages/testlab)                                 | @loopback/testlib                | A collection of test utilities we use to write LoopBack tests                                                                                                                                                                                                                                    |
 
 We use npm scripts declared in [package.json](package.json) to work with the
-monorepo managed by lerna. See [Developing LoopBack](./docs/DEVELOPING.md) for
+monorepo managed by lerna. See [Developing LoopBack](./DEVELOPING.md) for
 more details.

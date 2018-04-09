@@ -46,7 +46,7 @@ An example request would look something like this:
 ```
 
 You can find the code for our sample RPC server implementation
-[over here](https://github.com/strongloop/loopback4-example-rpc-server).
+[over here](https://github.com/strongloop/loopback-next/tree/master/examples/rpc-server).
 
 ### Trying it out
 
