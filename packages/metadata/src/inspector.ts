@@ -4,7 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Reflector, NamespacedReflect} from './reflect';
-import {MetadataMap} from './decorator-factory';
+import {
+  MetadataKey,
+  MetadataMap,
+  DesignTimeMethodMetadata,
+  DecoratorType,
+} from './types';
 
 /**
  * TypeScript reflector without a namespace. The TypeScript compiler can be
@@ -13,44 +18,6 @@ import {MetadataMap} from './decorator-factory';
  * See https://www.typescriptlang.org/docs/handbook/decorators.html
  */
 const TSReflector = new NamespacedReflect();
-
-/**
- * Design time metadata for a method.
- *
- * @example
- * ```ts
- * class MyController
- * {
- *   myMethod(x: string, y: number, z: MyClass): boolean {
- *     // ...
- *     return true;
- *   }
- * }
- * ```
- *
- * The `myMethod` above has design-time metadata as follows:
- * ```ts
- * {
- *   type: Function,
- *   parameterTypes: [String, Number, MyClass],
- *   returnType: Boolean
- * }
- * ```
- */
-export interface DesignTimeMethodMetadata {
-  /**
-   * Type of the method itself. It is `Function`
-   */
-  type: Function;
-  /**
-   * An array of parameter types
-   */
-  parameterTypes: Function[];
-  /**
-   * Return type
-   */
-  returnType: Function;
-}
 
 /**
  * Options for inspection
@@ -87,13 +54,13 @@ export class MetadataInspector {
    * @param options Options for inspection
    */
   static getClassMetadata<T>(
-    key: string,
+    key: MetadataKey<T, ClassDecorator>,
     target: Function,
     options?: InspectionOptions,
   ): T | undefined {
     return options && options.ownMetadataOnly
-      ? Reflector.getOwnMetadata(key, target)
-      : Reflector.getMetadata(key, target);
+      ? Reflector.getOwnMetadata(key.toString(), target)
+      : Reflector.getMetadata(key.toString(), target);
   }
 
   /**
@@ -104,12 +71,12 @@ export class MetadataInspector {
    * @param member Optional property or method name
    */
   static defineMetadata<T>(
-    key: string,
+    key: MetadataKey<T, DecoratorType>,
     value: T,
     target: Object,
     member?: string | symbol,
   ) {
-    Reflector.defineMetadata(key, value, target, member);
+    Reflector.defineMetadata(key.toString(), value, target, member);
   }
 
   /**
@@ -120,13 +87,13 @@ export class MetadataInspector {
    * @param options Options for inspection
    */
   static getAllMethodMetadata<T>(
-    key: string,
+    key: MetadataKey<T, MethodDecorator>,
     target: Object,
     options?: InspectionOptions,
   ): MetadataMap<T> | undefined {
     return options && options.ownMetadataOnly
-      ? Reflector.getOwnMetadata(key, target)
-      : Reflector.getMetadata(key, target);
+      ? Reflector.getOwnMetadata(key.toString(), target)
+      : Reflector.getMetadata(key.toString(), target);
   }
 
   /**
@@ -139,7 +106,7 @@ export class MetadataInspector {
    * @param options Options for inspection
    */
   static getMethodMetadata<T>(
-    key: string,
+    key: MetadataKey<T, MethodDecorator>,
     target: Object,
     methodName?: string | symbol,
     options?: InspectionOptions,
@@ -147,8 +114,8 @@ export class MetadataInspector {
     methodName = methodName || '';
     const meta: MetadataMap<T> =
       options && options.ownMetadataOnly
-        ? Reflector.getOwnMetadata(key, target)
-        : Reflector.getMetadata(key, target);
+        ? Reflector.getOwnMetadata(key.toString(), target)
+        : Reflector.getMetadata(key.toString(), target);
     return meta && meta[methodName];
   }
 
@@ -160,13 +127,13 @@ export class MetadataInspector {
    * @param options Options for inspection
    */
   static getAllPropertyMetadata<T>(
-    key: string,
+    key: MetadataKey<T, PropertyDecorator>,
     target: Object,
     options?: InspectionOptions,
   ): MetadataMap<T> | undefined {
     return options && options.ownMetadataOnly
-      ? Reflector.getOwnMetadata(key, target)
-      : Reflector.getMetadata(key, target);
+      ? Reflector.getOwnMetadata(key.toString(), target)
+      : Reflector.getMetadata(key.toString(), target);
   }
 
   /**
@@ -179,15 +146,15 @@ export class MetadataInspector {
    * @param options Options for inspection
    */
   static getPropertyMetadata<T>(
-    key: string,
+    key: MetadataKey<T, PropertyDecorator>,
     target: Object,
     propertyName: string | symbol,
     options?: InspectionOptions,
   ): T | undefined {
     const meta: MetadataMap<T> =
       options && options.ownMetadataOnly
-        ? Reflector.getOwnMetadata(key, target)
-        : Reflector.getMetadata(key, target);
+        ? Reflector.getOwnMetadata(key.toString(), target)
+        : Reflector.getMetadata(key.toString(), target);
     return meta && meta[propertyName];
   }
 
@@ -201,7 +168,7 @@ export class MetadataInspector {
    * @param options Options for inspection
    */
   static getAllParameterMetadata<T>(
-    key: string,
+    key: MetadataKey<T, ParameterDecorator>,
     target: Object,
     methodName?: string | symbol,
     options?: InspectionOptions,
@@ -209,8 +176,8 @@ export class MetadataInspector {
     methodName = methodName || '';
     const meta: MetadataMap<T[]> =
       options && options.ownMetadataOnly
-        ? Reflector.getOwnMetadata(key, target)
-        : Reflector.getMetadata(key, target);
+        ? Reflector.getOwnMetadata(key.toString(), target)
+        : Reflector.getMetadata(key.toString(), target);
     return meta && meta[methodName];
   }
 
@@ -225,7 +192,7 @@ export class MetadataInspector {
    * @param options Options for inspection
    */
   static getParameterMetadata<T>(
-    key: string,
+    key: MetadataKey<T, ParameterDecorator>,
     target: Object,
     methodName: string | symbol,
     index: number,
@@ -234,8 +201,8 @@ export class MetadataInspector {
     methodName = methodName || '';
     const meta: MetadataMap<T[]> =
       options && options.ownMetadataOnly
-        ? Reflector.getOwnMetadata(key, target)
-        : Reflector.getMetadata(key, target);
+        ? Reflector.getOwnMetadata(key.toString(), target)
+        : Reflector.getMetadata(key.toString(), target);
     const params = meta && meta[methodName];
     return params && params[index];
   }

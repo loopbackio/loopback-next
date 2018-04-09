@@ -412,6 +412,25 @@ const allParamsForConstructor = MetadataInspector.getAllParameterMetaData<
 >('my-parameter-decorator-key', MyController, '');
 ```
 
+### Use strong-typed metadata access key
+
+You can use MetadataAccessor to provide type checks for metadata access via
+keys. For example,
+
+```ts
+const CLASS_KEY = MetadataAccessor.create<MyClassMetadata, ClassDecorator>(
+    'my-class-decorator-key',
+  );
+
+// Create a class decorator with the key
+const myClassDecorator = ClassDecoratorFactory.createDecorator(CLASS_KEY);
+
+// Inspect a class with the key
+const myClassMeta = MetadataInspector.getClassMetaData(CLASS_KEY, MyController);
+```
+
+Please note MetadataKey can be an instance of MetadataAccessor or a string.
+
 ### Inspect design-time metadata of properties/methods
 
 ```ts

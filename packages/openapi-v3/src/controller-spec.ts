@@ -208,7 +208,7 @@ export function getControllerSpec(constructor: Function): ControllerSpec {
   if (!spec) {
     spec = resolveControllerSpec(constructor);
     MetadataInspector.defineMetadata(
-      OAI3Keys.CONTROLLER_SPEC_KEY,
+      OAI3Keys.CONTROLLER_SPEC_KEY.key,
       spec,
       constructor,
     );

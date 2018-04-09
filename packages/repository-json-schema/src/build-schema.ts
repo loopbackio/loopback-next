@@ -10,9 +10,11 @@ import {
 } from '@loopback/repository';
 import {includes} from 'lodash';
 import {Definition, PrimitiveType} from 'typescript-json-schema';
-import {MetadataInspector} from '@loopback/context';
+import {MetadataInspector, MetadataAccessor} from '@loopback/context';
 
-export const JSON_SCHEMA_KEY = 'loopback:json-schema';
+export const JSON_SCHEMA_KEY = MetadataAccessor.create<JsonDefinition>(
+  'loopback:json-schema',
+);
 
 /**
  * Type definition for JSON Schema
@@ -43,7 +45,7 @@ export function getJsonSchema(ctor: Function): JsonDefinition {
     return jsonSchema;
   } else {
     const newSchema = modelToJsonSchema(ctor);
-    MetadataInspector.defineMetadata(JSON_SCHEMA_KEY, newSchema, ctor);
+    MetadataInspector.defineMetadata(JSON_SCHEMA_KEY.key, newSchema, ctor);
     return newSchema;
   }
 }

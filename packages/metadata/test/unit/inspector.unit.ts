@@ -11,6 +11,7 @@ import {
   ParameterDecoratorFactory,
   MetadataInspector,
 } from '../..';
+import {MetadataAccessor} from '../..';
 
 describe('Inspector for a class', () => {
   /**
@@ -29,13 +30,15 @@ describe('Inspector for a class', () => {
 
   class AnotherController extends BaseController {}
 
+  const TEST_META = MetadataAccessor.create<object, ClassDecorator>('test');
+
   it('inspects metadata of a base class', () => {
     const meta = MetadataInspector.getClassMetadata('test', BaseController);
     expect(meta).to.eql({x: 1});
   });
 
   it('inspects metadata of a sub class', () => {
-    const meta = MetadataInspector.getClassMetadata('test', SubController);
+    const meta = MetadataInspector.getClassMetadata(TEST_META, SubController);
     expect(meta).to.eql({x: 1, y: 2});
   });
 
@@ -107,6 +110,8 @@ describe('Inspector for instance properties', () => {
     myProp: string;
   }
 
+  const TEST_META = MetadataAccessor.create<object, PropertyDecorator>('test');
+
   it('inspects metadata of all properties of a base class', () => {
     const meta = MetadataInspector.getAllPropertyMetadata(
       'test',
@@ -117,7 +122,7 @@ describe('Inspector for instance properties', () => {
 
   it('inspects metadata of a property of a base class', () => {
     const meta = MetadataInspector.getPropertyMetadata(
-      'test',
+      TEST_META,
       BaseController.prototype,
       'myProp',
     );
@@ -237,6 +242,8 @@ describe('Inspector for instance methods', () => {
 
   class AnotherController extends BaseController {}
 
+  const TEST_META = MetadataAccessor.create<object, MethodDecorator>('test');
+
   it('inspects metadata of all methods of a base class', () => {
     const meta = MetadataInspector.getAllMethodMetadata(
       'test',
@@ -247,7 +254,7 @@ describe('Inspector for instance methods', () => {
 
   it('inspects metadata of a method of a base class', () => {
     const meta = MetadataInspector.getMethodMetadata(
-      'test',
+      TEST_META,
       BaseController.prototype,
       'myMethod',
     );
@@ -256,7 +263,7 @@ describe('Inspector for instance methods', () => {
 
   it('inspects metadata of all methods of a sub class', () => {
     const meta = MetadataInspector.getAllMethodMetadata(
-      'test',
+      TEST_META,
       SubController.prototype,
     );
     expect(meta).to.eql({myMethod: {x: 1, y: 2}});
@@ -372,9 +379,11 @@ describe('Inspector for parameters of an instance method', () => {
 
   class AnotherController extends BaseController {}
 
+  const TEST_META = MetadataAccessor.create<object, ParameterDecorator>('test');
+
   it('inspects metadata of all parameters of a method of the base class', () => {
     const meta = MetadataInspector.getAllParameterMetadata(
-      'test',
+      TEST_META,
       BaseController.prototype,
       'myMethod',
     );
@@ -392,7 +401,7 @@ describe('Inspector for parameters of an instance method', () => {
 
   it('inspects metadata of a parameter of a method of the sub class', () => {
     const meta = MetadataInspector.getParameterMetadata(
-      'test',
+      TEST_META,
       SubController.prototype,
       'myMethod',
       0,

@@ -4,9 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Strategy} from 'passport';
-import {BindingKey} from '@loopback/context';
 import {AuthenticateFn, UserProfile} from './providers/authentication.provider';
 import {AuthenticationMetadata} from './decorators/authenticate.decorator';
+import {BindingKey, MetadataAccessor} from '@loopback/context';
+
 /**
  * Binding keys used by this component.
  */
@@ -31,4 +32,6 @@ export namespace AuthenticationBindings {
 /**
  * The key used to store log-related via @loopback/metadata and reflection.
  */
-export const AUTHENTICATION_METADATA_KEY = 'authentication.operationsMetadata';
+export const AUTHENTICATION_METADATA_KEY = MetadataAccessor.create<
+  AuthenticationMetadata
+>('authentication.operationsMetadata');

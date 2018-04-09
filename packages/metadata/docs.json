@@ -4,7 +4,8 @@
     "src/decorator-factory.ts",
     "src/index.ts",
     "src/inspector.ts",
-    "src/reflect.ts"
+    "src/reflect.ts",
+    "src/types.ts"
   ],
   "codeSectionDepth": 4
 }
