@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from './context';
-import {BindingKey} from './BindingKey';
+import {BindingKey} from './binding-key';
 import {ResolutionSession} from './resolution-session';
 import {instantiateClass} from './resolver';
 import {

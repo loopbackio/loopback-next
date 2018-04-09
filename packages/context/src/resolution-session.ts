@@ -14,7 +14,7 @@ const getTargetName = DecoratorFactory.getTargetName;
 
 // NOTE(bajtos) The following import is required to satisfy TypeScript compiler
 // tslint:disable-next-line:no-unused-variable
-import {BindingKey} from './BindingKey';
+import {BindingKey} from './binding-key';
 
 /**
  * A function to be executed with the resolution session

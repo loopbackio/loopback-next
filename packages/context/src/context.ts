@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding} from './binding';
-import {BindingKey, BindingAddress} from './BindingKey';
+import {BindingKey, BindingAddress} from './binding-key';
 import {isPromiseLike, getDeepProperty, BoundValue} from './value-promise';
 import {ResolutionOptions, ResolutionSession} from './resolution-session';
 
