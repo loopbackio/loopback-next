@@ -82,9 +82,14 @@ export class Context {
    * @param key The key for the binding that accepts the config
    * @param env The env (such as `dev`, `test`, and `prod`) for the config
    */
-  configure(key: string = '', env: string = ''): Binding {
+  configure<ConfigValueType = BoundValue>(
+    key: BindingAddress<BoundValue> = '',
+    env: string = '',
+  ): Binding<ConfigValueType> {
     const keyForConfig = BindingKey.buildKeyForConfig(key, env);
-    const bindingForConfig = this.bind(keyForConfig).tag(`config:${key}`);
+    const bindingForConfig = this.bind<ConfigValueType>(keyForConfig).tag(
+      `config:${key}`,
+    );
     return bindingForConfig;
   }
 
@@ -108,14 +113,14 @@ export class Context {
    * - optional: if not set or set to `true`, `undefined` will be returned if
    * no corresponding value is found. Otherwise, an error will be thrown.
    */
-  getConfigAsValueOrPromise<T>(
-    key: string,
+  getConfigAsValueOrPromise<ConfigValueType>(
+    key: BindingAddress<BoundValue>,
     configPath?: string,
     resolutionOptions?: ResolutionOptions,
-  ): ValueOrPromise<T | undefined> {
+  ): ValueOrPromise<ConfigValueType | undefined> {
     const env = resolutionOptions && resolutionOptions.environment;
     configPath = configPath || '';
-    const configKey = BindingKey.create(
+    const configKey = BindingKey.create<ConfigValueType>(
       BindingKey.buildKeyForConfig(key, env),
       configPath,
     );
@@ -126,9 +131,10 @@ export class Context {
     /**
      * Set up possible keys to resolve the config value
      */
+    key = key.toString();
     const keys = [];
     while (true) {
-      const configKeyAndPath = BindingKey.create(
+      const configKeyAndPath = BindingKey.create<ConfigValueType>(
         BindingKey.buildKeyForConfig(key, env),
         configPath,
       );
@@ -136,7 +142,10 @@ export class Context {
       if (env) {
         // The `environment` is set, let's try the non env specific binding too
         keys.push(
-          BindingKey.create(BindingKey.buildKeyForConfig(key), configPath),
+          BindingKey.create<ConfigValueType>(
+            BindingKey.buildKeyForConfig(key),
+            configPath,
+          ),
         );
       }
       if (!key || localConfigOnly) {
@@ -163,10 +172,10 @@ export class Context {
         resolutionOptions,
         {optional: true}, // Force optional to be true
       );
-      return this.getValueOrPromise<T>(keyWithPath, options);
+      return this.getValueOrPromise<ConfigValueType>(keyWithPath, options);
     };
 
-    const evaluateConfig = (keyWithPath: string, val: T) => {
+    const evaluateConfig = (keyWithPath: string, val: ConfigValueType) => {
       /* istanbul ignore if */
       if (debug.enabled) {
         debug('Configuration keyWithPath: %s => value: %j', keyWithPath, val);
@@ -181,20 +190,19 @@ export class Context {
     };
 
     const required = resolutionOptions && resolutionOptions.optional === false;
-    const valueOrPromise = resolveUntil<BindingAddress<T>, T>(
-      keys[Symbol.iterator](),
-      resolveConfig,
-      evaluateConfig,
-    );
-    return resolveValueOrPromise<T | undefined, T | undefined>(
-      valueOrPromise,
-      val => {
-        if (val === undefined && required) {
-          throw Error(`Configuration '${configKey}' cannot be resolved`);
-        }
-        return val;
-      },
-    );
+    const valueOrPromise = resolveUntil<
+      BindingAddress<ConfigValueType>,
+      ConfigValueType
+    >(keys[Symbol.iterator](), resolveConfig, evaluateConfig);
+    return resolveValueOrPromise<
+      ConfigValueType | undefined,
+      ConfigValueType | undefined
+    >(valueOrPromise, val => {
+      if (val === undefined && required) {
+        throw Error(`Configuration '${configKey}' cannot be resolved`);
+      }
+      return val;
+    });
   }
 
   /**
@@ -215,12 +223,12 @@ export class Context {
    * @param resolutionOptions Options for the resolution. If `localConfigOnly` is
    * set to true, no parent namespaces will be looked up.
    */
-  async getConfig<T>(
-    key: string,
+  async getConfig<ConfigValueType>(
+    key: BindingAddress<BoundValue>,
     configPath?: string,
     resolutionOptions?: ResolutionOptions,
-  ): Promise<T | undefined> {
-    return await this.getConfigAsValueOrPromise<T>(
+  ): Promise<ConfigValueType | undefined> {
+    return await this.getConfigAsValueOrPromise<ConfigValueType>(
       key,
       configPath,
       resolutionOptions,
@@ -245,12 +253,12 @@ export class Context {
    * @param resolutionOptions Options for the resolution. If `localConfigOnly`
    * is set to `true`, no parent namespaces will be looked up.
    */
-  getConfigSync<T>(
-    key: string,
+  getConfigSync<ConfigValueType>(
+    key: BindingAddress<BoundValue>,
     configPath?: string,
     resolutionOptions?: ResolutionOptions,
-  ): T | undefined {
-    const valueOrPromise = this.getConfigAsValueOrPromise<T>(
+  ): ConfigValueType | undefined {
+    const valueOrPromise = this.getConfigAsValueOrPromise<ConfigValueType>(
       key,
       configPath,
       resolutionOptions,
