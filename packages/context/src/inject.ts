@@ -12,7 +12,7 @@ import {
 } from '@loopback/metadata';
 import {BoundValue, ValueOrPromise, resolveList} from './value-promise';
 import {Context} from './context';
-import {BindingKey, BindingAddress} from './BindingKey';
+import {BindingKey, BindingAddress} from './binding-key';
 import {ResolutionSession} from './resolution-session';
 
 const PARAMETERS_KEY = 'inject:parameters';

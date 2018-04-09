@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {BindingKey} from '../../src/BindingKey';
+import {BindingKey} from '../../src/binding-key';
 
 describe('BindingKey', () => {
   describe('create', () => {
