@@ -30,7 +30,8 @@
     "swagger2openapi": "^2.11.16"
   },
   "devDependencies": {
-    "@loopback/build": "^0.4.2"
+    "@loopback/build": "^0.4.2",
+    "@types/node": "^8.10.4"
   },
   "files": [
     "README.md",

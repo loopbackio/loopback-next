@@ -26,7 +26,8 @@
     "@loopback/openapi-v3-types": "^0.3.3"
   },
   "devDependencies": {
-    "@loopback/build": "^0.4.2"
+    "@loopback/build": "^0.4.2",
+    "@types/node": "^8.10.4"
   },
   "files": [
     "README.md",
