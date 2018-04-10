@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@loopback/build": "^0.4.2",
+    "@loopback/testlab": "^0.5.3",
     "@types/node": "^8.10.4"
   },
   "scripts": {
@@ -17,7 +18,10 @@
     "build:apidocs": "lb-apidocs",
     "clean": "lb-clean loopback-openapi-v3-types*.tgz dist package api-docs",
     "prepublishOnly": "npm run build && npm run build:apidocs",
-    "verify": "npm pack && tar xf loopback-openapi-v3-types*.tgz && tree package && npm run clean"
+    "verify": "npm pack && tar xf loopback-openapi-v3-types*.tgz && tree package && npm run clean",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"DIST/test/**/*.js\"",
+    "unit": "npm run build && lb-mocha \"DIST/test/unit/**/*.js\""
   },
   "author": "IBM",
   "copyright.owner": "IBM Corp.",
