@@ -17,7 +17,6 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/openapi-v3-types": "^0.3.3",
     "@types/fs-extra": "^5.0.1",
     "@types/shot": "^3.4.0",
     "@types/sinon": "^4.3.0",
