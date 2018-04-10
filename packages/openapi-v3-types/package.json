@@ -9,7 +9,8 @@
     "openapi3-ts": "^0.8.0"
   },
   "devDependencies": {
-    "@loopback/build": "^0.4.2"
+    "@loopback/build": "^0.4.2",
+    "@types/node": "^8.10.4"
   },
   "scripts": {
     "build": "lb-tsc es2017",

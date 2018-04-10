@@ -26,6 +26,7 @@
   "devDependencies": {
     "@loopback/build": "^0.4.2",
     "@loopback/testlab": "^0.5.3",
+    "@types/node": "^8.10.4",
     "eslint-config-google": "^0.9.1",
     "glob": "^7.1.2",
     "mem-fs": "^1.1.3",

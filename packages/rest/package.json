@@ -42,7 +42,8 @@
     "@loopback/testlab": "^0.5.3",
     "@types/debug": "0.0.30",
     "@types/js-yaml": "^3.11.1",
-    "@types/lodash": "^4.14.106"
+    "@types/lodash": "^4.14.106",
+    "@types/node": "^8.10.4"
   },
   "files": [
     "README.md",
