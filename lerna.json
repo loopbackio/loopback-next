@@ -3,6 +3,7 @@
   "packages": ["packages/*", "examples/*", "docs"],
   "command": {
     "publish": {
+      "forcePublish": "@loopback/cli,@loopback/docs",
       "conventionalCommits": true,
       "message": "chore: publish release"
     },
