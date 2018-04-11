@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@0.6.0...@loopback/boot@0.7.0) (2018-04-11)
+
+
+### Features
+
+* **testlab:** update sourceMappingURL when copying a JS file ([aac2781](https://github.com/strongloop/loopback-next/commit/aac2781))
+
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@0.5.2...@loopback/boot@0.6.0) (2018-04-11)
 
