@@ -197,6 +197,11 @@ export class RestServer extends Context implements Server, HttpServerLike {
       return Promise.resolve();
     }
 
+    // Any item down the sequence chain can override the statusCode if needed
+    if (request.method === 'POST') {
+      response.statusCode = 201;
+    }
+
     if (
       request.method === 'GET' &&
       request.url &&
