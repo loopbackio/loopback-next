@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.5.2...@loopback/rest@0.6.0) (2018-04-11)
+
+
+### Bug Fixes
+
+* change file names to fit advocated naming convention ([0331df8](https://github.com/strongloop/loopback-next/commit/0331df8))
+
+
+### Features
+
+* **context:** typed binding keys ([685195c](https://github.com/strongloop/loopback-next/commit/685195c))
+* **rest:** add typing for controller instance/class/factory ([a1cbab3](https://github.com/strongloop/loopback-next/commit/a1cbab3))
+* **rest:** allow factory for controller routes ([184371b](https://github.com/strongloop/loopback-next/commit/184371b))
+
+
+
+
 <a name="0.5.3"></a>
 ## [0.5.3](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.5.2...@loopback/rest@0.5.3) (2018-04-06)
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.5.4"></a>
+## [0.5.4](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.5.2...@loopback/testlab@0.5.4) (2018-04-11)
+
+
+### Bug Fixes
+
+* change file names to fit advocated naming convention ([0331df8](https://github.com/strongloop/loopback-next/commit/0331df8))
+
+
+
+
 <a name="0.5.3"></a>
 ## [0.5.3](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.5.2...@loopback/testlab@0.5.3) (2018-04-06)
 

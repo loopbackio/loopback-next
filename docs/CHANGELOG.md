@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.3.4...@loopback/docs@0.4.0) (2018-04-11)
+
+
+### Bug Fixes
+
+* apply small docs changes ([8ad1b86](https://github.com/strongloop/loopback-next/commit/8ad1b86))
+* change file names to fit advocated naming convention ([0331df8](https://github.com/strongloop/loopback-next/commit/0331df8))
+
+
+### Features
+
+* **context:** typed binding keys ([685195c](https://github.com/strongloop/loopback-next/commit/685195c))
+* **repository:** have [@repository](https://github.com/repository) take in constructor as arg ([3db07eb](https://github.com/strongloop/loopback-next/commit/3db07eb))
+
+
+
+
 <a name="0.3.5"></a>
 ## [0.3.5](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.3.4...@loopback/docs@0.3.5) (2018-04-06)
 

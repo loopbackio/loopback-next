@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.6.2...@loopback/cli@0.7.0) (2018-04-11)
+
+
+### Bug Fixes
+
+* change file names to fit advocated naming convention ([0331df8](https://github.com/strongloop/loopback-next/commit/0331df8))
+
+
+### Features
+
+* **context:** typed binding keys ([685195c](https://github.com/strongloop/loopback-next/commit/685195c))
+* **repository:** have [@repository](https://github.com/repository) take in constructor as arg ([3db07eb](https://github.com/strongloop/loopback-next/commit/3db07eb))
+
+
+
+
 <a name="0.6.3"></a>
 ## [0.6.3](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.6.2...@loopback/cli@0.6.3) (2018-04-06)
 

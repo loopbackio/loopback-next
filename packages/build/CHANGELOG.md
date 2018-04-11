@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.3"></a>
+## [0.4.3](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.4.1...@loopback/build@0.4.3) (2018-04-11)
+
+
+### Bug Fixes
+
+* change file names to fit advocated naming convention ([0331df8](https://github.com/strongloop/loopback-next/commit/0331df8))
+* **build:** update build scripts ([2a3f560](https://github.com/strongloop/loopback-next/commit/2a3f560))
+
+
+
+
 <a name="0.4.2"></a>
 ## [0.4.2](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.4.1...@loopback/build@0.4.2) (2018-04-06)
 
