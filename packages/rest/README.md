@@ -3,11 +3,6 @@
 The REST API package for
 [loopback-next](https://github.com/strongloop/loopback-next).
 
-## STATUS: Developer Preview #1
-
-This package is not yet ready for production use. Additionally, this document is
-also a work-in-progress and some sections may not have corresponding code!
-
 ## Overview
 
 This component provides a REST server for your application instances, complete
