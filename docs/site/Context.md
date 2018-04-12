@@ -261,7 +261,7 @@ above will print `Hello John` at run time.
   associated with a binding key yet, therefore the TypeScript compiler will not
   check that the injection target (e.g. a constructor argument) was declared
   with a type that the bound value can be assigned to.
-"}
+" %}
 
 Please refer to [Dependency injection](Dependency-injection.md) for further
 details.
