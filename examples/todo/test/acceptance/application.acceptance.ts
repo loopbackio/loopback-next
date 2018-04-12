@@ -35,7 +35,7 @@ describe('Application', () => {
     const response = await client
       .post('/todo')
       .send(todo)
-      .expect(200);
+      .expect(201);
     expect(response.body).to.containEql(todo);
     const result = await todoRepo.findById(response.body.id);
     expect(result).to.containEql(todo);
