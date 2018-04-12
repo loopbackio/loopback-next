@@ -1,0 +1,4 @@
+[submodule "loopback.io"]
+	path = loopback.io
+	url = https://github.com/strongloop/loopback.io.git
+	branch = gh-pages

@@ -1,6 +1,6 @@
 {
   "lerna": "2.9.1",
-  "packages": ["packages/*", "examples/*", "docs", "sandbox/*"],
+  "packages": ["packages/*", "examples/*", "docs", "sandbox/*", "loopback.io"],
   "command": {
     "publish": {
       "forcePublish": "@loopback/cli,@loopback/docs",
