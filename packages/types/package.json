@@ -1,6 +1,6 @@
 {
   "name": "@loopback/types",
-  "version": "4.0.0-alpha.8",
+  "version": "0.1.0",
   "description": "LoopBack's types utilities for reflection and decoration",
   "engines": {
     "node": ">=6"

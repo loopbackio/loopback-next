@@ -4,5 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './common-types';
+export * from './convert';
 export * from './mixin';
 export * from './handlers';

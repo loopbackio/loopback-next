@@ -15,6 +15,7 @@ import {
   invokeMethod,
   instantiateClass,
   ValueOrPromise,
+  MetadataInspector,
 } from '@loopback/context';
 import {ServerRequest} from 'http';
 import * as HttpErrors from 'http-errors';

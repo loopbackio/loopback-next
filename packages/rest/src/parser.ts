@@ -9,6 +9,7 @@ import {
   OperationObject,
   ParameterObject,
   isReferenceObject,
+  isSchemaObject,
 } from '@loopback/openapi-v3-types';
 import {REQUEST_BODY_INDEX} from '@loopback/openapi-v3';
 import {promisify} from 'util';
@@ -18,6 +19,8 @@ import {
   PathParameterValues,
 } from './internal-types';
 import {ResolvedRoute} from './router/routing-table';
+import {getSerializer} from '@loopback/types';
+const debug = require('debug')('loopback:rest:parser');
 type HttpError = HttpErrors.HttpError;
 
 // tslint:disable-next-line:no-any
@@ -123,6 +126,28 @@ function buildOperationArguments(
         );
     }
   }
-  if (requestBodyIndex > -1) paramArgs.splice(requestBodyIndex, 0, body);
-  return paramArgs;
+
+  debug('Coercing parameters', paramArgs);
+
+  const coercedParamArgs: OperationArgs = [];
+  const paramObjects = operationSpec.parameters;
+  // coercion is done IFF parameters are defined in the OpenAPI spec
+  if (paramObjects) {
+    for (let i = 0; i < paramArgs.length; i++) {
+      const paramObject = paramObjects[i];
+      if (!isReferenceObject(paramObject)) {
+        // is a ParameterObject
+        if (paramObject.schema) {
+          if (isSchemaObject(paramObject.schema)) {
+            // basic type
+            const serializer = getSerializer(paramObject.schema.type!);
+            coercedParamArgs.push(serializer.coerce(paramArgs[i]));
+          }
+        }
+      }
+    }
+  }
+  if (requestBodyIndex > -1) coercedParamArgs.splice(requestBodyIndex, 0, body);
+
+  return coercedParamArgs;
 }
