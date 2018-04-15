@@ -35,6 +35,7 @@
     "rimraf": "^2.6.2",
     "sinon": "^4.5.0",
     "yeoman-assert": "^3.1.1",
+    "yeoman-environment": "^2.0.6",
     "yeoman-test": "^1.7.0"
   },
   "dependencies": {

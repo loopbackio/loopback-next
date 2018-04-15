@@ -5,13 +5,10 @@
 
 'use strict';
 
-const _ = require('lodash');
 const yeoman = require('yeoman-environment');
 const path = require('path');
 const helpers = require('yeoman-test');
 const fs = require('fs');
-const util = require('util');
-const RunContext = require('yeoman-test/lib/run-context');
 
 exports.testSetUpGen = function(genName, arg) {
   arg = arg || {};
