@@ -6,6 +6,7 @@
 import {ServerResponse as Response} from 'http';
 import {OperationRetval} from './internal-types';
 import {HttpError} from 'http-errors';
+import {ResolvedRoute} from './router/routing-table';
 import {Readable} from 'stream';
 
 /**
@@ -20,6 +21,7 @@ export function writeResultToResponse(
   response: Response,
   // result returned back from invoking controller method
   result: OperationRetval,
+  route?: ResolvedRoute,
 ): void {
   if (result) {
     if (result instanceof Readable || typeof result.pipe === 'function') {
@@ -47,6 +49,14 @@ export function writeResultToResponse(
         response.setHeader('Content-Type', 'text/plain');
         result = result.toString();
         break;
+    }
+    if (route) {
+      const spec = route.spec;
+      const responsesCode = Object.keys(spec.responses || {});
+      if (responsesCode.length >= 1) {
+        const successStatusCode = responsesCode[0];
+        response.statusCode = parseInt(successStatusCode);
+      }
     }
     response.write(result);
   }
