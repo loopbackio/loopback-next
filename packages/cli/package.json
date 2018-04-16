@@ -1,6 +1,6 @@
 {
   "name": "@loopback/cli",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "Yeoman generator for LoopBack 4",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/packages/cli",
   "author": {
@@ -67,9 +67,9 @@
       "//1": "This file contains dependency/version used by project templates",
       "//2": "It can be updated by `npm run update-template-deps` under `loopback-next`",
       "@loopback/context": "^0.7.0",
-      "@loopback/boot": "^0.7.1",
+      "@loopback/boot": "^0.7.2",
       "@loopback/core": "^0.5.2",
-      "@loopback/rest": "^0.6.2",
+      "@loopback/rest": "^0.6.3",
       "@loopback/openapi-v3": "^0.6.0",
       "@loopback/build": "^0.4.3",
       "@loopback/testlab": "^0.6.0",
@@ -84,8 +84,8 @@
       "debug": "^3.1.0",
       "nyc": "^11.6.0",
       "strong-docs": "^1.10.2",
-      "@loopback/authentication": "^0.7.0",
-      "@loopback/cli": "^0.7.3",
+      "@loopback/authentication": "^0.7.1",
+      "@loopback/cli": "^0.7.4",
       "@loopback/metadata": "^0.5.0",
       "@loopback/openapi-spec-builder": "^0.4.5",
       "@loopback/openapi-spec": "^0.3.0",
@@ -93,7 +93,7 @@
       "@loopback/repository-json-schema": "^0.5.0",
       "@loopback/repository": "^0.7.0",
       "@loopback/openapi-v2": "^0.3.0",
-      "@loopback/docs": "^0.4.2",
+      "@loopback/docs": "^0.4.3",
       "fs-extra": "^5.0.0",
       "rimraf": "^2.6.2"
     }

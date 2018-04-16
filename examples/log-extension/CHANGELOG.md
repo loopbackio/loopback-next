@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.6.3"></a>
+## [0.6.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@0.6.2...@loopback/example-log-extension@0.6.3) (2018-04-16)
+
+
+
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
 <a name="0.6.2"></a>
 ## [0.6.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@0.6.1...@loopback/example-log-extension@0.6.2) (2018-04-12)
 
