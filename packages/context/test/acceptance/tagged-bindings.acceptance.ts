@@ -17,11 +17,11 @@ describe('Context bindings - Tagged bindings', () => {
       before(tagBinding);
 
       it('has a tag name', () => {
-        expect(binding.tags.has('qux')).to.be.true();
+        expect(binding.tagNames).to.containEql('controller');
       });
 
       function tagBinding() {
-        binding.tag('qux');
+        binding.tag('controller');
       }
     });
 
@@ -29,12 +29,29 @@ describe('Context bindings - Tagged bindings', () => {
       before(tagBinding);
 
       it('has tags', () => {
-        expect(binding.tags.has('x')).to.be.true();
-        expect(binding.tags.has('y')).to.be.true();
+        expect(binding.tagNames).to.containEql('controller');
+        expect(binding.tagNames).to.containEql('rest');
       });
 
       function tagBinding() {
-        binding.tag(['x', 'y']);
+        binding.tag('controller', 'rest');
+      }
+    });
+
+    context('when the binding is tagged with name/value objects', () => {
+      before(tagBinding);
+
+      it('has tags', () => {
+        expect(binding.tagNames).to.containEql('controller');
+        expect(binding.tagNames).to.containEql('name');
+        expect(binding.tagMap).to.containEql({
+          name: 'my-controller',
+          controller: 'controller',
+        });
+      });
+
+      function tagBinding() {
+        binding.tag({name: 'my-controller'}, 'controller');
       }
     });
   });

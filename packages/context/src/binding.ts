@@ -12,6 +12,7 @@ import {
   isPromiseLike,
   BoundValue,
   ValueOrPromise,
+  MapObject,
 } from './value-promise';
 import {Provider} from './provider';
 
@@ -90,17 +91,55 @@ export enum BindingScope {
   SINGLETON = 'Singleton',
 }
 
+/**
+ * Type of the binding source
+ */
 export enum BindingType {
+  /**
+   * A fixed value
+   */
   CONSTANT = 'Constant',
+  /**
+   * A function to get the value
+   */
   DYNAMIC_VALUE = 'DynamicValue',
+  /**
+   * A class to be instantiated as the value
+   */
   CLASS = 'Class',
+  /**
+   * A provider class with `value()` function to get the value
+   */
   PROVIDER = 'Provider',
 }
 
+// tslint:disable-next-line:no-any
+export type TagMap = MapObject<any>;
+
+/**
+ * Binding represents an entry in the `Context`. Each binding has a key and a
+ * corresponding value getter.
+ */
 export class Binding<T = BoundValue> {
+  /**
+   * Key of the binding
+   */
   public readonly key: string;
-  public readonly tags: Set<string> = new Set();
+
+  /**
+   * Map for tag name/value pairs
+   */
+
+  public readonly tagMap: TagMap = {};
+
+  /**
+   * Scope of the binding to control how the value is cached/shared
+   */
   public scope: BindingScope = BindingScope.TRANSIENT;
+
+  /**
+   * Type of the binding value getter
+   */
   public type: BindingType;
 
   private _cache: WeakMap<Context, T>;
@@ -109,8 +148,10 @@ export class Binding<T = BoundValue> {
     session?: ResolutionSession,
   ) => ValueOrPromise<T>;
 
-  // For bindings bound via toClass, this property contains the constructor
-  // function
+  /**
+   * For bindings bound via toClass, this property contains the constructor
+   * function
+   */
   public valueConstructor: Constructor<T>;
 
   constructor(key: string, public isLocked: boolean = false) {
@@ -215,15 +256,52 @@ export class Binding<T = BoundValue> {
     return this;
   }
 
-  tag(tagName: string | string[]): this {
-    if (typeof tagName === 'string') {
-      this.tags.add(tagName);
-    } else {
-      tagName.forEach(t => {
-        this.tags.add(t);
-      });
+  /**
+   * Tag the binding with names or name/value objects. A tag has a name and
+   * an optional value. If not supplied, the tag name is used as the value.
+   *
+   * @param tags A list of names or name/value objects. Each
+   * parameter can be in one of the following forms:
+   * - string: A tag name without value
+   * - string[]: An array of tag names
+   * - TagMap: A map of tag name/value pairs
+   *
+   * @example
+   * ```ts
+   * // Add a named tag `controller`
+   * binding.tag('controller');
+   *
+   * // Add two named tags: `controller` and `rest`
+   * binding.tag('controller', 'rest');
+   *
+   * // Add two tags
+   * // - `controller` (name = 'controller')
+   * // `{name: 'my-controller'}` (name = 'name', value = 'my-controller')
+   * binding.tag('controller', {name: 'my-controller'});
+   *
+   * ```
+   */
+  tag(...tags: (string | TagMap)[]): this {
+    for (const t of tags) {
+      if (typeof t === 'string') {
+        this.tagMap[t] = t;
+      } else if (Array.isArray(t)) {
+        // Throw an error as TypeScript cannot exclude array from TagMap
+        throw new Error(
+          'Tag must be a string or an object (but not array): ' + t,
+        );
+      } else {
+        Object.assign(this.tagMap, t);
+      }
     }
     return this;
+  }
+
+  /**
+   * Get an array of tag names
+   */
+  get tagNames() {
+    return Object.keys(this.tagMap);
   }
 
   inScope(scope: BindingScope): this {
@@ -367,7 +445,7 @@ export class Binding<T = BoundValue> {
     const json: {[name: string]: any} = {
       key: this.key,
       scope: this.scope,
-      tags: Array.from(this.tags),
+      tags: this.tagMap,
       isLocked: this.isLocked,
     };
     if (this.type != null) {

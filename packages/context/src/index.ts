@@ -17,7 +17,7 @@ export {
   getDeepProperty,
 } from './value-promise';
 
-export {Binding, BindingScope, BindingType} from './binding';
+export {Binding, BindingScope, BindingType, TagMap} from './binding';
 
 export {Context} from './context';
 export {BindingKey, BindingAddress} from './binding-key';

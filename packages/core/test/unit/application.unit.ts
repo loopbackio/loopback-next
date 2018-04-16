@@ -16,14 +16,14 @@ describe('Application', () => {
 
     it('binds a controller', () => {
       const binding = app.controller(MyController);
-      expect(Array.from(binding.tags)).to.containEql('controller');
+      expect(Array.from(binding.tagNames)).to.containEql('controller');
       expect(binding.key).to.equal('controllers.MyController');
       expect(findKeysByTag(app, 'controller')).to.containEql(binding.key);
     });
 
     it('binds a controller with custom name', () => {
       const binding = app.controller(MyController, 'my-controller');
-      expect(Array.from(binding.tags)).to.containEql('controller');
+      expect(Array.from(binding.tagNames)).to.containEql('controller');
       expect(binding.key).to.equal('controllers.my-controller');
       expect(findKeysByTag(app, 'controller')).to.containEql(binding.key);
     });
@@ -65,7 +65,7 @@ describe('Application', () => {
     it('defaults to constructor name', async () => {
       const app = new Application();
       const binding = app.server(FakeServer);
-      expect(Array.from(binding.tags)).to.containEql('server');
+      expect(Array.from(binding.tagNames)).to.containEql('server');
       const result = await app.getServer(FakeServer.name);
       expect(result.constructor.name).to.equal(FakeServer.name);
     });
@@ -81,8 +81,8 @@ describe('Application', () => {
     it('allows binding of multiple servers as an array', async () => {
       const app = new Application();
       const bindings = app.servers([FakeServer, AnotherServer]);
-      expect(Array.from(bindings[0].tags)).to.containEql('server');
-      expect(Array.from(bindings[1].tags)).to.containEql('server');
+      expect(Array.from(bindings[0].tagNames)).to.containEql('server');
+      expect(Array.from(bindings[1].tagNames)).to.containEql('server');
       const fakeResult = await app.getServer(FakeServer);
       expect(fakeResult.constructor.name).to.equal(FakeServer.name);
       const AnotherResult = await app.getServer(AnotherServer);

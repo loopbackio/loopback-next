@@ -55,7 +55,7 @@ describe('RestServer.getApiSpec()', () => {
       new Route('get', '/greet', {responses: {}}, greet),
     );
     expect(binding.key).to.eql('routes.get %2Fgreet');
-    expect(binding.tags.has('route')).to.be.true();
+    expect(binding.tagNames).containEql('route');
   });
 
   it('binds a route via app.route(..., Controller, method)', () => {
@@ -72,7 +72,7 @@ describe('RestServer.getApiSpec()', () => {
       'greet',
     );
     expect(binding.key).to.eql('routes.get %2Fgreet%2Ejson');
-    expect(binding.tags.has('route')).to.be.true();
+    expect(binding.tagNames).containEql('route');
   });
 
   it('returns routes registered via app.route(route)', () => {

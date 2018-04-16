@@ -242,33 +242,55 @@ describe('Context', () => {
       expect(result).to.be.eql([b2, b3]);
       result = ctx.find(binding => binding.scope === BindingScope.SINGLETON);
       expect(result).to.be.eql([b1]);
-      result = ctx.find(binding => binding.tags.has('b'));
+      result = ctx.find(binding => binding.tagNames.includes('b'));
       expect(result).to.be.eql([b2, b3]);
     });
   });
 
-  describe('findByTag', () => {
+  describe('findByTag with name pattern', () => {
     it('returns matching binding', () => {
-      const b1 = ctx.bind('foo').tag('t1');
-      ctx.bind('bar').tag('t2');
-      const result = ctx.findByTag('t1');
+      const b1 = ctx.bind('controllers.ProductController').tag('controller');
+      ctx.bind('repositories.ProductRepository').tag('repository');
+      const result = ctx.findByTag('controller');
       expect(result).to.be.eql([b1]);
     });
 
     it('returns matching binding with *', () => {
-      const b1 = ctx.bind('foo').tag('t1');
-      const b2 = ctx.bind('bar').tag('t2');
-      const result = ctx.findByTag('t*');
+      const b1 = ctx.bind('controllers.ProductController').tag('controller');
+      const b2 = ctx.bind('controllers.OrderController').tag('controller');
+      const result = ctx.findByTag('c*');
       expect(result).to.be.eql([b1, b2]);
     });
 
     it('returns matching binding with regexp', () => {
-      const b1 = ctx.bind('foo').tag('t1');
-      const b2 = ctx.bind('bar').tag('t2');
-      let result = ctx.findByTag(/t/);
+      const b1 = ctx.bind('controllers.ProductController').tag('controller');
+      const b2 = ctx
+        .bind('controllers.OrderController')
+        .tag('controller', 'rest');
+      let result = ctx.findByTag(/controller/);
       expect(result).to.be.eql([b1, b2]);
-      result = ctx.findByTag(/t1/);
+      result = ctx.findByTag(/rest/);
+      expect(result).to.be.eql([b2]);
+    });
+  });
+
+  describe('findByTag with name/value filter', () => {
+    it('returns matching binding', () => {
+      const b1 = ctx
+        .bind('controllers.ProductController')
+        .tag({name: 'my-controller'});
+      ctx.bind('controllers.OrderController').tag('controller');
+      ctx.bind('dataSources.mysql').tag({dbType: 'mysql'});
+      const result = ctx.findByTag({name: 'my-controller'});
       expect(result).to.be.eql([b1]);
+    });
+
+    it('returns empty array if no matching tag value is found', () => {
+      ctx.bind('controllers.ProductController').tag({name: 'my-controller'});
+      ctx.bind('controllers.OrderController').tag('controller');
+      ctx.bind('dataSources.mysql').tag({dbType: 'mysql'});
+      const result = ctx.findByTag({name: 'your-controller'});
+      expect(result).to.be.eql([]);
     });
   });
 
@@ -604,30 +626,30 @@ describe('Context', () => {
         .bind('b')
         .toDynamicValue(() => 2)
         .inScope(BindingScope.SINGLETON)
-        .tag(['X', 'Y']);
+        .tag('X', 'Y');
       ctx
         .bind('c')
         .to(3)
-        .tag('Z');
+        .tag('Z', {a: 1});
       expect(ctx.toJSON()).to.eql({
         a: {
           key: 'a',
           scope: BindingScope.TRANSIENT,
-          tags: [],
+          tags: {},
           isLocked: true,
           type: BindingType.CONSTANT,
         },
         b: {
           key: 'b',
           scope: BindingScope.SINGLETON,
-          tags: ['X', 'Y'],
+          tags: {X: 'X', Y: 'Y'},
           isLocked: false,
           type: BindingType.DYNAMIC_VALUE,
         },
         c: {
           key: 'c',
           scope: BindingScope.TRANSIENT,
-          tags: ['Z'],
+          tags: {Z: 'Z', a: 1},
           isLocked: false,
           type: BindingType.CONSTANT,
         },

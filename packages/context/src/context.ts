@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding} from './binding';
+import {Binding, TagMap} from './binding';
 import {BindingKey, BindingAddress} from './binding-key';
 import {isPromiseLike, getDeepProperty, BoundValue} from './value-promise';
 import {ResolutionOptions, ResolutionSession} from './resolution-session';
@@ -185,19 +185,38 @@ export class Context {
   }
 
   /**
-   * Find bindings using the tag pattern
-   * @param pattern  A regexp or wildcard pattern with optional `*` and `?`. If
-   * it matches one of the binding tags, the binding is included. For a
-   * wildcard:
-   * - `*` matches zero or more characters except `.` and `:`
-   * - `?` matches exactly one character except `.` and `:`
+   * Find bindings using the tag filter. If the filter matches one of the
+   * binding tags, the binding is included.
+   *
+   * @param tagFilter  A filter for tags. It can be in one of the following
+   * forms:
+   * - A regular expression, such as `/controller/`
+   * - A wildcard pattern string with optional `*` and `?`, such as `'con*'`
+   *   For a wildcard:
+   *   - `*` matches zero or more characters except `.` and `:`
+   *   - `?` matches exactly one character except `.` and `:`
+   * - An object containing tag name/value pairs, such as
+   * `{name: 'my-controller'}`
    */
   findByTag<ValueType = BoundValue>(
-    pattern: string | RegExp,
+    tagFilter: string | RegExp | TagMap,
   ): Readonly<Binding<ValueType>>[] {
-    const regexp =
-      typeof pattern === 'string' ? this.wildcardToRegExp(pattern) : pattern;
-    return this.find(b => Array.from(b.tags).some(t => regexp.test(t)));
+    if (typeof tagFilter === 'string' || tagFilter instanceof RegExp) {
+      const regexp =
+        typeof tagFilter === 'string'
+          ? this.wildcardToRegExp(tagFilter)
+          : tagFilter;
+      return this.find(b => Array.from(b.tagNames).some(t => regexp!.test(t)));
+    }
+
+    return this.find(b => {
+      for (const t in tagFilter) {
+        // One tag name/value does not match
+        if (b.tagMap[t] !== tagFilter[t]) return false;
+      }
+      // All tag name/value pairs match
+      return true;
+    });
   }
 
   protected _mergeWithParent<ValueType>(
