@@ -109,10 +109,12 @@ describe('Application', () => {
       rest: {
         port: 0,
       },
-      datasource: {
-        name: 'db',
-        connector: 'memory',
-      },
+      datasources: [
+        {
+          name: 'db',
+          connector: 'memory',
+        },
+      ],
     });
   }
 
