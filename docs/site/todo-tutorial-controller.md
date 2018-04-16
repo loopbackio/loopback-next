@@ -77,7 +77,7 @@ export class TodoController {
   @post('/todo')
   async createTodo(@requestBody() todo: Todo) {
     if (!todo.title) {
-      return Promise.reject(new HttpErrors.BadRequest('title is required'));
+      throw new HttpErrors.BadRequest('title is required');
     }
     return await this.todoRepo.create(todo);
   }
@@ -127,7 +127,7 @@ export class TodoController {
   @post('/todo')
   async createTodo(@requestBody() todo: Todo) {
     if (!todo.title) {
-      return Promise.reject(new HttpErrors.BadRequest('title is required'));
+      throw new HttpErrors.BadRequest('title is required');
     }
     return await this.todoRepo.create(todo);
   }

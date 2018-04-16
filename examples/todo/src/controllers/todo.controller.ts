@@ -25,7 +25,7 @@ export class TodoController {
     // TODO(bajtos) This should be handled by the framework
     // See https://github.com/strongloop/loopback-next/issues/118
     if (!todo.title) {
-      return Promise.reject(new HttpErrors.BadRequest('title is required'));
+      throw new HttpErrors.BadRequest('title is required');
     }
     return await this.todoRepo.create(todo);
   }

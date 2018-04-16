@@ -100,9 +100,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       .getArtifactList(this.artifactInfo.modelDir, 'model')
       .then(list => {
         if (_.isEmpty(list)) {
-          return Promise.reject(
-            new Error(`No models found in ${this.artifactInfo.modelDir}`)
-          );
+          throw new Error(`No models found in ${this.artifactInfo.modelDir}`);
         }
         modelList = list;
         return utils.getArtifactList(
@@ -113,11 +111,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       })
       .then(list => {
         if (_.isEmpty(list)) {
-          return Promise.reject(
-            new Error(
-              `No repositories found in ${this.artifactInfo.repositoryDir}`
-            )
-          );
+          throw new Error(`No repositories found in ${this.artifactInfo.repositoryDir}`);
         }
         repositoryList = list;
         return this.prompt([

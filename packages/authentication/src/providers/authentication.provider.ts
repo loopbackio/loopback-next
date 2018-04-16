@@ -72,7 +72,7 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
       return undefined;
     }
     if (!strategy.authenticate) {
-      return Promise.reject(new Error('invalid strategy parameter'));
+      throw new Error('invalid strategy parameter');
     }
     const strategyAdapter = new StrategyAdapter(strategy);
     const user = await strategyAdapter.authenticate(request);
