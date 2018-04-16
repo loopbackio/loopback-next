@@ -60,7 +60,7 @@ export async function parseOperationArgs(
   return buildOperationArguments(operationSpec, request, pathParams, body);
 }
 
-function loadRequestBodyIfNeeded(
+async function loadRequestBodyIfNeeded(
   operationSpec: OperationObject,
   request: ServerRequest,
 ): Promise<MaybeBody> {
@@ -68,15 +68,14 @@ function loadRequestBodyIfNeeded(
 
   const contentType = getContentType(request);
   if (contentType && !/json/.test(contentType)) {
-    const err = new HttpErrors.UnsupportedMediaType(
+    throw new HttpErrors.UnsupportedMediaType(
       `Content-type ${contentType} is not supported.`,
     );
-    return Promise.reject(err);
   }
 
-  return parseJsonBody(request).catch((err: HttpError) => {
+  return await parseJsonBody(request).catch((err: HttpError) => {
     err.statusCode = 400;
-    return Promise.reject(err);
+    throw err;
   });
 }
 

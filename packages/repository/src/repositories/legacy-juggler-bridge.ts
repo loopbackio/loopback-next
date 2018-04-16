@@ -152,9 +152,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
       this.modelClass.findById(id, filter, options),
     );
     if (!model) {
-      return Promise.reject(
-        new Error(`no ${this.modelClass.name} found with id "${id}"`),
-      );
+      throw new Error(`no ${this.modelClass.name} found with id "${id}"`);
     }
     return this.toEntity(model);
   }
