@@ -11,11 +11,7 @@ describe('TestSandbox integration tests', () => {
   let sandbox: TestSandbox;
   let path: string;
   const COPY_FILE = 'copy-me.txt';
-  const COPY_FILE_PATH = resolve(
-    __dirname,
-    '../../../test/fixtures',
-    COPY_FILE,
-  );
+  const COPY_FILE_PATH = resolve(__dirname, '../fixtures', COPY_FILE);
 
   beforeEach(createSandbox);
   beforeEach(givenPath);

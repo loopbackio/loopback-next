@@ -21,6 +21,8 @@ function run(argv, options) {
   const utils = require('./utils');
   const path = require('path');
   const fs = require('fs');
+  const glob = require('glob');
+  const fse = require('fs-extra');
 
   const packageDir = utils.getPackageDir();
 
@@ -29,8 +31,18 @@ function run(argv, options) {
   const isTargetSet = utils.isOptionSet(compilerOpts, '--target');
   const isOutDirSet = utils.isOptionSet(compilerOpts, '--outDir');
   const isProjectSet = utils.isOptionSet(compilerOpts, '-p', '--project');
+  const isIgnoreResourcesSet = utils.isOptionSet(
+    compilerOpts,
+    '--ignore-resources'
+  );
 
   var target;
+
+  // --ignore-resources is not a TS Compiler option so we remove it from the
+  // list of compiler options to avoid compiler errors.
+  if (isIgnoreResourcesSet) {
+    compilerOpts.splice(compilerOpts.indexOf('--ignore-resources'), 1);
+  }
 
   if (!isTargetSet) {
     // Find the last non-option argument as the `target`
@@ -110,6 +122,22 @@ function run(argv, options) {
 
   if (outDir) {
     args.push('--outDir', outDir);
+
+    // Since outDir is set, ts files are compiled into that directory.
+    // If ignore-resources flag is not passed, copy resources (non-ts files)
+    // to the same outDir as well.
+    if (rootDir && tsConfigFile && !isIgnoreResourcesSet) {
+      const tsConfig = require(tsConfigFile);
+      const dirs = tsConfig.include
+        ? tsConfig.include.join('|')
+        : ['src', 'test'].join('|');
+
+      const pattern = `@(${dirs})/**/!(*.ts)`;
+      const files = glob.sync(pattern, {root: packageDir, nodir: true});
+      for (const file of files) {
+        fse.copySync(path.join(packageDir, file), path.join(outDir, file));
+      }
+    }
   }
 
   if (target) {
