@@ -10,12 +10,6 @@ os:
 git:
   depth: 300
 
-before_script:
-  - npm run bootstrap
-
-script:
-  - npm test
-
 after_success:
   - npm run coverage:ci
 
@@ -39,7 +33,9 @@ jobs:
     - stage: commit linting
       before_install:
         - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-      before_script: skip
+      # --ignore-scripts is disabling the postinstall script
+      # which would run relatively slow "lerna bootstrap"
+      install: npm install --ignore-scripts
       script: /bin/bash ./bin/lint-commits.sh
       after_success: skip
       os:

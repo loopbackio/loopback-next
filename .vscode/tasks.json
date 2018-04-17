@@ -9,9 +9,8 @@
       "command": "npm",
       "type": "shell",
       "args": [
-        "run",
-        "-s",
-        "bootstrap"
+        "install",
+        "-s"
       ],
       "problemMatcher": []
     },
