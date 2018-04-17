@@ -19,7 +19,7 @@
     "lerna": "^2.9.1"
   },
   "scripts": {
-    "bootstrap": "npm i && lerna bootstrap",
+    "postinstall": "lerna bootstrap",
     "release": "npm run build:full && lerna publish",
     "update-template-deps": "node bin/update-template-deps -f",
     "version": "npm run update-template-deps && npm run apidocs",
@@ -37,7 +37,7 @@
     "clean": "lerna run clean && node packages/build/bin/run-clean \"packages/*/dist*\" \"examples/*/dist*\"",
     "clean:lerna": "lerna clean",
     "build": "node bin/run-lerna run build",
-    "build:full": "npm run clean:lerna && npm run bootstrap && npm test",
+    "build:full": "npm run clean:lerna && npm install && npm test",
     "pretest": "npm run clean && npm run build",
     "test": "node packages/build/bin/run-nyc npm run mocha --scripts-prepend-node-path",
     "verify:docs": "npm run build:site -- --verify",

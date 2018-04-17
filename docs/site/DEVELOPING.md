@@ -53,7 +53,7 @@ command will install npm dependencies for all packages and create symbolic links
 for intra-dependencies:
 
 ```sh
-npm run bootstrap
+npm install
 ```
 
 The next step is to compile all packages from TypeScript to JavaScript:
