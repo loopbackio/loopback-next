@@ -51,7 +51,7 @@ Please remember to replace `your-module-name` with the name of your module.
 
 Now you run the scripts, such as:
 
-- `npm run build` - Compile TypeScript files
+- `npm run build` - Compile TypeScript files and copy resources (non `.ts` files) to outDir
 - `npm test` - Run all mocha tests
 - `npm run lint` - Run `tslint` and `prettier` on source files
 
@@ -88,6 +88,11 @@ Now you run the scripts, such as:
 
     For more information, see
     <https://www.typescriptlang.org/docs/handbook/compiler-options.html>.
+
+  - The following un-official compiler options are available:
+    |Option|Description|
+    |--|--|
+    |`--ignore-resources`|Do not copy any resources to outDir|
 
 - lb-tslint
 
