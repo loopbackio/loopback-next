@@ -118,7 +118,7 @@ describe('TestSandbox integration tests', () => {
   }
 
   async function deleteSandbox() {
-    if (!await pathExists(path)) return;
+    if (!(await pathExists(path))) return;
     await remove(sandbox.getPath());
   }
 });
