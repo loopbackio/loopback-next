@@ -6,7 +6,7 @@
 import {
   OperationObject,
   ParameterObject,
-  PathsObject,
+  PathObject,
 } from '@loopback/openapi-v3-types';
 import {
   BindingScope,
@@ -154,8 +154,8 @@ export class RoutingTable {
     this._routes.push(route);
   }
 
-  describeApiPaths(): PathsObject {
-    const paths: PathsObject = {};
+  describeApiPaths(): PathObject {
+    const paths: PathObject = {};
 
     for (const route of this._routes) {
       if (!paths[route.path]) {

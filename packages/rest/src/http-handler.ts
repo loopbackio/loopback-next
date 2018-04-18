@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from '@loopback/context';
-import {PathsObject, SchemasObject} from '@loopback/openapi-v3-types';
+import {PathObject, SchemasObject} from '@loopback/openapi-v3-types';
 import {ServerRequest, ServerResponse} from 'http';
 import {ControllerSpec} from '@loopback/openapi-v3';
 
@@ -54,7 +54,7 @@ export class HttpHandler {
     return this._apiDefinitions;
   }
 
-  describeApiPaths(): PathsObject {
+  describeApiPaths(): PathObject {
     return this._routes.describeApiPaths();
   }
 

@@ -8,7 +8,7 @@ import {
   ExampleObject,
   ReferenceObject,
   DiscriminatorObject,
-  XMLObject,
+  XmlObject,
   ExternalDocumentationObject,
   ISpecificationExtension,
   createEmptyApiSpec,
@@ -80,7 +80,7 @@ describe('openapi-v3-types unit tests', () => {
     }
 
     // tslint:disable-next-line:no-unused-variable
-    class XMLTestObject implements XMLObject {
+    class XMLTestObject implements XmlObject {
       name: 'test';
       namespace: 'test';
       prefix: 'test';
