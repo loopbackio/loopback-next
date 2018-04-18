@@ -8,7 +8,7 @@ import {MetadataInspector, DecoratorFactory} from '@loopback/context';
 import {
   OperationObject,
   ParameterObject,
-  PathsObject,
+  PathObject,
   ComponentsObject,
   RequestBodyObject,
 } from '@loopback/openapi-v3-types';
@@ -32,7 +32,7 @@ export interface ControllerSpec {
   /**
    * The available paths and operations for the API.
    */
-  paths: PathsObject;
+  paths: PathObject;
 
   /**
    * OpenAPI components.schemas generated from model metadata
