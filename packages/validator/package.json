@@ -1,0 +1,48 @@
+{
+  "name": "@loopback/validator",
+  "version": "0.1.0",
+  "description": "",
+  "engines": {
+    "node": ">=8"
+  },
+  "scripts": {
+    "build": "lb-tsc es2017",
+    "build:apidocs": "lb-apidocs",
+    "clean": "lb-clean loopback-validator*.tgz dist package api-docs",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/integration/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
+    "verify": "npm pack && tar xf validator*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM",
+  "license": "MIT",
+  "keywords": [
+    "LoopBack",
+    "TypeScript",
+    "JSON Schema"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@loopback/context": "^0.7.0",
+    "@loopback/rest": "^0.7.0",
+    "@types/json-schema": "^6.0.1",
+    "ajv": "^6.4.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^0.4.3",
+    "@loopback/testlab": "^0.6.0",
+    "@types/node": "^8.10.4"
+  },
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist/src",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
+}
