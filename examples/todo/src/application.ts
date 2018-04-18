@@ -6,7 +6,6 @@
 import {ApplicationConfig} from '@loopback/core';
 import {RestApplication} from '@loopback/rest';
 import {MySequence} from './sequence';
-import {db} from './datasources/db.datasource';
 
 /* tslint:disable:no-unused-variable */
 // Binding and Booter imports are required to infer types for BootMixin!
@@ -14,10 +13,10 @@ import {BootMixin, Booter, Binding} from '@loopback/boot';
 
 // juggler and DataSourceConstructor imports are required to infer types for RepositoryMixin!
 import {
-  Class,
-  Repository,
   RepositoryMixin,
   juggler,
+  Class,
+  Repository,
   DataSourceConstructor,
 } from '@loopback/repository';
 /* tslint:enable:no-unused-variable */
@@ -33,25 +32,6 @@ export class TodoListApplication extends BootMixin(
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
-    this.bootOptions = {
-      controllers: {
-        // Customize ControllerBooter Conventions here
-        dirs: ['controllers'],
-        extensions: ['.controller.js'],
-        nested: true,
-      },
-    };
-
-    this.setupDatasources();
-  }
-
-  setupDatasources() {
-    // This will allow you to test your application without needing to
-    // use a "real" datasource!
-    const datasource =
-      this.options && this.options.datasource
-        ? new DataSourceConstructor(this.options.datasource)
-        : db;
-    this.dataSource(datasource);
+    this.bootOptions = options ? Object.assign({}, options.bootOptions) : {};
   }
 }
