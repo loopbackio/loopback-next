@@ -8,6 +8,7 @@ import {Order} from './order.model';
 import {OrderRepository} from '../repositories/order.repository';
 import {Repository} from '../../../../../src/repositories';
 import {model, property, hasMany} from '../../../../../src/decorators';
+import {HasManyEntityCrudRepository} from '../../../../../src/repositories/relation.repository';
 
 @model()
 export class Customer extends Entity {
@@ -32,5 +33,8 @@ export class Customer extends Entity {
     target: 'Order',
     as: 'orders',
   })
-  customerOrders: OrderRepository;
+  customerOrders: HasManyEntityCrudRepository<
+    Order,
+    typeof Customer.prototype.id
+  >;
 }
