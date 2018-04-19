@@ -64,7 +64,7 @@ export class ModelDefinition {
     if (typeof nameOrDef === 'string') {
       nameOrDef = {name: nameOrDef};
     }
-    const {name, properties, settings} = nameOrDef;
+    const {name, properties, settings, relations} = nameOrDef;
 
     this.name = name;
 
@@ -76,6 +76,7 @@ export class ModelDefinition {
     }
 
     this.settings = settings || new Map();
+    this.relations = relations || {};
   }
 
   /**

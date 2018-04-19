@@ -5,6 +5,7 @@
 
 import {Entity} from '../../../../../';
 import {model, property, belongsTo} from '../../../../../src/decorators';
+import {CustomerRepository} from '../repositories/customer.repository';
 
 @model()
 export class Order extends Entity {
@@ -29,10 +30,12 @@ export class Order extends Entity {
     type: 'string',
     required: true,
   })
+  customerId: string;
+
   @belongsTo({
     target: 'Customer',
-    as: 'customer',
     foreignKey: 'customerId',
   })
-  customerId: string;
+  //placeholder type
+  customer: CustomerRepository;
 }

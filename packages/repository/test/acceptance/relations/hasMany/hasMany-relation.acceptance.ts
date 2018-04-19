@@ -11,7 +11,7 @@ import {memoryDs} from './fixtures/datasources/memory.datasource';
 import {Customer} from './models/customer.model';
 import {Order} from './models/order.model';
 
-describe('hasMany relationship', () => {
+describe.only('hasMany relationship', () => {
   let orderRepo: OrderRepository;
   let customerRepo: CustomerRepository;
   beforeEach(givenCustomerAndOrderRepositories);
@@ -19,20 +19,30 @@ describe('hasMany relationship', () => {
   it('creates a customer with an order and retrieves it', async () => {
     const c1: Customer = await customerRepo.create({
       name: 'John Smith',
-      slug: 'johnsmith@yahoo.com',
+      email: 'johnsmith@yahoo.com',
     });
     const order = await c1.customerOrders.create({
-      // customerId should be enforced
       desc: 'order1 description',
       date: new Date().toISOString(),
     });
 
+    //make sure that the order created has
+    // customerId constraint enforced
+    expect(order).to.have.properties({
+      customerId: c1.getId(),
+      desc: 'order1 description',
+    });
+
+    // if we were to find the order from the order repository
+    // we should get the same result.
     let foundOrder = await orderRepo.findById(order.id);
     expect(foundOrder).to.have.properties({
       desc: 'order1 description',
       customerId: c1.getId(),
     });
 
+    // we should also be able to support inclusion of orders from
+    // a customer repository get request
     const includeFilter = new FilterBuilder().include('orders').filter;
     let foundCustomer = await customerRepo.findById(c1.id, includeFilter);
     expect(foundCustomer).to.have.properties({

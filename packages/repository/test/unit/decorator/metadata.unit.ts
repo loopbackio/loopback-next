@@ -57,6 +57,7 @@ describe('Repository', () => {
           name: 'Samoflange',
           properties: {},
           settings: new Map(),
+          relations: {},
         }),
       );
     });

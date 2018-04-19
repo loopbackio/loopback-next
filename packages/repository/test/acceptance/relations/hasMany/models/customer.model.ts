@@ -8,7 +8,10 @@ import {Order} from './order.model';
 import {OrderRepository} from '../repositories/order.repository';
 import {Repository} from '../../../../../src/repositories';
 import {model, property, hasMany} from '../../../../../src/decorators';
-import {HasManyEntityCrudRepository} from '../../../../../src/repositories/relation.repository';
+import {
+  HasManyEntityCrudRepository,
+  DefaultHasManyEntityCrudRepository,
+} from '../../../../../src/repositories/relation.repository';
 
 @model()
 export class Customer extends Entity {
@@ -30,11 +33,7 @@ export class Customer extends Entity {
   email: string;
 
   @hasMany({
-    target: 'Order',
-    as: 'orders',
+    target: Order,
   })
-  customerOrders: HasManyEntityCrudRepository<
-    Order,
-    typeof Customer.prototype.id
-  >;
+  customerOrders: HasManyEntityCrudRepository<Order, typeof Order.prototype.id>;
 }
