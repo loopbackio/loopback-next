@@ -5,34 +5,25 @@
 
 import {Context} from '@loopback/context';
 import {PathsObject, SchemasObject} from '@loopback/openapi-v3-types';
-import {ServerRequest, ServerResponse} from 'http';
 import {ControllerSpec} from '@loopback/openapi-v3';
 
 import {SequenceHandler} from './sequence';
 import {
   RoutingTable,
-  parseRequestUrl,
   ResolvedRoute,
   RouteEntry,
   ControllerClass,
   ControllerFactory,
 } from './router/routing-table';
-import {ParsedRequest} from './internal-types';
+import {Request, HttpContext} from './internal-types';
 
 import {RestBindings} from './keys';
 
-export class HttpHandler {
+export class RestHttpHandler {
   protected _routes: RoutingTable = new RoutingTable();
   protected _apiDefinitions: SchemasObject;
 
-  public handleRequest: (
-    request: ServerRequest,
-    response: ServerResponse,
-  ) => Promise<void>;
-
-  constructor(protected _rootContext: Context) {
-    this.handleRequest = (req, res) => this._handleRequest(req, res);
-  }
+  constructor(protected _rootContext: Context) {}
 
   registerController<T>(
     spec: ControllerSpec,
@@ -58,30 +49,23 @@ export class HttpHandler {
     return this._routes.describeApiPaths();
   }
 
-  findRoute(request: ParsedRequest): ResolvedRoute {
+  findRoute(request: Request): ResolvedRoute {
     return this._routes.find(request);
   }
 
-  protected async _handleRequest(
-    request: ServerRequest,
-    response: ServerResponse,
-  ): Promise<void> {
-    const parsedRequest: ParsedRequest = parseRequestUrl(request);
-    const requestContext = this._createRequestContext(parsedRequest, response);
+  async handleRequest(httpCtx: HttpContext): Promise<void> {
+    const requestContext = this._createRequestContext(httpCtx);
 
     const sequence = await requestContext.get<SequenceHandler>(
       RestBindings.SEQUENCE,
     );
-    await sequence.handle(parsedRequest, response);
+    await sequence.handle(httpCtx);
   }
 
-  protected _createRequestContext(
-    req: ParsedRequest,
-    res: ServerResponse,
-  ): Context {
+  protected _createRequestContext(httpCtx: HttpContext): Context {
     const requestContext = new Context(this._rootContext);
-    requestContext.bind(RestBindings.Http.REQUEST).to(req);
-    requestContext.bind(RestBindings.Http.RESPONSE).to(res);
+    requestContext.bind(RestBindings.Http.REQUEST).to(httpCtx.request);
+    requestContext.bind(RestBindings.Http.RESPONSE).to(httpCtx.response);
     requestContext.bind(RestBindings.Http.CONTEXT).to(requestContext);
     return requestContext;
   }

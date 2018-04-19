@@ -23,7 +23,7 @@ describe('controller booter acceptance tests', () => {
     await app.start();
 
     const server: RestServer = await app.getServer(RestServer);
-    const client: Client = createClientForHandler(server.requestHandler);
+    const client: Client = createClientForHandler(server.requestListener);
 
     // Default Controllers = /controllers with .controller.js ending (nested = true);
     await client.get('/one').expect(200, 'ControllerOne.one()');

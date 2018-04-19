@@ -5,8 +5,7 @@
 
 import {
   parseOperationArgs,
-  ParsedRequest,
-  parseRequestUrl,
+  Request,
   PathParameterValues,
   Route,
   createResolvedRoute,
@@ -68,8 +67,8 @@ describe('operationArgsParser', () => {
     };
   }
 
-  function givenRequest(options?: ShotRequestOptions): ParsedRequest {
-    return parseRequestUrl(new ShotRequest(options || {url: '/'}));
+  function givenRequest(options?: ShotRequestOptions): Request {
+    return new ShotRequest(options || {url: '/'});
   }
 
   function givenResolvedRoute(

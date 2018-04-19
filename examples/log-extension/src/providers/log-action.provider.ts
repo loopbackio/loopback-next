@@ -5,8 +5,8 @@
 
 import {inject, Provider, Constructor, Getter} from '@loopback/context';
 import {CoreBindings} from '@loopback/core';
-import {OperationArgs, ParsedRequest} from '@loopback/rest';
-import {getLogMetadata} from '../decorators';
+import {OperationArgs, Request} from '@loopback/rest';
+import {getLogMetadata} from '../decorators/log.decorator';
 import {EXAMPLE_LOG_BINDINGS, LOG_LEVEL} from '../keys';
 import {
   LogFn,
@@ -35,7 +35,7 @@ export class LogActionProvider implements Provider<LogFn> {
 
   value(): LogFn {
     const fn = <LogFn>((
-      req: ParsedRequest,
+      req: Request,
       args: OperationArgs,
       // tslint:disable-next-line:no-any
       result: any,
@@ -52,7 +52,7 @@ export class LogActionProvider implements Provider<LogFn> {
   }
 
   private async action(
-    req: ParsedRequest,
+    req: Request,
     args: OperationArgs,
     // tslint:disable-next-line:no-any
     result: any,

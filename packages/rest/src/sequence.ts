@@ -3,16 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-const debug = require('debug')('loopback:core:sequence');
-import {ServerResponse} from 'http';
+const debug = require('debug')('loopback:rest:sequence');
 import {inject, Context} from '@loopback/context';
 import {
   FindRoute,
   InvokeMethod,
-  ParsedRequest,
   Send,
   Reject,
   ParseParams,
+  HttpContext,
 } from './internal-types';
 import {RestBindings} from './keys';
 
@@ -24,8 +23,7 @@ const SequenceActions = RestBindings.SequenceActions;
  */
 export type SequenceFunction = (
   sequence: DefaultSequence,
-  request: ParsedRequest,
-  response: ServerResponse,
+  httpCtx: HttpContext,
 ) => Promise<void> | void;
 
 /**
@@ -39,7 +37,7 @@ export interface SequenceHandler {
    * @param request The incoming HTTP request
    * @param response The HTTP server response where to write the result
    */
-  handle(request: ParsedRequest, response: ServerResponse): Promise<void>;
+  handle(httpCtx: HttpContext): Promise<void>;
 }
 
 /**
@@ -101,16 +99,24 @@ export class DefaultSequence implements SequenceHandler {
    * @param res HTTP server response with result from Application controller
    *  method invocation
    */
-  async handle(req: ParsedRequest, res: ServerResponse) {
+  async handle({request, response}: HttpContext) {
     try {
-      const route = this.findRoute(req);
-      const args = await this.parseParams(req, route);
-      const result = await this.invoke(route, args);
+      debug('Finding route for %s', request.originalUrl);
+      const route = this.findRoute(request);
+      debug('Route found for %s: %s', request.originalUrl, route.describe());
 
-      debug('%s result -', route.describe(), result);
-      this.send(res, result);
+      debug('Parsing request for %s', request.originalUrl);
+      const args = await this.parseParams(request, route);
+
+      debug('Invoking target for %s', request.originalUrl);
+      const result = await this.invoke(route, args);
+      debug('Invocation result for %s: %s', route.describe(), result);
+
+      debug('Sending response for %s', request.originalUrl);
+      this.send(response, result);
     } catch (err) {
-      this.reject(res, req, err);
+      debug('Rejecting request for %s: %s', request.originalUrl, err);
+      this.reject(response, request, err);
     }
   }
 }

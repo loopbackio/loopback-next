@@ -17,7 +17,7 @@ describe('PingController', () => {
   });
 
   before(() => {
-    client = createClientForHandler(server.requestHandler);
+    client = createClientForHandler(server.requestListener);
   });
 
   after(async () => {

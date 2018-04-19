@@ -3,9 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {LogError, Reject} from '../internal-types';
+import {LogError, Reject, Request, Response} from '../internal-types';
 import {inject, Provider} from '@loopback/context';
-import {ServerResponse, ServerRequest} from 'http';
 import {HttpError} from 'http-errors';
 import {writeErrorToResponse} from '../writer';
 import {RestBindings} from '../keys';
@@ -20,7 +19,7 @@ export class RejectProvider implements Provider<Reject> {
     return (response, request, error) => this.action(response, request, error);
   }
 
-  action(response: ServerResponse, request: ServerRequest, error: Error) {
+  action(response: Response, request: Request, error: Error) {
     const err = <HttpError>error;
     const statusCode = err.statusCode || err.status || 500;
     writeErrorToResponse(response, err);

@@ -13,8 +13,8 @@ export class HelloWorldApplication extends RestApplication {
     // returns the same HTTP response: Hello World!
     // Learn more about the concept of Sequence in our docs:
     //   http://loopback.io/doc/en/lb4/Sequence.html
-    this.handler((sequence, request, response) => {
-      sequence.send(response, 'Hello World!');
+    this.handler((sequence, httpCtx) => {
+      sequence.send(httpCtx.response, 'Hello World!');
     });
   }
 

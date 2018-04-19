@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ServerResponse as Response} from 'http';
-import {OperationRetval} from './internal-types';
+import {OperationRetval, Response} from './internal-types';
 import {HttpError} from 'http-errors';
 import {Readable} from 'stream';
 
@@ -21,6 +20,9 @@ export function writeResultToResponse(
   // result returned back from invoking controller method
   result: OperationRetval,
 ): void {
+  if (!response.statusCode) {
+    response.status(200);
+  }
   if (result) {
     if (result instanceof Readable || typeof result.pipe === 'function') {
       response.setHeader('Content-Type', 'application/octet-stream');
@@ -61,6 +63,9 @@ export function writeResultToResponse(
 export function writeErrorToResponse(response: Response, error: Error) {
   const e = <HttpError>error;
   const statusCode = (response.statusCode = e.statusCode || e.status || 500);
+  if (!response.statusCode) {
+    response.status(statusCode);
+  }
   if (e.headers) {
     // Set response headers for the error
     for (const h in e.headers) {

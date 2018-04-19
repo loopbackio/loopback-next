@@ -3,12 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  ParsedRequest,
-  parseRequestUrl,
-  RoutingTable,
-  ControllerRoute,
-} from '../../..';
+import {Request, RoutingTable, ControllerRoute} from '../../..';
 import {getControllerSpec, param, get} from '@loopback/openapi-v3';
 import {expect, ShotRequestOptions, ShotRequest} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
@@ -107,7 +102,11 @@ describe('RoutingTable', () => {
     expect(route.describe()).to.equal('TestController.greet');
   });
 
-  function givenRequest(options?: ShotRequestOptions): ParsedRequest {
-    return parseRequestUrl(new ShotRequest(options || {url: '/'}));
+  function givenRequest(options?: ShotRequestOptions): Request {
+    const req = new ShotRequest(options || {url: '/'});
+    if (!req.path) {
+      req.path = req.url;
+    }
+    return req;
   }
 });

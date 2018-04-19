@@ -3,12 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ServerResponse, writeResultToResponse} from '../..';
+import {Response, writeResultToResponse} from '../..';
 import {Duplex} from 'stream';
 import {expect, mockResponse, ShotObservedResponse} from '@loopback/testlab';
 
 describe('writer', () => {
-  let response: ServerResponse;
+  let response: Response;
   let observedResponse: Promise<ShotObservedResponse>;
 
   beforeEach(setupResponseMock);

@@ -4,21 +4,28 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application, ApplicationConfig} from '@loopback/core';
-import {expect, createClientForHandler} from '@loopback/testlab';
+import {
+  expect,
+  createClientForHandler,
+  createClientForRestServer,
+} from '@loopback/testlab';
 import {Route, RestBindings, RestServer, RestComponent} from '../..';
 import * as yaml from 'js-yaml';
+import * as fs from 'fs';
+import * as path from 'path';
 
 describe('RestServer (integration)', () => {
   it('updates rest.port binding when listening on ephemeral port', async () => {
     const server = await givenAServer({rest: {port: 0}});
     await server.start();
     expect(server.getSync(RestBindings.PORT)).to.be.above(0);
+    expect(server.options.port).to.be.above(0);
     await server.stop();
   });
 
   it('responds with 500 when Sequence fails with unhandled error', async () => {
     const server = await givenAServer({rest: {port: 0}});
-    server.handler((sequence, request, response) => {
+    server.handler((sequence, httpCtx) => {
       return Promise.reject(new Error('unhandled test error'));
     });
 
@@ -32,19 +39,19 @@ describe('RestServer (integration)', () => {
       }
     });
 
-    return createClientForHandler(server.requestHandler)
+    return createClientForHandler(server.requestListener)
       .get('/')
       .expect(500);
   });
 
   it('allows cors', async () => {
     const server = await givenAServer({rest: {port: 0}});
-    server.handler((sequence, request, response) => {
-      response.write('Hello');
-      response.end();
+    server.handler((sequence, httpCtx) => {
+      httpCtx.response.write('Hello');
+      httpCtx.response.end();
     });
 
-    await createClientForHandler(server.requestHandler)
+    await createClientForHandler(server.requestListener)
       .get('/')
       .expect(200, 'Hello')
       .expect('Access-Control-Allow-Origin', '*')
@@ -53,12 +60,12 @@ describe('RestServer (integration)', () => {
 
   it('allows cors preflight', async () => {
     const server = await givenAServer({rest: {port: 0}});
-    server.handler((sequence, request, response) => {
-      response.write('Hello');
-      response.end();
+    server.handler((sequence, httpCtx) => {
+      httpCtx.response.write('Hello');
+      httpCtx.response.end();
     });
 
-    await createClientForHandler(server.requestHandler)
+    await createClientForHandler(server.requestListener)
       .options('/')
       .expect(204)
       .expect('Access-Control-Allow-Origin', '*')
@@ -78,7 +85,7 @@ describe('RestServer (integration)', () => {
     };
     server.route(new Route('get', '/greet', greetSpec, function greet() {}));
 
-    const response = await createClientForHandler(server.requestHandler).get(
+    const response = await createClientForHandler(server.requestListener).get(
       '/openapi.json',
     );
     expect(response.body).to.containDeep({
@@ -118,7 +125,7 @@ describe('RestServer (integration)', () => {
     };
     server.route(new Route('get', '/greet', greetSpec, function greet() {}));
 
-    const response = await createClientForHandler(server.requestHandler).get(
+    const response = await createClientForHandler(server.requestListener).get(
       '/openapi.yaml',
     );
     const expected = yaml.safeLoad(`
@@ -159,7 +166,7 @@ servers:
     };
     server.route(new Route('get', '/greet', greetSpec, function greet() {}));
 
-    const response = await createClientForHandler(server.requestHandler).get(
+    const response = await createClientForHandler(server.requestListener).get(
       '/swagger-ui',
     );
     await server.get(RestBindings.PORT);
@@ -190,7 +197,7 @@ servers:
     };
     server.route(new Route('get', '/greet', greetSpec, function greet() {}));
 
-    const response = await createClientForHandler(server.requestHandler).get(
+    const response = await createClientForHandler(server.requestListener).get(
       '/swagger-ui',
     );
     await server.get(RestBindings.PORT);
@@ -203,6 +210,31 @@ servers:
     expect(response.get('Location')).match(url);
     expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
+  });
+
+  it('supports https protocol', async () => {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    const key = fs.readFileSync(
+      path.join(__dirname, '../../../test/integration/privatekey.pem'),
+    );
+    const cert = fs.readFileSync(
+      path.join(__dirname, '../../../test/integration/certificate.pem'),
+    );
+    const server = await givenAServer({
+      rest: {protocol: 'https', httpsServerOptions: {cert, key}, port: 0},
+    });
+    server.handler((sequence, httpCtx) => {
+      httpCtx.response.send('Hello');
+    });
+
+    const test = await createClientForRestServer(server);
+    test.get('/').expect(200, 'Hello');
+    delete process.env.NODE_TLS_REJECT_UNAUTHORIZED;
+
+    expect(server.endpoint).to.be.not.undefined();
+    expect(server.endpoint.url).to.be.not.undefined();
+    expect(server.endpoint.app).to.be.not.undefined();
+    await server.stop();
   });
 
   async function givenAServer(options?: ApplicationConfig) {
