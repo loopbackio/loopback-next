@@ -8,19 +8,20 @@ import {JsonDefinition} from '@loopback/repository-json-schema';
 
 import {SchemaObject} from '@loopback/openapi-v3-types';
 import {jsonToSchemaObject} from '../..';
+import {JSONSchema6} from 'json-schema';
 
 describe('jsonToSchemaObject', () => {
   it('does nothing when given an empty object', () => {
     expect({}).to.eql({});
   });
-  const typeDef: JsonDefinition = {type: ['string', 'number']};
+  const typeDef: JSONSchema6 = {type: ['string', 'number']};
   const expectedType: SchemaObject = {type: 'string'};
   it('converts type', () => {
     propertyConversionTest(typeDef, expectedType);
   });
 
   it('ignores non-compatible JSON schema properties', () => {
-    const nonCompatibleDef: JsonDefinition = {
+    const nonCompatibleDef = {
       anyOf: [],
       oneOf: [],
       additionalItems: {
@@ -34,7 +35,7 @@ describe('jsonToSchemaObject', () => {
   });
 
   it('converts allOf', () => {
-    const allOfDef: JsonDefinition = {
+    const allOfDef: JSONSchema6 = {
       allOf: [typeDef, typeDef],
     };
     const expectedAllOf: SchemaObject = {
@@ -44,7 +45,7 @@ describe('jsonToSchemaObject', () => {
   });
 
   it('converts definitions', () => {
-    const definitionsDef: JsonDefinition = {
+    const definitionsDef: JSONSchema6 = {
       definitions: {foo: typeDef, bar: typeDef},
     };
     const expectedDef: SchemaObject = {
@@ -54,7 +55,7 @@ describe('jsonToSchemaObject', () => {
   });
 
   it('converts properties', () => {
-    const propertyDef: JsonDefinition = {
+    const propertyDef: JSONSchema6 = {
       properties: {
         foo: typeDef,
       },
@@ -69,7 +70,7 @@ describe('jsonToSchemaObject', () => {
 
   context('additionalProperties', () => {
     it('is converted properly when the type is JsonDefinition', () => {
-      const additionalDef: JsonDefinition = {
+      const additionalDef: JSONSchema6 = {
         additionalProperties: typeDef,
       };
       const expectedAdditional: SchemaObject = {
@@ -79,7 +80,7 @@ describe('jsonToSchemaObject', () => {
     });
 
     it('is converted properly when it is "false"', () => {
-      const noAdditionalDef: JsonDefinition = {
+      const noAdditionalDef: JSONSchema6 = {
         additionalProperties: false,
       };
       const expectedDef: SchemaObject = {};
@@ -88,7 +89,7 @@ describe('jsonToSchemaObject', () => {
   });
 
   it('converts items', () => {
-    const itemsDef: JsonDefinition = {
+    const itemsDef: JSONSchema6 = {
       type: 'array',
       items: typeDef,
     };
@@ -101,7 +102,7 @@ describe('jsonToSchemaObject', () => {
 
   context('enum', () => {
     it('is converted properly when the type is primitive', () => {
-      const enumStringDef: JsonDefinition = {
+      const enumStringDef: JSONSchema6 = {
         enum: ['foo', 'bar'],
       };
       const expectedStringDef: SchemaObject = {
@@ -111,17 +112,17 @@ describe('jsonToSchemaObject', () => {
     });
 
     it('is converted properly when it is null', () => {
-      const enumNullDef: JsonDefinition = {
+      const enumNullDef: JSONSchema6 = {
         enum: [null, null],
       };
-      const expectedNullDef: JsonDefinition = {
+      const expectedNullDef: JSONSchema6 = {
         enum: [null, null],
       };
       propertyConversionTest(enumNullDef, expectedNullDef);
     });
 
     it('is converted properly when the type is complex', () => {
-      const enumCustomDef: JsonDefinition = {
+      const enumCustomDef: JSONSchema6 = {
         enum: [typeDef, typeDef],
       };
       const expectedCustomDef: SchemaObject = {
@@ -132,7 +133,7 @@ describe('jsonToSchemaObject', () => {
   });
 
   it('retains given properties in the conversion', () => {
-    const inputDef: JsonDefinition = {
+    const inputDef: JSONSchema6 = {
       title: 'foo',
       type: 'object',
       properties: {
@@ -142,7 +143,7 @@ describe('jsonToSchemaObject', () => {
       },
       default: 'Default string',
     };
-    const expectedDef: SchemaObject = {
+    const expectedDef: JSONSchema6 = {
       title: 'foo',
       type: 'object',
       properties: {

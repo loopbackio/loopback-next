@@ -5,9 +5,10 @@
 
 import {JsonDefinition} from '@loopback/repository-json-schema';
 import {SchemaObject} from '@loopback/openapi-v3-types';
+import {JSONSchema6} from 'json-schema';
 import * as _ from 'lodash';
 
-export function jsonToSchemaObject(json: JsonDefinition): SchemaObject {
+export function jsonToSchemaObject(json: JSONSchema6): SchemaObject {
   const result: SchemaObject = {};
   const propsToIgnore = [
     'anyOf',
@@ -36,27 +37,27 @@ export function jsonToSchemaObject(json: JsonDefinition): SchemaObject {
       }
       case 'definitions': {
         result.definitions = _.mapValues(json.definitions, def =>
-          jsonToSchemaObject(def),
+          jsonToSchemaObject(def as JSONSchema6),
         );
         break;
       }
       case 'properties': {
         result.properties = _.mapValues(json.properties, item =>
-          jsonToSchemaObject(item),
+          jsonToSchemaObject(item as JSONSchema6),
         );
         break;
       }
       case 'additionalProperties': {
         if (typeof json.additionalProperties !== 'boolean') {
           result.additionalProperties = jsonToSchemaObject(
-            json.additionalProperties as JsonDefinition,
+            json.additionalProperties as JSONSchema6,
           );
         }
         break;
       }
       case 'items': {
         const items = Array.isArray(json.items) ? json.items[0] : json.items;
-        result.items = jsonToSchemaObject(items as JsonDefinition);
+        result.items = jsonToSchemaObject(items as JSONSchema6);
         break;
       }
       case 'enum': {
@@ -67,7 +68,7 @@ export function jsonToSchemaObject(json: JsonDefinition): SchemaObject {
             newEnum.push(element);
           } else {
             // if element is JsonDefinition, convert to SchemaObject
-            newEnum.push(jsonToSchemaObject(element as JsonDefinition));
+            newEnum.push(jsonToSchemaObject(element as JSONSchema6));
           }
         }
         result.enum = newEnum;
@@ -82,7 +83,7 @@ export function jsonToSchemaObject(json: JsonDefinition): SchemaObject {
         break;
       }
       default: {
-        result[property] = json[property as keyof JsonDefinition];
+        result[property] = json[property as keyof JSONSchema6];
         break;
       }
     }

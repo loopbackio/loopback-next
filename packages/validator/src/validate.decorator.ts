@@ -9,8 +9,10 @@ import {
   MetadataAccessor,
   MetadataInspector,
   ParameterDecoratorFactory,
-} from '@loopback/context';
-import {HttpErrors} from '@loopback/rest';
+} from '@loopback/metadata';
+import * as HttpErrors from 'http-errors';
+
+const debug = require('debug')('loopback:validator');
 
 export const VALIDATION_KEY = MetadataAccessor.create<JSONSchema6>(
   'validation.parameter',
@@ -40,9 +42,12 @@ export function validatable() {
       for (let i = 0; i < args.length; i++) {
         const schema = schemas[i];
         if (schema) {
+          debug('validating %s against %o', args[i], schema);
           const isValid = ajv.validate(schema, args[i]);
           if (!isValid) {
-            throw new HttpErrors.UnprocessableEntity('bad param');
+            throw new HttpErrors.UnprocessableEntity(
+              ajv.errorsText(ajv.errors, {dataVar: args[i]}),
+            );
           }
         }
       }

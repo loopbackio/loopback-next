@@ -24,14 +24,20 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/context": "^0.7.0",
-    "@loopback/rest": "^0.7.0",
+    "@loopback/metadata": "^0.6.0",
+    "@types/http-errors": "^1.6.1",
     "@types/json-schema": "^6.0.1",
-    "ajv": "^6.4.0"
+    "ajv": "^6.4.0",
+    "debug": "^3.1.0",
+    "http-errors": "^1.6.3"
   },
   "devDependencies": {
-    "@loopback/build": "^0.4.3",
-    "@loopback/testlab": "^0.6.0",
+    "@loopback/build": "^0.5.0",
+    "@loopback/repository": "^0.8.0",
+    "@loopback/repository-json-schema": "^0.6.0",
+    "@loopback/rest": "^0.7.0",
+    "@loopback/testlab": "^0.7.0",
+    "@types/debug": "0.0.30",
     "@types/node": "^8.10.4"
   },
   "files": [

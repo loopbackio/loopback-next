@@ -4,3 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './validate.decorator';
+
+import * as HttpErrors from 'http-errors';
+export {HttpErrors};

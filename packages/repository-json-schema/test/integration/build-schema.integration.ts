@@ -8,6 +8,7 @@ import {modelToJsonSchema} from '../../src/build-schema';
 import {expect} from '@loopback/testlab';
 import {MetadataInspector} from '@loopback/context';
 import {JSON_SCHEMA_KEY, getJsonSchema} from '../../index';
+import {JSONSchema6} from 'json-schema';
 
 describe('build-schema', () => {
   describe('modelToJsonSchema', () => {
@@ -339,7 +340,7 @@ describe('build-schema', () => {
       class TestModel {
         @property() foo: number;
       }
-      const cachedSchema = {
+      const cachedSchema: JSONSchema6 = {
         properties: {
           cachedProperty: {
             type: 'string',

@@ -11,8 +11,9 @@ import {
 import {includes} from 'lodash';
 import {Definition, PrimitiveType} from 'typescript-json-schema';
 import {MetadataInspector, MetadataAccessor} from '@loopback/context';
+import {JSONSchema6} from 'json-schema';
 
-export const JSON_SCHEMA_KEY = MetadataAccessor.create<JsonDefinition>(
+export const JSON_SCHEMA_KEY = MetadataAccessor.create<JSONSchema6>(
   'loopback:json-schema',
 );
 
@@ -38,7 +39,7 @@ export interface JsonDefinition extends Definition {
  * in a cache. If not, one is generated and then cached.
  * @param ctor Contructor of class to get JSON Schema from
  */
-export function getJsonSchema(ctor: Function): JsonDefinition {
+export function getJsonSchema(ctor: Function): JSONSchema6 {
   // NOTE(shimks) currently impossible to dynamically update
   const jsonSchema = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor);
   if (jsonSchema) {
@@ -89,9 +90,9 @@ export function isComplexType(ctor: Function) {
  * Converts property metadata into a JSON property definition
  * @param meta
  */
-export function metaToJsonProperty(meta: PropertyDefinition): JsonDefinition {
+export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema6 {
   let ctor = meta.type as string | Function;
-  let def: JsonDefinition = {};
+  let def: JSONSchema6 = {};
 
   // errors out if @property.array() is not used on a property of array
   if (ctor === Array) {
@@ -108,7 +109,7 @@ export function metaToJsonProperty(meta: PropertyDefinition): JsonDefinition {
 
   if (meta.array) {
     def.type = 'array';
-    def.items = propDef;
+    def.items = <JSONSchema6>propDef;
   } else {
     Object.assign(def, propDef);
   }
@@ -124,9 +125,9 @@ export function metaToJsonProperty(meta: PropertyDefinition): JsonDefinition {
  * reflection API
  * @param ctor Constructor of class to convert from
  */
-export function modelToJsonSchema(ctor: Function): JsonDefinition {
+export function modelToJsonSchema(ctor: Function): JSONSchema6 {
   const meta: ModelDefinition | {} = ModelMetadataHelper.getModelMetadata(ctor);
-  const result: JsonDefinition = {};
+  const result: JSONSchema6 = {};
 
   // returns an empty object if metadata is an empty object
   if (!(meta instanceof ModelDefinition)) {
