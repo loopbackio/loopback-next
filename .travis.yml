@@ -21,6 +21,21 @@ after_success:
 
 jobs:
   include:
+    - stage: loopback.io
+      before_install:
+        - |
+          if git diff --name-only --quiet $TRAVIS_BRANCH docs/; then
+            echo "No changes to @loopback/docs in this PR"
+            exit 0
+          else
+            echo "Testing @loopback/docs"
+          fi
+      before_script: skip
+      script:
+        - npm run verify:docs
+      after_success: skip
+      os:
+        - linux
     - stage: commit linting
       before_install:
         - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
