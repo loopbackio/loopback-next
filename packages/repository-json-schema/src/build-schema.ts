@@ -71,7 +71,7 @@ export function stringTypeToWrapper(type: string): Function {
       break;
     }
     default: {
-      throw new Error('Unsupported type');
+      throw new Error('Unsupported type: ' + type);
     }
   }
   return wrapper;
