@@ -132,7 +132,7 @@ class Product extends Entity {
 
 The complete list of valid attributes for property definitions can be found in
 LoopBack 3's
-[Model definition section](https://loopback.io/doc/en/lb3/Model-definition-JSON-file.md#properties).
+[Model definition section](https://loopback.io/doc/en/lb3/Model-definition-JSON-file.html#properties).
 
 <!-- NOTE(kjdelisle): Until we have a metadata docs section, link to the
 package in the repository. -->
