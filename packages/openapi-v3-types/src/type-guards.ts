@@ -3,11 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  SchemaObject,
-  ReferenceObject,
-  ExtensionValue,
-} from './openapi-v3-spec-types';
+import {SchemaObject, ReferenceObject} from './openapi-v3-spec-types';
 
 /**
  * Type guard for OpenAPI 3.0.0 schema object
@@ -20,6 +16,6 @@ export function isSchemaObject(
   return !schema.hasOwnProperty('$ref');
 }
 
-export function isReferenceObject(obj: ExtensionValue): obj is ReferenceObject {
+export function isReferenceObject(obj: object): obj is ReferenceObject {
   return obj.hasOwnProperty('$ref');
 }

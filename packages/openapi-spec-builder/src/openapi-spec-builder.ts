@@ -5,13 +5,13 @@
 
 import * as assert from 'assert';
 import {
-  ExtensionValue,
   OpenApiSpec,
   OperationObject,
   ResponseObject,
   ParameterObject,
   createEmptyApiSpec,
   RequestBodyObject,
+  ISpecificationExtension,
 } from '@loopback/openapi-v3-types';
 
 /**
@@ -30,11 +30,7 @@ export function anOperationSpec() {
   return new OperationSpecBuilder();
 }
 
-export interface Extendable {
-  [extension: string]: ExtensionValue;
-}
-
-export class BuilderBase<T extends Extendable> {
+export class BuilderBase<T extends ISpecificationExtension> {
   protected _spec: T;
 
   constructor(initialSpec: T) {
@@ -47,7 +43,11 @@ export class BuilderBase<T extends Extendable> {
    * @param key The property name starting with "x-".
    * @param value The property value.
    */
-  withExtension(key: string, value: ExtensionValue): this {
+  withExtension(
+    key: string,
+    // tslint:disable-next-line:no-any
+    value: any,
+  ): this {
     assert(
       key.startsWith('x-'),
       `Invalid extension ${key}, extension keys must be prefixed with "x-"`,

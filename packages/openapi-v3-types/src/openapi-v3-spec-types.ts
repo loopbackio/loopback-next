@@ -12,12 +12,6 @@ import {OpenAPIObject} from 'openapi3-ts';
 export * from 'openapi3-ts';
 
 export type OpenApiSpec = OpenAPIObject;
-/**
- * Custom extensions can use arbitrary type as the value,
- * e.g. a string, an object or an array.
- */
-// tslint:disable-next-line:no-any
-export type ExtensionValue = any;
 
 /**
  * Create an empty OpenApiSpec object that's still a valid openapi document.

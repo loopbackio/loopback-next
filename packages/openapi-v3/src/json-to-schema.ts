@@ -4,11 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {JsonDefinition} from '@loopback/repository-json-schema';
-import {SchemaObject, ExtensionValue} from '@loopback/openapi-v3-types';
+import {SchemaObject} from '@loopback/openapi-v3-types';
 import * as _ from 'lodash';
 
-export function jsonToSchemaObject(jsonDef: JsonDefinition): SchemaObject {
-  const json = jsonDef as {[name: string]: ExtensionValue}; // gets around index signature error
+export function jsonToSchemaObject(json: JsonDefinition): SchemaObject {
   const result: SchemaObject = {};
   const propsToIgnore = [
     'anyOf',
@@ -63,7 +62,7 @@ export function jsonToSchemaObject(jsonDef: JsonDefinition): SchemaObject {
       case 'enum': {
         const newEnum = [];
         const primitives = ['string', 'number', 'boolean'];
-        for (const element of json.enum) {
+        for (const element of json.enum!) {
           if (primitives.includes(typeof element) || element === null) {
             newEnum.push(element);
           } else {
@@ -76,14 +75,14 @@ export function jsonToSchemaObject(jsonDef: JsonDefinition): SchemaObject {
         break;
       }
       case '$ref': {
-        result.$ref = json.$ref.replace(
+        result.$ref = json.$ref!.replace(
           '#/definitions',
           '#/components/schemas',
         );
         break;
       }
       default: {
-        result[property] = json[property];
+        result[property] = json[property as keyof JsonDefinition];
         break;
       }
     }
