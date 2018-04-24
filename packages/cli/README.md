@@ -90,6 +90,44 @@ Options:
         --skip-install   # Do not automatically install dependencies  Default: false
 ```
 
+5. To list available commands
+
+   `lb4 --commands` (or `lb4 -l`)
+
+```sh
+Available commands:
+  lb4 app
+  lb4 extension
+  lb4 controller
+  lb4 example
+```
+
+Please note `lb4 --help` also prints out available commands.
+
+6. To print out version information
+
+   `lb4 --version` (or `lb4 -v`)
+
+```sh
+@loopback/cli version: 0.8.0
+
+@loopback/* dependencies:
+  - @loopback/authentication: ^0.8.0
+  - @loopback/boot: ^0.8.0
+  - @loopback/build: ^0.5.0
+  - @loopback/context: ^0.8.0
+  - @loopback/core: ^0.6.0
+  - @loopback/metadata: ^0.6.0
+  - @loopback/openapi-spec-builder: ^0.5.0
+  - @loopback/openapi-v3-types: ^0.4.0
+  - @loopback/openapi-v3: ^0.7.0
+  - @loopback/repository-json-schema: ^0.6.0
+  - @loopback/repository: ^0.8.0
+  - @loopback/rest: ^0.7.0
+  - @loopback/testlab: ^0.7.0
+  - @loopback/docs: ^0.5.0
+```
+
 ## Contributions
 
 - [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)

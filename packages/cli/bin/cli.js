@@ -12,64 +12,117 @@ const debug = require('../lib/debug')();
 const minimist = require('minimist');
 const path = require('path');
 const yeoman = require('yeoman-environment');
+const PREFIX = 'loopback4:';
 
-const opts = minimist(process.argv.slice(2), {
-  alias: {
-    version: 'v',
-    commands: 'l',
-  },
-});
-
-if (opts.version) {
-  const ver = require('../package.json').version;
-  console.log('Version: %s', ver);
-  return;
+/**
+ * Parse arguments and run corresponding command
+ * @param env Yeoman env
+ * @param {*} opts Command options
+ * @param log Log function
+ * @param dryRun flag for dryRun (for testing)
+ */
+function runCommand(env, opts, log, dryRun) {
+  const args = opts._;
+  const originalCommand = args.shift();
+  let command = PREFIX + (originalCommand || 'app');
+  const supportedCommands = env.getGeneratorsMeta();
+  if (!(command in supportedCommands)) {
+    command = PREFIX + 'app';
+    args.unshift(originalCommand);
+    args.unshift(command);
+  } else {
+    args.unshift(command);
+  }
+  debug('invoking generator', args);
+  // `yo` is adding flags converted to CamelCase
+  const options = camelCaseKeys(opts, {exclude: ['--', /^\w$/, 'argv']});
+  Object.assign(options, opts);
+  debug('env.run %j %j', args, options);
+  if (!dryRun) {
+    env.run(args, options);
+  }
+  // list generators
+  if (opts.help && !originalCommand) {
+    printCommands(env, log);
+  }
 }
 
-var env = yeoman.createEnv();
+/**
+ * Set up yeoman generators
+ */
+function setupGenerators() {
+  var env = yeoman.createEnv();
+  env.register(path.join(__dirname, '../generators/app'), PREFIX + 'app');
+  env.register(
+    path.join(__dirname, '../generators/extension'),
+    PREFIX + 'extension'
+  );
+  env.register(
+    path.join(__dirname, '../generators/controller'),
+    PREFIX + 'controller'
+  );
+  env.register(
+    path.join(__dirname, '../generators/example'),
+    PREFIX + 'example'
+  );
+  return env;
+}
 
-env.register(path.join(__dirname, '../generators/app'), 'loopback4:app');
-env.register(
-  path.join(__dirname, '../generators/extension'),
-  'loopback4:extension'
-);
-env.register(
-  path.join(__dirname, '../generators/controller'),
-  'loopback4:controller'
-);
-env.register(
-  path.join(__dirname, '../generators/example'),
-  'loopback4:example'
-);
+/**
+ * Print @loopback/* versions
+ */
+function printVersions(log) {
+  const pkg = require('../package.json');
+  const ver = pkg.version;
+  log('@loopback/cli version: %s', ver);
+  const deps = pkg.config.templateDependencies;
+  log('\n@loopback/* dependencies:');
+  for (const d in deps) {
+    if (d.startsWith('@loopback/') && d !== '@loopback/cli') {
+      log('  - %s: %s', d, deps[d]);
+    }
+  }
+}
 
-// list generators
-if (opts.commands) {
-  console.log('Available commands: ');
+/**
+ * Print a list of available commands
+ * @param {*} env Yeoman env
+ * @param log Log function
+ */
+function printCommands(env, log) {
+  log('Available commands: ');
   var list = Object.keys(env.getGeneratorsMeta())
     .filter(name => /^loopback4:/.test(name))
     .map(name => name.replace(/^loopback4:/, '  lb4 '));
-  console.log(list.join('\n'));
-  return;
+  log(list.join('\n'));
 }
 
-const args = opts._;
-const originalCommand = args.shift();
-let command = 'loopback4:' + (originalCommand || 'app');
-const supportedCommands = env.getGeneratorsMeta();
+function main(opts, log, dryRun) {
+  log = log || console.log;
+  if (opts.version) {
+    printVersions(log);
+    return;
+  }
 
-if (!(command in supportedCommands)) {
-  command = 'loopback4:app';
-  args.unshift(originalCommand);
-  args.unshift(command);
-} else {
-  args.unshift(command);
+  var env = setupGenerators();
+
+  // list generators
+  if (opts.commands) {
+    printCommands(env, log);
+    return;
+  }
+
+  runCommand(env, opts, log, dryRun);
 }
 
-debug('invoking generator', args);
+module.exports = main;
 
-// `yo` is adding flags converted to CamelCase
-const options = camelCaseKeys(opts, {exclude: ['--', /^\w$/, 'argv']});
-Object.assign(options, opts);
-
-debug('env.run %j %j', args, options);
-env.run(args, options);
+if (require.main === module) {
+  const opts = minimist(process.argv.slice(2), {
+    alias: {
+      version: 'v', // --version or -v: print versions
+      commands: 'l', // --commands or -l: print commands
+    },
+  });
+  main(opts);
+}
