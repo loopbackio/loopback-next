@@ -14,7 +14,7 @@ const build = require('@loopback/build');
 describe('app-generator (SLOW)', function() {
   const generator = path.join(__dirname, '../../generators/app');
   const rootDir = path.join(__dirname, '../../../..');
-  const sandbox = path.join(__dirname, '../../sandbox/sandbox-app');
+  const sandbox = path.join(rootDir, 'sandbox/sandbox-app');
   const cwd = process.cwd();
   const appName = '@loopback/sandbox-app';
   const props = {
