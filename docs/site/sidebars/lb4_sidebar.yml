@@ -110,10 +110,6 @@ children:
   url: Calling-other-APIs-and-web-services.html
   output: 'web, pdf'
 
-- title: 'Testing your application'
-  url: Testing-your-application.html
-  output: 'web, pdf'
-
 - title: 'For current LoopBack users'
   url: LoopBack-3.x.html
   output: 'web, pdf'
@@ -167,6 +163,14 @@ children:
 
   - title: 'Preparing the API for consumption'
     url: Preparing-the-API-for-consumption.html
+    output: 'web, pdf'
+
+  - title: 'Testing your application'
+    url: Testing-your-application.html
+    output: 'web, pdf'
+
+  - title: 'Testing your extension'
+    url: Testing-your-extension.html
     output: 'web, pdf'
 
 - title: 'Extending LoopBack 4'
