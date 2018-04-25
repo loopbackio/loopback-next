@@ -2,6 +2,7 @@ sudo: false
 language: node_js
 node_js:
   - "8"
+  - "10"
 
 os:
   - linux
@@ -28,8 +29,8 @@ jobs:
       script:
         - npm run verify:docs
       after_success: skip
-      os:
-        - linux
+      os: linux
+      node_js: 8
     - stage: commit linting
       before_install:
         - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
@@ -38,8 +39,8 @@ jobs:
       install: npm install --ignore-scripts
       script: /bin/bash ./bin/lint-commits.sh
       after_success: skip
-      os:
-        - linux
+      os: linux
+      node_js: 8
 
 branches:
   only:
