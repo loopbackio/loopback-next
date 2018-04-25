@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@0.7.0...@loopback/openapi-v3@0.8.0) (2018-04-25)
+
+
+### Features
+
+* upgrade to openapi3-ts@0.11.0 ([1ed79c9](https://github.com/strongloop/loopback-next/commit/1ed79c9))
+
+
+
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@0.6.0...@loopback/openapi-v3@0.7.0) (2018-04-16)
 

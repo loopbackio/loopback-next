@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.7.0...@loopback/testlab@0.8.0) (2018-04-25)
+
+
+### Bug Fixes
+
+* fix lint error from prettier 1.12.1 ([63c2f37](https://github.com/strongloop/loopback-next/commit/63c2f37))
+
+
+### Features
+
+* **build:** add an option to copy non ts files to outDir ([49b9a82](https://github.com/strongloop/loopback-next/commit/49b9a82))
+
+
+
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.6.0...@loopback/testlab@0.7.0) (2018-04-16)
 
