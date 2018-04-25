@@ -27,6 +27,14 @@ describe('validate decorator', () => {
     await app.stop();
   });
 
+  function greaterThan10(num: number) {
+    return num > 10;
+  }
+
+  async function asyncGreaterThan10(num: number) {
+    return (await num) > 10;
+  }
+
   @model()
   class TestModel {
     @property() str: string;
@@ -81,6 +89,22 @@ describe('validate decorator', () => {
       @validate(getJsonSchema(TestModel))
       body: TestModel,
     ) {}
+
+    @get('/func')
+    @validatable()
+    func(
+      @param.query.number('num')
+      @validate(greaterThan10)
+      num: number,
+    ) {}
+
+    @get('/async-func')
+    @validatable()
+    asyncFunc(
+      @param.query.number('num')
+      @validate(asyncGreaterThan10)
+      num: number,
+    ) {}
   }
   it('simple valid', async () => {
     await client.get('/simple?str=foo@bar.com').expect(200);
@@ -132,6 +156,24 @@ describe('validate decorator', () => {
       })
       .expect(422);
     expect(res.body.message).to.match(/should be string/);
+  });
+
+  it('function valid', async () => {
+    await client.get('/func?num=11').expect(200);
+  });
+
+  it('function invalid', async () => {
+    const res = await client.get('/func?num=10').expect(422);
+    expect(res.body.message).to.match(/is not a valid argument/);
+  });
+
+  it('async function valid', async () => {
+    await client.get('/func?num=11').expect(200);
+  });
+
+  it('async function invalid', async () => {
+    const res = await client.get('/func?num=10').expect(422);
+    expect(res.body.message).to.match(/is not a valid argument/);
   });
 
   function givenAnApplication() {

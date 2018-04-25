@@ -14,7 +14,10 @@ import * as HttpErrors from 'http-errors';
 
 const debug = require('debug')('loopback:validator');
 
-export const VALIDATION_KEY = MetadataAccessor.create<JSONSchema6>(
+// tslint:disable-next-line:no-any
+export type Validator = (arg: any) => boolean | Promise<boolean>;
+
+export const VALIDATION_KEY = MetadataAccessor.create<JSONSchema6 | Validator>(
   'validation.parameter',
 );
 
@@ -32,7 +35,7 @@ export function validatable() {
       );
     }
     // tslint:disable-next-line:no-any
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = async function(...args: any[]) {
       const ajv = new AJV();
       const schemas = MetadataInspector.getAllParameterMetadata(
         VALIDATION_KEY,
@@ -41,12 +44,22 @@ export function validatable() {
       )!;
       for (let i = 0; i < args.length; i++) {
         const schema = schemas[i];
-        if (schema) {
+        if (typeof schema === 'object') {
+          // is a JSON Schema
           debug('validating %s against %o', args[i], schema);
           const isValid = ajv.validate(schema, args[i]);
           if (!isValid) {
             throw new HttpErrors.UnprocessableEntity(
               ajv.errorsText(ajv.errors, {dataVar: args[i]}),
+            );
+          }
+        } else if (typeof schema === 'function') {
+          // is a validator function
+          debug('validating %s against %o', args[i], schema);
+          const isValid = await schema(args[i]);
+          if (!isValid) {
+            throw new HttpErrors.UnprocessableEntity(
+              `${args[i]} is not a valid argument`,
             );
           }
         }
@@ -63,6 +76,9 @@ export function validatable() {
   };
 }
 
-export function validate(schema: JSONSchema6) {
-  return ParameterDecoratorFactory.createDecorator(VALIDATION_KEY, schema);
+export function validate(schemaOrValidator: JSONSchema6 | Validator) {
+  return ParameterDecoratorFactory.createDecorator(
+    VALIDATION_KEY,
+    schemaOrValidator,
+  );
 }

@@ -28,7 +28,10 @@ describe('validate', () => {
     }
 
     const ctrl = new EmailController();
-    expect(() => ctrl.createEmail('foobar')).to.throw(
+    // expect(() => ctrl.createEmail('foobar')).to.throw(
+    //   /should match format "email"/,
+    // );
+    expect(ctrl.createEmail('foobar')).to.be.rejectedWith(
       /should match format "email"/,
     );
   });
