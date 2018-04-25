@@ -116,8 +116,9 @@ import {
   ParsedRequest,
 } from '@loopback/rest';
 import {inject} from '@loopback/context';
-import {AuthenticationBindings, AuthenticateFn} from '@loopback/authentication';
 import {ServerResponse} from 'http';
+// === ADD THIS === //
+import {AuthenticationBindings, AuthenticateFn} from '@loopback/authentication';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -128,6 +129,7 @@ export class MySequence implements SequenceHandler {
     @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
     @inject(SequenceActions.SEND) protected send: Send,
     @inject(SequenceActions.REJECT) protected reject: Reject,
+    // === ADD THIS === //
     @inject(AuthenticationBindings.AUTH_ACTION)
     protected authenticateRequest: AuthenticateFn,
   ) {}
@@ -136,7 +138,7 @@ export class MySequence implements SequenceHandler {
     try {
       const route = this.findRoute(req);
 
-      // This is the important line added to the default sequence implementation
+      // === ADD THIS === //
       await this.authenticateRequest(req);
 
       const args = await this.parseParams(req, route);
@@ -155,13 +157,14 @@ Finally, put it all together in your application class:
 // src/application.ts
 import {BootMixin, Binding, Booter} from '@loopback/boot';
 import {RestApplication, RestServer, RestBindings} from '@loopback/rest';
+import {MySequence} from './sequence';
+import {ApplicationConfig} from '@loopback/core';
+// === ADD THIS === //
 import {
   AuthenticationComponent,
   AuthenticationBindings,
 } from '@loopback/authentication';
 import {MyAuthStrategyProvider} from './providers/auth-strategy.provider';
-import {MySequence} from './sequence';
-import {ApplicationConfig} from '@loopback/core';
 
 export class MyApp extends BootMixin(RestApplication) {
   constructor(options?: ApplicationConfig) {
@@ -169,10 +172,8 @@ export class MyApp extends BootMixin(RestApplication) {
 
     this.projectRoot = __dirname;
 
+    // === ADD THIS === //
     this.component(AuthenticationComponent);
-    this.bind(AuthenticationBindings.STRATEGY).toProvider(
-      MyAuthStrategyProvider,
-    );
 
     this.sequence(MySequence);
   }
@@ -181,6 +182,12 @@ export class MyApp extends BootMixin(RestApplication) {
     await super.start();
 
     const server = await this.getServer(RestServer);
+
+    // === ADD THIS === //
+    this.bind(AuthenticationBindings.STRATEGY).toProvider(
+      MyAuthStrategyProvider,
+    );
+
     const port = await server.get(RestBindings.PORT);
     console.log(`REST server running on port: ${port}`);
   }
