@@ -48,7 +48,7 @@ describe('Basic Authentication', () => {
     const client = whenIMakeRequestTo(server);
     const credential =
       users.list.joe.profile.id + ':' + users.list.joe.password;
-    const hash = new Buffer(credential).toString('base64');
+    const hash = Buffer.from(credential).toString('base64');
     await client
       .get('/whoAmI')
       .set('Authorization', 'Basic ' + hash)
@@ -58,7 +58,7 @@ describe('Basic Authentication', () => {
   it('returns error for invalid credentials', async () => {
     const client = whenIMakeRequestTo(server);
     const credential = users.list.Simpson.profile.id + ':' + 'invalid';
-    const hash = new Buffer(credential).toString('base64');
+    const hash = Buffer.from(credential).toString('base64');
     await client
       .get('/whoAmI')
       .set('Authorization', 'Basic ' + hash)
