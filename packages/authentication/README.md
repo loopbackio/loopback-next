@@ -170,9 +170,6 @@ export class MyApp extends BootMixin(RestApplication) {
     this.projectRoot = __dirname;
 
     this.component(AuthenticationComponent);
-    this.bind(AuthenticationBindings.STRATEGY).toProvider(
-      MyAuthStrategyProvider,
-    );
 
     this.sequence(MySequence);
   }
@@ -181,6 +178,11 @@ export class MyApp extends BootMixin(RestApplication) {
     await super.start();
 
     const server = await this.getServer(RestServer);
+
+    this.bind(AuthenticationBindings.STRATEGY).toProvider(
+      MyAuthStrategyProvider,
+    );
+
     const port = await server.get(RestBindings.PORT);
     console.log(`REST server running on port: ${port}`);
   }
