@@ -45,10 +45,13 @@ export function isClass(target: any): target is Constructor<any> {
 export function loadClassesFromFiles(files: string[]): Constructor<{}>[] {
   const classes: Array<Constructor<{}>> = [];
   for (const file of files) {
-    const data = require(file);
-    for (const cls of Object.values(data)) {
-      if (isClass(cls)) {
-        classes.push(cls);
+    const moduleObj = require(file);
+    // WORKAROUND: use `for in` instead of Object.values().
+    // See https://github.com/nodejs/node/issues/20278
+    for (const k in moduleObj) {
+      const exported = moduleObj[k];
+      if (isClass(exported)) {
+        classes.push(exported);
       }
     }
   }

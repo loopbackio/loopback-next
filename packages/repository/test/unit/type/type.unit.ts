@@ -231,8 +231,8 @@ describe('types', () => {
   describe('buffer', () => {
     const bufferType = new types.BufferType();
     it('checks isInstance', () => {
-      expect(bufferType.isInstance(new Buffer([1]))).to.be.true();
-      expect(bufferType.isInstance(new Buffer('123'))).to.be.true();
+      expect(bufferType.isInstance(Buffer.from([1]))).to.be.true();
+      expect(bufferType.isInstance(Buffer.from('123'))).to.be.true();
       expect(bufferType.isInstance('str')).to.be.false();
       expect(bufferType.isInstance(null)).to.be.true();
       expect(bufferType.isInstance(undefined)).to.be.true();
@@ -248,7 +248,7 @@ describe('types', () => {
       expect(bufferType.isCoercible('str')).to.be.true();
       expect(bufferType.isCoercible(null)).to.be.true();
       expect(bufferType.isCoercible(undefined)).to.be.true();
-      expect(bufferType.isCoercible(new Buffer('12'))).to.be.true();
+      expect(bufferType.isCoercible(Buffer.from('12'))).to.be.true();
       expect(bufferType.isCoercible([1, 2])).to.be.true();
       expect(bufferType.isCoercible({x: 1})).to.be.false();
       expect(bufferType.isCoercible(1)).to.be.false();
@@ -260,11 +260,11 @@ describe('types', () => {
     });
 
     it('coerces values', () => {
-      expect(bufferType.coerce('str').equals(new Buffer('str'))).to.be.true();
+      expect(bufferType.coerce('str').equals(Buffer.from('str'))).to.be.true();
       expect(bufferType.coerce([1]).equals(Buffer.from([1]))).to.be.true();
       expect(bufferType.coerce(null)).to.equal(null);
       expect(bufferType.coerce(undefined)).to.equal(undefined);
-      const buf = new Buffer('12');
+      const buf = Buffer.from('12');
       expect(bufferType.coerce(buf)).exactly(buf);
       expect(() => bufferType.coerce(1)).to.throw(/Invalid buffer/);
       expect(() => bufferType.coerce(new Date())).to.throw(/Invalid buffer/);
@@ -274,9 +274,9 @@ describe('types', () => {
 
     it('serializes values', () => {
       expect(
-        bufferType.serialize(new Buffer('str'), {encoding: 'utf-8'}),
+        bufferType.serialize(Buffer.from('str'), {encoding: 'utf-8'}),
       ).to.eql('str');
-      expect(bufferType.serialize(new Buffer('str'))).to.eql('c3Ry');
+      expect(bufferType.serialize(Buffer.from('str'))).to.eql('c3Ry');
       expect(bufferType.serialize(null)).null();
       expect(bufferType.serialize(undefined)).undefined();
     });
@@ -293,7 +293,7 @@ describe('types', () => {
       expect(anyType.isInstance([1, 2])).to.be.true();
       expect(anyType.isInstance(1)).to.be.true();
       expect(anyType.isInstance(new Date())).to.be.true();
-      expect(anyType.isInstance(new Buffer('123'))).to.be.true();
+      expect(anyType.isInstance(Buffer.from('123'))).to.be.true();
     });
 
     it('checks isCoercible', () => {
@@ -305,7 +305,7 @@ describe('types', () => {
       expect(anyType.isCoercible(1)).to.be.true();
       expect(anyType.isCoercible([1, '2'])).to.be.true();
       expect(anyType.isCoercible(new Date())).to.be.true();
-      expect(anyType.isCoercible(new Buffer('123'))).to.be.true();
+      expect(anyType.isCoercible(Buffer.from('123'))).to.be.true();
     });
 
     it('creates defaultValue', () => {
@@ -324,7 +324,7 @@ describe('types', () => {
       expect(anyType.coerce(1)).to.equal(1);
       const date = new Date();
       expect(anyType.coerce(date)).to.equal(date);
-      const buf = new Buffer('12');
+      const buf = Buffer.from('12');
       expect(anyType.coerce(buf)).to.equal(buf);
     });
 
