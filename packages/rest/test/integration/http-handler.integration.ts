@@ -58,6 +58,12 @@ describe('HttpHandler', () => {
         .withOperationReturningString('get', '/hello', 'hello')
         .withOperationReturningString('get', '/bye', 'bye')
         .withOperationReturningString('post', '/hello', 'postHello')
+        .withOperationReturningStringWithStatusCode(
+          'post',
+          '/createHello',
+          201,
+          'createHello',
+        )
         .build();
 
       class HelloController {
@@ -72,9 +78,17 @@ describe('HttpHandler', () => {
         public async postHello(): Promise<string> {
           return 'hello posted';
         }
+
+        public async createHello(): Promise<string> {
+          return 'hello created';
+        }
       }
 
       givenControllerClass(HelloController, spec);
+    });
+
+    it('returns 201 for "POST /createHello"', () => {
+      return client.post('/createHello').expect(201, 'hello created');
     });
 
     it('executes hello() for "GET /hello"', () => {

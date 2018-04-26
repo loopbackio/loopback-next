@@ -112,6 +112,18 @@ export class OpenApiSpecBuilder extends BuilderBase<OpenApiSpec> {
 
     return this.withOperation(verb, path, spec);
   }
+
+  withOperationReturningStringWithStatusCode(
+    verb: string,
+    path: string,
+    statusCode: number,
+    operationName?: string,
+  ): this {
+    const spec = anOperationSpec().withStringResponse(statusCode);
+    if (operationName) spec.withOperationName(operationName);
+
+    return this.withOperation(verb, path, spec);
+  }
 }
 
 /**

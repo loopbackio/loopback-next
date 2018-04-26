@@ -52,7 +52,11 @@ export type InvokeMethod = (
  * @param response The response the response to send to.
  * @param result The operation result to send.
  */
-export type Send = (response: ServerResponse, result: OperationRetval) => void;
+export type Send = (
+  response: ServerResponse,
+  result: OperationRetval,
+  route?: ResolvedRoute,
+) => void;
 
 /**
  * Reject the request with an error.
