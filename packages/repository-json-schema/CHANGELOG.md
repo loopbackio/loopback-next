@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@0.6.1...@loopback/repository-json-schema@0.7.0) (2018-04-26)
+
+
+### Features
+
+* **repository-json-schema:** include problem type in err message ([f5ad2f1](https://github.com/strongloop/loopback-next/commit/f5ad2f1))
+
+
+
+
 <a name="0.6.1"></a>
 ## [0.6.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@0.6.0...@loopback/repository-json-schema@0.6.1) (2018-04-25)
 

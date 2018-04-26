@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.9.1"></a>
+## [0.9.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.9.0...@loopback/cli@0.9.1) (2018-04-26)
+
+
+
+
+**Note:** Version bump only for package @loopback/cli
+
 <a name="0.9.0"></a>
 # [0.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.8.0...@loopback/cli@0.9.0) (2018-04-25)
 
