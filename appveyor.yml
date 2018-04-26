@@ -4,12 +4,13 @@ environment:
 
 install:
   - ps: Install-Product node $env:nodejs_version
+  - node --version
+  - npm --version
   - npm install
 
 test_script:
-  - node --version
-  - npm --version
-  - npm test
+  - npm run build
+  - npm run mocha --scripts-prepend-node-path
 
 build: off
 skip_branch_with_pr: true
