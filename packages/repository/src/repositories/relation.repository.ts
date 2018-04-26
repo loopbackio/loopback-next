@@ -1,12 +1,4 @@
-import {
-  DefaultCrudRepository,
-  DataSourceType,
-  EntityCrudRepository,
-  EntityRepository,
-  CrudRepository,
-  Repository,
-  juggler,
-} from '.';
+import {DefaultCrudRepository, EntityCrudRepository} from '.';
 import {
   Entity,
   Filter,
@@ -14,9 +6,9 @@ import {
   Where,
   DataObject,
   Options,
-  FilterBuilder,
   WhereBuilder,
 } from '..';
+import {cloneDeep} from 'lodash';
 
 /**
  * CRUD operations for a target repository of a HasMany relation
@@ -31,17 +23,31 @@ export interface HasManyEntityCrudRepository<T extends Entity, ID>
   build(targetModelData: DataObject<T>): Promise<T>;
 }
 
-export class DefaultHasManyEntityCrudRepositorys<T extends Entity, ID>
-  implements HasManyEntityCrudRepository<T, ID> {
+export class DefaultHasManyEntityCrudRepository<
+  S extends Entity,
+  T extends Entity,
+  TargetRepository extends DefaultCrudRepository<T, typeof Entity.prototype.id>,
+  ID
+> implements HasManyEntityCrudRepository<T, ID> {
+  public constraint: AnyObject = {};
   /**
-   * Constructor of DefaultCrudRepository
-   * @param targetModel the target mdoel class
+   * Constructor of DefaultHasManyEntityCrudRepository
+   * @param targetModel the target model class
    * @param targetId the constraints to scope target repo CRUD methods
    */
   constructor(
-    public targetModel: typeof Entity & {prototype: T},
-    public targetId: ID,
-  ) {}
+    public sourceInstance: S,
+    public targetRepository: TargetRepository,
+    public foreignKeyName: string,
+  ) {
+    let targetProp = this.targetRepository.entityClass.definition.properties[
+      this.foreignKeyName
+    ].type;
+    this.constraint[
+      this.foreignKeyName
+    ] = sourceInstance.getId() as typeof targetProp;
+    this.targetRepository = this.targetRepository;
+  }
   execute(
     command: string | AnyObject,
     // tslint:disable-next-line:no-any
@@ -56,8 +62,9 @@ export class DefaultHasManyEntityCrudRepositorys<T extends Entity, ID>
    * @param options Options for the operation
    * @returns A promise which resolves to the newly created target model instance
    */
-  create(targetModelData: Partial<T>, options?: Options): Promise<T> {
-    throw new Error('Method not implemented.');
+  async create(targetModelData: Partial<T>, options?: Options): Promise<T> {
+    targetModelData = constrainDataObject(targetModelData, this.constraint);
+    return await this.targetRepository.create(targetModelData, options);
   }
   /**
    * Build a target model instance
@@ -73,8 +80,14 @@ export class DefaultHasManyEntityCrudRepositorys<T extends Entity, ID>
    * @param options Options for the operation
    * @returns A promise of an entity found for the id
    */
-  findById(id: ID, filter?: Filter | undefined, options?: Options): Promise<T> {
-    throw new Error('Method not implemented.');
+  async findById(
+    id: ID,
+    filter?: Filter | undefined,
+    options?: Options,
+  ): Promise<T> {
+    // throw new Error('Method not implemented.');
+    filter = constrainFilter(filter, this.constraint);
+    return await this.targetRepository.findById(id, filter);
   }
   /**
    * Update a related entity by foreign key
@@ -143,4 +156,56 @@ export class DefaultHasManyEntityCrudRepositorys<T extends Entity, ID>
   count(where?: Where | undefined, options?: Options): Promise<number> {
     throw new Error('Method not implemented.');
   }
+}
+
+/**
+ * A utility function which takes a filter and enforces constraint(s)
+ * on it
+ * @param originalFilter the filter to apply the constrain(s) to
+ * @param constraint the constraint which is to be applied on the filter
+ * @returns Filter the modified filter with the constraint, otherwise
+ * the original filter
+ */
+export function constrainFilter(
+  originalFilter: Filter | undefined,
+  constraint: AnyObject,
+): Filter {
+  let constrainedFilter: Filter = {};
+  let constrainedWhere = new WhereBuilder();
+  for (const c in constraint) {
+    constrainedWhere.eq(c, constraint[c]);
+  }
+  if (originalFilter) {
+    constrainedFilter = cloneDeep(originalFilter);
+    if (originalFilter.where) {
+      constrainedFilter.where = constrainedWhere.and(
+        originalFilter.where,
+      ).where;
+    }
+  } else if (originalFilter === undefined) {
+    constrainedFilter.where = constrainedWhere.where;
+  }
+  return constrainedFilter;
+}
+
+/**
+ * A utility function which takes a model instance data and enforces constraint(s)
+ * on it
+ * @param originalData the model data to apply the constrain(s) to
+ * @param constraint the constraint which is to be applied on the filter
+ * @returns DataObject<Target> the modified data with the constraint, otherwise
+ * the original instance data
+ */
+export function constrainDataObject<Target extends Entity>(
+  originalData: Partial<Target>,
+  constraint: AnyObject,
+): Partial<Target> {
+  let constrainedData = cloneDeep(originalData);
+  for (const c in constraint) {
+    if (constrainedData[c]) {
+      console.warn('Overwriting %s with %s', constrainedData[c], constraint[c]);
+    }
+    constrainedData[c] = constraint[c];
+  }
+  return constrainedData;
 }

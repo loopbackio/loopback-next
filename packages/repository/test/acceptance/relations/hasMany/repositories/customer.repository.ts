@@ -3,11 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ModelMetadataHelper} from '../../../../../';
 import {Customer} from '../models/customer.model';
-import {Order} from '../models/order.model';
 import {inject, Context} from '@loopback/core';
-import {OrderRepository} from './order.repository';
 import {
   DefaultCrudRepository,
   DataSourceType,

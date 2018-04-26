@@ -3,15 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, Class} from '../../../../../';
+import {Entity} from '../../../../../';
 import {Order} from './order.model';
-import {OrderRepository} from '../repositories/order.repository';
-import {Repository} from '../../../../../src/repositories';
 import {model, property, hasMany} from '../../../../../src/decorators';
-import {
-  HasManyEntityCrudRepository,
-  DefaultHasManyEntityCrudRepository,
-} from '../../../../../src/repositories/relation.repository';
+import {HasManyEntityCrudRepository} from '../../../../../src/repositories/relation.repository';
 
 @model()
 export class Customer extends Entity {

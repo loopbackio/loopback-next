@@ -8,7 +8,6 @@ import {
   DataSourceType,
 } from '../../../../../src/repositories';
 import {Order} from '../models/order.model';
-import {inject} from '@loopback/core';
 
 export class OrderRepository extends DefaultCrudRepository<
   Order,
