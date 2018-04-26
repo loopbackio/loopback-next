@@ -32,7 +32,8 @@
     "http-errors": "^1.6.3",
     "js-yaml": "^3.11.0",
     "lodash": "^4.17.5",
-    "path-to-regexp": "^2.2.0"
+    "path-to-regexp": "^2.2.0",
+    "tiny-coerce": "^1.0.1"
   },
   "devDependencies": {
     "@loopback/build": "^0.6.0",

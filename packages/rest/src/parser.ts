@@ -18,6 +18,8 @@ import {
   PathParameterValues,
 } from './internal-types';
 import {ResolvedRoute} from './router/routing-table';
+const coerce = require('tiny-coerce');
+const debug = require('debug')('loopback:rest:parser');
 type HttpError = HttpErrors.HttpError;
 
 // tslint:disable-next-line:no-any
@@ -124,5 +126,14 @@ function buildOperationArguments(
     }
   }
   if (requestBodyIndex > -1) paramArgs.splice(requestBodyIndex, 0, body);
-  return paramArgs;
+
+  debug('Coercing parameters', paramArgs);
+
+  const coercedParamArgs: OperationArgs = [];
+  for (const arg of paramArgs) {
+    debug('Coercing parameter', arg);
+    coercedParamArgs.push(typeof arg === 'object' ? arg : coerce(arg));
+  }
+
+  return coercedParamArgs;
 }
