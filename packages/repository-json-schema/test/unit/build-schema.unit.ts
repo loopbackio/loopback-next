@@ -1,9 +1,5 @@
 import {expect} from '@loopback/testlab';
-import {
-  isComplexType,
-  stringTypeToWrapper,
-  metaToJsonProperty,
-} from '../../index';
+import {isComplexType, stringTypeToWrapper, metaToJsonProperty} from '../..';
 
 describe('build-schema', () => {
   describe('stringTypeToWrapper', () => {

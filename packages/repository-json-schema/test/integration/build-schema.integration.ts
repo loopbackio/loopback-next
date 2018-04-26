@@ -4,10 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {model, property} from '@loopback/repository';
-import {modelToJsonSchema} from '../../src/build-schema';
+import {
+  modelToJsonSchema,
+  JSON_SCHEMA_KEY,
+  getJsonSchema,
+  JSONSchema,
+} from '../..';
 import {expect} from '@loopback/testlab';
 import {MetadataInspector} from '@loopback/context';
-import {JSON_SCHEMA_KEY, getJsonSchema} from '../../index';
 
 describe('build-schema', () => {
   describe('modelToJsonSchema', () => {
@@ -339,7 +343,7 @@ describe('build-schema', () => {
       class TestModel {
         @property() foo: number;
       }
-      const cachedSchema = {
+      const cachedSchema: JSONSchema = {
         properties: {
           cachedProperty: {
             type: 'string',
