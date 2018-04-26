@@ -29,6 +29,9 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "",
   "license": "MIT",
   "files": [

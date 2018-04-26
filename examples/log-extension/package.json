@@ -27,6 +27,9 @@
     "type": "git",
     "url": "git+https://github.com/strongloop/loopback-next.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "loopback",
     "loopback-extension"

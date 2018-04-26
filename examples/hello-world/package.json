@@ -18,6 +18,9 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "MIT",
   "dependencies": {
     "@loopback/core": "^0.6.1",
