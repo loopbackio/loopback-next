@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-log-extension",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "An example extension project for LoopBack 4",
   "main": "index.js",
   "engines": {
