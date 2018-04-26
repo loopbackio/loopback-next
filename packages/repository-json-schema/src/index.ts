@@ -4,3 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './build-schema';
+
+import {JSONSchema6 as JSONSchema} from 'json-schema';
+export {JSONSchema};

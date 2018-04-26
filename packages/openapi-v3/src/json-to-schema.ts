@@ -3,11 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {JsonDefinition} from '@loopback/repository-json-schema';
+import {JSONSchema} from '@loopback/repository-json-schema';
 import {SchemaObject} from '@loopback/openapi-v3-types';
 import * as _ from 'lodash';
 
-export function jsonToSchemaObject(json: JsonDefinition): SchemaObject {
+/**
+ * Converts JSON Schemas into a SchemaObject
+ * @param json JSON Schema to convert from
+ */
+export function jsonToSchemaObject(json: JSONSchema): SchemaObject {
   const result: SchemaObject = {};
   const propsToIgnore = [
     'anyOf',
@@ -36,42 +40,27 @@ export function jsonToSchemaObject(json: JsonDefinition): SchemaObject {
       }
       case 'definitions': {
         result.definitions = _.mapValues(json.definitions, def =>
-          jsonToSchemaObject(def),
+          jsonToSchemaObject(jsonOrBooleanToJSON(def)),
         );
         break;
       }
       case 'properties': {
         result.properties = _.mapValues(json.properties, item =>
-          jsonToSchemaObject(item),
+          jsonToSchemaObject(jsonOrBooleanToJSON(item)),
         );
         break;
       }
       case 'additionalProperties': {
         if (typeof json.additionalProperties !== 'boolean') {
           result.additionalProperties = jsonToSchemaObject(
-            json.additionalProperties as JsonDefinition,
+            json.additionalProperties!,
           );
         }
         break;
       }
       case 'items': {
         const items = Array.isArray(json.items) ? json.items[0] : json.items;
-        result.items = jsonToSchemaObject(items as JsonDefinition);
-        break;
-      }
-      case 'enum': {
-        const newEnum = [];
-        const primitives = ['string', 'number', 'boolean'];
-        for (const element of json.enum!) {
-          if (primitives.includes(typeof element) || element === null) {
-            newEnum.push(element);
-          } else {
-            // if element is JsonDefinition, convert to SchemaObject
-            newEnum.push(jsonToSchemaObject(element as JsonDefinition));
-          }
-        }
-        result.enum = newEnum;
-
+        result.items = jsonToSchemaObject(jsonOrBooleanToJSON(items!));
         break;
       }
       case '$ref': {
@@ -82,11 +71,25 @@ export function jsonToSchemaObject(json: JsonDefinition): SchemaObject {
         break;
       }
       default: {
-        result[property] = json[property as keyof JsonDefinition];
+        result[property] = json[property as keyof JSONSchema];
         break;
       }
     }
   }
 
   return result;
+}
+
+/**
+ * Helper function used to interpret boolean values as JSON Schemas.
+ * See http://json-schema.org/draft-06/json-schema-release-notes.html
+ * @param jsonOrBool converts boolean values into their representative JSON Schemas
+ * @returns JSONSchema
+ */
+export function jsonOrBooleanToJSON(jsonOrBool: boolean | JSONSchema) {
+  if (typeof jsonOrBool === 'object') {
+    return jsonOrBool;
+  } else {
+    return jsonOrBool ? {} : {not: {}};
+  }
 }

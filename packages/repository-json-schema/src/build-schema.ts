@@ -8,37 +8,22 @@ import {
   PropertyDefinition,
   ModelDefinition,
 } from '@loopback/repository';
-import {includes} from 'lodash';
-import {Definition, PrimitiveType} from 'typescript-json-schema';
 import {MetadataInspector, MetadataAccessor} from '@loopback/context';
+import {
+  JSONSchema6 as JSONSchema,
+  JSONSchema6TypeName as JSONSchemaTypeName,
+} from 'json-schema';
 
-export const JSON_SCHEMA_KEY = MetadataAccessor.create<JsonDefinition>(
+export const JSON_SCHEMA_KEY = MetadataAccessor.create<JSONSchema>(
   'loopback:json-schema',
 );
-
-/**
- * Type definition for JSON Schema
- */
-export interface JsonDefinition extends Definition {
-  allOf?: JsonDefinition[];
-  oneOf?: JsonDefinition[];
-  anyOf?: JsonDefinition[];
-  items?: JsonDefinition | JsonDefinition[];
-  additionalItems?: {
-    anyOf: JsonDefinition[];
-  };
-  enum?: PrimitiveType[] | JsonDefinition[];
-  additionalProperties?: JsonDefinition | boolean;
-  definitions?: {[definition: string]: JsonDefinition};
-  properties?: {[property: string]: JsonDefinition};
-}
 
 /**
  * Gets the JSON Schema of a TypeScript model/class by seeing if one exists
  * in a cache. If not, one is generated and then cached.
  * @param ctor Contructor of class to get JSON Schema from
  */
-export function getJsonSchema(ctor: Function): JsonDefinition {
+export function getJsonSchema(ctor: Function): JSONSchema {
   // NOTE(shimks) currently impossible to dynamically update
   const jsonSchema = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor);
   if (jsonSchema) {
@@ -82,16 +67,18 @@ export function stringTypeToWrapper(type: string): Function {
  * @param ctor Constructor
  */
 export function isComplexType(ctor: Function) {
-  return !includes([String, Number, Boolean, Object, Function], ctor);
+  return !([String, Number, Boolean, Object, Function] as Function[]).includes(
+    ctor,
+  );
 }
 
 /**
  * Converts property metadata into a JSON property definition
  * @param meta
  */
-export function metaToJsonProperty(meta: PropertyDefinition): JsonDefinition {
+export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
   let ctor = meta.type as string | Function;
-  let def: JsonDefinition = {};
+  let def: JSONSchema = {};
 
   // errors out if @property.array() is not used on a property of array
   if (ctor === Array) {
@@ -104,7 +91,7 @@ export function metaToJsonProperty(meta: PropertyDefinition): JsonDefinition {
 
   const propDef = isComplexType(ctor)
     ? {$ref: `#/definitions/${ctor.name}`}
-    : {type: ctor.name.toLowerCase()};
+    : {type: <JSONSchemaTypeName>ctor.name.toLowerCase()};
 
   if (meta.array) {
     def.type = 'array';
@@ -124,9 +111,9 @@ export function metaToJsonProperty(meta: PropertyDefinition): JsonDefinition {
  * reflection API
  * @param ctor Constructor of class to convert from
  */
-export function modelToJsonSchema(ctor: Function): JsonDefinition {
+export function modelToJsonSchema(ctor: Function): JSONSchema {
   const meta: ModelDefinition | {} = ModelMetadataHelper.getModelMetadata(ctor);
-  const result: JsonDefinition = {};
+  const result: JSONSchema = {};
 
   // returns an empty object if metadata is an empty object
   if (!(meta instanceof ModelDefinition)) {
