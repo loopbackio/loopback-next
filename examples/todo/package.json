@@ -2,7 +2,6 @@
   "name": "@loopback/example-todo",
   "version": "0.7.1",
   "description": "Tutorial example on how to build an application with LoopBack 4.",
-  "private": true,
   "main": "index.js",
   "engines": {
     "node": ">=8"
