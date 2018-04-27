@@ -7,7 +7,7 @@
 
 const BaseGenerator = require('../../lib/base-generator');
 const chalk = require('chalk');
-const cloneExampleFromGitHub = require('./clone-example');
+const downloadAndExtractExample = require('./downloader');
 const path = require('path');
 const utils = require('../../lib/utils');
 
@@ -84,12 +84,11 @@ module.exports = class extends BaseGenerator {
     );
   }
 
-  cloneExampleFromGitHub() {
+  downloadAndExtract() {
     if (this.shouldExit()) return false;
     const cwd = process.cwd();
-    return cloneExampleFromGitHub(this.exampleName, cwd).then(o => {
-      this.outDir = path.relative(cwd, o);
-    });
+    const absOutDir = await downloadAndExtractExample(this.exampleName, cwd);
+    this.outDir = path.relative(cwd, absOutDir);
   }
 
   end() {
