@@ -7,13 +7,13 @@ import {expect} from '@loopback/testlab';
 
 import {SchemaObject} from '@loopback/openapi-v3-types';
 import {jsonToSchemaObject, jsonOrBooleanToJSON} from '../..';
-import {JSONSchema} from '@loopback/repository-json-schema';
+import {JsonSchema} from '@loopback/repository-json-schema';
 
 describe('jsonToSchemaObject', () => {
   it('does nothing when given an empty object', () => {
     expect({}).to.eql({});
   });
-  const typeDef: JSONSchema = {type: ['string', 'number']};
+  const typeDef: JsonSchema = {type: ['string', 'number']};
   const expectedType: SchemaObject = {type: 'string'};
   it('converts type', () => {
     propertyConversionTest(typeDef, expectedType);
@@ -34,7 +34,7 @@ describe('jsonToSchemaObject', () => {
   });
 
   it('converts allOf', () => {
-    const allOfDef: JSONSchema = {
+    const allOfDef: JsonSchema = {
       allOf: [typeDef, typeDef],
     };
     const expectedAllOf: SchemaObject = {
@@ -44,7 +44,7 @@ describe('jsonToSchemaObject', () => {
   });
 
   it('converts definitions', () => {
-    const definitionsDef: JSONSchema = {
+    const definitionsDef: JsonSchema = {
       definitions: {foo: typeDef, bar: typeDef},
     };
     const expectedDef: SchemaObject = {
@@ -54,7 +54,7 @@ describe('jsonToSchemaObject', () => {
   });
 
   it('converts properties', () => {
-    const propertyDef: JSONSchema = {
+    const propertyDef: JsonSchema = {
       properties: {
         foo: typeDef,
       },
@@ -68,8 +68,8 @@ describe('jsonToSchemaObject', () => {
   });
 
   context('additionalProperties', () => {
-    it('is converted properly when the type is JSONSchema', () => {
-      const additionalDef: JSONSchema = {
+    it('is converted properly when the type is JsonSchema', () => {
+      const additionalDef: JsonSchema = {
         additionalProperties: typeDef,
       };
       const expectedAdditional: SchemaObject = {
@@ -79,7 +79,7 @@ describe('jsonToSchemaObject', () => {
     });
 
     it('is converted properly when it is "false"', () => {
-      const noAdditionalDef: JSONSchema = {
+      const noAdditionalDef: JsonSchema = {
         additionalProperties: false,
       };
       const expectedDef: SchemaObject = {};
@@ -88,7 +88,7 @@ describe('jsonToSchemaObject', () => {
   });
 
   it('converts items', () => {
-    const itemsDef: JSONSchema = {
+    const itemsDef: JsonSchema = {
       type: 'array',
       items: typeDef,
     };
@@ -100,7 +100,7 @@ describe('jsonToSchemaObject', () => {
   });
 
   it('retains given properties in the conversion', () => {
-    const inputDef: JSONSchema = {
+    const inputDef: JsonSchema = {
       title: 'foo',
       type: 'object',
       properties: {
@@ -150,7 +150,7 @@ describe('jsonOrBooleanToJson', () => {
   });
 
   it('makes no changes to JSON Schema', () => {
-    const jsonSchema: JSONSchema = {
+    const jsonSchema: JsonSchema = {
       properties: {
         number: {type: 'number'},
       },

@@ -5,5 +5,5 @@
 
 export * from './build-schema';
 
-import {JSONSchema6 as JSONSchema} from 'json-schema';
-export {JSONSchema};
+import {JSONSchema6 as JsonSchema} from 'json-schema';
+export {JsonSchema};
