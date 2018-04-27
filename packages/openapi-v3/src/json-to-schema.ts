@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {JSONSchema} from '@loopback/repository-json-schema';
+import {JsonSchema} from '@loopback/repository-json-schema';
 import {SchemaObject} from '@loopback/openapi-v3-types';
 import * as _ from 'lodash';
 
@@ -11,7 +11,7 @@ import * as _ from 'lodash';
  * Converts JSON Schemas into a SchemaObject
  * @param json JSON Schema to convert from
  */
-export function jsonToSchemaObject(json: JSONSchema): SchemaObject {
+export function jsonToSchemaObject(json: JsonSchema): SchemaObject {
   const result: SchemaObject = {};
   const propsToIgnore = [
     'anyOf',
@@ -71,7 +71,7 @@ export function jsonToSchemaObject(json: JSONSchema): SchemaObject {
         break;
       }
       default: {
-        result[property] = json[property as keyof JSONSchema];
+        result[property] = json[property as keyof JsonSchema];
         break;
       }
     }
@@ -84,9 +84,9 @@ export function jsonToSchemaObject(json: JSONSchema): SchemaObject {
  * Helper function used to interpret boolean values as JSON Schemas.
  * See http://json-schema.org/draft-06/json-schema-release-notes.html
  * @param jsonOrBool converts boolean values into their representative JSON Schemas
- * @returns JSONSchema
+ * @returns A JSON Schema document representing the input value.
  */
-export function jsonOrBooleanToJSON(jsonOrBool: boolean | JSONSchema) {
+export function jsonOrBooleanToJSON(jsonOrBool: boolean | JsonSchema) {
   if (typeof jsonOrBool === 'object') {
     return jsonOrBool;
   } else {
