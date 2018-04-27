@@ -10,9 +10,13 @@
     "node": ">=8"
   },
   "scripts": {
-    "build": "lb-tsc es2017",
-    "build:watch": "lb-tsc es2017 --watch",
-    "clean": "lb-clean",
+    "build": "npm run build:dist8 && npm run build:dist10",
+    "build:apidocs": "lb-apidocs",
+    "build:current": "lb-tsc",
+    "build:dist8": "lb-tsc es2017",
+    "build:dist10": "lb-tsc es2018",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean dist*",
     "lint": "npm run prettier:check && npm run tslint",
     "lint:fix": "npm run prettier:fix && npm run tslint:fix",
     "prettier:cli": "lb-prettier \"**/*.ts\"",
@@ -20,10 +24,11 @@
     "prettier:fix": "npm run prettier:cli -- --write",
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
-    "pretest": "npm run clean && npm run build",
+    "pretest": "npm run clean && npm run build:current",
     "test": "lb-mocha DIST/test",
     "posttest": "npm run lint",
-    "start": "npm run build && node ."
+    "prestart": "npm run build:current",
+    "start": "node ."
   },
   "repository": {
     "type": "git",
@@ -38,7 +43,8 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist"
+    "dist*/src",
+    "dist*/index*"
   ],
   "dependencies": {
     "@loopback/context": "^0.8.1",

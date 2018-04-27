@@ -6,10 +6,10 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
 
-    "lib": ["es2017", "dom"],
+    "lib": ["es2018", "dom"],
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es6",
+    "target": "es2017",
     "sourceMap": true,
     "declaration": true
   }

@@ -7,10 +7,13 @@
     "node": ">=8"
   },
   "scripts": {
-    "build": "lb-tsc es2017",
+    "build": "npm run build:dist8 && npm run build:dist10",
     "build:apidocs": "lb-apidocs",
-    "build:watch": "lb-tsc es2017 --watch",
-    "clean": "lb-clean *example-log-extension-*.tgz dist package api-docs",
+    "build:current": "lb-tsc",
+    "build:dist8": "lb-tsc es2017",
+    "build:dist10": "lb-tsc es2018",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean *example-log-extension-*.tgz dist* package api-docs",
     "lint": "npm run prettier:check && npm run tslint",
     "lint:fix": "npm run prettier:fix && npm run tslint",
     "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
@@ -18,7 +21,7 @@
     "prettier:fix": "npm run prettier:cli -- --write",
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
-    "pretest": "npm run clean && npm run build",
+    "pretest": "npm run clean && npm run build:current",
     "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
     "posttest": "npm run lint",
     "verify": "npm pack && tar xf *example-log-extension*.tgz && tree package && npm run clean"
@@ -39,6 +42,13 @@
     "url": "https://github.com/strongloop/loopback-next/issues"
   },
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/examples/log-extension",
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist*/src",
+    "dist*/index*"
+  ],
   "devDependencies": {
     "@loopback/build": "^0.6.0",
     "@loopback/testlab": "^0.8.0",

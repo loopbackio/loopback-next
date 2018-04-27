@@ -21,7 +21,7 @@ describe('build', function() {
       'bin/run-clean',
       'tsconfig.json',
       'tsconfig.build.json',
-      'dist',
+      'dist*',
       'api-docs',
     ]);
   }
@@ -38,12 +38,12 @@ describe('build', function() {
 
   it('compiles ts files', done => {
     var run = require('../../bin/compile-package');
-    var childProcess = run(['node', 'bin/compile-package']);
+    var childProcess = run(['node', 'bin/compile-package', 'es2015']);
     childProcess.on('close', code => {
       assert.equal(code, 0);
       assert(
-        fs.existsSync(path.join(projectDir, 'dist')),
-        'dist should have been created'
+        fs.existsSync(path.join(projectDir, 'dist6')),
+        'dist6 should have been created'
       );
       assert(
         fs.existsSync(path.join(projectDir, 'tsconfig.json')),

@@ -8,14 +8,18 @@
   },
   "scripts": {
     "acceptance": "lb-mocha \"DIST/test/acceptance/**/*.js\"",
-    "build": "lb-tsc es2017",
+    "build": "npm run build:dist8 && npm run build:dist10",
     "build:apidocs": "lb-apidocs",
-    "clean": "lb-clean *example-todo*.tgz dist package api-docs",
-    "pretest": "npm run build",
+    "build:current": "lb-tsc",
+    "build:dist8": "lb-tsc es2017",
+    "build:dist10": "lb-tsc es2018",
+    "clean": "lb-clean *example-todo*.tgz dist* package api-docs",
+    "pretest": "npm run build:current",
     "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
     "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-todo*.tgz && tree package && npm run clean",
-    "start": "npm run build && node ."
+    "prestart": "npm run build:current",
+    "start": "node ."
   },
   "repository": {
     "type": "git",
@@ -25,6 +29,13 @@
     "access": "public"
   },
   "license": "MIT",
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist*/src",
+    "dist*/index*"
+  ],
   "dependencies": {
     "@loopback/boot": "^0.8.2",
     "@loopback/context": "^0.8.1",

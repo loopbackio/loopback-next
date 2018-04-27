@@ -8,11 +8,14 @@
   },
   "scripts": {
     "acceptance": "lb-mocha \"DIST/test/acceptance/**/*.js\"",
-    "build": "lb-tsc es2017",
+    "build": "npm run build:dist8 && npm run build:dist10",
     "build:apidocs": "lb-apidocs",
-    "clean": "lb-clean *example-hello-world*.tgz dist package api-docs",
+    "build:current": "lb-tsc",
+    "build:dist8": "lb-tsc es2017",
+    "build:dist10": "lb-tsc es2018",
+    "clean": "lb-clean *example-hello-world*.tgz dist* package api-docs",
     "verify": "npm pack && tar xf *example-hello-world*.tgz && tree package && npm run clean",
-    "start": "npm run build && node ."
+    "start": "npm run build:current && node ."
   },
   "repository": {
     "type": "git",

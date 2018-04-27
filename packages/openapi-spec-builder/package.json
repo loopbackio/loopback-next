@@ -6,9 +6,12 @@
     "node": ">=8"
   },
   "scripts": {
-    "build": "lb-tsc es2017",
+    "build": "npm run build:dist8 && npm run build:dist10",
     "build:apidocs": "lb-apidocs",
-    "clean": "lb-clean loopback-openapi-spec-builder*.tgz dist package api-docs",
+    "build:current": "lb-tsc",
+    "build:dist8": "lb-tsc es2017",
+    "build:dist10": "lb-tsc es2018",
+    "clean": "lb-clean loopback-openapi-spec-builder*.tgz dist* package api-docs",
     "verify": "npm pack && tar xf loopback-openapi-spec-builder*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
@@ -32,7 +35,8 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist/src",
+    "dist*/src",
+    "dist*/index*",
     "src"
   ],
   "repository": {
