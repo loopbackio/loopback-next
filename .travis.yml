@@ -8,39 +8,21 @@ os:
   - linux
   - osx
 
-git:
-  depth: 300
+script: ./bin/travis.sh
+env: TASK=test
+install: npm install --ignore-scripts
 
-after_success:
-  - npm run coverage:ci
-
-jobs:
+matrix:
   include:
-    - stage: loopback.io
-      before_install:
-        - |
-          if git diff --name-only --quiet $TRAVIS_BRANCH docs/; then
-            echo "No changes to @loopback/docs in this PR"
-            exit 0
-          else
-            echo "Testing @loopback/docs"
-          fi
-      before_script: skip
-      script:
-        - npm run verify:docs
-      after_success: skip
+    - node_js: "8"
       os: linux
-      node_js: 8
-    - stage: commit linting
-      before_install:
-        - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-      # --ignore-scripts is disabling the postinstall script
-      # which would run relatively slow "lerna bootstrap"
-      install: npm install --ignore-scripts
-      script: /bin/bash ./bin/lint-commits.sh
-      after_success: skip
+      env: TASK=code-lint
+    - node_js: "8"
       os: linux
-      node_js: 8
+      env: TASK=commit-lint
+    - node_js: "8"
+      os: linux
+      env: TASK=verify-docs
 
 branches:
   only:
