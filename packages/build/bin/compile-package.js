@@ -10,7 +10,7 @@
 Usage:
   node ./bin/compile-package <target>
 
-Where <target> is either es2017 or es2015.
+Where <target> is one of es2015, es2017 or es2018.
 
 ========
 */

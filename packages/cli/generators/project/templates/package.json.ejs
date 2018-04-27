@@ -11,9 +11,13 @@
     "node": ">=8"
   },
   "scripts": {
-    "build": "lb-tsc es2017",
-    "build:watch": "lb-tsc es2017 --watch",
-    "clean": "lb-clean",
+    "build": "npm run build:dist8 && npm run build:dist10",
+    "build:apidocs": "lb-apidocs",
+    "build:current": "lb-tsc",
+    "build:dist8": "lb-tsc es2017",
+    "build:dist10": "lb-tsc es2018",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean dist*",
 <% if (project.prettier && project.tslint) { -%>
     "lint": "npm run prettier:check && npm run tslint",
     "lint:fix": "npm run prettier:fix && npm run tslint:fix",
@@ -33,7 +37,7 @@
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
 <% } -%>
-    "pretest": "npm run clean && npm run build",
+    "pretest": "npm run clean && npm run build:current",
 <% if (project.mocha) { -%>
     "test": "lb-mocha --allow-console-logs \"DIST/test\"",
 <% } -%>
@@ -41,7 +45,8 @@
     "posttest": "npm run lint",
 <% } -%>
 <% if (project.projectType === 'application') { -%>
-    "start": "npm run build && node .",
+    "prestart": "npm run build:current",
+    "start": "node .",
 <% } -%>
     "prepublishOnly": "npm run test"
   },
@@ -57,7 +62,8 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist",
+    "dist*/src",
+    "dist*/index*",
     "src"
   ],
   "dependencies": {
