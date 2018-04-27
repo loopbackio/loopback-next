@@ -7,7 +7,7 @@
 
 const promisify = require('util').promisify;
 
-const cloneExampleFromGitHub = require('../../../generators/example/clone-example');
+const downloadAndExtractExample = require('../../../generators/example/downloader');
 const expect = require('@loopback/testlab').expect;
 const fs = require('fs');
 const TestSandbox = require('@loopback/testlab').TestSandbox;
@@ -26,7 +26,7 @@ describe('cloneExampleFromGitHub (SLOW)', function() {
   beforeEach('reset sandbox', () => sandbox.reset());
 
   it('extracts project files', async () => {
-    const outDir = await cloneExampleFromGitHub(VALID_EXAMPLE, SANDBOX_PATH);
+    const outDir = await downloadAndExtractExample(VALID_EXAMPLE, SANDBOX_PATH);
     const actualFiles = await glob('**', {
       cwd: outDir,
       ignore: 'node_modules/**',
