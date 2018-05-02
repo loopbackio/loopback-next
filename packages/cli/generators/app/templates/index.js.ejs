@@ -1,4 +1,6 @@
-const application = (module.exports = require('./dist'));
+const application = require('@loopback/dist-util').loadDist(__dirname);
+
+module.exports = application;
 
 if (require.main === module) {
   // Run the application

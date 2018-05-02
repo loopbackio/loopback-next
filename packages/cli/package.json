@@ -95,7 +95,8 @@
       "@loopback/example-hello-world": "^0.5.3",
       "@loopback/example-log-extension": "^0.7.3",
       "@loopback/example-rpc-server": "^0.5.3",
-      "@loopback/example-todo": "^0.7.3"
+      "@loopback/example-todo": "^0.7.3",
+      "@loopback/dist-util": "^0.1.0"
     }
   },
   "copyright.owner": "IBM Corp.",
