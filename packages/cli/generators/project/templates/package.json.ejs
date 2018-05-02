@@ -71,10 +71,12 @@
     "@loopback/boot": "<%= project.dependencies['@loopback/boot'] -%>",
 <% if (project.projectType === 'application') { -%>
     "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
+    "@loopback/dist-util": "<%= project.dependencies['@loopback/dist-util'] -%>",
     "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>",
     "@loopback/openapi-v3": "<%= project.dependencies['@loopback/openapi-v3'] -%>"
 <% } else { -%>
-    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>"
+    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
+    "@loopback/dist-util": "<%= project.dependencies['@loopback/dist-util'] -%>"
 <% } -%>
   },
   "devDependencies": {

@@ -25,6 +25,7 @@
   "dependencies": {
     "@loopback/context": "^0.8.1",
     "@loopback/core": "^0.6.1",
+    "@loopback/dist-util": "^0.1.0",
     "@loopback/openapi-v3": "^0.8.1",
     "@loopback/rest": "^0.8.1",
     "passport": "^0.4.0",

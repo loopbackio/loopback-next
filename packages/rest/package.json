@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@loopback/build": "^0.6.0",
+    "@loopback/dist-util": "^0.1.0",
     "@loopback/openapi-spec-builder": "^0.5.1",
     "@loopback/repository": "^0.8.1",
     "@loopback/testlab": "^0.8.0",

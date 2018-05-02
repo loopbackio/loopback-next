@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "@loopback/context": "^0.8.1",
+    "@loopback/dist-util": "^0.1.0",
     "@loopback/openapi-v3-types": "^0.5.0",
     "@loopback/repository-json-schema": "^0.7.0",
     "debug": "^3.1.0",

@@ -25,6 +25,7 @@
     "Testing"
   ],
   "dependencies": {
+    "@loopback/dist-util": "^0.1.0",
     "@loopback/openapi-v3-types": "^0.5.0"
   },
   "devDependencies": {

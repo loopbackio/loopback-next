@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@loopback/build": "^0.6.0",
+    "@loopback/dist-util": "^0.1.0",
     "@loopback/testlab": "^0.8.0",
     "@types/debug": "^0.0.30",
     "@types/lodash": "^4.14.106",

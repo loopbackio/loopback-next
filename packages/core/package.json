@@ -23,7 +23,8 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^0.8.1"
+    "@loopback/context": "^0.8.1",
+    "@loopback/dist-util": "^0.1.0"
   },
   "devDependencies": {
     "@loopback/build": "^0.6.0",
