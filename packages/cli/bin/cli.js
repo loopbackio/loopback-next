@@ -55,15 +55,15 @@ function setupGenerators() {
   env.register(path.join(__dirname, '../generators/app'), PREFIX + 'app');
   env.register(
     path.join(__dirname, '../generators/extension'),
-    PREFIX + 'extension'
+    PREFIX + 'extension',
   );
   env.register(
     path.join(__dirname, '../generators/controller'),
-    PREFIX + 'controller'
+    PREFIX + 'controller',
   );
   env.register(
     path.join(__dirname, '../generators/example'),
-    PREFIX + 'example'
+    PREFIX + 'example',
   );
   return env;
 }

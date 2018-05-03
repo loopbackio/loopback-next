@@ -43,11 +43,11 @@ describe('build', function() {
       assert.equal(code, 0);
       assert(
         fs.existsSync(path.join(projectDir, 'dist6')),
-        'dist6 should have been created'
+        'dist6 should have been created',
       );
       assert(
         fs.existsSync(path.join(projectDir, 'tsconfig.json')),
-        'tsconfig.json should have been created'
+        'tsconfig.json should have been created',
       );
       var tsConfig = fs.readJSONSync(path.join(projectDir, 'tsconfig.json'));
       assert.equal(tsConfig.extends, '../../../config/tsconfig.common.json');
@@ -70,7 +70,7 @@ describe('build', function() {
     var command = run(['node', 'bin/compile-package'], true);
     assert(
       command.indexOf('-p tsconfig.build.json') !== -1,
-      'project level tsconfig.build.json should be honored'
+      'project level tsconfig.build.json should be honored',
     );
   });
 
@@ -84,7 +84,7 @@ describe('build', function() {
     var command = run(['node', 'bin/compile-package'], true);
     assert(
       command.indexOf('-p tsconfig.json') !== -1,
-      'project level tsconfig.json should be honored'
+      'project level tsconfig.json should be honored',
     );
   });
 
@@ -92,11 +92,11 @@ describe('build', function() {
     var run = require('../../bin/compile-package');
     var command = run(
       ['node', 'bin/compile-package', '-p', 'tsconfig.my.json'],
-      true
+      true,
     );
     assert(
       command.indexOf('-p tsconfig.my.json') !== -1,
-      '-p should be honored'
+      '-p should be honored',
     );
   });
 
@@ -104,11 +104,11 @@ describe('build', function() {
     var run = require('../../bin/compile-package');
     var command = run(
       ['node', 'bin/compile-package', '--project', 'tsconfig.my.json'],
-      true
+      true,
     );
     assert(
       command.indexOf('--project tsconfig.my.json') !== -1,
-      '--project should be honored'
+      '--project should be honored',
     );
   });
 
@@ -116,11 +116,11 @@ describe('build', function() {
     var run = require('../../bin/compile-package');
     var command = run(
       ['node', 'bin/compile-package', '--target', 'es2015'],
-      true
+      true,
     );
     assert(
       command.indexOf('--target es2015') !== -1,
-      '--target should be honored'
+      '--target should be honored',
     );
   });
 
@@ -129,7 +129,7 @@ describe('build', function() {
     var command = run(['node', 'bin/compile-package', 'es2015'], true);
     assert(
       command.indexOf('--target es2015') !== -1,
-      '--target should be honored'
+      '--target should be honored',
     );
   });
 
@@ -137,15 +137,15 @@ describe('build', function() {
     var run = require('../../bin/compile-package');
     var command = run(
       ['node', 'bin/compile-package', 'es2015', '-p', 'tsconfig.my.json'],
-      true
+      true,
     );
     assert(
       command.indexOf('--target es2015') !== -1,
-      '--target should be honored'
+      '--target should be honored',
     );
     assert(
       command.indexOf('-p tsconfig.my.json') !== -1,
-      '-p should be honored'
+      '-p should be honored',
     );
   });
 
@@ -153,11 +153,11 @@ describe('build', function() {
     var run = require('../../bin/compile-package');
     var command = run(
       ['node', 'bin/compile-package', '--outDir', './dist'],
-      true
+      true,
     );
     assert(
       command.indexOf('--outDir ./dist') !== -1,
-      '--outDir should be honored'
+      '--outDir should be honored',
     );
   });
 
@@ -170,18 +170,18 @@ describe('build', function() {
       assert.equal(code, 0);
       assert(
         fs.existsSync(path.join(projectDir, 'api-docs')),
-        'api-docs should have been created'
+        'api-docs should have been created',
       );
       var typedocDir = require.resolve('typedoc/package.json');
       assert(
         !fs.existsSync(path.join(typedocDir, '../node_modules/typescript')),
-        'typedoc local dependency of typescript should have been renamed'
+        'typedoc local dependency of typescript should have been renamed',
       );
       assert(
         !fs.existsSync(
           path.join(typedocDir, '../node_modules/.bin'),
-          'typedoc local scripts from typescript should have been removed'
-        )
+          'typedoc local scripts from typescript should have been removed',
+        ),
       );
       done();
     });
@@ -191,11 +191,11 @@ describe('build', function() {
     var run = require('../../bin/generate-apidocs');
     var command = run(
       ['node', 'bin/generate-apidocs', '--tsconfig', 'tsconfig.my.json'],
-      true
+      true,
     );
     assert(
       command.indexOf('--tsconfig tsconfig.my.json') !== -1,
-      '--tsconfig should be honored'
+      '--tsconfig should be honored',
     );
   });
 
@@ -203,11 +203,11 @@ describe('build', function() {
     var run = require('../../bin/generate-apidocs');
     var command = run(
       ['node', 'bin/generate-apidocs', '--tstarget', 'es2017'],
-      true
+      true,
     );
     assert(
       command.indexOf('--tstarget es2017') !== -1,
-      '--tstarget should be honored'
+      '--tstarget should be honored',
     );
   });
 
@@ -215,11 +215,11 @@ describe('build', function() {
     var run = require('../../bin/generate-apidocs');
     var command = run(
       ['node', 'bin/generate-apidocs', '--skip-public-assets'],
-      true
+      true,
     );
     assert(
       command.indexOf('--skip-public-assets') !== -1,
-      '--skip-public-assets should be honored'
+      '--skip-public-assets should be honored',
     );
   });
 
@@ -227,11 +227,11 @@ describe('build', function() {
     var run = require('../../bin/generate-apidocs');
     var command = run(
       ['node', 'bin/generate-apidocs', '--html-file=my.html'],
-      true
+      true,
     );
     assert(
       command.indexOf('--html-file=my.html') !== -1,
-      '--html-file should be honored'
+      '--html-file should be honored',
     );
   });
 
@@ -254,11 +254,11 @@ describe('build', function() {
     var run = require('../../bin/run-tslint');
     var command = run(
       ['node', 'bin/un-tslint', '--config', 'tslint.my.json'],
-      true
+      true,
     );
     assert(
       command.indexOf('--config tslint.my.json') !== -1,
-      '--config should be honored'
+      '--config should be honored',
     );
   });
 
@@ -272,11 +272,11 @@ describe('build', function() {
     var run = require('../../bin/run-tslint');
     var command = run(
       ['node', 'bin/un-tslint', '--project', 'tsonfig.my.json'],
-      true
+      true,
     );
     assert(
       command.indexOf('--project tsonfig') !== -1,
-      '--project should be honored'
+      '--project should be honored',
     );
   });
 
@@ -286,7 +286,7 @@ describe('build', function() {
       ['node', 'bin/run-prettier', '**/src/*.ts', '--', '-l'],
       {
         stdio: [process.stdin, 'ignore', process.stderr],
-      }
+      },
     );
     childProcess.on('close', code => {
       assert.equal(code, 0);
@@ -298,7 +298,7 @@ describe('build', function() {
     var run = require('../../bin/run-clean');
     var command = run(
       ['node', 'bin/run-clean', 'tsconfig.json', 'dist', 'api-docs'],
-      true
+      true,
     );
     assert(command.indexOf('tsconfig.json dist api-docs') !== -1);
   });
@@ -313,7 +313,7 @@ describe('build', function() {
         './dist',
         path.join(process.cwd(), '../../api-docs'),
       ],
-      true
+      true,
     );
     assert(command.indexOf('rm -rf ./dist') !== -1);
   });
@@ -327,7 +327,7 @@ describe('build', function() {
       var command = run(['node', 'bin/generate-apidocs'], true);
       assert(
         command.indexOf('--skip-public-assets') !== -1,
-        '--skip-public-assets should be set by default'
+        '--skip-public-assets should be set by default',
       );
     });
 
@@ -336,7 +336,7 @@ describe('build', function() {
       var command = run(['node', 'bin/generate-apidocs'], true);
       assert(
         command.indexOf('--html-file ts-test-proj.html') !== -1,
-        '--html-file should be set to the package name by default'
+        '--html-file should be set to the package name by default',
       );
     });
 
@@ -345,11 +345,11 @@ describe('build', function() {
       var command = run(['node', 'bin/compile-package'], true);
       const tsConfig = path.relative(
         repoRoot,
-        path.join(__dirname, './fixtures/tsconfig.json')
+        path.join(__dirname, './fixtures/tsconfig.json'),
       );
       assert(
         command.indexOf(`-p ${tsConfig}`) !== -1,
-        '-p should be set relative to the monorepo root'
+        '-p should be set relative to the monorepo root',
       );
     });
 

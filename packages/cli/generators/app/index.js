@@ -72,7 +72,7 @@ module.exports = class extends ProjectGenerator {
     this.log(
       'Application %s is now created in %s.',
       this.projectInfo.name,
-      this.projectInfo.outdir
+      this.projectInfo.outdir,
     );
     this.log();
     this.log('Next steps:');

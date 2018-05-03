@@ -24,7 +24,7 @@ function run(argv, options) {
     prettierOpts,
     '--find-config-path',
     '--no-config',
-    '--config'
+    '--config',
   );
   const configFile = isConfigSet ? null : utils.getConfigFile('.prettierrc');
 

@@ -84,7 +84,7 @@ describe('lb4 example', function() {
         },
         err => {
           expect(err).to.match(/Invalid example name/);
-        }
+        },
       );
   });
 });

@@ -77,7 +77,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
           file.extname = result[2];
           file.basename = result[1];
         }
-      })
+      }),
     );
   }
 
@@ -95,7 +95,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       dependencies: utils.getDependencies(),
     };
     this.projectOptions = ['name', 'description', 'outdir', 'private'].concat(
-      this.buildOptions
+      this.buildOptions,
     );
     this.projectOptions.forEach(n => {
       if (this.options[n]) {
@@ -196,7 +196,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
         project: this.projectInfo,
       },
       {},
-      {globOptions: {dot: true}}
+      {globOptions: {dot: true}},
     );
 
     // Rename `_.gitignore` back to `.gitignore`.
@@ -204,7 +204,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     // if it's there in the templates.
     this.fs.move(
       this.destinationPath('_.gitignore'),
-      this.destinationPath('.gitignore')
+      this.destinationPath('.gitignore'),
     );
 
     // Copy project type specific files from ./templates
@@ -215,7 +215,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
         project: this.projectInfo,
       },
       {},
-      {globOptions: {dot: true}}
+      {globOptions: {dot: true}},
     );
 
     if (!this.projectInfo.tslint) {
@@ -229,7 +229,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     if (!this.projectInfo.loopbackBuild) {
       this.fs.move(
         this.destinationPath('package.plain.json.ejs'),
-        this.destinationPath('package.json.ejs')
+        this.destinationPath('package.json.ejs'),
       );
     } else {
       this.fs.delete(this.destinationPath('package.plain.json.ejs'));

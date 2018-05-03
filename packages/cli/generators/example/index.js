@@ -72,7 +72,7 @@ module.exports = class extends BaseGenerator {
       },
     ];
     return this.prompt(prompts).then(
-      answers => (this.exampleName = answers.name)
+      answers => (this.exampleName = answers.name),
     );
   }
 
@@ -80,11 +80,11 @@ module.exports = class extends BaseGenerator {
     if (this.exampleName in EXAMPLES) return;
     this.exit(
       `Invalid example name: ${this.exampleName}\n` +
-        'Run "lb4 example --help" to print the list of available example names.'
+        'Run "lb4 example --help" to print the list of available example names.',
     );
   }
 
-  downloadAndExtract() {
+  async downloadAndExtract() {
     if (this.shouldExit()) return false;
     const cwd = process.cwd();
     const absOutDir = await downloadAndExtractExample(this.exampleName, cwd);

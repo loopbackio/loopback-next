@@ -17,7 +17,7 @@ const props = {
 const tests = require('../lib/project-generator')(
   generator,
   props,
-  'application'
+  'application',
 );
 const baseTests = require('../lib/base-generator')(generator);
 
@@ -31,7 +31,7 @@ describe('app-generator specific files', () => {
     assert.file('src/application.ts');
     assert.fileContent(
       'src/application.ts',
-      /class MyAppApplication extends BootMixin\(RestApplication/
+      /class MyAppApplication extends BootMixin\(RestApplication/,
     );
     assert.fileContent('src/application.ts', /constructor\(/);
     assert.fileContent('src/application.ts', /async start\(/);
@@ -44,17 +44,17 @@ describe('app-generator specific files', () => {
     assert.file('src/controllers/ping.controller.ts');
     assert.fileContent(
       'src/controllers/ping.controller.ts',
-      /export class PingController/
+      /export class PingController/,
     );
     assert.fileContent('src/controllers/ping.controller.ts', /@inject/);
     assert.fileContent(
       'src/controllers/ping.controller.ts',
-      /@get\('\/ping'\)/
+      /@get\('\/ping'\)/,
     );
     assert.fileContent('src/controllers/ping.controller.ts', /ping\(\)/);
     assert.fileContent(
       'src/controllers/ping.controller.ts',
-      /\'\@loopback\/openapi\-v3\'/
+      /\'\@loopback\/openapi\-v3\'/,
     );
 
     assert.file;

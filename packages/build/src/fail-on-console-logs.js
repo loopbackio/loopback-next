@@ -37,10 +37,10 @@ function recordForbiddenCall(methodName) {
     // Record the problem otherwise
     const msg = util.format(...args);
     problems.push({msg, stack});
-  }
+  };
 }
 
-process.on('exit', (code) => {
+process.on('exit', code => {
   if (!problems.length) return;
   const log = originalConsole.log;
 

@@ -37,14 +37,14 @@ function generateValidRegex() {
   const ID_Start = get('Binary_Property/ID_Start');
   const ID_Continue = get('Binary_Property/ID_Continue');
   const compileRegex = _.template(
-    '^(?:<%= identifierStart %>)(?:<%= identifierPart %>)*$'
+    '^(?:<%= identifierStart %>)(?:<%= identifierPart %>)*$',
   );
   const identifierStart = regenerate(ID_Start).add('$', '_');
   const identifierPart = regenerate(ID_Continue).add(
     '$',
     '_',
     '\u200C',
-    '\u200D'
+    '\u200D',
   );
   const regex = compileRegex({
     identifierStart: identifierStart.toString(),
@@ -82,7 +82,7 @@ exports.validateClassName = function(name) {
   if (name.match(/[\/@\s\+%:]/)) {
     return util.format(
       'Class name cannot contain special characters (/@+%: ): %s',
-      name
+      name,
     );
   }
   return util.format('Class name is invalid: %s', name);

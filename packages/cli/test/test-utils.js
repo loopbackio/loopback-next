@@ -60,7 +60,7 @@ exports.executeGenerator = function(GeneratorOrNamespace, settings) {
 exports.runGeneratorWith = function runGeneratorWith(
   generator,
   prompts,
-  createArtifacts
+  createArtifacts,
 ) {
   return exports
     .executeGenerator(generator)
@@ -85,7 +85,7 @@ exports.givenAnApplicationDir = function(tmpDir, options) {
     path.join(tmpDir, 'package.json'),
     JSON.stringify({
       keywords: ['loopback'],
-    })
+    }),
   );
   fs.mkdirSync(srcDir);
   if (!options.omitModelDir) {

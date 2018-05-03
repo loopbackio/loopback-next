@@ -40,7 +40,7 @@ describe('cli', () => {
     main({help: true, _: []}, getLog(entries));
     expect(entries).to.containEql('Available commands: ');
     expect(entries).to.containEql(
-      '  lb4 app\n  lb4 extension\n  lb4 controller\n  lb4 example'
+      '  lb4 app\n  lb4 extension\n  lb4 controller\n  lb4 example',
     );
   });
 

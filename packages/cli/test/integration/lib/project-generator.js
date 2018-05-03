@@ -19,7 +19,7 @@ module.exports = function(projGenerator, props, projectType) {
       it('prints lb4', () => {
         const env = yeoman.createEnv();
         const name = projGenerator.substring(
-          projGenerator.lastIndexOf(path.sep) + 1
+          projGenerator.lastIndexOf(path.sep) + 1,
         );
         env.register(projGenerator, 'loopback4:' + name);
         const generator = env.create('loopback4:' + name);
@@ -36,7 +36,7 @@ module.exports = function(projGenerator, props, projectType) {
             .executeGenerator(projGenerator)
             .withArguments(['fooBar']);
           return expect(result).to.be.rejectedWith(
-            /Invalid npm package name\: fooBar/
+            /Invalid npm package name\: fooBar/,
           );
         });
 
@@ -46,7 +46,7 @@ module.exports = function(projGenerator, props, projectType) {
             .withOptions({name: 'fooBar'})
             .toPromise();
           return expect(result).to.be.rejectedWith(
-            /Invalid npm package name\: fooBar/
+            /Invalid npm package name\: fooBar/,
           );
         });
 
@@ -92,8 +92,8 @@ module.exports = function(projGenerator, props, projectType) {
           assert(helpText.match(/--private/));
           assert(
             helpText.match(
-              /# Mark the project private \(excluded from npm publish\)/
-            )
+              /# Mark the project private \(excluded from npm publish\)/,
+            ),
           );
         });
 
@@ -143,11 +143,11 @@ module.exports = function(projGenerator, props, projectType) {
         assert(gen.projectInfo.name === 'foobar');
         assert(
           gen.projectInfo.dependencies['@loopback/context'] ===
-            deps['@loopback/context']
+            deps['@loopback/context'],
         );
         assert(
           gen.projectInfo.dependencies['@loopback/core'] ===
-            deps['@loopback/core']
+            deps['@loopback/core'],
         );
         assert(gen.projectInfo.description !== null);
         assert(gen.projectInfo.prettier === true);
@@ -163,7 +163,7 @@ module.exports = function(projGenerator, props, projectType) {
             name: 'foobar',
             description: 'foobar description',
           },
-          'promptProjectName'
+          'promptProjectName',
         ).then(() => {
           gen.prompt.restore();
           assert(gen.projectInfo.name);
@@ -182,7 +182,7 @@ module.exports = function(projGenerator, props, projectType) {
           {
             outdir: 'foobar',
           },
-          'promptProjectDir'
+          'promptProjectDir',
         ).then(() => {
           gen.prompt.restore();
           assert(gen.projectInfo.outdir);
@@ -204,7 +204,7 @@ module.exports = function(projGenerator, props, projectType) {
               'Enable loopbackBuild',
             ],
           },
-          'promptOptions'
+          'promptOptions',
         ).then(() => {
           gen.prompt.restore();
           assert(gen.projectInfo.tslint === true);
@@ -245,19 +245,19 @@ module.exports = function(projGenerator, props, projectType) {
         if (projectType === 'application') {
           assert.fileContent(
             'package.json',
-            `"@loopback/core": "${deps['@loopback/core']}"`
+            `"@loopback/core": "${deps['@loopback/core']}"`,
           );
           assert.fileContent(
             'package.json',
-            `"@loopback/context": "${deps['@loopback/context']}"`
+            `"@loopback/context": "${deps['@loopback/context']}"`,
           );
           assert.fileContent(
             'package.json',
-            `"@loopback/rest": "${deps['@loopback/rest']}"`
+            `"@loopback/rest": "${deps['@loopback/rest']}"`,
           );
           assert.fileContent(
             'package.json',
-            `"@loopback/openapi-v3": "${deps['@loopback/openapi-v3']}"`
+            `"@loopback/openapi-v3": "${deps['@loopback/openapi-v3']}"`,
           );
           assert.jsonFileContent('package.json', {
             scripts: {
@@ -268,11 +268,11 @@ module.exports = function(projGenerator, props, projectType) {
         if (projectType === 'extension') {
           assert.fileContent(
             'package.json',
-            `"@loopback/core": "${deps['@loopback/core']}"`
+            `"@loopback/core": "${deps['@loopback/core']}"`,
           );
           assert.fileContent(
             'package.json',
-            `"@loopback/context": "${deps['@loopback/context']}"`
+            `"@loopback/context": "${deps['@loopback/context']}"`,
           );
           assert.noFileContent('package.json', '"@loopback/rest"');
           assert.noFileContent('package.json', '"@loopback/openapi-v3"');
@@ -296,8 +296,8 @@ module.exports = function(projGenerator, props, projectType) {
                 'Enable mocha',
               ],
             },
-            props
-          )
+            props,
+          ),
         );
       });
 
@@ -305,11 +305,11 @@ module.exports = function(projGenerator, props, projectType) {
         assert.jsonFileContent('package.json', props);
         assert.fileContent(
           'package.json',
-          `"@loopback/core": "${deps['@loopback/core']}"`
+          `"@loopback/core": "${deps['@loopback/core']}"`,
         );
         assert.fileContent(
           'package.json',
-          `"@loopback/context": "${deps['@loopback/context']}"`
+          `"@loopback/context": "${deps['@loopback/context']}"`,
         );
         assert.noFileContent([
           ['package.json', '@loopback/build'],
@@ -338,8 +338,8 @@ module.exports = function(projGenerator, props, projectType) {
                 'Enable mocha',
               ],
             },
-            props
-          )
+            props,
+          ),
         );
       });
 
@@ -361,8 +361,8 @@ module.exports = function(projGenerator, props, projectType) {
                 'Enable mocha',
               ],
             },
-            props
-          )
+            props,
+          ),
         );
       });
 
@@ -386,8 +386,8 @@ module.exports = function(projGenerator, props, projectType) {
                 'Enable mocha',
               ],
             },
-            props
-          )
+            props,
+          ),
         );
       });
 

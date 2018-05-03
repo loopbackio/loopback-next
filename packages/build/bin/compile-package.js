@@ -33,7 +33,7 @@ function run(argv, options) {
   const isProjectSet = utils.isOptionSet(compilerOpts, '-p', '--project');
   const isIgnoreResourcesSet = utils.isOptionSet(
     compilerOpts,
-    '--ignore-resources'
+    '--ignore-resources',
   );
 
   var target;
@@ -106,8 +106,8 @@ function run(argv, options) {
             ],
           },
           null,
-          '  '
-        )
+          '  ',
+        ),
       );
     }
   }
