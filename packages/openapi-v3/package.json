@@ -50,6 +50,8 @@
     "@loopback/context": "^0.8.1",
     "@loopback/openapi-v3-types": "^0.5.0",
     "@loopback/repository-json-schema": "^0.7.0",
+    "@loopback/validator": "^0.1.0",
+    "@types/json-schema": "^6.0.1",
     "debug": "^3.1.0",
     "lodash": "^4.17.5"
   }

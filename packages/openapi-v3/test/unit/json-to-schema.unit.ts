@@ -110,7 +110,7 @@ describe('jsonToSchemaObject', () => {
       },
       default: 'Default string',
     };
-    const expectedDef: SchemaObject = {
+    const expectedDef: JSONSchema = {
       title: 'foo',
       type: 'object',
       properties: {
