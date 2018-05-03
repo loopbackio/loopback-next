@@ -15,9 +15,14 @@ export namespace BootBindings {
    * Binding key for Boot configuration
    */
   export const BOOT_OPTIONS = BindingKey.create<BootOptions>('boot.options');
+  /**
+   * Binding key for determining project root directory
+   */
   export const PROJECT_ROOT = BindingKey.create<string>('boot.project_root');
 
-  // Key for Binding the BootStrapper Class
+  /**
+   * Binding key for binding the BootStrapper class
+   */
   export const BOOTSTRAPPER_KEY = BindingKey.create<Bootstrapper>(
     'application.bootstrapper',
   );
