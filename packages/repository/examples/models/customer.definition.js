@@ -10,18 +10,18 @@ module.exports = {
   properties: {
     id: {
       type: 'string',
-      id: true
+      id: true,
     },
     name: {
-      type: 'string'
+      type: 'string',
     },
     email: {
       type: 'string',
-      regexp: '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$',
-      required: true
+      regexp: '^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$',
+      required: true,
     },
     address: {
-      type: Address
-    }
-  }
+      type: Address,
+    },
+  },
 };

@@ -31,7 +31,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
     this.artifactInfo.defaultName = 'new';
     this.conflicter = new StatusConflicter(
       this.env.adapter,
-      this.options.force
+      this.options.force,
     );
   }
 
@@ -50,7 +50,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
         'No package.json found in ' +
           this.destinationRoot() +
           '. ' +
-          'The command must be run in a LoopBack project.'
+          'The command must be run in a LoopBack project.',
       );
       this.exit(err);
       return;
@@ -60,7 +60,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
         'No `loopback` keyword found in ' +
           this.destinationPath('package.json') +
           '. ' +
-          'The command must be run in a LoopBack project.'
+          'The command must be run in a LoopBack project.',
       );
       this.exit(err);
     }
@@ -99,7 +99,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
       this.destinationPath(),
       this.artifactInfo,
       {},
-      {globOptions: {dot: true}}
+      {globOptions: {dot: true}},
     );
   }
 };

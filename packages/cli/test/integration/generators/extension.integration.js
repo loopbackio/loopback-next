@@ -15,7 +15,7 @@ const props = {
 const tests = require('../lib/project-generator')(
   generator,
   props,
-  'extension'
+  'extension',
 );
 
 describe('generator-loopback4:extension', tests);

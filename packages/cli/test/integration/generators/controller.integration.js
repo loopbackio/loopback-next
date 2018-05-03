@@ -21,14 +21,14 @@ const baseTests = require('../lib/base-generator')(generator);
 
 const templateName = testUtils.givenAControllerPath(
   null,
-  'controller-template.ts'
+  'controller-template.ts',
 );
 const withInputProps = {
   name: 'fooBar',
 };
 const withInputName = testUtils.givenAControllerPath(
   null,
-  'foo-bar.controller.ts'
+  'foo-bar.controller.ts',
 );
 
 describe('controller-generator extending BaseGenerator', baseTests);
@@ -40,7 +40,7 @@ describe('lb4 controller', () => {
       .runGeneratorWith(
         generator,
         withInputProps,
-        testUtils.givenAnApplicationDir
+        testUtils.givenAnApplicationDir,
       )
       .then(() => {
         assert.noFile(withInputName);
@@ -51,7 +51,7 @@ describe('lb4 controller', () => {
       .runGeneratorWith(
         generator,
         withInputProps,
-        testUtils.givenAnApplicationDir
+        testUtils.givenAnApplicationDir,
       )
       .then(() => {
         assert.noFile(withInputName);
@@ -113,20 +113,20 @@ describe('lb4 controller', () => {
               repositoryName: 'BarRepository',
               id: 'number',
             },
-            baseInput
+            baseInput,
           ),
           dir => {
             tmpDir = dir;
             testUtils.givenAnApplicationDir(tmpDir);
             fs.writeFileSync(
               testUtils.givenAModelPath(tmpDir, 'foo.model.ts'),
-              '--DUMMY VALUE--'
+              '--DUMMY VALUE--',
             );
             fs.writeFileSync(
               testUtils.givenARepositoryPath(tmpDir, 'bar.repository.ts'),
-              '--DUMMY VALUE--'
+              '--DUMMY VALUE--',
             );
-          }
+          },
         )
         .then(() => {
           return checkRestCrudContents(tmpDir);
@@ -148,7 +148,7 @@ describe('lb4 controller', () => {
     it('fails when no model directory present', () => {
       return noModelFolder(baseInput).catch(err => {
         expect(err.message).to.match(
-          /ENOENT: no such file or directory, scandir(.*?)models\b/
+          /ENOENT: no such file or directory, scandir(.*?)models\b/,
         );
       });
     });
@@ -156,7 +156,7 @@ describe('lb4 controller', () => {
     it('fails when no repository directory present', () => {
       return noRepositoryFolder(baseInput).catch(err => {
         expect(err.message).to.match(
-          /ENOENT: no such file or directory, scandir(.*?)repositories\b/
+          /ENOENT: no such file or directory, scandir(.*?)repositories\b/,
         );
       });
     });
@@ -175,15 +175,15 @@ describe('lb4 controller', () => {
           repositoryName: 'BarRepository',
           id: 'number',
         },
-        baseInput
+        baseInput,
       ),
       dir => {
         testUtils.givenAnApplicationDir(dir);
         fs.writeFileSync(
           testUtils.givenARepositoryPath(dir, 'bar.repository.ts'),
-          '--DUMMY VALUE--'
+          '--DUMMY VALUE--',
         );
-      }
+      },
     );
   }
   /**
@@ -199,15 +199,15 @@ describe('lb4 controller', () => {
           modelName: 'Foo',
           id: 'number',
         },
-        baseInput
+        baseInput,
       ),
       dir => {
         testUtils.givenAnApplicationDir(dir);
         fs.writeFileSync(
           testUtils.givenAModelPath(dir, 'foo.model.ts'),
-          '--DUMMY VALUE--'
+          '--DUMMY VALUE--',
         );
-      }
+      },
     );
   }
 
@@ -225,15 +225,15 @@ describe('lb4 controller', () => {
           repositoryName: 'BarRepository',
           id: 'number',
         },
-        baseInput
+        baseInput,
       ),
       dir => {
         testUtils.givenAnApplicationDir(dir, {omitModelDir: true});
         fs.writeFileSync(
           testUtils.givenARepositoryPath(dir, 'bar.repository.ts'),
-          '--DUMMY VALUE--'
+          '--DUMMY VALUE--',
         );
-      }
+      },
     );
   }
 
@@ -251,15 +251,15 @@ describe('lb4 controller', () => {
           repositoryName: 'BarRepository',
           id: 'number',
         },
-        baseInput
+        baseInput,
       ),
       dir => {
         testUtils.givenAnApplicationDir(dir, {omitRepositoryDir: true});
         fs.writeFileSync(
           testUtils.givenAModelPath(dir, 'foo.model.ts'),
-          '--DUMMY VALUE--'
+          '--DUMMY VALUE--',
         );
-      }
+      },
     );
   }
 
@@ -284,43 +284,43 @@ describe('lb4 controller', () => {
     assert.fileContent(tmpDir + withInputName, /\@repository\(BarRepository\)/);
     assert.fileContent(
       tmpDir + withInputName,
-      /barRepository \: BarRepository/
+      /barRepository \: BarRepository/,
     );
 
     // Assert that the decorators are present in the correct groupings!
     assert.fileContent(
       tmpDir + withInputName,
-      /\@post\('\/foo'\)\s{1,}async create\(\@requestBody\(\)/
+      /\@post\('\/foo'\)\s{1,}async create\(\@requestBody\(\)/,
     );
 
     assert.fileContent(
       tmpDir + withInputName,
-      /\@get\('\/foo\/count'\)\s{1,}async count\(\@param.query.string\('where'\)/
+      /\@get\('\/foo\/count'\)\s{1,}async count\(\@param.query.string\('where'\)/,
     );
 
     assert.fileContent(
       tmpDir + withInputName,
-      /\@get\('\/foo'\)\s{1,}async find\(\@param.query.string\('filter'\)/
+      /\@get\('\/foo'\)\s{1,}async find\(\@param.query.string\('filter'\)/,
     );
     assert.fileContent(
       tmpDir + withInputName,
-      /\@patch\('\/foo'\)\s{1,}async updateAll\(\@param.query.string\('where'\) where: Where,\s{1,}\@requestBody\(\)/
+      /\@patch\('\/foo'\)\s{1,}async updateAll\(\@param.query.string\('where'\) where: Where,\s{1,}\@requestBody\(\)/,
     );
     assert.fileContent(
       tmpDir + withInputName,
-      /\@del\('\/foo'\)\s{1,}async deleteAll\(\@param.query.string\('where'\)/
+      /\@del\('\/foo'\)\s{1,}async deleteAll\(\@param.query.string\('where'\)/,
     );
     assert.fileContent(
       tmpDir + withInputName,
-      /\@get\('\/foo\/{id}'\)\s{1,}async findById\(\@param.path.number\('id'\)/
+      /\@get\('\/foo\/{id}'\)\s{1,}async findById\(\@param.path.number\('id'\)/,
     );
     assert.fileContent(
       tmpDir + withInputName,
-      /\@patch\('\/foo\/{id}'\)\s{1,}async updateById\(\@param.path.number\('id'\) id: number, \@requestBody\(\)/
+      /\@patch\('\/foo\/{id}'\)\s{1,}async updateById\(\@param.path.number\('id'\) id: number, \@requestBody\(\)/,
     );
     assert.fileContent(
       tmpDir + withInputName,
-      /\@del\('\/foo\/{id}'\)\s{1,}async deleteById\(\@param.path.number\('id'\) id: number\)/
+      /\@del\('\/foo\/{id}'\)\s{1,}async deleteById\(\@param.path.number\('id'\) id: number\)/,
     );
   }
 });

@@ -8,7 +8,7 @@
 const path = require('path');
 const pacote = require('pacote');
 
-module.exports = function downloadAndExtractExample(exampleName, cwd) {
+module.exports = async function downloadAndExtractExample(exampleName, cwd) {
   const packageSpec = `@loopback/example-${exampleName}`;
   const outDir = path.join(cwd, `loopback4-example-${exampleName}`);
   await pacote.extract(packageSpec, outDir);

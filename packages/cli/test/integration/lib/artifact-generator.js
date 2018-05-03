@@ -53,17 +53,17 @@ module.exports = function(artiGenerator) {
       testCheckLoopBack(
         'throws an error if no package.json is present',
         undefined,
-        /No package.json found/
+        /No package.json found/,
       );
       testCheckLoopBack(
         'throws an error if "keywords" key does not exist',
         {foobar: 'test'},
-        /No `loopback` keyword found/
+        /No `loopback` keyword found/,
       );
       testCheckLoopBack(
         'throws an error if "keywords" key does not map to an array with "loopback" as a member',
         {keywords: ['foobar', 'test']},
-        /No `loopback` keyword found/
+        /No `loopback` keyword found/,
       );
 
       it('passes if "keywords" maps to "loopback"', () => {

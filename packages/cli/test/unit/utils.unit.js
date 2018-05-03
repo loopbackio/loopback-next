@@ -22,42 +22,42 @@ describe('Utils', () => {
       testValidateName(
         'if the class name is empty',
         '',
-        /name cannot be empty/
+        /name cannot be empty/,
       );
       testValidateName(
         'if the class name is null',
         null,
-        /name cannot be empty/
+        /name cannot be empty/,
       );
       testValidateName(
         'if the first character is a digit',
         '2Controller',
-        /name cannot start with a number/
+        /name cannot start with a number/,
       );
       testValidateName(
         'if the class name contains a period',
         'Cool.App',
-        /name cannot contain \./
+        /name cannot contain \./,
       );
       testValidateName(
         'if the class name contains a space',
         'foo bar',
-        /name cannot contain space/
+        /name cannot contain space/,
       );
       testValidateName(
         'if the class name contains a hyphen',
         'foo-bar',
-        /name cannot contain hyphen/
+        /name cannot contain hyphen/,
       );
       testValidateName(
         'if the class name contains special characters',
         'Foo%bar',
-        /name cannot contain special character/
+        /name cannot contain special character/,
       );
       testValidateName(
         'if the class name contains other invalid symbols',
         'foo♡bar',
-        /name is invalid/
+        /name is invalid/,
       );
       function testValidateName(testName, input, expected) {
         it(testName, () => {
@@ -70,15 +70,15 @@ describe('Utils', () => {
       testCorrectName('if the class name contains upper case letter', 'fooBar');
       testCorrectName(
         'if the class name contains a digit in the middle',
-        'foo2bar'
+        'foo2bar',
       );
       testCorrectName(
         'if the class name contains non-English letter',
-        'fooβbar'
+        'fooβbar',
       );
       testCorrectName(
         'if the first character has an accented character',
-        'Óoobar'
+        'Óoobar',
       );
       function testCorrectName(testName, input) {
         it(testName, () => {
@@ -102,7 +102,7 @@ describe('Utils', () => {
       testExpectUpperCase(
         'if first letter is lower case in different language',
         'óooBar',
-        'ÓooBar'
+        'ÓooBar',
       );
     });
     function testExpectError(testName, input, expected) {
@@ -155,7 +155,7 @@ describe('Utils', () => {
       return verifyArtifactList('model', 'models', false, files).then(
         results => {
           expect(results).to.eql(expectedModels);
-        }
+        },
       );
     });
 
@@ -168,7 +168,7 @@ describe('Utils', () => {
       return verifyArtifactList('model', 'models', false, files).then(
         results => {
           expect(results).to.eql(expectedModels);
-        }
+        },
       );
     });
 
@@ -183,7 +183,7 @@ describe('Utils', () => {
         'repositories',
         true,
         files,
-        expectedRepos
+        expectedRepos,
       ).then(results => {
         expect(results).to.eql(expectedRepos);
       });
@@ -200,7 +200,7 @@ describe('Utils', () => {
         'repositories',
         true,
         files,
-        expectedRepos
+        expectedRepos,
       ).then(results => {
         expect(results).to.eql(expectedRepos);
       });

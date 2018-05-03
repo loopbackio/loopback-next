@@ -42,7 +42,7 @@ function run(argv, options) {
         console.error(
           'Skipping ' +
             pattern +
-            ' as it is not inside the project root directory.'
+            ' as it is not inside the project root directory.',
         );
       }
     } else {
