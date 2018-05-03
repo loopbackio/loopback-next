@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@0.7.3...@loopback/example-log-extension@0.8.0) (2018-05-03)
+
+
+### Features
+
+* add helper package "dist-util" ([532f153](https://github.com/strongloop/loopback-next/commit/532f153))
+
+
+
+
 <a name="0.7.3"></a>
 ## [0.7.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@0.7.2...@loopback/example-log-extension@0.7.3) (2018-04-26)
 
