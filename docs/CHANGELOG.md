@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.5.3...@loopback/docs@0.7.0) (2018-05-03)
+
+
+### Features
+
+* add integration for service-oriented backends ([b9e2d4e](https://github.com/strongloop/loopback-next/commit/b9e2d4e))
+
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.5.3...@loopback/docs@0.6.0) (2018-05-03)
 

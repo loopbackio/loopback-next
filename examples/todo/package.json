@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-todo",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Tutorial example on how to build an application with LoopBack 4.",
   "main": "index.js",
   "engines": {
@@ -37,18 +37,18 @@
     "dist*/index*"
   ],
   "dependencies": {
-    "@loopback/boot": "^0.9.0",
-    "@loopback/context": "^0.9.0",
-    "@loopback/core": "^0.7.0",
-    "@loopback/dist-util": "^0.2.0",
-    "@loopback/openapi-v3": "^0.9.0",
-    "@loopback/openapi-v3-types": "^0.6.0",
-    "@loopback/repository": "^0.9.0",
-    "@loopback/rest": "^0.9.0"
+    "@loopback/boot": "^0.10.0",
+    "@loopback/context": "^0.10.0",
+    "@loopback/core": "^0.8.0",
+    "@loopback/dist-util": "^0.3.0",
+    "@loopback/openapi-v3": "^0.10.0",
+    "@loopback/openapi-v3-types": "^0.7.0",
+    "@loopback/repository": "^0.10.0",
+    "@loopback/rest": "^0.10.0"
   },
   "devDependencies": {
-    "@loopback/build": "^0.6.1",
-    "@loopback/testlab": "^0.9.0",
+    "@loopback/build": "^0.6.2",
+    "@loopback/testlab": "^0.10.0",
     "@types/node": "^8.10.4",
     "source-map-support": "^0.5.4",
     "typescript": "^2.6.2"
