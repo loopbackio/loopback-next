@@ -1,6 +1,6 @@
 {
   "name": "@loopback/service-proxy",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Service integration for LoopBack 4",
   "engines": {
     "node": ">=8"
