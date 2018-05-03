@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@0.6.1...@loopback/core@0.7.0) (2018-05-03)
+
+
+### Features
+
+* **context:** allow tags to have an optional value ([95acd11](https://github.com/strongloop/loopback-next/commit/95acd11))
+* add helper package "dist-util" ([532f153](https://github.com/strongloop/loopback-next/commit/532f153))
+
+
+
+
 <a name="0.6.1"></a>
 ## [0.6.1](https://github.com/strongloop/loopback-next/compare/@loopback/core@0.6.0...@loopback/core@0.6.1) (2018-04-25)
 

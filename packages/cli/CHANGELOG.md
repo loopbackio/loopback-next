@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.10.0"></a>
+# [0.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.9.2...@loopback/cli@0.10.0) (2018-05-03)
+
+
+### Features
+
+* **cli:** download examples via npm ([43383f5](https://github.com/strongloop/loopback-next/commit/43383f5))
+* add helper package "dist-util" ([532f153](https://github.com/strongloop/loopback-next/commit/532f153))
+
+
+
+
 <a name="0.9.2"></a>
 ## [0.9.2](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.9.1...@loopback/cli@0.9.2) (2018-04-26)
 
