@@ -332,11 +332,13 @@ Please register the new package in the following files:
   new package, please keep the rows sorted by package name.
 - Update [docs/apidocs.html](../apidocs.html) - add a link to API docs for this
   new package.
+- Update [Reserved-binding-keys.md](./Reserved-binding-keys.mds) - add a link to
+  the apidocs on Binding Keys if the new package has any.
 - Update [CODEOWNERS](../../CODEOWNERS) - add a new entry listing the primary
-  maintainers (owners) of the new package
+  maintainers (owners) of the new package.
 - Ask somebody from the IBM team (e.g. [@bajtos](https://github.com/bajtos) or
   [@raymondfeng](https://github.com/raymondfeng) to enlist the new package on
-  <http://apidocs.loopback.io/>
+  <http://apidocs.loopback.io/>.
 
 ## How to test infrastructure changes
 

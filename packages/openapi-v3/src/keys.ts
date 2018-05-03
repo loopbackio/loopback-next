@@ -8,22 +8,41 @@ import {ParameterObject, RequestBodyObject} from '@loopback/openapi-v3-types';
 // License text available at https://opensource.org/licenses/MIT
 
 export namespace OAI3Keys {
+  /**
+   * Binding key used to set or retrieve `@operation` metadata.
+   */
   export const METHODS_KEY = MetadataAccessor.create<
     Partial<RestEndpoint>,
     MethodDecorator
   >('openapi-v3:methods');
+
+  /**
+   * Binding key used to set or retrieve `param` decorator metadata
+   */
   export const PARAMETERS_KEY = MetadataAccessor.create<
     ParameterObject,
     ParameterDecorator
   >('openapi-v3:parameters');
+
+  /**
+   * Binding key used to set or retrieve `@api` metadata
+   */
   export const CLASS_KEY = MetadataAccessor.create<
     ControllerSpec,
     ClassDecorator
   >('openapi-v3:class');
+
+  /**
+   * Binding key used to set or retrieve a controller spec
+   */
   export const CONTROLLER_SPEC_KEY = MetadataAccessor.create<
     ControllerSpec,
     ClassDecorator
   >('openapi-v3:controller-spec');
+
+  /**
+   * Binding key used to set or retrieve `@requestBody` metadata
+   */
   export const REQUEST_BODY_KEY = MetadataAccessor.create<
     RequestBodyObject,
     ParameterDecorator

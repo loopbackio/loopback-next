@@ -8,15 +8,12 @@ import {
   PropertyDefinition,
   ModelDefinition,
 } from '@loopback/repository';
-import {MetadataInspector, MetadataAccessor} from '@loopback/context';
+import {MetadataInspector} from '@loopback/context';
 import {
   JSONSchema6 as JSONSchema,
   JSONSchema6TypeName as JSONSchemaTypeName,
 } from 'json-schema';
-
-export const JSON_SCHEMA_KEY = MetadataAccessor.create<JSONSchema>(
-  'loopback:json-schema',
-);
+import {JSON_SCHEMA_KEY} from './keys';
 
 /**
  * Gets the JSON Schema of a TypeScript model/class by seeing if one exists
