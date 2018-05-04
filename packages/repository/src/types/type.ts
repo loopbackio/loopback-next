@@ -6,7 +6,7 @@
 /**
  * Typing system for LoopBack
  */
-import {Options} from '../common-types';
+import {Options} from '../';
 
 // tslint:disable:no-any
 

@@ -14,7 +14,7 @@ import {
   Command,
   NamedParameters,
   PositionalParameters,
-} from '../common-types';
+} from '../';
 import {Entity} from '../model';
 import {Filter, Where} from '../query';
 import {EntityCrudRepository} from './repository';

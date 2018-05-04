@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Repository} from './repository';
-import {Options, DataObject} from '../common-types';
+import {Options, DataObject} from '@loopback/core';
 import {Model} from '../model';
 import {Filter} from '../query';
 

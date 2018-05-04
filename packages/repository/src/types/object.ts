@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as util from 'util';
-import {Class, AnyObject} from '../common-types';
+import {Class, AnyObject} from '../';
 import {Type} from './type';
 
 // tslint:disable:no-any

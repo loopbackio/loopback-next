@@ -1,7 +1,6 @@
 {
   "content": [
     "./index.ts",
-    "./src/common-types.ts",
     "./src/connectors/connector.ts",
     "./src/connectors/crud.connector.ts",
     "./src/datasource.ts",

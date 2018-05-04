@@ -1,6 +1,8 @@
 {
   "content": [
     "index.ts",
+    "src/utils/common-types.ts",
+    "src/utils/mixin-builder.ts",
     "src/application.ts",
     "src/component.ts",
     "src/index.ts",

@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Class} from '../common-types';
+import {Class} from '../';
 import {Entity} from '../model';
 
 import {PropertyDecoratorFactory} from '@loopback/context';

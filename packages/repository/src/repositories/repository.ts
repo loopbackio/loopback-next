@@ -12,7 +12,7 @@ import {
   Command,
   NamedParameters,
   PositionalParameters,
-} from '../common-types';
+} from '../';
 import {DataSource} from '../datasource';
 import {CrudConnector} from '../connectors';
 import {Filter, Where} from '../query';
