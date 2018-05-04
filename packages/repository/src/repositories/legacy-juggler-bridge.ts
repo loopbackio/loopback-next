@@ -15,7 +15,7 @@ import {
   NamedParameters,
   PositionalParameters,
 } from '../common-types';
-import {Entity} from '../model';
+import {Entity, ModelDefinition} from '../model';
 import {Filter, Where} from '../query';
 import {EntityCrudRepository} from './repository';
 
@@ -88,7 +88,19 @@ export class DefaultCrudRepository<T extends Entity, ID>
       `Entity ${entityClass.name} must have at least one id/pk property.`,
     );
 
-    // Create an internal legacy Model attached to the datasource
+    this.setupPersistedModel(definition);
+  }
+
+  // Create an internal legacy Model attached to the datasource
+  private setupPersistedModel(definition: ModelDefinition) {
+    const dataSource = this.dataSource;
+
+    const model = dataSource.getModel(definition.name);
+    if (model) {
+      // The backing persisted model has been already defined.
+      this.modelClass = model as typeof juggler.PersistedModel;
+      return;
+    }
 
     // We need to convert property definitions from PropertyDefinition
     // to plain data object because of a juggler limitation
