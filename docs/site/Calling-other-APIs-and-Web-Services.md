@@ -25,9 +25,9 @@ $ npm install --save @loopback/service-proxy
 ### Define a data source for the service backend
 
 ```ts
-import {DataSourceConstructor, juggler} from '@loopback/service-proxy';
+import {juggler} from '@loopback/service-proxy';
 
-const ds: juggler.DataSource = new DataSourceConstructor({
+const ds: juggler.DataSource = new juggler.DataSource({
   name: 'GoogleMapGeoCode',
   connector: 'rest',
   options: {

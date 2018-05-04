@@ -38,13 +38,12 @@ import {MySequence} from './sequence';
 // Binding and Booter imports are required to infer types for BootMixin!
 import {BootMixin, Booter, Binding} from '@loopback/boot';
 
-// juggler and DataSourceConstructor imports are required to infer types for RepositoryMixin!
+// juggler imports are required to infer types for RepositoryMixin!
 import {
   Class,
   Repository,
   RepositoryMixin,
   juggler,
-  DataSourceConstructor,
 } from '@loopback/repository';
 /* tslint:enable:no-unused-variable */
 

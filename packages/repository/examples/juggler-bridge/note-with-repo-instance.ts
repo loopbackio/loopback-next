@@ -6,9 +6,8 @@
 import {Context} from '@loopback/context';
 
 import {
-  repository,
-  DataSourceConstructor,
   juggler,
+  repository,
   Entity,
   Options,
   DataObject,
@@ -33,7 +32,7 @@ class NoteController {
   }
 }
 
-const ds: juggler.DataSource = new DataSourceConstructor({
+const ds: juggler.DataSource = new juggler.DataSource({
   name: 'db',
   connector: 'memory',
 });

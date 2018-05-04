@@ -31,7 +31,7 @@
     "@loopback/context": "^0.10.1",
     "@loopback/core": "^0.8.1",
     "@loopback/dist-util": "^0.3.1",
-    "loopback-datasource-juggler": "^3.16.0"
+    "loopback-datasource-juggler": "^3.20.2"
   },
   "files": [
     "README.md",

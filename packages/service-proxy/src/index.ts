@@ -4,5 +4,4 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './legacy-juggler-bridge';
-export * from './loopback-datasource-juggler';
 export * from './decorators/service.decorator';

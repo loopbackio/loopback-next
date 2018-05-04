@@ -31,9 +31,9 @@ models. For example,
 
 ```ts
 // src/datasources/db.datasource.ts
-import {juggler, DataSourceConstructor} from '@loopback/repository';
+import {juggler} from '@loopback/repository';
 
-export const db: juggler.DataSource = new DataSourceConstructor({
+export const db: juggler.DataSource = new juggler.DataSource({
   name: 'db',
   connector: 'memory',
 });

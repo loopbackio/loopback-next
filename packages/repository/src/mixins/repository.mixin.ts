@@ -5,7 +5,7 @@
 
 import {Class} from '../common-types';
 import {Repository} from '../repositories/repository';
-import {juggler} from '../loopback-datasource-juggler';
+import {juggler} from '../repositories/legacy-juggler-bridge';
 import {Application} from '@loopback/core';
 
 /**
@@ -38,7 +38,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      *   model: any;
      *
      *   constructor() {
-     *     const ds: juggler.DataSource = new DataSourceConstructor({
+     *     const ds: juggler.DataSource = new juggler.DataSource({
      *       name: 'db',
      *       connector: 'memory',
      *     });
@@ -80,7 +80,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      *
      * ```ts
      *
-     * const ds: juggler.DataSource = new DataSourceConstructor({
+     * const ds: juggler.DataSource = new juggler.DataSource({
      *   name: 'db',
      *   connector: 'memory',
      * });

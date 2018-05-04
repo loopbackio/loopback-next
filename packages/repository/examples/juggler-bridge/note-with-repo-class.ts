@@ -7,9 +7,8 @@ import {Context, inject} from '@loopback/context';
 
 import {
   repository,
-  DataSourceConstructor,
-  juggler,
   Entity,
+  juggler,
   EntityCrudRepository,
   DefaultCrudRepository,
   ModelDefinition,
@@ -19,7 +18,7 @@ class NoteController {
   @repository('noteRepo') public noteRepo: EntityCrudRepository<Entity, number>;
 }
 
-const ds: juggler.DataSource = new DataSourceConstructor({
+const ds: juggler.DataSource = new juggler.DataSource({
   name: 'db',
   connector: 'memory',
 });

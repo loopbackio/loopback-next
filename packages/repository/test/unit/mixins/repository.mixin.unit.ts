@@ -4,10 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
+
 import {
-  RepositoryMixin,
   juggler,
-  DataSourceConstructor,
+  RepositoryMixin,
   Class,
   Options,
   Repository,
@@ -76,10 +76,10 @@ describe('RepositoryMixin', () => {
   class AppWithRepoMixin extends RepositoryMixin(Application) {}
 
   class NoteRepo implements Repository<juggler.PersistedModel> {
-    model: typeof juggler.PersistedModel;
+    model: juggler.PersistedModelClass;
 
     constructor() {
-      const ds: juggler.DataSource = new DataSourceConstructor({
+      const ds: juggler.DataSource = new juggler.DataSource({
         name: 'db',
         connector: 'memory',
       });
@@ -143,7 +143,7 @@ describe('RepositoryMixin dataSource', () => {
 
   it('binds dataSource to a binding key using the dataSource name property', () => {
     const myApp = new AppWithRepoMixin();
-    const fooDataSource: juggler.DataSource = new DataSourceConstructor({
+    const fooDataSource: juggler.DataSource = new juggler.DataSource({
       name: 'foo',
       connector: 'memory',
     });
@@ -153,7 +153,7 @@ describe('RepositoryMixin dataSource', () => {
 
   it('binds dataSource to a binding key using the given name', () => {
     const myApp = new AppWithRepoMixin();
-    const barDataSource: juggler.DataSource = new DataSourceConstructor({
+    const barDataSource: juggler.DataSource = new juggler.DataSource({
       connector: 'memory',
     });
     myApp.dataSource(barDataSource, 'bar');

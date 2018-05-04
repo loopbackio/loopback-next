@@ -5,13 +5,9 @@
 
 import * as assert from 'assert';
 import {Model, Entity} from '../model';
-import {
-  Repository,
-  DefaultCrudRepository,
-  DataSourceConstructor,
-} from '../repositories';
+import {Repository, DefaultCrudRepository} from '../repositories';
 import {DataSource} from '../datasource';
-import {juggler} from '../loopback-datasource-juggler';
+import {juggler} from '../repositories/legacy-juggler-bridge';
 import {inject, Context, Injection} from '@loopback/context';
 import {Class} from '../common-types';
 
@@ -199,7 +195,7 @@ async function resolve(ctx: Context, injection: Injection) {
     );
   }
   assert(
-    dataSource instanceof DataSourceConstructor,
+    dataSource instanceof juggler.DataSource,
     'DataSource must be provided',
   );
   return new DefaultCrudRepository(

@@ -5,12 +5,12 @@
 
 import {expect} from '@loopback/testlab';
 import {Context} from '@loopback/context';
-import {repository, EntityCrudRepository} from '../../../';
 
-import {Repository} from '../../../';
 import {
-  DataSourceConstructor,
   juggler,
+  repository,
+  EntityCrudRepository,
+  Repository,
   DefaultCrudRepository,
   Entity,
   ModelDefinition,
@@ -39,7 +39,7 @@ describe('repository decorator', () => {
   }
 
   before(function() {
-    ds = new DataSourceConstructor({
+    ds = new juggler.DataSource({
       name: 'db',
       connector: 'memory',
     });

@@ -6,22 +6,18 @@
 import {expect} from '@loopback/testlab';
 
 import {
-  bindModel,
-  DataSourceConstructor,
   juggler,
+  bindModel,
   DefaultCrudRepository,
   Entity,
   ModelDefinition,
 } from '../../../';
 
-/* tslint:disable-next-line:variable-name */
-type PersistedModelClass = typeof juggler.PersistedModel;
-
 describe('legacy loopback-datasource-juggler', () => {
   let ds: juggler.DataSource;
 
   before(function() {
-    ds = new DataSourceConstructor({
+    ds = new juggler.DataSource({
       name: 'db',
       connector: 'memory',
     });
@@ -31,7 +27,7 @@ describe('legacy loopback-datasource-juggler', () => {
 
   it('creates models', () => {
     /* tslint:disable-next-line:variable-name */
-    const Note = ds.createModel<PersistedModelClass>(
+    const Note = ds.createModel<juggler.PersistedModelClass>(
       'note',
       {title: 'string', content: 'string', id: {type: 'number', id: true}},
       {},
@@ -59,7 +55,7 @@ describe('DefaultCrudRepository', () => {
   }
 
   beforeEach(() => {
-    ds = new DataSourceConstructor({
+    ds = new juggler.DataSource({
       name: 'db',
       connector: 'memory',
     });

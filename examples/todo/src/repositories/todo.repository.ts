@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {DefaultCrudRepository, DataSourceType} from '@loopback/repository';
+import {DefaultCrudRepository, juggler} from '@loopback/repository';
 import {Todo} from '../models';
 import {inject} from '@loopback/core';
 
@@ -11,7 +11,9 @@ export class TodoRepository extends DefaultCrudRepository<
   Todo,
   typeof Todo.prototype.id
 > {
-  constructor(@inject('datasources.db') protected datasource: DataSourceType) {
+  constructor(
+    @inject('datasources.db') protected datasource: juggler.DataSource,
+  ) {
     super(Todo, datasource);
   }
 }

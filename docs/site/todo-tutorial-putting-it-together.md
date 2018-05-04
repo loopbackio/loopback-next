@@ -45,13 +45,12 @@ import {db} from './datasources/db.datasource';
 // Binding and Booter imports are required to infer types for BootMixin!
 import {BootMixin, Booter, Binding} from '@loopback/boot';
 
-// juggler and DataSourceConstructor imports are required to infer types for RepositoryMixin!
+// juggler imports are required to infer types for RepositoryMixin!
 import {
   Class,
   Repository,
   RepositoryMixin,
   juggler,
-  DataSourceConstructor,
 } from '@loopback/repository';
 /* tslint:enable:no-unused-variable */
 
@@ -83,7 +82,7 @@ export class TodoListApplication extends BootMixin(
     // use a "real" datasource!
     const datasource =
       this.options && this.options.datasource
-        ? new DataSourceConstructor(this.options.datasource)
+        ? new juggler.DataSource(this.options.datasource)
         : db;
     this.dataSource(datasource);
   }
