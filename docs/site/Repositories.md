@@ -9,7 +9,9 @@ summary:
 ---
 
 A Repository is a type of _Service_ that represents a collection of data within
-a DataSource.
+a DataSource. A repository class is a lightweight object, its instances can be
+created with low runtime overhead. Typically a new repository instance is
+created for each incoming request.
 
 ## Example Application
 

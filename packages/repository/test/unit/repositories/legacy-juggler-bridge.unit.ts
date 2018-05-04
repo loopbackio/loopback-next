@@ -67,6 +67,13 @@ describe('DefaultCrudRepository', () => {
     await model.deleteAll();
   });
 
+  it('shares the backing PersistedModel across repo instances', () => {
+    const model1 = new DefaultCrudRepository(Note, ds).modelClass;
+    const model2 = new DefaultCrudRepository(Note, ds).modelClass;
+
+    expect(model1 === model2).to.be.true();
+  });
+
   it('implements Repository.create()', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
     const note = await repo.create({title: 't3', content: 'c3'});
