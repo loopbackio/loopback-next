@@ -5,17 +5,13 @@
 
 import * as path from 'path';
 // The juggler reference must exist for consuming code to correctly infer
-// type info used in the "db" export (contained in DataSourceConstructor).
+// type info used in the "db" export (contained in juggler.DataSource).
 // tslint:disable-next-line:no-unused-variable
-import {juggler, DataSourceConstructor} from '@loopback/repository';
+import {juggler} from '@loopback/repository';
 
 const dsConfigPath = path.resolve(
   __dirname,
-  '..',
-  '..',
-  '..',
-  'config',
-  'datasources.json',
+  '../../../config/datasources.json',
 );
 const config = require(dsConfigPath);
 
@@ -25,4 +21,4 @@ const config = require(dsConfigPath);
 // integration tests where we don't have access to the full app object.
 // For example, @loopback/boot can provide a helper function for
 // performing a partial boot that creates datasources only.
-export const db = new DataSourceConstructor(config);
+export const db = new juggler.DataSource(config);

@@ -7,11 +7,10 @@ import {expect} from '@loopback/testlab';
 import {Context, inject, Provider, ValueOrPromise} from '@loopback/context';
 
 import {
+  juggler,
   Repository,
   Entity,
   repository,
-  DataSourceConstructor,
-  DataSourceType,
   DefaultCrudRepository,
   ModelDefinition,
 } from '../../../';
@@ -24,12 +23,12 @@ class MyRepositoryProvider
   implements Provider<DefaultCrudRepository<Entity, string>> {
   constructor(
     @inject('models.Note') private myModel: typeof Entity,
-    @inject('dataSources.memory') private dataSource: DataSourceType,
+    @inject('dataSources.memory') private dataSource: juggler.DataSource,
   ) {}
 
   value(): ValueOrPromise<DefaultCrudRepository<Entity, string>> {
     return new DefaultCrudRepository(this.myModel, this
-      .dataSource as DataSourceType);
+      .dataSource as juggler.DataSource);
   }
 }
 
@@ -37,7 +36,7 @@ describe('repository class', () => {
   let ctx: Context;
 
   before(function() {
-    const ds = new DataSourceConstructor({
+    const ds = new juggler.DataSource({
       name: 'db',
       connector: 'memory',
     });

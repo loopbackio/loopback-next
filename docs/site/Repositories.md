@@ -56,10 +56,10 @@ follows:
 
 ```ts
 // src/datsources/db.datasource.ts
-import {juggler, DataSourceConstructor} from '@loopback/repository';
+import {juggler} from '@loopback/repository';
 
 // this is just an example, 'test' database doesn't actually exist
-export const db = new DataSourceConstructor({
+export const db = new juggler.DataSource({
   connector: 'mysql',
   host: 'localhost',
   port: 3306,

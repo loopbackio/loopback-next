@@ -10,6 +10,5 @@ export * from './repositories';
 export * from './types';
 export * from './common-types';
 export * from './datasource';
-export * from './loopback-datasource-juggler';
 export * from './model';
 export * from './query';

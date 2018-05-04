@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {DataSourceConstructor} from '../..';
+import {DataSource} from 'loopback-datasource-juggler';
 import {Product} from '../fixtures/models/product.model';
 import {ProductRepository} from '../fixtures/repositories/product.repository';
 import {expect} from '@loopback/testlab';
@@ -38,7 +38,7 @@ describe('Repository in Thinking in LoopBack', () => {
   });
 
   function givenProductRepository() {
-    const db = new DataSourceConstructor({
+    const db = new DataSource({
       connector: 'memory',
     });
     repo = new ProductRepository(db);

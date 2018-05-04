@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-const jugglerModule = require('loopback-datasource-juggler');
+import * as legacy from 'loopback-datasource-juggler';
 
-import {juggler} from './loopback-datasource-juggler';
-
-export const DataSourceConstructor = jugglerModule.DataSource as typeof juggler.DataSource;
+export namespace juggler {
+  export import DataSource = legacy.DataSource;
+}
 
 /**
  * A generic service interface with any number of methods that return a promise
@@ -24,6 +24,7 @@ export interface GenericService {
  * @param ds A legacy data source
  * @typeparam T The generic type of service interface
  */
-export function getService<T = GenericService>(ds: juggler.DataSource): T {
-  return ds.DataAccessObject as T;
+export function getService<T = GenericService>(ds: legacy.DataSource): T {
+  // tslint:disable-next-line:no-any
+  return ds.DataAccessObject as any;
 }

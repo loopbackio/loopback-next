@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {juggler, DefaultCrudRepository} from '../../..';
+import {DefaultCrudRepository, juggler} from '../../..';
 import {Product} from '../models/product.model';
 export {Product};
 

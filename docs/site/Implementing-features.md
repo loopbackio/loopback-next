@@ -309,9 +309,9 @@ Welcome to `@loopback/repository`, a TypeScript facade for the
    Create `src/datasources/db.datasource.ts` with the following content:
 
    ```ts
-   import {juggler, DataSourceConstructor} from '@loopback/repository';
+   import {juggler} from '@loopback/repository';
 
-   export const db = new DataSourceConstructor({
+   export const db = new juggler.DataSource({
      connector: 'memory',
    });
    ```

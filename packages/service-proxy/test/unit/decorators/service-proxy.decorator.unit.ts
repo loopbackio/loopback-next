@@ -7,7 +7,7 @@ import {expect} from '@loopback/testlab';
 import {Context} from '@loopback/context';
 import {serviceProxy} from '../../../';
 
-import {DataSourceConstructor, juggler} from '../../../';
+import {juggler} from '../../../';
 
 import {MockConnector} from '../../mock-service.connector';
 
@@ -29,7 +29,7 @@ describe('serviceProxy decorator', () => {
   let ds: juggler.DataSource;
 
   before(function() {
-    ds = new DataSourceConstructor({
+    ds = new juggler.DataSource({
       name: 'db',
       connector: MockConnector,
     });

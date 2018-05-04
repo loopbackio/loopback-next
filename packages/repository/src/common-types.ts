@@ -51,7 +51,7 @@ export type DataObject<T> = T | AnyObject;
 /**
  * Type alias for Node.js options object
  */
-export type Options = AnyObject | null | undefined;
+export type Options = AnyObject;
 
 /**
  * Type alias for Node.js callback functions

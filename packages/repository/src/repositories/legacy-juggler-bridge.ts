@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export const jugglerModule = require('loopback-datasource-juggler');
+import * as legacy from 'loopback-datasource-juggler';
 
 import * as assert from 'assert';
 import {isPromiseLike} from '@loopback/context';
@@ -19,16 +19,13 @@ import {Entity} from '../model';
 import {Filter, Where} from '../query';
 import {EntityCrudRepository} from './repository';
 
-export * from '../loopback-datasource-juggler';
-import {juggler} from '../loopback-datasource-juggler';
-
-type DataSourceType = juggler.DataSource;
-export {DataSourceType};
-
-/* tslint:disable-next-line:variable-name */
-export const DataSourceConstructor = jugglerModule.DataSource as typeof juggler.DataSource;
-/* tslint:disable-next-line:variable-name */
-export const ModelBaseConstructor = jugglerModule.ModelBaseClass as typeof juggler.ModelBase;
+export namespace juggler {
+  export import DataSource = legacy.DataSource;
+  export import ModelBase = legacy.ModelBase;
+  export import ModelBaseClass = legacy.ModelBaseClass;
+  export import PersistedModel = legacy.PersistedModel;
+  export import PersistedModelClass = legacy.PersistedModelClass;
+}
 
 /**
  * This is a bridge to the legacy DAO class. The function mixes DAO methods
@@ -37,7 +34,7 @@ export const ModelBaseConstructor = jugglerModule.ModelBaseClass as typeof juggl
  * @param ds {DataSource} Data source
  * @returns {} The new model class with DAO (CRUD) operations
  */
-export function bindModel<T extends typeof juggler.ModelBase>(
+export function bindModel<T extends juggler.ModelBaseClass>(
   modelClass: T,
   ds: juggler.DataSource,
 ): T {
@@ -51,7 +48,7 @@ export function bindModel<T extends typeof juggler.ModelBase>(
  * @param p Promise or void
  */
 /* tslint:disable-next-line:no-any */
-function ensurePromise<T>(p: juggler.PromiseOrVoid<T>): Promise<T> {
+function ensurePromise<T>(p: legacy.PromiseOrVoid<T>): Promise<T> {
   if (p && isPromiseLike(p)) {
     // Juggler uses promise-like Bluebird instead of native Promise
     // implementation. We need to convert the promise returned by juggler
@@ -68,7 +65,7 @@ function ensurePromise<T>(p: juggler.PromiseOrVoid<T>): Promise<T> {
  */
 export class DefaultCrudRepository<T extends Entity, ID>
   implements EntityCrudRepository<T, ID> {
-  modelClass: typeof juggler.PersistedModel;
+  modelClass: juggler.PersistedModelClass;
 
   /**
    * Constructor of DefaultCrudRepository
@@ -100,7 +97,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
       properties[p] = Object.assign({}, definition.properties[p]);
     }
 
-    this.modelClass = dataSource.createModel<typeof juggler.PersistedModel>(
+    this.modelClass = dataSource.createModel<juggler.PersistedModelClass>(
       definition.name,
       properties,
       definition.settings,

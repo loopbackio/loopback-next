@@ -7,13 +7,12 @@ import {expect} from '@loopback/testlab';
 import {Context, inject} from '@loopback/context';
 
 import {
+  juggler,
   Repository,
   Entity,
   repository,
-  DataSourceConstructor,
   DefaultCrudRepository,
   ModelDefinition,
-  DataSourceType,
 } from '../../../';
 
 describe('repository class', () => {
@@ -36,7 +35,7 @@ describe('repository class', () => {
     expect(myController.noteRepo instanceof DefaultCrudRepository).to.be.true();
   });
 
-  const ds: DataSourceType = new DataSourceConstructor({
+  const ds: juggler.DataSource = new juggler.DataSource({
     name: 'db',
     connector: 'memory',
   });
@@ -62,7 +61,7 @@ describe('repository class', () => {
   class MyRepository extends DefaultCrudRepository<Entity, string> {
     constructor(
       @inject('models.Note') myModel: typeof Note,
-      @inject('dataSources.memory') dataSource: DataSourceType,
+      @inject('dataSources.memory') dataSource: juggler.DataSource,
     ) {
       super(myModel, dataSource);
     }

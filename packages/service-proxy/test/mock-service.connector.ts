@@ -4,10 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {juggler} from '..';
+import * as legacy from 'loopback-datasource-juggler';
+
 /**
  * A mockup service connector
  */
 export class MockConnector {
+  name: 'mock';
   connected?: boolean;
   dataSource: juggler.DataSource;
 
@@ -28,6 +31,20 @@ export class MockConnector {
   ) {
     this.connected = true;
     this.dataSource.connected = true;
+    process.nextTick(() => {
+      cb(null, true);
+    });
+  }
+
+  disconnect(cb: legacy.Callback) {
+    this.connected = false;
+    this.dataSource.connected = false;
+    process.nextTick(() => {
+      cb(null);
+    });
+  }
+
+  ping(cb: legacy.Callback) {
     process.nextTick(() => {
       cb(null, true);
     });
