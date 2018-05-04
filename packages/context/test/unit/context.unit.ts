@@ -325,7 +325,7 @@ describe('Context', () => {
       expect(bindingForConfig.key).to.equal(
         BindingKey.buildKeyForConfig('foo'),
       );
-      expect(bindingForConfig.tags.has('config:foo')).to.be.true();
+      expect(bindingForConfig.tagMap).to.eql({config: 'foo'});
     });
 
     it('configures options for a binding after it is bound', () => {
@@ -334,7 +334,7 @@ describe('Context', () => {
       expect(bindingForConfig.key).to.equal(
         BindingKey.buildKeyForConfig('foo'),
       );
-      expect(bindingForConfig.tags.has('config:foo')).to.be.true();
+      expect(bindingForConfig.tagMap).to.eql({config: 'foo'});
     });
   });
 

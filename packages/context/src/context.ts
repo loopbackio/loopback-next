@@ -3,21 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import * as debugModule from 'debug';
+import {v1 as uuidv1} from 'uuid';
 import {Binding, TagMap} from './binding';
-import {BindingKey, BindingAddress} from './binding-key';
+import {BindingAddress, BindingKey} from './binding-key';
+import {ConfigurationResolver, DefaultConfigurationResolver} from './config';
+import {ResolutionOptions, ResolutionSession} from './resolution-session';
 import {
-  isPromiseLike,
-  getDeepProperty,
   BoundValue,
   ValueOrPromise,
-  resolveUntil,
-  resolveValueOrPromise,
+  getDeepProperty,
+  isPromiseLike,
 } from './value-promise';
-import {ResolutionOptions, ResolutionSession} from './resolution-session';
-
-import {v1 as uuidv1} from 'uuid';
-
-import * as debugModule from 'debug';
 
 const debug = debugModule('loopback:context');
 
@@ -31,6 +28,8 @@ export class Context {
   readonly name: string;
   protected readonly registry: Map<string, Binding> = new Map();
   protected _parent?: Context;
+
+  private configResolver: ConfigurationResolver;
 
   /**
    * Create a new context
@@ -87,9 +86,9 @@ export class Context {
     env: string = '',
   ): Binding<ConfigValueType> {
     const keyForConfig = BindingKey.buildKeyForConfig(key, env);
-    const bindingForConfig = this.bind<ConfigValueType>(keyForConfig).tag(
-      `config:${key}`,
-    );
+    const bindingForConfig = this.bind<ConfigValueType>(keyForConfig).tag({
+      config: key,
+    });
     return bindingForConfig;
   }
 
@@ -118,91 +117,19 @@ export class Context {
     configPath?: string,
     resolutionOptions?: ResolutionOptions,
   ): ValueOrPromise<ConfigValueType | undefined> {
-    const env = resolutionOptions && resolutionOptions.environment;
-    configPath = configPath || '';
-    const configKey = BindingKey.create<ConfigValueType>(
-      BindingKey.buildKeyForConfig(key, env),
+    return this.getConfigResolver().getConfigAsValueOrPromise(
+      key,
       configPath,
+      resolutionOptions,
     );
+  }
 
-    const localConfigOnly =
-      resolutionOptions && resolutionOptions.localConfigOnly;
-
-    /**
-     * Set up possible keys to resolve the config value
-     */
-    key = key.toString();
-    const keys = [];
-    while (true) {
-      const configKeyAndPath = BindingKey.create<ConfigValueType>(
-        BindingKey.buildKeyForConfig(key, env),
-        configPath,
-      );
-      keys.push(configKeyAndPath);
-      if (env) {
-        // The `environment` is set, let's try the non env specific binding too
-        keys.push(
-          BindingKey.create<ConfigValueType>(
-            BindingKey.buildKeyForConfig(key),
-            configPath,
-          ),
-        );
-      }
-      if (!key || localConfigOnly) {
-        // No more keys
-        break;
-      }
-      // Shift last part of the key into the path as we'll try the parent
-      // namespace in the next iteration
-      const index = key.lastIndexOf('.');
-      configPath = configPath
-        ? `${key.substring(index + 1)}.${configPath}`
-        : `${key.substring(index + 1)}`;
-      key = key.substring(0, index);
+  private getConfigResolver() {
+    if (!this.configResolver) {
+      // TODO: Check bound ConfigurationResolver
+      this.configResolver = new DefaultConfigurationResolver(this);
     }
-    /* istanbul ignore if */
-    if (debug.enabled) {
-      debug('Configuration keyWithPaths: %j', keys);
-    }
-
-    const resolveConfig = (keyWithPath: string) => {
-      // Set `optional` to `true` to resolve config locally
-      const options = Object.assign(
-        {}, // Make sure resolutionOptions is copied
-        resolutionOptions,
-        {optional: true}, // Force optional to be true
-      );
-      return this.getValueOrPromise<ConfigValueType>(keyWithPath, options);
-    };
-
-    const evaluateConfig = (keyWithPath: string, val: ConfigValueType) => {
-      /* istanbul ignore if */
-      if (debug.enabled) {
-        debug('Configuration keyWithPath: %s => value: %j', keyWithPath, val);
-      }
-      // Found the corresponding config
-      if (val !== undefined) return true;
-
-      if (localConfigOnly) {
-        return true;
-      }
-      return false;
-    };
-
-    const required = resolutionOptions && resolutionOptions.optional === false;
-    const valueOrPromise = resolveUntil<
-      BindingAddress<ConfigValueType>,
-      ConfigValueType
-    >(keys[Symbol.iterator](), resolveConfig, evaluateConfig);
-    return resolveValueOrPromise<
-      ConfigValueType | undefined,
-      ConfigValueType | undefined
-    >(valueOrPromise, val => {
-      if (val === undefined && required) {
-        throw Error(`Configuration '${configKey}' cannot be resolved`);
-      }
-      return val;
-    });
+    return this.configResolver;
   }
 
   /**
