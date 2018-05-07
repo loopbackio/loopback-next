@@ -8,7 +8,7 @@ import {
   Options,
   WhereBuilder,
 } from '..';
-import {cloneDeep} from 'lodash';
+import {cloneDeep, isArray} from 'lodash';
 
 /**
  * CRUD operations for a target repository of a HasMany relation
@@ -32,8 +32,10 @@ export class DefaultHasManyEntityCrudRepository<
   public constraint: AnyObject = {};
   /**
    * Constructor of DefaultHasManyEntityCrudRepository
-   * @param targetModel the target model class
-   * @param targetId the constraints to scope target repo CRUD methods
+   * @param sourceInstance the source model instance
+   * @param targetRepository the related target model repository instance
+   * @param foreignKeyName the foreign key name to constrain the target repository
+   * instance
    */
   constructor(
     public sourceInstance: S,
@@ -46,7 +48,6 @@ export class DefaultHasManyEntityCrudRepository<
     this.constraint[
       this.foreignKeyName
     ] = sourceInstance.getId() as typeof targetProp;
-    this.targetRepository = this.targetRepository;
   }
   execute(
     command: string | AnyObject,
@@ -63,8 +64,10 @@ export class DefaultHasManyEntityCrudRepository<
    * @returns A promise which resolves to the newly created target model instance
    */
   async create(targetModelData: Partial<T>, options?: Options): Promise<T> {
-    targetModelData = constrainDataObject(targetModelData, this.constraint);
-    return await this.targetRepository.create(targetModelData, options);
+    return await this.targetRepository.create(
+      constrainDataObject(targetModelData, this.constraint) as Partial<T>,
+      options,
+    );
   }
   /**
    * Build a target model instance
@@ -85,9 +88,11 @@ export class DefaultHasManyEntityCrudRepository<
     filter?: Filter | undefined,
     options?: Options,
   ): Promise<T> {
-    // throw new Error('Method not implemented.');
-    filter = constrainFilter(filter, this.constraint);
-    return await this.targetRepository.findById(id, filter);
+    throw new Error(
+      `Method is not supported via HasMany relations. Use ${
+        this.targetRepository.entityClass.name
+      }'s findById CRUD method directly.`,
+    );
   }
   /**
    * Update a related entity by foreign key
@@ -98,7 +103,11 @@ export class DefaultHasManyEntityCrudRepository<
    * Promise<false>
    */
   updateById(id: ID, data: Partial<T>, options?: Options): Promise<boolean> {
-    throw new Error('Method not implemented.');
+    throw new Error(
+      `Method is not supported via HasMany relations. Use ${
+        this.targetRepository.entityClass.name
+      }'s updateById CRUD method directly.`,
+    );
   }
   /**
    * Delete a related entity by id
@@ -108,7 +117,11 @@ export class DefaultHasManyEntityCrudRepository<
    * Promise<false>
    */
   deleteById(id: ID, options?: Options): Promise<boolean> {
-    throw new Error('Method not implemented.');
+    throw new Error(
+      `Method is not supported via HasMany relations. Use ${
+        this.targetRepository.entityClass.name
+      }'s deleteById CRUD method directly.`,
+    );
   }
   /**
    * Check if the related entity exists for the given foreign key
@@ -118,43 +131,82 @@ export class DefaultHasManyEntityCrudRepository<
    * Promise<false>
    */
   exists(id: ID, options?: Options): Promise<boolean> {
-    throw new Error('Method not implemented.');
+    throw new Error(
+      `Method is not supported via HasMany relations. Use ${
+        this.targetRepository.entityClass.name
+      }'s exists CRUD method directly.`,
+    );
   }
 
-  save(entity: DataObject<T>, options?: Options): Promise<T | null> {
-    throw new Error('Method not implemented.');
+  async save(entity: DataObject<T>, options?: Options): Promise<T | null> {
+    return await this.targetRepository.save(
+      constrainDataObject(entity, this.constraint) as T,
+      options,
+    );
   }
-  update(entity: DataObject<T>, options?: Options): Promise<boolean> {
-    throw new Error('Method not implemented.');
+  async update(entity: DataObject<T>, options?: Options): Promise<boolean> {
+    return await this.targetRepository.update(
+      constrainDataObject(entity, this.constraint) as T,
+      options,
+    );
   }
-  delete(entity: DataObject<T>, options?: Options): Promise<boolean> {
-    throw new Error('Method not implemented.');
+  async delete(entity: DataObject<T>, options?: Options): Promise<boolean> {
+    return await this.targetRepository.delete(
+      constrainDataObject(entity, this.constraint) as T,
+      options,
+    );
   }
   replaceById(
     id: ID,
     data: DataObject<T>,
     options?: Options,
   ): Promise<boolean> {
-    throw new Error('Method not implemented.');
+    throw new Error(
+      `Method is not supported via HasMany relations. Use ${
+        this.targetRepository.entityClass.name
+      }'s replaceById CRUD method directly`,
+    );
   }
-  createAll(dataObjects: DataObject<T>[], options?: Options): Promise<T[]> {
-    throw new Error('Method not implemented.');
+  async createAll(
+    dataObjects: DataObject<T>[],
+    options?: Options,
+  ): Promise<T[]> {
+    return await this.targetRepository.createAll(
+      constrainDataObject(dataObjects, this.constraint) as Partial<T>[],
+      options,
+    );
   }
-  find(filter?: Filter | undefined, options?: Options): Promise<T[]> {
-    throw new Error('Method not implemented.');
+  async find(filter?: Filter | undefined, options?: Options): Promise<T[]> {
+    return await this.targetRepository.find(
+      constrainFilter(filter, this.constraint),
+      options,
+    );
   }
-  updateAll(
+  async updateAll(
     dataObject: DataObject<T>,
     where?: Where | undefined,
     options?: Options,
   ): Promise<number> {
-    throw new Error('Method not implemented.');
+    return await this.targetRepository.updateAll(
+      constrainDataObject(dataObject, this.constraint) as Partial<T>,
+      where,
+      options,
+    );
   }
-  deleteAll(where?: Where | undefined, options?: Options): Promise<number> {
-    throw new Error('Method not implemented.');
+  async deleteAll(
+    where?: Where | undefined,
+    options?: Options,
+  ): Promise<number> {
+    return await this.targetRepository.deleteAll(
+      constrainWhere(where, this.constraint),
+      options,
+    );
   }
-  count(where?: Where | undefined, options?: Options): Promise<number> {
-    throw new Error('Method not implemented.');
+  async count(where?: Where | undefined, options?: Options): Promise<number> {
+    return await this.targetRepository.count(
+      constrainWhere(where, this.constraint),
+      options,
+    );
   }
 }
 
@@ -189,23 +241,67 @@ export function constrainFilter(
 }
 
 /**
+ * A utility function which takes a filter and enforces constraint(s)
+ * on it
+ * @param originalFilter the filter to apply the constrain(s) to
+ * @param constraint the constraint which is to be applied on the filter
+ * @returns Filter the modified filter with the constraint, otherwise
+ * the original filter
+ */
+export function constrainWhere(
+  originalWhere: Where | undefined,
+  constraint: AnyObject,
+): Where {
+  let constrainedWhere = new WhereBuilder();
+  for (const c in constraint) {
+    constrainedWhere.eq(c, constraint[c]);
+  }
+  if (originalWhere) {
+    constrainedWhere.where = constrainedWhere.and(originalWhere).where;
+  }
+  return constrainedWhere.where;
+}
+
+function constrainDataObject<T extends Entity>(
+  originalData: DataObject<T>,
+  constraint: AnyObject,
+): DataObject<T>;
+
+function constrainDataObject<T extends Entity>(
+  originalData: DataObject<T>[],
+  constraint: AnyObject,
+): DataObject<T>[];
+/**
  * A utility function which takes a model instance data and enforces constraint(s)
  * on it
  * @param originalData the model data to apply the constrain(s) to
  * @param constraint the constraint which is to be applied on the filter
- * @returns DataObject<Target> the modified data with the constraint, otherwise
+ * @returns the modified data with the constraint, otherwise
  * the original instance data
  */
-export function constrainDataObject<Target extends Entity>(
-  originalData: Partial<Target>,
-  constraint: AnyObject,
-): Partial<Target> {
+// tslint:disable-next-line:no-any
+function constrainDataObject(originalData: any, constraint: any): any {
   let constrainedData = cloneDeep(originalData);
-  for (const c in constraint) {
-    if (constrainedData[c]) {
-      console.warn('Overwriting %s with %s', constrainedData[c], constraint[c]);
+  if (typeof originalData === 'object') {
+    addConstraintToDataObject(constraint, constrainedData);
+  } else if (isArray(originalData)) {
+    for (const data in originalData) {
+      addConstraintToDataObject(constraint, constrainedData);
     }
-    constrainedData[c] = constraint[c];
   }
   return constrainedData;
+
+  // tslint:disable-next-line:no-any
+  function addConstraintToDataObject(constrainObject: any, modelData: any) {
+    for (const c in constraint) {
+      if (constrainedData[c]) {
+        console.warn(
+          'Overwriting %s with %s',
+          constrainedData[c],
+          constraint[c],
+        );
+      }
+      constrainedData[c] = constraint[c];
+    }
+  }
 }
