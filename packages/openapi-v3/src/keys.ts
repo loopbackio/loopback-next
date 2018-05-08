@@ -9,7 +9,7 @@ import {ParameterObject, RequestBodyObject} from '@loopback/openapi-v3-types';
 
 export namespace OAI3Keys {
   /**
-   * Binding key used to set or retrieve `@operation` metadata.
+   * Metadata key used to set or retrieve `@operation` metadata.
    */
   export const METHODS_KEY = MetadataAccessor.create<
     Partial<RestEndpoint>,
@@ -17,7 +17,7 @@ export namespace OAI3Keys {
   >('openapi-v3:methods');
 
   /**
-   * Binding key used to set or retrieve `param` decorator metadata
+   * Metadata key used to set or retrieve `param` decorator metadata
    */
   export const PARAMETERS_KEY = MetadataAccessor.create<
     ParameterObject,
@@ -25,7 +25,7 @@ export namespace OAI3Keys {
   >('openapi-v3:parameters');
 
   /**
-   * Binding key used to set or retrieve `@api` metadata
+   * Metadata key used to set or retrieve `@api` metadata
    */
   export const CLASS_KEY = MetadataAccessor.create<
     ControllerSpec,
@@ -33,7 +33,7 @@ export namespace OAI3Keys {
   >('openapi-v3:class');
 
   /**
-   * Binding key used to set or retrieve a controller spec
+   * Metadata key used to set or retrieve a controller spec
    */
   export const CONTROLLER_SPEC_KEY = MetadataAccessor.create<
     ControllerSpec,
@@ -41,7 +41,7 @@ export namespace OAI3Keys {
   >('openapi-v3:controller-spec');
 
   /**
-   * Binding key used to set or retrieve `@requestBody` metadata
+   * Metadata key used to set or retrieve `@requestBody` metadata
    */
   export const REQUEST_BODY_KEY = MetadataAccessor.create<
     RequestBodyObject,
