@@ -19,6 +19,7 @@ packages/openapi-v3-types/* @bajtos @jannyHou
 packages/repository/* @raymondfeng
 packages/repository-json-schema/* @shimks
 packages/rest/* @bajtos @raymondfeng
+packages/service-proxy/* @raymondfeng
 packages/testlab/* @bajtos
 examples/todo/* @bajtos @virkt25
 examples/hello-world/* @b-admike
