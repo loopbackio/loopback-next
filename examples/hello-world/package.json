@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-hello-world",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "A simple hello-world Application using LoopBack 4",
   "main": "index.js",
   "engines": {
@@ -26,12 +26,12 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/core": "^0.8.0",
-    "@loopback/dist-util": "^0.3.0",
-    "@loopback/rest": "^0.10.0"
+    "@loopback/core": "^0.8.1",
+    "@loopback/dist-util": "^0.3.1",
+    "@loopback/rest": "^0.10.1"
   },
   "devDependencies": {
-    "@loopback/build": "^0.6.2",
+    "@loopback/build": "^0.6.3",
     "@types/node": "^8.10.4"
   },
   "keywords": [
