@@ -13,7 +13,7 @@ import {
   Send,
   Reject,
   ParseParams,
-} from './internal-types';
+} from './types';
 import {RestBindings} from './keys';
 
 const SequenceActions = RestBindings.SequenceActions;

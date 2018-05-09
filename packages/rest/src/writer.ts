@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ServerResponse as Response} from 'http';
-import {OperationRetval} from './internal-types';
+import {OperationRetval} from './types';
 import {HttpError} from 'http-errors';
 import {Readable} from 'stream';
 

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context, inject, Provider} from '@loopback/context';
-import {InvokeMethod, OperationArgs, OperationRetval} from '../internal-types';
+import {InvokeMethod, OperationArgs, OperationRetval} from '../types';
 import {RestBindings} from '../keys';
 import {RouteEntry} from '../router/routing-table';
 

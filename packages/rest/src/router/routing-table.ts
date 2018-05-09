@@ -24,7 +24,7 @@ import {
   PathParameterValues,
   OperationArgs,
   OperationRetval,
-} from '../internal-types';
+} from '../types';
 
 import {ControllerSpec} from '@loopback/openapi-v3';
 

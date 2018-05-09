@@ -20,7 +20,7 @@ import {
   ParseParams,
   Reject,
   Send,
-} from './internal-types';
+} from './types';
 
 // NOTE(bajtos) The following import is required to satisfy TypeScript compiler
 // tslint:disable-next-line:no-unused-variable

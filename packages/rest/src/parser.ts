@@ -12,11 +12,7 @@ import {
 } from '@loopback/openapi-v3-types';
 import {REQUEST_BODY_INDEX} from '@loopback/openapi-v3';
 import {promisify} from 'util';
-import {
-  OperationArgs,
-  ParsedRequest,
-  PathParameterValues,
-} from './internal-types';
+import {OperationArgs, ParsedRequest, PathParameterValues} from './types';
 import {ResolvedRoute} from './router/routing-table';
 type HttpError = HttpErrors.HttpError;
 

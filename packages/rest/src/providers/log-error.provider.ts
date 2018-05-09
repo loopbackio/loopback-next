@@ -5,7 +5,7 @@
 
 import {Provider} from '@loopback/context';
 import {ServerRequest} from 'http';
-import {LogError} from '../internal-types';
+import {LogError} from '../types';
 
 export class LogErrorProvider implements Provider<LogError> {
   value(): LogError {
