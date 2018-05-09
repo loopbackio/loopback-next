@@ -3,7 +3,7 @@
     "index.ts",
     "src/http-handler.ts",
     "src/index.ts",
-    "src/internal-types.ts",
+    "src/types.ts",
     "src/keys.ts",
     "src/parser.ts",
     "src/rest.application.ts",

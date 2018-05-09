@@ -17,7 +17,7 @@ import {
   ControllerClass,
   ControllerFactory,
 } from './router/routing-table';
-import {ParsedRequest} from './internal-types';
+import {ParsedRequest} from './types';
 
 import {RestBindings} from './keys';
 

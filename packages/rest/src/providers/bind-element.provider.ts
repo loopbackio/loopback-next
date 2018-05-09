@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context, inject, Provider, Binding} from '@loopback/context';
-import {BindElement} from '../internal-types';
+import {BindElement} from '../types';
 import {RestBindings} from '../keys';
 
 export class BindElementProvider implements Provider<BindElement> {

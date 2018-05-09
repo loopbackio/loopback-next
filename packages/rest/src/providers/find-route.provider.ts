@@ -4,10 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context, inject, Provider} from '@loopback/context';
-import {FindRoute} from '../internal-types';
+import {FindRoute, ParsedRequest} from '../types';
 import {HttpHandler} from '../http-handler';
 import {RestBindings} from '../keys';
-import {ParsedRequest} from '../internal-types';
 import {ResolvedRoute} from '../router/routing-table';
 
 export class FindRouteProvider implements Provider<FindRoute> {

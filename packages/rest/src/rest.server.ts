@@ -15,7 +15,7 @@ import {
   ControllerInstance,
   createControllerFactoryForBinding,
 } from './router/routing-table';
-import {ParsedRequest} from './internal-types';
+import {ParsedRequest} from './types';
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
 import {ServerRequest, ServerResponse, createServer} from 'http';
 import * as Http from 'http';
@@ -24,13 +24,7 @@ import {Application, CoreBindings, Server} from '@loopback/core';
 import {getControllerSpec} from '@loopback/openapi-v3';
 import {HttpHandler} from './http-handler';
 import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
-import {
-  FindRoute,
-  InvokeMethod,
-  Send,
-  Reject,
-  ParseParams,
-} from './internal-types';
+import {FindRoute, InvokeMethod, Send, Reject, ParseParams} from './types';
 import {RestBindings} from './keys';
 
 export type HttpRequestListener = (

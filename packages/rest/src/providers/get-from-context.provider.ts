@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context, inject, Provider, BoundValue} from '@loopback/context';
-import {GetFromContext} from '../internal-types';
+import {GetFromContext} from '../types';
 import {RestBindings} from '../keys';
 
 export class GetFromContextProvider implements Provider<GetFromContext> {
