@@ -16,58 +16,28 @@ import {
   instantiateClass,
   ValueOrPromise,
 } from '@loopback/context';
-import {ServerRequest} from 'http';
 import * as HttpErrors from 'http-errors';
 
 import {
-  ParsedRequest,
+  Request,
   PathParameterValues,
   OperationArgs,
   OperationRetval,
 } from '../internal-types';
 
-import {ControllerSpec} from '@loopback/openapi-v3';
+import { ControllerSpec } from '@loopback/openapi-v3';
 
 import * as assert from 'assert';
-import * as url from 'url';
 const debug = require('debug')('loopback:core:routing-table');
 
 // TODO(bajtos) Refactor this code to use Trie-based lookup,
 // e.g. via wayfarer/trie or find-my-way
 // See https://github.com/strongloop/loopback-next/issues/98
 import * as pathToRegexp from 'path-to-regexp';
-import {CoreBindings} from '@loopback/core';
+import { CoreBindings } from '@loopback/core';
 
-/**
- * Parse the URL of the incoming request and set additional properties
- * on this request object:
- *  - `path`
- *  - `query`
- *
- * @private
- * @param request
- */
-export function parseRequestUrl(request: ServerRequest): ParsedRequest {
-  // TODO(bajtos) The following parsing can be skipped when the router
-  // is mounted on an express app
-  const parsedRequest = request as ParsedRequest;
-  const parsedUrl = url.parse(parsedRequest.url, true);
-  parsedRequest.path = parsedUrl.pathname || '/';
-  // parsedUrl.query cannot be a string as it is parsed with
-  // parseQueryString = true
-  if (parsedUrl.query != null && typeof parsedUrl.query !== 'string') {
-    parsedRequest.query = parsedUrl.query;
-  } else {
-    parsedRequest.query = {};
-  }
-  return parsedRequest;
-}
-
-/**
- * A controller instance with open properties/methods
- */
 // tslint:disable-next-line:no-any
-export type ControllerInstance = {[name: string]: any} & object;
+export type ControllerInstance = { [name: string]: any } & object;
 
 /**
  * A factory function to create controller instances synchronously or
@@ -172,7 +142,7 @@ export class RoutingTable {
    * Map a request to a route
    * @param request
    */
-  find(request: ParsedRequest): ResolvedRoute {
+  find(request: Request): ResolvedRoute {
     for (const entry of this._routes) {
       const match = entry.match(request);
       if (match) return match;
@@ -205,7 +175,7 @@ export interface RouteEntry {
    * Map an http request to a route
    * @param request
    */
-  match(request: ParsedRequest): ResolvedRoute | undefined;
+  match(request: Request): ResolvedRoute | undefined;
 
   /**
    * Update bindings for the request context
@@ -263,7 +233,7 @@ export abstract class BaseRoute implements RouteEntry {
     });
   }
 
-  match(request: ParsedRequest): ResolvedRoute | undefined {
+  match(request: Request): ResolvedRoute | undefined {
     debug('trying endpoint', this);
     if (this.verb !== request.method!.toLowerCase()) {
       debug(' -> verb mismatch');
@@ -374,9 +344,9 @@ export class ControllerRoute<T> extends BaseRoute {
     if (!methodName) {
       throw new Error(
         'methodName must be provided either via the ControllerRoute argument ' +
-          'or via "x-operation-name" extension field in OpenAPI spec. ' +
-          `Operation: "${verb} ${path}" ` +
-          `Controller: ${controllerName}.`,
+        'or via "x-operation-name" extension field in OpenAPI spec. ' +
+        `Operation: "${verb} ${path}" ` +
+        `Controller: ${controllerName}.`,
       );
     }
 

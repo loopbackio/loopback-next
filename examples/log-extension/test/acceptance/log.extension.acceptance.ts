@@ -12,10 +12,9 @@ import {
   InvokeMethod,
   Send,
   Reject,
-  ParsedRequest,
-  ServerResponse,
+  HttpContext,
 } from '@loopback/rest';
-import {get, param} from '@loopback/openapi-v3';
+import { get, param } from '@loopback/openapi-v3';
 import {
   LogMixin,
   LOG_LEVEL,
@@ -31,19 +30,19 @@ import {
   createClientForHandler,
   expect,
 } from '@loopback/testlab';
-import {Context, inject} from '@loopback/context';
+import { Context, inject } from '@loopback/context';
 import chalk from 'chalk';
 
 const SequenceActions = RestBindings.SequenceActions;
 
-import {createLogSpy, restoreLogSpy} from '../log-spy';
-import {logToMemory, resetLogs} from '../in-memory-logger';
+import { createLogSpy, restoreLogSpy } from '../log-spy';
+import { logToMemory, resetLogs } from '../in-memory-logger';
 
 describe('log extension acceptance test', () => {
   let app: LogApp;
   let spy: SinonSpy;
 
-  class LogApp extends LogMixin(RestApplication) {}
+  class LogApp extends LogMixin(RestApplication) { }
 
   const debugMatch: string = chalk.white(
     'DEBUG: /debug :: MyController.debug() => debug called',
@@ -73,7 +72,7 @@ describe('log extension acceptance test', () => {
 
   it('logs information at DEBUG or higher', async () => {
     setAppLogToDebug();
-    const client: Client = createClientForHandler(app.requestHandler);
+    const client: Client = createClientForHandler(app.requestListener);
 
     await client.get('/nolog').expect(200, 'nolog called');
     expect(spy.called).to.be.False();
@@ -99,7 +98,7 @@ describe('log extension acceptance test', () => {
 
   it('logs information at INFO or higher', async () => {
     setAppLogToInfo();
-    const client: Client = createClientForHandler(app.requestHandler);
+    const client: Client = createClientForHandler(app.requestListener);
 
     await client.get('/nolog').expect(200, 'nolog called');
     expect(spy.called).to.be.False();
@@ -125,7 +124,7 @@ describe('log extension acceptance test', () => {
 
   it('logs information at WARN or higher', async () => {
     setAppLogToWarn();
-    const client: Client = createClientForHandler(app.requestHandler);
+    const client: Client = createClientForHandler(app.requestListener);
 
     await client.get('/nolog').expect(200, 'nolog called');
     expect(spy.called).to.be.False();
@@ -151,7 +150,7 @@ describe('log extension acceptance test', () => {
 
   it('logs information at ERROR', async () => {
     setAppLogToError();
-    const client: Client = createClientForHandler(app.requestHandler);
+    const client: Client = createClientForHandler(app.requestListener);
 
     await client.get('/nolog').expect(200, 'nolog called');
     expect(spy.called).to.be.False();
@@ -177,7 +176,7 @@ describe('log extension acceptance test', () => {
 
   it('logs no information when logLevel is set to OFF', async () => {
     setAppLogToOff();
-    const client: Client = createClientForHandler(app.requestHandler);
+    const client: Client = createClientForHandler(app.requestListener);
 
     await client.get('/nolog').expect(200, 'nolog called');
     expect(spy.called).to.be.False();
@@ -212,9 +211,9 @@ describe('log extension acceptance test', () => {
         @inject(SequenceActions.SEND) protected send: Send,
         @inject(SequenceActions.REJECT) protected reject: Reject,
         @inject(EXAMPLE_LOG_BINDINGS.LOG_ACTION) protected logger: LogFn,
-      ) {}
+      ) { }
 
-      async handle(req: ParsedRequest, res: ServerResponse) {
+      async handle({ request: req, response: res }: HttpContext) {
         // tslint:disable-next-line:no-any
         let args: any = [];
         // tslint:disable-next-line:no-any

@@ -5,14 +5,14 @@
 
 // Types and interfaces exposed by the extension go here
 
-import {ParsedRequest, OperationArgs} from '@loopback/rest';
+import { Request, OperationArgs } from '@loopback/rest';
 
 /**
  * A function to perform REST req/res logging action
  */
 export interface LogFn {
   (
-    req: ParsedRequest,
+    req: Request,
     args: OperationArgs,
     // tslint:disable-next-line:no-any
     result: any,
@@ -25,7 +25,7 @@ export interface LogFn {
 /**
  * Log level metadata
  */
-export type LevelMetadata = {level: number};
+export type LevelMetadata = { level: number };
 
 /**
  * High resolution time as [seconds, nanoseconds]. Used by process.hrtime().

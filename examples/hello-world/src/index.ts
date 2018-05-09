@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {HelloWorldApplication} from './application';
+import { HelloWorldApplication } from './application';
 
 export async function main() {
   const app = new HelloWorldApplication();

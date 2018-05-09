@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {sinon} from '@loopback/testlab';
-import {ParsedRequest} from '@loopback/rest';
+import { sinon } from '@loopback/testlab';
+import { Request } from '@loopback/rest';
 import {
   LogActionProvider,
   LogFn,
@@ -15,13 +15,13 @@ import {
 } from '../../..';
 import chalk from 'chalk';
 
-import {createLogSpy, restoreLogSpy, createConsoleStub} from '../../log-spy';
-import {logToMemory} from '../../in-memory-logger';
+import { createLogSpy, restoreLogSpy, createConsoleStub } from '../../log-spy';
+import { logToMemory } from '../../in-memory-logger';
 
 describe('LogActionProvider with in-memory logger', () => {
   let spy: sinon.SinonSpy;
   let logger: LogFn;
-  const req = <ParsedRequest>{url: '/test'};
+  const req = <Request>{ url: '/test' };
 
   beforeEach(() => {
     spy = createLogSpy();
@@ -60,7 +60,7 @@ describe('LogActionProvider with in-memory logger', () => {
 describe('LogActionProvider with default logger', () => {
   let stub: sinon.SinonSpy;
   let logger: LogFn;
-  const req = <ParsedRequest>{url: '/test'};
+  const req = <Request>{ url: '/test' };
 
   beforeEach(() => {
     stub = createConsoleStub();
@@ -99,7 +99,7 @@ describe('LogActionProvider with default logger', () => {
 async function getLogger(logWriter?: LogWriterFn) {
   class TestClass {
     @log(LOG_LEVEL.ERROR)
-    test() {}
+    test() { }
   }
 
   const provider = new LogActionProvider(

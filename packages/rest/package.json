@@ -25,9 +25,11 @@
   "dependencies": {
     "@loopback/context": "^0.10.1",
     "@loopback/core": "^0.8.1",
+    "@loopback/http-server-express": "^0.2.0",
     "@loopback/openapi-v3": "^0.10.1",
     "@loopback/openapi-v3-types": "^0.7.1",
     "@types/cors": "^2.8.3",
+    "@types/express": "^4.11.1",
     "@types/http-errors": "^1.6.1",
     "body": "^5.1.0",
     "cors": "^2.8.4",

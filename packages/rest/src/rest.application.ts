@@ -3,19 +3,20 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, ApplicationConfig, Server} from '@loopback/core';
-import {RestComponent} from './rest.component';
-import {SequenceHandler, SequenceFunction} from './sequence';
-import {Binding, Constructor} from '@loopback/context';
-import {format} from 'util';
-import {RestBindings} from './keys';
-import {RestServer, HttpRequestListener, HttpServerLike} from './rest.server';
+import { Application, ApplicationConfig, Server } from '@loopback/core';
+import { RestComponent } from './rest.component';
+import { SequenceHandler, SequenceFunction } from './sequence';
+import { Binding, Constructor } from '@loopback/context';
+import { format } from 'util';
+import { RestBindings } from './keys';
+import { RestServer } from './rest.server';
 import {
   RouteEntry,
   ControllerClass,
   ControllerFactory,
 } from './router/routing-table';
-import {OperationObject, OpenApiSpec} from '@loopback/openapi-v3-types';
+import { OperationObject, OpenApiSpec } from '@loopback/openapi-v3-types';
+import { HttpRequestListener, HttpServerLike } from './http-server';
 
 export const ERR_NO_MULTI_SERVER = format(
   'RestApplication does not support multiple servers!',
@@ -59,8 +60,8 @@ export class RestApplication extends Application implements HttpServerLike {
    * @param req The request.
    * @param res The response.
    */
-  get requestHandler(): HttpRequestListener {
-    return this.restServer.requestHandler;
+  get requestListener(): HttpRequestListener {
+    return this.restServer.requestListener;
   }
 
   constructor(config?: ApplicationConfig) {

@@ -3,12 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {createClientForHandler, expect, supertest} from '@loopback/testlab';
-import {RestServer} from '@loopback/rest';
-import {TodoListApplication} from '../../src/application';
-import {TodoRepository} from '../../src/repositories/';
-import {givenTodo} from '../helpers';
-import {Todo} from '../../src/models/';
+import { createClientForHandler, expect, supertest } from '@loopback/testlab';
+import { RestServer } from '@loopback/rest';
+import { TodoListApplication } from '../../src/application';
+import { TodoRepository } from '../../src/repositories/';
+import { givenTodo } from '../helpers';
+import { Todo } from '../../src/models/';
 
 describe('Application', () => {
   let app: TodoListApplication;
@@ -24,7 +24,7 @@ describe('Application', () => {
   before(givenARestServer);
   before(givenTodoRepository);
   before(() => {
-    client = createClientForHandler(server.requestHandler);
+    client = createClientForHandler(server.requestListener);
   });
   after(async () => {
     await app.stop();

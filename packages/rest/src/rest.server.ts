@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {AssertionError} from 'assert';
-import {safeDump} from 'js-yaml';
-import {Binding, Context, Constructor, inject} from '@loopback/context';
+import { AssertionError } from 'assert';
+import { safeDump } from 'js-yaml';
+import { Binding, Context, Constructor, inject } from '@loopback/context';
 import {
   Route,
   ControllerRoute,
@@ -15,15 +15,15 @@ import {
   ControllerInstance,
   createControllerFactoryForBinding,
 } from './router/routing-table';
-import {ParsedRequest} from './internal-types';
-import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
-import {ServerRequest, ServerResponse, createServer} from 'http';
-import * as Http from 'http';
+import { OpenApiSpec, OperationObject } from '@loopback/openapi-v3-types';
 import * as cors from 'cors';
-import {Application, CoreBindings, Server} from '@loopback/core';
-import {getControllerSpec} from '@loopback/openapi-v3';
-import {HttpHandler} from './http-handler';
-import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
+// tslint:disable-next-line:no-unused-variable
+import { IncomingMessage, ServerResponse } from 'http';
+import { ServerOptions } from 'https';
+import { Application, CoreBindings, Server } from '@loopback/core';
+import { getControllerSpec } from '@loopback/openapi-v3';
+import { RestHttpHandler } from './http-handler';
+import { DefaultSequence, SequenceHandler, SequenceFunction } from './sequence';
 import {
   FindRoute,
   InvokeMethod,
@@ -31,16 +31,16 @@ import {
   Reject,
   ParseParams,
 } from './internal-types';
-import {RestBindings} from './keys';
-
-export type HttpRequestListener = (
-  req: ServerRequest,
-  res: ServerResponse,
-) => void;
-
-export interface HttpServerLike {
-  requestHandler: HttpRequestListener;
-}
+import { RestBindings } from './keys';
+import {
+  HTTP_FACTORY,
+  Request,
+  Response,
+  HttpContext,
+  HttpHandler,
+  HttpServerLike,
+  HttpEndpoint,
+} from './http-server';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -61,9 +61,9 @@ interface OpenApiSpecOptions {
   format?: string;
 }
 
-const OPENAPI_SPEC_MAPPING: {[key: string]: OpenApiSpecOptions} = {
-  '/openapi.json': {version: '3.0.0', format: 'json'},
-  '/openapi.yaml': {version: '3.0.0', format: 'yaml'},
+const OPENAPI_SPEC_MAPPING: { [key: string]: OpenApiSpecOptions } = {
+  '/openapi.json': { version: '3.0.0', format: 'json' },
+  '/openapi.yaml': { version: '3.0.0', format: 'yaml' },
 };
 
 /**
@@ -113,17 +113,16 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * httpServer.listen(3000);
    * ```
    *
-   * @param req The request.
-   * @param res The response.
+   * @param httpCtx HTTP context
    */
-  public requestHandler: HttpRequestListener;
-
-  protected _httpHandler: HttpHandler;
-  protected get httpHandler(): HttpHandler {
+  public httpHandler: HttpHandler;
+  public readonly options: RestServerConfig;
+  public endpoint: HttpEndpoint;
+  protected _restHttpHandler: RestHttpHandler;
+  protected get restHttpHandler(): RestHttpHandler {
     this._setupHandlerIfNeeded();
-    return this._httpHandler;
+    return this._restHttpHandler;
   }
-  protected _httpServer: Http.Server;
 
   /**
    * @memberof RestServer
@@ -142,6 +141,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     super(app);
 
     options = options || {};
+    this.options = options;
 
     // Can't check falsiness, 0 is a valid port.
     if (options.port == null) {
@@ -158,24 +158,23 @@ export class RestServer extends Context implements Server, HttpServerLike {
       this.sequence(options.sequence);
     }
 
-    this.requestHandler = (req: ServerRequest, res: ServerResponse) => {
+    this.httpHandler = async (httpCtx: HttpContext) => {
       try {
-        this._handleHttpRequest(req, res, options!).catch(err =>
-          this._onUnhandledError(req, res, err),
-        );
+        await this._handleHttpRequest(httpCtx, options!);
       } catch (err) {
-        this._onUnhandledError(req, res, err);
+        this._onUnhandledError(httpCtx, err);
       }
     };
 
-    this.bind(RestBindings.HANDLER).toDynamicValue(() => this.httpHandler);
+    this.bind(RestBindings.HANDLER).toDynamicValue(() => this.restHttpHandler);
   }
 
   protected _handleHttpRequest(
-    request: ServerRequest,
-    response: ServerResponse,
+    httpCtx: HttpContext,
     options: RestServerConfig,
   ) {
+    const request = httpCtx.request;
+    const response = httpCtx.response;
     // allow CORS support for all endpoints so that users
     // can test with online SwaggerUI instance
 
@@ -192,7 +191,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     // at https://github.com/expressjs/cors/blob/master/lib/index.js only uses
     // http.ServerRequest/ServerResponse
     // tslint:disable-next-line:no-any
-    cors(corsOptions)(request as any, response as any, () => {});
+    cors(corsOptions)(request as any, response as any, () => { });
     if (request.method === 'OPTIONS') {
       return Promise.resolve();
     }
@@ -217,9 +216,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
       request.url &&
       request.url === '/swagger-ui'
     ) {
-      return this._redirectToSwaggerUI(request, response, options);
+      return this._redirectToSwaggerUI(httpCtx, options);
     }
-    return this.httpHandler.handleRequest(request, response);
+    return this.restHttpHandler.handleRequest(httpCtx);
   }
 
   protected _setupHandlerIfNeeded() {
@@ -227,9 +226,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
     // after the app started. The idea is to rebuild the HttpHandler
     // instance whenever a controller was added/deleted.
     // See https://github.com/strongloop/loopback-next/issues/433
-    if (this._httpHandler) return;
+    if (this._restHttpHandler) return;
 
-    this._httpHandler = new HttpHandler(this);
+    this._restHttpHandler = new RestHttpHandler(this);
     for (const b of this.find('controllers.*')) {
       const controllerName = b.key.replace(/^controllers\./, '');
       const ctor = b.valueConstructor;
@@ -244,16 +243,22 @@ export class RestServer extends Context implements Server, HttpServerLike {
         continue;
       }
       if (apiSpec.components && apiSpec.components.schemas) {
-        this._httpHandler.registerApiDefinitions(apiSpec.components.schemas);
+        this._restHttpHandler.registerApiDefinitions(
+          apiSpec.components.schemas,
+        );
       }
       const controllerFactory = createControllerFactoryForBinding(b.key);
-      this._httpHandler.registerController(apiSpec, ctor, controllerFactory);
+      this._restHttpHandler.registerController(
+        apiSpec,
+        ctor,
+        controllerFactory,
+      );
     }
 
     for (const b of this.find('routes.*')) {
       // TODO(bajtos) should we support routes defined asynchronously?
       const route = this.getSync<RouteEntry>(b.key);
-      this._httpHandler.registerRoute(route);
+      this._restHttpHandler.registerRoute(route);
     }
 
     // TODO(bajtos) should we support API spec defined asynchronously?
@@ -276,7 +281,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
       delete spec['x-operation'];
 
       const route = new Route(verb, path, spec, handler);
-      this._httpHandler.registerRoute(route);
+      this._restHttpHandler.registerRoute(route);
       return;
     }
 
@@ -304,7 +309,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
         ctor,
         controllerFactory,
       );
-      this._httpHandler.registerRoute(route);
+      this._restHttpHandler.registerRoute(route);
       return;
     }
 
@@ -314,11 +319,11 @@ export class RestServer extends Context implements Server, HttpServerLike {
   }
 
   private async _serveOpenApiSpec(
-    request: ServerRequest,
-    response: ServerResponse,
+    request: Request,
+    response: Response,
     options?: OpenApiSpecOptions,
   ) {
-    options = options || {version: '3.0.0', format: 'json'};
+    options = options || { version: '3.0.0', format: 'json' };
     let specObj = this.getApiSpec();
     if (options.format === 'json') {
       const spec = JSON.stringify(specObj, null, 2);
@@ -332,8 +337,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
   }
 
   private async _redirectToSwaggerUI(
-    request: ServerRequest,
-    response: ServerResponse,
+    { request, response }: HttpContext,
     options: RestServerConfig,
   ) {
     response.statusCode = 308;
@@ -492,11 +496,11 @@ export class RestServer extends Context implements Server, HttpServerLike {
    */
   getApiSpec(): OpenApiSpec {
     const spec = this.getSync<OpenApiSpec>(RestBindings.API_SPEC);
-    const defs = this.httpHandler.getApiDefinitions();
+    const defs = this.restHttpHandler.getApiDefinitions();
 
     // Apply deep clone to prevent getApiSpec() callers from
     // accidentally modifying our internal routing data
-    spec.paths = cloneDeep(this.httpHandler.describeApiPaths());
+    spec.paths = cloneDeep(this.restHttpHandler.describeApiPaths());
     if (defs) {
       spec.components = spec.components || {};
       spec.components.schemas = cloneDeep(defs);
@@ -513,7 +517,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    *     @inject('send) public send: Send)) {
    *   }
    *
-   *   public async handle(request: ParsedRequest, response: ServerResponse) {
+   *   public async handle(request: Request, response: Response) {
    *     send(response, 'hello world');
    *   }
    * }
@@ -552,11 +556,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
         super(ctx, findRoute, parseParams, invoke, send, reject);
       }
 
-      async handle(
-        request: ParsedRequest,
-        response: ServerResponse,
-      ): Promise<void> {
-        await Promise.resolve(handlerFn(this, request, response));
+      async handle(httpCtx: HttpContext): Promise<void> {
+        await Promise.resolve(handlerFn(this, httpCtx));
       }
     }
 
@@ -570,26 +571,30 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * @memberof RestServer
    */
   async start(): Promise<void> {
-    // Setup the HTTP handler so that we can verify the configuration
-    // of API spec, controllers and routes at startup time.
-    this._setupHandlerIfNeeded();
-
     const httpPort = await this.get<number>(RestBindings.PORT);
     const httpHost = await this.get<string | undefined>(RestBindings.HOST);
-    this._httpServer = createServer(this.requestHandler);
-    const httpServer = this._httpServer;
+    if (httpHost != null) {
+      this.options.host = httpHost;
+    }
+    if (httpPort != null) {
+      this.options.port = httpPort;
+    }
+    // Setup the HTTP handler so that we can verify the configuration
+    // of API spec, controllers and routes at startup time.
+    this._setup();
+    const url = await this.endpoint.start();
+    this.bind(RestBindings.HOST).to(this.endpoint.host);
+    this.bind(RestBindings.PORT).to(this.endpoint.port);
+    this.bind(RestBindings.URL).to(url);
+  }
 
-    // TODO(bajtos) support httpHostname too
-    // See https://github.com/strongloop/loopback-next/issues/434
-    httpServer.listen(httpPort, httpHost);
+  private _setup() {
+    if (this.endpoint) return;
+    this._setupHandlerIfNeeded();
 
-    return new Promise<void>((resolve, reject) => {
-      httpServer.once('listening', () => {
-        this.bind(RestBindings.PORT).to(httpServer.address().port);
-        resolve();
-      });
-      httpServer.once('error', reject);
-    });
+    this.endpoint = HTTP_FACTORY.createEndpoint(this.options, httpCtx =>
+      this.httpHandler(httpCtx),
+    );
   }
 
   /**
@@ -600,26 +605,18 @@ export class RestServer extends Context implements Server, HttpServerLike {
    */
   async stop() {
     // Kill the server instance.
-    const server = this._httpServer;
-    return new Promise<void>((resolve, reject) => {
-      server.close((err: Error) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
+    await (this.endpoint && this.endpoint.stop());
   }
 
-  protected _onUnhandledError(
-    req: ServerRequest,
-    res: ServerResponse,
-    err: Error,
-  ) {
-    if (!res.headersSent) {
-      res.statusCode = 500;
-      res.end();
+  get requestListener() {
+    this._setup();
+    return this.endpoint && this.endpoint.requestListener;
+  }
+
+  protected _onUnhandledError({ response }: HttpContext, err: Error) {
+    if (!response.headersSent) {
+      response.statusCode = 500;
+      response.end();
     }
 
     // It's the responsibility of the Sequence to handle any errors.
@@ -638,6 +635,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
  * @interface RestServerConfig
  */
 export interface RestServerConfig {
+  protocol?: 'http' | 'https';
+  httpsServerOptions?: ServerOptions;
   host?: string;
   port?: number;
   cors?: cors.CorsOptions;

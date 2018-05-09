@@ -3,20 +3,19 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ServerResponse} from 'http';
-import {CoreBindings} from '@loopback/core';
-import {BindingKey, Context} from '@loopback/context';
-import {OpenApiSpec} from '@loopback/openapi-v3-types';
-
-import {HttpHandler} from './http-handler';
-import {SequenceHandler} from './sequence';
+import { CoreBindings } from '@loopback/core';
+import { BindingKey, Context } from '@loopback/context';
+import { OpenApiSpec } from '@loopback/openapi-v3-types';
+import { RestHttpHandler } from './http-handler';
+import { SequenceHandler } from './sequence';
 import {
   BindElement,
   FindRoute,
   GetFromContext,
   InvokeMethod,
   LogError,
-  ParsedRequest,
+  Request,
+  Response,
   ParseParams,
   Reject,
   Send,
@@ -24,7 +23,7 @@ import {
 
 // NOTE(bajtos) The following import is required to satisfy TypeScript compiler
 // tslint:disable-next-line:no-unused-variable
-import {OpenAPIObject} from '@loopback/openapi-v3-types';
+import { OpenAPIObject } from '@loopback/openapi-v3-types';
 
 /**
  * RestServer-specific bindings
@@ -41,11 +40,15 @@ export namespace RestBindings {
   /**
    * Binding key for setting and injecting the port number of RestServer
    */
-  export const PORT = BindingKey.create<number>('rest.port');
+  export const PORT = BindingKey.create<number | undefined>('rest.port');
   /**
    * Internal binding key for http-handler
    */
-  export const HANDLER = BindingKey.create<HttpHandler>('rest.handler');
+  export const HANDLER = BindingKey.create<RestHttpHandler>('rest.handler');
+  /**
+   * Internal binding key for URL
+   */
+  export const URL = BindingKey.create<string>('rest.url');
 
   /**
    * Binding key for setting and injecting an OpenAPI spec
@@ -116,13 +119,13 @@ export namespace RestBindings {
     /**
      * Binding key for setting and injecting the http request
      */
-    export const REQUEST = BindingKey.create<ParsedRequest>(
+    export const REQUEST = BindingKey.create<Request>(
       'rest.http.request',
     );
     /**
      * Binding key for setting and injecting the http response
      */
-    export const RESPONSE = BindingKey.create<ServerResponse>(
+    export const RESPONSE = BindingKey.create<Response>(
       'rest.http.response',
     );
     /**

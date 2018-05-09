@@ -3,17 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect, validateApiSpec} from '@loopback/testlab';
-import {Application} from '@loopback/core';
+import { expect, validateApiSpec } from '@loopback/testlab';
+import { Application } from '@loopback/core';
 import {
   RestServer,
   Route,
   RestComponent,
   createControllerFactoryForClass,
 } from '../../..';
-import {get, post, requestBody} from '@loopback/openapi-v3';
-import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
-import {model, property} from '@loopback/repository';
+import { get, post, requestBody } from '@loopback/openapi-v3';
+import { anOpenApiSpec } from '@loopback/openapi-spec-builder';
+import { model, property } from '@loopback/repository';
 
 describe('RestServer.getApiSpec()', () => {
   let app: Application;
@@ -31,7 +31,7 @@ describe('RestServer.getApiSpec()', () => {
         title: 'Test API',
         version: '1.0.0',
       },
-      servers: [{url: 'example.com:8080/api'}],
+      servers: [{ url: 'example.com:8080/api' }],
       paths: {},
       'x-foo': 'bar',
     });
@@ -43,16 +43,16 @@ describe('RestServer.getApiSpec()', () => {
         title: 'Test API',
         version: '1.0.0',
       },
-      servers: [{url: 'example.com:8080/api'}],
+      servers: [{ url: 'example.com:8080/api' }],
       paths: {},
       'x-foo': 'bar',
     });
   });
 
   it('binds a route via app.route(route)', () => {
-    function greet() {}
+    function greet() { }
     const binding = server.route(
-      new Route('get', '/greet', {responses: {}}, greet),
+      new Route('get', '/greet', { responses: {} }, greet),
     );
     expect(binding.key).to.eql('routes.get %2Fgreet');
     expect(binding.tagNames).containEql('route');
@@ -60,13 +60,13 @@ describe('RestServer.getApiSpec()', () => {
 
   it('binds a route via app.route(..., Controller, method)', () => {
     class MyController {
-      greet() {}
+      greet() { }
     }
 
     const binding = server.route(
       'get',
       '/greet.json',
-      {responses: {}},
+      { responses: {} },
       MyController,
       createControllerFactoryForClass(MyController),
       'greet',
@@ -76,8 +76,8 @@ describe('RestServer.getApiSpec()', () => {
   });
 
   it('returns routes registered via app.route(route)', () => {
-    function greet() {}
-    server.route(new Route('get', '/greet', {responses: {}}, greet));
+    function greet() { }
+    server.route(new Route('get', '/greet', { responses: {} }, greet));
 
     const spec = server.getApiSpec();
     expect(spec.paths).to.eql({
@@ -91,13 +91,13 @@ describe('RestServer.getApiSpec()', () => {
 
   it('returns routes registered via app.route(..., Controller, method)', () => {
     class MyController {
-      greet() {}
+      greet() { }
     }
 
     server.route(
       'get',
       '/greet',
-      {responses: {}},
+      { responses: {} },
       MyController,
       createControllerFactoryForClass(MyController),
       'greet',
@@ -118,8 +118,8 @@ describe('RestServer.getApiSpec()', () => {
 
   it('honors tags in the operation spec', () => {
     class MyController {
-      @get('/greet', {responses: {}, tags: ['MyTag']})
-      greet() {}
+      @get('/greet', { responses: {}, tags: ['MyTag'] })
+      greet() { }
     }
     app.controller(MyController);
 
@@ -139,7 +139,7 @@ describe('RestServer.getApiSpec()', () => {
   it('returns routes registered via app.controller()', () => {
     class MyController {
       @get('/greet')
-      greet() {}
+      greet() { }
     }
     app.controller(MyController);
 
@@ -163,7 +163,7 @@ describe('RestServer.getApiSpec()', () => {
     }
     class MyController {
       @post('/foo')
-      createFoo(@requestBody() foo: MyModel) {}
+      createFoo(@requestBody() foo: MyModel) { }
     }
     app.controller(MyController);
 
@@ -181,7 +181,7 @@ describe('RestServer.getApiSpec()', () => {
   });
 
   it('preserves routes specified in app.api()', () => {
-    function status() {}
+    function status() { }
     server.api(
       anOpenApiSpec()
         .withOperation('get', '/status', {
@@ -191,8 +191,8 @@ describe('RestServer.getApiSpec()', () => {
         .build(),
     );
 
-    function greet() {}
-    server.route(new Route('get', '/greet', {responses: {}}, greet));
+    function greet() { }
+    server.route(new Route('get', '/greet', { responses: {} }, greet));
 
     const spec = server.getApiSpec();
     expect(spec.paths).to.eql({

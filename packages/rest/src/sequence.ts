@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 const debug = require('debug')('loopback:core:sequence');
-import {ServerResponse} from 'http';
-import {inject, Context} from '@loopback/context';
+import { ServerResponse } from 'http';
+import { inject, Context } from '@loopback/context';
 import {
   FindRoute,
   InvokeMethod,
@@ -13,8 +13,9 @@ import {
   Send,
   Reject,
   ParseParams,
+  HttpContext,
 } from './internal-types';
-import {RestBindings} from './keys';
+import { RestBindings } from './keys';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -24,8 +25,7 @@ const SequenceActions = RestBindings.SequenceActions;
  */
 export type SequenceFunction = (
   sequence: DefaultSequence,
-  request: ParsedRequest,
-  response: ServerResponse,
+  httpCtx: HttpContext,
 ) => Promise<void> | void;
 
 /**
@@ -39,7 +39,7 @@ export interface SequenceHandler {
    * @param request The incoming HTTP request
    * @param response The HTTP server response where to write the result
    */
-  handle(request: ParsedRequest, response: ServerResponse): Promise<void>;
+  handle(httpCtx: HttpContext): Promise<void>;
 }
 
 /**
@@ -83,34 +83,42 @@ export class DefaultSequence implements SequenceHandler {
     @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
     @inject(SequenceActions.SEND) public send: Send,
     @inject(SequenceActions.REJECT) public reject: Reject,
-  ) {}
+  ) { }
 
   /**
-   * Runs the default sequence. Given a request and response, running the
-   * sequence will produce a response or an error.
-   *
-   * Default sequence executes these steps
-   *  - Finds the appropriate controller method, swagger spec
-   *    and args for invocation
-   *  - Parses HTTP request to get API argument list
-   *  - Invokes the API which is defined in the Application Controller
-   *  - Writes the result from API into the HTTP response
-   *  - Error is caught and logged using 'logError' if any of the above steps
-   *    in the sequence fails with an error.
-   * @param req Parsed incoming HTTP request
-   * @param res HTTP server response with result from Application controller
-   *  method invocation
-   */
-  async handle(req: ParsedRequest, res: ServerResponse) {
+     * Runs the default sequence. Given a request and response, running the
+     * sequence will produce a response or an error.
+     *
+     * Default sequence executes these steps
+     *  - Finds the appropriate controller method, swagger spec
+     *    and args for invocation
+     *  - Parses HTTP request to get API argument list
+     *  - Invokes the API which is defined in the Application Controller
+     *  - Writes the result from API into the HTTP response
+     *  - Error is caught and logged using 'logError' if any of the above steps
+     *    in the sequence fails with an error.
+     * @param req Parsed incoming HTTP request
+     * @param res HTTP server response with result from Application controller
+     *  method invocation
+     */
+  async handle({ request, response }: HttpContext) {
     try {
-      const route = this.findRoute(req);
-      const args = await this.parseParams(req, route);
-      const result = await this.invoke(route, args);
+      debug('Finding route for %s', request.originalUrl);
+      const route = this.findRoute(request);
+      debug('Route found for %s: %s', request.originalUrl, route.describe());
 
-      debug('%s result -', route.describe(), result);
-      this.send(res, result);
+      debug('Parsing request for %s', request.originalUrl);
+      const args = await this.parseParams(request, route);
+
+      debug('Invoking target for %s', request.originalUrl);
+      const result = await this.invoke(route, args);
+      debug('Invocation result for %s: %s', route.describe(), result);
+
+      debug('Sending response for %s', request.originalUrl);
+      this.send(response, result);
     } catch (err) {
-      this.reject(res, req, err);
+      debug('Rejecting request for %s: %s', request.originalUrl, err);
+      this.reject(response, request, err);
     }
   }
 }
