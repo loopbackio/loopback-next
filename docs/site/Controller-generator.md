@@ -67,6 +67,10 @@ to select:
 
 - The model to use for the CRUD function definitions
 - The repository for this model that provides datasource connectivity
+- The REST path naming convention
+  - Default: singular and plural forms of the model name in dash-delimited style
+    are used
+  - Custom: users are prompted for custom names of their REST paths
 
 {% include warning.html content= " If you do not have a model and repository to
 select, then you will receive an error! " lang=page.lang
@@ -95,40 +99,40 @@ export class TodoController {
     public todoRepository: TodoRepository,
   ) {}
 
-  @post('/todo')
+  @post('/todos')
   async create(@requestBody() obj: Todo): Promise<Todo> {
     return await this.todoRepository.create(obj);
   }
 
-  @get('/todo/count')
+  @get('/todos/count')
   async count(@param.query.string('where') where: Where): Promise<number> {
     return await this.todoRepository.count(where);
   }
 
-  @get('/todo')
+  @get('/todos')
   async find(@param.query.string('filter') filter: Filter): Promise<Todo[]> {
     return await this.todoRepository.find(filter);
   }
 
-  @patch('/todo')
+  @patch('/todos')
   async updateAll(
     @param.query.string('where') where: Where,
-    @reqeustBody() obj: Todo,
+    @requestBody() obj: Todo,
   ): Promise<number> {
     return await this.todoRepository.updateAll(where, obj);
   }
 
-  @del('/todo')
+  @del('/todos')
   async deleteAll(@param.query.string('where') where: Where): Promise<number> {
     return await this.todoRepository.deleteAll(where);
   }
 
-  @get('/todo/{id}')
+  @get('/todos/{id}')
   async findById(@param.path.number('id') id: number): Promise<Todo> {
     return await this.todoRepository.findById(id);
   }
 
-  @patch('/todo/{id}')
+  @patch('/todos/{id}')
   async updateById(
     @param.path.number('id') id: number,
     @requestBody() obj: Todo,
@@ -136,7 +140,7 @@ export class TodoController {
     return await this.todoRepository.updateById(id, obj);
   }
 
-  @del('/todo/{id}')
+  @del('/todos/{id}')
   async deleteById(@param.path.number('id') id: number): Promise<boolean> {
     return await this.todoRepository.deleteById(id);
   }

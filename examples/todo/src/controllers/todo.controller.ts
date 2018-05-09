@@ -20,7 +20,7 @@ import {
 export class TodoController {
   constructor(@repository(TodoRepository) protected todoRepo: TodoRepository) {}
 
-  @post('/todo')
+  @post('/todos')
   async createTodo(@requestBody() todo: Todo) {
     // TODO(bajtos) This should be handled by the framework
     // See https://github.com/strongloop/loopback-next/issues/118
@@ -30,7 +30,7 @@ export class TodoController {
     return await this.todoRepo.create(todo);
   }
 
-  @get('/todo/{id}')
+  @get('/todos/{id}')
   async findTodoById(
     @param.path.number('id') id: number,
     @param.query.boolean('items') items?: boolean,
@@ -38,12 +38,12 @@ export class TodoController {
     return await this.todoRepo.findById(id);
   }
 
-  @get('/todo')
+  @get('/todos')
   async findTodos(): Promise<Todo[]> {
     return await this.todoRepo.find();
   }
 
-  @put('/todo/{id}')
+  @put('/todos/{id}')
   async replaceTodo(
     @param.path.number('id') id: number,
     @requestBody() todo: Todo,
@@ -57,7 +57,7 @@ export class TodoController {
     return await this.todoRepo.replaceById(id, todo);
   }
 
-  @patch('/todo/{id}')
+  @patch('/todos/{id}')
   async updateTodo(
     @param.path.number('id') id: number,
     @requestBody() todo: Todo,
@@ -71,7 +71,7 @@ export class TodoController {
     return await this.todoRepo.updateById(id, todo);
   }
 
-  @del('/todo/{id}')
+  @del('/todos/{id}')
   async deleteTodo(@param.path.number('id') id: number): Promise<boolean> {
     return await this.todoRepo.deleteById(id);
   }

@@ -11,54 +11,65 @@ describe('Utils', () => {
   describe('validateClassName', () => {
     describe('validRegex', () => {
       const regex = utils.validRegex;
+
       it('should return a RegExp', () => {
         expect(regex).to.be.an.instanceOf(RegExp);
       });
+
       it('should match "className"', () => {
         expect(regex.test('className')).to.equal(true);
       });
     });
+
     describe('should not validate', () => {
       testValidateName(
         'if the class name is empty',
         '',
         /name cannot be empty/,
       );
+
       testValidateName(
         'if the class name is null',
         null,
         /name cannot be empty/,
       );
+
       testValidateName(
         'if the first character is a digit',
         '2Controller',
         /name cannot start with a number/,
       );
+
       testValidateName(
         'if the class name contains a period',
         'Cool.App',
         /name cannot contain \./,
       );
+
       testValidateName(
         'if the class name contains a space',
         'foo bar',
         /name cannot contain space/,
       );
+
       testValidateName(
         'if the class name contains a hyphen',
         'foo-bar',
         /name cannot contain hyphen/,
       );
+
       testValidateName(
         'if the class name contains special characters',
         'Foo%bar',
         /name cannot contain special character/,
       );
+
       testValidateName(
         'if the class name contains other invalid symbols',
         'foo♡bar',
         /name is invalid/,
       );
+
       function testValidateName(testName, input, expected) {
         it(testName, () => {
           expect(utils.validateClassName(input)).to.match(expected);
@@ -80,6 +91,7 @@ describe('Utils', () => {
         'if the first character has an accented character',
         'Óoobar',
       );
+
       function testCorrectName(testName, input) {
         it(testName, () => {
           expect(utils.validateClassName(input)).to.equal(true);
@@ -93,10 +105,12 @@ describe('Utils', () => {
       testExpectError('if input is null', null, /bad input/);
       testExpectError('if input is not a string', 42, /bad input/);
     });
+
     describe('should have no effect', () => {
       testExpectNoChange('if first letter is capitalized', 'FooBar');
       testExpectNoChange('if first letter is not convertible', '$fooBar');
     });
+
     describe('should capitalize first letter', () => {
       testExpectUpperCase('if first letter is lower case', 'fooBar', 'FooBar');
       testExpectUpperCase(
@@ -105,22 +119,83 @@ describe('Utils', () => {
         'ÓooBar',
       );
     });
+
     function testExpectError(testName, input, expected) {
       it(testName, () => {
         expect(utils.toClassName(input)).to.match(expected);
       });
     }
+
     function testExpectNoChange(testName, input) {
       it(testName, () => {
         expect(utils.toClassName(input)).to.equal(input);
       });
     }
+
     function testExpectUpperCase(testName, input, expected) {
       it(testName, () => {
         expect(utils.toClassName(input)).to.equal(expected);
       });
     }
   });
+
+  describe('validateUrlSlug', () => {
+    it('returns true for slug in plural form', () => {
+      expect(utils.validateUrlSlug('foos')).to.be.true();
+    });
+
+    it('returns true for slug in camelCase', () => {
+      expect(utils.validateUrlSlug('fooBar')).to.be.true();
+    });
+
+    it('returns true for slug with lower and upper case letters', () => {
+      expect(utils.validateUrlSlug('fOoBaR')).to.be.true();
+    });
+
+    it('returns true for slugs separated by underscores', () => {
+      expect(utils.validateUrlSlug('foo_Bar')).to.be.true();
+    });
+
+    it('returns true for slug with backslash in front', () => {
+      expect(utils.validateUrlSlug('/foo-bar')).to.be.true();
+    });
+
+    it('does not validate an invalid url slug', () => {
+      expect(utils.validateUrlSlug('foo#bars')).to.match(
+        /Suggested slug: foo-bars/,
+      );
+      expect(utils.validateUrlSlug('foo bar')).to.match(
+        /Suggested slug: foo-bar/,
+      );
+      expect(utils.validateUrlSlug('/foo&bar')).to.match(
+        /Suggested slug: \/foo-bar/,
+      );
+      expect(utils.validateUrlSlug('//foo-bar')).to.match(
+        /Suggested slug: \/foo-bar/,
+      );
+      expect(utils.validateUrlSlug('/foo-bar/')).to.match(
+        /Suggested slug: \/foo-bar/,
+      );
+      expect(utils.validateUrlSlug('foo-bar/')).to.match(
+        /Suggested slug: foo-bar/,
+      );
+    });
+  });
+
+  describe('prependBackslash', () => {
+    it('appends backslash if given word does not have any', () => {
+      expect(utils.prependBackslash('product-review')).to.eql(
+        '/product-review',
+      );
+    });
+
+    it('does nothing if given word already has a backslash', () => {
+      expect(utils.prependBackslash('/product-review')).to.eql(
+        '/product-review',
+      );
+    });
+  });
+
   describe('findArtifactPaths', () => {
     it('returns all matching paths of type', () => {
       const expected = [

@@ -16,6 +16,8 @@ const _ = require('lodash');
 const pascalCase = require('change-case').pascalCase;
 const promisify = require('util').promisify;
 const camelCase = require('change-case').camelCase;
+const pluralize = require('pluralize');
+const urlSlug = require('url-slug');
 const validate = require('validate-npm-package-name');
 const Conflicter = require('yeoman-generator/lib/util/conflicter');
 
@@ -112,11 +114,40 @@ exports.kebabCase = _.kebabCase;
 
 exports.pascalCase = pascalCase;
 exports.camelCase = camelCase;
+exports.pluralize = pluralize;
+exports.urlSlug = urlSlug;
 
 exports.validate = function(name) {
   const isValid = validate(name).validForNewPackages;
   if (!isValid) return 'Invalid npm package name: ' + name;
   return isValid;
+};
+
+/**
+ * Adds a backslash to the start of the word if not already present
+ * @param {string} httpPath
+ */
+exports.prependBackslash = httpPath => httpPath.replace(/^\/?/, '/');
+
+/**
+ * Validates whether a given string is a valid url slug or not.
+ * Allows slugs with backslash in front of them to be validated as well
+ * @param {string} name Slug to validate
+ */
+exports.validateUrlSlug = function(name) {
+  const backslashIfNeeded = name.charAt(0) === '/' ? '/' : '';
+  if (backslashIfNeeded === '/') {
+    name = name.substr(1);
+  }
+  const separators = ['-', '.', '_', '~', ''];
+  const possibleSlugs = separators.map(separator =>
+    urlSlug(name, separator, false),
+  );
+  if (!possibleSlugs.includes(name))
+    return `Invalid url slug. Suggested slug: ${backslashIfNeeded}${
+      possibleSlugs[0]
+    }`;
+  return true;
 };
 
 /**
