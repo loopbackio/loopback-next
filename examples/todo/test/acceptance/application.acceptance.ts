@@ -33,7 +33,7 @@ describe('Application', () => {
   it('creates a todo', async () => {
     const todo = givenTodo();
     const response = await client
-      .post('/todo')
+      .post('/todos')
       .send(todo)
       .expect(200);
     expect(response.body).to.containEql(todo);
@@ -44,7 +44,7 @@ describe('Application', () => {
   it('gets a todo by ID', async () => {
     const todo = await givenTodoInstance();
     await client
-      .get(`/todo/${todo.id}`)
+      .get(`/todos/${todo.id}`)
       .send()
       .expect(200, todo);
   });
@@ -57,7 +57,7 @@ describe('Application', () => {
       isComplete: true,
     });
     await client
-      .put(`/todo/${todo.id}`)
+      .put(`/todos/${todo.id}`)
       .send(updatedTodo)
       .expect(200);
     const result = await todoRepo.findById(todo.id);
@@ -71,7 +71,7 @@ describe('Application', () => {
       isComplete: true,
     });
     await client
-      .patch(`/todo/${todo.id}`)
+      .patch(`/todos/${todo.id}`)
       .send(updatedTodo)
       .expect(200);
     const result = await todoRepo.findById(todo.id);
@@ -81,7 +81,7 @@ describe('Application', () => {
   it('deletes the todo', async () => {
     const todo = await givenTodoInstance();
     await client
-      .del(`/todo/${todo.id}`)
+      .del(`/todos/${todo.id}`)
       .send()
       .expect(200);
     try {

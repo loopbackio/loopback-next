@@ -112,10 +112,10 @@ your API and make requests!
 
 Here are some requests you can try:
 
-- `POST /todo` with a body of `{ "title": "get the milk" }`
-- `GET /todo/{id}` using the ID you received from your `POST`, and see if you
+- `POST /todos` with a body of `{ "title": "get the milk" }`
+- `GET /todos/{id}` using the ID you received from your `POST`, and see if you
   get your Todo object back.
-- `PATCH /todo/{id}` with a body of `{ "desc": "need milk for cereal" }`
+- `PATCH /todos/{id}` with a body of `{ "desc": "need milk for cereal" }`
 
 That's it! You've just created your first LoopBack 4 application!
 

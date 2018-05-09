@@ -137,12 +137,12 @@ import {post, get, param, requestBody} from '@loopback/openapi-v3';
 export class TodoController {
   constructor() {}
 
-  @post('/todo') // same as @operation('post', '/todo');
+  @post('/todos') // same as @operation('post', '/todos');
   async createTodo(@requestBody() todo: Todo) {
     // data creating logic goes here
   }
 
-  @get('/todo/{id}')
+  @get('/todos/{id}')
   async findTodoById(
     @param.path.number('id') id: number,
     @param.query.boolean('items') items?: boolean,

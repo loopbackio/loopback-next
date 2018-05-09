@@ -12,7 +12,7 @@ summary: LoopBack 4 Todo Application Tutorial - Add a Controller
 
 In LoopBack 4, controllers handle the request-response lifecycle for your API.
 Each function on a controller can be addressed individually to handle an
-incoming request (like a POST request to `/todo`), perform business logic and
+incoming request (like a POST request to `/todos`), perform business logic and
 then return a response.
 
 In this respect, controllers are the regions _in which most of your business
@@ -74,7 +74,7 @@ export class TodoController {
     @repository(TodoRepository) protected todoRepo: TodoRepository,
   ) {}
 
-  @post('/todo')
+  @post('/todos')
   async createTodo(@requestBody() todo: Todo) {
     if (!todo.title) {
       throw new HttpErrors.BadRequest('title is required');
@@ -87,7 +87,7 @@ export class TodoController {
 In this example, we're using two new decorators to provide LoopBack with
 metadata about the route, verb and the format of the incoming request body:
 
-- `@post('/todo')` creates metadata for `@loopback/rest` so that it can redirect
+- `@post('/todos')` creates metadata for `@loopback/rest` so that it can redirect
   requests to this function when the path and verb match.
 - `@requestBody()` associates the OpenAPI schema for a Todo with the body of the
   request so that LoopBack can validate the format of an incoming request
@@ -124,7 +124,7 @@ export class TodoController {
     @repository(TodoRepository) protected todoRepo: TodoRepository,
   ) {}
 
-  @post('/todo')
+  @post('/todos')
   async createTodo(@requestBody() todo: Todo) {
     if (!todo.title) {
       throw new HttpErrors.BadRequest('title is required');
@@ -132,17 +132,17 @@ export class TodoController {
     return await this.todoRepo.create(todo);
   }
 
-  @get('/todo/{id}')
+  @get('/todos/{id}')
   async findTodoById(@param.path.number('id') id: number): Promise<Todo> {
     return await this.todoRepo.findById(id);
   }
 
-  @get('/todo')
+  @get('/todos')
   async findTodos(): Promise<Todo[]> {
     return await this.todoRepo.find();
   }
 
-  @put('/todo/{id}')
+  @put('/todos/{id}')
   async replaceTodo(
     @param.path.number('id') id: number,
     @requestBody() todo: Todo,
@@ -153,7 +153,7 @@ export class TodoController {
     return await this.todoRepo.replaceById(id, todo);
   }
 
-  @patch('/todo/{id}')
+  @patch('/todos/{id}')
   async updateTodo(
     @param.path.number('id') id: number,
     @requestBody() todo: Todo,
@@ -162,7 +162,7 @@ export class TodoController {
     return await this.todoRepo.updateById(id, todo);
   }
 
-  @del('/todo/{id}')
+  @del('/todos/{id}')
   async deleteTodo(@param.path.number('id') id: number): Promise<boolean> {
     return await this.todoRepo.deleteById(id);
   }
@@ -171,7 +171,7 @@ export class TodoController {
 
 Some additional things to note about this example:
 
-- Routes like `@get('/todo/{id}')` can be paired with the `@param.path`
+- Routes like `@get('/todos/{id}')` can be paired with the `@param.path`
   decorators to inject those values at request time into the handler function.
 - LoopBack's `@param` decorator also contains a namespace full of other
   "subdecorators" like `@param.path`, `@param.query`, and `@param.header` that

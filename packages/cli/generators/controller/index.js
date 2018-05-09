@@ -144,6 +144,18 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
             when: this.artifactInfo.idType === undefined,
             default: 'number',
           },
+          {
+            type: 'input',
+            name: 'httpPathName',
+            message: 'What is the base HTTP path name of the CRUD operations?',
+            when: this.artifactInfo.httpPathName === undefined,
+            default: answers =>
+              utils.prependBackslash(
+                utils.pluralize(utils.urlSlug(answers.modelName)),
+              ),
+            validate: utils.validateUrlSlug,
+            filter: utils.prependBackslash,
+          },
         ]).then(props => {
           debug(`props: ${inspect(props)}`);
           Object.assign(this.artifactInfo, props);
@@ -158,9 +170,6 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
           // Create camel-case names for variables.
           this.artifactInfo.repositoryNameCamel = utils.camelCase(
             this.artifactInfo.repositoryName,
-          );
-          this.artifactInfo.modelNameCamel = utils.camelCase(
-            this.artifactInfo.modelName,
           );
           return props;
         });
