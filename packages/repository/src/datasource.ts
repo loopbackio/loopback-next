@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {AnyObject} from './common-types';
+import {AnyObject} from '@loopback/core';
 import {Connector} from './connectors';
 
 /**

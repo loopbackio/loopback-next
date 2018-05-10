@@ -13,7 +13,7 @@ import {
 import {DataSource} from '../datasource';
 import {juggler} from '../loopback-datasource-juggler';
 import {inject, Context, Injection} from '@loopback/context';
-import {Class} from '../common-types';
+import {Class} from '../';
 
 /**
  * Type definition for decorators returned by `@repository` decorator factory

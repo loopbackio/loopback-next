@@ -5,7 +5,7 @@
 
 import * as util from 'util';
 import {Type} from './type';
-import {Options} from '../common-types';
+import {Options} from '../';
 
 // tslint:disable:no-any
 

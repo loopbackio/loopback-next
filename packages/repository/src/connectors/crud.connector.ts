@@ -6,7 +6,7 @@
 import {Connector} from './connector';
 import {Entity, EntityData} from '../model';
 import {Filter, Where} from '../query';
-import {Class, Options} from '../common-types';
+import {Class, Options} from '../';
 
 /**
  * CRUD operations for connector implementations
