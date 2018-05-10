@@ -29,7 +29,7 @@ Here's a basic "Hello World" application using `@loopback/rest`:
 import {RestApplication, RestServer} from '@loopback/rest';
 
 const app = new RestApplication();
-app.handler((sequence, request, response) => {
+app.handler(({request, response}, sequence) => {
   sequence.send(response, 'hello world');
 });
 

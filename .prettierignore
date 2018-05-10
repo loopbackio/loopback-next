@@ -4,5 +4,6 @@ packages/cli/generators/*/templates
 packages/cli/test/integration/.sandbox
 packages/*/dist*
 examples/*/dist*
+sandbox/**/dist*
 *.json
 *.md

@@ -10,9 +10,9 @@ import {
   RestServer,
   RestComponent,
   RestApplication,
+  RequestContext,
 } from '../../..';
 import {Application} from '@loopback/core';
-import {ServerResponse, ServerRequest} from 'http';
 
 describe('Bootstrapping with RestComponent', () => {
   context('with a user-defined sequence', () => {
@@ -76,9 +76,8 @@ async function startServerCheck(app: Application) {
 }
 
 function sequenceHandler(
+  {request, response}: RequestContext,
   sequence: DefaultSequence,
-  request: ServerRequest,
-  response: ServerResponse,
 ) {
   sequence.send(response, 'hello world');
 }

@@ -4,8 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 const debug = require('debug')('loopback:core:sequence');
-import {ServerResponse} from 'http';
-import {inject, Context} from '@loopback/context';
+import {inject} from '@loopback/context';
 import {
   FindRoute,
   InvokeMethod,
@@ -15,6 +14,7 @@ import {
   ParseParams,
 } from './types';
 import {RestBindings} from './keys';
+import {RequestContext} from './request-context';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -23,9 +23,8 @@ const SequenceActions = RestBindings.SequenceActions;
  * sequence of actions to handle an incoming request.
  */
 export type SequenceFunction = (
+  context: RequestContext,
   sequence: DefaultSequence,
-  request: ParsedRequest,
-  response: ServerResponse,
 ) => Promise<void> | void;
 
 /**
@@ -36,10 +35,10 @@ export interface SequenceHandler {
   /**
    * Handle the request by running the configured sequence of actions.
    *
-   * @param request The incoming HTTP request
-   * @param response The HTTP server response where to write the result
+   * @param context The request context: HTTP request and response objects,
+   * per-request IoC container and more.
    */
-  handle(request: ParsedRequest, response: ServerResponse): Promise<void>;
+  handle(context: RequestContext): Promise<void>;
 }
 
 /**
@@ -63,8 +62,6 @@ export class DefaultSequence implements SequenceHandler {
    * Constructor: Injects findRoute, invokeMethod & logError
    * methods as promises.
    *
-   * @param {Context} ctx The context for the sequence (injected via
-   * RestBindings.Http.CONTEXT).
    * @param {FindRoute} findRoute Finds the appropriate controller method,
    *  spec and args for invocation (injected via SequenceActions.FIND_ROUTE).
    * @param {ParseParams} parseParams The parameter parsing function (injected
@@ -77,7 +74,6 @@ export class DefaultSequence implements SequenceHandler {
    * promise result (injected via SequenceActions.REJECT).
    */
   constructor(
-    @inject(RestBindings.Http.CONTEXT) public ctx: Context,
     @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
     @inject(SequenceActions.PARSE_PARAMS) protected parseParams: ParseParams,
     @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
@@ -86,8 +82,8 @@ export class DefaultSequence implements SequenceHandler {
   ) {}
 
   /**
-   * Runs the default sequence. Given a request and response, running the
-   * sequence will produce a response or an error.
+   * Runs the default sequence. Given a handler context (request and response),
+   * running the sequence will produce a response or an error.
    *
    * Default sequence executes these steps
    *  - Finds the appropriate controller method, swagger spec
@@ -97,20 +93,21 @@ export class DefaultSequence implements SequenceHandler {
    *  - Writes the result from API into the HTTP response
    *  - Error is caught and logged using 'logError' if any of the above steps
    *    in the sequence fails with an error.
-   * @param req Parsed incoming HTTP request
-   * @param res HTTP server response with result from Application controller
-   *  method invocation
+   *
+   * @param context The request context: HTTP request and response objects,
+   * per-request IoC container and more.
    */
-  async handle(req: ParsedRequest, res: ServerResponse) {
+  async handle(context: RequestContext): Promise<void> {
     try {
-      const route = this.findRoute(req);
-      const args = await this.parseParams(req, route);
+      const {request, response} = context;
+      const route = this.findRoute(request);
+      const args = await this.parseParams(request, route);
       const result = await this.invoke(route, args);
 
       debug('%s result -', route.describe(), result);
-      this.send(res, result);
-    } catch (err) {
-      this.reject(res, req, err);
+      this.send(response, result);
+    } catch (error) {
+      this.reject(context, error);
     }
   }
 }

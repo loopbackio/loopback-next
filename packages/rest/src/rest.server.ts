@@ -15,7 +15,6 @@ import {
   ControllerInstance,
   createControllerFactoryForBinding,
 } from './router/routing-table';
-import {ParsedRequest} from './types';
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
 import {ServerRequest, ServerResponse, createServer} from 'http';
 import * as Http from 'http';
@@ -26,6 +25,7 @@ import {HttpHandler} from './http-handler';
 import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
 import {FindRoute, InvokeMethod, Send, Reject, ParseParams} from './types';
 import {RestBindings} from './keys';
+import {RequestContext} from '.';
 
 export type HttpRequestListener = (
   req: ServerRequest,
@@ -507,7 +507,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    *     @inject('send) public send: Send)) {
    *   }
    *
-   *   public async handle(request: ParsedRequest, response: ServerResponse) {
+   *   public async handle({response}: RequestContext) {
    *     send(response, 'hello world');
    *   }
    * }
@@ -523,7 +523,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * Configure a custom sequence function for handling incoming requests.
    *
    * ```ts
-   * app.handler((sequence, request, response) => {
+   * app.handler(({request, response}, sequence) => {
    *   sequence.send(response, 'hello world');
    * });
    * ```
@@ -535,7 +535,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
       // NOTE(bajtos) Unfortunately, we have to duplicate the constructor
       // in order for our DI/IoC framework to inject constructor arguments
       constructor(
-        @inject(RestBindings.Http.CONTEXT) public ctx: Context,
         @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
         @inject(SequenceActions.PARSE_PARAMS)
         protected parseParams: ParseParams,
@@ -543,14 +542,11 @@ export class RestServer extends Context implements Server, HttpServerLike {
         @inject(SequenceActions.SEND) public send: Send,
         @inject(SequenceActions.REJECT) public reject: Reject,
       ) {
-        super(ctx, findRoute, parseParams, invoke, send, reject);
+        super(findRoute, parseParams, invoke, send, reject);
       }
 
-      async handle(
-        request: ParsedRequest,
-        response: ServerResponse,
-      ): Promise<void> {
-        await Promise.resolve(handlerFn(this, request, response));
+      async handle(context: RequestContext): Promise<void> {
+        await Promise.resolve(handlerFn(context, this));
       }
     }
 
