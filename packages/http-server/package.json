@@ -1,0 +1,44 @@
+{
+  "name": "@loopback/http-server",
+  "version": "0.2.0",
+  "description": "",
+  "engines": {
+    "node": ">=8"
+  },
+  "scripts": {
+    "acceptance": "lb-mocha \"DIST/test/acceptance/**/*.js\"",
+    "build": "lb-tsc es2017",
+    "build:apidocs": "lb-apidocs",
+    "clean": "lb-clean loopback-http-server*.tgz dist package api-docs",
+    "prepublishOnly": "npm run build && npm run build:apidocs",
+    "pretest": "npm run build",
+    "integration": "lb-mocha \"DIST/test/integration/**/*.js\"",
+    "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/integration/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
+    "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-http-server*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/context": "^0.2.1",
+    "debug": "^3.1.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^0.2.0",
+    "@loopback/testlab": "^0.3.0",
+    "@types/debug": "^0.0.30"
+  },
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist/src",
+    "api-docs",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
+}

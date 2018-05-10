@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject, Provider, Constructor, Getter} from '@loopback/context';
-import {CoreBindings} from '@loopback/core';
-import {OperationArgs, ParsedRequest} from '@loopback/rest';
-import {getLogMetadata} from '../decorators';
-import {EXAMPLE_LOG_BINDINGS, LOG_LEVEL} from '../keys';
+import { inject, Provider, Constructor, Getter } from '@loopback/context';
+import { CoreBindings } from '@loopback/core';
+import { OperationArgs, Request } from '@loopback/rest';
+import { getLogMetadata } from '../decorators/log.decorator';
+import { EXAMPLE_LOG_BINDINGS, LOG_LEVEL } from '../keys';
 import {
   LogFn,
   TimerFn,
@@ -19,10 +19,10 @@ import chalk from 'chalk';
 
 export class LogActionProvider implements Provider<LogFn> {
   // LogWriteFn is an optional dependency and it falls back to `logToConsole`
-  @inject(EXAMPLE_LOG_BINDINGS.LOGGER, {optional: true})
+  @inject(EXAMPLE_LOG_BINDINGS.LOGGER, { optional: true })
   writeLog: LogWriterFn = logToConsole;
 
-  @inject(EXAMPLE_LOG_BINDINGS.APP_LOG_LEVEL, {optional: true})
+  @inject(EXAMPLE_LOG_BINDINGS.APP_LOG_LEVEL, { optional: true })
   logLevel: LOG_LEVEL = LOG_LEVEL.WARN;
 
   constructor(
@@ -31,11 +31,11 @@ export class LogActionProvider implements Provider<LogFn> {
     @inject.getter(CoreBindings.CONTROLLER_METHOD_NAME)
     private readonly getMethod: Getter<string>,
     @inject(EXAMPLE_LOG_BINDINGS.TIMER) public timer: TimerFn,
-  ) {}
+  ) { }
 
   value(): LogFn {
     const fn = <LogFn>((
-      req: ParsedRequest,
+      req: Request,
       args: OperationArgs,
       // tslint:disable-next-line:no-any
       result: any,
@@ -52,7 +52,7 @@ export class LogActionProvider implements Provider<LogFn> {
   }
 
   private async action(
-    req: ParsedRequest,
+    req: Request,
     args: OperationArgs,
     // tslint:disable-next-line:no-any
     result: any,

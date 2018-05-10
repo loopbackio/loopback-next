@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  HttpHandler,
+  RestHttpHandler,
   DefaultSequence,
   writeResultToResponse,
   parseOperationArgs,
@@ -12,6 +12,7 @@ import {
   FindRouteProvider,
   InvokeMethodProvider,
   RejectProvider,
+  HTTP_FACTORY,
 } from '../..';
 import {ControllerSpec, get} from '@loopback/openapi-v3';
 import {Context} from '@loopback/context';
@@ -423,7 +424,7 @@ describe('HttpHandler', () => {
   });
 
   let rootContext: Context;
-  let handler: HttpHandler;
+  let handler: RestHttpHandler;
   function givenHandler() {
     rootContext = new Context();
     rootContext.bind(SequenceActions.FIND_ROUTE).toProvider(FindRouteProvider);
@@ -439,7 +440,7 @@ describe('HttpHandler', () => {
 
     rootContext.bind(RestBindings.SEQUENCE).toClass(DefaultSequence);
 
-    handler = new HttpHandler(rootContext);
+    handler = new RestHttpHandler(rootContext);
     rootContext.bind(RestBindings.HANDLER).to(handler);
   }
 
@@ -459,7 +460,9 @@ describe('HttpHandler', () => {
 
   function givenClient() {
     client = createClientForHandler((req, res) => {
-      handler.handleRequest(req, res).catch(err => {
+      const app = HTTP_FACTORY.createApp();
+      const httpCtx = HTTP_FACTORY.createHttpContext(req, res, app);
+      handler.handleRequest(httpCtx).catch(err => {
         // This should never happen. If we ever get here,
         // then it means "handler.handlerRequest()" crashed unexpectedly.
         // We need to make a lot of helpful noise in such case.

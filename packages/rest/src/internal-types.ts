@@ -3,15 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, BoundValue} from '@loopback/context';
-import {ServerRequest, ServerResponse} from 'http';
-import {ResolvedRoute, RouteEntry} from './router/routing-table';
+import { Binding, BoundValue } from '@loopback/context';
+import { ServerRequest, ServerResponse } from 'http';
+import { ResolvedRoute, RouteEntry } from './router/routing-table';
+
+import { Request, Response } from './http-server';
+export { Request, Response, HttpContext } from './http-server';
 
 export interface ParsedRequest extends ServerRequest {
   // see http://expressjs.com/en/4x/api.html#req.path
   path: string;
   // see http://expressjs.com/en/4x/api.html#req.query
-  query: {[key: string]: string | string[]};
+  query: { [key: string]: string | string[] };
   // see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/15808
   url: string;
   pathname: string;
@@ -22,13 +25,13 @@ export interface ParsedRequest extends ServerRequest {
  * Find a route matching the incoming request.
  * Throw an error when no route was found.
  */
-export type FindRoute = (request: ParsedRequest) => ResolvedRoute;
+export type FindRoute = (request: Request) => ResolvedRoute;
 
 /**
  *
  */
 export type ParseParams = (
-  request: ParsedRequest,
+  request: Request,
   route: ResolvedRoute,
 ) => Promise<OperationArgs>;
 
@@ -81,7 +84,7 @@ export type LogError = (
 ) => void;
 
 // tslint:disable:no-any
-export type PathParameterValues = {[key: string]: any};
+export type PathParameterValues = { [key: string]: any };
 export type OperationArgs = any[];
 
 /**
