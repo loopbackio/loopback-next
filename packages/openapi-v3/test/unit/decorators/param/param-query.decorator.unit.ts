@@ -13,18 +13,14 @@ describe('Routing metadata for parameters', () => {
         @get('/greet')
         greet(@param.query.string('name') name: string) {}
       }
-
-      const actualSpec = getControllerSpec(MyController);
-
-      expect(actualSpec.paths['/greet']['get'].parameters).to.eql([
-        {
-          name: 'name',
-          in: 'query',
-          schema: {
-            type: 'string',
-          },
+      const expectedParamSpec = {
+        name: 'name',
+        in: 'query',
+        schema: {
+          type: 'string',
         },
-      ]);
+      };
+      expectSpecToBeEqual(MyController, expectedParamSpec);
     });
   });
 
@@ -32,20 +28,16 @@ describe('Routing metadata for parameters', () => {
     it('defines a parameter with in:query type:number', () => {
       class MyController {
         @get('/greet')
-        greet(@param.query.number('name') name: string) {}
+        greet(@param.query.number('name') name: number) {}
       }
-
-      const actualSpec = getControllerSpec(MyController);
-
-      expect(actualSpec.paths['/greet']['get'].parameters).to.eql([
-        {
-          name: 'name',
-          in: 'query',
-          schema: {
-            type: 'number',
-          },
+      const expectedParamSpec = {
+        name: 'name',
+        in: 'query',
+        schema: {
+          type: 'number',
         },
-      ]);
+      };
+      expectSpecToBeEqual(MyController, expectedParamSpec);
     });
   });
 
@@ -55,19 +47,15 @@ describe('Routing metadata for parameters', () => {
         @get('/greet')
         greet(@param.query.integer('name') name: number) {}
       }
-
-      const actualSpec = getControllerSpec(MyController);
-
-      expect(actualSpec.paths['/greet']['get'].parameters).to.eql([
-        {
-          name: 'name',
-          in: 'query',
-          schema: {
-            type: 'integer',
-            format: 'int32',
-          },
+      const expectedParamSpec = {
+        name: 'name',
+        in: 'query',
+        schema: {
+          type: 'integer',
+          format: 'int32',
         },
-      ]);
+      };
+      expectSpecToBeEqual(MyController, expectedParamSpec);
     });
   });
 
@@ -77,18 +65,163 @@ describe('Routing metadata for parameters', () => {
         @get('/greet')
         greet(@param.query.boolean('name') name: boolean) {}
       }
-
-      const actualSpec = getControllerSpec(MyController);
-
-      expect(actualSpec.paths['/greet']['get'].parameters).to.eql([
-        {
-          name: 'name',
-          in: 'query',
-          schema: {
-            type: 'boolean',
-          },
+      const expectedParamSpec = {
+        name: 'name',
+        in: 'query',
+        schema: {
+          type: 'boolean',
         },
-      ]);
+      };
+      expectSpecToBeEqual(MyController, expectedParamSpec);
+    });
+  });
+
+  describe('@param.query.long', () => {
+    it('defines a parameter with in:query type:long', () => {
+      class MyController {
+        @get('/greet')
+        greet(@param.query.long('name') name: number) {}
+      }
+      const expectedParamSpec = {
+        name: 'name',
+        in: 'query',
+        schema: {
+          type: 'integer',
+          format: 'int64',
+        },
+      };
+      expectSpecToBeEqual(MyController, expectedParamSpec);
+    });
+  });
+
+  describe('@param.query.float', () => {
+    it('defines a parameter with in:query type:float', () => {
+      class MyController {
+        @get('/greet')
+        greet(@param.query.float('name') name: number) {}
+      }
+      const expectedParamSpec = {
+        name: 'name',
+        in: 'query',
+        schema: {
+          type: 'number',
+          format: 'float',
+        },
+      };
+      expectSpecToBeEqual(MyController, expectedParamSpec);
+    });
+  });
+
+  describe('@param.query.double', () => {
+    it('defines a parameter with in:query type:double', () => {
+      class MyController {
+        @get('/greet')
+        greet(@param.query.double('name') name: number) {}
+      }
+      const expectedParamSpec = {
+        name: 'name',
+        in: 'query',
+        schema: {
+          type: 'number',
+          format: 'double',
+        },
+      };
+      expectSpecToBeEqual(MyController, expectedParamSpec);
+    });
+  });
+
+  describe('@param.query.byte', () => {
+    it('defines a parameter with in:query type:byte', () => {
+      class MyController {
+        @get('/greet')
+        greet(@param.query.byte('name') name: string) {}
+      }
+      const expectedParamSpec = {
+        name: 'name',
+        in: 'query',
+        schema: {
+          type: 'string',
+          format: 'byte',
+        },
+      };
+      expectSpecToBeEqual(MyController, expectedParamSpec);
+    });
+  });
+
+  describe('@param.query.binary', () => {
+    it('defines a parameter with in:query type:binary', () => {
+      class MyController {
+        @get('/greet')
+        greet(@param.query.binary('name') name: string) {}
+      }
+      const expectedParamSpec = {
+        name: 'name',
+        in: 'query',
+        schema: {
+          type: 'string',
+          format: 'binary',
+        },
+      };
+      expectSpecToBeEqual(MyController, expectedParamSpec);
+    });
+  });
+
+  describe('@param.query.date', () => {
+    it('defines a parameter with in:query type:date', () => {
+      class MyController {
+        @get('/greet')
+        greet(@param.query.date('name') name: string) {}
+      }
+      const expectedParamSpec = {
+        name: 'name',
+        in: 'query',
+        schema: {
+          type: 'string',
+          format: 'date',
+        },
+      };
+      expectSpecToBeEqual(MyController, expectedParamSpec);
+    });
+  });
+
+  describe('@param.query.dateTime', () => {
+    it('defines a parameter with in:query type:dateTime', () => {
+      class MyController {
+        @get('/greet')
+        greet(@param.query.dateTime('name') name: string) {}
+      }
+      const expectedParamSpec = {
+        name: 'name',
+        in: 'query',
+        schema: {
+          type: 'string',
+          format: 'date-time',
+        },
+      };
+      expectSpecToBeEqual(MyController, expectedParamSpec);
+    });
+  });
+
+  describe('@param.query.password', () => {
+    it('defines a parameter with in:query type:password', () => {
+      class MyController {
+        @get('/greet')
+        greet(@param.query.password('name') name: string) {}
+      }
+      const expectedParamSpec = {
+        name: 'name',
+        in: 'query',
+        schema: {
+          type: 'string',
+          format: 'password',
+        },
+      };
+      expectSpecToBeEqual(MyController, expectedParamSpec);
     });
   });
 });
+
+function expectSpecToBeEqual(controller: Function, paramSpec: object) {
+  const actualSpec = getControllerSpec(controller);
+  expect(actualSpec.paths['/greet']['get'].parameters).to.eql([paramSpec]);
+}
