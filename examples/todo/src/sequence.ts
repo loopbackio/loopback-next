@@ -7,14 +7,13 @@ import {Context, inject} from '@loopback/context';
 import {
   FindRoute,
   InvokeMethod,
-  ParsedRequest,
   ParseParams,
   Reject,
+  RequestContext,
   RestBindings,
   Send,
   SequenceHandler,
 } from '@loopback/rest';
-import {ServerResponse} from 'http';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -28,14 +27,15 @@ export class MySequence implements SequenceHandler {
     @inject(SequenceActions.REJECT) public reject: Reject,
   ) {}
 
-  async handle(req: ParsedRequest, res: ServerResponse) {
+  async handle(context: RequestContext) {
     try {
-      const route = this.findRoute(req);
-      const args = await this.parseParams(req, route);
+      const {request, response} = context;
+      const route = this.findRoute(request);
+      const args = await this.parseParams(request, route);
       const result = await this.invoke(route, args);
-      this.send(res, result);
-    } catch (err) {
-      this.reject(res, req, err);
+      this.send(response, result);
+    } catch (error) {
+      this.reject(context, error);
     }
   }
 }

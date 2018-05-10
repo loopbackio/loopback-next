@@ -18,7 +18,7 @@ describe('RestServer (integration)', () => {
 
   it('responds with 500 when Sequence fails with unhandled error', async () => {
     const server = await givenAServer({rest: {port: 0}});
-    server.handler((sequence, request, response) => {
+    server.handler((context, sequence) => {
       return Promise.reject(new Error('unhandled test error'));
     });
 
@@ -39,7 +39,7 @@ describe('RestServer (integration)', () => {
 
   it('allows cors', async () => {
     const server = await givenAServer({rest: {port: 0}});
-    server.handler((sequence, request, response) => {
+    server.handler(({response}, sequence) => {
       response.write('Hello');
       response.end();
     });
@@ -53,7 +53,7 @@ describe('RestServer (integration)', () => {
 
   it('allows cors preflight', async () => {
     const server = await givenAServer({rest: {port: 0}});
-    server.handler((sequence, request, response) => {
+    server.handler(({response}, sequence) => {
       response.write('Hello');
       response.end();
     });

@@ -19,6 +19,15 @@ export interface ParsedRequest extends ServerRequest {
 }
 
 /**
+ * An object holding HTTP request, response and other data
+ * needed to handle an incoming HTTP request.
+ */
+export interface HandlerContext {
+  readonly request: ParsedRequest;
+  readonly response: ServerResponse;
+}
+
+/**
  * Find a route matching the incoming request.
  * Throw an error when no route was found.
  */
@@ -57,15 +66,11 @@ export type Send = (response: ServerResponse, result: OperationRetval) => void;
 /**
  * Reject the request with an error.
  *
- * @param response The response the response to send to.
- * @param request The request that triggered the error.
+ * @param handlerContext The context object holding HTTP request, response
+ * and other data  needed to handle an incoming HTTP request.
  * @param err The error.
  */
-export type Reject = (
-  response: ServerResponse,
-  request: ServerRequest,
-  err: Error,
-) => void;
+export type Reject = (handlerContext: HandlerContext, err: Error) => void;
 
 /**
  * Log information about a failed request.

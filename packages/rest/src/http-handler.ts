@@ -20,6 +20,7 @@ import {
 import {ParsedRequest} from './types';
 
 import {RestBindings} from './keys';
+import {RequestContext} from './request-context';
 
 export class HttpHandler {
   protected _routes: RoutingTable = new RoutingTable();
@@ -67,22 +68,15 @@ export class HttpHandler {
     response: ServerResponse,
   ): Promise<void> {
     const parsedRequest: ParsedRequest = parseRequestUrl(request);
-    const requestContext = this._createRequestContext(parsedRequest, response);
+    const requestContext = new RequestContext(
+      parsedRequest,
+      response,
+      this._rootContext,
+    );
 
     const sequence = await requestContext.get<SequenceHandler>(
       RestBindings.SEQUENCE,
     );
-    await sequence.handle(parsedRequest, response);
-  }
-
-  protected _createRequestContext(
-    req: ParsedRequest,
-    res: ServerResponse,
-  ): Context {
-    const requestContext = new Context(this._rootContext);
-    requestContext.bind(RestBindings.Http.REQUEST).to(req);
-    requestContext.bind(RestBindings.Http.RESPONSE).to(res);
-    requestContext.bind(RestBindings.Http.CONTEXT).to(requestContext);
-    return requestContext;
+    await sequence.handle(requestContext);
   }
 }

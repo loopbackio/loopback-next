@@ -24,14 +24,14 @@ instances handle requests and responses. The `DefaultSequence` looks like this:
 
 ```ts
 class DefaultSequence {
-  async handle(request: ParsedRequest, response: ServerResponse) {
+  async handle(context: RequestContext) {
     try {
-      const route = this.findRoute(request);
-      const params = await this.parseParams(request, route);
+      const route = this.findRoute(context.request);
+      const params = await this.parseParams(context.request, route);
       const result = await this.invoke(route, params);
-      await this.send(response, result);
-    } catch (err) {
-      await this.reject(response, err);
+      await this.send(context.response, result);
+    } catch (error) {
+      await this.reject(context, error);
     }
   }
 }
@@ -61,15 +61,15 @@ Actions:
 
 ```ts
 class MySequence extends DefaultSequence {
-  async handle(request: ParsedRequest, response: ServerResponse) {
+  async handle(context: RequestContext) {
     // findRoute() produces an element
-    const route = this.findRoute(request);
+    const route = this.findRoute(context.request);
     // parseParams() uses the route element and produces the params element
-    const params = await this.parseParams(request, route);
+    const params = await this.parseParams(context.request, route);
     // invoke() uses both the route and params elements to produce the result (OperationRetVal) element
     const result = await this.invoke(route, params);
     // send() uses the result element
-    await this.send(response, result);
+    await this.send(context.response, result);
   }
 }
 ```
@@ -91,9 +91,9 @@ class MySequence extends DefaultSequence {
   log(msg: string) {
     console.log(msg);
   }
-  async handle(request: ParsedRequest, response: ServerResponse) {
+  async handle(context: RequestContext) {
     this.log('before request');
-    await super.handle(request, response);
+    await super.handle(context);
     this.log('after request');
   }
 }

@@ -35,6 +35,7 @@ export {writeResultToResponse} from './writer';
 export {HttpErrors};
 
 export * from './http-handler';
+export * from './request-context';
 export * from './types';
 export * from './keys';
 export * from './rest.application';

@@ -12,8 +12,7 @@ import {
   InvokeMethod,
   Send,
   Reject,
-  ParsedRequest,
-  ServerResponse,
+  RequestContext,
 } from '@loopback/rest';
 import {get, param} from '@loopback/openapi-v3';
 import {
@@ -31,7 +30,7 @@ import {
   createClientForHandler,
   expect,
 } from '@loopback/testlab';
-import {Context, inject} from '@loopback/context';
+import {inject} from '@loopback/context';
 import chalk from 'chalk';
 
 const SequenceActions = RestBindings.SequenceActions;
@@ -204,7 +203,6 @@ describe('log extension acceptance test', () => {
   function createSequence() {
     class LogSequence implements SequenceHandler {
       constructor(
-        @inject(RestBindings.Http.CONTEXT) public ctx: Context,
         @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
         @inject(SequenceActions.PARSE_PARAMS)
         protected parseParams: ParseParams,
@@ -214,23 +212,25 @@ describe('log extension acceptance test', () => {
         @inject(EXAMPLE_LOG_BINDINGS.LOG_ACTION) protected logger: LogFn,
       ) {}
 
-      async handle(req: ParsedRequest, res: ServerResponse) {
+      async handle(context: RequestContext): Promise<void> {
+        const {request, response} = context;
+
         // tslint:disable-next-line:no-any
         let args: any = [];
         // tslint:disable-next-line:no-any
         let result: any;
 
         try {
-          const route = this.findRoute(req);
-          args = await this.parseParams(req, route);
+          const route = this.findRoute(request);
+          args = await this.parseParams(request, route);
           result = await this.invoke(route, args);
-          this.send(res, result);
-        } catch (err) {
-          this.reject(res, req, err);
-          result = err;
+          this.send(response, result);
+        } catch (error) {
+          this.reject(context, error);
+          result = error;
         }
 
-        await this.logger(req, args, result);
+        await this.logger(request, args, result);
       }
     }
 

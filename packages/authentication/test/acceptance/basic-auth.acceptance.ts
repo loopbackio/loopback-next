@@ -6,8 +6,6 @@
 import {Application} from '@loopback/core';
 import {
   RestBindings,
-  ServerResponse,
-  ParsedRequest,
   ParseParams,
   FindRoute,
   InvokeMethod,
@@ -16,6 +14,7 @@ import {
   SequenceHandler,
   RestServer,
   RestComponent,
+  RequestContext,
 } from '@loopback/rest';
 import {api, get} from '@loopback/openapi-v3';
 import {Client, createClientForHandler} from '@loopback/testlab';
@@ -137,19 +136,20 @@ describe('Basic Authentication', () => {
         protected authenticateRequest: AuthenticateFn,
       ) {}
 
-      async handle(req: ParsedRequest, res: ServerResponse) {
+      async handle(context: RequestContext) {
         try {
-          const route = this.findRoute(req);
+          const {request, response} = context;
+          const route = this.findRoute(request);
 
           // Authenticate
-          await this.authenticateRequest(req);
+          await this.authenticateRequest(request);
 
           // Authentication successful, proceed to invoke controller
-          const args = await this.parseParams(req, route);
+          const args = await this.parseParams(request, route);
           const result = await this.invoke(route, args);
-          this.send(res, result);
-        } catch (err) {
-          this.reject(res, req, err);
+          this.send(response, result);
+        } catch (error) {
+          this.reject(context, error);
           return;
         }
       }
