@@ -48,7 +48,7 @@
     "@types/debug": "0.0.30",
     "@types/js-yaml": "^3.11.1",
     "@types/lodash": "^4.14.106",
-    "@types/node": "^8.10.4"
+    "@types/node": "^10.1.1"
   },
   "files": [
     "README.md",
