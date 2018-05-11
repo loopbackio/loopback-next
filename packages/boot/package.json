@@ -40,7 +40,7 @@
     "@loopback/openapi-v3": "^0.10.3",
     "@loopback/rest": "^0.10.3",
     "@loopback/testlab": "^0.10.3",
-    "@types/node": "^8.10.4"
+    "@types/node": "^10.1.1"
   },
   "files": [
     "README.md",

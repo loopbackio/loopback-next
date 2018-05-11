@@ -54,7 +54,7 @@
     "@loopback/build": "^0.6.4",
     "@loopback/testlab": "^0.10.3",
     "@types/debug": "0.0.30",
-    "@types/node": "^8.10.4",
+    "@types/node": "^10.1.1",
     "source-map-support": "^0.5.4"
   },
   "dependencies": {

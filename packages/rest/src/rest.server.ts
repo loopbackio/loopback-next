@@ -35,6 +35,7 @@ import {
 import {RestBindings} from './keys';
 import {RequestContext} from './request-context';
 import * as express from 'express';
+import {AddressInfo} from 'net';
 
 export type HttpRequestListener = (
   req: ServerRequest,
@@ -589,7 +590,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
     return new Promise<void>((resolve, reject) => {
       httpServer.once('listening', () => {
-        this.bind(RestBindings.PORT).to(httpServer.address().port);
+        const address = httpServer.address() as AddressInfo;
+        this.bind(RestBindings.PORT).to(address.port);
         resolve();
       });
       httpServer.once('error', reject);
