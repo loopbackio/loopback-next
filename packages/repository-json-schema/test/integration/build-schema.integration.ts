@@ -12,6 +12,7 @@ import {
 } from '../..';
 import {expect} from '@loopback/testlab';
 import {MetadataInspector} from '@loopback/context';
+import * as Ajv from 'ajv';
 
 describe('build-schema', () => {
   describe('modelToJsonSchema', () => {
@@ -25,6 +26,7 @@ describe('build-schema', () => {
 
         const jsonSchema = modelToJsonSchema(TestModel);
         expect(jsonSchema.properties).to.not.have.keys(['nul', 'undef']);
+        expectValidJsonSchema(jsonSchema);
       });
 
       it('does not convert properties that have not been decorated', () => {
@@ -42,11 +44,13 @@ describe('build-schema', () => {
         const noPropJson = modelToJsonSchema(NoPropertyMeta);
         const onePropJson = modelToJsonSchema(OnePropertyDecorated);
         expect(noPropJson).to.not.have.key('properties');
+        expectValidJsonSchema(noPropJson);
         expect(onePropJson.properties).to.deepEqual({
           foo: {
             type: 'string',
           },
         });
+        expectValidJsonSchema(onePropJson);
       });
 
       it('does not convert models that have not been decorated with @model()', () => {
@@ -56,8 +60,12 @@ describe('build-schema', () => {
           bar: number;
         }
 
-        expect(modelToJsonSchema(Empty)).to.eql({});
-        expect(modelToJsonSchema(NoModelMeta)).to.eql({});
+        const emptyJson = modelToJsonSchema(Empty);
+        const noModelMetaJson = modelToJsonSchema(NoModelMeta);
+        expect(emptyJson).to.eql({});
+        expectValidJsonSchema(emptyJson);
+        expect(noModelMetaJson).to.eql({});
+        expectValidJsonSchema(noModelMetaJson);
       });
 
       it('infers "title" property from constructor name', () => {
@@ -68,6 +76,7 @@ describe('build-schema', () => {
 
         const jsonSchema = modelToJsonSchema(TestModel);
         expect(jsonSchema.title).to.eql('TestModel');
+        expectValidJsonSchema(jsonSchema);
       });
 
       it('overrides "title" property if explicitly given', () => {
@@ -78,6 +87,7 @@ describe('build-schema', () => {
 
         const jsonSchema = modelToJsonSchema(TestModel);
         expect(jsonSchema.title).to.eql('NewName');
+        expectValidJsonSchema(jsonSchema);
       });
 
       it('retains "description" properties from top-level metadata', () => {
@@ -91,6 +101,7 @@ describe('build-schema', () => {
 
         const jsonSchema = modelToJsonSchema(TestModel);
         expect(jsonSchema.description).to.eql(topMeta.description);
+        expectValidJsonSchema(jsonSchema);
       });
 
       it('properly converts string, number, and boolean properties', () => {
@@ -113,6 +124,7 @@ describe('build-schema', () => {
             type: 'boolean',
           },
         });
+        expectValidJsonSchema(jsonSchema);
       });
 
       it('properly converts object properties', () => {
@@ -127,6 +139,7 @@ describe('build-schema', () => {
             type: 'object',
           },
         });
+        expectValidJsonSchema(jsonSchema);
       });
 
       context('with custom type properties', () => {
@@ -147,6 +160,7 @@ describe('build-schema', () => {
             },
           });
           expect(jsonSchema).to.not.have.key('definitions');
+          expectValidJsonSchema(jsonSchema);
         });
 
         it('properly converts decorated custom type properties', () => {
@@ -176,6 +190,7 @@ describe('build-schema', () => {
               },
             },
           });
+          expectValidJsonSchema(jsonSchema);
         });
 
         it('creates definitions only at the root level of the schema', () => {
@@ -223,6 +238,7 @@ describe('build-schema', () => {
               },
             },
           });
+          expectValidJsonSchema(jsonSchema);
         });
       });
 
@@ -241,6 +257,7 @@ describe('build-schema', () => {
             },
           },
         });
+        expectValidJsonSchema(jsonSchema);
       });
 
       it('properly converts custom type arrays properties', () => {
@@ -262,6 +279,7 @@ describe('build-schema', () => {
             },
           },
         });
+        expectValidJsonSchema(jsonSchema);
       });
 
       it('supports explicit primitive type decoration via strings', () => {
@@ -287,6 +305,7 @@ describe('build-schema', () => {
             type: 'number',
           },
         });
+        expectValidJsonSchema(jsonSchema);
       });
 
       it('maps "required" keyword to the schema appropriately', () => {
@@ -301,6 +320,7 @@ describe('build-schema', () => {
 
         const jsonSchema = modelToJsonSchema(TestModel);
         expect(jsonSchema.required).to.deepEqual(['propTwo']);
+        expectValidJsonSchema(jsonSchema);
       });
 
       it('errors out when explicit type decoration is not primitive', () => {
@@ -335,6 +355,18 @@ describe('build-schema', () => {
         }).to.throw(/type is defined as an array/);
       });
     });
+
+    function expectValidJsonSchema(schema: JsonSchema) {
+      const ajv = new Ajv();
+      const validate = ajv.compile(
+        require('ajv/lib/refs/json-schema-draft-06.json'),
+      );
+      const isValid = validate(schema);
+      const result = isValid
+        ? 'JSON Schema is valid'
+        : ajv.errorsText(validate.errors!);
+      expect(result).to.equal('JSON Schema is valid');
+    }
   });
 
   describe('getjsonSchema', () => {

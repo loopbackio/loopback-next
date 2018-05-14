@@ -35,7 +35,8 @@
   "devDependencies": {
     "@loopback/build": "^0.6.5",
     "@loopback/testlab": "^0.10.4",
-    "@types/node": "^10.1.1"
+    "@types/node": "^10.1.1",
+    "ajv": "^6.5.0"
   },
   "files": [
     "README.md",
