@@ -1,6 +1,7 @@
 /coverage
 packages/*/api-docs
 packages/cli/generators/*/templates
+packages/cli/test/integration/.sandbox
 packages/*/dist*
 examples/*/dist*
 *.json
