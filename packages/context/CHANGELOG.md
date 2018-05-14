@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@0.10.1...@loopback/context@0.11.0) (2018-05-14)
+
+
+### Features
+
+* **context:** add more utils to resolve valueOrPromises ([cc55ef5](https://github.com/strongloop/loopback-next/commit/cc55ef5))
+
+
+
+
 <a name="0.10.1"></a>
 ## [0.10.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@0.10.0...@loopback/context@0.10.1) (2018-05-08)
 

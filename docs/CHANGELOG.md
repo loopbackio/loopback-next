@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.7.4"></a>
+## [0.7.4](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.7.3...@loopback/docs@0.7.4) (2018-05-14)
+
+
+### Bug Fixes
+
+* multiple instances of the same repository class ([c553f11](https://github.com/strongloop/loopback-next/commit/c553f11))
+
+
+
+
 <a name="0.7.3"></a>
 ## [0.7.3](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.7.2...@loopback/docs@0.7.3) (2018-05-08)
 
