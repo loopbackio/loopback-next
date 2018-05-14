@@ -37,7 +37,7 @@ describe('cli', () => {
 
   it('prints commands with --help', () => {
     const entries = [];
-    main({help: true, _: []}, getLog(entries));
+    main({help: true, _: []}, getLog(entries), true);
     expect(entries).to.containEql('Available commands: ');
     expect(entries).to.containEql(
       '  lb4 app\n  lb4 extension\n  lb4 controller\n  lb4 example',
