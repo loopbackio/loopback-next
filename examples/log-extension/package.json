@@ -47,7 +47,8 @@
     "index.js",
     "index.d.ts",
     "dist*/src",
-    "dist*/index*"
+    "dist*/index*",
+    "src"
   ],
   "devDependencies": {
     "@loopback/build": "^0.6.4",
