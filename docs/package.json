@@ -1,6 +1,6 @@
 {
   "name": "@loopback/docs",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "description": "Documentation for LoopBack 4",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/docs",
   "author": {

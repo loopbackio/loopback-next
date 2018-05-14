@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.9.3"></a>
+## [0.9.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.9.2...@loopback/example-todo@0.9.3) (2018-05-14)
+
+
+### Bug Fixes
+
+* change index.d.ts files to point to dist8 ([42ca42d](https://github.com/strongloop/loopback-next/commit/42ca42d))
+* update example scripts and files in package.json ([65f5d52](https://github.com/strongloop/loopback-next/commit/65f5d52))
+
+
+
+
 <a name="0.9.2"></a>
 ## [0.9.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.9.1...@loopback/example-todo@0.9.2) (2018-05-14)
 

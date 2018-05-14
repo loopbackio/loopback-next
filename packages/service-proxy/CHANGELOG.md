@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.5.4"></a>
+## [0.5.4](https://github.com/strongloop/loopback-next/compare/@loopback/service-proxy@0.5.3...@loopback/service-proxy@0.5.4) (2018-05-14)
+
+
+### Bug Fixes
+
+* change index.d.ts files to point to dist8 ([42ca42d](https://github.com/strongloop/loopback-next/commit/42ca42d))
+
+
+
+
 <a name="0.5.3"></a>
 ## [0.5.3](https://github.com/strongloop/loopback-next/compare/@loopback/service-proxy@0.5.2...@loopback/service-proxy@0.5.3) (2018-05-14)
 

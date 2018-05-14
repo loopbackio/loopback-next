@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.8.3"></a>
+## [0.8.3](https://github.com/strongloop/loopback-next/compare/@loopback/core@0.8.2...@loopback/core@0.8.3) (2018-05-14)
+
+
+### Bug Fixes
+
+* change index.d.ts files to point to dist8 ([42ca42d](https://github.com/strongloop/loopback-next/commit/42ca42d))
+
+
+
+
 <a name="0.8.2"></a>
 ## [0.8.2](https://github.com/strongloop/loopback-next/compare/@loopback/core@0.8.1...@loopback/core@0.8.2) (2018-05-14)
 
