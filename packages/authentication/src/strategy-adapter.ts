@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {HttpErrors, ParsedRequest} from '@loopback/rest';
+import {HttpErrors, Request} from '@loopback/rest';
 import {Strategy} from 'passport';
 import {UserProfile} from './providers/authentication.provider';
 
@@ -19,7 +19,7 @@ export class ShimRequest implements Express.Request {
   path: string;
   method: string;
 
-  constructor(request: ParsedRequest) {
+  constructor(request: Request) {
     this.headers = request.headers;
     this.query = request.query;
     this.url = request.url;
@@ -79,7 +79,7 @@ export class StrategyAdapter {
    *     3. authenticate using the strategy
    * @param req {http.ServerRequest} The incoming request.
    */
-  authenticate(req: ParsedRequest) {
+  authenticate(req: Request) {
     const shimReq = new ShimRequest(req);
     return new Promise<UserProfile>((resolve, reject) => {
       // create a prototype chain of an instance of a passport strategy

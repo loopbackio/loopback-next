@@ -4,33 +4,26 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  RejectProvider,
-  LogError,
-  ParsedRequest,
-  HandlerContext,
-} from '../../..';
-
-import {
-  expect,
-  mockResponse,
-  ShotResponseMock,
-  sinon,
+  ExpressContextStub,
   SinonSpy,
+  expect,
+  sinon,
+  stubExpressContext,
 } from '@loopback/testlab';
+import {LogError, RejectProvider} from '../../..';
 
 describe('reject', () => {
   const noopLogger: LogError = () => {};
   const testError = new Error('test error');
-  let mock: ShotResponseMock;
-  let mockedContext: HandlerContext;
+  let contextStub: ExpressContextStub;
 
-  beforeEach(givenMockedResponse);
+  beforeEach(givenStubbedContext);
 
   it('returns HTTP response with status code 500 by default', async () => {
     const reject = new RejectProvider(noopLogger).value();
 
-    reject(mockedContext, testError);
-    const result = await mock.result;
+    reject(contextStub, testError);
+    const result = await contextStub.result;
 
     expect(result).to.have.property('statusCode', 500);
   });
@@ -39,18 +32,13 @@ describe('reject', () => {
     const logger = sinon.spy() as LogError & SinonSpy;
     const reject = new RejectProvider(logger).value();
 
-    reject(mockedContext, testError);
-    await mock.result;
+    reject(contextStub, testError);
+    await contextStub.result;
 
-    sinon.assert.calledWith(logger, testError, 500, mock.request);
+    sinon.assert.calledWith(logger, testError, 500, contextStub.request);
   });
 
-  function givenMockedResponse() {
-    mock = mockResponse();
-    mockedContext = {
-      // FIXME(bajtos) Remove this explicit cast once we switch to Express
-      request: mock.request as ParsedRequest,
-      response: mock.response,
-    };
+  function givenStubbedContext() {
+    contextStub = stubExpressContext();
   }
 });

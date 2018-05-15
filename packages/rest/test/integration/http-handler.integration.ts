@@ -20,6 +20,7 @@ import * as HttpErrors from 'http-errors';
 import {ParameterObject, RequestBodyObject} from '@loopback/openapi-v3-types';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 import {createUnexpectedHttpErrorLogger} from '../helpers';
+import * as express from 'express';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -458,7 +459,8 @@ describe('HttpHandler', () => {
   }
 
   function givenClient() {
-    client = createClientForHandler((req, res) => {
+    const app = express();
+    app.use((req, res) => {
       handler.handleRequest(req, res).catch(err => {
         // This should never happen. If we ever get here,
         // then it means "handler.handlerRequest()" crashed unexpectedly.
@@ -469,5 +471,6 @@ describe('HttpHandler', () => {
         res.end();
       });
     });
+    client = createClientForHandler(app);
   }
 });

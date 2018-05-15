@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  ParsedRequest,
   FindRoute,
   InvokeMethod,
   Send,

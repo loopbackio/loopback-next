@@ -5,19 +5,17 @@
 
 import {Context} from '@loopback/context';
 import {PathObject, SchemasObject} from '@loopback/openapi-v3-types';
-import {ServerRequest, ServerResponse} from 'http';
 import {ControllerSpec} from '@loopback/openapi-v3';
 
 import {SequenceHandler} from './sequence';
 import {
   RoutingTable,
-  parseRequestUrl,
   ResolvedRoute,
   RouteEntry,
   ControllerClass,
   ControllerFactory,
 } from './router/routing-table';
-import {ParsedRequest} from './types';
+import {Request, Response} from './types';
 
 import {RestBindings} from './keys';
 import {RequestContext} from './request-context';
@@ -26,10 +24,7 @@ export class HttpHandler {
   protected _routes: RoutingTable = new RoutingTable();
   protected _apiDefinitions: SchemasObject;
 
-  public handleRequest: (
-    request: ServerRequest,
-    response: ServerResponse,
-  ) => Promise<void>;
+  public handleRequest: (request: Request, response: Response) => Promise<void>;
 
   constructor(protected _rootContext: Context) {
     this.handleRequest = (req, res) => this._handleRequest(req, res);
@@ -59,17 +54,16 @@ export class HttpHandler {
     return this._routes.describeApiPaths();
   }
 
-  findRoute(request: ParsedRequest): ResolvedRoute {
+  findRoute(request: Request): ResolvedRoute {
     return this._routes.find(request);
   }
 
   protected async _handleRequest(
-    request: ServerRequest,
-    response: ServerResponse,
+    request: Request,
+    response: Response,
   ): Promise<void> {
-    const parsedRequest: ParsedRequest = parseRequestUrl(request);
     const requestContext = new RequestContext(
-      parsedRequest,
+      request,
       response,
       this._rootContext,
     );

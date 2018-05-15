@@ -3,9 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-// external dependencies
-export {ServerRequest, ServerResponse} from 'http';
-
 export {
   RouteEntry,
   RoutingTable,
@@ -13,7 +10,6 @@ export {
   ControllerRoute,
   ResolvedRoute,
   createResolvedRoute,
-  parseRequestUrl,
   ControllerClass,
   ControllerInstance,
   ControllerFactory,

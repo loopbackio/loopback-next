@@ -4,19 +4,22 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  parseOperationArgs,
-  ParsedRequest,
-  parseRequestUrl,
-  PathParameterValues,
-  Route,
-  createResolvedRoute,
-} from '../..';
-import {expect, ShotRequest, ShotRequestOptions} from '@loopback/testlab';
-import {
   OperationObject,
   ParameterObject,
   RequestBodyObject,
 } from '@loopback/openapi-v3-types';
+import {
+  ShotRequestOptions,
+  expect,
+  stubExpressContext,
+} from '@loopback/testlab';
+import {
+  PathParameterValues,
+  Request,
+  Route,
+  createResolvedRoute,
+  parseOperationArgs,
+} from '../..';
 
 describe('operationArgsParser', () => {
   it('parses path parameters', async () => {
@@ -68,8 +71,8 @@ describe('operationArgsParser', () => {
     };
   }
 
-  function givenRequest(options?: ShotRequestOptions): ParsedRequest {
-    return parseRequestUrl(new ShotRequest(options || {url: '/'}));
+  function givenRequest(options?: ShotRequestOptions): Request {
+    return stubExpressContext(options).request;
   }
 
   function givenResolvedRoute(

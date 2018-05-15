@@ -8,6 +8,8 @@
  * https://github.com/hapijs/shot
  */
 
+// tslint:disable:no-any
+
 import {ServerRequest, ServerResponse} from 'http';
 import * as util from 'util';
 
@@ -17,18 +19,26 @@ import {
   inject,
 } from 'shot';
 
+import * as express from 'express';
+
 export {inject, ShotRequestOptions};
 
 // tslint:disable-next-line:variable-name
-export const ShotRequest: ShotRequestCtor = require('shot/lib/request');
+const ShotRequest: ShotRequestCtor = require('shot/lib/request');
+type ShotRequestCtor = new (options: ShotRequestOptions) => ServerRequest;
+
+export function stubServerRequest(options: ShotRequestOptions): ServerRequest {
+  const stub = new ShotRequest(options);
+  // Hacky workaround for Express, see
+  // https://github.com/expressjs/express/blob/4.16.3/lib/middleware/init.js
+  // https://github.com/hapijs/shot/issues/82#issuecomment-247943773
+  // https://github.com/jfhbrook/pickleback
+  Object.assign(stub, ShotRequest.prototype);
+  return stub;
+}
 
 // tslint:disable-next-line:variable-name
-export const ShotResponse: ShotResponseCtor = require('shot/lib/response');
-
-export type ShotRequestCtor = new (
-  options: ShotRequestOptions,
-) => ServerRequest;
-
+const ShotResponse: ShotResponseCtor = require('shot/lib/response');
 export type ShotCallback = (response: ResponseObject) => void;
 
 export type ShotResponseCtor = new (
@@ -36,49 +46,124 @@ export type ShotResponseCtor = new (
   onEnd: ShotCallback,
 ) => ServerResponse;
 
-export type ShotObservedResponse = ResponseObject;
-
-export interface ShotResponseMock {
-  request: ServerRequest;
-  response: ServerResponse;
-  result: Promise<ShotObservedResponse>;
+export function stubServerResponse(
+  request: ServerRequest,
+  onEnd: ShotCallback,
+): ServerResponse {
+  const stub = new ShotResponse(request, onEnd);
+  // Hacky workaround for Express, see
+  // https://github.com/expressjs/express/blob/4.16.3/lib/middleware/init.js
+  // https://github.com/hapijs/shot/issues/82#issuecomment-247943773
+  // https://github.com/jfhbrook/pickleback
+  Object.assign(stub, ShotResponse.prototype);
+  return stub;
 }
 
-export function mockResponse(
+export type ObservedResponse = ResponseObject;
+
+export interface HandlerContextStub {
+  request: ServerRequest;
+  response: ServerResponse;
+  result: Promise<ObservedResponse>;
+}
+
+export function stubHandlerContext(
   requestOptions: ShotRequestOptions = {url: '/'},
-): ShotResponseMock {
-  const request = new ShotRequest(requestOptions);
+): HandlerContextStub {
+  const request = stubServerRequest(requestOptions);
   let response: ServerResponse | undefined;
-  let result = new Promise<ShotObservedResponse>(resolve => {
+  let result = new Promise<ObservedResponse>(resolve => {
     response = new ShotResponse(request, resolve);
   });
 
+  const context = {request, response: response!, result};
+  defineCustomContextInspect(context, requestOptions);
+  return context;
+}
+
+export interface ExpressContextStub extends HandlerContextStub {
+  app: express.Application;
+  request: express.Request;
+  response: express.Response;
+  result: Promise<ObservedResponse>;
+}
+
+export function stubExpressContext(
+  requestOptions: ShotRequestOptions = {url: '/'},
+): ExpressContextStub {
+  const app = express();
+
+  const request = new ShotRequest(requestOptions) as express.Request;
+  // mix in Express Request API
+  const RequestApi = (express as any).request;
+  for (const key of Object.getOwnPropertyNames(RequestApi)) {
+    Object.defineProperty(
+      request,
+      key,
+      Object.getOwnPropertyDescriptor(RequestApi, key)!,
+    );
+  }
+  request.app = app;
+  request.originalUrl = request.url;
+
+  let response: express.Response | undefined;
+  let result = new Promise<ObservedResponse>(resolve => {
+    response = new ShotResponse(request, resolve) as express.Response;
+    // mix in Express Response API
+    Object.assign(response, (express as any).response);
+    const ResponseApi = (express as any).response;
+    for (const key of Object.getOwnPropertyNames(ResponseApi)) {
+      Object.defineProperty(
+        response,
+        key,
+        Object.getOwnPropertyDescriptor(ResponseApi, key)!,
+      );
+    }
+    response.app = app;
+    (response as any).req = request;
+    (request as any).res = response;
+  });
+
+  const context = {app, request, response: response!, result};
+  defineCustomContextInspect(context, requestOptions);
+  return context;
+}
+
+function defineCustomContextInspect(
+  context: HandlerContextStub,
+  requestOptions: ShotRequestOptions,
+) {
   // Setup custom inspect functions to make test error messages easier to read
-  const inspectOpts = (depth: number) => util.inspect(requestOptions, {depth});
+  const inspectOpts = (depth: number, opts: any) =>
+    util.inspect(requestOptions, opts);
+
   defineCustomInspect(
-    request,
-    depth => `[ShotRequest with options ${inspectOpts(depth)}]`,
+    context.request,
+    (depth, opts) => `[RequestStub with options ${inspectOpts(depth, opts)}]`,
   );
 
   defineCustomInspect(
-    response,
-    depth => `[ShotResponse for request with options ${inspectOpts(depth)}]`,
+    context.response,
+    (depth, opts) =>
+      `[ResponseStub for request with options ${inspectOpts(depth, opts)}]`,
   );
 
-  result = result.then(r => {
+  context.result = context.result.then(r => {
     defineCustomInspect(
       r,
-      depth =>
-        `[ShotObservedResponse for request with options ${inspectOpts(depth)}]`,
+      (depth, opts) =>
+        `[ObservedResponse for request with options ${inspectOpts(
+          depth,
+          opts,
+        )}]`,
     );
     return r;
   });
-
-  return {request, response: response!, result};
 }
 
-// tslint:disable:no-any
-function defineCustomInspect(obj: any, inspectFn: (depth: number) => {}) {
-  obj.inspect = obj.toString = inspectFn;
+function defineCustomInspect(
+  obj: any,
+  inspectFn: (depth: number, opts: any) => {},
+) {
+  obj[util.inspect.custom] = inspectFn;
 }
-// tslint:enable:no-any

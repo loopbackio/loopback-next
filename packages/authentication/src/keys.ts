@@ -37,20 +37,20 @@ export namespace AuthenticationBindings {
    *     // ... other sequence action injections
    *   ) {}
    *
-   *   async handle(req: ParsedRequest, res: ServerResponse) {
+   *   async handle(context: RequestContext) {
    *     try {
-   *       const route = this.findRoute(req);
+   *       const {request, response} = context;
+   *       const route = this.findRoute(request);
    *
    *      // Authenticate
-   *       await this.authenticateRequest(req);
+   *       await this.authenticateRequest(request);
    *
    *       // Authentication successful, proceed to invoke controller
-   *       const args = await this.parseParams(req, route);
+   *       const args = await this.parseParams(request, route);
    *       const result = await this.invoke(route, args);
-   *       this.send(res, result);
+   *       this.send(response, result);
    *     } catch (err) {
-   *       this.reject(res, req, err);
-   *       return;
+   *       this.reject(context, err);
    *     }
    *   }
    * }

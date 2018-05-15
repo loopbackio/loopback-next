@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context, inject, Provider} from '@loopback/context';
-import {FindRoute, ParsedRequest} from '../types';
+import {FindRoute, Request} from '../types';
 import {HttpHandler} from '../http-handler';
 import {RestBindings} from '../keys';
 import {ResolvedRoute} from '../router/routing-table';
@@ -19,7 +19,7 @@ export class FindRouteProvider implements Provider<FindRoute> {
     return request => this.action(request);
   }
 
-  action(request: ParsedRequest): ResolvedRoute {
+  action(request: Request): ResolvedRoute {
     const found = this.handler.findRoute(request);
     found.updateBindings(this.context);
     return found;

@@ -4,8 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from '@loopback/context';
-import {ServerResponse} from 'http';
-import {HandlerContext, ParsedRequest} from './types';
+import {HandlerContext, Request, Response} from './types';
 import {RestBindings} from './keys';
 
 /**
@@ -14,8 +13,8 @@ import {RestBindings} from './keys';
  */
 export class RequestContext extends Context implements HandlerContext {
   constructor(
-    public readonly request: ParsedRequest,
-    public readonly response: ServerResponse,
+    public readonly request: Request,
+    public readonly response: Response,
     parent: Context,
     name?: string,
   ) {
@@ -23,7 +22,7 @@ export class RequestContext extends Context implements HandlerContext {
     this._setupBindings(request, response);
   }
 
-  private _setupBindings(request: ParsedRequest, response: ServerResponse) {
+  private _setupBindings(request: Request, response: Response) {
     this.bind(RestBindings.Http.REQUEST)
       .to(request)
       .lock();

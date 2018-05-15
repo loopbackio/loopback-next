@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ServerResponse as Response} from 'http';
-import {OperationRetval} from './types';
+import {OperationRetval, Response} from './types';
 import {HttpError} from 'http-errors';
 import {Readable} from 'stream';
 

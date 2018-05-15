@@ -23,9 +23,18 @@ import {Application, CoreBindings, Server} from '@loopback/core';
 import {getControllerSpec} from '@loopback/openapi-v3';
 import {HttpHandler} from './http-handler';
 import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
-import {FindRoute, InvokeMethod, Send, Reject, ParseParams} from './types';
+import {
+  FindRoute,
+  InvokeMethod,
+  Send,
+  Reject,
+  ParseParams,
+  Request,
+  Response,
+} from './types';
 import {RestBindings} from './keys';
-import {RequestContext} from '.';
+import {RequestContext} from './request-context';
+import * as express from 'express';
 
 export type HttpRequestListener = (
   req: ServerRequest,
@@ -119,6 +128,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
   }
   protected _httpServer: Http.Server;
 
+  protected _expressApp: express.Application;
+
   /**
    * @memberof RestServer
    * Creates an instance of RestServer.
@@ -152,22 +163,31 @@ export class RestServer extends Context implements Server, HttpServerLike {
       this.sequence(options.sequence);
     }
 
-    this.requestHandler = (req: ServerRequest, res: ServerResponse) => {
-      try {
-        this._handleHttpRequest(req, res, options!).catch(err =>
-          this._onUnhandledError(req, res, err),
-        );
-      } catch (err) {
-        this._onUnhandledError(req, res, err);
-      }
-    };
+    this._setupRequestHandler(options);
 
     this.bind(RestBindings.HANDLER).toDynamicValue(() => this.httpHandler);
   }
 
+  protected _setupRequestHandler(options: RestServerConfig) {
+    this._expressApp = express();
+    this.requestHandler = this._expressApp;
+
+    // Mount our router & request handler
+    this._expressApp.use((req, res, next) => {
+      this._handleHttpRequest(req, res, options!).catch(next);
+    });
+
+    // Mount our error handler
+    this._expressApp.use(
+      (err: Error, req: Request, res: Response, next: Function) => {
+        this._onUnhandledError(req, res, err);
+      },
+    );
+  }
+
   protected _handleHttpRequest(
-    request: ServerRequest,
-    response: ServerResponse,
+    request: Request,
+    response: Response,
     options: RestServerConfig,
   ) {
     // allow CORS support for all endpoints so that users
@@ -182,11 +202,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
       credentials: true,
     };
 
-    // FIXME: `cors` expects Express Request/Response but the implementation
-    // at https://github.com/expressjs/cors/blob/master/lib/index.js only uses
-    // http.ServerRequest/ServerResponse
-    // tslint:disable-next-line:no-any
-    cors(corsOptions)(request as any, response as any, () => {});
+    // TODO(bajtos) Register cors as a middleware in _setupRequestHandler
+    cors(corsOptions)(request, response, () => {});
     if (request.method === 'OPTIONS') {
       return Promise.resolve();
     }
@@ -308,8 +325,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
   }
 
   private async _serveOpenApiSpec(
-    request: ServerRequest,
-    response: ServerResponse,
+    request: Request,
+    response: Response,
     options?: OpenApiSpecOptions,
   ) {
     options = options || {version: '3.0.0', format: 'json'};
@@ -326,18 +343,15 @@ export class RestServer extends Context implements Server, HttpServerLike {
   }
 
   private async _redirectToSwaggerUI(
-    request: ServerRequest,
-    response: ServerResponse,
+    request: Request,
+    response: Response,
     options: RestServerConfig,
   ) {
-    response.statusCode = 308;
     const baseUrl =
       options.apiExplorerUrl || 'https://loopback.io/api-explorer';
-    response.setHeader(
-      'Location',
-      `${baseUrl}?url=http://${request.headers.host}/openapi.json`,
-    );
-    response.end();
+    const openApiUrl = `http://${request.headers.host}/openapi.json`;
+    const fullUrl = `${baseUrl}?url=${openApiUrl}`;
+    response.redirect(308, fullUrl);
   }
 
   /**
@@ -602,11 +616,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     });
   }
 
-  protected _onUnhandledError(
-    req: ServerRequest,
-    res: ServerResponse,
-    err: Error,
-  ) {
+  protected _onUnhandledError(req: Request, res: Response, err: Error) {
     if (!res.headersSent) {
       res.statusCode = 500;
       res.end();

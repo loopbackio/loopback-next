@@ -85,7 +85,7 @@ Here is an example where the application logs out a message before and after
 a request is handled:
 
 ```ts
-import {DefaultSequence, ParsedRequest, ServerResponse} from '@loopback/rest';
+import {DefaultSequence, Request, Response} from '@loopback/rest';
 
 class MySequence extends DefaultSequence {
   log(msg: string) {
@@ -137,7 +137,7 @@ function upon injection.
 **custom-send.provider.ts**
 
 ```ts
-import {Send, ServerResponse} from '@loopback/rest';
+import {Send, Response} from '@loopback/rest';
 import {Provider, BoundValue, inject} from '@loopback/context';
 import {
   writeResultToResponse,
@@ -157,19 +157,18 @@ export class CustomSendProvider implements Provider<Send> {
 
   value() {
     // Use the lambda syntax to preserve the "this" scope for future calls!
-    return (response: ServerResponse, result: OperationRetval) => {
+    return (response: Response, result: OperationRetval) => {
       this.action(response, result);
     };
   }
   /**
    * Use the mimeType given in the request's Accept header to convert
    * the response object!
-   * @param ServerResponse response The response object used to reply to the
-   * client.
-   * @param OperationRetVal result The result of the operation carried out by
-   * the controller's handling function.
+   * @param response The response object used to reply to the  client.
+   * @param result The result of the operation carried out by the controller's
+   * handling function.
    */
-  action(response: ServerResponse, result: OperationRetval) {
+  action(response: Response, result: OperationRetval) {
     if (result) {
       // Currently, the headers interface doesn't allow arbitrary string keys!
       const headers = (this.request.headers as any) || {};

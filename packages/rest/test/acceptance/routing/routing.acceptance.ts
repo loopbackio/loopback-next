@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  ServerRequest,
-  ServerResponse,
+  Request,
+  Response,
   Route,
   RestBindings,
   RestServer,
@@ -312,8 +312,8 @@ describe('Routing', () => {
     @api(spec)
     class StatusController {
       constructor(
-        @inject(RestBindings.Http.REQUEST) private request: ServerRequest,
-        @inject(RestBindings.Http.RESPONSE) private response: ServerResponse,
+        @inject(RestBindings.Http.REQUEST) private request: Request,
+        @inject(RestBindings.Http.RESPONSE) private response: Response,
       ) {}
 
       async getStatus(): Promise<string> {

@@ -3,15 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  ParsedRequest,
-  parseRequestUrl,
-  RoutingTable,
-  ControllerRoute,
-} from '../../..';
-import {getControllerSpec, param, get} from '@loopback/openapi-v3';
-import {expect, ShotRequestOptions, ShotRequest} from '@loopback/testlab';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
+import {get, getControllerSpec, param} from '@loopback/openapi-v3';
+import {
+  ShotRequestOptions,
+  expect,
+  stubExpressContext,
+} from '@loopback/testlab';
+import {ControllerRoute, Request, RoutingTable} from '../../..';
 
 describe('RoutingTable', () => {
   it('joins basePath and path', () => {
@@ -107,7 +106,7 @@ describe('RoutingTable', () => {
     expect(route.describe()).to.equal('TestController.greet');
   });
 
-  function givenRequest(options?: ShotRequestOptions): ParsedRequest {
-    return parseRequestUrl(new ShotRequest(options || {url: '/'}));
+  function givenRequest(options?: ShotRequestOptions): Request {
+    return stubExpressContext(options).request;
   }
 });

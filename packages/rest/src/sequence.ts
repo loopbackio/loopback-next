@@ -5,14 +5,7 @@
 
 const debug = require('debug')('loopback:core:sequence');
 import {inject} from '@loopback/context';
-import {
-  FindRoute,
-  InvokeMethod,
-  ParsedRequest,
-  Send,
-  Reject,
-  ParseParams,
-} from './types';
+import {FindRoute, InvokeMethod, Send, Reject, ParseParams} from './types';
 import {RestBindings} from './keys';
 import {RequestContext} from './request-context';
 
