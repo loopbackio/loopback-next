@@ -3,23 +3,22 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect, ShotRequest} from '@loopback/testlab';
+import {BoundValue, Context, Provider, inject} from '@loopback/context';
 import {
   Application,
-  ProviderMap,
-  CoreBindings,
   Component,
+  CoreBindings,
+  ProviderMap,
 } from '@loopback/core';
-import {inject, Provider, BoundValue, Context} from '@loopback/context';
-
+import {expect, stubExpressContext} from '@loopback/testlab';
 import {
-  RestComponent,
-  RestServer,
-  RestBindings,
-  RestComponentConfig,
-  ServerRequest,
   HttpHandler,
   LogError,
+  Request,
+  RestBindings,
+  RestComponent,
+  RestComponentConfig,
+  RestServer,
 } from '../..';
 
 const SequenceActions = RestBindings.SequenceActions;
@@ -68,9 +67,9 @@ describe('RestComponent', () => {
           }
         }
 
-        class CustomLogger implements Provider<BoundValue> {
+        class CustomLogger implements Provider<LogError> {
           value() {
-            return (err: Error, statusCode: number, request: ServerRequest) => {
+            return (err: Error, statusCode: number, request: Request) => {
               lastLog = `${request.url} ${statusCode} ${err.message}`;
             };
           }
@@ -80,7 +79,8 @@ describe('RestComponent', () => {
         app.component(CustomRestComponent);
         const server = await app.getServer(RestServer);
         const logError = await server.get<LogError>(SequenceActions.LOG_ERROR);
-        logError(new Error('test-error'), 400, new ShotRequest({url: '/'}));
+        const expressContext = stubExpressContext({url: '/'});
+        logError(new Error('test-error'), 400, expressContext.request);
 
         expect(lastLog).to.equal('/ 400 test-error');
       });

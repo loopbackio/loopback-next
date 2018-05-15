@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ServerResponse} from 'http';
 import {CoreBindings} from '@loopback/core';
 import {BindingKey, Context} from '@loopback/context';
 import {OpenApiSpec} from '@loopback/openapi-v3-types';
@@ -16,7 +15,8 @@ import {
   GetFromContext,
   InvokeMethod,
   LogError,
-  ParsedRequest,
+  Request,
+  Response,
   ParseParams,
   Reject,
   Send,
@@ -116,15 +116,11 @@ export namespace RestBindings {
     /**
      * Binding key for setting and injecting the http request
      */
-    export const REQUEST = BindingKey.create<ParsedRequest>(
-      'rest.http.request',
-    );
+    export const REQUEST = BindingKey.create<Request>('rest.http.request');
     /**
      * Binding key for setting and injecting the http response
      */
-    export const RESPONSE = BindingKey.create<ServerResponse>(
-      'rest.http.response',
-    );
+    export const RESPONSE = BindingKey.create<Response>('rest.http.response');
     /**
      * Binding key for setting and injecting the http request context
      */

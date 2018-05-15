@@ -4,40 +4,31 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding, BoundValue} from '@loopback/context';
-import {ServerRequest, ServerResponse} from 'http';
 import {ResolvedRoute, RouteEntry} from './router/routing-table';
+import {Request, Response} from 'express';
 
-export interface ParsedRequest extends ServerRequest {
-  // see http://expressjs.com/en/4x/api.html#req.path
-  path: string;
-  // see http://expressjs.com/en/4x/api.html#req.query
-  query: {[key: string]: string | string[]};
-  // see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/15808
-  url: string;
-  pathname: string;
-  method: string;
-}
+export {Request, Response};
 
 /**
  * An object holding HTTP request, response and other data
  * needed to handle an incoming HTTP request.
  */
 export interface HandlerContext {
-  readonly request: ParsedRequest;
-  readonly response: ServerResponse;
+  readonly request: Request;
+  readonly response: Response;
 }
 
 /**
  * Find a route matching the incoming request.
  * Throw an error when no route was found.
  */
-export type FindRoute = (request: ParsedRequest) => ResolvedRoute;
+export type FindRoute = (request: Request) => ResolvedRoute;
 
 /**
  *
  */
 export type ParseParams = (
-  request: ParsedRequest,
+  request: Request,
   route: ResolvedRoute,
 ) => Promise<OperationArgs>;
 
@@ -61,7 +52,7 @@ export type InvokeMethod = (
  * @param response The response the response to send to.
  * @param result The operation result to send.
  */
-export type Send = (response: ServerResponse, result: OperationRetval) => void;
+export type Send = (response: Response, result: OperationRetval) => void;
 
 /**
  * Reject the request with an error.
@@ -82,7 +73,7 @@ export type Reject = (handlerContext: HandlerContext, err: Error) => void;
 export type LogError = (
   err: Error,
   statusCode: number,
-  request: ServerRequest,
+  request: Request,
 ) => void;
 
 // tslint:disable:no-any

@@ -12,7 +12,7 @@ import {
 } from '@loopback/openapi-v3-types';
 import {REQUEST_BODY_INDEX} from '@loopback/openapi-v3';
 import {promisify} from 'util';
-import {OperationArgs, ParsedRequest, PathParameterValues} from './types';
+import {OperationArgs, Request, PathParameterValues} from './types';
 import {ResolvedRoute} from './router/routing-table';
 type HttpError = HttpErrors.HttpError;
 
@@ -27,7 +27,7 @@ const parseJsonBody: (req: ServerRequest) => Promise<MaybeBody> = promisify(
  * Get the content-type header value from the request
  * @param req Http request
  */
-function getContentType(req: ServerRequest): string | undefined {
+function getContentType(req: Request): string | undefined {
   const val = req.headers['content-type'];
   if (typeof val === 'string') {
     return val;
@@ -47,7 +47,7 @@ function getContentType(req: ServerRequest): string | undefined {
  * @param pathParams Path parameters in incoming HTTP request
  */
 export async function parseOperationArgs(
-  request: ParsedRequest,
+  request: Request,
   route: ResolvedRoute,
 ): Promise<OperationArgs> {
   const operationSpec = route.spec;
@@ -58,7 +58,7 @@ export async function parseOperationArgs(
 
 async function loadRequestBodyIfNeeded(
   operationSpec: OperationObject,
-  request: ServerRequest,
+  request: Request,
 ): Promise<MaybeBody> {
   if (!operationSpec.requestBody) return Promise.resolve();
 
@@ -77,7 +77,7 @@ async function loadRequestBodyIfNeeded(
 
 function buildOperationArguments(
   operationSpec: OperationObject,
-  request: ParsedRequest,
+  request: Request,
   pathParams: PathParameterValues,
   body?: MaybeBody,
 ): OperationArgs {

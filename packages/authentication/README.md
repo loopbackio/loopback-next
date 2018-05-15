@@ -113,11 +113,10 @@ import {
   InvokeMethod,
   Send,
   Reject,
-  ParsedRequest,
+  RequestContext,
 } from '@loopback/rest';
 import {inject} from '@loopback/context';
 import {AuthenticationBindings, AuthenticateFn} from '@loopback/authentication';
-import {ServerResponse} from 'http';
 
 const SequenceActions = RestBindings.SequenceActions;
 
