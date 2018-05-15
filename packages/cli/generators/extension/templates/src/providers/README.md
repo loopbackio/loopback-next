@@ -76,7 +76,9 @@ class LogSequence implements SequenceHandler {
     @inject(ExtensionStarterBindings.LOG_ACTION) protected logger: LogFn,
   ) {}
 
-  async handle(req: ParsedRequest, res: ServerResponse) {
+  async handle(context: RequestContext) {
+    const {request, response} = context;
+
     // We define these variable outside so they can be accessed by logger.
     let args: any = [];
     let result: any;
@@ -86,17 +88,17 @@ class LogSequence implements SequenceHandler {
     const start = this.logger.startTimer();
 
     try {
-      const route = this.findRoute(req);
-      args = await this.parseParams(req, route);
+      const route = this.findRoute(request);
+      args = await this.parseParams(request, route);
       result = await this.invoke(route, args);
-      this.send(res, result);
-    } catch (err) {
-      result = err; // so we can log the error message in the logger
-      this.reject(res, req, err);
+      this.send(response, result);
+    } catch (error) {
+      result = error; // so we can log the error message in the logger
+      this.reject(context, error);
     }
 
     // We call the logger function given to us by LogProvider
-    this.logger(req, args, result, start);
+    this.logger(request, args, result, start);
   }
 }
 ```

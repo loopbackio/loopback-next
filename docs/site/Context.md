@@ -118,12 +118,12 @@ as an example, we can create custom sequences that:
 Let's see this in action:
 
 ```ts
-import {DefaultSequence, RestBindings} from '@loopback/rest';
+import {DefaultSequence, RestBindings, RequestContext} from '@loopback/rest';
 
 class MySequence extends DefaultSequence {
-  async handle(request: ParsedRequest, response: ServerResponse) {
-    // we provide these value for convenience (taken from the Context)
-    // but they are still available in the sequence/request context
+  async handle(context: RequestContext) {
+    // RequestContext provides request/response properties for convenience
+    // and performance, but they are still available in the context too
     const req = await this.ctx.get(RestBindings.Http.REQUEST);
     const res = await this.ctx.get(RestBindings.Http.RESPONSE);
     this.send(res, `hello ${req.query.name}`);
