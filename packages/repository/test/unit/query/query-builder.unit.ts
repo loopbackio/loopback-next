@@ -143,6 +143,12 @@ describe('WhereBuilder', () => {
       .build();
     expect(where).to.eql({y: 'y', a: 1, b: {gt: 2}, c: {lt: 2}, x: 'x'});
   });
+
+  it('constrains an existing where object with another where filter', () => {
+    const builder = new WhereBuilder({x: 'x'});
+    const where = builder.impose({x: 'y', z: 'z'}).build();
+    expect(where).to.be.deepEqual({and: [{x: 'x'}, {x: 'y', z: 'z'}]});
+  });
 });
 
 describe('FilterBuilder', () => {
@@ -323,6 +329,51 @@ describe('FilterBuilder', () => {
     expect(filter).to.eql({
       include: [{relation: 'orders'}, {relation: 'friends'}],
     });
+  });
+
+  it('imposes a constraint with only a where object on an existing filter', () => {
+    const filterBuilder = new FilterBuilder()
+      .fields({a: true}, 'b')
+      .include('orders')
+      .limit(5)
+      .offset(2)
+      .order('a ASC')
+      .where({x: 'x'});
+    filterBuilder.impose({where: {x: 'y', z: 'z'}});
+    expect(filterBuilder.build()).to.have.properties([
+      'fields',
+      'include',
+      'limit',
+      'offset',
+      'order',
+    ]);
+    expect(filterBuilder.build()).to.have.property('where', {
+      and: [{x: 'x'}, {x: 'y', z: 'z'}],
+    });
+  });
+
+  it('throws an error when imposing a constraint filter with unsupported properties', () => {
+    const filterBuilder = new FilterBuilder()
+      .fields({a: true}, 'b')
+      .include('orders')
+      .limit(5)
+      .offset(2)
+      .order('a ASC')
+      .where({x: 'x'});
+    const constraint = new FilterBuilder()
+      .fields({a: false}, {c: false})
+      .include({relation: 'orders', scope: {limit: 5}})
+      .limit(10)
+      .offset(3)
+      .order('b DESC', 'a DESC', 'c ASC')
+      .where({x: 'y', y: 'z'})
+      .build();
+
+    expect(() => {
+      filterBuilder.impose(constraint);
+    }).to.throw(
+      /merging strategy for selection, pagination, and sorting not implemented/,
+    );
   });
 });
 
