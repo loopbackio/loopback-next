@@ -9,6 +9,7 @@ const debug = require('../lib/debug')('utils');
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
+const stream = require('stream');
 var semver = require('semver');
 const regenerate = require('regenerate');
 const _ = require('lodash');
@@ -207,4 +208,30 @@ exports.getDependencies = function() {
     deps[i] = dependencies[i] || loopbackVersion;
   }
   return deps;
+};
+
+/**
+ * Rename EJS files
+ */
+exports.renameEJS = function() {
+  const renameStream = new stream.Transform({objectMode: true});
+
+  renameStream._transform = function(file, enc, callback) {
+    const filePath = file.relative;
+    const dirname = path.dirname(filePath);
+    let extname = path.extname(filePath);
+    let basename = path.basename(filePath, extname);
+
+    // extname already contains a leading '.'
+    const fileName = `${basename}${extname}`;
+    const result = fileName.match(/(.+)(.ts|.json|.js|.md)\.ejs$/);
+    if (result) {
+      extname = result[2];
+      basename = result[1];
+      file.path = path.join(file.base, dirname, basename + extname);
+    }
+    callback(null, file);
+  };
+
+  return renameStream;
 };
