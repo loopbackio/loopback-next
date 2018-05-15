@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-const rename = require('gulp-rename');
 const BaseGenerator = require('./base-generator');
 const utils = require('./utils');
 
@@ -61,6 +60,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     });
 
     this._setupRenameTransformer();
+    super._setupGenerator();
   }
 
   /**
@@ -68,17 +68,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
    * from files that have it during project generation.
    */
   _setupRenameTransformer() {
-    this.registerTransformStream(
-      rename(function(file) {
-        // extname already contains a leading '.'
-        const fileName = `${file.basename}${file.extname}`;
-        const result = fileName.match(/(.+)(.ts|.json|.js|.md)\.ejs$/);
-        if (result) {
-          file.extname = result[2];
-          file.basename = result[1];
-        }
-      }),
-    );
+    this.registerTransformStream(utils.renameEJS());
   }
 
   setOptions() {
