@@ -279,6 +279,19 @@ export class WhereBuilder {
   exists(key: string, val?: boolean): this {
     return this.add({[key]: {exists: !!val || val == null}});
   }
+  /**
+   * Add a where object. For conflicting keys with the existing where object,
+   * create an `and` clause.
+   * @param where Where filter
+   */
+  impose(where: Where): this {
+    if (!this.where) {
+      this.where = where || {};
+    } else {
+      this.add(where);
+    }
+    return this;
+  }
 
   /**
    * Get the where object
@@ -426,6 +439,36 @@ export class FilterBuilder {
    */
   where(w: Where): this {
     this.filter.where = w;
+    return this;
+  }
+
+  /**
+   * Add a filter object. For conflicting keys with its where object,
+   * create an `and` clause. For any other properties, throw an error.
+   * @param filter filter object
+   */
+  impose(filter: Filter): this {
+    if (!this.filter) {
+      this.filter = filter || {};
+    } else if (this.filter) {
+      if (
+        filter.fields ||
+        filter.include ||
+        filter.limit ||
+        filter.offset ||
+        filter.order ||
+        filter.skip
+      ) {
+        throw new Error(
+          'merging strategy for selection, pagination, and sorting not implemented',
+        );
+      }
+      if (filter.where) {
+        this.filter.where = new WhereBuilder(this.filter.where)
+          .impose(filter.where)
+          .build();
+      }
+    }
     return this;
   }
 

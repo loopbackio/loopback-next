@@ -6,3 +6,6 @@
 export * from './kv.repository';
 export * from './legacy-juggler-bridge';
 export * from './repository';
+export * from './relation.factory';
+export * from './relation.repository';
+export * from './constraint-utils';
