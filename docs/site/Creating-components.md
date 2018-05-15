@@ -213,7 +213,6 @@ The idiomatic solution has two parts:
     ```ts
     class AppSequence implements SequenceHandler {
       constructor(
-        @inject(RestBindings.Http.CONTEXT) protected ctx: Context,
         @inject(RestBindings.SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
         @inject(RestBindings.SequenceActions.PARSE_PARAMS) protected parseParams: ParseParams,
         @inject(RestBindings.SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
@@ -223,18 +222,19 @@ The idiomatic solution has two parts:
         @inject('authentication.actions.authenticate') protected authenticate: AuthenticateFn
       ) {}
 
-      async handle(req: ParsedRequest, res: ServerResponse) {
+      async handle(context: RequestContext) {
         try {
-        const route = this.findRoute(req);
+          const {request, response} = context;
+          const route = this.findRoute(request);
 
           // Invoke the new action:
-          const user = await this.authenticate(req);
+          const user = await this.authenticate(request);
 
-          const args = await parseOperationArgs(req, route);
+          const args = await parseOperationArgs(request, route);
           const result = await this.invoke(route, args);
-          this.send(res, result);
-        } catch (err) {
-          this.reject(res, req, err);
+          this.send(response, result);
+        } catch (error) {
+          this.reject(context, err);
         }
       }
     }

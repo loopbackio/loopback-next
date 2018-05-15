@@ -639,14 +639,15 @@ export class MySequence implements SequenceHandler {
     @inject(RestSequenceActions.REJECT) protected reject: Reject,
   ) {}
 
-  async handle(req: ParsedRequest, res: ServerResponse) {
+  async handle(context: RequestContext) {
     try {
-      const route = this.findRoute(req);
-      const args = await this.parseParams(req, route);
+      const {request, response} = context;
+      const route = this.findRoute(request);
+      const args = await this.parseParams(requset, route);
       const result = await this.invoke(route, args);
-      this.send(res, result);
+      this.send(response, result);
     } catch (err) {
-      this.reject(res, req, err);
+      this.reject(context, err);
     }
   }
 }
@@ -660,23 +661,24 @@ Now it's time to customize the default sequence to print a common log line. Edit
 the `handle` method as follows:
 
 ```ts
-async handle(req: ParsedRequest, res: ServerResponse) {
+async handle(context: RequestContext) {
   try {
-    const route = this.findRoute(req);
-    const args = await this.parseParams(req, route);
+    const {request, response} = context;
+    const route = this.findRoute(request);
+    const args = await this.parseParams(request, route);
     const result = await this.invoke(route, args);
-    this.send(res, result);
+    this.send(response, result);
     this.log([
-      req.socket.remoteAddress,
+      request.socket.remoteAddress,
       '-',
       '-',
       `[${strftime('%d/%b/%Y:%H:%M:%S %z', new Date())}]`,
-      `"${req.method} ${req.path} HTTP/${req.httpVersion}"`,
-      res.statusCode,
+      `"${request.method} ${request.path} HTTP/${request.httpVersion}"`,
+      response.statusCode,
       '-',
     ].join(' '));
   } catch (err) {
-    this.reject(res, req, err);
+    this.reject(context, err);
   }
 }
 ```
