@@ -24,6 +24,7 @@
     "pretest": "npm run clean && npm run build:current",
     "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
     "posttest": "npm run lint",
+    "test:dev": "lb-mocha --allow-console-logs DIST/test/**/*.js && npm run posttest",
     "verify": "npm pack && tar xf *example-log-extension*.tgz && tree package && npm run clean"
   },
   "repository": {
