@@ -3,36 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Getter, Provider, Setter, inject} from '@loopback/context';
 import {Request} from '@loopback/rest';
-import {inject} from '@loopback/core';
-import {Provider, Getter, Setter} from '@loopback/context';
 import {Strategy} from 'passport';
-import {StrategyAdapter} from '../strategy-adapter';
 import {AuthenticationBindings} from '../keys';
-
-/**
- * Passport monkey-patches Node.js' IncomingMessage prototype
- * and adds extra methods like "login" and "isAuthenticated"
- */
-export type PassportRequest = Request & Express.Request;
-
-/**
- * interface definition of a function which accepts a request
- * and returns an authenticated user
- */
-export interface AuthenticateFn {
-  (request: Request): Promise<UserProfile | undefined>;
-}
-
-/**
- * interface definition of a user profile
- * http://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
- */
-export interface UserProfile {
-  id: string;
-  name?: string;
-  email?: string;
-}
+import {StrategyAdapter} from '../strategy-adapter';
+import {AuthenticateFn, UserProfile} from '../types';
 
 /**
  * @description Provider of a function which authenticates

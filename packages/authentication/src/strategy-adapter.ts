@@ -5,57 +5,9 @@
 
 import {HttpErrors, Request} from '@loopback/rest';
 import {Strategy} from 'passport';
-import {UserProfile} from './providers/authentication.provider';
+import {UserProfile} from './types';
 
-const PassportRequestExtras: Express.Request = require('passport/lib/http/request');
-
-/**
- * Shimmed Request to satisfy express requirements of passport strategies.
- */
-export class ShimRequest implements Express.Request {
-  headers: Object;
-  query: Object;
-  url: string;
-  path: string;
-  method: string;
-
-  constructor(request: Request) {
-    this.headers = request.headers;
-    this.query = request.query;
-    this.url = request.url;
-    this.path = request.path;
-    this.method = request.method;
-  }
-
-  // tslint:disable:no-any
-  login(user: any, done: (err: any) => void): void;
-  login(user: any, options: any, done: (err: any) => void): void;
-  login(user: any, options: any, done?: any) {
-    PassportRequestExtras.login.apply(this, arguments);
-  }
-
-  logIn(user: any, done: (err: any) => void): void;
-  logIn(user: any, options: any, done: (err: any) => void): void;
-  logIn(user: any, options: any, done?: any) {
-    PassportRequestExtras.logIn.apply(this, arguments);
-  }
-
-  logout(): void {
-    PassportRequestExtras.logout.apply(this, arguments);
-  }
-
-  logOut(): void {
-    PassportRequestExtras.logOut.apply(this, arguments);
-  }
-
-  isAuthenticated(): boolean {
-    return PassportRequestExtras.isAuthenticated.apply(this, arguments);
-  }
-  isUnauthenticated(): boolean {
-    return PassportRequestExtras.isUnauthenticated.apply(this, arguments);
-  }
-  // tslint:enable:no-any
-}
+const passportRequestMixin = require('passport/lib/http/request');
 
 /**
  * Adapter class to invoke passport-strategy
@@ -77,11 +29,16 @@ export class StrategyAdapter {
    *     1. Create an instance of the strategy
    *     2. add success and failure state handlers
    *     3. authenticate using the strategy
-   * @param req {http.ServerRequest} The incoming request.
+   * @param request The incoming request.
    */
-  authenticate(req: Request) {
-    const shimReq = new ShimRequest(req);
+  authenticate(request: Request): Promise<UserProfile> {
     return new Promise<UserProfile>((resolve, reject) => {
+      // mix-in passport additions like req.logIn and req.logOut
+      for (const key in passportRequestMixin) {
+        // tslint:disable-next-line:no-any
+        (request as any)[key] = passportRequestMixin[key];
+      }
+
       // create a prototype chain of an instance of a passport strategy
       const strategy = Object.create(this.strategy);
 
@@ -101,7 +58,7 @@ export class StrategyAdapter {
       };
 
       // authenticate
-      strategy.authenticate(shimReq);
+      strategy.authenticate(request);
     });
   }
 }
