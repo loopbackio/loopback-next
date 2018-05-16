@@ -13,7 +13,6 @@
     "./src/connectors/kv.connector.ts",
     "./src/repositories/kv.repository.ts",
     "./src/repositories/legacy-juggler-bridge.ts",
-    "./src/mixins/mixin.ts",
     "./src/model.ts",
     "./src/query.ts",
     "./src/repositories/repository.ts",
