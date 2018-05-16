@@ -124,6 +124,13 @@ module.exports = function(projGenerator, props, projectType) {
           assert(helpText.match(/--loopbackBuild/));
           assert(helpText.match(/# Use @loopback\/build/));
         });
+
+        it('has vscode option set up', () => {
+          let gen = testUtils.testSetUpGen(projGenerator);
+          let helpText = gen.help();
+          assert(helpText.match(/--vscode/));
+          assert(helpText.match(/# Use preconfigured VSCode settings/));
+        });
       });
     });
 
@@ -138,6 +145,7 @@ module.exports = function(projGenerator, props, projectType) {
           prettier: true,
           mocha: null,
           loopbackBuild: null,
+          vscode: null,
         };
         gen.setOptions();
         assert(gen.projectInfo.name === 'foobar');
@@ -202,6 +210,7 @@ module.exports = function(projGenerator, props, projectType) {
               'Enable prettier',
               'Enable mocha',
               'Enable loopbackBuild',
+              'Enable vscode',
             ],
           },
           'promptOptions',
@@ -211,6 +220,7 @@ module.exports = function(projGenerator, props, projectType) {
           assert(gen.projectInfo.prettier === true);
           assert(gen.projectInfo.mocha === true);
           assert(gen.projectInfo.loopbackBuild === true);
+          assert(gen.projectInfo.vscode === true);
         });
       });
     });
@@ -229,6 +239,8 @@ module.exports = function(projGenerator, props, projectType) {
           '.npmrc',
           'tslint.json',
           'src/index.ts',
+          '.vscode/settings.json',
+          '.vscode/tasks.json',
         ]);
         assert.jsonFileContent('package.json', props);
         assert.fileContent([
@@ -296,6 +308,7 @@ module.exports = function(projGenerator, props, projectType) {
                 'Enable tslint',
                 'Enable prettier',
                 'Enable mocha',
+                'Enable vscode',
               ],
             },
             props,
@@ -338,6 +351,7 @@ module.exports = function(projGenerator, props, projectType) {
                 'Enable tslint',
                 'Disable prettier', // Force Enable prettier to be unchecked
                 'Enable mocha',
+                'Enable vscode',
               ],
             },
             props,
@@ -361,6 +375,7 @@ module.exports = function(projGenerator, props, projectType) {
                 'Disable tslint', // Force Enable tslint to be unchecked
                 'Enable prettier',
                 'Enable mocha',
+                'Enable vscode',
               ],
             },
             props,
@@ -386,6 +401,7 @@ module.exports = function(projGenerator, props, projectType) {
                 'Disable tslint',
                 'Enable prettier',
                 'Enable mocha',
+                'Enable vscode',
               ],
             },
             props,
@@ -406,6 +422,29 @@ module.exports = function(projGenerator, props, projectType) {
           ['tsconfig.json', '"compilerOptions"'],
         ]);
         assert.noFileContent([['package.json', '"tslint"']]);
+      });
+    });
+
+    describe('with vscode disabled', () => {
+      before(() => {
+        return helpers.run(projGenerator).withPrompts(
+          Object.assign(
+            {
+              settings: [
+                'Enable loopbackBuild',
+                'Enable tslint',
+                'Enable prettier',
+                'Enable mocha',
+                'Disable vscode', // Force Enable vscode to be unchecked
+              ],
+            },
+            props,
+          ),
+        );
+      });
+
+      it('does not create .vscode files', () => {
+        assert.noFile('.vscode/');
       });
     });
 

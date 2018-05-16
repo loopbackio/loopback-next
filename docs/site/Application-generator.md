@@ -33,6 +33,8 @@ lb4 [app] [options] [<name>]
 `--loopbackBuild` : Add @loopback/build module's script set to LoopBack4
 application project.
 
+`--vscode`: Add VSCode config files to LoopBack4 application project
+
 {% include_relative includes/CLI-std-options.md %}
 
 ### Arguments
@@ -66,6 +68,7 @@ The tool will prompt you for:
   - [`prettier`](https://www.npmjs.com/package/prettier)
   - [`mocha`](https://www.npmjs.com/package/mocha)
   - [`@loopback/build`](https://www.npmjs.com/package/@loopback/build)
+  - [`vscode`](https://code.visualstudio.com/)
 
 ### Output
 

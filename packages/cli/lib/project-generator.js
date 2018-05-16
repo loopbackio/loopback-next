@@ -14,7 +14,13 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     // The default list of build options available for a project
     // This list gets shown to users to let them select the appropriate
     // build settings for their project.
-    this.buildOptions = ['tslint', 'prettier', 'mocha', 'loopbackBuild'];
+    this.buildOptions = [
+      'tslint',
+      'prettier',
+      'mocha',
+      'loopbackBuild',
+      'vscode',
+    ];
   }
 
   _setupGenerator() {
@@ -52,6 +58,11 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     this.option('loopbackBuild', {
       type: Boolean,
       description: 'Use @loopback/build',
+    });
+
+    this.option('vscode', {
+      type: Boolean,
+      description: 'Use preconfigured VSCode settings',
     });
 
     this.option('private', {
@@ -227,6 +238,10 @@ module.exports = class ProjectGenerator extends BaseGenerator {
 
     if (!this.projectInfo.mocha) {
       this.fs.delete(this.destinationPath('test/mocha.opts'));
+    }
+
+    if (!this.projectInfo.vscode) {
+      this.fs.delete(this.destinationPath('.vscode'));
     }
   }
 

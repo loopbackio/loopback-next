@@ -42,7 +42,7 @@ Answer the prompts as follows:
 ? Project description: Getting started tutorial
 ? Project root directory: (getting-started)
 ? Application class name: StarterApplication
-? Select project build settings: Enable tslint, Enable prettier, Enable mocha, Enable loopbackBuild
+? Select project build settings: Enable tslint, Enable prettier, Enable mocha, Enable loopbackBuild, Enable vscode
 ```
 
 ### Starting the project

@@ -30,7 +30,7 @@
     "prettier:fix": "npm run prettier:cli -- --write",
 <% } -%>
 <% if (project.tslint) { -%>
-    "tslint": "tslint",
+    "tslint": "tslint -p .",
     "tslint:fix": "npm run tslint -- --fix",
 <% } -%>
     "pretest": "npm run clean && npm run build",
@@ -39,6 +39,11 @@
 <% } -%>
 <% if (project.prettier || project.tslint) { -%>
     "posttest": "npm run lint",
+<% } -%>
+<% if (project.mocha && (project.prettier || project.tslint)) { -%>
+    "test:dev": "mocha dist/test/**/*.js && npm run posttest",
+<% } else if (project.mocha) { -%>
+    "test:dev": "mocha dist/test/**/*.js",
 <% } -%>
 <% if (project.projectType === 'application') { -%>
     "start": "npm run build && node .",

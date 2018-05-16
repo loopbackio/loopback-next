@@ -44,6 +44,11 @@
 <% if (project.prettier || project.tslint) { -%>
     "posttest": "npm run lint",
 <% } -%>
+<% if (project.mocha && (project.prettier || project.tslint)) { -%>
+    "test:dev": "lb-mocha --allow-console-logs DIST/test/**/*.js && npm run posttest",
+<% } else if (project.mocha) { -%>
+    "test:dev": "lb-mocha --allow-console-logs DIST/test/**/*.js",
+<% } -%>
 <% if (project.projectType === 'application') { -%>
     "prestart": "npm run build:current",
     "start": "node .",
