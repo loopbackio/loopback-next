@@ -6,11 +6,8 @@
 import {expect} from '@loopback/testlab';
 import {CoreBindings} from '@loopback/core';
 import {Context, Provider} from '@loopback/context';
-import {
-  AuthMetadataProvider,
-  AuthenticationMetadata,
-  authenticate,
-} from '../../..';
+import {AuthenticationMetadata, authenticate} from '../../..';
+import {AuthMetadataProvider} from '../../../src/providers';
 
 describe('AuthMetadataProvider', () => {
   let provider: Provider<AuthenticationMetadata | undefined>;

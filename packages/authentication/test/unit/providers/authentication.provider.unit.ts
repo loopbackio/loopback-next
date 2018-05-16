@@ -6,14 +6,10 @@
 import {expect} from '@loopback/testlab';
 import {Context, instantiateClass} from '@loopback/context';
 import {Request} from '@loopback/rest';
-import {
-  AuthenticateActionProvider,
-  AuthenticateFn,
-  UserProfile,
-  AuthenticationBindings,
-} from '../../..';
+import {AuthenticateFn, UserProfile, AuthenticationBindings} from '../../..';
 import {MockStrategy} from '../fixtures/mock-strategy';
 import {Strategy} from 'passport';
+import {AuthenticateActionProvider} from '../../../src/providers';
 
 describe('AuthenticateActionProvider', () => {
   describe('constructor()', () => {

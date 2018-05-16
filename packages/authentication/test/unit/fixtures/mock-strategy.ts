@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Strategy, AuthenticateOptions} from 'passport';
-import {PassportRequest} from '../../..';
+import {Request} from 'express';
 
 /**
  * Test fixture for a mock asynchronous passport-strategy
@@ -21,7 +21,7 @@ export class MockStrategy extends Strategy {
    * authenticate() function similar to passport-strategy packages
    * @param req
    */
-  async authenticate(req: Express.Request, options?: AuthenticateOptions) {
+  async authenticate(req: Request, options?: AuthenticateOptions) {
     await this.verify(req);
   }
   /**
@@ -33,21 +33,18 @@ export class MockStrategy extends Strategy {
    * pass req.query.testState = 'fail' to mock failed authorization
    * pass req.query.testState = 'error' to mock unexpected error
    */
-  async verify(request: Express.Request) {
-    // A workaround for buggy typings provided by @types/passport
-    const req = request as PassportRequest;
-
+  async verify(request: Request) {
     if (
-      req.headers &&
-      req.headers.testState &&
-      req.headers.testState === 'fail'
+      request.headers &&
+      request.headers.testState &&
+      request.headers.testState === 'fail'
     ) {
       this.returnUnauthorized('authorization failed');
       return;
     } else if (
-      req.headers &&
-      req.headers.testState &&
-      req.headers.testState === 'error'
+      request.headers &&
+      request.headers.testState &&
+      request.headers.testState === 'error'
     ) {
       this.returnError('unexpected error');
       return;
