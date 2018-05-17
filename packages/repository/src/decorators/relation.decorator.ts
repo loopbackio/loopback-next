@@ -6,7 +6,7 @@
 import {Class} from '../common-types';
 import {Entity} from '../model';
 
-import {PropertyDecoratorFactory} from '@loopback/context';
+import {PropertyDecoratorFactory, MetadataMap} from '@loopback/context';
 
 // tslint:disable:no-any
 
@@ -27,6 +27,8 @@ export class RelationMetadata {
   target: string | Class<Entity>;
   as: string;
 }
+
+export type RelationMap = MetadataMap<RelationMetadata>;
 
 /**
  * Decorator for relations

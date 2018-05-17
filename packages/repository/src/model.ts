@@ -5,6 +5,7 @@
 
 import {Options, AnyObject, DataObject} from './common-types';
 import {Type} from './types';
+import {RelationMetadata} from '.';
 
 /**
  * This module defines the key classes representing building blocks for Domain
@@ -55,6 +56,7 @@ export class ModelDefinition {
   readonly name: string;
   properties: {[name: string]: PropertyDefinition};
   settings: {[name: string]: any};
+  relations: {[name: string]: RelationMetadata};
   // indexes: Map<string, any>;
   [attribute: string]: any; // Other attributes
 
@@ -62,7 +64,7 @@ export class ModelDefinition {
     if (typeof nameOrDef === 'string') {
       nameOrDef = {name: nameOrDef};
     }
-    const {name, properties, settings} = nameOrDef;
+    const {name, properties, settings, relations} = nameOrDef;
 
     this.name = name;
 
@@ -74,6 +76,7 @@ export class ModelDefinition {
     }
 
     this.settings = settings || new Map();
+    this.relations = relations || {};
   }
 
   /**
