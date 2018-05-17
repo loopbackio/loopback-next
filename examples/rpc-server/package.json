@@ -39,14 +39,6 @@
   },
   "author": "",
   "license": "MIT",
-  "files": [
-    "README.md",
-    "index.js",
-    "index.d.ts",
-    "dist*/src",
-    "dist*/index*",
-    "src"
-  ],
   "dependencies": {
     "@loopback/context": "^0.11.2",
     "@loopback/core": "^0.8.4",
