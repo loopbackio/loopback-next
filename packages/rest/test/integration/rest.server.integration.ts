@@ -66,6 +66,25 @@ describe('RestServer (integration)', () => {
       .expect('Access-Control-Max-Age', '86400');
   });
 
+  it('allows custom CORS configuration', async () => {
+    const server = await givenAServer({
+      rest: {
+        port: 0,
+        cors: {
+          optionsSuccessStatus: 200,
+          maxAge: 1,
+        },
+      },
+    });
+
+    server.handler(({response}, sequence) => void response.send('Hello'));
+
+    await createClientForHandler(server.requestHandler)
+      .options('/')
+      .expect(200)
+      .expect('Access-Control-Max-Age', '1');
+  });
+
   it('exposes "GET /openapi.json" endpoint', async () => {
     const server = await givenAServer({rest: {port: 0}});
     const greetSpec = {

@@ -173,6 +173,18 @@ export class RestServer extends Context implements Server, HttpServerLike {
     this._expressApp = express();
     this.requestHandler = this._expressApp;
 
+    // Allow CORS support for all endpoints so that users
+    // can test with online SwaggerUI instance
+    const corsOptions = options.cors || {
+      origin: '*',
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      preflightContinue: false,
+      optionsSuccessStatus: 204,
+      maxAge: 86400,
+      credentials: true,
+    };
+    this._expressApp.use(cors(corsOptions));
+
     // Mount our router & request handler
     this._expressApp.use((req, res, next) => {
       this._handleHttpRequest(req, res, options!).catch(next);
@@ -191,24 +203,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
     response: Response,
     options: RestServerConfig,
   ) {
-    // allow CORS support for all endpoints so that users
-    // can test with online SwaggerUI instance
-
-    const corsOptions = options.cors || {
-      origin: '*',
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-      preflightContinue: false,
-      optionsSuccessStatus: 204,
-      maxAge: 86400,
-      credentials: true,
-    };
-
-    // TODO(bajtos) Register cors as a middleware in _setupRequestHandler
-    cors(corsOptions)(request, response, () => {});
-    if (request.method === 'OPTIONS') {
-      return Promise.resolve();
-    }
-
     if (
       request.method === 'GET' &&
       request.url &&
