@@ -35,14 +35,6 @@
     "@loopback/build": "^0.6.5",
     "@types/node": "^10.1.1"
   },
-  "files": [
-    "README.md",
-    "index.js",
-    "index.d.ts",
-    "dist*/src",
-    "dist*/index*",
-    "src"
-  ],
   "keywords": [
     "loopback",
     "LoopBack",

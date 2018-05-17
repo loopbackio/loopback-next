@@ -42,14 +42,6 @@
     "url": "https://github.com/strongloop/loopback-next/issues"
   },
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/examples/log-extension",
-  "files": [
-    "README.md",
-    "index.js",
-    "index.d.ts",
-    "dist*/src",
-    "dist*/index*",
-    "src"
-  ],
   "devDependencies": {
     "@loopback/build": "^0.6.5",
     "@loopback/testlab": "^0.10.4",

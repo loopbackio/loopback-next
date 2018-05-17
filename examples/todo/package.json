@@ -29,14 +29,6 @@
     "access": "public"
   },
   "license": "MIT",
-  "files": [
-    "README.md",
-    "index.js",
-    "index.d.ts",
-    "dist*/src",
-    "dist*/index*",
-    "src"
-  ],
   "dependencies": {
     "@loopback/boot": "^0.10.4",
     "@loopback/context": "^0.11.2",
