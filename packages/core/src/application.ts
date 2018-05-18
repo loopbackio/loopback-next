@@ -166,7 +166,7 @@ export class Application extends Context {
    * Add a component to this application and register extensions such as
    * controllers, providers, and servers from the component.
    *
-   * @param componentCtor The component class to add.
+   * @param componentClassOrInstance The component class or instance to add.
    * @param {string=} name Optional component name, default to the class name
    *
    * ```ts
@@ -183,16 +183,32 @@ export class Application extends Context {
    * app.component(ProductComponent);
    * ```
    */
-  public component(componentCtor: Constructor<Component>, name?: string) {
-    name = name || componentCtor.name;
-    const componentKey = `components.${name}`;
-    this.bind(componentKey)
-      .toClass(componentCtor)
-      .inScope(BindingScope.SINGLETON)
-      .tag('component');
-    // Assuming components can be synchronously instantiated
-    const instance = this.getSync<Component>(componentKey);
+  public component(
+    componentClassOrInstance: Constructor<Component> | Component,
+    name?: string,
+  ) {
+    let binding: Binding;
+    let instance: Component;
+    if (typeof componentClassOrInstance === 'function') {
+      name = name || componentClassOrInstance.name;
+      const componentKey = `components.${name}`;
+      binding = this.bind(componentKey)
+        .toClass(componentClassOrInstance)
+        .inScope(BindingScope.SINGLETON)
+        .tag('component');
+      // Assuming components can be synchronously instantiated
+      instance = this.getSync<Component>(componentKey);
+    } else {
+      name = name || componentClassOrInstance.name;
+      instance = componentClassOrInstance;
+      const componentKey = `components.${name}`;
+      binding = this.bind(componentKey)
+        .to(componentClassOrInstance)
+        .inScope(BindingScope.SINGLETON)
+        .tag('component');
+    }
     mountComponent(this, instance);
+    return binding;
   }
 }
 

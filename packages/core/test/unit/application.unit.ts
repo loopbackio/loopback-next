@@ -56,6 +56,11 @@ describe('Application', () => {
       providers = {'my-provider': MyProvider};
     }
 
+    const aComponent: Component = {
+      controllers: [MyController],
+      name: 'AnotherComponent',
+    };
+
     class MyComponentWithDI implements Component {
       constructor(@inject(CoreBindings.APPLICATION_INSTANCE) ctx: Context) {
         // Porgramatically bind to the context
@@ -65,10 +70,24 @@ describe('Application', () => {
 
     beforeEach(givenApp);
 
-    it('binds a component', () => {
+    it('binds a component by class', () => {
       app.component(MyComponent);
       expect(findKeysByTag(app, 'component')).to.containEql(
         'components.MyComponent',
+      );
+    });
+
+    it('binds a component by instance with a custom name', () => {
+      app.component(aComponent, 'YourComponent');
+      expect(findKeysByTag(app, 'component')).to.containEql(
+        'components.YourComponent',
+      );
+    });
+
+    it('binds a component by instance', () => {
+      app.component(aComponent);
+      expect(findKeysByTag(app, 'component')).to.containEql(
+        'components.AnotherComponent',
       );
     });
 
