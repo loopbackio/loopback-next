@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.11.6"></a>
+## [0.11.6](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.11.5...@loopback/cli@0.11.6) (2018-05-20)
+
+
+### Bug Fixes
+
+* replace gulp-rename with our own implementation ([f8349d4](https://github.com/strongloop/loopback-next/commit/f8349d4))
+
+
+
+
 <a name="0.11.5"></a>
 ## [0.11.5](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.11.4...@loopback/cli@0.11.5) (2018-05-14)
 

@@ -1,6 +1,6 @@
 {
   "name": "@loopback/repository-json-schema",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "Converts TS classes into JSON Schemas using TypeScript's reflection API",
   "engines": {
     "node": ">=8"
@@ -27,14 +27,14 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/context": "^0.11.1",
+    "@loopback/context": "^0.11.2",
     "@loopback/dist-util": "^0.3.1",
-    "@loopback/repository": "^0.10.3",
+    "@loopback/repository": "^0.10.4",
     "@types/json-schema": "^6.0.1"
   },
   "devDependencies": {
-    "@loopback/build": "^0.6.4",
-    "@loopback/testlab": "^0.10.3",
+    "@loopback/build": "^0.6.5",
+    "@loopback/testlab": "^0.10.4",
     "@types/node": "^10.1.1"
   },
   "files": [

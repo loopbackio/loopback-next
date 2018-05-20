@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.10.4"></a>
+## [0.10.4](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.10.3...@loopback/repository@0.10.4) (2018-05-20)
+
+
+### Bug Fixes
+
+* move apidocs outside of the function ([940674e](https://github.com/strongloop/loopback-next/commit/940674e))
+* remove mixin builder ([d6942d7](https://github.com/strongloop/loopback-next/commit/d6942d7))
+
+
+
+
 <a name="0.10.3"></a>
 ## [0.10.3](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.10.2...@loopback/repository@0.10.3) (2018-05-14)
 

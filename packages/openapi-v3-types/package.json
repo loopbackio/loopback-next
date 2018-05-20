@@ -1,6 +1,6 @@
 {
   "name": "@loopback/openapi-v3-types",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "TypeScript type definitions for OpenAPI Specifications.",
   "engines": {
     "node": ">=8"
@@ -10,8 +10,8 @@
     "openapi3-ts": "^0.11.0"
   },
   "devDependencies": {
-    "@loopback/build": "^0.6.4",
-    "@loopback/testlab": "^0.10.3",
+    "@loopback/build": "^0.6.5",
+    "@loopback/testlab": "^0.10.4",
     "@types/node": "^10.1.1"
   },
   "scripts": {
