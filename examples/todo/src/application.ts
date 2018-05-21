@@ -3,9 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ApplicationConfig} from '@loopback/core';
+import {ApplicationConfig, Provider, Constructor} from '@loopback/core';
 import {RestApplication} from '@loopback/rest';
 import {MySequence} from './sequence';
+import {GeocoderServiceProvider} from './services';
 
 /* tslint:disable:no-unused-variable */
 // Binding and Booter imports are required to infer types for BootMixin!
@@ -39,5 +40,19 @@ export class TodoListApplication extends BootMixin(
         nested: true,
       },
     };
+
+    // TODO(bajtos) Services should be created and registered by @loopback/boot
+    this.setupServices();
+  }
+
+  setupServices() {
+    this.service(GeocoderServiceProvider);
+  }
+
+  // TODO(bajtos) app.service should be provided either by core Application
+  // class or a mixin provided by @loopback/service-proxy
+  service<T>(provider: Constructor<Provider<T>>) {
+    const key = `services.${provider.name.replace(/Provider$/, '')}`;
+    this.bind(key).toProvider(provider);
   }
 }

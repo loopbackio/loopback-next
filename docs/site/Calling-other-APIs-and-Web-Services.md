@@ -56,6 +56,12 @@ const ds: juggler.DataSource = new juggler.DataSource({
 });
 ```
 
+Install the REST connector used by the new datasource:
+
+```
+$ npm install --save loopback-connector-rest
+```
+
 ### Bind data sources to the context
 
 ```ts

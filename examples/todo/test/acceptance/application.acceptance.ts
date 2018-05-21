@@ -4,44 +4,32 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {createClientForHandler, expect, supertest} from '@loopback/testlab';
-import {RestServer} from '@loopback/rest';
 import {TodoListApplication} from '../../src/application';
-import {TodoRepository} from '../../src/repositories/';
-import {givenTodo} from '../helpers';
 import {Todo} from '../../src/models/';
+import {TodoRepository} from '../../src/repositories/';
+import {
+  HttpCachingProxy,
+  aLocation,
+  getProxiedGeoCoderConfig,
+  givenCachingProxy,
+  givenTodo,
+} from '../helpers';
 
 describe('Application', () => {
   let app: TodoListApplication;
-  let server: RestServer;
   let client: supertest.SuperTest<supertest.Test>;
   let todoRepo: TodoRepository;
 
-  before(givenAnApplication);
-  before(async () => {
-    await app.boot();
+  let cachingProxy: HttpCachingProxy;
+  before(async () => (cachingProxy = await givenCachingProxy()));
+  after(() => cachingProxy.stop());
 
-    /**
-     * Override DataSource to not write to file for testing. Since we aren't
-     * persisting data to file and each injection normally instatiates a new
-     * instance, we must change the BindingScope to a singleton so only one
-     * instance is created and used for all injections (preserving access to
-     * the same memory space).
-     */
-    app.bind('datasources.config.db').to({
-      name: 'db',
-      connector: 'memory',
-    });
+  before(givenRunningApplicationWithCustomConfiguration);
+  after(() => app.stop());
 
-    // Start Application
-    await app.start();
-  });
-  before(givenARestServer);
   before(givenTodoRepository);
   before(() => {
-    client = createClientForHandler(server.requestHandler);
-  });
-  after(async () => {
-    await app.stop();
+    client = createClientForHandler(app.requestHandler);
   });
 
   it('creates a todo', async () => {
@@ -50,17 +38,34 @@ describe('Application', () => {
       .post('/todos')
       .send(todo)
       .expect(200);
+    expect(response.body).to.containDeep(todo);
+    const result = await todoRepo.findById(response.body.id);
+    expect(result).to.containDeep(todo);
+  });
+
+  it('creates an address-based reminder', async () => {
+    const todo = givenTodo({remindAtAddress: aLocation.address});
+    const response = await client
+      .post('/todos')
+      .send(todo)
+      .expect(200);
+    todo.remindAtGeo = aLocation.geostring;
+
     expect(response.body).to.containEql(todo);
+
     const result = await todoRepo.findById(response.body.id);
     expect(result).to.containEql(todo);
   });
 
   it('gets a todo by ID', async () => {
     const todo = await givenTodoInstance();
-    await client
+    const result = await client
       .get(`/todos/${todo.id}`)
       .send()
-      .expect(200, todo);
+      .expect(200);
+    // Remove any undefined properties that cannot be represented in JSON/REST
+    const expected = JSON.parse(JSON.stringify(todo));
+    expect(result.body).to.deepEqual(expected);
   });
 
   it('replaces the todo by ID', async () => {
@@ -118,16 +123,32 @@ describe('Application', () => {
    - keep them DRY (who wants to write the same stuff over and over?)
    ============================================================================
    */
-  function givenAnApplication() {
+
+  async function givenRunningApplicationWithCustomConfiguration() {
     app = new TodoListApplication({
       rest: {
         port: 0,
       },
     });
-  }
 
-  async function givenARestServer() {
-    server = await app.getServer(RestServer);
+    await app.boot();
+
+    /**
+     * Override default config for DataSource for testing so we don't write
+     * test data to file when using the memory connector.
+     */
+    app.bind('datasources.config.db').to({
+      name: 'db',
+      connector: 'memory',
+    });
+
+    // Override Geocoder datasource to use a caching proxy to speed up tests.
+    app
+      .bind('datasources.config.geocoder')
+      .to(getProxiedGeoCoderConfig(cachingProxy));
+
+    // Start Application
+    await app.start();
   }
 
   async function givenTodoRepository() {

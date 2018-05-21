@@ -3,7 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {HttpCachingProxy} from '@loopback/http-caching-proxy';
+import {merge} from 'lodash';
+import * as path from 'path';
 import {Todo} from '../src/models/index';
+import {GeoPoint} from '../src/services/geocoder.service';
 
 /*
  ==============================================================================
@@ -30,12 +34,42 @@ import {Todo} from '../src/models/index';
  * @param todo A partial (or complete) Todo object.
  */
 export function givenTodo(todo?: Partial<Todo>) {
-  return Object.assign(
-    new Todo({
+  const data = Object.assign(
+    {
       title: 'do a thing',
       desc: 'There are some things that need doing',
       isComplete: false,
-    }),
+    },
     todo,
   );
+  return new Todo(data);
+}
+
+export const aLocation = {
+  address: '1 New Orchard Road, Armonk, 10504',
+  geopoint: <GeoPoint>{y: 41.109653, x: -73.72467},
+  get geostring() {
+    // tslint:disable-next-line:no-invalid-this
+    return `${this.geopoint.y},${this.geopoint.x}`;
+  },
+};
+
+const GEO_CODER_CONFIG = require('../src/datasources/geocoder.datasource.json');
+
+export function getProxiedGeoCoderConfig(proxy: HttpCachingProxy) {
+  return merge({}, GEO_CODER_CONFIG, {
+    options: {
+      proxy: proxy.url,
+      tunnel: false,
+    },
+  });
+}
+
+export {HttpCachingProxy};
+export async function givenCachingProxy() {
+  const proxy = new HttpCachingProxy({
+    cachePath: path.resolve(__dirname, '.http-cache'),
+  });
+  await proxy.start();
+  return proxy;
 }
