@@ -3,22 +3,27 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {inject} from '@loopback/core';
 import {repository} from '@loopback/repository';
-import {TodoRepository} from '../repositories';
-import {Todo} from '../models';
 import {
   HttpErrors,
-  post,
-  param,
-  requestBody,
-  get,
-  put,
-  patch,
   del,
+  get,
+  param,
+  patch,
+  post,
+  put,
+  requestBody,
 } from '@loopback/rest';
+import {Todo} from '../models';
+import {TodoRepository} from '../repositories';
+import {GeocoderService} from '../services';
 
 export class TodoController {
-  constructor(@repository(TodoRepository) protected todoRepo: TodoRepository) {}
+  constructor(
+    @repository(TodoRepository) protected todoRepo: TodoRepository,
+    @inject('services.GeocoderService') protected geoService: GeocoderService,
+  ) {}
 
   @post('/todos')
   async createTodo(@requestBody() todo: Todo) {
@@ -27,6 +32,16 @@ export class TodoController {
     if (!todo.title) {
       throw new HttpErrors.BadRequest('title is required');
     }
+
+    if (todo.remindAtAddress) {
+      // TODO(bajtos) handle "address not found"
+      const geo = await this.geoService.geocode(todo.remindAtAddress);
+      // Encode the coordinates as "lat,lng" (Google Maps API format). See also
+      // https://stackoverflow.com/q/7309121/69868
+      // https://gis.stackexchange.com/q/7379
+      todo.remindAtGeo = `${geo[0].y},${geo[0].x}`;
+    }
+
     return await this.todoRepo.create(todo);
   }
 

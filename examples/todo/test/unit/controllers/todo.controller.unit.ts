@@ -5,12 +5,14 @@
 
 import {expect, sinon} from '@loopback/testlab';
 import {TodoController} from '../../../src/controllers';
-import {TodoRepository} from '../../../src/repositories';
 import {Todo} from '../../../src/models/index';
-import {givenTodo} from '../../helpers';
+import {TodoRepository} from '../../../src/repositories';
+import {GeocoderService} from '../../../src/services';
+import {aLocation, givenTodo} from '../../helpers';
 
 describe('TodoController', () => {
   let todoRepo: TodoRepository;
+  let geoService: GeocoderService;
 
   /*
   =============================================================================
@@ -26,6 +28,7 @@ describe('TodoController', () => {
   let replaceById: sinon.SinonStub;
   let updateById: sinon.SinonStub;
   let deleteById: sinon.SinonStub;
+  let geocode: sinon.SinonStub;
 
   /*
   =============================================================================
@@ -47,6 +50,7 @@ describe('TodoController', () => {
   const noError = 'No error was thrown!';
 
   beforeEach(resetRepositories);
+
   describe('createTodo', () => {
     it('creates a Todo', async () => {
       create.resolves(aTodoWithId);
@@ -67,6 +71,24 @@ describe('TodoController', () => {
       }
       // Repository stub should not have been called!
       throw new Error(noError);
+    });
+
+    it('resolves remindAtAddress to a geocode', async () => {
+      geocode.resolves([aLocation.geopoint]);
+
+      const input = givenTodo({remindAtAddress: aLocation.address});
+
+      const expected = new Todo(input);
+      Object.assign(expected, {
+        remindAtAddress: aLocation.address,
+        remindAtGeo: aLocation.geostring,
+      });
+      create.resolves(expected);
+
+      const result = await controller.createTodo(input);
+
+      expect(result).to.eql(expected);
+      sinon.assert.calledWith(create, input);
     });
   });
 
@@ -150,6 +172,10 @@ describe('TodoController', () => {
     updateById = todoRepo.updateById as sinon.SinonStub;
     replaceById = todoRepo.replaceById as sinon.SinonStub;
     deleteById = todoRepo.deleteById as sinon.SinonStub;
-    controller = new TodoController(todoRepo);
+
+    geoService = {geocode: sinon.stub()};
+    geocode = geoService.geocode as sinon.SinonStub;
+
+    controller = new TodoController(todoRepo, geoService);
   }
 });

@@ -7,7 +7,6 @@
     "node": ">=8"
   },
   "scripts": {
-    "acceptance": "lb-mocha \"DIST/test/acceptance/**/*.js\"",
     "build": "npm run build:dist8 && npm run build:dist10",
     "build:apidocs": "lb-apidocs",
     "build:current": "lb-tsc",
@@ -23,9 +22,8 @@
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
     "pretest": "npm run build:current",
-    "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
+    "test": "lb-mocha \"DIST/test/*/**/*.js\"",
     "test:dev": "lb-mocha --allow-console-logs DIST/test/**/*.js && npm run posttest",
-    "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-todo*.tgz && tree package && npm run clean",
     "prestart": "npm run build:current",
     "start": "node ."
@@ -46,12 +44,17 @@
     "@loopback/openapi-v3": "^0.10.9",
     "@loopback/openapi-v3-types": "^0.7.7",
     "@loopback/repository": "^0.11.3",
-    "@loopback/rest": "^0.11.3"
+    "@loopback/rest": "^0.11.3",
+    "@loopback/service-proxy": "^0.5.5",
+    "loopback-connector-rest": "^3.1.1"
   },
   "devDependencies": {
     "@loopback/build": "^0.6.8",
+    "@loopback/http-caching-proxy": "^0.2.3",
     "@loopback/testlab": "^0.10.7",
-    "@types/node": "^10.1.1"
+    "@types/lodash": "^4.14.109",
+    "@types/node": "^10.1.1",
+    "lodash": "^4.17.10"
   },
   "keywords": [
     "loopback",

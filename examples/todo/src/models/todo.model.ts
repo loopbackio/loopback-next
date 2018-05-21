@@ -29,7 +29,22 @@ export class Todo extends Entity {
   })
   isComplete: boolean;
 
+  @property({
+    type: 'string',
+  })
+  remindAtAddress: string; // address,city,zipcode
+
+  // TODO(bajtos) Use LoopBack's GeoPoint type here
+  @property({
+    type: 'string',
+  })
+  remindAtGeo: string; // latitude,longitude
+
   getId() {
     return this.id;
+  }
+
+  constructor(data?: Partial<Todo>) {
+    super(data);
   }
 }
