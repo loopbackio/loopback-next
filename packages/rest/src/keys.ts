@@ -43,6 +43,14 @@ export namespace RestBindings {
    */
   export const PORT = BindingKey.create<number>('rest.port');
   /**
+   * Binding key for setting and injecting the URL of RestServer
+   */
+  export const URL = BindingKey.create<string>('rest.url');
+  /**
+   * Binding key for setting and injecting the protocol of RestServer
+   */
+  export const PROTOCOL = BindingKey.create<'http' | 'https'>('rest.protocol');
+  /**
    * Internal binding key for http-handler
    */
   export const HANDLER = BindingKey.create<HttpHandler>('rest.handler');
