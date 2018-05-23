@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.12.0"></a>
+# [0.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.11.6...@loopback/cli@0.12.0) (2018-05-23)
+
+
+### Features
+
+* **cli:** add CLI prompt for controller's http path name ([0f9c438](https://github.com/strongloop/loopback-next/commit/0f9c438))
+
+
+
+
 <a name="0.11.6"></a>
 ## [0.11.6](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.11.5...@loopback/cli@0.11.6) (2018-05-20)
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.7.6...@loopback/docs@0.8.0) (2018-05-23)
+
+
+### Bug Fixes
+
+* add tealium scripts to page ([a882c64](https://github.com/strongloop/loopback-next/commit/a882c64))
+
+
+### Features
+
+* **cli:** add CLI prompt for controller's http path name ([0f9c438](https://github.com/strongloop/loopback-next/commit/0f9c438))
+
+
+
+
 <a name="0.7.6"></a>
 ## [0.7.6](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.7.5...@loopback/docs@0.7.6) (2018-05-20)
 

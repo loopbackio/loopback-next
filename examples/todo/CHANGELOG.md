@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.10.0"></a>
+# [0.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.9.4...@loopback/example-todo@0.10.0) (2018-05-23)
+
+
+### Features
+
+* **cli:** add CLI prompt for controller's http path name ([0f9c438](https://github.com/strongloop/loopback-next/commit/0f9c438))
+
+
+
+
 <a name="0.9.4"></a>
 ## [0.9.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.9.3...@loopback/example-todo@0.9.4) (2018-05-20)
 
