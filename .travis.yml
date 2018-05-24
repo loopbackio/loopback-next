@@ -2,8 +2,7 @@ sudo: false
 language: node_js
 node_js:
   - "8"
-  - "10.0.0" # Pinned to prevent warning "fs.promises API is experimental"
-             # Waiting for https://github.com/nodejs/node/pull/20632
+  - "10"
 
 os:
   - linux
