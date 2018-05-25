@@ -31,8 +31,9 @@ the `RepositoryMixin`:
 
 ```ts
 import {ApplicationConfig} from '@loopback/core';
-import {RestApplication, RestServer} from '@loopback/rest';
+import {RestApplication} from '@loopback/rest';
 import {MySequence} from './sequence';
+import {db} from './datasources/db.datasource';
 
 /* tslint:disable:no-unused-variable */
 // Binding and Booter imports are required to infer types for BootMixin!
@@ -66,17 +67,21 @@ export class TodoListApplication extends BootMixin(
         nested: true,
       },
     };
+
+    this.setupDatasources();
   }
 
-  async start() {
-    await super.start();
-
-    const server = await this.getServer(RestServer);
-    const port = await server.get<number>('rest.port');
-    console.log(`Server is running at http://127.0.0.1:${port}`);
-    console.log(`Try http://127.0.0.1:${port}/ping`);
+  setupDatasources() {
+    // This will allow you to test your application without needing to
+    // use a "real" datasource!
+    const datasource =
+      this.options && this.options.datasource
+        ? new juggler.DataSource(this.options.datasource)
+        : db;
+    this.dataSource(datasource);
   }
 }
+
 ```
 
 Once you're ready, we'll move on to the [Add your Todo model](model.md) section.
