@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.9.5"></a>
+## [0.9.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@0.9.4...@loopback/example-log-extension@0.9.5) (2018-05-28)
+
+
+### Bug Fixes
+
+* clone the test folder for examples ([00688ea](https://github.com/strongloop/loopback-next/commit/00688ea))
+
+
+
+
 <a name="0.9.4"></a>
 ## [0.9.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@0.9.3...@loopback/example-log-extension@0.9.4) (2018-05-20)
 

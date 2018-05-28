@@ -1,6 +1,6 @@
 {
   "name": "@loopback/openapi-v3",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "description": "Processes openapi v3 related metadata",
   "engines": {
     "node": ">=8"
@@ -54,7 +54,7 @@
     "@loopback/context": "^0.11.2",
     "@loopback/dist-util": "^0.3.1",
     "@loopback/openapi-v3-types": "^0.7.4",
-    "@loopback/repository-json-schema": "^0.9.4",
+    "@loopback/repository-json-schema": "^0.9.5",
     "debug": "^3.1.0",
     "lodash": "^4.17.5"
   }

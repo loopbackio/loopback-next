@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.7.5"></a>
+## [0.7.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-rpc-server@0.7.4...@loopback/example-rpc-server@0.7.5) (2018-05-28)
+
+
+### Bug Fixes
+
+* clone the test folder for examples ([00688ea](https://github.com/strongloop/loopback-next/commit/00688ea))
+
+
+
+
 <a name="0.7.4"></a>
 ## [0.7.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-rpc-server@0.7.3...@loopback/example-rpc-server@0.7.4) (2018-05-20)
 
