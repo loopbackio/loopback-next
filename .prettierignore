@@ -1,9 +1,9 @@
 /coverage
 packages/*/api-docs
 packages/cli/generators/*/templates
-packages/cli/test/integration/.sandbox
+**/.sandbox
 packages/*/dist*
 examples/*/dist*
-sandbox/**/dist*
+sandbox/**/*
 *.json
 *.md
