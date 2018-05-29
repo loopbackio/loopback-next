@@ -15,7 +15,7 @@ See https://loopback.io/doc/en/lb4/Calling-other-APIs-and-web-services.html
 
 ## Contributions
 
-- [Guidelines](https://github.com/strongloop/loopback-next/wiki/Contributing##guidelines)
+- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
 - [Join the team](https://github.com/strongloop/loopback-next/issues/110)
 
 ## Tests
