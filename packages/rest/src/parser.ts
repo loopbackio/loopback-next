@@ -14,6 +14,8 @@ import {REQUEST_BODY_INDEX} from '@loopback/openapi-v3';
 import {promisify} from 'util';
 import {OperationArgs, Request, PathParameterValues} from './types';
 import {ResolvedRoute} from './router/routing-table';
+import {coerceParameter} from './coercion/coerce-parameter';
+import {RestHttpErrors} from './index';
 type HttpError = HttpErrors.HttpError;
 
 // tslint:disable-next-line:no-any
@@ -101,24 +103,35 @@ function buildOperationArguments(
       throw new Error('$ref parameters are not supported yet.');
     }
     const spec = paramSpec as ParameterObject;
-    switch (spec.in) {
-      case 'query':
-        paramArgs.push(request.query[spec.name]);
-        break;
-      case 'path':
-        paramArgs.push(pathParams[spec.name]);
-        break;
-      case 'header':
-        paramArgs.push(request.headers[spec.name.toLowerCase()]);
-        break;
-      // TODO(jannyhou) to support `cookie`,
-      // see issue https://github.com/strongloop/loopback-next/issues/997
-      default:
-        throw new HttpErrors.NotImplemented(
-          'Parameters with "in: ' + spec.in + '" are not supported yet.',
-        );
-    }
+    const rawValue = getParamFromRequest(spec, request, pathParams);
+    const coercedValue = coerceParameter(rawValue, spec);
+    paramArgs.push(coercedValue);
   }
   if (requestBodyIndex > -1) paramArgs.splice(requestBodyIndex, 0, body);
   return paramArgs;
+}
+
+function getParamFromRequest(
+  spec: ParameterObject,
+  request: Request,
+  pathParams: PathParameterValues,
+) {
+  let result;
+  switch (spec.in) {
+    case 'query':
+      result = request.query[spec.name];
+      break;
+    case 'path':
+      result = pathParams[spec.name];
+      break;
+    case 'header':
+      // @jannyhou TBD: check edge cases
+      result = request.headers[spec.name.toLowerCase()];
+      break;
+    // TODO(jannyhou) to support `cookie`,
+    // see issue https://github.com/strongloop/loopback-next/issues/997
+    default:
+      throw RestHttpErrors.invalidParamLocation(spec.in);
+  }
+  return result;
 }
