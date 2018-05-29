@@ -13,6 +13,9 @@ script: ./bin/travis.sh
 env: TASK=test
 install: npm install --ignore-scripts
 
+after_success:
+  - npm run coverage:ci
+
 matrix:
   include:
     - node_js: "8"
