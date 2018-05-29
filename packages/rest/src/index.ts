@@ -39,3 +39,4 @@ export * from './rest.component';
 export * from './rest.server';
 export * from './sequence';
 export * from '@loopback/openapi-v3';
+export * from './coercion/rest-http-error';
