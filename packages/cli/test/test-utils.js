@@ -49,96 +49,65 @@ exports.executeGenerator = function(GeneratorOrNamespace, settings) {
 };
 
 /**
- * Helper function for running the generator with custom inputs, artifacts,
- * and prompts.
- * @param {Generator} generator The generator to run.
- * @param {Object} prompts The prompts object to use with the generator under
- * test.
- * @param {Function} createArtifacts The create artifacts function. Takes
- * a directory. Use it to create folders and files for your tests.
+ * Helper function for creating a LoopBack 4 Project Directory for
+ * testing.
+ *
+ * @param {string} rootDir Root directory in which to create the project
+ * @param {Object} options
+ * @property {boolean} excludeKeyword Excludes the 'loopback' keyword in package.json
+ * @property {boolean} excludePackageJSON Excludes package.json
+ * @property {boolean} excludeYoRcJSON Excludes .yo-rc.json
+ * @property {boolean} excludeControllersDir Excludes the controllers directory
+ * @property {boolean} excludeModelsDir Excludes the models directory
+ * @property {boolean} excludeRepositoriesDir Excludes the repositories directory
+ * @property {boolean} excludeDataSourcesDir Excludes the datasources directory
+ * @property {boolean} includeDummyModel Creates a dummy model file in /src/models/product-review.model.ts
+ * @property {boolean} includeDummyRepository Creates a dummy repository file in /src/repositories/bar.repository.ts
  */
-exports.runGeneratorWith = function runGeneratorWith(
-  generator,
-  prompts,
-  createArtifacts,
-) {
-  return exports
-    .executeGenerator(generator)
-    .inTmpDir(dir => {
-      createArtifacts(dir);
-    })
-    .withPrompts(prompts);
-};
-/**
- * Setup the target directory with the required package.json and folder
- * structure.
- * @param {string} tmpDir Path to the temporary directory to setup
- * @param {object} options
- * @property {boolean} omitModelDir Do not create "models" directory
- * @property {boolean} omitRepositoryDir Do not create "repositories" directory
- * @property {boolean} omitControllerDir Do not create "controllers" directory
- */
-exports.givenAnApplicationDir = function(tmpDir, options) {
+exports.givenLBProject = function(rootDir, options) {
   options = options || {};
-  const srcDir = path.join(tmpDir, 'src');
-  fs.writeFileSync(
-    path.join(tmpDir, 'package.json'),
-    JSON.stringify({
-      keywords: ['loopback'],
-    }),
-  );
-  fs.mkdirSync(srcDir);
-  if (!options.omitModelDir) {
-    fs.mkdirSync(path.join(srcDir, 'models'));
+  const context = {};
+  const content = {};
+  if (!options.excludeKeyword) {
+    content.keywords = ['loopback'];
   }
-  if (!options.omitRepositoryDir) {
-    fs.mkdirSync(path.join(srcDir, 'repositories'));
+
+  if (!options.excludePackageJSON) {
+    fs.writeFileSync(
+      path.join(rootDir, 'package.json'),
+      JSON.stringify(content),
+    );
   }
-  if (!options.omitControllerDir) {
-    fs.mkdirSync(path.join(srcDir, 'controllers'));
+
+  if (!options.excludeYoRcJSON) {
+    fs.writeFileSync(path.join(rootDir, '.yo-rc.json'), JSON.stringify({}));
   }
-};
 
-/**
- * Return the default path for the specified repository and temp directory.
- * @param {string=} tmpDir The temporary directory path. If omitted, the
- * returned path will be relative (prefixed with either "/" or "\",
- * @param {string} fileName The repository name.
- */
-exports.givenARepositoryPath = function(tmpDir, fileName) {
-  return exports.givenAnArtifactPath(tmpDir, 'repositories', fileName);
-};
+  fs.mkdirSync(path.join(rootDir, 'src'));
 
-/**
- * Return the default path for the specified model and temp directory.
- * @param {string=} tmpDir The temporary directory path. If omitted, the
- * returned path will be relative (prefixed with either "/" or "\",
- * depending on OS).
- * @param {string} fileName The model name.
- */
-exports.givenAModelPath = function(tmpDir, fileName) {
-  return exports.givenAnArtifactPath(tmpDir, 'models', fileName);
-};
+  if (!options.excludeControllersDir) {
+    fs.mkdirSync(path.join(rootDir, 'src', 'controllers'));
+  }
 
-/**
- * Return the default path for the specified controller and temp directory.
- * @param {string=} tmpDir The temporary directory path. If omitted, the
- * returned path will be relative (prefixed with either "/" or "\",
- * depending on OS).
- * @param {string} fileName The controller name.
- */
-exports.givenAControllerPath = function(tmpDir, fileName) {
-  return exports.givenAnArtifactPath(tmpDir, 'controllers', fileName);
-};
+  if (!options.excludeModelsDir) {
+    fs.mkdirSync(path.join(rootDir, 'src', 'models'));
+  }
 
-/**
- * @param {string=} tmpDir The temporary directory path. If omitted, the
- * returned path will be relative (prefixed with either "/" or "\",
- * depending on OS).
- * @param {string} artifactDir The artifact directory name.
- * @param {string} fileName The artifact fileName.
- */
-exports.givenAnArtifactPath = function(tmpDir, artifactDir, fileName) {
-  if (!tmpDir) tmpDir = path.sep; // To allow use for relative pathing.
-  return path.join(tmpDir, 'src', artifactDir, fileName);
+  if (!options.excludeRepositoriesDir) {
+    fs.mkdirSync(path.join(rootDir, 'src', 'repositories'));
+  }
+
+  if (!options.excludeDataSourcesDir) {
+    fs.mkdirSync(path.join(rootDir, 'src', 'datasources'));
+  }
+
+  if (options.includeDummyModel) {
+    const modelPath = path.join(rootDir, '/src/models/product-review.model.ts');
+    fs.writeFileSync(modelPath, '--DUMMY VALUE--');
+  }
+
+  if (options.includeDummyRepository) {
+    const repoPath = path.join(rootDir, '/src/repositories/bar.repository.ts');
+    fs.writeFileSync(repoPath, '--DUMMY VALUE--');
+  }
 };
