@@ -117,8 +117,6 @@ describe('HasMany relation', () => {
 
   function givenHasManyRelationMetadata(): HasManyDefinition {
     return {
-      modelFrom: Customer,
-      keyFrom: 'id',
       keyTo: 'customerId',
       type: RelationType.hasMany,
     };
