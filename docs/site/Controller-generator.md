@@ -67,10 +67,7 @@ to select:
 
 - The model to use for the CRUD function definitions
 - The repository for this model that provides datasource connectivity
-- The REST path naming convention
-  - Default: singular and plural forms of the model name in dash-delimited style
-    are used
-  - Custom: users are prompted for custom names of their REST paths
+- The REST path name to host the endpoints on
 
 {% include warning.html content= " If you do not have a model and repository to
 select, then you will receive an error! " lang=page.lang
