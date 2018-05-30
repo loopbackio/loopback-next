@@ -139,7 +139,7 @@ module.exports = function(projGenerator, props, projectType) {
     });
 
     describe('setOptions', () => {
-      it('has projectInfo set up', () => {
+      it('has projectInfo set up', async () => {
         let gen = testUtils.testSetUpGen(projGenerator);
         gen.options = {
           name: 'foobar',
@@ -151,7 +151,7 @@ module.exports = function(projGenerator, props, projectType) {
           loopbackBuild: null,
           vscode: null,
         };
-        gen.setOptions();
+        await gen.setOptions();
         assert(gen.projectInfo.name === 'foobar');
         assert(
           gen.projectInfo.dependencies['@loopback/context'] ===
@@ -452,11 +452,27 @@ module.exports = function(projGenerator, props, projectType) {
       });
     });
 
-    function testPrompt(gen, props, fnName) {
-      gen.setOptions();
+    describe('with --skip-optional-prompts', () => {
+      before(() => {
+        return helpers.run(projGenerator).withOptions({
+          name: props.name,
+          'skip-optional-prompts': true,
+        });
+      });
+
+      it('creates files', () => {
+        assert.jsonFileContent('package.json', {
+          name: props.name,
+          description: props.name,
+        });
+      });
+    });
+
+    async function testPrompt(gen, props, fnName) {
+      await gen.setOptions();
       gen.prompt = sinon.stub(gen, 'prompt');
       gen.prompt.resolves(props);
-      return gen[fnName]();
+      return await gen[fnName]();
     }
   };
 };

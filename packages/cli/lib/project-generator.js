@@ -82,7 +82,9 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     this.registerTransformStream(utils.renameEJS());
   }
 
-  setOptions() {
+  async setOptions() {
+    await super.setOptions();
+    if (this.shouldExit()) return false;
     if (this.options.name) {
       const msg = utils.validate(this.options.name);
       if (typeof msg === 'string') {
@@ -148,6 +150,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
 
     return this.prompt(prompts).then(props => {
       Object.assign(this.projectInfo, props);
+      this.destinationRoot(this.projectInfo.outdir);
     });
   }
 
@@ -187,7 +190,6 @@ module.exports = class ProjectGenerator extends BaseGenerator {
 
   scaffold() {
     if (this.shouldExit()) return false;
-    this.destinationRoot(this.projectInfo.outdir);
 
     // First copy common files from ../../project/templates
     this.fs.copyTpl(

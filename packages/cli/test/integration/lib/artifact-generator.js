@@ -16,19 +16,26 @@ module.exports = function(artiGenerator) {
       describe('args validation', () => {
         it('errors out if validation fails', () => {
           assert.throws(() => {
-            testUtils.testSetUpGen(artiGenerator, {args: '2foobar'});
+            const gen = testUtils.testSetUpGen(artiGenerator, {
+              args: '2foobar',
+            });
+            gen.setOptions();
           }, Error);
         });
 
         it('succeeds if no arg is provided', () => {
           assert.doesNotThrow(() => {
-            testUtils.testSetUpGen(artiGenerator);
+            const gen = testUtils.testSetUpGen(artiGenerator);
+            gen.setOptions();
           }, Error);
         });
 
         it('succeeds if arg is valid', () => {
           assert.doesNotThrow(() => {
-            testUtils.testSetUpGen(artiGenerator, {args: ['foobar']});
+            const gen = testUtils.testSetUpGen(artiGenerator, {
+              args: ['foobar'],
+            });
+            gen.setOptions();
           }, Error);
         });
       });
@@ -42,10 +49,11 @@ module.exports = function(artiGenerator) {
         assert(helpText.match(/Required: false/));
       });
 
-      it('sets up artifactInfo', () => {
+      it('sets up artifactInfo', async () => {
         let gen = testUtils.testSetUpGen(artiGenerator, {args: ['test']});
+        await gen.setOptions();
         assert(gen.artifactInfo);
-        assert(gen.artifactInfo.name == 'test');
+        assert.equal(gen.artifactInfo.name, 'test');
       });
     });
 
