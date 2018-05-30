@@ -60,6 +60,10 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
     return super._setupGenerator();
   }
 
+  setOptions() {
+    return super.setOptions();
+  }
+
   /**
    * Ensure CLI is being run in a LoopBack 4 project.
    */
