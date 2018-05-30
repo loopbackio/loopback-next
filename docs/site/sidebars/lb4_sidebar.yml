@@ -215,6 +215,6 @@ children:
     url: Glossary.html
     output: 'web, pdf'
 
-  - title: 'Deploy for GDPR Readiness'
+  - title: 'Considerations for GDPR readiness'
     url: Deploy-for-GDPR-readiness.html
     output: 'web, pdf'
