@@ -12,7 +12,7 @@ import {Filter} from '../query';
 /**
  * CRUD operations for a target repository of a HasMany relation
  */
-export interface HasManyEntityCrudRepository<T extends Entity, ID> {
+export interface HasManyEntityCrudRepository<T extends Entity> {
   /**
    * Create a target model instance
    * @param targetModelData The target model data
@@ -31,15 +31,13 @@ export interface HasManyEntityCrudRepository<T extends Entity, ID> {
 
 export class DefaultHasManyEntityCrudRepository<
   T extends Entity,
-  TargetRepository extends EntityCrudRepository<T, typeof Entity.prototype.id>,
-  ID
-> implements HasManyEntityCrudRepository<T, ID> {
+  TargetRepository extends EntityCrudRepository<T, typeof Entity.prototype.id>
+> implements HasManyEntityCrudRepository<T> {
   /**
    * Constructor of DefaultHasManyEntityCrudRepository
-   * @param sourceInstance the source model instance
    * @param targetRepository the related target model repository instance
-   * @param foreignKeyName the foreign key name to constrain the target repository
-   * instance
+   * @param constraint the key value pair representing foreign key name to constrain
+   * the target repository instance
    */
   constructor(
     public targetRepository: TargetRepository,
@@ -48,7 +46,7 @@ export class DefaultHasManyEntityCrudRepository<
 
   async create(targetModelData: Partial<T>, options?: Options): Promise<T> {
     return await this.targetRepository.create(
-      constrainDataObject(targetModelData, this.constraint) as Partial<T>,
+      constrainDataObject(targetModelData, this.constraint),
       options,
     );
   }

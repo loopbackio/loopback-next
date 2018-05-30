@@ -10,6 +10,7 @@ import {
   WhereBuilder,
   Where,
   filterTemplate,
+  isFilter,
 } from '../../../';
 
 describe('WhereBuilder', () => {
@@ -152,6 +153,16 @@ describe('WhereBuilder', () => {
 });
 
 describe('FilterBuilder', () => {
+  context('isFilter', () => {
+    it('returns false for objects containing illegal fields', () => {
+      const badFilter = {where: {}, badKey: 'bad key'};
+      expect(isFilter(badFilter)).to.be.false();
+    });
+    it('returns true for objects containing only the legal fields', () => {
+      const legalFilter = {where: {}, limit: 5};
+      expect(isFilter(legalFilter)).to.be.true();
+    });
+  });
   it('builds a filter object with field names', () => {
     const filterBuilder = new FilterBuilder();
     filterBuilder.fields('a', 'b', 'c');
@@ -349,6 +360,27 @@ describe('FilterBuilder', () => {
     ]);
     expect(filterBuilder.build()).to.have.property('where', {
       and: [{x: 'x'}, {x: 'y', z: 'z'}],
+    });
+  });
+
+  it('imposes a constraint with a where object', () => {
+    const filterBuilder = new FilterBuilder()
+      .fields({a: true}, 'b')
+      .include('orders')
+      .limit(5)
+      .offset(2)
+      .order('a ASC')
+      .where({x: 'x'});
+    filterBuilder.impose({x: 'y', fields: 'z'});
+    expect(filterBuilder.build()).to.have.properties([
+      'fields',
+      'include',
+      'limit',
+      'offset',
+      'order',
+    ]);
+    expect(filterBuilder.build()).to.have.property('where', {
+      and: [{x: 'x'}, {x: 'y', fields: 'z'}],
     });
   });
 
