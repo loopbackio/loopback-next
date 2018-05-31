@@ -64,8 +64,7 @@ export class RestApplication extends Application implements HttpServerLike {
   }
 
   constructor(config?: ApplicationConfig) {
-    const cfg = Object.assign({}, config);
-    super(cfg);
+    super(Object.assign({}, config));
     this.component(RestComponent);
   }
 

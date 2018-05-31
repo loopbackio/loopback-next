@@ -470,7 +470,7 @@ describe('Reflect Context', () => {
       expect(result).to.be.true();
     });
 
-    function deleteMetadata(target: Object, propertyKey?: string | symbol) {
+    function deleteMetadata(target: Object, propertyKey?: string) {
       if (propertyKey) {
         const keys = reflectContext.getOwnMetadataKeys(target, propertyKey);
         for (const k of keys) {

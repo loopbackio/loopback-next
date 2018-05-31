@@ -78,7 +78,7 @@ export const REQUEST_BODY_INDEX = 'x-parameter-index';
  * ```
  */
 export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
-  return function(target: Object, member: string | symbol, index: number) {
+  return function(target: Object, member: string, index: number) {
     // Use 'application/json' as default content if `requestBody` is undefined
     requestBodySpec = requestBodySpec || {content: {}};
 

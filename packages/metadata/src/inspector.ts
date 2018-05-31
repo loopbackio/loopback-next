@@ -74,7 +74,7 @@ export class MetadataInspector {
     key: MetadataKey<T, DecoratorType>,
     value: T,
     target: Object,
-    member?: string | symbol,
+    member?: string,
   ) {
     Reflector.defineMetadata(key.toString(), value, target, member);
   }
@@ -108,7 +108,7 @@ export class MetadataInspector {
   static getMethodMetadata<T>(
     key: MetadataKey<T, MethodDecorator>,
     target: Object,
-    methodName?: string | symbol,
+    methodName?: string,
     options?: InspectionOptions,
   ): T | undefined {
     methodName = methodName || '';
@@ -148,7 +148,7 @@ export class MetadataInspector {
   static getPropertyMetadata<T>(
     key: MetadataKey<T, PropertyDecorator>,
     target: Object,
-    propertyName: string | symbol,
+    propertyName: string,
     options?: InspectionOptions,
   ): T | undefined {
     const meta: MetadataMap<T> =
@@ -170,7 +170,7 @@ export class MetadataInspector {
   static getAllParameterMetadata<T>(
     key: MetadataKey<T, ParameterDecorator>,
     target: Object,
-    methodName?: string | symbol,
+    methodName?: string,
     options?: InspectionOptions,
   ): T[] | undefined {
     methodName = methodName || '';
@@ -194,7 +194,7 @@ export class MetadataInspector {
   static getParameterMetadata<T>(
     key: MetadataKey<T, ParameterDecorator>,
     target: Object,
-    methodName: string | symbol,
+    methodName: string,
     index: number,
     options?: InspectionOptions,
   ): T | undefined {
@@ -214,7 +214,7 @@ export class MetadataInspector {
    */
   static getDesignTypeForProperty(
     target: Object,
-    propertyName: string | symbol,
+    propertyName: string,
   ): Function {
     return TSReflector.getMetadata('design:type', target, propertyName);
   }
@@ -226,7 +226,7 @@ export class MetadataInspector {
    */
   static getDesignTypeForMethod(
     target: Object,
-    methodName: string | symbol,
+    methodName: string,
   ): DesignTimeMethodMetadata {
     const type = TSReflector.getMetadata('design:type', target, methodName);
     const parameterTypes = TSReflector.getMetadata(

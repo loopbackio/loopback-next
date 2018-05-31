@@ -295,7 +295,7 @@ method parameters. Please note `M` is a map for methods/properties/parameters.
 protected mergeWithInherited(
   inheritedMetadata: M,
   target: Object,
-  member?: string | symbol,
+  member?: string,
   descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
 ): M {
   // ...
@@ -304,7 +304,7 @@ protected mergeWithInherited(
 protected mergeWithOwn(
   ownMetadata: M,
   target: Object,
-  member?: string | symbol,
+  member?: string,
   descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
 ): M {
   // ...

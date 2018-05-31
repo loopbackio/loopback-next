@@ -16,7 +16,7 @@ import {Class} from '../common-types';
  */
 export type RepositoryDecorator = (
   target: Object,
-  key?: string | symbol,
+  key?: string,
   // tslint:disable-next-line:no-any
   descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
 ) => void;
@@ -144,7 +144,7 @@ export function repository(
   const meta = new RepositoryMetadata(stringOrModel, dataSource);
   return function(
     target: Object,
-    key?: symbol | string,
+    key?: string,
     // tslint:disable-next-line:no-any
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ) {
