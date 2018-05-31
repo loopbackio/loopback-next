@@ -137,11 +137,11 @@ export class DecoratorFactory<
     if (member == null) member = 'constructor';
     if (typeof descriptorOrIndex === 'number') {
       // Parameter
-      name = `${name}.${member}[${descriptorOrIndex}]`;
+      name = `${name}.${String(member)}[${descriptorOrIndex}]`;
     } else if (descriptorOrIndex != null) {
-      name = `${name}.${member}()`;
+      name = `${name}.${String(member)}()`;
     } else {
-      name = `${name}.${member}`;
+      name = `${name}.${String(member)}`;
     }
     return name;
   }
@@ -157,7 +157,7 @@ export class DecoratorFactory<
       return target.length;
     } else {
       // target[member] is a function
-      return (<{[methodName: string]: Function}>target)[member!].length;
+      return (<{[methodName: string]: Function}>target)[String(member)!].length;
     }
   }
 
@@ -405,10 +405,10 @@ export class PropertyDecoratorFactory<T> extends DecoratorFactory<
   ) {
     inheritedMetadata = inheritedMetadata || {};
     const propertyMeta: T = this.withTarget(
-      <T>this.inherit(inheritedMetadata[propertyName!]),
+      <T>this.inherit(inheritedMetadata[String(propertyName)!]),
       target,
     );
-    inheritedMetadata[propertyName!] = propertyMeta;
+    inheritedMetadata[String(propertyName)!] = propertyMeta;
     return inheritedMetadata;
   }
 
@@ -419,13 +419,13 @@ export class PropertyDecoratorFactory<T> extends DecoratorFactory<
     descriptorOrParameterIndex?: TypedPropertyDescriptor<any> | number,
   ) {
     ownMetadata = ownMetadata || {};
-    if (ownMetadata[propertyName!] != null) {
+    if (ownMetadata[String(propertyName)!] != null) {
       const targetName = DecoratorFactory.getTargetName(target, propertyName);
       throw new Error(
         'Decorator cannot be applied more than once on ' + targetName,
       );
     }
-    ownMetadata[propertyName!] = this.withTarget(this.spec, target);
+    ownMetadata[String(propertyName)!] = this.withTarget(this.spec, target);
     return ownMetadata;
   }
 
@@ -469,10 +469,10 @@ export class MethodDecoratorFactory<T> extends DecoratorFactory<
   ) {
     inheritedMetadata = inheritedMetadata || {};
     const methodMeta = this.withTarget(
-      <T>this.inherit(inheritedMetadata[methodName!]),
+      <T>this.inherit(inheritedMetadata[String(methodName)!]),
       target,
     );
-    inheritedMetadata[methodName!] = methodMeta;
+    inheritedMetadata[String(methodName)!] = methodMeta;
     return inheritedMetadata;
   }
 
@@ -483,7 +483,7 @@ export class MethodDecoratorFactory<T> extends DecoratorFactory<
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
   ) {
     ownMetadata = ownMetadata || {};
-    const methodMeta = ownMetadata[methodName!];
+    const methodMeta = ownMetadata[String(methodName)!];
     if (this.getTarget(methodMeta) === target) {
       throw new Error(
         'Decorator cannot be applied more than once on ' +
@@ -491,7 +491,7 @@ export class MethodDecoratorFactory<T> extends DecoratorFactory<
       );
     }
     // Set the method metadata
-    ownMetadata[methodName!] = this.withTarget(this.spec, target);
+    ownMetadata[String(methodName)!] = this.withTarget(this.spec, target);
     return ownMetadata;
   }
 
@@ -536,13 +536,13 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
     methodName?: string | symbol,
   ) {
     const method = methodName ? methodName : '';
-    let methodMeta = meta[method];
+    let methodMeta = meta[String(method)];
     if (methodMeta == null) {
       // Initialize the method metadata
       methodMeta = new Array(
         DecoratorFactory.getNumberOfParameters(target, methodName),
       ).fill(undefined);
-      meta[method] = methodMeta;
+      meta[String(method)] = methodMeta;
     }
     return methodMeta;
   }
@@ -681,7 +681,8 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
     const index = this.getParameterIndex(target, methodName, methodDescriptor);
 
     const inheritedParams =
-      inheritedMetadata[methodName!] || new Array(index + 1).fill(undefined);
+      inheritedMetadata[String(methodName)!] ||
+      new Array(index + 1).fill(undefined);
     if (inheritedParams.length) {
       // First time applied to a method. This is the last parameter of the method
       inheritedParams[index] = this.withTarget(
@@ -696,7 +697,7 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
       target,
       methodName,
     );
-    inheritedMetadata[methodName!] = inheritedParams;
+    inheritedMetadata[String(methodName)!] = inheritedParams;
     return inheritedMetadata;
   }
 
@@ -710,9 +711,9 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
     const index = this.getParameterIndex(target, methodName, methodDescriptor);
 
     let params =
-      ownMetadata[methodName!] || new Array(index + 1).fill(undefined);
+      ownMetadata[String(methodName)!] || new Array(index + 1).fill(undefined);
     params[index] = this.withTarget(<T>this.inherit(params[index]), target);
-    ownMetadata[methodName!] = params;
+    ownMetadata[String(methodName)!] = params;
     // Cache the index to help us position the next parameter
     Reflector.defineMetadata(
       `${this.key}:index`,
