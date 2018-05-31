@@ -124,7 +124,7 @@ export class DecoratorFactory<
    */
   static getTargetName(
     target: Object,
-    member?: string | symbol,
+    member?: string,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ) {
     let name =
@@ -151,7 +151,7 @@ export class DecoratorFactory<
    * @param target Class or the prototype
    * @param member Method name
    */
-  static getNumberOfParameters(target: Object, member?: string | symbol) {
+  static getNumberOfParameters(target: Object, member?: string) {
     if (target instanceof Function && !member) {
       // constructor
       return target.length;
@@ -210,7 +210,7 @@ export class DecoratorFactory<
   protected mergeWithInherited(
     inheritedMetadata: M,
     target: Object,
-    member?: string | symbol,
+    member?: string,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ): M {
     throw new Error('mergeWithInherited() is not implemented');
@@ -232,7 +232,7 @@ export class DecoratorFactory<
   protected mergeWithOwn(
     ownMetadata: M,
     target: Object,
-    member?: string | symbol,
+    member?: string,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ): M {
     throw new Error('mergeWithOwn() is not implemented');
@@ -254,7 +254,7 @@ export class DecoratorFactory<
    */
   protected decorate(
     target: Object,
-    member?: string | symbol,
+    member?: string,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ) {
     const targetName = DecoratorFactory.getTargetName(
@@ -349,7 +349,7 @@ export class ClassDecoratorFactory<T> extends DecoratorFactory<
   protected mergeWithInherited(
     inheritedMetadata: T,
     target: Object,
-    member?: string | symbol,
+    member?: string,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ) {
     return this.withTarget(<T>this.inherit(inheritedMetadata), target);
@@ -358,7 +358,7 @@ export class ClassDecoratorFactory<T> extends DecoratorFactory<
   protected mergeWithOwn(
     ownMetadata: T,
     target: Object,
-    member?: string | symbol,
+    member?: string,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ) {
     if (ownMetadata != null) {
@@ -400,7 +400,7 @@ export class PropertyDecoratorFactory<T> extends DecoratorFactory<
   protected mergeWithInherited(
     inheritedMetadata: MetadataMap<T>,
     target: Object,
-    propertyName?: string | symbol,
+    propertyName?: string,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ) {
     inheritedMetadata = inheritedMetadata || {};
@@ -415,7 +415,7 @@ export class PropertyDecoratorFactory<T> extends DecoratorFactory<
   protected mergeWithOwn(
     ownMetadata: MetadataMap<T>,
     target: Object,
-    propertyName?: string | symbol,
+    propertyName?: string,
     descriptorOrParameterIndex?: TypedPropertyDescriptor<any> | number,
   ) {
     ownMetadata = ownMetadata || {};
@@ -430,7 +430,7 @@ export class PropertyDecoratorFactory<T> extends DecoratorFactory<
   }
 
   create(): PropertyDecorator {
-    return (target: Object, propertyName: string | symbol) =>
+    return (target: Object, propertyName: string) =>
       this.decorate(target, propertyName);
   }
 
@@ -464,7 +464,7 @@ export class MethodDecoratorFactory<T> extends DecoratorFactory<
   protected mergeWithInherited(
     inheritedMetadata: MetadataMap<T>,
     target: Object,
-    methodName?: string | symbol,
+    methodName?: string,
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
   ) {
     inheritedMetadata = inheritedMetadata || {};
@@ -479,7 +479,7 @@ export class MethodDecoratorFactory<T> extends DecoratorFactory<
   protected mergeWithOwn(
     ownMetadata: MetadataMap<T>,
     target: Object,
-    methodName?: string | symbol,
+    methodName?: string,
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
   ) {
     ownMetadata = ownMetadata || {};
@@ -498,7 +498,7 @@ export class MethodDecoratorFactory<T> extends DecoratorFactory<
   create(): MethodDecorator {
     return (
       target: Object,
-      methodName: string | symbol,
+      methodName: string,
       descriptor: TypedPropertyDescriptor<any>,
     ) => this.decorate(target, methodName, descriptor);
   }
@@ -533,7 +533,7 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
   private getOrInitMetadata(
     meta: MetadataMap<T[]>,
     target: Object,
-    methodName?: string | symbol,
+    methodName?: string,
   ) {
     const method = methodName ? methodName : '';
     let methodMeta = meta[method];
@@ -550,7 +550,7 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
   protected mergeWithInherited(
     inheritedMetadata: MetadataMap<T[]>,
     target: Object,
-    methodName?: string | symbol,
+    methodName?: string,
     parameterIndex?: TypedPropertyDescriptor<any> | number,
   ) {
     inheritedMetadata = inheritedMetadata || {};
@@ -570,7 +570,7 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
   protected mergeWithOwn(
     ownMetadata: MetadataMap<T[]>,
     target: Object,
-    methodName?: string | symbol,
+    methodName?: string,
     parameterIndex?: TypedPropertyDescriptor<any> | number,
   ) {
     ownMetadata = ownMetadata || {};
@@ -592,11 +592,8 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
   }
 
   create(): ParameterDecorator {
-    return (
-      target: Object,
-      methodName: string | symbol,
-      parameterIndex: number,
-    ) => this.decorate(target, methodName, parameterIndex);
+    return (target: Object, methodName: string, parameterIndex: number) =>
+      this.decorate(target, methodName, parameterIndex);
   }
 
   /**
@@ -642,7 +639,7 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
    */
   private getParameterIndex(
     target: Object,
-    methodName?: string | symbol,
+    methodName?: string,
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
   ) {
     const numOfParams = DecoratorFactory.getNumberOfParameters(
@@ -674,7 +671,7 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
   protected mergeWithInherited(
     inheritedMetadata: MetadataMap<T[]>,
     target: Object,
-    methodName?: string | symbol,
+    methodName?: string,
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
   ) {
     inheritedMetadata = inheritedMetadata || {};
@@ -703,7 +700,7 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
   protected mergeWithOwn(
     ownMetadata: MetadataMap<T[]>,
     target: Object,
-    methodName?: string | symbol,
+    methodName?: string,
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
   ) {
     ownMetadata = ownMetadata || {};
@@ -726,7 +723,7 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
   create(): MethodDecorator {
     return (
       target: Object,
-      methodName: string | symbol,
+      methodName: string,
       descriptor: TypedPropertyDescriptor<any>,
     ) => this.decorate(target, methodName, descriptor);
   }

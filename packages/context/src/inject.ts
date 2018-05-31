@@ -58,7 +58,7 @@ export interface InjectionMetadata {
  */
 export interface Injection<ValueType = BoundValue> {
   target: Object;
-  member?: string | symbol;
+  member?: string;
   methodDescriptorOrParameterIndex?:
     | TypedPropertyDescriptor<ValueType>
     | number;
@@ -102,7 +102,7 @@ export function inject(
   metadata = Object.assign({decorator: '@inject'}, metadata);
   return function markParameterOrPropertyAsInjected(
     target: Object,
-    member: string | symbol,
+    member: string,
     methodDescriptorOrParameterIndex?:
       | TypedPropertyDescriptor<BoundValue>
       | number,
@@ -296,7 +296,7 @@ function resolveAsSetter(ctx: Context, injection: Injection) {
  */
 export function describeInjectedArguments(
   target: Object,
-  method?: string | symbol,
+  method?: string,
 ): Readonly<Injection>[] {
   method = method || '';
   const meta = MetadataInspector.getAllParameterMetadata<Readonly<Injection>>(
