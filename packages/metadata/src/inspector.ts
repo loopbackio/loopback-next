@@ -116,7 +116,7 @@ export class MetadataInspector {
       options && options.ownMetadataOnly
         ? Reflector.getOwnMetadata(key.toString(), target)
         : Reflector.getMetadata(key.toString(), target);
-    return meta && meta[methodName];
+    return meta && meta[String(methodName)];
   }
 
   /**
@@ -155,7 +155,7 @@ export class MetadataInspector {
       options && options.ownMetadataOnly
         ? Reflector.getOwnMetadata(key.toString(), target)
         : Reflector.getMetadata(key.toString(), target);
-    return meta && meta[propertyName];
+    return meta && meta[String(propertyName)];
   }
 
   /**
@@ -178,7 +178,7 @@ export class MetadataInspector {
       options && options.ownMetadataOnly
         ? Reflector.getOwnMetadata(key.toString(), target)
         : Reflector.getMetadata(key.toString(), target);
-    return meta && meta[methodName];
+    return meta && meta[String(methodName)];
   }
 
   /**
@@ -203,7 +203,7 @@ export class MetadataInspector {
       options && options.ownMetadataOnly
         ? Reflector.getOwnMetadata(key.toString(), target)
         : Reflector.getMetadata(key.toString(), target);
-    const params = meta && meta[methodName];
+    const params = meta && meta[String(methodName)];
     return params && params[index];
   }
 
