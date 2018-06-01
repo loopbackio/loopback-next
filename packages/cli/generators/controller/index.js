@@ -9,6 +9,7 @@ const ArtifactGenerator = require('../../lib/artifact-generator');
 const debug = require('../../lib/debug')('controller-generator');
 const inspect = require('util').inspect;
 const path = require('path');
+const chalk = require('chalk');
 const utils = require('../../lib/utils');
 
 // Exportable constants
@@ -35,7 +36,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
     // XXX(kjdelisle): These should be more extensible to allow custom paths
     // for each artifact type.
 
-    this.artifactInfo.outdir = path.resolve(
+    this.artifactInfo.outDir = path.resolve(
       this.artifactInfo.rootDir,
       'controllers',
     );
@@ -185,10 +186,10 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
     // all of the templates!
     if (this.shouldExit()) return false;
     this.artifactInfo.name = utils.toClassName(this.artifactInfo.name);
-    this.artifactInfo.filename =
+    this.artifactInfo.outFile =
       utils.kebabCase(this.artifactInfo.name) + '.controller.ts';
     if (debug.enabled) {
-      debug(`Artifact filename set to: ${this.artifactInfo.filename}`);
+      debug(`Artifact output filename set to: ${this.artifactInfo.outFile}`);
     }
     // renames the file
     let template = 'controller-template.ts.ejs';
@@ -204,7 +205,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       debug(`Using template at: ${source}`);
     }
     const dest = this.destinationPath(
-      path.join(this.artifactInfo.outdir, this.artifactInfo.filename),
+      path.join(this.artifactInfo.outDir, this.artifactInfo.outFile),
     );
 
     if (debug.enabled) {
@@ -221,20 +222,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
     return;
   }
 
-  end() {
-    super.end();
-    if (this.shouldExit()) return false;
-    // logs a message if there is no file conflict
-    if (
-      this.conflicter.generationStatus[this.artifactInfo.filename] !== 'skip' &&
-      this.conflicter.generationStatus[this.artifactInfo.filename] !==
-        'identical'
-    ) {
-      this.log();
-      this.log(
-        'Controller %s is now created in src/controllers/',
-        this.artifactInfo.name,
-      );
-    }
+  async end() {
+    await super.end();
   }
 };

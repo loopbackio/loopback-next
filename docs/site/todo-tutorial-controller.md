@@ -20,11 +20,14 @@ logic will live_!
 
 ### Create your controller
 
-So, let's create a controller to handle our Todo routes. Inside the
-`src/controllers` directory create the following two files:
+So, let's create a controller to handle our Todo routes. You can create an empty
+Controller using the CLI as follows:
 
-- `index.ts` (export helper)
-- `todo.controller.ts`
+```sh
+lb4 controller
+? Controller class name: todo
+? What kind of controller would you like to generate? Empty Controller
+```
 
 In addition to creating the handler functions themselves, we'll also be adding
 decorators that setup the routing as well as the expected parameters of incoming
