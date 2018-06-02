@@ -8,7 +8,7 @@ import {resolve} from 'path';
 import {BooterApp} from '../fixtures/application';
 
 describe('repository booter integration tests', () => {
-  const SANDBOX_PATH = resolve(__dirname, '../../.sandbox');
+  const SANDBOX_PATH = resolve(__dirname, '../../.sandbox.repo.integration');
   const sandbox = new TestSandbox(SANDBOX_PATH);
 
   // Remnants from Refactor -- need to add these to core

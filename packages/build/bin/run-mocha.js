@@ -33,7 +33,7 @@ function run(argv, options) {
   if (mochaOpts.indexOf('source-map-support/register') === -1) {
     // Resolve source-map-support so that the path can be used by mocha
     const sourceMapRegisterPath = require.resolve(
-      'source-map-support/register',
+      'source-map-support/register'
     );
     mochaOpts.unshift('--require', sourceMapRegisterPath);
   }
@@ -43,7 +43,7 @@ function run(argv, options) {
     // Fail any tests that are printing to console.
     mochaOpts.unshift(
       '--require',
-      require.resolve('../src/fail-on-console-logs'),
+      require.resolve('../src/fail-on-console-logs')
     );
   } else {
     // Allow tests to print to console, remove --allow-console-logs argument
@@ -52,7 +52,7 @@ function run(argv, options) {
 
   const args = [...mochaOpts];
 
-  return utils.runCLI('mocha/bin/mocha', args, options);
+  return utils.runCLI('mocha-parallel-tests/dist/bin/cli.js', args, options);
 }
 
 module.exports = run;

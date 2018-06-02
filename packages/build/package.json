@@ -20,6 +20,7 @@
     "fs-extra": "^6.0.1",
     "glob": "^7.1.2",
     "mocha": "^5.1.1",
+    "mocha-parallel-tests": "^2.0.1",
     "nyc": "^11.7.1",
     "prettier": "^1.13.3",
     "rimraf": "^2.6.2",

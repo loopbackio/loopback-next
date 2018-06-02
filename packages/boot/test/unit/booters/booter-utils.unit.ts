@@ -8,7 +8,7 @@ import {resolve} from 'path';
 import {TestSandbox, expect} from '@loopback/testlab';
 
 describe('booter-utils unit tests', () => {
-  const SANDBOX_PATH = resolve(__dirname, '../../../.sandbox');
+  const SANDBOX_PATH = resolve(__dirname, '../../../.sandbox.booter.utils');
   const sandbox = new TestSandbox(SANDBOX_PATH);
 
   beforeEach('reset sandbox', () => sandbox.reset());

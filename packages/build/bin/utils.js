@@ -44,7 +44,7 @@ function getDistribution(target) {
       break;
     default:
       console.error(
-        'Unknown build target %s. Supported values: es2015, es2017, es2018',
+        'Unknown build target %s. Supported values: es2015, es2017, es2018'
       );
       process.exit(1);
   }
@@ -133,8 +133,8 @@ function runCLI(cli, args, options) {
         stdio: 'inherit',
         env: Object.create(process.env),
       },
-      options,
-    ),
+      options
+    )
   );
   child.on('close', (code, signal) => {
     debug('%s exits: %d', cli, code);
@@ -172,8 +172,8 @@ function runShell(command, args, options) {
         // only via a shell.
         shell: true,
       },
-      options,
-    ),
+      options
+    )
   );
   child.on('close', (code, signal) => {
     debug('%s exits: %d', command, code);
@@ -190,7 +190,7 @@ function runShell(command, args, options) {
 function isOptionSet(opts, ...optionNames) {
   return opts.some(opt =>
     // It can be --my-opt or --my-opt=my-value
-    optionNames.some(name => name === opt || opt.startsWith(`${name}=`)),
+    optionNames.some(name => name === opt || opt.startsWith(`${name}=`))
   );
 }
 

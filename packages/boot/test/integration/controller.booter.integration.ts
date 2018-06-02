@@ -8,7 +8,7 @@ import {resolve} from 'path';
 import {BooterApp} from '../fixtures/application';
 
 describe('controller booter integration tests', () => {
-  const SANDBOX_PATH = resolve(__dirname, '../../.sandbox');
+  const SANDBOX_PATH = resolve(__dirname, '../../.sandbox.ctrl.integration');
   const sandbox = new TestSandbox(SANDBOX_PATH);
 
   // Remnants from Refactor -- need to add these to core
