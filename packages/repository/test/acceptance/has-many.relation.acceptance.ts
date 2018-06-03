@@ -60,7 +60,7 @@ describe('HasMany relation', () => {
   });
 
   // This should be enforced by the database to avoid race conditions
-  it('reject create request when the customer does not exist');
+  it.skip('reject create request when the customer does not exist');
 
   //--- HELPERS ---//
 
