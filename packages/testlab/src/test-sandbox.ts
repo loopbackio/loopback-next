@@ -58,6 +58,16 @@ export class TestSandbox {
    */
   async reset(): Promise<void> {
     this.validateInst();
+
+    // Decache files from require's cache so future tests aren't affected incase
+    // a file is recreated in sandbox with the same file name but different
+    // contents after resetting the sandbox.
+    for (const key in require.cache) {
+      if (key.startsWith(this.path)) {
+        delete require.cache[key];
+      }
+    }
+
     await emptyDir(this.path);
   }
 
