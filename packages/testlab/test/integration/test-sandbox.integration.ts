@@ -5,7 +5,7 @@
 
 import {TestSandbox, expect} from '../..';
 import {resolve} from 'path';
-import {remove, pathExists, readFile} from 'fs-extra';
+import {remove, pathExists, readFile, writeJSON} from 'fs-extra';
 
 describe('TestSandbox integration tests', () => {
   let sandbox: TestSandbox;
@@ -61,6 +61,25 @@ describe('TestSandbox integration tests', () => {
     );
 
     expect(fileContents.pop()).to.equal(sourceMapString);
+  });
+
+  it('resets the sandbox', async () => {
+    const file = 'test.js';
+    const resolvedFile = resolve(__dirname, '../fixtures/test.js');
+    await sandbox.copyFile(resolvedFile);
+    await sandbox.reset();
+    expect(await pathExists(resolve(path, file))).to.be.False();
+  });
+
+  it('decaches files from npm require when sandbox is reset', async () => {
+    const file = 'test.json';
+    await writeJSON(resolve(path, file), {x: 1});
+    const data = require(resolve(path, file));
+    expect(data).to.be.eql({x: 1});
+    await sandbox.reset();
+    await writeJSON(resolve(path, file), {x: 2});
+    const data2 = require(resolve(path, file));
+    expect(data2).to.be.eql({x: 2});
   });
 
   it('deletes the test sandbox', async () => {
