@@ -38,7 +38,7 @@ describe('operationArgsParser', () => {
     expect(args).to.eql([1]);
   });
 
-  it('parsed body parameter', async () => {
+  it('parses body parameter', async () => {
     const req = givenRequest({
       url: '/',
       payload: {key: 'value'},
