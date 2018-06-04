@@ -41,6 +41,13 @@ describe('Basic assertions', => {
 
 ## API documentation
 
+Table of contents:
+
+- [expect](#expect) - Better assertions.
+- [sinon](#sinon) - Mocks, stubs and more.
+- [shot](#shot) - HTTP Request/Response stubs.
+- [validateApiSpec](#validateapispec) - Open API Spec validator.
+
 ### `expect`
 
 [Should.js](https://shouldjs.github.io/) configured in "as-function" mode
@@ -52,7 +59,136 @@ Spies, mocks and stubs. Learn more at <http://sinonjs.org/>.
 
 ### `shot`
 
-Shot [API Reference](https://github.com/hapijs/shot/blob/master/API.md)
+Stub implementation of HTTP Request and Response objects, useful for unit tests.
+
+Besides the API provided by `shot` module
+(see [API Reference](https://github.com/hapijs/shot/blob/master/API.md)),
+we provide additional APIs to better support async/await flow control
+and usage in Express-based code.
+
+There are three primary situations where you can leverage stub objects
+provided by Shot in your unit tests:
+
+ - Code parsing core HTTP Request
+ - Code modifying core HTTP Response, including full request/response handlers
+ - Code parsing Express HTTP Request or modifying Express HTTP Response
+
+#### Test request parsing
+
+Use the factory function `stubServerRequest` to create a stub request that
+can be passed to methods expecting core HTTP Request on input.
+
+```ts
+import {stubServerRequest, expect} from '@loopback/testlab';
+
+describe('parseParams', () => {
+  it('parses query string arguments', () => {
+    const request = stubServerRequest({
+      method: 'GET',
+      url: '/api/products?count=10',
+    });
+
+    const args = parseParams(request, [
+      {name: 'count', in: 'query', type: 'number'}
+    ];
+
+    expect(args).to.eql([10]);
+  })
+})
+```
+
+#### Test response producers
+
+Use the factory function `stubHandlerContext` to create request & response
+stubs and a promise to observe the actual response as received by clients.
+
+```ts
+import {stubHandlerContext, expect} from '@loopback/testlab';
+
+describe('app REST handler', () => {
+  it('returns 404 with JSON body when URL not found', async () => {
+    const app = express();
+    const context = stubHandlerContext({
+      method: 'GET',
+      url: '/path-does-not-exist',
+    });
+
+    // Invoke Express' request handler with stubbed request/response objects
+    app(context.request, context.response);
+
+    // Wait until Express finishes writing the response
+    const actualResponse = await context.result;
+
+    // Verify the response seen by clients
+    expect(actualResponse.statusCode).to.equal(404);
+    expect(JSON.parse(actualResponse.payload)).to.containEql({
+      error: {
+        statusCode: 404,
+        message: 'Not Found',
+      },
+    });
+  });
+});
+```
+
+#### Test code expecting Express Request or Response
+
+Express modifies core HTTP request and response objects with additional
+properties and methods, it also cross-links request with response and vice
+versa. As a result, it's not possible to create Express Request object without
+the accompanying Response object.
+
+Use the factory function `stubExpressContext` to create Express-flavored
+request & response stubs and a promise to observe the actual response as
+received by clients.
+
+If your tested function is expecting a request object only:
+
+```ts
+import {stubExpressContext, expect} from '@loopback/testlab';
+
+describe('operationArgsParser', () => {
+  it('parses body parameter', async () => {
+    const req = givenRequest({
+      url: '/',
+      payload: {key: 'value'},
+    });
+
+    const spec = givenOperationWithRequestBody({
+      description: 'data',
+      content: {'application/json': {schema: {type: 'object'}}},
+    });
+    const route = givenResolvedRoute(spec);
+
+    const args = await parseOperationArgs(req, route);
+
+    expect(args).to.eql([{key: 'value'}]);
+  });
+
+  function givenRequest(options?: ShotRequestOptions): Request {
+    return stubExpressContext(options).request;
+  }
+});
+```
+
+Tests verifying code producing HTTP response can await `context.result` to
+receive the response as returned to clients.
+
+```ts
+import {stubExpressContext, expect} from '@loopback/testlab';
+
+describe('response writer', () => {
+  it('writes object result to response as JSON', async () => {
+  const context = stubExpressContext();
+
+    writeResultToResponse(context.response, {name: 'Joe'});
+    const result = await context.result;
+
+    expect(result.headers['content-type']).to.eql('application/json');
+    expect(result.payload).to.equal('{"name":"Joe"}');
+  });
+});
+```
 
 ### `validateApiSpec`
 
