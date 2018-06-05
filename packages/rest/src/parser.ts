@@ -14,6 +14,8 @@ import {REQUEST_BODY_INDEX} from '@loopback/openapi-v3';
 import {promisify} from 'util';
 import {OperationArgs, Request, PathParameterValues} from './types';
 import {ResolvedRoute} from './router/routing-table';
+import {deserialize} from './deserializer';
+
 type HttpError = HttpErrors.HttpError;
 
 // tslint:disable-next-line:no-any
@@ -101,16 +103,19 @@ function buildOperationArguments(
       throw new Error('$ref parameters are not supported yet.');
     }
     const spec = paramSpec as ParameterObject;
+    // tslint:disable-next-line:no-any
+    const addArg = (val: any) => paramArgs.push(deserialize(val, spec));
     switch (spec.in) {
       case 'query':
-        paramArgs.push(request.query[spec.name]);
+        addArg(request.query[spec.name]);
         break;
       case 'path':
-        paramArgs.push(pathParams[spec.name]);
+        addArg(pathParams[spec.name]);
         break;
       case 'header':
-        paramArgs.push(request.headers[spec.name.toLowerCase()]);
+        addArg(request.headers[spec.name.toLowerCase()]);
         break;
+      case 'cookie':
       // TODO(jannyhou) to support `cookie`,
       // see issue https://github.com/strongloop/loopback-next/issues/997
       default:
