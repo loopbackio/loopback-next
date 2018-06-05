@@ -90,7 +90,7 @@ describe('parseParams', () => {
 
     const args = parseParams(request, [
       {name: 'count', in: 'query', type: 'number'}
-    ];
+    ]);
 
     expect(args).to.eql([10]);
   })
@@ -179,7 +179,7 @@ import {stubExpressContext, expect} from '@loopback/testlab';
 
 describe('response writer', () => {
   it('writes object result to response as JSON', async () => {
-  const context = stubExpressContext();
+    const context = stubExpressContext();
 
     writeResultToResponse(context.response, {name: 'Joe'});
     const result = await context.result;
