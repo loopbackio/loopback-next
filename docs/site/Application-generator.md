@@ -18,7 +18,7 @@ lb4 [app] [options] [<name>]
 
 ### Options
 
-`--applicationName` : Application name.
+`--applicationName` : Application class name.
 
 `--description` : Description of the application.
 
