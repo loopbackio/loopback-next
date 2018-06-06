@@ -99,7 +99,8 @@ export class Todo {
 
 {% include note.html content=" `TodoController` from
 [tutorial](https://github.com/strongloop/loopback-next/blob/master/docs/site/todo-tutorial-controller.md#srccontrollerstodocontrollerts-2)
-is used for demonstration here. " %}
+is used for demonstration here.
+" %}
 
 Once your models are defined, create a controller to host your routes for each
 [paths](https://swagger.io/specification/#pathsObject) of your API:
