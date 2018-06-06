@@ -10,7 +10,6 @@ const utils = require('./utils');
 const updateIndex = require('./update-index');
 const path = require('path');
 const chalk = require('chalk');
-const StatusConflicter = utils.StatusConflicter;
 
 module.exports = class ArtifactGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -36,41 +35,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
       this.destinationPath(),
       this.artifactInfo.outDir,
     );
-    this.conflicter = new StatusConflicter(
-      this.env.adapter,
-      this.options.force,
-    );
-  }
-
-  /**
-   * Checks if current directory is a LoopBack project by checking for
-   * keyword 'loopback' under 'keywords' attribute in package.json.
-   * 'keywords' is an array
-   */
-  checkLoopBackProject() {
-    debug('Checking for loopback project');
-    if (this.shouldExit()) return false;
-    const pkg = this.fs.readJSON(this.destinationPath('package.json'));
-    const key = 'loopback';
-    if (!pkg) {
-      const err = new Error(
-        'No package.json found in ' +
-          this.destinationRoot() +
-          '. ' +
-          'The command must be run in a LoopBack project.',
-      );
-      this.exit(err);
-      return;
-    }
-    if (!pkg.keywords || !pkg.keywords.includes(key)) {
-      const err = new Error(
-        'No `loopback` keyword found in ' +
-          this.destinationPath('package.json') +
-          '. ' +
-          'The command must be run in a LoopBack project.',
-      );
-      this.exit(err);
-    }
+    super._setupGenerator();
   }
 
   promptArtifactName() {
@@ -111,7 +76,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
   }
 
   async end() {
-    const success = super.end();
+    const success = await super.end();
     if (!success) return false;
 
     let generationStatus = true;
@@ -128,7 +93,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
        *
        * Both those properties must be present for this to happen. Optionally,
        * this can be disabled even if the properties are present by setting:
-       * this.artifactInfo.disableIndexUdpdate = true;
+       * this.artifactInfo.disableIndexUpdate = true;
        */
       if (
         this.artifactInfo.outDir &&
