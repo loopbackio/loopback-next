@@ -10,7 +10,7 @@ const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 const generator = path.join(__dirname, '../../../generators/app');
 const props = {
-  name: 'myApp',
+  name: 'my-app',
   description: 'My app for LoopBack 4',
 };
 
@@ -56,7 +56,21 @@ describe('app-generator specific files', () => {
       'src/controllers/ping.controller.ts',
       /\'\@loopback\/openapi\-v3\'/,
     );
+  });
+});
 
-    assert.file;
+describe('app-generator with --applicationName', () => {
+  before(() => {
+    return helpers
+      .run(generator)
+      .withOptions({applicationName: 'MyApp'})
+      .withPrompts(props);
+  });
+  it('generates all the proper files', () => {
+    assert.file('src/application.ts');
+    assert.fileContent(
+      'src/application.ts',
+      /class MyApp extends BootMixin\(RestApplication/,
+    );
   });
 });
