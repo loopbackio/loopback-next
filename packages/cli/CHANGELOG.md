@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.12.1...@loopback/cli@0.13.0) (2018-06-08)
+
+
+### Bug Fixes
+
+* **cli:** fix controller.integration.js tests and refactor ([f3edbd9](https://github.com/strongloop/loopback-next/commit/f3edbd9))
+* **cli:** fix templates & move some utils to base generator ([1a5cbf8](https://github.com/strongloop/loopback-next/commit/1a5cbf8))
+* **cli:** make sure --applicationName is honored ([526e6ca](https://github.com/strongloop/loopback-next/commit/526e6ca))
+
+
+### Features
+
+* **cli:** add vscode config files ([3738b9c](https://github.com/strongloop/loopback-next/commit/3738b9c))
+* **cli:** auto-generate / update index.ts for exports ([2998363](https://github.com/strongloop/loopback-next/commit/2998363)), closes [#1127](https://github.com/strongloop/loopback-next/issues/1127)
+
+
+
+
 <a name="0.12.1"></a>
 ## [0.12.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.12.0...@loopback/cli@0.12.1) (2018-05-28)
 

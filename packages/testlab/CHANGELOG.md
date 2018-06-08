@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.10.5"></a>
+## [0.10.5](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.10.4...@loopback/testlab@0.10.5) (2018-06-08)
+
+
+### Bug Fixes
+
+* fill out missing brackets in testlab readme ([5383f54](https://github.com/strongloop/loopback-next/commit/5383f54))
+
+
+
+
 <a name="0.10.4"></a>
 ## [0.10.4](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.10.3...@loopback/testlab@0.10.4) (2018-05-20)
 

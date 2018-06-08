@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.6.6"></a>
+## [0.6.6](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.6.5...@loopback/build@0.6.6) (2018-06-08)
+
+
+### Bug Fixes
+
+* make the code compatible with TypeScript 2.9.x ([37aba50](https://github.com/strongloop/loopback-next/commit/37aba50))
+
+
+
+
 <a name="0.6.5"></a>
 ## [0.6.5](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.6.4...@loopback/build@0.6.5) (2018-05-20)
 
