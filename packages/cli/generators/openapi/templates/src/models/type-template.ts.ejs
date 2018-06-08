@@ -1,0 +1,12 @@
+<%_
+imports.forEach(i => {
+-%>
+<%- i %>
+<%_
+});
+-%>
+/**
+ * The model type is generated from OpenAPI schema - <%- name %>
+ */
+export type <%- className %> = <%- declaration %>;
+
