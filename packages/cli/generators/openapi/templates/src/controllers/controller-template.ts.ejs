@@ -1,0 +1,30 @@
+/* tslint:disable:no-any */
+import {operation, param} from '@loopback/rest';
+<%_
+imports.forEach(i => {
+-%>
+<%- i %>
+<%_
+});
+-%>
+
+/**
+ * The controller class is generated from OpenAPI spec with operations tagged
+ * by <%- tag %>
+ * <%- description %>
+ */
+export class <%- className %> {
+  constructor() {}
+
+  <%_ for (const m of methods) { -%>
+  /**
+   * <%- m.description %>
+   */
+  <%- m.decoration %>
+  <%- m.signature %> {
+    throw new Error('Not implemented');
+  }
+
+  <%_ } -%>
+}
+

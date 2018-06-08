@@ -23,7 +23,8 @@ describe('cli', () => {
     main({commands: true}, getLog(entries));
     expect(entries).to.eql([
       'Available commands: ',
-      '  lb4 app\n  lb4 extension\n  lb4 controller\n  lb4 datasource\n  lb4 example',
+      '  lb4 app\n  lb4 extension\n  lb4 controller\n  lb4 datasource\n  ' +
+        'lb4 example\n  lb4 openapi',
     ]);
   });
 
@@ -40,7 +41,8 @@ describe('cli', () => {
     main({help: true, _: []}, getLog(entries), true);
     expect(entries).to.containEql('Available commands: ');
     expect(entries).to.containEql(
-      '  lb4 app\n  lb4 extension\n  lb4 controller\n  lb4 datasource\n  lb4 example',
+      '  lb4 app\n  lb4 extension\n  lb4 controller\n  lb4 datasource\n  ' +
+        'lb4 example\n  lb4 openapi',
     );
   });
 

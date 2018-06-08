@@ -69,6 +69,10 @@ function setupGenerators() {
     path.join(__dirname, '../generators/example'),
     PREFIX + 'example',
   );
+  env.register(
+    path.join(__dirname, '../generators/openapi'),
+    PREFIX + 'openapi',
+  );
   return env;
 }
 
