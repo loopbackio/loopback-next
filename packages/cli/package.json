@@ -1,6 +1,6 @@
 {
   "name": "@loopback/cli",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "description": "Yeoman generator for LoopBack 4",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/packages/cli",
   "author": {
@@ -79,7 +79,7 @@
       "@loopback/authentication": "^0.10.6",
       "@loopback/boot": "^0.10.6",
       "@loopback/build": "^0.6.6",
-      "@loopback/cli": "^0.13.0",
+      "@loopback/cli": "^0.13.1",
       "@loopback/context": "^0.11.3",
       "@loopback/core": "^0.8.5",
       "@loopback/metadata": "^0.8.5",
@@ -90,7 +90,7 @@
       "@loopback/repository": "^0.11.0",
       "@loopback/rest": "^0.11.0",
       "@loopback/testlab": "^0.10.5",
-      "@loopback/docs": "^0.9.0",
+      "@loopback/docs": "^0.9.1",
       "glob": "^7.1.2",
       "@loopback/example-hello-world": "^0.8.0",
       "@loopback/example-log-extension": "^0.10.0",
@@ -99,7 +99,7 @@
       "@loopback/dist-util": "^0.3.2",
       "@loopback/service-proxy-proxy": "^0.4.0",
       "@loopback/service-proxy": "^0.5.6",
-      "@loopback/http-caching-proxy": "^0.2.0",
+      "@loopback/http-caching-proxy": "^0.2.1",
       "@loopback/http-server": "^0.1.0"
     }
   },
