@@ -76,14 +76,24 @@ describe('constraint utility functions', () => {
   });
 
   context('constrainDataObject', () => {
-    it('constrain a single data object', () => {
-      const input = new Order({id: 1, description: 'order 1'});
+    it('constrains a single data object', () => {
+      const input = new Order({description: 'order 1'});
       const constraint: Partial<Order> = {id: 2};
-      const result = constrainDataObject(input, constraint);
-      expect(result).to.containDeep(Object.assign({}, input, constraint));
+      expect(constrainDataObject(input, constraint)).to.containDeep({
+        description: 'order 1',
+        id: 2,
+      });
     });
 
-    it('constrain array of data objects', () => {
+    it('throws error when the query changes field in constrain', () => {
+      const input = new Order({id: 1, description: 'order 1'});
+      const constraint: Partial<Order> = {id: 2};
+      expect(() => {
+        constrainDataObject(input, constraint);
+      }).to.throwError(/Property "id" cannot be changed!/);
+    });
+
+    it('constrains array of data objects', () => {
       const input = [
         new Order({id: 1, description: 'order 1'}),
         new Order({id: 2, description: 'order 2'}),

@@ -13,8 +13,10 @@ import {
   hasManyRepositoryFactory,
   HasManyDefinition,
   RelationType,
+  HasManyEntityCrudRepository,
 } from '../..';
 import {expect} from '@loopback/testlab';
+import * as _ from 'lodash';
 
 describe('HasMany relation', () => {
   // Given a Customer and Order models - see definitions at the bottom
@@ -24,32 +26,27 @@ describe('HasMany relation', () => {
   let existingCustomerId: number;
   //FIXME: this should be inferred from relational decorators
   let customerHasManyOrdersRelationMeta: HasManyDefinition;
+  let customerOrders: HasManyEntityCrudRepository<Order>;
 
   beforeEach(async () => {
     existingCustomerId = (await givenPersistedCustomerInstance()).id;
     customerHasManyOrdersRelationMeta = givenHasManyRelationMetadata();
+    // Ideally, we would like to write
+    // customerRepo.orders.create(customerId, orderData);
+    // or customerRepo.orders({id: customerId}).*
+    // The initial "involved" implementation is below
+
+    //FIXME: should be automagically instantiated via DI or other means
+    customerOrders = hasManyRepositoryFactory(
+      existingCustomerId,
+      customerHasManyOrdersRelationMeta,
+      orderRepo,
+    );
   });
 
   it('can create an instance of the related model', async () => {
-    // A controller method - CustomerOrdersController.create()
-    // customerRepo and orderRepo would be injected via constructor arguments
-    async function create(customerId: number, orderData: Partial<Order>) {
-      // Ideally, we would like to write
-      // customerRepo.orders.create(customerId, orderData);
-      // or customerRepo.orders({id: customerId}).*
-      // The initial "involved" implementation is below
-
-      //FIXME: should be automagically instantiated via DI or other means
-      const customerOrders = hasManyRepositoryFactory(
-        customerId,
-        customerHasManyOrdersRelationMeta,
-        orderRepo,
-      );
-      return await customerOrders.create(orderData);
-    }
-
     const description = 'an order desc';
-    const order = await create(existingCustomerId, {description});
+    const order = await customerOrders.create({description});
 
     expect(order.toObject()).to.containDeep({
       customerId: existingCustomerId,
@@ -59,6 +56,59 @@ describe('HasMany relation', () => {
     expect(persisted.toObject()).to.deepEqual(order.toObject());
   });
 
+  it('can patch many instances', async () => {
+    await givenCustomerOrder({description: 'order 1', isDelivered: false});
+    await givenCustomerOrder({description: 'order 2', isDelivered: false});
+    const patchObject = {isDelivered: true};
+    const arePatched = await customerOrders.patch(patchObject);
+    expect(arePatched).to.equal(2);
+    const patchedData = _.map(await customerOrders.find(), d =>
+      _.pick(d, ['customerId', 'description', 'isDelivered']),
+    );
+    expect(patchedData).to.eql([
+      {
+        customerId: existingCustomerId,
+        description: 'order 1',
+        isDelivered: true,
+      },
+      {
+        customerId: existingCustomerId,
+        description: 'order 2',
+        isDelivered: true,
+      },
+    ]);
+  });
+
+  it('throws error when query tries to change the foreignKey', async () => {
+    await expect(
+      customerOrders.patch({customerId: existingCustomerId + 1}),
+    ).to.be.rejectedWith(/Property "customerId" cannot be changed!/);
+  });
+
+  it('can delete many instances', async () => {
+    await givenCustomerOrder({description: 'order 1'});
+    await givenCustomerOrder({description: 'order 2'});
+    const deletedOrders = await customerOrders.delete();
+    expect(deletedOrders).to.equal(2);
+    const relatedOrders = await customerOrders.find();
+    expect(relatedOrders).to.be.empty();
+  });
+
+  it("does not delete instances that don't belong to the constrained instance", async () => {
+    const newOrder = {
+      customerId: existingCustomerId + 1,
+      description: 'another order',
+    };
+    await orderRepo.create(newOrder);
+    await customerOrders.delete();
+    const orders = await orderRepo.find();
+    expect(orders).to.have.length(1);
+    expect(_.pick(orders[0], ['customerId', 'description'])).to.eql(newOrder);
+  });
+
+  async function givenCustomerOrder(dataObject: Partial<Order>) {
+    await customerOrders.create(dataObject);
+  }
   // This should be enforced by the database to avoid race conditions
   it.skip('reject create request when the customer does not exist');
 
@@ -91,6 +141,12 @@ describe('HasMany relation', () => {
       required: true,
     })
     description: string;
+
+    @property({
+      type: 'boolean',
+      required: false,
+    })
+    isDelivered: boolean;
 
     @property({
       type: 'number',
