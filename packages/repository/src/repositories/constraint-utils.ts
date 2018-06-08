@@ -55,6 +55,8 @@ export function constrainDataObject<T extends Entity>(
 ): DataObject<T> {
   const constrainedData = cloneDeep(originalData);
   for (const c in constraint) {
+    if (constrainedData.hasOwnProperty(c))
+      throw new Error(`Property "${c}" cannot be changed!`);
     constrainedData[c] = constraint[c];
   }
   return constrainedData;

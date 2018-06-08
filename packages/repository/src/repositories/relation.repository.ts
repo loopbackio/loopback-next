@@ -4,10 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {EntityCrudRepository} from './repository';
-import {constrainDataObject, constrainFilter} from './constraint-utils';
-import {AnyObject, Options} from '../common-types';
+import {
+  constrainDataObject,
+  constrainFilter,
+  constrainWhere,
+} from './constraint-utils';
+import {DataObject, AnyObject, Options} from '../common-types';
 import {Entity} from '../model';
-import {Filter} from '../query';
+import {Filter, Where} from '../query';
 
 /**
  * CRUD operations for a target repository of a HasMany relation
@@ -26,7 +30,26 @@ export interface HasManyEntityCrudRepository<T extends Entity> {
    * @param options Options for the operation
    * @returns A promise which resolves with the found target instance(s)
    */
-  find(filter?: Filter | undefined, options?: Options): Promise<T[]>;
+  find(filter?: Filter, options?: Options): Promise<T[]>;
+  /**
+   * Delete multiple target model instances
+   * @param where Instances within the where scope are deleted
+   * @param options
+   * @returns A promise which resolves the deleted target model instances
+   */
+  delete(where?: Where, options?: Options): Promise<number>;
+  /**
+   * Patch multiple target model instances
+   * @param dataObject The fields and their new values to patch
+   * @param where Instances within the where scope are patched
+   * @param options
+   * @returns A promise which resolves the patched target model instances
+   */
+  patch(
+    dataObject: DataObject<T>,
+    where?: Where,
+    options?: Options,
+  ): Promise<number>;
 }
 
 export class DefaultHasManyEntityCrudRepository<
@@ -51,9 +74,28 @@ export class DefaultHasManyEntityCrudRepository<
     );
   }
 
-  async find(filter?: Filter | undefined, options?: Options): Promise<T[]> {
+  async find(filter?: Filter, options?: Options): Promise<T[]> {
     return await this.targetRepository.find(
       constrainFilter(filter, this.constraint),
+      options,
+    );
+  }
+
+  async delete(where?: Where, options?: Options): Promise<number> {
+    return await this.targetRepository.deleteAll(
+      constrainWhere(where, this.constraint),
+      options,
+    );
+  }
+
+  async patch(
+    dataObject: Partial<T>,
+    where?: Where,
+    options?: Options,
+  ): Promise<number> {
+    return await this.targetRepository.updateAll(
+      constrainDataObject(dataObject, this.constraint),
+      constrainWhere(where, this.constraint),
       options,
     );
   }

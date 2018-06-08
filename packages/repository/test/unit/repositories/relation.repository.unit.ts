@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {sinon} from '@loopback/testlab';
+import {sinon, expect} from '@loopback/testlab';
 import {
   EntityCrudRepository,
   HasManyEntityCrudRepository,
@@ -13,6 +13,9 @@ import {
   Entity,
   AnyObject,
   Filter,
+  Options,
+  DataObject,
+  Where,
 } from '../../..';
 
 describe('relation repository', () => {
@@ -34,12 +37,26 @@ describe('relation repository', () => {
         targetModelData: Partial<T>,
         options?: AnyObject | undefined,
       ): Promise<T> {
+        /* istanbul ignore next */
         throw new Error('Method not implemented.');
       }
       find(
         filter?: Filter | undefined,
         options?: AnyObject | undefined,
       ): Promise<T[]> {
+        /* istanbul ignore next */
+        throw new Error('Method not implemented.');
+      }
+      async delete(where?: Where, options?: Options): Promise<number> {
+        /* istanbul ignore next */
+        throw new Error('Method not implemented.');
+      }
+      async patch(
+        dataObject: DataObject<T>,
+        where?: Where,
+        options?: Options,
+      ): Promise<number> {
+        /* istanbul ignore next */
         throw new Error('Method not implemented.');
       }
     }
@@ -60,6 +77,36 @@ describe('relation repository', () => {
       await HasManyCrudInstance.find({where: {id: 3}});
       const findStub = repo.find as sinon.SinonStub;
       sinon.assert.calledWithMatch(findStub, {where: {id: 3, name: 'Jane'}});
+    });
+
+    context('patch', async () => {
+      it('can patch related model instance', async () => {
+        const constraint: Partial<Customer> = {name: 'Jane'};
+        const HasManyCrudInstance = givenDefaultHasManyCrudInstance(constraint);
+        await HasManyCrudInstance.patch({country: 'US'}, {id: 3});
+        const patchStub = repo.updateAll as sinon.SinonStub;
+        sinon.assert.calledWith(
+          patchStub,
+          {country: 'US', name: 'Jane'},
+          {id: 3, name: 'Jane'},
+        );
+      });
+
+      it('cannot override the constrain data', async () => {
+        const constraint: Partial<Customer> = {name: 'Jane'};
+        const HasManyCrudInstance = givenDefaultHasManyCrudInstance(constraint);
+        await expect(
+          HasManyCrudInstance.patch({name: 'Joe'}),
+        ).to.be.rejectedWith(/Property "name" cannot be changed!/);
+      });
+    });
+
+    it('can delete related model instance', async () => {
+      const constraint: Partial<Customer> = {name: 'Jane'};
+      const HasManyCrudInstance = givenDefaultHasManyCrudInstance(constraint);
+      await HasManyCrudInstance.delete({id: 3});
+      const deleteStub = repo.deleteAll as sinon.SinonStub;
+      sinon.assert.calledWith(deleteStub, {id: 3, name: 'Jane'});
     });
   });
 
