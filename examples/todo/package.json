@@ -51,9 +51,7 @@
   "devDependencies": {
     "@loopback/build": "^0.6.8",
     "@loopback/testlab": "^0.10.7",
-    "@types/node": "^10.1.1",
-    "source-map-support": "^0.5.4",
-    "typescript": "^2.6.2"
+    "@types/node": "^10.1.1"
   },
   "keywords": [
     "loopback",

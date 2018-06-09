@@ -1,5 +1,5 @@
 /coverage
-packages/*/api-docs
+**/*/api-docs
 packages/cli/generators/*/templates
 **/.sandbox
 packages/*/dist*
