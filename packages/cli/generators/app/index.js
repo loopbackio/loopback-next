@@ -18,14 +18,27 @@ module.exports = class AppGenerator extends ProjectGenerator {
 
     this.option('applicationName', {
       type: String,
-      description: 'Application name',
+      description: 'Application class name',
     });
 
     return super._setupGenerator();
   }
 
-  setOptions() {
-    return super.setOptions();
+  async setOptions() {
+    await super.setOptions();
+    if (this.shouldExit()) return;
+    if (this.options.applicationName) {
+      const clsName = utils.toClassName(this.options.applicationName);
+      if (typeof clsName === 'string') {
+        this.projectInfo.applicationName = clsName;
+      } else if (clsName instanceof Error) {
+        throw clsName;
+      }
+      const msg = utils.validateClassName(clsName);
+      if (msg !== true) {
+        throw new Error(msg);
+      }
+    }
   }
 
   promptProjectName() {
@@ -45,12 +58,15 @@ module.exports = class AppGenerator extends ProjectGenerator {
         message: 'Application class name:',
         default: utils.pascalCase(this.projectInfo.name) + 'Application',
         validate: utils.validateClassName,
+        when: this.projectInfo.applicationName == null,
       },
     ];
 
     return this.prompt(prompts).then(props => {
       props.applicationName = utils.toClassName(props.applicationName);
-      Object.assign(this.projectInfo, props);
+      if (typeof props.applicationName === 'string') {
+        this.projectInfo.applicationName = props.applicationName;
+      }
     });
   }
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-hello-world@0.7.5...@loopback/example-hello-world@0.8.0) (2018-06-08)
+
+
+### Features
+
+* **cli:** add vscode config files ([3738b9c](https://github.com/strongloop/loopback-next/commit/3738b9c))
+
+
+
+
 <a name="0.7.5"></a>
 ## [0.7.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-hello-world@0.7.4...@loopback/example-hello-world@0.7.5) (2018-05-28)
 

@@ -16,8 +16,8 @@ import {
   createControllerFactoryForBinding,
 } from './router/routing-table';
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
-import {ServerRequest, ServerResponse, createServer} from 'http';
-import * as Http from 'http';
+import {ServerRequest, ServerResponse} from 'http';
+import {HttpServer} from '@loopback/http-server';
 import * as cors from 'cors';
 import {Application, CoreBindings, Server} from '@loopback/core';
 import {getControllerSpec} from '@loopback/openapi-v3';
@@ -35,7 +35,6 @@ import {
 import {RestBindings} from './keys';
 import {RequestContext} from './request-context';
 import * as express from 'express';
-import {AddressInfo} from 'net';
 
 export type HttpRequestListener = (
   req: ServerRequest,
@@ -127,7 +126,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     this._setupHandlerIfNeeded();
     return this._httpHandler;
   }
-  protected _httpServer: Http.Server;
+  protected _httpServer: HttpServer;
 
   protected _expressApp: express.Application;
 
@@ -159,6 +158,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     }
     this.bind(RestBindings.PORT).to(options.port);
     this.bind(RestBindings.HOST).to(options.host);
+    this.bind(RestBindings.PROTOCOL).to(options.protocol || 'http');
 
     if (options.sequence) {
       this.sequence(options.sequence);
@@ -573,23 +573,22 @@ export class RestServer extends Context implements Server, HttpServerLike {
     // of API spec, controllers and routes at startup time.
     this._setupHandlerIfNeeded();
 
-    const httpPort = await this.get<number>(RestBindings.PORT);
-    const httpHost = await this.get<string | undefined>(RestBindings.HOST);
-    this._httpServer = createServer(this.requestHandler);
-    const httpServer = this._httpServer;
+    const port = await this.get<number | undefined>(RestBindings.PORT);
+    const host = await this.get<string | undefined>(RestBindings.HOST);
+    const protocol = await this.get<'http' | 'https' | undefined>(
+      RestBindings.PROTOCOL,
+    );
 
-    // TODO(bajtos) support httpHostname too
-    // See https://github.com/strongloop/loopback-next/issues/434
-    httpServer.listen(httpPort, httpHost);
-
-    return new Promise<void>((resolve, reject) => {
-      httpServer.once('listening', () => {
-        const address = httpServer.address() as AddressInfo;
-        this.bind(RestBindings.PORT).to(address.port);
-        resolve();
-      });
-      httpServer.once('error', reject);
+    this._httpServer = new HttpServer(this.requestHandler, {
+      port: port,
+      host: host,
+      protocol: protocol || 'http',
     });
+
+    await this._httpServer.start();
+    this.bind(RestBindings.PORT).to(this._httpServer.port);
+    this.bind(RestBindings.HOST).to(this._httpServer.host);
+    this.bind(RestBindings.URL).to(this._httpServer.url);
   }
 
   /**
@@ -600,16 +599,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    */
   async stop() {
     // Kill the server instance.
-    const server = this._httpServer;
-    return new Promise<void>((resolve, reject) => {
-      server.close((err: Error) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
+    await this._httpServer.stop();
   }
 
   protected _onUnhandledError(req: Request, res: Response, err: Error) {
@@ -639,4 +629,5 @@ export interface RestServerConfig {
   cors?: cors.CorsOptions;
   apiExplorerUrl?: string;
   sequence?: Constructor<SequenceHandler>;
+  protocol?: 'http' | 'https';
 }

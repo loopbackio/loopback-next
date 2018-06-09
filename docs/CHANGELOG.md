@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.9.1"></a>
+## [0.9.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.9.0...@loopback/docs@0.9.1) (2018-06-08)
+
+
+
+
+**Note:** Version bump only for package @loopback/docs
+
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.8.1...@loopback/docs@0.9.0) (2018-06-08)
+
+
+### Bug Fixes
+
+* correct docs for rest controller cli prompt ([9241f5a](https://github.com/strongloop/loopback-next/commit/9241f5a))
+* **cli:** make sure --applicationName is honored ([526e6ca](https://github.com/strongloop/loopback-next/commit/526e6ca))
+
+
+### Features
+
+* **cli:** add vscode config files ([3738b9c](https://github.com/strongloop/loopback-next/commit/3738b9c))
+* **cli:** auto-generate / update index.ts for exports ([2998363](https://github.com/strongloop/loopback-next/commit/2998363)), closes [#1127](https://github.com/strongloop/loopback-next/issues/1127)
+* **http-caching-proxy:** initial implementation ([7d8345c](https://github.com/strongloop/loopback-next/commit/7d8345c))
+
+
+
+
 <a name="0.8.1"></a>
 ## [0.8.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.8.0...@loopback/docs@0.8.1) (2018-05-28)
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.10.4...@loopback/repository@0.11.0) (2018-06-08)
+
+
+### Bug Fixes
+
+* make the code compatible with TypeScript 2.9.x ([37aba50](https://github.com/strongloop/loopback-next/commit/37aba50))
+
+
+### Features
+
+* **repository:** initial hasMany relation impl ([63f20c4](https://github.com/strongloop/loopback-next/commit/63f20c4))
+
+
+
+
 <a name="0.10.4"></a>
 ## [0.10.4](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.10.3...@loopback/repository@0.10.4) (2018-05-20)
 

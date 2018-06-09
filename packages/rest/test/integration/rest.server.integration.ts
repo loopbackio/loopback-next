@@ -16,6 +16,14 @@ describe('RestServer (integration)', () => {
     await server.stop();
   });
 
+  it('honors port binding after instantiation', async () => {
+    const server = await givenAServer({rest: {port: 80}});
+    await server.bind(RestBindings.PORT).to(0);
+    await server.start();
+    expect(server.getSync(RestBindings.PORT)).to.not.equal(80);
+    await server.stop();
+  });
+
   it('responds with 500 when Sequence fails with unhandled error', async () => {
     const server = await givenAServer({rest: {port: 0}});
     server.handler((context, sequence) => {

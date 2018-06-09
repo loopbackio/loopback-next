@@ -6,7 +6,9 @@
 const path = require('path');
 const util = require('util');
 const fs = require('fs');
-const appendFileAsync = util.promisify(fs.appendFile);
+const appendFile = util.promisify(fs.appendFile);
+const readFile = util.promisify(fs.readFile);
+const exists = util.promisify(fs.exists);
 
 /**
  *
@@ -18,6 +20,14 @@ module.exports = async function(dir, file) {
   if (!file.endsWith('.ts')) {
     throw new Error(`${file} must be a TypeScript (.ts) file`);
   }
+
+  let index = '';
+  const indexExists = await exists(indexFile);
+  if (indexExists) {
+    index = await readFile(indexFile);
+  }
   const content = `export * from './${file.slice(0, -3)}';\n`;
-  await appendFileAsync(indexFile, content);
+  if (!index.includes(content)) {
+    await appendFile(indexFile, content);
+  }
 };

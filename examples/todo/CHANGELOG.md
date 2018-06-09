@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.10.1...@loopback/example-todo@0.11.0) (2018-06-08)
+
+
+### Features
+
+* **cli:** add vscode config files ([3738b9c](https://github.com/strongloop/loopback-next/commit/3738b9c))
+
+
+
+
 <a name="0.10.1"></a>
 ## [0.10.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.10.0...@loopback/example-todo@0.10.1) (2018-05-28)
 
