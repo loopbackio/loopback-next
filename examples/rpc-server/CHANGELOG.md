@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.8.3"></a>
+## [0.8.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-rpc-server@0.8.2...@loopback/example-rpc-server@0.8.3) (2018-06-09)
+
+
+
+
+**Note:** Version bump only for package @loopback/example-rpc-server
+
 <a name="0.8.2"></a>
 ## [0.8.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-rpc-server@0.8.0...@loopback/example-rpc-server@0.8.2) (2018-06-09)
 
