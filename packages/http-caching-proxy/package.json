@@ -1,6 +1,6 @@
 {
   "name": "@loopback/http-caching-proxy",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A caching HTTP proxy for integration tests. NOT SUITABLE FOR PRODUCTION USE!",
   "engines": {
     "node": ">=8"
@@ -28,8 +28,8 @@
     "rimraf": "^2.6.2"
   },
   "devDependencies": {
-    "@loopback/build": "^0.6.7",
-    "@loopback/testlab": "^0.10.6",
+    "@loopback/build": "^0.6.8",
+    "@loopback/testlab": "^0.10.7",
     "@types/debug": "^0.0.30",
     "@types/delay": "^2.0.1",
     "@types/node": "^10.1.1",
