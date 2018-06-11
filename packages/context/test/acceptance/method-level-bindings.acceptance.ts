@@ -29,6 +29,15 @@ class InfoController {
     debug(msg);
     return msg;
   }
+
+  greetWithDefault(
+    prefix: string = '***',
+    @inject('user') user: string,
+  ): string {
+    const msg = `[${prefix}] Hello ${user}`;
+    debug(msg);
+    return msg;
+  }
 }
 
 const INFO_CONTROLLER = 'controllers.info';
@@ -57,6 +66,13 @@ describe('Context bindings - Injecting dependencies of method', () => {
     const instance = await ctx.get(INFO_CONTROLLER);
     // Invoke the `hello` method => Hello John
     const msg = await invokeMethod(instance, 'greet', ctx, ['INFO']);
+    expect(msg).to.eql('[INFO] Hello John');
+  });
+
+  it('injects prototype method args with non-injected ones with default', async () => {
+    const instance = await ctx.get(INFO_CONTROLLER);
+    // Invoke the `hello` method => Hello John
+    const msg = await invokeMethod(instance, 'greetWithDefault', ctx, ['INFO']);
     expect(msg).to.eql('[INFO] Hello John');
   });
 
