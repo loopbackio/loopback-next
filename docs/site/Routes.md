@@ -185,8 +185,8 @@ app.start();
 
 ## Invoking operations using Routes
 
-This example breaks down how [`Sequences`](Sequence.md) determine and call the matching
-operation for any given request.
+This example breaks down how [`Sequences`](Sequence.md) determine and call the
+matching operation for any given request.
 
 ```js
 class MySequence extends DefaultSequence {

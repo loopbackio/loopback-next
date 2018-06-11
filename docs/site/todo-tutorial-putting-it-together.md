@@ -12,8 +12,8 @@ summary: LoopBack 4 Todo Application Tutorial - Putting it all together
 
 We've got all of our artifacts now, and all that's left is to bind them to our
 [Application](Application.md) so that LoopBack's
-[Dependency injection](Dependency-injection.md)
-system can tie it all together for us!
+[Dependency injection](Dependency-injection.md) system can tie it all together
+for us!
 
 LoopBack's
 [boot module](https://github.com/strongloop/loopback-next/tree/master/packages/boot)
@@ -29,8 +29,7 @@ artifacts and inject them into our application for use.
 > - Repositories: `./src/repositories`
 >
 > To find out how to customize this behavior, see the
-> [Booters](Booting-an-Application.md#booters)
-> section of
+> [Booters](Booting-an-Application.md#booters) section of
 > [Booting an Application](Booting-an-Application.md).
 
 #### src/application.ts
@@ -122,9 +121,8 @@ That's it! You've just created your first LoopBack 4 application!
 ### More examples and tutorials
 
 Eager to continue learning about LoopBack 4? Check out our
-[examples and tutorials](Examples-and-tutorials.md)
-section to find examples for creating your own custom components, sequences and
-more!
+[examples and tutorials](Examples-and-tutorials.md) section to find examples for
+creating your own custom components, sequences and more!
 
 ### Navigation
 

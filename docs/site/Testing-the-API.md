@@ -32,9 +32,9 @@ empty. Try it yourself by cloning the repository from GitHub.
 
 For input/output testing, you are going to create three parts:
 
-1. Input data definition.
-2. Expected output response definition.
-3. Test code.
+1.  Input data definition.
+2.  Expected output response definition.
+3.  Test code.
 
 Parts one and two are included in the API specification. The input data is given
 as `x-example` as follows:

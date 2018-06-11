@@ -11,8 +11,8 @@ summary:
 ## Overview
 
 A `Controller` is a class that implements operations defined by application's
-API. It implements an application's business logic and acts as a bridge
-between the HTTP/REST API and domain/database models. Decorations are added to a
+API. It implements an application's business logic and acts as a bridge between
+the HTTP/REST API and domain/database models. Decorations are added to a
 `Controller` class and its members to map the API operations of the application
 to the corresponding controller's operations. A `Controller` operates only on
 processed input and abstractions of backend services / databases.
@@ -272,9 +272,7 @@ import {get, param, HttpErrors} from '@loopback/rest';
 import {repository} from '@loopback/repository';
 
 export class HelloController {
-  constructor(
-    @repository(HelloRepository) protected repo: HelloRepository,
-  ) {}
+  constructor(@repository(HelloRepository) protected repo: HelloRepository) {}
 
   // returns a list of our objects
   @get('/messages')

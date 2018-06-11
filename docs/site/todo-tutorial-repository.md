@@ -53,8 +53,8 @@ export class TodoRepository extends DefaultCrudRepository<
 ```
 
 Now we have everything we need to perform CRUD operations for our Todo list,
-we'll need to build the [Controller](todo-tutorial-controller.md) to handle our incoming
-requests.
+we'll need to build the [Controller](todo-tutorial-controller.md) to handle our
+incoming requests.
 
 ### Navigation
 

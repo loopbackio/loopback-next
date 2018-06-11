@@ -114,25 +114,28 @@ npm script `lint:fix`.
 ```sh
 npm run lint:fix
 ```
+
 ## File naming convention
 
 For consistency, we follow
 [Angular's file naming convention](https://angular.io/guide/styleguide#separate-file-names-with-dots-and-dashes).
-It helps to derive the usage of files by inspecting the names.
-Besides the LoopBack 4 codebase, we also follow this naming convention in our generated artifacts from the CLI tooling:
-`{name}`.`{artifact-type}`.ts
+It helps to derive the usage of files by inspecting the names. Besides the
+LoopBack 4 codebase, we also follow this naming convention in our generated
+artifacts from the CLI tooling: `{name}`.`{artifact-type}`.ts
 
 Examples are:
+
 ```
 src/decorators/authenticate.decorator.ts
 src/boot.component.ts
 ```
 
-In addition, files under `test` folder are categorized
-according to the type of tests (unit, acceptance and integration),
-with the convention `{name}.{test-type}.ts`.
+In addition, files under `test` folder are categorized according to the type of
+tests (unit, acceptance and integration), with the convention
+`{name}.{test-type}.ts`.
 
 Examples are:
+
 ```
 test/acceptance/application.acceptance.ts
 test/integration/user.controller.integration.ts
@@ -347,47 +350,47 @@ configuration, it's important to verify that all usage scenarios keep working.
 
 ### Verify TypeScript setup
 
-1. Open any existing TypeScript file, e.g. `packages/src/index.ts`
+1.  Open any existing TypeScript file, e.g. `packages/src/index.ts`
 
-2. Add a small bit of code to break TypeScript's type checks, for example:
+2.  Add a small bit of code to break TypeScript's type checks, for example:
 
-   ```ts
-   const foo: number = 'bar';
-   ```
+    ```ts
+    const foo: number = 'bar';
+    ```
 
-3. Run `npm test`
+3.  Run `npm test`
 
-4. Verify that the build failed and the compiler error message shows a path
-   relative to monorepo root, e.g. `packages/src/index.ts`.
+4.  Verify that the build failed and the compiler error message shows a path
+    relative to monorepo root, e.g. `packages/src/index.ts`.
 
-   _(This is does not work now, `tsc` is reporting paths relative to individual
-   package directories. See
-   <https://github.com/strongloop/loopback-next/issues/1010>)_
+    _(This is does not work now, `tsc` is reporting paths relative to individual
+    package directories. See
+    <https://github.com/strongloop/loopback-next/issues/1010>)_
 
-5. Test integration with supported IDEs:
-   - [VS Code](./VSCode.md#how-to-verify-typescript-setup)
+5.  Test integration with supported IDEs:
+    - [VS Code](./VSCode.md#how-to-verify-typescript-setup)
 
 ### Verify TSLint setup
 
-1. Open any existing TypeScript file, e.g. `packages/src/index.ts`
+1.  Open any existing TypeScript file, e.g. `packages/src/index.ts`
 
-2. Introduce two kinds linting problems - one that does and another that does
-   not require type information to be detected. For example, you can add the
-   following line at the end of the opened `index.ts`:
+2.  Introduce two kinds linting problems - one that does and another that does
+    not require type information to be detected. For example, you can add the
+    following line at the end of the opened `index.ts`:
 
-   ```ts
-   const foo: any = 'bar';
-   ```
+    ```ts
+    const foo: any = 'bar';
+    ```
 
-3. Run `npm test`
+3.  Run `npm test`
 
-4. Verify that the build failed and both linting problems are reported:
+4.  Verify that the build failed and both linting problems are reported:
 
-   ```text
-   ERROR: /Users/(...)/packages/core/src/index.ts[16, 7]: 'foo' is declared but its value is never read.
-   ERROR: /Users/(...)/packages/core/src/index.ts[16, 12]: Type declaration of 'any' loses type-safety. Consider replacing it with a more precise type.
-   ```
+    ```text
+    ERROR: /Users/(...)/packages/core/src/index.ts[16, 7]: 'foo' is declared but its value is never read.
+    ERROR: /Users/(...)/packages/core/src/index.ts[16, 12]: Type declaration of 'any' loses type-safety. Consider replacing it with a more precise type.
+    ```
 
-5. Test integration with supported IDEs:
+5.  Test integration with supported IDEs:
 
-   - [VS Code](./VSCode.md#how-to-verify-tslint-setup)
+    - [VS Code](./VSCode.md#how-to-verify-tslint-setup)

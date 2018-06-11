@@ -11,8 +11,9 @@ summary:
 Your API implementation often needs to interact with REST APIs, SOAP Web
 Services, gRPC microservices, or other forms of APIs.
 
-To facilitate calling other APIs or web services, we introduce `@loopback/service-proxy`
-module to provide a common set of interfaces for interacting with backend services.
+To facilitate calling other APIs or web services, we introduce
+`@loopback/service-proxy` module to provide a common set of interfaces for
+interacting with backend services.
 
 ## Installation
 
@@ -32,9 +33,9 @@ const ds: juggler.DataSource = new juggler.DataSource({
   connector: 'rest',
   options: {
     headers: {
-      'accept': 'application/json',
-      'content-type': 'application/json'
-    }
+      accept: 'application/json',
+      'content-type': 'application/json',
+    },
   },
   operations: [
     {
@@ -43,15 +44,15 @@ const ds: juggler.DataSource = new juggler.DataSource({
         url: 'http://maps.googleapis.com/maps/api/geocode/{format=json}',
         query: {
           address: '{street},{city},{zipcode}',
-          sensor: '{sensor=false}'
+          sensor: '{sensor=false}',
         },
-        responsePath: '$.results[0].geometry.location[0]'
+        responsePath: '$.results[0].geometry.location[0]',
       },
       functions: {
-        geocode: ['street', 'city', 'zipcode']
-      }
-    }
-  ]
+        geocode: ['street', 'city', 'zipcode'],
+      },
+    },
+  ],
 });
 ```
 
@@ -64,9 +65,9 @@ const context = new Context();
 context.bind('dataSources.geoService').to(ds);
 ```
 
-**NOTE**: Once we start to support declarative datasources with `@loopback/boot`,
-the datasource configuration files can be dropped into `src/datasources` to be
-discovered and bound automatically.
+**NOTE**: Once we start to support declarative datasources with
+`@loopback/boot`, the datasource configuration files can be dropped into
+`src/datasources` to be discovered and bound automatically.
 
 ### Declare the service interface
 
@@ -84,7 +85,8 @@ interface GeoService {
 }
 ```
 
-Alternately, we also provide a weakly-typed generic service interface as follows:
+Alternately, we also provide a weakly-typed generic service interface as
+follows:
 
 ```ts
 /**
@@ -114,10 +116,7 @@ properties of the controller class.
 import {serviceProxy} from '@loopback/service-proxy';
 
 export class MyController {
-
-  @serviceProxy('geoService')
-  private geoService: GeoService;
-
+  @serviceProxy('geoService') private geoService: GeoService;
 }
 ```
 
@@ -125,5 +124,7 @@ export class MyController {
 
 ```ts
 context.bind('controllers.MyController').toClass(MyController);
-const myController = await context.get<MyController>('controllers.MyController');
+const myController = await context.get<MyController>(
+  'controllers.MyController',
+);
 ```

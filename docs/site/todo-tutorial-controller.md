@@ -43,9 +43,7 @@ import {repository} from '@loopback/repository';
 import {TodoRepository} from '../repositories';
 
 export class TodoController {
-  constructor(
-    @repository(TodoRepository) protected todoRepo: TodoRepository,
-  ) {}
+  constructor(@repository(TodoRepository) protected todoRepo: TodoRepository) {}
 }
 ```
 
@@ -59,8 +57,7 @@ new controller instances.
 > **NOTE**: You can customize the lifecycle of _all_ bindings in LoopBack 4!
 > Controllers can easily be made to use singleton lifecycles to minimize startup
 > costs. For more information, see the
-> [Dependency injection](Dependency-injection.md)
-> section of our docs.
+> [Dependency injection](Dependency-injection.md) section of our docs.
 
 Now that we have the repository wireup, let's create our first handler function.
 
@@ -73,9 +70,7 @@ import {Todo} from '../models';
 import {HttpErrors, post, param, requestBody} from '@loopback/rest';
 
 export class TodoController {
-  constructor(
-    @repository(TodoRepository) protected todoRepo: TodoRepository,
-  ) {}
+  constructor(@repository(TodoRepository) protected todoRepo: TodoRepository) {}
 
   @post('/todos')
   async createTodo(@requestBody() todo: Todo) {
@@ -90,8 +85,8 @@ export class TodoController {
 In this example, we're using two new decorators to provide LoopBack with
 metadata about the route, verb and the format of the incoming request body:
 
-- `@post('/todos')` creates metadata for `@loopback/rest` so that it can redirect
-  requests to this function when the path and verb match.
+- `@post('/todos')` creates metadata for `@loopback/rest` so that it can
+  redirect requests to this function when the path and verb match.
 - `@requestBody()` associates the OpenAPI schema for a Todo with the body of the
   request so that LoopBack can validate the format of an incoming request
   (**Note**: As of this writing, schematic validation is not yet functional).
@@ -123,9 +118,7 @@ import {
 } from '@loopback/rest';
 
 export class TodoController {
-  constructor(
-    @repository(TodoRepository) protected todoRepo: TodoRepository,
-  ) {}
+  constructor(@repository(TodoRepository) protected todoRepo: TodoRepository) {}
 
   @post('/todos')
   async createTodo(@requestBody() todo: Todo) {

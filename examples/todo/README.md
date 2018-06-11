@@ -28,24 +28,26 @@ npm i -g @loopback/cli
 ## Tutorial
 
 To follow this tutorial, begin with the
-[Create your app scaffolding](http://loopback.io/doc/en/lb4/todo-tutorial-scaffolding.html) section.
+[Create your app scaffolding](http://loopback.io/doc/en/lb4/todo-tutorial-scaffolding.html)
+section.
 
 ### Steps
 
-1. [Create your app scaffolding](http://loopback.io/doc/en/lb4/todo-tutorial-scaffolding.html)
-2. [Adding legacy juggler](http://loopback.io/doc/en/lb4/todo-tutorial-juggler.html)
-3. [Add your Todo model](http://loopback.io/doc/en/lb4/todo-tutorial-model.html)
-4. [Add a datasource](http://loopback.io/doc/en/lb4/todo-tutorial-datasource.html)
-5. [Add a repository](http://loopback.io/doc/en/lb4/todo-tutorial-repository.html)
-6. [Add a controller](http://loopback.io/doc/en/lb4/todo-tutorial-controller.html)
-7. [Putting it all together](http://loopback.io/doc/en/lb4/todo-tutorial-putting-it-together.html)
+1.  [Create your app scaffolding](http://loopback.io/doc/en/lb4/todo-tutorial-scaffolding.html)
+2.  [Adding legacy juggler](http://loopback.io/doc/en/lb4/todo-tutorial-juggler.html)
+3.  [Add your Todo model](http://loopback.io/doc/en/lb4/todo-tutorial-model.html)
+4.  [Add a datasource](http://loopback.io/doc/en/lb4/todo-tutorial-datasource.html)
+5.  [Add a repository](http://loopback.io/doc/en/lb4/todo-tutorial-repository.html)
+6.  [Add a controller](http://loopback.io/doc/en/lb4/todo-tutorial-controller.html)
+7.  [Putting it all together](http://loopback.io/doc/en/lb4/todo-tutorial-putting-it-together.html)
 
 ## Try it out
 
 If you'd like to see the final results of this tutorial as an example
 application, follow these steps:
 
-1. Run the `lb4 example` command to select and clone the todo repository:
+1.  Run the `lb4 example` command to select and clone the todo repository:
+
 ```sh
 $ lb4 example
 ? What example would you like to clone? (Use arrow keys)
@@ -55,12 +57,13 @@ $ lb4 example
   rpc-server: A basic RPC server using a made-up protocol.
 ```
 
-2. Jump into the directory and then install the required dependencies:
+2.  Jump into the directory and then install the required dependencies:
+
 ```sh
 cd loopback4-example-todo && npm i
 ```
 
-3. Finally, start the application!
+3.  Finally, start the application!
 
     ```sh
     $ npm start
@@ -93,7 +96,8 @@ Run `npm test` from the root folder.
 
 ## Contributors
 
-See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+See
+[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
 ## License
 

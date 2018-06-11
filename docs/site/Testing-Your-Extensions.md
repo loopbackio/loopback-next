@@ -20,7 +20,9 @@ your extension brings powerful benefits to all your users, including:
 
 ## Project Setup
 
-We recommend that you use `@loopback/cli` to create the extension, as it installs several tools you can use for testing, such as `mocha`, assertion libraries, linters, etc.
+We recommend that you use `@loopback/cli` to create the extension, as it
+installs several tools you can use for testing, such as `mocha`, assertion
+libraries, linters, etc.
 
 The `@loopback/cli` includes the `mocha` automated test runner and a `test`
 folder containing recommended folders for various types of tests. `Mocha` is
@@ -28,9 +30,10 @@ enabled by default if `@loopback/cli` is used to create the extension project.
 The `@loopback/cli` installs and configures `mocha`, creates the `test` folder,
 and also enters a `test` command in your `package.json`.
 
-Assertion libraries such as [ShouldJS](http://shouldjs.github.io/) (as `expect`),
-[SinonJS](http://sinonjs.org/), and a test sandbox are made available
-through the convenient `@loopback/testlab` package. The `testlab` is also installed by `@loopback/cli`.
+Assertion libraries such as [ShouldJS](http://shouldjs.github.io/) (as
+`expect`), [SinonJS](http://sinonjs.org/), and a test sandbox are made available
+through the convenient `@loopback/testlab` package. The `testlab` is also
+installed by `@loopback/cli`.
 
 ### Manual Setup - Using Mocha
 
@@ -297,6 +300,8 @@ you don't know or care about the internals of the extensions. You will be using
 the extension as if you were the consumer.
 
 Due to the complexity of an Acceptance test, there is no example given here.
-Have a look at [loopback4-example-log-extension](https://github.com/strongloop/loopback-next/tree/master/examples/log-extension)
-to understand the extension artifacts and their usage. An Acceptance test can
-be seen here: [test/acceptance/log.extension.acceptance.ts](https://github.com/strongloop/loopback-next/blob/master/examples/log-extension/test/acceptance/log.extension.acceptance.ts).
+Have a look at
+[loopback4-example-log-extension](https://github.com/strongloop/loopback-next/tree/master/examples/log-extension)
+to understand the extension artifacts and their usage. An Acceptance test can be
+seen here:
+[test/acceptance/log.extension.acceptance.ts](https://github.com/strongloop/loopback-next/blob/master/examples/log-extension/test/acceptance/log.extension.acceptance.ts).

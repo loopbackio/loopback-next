@@ -1,7 +1,7 @@
 # @loopback/openapi-spec-builder
 
-Make it easy to create OpenAPI specification documents in your tests
-using the builder pattern.
+Make it easy to create OpenAPI specification documents in your tests using the
+builder pattern.
 
 ## Overview
 

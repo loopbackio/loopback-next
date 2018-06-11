@@ -50,7 +50,8 @@ console.log(binding.tagNames); // =>  ['controller', 'rest']
 - Given a context
 - And a binding named `foo` with value `bar`
 - When I tag it `{name: 'my-controller'}` and `controller`
-- Then it should be tagged with `{name: 'my-controller', controller: 'controller'}`
+- Then it should be tagged with
+  `{name: 'my-controller', controller: 'controller'}`
 
 ```ts
 // create a container for bindings

@@ -10,9 +10,9 @@ Run the following command to install the CLI.
 
 ## Basic Use
 
-1. To scaffold a LoopBack 4 application
+1.  To scaffold a LoopBack 4 application
 
-   `lb4`
+    `lb4`
 
 ```sh
 Usage:
@@ -34,9 +34,9 @@ Arguments:
   name  # Project name for the application  Type: String  Required: false
 ```
 
-2. To scaffold a LoopBack 4 extension
+2.  To scaffold a LoopBack 4 extension
 
-   `lb4 extension`
+    `lb4 extension`
 
 ```sh
 Usage:
@@ -55,7 +55,7 @@ Options:
         --componentName  # Component name
 ```
 
-3. To scaffold a controller into your application
+3.  To scaffold a controller into your application
 
 ```sh
   cd <your-project-directory>
@@ -76,9 +76,9 @@ Arguments:
   name  # Name for the controller  Type: String  Required: false
 ```
 
-4. To download one of LoopBack example projects
+4.  To download one of LoopBack example projects
 
-   `lb4 example`
+    `lb4 example`
 
 ```sh
 Usage:
@@ -90,9 +90,9 @@ Options:
         --skip-install   # Do not automatically install dependencies  Default: false
 ```
 
-5. To list available commands
+5.  To list available commands
 
-   `lb4 --commands` (or `lb4 -l`)
+    `lb4 --commands` (or `lb4 -l`)
 
 ```sh
 Available commands:
@@ -104,9 +104,9 @@ Available commands:
 
 Please note `lb4 --help` also prints out available commands.
 
-6. To print out version information
+6.  To print out version information
 
-   `lb4 --version` (or `lb4 -v`)
+    `lb4 --version` (or `lb4 -v`)
 
 ```sh
 @loopback/cli version: 0.8.0

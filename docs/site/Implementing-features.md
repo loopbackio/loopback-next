@@ -271,67 +271,67 @@ users to have a recommended solution that's covered by technical support.
 Welcome to `@loopback/repository`, a TypeScript facade for the
 `loopback-datasource-juggler` implementation in LoopBack 3.x.
 
-1. Define `Product` model in `src/models/product.model.ts`
+1.  Define `Product` model in `src/models/product.model.ts`
 
-   ```ts
-   import {Entity, model, property} from '@loopback/repository';
+    ```ts
+    import {Entity, model, property} from '@loopback/repository';
 
-   @model()
-   export class Product extends Entity {
-     @property({
-       description: 'The unique identifier for a product',
-       id: true,
-     })
-     id: number;
+    @model()
+    export class Product extends Entity {
+      @property({
+        description: 'The unique identifier for a product',
+        id: true,
+      })
+      id: number;
 
-     @property({required: true})
-     name: string;
+      @property({required: true})
+      name: string;
 
-     @property({required: true})
-     slug: string;
+      @property({required: true})
+      slug: string;
 
-     @property({required: true})
-     price: number;
+      @property({required: true})
+      price: number;
 
-     // Add the remaining properties yourself:
-     // description, available, category, label, endData
-   }
-   ```
+      // Add the remaining properties yourself:
+      // description, available, category, label, endData
+    }
+    ```
 
-   **TODO(bajtos) Find out how to re-use ProductBaseSchema for the model
-   definition**
+    **TODO(bajtos) Find out how to re-use ProductBaseSchema for the model
+    definition**
 
-2. Define a data source representing a single source of data, typically a
-   database. This example uses in-memory storage. In real applications, replace
-   the `memory` connector with the actual database connector (`postgresql`,
-   `mongodb`, etc.).
+2.  Define a data source representing a single source of data, typically a
+    database. This example uses in-memory storage. In real applications, replace
+    the `memory` connector with the actual database connector (`postgresql`,
+    `mongodb`, etc.).
 
-   Create `src/datasources/db.datasource.ts` with the following content:
+    Create `src/datasources/db.datasource.ts` with the following content:
 
-   ```ts
-   import {juggler} from '@loopback/repository';
+    ```ts
+    import {juggler} from '@loopback/repository';
 
-   export const db = new juggler.DataSource({
-     connector: 'memory',
-   });
-   ```
+    export const db = new juggler.DataSource({
+      connector: 'memory',
+    });
+    ```
 
-3. Define `ProductRepository` in `src/repositories/product.repository.ts`
+3.  Define `ProductRepository` in `src/repositories/product.repository.ts`
 
-   ```ts
-   import {DefaultCrudRepository, DataSourceType} from '@loopback/repository';
-   import {Product} from '../models/product.model';
-   import {db} from '../datasources/db.datasource';
+    ```ts
+    import {DefaultCrudRepository, DataSourceType} from '@loopback/repository';
+    import {Product} from '../models/product.model';
+    import {db} from '../datasources/db.datasource';
 
-   export class ProductRepository extends DefaultCrudRepository<
-     Product,
-     typeof Product.prototype.id
-   > {
-     constructor() {
-       super(Product, db);
-     }
-   }
-   ```
+    export class ProductRepository extends DefaultCrudRepository<
+      Product,
+      typeof Product.prototype.id
+    > {
+      constructor() {
+        super(Product, db);
+      }
+    }
+    ```
 
 See [Repositories](Repositories.md) for more details on this topic.
 
@@ -365,16 +365,16 @@ defaults. This is allow tests to provide only a small subset of properties that
 are strictly required by the tested scenario. This is important for multiple
 reasons:
 
-1. It makes tests easier to understand, because it's immediately clear what
-   model properties are relevant to the test. If the test was setting all
-   required properties, it would be difficult to tell whether some of those
-   properties may be actually relevant to the tested scenario.
+1.  It makes tests easier to understand, because it's immediately clear what
+    model properties are relevant to the test. If the test was setting all
+    required properties, it would be difficult to tell whether some of those
+    properties may be actually relevant to the tested scenario.
 
-2. It makes tests easier to maintain. As the data model evolves, you will
-   eventually need to add more required properties. If the tests were building
-   product instances manually, you would have to fix all tests to set the new
-   required property. With a shared helper, there is only a single place where
-   to add a value for the new required property.
+2.  It makes tests easier to maintain. As the data model evolves, you will
+    eventually need to add more required properties. If the tests were building
+    product instances manually, you would have to fix all tests to set the new
+    required property. With a shared helper, there is only a single place where
+    to add a value for the new required property.
 
 You can learn more about test data builders in
 [Use test data builders](./Testing-your-application.md#use-test-data-builders)
@@ -402,13 +402,13 @@ export class ProductController {
 
 Run the tests again. These results may surprise you:
 
-1. The acceptance test is failing: the response contains some expected
-   properties (slug, name), but is missing most of other properties.
+1.  The acceptance test is failing: the response contains some expected
+    properties (slug, name), but is missing most of other properties.
 
-2. The API smoke test is failing with a cryptic error.
+2.  The API smoke test is failing with a cryptic error.
 
-3. The unit test is passing, despite the fact that it's not setting up any data
-   at all!
+3.  The unit test is passing, despite the fact that it's not setting up any data
+    at all!
 
 Examine the acceptance test first. A quick review of the source code should tell
 us what's the problem - the test is relying on `givenEmptyDatabase` and
@@ -506,13 +506,13 @@ describe('ProductController', () => {
 The new unit test is passing now, but the integration and acceptance tests are
 broken again!
 
-1. Fix the integration test by changing how the controller is created - inject
-   `new ProductRepository()` into the repository argument.
+1.  Fix the integration test by changing how the controller is created - inject
+    `new ProductRepository()` into the repository argument.
 
-2. Fix the acceptance test by annotating `ProductController`'s `repository`
-   argument with `@inject('repositories.Product')` and binding the
-   `ProductRepository` in the main application file where you are also binding
-   controllers.
+2.  Fix the acceptance test by annotating `ProductController`'s `repository`
+    argument with `@inject('repositories.Product')` and binding the
+    `ProductRepository` in the main application file where you are also binding
+    controllers.
 
 Learn more about this topic in
 [Unit-test your Controllers](./Testing-your-application.md#unit-test-your-controllers)

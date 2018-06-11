@@ -8,7 +8,6 @@ Implements #254
 See also #23
 -->
 
-
 ## Checklist
 
 - [ ] `npm test` passes on your machine

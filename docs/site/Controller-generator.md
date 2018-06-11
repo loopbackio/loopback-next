@@ -79,22 +79,13 @@ Here's an example of what the template will produce given a `Todo` model and a
 
 ```ts
 import {Filter, Where, repository} from '@loopback/repository';
-import {
-  post,
-  param,
-  get,
-  put,
-  patch,
-  del,
-  requestBody
-} from '@loopback/rest';
+import {post, param, get, put, patch, del, requestBody} from '@loopback/rest';
 import {Todo} from '../models';
 import {TodoRepository} from '../repositories';
 
 export class TodoController {
   constructor(
-    @repository(TodoRepository)
-    public todoRepository: TodoRepository,
+    @repository(TodoRepository) public todoRepository: TodoRepository,
   ) {}
 
   @post('/todos')

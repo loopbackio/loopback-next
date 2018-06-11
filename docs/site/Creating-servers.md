@@ -23,15 +23,15 @@ concept to leverage for creating your custom servers.
 LoopBack 4 developers are strongly encouraged to use controllers for their
 modules, and this naturally leads to the concept of routing.
 
-No matter what protocol you intend to use for your custom server, you'll need
-to use some algorithm to determine _which_ controller and function to send
-request data to, and that means you need a router.
+No matter what protocol you intend to use for your custom server, you'll need to
+use some algorithm to determine _which_ controller and function to send request
+data to, and that means you need a router.
 
-For example, consider a "toy protocol" similar to the JSON RPC
-specification (but nowhere near as complete or robust).
+For example, consider a "toy protocol" similar to the JSON RPC specification
+(but nowhere near as complete or robust).
 
-The toy protocol will require a JSON payload with three properties: `controller`,
-`method`, and `input`.
+The toy protocol will require a JSON payload with three properties:
+`controller`, `method`, and `input`.
 
 An example request would look something like this:
 
@@ -73,8 +73,8 @@ Hello, Nadine! I heard you like extreme mountain biking.
 ```
 
 While a typical protocol server would be a lot more involved in the
-implementation of both its router and server, the general concept remains
-the same, and you can use these tools to make whatever server you'd like.
+implementation of both its router and server, the general concept remains the
+same, and you can use these tools to make whatever server you'd like.
 
 ### Other considerations
 

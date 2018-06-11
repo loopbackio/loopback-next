@@ -39,5 +39,5 @@ The tool will prompt you for:
 ### Output
 
 The example project is downloaded to a new directory. For example, when
-downloading `todo` example, the tool stores the files under the newly
-created `loopback4-example-todo` directory.
+downloading `todo` example, the tool stores the files under the newly created
+`loopback4-example-todo` directory.

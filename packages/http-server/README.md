@@ -16,28 +16,34 @@ npm i @loopback/http-server
 
 ## Usage
 
-`@loopback/http-server` should be instantiated with a request handler function, and an HTTP / HTTPS options object.
+`@loopback/http-server` should be instantiated with a request handler function,
+and an HTTP / HTTPS options object.
 
 ```js
-const httpServer = new HttpServer((req, res) => { res.end('Hello world')}, {port: 3000, host: ''});
+const httpServer = new HttpServer(
+  (req, res) => {
+    res.end('Hello world');
+  },
+  {port: 3000, host: ''},
+);
 ```
 
 Instance methods of `HttpServer`.
 
-| Method  | Description          |
-| ------- | -------------------- |
-| `start()` | Starts the server    |
-| `stop()`  | Stops the server     |
+| Method    | Description       |
+| --------- | ----------------- |
+| `start()` | Starts the server |
+| `stop()`  | Stops the server  |
 
 Instance properties of `HttpServer`.
 
-| Property    | Description            |
-| ----------- | ---------------------- |
-| `address`   | Address details        |
-| `host`      | host of the server     |
-| `port`      | port of the server     |
-| `protocol`  | protocol of the server |
-| `url`       | url the server         |
+| Property   | Description            |
+| ---------- | ---------------------- |
+| `address`  | Address details        |
+| `host`     | host of the server     |
+| `port`     | port of the server     |
+| `protocol` | protocol of the server |
+| `url`      | url the server         |
 
 ## Contributions
 
@@ -50,7 +56,8 @@ Run `npm test` from the root folder.
 
 ## Contributors
 
-See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+See
+[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
 ## License
 

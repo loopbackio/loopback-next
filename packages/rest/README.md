@@ -10,7 +10,8 @@ with:
 
 - new custom routing engine (special thanks to @bajtos)!
 - tools for defining your application routes
-- OpenAPI 3.0 spec (`openapi.json`/`openapi.yaml`) generation using `@loopback/openapi-v3`
+- OpenAPI 3.0 spec (`openapi.json`/`openapi.yaml`) generation using
+  `@loopback/openapi-v3`
 - a default sequence implementation to manage the request and response lifecycle
 
 ## Installation

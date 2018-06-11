@@ -41,12 +41,13 @@ Inside the `src/models` folder, create two files:
 - `index.ts`
 - `todo.model.ts`
 
-> **NOTE:**
-> The `index.ts` file is an export helper file; this pattern is a huge time-saver
-> as the number of models in your project grows, because it allows you to point
-> to the _directory_ when attempting to import types from a file within the target
-> folder. **We will use this concept throughout the tutorial! For more info,
-> see TypeScript's [Module Resolution](https://www.typescriptlang.org/docs/handbook/module-resolution.html) docs.**
+> **NOTE:** The `index.ts` file is an export helper file; this pattern is a huge
+> time-saver as the number of models in your project grows, because it allows
+> you to point to the _directory_ when attempting to import types from a file
+> within the target folder. **We will use this concept throughout the tutorial!
+> For more info, see TypeScript's
+> [Module Resolution](https://www.typescriptlang.org/docs/handbook/module-resolution.html)
+> docs.**
 
 ```ts
 // in src/models/index.ts
@@ -105,8 +106,9 @@ export class Todo extends Entity {
 }
 ```
 
-Now that we have our model, it's time to add a [datasource](todo-tutorial-datasource.md) so we
-can perform real CRUD operations!
+Now that we have our model, it's time to add a
+[datasource](todo-tutorial-datasource.md) so we can perform real CRUD
+operations!
 
 ### Navigation
 
