@@ -15,6 +15,10 @@ const expect = require('@loopback/testlab').expect;
 
 module.exports = function(projGenerator, props, projectType) {
   return function() {
+    // Increase the timeout to 60 seconds to accomodate
+    // for possibly slow CI build machines
+    this.timeout(60 * 1000);
+
     describe('help', () => {
       it('prints lb4', () => {
         const env = yeoman.createEnv();

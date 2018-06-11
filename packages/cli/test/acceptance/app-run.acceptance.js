@@ -23,7 +23,9 @@ describe('app-generator (SLOW)', function() {
     outdir: sandbox,
   };
 
-  before(async () => {
+  before('scaffold a new application', async function createAppProject() {
+    // Increase the timeout to 1 minute to accomodate slow CI build machines
+    this.timeout(60 * 1000);
     await helpers
       .run(generator)
       .inDir(sandbox)
@@ -32,21 +34,25 @@ describe('app-generator (SLOW)', function() {
       .withPrompts(props);
   });
 
-  // Run `lerna bootstrap --scope @loopback/sandbox-app`
-  // WARNING: It takes a while to run `lerna bootstrap`
-  this.timeout(0);
-  before(async () => {
+  before('install dependencies', async function installDependencies() {
+    // Run `lerna bootstrap --scope @loopback/sandbox-app`
+    // WARNING: It takes a while to run `lerna bootstrap`
+    this.timeout(15 * 60 * 1000);
     process.chdir(rootDir);
     await lernaBootstrap(appName);
   });
 
-  it('passes `npm test` for the generated project', () => {
-    process.chdir(sandbox);
+  it('passes `npm test` for the generated project', function() {
+    // Increase the timeout to 5 minutes,
+    // the tests can take more than 2 seconds to run.
+    this.timeout(5 * 60 * 1000);
+
     return new Promise((resolve, reject) => {
       build
         .runShell('npm', ['test'], {
           // Disable stdout
           stdio: [process.stdin, 'ignore', process.stderr],
+          cwd: sandbox,
         })
         .on('close', code => {
           assert.equal(code, 0);
