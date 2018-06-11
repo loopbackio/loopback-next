@@ -34,7 +34,7 @@
     "lint:fix": "npm run prettier:fix && npm run tslint:fix",
     "tslint": "node packages/build/bin/run-tslint --project tsconfig.json",
     "tslint:fix": "npm run tslint -- --fix",
-    "prettier:cli": "node packages/build/bin/run-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:cli": "node packages/build/bin/run-prettier \"**/*.ts\" \"**/*.js\" \"**/*.md\"",
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
     "clean": "lerna run clean && node packages/build/bin/run-clean \"packages/*/dist*\" \"examples/*/dist*\"",

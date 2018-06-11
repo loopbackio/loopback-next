@@ -53,8 +53,8 @@ export class Note extends Entity {
 ```
 
 **NOTE**: There is no declarative support for data source and model yet in
-LoopBack 4. These constructs need to be created programmatically as
-illustrated above.
+LoopBack 4. These constructs need to be created programmatically as illustrated
+above.
 
 ### Defining a repository
 
@@ -116,10 +116,10 @@ export class NoteController {
 
 A Repository Mixin is available for Application that provides convenience
 methods for binding and instantiating a repository class. Bound instances can be
-used anywhere in your application using Dependency Injection.
-The `.repository(RepositoryClass)` function can be used to bind a repository
-class to an Application. The mixin will also instantiate any repositories
-declared by a component in its constructor using the `repositories` key.
+used anywhere in your application using Dependency Injection. The
+`.repository(RepositoryClass)` function can be used to bind a repository class
+to an Application. The mixin will also instantiate any repositories declared by
+a component in its constructor using the `repositories` key.
 
 Repositories will be bound to the key `repositories.RepositoryClass` where
 `RepositoryClass` is the name of the Repository class being bound.

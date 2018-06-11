@@ -63,52 +63,52 @@ community.
 Like many projects, LoopBack has started to experience growing pains, especially
 as:
 
-1. The code base becomes more complicated over time with more modules and more
-   functionality. We would like to have more maintainers and contributors to
-   help out. But the learning curve is getting steep. One of the things to
-   blame is JavaScript itself, which is weakly-typed and lack of constructs
-   such as interfaces to explicitly define contracts between code. There is
-   quite a bit hidden knowledge that is not explicit or obvious for new comers.
+1.  The code base becomes more complicated over time with more modules and more
+    functionality. We would like to have more maintainers and contributors to
+    help out. But the learning curve is getting steep. One of the things to
+    blame is JavaScript itself, which is weakly-typed and lack of constructs
+    such as interfaces to explicitly define contracts between code. There is
+    quite a bit hidden knowledge that is not explicit or obvious for new comers.
 
-2. Technical debt is accumulating, for example inconsistent designs across
-   modules and feature flags for different behaviors. Here are a few examples:
+2.  Technical debt is accumulating, for example inconsistent designs across
+    modules and feature flags for different behaviors. Here are a few examples:
 
-   - Various modules use different registries to manage different types of
-     artifacts, such as remoting metadata, models, datasources, and middleware.
-   - Different flavors are used to allow custom logic to intercept
-     requests/responses at various layers, such as middleware, remote hooks,
-     CRUD operation hooks, and connector hooks.
-   - More feature flags were added over time to keep backward compatibility
-     while enabling users to opt-in to new behaviors.
+    - Various modules use different registries to manage different types of
+      artifacts, such as remoting metadata, models, datasources, and middleware.
+    - Different flavors are used to allow custom logic to intercept
+      requests/responses at various layers, such as middleware, remote hooks,
+      CRUD operation hooks, and connector hooks.
+    - More feature flags were added over time to keep backward compatibility
+      while enabling users to opt-in to new behaviors.
 
-3. It is becoming more difficult to add new features or fix bugs as some areas
-   start to reach the limit of the current design.
+3.  It is becoming more difficult to add new features or fix bugs as some areas
+    start to reach the limit of the current design.
 
-   - The `loopback-datasource-juggler` module is a kitchen sink for many
-     things, such as typing, data modeling, validation, aggregation,
-     persistence, and service integration.
-   - Models are overloaded with multiple responsibilities, such as data
-     representation, persistence, and mapping to REST. Models are tied to
-     datasources and it's not easy to reuse the same model definition against
-     different datasources.
+    - The `loopback-datasource-juggler` module is a kitchen sink for many
+      things, such as typing, data modeling, validation, aggregation,
+      persistence, and service integration.
+    - Models are overloaded with multiple responsibilities, such as data
+      representation, persistence, and mapping to REST. Models are tied to
+      datasources and it's not easy to reuse the same model definition against
+      different datasources.
 
-4. It's not easy to extend the framework without requesting the core team to
-   make code changes in LoopBack modules. The current version of LoopBack has
-   ad-hoc extensibility at various layers. Extension points are not
-   consistently defined. For example,
+4.  It's not easy to extend the framework without requesting the core team to
+    make code changes in LoopBack modules. The current version of LoopBack has
+    ad-hoc extensibility at various layers. Extension points are not
+    consistently defined. For example,
 
-   - Use Express to register middleware.
-   - Use remoting hooks to intercept remote method invocations.
-   - Use CRUD hooks to add logic around CRUD operations.
+    - Use Express to register middleware.
+    - Use remoting hooks to intercept remote method invocations.
+    - Use CRUD hooks to add logic around CRUD operations.
 
-5. More projects start to use LoopBack as the underlying platform. Such use
-   cases require more knowledge of LoopBack internals and more flexibility and
-   dynamicity to leverage LoopBack to manage and compose artifacts using a
-   metadata driven approach. Some good examples are:
-   - Multi-tenancy which requires artifact isolation between tenants.
-   - Metadata APIs to manage/activate model definitions and datasources.
-   - New interaction patterns for connectors, such as eventing or messaging.
-   - Extra metadata for model definitions.
+5.  More projects start to use LoopBack as the underlying platform. Such use
+    cases require more knowledge of LoopBack internals and more flexibility and
+    dynamicity to leverage LoopBack to manage and compose artifacts using a
+    metadata driven approach. Some good examples are:
+    - Multi-tenancy which requires artifact isolation between tenants.
+    - Metadata APIs to manage/activate model definitions and datasources.
+    - New interaction patterns for connectors, such as eventing or messaging.
+    - Extra metadata for model definitions.
 
 Since the release of 3.x, the team has been brainstorming about how to sustain
 and advance LoopBack. We did a lot of homework, triaged existing GitHub issues,
@@ -150,39 +150,39 @@ generation of API creation platform. For more information, read the blog post
 
 LoopBack 4's goals are:
 
-1. Catch up with latest and greatest technology advances.
+1.  Catch up with latest and greatest technology advances.
 
-   - Adopt [ES2016/2017](http://exploringjs.com/es2016-es2017/index.html) and
-     [TypeScript](https://www.typescriptlang.org/) for ease of maintenance and
-     productivity.
-   - Embrace new standards such as [OpenAPI Spec](https://www.openapis.org/)
-     and [GraphQL](http://graphql.org/).
+    - Adopt [ES2016/2017](http://exploringjs.com/es2016-es2017/index.html) and
+      [TypeScript](https://www.typescriptlang.org/) for ease of maintenance and
+      productivity.
+    - Embrace new standards such as [OpenAPI Spec](https://www.openapis.org/)
+      and [GraphQL](http://graphql.org/).
 
-2. Promote extensibility to grow the ecosystem.
+2.  Promote extensibility to grow the ecosystem.
 
-   - Build a minimal core and enable everything else to be implemented via
-     extensions.
-   - Open the door for more
-     [extension points and extensions](https://github.com/strongloop/loopback-next/issues/512).
+    - Build a minimal core and enable everything else to be implemented via
+      extensions.
+    - Open the door for more
+      [extension points and extensions](https://github.com/strongloop/loopback-next/issues/512).
 
-3. Align with cloud native experience for microservices.
+3.  Align with cloud native experience for microservices.
 
-   - Adopt cloud native microservices by adopting initiatives such as
-     [Cloud Native Computing Foundation](https://www.cncf.io/).
-   - Make LoopBack a first-class citizen of the microservices ecosystem.
+    - Adopt cloud native microservices by adopting initiatives such as
+      [Cloud Native Computing Foundation](https://www.cncf.io/).
+    - Make LoopBack a first-class citizen of the microservices ecosystem.
 
-4. Remove the complexity and inconsistency across modules.
+4.  Remove the complexity and inconsistency across modules.
 
-   - Use a consistent registry and APIs to manage artifacts and their
-     dependencies.
-   - Pay down technical debts by refactoring complex modules.
+    - Use a consistent registry and APIs to manage artifacts and their
+      dependencies.
+    - Pay down technical debts by refactoring complex modules.
 
-5. Separate concerns for better composability.
-   - Introduce new concepts such as controllers and repositories to represent
-     different responsibilities.
-   - Break down the runtime as a set of services and utilize the extension
-     points/extensions pattern to manage the registration, resolution, and
-     composition.
+5.  Separate concerns for better composability.
+    - Introduce new concepts such as controllers and repositories to represent
+      different responsibilities.
+    - Break down the runtime as a set of services and utilize the extension
+      points/extensions pattern to manage the registration, resolution, and
+      composition.
 
 ## Design principles
 
@@ -191,144 +191,144 @@ are doing it incrementally in multiple stages with smaller steps. This approach
 allows us to better engage the community from the beginning. We are following
 the principles below to pursue architectural simplicity and extensibility:
 
-1. **Imperative first, declarative later**
+1.  **Imperative first, declarative later**
 
-   Everything can be done by code via `APIs`. The LoopBack team or community
-   contributors can then create varieties of user experiences with such APIs.
-   For example, with APIs to define models, we allow applications to declare
-   models in JSON or YAML files so that they can be discovered and loaded. An
-   extension can parse other forms of model definition, such as JSON schemas,
-   ES6 classes with decorators, schemas in OpenAPI spec, or even XML schemas
-   into LoopBack model definitions.
+    Everything can be done by code via `APIs`. The LoopBack team or community
+    contributors can then create varieties of user experiences with such APIs.
+    For example, with APIs to define models, we allow applications to declare
+    models in JSON or YAML files so that they can be discovered and loaded. An
+    extension can parse other forms of model definition, such as JSON schemas,
+    ES6 classes with decorators, schemas in OpenAPI spec, or even XML schemas
+    into LoopBack model definitions.
 
-   We can also leverage programming constructs such as
-   [decorators](https://www.typescriptlang.org/docs/handbook/decorators.html)
-   allow developers to supply metadata in code. Furthermore, LoopBack artifacts
-   can be declared in JSON or YAML files, which will be handy for users to
-   generate and manipulate them by hand or tooling.
+    We can also leverage programming constructs such as
+    [decorators](https://www.typescriptlang.org/docs/handbook/decorators.html)
+    allow developers to supply metadata in code. Furthermore, LoopBack artifacts
+    can be declared in JSON or YAML files, which will be handy for users to
+    generate and manipulate them by hand or tooling.
 
-2. **Build minimum features and add more later if necessary**
+2.  **Build minimum features and add more later if necessary**
 
-   Apply YAGNI (You Aint’t Gonna Need It). Design and build for what is needed
-   now, not for what you think you may need in the future. There are many
-   different perspectives in API creation and people ask for a lot of features.
-   Starting with MVP allow us to reach the root of the issues without being
-   derailed by noises and build the absolutely necessary features as the core
-   building blocks.
+    Apply YAGNI (You Aint’t Gonna Need It). Design and build for what is needed
+    now, not for what you think you may need in the future. There are many
+    different perspectives in API creation and people ask for a lot of features.
+    Starting with MVP allow us to reach the root of the issues without being
+    derailed by noises and build the absolutely necessary features as the core
+    building blocks.
 
-3. **Developer experience first**
+3.  **Developer experience first**
 
-   Always keep in mind that LoopBack is built for developers by developers. Our
-   first priority is to make API developers' life easier. When we design APIs
-   and user interfaces such as a CLI or GUI, we want to make sure they are
-   intuitive to and natural to their thought process.
+    Always keep in mind that LoopBack is built for developers by developers. Our
+    first priority is to make API developers' life easier. When we design APIs
+    and user interfaces such as a CLI or GUI, we want to make sure they are
+    intuitive to and natural to their thought process.
 
 ## Implementation stages
 
 Here are the stages we are marching through toward the final version of LoopBack
 4 as illustrated below.
 
-1. **Rebase and rewrite the core**
+1.  **Rebase and rewrite the core**
 
-   - Leverage TypeScript for better code quality and productivity.
+    - Leverage TypeScript for better code quality and productivity.
 
-     - Provide optional type system for JavaScript.
-     - Provide planned features from future JavaScript editions to current
-       JavaScript engines.
+      - Provide optional type system for JavaScript.
+      - Provide planned features from future JavaScript editions to current
+        JavaScript engines.
 
-   - Unify the asynchronous programming model/style.
+    - Unify the asynchronous programming model/style.
 
-     - 100% promise-based APIs.
-     - Async/Await as first-class async programming style.
+      - 100% promise-based APIs.
+      - Async/Await as first-class async programming style.
 
-   - Implement an IoC Container for better visibility and extensibility
+    - Implement an IoC Container for better visibility and extensibility
 
-     - Universal registry across different modules
-     - Dependency injection as a pattern to manage dependencies
+      - Universal registry across different modules
+      - Dependency injection as a pattern to manage dependencies
 
-   - Introduce Component as packaging model for extensions
-     - Component can be a npm module or a local directory
-     - Component encapsulates a list of extensions as a whole
+    - Introduce Component as packaging model for extensions
+      - Component can be a npm module or a local directory
+      - Component encapsulates a list of extensions as a whole
 
-2. **Validate the core design by implementing an REST/HTTP invocation chain**
+2.  **Validate the core design by implementing an REST/HTTP invocation chain**
 
-   - Add top-down REST API creation which starts with OpenAPI specs.
+    - Add top-down REST API creation which starts with OpenAPI specs.
 
-   - Build sequence of actions for inbound http processing
+    - Build sequence of actions for inbound http processing
 
-     - Introduce sequence as the composition of actions
-     - Implement the most critical actions to fulfill the REST API routing and
-       invocation
+      - Introduce sequence as the composition of actions
+      - Implement the most critical actions to fulfill the REST API routing and
+        invocation
 
-   - Introduce controllers as entry points for API-related business logic.
+    - Introduce controllers as entry points for API-related business logic.
 
-     Models are the centerpieces of the current LoopBack applications. . They
-     take multiple responsibilities:
+      Models are the centerpieces of the current LoopBack applications. . They
+      take multiple responsibilities:
 
-     - Data modeling
-     - Anchor for API related business logic
-     - Persistence or service invocation
-     - Mapping to REST HTTP/JSON endpoints
+      - Data modeling
+      - Anchor for API related business logic
+      - Persistence or service invocation
+      - Mapping to REST HTTP/JSON endpoints
 
-   - Authentication as a component
+    - Authentication as a component
 
-     Implement the core functionality of authentication as a component, which
-     includes:
+      Implement the core functionality of authentication as a component, which
+      includes:
 
-     - Decorators to denote authentication requirement
-     - `authenticate` action to handle authentication
-     - Extension points for various authentication strategies
+      - Decorators to denote authentication requirement
+      - `authenticate` action to handle authentication
+      - Extension points for various authentication strategies
 
-3. **Rebuild our integration and composition capabilities**
+3.  **Rebuild our integration and composition capabilities**
 
-   - Introduce repositories to represent data access patterns such as CRUD or
-     Key/Value stores
-   - Provide a reference implementation of CRUD and KV flavors of repository
-     interfaces using the legacy juggler and connectors
-   - Refactor/rewrite the juggler into separate modules
-     - Typing system
-     - Model and relation definition
-     - Validation
-     - Query and mutation language
-     - DataSource
-     - Repository interfaces and implementations for data access
-     - Service interfaces and implementations for service invocations
-   - Define interfaces and metadata for connectors
-   - Rewrite connectors
+    - Introduce repositories to represent data access patterns such as CRUD or
+      Key/Value stores
+    - Provide a reference implementation of CRUD and KV flavors of repository
+      interfaces using the legacy juggler and connectors
+    - Refactor/rewrite the juggler into separate modules
+      - Typing system
+      - Model and relation definition
+      - Validation
+      - Query and mutation language
+      - DataSource
+      - Repository interfaces and implementations for data access
+      - Service interfaces and implementations for service invocations
+    - Define interfaces and metadata for connectors
+    - Rewrite connectors
 
-4. **Declarative metadata and bootstrapping**
+4.  **Declarative metadata and bootstrapping**
 
-   LoopBack manages a set of artifacts, such as models, relations, datasources,
-   connectors, ACLs, controllers, repositories, actions, sequences, components,
-   utility functions, and OpenAPI specs. In addition to the programmatic
-   approach to describe these artifacts by code (apis and decorators), we would
-   like to add declarative support so that they can be declared in JSON/YAML
-   files.
+    LoopBack manages a set of artifacts, such as models, relations, datasources,
+    connectors, ACLs, controllers, repositories, actions, sequences, components,
+    utility functions, and OpenAPI specs. In addition to the programmatic
+    approach to describe these artifacts by code (apis and decorators), we would
+    like to add declarative support so that they can be declared in JSON/YAML
+    files.
 
-   - Define a new domain-specific language (DSL) in JSON/YAML format and
-     corresponding templates.
-   - Define the project layout to organize project artifacts.
-   - Leverage the IoC Context to manage metadata/instances of such artifacts
-     following the extension point/extension pattern.
-   - Define the lifecycle and serialization/de-serialization requirements for
-     each type of artifact.
-   - Add a boot component to discover/load/resolve/activate the artifacts. The
-     boot process can be tailored for both tooling and runtime.
+    - Define a new domain-specific language (DSL) in JSON/YAML format and
+      corresponding templates.
+    - Define the project layout to organize project artifacts.
+    - Leverage the IoC Context to manage metadata/instances of such artifacts
+      following the extension point/extension pattern.
+    - Define the lifecycle and serialization/de-serialization requirements for
+      each type of artifact.
+    - Add a boot component to discover/load/resolve/activate the artifacts. The
+      boot process can be tailored for both tooling and runtime.
 
-5. **Tooling (CLI & UI)**
+5.  **Tooling (CLI & UI)**
 
-   - Add CLI and UI tools to:
-     - Scaffold LoopBack 4 applications
-     - Manage artifacts such as sequences, actions, controllers, repositories,
-       services, datasources and models
+    - Add CLI and UI tools to:
+      - Scaffold LoopBack 4 applications
+      - Manage artifacts such as sequences, actions, controllers, repositories,
+        services, datasources and models
 
-6. **Enable cloud native experience**
+6.  **Enable cloud native experience**
 
-   - Allow controllers to be exposed as gRPC services
-   - Allow interaction with other gRPC services
-   - Integration with microservices deployment infrastructure such as Docker
-     and Kubernetes
-   - Integration with service mesh
+    - Allow controllers to be exposed as gRPC services
+    - Allow interaction with other gRPC services
+    - Integration with microservices deployment infrastructure such as Docker
+      and Kubernetes
+    - Integration with service mesh
 
 The following diagram illustrates the high-level building blocks of LoopBack 4:
 

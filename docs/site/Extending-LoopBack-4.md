@@ -87,14 +87,17 @@ const ok = await userController.login('John', 'MyPassWord');
 Now you might wonder why the IoC container is fundamental to extensibility.
 Here's how it's achieved.
 
-1. An alternative implementation of the service provider can be bound the context to replace the existing one. For example, we can implement different hashing functions for password encryption. The user management system can then receive custom password hashing functions.
+1.  An alternative implementation of the service provider can be bound the
+    context to replace the existing one. For example, we can implement different
+    hashing functions for password encryption. The user management system can
+    then receive custom password hashing functions.
 
-2. Services can be organized as extension points and extensions. For example,
-   to allow multiple authentication strategies, the `authentication` component
-   can define an extension point as `authentication-manager` and various
-   authentication strategies such as user/password, LDAP, oAuth2 can be
-   contributed to the extension point as extensions. The relation will look
-   like:
+2.  Services can be organized as extension points and extensions. For example,
+    to allow multiple authentication strategies, the `authentication` component
+    can define an extension point as `authentication-manager` and various
+    authentication strategies such as user/password, LDAP, oAuth2 can be
+    contributed to the extension point as extensions. The relation will look
+    like:
 
 ![loopback-extension](./imgs/loopback-extension.png)
 
@@ -180,4 +183,5 @@ An application-level component usually contributes:
 
 ### Create your own extension
 
-You can scaffold a LoopBack 4 extension project using `@loopback/cli`'s `lb4 extension` command.
+You can scaffold a LoopBack 4 extension project using `@loopback/cli`'s
+`lb4 extension` command.

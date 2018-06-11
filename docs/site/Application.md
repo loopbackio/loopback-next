@@ -11,8 +11,8 @@ summary:
 ## What is an Application?
 
 In LoopBack 4, the
-[`Application`](http://apidocs.loopback.io/@loopback%2fcore/#Application)
-class is the central class for setting up all of your module's components,
+[`Application`](http://apidocs.loopback.io/@loopback%2fcore/#Application) class
+is the central class for setting up all of your module's components,
 controllers, servers and bindings. The `Application` class extends
 [Context](Context.md), and provides the controls for starting and stopping
 itself and its associated servers.
@@ -200,10 +200,10 @@ Here are some tips to help avoid common pitfalls and mistakes.
 ### Extend from `RestApplication` when using `RestServer`
 
 If you want to use `RestServer` from `@loopback/rest` package, we recommend
-extending `RestApplication` in your app instead of manually binding
-`RestServer` or `RestComponent`. `RestApplication` already uses `RestComponent`
-and makes useful functions in `RestServer` like `handler()` available at the app
-level. This means you can call these `RestServer` functions to do all of your
+extending `RestApplication` in your app instead of manually binding `RestServer`
+or `RestComponent`. `RestApplication` already uses `RestComponent` and makes
+useful functions in `RestServer` like `handler()` available at the app level.
+This means you can call these `RestServer` functions to do all of your
 server-level setups in the app constructor without having to explicitly retrieve
 an instance of your server.
 

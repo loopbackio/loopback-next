@@ -1,3 +1,4 @@
+<!-- prettier-ignore-start -->
 {% if include.title != "no" %}
 **Standard options**
 {% endif %}
@@ -9,3 +10,4 @@
 
 `--skip-install`
 : Do not automatically install dependencies. Default is false.
+<!-- prettier-ignore-end -->

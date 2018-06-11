@@ -46,7 +46,8 @@ Syntax:
 [`@api(spec: ControllerSpec)`](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#29)
 
 `@api` is a decorator for the controller class and is appended just before it's
-declared. `@api` is used when you have multiple [Paths Objects](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#pathsObject)
+declared. `@api` is used when you have multiple
+[Paths Objects](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#pathsObject)
 that contain all path definitions of your controller. Please note the api specs
 defined with `@api` will override other api specs defined inside the controller.
 For example:
@@ -121,13 +122,14 @@ class MyController {
 Syntax:
 [`@get(path: string, spec?: OperationObject)`](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#48)
 
-Same Syntax for decorators [`@post`](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#58)
-, [`@put`](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#68)
-, [`@patch`](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#78)
-, [`@del`](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#88)
+Same Syntax for decorators
+[`@post`](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#58) ,
+[`@put`](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#68) ,
+[`@patch`](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#78) ,
+[`@del`](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#88)
 
-You can call these sugar operation decorators as a shortcut of `@operation`.
-For example:
+You can call these sugar operation decorators as a shortcut of `@operation`. For
+example:
 
 ```ts
 class MyController {
@@ -147,9 +149,11 @@ class MyController {
 
 ### Parameter Decorator
 
-Syntax: see [API documentation](https://github.com/strongloop/loopback-next/tree/master/packages/openapi-v3/src/decorators/parameter.decorator.ts#L17-L29)
+Syntax: see
+[API documentation](https://github.com/strongloop/loopback-next/tree/master/packages/openapi-v3/src/decorators/parameter.decorator.ts#L17-L29)
 
-`@param` is applied to controller method parameters to generate OpenAPI parameter specification for them.
+`@param` is applied to controller method parameters to generate OpenAPI
+parameter specification for them.
 
 For example:
 
@@ -160,15 +164,15 @@ const categorySpec = {
   name: 'category',
   in: 'path',
   required: true,
-  schema: {type: 'string'}
-}
+  schema: {type: 'string'},
+};
 
 const pageSizeSpec = {
   name: 'pageSize',
   in: 'query',
   required: false,
-  schema: {type: 'integer', format: 'int32'}
-}
+  schema: {type: 'integer', format: 'int32'},
+};
 
 class MyController {
   @get('Pets/{category}')
@@ -179,42 +183,49 @@ class MyController {
 }
 ```
 
-Writing the whole parameter specification is tedious, so we've created shortcuts to define
-the params with the pattern `@param.${in}.${type}(${name})`:
+Writing the whole parameter specification is tedious, so we've created shortcuts
+to define the params with the pattern `@param.${in}.${type}(${name})`:
 
-- in: The parameter location. It can be one of the following values: `query`, `header`, `path`.
-- type: A [common name of OpenAPI primitive data type](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#data-types).
+- in: The parameter location. It can be one of the following values: `query`,
+  `header`, `path`.
+- type: A
+  [common name of OpenAPI primitive data type](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#data-types).
 - name: Name of the parameter. It should be a `string`.
 
-A list of available shortcuts for `query` can be found in [API document](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#param.query),
+A list of available shortcuts for `query` can be found in
+[API document](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#param.query),
 along with the shortcuts for `path` and `header`.
 
 An equivalent example using the shortcut decorator would be:
 
 ```ts
-  class MyController {
-    @get('/Pets/{category}')
-    list(
-      @param.path.string('category') category: string,
-      @param.query.number('pageSizes') pageSize?: number,
-    ) {}
-  }
+class MyController {
+  @get('/Pets/{category}')
+  list(
+    @param.path.string('category') category: string,
+    @param.query.number('pageSizes') pageSize?: number,
+  ) {}
+}
 ```
 
-You can find specific use cases in [Writing Controller methods](Controllers.md#writing-controller-methods)
+You can find specific use cases in
+[Writing Controller methods](Controllers.md#writing-controller-methods)
 
-*The parameter location cookie is not supported yet, see*
-*https://github.com/strongloop/loopback-next/issues/997*
+_The parameter location cookie is not supported yet, see_
+_https://github.com/strongloop/loopback-next/issues/997_
 
 ### RequestBody Decorator
 
-Syntax: see [API documentation](https://github.com/strongloop/loopback-next/tree/master/packages/openapi-v3/src/decorators/request-body.decorator.ts#L20-L79)
+Syntax: see
+[API documentation](https://github.com/strongloop/loopback-next/tree/master/packages/openapi-v3/src/decorators/request-body.decorator.ts#L20-L79)
 
-`@requestBody()` is applied to a controller method parameter to generate OpenAPI requestBody specification for it.
+`@requestBody()` is applied to a controller method parameter to generate OpenAPI
+requestBody specification for it.
 
-*Only one parameter can be decorated by `@requestBody` per controller method.*
+_Only one parameter can be decorated by `@requestBody` per controller method._
 
-A typical [OpenAPI requestBody specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#requestBodyObject)
+A typical
+[OpenAPI requestBody specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#requestBodyObject)
 contains properties `description`, `required`, and `content`:
 
 ```ts
@@ -228,7 +239,8 @@ requestBodySpec: {
 }
 ```
 
-In order to use `@requestBody`, the parameter type it's decorating needs to have its model decorated with `@model` and `@property`:
+In order to use `@requestBody`, the parameter type it's decorating needs to have
+its model decorated with `@model` and `@property`:
 
 ```ts
 import {model, property} from '@loopback/repository';
@@ -236,36 +248,35 @@ import {Address} from './address.model';
 
 @model()
 class User {
-  @property()
-  firstname: string
-  @property()
-  lastname: string
-  @property()
-  address: Address
+  @property() firstname: string;
+  @property() lastname: string;
+  @property() address: Address;
 }
 ```
-*To learn more about decorating models and the corresponding OpenAPI schema, please check
-[model decorators](#model-decorators).*
 
-This allows type information of the model to be visible to the spec generator so that `@requestBody` can be used on the parameter:
+_To learn more about decorating models and the corresponding OpenAPI schema,
+please check [model decorators](#model-decorators)._
+
+This allows type information of the model to be visible to the spec generator so
+that `@requestBody` can be used on the parameter:
 
 ```ts
 // in file '/src/controllers/user.controller.ts'
-import {User} from '../models/user.model'
-import {put} from '@loopback/rest'
+import {User} from '../models/user.model';
+import {put} from '@loopback/rest';
 
 class UserController {
   @put('/Users/{id}')
   async replaceUser(
     @param.path.string('id') id: string,
-    @requestBody() user: User
+    @requestBody() user: User,
   ) {}
 }
 ```
 
-For the simplest use case, you can leave the input of `@requestBody` empty
-since we automatically detect the type of `user` and generate the corresponding schema for it.
-The default content type is set to be `application/json`.
+For the simplest use case, you can leave the input of `@requestBody` empty since
+we automatically detect the type of `user` and generate the corresponding schema
+for it. The default content type is set to be `application/json`.
 
 You can also customize the generated `requestBody` specification in 3 ways:
 
@@ -278,8 +289,9 @@ class MyController {
     @param.path.string('id') id: string,
     @requestBody({
       description: 'a modified user',
-      required: true
-    }) user: User
+      required: true,
+    })
+    user: User,
   ) {}
 }
 ```
@@ -296,8 +308,9 @@ class MyController {
         // leave the schema as empty object, the decorator will generate it for both.
         'application/text': {},
         'application/xml': {},
-      }
-    }) user: User
+      },
+    })
+    user: User,
   ) {}
 }
 ```
@@ -313,15 +326,16 @@ class MyController {
     @param.path.string('id') id: string,
     @requestBody({
       content: {
-        'application/json': UserSchema
-      }
-    }) user: User
+        'application/json': UserSchema,
+      },
+    })
+    user: User,
   ) {}
 }
 ```
 
-*We are supporting more `@requestBody` shortcuts in the future, track the feature in story*
-*https://github.com/strongloop/loopback-next/issues/1064*
+_We are supporting more `@requestBody` shortcuts in the future, track the
+feature in story_ _https://github.com/strongloop/loopback-next/issues/1064_
 
 ## Dependency Injection
 
@@ -446,7 +460,7 @@ ctx
   .to('San Jose')
   .tag('store:location');
 const store = ctx.getSync<Store>('store');
-console.log(store.locations) // ['San Francisco', 'San Jose']
+console.log(store.locations); // ['San Francisco', 'San Jose']
 ```
 
 - `@inject.context`: inject the current context
@@ -504,7 +518,8 @@ export class WhoAmIController {
 }
 ```
 
-For more information on authentication with LoopBack, visit [here](https://github.com/strongloop/loopback-next/blob/master/packages/authentication/README.md).
+For more information on authentication with LoopBack, visit
+[here](https://github.com/strongloop/loopback-next/blob/master/packages/authentication/README.md).
 
 ## Repository Decorators
 
@@ -516,22 +531,22 @@ In LoopBack, a domain object is usually a TypeScript/JavaScript Class instance,
 and a typical example of a data mapping layer module could be a database's
 node.js driver.
 
-LoopBack repository encapsulates your TypeScript/JavaScript Class instance,
-and its methods that communicate with your database.
-It is an interface to implement data persistence.
+LoopBack repository encapsulates your TypeScript/JavaScript Class instance, and
+its methods that communicate with your database. It is an interface to implement
+data persistence.
 
 Repository decorators are used for defining models (domain objects) for use with
 your chosen datasources, and the navigation strategies among models.
 
 If you are not familiar with repository related concepts like `Model`, `Entity`
-and `Datasource`, please see LoopBack concept [Repositories](Repositories.md)
-to learn more.
+and `Datasource`, please see LoopBack concept [Repositories](Repositories.md) to
+learn more.
 
 ### Model Decorators
 
-Model is a class that LoopBack builds for you to organize the data that
-share same configurations and properties. You can use model decorators to define
-a model and its properties.
+Model is a class that LoopBack builds for you to organize the data that share
+same configurations and properties. You can use model decorators to define a
+model and its properties.
 
 #### Model Decorator
 
@@ -542,19 +557,19 @@ definition format from LoopBack 3, which is described in the
 [Model definition JSON file](https://loopback.io/doc/en/lb3/Model-definition-JSON-file).
 For usage examples, see [Define Models](Repositories.md#define-models)
 
-*Please note we will elaborate more about model and model definition in the
-[Model](Model.md) page, and replace the link above with a LoopBack 4 link*
+_Please note we will elaborate more about model and model definition in the
+[Model](Model.md) page, and replace the link above with a LoopBack 4 link_
 
 By using a model decorator, you can define a model as your repository's
 metadata, which then allows you to choose between two ways of creating the
 repository instance:
 
 One is to inject your repository and resolve it with Legacy Juggler that's
-complete with CRUD operations for accessing the model's data.
-A use case can be found in section [Repository decorator](#repository-decorator)
+complete with CRUD operations for accessing the model's data. A use case can be
+found in section [Repository decorator](#repository-decorator)
 
-The other one is defining your own repository without using legacy juggler,
-and use an ORM/ODM of your choice.
+The other one is defining your own repository without using legacy juggler, and
+use an ORM/ODM of your choice.
 
 ```ts
 // Missing example here
@@ -576,18 +591,19 @@ For usage examples, see [Define Models](Repositories.md#define-models)
 
 Syntax:
 
-[@repository(modelOrRepo: string | Class<Repository<Model>> | typeof Entity, dataSource?: string | juggler.DataSource)](http://apidocs.loopback.io/@loopback%2frepository/#1503)
+[`@repository(modelOrRepo: string | Class<Repository<Model>> | typeof Entity, dataSource?: string | juggler.DataSource)`](http://apidocs.loopback.io/@loopback%2frepository/#1503)
 
 This decorator either injects an existing repository or creates a repository
 from a model and a datasource.
 
-The injection example can be found in [Repository#controller-configuration](Repositories.md#controller-configuration)
+The injection example can be found in
+[Repository#controller-configuration](Repositories.md#controller-configuration)
 
 To create a repository in a controller, you can define your model and datasource
 first, then import them in your controller file:
 
-*To learn more about creating models and datasources, please see the example in
-[Best Practices with LoopBack](Implementing-features.md#define-product-model-repository-and-data-source)*
+_To learn more about creating models and datasources, please see the example in
+[Best Practices with LoopBack](Implementing-features.md#define-product-model-repository-and-data-source)_
 
 ```ts
 // src/controllers/todo.controller.ts
@@ -619,8 +635,8 @@ export class TodoController {
 
 ### Relation Decorators
 
-*This feature has not yet been released in alpha form. Documentation will be
-added here as this feature progresses.*
+_This feature has not yet been released in alpha form. Documentation will be
+added here as this feature progresses._
 
 The relation decorator defines the nature of a relationship between two models.
 
@@ -630,8 +646,8 @@ Syntax: `@relation`
 
 Register a general relation.
 
-*This feature has not yet been released in alpha form. Documentation will be
-added here as this feature progresses.*
+_This feature has not yet been released in alpha form. Documentation will be
+added here as this feature progresses._
 
 #### Specfic Relation Decorator
 
@@ -647,5 +663,5 @@ Syntax:
 
 Register a specific relation.
 
-*This feature has not yet been released in alpha form. Documentation will be
-added here as this feature progresses.*
+_This feature has not yet been released in alpha form. Documentation will be
+added here as this feature progresses._

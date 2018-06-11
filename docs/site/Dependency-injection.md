@@ -128,13 +128,13 @@ You can learn more about Providers in
 
 LoopBack supports three kinds of dependency injection:
 
-1. constructor injection: the dependencies are provided as arguments of the
-   class constructor.
-2. property injection: the dependencies are stored in instance properties after
-   the class was constructed.
-3. method injection: the dependencies are provided as arguments of a method
-   invocation. Please note that constructor injection is a special form of
-   method injection to instantiate a class by calling its constructor.
+1.  constructor injection: the dependencies are provided as arguments of the
+    class constructor.
+2.  property injection: the dependencies are stored in instance properties after
+    the class was constructed.
+3.  method injection: the dependencies are provided as arguments of a method
+    invocation. Please note that constructor injection is a special form of
+    method injection to instantiate a class by calling its constructor.
 
 ### Constructor injection
 
@@ -224,7 +224,6 @@ export class LoggerProvider implements Provider<Logger> {
     // Log writer is an optional dependency and it falls back to `logToConsole`
     @inject('log.writer', {optional: true})
     private logWriter: LogWriterFn = logToConsole,
-
     // Log level is an optional dependency with a default value `WARN`
     @inject('log.level', {optional: true})
     private logLevel: string = 'WARN',

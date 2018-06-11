@@ -1,13 +1,15 @@
 # LoopBack 4 documentation
 
-This package contains documentation for LoopBack 4. It's published to npm
-as [@loopback/docs](https://www.npmjs.com/package/@loopback/docs).
+This package contains documentation for LoopBack 4. It's published to npm as
+[@loopback/docs](https://www.npmjs.com/package/@loopback/docs).
 
 ## Documentation site
 
-The `site` directory contains pages for http://loopback.io/doc/en/lb4/index.html.
+The `site` directory contains pages for
+http://loopback.io/doc/en/lb4/index.html.
 
-To contribute, please check out https://loopback.io/doc/en/contrib/doc-contrib.html.
+To contribute, please check out
+https://loopback.io/doc/en/contrib/doc-contrib.html.
 
 ## API references
 
