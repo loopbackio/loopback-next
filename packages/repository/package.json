@@ -1,6 +1,6 @@
 {
   "name": "@loopback/repository",
-  "version": "0.11.2",
+  "version": "0.11.3",
   "description": "Repository based persistence for LoopBack 4",
   "engines": {
     "node": ">=8"
@@ -30,8 +30,8 @@
     "lodash": "^4.17.10"
   },
   "dependencies": {
-    "@loopback/context": "^0.11.5",
-    "@loopback/core": "^0.8.7",
+    "@loopback/context": "^0.11.6",
+    "@loopback/core": "^0.8.8",
     "@loopback/dist-util": "^0.3.2",
     "loopback-datasource-juggler": "^3.20.2"
   },
