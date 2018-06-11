@@ -19,7 +19,9 @@ import {Filter, Where} from '../query';
 
 // tslint:disable:no-unused-variable
 
-export interface Repository<T extends Model> {
+export interface Repository<T extends Model> {}
+
+export interface ExecutableRepository<T extends Model> extends Repository<T> {
   /**
    * Execute a query with the given parameter object or an array of parameters
    * @param command The query string or command object
@@ -96,7 +98,8 @@ export interface CrudRepository<T extends ValueObject | Entity>
 /**
  * Base interface for a repository of entities
  */
-export interface EntityRepository<T extends Entity, ID> extends Repository<T> {}
+export interface EntityRepository<T extends Entity, ID>
+  extends ExecutableRepository<T> {}
 
 /**
  * CRUD operations for a repository of entities

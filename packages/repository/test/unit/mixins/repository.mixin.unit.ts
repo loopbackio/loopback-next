@@ -5,17 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 
-import {
-  juggler,
-  RepositoryMixin,
-  Class,
-  Options,
-  Repository,
-  AnyObject,
-  Command,
-  NamedParameters,
-  PositionalParameters,
-} from '../../../';
+import {juggler, RepositoryMixin, Class, Repository} from '../../../';
 import {Application, Component} from '@loopback/core';
 
 // tslint:disable:no-any
@@ -89,16 +79,6 @@ describe('RepositoryMixin', () => {
         {title: 'string', content: 'string'},
         {},
       );
-    }
-
-    async execute(
-      query: Command,
-      // tslint:disable:no-any
-      parameters: NamedParameters | PositionalParameters,
-      options?: Options,
-    ): Promise<AnyObject> {
-      /* istanbul ignore next */
-      throw Error('Not implemented');
     }
   }
 
