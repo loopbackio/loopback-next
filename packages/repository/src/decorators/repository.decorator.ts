@@ -137,8 +137,10 @@ export function repository(
   modelOrRepo: string | Class<Repository<Model>> | typeof Entity,
   dataSource?: string | juggler.DataSource,
 ) {
+  // if string, repository or not a model ctor,
+  // keep it a string / assign to ctor's name (string) for DI
   const stringOrModel =
-    typeof modelOrRepo !== 'string' && modelOrRepo.prototype.execute
+    typeof modelOrRepo !== 'string' && !modelOrRepo.prototype.getId
       ? modelOrRepo.name
       : (modelOrRepo as typeof Entity);
   const meta = new RepositoryMetadata(stringOrModel, dataSource);
