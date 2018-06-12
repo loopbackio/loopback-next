@@ -8,15 +8,29 @@ permalink: /doc/en/lb4/Repositories.html
 summary:
 ---
 
-A Repository is a type of _Service_ that represents a collection of data within
-a DataSource. A repository class is a lightweight object, its instances can be
-created with low runtime overhead. Typically a new repository instance is
-created for each incoming request.
+`Repository` represents a specialized `Service` interface that provides
+strong-typed data access (for example, CRUD) operations of a domain model
+against the underlying database or service.
 
-## Example Application
+`Repository` can be defined and implemented by application developers. LoopBack
+ships a few predefined `Repository` interfaces for typical CRUD and KV
+operations. These `Repository` implementations leverage `Model` definition and
+`DataSource` configuration to fulfill the logic for data access.
 
-You can look at
-[the account application as an example.](https://github.com/strongloop/loopback4-example-microservices/tree/master/services/account)
+```js
+interface Repository<T extends Model> {}
+
+interface CustomerRepository extends Repository<Customer> {
+  find(filter?: Filter, options?: Options): Promise<Customer[]>;
+  findByEmail(email: string): Promise<Customer>;
+  // ...
+}
+```
+
+See more examples at:
+
+- [Repository/CrudRepository/EntityRepository](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/repository.ts)
+- [KVRepository](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/kv.repository.ts)
 
 ## Installation
 
@@ -53,8 +67,34 @@ app.repository(CategoryRepository);
 
 ## Configure datasources
 
-You can define a DataSource using legacy Juggler in your LoopBack 4 app as
+`DataSource` is a named configuration of a connector. The configuration
+properties vary by connectors. For example, a datasource for `MySQL` needs to
+set the `connector` property to `loopback-connector-mysql` with settings as
 follows:
+
+```json
+{
+  "host": "localhost",
+  "port": 3306,
+  "user": "my-user",
+  "password": "my-password",
+  "database": "demo"
+}
+```
+
+`Connector` is a provider that implements data access or api calls with a
+specific backend system, such as a database, a REST service, a SOAP Web Service,
+or a gRPC micro-service. It abstracts such interactions as a list of operations
+in the form of Node.js methods.
+
+Typically, a connector translates LoopBack query and mutation requests into
+native api calls supported by the underlying Node.js driver for the given
+backend. For example, a connector for `MySQL` will map `create` method to SQL
+INSERT statement, which can be executed through MySQL driver for Node.js.
+
+When a `DataSource` is instantiated, the configuration properties will be used
+to initialize the connector to connect to the backend system. You can define a
+DataSource using legacy Juggler in your LoopBack 4 app as follows:
 
 ```ts
 // src/datsources/db.datasource.ts
@@ -159,6 +199,7 @@ export class AccountController {
   constructor(
     @repository(AccountRepository) public repository: AccountRepository,
   ) {}
+}
 ```
 
 ### Defining CRUD methods for your application
@@ -367,3 +408,8 @@ public find(
   });
 }
 ```
+
+## Example Application
+
+You can look at
+[the account application as an example.](https://github.com/strongloop/loopback4-example-microservices/tree/master/services/account)

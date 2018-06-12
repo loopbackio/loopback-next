@@ -12,11 +12,59 @@ summary:
 
 ## Overview
 
-A `model` represents the definition of a model in LoopBack, with respect to the
-[datasource juggler](https://github.com/strongloop/loopback-datasource-juggler).
+A model describes business domain objects, for example, `Customer`, `Address`,
+and `Order`. It usually defines a list of properties with name, type, and other
+constraints.
+
+Models can be used for data exchange on the wire or between different systems.
+For example, a JSON object conforming to the `Customer` model definition can be
+passed in REST/HTTP payload to create a new customer or stored in a document
+database such as MongoDB. Model definitions can also be mapped to other forms,
+such as relational database schema, XML schema, JSON schema, OpenAPI schema, or
+gRPC message definition, and vice versa.
+
+There are two subtly different types of models for domain objects:
+
+- Value Object: A domain object that does not have an identity (ID). Its
+  equality is based on the structural value. For example, `Address` can be
+  modeled as `Value Object` as two US addresses are equal if they have the same
+  street number, street name, city, and zip code values. For example:
+
+```json
+{
+  "name": "Address",
+  "properties": {
+    "streetNum": "string",
+    "streetName": "string",
+    "city": "string",
+    "zipCode": "string"
+  }
+}
+```
+
+- Entity: A domain object that has an identity (ID). Its equality is based on
+  the identity. For example, `Customer` can be modeled as `Entity` as each
+  customer should have a unique customer id. Two instances of `Customer` with
+  the same customer id are equal since they refer to the same customer. For
+  example:
+
+```json
+{
+  "name": "Customer",
+  "properties": {
+    "id": "string",
+    "lastName": "string",
+    "firstName": "string",
+    "email": "string",
+    "address": "Address"
+  }
+}
+```
+
 Currently, we provide the `@loopback/repository` module, which provides special
 decorators for adding metadata to your TypeScript/JavaScript classes in order to
-use them with the legacy implementation of the Juggler.
+use them with the legacy implementation of the
+[datasource juggler](https://github.com/strongloop/loopback-datasource-juggler).
 
 ## Definition of a Model
 
