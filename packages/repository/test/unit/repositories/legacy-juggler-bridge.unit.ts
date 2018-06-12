@@ -110,8 +110,21 @@ describe('DefaultCrudRepository', () => {
       where: {title: 't1'},
       order: ['content DESC'],
     });
-    expect(note.title).to.eql('t1');
-    expect(note.content).to.eql('c2');
+    expect(note).to.not.be.null();
+    expect(note && note.title).to.eql('t1');
+    expect(note && note.content).to.eql('c2');
+  });
+  it('returns null if Repository.findOne() does not return a value', async () => {
+    const repo = new DefaultCrudRepository(Note, ds);
+    await repo.createAll([
+      {title: 't1', content: 'c1'},
+      {title: 't1', content: 'c2'},
+    ]);
+    const note = await repo.findOne({
+      where: {title: 't5'},
+      order: ['content DESC'],
+    });
+    expect(note).to.be.null();
   });
 
   it('implements Repository.delete()', async () => {
