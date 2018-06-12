@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.11.4"></a>
+## [0.11.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.11.3...@loopback/example-todo@0.11.4) (2018-06-11)
+
+
+
+
+**Note:** Version bump only for package @loopback/example-todo
+
 <a name="0.11.3"></a>
 ## [0.11.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.11.2...@loopback/example-todo@0.11.3) (2018-06-09)
 

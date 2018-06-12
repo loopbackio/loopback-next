@@ -8,7 +8,8 @@ permalink: /doc/en/lb4/Creating-components.html
 summary:
 ---
 
-As explained in [Using Components](Using-components.md), a typical LoopBack component is an npm package exporting a Component class.
+As explained in [Using Components](Using-components.md), a typical LoopBack
+component is an npm package exporting a Component class.
 
 ```ts
 import {MyController} from './controllers/my.controller';
@@ -36,7 +37,10 @@ create a new binding `my-value` that will be resolved using `MyValueProvider`.
 
 ## Providers
 
-Providers enable components to export values that can be used by the target application or other components. The `Provider` class provides a `value()` function called by [Context](Context.md) when another entity requests a value to be injected.
+Providers enable components to export values that can be used by the target
+application or other components. The `Provider` class provides a `value()`
+function called by [Context](Context.md) when another entity requests a value to
+be injected.
 
 ```ts
 import {Provider} from '@loopback/context';
@@ -66,9 +70,9 @@ export class MyComponent implements Component {
 ```
 
 We recommend to component authors to use
-[Typed binding keys](./Context.md#encoding-value-types-in-binding-keys)
-instead of string keys and to export an object (a TypeScript namespace)
-providing constants for all binding keys defined by the component.
+[Typed binding keys](./Context.md#encoding-value-types-in-binding-keys) instead
+of string keys and to export an object (a TypeScript namespace) providing
+constants for all binding keys defined by the component.
 
 ```ts
 import {MyValue, MyValueProvider} from './providers/my-value-provider';
@@ -165,7 +169,9 @@ start time and write a log entry when the request has been handled.
 
 The idiomatic solution has two parts:
 
-1. The component should define and bind a new [Sequence action](Sequence.md#actions), for example `authentication.actions.authenticate`:
+1.  The component should define and bind a new
+    [Sequence action](Sequence.md#actions), for example
+    `authentication.actions.authenticate`:
 
     ```ts
     import {Component} from '@loopback/core';
@@ -185,8 +191,8 @@ The idiomatic solution has two parts:
     }
     ```
 
-    A sequence action is typically implemented as an `action()` method
-    in the provider.
+    A sequence action is typically implemented as an `action()` method in the
+    provider.
 
     ```ts
     class AuthenticateActionProvider implements Provider<AuthenticateFn> {
@@ -202,24 +208,29 @@ The idiomatic solution has two parts:
     }
     ```
 
-    It may be tempting to put action implementation directly inside
-    the anonymous arrow function returned by provider's `value()` method.
-    We consider that as a bad practice though, because when an error occurs,
-    the stack trace will contain only an anonymous function that makes it more
+    It may be tempting to put action implementation directly inside the
+    anonymous arrow function returned by provider's `value()` method. We
+    consider that as a bad practice though, because when an error occurs, the
+    stack trace will contain only an anonymous function that makes it more
     difficult to link the entry with the sequence action.
 
-2. The application should use a custom `Sequence` class which calls this new sequence action in an appropriate place.
+2.  The application should use a custom `Sequence` class which calls this new
+    sequence action in an appropriate place.
 
     ```ts
     class AppSequence implements SequenceHandler {
       constructor(
-        @inject(RestBindings.SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
-        @inject(RestBindings.SequenceActions.PARSE_PARAMS) protected parseParams: ParseParams,
-        @inject(RestBindings.SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
+        @inject(RestBindings.SequenceActions.FIND_ROUTE)
+        protected findRoute: FindRoute,
+        @inject(RestBindings.SequenceActions.PARSE_PARAMS)
+        protected parseParams: ParseParams,
+        @inject(RestBindings.SequenceActions.INVOKE_METHOD)
+        protected invoke: InvokeMethod,
         @inject(RestBindings.SequenceActions.SEND) public send: Send,
         @inject(RestBindings.SequenceActions.REJECT) public reject: Reject,
         // Inject the new action here:
-        @inject('authentication.actions.authenticate') protected authenticate: AuthenticateFn
+        @inject('authentication.actions.authenticate')
+        protected authenticate: AuthenticateFn,
       ) {}
 
       async handle(context: RequestContext) {
@@ -256,8 +267,7 @@ until the sequence action contributing this value has already finished.
 ```ts
 export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
   constructor(
-    @inject.getter(BindingKeys.Authentication.STRATEGY)
-    readonly getStrategy
+    @inject.getter(BindingKeys.Authentication.STRATEGY) readonly getStrategy,
   ) {}
 
   value() {
@@ -302,9 +312,10 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
 When binding a component to an app, you may want to extend the app with the
 component's properties and methods by using mixins.
 
-An example of how a mixin leverages a component is `RepositoryMixin`.
-Suppose an app has multiple components with repositories bound to each of them.
-You can use function `RepositoryMixin()` to mount those repositories to application level context.
+An example of how a mixin leverages a component is `RepositoryMixin`. Suppose an
+app has multiple components with repositories bound to each of them. You can use
+function `RepositoryMixin()` to mount those repositories to application level
+context.
 
 The following snippet is an abbreviated function
 [`RepositoryMixin`](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/mixins/repository.mixin.ts):

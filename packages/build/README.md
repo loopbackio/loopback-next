@@ -21,11 +21,11 @@ fall back to bundled ones in `@loopback/build`.
 
 To use `@loopback/build` for your package:
 
-1. Run the following command to add `@loopback/build` as a dev dependency.
+1.  Run the following command to add `@loopback/build` as a dev dependency.
 
 `npm i @loopback/build --save-dev`
 
-2. Configure your project package.json as follows:
+2.  Configure your project package.json as follows:
 
 ```json
 "scripts": {
@@ -51,11 +51,12 @@ Please remember to replace `your-module-name` with the name of your module.
 
 Now you run the scripts, such as:
 
-- `npm run build` - Compile TypeScript files and copy resources (non `.ts` files) to outDir
+- `npm run build` - Compile TypeScript files and copy resources (non `.ts`
+  files) to outDir
 - `npm test` - Run all mocha tests
 - `npm run lint` - Run `tslint` and `prettier` on source files
 
-3. Override default configurations in your project
+3.  Override default configurations in your project
 
 - lb-tsc
 
@@ -90,9 +91,10 @@ Now you run the scripts, such as:
     <https://www.typescriptlang.org/docs/handbook/compiler-options.html>.
 
   - The following un-official compiler options are available:
-    |Option|Description|
-    |--|--|
-    |`--ignore-resources`|Do not copy any resources to outDir|
+
+    | Option               | Description                         |
+    | -------------------- | ----------------------------------- |
+    | `--ignore-resources` | Do not copy any resources to outDir |
 
 - lb-tslint
 
@@ -138,7 +140,7 @@ Now you run the scripts, such as:
 
   For more information, see <https://palantir.github.io/tslint/usage/cli/>.
 
-4. Run builds
+4.  Run builds
 
 ```sh
 npm run build

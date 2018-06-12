@@ -42,11 +42,11 @@ const serverCtx = new Context(rootCtx, 'server-ctx'); // rootCtx as the parent
 const reqCtx = new Context(serverCtx); // No explicit name, a UUID will be generated
 ```
 
-LoopBack's context system allows an unlimited amount of Context instances,
-each of which may have a parent Context.
+LoopBack's context system allows an unlimited amount of Context instances, each
+of which may have a parent Context.
 
-An application typically has three "levels" of context:
-application-level, server-level and request-level.
+An application typically has three "levels" of context: application-level,
+server-level and request-level.
 
 ## Application-level context (global)
 
@@ -171,11 +171,15 @@ console.log(app.getSync<string>('hello'));
 The code obtaining the bound value is explicitly specifying the type of this
 value. Such solution is far from ideal:
 
-1. Consumers have to know the exact name of the type that's associated with each binding key and also where to import it from.
-2. Consumers must explicitly provide this type to the compiler when calling ctx.get in order to benefit from compile-type checks.
-3. It's easy to accidentally provide a wrong type when retrieving the value and get a false sense of security.
+1.  Consumers have to know the exact name of the type that's associated with
+    each binding key and also where to import it from.
+2.  Consumers must explicitly provide this type to the compiler when calling
+    ctx.get in order to benefit from compile-type checks.
+3.  It's easy to accidentally provide a wrong type when retrieving the value and
+    get a false sense of security.
 
-The third point is important because the bugs can be subtle and difficult to spot.
+The third point is important because the bugs can be subtle and difficult to
+spot.
 
 Consider the following REST binding key:
 
@@ -184,10 +188,10 @@ export const HOST = 'rest.host';
 ```
 
 The binding key does not provide any indication that `undefined` is a valid
-value for the HOST binding. Without that knowledge, one could write
-the following code and get it accepted by TypeScript compiler, only to learn
-at runtime that HOST may be also undefined and the code needs to find the
-server's host name using a different way.:
+value for the HOST binding. Without that knowledge, one could write the
+following code and get it accepted by TypeScript compiler, only to learn at
+runtime that HOST may be also undefined and the code needs to find the server's
+host name using a different way.:
 
 ```ts
 const resolve = promisify(dns.resolve);
@@ -205,13 +209,13 @@ can be defined as follows:
 export const HOST = new BindingKey<string | undefined>('rest.host');
 ```
 
-Context methods like `.get()` and `.getSync()` understand this wrapper
-and use the value type from the binding key to describe the type of the value
-they are returning themselves. This allows binding consumers to omit
-the expected value type when calling `.get()` and `.getSync()`.
+Context methods like `.get()` and `.getSync()` understand this wrapper and use
+the value type from the binding key to describe the type of the value they are
+returning themselves. This allows binding consumers to omit the expected value
+type when calling `.get()` and `.getSync()`.
 
-When we rewrite the failing snippet resolving HOST names to use the new API,
-the TypeScript compiler immediatelly tells us about the problem:
+When we rewrite the failing snippet resolving HOST names to use the new API, the
+TypeScript compiler immediatelly tells us about the problem:
 
 ```ts
 const host = await ctx.get(RestBindings.HOST);

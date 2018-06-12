@@ -30,19 +30,19 @@ At high-level, LoopBack 3.x applications consist of three big "parts"
 
 In the persistence layer, users can contribute the following artifacts:
 
-1. Definitions of Model data types (properties, validations)
-2. Definition of data sources
-3. Configuration of models (which datasource are they attached to)
-4. Operation hooks
+1.  Definitions of Model data types (properties, validations)
+2.  Definition of data sources
+3.  Configuration of models (which datasource are they attached to)
+4.  Operation hooks
 
 At the public API side, users can define:
 
-1. Which built-in methods should be exposed (think of
-   `disableRemoteMethodByName`)
-2. Custom remote methods
-3. before/after/afterError hooks at application-level
-4. before/after/afterError hooks at model-level
-5. before/after/afterError hooks at model method level
+1.  Which built-in methods should be exposed (think of
+    `disableRemoteMethodByName`)
+2.  Custom remote methods
+3.  before/after/afterError hooks at application-level
+4.  before/after/afterError hooks at model-level
+5.  before/after/afterError hooks at model method level
 
 LoopBack 4 was intentionally designed to allow users to choose their own
 ORM/persistence solution. The juggler from LoopBack 3 has been packaged into

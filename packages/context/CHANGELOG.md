@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.11.6"></a>
+## [0.11.6](https://github.com/strongloop/loopback-next/compare/@loopback/context@0.11.5...@loopback/context@0.11.6) (2018-06-11)
+
+
+### Bug Fixes
+
+* **context:** calculate # of method params with default ([f5f5bde](https://github.com/strongloop/loopback-next/commit/f5f5bde))
+
+
+
+
 <a name="0.11.5"></a>
 ## [0.11.5](https://github.com/strongloop/loopback-next/compare/@loopback/context@0.11.3...@loopback/context@0.11.5) (2018-06-09)
 

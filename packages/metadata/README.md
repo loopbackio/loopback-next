@@ -199,8 +199,8 @@ class MyController {
 **WARNING**: Using method decorators to provide metadata for parameters is
 strongly discouraged for a few reasons:
 
-1. Method decorators cannot be applied to a constructor
-2. Method decorators depends on the positions to match parameters
+1.  Method decorators cannot be applied to a constructor
+2.  Method decorators depends on the positions to match parameters
 
 We recommend that `ParameterDecorator` be used instead.
 
@@ -220,12 +220,12 @@ functions. There are two flags for the options:
 
 By default, the decorator factories allow inheritance with the following rules:
 
-1. If the metadata is an object, we merge the `spec` argument from the
-   decorator function into the inherited value from base classes. For metadata
-   of array and other primitive types, the `spec` argument is used if provided.
+1.  If the metadata is an object, we merge the `spec` argument from the
+    decorator function into the inherited value from base classes. For metadata
+    of array and other primitive types, the `spec` argument is used if provided.
 
-   - We can override `inherit` method of the decorator factory to customize how
-     to resolve `spec` against the inherited metadata. For example:
+    - We can override `inherit` method of the decorator factory to customize how
+      to resolve `spec` against the inherited metadata. For example:
 
 ```ts
 protected inherit(inheritedMetadata: T | undefined | null): T {
@@ -234,13 +234,13 @@ protected inherit(inheritedMetadata: T | undefined | null): T {
 }
 ```
 
-2. Method/property/parameter level metadata is applied to the class or its
-   prototype as a map keyed method/property names. We think this approach is
-   better than keeping metadata at method/property level as it's not easy to
-   inspect a class to find static/instance methods and properties with
-   decorations. The metadata for a class is illustrated below:
+2.  Method/property/parameter level metadata is applied to the class or its
+    prototype as a map keyed method/property names. We think this approach is
+    better than keeping metadata at method/property level as it's not easy to
+    inspect a class to find static/instance methods and properties with
+    decorations. The metadata for a class is illustrated below:
 
-   - MyClass (the constructor function itself)
+    - MyClass (the constructor function itself)
 
 ```ts
 {
@@ -311,9 +311,9 @@ protected mergeWithOwn(
 }
 ```
 
-3. The default implementation throws errors if the same decorator function is
-   applied to a given target member (class/method/property/parameter) more than
-   once. For example, the following usage will report an error at runtime.
+3.  The default implementation throws errors if the same decorator function is
+    applied to a given target member (class/method/property/parameter) more than
+    once. For example, the following usage will report an error at runtime.
 
 ```ts
 @myClassDecorator({name: 'my-controller'})
@@ -419,8 +419,8 @@ keys. For example,
 
 ```ts
 const CLASS_KEY = MetadataAccessor.create<MyClassMetadata, ClassDecorator>(
-    'my-class-decorator-key',
-  );
+  'my-class-decorator-key',
+);
 
 // Create a class decorator with the key
 const myClassDecorator = ClassDecoratorFactory.createDecorator(CLASS_KEY);
@@ -469,7 +469,8 @@ Run `npm test` from the root folder.
 
 ## Contributors
 
-See [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
+See
+[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
 ## License
 

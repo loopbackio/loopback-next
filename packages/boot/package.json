@@ -1,6 +1,6 @@
 {
   "name": "@loopback/boot",
-  "version": "0.10.8",
+  "version": "0.10.9",
   "description": "A collection of Booters for LoopBack 4 Applications",
   "engines": {
     "node": ">=8"
@@ -26,10 +26,10 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^0.11.5",
-    "@loopback/core": "^0.8.7",
+    "@loopback/context": "^0.11.6",
+    "@loopback/core": "^0.8.8",
     "@loopback/dist-util": "^0.3.2",
-    "@loopback/repository": "^0.11.2",
+    "@loopback/repository": "^0.11.3",
     "@types/debug": "0.0.30",
     "@types/glob": "^5.0.35",
     "debug": "^3.1.0",
@@ -37,8 +37,8 @@
   },
   "devDependencies": {
     "@loopback/build": "^0.6.8",
-    "@loopback/openapi-v3": "^0.10.8",
-    "@loopback/rest": "^0.11.2",
+    "@loopback/openapi-v3": "^0.10.9",
+    "@loopback/rest": "^0.11.3",
     "@loopback/testlab": "^0.10.7",
     "@types/node": "^10.1.1"
   },

@@ -61,22 +61,22 @@ Spies, mocks and stubs. Learn more at <http://sinonjs.org/>.
 
 Stub implementation of HTTP Request and Response objects, useful for unit tests.
 
-Besides the API provided by `shot` module
-(see [API Reference](https://github.com/hapijs/shot/blob/master/API.md)),
-we provide additional APIs to better support async/await flow control
-and usage in Express-based code.
+Besides the API provided by `shot` module (see
+[API Reference](https://github.com/hapijs/shot/blob/master/API.md)), we provide
+additional APIs to better support async/await flow control and usage in
+Express-based code.
 
-There are three primary situations where you can leverage stub objects
-provided by Shot in your unit tests:
+There are three primary situations where you can leverage stub objects provided
+by Shot in your unit tests:
 
- - Code parsing core HTTP Request
- - Code modifying core HTTP Response, including full request/response handlers
- - Code parsing Express HTTP Request or modifying Express HTTP Response
+- Code parsing core HTTP Request
+- Code modifying core HTTP Response, including full request/response handlers
+- Code parsing Express HTTP Request or modifying Express HTTP Response
 
 #### Test request parsing
 
-Use the factory function `stubServerRequest` to create a stub request that
-can be passed to methods expecting core HTTP Request on input.
+Use the factory function `stubServerRequest` to create a stub request that can
+be passed to methods expecting core HTTP Request on input.
 
 ```ts
 import {stubServerRequest, expect} from '@loopback/testlab';
@@ -89,18 +89,18 @@ describe('parseParams', () => {
     });
 
     const args = parseParams(request, [
-      {name: 'count', in: 'query', type: 'number'}
+      {name: 'count', in: 'query', type: 'number'},
     ]);
 
     expect(args).to.eql([10]);
-  })
-})
+  });
+});
 ```
 
 #### Test response producers
 
-Use the factory function `stubHandlerContext` to create request & response
-stubs and a promise to observe the actual response as received by clients.
+Use the factory function `stubHandlerContext` to create request & response stubs
+and a promise to observe the actual response as received by clients.
 
 ```ts
 import {stubHandlerContext, expect} from '@loopback/testlab';
@@ -138,9 +138,9 @@ properties and methods, it also cross-links request with response and vice
 versa. As a result, it's not possible to create Express Request object without
 the accompanying Response object.
 
-Use the factory function `stubExpressContext` to create Express-flavored
-request & response stubs and a promise to observe the actual response as
-received by clients.
+Use the factory function `stubExpressContext` to create Express-flavored request
+& response stubs and a promise to observe the actual response as received by
+clients.
 
 If your tested function is expecting a request object only:
 

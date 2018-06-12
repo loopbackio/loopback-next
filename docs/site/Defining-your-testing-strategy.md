@@ -65,47 +65,47 @@ over slow application-wide end-to-end tests.
 Say you are implementing the "search" endpoint of the Product resource described
 earlier. You might write the following tests:
 
-1. One "acceptance test", where you start the application, make an HTTP request
-   to search for a given product name, and verify that expected products were
-   returned. This verifies that all parts of the application are correctly
-   wired together.
+1.  One "acceptance test", where you start the application, make an HTTP request
+    to search for a given product name, and verify that expected products were
+    returned. This verifies that all parts of the application are correctly
+    wired together.
 
-2. Few "integration tests" where you invoke `ProductController` API from
-   JavaScript/TypeScript, talk to a real database, and verify that the queries
-   built by the controller work as expected when executed by the database
-   server.
+2.  Few "integration tests" where you invoke `ProductController` API from
+    JavaScript/TypeScript, talk to a real database, and verify that the queries
+    built by the controller work as expected when executed by the database
+    server.
 
-3. Many "unit tests" where you test `ProductController` in isolation and verify
-   that the controller handles all different situations, including error paths
-   and edge cases.
+3.  Many "unit tests" where you test `ProductController` in isolation and verify
+    that the controller handles all different situations, including error paths
+    and edge cases.
 
 ### Testing workflow
 
 Here is what your testing workflow might look like:
 
-1. Write an acceptance test demonstrating the new feature you are going to
-   build. Watch the test fail with a helpful error message. Use this new test
-   as a reminder of what is the scope of your current work. When the new tests
-   passes then you are done.
+1.  Write an acceptance test demonstrating the new feature you are going to
+    build. Watch the test fail with a helpful error message. Use this new test
+    as a reminder of what is the scope of your current work. When the new tests
+    passes then you are done.
 
-2. Think about the different ways how the new feature can be used and pick one
-   that's most easy to implement. Consider error scenarios and edge cases that
-   you need to handle too. In the example above, where you want to search for
-   products by name, you may start with the case when no product is found.
+2.  Think about the different ways how the new feature can be used and pick one
+    that's most easy to implement. Consider error scenarios and edge cases that
+    you need to handle too. In the example above, where you want to search for
+    products by name, you may start with the case when no product is found.
 
-3. Write a unit-test for this case and watch it fail with an expected (and
-   helpful) error message. This is the "red" step in Test Driven Development
-   ([TDD](https://en.wikipedia.org/wiki/Test-driven_development)).
+3.  Write a unit-test for this case and watch it fail with an expected (and
+    helpful) error message. This is the "red" step in Test Driven Development
+    ([TDD](https://en.wikipedia.org/wiki/Test-driven_development)).
 
-4. Write a minimal implementation need to make your tests pass. Building up on
-   the example above, let your search method return an empty array. This is the
-   "green" step in TDD.
+4.  Write a minimal implementation need to make your tests pass. Building up on
+    the example above, let your search method return an empty array. This is the
+    "green" step in TDD.
 
-5. Review the code you have written so far, and refactor as needed to clean up
-   the design. Don't forget to keep your test code clean too! This is the
-   "refactor" step in TDD.
+5.  Review the code you have written so far, and refactor as needed to clean up
+    the design. Don't forget to keep your test code clean too! This is the
+    "refactor" step in TDD.
 
-6. Repeat the steps 2-5 until your acceptance test starts passing.
+6.  Repeat the steps 2-5 until your acceptance test starts passing.
 
 When writing new unit tests, watch out for situations where your tests are
 asserting on how the tested objects interacted with the mocked dependencies,
