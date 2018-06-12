@@ -23,6 +23,16 @@ describe('RestServer (integration)', () => {
     expect(server.getSync(RestBindings.PORT)).to.not.equal(80);
     await server.stop();
   });
+  it('does not throw an error when stopping an App that has not been started', async () => {
+    try {
+      const app = new Application();
+      app.component(RestComponent);
+      const server = await app.getServer(RestServer);
+      await server.stop();
+    } catch (error) {
+      expect(error).not.to.be.null();
+    }
+  });
 
   it('responds with 500 when Sequence fails with unhandled error', async () => {
     const server = await givenAServer({rest: {port: 0}});

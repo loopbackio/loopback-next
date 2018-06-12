@@ -599,7 +599,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
    */
   async stop() {
     // Kill the server instance.
-    await this._httpServer.stop();
+    if (this._httpServer) {
+      await this._httpServer.stop();
+    }
   }
 
   protected _onUnhandledError(req: Request, res: Response, err: Error) {
