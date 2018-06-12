@@ -143,8 +143,8 @@ children:
     url: Download-examples.html
     output: 'web, pdf'
 
-- title: 'Best practices with Loopback 4'
-  url: Best-practices-with-Loopback-4.html
+- title: 'Best practices'
+  url: Best-practices.html
   output: 'web, pdf'
   children:
 
