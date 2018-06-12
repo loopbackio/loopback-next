@@ -1,12 +1,11 @@
 {
   "name": "@loopback/http-server",
   "version": "0.1.3",
-  "description": "",
+  "description": "A wrapper for creating HTTP/HTTPS servers",
   "engines": {
     "node": ">=8"
   },
   "scripts": {
-    "acceptance": "lb-mocha \"DIST/test/acceptance/**/*.js\"",
     "build": "npm run build:dist8 && npm run build:dist10",
     "build:apidocs": "lb-apidocs",
     "build:current": "lb-tsc",
@@ -14,9 +13,7 @@
     "build:dist10": "lb-tsc es2018",
     "clean": "lb-clean loopback-http-server*.tgz dist* package api-docs",
     "pretest": "npm run build:current",
-    "integration": "lb-mocha \"DIST/test/integration/**/*.js\"",
-    "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/integration/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
-    "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",
+    "test": "lb-mocha \"DIST/test/**/*.js\"",
     "verify": "npm pack && tar xf loopback-http-server*.tgz && tree package && npm run clean"
   },
   "author": "IBM",

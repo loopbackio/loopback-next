@@ -8,17 +8,20 @@ import * as makeRequest from 'request-promise-native';
 import {ServerRequest, ServerResponse} from 'http';
 
 describe('HttpServer (integration)', () => {
+  let server: HttpServer | undefined;
+
+  afterEach(stopServer);
+
   it('starts server', async () => {
-    const server = new HttpServer(dummyRequestHandler);
+    server = new HttpServer(dummyRequestHandler);
     await server.start();
     supertest(server.url)
       .get('/')
       .expect(200);
-    await server.stop();
   });
 
   it('stops server', async () => {
-    const server = new HttpServer(dummyRequestHandler);
+    server = new HttpServer(dummyRequestHandler);
     await server.start();
     await server.stop();
     await expect(
@@ -29,24 +32,23 @@ describe('HttpServer (integration)', () => {
   });
 
   it('exports original port', async () => {
-    const server = new HttpServer(dummyRequestHandler, {port: 0});
+    server = new HttpServer(dummyRequestHandler, {port: 0});
     expect(server)
       .to.have.property('port')
       .which.is.equal(0);
   });
 
   it('exports reported port', async () => {
-    const server = new HttpServer(dummyRequestHandler);
+    server = new HttpServer(dummyRequestHandler);
     await server.start();
     expect(server)
       .to.have.property('port')
       .which.is.a.Number()
       .which.is.greaterThan(0);
-    await server.stop();
   });
 
   it('does not permanently bind to the initial port', async () => {
-    const server = new HttpServer(dummyRequestHandler);
+    server = new HttpServer(dummyRequestHandler);
     await server.start();
     const port = server.port;
     await server.stop();
@@ -55,71 +57,71 @@ describe('HttpServer (integration)', () => {
       .to.have.property('port')
       .which.is.a.Number()
       .which.is.not.equal(port);
-    await server.stop();
   });
 
   it('exports original host', async () => {
-    const server = new HttpServer(dummyRequestHandler);
+    server = new HttpServer(dummyRequestHandler);
     expect(server)
       .to.have.property('host')
       .which.is.equal(undefined);
   });
 
   it('exports reported host', async () => {
-    const server = new HttpServer(dummyRequestHandler);
+    server = new HttpServer(dummyRequestHandler);
     await server.start();
     expect(server)
       .to.have.property('host')
       .which.is.a.String();
-    await server.stop();
   });
 
   it('exports protocol', async () => {
-    const server = new HttpServer(dummyRequestHandler);
+    server = new HttpServer(dummyRequestHandler);
     await server.start();
     expect(server)
       .to.have.property('protocol')
       .which.is.a.String()
       .match(/http|https/);
-    await server.stop();
   });
 
   it('exports url', async () => {
-    const server = new HttpServer(dummyRequestHandler);
+    server = new HttpServer(dummyRequestHandler);
     await server.start();
     expect(server)
       .to.have.property('url')
       .which.is.a.String()
       .match(/http|https\:\/\//);
-    await server.stop();
   });
 
   it('exports address', async () => {
-    const server = new HttpServer(dummyRequestHandler);
+    server = new HttpServer(dummyRequestHandler);
     await server.start();
     expect(server)
       .to.have.property('address')
       .which.is.an.Object();
-    await server.stop();
   });
 
   it('exports started', async () => {
-    const server = new HttpServer(dummyRequestHandler);
+    server = new HttpServer(dummyRequestHandler);
     await server.start();
     expect(server.started).to.be.true();
     await server.stop();
     expect(server.started).to.be.false();
   });
 
-  it('start() returns a rejected promise', async () => {
-    const serverA = new HttpServer(dummyRequestHandler);
-    await serverA.start();
-    const port = serverA.port;
-    const serverB = new HttpServer(dummyRequestHandler, {port: port});
-    expect(serverB.start()).to.be.rejectedWith(/EADDRINUSE/);
+  it('reports error when the server cannot be started', async () => {
+    server = new HttpServer(dummyRequestHandler);
+    await server.start();
+    const port = server.port;
+    const anotherServer = new HttpServer(dummyRequestHandler, {port: port});
+    expect(anotherServer.start()).to.be.rejectedWith(/EADDRINUSE/);
   });
 
   function dummyRequestHandler(req: ServerRequest, res: ServerResponse): void {
     res.end();
+  }
+
+  async function stopServer() {
+    if (!server) return;
+    await server.stop();
   }
 });
