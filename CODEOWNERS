@@ -10,6 +10,7 @@ packages/authentication/* @bajtos @raymondfeng
 packages/boot/* @raymondfeng @virkt25
 packages/build/* @bajtos @raymondfeng
 packages/http-caching-proxy/* @bajtos
+packages/http-server/* @hacksparrow @bajtos
 packages/cli/* @raymondfeng @shimks
 packages/context/* @bajtos @raymondfeng
 packages/core/* @bajtos @raymondfeng
