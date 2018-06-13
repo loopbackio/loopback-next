@@ -5,8 +5,9 @@
 
 import {Class} from '../common-types';
 import {Entity} from '../model';
-
-import {PropertyDecoratorFactory} from '@loopback/context';
+import {PropertyDecoratorFactory, MetadataInspector} from '@loopback/context';
+import {MODEL_PROPERTIES_KEY} from './model.decorator';
+import {HasManyDefinition} from '../repositories/relation.factory';
 
 // tslint:disable:no-any
 
@@ -59,14 +60,49 @@ export function hasOne(definition?: Object) {
   return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
 }
 
-/**
- * Decorator for hasMany
- * @param definition
- * @returns {(target:any, key:string)}
- */
-export function hasMany(definition?: Object) {
-  const rel = Object.assign({type: RelationType.hasMany}, definition);
-  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
+export function hasMany(definition?: Partial<HasManyDefinition>) {
+  return function(target: Object, key: string) {
+    const propMeta = MetadataInspector.getPropertyMetadata(
+      MODEL_PROPERTIES_KEY,
+      target,
+      key,
+    );
+
+    if (definition && definition.modelTo) {
+      const meta = Object.assign(
+        {
+          type: RelationType.hasMany,
+          modelTo: definition.modelTo,
+          modelFrom: target.constructor,
+          as: key,
+        },
+        definition,
+      );
+      PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, meta)(
+        target,
+        key,
+      );
+    } else if (propMeta && propMeta.type) {
+      const meta = Object.assign(
+        {
+          type: RelationType.hasMany,
+          modelTo: propMeta.type,
+          modelFrom: target.constructor,
+          as: key,
+        },
+        definition,
+      );
+      PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, meta)(
+        target,
+        key,
+      );
+    } else if (
+      (!propMeta && !definition) ||
+      (!propMeta && definition && !definition.modelTo)
+    ) {
+      throw new Error('Could not infer property type from @property decorator');
+    }
+  };
 }
 
 /**

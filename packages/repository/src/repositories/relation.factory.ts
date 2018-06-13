@@ -13,11 +13,15 @@ import {
 
 export interface RelationDefinitionBase {
   type: RelationType;
-  keyTo: string;
 }
 
 export interface HasManyDefinition extends RelationDefinitionBase {
   type: RelationType.hasMany;
+  modelFrom: typeof Entity;
+  modelTo: typeof Entity;
+  keyTo: string;
+  keyFrom: string;
+  as: string;
 }
 /**
  * Enforces a constraint on a repository based on a relationship contract
