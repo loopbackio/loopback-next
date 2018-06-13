@@ -7,6 +7,7 @@ import {Class} from '../common-types';
 import {Repository} from '../repositories/repository';
 import {juggler} from '../repositories/legacy-juggler-bridge';
 import {Application} from '@loopback/core';
+import {BindingScope} from '@loopback/context';
 
 /**
  * A mixin class for Application that creates a .repository()
@@ -97,9 +98,27 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * }
      * ```
      */
-    dataSource(dataSource: juggler.DataSource, name?: string) {
-      const dataSourceKey = `datasources.${name || dataSource.name}`;
-      this.bind(dataSourceKey).to(dataSource);
+    dataSource(
+      dataSource: Class<juggler.DataSource> | juggler.DataSource,
+      name?: string,
+    ) {
+      // We have an instance of
+      if (dataSource instanceof juggler.DataSource) {
+        const key = `datasources.${name || dataSource.name}`;
+        this.bind(key)
+          .to(dataSource)
+          .tag('datasource');
+      } else if (typeof dataSource === 'function') {
+        const key = `datasources.${name ||
+          dataSource.dataSourceName ||
+          dataSource.name}`;
+        this.bind(key)
+          .toClass(dataSource)
+          .tag('datasource')
+          .inScope(BindingScope.SINGLETON);
+      } else {
+        throw new Error('not a valid DataSource.');
+      }
     }
 
     /**
@@ -155,7 +174,10 @@ export interface AppWithRepository extends Application {
   repository(repo: Class<any>): void;
   // tslint:disable-next-line:no-any
   getRepository<R extends Repository<any>>(repo: Class<R>): Promise<R>;
-  dataSource(dataSource: juggler.DataSource, name?: string): void;
+  dataSource(
+    dataSource: Class<juggler.DataSource> | juggler.DataSource,
+    name?: string,
+  ): void;
   component(component: Class<{}>): void;
   mountComponentRepository(component: Class<{}>): void;
 }
@@ -236,7 +258,10 @@ export class RepositoryMixinDoc {
    * }
    * ```
    */
-  dataSource(dataSource: juggler.DataSource, name?: string) {}
+  dataSource(
+    dataSource: Class<juggler.DataSource> | juggler.DataSource,
+    name?: string,
+  ) {}
 
   /**
    * Add a component to this application. Also mounts
