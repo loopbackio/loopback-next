@@ -83,7 +83,7 @@ export class TodoListApplication extends BootMixin(
 }
 ```
 
-Once you're ready, we'll move on to the [Add your Todo model](model.md) section.
+Once you're ready, we'll move on to the [Add your Todo model](todo-tutorial-model.md) section.
 
 For more information on the Legacy Juggler, check out the
 [@loopback/repository package](https://github.com/strongloop/loopback-next/tree/master/packages/repository)
