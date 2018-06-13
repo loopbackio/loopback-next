@@ -266,3 +266,32 @@ exports.renameEJS = function() {
 
   return renameStream;
 };
+
+/**
+ * Get a validate function for object/array type
+ * @param {String} type 'object' OR 'array'
+ */
+exports.validateStringObject = function(type) {
+  return function validate(val) {
+    if (val === null || val === '') {
+      return true;
+    }
+
+    const err = `The value must be a stringified ${type}`;
+
+    if (typeof val !== 'string') {
+      return err;
+    }
+
+    try {
+      var result = JSON.parse(val);
+      if (type === 'array' && !Array.isArray(result)) {
+        return err;
+      }
+    } catch (e) {
+      return err;
+    }
+
+    return true;
+  };
+};

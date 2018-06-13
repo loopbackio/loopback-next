@@ -5,6 +5,7 @@
     "lib/base-generator.js",
     "lib/debug.js",
     "lib/project-generator.js",
+    "lib/update-index.js",
     "lib/utils.js"
   ],
   "codeSectionDepth": 4

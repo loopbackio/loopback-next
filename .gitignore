@@ -10,3 +10,4 @@ packages/*/dist*
 examples/*/dist*
 **/package
 .sandbox
+packages/cli/generators/datasource/connectors.json
