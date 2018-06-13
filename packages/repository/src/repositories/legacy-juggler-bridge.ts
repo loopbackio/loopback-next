@@ -18,6 +18,11 @@ import {
 import {Entity, ModelDefinition} from '../model';
 import {Filter, Where} from '../query';
 import {EntityCrudRepository} from './repository';
+import {createHasManyRepositoryFactory} from './relation.factory';
+import {HasManyDefinition} from '../decorators/relation.decorator';
+// need the import for exporting of a return type
+// tslint:disable-next-line:no-unused-variable
+import {HasManyRepository} from './relation.repository';
 
 export namespace juggler {
   export import DataSource = legacy.DataSource;
@@ -115,6 +120,43 @@ export class DefaultCrudRepository<T extends Entity, ID>
       definition.settings,
     );
     this.modelClass.attachTo(dataSource);
+  }
+
+  /**
+   * Function to create a constrained relation repository factory
+   *
+   * ```ts
+   * class CustomerRepository extends DefaultCrudRepository<
+   *   Customer,
+   *   typeof Customer.prototype.id
+   * > {
+   *   public orders: HasManyRepositoryFactory<Order, typeof Order.prototype.id>;
+   *
+   *   constructor(
+   *     protected db: juggler.DataSource,
+   *     orderRepository: EntityCrudRepository<Order, typeof Order.prototype.id>,
+   *   ) {
+   *     super(Customer, db);
+   *     this.orders = this._createHasManyRepositoryFactoryFor(
+   *       'orders',
+   *       orderRepository,
+   *     );
+   *   }
+   * }
+   * ```
+   *
+   * @param relationName Name of the relation defined on the source model
+   * @param targetRepo Target repository instance
+   */
+  protected _createHasManyRepositoryFactoryFor<Target extends Entity>(
+    relationName: string,
+    targetRepo: EntityCrudRepository<Target, typeof Entity.prototype.id>,
+  ) {
+    const meta = this.entityClass.definition.relations[relationName];
+    return createHasManyRepositoryFactory(
+      meta as HasManyDefinition,
+      targetRepo,
+    );
   }
 
   async create(entity: Partial<T>, options?: Options): Promise<T> {

@@ -25,13 +25,13 @@
     "@loopback/build": "^0.6.11",
     "@loopback/testlab": "^0.10.10",
     "@types/lodash": "^4.14.108",
-    "@types/node": "^10.1.1",
-    "lodash": "^4.17.10"
+    "@types/node": "^10.1.1"
   },
   "dependencies": {
     "@loopback/context": "^0.11.9",
     "@loopback/core": "^0.10.1",
     "@loopback/dist-util": "^0.3.3",
+    "lodash": "^4.17.10",
     "loopback-datasource-juggler": "^3.20.2"
   },
   "files": [

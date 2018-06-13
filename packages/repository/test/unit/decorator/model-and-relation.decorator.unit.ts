@@ -4,8 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {model, property, MODEL_KEY, MODEL_PROPERTIES_KEY} from '../../../';
 import {
+  model,
+  property,
+  MODEL_KEY,
+  MODEL_PROPERTIES_KEY,
   relation,
   hasOne,
   belongsTo,
@@ -16,9 +19,9 @@ import {
   referencesOne,
   RELATIONS_KEY,
   RelationType,
+  Entity,
+  ValueObject,
 } from '../../../';
-
-import {Entity, ValueObject} from '../../../';
 import {MetadataInspector} from '@loopback/context';
 
 describe('model decorator', () => {
@@ -87,7 +90,7 @@ describe('model decorator', () => {
 
     @property({type: 'string', id: true, generated: true})
     id: string;
-    customerId: string;
+    @property() customerId: string;
 
     @belongsTo({target: 'Customer'})
     // TypeScript does not allow me to reference Customer here
@@ -112,7 +115,7 @@ describe('model decorator', () => {
 
     @referencesOne() profile: Profile;
 
-    @hasMany() orders?: Order[];
+    @hasMany(Order) orders?: Order[];
 
     @hasOne() lastOrder?: Order;
 
@@ -230,6 +233,7 @@ describe('model decorator', () => {
       ) || /* istanbul ignore next */ {};
     expect(meta.orders).to.eql({
       type: RelationType.hasMany,
+      keyTo: 'customerId',
     });
   });
 
@@ -265,6 +269,25 @@ describe('model decorator', () => {
     expect(meta.recentOrders).to.eql({
       type: RelationType.hasMany,
     });
+  });
+
+  it('adds hasMany metadata to the constructor', () => {
+    class Person extends Entity {}
+
+    @model()
+    class House extends Entity {
+      @property() name: string;
+      @hasMany(Person, {keyTo: 'fk'})
+      person: Person[];
+    }
+
+    const relationMeta = MetadataInspector.getPropertyMetadata(
+      RELATIONS_KEY,
+      House.prototype,
+      'person',
+    );
+    expect(House.definition).to.have.property('relations');
+    expect(House.definition.relations).to.containEql({person: relationMeta});
   });
 
   describe('property namespace', () => {

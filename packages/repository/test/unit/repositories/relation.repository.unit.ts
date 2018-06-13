@@ -6,7 +6,7 @@
 import {sinon, expect} from '@loopback/testlab';
 import {
   EntityCrudRepository,
-  HasManyEntityCrudRepository,
+  HasManyRepository,
   DefaultCrudRepository,
   juggler,
   DefaultHasManyEntityCrudRepository,
@@ -28,11 +28,9 @@ describe('relation repository', () => {
     // tslint:disable-next-line:no-unused-variable
     class testHasManyEntityCrudRepository<
       T extends Entity,
-      TargetRepository extends EntityCrudRepository<
-        T,
-        typeof Entity.prototype.id
-      >
-    > implements HasManyEntityCrudRepository<T> {
+      ID,
+      TargetRepository extends EntityCrudRepository<T, ID>
+    > implements HasManyRepository<T> {
       create(
         targetModelData: Partial<T>,
         options?: AnyObject | undefined,
@@ -131,6 +129,10 @@ describe('relation repository', () => {
 
   function givenDefaultHasManyCrudInstance(constraint: AnyObject) {
     repo = sinon.createStubInstance(CustomerRepository);
-    return new DefaultHasManyEntityCrudRepository(repo, constraint);
+    return new DefaultHasManyEntityCrudRepository<
+      Customer,
+      typeof Customer.prototype.id,
+      CustomerRepository
+    >(repo, constraint);
   }
 });
