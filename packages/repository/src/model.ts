@@ -5,6 +5,7 @@
 
 import {Options, AnyObject, DataObject} from './common-types';
 import {Type} from './types';
+import {RelationDefinitionBase} from './decorators/relation.decorator';
 
 /**
  * This module defines the key classes representing building blocks for Domain
@@ -45,6 +46,7 @@ export interface ModelDefinitionSyntax {
   name: string;
   properties?: {[name: string]: PropertyDefinition | PropertyType};
   settings?: {[name: string]: any};
+  relations?: {[name: string]: RelationDefinitionBase};
   [attribute: string]: any;
 }
 
@@ -55,6 +57,7 @@ export class ModelDefinition {
   readonly name: string;
   properties: {[name: string]: PropertyDefinition};
   settings: {[name: string]: any};
+  relations: {[name: string]: RelationDefinitionBase};
   // indexes: Map<string, any>;
   [attribute: string]: any; // Other attributes
 
@@ -62,7 +65,7 @@ export class ModelDefinition {
     if (typeof nameOrDef === 'string') {
       nameOrDef = {name: nameOrDef};
     }
-    const {name, properties, settings} = nameOrDef;
+    const {name, properties, settings, relations} = nameOrDef;
 
     this.name = name;
 
@@ -74,6 +77,7 @@ export class ModelDefinition {
     }
 
     this.settings = settings || new Map();
+    this.relations = relations || {};
   }
 
   /**
