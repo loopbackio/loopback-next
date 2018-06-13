@@ -78,6 +78,10 @@ children:
     url: Controllers.html
     output: 'web, pdf'
 
+  - title: 'DataSources'
+    url: DataSources.html
+    output: 'web, pdf'
+
   - title: 'Routes'
     url: Routes.html
     output: 'web, pdf'
@@ -125,6 +129,10 @@ children:
 
   - title: 'Controller generator'
     url: Controller-generator.html
+    output: 'web, pdf'
+
+  - title: 'DataSource generator'
+    url: DataSource-generator.html
     output: 'web, pdf'
 
   - title: 'Extension generator'
