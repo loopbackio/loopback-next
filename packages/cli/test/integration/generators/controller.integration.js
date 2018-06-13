@@ -6,11 +6,9 @@
 'use strict';
 
 const path = require('path');
-const util = require('util');
-
 const assert = require('yeoman-assert');
-
 const testlab = require('@loopback/testlab');
+
 const expect = testlab.expect;
 const TestSandbox = testlab.TestSandbox;
 
@@ -41,6 +39,7 @@ const expectedFile = path.join(
   '/src/controllers/product-review.controller.ts',
 );
 
+// Base Tests
 describe('controller-generator extending BaseGenerator', baseTests);
 describe('generator-loopback4:controller', tests);
 

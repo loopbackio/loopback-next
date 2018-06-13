@@ -300,4 +300,76 @@ describe('Utils', () => {
       return utils.getArtifactList(artifactPath, artifactType, suffix, reader);
     }
   });
+
+  describe('validateStringObject', () => {
+    it('returns true for an object check with a null value', () => {
+      expect(utils.validateStringObject('object')(null)).to.be.True();
+    });
+
+    it('returns true for an array check with a null value', () => {
+      expect(utils.validateStringObject('array')(null)).to.be.True();
+    });
+
+    it('returns string for an object check with an empty string', () => {
+      expect(utils.validateStringObject('object')('')).to.be.True();
+    });
+
+    it('returns string for an array check with an empty string', () => {
+      expect(utils.validateStringObject('array')('')).to.be.True();
+    });
+
+    it('returns true for an object check with undefined', () => {
+      expect(utils.validateStringObject('object')(undefined)).to.be.eql(
+        'The value must be a stringified object',
+      );
+    });
+
+    it('returns true for an array check with undefined', () => {
+      expect(utils.validateStringObject('array')(undefined)).to.be.eql(
+        'The value must be a stringified array',
+      );
+    });
+
+    it('returns string for an object check with a number', () => {
+      expect(utils.validateStringObject('object')(123)).to.be.eql(
+        'The value must be a stringified object',
+      );
+    });
+
+    it('returns string for an array check with a number', () => {
+      expect(utils.validateStringObject('array')(123)).to.be.eql(
+        'The value must be a stringified array',
+      );
+    });
+
+    it('returns string for an object check with an object', () => {
+      expect(utils.validateStringObject('object')({})).to.be.eql(
+        'The value must be a stringified object',
+      );
+    });
+
+    it('returns string for an array check with a number', () => {
+      expect(utils.validateStringObject('array')({})).to.be.eql(
+        'The value must be a stringified array',
+      );
+    });
+
+    it('returns true for an object check with an object', () => {
+      expect(utils.validateStringObject('object')('{}')).to.be.True();
+    });
+
+    it('returns string for an array check with an object', () => {
+      expect(utils.validateStringObject('array')('{}')).to.be.eql(
+        'The value must be a stringified array',
+      );
+    });
+
+    it('returns string for an object check with an array', () => {
+      expect(utils.validateStringObject('object')('[1, 2, 3]')).to.be.True();
+    });
+
+    it('returns true for an array check with an array', () => {
+      expect(utils.validateStringObject('array')('[1, 2, 3]')).to.be.True();
+    });
+  });
 });

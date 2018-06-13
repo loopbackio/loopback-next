@@ -76,7 +76,23 @@ Arguments:
   name  # Name for the controller  Type: String  Required: false
 ```
 
-4.  To download one of LoopBack example projects
+4.  To scaffold a DataSource into your application
+
+    `lb4 datasource`
+
+```sh
+Usage:
+  lb4 datasource [options] [<name>]
+
+Options:
+  -h,   --help            # Print the generator's options and usage
+        --connector       # Name of datasource connector
+
+Arguments:
+  name  # Name for the datasource  Type: String  Required: true
+```
+
+5.  To download one of LoopBack example projects
 
     `lb4 example`
 
@@ -90,7 +106,7 @@ Options:
         --skip-install   # Do not automatically install dependencies  Default: false
 ```
 
-5.  To list available commands
+6.  To list available commands
 
     `lb4 --commands` (or `lb4 -l`)
 
@@ -104,7 +120,7 @@ Available commands:
 
 Please note `lb4 --help` also prints out available commands.
 
-6.  To print out version information
+7.  To print out version information
 
     `lb4 --version` (or `lb4 -v`)
 
