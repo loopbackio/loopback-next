@@ -49,6 +49,9 @@ LoopBack 4 introduces some new concepts that are important to understand:
   `@loopback/repository-json-schema` module uses the decorators' metadata to
   build a matching JSON Schema.
 
+- [**DataSources**](DataSources.md): A named configuration for a Connector
+  instance that represents data in an external system.
+
 - [**Repository**](Repositories.md): A type of service that represents a
   collection of data within a DataSource.
 

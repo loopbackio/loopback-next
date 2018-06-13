@@ -23,7 +23,8 @@ values for writing web applications and APIs. For more information, see
 **Controller**: The implementation of API endpoints.
 
 **DataSource**: A named configuration for a Connector instance that represents
-data in an external system.
+data in an external system. For more information, see
+[DataSource](DataSource.md).
 
 **Element:** The building blocks of a Sequence, such as route, params, and
 result. For more information, see [Sequence](Sequence.md#elements).

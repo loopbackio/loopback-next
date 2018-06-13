@@ -37,10 +37,10 @@ the name.
 
 The tool will prompt you for:
 
-- Name of the controller. If the name had been supplied from the command line,
-  the prompt is skipped and the controller is built with the name from the
+- **Name of the controller.** If the name had been supplied from the command
+  line, the prompt is skipped and the controller is built with the name from the
   command-line argument.
-- Type of the controller. You can select from the following types:
+- **Type of the controller.** You can select from the following types:
   - **Empty Controller** - An empty controller definition
   - **REST Controller with CRUD Methods** - A controller wired up to a model and
     repository definition, with pre-defined CRUD methods.

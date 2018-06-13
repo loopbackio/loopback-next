@@ -22,38 +22,22 @@ create a datasource definition to make this possible.
 
 ### Building a Datasource
 
-Create a new folder in the root directory of the project called `config`, and
-then inside that folder, create a `datasources.json` file. For the purposes of
-this tutorial, we'll be using the memory connector provided with the Juggler.
+From inside the project folder, we'll run the `lb4 datasource` command to create
+a DataSource. For the purposes of this tutorial, we'll be using the memory
+connector provided with the Juggler.
 
-#### config/datasources.json
+```sh
+lb4 datasource
+? Datasource name: db
+? Select the connector for db: In-memory db (supported by StrongLoop)
+? window.localStorage key to use for persistence (browser only):
+? Full path to file for persistence (server only): ./data/db.json
 
-```json
-{
-  "name": "db",
-  "connector": "memory",
-  "file": "./data/db.json"
-}
-```
+  create src/datasources/db.datasource.json
+  create src/datasources/db.datasource.ts
+  update src/datasources/index.ts
 
-Inside the `src/datasources` directory create a new file called
-`db.datasource.ts`. This file will create a strongly-typed export of our
-datasource using the `juggler.DataSource`, which we can consume in our
-application via injection.
-
-#### src/datasources/db.datasource.ts
-
-```ts
-import * as path from 'path';
-import {juggler} from '@loopback/repository';
-
-const dsConfigPath = path.resolve(
-  __dirname,
-  '../../../config/datasources.json',
-);
-const config = require(dsConfigPath);
-
-export const db = new juggler.DataSource(config);
+Datasource db is now created in src/datasources/
 ```
 
 Create a `data` folder in the applications root and add a new file called
