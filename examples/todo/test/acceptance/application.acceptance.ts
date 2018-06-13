@@ -19,6 +19,20 @@ describe('Application', () => {
   before(givenAnApplication);
   before(async () => {
     await app.boot();
+
+    /**
+     * Override DataSource to not write to file for testing. Since we aren't
+     * persisting data to file and each injection normally instatiates a new
+     * instance, we must change the BindingScope to a singleton so only one
+     * instance is created and used for all injections (preserving access to
+     * the same memory space).
+     */
+    app.bind('datasources.config.db').to({
+      name: 'db',
+      connector: 'memory',
+    });
+
+    // Start Application
     await app.start();
   });
   before(givenARestServer);
@@ -108,10 +122,6 @@ describe('Application', () => {
     app = new TodoListApplication({
       rest: {
         port: 0,
-      },
-      datasource: {
-        name: 'db',
-        connector: 'memory',
       },
     });
   }
