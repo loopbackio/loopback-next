@@ -5,7 +5,14 @@
 
 import {expect} from '@loopback/testlab';
 import {Application} from '@loopback/core';
-import {BootBindings, Bootstrapper, ControllerBooter, BootMixin} from '../../';
+import {
+  BootBindings,
+  Bootstrapper,
+  ControllerBooter,
+  BootMixin,
+  RepositoryBooter,
+  DataSourceBooter,
+} from '../../';
 
 describe('boot.component unit tests', () => {
   class BootableApp extends BootMixin(Application) {}
@@ -20,10 +27,24 @@ describe('boot.component unit tests', () => {
   });
 
   it('ControllerBooter is bound as a booter by default', async () => {
-    const ctrlBooter = await app.get(
+    const booterInst = await app.get(
       `${BootBindings.BOOTER_PREFIX}.ControllerBooter`,
     );
-    expect(ctrlBooter).to.be.an.instanceOf(ControllerBooter);
+    expect(booterInst).to.be.an.instanceOf(ControllerBooter);
+  });
+
+  it('RepositoryBooter is bound as a booter by default', async () => {
+    const booterInst = await app.get(
+      `${BootBindings.BOOTER_PREFIX}.RepositoryBooter`,
+    );
+    expect(booterInst).to.be.an.instanceOf(RepositoryBooter);
+  });
+
+  it('DataSourceBooter is bound as a booter by default', async () => {
+    const booterInst = await app.get(
+      `${BootBindings.BOOTER_PREFIX}.DataSourceBooter`,
+    );
+    expect(booterInst).to.be.an.instanceOf(DataSourceBooter);
   });
 
   function getApp() {
