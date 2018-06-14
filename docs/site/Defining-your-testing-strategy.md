@@ -8,8 +8,7 @@ permalink: /doc/en/lb4/Defining-your-testing-strategy.html
 summary:
 ---
 
-{% include previous.html content=" This article continues
-from [Testing the API](./Testing-the-API.md) and
+{% include previous.html content=" This article continues from
 [Defining the API using code-first approach](./Defining-the-API-using-code-first-approach.md).
 " %}
 
@@ -130,7 +129,3 @@ To summarize:
 
 See [Testing Your Application](Testing-Your-application.md) for a reference
 manual on automated tests.
-
-{% include next.html content= "
-[Implementing features](./Implementing-features.md)
-" %}

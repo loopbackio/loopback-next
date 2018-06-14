@@ -152,25 +152,8 @@ children:
     url: Defining-the-API-using-code-first-approach.html
     output: 'web, pdf'
 
-  - title: 'Defining the API using design-first approach'
-    url: Defining-the-API-using-design-first-approach.html
-    output: 'web, pdf'
-    children:
-
-    - title: 'Testing the API'
-      url: Testing-the-API.html
-      output: 'web, pdf'
-
   - title: 'Defining your testing strategy'
     url: Defining-your-testing-strategy.html
-    output: 'web, pdf'
-
-  - title: 'Implementing features'
-    url: Implementing-features.html
-    output: 'web, pdf'
-
-  - title: 'Preparing the API for consumption'
-    url: Preparing-the-API-for-consumption.html
     output: 'web, pdf'
 
   - title: 'Testing your application'
