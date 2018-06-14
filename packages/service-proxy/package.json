@@ -33,6 +33,7 @@
   "dependencies": {
     "@loopback/context": "^0.11.6",
     "@loopback/core": "^0.8.8",
+    "@loopback/dist-util": "^0.3.2",
     "loopback-datasource-juggler": "^3.20.2"
   },
   "files": [
