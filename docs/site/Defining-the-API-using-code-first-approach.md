@@ -174,12 +174,6 @@ approach, see our
 [Todo application](https://github.com/strongloop/loopback-next/blob/master/examples/todo/README.md)
 tutorial.
 
-{% include note.html content=" If you would like to create your API manually or
-already have one designed, refer to
-[Defining the API using design-first approach](Defining-the-API-using-design-first-approach.md)
-page for best practices.
-" %}
-
 {% include next.html content= "
 [Defining your testing strategy](./Defining-your-testing-strategy.md)
 " %}

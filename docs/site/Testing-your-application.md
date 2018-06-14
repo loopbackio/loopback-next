@@ -31,9 +31,7 @@ styles work well, so pick one that you're comfortable with and start writing
 tests!
 
 For an introduction to automated testing, see
-[Define your testing strategy](Defining-your-testing-strategy.md). For a
-step-by-step tutorial, see
-[Incrementally implement features](Implementing-features.md).
+[Define your testing strategy](Defining-your-testing-strategy.md).
 
 {% include important.html content=" A great test suite requires you to think
 smaller and favor fast and focused unit tests over slow end-to-end tests.

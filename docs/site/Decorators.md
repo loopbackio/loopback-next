@@ -602,9 +602,6 @@ The injection example can be found in
 To create a repository in a controller, you can define your model and datasource
 first, then import them in your controller file:
 
-_To learn more about creating models and datasources, please see the example in
-[Best Practices with LoopBack](Implementing-features.md#define-product-model-repository-and-data-source)_
-
 ```ts
 // src/controllers/todo.controller.ts
 import {Todo} from '../models';
