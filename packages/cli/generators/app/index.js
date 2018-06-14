@@ -86,7 +86,7 @@ module.exports = class AppGenerator extends ProjectGenerator {
     if (!super.end()) return false;
     this.log();
     this.log(
-      'Application %s is now created in %s.',
+      'Application %s was created in %s.',
       this.projectInfo.name,
       this.projectInfo.outdir,
     );

@@ -30,7 +30,7 @@ $ lb4 app
  ◉ Enable loopbackBuild
  ◉ Enable vscode
  # npm will install dependencies now
- Application todo-list is now created in todo-list.
+ Application todo-list was created in todo-list.
 ```
 
 For this tutorial, when prompted with the options for selecting things like

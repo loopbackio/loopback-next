@@ -185,7 +185,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
     // We don't want to call the base scaffold function since it copies
     // all of the templates!
     if (this.shouldExit()) return false;
-    this.artifactInfo.name = utils.toClassName(this.artifactInfo.name);
+    this.artifactInfo.className = utils.toClassName(this.artifactInfo.name);
     this.artifactInfo.outFile =
       utils.kebabCase(this.artifactInfo.name) + '.controller.ts';
     if (debug.enabled) {
