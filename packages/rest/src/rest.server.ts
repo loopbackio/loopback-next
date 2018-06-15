@@ -126,7 +126,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     this._setupHandlerIfNeeded();
     return this._httpHandler;
   }
-  protected _httpServer: HttpServer;
+  protected _httpServer: HttpServer | undefined;
 
   protected _expressApp: express.Application;
 
@@ -599,7 +599,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
    */
   async stop() {
     // Kill the server instance.
+    if (!this._httpServer) return;
     await this._httpServer.stop();
+    this._httpServer = undefined;
   }
 
   protected _onUnhandledError(req: Request, res: Response, err: Error) {

@@ -24,6 +24,11 @@ describe('RestServer (integration)', () => {
     await server.stop();
   });
 
+  it('does not throw an error when stopping an app that has not been started', async () => {
+    const server = await givenAServer();
+    await expect(server.stop()).to.fulfilled();
+  });
+
   it('responds with 500 when Sequence fails with unhandled error', async () => {
     const server = await givenAServer({rest: {port: 0}});
     server.handler((context, sequence) => {
