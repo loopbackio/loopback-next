@@ -63,9 +63,22 @@ Now that we have a basic project created, it's time to add our own
 [controller](Controllers.md). Let's add a simple "Hello World" controller as
 follows:
 
-- Create a new file in `/src/controllers/` called `hello.controller.ts`.
+```sh
+lb4 controller
+```
 
-- Paste the following contents into the file:
+- Answer the prompts as follows:
+
+  ```sh
+  ? Controller class name: hello
+  ? What kind of controller would you like to generate? Empty Controller
+    create src/controllers/hello.controller.ts
+
+  Controller Hello is now created in src/controllers/
+  ```
+
+- Paste the following contents into the file
+  `/src/controllers/hello.controller.ts`:
 
   ```ts
   import {get} from '@loopback/rest';
