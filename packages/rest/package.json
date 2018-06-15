@@ -38,7 +38,8 @@
     "http-errors": "^1.6.3",
     "js-yaml": "^3.11.0",
     "lodash": "^4.17.5",
-    "path-to-regexp": "^2.2.0"
+    "path-to-regexp": "^2.2.0",
+    "validator": "^10.4.0"
   },
   "devDependencies": {
     "@loopback/build": "^0.6.9",

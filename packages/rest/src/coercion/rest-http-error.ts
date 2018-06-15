@@ -9,8 +9,7 @@ export namespace RestHttpErrors {
     return new HttpErrors.BadRequest(msg);
   }
   export function invalidParamLocation(location: string): HttpErrors.HttpError {
-    return new HttpErrors.NotImplemented(
-      'Parameters with "in: ' + location + '" are not supported yet.',
-    );
+    const msg = `Parameters with "in: ${location}" are not supported yet.`;
+    return new HttpErrors.NotImplemented(msg);
   }
 }

@@ -7,7 +7,17 @@ import {ParameterObject, isReferenceObject} from '@loopback/openapi-v3-types';
 import {Validator} from './validator';
 import * as debugModule from 'debug';
 import {RestHttpErrors} from '../';
-
+import {
+  getOAIPrimitiveType,
+  isEmpty,
+  isFalse,
+  isTrue,
+  isValidDateTime,
+  matchDateFormat,
+  DateCoercionOptions,
+  IntegerCoercionOptions,
+} from './utils';
+const isRFC3339 = require('validator/lib/isRFC3339');
 const debug = debugModule('loopback:rest:coercion');
 
 /**
@@ -17,7 +27,10 @@ const debug = debugModule('loopback:rest:coercion');
  * @param data The raw data get from http request
  * @param schema The parameter's schema defined in OpenAPI specification
  */
-export function coerceParameter(data: string, spec: ParameterObject) {
+export function coerceParameter(
+  data: string | undefined | object,
+  spec: ParameterObject,
+) {
   const schema = spec.schema;
   if (!schema || isReferenceObject(schema)) {
     debug(
@@ -31,26 +44,25 @@ export function coerceParameter(data: string, spec: ParameterObject) {
   const validator = new Validator({parameterSpec: spec});
 
   validator.validateParamBeforeCoercion(data);
+  if (data === undefined) return data;
 
   switch (OAIType) {
     case 'byte':
-      return Buffer.from(data, 'base64');
+      return coerceBuffer(data, spec);
     case 'date':
-      return new Date(data);
+      return coerceDatetime(data, spec, {dateOnly: true});
+    case 'date-time':
+      return coerceDatetime(data, spec);
     case 'float':
     case 'double':
-      return parseFloat(data);
     case 'number':
-      const coercedData = data ? Number(data) : undefined;
-      if (coercedData === undefined) return;
-      if (isNaN(coercedData)) throw RestHttpErrors.invalidData(data, spec.name);
-      return coercedData;
+      return coerceNumber(data, spec);
     case 'long':
-      return Number(data);
+      return coerceInteger(data, spec, {isLong: true});
     case 'integer':
-      return parseInt(data);
+      return coerceInteger(data, spec);
     case 'boolean':
-      return isTrue(data) ? true : isFalse(data) ? false : undefined;
+      return coerceBoolean(data, spec);
     case 'string':
     case 'password':
     // serialize will be supported in next PR
@@ -60,56 +72,71 @@ export function coerceParameter(data: string, spec: ParameterObject) {
   }
 }
 
-/**
- * A set of truthy values. A data in this set will be coerced to `true`.
- *
- * @param data The raw data get from http request
- * @returns The corresponding coerced boolean type
- */
-function isTrue(data: string): boolean {
-  return ['true', '1'].includes(data);
+function coerceBuffer(data: string | object, spec: ParameterObject) {
+  if (typeof data === 'object')
+    throw RestHttpErrors.invalidData(data, spec.name);
+  return Buffer.from(data, 'base64');
 }
 
-/**
- * A set of falsy values. A data in this set will be coerced to `false`.
- * @param data The raw data get from http request
- * @returns The corresponding coerced boolean type
- */
-function isFalse(data: string): boolean {
-  return ['false', '0'].includes(data);
-}
+function coerceDatetime(
+  data: string | object,
+  spec: ParameterObject,
+  options?: DateCoercionOptions,
+) {
+  if (typeof data === 'object' || isEmpty(data))
+    throw RestHttpErrors.invalidData(data, spec.name);
 
-/**
- * Return the corresponding OpenAPI data type given an OpenAPI schema
- *
- * @param type The type in an OpenAPI schema specification
- * @param format The format in an OpenAPI schema specification
- */
-function getOAIPrimitiveType(type?: string, format?: string) {
-  // serizlize will be supported in next PR
-  if (type === 'object' || type === 'array') return 'serialize';
-  if (type === 'string') {
-    switch (format) {
-      case 'byte':
-        return 'byte';
-      case 'binary':
-        return 'binary';
-      case 'date':
-        return 'date';
-      case 'date-time':
-        return 'date-time';
-      case 'password':
-        return 'password';
-      default:
-        return 'string';
-    }
+  if (options && options.dateOnly) {
+    if (!matchDateFormat(data))
+      throw RestHttpErrors.invalidData(data, spec.name);
+  } else {
+    if (!isRFC3339(data)) throw RestHttpErrors.invalidData(data, spec.name);
   }
-  if (type === 'boolean') return 'boolean';
-  if (type === 'number')
-    return format === 'float'
-      ? 'float'
-      : format === 'double'
-        ? 'double'
-        : 'number';
-  if (type === 'integer') return format === 'int64' ? 'long' : 'integer';
+
+  const coercedDate = new Date(data);
+  if (!isValidDateTime(coercedDate))
+    throw RestHttpErrors.invalidData(data, spec.name);
+  return coercedDate;
+}
+
+function coerceNumber(data: string | object, spec: ParameterObject) {
+  if (typeof data === 'object' || isEmpty(data))
+    throw RestHttpErrors.invalidData(data, spec.name);
+
+  const coercedNum = Number(data);
+  if (isNaN(coercedNum)) throw RestHttpErrors.invalidData(data, spec.name);
+
+  debug('data of type number is coerced to %s', coercedNum);
+  return coercedNum;
+}
+
+function coerceInteger(
+  data: string | object,
+  spec: ParameterObject,
+  options?: IntegerCoercionOptions,
+) {
+  if (typeof data === 'object' || isEmpty(data))
+    throw RestHttpErrors.invalidData(data, spec.name);
+
+  const coercedInt = Number(data);
+  if (isNaN(coercedInt!)) throw RestHttpErrors.invalidData(data, spec.name);
+
+  if (options && options.isLong) {
+    if (!Number.isInteger(coercedInt))
+      throw RestHttpErrors.invalidData(data, spec.name);
+  } else {
+    if (!Number.isSafeInteger(coercedInt))
+      throw RestHttpErrors.invalidData(data, spec.name);
+  }
+
+  debug('data of type integer is coerced to %s', coercedInt);
+  return coercedInt;
+}
+
+function coerceBoolean(data: string | object, spec: ParameterObject) {
+  if (typeof data === 'object' || isEmpty(data))
+    throw RestHttpErrors.invalidData(data, spec.name);
+  if (isTrue(data)) return true;
+  if (isFalse(data)) return false;
+  throw RestHttpErrors.invalidData(data, spec.name);
 }
