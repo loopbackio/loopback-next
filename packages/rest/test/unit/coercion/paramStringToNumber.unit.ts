@@ -5,7 +5,7 @@
 
 import {test} from './utils';
 import {ParameterLocation} from '@loopback/openapi-v3-types';
-import {RestHttpErrors} from './../../../';
+import {RestHttpErrors} from '../../../';
 
 const NUMBER_PARAM = {
   in: <ParameterLocation>'path',
@@ -74,9 +74,15 @@ describe('coerce param from string to number - optional', () => {
     test(NUMBER_PARAM, '-1.234e+30', -1.234e30);
   });
 
-  context('empty value converts to undefined', () => {
+  context('empty collection converts to undefined', () => {
     // [], {} sent from request are converted to raw value undefined
     test(NUMBER_PARAM, undefined, undefined);
+  });
+
+  // @jannyhou For review: shall we convert empty value to 0 or throw error?
+  context('empty values trigger ERROR_BAD_REQUEST', () => {
+    // null, '' sent from request are converted to raw value ''
+    test(NUMBER_PARAM, '', RestHttpErrors.invalidData('', NUMBER_PARAM.name));
   });
 
   context('All other non-number values trigger ERROR_BAD_REQUEST', () => {

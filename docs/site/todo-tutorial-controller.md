@@ -143,9 +143,6 @@ export class TodoController {
     @param.path.number('id') id: number,
     @requestBody() todo: Todo,
   ): Promise<boolean> {
-    // REST adapter does not coerce parameter values coming from string sources
-    // like path & query, so we cast the value to a number ourselves.
-    id = +id;
     return await this.todoRepo.replaceById(id, todo);
   }
 
@@ -154,7 +151,6 @@ export class TodoController {
     @param.path.number('id') id: number,
     @requestBody() todo: Todo,
   ): Promise<boolean> {
-    id = +id;
     return await this.todoRepo.updateById(id, todo);
   }
 
