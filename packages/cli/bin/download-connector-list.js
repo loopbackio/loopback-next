@@ -2,8 +2,8 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
+const request = require('request-promise-native');
 
-const readFileAsync = util.promisify(fs.readFile);
 const writeFileAsync = util.promisify(fs.writeFile);
 
 const DEST = path.resolve('generators/datasource/connectors.json');
@@ -15,36 +15,20 @@ const URL =
  * so the list only has to be maintained in one place.
  */
 async function download() {
-  var file = fs.createWriteStream(DEST);
-  var request = https
-    .get(URL, function(response) {
-      response.pipe(file);
-      file.on('finish', async function() {
-        file.close();
-        await transformConnectorJSON();
-      });
-    })
-    .on('error', function(err) {
-      fs.unlink(DEST);
-      return err;
-    });
-}
-
-/**
- * This function transforms the array of Connector objects from
- * loopback-workspace as follows:
- *
- * - Transforms the array into an object / map
- * - Transforms display:password to type:password so it can be used by CLI directly
- * - Transforms description to message so it can be used by CLI directly
- */
-async function transformConnectorJSON() {
-  let data = await readFileAsync(DEST, 'utf-8');
-  data = JSON.parse(data);
+  const data = await request(URL, {json: true});
   const out = {};
+
+  /**
+   * This transforms the array of Connector objects from
+   * loopback-workspace as follows:
+   *
+   * - Transforms the array into an object / map
+   * - Transforms display:password to type:password so it can be used by CLI directly
+   * - Transforms description to message so it can be used by CLI directly
+   */
   data.forEach(item => {
     if (item.settings) {
-      Object.entries(item.settings).forEach(([key, value]) => {
+      Object.values(item.settings).forEach(value => {
         if (value.display === 'password') {
           value.type = 'password';
           delete value.display;
@@ -58,6 +42,8 @@ async function transformConnectorJSON() {
     }
     out[item.name] = item;
   });
+
+  // Write data to file
   await writeFileAsync(DEST, JSON.stringify(out, null, 2));
 }
 
