@@ -25,6 +25,8 @@ import {
 // NOTE(bajtos) The following import is required to satisfy TypeScript compiler
 // tslint:disable-next-line:no-unused-variable
 import {OpenAPIObject} from '@loopback/openapi-v3-types';
+import {HttpProtocol} from '@loopback/http-server';
+import * as https from 'https';
 
 /**
  * RestServer-specific bindings
@@ -49,7 +51,13 @@ export namespace RestBindings {
   /**
    * Binding key for setting and injecting the protocol of RestServer
    */
-  export const PROTOCOL = BindingKey.create<'http' | 'https'>('rest.protocol');
+  export const PROTOCOL = BindingKey.create<HttpProtocol>('rest.protocol');
+  /**
+   * Binding key for HTTPS options
+   */
+  export const HTTPS_OPTIONS = BindingKey.create<https.ServerOptions>(
+    'rest.httpsOptions',
+  );
   /**
    * Internal binding key for http-handler
    */
