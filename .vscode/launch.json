@@ -20,6 +20,20 @@
     },
     {
       "type": "node",
+      "request": "launch",
+      "name": "Run repository mocha tests",
+      "program": "${workspaceRoot}/packages/build/node_modules/.bin/_mocha",
+      "cwd": "${workspaceRoot}",
+      "args": [
+        "--opts",
+        "${workspaceRoot}/test/mocha.opts",
+        "packages/repository/dist8/test/**/*.js",
+        "-t",
+        "0"
+      ]
+    },
+    {
+      "type": "node",
       "request": "attach",
       "name": "Attach to Process",
       "port": 5858

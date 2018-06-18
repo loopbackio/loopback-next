@@ -67,41 +67,29 @@ export function hasMany(definition?: Partial<HasManyDefinition>) {
       target,
       key,
     );
-
-    if (definition && definition.modelTo) {
-      const meta = Object.assign(
-        {
-          type: RelationType.hasMany,
-          modelTo: definition.modelTo,
-          modelFrom: target.constructor,
-          as: key,
-        },
-        definition,
-      );
-      PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, meta)(
-        target,
-        key,
-      );
-    } else if (propMeta && propMeta.type) {
-      const meta = Object.assign(
-        {
-          type: RelationType.hasMany,
-          modelTo: propMeta.type,
-          modelFrom: target.constructor,
-          as: key,
-        },
-        definition,
-      );
-      PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, meta)(
-        target,
-        key,
-      );
-    } else if (
-      (!propMeta && !definition) ||
-      (!propMeta && definition && !definition.modelTo)
-    ) {
-      throw new Error('Could not infer property type from @property decorator');
+    const allPropMeta = MetadataInspector.getAllPropertyMetadata(
+      MODEL_PROPERTIES_KEY,
+      target,
+    )!;
+    let meta = {};
+    for (const property in allPropMeta) {
+      if (allPropMeta[property].id === true) {
+        Object.assign(meta, {keyFrom: property}, definition);
+      }
     }
+
+    Object.assign(
+      meta,
+      {
+        type: RelationType.hasMany,
+        modelFrom: target.constructor,
+      },
+      definition,
+    );
+    PropertyDecoratorFactory.createDecorator(
+      RELATIONS_KEY,
+      meta as HasManyDefinition,
+    )(target, key);
   };
 }
 

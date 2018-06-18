@@ -13,44 +13,35 @@ import {
   repository,
   RepositoryMixin,
   HasManyEntityCrudRepository,
+  AppWithRepository,
+  hasManyRepository,
+  constrainRepositoryFunction,
 } from '../..';
 import {expect} from '@loopback/testlab';
 import {inject} from '@loopback/context';
 import {Application} from '@loopback/core';
-import {hasManyRepository} from '../../src/decorators/relation.repository.decorator';
 
 describe('HasMany relation', () => {
   // Given a Customer and Order models - see definitions at the bottom
 
+  let app: AppWithRepository;
+  let controller: CustomerController;
+  let customerRepo: CustomerRepository;
+  let orderRepo: OrderRepository;
   let existingCustomerId: number;
+
+  before(givenApplicationWithMemoryDB);
+  before(givenBoundCrudRepositoriesForCustomerAndOrder);
+  before(givenCustomerController);
 
   beforeEach(async () => {
     existingCustomerId = (await givenPersistedCustomerInstance()).id;
   });
+  afterEach(async () => {
+    await orderRepo.deleteAll();
+  });
 
   it('can create an instance of the related model', async () => {
-    class TestController {
-      constructor(
-        @repository(CustomerRepository) protected cusRepo: CustomerRepository,
-      ) {}
-
-      async createCustomerOrders(
-        customerId: number,
-        orderData: Partial<Order>,
-      ): Promise<Order> {
-        return await this.cusRepo.orders({id: customerId}).create(orderData);
-      }
-    }
-    class TestApp extends RepositoryMixin(Application) {}
-    const app = new TestApp();
-    app.repository(CustomerRepository);
-    app.repository(OrderRepository);
-    app.controller(TestController);
-    app.dataSource(new juggler.DataSource({name: 'db', connector: 'memory'}));
-    const controller = await app.get<TestController>(
-      'controllers.TestController',
-    );
-
     const order = await controller.createCustomerOrders(existingCustomerId, {
       description: 'order 1',
     });
@@ -59,11 +50,28 @@ describe('HasMany relation', () => {
       description: 'order 1',
     });
 
-    const orderRepo = await app.get<OrderRepository>(
-      'repositories.OrderRepository',
-    );
     const persisted = await orderRepo.findById(order.id);
     expect(persisted.toObject()).to.deepEqual(order.toObject());
+  });
+
+  it('can find instances of the related model', async () => {
+    const order = await controller.createCustomerOrders(existingCustomerId, {
+      description: 'order 1',
+    });
+    const notMyOrder = await controller.createCustomerOrders(
+      existingCustomerId + 1,
+      {
+        description: 'order 2',
+      },
+    );
+    const foundOrders = await controller.findCustomerOrders(existingCustomerId);
+    expect(foundOrders).to.containEql(order);
+    expect(foundOrders).to.not.containEql(notMyOrder);
+
+    const persisted = await orderRepo.find({
+      where: {customerId: existingCustomerId},
+    });
+    expect(persisted).to.deepEqual(order);
   });
 
   // This should be enforced by the database to avoid race conditions
@@ -114,7 +122,7 @@ describe('HasMany relation', () => {
     Order,
     typeof Order.prototype.id
   > {
-    constructor(@inject('datasources.db') db: juggler.DataSource) {
+    constructor(@inject('datasources.db') protected db: juggler.DataSource) {
       super(Order, db);
     }
   }
@@ -123,8 +131,7 @@ describe('HasMany relation', () => {
     Customer,
     typeof Customer.prototype.id
   > {
-    constructor() {
-      const db = new juggler.DataSource({connector: 'memory'});
+    constructor(@inject('datasources.db') protected db: juggler.DataSource) {
       super(Customer, db);
     }
 
@@ -134,8 +141,47 @@ describe('HasMany relation', () => {
     ) => HasManyEntityCrudRepository<Order>;
   }
 
+  class CustomerController {
+    constructor(
+      @repository(CustomerRepository)
+      protected customerRepository: CustomerRepository,
+    ) {}
+
+    async createCustomerOrders(
+      customerId: number,
+      orderData: Partial<Order>,
+    ): Promise<Order> {
+      return await this.customerRepository
+        .orders({id: customerId})
+        .create(orderData);
+    }
+
+    async findCustomerOrders(customerId: number) {
+      return await this.customerRepository.orders({id: customerId}).find();
+    }
+  }
+
+  function givenApplicationWithMemoryDB() {
+    class TestApp extends RepositoryMixin(Application) {}
+    app = new TestApp();
+    app.dataSource(new juggler.DataSource({name: 'db', connector: 'memory'}));
+  }
+
+  async function givenBoundCrudRepositoriesForCustomerAndOrder() {
+    app.repository(CustomerRepository);
+    app.repository(OrderRepository);
+    customerRepo = await app.getRepository(CustomerRepository);
+    orderRepo = await app.getRepository(OrderRepository);
+  }
+
+  async function givenCustomerController() {
+    app.controller(CustomerController);
+    controller = await app.get<CustomerController>(
+      'controllers.CustomerController',
+    );
+  }
+
   async function givenPersistedCustomerInstance() {
-    const customerRepo = new CustomerRepository();
     return customerRepo.create({name: 'a customer'});
   }
 });

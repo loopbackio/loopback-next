@@ -4,12 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {EntityCrudRepository} from './repository';
-import {RelationType} from '../decorators/relation.decorator';
+import {RelationType, RELATIONS_KEY} from '../decorators/relation.decorator';
 import {Entity} from '../model';
 import {
   HasManyEntityCrudRepository,
   DefaultHasManyEntityCrudRepository,
 } from './relation.repository';
+import {DefaultCrudRepository} from './legacy-juggler-bridge';
+import {MetadataInspector} from '@loopback/context';
 
 export interface RelationDefinitionBase {
   type: RelationType;
@@ -18,11 +20,14 @@ export interface RelationDefinitionBase {
 export interface HasManyDefinition extends RelationDefinitionBase {
   type: RelationType.hasMany;
   modelFrom: typeof Entity;
-  modelTo: typeof Entity;
   keyTo: string;
   keyFrom: string;
-  as: string;
 }
+
+export type constrainRepositoryFunction<T extends Entity> = (
+  key: Partial<T>,
+) => HasManyEntityCrudRepository<T, typeof Entity.prototype.id>;
+
 /**
  * Enforces a constraint on a repository based on a relationship contract
  * between models. Returns a relational repository that exposes applicable CRUD
@@ -39,6 +44,33 @@ export interface HasManyDefinition extends RelationDefinitionBase {
  * relation attached to a datasource.
  *
  */
+
+export function getConstrainedRepositoryFunction<
+  S extends Entity,
+  SrcModel extends typeof Entity,
+  T extends Entity
+>(
+  sourceModel: SrcModel,
+  targetRepo: DefaultCrudRepository<T, typeof Entity.prototype.id>,
+) {
+  const allMeta = MetadataInspector.getAllPropertyMetadata<
+    RelationDefinitionBase
+  >(RELATIONS_KEY, sourceModel.prototype)!;
+  let hasManyMeta: HasManyDefinition;
+  Object.values(allMeta).forEach(value => {
+    if (value.type === RelationType.hasMany) {
+      hasManyMeta = value as HasManyDefinition;
+    }
+  });
+  return function(constraint: Partial<S>) {
+    return hasManyRepositoryFactory(
+      constraint[hasManyMeta.keyFrom],
+      hasManyMeta,
+      targetRepo,
+    );
+  };
+}
+
 export function hasManyRepositoryFactory<SourceID, T extends Entity, ID>(
   sourceModelId: SourceID,
   relationMetadata: HasManyDefinition,
