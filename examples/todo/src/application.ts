@@ -42,6 +42,7 @@ export class TodoListApplication extends BootMixin(
     };
 
     // TODO(bajtos) Services should be created and registered by @loopback/boot
+    // See https://github.com/strongloop/loopback-next/issues/1439
     this.setupServices();
   }
 
@@ -51,6 +52,7 @@ export class TodoListApplication extends BootMixin(
 
   // TODO(bajtos) app.service should be provided either by core Application
   // class or a mixin provided by @loopback/service-proxy
+  // See https://github.com/strongloop/loopback-next/issues/1439
   service<T>(provider: Constructor<Provider<T>>) {
     const key = `services.${provider.name.replace(/Provider$/, '')}`;
     this.bind(key).toProvider(provider);

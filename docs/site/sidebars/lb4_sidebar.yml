@@ -53,6 +53,10 @@ children:
       url: todo-tutorial-putting-it-together.html
       output: 'web, pdf'
 
+    - title: 'Bonus: Integrate with a geo-coding service'
+      url: todo-tutorial-geocoding-service.html
+      output: 'web, pdf'
+
 - title: 'Key concepts'
   url: Concepts.html
   output: 'web, pdf'
