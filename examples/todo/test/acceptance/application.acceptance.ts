@@ -43,7 +43,11 @@ describe('Application', () => {
     expect(result).to.containDeep(todo);
   });
 
-  it('creates an address-based reminder', async () => {
+  it('creates an address-based reminder', async function() {
+    // Increase the timeout to accomodate slow network connections
+    // tslint:disable-next-line:no-invalid-this
+    this.timeout(30000);
+
     const todo = givenTodo({remindAtAddress: aLocation.address});
     const response = await client
       .post('/todos')

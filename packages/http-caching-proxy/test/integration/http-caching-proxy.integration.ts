@@ -39,7 +39,11 @@ describe('HttpCachingProxy', () => {
     expect(proxy.url).to.match(/not-running/);
   });
 
-  it('proxies HTTP requests', async () => {
+  it('proxies HTTP requests', async function() {
+    // Increase the timeout to accomodate slow network connections
+    // tslint:disable-next-line:no-invalid-this
+    this.timeout(30000);
+
     await givenRunningProxy();
     const result = await makeRequest({
       uri: 'http://example.com',
@@ -51,7 +55,11 @@ describe('HttpCachingProxy', () => {
     expect(result.body).to.containEql('example');
   });
 
-  it('proxies HTTPs requests (no tunneling)', async () => {
+  it('proxies HTTPs requests (no tunneling)', async function() {
+    // Increase the timeout to accomodate slow network connections
+    // tslint:disable-next-line:no-invalid-this
+    this.timeout(30000);
+
     await givenRunningProxy();
     const result = await makeRequest({
       uri: 'https://example.com',
