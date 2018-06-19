@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {inject} from '@loopback/core';
-import {juggler, DataSource} from '@loopback/repository';
+import {juggler, AnyObject} from '@loopback/repository';
 const config = require('./geocoder.datasource.json');
 
 export class GeocoderDataSource extends juggler.DataSource {
@@ -12,7 +12,7 @@ export class GeocoderDataSource extends juggler.DataSource {
 
   constructor(
     @inject('datasources.config.geocoder', {optional: true})
-    dsConfig: DataSource = config,
+    dsConfig: AnyObject = config,
   ) {
     dsConfig = Object.assign({}, dsConfig, {
       // A workaround for the current design flaw where inside our monorepo,

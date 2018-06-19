@@ -40,6 +40,8 @@ section.
 5.  [Add a repository](http://loopback.io/doc/en/lb4/todo-tutorial-repository.html)
 6.  [Add a controller](http://loopback.io/doc/en/lb4/todo-tutorial-controller.html)
 7.  [Putting it all together](http://loopback.io/doc/en/lb4/todo-tutorial-putting-it-together.html)
+8.  Bonus:
+    [Integrate with a geo-coding service](http://loopback.io/doc/en/lb4/todo-tutorial-geocoder-service.html)
 
 ## Try it out
 

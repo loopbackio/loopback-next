@@ -118,6 +118,13 @@ Here are some requests you can try:
 
 That's it! You've just created your first LoopBack 4 application!
 
+### Bonus: Integrate with a REST based geo-coding service
+
+A typical REST API server needs to access data from a variety of sources,
+including SOAP or REST services. Continue to the bonus section to learn how
+LoopBack connectors make it super easy to fetch data from other services and
+[enhance your Todo application with location-based reminders](todo-tutorial-geocoding-service.md).
+
 ### More examples and tutorials
 
 Eager to continue learning about LoopBack 4? Check out our
@@ -127,3 +134,6 @@ creating your own custom components, sequences and more!
 ### Navigation
 
 Previous step: [Add a controller](todo-tutorial-controller.md)
+
+Next step:
+[Integrate with a geo-coding service](todo-tutorial-geocoding-service.md)
