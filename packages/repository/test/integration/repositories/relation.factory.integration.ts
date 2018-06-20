@@ -28,6 +28,7 @@ describe('HasMany relation', () => {
   let existingCustomerId: number;
 
   const customerHasManyOrdersRelationMeta: HasManyDefinition = {
+    keyFrom: 'id',
     keyTo: 'customerId',
     type: RelationType.hasMany,
   };

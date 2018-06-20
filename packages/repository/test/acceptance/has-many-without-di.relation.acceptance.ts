@@ -54,7 +54,7 @@ describe('HasMany relation', () => {
     expect(persisted.toObject()).to.deepEqual(order.toObject());
   });
 
-  it.only('can find instances of the related model', async () => {
+  it('can find instances of the related model', async () => {
     async function createCustomerOrders(
       customerId: number,
       orderData: Partial<Order>,

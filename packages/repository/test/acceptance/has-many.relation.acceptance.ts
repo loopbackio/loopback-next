@@ -131,14 +131,13 @@ describe('HasMany relation', () => {
     Customer,
     typeof Customer.prototype.id
   > {
-    constructor(@inject('datasources.db') protected db: juggler.DataSource) {
+    constructor(
+      @inject('datasources.db') protected db: juggler.DataSource,
+      @hasManyRepository(OrderRepository)
+      public readonly orders: constrainRepositoryFunction<Order>,
+    ) {
       super(Customer, db);
     }
-
-    @hasManyRepository(OrderRepository)
-    public readonly orders: (
-      key: Partial<Customer>,
-    ) => HasManyEntityCrudRepository<Order>;
   }
 
   class CustomerController {

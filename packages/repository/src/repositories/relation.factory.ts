@@ -19,14 +19,13 @@ export interface RelationDefinitionBase {
 
 export interface HasManyDefinition extends RelationDefinitionBase {
   type: RelationType.hasMany;
-  modelFrom: typeof Entity;
   keyTo: string;
   keyFrom: string;
 }
 
 export type constrainRepositoryFunction<T extends Entity> = (
   key: Partial<T>,
-) => HasManyEntityCrudRepository<T, typeof Entity.prototype.id>;
+) => HasManyEntityCrudRepository<T>;
 
 /**
  * Enforces a constraint on a repository based on a relationship contract

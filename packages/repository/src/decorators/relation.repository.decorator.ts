@@ -26,12 +26,12 @@ export function hasManyRepository<T extends Entity>(
   targetRepo: Class<EntityCrudRepository<T, typeof Entity.prototype.id>>,
 ) {
   // tslint:disable-next-line:no-any
-  return function(target: Object, key: string) {
+  return function(target: Object, key: string, index: number) {
     inject(
       BindingKey.create<typeof targetRepo>(`repositories.${targetRepo.name}`),
       {sourceRepo: target.constructor},
       resolver,
-    )(target, key);
+    )(target, key, index);
   };
 
   async function resolver(ctx: Context, injection: Injection) {
@@ -39,13 +39,6 @@ export function hasManyRepository<T extends Entity>(
       DefaultCrudRepository<Entity, typeof Entity.prototype.id>
     >(injection.bindingKey);
     const sourceModel = new injection.metadata!.sourceRepo().entityClass;
-    // return function<S extends Entity>(constraint: Partial<S>) {
-    //   return hasManyRepositoryFactory(
-    //     constraint[meta.keyFrom],
-    //     meta,
-    //     tRepo as DefaultCrudRepository<Entity, typeof Entity.prototype.id>,
-    //   );
-    // };
     return getConstrainedRepositoryFunction(sourceModel, tRepo);
   }
 }
