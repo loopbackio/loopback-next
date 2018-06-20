@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.10.0"></a>
+# [0.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.9.6...@loopback/docs@0.10.0) (2018-06-20)
+
+
+### Bug Fixes
+
+* **cli:** update successful creation message ([d602ded](https://github.com/strongloop/loopback-next/commit/d602ded)), closes [#886](https://github.com/strongloop/loopback-next/issues/886)
+* **docs:** fix link to [@loopback](https://github.com/loopback)/boot apidocs ([848fd5d](https://github.com/strongloop/loopback-next/commit/848fd5d))
+* **docs:** update todo-tutorial-juggler.md ([5c7122f](https://github.com/strongloop/loopback-next/commit/5c7122f))
+
+
+### Features
+
+* **example-todo:** add Geo to examples/todo ([b4a9a9e](https://github.com/strongloop/loopback-next/commit/b4a9a9e))
+
+
+
+
 <a name="0.9.6"></a>
 ## [0.9.6](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.9.5...@loopback/docs@0.9.6) (2018-06-11)
 

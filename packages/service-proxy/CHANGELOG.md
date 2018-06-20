@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.5.10"></a>
+## [0.5.10](https://github.com/strongloop/loopback-next/compare/@loopback/service-proxy@0.5.9...@loopback/service-proxy@0.5.10) (2018-06-20)
+
+
+### Bug Fixes
+
+* **service-proxy:** add missing dependency on dist-util ([7155570](https://github.com/strongloop/loopback-next/commit/7155570))
+
+
+
+
 <a name="0.5.9"></a>
 ## [0.5.9](https://github.com/strongloop/loopback-next/compare/@loopback/service-proxy@0.5.8...@loopback/service-proxy@0.5.9) (2018-06-11)
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@0.10.9...@loopback/boot@0.11.0) (2018-06-20)
+
+
+### Features
+
+* **boot:** datasource booter ([470b193](https://github.com/strongloop/loopback-next/commit/470b193))
+
+
+
+
 <a name="0.10.9"></a>
 ## [0.10.9](https://github.com/strongloop/loopback-next/compare/@loopback/boot@0.10.8...@loopback/boot@0.10.9) (2018-06-11)
 

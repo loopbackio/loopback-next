@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.12.0"></a>
+# [0.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.11.4...@loopback/example-todo@0.12.0) (2018-06-20)
+
+
+### Features
+
+* add type coercion ([2b8d816](https://github.com/strongloop/loopback-next/commit/2b8d816))
+* **example-todo:** add Geo to examples/todo ([b4a9a9e](https://github.com/strongloop/loopback-next/commit/b4a9a9e))
+
+
+
+
 <a name="0.11.4"></a>
 ## [0.11.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.11.3...@loopback/example-todo@0.11.4) (2018-06-11)
 

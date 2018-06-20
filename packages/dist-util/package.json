@@ -1,6 +1,6 @@
 {
   "name": "@loopback/dist-util",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Select dist directory based on Node.js major version.",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/packages/dist-select",
   "author": {

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.11.4"></a>
+## [0.11.4](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.11.3...@loopback/repository@0.11.4) (2018-06-20)
+
+
+### Bug Fixes
+
+* **repository:** accept class and instance for app.datasource ([4b4270c](https://github.com/strongloop/loopback-next/commit/4b4270c))
+* **repository:** check null for findOne CRUD method ([19f9d61](https://github.com/strongloop/loopback-next/commit/19f9d61))
+
+
+
+
 <a name="0.11.3"></a>
 ## [0.11.3](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.11.2...@loopback/repository@0.11.3) (2018-06-11)
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.12.0"></a>
+# [0.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.11.3...@loopback/rest@0.12.0) (2018-06-20)
+
+
+### Bug Fixes
+
+* **rest:** stop an app that has not been started ([1841ebb](https://github.com/strongloop/loopback-next/commit/1841ebb)), closes [#822](https://github.com/strongloop/loopback-next/issues/822)
+
+
+### Features
+
+* add type coercion ([2b8d816](https://github.com/strongloop/loopback-next/commit/2b8d816))
+
+
+
+
 <a name="0.11.3"></a>
 ## [0.11.3](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.11.2...@loopback/rest@0.11.3) (2018-06-11)
 

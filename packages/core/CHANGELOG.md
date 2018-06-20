@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@0.8.8...@loopback/core@0.9.0) (2018-06-20)
+
+
+### Features
+
+* **example-todo:** add Geo to examples/todo ([b4a9a9e](https://github.com/strongloop/loopback-next/commit/b4a9a9e))
+
+
+
+
 <a name="0.8.8"></a>
 ## [0.8.8](https://github.com/strongloop/loopback-next/compare/@loopback/core@0.8.7...@loopback/core@0.8.8) (2018-06-11)
 

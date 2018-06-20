@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.10.8"></a>
+## [0.10.8](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.10.7...@loopback/testlab@0.10.8) (2018-06-20)
+
+
+### Bug Fixes
+
+* **testlab:** decache files in TestSandbox when resetting it ([7878ae6](https://github.com/strongloop/loopback-next/commit/7878ae6))
+
+
+
+
 <a name="0.10.7"></a>
 ## [0.10.7](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.10.5...@loopback/testlab@0.10.7) (2018-06-09)
 

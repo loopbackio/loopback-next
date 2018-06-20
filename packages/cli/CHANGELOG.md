@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.14.0"></a>
+# [0.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.13.6...@loopback/cli@0.14.0) (2018-06-20)
+
+
+### Bug Fixes
+
+* **cli:** make download-connector-list more robust ([a4c2ce0](https://github.com/strongloop/loopback-next/commit/a4c2ce0))
+* **cli:** update successful creation message ([d602ded](https://github.com/strongloop/loopback-next/commit/d602ded)), closes [#886](https://github.com/strongloop/loopback-next/issues/886)
+
+
+### Features
+
+* **cli:** add lb4 datasource command ([b3844eb](https://github.com/strongloop/loopback-next/commit/b3844eb))
+
+
+
+
 <a name="0.13.6"></a>
 ## [0.13.6](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.13.5...@loopback/cli@0.13.6) (2018-06-11)
 
