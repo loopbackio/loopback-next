@@ -71,13 +71,30 @@ describe('HasMany relation', () => {
     const persisted = await orderRepo.find({
       where: {customerId: existingCustomerId},
     });
-    expect(persisted).to.deepEqual(order);
+    expect(persisted).to.deepEqual(foundOrders);
   });
 
   // This should be enforced by the database to avoid race conditions
   it.skip('reject create request when the customer does not exist');
 
   //--- HELPERS ---//
+
+  @model()
+  class Customer extends Entity {
+    @property({
+      type: 'number',
+      id: true,
+    })
+    id: number;
+
+    @property({
+      type: 'string',
+    })
+    name: string;
+
+    @hasMany({keyTo: 'customerId'})
+    orders: Order[];
+  }
 
   @model()
   class Order extends Entity {
@@ -98,24 +115,6 @@ describe('HasMany relation', () => {
       required: true,
     })
     customerId: number;
-  }
-
-  @model()
-  class Customer extends Entity {
-    @property({
-      type: 'number',
-      id: true,
-    })
-    id: number;
-
-    @property({
-      type: 'string',
-    })
-    name: string;
-
-    @hasMany({keyTo: 'customerId'})
-    @property.array(Order)
-    orders: Order[];
   }
 
   class OrderRepository extends DefaultCrudRepository<

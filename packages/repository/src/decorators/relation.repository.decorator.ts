@@ -16,6 +16,7 @@ import {
   MetadataInspector,
 } from '@loopback/context';
 import {DefaultCrudRepository} from '../repositories/legacy-juggler-bridge';
+import {DataSource} from 'loopback-datasource-juggler';
 
 /**
  * Decorator for hasMany
@@ -26,10 +27,10 @@ export function hasManyRepository<T extends Entity>(
   targetRepo: Class<EntityCrudRepository<T, typeof Entity.prototype.id>>,
 ) {
   // tslint:disable-next-line:no-any
-  return function(target: Object, key: string, index: number) {
+  return function(target: any, key: string, index: number) {
     inject(
       BindingKey.create<typeof targetRepo>(`repositories.${targetRepo.name}`),
-      {sourceRepo: target.constructor},
+      {sourceRepo: target},
       resolver,
     )(target, key, index);
   };
@@ -38,7 +39,21 @@ export function hasManyRepository<T extends Entity>(
     const tRepo = await ctx.get<
       DefaultCrudRepository<Entity, typeof Entity.prototype.id>
     >(injection.bindingKey);
-    const sourceModel = new injection.metadata!.sourceRepo().entityClass;
+
+    /**
+     * discussion point: use a fake DataSource instance so that we can get back
+     * the source model possible alternatives we considered:
+     *  - use context to resolve an instance of the source repository and thus a
+     *    source model (results in circular dependency between related
+     *    repositories)
+     *  - change UX so that users pass in the source model manually
+     *    (inconvenient)
+     *  - enforce binding of models to application context, so that it can be
+     *    retrieved
+     */
+
+    const fakeDs = new DataSource();
+    const sourceModel = new injection.metadata!.sourceRepo(fakeDs).entityClass;
     return getConstrainedRepositoryFunction(sourceModel, tRepo);
   }
 }

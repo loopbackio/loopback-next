@@ -27,7 +27,7 @@ describe('hasManyRepository decorator', () => {
   let linkRepo: LinkRepository;
   let expectedFn: constrainRepositoryFunction<Link>;
 
-  before(function() {
+  before(async function() {
     ds = new DataSource({
       name: 'db',
       connector: 'memory',
@@ -35,28 +35,31 @@ describe('hasManyRepository decorator', () => {
 
     ctx = new Context();
     ctx.bind('datasources.memory').to(ds);
-    ctx.bind('repositories.LinkRepository').to(LinkRepository);
-    ctx.bind('repositories.WebPageRepository').to(WebPageRepository);
+    ctx.bind('repositories.LinkRepository').toClass(LinkRepository);
+    ctx.bind('repositories.WebPageRepository').toClass(WebPageRepository);
+
+    await givenFactoryFn();
   });
 
-  it.only('injects constrained repo function via constructor', async () => {
+  it('injects constrained repo function via constructor', async () => {
     const repo = await ctx.get<WebPageRepository>(
       'repositories.WebPageRepository',
     );
 
-    await givenFactoryFn();
-    expect(repo.links).exactly(expectedFn);
+    expect(repo.links).deepEqual(expectedFn);
   });
 
   @model()
   class Link extends Entity {
-    @property() id: number;
+    @property({id: true})
+    id: number;
     @property() url: string;
   }
 
   @model()
   class WebPage extends Entity {
-    @property() id: number;
+    @property({id: true})
+    id: number;
     @property() title: string;
     @hasMany() links: Link[];
   }
@@ -64,14 +67,18 @@ describe('hasManyRepository decorator', () => {
   class LinkRepository extends DefaultCrudRepository<
     Link,
     typeof Link.prototype.id
-  > {}
+  > {
+    constructor(@inject('datasources.memory') protected db: DataSource) {
+      super(Link, db);
+    }
+  }
 
   class WebPageRepository extends DefaultCrudRepository<
     WebPage,
     typeof WebPage.prototype.id
   > {
     constructor(
-      @inject('datasources.db') protected db: DataSource,
+      @inject('datasources.memory') protected db: DataSource,
       @hasManyRepository(LinkRepository)
       public readonly links: constrainRepositoryFunction<Link>,
     ) {

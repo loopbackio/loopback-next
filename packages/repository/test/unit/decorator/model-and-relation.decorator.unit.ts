@@ -230,6 +230,7 @@ describe('model decorator', () => {
       ) || /* istanbul ignore next */ {};
     expect(meta.orders).to.eql({
       type: RelationType.hasMany,
+      modelFrom: Customer,
     });
   });
 
