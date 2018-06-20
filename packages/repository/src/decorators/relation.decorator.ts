@@ -62,11 +62,6 @@ export function hasOne(definition?: Object) {
 
 export function hasMany(definition?: Partial<HasManyDefinition>) {
   return function(target: Object, key: string) {
-    const propMeta = MetadataInspector.getPropertyMetadata(
-      MODEL_PROPERTIES_KEY,
-      target,
-      key,
-    );
     const allPropMeta = MetadataInspector.getAllPropertyMetadata(
       MODEL_PROPERTIES_KEY,
       target,

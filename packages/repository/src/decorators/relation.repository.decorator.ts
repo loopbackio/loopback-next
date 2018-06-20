@@ -1,20 +1,8 @@
 import {Entity} from '../model';
 import {EntityCrudRepository} from '../repositories/repository';
 import {Class} from '../common-types';
-import {
-  HasManyDefinition,
-  hasManyRepositoryFactory,
-  RelationDefinitionBase,
-  getConstrainedRepositoryFunction,
-} from '../repositories/relation.factory';
-import {RelationType, RELATIONS_KEY} from './relation.decorator';
-import {
-  inject,
-  BindingKey,
-  Context,
-  Injection,
-  MetadataInspector,
-} from '@loopback/context';
+import {getConstrainedRepositoryFunction} from '../repositories/relation.factory';
+import {inject, BindingKey, Context, Injection} from '@loopback/context';
 import {DefaultCrudRepository} from '../repositories/legacy-juggler-bridge';
 import {DataSource} from 'loopback-datasource-juggler';
 

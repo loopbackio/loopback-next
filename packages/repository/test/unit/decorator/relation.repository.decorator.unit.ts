@@ -8,14 +8,11 @@ import {
   Entity,
   DefaultCrudRepository,
   hasManyRepository,
-  juggler,
-  EntityCrudRepository,
   constrainRepositoryFunction,
   getConstrainedRepositoryFunction,
   model,
   hasMany,
   property,
-  repository,
 } from '../../../src';
 import {DataSource} from 'loopback-datasource-juggler';
 import {Context, inject} from '@loopback/context';
@@ -23,8 +20,6 @@ import {Context, inject} from '@loopback/context';
 describe('hasManyRepository decorator', () => {
   let ctx: Context;
   let ds: DataSource;
-  let webPageRepo: WebPageRepository;
-  let linkRepo: LinkRepository;
   let expectedFn: constrainRepositoryFunction<Link>;
 
   before(async function() {

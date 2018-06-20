@@ -12,7 +12,6 @@ import {
   hasMany,
   repository,
   RepositoryMixin,
-  HasManyEntityCrudRepository,
   AppWithRepository,
   hasManyRepository,
   constrainRepositoryFunction,

@@ -12,6 +12,7 @@ import {
 } from './relation.repository';
 import {DefaultCrudRepository} from './legacy-juggler-bridge';
 import {MetadataInspector} from '@loopback/context';
+import {Class} from '../common-types';
 
 export interface RelationDefinitionBase {
   type: RelationType;
@@ -46,10 +47,9 @@ export type constrainRepositoryFunction<T extends Entity> = (
 
 export function getConstrainedRepositoryFunction<
   S extends Entity,
-  SrcModel extends typeof Entity,
   T extends Entity
 >(
-  sourceModel: SrcModel,
+  sourceModel: Class<S>,
   targetRepo: DefaultCrudRepository<T, typeof Entity.prototype.id>,
 ) {
   const allMeta = MetadataInspector.getAllPropertyMetadata<
