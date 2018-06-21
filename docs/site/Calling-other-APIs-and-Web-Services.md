@@ -134,3 +134,50 @@ const myController = await context.get<MyController>(
   'controllers.MyController',
 );
 ```
+
+### Make service proxies easier to test
+
+While `@serviceProxy` decorator makes it easy to use service proxies in
+controllers, it makes it difficult to write integration tests to verify that
+service proxies are correctly configured/implemented in respect to the most
+recent API provided by the backend service implementation. To make service
+proxies easy to test, we recommend to write a
+[Provider](./Creating-components.md#providers) class that will allow both
+controllers and integration tests to access the same service proxy
+implementation.
+
+```ts
+import {getService, juggler} from '@loopback/service-proxy';
+import {inject, Provider} from '@loopback/core';
+import {GeocoderDataSource} from '../datasources/geocoder.datasource';
+
+export class GeoServiceProvider implements Provider<GeoService> {
+  constructor(
+    @inject('datasources.geoService')
+    protected datasource: juggler.DataSource = new GeocoderDataSource(),
+  ) {}
+
+  value(): GeocoderService {
+    return getService(this.datasource);
+  }
+}
+```
+
+In your application setup, create an explicit binding for the geo service proxy:
+
+```ts
+app.bind('services.geo').toProvider(GeoServiceProvider);
+```
+
+Finally, modify the controller to receive our new service proxy in the
+constructor:
+
+```ts
+export class MyController {
+  @inject('services.geo') private geoService: GeoService;
+}
+```
+
+Please refer to
+[Testing Your Application](./Testing-your-application.md#test-your-services-against-real-backends)
+for guidelines on integration testing.
