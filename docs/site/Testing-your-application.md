@@ -497,19 +497,6 @@ thing covered).
 See [Test Sequence customizations](#test-sequence-customizations) in
 [Acceptance Testing](#acceptance-end-to-end-testing).
 
-### Unit test your Services
-
-{% include content/tbd.html %}
-
-The initial beta release does not include Services as a first-class feature.
-
-See the following related GitHub issues:
-
-- Define services to represent interactions with REST APIs, SOAP Web Services,
-  gRPC services, and more:
-  [#522](https://github.com/strongloop/loopback-next/issues/522)
-- Guide: Services [#451](https://github.com/strongloop/loopback-next/issues/451)
-
 ## Integration testing
 
 Integration tests are considered "white-box" tests because they use an
@@ -598,9 +585,86 @@ describe('ProductController (integration)', () => {
 
 ### Test your Services against real backends
 
-{% include content/tbd.html %}
+When integrating with other services (including our own microservices), it's
+important to verify that our client configuration is correct and the client
+(service proxy) API is matching the actual service implementation. Ideally,
+there should be at least one integration test for each endpoint (operation)
+consumed by the application.
 
-The initial beta release does not include Services as a first-class feature.
+To write an integration test, we need to:
+
+- Obtain an instance of the tested service proxy. Optionally modify the
+  connection configuration, for example change the target URL or configure a
+  caching proxy to speed up tests.
+- Execute service proxy methods and verify that expected results were returned
+  by the backend service.
+
+#### Obtain a Service Proxy instance
+
+In
+[Make service proxies easier to test](./Calling-other-APIs-and-Web-Services.md#make-service-proxies-easier-to-test),
+we are suggesting to leverage Providers as a tool allowing both the IoC
+framework and the tests to access service proxy instances.
+
+In the integration tests, a test helper should be written to obtain an instance
+of the service proxy by invoking the provider. This helper should be typically
+invoked once before the integration test suite begins.
+
+```ts
+import {
+  GeoService,
+  GeoServiceProvider,
+} from '../../src/services/geo.service.ts';
+import {GeoDataSource} from '../../src/datasources/geo.datasource.ts';
+
+describe('GeoService', () => {
+  let service: GeoService;
+  before(givenGeoService);
+
+  // to be done: add tests here
+
+  function givenGeoService() {
+    const dataSource = new GeoDataSource();
+    service = new GeoServiceProvider(dataSource).value();
+  }
+});
+```
+
+If needed, you can tweak the datasource config before creating the service
+instance:
+
+```ts
+import {merge} from 'lodash';
+
+const GEO_CODER_CONFIG = require('../src/datasources/geo.datasource.json');
+
+function givenGeoService() {
+  const config = merge({}, GEO_CODER_CONFIG, {
+    // your config overrides
+  });
+  const dataSource = new GeoDataSource(config);
+  service = new GeoServiceProvider(dataSource).value();
+}
+```
+
+#### Test invidivudal service methods
+
+With the service proxy instance available, integration tests can focus on
+executing individual methods with the right set of input parameters; and
+verifying the outcome of those calls.
+
+```ts
+it('resolves an address to a geo point', async () => {
+  const points = await service.geocode('1 New Orchard Road, Armonk, 10504');
+
+  expect(points).to.deepEqual([
+    {
+      lat: 41.109653,
+      lng: -73.72467,
+    },
+  ]);
+});
+```
 
 ## Acceptance (end-to-end) testing
 
