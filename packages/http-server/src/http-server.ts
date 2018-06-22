@@ -100,7 +100,11 @@ export class HttpServer {
    * URL of the HTTP / HTTPS server
    */
   public get url(): string {
-    return `${this._protocol}://${this.host}:${this.port}`;
+    let host = this.host;
+    if (this._address.family === 'IPv6') {
+      host = `[${host}]`;
+    }
+    return `${this._protocol}://${host}:${this.port}`;
   }
 
   /**
