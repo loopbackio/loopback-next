@@ -6,5 +6,4 @@
 export * from './metadata';
 export * from './model.decorator';
 export * from './relation.decorator';
-export * from './relation.repository.decorator';
 export * from './repository.decorator';

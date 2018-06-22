@@ -13,8 +13,8 @@ import {
   repository,
   RepositoryMixin,
   AppWithRepository,
-  hasManyRepository,
   HasManyRepositoryFactory,
+  createHasManyRepositoryFactory,
 } from '../..';
 import {expect} from '@loopback/testlab';
 import {inject} from '@loopback/context';
@@ -129,12 +129,13 @@ describe('HasMany relation', () => {
     Customer,
     typeof Customer.prototype.id
   > {
+    public orders: HasManyRepositoryFactory<Customer, Order>;
     constructor(
       @inject('datasources.db') protected db: juggler.DataSource,
-      @hasManyRepository(OrderRepository)
-      public readonly orders: HasManyRepositoryFactory<Customer, Order>,
+      @repository(OrderRepository) orderRepository: OrderRepository,
     ) {
       super(Customer, db);
+      this.orders = createHasManyRepositoryFactory(Customer, orderRepository);
     }
   }
 

@@ -26,7 +26,7 @@ describe('HasMany relation', () => {
 
   before(givenDataSource);
   before(givenOrderRepository);
-  before(givenFactoryFn);
+  // before(givenFactoryFn);
   before(givenCustomerRepository);
   beforeEach(async () => {
     existingCustomerId = (await givenPersistedCustomerInstance()).id;
@@ -136,11 +136,14 @@ describe('HasMany relation', () => {
     Customer,
     typeof Customer.prototype.id
   > {
+    public orders: HasManyRepositoryFactory<Customer, Order>;
+
     constructor(
       protected db: juggler.DataSource,
-      public readonly orders: HasManyRepositoryFactory<Customer, Order>,
+      orderRepository: DefaultCrudRepository<Order, typeof Order.prototype.id>,
     ) {
       super(Customer, db);
+      this.orders = createHasManyRepositoryFactory(Customer, orderRepository);
     }
   }
 
@@ -152,12 +155,12 @@ describe('HasMany relation', () => {
     orderRepo = new OrderRepository(ds);
   }
 
-  function givenFactoryFn() {
-    fn = createHasManyRepositoryFactory(Customer, orderRepo);
-  }
+  // function givenFactoryFn() {
+  //   fn = createHasManyRepositoryFactory(Customer, orderRepo);
+  // }
 
   function givenCustomerRepository() {
-    customerRepo = new CustomerRepository(ds, fn);
+    customerRepo = new CustomerRepository(ds, orderRepo);
   }
 
   async function givenPersistedCustomerInstance() {
