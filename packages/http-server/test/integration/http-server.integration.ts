@@ -5,12 +5,20 @@
 import {HttpServer} from '../../';
 import {supertest, expect} from '@loopback/testlab';
 import * as makeRequest from 'request-promise-native';
-import {ServerRequest, ServerResponse} from 'http';
+import {ServerRequest, ServerResponse, get, IncomingMessage} from 'http';
 
 describe('HttpServer (integration)', () => {
   let server: HttpServer | undefined;
 
   afterEach(stopServer);
+
+  it('formats IPv6 url correctly', async () => {
+    server = new HttpServer(dummyRequestHandler, {host: '::1'});
+    await server.start();
+    expect(server.address!.family).to.equal('IPv6');
+    const response = await getAsync(server.url);
+    expect(response.statusCode).to.equal(200);
+  });
 
   it('starts server', async () => {
     server = new HttpServer(dummyRequestHandler);
@@ -133,5 +141,11 @@ describe('HttpServer (integration)', () => {
   async function stopServer() {
     if (!server) return;
     await server.stop();
+  }
+
+  function getAsync(url: string): Promise<IncomingMessage> {
+    return new Promise((resolve, reject) => {
+      get(url, resolve).on('error', reject);
+    });
   }
 });
