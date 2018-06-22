@@ -32,7 +32,11 @@ describe('Application', () => {
     client = createClientForHandler(app.requestHandler);
   });
 
-  it('creates a todo', async () => {
+  it('creates a todo', async function() {
+    // Set timeout to 30 seconds as `post /todos` triggers geocode look up
+    // over the internet and it takes more than 2 seconds
+    // tslint:disable-next-line:no-invalid-this
+    this.timeout(30000);
     const todo = givenTodo();
     const response = await client
       .post('/todos')
@@ -44,7 +48,7 @@ describe('Application', () => {
   });
 
   it('creates an address-based reminder', async function() {
-    // Increase the timeout to accomodate slow network connections
+    // Increase the timeout to accommodate slow network connections
     // tslint:disable-next-line:no-invalid-this
     this.timeout(30000);
 
