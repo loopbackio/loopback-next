@@ -15,6 +15,12 @@ import {
   ModelDefinitionSyntax,
   PropertyDefinition,
 } from '../model';
+import {
+  RELATIONS_KEY,
+  RelationDefinitionBase,
+  RelationType,
+  HasManyDefinition,
+} from './relation.decorator';
 
 export const MODEL_KEY = MetadataAccessor.create<
   Partial<ModelDefinitionSyntax>,
@@ -30,6 +36,7 @@ export const MODEL_WITH_PROPERTIES_KEY = MetadataAccessor.create<
 >('loopback:model-and-properties');
 
 export type PropertyMap = MetadataMap<PropertyDefinition>;
+export type RelationMap = MetadataMap<RelationDefinitionBase>;
 
 // tslint:disable:no-any
 
@@ -39,7 +46,9 @@ export type PropertyMap = MetadataMap<PropertyDefinition>;
  * @returns {(target:any)}
  */
 export function model(definition?: Partial<ModelDefinitionSyntax>) {
-  return function(target: Function & {definition?: ModelDefinition}) {
+  return function(
+    target: Function & {definition?: ModelDefinition; relations?: RelationMap},
+  ) {
     definition = definition || {};
     const def: ModelDefinitionSyntax = Object.assign(definition, {
       name: definition.name || target.name,
@@ -73,6 +82,25 @@ export function model(definition?: Partial<ModelDefinitionSyntax>) {
     }
 
     target.definition = modelDef;
+
+    const relationMap: RelationMap =
+      MetadataInspector.getAllPropertyMetadata(
+        RELATIONS_KEY,
+        target.prototype,
+      ) || {};
+    // TODO(shimks): implement support for composite keys
+    const primaryKey = target.definition.idProperties()[0];
+    if (primaryKey) {
+      for (const key in relationMap) {
+        const relationMeta = relationMap[key];
+        switch (relationMeta.type) {
+          case RelationType.hasMany:
+            (relationMeta as HasManyDefinition).keyFrom = primaryKey;
+            break;
+        }
+      }
+    }
+    target.relations = relationMap;
   };
 }
 

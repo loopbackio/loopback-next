@@ -4,28 +4,20 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {EntityCrudRepository} from './repository';
-import {RelationType, RELATIONS_KEY} from '../decorators/relation.decorator';
+import {
+  RelationType,
+  HasManyDefinition,
+} from '../decorators/relation.decorator';
 import {Entity} from '../model';
 import {
   HasManyEntityCrudRepository,
   DefaultHasManyEntityCrudRepository,
 } from './relation.repository';
-import {DefaultCrudRepository} from './legacy-juggler-bridge';
-import {MetadataInspector} from '@loopback/context';
 import {Class} from '../common-types';
+import {RelationMap} from '../decorators/model.decorator';
 
-export interface RelationDefinitionBase {
-  type: RelationType;
-}
-
-export interface HasManyDefinition extends RelationDefinitionBase {
-  type: RelationType.hasMany;
-  keyTo: string;
-  keyFrom: string;
-}
-
-export type constrainRepositoryFunction<T extends Entity> = (
-  key: Partial<T>,
+export type HasManyRepositoryFactory<S extends Entity, T extends Entity> = (
+  key: Partial<S>,
 ) => HasManyEntityCrudRepository<T>;
 
 /**
@@ -45,43 +37,27 @@ export type constrainRepositoryFunction<T extends Entity> = (
  *
  */
 
-export function getConstrainedRepositoryFunction<
+export function createHasManyRepositoryFactory<
   S extends Entity,
   T extends Entity
 >(
   sourceModel: Class<S>,
-  targetRepo: DefaultCrudRepository<T, typeof Entity.prototype.id>,
+  targetRepo: EntityCrudRepository<T, typeof Entity.prototype.id>,
 ) {
-  const allMeta = MetadataInspector.getAllPropertyMetadata<
-    RelationDefinitionBase
-  >(RELATIONS_KEY, sourceModel.prototype)!;
-  let hasManyMeta: HasManyDefinition;
-  Object.values(allMeta).forEach(value => {
-    if (value.type === RelationType.hasMany) {
-      hasManyMeta = value as HasManyDefinition;
-    }
-  });
   return function(constraint: Partial<S>) {
-    return hasManyRepositoryFactory(
-      constraint[hasManyMeta.keyFrom],
-      hasManyMeta,
-      targetRepo,
-    );
+    const relationsMeta = sourceModel.relations as RelationMap;
+    for (const property in relationsMeta) {
+      const meta = relationsMeta[property];
+      switch (meta.type) {
+        case RelationType.hasMany:
+          const fkName = (meta as HasManyDefinition).keyTo;
+          const fkValue = constraint[(meta as HasManyDefinition).keyFrom];
+          return new DefaultHasManyEntityCrudRepository<
+            T,
+            EntityCrudRepository<T, typeof Entity.prototype.id>
+          >(targetRepo, {[fkName]: fkValue});
+      }
+    }
+    throw new Error('Relations metadata not found');
   };
-}
-
-export function hasManyRepositoryFactory<SourceID, T extends Entity, ID>(
-  sourceModelId: SourceID,
-  relationMetadata: HasManyDefinition,
-  targetRepository: EntityCrudRepository<T, ID>,
-): HasManyEntityCrudRepository<T> {
-  switch (relationMetadata.type) {
-    case RelationType.hasMany:
-      const fkConstraint = {[relationMetadata.keyTo]: sourceModelId};
-
-      return new DefaultHasManyEntityCrudRepository<
-        T,
-        EntityCrudRepository<T, ID>
-      >(targetRepository, fkConstraint);
-  }
 }

@@ -10,8 +10,8 @@ import {
   DefaultCrudRepository,
   juggler,
   hasMany,
-  constrainRepositoryFunction,
-  getConstrainedRepositoryFunction,
+  HasManyRepositoryFactory,
+  createHasManyRepositoryFactory,
 } from '../..';
 import {expect} from '@loopback/testlab';
 
@@ -22,7 +22,7 @@ describe('HasMany relation', () => {
   let ds: juggler.DataSource;
   let customerRepo: CustomerRepository;
   let orderRepo: OrderRepository;
-  let fn: constrainRepositoryFunction<Order>;
+  let fn: HasManyRepositoryFactory<Customer, Order>;
 
   before(givenDataSource);
   before(givenOrderRepository);
@@ -137,8 +137,8 @@ describe('HasMany relation', () => {
     typeof Customer.prototype.id
   > {
     constructor(
-      db: juggler.DataSource,
-      public readonly orders: constrainRepositoryFunction<Order>,
+      protected db: juggler.DataSource,
+      public readonly orders: HasManyRepositoryFactory<Customer, Order>,
     ) {
       super(Customer, db);
     }
@@ -153,7 +153,7 @@ describe('HasMany relation', () => {
   }
 
   function givenFactoryFn() {
-    fn = getConstrainedRepositoryFunction(Customer, orderRepo);
+    fn = createHasManyRepositoryFactory(Customer, orderRepo);
   }
 
   function givenCustomerRepository() {

@@ -14,7 +14,7 @@ import {
   RepositoryMixin,
   AppWithRepository,
   hasManyRepository,
-  constrainRepositoryFunction,
+  HasManyRepositoryFactory,
 } from '../..';
 import {expect} from '@loopback/testlab';
 import {inject} from '@loopback/context';
@@ -132,7 +132,7 @@ describe('HasMany relation', () => {
     constructor(
       @inject('datasources.db') protected db: juggler.DataSource,
       @hasManyRepository(OrderRepository)
-      public readonly orders: constrainRepositoryFunction<Order>,
+      public readonly orders: HasManyRepositoryFactory<Customer, Order>,
     ) {
       super(Customer, db);
     }

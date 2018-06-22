@@ -5,6 +5,7 @@
 
 import {Options, AnyObject, DataObject} from './common-types';
 import {Type} from './types';
+import {RelationMap} from './decorators/model.decorator';
 
 /**
  * This module defines the key classes representing building blocks for Domain
@@ -138,6 +139,7 @@ export class ModelDefinition {
 export abstract class Model {
   static modelName: string;
   static definition: ModelDefinition;
+  static relations: RelationMap;
 
   /**
    * Serialize into a plain JSON object

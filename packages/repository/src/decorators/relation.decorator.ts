@@ -7,7 +7,6 @@ import {Class} from '../common-types';
 import {Entity} from '../model';
 import {PropertyDecoratorFactory, MetadataInspector} from '@loopback/context';
 import {MODEL_PROPERTIES_KEY} from './model.decorator';
-import {HasManyDefinition} from '../repositories/relation.factory';
 
 // tslint:disable:no-any
 
@@ -27,6 +26,16 @@ export class RelationMetadata {
   type: RelationType;
   target: string | Class<Entity>;
   as: string;
+}
+
+export interface RelationDefinitionBase {
+  type: RelationType;
+}
+
+export interface HasManyDefinition extends RelationDefinitionBase {
+  type: RelationType.hasMany;
+  keyTo: string;
+  keyFrom: string;
 }
 
 /**
@@ -77,7 +86,6 @@ export function hasMany(definition?: Partial<HasManyDefinition>) {
       meta,
       {
         type: RelationType.hasMany,
-        modelFrom: target.constructor,
       },
       definition,
     );

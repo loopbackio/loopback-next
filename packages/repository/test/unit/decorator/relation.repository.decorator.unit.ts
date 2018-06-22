@@ -8,8 +8,8 @@ import {
   Entity,
   DefaultCrudRepository,
   hasManyRepository,
-  constrainRepositoryFunction,
-  getConstrainedRepositoryFunction,
+  HasManyRepositoryFactory,
+  createHasManyRepositoryFactory,
   model,
   hasMany,
   property,
@@ -20,7 +20,7 @@ import {Context, inject} from '@loopback/context';
 describe('hasManyRepository decorator', () => {
   let ctx: Context;
   let ds: DataSource;
-  let expectedFn: constrainRepositoryFunction<Link>;
+  let expectedFn: HasManyRepositoryFactory<WebPage, Link>;
 
   before(async function() {
     ds = new DataSource({
@@ -75,7 +75,7 @@ describe('hasManyRepository decorator', () => {
     constructor(
       @inject('datasources.memory') protected db: DataSource,
       @hasManyRepository(LinkRepository)
-      public readonly links: constrainRepositoryFunction<Link>,
+      public readonly links: HasManyRepositoryFactory<WebPage, Link>,
     ) {
       super(WebPage, db);
     }
@@ -87,6 +87,6 @@ describe('hasManyRepository decorator', () => {
 
   async function givenFactoryFn() {
     const linkRepoInstance = await givenLinkRepositoryInstance();
-    expectedFn = getConstrainedRepositoryFunction(WebPage, linkRepoInstance);
+    expectedFn = createHasManyRepositoryFactory(WebPage, linkRepoInstance);
   }
 });

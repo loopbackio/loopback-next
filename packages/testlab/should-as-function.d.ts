@@ -107,6 +107,7 @@ interface ShouldAssertion {
     name: string,
     descriptor: PropertyDescriptor,
   ): ShouldAssertion;
+  value(key: any, value: any): ShouldAssertion;
   oneOf(...values: any[]): ShouldAssertion;
   ownProperty(name: string, description?: string): ShouldAssertion;
   containEql(obj: any): ShouldAssertion;

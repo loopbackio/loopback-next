@@ -1,9 +1,8 @@
 import {Entity} from '../model';
 import {EntityCrudRepository} from '../repositories/repository';
 import {Class} from '../common-types';
-import {getConstrainedRepositoryFunction} from '../repositories/relation.factory';
+import {createHasManyRepositoryFactory} from '../repositories/relation.factory';
 import {inject, BindingKey, Context, Injection} from '@loopback/context';
-import {DefaultCrudRepository} from '../repositories/legacy-juggler-bridge';
 import {DataSource} from 'loopback-datasource-juggler';
 
 /**
@@ -25,7 +24,7 @@ export function hasManyRepository<T extends Entity>(
 
   async function resolver(ctx: Context, injection: Injection) {
     const tRepo = await ctx.get<
-      DefaultCrudRepository<Entity, typeof Entity.prototype.id>
+      EntityCrudRepository<T, typeof Entity.prototype.id>
     >(injection.bindingKey);
 
     /**
@@ -42,6 +41,6 @@ export function hasManyRepository<T extends Entity>(
 
     const fakeDs = new DataSource();
     const sourceModel = new injection.metadata!.sourceRepo(fakeDs).entityClass;
-    return getConstrainedRepositoryFunction(sourceModel, tRepo);
+    return createHasManyRepositoryFactory(sourceModel, tRepo);
   }
 }

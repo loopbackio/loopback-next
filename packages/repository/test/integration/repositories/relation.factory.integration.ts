@@ -8,11 +8,10 @@ import {
   DefaultCrudRepository,
   juggler,
   EntityCrudRepository,
-  hasManyRepositoryFactory,
-  HasManyDefinition,
   RelationType,
   HasManyEntityCrudRepository,
   ModelDefinition,
+  createHasManyRepositoryFactory,
 } from '../../..';
 import {expect} from '@loopback/testlab';
 
@@ -26,12 +25,6 @@ describe('HasMany relation', () => {
   let orderRepo: EntityCrudRepository<Order, typeof Order.prototype.id>;
   let customerOrderRepo: HasManyEntityCrudRepository<Order>;
   let existingCustomerId: number;
-
-  const customerHasManyOrdersRelationMeta: HasManyDefinition = {
-    keyFrom: 'id',
-    keyTo: 'customerId',
-    type: RelationType.hasMany,
-  };
 
   before(givenCrudRepositories);
   before(givenPersistedCustomerInstance);
@@ -100,6 +93,14 @@ describe('HasMany relation', () => {
         orders: {type: Order, array: true},
       },
     });
+
+    static relations = {
+      orders: {
+        type: RelationType.hasMany,
+        keyTo: 'customerId',
+        keyFrom: 'id',
+      },
+    };
   }
 
   function givenCrudRepositories() {
@@ -114,10 +115,7 @@ describe('HasMany relation', () => {
   }
 
   function givenConstrainedRepository() {
-    customerOrderRepo = hasManyRepositoryFactory(
-      existingCustomerId,
-      customerHasManyOrdersRelationMeta,
-      orderRepo,
-    );
+    const factoryFn = createHasManyRepositoryFactory(Customer, orderRepo);
+    customerOrderRepo = factoryFn({id: existingCustomerId});
   }
 });

@@ -4,8 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {model, property, MODEL_KEY, MODEL_PROPERTIES_KEY} from '../../../';
 import {
+  model,
+  property,
+  MODEL_KEY,
+  MODEL_PROPERTIES_KEY,
   relation,
   hasOne,
   belongsTo,
@@ -16,9 +19,9 @@ import {
   referencesOne,
   RELATIONS_KEY,
   RelationType,
+  Entity,
+  ValueObject,
 } from '../../../';
-
-import {Entity, ValueObject} from '../../../';
 import {MetadataInspector} from '@loopback/context';
 
 describe('model decorator', () => {
@@ -230,7 +233,6 @@ describe('model decorator', () => {
       ) || /* istanbul ignore next */ {};
     expect(meta.orders).to.eql({
       type: RelationType.hasMany,
-      modelFrom: Customer,
     });
   });
 
@@ -266,6 +268,49 @@ describe('model decorator', () => {
     expect(meta.recentOrders).to.eql({
       type: RelationType.hasMany,
     });
+  });
+
+  it('adds hasMany metadata to the constructor', () => {
+    class Person extends Entity {}
+
+    @model()
+    class House extends Entity {
+      @property() name: string;
+      @hasMany({keyTo: 'foreignKey'})
+      person: Person;
+    }
+
+    const relationMeta = MetadataInspector.getPropertyMetadata(
+      RELATIONS_KEY,
+      House.prototype,
+      'person',
+    );
+    expect(House).to.have.property('relations');
+    expect(House.relations).to.containEql({person: relationMeta});
+  });
+
+  it('identifies primary key if given and adds it as "keyFrom" to relations property', () => {
+    class Person extends Entity {}
+
+    @model()
+    class House extends Entity {
+      @property() name: string;
+      @hasMany({keyTo: 'foreignKey'})
+      person: Person;
+      @property({id: true})
+      id: number;
+    }
+
+    const relationMeta = MetadataInspector.getPropertyMetadata(
+      RELATIONS_KEY,
+      House.prototype,
+      'person',
+    );
+    expect(House).to.have.property('relations');
+    expect(House.relations).to.have.value(
+      'person',
+      Object.assign({}, relationMeta, {keyFrom: 'id'}),
+    );
   });
 
   describe('property namespace', () => {

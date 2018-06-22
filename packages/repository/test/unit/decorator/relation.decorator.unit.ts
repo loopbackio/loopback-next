@@ -31,7 +31,32 @@ describe('relation decorator', () => {
       );
       expect(meta).to.eql({
         type: RelationType.hasMany,
-        modelFrom: AddressBook,
+      });
+    });
+
+    it('passes metadata through the parameter', () => {
+      class Address extends Entity {
+        addressId: number;
+        street: string;
+        province: string;
+      }
+
+      class AddressBook extends Entity {
+        id: number;
+
+        @hasMany({keyFrom: 'foreignKey'})
+        @property.array(Address)
+        addresses: Address[];
+      }
+
+      const meta = MetadataInspector.getPropertyMetadata(
+        RELATIONS_KEY,
+        AddressBook.prototype,
+        'addresses',
+      );
+      expect(meta).to.eql({
+        type: RelationType.hasMany,
+        keyFrom: 'foreignKey',
       });
     });
   });
