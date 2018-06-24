@@ -100,6 +100,16 @@ describe('HttpServer (integration)', () => {
       .which.is.an.Object();
   });
 
+  it('resets address when server is stopped', async () => {
+    server = new HttpServer(dummyRequestHandler);
+    await server.start();
+    expect(server)
+      .to.have.property('address')
+      .which.is.an.Object();
+    await server.stop();
+    expect(server.address).to.be.undefined();
+  });
+
   it('exports started', async () => {
     server = new HttpServer(dummyRequestHandler);
     await server.start();
