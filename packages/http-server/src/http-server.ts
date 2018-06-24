@@ -113,7 +113,7 @@ export class HttpServer {
   /**
    * Address of the HTTP / HTTPS server
    */
-  public get address(): AddressInfo {
-    return this._address;
+  public get address(): AddressInfo | undefined {
+    return this._started ? this._address : undefined;
   }
 }
