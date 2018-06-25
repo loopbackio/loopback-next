@@ -139,6 +139,10 @@ children:
     url: DataSource-generator.html
     output: 'web, pdf'
 
+  - title: 'OpenAPI generator'
+    url: OpenAPI-generator.html
+    output: 'web, pdf'
+
   - title: 'Extension generator'
     url: Extension-generator.html
     output: 'web, pdf'
