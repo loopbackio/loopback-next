@@ -52,6 +52,29 @@ function getTagDescription(apiSpec, tag) {
 }
 
 /**
+ * Merge path level parameters into the operation level
+ * @param {OperationObject} operationSpec Operation spec
+ * @param {ParameterObject[]} pathLevelParams Path level parameters
+ */
+function mergeParameters(operationSpec, pathLevelParams) {
+  if (!pathLevelParams || pathLevelParams.length === 0) return;
+  for (const p of pathLevelParams) {
+    operationSpec.parameters = operationSpec.parameters || [];
+    let found = false;
+    for (const param of operationSpec.parameters) {
+      if (p.name === param.name && p.in === param.in) {
+        // The parameter has been overridden at operation level
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      operationSpec.parameters.push(p);
+    }
+  }
+}
+
+/**
  * Group operations by controller class name
  * @param {object} apiSpec OpenAPI 3.x spec
  */
@@ -61,10 +84,12 @@ function groupOperationsByController(apiSpec) {
   for (const path in apiSpec.paths) {
     if (isExtension(path)) continue;
     debug('Path: %s', path);
+    const pathLevelParams = apiSpec.paths[path].parameters;
     for (const verb in apiSpec.paths[path]) {
       if (isExtension(verb) || !isHttpVerb(verb)) continue;
       debug('Verb: %s', verb);
       const op = apiSpec.paths[path][verb];
+      mergeParameters(op, pathLevelParams);
       const operation = {
         path,
         verb,
