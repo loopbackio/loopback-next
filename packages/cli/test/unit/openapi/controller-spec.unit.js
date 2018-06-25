@@ -23,17 +23,21 @@ describe('openapi to controllers/models', () => {
         imports: ["import {Customer} from '../models/customer.model';"],
         methods: [
           {
-            description: 'Returna all customers',
+            description: 'Returns all customers',
             decoration: "@operation('get', '/customers')",
             signature:
               "async ''(@param({name: 'if', in: 'query'}) _if: string[], " +
-              "@param({name: 'limit', in: 'query'}) limit: number): " +
+              "@param({name: 'limit', in: 'query'}) limit: number, " +
+              "@param({name: 'access-token', in: 'query'}) " +
+              'accessToken: string): ' +
               'Promise<Customer[]>',
           },
           {
             description: 'Creates a new customer',
             decoration: "@operation('post', '/customers')",
-            signature: 'async createCustomer(): Promise<Customer>',
+            signature:
+              "async createCustomer(@param({name: 'access-token', " +
+              "in: 'query'}) accessToken: string): Promise<Customer>",
           },
           {
             description: 'Returns a customer based on a single ID',

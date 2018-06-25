@@ -11,10 +11,17 @@ tags:
     description: Customer resource
 paths:
   /customers:
+    parameters:
+      - name: access-token
+        in: query
+        description: Access token
+        required: false
+        schema:
+          type: string
     get:
       tags:
         - Customer
-      description: Returna all customers
+      description: Returns all customers
       parameters:
         - name: if
           in: query

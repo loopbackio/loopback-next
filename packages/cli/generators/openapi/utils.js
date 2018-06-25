@@ -145,7 +145,7 @@ function escapeIdentifier(name) {
     return '_' + name;
   }
   if (!name.match(SAFE_IDENTIFER)) {
-    return camelCase(name);
+    return _.camelCase(name);
   }
   return name;
 }
