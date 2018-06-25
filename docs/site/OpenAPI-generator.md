@@ -1,58 +1,75 @@
-# lb4 openapi
+---
+lang: en
+title: 'OpenAPI generator'
+keywords: LoopBack 4.0, LoopBack 4
+tags:
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/OpenAPI-generator.html
+summary:
+---
 
-The `openapi` command generates LoopBack 4 artifacts from an
-[OpenAPI specification](https://github.com/OAI/OpenAPI-Specification), including
-version 2.0 and 3.0.
+{% include content/generator-create-app.html lang=page.lang %}
 
-## Basic use
+### Synopsis
+
+Generates artifacts from an OpenAPI spec into a LoopBack application.
 
 ```sh
-Usage:
-  lb4 openapi [<url>] [options]
-
-Options:
-  -h,   --help          # Print the generator's options and usage
-        --url           # URL or file path of the OpenAPI spec
-        --validate      # Validate the OpenAPI spec                  Default: false
-
-Arguments:
-  url  # URL or file path of the OpenAPI spec  Type: String  Required: false
+lb4 openapi [<url>] [options]
 ```
+
+### Options
+
+- `--url`: URL or file path of the OpenAPI spec.
+- `--validate`: Validate the OpenAPI spec. Default: false.
+
+### Arguments
+
+`<url>`: URL or file path of the OpenAPI spec. Type: String. Required: false.
+
+### Supported OpenAPI spec versions
+
+- [2.0 (a.k.a. Swagger)](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
+- [3.0.x (OpenAPI 3.0)](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md)
+
+### Interactive Prompts
+
+The tool will prompt you for:
+
+- **URL or file path of the OpenAPI spec** If the url or file path is supplied
+  from the command line, the prompt is skipped.
+- **Select controllers to be generated** You can select what controllers will be
+  generated based on OpenAPI tags.
+
+### Generated artifacts
+
+The command generates the following artifacts:
+
+1.  For each schema under `components.schemas`, a model class or type
+    declaration is generated as `src/models/<model-or-type-name>.model.ts`.
 
 For example,
 
-```sh
-lb4 openapi https://api.apis.guru/v2/specs/api2cart.com/1.0.0/swagger.json
-```
-
-## Mappings
-
-We map OpenAPI operations by tag into `controllers` and schemas into `models` as
-TypeScript classes or types.
-
-### Schemas
-
-The generator first iterates through the `components.schemas` of the
-specification document and maps them into TypeScript classes or types:
-
-- Primitive types --> TypeScript type declaration
+src/models/message.model.ts:
 
 ```ts
 export type Message = string;
 ```
 
+src/models/order-enum.model.ts:
+
 ```ts
 export type OrderEnum = 'ascending' | 'descending';
 ```
 
-- Array types --> TypeScript type declaration
+src/models/comments.model.ts:
 
 ```ts
 import {Comment} from './comment.model';
 export type Comments = Comment[];
 ```
 
-- Object type --> TypeScript class definition
+src/models/cart.model.ts:
 
 ```ts
 import {model, property} from '@loopback/repository';
@@ -101,24 +118,25 @@ export class Cart {
 }
 ```
 
-- Composite type (anyOf|oneOf|allOf) --> TypeScript union/intersection types
+src/models/id-type.model.ts:
 
 ```ts
 export type IdType = string | number;
 ```
+
+src/models/pet.model.ts:
 
 ```ts
 import {NewPet} from './new-pet.model.ts';
 export type Pet = NewPet & {id: number};
 ```
 
-Embedded schemas are mapped to TypeScript type literals.
+2.  The generator groups operations (`paths.<path>.<verb>`) by tags. If no tag
+    is present, it defaults to `OpenApi`. For each tag, a controller class is
+    generated as `src/controllers/<tag-name>.controller.ts` to hold all
+    operations with the same tag.
 
-### Operations
-
-The generator groups operations (`paths.<path>.<verb>`) by tags. If no tag is
-present, it defaults to `OpenApi`. For each tag, a controller class is generated
-to hold all operations with the same tag.
+For example,
 
 ```ts
 import {operation, param} from '@loopback/rest';
@@ -215,9 +233,13 @@ export class AccountController {
 }
 ```
 
-## OpenAPI Examples
+### OpenAPI Examples
+
+Try out the following specs or your own with `lb4 openapi`:
 
 - https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore-expanded.yaml
 - https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/uspto.yaml
 - https://api.apis.guru/v2/specs/api2cart.com/1.0.0/swagger.json
 - https://api.apis.guru/v2/specs/amazonaws.com/codecommit/2015-04-13/swagger.json
+
+For more real world OpenAPI specs, see https://api.apis.guru/v2/list.json.
