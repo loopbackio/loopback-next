@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.16.0"></a>
+# [0.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.14.0...@loopback/cli@0.16.0) (2018-06-25)
+
+
+### Features
+
+* **cli:** add cli for code generation from openapi ([1a1b12c](https://github.com/strongloop/loopback-next/commit/1a1b12c))
+
+
+
+
+<a name="0.15.0"></a>
+# [0.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.14.0...@loopback/cli@0.15.0) (2018-06-25)
+
+
+### Features
+
+* **cli:** add cli for code generation from openapi ([1a1b12c](https://github.com/strongloop/loopback-next/commit/1a1b12c))
+
+
+
+
 <a name="0.14.0"></a>
 # [0.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.13.6...@loopback/cli@0.14.0) (2018-06-20)
 

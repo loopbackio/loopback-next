@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.14.0"></a>
+# [0.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.12.0...@loopback/rest@0.14.0) (2018-06-25)
+
+
+### Features
+
+* coercion for more types ([2b4b269](https://github.com/strongloop/loopback-next/commit/2b4b269))
+
+
+
+
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.12.0...@loopback/rest@0.13.0) (2018-06-25)
+
+
+### Features
+
+* coercion for more types ([2b4b269](https://github.com/strongloop/loopback-next/commit/2b4b269))
+
+
+
+
 <a name="0.12.0"></a>
 # [0.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.11.3...@loopback/rest@0.12.0) (2018-06-20)
 
