@@ -12,6 +12,8 @@ import {
   hasMany,
   HasManyRepositoryFactory,
   createHasManyRepositoryFactory,
+  HasManyDefinition,
+  EntityCrudRepository,
 } from '../..';
 import {expect} from '@loopback/testlab';
 
@@ -140,10 +142,13 @@ describe('HasMany relation', () => {
 
     constructor(
       protected db: juggler.DataSource,
-      orderRepository: DefaultCrudRepository<Order, typeof Order.prototype.id>,
+      orderRepository: EntityCrudRepository<Order, typeof Order.prototype.id>,
     ) {
       super(Customer, db);
-      this.orders = createHasManyRepositoryFactory(Customer, orderRepository);
+      this.orders = this._createHasManyRepositoryFactoryFor(
+        'orders',
+        orderRepository,
+      );
     }
   }
 

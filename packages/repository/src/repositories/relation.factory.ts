@@ -7,10 +7,11 @@ import {EntityCrudRepository} from './repository';
 import {
   RelationType,
   HasManyDefinition,
+  RelationDefinitionBase,
 } from '../decorators/relation.decorator';
 import {Entity} from '../model';
 import {
-  HasManyEntityCrudRepository,
+  HasManyRepository,
   DefaultHasManyEntityCrudRepository,
 } from './relation.repository';
 import {Class} from '../common-types';
@@ -18,7 +19,7 @@ import {RelationMap} from '../decorators/model.decorator';
 
 export type HasManyRepositoryFactory<S extends Entity, T extends Entity> = (
   key: Partial<S>,
-) => HasManyEntityCrudRepository<T>;
+) => HasManyRepository<T>;
 
 /**
  * Enforces a constraint on a repository based on a relationship contract
@@ -36,28 +37,19 @@ export type HasManyRepositoryFactory<S extends Entity, T extends Entity> = (
  * relation attached to a datasource.
  *
  */
-
 export function createHasManyRepositoryFactory<
   S extends Entity,
   T extends Entity
 >(
-  sourceModel: Class<S>,
+  relationMeta: HasManyDefinition,
   targetRepo: EntityCrudRepository<T, typeof Entity.prototype.id>,
 ) {
   return function(constraint: Partial<S>) {
-    const relationsMeta = sourceModel.relations as RelationMap;
-    for (const property in relationsMeta) {
-      const meta = relationsMeta[property];
-      switch (meta.type) {
-        case RelationType.hasMany:
-          const fkName = (meta as HasManyDefinition).keyTo;
-          const fkValue = constraint[(meta as HasManyDefinition).keyFrom];
-          return new DefaultHasManyEntityCrudRepository<
-            T,
-            EntityCrudRepository<T, typeof Entity.prototype.id>
-          >(targetRepo, {[fkName]: fkValue});
-      }
-    }
-    throw new Error('Relations metadata not found');
+    const fkName = relationMeta.keyTo;
+    const fkValue = constraint[relationMeta.keyFrom];
+    return new DefaultHasManyEntityCrudRepository<
+      T,
+      EntityCrudRepository<T, typeof Entity.prototype.id>
+    >(targetRepo, {[fkName]: fkValue});
   };
 }

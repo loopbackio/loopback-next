@@ -6,7 +6,7 @@
 import * as legacy from 'loopback-datasource-juggler';
 
 import * as assert from 'assert';
-import {isPromiseLike} from '@loopback/context';
+import {isPromiseLike, MetadataInspector} from '@loopback/context';
 import {
   DataObject,
   Options,
@@ -18,6 +18,9 @@ import {
 import {Entity, ModelDefinition} from '../model';
 import {Filter, Where} from '../query';
 import {EntityCrudRepository} from './repository';
+import {createHasManyRepositoryFactory} from './relation.factory';
+import {DefaultHasManyEntityCrudRepository} from './relation.repository';
+import {HasManyDefinition} from '../decorators/relation.decorator';
 
 export namespace juggler {
   export import DataSource = legacy.DataSource;
@@ -115,6 +118,17 @@ export class DefaultCrudRepository<T extends Entity, ID>
       definition.settings,
     );
     this.modelClass.attachTo(dataSource);
+  }
+
+  protected _createHasManyRepositoryFactoryFor<Target extends Entity>(
+    relationName: string,
+    targetRepo: EntityCrudRepository<Target, typeof Entity.prototype.id>,
+  ) {
+    const meta = this.entityClass.relations[relationName];
+    return createHasManyRepositoryFactory(
+      meta as HasManyDefinition,
+      targetRepo,
+    );
   }
 
   async create(entity: Partial<T>, options?: Options): Promise<T> {

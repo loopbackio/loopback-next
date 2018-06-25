@@ -12,7 +12,7 @@ import {Filter} from '../query';
 /**
  * CRUD operations for a target repository of a HasMany relation
  */
-export interface HasManyEntityCrudRepository<T extends Entity> {
+export interface HasManyRepository<T extends Entity> {
   /**
    * Create a target model instance
    * @param targetModelData The target model data
@@ -32,7 +32,7 @@ export interface HasManyEntityCrudRepository<T extends Entity> {
 export class DefaultHasManyEntityCrudRepository<
   T extends Entity,
   TargetRepository extends EntityCrudRepository<T, typeof Entity.prototype.id>
-> implements HasManyEntityCrudRepository<T> {
+> implements HasManyRepository<T> {
   /**
    * Constructor of DefaultHasManyEntityCrudRepository
    * @param targetRepository the related target model repository instance

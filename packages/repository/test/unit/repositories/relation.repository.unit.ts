@@ -6,7 +6,7 @@
 import {sinon} from '@loopback/testlab';
 import {
   EntityCrudRepository,
-  HasManyEntityCrudRepository,
+  HasManyRepository,
   DefaultCrudRepository,
   juggler,
   DefaultHasManyEntityCrudRepository,
@@ -29,7 +29,7 @@ describe('relation repository', () => {
         T,
         typeof Entity.prototype.id
       >
-    > implements HasManyEntityCrudRepository<T> {
+    > implements HasManyRepository<T> {
       create(
         targetModelData: Partial<T>,
         options?: AnyObject | undefined,

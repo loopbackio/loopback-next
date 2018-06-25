@@ -15,6 +15,7 @@ import {
   AppWithRepository,
   HasManyRepositoryFactory,
   createHasManyRepositoryFactory,
+  HasManyDefinition,
 } from '../..';
 import {expect} from '@loopback/testlab';
 import {inject} from '@loopback/context';
@@ -135,7 +136,10 @@ describe('HasMany relation', () => {
       @repository(OrderRepository) orderRepository: OrderRepository,
     ) {
       super(Customer, db);
-      this.orders = createHasManyRepositoryFactory(Customer, orderRepository);
+      this.orders = this._createHasManyRepositoryFactoryFor(
+        'orders',
+        orderRepository,
+      );
     }
   }
 
