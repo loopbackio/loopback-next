@@ -5,8 +5,8 @@
 
 import {Class} from '../common-types';
 import {Entity} from '../model';
-import {PropertyDecoratorFactory, MetadataInspector} from '@loopback/context';
-import {MODEL_PROPERTIES_KEY} from './model.decorator';
+import {PropertyDecoratorFactory} from '@loopback/context';
+import {property} from './model.decorator';
 
 // tslint:disable:no-any
 
@@ -69,26 +69,37 @@ export function hasOne(definition?: Object) {
   return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
 }
 
-export function hasMany(definition?: Partial<HasManyDefinition>) {
+export function hasMany<T extends typeof Entity>(
+  definition?: Partial<HasManyDefinition>,
+  itemType?: T,
+): PropertyDecorator;
+
+export function hasMany<T extends typeof Entity>(
+  itemType: T,
+): PropertyDecorator;
+
+export function hasMany<T extends typeof Entity>(
+  definition?: Partial<HasManyDefinition> | T,
+  itemType?: T,
+) {
+  // todo(shimks): extract out common logic (such as @property.array) to
+  // @relation
   return function(target: Object, key: string) {
-    const allPropMeta = MetadataInspector.getAllPropertyMetadata(
-      MODEL_PROPERTIES_KEY,
-      target,
-    )!;
-    let meta = {};
-    for (const property in allPropMeta) {
-      if (allPropMeta[property].id === true) {
-        Object.assign(meta, {keyFrom: property}, definition);
-      }
+    if (
+      definition &&
+      typeof definition !== 'object' &&
+      definition.prototype instanceof Entity &&
+      !itemType
+    ) {
+      itemType = definition as T;
+    }
+    if (itemType) {
+      property.array(itemType)(target, key);
     }
 
-    Object.assign(
-      meta,
-      {
-        type: RelationType.hasMany,
-      },
-      definition,
-    );
+    let meta = {type: RelationType.hasMany};
+    Object.assign(meta, definition);
+
     PropertyDecoratorFactory.createDecorator(
       RELATIONS_KEY,
       meta as HasManyDefinition,
