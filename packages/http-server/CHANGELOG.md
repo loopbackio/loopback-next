@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.5"></a>
+## [0.1.5](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@0.1.4...@loopback/http-server@0.1.5) (2018-06-26)
+
+
+### Bug Fixes
+
+* **http-server:** reset addressInfo when server is stopped ([85fcbd4](https://github.com/strongloop/loopback-next/commit/85fcbd4))
+
+
+
+
 <a name="0.1.4"></a>
 ## [0.1.4](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@0.1.3...@loopback/http-server@0.1.4) (2018-06-20)
 
