@@ -16,6 +16,7 @@ import {
   Where,
   Options,
   CrudConnector,
+  AnyObject,
 } from '../../..';
 
 /**
@@ -62,7 +63,7 @@ class CrudConnectorStub implements CrudConnector {
   ): Promise<number> {
     for (const p in data) {
       for (const e of this.entities) {
-        e[p] = data[p];
+        (e as AnyObject)[p] = (data as AnyObject)[p];
       }
     }
     return Promise.resolve(this.entities.length);
@@ -93,7 +94,7 @@ class Customer extends Entity {
   id: number;
   email: string;
 
-  constructor(data: EntityData) {
+  constructor(data: Partial<Customer>) {
     super();
     if (data && typeof data.id === 'number') {
       this.id = data.id;

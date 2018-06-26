@@ -139,5 +139,9 @@ describe('constraint utility functions', () => {
     id: number;
     description: string;
     customerId: number;
+
+    constructor(data?: Partial<Order>) {
+      super(data);
+    }
   }
 });

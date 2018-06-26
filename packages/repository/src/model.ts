@@ -149,12 +149,13 @@ export abstract class Model {
   toJSON(): Object {
     const json: AnyObject = {};
     const def = (<typeof Model>this.constructor).definition;
-    if (def == null) {
+    if (def == null || def.settings.strict === false) {
       return this.toObject({ignoreUnknownProperties: false});
     }
+
     for (const p in def.properties) {
       if (p in this) {
-        json[p] = this[p];
+        json[p] = (this as AnyObject)[p];
       }
     }
     return json;
@@ -176,8 +177,6 @@ export abstract class Model {
     return obj;
   }
 
-  [prop: string]: any;
-
   constructor(data?: Partial<Model>) {
     Object.assign(this, data);
   }
@@ -198,6 +197,21 @@ export abstract class ValueObject extends Model implements Persistable {}
  */
 export abstract class Entity extends Model implements Persistable {
   /**
+   * Get the identity value for a given entity instance or entity data object.
+   *
+   * @param entityOrData The data object for which to determine the identity
+   * value.
+   */
+  static getIdOf(entityOrData: AnyObject): any {
+    if (typeof entityOrData.getId === 'function') {
+      return entityOrData.getId();
+    }
+
+    const idName = this.definition.idName();
+    return entityOrData[idName];
+  }
+
+  /**
    * Get the identity value. If the identity is a composite key, returns
    * an object.
    */
@@ -205,7 +219,7 @@ export abstract class Entity extends Model implements Persistable {
     const definition = (this.constructor as typeof Entity).definition;
     const idProps = definition.idProperties();
     if (idProps.length === 1) {
-      return this[idProps[0]];
+      return (this as AnyObject)[idProps[0]];
     }
     if (!idProps.length) {
       throw new Error(
@@ -225,7 +239,7 @@ export abstract class Entity extends Model implements Persistable {
     const idProps = definition.idProperties();
     const idObj = {} as any;
     for (const idProp of idProps) {
-      idObj[idProp] = this[idProp];
+      idObj[idProp] = (this as AnyObject)[idProp];
     }
     return idObj;
   }

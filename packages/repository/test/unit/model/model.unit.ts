@@ -31,17 +31,55 @@ describe('model', () => {
     .addProperty('firstName', String)
     .addProperty('lastName', STRING);
 
+  const flexibleDef = new ModelDefinition('Flexible');
+  flexibleDef
+    .addProperty('id', {type: 'string', id: true})
+    .addSetting('strict', false);
+
   class Customer extends Entity {
     static definition = customerDef;
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+
+    constructor(data?: Partial<Customer>) {
+      super(data);
+    }
   }
 
   class RealmCustomer extends Entity {
     static definition = realmCustomerDef;
+    realm: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+
+    constructor(data?: Partial<RealmCustomer>) {
+      super(data);
+    }
   }
 
   // tslint:disable-next-line:no-unused-variable
   class User extends Entity {
     static definition = userDef;
+    id: string;
+    email: string;
+    firstName: string;
+
+    constructor(data?: Partial<User>) {
+      super(data);
+    }
+  }
+
+  class Flexible extends Entity {
+    static definition = flexibleDef;
+
+    id: string;
+
+    constructor(data?: Partial<Flexible>) {
+      super(data);
+    }
   }
 
   function createCustomer() {
@@ -81,12 +119,21 @@ describe('model', () => {
 
   it('converts to json', () => {
     const customer = createCustomer();
+    Object.assign(customer, {extra: 'additional data'});
     expect(customer.toJSON()).to.eql({id: '123', email: 'xyz@example.com'});
+    // notice that "extra" property was discarded from the output
+  });
+
+  it('supports non-strict model in toJSON()', () => {
+    const DATA = {id: 'uid', extra: 'additional data'};
+    const instance = new Flexible(DATA);
+    const actual = instance.toJSON();
+    expect(actual).to.deepEqual(DATA);
   });
 
   it('converts to plain object', () => {
     const customer = createCustomer();
-    customer.unknown = 'abc';
+    Object.assign(customer, {unknown: 'abc'});
     expect(customer.toObject()).to.eql({id: '123', email: 'xyz@example.com'});
     expect(customer.toObject({ignoreUnknownProperties: false})).to.eql({
       id: '123',
