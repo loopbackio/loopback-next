@@ -19,7 +19,7 @@ import {
 } from '../../..';
 
 describe('relation repository', () => {
-  context('hasManyEntityCrudRepository interface', () => {
+  context('HasManyRepository interface', () => {
     /**
      * The class below is declared as test for the HasManyEntityCrudRepository
      * interface. The TS Compiler will complain if the interface changes.
@@ -114,6 +114,7 @@ describe('relation repository', () => {
     id: number;
     name: string;
     age: number;
+    country: string;
   }
 
   class CustomerRepository extends DefaultCrudRepository<

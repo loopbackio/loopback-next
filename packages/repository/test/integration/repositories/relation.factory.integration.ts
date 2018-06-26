@@ -209,8 +209,9 @@ describe('HasMany relation', () => {
 
   function givenConstrainedRepositories() {
     const orderFactoryFn = createHasManyRepositoryFactory<
+      typeof Customer.prototype.id,
       Order,
-      typeof Customer.prototype.id
+      typeof Order.prototype.id
     >(Customer.definition.relations.orders as HasManyDefinition, orderRepo);
 
     customerOrderRepo = orderFactoryFn(existingCustomerId);

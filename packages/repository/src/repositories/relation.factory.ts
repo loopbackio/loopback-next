@@ -28,21 +28,25 @@ export type HasManyRepositoryFactory<T extends Entity, ID> = (
  * @returns The factory function which accepts a foreign key value to constrain
  * the given target repository
  */
-export function createHasManyRepositoryFactory<T extends Entity, ID>(
-  relationMeta: HasManyDefinition,
-  targetRepo: EntityCrudRepository<T, ID>,
-): HasManyRepositoryFactory<T, ID> {
-  return function(fkValue: ID) {
-    const fkName = relationMeta.keyTo;
+export function createHasManyRepositoryFactory<
+  SourceID,
+  Target extends Entity,
+  TargetID
+>(
+  relationMetadata: HasManyDefinition,
+  targetRepository: EntityCrudRepository<Target, TargetID>,
+): HasManyRepositoryFactory<Target, SourceID> {
+  return function(fkValue: SourceID) {
+    const fkName = relationMetadata.keyTo;
     if (!fkName) {
       throw new Error(
         'The foreign key property name (keyTo) must be specified',
       );
     }
     return new DefaultHasManyEntityCrudRepository<
-      T,
-      ID,
-      EntityCrudRepository<T, ID>
-    >(targetRepo, {[fkName]: fkValue});
+      Target,
+      TargetID,
+      EntityCrudRepository<Target, TargetID>
+    >(targetRepository, {[fkName]: fkValue});
   };
 }

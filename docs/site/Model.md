@@ -121,6 +121,29 @@ export class Product extends Entity {
 }
 ```
 
+As you can see, models are defined primarily by their TypeScript class. By
+default, classes forbid additional properties not specified in the type
+definition. The persistence layer is respecting this constraint and configures
+underlying PersistedModel classes to enforce `strict` mode.
+
+To create a model that allows both well-defined but also arbitrary extra
+properties, you need to disable `strict` mode in model settings and tell
+TypeScript to allow arbitrary additional properties to be set on model
+instances.
+
+```ts
+@model({settings: {strict: false}})
+class MyFlexibleModel extends Entity {
+  @property({id: true})
+  id: number;
+
+  // Define well-known properties here
+
+  // Add an indexer property to allow additional data
+  [prop: string]: any;
+}
+```
+
 ### Model Decorator
 
 The model decorator can be used without any additional parameters, or can be

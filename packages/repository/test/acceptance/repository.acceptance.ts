@@ -7,6 +7,13 @@ import {DataSource} from 'loopback-datasource-juggler';
 import {Product} from '../fixtures/models/product.model';
 import {ProductRepository} from '../fixtures/repositories/product.repository';
 import {expect} from '@loopback/testlab';
+import {
+  Entity,
+  model,
+  DefaultCrudRepository,
+  property,
+  AnyObject,
+} from '../../src';
 
 // This test shows the recommended way how to use @loopback/repository
 // together with existing connectors when building LoopBack applications
@@ -35,6 +42,33 @@ describe('Repository in Thinking in LoopBack', () => {
       slug: 'pencil',
       name: 'Red Pencil',
     });
+  });
+
+  it('rejects extra model properties (defaults to strict mode)', async () => {
+    await expect(
+      repo.create({name: 'custom', extra: 'additional-data'} as AnyObject),
+    ).to.be.rejectedWith(/extra.*not defined/);
+  });
+
+  it('allows models to allow additional properties', async () => {
+    // TODO(bajtos) Add syntactic sugar to allow the following usage:
+    //    @model({strict: false})
+    @model({settings: {strict: false}})
+    class Flexible extends Entity {
+      @property({id: true})
+      id: number;
+    }
+
+    const flexibleRepo = new DefaultCrudRepository<
+      Flexible,
+      typeof Flexible.prototype.id
+    >(Flexible, new DataSource({connector: 'memory'}));
+
+    const created = await flexibleRepo.create({
+      extra: 'additional data',
+    } as AnyObject);
+    const stored = await flexibleRepo.findById(created.id);
+    expect(stored).to.containDeep({extra: 'additional data'});
   });
 
   function givenProductRepository() {

@@ -8,7 +8,6 @@ import * as legacy from 'loopback-datasource-juggler';
 import * as assert from 'assert';
 import {isPromiseLike} from '@loopback/context';
 import {
-  DataObject,
   Options,
   AnyObject,
   Command,
@@ -117,7 +116,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
     this.modelClass = dataSource.createModel<juggler.PersistedModelClass>(
       definition.name,
       properties,
-      definition.settings,
+      Object.assign({strict: true}, definition.settings),
     );
     this.modelClass.attachTo(dataSource);
   }
@@ -148,9 +147,9 @@ export class DefaultCrudRepository<T extends Entity, ID>
    * @param relationName Name of the relation defined on the source model
    * @param targetRepo Target repository instance
    */
-  protected _createHasManyRepositoryFactoryFor<Target extends Entity>(
+  protected _createHasManyRepositoryFactoryFor<Target extends Entity, TargetID>(
     relationName: string,
-    targetRepo: EntityCrudRepository<Target, typeof Entity.prototype.id>,
+    targetRepo: EntityCrudRepository<Target, TargetID>,
   ) {
     const meta = this.entityClass.definition.relations[relationName];
     return createHasManyRepositoryFactory(
@@ -168,22 +167,17 @@ export class DefaultCrudRepository<T extends Entity, ID>
     const models = await ensurePromise(
       this.modelClass.create(entities, options),
     );
-    return this.toEntities(models as DataObject<T>[]);
+    return this.toEntities(models);
   }
 
   save(entity: T, options?: Options): Promise<T | null> {
-    const idName = this.modelClass.definition.idName();
-    let id;
-    if (typeof entity.getId === 'function') {
-      id = entity.getId();
-    } else {
-      id = entity[idName];
-    }
+    const id = this.entityClass.getIdOf(entity);
     if (id == null) {
       return this.create(entity, options);
     } else {
       return this.replaceById(id, entity, options).then(
-        result => (result ? this.toEntity(entity) : null),
+        result =>
+          result ? (new this.entityClass(entity.toObject()) as T) : null,
       );
     }
   }
@@ -270,11 +264,11 @@ export class DefaultCrudRepository<T extends Entity, ID>
     throw new Error('Not implemented');
   }
 
-  protected toEntity(model: DataObject<T>): T {
+  protected toEntity(model: juggler.PersistedModel): T {
     return new this.entityClass(model.toObject()) as T;
   }
 
-  protected toEntities(models: DataObject<T>[]): T[] {
+  protected toEntities(models: juggler.PersistedModel[]): T[] {
     return models.map(m => this.toEntity(m));
   }
 }

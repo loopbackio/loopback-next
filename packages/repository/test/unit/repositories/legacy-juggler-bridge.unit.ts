@@ -52,6 +52,14 @@ describe('DefaultCrudRepository', () => {
         id: {name: 'id', type: 'number', id: true},
       },
     });
+
+    title?: string;
+    content?: string;
+    id: number;
+
+    constructor(data: Partial<Note>) {
+      super(data);
+    }
   }
 
   beforeEach(() => {

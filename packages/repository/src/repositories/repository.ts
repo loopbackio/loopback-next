@@ -232,8 +232,9 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     if (typeof this.connector.save === 'function') {
       return this.toModel(this.connector.save(this.model, entity, options));
     } else {
-      if (entity.getId() != null) {
-        return this.replaceById(entity.getId(), entity, options).then(
+      const id = this.model.getIdOf(entity);
+      if (id != null) {
+        return this.replaceById(id, entity, options).then(
           (result: boolean) =>
             result
               ? this.toModel(Promise.resolve(entity))
@@ -262,11 +263,11 @@ export class CrudRepositoryImpl<T extends Entity, ID>
   }
 
   update(entity: DataObject<T>, options?: Options): Promise<boolean> {
-    return this.updateById(entity.getId(), entity, options);
+    return this.updateById(this.model.getIdOf(entity), entity, options);
   }
 
   delete(entity: DataObject<T>, options?: Options): Promise<boolean> {
-    return this.deleteById(entity.getId(), options);
+    return this.deleteById(this.model.getIdOf(entity), options);
   }
 
   updateAll(

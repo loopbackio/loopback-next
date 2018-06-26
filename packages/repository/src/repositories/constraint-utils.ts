@@ -57,7 +57,7 @@ export function constrainDataObject<T extends Entity>(
   for (const c in constraint) {
     if (constrainedData.hasOwnProperty(c))
       throw new Error(`Property "${c}" cannot be changed!`);
-    constrainedData[c] = constraint[c];
+    (constrainedData as AnyObject)[c] = constraint[c];
   }
   return constrainedData;
 }
@@ -76,7 +76,7 @@ export function constrainDataObjects<T extends Entity>(
   const constrainedData = cloneDeep(originalData);
   for (let obj of constrainedData) {
     for (let prop in constraint) {
-      obj[prop] = constraint[prop];
+      (obj as AnyObject)[prop] = constraint[prop];
     }
   }
   return constrainedData;
