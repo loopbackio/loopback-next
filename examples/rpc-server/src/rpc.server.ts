@@ -13,6 +13,7 @@ import {rpcRouter} from './rpc.router';
 export class RPCServer extends Context implements Server {
   _server: http.Server;
   expressServer: express.Application;
+  listening: boolean = false;
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE) public app?: Application,
     @inject('rpcServer.config') public config?: RPCServerConfig,
@@ -27,10 +28,12 @@ export class RPCServer extends Context implements Server {
     this._server = this.expressServer.listen(
       (this.config && this.config.port) || 3000,
     );
+    this.listening = true;
     return await pEvent(this._server, 'listening');
   }
   async stop(): Promise<void> {
     this._server.close();
+    this.listening = false;
     return await pEvent(this._server, 'close');
   }
 }

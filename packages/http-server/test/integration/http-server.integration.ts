@@ -121,9 +121,9 @@ describe('HttpServer (integration)', () => {
   it('exports started', async () => {
     server = new HttpServer(dummyRequestHandler);
     await server.start();
-    expect(server.started).to.be.true();
+    expect(server.listening).to.be.true();
     await server.stop();
-    expect(server.started).to.be.false();
+    expect(server.listening).to.be.false();
   });
 
   it('reports error when the server cannot be started', async () => {
