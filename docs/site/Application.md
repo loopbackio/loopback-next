@@ -11,8 +11,8 @@ summary:
 ## What is an Application?
 
 In LoopBack 4, the
-[`Application`](http://apidocs.loopback.io/@loopback%2fcore/#Application) class
-is the central class for setting up all of your module's components,
+[`Application`](http://apidocs.loopback.io/@loopback%2fdocs/core.html#Application)
+class is the central class for setting up all of your module's components,
 controllers, servers and bindings. The `Application` class extends
 [Context](Context.md), and provides the controls for starting and stopping
 itself and its associated servers.
@@ -96,8 +96,8 @@ export class MyApplication extends Application {
 ```
 
 You can find a complete list of these functions on the
-[`Application`](http://apidocs.loopback.io/@loopback%2fcore/#Application) API
-docs page.
+[`Application`](http://apidocs.loopback.io/@loopback%2fdocs/core.html#Application)
+API docs page.
 
 Additionally, you can use more advanced forms of binding to fine-tune your
 application's configuration:
@@ -168,9 +168,9 @@ context under the keys `servers.public`, and `servers.private` respectively.
 ### Constructor configuration
 
 The `Application` class constructor also accepts an
-[`ApplicationConfig`](http://apidocs.loopback.io/@loopback%2fcore/#ApplicationConfig)
+[`ApplicationConfig`](http://apidocs.loopback.io/@loopback%2fdocs/core.html#ApplicationConfig)
 object which contains component-level configurations such as
-[`RestServerConfig`](http://apidocs.loopback.io/@loopback%2frest/#RestServerConfig).
+[`RestServerConfig`](http://apidocs.loopback.io/@loopback%2fdocs/rest.html#RestServerConfig).
 It will automatically create bindings for these configurations and later be
 injected through dependency injections. Visit
 [Dependency Injection](Dependency-injection.md) for more details.
@@ -222,14 +222,14 @@ app.bind('fooCorp.widgetServer.config').to(widgetServerConfig);
 ### Avoid use of `getSync`
 
 We provide the
-[`getSync`](http://apidocs.loopback.io/@loopback%2fcontext/#getSync) function
-for scenarios where you cannot asynchronously retrieve your bindings, such as in
-constructor bodies.
+[`getSync`](http://apidocs.loopback.io/@loopback%2fdocs/context.html#getSync)
+function for scenarios where you cannot asynchronously retrieve your bindings,
+such as in constructor bodies.
 
 However, the number of scenarios in which you must do this are limited, and you
 should avoid potential race conditions and retrieve your bindings asynchronously
-using the [`get`](http://apidocs.loopback.io/@loopback%2fcontext/#get) function
-whenever possible.
+using the [`get`](http://apidocs.loopback.io/@loopback%2fdocs/context.html#get)
+function whenever possible.
 
 ### Use caution with singleton binding scopes
 

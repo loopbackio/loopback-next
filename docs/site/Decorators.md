@@ -43,7 +43,7 @@ accordingly or do a composition of them:
 ### API Decorator
 
 Syntax:
-[`@api(spec: ControllerSpec)`](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#29)
+[`@api(spec: ControllerSpec)`](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3.html#api)
 
 `@api` is a decorator for the controller class and is appended just before it's
 declared. `@api` is used when you have multiple
@@ -89,7 +89,7 @@ A more detailed explanation can be found in
 ### Operation Decorator
 
 Syntax:
-[`@operation(verb: string, path: string, spec?: OperationObject)`](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#98)
+[`@operation(verb: string, path: string, spec?: OperationObject)`](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3.html#operation)
 
 `@operation` is a controller method decorator. It exposes a Controller method as
 a REST API operation, and is represented in OpenAPI spec as an
@@ -120,13 +120,13 @@ class MyController {
 ### Commonly-used Operation Decorators
 
 Syntax:
-[`@get(path: string, spec?: OperationObject)`](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#48)
+[`@get(path: string, spec?: OperationObject)`](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3.html#get)
 
 Same Syntax for decorators
-[`@post`](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#58) ,
-[`@put`](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#68) ,
-[`@patch`](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#78) ,
-[`@del`](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#88)
+[`@post`](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3.html#post) ,
+[`@put`](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3.html#put) ,
+[`@patch`](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3.html#patch) ,
+[`@del`](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3.html#del)
 
 You can call these sugar operation decorators as a shortcut of `@operation`. For
 example:
@@ -193,7 +193,7 @@ to define the params with the pattern `@param.${in}.${type}(${name})`:
 - name: Name of the parameter. It should be a `string`.
 
 A list of available shortcuts for `query` can be found in
-[API document](http://apidocs.loopback.io/@loopback%2fopenapi-v3/#param.query),
+[API document](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3.html#param.query),
 along with the shortcuts for `path` and `header`.
 
 An equivalent example using the shortcut decorator would be:
@@ -591,7 +591,7 @@ For usage examples, see [Define Models](Repositories.md#define-models)
 
 Syntax:
 
-[`@repository(modelOrRepo: string | Class<Repository<Model>> | typeof Entity, dataSource?: string | juggler.DataSource)`](http://apidocs.loopback.io/@loopback%2frepository/#1503)
+[`@repository(modelOrRepo: string | Class<Repository<Model>> | typeof Entity, dataSource?: string | juggler.DataSource)`](http://apidocs.loopback.io/@loopback%2fdocs/repository.html#repository)
 
 This decorator either injects an existing repository or creates a repository
 from a model and a datasource.
