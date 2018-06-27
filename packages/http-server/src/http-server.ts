@@ -32,7 +32,7 @@ export type HttpProtocol = 'http' | 'https'; // Will be extended to `http2` in t
 export class HttpServer {
   private _port: number;
   private _host?: string;
-  private _started: Boolean;
+  private _listening: boolean = false;
   private _protocol: HttpProtocol;
   private _address: AddressInfo;
   private httpRequestListener: HttpRequestListener;
@@ -60,7 +60,7 @@ export class HttpServer {
     this.httpServer = createServer(this.httpRequestListener);
     this.httpServer.listen(this._port, this._host);
     await pEvent(this.httpServer, 'listening');
-    this._started = true;
+    this._listening = true;
     this._address = this.httpServer.address() as AddressInfo;
   }
 
@@ -71,7 +71,7 @@ export class HttpServer {
     if (this.httpServer) {
       this.httpServer.close();
       await pEvent(this.httpServer, 'close');
-      this._started = false;
+      this._listening = false;
     }
   }
 
@@ -110,14 +110,14 @@ export class HttpServer {
   /**
    * State of the HTTP / HTTPS server
    */
-  public get started(): Boolean {
-    return this._started;
+  public get listening(): boolean {
+    return this._listening;
   }
 
   /**
    * Address of the HTTP / HTTPS server
    */
   public get address(): AddressInfo | undefined {
-    return this._started ? this._address : undefined;
+    return this._listening ? this._address : undefined;
   }
 }

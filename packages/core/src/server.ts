@@ -24,4 +24,8 @@ export interface Server {
    * Stop the server
    */
   stop(): Promise<void>;
+  /**
+   * Tells whether the server is listening for connections or not
+   */
+  listening: boolean;
 }

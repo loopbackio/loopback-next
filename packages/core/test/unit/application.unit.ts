@@ -98,7 +98,7 @@ describe('Application', () => {
       await app.start();
       const server = await app.getServer(FakeServer);
       expect(server).to.not.be.null();
-      expect(server.running).to.equal(true);
+      expect(server.listening).to.equal(true);
       await app.stop();
     });
 
@@ -131,16 +131,16 @@ class FakeComponent implements Component {
 }
 
 class FakeServer extends Context implements Server {
-  running: boolean = false;
+  listening: boolean = false;
   constructor() {
     super();
   }
   async start(): Promise<void> {
-    this.running = true;
+    this.listening = true;
   }
 
   async stop(): Promise<void> {
-    this.running = false;
+    this.listening = false;
   }
 }
 

@@ -11,13 +11,13 @@ summary:
 ## Overview
 
 The [Server](https://apidocs.strongloop.com/@loopback%2fcore/#Server) interface
-defines the minimal required functions (start and stop) to implement for a
-LoopBack application. Servers in LoopBack 4 are used to represent
-implementations for inbound transports and/or protocols such as REST over http,
-gRPC over http2, graphQL over https, etc. They typically listen for requests on
-a specific port, handle them, and return appropriate responses. A single
-application can have multiple server instances listening on different ports and
-working with different protocols.
+defines the minimal required functions (start and stop) and a 'listening'
+property to implement for a LoopBack application. Servers in LoopBack 4 are used
+to represent implementations for inbound transports and/or protocols such as
+REST over http, gRPC over http2, graphQL over https, etc. They typically listen
+for requests on a specific port, handle them, and return appropriate responses.
+A single application can have multiple server instances listening on different
+ports and working with different protocols.
 
 ## Usage
 
