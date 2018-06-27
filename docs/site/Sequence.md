@@ -42,15 +42,14 @@ class DefaultSequence {
 In the example above, `route`, `params`, and `result` are all Elements. When
 building sequences, you use LoopBack Elements to respond to a request:
 
-- [`Route`](http://apidocs.loopback.io/@loopback%2frest/#Route)
+- [`FindRoute`](http://apidocs.loopback.io/@loopback%2fdocs/rest.html#FindRoute)
 - [`Request`](http://apidocs.strongloop.com/loopback-next/) - (TBD) missing API
   docs link
 - [`Response`](http://apidocs.strongloop.com/loopback-next/) - (TBD) missing API
   docs link
-- [`OperationRetVal`](http://apidocs.loopback.io/@loopback%2frest/#OperationRetval)
-- [`Params`](http://apidocs.strongloop.com/loopback-next/) - (TBD) missing API
-  docs link
-- [`OpenAPISpec`](http://apidocs.loopback.io/@loopback%2fopenapi-spec/)
+- [`OperationRetVal`](http://apidocs.loopback.io/@loopback%2fdocs/rest.html#OperationRetval)
+- [`ParseParams`](http://apidocs.loopback.io/@loopback%2fdocs/rest.html#ParseParams)
+- [`OpenAPISpec`](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3-types.html#OpenApiSpec)
 
 ## Actions
 
@@ -127,8 +126,8 @@ As an example, we'll implement a custom sequence action to replace the default
 controller to the client making the request.
 
 To do this, we'll register a custom send action by binding a
-[Provider](http://apidocs.strongloop.com/@loopback%2fcontext/#Provider) to the
-`RestBindings.SequenceActions.SEND` key.
+[Provider](http://apidocs.strongloop.com/@loopback%2fdocs/context.html#Provider)
+to the `RestBindings.SequenceActions.SEND` key.
 
 First, let's create our `CustomSendProvider` class, which will provide the send
 function upon injection.
@@ -217,7 +216,7 @@ export class YourApp extends RepositoryMixin(RestApplication) {
 ```
 
 As a result, whenever the send action of the
-[`DefaultSequence`](http://apidocs.strongloop.com/@loopback%2frest/#DefaultSequence)
+[`DefaultSequence`](http://apidocs.strongloop.com/@loopback%2fdocs/rest.html#DefaultSequence)
 is called, it will make use of your function instead! You can use this approach
 to override any of the actions listed under the `RestBindings.SequenceActions`
 namespace.
