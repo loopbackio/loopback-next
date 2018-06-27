@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.6.10"></a>
+## [0.6.10](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.6.9...@loopback/build@0.6.10) (2018-06-27)
+
+
+### Bug Fixes
+
+* **docs:** upgrade to strong-docs@3.1.0 and fix links ([f91af8f](https://github.com/strongloop/loopback-next/commit/f91af8f))
+
+
+
+
 <a name="0.6.9"></a>
 ## [0.6.9](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.6.8...@loopback/build@0.6.9) (2018-06-20)
 

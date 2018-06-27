@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.12.1...@loopback/docs@0.13.0) (2018-06-27)
+
+
+### Bug Fixes
+
+* **docs:** upgrade to strong-docs@3.1.0 and fix links ([f91af8f](https://github.com/strongloop/loopback-next/commit/f91af8f))
+
+
+### Features
+
+* add `listening` property in the server interface ([ff0eab7](https://github.com/strongloop/loopback-next/commit/ff0eab7)), closes [#1368](https://github.com/strongloop/loopback-next/issues/1368)
+
+
+
+
 <a name="0.12.1"></a>
 ## [0.12.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.12.0...@loopback/docs@0.12.1) (2018-06-26)
 

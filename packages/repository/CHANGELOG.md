@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.12.0"></a>
+# [0.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.11.4...@loopback/repository@0.12.0) (2018-06-27)
+
+
+### Features
+
+* add crud relation methods ([1fdae63](https://github.com/strongloop/loopback-next/commit/1fdae63))
+
+
+
+
 <a name="0.11.4"></a>
 ## [0.11.4](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.11.3...@loopback/repository@0.11.4) (2018-06-20)
 

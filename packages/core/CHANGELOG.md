@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.10.0"></a>
+# [0.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@0.9.0...@loopback/core@0.10.0) (2018-06-27)
+
+
+### Features
+
+* add `listening` property in the server interface ([ff0eab7](https://github.com/strongloop/loopback-next/commit/ff0eab7)), closes [#1368](https://github.com/strongloop/loopback-next/issues/1368)
+
+
+
+
 <a name="0.9.0"></a>
 # [0.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@0.8.8...@loopback/core@0.9.0) (2018-06-20)
 

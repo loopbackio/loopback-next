@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@0.1.5...@loopback/http-server@0.2.0) (2018-06-27)
+
+
+### Bug Fixes
+
+* **http-server:** correctly format IPv6 host in url ([c076eba](https://github.com/strongloop/loopback-next/commit/c076eba))
+
+
+### Features
+
+* add `listening` property in the server interface ([ff0eab7](https://github.com/strongloop/loopback-next/commit/ff0eab7)), closes [#1368](https://github.com/strongloop/loopback-next/issues/1368)
+
+
+
+
 <a name="0.1.5"></a>
 ## [0.1.5](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@0.1.4...@loopback/http-server@0.1.5) (2018-06-26)
 
