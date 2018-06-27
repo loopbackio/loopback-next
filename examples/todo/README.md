@@ -7,6 +7,8 @@ This is the basic tutorial for getting started with Loopback 4!
 This tutorial demonstrates how to create a basic API for a todo list using
 LoopBack 4.
 
+![todo-tutorial-overview](./imgs/todo-overview.png)
+
 ## Setup
 
 You'll need to make sure you have some things installed:
