@@ -11,9 +11,10 @@ import * as pEvent from 'p-event';
 import {rpcRouter} from './rpc.router';
 
 export class RPCServer extends Context implements Server {
+  private _listening: boolean = false;
   _server: http.Server;
   expressServer: express.Application;
-  listening: boolean = false;
+
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE) public app?: Application,
     @inject('rpcServer.config') public config?: RPCServerConfig,
@@ -24,16 +25,20 @@ export class RPCServer extends Context implements Server {
     rpcRouter(this);
   }
 
+  get listening() {
+    return this._listening;
+  }
+
   async start(): Promise<void> {
     this._server = this.expressServer.listen(
       (this.config && this.config.port) || 3000,
     );
-    this.listening = true;
+    this._listening = true;
     return await pEvent(this._server, 'listening');
   }
   async stop(): Promise<void> {
     this._server.close();
-    this.listening = false;
+    this._listening = false;
     return await pEvent(this._server, 'close');
   }
 }
