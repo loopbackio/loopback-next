@@ -130,7 +130,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
   protected _expressApp: express.Application;
 
-  listening: boolean = false;
+  get listening(): boolean {
+    return this._httpServer ? this._httpServer.listening : false;
+  }
 
   /**
    * @memberof RestServer
@@ -591,7 +593,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
     this.bind(RestBindings.PORT).to(this._httpServer.port);
     this.bind(RestBindings.HOST).to(this._httpServer.host);
     this.bind(RestBindings.URL).to(this._httpServer.url);
-    this.listening = true;
   }
 
   /**
@@ -605,7 +606,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
     if (!this._httpServer) return;
     await this._httpServer.stop();
     this._httpServer = undefined;
-    this.listening = false;
   }
 
   protected _onUnhandledError(req: Request, res: Response, err: Error) {

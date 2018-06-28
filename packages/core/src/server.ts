@@ -17,6 +17,11 @@
  */
 export interface Server {
   /**
+   * Tells whether the server is listening for connections or not
+   */
+  readonly listening: boolean;
+
+  /**
    * Start the server
    */
   start(): Promise<void>;
@@ -24,8 +29,4 @@ export interface Server {
    * Stop the server
    */
   stop(): Promise<void>;
-  /**
-   * Tells whether the server is listening for connections or not
-   */
-  listening: boolean;
 }
