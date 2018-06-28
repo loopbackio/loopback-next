@@ -1,7 +1,7 @@
 ---
 lang: en
 title: 'OpenAPI generator'
-keywords: LoopBack 4.0, LoopBack 4
+keywords: LoopBack 4.0, LoopBack 4, OpenAPI, Swagger
 tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/OpenAPI-generator.html
@@ -32,6 +32,9 @@ lb4 openapi [<url>] [options]
 - [2.0 (a.k.a. Swagger)](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
 - [3.0.x (OpenAPI 3.0)](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md)
 
+Please note Swagger 2.0 specs are converted to OpenAPI 3.0 internally using
+[swagger2openapi](https://www.npmjs.com/package/swagger2openapi).
+
 ### Interactive Prompts
 
 The tool will prompt you for:
@@ -47,6 +50,9 @@ The command generates the following artifacts:
 
 1.  For each schema under `components.schemas`, a model class or type
     declaration is generated as `src/models/<model-or-type-name>.model.ts`.
+
+Simple types, array types, composite types (allOf/anyOf/oneOf) are mapped to
+TypeScript type declarations. Object types are mapped to TypeScript classes.
 
 For example,
 
@@ -135,6 +141,11 @@ export type Pet = NewPet & {id: number};
     is present, it defaults to `OpenApi`. For each tag, a controller class is
     generated as `src/controllers/<tag-name>.controller.ts` to hold all
     operations with the same tag.
+
+Controller class names are derived from tag names. The `x-controller-name`
+property of an operation can be used to customize the controller name. Method
+names are derived from `operationId`s. They can be configured using
+`x-operation-name`.
 
 For example,
 
