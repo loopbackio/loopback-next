@@ -7,6 +7,7 @@ import {
   OperationObject,
   ParameterObject,
   PathObject,
+  SchemasObject,
 } from '@loopback/openapi-v3-types';
 import {
   BindingScope,
@@ -17,6 +18,7 @@ import {
   ValueOrPromise,
 } from '@loopback/context';
 import * as HttpErrors from 'http-errors';
+import {inspect} from 'util';
 
 import {
   Request,
@@ -28,7 +30,7 @@ import {
 import {ControllerSpec} from '@loopback/openapi-v3';
 
 import * as assert from 'assert';
-const debug = require('debug')('loopback:core:routing-table');
+const debug = require('debug')('loopback:rest:routing-table');
 
 // TODO(bajtos) Refactor this code to use Trie-based lookup,
 // e.g. via wayfarer/trie or find-my-way
@@ -80,7 +82,7 @@ export class RoutingTable {
       return;
     }
 
-    debug('Registering Controller with API', spec);
+    debug('Registering Controller with API %s', inspect(spec, {depth: null}));
 
     const basePath = spec.basePath || '/';
     for (const p in spec.paths) {
@@ -118,7 +120,7 @@ export class RoutingTable {
     if (debug.enabled) {
       debug(
         'Registering route %s %s -> %s(%s)',
-        route.verb,
+        route.verb.toUpperCase(),
         route.path,
         route.describe(),
         describeOperationParameters(route.spec),
@@ -204,6 +206,14 @@ export interface RouteEntry {
  */
 export interface ResolvedRoute extends RouteEntry {
   readonly pathParams: PathParameterValues;
+
+  /**
+   * Server/application wide schemas shared by multiple routes,
+   * e.g. model schemas. This is a temporary workaround for
+   * missing support for $ref references, see
+   * https://github.com/strongloop/loopback-next/issues/435
+   */
+  readonly schemas: SchemasObject;
 }
 
 /**
@@ -237,7 +247,7 @@ export abstract class BaseRoute implements RouteEntry {
   }
 
   match(request: Request): ResolvedRoute | undefined {
-    debug('trying endpoint', this);
+    debug('trying endpoint %s', inspect(this, {depth: 5}));
     if (this.verb !== request.method!.toLowerCase()) {
       debug(' -> verb mismatch');
       return undefined;
@@ -285,6 +295,9 @@ export function createResolvedRoute(
     pathParams: {
       writable: false,
       value: pathParams,
+    },
+    schemas: {
+      value: {},
     },
   });
 }

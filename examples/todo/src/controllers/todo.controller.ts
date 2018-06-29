@@ -5,16 +5,7 @@
 
 import {inject} from '@loopback/core';
 import {repository} from '@loopback/repository';
-import {
-  HttpErrors,
-  del,
-  get,
-  param,
-  patch,
-  post,
-  put,
-  requestBody,
-} from '@loopback/rest';
+import {del, get, param, patch, post, put, requestBody} from '@loopback/rest';
 import {Todo} from '../models';
 import {TodoRepository} from '../repositories';
 import {GeocoderService} from '../services';
@@ -27,12 +18,6 @@ export class TodoController {
 
   @post('/todos')
   async createTodo(@requestBody() todo: Todo) {
-    // TODO(bajtos) This should be handled by the framework
-    // See https://github.com/strongloop/loopback-next/issues/118
-    if (!todo.title) {
-      throw new HttpErrors.BadRequest('title is required');
-    }
-
     if (todo.remindAtAddress) {
       // TODO(bajtos) handle "address not found"
       const geo = await this.geoService.geocode(todo.remindAtAddress);

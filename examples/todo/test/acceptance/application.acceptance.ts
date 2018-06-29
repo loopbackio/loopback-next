@@ -47,6 +47,15 @@ describe('Application', () => {
     expect(result).to.containDeep(todo);
   });
 
+  it('rejects requests to create a todo with no title', async () => {
+    const todo = givenTodo();
+    delete todo.title;
+    await client
+      .post('/todos')
+      .send(todo)
+      .expect(422);
+  });
+
   it('creates an address-based reminder', async function() {
     // Increase the timeout to accommodate slow network connections
     // tslint:disable-next-line:no-invalid-this

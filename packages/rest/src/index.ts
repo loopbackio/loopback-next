@@ -20,16 +20,8 @@ export {
 
 export * from './providers';
 
-// import all errors from external http-errors package
-import * as HttpErrors from 'http-errors';
-
 export * from './parser';
-
-export {writeResultToResponse} from './writer';
-
-// http errors
-export {HttpErrors};
-
+export * from './writer';
 export * from './http-handler';
 export * from './request-context';
 export * from './types';
@@ -38,5 +30,10 @@ export * from './rest.application';
 export * from './rest.component';
 export * from './rest.server';
 export * from './sequence';
-export * from '@loopback/openapi-v3';
 export * from './coercion/rest-http-error';
+
+// export all errors from external http-errors package
+import * as HttpErrors from 'http-errors';
+export {HttpErrors};
+
+export * from '@loopback/openapi-v3';

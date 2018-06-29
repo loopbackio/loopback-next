@@ -3,6 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {
+  ReferenceObject,
+  RequestBodyObject,
+  SchemaObject,
+} from '@loopback/openapi-v3-types';
 import {ServerRequest} from 'http';
 import {LogError} from '..';
 
@@ -24,4 +29,17 @@ export function createUnexpectedHttpErrorLogger(
       err.stack || err,
     );
   };
+}
+
+export function aBodySpec(
+  schema: SchemaObject | ReferenceObject,
+  options?: Partial<RequestBodyObject>,
+): RequestBodyObject {
+  return Object.assign({}, options, {
+    content: {
+      'application/json': {
+        schema: schema,
+      },
+    },
+  });
 }

@@ -55,7 +55,9 @@ export class HttpHandler {
   }
 
   findRoute(request: Request): ResolvedRoute {
-    return this._routes.find(request);
+    const route = this._routes.find(request);
+    Object.assign(route.schemas, this.getApiDefinitions());
+    return route;
   }
 
   protected async _handleRequest(

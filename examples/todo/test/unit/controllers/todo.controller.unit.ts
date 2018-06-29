@@ -47,8 +47,6 @@ describe('TodoController', () => {
   let aChangedTodo: Todo;
   let aTodoList: Todo[];
 
-  const noError = 'No error was thrown!';
-
   beforeEach(resetRepositories);
 
   describe('createTodo', () => {
@@ -57,20 +55,6 @@ describe('TodoController', () => {
       const result = await controller.createTodo(aTodo);
       expect(result).to.eql(aTodoWithId);
       sinon.assert.calledWith(create, aTodo);
-    });
-
-    it('throws if the payload is missing a title', async () => {
-      const todo = givenTodo();
-      delete todo.title;
-      try {
-        await controller.createTodo(todo);
-      } catch (err) {
-        expect(err).to.match(/title is required/);
-        sinon.assert.notCalled(create);
-        return;
-      }
-      // Repository stub should not have been called!
-      throw new Error(noError);
     });
 
     it('resolves remindAtAddress to a geocode', async () => {

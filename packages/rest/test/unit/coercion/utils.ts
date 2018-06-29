@@ -57,12 +57,9 @@ export async function testCoercion<T>(config: TestArgs<T>) {
     const route = givenResolvedRoute(spec, {aparameter: config.rawValue});
 
     if (config.expectError) {
-      try {
-        await parseOperationArgs(req, route);
-        throw new Error("'parseOperationArgs' should throw error!");
-      } catch (err) {
-        expect(err).to.eql(config.expectedResult);
-      }
+      await expect(parseOperationArgs(req, route)).to.be.rejectedWith(
+        config.expectedResult,
+      );
     } else {
       const args = await parseOperationArgs(req, route);
       expect(args).to.eql([config.expectedResult]);

@@ -31,6 +31,7 @@
     "@types/cors": "^2.8.3",
     "@types/express": "^4.11.1",
     "@types/http-errors": "^1.6.1",
+    "ajv": "^6.5.1",
     "body": "^5.1.0",
     "cors": "^2.8.4",
     "debug": "^3.1.0",
@@ -38,6 +39,7 @@
     "http-errors": "^1.6.3",
     "js-yaml": "^3.11.0",
     "lodash": "^4.17.5",
+    "openapi-schema-to-json-schema": "^2.1.0",
     "path-to-regexp": "^2.2.0",
     "validator": "^10.4.0"
   },

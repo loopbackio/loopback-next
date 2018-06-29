@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-const debug = require('debug')('loopback:core:sequence');
+const debug = require('debug')('loopback:rest:sequence');
 import {inject} from '@loopback/context';
 import {FindRoute, InvokeMethod, Send, Reject, ParseParams} from './types';
 import {RestBindings} from './keys';

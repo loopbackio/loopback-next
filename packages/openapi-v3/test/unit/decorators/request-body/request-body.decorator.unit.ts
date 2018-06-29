@@ -70,7 +70,7 @@ describe('requestBody decorator', () => {
       expect(requestBodySpec.content).to.deepEqual(expectedContent);
     });
 
-    it('schema in requestBody overrides the generated schema', () => {
+    it('preserves user-provided schema in requestBody', () => {
       const expectedContent = {
         'application/json': {
           schema: {type: 'object'},
@@ -84,6 +84,29 @@ describe('requestBody decorator', () => {
         createMyModel(
           @requestBody({content: expectedContent})
           inst: MyModel,
+        ) {}
+      }
+
+      const requestBodySpec = getControllerSpec(MyController).paths['/MyModel'][
+        'post'
+      ].requestBody;
+      expect(requestBodySpec.content).to.deepEqual(expectedContent);
+    });
+
+    it('preserves user-provided reference in requestBody', () => {
+      const expectedContent = {
+        'application/json': {
+          schema: {$ref: '#/components/schemas/MyModel'},
+        },
+      };
+
+      class MyModel {}
+
+      class MyController {
+        @post('/MyModel')
+        createMyModel(
+          @requestBody({content: expectedContent})
+          inst: Partial<MyModel>,
         ) {}
       }
 

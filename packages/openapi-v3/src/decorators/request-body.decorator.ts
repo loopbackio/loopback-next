@@ -79,6 +79,10 @@ export const REQUEST_BODY_INDEX = 'x-parameter-index';
  */
 export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
   return function(target: Object, member: string, index: number) {
+    debug('@requestBody() on %s.%s', target.constructor.name, member);
+    debug('  parameter index: %s', index);
+    debug('  options: %s', inspect(requestBodySpec, {depth: null}));
+
     // Use 'application/json' as default content if `requestBody` is undefined
     requestBodySpec = requestBodySpec || {content: {}};
 
@@ -89,11 +93,12 @@ export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
     const methodSig = MetadataInspector.getDesignTypeForMethod(target, member);
     const paramTypes = (methodSig && methodSig.parameterTypes) || [];
 
-    let paramType = paramTypes[index];
-    let schema: SchemaObject;
+    const paramType = paramTypes[index];
+    const schema = getSchemaForRequestBody(paramType);
+    debug('  inferred schema: %s', inspect(schema, {depth: null}));
     requestBodySpec.content = _.mapValues(requestBodySpec.content, c => {
       if (!c.schema) {
-        c.schema = schema = schema || getSchemaForRequestBody(paramType);
+        c.schema = schema;
       }
       return c;
     });
@@ -104,9 +109,7 @@ export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
       requestBodySpec[REQUEST_BODY_INDEX] = index;
     }
 
-    debug('requestBody member: ', member);
-    debug('requestBody index: ', index);
-    debug('requestBody spec: ', inspect(requestBodySpec, {depth: null}));
+    debug('  final spec: ', inspect(requestBodySpec, {depth: null}));
     ParameterDecoratorFactory.createDecorator<RequestBodyObject>(
       OAI3Keys.REQUEST_BODY_KEY,
       requestBodySpec as RequestBodyObject,
