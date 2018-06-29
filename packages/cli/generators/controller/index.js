@@ -88,92 +88,95 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       });
   }
 
-  promptArtifactCrudVars() {
-    let modelList = [];
-    let repositoryList = [];
+  async promptArtifactCrudVars() {
+    // let modelList = [];
+    // let repositoryList = [];
     if (
       !this.artifactInfo.controllerType ||
       this.artifactInfo.controllerType === ControllerGenerator.BASIC
     ) {
       return;
     }
-    return utils
-      .getArtifactList(this.artifactInfo.modelDir, 'model')
-      .then(list => {
-        if (_.isEmpty(list)) {
-          throw new Error(`No models found in ${this.artifactInfo.modelDir}`);
-        }
-        modelList = list;
-        return utils.getArtifactList(
-          this.artifactInfo.repositoryDir,
-          'repository',
-          true,
-        );
-      })
-      .then(list => {
-        if (_.isEmpty(list)) {
-          throw new Error(
-            `No repositories found in ${this.artifactInfo.repositoryDir}`,
-          );
-        }
-        repositoryList = list;
-        return this.prompt([
-          {
-            type: 'list',
-            name: 'modelName',
-            message:
-              'What is the name of the model to use with this CRUD repository?',
-            choices: modelList,
-            when: this.artifactInfo.modelName === undefined,
-            default: modelList[0],
-            validate: utils.validateClassName,
-          },
-          {
-            type: 'list',
-            name: 'repositoryName',
-            message: 'What is the name of your CRUD repository?',
-            choices: repositoryList,
-            when: this.artifactInfo.repositoryName === undefined,
-            default: repositoryList[0],
-            validate: utils.validateClassName,
-          },
-          {
-            type: 'list',
-            name: 'idType',
-            message: 'What is the type of your ID?',
-            choices: ['number', 'string', 'object'],
-            when: this.artifactInfo.idType === undefined,
-            default: 'number',
-          },
-          {
-            type: 'input',
-            name: 'httpPathName',
-            message: 'What is the base HTTP path name of the CRUD operations?',
-            when: this.artifactInfo.httpPathName === undefined,
-            default: answers =>
-              utils.prependBackslash(
-                utils.pluralize(utils.urlSlug(answers.modelName)),
-              ),
-            validate: utils.validateUrlSlug,
-            filter: utils.prependBackslash,
-          },
-        ]).then(props => {
-          debug(`props: ${inspect(props)}`);
-          Object.assign(this.artifactInfo, props);
-          // Ensure that the artifact names are valid.
-          [
-            this.artifactInfo.name,
-            this.artifactInfo.modelName,
-            this.artifactInfo.repositoryName,
-          ].forEach(item => {
-            item = utils.toClassName(item);
-          });
-          // Create camel-case names for variables.
-          this.artifactInfo.repositoryNameCamel = utils.camelCase(
-            this.artifactInfo.repositoryName,
-          );
-          return props;
+    const modelList = await utils.getArtifactList(
+      this.artifactInfo.modelDir,
+      'model',
+    );
+    const repositoryList = await utils.getArtifactList(
+      this.artifactInfo.repositoryDir,
+      'repository',
+      true,
+    );
+    if (_.isEmpty(modelList)) {
+      throw new Error(
+        `No models found in ${
+          this.artifactInfo.modelDir
+        }. Please visit htpp://loopback.io/doc/en/lb4/Controller-generator.html for information on how models are discovered`,
+      );
+    }
+    if (_.isEmpty(repositoryList)) {
+      throw new Error(
+        `No repositories found in ${
+          this.artifactInfo.repositoryDir
+        }. Please visit htpp://loopback.io/doc/en/lb4/Controller-generator.html for information on how repositories are discovered`,
+      );
+    }
+    return this.prompt([
+      {
+        type: 'list',
+        name: 'modelName',
+        message:
+          'What is the name of the model to use with this CRUD repository?',
+        choices: modelList,
+        when: this.artifactInfo.modelName === undefined,
+        default: modelList[0],
+        validate: utils.validateClassName,
+      },
+      {
+        type: 'list',
+        name: 'repositoryName',
+        message: 'What is the name of your CRUD repository?',
+        choices: repositoryList,
+        when: this.artifactInfo.repositoryName === undefined,
+        default: repositoryList[0],
+        validate: utils.validateClassName,
+      },
+      {
+        type: 'list',
+        name: 'idType',
+        message: 'What is the type of your ID?',
+        choices: ['number', 'string', 'object'],
+        when: this.artifactInfo.idType === undefined,
+        default: 'number',
+      },
+      {
+        type: 'input',
+        name: 'httpPathName',
+        message: 'What is the base HTTP path name of the CRUD operations?',
+        when: this.artifactInfo.httpPathName === undefined,
+        default: answers =>
+          utils.prependBackslash(
+            utils.pluralize(utils.urlSlug(answers.modelName)),
+          ),
+        validate: utils.validateUrlSlug,
+        filter: utils.prependBackslash,
+      },
+    ])
+      .then(props => {
+        debug(`props: ${inspect(props)}`);
+        Object.assign(this.artifactInfo, props);
+        // Ensure that the artifact names are valid.
+        [
+          this.artifactInfo.name,
+          this.artifactInfo.modelName,
+          this.artifactInfo.repositoryName,
+        ].forEach(item => {
+          item = utils.toClassName(item);
         });
+        // Create camel-case names for variables.
+        this.artifactInfo.repositoryNameCamel = utils.camelCase(
+          this.artifactInfo.repositoryName,
+        );
+        return props;
       })
       .catch(err => {
         debug(`Error during prompt for controller variables: ${err}`);

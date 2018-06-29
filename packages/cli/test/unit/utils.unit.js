@@ -197,7 +197,7 @@ describe('Utils', () => {
   });
 
   describe('findArtifactPaths', () => {
-    it('returns all matching paths of type', () => {
+    it('returns all matching paths of type', async () => {
       const expected = [
         path.join('tmp', 'app', 'models', 'foo.model.js'),
         path.join('tmp', 'app', 'models', 'baz.model.js'),
@@ -211,74 +211,67 @@ describe('Utils', () => {
         ].concat(expected);
       };
 
-      return utils
-        .findArtifactPaths(path.join('fake', 'path'), 'model', reader)
-        .then(results => {
-          expect(results).to.eql(expected);
-        });
+      const results = await utils.findArtifactPaths(
+        path.join('fake', 'path'),
+        'model',
+        reader,
+      );
+      expect(results).to.eql(expected);
     });
   });
   describe('getArtifactList', () => {
     const expectedModels = ['Foo', 'Bar'];
     const expectedRepos = ['FooRepository', 'BarRepository'];
-    it('finds JS models', () => {
+    it('finds JS models', async () => {
       const files = [
         path.join('tmp', 'app', 'foo.model.js'),
         path.join('tmp', 'app', 'bar.model.js'),
         path.join('tmp', 'app', 'README.md'),
       ];
-      return verifyArtifactList('model', 'models', false, files).then(
-        results => {
-          expect(results).to.eql(expectedModels);
-        },
-      );
+      const results = await verifyArtifactList('model', 'models', false, files);
+      expect(results).to.eql(expectedModels);
     });
 
-    it('finds TS models', () => {
+    it('finds TS models', async () => {
       const files = [
         path.join('tmp', 'app', 'foo.model.ts'),
         path.join('tmp', 'app', 'bar.model.ts'),
         path.join('tmp', 'app', 'README.md'),
       ];
-      return verifyArtifactList('model', 'models', false, files).then(
-        results => {
-          expect(results).to.eql(expectedModels);
-        },
-      );
+      const results = await verifyArtifactList('model', 'models', false, files);
+      expect(results).to.eql(expectedModels);
     });
 
-    it('finds JS repositories', () => {
+    it('finds JS repositories', async () => {
       const files = [
         path.join('tmp', 'app', 'foo.repository.js'),
         path.join('tmp', 'app', 'bar.repository.js'),
         path.join('tmp', 'app', 'foo.model.js'),
       ];
-      return verifyArtifactList(
+      const results = await verifyArtifactList(
         'repository',
         'repositories',
         true,
         files,
         expectedRepos,
-      ).then(results => {
-        expect(results).to.eql(expectedRepos);
-      });
+      );
+      expect(results).to.eql(expectedRepos);
     });
 
-    it('finds TS repositories', () => {
+    it('finds TS repositories', async () => {
       const files = [
         path.join('tmp', 'app', 'foo.repository.ts'),
         path.join('tmp', 'app', 'bar.repository.ts'),
         path.join('tmp', 'app', 'foo.model.ts'),
       ];
-      return verifyArtifactList(
+      const results = await verifyArtifactList(
         'repository',
         'repositories',
         true,
         files,
         expectedRepos,
-      ).then(results => {
-        expect(results).to.eql(expectedRepos);
-      });
+      );
+      expect(results).to.eql(expectedRepos);
     });
 
     /**
@@ -292,12 +285,17 @@ describe('Utils', () => {
      * (ex. the "foo" repository is FooRepository)
      * @param {string[]} files An array of fake filepaths to test with
      */
-    function verifyArtifactList(artifactType, folder, suffix, files) {
+    async function verifyArtifactList(artifactType, folder, suffix, files) {
       const reader = () => {
         return files;
       };
       const artifactPath = path.join('tmp', 'app', folder);
-      return utils.getArtifactList(artifactPath, artifactType, suffix, reader);
+      return await utils.getArtifactList(
+        artifactPath,
+        artifactType,
+        suffix,
+        reader,
+      );
     }
   });
 
