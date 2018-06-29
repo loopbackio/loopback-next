@@ -69,6 +69,20 @@ to select:
 - The repository for this model that provides datasource connectivity
 - The REST path name to host the endpoints on
 
+The prompts that list out the models and repositories to choose from to build
+the controller with are chosen from the existing model/repository files on disc.
+From the LoopBack 4 project that the CLI is run, the CLI tool will search for
+file names ending with the following strings under `src/models` and
+`src/repositories`: `model.ts`/`model.js` and `repository.ts`/`repository.ts`.
+Files that match these patterns will then be identified based on the string
+before the first `.` separator.
+
+{% include note.html content="
+Please note that the model and repository typing information will be based on
+how the model/repository files are named; the CLI tooling does not read the
+actual artifact class names inside the files.
+" %}
+
 {% include warning.html content="
 If you do not have a model and repository to select,
 then you will receive an error!
