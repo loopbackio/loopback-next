@@ -180,17 +180,16 @@ exports.StatusConflicter = class StatusConflicter extends Conflicter {
  * paths. Must return a Promise.
  * @returns {Promise<string[]>} The filtered list of paths.
  */
-exports.findArtifactPaths = function(path, artifactType, reader) {
+exports.findArtifactPaths = async function(path, artifactType, reader) {
   const readdir = reader || readdirAsync;
   debug(`Finding artifact paths at: ${path}`);
+
   // Wrapping readdir in case it's not a promise.
-  return Promise.resolve(readdir(path)).then(files => {
-    return _.filter(files, f => {
-      return (
-        _.endsWith(f, `${artifactType}.js`) ||
-        _.endsWith(f, `${artifactType}.ts`)
-      );
-    });
+  const files = await readdir(path);
+  return _.filter(files, f => {
+    return (
+      _.endsWith(f, `${artifactType}.js`) || _.endsWith(f, `${artifactType}.ts`)
+    );
   });
 };
 /**
@@ -204,16 +203,15 @@ exports.findArtifactPaths = function(path, artifactType, reader) {
  * @param {Function} reader An alternate function to replace the promisified
  * fs.readdir (useful for testing and for custom overrides).
  */
-exports.getArtifactList = function(dir, artifactType, addSuffix, reader) {
-  return exports.findArtifactPaths(dir, artifactType, reader).then(paths => {
-    debug(`Filtering artifact paths: ${paths}`);
-    return paths.map(p => {
-      const result = _.first(_.split(_.last(_.split(p, path.sep)), '.'));
-      //
-      return addSuffix
-        ? exports.toClassName(result) + exports.toClassName(artifactType)
-        : exports.toClassName(result);
-    });
+exports.getArtifactList = async function(dir, artifactType, addSuffix, reader) {
+  const paths = await exports.findArtifactPaths(dir, artifactType, reader);
+  debug(`Filtering artifact paths: ${paths}`);
+  return paths.map(p => {
+    const result = _.first(_.split(_.last(_.split(p, path.sep)), '.'));
+    //
+    return addSuffix
+      ? exports.toClassName(result) + exports.toClassName(artifactType)
+      : exports.toClassName(result);
   });
 };
 
