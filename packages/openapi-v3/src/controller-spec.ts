@@ -178,16 +178,34 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
         if (!spec.components.schemas) {
           spec.components.schemas = {};
         }
+        if (p.name in spec.components.schemas) {
+          // Preserve user-provided definitions
+          debug(
+            '    skipping parameter type %j as already defined',
+            p.name || p,
+          );
+          continue;
+        }
         const jsonSchema = getJsonSchema(p);
         const openapiSchema = jsonToSchemaObject(jsonSchema);
+        const outputSchemas = spec.components.schemas;
         if (openapiSchema.definitions) {
           for (const key in openapiSchema.definitions) {
-            spec.components.schemas[key] = openapiSchema.definitions[key];
+            // Preserve user-provided definitions
+            if (key in outputSchemas) continue;
+            const relatedSchema = openapiSchema.definitions[key];
+            debug(
+              '    defining referenced schema for %j: %j',
+              key,
+              relatedSchema,
+            );
+            outputSchemas[key] = relatedSchema;
           }
           delete openapiSchema.definitions;
         }
 
-        spec.components.schemas[p.name] = openapiSchema;
+        debug('    defining schema for %j: %j', p.name, openapiSchema);
+        outputSchemas[p.name] = openapiSchema;
         break;
       }
     }

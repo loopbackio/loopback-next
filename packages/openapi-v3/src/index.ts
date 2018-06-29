@@ -6,3 +6,5 @@
 export * from './decorators';
 export * from './controller-spec';
 export * from './json-to-schema';
+
+export * from '@loopback/repository-json-schema';
