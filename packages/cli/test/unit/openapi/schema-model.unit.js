@@ -210,8 +210,8 @@ describe('schema to model', () => {
         import: "import {Address} from './address.model';",
         kind: 'class',
         declaration:
-          '{\n  street?: string;\n  city?: string;\n  state?: string;\n' +
-          '  zipCode?: string;\n}',
+          '{\n  street?: string;\n  city?: string;\n  state?: string;\n  ' +
+          'zipCode?: string;\n}',
         signature: 'Address',
       },
       {
@@ -248,8 +248,8 @@ describe('schema to model', () => {
         import: "import {Customer} from './customer.model';",
         kind: 'class',
         declaration:
-          "{\n  id: number;\n  'first-name'?: string;\n  " +
-          "'last-name'?: Name;\n  addresses?: Address[];\n}",
+          "{\n  id: number;\n  'first-name'?: string;\n  'last-name'?: " +
+          'Name;\n  addresses?: Address[];\n}',
         signature: 'Customer',
       },
     ]);

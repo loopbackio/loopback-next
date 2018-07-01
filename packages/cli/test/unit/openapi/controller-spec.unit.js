@@ -18,36 +18,56 @@ describe('openapi to controllers/models', () => {
     expect(customerSepc.controllerSpecs).to.eql([
       {
         tag: 'Customer',
-        className: 'CustomerController',
         description: 'Customer resource',
+        className: 'CustomerController',
         imports: ["import {Customer} from '../models/customer.model';"],
         methods: [
           {
             description: 'Returns all customers',
+            comments: [
+              'Returns all customers',
+              '\n',
+              '@param _if if condition',
+              '@param limit maximum number of results to return',
+              '@param accessToken Access token',
+              '@returns customer response',
+            ],
             decoration: "@operation('get', '/customers')",
             signature:
               "async getCustomers(@param({name: 'if', in: 'query'}) _if: " +
               "string[], @param({name: 'limit', in: 'query'}) limit: number, " +
-              "@param({name: 'access-token', in: 'query'}) " +
-              'accessToken: string): ' +
-              'Promise<Customer[]>',
+              "@param({name: 'access-token', in: 'query'}) accessToken: " +
+              'string): Promise<Customer[]>',
           },
           {
             description: 'Creates a new customer',
+            comments: [
+              'Creates a new customer',
+              '\n',
+              '@param body Customer to add',
+              '@param accessToken Access token',
+              '@returns customer response',
+            ],
             decoration: "@operation('post', '/customers')",
             signature:
               'async createCustomer(@requestBody() body: Customer, ' +
-              "@param({name: 'access-token', " +
-              "in: 'query'}) accessToken: string): Promise<Customer>",
+              "@param({name: 'access-token', in: 'query'}) accessToken: " +
+              'string): Promise<Customer>',
           },
           {
             description: 'Returns a customer based on a single ID',
+            comments: [
+              'Returns a customer based on a single ID',
+              '\n',
+              '@param id ID of customer to fetch',
+              '@returns customer response',
+            ],
             decoration: "@operation('get', '/customers/{id}')",
-            implementation:
-              "return {id: id, 'first-name': 'John', last-name: 'Smith'};",
             signature:
               "async findCustomerById(@param({name: 'id', in: 'path'}) " +
               'id: number): Promise<Customer>',
+            implementation:
+              "return {id: id, 'first-name': 'John', last-name: 'Smith'};",
           },
         ],
       },
