@@ -149,6 +149,7 @@ function getMethodName(opSpec) {
  */
 function buildMethodSpec(controllerSpec, op, options) {
   const methodName = getMethodName(op.spec);
+  const comments = [];
   let args = [];
   const parameters = op.spec.parameters;
   // Keep track of param names to avoid duplicates
@@ -163,6 +164,7 @@ function buildMethodSpec(controllerSpec, op, options) {
       }
       const pType = mapSchemaType(p.schema, options);
       addImportsForType(pType);
+      comments.push(`@param ${name} ${p.description || ''}`);
       return `@param({name: '${p.name}', in: '${p.in}'}) ${name}: ${
         pType.signature
       }`;
@@ -195,6 +197,9 @@ function buildMethodSpec(controllerSpec, op, options) {
     args.unshift(
       `@requestBody(${bodySpec}) ${bodyParam}: ${bodyType.signature}`,
     );
+    comments.unshift(
+      `@param ${bodyName} ${op.spec.requestBody.description || ''}`,
+    );
   }
   let returnType = {signature: 'any'};
   const responses = op.spec.responses;
@@ -212,20 +217,24 @@ function buildMethodSpec(controllerSpec, op, options) {
      */
     for (const code in responses) {
       if (isExtension(code)) continue;
-      if (code !== '200') continue;
+      if (code !== '200' && code !== '201') continue;
       const content = responses[code].content;
       const jsonType = content && content['application/json'];
       if (jsonType && jsonType.schema) {
         returnType = mapSchemaType(jsonType.schema, options);
         addImportsForType(returnType);
+        comments.push(`@returns ${responses[code].description || ''}`);
+        break;
       }
     }
   }
   const signature = `async ${methodName}(${args.join(', ')}): Promise<${
     returnType.signature
   }>`;
+  comments.unshift(op.spec.description || '', '\n');
   const methodSpec = {
     description: op.spec.description,
+    comments,
     decoration: `@operation('${op.verb}', '${op.path}')`,
     signature,
   };

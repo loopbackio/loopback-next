@@ -18,7 +18,9 @@ export class <%- className %> {
 
   <%_ for (const m of methods) { -%>
   /**
-   * <%- m.description %>
+  <%_ for (const c of m.comments) { -%>
+   * <%- c %>
+  <%_ } -%>
    */
   <%- m.decoration %>
   <%- m.signature %> {
