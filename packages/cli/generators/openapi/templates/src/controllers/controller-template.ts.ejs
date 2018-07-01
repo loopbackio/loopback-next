@@ -1,5 +1,5 @@
 /* tslint:disable:no-any */
-import {operation, param} from '@loopback/rest';
+import {operation, param, requestBody} from '@loopback/rest';
 <%_
 imports.forEach(i => {
 -%>
@@ -22,7 +22,7 @@ export class <%- className %> {
    */
   <%- m.decoration %>
   <%- m.signature %> {
-    throw new Error('Not implemented');
+    <%- m.implementation || "throw new Error('Not implemented');" %>
   }
 
   <%_ } -%>

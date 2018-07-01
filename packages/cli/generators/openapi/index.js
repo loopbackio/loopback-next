@@ -108,6 +108,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     if (this.shouldExit()) return false;
     this._generateModels();
     this._generateControllers();
+    await this._updateIndex();
   }
 
   _generateControllers() {
@@ -145,9 +146,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     }
   }
 
-  async end() {
-    await super.end();
-    if (this.shouldExit()) return;
+  async _updateIndex() {
     const targetDir = this.destinationPath(`src/controllers`);
     for (const c of this.selectedControllers) {
       // Check all files being generated to ensure they succeeded
@@ -156,5 +155,10 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
         await updateIndex(targetDir, c.fileName);
       }
     }
+  }
+
+  async end() {
+    await super.end();
+    if (this.shouldExit()) return;
   }
 };

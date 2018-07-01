@@ -17,6 +17,7 @@ const {
   camelCase,
   escapeIdentifier,
   escapePropertyOrMethodName,
+  toJsonStr,
 } = require('./utils');
 
 const HTTP_VERBS = [
@@ -150,9 +151,9 @@ function buildMethodSpec(controllerSpec, op, options) {
   const methodName = getMethodName(op.spec);
   let args = [];
   const parameters = op.spec.parameters;
+  // Keep track of param names to avoid duplicates
+  const paramNames = {};
   if (parameters) {
-    // Keep track of param names to avoid duplicates
-    const paramNames = {};
     args = parameters.map(p => {
       const name = escapeIdentifier(p.name);
       if (name in paramNames) {
@@ -167,7 +168,35 @@ function buildMethodSpec(controllerSpec, op, options) {
       }`;
     });
   }
-  let returnType = 'any';
+  if (op.spec.requestBody) {
+    /**
+     * requestBody:
+     *  description: Pet to add to the store
+     *  required: true
+     *  content:
+     *    application/json:
+     *      schema:
+     *        $ref: '#/components/schemas/NewPet'
+     */
+    let bodyType = {signature: 'any'};
+    const content = op.spec.requestBody.content;
+    const jsonType = content && content['application/json'];
+    if (jsonType && jsonType.schema) {
+      bodyType = mapSchemaType(jsonType.schema, options);
+      addImportsForType(bodyType);
+    }
+    let bodyName = 'body';
+    if (bodyName in paramNames) {
+      bodyName = `${bodyName}${paramNames[bodyName]++}`;
+    }
+    const bodyParam = bodyName; // + (op.spec.requestBody.required ? '' : '?');
+    // Add body as the 1st param
+    const bodySpec = ''; // toJsonStr(op.spec.requestBody);
+    args.unshift(
+      `@requestBody(${bodySpec}) ${bodyParam}: ${bodyType.signature}`,
+    );
+  }
+  let returnType = {signature: 'any'};
   const responses = op.spec.responses;
   if (responses) {
     /**
@@ -195,11 +224,15 @@ function buildMethodSpec(controllerSpec, op, options) {
   const signature = `async ${methodName}(${args.join(', ')}): Promise<${
     returnType.signature
   }>`;
-  return {
+  const methodSpec = {
     description: op.spec.description,
     decoration: `@operation('${op.verb}', '${op.path}')`,
     signature,
   };
+  if (op.spec['x-implementation']) {
+    methodSpec.implementation = op.spec['x-implementation'];
+  }
+  return methodSpec;
 
   function addImportsForType(typeSpec) {
     if (typeSpec.className && typeSpec.import) {

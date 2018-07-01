@@ -180,6 +180,41 @@ describe('schema to model', () => {
         signature: 'Name',
       },
       {
+        description: 'Address',
+        name: 'Address',
+        className: 'Address',
+        fileName: 'address.model.ts',
+        properties: [
+          {
+            name: 'street',
+            signature: 'street?: string;',
+            decoration: "@property({name: 'street'})",
+          },
+          {
+            name: 'city',
+            signature: 'city?: string;',
+            decoration: "@property({name: 'city'})",
+          },
+          {
+            name: 'state',
+            signature: 'state?: string;',
+            decoration: "@property({name: 'state'})",
+          },
+          {
+            name: 'zipCode',
+            signature: 'zipCode?: string;',
+            decoration: "@property({name: 'zipCode'})",
+          },
+        ],
+        imports: [],
+        import: "import {Address} from './address.model';",
+        kind: 'class',
+        declaration:
+          '{\n  street?: string;\n  city?: string;\n  state?: string;\n' +
+          '  zipCode?: string;\n}',
+        signature: 'Address',
+      },
+      {
         description: 'Customer',
         name: 'Customer',
         className: 'Customer',
@@ -200,12 +235,21 @@ describe('schema to model', () => {
             signature: "'last-name'?: Name;",
             decoration: "@property({name: 'last-name'})",
           },
+          {
+            name: 'addresses',
+            signature: 'addresses?: Address[];',
+            decoration: "@property.array(Address, {name: 'addresses'})",
+          },
         ],
-        imports: ["import {Name} from './name.model';"],
+        imports: [
+          "import {Name} from './name.model';",
+          "import {Address} from './address.model';",
+        ],
         import: "import {Customer} from './customer.model';",
         kind: 'class',
         declaration:
-          "{\n  id: number;\n  'first-name'?: string;\n  'last-name'?: Name;\n}",
+          "{\n  id: number;\n  'first-name'?: string;\n  " +
+          "'last-name'?: Name;\n  addresses?: Address[];\n}",
         signature: 'Customer',
       },
     ]);

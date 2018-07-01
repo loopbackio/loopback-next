@@ -13,7 +13,7 @@ const {
   createAppProject,
   generateOpenApiArtifacts,
   cleanSandbox,
-  runPrettier,
+  runLintFix,
   runNpmTest,
 } = require('./code-gen-utils');
 
@@ -91,7 +91,7 @@ describe('Real-world APIs', () => {
       console.log('Sandbox app created: %s', sandbox);
       await generateOpenApiArtifacts(sandbox, api.swaggerUrl);
       console.log('OpenApi artifacts generated');
-      await runPrettier(sandbox);
+      await runLintFix(sandbox);
       console.log('Artifacts formatted with prettier');
       await runNpmTest(sandbox);
       console.log('npm test is passing', sandbox);
