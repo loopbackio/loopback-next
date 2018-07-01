@@ -26,8 +26,8 @@ describe('openapi to controllers/models', () => {
             description: 'Returns all customers',
             decoration: "@operation('get', '/customers')",
             signature:
-              "async ''(@param({name: 'if', in: 'query'}) _if: string[], " +
-              "@param({name: 'limit', in: 'query'}) limit: number, " +
+              "async getCustomers(@param({name: 'if', in: 'query'}) _if: " +
+              "string[], @param({name: 'limit', in: 'query'}) limit: number, " +
               "@param({name: 'access-token', in: 'query'}) " +
               'accessToken: string): ' +
               'Promise<Customer[]>',
@@ -36,12 +36,15 @@ describe('openapi to controllers/models', () => {
             description: 'Creates a new customer',
             decoration: "@operation('post', '/customers')",
             signature:
-              "async createCustomer(@param({name: 'access-token', " +
+              'async createCustomer(@requestBody() body: Customer, ' +
+              "@param({name: 'access-token', " +
               "in: 'query'}) accessToken: string): Promise<Customer>",
           },
           {
             description: 'Returns a customer based on a single ID',
             decoration: "@operation('get', '/customers/{id}')",
+            implementation:
+              "return {id: id, 'first-name': 'John', last-name: 'Smith'};",
             signature:
               "async findCustomerById(@param({name: 'id', in: 'path'}) " +
               'id: number): Promise<Customer>',

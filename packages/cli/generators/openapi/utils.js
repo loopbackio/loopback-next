@@ -7,6 +7,7 @@
 const fs = require('fs');
 const util = require('util');
 const _ = require('lodash');
+const json5 = require('json5');
 
 const utils = require('../../lib/utils');
 const debug = require('../../lib/debug')('openapi-generator');
@@ -168,6 +169,10 @@ function escapePropertyOrMethodName(name) {
   return name;
 }
 
+function toJsonStr(val) {
+  return json5.stringify(val, null, 2);
+}
+
 module.exports = {
   isExtension,
   titleCase,
@@ -177,4 +182,5 @@ module.exports = {
   camelCase: _.camelCase,
   escapeIdentifier,
   escapePropertyOrMethodName,
+  toJsonStr,
 };

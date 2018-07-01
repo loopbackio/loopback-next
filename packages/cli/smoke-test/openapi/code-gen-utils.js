@@ -57,8 +57,8 @@ function runNpmTest(sandbox) {
   return runNpmScript(sandbox, ['test']);
 }
 
-function runPrettier(sandbox) {
-  return runNpmScript(sandbox, ['run', 'prettier:fix']);
+function runLintFix(sandbox) {
+  return runNpmScript(sandbox, ['run', 'lint:fix']);
 }
 
 function runNpmScript(sandbox, args) {
@@ -95,5 +95,5 @@ module.exports = {
   generateOpenApiArtifacts,
   cleanSandbox,
   runNpmTest,
-  runPrettier,
+  runLintFix,
 };

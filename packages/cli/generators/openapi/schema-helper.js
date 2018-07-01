@@ -5,18 +5,14 @@
 
 'use strict';
 const util = require('util');
-const json5 = require('json5');
 
 const {
   isExtension,
   titleCase,
   kebabCase,
   escapePropertyOrMethodName,
+  toJsonStr,
 } = require('./utils');
-
-function toJsonStr(val) {
-  return json5.stringify(val, null, 2);
-}
 
 function setImport(typeSpec) {
   if (typeSpec.fileName) {
@@ -165,10 +161,17 @@ function mapObjectType(schema, options) {
       );
       // The property name might have chars such as `-`
       const propName = escapePropertyOrMethodName(p);
+      let propDecoration = `@property({name: '${p}'})`;
+      if (propertyType.itemType && propertyType.itemType.kind === 'class') {
+        // Use `@property.array` for array types
+        propDecoration = `@property.array(${
+          propertyType.itemType.className
+        }, {name: '${p}'})`;
+      }
       const propSpec = {
         name: p,
         signature: `${propName + suffix}: ${propertyType.signature};`,
-        decoration: `@property({name: '${p}'})`,
+        decoration: propDecoration,
       };
       if (schema.properties[p].description) {
         propSpec.description = schema.properties[p].description;
