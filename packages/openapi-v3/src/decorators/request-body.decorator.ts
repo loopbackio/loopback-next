@@ -90,9 +90,11 @@ export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
     const paramTypes = (methodSig && methodSig.parameterTypes) || [];
 
     let paramType = paramTypes[index];
-    let schema = getSchemaForRequestBody(paramType);
+    let schema: SchemaObject;
     requestBodySpec.content = _.mapValues(requestBodySpec.content, c => {
-      c.schema = c.schema || schema;
+      if (!c.schema) {
+        c.schema = schema = schema || getSchemaForRequestBody(paramType);
+      }
       return c;
     });
 
