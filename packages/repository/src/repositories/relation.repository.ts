@@ -16,21 +16,21 @@ import {Filter, Where} from '../query';
 /**
  * CRUD operations for a target repository of a HasMany relation
  */
-export interface HasManyRepository<T extends Entity> {
+export interface HasManyRepository<Target extends Entity> {
   /**
    * Create a target model instance
    * @param targetModelData The target model data
    * @param options Options for the operation
    * @returns A promise which resolves to the newly created target model instance
    */
-  create(targetModelData: Partial<T>, options?: Options): Promise<T>;
+  create(targetModelData: Partial<Target>, options?: Options): Promise<Target>;
   /**
    * Find target model instance(s)
    * @param Filter A filter object for where, order, limit, etc.
    * @param options Options for the operation
    * @returns A promise which resolves with the found target instance(s)
    */
-  find(filter?: Filter, options?: Options): Promise<T[]>;
+  find(filter?: Filter, options?: Options): Promise<Target[]>;
   /**
    * Delete multiple target model instances
    * @param where Instances within the where scope are deleted
@@ -46,17 +46,17 @@ export interface HasManyRepository<T extends Entity> {
    * @returns A promise which resolves the patched target model instances
    */
   patch(
-    dataObject: DataObject<T>,
+    dataObject: DataObject<Target>,
     where?: Where,
     options?: Options,
   ): Promise<number>;
 }
 
 export class DefaultHasManyEntityCrudRepository<
-  T extends Entity,
-  ID,
-  TargetRepository extends EntityCrudRepository<T, ID>
-> implements HasManyRepository<T> {
+  TargetEntity extends Entity,
+  TargetID,
+  TargetRepository extends EntityCrudRepository<TargetEntity, TargetID>
+> implements HasManyRepository<TargetEntity> {
   /**
    * Constructor of DefaultHasManyEntityCrudRepository
    * @param targetRepository the related target model repository instance
@@ -68,14 +68,17 @@ export class DefaultHasManyEntityCrudRepository<
     public constraint: AnyObject,
   ) {}
 
-  async create(targetModelData: Partial<T>, options?: Options): Promise<T> {
+  async create(
+    targetModelData: Partial<TargetEntity>,
+    options?: Options,
+  ): Promise<TargetEntity> {
     return await this.targetRepository.create(
       constrainDataObject(targetModelData, this.constraint),
       options,
     );
   }
 
-  async find(filter?: Filter, options?: Options): Promise<T[]> {
+  async find(filter?: Filter, options?: Options): Promise<TargetEntity[]> {
     return await this.targetRepository.find(
       constrainFilter(filter, this.constraint),
       options,
@@ -90,7 +93,7 @@ export class DefaultHasManyEntityCrudRepository<
   }
 
   async patch(
-    dataObject: Partial<T>,
+    dataObject: Partial<TargetEntity>,
     where?: Where,
     options?: Options,
   ): Promise<number> {
