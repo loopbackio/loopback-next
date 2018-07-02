@@ -11,9 +11,9 @@ import {
   DefaultHasManyEntityCrudRepository,
 } from './relation.repository';
 
-export type HasManyRepositoryFactory<T extends Entity, ID> = (
-  fkValue: ID,
-) => HasManyRepository<T>;
+export type HasManyRepositoryFactory<Target extends Entity, SourceID> = (
+  fkValue: SourceID,
+) => HasManyRepository<Target>;
 
 /**
  * Enforces a constraint on a repository based on a relationship contract
