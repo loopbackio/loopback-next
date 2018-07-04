@@ -71,11 +71,17 @@ to select:
 
 The prompts that list out the models and repositories to choose from to build
 the controller with are chosen from the existing model/repository files on disc.
-From the LoopBack 4 project that the CLI is run, the CLI tool will search for
-file names ending with the following strings under `src/models` and
-`src/repositories`: `model.ts`/`model.js` and `repository.ts`/`repository.ts`.
+From the LoopBack 4 project that the CLI is run in, the CLI tool will search for
+the following files in the LoopBack 4 project it runs in:
+
+- `src/repositories/*.repository.ts`
+- `src/repositores/*.repository.js`
+- `src/models/*.model.ts`
+- `src/models/*.model.js`
+
 Files that match these patterns will then be identified based on the string
-before the first `.` separator.
+before the first `.` separator. For example, file `models/product.model.ts` is
+identified as a source of `Product` model.
 
 {% include note.html content="
 Please note that the model and repository typing information will be based on
