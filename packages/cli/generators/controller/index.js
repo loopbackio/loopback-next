@@ -89,8 +89,6 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   }
 
   async promptArtifactCrudVars() {
-    // let modelList = [];
-    // let repositoryList = [];
     if (
       !this.artifactInfo.controllerType ||
       this.artifactInfo.controllerType === ControllerGenerator.BASIC
@@ -108,16 +106,18 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
     );
     if (_.isEmpty(modelList)) {
       throw new Error(
-        `No models found in ${
-          this.artifactInfo.modelDir
-        }. Please visit htpp://loopback.io/doc/en/lb4/Controller-generator.html for information on how models are discovered`,
+        `No models found in ${this.artifactInfo.modelDir}.
+        ${chalk.yellow(
+          'Please visit http://loopback.io/doc/en/lb4/Controller-generator.html for information on how models are discovered',
+        )}`,
       );
     }
     if (_.isEmpty(repositoryList)) {
       throw new Error(
-        `No repositories found in ${
-          this.artifactInfo.repositoryDir
-        }. Please visit htpp://loopback.io/doc/en/lb4/Controller-generator.html for information on how repositories are discovered`,
+        `No repositories found in ${this.artifactInfo.repositoryDir}.
+        ${chalk.yellow(
+          'Please visit http://loopback.io/doc/en/lb4/Controller-generator.html for information on how repositories are discovered',
+        )}`,
       );
     }
     return this.prompt([
