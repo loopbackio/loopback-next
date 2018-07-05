@@ -7,18 +7,26 @@ import {
   RequestBodyObject,
   SchemaObject,
   SchemasObject,
-  isReferenceObject,
 } from '@loopback/openapi-v3-types';
 import * as AJV from 'ajv';
 import * as debugModule from 'debug';
 import * as util from 'util';
 import {HttpErrors} from '..';
-import {RestHttpErrors} from '../coercion/rest-http-error';
+import {RestHttpErrors} from '..';
+import {AnyObject} from '@loopback/repository';
 
 const toJsonSchema = require('openapi-schema-to-json-schema');
-
 const debug = debugModule('loopback:rest:validation');
 
+/**
+ * Check whether the request body is valid according to the provided OpenAPI schema.
+ * The JSON schema is generated from the OpenAPI schema which is typically defined
+ * by `@requestBody()`.
+ * The validation leverages AJS shema validator.
+ * @param body The body data from an HTTP request.
+ * @param requestBodySpec The OpenAPI requestBody specification defined in `@requestBody()`.
+ * @param globalSchemas The referenced schemas generated from `OpenAPISpec.components.schemas`.
+ */
 export function validateRequestBody(
   // tslint:disable-next-line:no-any
   body: any,
@@ -28,47 +36,33 @@ export function validateRequestBody(
   if (requestBodySpec && requestBodySpec.required && body == undefined)
     throw new HttpErrors.BadRequest('Request body is required');
 
-  const schema = getRequestBodySchema(requestBodySpec, globalSchemas || {});
+  const schema = getRequestBodySchema(requestBodySpec);
   debug('Request body schema: %j', util.inspect(schema, {depth: null}));
   if (!schema) return;
 
   const jsonSchema = convertToJsonSchema(schema);
-  validateValueAgainstJsonSchema(body, jsonSchema);
+  validateValueAgainstJsonSchema(body, jsonSchema, globalSchemas);
 }
 
+/**
+ * Get the schema from requestBody specification.
+ * @param requestBodySpec The requestBody specification defined in `@requestBody()`.
+ */
 function getRequestBodySchema(
   requestBodySpec: RequestBodyObject | undefined,
-  globalSchemas: SchemasObject,
 ): SchemaObject | undefined {
   if (!requestBodySpec) return;
 
   const content = requestBodySpec.content;
   // FIXME(bajtos) we need to find the entry matching the content-type
   // header from the incoming request (e.g. "application/json").
-  const schema = content[Object.keys(content)[0]].schema;
-  if (!schema || !isReferenceObject(schema)) {
-    return schema;
-  }
-
-  return resolveSchemaReference(schema.$ref, globalSchemas);
+  return content[Object.keys(content)[0]].schema;
 }
 
-function resolveSchemaReference(ref: string, schemas: SchemasObject) {
-  // A temporary solution for resolving schema references produced
-  // by @loopback/repository-json-schema. In the future, we should
-  // support arbitrary references anywhere in the OpenAPI spec.
-  // See https://github.com/strongloop/loopback-next/issues/435
-  const match = ref.match(/^#\/components\/schemas\/([^\/]+)$/);
-  if (!match) throw new Error(`Unsupported schema reference format: ${ref}`);
-  const schemaId = match[1];
-
-  debug(`Resolving schema reference ${ref} (schema id ${schemaId}).`);
-  if (!(schemaId in schemas)) {
-    throw new Error(`Invalid reference ${ref} - schema ${schemaId} not found.`);
-  }
-  return schemas[schemaId];
-}
-
+/**
+ * Convert an OpenAPI schema to the corresponding JSON schema.
+ * @param openapiSchema The OpenAPI schema to convert.
+ */
 function convertToJsonSchema(openapiSchema: SchemaObject) {
   const jsonSchema = toJsonSchema(openapiSchema);
   delete jsonSchema['$schema'];
@@ -79,11 +73,28 @@ function convertToJsonSchema(openapiSchema: SchemaObject) {
   return jsonSchema;
 }
 
-// tslint:disable-next-line:no-any
-function validateValueAgainstJsonSchema(body: any, schema: any) {
-  const ajv = new AJV({allErrors: true});
+/**
+ * Validate the request body data against JSON schema.
+ * @param body The request body data.
+ * @param schema The JSON schema used to perform the validation.
+ * @param globalSchemas Schema references.
+ */
+function validateValueAgainstJsonSchema(
+  // tslint:disable-next-line:no-any
+  body: any,
+  jsonSchema: AnyObject,
+  globalSchemas?: SchemasObject,
+) {
+  const schemaWithRef = Object.assign({}, jsonSchema);
+  schemaWithRef.components = {
+    schemas: globalSchemas,
+  };
+
+  const ajv = new AJV({
+    allErrors: true,
+  });
   try {
-    if (ajv.validate(schema, body)) {
+    if (ajv.validate(schemaWithRef, body)) {
       debug('Request body passed AJV validation.');
       return;
     }
