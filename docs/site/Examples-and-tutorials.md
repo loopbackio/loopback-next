@@ -16,6 +16,9 @@ LoopBack 4 comes with the following example projects:
 - **[todo](todo-tutorial.md)**: Tutorial on building a simple application with
   LoopBack 4 key concepts using bottom-up approach.
 
+- **[todo-list](todo-list-tutorial.md)**: Tutorial on introducing related models
+  and building their API from the Todo tutorial
+
 - **[log-extension](https://github.com/strongloop/loopback-next/tree/master/examples/log-extension)**:
   Tutorial on building a log extension.
 
@@ -25,11 +28,12 @@ LoopBack 4 comes with the following example projects:
 You can download any of the example projects usig our CLI tool `lb4`:
 
 ```sh
-lb4 example
+$ lb4 example
 ? What example would you like to clone? (Use arrow keys)
-❯ todo: Tutorial example on how to build an application with LoopBack 4.
-  hello-world: A simple hello-world Application using LoopBack 4
-  log-extension: An example extension project for LoopBack 4
+> todo: Tutorial example on how to build an application with LoopBack 4.
+  todo-list: Continuation of the todo example using relations in LoopBack 4.
+  hello-world: A simple hello-world Application using LoopBack 4.
+  log-extension: An example extension project for LoopBack 4.
   rpc-server: A basic RPC server using a made-up protocol.
 ```
 

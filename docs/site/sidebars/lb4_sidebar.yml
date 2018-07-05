@@ -57,6 +57,23 @@ children:
       url: todo-tutorial-geocoding-service.html
       output: 'web, pdf'
 
+  - title: 'TodoList Tutorial'
+    url: todo-list-tutorial.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'Add TodoList Model'
+      url: todo-list-tutorial-model.html
+      output: 'web, pdf'
+
+    - title: 'Add TodoList Repository'
+      url: todo-list-tutorial-repository.html
+      output: 'web, pdf'
+
+    - title: 'Add TodoList Controller'
+      url: todo-list-tutorial-controller.html
+      output: 'web, pdf'
+
 - title: 'Key concepts'
   url: Concepts.html
   output: 'web, pdf'
