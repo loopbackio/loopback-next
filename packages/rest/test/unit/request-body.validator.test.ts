@@ -6,7 +6,11 @@
 import {expect} from '@loopback/testlab';
 import {validateRequestBody} from '../../src/validation/request-body.validator';
 import {aBodySpec} from '../helpers';
-import {RequestBodyObject, SchemasObject} from '@loopback/openapi-v3-types';
+import {
+  RequestBodyObject,
+  SchemaObject,
+  SchemasObject,
+} from '@loopback/openapi-v3-types';
 
 const TODO_SCHEMA = {
   title: 'Todo',
@@ -16,6 +20,24 @@ const TODO_SCHEMA = {
     isComplete: {type: 'boolean'},
   },
   required: ['title'],
+};
+
+// a schema that contains a property with referenced schema
+const ACCOUNT_SCHEMA = {
+  title: 'Account',
+  properties: {
+    title: {type: 'string'},
+    address: {$ref: '#/components/schemas/Address'},
+  },
+};
+
+const ADDRESS_SCHEMA = {
+  title: 'Address',
+  properties: {
+    city: {type: 'string'},
+    unit: {type: 'number'},
+    isOwner: {type: 'boolean'},
+  },
 };
 
 describe('validateRequestBody', () => {
@@ -66,7 +88,7 @@ describe('validateRequestBody', () => {
 
   it('rejects empty values when body is required', () => {
     verifyValidationRejectsInputWithError(
-      /body is required/i,
+      /body is required/,
       null,
       aBodySpec(TODO_SCHEMA, {required: true}),
     );
@@ -77,7 +99,7 @@ describe('validateRequestBody', () => {
   });
 
   it('rejects invalid values for number properties', () => {
-    const schema: SchemasObject = {
+    const schema: SchemaObject = {
       properties: {
         count: {type: 'number'},
       },
@@ -87,6 +109,91 @@ describe('validateRequestBody', () => {
       {count: 'string value'},
       aBodySpec(schema),
     );
+  });
+
+  context('rejects array of data with wrong type - ', () => {
+    it('primitive types', () => {
+      const schema: SchemaObject = {
+        type: 'object',
+        properties: {
+          orders: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+        },
+      };
+      verifyValidationRejectsInputWithError(
+        /orders\[1\] should be string/,
+        {orders: ['order1', 1]},
+        aBodySpec(schema),
+      );
+    });
+
+    it('first level $ref', () => {
+      const schema: SchemaObject = {
+        type: 'array',
+        items: {
+          $ref: '#/components/schemas/Todo',
+        },
+      };
+      verifyValidationRejectsInputWithError(
+        /required property/,
+        [{title: 'a good todo'}, {description: 'a todo item missing title'}],
+        aBodySpec(schema),
+        {Todo: TODO_SCHEMA},
+      );
+    });
+
+    it('nested $ref in schema', () => {
+      const schema: SchemaObject = {
+        type: 'object',
+        properties: {
+          todos: {
+            type: 'array',
+            items: {
+              $ref: '#/components/schemas/Todo',
+            },
+          },
+        },
+      };
+      verifyValidationRejectsInputWithError(
+        /todos\[1\] should have required property \'title\'/,
+        {
+          todos: [
+            {title: 'a good todo'},
+            {description: 'a todo item missing title'},
+          ],
+        },
+        aBodySpec(schema),
+        {Todo: TODO_SCHEMA},
+      );
+    });
+
+    it('nested $ref in reference', () => {
+      const schema: SchemaObject = {
+        type: 'object',
+        properties: {
+          accounts: {
+            type: 'array',
+            items: {
+              $ref: '#/components/schemas/Account',
+            },
+          },
+        },
+      };
+      verifyValidationRejectsInputWithError(
+        /accounts\[0\]\.address\.city should be string/,
+        {
+          accounts: [
+            {title: 'an account with invalid address', address: {city: 1}},
+          ],
+        },
+        aBodySpec(schema),
+        {Account: ACCOUNT_SCHEMA, Address: ADDRESS_SCHEMA},
+      );
+    });
   });
 });
 

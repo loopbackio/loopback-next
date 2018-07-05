@@ -30,7 +30,7 @@ export * from './rest.application';
 export * from './rest.component';
 export * from './rest.server';
 export * from './sequence';
-export * from './coercion/rest-http-error';
+export * from './rest-http-error';
 
 // export all errors from external http-errors package
 import * as HttpErrors from 'http-errors';
