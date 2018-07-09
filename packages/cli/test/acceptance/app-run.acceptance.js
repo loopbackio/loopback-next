@@ -24,7 +24,7 @@ describe('app-generator (SLOW)', function() {
   };
 
   before('scaffold a new application', async function createAppProject() {
-    // Increase the timeout to 1 minute to accomodate slow CI build machines
+    // Increase the timeout to 1 minute to accommodate slow CI build machines
     this.timeout(60 * 1000);
     await helpers
       .run(generator)

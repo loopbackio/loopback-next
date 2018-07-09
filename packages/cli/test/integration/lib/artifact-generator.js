@@ -58,6 +58,17 @@ module.exports = function(artiGenerator) {
     });
 
     describe('checkLoopBackProject', () => {
+      let gen;
+
+      beforeEach(() => {
+        gen = testUtils.testSetUpGen(artiGenerator);
+        gen.fs.readJSON = sinon.stub(fs, 'readJSON');
+      });
+
+      afterEach(() => {
+        if (gen) gen.fs.readJSON.restore();
+      });
+
       testCheckLoopBack(
         'throws an error if no package.json is present',
         undefined,
@@ -75,23 +86,18 @@ module.exports = function(artiGenerator) {
       );
 
       it('passes if "keywords" maps to "loopback"', () => {
-        let gen = testUtils.testSetUpGen(artiGenerator);
-        gen.fs.readJSON = sinon.stub(fs, 'readJSON');
         gen.fs.readJSON.returns({keywords: ['test', 'loopback']});
         assert.doesNotThrow(() => {
           gen.checkLoopBackProject();
         }, Error);
-        gen.fs.readJSON.restore();
       });
 
       function testCheckLoopBack(testName, obj, expected) {
         it(testName, () => {
-          let gen = testUtils.testSetUpGen(artiGenerator);
           let logs = [];
           gen.log = function(...args) {
             logs = logs.concat(args);
           };
-          gen.fs.readJSON = sinon.stub(fs, 'readJSON');
           gen.fs.readJSON.returns(obj);
           gen.checkLoopBackProject();
           assert(gen.exitGeneration instanceof Error);
@@ -100,18 +106,25 @@ module.exports = function(artiGenerator) {
           assert.deepEqual(logs, [
             chalk.red('Generation is aborted:', gen.exitGeneration),
           ]);
-          gen.fs.readJSON.restore();
         });
       }
     });
 
     describe('promptArtifactName', () => {
-      it('incorporates user input into artifactInfo', () => {
-        let gen = testUtils.testSetUpGen(artiGenerator);
+      let gen;
+
+      beforeEach(() => {
+        gen = testUtils.testSetUpGen(artiGenerator);
         gen.prompt = sinon.stub(gen, 'prompt');
+      });
+
+      afterEach(() => {
+        if (gen) gen.prompt.restore();
+      });
+
+      it('incorporates user input into artifactInfo', () => {
         gen.prompt.resolves({name: 'foobar'});
         return gen.promptArtifactName().then(() => {
-          gen.prompt.restore();
           assert(gen.artifactInfo.name);
           assert(gen.artifactInfo.name === 'foobar');
         });

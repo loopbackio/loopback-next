@@ -81,8 +81,10 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
   }
 
   async end() {
-    const success = await super.end();
-    if (!success) return false;
+    if (this.shouldExit()) {
+      await super.end();
+      return;
+    }
 
     let generationStatus = true;
     // Check all files being generated to ensure they succeeded
@@ -124,6 +126,6 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
       this.log();
     }
 
-    return false;
+    await super.end();
   }
 };

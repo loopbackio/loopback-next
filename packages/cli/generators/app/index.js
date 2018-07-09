@@ -82,8 +82,9 @@ module.exports = class AppGenerator extends ProjectGenerator {
     return super.install();
   }
 
-  end() {
-    if (!super.end()) return false;
+  async end() {
+    await super.end();
+    if (this.shouldExit()) return;
     this.log();
     this.log(
       'Application %s was created in %s.',

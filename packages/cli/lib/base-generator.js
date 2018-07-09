@@ -12,6 +12,7 @@ const path = require('path');
 const fs = require('fs');
 const readline = require('readline');
 const debug = require('./debug')('base-generator');
+const assert = require('assert');
 
 /**
  * Base Generator for LoopBack 4
@@ -42,6 +43,12 @@ module.exports = class BaseGenerator extends Generator {
       alias: 'y',
       description:
         'Skip all confirmation prompts with default or provided value',
+    });
+
+    this.option('format', {
+      type: Boolean,
+      alias: 'f',
+      description: 'Format generated code using npm run lint:fix',
     });
 
     this.artifactInfo = this.artifactInfo || {
@@ -280,6 +287,20 @@ module.exports = class BaseGenerator extends Generator {
       );
       this.exit(err);
     }
+    this.packageJson = pkg;
+  }
+
+  _runNpmScript(projectDir, args) {
+    return new Promise((resolve, reject) => {
+      this.spawnCommand('npm', args, {
+        // Disable stdout
+        stdio: [process.stdin, 'ignore', process.stderr],
+        cwd: projectDir,
+      }).on('close', code => {
+        if (code === 0) resolve();
+        else reject(new Error('npm exit code: ' + code));
+      });
+    });
   }
 
   /**
@@ -292,14 +313,17 @@ module.exports = class BaseGenerator extends Generator {
   /**
    * Print out the exit reason if this generator is told to exit before it ends
    */
-  end() {
+  async end() {
     if (this.shouldExit()) {
       debug(this.exitGeneration);
       this.log(chalk.red('Generation is aborted:', this.exitGeneration));
       // Fail the process
       process.exitCode = 1;
-      return false;
+      return;
     }
-    return true;
+    if (this.options.format) {
+      this.log('Running npm run lint:fix to format the code...');
+      await this._runNpmScript(this.destinationRoot(), ['run', 'lint:fix']);
+    }
   }
 };
