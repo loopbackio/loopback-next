@@ -229,9 +229,8 @@ How to get query string param values.
 
 ### Parsing Requests
 
-{% include content/tbd.html %}
-
-Parsing and validating arguments from the request url, headers, and body.
+Parsing and validating arguments from the request url, headers, and body. See
+page [Parsing requests](Parsing-requests.md)
 
 ### Invoking controller methods
 
