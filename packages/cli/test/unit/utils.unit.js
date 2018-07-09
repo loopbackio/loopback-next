@@ -274,6 +274,16 @@ describe('Utils', () => {
       expect(results).to.eql(expectedRepos);
     });
 
+    it('finds artifacts with hyphens in their names', async () => {
+      const files = [
+        path.join('tmp', 'app', 'foo-bar.model.js'),
+        path.join('tmp', 'app', 'baz.model.js'),
+        path.join('tmp', 'app', 'README.md'),
+      ];
+      const results = await verifyArtifactList('model', 'models', false, files);
+      expect(results).to.eql(['FooBar', 'Baz']);
+    });
+
     /**
      * Testing function for evaluating the lists returned from
      * the getArtifactList function.

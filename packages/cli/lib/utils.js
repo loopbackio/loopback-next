@@ -209,8 +209,8 @@ exports.getArtifactList = async function(dir, artifactType, addSuffix, reader) {
   const paths = await exports.findArtifactPaths(dir, artifactType, reader);
   debug(`Filtering artifact paths: ${paths}`);
   return paths.map(p => {
-    const result = _.first(_.split(_.last(_.split(p, path.sep)), '.'));
-    //
+    const firstWord = _.first(_.split(_.last(_.split(p, path.sep)), '.'));
+    const result = pascalCase(exports.toClassName(firstWord));
     return addSuffix
       ? exports.toClassName(result) + exports.toClassName(artifactType)
       : exports.toClassName(result);
