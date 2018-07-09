@@ -249,6 +249,10 @@ module.exports = class ProjectGenerator extends BaseGenerator {
 
   install() {
     if (this.shouldExit()) return false;
-    this.npmInstall(null, {}, {cwd: this.destinationRoot()});
+    const opts = this.options.npmInstall || {};
+    const spawnOpts = Object.assign({}, this.options.spawn, {
+      cwd: this.destinationRoot(),
+    });
+    this.npmInstall(null, opts, spawnOpts);
   }
 };

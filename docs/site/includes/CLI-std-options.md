@@ -14,6 +14,9 @@
 `-c, --config`
 : JSON file name or value to configure options
 
+`--format`
+: Format generated code using `npm run lint:fix`
+
 For example,
 ```sh
 lb4 app --config config.json
