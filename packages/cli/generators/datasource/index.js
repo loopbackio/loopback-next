@@ -223,26 +223,6 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
     });
   }
 
-  install() {
-    debug('install npm dependencies');
-    const pkgs = [];
-
-    // Connector package.
-    const connector = connectors[this.artifactInfo.connector];
-    if (connector && connector.package) {
-      pkgs.push(
-        connector.package.name +
-          `${connector.package.version ? '@' + connector.package.version : ''}`,
-      );
-
-      debug(`npmModule - ${pkgs[0]}`);
-    }
-
-    pkgs.push('@loopback/repository');
-
-    this.npmInstall(pkgs, {save: true});
-  }
-
   /**
    * Scaffold DataSource related files
    * super.scaffold() doesn't provide a way to rename files -- don't call it
@@ -302,6 +282,35 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
     // Copy Templates
     this.fs.writeJSON(jsonPath, ds);
     this.fs.copyTpl(classTemplatePath, tsPath, this.artifactInfo);
+  }
+
+  install() {
+    if (this.shouldExit()) return false;
+    debug('install npm dependencies');
+    const pkgJson = this.packageJson || {};
+    const deps = pkgJson.dependencies || {};
+    const pkgs = [];
+
+    // Connector package.
+    const connector = connectors[this.artifactInfo.connector];
+    if (connector && connector.package) {
+      if (!deps[connector.package.name]) {
+        pkgs.push(
+          connector.package.name +
+            `${
+              connector.package.version ? '@' + connector.package.version : ''
+            }`,
+        );
+      }
+
+      debug(`npmModule - ${pkgs[0]}`);
+    }
+
+    if (!deps['@loopback/repository']) {
+      pkgs.push('@loopback/repository');
+    }
+
+    if (pkgs.length) this.npmInstall(pkgs, {save: true});
   }
 
   async end() {
