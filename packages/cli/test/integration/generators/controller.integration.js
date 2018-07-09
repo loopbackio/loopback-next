@@ -256,7 +256,7 @@ function checkRestCrudContents() {
   );
   assert.fileContent(
     expectedFile,
-    /\@patch\('\/product-reviews'\)\s{1,}async updateAll\(\s{1,}\@param.query.string\('where'\) where: Where,\s{1,}\@requestBody\(\)/,
+    /\@patch\('\/product-reviews'\)\s{1,}async updateAll\(\s{1,}\@requestBody\(\).*\s{1,}\@param.query.string\('where'\) where\?: Where,/,
   );
   assert.fileContent(
     expectedFile,
