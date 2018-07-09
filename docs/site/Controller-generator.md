@@ -99,7 +99,7 @@ Here's an example of what the template will produce given a `Todo` model and a
 
 ```ts
 import {Filter, Where, repository} from '@loopback/repository';
-import {post, param, get, put, patch, del, requestBody} from '@loopback/rest';
+import {post, param, get, patch, del, requestBody} from '@loopback/rest';
 import {Todo} from '../models';
 import {TodoRepository} from '../repositories';
 
@@ -114,25 +114,25 @@ export class TodoController {
   }
 
   @get('/todos/count')
-  async count(@param.query.string('where') where: Where): Promise<number> {
+  async count(@param.query.string('where') where?: Where): Promise<number> {
     return await this.todoRepository.count(where);
   }
 
   @get('/todos')
-  async find(@param.query.string('filter') filter: Filter): Promise<Todo[]> {
+  async find(@param.query.string('filter') filter?: Filter): Promise<Todo[]> {
     return await this.todoRepository.find(filter);
   }
 
   @patch('/todos')
   async updateAll(
-    @param.query.string('where') where: Where,
     @requestBody() obj: Todo,
+    @param.query.string('where') where?: Where,
   ): Promise<number> {
-    return await this.todoRepository.updateAll(where, obj);
+    return await this.todoRepository.updateAll(obj, where);
   }
 
   @del('/todos')
-  async deleteAll(@param.query.string('where') where: Where): Promise<number> {
+  async deleteAll(@param.query.string('where') where?: Where): Promise<number> {
     return await this.todoRepository.deleteAll(where);
   }
 
