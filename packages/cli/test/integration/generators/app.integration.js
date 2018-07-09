@@ -74,3 +74,37 @@ describe('app-generator with --applicationName', () => {
     );
   });
 });
+
+// The test takes about 1 min to install dependencies
+function testFormat() {
+  before(function() {
+    this.timeout(60 * 1000);
+    return helpers
+      .run(generator)
+      .withOptions({
+        applicationName: 'MyApp',
+        format: true,
+        // Make sure `npm install` happens
+        skipInstall: false,
+        // Disable npm log and progress bar
+        npmInstall: {silent: true, progress: false},
+        // Disable npm stdio
+        spawn: {
+          stdio: 'ignore',
+        },
+      })
+      .withPrompts(props);
+  });
+  it('generates all the proper files', () => {
+    assert.file('src/application.ts');
+    assert.fileContent(
+      'src/application.ts',
+      /class MyApp extends BootMixin\(RestApplication/,
+    );
+  });
+}
+
+// Skip the test for CI
+process.env.CI && !process.env.DEBUG
+  ? describe.skip
+  : describe('app-generator with --format', testFormat);

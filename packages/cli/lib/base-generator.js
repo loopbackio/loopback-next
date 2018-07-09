@@ -47,7 +47,6 @@ module.exports = class BaseGenerator extends Generator {
 
     this.option('format', {
       type: Boolean,
-      alias: 'f',
       description: 'Format generated code using npm run lint:fix',
     });
 
@@ -310,6 +309,24 @@ module.exports = class BaseGenerator extends Generator {
     return !!this.exitGeneration;
   }
 
+  async _runLintFix() {
+    if (this.options.format) {
+      const pkg = this.packageJson || {};
+      if (pkg.scripts && pkg.scripts['lint:fix']) {
+        this.log("Running 'npm run lint:fix' to format the code...");
+        await this._runNpmScript(this.destinationRoot(), [
+          'run',
+          '-s',
+          'lint:fix',
+        ]);
+      } else {
+        this.log(
+          chalk.red("No 'lint:fix' script is configured in package.json."),
+        );
+      }
+    }
+  }
+
   /**
    * Print out the exit reason if this generator is told to exit before it ends
    */
@@ -321,9 +338,6 @@ module.exports = class BaseGenerator extends Generator {
       process.exitCode = 1;
       return;
     }
-    if (this.options.format) {
-      this.log('Running npm run lint:fix to format the code...');
-      await this._runNpmScript(this.destinationRoot(), ['run', 'lint:fix']);
-    }
+    await this._runLintFix();
   }
 };
