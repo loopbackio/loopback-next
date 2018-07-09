@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.16.0"></a>
+# [0.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.15.1...@loopback/rest@0.16.0) (2018-07-09)
+
+
+### Features
+
+* body validation ([d284ad8](https://github.com/strongloop/loopback-next/commit/d284ad8))
+
+
+
+
 <a name="0.15.1"></a>
 ## [0.15.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.15.0...@loopback/rest@0.15.1) (2018-06-28)
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.12.5...@loopback/example-todo@0.13.0) (2018-07-09)
+
+
+### Features
+
+* body validation ([d284ad8](https://github.com/strongloop/loopback-next/commit/d284ad8))
+
+
+
+
 <a name="0.12.5"></a>
 ## [0.12.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.12.4...@loopback/example-todo@0.12.5) (2018-06-28)
 

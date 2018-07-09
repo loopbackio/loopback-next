@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.17.0"></a>
+# [0.17.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.16.3...@loopback/cli@0.17.0) (2018-07-09)
+
+
+### Bug Fixes
+
+* **cli:** tweak getArtifactList to return pascalCased strings ([b3bb208](https://github.com/strongloop/loopback-next/commit/b3bb208))
+
+
+### Features
+
+* **cli:** add comments for generated methods from openapi ([daa7f78](https://github.com/strongloop/loopback-next/commit/daa7f78))
+* **cli:** add config and yes options ([5778a2a](https://github.com/strongloop/loopback-next/commit/5778a2a))
+* **cli:** improve openapi handling of body and impl ([640b941](https://github.com/strongloop/loopback-next/commit/640b941))
+
+
+
+
 <a name="0.16.3"></a>
 ## [0.16.3](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.16.2...@loopback/cli@0.16.3) (2018-06-28)
 

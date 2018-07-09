@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.12.1...@loopback/repository@0.13.0) (2018-07-09)
+
+
+### Bug Fixes
+
+* **repository:** make models strict by default ([08c2d89](https://github.com/strongloop/loopback-next/commit/08c2d89))
+
+
+### Features
+
+* **cli:** add config and yes options ([5778a2a](https://github.com/strongloop/loopback-next/commit/5778a2a))
+* **repository:** introduce hasmany relation decorator inference ([b267f3c](https://github.com/strongloop/loopback-next/commit/b267f3c))
+
+
+
+
 <a name="0.12.1"></a>
 ## [0.12.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.12.0...@loopback/repository@0.12.1) (2018-06-28)
 

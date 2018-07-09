@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@0.10.12...@loopback/openapi-v3@0.11.0) (2018-07-09)
+
+
+### Bug Fixes
+
+* generate schema for requestBody only if not present ([caf66c2](https://github.com/strongloop/loopback-next/commit/caf66c2))
+
+
+### Features
+
+* body validation ([d284ad8](https://github.com/strongloop/loopback-next/commit/d284ad8))
+
+
+
+
 <a name="0.10.12"></a>
 ## [0.10.12](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@0.10.11...@loopback/openapi-v3@0.10.12) (2018-06-28)
 
