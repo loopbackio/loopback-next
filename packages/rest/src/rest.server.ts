@@ -136,6 +136,10 @@ export class RestServer extends Context implements Server, HttpServerLike {
     return this._httpServer ? this._httpServer.listening : false;
   }
 
+  get url(): string | undefined {
+    return this._httpServer && this._httpServer.url;
+  }
+
   /**
    * @memberof RestServer
    * Creates an instance of RestServer.

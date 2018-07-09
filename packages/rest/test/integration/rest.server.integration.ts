@@ -4,11 +4,30 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application, ApplicationConfig} from '@loopback/core';
-import {expect, createClientForHandler} from '@loopback/testlab';
+import {supertest, expect, createClientForHandler} from '@loopback/testlab';
 import {Route, RestBindings, RestServer, RestComponent} from '../..';
 import * as yaml from 'js-yaml';
 
 describe('RestServer (integration)', () => {
+  it('exports url property', async () => {
+    const server = await givenAServer({rest: {port: 0}});
+    server.handler(({response}, sequence) => {
+      response.write('ok');
+      response.end();
+    });
+    expect(server.url).to.be.undefined();
+    await server.start();
+    expect(server)
+      .to.have.property('url')
+      .which.is.a.String()
+      .match(/http|https\:\/\//);
+    await supertest(server.url)
+      .get('/')
+      .expect(200, 'ok');
+    await server.stop();
+    expect(server.url).to.be.undefined();
+  });
+
   it('updates rest.port binding when listening on ephemeral port', async () => {
     const server = await givenAServer({rest: {port: 0}});
     await server.start();
