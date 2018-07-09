@@ -38,7 +38,6 @@ artifacts and inject them into our application for use.
 import {ApplicationConfig} from '@loopback/core';
 import {RestApplication, RestServer} from '@loopback/rest';
 import {MySequence} from './sequence';
-import {db} from './datasources/db.datasource';
 
 /* tslint:disable:no-unused-variable */
 // Binding and Booter imports are required to infer types for BootMixin!
@@ -72,18 +71,6 @@ export class TodoListApplication extends BootMixin(
         nested: true,
       },
     };
-
-    this.setupDatasources();
-  }
-
-  setupDatasources() {
-    // This will allow you to test your application without needing to
-    // use a "real" datasource!
-    const datasource =
-      this.options && this.options.datasource
-        ? new juggler.DataSource(this.options.datasource)
-        : db;
-    this.dataSource(datasource);
   }
 
   async start() {
