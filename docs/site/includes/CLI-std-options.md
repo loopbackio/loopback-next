@@ -10,4 +10,21 @@
 
 `--skip-install`
 : Do not automatically install dependencies. Default is false.
+
+`-c, --config`
+: JSON file name or value to configure options
+
+For example,
+```sh
+lb4 app --config config.json
+lb4 app --config {"name":"my-app"}
+cat config.json | lb4 app --config stdin
+lb4 app --config stdin < config.json
+lb4 app --config stdin << EOF
+> {"name":"my-app"}
+> EOF
+```
+
+`-y, --yes`
+: Skip all confirmation prompts with default or provided value
 <!-- prettier-ignore-end -->

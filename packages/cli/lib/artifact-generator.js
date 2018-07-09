@@ -19,23 +19,27 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
 
   _setupGenerator() {
     debug('Setting up generator');
+    super._setupGenerator();
     this.argument('name', {
       type: String,
       required: false,
       description: 'Name for the ' + this.artifactInfo.type,
     });
+  }
+
+  setOptions() {
     // argument validation
-    if (this.args.length) {
-      const validationMsg = utils.validateClassName(this.args[0]);
+    const name = this.options.name;
+    if (name) {
+      const validationMsg = utils.validateClassName(name);
       if (typeof validationMsg === 'string') throw new Error(validationMsg);
     }
-    this.artifactInfo.name = this.args[0];
-    this.artifactInfo.defaultName = 'new';
+    this.artifactInfo.name = name;
     this.artifactInfo.relPath = path.relative(
       this.destinationPath(),
       this.artifactInfo.outDir,
     );
-    super._setupGenerator();
+    return super.setOptions();
   }
 
   promptArtifactName() {
@@ -48,6 +52,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
         // capitalization
         message: utils.toClassName(this.artifactInfo.type) + ' class name:',
         when: this.artifactInfo.name === undefined,
+        default: this.artifactInfo.name,
         validate: utils.validateClassName,
       },
     ];
