@@ -6,13 +6,13 @@
     "node": ">=8"
   },
   "scripts": {
-    "build": "npm run build:dist8 && npm run build:dist10",
+    "build:all-dist": "npm run build:dist8 && npm run build:dist10",
     "build:apidocs": "lb-apidocs",
-    "build:current": "lb-tsc",
+    "build": "lb-tsc",
     "build:dist8": "lb-tsc es2017",
     "build:dist10": "lb-tsc es2018",
     "clean": "lb-clean loopback-caching-proxy*.tgz dist* package api-docs",
-    "pretest": "npm run build:current",
+    "pretest": "npm run build",
     "test": "lb-mocha \"DIST/test/integration/**/*.js\"",
     "verify": "npm pack && tar xf loopback-caching-proxy*.tgz && tree package && npm run clean"
   },

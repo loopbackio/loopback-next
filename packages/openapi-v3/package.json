@@ -15,14 +15,14 @@
     "@types/node": "^10.1.1"
   },
   "scripts": {
-    "build": "npm run build:dist8 && npm run build:dist10",
+    "build:all-dist": "npm run build:dist8 && npm run build:dist10",
     "build:apidocs": "lb-apidocs",
-    "build:current": "lb-tsc",
+    "build": "lb-tsc",
     "build:dist8": "lb-tsc es2017",
     "build:dist10": "lb-tsc es2018",
     "clean": "lb-clean loopback-openapi-v3*.tgz dist* package",
     "integration": "lb-mocha \"DIST/test/integration/**/*.js\"",
-    "pretest": "npm run build:current",
+    "pretest": "npm run build",
     "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/integration/**/*.js\"",
     "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-openapi-v3*.tgz && tree package && npm run clean"
