@@ -13,7 +13,7 @@ import * as debugModule from 'debug';
 import * as util from 'util';
 import {HttpErrors} from '..';
 import {RestHttpErrors} from '..';
-import {AnyObject} from '@loopback/repository';
+import * as _ from 'lodash';
 
 const toJsonSchema = require('openapi-schema-to-json-schema');
 const debug = debugModule('loopback:rest:validation');
@@ -82,10 +82,10 @@ function convertToJsonSchema(openapiSchema: SchemaObject) {
 function validateValueAgainstJsonSchema(
   // tslint:disable-next-line:no-any
   body: any,
-  jsonSchema: AnyObject,
+  jsonSchema: object,
   globalSchemas?: SchemasObject,
 ) {
-  const schemaWithRef = Object.assign({}, jsonSchema);
+  const schemaWithRef = Object.assign({components: {}}, jsonSchema);
   schemaWithRef.components = {
     schemas: globalSchemas,
   };
@@ -103,8 +103,15 @@ function validateValueAgainstJsonSchema(
   }
 
   debug('Invalid request body: %s', util.inspect(ajv.errors));
-  const message = ajv.errorsText(ajv.errors, {dataVar: body});
-  // FIXME add `err.details` object containing machine-readable information
-  // see LB 3.x ValidationError for inspiration
-  throw RestHttpErrors.invalidRequestBody(message);
+
+  const error = RestHttpErrors.invalidRequestBody();
+  error.details = _.map(ajv.errors, e => {
+    return {
+      path: e.dataPath,
+      code: e.keyword,
+      message: e.message,
+      info: e.params,
+    };
+  });
+  throw error;
 }
