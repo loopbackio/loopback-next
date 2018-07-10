@@ -6,7 +6,16 @@
     "src/types.ts",
     "src/keys.ts",
     "src/parser.ts",
+    "src/request-context.ts",
+    "src/rest-http-error.ts",
     "src/rest.application.ts",
+    "src/rest.component.ts",
+    "src/rest.server.ts",
+    "src/sequence.ts",
+    "src/writer.ts",
+    "src/coercion/coerce-parameter.ts",
+    "src/coercion/utils.ts",
+    "src/coercion/validator.ts",
     "src/providers/bind-element.provider.ts",
     "src/providers/find-route.provider.ts",
     "src/providers/get-from-context.provider.ts",
@@ -16,11 +25,8 @@
     "src/providers/parse-params.provider.ts",
     "src/providers/reject.provider.ts",
     "src/providers/send.provider.ts",
-    "src/rest.component.ts",
-    "src/rest.server.ts",
     "src/router/routing-table.ts",
-    "src/sequence.ts",
-    "src/writer.ts"
+    "src/validation/request-body.validator.ts"
   ],
   "codeSectionDepth": 4
 }

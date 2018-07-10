@@ -6,9 +6,8 @@
     "src/context.ts",
     "src/index.ts",
     "src/inject.ts",
-    "src/is-promise.ts",
+    "src/value-promise.ts",
     "src/provider.ts",
-    "src/reflect.ts",
     "src/resolution-session.ts",
     "src/resolver.ts"
   ],
