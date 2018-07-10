@@ -25,6 +25,8 @@ const Conflicter = require('yeoman-generator/lib/util/conflicter');
 
 const readdirAsync = promisify(fs.readdir);
 
+const RESERVED_PROPERTY_NAMES = ['constructor'];
+
 /**
  * Either a reference to util.promisify or its polyfill, depending on
  * your version of Node.
@@ -328,3 +330,43 @@ exports.readTextFromStdin = function() {
       });
   });
 };
+
+/*
+ * Validate property name
+ * @param {String} name The user input
+ * @returns {String|Boolean}
+ */
+exports.checkPropertyName = function(name) {
+  var result = exports.validateRequiredName(name);
+  if (result !== true) return result;
+  if (RESERVED_PROPERTY_NAMES.includes(name)) {
+    return `${name} is a reserved keyword. Please use another name`;
+  }
+  return true;
+};
+
+/**
+ * Validate required name for properties, data sources, or connectors
+ * Empty name could not pass
+ * @param {String} name The user input
+ * @returns {String|Boolean}
+ */
+exports.validateRequiredName = function(name) {
+  if (!name) {
+    return 'Name is required';
+  }
+  return validateValue(name, /[\/@\s\+%:\.]/);
+};
+
+function validateValue(name, unallowedCharacters) {
+  if (!unallowedCharacters) {
+    unallowedCharacters = /[\/@\s\+%:\.]/;
+  }
+  if (name.match(unallowedCharacters)) {
+    return `Name cannot contain special characters ${unallowedCharacters}: ${name}`;
+  }
+  if (name !== encodeURIComponent(name)) {
+    return `Name cannot contain special characters escaped by encodeURIComponent: ${name}`;
+  }
+  return true;
+}
