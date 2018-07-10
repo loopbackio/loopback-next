@@ -1,0 +1,14 @@
+import {Entity, model, property} from '@loopback/repository';
+
+@model()
+export class <%= className %> extends Entity {
+  <% Object.entries(properties).forEach(([key, val]) => { %>
+  @property({<% Object.entries(val).forEach(([propKey, propVal]) => {%>
+    <%if (propKey !== 'tsType') {%><%= propKey %>: <%- propVal %>,<% } %><% }) %>
+  })
+  <%= key %><%if (!val.required) {%>?<% } %>: <%= val.tsType %>;
+  <% }) %>
+  constructor(data?: Partial<<%= className %>>) {
+    super(data);
+  }
+}

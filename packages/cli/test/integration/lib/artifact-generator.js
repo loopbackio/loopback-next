@@ -116,10 +116,14 @@ module.exports = function(artiGenerator) {
       beforeEach(() => {
         gen = testUtils.testSetUpGen(artiGenerator);
         gen.prompt = sinon.stub(gen, 'prompt');
+        gen.log = sinon.stub(gen, 'log');
       });
 
       afterEach(() => {
-        if (gen) gen.prompt.restore();
+        if (gen) {
+          gen.prompt.restore();
+          gen.log.restore();
+        }
       });
 
       it('incorporates user input into artifactInfo', () => {
