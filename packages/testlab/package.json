@@ -6,12 +6,12 @@
     "node": ">=8"
   },
   "scripts": {
-    "build": "npm run build:dist8 && npm run build:dist10",
-    "build:current": "lb-tsc",
+    "build:all-dist": "npm run build:dist8 && npm run build:dist10",
+    "build": "lb-tsc",
     "build:dist8": "lb-tsc es2017",
     "build:dist10": "lb-tsc es2018",
     "clean": "lb-clean loopback-testlab*.tgz dist* package api-docs",
-    "pretest": "npm run build:current",
+    "pretest": "npm run build",
     "test": "lb-mocha \"DIST/test\"",
     "verify": "npm pack && tar xf loopback-testlab*.tgz && tree package && npm run clean"
   },

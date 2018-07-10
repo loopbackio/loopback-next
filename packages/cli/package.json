@@ -63,7 +63,7 @@
   "scripts": {
     "prepublishOnly": "nsp check",
     "build": "node ./bin/download-connector-list.js",
-    "build:current": "npm run build",
+    "build:all-dist": "npm run build",
     "test": "lb-mocha \"test/**/*.js\"",
     "smoke-test": "lb-mocha --allow-console-logs \"smoke-test/**/*.smoke.js\""
   },

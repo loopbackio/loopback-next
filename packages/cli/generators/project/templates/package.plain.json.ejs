@@ -12,6 +12,7 @@
   },
   "scripts": {
     "build": "tsc --outDir dist --target es2017",
+    "build:all-dist": "npm run build",
     "build:watch": "tsc --outDir dist --target es2017 --watch",
     "clean": "rm -rf dist",
 <% if (project.prettier && project.tslint) { -%>
