@@ -17,7 +17,10 @@ import {
 import {Entity, ModelDefinition} from '../model';
 import {Filter, Where} from '../query';
 import {EntityCrudRepository} from './repository';
-import {createHasManyRepositoryFactory} from './relation.factory';
+import {
+  createHasManyRepositoryFactory,
+  HasManyRepositoryFactory,
+} from './relation.factory';
 import {HasManyDefinition} from '../decorators/relation.decorator';
 // need the import for exporting of a return type
 // tslint:disable-next-line:no-unused-variable
@@ -150,9 +153,9 @@ export class DefaultCrudRepository<T extends Entity, ID>
   protected _createHasManyRepositoryFactoryFor<Target extends Entity, TargetID>(
     relationName: string,
     targetRepo: EntityCrudRepository<Target, TargetID>,
-  ) {
+  ): HasManyRepositoryFactory<Target, ID> {
     const meta = this.entityClass.definition.relations[relationName];
-    return createHasManyRepositoryFactory(
+    return createHasManyRepositoryFactory<ID, Target, TargetID>(
       meta as HasManyDefinition,
       targetRepo,
     );
