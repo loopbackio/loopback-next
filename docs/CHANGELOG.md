@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.14.1"></a>
+## [0.14.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.14.0...@loopback/docs@0.14.1) (2018-07-10)
+
+
+### Bug Fixes
+
+* **docs:** fix example-todo diagram link ([b2fe27c](https://github.com/strongloop/loopback-next/commit/b2fe27c))
+
+
+
+
 <a name="0.14.0"></a>
 # [0.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.13.1...@loopback/docs@0.14.0) (2018-07-09)
 

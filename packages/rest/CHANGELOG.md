@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.17.0"></a>
+# [0.17.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.16.0...@loopback/rest@0.17.0) (2018-07-10)
+
+
+### Features
+
+* add tests for array and object ([57b968a](https://github.com/strongloop/loopback-next/commit/57b968a))
+* **rest:** add url property ([18b3408](https://github.com/strongloop/loopback-next/commit/18b3408))
+
+
+
+
 <a name="0.16.0"></a>
 # [0.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.15.1...@loopback/rest@0.16.0) (2018-07-09)
 

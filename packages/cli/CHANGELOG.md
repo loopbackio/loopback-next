@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.18.0"></a>
+# [0.18.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.17.0...@loopback/cli@0.18.0) (2018-07-10)
+
+
+### Bug Fixes
+
+* **cli:** install deps if necessary for datasource ([4c605b0](https://github.com/strongloop/loopback-next/commit/4c605b0))
+
+
+### Features
+
+* **cli:** add --format to run lint:fix for generated code ([77f15c7](https://github.com/strongloop/loopback-next/commit/77f15c7))
+
+
+
+
 <a name="0.17.0"></a>
 # [0.17.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.16.3...@loopback/cli@0.17.0) (2018-07-09)
 

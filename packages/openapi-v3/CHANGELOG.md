@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.11.1"></a>
+## [0.11.1](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@0.11.0...@loopback/openapi-v3@0.11.1) (2018-07-10)
+
+
+
+
+**Note:** Version bump only for package @loopback/openapi-v3
+
 <a name="0.11.0"></a>
 # [0.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@0.10.12...@loopback/openapi-v3@0.11.0) (2018-07-09)
 

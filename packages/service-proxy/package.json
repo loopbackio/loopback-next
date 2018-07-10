@@ -1,6 +1,6 @@
 {
   "name": "@loopback/service-proxy",
-  "version": "0.5.12",
+  "version": "0.5.13",
   "description": "Service integration for LoopBack 4",
   "engines": {
     "node": ">=8"
@@ -28,11 +28,11 @@
   "license": "MIT",
   "devDependencies": {
     "@loopback/build": "^0.6.11",
-    "@loopback/testlab": "^0.10.10"
+    "@loopback/testlab": "^0.10.11"
   },
   "dependencies": {
-    "@loopback/context": "^0.11.9",
-    "@loopback/core": "^0.10.1",
+    "@loopback/context": "^0.11.10",
+    "@loopback/core": "^0.10.2",
     "@loopback/dist-util": "^0.3.3",
     "loopback-datasource-juggler": "^3.20.2"
   },
