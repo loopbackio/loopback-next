@@ -93,27 +93,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
     });
 
     if (generationStatus) {
-      /**
-       * Update the index.ts in this.artifactInfo.outDir. Creates it if it
-       * doesn't exist.
-       * this.artifactInfo.outFile is what is exported from the file.
-       *
-       * Both those properties must be present for this to happen. Optionally,
-       * this can be disabled even if the properties are present by setting:
-       * this.artifactInfo.disableIndexUpdate = true;
-       */
-      if (
-        this.artifactInfo.outDir &&
-        this.artifactInfo.outFile &&
-        !this.artifactInfo.disableIndexUpdate
-      ) {
-        await updateIndex(this.artifactInfo.outDir, this.artifactInfo.outFile);
-        // Output for users
-        this.log(
-          chalk.green('   update'),
-          `${this.artifactInfo.relPath}/index.ts`,
-        );
-      }
+      await this._updateIndexFiles();
 
       // User Output
       this.log();
@@ -127,5 +107,56 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
     }
 
     await super.end();
+  }
+
+  /**
+   * Update the index.ts in this.artifactInfo.outDir. Creates it if it
+   * doesn't exist.
+   * this.artifactInfo.outFile is what is exported from the file.
+   *
+   * Both those properties must be present for this to happen. Optionally,
+   * this can be disabled even if the properties are present by setting:
+   * this.artifactInfo.disableIndexUpdate = true;
+   *
+   * Multiple indexes / files can be updated by providing an array of
+   * index update objects as follows:
+   * this.artifactInfo.indexesToBeUpdated = [{
+   *   dir: 'directory in which to update index.ts',
+   *   file: 'file to add to index.ts',
+   * }, {dir: '...', file: '...'}]
+   */
+  async _updateIndexFiles() {
+    // Index Update Disabled
+    if (this.artifactInfo.disableIndexUpdate) return;
+
+    // No Array given for Index Update, Create default array
+    if (
+      !this.artifactInfo.indexesToBeUpdated &&
+      this.artifactInfo.outDir &&
+      this.artifactInfo.outFile
+    ) {
+      this.artifactInfo.indexesToBeUpdated = [
+        {dir: this.artifactInfo.outDir, file: this.artifactInfo.outFile},
+      ];
+    } else {
+      this.artifactInfo.indexesToBeUpdated = [];
+    }
+
+    for (const idx of this.artifactInfo.indexesToBeUpdated) {
+      await updateIndex(idx.dir, idx.file);
+      // Output for users
+      const updateDirRelPath = path.relative(
+        this.artifactInfo.relPath,
+        idx.dir,
+      );
+
+      const outPath = path.join(
+        this.artifactInfo.relPath,
+        updateDirRelPath,
+        'index.ts',
+      );
+
+      this.log(chalk.green('   update'), `${outPath}`);
+    }
   }
 };
