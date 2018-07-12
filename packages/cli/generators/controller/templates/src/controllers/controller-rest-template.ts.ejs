@@ -48,20 +48,20 @@ export class <%= className %>Controller {
   }
 
   @get('<%= httpPathName %>/{id}')
-  async findById(@param.path.number('id') id: <%= idType %>): Promise<<%= modelName %>> {
+  async findById(@param.path.<%= idType %>('id') id: <%= idType %>): Promise<<%= modelName %>> {
     return await this.<%= repositoryNameCamel %>.findById(id);
   }
 
   @patch('<%= httpPathName %>/{id}')
   async updateById(
-    @param.path.number('id') id: <%= idType %>,
+    @param.path.<%= idType %>('id') id: <%= idType %>,
     @requestBody() obj: <%= modelName %>
   ): Promise<boolean> {
     return await this.<%= repositoryNameCamel %>.updateById(id, obj);
   }
 
   @del('<%= httpPathName %>/{id}')
-  async deleteById(@param.path.number('id') id: <%= idType %>): Promise<boolean> {
+  async deleteById(@param.path.<%= idType %>('id') id: <%= idType %>): Promise<boolean> {
     return await this.<%= repositoryNameCamel %>.deleteById(id);
   }
 }
