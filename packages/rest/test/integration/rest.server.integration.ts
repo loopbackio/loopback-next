@@ -10,7 +10,8 @@ import * as yaml from 'js-yaml';
 
 describe('RestServer (integration)', () => {
   it('exports url property', async () => {
-    const server = await givenAServer({rest: {port: 0}});
+    // Explicitly setting host to IPv4 address so test runs on Travis
+    const server = await givenAServer({rest: {port: 0, host: '127.0.0.1'}});
     server.handler(({response}, sequence) => {
       response.write('ok');
       response.end();
