@@ -12,13 +12,16 @@ describe('HttpServer (integration)', () => {
 
   afterEach(stopServer);
 
-  it('formats IPv6 url correctly', async () => {
-    server = new HttpServer(dummyRequestHandler, {host: '::1'});
-    await server.start();
-    expect(server.address!.family).to.equal('IPv6');
-    const response = await getAsync(server.url);
-    expect(response.statusCode).to.equal(200);
-  });
+  process.env.TRAVIS
+    ? // tslint:disable-next-line:no-unused-expression
+      it.skip
+    : it('formats IPv6 url correctly', async () => {
+        server = new HttpServer(dummyRequestHandler, {host: '::1'});
+        await server.start();
+        expect(server.address!.family).to.equal('IPv6');
+        const response = await getAsync(server.url);
+        expect(response.statusCode).to.equal(200);
+      });
 
   it('starts server', async () => {
     server = new HttpServer(dummyRequestHandler);
@@ -29,7 +32,8 @@ describe('HttpServer (integration)', () => {
   });
 
   it('stops server', async () => {
-    server = new HttpServer(dummyRequestHandler);
+    // Explicitly setting host to IPv4 address so test runs on Travis
+    server = new HttpServer(dummyRequestHandler, {host: '127.0.0.1'});
     await server.start();
     await server.stop();
     await expect(
