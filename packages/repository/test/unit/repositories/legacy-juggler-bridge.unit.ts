@@ -177,6 +177,17 @@ describe('DefaultCrudRepository', () => {
     expect(notes[0].content).to.eql('c5');
   });
 
+  it('implements Repository.updateAll() without a where object', async () => {
+    const repo = new DefaultCrudRepository(Note, ds);
+    await repo.create({title: 't3', content: 'c3'});
+    await repo.create({title: 't4', content: 'c4'});
+    const result = await repo.updateAll({content: 'c5'});
+    expect(result).to.eql(2);
+    const notes = await repo.find();
+    const titles = notes.map(n => `${n.title}:${n.content}`);
+    expect(titles).to.deepEqual(['t3:c5', 't4:c5']);
+  });
+
   it('implements Repository.count()', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
     await repo.create({title: 't3', content: 'c3'});
