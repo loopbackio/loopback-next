@@ -28,12 +28,12 @@ describe('HasMany relation', () => {
   let reviewRepo: EntityCrudRepository<Review, typeof Review.prototype.id>;
   let customerOrderRepo: HasManyRepository<Order>;
   let customerAuthoredReviewFactoryFn: HasManyRepositoryFactory<
-    Review,
-    typeof Customer.prototype.id
+    typeof Customer.prototype.id,
+    Review
   >;
   let customerApprovedReviewFactoryFn: HasManyRepositoryFactory<
-    Review,
-    typeof Customer.prototype.id
+    typeof Customer.prototype.id,
+    Review
   >;
   let existingCustomerId: number;
 
