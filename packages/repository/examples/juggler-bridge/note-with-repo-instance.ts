@@ -16,22 +16,6 @@ import {
   ModelDefinition,
 } from '../../';
 
-// The Controller for Note
-class NoteController {
-  constructor(
-    @repository('noteRepo')
-    public noteRepo: EntityCrudRepository<Entity, number>,
-  ) {}
-
-  create(data: DataObject<Entity>, options?: Options) {
-    return this.noteRepo.create(data, options);
-  }
-
-  findByTitle(title: string, options?: Options) {
-    return this.noteRepo.find({where: {title}}, options);
-  }
-}
-
 const ds: juggler.DataSource = new juggler.DataSource({
   name: 'db',
   connector: 'memory',
@@ -42,6 +26,24 @@ class Note extends Entity {
     name: 'note',
     properties: {title: 'string', content: 'string'},
   });
+
+  title: string;
+  content?: string;
+}
+
+// The Controller for Note
+class NoteController {
+  constructor(
+    @repository('noteRepo') public noteRepo: EntityCrudRepository<Note, number>,
+  ) {}
+
+  create(data: DataObject<Note>, options?: Options) {
+    return this.noteRepo.create(data, options);
+  }
+
+  findByTitle(title: string, options?: Options) {
+    return this.noteRepo.find({where: {title}}, options);
+  }
 }
 
 async function main() {

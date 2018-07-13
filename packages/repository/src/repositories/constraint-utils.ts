@@ -51,7 +51,7 @@ export function constrainWhere(
  */
 export function constrainDataObject<T extends Entity>(
   originalData: DataObject<T>,
-  constraint: Partial<T>,
+  constraint: DataObject<T>,
 ): DataObject<T> {
   const constrainedData = cloneDeep(originalData);
   for (const c in constraint) {
