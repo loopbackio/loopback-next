@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.9.16"></a>
+## [0.9.16](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@0.9.15...@loopback/repository-json-schema@0.9.16) (2018-07-13)
+
+
+
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
 <a name="0.9.15"></a>
 ## [0.9.15](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@0.9.14...@loopback/repository-json-schema@0.9.15) (2018-07-11)
 

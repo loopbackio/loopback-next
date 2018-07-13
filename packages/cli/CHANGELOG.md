@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.19.0"></a>
+# [0.19.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.18.1...@loopback/cli@0.19.0) (2018-07-13)
+
+
+### Bug Fixes
+
+* **cli:** add empty logs to better format model prompts ([60b3d57](https://github.com/strongloop/loopback-next/commit/60b3d57))
+* **cli:** adds the <idtype> on param.path for those methods in the rest controller template parsing ([c526b99](https://github.com/strongloop/loopback-next/commit/c526b99))
+* **cli:** reorder where and body in CLI template for updateAll and make where optional ([c875707](https://github.com/strongloop/loopback-next/commit/c875707))
+* **cli:** support updating multiple index.ts files ([1e92f4f](https://github.com/strongloop/loopback-next/commit/1e92f4f))
+
+
+### Features
+
+* **cli:** `lb4 model` command to scaffold model files ([3593820](https://github.com/strongloop/loopback-next/commit/3593820))
+
+
+
+
 <a name="0.18.1"></a>
 ## [0.18.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.18.0...@loopback/cli@0.18.1) (2018-07-11)
 

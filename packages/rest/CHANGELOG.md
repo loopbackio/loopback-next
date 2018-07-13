@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.18.0"></a>
+# [0.18.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.17.1...@loopback/rest@0.18.0) (2018-07-13)
+
+
+### Features
+
+* localize error in details ([3c9f6b4](https://github.com/strongloop/loopback-next/commit/3c9f6b4))
+
+
+
+
 <a name="0.17.1"></a>
 ## [0.17.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.17.0...@loopback/rest@0.17.1) (2018-07-11)
 
