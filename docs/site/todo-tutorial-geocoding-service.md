@@ -187,12 +187,12 @@ export class Todo extends Entity {
   @property({
     type: 'string',
   })
-  remindAtAddress: string; // address,city,zipcode
+  remindAtAddress?: string; // address,city,zipcode
 
   @property({
     type: 'string',
   })
-  remindAtGeo: string; // latitude,longitude
+  remindAtGeo?: string; // latitude,longitude
 }
 ```
 

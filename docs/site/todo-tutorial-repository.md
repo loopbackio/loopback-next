@@ -23,6 +23,32 @@ In the `src/repositories` directory, create two files:
 - `index.ts` (our export helper)
 - `todo.repository.ts`
 
+> **NOTE:** The `index.ts` file is an export helper file; this pattern is a huge
+> time-saver as the number of models in your project grows, because it allows
+> you to point to the _directory_ when attempting to import types from a file
+> within the target folder. **We will use this concept throughout the tutorial!
+> For more info, see TypeScript's
+> [Module Resolution](https://www.typescriptlang.org/docs/handbook/module-resolution.html)
+> docs.**
+
+```ts
+// in src/models/index.ts
+export * from './foo.model';
+export * from './bar.model';
+export * from './baz.model';
+
+// elsewhere...
+
+// with index.ts
+import {Foo, Bar, Baz} from './models';
+// ...and without index.ts
+import {Foo} from './models/foo.model';
+import {Bar} from './models/bar.model';
+import {Baz} from './models/baz.model';
+// Using an index.ts in your artifact folders really helps keep
+// things tidy and succinct!
+```
+
 Our TodoRepository will extend a small base class that uses the
 `DefaultCrudRepository` class from
 [`@loopback/repository`](https://github.com/strongloop/loopback-next/tree/master/packages/repository)
