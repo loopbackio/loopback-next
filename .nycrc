@@ -1,7 +1,12 @@
 {
     "include": [
-      "packages/*/dist*/*",
-      "examples/*/dist*/*"
+      "packages/*/dist*/",
+      "examples/*/dist*/"
+    ],
+    "exclude": [
+      "packages/*/dist*/test/",
+      "examples/*/dist*/test/",
+      "**/.sandbox/"
     ],
     "extension": [
       ".js",
