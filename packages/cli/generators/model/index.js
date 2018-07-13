@@ -14,8 +14,9 @@ const path = require('path');
 /**
  * Model Generator
  *
- * Prompts for a Model name, Model Base Class (currently defaults to 'Entity').
- * Creates the Model Class -- currently a one time process only.
+ * Prompts for a Model name and model properties and creates the model class.
+ * Currently properties can only be added once to each model using the CLI (at
+ * creation).
  *
  * Will prompt for properties to add to the Model till a blank property name is
  * entered. Will also ask if a property is required, the default value for the
@@ -64,18 +65,23 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     return super.checkLoopBackProject();
   }
 
+  // Prompt a user for Model Name
   async promptArtifactName() {
     await super.promptArtifactName();
     this.artifactInfo.className = utils.toClassName(this.artifactInfo.name);
+    this.log();
     this.log(
       `Let's add a property to ${chalk.yellow(this.artifactInfo.className)}`,
     );
   }
 
-  // Prompt for a property name
+  // Prompt for a Property Name
   async promptPropertyName() {
     this.log(`Enter an empty property name when done`);
+    this.log();
 
+    // This function can be called repeatedly so this deletes the previous
+    // property name if one was set.
     delete this.propName;
 
     const prompts = [
@@ -154,15 +160,21 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
 
       const answers = await this.prompt(prompts);
       debug(`propertyInfo => ${JSON.stringify(answers)}`);
+
+      // Yeoman sets the default to `''` so we remove it unless the user entered
+      // a different value
       if (answers.default === '') {
         delete answers.default;
       }
 
       Object.assign(this.artifactInfo.properties[this.propName], answers);
+
+      // We prompt for `id` only once per model using idFieldSet flag.
       if (answers.id) {
         this.idFieldSet = true;
       }
 
+      this.log();
       this.log(
         `Let's add another property to ${chalk.yellow(
           this.artifactInfo.className,
@@ -223,10 +235,15 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
       // Convert Type to include '' for template
       val.type = `'${val.type}'`;
 
+      // If required is false, we can delete it as that's the default assumption
+      // for this field if not present. This helps to avoid polluting the
+      // decorator with redundant properties.
       if (!val.required) {
         delete val.required;
       }
 
+      // We only care about marking the `id` field as `id` and not fields that
+      // are not the id so if this is false we delete it similar to `required`.
       if (!val.id) {
         delete val.id;
       }
