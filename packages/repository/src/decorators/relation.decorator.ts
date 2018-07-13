@@ -12,13 +12,13 @@ import {camelCase} from 'lodash';
 // tslint:disable:no-any
 
 export enum RelationType {
-  belongsTo,
-  hasOne,
-  hasMany,
-  embedsOne,
-  embedsMany,
-  referencesOne,
-  referencesMany,
+  belongsTo = 'belongsTo',
+  hasOne = 'hasOne',
+  hasMany = 'hasMany',
+  embedsOne = 'embedsOne',
+  embedsMany = 'embedsMany',
+  referencesOne = 'referencesOne',
+  referencesMany = 'referencesMany',
 }
 
 export const RELATIONS_KEY = 'loopback:relations';
