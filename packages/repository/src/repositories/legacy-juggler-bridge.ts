@@ -219,6 +219,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
     where?: Where,
     options?: Options,
   ): Promise<number> {
+    where = where || {};
     return ensurePromise(this.modelClass.updateAll(where, data, options)).then(
       result => result.count,
     );
