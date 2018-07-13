@@ -55,6 +55,9 @@ LoopBack 4 introduces some new concepts that are important to understand:
 - [**Repository**](Repositories.md): A type of service that represents a
   collection of data within a DataSource.
 
+- [**Relation**](Relations.md): A mapping between two models which describes a
+  real world link between them and exposes CRUD APIs based on the configuration.
+
 - [**Decorator**](Decorators.md): The pattern used to annotate or modify your
   class declarations and their members with metadata.
 

@@ -102,6 +102,15 @@ children:
     url: Repositories.html
     output: 'web, pdf'
 
+  - title: 'Relations'
+    url: Relations.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'HasMany Relation'
+      url: HasMany-relation.html
+      output: 'web, pdf'
+
   - title: 'Decorators'
     url: Decorators.html
     output: 'web, pdf'
