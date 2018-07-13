@@ -92,7 +92,22 @@ Arguments:
   name  # Name for the datasource  Type: String  Required: true
 ```
 
-5.  To download one of LoopBack example projects
+5.  To scaffold a Model into your application
+
+    `lb4 model`
+
+```sh
+Usage:
+  lb4 model [options] [<name>]
+
+Options:
+  -h,   --help            # Print the generator's options and usage
+
+Arguments:
+  name  # Name for the model  Type: String  Required: true
+```
+
+6.  To download one of LoopBack example projects
 
     `lb4 example`
 
@@ -106,7 +121,7 @@ Options:
         --skip-install   # Do not automatically install dependencies  Default: false
 ```
 
-6.  To list available commands
+7.  To list available commands
 
     `lb4 --commands` (or `lb4 -l`)
 
@@ -120,7 +135,7 @@ Available commands:
 
 Please note `lb4 --help` also prints out available commands.
 
-7.  To print out version information
+8.  To print out version information
 
     `lb4 --version` (or `lb4 -v`)
 

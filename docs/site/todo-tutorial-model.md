@@ -36,74 +36,55 @@ For our Todo model to represent our Todo instances, it will need:
 - a description that details what the todo is all about
 - a boolean flag for whether or not we've completed the task
 
-Inside the `src/models` folder, create two files:
+We can use the `lb4 model` command and answer the prompts to generate the model
+for us as follows:
 
-- `index.ts`
-- `todo.model.ts`
+```sh
+lb4 model
+? Model class name: todo
 
-> **NOTE:** The `index.ts` file is an export helper file; this pattern is a huge
-> time-saver as the number of models in your project grows, because it allows
-> you to point to the _directory_ when attempting to import types from a file
-> within the target folder. **We will use this concept throughout the tutorial!
-> For more info, see TypeScript's
-> [Module Resolution](https://www.typescriptlang.org/docs/handbook/module-resolution.html)
-> docs.**
+Let's add a property to Todo
+Enter an empty property name when done
 
-```ts
-// in src/models/index.ts
-export * from './foo.model';
-export * from './bar.model';
-export * from './baz.model';
+? Enter the property name: id
+? Property type: number
+? Is ID field? Yes
+? Required?: No
+? Default value [leave blank for none]:
 
-// elsewhere...
+Let's add another property to Todo
+Enter an empty property name when done
 
-// with index.ts
-import {Foo, Bar, Baz} from './models';
-// ...and without index.ts
-import {Foo} from './models/foo.model';
-import {Bar} from './models/bar.model';
-import {Baz} from './models/baz.model';
-// Using an index.ts in your artifact folders really helps keep
-// things tidy and succinct!
-```
+? Enter the property name: title
+? Property type: string
+? Required?: Yes
+? Default value [leave blank for none]:
 
-For the Legacy Juggler to understand how to work with our model class, it will
-need to extend the `Entity` type, as well as provide an override for the `getId`
-function, so that it can retrieve a Todo model's ID as needed.
+Let's add another property to Todo
+Enter an empty property name when done
 
-#### src/models/todo.model.ts
+? Enter the property name: desc
+? Property type: string
+? Required?: No
+? Default value [leave blank for none]:
 
-```ts
-import {Entity, property, model} from '@loopback/repository';
+Let's add another property to Todo
+Enter an empty property name when done
 
-@model()
-export class Todo extends Entity {
-  @property({
-    type: 'number',
-    id: true,
-  })
-  id?: number;
+? Enter the property name: isComplete
+? Property type: boolean
+? Required?: No
+? Default value [leave blank for none]:
 
-  @property({
-    type: 'string',
-    required: true,
-  })
-  title: string;
+Let's add another property to Todo
+Enter an empty property name when done
 
-  @property({
-    type: 'string',
-  })
-  desc?: string;
+? Enter the property name:
 
-  @property({
-    type: 'boolean',
-  })
-  isComplete: boolean;
+   create src/models/test.model.ts
+   update src/models/index.ts
 
-  getId() {
-    return this.id;
-  }
-}
+Model todo was created in src/models/
 ```
 
 Now that we have our model, it's time to add a

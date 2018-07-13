@@ -12,7 +12,7 @@ summary:
 
 ### Synopsis
 
-Adds new [DataSource](Datasources.md) class and config files to a LoopBack
+Adds a new [DataSource](Datasources.md) class and config files to a LoopBack
 application.
 
 ```sh
@@ -29,7 +29,7 @@ This can be a connector supported by LoopBack / Community / Custom.
 
 ### Arguments
 
-`<name>` - Required name of the datasource to create as an argiment to the
+`<name>` - Required name of the datasource to create as an argument to the
 command. If provided, the tool will use that as the default when it prompts for
 the name.
 
@@ -53,8 +53,9 @@ Once all the prompts have been answered, the CLI will do the following:
 - Install `@loopback/repository` and the connector package (if it's not a custom
   connector).
 - Create a file with the connector configuration as follows:
-  `/datasources/${dataSource.dataSourceName}.datasource.json`
+  `/src/datasources/${dataSource.dataSourceName}.datasource.json`
 - Create a DataSource class which recieves the connector config using
   [Dependency Injection](Dependency-injection.md) as follows:
-  `/datasources/${dataSource.dataSourceName}.datasource.ts`
-- Update `index.ts` to export the newly created DataSource class.
+  `/src/datasources/${dataSource.dataSourceName}.datasource.ts`
+- Update `/src/datasources/index.ts` to export the newly created DataSource
+  class.
