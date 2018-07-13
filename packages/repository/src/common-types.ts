@@ -44,9 +44,15 @@ export interface AnyObject {
 }
 
 /**
- * Type alias for T or any object
+ * An extension of the built-in Partial<T> type which allows partial values
+ * in deeply nested properties too.
  */
-export type DataObject<T> = T | AnyObject;
+export type DeepPartial<T> = {[P in keyof T]?: DeepPartial<T[P]>};
+
+/**
+ * Type alias for strongly or weakly typed objects of T
+ */
+export type DataObject<T> = T | DeepPartial<T>;
 
 /**
  * Type alias for Node.js options object

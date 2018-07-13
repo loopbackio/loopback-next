@@ -32,7 +32,7 @@ describe('relation repository', () => {
       TargetRepository extends EntityCrudRepository<T, ID>
     > implements HasManyRepository<T> {
       create(
-        targetModelData: Partial<T>,
+        targetModelData: DataObject<T>,
         options?: AnyObject | undefined,
       ): Promise<T> {
         /* istanbul ignore next */
@@ -128,7 +128,7 @@ describe('relation repository', () => {
 
   let repo: CustomerRepository;
 
-  function givenDefaultHasManyCrudInstance(constraint: AnyObject) {
+  function givenDefaultHasManyCrudInstance(constraint: DataObject<Customer>) {
     repo = sinon.createStubInstance(CustomerRepository);
     return new DefaultHasManyEntityCrudRepository<
       Customer,

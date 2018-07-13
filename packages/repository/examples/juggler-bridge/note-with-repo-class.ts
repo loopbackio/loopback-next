@@ -14,10 +14,6 @@ import {
   ModelDefinition,
 } from '../../';
 
-class NoteController {
-  @repository('noteRepo') public noteRepo: EntityCrudRepository<Entity, number>;
-}
-
 const ds: juggler.DataSource = new juggler.DataSource({
   name: 'db',
   connector: 'memory',
@@ -28,6 +24,13 @@ class Note extends Entity {
     name: 'note',
     properties: {title: 'string', content: 'string'},
   });
+
+  title: string;
+  content?: string;
+}
+
+class NoteController {
+  @repository('noteRepo') public noteRepo: EntityCrudRepository<Note, number>;
 }
 
 class MyNoteRepository extends DefaultCrudRepository<Note, string> {
