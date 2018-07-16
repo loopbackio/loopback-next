@@ -17,7 +17,7 @@ import {
 } from './router/routing-table';
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
 import {ServerRequest, ServerResponse} from 'http';
-import {HttpServer} from '@loopback/http-server';
+import {HttpServer, HttpServerOptions} from '@loopback/http-server';
 import * as cors from 'cors';
 import {Application, CoreBindings, Server} from '@loopback/core';
 import {getControllerSpec} from '@loopback/openapi-v3';
@@ -169,6 +169,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     this.bind(RestBindings.PORT).to(options.port);
     this.bind(RestBindings.HOST).to(options.host);
     this.bind(RestBindings.PROTOCOL).to(options.protocol || 'http');
+    this.bind(RestBindings.HTTPS_OPTIONS).to(options);
 
     if (options.sequence) {
       this.sequence(options.sequence);
@@ -586,19 +587,19 @@ export class RestServer extends Context implements Server, HttpServerLike {
     // of API spec, controllers and routes at startup time.
     this._setupHandlerIfNeeded();
 
-    const port = await this.get<number | undefined>(RestBindings.PORT);
-    const host = await this.get<string | undefined>(RestBindings.HOST);
-    const protocol = await this.get<'http' | 'https' | undefined>(
-      RestBindings.PROTOCOL,
-    );
+    const port = await this.get(RestBindings.PORT);
+    const host = await this.get(RestBindings.HOST);
+    const protocol = await this.get(RestBindings.PROTOCOL);
+    const httpsOptions = await this.get(RestBindings.HTTPS_OPTIONS);
 
-    this._httpServer = new HttpServer(this.requestHandler, {
-      port: port,
-      host: host,
-      protocol: protocol || 'http',
-    });
+    const serverOptions = {};
+    if (protocol === 'https') Object.assign(serverOptions, httpsOptions);
+    Object.assign(serverOptions, {port, host, protocol});
+
+    this._httpServer = new HttpServer(this.requestHandler, serverOptions);
 
     await this._httpServer.start();
+
     this.bind(RestBindings.PORT).to(this._httpServer.port);
     this.bind(RestBindings.HOST).to(this._httpServer.host);
     this.bind(RestBindings.URL).to(this._httpServer.url);
@@ -633,17 +634,16 @@ export class RestServer extends Context implements Server, HttpServerLike {
   }
 }
 
+export interface RestServerOptions {
+  cors?: cors.CorsOptions;
+  apiExplorerUrl?: string;
+  sequence?: Constructor<SequenceHandler>;
+}
+
 /**
  * Valid configuration for the RestServer constructor.
  *
  * @export
  * @interface RestServerConfig
  */
-export interface RestServerConfig {
-  host?: string;
-  port?: number;
-  cors?: cors.CorsOptions;
-  apiExplorerUrl?: string;
-  sequence?: Constructor<SequenceHandler>;
-  protocol?: 'http' | 'https';
-}
+export type RestServerConfig = RestServerOptions & HttpServerOptions;
