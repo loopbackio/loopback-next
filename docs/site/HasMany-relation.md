@@ -120,7 +120,9 @@ import {
   DefaultCrudRepository,
   juggler,
   HasManyRepositoryFactory,
+  repository,
 } from '@loopback/repository';
+import {inject} from '@loopback/core';
 
 class CustomerRepository extends DefaultCrudRepository<
   Customer,
@@ -171,8 +173,9 @@ content="src/controllers/customer-orders.controller.ts" %}
 
 ```ts
 import {post, param, requestBody} from '@loopback/rest';
-import {customerRepository} from '../repositories/';
+import {CustomerRepository} from '../repositories/';
 import {Customer, Order} from '../models/';
+import {repository} from '@loopback/repository';
 
 export class CustomerOrdersController {
   constructor(
