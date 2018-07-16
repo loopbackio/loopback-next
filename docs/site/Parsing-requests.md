@@ -155,7 +155,7 @@ A few tips worth mentioning:
   [`api()`](Decorators.md#api-decorator), this requires you to provide a
   completed request body specification.
 
-#### Localizing errors
+#### Localizing Errors
 
 A body data may break multiple validation rules, like missing required fields,
 data in a wrong type, data that exceeds the maximum length, etc...The validation
@@ -179,7 +179,7 @@ it as a number: `{id: 1, name: 'Foo'}`. Then the error entry is:
   path: '.id',
   code: 'type',
   message: 'should be string',
-  info: {type: 'boolean'},
+  info: {type: 'string'},
 }
 ```
 
