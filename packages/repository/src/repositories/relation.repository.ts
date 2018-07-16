@@ -9,7 +9,7 @@ import {
   constrainFilter,
   constrainWhere,
 } from './constraint-utils';
-import {DataObject, AnyObject, Options} from '../common-types';
+import {DataObject, Options} from '../common-types';
 import {Entity} from '../model';
 import {Filter, Where} from '../query';
 
@@ -23,7 +23,10 @@ export interface HasManyRepository<Target extends Entity> {
    * @param options Options for the operation
    * @returns A promise which resolves to the newly created target model instance
    */
-  create(targetModelData: Partial<Target>, options?: Options): Promise<Target>;
+  create(
+    targetModelData: DataObject<Target>,
+    options?: Options,
+  ): Promise<Target>;
   /**
    * Find target model instance(s)
    * @param Filter A filter object for where, order, limit, etc.
@@ -65,11 +68,11 @@ export class DefaultHasManyEntityCrudRepository<
    */
   constructor(
     public targetRepository: TargetRepository,
-    public constraint: AnyObject,
+    public constraint: DataObject<TargetEntity>,
   ) {}
 
   async create(
-    targetModelData: Partial<TargetEntity>,
+    targetModelData: DataObject<TargetEntity>,
     options?: Options,
   ): Promise<TargetEntity> {
     return await this.targetRepository.create(
@@ -93,7 +96,7 @@ export class DefaultHasManyEntityCrudRepository<
   }
 
   async patch(
-    dataObject: Partial<TargetEntity>,
+    dataObject: DataObject<TargetEntity>,
     where?: Where,
     options?: Options,
   ): Promise<number> {

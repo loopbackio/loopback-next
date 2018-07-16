@@ -10,6 +10,7 @@ import {
   HasManyRepository,
   DefaultHasManyEntityCrudRepository,
 } from './relation.repository';
+import {DataObject} from '..';
 
 export type HasManyRepositoryFactory<SourceID, Target extends Entity> = (
   fkValue: SourceID,
@@ -43,10 +44,12 @@ export function createHasManyRepositoryFactory<
         'The foreign key property name (keyTo) must be specified',
       );
     }
+    // tslint:disable-next-line:no-any
+    const constraint: any = {[fkName]: fkValue};
     return new DefaultHasManyEntityCrudRepository<
       Target,
       TargetID,
       EntityCrudRepository<Target, TargetID>
-    >(targetRepository, {[fkName]: fkValue});
+    >(targetRepository, constraint as DataObject<Target>);
   };
 }

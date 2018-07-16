@@ -177,7 +177,7 @@ export abstract class Model {
     return obj;
   }
 
-  constructor(data?: Partial<Model>) {
+  constructor(data?: DataObject<Model>) {
     Object.assign(this, data);
   }
 }

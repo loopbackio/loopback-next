@@ -13,6 +13,7 @@ import {
   Command,
   NamedParameters,
   PositionalParameters,
+  DataObject,
 } from '../common-types';
 import {Entity, ModelDefinition} from '../model';
 import {Filter, Where} from '../query';
@@ -31,6 +32,7 @@ export namespace juggler {
   export import ModelBase = legacy.ModelBase;
   export import ModelBaseClass = legacy.ModelBaseClass;
   export import PersistedModel = legacy.PersistedModel;
+  export import KeyValueModel = legacy.KeyValueModel;
   export import PersistedModelClass = legacy.PersistedModelClass;
 }
 
@@ -55,7 +57,7 @@ export function bindModel<T extends juggler.ModelBaseClass>(
  * @param p Promise or void
  */
 /* tslint:disable-next-line:no-any */
-function ensurePromise<T>(p: legacy.PromiseOrVoid<T>): Promise<T> {
+export function ensurePromise<T>(p: legacy.PromiseOrVoid<T>): Promise<T> {
   if (p && isPromiseLike(p)) {
     // Juggler uses promise-like Bluebird instead of native Promise
     // implementation. We need to convert the promise returned by juggler
@@ -161,12 +163,12 @@ export class DefaultCrudRepository<T extends Entity, ID>
     );
   }
 
-  async create(entity: Partial<T>, options?: Options): Promise<T> {
+  async create(entity: DataObject<T>, options?: Options): Promise<T> {
     const model = await ensurePromise(this.modelClass.create(entity, options));
     return this.toEntity(model);
   }
 
-  async createAll(entities: Partial<T>[], options?: Options): Promise<T[]> {
+  async createAll(entities: DataObject<T>[], options?: Options): Promise<T[]> {
     const models = await ensurePromise(
       this.modelClass.create(entities, options),
     );
@@ -215,7 +217,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
   }
 
   updateAll(
-    data: Partial<T>,
+    data: DataObject<T>,
     where?: Where,
     options?: Options,
   ): Promise<number> {
@@ -224,14 +226,18 @@ export class DefaultCrudRepository<T extends Entity, ID>
     );
   }
 
-  updateById(id: ID, data: Partial<T>, options?: Options): Promise<boolean> {
+  updateById(id: ID, data: DataObject<T>, options?: Options): Promise<boolean> {
     const idProp = this.modelClass.definition.idName();
     const where = {} as Where;
     where[idProp] = id;
     return this.updateAll(data, where, options).then(count => count > 0);
   }
 
-  replaceById(id: ID, data: Partial<T>, options?: Options): Promise<boolean> {
+  replaceById(
+    id: ID,
+    data: DataObject<T>,
+    options?: Options,
+  ): Promise<boolean> {
     return ensurePromise(this.modelClass.replaceById(id, data, options)).then(
       result => !!result,
     );
