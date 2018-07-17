@@ -13,7 +13,7 @@ integrations.
 - Define your data and endpoints with OpenAPI
 - No maintenance of generated code
 
-## Status: Developer Preview #2
+## Status: Developer Preview #3
 
 LoopBack 4 is a work in progress, the public API is frequently changed in
 backward incompatible ways. See
