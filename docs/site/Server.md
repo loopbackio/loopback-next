@@ -21,13 +21,15 @@ listening on different ports and working with different protocols.
 
 ## Usage
 
-LoopBack 4 currently offers the
+LoopBack 4 offers the
 [`@loopback/rest`](https://github.com/strongloop/loopback-next/tree/master/packages/rest)
-package out of the box which provides an HTTP based server implementation
-handling requests over REST called `RestServer`. In order to use it in your
-application, all you need to do is have your application class extend
-`RestApplication`, and it will provide you with an instance of RestServer
-listening on port 3000. The following shows how to make use of it:
+package out of the box, which provides HTTP/HTTPS based server called
+`RestServer` for handling REST requests.
+
+In order to use it in your application, all you need to do is have your
+application class extend `RestApplication`, and it will provide you with an
+instance of RestServer listening on port 3000. The following shows how to make
+use of it:
 
 ```ts
 import {RestApplication, RestServer} from '@loopback/rest';
@@ -57,6 +59,37 @@ export class HelloWorldApp extends RestApplication {
 ```
 
 ## Configuration
+
+### Enable HTTPS
+
+Enabling HTTPS for the LoopBack REST server is just a matter of specifying the
+protocol as `https` and specifying the credentials.
+
+In the following app we configure HTTPS for a bare miminum app using a key +
+certificate chain variant.
+
+```ts
+import {RestApplication, RestServer, RestBindings} from '@loopback/rest';
+import * as fs from 'fs';
+
+export async function main() {
+  const options = {
+    rest: {
+      protocol: 'https',
+      key: fs.readFileSync('./key.pem'),
+      cert: fs.readFileSync('./cert.pem'),
+    },
+  };
+  const app = new RestApplication(options);
+  app.handler(handler => {
+    handler.response.send('Hello');
+  });
+  await app.start();
+
+  const url = app.restServer.url;
+  console.log(`Server is running at ${url}`);
+}
+```
 
 ### Add servers to application instance
 
