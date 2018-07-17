@@ -132,7 +132,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
    *   Customer,
    *   typeof Customer.prototype.id
    * > {
-   *   public orders: HasManyRepositoryFactory<typeof Customer.prototype.id, Order>;
+   *   public orders: HasManyRepositoryFactory<Order, typeof Customer.prototype.id>;
    *
    *   constructor(
    *     protected db: juggler.DataSource,
@@ -150,12 +150,16 @@ export class DefaultCrudRepository<T extends Entity, ID>
    * @param relationName Name of the relation defined on the source model
    * @param targetRepo Target repository instance
    */
-  protected _createHasManyRepositoryFactoryFor<Target extends Entity, TargetID>(
+  protected _createHasManyRepositoryFactoryFor<
+    Target extends Entity,
+    TargetID,
+    ForeignKeyType
+  >(
     relationName: string,
     targetRepo: EntityCrudRepository<Target, TargetID>,
-  ): HasManyRepositoryFactory<ID, Target> {
+  ): HasManyRepositoryFactory<Target, ForeignKeyType> {
     const meta = this.entityClass.definition.relations[relationName];
-    return createHasManyRepositoryFactory<ID, Target, TargetID>(
+    return createHasManyRepositoryFactory<Target, TargetID, ForeignKeyType>(
       meta as HasManyDefinition,
       targetRepo,
     );
