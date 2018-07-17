@@ -93,11 +93,11 @@ children:
   - title: 'Sequence'
     url: Sequence.html
     output: 'web, pdf'
-
     children:
-      - title: 'Parsing requests'
-      - url: Parsing-request.html
-      - output: 'web, pdf'
+
+    - title: 'Parsing requests'
+      url: Parsing-requests.html
+      output: 'web, pdf'
 
   - title: 'Model'
     url: Model.html
