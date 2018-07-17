@@ -28,12 +28,12 @@ describe('HasMany relation', () => {
   let reviewRepo: EntityCrudRepository<Review, typeof Review.prototype.id>;
   let customerOrderRepo: HasManyRepository<Order>;
   let customerAuthoredReviewFactoryFn: HasManyRepositoryFactory<
-    typeof Customer.prototype.id,
-    Review
+    Review,
+    typeof Customer.prototype.id
   >;
   let customerApprovedReviewFactoryFn: HasManyRepositoryFactory<
-    typeof Customer.prototype.id,
-    Review
+    Review,
+    typeof Customer.prototype.id
   >;
   let existingCustomerId: number;
 
@@ -209,9 +209,9 @@ describe('HasMany relation', () => {
 
   function givenConstrainedRepositories() {
     const orderFactoryFn = createHasManyRepositoryFactory<
-      typeof Customer.prototype.id,
       Order,
-      typeof Order.prototype.id
+      typeof Order.prototype.id,
+      typeof Customer.prototype.id
     >(Customer.definition.relations.orders as HasManyDefinition, orderRepo);
 
     customerOrderRepo = orderFactoryFn(existingCustomerId);

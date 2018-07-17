@@ -205,8 +205,8 @@ describe('HasMany relation', () => {
     typeof Customer.prototype.id
   > {
     public orders: HasManyRepositoryFactory<
-      typeof Customer.prototype.id,
-      Order
+      Order,
+      typeof Customer.prototype.id
     >;
     constructor(
       @inject('datasources.db') protected db: juggler.DataSource,
