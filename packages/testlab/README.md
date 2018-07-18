@@ -47,6 +47,10 @@ Table of contents:
 - [sinon](#sinon) - Mocks, stubs and more.
 - [shot](#shot) - HTTP Request/Response stubs.
 - [validateApiSpec](#validateapispec) - Open API Spec validator.
+- [itSkippedOnTravis](#itskippedontravis) - Skip tests on Travis env.
+- [givenHttpServerConfig](#givenhttpserverconfig) - Generate HTTP server config.
+- [httpGetAsync](#httpgetasync) - Async wrapper for HTTP GET requests.
+- [httpsGetAsync](#httpsgetasync) - Async wrapper for HTTPS GET requests.
 
 ### `expect`
 
@@ -72,6 +76,34 @@ by Shot in your unit tests:
 - Code parsing core HTTP Request
 - Code modifying core HTTP Response, including full request/response handlers
 - Code parsing Express HTTP Request or modifying Express HTTP Response
+
+### `itSkippedOnTravis`
+
+Helper function for skipping tests on Travis environment. If you need to skip
+testing on Travis for any reason, use this instead of Mocha's `it`.
+
+### `givenhttpserverconfig`
+
+Helper function for generating Travis-friendly host (127.0.0.1). This is
+required because Travis is not able to handle IPv6 addresses.
+
+### `httpgetasync`
+
+Async wrapper for making HTTP GET requests.
+
+```ts
+import {httpGetAsync} from '@loopback/testlab';
+const response = await httpGetAsync('http://example.com');
+```
+
+### `httpsgetasync`
+
+Async wrapper for making HTTPS GET requests.
+
+```ts
+import {httpsGetAsync} from '@loopback/testlab';
+const response = await httpsGetAsync('https://example.com');
+```
 
 #### Test request parsing
 

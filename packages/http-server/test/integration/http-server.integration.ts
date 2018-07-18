@@ -3,13 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 import {HttpServer, HttpOptions, HttpServerOptions} from '../../';
-import {supertest, expect} from '@loopback/testlab';
+import {
+  supertest,
+  expect,
+  itSkippedOnTravis,
+  httpGetAsync,
+  httpsGetAsync,
+  givenHttpServerConfig,
+} from '@loopback/testlab';
 import * as makeRequest from 'request-promise-native';
-import {ServerRequest, ServerResponse, get, IncomingMessage} from 'http';
-import * as https from 'https';
+import {ServerRequest, ServerResponse} from 'http';
 import * as path from 'path';
 import * as fs from 'fs';
-import * as url from 'url';
 
 describe('HttpServer (integration)', () => {
   let server: HttpServer | undefined;
@@ -22,12 +27,12 @@ describe('HttpServer (integration)', () => {
     } as HttpOptions);
     await server.start();
     expect(server.address!.family).to.equal('IPv6');
-    const response = await getAsync(server.url);
+    const response = await httpGetAsync(server.url);
     expect(response.statusCode).to.equal(200);
   });
 
   it('starts server', async () => {
-    const serverOptions = givenServerOptions();
+    const serverOptions = givenHttpServerConfig();
     server = new HttpServer(dummyRequestHandler, serverOptions);
     await server.start();
     await supertest(server.url)
@@ -36,7 +41,7 @@ describe('HttpServer (integration)', () => {
   });
 
   it('stops server', async () => {
-    const serverOptions = givenServerOptions();
+    const serverOptions = givenHttpServerConfig();
     server = new HttpServer(dummyRequestHandler, serverOptions);
     await server.start();
     await server.stop();
@@ -145,7 +150,7 @@ describe('HttpServer (integration)', () => {
   });
 
   it('supports HTTPS protocol with key and certificate files', async () => {
-    const serverOptions = givenServerOptions();
+    const serverOptions = givenHttpServerConfig();
     const httpsServer: HttpServer = givenHttpsServer(serverOptions);
     await httpsServer.start();
     const response = await httpsGetAsync(httpsServer.url);
@@ -154,7 +159,7 @@ describe('HttpServer (integration)', () => {
 
   it('supports HTTPS protocol with a pfx file', async () => {
     const options = {usePfx: true};
-    const serverOptions = givenServerOptions();
+    const serverOptions = givenHttpServerConfig();
     Object.assign(serverOptions, options);
     const httpsServer: HttpServer = givenHttpsServer(serverOptions);
     await httpsServer.start();
@@ -181,12 +186,6 @@ describe('HttpServer (integration)', () => {
     await server.stop();
   }
 
-  function getAsync(urlString: string): Promise<IncomingMessage> {
-    return new Promise((resolve, reject) => {
-      get(urlString, resolve).on('error', reject);
-    });
-  }
-
   function givenHttpsServer({
     usePfx,
     host,
@@ -206,42 +205,5 @@ describe('HttpServer (integration)', () => {
       options.cert = fs.readFileSync(certPath);
     }
     return new HttpServer(dummyRequestHandler, options);
-  }
-
-  function httpsGetAsync(urlString: string): Promise<IncomingMessage> {
-    const agent = new https.Agent({
-      rejectUnauthorized: false,
-    });
-
-    const urlOptions = url.parse(urlString);
-    const options = {agent, ...urlOptions};
-
-    return new Promise((resolve, reject) => {
-      https.get(options, resolve).on('error', reject);
-    });
-  }
-
-  function givenServerOptions(
-    options: Partial<HttpServerOptions> = {},
-  ): HttpServerOptions {
-    const defaults = process.env.TRAVIS ? {host: '127.0.0.1'} : {};
-    return Object.assign(defaults, options);
-  }
-
-  // tslint:disable-next-line:no-any
-  type TestCallbackRetval = void | PromiseLike<any>;
-
-  function itSkippedOnTravis(
-    expectation: string,
-    callback?: (
-      this: Mocha.ITestCallbackContext,
-      done: MochaDone,
-    ) => TestCallbackRetval,
-  ): void {
-    if (process.env.TRAVIS) {
-      it.skip(`[SKIPPED ON TRAVIS] ${expectation}`, callback);
-    } else {
-      it(expectation, callback);
-    }
   }
 });
