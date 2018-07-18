@@ -4,14 +4,19 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application, ApplicationConfig} from '@loopback/core';
-import {supertest, expect, createClientForHandler} from '@loopback/testlab';
+import {
+  supertest,
+  expect,
+  createClientForHandler,
+  itSkippedOnTravis,
+  httpsGetAsync,
+  givenHttpServerConfig,
+} from '@loopback/testlab';
 import {Route, RestBindings, RestServer, RestComponent} from '../..';
 import {IncomingMessage, ServerResponse} from 'http';
-import * as https from 'https';
 import * as yaml from 'js-yaml';
 import * as path from 'path';
 import * as fs from 'fs';
-import * as url from 'url';
 
 describe('RestServer (integration)', () => {
   it('exports url property', async () => {
@@ -262,7 +267,7 @@ servers:
       key: fs.readFileSync(keyPath),
       cert: fs.readFileSync(certPath),
     };
-    const serverOptions = givenServerOptions(options);
+    const serverOptions = givenHttpServerConfig(options);
     const server = await givenAServer({rest: serverOptions});
     server.handler(dummyRequestHandler);
     await server.start();
@@ -279,7 +284,7 @@ servers:
       pfx: fs.readFileSync(pfxPath),
       passphrase: 'loopback4',
     };
-    const serverOptions = givenServerOptions(options);
+    const serverOptions = givenHttpServerConfig(options);
     const server = await givenAServer({rest: serverOptions});
     server.handler(dummyRequestHandler);
     await server.start();
@@ -316,7 +321,7 @@ servers:
       port: 0,
       protocol: 'https',
     };
-    const serverOptions = givenServerOptions(options);
+    const serverOptions = givenHttpServerConfig(options);
     const server = await givenAServer({rest: serverOptions});
 
     server.handler(dummyRequestHandler);
@@ -348,42 +353,5 @@ servers:
     const {response} = handler;
     response.write('Hello');
     response.end();
-  }
-
-  function httpsGetAsync(urlString: string): Promise<IncomingMessage> {
-    const agent = new https.Agent({
-      rejectUnauthorized: false,
-    });
-
-    const urlOptions = url.parse(urlString);
-    const options = {agent, ...urlOptions};
-
-    return new Promise((resolve, reject) => {
-      https.get(options, resolve).on('error', reject);
-    });
-  }
-
-  function givenServerOptions(
-    options: Partial<ApplicationConfig> = {},
-  ): ApplicationConfig {
-    const defaults = process.env.TRAVIS ? {host: '127.0.0.1'} : {};
-    return Object.assign(defaults, options);
-  }
-
-  // tslint:disable-next-line:no-any
-  type TestCallbackRetval = void | PromiseLike<any>;
-
-  function itSkippedOnTravis(
-    expectation: string,
-    callback?: (
-      this: Mocha.ITestCallbackContext,
-      done: MochaDone,
-    ) => TestCallbackRetval,
-  ): void {
-    if (process.env.TRAVIS) {
-      it.skip(`[SKIPPED ON TRAVIS] ${expectation}`, callback);
-    } else {
-      it(expectation, callback);
-    }
   }
 });

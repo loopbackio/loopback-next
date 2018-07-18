@@ -9,3 +9,6 @@ export * from './client';
 export * from './shot';
 export * from './validate-api-spec';
 export * from './test-sandbox';
+export * from './skip-travis';
+export * from './request';
+export * from './http-server-config';
