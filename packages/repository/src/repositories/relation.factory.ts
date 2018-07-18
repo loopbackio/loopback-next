@@ -11,8 +11,8 @@ import {
   DefaultHasManyEntityCrudRepository,
 } from './relation.repository';
 
-export type HasManyRepositoryFactory<SourceID, Target extends Entity> = (
-  fkValue: SourceID,
+export type HasManyRepositoryFactory<Target extends Entity, ForeignKeyType> = (
+  fkValue: ForeignKeyType,
 ) => HasManyRepository<Target>;
 
 /**
@@ -29,14 +29,14 @@ export type HasManyRepositoryFactory<SourceID, Target extends Entity> = (
  * the given target repository
  */
 export function createHasManyRepositoryFactory<
-  SourceID,
   Target extends Entity,
-  TargetID
+  TargetID,
+  ForeignKeyType
 >(
   relationMetadata: HasManyDefinition,
   targetRepository: EntityCrudRepository<Target, TargetID>,
-): HasManyRepositoryFactory<SourceID, Target> {
-  return function(fkValue: SourceID) {
+): HasManyRepositoryFactory<Target, ForeignKeyType> {
+  return function(fkValue: ForeignKeyType) {
     const fkName = relationMetadata.keyTo;
     if (!fkName) {
       throw new Error(
