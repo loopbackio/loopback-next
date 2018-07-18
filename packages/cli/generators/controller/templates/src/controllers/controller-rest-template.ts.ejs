@@ -35,8 +35,8 @@ export class <%= className %>Controller {
 
   @patch('<%= httpPathName %>')
   async updateAll(
-    @requestBody() obj: <%= modelName %>
-    @param.query.string('where') where?: Where,
+    @requestBody() obj: <%= modelName %>,
+    @param.query.string('where') where?: Where
   ): Promise<number> {
     return await this.<%= repositoryNameCamel %>.updateAll(obj, where);
   }
