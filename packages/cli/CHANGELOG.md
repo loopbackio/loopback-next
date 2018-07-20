@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.20.0"></a>
+# [0.20.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.19.0...@loopback/cli@0.20.0) (2018-07-20)
+
+
+### Bug Fixes
+
+* **cli:** fix cli rest controller generator template ([cc9591d](https://github.com/strongloop/loopback-next/commit/cc9591d))
+
+
+### Features
+
+* **example-todo-list:** add TodoList package/tutorial ([306d437](https://github.com/strongloop/loopback-next/commit/306d437))
+
+
+
+
 <a name="0.19.0"></a>
 # [0.19.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.18.1...@loopback/cli@0.19.0) (2018-07-13)
 

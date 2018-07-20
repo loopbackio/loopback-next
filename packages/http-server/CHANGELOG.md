@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@0.2.4...@loopback/http-server@0.3.0) (2018-07-20)
+
+
+### Features
+
+* add HTTPs protocol support ([6941a5d](https://github.com/strongloop/loopback-next/commit/6941a5d))
+
+
+
+
 <a name="0.2.4"></a>
 ## [0.2.4](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@0.2.3...@loopback/http-server@0.2.4) (2018-07-13)
 

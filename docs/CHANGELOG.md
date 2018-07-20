@@ -3,6 +3,50 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.15.0"></a>
+# [0.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.14.3...@loopback/docs@0.15.0) (2018-07-20)
+
+
+### Bug Fixes
+
+* **docs:** fix Parsing-requests.html sidebar entry ([94740f4](https://github.com/strongloop/loopback-next/commit/94740f4))
+* **repository:** change parameter order in HasManyRepositoryFactory ([534895d](https://github.com/strongloop/loopback-next/commit/534895d))
+
+
+### Features
+
+* **example-todo-list:** add TodoList package/tutorial ([306d437](https://github.com/strongloop/loopback-next/commit/306d437))
+
+
+### BREAKING CHANGES
+
+* **repository:** the generic SourceID for type HasManyRepositoryFactory
+has been renamed to ForeignKeyType and switched with Target generic.
+Also, the function createHasManyRepositoryFactory also renames the same
+generic and makes it the last declared generic. Lastly, the generic
+ForeignKeyType is added to DefaultCrudRepository#_createHasManyRepository
+FactoryFor function. Assuming there is an Order and Customer model defined,
+see the following examples for upgrade instructions:
+
+For `HasManyRepository` type:
+
+```diff
+- public orders: HasManyRepository<typeof Customer.prototype.id, Order>
++ public orders: HasManyRepository<Order, typeof Customer.prototype.id>
+```
+
+For `createHasManyRepositoryFactory` function:
+
+```diff
+- const orderFactoryFn = createHasManyRepositoryFactory<typeof Customer.
+prototype.id, Order, typeof Order.prototype.id>(...);
++ const orderFactoryFn = createHasManyRepositoryFactory<Order, typeof Order.
+prototype.id, typeof Customer.prototype.id>(...);
+```
+
+
+
+
 <a name="0.14.3"></a>
 ## [0.14.3](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.14.2...@loopback/docs@0.14.3) (2018-07-13)
 

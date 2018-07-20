@@ -1,15 +1,15 @@
 {
   "name": "@loopback/openapi-v3",
-  "version": "0.11.3",
+  "version": "0.12.0",
   "description": "Processes openapi v3 related metadata",
   "engines": {
     "node": ">=8"
   },
   "devDependencies": {
     "@loopback/build": "^0.6.11",
-    "@loopback/openapi-spec-builder": "^0.7.11",
-    "@loopback/repository": "^0.13.3",
-    "@loopback/testlab": "^0.10.11",
+    "@loopback/openapi-spec-builder": "^0.8.0",
+    "@loopback/repository": "^0.14.0",
+    "@loopback/testlab": "^0.11.0",
     "@types/debug": "0.0.30",
     "@types/lodash": "^4.14.106",
     "@types/node": "^10.1.1"
@@ -51,10 +51,10 @@
     "url": "https://github.com/strongloop/loopback-next.git"
   },
   "dependencies": {
-    "@loopback/context": "^0.11.11",
+    "@loopback/context": "^0.12.0",
     "@loopback/dist-util": "^0.3.3",
-    "@loopback/openapi-v3-types": "^0.7.11",
-    "@loopback/repository-json-schema": "^0.9.16",
+    "@loopback/openapi-v3-types": "^0.8.0",
+    "@loopback/repository-json-schema": "^0.10.0",
     "debug": "^3.1.0",
     "lodash": "^4.17.5"
   }

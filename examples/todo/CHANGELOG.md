@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.14.0"></a>
+# [0.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.13.3...@loopback/example-todo@0.14.0) (2018-07-20)
+
+
+### Features
+
+* **example-todo-list:** add TodoList package/tutorial ([306d437](https://github.com/strongloop/loopback-next/commit/306d437))
+
+
+
+
 <a name="0.13.3"></a>
 ## [0.13.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.13.2...@loopback/example-todo@0.13.3) (2018-07-13)
 
