@@ -23,7 +23,7 @@ import {Todo, TodoList} from '../src/models';
  - Making the input itself optional means you don't need to do anything special
    for tests where the particular details of the input don't matter.
  ==============================================================================
- *
+ */
 
 /**
  * Generate a complete Todo object for use with tests.
@@ -41,6 +41,10 @@ export function givenTodo(todo?: Partial<Todo>) {
   return new Todo(data);
 }
 
+/**
+ * Generate a complete TodoList object for use with tests
+ * @param todoList A partial (or complete) TodoList object.
+ */
 export function givenTodoList(todoList?: Partial<TodoList>) {
   const data = Object.assign(
     {

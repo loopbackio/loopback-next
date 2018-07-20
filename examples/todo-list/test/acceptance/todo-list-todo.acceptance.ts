@@ -15,6 +15,8 @@ describe('Application', () => {
   let todoRepo: TodoRepository;
   let todoListRepo: TodoListRepository;
 
+  let persistedTodoList: TodoList;
+
   before(givenRunningApplicationWithCustomConfiguration);
   after(() => app.stop());
 
@@ -29,82 +31,78 @@ describe('Application', () => {
     await todoListRepo.deleteAll();
   });
 
+  beforeEach(async () => {
+    persistedTodoList = await givenTodoListInstance();
+  });
+
   it('creates todo for a todoList', async () => {
-    const todoList = await givenTodoListInstance();
     const todo = givenTodo();
     const response = await client
-      .post(`/todo-lists/${todoList.id}/todos`)
+      .post(`/todo-lists/${persistedTodoList.id}/todos`)
       .send(todo)
       .expect(200);
 
     expect(response.body).to.containDeep(todo);
   });
 
-  it('finds todos for a todoList', async () => {
-    const todoList = await givenTodoListInstance();
-    const notMyTodo = await givenTodoInstance({
-      title: 'someone else does a thing',
+  context('when dealing with multiple persisted Todos', () => {
+    let notMyTodo: Todo;
+    let myTodos: Todo[];
+
+    beforeEach(async () => {
+      notMyTodo = await givenTodoInstance({
+        title: 'someone else does a thing',
+      });
+      myTodos = await Promise.all([
+        givenTodoInstanceOfTodoList(persistedTodoList.id),
+        givenTodoInstanceOfTodoList(persistedTodoList.id, {
+          title: 'another thing needs doing',
+        }),
+      ]);
     });
-    const myTodos = [
-      await givenTodoInstanceOfTodoList(todoList.id),
-      await givenTodoInstanceOfTodoList(todoList.id, {
-        title: 'another thing needs doing',
-      }),
-    ];
-    const response = await client
-      .get(`/todo-lists/${todoList.id}/todos`)
-      .send()
-      .expect(200);
 
-    expect(response.body)
-      .to.containDeep(myTodos)
-      .and.not.containEql(notMyTodo.toJSON()); // is this assertion necessary?
-  });
+    it('finds todos for a todoList', async () => {
+      const response = await client
+        .get(`/todo-lists/${persistedTodoList.id}/todos`)
+        .send()
+        .expect(200);
 
-  it('updates todos for a todoList', async () => {
-    const todoList = await givenTodoListInstance();
-    const notMyTodo = await givenTodoInstance({
-      title: 'someone else does a thing',
+      expect(response.body)
+        .to.containDeep(myTodos)
+        .and.not.containEql(notMyTodo.toJSON());
     });
-    const myTodos = [
-      await givenTodoInstanceOfTodoList(todoList.id),
-      await givenTodoInstanceOfTodoList(todoList.id, {
-        title: 'another thing needs doing',
-      }),
-    ];
-    const patchedIsCompleteTodo = {isComplete: true};
-    const response = await client
-      .patch(`/todo-lists/${todoList.id}/todos`)
-      .send(patchedIsCompleteTodo)
-      .expect(200);
 
-    expect(response.body).to.eql(myTodos.length);
-    const updatedTodos = await todoListRepo.todos(todoList.id).find();
-    const notUpdatedTodo = await todoRepo.findById(notMyTodo.id);
-    for (const todo of updatedTodos) {
-      expect(todo.toJSON()).to.containEql(patchedIsCompleteTodo);
-    }
-    expect(notUpdatedTodo.toJSON()).to.not.containEql(patchedIsCompleteTodo);
-  });
+    it('updates todos for a todoList', async () => {
+      const patchedIsCompleteTodo = {isComplete: true};
+      const response = await client
+        .patch(`/todo-lists/${persistedTodoList.id}/todos`)
+        .send(patchedIsCompleteTodo)
+        .expect(200);
 
-  it('deletes todos for a todoList', async () => {
-    const todoList = await givenTodoListInstance();
-    const notMyTodo = await givenTodoInstance({
-      title: 'someone else does a thing',
+      expect(response.body).to.eql(myTodos.length);
+      const updatedTodos = await todoListRepo
+        .todos(persistedTodoList.id)
+        .find();
+      const notUpdatedTodo = await todoRepo.findById(notMyTodo.id);
+      for (const todo of updatedTodos) {
+        expect(todo.toJSON()).to.containEql(patchedIsCompleteTodo);
+      }
+      expect(notUpdatedTodo.toJSON()).to.not.containEql(patchedIsCompleteTodo);
     });
-    await givenTodoInstanceOfTodoList(todoList.id);
-    await givenTodoInstanceOfTodoList(todoList.id, {
-      title: 'another thing needs doing',
-    });
-    await client
-      .del(`/todo-lists/${todoList.id}/todos`)
-      .send()
-      .expect(200);
 
-    const myDeletedTodos = await todoListRepo.todos(todoList.id).find();
-    const notDeletedTodo = await todoRepo.findById(notMyTodo.id);
-    expect(myDeletedTodos).to.be.empty();
-    expect(notDeletedTodo).to.eql(notMyTodo);
+    it('deletes todos for a todoList', async () => {
+      await client
+        .del(`/todo-lists/${persistedTodoList.id}/todos`)
+        .send()
+        .expect(200);
+
+      const myDeletedTodos = await todoListRepo
+        .todos(persistedTodoList.id)
+        .find();
+      const notDeletedTodo = await todoRepo.findById(notMyTodo.id);
+      expect(myDeletedTodos).to.be.empty();
+      expect(notDeletedTodo).to.eql(notMyTodo);
+    });
   });
 
   /*

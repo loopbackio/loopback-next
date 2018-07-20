@@ -60,6 +60,9 @@
     "loopback",
     "LoopBack",
     "example",
-    "tutorial"
+    "tutorial",
+    "CRUD",
+    "models",
+    "todo"
   ]
 }

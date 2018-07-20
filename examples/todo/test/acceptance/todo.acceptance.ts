@@ -32,6 +32,10 @@ describe('Application', () => {
     client = createClientForHandler(app.requestHandler);
   });
 
+  beforeEach(async () => {
+    await todoRepo.deleteAll();
+  });
+
   it('creates a todo', async function() {
     // Set timeout to 30 seconds as `post /todos` triggers geocode look up
     // over the internet and it takes more than 2 seconds
@@ -74,59 +78,59 @@ describe('Application', () => {
     expect(result).to.containEql(todo);
   });
 
-  it('gets a todo by ID', async () => {
-    const todo = await givenTodoInstance();
-    const result = await client
-      .get(`/todos/${todo.id}`)
-      .send()
-      .expect(200);
-    // Remove any undefined properties that cannot be represented in JSON/REST
-    const expected = JSON.parse(JSON.stringify(todo));
-    expect(result.body).to.deepEqual(expected);
-  });
+  context('when dealing with a single persisted todo', () => {
+    let persistedTodo: Todo;
 
-  it('replaces the todo by ID', async () => {
-    const todo = await givenTodoInstance();
-    const updatedTodo = givenTodo({
-      title: 'DO SOMETHING AWESOME',
-      desc: 'It has to be something ridiculous',
-      isComplete: true,
+    beforeEach(async () => {
+      persistedTodo = await givenTodoInstance();
     });
-    await client
-      .put(`/todos/${todo.id}`)
-      .send(updatedTodo)
-      .expect(200);
-    const result = await todoRepo.findById(todo.id);
-    expect(result).to.containEql(updatedTodo);
-  });
 
-  it('updates the todo by ID ', async () => {
-    const todo = await givenTodoInstance();
-    const updatedTodo = givenTodo({
-      title: 'DO SOMETHING AWESOME',
-      isComplete: true,
+    it('gets a todo by ID', async () => {
+      const result = await client
+        .get(`/todos/${persistedTodo.id}`)
+        .send()
+        .expect(200);
+      // Remove any undefined properties that cannot be represented in JSON/REST
+      const expected = JSON.parse(JSON.stringify(persistedTodo));
+      expect(result.body).to.deepEqual(expected);
     });
-    await client
-      .patch(`/todos/${todo.id}`)
-      .send(updatedTodo)
-      .expect(200);
-    const result = await todoRepo.findById(todo.id);
-    expect(result).to.containEql(updatedTodo);
-  });
 
-  it('deletes the todo', async () => {
-    const todo = await givenTodoInstance();
-    await client
-      .del(`/todos/${todo.id}`)
-      .send()
-      .expect(200);
-    try {
-      await todoRepo.findById(todo.id);
-    } catch (err) {
-      expect(err).to.match(/No Todo found with id/);
-      return;
-    }
-    throw new Error('No error was thrown!');
+    it('replaces the todo by ID', async () => {
+      const updatedTodo = givenTodo({
+        title: 'DO SOMETHING AWESOME',
+        desc: 'It has to be something ridiculous',
+        isComplete: true,
+      });
+      await client
+        .put(`/todos/${persistedTodo.id}`)
+        .send(updatedTodo)
+        .expect(200);
+      const result = await todoRepo.findById(persistedTodo.id);
+      expect(result).to.containEql(updatedTodo);
+    });
+
+    it('updates the todo by ID ', async () => {
+      const updatedTodo = givenTodo({
+        title: 'DO SOMETHING AWESOME',
+        isComplete: true,
+      });
+      await client
+        .patch(`/todos/${persistedTodo.id}`)
+        .send(updatedTodo)
+        .expect(200);
+      const result = await todoRepo.findById(persistedTodo.id);
+      expect(result).to.containEql(updatedTodo);
+    });
+
+    it('deletes the todo', async () => {
+      await client
+        .del(`/todos/${persistedTodo.id}`)
+        .send()
+        .expect(200);
+      await expect(todoRepo.findById(persistedTodo.id)).to.be.rejectedWith(
+        /no Todo found with id/,
+      );
+    });
   });
 
   /*
