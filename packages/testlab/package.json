@@ -1,6 +1,6 @@
 {
   "name": "@loopback/testlab",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "description": "A collection of test utilities we use to write LoopBack tests.",
   "engines": {
     "node": ">=8"
@@ -19,7 +19,7 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/dist-util": "^0.3.3",
+    "@loopback/dist-util": "^0.3.4",
     "@types/express": "^4.11.1",
     "@types/fs-extra": "^5.0.1",
     "@types/shot": "^3.4.0",
@@ -34,7 +34,7 @@
     "swagger2openapi": "^2.11.16"
   },
   "devDependencies": {
-    "@loopback/build": "^0.6.11",
+    "@loopback/build": "^0.6.12",
     "@types/node": "^10.1.1"
   },
   "files": [
