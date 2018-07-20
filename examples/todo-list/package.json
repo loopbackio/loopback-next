@@ -7,9 +7,9 @@
     "node": ">=8"
   },
   "scripts": {
-    "build": "npm run build:dist8 && npm run build:dist10",
+    "build:all-dist": "npm run build:dist8 && npm run build:dist10",
     "build:apidocs": "lb-apidocs",
-    "build:current": "lb-tsc",
+    "build": "lb-tsc",
     "build:dist8": "lb-tsc es2017",
     "build:dist10": "lb-tsc es2018",
     "build:watch": "lb-tsc --watch",
@@ -21,11 +21,11 @@
     "prettier:fix": "npm run prettier:cli -- --write",
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
-    "pretest": "npm run build:current",
+    "pretest": "npm run build",
     "test": "lb-mocha \"DIST/test/*/**/*.js\"",
     "test:dev": "lb-mocha --allow-console-logs DIST/test/**/*.js && npm run posttest",
     "verify": "npm pack && tar xf loopback-todo-list*.tgz && tree package && npm run clean",
-    "prestart": "npm run build:current",
+    "prestart": "npm run build",
     "start": "node ."
   },
   "repository": {
