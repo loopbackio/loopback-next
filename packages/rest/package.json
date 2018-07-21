@@ -1,6 +1,6 @@
 {
   "name": "@loopback/rest",
-  "version": "0.19.1",
+  "version": "0.19.2",
   "description": "",
   "engines": {
     "node": ">=8"
@@ -23,11 +23,11 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^0.12.1",
-    "@loopback/core": "^0.11.1",
-    "@loopback/http-server": "^0.3.1",
-    "@loopback/openapi-v3": "^0.12.1",
-    "@loopback/openapi-v3-types": "^0.8.1",
+    "@loopback/context": "^0.12.2",
+    "@loopback/core": "^0.11.2",
+    "@loopback/http-server": "^0.3.2",
+    "@loopback/openapi-v3": "^0.12.2",
+    "@loopback/openapi-v3-types": "^0.8.2",
     "@types/cors": "^2.8.3",
     "@types/express": "^4.11.1",
     "@types/http-errors": "^1.6.1",
@@ -44,11 +44,11 @@
     "validator": "^10.4.0"
   },
   "devDependencies": {
-    "@loopback/build": "^0.6.12",
-    "@loopback/dist-util": "^0.3.4",
-    "@loopback/openapi-spec-builder": "^0.8.1",
-    "@loopback/repository": "^0.14.1",
-    "@loopback/testlab": "^0.11.1",
+    "@loopback/build": "^0.6.13",
+    "@loopback/dist-util": "^0.3.5",
+    "@loopback/openapi-spec-builder": "^0.8.2",
+    "@loopback/repository": "^0.14.2",
+    "@loopback/testlab": "^0.11.2",
     "@types/debug": "0.0.30",
     "@types/js-yaml": "^3.11.1",
     "@types/lodash": "^4.14.106",
