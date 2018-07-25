@@ -27,4 +27,5 @@ examples/todo/* @bajtos @virkt25
 examples/hello-world/* @b-admike
 examples/log-extension/* @virkt25
 examples/rpc-server/* @virkt25
+examples/soap-calculator/* @marioestradarosa
 docs/* @bajtos @raymondfeng @virkt25 @b-admike @shimks @jannyHou
