@@ -18,6 +18,7 @@ const EXAMPLES = {
   'hello-world': 'A simple hello-world Application using LoopBack 4.',
   'log-extension': 'An example extension project for LoopBack 4.',
   'rpc-server': 'A basic RPC server using a made-up protocol.',
+  'soap-calculator': 'An example on how to integrate SOAP web services',
 };
 Object.freeze(EXAMPLES);
 
