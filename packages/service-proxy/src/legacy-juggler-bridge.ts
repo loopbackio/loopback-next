@@ -24,7 +24,10 @@ export interface GenericService {
  * @param ds A legacy data source
  * @typeparam T The generic type of service interface
  */
-export function getService<T = GenericService>(ds: legacy.DataSource): T {
+export async function getService<T = GenericService>(
+  ds: legacy.DataSource,
+): Promise<T> {
+  await ds.connect();
   // tslint:disable-next-line:no-any
   return ds.DataAccessObject as any;
 }

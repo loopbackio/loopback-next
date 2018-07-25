@@ -35,7 +35,7 @@ describe('service-proxy', () => {
       zipcode: '94401',
     };
 
-    const geoService = getService<GeoService>(ds);
+    const geoService = await getService<GeoService>(ds);
     const result = await geoService.geocode(loc.street, loc.city, loc.zipcode);
 
     // { lat: 37.5669986, lng: -122.3237495 }
@@ -50,7 +50,7 @@ describe('service-proxy', () => {
       zipcode: '94401',
     };
 
-    const geoService: GenericService = getService(ds);
+    const geoService: GenericService = await getService(ds);
     const result = await geoService.geocode(loc.street, loc.city, loc.zipcode);
 
     // { lat: 37.5669986, lng: -122.3237495 }

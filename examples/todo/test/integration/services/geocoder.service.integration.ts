@@ -34,9 +34,9 @@ describe('GeoLookupService', function() {
     ]);
   });
 
-  function givenGeoService() {
+  async function givenGeoService() {
     const config = getProxiedGeoCoderConfig(cachingProxy);
     const dataSource = new GeocoderDataSource(config);
-    service = new GeocoderServiceProvider(dataSource).value();
+    service = await new GeocoderServiceProvider(dataSource).value();
   }
 });

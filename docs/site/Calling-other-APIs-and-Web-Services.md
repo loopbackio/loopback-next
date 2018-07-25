@@ -156,7 +156,7 @@ export class GeoServiceProvider implements Provider<GeoService> {
     protected datasource: juggler.DataSource = new GeocoderDataSource(),
   ) {}
 
-  value(): GeocoderService {
+  value(): Promise<GeocoderService> {
     return getService(this.datasource);
   }
 }

@@ -51,6 +51,13 @@ export class MockConnector {
   }
 
   get DataAccessObject() {
+    if (!this.connected) {
+      // this simulates call to the connector.DataAccessObject when the
+      // connector has not been connected and its DAO methods has not been
+      // fully built
+      return {};
+    }
+
     return {
       geocode: async function(street: string, city: string, zipcode: string) {
         return {
