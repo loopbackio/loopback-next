@@ -45,11 +45,13 @@ and raw data is parsed from request according to the specification. In the
 example above, the first parameter is from source `path`, so its value will be
 parsed from a request's path.
 
-{% include note.html title="Controller documentation" content="See [controller](Controller.md) for more details of defining an endpoint." %}
+{% include note.html title="Controller documentation" content="See [controller](Controller.md) for more details of defining an endpoint.
+" %}
 
 {% include note.html title="OpenAPI operation object" content="See
 [OpenAPI operation object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#operationObject)
-to know more about its structure." %}
+to know more about its structure.
+" %}
 
 ### Coercion
 
@@ -135,7 +137,8 @@ The request body specification is defined by applying `@requestBody()` to
 argument `todo`, and the schema specification inside it is inferred from its
 type `Todo`. The type is exported from a `Todo` model.
 
-{% include note.html title="Model documentation" content="See [model](Model.md) to know more details about how to decorate a model class" %}
+{% include note.html title="Model documentation" content="See [model](Model.md) to know more details about how to decorate a model class.
+" %}
 
 When the `PUT` method on the `/todo/{id}` gets called, the `todo` instance from
 the request body will be validated with a well defined specification.
