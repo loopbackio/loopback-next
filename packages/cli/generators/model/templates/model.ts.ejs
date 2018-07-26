@@ -2,12 +2,17 @@ import {Entity, model, property} from '@loopback/repository';
 
 @model()
 export class <%= className %> extends Entity {
-  <% Object.entries(properties).forEach(([key, val]) => { %>
-  @property({<% Object.entries(val).forEach(([propKey, propVal]) => {%>
-    <%if (propKey !== 'tsType') {%><%= propKey %>: <%- propVal %>,<% } %><% }) %>
+<% Object.entries(properties).forEach(([key, val]) => { -%>
+  @property({
+  <%_ Object.entries(val).forEach(([propKey, propVal]) => { -%>
+    <%_ if (propKey !== 'tsType') { -%>
+    <%= propKey %>: <%- propVal %>,
+    <%_ } -%>
+  <%_ }) -%>
   })
   <%= key %><%if (!val.required) {%>?<% } %>: <%= val.tsType %>;
-  <% }) %>
+
+<% }) -%>
   constructor(data?: Partial<<%= className %>>) {
     super(data);
   }
