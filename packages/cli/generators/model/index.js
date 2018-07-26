@@ -234,6 +234,9 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
 
       // Convert Type to include '' for template
       val.type = `'${val.type}'`;
+      if (val.arrayType) {
+        val.arrayType = `'${val.arrayType}'`;
+      }
 
       // If required is false, we can delete it as that's the default assumption
       // for this field if not present. This helps to avoid polluting the
