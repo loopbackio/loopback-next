@@ -75,6 +75,55 @@ describe('DefaultCrudRepository', () => {
     await model.deleteAll();
   });
 
+  context('constructor', () => {
+    class ShoppingList extends Entity {
+      static definition = new ModelDefinition({
+        name: 'ShoppingList',
+        properties: {
+          id: {
+            type: 'number',
+            id: true,
+          },
+          toBuy: {
+            type: 'array',
+            itemType: 'string',
+          },
+          toVisit: {
+            type: Array,
+            itemType: String,
+          },
+        },
+      });
+
+      toBuy: String[];
+      toVisit: String[];
+    }
+
+    it('converts PropertyDefinition with array type', () => {
+      const originalPropertyDefinition = Object.assign(
+        {},
+        ShoppingList.definition.properties,
+      );
+      const listDefinition = new DefaultCrudRepository(ShoppingList, ds)
+        .modelClass.definition;
+      const jugglerPropertyDefinition = {
+        toBuy: {
+          type: [String],
+        },
+        toVisit: {
+          type: [String],
+        },
+      };
+
+      expect(listDefinition.properties).to.containDeep(
+        jugglerPropertyDefinition,
+      );
+      expect(ShoppingList.definition.properties).to.containDeep(
+        originalPropertyDefinition,
+      );
+    });
+  });
+
   it('shares the backing PersistedModel across repo instances', () => {
     const model1 = new DefaultCrudRepository(Note, ds).modelClass;
     const model2 = new DefaultCrudRepository(Note, ds).modelClass;

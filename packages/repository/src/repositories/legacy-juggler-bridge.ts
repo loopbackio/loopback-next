@@ -112,9 +112,16 @@ export class DefaultCrudRepository<T extends Entity, ID>
     // We need to convert property definitions from PropertyDefinition
     // to plain data object because of a juggler limitation
     const properties: {[name: string]: object} = {};
-    for (const p in definition.properties) {
-      properties[p] = Object.assign({}, definition.properties[p]);
-    }
+
+    // We need to convert PropertyDefinition into the definition that
+    // the juggler understands
+    Object.entries(definition.properties).forEach(([key, value]) => {
+      if (value.type === 'array' || value.type === Array) {
+        value = Object.assign({}, value, {type: [value.itemType]});
+        delete value.itemType;
+      }
+      properties[key] = Object.assign({}, value);
+    });
 
     this.modelClass = dataSource.createModel<juggler.PersistedModelClass>(
       definition.name,

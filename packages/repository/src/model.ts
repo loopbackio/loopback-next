@@ -25,6 +25,7 @@ export interface PropertyDefinition {
   id?: boolean;
   json?: PropertyForm;
   store?: PropertyForm;
+  itemType?: PropertyType; // type of array
   [attribute: string]: any; // Other attributes
 }
 

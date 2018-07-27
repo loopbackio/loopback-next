@@ -121,7 +121,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
           choices: this.typeChoices,
         },
         {
-          name: 'arrayType',
+          name: 'itemType',
           message: 'Type of array items:',
           type: 'list',
           choices: this.typeChoices.filter(choice => {
@@ -204,18 +204,18 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     // Set up types for Templating
     const TS_TYPES = ['string', 'number', 'object', 'boolean', 'any'];
     const NON_TS_TYPES = ['geopoint', 'date'];
-    Object.entries(this.artifactInfo.properties).forEach(([key, val]) => {
+    Object.values(this.artifactInfo.properties).forEach(val => {
       // Default tsType is the type property
       val.tsType = val.type;
 
       // Override tsType based on certain type values
       if (val.type === 'array') {
-        if (TS_TYPES.includes(val.arrayType)) {
-          val.tsType = `${val.arrayType}[]`;
+        if (TS_TYPES.includes(val.itemType)) {
+          val.tsType = `${val.itemType}[]`;
         } else if (val.type === 'buffer') {
-          val.tsType = `Buffer[]`;
+          val.tsType = 'Buffer[]';
         } else {
-          val.tsType = `string[]`;
+          val.tsType = 'string[]';
         }
       } else if (val.type === 'buffer') {
         val.tsType = 'Buffer';
@@ -234,8 +234,8 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
 
       // Convert Type to include '' for template
       val.type = `'${val.type}'`;
-      if (val.arrayType) {
-        val.arrayType = `'${val.arrayType}'`;
+      if (val.itemType) {
+        val.itemType = `'${val.itemType}'`;
       }
 
       // If required is false, we can delete it as that's the default assumption
