@@ -153,6 +153,113 @@ describe('build-schema', () => {
         expectValidJsonSchema(jsonSchema);
       });
 
+      it('properly converts primitive array properties', () => {
+        @model()
+        class TestModel {
+          @property.array(Number)
+          numArr: number[];
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema.properties).to.deepEqual({
+          numArr: {
+            type: 'array',
+            items: {
+              type: 'number',
+            },
+          },
+        });
+        expectValidJsonSchema(jsonSchema);
+      });
+
+      it('properly converts properties with recursive arrays', () => {
+        @model()
+        class RecursiveArray {
+          @property.array(Array)
+          recArr: string[][];
+        }
+
+        const jsonSchema = modelToJsonSchema(RecursiveArray);
+        expect(jsonSchema.properties).to.eql({
+          recArr: {
+            type: 'array',
+            items: {
+              type: 'array',
+            },
+          },
+        });
+      });
+
+      it('supports explicit primitive type decoration via strings', () => {
+        @model()
+        class TestModel {
+          @property({type: 'string'})
+          hardStr: Number;
+          @property({type: 'boolean'})
+          hardBool: String;
+          @property({type: 'number'})
+          hardNum: Boolean;
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema.properties).to.deepEqual({
+          hardStr: {
+            type: 'string',
+          },
+          hardBool: {
+            type: 'boolean',
+          },
+          hardNum: {
+            type: 'number',
+          },
+        });
+        expectValidJsonSchema(jsonSchema);
+      });
+
+      it('maps "required" keyword to the schema appropriately', () => {
+        @model()
+        class TestModel {
+          @property({required: false})
+          propOne: string;
+          @property({required: true})
+          propTwo: string;
+          @property()
+          propThree: number;
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema.required).to.deepEqual(['propTwo']);
+        expectValidJsonSchema(jsonSchema);
+      });
+
+      it('errors out when explicit type decoration is not primitive', () => {
+        @model()
+        class TestModel {
+          @property({type: 'NotPrimitive'})
+          bad: String;
+        }
+
+        expect(() => modelToJsonSchema(TestModel)).to.throw(/Unsupported type/);
+      });
+
+      it('properly converts array of types defined by strings', () => {
+        @model()
+        class TestModel {
+          @property({type: 'array', itemType: 'number'})
+          num: number[];
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema.properties).to.eql({
+          num: {
+            type: 'array',
+            items: {
+              type: 'number',
+            },
+          },
+        });
+      });
+
       context('with custom type properties', () => {
         it('properly converts undecorated custom type properties', () => {
           class CustomType {
@@ -192,6 +299,62 @@ describe('build-schema', () => {
           expect(jsonSchema.properties).to.deepEqual({
             cusType: {
               $ref: '#/definitions/CustomType',
+            },
+          });
+          expect(jsonSchema.definitions).to.deepEqual({
+            CustomType: {
+              title: 'CustomType',
+              properties: {
+                prop: {
+                  type: 'string',
+                },
+              },
+            },
+          });
+          expectValidJsonSchema(jsonSchema);
+        });
+
+        it('properly converts undecorated custom array type properties', () => {
+          class CustomType {
+            prop: string;
+          }
+
+          @model()
+          class TestModel {
+            @property.array(CustomType)
+            cusArr: CustomType[];
+          }
+
+          const jsonSchema = modelToJsonSchema(TestModel);
+          expect(jsonSchema.properties).to.deepEqual({
+            cusArr: {
+              type: 'array',
+              items: {
+                $ref: '#/definitions/CustomType',
+              },
+            },
+          });
+          expectValidJsonSchema(jsonSchema);
+        });
+
+        it('properly converts decorated custom array type properties', () => {
+          @model()
+          class CustomType {
+            @property()
+            prop: string;
+          }
+
+          @model()
+          class TestModel {
+            @property.array(CustomType)
+            cusType: CustomType[];
+          }
+
+          const jsonSchema = modelToJsonSchema(TestModel);
+          expect(jsonSchema.properties).to.deepEqual({
+            cusType: {
+              type: 'array',
+              items: {$ref: '#/definitions/CustomType'},
             },
           });
           expect(jsonSchema.definitions).to.deepEqual({
@@ -257,124 +420,6 @@ describe('build-schema', () => {
           });
           expectValidJsonSchema(jsonSchema);
         });
-      });
-
-      it('properly converts primitive arrays properties', () => {
-        @model()
-        class TestModel {
-          @property.array(Number)
-          numArr: number[];
-        }
-
-        const jsonSchema = modelToJsonSchema(TestModel);
-        expect(jsonSchema.properties).to.deepEqual({
-          numArr: {
-            type: 'array',
-            items: {
-              type: 'number',
-            },
-          },
-        });
-        expectValidJsonSchema(jsonSchema);
-      });
-
-      it('properly converts custom type arrays properties', () => {
-        class CustomType {
-          prop: string;
-        }
-
-        @model()
-        class TestModel {
-          @property.array(CustomType)
-          cusArr: CustomType[];
-        }
-
-        const jsonSchema = modelToJsonSchema(TestModel);
-        expect(jsonSchema.properties).to.deepEqual({
-          cusArr: {
-            type: 'array',
-            items: {
-              $ref: '#/definitions/CustomType',
-            },
-          },
-        });
-        expectValidJsonSchema(jsonSchema);
-      });
-
-      it('supports explicit primitive type decoration via strings', () => {
-        @model()
-        class TestModel {
-          @property({type: 'string'})
-          hardStr: Number;
-          @property({type: 'boolean'})
-          hardBool: String;
-          @property({type: 'number'})
-          hardNum: Boolean;
-        }
-
-        const jsonSchema = modelToJsonSchema(TestModel);
-        expect(jsonSchema.properties).to.deepEqual({
-          hardStr: {
-            type: 'string',
-          },
-          hardBool: {
-            type: 'boolean',
-          },
-          hardNum: {
-            type: 'number',
-          },
-        });
-        expectValidJsonSchema(jsonSchema);
-      });
-
-      it('maps "required" keyword to the schema appropriately', () => {
-        @model()
-        class TestModel {
-          @property({required: false})
-          propOne: string;
-          @property({required: true})
-          propTwo: string;
-          @property()
-          propThree: number;
-        }
-
-        const jsonSchema = modelToJsonSchema(TestModel);
-        expect(jsonSchema.required).to.deepEqual(['propTwo']);
-        expectValidJsonSchema(jsonSchema);
-      });
-
-      it('errors out when explicit type decoration is not primitive', () => {
-        @model()
-        class TestModel {
-          @property({type: 'NotPrimitive'})
-          bad: String;
-        }
-
-        expect(() => modelToJsonSchema(TestModel)).to.throw(/Unsupported type/);
-      });
-
-      it('errors out when "@property.array" is not used on an array', () => {
-        @model()
-        class BadArray {
-          @property()
-          badArr: string[];
-        }
-
-        expect(() => {
-          modelToJsonSchema(BadArray);
-        }).to.throw(/type is defined as an array/);
-      });
-
-      it('errors out if "@property.array" is given "Array" as parameter', () => {
-        @model()
-        class BadArray {
-          @property.array(Array)
-          badArr: string[][];
-        }
-
-        expect(() => {
-          modelToJsonSchema(BadArray);
-        }).to.throw(/type is defined as an array/);
       });
     });
 

@@ -8,10 +8,34 @@ import {isComplexType, stringTypeToWrapper, metaToJsonProperty} from '../..';
 
 describe('build-schema', () => {
   describe('stringTypeToWrapper', () => {
-    it('returns respective wrapper of number, string and boolean', () => {
-      expect(stringTypeToWrapper('string')).to.eql(String);
-      expect(stringTypeToWrapper('number')).to.eql(Number);
-      expect(stringTypeToWrapper('boolean')).to.eql(Boolean);
+    context('when given primitive types in string', () => {
+      it('returns String for "string"', () => {
+        expect(stringTypeToWrapper('string')).to.eql(String);
+      });
+
+      it('returns Number for "number"', () => {
+        expect(stringTypeToWrapper('number')).to.eql(Number);
+      });
+
+      it('returns Boolean for "boolean"', () => {
+        expect(stringTypeToWrapper('boolean')).to.eql(Boolean);
+      });
+
+      it('returns Array for "array"', () => {
+        expect(stringTypeToWrapper('array')).to.eql(Array);
+      });
+
+      it('returns Buffer for "buffer"', () => {
+        expect(stringTypeToWrapper('buffer')).to.eql(Buffer);
+      });
+
+      it('returns Date for "date"', () => {
+        expect(stringTypeToWrapper('date')).to.eql(Date);
+      });
+
+      it('returns Object for "object"', () => {
+        expect(stringTypeToWrapper('object')).to.eql(Object);
+      });
     });
 
     it('errors out if other types are given', () => {
@@ -21,19 +45,34 @@ describe('build-schema', () => {
       expect(() => {
         stringTypeToWrapper('function');
       }).to.throw(/Unsupported type/);
-      expect(() => {
-        stringTypeToWrapper('object');
-      }).to.throw(/Unsupported type/);
     });
   });
 
   describe('isComplextype', () => {
-    it('returns false if primitive or object wrappers are passed in', () => {
-      expect(isComplexType(Number)).to.eql(false);
-      expect(isComplexType(String)).to.eql(false);
-      expect(isComplexType(Boolean)).to.eql(false);
-      expect(isComplexType(Object)).to.eql(false);
-      expect(isComplexType(Function)).to.eql(false);
+    context('when given primitive wrappers', () => {
+      it('returns false for Number', () => {
+        expect(isComplexType(Number)).to.eql(false);
+      });
+
+      it('returns false for String', () => {
+        expect(isComplexType(String)).to.eql(false);
+      });
+
+      it('returns false for Boolean', () => {
+        expect(isComplexType(Boolean)).to.eql(false);
+      });
+
+      it('returns false for Object', () => {
+        expect(isComplexType(Object)).to.eql(false);
+      });
+
+      it('returns false for Function', () => {
+        expect(isComplexType(Function)).to.eql(false);
+      });
+
+      it('returns false for Array', () => {
+        expect(isComplexType(Array)).to.eql(false);
+      });
     });
 
     it('returns true if any other wrappers are passed in', () => {
@@ -43,9 +82,9 @@ describe('build-schema', () => {
   });
 
   describe('metaToJsonSchema', () => {
-    it('errors out if "type" property is Array', () => {
-      expect(() => metaToJsonProperty({type: Array})).to.throw(
-        /type is defined as an array/,
+    it('errors out if "itemType" is an array', () => {
+      expect(() => metaToJsonProperty({type: Array, itemType: []})).to.throw(
+        /itemType as an array is not supported/,
       );
     });
 
@@ -61,6 +100,12 @@ describe('build-schema', () => {
       });
     });
 
+    it('converts arrays', () => {
+      expect(metaToJsonProperty({type: Array})).to.eql({
+        type: 'array',
+      });
+    });
+
     it('converts complex types', () => {
       class CustomType {}
       expect(metaToJsonProperty({type: CustomType})).to.eql({
@@ -69,7 +114,7 @@ describe('build-schema', () => {
     });
 
     it('converts primitive arrays', () => {
-      expect(metaToJsonProperty({array: true, type: Number})).to.eql({
+      expect(metaToJsonProperty({type: Array, itemType: Number})).to.eql({
         type: 'array',
         items: {type: 'number'},
       });
@@ -77,7 +122,7 @@ describe('build-schema', () => {
 
     it('converts arrays of custom types', () => {
       class CustomType {}
-      expect(metaToJsonProperty({array: true, type: CustomType})).to.eql({
+      expect(metaToJsonProperty({type: Array, itemType: CustomType})).to.eql({
         type: 'array',
         items: {$ref: '#/definitions/CustomType'},
       });

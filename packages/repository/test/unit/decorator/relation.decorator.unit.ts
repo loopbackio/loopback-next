@@ -61,12 +61,12 @@ describe('relation decorator', () => {
         keyTo: 'addressBookId',
       });
       expect(jugglerMeta).to.eql({
-        type: Address,
-        array: true,
+        type: Array,
+        itemType: Address,
       });
     });
 
-    it('takes in both complex property type and asMany metadata', () => {
+    it('takes in both complex property type and hasMany metadata', () => {
       class Address extends Entity {
         addressId: number;
         street: string;
@@ -95,8 +95,8 @@ describe('relation decorator', () => {
         keyTo: 'someForeignKey',
       });
       expect(jugglerMeta).to.eql({
-        type: Address,
-        array: true,
+        type: Array,
+        itemType: Address,
       });
     });
 

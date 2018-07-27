@@ -5,7 +5,7 @@ export class <%= className %> extends Entity {
 <% Object.entries(properties).forEach(([key, val]) => { -%>
   @property({
   <%_ Object.entries(val).forEach(([propKey, propVal]) => { -%>
-    <%_ if (propKey !== 'tsType') { -%>
+    <%_ if (!['tsType'].includes(propKey)) { -%>
     <%= propKey %>: <%- propVal %>,
     <%_ } -%>
   <%_ }) -%>
