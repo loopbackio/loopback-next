@@ -1,0 +1,10 @@
+---
+applications:
+- instances: 1
+  timeout: 256
+  name: LB4-0001
+  buildpack: sdk-for-nodejs
+  command: npm start
+  memory: 128M
+  domain: eu-gb.mybluemix.net
+  host: lb4-0001

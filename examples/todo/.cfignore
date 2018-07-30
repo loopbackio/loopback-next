@@ -1,0 +1,4 @@
+.git/
+node_modules/
+vcap-local.js
+.vscode/
