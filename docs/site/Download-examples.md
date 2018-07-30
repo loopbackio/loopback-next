@@ -2,10 +2,8 @@
 lang: en
 title: 'Download examples'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Download-examples.html
-summary:
 ---
 
 ### Synopsis

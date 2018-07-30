@@ -53,14 +53,14 @@ describe('requestBody decorator', () => {
 
       @model()
       class MyModel {
-        @property() name: string;
+        @property()
+        name: string;
       }
 
       class MyController {
         @post('/MyModel')
         createMyModel(
-          @requestBody({content: {'application/text': {}}})
-          inst: MyModel,
+          @requestBody({content: {'application/text': {}}}) inst: MyModel,
         ) {}
       }
 
@@ -81,10 +81,7 @@ describe('requestBody decorator', () => {
 
       class MyController {
         @post('/MyModel')
-        createMyModel(
-          @requestBody({content: expectedContent})
-          inst: MyModel,
-        ) {}
+        createMyModel(@requestBody({content: expectedContent}) inst: MyModel) {}
       }
 
       const requestBodySpec = getControllerSpec(MyController).paths['/MyModel'][
@@ -105,8 +102,7 @@ describe('requestBody decorator', () => {
       class MyController {
         @post('/MyModel')
         createMyModel(
-          @requestBody({content: expectedContent})
-          inst: Partial<MyModel>,
+          @requestBody({content: expectedContent}) inst: Partial<MyModel>,
         ) {}
       }
 

@@ -15,7 +15,8 @@ import {
 } from '../../';
 
 class NoteController {
-  @repository('noteRepo') public noteRepo: EntityCrudRepository<Entity, number>;
+  @repository('noteRepo')
+  public noteRepo: EntityCrudRepository<Entity, number>;
 }
 
 const ds: juggler.DataSource = new juggler.DataSource({

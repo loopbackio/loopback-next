@@ -2,10 +2,8 @@
 lang: en
 title: 'Routes'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Routes.html
-summary:
 ---
 
 ## Overview

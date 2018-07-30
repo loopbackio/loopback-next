@@ -2,10 +2,8 @@
 lang: en
 title: 'Testing the API'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Testing-the-API.html
-summary:
 ---
 
 {% include previous.html content=" This article continues off

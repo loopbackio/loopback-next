@@ -2,7 +2,6 @@
 lang: en
 title: 'Add TodoList Model'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/todo-list-tutorial-model.html
 summary: LoopBack 4 TodoList Application Tutorial - Add TodoList Model
@@ -79,7 +78,8 @@ model. To `TodoList` model, add in the following property:
 export class TodoList extends Entity {
   // ...properties defined by the CLI...
 
-  @hasMany(Todo) todos?: Todo[];
+  @hasMany(Todo)
+  todos?: Todo[];
 
   // ...constructor def...
 }
@@ -99,7 +99,8 @@ property on `Todo` model to complete defining the relation on both ends:
 export class Todo extends Entity {
   // ...properties defined by the CLI...
 
-  @property() todoListId: number;
+  @property()
+  todoListId: number;
 
   // ...constructor def...
 }

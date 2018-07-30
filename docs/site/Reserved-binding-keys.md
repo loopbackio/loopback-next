@@ -3,10 +3,8 @@ lang: en
 title: 'Reserved binding keys'
 keywords: LoopBack 4.0, LoopBack 4
 toc_level: 1
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Reserved-binding-keys.html
-summary:
 ---
 
 ## Overview

@@ -2,10 +2,10 @@
 lang: en
 title: 'Integrate with a geo-coding service'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/todo-tutorial-geocoding-service.html
-summary: LoopBack 4 Todo Application Tutorial - Integrate with a geo-coding service
+summary:
+  LoopBack 4 Todo Application Tutorial - Integrate with a geo-coding service
 ---
 
 ### Services
@@ -74,8 +74,7 @@ docs here: [REST connector](/doc/en/lb3/REST-connector.html).
     {
       "template": {
         "method": "GET",
-        "url":
-          "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress",
+        "url": "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress",
         "query": {
           "format": "{format=json}",
           "benchmark": "Public_AR_Current",

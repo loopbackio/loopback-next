@@ -2,10 +2,8 @@
 lang: en
 title: 'Creating components'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Creating-components.html
-summary:
 ---
 
 As explained in [Using Components](Using-components.md), a typical LoopBack

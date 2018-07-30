@@ -2,10 +2,8 @@
 lang: en
 title: 'Controller generator'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Controller-generator.html
-summary:
 ---
 
 {% include content/generator-create-app.html lang=page.lang %}

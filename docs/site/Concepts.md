@@ -2,10 +2,8 @@
 lang: en
 title: 'Key concepts'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Concepts.html
-summary:
 ---
 
 LoopBack 4 introduces some new concepts that are important to understand:

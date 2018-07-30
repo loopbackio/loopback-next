@@ -2,12 +2,10 @@
 lang: en
 title: 'Best practices with Loopback 4'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Best-practices.html
 redirect_from:
   - /doc/en/lb4/Best-practices-with-Loopback-4.html
-summary:
 ---
 
 LoopBack 4 is more than just a framework: It’s an ecosystem that encourages

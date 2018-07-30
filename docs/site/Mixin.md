@@ -2,10 +2,8 @@
 lang: en
 title: 'Mixin'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Mixin.html
-summary:
 ---
 
 It is a commonly used JavaScript/TypeScript strategy to extend a class with new

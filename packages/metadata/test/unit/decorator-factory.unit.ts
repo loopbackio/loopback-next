@@ -518,19 +518,13 @@ describe('ParameterDecoratorFactory', () => {
   }
 
   class BaseController {
-    myMethod(
-      @parameterDecorator({x: 1})
-      a: string,
-      b: number,
-    ) {}
+    myMethod(@parameterDecorator({x: 1}) a: string, b: number) {}
   }
 
   class SubController extends BaseController {
     myMethod(
-      @parameterDecorator({y: 2})
-      a: string,
-      @parameterDecorator({x: 2})
-      b: number,
+      @parameterDecorator({y: 2}) a: string,
+      @parameterDecorator({x: 2}) b: number,
     ) {}
   }
 
@@ -575,19 +569,13 @@ describe('ParameterDecoratorFactory for a constructor', () => {
   }
 
   class BaseController {
-    constructor(
-      @parameterDecorator({x: 1})
-      a: string,
-      b: number,
-    ) {}
+    constructor(@parameterDecorator({x: 1}) a: string, b: number) {}
   }
 
   class SubController extends BaseController {
     constructor(
-      @parameterDecorator({y: 2})
-      a: string,
-      @parameterDecorator({x: 2})
-      b: number,
+      @parameterDecorator({y: 2}) a: string,
+      @parameterDecorator({x: 2}) b: number,
     ) {
       super(a, b);
     }
@@ -619,19 +607,13 @@ describe('ParameterDecoratorFactory for a static method', () => {
   }
 
   class BaseController {
-    static myMethod(
-      @parameterDecorator({x: 1})
-      a: string,
-      b: number,
-    ) {}
+    static myMethod(@parameterDecorator({x: 1}) a: string, b: number) {}
   }
 
   class SubController extends BaseController {
     static myMethod(
-      @parameterDecorator({y: 2})
-      a: string,
-      @parameterDecorator({x: 2})
-      b: number,
+      @parameterDecorator({y: 2}) a: string,
+      @parameterDecorator({x: 2}) b: number,
     ) {}
   }
 

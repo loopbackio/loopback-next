@@ -72,11 +72,14 @@ describe('model decorator', () => {
 
   @model()
   class Product extends Entity {
-    @property() id: string;
+    @property()
+    id: string;
 
-    @property() name: string;
+    @property()
+    name: string;
 
-    @property() price: number;
+    @property()
+    price: number;
   }
 
   @model({name: 'order'})
@@ -90,14 +93,16 @@ describe('model decorator', () => {
 
     @property({type: 'string', id: true, generated: true})
     id: string;
-    @property() customerId: string;
+    @property()
+    customerId: string;
 
     @belongsTo({target: 'Customer'})
     // TypeScript does not allow me to reference Customer here
     customer: ICustomer;
 
     // Validates that property no longer requires a parameter
-    @property() isShipped: boolean;
+    @property()
+    isShipped: boolean;
   }
 
   @model()
@@ -107,17 +112,23 @@ describe('model decorator', () => {
     firstName: string;
     lastName: string;
 
-    @embedsOne() address: Address;
+    @embedsOne()
+    address: Address;
 
-    @embedsMany() phones: Phone[];
+    @embedsMany()
+    phones: Phone[];
 
-    @referencesMany() accounts: Account[];
+    @referencesMany()
+    accounts: Account[];
 
-    @referencesOne() profile: Profile;
+    @referencesOne()
+    profile: Profile;
 
-    @hasMany(Order) orders?: Order[];
+    @hasMany(Order)
+    orders?: Order[];
 
-    @hasOne() lastOrder?: Order;
+    @hasOne()
+    lastOrder?: Order;
 
     @relation({type: RelationType.hasMany})
     recentOrders?: Order[];
@@ -276,7 +287,8 @@ describe('model decorator', () => {
 
     @model()
     class House extends Entity {
-      @property() name: string;
+      @property()
+      name: string;
       @hasMany(Person, {keyTo: 'fk'})
       person: Person[];
     }
@@ -295,7 +307,8 @@ describe('model decorator', () => {
       it('"@property.array" adds array metadata', () => {
         @model()
         class TestModel {
-          @property.array(Product) items: Product[];
+          @property.array(Product)
+          items: Product[];
         }
 
         const meta =
@@ -311,7 +324,8 @@ describe('model decorator', () => {
           () => {
             // tslint:disable-next-line:no-unused-variable
             class Oops {
-              @property.array(Product) product: Product;
+              @property.array(Product)
+              product: Product;
             }
           },
           Error,

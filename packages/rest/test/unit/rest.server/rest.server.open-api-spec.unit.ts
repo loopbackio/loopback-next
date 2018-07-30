@@ -159,7 +159,8 @@ describe('RestServer.getApiSpec()', () => {
   it('returns definitions inferred via app.controller()', () => {
     @model()
     class MyModel {
-      @property() bar: string;
+      @property()
+      bar: string;
     }
     class MyController {
       @post('/foo')
