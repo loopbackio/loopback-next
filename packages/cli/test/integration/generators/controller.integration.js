@@ -12,7 +12,6 @@ const testlab = require('@loopback/testlab');
 const expect = testlab.expect;
 const TestSandbox = testlab.TestSandbox;
 
-const debug = require('../../../lib/debug')('lb4:controller:test');
 const ControllerGenerator = require('../../../generators/controller');
 const generator = path.join(__dirname, '../../../generators/controller');
 const tests = require('../lib/artifact-generator')(generator);

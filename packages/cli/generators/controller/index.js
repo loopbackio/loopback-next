@@ -98,17 +98,26 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
     ) {
       return;
     }
-    const modelList = await utils.getArtifactList(
-      this.artifactInfo.modelDir,
-      'model',
-    );
-    const repositoryList = await utils.getArtifactList(
-      this.artifactInfo.repositoryDir,
-      'repository',
-      true,
-    );
+
+    let modelList, repositoryList;
+
+    try {
+      modelList = await utils.getArtifactList(
+        this.artifactInfo.modelDir,
+        'model',
+      );
+
+      repositoryList = await utils.getArtifactList(
+        this.artifactInfo.repositoryDir,
+        'repository',
+        true,
+      );
+    } catch (err) {
+      return this.exit(err);
+    }
+
     if (_.isEmpty(modelList)) {
-      throw new Error(
+      return this.exit(
         `No models found in ${this.artifactInfo.modelDir}.
         ${chalk.yellow(
           'Please visit http://loopback.io/doc/en/lb4/Controller-generator.html for information on how models are discovered',
@@ -116,7 +125,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       );
     }
     if (_.isEmpty(repositoryList)) {
-      throw new Error(
+      return this.exit(
         `No repositories found in ${this.artifactInfo.repositoryDir}.
         ${chalk.yellow(
           'Please visit http://loopback.io/doc/en/lb4/Controller-generator.html for information on how repositories are discovered',
