@@ -34,7 +34,6 @@ describe('app-generator specific files', () => {
       /class MyAppApplication extends BootMixin\(RestApplication/,
     );
     assert.fileContent('src/application.ts', /constructor\(/);
-    assert.fileContent('src/application.ts', /async start\(/);
     assert.fileContent('src/application.ts', /this.projectRoot = __dirname/);
 
     assert.file('src/index.ts');
