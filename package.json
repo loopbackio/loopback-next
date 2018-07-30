@@ -6,7 +6,7 @@
   },
   "version": "0.1.0",
   "engines": {
-    "node": ">=8"
+    "node": ">=8.9"
   },
   "license": "MIT",
   "devDependencies": {

@@ -32,7 +32,7 @@ by using it for your next project. Start by having a look at
 
 Make sure you have the following installed:
 
-- [Node.js](https://nodejs.org/en/download/) >= 8.0.0
+- [Node.js](https://nodejs.org/en/download/) >= 8.9.0
 
 Install LoopBack 4 CLI to help create new projects as follows:
 

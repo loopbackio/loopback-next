@@ -3,7 +3,7 @@
   "version": "0.19.2",
   "description": "",
   "engines": {
-    "node": ">=8"
+    "node": ">=8.9"
   },
   "scripts": {
     "acceptance": "lb-mocha \"DIST/test/acceptance/**/*.js\"",
