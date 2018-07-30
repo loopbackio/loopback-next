@@ -2,10 +2,8 @@
 lang: en
 title: 'Model'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Model.html
-summary:
 ---
 
 {% include content/tbd.html %}
@@ -89,9 +87,12 @@ import {model, property} from '@loopback/repository';
 
 @model()
 export class Customer {
-  @property() email: string;
-  @property() isMember: boolean;
-  @property() cart: ShoppingCart;
+  @property()
+  email: string;
+  @property()
+  isMember: boolean;
+  @property()
+  cart: ShoppingCart;
 }
 ```
 
@@ -111,9 +112,11 @@ export class Product extends Entity {
   })
   id: number;
 
-  @property() name: string;
+  @property()
+  name: string;
 
-  @property() slug: string;
+  @property()
+  slug: string;
 
   constructor(data?: Partial<Product>) {
     super(data);
@@ -215,7 +218,8 @@ to determine the type of a particular property.
 ```ts
 @model()
 class Product extends Entity {
-  @property() public name: string; // The type information for this property is String.
+  @property()
+  public name: string; // The type information for this property is String.
 }
 ```
 
@@ -235,13 +239,15 @@ adds the appropriate metadata for type inference of your array properties.
 ```ts
 @model()
 class Order extends Entity {
-  @property.array(Product) items: Product[];
+  @property.array(Product)
+  items: Product[];
 }
 
 @model()
 class Thread extends Entity {
   // Note that we still require it, even for primitive types!
-  @property.array(String) posts: string[];
+  @property.array(String)
+  posts: string[];
 }
 ```
 
@@ -274,14 +280,16 @@ import {getJsonSchema} from '@loopback/repository-json-schema';
 
 @model()
 class Category {
-  @property() name: string;
+  @property()
+  name: string;
 }
 
 @model()
 class Product {
   @property({required: true})
   name: string;
-  @property() type: Category;
+  @property()
+  type: Category;
 }
 
 const jsonSchema = getJsonSchema(Product);

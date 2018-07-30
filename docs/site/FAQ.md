@@ -2,7 +2,6 @@
 lang: en
 title: 'Frequently-asked questions'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/FAQ.html
 summary: LoopBack 4 is a completely new framework, also known as LoopBack-Next.

@@ -85,14 +85,16 @@ describe('property injection', () => {
   it('can decorate properties', () => {
     // tslint:disable-next-line:no-unused-variable
     class TestClass {
-      @inject('foo') foo: string;
+      @inject('foo')
+      foo: string;
     }
     // the test passes when TypeScript Compiler is happy
   });
 
   it('can retrieve information about injected properties', () => {
     class TestClass {
-      @inject('foo') foo: string;
+      @inject('foo')
+      foo: string;
     }
 
     const meta = describeInjectedProperties(TestClass.prototype);
@@ -112,7 +114,8 @@ describe('property injection', () => {
     expect(() => {
       // tslint:disable-next-line:no-unused-variable
       class TestClass {
-        @inject('foo') static foo: string;
+        @inject('foo')
+        static foo: string;
       }
     }).to.throw(/@inject is not supported for a static property/);
   });
@@ -129,7 +132,8 @@ describe('property injection', () => {
 
   it('supports inheritance without overriding property', () => {
     class TestClass {
-      @inject('foo') foo: string;
+      @inject('foo')
+      foo: string;
     }
 
     class SubTestClass extends TestClass {}
@@ -139,11 +143,13 @@ describe('property injection', () => {
 
   it('supports inheritance with overriding property', () => {
     class TestClass {
-      @inject('foo') foo: string;
+      @inject('foo')
+      foo: string;
     }
 
     class SubTestClass extends TestClass {
-      @inject('bar') foo: string;
+      @inject('bar')
+      foo: string;
     }
 
     const base = describeInjectedProperties(TestClass.prototype);
@@ -155,11 +161,13 @@ describe('property injection', () => {
 
   it('supports inherited and own properties', () => {
     class TestClass {
-      @inject('foo') foo: string;
+      @inject('foo')
+      foo: string;
     }
 
     class SubTestClass extends TestClass {
-      @inject('bar') bar: string;
+      @inject('bar')
+      bar: string;
     }
     const meta = describeInjectedProperties(SubTestClass.prototype);
     expect(meta.foo.bindingKey).to.eql('foo');

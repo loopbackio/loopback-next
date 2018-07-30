@@ -23,7 +23,8 @@ describe('relation decorator', () => {
         class AddressBook extends Entity {
           id: number;
 
-          @hasMany(Address) addresses: Address[];
+          @hasMany(Address)
+          addresses: Address[];
         }
       }).throw(/addressBookId not found on Address/);
     });
@@ -34,13 +35,15 @@ describe('relation decorator', () => {
         addressId: number;
         street: string;
         province: string;
-        @property() addressBookId: number;
+        @property()
+        addressBookId: number;
       }
 
       class AddressBook extends Entity {
         id: number;
 
-        @hasMany(Address) addresses: Address[];
+        @hasMany(Address)
+        addresses: Address[];
       }
 
       const meta = MetadataInspector.getPropertyMetadata(

@@ -12,25 +12,28 @@ describe('controller spec', () => {
   it('adds property schemas in components.schemas', () => {
     @model()
     class Bar {
-      @property() name: string;
+      @property()
+      name: string;
     }
 
     @model()
     class Baz {
-      @property() name: string;
+      @property()
+      name: string;
     }
 
     @model()
     class Foo {
-      @property() bar: Bar;
-      @property() baz: Baz;
+      @property()
+      bar: Bar;
+      @property()
+      baz: Baz;
     }
 
     class FooController {
       @post('/foo')
       create(
-        @requestBody({description: 'a foo instance', required: true})
-        foo: Foo,
+        @requestBody({description: 'a foo instance', required: true}) foo: Foo,
       ): void {}
     }
 
@@ -79,13 +82,16 @@ describe('controller spec', () => {
 
     @model()
     class Foo {
-      @property() bar: number;
+      @property()
+      bar: number;
     }
 
     @model()
     class MyParam {
-      @property() name: string;
-      @property() foo: Foo;
+      @property()
+      name: string;
+      @property()
+      foo: Foo;
     }
 
     class MyController {
@@ -128,7 +134,8 @@ describe('controller spec', () => {
       in: 'query',
     };
     class MyParam {
-      @property() name: string;
+      @property()
+      name: string;
     }
     class MyController {
       @post('/foo')

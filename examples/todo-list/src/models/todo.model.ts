@@ -29,7 +29,8 @@ export class Todo extends Entity {
   })
   isComplete: boolean;
 
-  @property() todoListId: number;
+  @property()
+  todoListId: number;
 
   getId() {
     return this.id;

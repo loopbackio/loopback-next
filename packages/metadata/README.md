@@ -143,24 +143,18 @@ follows:
 ```ts
 class MyController {
   constructor(
-    @myParameterDecorator({name: 'logging-prefix'})
-    public prefix: string,
-    @myParameterDecorator({name: 'logging-level'})
-    public level: number,
+    @myParameterDecorator({name: 'logging-prefix'}) public prefix: string,
+    @myParameterDecorator({name: 'logging-level'}) public level: number,
   ) {}
 
   myMethod(
-    @myParameterDecorator({name: 'x'})
-    x: number,
-    @myParameterDecorator({name: 'y'})
-    y: number,
+    @myParameterDecorator({name: 'x'}) x: number,
+    @myParameterDecorator({name: 'y'}) y: number,
   ) {}
 
   static myStaticMethod(
-    @myParameterDecorator({name: 'a'})
-    a: string,
-    @myParameterDecorator({name: 'b'})
-    b: string,
+    @myParameterDecorator({name: 'a'}) a: string,
+    @myParameterDecorator({name: 'b'}) b: string,
   ) {}
 }
 ```

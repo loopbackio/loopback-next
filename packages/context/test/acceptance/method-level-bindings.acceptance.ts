@@ -15,10 +15,7 @@ class InfoController {
     return msg;
   }
 
-  hello(
-    @inject('user', {optional: true})
-    user: string = 'Mary',
-  ): string {
+  hello(@inject('user', {optional: true}) user: string = 'Mary'): string {
     const msg = `Hello ${user}`;
     debug(msg);
     return msg;

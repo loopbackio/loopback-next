@@ -137,14 +137,10 @@ export class AccountController {
    */
   @operation('get', '/account.cart.list.json')
   async accountCartList(
-    @param({name: 'params', in: 'query'})
-    params: string,
-    @param({name: 'exclude', in: 'query'})
-    exclude: string,
-    @param({name: 'request_from_date', in: 'query'})
-    request_from_date: string,
-    @param({name: 'request_to_date', in: 'query'})
-    request_to_date: string,
+    @param({name: 'params', in: 'query'}) params: string,
+    @param({name: 'exclude', in: 'query'}) exclude: string,
+    @param({name: 'request_from_date', in: 'query'}) request_from_date: string,
+    @param({name: 'request_to_date', in: 'query'}) request_to_date: string,
   ): Promise<{
     result?: {
       carts?: {
@@ -167,16 +163,11 @@ export class AccountController {
    */
   @operation('put', '/account.config.update.json')
   async accountConfigUpdate(
-    @param({name: 'db_tables_prefix', in: 'query'})
-    db_tables_prefix: string,
-    @param({name: 'client_id', in: 'query'})
-    client_id: string,
-    @param({name: 'bridge_url', in: 'query'})
-    bridge_url: string,
-    @param({name: 'store_root', in: 'query'})
-    store_root: string,
-    @param({name: 'shared_secret', in: 'query'})
-    shared_secret: string,
+    @param({name: 'db_tables_prefix', in: 'query'}) db_tables_prefix: string,
+    @param({name: 'client_id', in: 'query'}) client_id: string,
+    @param({name: 'bridge_url', in: 'query'}) bridge_url: string,
+    @param({name: 'store_root', in: 'query'}) store_root: string,
+    @param({name: 'shared_secret', in: 'query'}) shared_secret: string,
   ): Promise<{
     result?: {
       updated_items?: number;
@@ -192,12 +183,9 @@ export class AccountController {
    */
   @operation('get', '/account.failed_webhooks.json')
   async accountFailedWebhooks(
-    @param({name: 'count', in: 'query'})
-    count: number,
-    @param({name: 'start', in: 'query'})
-    start: number,
-    @param({name: 'ids', in: 'query'})
-    ids: string,
+    @param({name: 'count', in: 'query'}) count: number,
+    @param({name: 'start', in: 'query'}) start: number,
+    @param({name: 'ids', in: 'query'}) ids: string,
   ): Promise<{
     result?: {
       all_failed_webhook?: string;

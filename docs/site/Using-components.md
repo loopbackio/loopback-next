@@ -2,10 +2,8 @@
 lang: en
 title: 'Using components'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Using-components.html
-summary:
 ---
 
 Components play an important part in the extensibility of LoopBack 4. A

@@ -2,10 +2,8 @@
 lang: en
 title: 'Defining the API using code-first approach'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Defining-the-API-using-code-first-approach.html
-summary:
 ---
 
 ## Define the API from code-first approach
@@ -85,13 +83,16 @@ import {model, property} from '@loopback/repository';
 
 @model()
 export class Todo {
-  @property() id?: number;
+  @property()
+  id?: number;
   @property({
     required: true,
   })
   title: string;
-  @property() desc?: string;
-  @property() isComplete: boolean;
+  @property()
+  desc?: string;
+  @property()
+  isComplete: boolean;
 }
 ```
 

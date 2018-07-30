@@ -2,10 +2,8 @@
 lang: en
 title: 'Extending LoopBack 4'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Extending-LoopBack-4.html
-summary:
 ---
 
 ## Overview

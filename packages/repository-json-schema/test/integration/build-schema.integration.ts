@@ -20,8 +20,10 @@ describe('build-schema', () => {
       it('does not convert null or undefined property', () => {
         @model()
         class TestModel {
-          @property() nul: null;
-          @property() undef: undefined;
+          @property()
+          nul: null;
+          @property()
+          undef: undefined;
         }
 
         const jsonSchema = modelToJsonSchema(TestModel);
@@ -36,7 +38,8 @@ describe('build-schema', () => {
         }
         @model()
         class OnePropertyDecorated {
-          @property() foo: string;
+          @property()
+          foo: string;
           bar: boolean;
           baz: number;
         }
@@ -56,7 +59,8 @@ describe('build-schema', () => {
       it('does not convert models that have not been decorated with @model()', () => {
         class Empty {}
         class NoModelMeta {
-          @property() foo: string;
+          @property()
+          foo: string;
           bar: number;
         }
 
@@ -71,7 +75,8 @@ describe('build-schema', () => {
       it('infers "title" property from constructor name', () => {
         @model()
         class TestModel {
-          @property() foo: string;
+          @property()
+          foo: string;
         }
 
         const jsonSchema = modelToJsonSchema(TestModel);
@@ -82,7 +87,8 @@ describe('build-schema', () => {
       it('overrides "title" property if explicitly given', () => {
         @model({title: 'NewName'})
         class TestModel {
-          @property() foo: string;
+          @property()
+          foo: string;
         }
 
         const jsonSchema = modelToJsonSchema(TestModel);
@@ -96,7 +102,8 @@ describe('build-schema', () => {
         };
         @model(topMeta)
         class TestModel {
-          @property() foo: string;
+          @property()
+          foo: string;
         }
 
         const jsonSchema = modelToJsonSchema(TestModel);
@@ -107,9 +114,12 @@ describe('build-schema', () => {
       it('properly converts string, number, and boolean properties', () => {
         @model()
         class TestModel {
-          @property() str: string;
-          @property() num: number;
-          @property() bool: boolean;
+          @property()
+          str: string;
+          @property()
+          num: number;
+          @property()
+          bool: boolean;
         }
 
         const jsonSchema = modelToJsonSchema(TestModel);
@@ -130,7 +140,8 @@ describe('build-schema', () => {
       it('properly converts object properties', () => {
         @model()
         class TestModel {
-          @property() obj: object;
+          @property()
+          obj: object;
         }
 
         const jsonSchema = modelToJsonSchema(TestModel);
@@ -150,7 +161,8 @@ describe('build-schema', () => {
 
           @model()
           class TestModel {
-            @property() cusType: CustomType;
+            @property()
+            cusType: CustomType;
           }
 
           const jsonSchema = modelToJsonSchema(TestModel);
@@ -166,12 +178,14 @@ describe('build-schema', () => {
         it('properly converts decorated custom type properties', () => {
           @model()
           class CustomType {
-            @property() prop: string;
+            @property()
+            prop: string;
           }
 
           @model()
           class TestModel {
-            @property() cusType: CustomType;
+            @property()
+            cusType: CustomType;
           }
 
           const jsonSchema = modelToJsonSchema(TestModel);
@@ -196,17 +210,20 @@ describe('build-schema', () => {
         it('creates definitions only at the root level of the schema', () => {
           @model()
           class CustomTypeFoo {
-            @property() prop: string;
+            @property()
+            prop: string;
           }
 
           @model()
           class CustomTypeBar {
-            @property.array(CustomTypeFoo) prop: CustomTypeFoo[];
+            @property.array(CustomTypeFoo)
+            prop: CustomTypeFoo[];
           }
 
           @model()
           class TestModel {
-            @property() cusBar: CustomTypeBar;
+            @property()
+            cusBar: CustomTypeBar;
           }
 
           const jsonSchema = modelToJsonSchema(TestModel);
@@ -245,7 +262,8 @@ describe('build-schema', () => {
       it('properly converts primitive arrays properties', () => {
         @model()
         class TestModel {
-          @property.array(Number) numArr: number[];
+          @property.array(Number)
+          numArr: number[];
         }
 
         const jsonSchema = modelToJsonSchema(TestModel);
@@ -267,7 +285,8 @@ describe('build-schema', () => {
 
         @model()
         class TestModel {
-          @property.array(CustomType) cusArr: CustomType[];
+          @property.array(CustomType)
+          cusArr: CustomType[];
         }
 
         const jsonSchema = modelToJsonSchema(TestModel);
@@ -315,7 +334,8 @@ describe('build-schema', () => {
           propOne: string;
           @property({required: true})
           propTwo: string;
-          @property() propThree: number;
+          @property()
+          propThree: number;
         }
 
         const jsonSchema = modelToJsonSchema(TestModel);
@@ -336,7 +356,8 @@ describe('build-schema', () => {
       it('errors out when "@property.array" is not used on an array', () => {
         @model()
         class BadArray {
-          @property() badArr: string[];
+          @property()
+          badArr: string[];
         }
 
         expect(() => {
@@ -347,7 +368,8 @@ describe('build-schema', () => {
       it('errors out if "@property.array" is given "Array" as parameter', () => {
         @model()
         class BadArray {
-          @property.array(Array) badArr: string[][];
+          @property.array(Array)
+          badArr: string[][];
         }
 
         expect(() => {
@@ -373,7 +395,8 @@ describe('build-schema', () => {
     it('gets cached JSON schema if one exists', () => {
       @model()
       class TestModel {
-        @property() foo: number;
+        @property()
+        foo: number;
       }
       const cachedSchema: JsonSchema = {
         properties: {
@@ -395,7 +418,8 @@ describe('build-schema', () => {
     it('creates JSON schema if one does not already exist', () => {
       @model()
       class NewModel {
-        @property() newProperty: string;
+        @property()
+        newProperty: string;
       }
 
       const jsonSchema = getJsonSchema(NewModel);

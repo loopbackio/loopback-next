@@ -2,10 +2,8 @@
 lang: en
 title: 'Calling other APIs and web services'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Calling-other-APIs-and-web-services.html
-summary:
 ---
 
 Your API implementation often needs to interact with REST APIs, SOAP Web
@@ -122,7 +120,8 @@ properties of the controller class.
 import {serviceProxy} from '@loopback/service-proxy';
 
 export class MyController {
-  @serviceProxy('geoService') private geoService: GeoService;
+  @serviceProxy('geoService')
+  private geoService: GeoService;
 }
 ```
 
@@ -174,7 +173,8 @@ constructor:
 
 ```ts
 export class MyController {
-  @inject('services.geo') private geoService: GeoService;
+  @inject('services.geo')
+  private geoService: GeoService;
 }
 ```
 

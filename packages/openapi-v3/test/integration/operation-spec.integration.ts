@@ -11,8 +11,10 @@ describe('operation arguments', () => {
   it('generate parameters and requestBody for operation', () => {
     @model()
     class User {
-      @property() name: string;
-      @property() password: number;
+      @property()
+      name: string;
+      @property()
+      password: number;
     }
 
     class MyController {

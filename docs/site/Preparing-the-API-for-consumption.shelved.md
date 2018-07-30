@@ -2,10 +2,8 @@
 lang: en
 title: 'Preparing the API for consumption'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Preparing-the-API-for-consumption.html
-summary:
 ---
 
 {% include previous.html content=" This article continues

@@ -22,7 +22,8 @@ import {model, property} from '@loopback/repository';
 
 @model()
 class MyModel {
-  @property() name: string;
+  @property()
+  name: string;
 }
 
 const jsonSchema = getJsonSchema(MyModel);
