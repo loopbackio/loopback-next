@@ -177,6 +177,20 @@ describe('HttpServer (integration)', () => {
     expect(response.statusCode).to.equal(200);
   });
 
+  it('converts host from [::] to [::1] in url', async () => {
+    // Safari on MacOS does not support http://[::]:3000/
+    server = new HttpServer(dummyRequestHandler, {host: '::'});
+    await server.start();
+    expect(server.url).to.equal(`http://[::1]:${server.port}`);
+  });
+
+  it('converts host from 0.0.0.0 to 127.0.0.1 in url', async () => {
+    // Windows does not support http://0.0.0.0:3000/
+    server = new HttpServer(dummyRequestHandler, {host: '0.0.0.0'});
+    await server.start();
+    expect(server.url).to.equal(`http://127.0.0.1:${server.port}`);
+  });
+
   function dummyRequestHandler(req: ServerRequest, res: ServerResponse): void {
     res.end();
   }
