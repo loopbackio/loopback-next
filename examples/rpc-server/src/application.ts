@@ -18,9 +18,4 @@ export class MyApplication extends Application {
     this.options.port = this.options.port || 3000;
     this.bind('rpcServer.config').to(this.options);
   }
-
-  async start() {
-    await super.start();
-    console.log(`Server is running on port ${this.options.port}`);
-  }
 }
