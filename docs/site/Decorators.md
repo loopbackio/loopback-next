@@ -2,10 +2,8 @@
 lang: en
 title: 'Decorators'
 keywords: LoopBack 4.0, LoopBack-Next
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Decorators.html
-summary:
 ---
 
 A decorator allows you to annotate or modify your class declarations and members
@@ -248,9 +246,12 @@ import {Address} from './address.model';
 
 @model()
 class User {
-  @property() firstname: string;
-  @property() lastname: string;
-  @property() address: Address;
+  @property()
+  firstname: string;
+  @property()
+  lastname: string;
+  @property()
+  address: Address;
 }
 ```
 
@@ -383,7 +384,8 @@ import {inject} from '@loopback/context';
 
 export class WidgetController {
   // injection for property
-  @inject('logger.widget') private logger: Function;
+  @inject('logger.widget')
+  private logger: Function;
 
   // injection for constructor parameter
   constructor(

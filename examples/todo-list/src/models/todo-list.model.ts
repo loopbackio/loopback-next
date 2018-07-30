@@ -25,7 +25,8 @@ export class TodoList extends Entity {
   })
   color?: string;
 
-  @hasMany(Todo) todos: Todo[];
+  @hasMany(Todo)
+  todos: Todo[];
 
   constructor(data?: Partial<TodoList>) {
     super(data);

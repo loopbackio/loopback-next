@@ -1,5 +1,5 @@
 ---
-title: "LoopBack considerations for GDPR readiness"
+title: 'LoopBack considerations for GDPR readiness'
 layout: page
 keywords: LoopBack, GDPR
 tags: gdpr

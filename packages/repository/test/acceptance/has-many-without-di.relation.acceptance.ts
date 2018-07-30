@@ -116,7 +116,8 @@ describe('HasMany relation', () => {
     })
     name: string;
 
-    @hasMany(Order) orders: Order[];
+    @hasMany(Order)
+    orders: Order[];
   }
 
   class OrderRepository extends DefaultCrudRepository<

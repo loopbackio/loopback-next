@@ -34,10 +34,7 @@ describe('constructor injection', () => {
 
   it('can report error for missing binding key', () => {
     class TestClass {
-      constructor(
-        @inject('', {x: 'bar'})
-        public fooBar: string,
-      ) {}
+      constructor(@inject('', {x: 'bar'}) public fooBar: string) {}
     }
 
     expect(() => {
@@ -115,10 +112,7 @@ describe('constructor injection', () => {
 
   it('resolves constructor arguments with custom decorator', () => {
     class TestClass {
-      constructor(
-        @customDecorator({x: 'bar'})
-        public fooBar: string,
-      ) {}
+      constructor(@customDecorator({x: 'bar'}) public fooBar: string) {}
     }
 
     const t = instantiateClass(TestClass, ctx) as TestClass;
@@ -131,11 +125,13 @@ describe('constructor injection', () => {
     interface YInterface {}
 
     class XClass implements XInterface {
-      @inject('y') public y: YInterface;
+      @inject('y')
+      public y: YInterface;
     }
 
     class YClass implements YInterface {
-      @inject('x') public x: XInterface;
+      @inject('x')
+      public x: XInterface;
     }
 
     context.bind('x').toClass(XClass);
@@ -339,10 +335,7 @@ describe('async constructor injection', () => {
   // tslint:disable-next-line:max-line-length
   it('resolves constructor arguments with custom async decorator', async () => {
     class TestClass {
-      constructor(
-        @customAsyncDecorator({x: 'bar'})
-        public fooBar: string,
-      ) {}
+      constructor(@customAsyncDecorator({x: 'bar'}) public fooBar: string) {}
     }
 
     const t = await instantiateClass(TestClass, ctx);
@@ -361,7 +354,8 @@ describe('property injection', () => {
 
   it('resolves injected properties', () => {
     class TestClass {
-      @inject('foo') foo: string;
+      @inject('foo')
+      foo: string;
     }
     const t = instantiateClass(TestClass, ctx) as TestClass;
     expect(t.foo).to.eql('FOO');
@@ -430,7 +424,8 @@ describe('async property injection', () => {
 
   it('resolves injected properties', async () => {
     class TestClass {
-      @inject('foo') foo: string;
+      @inject('foo')
+      foo: string;
     }
     const t: TestClass = await instantiateClass(TestClass, ctx);
     expect(t.foo).to.eql('FOO');
@@ -458,7 +453,8 @@ describe('dependency injection', () => {
 
   it('resolves properties and constructor arguments', () => {
     class TestClass {
-      @inject('bar') bar: string;
+      @inject('bar')
+      bar: string;
 
       constructor(@inject('foo') public foo: string) {}
     }
@@ -480,7 +476,8 @@ describe('async dependency injection', () => {
 
   it('resolves properties and constructor arguments', async () => {
     class TestClass {
-      @inject('bar') bar: string;
+      @inject('bar')
+      bar: string;
 
       constructor(@inject('foo') public foo: string) {}
     }
@@ -502,7 +499,8 @@ describe('async constructor & sync property injection', () => {
 
   it('resolves properties and constructor arguments', async () => {
     class TestClass {
-      @inject('bar') bar: string;
+      @inject('bar')
+      bar: string;
 
       constructor(@inject('foo') public foo: string) {}
     }
@@ -551,7 +549,8 @@ describe('async property injection with errors', () => {
 
   it('resolves properties and constructor arguments', async () => {
     class TestClass {
-      @inject('bar') bar: string;
+      @inject('bar')
+      bar: string;
     }
 
     await expect(instantiateClass(TestClass, ctx)).to.be.rejectedWith(
@@ -571,7 +570,8 @@ describe('sync constructor & async property injection', () => {
 
   it('resolves properties and constructor arguments', async () => {
     class TestClass {
-      @inject('bar') bar: string;
+      @inject('bar')
+      bar: string;
 
       constructor(@inject('foo') public foo: string) {}
     }

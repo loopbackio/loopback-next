@@ -48,7 +48,8 @@ const ctx = new Context();
 ctx.bind('application.name').to('CodeHub');
 
 class InfoController {
-  @inject('application.name') appName: string;
+  @inject('application.name')
+  appName: string;
 }
 ctx.bind('controllers.info').toClass(InfoController);
 

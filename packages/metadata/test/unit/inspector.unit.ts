@@ -361,19 +361,13 @@ describe('Inspector for parameters of an instance method', () => {
   }
 
   class BaseController {
-    myMethod(
-      @parameterDecorator({x: 1})
-      a: string,
-      b: number,
-    ) {}
+    myMethod(@parameterDecorator({x: 1}) a: string, b: number) {}
   }
 
   class SubController extends BaseController {
     myMethod(
-      @parameterDecorator({y: 2})
-      a: string,
-      @parameterDecorator({x: 2})
-      b: number,
+      @parameterDecorator({y: 2}) a: string,
+      @parameterDecorator({x: 2}) b: number,
     ) {}
   }
 
@@ -445,19 +439,13 @@ describe('Inspector for parameters of a static method', () => {
   }
 
   class BaseController {
-    static myMethod(
-      @parameterDecorator({x: 1})
-      a: string,
-      b: number,
-    ) {}
+    static myMethod(@parameterDecorator({x: 1}) a: string, b: number) {}
   }
 
   class SubController extends BaseController {
     static myMethod(
-      @parameterDecorator({y: 2})
-      a: string,
-      @parameterDecorator({x: 2})
-      b: number,
+      @parameterDecorator({y: 2}) a: string,
+      @parameterDecorator({x: 2}) b: number,
     ) {}
   }
 
@@ -527,19 +515,13 @@ describe('Inspector for parameters of a constructor', () => {
   }
 
   class BaseController {
-    constructor(
-      @parameterDecorator({x: 1})
-      a: string,
-      b: number,
-    ) {}
+    constructor(@parameterDecorator({x: 1}) a: string, b: number) {}
   }
 
   class SubController extends BaseController {
     constructor(
-      @parameterDecorator({y: 2})
-      a: string,
-      @parameterDecorator({x: 2})
-      b: number,
+      @parameterDecorator({y: 2}) a: string,
+      @parameterDecorator({x: 2}) b: number,
     ) {
       super(a, b);
     }
@@ -589,26 +571,27 @@ describe('Inspector for design time metadata', () => {
   class MyClass {}
 
   class MyController {
-    constructor(
-      @parameterDecorator({x: 1})
-      a: string,
-      b: number,
-    ) {}
+    constructor(@parameterDecorator({x: 1}) a: string, b: number) {}
 
-    @propertyDecorator() myProp: string;
+    @propertyDecorator()
+    myProp: string;
 
-    @propertyDecorator() myType: MyClass;
+    @propertyDecorator()
+    myType: MyClass;
 
-    @propertyDecorator() myArray: string[];
+    @propertyDecorator()
+    myArray: string[];
 
-    @propertyDecorator() myUnionType: string | number;
+    @propertyDecorator()
+    myUnionType: string | number;
 
     @methodDecorator()
     myMethod(x: string, y: number): boolean {
       return false;
     }
 
-    @propertyDecorator() static myStaticProp = {};
+    @propertyDecorator()
+    static myStaticProp = {};
 
     @methodDecorator()
     static myStaticMethod(x: string, y: number): boolean {

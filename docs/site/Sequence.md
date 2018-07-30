@@ -2,10 +2,8 @@
 lang: en
 title: 'Sequence'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Sequence.html
-summary:
 ---
 
 ## What is a Sequence?

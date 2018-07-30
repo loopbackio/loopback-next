@@ -2,10 +2,8 @@
 lang: en
 title: 'Defining your testing strategy'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Defining-your-testing-strategy.html
-summary:
 ---
 
 {% include previous.html content=" This article continues from

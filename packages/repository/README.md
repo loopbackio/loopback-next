@@ -47,8 +47,10 @@ import {model, Entity, property} from '@loopback/repository';
 export class Note extends Entity {
   @property({id: true})
   id: string;
-  @property() title: string;
-  @property() content: string;
+  @property()
+  title: string;
+  @property()
+  content: string;
 }
 ```
 

@@ -44,8 +44,7 @@ describe('Validation at REST level', () => {
     class ProductController {
       @post('/products')
       async create(
-        @requestBody({required: true})
-        data: Product,
+        @requestBody({required: true}) data: Product,
       ): Promise<Product> {
         return new Product(data);
       }
@@ -80,8 +79,7 @@ describe('Validation at REST level', () => {
     class ProductControllerWithFullSchema {
       @post('/products')
       async create(
-        @requestBody(aBodySpec(PRODUCT_SPEC))
-        data: object,
+        @requestBody(aBodySpec(PRODUCT_SPEC)) data: object,
         //    ^^^^^^
         // use "object" instead of "Product" to verify the situation when
         // body schema cannot be inferred from the argument type

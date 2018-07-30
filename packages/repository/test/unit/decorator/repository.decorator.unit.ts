@@ -19,7 +19,8 @@ import {
 class MyController {
   constructor(@repository('noteRepo') public noteRepo: Repository<Entity>) {}
 
-  @repository('noteRepo') noteRepo2: Repository<Entity>;
+  @repository('noteRepo')
+  noteRepo2: Repository<Entity>;
 }
 
 describe('repository decorator', () => {
@@ -79,8 +80,7 @@ describe('repository decorator', () => {
   it('supports @repository(model, dataSource) by names', async () => {
     class Controller2 {
       constructor(
-        @repository('Note', 'memory')
-        public noteRepo: Repository<Note>,
+        @repository('Note', 'memory') public noteRepo: Repository<Note>,
       ) {}
     }
     ctx.bind('controllers.Controller2').toClass(Controller2);

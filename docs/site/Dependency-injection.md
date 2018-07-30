@@ -2,10 +2,8 @@
 lang: en
 title: 'Dependency injection'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Dependency-injection.html
-summary:
 ---
 
 ## Introduction
@@ -225,8 +223,7 @@ export class LoggerProvider implements Provider<Logger> {
     @inject('log.writer', {optional: true})
     private logWriter: LogWriterFn = logToConsole,
     // Log level is an optional dependency with a default value `WARN`
-    @inject('log.level', {optional: true})
-    private logLevel: string = 'WARN',
+    @inject('log.level', {optional: true}) private logLevel: string = 'WARN',
   ) {}
 }
 ```
@@ -236,10 +233,7 @@ optional:
 
 ```ts
 export class MyController {
-  greet(
-    @inject('hello.prefix', {optional: true})
-    prefix: string = 'Hello',
-  ) {
+  greet(@inject('hello.prefix', {optional: true}) prefix: string = 'Hello') {
     return `${prefix}, world!`;
   }
 }

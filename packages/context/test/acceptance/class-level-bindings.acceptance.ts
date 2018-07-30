@@ -111,7 +111,8 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     });
 
     class InfoController {
-      @inject('authenticated') public isAuthenticated: boolean;
+      @inject('authenticated')
+      public isAuthenticated: boolean;
     }
     ctx.bind(INFO_CONTROLLER).toClass(InfoController);
 
@@ -126,7 +127,8 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     class InfoController {
       constructor(@inject('appName') public appName: string) {}
 
-      @inject('authenticated') public isAuthenticated: boolean;
+      @inject('authenticated')
+      public isAuthenticated: boolean;
     }
     const b = ctx.bind(INFO_CONTROLLER).toClass(InfoController);
 
@@ -214,10 +216,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
 
   it('injects values by tag regex', () => {
     class Store {
-      constructor(
-        @inject.tag(/.+:location:sj/)
-        public locations: string[],
-      ) {}
+      constructor(@inject.tag(/.+:location:sj/) public locations: string[]) {}
     }
 
     ctx.bind('store').toClass(Store);

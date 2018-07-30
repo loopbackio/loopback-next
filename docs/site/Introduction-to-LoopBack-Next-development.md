@@ -2,10 +2,8 @@
 lang: en
 title: 'Introduction to LoopBack 4 development'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Intro-to-LB4-development.html
-summary:
 ---
 
 MOVED TO strongloop.com.

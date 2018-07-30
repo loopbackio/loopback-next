@@ -61,8 +61,7 @@ describe('Routing metadata for parameters', () => {
             in: 'query',
           })
           vip: boolean,
-          @param.array('tags', 'query', {type: 'string'})
-          tags: string[],
+          @param.array('tags', 'query', {type: 'string'}) tags: string[],
           @param({
             name: 'address',
             in: 'query',
@@ -164,8 +163,7 @@ describe('Routing metadata for parameters', () => {
           class MyController {
             @get('/greet')
             greet(
-              @param.array('names', 'query', {type: 'string'})
-              names: string,
+              @param.array('names', 'query', {type: 'string'}) names: string,
             ) {}
           }
         },

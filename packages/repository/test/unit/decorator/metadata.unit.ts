@@ -17,7 +17,8 @@ import {MetadataInspector} from '@loopback/context';
 describe('Repository', () => {
   describe('getAllClassMetadata', () => {
     class Oops {
-      @property() oopsie: string;
+      @property()
+      oopsie: string;
     }
 
     @model()
@@ -27,8 +28,10 @@ describe('Repository', () => {
     }
     @model()
     class Widget {
-      @property() id: number;
-      @property.array(Colour) colours: Colour[];
+      @property()
+      id: number;
+      @property.array(Colour)
+      colours: Colour[];
     }
 
     @model()
@@ -40,9 +43,12 @@ describe('Repository', () => {
 
     @model()
     class Phlange {
-      @property() id: number;
-      @property() canFlap: boolean;
-      @property.array(Colour) colours: Colour[];
+      @property()
+      id: number;
+      @property()
+      canFlap: boolean;
+      @property.array(Colour)
+      colours: Colour[];
     }
 
     it('returns empty object for classes without @model', () => {

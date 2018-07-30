@@ -2,10 +2,8 @@
 lang: en
 title: 'Repositories'
 keywords: LoopBack 4.0, LoopBack 4
-tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Repositories.html
-summary:
 ---
 
 `Repository` represents a specialized `Service` interface that provides
@@ -374,7 +372,8 @@ Injection:
 
     ```ts
     export class AccountController {
-      @repository(NewRepository) private repository: NewRepository;
+      @repository(NewRepository)
+      private repository: NewRepository;
     }
     ```
 
