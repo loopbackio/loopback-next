@@ -7,7 +7,7 @@
     "name": "IBM"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=8.9"
   },
   "files": [
     "index.js"

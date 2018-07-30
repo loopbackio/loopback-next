@@ -7,7 +7,7 @@
     "loopback"
   ],
   "engines": {
-    "node": ">=8"
+    "node": ">=8.9"
   },
   "scripts": {
     "build:all-dist": "npm run build:dist8 && npm run build:dist10",

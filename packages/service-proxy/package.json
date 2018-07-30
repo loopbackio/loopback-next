@@ -3,7 +3,7 @@
   "version": "0.6.2",
   "description": "Service integration for LoopBack 4",
   "engines": {
-    "node": ">=8"
+    "node": ">=8.9"
   },
   "main": "index",
   "scripts": {

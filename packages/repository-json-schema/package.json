@@ -3,7 +3,7 @@
   "version": "0.10.2",
   "description": "Converts TS classes into JSON Schemas using TypeScript's reflection API",
   "engines": {
-    "node": ">=8"
+    "node": ">=8.9"
   },
   "scripts": {
     "build:all-dist": "npm run build:dist8 && npm run build:dist10",

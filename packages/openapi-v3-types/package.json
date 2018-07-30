@@ -3,7 +3,7 @@
   "version": "0.8.2",
   "description": "TypeScript type definitions for OpenAPI Specifications.",
   "engines": {
-    "node": ">=8"
+    "node": ">=8.9"
   },
   "dependencies": {
     "@loopback/dist-util": "^0.3.5",

@@ -3,7 +3,7 @@
   "version": "0.3.2",
   "description": "A caching HTTP proxy for integration tests. NOT SUITABLE FOR PRODUCTION USE!",
   "engines": {
-    "node": ">=8"
+    "node": ">=8.9"
   },
   "scripts": {
     "build:all-dist": "npm run build:dist8 && npm run build:dist10",

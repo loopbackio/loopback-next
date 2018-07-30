@@ -12,7 +12,7 @@ function getDist() {
   if (nodeMajorVersion < 8) {
     throw new Error(
       `Node.js version ${process.versions.node} is not supported.` +
-        'Please use Node.js 8.x or newer.',
+        'Please use Node.js 8.9 or newer.',
     );
   }
   return nodeMajorVersion >= 10 ? './dist10' : './dist8';
