@@ -145,7 +145,10 @@ export class HttpServer {
   public get url(): string {
     let host = this.host;
     if (this._address.family === 'IPv6') {
+      if (host === '::') host = '::1';
       host = `[${host}]`;
+    } else if (host === '0.0.0.0') {
+      host = '127.0.0.1';
     }
     return `${this._protocol}://${host}:${this.port}`;
   }
