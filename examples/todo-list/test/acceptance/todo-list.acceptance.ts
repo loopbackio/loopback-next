@@ -72,14 +72,6 @@ describe('Application', () => {
         expect(todoList.color).to.eql(patchedColorTodo.color);
       }
     });
-
-    it('deletes all todoLists', async () => {
-      await client
-        .del('/todo-lists')
-        .send()
-        .expect(200);
-      expect(await todoListRepo.find()).to.be.empty();
-    });
   });
 
   context('when dealing with a single persisted todoList', () => {

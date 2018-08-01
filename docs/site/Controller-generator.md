@@ -129,11 +129,6 @@ export class TodoController {
     return await this.todoRepository.updateAll(obj, where);
   }
 
-  @del('/todos')
-  async deleteAll(@param.query.string('where') where?: Where): Promise<number> {
-    return await this.todoRepository.deleteAll(where);
-  }
-
   @get('/todos/{id}')
   async findById(@param.path.number('id') id: number): Promise<Todo> {
     return await this.todoRepository.findById(id);

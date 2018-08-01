@@ -39,11 +39,6 @@ export class TodoListController {
     return await this.todoListRepository.updateAll(obj, where);
   }
 
-  @del('/todo-lists')
-  async deleteAll(@param.query.string('where') where?: Where): Promise<number> {
-    return await this.todoListRepository.deleteAll(where);
-  }
-
   @get('/todo-lists/{id}')
   async findById(@param.path.number('id') id: number): Promise<TodoList> {
     return await this.todoListRepository.findById(id);

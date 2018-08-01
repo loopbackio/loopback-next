@@ -259,10 +259,6 @@ function checkRestCrudContents() {
   );
   assert.fileContent(
     expectedFile,
-    /\@del\('\/product-reviews'\)\s{1,}async deleteAll\(\@param.query.string\('where'\)/,
-  );
-  assert.fileContent(
-    expectedFile,
     /\@get\('\/product-reviews\/{id}'\)\s{1,}async findById\(\@param.path.number\('id'\)/,
   );
   assert.fileContent(
@@ -295,10 +291,6 @@ function checkRestPaths(restUrl) {
   assert.fileContent(
     expectedFile,
     new RegExp(/@patch\('/.source + restUrl + /'\)/.source),
-  );
-  assert.fileContent(
-    expectedFile,
-    new RegExp(/@del\('/.source + restUrl + /'\)/.source),
   );
   assert.fileContent(
     expectedFile,
