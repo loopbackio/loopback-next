@@ -41,11 +41,6 @@ export class <%= className %>Controller {
     return await this.<%= repositoryNameCamel %>.updateAll(obj, where);
   }
 
-  @del('<%= httpPathName %>')
-  async deleteAll(@param.query.string('where') where?: Where): Promise<number> {
-    return await this.<%= repositoryNameCamel %>.deleteAll(where);
-  }
-
   @get('<%= httpPathName %>/{id}')
   async findById(@param.path.<%= idType %>('id') id: <%= idType %>): Promise<<%= modelName %>> {
     return await this.<%= repositoryNameCamel %>.findById(id);

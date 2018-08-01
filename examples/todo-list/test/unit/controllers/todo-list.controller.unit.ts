@@ -24,7 +24,6 @@ describe('TodoController', () => {
   let count: sinon.SinonStub;
   let find: sinon.SinonStub;
   let updateAll: sinon.SinonStub;
-  let deleteAll: sinon.SinonStub;
   let findById: sinon.SinonStub;
   let updateById: sinon.SinonStub;
   let deleteById: sinon.SinonStub;
@@ -86,14 +85,6 @@ describe('TodoController', () => {
       const where = {title: aTodoListWithId.title};
       expect(await controller.updateAll(aTodoListToPatchTo, where)).to.eql(1);
       sinon.assert.calledWith(updateAll, aTodoListToPatchTo, where);
-    });
-  });
-
-  describe('deleteAll()', () => {
-    it('successfully deletes existing items', async () => {
-      deleteAll.resolves(aListOfTodoLists.length);
-      expect(await controller.deleteAll()).to.eql(aListOfTodoLists.length);
-      sinon.assert.called(deleteAll);
     });
   });
 
@@ -160,7 +151,6 @@ describe('TodoController', () => {
     count = todoListRepo.count as sinon.SinonStub;
     find = todoListRepo.find as sinon.SinonStub;
     updateAll = todoListRepo.updateAll as sinon.SinonStub;
-    deleteAll = todoListRepo.deleteAll as sinon.SinonStub;
     findById = todoListRepo.findById as sinon.SinonStub;
     updateById = todoListRepo.updateById as sinon.SinonStub;
     deleteById = todoListRepo.deleteById as sinon.SinonStub;
