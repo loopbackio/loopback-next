@@ -93,6 +93,12 @@ module.exports = class extends BaseGenerator {
     this.outDir = path.relative(cwd, absOutDir);
   }
 
+  install() {
+    if (this.shouldExit()) return false;
+    this.destinationRoot(this.outDir);
+    return super.install();
+  }
+
   end() {
     if (!super.end()) return false;
     this.log();

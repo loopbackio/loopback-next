@@ -258,6 +258,18 @@ module.exports = class BaseGenerator extends Generator {
   }
 
   /**
+   * Run `npm install` in the project
+   */
+  install() {
+    if (this.shouldExit()) return false;
+    const opts = this.options.npmInstall || {};
+    const spawnOpts = Object.assign({}, this.options.spawn, {
+      cwd: this.destinationRoot(),
+    });
+    this.npmInstall(null, opts, spawnOpts);
+  }
+
+  /**
    * Checks if current directory is a LoopBack project by checking for
    * keyword 'loopback' under 'keywords' attribute in package.json.
    * 'keywords' is an array

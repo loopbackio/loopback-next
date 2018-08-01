@@ -19,10 +19,10 @@ npm i -g @loopback/cli
 lb4 example rpc-server
 ```
 
-3.  Switch to the directory and install dependencies.
+3.  Switch to the directory.
 
 ```sh
-cd loopback-example-rpc-server && npm i
+cd loopback-example-rpc-server
 ```
 
 4.  Start the app!

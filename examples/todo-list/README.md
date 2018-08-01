@@ -69,10 +69,10 @@ application, follow these steps:
       rpc-server: A basic RPC server using a made-up protocol.
     ```
 
-2.  Jump into the directory and then install the required dependencies:
+2.  Switch to the directory.
 
     ```sh
-    cd loopback4-example-todo-list && npm i
+    cd loopback4-example-todo-list
     ```
 
 3.  Finally, start the application!
