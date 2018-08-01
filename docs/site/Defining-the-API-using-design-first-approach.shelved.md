@@ -429,9 +429,9 @@ See
 [Validate your OpenAPI specification](Testing-your-application.md#validate-your-openapi-specification)
 from [Testing your application](Testing-your-application.md) for more details.
 
-{% include note.html content=" If you would like to make tweaks to your API as
-you develop your application, refer to
-[Defining the API using code-first approach](Defining-the-API-using-code-first-approach.md)
+{% include note.html content="
+If you would like to make tweaks to your API as you develop your application,
+refer to [Defining the API using code-first approach](Defining-the-API-using-code-first-approach.md)
 page for best practices.
 " %}
 

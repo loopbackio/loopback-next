@@ -259,10 +259,10 @@ runtime even if you do not know the value when writing up the Controller. The
 above will print `Hello John` at run time.
 
 {% include note.html content="
-  `@inject` decorator is not able to leverage the value-type information
-  associated with a binding key yet, therefore the TypeScript compiler will not
-  check that the injection target (e.g. a constructor argument) was declared
-  with a type that the bound value can be assigned to.
+`@inject` decorator is not able to leverage the value-type information
+associated with a binding key yet, therefore the TypeScript compiler will not
+check that the injection target (e.g. a constructor argument) was declared
+with a type that the bound value can be assigned to.
 " %}
 
 Please refer to [Dependency injection](Dependency-injection.md) for further

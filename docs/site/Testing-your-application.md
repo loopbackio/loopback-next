@@ -307,7 +307,8 @@ There are three kinds of test doubles provided by Sinon.JS:
   stubs) as well as pre-programmed expectations. A mock will fail your test if
   it is not used as expected.
 
-{% include note.html content=" We recommend against using test mocks. With test
+{% include note.html content="
+We recommend against using test mocks. With test
 mocks, the expectations must be defined before the tested scenario is executed,
 which breaks the recommended test layout 'arrange-act-assert' (or
 'given-when-then') and also produces code that's difficult to comprehend.

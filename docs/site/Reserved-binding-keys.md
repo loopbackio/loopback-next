@@ -30,11 +30,11 @@ app.bind(BindKeyNameSpace.KeyName).to('value');
 Following is a list of links to the apidocs on the binding keys in use by
 various `@loopback` packages:
 
-{% include note.html title="Declaring new binding keys" content="For component
-developers creating a new Binding, to avoid conflict with other packages, it is
-recommended that the binding key start with the package name as the prefix.
-Example: `@loopback/authentication` component uses the prefix `authentication`
-for its binding keys.
+{% include note.html title="Declaring new binding keys" content="
+For component developers creating a new Binding, to avoid conflict with other
+packages, it is recommended that the binding key start with the package name as
+the prefix. Example: `@loopback/authentication` component uses the prefix
+`authentication` for its binding keys.
 " %}
 
 - [AuthenticationBindings](http://apidocs.loopback.io/@loopback%2fdocs/authentication.html#AuthenticationBindings)
