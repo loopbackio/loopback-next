@@ -15,3 +15,10 @@ export async function main(options?: ApplicationConfig) {
   console.log(`Server is running at ${url}`);
   return app;
 }
+
+// re-exports for our benchmark, not needed for the tutorial itself
+export {TodoListApplication};
+
+export * from './models';
+export * from './repositories';
+export * from '@loopback/rest';

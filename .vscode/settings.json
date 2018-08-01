@@ -15,6 +15,7 @@
     "**/CVS": true,
     ".nyc_output": true,
     "coverage": true,
+    "benchmark/dist*": true,
     "packages/*/dist*": true,
     "packages/*/api-docs": true,
     "examples/*/dist*": true,
