@@ -4,6 +4,7 @@ packages/cli/generators/*/templates
 **/.sandbox
 packages/*/dist*
 examples/*/dist*
+benchmark/dist*
 sandbox/**/*
 *.json
 CHANGELOG.md

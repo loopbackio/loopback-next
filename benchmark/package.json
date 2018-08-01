@@ -1,0 +1,62 @@
+{
+  "name": "@loopback/benchmark",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Benchmarks measuring performance of our framework.",
+  "keywords": [
+    "loopback",
+    "performance",
+    "benchmark"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {
+    "build:all-dist": "npm run build:dist8 && npm run build:dist10",
+    "build": "lb-tsc",
+    "build:dist8": "lb-tsc es2017",
+    "build:dist10": "lb-tsc es2018",
+    "clean": "lb-clean dist*",
+    "pretest": "npm run clean && npm run build",
+    "test": "lb-mocha \"DIST/test\"",
+    "prestart": "npm run build",
+    "start": "node .",
+    "prepublishOnly": "npm run test"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "author": "",
+  "license": "MIT",
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist*/src",
+    "dist*/index*",
+    "src"
+  ],
+  "dependencies": {
+    "@loopback/dist-util": "^0.3.6",
+    "@loopback/example-todo": "^0.15.0",
+    "@types/byline": "^4.2.31",
+    "@types/debug": "0.0.30",
+    "@types/p-event": "^1.3.0",
+    "@types/request-promise-native": "^1.0.15",
+    "autocannon": "^2.4.1",
+    "byline": "^5.0.0",
+    "debug": "^3.1.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
+  },
+  "devDependencies": {
+    "@loopback/build": "^0.6.14",
+    "@loopback/testlab": "^0.11.3",
+    "@types/mocha": "^5.0.0",
+    "@types/node": "^10.1.1",
+    "mocha": "^5.1.1",
+    "p-event": "^2.1.0",
+    "source-map-support": "^0.5.5"
+  }
+}
