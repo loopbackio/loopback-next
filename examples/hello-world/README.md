@@ -35,10 +35,10 @@ npm i -g @loopback/cli
 lb4 example hello-world
 ```
 
-3.  Switch to the directory and install dependencies.
+3.  Switch to the directory.
 
 ```sh
-cd loopback4-example-hello-world && npm i
+cd loopback4-example-hello-world
 ```
 
 ## Use

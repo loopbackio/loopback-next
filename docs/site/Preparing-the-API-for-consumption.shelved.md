@@ -24,7 +24,6 @@ application:
 ```sh
 lb4 example todo
 cd loopback4-example-todo
-npm i
 npm start
 ```
 

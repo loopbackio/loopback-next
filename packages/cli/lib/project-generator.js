@@ -246,13 +246,4 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       this.fs.delete(this.destinationPath('.vscode'));
     }
   }
-
-  install() {
-    if (this.shouldExit()) return false;
-    const opts = this.options.npmInstall || {};
-    const spawnOpts = Object.assign({}, this.options.spawn, {
-      cwd: this.destinationRoot(),
-    });
-    this.npmInstall(null, opts, spawnOpts);
-  }
 };
