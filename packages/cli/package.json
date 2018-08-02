@@ -80,7 +80,7 @@
       "fs-extra": "^6.0.1",
       "mocha": "^5.1.1",
       "nyc": "^11.7.1",
-      "prettier": "^1.13.3",
+      "prettier": "^1.14.0",
       "rimraf": "^2.6.2",
       "source-map-support": "^0.5.5",
       "strong-docs": "^3.2.0",
