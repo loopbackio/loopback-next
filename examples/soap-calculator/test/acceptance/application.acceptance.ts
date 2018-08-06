@@ -1,17 +1,15 @@
 import {supertest} from '@loopback/testlab';
 import {SoapCalculatorApplication} from '../../src/application';
 import {expect} from '@loopback/testlab';
-import {givenAConnectedDataSource} from '../helpers';
 
 describe('Application', function() {
   let app: SoapCalculatorApplication;
   let client: supertest.SuperTest<supertest.Test>;
 
   // tslint:disable-next-line:no-invalid-this
-  this.timeout(5000);
+  this.timeout(10000);
 
   before(givenAnApplication);
-  before(givenAConnectedDataSource);
 
   before(async () => {
     await app.boot();
