@@ -6,15 +6,15 @@
 import {LogError, Reject, HandlerContext} from '../types';
 import {inject, Provider} from '@loopback/context';
 import {HttpError} from 'http-errors';
-import {writeErrorToResponse} from '../writer';
 import {RestBindings} from '../keys';
-
-const debug = require('debug')('loopback:rest:reject');
+import {writeErrorToResponse, ErrorWriterOptions} from 'strong-error-handler';
 
 export class RejectProvider implements Provider<Reject> {
   constructor(
     @inject(RestBindings.SequenceActions.LOG_ERROR)
     protected logError: LogError,
+    @inject(RestBindings.ERROR_WRITER_OPTIONS, {optional: true})
+    protected errorWriterOptions?: ErrorWriterOptions,
   ) {}
 
   value(): Reject {
@@ -24,17 +24,7 @@ export class RejectProvider implements Provider<Reject> {
   action({request, response}: HandlerContext, error: Error) {
     const err = <HttpError>error;
     const statusCode = err.statusCode || err.status || 500;
-    writeErrorToResponse(response, err);
-
-    // Always log the error in debug mode, even when the application
-    // has a custom error logger configured (e.g. in tests)
-    debug(
-      'HTTP request %s %s was rejected: %s %s',
-      request.method,
-      request.url,
-      statusCode,
-      err.stack || err,
-    );
+    writeErrorToResponse(err, request, response, this.errorWriterOptions);
     this.logError(error, statusCode, request);
   }
 }

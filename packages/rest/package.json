@@ -41,6 +41,7 @@
     "lodash": "^4.17.5",
     "openapi-schema-to-json-schema": "^2.1.0",
     "path-to-regexp": "^2.2.0",
+    "strong-error-handler": "^3.2.0",
     "validator": "^10.4.0"
   },
   "devDependencies": {

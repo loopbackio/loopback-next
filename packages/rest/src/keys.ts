@@ -24,6 +24,7 @@ import {
 
 import {HttpProtocol} from '@loopback/http-server';
 import * as https from 'https';
+import {ErrorWriterOptions} from 'strong-error-handler';
 
 /**
  * RestServer-specific bindings
@@ -59,6 +60,13 @@ export namespace RestBindings {
    * Internal binding key for http-handler
    */
   export const HANDLER = BindingKey.create<HttpHandler>('rest.handler');
+  /**
+   * Binding key for setting and injecting Reject action's error handling
+   * options
+   */
+  export const ERROR_WRITER_OPTIONS = BindingKey.create<ErrorWriterOptions>(
+    'rest.errorWriterOptions',
+  );
 
   /**
    * Binding key for setting and injecting an OpenAPI spec
