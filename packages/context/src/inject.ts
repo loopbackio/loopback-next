@@ -10,6 +10,7 @@ import {
   PropertyDecoratorFactory,
   MetadataMap,
   MetadataAccessor,
+  InspectionOptions,
 } from '@loopback/metadata';
 import {BoundValue, ValueOrPromise, resolveList} from './value-promise';
 import {Context} from './context';
@@ -299,10 +300,23 @@ export function describeInjectedArguments(
   method?: string,
 ): Readonly<Injection>[] {
   method = method || '';
+  const options: InspectionOptions = {};
+  if (method === '') {
+    // A hacky way to check if an explicit constructor exists
+    // See https://github.com/strongloop/loopback-next/issues/1565
+    if (target.toString().match(/\s+constructor\s*\([^\)]*\)\s+\{/m)) {
+      options.ownMetadataOnly = true;
+    }
+  } else if (target.hasOwnProperty(method)) {
+    // The method exists in the target, no injections on the super method
+    // should be honored
+    options.ownMetadataOnly = true;
+  }
   const meta = MetadataInspector.getAllParameterMetadata<Readonly<Injection>>(
     PARAMETERS_KEY,
     target,
     method,
+    options,
   );
   return meta || [];
 }
