@@ -31,7 +31,11 @@ describe('app-generator specific files', () => {
     assert.file('src/application.ts');
     assert.fileContent(
       'src/application.ts',
-      /class MyAppApplication extends BootMixin\(RestApplication/,
+      /class MyAppApplication extends BootMixin\(/,
+    );
+    assert.fileContent(
+      'src/application.ts',
+      /RepositoryMixin\(RestApplication\)/,
     );
     assert.fileContent('src/application.ts', /constructor\(/);
     assert.fileContent('src/application.ts', /this.projectRoot = __dirname/);
@@ -67,9 +71,13 @@ describe('app-generator with --applicationName', () => {
   });
   it('generates all the proper files', () => {
     assert.file('src/application.ts');
+    assert.fileContent('src/application.ts', /class MyApp extends BootMixin\(/);
+  });
+  it('generates the application with RepositoryMixin', () => {
+    assert.file('src/application.ts');
     assert.fileContent(
       'src/application.ts',
-      /class MyApp extends BootMixin\(RestApplication/,
+      /RepositoryMixin\(RestApplication\)/,
     );
   });
 });
@@ -96,9 +104,13 @@ function testFormat() {
   });
   it('generates all the proper files', () => {
     assert.file('src/application.ts');
+    assert.fileContent('src/application.ts', /class MyApp extends BootMixin\(/);
+  });
+  it('generates the application with RepositoryMixin', () => {
+    assert.file('src/application.ts');
     assert.fileContent(
       'src/application.ts',
-      /class MyApp extends BootMixin\(RestApplication/,
+      /RepositoryMixin\(RestApplication\)/,
     );
   });
 }
