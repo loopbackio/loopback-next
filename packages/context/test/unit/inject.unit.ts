@@ -79,6 +79,20 @@ describe('function argument injection', () => {
     const meta = describeInjectedArguments(SubTestClass);
     expect(meta.map(m => m.bindingKey)).to.deepEqual(['bar']);
   });
+
+  it('supports inheritance with overriding constructor - no args', () => {
+    class TestClass {
+      constructor(@inject('foo') foo: string) {}
+    }
+
+    class SubTestClass extends TestClass {
+      constructor() {
+        super('foo');
+      }
+    }
+    const meta = describeInjectedArguments(SubTestClass);
+    expect(meta.map(m => m.bindingKey)).to.deepEqual([]);
+  });
 });
 
 describe('property injection', () => {
