@@ -53,7 +53,7 @@ To create your first LoopBack 4 application, see
 
 ## Contributing
 
-See the following resources to get your started:
+See the following resources to get you started:
 
 - [Contributing Guidelines](./docs/CONTRIBUTING.md)
 - [Monorepo overview](./docs/site/MONOREPO.md)
