@@ -25,7 +25,6 @@
     "test": "lb-mocha \"DIST/test/*/**/*.js\"",
     "test:dev": "lb-mocha --allow-console-logs DIST/test/**/*.js && npm run posttest",
     "verify": "npm pack && tar xf loopback-todo*.tgz && tree package && npm run clean",
-    "prestart": "npm run build",
     "start": "node ."
   },
   "repository": {
@@ -46,6 +45,8 @@
     "@loopback/repository": "^0.14.2",
     "@loopback/rest": "^0.19.2",
     "@loopback/service-proxy": "^0.6.2",
+    "loopback-connector-cloudant": "^1.3.0",
+    "loopback-connector-mysql": "^5.3.0",
     "loopback-connector-rest": "^3.1.1"
   },
   "devDependencies": {

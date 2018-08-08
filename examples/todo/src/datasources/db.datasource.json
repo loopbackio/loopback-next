@@ -1,6 +1,8 @@
 {
   "name": "db",
-  "connector": "memory",
-  "localStorage": "",
-  "file": "./data/db.json"
+  "connector": "cloudant",
+  "url": "http://admin:pass@localhost:8080",
+  "database": "todo",
+  "modelIndex": "",
+  "ibmCloud": true
 }
