@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.16.0"></a>
+# [0.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.15.2...@loopback/docs@0.16.0) (2018-08-08)
+
+
+### Bug Fixes
+
+* update todo juggler page ([3711931](https://github.com/strongloop/loopback-next/commit/3711931))
+* **cli:** install dependencies for clones examples ([5774f1f](https://github.com/strongloop/loopback-next/commit/5774f1f))
+* **cli:** remove deleteAll endpoint from REST Controller template ([34eba34](https://github.com/strongloop/loopback-next/commit/34eba34))
+* **service-proxy:** await datasource until it connects to the service ([714344b](https://github.com/strongloop/loopback-next/commit/714344b))
+
+
+### Features
+
+* **example-soap-calculator:** add soap web services integration example ([9a8d57c](https://github.com/strongloop/loopback-next/commit/9a8d57c)), closes [#1550](https://github.com/strongloop/loopback-next/issues/1550)
+
+
+
+
 <a name="0.15.2"></a>
 ## [0.15.2](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.15.1...@loopback/docs@0.15.2) (2018-07-21)
 

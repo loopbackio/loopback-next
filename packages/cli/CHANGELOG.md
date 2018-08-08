@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.21.0"></a>
+# [0.21.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.20.2...@loopback/cli@0.21.0) (2018-08-08)
+
+
+### Bug Fixes
+
+* import package in template ([14bb6a5](https://github.com/strongloop/loopback-next/commit/14bb6a5))
+* **cli:** change model template to properly render array types ([2d43a61](https://github.com/strongloop/loopback-next/commit/2d43a61))
+* **cli:** install dependencies for clones examples ([5774f1f](https://github.com/strongloop/loopback-next/commit/5774f1f))
+* **cli:** remove deleteAll endpoint from REST Controller template ([34eba34](https://github.com/strongloop/loopback-next/commit/34eba34))
+* **cli:** use this.exit instead of throwing an error ([8d25a79](https://github.com/strongloop/loopback-next/commit/8d25a79))
+
+
+### Features
+
+* **cli:** add repositorymixin and imports by a new switch ([be81131](https://github.com/strongloop/loopback-next/commit/be81131)), closes [#1594](https://github.com/strongloop/loopback-next/issues/1594)
+* **cli:** use `app.restServer.url` for console logs ([f31160c](https://github.com/strongloop/loopback-next/commit/f31160c))
+* **example-soap-calculator:** add soap web services integration example ([9a8d57c](https://github.com/strongloop/loopback-next/commit/9a8d57c)), closes [#1550](https://github.com/strongloop/loopback-next/issues/1550)
+
+
+
+
 <a name="0.20.2"></a>
 ## [0.20.2](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.20.1...@loopback/cli@0.20.2) (2018-07-21)
 
