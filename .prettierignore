@@ -8,3 +8,4 @@ benchmark/dist*
 sandbox/**/*
 *.json
 CHANGELOG.md
+*.yml

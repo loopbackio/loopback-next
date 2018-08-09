@@ -74,6 +74,39 @@ children:
       url: todo-list-tutorial-controller.html
       output: 'web, pdf'
 
+  - title: 'SOAP Web Service Tutorial'
+    url: soap-calculator-tutorial.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'SOAP Web Service Overview'
+      url: soap-calculator-tutorial-web-service-overview.html
+      output: 'web, pdf'
+
+    - title: 'App scaffolding'
+      url: soap-calculator-tutorial-scaffolding.html
+      output: 'web, pdf'
+
+    - title: 'Add a Datasource'
+      url: soap-calculator-tutorial-add-datasource.html
+      output: 'web, pdf'
+
+    - title: 'Add a Service'
+      url: soap-calculator-tutorial-add-service.html
+      output: 'web, pdf'
+
+    - title: 'Add a Controller'
+      url: soap-calculator-tutorial-add-controller.html
+      output: 'web, pdf'
+
+    - title: 'Register the Service'
+      url: soap-calculator-tutorial-register-service.html
+      output: 'web, pdf'
+
+    - title: 'Run and Test it'
+      url: soap-calculator-tutorial-run-and-test.html
+      output: 'web, pdf'
+
 - title: 'Key concepts'
   url: Concepts.html
   output: 'web, pdf'

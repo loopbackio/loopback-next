@@ -23,6 +23,9 @@ LoopBack 4 comes with the following example projects:
 - **[rpc-server](https://github.com/strongloop/loopback-next/tree/master/examples/rpc-server)**:
   An example showing how to implement a made-up RPC protocol.
 
+- **[soap-calculator](soap-calculator-tutorial.md)**: Tutorial on integrating
+  SOAP web services.
+
 You can download any of the example projects usig our CLI tool `lb4`:
 
 ```sh
@@ -33,6 +36,7 @@ $ lb4 example
   hello-world: A simple hello-world Application using LoopBack 4.
   log-extension: An example extension project for LoopBack 4.
   rpc-server: A basic RPC server using a made-up protocol.
+  soap-calculator: An example on how to integrate SOAP web services.
 ```
 
 Please follow the instructions in
