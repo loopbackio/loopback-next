@@ -72,8 +72,9 @@ lb4 controller
   ? Controller class name: hello
   ? What kind of controller would you like to generate? Empty Controller
     create src/controllers/hello.controller.ts
+    update src/controllers/index.ts
 
-  Controller Hello is now created in src/controllers/
+  Controller Hello was now created in src/controllers/
   ```
 
 - Paste the following contents into the file
