@@ -96,7 +96,7 @@ function startWorker() {
       process.execPath,
       ['--expose-gc', require.resolve('./worker')],
       {
-        stdio: ['pipe', 'pipe', 'inherit'],
+        stdio: ['pipe', 'pipe', process.stderr],
       },
     );
 
