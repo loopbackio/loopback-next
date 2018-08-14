@@ -7,31 +7,6 @@ import {inject} from '@loopback/core';
 import {juggler, DataSource} from '@loopback/repository';
 const config = require('./db.datasource.json');
 
-type VcapService = {
-  name: string;
-  credentials: {
-    // tslint:disable-next-line:no-any
-    [property: string]: any;
-  };
-};
-
-if (shouldConfigureForIbmCloud()) {
-  const services = JSON.parse(process.env.VCAP_SERVICES!);
-  Object.keys(services).forEach(key => {
-    const serviceGroup = services[key];
-
-    // tslint:disable-next-line:no-any
-    serviceGroup.forEach((service: VcapService) => {
-      if (service.name === config.vcapServiceName) {
-        config.url = service.credentials.url;
-      }
-    });
-  });
-}
-
-// cf does not show .log() reliably, so have to use .warn()
-console.warn(config);
-
 export class DbDataSource extends juggler.DataSource {
   static dataSourceName = 'db';
 
@@ -39,6 +14,10 @@ export class DbDataSource extends juggler.DataSource {
     @inject('datasources.config.db', {optional: true})
     dsConfig: DataSource = config,
   ) {
+    // FOR VISUAL CONFIRMATION PURPOSES
+    // cf does not show .log() reliably, so have to use .warn()
+    console.warn(config);
+
     dsConfig = Object.assign({}, dsConfig, {
       // A workaround for the current design flaw where inside our monorepo,
       //  packages/service-proxy/node_modules/loopback-datasource-juggler cannot
@@ -48,14 +27,4 @@ export class DbDataSource extends juggler.DataSource {
     });
     super(dsConfig);
   }
-}
-
-function shouldConfigureForIbmCloud() {
-  if (
-    config.vcapServiceName && // have to explicitly config datasource to mark it as an IBM Cloud service with a matching name locally
-    process.env.VCAP_SERVICES // service should have been provisioned and bound to the app
-  ) {
-    return true;
-  }
-  return false;
 }
