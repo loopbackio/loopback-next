@@ -4,5 +4,5 @@
   "url": "http://admin:pass@localhost:8080",
   "database": "todo",
   "modelIndex": "",
-  "ibmCloud": true
+  "vcapServiceName": "db"
 }

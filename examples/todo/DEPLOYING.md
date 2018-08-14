@@ -17,7 +17,6 @@ Follow the steps:
 
 ```
 docker run \
-       --detach \
        --volume cloudant:/srv \
        --name cloudant-developer \
        --publish 8080:80 \
@@ -65,7 +64,7 @@ Follow the steps:
 
 ### Local
 
-1.  Add `loopback-cloudant-connector` to dependecies in `package.json`.
+1.  Add `loopback-connector-cloudant` to dependecies in `package.json`.
 2.  Install all dependencies:
 
 ```
@@ -164,7 +163,16 @@ Some pain points from the overall experience.
 
 ### LoopBack
 
-1.  Model configuration change is drastic.
+1.  `model-config.json` in LB3 was simpler. This is just a note about my first
+    experience with the change. LB4 has a new way to doing things and that's the
+    way forward, we should learn and start using the new way.
 2.  Repository creation and linking to a model is manual. There should be a
-    provision to do these from the `lb` commands.
-3.  There no API Explorer to play around with the models.
+    provision to do these from the `lb` commands. An issue has been opened to
+    discuss this - https://github.com/strongloop/loopback-next/issues/1588.
+3.  The API Explorer fails to load on IBM Cloud due to mixed content on Chrome
+    and Safari - https://github.com/strongloop/loopback-next/issues/1603.
+
+## Discoveries
+
+1.  We need a post-boot extension point in `@loopback/boot`. This will allow
+    for modification of datasource and other possible configurations.

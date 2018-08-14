@@ -22,7 +22,7 @@ if (shouldConfigureForIbmCloud()) {
 
     // tslint:disable-next-line:no-any
     serviceGroup.forEach((service: VcapService) => {
-      if (service.name === config.name) {
+      if (service.name === config.vcapServiceName) {
         config.url = service.credentials.url;
       }
     });
@@ -52,8 +52,7 @@ export class DbDataSource extends juggler.DataSource {
 
 function shouldConfigureForIbmCloud() {
   if (
-    process.env.HOME === '/home/vcap/app' && // relatively reliable way to detect the app is running on IBM Cloud
-    config.ibmCloud && // have to explicitly config datasource to mark it as an IBM Cloud service with a matching name locally
+    config.vcapServiceName && // have to explicitly config datasource to mark it as an IBM Cloud service with a matching name locally
     process.env.VCAP_SERVICES // service should have been provisioned and bound to the app
   ) {
     return true;
