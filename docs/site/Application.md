@@ -206,10 +206,39 @@ This means you can call these `RestServer` functions to do all of your
 server-level setups in the app constructor without having to explicitly retrieve
 an instance of your server.
 
+### Serve static files
+
+The `RestServer` allows static files to be served. It can be set up by calling
+the `static()` API.
+
+```ts
+app.static('/html', rootDirForHtml);
+```
+
+or
+
+```ts
+server.static(['/html', '/public'], rootDirForHtml);
+```
+
+Static assets are not allowed to be mounted on `/` to avoid performance penalty
+as `/` matches all paths and incurs file system access for each HTTP request.
+
+The static() API delegates to
+[serve-static](https://expressjs.com/en/resources/middleware/serve-static.html)
+to serve static files. Please see
+https://expressjs.com/en/starter/static-files.html and
+https://expressjs.com/en/4x/api.html#express.static for details.
+
+**WARNING**:
+
+> The static assets are served before LoopBack sequence of actions. If an error
+> is thrown, the `reject` action will NOT be triggered.
+
 ### Use unique bindings
 
 Use binding names that are prefixed with a unique string that does not overlap
-with loopback's bindings. As an example, if your application is built for your
+with LoopBack's bindings. As an example, if your application is built for your
 employer FooCorp, you can prefix your bindings with `fooCorp`.
 
 ```ts

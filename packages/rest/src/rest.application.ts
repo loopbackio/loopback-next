@@ -16,6 +16,8 @@ import {
   ControllerFactory,
 } from './router/routing-table';
 import {OperationObject, OpenApiSpec} from '@loopback/openapi-v3-types';
+import {ServeStaticOptions} from 'serve-static';
+import {PathParams} from 'express-serve-static-core';
 
 export const ERR_NO_MULTI_SERVER = format(
   'RestApplication does not support multiple servers!',
@@ -81,6 +83,19 @@ export class RestApplication extends Application implements HttpServerLike {
 
   handler(handlerFn: SequenceFunction) {
     this.restServer.handler(handlerFn);
+  }
+
+  /**
+   * Mount static assets to the REST server.
+   * See https://expressjs.com/en/4x/api.html#express.static
+   * @param path The path(s) to serve the asset.
+   * See examples at https://expressjs.com/en/4x/api.html#path-examples
+   * To avoid performance penalty, `/` is not allowed for now.
+   * @param rootDir The root directory from which to serve static assets
+   * @param options Options for serve-static
+   */
+  static(path: PathParams, rootDir: string, options?: ServeStaticOptions) {
+    this.restServer.static(path, rootDir, options);
   }
 
   /**

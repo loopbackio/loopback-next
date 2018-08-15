@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, ApplicationConfig} from '@loopback/core';
+import {Application} from '@loopback/core';
 import {
   supertest,
   expect,
@@ -17,6 +17,7 @@ import {IncomingMessage, ServerResponse} from 'http';
 import * as yaml from 'js-yaml';
 import * as path from 'path';
 import * as fs from 'fs';
+import {RestServerConfig} from '../../src';
 
 describe('RestServer (integration)', () => {
   it('exports url property', async () => {
@@ -75,6 +76,108 @@ describe('RestServer (integration)', () => {
     return createClientForHandler(server.requestHandler)
       .get('/')
       .expect(500);
+  });
+
+  it('does not allow static assets to be mounted at /', async () => {
+    const root = path.join(__dirname, 'fixtures');
+    const server = await givenAServer({
+      rest: {
+        port: 0,
+      },
+    });
+
+    expect(() => server.static('/', root)).to.throw(
+      'Static assets cannot be mount to "/" to avoid performance penalty.',
+    );
+
+    expect(() => server.static('', root)).to.throw(
+      'Static assets cannot be mount to "/" to avoid performance penalty.',
+    );
+
+    expect(() => server.static(['/'], root)).to.throw(
+      'Static assets cannot be mount to "/" to avoid performance penalty.',
+    );
+
+    expect(() => server.static(['/html', ''], root)).to.throw(
+      'Static assets cannot be mount to "/" to avoid performance penalty.',
+    );
+
+    expect(() => server.static(/.*/, root)).to.throw(
+      'Static assets cannot be mount to "/" to avoid performance penalty.',
+    );
+
+    expect(() => server.static('/(.*)', root)).to.throw(
+      'Static assets cannot be mount to "/" to avoid performance penalty.',
+    );
+  });
+
+  it('allows static assets via api', async () => {
+    const root = path.join(__dirname, 'fixtures');
+    const server = await givenAServer({
+      rest: {
+        port: 0,
+      },
+    });
+
+    server.static('/html', root);
+    const content = fs
+      .readFileSync(path.join(root, 'index.html'))
+      .toString('utf-8');
+    await createClientForHandler(server.requestHandler)
+      .get('/html/index.html')
+      .expect('Content-Type', /text\/html/)
+      .expect(200, content);
+  });
+
+  it('allows static assets via api after start', async () => {
+    const root = path.join(__dirname, 'fixtures');
+    const server = await givenAServer({
+      rest: {
+        port: 0,
+      },
+    });
+    await createClientForHandler(server.requestHandler)
+      .get('/html/index.html')
+      .expect(404);
+
+    server.static('/html', root);
+
+    await createClientForHandler(server.requestHandler)
+      .get('/html/index.html')
+      .expect(200);
+  });
+
+  it('allows non-static routes after assets', async () => {
+    const root = path.join(__dirname, 'fixtures');
+    const server = await givenAServer({
+      rest: {
+        port: 0,
+      },
+    });
+    server.static('/html', root);
+    server.handler(dummyRequestHandler);
+
+    await createClientForHandler(server.requestHandler)
+      .get('/html/does-not-exist.html')
+      .expect(200, 'Hello');
+  });
+
+  it('serve static assets if matches before other routes', async () => {
+    const root = path.join(__dirname, 'fixtures');
+    const server = await givenAServer({
+      rest: {
+        port: 0,
+      },
+    });
+    server.static('/html', root);
+    server.handler(dummyRequestHandler);
+
+    const content = fs
+      .readFileSync(path.join(root, 'index.html'))
+      .toString('utf-8');
+    await createClientForHandler(server.requestHandler)
+      .get('/html/index.html')
+      .expect(200, content);
   });
 
   it('allows cors', async () => {
@@ -369,7 +472,7 @@ servers:
     await server.stop();
   });
 
-  async function givenAServer(options?: ApplicationConfig) {
+  async function givenAServer(options?: {rest: RestServerConfig}) {
     const app = new Application(options);
     app.component(RestComponent);
     return await app.getServer(RestServer);
