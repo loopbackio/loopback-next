@@ -35,6 +35,9 @@ import {
 import {RestBindings} from './keys';
 import {RequestContext} from './request-context';
 import * as express from 'express';
+import {ServeStaticOptions} from 'serve-static';
+import {PathParams} from 'express-serve-static-core';
+import * as pathToRegExp from 'path-to-regexp';
 
 const debug = require('debug')('loopback:rest:server');
 
@@ -131,6 +134,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
   protected _httpServer: HttpServer | undefined;
 
   protected _expressApp: express.Application;
+  protected _routerForStaticAssets: express.Router;
 
   get listening(): boolean {
     return this._httpServer ? this._httpServer.listening : false;
@@ -196,6 +200,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
     };
     this._expressApp.use(cors(corsOptions));
 
+    // Place the assets router here before controllers
+    this._setupRouterForStaticAssets();
+
     // Mount our router & request handler
     this._expressApp.use((req, res, next) => {
       this._handleHttpRequest(req, res, options!).catch(next);
@@ -207,6 +214,17 @@ export class RestServer extends Context implements Server, HttpServerLike {
         this._onUnhandledError(req, res, err);
       },
     );
+  }
+
+  /**
+   * Set up an express router for all static assets so that middleware for
+   * all directories are invoked at the same phase
+   */
+  protected _setupRouterForStaticAssets() {
+    if (!this._routerForStaticAssets) {
+      this._routerForStaticAssets = express.Router();
+      this._expressApp.use(this._routerForStaticAssets);
+    }
   }
 
   protected _handleHttpRequest(
@@ -511,6 +529,25 @@ export class RestServer extends Context implements Server, HttpServerLike {
         methodName,
       ),
     );
+  }
+
+  /**
+   * Mount static assets to the REST server.
+   * See https://expressjs.com/en/4x/api.html#express.static
+   * @param path The path(s) to serve the asset.
+   * See examples at https://expressjs.com/en/4x/api.html#path-examples
+   * To avoid performance penalty, `/` is not allowed for now.
+   * @param rootDir The root directory from which to serve static assets
+   * @param options Options for serve-static
+   */
+  static(path: PathParams, rootDir: string, options?: ServeStaticOptions) {
+    const re = pathToRegExp(path, [], {end: false});
+    if (re.test('/')) {
+      throw new Error(
+        'Static assets cannot be mount to "/" to avoid performance penalty.',
+      );
+    }
+    this._routerForStaticAssets.use(path, express.static(rootDir, options));
   }
 
   /**
