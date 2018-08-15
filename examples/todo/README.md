@@ -11,7 +11,7 @@ LoopBack 4.
 
 ## Setup
 
-You'll need to make sure you have some things installed:
+First, you'll need to install a supported version of Node:
 
 - [Node.js](https://nodejs.org/en/) at v8.9 or greater
 
@@ -80,15 +80,15 @@ Feel free to look around in the application's code to get a feel for how it
 works. If you're interested in learning how to build it step-by-step, then
 continue with this tutorial!
 
-### Stuck?
+### Need help?
 
 Check out our [Gitter channel](https://gitter.im/strongloop/loopback) and ask
-for help with this tutorial!
+for help with this tutorial.
 
 ### Bugs/Feedback
 
 Open an issue in [loopback-next](https://github.com/strongloop/loopback-next)
-and we'll take a look!
+and we'll take a look.
 
 ## Contributions
 
