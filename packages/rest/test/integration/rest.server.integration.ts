@@ -227,6 +227,35 @@ servers:
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
   });
 
+  it('honors "x-forwarded-*" headers', async () => {
+    const app = new Application();
+    app.component(RestComponent);
+    const server = await app.getServer(RestServer);
+    const greetSpec = {
+      responses: {
+        200: {
+          schema: {type: 'string'},
+          description: 'greeting of the day',
+        },
+      },
+    };
+    server.route(new Route('get', '/greet', greetSpec, function greet() {}));
+
+    const response = await createClientForHandler(server.requestHandler)
+      .get('/swagger-ui')
+      .set('x-forwarded-proto', 'https')
+      .set('x-forwarded-host', 'example.com')
+      .set('x-forwarded-port', '8080');
+    await server.get(RestBindings.PORT);
+    const expectedUrl = new RegExp(
+      [
+        'https://loopback.io/api-explorer',
+        '\\?url=https://example.com:8080/openapi.json',
+      ].join(''),
+    );
+    expect(response.get('Location')).match(expectedUrl);
+  });
+
   it('exposes "GET /swagger-ui" endpoint with apiExplorerUrl', async () => {
     const app = new Application({
       rest: {apiExplorerUrl: 'http://petstore.swagger.io'},
