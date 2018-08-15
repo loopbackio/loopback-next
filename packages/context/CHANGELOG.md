@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.12.4"></a>
+## [0.12.4](https://github.com/strongloop/loopback-next/compare/@loopback/context@0.12.3...@loopback/context@0.12.4) (2018-08-15)
+
+
+### Bug Fixes
+
+* **context:** check constructor/method override for [@inject](https://github.com/inject) ([8c0bdb6](https://github.com/strongloop/loopback-next/commit/8c0bdb6))
+
+
+
+
 <a name="0.12.3"></a>
 ## [0.12.3](https://github.com/strongloop/loopback-next/compare/@loopback/context@0.12.2...@loopback/context@0.12.3) (2018-08-08)
 

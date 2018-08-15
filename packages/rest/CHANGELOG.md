@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.19.4"></a>
+## [0.19.4](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.19.3...@loopback/rest@0.19.4) (2018-08-15)
+
+
+### Bug Fixes
+
+* **rest:** set openapi url based on x-forwarded-* headers ([8706038](https://github.com/strongloop/loopback-next/commit/8706038))
+
+
+
+
 <a name="0.19.3"></a>
 ## [0.19.3](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.19.2...@loopback/rest@0.19.3) (2018-08-08)
 

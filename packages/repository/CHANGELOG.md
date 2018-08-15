@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.15.0"></a>
+# [0.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.14.3...@loopback/repository@0.15.0) (2018-08-15)
+
+
+### Bug Fixes
+
+* **repository:** change the way array property definition is built for the juggler ([2471c88](https://github.com/strongloop/loopback-next/commit/2471c88))
+
+
+### Features
+
+* **repository:** add KVRepository impl using legacy juggler ([97a75dc](https://github.com/strongloop/loopback-next/commit/97a75dc))
+
+
+
+
 <a name="0.14.3"></a>
 ## [0.14.3](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.14.2...@loopback/repository@0.14.3) (2018-08-08)
 

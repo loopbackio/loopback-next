@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-todo",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "description": "Tutorial example on how to build an application with LoopBack 4.",
   "main": "index.js",
   "engines": {
@@ -37,21 +37,21 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/boot": "^0.12.3",
-    "@loopback/context": "^0.12.3",
-    "@loopback/core": "^0.11.3",
+    "@loopback/boot": "^0.12.4",
+    "@loopback/context": "^0.12.4",
+    "@loopback/core": "^0.11.4",
     "@loopback/dist-util": "^0.3.6",
-    "@loopback/openapi-v3": "^0.12.3",
-    "@loopback/openapi-v3-types": "^0.8.3",
-    "@loopback/repository": "^0.14.3",
-    "@loopback/rest": "^0.19.3",
-    "@loopback/service-proxy": "^0.6.3",
+    "@loopback/openapi-v3": "^0.12.4",
+    "@loopback/openapi-v3-types": "^0.8.4",
+    "@loopback/repository": "^0.15.0",
+    "@loopback/rest": "^0.19.4",
+    "@loopback/service-proxy": "^0.7.0",
     "loopback-connector-rest": "^3.1.1"
   },
   "devDependencies": {
-    "@loopback/build": "^0.6.14",
-    "@loopback/http-caching-proxy": "^0.3.3",
-    "@loopback/testlab": "^0.11.3",
+    "@loopback/build": "^0.7.0",
+    "@loopback/http-caching-proxy": "^0.3.4",
+    "@loopback/testlab": "^0.11.4",
     "@types/lodash": "^4.14.109",
     "@types/node": "^10.1.1",
     "lodash": "^4.17.10"

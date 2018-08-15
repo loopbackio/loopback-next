@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.10.4"></a>
+## [0.10.4](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@0.10.3...@loopback/repository-json-schema@0.10.4) (2018-08-15)
+
+
+### Bug Fixes
+
+* **repository:** change the way array property definition is built for the juggler ([2471c88](https://github.com/strongloop/loopback-next/commit/2471c88))
+
+
+
+
 <a name="0.10.3"></a>
 ## [0.10.3](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@0.10.2...@loopback/repository-json-schema@0.10.3) (2018-08-08)
 

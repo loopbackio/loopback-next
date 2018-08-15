@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.21.1"></a>
+## [0.21.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.21.0...@loopback/cli@0.21.1) (2018-08-15)
+
+
+### Bug Fixes
+
+* **repository:** change the way array property definition is built for the juggler ([2471c88](https://github.com/strongloop/loopback-next/commit/2471c88))
+
+
+
+
 <a name="0.21.0"></a>
 # [0.21.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.20.2...@loopback/cli@0.21.0) (2018-08-08)
 

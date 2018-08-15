@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.16.0"></a>
+# [0.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.15.0...@loopback/example-todo@0.16.0) (2018-08-15)
+
+
+### Features
+
+* add two simple benchmarks ([5066cdf](https://github.com/strongloop/loopback-next/commit/5066cdf))
+
+
+
+
 <a name="0.15.0"></a>
 # [0.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.14.2...@loopback/example-todo@0.15.0) (2018-08-08)
 

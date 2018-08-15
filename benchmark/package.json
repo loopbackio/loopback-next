@@ -1,6 +1,6 @@
 {
   "name": "@loopback/benchmark",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Benchmarks measuring performance of our framework.",
   "keywords": [
@@ -39,7 +39,7 @@
   ],
   "dependencies": {
     "@loopback/dist-util": "^0.3.6",
-    "@loopback/example-todo": "^0.15.0",
+    "@loopback/example-todo": "^0.16.0",
     "@types/byline": "^4.2.31",
     "@types/debug": "0.0.30",
     "@types/p-event": "^1.3.0",
@@ -51,8 +51,8 @@
     "request-promise-native": "^1.0.5"
   },
   "devDependencies": {
-    "@loopback/build": "^0.6.14",
-    "@loopback/testlab": "^0.11.3",
+    "@loopback/build": "^0.7.0",
+    "@loopback/testlab": "^0.11.4",
     "@types/mocha": "^5.0.0",
     "@types/node": "^10.1.1",
     "mocha": "^5.1.1",
