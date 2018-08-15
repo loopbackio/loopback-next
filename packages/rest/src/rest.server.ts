@@ -351,6 +351,35 @@ export class RestServer extends Context implements Server, HttpServerLike {
     }
   }
 
+  /**
+   * Get the URL of the request sent by the client
+   * @param request Http request
+   */
+  private _getUrlForClient(request: Request, options: RestServerConfig) {
+    const protocol =
+      (request.get('x-forwarded-proto') || '').split(',')[0] ||
+      request.protocol ||
+      options.protocol ||
+      'http';
+    let host =
+      (request.get('x-forwarded-host') || '').split(',')[0] ||
+      request.headers.host!.replace(/:[0-9]+/, '');
+    let port =
+      (request.get('x-forwarded-port') || '').split(',')[0] ||
+      options.port ||
+      (request.headers.host!.match(/:([0-9]+)/) || [])[1] ||
+      '';
+
+    // clear default ports
+    port = protocol === 'https' && port === '443' ? '' : port;
+    port = protocol === 'http' && port === '80' ? '' : port;
+
+    // add port number of present
+    host += port !== '' ? ':' + port : '';
+
+    return protocol + '://' + host;
+  }
+
   private async _redirectToSwaggerUI(
     request: Request,
     response: Response,
@@ -358,7 +387,10 @@ export class RestServer extends Context implements Server, HttpServerLike {
   ) {
     const baseUrl =
       options.apiExplorerUrl || 'https://loopback.io/api-explorer';
-    const openApiUrl = `http://${request.headers.host}/openapi.json`;
+    const openApiUrl = `${this._getUrlForClient(
+      request,
+      options,
+    )}/openapi.json`;
     const fullUrl = `${baseUrl}?url=${openApiUrl}`;
     response.redirect(308, fullUrl);
   }
