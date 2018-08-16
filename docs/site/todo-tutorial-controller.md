@@ -11,8 +11,8 @@ summary: LoopBack 4 Todo Application Tutorial - Add a Controller
 
 In LoopBack 4, controllers handle the request-response lifecycle for your API.
 Each function on a controller can be addressed individually to handle an
-incoming request (like a POST request to `/todos`), perform business logic and
-then return a response.
+incoming request (like a POST request to `/todos`), to perform business logic,
+and to return a response.
 
 In this respect, controllers are the regions _in which most of your business
 logic will live_!
@@ -58,7 +58,8 @@ new controller instances.
 > costs. For more information, see the
 > [Dependency injection](Dependency-injection.md) section of our docs.
 
-Now that we have the repository wireup, let's create our first handler function.
+Now that the repository is connected, let's create our first controller
+function.
 
 #### src/controllers/todo.controller.ts
 
