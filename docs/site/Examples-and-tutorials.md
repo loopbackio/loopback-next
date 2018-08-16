@@ -1,6 +1,6 @@
 ---
 lang: en
-title: Examples and tutorials
+title: Tutorials and Examples
 keywords: LoopBack 4.0
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Examples-and-tutorials.html

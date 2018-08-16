@@ -9,14 +9,14 @@ summary: Write and run a LoopBack 4 "Hello World" project in TypeScript.
 
 ## Prerequisites
 
-Install [Node.js](https://nodejs.org/en/download/) (version 8.9 or higher) if
-not already installed on your machine.
+Install [Node.js](https://nodejs.org/en/download/) (version 8.9 or higher) if it
+is not already installed on your machine.
 
 ## Install LoopBack 4 CLI
 
-The LoopBack 4 CLI is a command-line interface that can scaffold a project or
-extension with more features under development. CLI provides the fastest way to
-get started with a LoopBack 4 project that adheres to best practices.
+The LoopBack 4 CLI is a command-line interface that scaffolds a project or an
+extension by generating the basic code. The CLI provides the fastest way to get
+started with a LoopBack 4 project that adheres to best practices.
 
 Install the CLI globally by running
 
@@ -26,7 +26,7 @@ npm i -g @loopback/cli
 
 ## Create a new project
 
-The CLI tool will scaffold the project, configure TypeScript compiler and
+The CLI tool will scaffold the project, configure the TypeScript compiler, and
 install all the required dependencies. To create a new project, run the CLI as
 follows and answer the prompts.
 
@@ -97,3 +97,8 @@ lb4 controller
     before restarting it_
 
 - Visit <http://127.0.0.1:3000/hello> to see `Hello world!`
+
+## Code sample
+
+You can view the generated code for this example at:
+[hello-world](https://github.com/strongloop/loopback-next/tree/master/examples/hello-world)

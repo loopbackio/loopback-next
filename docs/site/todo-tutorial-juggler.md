@@ -1,18 +1,18 @@
 ---
 lang: en
-title: 'Adding legacy juggler'
+title: 'Adding juggler bridge'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/todo-tutorial-juggler.html
-summary: LoopBack 4 Todo Application Tutorial - Adding legacy juggler
+summary: LoopBack 4 Todo Application Tutorial - Adding juggler bridge
 ---
 
-### Adding Legacy Juggler
+### Adding Juggler Bridge
 
-The Legacy Juggler is a "bridge" between the existing
+The Juggler Bridge is a "bridge" between the existing
 [loopback-datasource-juggler](https://github.com/strongloop/loopback-datasource-juggler)
-and the new LoopBack 4 architecture. It provides the capabilities required to
-access persistence layers/APIs, and perform
+and the LoopBack 4 architecture. It provides the capabilities required to access
+persistence layers/APIs, and perform
 [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations
 on those sources of data.
 
@@ -72,7 +72,7 @@ export class TodoListApplication extends BootMixin(
 Once you're ready, we'll move on to the
 [Add your Todo model](todo-tutorial-model.md) section.
 
-For more information on the Legacy Juggler, check out the
+For more information on the Juggler Bridge, check out the
 [@loopback/repository package](https://github.com/strongloop/loopback-next/tree/master/packages/repository)
 or see the [Repositories section](Repositories.md) of our docs.
 

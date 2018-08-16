@@ -1,10 +1,10 @@
 ---
 lang: en
-title: 'Add Todo Model'
+title: 'Add the Todo Model'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/todo-tutorial-model.html
-summary: LoopBack 4 Todo Application Tutorial - Add Todo Model
+summary: LoopBack 4 Todo Application Tutorial - Add the Todo Model
 ---
 
 ### Models
@@ -14,7 +14,7 @@ LoopBack 4. To that end, we're going to create a Todo model that can represent
 instances of a task for our Todo list. The Todo model will serve both as a
 [Data Transfer Object](https://en.wikipedia.org/wiki/Data_transfer_object) (also
 known as a DTO) for representing incoming Todo instances on requests, as well as
-our data structure for use with the Legacy Juggler.
+our data structure for use with loopback-datasource-juggler.
 
 > **NOTE:** LoopBack 3 treated models as the "center" of operations; in LoopBack
 > 4, that is no longer the case. While LoopBack 4 provides many of the helper
@@ -36,7 +36,8 @@ For our Todo model to represent our Todo instances, it will need:
 - a boolean flag for whether or not we've completed the task
 
 We can use the `lb4 model` command and answer the prompts to generate the model
-for us as follows:
+for us. Press `return` with an empty property name to generate the model. Follow
+these steps:
 
 ```sh
 lb4 model
@@ -92,6 +93,6 @@ operations!
 
 ### Navigation
 
-Previous step: [Adding the Legacy Juggler](todo-tutorial-juggler.md)
+Previous step: [Create your app scaffolding](todo-tutorial-scaffolding.md)
 
 Next step: [Add a datasource](todo-tutorial-datasource.md)

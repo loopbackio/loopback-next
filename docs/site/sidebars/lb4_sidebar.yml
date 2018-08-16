@@ -29,11 +29,7 @@ children:
       url: todo-tutorial-scaffolding.html
       output: 'web, pdf'
 
-    - title: 'Adding legacy juggler'
-      url: todo-tutorial-juggler.html
-      output: 'web, pdf'
-
-    - title: 'Add your Todo model'
+    - title: 'Add the Todo model'
       url: todo-tutorial-model.html
       output: 'web, pdf'
 
