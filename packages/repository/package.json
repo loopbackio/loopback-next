@@ -15,7 +15,7 @@
     "build:dist10": "lb-tsc es2018",
     "clean": "lb-clean loopback-repository*.tgz dist* package api-docs",
     "pretest": "npm run build",
-    "test": "lb-mocha \"DIST/test/**/*.js\"",
+    "test": "lb-mocha \"DIST/test/**/*.js\" --exclude DIST/test/fixtures/models/bad/*.js",
     "verify": "npm pack && tar xf loopback-repository*.tgz && tree package && npm run clean"
   },
   "author": "IBM",

@@ -10,6 +10,7 @@ import {
   DefaultCrudRepository,
   juggler,
   hasMany,
+  belongsTo,
   repository,
   RepositoryMixin,
   AppWithRepository,
@@ -76,13 +77,13 @@ describe('HasMany relation', () => {
   it('can patch many instances', async () => {
     await controller.createCustomerOrders(existingCustomerId, {
       description: 'order 1',
-      isDelivered: false,
+      isShipped: false,
     });
     await controller.createCustomerOrders(existingCustomerId, {
       description: 'order 2',
-      isDelivered: false,
+      isShipped: false,
     });
-    const patchObject = {isDelivered: true};
+    const patchObject = {isShipped: true};
     const arePatched = await controller.patchCustomerOrders(
       existingCustomerId,
       patchObject,
@@ -90,18 +91,18 @@ describe('HasMany relation', () => {
     expect(arePatched).to.equal(2);
     const patchedData = _.map(
       await controller.findCustomerOrders(existingCustomerId),
-      d => _.pick(d, ['customerId', 'description', 'isDelivered']),
+      d => _.pick(d, ['customerId', 'description', 'isShipped']),
     );
     expect(patchedData).to.eql([
       {
         customerId: existingCustomerId,
         description: 'order 1',
-        isDelivered: true,
+        isShipped: true,
       },
       {
         customerId: existingCustomerId,
         description: 'order 2',
-        isDelivered: true,
+        isShipped: true,
       },
     ]);
   });
@@ -166,12 +167,9 @@ describe('HasMany relation', () => {
       type: 'boolean',
       required: false,
     })
-    isDelivered: boolean;
+    isShipped: boolean;
 
-    @property({
-      type: 'number',
-      required: true,
-    })
+    @belongsTo(() => Customer)
     customerId: number;
   }
 
@@ -188,7 +186,7 @@ describe('HasMany relation', () => {
     })
     name: string;
 
-    @hasMany(Order)
+    @hasMany(() => Order)
     orders: Order[];
   }
 

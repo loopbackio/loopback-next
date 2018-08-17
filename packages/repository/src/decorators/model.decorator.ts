@@ -14,6 +14,7 @@ import {
   ModelDefinition,
   ModelDefinitionSyntax,
   PropertyDefinition,
+  ModelResolver,
 } from '../model';
 import {RELATIONS_KEY, RelationDefinitionBase} from './relation.decorator';
 
@@ -91,6 +92,16 @@ export function model(definition?: Partial<ModelDefinitionSyntax>) {
  * @returns {(target:any, key:string)}
  */
 export function property(definition?: Partial<PropertyDefinition>) {
+  if (
+    definition &&
+    (definition.type === Array || definition.type === 'array') &&
+    (definition as object).hasOwnProperty('itemType') &&
+    !definition.itemType
+  ) {
+    // this path is taken when cyclic dependency is detected
+    // in that case, a ModelResolver should be used instead
+    throw new Error('target model is undefined');
+  }
   return PropertyDecoratorFactory.createDecorator(
     MODEL_PROPERTIES_KEY,
     Object.assign({}, definition),
@@ -100,7 +111,6 @@ export function property(definition?: Partial<PropertyDefinition>) {
 export namespace property {
   export const ERR_PROP_NOT_ARRAY =
     '@property.array can only decorate array properties!';
-  export const ERR_NO_ARGS = 'decorator received less than two parameters';
 
   /**
    *
@@ -108,8 +118,8 @@ export namespace property {
    * @param definition Optional PropertyDefinition object for additional
    * metadata
    */
-  export function array(
-    itemType: Function,
+  export function array<T>(
+    itemType: T | ModelResolver<T>,
     definition?: Partial<PropertyDefinition>,
   ) {
     return function(target: Object, propertyName: string) {

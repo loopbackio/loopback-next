@@ -47,7 +47,7 @@
     "test:ci": "node packages/build/bin/run-nyc npm run mocha --scripts-prepend-node-path",
     "verify:docs": "npm run build:site -- --verify",
     "build:site": "./bin/build-docs-site.sh",
-    "mocha": "node packages/build/bin/run-mocha \"packages/*/DIST/test/**/*.js\" \"examples/*/DIST/test/**/*.js\" \"packages/cli/test/**/*.js\" \"packages/build/test/*/*.js\"",
+    "mocha": "node packages/build/bin/run-mocha \"packages/*/DIST/test/**/*.js\" \"examples/*/DIST/test/**/*.js\" \"packages/cli/test/**/*.js\" \"packages/build/test/*/*.js\" --exclude packages/*/DIST/test/fixtures/**/*.js",
     "posttest": "npm run lint",
     "commitmsg": "commitlint -E GIT_PARAMS"
   },

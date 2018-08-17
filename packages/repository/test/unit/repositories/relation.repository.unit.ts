@@ -16,7 +16,13 @@ import {
   Options,
   DataObject,
   Where,
+  resolveHasManyMetadata,
+  HasManyDefinition,
+  RelationType,
+  RELATIONS_KEY,
+  RelationMap,
 } from '../../..';
+import {MetadataInspector} from '@loopback/context';
 
 describe('relation repository', () => {
   context('HasManyRepository interface', () => {
@@ -105,6 +111,99 @@ describe('relation repository', () => {
       await HasManyCrudInstance.delete({id: 3});
       const deleteStub = repo.deleteAll as sinon.SinonStub;
       sinon.assert.calledWith(deleteStub, {id: 3, name: 'Jane'});
+    });
+  });
+
+  context('resolveHasManyMetadata', () => {
+    it('retains non-resolver type', () => {
+      class TargetModel extends Entity {}
+      const meta: HasManyDefinition = {
+        type: RelationType.hasMany,
+        target: TargetModel,
+      };
+      const result = resolveHasManyMetadata(meta);
+
+      expect(result).to.eql(meta);
+    });
+
+    it('throws if no target relation metadata is found', () => {
+      class TargetModel extends Entity {}
+      const meta: HasManyDefinition = {
+        type: RelationType.hasMany,
+        target: () => TargetModel,
+      };
+      expect(() => resolveHasManyMetadata(meta)).to.throw(
+        /no belongsTo metadata found/,
+      );
+    });
+
+    it('throws if no belongsTo metadata is found', () => {
+      class SourceModel extends Entity {}
+      class TargetModel extends Entity {}
+      const targetRelationMeta: RelationMap = {
+        foreignId: {type: RelationType.hasMany, target: () => SourceModel},
+      };
+      MetadataInspector.defineMetadata(
+        RELATIONS_KEY,
+        targetRelationMeta,
+        TargetModel.prototype,
+      );
+      const meta: HasManyDefinition = {
+        type: RelationType.hasMany,
+        target: () => TargetModel,
+      };
+      expect(() => resolveHasManyMetadata(meta)).to.throw(
+        /no belongsTo metadata found/,
+      );
+    });
+
+    it('retains predefined keyTo property', () => {
+      class SourceModel extends Entity {}
+      class TargetModel extends Entity {}
+      const targetRelationMeta: RelationMap = {
+        foreignId: {type: RelationType.belongsTo, target: () => SourceModel},
+      };
+      MetadataInspector.defineMetadata(
+        RELATIONS_KEY,
+        targetRelationMeta,
+        TargetModel.prototype,
+      );
+      const meta: HasManyDefinition = {
+        type: RelationType.hasMany,
+        target: () => TargetModel,
+        keyTo: 'someOtherForeignId',
+      };
+      const result = resolveHasManyMetadata(meta);
+      const expected: HasManyDefinition = {
+        type: RelationType.hasMany,
+        target: () => TargetModel,
+        keyTo: 'someOtherForeignId',
+      };
+      expect(result).to.eql(expected);
+    });
+
+    it('infers keyTo from property decorated with @belongsTo on target model', () => {
+      class SourceModel extends Entity {}
+      class TargetModel extends Entity {}
+      const targetRelationMeta: RelationMap = {
+        foreignId: {type: RelationType.belongsTo, target: () => SourceModel},
+      };
+      MetadataInspector.defineMetadata(
+        RELATIONS_KEY,
+        targetRelationMeta,
+        TargetModel.prototype,
+      );
+      const meta: HasManyDefinition = {
+        type: RelationType.hasMany,
+        target: () => TargetModel,
+      };
+      const result = resolveHasManyMetadata(meta);
+      const expected: HasManyDefinition = {
+        type: RelationType.hasMany,
+        target: () => TargetModel,
+        keyTo: 'foreignId',
+      };
+      expect(result).to.eql(expected);
     });
   });
 

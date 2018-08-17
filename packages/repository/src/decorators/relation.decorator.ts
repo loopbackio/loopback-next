@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Class} from '../common-types';
-import {Entity} from '../model';
-import {PropertyDecoratorFactory} from '@loopback/context';
+import {Entity, ModelResolver, isModelResolver} from '../model';
+import {PropertyDecoratorFactory, MetadataInspector} from '@loopback/context';
 import {property} from './model.decorator';
 import {camelCase} from 'lodash';
 
@@ -31,11 +31,12 @@ export class RelationMetadata {
 
 export interface RelationDefinitionBase {
   type: RelationType;
+  target: typeof Entity | ModelResolver<typeof Entity>;
 }
 
 export interface HasManyDefinition extends RelationDefinitionBase {
   type: RelationType.hasMany;
-  keyTo: string;
+  keyTo?: string;
 }
 
 /**
@@ -53,10 +54,22 @@ export function relation(definition?: Object) {
  * @param definition
  * @returns {(target:any, key:string)}
  */
-export function belongsTo(definition?: Object) {
-  // Apply model definition to the model class
-  const rel = Object.assign({type: RelationType.belongsTo}, definition);
-  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
+export function belongsTo<T extends typeof Entity>(
+  targetModel: T | ModelResolver<T>,
+  definition?: Partial<RelationDefinitionBase>,
+) {
+  return function(target: Object, key: string) {
+    const propMeta = {
+      type: MetadataInspector.getDesignTypeForProperty(target, key),
+    };
+    property(propMeta)(target, key);
+    // Apply model definition to the model class
+    const rel = Object.assign(
+      {type: RelationType.belongsTo, target: targetModel},
+      definition,
+    );
+    PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel)(target, key);
+  };
 }
 
 /**
@@ -78,7 +91,7 @@ export function hasOne(definition?: Object) {
  * @returns {(target:any, key:string)}
  */
 export function hasMany<T extends typeof Entity>(
-  targetModel: T,
+  targetModel: T | ModelResolver<T>,
   definition?: Partial<HasManyDefinition>,
 ) {
   // todo(shimks): extract out common logic (such as @property.array) to
@@ -86,28 +99,30 @@ export function hasMany<T extends typeof Entity>(
   return function(target: Object, key: string) {
     property.array(targetModel)(target, key);
 
-    const defaultFkName = camelCase(target.constructor.name + '_id');
-    const hasKeyTo = definition && definition.keyTo;
-    const hasDefaultFkProperty =
-      targetModel.definition &&
-      targetModel.definition.properties &&
-      targetModel.definition.properties[defaultFkName];
-    if (!(hasKeyTo || hasDefaultFkProperty)) {
-      // note(shimks): should we also check for the existence of explicitly
-      // given foreign key name on the juggler definition?
-      throw new Error(
-        `foreign key ${defaultFkName} not found on ${
-          targetModel.name
-        } model's juggler definition`,
-      );
+    const meta: Partial<HasManyDefinition> = {target: targetModel};
+
+    if (!isModelResolver(targetModel)) {
+      const defaultFkName = camelCase(target.constructor.name + '_id');
+      const hasKeyTo = definition && definition.keyTo;
+      const hasDefaultFkProperty =
+        targetModel.definition &&
+        targetModel.definition.properties &&
+        targetModel.definition.properties[defaultFkName];
+      if (!(hasKeyTo || hasDefaultFkProperty)) {
+        // note(shimks): should we also check for the existence of explicitly
+        // given foreign key name on the juggler definition?
+        throw new Error(
+          `foreign key ${defaultFkName} not found on ${
+            targetModel.name
+          } model's juggler definition`,
+        );
+      }
+      Object.assign(meta, {keyTo: defaultFkName});
     }
-    const meta = {keyTo: defaultFkName};
+
     Object.assign(meta, definition, {type: RelationType.hasMany});
 
-    PropertyDecoratorFactory.createDecorator(
-      RELATIONS_KEY,
-      meta as HasManyDefinition,
-    )(target, key);
+    PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, meta)(target, key);
   };
 }
 

@@ -26,6 +26,6 @@ class Order extends Entity {
   id: string;
   customerId: string;
 
-  @belongsTo()
+  @belongsTo(() => Customer)
   customer: Customer;
 }
