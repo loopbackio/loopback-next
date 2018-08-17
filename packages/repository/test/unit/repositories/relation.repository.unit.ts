@@ -19,10 +19,8 @@ import {
   resolveHasManyMetadata,
   HasManyDefinition,
   RelationType,
-  RELATIONS_KEY,
-  RelationMap,
+  ModelDefinition,
 } from '../../..';
-import {MetadataInspector} from '@loopback/context';
 
 describe('relation repository', () => {
   context('HasManyRepository interface', () => {
@@ -127,7 +125,11 @@ describe('relation repository', () => {
     });
 
     it('throws if no target relation metadata is found', () => {
-      class TargetModel extends Entity {}
+      class TargetModel extends Entity {
+        static definition = new ModelDefinition({
+          name: 'TargetModel',
+        });
+      }
       const meta: HasManyDefinition = {
         type: RelationType.hasMany,
         target: () => TargetModel,
@@ -139,15 +141,14 @@ describe('relation repository', () => {
 
     it('throws if no belongsTo metadata is found', () => {
       class SourceModel extends Entity {}
-      class TargetModel extends Entity {}
-      const targetRelationMeta: RelationMap = {
-        foreignId: {type: RelationType.hasMany, target: () => SourceModel},
-      };
-      MetadataInspector.defineMetadata(
-        RELATIONS_KEY,
-        targetRelationMeta,
-        TargetModel.prototype,
-      );
+      class TargetModel extends Entity {
+        static definition = new ModelDefinition({
+          name: 'TargetModel',
+          relations: {
+            foreignId: {type: RelationType.hasMany, target: () => SourceModel},
+          },
+        });
+      }
       const meta: HasManyDefinition = {
         type: RelationType.hasMany,
         target: () => TargetModel,
@@ -158,16 +159,7 @@ describe('relation repository', () => {
     });
 
     it('retains predefined keyTo property', () => {
-      class SourceModel extends Entity {}
       class TargetModel extends Entity {}
-      const targetRelationMeta: RelationMap = {
-        foreignId: {type: RelationType.belongsTo, target: () => SourceModel},
-      };
-      MetadataInspector.defineMetadata(
-        RELATIONS_KEY,
-        targetRelationMeta,
-        TargetModel.prototype,
-      );
       const meta: HasManyDefinition = {
         type: RelationType.hasMany,
         target: () => TargetModel,
@@ -184,15 +176,17 @@ describe('relation repository', () => {
 
     it('infers keyTo from property decorated with @belongsTo on target model', () => {
       class SourceModel extends Entity {}
-      class TargetModel extends Entity {}
-      const targetRelationMeta: RelationMap = {
-        foreignId: {type: RelationType.belongsTo, target: () => SourceModel},
-      };
-      MetadataInspector.defineMetadata(
-        RELATIONS_KEY,
-        targetRelationMeta,
-        TargetModel.prototype,
-      );
+      class TargetModel extends Entity {
+        static definition = new ModelDefinition({
+          name: 'TargetModel',
+          relations: {
+            foreignId: {
+              type: RelationType.belongsTo,
+              target: () => SourceModel,
+            },
+          },
+        });
+      }
       const meta: HasManyDefinition = {
         type: RelationType.hasMany,
         target: () => TargetModel,

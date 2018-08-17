@@ -7,7 +7,7 @@ import {
   ModelMetadataHelper,
   PropertyDefinition,
   ModelDefinition,
-  isModelResolver,
+  resolveType,
 } from '@loopback/repository';
 import {MetadataInspector} from '@loopback/context';
 import {
@@ -125,9 +125,7 @@ export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
   propertyType = stringTypeToWrapper(propertyType);
 
   if (isComplexType(propertyType)) {
-    propertyType = isModelResolver(propertyType)
-      ? propertyType()
-      : propertyType;
+    propertyType = resolveType(propertyType);
     Object.assign(propDef, {$ref: `#/definitions/${propertyType.name}`});
   } else {
     Object.assign(propDef, {
@@ -181,9 +179,7 @@ export function modelToJsonSchema(ctor: Function): JSONSchema {
         (metaProperty.itemType as string | Function)
       : (metaProperty.type as string | Function);
     if (typeof referenceType === 'function' && isComplexType(referenceType)) {
-      referenceType = isModelResolver(referenceType)
-        ? referenceType()
-        : referenceType;
+      referenceType = resolveType(referenceType);
       const propSchema = getJsonSchema(referenceType);
 
       if (propSchema && Object.keys(propSchema).length > 0) {

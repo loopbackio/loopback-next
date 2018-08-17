@@ -21,11 +21,11 @@ export type PropertyType = string | Function | Object | Type<any>;
  * Property definition for a model
  */
 export interface PropertyDefinition {
-  type: PropertyType | ModelResolver; // For example, 'string', String, or {}
+  type: PropertyType | TypeResolver; // For example, 'string', String, or {}
   id?: boolean;
   json?: PropertyForm;
   store?: PropertyForm;
-  itemType?: PropertyType | ModelResolver; // type of array
+  itemType?: PropertyType | TypeResolver; // type of array
   [attribute: string]: any; // Other attributes
 }
 
@@ -264,15 +264,28 @@ export abstract class Entity extends Model implements Persistable {
 }
 
 /**
- * DONT FORGET TO WRITE THE DOCS HERE
- * REVIEWERS REMIND ME IF THIS IS STILL HERE
+ * An anonymous function that resolves to a class/entity
+ * Intended to be used for cases when the JS engine is unable to fully define
+ * a given type
  */
-export type ModelResolver<T = typeof Entity> = () => T;
+export type TypeResolver<T = typeof Entity> = () => T;
 
-export function isModelResolver<T>(
-  fn: ModelResolver<T> | T,
-): fn is ModelResolver<T> {
+/**
+ * A function that checks whether given element is a TypeResolver or not
+ * @param fn
+ */
+export function isTypeResolver<T>(
+  fn: TypeResolver<T> | T,
+): fn is TypeResolver<T> {
   return !/^class/.test(fn.toString());
+}
+
+/**
+ * If given class/function is a TypeResolver, the resolved class is returned
+ * @param fn
+ */
+export function resolveType<T>(fn: TypeResolver<T> | T) {
+  return isTypeResolver(fn) ? fn() : fn;
 }
 
 /**

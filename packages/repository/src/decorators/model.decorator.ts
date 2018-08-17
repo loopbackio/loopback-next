@@ -14,7 +14,7 @@ import {
   ModelDefinition,
   ModelDefinitionSyntax,
   PropertyDefinition,
-  ModelResolver,
+  TypeResolver,
 } from '../model';
 import {RELATIONS_KEY, RelationDefinitionBase} from './relation.decorator';
 
@@ -119,7 +119,7 @@ export namespace property {
    * metadata
    */
   export function array<T>(
-    itemType: T | ModelResolver<T>,
+    itemType: T | TypeResolver<T>,
     definition?: Partial<PropertyDefinition>,
   ) {
     return function(target: Object, propertyName: string) {

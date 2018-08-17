@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Class} from '../common-types';
-import {Entity, ModelResolver, isModelResolver} from '../model';
+import {Entity, TypeResolver, isTypeResolver} from '../model';
 import {PropertyDecoratorFactory, MetadataInspector} from '@loopback/context';
 import {property} from './model.decorator';
 import {camelCase} from 'lodash';
@@ -31,7 +31,7 @@ export class RelationMetadata {
 
 export interface RelationDefinitionBase {
   type: RelationType;
-  target: typeof Entity | ModelResolver<typeof Entity>;
+  target: typeof Entity | TypeResolver<typeof Entity>;
 }
 
 export interface HasManyDefinition extends RelationDefinitionBase {
@@ -55,7 +55,7 @@ export function relation(definition?: Object) {
  * @returns {(target:any, key:string)}
  */
 export function belongsTo<T extends typeof Entity>(
-  targetModel: T | ModelResolver<T>,
+  targetModel: T | TypeResolver<T>,
   definition?: Partial<RelationDefinitionBase>,
 ) {
   return function(target: Object, key: string) {
@@ -91,7 +91,7 @@ export function hasOne(definition?: Object) {
  * @returns {(target:any, key:string)}
  */
 export function hasMany<T extends typeof Entity>(
-  targetModel: T | ModelResolver<T>,
+  targetModel: T | TypeResolver<T>,
   definition?: Partial<HasManyDefinition>,
 ) {
   // todo(shimks): extract out common logic (such as @property.array) to
@@ -101,7 +101,7 @@ export function hasMany<T extends typeof Entity>(
 
     const meta: Partial<HasManyDefinition> = {target: targetModel};
 
-    if (!isModelResolver(targetModel)) {
+    if (!isTypeResolver(targetModel)) {
       const defaultFkName = camelCase(target.constructor.name + '_id');
       const hasKeyTo = definition && definition.keyTo;
       const hasDefaultFkProperty =
