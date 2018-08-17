@@ -4,8 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {STRING} from '../../../';
-import {Entity, ModelDefinition} from '../../../';
+import {STRING, Entity, ModelDefinition, isModelResolver} from '../../../';
 
 describe('model', () => {
   const customerDef = new ModelDefinition('Customer');
@@ -185,5 +184,17 @@ describe('model', () => {
 
     const instance = new NoId();
     expect(() => instance.getId()).to.throw(/missing.*id/);
+  });
+
+  context('isModelResolver', () => {
+    class SomeModel {}
+
+    it('returns true if given arg is a resolver', () => {
+      expect(isModelResolver(() => SomeModel)).to.be.true();
+    });
+
+    it('returns false if given arg is not a resolver', () => {
+      expect(isModelResolver(SomeModel)).to.be.false();
+    });
   });
 });

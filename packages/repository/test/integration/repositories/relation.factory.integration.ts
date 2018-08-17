@@ -14,6 +14,10 @@ import {
   createHasManyRepositoryFactory,
   HasManyDefinition,
   HasManyRepositoryFactory,
+  hasMany,
+  belongsTo,
+  model,
+  property,
 } from '../../..';
 import {expect} from '@loopback/testlab';
 
@@ -116,16 +120,53 @@ describe('HasMany relation', () => {
     );
   });
 
-  it('errors when keyTo is not available hasMany metadata', () => {
-    const keytolessMeta = {
-      type: RelationType.hasMany,
-    };
-    expect(
+  context('createHasManyRepositoryFactory', () => {
+    it('errors when keyTo is not available hasMany metadata', () => {
+      class SomeClass extends Entity {}
+      const keytolessMeta: HasManyDefinition = {
+        type: RelationType.hasMany,
+        target: SomeClass,
+      };
+      expect(() =>
+        createHasManyRepositoryFactory(keytolessMeta, reviewRepo),
+      ).to.throw(/The foreign key property name \(keyTo\) must be specified/);
+    });
+
+    it('resolves belongsTo metadata', () => {
+      @model()
+      class Card extends Entity {
+        @property({id: true})
+        id: number;
+        @belongsTo(() => Suite)
+        suiteId: string;
+      }
+
+      @model()
+      class Suite extends Entity {
+        @property({id: true})
+        id: string;
+        @hasMany(() => Card)
+        cards: Card[];
+      }
+
+      const hasManyMeta = Suite.definition.relations.cards as HasManyDefinition;
+      expect(hasManyMeta).to.eql({
+        type: RelationType.hasMany,
+        target: () => Card,
+      });
       createHasManyRepositoryFactory(
-        keytolessMeta as HasManyDefinition,
-        reviewRepo,
-      ),
-    ).to.throw(/The foreign key property name \(keyTo\) must be specified/);
+        hasManyMeta,
+        new DefaultCrudRepository(
+          Suite,
+          new juggler.DataSource({connector: 'memory'}),
+        ),
+      );
+      expect(hasManyMeta).to.eql({
+        type: RelationType.hasMany,
+        target: () => Card,
+        keyTo: 'suiteId',
+      });
+    });
   });
 
   //--- HELPERS ---//
@@ -181,14 +222,17 @@ describe('HasMany relation', () => {
       relations: {
         orders: {
           type: RelationType.hasMany,
+          target: () => Order,
           keyTo: 'customerId',
         },
         reviewsAuthored: {
           type: RelationType.hasMany,
+          target: () => Review,
           keyTo: 'authorId',
         },
         reviewsApproved: {
           type: RelationType.hasMany,
+          target: () => Review,
           keyTo: 'approvedId',
         },
       },

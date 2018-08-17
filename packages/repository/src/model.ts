@@ -21,11 +21,11 @@ export type PropertyType = string | Function | Object | Type<any>;
  * Property definition for a model
  */
 export interface PropertyDefinition {
-  type: PropertyType; // For example, 'string', String, or {}
+  type: PropertyType | ModelResolver; // For example, 'string', String, or {}
   id?: boolean;
   json?: PropertyForm;
   store?: PropertyForm;
-  itemType?: PropertyType; // type of array
+  itemType?: PropertyType | ModelResolver; // type of array
   [attribute: string]: any; // Other attributes
 }
 
@@ -261,6 +261,18 @@ export abstract class Entity extends Model implements Persistable {
     }
     return where;
   }
+}
+
+/**
+ * DONT FORGET TO WRITE THE DOCS HERE
+ * REVIEWERS REMIND ME IF THIS IS STILL HERE
+ */
+export type ModelResolver<T = typeof Entity> = () => T;
+
+export function isModelResolver<T>(
+  fn: ModelResolver<T> | T,
+): fn is ModelResolver<T> {
+  return !/^class/.test(fn.toString());
 }
 
 /**

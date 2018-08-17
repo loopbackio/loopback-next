@@ -4,13 +4,23 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {EntityCrudRepository} from './repository';
-import {HasManyDefinition} from '../decorators/relation.decorator';
-import {Entity} from '../model';
+import {
+  HasManyDefinition,
+  RelationType,
+  RELATIONS_KEY,
+} from '../decorators/relation.decorator';
+import {Entity, isModelResolver} from '../model';
 import {
   HasManyRepository,
   DefaultHasManyEntityCrudRepository,
 } from './relation.repository';
-import {DataObject} from '..';
+import {DataObject} from '../common-types';
+import {MetadataInspector} from '@loopback/context';
+import {RelationMap} from '../decorators/model.decorator';
+
+const debug = require('debug')('loopback:repository:relation:factory');
+
+const ERR_NO_BELONGSTO_META = 'no belongsTo metadata found';
 
 export type HasManyRepositoryFactory<Target extends Entity, ForeignKeyType> = (
   fkValue: ForeignKeyType,
@@ -37,13 +47,13 @@ export function createHasManyRepositoryFactory<
   relationMetadata: HasManyDefinition,
   targetRepository: EntityCrudRepository<Target, TargetID>,
 ): HasManyRepositoryFactory<Target, ForeignKeyType> {
+  resolveHasManyMetadata(relationMetadata);
+  debug('resolved relation metadata: %o', relationMetadata);
+  const fkName = relationMetadata.keyTo;
+  if (!fkName) {
+    throw new Error('The foreign key property name (keyTo) must be specified');
+  }
   return function(fkValue: ForeignKeyType) {
-    const fkName = relationMetadata.keyTo;
-    if (!fkName) {
-      throw new Error(
-        'The foreign key property name (keyTo) must be specified',
-      );
-    }
     // tslint:disable-next-line:no-any
     const constraint: any = {[fkName]: fkValue};
     return new DefaultHasManyEntityCrudRepository<
@@ -52,4 +62,44 @@ export function createHasManyRepositoryFactory<
       EntityCrudRepository<Target, TargetID>
     >(targetRepository, constraint as DataObject<Target>);
   };
+}
+
+export function resolveHasManyMetadata(relationMeta: HasManyDefinition) {
+  if (
+    relationMeta.target &&
+    isModelResolver(relationMeta.target) &&
+    !relationMeta.keyTo
+  ) {
+    const resolvedModel = relationMeta.target();
+
+    debug('resolved model from given metadata: %o', resolvedModel);
+
+    const targetRelationMeta:
+      | RelationMap
+      | undefined = MetadataInspector.getAllPropertyMetadata(
+      RELATIONS_KEY,
+      resolvedModel.prototype,
+    );
+
+    debug('relation metadata from %o: %o', resolvedModel, targetRelationMeta);
+
+    if (!targetRelationMeta) {
+      throw new Error(ERR_NO_BELONGSTO_META);
+    }
+
+    let belongsToMetaExists = false;
+
+    for (const key in targetRelationMeta) {
+      if (targetRelationMeta[key].type === RelationType.belongsTo) {
+        relationMeta.keyTo = key;
+        belongsToMetaExists = true;
+        break;
+      }
+    }
+
+    if (!belongsToMetaExists) {
+      throw new Error(ERR_NO_BELONGSTO_META);
+    }
+  }
+  return relationMeta;
 }
