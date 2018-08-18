@@ -96,6 +96,24 @@ difficult to maintain, and prone to test failures unrelated to the changes made.
 Our approach to data handling, based on our experience, is described in this
 section.
 
+### Create a test datasource
+
+As we would prefer full control of the database and even the development
+database is not something we want to clean before each test it's handy to use an
+independent in-memory datasource which is filled appropriately using
+[test data builders](#use-test-data-builders) before each test run.
+
+{% include code-caption.html content="test/fixtures/datasources/testdb.datasource.ts" %}
+
+```ts
+import {juggler} from '@loopback/repository';
+
+export const testdb: juggler.DataSource = new juggler.DataSource({
+  name: 'db',
+  connector: 'memory',
+});
+```
+
 ### Clean the database before each test
 
 Start with a clean database before each test. This may seem counter-intuitive:
