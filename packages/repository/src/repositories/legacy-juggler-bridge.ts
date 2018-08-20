@@ -125,7 +125,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
     this.modelClass = dataSource.createModel<juggler.PersistedModelClass>(
       definition.name,
       properties,
-      Object.assign({strict: true}, definition.settings),
+      Object.assign({strict: true, strictDelete: true}, definition.settings),
     );
     this.modelClass.attachTo(dataSource);
   }
