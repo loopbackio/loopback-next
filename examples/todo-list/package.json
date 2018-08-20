@@ -15,7 +15,7 @@
     "build:watch": "lb-tsc --watch",
     "clean": "lb-clean *example-todo-list*.tgz dist* package api-docs",
     "lint": "npm run prettier:check && npm run tslint",
-    "lint:fix": "npm run prettier:fix && npm run tslint:fix",
+    "lint:fix": "npm run tslint:fix && npm run prettier:fix",
     "prettier:cli": "lb-prettier \"**/*.ts\"",
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
