@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.21.2"></a>
+## [0.21.2](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.21.1...@loopback/cli@0.21.2) (2018-08-20)
+
+
+### Bug Fixes
+
+* **cli:** add esnext.asynciterable to lib for typescript ([83a8036](https://github.com/strongloop/loopback-next/commit/83a8036))
+* **cli:** increase timeout for app generation tests ([c51383d](https://github.com/strongloop/loopback-next/commit/c51383d))
+
+
+
+
 <a name="0.21.1"></a>
 ## [0.21.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.21.0...@loopback/cli@0.21.1) (2018-08-15)
 
