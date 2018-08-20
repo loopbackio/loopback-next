@@ -17,9 +17,9 @@ export class <%= className %>Controller {
   ) {}
 
   @post('<%= httpPathName %>')
-  async create(@requestBody() obj: <%= modelName %>)
+  async create(@requestBody() <%= name %>: <%= modelName %>)
     : Promise<<%= modelName %>> {
-    return await this.<%= repositoryNameCamel %>.create(obj);
+    return await this.<%= repositoryNameCamel %>.create(<%= name %>);
   }
 
   @get('<%= httpPathName %>/count')
@@ -35,10 +35,10 @@ export class <%= className %>Controller {
 
   @patch('<%= httpPathName %>')
   async updateAll(
-    @requestBody() obj: <%= modelName %>,
+    @requestBody() <%= name %>: <%= modelName %>,
     @param.query.string('where') where?: Where
   ): Promise<number> {
-    return await this.<%= repositoryNameCamel %>.updateAll(obj, where);
+    return await this.<%= repositoryNameCamel %>.updateAll(<%= name %>, where);
   }
 
   @get('<%= httpPathName %>/{id}')
@@ -49,9 +49,9 @@ export class <%= className %>Controller {
   @patch('<%= httpPathName %>/{id}')
   async updateById(
     @param.path.<%= idType %>('id') id: <%= idType %>,
-    @requestBody() obj: <%= modelName %>
+    @requestBody() <%= name %>: <%= modelName %>
   ): Promise<boolean> {
-    return await this.<%= repositoryNameCamel %>.updateById(id, obj);
+    return await this.<%= repositoryNameCamel %>.updateById(id, <%= name %>);
   }
 
   @del('<%= httpPathName %>/{id}')
