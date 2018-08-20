@@ -85,7 +85,7 @@ describe('app-generator with --applicationName', () => {
 // The test takes about 1 min to install dependencies
 function testFormat() {
   before(function() {
-    this.timeout(60 * 1000);
+    this.timeout(90 * 1000);
     return helpers
       .run(generator)
       .withOptions({
