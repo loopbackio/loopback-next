@@ -8,7 +8,7 @@
 const path = require('path');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
-const lerna = require('lerna');
+const bootstrapCommandFactory = require('@lerna/bootstrap');
 const build = require('@loopback/build');
 
 describe('app-generator (SLOW)', function() {
@@ -68,10 +68,12 @@ describe('app-generator (SLOW)', function() {
   });
 });
 
-function lernaBootstrap(scope) {
-  const cmd = new lerna.BootstrapCommand('', {
+async function lernaBootstrap(scope) {
+  const cmd = bootstrapCommandFactory({
+    _: [],
+    ci: false,
     scope: scope,
     loglevel: 'silent',
   });
-  return cmd.run();
+  await cmd;
 }

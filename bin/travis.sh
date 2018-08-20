@@ -4,7 +4,7 @@ set -e
 # Running Code Linter -- Requires @loopback/build so it's bootstrapped
 if [ $TASK = "code-lint" ]; then
   echo "TASK => LINTING CODE"
-  lerna bootstrap --scope @loopback/build
+  lerna bootstrap --no-ci --scope @loopback/build
   npm run lint
 
 # Commit Message Linter
