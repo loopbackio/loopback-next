@@ -173,13 +173,14 @@ describe('build', function() {
         'api-docs should have been created',
       );
       var typedocDir = require.resolve('typedoc/package.json');
+      typedocDir = path.resolve(typedocDir, '..');
       assert(
-        !fs.existsSync(path.join(typedocDir, '../node_modules/typescript')),
+        !fs.existsSync(path.join(typedocDir, './node_modules/typescript')),
         'typedoc local dependency of typescript should have been renamed',
       );
       assert(
         !fs.existsSync(
-          path.join(typedocDir, '../node_modules/.bin'),
+          path.join(typedocDir, './node_modules/.bin/tsc'),
           'typedoc local scripts from typescript should have been removed',
         ),
       );
