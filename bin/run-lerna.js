@@ -11,21 +11,17 @@
 'use strict';
 
 const path = require('path');
-const lerna = require('lerna');
+const Project = require('@lerna/project');
 const build = require('../packages/build');
 
-function run(argv, options) {
-  const ls = new lerna.LsCommand(
-    null,
-    {json: true, loglevel: 'silent'},
-    path.join(__dirname, '..'),
-  );
-  const rootPath = ls.repository.rootPath;
+async function run(argv, options) {
+  const project = new Project(path.join(__dirname, '..'));
+  const rootPath = project.rootPath;
 
   process.env.LERNA_ROOT_PATH = rootPath;
   let args = argv.slice(2);
 
-  return build.runCLI('lerna/bin/lerna', args, options);
+  return build.runCLI('lerna/cli', args, options);
 }
 
 module.exports = run;
