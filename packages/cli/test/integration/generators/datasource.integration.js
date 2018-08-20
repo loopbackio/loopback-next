@@ -163,7 +163,7 @@ function checkBasicDataSourceFiles() {
   assert.fileContent(expectedTSFile, /import {inject} from '@loopback\/core';/);
   assert.fileContent(
     expectedTSFile,
-    /import {juggler, DataSource, AnyObject} from '@loopback\/repository';/,
+    /import {juggler, AnyObject} from '@loopback\/repository';/,
   );
   assert.fileContent(
     expectedTSFile,
