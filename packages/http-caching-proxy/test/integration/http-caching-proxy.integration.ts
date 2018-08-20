@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import * as delay from 'delay';
+import delay from 'delay';
 import * as http from 'http';
 import {AddressInfo} from 'net';
 import * as pEvent from 'p-event';
