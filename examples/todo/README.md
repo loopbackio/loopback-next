@@ -36,13 +36,12 @@ section.
 ### Steps
 
 1.  [Create your app scaffolding](http://loopback.io/doc/en/lb4/todo-tutorial-scaffolding.html)
-2.  [Adding legacy juggler](http://loopback.io/doc/en/lb4/todo-tutorial-juggler.html)
-3.  [Add your Todo model](http://loopback.io/doc/en/lb4/todo-tutorial-model.html)
-4.  [Add a datasource](http://loopback.io/doc/en/lb4/todo-tutorial-datasource.html)
-5.  [Add a repository](http://loopback.io/doc/en/lb4/todo-tutorial-repository.html)
-6.  [Add a controller](http://loopback.io/doc/en/lb4/todo-tutorial-controller.html)
-7.  [Putting it all together](http://loopback.io/doc/en/lb4/todo-tutorial-putting-it-together.html)
-8.  Bonus:
+2.  [Add your Todo model](http://loopback.io/doc/en/lb4/todo-tutorial-model.html)
+3.  [Add a datasource](http://loopback.io/doc/en/lb4/todo-tutorial-datasource.html)
+4.  [Add a repository](http://loopback.io/doc/en/lb4/todo-tutorial-repository.html)
+5.  [Add a controller](http://loopback.io/doc/en/lb4/todo-tutorial-controller.html)
+6.  [Putting it all together](http://loopback.io/doc/en/lb4/todo-tutorial-putting-it-together.html)
+7.  Bonus:
     [Integrate with a geo-coding service](http://loopback.io/doc/en/lb4/todo-tutorial-geocoder-service.html)
 
 ## Try it out
