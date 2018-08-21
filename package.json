@@ -17,10 +17,10 @@
     "coveralls": "^3.0.0",
     "cz-conventional-changelog": "^2.1.0",
     "husky": "^0.14.3",
-    "lerna": "^3.1.2"
+    "lerna": "^3.1.4"
   },
   "scripts": {
-    "postinstall": "lerna bootstrap --no-ci",
+    "postinstall": "lerna bootstrap",
     "prerelease": "npm run build:full && npm run mocha && npm run lint",
     "release": "lerna publish",
     "update-template-deps": "node bin/update-template-deps -f",

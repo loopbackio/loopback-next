@@ -1,5 +1,5 @@
 {
-  "lerna": "3.1.2",
+  "lerna": "3.1.4",
   "packages": [
     "benchmark",
     "docs",
@@ -8,6 +8,9 @@
     "sandbox/*"
   ],
   "command": {
+    "bootstrap": {
+      "ci": false
+    },
     "publish": {
       "forcePublish": "@loopback/cli,@loopback/docs",
       "conventionalCommits": true,
