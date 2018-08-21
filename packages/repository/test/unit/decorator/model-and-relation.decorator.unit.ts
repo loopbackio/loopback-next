@@ -273,6 +273,7 @@ describe('model decorator', () => {
     expect(meta.customer).to.eql({
       type: RelationType.belongsTo,
       target: () => Customer,
+      keyFrom: 'customer',
     });
   });
 

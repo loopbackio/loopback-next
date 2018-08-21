@@ -39,6 +39,12 @@ export interface HasManyDefinition extends RelationDefinitionBase {
   keyTo?: string;
 }
 
+export interface BelongsToDefinition extends RelationDefinitionBase {
+  type: RelationType.belongsTo;
+  keyTo?: string;
+  keyFrom?: string;
+}
+
 /**
  * Decorator for relations
  * @param definition
@@ -56,18 +62,43 @@ export function relation(definition?: Object) {
  */
 export function belongsTo<T extends typeof Entity>(
   targetModel: T | TypeResolver<T>,
-  definition?: Partial<RelationDefinitionBase>,
+  definition?: Partial<BelongsToDefinition>,
 ) {
   return function(target: Object, key: string) {
     const propMeta = {
       type: MetadataInspector.getDesignTypeForProperty(target, key),
     };
     property(propMeta)(target, key);
+
+    const rel: BelongsToDefinition = {
+      type: RelationType.belongsTo,
+      target: targetModel,
+      keyFrom: key,
+    };
+
+    if (!isTypeResolver(targetModel)) {
+      const hasKeyTo = definition && definition.keyTo;
+      let hasPrimaryKey = false;
+
+      for (const propertyKey in targetModel.definition.properties) {
+        if (targetModel.definition.properties[propertyKey].id === true) {
+          rel.keyTo = propertyKey;
+          hasPrimaryKey = true;
+          break;
+        }
+      }
+
+      if (!hasPrimaryKey && !hasKeyTo) {
+        throw new Error(
+          `primary key not found on ${
+            targetModel.name
+          } model's juggler definition`,
+        );
+      }
+    }
+
     // Apply model definition to the model class
-    const rel = Object.assign(
-      {type: RelationType.belongsTo, target: targetModel},
-      definition,
-    );
+    Object.assign(rel, definition);
     PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel)(target, key);
   };
 }

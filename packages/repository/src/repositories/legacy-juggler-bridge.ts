@@ -21,8 +21,13 @@ import {EntityCrudRepository} from './repository';
 import {
   createHasManyRepositoryFactory,
   HasManyRepositoryFactory,
+  BelongsToFactory,
+  createBelongsToFactory,
 } from './relation.factory';
-import {HasManyDefinition} from '../decorators/relation.decorator';
+import {
+  HasManyDefinition,
+  BelongsToDefinition,
+} from '../decorators/relation.decorator';
 // need the import for exporting of a return type
 // tslint:disable-next-line:no-unused-variable
 import {HasManyRepository} from './relation.repository';
@@ -165,13 +170,25 @@ export class DefaultCrudRepository<T extends Entity, ID>
     ForeignKeyType
   >(
     relationName: string,
-    targetRepo: EntityCrudRepository<Target, TargetID>,
+    targetRepo: Promise<EntityCrudRepository<Target, TargetID>>,
   ): HasManyRepositoryFactory<Target, ForeignKeyType> {
     const meta = this.entityClass.definition.relations[relationName];
     return createHasManyRepositoryFactory<Target, TargetID, ForeignKeyType>(
       meta as HasManyDefinition,
       targetRepo,
     );
+  }
+
+  protected _createBelongsToFactoryFor<
+    Target extends Entity,
+    TargetId,
+    Source extends Entity
+  >(
+    relationName: string,
+    targetRepo: Promise<EntityCrudRepository<Target, TargetId>>,
+  ): BelongsToFactory<Target, Source> {
+    const meta = this.entityClass.definition.relations[relationName];
+    return createBelongsToFactory(meta as BelongsToDefinition, targetRepo);
   }
 
   async create(entity: DataObject<T>, options?: Options): Promise<T> {

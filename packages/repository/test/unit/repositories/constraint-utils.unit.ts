@@ -31,6 +31,15 @@ describe('constraint utility functions', () => {
         where: Object.assign({}, inputFilter.where, constraint),
       });
     });
+
+    it('applies a where constraint without a filter to start from', () => {
+      const constraint = {id: 'a wonderful id'};
+      const result = constrainFilter(undefined, constraint);
+      expect(result).to.containEql({
+        where: constraint,
+      });
+    });
+
     it('applies a filter constraint with where object', () => {
       const constraint: Filter = {where: {id: '10'}};
       const result = constrainFilter(inputFilter, constraint);
