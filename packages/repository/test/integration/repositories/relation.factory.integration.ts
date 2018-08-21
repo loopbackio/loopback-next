@@ -18,29 +18,28 @@ import {
   belongsTo,
   model,
   property,
+  createBelongsToFactory,
+  BelongsToDefinition,
 } from '../../..';
 import {expect} from '@loopback/testlab';
 
-describe('HasMany relation', () => {
-  // Given a Customer and Order models - see definitions at the bottom
-  let db: juggler.DataSource;
-  let customerRepo: EntityCrudRepository<
-    Customer,
-    typeof Customer.prototype.id
-  >;
-  let orderRepo: EntityCrudRepository<Order, typeof Order.prototype.id>;
-  let reviewRepo: EntityCrudRepository<Review, typeof Review.prototype.id>;
-  let customerOrderRepo: HasManyRepository<Order>;
-  let customerAuthoredReviewFactoryFn: HasManyRepositoryFactory<
-    Review,
-    typeof Customer.prototype.id
-  >;
-  let customerApprovedReviewFactoryFn: HasManyRepositoryFactory<
-    Review,
-    typeof Customer.prototype.id
-  >;
-  let existingCustomerId: number;
+// Given a Customer and Order models - see definitions at the bottom
+let db: juggler.DataSource;
+let customerRepo: EntityCrudRepository<Customer, typeof Customer.prototype.id>;
+let orderRepo: EntityCrudRepository<Order, typeof Order.prototype.id>;
+let reviewRepo: EntityCrudRepository<Review, typeof Review.prototype.id>;
+let customerOrderRepo: HasManyRepository<Order>;
+let customerAuthoredReviewFactoryFn: HasManyRepositoryFactory<
+  Review,
+  typeof Customer.prototype.id
+>;
+let customerApprovedReviewFactoryFn: HasManyRepositoryFactory<
+  Review,
+  typeof Customer.prototype.id
+>;
+let existingCustomerId: number;
 
+describe('HasMany relation', () => {
   before(givenCrudRepositories);
   before(givenPersistedCustomerInstance);
   before(givenConstrainedRepositories);
@@ -168,107 +167,196 @@ describe('HasMany relation', () => {
       });
     });
   });
-
-  //--- HELPERS ---//
-
-  class Order extends Entity {
-    id: number;
-    description: string;
-    customerId: number;
-
-    static definition = new ModelDefinition({
-      name: 'Order',
-      properties: {
-        id: {type: 'number', id: true},
-        description: {type: 'string', required: true},
-        customerId: {type: 'number', required: true},
-      },
-    });
-  }
-
-  class Review extends Entity {
-    id: number;
-    description: string;
-    authorId: number;
-    approvedId: number;
-
-    static definition = new ModelDefinition({
-      name: 'Review',
-      properties: {
-        id: {type: 'number', id: true},
-        description: {type: 'string', required: true},
-        authorId: {type: 'number', required: false},
-        approvedId: {type: 'number', required: false},
-      },
-    });
-  }
-
-  class Customer extends Entity {
-    id: number;
-    name: string;
-    orders: Order[];
-    reviewsAuthored: Review[];
-    reviewsApproved: Review[];
-
-    static definition = new ModelDefinition({
-      name: 'Customer',
-      properties: {
-        id: {type: 'number', id: true},
-        name: {type: 'string', required: true},
-        orders: {type: Order, array: true},
-        reviewsAuthored: {type: Review, array: true},
-        reviewsApproved: {type: Review, array: true},
-      },
-      relations: {
-        orders: {
-          type: RelationType.hasMany,
-          target: () => Order,
-          keyTo: 'customerId',
-        },
-        reviewsAuthored: {
-          type: RelationType.hasMany,
-          target: () => Review,
-          keyTo: 'authorId',
-        },
-        reviewsApproved: {
-          type: RelationType.hasMany,
-          target: () => Review,
-          keyTo: 'approvedId',
-        },
-      },
-    });
-  }
-
-  function givenCrudRepositories() {
-    db = new juggler.DataSource({connector: 'memory'});
-
-    customerRepo = new DefaultCrudRepository(Customer, db);
-    orderRepo = new DefaultCrudRepository(Order, db);
-    reviewRepo = new DefaultCrudRepository(Review, db);
-  }
-
-  async function givenPersistedCustomerInstance() {
-    existingCustomerId = (await customerRepo.create({name: 'a customer'})).id;
-  }
-
-  function givenConstrainedRepositories() {
-    const orderFactoryFn = createHasManyRepositoryFactory<
-      Order,
-      typeof Order.prototype.id,
-      typeof Customer.prototype.id
-    >(Customer.definition.relations.orders as HasManyDefinition, orderRepo);
-
-    customerOrderRepo = orderFactoryFn(existingCustomerId);
-  }
-
-  function givenRepositoryFactoryFunctions() {
-    customerAuthoredReviewFactoryFn = createHasManyRepositoryFactory(
-      Customer.definition.relations.reviewsAuthored as HasManyDefinition,
-      reviewRepo,
-    );
-    customerApprovedReviewFactoryFn = createHasManyRepositoryFactory(
-      Customer.definition.relations.reviewsApproved as HasManyDefinition,
-      reviewRepo,
-    );
-  }
 });
+
+describe('belongsTo relation', () => {
+  it('can find an instance of the related model', async () => {
+    const findCustomerOfOrder = createBelongsToFactory(
+      Order.definition.relations.customerId as BelongsToDefinition,
+      customerRepo,
+    );
+
+    const customer = await customerRepo.create({name: 'Order McForder'});
+    const order = await orderRepo.create({
+      customerId: customer.id,
+      description: 'Order from Order McForder, the hoarder of Mordor',
+    });
+    const result = await findCustomerOfOrder(order);
+    expect(result).to.deepEqual(customer);
+  });
+
+  context('createBelongsToFactory', () => {
+    it('errors when keyFrom is not available from belongsTo metadata', () => {
+      class SomeClass extends Entity {}
+      const keyFromLessMeta: BelongsToDefinition = {
+        type: RelationType.belongsTo,
+        target: SomeClass,
+        keyTo: 'someKey',
+      };
+      expect(() =>
+        createBelongsToFactory(keyFromLessMeta, reviewRepo),
+      ).to.throw(/The foreign key property name \(keyFrom\) must be specified/);
+    });
+
+    it('errors when keyTo is not available from belongsTo metadata', () => {
+      class SomeClass extends Entity {}
+      const keyToLessMeta: BelongsToDefinition = {
+        type: RelationType.belongsTo,
+        target: SomeClass,
+        keyFrom: 'someKey',
+      };
+      expect(() => createBelongsToFactory(keyToLessMeta, reviewRepo)).to.throw(
+        /The primary key property name \(keyTo\) must be specified/,
+      );
+    });
+
+    it('resolves property id metadata', () => {
+      @model()
+      class Card extends Entity {
+        @property({id: true})
+        id: number;
+        @belongsTo(() => Suite)
+        suiteId: string;
+      }
+
+      @model()
+      class Suite extends Entity {
+        @property({id: true})
+        id: string;
+        cards: Card[];
+      }
+
+      const belongsToMeta = Card.definition.relations
+        .suiteId as BelongsToDefinition;
+      expect(belongsToMeta).to.eql({
+        type: RelationType.belongsTo,
+        target: () => Suite,
+        keyFrom: 'suiteId',
+      });
+      createBelongsToFactory(
+        belongsToMeta,
+        new DefaultCrudRepository(
+          Suite,
+          new juggler.DataSource({connector: 'memory'}),
+        ),
+      );
+      expect(belongsToMeta).to.eql({
+        type: RelationType.belongsTo,
+        target: () => Suite,
+        keyFrom: 'suiteId',
+        keyTo: 'id',
+      });
+    });
+  });
+});
+
+//--- HELPERS ---//
+
+class Order extends Entity {
+  id: number;
+  description: string;
+  customerId: number;
+
+  static definition: ModelDefinition = new ModelDefinition({
+    name: 'Order',
+    properties: {
+      id: {type: 'number', id: true},
+      description: {type: 'string', required: true},
+      customerId: {type: 'number', required: true},
+    },
+    relations: {
+      customerId: {
+        type: RelationType.belongsTo,
+        target: () => Customer,
+        keyFrom: 'customerId',
+        keyTo: 'id',
+      },
+    },
+  });
+}
+
+class Review extends Entity {
+  id: number;
+  description: string;
+  authorId: number;
+  approvedId: number;
+
+  static definition = new ModelDefinition({
+    name: 'Review',
+    properties: {
+      id: {type: 'number', id: true},
+      description: {type: 'string', required: true},
+      authorId: {type: 'number', required: false},
+      approvedId: {type: 'number', required: false},
+    },
+  });
+}
+
+class Customer extends Entity {
+  id: number;
+  name: string;
+  orders: Order[];
+  reviewsAuthored: Review[];
+  reviewsApproved: Review[];
+
+  static definition: ModelDefinition = new ModelDefinition({
+    name: 'Customer',
+    properties: {
+      id: {type: 'number', id: true},
+      name: {type: 'string', required: true},
+      orders: {type: Order, array: true},
+      reviewsAuthored: {type: Review, array: true},
+      reviewsApproved: {type: Review, array: true},
+    },
+    relations: {
+      orders: {
+        type: RelationType.hasMany,
+        target: () => Order,
+        keyTo: 'customerId',
+      },
+      reviewsAuthored: {
+        type: RelationType.hasMany,
+        target: () => Review,
+        keyTo: 'authorId',
+      },
+      reviewsApproved: {
+        type: RelationType.hasMany,
+        target: () => Review,
+        keyTo: 'approvedId',
+      },
+    },
+  });
+}
+
+function givenCrudRepositories() {
+  db = new juggler.DataSource({connector: 'memory'});
+
+  customerRepo = new DefaultCrudRepository(Customer, db);
+  orderRepo = new DefaultCrudRepository(Order, db);
+  reviewRepo = new DefaultCrudRepository(Review, db);
+}
+
+async function givenPersistedCustomerInstance() {
+  existingCustomerId = (await customerRepo.create({name: 'a customer'})).id;
+}
+
+function givenConstrainedRepositories() {
+  const orderFactoryFn = createHasManyRepositoryFactory<
+    Order,
+    typeof Order.prototype.id,
+    typeof Customer.prototype.id
+  >(Customer.definition.relations.orders as HasManyDefinition, orderRepo);
+
+  customerOrderRepo = orderFactoryFn(existingCustomerId);
+}
+
+function givenRepositoryFactoryFunctions() {
+  customerAuthoredReviewFactoryFn = createHasManyRepositoryFactory(
+    Customer.definition.relations.reviewsAuthored as HasManyDefinition,
+    reviewRepo,
+  );
+  customerApprovedReviewFactoryFn = createHasManyRepositoryFactory(
+    Customer.definition.relations.reviewsApproved as HasManyDefinition,
+    reviewRepo,
+  );
+}

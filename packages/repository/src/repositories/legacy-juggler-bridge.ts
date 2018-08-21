@@ -6,7 +6,7 @@
 import * as legacy from 'loopback-datasource-juggler';
 
 import * as assert from 'assert';
-import {isPromiseLike} from '@loopback/context';
+import {isPromiseLike, Getter} from '@loopback/context';
 import {
   Options,
   AnyObject,
@@ -21,8 +21,16 @@ import {EntityCrudRepository} from './repository';
 import {
   createHasManyRepositoryFactory,
   HasManyRepositoryFactory,
+  BelongsToFactory,
+  createBelongsToFactory,
 } from './relation.factory';
-import {HasManyDefinition} from '../decorators/relation.decorator';
+import {
+  HasManyDefinition,
+  BelongsToDefinition,
+} from '../decorators/relation.decorator';
+// need the import for exporting of a return type
+// tslint:disable-next-line:no-unused-variable
+import {HasManyRepository} from './relation.repository';
 
 export namespace juggler {
   export import DataSource = legacy.DataSource;
@@ -162,13 +170,29 @@ export class DefaultCrudRepository<T extends Entity, ID>
     ForeignKeyType
   >(
     relationName: string,
-    targetRepo: EntityCrudRepository<Target, TargetID>,
+    targetRepo:
+      | EntityCrudRepository<Target, TargetID>
+      | Getter<EntityCrudRepository<Target, TargetID>>,
   ): HasManyRepositoryFactory<Target, ForeignKeyType> {
     const meta = this.entityClass.definition.relations[relationName];
     return createHasManyRepositoryFactory<Target, TargetID, ForeignKeyType>(
       meta as HasManyDefinition,
       targetRepo,
     );
+  }
+
+  protected _createBelongsToFactoryFor<
+    Target extends Entity,
+    TargetId,
+    Source extends Entity
+  >(
+    relationName: string,
+    targetRepo:
+      | EntityCrudRepository<Target, TargetId>
+      | Getter<EntityCrudRepository<Target, TargetId>>,
+  ): BelongsToFactory<Target, Source> {
+    const meta = this.entityClass.definition.relations[relationName];
+    return createBelongsToFactory(meta as BelongsToDefinition, targetRepo);
   }
 
   async create(entity: DataObject<T>, options?: Options): Promise<T> {

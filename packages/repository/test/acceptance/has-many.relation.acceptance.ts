@@ -3,22 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  model,
-  property,
-  Entity,
-  DefaultCrudRepository,
-  juggler,
-  hasMany,
-  belongsTo,
-  repository,
-  RepositoryMixin,
-  AppWithRepository,
-  HasManyRepositoryFactory,
-} from '../..';
+import {juggler, repository, RepositoryMixin, AppWithRepository} from '../..';
+import {Order} from '../fixtures/models';
+import {CustomerRepository, OrderRepository} from '../fixtures/repositories';
 import {expect} from '@loopback/testlab';
 import * as _ from 'lodash';
-import {inject} from '@loopback/context';
 import {Application} from '@loopback/core';
 
 describe('HasMany relation', () => {
@@ -148,76 +137,6 @@ describe('HasMany relation', () => {
   it.skip('reject create request when the customer does not exist');
 
   //--- HELPERS ---//
-
-  @model()
-  class Order extends Entity {
-    @property({
-      type: 'number',
-      id: true,
-    })
-    id: number;
-
-    @property({
-      type: 'string',
-      required: true,
-    })
-    description: string;
-
-    @property({
-      type: 'boolean',
-      required: false,
-    })
-    isShipped: boolean;
-
-    @belongsTo(() => Customer)
-    customerId: number;
-  }
-
-  @model()
-  class Customer extends Entity {
-    @property({
-      type: 'number',
-      id: true,
-    })
-    id: number;
-
-    @property({
-      type: 'string',
-    })
-    name: string;
-
-    @hasMany(() => Order)
-    orders: Order[];
-  }
-
-  class OrderRepository extends DefaultCrudRepository<
-    Order,
-    typeof Order.prototype.id
-  > {
-    constructor(@inject('datasources.db') protected db: juggler.DataSource) {
-      super(Order, db);
-    }
-  }
-
-  class CustomerRepository extends DefaultCrudRepository<
-    Customer,
-    typeof Customer.prototype.id
-  > {
-    public orders: HasManyRepositoryFactory<
-      Order,
-      typeof Customer.prototype.id
-    >;
-    constructor(
-      @inject('datasources.db') protected db: juggler.DataSource,
-      @repository(OrderRepository) orderRepository: OrderRepository,
-    ) {
-      super(Customer, db);
-      this.orders = this._createHasManyRepositoryFactoryFor(
-        'orders',
-        orderRepository,
-      );
-    }
-  }
 
   class CustomerController {
     constructor(
