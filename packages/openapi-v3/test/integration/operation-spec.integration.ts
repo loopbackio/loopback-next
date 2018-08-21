@@ -37,7 +37,12 @@ describe('operation arguments', () => {
             parameters: [
               {name: 'type', in: 'query', schema: {type: 'string'}},
               {name: 'token', in: 'header', schema: {type: 'string'}},
-              {name: 'location', in: 'path', schema: {type: 'string'}},
+              {
+                name: 'location',
+                in: 'path',
+                required: true,
+                schema: {type: 'string'},
+              },
             ],
             requestBody: {
               content: {
@@ -60,6 +65,7 @@ describe('operation arguments', () => {
         },
       },
     };
-    expect(getControllerSpec(MyController)).to.eql(expectedSpec);
+    const spec = getControllerSpec(MyController);
+    expect(spec).to.eql(expectedSpec);
   });
 });

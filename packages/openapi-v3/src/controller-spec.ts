@@ -121,7 +121,13 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
        *   }
        * ```
        */
-      operationSpec.parameters = params.filter(p => p != null);
+      operationSpec.parameters = params.filter(p => p != null).map(p => {
+        // Per OpenAPI spec, `required` must be `true` for path parameters
+        if (p.in === 'path') {
+          p.required = true;
+        }
+        return p;
+      });
     }
 
     debug('  processing requestBody for method %s', op);

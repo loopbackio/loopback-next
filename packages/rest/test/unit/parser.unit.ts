@@ -29,6 +29,7 @@ describe('operationArgsParser', () => {
         name: 'id',
         type: 'number',
         in: 'path',
+        required: true,
       },
     ]);
     const route = givenResolvedRoute(spec, {id: 1});

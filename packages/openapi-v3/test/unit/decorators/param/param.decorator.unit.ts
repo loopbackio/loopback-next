@@ -44,6 +44,7 @@ describe('Routing metadata for parameters', () => {
           @param({
             name: 'id',
             in: 'path',
+            required: true,
           })
           id: string,
           @param({
@@ -80,6 +81,7 @@ describe('Routing metadata for parameters', () => {
             type: 'string',
           },
           in: 'path',
+          required: true,
         })
         .withParameter({
           name: 'name',
