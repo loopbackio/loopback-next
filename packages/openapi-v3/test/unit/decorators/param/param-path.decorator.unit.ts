@@ -16,6 +16,7 @@ describe('Routing metadata for parameters', () => {
       const expectedParamSpec = {
         name: 'name',
         in: 'path',
+        required: true,
         schema: {
           type: 'string',
         },
@@ -33,6 +34,7 @@ describe('Routing metadata for parameters', () => {
       const expectedParamSpec = {
         name: 'name',
         in: 'path',
+        required: true,
         schema: {
           type: 'number',
         },
@@ -50,6 +52,7 @@ describe('Routing metadata for parameters', () => {
       const expectedParamSpec = {
         name: 'name',
         in: 'path',
+        required: true,
         schema: {
           type: 'integer',
           format: 'int32',
@@ -72,6 +75,7 @@ describe('Routing metadata for parameters', () => {
         {
           name: 'name',
           in: 'path',
+          required: true,
           schema: {
             type: 'boolean',
           },
@@ -89,6 +93,7 @@ describe('Routing metadata for parameters', () => {
       const expectedParamSpec = {
         name: 'name',
         in: 'path',
+        required: true,
         schema: {
           type: 'integer',
           format: 'int64',
@@ -107,6 +112,7 @@ describe('Routing metadata for parameters', () => {
       const expectedParamSpec = {
         name: 'name',
         in: 'path',
+        required: true,
         schema: {
           type: 'number',
           format: 'float',
@@ -125,6 +131,7 @@ describe('Routing metadata for parameters', () => {
       const expectedParamSpec = {
         name: 'name',
         in: 'path',
+        required: true,
         schema: {
           type: 'number',
           format: 'double',
@@ -143,6 +150,7 @@ describe('Routing metadata for parameters', () => {
       const expectedParamSpec = {
         name: 'name',
         in: 'path',
+        required: true,
         schema: {
           type: 'string',
           format: 'byte',
@@ -161,6 +169,7 @@ describe('Routing metadata for parameters', () => {
       const expectedParamSpec = {
         name: 'name',
         in: 'path',
+        required: true,
         schema: {
           type: 'string',
           format: 'binary',
@@ -179,6 +188,7 @@ describe('Routing metadata for parameters', () => {
       const expectedParamSpec = {
         name: 'name',
         in: 'path',
+        required: true,
         schema: {
           type: 'string',
           format: 'date',
@@ -197,6 +207,7 @@ describe('Routing metadata for parameters', () => {
       const expectedParamSpec = {
         name: 'name',
         in: 'path',
+        required: true,
         schema: {
           type: 'string',
           format: 'date-time',
@@ -215,6 +226,7 @@ describe('Routing metadata for parameters', () => {
       const expectedParamSpec = {
         name: 'name',
         in: 'path',
+        required: true,
         schema: {
           type: 'string',
           format: 'password',
