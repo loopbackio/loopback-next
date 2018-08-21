@@ -421,44 +421,50 @@ independent of the nature of such artifacts.
     need to have a packaging model so that extension developers can create their
     own modules as bundles and plug into a LoopBack application.
 
-### Why not Express?
+### Why Express behind the scene?
 
-Do we need to build our own core foundation? Can we continue to use Express? Our
-conclusion is no. Here are the gaps between what Express and LoopBack's needs.
+#### Background
 
-- **Lack of extensibility**.
+LoopBack had always been built on Express so we can leverage the vast community
+and middleware in the Express ecosystem **BUT** it presented some challenges for
+LoopBack. With LoopBack 4 we considered moving away from Express (and even built
+the framework without Express) but eventually circled back to Express because of
+its vast ecosystem.
 
-  Express is a routing and middleware web framework with minimal functionality
-  of its own: An Express application is essentially a series of middleware
-  function calls. For details, see
-  [Using middleware](http://expressjs.com/en/guide/using-middleware.html).
+Some of the gaps between what Express offers and LoopBack's needs are:
 
-  Express is only extensibile via middleware. It neither exposes a registry nor
-  provides APIs to manage artifacts such as middleware or routers. For its
-  purpose, Express only deals with middleware-like extensions that intercept
-  http requests/responses. LoopBack needs much more extension points and
-  extensions.
+- Lack of extensibility
+  > Express is only extensibile via middleware. It neither exposes a registry
+  > nor provides APIs to manage artifacts such as middleware or routers.
+- Lack of composability
+  > Express is not composable. For example, `app.use()` is the only way to
+  > register a middleware. The order of middleware is determined by the order of
+  > `app.use`.
+- Lack of declarative support
+  > In Express, everything is done by JavaScript ... In contrast, LoopBack is
+  > designed to facilitate API creation and composition by conventions and
+  > patterns as best practices.
 
-- **Lack of composability**.
+#### Circling back to Express with a twist
 
-  Express is not composable. For example, `app.use()` is the only way to
-  register a middleware. The order of middleware is determined by the order of
-  `app.use`. This simplistic approach works for a single monolithic application
-  where all middleware are known and arranged ahead of time. But it does not
-  support the case when middleware from other components need to be added
-  between existing ones. LoopBack had to introduce a phase-based extension and
-  hack Express to provide this capability.
+The main purpose of LoopBack is to make API creation easy, interacting with
+databases, services, etc., not middleware for CORS, static file serving, etc. We
+didn't want to reinvent the wheel by writing new middleware for LoopBack 4.
 
-  Express doesn't provide any way to manage dependencies between artifact
-  instances either.
+The team explored leveraging
+[Express or Koa](https://github.com/strongloop/loopback-next/pull/1082) (but
+only for their middleware support). The final decision was to use Express in a
+way that bridges the gap by addressing the gaps identified above as follows:
 
-- **Lack of declarative support**.
+- LoopBack provides its own
+  [Controller / OpenAPI metadata optimized routing engine](Routes.md)
+- Express is used exclusively for allowing us to consume Express middleware
+  (CORS, Static File Serving)
+- LoopBack uses a [Sequence of Actions](Sequence.md) to craft the response in a
+  composable manner and leverages `@loopback/context` as a registry.
 
-  In Express, everything is done by JavaScript code as it works exactly as the
-  web site claims: `Fast, unopinionated, minimalist web framework for Node.js`.
-  In contrast, LoopBack is designed to facilitate API creation and composition
-  by conventions and patterns as best practices. More types of constructs are
-  introduced.
+You can learn more details in our blog post on
+[improving inbound http processing](https://strongloop.com/strongblog/loopback4-improves-inbound-http-processing).
 
 ## Deep dive into LoopBack 4 extensibility
 
