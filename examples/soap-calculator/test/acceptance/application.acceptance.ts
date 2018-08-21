@@ -7,7 +7,7 @@ describe('Application', function() {
   let client: supertest.SuperTest<supertest.Test>;
 
   // tslint:disable-next-line:no-invalid-this
-  this.timeout(10000);
+  this.timeout(30000);
 
   before(givenAnApplication);
 
