@@ -13,31 +13,13 @@
 const path = require('path');
 const fs = require('fs');
 
-const Command = require('@lerna/command');
-
-/**
- * A dummy command to get filtered packages
- */
-class NopCommand extends Command {
-  get requiresGit() {
-    return false;
-  }
-
-  initialize() {
-    // No-op
-  }
-
-  execute() {
-    // No-op
-  }
-}
+const Project = require('@lerna/project');
 
 async function updateTemplateDeps() {
-  const cmd = new NopCommand({_: [], loglevel: 'silent'});
+  const project = new Project(process.cwd());
+  const packages = await project.getPackages();
 
-  await cmd; // Execute the command
-
-  const pkgs = cmd.filteredPackages.filter(pkg => !pkg.private).map(pkg => ({
+  const pkgs = packages.filter(pkg => !pkg.private).map(pkg => ({
     name: pkg.name,
     version: pkg.version,
   }));
@@ -47,7 +29,7 @@ async function updateTemplateDeps() {
     lbModules[p.name] = '^' + p.version;
   }
 
-  const rootPath = cmd.project.rootPath;
+  const rootPath = project.rootPath;
 
   // Load dependencies from `packages/build/package.json`
   const buildDeps = require(path.join(rootPath, 'packages/build/package.json'))
