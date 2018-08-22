@@ -648,7 +648,7 @@ Register a general relation.
 _This feature has not yet been released in alpha form. Documentation will be
 added here as this feature progresses._
 
-#### Specfic Relation Decorator
+#### Specific Relation Decorator
 
 Syntax:
 
