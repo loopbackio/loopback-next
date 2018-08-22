@@ -34,7 +34,7 @@ $ lb4 controller
 Controller TodoList was created in src/controllers/
 ```
 
-And voilà! We now have a set of basic APIs for todo-lists just like that!
+And voilà! We now have a set of basic APIs for todo-lists, just like that!
 
 ### Create TodoList's Todo controller
 
@@ -66,14 +66,13 @@ export class TodoListTodoController {
 }
 ```
 
-With this, we're now ready to add in some routes for our todo requests. To call
-the CRUD methods on a todo-list's todo items, we'll first need to create a
-constrained `TodoRepository`. We can achieve this by using our repository
-instance's `todos` factory function that we defined earlier in
-`TodoListRepository`.
+We're now ready to add in some routes for our todo requests. To call the CRUD
+methods on a todo-list's todo items, we'll first need to create a constrained
+`TodoRepository`. We can achieve this by using our repository instance's `todos`
+factory function that we defined earlier in `TodoListRepository`.
 
-The `POST` request from `/todo-lists/{id}/todos` should look something like
-this:
+The `POST` request from `/todo-lists/{id}/todos` should look similar to the
+following request:
 
 #### src/controllers/todo-list-todo.controller.ts
 
@@ -163,7 +162,7 @@ Here are some new requests you can try out:
   contains property `todoListId` with the ID from before.
 - `GET /todos/{id}/todos` and see if you get the todo you created from before.
 
-And there you have it! You now have the power to define API for related models!
+And there you have it! You now have the power to define APIs for related models!
 
 ### Navigation
 
