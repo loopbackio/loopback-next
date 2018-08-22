@@ -15,6 +15,7 @@
   },
   "scripts": {
     "build": "lb-tsc es2017 --outDir dist",
+    "build:resources": "lb-copy-resources",
     "clean": "lb-clean dist",
     "pretest": "npm run clean && npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",

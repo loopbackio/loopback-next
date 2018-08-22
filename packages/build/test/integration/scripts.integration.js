@@ -162,6 +162,30 @@ describe('build', function() {
     );
   });
 
+  it('honors --outDir option for copy-resources', () => {
+    var run = require('../../bin/copy-resources');
+    var command = run(
+      ['node', 'bin/copy-resources', '--outDir', 'dist10'],
+      true,
+    );
+    assert(
+      command.indexOf('--outDir dist10') !== -1,
+      '--outDir should be honored',
+    );
+  });
+
+  it('honors --rootDir option for copy-resources', () => {
+    var run = require('../../bin/copy-resources');
+    var command = run(
+      ['node', 'bin/copy-resources', '--rootDir', 'my-src'],
+      true,
+    );
+    assert(
+      command.indexOf('--rootDir my-src') !== -1,
+      '--rootDir should be honored',
+    );
+  });
+
   it('generates apidocs', done => {
     const run = require('../../bin/generate-apidocs');
     const childProcess = run(['node', 'bin/generate-apidocs'], {

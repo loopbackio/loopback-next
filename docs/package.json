@@ -7,9 +7,6 @@
   "engines": {
     "node": ">=8.9"
   },
-  "files": [
-    "**/*"
-  ],
   "keywords": [
     "LoopBack",
     "docs"

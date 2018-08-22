@@ -10,6 +10,7 @@
   "scripts": {
     "build": "lb-tsc es2017 --outDir dist",
     "build:apidocs": "lb-apidocs",
+    "build:resources": "lb-copy-resources",
     "clean": "lb-clean loopback-testlab*.tgz dist package api-docs",
     "pretest": "npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",

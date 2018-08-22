@@ -11,6 +11,7 @@
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
+    "build:resources": "lb-copy-resources",
     "clean": "lb-clean loopback-service-proxy*.tgz dist package api-docs",
     "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
     "pretest": "npm run build",

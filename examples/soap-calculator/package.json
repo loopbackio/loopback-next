@@ -12,13 +12,14 @@
   "main": "index.js",
   "types": "dist/index.d.ts",
   "engines": {
-    "node": ">=8"
+    "node": ">=8.9"
   },
   "author": "IBM Corp.",
   "scripts": {
     "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
-    "build:watch": "lb-tsc es2017 --outDir dist --watch",
+    "build:resources": "lb-copy-resources",
+    "build:watch": "lb-tsc --watch",
     "clean": "lb-clean *example-soap*.tgz dist package api-docs dist",
     "lint": "npm run prettier:check && npm run eslint",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",

@@ -15,7 +15,7 @@ const URL =
   'https://raw.githubusercontent.com/strongloop/loopback-workspace/master/available-connectors.json';
 
 /**
- * Function to dowload the list of available connectors from loopback-workspace
+ * Function to download the list of available connectors from loopback-workspace
  * so the list only has to be maintained in one place.
  */
 async function download() {

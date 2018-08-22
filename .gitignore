@@ -29,3 +29,5 @@ packages/tsdocs/fixtures/monorepo/docs
 # ESLint cache
 .eslintcache
 
+# TypeScrip build cache
+.tsbuildinfo

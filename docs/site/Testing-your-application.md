@@ -129,7 +129,7 @@ helper method; for example:
 {% include code-caption.html content="src/__tests__/helpers/database.helpers.ts" %}
 
 ```ts
-import {ProductRepository, CategoryRepository} from '../../src/repositories';
+import {ProductRepository, CategoryRepository} from '../../repositories';
 import {testdb} from '../fixtures/datasources/testdb.datasource';
 
 export async function givenEmptyDatabase() {
@@ -547,7 +547,7 @@ valid data to create a new model instance.
 {% include code-caption.html content="src/__tests__/unit/models/person.model.unit.ts" %}
 
 ```ts
-import {Person} from '../../../src/models';
+import {Person} from '../../../models';
 import {givenPersonData} from '../../helpers/database.helpers';
 import {expect} from '@loopback/testlab';
 
@@ -638,7 +638,7 @@ import {
   givenEmptyDatabase,
   givenCategory,
 } from '../../helpers/database.helpers';
-import {CategoryRepository} from '../../../src/repositories';
+import {CategoryRepository} from '../../../repositories';
 import {expect} from '@loopback/testlab';
 import {testdb} from '../../fixtures/datasources/testdb.datasource';
 
@@ -671,8 +671,8 @@ ingredient.
 ```ts
 import {expect} from '@loopback/testlab';
 import {givenEmptyDatabase, givenProduct} from '../../helpers/database.helpers';
-import {ProductController} from '../../../src/controllers';
-import {ProductRepository} from '../../../src/repositories';
+import {ProductController} from '../../../controllers';
+import {ProductRepository} from '../../../repositories';
 import {testdb} from '../../fixtures/datasources/testdb.datasource';
 
 describe('ProductController (integration)', () => {
@@ -719,11 +719,8 @@ of the service proxy by invoking the provider. This helper should be typically
 invoked once before the integration test suite begins.
 
 ```ts
-import {
-  GeoService,
-  GeoServiceProvider,
-} from '../../src/services/geo.service.ts';
-import {GeoDataSource} from '../../src/datasources/geo.datasource.ts';
+import {GeoService, GeoServiceProvider} from '../../services/geo.service.ts';
+import {GeoDataSource} from '../../datasources/geo.datasource.ts';
 
 describe('GeoService', () => {
   let service: GeoService;
@@ -743,7 +740,7 @@ instance:
 
 ```ts
 import {merge} from 'lodash';
-import * as GEO_CODER_CONFIG from '../src/datasources/geo.datasource.json';
+import * as GEO_CODER_CONFIG from '../datasources/geo.datasource.json';
 
 function givenGeoService() {
   const config = merge({}, GEO_CODER_CONFIG, {

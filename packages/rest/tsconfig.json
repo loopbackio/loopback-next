@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "extends": "@loopback/build/config/tsconfig.common.json",
+  "compilerOptions": {
+    "target": "es2017",
+    "outDir": "dist",
+    "rootDir": "src",
+    "composite": true,
+    "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo"
+  },
+  "references": [
+    {
+      "path": "../openapi-spec-builder/tsconfig.json"
+    },
+    {
+      "path": "../repository/tsconfig.json"
+    },
+    {
+      "path": "../testlab/tsconfig.json"
+    },
+    {
+      "path": "../context/tsconfig.json"
+    },
+    {
+      "path": "../core/tsconfig.json"
+    },
+    {
+      "path": "../http-server/tsconfig.json"
+    },
+    {
+      "path": "../openapi-v3/tsconfig.json"
+    },
+    {
+      "path": "../openapi-v3-types/tsconfig.json"
+    }
+  ],
+  "include": [
+    "src/**/*",
+    "src/**/*.json"
+  ]
+}

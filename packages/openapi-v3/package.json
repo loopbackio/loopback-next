@@ -20,6 +20,7 @@
   "scripts": {
     "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
+    "build:resources": "lb-copy-resources",
     "clean": "lb-clean loopback-openapi-v3*.tgz dist package",
     "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
     "pretest": "npm run build",

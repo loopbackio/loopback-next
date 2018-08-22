@@ -47,7 +47,7 @@ function run(argv, options) {
     mochaOpts.unshift(
       '--no-warnings', // Disable node.js warnings
       '--require',
-      require.resolve('../src/fail-on-console-logs'),
+      require.resolve('../lib/fail-on-console-logs'),
     );
   } else {
     // Allow tests to print to console, remove --allow-console-logs argument

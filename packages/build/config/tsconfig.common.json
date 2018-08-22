@@ -13,9 +13,10 @@
     "lib": ["es2018", "esnext.asynciterable"],
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es2017",
     "sourceMap": true,
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "target": "es2017",
+    "composite": true
   }
 }

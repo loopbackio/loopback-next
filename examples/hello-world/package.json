@@ -8,11 +8,13 @@
     "node": ">=8.9"
   },
   "author": "IBM Corp.",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
-    "build:watch": "lb-tsc es2017 --outDir dist --watch",
+    "build:resources": "lb-copy-resources",
+    "build:watch": "lb-tsc --watch",
     "clean": "lb-clean *example-hello-world*.tgz dist package api-docs",
     "verify": "npm pack && tar xf *example-hello-world*.tgz && tree package && npm run clean",
     "lint": "npm run prettier:check && npm run eslint",

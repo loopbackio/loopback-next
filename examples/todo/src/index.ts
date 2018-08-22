@@ -17,8 +17,7 @@ export async function main(options: ApplicationConfig = {}) {
 }
 
 // re-exports for our benchmark, not needed for the tutorial itself
-export {TodoListApplication};
+export * from './application';
 
 export * from './models';
 export * from './repositories';
-export * from '@loopback/rest';

@@ -17,7 +17,7 @@ const debug = require('debug')('loopback:build');
 function getCompilationTarget() {
   const nodeMajorVersion = +process.versions.node.split('.')[0];
   return nodeMajorVersion >= 10
-    ? 'es2018'
+    ? 'es2017'
     : nodeMajorVersion >= 7
     ? 'es2017'
     : 'es2015';
@@ -37,7 +37,7 @@ function getDistribution(target) {
       dist = 'dist10';
       break;
     case 'es2017':
-      dist = 'dist8';
+      dist = 'dist';
       break;
     case 'es2015':
       dist = 'dist6';
@@ -228,6 +228,41 @@ function mochaConfiguredForProject() {
   });
 }
 
+/**
+ * Get the value of an option
+ * @param {string[]} opts Arguments
+ * @param {string} optionName Option name
+ */
+function getOptionValue(opts, optionName) {
+  for (let i = 0; i < opts.length; i++) {
+    if (opts[i] === `--${optionName}`) return opts[i + 1];
+    if (opts[i].startsWith(`--${optionName}=`)) {
+      return opts.substring(`--${optionName}=`.length);
+    }
+  }
+  return undefined;
+}
+
+/**
+ * Remove options and their values from args
+ */
+function removeOptions(args, ...options) {
+  const removed = [];
+  for (const e of options) {
+    const index = args.indexOf(e);
+    if (index !== -1) {
+      const next = args[index + 1];
+      if (typeof next === 'string' && !next.startsWith('-')) {
+        // The next element is the value of the option, remove it too
+        removed.push(...args.splice(index, 2));
+      } else {
+        removed.push(...args.splice(index, 1));
+      }
+    }
+  }
+  return removed;
+}
+
 exports.getCompilationTarget = getCompilationTarget;
 exports.getDistribution = getDistribution;
 exports.getRootDir = getRootDir;
@@ -238,3 +273,5 @@ exports.runCLI = runCLI;
 exports.runShell = runShell;
 exports.isOptionSet = isOptionSet;
 exports.mochaConfiguredForProject = mochaConfiguredForProject;
+exports.getOptionValue = getOptionValue;
+exports.removeOptions = removeOptions;

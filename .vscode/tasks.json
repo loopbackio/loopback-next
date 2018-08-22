@@ -82,13 +82,16 @@
     },
     {
       "label": "Build project",
-      "group": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
       "type": "shell",
       "command": "npm",
       "args": [
         "run",
         "-s",
-        "build"
+        "build:dev"
       ],
       "problemMatcher": "$tsc"
     },

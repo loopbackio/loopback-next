@@ -10,7 +10,7 @@
 Usage:
   node ./bin/compile-package <target>
 
-Where <target> is one of es2015, es2017 or es2018.
+Where <target> is one of es2015, es2017 or es2017.
 
 ========
 */
@@ -21,8 +21,13 @@ function run(argv, options) {
   const utils = require('./utils');
   const path = require('path');
   const fs = require('fs');
-  const glob = require('glob');
-  const fse = require('fs-extra');
+  const copyResources = require('./copy-resources');
+
+  if (options === true) {
+    options = {dryRun: true};
+  } else {
+    options = options || {};
+  }
 
   const packageDir = utils.getPackageDir();
 
@@ -37,6 +42,10 @@ function run(argv, options) {
   );
 
   let target;
+  // Honor --dry from tsc
+  if (utils.isOptionSet(compilerOpts, '--dry')) {
+    options.dryRun = true;
+  }
 
   // --copy-resources is not a TS Compiler option so we remove it from the
   // list of compiler options to avoid compiler errors.
@@ -102,13 +111,11 @@ function run(argv, options) {
         JSON.stringify(
           {
             extends: baseConfigFile,
-            include: ['src', 'test'],
-            exclude: [
-              'node_modules/**',
-              'packages/*/node_modules/**',
-              'examples/*/node_modules/**',
-              '**/*.d.ts',
-            ],
+            compilerOptions: {
+              target: 'es2017',
+              outDir: 'dist',
+            },
+            exclude: ['**/*.d.ts'],
           },
           null,
           '  ',
@@ -133,28 +140,12 @@ function run(argv, options) {
     // to the same outDir as well.
     if (rootDir && tsConfigFile && isCopyResourcesSet) {
       const tsConfig = require(tsConfigFile);
-      const dirs = tsConfig.include
-        ? tsConfig.include.join('|')
-        : ['src', 'test'].join('|');
-
-      const compilerRootDir =
-        (tsConfig.compilerOptions && tsConfig.compilerOptions.rootDir) || '';
-
-      const pattern = `@(${dirs})/**/!(*.ts)`;
-      const files = glob.sync(pattern, {root: packageDir, nodir: true});
-      for (const file of files) {
-        /**
-         * Trim path that matches tsConfig.compilerOptions.rootDir
-         */
-        let targetFile = file;
-        if (compilerRootDir && file.startsWith(compilerRootDir + '/')) {
-          targetFile = file.substring(compilerRootDir.length + 1);
-        }
-        fse.copySync(
-          path.join(packageDir, file),
-          path.join(outDir, targetFile),
-        );
-      }
+      const tsRootDir =
+        (tsConfig.compilerOptions && tsConfig.compilerOptions.rootDir) || 'src';
+      copyResources(
+        [argv[0], argv[1], '--rootDir', tsRootDir, '--outDir', outDir],
+        options,
+      );
     }
   }
 
@@ -164,11 +155,21 @@ function run(argv, options) {
 
   args.push(...compilerOpts);
 
-  if (options === true) {
-    options = {dryRun: true};
-  } else {
-    options = options || {};
+  // Move --build or -b as the 1st argument to avoid:
+  // error TS6369: Option '--build' must be the first command line argument.
+  const buildOptions = utils.removeOptions(args, '-b', '--build');
+  if (buildOptions.length) {
+    let projectOptions = utils.removeOptions(args, '-p', '--project');
+    projectOptions = projectOptions.filter(p => !p.startsWith('-'));
+    // Remove conflict options with '--build'
+    utils.removeOptions(args, '--outDir', '--target');
+    if (buildOptions.length === 1) {
+      args.unshift(...buildOptions, ...projectOptions);
+    } else {
+      args.unshift(...buildOptions);
+    }
   }
+
   return utils.runCLI('typescript/lib/tsc', args, {cwd, ...options});
 }
 
