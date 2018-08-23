@@ -58,6 +58,73 @@ export class HelloWorldApp extends RestApplication {
 
 ## Configuration
 
+The REST server can be configured by passing a `rest` property inside your
+RestApplication options. For example, the following code customizes the port
+number that a REST server listens on.
+
+```ts
+const app = new RestApplication({
+  rest: {
+    port: 3001,
+  },
+});
+```
+
+### Customize How OpenAPI Spec is Served
+
+There are a few options under `rest.openApiSpec` to configure how OpenAPI spec
+is served by the given REST server.
+
+- servers: Configure servers for OpenAPI spec
+- setServersFromRequest: Set `servers` based on HTTP request headers, default to
+  `false`
+- endpointMapping: Maps urls for various forms of the spec. Default to:
+
+```js
+    {
+      '/openapi.json': {version: '3.0.0', format: 'json'},
+      '/openapi.yaml': {version: '3.0.0', format: 'yaml'},
+    }
+```
+
+```ts
+const app = new RestApplication({
+  rest: {
+    openApiSpec: {
+      servers: [{url: 'http://127.0.0.1:8080'}],
+      setServersFromRequest: false,
+      endpointMapping: {
+        '/openapi.json': {version: '3.0.0', format: 'json'},
+        '/openapi.yaml': {version: '3.0.0', format: 'yaml'},
+      },
+    },
+  },
+});
+```
+
+### Configure the API Explorer
+
+LoopBack allows externally hosted API Explorer UI to render the OpenAPI
+endpoints for a REST server. Such URLs can be specified with `rest.apiExplorer`:
+
+- url: URL for the hosted API Explorer UI, default to
+  `https://loopback.io/api-explorer`.
+- httpUrl: URL for the API explorer served over plain http to deal with mixed
+  content security imposed by browsers as the spec is exposed over `http` by
+  default. See https://github.com/strongloop/loopback-next/issues/1603. Default
+  to the value of `url`.
+
+```ts
+const app = new RestApplication({
+  rest: {
+    apiExplorer: {
+      url: 'https://petstore.swagger.io',
+      httpUrl: 'http://petstore.swagger.io',
+    },
+  },
+});
+```
+
 ### Enable HTTPS
 
 Enabling HTTPS for the LoopBack REST server is just a matter of specifying the
@@ -89,7 +156,19 @@ export async function main() {
 }
 ```
 
-### Add servers to application instance
+### `rest` options
+
+| Property    | Type                | Purpose                                                                                                   |
+| ----------- | ------------------- | --------------------------------------------------------------------------------------------------------- |
+| port        | number              | Specify the port on which the RestServer will listen for traffic.                                         |
+| protocol    | string (http/https) | Specify the protocol on which the RestServer will listen for traffic.                                     |
+| key         | string              | Specify the SSL private key for https.                                                                    |
+| cert        | string              | Specify the SSL certificate for https.                                                                    |
+| sequence    | SequenceHandler     | Use a custom SequenceHandler to change the behavior of the RestServer for the request-response lifecycle. |
+| openApiSpec | OpenApiSpecOptions  | Customize how OpenAPI spec is served                                                                      |
+| apiExplorer | ApiExplorerOptions  | Customize how API explorer is served                                                                      |
+
+## Add servers to application instance
 
 You can add server instances to your application via the `app.server()` method
 individually or as an array using `app.servers()` method. Using `app.server()`
