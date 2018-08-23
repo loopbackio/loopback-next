@@ -45,23 +45,7 @@ app.handler(({request, response}, sequence) => {
 
 ## Configuration
 
-The rest package is configured by passing a `rest` property inside of your
-Application options.
-
-```ts
-const app = new RestApplication({
-  rest: {
-    port: 3001,
-  },
-});
-```
-
-### `rest` options
-
-| Property | Type            | Purpose                                                                                                   |
-| -------- | --------------- | --------------------------------------------------------------------------------------------------------- |
-| port     | number          | Specify the port on which the RestServer will listen for traffic.                                         |
-| sequence | SequenceHandler | Use a custom SequenceHandler to change the behavior of the RestServer for the request-response lifecycle. |
+See https://loopback.io/doc/en/lb4/Server.html#configuration.
 
 ## Contributions
 

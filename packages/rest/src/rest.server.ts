@@ -7,7 +7,11 @@ import {Binding, Constructor, Context, inject} from '@loopback/context';
 import {Application, CoreBindings, Server} from '@loopback/core';
 import {HttpServer, HttpServerOptions} from '@loopback/http-server';
 import {getControllerSpec} from '@loopback/openapi-v3';
-import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
+import {
+  OpenApiSpec,
+  OperationObject,
+  ServerObject,
+} from '@loopback/openapi-v3-types';
 import {AssertionError} from 'assert';
 import * as cors from 'cors';
 import * as express from 'express';
@@ -29,6 +33,7 @@ import {
   Route,
   RouteEntry,
 } from './router/routing-table';
+
 import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
 import {
   FindRoute,
@@ -58,22 +63,6 @@ const SequenceActions = RestBindings.SequenceActions;
 //  Module '"(...)/node_modules/@types/lodash/cloneDeep/index"' resolves to
 //  a non-module entity and cannot be imported using this construct.
 const cloneDeep: <T>(value: T) => T = require('lodash/cloneDeep');
-
-/**
- * The object format used for building the template bases of our OpenAPI spec
- * files.
- *
- * @interface OpenApiSpecOptions
- */
-interface OpenApiSpecOptions {
-  version?: string;
-  format?: string;
-}
-
-const OPENAPI_SPEC_MAPPING: {[key: string]: OpenApiSpecOptions} = {
-  '/openapi.json': {version: '3.0.0', format: 'json'},
-  '/openapi.yaml': {version: '3.0.0', format: 'yaml'},
-};
 
 /**
  * A REST API server for use with Loopback.
@@ -127,6 +116,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    */
   public requestHandler: HttpRequestListener;
 
+  public readonly config: RestServerConfig;
   protected _httpHandler: HttpHandler;
   protected get httpHandler(): HttpHandler {
     this._setupHandlerIfNeeded();
@@ -151,41 +141,56 @@ export class RestServer extends Context implements Server, HttpServerLike {
    *
    * @param {Application} app The application instance (injected via
    * CoreBindings.APPLICATION_INSTANCE).
-   * @param {RestServerConfig=} options The configuration options (injected via
+   * @param {RestServerConfig=} config The configuration options (injected via
    * RestBindings.CONFIG).
    *
    */
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE) app: Application,
-    @inject(RestBindings.CONFIG) options?: RestServerConfig,
+    @inject(RestBindings.CONFIG) config?: RestServerConfig,
   ) {
     super(app);
 
-    options = options || {};
+    config = config || {};
 
     // Can't check falsiness, 0 is a valid port.
-    if (options.port == null) {
-      options.port = 3000;
+    if (config.port == null) {
+      config.port = 3000;
     }
-    if (options.host == null) {
+    if (config.host == null) {
       // Set it to '' so that the http server will listen on all interfaces
-      options.host = undefined;
-    }
-    this.bind(RestBindings.PORT).to(options.port);
-    this.bind(RestBindings.HOST).to(options.host);
-    this.bind(RestBindings.PROTOCOL).to(options.protocol || 'http');
-    this.bind(RestBindings.HTTPS_OPTIONS).to(options);
-
-    if (options.sequence) {
-      this.sequence(options.sequence);
+      config.host = undefined;
     }
 
-    this._setupRequestHandler(options);
+    config.openApiSpec = config.openApiSpec || {};
+    config.openApiSpec.endpointMapping =
+      config.openApiSpec.endpointMapping || OPENAPI_SPEC_MAPPING;
+    config.apiExplorer = config.apiExplorer || {};
+
+    config.apiExplorer.url =
+      config.apiExplorer.url || 'https://loopback.io/api-explorer';
+
+    config.apiExplorer.httpUrl =
+      config.apiExplorer.httpUrl ||
+      config.apiExplorer.url ||
+      'https://loopback.io/api-explorer';
+
+    this.config = config;
+    this.bind(RestBindings.PORT).to(config.port);
+    this.bind(RestBindings.HOST).to(config.host);
+    this.bind(RestBindings.PROTOCOL).to(config.protocol || 'http');
+    this.bind(RestBindings.HTTPS_OPTIONS).to(config);
+
+    if (config.sequence) {
+      this.sequence(config.sequence);
+    }
+
+    this._setupRequestHandler();
 
     this.bind(RestBindings.HANDLER).toDynamicValue(() => this.httpHandler);
   }
 
-  protected _setupRequestHandler(options: RestServerConfig) {
+  protected _setupRequestHandler() {
     this._expressApp = express();
 
     // Disable express' built-in query parser, we parse queries ourselves
@@ -200,7 +205,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
     // Allow CORS support for all endpoints so that users
     // can test with online SwaggerUI instance
-    const corsOptions = options.cors || {
+    const corsOptions = this.config.cors || {
       origin: '*',
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       preflightContinue: false,
@@ -213,9 +218,12 @@ export class RestServer extends Context implements Server, HttpServerLike {
     // Place the assets router here before controllers
     this._setupRouterForStaticAssets();
 
+    // Set up endpoints for OpenAPI spec/ui
+    this._setupOpenApiSpecEndpoints();
+
     // Mount our router & request handler
     this._expressApp.use((req, res, next) => {
-      this._handleHttpRequest(req, res, options!).catch(next);
+      this._handleHttpRequest(req, res).catch(next);
     });
 
     // Mount our error handler
@@ -237,33 +245,31 @@ export class RestServer extends Context implements Server, HttpServerLike {
     }
   }
 
-  protected _handleHttpRequest(
-    request: Request,
-    response: Response,
-    options: RestServerConfig,
-  ) {
-    if (
-      request.method === 'GET' &&
-      request.url &&
-      request.url in OPENAPI_SPEC_MAPPING
-    ) {
-      // NOTE(bajtos) Regular routes are handled through Sequence.
-      // IMO, this built-in endpoint should not run through a Sequence,
-      // because it's not part of the application API itself.
-      // E.g. if the app implements access/audit logs, I don't want
-      // this endpoint to trigger a log entry. If the server implements
-      // content-negotiation to support XML clients, I don't want the OpenAPI
-      // spec to be converted into an XML response.
-      const settings = OPENAPI_SPEC_MAPPING[request.url];
-      return this._serveOpenApiSpec(request, response, settings);
+  /**
+   * Mount /openapi.json, /openapi.yaml for specs and /swagger-ui, /api-explorer
+   * to redirect to externally hosted API explorer
+   */
+  protected _setupOpenApiSpecEndpoints() {
+    // NOTE(bajtos) Regular routes are handled through Sequence.
+    // IMO, this built-in endpoint should not run through a Sequence,
+    // because it's not part of the application API itself.
+    // E.g. if the app implements access/audit logs, I don't want
+    // this endpoint to trigger a log entry. If the server implements
+    // content-negotiation to support XML clients, I don't want the OpenAPI
+    // spec to be converted into an XML response.
+    const mapping = this.config.openApiSpec!.endpointMapping!;
+    // Serving OpenAPI spec
+    for (const p in mapping) {
+      this._expressApp.use(p, (req, res) =>
+        this._serveOpenApiSpec(req, res, mapping[p]),
+      );
     }
-    if (
-      request.method === 'GET' &&
-      request.url &&
-      request.url === '/swagger-ui'
-    ) {
-      return this._redirectToSwaggerUI(request, response, options);
-    }
+    this._expressApp.get(['/swagger-ui', '/api-explorer'], (req, res) =>
+      this._redirectToSwaggerUI(req, res),
+    );
+  }
+
+  protected _handleHttpRequest(request: Request, response: Response) {
     return this.httpHandler.handleRequest(request, response);
   }
 
@@ -364,11 +370,16 @@ export class RestServer extends Context implements Server, HttpServerLike {
   private async _serveOpenApiSpec(
     request: Request,
     response: Response,
-    options?: OpenApiSpecOptions,
+    specForm?: OpenApiSpecForm,
   ) {
-    options = options || {version: '3.0.0', format: 'json'};
+    specForm = specForm || {version: '3.0.0', format: 'json'};
     let specObj = this.getApiSpec();
-    if (options.format === 'json') {
+    if (this.config.openApiSpec!.setServersFromRequest) {
+      specObj = Object.assign({}, specObj);
+      specObj.servers = [{url: this._getUrlForClient(request)}];
+    }
+
+    if (specForm.format === 'json') {
       const spec = JSON.stringify(specObj, null, 2);
       response.setHeader('content-type', 'application/json; charset=utf-8');
       response.end(spec, 'utf-8');
@@ -380,22 +391,35 @@ export class RestServer extends Context implements Server, HttpServerLike {
   }
 
   /**
+   * Get the protocol for a request
+   * @param request Http request
+   */
+  private _getProtocolForRequest(request: Request) {
+    return (
+      (request.get('x-forwarded-proto') || '').split(',')[0] ||
+      request.protocol ||
+      this.config.protocol ||
+      'http'
+    );
+  }
+  /**
    * Get the URL of the request sent by the client
    * @param request Http request
    */
-  private _getUrlForClient(request: Request, options: RestServerConfig) {
-    const protocol =
-      (request.get('x-forwarded-proto') || '').split(',')[0] ||
-      request.protocol ||
-      options.protocol ||
-      'http';
+  private _getUrlForClient(request: Request) {
+    const protocol = this._getProtocolForRequest(request);
+    // The host can be in one of the forms
+    // [::1]:3000
+    // [::1]
+    // 127.0.0.1:3000
+    // 127.0.0.1
     let host =
       (request.get('x-forwarded-host') || '').split(',')[0] ||
-      request.headers.host!.replace(/:[0-9]+/, '');
+      request.headers.host!.replace(/:[0-9]+$/, '');
     let port =
       (request.get('x-forwarded-port') || '').split(',')[0] ||
-      options.port ||
-      (request.headers.host!.match(/:([0-9]+)/) || [])[1] ||
+      this.config.port ||
+      (request.headers.host!.match(/:([0-9]+)$/) || [])[1] ||
       '';
 
     // clear default ports
@@ -408,17 +432,13 @@ export class RestServer extends Context implements Server, HttpServerLike {
     return protocol + '://' + host;
   }
 
-  private async _redirectToSwaggerUI(
-    request: Request,
-    response: Response,
-    options: RestServerConfig,
-  ) {
+  private async _redirectToSwaggerUI(request: Request, response: Response) {
+    const protocol = this._getProtocolForRequest(request);
     const baseUrl =
-      options.apiExplorerUrl || 'https://loopback.io/api-explorer';
-    const openApiUrl = `${this._getUrlForClient(
-      request,
-      options,
-    )}/openapi.json`;
+      protocol === 'http'
+        ? this.config.apiExplorer!.httpUrl
+        : this.config.apiExplorer!.url;
+    const openApiUrl = `${this._getUrlForClient(request)}/openapi.json`;
     const fullUrl = `${baseUrl}?url=${openApiUrl}`;
     response.redirect(308, fullUrl);
   }
@@ -713,9 +733,70 @@ export class RestServer extends Context implements Server, HttpServerLike {
   }
 }
 
+/**
+ * The form of OpenAPI specs to be served
+ *
+ * @interface OpenApiSpecForm
+ */
+export interface OpenApiSpecForm {
+  version?: string;
+  format?: string;
+}
+
+const OPENAPI_SPEC_MAPPING: {[key: string]: OpenApiSpecForm} = {
+  '/openapi.json': {version: '3.0.0', format: 'json'},
+  '/openapi.yaml': {version: '3.0.0', format: 'yaml'},
+};
+
+/**
+ * Options to customize how OpenAPI specs are served
+ */
+export interface OpenApiSpecOptions {
+  /**
+   * Mapping of urls to spec forms, by default:
+   * ```
+   * {
+   *   '/openapi.json': {version: '3.0.0', format: 'json'},
+   *   '/openapi.yaml': {version: '3.0.0', format: 'yaml'},
+   * }
+   * ```
+   */
+  endpointMapping?: {[key: string]: OpenApiSpecForm};
+
+  /**
+   * A flag to force `servers` to be set from the http request for the OpenAPI
+   * spec
+   */
+  setServersFromRequest?: boolean;
+
+  /**
+   * Configure servers for OpenAPI spec
+   */
+  servers?: ServerObject[];
+}
+
+export interface ApiExplorerOptions {
+  /**
+   * URL for the hosted API explorer UI
+   * default to https://loopback.io/api-explorer
+   */
+  url?: string;
+  /**
+   * URL for the API explorer served over `http` protocol to deal with mixed
+   * content security imposed by browsers as the spec is exposed over `http` by
+   * default.
+   * See https://github.com/strongloop/loopback-next/issues/1603
+   */
+  httpUrl?: string;
+}
+
+/**
+ * Options for RestServer configuration
+ */
 export interface RestServerOptions {
   cors?: cors.CorsOptions;
-  apiExplorerUrl?: string;
+  openApiSpec?: OpenApiSpecOptions;
+  apiExplorer?: ApiExplorerOptions;
   sequence?: Constructor<SequenceHandler>;
 }
 

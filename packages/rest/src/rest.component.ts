@@ -48,7 +48,12 @@ export class RestComponent implements Component {
     @inject(RestBindings.CONFIG) config?: RestComponentConfig,
   ) {
     app.bind(RestBindings.SEQUENCE).toClass(DefaultSequence);
-    app.bind(RestBindings.API_SPEC).to(createEmptyApiSpec());
+    const apiSpec = createEmptyApiSpec();
+    // Merge the OpenAPI `servers` spec from the config into the empty one
+    if (config && config.openApiSpec && config.openApiSpec.servers) {
+      Object.assign(apiSpec, {servers: config.openApiSpec.servers});
+    }
+    app.bind(RestBindings.API_SPEC).to(apiSpec);
   }
 }
 
