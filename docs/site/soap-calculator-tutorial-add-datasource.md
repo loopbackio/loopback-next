@@ -1,14 +1,14 @@
 ---
 lang: en
-title: 'Add Datasource'
+title: 'Add a Datasource'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/soap-calculator-add-datasource.html
+permalink: /doc/en/lb4/soap-calculator-tutorial-add-datasource.html
 ---
 
 ### Add a Datasource
 
-![soap-calculator-add-data-source](../../docs/img/loopback-example-soap-calculator_figure2.png)
+![soap-calculator-add-data-source](../img/loopback-example-soap-calculator_figure2.png)
 
 We will add a Datasource to the **LB4** application using the **CLI**. This step
 will not only create two files under the src/datasources, but also will install

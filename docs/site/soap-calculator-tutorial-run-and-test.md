@@ -1,9 +1,9 @@
 ---
 lang: en
-title: 'Run and Test'
+title: 'Run and Test it'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/soap-calculator-run-and-test.html
+permalink: /doc/en/lb4/soap-calculator-tutorial-run-and-test.html
 ---
 
 ### Run and Test the Application

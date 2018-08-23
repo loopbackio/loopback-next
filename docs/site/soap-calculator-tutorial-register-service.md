@@ -3,7 +3,7 @@ lang: en
 title: 'Register the Service'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/soap-calculator-register-service.html
+permalink: /doc/en/lb4/soap-calculator-tutorial-register-service.html
 ---
 
 ### Registering the service in the Application src/application.ts
