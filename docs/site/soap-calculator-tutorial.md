@@ -20,7 +20,7 @@ tests are provided.
 Before each step, you will be presented an image containing the artifacts that
 you will be creating in blue.
 
-![soap-calculator-overview](../../docs/img/loopback-example-soap-calculator_figure1.png)
+![soap-calculator-overview](../img/loopback-example-soap-calculator_figure1.png)
 
 ## Setup
 

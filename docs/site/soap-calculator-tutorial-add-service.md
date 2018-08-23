@@ -3,12 +3,12 @@ lang: en
 title: 'Add a Service'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/soap-calculator-add-service.html
+permalink: /doc/en/lb4/soap-calculator-tutorial-add-service.html
 ---
 
 ### Add a Service
 
-![soap-calculator-add-service](../../docs/img/loopback-example-soap-calculator_figure3.png)
+![soap-calculator-add-service](../img/loopback-example-soap-calculator_figure3.png)
 
 **LB4** has the package _@loopback/proxy-server_ that contains the artifacts
 needed to implement the link between the methods described in the .json file and

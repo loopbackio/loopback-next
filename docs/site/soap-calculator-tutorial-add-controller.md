@@ -3,12 +3,12 @@ lang: en
 title: 'Add a Controller'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/soap-calculator-add-controller.html
+permalink: /doc/en/lb4/soap-calculator-tutorial-add-controller.html
 ---
 
 ### Add a Controller
 
-![soap-calculator-add-service](../../docs/img/loopback-example-soap-calculator_figure4.png)
+![soap-calculator-add-service](../img/loopback-example-soap-calculator_figure4.png)
 
 Now it is time to add the controller which will make the REST endpoints
 available to client applications through the REST server.
