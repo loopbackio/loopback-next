@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {MetadataAccessor} from '@loopback/context';
+import {MetadataAccessor} from '@loopback/metadata';
 import {JSONSchema6 as JSONSchema} from 'json-schema';
 
 /**
