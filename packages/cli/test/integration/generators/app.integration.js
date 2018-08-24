@@ -35,7 +35,7 @@ describe('app-generator specific files', () => {
     );
     assert.fileContent(
       'src/application.ts',
-      /RepositoryMixin\(RestApplication\)/,
+      /ServiceMixin\(RepositoryMixin\(RestApplication\)\)/,
     );
     assert.fileContent('src/application.ts', /constructor\(/);
     assert.fileContent('src/application.ts', /this.projectRoot = __dirname/);

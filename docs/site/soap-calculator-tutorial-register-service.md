@@ -15,33 +15,33 @@ Injection)_.
 
 #### Importing the service and helper classes
 
-Add the following import statement after all the previous imports.
+Add the following import statements after all the previous imports.
 
 ```ts
+import {ServiceMixin} from '@loopback/service-proxy';
 import {CalculatorServiceProvider} from './services/calculator.service';
 ```
 
-Now change the following line to include a Constructor and Provider class from
-_LB4_ core.
+#### Applying `ServiceMixin` on our Application class
+
+Modify the inheritance chain of our Application class as follows:
 
 ```ts
-import {ApplicationConfig} from '@loopback/core';
-```
-
-change it to
-
-```ts
-import {ApplicationConfig, Constructor, Provider} from '@loopback/core';
+export class SoapCalculatorApplication extends BootMixin(
+  ServiceMixin(RepositoryMixin(RestApplication)),
+) {
+  // (no changes in application constructor or methods)
+}
 ```
 
 #### Registering the Service and bind it to a key
 
-Let's continue by adding the following generic method that we will use in order
-to register our service and any other service that we might work in the future.
-
-Notice that it removes the Provider key from the name of the service, so for our
-service name CalculatorServiceProvider, its key will become
-**services.CalculatorService** which matches the
+Let's continue by creating a method to register services used by our
+application. Notice that we are using `this.serviceProvider` method contributed
+by `ServiceMixin`, this method removes the suffix `Provider` from the class name
+and uses the remaining string as the binding key. For our service provider
+called `CalculatorServiceProvider`, the binding key becomes
+**services.CalculatorService** and matches the
 `@inject('services.CalculatorService')` decorator parameter we used in our
 controller.
 
@@ -50,17 +50,8 @@ registration for services in the same way we do now for other artifacts in
 **LB4**.
 
 ```ts
-service<T>(provider: Constructor<Provider<T>>) {
-    const key = `services.${provider.name.replace(/Provider$/, '')}`;
-    this.bind(key).toProvider(provider);
-  }
-```
-
-Now let's add a method that will make use of this generic `service<T>` method.
-
-```ts
   setupServices() {
-    this.service(CalculatorServiceProvider);
+    this.serviceProvider(CalculatorServiceProvider);
   }
 ```
 
@@ -72,10 +63,10 @@ constructor after the `this.sequence(MySequence);` statement.
 this.setupServices();
 ```
 
-**Note:** We could have achieved the above result by just one line inside the
-setupServices() method, replacing the generic method. However, the generic one
-is more efficient when you need to register multiple services, to keep the
-_keys_ standard.
+**Note:** We could have achieved the above result by calling the following line
+inside the setupServices() method, replacing the method provided by the mixin.
+However, the mixin-provided method is more efficient when you need to register
+multiple services, to keep the _keys_ standard.
 
 ```ts
 this.bind('services.CalculatorService').toProvider(CalculatorServiceProvider);

@@ -78,9 +78,16 @@
     "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
     "@loopback/dist-util": "<%= project.dependencies['@loopback/dist-util'] -%>",
     "@loopback/openapi-v3": "<%= project.dependencies['@loopback/openapi-v3'] -%>",
+<% if (project.enableRepository) { -%>
     "@loopback/repository": "<%= project.dependencies['@loopback/repository'] -%>",
-    "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>"
+<% } -%>
+<% if (project.enableServices) { -%>
+    "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>",
+    "@loopback/service-proxy": "<%= project.dependencies['@loopback/service-proxy'] -%>"
 <% } else { -%>
+    "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>"
+<% } -%>
+<% } else { /* NOT AN APPLICATION */-%>
     "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
     "@loopback/dist-util": "<%= project.dependencies['@loopback/dist-util'] -%>"
 <% } -%>

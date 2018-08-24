@@ -60,19 +60,6 @@ Install the REST connector used by the new datasource:
 $ npm install --save loopback-connector-rest
 ```
 
-### Bind data sources to the context
-
-```ts
-import {Context} from '@loopback/context';
-
-const context = new Context();
-context.bind('dataSources.geoService').to(ds);
-```
-
-**NOTE**: Once we start to support declarative datasources with
-`@loopback/boot`, the datasource configuration files can be dropped into
-`src/datasources` to be discovered and bound automatically.
-
 ### Declare the service interface
 
 To promote type safety, we recommend you to declare data types and service
@@ -162,10 +149,12 @@ export class GeoServiceProvider implements Provider<GeoService> {
 }
 ```
 
-In your application setup, create an explicit binding for the geo service proxy:
+In your application, apply
+[ServiceMixin](http://apidocs.loopback.io/@loopback%2fdocs/service-proxy.html#ServiceMixin)
+and use `app.serviceProvider` API to create binding for the geo service proxy.
 
 ```ts
-app.bind('services.geo').toProvider(GeoServiceProvider);
+app.serviceProvider(GeoServiceProvider);
 ```
 
 Finally, modify the controller to receive our new service proxy in the
@@ -173,7 +162,7 @@ constructor:
 
 ```ts
 export class MyController {
-  @inject('services.geo')
+  @inject('services.GeoService')
   private geoService: GeoService;
 }
 ```

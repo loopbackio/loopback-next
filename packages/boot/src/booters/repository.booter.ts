@@ -5,7 +5,7 @@
 
 import {CoreBindings} from '@loopback/core';
 import {inject} from '@loopback/context';
-import {AppWithRepository} from '@loopback/repository';
+import {ApplicationWithRepositories} from '@loopback/repository';
 import {BaseArtifactBooter} from './base-artifact.booter';
 import {BootBindings} from '../keys';
 import {ArtifactOptions} from '../interfaces';
@@ -23,7 +23,8 @@ import {ArtifactOptions} from '../interfaces';
  */
 export class RepositoryBooter extends BaseArtifactBooter {
   constructor(
-    @inject(CoreBindings.APPLICATION_INSTANCE) public app: AppWithRepository,
+    @inject(CoreBindings.APPLICATION_INSTANCE)
+    public app: ApplicationWithRepositories,
     @inject(BootBindings.PROJECT_ROOT) public projectRoot: string,
     @inject(`${BootBindings.BOOT_OPTIONS}#repositories`)
     public repositoryOptions: ArtifactOptions = {},

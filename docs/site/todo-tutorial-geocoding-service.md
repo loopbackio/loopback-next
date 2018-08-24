@@ -149,8 +149,10 @@ to add few code snippets to our Application class to take care of this task.
 #### src/application.ts
 
 ```ts
+import {ServiceMixin} from '@loopback/service-proxy';
+
 export class TodoListApplication extends BootMixin(
-  RepositoryMixin(RestApplication),
+  ServiceMixin(RepositoryMixin(RestApplication)),
 ) {
   constructor(options?: ApplicationConfig) {
     super(options);
@@ -162,12 +164,7 @@ export class TodoListApplication extends BootMixin(
 
   // ADD THE FOLLOWING TWO METHODS
   setupServices() {
-    this.service(GeocoderServiceProvider);
-  }
-
-  service<T>(provider: Constructor<Provider<T>>) {
-    const key = `services.${provider.name.replace(/Provider$/, '')}`;
-    this.bind(key).toProvider(provider);
+    this.serviceProvider(GeocoderServiceProvider);
   }
 }
 ```

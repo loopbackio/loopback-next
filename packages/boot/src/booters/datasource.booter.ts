@@ -4,7 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {CoreBindings} from '@loopback/core';
-import {AppWithRepository, juggler, Class} from '@loopback/repository';
+import {
+  ApplicationWithRepositories,
+  juggler,
+  Class,
+} from '@loopback/repository';
 import {inject} from '@loopback/context';
 import {ArtifactOptions} from '../interfaces';
 import {BaseArtifactBooter} from './base-artifact.booter';
@@ -22,7 +26,8 @@ import {BootBindings} from '../keys';
  */
 export class DataSourceBooter extends BaseArtifactBooter {
   constructor(
-    @inject(CoreBindings.APPLICATION_INSTANCE) public app: AppWithRepository,
+    @inject(CoreBindings.APPLICATION_INSTANCE)
+    public app: ApplicationWithRepositories,
     @inject(BootBindings.PROJECT_ROOT) public projectRoot: string,
     @inject(`${BootBindings.BOOT_OPTIONS}#datasources`)
     public datasourceConfig: ArtifactOptions = {},

@@ -12,7 +12,7 @@ import {
   hasMany,
   repository,
   RepositoryMixin,
-  AppWithRepository,
+  ApplicationWithRepositories,
   HasManyRepositoryFactory,
 } from '../..';
 import {expect} from '@loopback/testlab';
@@ -23,7 +23,7 @@ import {Application} from '@loopback/core';
 describe('HasMany relation', () => {
   // Given a Customer and Order models - see definitions at the bottom
 
-  let app: AppWithRepository;
+  let app: ApplicationWithRepositories;
   let controller: CustomerController;
   let customerRepo: CustomerRepository;
   let orderRepo: OrderRepository;
