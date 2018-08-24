@@ -143,7 +143,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      */
     public component(component: Class<{}>) {
       super.component(component);
-      this.mountComponentRepository(component);
+      this.mountComponentRepositories(component);
     }
 
     /**
@@ -153,7 +153,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      *
      * @param component The component to mount repositories of
      */
-    mountComponentRepository(component: Class<{}>) {
+    mountComponentRepositories(component: Class<{}>) {
       const componentKey = `components.${component.name}`;
       const compInstance = this.getSync(componentKey);
 
@@ -169,7 +169,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
 /**
  * Interface for an Application mixed in with RepositoryMixin
  */
-export interface AppWithRepository extends Application {
+export interface ApplicationWithRepositories extends Application {
   // tslint:disable-next-line:no-any
   repository(repo: Class<any>): void;
   // tslint:disable-next-line:no-any
@@ -179,7 +179,7 @@ export interface AppWithRepository extends Application {
     name?: string,
   ): void;
   component(component: Class<{}>): void;
-  mountComponentRepository(component: Class<{}>): void;
+  mountComponentRepositories(component: Class<{}>): void;
 }
 
 /**

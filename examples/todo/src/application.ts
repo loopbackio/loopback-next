@@ -4,14 +4,15 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {BootMixin} from '@loopback/boot';
-import {ApplicationConfig, Constructor, Provider} from '@loopback/core';
+import {ApplicationConfig} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
+import {ServiceMixin} from '@loopback/service-proxy';
 import {MySequence} from './sequence';
 import {GeocoderServiceProvider} from './services';
 
 export class TodoListApplication extends BootMixin(
-  RepositoryMixin(RestApplication),
+  ServiceMixin(RepositoryMixin(RestApplication)),
 ) {
   constructor(options?: ApplicationConfig) {
     super(options);
@@ -36,14 +37,6 @@ export class TodoListApplication extends BootMixin(
   }
 
   setupServices() {
-    this.service(GeocoderServiceProvider);
-  }
-
-  // TODO(bajtos) app.service should be provided either by core Application
-  // class or a mixin provided by @loopback/service-proxy
-  // See https://github.com/strongloop/loopback-next/issues/1439
-  service<T>(provider: Constructor<Provider<T>>) {
-    const key = `services.${provider.name.replace(/Provider$/, '')}`;
-    this.bind(key).toProvider(provider);
+    this.serviceProvider(GeocoderServiceProvider);
   }
 }

@@ -12,6 +12,7 @@ module.exports = class AppGenerator extends ProjectGenerator {
   constructor(args, opts) {
     super(args, opts);
     this.buildOptions.push('enableRepository');
+    this.buildOptions.push('enableServices');
   }
 
   _setupGenerator() {
@@ -25,6 +26,11 @@ module.exports = class AppGenerator extends ProjectGenerator {
     this.option('enableRepository', {
       type: Boolean,
       description: 'Include repository imports and RepositoryMixin',
+    });
+
+    this.option('enableServices', {
+      type: Boolean,
+      description: 'Include service-proxy imports and ServiceMixin',
     });
 
     return super._setupGenerator();
@@ -78,6 +84,22 @@ module.exports = class AppGenerator extends ProjectGenerator {
 
   promptOptions() {
     return super.promptOptions();
+  }
+
+  buildAppClassMixins() {
+    if (this.shouldExit()) return false;
+    const {enableRepository, enableServices} = this.projectInfo || {};
+    if (!enableRepository && !enableServices) return;
+
+    let appClassWithMixins = 'RestApplication';
+    if (enableRepository) {
+      appClassWithMixins = `RepositoryMixin(${appClassWithMixins})`;
+    }
+    if (enableServices) {
+      appClassWithMixins = `ServiceMixin(${appClassWithMixins})`;
+    }
+
+    this.projectInfo.appClassWithMixins = appClassWithMixins;
   }
 
   scaffold() {

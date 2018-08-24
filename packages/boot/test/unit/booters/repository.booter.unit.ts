@@ -5,7 +5,10 @@
 
 import {expect, TestSandbox, sinon} from '@loopback/testlab';
 import {Application} from '@loopback/core';
-import {RepositoryMixin, AppWithRepository} from '@loopback/repository';
+import {
+  RepositoryMixin,
+  ApplicationWithRepositories,
+} from '@loopback/repository';
 import {RepositoryBooter, RepositoryDefaults} from '../../../index';
 import {resolve} from 'path';
 
@@ -33,7 +36,7 @@ describe('repository booter unit tests', () => {
     );
 
     const booterInst = new RepositoryBooter(
-      normalApp as AppWithRepository,
+      normalApp as ApplicationWithRepositories,
       SANDBOX_PATH,
     );
 

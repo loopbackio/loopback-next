@@ -5,7 +5,10 @@
 
 import {expect, TestSandbox, sinon} from '@loopback/testlab';
 import {resolve} from 'path';
-import {AppWithRepository, RepositoryMixin} from '@loopback/repository';
+import {
+  ApplicationWithRepositories,
+  RepositoryMixin,
+} from '@loopback/repository';
 import {DataSourceBooter, DataSourceDefaults} from '../../../src';
 import {Application} from '@loopback/core';
 
@@ -33,7 +36,7 @@ describe('datasource booter unit tests', () => {
     );
 
     const booterInst = new DataSourceBooter(
-      normalApp as AppWithRepository,
+      normalApp as ApplicationWithRepositories,
       SANDBOX_PATH,
     );
 
