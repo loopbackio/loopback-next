@@ -4,6 +4,7 @@ import {
   DefaultCrudRepository,
   HasManyRepositoryFactory,
   juggler,
+  repository,
 } from '../../..';
 import {inject, Getter} from '@loopback/context';
 
@@ -14,7 +15,7 @@ export class CustomerRepository extends DefaultCrudRepository<
   public orders: HasManyRepositoryFactory<Order, typeof Customer.prototype.id>;
   constructor(
     @inject('datasources.db') protected db: juggler.DataSource,
-    @inject.getter('repositories.OrderRepository')
+    @repository.getter('repositories.OrderRepository')
     orderRepositoryGetter: Getter<OrderRepository>,
   ) {
     super(Customer, db);

@@ -24,10 +24,10 @@ describe('HasMany relation', () => {
   before(givenCustomerController);
 
   beforeEach(async () => {
-    existingCustomerId = (await givenPersistedCustomerInstance()).id;
-  });
-  afterEach(async () => {
     await orderRepo.deleteAll();
+  });
+  beforeEach(async () => {
+    existingCustomerId = (await givenPersistedCustomerInstance()).id;
   });
 
   it('can create an instance of the related model', async () => {

@@ -14,6 +14,7 @@ import {
   EntityCrudRepository,
 } from '../..';
 import {expect} from '@loopback/testlab';
+import {createGetter} from '../test-utils';
 
 describe('HasMany relation', () => {
   // Given a Customer and Order models - see definitions at the bottom
@@ -27,10 +28,10 @@ describe('HasMany relation', () => {
   before(givenOrderRepository);
   before(givenCustomerRepository);
   beforeEach(async () => {
-    existingCustomerId = (await givenPersistedCustomerInstance()).id;
-  });
-  afterEach(async () => {
     await orderRepo.deleteAll();
+  });
+  beforeEach(async () => {
+    existingCustomerId = (await givenPersistedCustomerInstance()).id;
   });
 
   it('can create an instance of the related model', async () => {
@@ -145,7 +146,7 @@ describe('HasMany relation', () => {
       super(Customer, db);
       this.orders = this._createHasManyRepositoryFactoryFor(
         'orders',
-        orderRepository,
+        createGetter(orderRepository),
       );
     }
   }

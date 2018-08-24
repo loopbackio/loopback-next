@@ -8,7 +8,7 @@ import {Model, Entity} from '../model';
 import {Repository, DefaultCrudRepository} from '../repositories';
 import {DataSource} from '../datasource';
 import {juggler} from '../repositories/legacy-juggler-bridge';
-import {inject, Context, Injection} from '@loopback/context';
+import {inject, Context, Injection, BindingAddress} from '@loopback/context';
 import {Class} from '../common-types';
 
 /**
@@ -170,6 +170,13 @@ export function repository(
     // Mixin repository into the class
     throw new Error('Class level @repository is not implemented');
   };
+}
+
+export namespace repository {
+  // tslint:disable-next-line:no-any
+  export function getter<T = any>(bindingKey: BindingAddress<T>) {
+    return inject.getter(bindingKey);
+  }
 }
 
 /**

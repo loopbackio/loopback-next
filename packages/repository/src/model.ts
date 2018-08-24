@@ -288,6 +288,9 @@ export function resolveType<T>(fn: TypeResolver<T> | T) {
   return isTypeResolver(fn) ? fn() : fn;
 }
 
+export const ERR_TARGET_UNDEFINED =
+  'Target model is undefined. Please consider using TypeResolver (() => TargetModel)';
+
 /**
  * Domain events
  */

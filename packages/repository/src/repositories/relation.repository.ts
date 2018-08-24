@@ -72,39 +72,29 @@ export class DefaultHasManyEntityCrudRepository<
    * the target repository instance
    */
 
-  public targetRepositoryGetter: Getter<TargetRepository>;
-
   constructor(
-    targetRepository: TargetRepository | Getter<TargetRepository>,
+    public getTargetRepository: Getter<TargetRepository>,
     public constraint: DataObject<TargetEntity>,
-  ) {
-    this.targetRepositoryGetter =
-      typeof targetRepository === 'object'
-        ? ((() => Promise.resolve(targetRepository)) as Getter<
-            TargetRepository
-          >)
-        : targetRepository;
-  }
-
+  ) {}
   async create(
     targetModelData: DataObject<TargetEntity>,
     options?: Options,
   ): Promise<TargetEntity> {
-    return (await this.targetRepositoryGetter()).create(
+    const targetRepo = await this.getTargetRepository();
+    return targetRepo.create(
       constrainDataObject(targetModelData, this.constraint),
       options,
     );
   }
 
   async find(filter?: Filter, options?: Options): Promise<TargetEntity[]> {
-    return (await this.targetRepositoryGetter()).find(
-      constrainFilter(filter, this.constraint),
-      options,
-    );
+    const targetRepo = await this.getTargetRepository();
+    return targetRepo.find(constrainFilter(filter, this.constraint), options);
   }
 
   async delete(where?: Where, options?: Options): Promise<number> {
-    return (await this.targetRepositoryGetter()).deleteAll(
+    const targetRepo = await this.getTargetRepository();
+    return targetRepo.deleteAll(
       constrainWhere(where, this.constraint),
       options,
     );
@@ -115,7 +105,8 @@ export class DefaultHasManyEntityCrudRepository<
     where?: Where,
     options?: Options,
   ): Promise<number> {
-    return (await this.targetRepositoryGetter()).updateAll(
+    const targetRepo = await this.getTargetRepository();
+    return targetRepo.updateAll(
       constrainDataObject(dataObject, this.constraint),
       constrainWhere(where, this.constraint),
       options,
@@ -127,23 +118,17 @@ export class DefaultBelongsToEntityCrudRepository<
   TargetEntity extends Entity,
   TargetId,
   TargetRepository extends EntityCrudRepository<TargetEntity, TargetId>
-> {
-  public targetRepositoryGetter: Getter<TargetRepository>;
-
+> implements BelongsToRepository<TargetEntity> {
   constructor(
-    targetRepository: TargetRepository | Getter<TargetRepository>,
+    public getTargetRepository: Getter<TargetRepository>,
     public constraint: DataObject<TargetEntity>,
-  ) {
-    this.targetRepositoryGetter =
-      typeof targetRepository === 'object'
-        ? () => Promise.resolve(targetRepository)
-        : targetRepository;
-  }
-
+  ) {}
   async find(options?: Options): Promise<TargetEntity> {
-    return (await (await this.targetRepositoryGetter()).find(
+    const targetRepo = await this.getTargetRepository();
+    const result = await targetRepo.find(
       constrainFilter(undefined, this.constraint),
       options,
-    ))[0];
+    );
+    return result[0];
   }
 }

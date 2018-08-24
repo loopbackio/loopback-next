@@ -20,7 +20,7 @@ describe('HasMany relation', () => {
   before(givenBoundCrudRepositoriesForCustomerAndOrder);
   before(givenOrderController);
 
-  afterEach(async () => {
+  beforeEach(async () => {
     await orderRepo.deleteAll();
   });
 

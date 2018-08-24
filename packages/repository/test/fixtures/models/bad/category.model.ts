@@ -3,10 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {property} from '../../../..';
-import {BadCyclicX} from './cyclic-x.model';
+import {hasMany, Entity} from '../../../..';
+import {Product} from './product.model';
 
-export class BadCyclicY {
-  @property.array(BadCyclicX)
-  cyclicProp: BadCyclicX[];
+export class Category extends Entity {
+  @hasMany(Product)
+  products: Product[];
 }

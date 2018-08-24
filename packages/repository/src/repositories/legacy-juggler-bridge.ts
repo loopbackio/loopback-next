@@ -170,9 +170,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
     ForeignKeyType
   >(
     relationName: string,
-    targetRepo:
-      | EntityCrudRepository<Target, TargetID>
-      | Getter<EntityCrudRepository<Target, TargetID>>,
+    targetRepo: Getter<EntityCrudRepository<Target, TargetID>>,
   ): HasManyRepositoryFactory<Target, ForeignKeyType> {
     const meta = this.entityClass.definition.relations[relationName];
     return createHasManyRepositoryFactory<Target, TargetID, ForeignKeyType>(
@@ -187,9 +185,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
     Source extends Entity
   >(
     relationName: string,
-    targetRepo:
-      | EntityCrudRepository<Target, TargetId>
-      | Getter<EntityCrudRepository<Target, TargetId>>,
+    targetRepo: Getter<EntityCrudRepository<Target, TargetId>>,
   ): BelongsToFactory<Target, Source> {
     const meta = this.entityClass.definition.relations[relationName];
     return createBelongsToFactory(meta as BelongsToDefinition, targetRepo);

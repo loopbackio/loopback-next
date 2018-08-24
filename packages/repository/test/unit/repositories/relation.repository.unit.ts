@@ -23,6 +23,7 @@ import {
   BelongsToDefinition,
   resolveBelongsToMetadata,
 } from '../../..';
+import {createGetter} from '../../test-utils';
 
 describe('relation repository', () => {
   context('HasManyRepository interface', () => {
@@ -67,25 +68,6 @@ describe('relation repository', () => {
   });
 
   context('DefaultHasManyEntityCrudRepository', () => {
-    it('can take in a repository instance as an argument', () => {
-      const HasManyCrudInstance = givenDefaultHasManyCrudInstance({});
-      expect(HasManyCrudInstance.targetRepositoryGetter()).to.eql(
-        Promise.resolve(repo),
-      );
-    });
-
-    it('can take in a repository getter as an argument', () => {
-      repo = sinon.createStubInstance(CustomerRepository);
-      const repoGetter = () => Promise.resolve(repo);
-      const HasManyCrudInstance = new DefaultHasManyEntityCrudRepository(
-        repoGetter,
-        {},
-      );
-      expect(HasManyCrudInstance)
-        .to.have.property('targetRepositoryGetter')
-        .which.eql(repoGetter);
-    });
-
     it('can create related model instance', async () => {
       const constraint: Partial<Customer> = {age: 25};
       const HasManyCrudInstance = givenDefaultHasManyCrudInstance(constraint);
@@ -326,10 +308,11 @@ describe('relation repository', () => {
 
   function givenDefaultHasManyCrudInstance(constraint: DataObject<Customer>) {
     repo = sinon.createStubInstance(CustomerRepository);
+    const repoGetter = createGetter(repo);
     return new DefaultHasManyEntityCrudRepository<
       Customer,
       typeof Customer.prototype.id,
       CustomerRepository
-    >(repo, constraint);
+    >(repoGetter, constraint);
   }
 });

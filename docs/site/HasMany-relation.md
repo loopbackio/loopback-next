@@ -99,6 +99,7 @@ repository, the following are required:
 
 - Use [Dependency Injection](Dependency-injection.md) to inject an instance of
   the target repository in the constructor of your source repository class.
+  <!-- TODO: EXPLAIN WHY WE NEED TO INJECT A GETTER HERE -->
 - Declare a property with the factory function type
   `HasManyRepositoryFactory<targetModel, typeof sourceModel.prototype.id>` on
   the source repository class.
@@ -121,7 +122,7 @@ import {
   HasManyRepositoryFactory,
   repository,
 } from '@loopback/repository';
-import {inject} from '@loopback/core';
+import {inject, Getter} from '@loopback/core';
 
 class CustomerRepository extends DefaultCrudRepository<
   Customer,
@@ -130,12 +131,13 @@ class CustomerRepository extends DefaultCrudRepository<
   public orders: HasManyRepositoryFactory<Order, typeof Customer.prototype.id>;
   constructor(
     @inject('datasources.db') protected db: juggler.DataSource,
-    @repository(OrderRepository) orderRepository: OrderRepository,
+    @repository.getter('repositories.OrderRepository')
+    getOrderRepository: Getter<OrderRepository>,
   ) {
     super(Customer, db);
     this.orders = this._createHasManyRepositoryFactoryFor(
       'orders',
-      orderRepository,
+      getOrderRepository,
     );
   }
 }

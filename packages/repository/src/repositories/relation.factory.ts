@@ -50,9 +50,7 @@ export function createHasManyRepositoryFactory<
   ForeignKeyType
 >(
   relationMetadata: HasManyDefinition,
-  targetRepository:
-    | EntityCrudRepository<Target, TargetID>
-    | Getter<EntityCrudRepository<Target, TargetID>>,
+  targetRepository: Getter<EntityCrudRepository<Target, TargetID>>,
 ): HasManyRepositoryFactory<Target, ForeignKeyType> {
   resolveHasManyMetadata(relationMetadata);
   debug('resolved relation metadata: %o', relationMetadata);
@@ -77,9 +75,7 @@ export function createBelongsToFactory<
   Source extends Entity
 >(
   belongsToMetadata: BelongsToDefinition,
-  targetRepository:
-    | EntityCrudRepository<Target, TargetId>
-    | Getter<EntityCrudRepository<Target, TargetId>>,
+  targetRepository: Getter<EntityCrudRepository<Target, TargetId>>,
 ): BelongsToFactory<Target, Source> {
   resolveBelongsToMetadata(belongsToMetadata);
   const foreignKey = belongsToMetadata.keyFrom;
@@ -92,6 +88,7 @@ export function createBelongsToFactory<
   if (!primaryKey) {
     throw new Error('The primary key property name (keyTo) must be specified');
   }
+  // NOTE change this to accept ID
   return async function(sourceModel: Source) {
     const foreignKeyValue = sourceModel[foreignKey as keyof Source];
     // tslint:disable-next-line:no-any

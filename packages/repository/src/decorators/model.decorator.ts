@@ -15,6 +15,7 @@ import {
   ModelDefinitionSyntax,
   PropertyDefinition,
   TypeResolver,
+  ERR_TARGET_UNDEFINED,
 } from '../model';
 import {RELATIONS_KEY, RelationDefinitionBase} from './relation.decorator';
 
@@ -92,15 +93,20 @@ export function model(definition?: Partial<ModelDefinitionSyntax>) {
  * @returns {(target:any, key:string)}
  */
 export function property(definition?: Partial<PropertyDefinition>) {
-  if (
+  const isCyclic =
+    definition &&
+    (definition as Object).hasOwnProperty('type') &&
+    !definition.type;
+  const isCyclicArray =
     definition &&
     (definition.type === Array || definition.type === 'array') &&
     (definition as object).hasOwnProperty('itemType') &&
-    !definition.itemType
-  ) {
+    !definition.itemType;
+
+  if (isCyclic || isCyclicArray) {
     // this path is taken when cyclic dependency is detected
-    // in that case, a ModelResolver should be used instead
-    throw new Error('target model is undefined');
+    // in that case, a TypeResolver should be used instead
+    throw new Error(ERR_TARGET_UNDEFINED);
   }
   return PropertyDecoratorFactory.createDecorator(
     MODEL_PROPERTIES_KEY,

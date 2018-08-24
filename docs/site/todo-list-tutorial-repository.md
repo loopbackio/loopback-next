@@ -49,7 +49,7 @@ import {
   repository,
 } from '@loopback/repository';
 import {TodoList, Todo} from '../models';
-import {inject} from '@loopback/core';
+import {inject, Getter} from '@loopback/core';
 import {TodoRepository} from './todo.repository';
 
 export class TodoListRepository extends DefaultCrudRepository<
@@ -60,12 +60,13 @@ export class TodoListRepository extends DefaultCrudRepository<
 
   constructor(
     @inject('datasources.db') protected datasource: juggler.DataSource,
-    @repository(TodoRepository) protected todoRepository: TodoRepository,
+    @repository.getter('repositories.TodoRepository')
+    protected getTodoRepository: Getter<TodoRepository>,
   ) {
     super(TodoList, datasource);
     this.todos = this._createHasManyRepositoryFactoryFor(
       'todos',
-      todoRepository,
+      getTodoRepository,
     );
   }
 }

@@ -22,6 +22,7 @@ import {
   BelongsToDefinition,
 } from '../../..';
 import {expect} from '@loopback/testlab';
+import {createGetter} from '../../test-utils';
 
 // Given a Customer and Order models - see definitions at the bottom
 let db: juggler.DataSource;
@@ -120,14 +121,14 @@ describe('HasMany relation', () => {
   });
 
   context('createHasManyRepositoryFactory', () => {
-    it('errors when keyTo is not available hasMany metadata', () => {
+    it('errors when keyTo is not available in hasMany metadata', () => {
       class SomeClass extends Entity {}
       const keytolessMeta: HasManyDefinition = {
         type: RelationType.hasMany,
         target: SomeClass,
       };
       expect(() =>
-        createHasManyRepositoryFactory(keytolessMeta, reviewRepo),
+        createHasManyRepositoryFactory(keytolessMeta, createGetter(reviewRepo)),
       ).to.throw(/The foreign key property name \(keyTo\) must be specified/);
     });
 
@@ -155,9 +156,11 @@ describe('HasMany relation', () => {
       });
       createHasManyRepositoryFactory(
         hasManyMeta,
-        new DefaultCrudRepository(
-          Suite,
-          new juggler.DataSource({connector: 'memory'}),
+        createGetter(
+          new DefaultCrudRepository(
+            Suite,
+            new juggler.DataSource({connector: 'memory'}),
+          ),
         ),
       );
       expect(hasManyMeta).to.eql({
@@ -173,7 +176,7 @@ describe('belongsTo relation', () => {
   it('can find an instance of the related model', async () => {
     const findCustomerOfOrder = createBelongsToFactory(
       Order.definition.relations.customerId as BelongsToDefinition,
-      customerRepo,
+      createGetter(customerRepo),
     );
 
     const customer = await customerRepo.create({name: 'Order McForder'});
@@ -194,7 +197,7 @@ describe('belongsTo relation', () => {
         keyTo: 'someKey',
       };
       expect(() =>
-        createBelongsToFactory(keyFromLessMeta, reviewRepo),
+        createBelongsToFactory(keyFromLessMeta, createGetter(reviewRepo)),
       ).to.throw(/The foreign key property name \(keyFrom\) must be specified/);
     });
 
@@ -205,9 +208,9 @@ describe('belongsTo relation', () => {
         target: SomeClass,
         keyFrom: 'someKey',
       };
-      expect(() => createBelongsToFactory(keyToLessMeta, reviewRepo)).to.throw(
-        /The primary key property name \(keyTo\) must be specified/,
-      );
+      expect(() =>
+        createBelongsToFactory(keyToLessMeta, createGetter(reviewRepo)),
+      ).to.throw(/The primary key property name \(keyTo\) must be specified/);
     });
 
     it('resolves property id metadata', () => {
@@ -235,9 +238,11 @@ describe('belongsTo relation', () => {
       });
       createBelongsToFactory(
         belongsToMeta,
-        new DefaultCrudRepository(
-          Suite,
-          new juggler.DataSource({connector: 'memory'}),
+        createGetter(
+          new DefaultCrudRepository(
+            Suite,
+            new juggler.DataSource({connector: 'memory'}),
+          ),
         ),
       );
       expect(belongsToMeta).to.eql({
@@ -345,7 +350,10 @@ function givenConstrainedRepositories() {
     Order,
     typeof Order.prototype.id,
     typeof Customer.prototype.id
-  >(Customer.definition.relations.orders as HasManyDefinition, orderRepo);
+  >(
+    Customer.definition.relations.orders as HasManyDefinition,
+    createGetter(orderRepo),
+  );
 
   customerOrderRepo = orderFactoryFn(existingCustomerId);
 }
@@ -353,10 +361,10 @@ function givenConstrainedRepositories() {
 function givenRepositoryFactoryFunctions() {
   customerAuthoredReviewFactoryFn = createHasManyRepositoryFactory(
     Customer.definition.relations.reviewsAuthored as HasManyDefinition,
-    reviewRepo,
+    createGetter(reviewRepo),
   );
   customerApprovedReviewFactoryFn = createHasManyRepositoryFactory(
     Customer.definition.relations.reviewsApproved as HasManyDefinition,
-    reviewRepo,
+    createGetter(reviewRepo),
   );
 }

@@ -1,6 +1,11 @@
 import {Order, Customer} from '../models';
 import {CustomerRepository} from '../repositories';
-import {DefaultCrudRepository, juggler, BelongsToFactory} from '../../..';
+import {
+  DefaultCrudRepository,
+  juggler,
+  BelongsToFactory,
+  repository,
+} from '../../..';
 import {inject, Getter} from '@loopback/context';
 
 export class OrderRepository extends DefaultCrudRepository<
@@ -10,7 +15,7 @@ export class OrderRepository extends DefaultCrudRepository<
   public customer: BelongsToFactory<Customer, Order>;
   constructor(
     @inject('datasources.db') protected db: juggler.DataSource,
-    @inject.getter('repositories.CustomerRepository')
+    @repository.getter('repositories.CustomerRepository')
     customerRepositoryGetter: Getter<CustomerRepository>,
   ) {
     super(Order, db);

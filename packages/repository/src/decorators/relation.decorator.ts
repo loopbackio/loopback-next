@@ -4,7 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Class} from '../common-types';
-import {Entity, TypeResolver, isTypeResolver} from '../model';
+import {
+  Entity,
+  TypeResolver,
+  isTypeResolver,
+  ERR_TARGET_UNDEFINED,
+} from '../model';
 import {PropertyDecoratorFactory, MetadataInspector} from '@loopback/context';
 import {property} from './model.decorator';
 import {camelCase} from 'lodash';
@@ -64,6 +69,13 @@ export function belongsTo<T extends typeof Entity>(
   targetModel: T | TypeResolver<T>,
   definition?: Partial<BelongsToDefinition>,
 ) {
+  const defIsCyclic =
+    definition &&
+    (definition as Object).hasOwnProperty('target') &&
+    !definition.target;
+  if (!targetModel || defIsCyclic) {
+    throw new Error(ERR_TARGET_UNDEFINED);
+  }
   return function(target: Object, key: string) {
     const propMeta = {
       type: MetadataInspector.getDesignTypeForProperty(target, key),
@@ -90,9 +102,7 @@ export function belongsTo<T extends typeof Entity>(
 
       if (!hasPrimaryKey && !hasKeyTo) {
         throw new Error(
-          `primary key not found on ${
-            targetModel.name
-          } model's juggler definition`,
+          `primary key not found on ${targetModel.name} model's definition`,
         );
       }
     }
@@ -145,7 +155,7 @@ export function hasMany<T extends typeof Entity>(
         throw new Error(
           `foreign key ${defaultFkName} not found on ${
             targetModel.name
-          } model's juggler definition`,
+          } model's definition`,
         );
       }
       Object.assign(meta, {keyTo: defaultFkName});

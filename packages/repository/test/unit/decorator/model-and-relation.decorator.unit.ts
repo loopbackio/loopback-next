@@ -21,6 +21,7 @@ import {
   RelationType,
   Entity,
   ValueObject,
+  ERR_TARGET_UNDEFINED,
 } from '../../../';
 import {MetadataInspector} from '@loopback/context';
 
@@ -319,6 +320,15 @@ describe('model decorator', () => {
     expect(House.definition.relations).to.containEql({person: relationMeta});
   });
 
+  it('throws when hasMany and belongsTo relations are cyclic', () => {
+    expect(() => {
+      require('../../fixtures/models/bad/category.model');
+    }).to.throw(ERR_TARGET_UNDEFINED);
+    expect(() => {
+      require('../../fixtures/models/bad/product.model');
+    }).to.throw(ERR_TARGET_UNDEFINED);
+  });
+
   describe('property namespace', () => {
     describe('array', () => {
       it('adds array metadata', () => {
@@ -363,28 +373,13 @@ describe('model decorator', () => {
       });
 
       it('throws when used on a non-array property', () => {
-        expect.throws(
-          () => {
-            // tslint:disable-next-line:no-unused-variable
-            class Oops {
-              @property.array(Product)
-              product: Product;
-            }
-          },
-          Error,
-          property.ERR_PROP_NOT_ARRAY,
-        );
-      });
-
-      it('throws when properties are cyclic', () => {
-        expect.throws(
-          () => {
-            require('../../fixtures/models/bad/cyclic-x.model');
-            require('../../fixtures/models/bad/cyclic-y.model');
-          },
-          Error,
-          'model is undefined',
-        );
+        expect(() => {
+          // tslint:disable-next-line:no-unused-variable
+          class Oops {
+            @property.array(Product)
+            product: Product;
+          }
+        }).to.throw(property.ERR_PROP_NOT_ARRAY);
       });
     });
   });
