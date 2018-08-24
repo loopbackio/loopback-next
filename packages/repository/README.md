@@ -130,18 +130,11 @@ We'll use `BootMixin` on top of `RepositoryMixin` so that Repository bindings
 can be taken care of automatically at boot time before the application starts.
 
 ```ts
+import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
+import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
 import {db} from './datasources/db.datasource';
-/* tslint:disable:no-unused-variable */
-import {BootMixin, Booter, Binding} from '@loopback/boot';
-import {
-  RepositoryMixin,
-  Class,
-  Repository,
-  juggler,
-} from '@loopback/repository';
-/* tslint:enable:no-unused-variable */
 
 export class RepoApplication extends BootMixin(
   RepositoryMixin(RestApplication),

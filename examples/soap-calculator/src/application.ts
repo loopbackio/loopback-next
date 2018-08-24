@@ -1,20 +1,9 @@
+import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig, Constructor, Provider} from '@loopback/core';
+import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
 import {MySequence} from './sequence';
 import {CalculatorServiceProvider} from './services/calculator.service';
-
-// Binding and Booter imports are required to infer types for BootMixin!
-/* tslint:disable:no-unused-variable */
-import {BootMixin, Booter, Binding} from '@loopback/boot';
-
-// juggler imports are required to infer types for RepositoryMixin!
-import {
-  Class,
-  Repository,
-  RepositoryMixin,
-  juggler,
-} from '@loopback/repository';
-/* tslint:enable:no-unused-variable */
 
 export class SoapCalculatorApplication extends BootMixin(
   RepositoryMixin(RestApplication),

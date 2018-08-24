@@ -4,14 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {
-  FilterBuilder,
-  Filter,
-  WhereBuilder,
-  Where,
-  filterTemplate,
-  isFilter,
-} from '../../../';
+import {FilterBuilder, WhereBuilder, filterTemplate, isFilter} from '../../../';
 
 describe('WhereBuilder', () => {
   it('builds where object', () => {
