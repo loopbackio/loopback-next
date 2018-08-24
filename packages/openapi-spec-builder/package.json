@@ -1,6 +1,6 @@
 {
   "name": "@loopback/openapi-spec-builder",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "description": "Make it easy to create OpenAPI (Swagger) specification documents in your tests using the builder pattern.",
   "engines": {
     "node": ">=8.9"
@@ -26,10 +26,10 @@
   ],
   "dependencies": {
     "@loopback/dist-util": "^0.3.6",
-    "@loopback/openapi-v3-types": "^0.8.4"
+    "@loopback/openapi-v3-types": "^0.8.5"
   },
   "devDependencies": {
-    "@loopback/build": "^0.7.0",
+    "@loopback/build": "^0.7.1",
     "@types/node": "^10.1.1"
   },
   "files": [

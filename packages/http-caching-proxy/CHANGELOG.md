@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.5"></a>
+## [0.3.5](https://github.com/strongloop/loopback-next/compare/@loopback/http-caching-proxy@0.3.4...@loopback/http-caching-proxy@0.3.5) (2018-08-24)
+
+
+### Bug Fixes
+
+* **http-caching-proxy:** fix compilation error ([653f6df](https://github.com/strongloop/loopback-next/commit/653f6df))
+
+
+
+
+
 <a name="0.3.4"></a>
 ## [0.3.4](https://github.com/strongloop/loopback-next/compare/@loopback/http-caching-proxy@0.3.3...@loopback/http-caching-proxy@0.3.4) (2018-08-15)
 

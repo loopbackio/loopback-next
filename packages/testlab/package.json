@@ -1,6 +1,6 @@
 {
   "name": "@loopback/testlab",
-  "version": "0.11.4",
+  "version": "0.11.5",
   "description": "A collection of test utilities we use to write LoopBack tests.",
   "engines": {
     "node": ">=8.9"
@@ -34,7 +34,7 @@
     "swagger2openapi": "^2.11.16"
   },
   "devDependencies": {
-    "@loopback/build": "^0.7.0",
+    "@loopback/build": "^0.7.1",
     "@types/node": "^10.1.1"
   },
   "files": [

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.12.5"></a>
+## [0.12.5](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@0.12.4...@loopback/openapi-v3@0.12.5) (2018-08-24)
+
+
+### Bug Fixes
+
+* **openapi-v3:** set required to true for path parameters ([2b13247](https://github.com/strongloop/loopback-next/commit/2b13247))
+
+
+
+
+
 <a name="0.12.4"></a>
 ## [0.12.4](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@0.12.3...@loopback/openapi-v3@0.12.4) (2018-08-15)
 
