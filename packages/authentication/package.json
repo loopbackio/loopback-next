@@ -24,6 +24,7 @@
   "license": "MIT",
   "dependencies": {
     "@loopback/context": "^0.12.5",
+    "@loopback/metadata": "^0.9.5",
     "@loopback/core": "^0.11.5",
     "@loopback/dist-util": "^0.3.6",
     "@loopback/openapi-v3": "^0.12.5",
