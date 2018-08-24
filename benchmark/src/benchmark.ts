@@ -35,8 +35,6 @@ export type AutocannonFactory = (url: string) => Autocannon;
 
 export class Benchmark {
   private options: Options;
-  private worker: ChildProcess;
-  private url: string;
 
   // Customization points
   public cannonFactory: AutocannonFactory;
@@ -81,7 +79,7 @@ export class Benchmark {
     const result = await runner.execute(autocannon);
     debug('Stats: %j', result);
 
-    closeWorker(worker);
+    await closeWorker(worker);
     debug('Worker stopped, done.');
 
     this.logger(name, result);
@@ -114,8 +112,4 @@ function startWorker() {
 async function closeWorker(worker: ChildProcess) {
   worker.kill();
   await pEvent(worker, 'close');
-}
-
-function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }

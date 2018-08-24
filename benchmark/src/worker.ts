@@ -3,11 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  TodoListApplication,
-  TodoRepository,
-  Route,
-} from '@loopback/example-todo';
+import {TodoListApplication} from '@loopback/example-todo';
 
 async function main() {
   const app = new TodoListApplication({
