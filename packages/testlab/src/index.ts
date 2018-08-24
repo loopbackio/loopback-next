@@ -12,3 +12,4 @@ export * from './test-sandbox';
 export * from './skip-travis';
 export * from './request';
 export * from './http-server-config';
+export * from './disable-unused-local-error';

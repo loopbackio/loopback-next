@@ -6,10 +6,8 @@
 import {Entity, model, property, belongsTo} from '../..';
 import {Customer} from './customer.model';
 
-// tslint:disable:no-unused-variable
-
 @model()
-class Order extends Entity {
+export class Order extends Entity {
   @property({
     // TODO(bajtos) type should be optional for TypeScript based properties,
     // as simple types string, number, boolean can be inferred

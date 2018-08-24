@@ -10,7 +10,7 @@ import {
 } from '@loopback/openapi-v3-types';
 import {param, get, patch, operation, getControllerSpec} from '../../../../';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
-import {expect} from '@loopback/testlab';
+import {expect, disableUnusedLocalError} from '@loopback/testlab';
 
 describe('Routing metadata for parameters', () => {
   describe('@param', () => {
@@ -161,13 +161,13 @@ describe('Routing metadata for parameters', () => {
     it('reports error if an array parameter type is not Array', () => {
       expect.throws(
         () => {
-          // tslint:disable-next-line:no-unused-variable
           class MyController {
             @get('/greet')
             greet(
               @param.array('names', 'query', {type: 'string'}) names: string,
             ) {}
           }
+          disableUnusedLocalError(MyController);
         },
         Error,
         `The parameter type is set to 'array' but the JavaScript type is String`,

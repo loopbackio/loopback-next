@@ -17,8 +17,6 @@ import {DataSource} from '../datasource';
 import {CrudConnector} from '../connectors';
 import {Filter, Where} from '../query';
 
-// tslint:disable:no-unused-variable
-
 export interface Repository<T extends Model> {}
 
 export interface ExecutableRepository<T extends Model> extends Repository<T> {
@@ -297,10 +295,9 @@ export class CrudRepositoryImpl<T extends Entity, ID>
       return this.connector.replaceById(this.model, id, data, options);
     }
     // FIXME: populate inst with all properties
-    // tslint:disable-next-line:no-unused-variable
     const inst = data;
     const where = this.model.buildWhereForId(id);
-    return this.updateAll(data, where, options).then(
+    return this.updateAll(inst, where, options).then(
       (count: number) => count > 0,
     );
   }

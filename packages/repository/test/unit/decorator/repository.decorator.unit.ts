@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect, disableUnusedLocalError} from '@loopback/testlab';
 import {Context} from '@loopback/context';
 
 import {
@@ -72,8 +72,8 @@ describe('repository decorator', () => {
   it('throws not implemented for class-level @repository', () => {
     expect(() => {
       @repository('noteRepo')
-      // tslint:disable-next-line:no-unused-variable
       class Controller1 {}
+      disableUnusedLocalError(Controller1);
     }).to.throw(/not implemented/);
   });
 

@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect, disableUnusedLocalError} from '@loopback/testlab';
 import {STRING} from '../../../';
 import {Entity, ModelDefinition} from '../../../';
 
@@ -60,7 +60,6 @@ describe('model', () => {
     }
   }
 
-  // tslint:disable-next-line:no-unused-variable
   class User extends Entity {
     static definition = userDef;
     id: string;
@@ -71,6 +70,7 @@ describe('model', () => {
       super(data);
     }
   }
+  disableUnusedLocalError(User);
 
   class Flexible extends Entity {
     static definition = flexibleDef;

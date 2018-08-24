@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect, disableUnusedLocalError} from '@loopback/testlab';
 import {
   ExampleObject,
   ReferenceObject,
@@ -57,7 +57,6 @@ describe('openapi-v3-types unit tests', () => {
      * original OAS 3 definition. (Though some interfaces allow for extensibility).
      */
 
-    // tslint:disable-next-line:no-unused-variable
     class TestObject implements ExampleObject {
       summary: 'test object';
       description: 'test object';
@@ -65,21 +64,21 @@ describe('openapi-v3-types unit tests', () => {
       externalValue: '1';
       randomProperty: 'extension value';
     }
+    disableUnusedLocalError(TestObject);
 
-    // tslint:disable-next-line:no-unused-variable
     class ReferenceTestObject implements ReferenceObject {
       $ref: '#def/reference-object';
     }
+    disableUnusedLocalError(ReferenceTestObject);
 
-    // tslint:disable-next-line:no-unused-variable
     class DiscriminatorTestObject implements DiscriminatorObject {
       propertyName: 'test';
       mapping: {
         hello: 'world';
       };
     }
+    disableUnusedLocalError(DiscriminatorTestObject);
 
-    // tslint:disable-next-line:no-unused-variable
     class XMLTestObject implements XmlObject {
       name: 'test';
       namespace: 'test';
@@ -87,16 +86,17 @@ describe('openapi-v3-types unit tests', () => {
       attribute: false;
       wrapped: false;
     }
+    disableUnusedLocalError(XMLTestObject);
 
-    // tslint:disable-next-line:no-unused-variable
     class TestExternalDocumentationObject
       implements ExternalDocumentationObject {
       url: 'https://test.com/test.html';
     }
+    disableUnusedLocalError(TestExternalDocumentationObject);
 
-    // tslint:disable-next-line:no-unused-variable
     class TestISpecificationExtension implements ISpecificationExtension {
       test: 'test';
     }
+    disableUnusedLocalError(TestISpecificationExtension);
   });
 });

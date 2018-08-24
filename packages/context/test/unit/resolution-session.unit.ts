@@ -3,14 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect, disableUnusedLocalError} from '@loopback/testlab';
 import {ResolutionSession, Binding, Injection, inject} from '../..';
 
 describe('ResolutionSession', () => {
   class MyController {
-    // tslint:disable-next-line:no-unused-variable
-    constructor(@inject('b') private b: string) {}
+    constructor(@inject('b') public b: string) {}
   }
+  disableUnusedLocalError(MyController);
+
   function givenInjection(): Injection {
     return {
       target: MyController,
