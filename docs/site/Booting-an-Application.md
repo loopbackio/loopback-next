@@ -61,13 +61,8 @@ example below)_
 
 ### Using the BootMixin
 
-`Booter` and `Binding` types must be imported alongside `BootMixin` to allow
-TypeScript to infer types and avoid errors. _If using `tslint` with the
-`no-unused-variable` rule, you can disable it for the import line by adding
-`// tslint:disable-next-line:no-unused-variable` above the import statement_.
-
 ```ts
-import {BootMixin, Booter, Binding} from "@loopback/boot";
+import {BootMixin} from "@loopback/boot";
 
 class MyApplication extends BootMixin(Application) {
   constructor(options?: ApplicationConfig) {

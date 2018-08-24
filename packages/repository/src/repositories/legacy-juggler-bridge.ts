@@ -23,9 +23,6 @@ import {
   HasManyRepositoryFactory,
 } from './relation.factory';
 import {HasManyDefinition} from '../decorators/relation.decorator';
-// need the import for exporting of a return type
-// tslint:disable-next-line:no-unused-variable
-import {HasManyRepository} from './relation.repository';
 
 export namespace juggler {
   export import DataSource = legacy.DataSource;

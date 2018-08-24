@@ -22,9 +22,6 @@ import {
   Send,
 } from './types';
 
-// NOTE(bajtos) The following import is required to satisfy TypeScript compiler
-// tslint:disable-next-line:no-unused-variable
-import {OpenAPIObject} from '@loopback/openapi-v3-types';
 import {HttpProtocol} from '@loopback/http-server';
 import * as https from 'https';
 
