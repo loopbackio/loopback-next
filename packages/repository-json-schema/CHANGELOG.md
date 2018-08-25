@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.10.6"></a>
+## [0.10.6](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@0.10.5...@loopback/repository-json-schema@0.10.6) (2018-08-25)
+
+
+### Bug Fixes
+
+* fix [#1643](https://github.com/strongloop/loopback-next/issues/1643): import MetadataAccessor direct from metadata to avoid TypeScript 3 compiler issue ([37d727a](https://github.com/strongloop/loopback-next/commit/37d727a))
+
+
+
+
+
 <a name="0.10.5"></a>
 ## [0.10.5](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@0.10.4...@loopback/repository-json-schema@0.10.5) (2018-08-24)
 

@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.3"></a>
+## [0.3.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@0.3.2...@loopback/example-todo-list@0.3.3) (2018-08-25)
+
+**Note:** Version bump only for package @loopback/example-todo-list
+
+
+
+
+
 <a name="0.3.2"></a>
 ## [0.3.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@0.3.1...@loopback/example-todo-list@0.3.2) (2018-08-24)
 
