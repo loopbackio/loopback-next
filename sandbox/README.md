@@ -15,13 +15,16 @@ cd loopback-next/sandbox
 ```
 
 Now you can scaffold your Node.js modules or copy existing projects into the
-`sandbox` directory.
+`sandbox` directory, for example, `sandbox/example`.
 
-To link the `@loopback/*` dependencies against the source code:
+To link the `@loopback/*` dependencies for your project, run the following
+commands:
 
 ```sh
-cd loopback/next
-npm run bootstrap
+cd loopback-next
+npm install
+cd sandbox/example
+node .
 ```
 
-Your project is ready against the LoopBack 4 source code now.
+Your project is now ready against the LoopBack 4 source code.

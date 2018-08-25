@@ -12,3 +12,8 @@ benchmark/dist*
 **/package
 .sandbox
 packages/cli/generators/datasource/connectors.json
+
+# Exclude all files under sandbox except README.md and example
+/sandbox/*
+!/sandbox/README.md
+!/sandbox/example/
