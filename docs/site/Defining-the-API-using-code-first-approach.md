@@ -21,7 +21,7 @@ There are various tools available to LoopBack which allows this bottom-up
 approach of building your application to be simple through the usages of
 metadata and decorators.
 
-### Start with LoopBack artfiacts
+### Start with LoopBack artifacts
 
 With TypeScript's
 [experimental decorator](https://www.typescriptlang.org/docs/handbook/decorators.html)
