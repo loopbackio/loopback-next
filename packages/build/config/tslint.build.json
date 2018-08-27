@@ -15,8 +15,8 @@
     // User-land promises like Bluebird implement "PromiseLike" (not "Promise")
     // interface only. The string "PromiseLike" bellow is needed to
     // tell tslint that it's ok to `await` such promises.
-    "await-promise": [true, "PromiseLike"],
-    "no-floating-promises": true,
+    "await-promise": [true, "PromiseLike", "RequestPromise"],
+    "no-floating-promises": [true, "PromiseLike", "RequestPromise"],
     "no-unused-variable": true,
     "no-void-expression": [true, "ignore-arrow-function-shorthand"]
   }

@@ -156,6 +156,6 @@ describe('Validation at REST level', () => {
     app.controller(controller);
     await app.start();
 
-    client = await createClientForHandler(app.requestHandler);
+    client = createClientForHandler(app.requestHandler);
   }
 });
