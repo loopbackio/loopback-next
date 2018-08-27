@@ -45,8 +45,8 @@ Follow the following steps to start buiding your application:
 3. [Add a data source](soap-calculator-tutorial-add-datasource.md)
 4. [Add a Service](soap-calculator-tutorial-add-service.md)
 5. [Add a controller](soap-calculator-tutorial-add-controller.md)
-6. [Register the service](soap-calculator-tutorial-make-service-available.md)
-7. [Run and Test the application](soap-calculator-run-and-and-test.md)
+6. [Register the service](soap-calculator-tutorial-register-service.md)
+7. [Run and Test the application](soap-calculator-tutorial-run-and-test.md)
 
 ## or Try it out
 
