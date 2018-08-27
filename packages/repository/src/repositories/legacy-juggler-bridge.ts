@@ -164,31 +164,30 @@ export class DefaultCrudRepository<T extends Entity, ID>
    * @param relationName Name of the relation defined on the source model
    * @param targetRepo Target repository instance
    */
-  protected _createHasManyRepositoryFactoryFor<
-    Target extends Entity,
-    TargetID,
-    ForeignKeyType
-  >(
+  protected _createHasManyRepositoryFactoryFor<Target extends Entity, TargetID>(
     relationName: string,
     targetRepo: Getter<EntityCrudRepository<Target, TargetID>>,
-  ): HasManyRepositoryFactory<Target, ForeignKeyType> {
+  ): HasManyRepositoryFactory<Target, ID> {
     const meta = this.entityClass.definition.relations[relationName];
-    return createHasManyRepositoryFactory<Target, TargetID, ForeignKeyType>(
+    return createHasManyRepositoryFactory<Target, TargetID, ID>(
       meta as HasManyDefinition,
       targetRepo,
     );
   }
 
-  protected _createBelongsToFactoryFor<
+  protected _createBelongsToRepositoryFactoryFor<
     Target extends Entity,
-    TargetId,
-    Source extends Entity
+    TargetId
   >(
     relationName: string,
     targetRepo: Getter<EntityCrudRepository<Target, TargetId>>,
-  ): BelongsToFactory<Target, Source> {
+  ): BelongsToFactory<Target, ID> {
     const meta = this.entityClass.definition.relations[relationName];
-    return createBelongsToFactory(meta as BelongsToDefinition, targetRepo);
+    return createBelongsToFactory<Target, TargetId, T, ID>(
+      meta as BelongsToDefinition,
+      targetRepo,
+      this,
+    );
   }
 
   async create(entity: DataObject<T>, options?: Options): Promise<T> {

@@ -173,6 +173,12 @@ export function repository(
 }
 
 export namespace repository {
+  /**
+   * Decorator used to inject a Getter for a repository
+   * Mainly intended for usage with repository injections on relation repository
+   * factory
+   * @param bindingKey
+   */
   // tslint:disable-next-line:no-any
   export function getter<T = any>(bindingKey: BindingAddress<T>) {
     return inject.getter(bindingKey);

@@ -177,6 +177,7 @@ describe('belongsTo relation', () => {
     const findCustomerOfOrder = createBelongsToFactory(
       Order.definition.relations.customerId as BelongsToDefinition,
       createGetter(customerRepo),
+      orderRepo,
     );
 
     const customer = await customerRepo.create({name: 'Order McForder'});
@@ -184,7 +185,7 @@ describe('belongsTo relation', () => {
       customerId: customer.id,
       description: 'Order from Order McForder, the hoarder of Mordor',
     });
-    const result = await findCustomerOfOrder(order);
+    const result = await findCustomerOfOrder(order.id);
     expect(result).to.deepEqual(customer);
   });
 
@@ -197,7 +198,11 @@ describe('belongsTo relation', () => {
         keyTo: 'someKey',
       };
       expect(() =>
-        createBelongsToFactory(keyFromLessMeta, createGetter(reviewRepo)),
+        createBelongsToFactory(
+          keyFromLessMeta,
+          createGetter(reviewRepo),
+          orderRepo,
+        ),
       ).to.throw(/The foreign key property name \(keyFrom\) must be specified/);
     });
 
@@ -209,7 +214,11 @@ describe('belongsTo relation', () => {
         keyFrom: 'someKey',
       };
       expect(() =>
-        createBelongsToFactory(keyToLessMeta, createGetter(reviewRepo)),
+        createBelongsToFactory(
+          keyToLessMeta,
+          createGetter(reviewRepo),
+          orderRepo,
+        ),
       ).to.throw(/The primary key property name \(keyTo\) must be specified/);
     });
 
@@ -243,6 +252,10 @@ describe('belongsTo relation', () => {
             Suite,
             new juggler.DataSource({connector: 'memory'}),
           ),
+        ),
+        new DefaultCrudRepository(
+          Card,
+          new juggler.DataSource({connector: 'memory'}),
         ),
       );
       expect(belongsToMeta).to.eql({

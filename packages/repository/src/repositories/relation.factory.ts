@@ -27,8 +27,8 @@ export type HasManyRepositoryFactory<Target extends Entity, ForeignKeyType> = (
   fkValue: ForeignKeyType,
 ) => HasManyRepository<Target>;
 
-export type BelongsToFactory<Target extends Entity, Source extends Entity> = (
-  sourceModel: Source,
+export type BelongsToFactory<Target extends Entity, SourceId> = (
+  sourceId: SourceId,
 ) => Promise<Target>;
 
 /**
@@ -69,14 +69,19 @@ export function createHasManyRepositoryFactory<
   };
 }
 
+/**
+ * Enforces a BelongsTo constraint on a repository
+ */
 export function createBelongsToFactory<
   Target extends Entity,
   TargetId,
-  Source extends Entity
+  Source extends Entity,
+  SourceId
 >(
   belongsToMetadata: BelongsToDefinition,
   targetRepository: Getter<EntityCrudRepository<Target, TargetId>>,
-): BelongsToFactory<Target, Source> {
+  sourceRepository: EntityCrudRepository<Source, SourceId>,
+): BelongsToFactory<Target, SourceId> {
   resolveBelongsToMetadata(belongsToMetadata);
   const foreignKey = belongsToMetadata.keyFrom;
   const primaryKey = belongsToMetadata.keyTo;
@@ -89,7 +94,8 @@ export function createBelongsToFactory<
     throw new Error('The primary key property name (keyTo) must be specified');
   }
   // NOTE change this to accept ID
-  return async function(sourceModel: Source) {
+  return async function(sourceId: SourceId) {
+    const sourceModel = await sourceRepository.findById(sourceId);
     const foreignKeyValue = sourceModel[foreignKey as keyof Source];
     // tslint:disable-next-line:no-any
     const constraint: any = {[primaryKey]: foreignKeyValue};
@@ -97,7 +103,7 @@ export function createBelongsToFactory<
       targetRepository,
       constraint as DataObject<Target>,
     );
-    return constrainedRepo.find();
+    return constrainedRepo.get();
   };
 }
 
@@ -142,6 +148,12 @@ export function resolveHasManyMetadata(relationMeta: HasManyDefinition) {
   return relationMeta;
 }
 
+/**
+ * Resolves given belongsTo metadata if target is specified to be a resolver.
+ * Mainly used to infer what the `keyTo` property should be from the target's
+ * property id metadata
+ * @param relationMeta belongsTo metadata to resolve
+ */
 export function resolveBelongsToMetadata(relationMeta: BelongsToDefinition) {
   if (
     relationMeta.target &&

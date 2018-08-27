@@ -109,7 +109,7 @@ export function belongsTo<T extends typeof Entity>(
 
     // Apply model definition to the model class
     Object.assign(rel, definition);
-    PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel)(target, key);
+    relation(rel)(target, key);
   };
 }
 
@@ -163,7 +163,7 @@ export function hasMany<T extends typeof Entity>(
 
     Object.assign(meta, definition, {type: RelationType.hasMany});
 
-    PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, meta)(target, key);
+    relation(meta)(target, key);
   };
 }
 

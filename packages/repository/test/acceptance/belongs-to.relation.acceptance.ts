@@ -42,8 +42,7 @@ describe('HasMany relation', () => {
     ) {}
 
     async findOwnerOfOrder(orderId: number) {
-      const order = await this.orderRepository.findById(orderId);
-      return await this.orderRepository.customer(order);
+      return await this.orderRepository.customer(orderId);
     }
   }
 
