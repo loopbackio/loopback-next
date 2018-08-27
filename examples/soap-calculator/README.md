@@ -8,6 +8,9 @@ This example project shows how to integrate a SOAP web service with LoopBack 4
 and expose its methods through the REST API server. Acceptance and Integration
 tests are provided.
 
+Before each step, you will be presented an image containing the artifacts that
+you will be creating in blue.
+
 ![soap-calculator-overview](https://loopback.io/pages/en/lb4/imgs/loopback-example-soap-calculator_figure1.png)
 
 ## Setup
@@ -22,10 +25,29 @@ Lastly, you'll need to install the LoopBack 4 CLI toolkit:
 npm i -g @loopback/cli
 ```
 
-## Generate the example using CLI
+## Start the Tutorial
 
-1.  Run the `lb4 example` command to select and clone the soap-calculator
-    repository:
+Follow the following steps to start buiding your application:
+
+### Steps
+
+1. [SOAP Web Service Overview](https://loopback.io/doc/en/lb4/soap-calculator-tutorial-web-service-overview.html)
+2. [Scaffold the Application](https://loopback.io/doc/en/lb4/soap-calculator-tutorial-scaffolding.html)
+3. [Add a data source](https://loopback.io/doc/en/lb4/soap-calculator-tutorial-add-datasource.html)
+4. [Add a Service](https://loopback.io/doc/en/lb4/soap-calculator-tutorial-add-service.html)
+5. [Add a controller](https://loopback.io/doc/en/lb4/soap-calculator-tutorial-add-controller.html)
+6. [Register the service](https://loopback.io/doc/en/lb4/soap-calculator-tutorial-make-service-available.md)
+7. [Run and Test the application](https://loopback.io/doc/en/lb4/soap-calculator-run-and-and-test.md)
+
+## or Try it out
+
+If you'd like to see the final results of this tutorial as an example
+application, follow these steps:
+
+### Generate the example using CLI
+
+1.Run the `lb4 example` command to select and clone the soap-calculator
+repository:
 
 ```sh
 $ lb4 example
@@ -38,13 +60,13 @@ $ lb4 example
 > soap-calculator: An example on how to integrate SOAP web services.
 ```
 
-2.  Jump into the directory and then install the required dependencies:
+2.Jump into the directory and then install the required dependencies:
 
 ```sh
 cd loopback4-example-soap-calculator
 ```
 
-3.  Finally, start the application!
+3.Finally, start the application!
 
     ```sh
     $ npm start
@@ -54,30 +76,6 @@ cd loopback4-example-soap-calculator
 
 Feel free to look around in the application's code to get a feel for how it
 works.
-
-### Stuck?
-
-Check out our [Gitter channel](https://gitter.im/strongloop/loopback) and ask
-for help with this tutorial!
-
-### Bugs/Feedback
-
-Open an issue in [loopback-next](https://github.com/strongloop/loopback-next)
-and we'll take a look!
-
-## Contributions
-
-- [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
-- [Join the team](https://github.com/strongloop/loopback-next/issues/110)
-
-## Tests
-
-Run `npm test` from the root folder.
-
-## Contributors
-
-See
-[all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
 
 ## License
 
