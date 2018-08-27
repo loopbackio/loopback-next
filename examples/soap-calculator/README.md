@@ -8,7 +8,7 @@ This example project shows how to integrate a SOAP web service with LoopBack 4
 and expose its methods through the REST API server. Acceptance and Integration
 tests are provided.
 
-![soap-calculator-overview](../../docs/img/loopback-example-soap-calculator_figure1.png)
+![soap-calculator-overview](https://loopback.io/pages/en/lb4/imgs/loopback-example-soap-calculator_figure1.png)
 
 ## Setup
 
