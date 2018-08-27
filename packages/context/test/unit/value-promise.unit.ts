@@ -251,6 +251,7 @@ describe('resolveUntil', () => {
       v => Promise.reject(new Error(v)),
       (s, v) => true,
     );
+    // tslint:disable-next-line:no-floating-promises
     expect(result).be.rejectedWith('a');
   });
 
@@ -276,6 +277,7 @@ describe('resolveUntil', () => {
         throw new Error(v);
       },
     );
+    // tslint:disable-next-line:no-floating-promises
     expect(result).be.rejectedWith('A');
   });
 
@@ -343,6 +345,7 @@ describe('transformValueOrPromise', () => {
     const result = transformValueOrPromise('a', v =>
       Promise.reject(new Error(v)),
     );
+    // tslint:disable-next-line:no-floating-promises
     expect(result).be.rejectedWith('a');
   });
 
