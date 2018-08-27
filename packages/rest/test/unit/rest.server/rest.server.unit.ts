@@ -64,7 +64,7 @@ describe('RestServer', () => {
       const app = new Application();
       app.component(RestComponent);
       const server = await app.getServer(RestServer);
-      const host = await server.getSync(RestBindings.HOST);
+      const host = await server.get(RestBindings.HOST);
       expect(host).to.be.undefined();
     });
 

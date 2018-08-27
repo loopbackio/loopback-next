@@ -53,6 +53,6 @@ describe('Coercion', () => {
     app = new RestApplication();
     app.controller(MyController);
     await app.start();
-    client = await createClientForHandler(app.requestHandler);
+    client = createClientForHandler(app.requestHandler);
   }
 });
