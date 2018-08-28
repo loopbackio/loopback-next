@@ -74,7 +74,7 @@ export class DefaultHasManyEntityCrudRepository<
 > implements HasManyRepository<TargetEntity> {
   /**
    * Constructor of DefaultHasManyEntityCrudRepository
-   * @param getTargetRepository the related target model repository instance
+   * @param getTargetRepository the getter of the related target model repository instance
    * @param constraint the key value pair representing foreign key name to constrain
    * the target repository instance
    */
@@ -127,7 +127,7 @@ export class DefaultBelongsToEntityCrudRepository<
 > implements BelongsToRepository<TargetEntity> {
   /**
    * Constructor of DefaultBelongsToEntityCrudRepository
-   * @param getTargetRepository the related target model repository instance
+   * @param getTargetRepository the getter of the related target model repository instance
    * @param constraint the key value pair representing foreign key name to constrain
    * the target repository instance
    */

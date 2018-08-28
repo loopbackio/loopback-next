@@ -8,7 +8,7 @@ import {CustomerRepository} from '../repositories';
 import {
   DefaultCrudRepository,
   juggler,
-  BelongsToFactory,
+  BelongsToAccessor,
   repository,
 } from '../../..';
 import {inject, Getter} from '@loopback/context';
@@ -17,14 +17,14 @@ export class OrderRepository extends DefaultCrudRepository<
   Order,
   typeof Order.prototype.id
 > {
-  public customer: BelongsToFactory<Customer, typeof Order.prototype.id>;
+  public customer: BelongsToAccessor<Customer, typeof Order.prototype.id>;
   constructor(
     @inject('datasources.db') protected db: juggler.DataSource,
     @repository.getter('repositories.CustomerRepository')
     customerRepositoryGetter: Getter<CustomerRepository>,
   ) {
     super(Order, db);
-    this.customer = this._createBelongsToRepositoryFactoryFor(
+    this.customer = this._createBelongsToAccessorFor(
       'customerId',
       customerRepositoryGetter,
     );

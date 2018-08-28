@@ -20,17 +20,14 @@ import {Filter, Where} from '../query';
 import {EntityCrudRepository} from './repository';
 import {
   createHasManyRepositoryFactory,
-  HasManyRepositoryFactory,
-  BelongsToFactory,
+  HasManyAccessor,
+  BelongsToAccessor,
   createBelongsToFactory,
 } from './relation.factory';
 import {
   HasManyDefinition,
   BelongsToDefinition,
 } from '../decorators/relation.decorator';
-// need the import for exporting of a return type
-// tslint:disable-next-line:no-unused-variable
-import {HasManyRepository} from './relation.repository';
 
 export namespace juggler {
   export import DataSource = legacy.DataSource;
@@ -153,7 +150,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
    *     orderRepository: EntityCrudRepository<Order, typeof Order.prototype.id>,
    *   ) {
    *     super(Customer, db);
-   *     this.orders = this._createHasManyRepositoryFactoryFor(
+   *     this.orders = this._createHasManyAccessorFor(
    *       'orders',
    *       orderRepository,
    *     );
@@ -162,30 +159,27 @@ export class DefaultCrudRepository<T extends Entity, ID>
    * ```
    *
    * @param relationName Name of the relation defined on the source model
-   * @param targetRepo Target repository instance
+   * @param targetRepoGetter Getter for the target repository instance
    */
-  protected _createHasManyRepositoryFactoryFor<Target extends Entity, TargetID>(
+  protected _createHasManyAccessorFor<Target extends Entity, TargetID>(
     relationName: string,
-    targetRepo: Getter<EntityCrudRepository<Target, TargetID>>,
-  ): HasManyRepositoryFactory<Target, ID> {
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+  ): HasManyAccessor<Target, ID> {
     const meta = this.entityClass.definition.relations[relationName];
     return createHasManyRepositoryFactory<Target, TargetID, ID>(
       meta as HasManyDefinition,
-      targetRepo,
+      targetRepoGetter,
     );
   }
 
-  protected _createBelongsToRepositoryFactoryFor<
-    Target extends Entity,
-    TargetId
-  >(
+  protected _createBelongsToAccessorFor<Target extends Entity, TargetId>(
     relationName: string,
-    targetRepo: Getter<EntityCrudRepository<Target, TargetId>>,
-  ): BelongsToFactory<Target, ID> {
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetId>>,
+  ): BelongsToAccessor<Target, ID> {
     const meta = this.entityClass.definition.relations[relationName];
     return createBelongsToFactory<Target, TargetId, T, ID>(
       meta as BelongsToDefinition,
-      targetRepo,
+      targetRepoGetter,
       this,
     );
   }

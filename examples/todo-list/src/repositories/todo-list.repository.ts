@@ -6,7 +6,7 @@
 import {
   DefaultCrudRepository,
   juggler,
-  HasManyRepositoryFactory,
+  HasManyAccessor,
   repository,
 } from '@loopback/repository';
 import {TodoList, Todo} from '../models';
@@ -17,7 +17,7 @@ export class TodoListRepository extends DefaultCrudRepository<
   TodoList,
   typeof TodoList.prototype.id
 > {
-  public todos: HasManyRepositoryFactory<Todo, typeof TodoList.prototype.id>;
+  public todos: HasManyAccessor<Todo, typeof TodoList.prototype.id>;
 
   constructor(
     @inject('datasources.db') protected datasource: juggler.DataSource,
@@ -25,9 +25,6 @@ export class TodoListRepository extends DefaultCrudRepository<
     protected getTodoRepository: Getter<TodoRepository>,
   ) {
     super(TodoList, datasource);
-    this.todos = this._createHasManyRepositoryFactoryFor(
-      'todos',
-      getTodoRepository,
-    );
+    this.todos = this._createHasManyAccessorFor('todos', getTodoRepository);
   }
 }

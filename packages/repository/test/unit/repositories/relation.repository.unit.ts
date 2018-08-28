@@ -116,17 +116,6 @@ describe('relation repository', () => {
   });
 
   context('resolveHasManyMetadata', () => {
-    it('retains non-resolver type', () => {
-      class TargetModel extends Entity {}
-      const meta: HasManyDefinition = {
-        type: RelationType.hasMany,
-        target: TargetModel,
-      };
-      const result = resolveHasManyMetadata(meta);
-
-      expect(result).to.eql(meta);
-    });
-
     it('throws if no target relation metadata is found', () => {
       class TargetModel extends Entity {
         static definition = new ModelDefinition({
@@ -205,17 +194,6 @@ describe('relation repository', () => {
   });
 
   context('resolveBelongsToMetadata', () => {
-    it('retains non-resolver type', () => {
-      class TargetModel extends Entity {}
-      const meta: BelongsToDefinition = {
-        type: RelationType.belongsTo,
-        target: TargetModel,
-      };
-      const result = resolveBelongsToMetadata(meta);
-
-      expect(result).to.eql(meta);
-    });
-
     it('throws if no target definition metadata is found', () => {
       class TargetModel extends Entity {
         static definition = new ModelDefinition({

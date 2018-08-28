@@ -13,7 +13,7 @@ import {
   ModelDefinition,
   createHasManyRepositoryFactory,
   HasManyDefinition,
-  HasManyRepositoryFactory,
+  HasManyAccessor,
   hasMany,
   belongsTo,
   model,
@@ -30,11 +30,11 @@ let customerRepo: EntityCrudRepository<Customer, typeof Customer.prototype.id>;
 let orderRepo: EntityCrudRepository<Order, typeof Order.prototype.id>;
 let reviewRepo: EntityCrudRepository<Review, typeof Review.prototype.id>;
 let customerOrderRepo: HasManyRepository<Order>;
-let customerAuthoredReviewFactoryFn: HasManyRepositoryFactory<
+let customerAuthoredReviewFactoryFn: HasManyAccessor<
   Review,
   typeof Customer.prototype.id
 >;
-let customerApprovedReviewFactoryFn: HasManyRepositoryFactory<
+let customerApprovedReviewFactoryFn: HasManyAccessor<
   Review,
   typeof Customer.prototype.id
 >;
@@ -121,17 +121,6 @@ describe('HasMany relation', () => {
   });
 
   context('createHasManyRepositoryFactory', () => {
-    it('errors when keyTo is not available in hasMany metadata', () => {
-      class SomeClass extends Entity {}
-      const keytolessMeta: HasManyDefinition = {
-        type: RelationType.hasMany,
-        target: SomeClass,
-      };
-      expect(() =>
-        createHasManyRepositoryFactory(keytolessMeta, createGetter(reviewRepo)),
-      ).to.throw(/The foreign key property name \(keyTo\) must be specified/);
-    });
-
     it('resolves belongsTo metadata', () => {
       @model()
       class Card extends Entity {
@@ -194,7 +183,7 @@ describe('belongsTo relation', () => {
       class SomeClass extends Entity {}
       const keyFromLessMeta: BelongsToDefinition = {
         type: RelationType.belongsTo,
-        target: SomeClass,
+        target: () => SomeClass,
         keyTo: 'someKey',
       };
       expect(() =>
@@ -204,22 +193,6 @@ describe('belongsTo relation', () => {
           orderRepo,
         ),
       ).to.throw(/The foreign key property name \(keyFrom\) must be specified/);
-    });
-
-    it('errors when keyTo is not available from belongsTo metadata', () => {
-      class SomeClass extends Entity {}
-      const keyToLessMeta: BelongsToDefinition = {
-        type: RelationType.belongsTo,
-        target: SomeClass,
-        keyFrom: 'someKey',
-      };
-      expect(() =>
-        createBelongsToFactory(
-          keyToLessMeta,
-          createGetter(reviewRepo),
-          orderRepo,
-        ),
-      ).to.throw(/The primary key property name \(keyTo\) must be specified/);
     });
 
     it('resolves property id metadata', () => {

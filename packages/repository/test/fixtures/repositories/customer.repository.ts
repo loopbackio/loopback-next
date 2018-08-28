@@ -7,7 +7,7 @@ import {Customer, Order} from '../models';
 import {OrderRepository} from './order.repository';
 import {
   DefaultCrudRepository,
-  HasManyRepositoryFactory,
+  HasManyAccessor,
   juggler,
   repository,
 } from '../../..';
@@ -17,14 +17,14 @@ export class CustomerRepository extends DefaultCrudRepository<
   Customer,
   typeof Customer.prototype.id
 > {
-  public orders: HasManyRepositoryFactory<Order, typeof Customer.prototype.id>;
+  public orders: HasManyAccessor<Order, typeof Customer.prototype.id>;
   constructor(
     @inject('datasources.db') protected db: juggler.DataSource,
     @repository.getter('repositories.OrderRepository')
     orderRepositoryGetter: Getter<OrderRepository>,
   ) {
     super(Customer, db);
-    this.orders = this._createHasManyRepositoryFactoryFor(
+    this.orders = this._createHasManyAccessorFor(
       'orders',
       orderRepositoryGetter,
     );

@@ -36,7 +36,7 @@ export class RelationMetadata {
 
 export interface RelationDefinitionBase {
   type: RelationType;
-  target: typeof Entity | TypeResolver<typeof Entity>;
+  target: TypeResolver<typeof Entity>;
 }
 
 export interface HasManyDefinition extends RelationDefinitionBase {
@@ -66,7 +66,7 @@ export function relation(definition?: Object) {
  * @returns {(target:any, key:string)}
  */
 export function belongsTo<T extends typeof Entity>(
-  targetModel: T | TypeResolver<T>,
+  targetModel: TypeResolver<T>,
   definition?: Partial<BelongsToDefinition>,
 ) {
   const defIsCyclic =
@@ -87,25 +87,6 @@ export function belongsTo<T extends typeof Entity>(
       target: targetModel,
       keyFrom: key,
     };
-
-    if (!isTypeResolver(targetModel)) {
-      const hasKeyTo = definition && definition.keyTo;
-      let hasPrimaryKey = false;
-
-      for (const propertyKey in targetModel.definition.properties) {
-        if (targetModel.definition.properties[propertyKey].id === true) {
-          rel.keyTo = propertyKey;
-          hasPrimaryKey = true;
-          break;
-        }
-      }
-
-      if (!hasPrimaryKey && !hasKeyTo) {
-        throw new Error(
-          `primary key not found on ${targetModel.name} model's definition`,
-        );
-      }
-    }
 
     // Apply model definition to the model class
     Object.assign(rel, definition);
@@ -132,7 +113,7 @@ export function hasOne(definition?: Object) {
  * @returns {(target:any, key:string)}
  */
 export function hasMany<T extends typeof Entity>(
-  targetModel: T | TypeResolver<T>,
+  targetModel: TypeResolver<T>,
   definition?: Partial<HasManyDefinition>,
 ) {
   // todo(shimks): extract out common logic (such as @property.array) to
@@ -141,25 +122,6 @@ export function hasMany<T extends typeof Entity>(
     property.array(targetModel)(target, key);
 
     const meta: Partial<HasManyDefinition> = {target: targetModel};
-
-    if (!isTypeResolver(targetModel)) {
-      const defaultFkName = camelCase(target.constructor.name + '_id');
-      const hasKeyTo = definition && definition.keyTo;
-      const hasDefaultFkProperty =
-        targetModel.definition &&
-        targetModel.definition.properties &&
-        targetModel.definition.properties[defaultFkName];
-      if (!(hasKeyTo || hasDefaultFkProperty)) {
-        // note(shimks): should we also check for the existence of explicitly
-        // given foreign key name on the juggler definition?
-        throw new Error(
-          `foreign key ${defaultFkName} not found on ${
-            targetModel.name
-          } model's definition`,
-        );
-      }
-      Object.assign(meta, {keyTo: defaultFkName});
-    }
 
     Object.assign(meta, definition, {type: RelationType.hasMany});
 

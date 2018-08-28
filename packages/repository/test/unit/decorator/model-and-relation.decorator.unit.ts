@@ -125,7 +125,7 @@ describe('model decorator', () => {
     @referencesOne()
     profile: Profile;
 
-    @hasMany(Order)
+    @hasMany(() => Order)
     orders?: Order[];
 
     @hasOne()
@@ -260,8 +260,7 @@ describe('model decorator', () => {
       ) || /* istanbul ignore next */ {};
     expect(meta.orders).to.eql({
       type: RelationType.hasMany,
-      target: Order,
-      keyTo: 'customerId',
+      target: () => Order,
     });
   });
 
@@ -307,7 +306,7 @@ describe('model decorator', () => {
     class House extends Entity {
       @property()
       name: string;
-      @hasMany(Person, {keyTo: 'fk'})
+      @hasMany(() => Person, {keyTo: 'fk'})
       person: Person[];
     }
 
@@ -318,15 +317,6 @@ describe('model decorator', () => {
     );
     expect(House.definition).to.have.property('relations');
     expect(House.definition.relations).to.containEql({person: relationMeta});
-  });
-
-  it('throws when hasMany and belongsTo relations are cyclic', () => {
-    expect(() => {
-      require('../../fixtures/models/bad/category.model');
-    }).to.throw(ERR_TARGET_UNDEFINED);
-    expect(() => {
-      require('../../fixtures/models/bad/product.model');
-    }).to.throw(ERR_TARGET_UNDEFINED);
   });
 
   describe('property namespace', () => {

@@ -10,7 +10,7 @@ import {
   DefaultCrudRepository,
   juggler,
   hasMany,
-  HasManyRepositoryFactory,
+  HasManyAccessor,
   EntityCrudRepository,
 } from '../..';
 import {expect} from '@loopback/testlab';
@@ -117,7 +117,7 @@ describe('HasMany relation', () => {
     })
     name: string;
 
-    @hasMany(Order)
+    @hasMany(() => Order, {keyTo: 'customerId'})
     orders: Order[];
   }
 
@@ -134,17 +134,14 @@ describe('HasMany relation', () => {
     Customer,
     typeof Customer.prototype.id
   > {
-    public orders: HasManyRepositoryFactory<
-      Order,
-      typeof Customer.prototype.id
-    >;
+    public orders: HasManyAccessor<Order, typeof Customer.prototype.id>;
 
     constructor(
       protected db: juggler.DataSource,
       orderRepository: EntityCrudRepository<Order, typeof Order.prototype.id>,
     ) {
       super(Customer, db);
-      this.orders = this._createHasManyRepositoryFactoryFor(
+      this.orders = this._createHasManyAccessorFor(
         'orders',
         createGetter(orderRepository),
       );

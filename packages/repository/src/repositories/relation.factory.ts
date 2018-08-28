@@ -23,11 +23,11 @@ const debug = require('debug')('loopback:repository:relation:factory');
 const ERR_NO_BELONGSTO_META = 'no belongsTo metadata found';
 const ERR_NO_ID_META = 'no id metadata found';
 
-export type HasManyRepositoryFactory<Target extends Entity, ForeignKeyType> = (
+export type HasManyAccessor<Target extends Entity, ForeignKeyType> = (
   fkValue: ForeignKeyType,
 ) => HasManyRepository<Target>;
 
-export type BelongsToFactory<Target extends Entity, SourceId> = (
+export type BelongsToAccessor<Target extends Entity, SourceId> = (
   sourceId: SourceId,
 ) => Promise<Target>;
 
@@ -50,8 +50,8 @@ export function createHasManyRepositoryFactory<
   ForeignKeyType
 >(
   relationMetadata: HasManyDefinition,
-  targetRepository: Getter<EntityCrudRepository<Target, TargetID>>,
-): HasManyRepositoryFactory<Target, ForeignKeyType> {
+  targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+): HasManyAccessor<Target, ForeignKeyType> {
   resolveHasManyMetadata(relationMetadata);
   debug('resolved relation metadata: %o', relationMetadata);
   const fkName = relationMetadata.keyTo;
@@ -65,7 +65,7 @@ export function createHasManyRepositoryFactory<
       Target,
       TargetID,
       EntityCrudRepository<Target, TargetID>
-    >(targetRepository, constraint as DataObject<Target>);
+    >(targetRepoGetter, constraint as DataObject<Target>);
   };
 }
 
@@ -79,9 +79,9 @@ export function createBelongsToFactory<
   SourceId
 >(
   belongsToMetadata: BelongsToDefinition,
-  targetRepository: Getter<EntityCrudRepository<Target, TargetId>>,
+  targetRepoGetter: Getter<EntityCrudRepository<Target, TargetId>>,
   sourceRepository: EntityCrudRepository<Source, SourceId>,
-): BelongsToFactory<Target, SourceId> {
+): BelongsToAccessor<Target, SourceId> {
   resolveBelongsToMetadata(belongsToMetadata);
   const foreignKey = belongsToMetadata.keyFrom;
   const primaryKey = belongsToMetadata.keyTo;
@@ -93,14 +93,13 @@ export function createBelongsToFactory<
   if (!primaryKey) {
     throw new Error('The primary key property name (keyTo) must be specified');
   }
-  // NOTE change this to accept ID
-  return async function(sourceId: SourceId) {
+  return async function getTargetInstanceOfBelongsTo(sourceId: SourceId) {
     const sourceModel = await sourceRepository.findById(sourceId);
     const foreignKeyValue = sourceModel[foreignKey as keyof Source];
     // tslint:disable-next-line:no-any
     const constraint: any = {[primaryKey]: foreignKeyValue};
     const constrainedRepo = new DefaultBelongsToEntityCrudRepository(
-      targetRepository,
+      targetRepoGetter,
       constraint as DataObject<Target>,
     );
     return constrainedRepo.get();

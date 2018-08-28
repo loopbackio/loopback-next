@@ -25,7 +25,7 @@ export class TodoList extends Entity {
   })
   color?: string;
 
-  @hasMany(Todo)
+  @hasMany(() => Todo, {keyTo: 'todoListId'})
   todos: Todo[];
 
   constructor(data?: Partial<TodoList>) {

@@ -41,7 +41,7 @@ describe('HasMany relation', () => {
       @repository(OrderRepository) protected orderRepository: OrderRepository,
     ) {}
 
-    async findOwnerOfOrder(orderId: number) {
+    async findOwnerOfOrder(orderId: string) {
       return await this.orderRepository.customer(orderId);
     }
   }

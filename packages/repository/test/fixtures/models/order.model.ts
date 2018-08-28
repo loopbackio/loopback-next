@@ -9,10 +9,10 @@ import {Customer} from './customer.model';
 @model()
 export class Order extends Entity {
   @property({
-    type: 'number',
+    type: 'string',
     id: true,
   })
-  id: number;
+  id: string;
 
   @property({
     type: 'string',
