@@ -4,8 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Constructor} from '@loopback/context';
+import * as debugFactory from 'debug';
+import * as path from 'path';
+import {ArtifactOptions, Booter} from '../interfaces';
 import {discoverFiles, loadClassesFromFiles} from './booter-utils';
-import {Booter, ArtifactOptions} from '../interfaces';
+
+const debug = debugFactory('loopback:boot:base-artifact-booter');
 
 /**
  * This class serves as a base class for Booters which follow a pattern of
@@ -35,13 +39,26 @@ export class BaseArtifactBooter implements Booter {
   /**
    * Options being used by the Booter.
    */
-  options: ArtifactOptions;
-  projectRoot: string;
+  readonly options: ArtifactOptions;
+  readonly projectRoot: string;
   dirs: string[];
   extensions: string[];
   glob: string;
   discovered: string[];
   classes: Array<Constructor<{}>>;
+
+  constructor(projectRoot: string, options: ArtifactOptions) {
+    this.projectRoot = projectRoot;
+    this.options = options;
+  }
+
+  /**
+   * Get the name of the artifact loaded by this booter, e.g. "Controller".
+   * Subclasses can override the default logic based on the class name.
+   */
+  get artifactName(): string {
+    return this.constructor.name.replace(/Booter$/, '');
+  }
 
   /**
    * Configure the Booter by initializing the 'dirs', 'extensions' and 'glob'
@@ -78,7 +95,25 @@ export class BaseArtifactBooter implements Booter {
    * 'discovered' property.
    */
   async discover() {
+    debug(
+      'Discovering %s artifacts in %j using glob %j',
+      this.artifactName,
+      this.projectRoot,
+      this.glob,
+    );
+
     this.discovered = await discoverFiles(this.glob, this.projectRoot);
+
+    if (debug.enabled) {
+      debug(
+        'Artifact files found: %s',
+        JSON.stringify(
+          this.discovered.map(f => path.relative(this.projectRoot, f)),
+          null,
+          2,
+        ),
+      );
+    }
   }
 
   /**
@@ -90,6 +125,6 @@ export class BaseArtifactBooter implements Booter {
    * and then process the artifact classes as appropriate.
    */
   async load() {
-    this.classes = loadClassesFromFiles(this.discovered);
+    this.classes = loadClassesFromFiles(this.discovered, this.projectRoot);
   }
 }

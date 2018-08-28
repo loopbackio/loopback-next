@@ -22,13 +22,15 @@ import {BootBindings} from '../keys';
 export class ControllerBooter extends BaseArtifactBooter {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE) public app: Application,
-    @inject(BootBindings.PROJECT_ROOT) public projectRoot: string,
+    @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
     @inject(`${BootBindings.BOOT_OPTIONS}#controllers`)
     public controllerConfig: ArtifactOptions = {},
   ) {
-    super();
-    // Set Controller Booter Options if passed in via bootConfig
-    this.options = Object.assign({}, ControllerDefaults, controllerConfig);
+    super(
+      projectRoot,
+      // Set Controller Booter Options if passed in via bootConfig
+      Object.assign({}, ControllerDefaults, controllerConfig),
+    );
   }
 
   /**
