@@ -10,10 +10,11 @@ import {
   DefaultCrudRepository,
   juggler,
   hasMany,
-  HasManyRepositoryFactory,
+  HasManyAccessor,
   EntityCrudRepository,
 } from '../..';
 import {expect} from '@loopback/testlab';
+import {createGetter} from '../test-utils';
 
 describe('HasMany relation', () => {
   // Given a Customer and Order models - see definitions at the bottom
@@ -27,10 +28,10 @@ describe('HasMany relation', () => {
   before(givenOrderRepository);
   before(givenCustomerRepository);
   beforeEach(async () => {
-    existingCustomerId = (await givenPersistedCustomerInstance()).id;
-  });
-  afterEach(async () => {
     await orderRepo.deleteAll();
+  });
+  beforeEach(async () => {
+    existingCustomerId = (await givenPersistedCustomerInstance()).id;
   });
 
   it('can create an instance of the related model', async () => {
@@ -116,7 +117,7 @@ describe('HasMany relation', () => {
     })
     name: string;
 
-    @hasMany(Order)
+    @hasMany(() => Order, {keyTo: 'customerId'})
     orders: Order[];
   }
 
@@ -133,19 +134,16 @@ describe('HasMany relation', () => {
     Customer,
     typeof Customer.prototype.id
   > {
-    public orders: HasManyRepositoryFactory<
-      Order,
-      typeof Customer.prototype.id
-    >;
+    public orders: HasManyAccessor<Order, typeof Customer.prototype.id>;
 
     constructor(
       protected db: juggler.DataSource,
       orderRepository: EntityCrudRepository<Order, typeof Order.prototype.id>,
     ) {
       super(Customer, db);
-      this.orders = this._createHasManyRepositoryFactoryFor(
+      this.orders = this._createHasManyAccessorFor(
         'orders',
-        orderRepository,
+        createGetter(orderRepository),
       );
     }
   }

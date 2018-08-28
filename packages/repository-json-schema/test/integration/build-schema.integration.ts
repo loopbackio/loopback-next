@@ -3,7 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {model, property} from '@loopback/repository';
+import {
+  model,
+  property,
+  belongsTo,
+  hasMany,
+  Entity,
+} from '@loopback/repository';
 import {
   modelToJsonSchema,
   JSON_SCHEMA_KEY,
@@ -368,6 +374,84 @@ describe('build-schema', () => {
             },
           });
           expectValidJsonSchema(jsonSchema);
+        });
+
+        it('properly converts decorated custom array type with a resolver', () => {
+          @model()
+          class CustomType {
+            @property()
+            prop: string;
+          }
+
+          @model()
+          class TestModel {
+            @property.array(() => CustomType)
+            cusType: CustomType[];
+          }
+
+          const jsonSchema = modelToJsonSchema(TestModel);
+          expect(jsonSchema.properties).to.deepEqual({
+            cusType: {
+              type: 'array',
+              items: {$ref: '#/definitions/CustomType'},
+            },
+          });
+          expect(jsonSchema.definitions).to.deepEqual({
+            CustomType: {
+              title: 'CustomType',
+              properties: {
+                prop: {
+                  type: 'string',
+                },
+              },
+            },
+          });
+          expectValidJsonSchema(jsonSchema);
+        });
+
+        it('properly converts decorated models with hasMany and belongsTo', () => {
+          @model()
+          class Order extends Entity {
+            @property({id: true})
+            id: number;
+            @belongsTo(() => Customer)
+            customerId: number;
+          }
+
+          @model()
+          class Customer extends Entity {
+            @property({id: true})
+            id: number;
+            @hasMany(() => Order)
+            orders: Order[];
+          }
+
+          const orderSchema = modelToJsonSchema(Order);
+          const customerSchema = modelToJsonSchema(Customer);
+          expect(orderSchema.properties).to.deepEqual({
+            id: {type: 'number'},
+            customerId: {type: 'number'},
+          });
+          expect(customerSchema.properties).to.deepEqual({
+            id: {type: 'number'},
+            orders: {
+              type: 'array',
+              items: {$ref: '#/definitions/Order'},
+            },
+          });
+          expect(customerSchema.definitions).to.deepEqual({
+            Order: {
+              title: 'Order',
+              properties: {
+                id: {
+                  type: 'number',
+                },
+                customerId: {type: 'number'},
+              },
+            },
+          });
+
+          expectValidJsonSchema(orderSchema);
         });
 
         it('creates definitions only at the root level of the schema', () => {

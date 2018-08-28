@@ -7,6 +7,8 @@ import {expect} from '@loopback/testlab';
 import {isComplexType, stringTypeToWrapper, metaToJsonProperty} from '../..';
 
 describe('build-schema', () => {
+  class CustomType {}
+
   describe('stringTypeToWrapper', () => {
     context('when given primitive types in string', () => {
       it('returns String for "string"', () => {
@@ -76,7 +78,6 @@ describe('build-schema', () => {
     });
 
     it('returns true if any other wrappers are passed in', () => {
-      class CustomType {}
       expect(isComplexType(CustomType)).to.eql(true);
     });
   });
@@ -107,8 +108,13 @@ describe('build-schema', () => {
     });
 
     it('converts complex types', () => {
-      class CustomType {}
       expect(metaToJsonProperty({type: CustomType})).to.eql({
+        $ref: '#/definitions/CustomType',
+      });
+    });
+
+    it('converts complex types with resolver', () => {
+      expect(metaToJsonProperty({type: () => CustomType})).to.eql({
         $ref: '#/definitions/CustomType',
       });
     });
@@ -121,8 +127,16 @@ describe('build-schema', () => {
     });
 
     it('converts arrays of custom types', () => {
-      class CustomType {}
       expect(metaToJsonProperty({type: Array, itemType: CustomType})).to.eql({
+        type: 'array',
+        items: {$ref: '#/definitions/CustomType'},
+      });
+    });
+
+    it('converts array types with resolver', () => {
+      expect(
+        metaToJsonProperty({type: Array, itemType: () => CustomType}),
+      ).to.eql({
         type: 'array',
         items: {$ref: '#/definitions/CustomType'},
       });

@@ -4,8 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Class} from '../common-types';
-import {Entity} from '../model';
-import {PropertyDecoratorFactory} from '@loopback/context';
+import {
+  Entity,
+  TypeResolver,
+  isTypeResolver,
+  ERR_TARGET_UNDEFINED,
+} from '../model';
+import {PropertyDecoratorFactory, MetadataInspector} from '@loopback/context';
 import {property} from './model.decorator';
 import {camelCase} from 'lodash';
 
@@ -31,11 +36,18 @@ export class RelationMetadata {
 
 export interface RelationDefinitionBase {
   type: RelationType;
+  target: TypeResolver<typeof Entity>;
 }
 
 export interface HasManyDefinition extends RelationDefinitionBase {
   type: RelationType.hasMany;
-  keyTo: string;
+  keyTo?: string;
+}
+
+export interface BelongsToDefinition extends RelationDefinitionBase {
+  type: RelationType.belongsTo;
+  keyTo?: string;
+  keyFrom?: string;
 }
 
 /**
@@ -53,10 +65,33 @@ export function relation(definition?: Object) {
  * @param definition
  * @returns {(target:any, key:string)}
  */
-export function belongsTo(definition?: Object) {
-  // Apply model definition to the model class
-  const rel = Object.assign({type: RelationType.belongsTo}, definition);
-  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
+export function belongsTo<T extends typeof Entity>(
+  targetModel: TypeResolver<T>,
+  definition?: Partial<BelongsToDefinition>,
+) {
+  const defIsCyclic =
+    definition &&
+    (definition as Object).hasOwnProperty('target') &&
+    !definition.target;
+  if (!targetModel || defIsCyclic) {
+    throw new Error(ERR_TARGET_UNDEFINED);
+  }
+  return function(target: Object, key: string) {
+    const propMeta = {
+      type: MetadataInspector.getDesignTypeForProperty(target, key),
+    };
+    property(propMeta)(target, key);
+
+    const rel: BelongsToDefinition = {
+      type: RelationType.belongsTo,
+      target: targetModel,
+      keyFrom: key,
+    };
+
+    // Apply model definition to the model class
+    Object.assign(rel, definition);
+    relation(rel)(target, key);
+  };
 }
 
 /**
@@ -78,7 +113,7 @@ export function hasOne(definition?: Object) {
  * @returns {(target:any, key:string)}
  */
 export function hasMany<T extends typeof Entity>(
-  targetModel: T,
+  targetModel: TypeResolver<T>,
   definition?: Partial<HasManyDefinition>,
 ) {
   // todo(shimks): extract out common logic (such as @property.array) to
@@ -86,28 +121,11 @@ export function hasMany<T extends typeof Entity>(
   return function(target: Object, key: string) {
     property.array(targetModel)(target, key);
 
-    const defaultFkName = camelCase(target.constructor.name + '_id');
-    const hasKeyTo = definition && definition.keyTo;
-    const hasDefaultFkProperty =
-      targetModel.definition &&
-      targetModel.definition.properties &&
-      targetModel.definition.properties[defaultFkName];
-    if (!(hasKeyTo || hasDefaultFkProperty)) {
-      // note(shimks): should we also check for the existence of explicitly
-      // given foreign key name on the juggler definition?
-      throw new Error(
-        `foreign key ${defaultFkName} not found on ${
-          targetModel.name
-        } model's juggler definition`,
-      );
-    }
-    const meta = {keyTo: defaultFkName};
+    const meta: Partial<HasManyDefinition> = {target: targetModel};
+
     Object.assign(meta, definition, {type: RelationType.hasMany});
 
-    PropertyDecoratorFactory.createDecorator(
-      RELATIONS_KEY,
-      meta as HasManyDefinition,
-    )(target, key);
+    relation(meta)(target, key);
   };
 }
 

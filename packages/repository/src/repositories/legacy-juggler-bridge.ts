@@ -6,7 +6,7 @@
 import * as legacy from 'loopback-datasource-juggler';
 
 import * as assert from 'assert';
-import {isPromiseLike} from '@loopback/context';
+import {isPromiseLike, Getter} from '@loopback/context';
 import {
   Options,
   AnyObject,
@@ -20,9 +20,14 @@ import {Filter, Where} from '../query';
 import {EntityCrudRepository} from './repository';
 import {
   createHasManyRepositoryFactory,
-  HasManyRepositoryFactory,
+  HasManyAccessor,
+  BelongsToAccessor,
+  createBelongsToFactory,
 } from './relation.factory';
-import {HasManyDefinition} from '../decorators/relation.decorator';
+import {
+  HasManyDefinition,
+  BelongsToDefinition,
+} from '../decorators/relation.decorator';
 
 export namespace juggler {
   export import DataSource = legacy.DataSource;
@@ -145,7 +150,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
    *     orderRepository: EntityCrudRepository<Order, typeof Order.prototype.id>,
    *   ) {
    *     super(Customer, db);
-   *     this.orders = this._createHasManyRepositoryFactoryFor(
+   *     this.orders = this._createHasManyAccessorFor(
    *       'orders',
    *       orderRepository,
    *     );
@@ -154,20 +159,28 @@ export class DefaultCrudRepository<T extends Entity, ID>
    * ```
    *
    * @param relationName Name of the relation defined on the source model
-   * @param targetRepo Target repository instance
+   * @param targetRepoGetter Getter for the target repository instance
    */
-  protected _createHasManyRepositoryFactoryFor<
-    Target extends Entity,
-    TargetID,
-    ForeignKeyType
-  >(
+  protected _createHasManyAccessorFor<Target extends Entity, TargetID>(
     relationName: string,
-    targetRepo: EntityCrudRepository<Target, TargetID>,
-  ): HasManyRepositoryFactory<Target, ForeignKeyType> {
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+  ): HasManyAccessor<Target, ID> {
     const meta = this.entityClass.definition.relations[relationName];
-    return createHasManyRepositoryFactory<Target, TargetID, ForeignKeyType>(
+    return createHasManyRepositoryFactory<Target, TargetID, ID>(
       meta as HasManyDefinition,
-      targetRepo,
+      targetRepoGetter,
+    );
+  }
+
+  protected _createBelongsToAccessorFor<Target extends Entity, TargetId>(
+    relationName: string,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetId>>,
+  ): BelongsToAccessor<Target, ID> {
+    const meta = this.entityClass.definition.relations[relationName];
+    return createBelongsToFactory<Target, TargetId, T, ID>(
+      meta as BelongsToDefinition,
+      targetRepoGetter,
+      this,
     );
   }
 

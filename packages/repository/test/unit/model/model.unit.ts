@@ -4,8 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {STRING} from '../../../';
-import {Entity, ModelDefinition} from '../../../';
+import {
+  STRING,
+  Entity,
+  ModelDefinition,
+  isTypeResolver,
+  resolveType,
+} from '../../../';
 
 describe('model', () => {
   const customerDef = new ModelDefinition('Customer');
@@ -185,5 +190,28 @@ describe('model', () => {
 
     const instance = new NoId();
     expect(() => instance.getId()).to.throw(/missing.*id/);
+  });
+
+  context('TypeResolver', () => {
+    class SomeModel {}
+
+    context('isTypeResolver', () => {
+      it('returns true if given arg is a resolver', () => {
+        expect(isTypeResolver(() => SomeModel)).to.be.true();
+      });
+
+      it('returns false if given arg is not a resolver', () => {
+        expect(isTypeResolver(SomeModel)).to.be.false();
+      });
+    });
+
+    context('resolveType', () => {
+      it('resolves given TypeResolver', () => {
+        expect(resolveType(() => SomeModel)).to.eql(SomeModel);
+      });
+      it('returns given arg if not a TypeResolver', () => {
+        expect(resolveType(SomeModel)).to.eql(SomeModel);
+      });
+    });
   });
 });

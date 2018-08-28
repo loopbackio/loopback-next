@@ -21,11 +21,11 @@ export type PropertyType = string | Function | Object | Type<any>;
  * Property definition for a model
  */
 export interface PropertyDefinition {
-  type: PropertyType; // For example, 'string', String, or {}
+  type: PropertyType | TypeResolver; // For example, 'string', String, or {}
   id?: boolean;
   json?: PropertyForm;
   store?: PropertyForm;
-  itemType?: PropertyType; // type of array
+  itemType?: PropertyType | TypeResolver; // type of array
   [attribute: string]: any; // Other attributes
 }
 
@@ -262,6 +262,34 @@ export abstract class Entity extends Model implements Persistable {
     return where;
   }
 }
+
+/**
+ * An anonymous function that resolves to a class/entity
+ * Intended to be used for cases when the JS engine is unable to fully define
+ * a given type
+ */
+export type TypeResolver<T = typeof Entity> = () => T;
+
+/**
+ * A function that checks whether given element is a TypeResolver or not
+ * @param fn
+ */
+export function isTypeResolver<T>(
+  fn: TypeResolver<T> | T,
+): fn is TypeResolver<T> {
+  return !/^class/.test(fn.toString());
+}
+
+/**
+ * If given class/function is a TypeResolver, the resolved class is returned
+ * @param fn
+ */
+export function resolveType<T>(fn: TypeResolver<T> | T) {
+  return isTypeResolver(fn) ? fn() : fn;
+}
+
+export const ERR_TARGET_UNDEFINED =
+  'Target model is undefined. Please consider using TypeResolver (() => TargetModel)';
 
 /**
  * Domain events

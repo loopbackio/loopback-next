@@ -35,9 +35,9 @@ we'll need to make two more additions:
 - inject `TodoRepository` instance
 
 Once the property type for `todos` have been defined, use
-`this._createHasManyRepositoryFactoryFor` to assign it a repository contraining
-factory function. Pass in the name of the relationship (`todos`) and the Todo
-repository instance to constrain as the arguments for the function.
+`this._createHasManyAccessorFor` to assign it a repository constraining factory
+function. Pass in the name of the relationship (`todos`) and the Todo repository
+instance to constrain as the arguments for the function.
 
 #### src/repositories/todo-list.repository.ts
 
@@ -45,28 +45,26 @@ repository instance to constrain as the arguments for the function.
 import {
   DefaultCrudRepository,
   juggler,
-  HasManyRepositoryFactory,
+  HasManyAccessor,
   repository,
 } from '@loopback/repository';
 import {TodoList, Todo} from '../models';
-import {inject} from '@loopback/core';
+import {inject, Getter} from '@loopback/core';
 import {TodoRepository} from './todo.repository';
 
 export class TodoListRepository extends DefaultCrudRepository<
   TodoList,
   typeof TodoList.prototype.id
 > {
-  public todos: HasManyRepositoryFactory<Todo, typeof TodoList.prototype.id>;
+  public todos: HasManyAccessor<Todo, typeof TodoList.prototype.id>;
 
   constructor(
     @inject('datasources.db') protected datasource: juggler.DataSource,
-    @repository(TodoRepository) protected todoRepository: TodoRepository,
+    @repository.getter('repositories.TodoRepository')
+    protected getTodoRepository: Getter<TodoRepository>,
   ) {
     super(TodoList, datasource);
-    this.todos = this._createHasManyRepositoryFactoryFor(
-      'todos',
-      todoRepository,
-    );
+    this.todos = this._createHasManyAccessorFor('todos', getTodoRepository);
   }
 }
 ```

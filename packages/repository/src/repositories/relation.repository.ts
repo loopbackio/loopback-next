@@ -12,6 +12,7 @@ import {
 import {DataObject, Options} from '../common-types';
 import {Entity} from '../model';
 import {Filter, Where} from '../query';
+import {Getter} from '@loopback/context';
 
 /**
  * CRUD operations for a target repository of a HasMany relation
@@ -55,6 +56,17 @@ export interface HasManyRepository<Target extends Entity> {
   ): Promise<number>;
 }
 
+/**
+ * CRUD operations for a target repository of a BelongsTo relation
+ */
+export interface BelongsToRepository<Target extends Entity> {
+  /**
+   * Gets the target model instance
+   * @param options
+   */
+  get(options?: Options): Promise<Target>;
+}
+
 export class DefaultHasManyEntityCrudRepository<
   TargetEntity extends Entity,
   TargetID,
@@ -62,34 +74,33 @@ export class DefaultHasManyEntityCrudRepository<
 > implements HasManyRepository<TargetEntity> {
   /**
    * Constructor of DefaultHasManyEntityCrudRepository
-   * @param targetRepository the related target model repository instance
+   * @param getTargetRepository the getter of the related target model repository instance
    * @param constraint the key value pair representing foreign key name to constrain
    * the target repository instance
    */
   constructor(
-    public targetRepository: TargetRepository,
+    public getTargetRepository: Getter<TargetRepository>,
     public constraint: DataObject<TargetEntity>,
   ) {}
-
   async create(
     targetModelData: DataObject<TargetEntity>,
     options?: Options,
   ): Promise<TargetEntity> {
-    return await this.targetRepository.create(
+    const targetRepo = await this.getTargetRepository();
+    return targetRepo.create(
       constrainDataObject(targetModelData, this.constraint),
       options,
     );
   }
 
   async find(filter?: Filter, options?: Options): Promise<TargetEntity[]> {
-    return await this.targetRepository.find(
-      constrainFilter(filter, this.constraint),
-      options,
-    );
+    const targetRepo = await this.getTargetRepository();
+    return targetRepo.find(constrainFilter(filter, this.constraint), options);
   }
 
   async delete(where?: Where, options?: Options): Promise<number> {
-    return await this.targetRepository.deleteAll(
+    const targetRepo = await this.getTargetRepository();
+    return targetRepo.deleteAll(
       constrainWhere(where, this.constraint),
       options,
     );
@@ -100,10 +111,36 @@ export class DefaultHasManyEntityCrudRepository<
     where?: Where,
     options?: Options,
   ): Promise<number> {
-    return await this.targetRepository.updateAll(
+    const targetRepo = await this.getTargetRepository();
+    return targetRepo.updateAll(
       constrainDataObject(dataObject, this.constraint),
       constrainWhere(where, this.constraint),
       options,
     );
+  }
+}
+
+export class DefaultBelongsToEntityCrudRepository<
+  TargetEntity extends Entity,
+  TargetId,
+  TargetRepository extends EntityCrudRepository<TargetEntity, TargetId>
+> implements BelongsToRepository<TargetEntity> {
+  /**
+   * Constructor of DefaultBelongsToEntityCrudRepository
+   * @param getTargetRepository the getter of the related target model repository instance
+   * @param constraint the key value pair representing foreign key name to constrain
+   * the target repository instance
+   */
+  constructor(
+    public getTargetRepository: Getter<TargetRepository>,
+    public constraint: DataObject<TargetEntity>,
+  ) {}
+  async get(options?: Options): Promise<TargetEntity> {
+    const targetRepo = await this.getTargetRepository();
+    const result = await targetRepo.find(
+      constrainFilter(undefined, this.constraint),
+      options,
+    );
+    return result[0];
   }
 }

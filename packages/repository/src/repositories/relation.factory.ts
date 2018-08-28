@@ -4,17 +4,32 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {EntityCrudRepository} from './repository';
-import {HasManyDefinition} from '../decorators/relation.decorator';
-import {Entity} from '../model';
+import {
+  HasManyDefinition,
+  RelationType,
+  BelongsToDefinition,
+} from '../decorators/relation.decorator';
+import {Entity, isTypeResolver} from '../model';
 import {
   HasManyRepository,
   DefaultHasManyEntityCrudRepository,
+  DefaultBelongsToEntityCrudRepository,
 } from './relation.repository';
-import {DataObject} from '..';
+import {DataObject} from '../common-types';
+import {Getter} from '@loopback/context';
 
-export type HasManyRepositoryFactory<Target extends Entity, ForeignKeyType> = (
+const debug = require('debug')('loopback:repository:relation:factory');
+
+const ERR_NO_BELONGSTO_META = 'no belongsTo metadata found';
+const ERR_NO_ID_META = 'no id metadata found';
+
+export type HasManyAccessor<Target extends Entity, ForeignKeyType> = (
   fkValue: ForeignKeyType,
 ) => HasManyRepository<Target>;
+
+export type BelongsToAccessor<Target extends Entity, SourceId> = (
+  sourceId: SourceId,
+) => Promise<Target>;
 
 /**
  * Enforces a constraint on a repository based on a relationship contract
@@ -35,21 +50,140 @@ export function createHasManyRepositoryFactory<
   ForeignKeyType
 >(
   relationMetadata: HasManyDefinition,
-  targetRepository: EntityCrudRepository<Target, TargetID>,
-): HasManyRepositoryFactory<Target, ForeignKeyType> {
+  targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+): HasManyAccessor<Target, ForeignKeyType> {
+  resolveHasManyMetadata(relationMetadata);
+  debug('resolved relation metadata: %o', relationMetadata);
+  const fkName = relationMetadata.keyTo;
+  if (!fkName) {
+    throw new Error('The foreign key property name (keyTo) must be specified');
+  }
   return function(fkValue: ForeignKeyType) {
-    const fkName = relationMetadata.keyTo;
-    if (!fkName) {
-      throw new Error(
-        'The foreign key property name (keyTo) must be specified',
-      );
-    }
     // tslint:disable-next-line:no-any
     const constraint: any = {[fkName]: fkValue};
     return new DefaultHasManyEntityCrudRepository<
       Target,
       TargetID,
       EntityCrudRepository<Target, TargetID>
-    >(targetRepository, constraint as DataObject<Target>);
+    >(targetRepoGetter, constraint as DataObject<Target>);
   };
+}
+
+/**
+ * Enforces a BelongsTo constraint on a repository
+ */
+export function createBelongsToFactory<
+  Target extends Entity,
+  TargetId,
+  Source extends Entity,
+  SourceId
+>(
+  belongsToMetadata: BelongsToDefinition,
+  targetRepoGetter: Getter<EntityCrudRepository<Target, TargetId>>,
+  sourceRepository: EntityCrudRepository<Source, SourceId>,
+): BelongsToAccessor<Target, SourceId> {
+  resolveBelongsToMetadata(belongsToMetadata);
+  const foreignKey = belongsToMetadata.keyFrom;
+  const primaryKey = belongsToMetadata.keyTo;
+  if (!foreignKey) {
+    throw new Error(
+      'The foreign key property name (keyFrom) must be specified',
+    );
+  }
+  if (!primaryKey) {
+    throw new Error('The primary key property name (keyTo) must be specified');
+  }
+  return async function getTargetInstanceOfBelongsTo(sourceId: SourceId) {
+    const sourceModel = await sourceRepository.findById(sourceId);
+    const foreignKeyValue = sourceModel[foreignKey as keyof Source];
+    // tslint:disable-next-line:no-any
+    const constraint: any = {[primaryKey]: foreignKeyValue};
+    const constrainedRepo = new DefaultBelongsToEntityCrudRepository(
+      targetRepoGetter,
+      constraint as DataObject<Target>,
+    );
+    return constrainedRepo.get();
+  };
+}
+
+/**
+ * Resolves given hasMany metadata if target is specified to be a resolver.
+ * Mainly used to infer what the `keyTo` property should be from the target's
+ * belongsTo metadata
+ * @param relationMeta hasMany metadata to resolve
+ */
+export function resolveHasManyMetadata(relationMeta: HasManyDefinition) {
+  if (
+    relationMeta.target &&
+    isTypeResolver(relationMeta.target) &&
+    !relationMeta.keyTo
+  ) {
+    const resolvedModel = relationMeta.target();
+
+    debug('resolved model from given metadata: %o', resolvedModel);
+
+    const targetRelationMeta = resolvedModel.definition.relations;
+
+    debug('relation metadata from %o: %o', resolvedModel, targetRelationMeta);
+
+    if (!targetRelationMeta) {
+      throw new Error(ERR_NO_BELONGSTO_META);
+    }
+
+    let belongsToMetaExists = false;
+
+    for (const key in targetRelationMeta) {
+      if (targetRelationMeta[key].type === RelationType.belongsTo) {
+        relationMeta.keyTo = key;
+        belongsToMetaExists = true;
+        break;
+      }
+    }
+
+    if (!belongsToMetaExists) {
+      throw new Error(ERR_NO_BELONGSTO_META);
+    }
+  }
+  return relationMeta;
+}
+
+/**
+ * Resolves given belongsTo metadata if target is specified to be a resolver.
+ * Mainly used to infer what the `keyTo` property should be from the target's
+ * property id metadata
+ * @param relationMeta belongsTo metadata to resolve
+ */
+export function resolveBelongsToMetadata(relationMeta: BelongsToDefinition) {
+  if (
+    relationMeta.target &&
+    isTypeResolver(relationMeta.target) &&
+    !relationMeta.keyTo
+  ) {
+    const resolvedModel = relationMeta.target();
+
+    debug('resolved model from given metadata: %o', resolvedModel);
+
+    const targetPropertiesMeta = resolvedModel.definition.properties;
+
+    debug('relation metadata from %o: %o', resolvedModel, targetPropertiesMeta);
+
+    if (!targetPropertiesMeta) {
+      throw new Error(ERR_NO_ID_META);
+    }
+
+    let idMetaExists = false;
+
+    for (const key in targetPropertiesMeta) {
+      if (targetPropertiesMeta[key].id === true) {
+        relationMeta.keyTo = key;
+        idMetaExists = true;
+        break;
+      }
+    }
+
+    if (!idMetaExists) {
+      throw new Error(ERR_NO_ID_META);
+    }
+  }
+  return relationMeta;
 }

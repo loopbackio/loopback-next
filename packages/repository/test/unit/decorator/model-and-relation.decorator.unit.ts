@@ -21,6 +21,7 @@ import {
   RelationType,
   Entity,
   ValueObject,
+  ERR_TARGET_UNDEFINED,
 } from '../../../';
 import {MetadataInspector} from '@loopback/context';
 
@@ -96,8 +97,8 @@ describe('model decorator', () => {
     @property()
     customerId: string;
 
-    @belongsTo({target: 'Customer'})
     // TypeScript does not allow me to reference Customer here
+    @belongsTo(() => Customer)
     customer: ICustomer;
 
     // Validates that property no longer requires a parameter
@@ -124,7 +125,7 @@ describe('model decorator', () => {
     @referencesOne()
     profile: Profile;
 
-    @hasMany(Order)
+    @hasMany(() => Order)
     orders?: Order[];
 
     @hasOne()
@@ -259,7 +260,7 @@ describe('model decorator', () => {
       ) || /* istanbul ignore next */ {};
     expect(meta.orders).to.eql({
       type: RelationType.hasMany,
-      keyTo: 'customerId',
+      target: () => Order,
     });
   });
 
@@ -271,7 +272,8 @@ describe('model decorator', () => {
       ) || /* istanbul ignore next */ {};
     expect(meta.customer).to.eql({
       type: RelationType.belongsTo,
-      target: 'Customer',
+      target: () => Customer,
+      keyFrom: 'customer',
     });
   });
 
@@ -304,7 +306,7 @@ describe('model decorator', () => {
     class House extends Entity {
       @property()
       name: string;
-      @hasMany(Person, {keyTo: 'fk'})
+      @hasMany(() => Person, {keyTo: 'fk'})
       person: Person[];
     }
 
@@ -319,7 +321,7 @@ describe('model decorator', () => {
 
   describe('property namespace', () => {
     describe('array', () => {
-      it('"@property.array" adds array metadata', () => {
+      it('adds array metadata', () => {
         @model()
         class TestModel {
           @property.array(Product)
@@ -334,18 +336,40 @@ describe('model decorator', () => {
         expect(meta.items).to.eql({type: Array, itemType: Product});
       });
 
-      it('throws when @property.array is used on a non-array property', () => {
-        expect.throws(
-          () => {
-            // tslint:disable-next-line:no-unused-variable
-            class Oops {
-              @property.array(Product)
-              product: Product;
-            }
-          },
-          Error,
-          property.ERR_PROP_NOT_ARRAY,
+      it('adds model resolver metadata', () => {
+        class CyclicX {
+          @property.array(() => CyclicY)
+          cyclicProp: CyclicY[];
+        }
+        class CyclicY {
+          @property.array(() => CyclicX)
+          cyclicProp: CyclicX[];
+        }
+        const cyclicXMeta = MetadataInspector.getAllPropertyMetadata(
+          MODEL_PROPERTIES_KEY,
+          CyclicX.prototype,
         );
+        const cyclicYMeta = MetadataInspector.getAllPropertyMetadata(
+          MODEL_PROPERTIES_KEY,
+          CyclicY.prototype,
+        );
+
+        expect(cyclicXMeta)
+          .to.have.property('cyclicProp')
+          .which.eql({type: Array, itemType: () => CyclicY});
+        expect(cyclicYMeta)
+          .to.have.property('cyclicProp')
+          .which.eql({type: Array, itemType: () => CyclicX});
+      });
+
+      it('throws when used on a non-array property', () => {
+        expect(() => {
+          // tslint:disable-next-line:no-unused-variable
+          class Oops {
+            @property.array(Product)
+            product: Product;
+          }
+        }).to.throw(property.ERR_PROP_NOT_ARRAY);
       });
     });
   });

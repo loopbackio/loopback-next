@@ -16,7 +16,14 @@ import {
   Options,
   DataObject,
   Where,
+  resolveHasManyMetadata,
+  HasManyDefinition,
+  RelationType,
+  ModelDefinition,
+  BelongsToDefinition,
+  resolveBelongsToMetadata,
 } from '../../..';
+import {createGetter} from '../../test-utils';
 
 describe('relation repository', () => {
   context('HasManyRepository interface', () => {
@@ -108,6 +115,155 @@ describe('relation repository', () => {
     });
   });
 
+  context('resolveHasManyMetadata', () => {
+    it('throws if no target relation metadata is found', () => {
+      class TargetModel extends Entity {
+        static definition = new ModelDefinition({
+          name: 'TargetModel',
+        });
+      }
+      const meta: HasManyDefinition = {
+        type: RelationType.hasMany,
+        target: () => TargetModel,
+      };
+      expect(() => resolveHasManyMetadata(meta)).to.throw(
+        /no belongsTo metadata found/,
+      );
+    });
+
+    it('throws if no belongsTo metadata is found', () => {
+      class SourceModel extends Entity {}
+      class TargetModel extends Entity {
+        static definition = new ModelDefinition({
+          name: 'TargetModel',
+          relations: {
+            foreignId: {type: RelationType.hasMany, target: () => SourceModel},
+          },
+        });
+      }
+      const meta: HasManyDefinition = {
+        type: RelationType.hasMany,
+        target: () => TargetModel,
+      };
+      expect(() => resolveHasManyMetadata(meta)).to.throw(
+        /no belongsTo metadata found/,
+      );
+    });
+
+    it('retains predefined keyTo property', () => {
+      class TargetModel extends Entity {}
+      const meta: HasManyDefinition = {
+        type: RelationType.hasMany,
+        target: () => TargetModel,
+        keyTo: 'someOtherForeignId',
+      };
+      const result = resolveHasManyMetadata(meta);
+      const expected: HasManyDefinition = {
+        type: RelationType.hasMany,
+        target: () => TargetModel,
+        keyTo: 'someOtherForeignId',
+      };
+      expect(result).to.eql(expected);
+    });
+
+    it('infers keyTo from property decorated with @belongsTo on target model', () => {
+      class SourceModel extends Entity {}
+      class TargetModel extends Entity {
+        static definition = new ModelDefinition({
+          name: 'TargetModel',
+          relations: {
+            foreignId: {
+              type: RelationType.belongsTo,
+              target: () => SourceModel,
+            },
+          },
+        });
+      }
+      const meta: HasManyDefinition = {
+        type: RelationType.hasMany,
+        target: () => TargetModel,
+      };
+      const result = resolveHasManyMetadata(meta);
+      const expected: HasManyDefinition = {
+        type: RelationType.hasMany,
+        target: () => TargetModel,
+        keyTo: 'foreignId',
+      };
+      expect(result).to.eql(expected);
+    });
+  });
+
+  context('resolveBelongsToMetadata', () => {
+    it('throws if no target definition metadata is found', () => {
+      class TargetModel extends Entity {
+        static definition = new ModelDefinition({
+          name: 'TargetModel',
+        });
+      }
+      const meta: BelongsToDefinition = {
+        type: RelationType.belongsTo,
+        target: () => TargetModel,
+      };
+      expect(() => resolveBelongsToMetadata(meta)).to.throw(
+        /no id metadata found/,
+      );
+    });
+
+    it('throws if no belongsTo metadata is found', () => {
+      class TargetModel extends Entity {
+        static definition = new ModelDefinition({
+          name: 'TargetModel',
+          properties: {
+            propertyThatIsNotId: {type: 'number'},
+          },
+        });
+      }
+      const meta: BelongsToDefinition = {
+        type: RelationType.belongsTo,
+        target: () => TargetModel,
+      };
+      expect(() => resolveBelongsToMetadata(meta)).to.throw(
+        /no id metadata found/,
+      );
+    });
+
+    it('retains predefined keyTo property', () => {
+      class TargetModel extends Entity {}
+      const meta: BelongsToDefinition = {
+        type: RelationType.belongsTo,
+        target: () => TargetModel,
+        keyTo: 'someOtherForeignId',
+      };
+      const result = resolveBelongsToMetadata(meta);
+      const expected: BelongsToDefinition = {
+        type: RelationType.belongsTo,
+        target: () => TargetModel,
+        keyTo: 'someOtherForeignId',
+      };
+      expect(result).to.eql(expected);
+    });
+
+    it('infers keyTo from property decorated with @property({id: true}) on target model', () => {
+      class TargetModel extends Entity {
+        static definition = new ModelDefinition({
+          name: 'TargetModel',
+          properties: {anId: {type: 'number', id: true}},
+        });
+      }
+      const meta: BelongsToDefinition = {
+        type: RelationType.belongsTo,
+        target: () => TargetModel,
+      };
+      const result = resolveBelongsToMetadata(meta);
+      const expected: BelongsToDefinition = {
+        type: RelationType.belongsTo,
+        target: () => TargetModel,
+        keyTo: 'anId',
+      };
+      expect(result).to.eql(expected);
+    });
+  });
+
   /*------------- HELPERS ---------------*/
 
   class Customer extends Entity {
@@ -130,10 +286,11 @@ describe('relation repository', () => {
 
   function givenDefaultHasManyCrudInstance(constraint: DataObject<Customer>) {
     repo = sinon.createStubInstance(CustomerRepository);
+    const repoGetter = createGetter(repo);
     return new DefaultHasManyEntityCrudRepository<
       Customer,
       typeof Customer.prototype.id,
       CustomerRepository
-    >(repo, constraint);
+    >(repoGetter, constraint);
   }
 });

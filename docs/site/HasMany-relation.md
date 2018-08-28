@@ -56,7 +56,7 @@ export class Customer extends Entity {
   })
   name: string;
 
-  @hasMany(Order)
+  @hasMany(() => Order)
   orders?: Order[];
 
   constructor(data: Partial<Customer>) {
@@ -85,7 +85,7 @@ as follows:
 // import statements
 class Customer extends Entity {
   // constructor, properties, etc.
-  @hasMany(Order, {keyTo: 'custId'})
+  @hasMany(() => Order, {keyTo: 'custId'})
   orders?: Order[];
 }
 ```
@@ -99,18 +99,19 @@ repository, the following are required:
 
 - Use [Dependency Injection](Dependency-injection.md) to inject an instance of
   the target repository in the constructor of your source repository class.
+  <!-- TODO: EXPLAIN WHY WE NEED TO INJECT A GETTER HERE -->
 - Declare a property with the factory function type
-  `HasManyRepositoryFactory<targetModel, typeof sourceModel.prototype.id>` on
-  the source repository class.
-- call the `_createHasManyRepositoryFactoryFor` function in the constructor of
-  the source repository class with the relation name (decorated relation
-  property on the source model) and target repository instance and assign it the
-  property mentioned above.
+  `HasManyAccessor<targetModel, typeof sourceModel.prototype.id>` on the source
+  repository class.
+- call the `_createHasManyAccessorFor` function in the constructor of the source
+  repository class with the relation name (decorated relation property on the
+  source model) and target repository instance and assign it the property
+  mentioned above.
 
 The following code snippet shows how it would look like:
 
 {% include code-caption.html
-content="/src/repositories/customer.repository.ts.ts" %}
+content="/src/repositories/customer.repository.ts" %}
 
 ```ts
 import {Order, Customer} from '../models';
@@ -118,25 +119,23 @@ import {OrderRepository} from './order.repository.ts';
 import {
   DefaultCrudRepository,
   juggler,
-  HasManyRepositoryFactory,
+  HasManyAccessor,
   repository,
 } from '@loopback/repository';
-import {inject} from '@loopback/core';
+import {inject, Getter} from '@loopback/core';
 
 class CustomerRepository extends DefaultCrudRepository<
   Customer,
   typeof Customer.prototype.id
 > {
-  public orders: HasManyRepositoryFactory<Order, typeof Customer.prototype.id>;
+  public orders: HasManyAccessor<Order, typeof Customer.prototype.id>;
   constructor(
     @inject('datasources.db') protected db: juggler.DataSource,
-    @repository(OrderRepository) orderRepository: OrderRepository,
+    @repository.getter('repositories.OrderRepository')
+    getOrderRepository: Getter<OrderRepository>,
   ) {
     super(Customer, db);
-    this.orders = this._createHasManyRepositoryFactoryFor(
-      'orders',
-      orderRepository,
-    );
+    this.orders = this._createHasManyAccessorFor_('orders', getOrderRepository);
   }
 }
 ```
