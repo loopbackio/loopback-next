@@ -20,7 +20,16 @@ import {
  */
 export class TestSandbox {
   // Path of the TestSandbox
-  private path: string;
+  private _path?: string;
+
+  public get path(): string {
+    if (!this._path) {
+      throw new Error(
+        `TestSandbox instance was deleted. Create a new instance.`,
+      );
+    }
+    return this._path;
+  }
 
   /**
    * Will create a directory if it doesn't already exist. If it exists, you
@@ -30,26 +39,14 @@ export class TestSandbox {
    */
   constructor(path: string) {
     // resolve ensures path is absolute / makes it absolute (relative to cwd())
-    this.path = resolve(path);
+    this._path = resolve(path);
     ensureDirSync(this.path);
-  }
-
-  /**
-   * This function ensures a valid instance is being used for operations.
-   */
-  private validateInst() {
-    if (!this.path) {
-      throw new Error(
-        `TestSandbox instance was deleted. Create a new instance.`,
-      );
-    }
   }
 
   /**
    * Returns the path of the TestSandbox
    */
   getPath(): string {
-    this.validateInst();
     return this.path;
   }
 
@@ -57,8 +54,6 @@ export class TestSandbox {
    * Resets the TestSandbox. (Remove all files in it).
    */
   async reset(): Promise<void> {
-    this.validateInst();
-
     // Decache files from require's cache so future tests aren't affected incase
     // a file is recreated in sandbox with the same file name but different
     // contents after resetting the sandbox.
@@ -75,9 +70,8 @@ export class TestSandbox {
    * Deletes the TestSandbox.
    */
   async delete(): Promise<void> {
-    this.validateInst();
     await remove(this.path);
-    delete this.path;
+    delete this._path;
   }
 
   /**
@@ -86,7 +80,6 @@ export class TestSandbox {
    * @param dir Name of directory to create (relative to TestSandbox path)
    */
   async mkdir(dir: string): Promise<void> {
-    this.validateInst();
     await ensureDir(resolve(this.path, dir));
   }
 
@@ -101,7 +94,6 @@ export class TestSandbox {
    * (relative to TestSandbox). Original filename used if not specified.
    */
   async copyFile(src: string, dest?: string): Promise<void> {
-    this.validateInst();
     dest = dest
       ? resolve(this.path, dest)
       : resolve(this.path, parse(src).base);
