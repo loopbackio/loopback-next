@@ -6,9 +6,12 @@
 import {ApplicationConfig} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
+import {ServiceMixin} from '@loopback/service-proxy';
 import {BootMixin} from '../../index';
 
-export class BooterApp extends RepositoryMixin(BootMixin(RestApplication)) {
+export class BooterApp extends BootMixin(
+  ServiceMixin(RepositoryMixin(RestApplication)),
+) {
   constructor(options?: ApplicationConfig) {
     super(options);
     this.projectRoot = __dirname;

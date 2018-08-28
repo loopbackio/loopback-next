@@ -6,6 +6,7 @@
     "src/booters/controller.booter.ts",
     "src/booters/datasource.booter.ts",
     "src/booters/repository.booter.ts",
+    "src/booters/service.booter.ts",
     "src/booters/index.ts",
     "src/mixins/boot.mixin.ts",
     "src/mixins/index.ts",

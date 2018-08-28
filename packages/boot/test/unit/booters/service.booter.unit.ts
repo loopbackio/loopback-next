@@ -5,21 +5,18 @@
 
 import {expect, TestSandbox, sinon} from '@loopback/testlab';
 import {resolve} from 'path';
-import {
-  ApplicationWithRepositories,
-  RepositoryMixin,
-} from '@loopback/repository';
-import {DataSourceBooter, DataSourceDefaults} from '../../../src';
+import {ApplicationWithServices, ServiceMixin} from '@loopback/service-proxy';
+import {ServiceBooter, ServiceDefaults} from '../../../src';
 import {Application} from '@loopback/core';
 
-describe('datasource booter unit tests', () => {
+describe('service booter unit tests', () => {
   const SANDBOX_PATH = resolve(__dirname, '../../../.sandbox');
   const sandbox = new TestSandbox(SANDBOX_PATH);
 
-  const DATASOURCES_PREFIX = 'datasources';
-  const DATASOURCES_TAG = 'datasource';
+  const SERVICES_PREFIX = 'services';
+  const SERVICES_TAG = 'service';
 
-  class AppWithRepo extends RepositoryMixin(Application) {}
+  class AppWithRepo extends ServiceMixin(Application) {}
 
   let app: AppWithRepo;
   let stub: sinon.SinonStub;
@@ -32,28 +29,30 @@ describe('datasource booter unit tests', () => {
   it('gives a warning if called on an app without RepositoryMixin', async () => {
     const normalApp = new Application();
     await sandbox.copyFile(
-      resolve(__dirname, '../../fixtures/datasource.artifact.js'),
+      resolve(__dirname, '../../fixtures/service-provider.artifact.js'),
     );
 
-    const booterInst = new DataSourceBooter(
-      normalApp as ApplicationWithRepositories,
+    const booterInst = new ServiceBooter(
+      normalApp as ApplicationWithServices,
       SANDBOX_PATH,
     );
 
-    booterInst.discovered = [resolve(SANDBOX_PATH, 'datasource.artifact.js')];
+    booterInst.discovered = [
+      resolve(SANDBOX_PATH, 'service-provider.artifact.js'),
+    ];
     await booterInst.load();
 
     sinon.assert.calledOnce(stub);
     sinon.assert.calledWith(
       stub,
-      'app.dataSource() function is needed for DataSourceBooter. You can add ' +
-        'it to your Application using RepositoryMixin from @loopback/repository.',
+      'app.serviceProvider() function is needed for ServiceBooter. You can add ' +
+        'it to your Application using ServiceMixin from @loopback/service-proxy.',
     );
   });
 
-  it(`uses DataSourceDefaults for 'options' if none are given`, () => {
-    const booterInst = new DataSourceBooter(app, SANDBOX_PATH);
-    expect(booterInst.options).to.deepEqual(DataSourceDefaults);
+  it(`uses ServiceDefaults for 'options' if none are given`, () => {
+    const booterInst = new ServiceBooter(app, SANDBOX_PATH);
+    expect(booterInst.options).to.deepEqual(ServiceDefaults);
   });
 
   it('overrides defaults with provided options and uses defaults for the rest', () => {
@@ -62,26 +61,28 @@ describe('datasource booter unit tests', () => {
       extensions: ['.ext1'],
     };
     const expected = Object.assign({}, options, {
-      nested: DataSourceDefaults.nested,
+      nested: ServiceDefaults.nested,
     });
 
-    const booterInst = new DataSourceBooter(app, SANDBOX_PATH, options);
+    const booterInst = new ServiceBooter(app, SANDBOX_PATH, options);
     expect(booterInst.options).to.deepEqual(expected);
   });
 
-  it('binds datasources during the load phase', async () => {
-    const expected = [`${DATASOURCES_PREFIX}.db`];
+  it('binds services during the load phase', async () => {
+    const expected = [`${SERVICES_PREFIX}.GeocoderService`];
     await sandbox.copyFile(
-      resolve(__dirname, '../../fixtures/datasource.artifact.js'),
+      resolve(__dirname, '../../fixtures/service-provider.artifact.js'),
     );
-    const booterInst = new DataSourceBooter(app, SANDBOX_PATH);
+    const booterInst = new ServiceBooter(app, SANDBOX_PATH);
     const NUM_CLASSES = 1; // 1 class in above file.
 
-    booterInst.discovered = [resolve(SANDBOX_PATH, 'datasource.artifact.js')];
+    booterInst.discovered = [
+      resolve(SANDBOX_PATH, 'service-provider.artifact.js'),
+    ];
     await booterInst.load();
 
-    const datasources = app.findByTag(DATASOURCES_TAG);
-    const keys = datasources.map(binding => binding.key);
+    const services = app.findByTag(SERVICES_TAG);
+    const keys = services.map(binding => binding.key);
     expect(keys).to.have.lengthOf(NUM_CLASSES);
     expect(keys.sort()).to.eql(expected.sort());
   });

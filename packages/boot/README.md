@@ -48,6 +48,7 @@ List of Options available on BootOptions Object.
 | `controllers`  | `ArtifactOptions` | ControllerBooter convention options |
 | `repositories` | `ArtifactOptions` | RepositoryBooter convention options |
 | `datasources`  | `ArtifactOptions` | DataSourceBooter convention options |
+| `services`     | `ArtifactOptions` | ServiceBooter convention options    |
 
 ### ArtifactOptions
 
@@ -157,6 +158,29 @@ Available options on the `datasources` object on `BootOptions` are as follows:
 | `dirs`       | `string \| string[]` | `['datasources']`    | Paths relative to projectRoot to look in for DataSource artifacts                                            |
 | `extensions` | `string \| string[]` | `['.datasource.js']` | File extensions to match for DataSource artifacts                                                            |
 | `nested`     | `boolean`            | `true`               | Look in nested directories in `dirs` for DataSource artifacts                                                |
+| `glob`       | `string`             |                      | A `glob` pattern string. This takes precedence over above 3 options (which are used to make a glob pattern). |
+
+### ServiceBooter
+
+#### Description
+
+Discovers and binds Service providers using `app.serviceProvider()` (Application
+must use `ServiceMixin` from `@loopback/service-proxy`).
+
+#### Options
+
+The options for this can be passed via `BootOptions` when calling
+`app.boot(options: BootOptions)`.
+
+The options for this are passed in a `services` object on `BootOptions`.
+
+Available options on the `services` object on `BootOptions` are as follows:
+
+| Options      | Type                 | Default              | Description                                                                                                  |
+| ------------ | -------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `dirs`       | `string \| string[]` | `['repositories']`   | Paths relative to projectRoot to look in for Service artifacts                                               |
+| `extensions` | `string \| string[]` | `['.repository.js']` | File extensions to match for Service artifacts                                                               |
+| `nested`     | `boolean`            | `true`               | Look in nested directories in `dirs` for Service artifacts                                                   |
 | `glob`       | `string`             |                      | A `glob` pattern string. This takes precedence over above 3 options (which are used to make a glob pattern). |
 
 ## Contributions
