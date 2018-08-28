@@ -28,13 +28,15 @@ export class DataSourceBooter extends BaseArtifactBooter {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: ApplicationWithRepositories,
-    @inject(BootBindings.PROJECT_ROOT) public projectRoot: string,
+    @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
     @inject(`${BootBindings.BOOT_OPTIONS}#datasources`)
     public datasourceConfig: ArtifactOptions = {},
   ) {
-    super();
-    // Set DataSource Booter Options if passed in via bootConfig
-    this.options = Object.assign({}, DataSourceDefaults, datasourceConfig);
+    super(
+      projectRoot,
+      // Set DataSource Booter Options if passed in via bootConfig
+      Object.assign({}, DataSourceDefaults, datasourceConfig),
+    );
   }
 
   /**

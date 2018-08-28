@@ -67,7 +67,7 @@ describe('booter-utils unit tests', () => {
       const files = [resolve(SANDBOX_PATH, 'multiple.artifact.js')];
       const NUM_CLASSES = 2; // Number of classes in above file
 
-      const classes = loadClassesFromFiles(files);
+      const classes = loadClassesFromFiles(files, sandbox.path);
       expect(classes).to.have.lengthOf(NUM_CLASSES);
       expect(classes[0]).to.be.a.Function();
       expect(classes[1]).to.be.a.Function();
@@ -79,14 +79,16 @@ describe('booter-utils unit tests', () => {
       );
       const files = [resolve(SANDBOX_PATH, 'empty.artifact.js')];
 
-      const classes = loadClassesFromFiles(files);
+      const classes = loadClassesFromFiles(files, sandbox.path);
       expect(classes).to.be.an.Array();
       expect(classes).to.be.empty();
     });
 
     it('throws an error given a non-existent file', async () => {
       const files = [resolve(SANDBOX_PATH, 'fake.artifact.js')];
-      expect(() => loadClassesFromFiles(files)).to.throw(/Cannot find module/);
+      expect(() => loadClassesFromFiles(files, sandbox.path)).to.throw(
+        /Cannot find module/,
+      );
     });
   });
 });

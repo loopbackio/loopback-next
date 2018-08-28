@@ -6,35 +6,38 @@
 import {BaseArtifactBooter} from '../../../index';
 import {expect} from '@loopback/testlab';
 import {resolve} from 'path';
+import {ArtifactOptions} from '../../../src';
 
 describe('base-artifact booter unit tests', () => {
-  let booterInst: BaseArtifactBooter;
-
-  beforeEach(getBaseBooter);
+  const TEST_OPTIONS = {
+    dirs: ['test', 'test2'],
+    extensions: ['.test.js', 'test2.js'],
+    nested: false,
+  };
 
   describe('configure()', () => {
-    const options = {
-      dirs: ['test', 'test2'],
-      extensions: ['.test.js', 'test2.js'],
-      nested: false,
-    };
-
     it(`sets 'dirs' / 'extensions' properties as an array if a string`, async () => {
-      booterInst.options = {dirs: 'test', extensions: '.test.js', nested: true};
+      const booterInst = givenBaseBooter({
+        dirs: 'test',
+        extensions: '.test.js',
+        nested: true,
+      });
       await booterInst.configure();
       expect(booterInst.dirs).to.be.eql(['test']);
       expect(booterInst.extensions).to.be.eql(['.test.js']);
     });
 
     it(`creates and sets 'glob' pattern`, async () => {
-      booterInst.options = options;
+      const booterInst = givenBaseBooter();
       const expected = '/@(test|test2)/*@(.test.js|test2.js)';
       await booterInst.configure();
       expect(booterInst.glob).to.equal(expected);
     });
 
     it(`creates and sets 'glob' pattern (nested)`, async () => {
-      booterInst.options = Object.assign({}, options, {nested: true});
+      const booterInst = givenBaseBooter(
+        Object.assign({}, TEST_OPTIONS, {nested: true}),
+      );
       const expected = '/@(test|test2)/**/*@(.test.js|test2.js)';
       await booterInst.configure();
       expect(booterInst.glob).to.equal(expected);
@@ -42,7 +45,9 @@ describe('base-artifact booter unit tests', () => {
 
     it(`sets 'glob' pattern to options.glob if present`, async () => {
       const expected = '/**/*.glob';
-      booterInst.options = Object.assign({}, options, {glob: expected});
+      const booterInst = givenBaseBooter(
+        Object.assign({}, TEST_OPTIONS, {glob: expected}),
+      );
       await booterInst.configure();
       expect(booterInst.glob).to.equal(expected);
     });
@@ -50,7 +55,7 @@ describe('base-artifact booter unit tests', () => {
 
   describe('discover()', () => {
     it(`sets 'discovered' property`, async () => {
-      booterInst.projectRoot = __dirname;
+      const booterInst = givenBaseBooter();
       // Fake glob pattern so we get an empty array
       booterInst.glob = '/abc.xyz';
       await booterInst.discover();
@@ -60,6 +65,7 @@ describe('base-artifact booter unit tests', () => {
 
   describe('load()', () => {
     it(`sets 'classes' property to Classes from a file`, async () => {
+      const booterInst = givenBaseBooter();
       booterInst.discovered = [
         resolve(__dirname, '../../fixtures/multiple.artifact.js'),
       ];
@@ -69,7 +75,7 @@ describe('base-artifact booter unit tests', () => {
     });
   });
 
-  async function getBaseBooter() {
-    booterInst = new BaseArtifactBooter();
+  function givenBaseBooter(options?: ArtifactOptions) {
+    return new BaseArtifactBooter(__dirname, options || TEST_OPTIONS);
   }
 });

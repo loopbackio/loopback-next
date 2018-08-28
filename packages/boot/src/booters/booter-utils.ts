@@ -4,8 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Constructor} from '@loopback/context';
+import * as debugFactory from 'debug';
+import * as path from 'path';
 import {promisify} from 'util';
 const glob = promisify(require('glob'));
+
+const debug = debugFactory('loopback:boot:booter-utils');
 
 /**
  * Returns all files matching the given glob pattern relative to root
@@ -42,16 +46,23 @@ export function isClass(target: any): target is Constructor<any> {
  * @param files An array of string of absolute file paths
  * @returns {Constructor<{}>[]} An array of Class constructors from a file
  */
-export function loadClassesFromFiles(files: string[]): Constructor<{}>[] {
+export function loadClassesFromFiles(
+  files: string[],
+  projectRootDir: string,
+): Constructor<{}>[] {
   const classes: Array<Constructor<{}>> = [];
   for (const file of files) {
+    debug('Loading artifact file %j', path.relative(projectRootDir, file));
     const moduleObj = require(file);
     // WORKAROUND: use `for in` instead of Object.values().
     // See https://github.com/nodejs/node/issues/20278
     for (const k in moduleObj) {
       const exported = moduleObj[k];
       if (isClass(exported)) {
+        debug('  add %s (class %s)', k, exported.name);
         classes.push(exported);
+      } else {
+        debug('  skip non-class %s', k);
       }
     }
   }

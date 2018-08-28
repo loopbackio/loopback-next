@@ -25,13 +25,15 @@ export class RepositoryBooter extends BaseArtifactBooter {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: ApplicationWithRepositories,
-    @inject(BootBindings.PROJECT_ROOT) public projectRoot: string,
+    @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
     @inject(`${BootBindings.BOOT_OPTIONS}#repositories`)
     public repositoryOptions: ArtifactOptions = {},
   ) {
-    super();
-    // Set Repository Booter Options if passed in via bootConfig
-    this.options = Object.assign({}, RepositoryDefaults, repositoryOptions);
+    super(
+      projectRoot,
+      // Set Repository Booter Options if passed in via bootConfig
+      Object.assign({}, RepositoryDefaults, repositoryOptions),
+    );
   }
 
   /**
