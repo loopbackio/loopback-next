@@ -30,6 +30,7 @@
     "@loopback/core": "^0.11.5",
     "@loopback/dist-util": "^0.3.6",
     "@loopback/repository": "^0.15.1",
+    "@loopback/service-proxy": "^0.7.1",
     "@types/debug": "0.0.30",
     "@types/glob": "^5.0.35",
     "debug": "^3.1.0",
