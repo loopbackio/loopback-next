@@ -3,17 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-// tslint:disable:no-unused-variable
-
 import {EntityCrudRepository, repository} from '../..';
 import {Customer} from '../models/customer.model';
 
 /**
  * Controller for Customer
  */
-// @controller
 export class CustomerController {
   // Use property dependency injection
   @repository('Customer', 'mongodbDataSource')
-  private repository: EntityCrudRepository<Customer, string>;
+  public repository: EntityCrudRepository<Customer, string>;
 }

@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {sinon, expect} from '@loopback/testlab';
+import {sinon, expect, disableUnusedLocalError} from '@loopback/testlab';
 import {
   EntityCrudRepository,
   HasManyRepository,
@@ -25,7 +25,6 @@ describe('relation repository', () => {
      * interface. The TS Compiler will complain if the interface changes.
      */
 
-    // tslint:disable-next-line:no-unused-variable
     class testHasManyEntityCrudRepository<
       T extends Entity,
       ID,
@@ -58,6 +57,7 @@ describe('relation repository', () => {
         throw new Error('Method not implemented.');
       }
     }
+    disableUnusedLocalError(testHasManyEntityCrudRepository);
   });
 
   context('DefaultHasManyEntityCrudRepository', () => {

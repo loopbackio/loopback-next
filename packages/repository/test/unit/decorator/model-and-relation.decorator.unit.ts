@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect, disableUnusedLocalError} from '@loopback/testlab';
 import {
   model,
   property,
@@ -337,11 +337,11 @@ describe('model decorator', () => {
       it('throws when @property.array is used on a non-array property', () => {
         expect.throws(
           () => {
-            // tslint:disable-next-line:no-unused-variable
             class Oops {
               @property.array(Product)
               product: Product;
             }
+            disableUnusedLocalError(Oops);
           },
           Error,
           property.ERR_PROP_NOT_ARRAY,

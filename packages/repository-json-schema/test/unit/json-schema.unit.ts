@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {disableUnusedLocalError} from '@loopback/testlab';
 import {JsonSchema} from '../../src';
 
 describe('JSON Schema type', () => {
@@ -15,7 +16,6 @@ describe('JSON Schema type', () => {
      * Inspired by https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-schema/json-schema-tests.ts
      */
 
-    // tslint:disable-next-line:no-unused-variable
     const testSchema: JsonSchema = {
       $id: 'test',
       $ref: 'test/sub',
@@ -59,5 +59,6 @@ describe('JSON Schema type', () => {
       propertyNames: {enum: ['foo', 'bar']},
       format: 'email',
     };
+    disableUnusedLocalError(testSchema);
   });
 });

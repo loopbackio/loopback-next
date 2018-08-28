@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect, disableUnusedLocalError} from '@loopback/testlab';
 import {
   ClassDecoratorFactory,
   PropertyDecoratorFactory,
@@ -113,8 +113,8 @@ describe('ClassDecoratorFactory', () => {
     expect(() => {
       @classDecorator({x: 1})
       @classDecorator({y: 2})
-      // tslint:disable-next-line:no-unused-variable
       class MyController {}
+      disableUnusedLocalError(MyController);
     }).to.throw(
       /Decorator cannot be applied more than once on class MyController/,
     );
@@ -352,12 +352,12 @@ describe('PropertyDecoratorFactory', () => {
 
   it('throws if applied more than once on the same property', () => {
     expect(() => {
-      // tslint:disable-next-line:no-unused-variable
       class MyController {
         @propertyDecorator({x: 1})
         @propertyDecorator({y: 2})
         myProp: string;
       }
+      disableUnusedLocalError(MyController);
     }).to.throw(
       /Decorator cannot be applied more than once on MyController\.prototype\.myProp/,
     );
@@ -400,12 +400,12 @@ describe('PropertyDecoratorFactory for static properties', () => {
 
   it('throws if applied more than once on the same static property', () => {
     expect(() => {
-      // tslint:disable-next-line:no-unused-variable
       class MyController {
         @propertyDecorator({x: 1})
         @propertyDecorator({y: 2})
         static myProp: string;
       }
+      disableUnusedLocalError(MyController);
     }).to.throw(
       /Decorator cannot be applied more than once on MyController\.myProp/,
     );
@@ -448,12 +448,12 @@ describe('MethodDecoratorFactory', () => {
 
   it('throws if applied more than once on the same method', () => {
     expect(() => {
-      // tslint:disable-next-line:no-unused-variable
       class MyController {
         @methodDecorator({x: 1})
         @methodDecorator({y: 2})
         myMethod() {}
       }
+      disableUnusedLocalError(MyController);
     }).to.throw(
       /Decorator cannot be applied more than once on MyController\.prototype\.myMethod\(\)/,
     );
@@ -496,12 +496,12 @@ describe('MethodDecoratorFactory for static methods', () => {
 
   it('throws if applied more than once on the same static method', () => {
     expect(() => {
-      // tslint:disable-next-line:no-unused-variable
       class MyController {
         @methodDecorator({x: 1})
         @methodDecorator({y: 2})
         static myMethod() {}
       }
+      disableUnusedLocalError(MyController);
     }).to.throw(
       /Decorator cannot be applied more than once on MyController\.myMethod\(\)/,
     );
@@ -545,7 +545,6 @@ describe('ParameterDecoratorFactory', () => {
 
   it('throws if applied more than once on the same parameter', () => {
     expect(() => {
-      // tslint:disable-next-line:no-unused-variable
       class MyController {
         myMethod(
           @parameterDecorator({x: 1})
@@ -553,6 +552,7 @@ describe('ParameterDecoratorFactory', () => {
           x: string,
         ) {}
       }
+      disableUnusedLocalError(MyController);
     }).to.throw(
       /Decorator cannot be applied more than once on MyController\.prototype\.myMethod\[0\]/,
     );
@@ -634,7 +634,6 @@ describe('ParameterDecoratorFactory for a static method', () => {
 
   it('throws if applied more than once on the same parameter', () => {
     expect(() => {
-      // tslint:disable-next-line:no-unused-variable
       class MyController {
         static myMethod(
           @parameterDecorator({x: 1})
@@ -642,6 +641,7 @@ describe('ParameterDecoratorFactory for a static method', () => {
           x: string,
         ) {}
       }
+      disableUnusedLocalError(MyController);
     }).to.throw(
       /Decorator cannot be applied more than once on MyController\.myMethod\[0\]/,
     );
@@ -695,13 +695,13 @@ describe('MethodParameterDecoratorFactory with invalid decorations', () => {
 
   it('reports error if the # of decorations exceeeds the # of params', () => {
     expect(() => {
-      // tslint:disable-next-line:no-unused-variable
       class MyController {
         @methodParameterDecorator({x: 1}) // Causing error
         @methodParameterDecorator({x: 2}) // For a
         @methodParameterDecorator({x: 3}) // For b
         myMethod(a: string, b: number) {}
       }
+      disableUnusedLocalError(MyController);
     }).to.throw(
       /The decorator is used more than 2 time\(s\) on MyController\.prototype\.myMethod\(\)/,
     );

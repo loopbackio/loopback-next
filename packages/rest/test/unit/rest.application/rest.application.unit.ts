@@ -14,7 +14,6 @@ import {expect} from '@loopback/testlab';
 describe('RestApplication', () => {
   describe('throws', () => {
     it('when attempting to bind another server', () => {
-      // tslint:disable-next-line:no-unused-variable
       const app = new RestApplication();
       expect.throws(
         () => {
@@ -26,7 +25,6 @@ describe('RestApplication', () => {
     });
 
     it('when attempting to bind an array of servers', () => {
-      // tslint:disable-next-line:no-unused-variable
       const app = new RestApplication();
       expect.throws(
         () => {
@@ -41,7 +39,6 @@ describe('RestApplication', () => {
       class OtherRestComponent extends RestComponent {}
       expect.throws(
         () => {
-          // tslint:disable-next-line:no-unused-variable
           const app = new RestApplication();
           app.component(RestComponent);
           app.component(OtherRestComponent);

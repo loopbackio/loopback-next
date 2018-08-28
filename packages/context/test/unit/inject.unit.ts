@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect, disableUnusedLocalError} from '@loopback/testlab';
 import {
   inject,
   describeInjectedArguments,
@@ -12,10 +12,10 @@ import {
 
 describe('function argument injection', () => {
   it('can decorate class constructor arguments', () => {
-    // tslint:disable-next-line:no-unused-variable
     class TestClass {
-      constructor(@inject('foo') foo: string) {}
+      constructor(@inject('foo') public foo: string) {}
     }
+    disableUnusedLocalError(TestClass);
     // the test passes when TypeScript Compiler is happy
   });
 
@@ -29,10 +29,10 @@ describe('function argument injection', () => {
   });
 
   it('can retrieve information about injected method arguments', () => {
-    // tslint:disable-next-line:no-unused-variable
     class TestClass {
       test(@inject('foo') foo: string) {}
     }
+    disableUnusedLocalError(TestClass);
 
     const meta = describeInjectedArguments(TestClass.prototype, 'test');
     expect(meta.map(m => m.bindingKey)).to.deepEqual(['foo']);
@@ -82,7 +82,7 @@ describe('function argument injection', () => {
 
   it('supports inheritance with overriding constructor - no args', () => {
     class TestClass {
-      constructor(@inject('foo') foo: string) {}
+      constructor(@inject('foo') public foo: string) {}
     }
 
     class SubTestClass extends TestClass {
@@ -92,16 +92,17 @@ describe('function argument injection', () => {
     }
     const meta = describeInjectedArguments(SubTestClass);
     expect(meta.map(m => m.bindingKey)).to.deepEqual([]);
+    disableUnusedLocalError(TestClass);
   });
 });
 
 describe('property injection', () => {
   it('can decorate properties', () => {
-    // tslint:disable-next-line:no-unused-variable
     class TestClass {
       @inject('foo')
       foo: string;
     }
+    disableUnusedLocalError(TestClass);
     // the test passes when TypeScript Compiler is happy
   });
 
@@ -126,21 +127,21 @@ describe('property injection', () => {
 
   it('cannot decorate static properties', () => {
     expect(() => {
-      // tslint:disable-next-line:no-unused-variable
       class TestClass {
         @inject('foo')
         static foo: string;
       }
+      disableUnusedLocalError(TestClass);
     }).to.throw(/@inject is not supported for a static property/);
   });
 
   it('cannot decorate a method', () => {
     expect(() => {
-      // tslint:disable-next-line:no-unused-variable
       class TestClass {
         @inject('bar')
         foo() {}
       }
+      disableUnusedLocalError(TestClass);
     }).to.throw(/@inject cannot be used on a method/);
   });
 

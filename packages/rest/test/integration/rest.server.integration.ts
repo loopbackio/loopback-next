@@ -45,7 +45,7 @@ describe('RestServer (integration)', () => {
 
   it('honors port binding after instantiation', async () => {
     const server = await givenAServer({rest: {port: 80}});
-    await server.bind(RestBindings.PORT).to(0);
+    server.bind(RestBindings.PORT).to(0);
     await server.start();
     expect(server.getSync(RestBindings.PORT)).to.not.equal(80);
     await server.stop();
@@ -358,7 +358,7 @@ servers:
     let serverUrl = server.getSync(RestBindings.URL);
     await expect(httpsGetAsync(serverUrl)).to.be.rejectedWith(/EPROTO/);
     await server.stop();
-    await server.bind(RestBindings.HTTPS_OPTIONS).to({
+    server.bind(RestBindings.HTTPS_OPTIONS).to({
       key: fs.readFileSync(keyPath),
       cert: fs.readFileSync(certPath),
     });

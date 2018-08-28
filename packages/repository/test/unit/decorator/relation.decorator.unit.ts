@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect, disableUnusedLocalError} from '@loopback/testlab';
 import {Entity, hasMany, RELATIONS_KEY, RelationType, property} from '../../..';
 import {MetadataInspector} from '@loopback/context';
 import {MODEL_PROPERTIES_KEY, model} from '../../../src';
@@ -19,13 +19,13 @@ describe('relation decorator', () => {
           province: string;
         }
 
-        // tslint:disable-next-line:no-unused-variable
         class AddressBook extends Entity {
           id: number;
 
           @hasMany(Address)
           addresses: Address[];
         }
+        disableUnusedLocalError(AddressBook);
       }).throw(/addressBookId not found on Address/);
     });
 
@@ -110,7 +110,6 @@ describe('relation decorator', () => {
             province: string;
           }
 
-          // tslint:disable-next-line:no-unused-variable
           class AddressBook extends Entity {
             id: number;
             @property.array(Entity)
@@ -119,6 +118,7 @@ describe('relation decorator', () => {
             })
             addresses: Address[];
           }
+          disableUnusedLocalError(AddressBook);
         }).to.throw(/Decorator cannot be applied more than once/);
       });
     });
