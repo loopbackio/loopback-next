@@ -28,7 +28,7 @@ interface CustomerRepository extends Repository<Customer> {
 See more examples at:
 
 - [Repository/CrudRepository/EntityRepository](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/repository.ts)
-- [KVRepository](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/kv.repository.ts)
+- [KeyValueRepository](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/kv.repository.ts)
 
 ## Installation
 
@@ -291,7 +291,108 @@ Please See [Testing Your Application](Testing-Your-Application.md) section in
 order to set up and write unit, acceptance, and integration tests for your
 application.
 
-## Persisting Data without Juggler [Using MySQL database]
+## Access KeyValue Stores
+
+We can now access key-value stores such as [Redis](https://redis.io/) using the
+[KeyValueRepository]((https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/kv.repository.ts).
+
+### Define a KeyValue Datasource
+
+We first need to define a datasource to configure the key-value store. For
+better flexibility, we spilt the datasource definition into two files. The json
+file captures the configuration properties and it can be possibly overridden by
+dependency injection.
+
+1. redis.datasource.json
+
+```json
+{
+  "name": "redis",
+  "connector": "kv-redis",
+  "host": "127.0.0.1",
+  "port": 6379,
+  "password": "",
+  "db": 0
+}
+```
+
+2. redis.datasource.ts
+
+The class uses a configuration object to set up a datasource for the Redis
+instance. By default, the configuration is loaded from `redis.datasource.json`.
+We can override it by binding a new object to `datasources.config.redis` for a
+context.
+
+```ts
+import {inject} from '@loopback/core';
+import {juggler, AnyObject} from '@loopback/repository';
+const config = require('./redis.datasource.json');
+
+export class RedisDataSource extends juggler.DataSource {
+  static dataSourceName = 'redis';
+
+  constructor(
+    @inject('datasources.config.redis', {optional: true})
+    dsConfig: AnyObject = config,
+  ) {
+    super(dsConfig);
+  }
+}
+```
+
+To generate the datasource automatically, use `lb4 datasource` command and
+select `Redis key-value connector (supported by StrongLoop)`.
+
+### Define a KeyValueRepository
+
+The KeyValueRepository binds a model such as `ShoppingCart` to the
+`RedisDataSource`. The base `DefaultKeyValueRepository` class provides an
+implementation based on `loopback-datasource-juggler`.
+
+```ts
+import {DefaultKeyValueRepository} from '@loopback/repository';
+import {ShoppingCart} from '../models/shopping-cart.model';
+import {RedisDataSource} from '../datasources/redis.datasource';
+import {inject} from '@loopback/context';
+
+export class ShoppingCartRepository extends DefaultKeyValueRepository<
+  ShoppingCart
+> {
+  constructor(@inject('datasources.redis') ds: RedisDataSource) {
+    super(ShoppingCart, ds);
+  }
+}
+```
+
+### Perform Key Value Operations
+
+The KeyValueRepository provides a set of key based operations, such as `set`,
+`get`, `delete`, `expire`, `ttl`, and `keys`. See
+[KeyValueRepository](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/kv.repository.ts)
+for a complete list.
+
+```ts
+// Please note the ShoppingCartRepository can be instantiated using Dependency
+// Injection
+const repo: ShoppingCartRepository =
+  new ShoppingCartRepository(new RedisDataSource());
+const cart1: ShoppingCart = givenShoppingCart1();
+const cart2: ShoppingCart = givenShoppingCart2();
+
+async function testKV() {
+  // Store carts using userId as the key
+  await repo.set(cart1.userId, cart1);
+  await repo.set(cart2.userId, cart2);
+
+  // Retrieve a cart by its key
+  const result = await repo.get(cart1.userId);
+  console.log(result);
+});
+
+testKV();
+```
+
+## Persist Data without Juggler [Using MySQL database]
 
 {% include important.html content="This section has not been updated and code
 examples may not work out of the box.
