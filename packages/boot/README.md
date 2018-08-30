@@ -167,6 +167,10 @@ Available options on the `datasources` object on `BootOptions` are as follows:
 Discovers and binds Service providers using `app.serviceProvider()` (Application
 must use `ServiceMixin` from `@loopback/service-proxy`).
 
+**IMPORTANT:** For a class to be recognized by `ServiceBooter` as a service
+provider, its name must end with `Provider` suffix and its prototype must have a
+`value()` method.
+
 #### Options
 
 The options for this can be passed via `BootOptions` when calling

@@ -4,7 +4,6 @@ import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import {MySequence} from './sequence';
-import {CalculatorServiceProvider} from './services/calculator.service';
 
 export class SoapCalculatorApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
@@ -14,9 +13,6 @@ export class SoapCalculatorApplication extends BootMixin(
 
     // Set up the custom sequence
     this.sequence(MySequence);
-
-    //bind services
-    this.setupServices();
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
@@ -28,9 +24,5 @@ export class SoapCalculatorApplication extends BootMixin(
         nested: true,
       },
     };
-  }
-
-  setupServices() {
-    this.serviceProvider(CalculatorServiceProvider);
   }
 }

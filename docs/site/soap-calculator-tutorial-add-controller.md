@@ -193,4 +193,5 @@ the divide end point method.
 
 Previous step: [Add a Service](soap-calculator-tutorial-add-service.md)
 
-Next step: [Register the Service](soap-calculator-tutorial-register-service.md)
+Next step:
+[Run and Test the Application](soap-calculator-tutorial-run-and-test.md)

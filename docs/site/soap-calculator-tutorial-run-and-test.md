@@ -66,5 +66,4 @@ options = Object.assign(
 
 ### Navigation
 
-Previous step:
-[Register the Service](soap-calculator-tutorial-register-service.md)
+Previous step: [Add a Controller](soap-calculator-tutorial-add-controller.md)

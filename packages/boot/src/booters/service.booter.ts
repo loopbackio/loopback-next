@@ -78,5 +78,7 @@ export const ServiceDefaults: ArtifactOptions = {
 };
 
 function isServiceProvider(cls: Constructor<{}>): cls is ServiceProviderClass {
-  return /Provider$/.test(cls.name);
+  const hasSupportedName = cls.name.endsWith('Provider');
+  const hasValueMethod = 'value' in cls.prototype;
+  return hasSupportedName && hasValueMethod;
 }
