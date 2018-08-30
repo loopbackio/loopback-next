@@ -95,10 +95,6 @@ children:
       url: soap-calculator-tutorial-add-controller.html
       output: 'web, pdf'
 
-    - title: 'Register the Service'
-      url: soap-calculator-tutorial-register-service.html
-      output: 'web, pdf'
-
     - title: 'Run and Test it'
       url: soap-calculator-tutorial-run-and-test.html
       output: 'web, pdf'

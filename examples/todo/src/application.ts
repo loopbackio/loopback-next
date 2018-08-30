@@ -9,7 +9,6 @@ import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import {MySequence} from './sequence';
-import {GeocoderServiceProvider} from './services';
 
 export class TodoListApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
@@ -30,13 +29,5 @@ export class TodoListApplication extends BootMixin(
         nested: true,
       },
     };
-
-    // TODO(bajtos) Services should be created and registered by @loopback/boot
-    // See https://github.com/strongloop/loopback-next/issues/1439
-    this.setupServices();
-  }
-
-  setupServices() {
-    this.serviceProvider(GeocoderServiceProvider);
   }
 }

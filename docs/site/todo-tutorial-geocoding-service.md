@@ -94,12 +94,12 @@ docs here: [REST connector](/doc/en/lb3/REST-connector.html).
 
 Create a new directory `src/services` and add the following two new files:
 
-- `src/geocoder.service.ts` defining TypeScript interfaces for Geocoder service
-  and implementing a service proxy provider.
+- `src/services/geocoder.service.ts` defining TypeScript interfaces for Geocoder
+  service and implementing a service proxy provider.
 - `src/index.ts` providing a conventient access to all services via a single
   `import` statement.
 
-#### src/geocoder.service.ts
+#### src/services/geocoder.service.ts
 
 ```ts
 import {getService, juggler} from '@loopback/service-proxy';
@@ -138,35 +138,6 @@ export class GeocoderServiceProvider implements Provider<GeocoderService> {
 
 ```ts
 export * from './geocoder.service';
-```
-
-### Register the service for dependency injection
-
-Because `@loopback/boot` does not support loading of services yet (see
-[issue #1439](https://github.com/strongloop/loopback-next/issues/1439)), we need
-to add few code snippets to our Application class to take care of this task.
-
-#### src/application.ts
-
-```ts
-import {ServiceMixin} from '@loopback/service-proxy';
-
-export class TodoListApplication extends BootMixin(
-  ServiceMixin(RepositoryMixin(RestApplication)),
-) {
-  constructor(options?: ApplicationConfig) {
-    super(options);
-    // etc., keep the existing code without changes
-
-    // ADD THE FOLLOWING LINE AT THE END
-    this.setupServices();
-  }
-
-  // ADD THE FOLLOWING TWO METHODS
-  setupServices() {
-    this.serviceProvider(GeocoderServiceProvider);
-  }
-}
 ```
 
 ### Enhance Todo model with location data
