@@ -10,17 +10,16 @@ summary: LoopBack 4 TodoList Application Tutorial - Add TodoList Model
 ### Building a checklist for your Todo models
 
 A todo item is often grouped into a checklist along with other todo items so
-that it can be used to measure the progress of a bigger picture that the item is
-a part of.
+that it can be used to measure the progress of a bigger picture.
 
-A set of data can often be related to another; an entity may be able to provide
-access to another based on its relationship with the other entity. To take
-`TodoListApplication` one step further and establish relations with the existing
-`Todo` model as real-world applications often tend to do, we'll introduce the
-model `TodoList`.
+A data set can often be related to another data set, so that an entity may be
+able to provide access to another entity based on its relationship with the
+other entity. To take `TodoListApplication` one step further and establish
+relations with the existing `Todo` model as real-world applications often tend
+to do, we'll introduce the model `TodoList`.
 
-We'll create `TodoList` model to represent a checklist that contains multiple
-Todo items. Let's define TodoList model with the following properties:
+We'll create the `TodoList` model to represent a checklist that contains
+multiple Todo items. Let's define TodoList model with the following properties:
 
 - a unique id
 - a title
@@ -68,8 +67,8 @@ Enter an empty property name when done
 Model TodoList was created in src/models/
 ```
 
-Now that we have our new model, it's time to define its relation with the `Todo`
-model. To `TodoList` model, add in the following property:
+Now that we have our new model, we need to define its relation with the `Todo`
+model. Add the following property to the `TodoList` model:
 
 #### src/models/todo-list.model.ts
 
@@ -85,12 +84,12 @@ export class TodoList extends Entity {
 }
 ```
 
-Notice that `@hasMany()` decorator is used to define this property. As the
-decorator's name suggests, this will let LoopBack 4 know that a todo list can
-have many todo items.
+The `@hasMany()` decorator defines this property. As the decorator's name
+suggests, `@hasMany()` informs LoopBack 4 that a todo list can have many todo
+items.
 
-To complement `TodoList`'s relationship to `Todo`, we'll add in `todoListId`
-property on `Todo` model to complete defining the relation on both ends:
+To complement `TodoList`'s relationship to `Todo`, we'll add in the `todoListId`
+property on the `Todo` model to define the relation on both ends:
 
 ### src/models/todo.model.ts
 

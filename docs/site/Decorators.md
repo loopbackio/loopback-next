@@ -90,10 +90,10 @@ Syntax:
 [`@operation(verb: string, path: string, spec?: OperationObject)`](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3.html#operation)
 
 `@operation` is a controller method decorator. It exposes a Controller method as
-a REST API operation, and is represented in OpenAPI spec as an
+a REST API operation and is represented in the OpenAPI spec as an
 [Operation Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#operation-object).
-You can specify the verb, path, parameters and response as specification of your
-endpoint, for example:
+You can specify the verb, path, parameters, and response as a specification of
+your endpoint, for example:
 
 ```ts
 const spec = {
@@ -150,7 +150,7 @@ class MyController {
 Syntax: see
 [API documentation](https://github.com/strongloop/loopback-next/tree/master/packages/openapi-v3/src/decorators/parameter.decorator.ts#L17-L29)
 
-`@param` is applied to controller method parameters to generate OpenAPI
+`@param` is applied to controller method parameters to generate an OpenAPI
 parameter specification for them.
 
 For example:
@@ -185,7 +185,7 @@ Writing the whole parameter specification is tedious, so we've created shortcuts
 to define the params with the pattern `@param.${in}.${type}(${name})`:
 
 - in: The parameter location. It can be one of the following values: `query`,
-  `header`, `path`.
+  `header`, or `path`.
 - type: A
   [common name of OpenAPI primitive data type](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#data-types).
 - name: Name of the parameter. It should be a `string`.
@@ -210,7 +210,7 @@ You can find specific use cases in
 [Writing Controller methods](Controllers.md#writing-controller-methods)
 
 _The parameter location cookie is not supported yet, see_
-_https://github.com/strongloop/loopback-next/issues/997_
+_(https://github.com/strongloop/loopback-next/issues/997)_
 
 ### RequestBody Decorator
 
@@ -237,8 +237,8 @@ requestBodySpec: {
 }
 ```
 
-In order to use `@requestBody`, the parameter type it's decorating needs to have
-its model decorated with `@model` and `@property`:
+In order to use `@requestBody` in a parameter type, the model in the parameter
+type must be decorated with `@model` and `@property`:
 
 ```ts
 import {model, property} from '@loopback/repository';
@@ -255,11 +255,11 @@ class User {
 }
 ```
 
-_To learn more about decorating models and the corresponding OpenAPI schema,
-please check [model decorators](#model-decorators)._
+_To learn more about decorating models and the corresponding OpenAPI schema, see
+[model decorators](#model-decorators)._
 
-This allows type information of the model to be visible to the spec generator so
-that `@requestBody` can be used on the parameter:
+The model decorators allow type information of the model to be visible to the
+spec generator so that `@requestBody` can be used on the parameter:
 
 ```ts
 // in file '/src/controllers/user.controller.ts'
@@ -279,9 +279,9 @@ For the simplest use case, you can leave the input of `@requestBody` empty since
 we automatically detect the type of `user` and generate the corresponding schema
 for it. The default content type is set to be `application/json`.
 
-You can also customize the generated `requestBody` specification in 3 ways:
+You can also customize the generated `requestBody` specification in three ways:
 
-- add optional fields `description` and `required`
+- Add the optional fields `description` and `required`
 
 ```ts
 class MyController {
@@ -297,7 +297,7 @@ class MyController {
 }
 ```
 
-- override the content type or define multiple content types
+- Override the content type or define multiple content types
 
 ```ts
 class MyController {
@@ -316,7 +316,7 @@ class MyController {
 }
 ```
 
-- override the schema specification
+- Override the schema specification
 
 ```ts
 import {UserSchema, User} from '../model/user.schema';
@@ -335,8 +335,9 @@ class MyController {
 }
 ```
 
-_We are supporting more `@requestBody` shortcuts in the future, track the
-feature in story_ _https://github.com/strongloop/loopback-next/issues/1064_
+_We plan to support more `@requestBody` shortcuts in the future. You can track
+the feature in story_
+_(https://github.com/strongloop/loopback-next/issues/1064)_
 
 ## Dependency Injection
 
@@ -348,9 +349,9 @@ used on non-static properties or constructor parameters of a Class.
 
 The `@inject` decorator allows you to inject dependencies bound to any
 implementation of the [Context](Context.md) object, such as an Application
-instance or a request context instance. You can bind values, class definitions
-and provider functions to those contexts and then resolve values (or the results
-of functions that return those values!) in other areas of your code.
+instance or a request context instance. You can bind values, class definitions,
+and provider functions to those contexts and then resolve the values (or the
+results of functions that return those values!) in other areas of your code.
 
 ```ts
 // src/application.ts
@@ -375,7 +376,7 @@ export class MyApp extends RestApplication {
 ```
 
 Now that we've bound the 'config.widget' key to our configuration object, and
-'logger.widget' key to the function `logInfo()`, we can inject them in our
+the 'logger.widget' key to the function `logInfo()`, we can inject them in our
 WidgetController:
 
 ```ts
@@ -422,7 +423,7 @@ export class HelloController {
 }
 ```
 
-- `@inject.setter`: inject a setter function to set bound value of the key
+- `@inject.setter`: inject a setter function to set the bound value of the key
 
 Syntax: `@inject.setter(bindingKey: string)`.
 
@@ -481,7 +482,7 @@ const component = ctx.getSync<MyComponent>('my-component');
 ```
 
 **NOTE**: It's recommended to use `@inject` with specific keys for dependency
-injection if possible. Use `@inject.context` only when the code need to access
+injection if possible. Use `@inject.context` only when the code needs to access
 the current context object for advanced use cases.
 
 For more information, see the [Dependency Injection](Dependency-Injection.md)
@@ -527,27 +528,27 @@ For more information on authentication with LoopBack, visit
 
 As a [domain-driven design](https://en.wikipedia.org/wiki/Domain-driven_design)
 concept, the repository is a layer between your domain object and data mapping
-layers using a collection-like interface for accessing domain objects.
+layers that uses a collection-like interface for accessing domain objects.
 
-In LoopBack, a domain object is usually a TypeScript/JavaScript Class instance,
-and a typical example of a data mapping layer module could be a database's
-node.js driver.
+In LoopBack, a domain object is usually a TypeScript/JavaScript Class instance.
+A typical example of a data mapping layer module could be a database's node.js
+driver.
 
-LoopBack repository encapsulates your TypeScript/JavaScript Class instance, and
-its methods that communicate with your database. It is an interface to implement
+LoopBack repository encapsulates your TypeScript/JavaScript Class instance and
+the methods that communicate with your database. It is an interface to implement
 data persistence.
 
 Repository decorators are used for defining models (domain objects) for use with
-your chosen datasources, and the navigation strategies among models.
+your chosen datasources and for the navigation strategies among models.
 
 If you are not familiar with repository related concepts like `Model`, `Entity`
-and `Datasource`, please see LoopBack concept [Repositories](Repositories.md) to
-learn more.
+and `Datasource`, see LoopBack concept [Repositories](Repositories.md) to learn
+more.
 
 ### Model Decorators
 
-Model is a class that LoopBack builds for you to organize the data that share
-same configurations and properties. You can use model decorators to define a
+Model is a class that LoopBack builds for you to organize the data that shares
+the same configurations and properties. You can use model decorators to define a
 model and its properties.
 
 #### Model Decorator
@@ -566,12 +567,13 @@ By using a model decorator, you can define a model as your repository's
 metadata, which then allows you to choose between two ways of creating the
 repository instance:
 
-One is to inject your repository and resolve it with Legacy Juggler that's
-complete with CRUD operations for accessing the model's data. A use case can be
-found in section [Repository decorator](#repository-decorator)
+1. Inject your repository and resolve it with the datasource juggler bridge  
+   that's complete with CRUD operations for accessing the model's data. A use
+   case can be found in this section:
+   [Repository decorator](#repository-decorator)
 
-The other one is defining your own repository without using legacy juggler, and
-use an ORM/ODM of your choice.
+2. Define your own repository without using the datasource juggler bridge, and
+   use an ORM/ODM of your choice.
 
 ```ts
 // Missing example here
