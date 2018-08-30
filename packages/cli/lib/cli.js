@@ -64,6 +64,10 @@ function setupGenerators() {
   );
   env.register(path.join(__dirname, '../generators/model'), PREFIX + 'model');
   env.register(
+    path.join(__dirname, '../generators/repository'),
+    PREFIX + 'repository',
+  );
+  env.register(
     path.join(__dirname, '../generators/example'),
     PREFIX + 'example',
   );

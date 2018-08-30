@@ -1,0 +1,11 @@
+import {<%= repositoryTypeClass %>}} from '@loopback/repository';
+import {<%= modelName %>} from '../models';
+import {inject} from '@loopback/core';
+
+export class <%= className %>Repository extends <%= repositoryTypeClass %><<%= modelName %>> {
+  constructor(
+    @inject('datasources.<%= dataSourceName %>') protected datasource: juggler.DataSource,
+  ) {
+    super(<%= modelName %>,datasource);
+  }
+}
