@@ -36,12 +36,14 @@
     "request-promise-native": "^1.0.5",
     "rimraf": "^2.6.2",
     "sinon": "^4.5.0",
+    "typescript": "^2.9.2",
     "yeoman-assert": "^3.1.1",
     "yeoman-environment": "^2.0.6",
     "yeoman-test": "^1.7.0"
   },
   "dependencies": {
     "@loopback/dist-util": "^0.3.7",
+    "@phenomnomnominal/tsquery": "^2.0.1",
     "camelcase-keys": "^4.2.0",
     "chalk": "^2.3.2",
     "change-case": "^3.0.2",
