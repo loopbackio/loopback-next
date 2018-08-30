@@ -299,7 +299,7 @@ We can now access key-value stores such as [Redis](https://redis.io/) using the
 ### Define a KeyValue Datasource
 
 We first need to define a datasource to configure the key-value store. For
-better flexibility, we spilt the datasource definition into two files. The json
+better flexibility, we split the datasource definition into two files. The json
 file captures the configuration properties and it can be possibly overridden by
 dependency injection.
 
