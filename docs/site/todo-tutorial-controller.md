@@ -14,8 +14,15 @@ Each function on a controller can be addressed individually to handle an
 incoming request (like a POST request to `/todos`), to perform business logic,
 and to return a response.
 
+`Controller` is a class that implements operations defined by application's API.
+It implements an application's business logic and acts as a bridge between the
+HTTP/REST API and domain/database models.
+
 In this respect, controllers are the regions _in which most of your business
 logic will live_!
+
+For more information about Controllers, see
+[Controllers](https://loopback.io/doc/en/lb4/Controllers.html).
 
 ### Create your controller
 

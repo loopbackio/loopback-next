@@ -15,6 +15,13 @@ themselves to perform CRUD operations. In LoopBack 4, the layer responsible for
 this has been separated from the definition of the model itself, into the
 repository layer.
 
+A `Repository` represents a specialized `Service` interface that provides
+strong-typed data access (for example, CRUD) operations of a domain model
+against the underlying database or service.
+
+For more information about Repositories, see
+[Repositories](https://loopback.io/doc/en/lb4/Repositories.html).
+
 ### Create your repository
 
 In the `src/repositories` directory, create two files:

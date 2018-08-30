@@ -16,6 +16,14 @@ instances of a task for our Todo list. The Todo model will serve both as a
 known as a DTO) for representing incoming Todo instances on requests, as well as
 our data structure for use with loopback-datasource-juggler.
 
+A model describes business domain objects and defines a list of properties with
+name, type, and other constraints.
+
+Models are used for data exchange on the wire or between different systems.
+
+For more information about Models and how they are used in LoopBack, see
+[Models](https://loopback.io/doc/en/lb4/todo-tutorial-model.html).
+
 > **NOTE:** LoopBack 3 treated models as the "center" of operations; in LoopBack
 > 4, that is no longer the case. While LoopBack 4 provides many of the helper
 > methods and decorators that allow you to utilize models in a similar way, you
@@ -28,7 +36,8 @@ let you label tasks so that you can distinguish between them, add extra
 information to describe those tasks, and finally, provide a way of tracking
 whether or not they're complete.
 
-For our Todo model to represent our Todo instances, it will need:
+For our Todo model to represent our Todo instances for our business domain, it
+will need:
 
 - a unique id
 - a title

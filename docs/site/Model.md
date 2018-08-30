@@ -18,15 +18,15 @@ Models can be used for data exchange on the wire or between different systems.
 For example, a JSON object conforming to the `Customer` model definition can be
 passed in REST/HTTP payload to create a new customer or stored in a document
 database such as MongoDB. Model definitions can also be mapped to other forms,
-such as relational database schema, XML schema, JSON schema, OpenAPI schema, or
-gRPC message definition, and vice versa.
+such as relational database schemas, XML schemas, JSON schemas, OpenAPI schemas,
+or gRPC message definitions, and vice versa.
 
 There are two subtly different types of models for domain objects:
 
 - Value Object: A domain object that does not have an identity (ID). Its
   equality is based on the structural value. For example, `Address` can be
-  modeled as `Value Object` as two US addresses are equal if they have the same
-  street number, street name, city, and zip code values. For example:
+  modeled as a `Value Object` because two US addresses are equal if they have
+  the same street number, street name, city, and zip code values. For example:
 
 ```json
 {
@@ -41,10 +41,9 @@ There are two subtly different types of models for domain objects:
 ```
 
 - Entity: A domain object that has an identity (ID). Its equality is based on
-  the identity. For example, `Customer` can be modeled as `Entity` as each
-  customer should have a unique customer id. Two instances of `Customer` with
-  the same customer id are equal since they refer to the same customer. For
-  example:
+  the identity. For example, `Customer` can be modeled as an `Entity` because
+  each customer has a unique customer id. Two instances of `Customer` with the
+  same customer id are equal since they refer to the same customer. For example:
 
 ```json
 {
@@ -77,7 +76,7 @@ export class Customer {
 ```
 
 Extensibility is a core feature of LoopBack. There are external packages that
-add additional features, for example, integration with the legacy juggler or
+add additional features, for example, integration with the juggler bridge or
 JSON Schema generation. These features become available to a LoopBack model
 through the `@model` and `@property` decorators from the `@loopback/repository`
 module.
@@ -96,9 +95,9 @@ export class Customer {
 }
 ```
 
-## Using Legacy Juggler
+## Using the Juggler Bridge
 
-To define a model for use with the legacy juggler, extend your classes from
+To define a model for use with the juggler bridge, extend your classes from
 `Entity` and decorate them with the `@model` and `@property` decorators.
 
 ```ts
@@ -124,10 +123,10 @@ export class Product extends Entity {
 }
 ```
 
-As you can see, models are defined primarily by their TypeScript class. By
-default, classes forbid additional properties not specified in the type
-definition. The persistence layer is respecting this constraint and configures
-underlying PersistedModel classes to enforce `strict` mode.
+Models are defined primarily by their TypeScript class. By default, classes
+forbid additional properties that are not specified in the type definition. The
+persistence layer respects this constraint and configures underlying
+PersistedModel classes to enforce `strict` mode.
 
 To create a model that allows both well-defined but also arbitrary extra
 properties, you need to disable `strict` mode in model settings and tell
@@ -193,7 +192,7 @@ class Product extends Entity {
 
 Additionally, the model decorator is able to build the properties object through
 the information passed in or inferred by the property decorators, so the
-properties key value pair can be omitted as well by using property decorators.
+properties key value pair can also be omitted.
 
 ### Property Decorator
 
@@ -238,7 +237,7 @@ LoopBack, due to the nature of arrays in JavaScript. In JavaScript, arrays do
 not possess any information about the types of their members. By traversing an
 array, you can inspect the members of an array to determine if they are of a
 primitive type (string, number, array, boolean), object or function, but this
-would not tell us anything about what the value would be if it were an object or
+does not tell you anything about what the value would be if it were an object or
 function.
 
 For consistency, we require the use of the `@property.array` decorator, which
@@ -259,7 +258,7 @@ class Thread extends Entity {
 }
 ```
 
-Additionally, the `@property.array` decorator can still take an optional 2nd
+Additionally, the `@property.array` decorator can still take an optional second
 parameter to define or override metadata in the same fashion as the `@property`
 decorator.
 
@@ -280,7 +279,7 @@ Use the `@loopback/repository-json-schema module` to build a JSON schema from a
 decorated model. Type information is inferred from the `@model` and `@property`
 decorators. The `@loopback/repository-json-schema` module contains the
 `getJsonSchema` function to access the metadata stored by the decorators to
-build a matching JSON Schema of your model.
+build a matching JSON schema of your model.
 
 ```ts
 import {model, property} from '@loopback/repository';
@@ -346,7 +345,7 @@ This feature is still a work in progress and is incomplete.
 " %}
 
 Following are the supported keywords that can be explicitly passed into the
-decorators to better tailor towards the JSON Schema being produced.
+decorators to better tailor towards the JSON Schema being produced:
 
 | Keywords    | Decorator   | Type    | Default      | Description                                             |
 | ----------- | ----------- | ------- | ------------ | ------------------------------------------------------- |

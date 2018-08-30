@@ -6,12 +6,12 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Repositories.html
 ---
 
-`Repository` represents a specialized `Service` interface that provides
+A `Repository` represents a specialized `Service` interface that provides
 strong-typed data access (for example, CRUD) operations of a domain model
 against the underlying database or service.
 
-`Repository` can be defined and implemented by application developers. LoopBack
-ships a few predefined `Repository` interfaces for typical CRUD and KV
+A `Repository` can be defined and implemented by application developers.
+LoopBack ships a few predefined `Repository` interfaces for typical CRUD and KV
 operations. These `Repository` implementations leverage `Model` definition and
 `DataSource` configuration to fulfill the logic for data access.
 
