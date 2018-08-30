@@ -9,11 +9,11 @@ summary: LoopBack 4 TodoList Application Tutorial - Add TodoList Repository
 
 ### Repositories with related models
 
-One great feature a related model's repository has is its ability to expose a
-factory function, a function that return a newly instantiated object, that can
-return a 'constrained' version of the related model's repository. This factory
-function is useful because it allows you to create a repository whose operations
-are limited by the data set that the factory function takes in.
+One great feature of a related model's repository is its ability to expose a
+factory function (a function that returns a newly instantiated object) to return
+a 'constrained' version of the related model's repository. A factory function is
+useful because it allows you to create a repository whose operations are limited
+by the data set that applies to the factory function.
 
 In this section, we'll build `TodoListRepository` to have the capability of
 building a constrained version of `TodoRepository`.
@@ -30,12 +30,12 @@ Like `TodoRepository`, we'll use `DefaultCrudRepository` to extend our
 `TodoRepository`, inject `datasources.db` in this repository as well. From there
 we'll need to make two more additions:
 
-- define `todos` property; this property will be used to build a constrained
+- define the `todos` property, which will be used to build a constrained
   `TodoRepository`
 - inject `TodoRepository` instance
 
-Once the property type for `todos` have been defined, use
-`this._createHasManyRepositoryFactoryFor` to assign it a repository contraining
+Once the property type for `todos` has been defined, use
+`this._createHasManyRepositoryFactoryFor` to assign it a repository constraining
 factory function. Pass in the name of the relationship (`todos`) and the Todo
 repository instance to constrain as the arguments for the function.
 
