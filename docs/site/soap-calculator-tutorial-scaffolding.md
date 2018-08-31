@@ -12,13 +12,13 @@ Let's start by creating the initial application by running the following
 command:
 
 ```sh
-lb4 app soap-calculator --enableRepository --enableServices
+lb4 app soap-calculator --repositories --services
 ```
 
-**Note:** The option **--enableRepository** instructs the **CLI** to include a
+**Note:** The option **--repositories** instructs the **CLI** to include a
 `RepositoryMixin` class in the application constructor which will be needed when
-we create the datasource. The option **--enableServices** instructs the **CLI**
-to include a `ServiceMixin` class in the application constructor which will be
+we create the datasource. The option **--services** instructs the **CLI** to
+include a `ServiceMixin` class in the application constructor which will be
 needed to register our SOAP service client.
 
 **LB4** will ask you a few questions _(you can leave the default options)_. The
@@ -33,20 +33,22 @@ application.ts file.
 ```
 
 Next you will see a list of options for the build settings, if you did not
-specify `--enableRepository` and `--enableServices` in the last command, then
-you will see them in this list, make sure you enable both the repository and the
-services for the application.
+specify `--repositories` and `--services` in the last command, then you will see
+them in this list, make sure you enable both the repository and the services for
+the application.
 
 **Note:** Enable all options, unless you know what you are doing, see
 [The Getting Started guide](Getting-started.md) for more information.
 
 ```sh
-? Select project build settings:  (Press <space> to select, <a> to toggle all, <i> to invert selection)
+? Select features to enable in the project:
 ❯◉ Enable tslint
  ◉ Enable prettier
  ◉ Enable mocha
  ◉ Enable loopbackBuild
  ◉ Enable vscode
+ ◉ Enable repositories
+ ◉ Enable services
 ```
 
 #### Run the Application

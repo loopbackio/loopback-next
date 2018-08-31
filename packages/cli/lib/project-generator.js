@@ -169,7 +169,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     const prompts = [
       {
         name: 'settings',
-        message: 'Select project build settings: ',
+        message: 'Select features to enable in the project',
         type: 'checkbox',
         choices: choices,
         // Skip if all features are enabled by cli options

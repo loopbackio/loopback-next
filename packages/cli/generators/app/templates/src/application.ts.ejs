@@ -1,10 +1,10 @@
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
-<% if (project.enableRepository) { -%>
+<% if (project.repositories) { -%>
 import {RepositoryMixin} from '@loopback/repository';
 <% } -%>
 import {RestApplication} from '@loopback/rest';
-<% if (project.enableServices) { -%>
+<% if (project.services) { -%>
 import {ServiceMixin} from '@loopback/service-proxy';
 <% } -%>
 import {MySequence} from './sequence';

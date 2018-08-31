@@ -78,10 +78,10 @@
     "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
     "@loopback/dist-util": "<%= project.dependencies['@loopback/dist-util'] -%>",
     "@loopback/openapi-v3": "<%= project.dependencies['@loopback/openapi-v3'] -%>",
-<% if (project.enableRepository) { -%>
+<% if (project.repositories) { -%>
     "@loopback/repository": "<%= project.dependencies['@loopback/repository'] -%>",
 <% } -%>
-<% if (project.enableServices) { -%>
+<% if (project.services) { -%>
     "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>",
     "@loopback/service-proxy": "<%= project.dependencies['@loopback/service-proxy'] -%>"
 <% } else { -%>
