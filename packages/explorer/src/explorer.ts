@@ -30,6 +30,11 @@ export type ApiExplorerUIOptions = {
    * Options for serve-static middleware
    */
   serveStaticOptions?: serveStatic.ServeStaticOptions;
+
+  /**
+   * Path for the explorer UI
+   */
+  path?: string;
 };
 
 /**

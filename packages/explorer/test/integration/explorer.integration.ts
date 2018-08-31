@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {createClientForHandler} from '@loopback/testlab';
-import {apiExplorerUI} from '../../src/explorer';
+import {apiExplorerUI} from '../../';
 import * as express from 'express';
 import * as path from 'path';
 

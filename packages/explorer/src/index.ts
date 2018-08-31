@@ -4,3 +4,5 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './explorer';
+export * from './keys';
+export * from './explorer.component';

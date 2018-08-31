@@ -6,33 +6,33 @@
     "node": ">=8.9"
   },
   "scripts": {
-    "build:all-dist": "npm run build:dist8 && npm run build:dist10",
     "build:apidocs": "lb-apidocs",
-    "build": "lb-tsc",
-    "build:dist8": "lb-tsc es2017",
-    "build:dist10": "lb-tsc es2018",
+    "build": "lb-tsc es2017 --outDir dist --copy-resources",
     "clean": "lb-clean loopback-explorer*.tgz dist* package api-docs",
     "pretest": "npm run build",
-    "integration": "lb-mocha \"DIST/test/integration/**/*.js\"",
-    "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/integration/**/*.js\"",
-    "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",
+    "integration": "lb-mocha \"dist/test/integration/**/*.js\"",
+    "test": "lb-mocha \"dist/test/unit/**/*.js\" \"dist/test/integration/**/*.js\"",
+    "unit": "lb-mocha \"dist/test/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-explorer*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
+    "@loopback/context": "^1.0.0",
+    "@loopback/core": "^1.0.0",
+    "@loopback/dist-util": "^0.3.6",
+    "@loopback/rest": "^1.1.0",
     "@types/express": "^4.16.0",
     "ejs": "^2.6.1",
     "serve-static": "^1.13.2",
-    "swagger-ui-dist": "^3.18.2"
+    "swagger-ui-dist": "^3.19.0"
   },
   "devDependencies": {
-    "@loopback/build": "^0.7.1",
-    "@loopback/dist-util": "^0.3.6",
-    "@loopback/testlab": "^0.11.5",
+    "@loopback/build": "^1.0.0",
+    "@loopback/testlab": "^1.0.0",
     "@types/ejs": "^2.6.0",
-    "@types/node": "^10.1.1",
+    "@types/node": "^10.10.1",
     "@types/serve-static": "^1.13.2",
     "express": "^4.16.3"
   },
