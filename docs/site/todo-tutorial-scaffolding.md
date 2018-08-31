@@ -22,12 +22,14 @@ $ lb4 app
 ? Project description: A todo list API made with LoopBack 4.
 ? Project root directory: (todo-list)
 ? Application class name: (TodoListApplication)
-? Select project build settings:  (Press <space> to select, <a> to toggle all, <i> to inverse selection)
+? Select features to enable in the project:
 ❯◉ Enable tslint
  ◉ Enable prettier
  ◉ Enable mocha
  ◉ Enable loopbackBuild
  ◉ Enable vscode
+ ◉ Enable repositories
+ ◉ Enable services
  # npm will install dependencies now
  Application todo-list was created in todo-list.
 ```
