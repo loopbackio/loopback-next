@@ -246,11 +246,92 @@ page [Parsing requests](Parsing-requests.md)
 - Must call `sendResponse()` exactly once
 - Streams?
 
-### Sending errors
+### Handling errors
 
-{% include content/tbd.html %}
+There are many reasons why the application may not be able to handle an incoming
+request:
 
-- try/catch details
+- The requested endpoint (method + URL path) was not found.
+- Parameters provided by the client were not valid.
+- A backend database or a service cannot be reached.
+- The response object cannot be converted to JSON because of cyclic
+  dependencies.
+- A programmer made a mistake and a `TypeError` is thrown by the runtime.
+- And so on.
+
+In the Sequence implementation described above, all errors are handled by a
+single `catch` block at the end of the sequence, using the Sequence Action
+called `reject`.
+
+The default implementation of `reject` does the following steps:
+
+- Call
+  [strong-error-handler](https://github.com/strongloop/strong-error-handler) to
+  send back an HTTP response describing the error.
+- Log the error to `stderr` if the status code was 5xx (an internal server
+  error, not a bad request).
+
+To prevent the application from leaking sensitive information like filesystem
+paths and server addresses, the error handler is configured to hide error
+details.
+
+- For 5xx errors, the output contains only the status code and the status name
+  from the HTTP specification. For example:
+
+  ```json
+  {
+    "error": {
+      "statusCode": 500,
+      "message": "Internal Server Error"
+    }
+  }
+  ```
+
+- For 4xx errors, the output contains the full error message (`error.message`)
+  and the contents of the `details` property (`error.details`) that
+  `ValidationError` typically uses to provide machine-readable details about
+  validation problems. It also includes `error.code` to allow a machine-readable
+  error code to be passed through which could be used, for example, for
+  translation.
+
+  ```json
+  {
+    "error": {
+      "statusCode": 422,
+      "name": "Unprocessable Entity",
+      "message": "Missing required fields",
+      "code": "MISSING_REQUIRED_FIELDS"
+    }
+  }
+  ```
+
+During development and testing, it may be useful to see all error details in the
+HTTP responsed returned by the server. This behavior can be enabled by enabling
+the `debug` flag in error-handler configuration as shown in the code example
+below. See strong-error-handler
+[docs](https://github.com/strongloop/strong-error-handler#options) for a list of
+all available options.
+
+```ts
+app.bind(RestBindings.ERROR_WRITER_OPTIONS).to({debug: true});
+```
+
+An example error message when the debug mode is enabled:
+
+```json
+{
+  "error": {
+    "statusCode": 500,
+    "name": "Error",
+    "message": "ENOENT: no such file or directory, open '/etc/passwords'",
+    "errno": -2,
+    "syscall": "open",
+    "code": "ENOENT",
+    "path": "/etc/passwords",
+    "stack": "Error: a test error message\n    at Object.openSync (fs.js:434:3)\n    at Object.readFileSync (fs.js:339:35)"
+  }
+}
+```
 
 ### Keeping your Sequences
 

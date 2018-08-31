@@ -62,7 +62,11 @@ export namespace RestBindings {
   export const HANDLER = BindingKey.create<HttpHandler>('rest.handler');
   /**
    * Binding key for setting and injecting Reject action's error handling
-   * options
+   * options.
+   *
+   * See https://github.com/strongloop/strong-error-handler#options for
+   * the list of available options. Please note that the flag `log` is not used
+   * by `@loopback/rest`.
    */
   export const ERROR_WRITER_OPTIONS = BindingKey.create<ErrorWriterOptions>(
     'rest.errorWriterOptions',
