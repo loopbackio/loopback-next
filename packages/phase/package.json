@@ -1,0 +1,50 @@
+{
+  "name": "@loopback/phase",
+  "version": "1.0.0-1",
+  "description": "Phase based handler chain",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {
+    "build:apidocs": "lb-apidocs",
+    "build": "lb-tsc es2017 --outDir dist",
+    "clean": "lb-clean loopback-phase*.tgz dist* package api-docs",
+    "pretest": "npm run build",
+    "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-phase*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^4.1.1"
+  },
+  "devDependencies": {
+    "@loopback/build": "^1.2.1",
+    "@loopback/testlab": "^1.0.5",
+    "@loopback/tslint-config": "^2.0.0",
+    "@types/debug": "^4.1.0",
+    "@types/node": "^10.9.4"
+  },
+  "keywords": [
+    "LoopBack",
+    "Phase"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist*/src",
+    "dist*/index*",
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
+}
