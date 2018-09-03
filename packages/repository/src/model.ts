@@ -167,7 +167,10 @@ function asObject(value: any, options?: Options): any {
  * Base class for models
  */
 export abstract class Model {
-  static modelName: string;
+  static get modelName(): string {
+    return (this.definition && this.definition.name) || this.name;
+  }
+
   static definition: ModelDefinition;
 
   /**

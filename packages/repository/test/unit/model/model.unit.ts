@@ -293,4 +293,13 @@ describe('model', () => {
     const instance = new NoId();
     expect(() => instance.getId()).to.throw(/missing.*id/);
   });
+
+  it('reads model name from the definition', () => {
+    expect(Customer.modelName).to.equal('Customer');
+  });
+
+  it('reads model name from the class name', () => {
+    class MyModel extends Entity {}
+    expect(MyModel.modelName).to.equal('MyModel');
+  });
 });
