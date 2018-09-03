@@ -5,6 +5,7 @@
 
 export * from './connectors';
 export * from './decorators';
+export * from './errors';
 export * from './mixins';
 export * from './repositories';
 export * from './types';
