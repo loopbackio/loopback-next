@@ -98,6 +98,9 @@ children:
     - title: 'Run and Test it'
       url: soap-calculator-tutorial-run-and-test.html
       output: 'web, pdf'
+  - title: 'Deploying to IBM Cloud'
+    url: Deploying-to-IBM-Cloud.html
+    output: 'web, pdf'
 
 - title: 'Key concepts'
   url: Concepts.html
