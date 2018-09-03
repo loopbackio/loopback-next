@@ -18,7 +18,9 @@ describe('EntityNotFoundError', () => {
     expect(err).to.be.instanceof(Error);
     expect(err.stack)
       .to.be.String()
-      .and.match((s: string) => s.indexOf(__filename) > -1);
+      // NOTE(bajtos) We cannot assert using __filename because stack traces
+      // are typically converted from JS paths to TS paths using source maps.
+      .and.match(/entity-not-found-error.test.(ts|js)/);
   });
 
   it('sets code to "ENTITY_NOT_FOUND"', () => {

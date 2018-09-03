@@ -5,7 +5,6 @@
 
 import {Entity, ValueObject, Model} from '../model';
 import {
-  Class,
   DataObject,
   Options,
   AnyObject,
@@ -16,6 +15,7 @@ import {
 import {DataSource} from '../datasource';
 import {CrudConnector} from '../connectors';
 import {Filter, Where} from '../query';
+import {EntityNotFoundError} from '../errors';
 
 // tslint:disable:no-unused-variable
 
@@ -134,8 +134,10 @@ export interface EntityCrudRepository<T extends Entity, ID>
   delete(entity: DataObject<T>, options?: Options): Promise<boolean>;
 
   /**
-   * Find an entity by id
+   * Find an entity by id, return a rejected promise if not found.
    * @param id Value for the entity id
+   * @param filter Additional query options. E.g. `filter.include` configures
+   * which related models to fetch as part of the database query (or queries).
    * @param options Options for the operations
    * @returns A promise of an entity found for the id
    */
@@ -206,16 +208,20 @@ export class CrudRepositoryImpl<T extends Entity, ID>
   implements EntityCrudRepository<T, ID> {
   private connector: CrudConnector;
 
-  constructor(public dataSource: DataSource, public model: Class<T>) {
+  constructor(
+    public dataSource: DataSource,
+    // model should have type "typeof T", but that's not supported by TSC
+    public model: typeof Entity & {prototype: T},
+  ) {
     this.connector = dataSource.connector as CrudConnector;
   }
 
   private toModels(data: Promise<DataObject<Entity>[]>): Promise<T[]> {
-    return data.then(items => items.map(i => new this.model(i)));
+    return data.then(items => items.map(i => new this.model(i) as T));
   }
 
   private toModel(data: Promise<DataObject<Entity>>): Promise<T> {
-    return data.then(d => new this.model(d));
+    return data.then(d => new this.model(d) as T);
   }
 
   create(entity: DataObject<T>, options?: Options): Promise<T> {
@@ -250,16 +256,18 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     return this.toModels(this.connector.find(this.model, filter, options));
   }
 
-  findById(id: ID, options?: Options): Promise<T> {
+  async findById(id: ID, filter?: Filter, options?: Options): Promise<T> {
     if (typeof this.connector.findById === 'function') {
       return this.toModel(this.connector.findById(this.model, id, options));
     }
     const where = this.model.buildWhereForId(id);
-    return this.connector
-      .find(this.model, {where: where}, options)
-      .then((entities: T[]) => {
-        return entities[0];
-      });
+    const entities = await this.toModels(
+      this.connector.find(this.model, {where: where}, options),
+    );
+    if (!entities.length) {
+      throw new EntityNotFoundError(this.model, id);
+    }
+    return entities[0];
   }
 
   update(entity: DataObject<T>, options?: Options): Promise<boolean> {

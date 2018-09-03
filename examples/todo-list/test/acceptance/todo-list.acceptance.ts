@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {EntityNotFoundError} from '@loopback/repository';
 import {createClientForHandler, expect, supertest} from '@loopback/testlab';
 import {TodoListApplication} from '../../src/application';
 import {TodoList} from '../../src/models/';
@@ -110,7 +111,7 @@ describe('Application', () => {
         .expect(200);
       await expect(
         todoListRepo.findById(persistedTodoList.id),
-      ).to.be.rejectedWith(/no TodoList found with id/);
+      ).to.be.rejectedWith(EntityNotFoundError);
     });
   });
 

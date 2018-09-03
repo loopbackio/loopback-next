@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Filter, Where, repository} from '@loopback/repository';
-import {post, param, get, patch, del, requestBody} from '@loopback/rest';
+import {Filter, repository, Where} from '@loopback/repository';
+import {del, get, param, patch, post, requestBody} from '@loopback/rest';
 import {TodoList} from '../models';
 import {TodoListRepository} from '../repositories';
 

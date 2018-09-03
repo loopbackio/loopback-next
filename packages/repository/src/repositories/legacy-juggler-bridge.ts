@@ -3,26 +3,26 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as legacy from 'loopback-datasource-juggler';
-
-import * as assert from 'assert';
 import {isPromiseLike} from '@loopback/context';
+import * as assert from 'assert';
+import * as legacy from 'loopback-datasource-juggler';
 import {
-  Options,
   AnyObject,
   Command,
-  NamedParameters,
-  PositionalParameters,
   DataObject,
+  NamedParameters,
+  Options,
+  PositionalParameters,
 } from '../common-types';
+import {HasManyDefinition} from '../decorators/relation.decorator';
+import {EntityNotFoundError} from '../errors';
 import {Entity, ModelDefinition} from '../model';
 import {Filter, Where} from '../query';
-import {EntityCrudRepository} from './repository';
 import {
   createHasManyRepositoryFactory,
   HasManyRepositoryFactory,
 } from './relation.factory';
-import {HasManyDefinition} from '../decorators/relation.decorator';
+import {EntityCrudRepository} from './repository';
 
 export namespace juggler {
   export import DataSource = legacy.DataSource;
@@ -211,7 +211,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
       this.modelClass.findById(id, filter, options),
     );
     if (!model) {
-      throw new Error(`no ${this.modelClass.name} found with id "${id}"`);
+      throw new EntityNotFoundError(this.entityClass, id);
     }
     return this.toEntity(model);
   }
