@@ -45,7 +45,7 @@ describe('DefaultCrudRepository', () => {
 
   class Note extends Entity {
     static definition = new ModelDefinition({
-      name: 'note3',
+      name: 'Note',
       properties: {
         title: 'string',
         content: 'string',
@@ -67,12 +67,6 @@ describe('DefaultCrudRepository', () => {
       name: 'db',
       connector: 'memory',
     });
-  });
-
-  afterEach(async () => {
-    const model = ds.createModel<typeof juggler.PersistedModel>('note3');
-    model.attachTo(ds);
-    await model.deleteAll();
   });
 
   context('constructor', () => {
@@ -184,6 +178,23 @@ describe('DefaultCrudRepository', () => {
     expect(note).to.be.null();
   });
 
+  describe('findById', () => {
+    it('returns the correct instance', async () => {
+      const repo = new DefaultCrudRepository(Note, ds);
+      const note = await repo.create({title: 'a-title', content: 'a-content'});
+      const result = await repo.findById(note.id);
+      expect(result && result.toJSON()).to.eql(note.toJSON());
+    });
+
+    it('throws when the instance does not exist', async () => {
+      const repo = new DefaultCrudRepository(Note, ds);
+      await expect(repo.findById(999999)).to.be.rejectedWith({
+        code: 'ENTITY_NOT_FOUND',
+        message: 'Entity not found: Note with id 999999',
+      });
+    });
+  });
+
   it('implements Repository.delete()', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
     const note = await repo.create({title: 't3', content: 'c3'});
@@ -277,16 +288,5 @@ describe('DefaultCrudRepository', () => {
     const note1 = await repo.create({title: 't3', content: 'c3'});
     const ok = await repo.exists(note1.id);
     expect(ok).to.be.true();
-  });
-
-  it('throws if findById does not return a value', async () => {
-    const repo = new DefaultCrudRepository(Note, ds);
-    try {
-      await repo.findById(999999);
-    } catch (err) {
-      expect(err).to.match(/no Note was found with id/);
-      return;
-    }
-    throw new Error('No error was returned!');
   });
 });
