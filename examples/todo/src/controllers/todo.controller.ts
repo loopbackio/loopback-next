@@ -9,6 +9,7 @@ import {del, get, param, patch, post, put, requestBody} from '@loopback/rest';
 import {Todo} from '../models';
 import {TodoRepository} from '../repositories';
 import {GeocoderService} from '../services';
+import * as HttpErrors from 'http-errors';
 
 export class TodoController {
   constructor(
@@ -35,7 +36,13 @@ export class TodoController {
     @param.path.number('id') id: number,
     @param.query.boolean('items') items?: boolean,
   ): Promise<Todo> {
-    return await this.todoRepo.findById(id);
+    try {
+      const result = await this.todoRepo.findById(id);
+      return result;
+    } catch (e) {
+      const err = new HttpErrors.NotFound(e);
+      throw err;
+    }
   }
 
   @get('/todos')

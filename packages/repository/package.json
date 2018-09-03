@@ -31,6 +31,7 @@
     "@loopback/context": "^0.12.5",
     "@loopback/core": "^0.11.5",
     "@loopback/dist-util": "^0.3.6",
+    "@types/http-errors": "^1.6.1",
     "lodash": "^4.17.10",
     "loopback-datasource-juggler": "^3.23.0"
   },
