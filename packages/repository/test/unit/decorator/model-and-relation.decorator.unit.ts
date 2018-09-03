@@ -164,6 +164,12 @@ describe('model decorator', () => {
     expect(meta).to.eql({name: 'foo'});
   });
 
+  it('updates static property "modelName"', () => {
+    @model()
+    class Category extends Entity {}
+    expect(Category.modelName).to.equal('Category');
+  });
+
   it('adds model metadata with arbitrary properties', () => {
     @model({arbitrary: 'property'})
     class Arbitrary {
