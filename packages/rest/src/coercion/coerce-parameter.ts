@@ -63,10 +63,10 @@ export function coerceParameter(
       return coerceInteger(data, spec);
     case 'boolean':
       return coerceBoolean(data, spec);
+    case 'object':
+      return coerceObject(data, spec);
     case 'string':
     case 'password':
-    // serialize will be supported in next PR
-    case 'serialize':
     default:
       return data;
   }
@@ -139,4 +139,52 @@ function coerceBoolean(data: string | object, spec: ParameterObject) {
   if (isTrue(data)) return true;
   if (isFalse(data)) return false;
   throw RestHttpErrors.invalidData(data, spec.name);
+}
+
+function coerceObject(input: string | object, spec: ParameterObject) {
+  const data = parseJsonIfNeeded(input, spec);
+
+  if (data === undefined) {
+    // Skip any further checks and coercions, nothing we can do with `undefined`
+    return undefined;
+  }
+
+  if (typeof data !== 'object' || Array.isArray(data))
+    throw RestHttpErrors.invalidData(input, spec.name);
+
+  // TODO(bajtos) apply coercion based on properties defined by spec.schema
+  return data;
+}
+
+function parseJsonIfNeeded(
+  data: string | object,
+  spec: ParameterObject,
+): string | object | undefined {
+  if (typeof data !== 'string') return data;
+
+  if (spec.in !== 'query' || spec.style !== 'deepObject') {
+    debug(
+      'Skipping JSON.parse, argument %s is not in:query style:deepObject',
+      spec.name,
+    );
+    return data;
+  }
+
+  if (data === '') {
+    debug('Converted empty string to object value `undefined`');
+    return undefined;
+  }
+
+  try {
+    const result = JSON.parse(data);
+    debug('Parsed parameter %s as %j', spec.name, result);
+    return result;
+  } catch (err) {
+    debug('Cannot parse %s value %j as JSON: %s', spec.name, data, err.message);
+    throw RestHttpErrors.invalidData(data, spec.name, {
+      details: {
+        syntaxError: err.message,
+      },
+    });
+  }
 }

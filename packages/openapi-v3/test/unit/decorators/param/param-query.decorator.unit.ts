@@ -5,6 +5,7 @@
 
 import {get, param, getControllerSpec} from '../../../..';
 import {expect} from '@loopback/testlab';
+import {ParameterObject} from '@loopback/openapi-v3-types';
 
 describe('Routing metadata for parameters', () => {
   describe('@param.query.string', () => {
@@ -214,6 +215,54 @@ describe('Routing metadata for parameters', () => {
         schema: {
           type: 'string',
           format: 'password',
+        },
+      };
+      expectSpecToBeEqual(MyController, expectedParamSpec);
+    });
+  });
+
+  describe('@param.query.object', () => {
+    it('sets in:query style:deepObject and a default schema', () => {
+      class MyController {
+        @get('/greet')
+        greet(@param.query.object('filter') filter: Object) {}
+      }
+      const expectedParamSpec = <ParameterObject>{
+        name: 'filter',
+        in: 'query',
+        style: 'deepObject',
+        schema: {
+          type: 'object',
+          additionalProperties: true,
+        },
+      };
+      expectSpecToBeEqual(MyController, expectedParamSpec);
+    });
+
+    it('supports user-defined schema', () => {
+      class MyController {
+        @get('/greet')
+        greet(
+          @param.query.object('filter', {
+            type: 'object',
+            properties: {
+              where: {type: 'object', additionalProperties: true},
+              limit: {type: 'number'},
+            },
+          })
+          filter: Object,
+        ) {}
+      }
+      const expectedParamSpec: ParameterObject = {
+        name: 'filter',
+        in: 'query',
+        style: 'deepObject',
+        schema: {
+          type: 'object',
+          properties: {
+            where: {type: 'object', additionalProperties: true},
+            limit: {type: 'number'},
+          },
         },
       };
       expectSpecToBeEqual(MyController, expectedParamSpec);

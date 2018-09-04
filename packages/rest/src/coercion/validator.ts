@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ParameterObject} from '@loopback/openapi-v3-types';
+import {ParameterObject, SchemaObject} from '@loopback/openapi-v3-types';
 import {RestHttpErrors} from '../';
 
 /**
@@ -63,6 +63,11 @@ export class Validator {
    */
   // tslint:disable-next-line:no-any
   isAbsent(value: any) {
-    return value === '' || value === undefined;
+    if (value === '' || value === undefined) return true;
+
+    const schema: SchemaObject = this.ctx.parameterSpec.schema || {};
+    if (schema.type === 'object' && value === 'null') return true;
+
+    return false;
   }
 }

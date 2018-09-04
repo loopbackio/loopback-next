@@ -21,8 +21,9 @@ export type IntegerCoercionOptions = {
 };
 
 export function isEmpty(data: string) {
-  debug('isEmpty %s', data);
-  return data === '';
+  const result = data === '';
+  debug('isEmpty(%j) -> %s', data, result);
+  return result;
 }
 /**
  * A set of truthy values. A data in this set will be coerced to `true`.
@@ -59,8 +60,9 @@ const REGEX_RFC3339_DATE = /^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]
  */
 export function matchDateFormat(date: string) {
   const pattern = new RegExp(REGEX_RFC3339_DATE);
-  debug('matchDateFormat: %s', pattern.test(date));
-  return pattern.test(date);
+  const result = pattern.test(date);
+  debug('matchDateFormat(%j) -> %s', date, result);
+  return result;
 }
 
 /**
@@ -70,8 +72,7 @@ export function matchDateFormat(date: string) {
  * @param format The format in an OpenAPI schema specification
  */
 export function getOAIPrimitiveType(type?: string, format?: string) {
-  // serizlize will be supported in next PR
-  if (type === 'object' || type === 'array') return 'serialize';
+  if (type === 'object' || type === 'array') return type;
   if (type === 'string') {
     switch (format) {
       case 'byte':
