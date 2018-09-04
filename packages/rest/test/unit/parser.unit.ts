@@ -7,6 +7,7 @@ import {
   OperationObject,
   ParameterObject,
   RequestBodyObject,
+  SchemaObject,
 } from '@loopback/openapi-v3-types';
 import {
   ShotRequestOptions,
@@ -20,6 +21,7 @@ import {
   createResolvedRoute,
   parseOperationArgs,
 } from '../..';
+import {RestHttpErrors} from '../../src';
 
 describe('operationArgsParser', () => {
   it('parses path parameters', async () => {
@@ -54,6 +56,92 @@ describe('operationArgsParser', () => {
     const args = await parseOperationArgs(req, route);
 
     expect(args).to.eql([{key: 'value'}]);
+  });
+
+  context('in:query style:deepObject', () => {
+    it('parses JSON-encoded string value', async () => {
+      const req = givenRequest({
+        url: '/?value={"key":"value"}',
+      });
+
+      const spec = givenOperationWithObjectParameter('value');
+      const route = givenResolvedRoute(spec);
+
+      const args = await parseOperationArgs(req, route);
+
+      expect(args).to.eql([{key: 'value'}]);
+    });
+
+    it('parses object value provided via nested keys', async () => {
+      const req = givenRequest({
+        url: '/?value[key]=value',
+      });
+
+      const spec = givenOperationWithObjectParameter('value');
+      const route = givenResolvedRoute(spec);
+
+      const args = await parseOperationArgs(req, route);
+
+      expect(args).to.eql([{key: 'value'}]);
+    });
+
+    it('rejects malformed JSON string', async () => {
+      const req = givenRequest({
+        url: '/?value={"malformed-JSON"}',
+      });
+
+      const spec = givenOperationWithObjectParameter('value');
+      const route = givenResolvedRoute(spec);
+
+      await expect(parseOperationArgs(req, route)).to.be.rejectedWith(
+        RestHttpErrors.invalidData('{"malformed-JSON"}', 'value', {
+          details: {
+            syntaxError: 'Unexpected token } in JSON at position 17',
+          },
+        }),
+      );
+    });
+
+    it('rejects array values encoded as JSON', async () => {
+      const req = givenRequest({
+        url: '/?value=[1,2]',
+      });
+
+      const spec = givenOperationWithObjectParameter('value');
+      const route = givenResolvedRoute(spec);
+
+      await expect(parseOperationArgs(req, route)).to.be.rejectedWith(
+        RestHttpErrors.invalidData('[1,2]', 'value'),
+      );
+    });
+
+    it('rejects array values provided via nested keys', async () => {
+      const req = givenRequest({
+        url: '/?value=1&value=2',
+      });
+
+      const spec = givenOperationWithObjectParameter('value');
+      const route = givenResolvedRoute(spec);
+
+      await expect(parseOperationArgs(req, route)).to.be.rejectedWith(
+        RestHttpErrors.invalidData(['1', '2'], 'value'),
+      );
+    });
+
+    function givenOperationWithObjectParameter(
+      name: string,
+      schema: SchemaObject = {type: 'object', additionalProperties: true},
+    ) {
+      expect(schema).to.have.property('type', 'object');
+      return givenOperationWithParameters([
+        {
+          name,
+          in: 'query',
+          style: 'deepObject',
+          schema,
+        },
+      ]);
+    }
   });
 
   function givenOperationWithParameters(params?: ParameterObject[]) {

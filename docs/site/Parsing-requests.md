@@ -78,6 +78,36 @@ async replaceTodo(
 }
 ```
 
+#### Object values
+
+OpenAPI specification describes several ways how to encode object values into a
+string, see
+[Style Values](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#style-values)
+and
+[Style Examples](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#style-examples).
+
+At the moment, LoopBack supports object values for parameters in query strings
+with `style: "deepObject"` only. Please note that this style does not preserve
+encoding of primitive types, numbers and booleans are always parsed as strings.
+
+For example:
+
+```
+GET /todos?filter[where][completed]=false
+// filter={where: {completed: 'false'}}
+```
+
+As an extension to the deep-object encoding described by OpenAPI, when the
+parameter is specified with `style: "deepObject"`, we allow clients to provide
+the object value as a JSON-encoded string too.
+
+For example:
+
+```
+GET /todos?filter={"where":{"completed":false}}
+// filter={where: {completed: false}}
+```
+
 ### Validation
 
 Validations are applied on the parameters and the request body data. They also
@@ -107,6 +137,7 @@ Here are our default validation rules for each type:
   [RFC3339](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14).
 - boolean: after converted to all upper case, should be one of the following
   values: `TRUE`, `1`, `FALSE` or `0`.
+- object: should be a plain data object, not an array.
 
 #### Request Body
 

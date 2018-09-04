@@ -204,6 +204,29 @@ export namespace param {
      * @param name Parameter name.
      */
     password: createParamShortcut('query', builtinTypes.password),
+
+    /**
+     * Define a parameter accepting an object value encoded
+     * - as a JSON string, e.g. `filter={"where":{"id":1}}`); or
+     * - in multiple nested keys, e.g. `filter[where][id]=1`
+     *
+     * @param name Parameter name
+     * @param schema Optional OpenAPI Schema describing the object value.
+     */
+    object: function(
+      name: string,
+      schema: SchemaObject | ReferenceObject = {
+        type: 'object',
+        additionalProperties: true,
+      },
+    ) {
+      return param({
+        name,
+        in: 'query',
+        style: 'deepObject',
+        schema,
+      });
+    },
   };
 
   export const header = {

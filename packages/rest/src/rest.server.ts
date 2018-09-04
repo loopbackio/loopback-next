@@ -3,41 +3,42 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {AssertionError} from 'assert';
-import {safeDump} from 'js-yaml';
-import {Binding, Context, Constructor, inject} from '@loopback/context';
-import {
-  Route,
-  ControllerRoute,
-  RouteEntry,
-  ControllerFactory,
-  ControllerClass,
-  ControllerInstance,
-  createControllerFactoryForBinding,
-} from './router/routing-table';
-import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
-import {ServerRequest, ServerResponse} from 'http';
-import {HttpServer, HttpServerOptions} from '@loopback/http-server';
-import * as cors from 'cors';
+import {Binding, Constructor, Context, inject} from '@loopback/context';
 import {Application, CoreBindings, Server} from '@loopback/core';
+import {HttpServer, HttpServerOptions} from '@loopback/http-server';
 import {getControllerSpec} from '@loopback/openapi-v3';
+import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
+import {AssertionError} from 'assert';
+import * as cors from 'cors';
+import * as express from 'express';
+import {PathParams} from 'express-serve-static-core';
+import {ServerRequest, ServerResponse} from 'http';
+import {safeDump} from 'js-yaml';
+import * as pathToRegExp from 'path-to-regexp';
+import {ServeStaticOptions} from 'serve-static';
 import {HttpHandler} from './http-handler';
-import {DefaultSequence, SequenceHandler, SequenceFunction} from './sequence';
+import {RestBindings} from './keys';
+import {QUERY_NOT_PARSED} from './parser';
+import {RequestContext} from './request-context';
+import {
+  ControllerClass,
+  ControllerFactory,
+  ControllerInstance,
+  ControllerRoute,
+  createControllerFactoryForBinding,
+  Route,
+  RouteEntry,
+} from './router/routing-table';
+import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
 import {
   FindRoute,
   InvokeMethod,
-  Send,
-  Reject,
   ParseParams,
+  Reject,
   Request,
   Response,
+  Send,
 } from './types';
-import {RestBindings} from './keys';
-import {RequestContext} from './request-context';
-import * as express from 'express';
-import {ServeStaticOptions} from 'serve-static';
-import {PathParams} from 'express-serve-static-core';
-import * as pathToRegExp from 'path-to-regexp';
 
 const debug = require('debug')('loopback:rest:server');
 
@@ -186,6 +187,15 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
   protected _setupRequestHandler(options: RestServerConfig) {
     this._expressApp = express();
+
+    // Disable express' built-in query parser, we parse queries ourselves
+    // Note that when disabled, express sets query to an empty object,
+    // which makes it difficult for us to detect whether the query
+    // has been parsed or not. At the same time, we want `request.query`
+    // to remain as an object, because everybody in express ecosystem expects
+    // that property to be defined. A static singleton object to the rescue!
+    this._expressApp.set('query parser fn', (str: string) => QUERY_NOT_PARSED);
+
     this.requestHandler = this._expressApp;
 
     // Allow CORS support for all endpoints so that users

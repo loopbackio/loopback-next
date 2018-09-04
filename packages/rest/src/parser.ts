@@ -3,24 +3,31 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ServerRequest} from 'http';
-import * as HttpErrors from 'http-errors';
+import {REQUEST_BODY_INDEX} from '@loopback/openapi-v3';
 import {
+  isReferenceObject,
   OperationObject,
   ParameterObject,
-  isReferenceObject,
   SchemasObject,
 } from '@loopback/openapi-v3-types';
-import {REQUEST_BODY_INDEX} from '@loopback/openapi-v3';
-import {promisify} from 'util';
-import {OperationArgs, Request, PathParameterValues} from './types';
-import {ResolvedRoute} from './router/routing-table';
-import {coerceParameter} from './coercion/coerce-parameter';
-import {validateRequestBody} from './validation/request-body.validator';
-import {RestHttpErrors} from './index';
-type HttpError = HttpErrors.HttpError;
 import * as debugModule from 'debug';
+import {ServerRequest} from 'http';
+import * as HttpErrors from 'http-errors';
+import * as parseUrl from 'parseurl';
+import {parse as parseQuery} from 'qs';
+import {promisify} from 'util';
+import {coerceParameter} from './coercion/coerce-parameter';
+import {RestHttpErrors} from './index';
+import {ResolvedRoute} from './router/routing-table';
+import {OperationArgs, PathParameterValues, Request} from './types';
+import {validateRequestBody} from './validation/request-body.validator';
+
+type HttpError = HttpErrors.HttpError;
+
 const debug = debugModule('loopback:rest:parser');
+
+export const QUERY_NOT_PARSED = {};
+Object.freeze(QUERY_NOT_PARSED);
 
 // tslint:disable-next-line:no-any
 type MaybeBody = any | undefined;
@@ -134,22 +141,31 @@ function getParamFromRequest(
   request: Request,
   pathParams: PathParameterValues,
 ) {
-  let result;
   switch (spec.in) {
     case 'query':
-      result = request.query[spec.name];
-      break;
+      ensureRequestQueryWasParsed(request);
+      return request.query[spec.name];
     case 'path':
-      result = pathParams[spec.name];
-      break;
+      return pathParams[spec.name];
     case 'header':
       // @jannyhou TBD: check edge cases
-      result = request.headers[spec.name.toLowerCase()];
+      return request.headers[spec.name.toLowerCase()];
       break;
     // TODO(jannyhou) to support `cookie`,
     // see issue https://github.com/strongloop/loopback-next/issues/997
     default:
       throw RestHttpErrors.invalidParamLocation(spec.in);
   }
-  return result;
+}
+
+function ensureRequestQueryWasParsed(request: Request) {
+  if (request.query && request.query !== QUERY_NOT_PARSED) return;
+
+  const input = parseUrl(request)!.query;
+  if (input && typeof input === 'string') {
+    request.query = parseQuery(input);
+  } else {
+    request.query = {};
+  }
+  debug('Parsed request query: ', request.query);
 }
