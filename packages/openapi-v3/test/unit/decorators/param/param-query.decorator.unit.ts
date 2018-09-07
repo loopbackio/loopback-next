@@ -231,6 +231,7 @@ describe('Routing metadata for parameters', () => {
         name: 'filter',
         in: 'query',
         style: 'deepObject',
+        explode: true,
         schema: {
           type: 'object',
           additionalProperties: true,
@@ -257,6 +258,7 @@ describe('Routing metadata for parameters', () => {
         name: 'filter',
         in: 'query',
         style: 'deepObject',
+        explode: true,
         schema: {
           type: 'object',
           properties: {

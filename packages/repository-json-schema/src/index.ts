@@ -5,6 +5,9 @@
 
 export * from './build-schema';
 export * from './keys';
+export * from './filter-json-schema';
 
 import {JSONSchema6 as JsonSchema} from 'json-schema';
 export {JsonSchema};
+
+export {Model} from '@loopback/repository';

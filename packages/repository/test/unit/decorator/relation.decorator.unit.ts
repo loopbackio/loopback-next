@@ -6,7 +6,7 @@
 import {expect} from '@loopback/testlab';
 import {Entity, hasMany, RELATIONS_KEY, RelationType, property} from '../../..';
 import {MetadataInspector} from '@loopback/context';
-import {MODEL_PROPERTIES_KEY, model} from '../../../src';
+import {MODEL_PROPERTIES_KEY, model, getModelRelations} from '../../../src';
 
 describe('relation decorator', () => {
   context('hasMany', () => {
@@ -121,6 +121,46 @@ describe('relation decorator', () => {
           }
         }).to.throw(/Decorator cannot be applied more than once/);
       });
+    });
+  });
+});
+
+describe('getModelRelations', () => {
+  it('returns relation metadata for own and inherited properties', () => {
+    @model()
+    class AccessToken extends Entity {
+      @property({id: true})
+      userId: number;
+    }
+
+    @model()
+    class User extends Entity {
+      @hasMany(AccessToken)
+      accessTokens: AccessToken[];
+    }
+
+    @model()
+    class Order extends Entity {
+      @property({id: true})
+      customerId: number;
+    }
+
+    @model()
+    class Customer extends User {
+      @hasMany(Order)
+      orders: Order[];
+    }
+
+    const relations = getModelRelations(Customer);
+    expect(relations).to.deepEqual({
+      accessTokens: {
+        keyTo: 'userId',
+        type: 'hasMany',
+      },
+      orders: {
+        keyTo: 'customerId',
+        type: 'hasMany',
+      },
     });
   });
 });

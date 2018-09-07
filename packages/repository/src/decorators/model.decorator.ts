@@ -14,8 +14,9 @@ import {
   ModelDefinition,
   ModelDefinitionSyntax,
   PropertyDefinition,
+  RelationDefinitionMap,
 } from '../model';
-import {RELATIONS_KEY, RelationDefinitionBase} from './relation.decorator';
+import {RELATIONS_KEY} from './relation.decorator';
 
 export const MODEL_KEY = MetadataAccessor.create<
   Partial<ModelDefinitionSyntax>,
@@ -31,7 +32,6 @@ export const MODEL_WITH_PROPERTIES_KEY = MetadataAccessor.create<
 >('loopback:model-and-properties');
 
 export type PropertyMap = MetadataMap<PropertyDefinition>;
-export type RelationMap = MetadataMap<RelationDefinitionBase>;
 
 // tslint:disable:no-any
 
@@ -76,7 +76,7 @@ export function model(definition?: Partial<ModelDefinitionSyntax>) {
 
     target.definition = modelDef;
 
-    const relationMap: RelationMap =
+    const relationMap: RelationDefinitionMap =
       MetadataInspector.getAllPropertyMetadata(
         RELATIONS_KEY,
         target.prototype,
