@@ -17,7 +17,7 @@
     "coveralls": "^3.0.0",
     "cz-conventional-changelog": "^2.1.0",
     "husky": "^0.14.3",
-    "lerna": "^3.1.4"
+    "lerna": "^3.3.0"
   },
   "scripts": {
     "postinstall": "lerna bootstrap",

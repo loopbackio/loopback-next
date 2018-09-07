@@ -1,5 +1,5 @@
 {
-  "lerna": "3.1.4",
+  "lerna": "3.3.0",
   "packages": [
     "benchmark",
     "docs",
@@ -21,7 +21,9 @@
     "run": {
       "prefix": false,
       "loglevel": "silent",
-      "parallel": true
+      "stream": true,
+      "concurrency": 8,
+      "sort": false
     },
     "clean": {
       "loglevel": "silent",
