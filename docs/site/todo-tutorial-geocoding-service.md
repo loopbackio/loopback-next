@@ -138,7 +138,7 @@ export class GeocoderServiceProvider implements Provider<GeocoderService> {
     protected datasource: juggler.DataSource = new GeocoderDataSource(),
   ) {}
 
-  value(): GeocoderService {
+  value(): Promise<GeocoderService> {
     return getService(this.datasource);
   }
 }
@@ -178,12 +178,14 @@ export class Todo extends Entity {
 Finally, modify `TodoController` to look up the address and convert it to GPS
 coordinates when a new Todo item is created.
 
-Modify the Controller constructor to receive `GeocoderService` as a new
-dependency.
+Import `GeocodeService` interface into the `TodoController` and then modify the
+Controller constructor to receive `GeocodeService` as a new dependency.
 
 #### src/controllers/todo.controller.ts
 
 ```ts
+import {GeocoderService} from '../services';
+
 export class TodoController {
   constructor(
     @repository(TodoRepository) protected todoRepo: TodoRepository,
