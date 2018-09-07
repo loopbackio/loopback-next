@@ -224,6 +224,7 @@ export namespace param {
         name,
         in: 'query',
         style: 'deepObject',
+        explode: true,
         schema,
       });
     },

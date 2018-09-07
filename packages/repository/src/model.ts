@@ -44,7 +44,13 @@ export interface PropertyForm {
   name?: string; // Custom name for this form
 }
 
-export interface PropertyDefinitionMap {}
+/**
+ * A key-value map describing model relations.
+ * A relation name is used as the key, a relation definition is the value.
+ */
+export type RelationDefinitionMap = {
+  [relationName: string]: RelationDefinitionBase;
+};
 
 /**
  * DSL for building a model definition.
@@ -53,7 +59,7 @@ export interface ModelDefinitionSyntax {
   name: string;
   properties?: {[name: string]: PropertyDefinition | PropertyType};
   settings?: {[name: string]: any};
-  relations?: {[name: string]: RelationDefinitionBase};
+  relations?: RelationDefinitionMap;
   [attribute: string]: any;
 }
 
@@ -64,7 +70,7 @@ export class ModelDefinition {
   readonly name: string;
   properties: {[name: string]: PropertyDefinition};
   settings: {[name: string]: any};
-  relations: {[name: string]: RelationDefinitionBase};
+  relations: RelationDefinitionMap;
   // indexes: Map<string, any>;
   [attribute: string]: any; // Other attributes
 

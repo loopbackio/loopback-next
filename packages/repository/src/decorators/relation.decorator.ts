@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Class} from '../common-types';
-import {Entity} from '../model';
+import {Entity, Model, RelationDefinitionMap} from '../model';
 import {PropertyDecoratorFactory} from '@loopback/context';
 import {property} from './model.decorator';
 import {camelCase} from 'lodash';
@@ -25,7 +24,7 @@ export const RELATIONS_KEY = 'loopback:relations';
 
 export class RelationMetadata {
   type: RelationType;
-  target: string | Class<Entity>;
+  target: string | typeof Entity;
   as: string;
 }
 
@@ -149,4 +148,16 @@ export function referencesOne(definition?: Object) {
 export function referencesMany(definition?: Object) {
   const rel = Object.assign({type: RelationType.referencesMany}, definition);
   return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
+}
+
+/**
+ * Get metadata of all relations defined on a given model class.
+ *
+ * @param modelCtor The model class (the constructor function).
+ * @return
+ */
+export function getModelRelations(
+  modelCtor: typeof Model,
+): RelationDefinitionMap {
+  return (modelCtor.definition && modelCtor.definition.relations) || {};
 }

@@ -16,6 +16,7 @@ const OPTIONAL_ANY_OBJECT: ParameterObject = {
     additionalProperties: true,
   },
   style: 'deepObject',
+  explode: true,
 };
 
 const REQUIRED_ANY_OBJECT = {
