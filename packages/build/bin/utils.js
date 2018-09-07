@@ -177,6 +177,19 @@ function runShell(command, args, options) {
   );
   child.on('close', (code, signal) => {
     debug('%s exits: %d', command, code);
+    if (code > 0 || signal) {
+      console.warn(
+        'Command aborts (code %d signal %s): %s %s.',
+        code,
+        signal,
+        command,
+        args.join(' '),
+      );
+    }
+    if (signal === 'SIGKILL' && code === 0) {
+      // Travis might kill processes under resource pressure
+      code = 128;
+    }
     process.exitCode = code;
   });
   return child;
