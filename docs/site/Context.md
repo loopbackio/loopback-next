@@ -8,21 +8,21 @@ permalink: /doc/en/lb4/Context.html
 
 ## What is Context?
 
-- An abstraction of all state and dependencies in your application.
-- Context is what LoopBack uses to manage everything.
+- An abstraction of all state and dependencies in your application
+- LoopBack uses context to manage everything
 - A global registry for anything/everything in your app (all configs, state,
-  dependencies, classes, etc).
+  dependencies, classes, etc)
 - An [inversion of control](https://en.wikipedia.org/wiki/Inversion_of_control)
-  container used to inject dependencies into your code.
+  container used to inject dependencies into your code
 
 ### Why is it important?
 
 - You can use the context as a way to give loopback more "info" so that other
-  dependencies in your app may retrieve it (ie. a centralized place/global
-  builtin/in-memory storage mechanism).
+  dependencies in your app may retrieve it. It works as a centralized place/
+  global built-in/in-memory storage mechanism.
 - LoopBack can help "manage" your resources automatically (through
   [Dependency Injection](Dependency-injection.md) and decorators).
-- You have full access to updated/real-time application + request state at all
+- You have full access to updated/real-time application and request state at all
   times.
 
 ## How to create a context?
@@ -44,14 +44,14 @@ LoopBack's context system allows an unlimited amount of Context instances, each
 of which may have a parent Context.
 
 An application typically has three "levels" of context: application-level,
-server-level and request-level.
+server-level, and request-level.
 
 ## Application-level context (global)
 
-- stores all the initial and modified app state throughout the entire life of
+- Stores all the initial and modified app states throughout the entire life of
   the app (while the process is alive)
-- Generally configured when the application is created (though other things may
-  modify things in the context while alive/running)
+- Generally configured when the application is created (though the context may
+  be modified while running)
 
 Here is a simple example:
 
@@ -109,9 +109,9 @@ Using
 as an example, we can create custom sequences that:
 
 - are dynamically created for each incoming server request
-- extend the application level context (to give you access to application level
-  dependencies during the request/response lifecycle)
-- are garbage collected once the response is sent (memory management)
+- extend the application level context to give you access to application-level
+  dependencies during the request/response lifecycle
+- are garbage-collected once the response is sent for memory management
 
 Let's see this in action:
 

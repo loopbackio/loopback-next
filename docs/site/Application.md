@@ -12,8 +12,8 @@ In LoopBack 4, the
 [`Application`](http://apidocs.loopback.io/@loopback%2fdocs/core.html#Application)
 class is the central class for setting up all of your module's components,
 controllers, servers and bindings. The `Application` class extends
-[Context](Context.md), and provides the controls for starting and stopping
-itself and its associated servers.
+[Context](Context.md) and provides the controls for starting and stopping itself
+and its associated servers.
 
 When using LoopBack 4, we strongly encourage you to create your own subclass of
 `Application` to better organize your configuration and setup.
@@ -23,9 +23,9 @@ When using LoopBack 4, we strongly encourage you to create your own subclass of
 By making your own application class, you can perform several additional tasks
 as a part of your setup:
 
-- Pass configuration into the base class constructor
-- Perform some asynchronous wireup before application start
-- Perform some graceful cleanup on application stop
+- Pass the configuration into the base class constructor
+- Perform asynchronous startup functions before starting the application
+- Perform graceful cleanup functions when the application stops
 
 {% include code-caption.html content="src/widget.application.ts" %}
 
@@ -71,7 +71,7 @@ combination of both.
 ### Binding configuration
 
 Binding is the most commonly-demonstrated form of application configuration
-throughout our examples, and is the recommended method for setting up your
+throughout our examples. Binding is the recommended method for setting up your
 application.
 
 In addition to the binding functions provided by [Context](Context.md), the
@@ -151,8 +151,8 @@ app.server(RestServer);
 app.servers([MyServer, GrpcServer]);
 ```
 
-The `server` function is much like the previous functions, but with
-[Servers](Server.md) bulk bindings are possible through the function `servers`.
+The `server` function is much like the previous functions, but bulk bindings are
+possible with [Servers](Server.md) through the function `servers`.
 
 ```ts
 const app = new Application();
@@ -161,7 +161,7 @@ app.server(RestServer, 'private'); // {'private': RestServer}
 ```
 
 In the above example, the two server instances would be bound to the Application
-context under the keys `servers.public`, and `servers.private` respectively.
+context under the keys `servers.public` and `servers.private`, respectively.
 
 ### Constructor configuration
 
@@ -171,7 +171,7 @@ object which contains component-level configurations such as
 [`RestServerConfig`](http://apidocs.loopback.io/@loopback%2fdocs/rest.html#RestServerConfig).
 It will automatically create bindings for these configurations and later be
 injected through dependency injections. Visit
-[Dependency Injection](Dependency-injection.md) for more details.
+[Dependency Injection](Dependency-injection.md) for more information.
 
 {% include note.html content="
 Binding configuration such as component binding,
@@ -194,15 +194,16 @@ export class MyApplication extends RestApplication {
 
 ## Tips for application setup
 
-Here are some tips to help avoid common pitfalls and mistakes.
+Here are some tips for application setup to help avoid common pitfalls and
+mistakes.
 
 ### Extend from `RestApplication` when using `RestServer`
 
-If you want to use `RestServer` from `@loopback/rest` package, we recommend
+If you want to use `RestServer` from the `@loopback/rest` package, we recommend
 extending `RestApplication` in your app instead of manually binding `RestServer`
 or `RestComponent`. `RestApplication` already uses `RestComponent` and makes
 useful functions in `RestServer` like `handler()` available at the app level.
-This means you can call these `RestServer` functions to do all of your
+This means you can call the `RestServer` functions to perform all of your
 server-level setups in the app constructor without having to explicitly retrieve
 an instance of your server.
 
