@@ -15,7 +15,7 @@
     "generators"
   ],
   "bin": {
-    "lb4": "bin/cli.js"
+    "lb4": "bin/cli-main.js"
   },
   "main": "generators/app/index.js",
   "keywords": [
@@ -42,6 +42,7 @@
     "yeoman-test": "^1.7.0"
   },
   "dependencies": {
+    "@loopback/dist-util": "^0.3.6",
     "camelcase-keys": "^4.2.0",
     "chalk": "^2.3.2",
     "change-case": "^3.0.2",

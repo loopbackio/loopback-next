@@ -9,6 +9,9 @@
   "engines": {
     "node": ">=8.9"
   },
+  "dependencies": {
+    "semver": "^5.5.1"
+  },
   "files": [
     "index.js"
   ],

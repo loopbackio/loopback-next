@@ -7,7 +7,7 @@
 
 const expect = require('@loopback/testlab').expect;
 const util = require('util');
-const main = require('../../../bin/cli');
+const main = require('../../../lib/cli');
 
 function getLog(buffer) {
   buffer = buffer || [];

@@ -6,15 +6,28 @@
 'use strict';
 
 const path = require('path');
+const util = require('util');
+const semver = require('semver');
+
+/**
+ * Make sure node version meets the requirement. This file intentionally
+ * only uses ES5 features so that it can be run with lower versions of Node
+ * to report the version requirement.
+ */
+function checkNodeVersion(range) {
+  const nodeVer = process.versions.node;
+  const requiredVer = range || require('./package.json').engines.node;
+  const ok = semver.satisfies(nodeVer, requiredVer);
+  if (!ok) {
+    const format = 'Node.js %s is not supported. Please use a version %s.';
+    const msg = util.format(format, nodeVer, requiredVer);
+    throw new Error(msg);
+  }
+}
 
 function getDist() {
+  checkNodeVersion();
   const nodeMajorVersion = +process.versions.node.split('.')[0];
-  if (nodeMajorVersion < 8) {
-    throw new Error(
-      `Node.js version ${process.versions.node} is not supported.` +
-        'Please use Node.js 8.9 or newer.',
-    );
-  }
   return nodeMajorVersion >= 10 ? './dist10' : './dist8';
 }
 
@@ -23,4 +36,4 @@ function loadDist(projectRootDir) {
   return require(path.join(projectRootDir, dist));
 }
 
-module.exports = {getDist, loadDist};
+module.exports = {getDist, loadDist, checkNodeVersion};
