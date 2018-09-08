@@ -1,6 +1,6 @@
 ---
 lang: en
-title: 'Relations'
+title: 'hasMany Relation'
 keywords: LoopBack 4.0, LoopBack 4
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/HasMany-relation.html
