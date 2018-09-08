@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.4"></a>
+## [0.3.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@0.3.3...@loopback/example-todo-list@0.3.4) (2018-09-08)
+
+
+### Bug Fixes
+
+* remove extra imports for mixin dependencies ([35b916b](https://github.com/strongloop/loopback-next/commit/35b916b))
+
+
+
+
+
 <a name="0.3.3"></a>
 ## [0.3.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@0.3.2...@loopback/example-todo-list@0.3.3) (2018-08-25)
 

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@0.12.6...@loopback/boot@0.13.0) (2018-09-08)
+
+
+### Bug Fixes
+
+* remove extra imports for mixin dependencies ([35b916b](https://github.com/strongloop/loopback-next/commit/35b916b))
+
+
+### Features
+
+* **boot:** add debug logs for better troubleshooting ([cdb63b7](https://github.com/strongloop/loopback-next/commit/cdb63b7))
+* **boot:** implement Service booter ([bf8e9c8](https://github.com/strongloop/loopback-next/commit/bf8e9c8))
+* **service-proxy:** add service mixin ([fb01931](https://github.com/strongloop/loopback-next/commit/fb01931))
+
+
+
+
+
 <a name="0.12.6"></a>
 ## [0.12.6](https://github.com/strongloop/loopback-next/compare/@loopback/boot@0.12.5...@loopback/boot@0.12.6) (2018-08-25)
 

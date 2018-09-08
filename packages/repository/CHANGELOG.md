@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.16.0"></a>
+# [0.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.15.1...@loopback/repository@0.16.0) (2018-09-08)
+
+
+### Bug Fixes
+
+* remove extra imports for mixin dependencies ([35b916b](https://github.com/strongloop/loopback-next/commit/35b916b))
+
+
+### Features
+
+* default 404 for request to non-existent resource ([f68a45c](https://github.com/strongloop/loopback-next/commit/f68a45c))
+* **service-proxy:** add service mixin ([fb01931](https://github.com/strongloop/loopback-next/commit/fb01931))
+
+
+
+
+
 <a name="0.15.1"></a>
 ## [0.15.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.15.0...@loopback/repository@0.15.1) (2018-08-24)
 

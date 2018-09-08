@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.20.0"></a>
+# [0.20.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.19.6...@loopback/rest@0.20.0) (2018-09-08)
+
+
+### Bug Fixes
+
+* remove extra imports for mixin dependencies ([35b916b](https://github.com/strongloop/loopback-next/commit/35b916b))
+* **rest:** use strong-error-handler for writing errors to the response body ([ac011f8](https://github.com/strongloop/loopback-next/commit/ac011f8))
+
+
+### Features
+
+* **rest:** allow static assets to be served by a rest server ([a1cefcc](https://github.com/strongloop/loopback-next/commit/a1cefcc))
+* coerce object arguments from query strings ([d095693](https://github.com/strongloop/loopback-next/commit/d095693))
+
+
+
+
+
 <a name="0.19.6"></a>
 ## [0.19.6](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.19.5...@loopback/rest@0.19.6) (2018-08-25)
 

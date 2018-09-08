@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.17.0"></a>
+# [0.17.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.16.4...@loopback/docs@0.17.0) (2018-09-08)
+
+
+### Bug Fixes
+
+* remove extra imports for mixin dependencies ([35b916b](https://github.com/strongloop/loopback-next/commit/35b916b))
+* **cli:** rename repository/service feature flags ([c089299](https://github.com/strongloop/loopback-next/commit/c089299))
+* **docs:** fix todo-tutorial import service and Promise wrapper ([5898849](https://github.com/strongloop/loopback-next/commit/5898849)), closes [#1681](https://github.com/strongloop/loopback-next/issues/1681)
+* **docs:** fix typo ([5c33962](https://github.com/strongloop/loopback-next/commit/5c33962))
+* **docs:** fix typo in Repositories.md ([b18e95f](https://github.com/strongloop/loopback-next/commit/b18e95f))
+
+
+### Features
+
+* **rest:** allow static assets to be served by a rest server ([a1cefcc](https://github.com/strongloop/loopback-next/commit/a1cefcc))
+* **service-proxy:** add service mixin ([fb01931](https://github.com/strongloop/loopback-next/commit/fb01931))
+* coerce object arguments from query strings ([d095693](https://github.com/strongloop/loopback-next/commit/d095693))
+* default 404 for request to non-existent resource ([f68a45c](https://github.com/strongloop/loopback-next/commit/f68a45c))
+
+
+
+
+
 <a name="0.16.4"></a>
 ## [0.16.4](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.16.3...@loopback/docs@0.16.4) (2018-08-25)
 

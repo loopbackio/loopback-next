@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.22.0"></a>
+# [0.22.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.21.4...@loopback/cli@0.22.0) (2018-09-08)
+
+
+### Bug Fixes
+
+* remove extra imports for mixin dependencies ([35b916b](https://github.com/strongloop/loopback-next/commit/35b916b))
+* **cli:** rename repository/service feature flags ([c089299](https://github.com/strongloop/loopback-next/commit/c089299))
+
+
+### Features
+
+* **service-proxy:** add service mixin ([fb01931](https://github.com/strongloop/loopback-next/commit/fb01931))
+
+
+
+
+
 <a name="0.21.4"></a>
 ## [0.21.4](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.21.3...@loopback/cli@0.21.4) (2018-08-25)
 

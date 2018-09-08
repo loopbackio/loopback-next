@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@0.2.3...@loopback/example-soap-calculator@0.3.0) (2018-09-08)
+
+
+### Bug Fixes
+
+* remove extra imports for mixin dependencies ([35b916b](https://github.com/strongloop/loopback-next/commit/35b916b))
+* soap example ([9b790ed](https://github.com/strongloop/loopback-next/commit/9b790ed))
+
+
+### Features
+
+* **service-proxy:** add service mixin ([fb01931](https://github.com/strongloop/loopback-next/commit/fb01931))
+
+
+
+
+
 <a name="0.2.3"></a>
 ## [0.2.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@0.2.2...@loopback/example-soap-calculator@0.2.3) (2018-08-25)
 

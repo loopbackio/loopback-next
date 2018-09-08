@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.8.6"></a>
+## [0.8.6](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-spec-builder@0.8.5...@loopback/openapi-spec-builder@0.8.6) (2018-09-08)
+
+**Note:** Version bump only for package @loopback/openapi-spec-builder
+
+
+
+
+
 <a name="0.8.5"></a>
 ## [0.8.5](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-spec-builder@0.8.4...@loopback/openapi-spec-builder@0.8.5) (2018-08-24)
 

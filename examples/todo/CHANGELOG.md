@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.17.0"></a>
+# [0.17.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.16.3...@loopback/example-todo@0.17.0) (2018-09-08)
+
+
+### Bug Fixes
+
+* remove extra imports for mixin dependencies ([35b916b](https://github.com/strongloop/loopback-next/commit/35b916b))
+
+
+### Features
+
+* **service-proxy:** add service mixin ([fb01931](https://github.com/strongloop/loopback-next/commit/fb01931))
+
+
+
+
+
 <a name="0.16.3"></a>
 ## [0.16.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.16.2...@loopback/example-todo@0.16.3) (2018-08-25)
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.12.0"></a>
+# [0.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.11.5...@loopback/testlab@0.12.0) (2018-09-08)
+
+
+### Features
+
+* **testlab:** expose "sandbox.path" property ([1445ebd](https://github.com/strongloop/loopback-next/commit/1445ebd))
+
+
+
+
+
 <a name="0.11.5"></a>
 ## [0.11.5](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.11.4...@loopback/testlab@0.11.5) (2018-08-24)
 

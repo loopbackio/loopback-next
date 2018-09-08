@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@0.12.6...@loopback/openapi-v3@0.13.0) (2018-09-08)
+
+
+### Features
+
+* coerce object arguments from query strings ([d095693](https://github.com/strongloop/loopback-next/commit/d095693))
+
+
+
+
+
 <a name="0.12.6"></a>
 ## [0.12.6](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@0.12.5...@loopback/openapi-v3@0.12.6) (2018-08-25)
 
