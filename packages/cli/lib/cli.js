@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 // Copyright IBM Corp. 2017,2018. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
@@ -6,10 +5,8 @@
 
 'use strict';
 
-const assert = require('assert');
 const camelCaseKeys = require('camelcase-keys');
-const debug = require('../lib/debug')();
-const minimist = require('minimist');
+const debug = require('./debug')();
 const path = require('path');
 const yeoman = require('yeoman-environment');
 const PREFIX = 'loopback4:';
@@ -125,13 +122,3 @@ function main(opts, log, dryRun) {
 }
 
 module.exports = main;
-
-if (require.main === module) {
-  const opts = minimist(process.argv.slice(2), {
-    alias: {
-      version: 'v', // --version or -v: print versions
-      commands: 'l', // --commands or -l: print commands
-    },
-  });
-  main(opts);
-}
