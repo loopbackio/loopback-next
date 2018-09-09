@@ -5,7 +5,12 @@
 
 import {CoreBindings} from '@loopback/core';
 import {BindingKey, Context} from '@loopback/context';
-import {OpenApiSpec} from '@loopback/openapi-v3-types';
+
+/**
+ * See https://github.com/Microsoft/TypeScript/issues/26985
+ */
+// import {OpenApiSpec} from '@loopback/openapi-v3-types';
+import {OpenAPIObject as OpenApiSpec} from 'openapi3-ts';
 
 import {HttpHandler} from './http-handler';
 import {SequenceHandler} from './sequence';
