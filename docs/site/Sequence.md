@@ -136,11 +136,7 @@ function upon injection.
 ```ts
 import {Send, Response} from '@loopback/rest';
 import {Provider, BoundValue, inject} from '@loopback/context';
-import {
-  writeResultToResponse,
-  RestBindings,
-  ParsedRequest,
-} from '@loopback/rest';
+import {writeResultToResponse, RestBindings, Request} from '@loopback/rest';
 
 // Note: This is an example class; we do not provide this for you.
 import {Formatter} from '../utils';
@@ -149,7 +145,7 @@ export class CustomSendProvider implements Provider<Send> {
   // In this example, the injection key for formatter is simple
   constructor(
     @inject('utils.formatter') public formatter: Formatter,
-    @inject(RestBindings.Http.REQUEST) public request: ParsedRequest,
+    @inject(RestBindings.Http.REQUEST) public request: Request,
   ) {}
 
   value() {

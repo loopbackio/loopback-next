@@ -34,7 +34,7 @@ class AuthenticateActionProvider {
   }
 
   // this is the function invoked by "authenticate()" sequence action
-  action(request: ParsedRequest) {
+  action(request: Request) {
     const adapter = new StrategyAdapter(this.strategy);
     const user = await adapter.authenticate(request);
     return user;
