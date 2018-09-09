@@ -144,13 +144,11 @@ resolve them automatically.
 
 ```ts
 import {Provider} from '@loopback/context';
-import {ParsedRequest, RestBindings} from '@loopback/rest';
+import {Request, RestBindings} from '@loopback/rest';
 const uuid = require('uuid/v4');
 
 class CorrelationIdProvider implements Provider<string> {
-  constructor(
-    @inject(RestBindings.Http.REQUEST) private request: ParsedRequest,
-  ) {}
+  constructor(@inject(RestBindings.Http.REQUEST) private request: Request) {}
 
   value() {
     return this.request.headers['X-Correlation-Id'] || uuid();
