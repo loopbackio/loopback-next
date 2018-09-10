@@ -108,7 +108,6 @@
       "@loopback/example-todo": "^0.17.0",
       "@loopback/example-soap-calculator": "^0.3.0",
       "@loopback/dist-util": "^0.3.6",
-      "@loopback/service-proxy-proxy": "^0.4.0",
       "@loopback/service-proxy": "^0.8.0",
       "@loopback/http-caching-proxy": "^0.3.6",
       "@loopback/http-server": "^0.3.6",
