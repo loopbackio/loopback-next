@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-soap-calculator",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Integrate a SOAP webservice with LoopBack 4",
   "keywords": [
     "loopback",
