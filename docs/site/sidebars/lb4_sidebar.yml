@@ -161,6 +161,7 @@ children:
   - title: 'Decorators'
     url: Decorators.html
     output: 'web, pdf'
+    children:
 
     - title: 'Route Decorators'
       url: Decorators_route.html
@@ -171,11 +172,11 @@ children:
       output: 'web, pdf'
 
     - title: 'Authentication Decorator'
-      url: Decorators_auth.html
+      url: Decorators_authenticate.html
       output: 'web, pdf'
 
     - title: 'Repository Decorators'
-      url: Decorators_repo.html
+      url: Decorators_repository.html
       output: 'web, pdf'
 
 - title: 'Booting an Application'

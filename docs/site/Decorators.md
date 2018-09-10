@@ -24,5 +24,5 @@ As a default, LoopBack comes with some pre-defined decorators:
 
 - [Route Decorators](Decorators_route.md)
 - [Dependency Injection Decorator](Decorators_inject.md)
-- [Authentication Decorator](Decorators_auth.md)
-- [Repository Decorators](Decorators_repo.md)
+- [Authentication Decorator](Decorators_authenticate.md)
+- [Repository Decorators](Decorators_repository.md)
