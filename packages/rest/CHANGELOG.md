@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.21.0"></a>
+# [0.21.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.20.0...@loopback/rest@0.21.0) (2018-09-10)
+
+
+### Bug Fixes
+
+* **rest:** use direct import to work around a TS bug ([2cf3b2c](https://github.com/strongloop/loopback-next/commit/2cf3b2c))
+
+
+### Features
+
+* **rest:** make servers configurable for openapi specs ([99b80a9](https://github.com/strongloop/loopback-next/commit/99b80a9))
+
+
+
+
+
 <a name="0.20.0"></a>
 # [0.20.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.19.6...@loopback/rest@0.20.0) (2018-09-08)
 

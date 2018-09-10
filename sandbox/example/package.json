@@ -1,6 +1,6 @@
 {
   "name": "@loopback/sandbox-example",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Sample project for sandbox",
   "main": "index.js",
   "private": true,
@@ -18,6 +18,6 @@
     "url": "https://github.com/strongloop/loopback-next.git"
   },
   "dependencies": {
-    "@loopback/dist-util": "^0.3.6"
+    "@loopback/dist-util": "^0.3.7"
   }
 }

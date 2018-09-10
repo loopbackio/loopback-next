@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.18.0"></a>
+# [0.18.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.17.1...@loopback/docs@0.18.0) (2018-09-10)
+
+
+### Features
+
+* **rest:** make servers configurable for openapi specs ([99b80a9](https://github.com/strongloop/loopback-next/commit/99b80a9))
+
+
+
+
+
 <a name="0.17.1"></a>
 ## [0.17.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.17.0...@loopback/docs@0.17.1) (2018-09-10)
 
