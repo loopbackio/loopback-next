@@ -11,10 +11,12 @@
     "bootstrap": {
       "ci": false
     },
-    "publish": {
+    "version": {
       "forcePublish": "@loopback/cli,@loopback/docs",
       "conventionalCommits": true,
       "message": "chore: publish release"
+    },
+    "publish": {
     },
     "run": {
       "prefix": false,

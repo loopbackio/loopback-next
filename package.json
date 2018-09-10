@@ -22,7 +22,7 @@
   "scripts": {
     "postinstall": "lerna bootstrap",
     "prerelease": "npm run build:full && npm run mocha && npm run lint",
-    "release": "lerna publish",
+    "release": "lerna version && lerna publish from-git",
     "update-template-deps": "node bin/update-template-deps -f",
     "version": "npm run update-template-deps && npm run apidocs",
     "apidocs": "node bin/run-lerna run build:apidocs",
