@@ -62,7 +62,7 @@
     "yeoman-generator": "^3.1.1"
   },
   "scripts": {
-    "prepublishOnly": "nsp check",
+    "preversion": "nsp check",
     "build": "node ./bin/download-connector-list.js",
     "build:all-dist": "npm run build",
     "test": "lb-mocha \"test/**/*.js\"",
