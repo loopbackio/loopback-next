@@ -3,7 +3,7 @@ lang: en
 title: 'Repository Decorators'
 keywords: LoopBack 4.0, LoopBack-Next
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/Decorators_repo.html
+permalink: /doc/en/lb4/Decorators_repository.html
 ---
 
 ## Repository Decorators
