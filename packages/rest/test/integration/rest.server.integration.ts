@@ -391,15 +391,6 @@ paths:
     const app = new Application();
     app.component(RestComponent);
     const server = await app.getServer(RestServer);
-    const greetSpec = {
-      responses: {
-        200: {
-          schema: {type: 'string'},
-          description: 'greeting of the day',
-        },
-      },
-    };
-    server.route(new Route('get', '/greet', greetSpec, function greet() {}));
 
     const response = await createClientForHandler(server.requestHandler)
       .get('/swagger-ui')
@@ -411,6 +402,45 @@ paths:
       [
         'https://loopback.io/api-explorer',
         '\\?url=https://example.com:8080/openapi.json',
+      ].join(''),
+    );
+    expect(response.get('Location')).match(expectedUrl);
+  });
+
+  it('honors "x-forwarded-host" headers', async () => {
+    const app = new Application();
+    app.component(RestComponent);
+    const server = await app.getServer(RestServer);
+
+    const response = await createClientForHandler(server.requestHandler)
+      .get('/swagger-ui')
+      .set('x-forwarded-proto', 'http')
+      .set('x-forwarded-host', 'example.com:8080,my.example.com:9080');
+    await server.get(RestBindings.PORT);
+    const expectedUrl = new RegExp(
+      [
+        'https://loopback.io/api-explorer',
+        '\\?url=http://example.com:8080/openapi.json',
+      ].join(''),
+    );
+    expect(response.get('Location')).match(expectedUrl);
+  });
+
+  it('skips port if it is the default for http or https', async () => {
+    const app = new Application();
+    app.component(RestComponent);
+    const server = await app.getServer(RestServer);
+
+    const response = await createClientForHandler(server.requestHandler)
+      .get('/swagger-ui')
+      .set('x-forwarded-proto', 'https')
+      .set('x-forwarded-host', 'example.com')
+      .set('x-forwarded-port', '443');
+    await server.get(RestBindings.PORT);
+    const expectedUrl = new RegExp(
+      [
+        'https://loopback.io/api-explorer',
+        '\\?url=https://example.com/openapi.json',
       ].join(''),
     );
     expect(response.get('Location')).match(expectedUrl);

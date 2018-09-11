@@ -402,6 +402,20 @@ export class RestServer extends Context implements Server, HttpServerLike {
       'http'
     );
   }
+
+  /**
+   * Parse the host:port string into an object for host and port
+   * @param host The host string
+   */
+  private _parseHostAndPort(host: string | undefined) {
+    host = host || '';
+    host = host.split(',')[0];
+    const portPattern = /:([0-9]+)$/;
+    const port = (host.match(portPattern) || [])[1] || '';
+    host = host.replace(portPattern, '');
+    return {host, port};
+  }
+
   /**
    * Get the URL of the request sent by the client
    * @param request Http request
@@ -413,14 +427,18 @@ export class RestServer extends Context implements Server, HttpServerLike {
     // [::1]
     // 127.0.0.1:3000
     // 127.0.0.1
-    let host =
-      (request.get('x-forwarded-host') || '').split(',')[0] ||
-      request.headers.host!.replace(/:[0-9]+$/, '');
-    let port =
-      (request.get('x-forwarded-port') || '').split(',')[0] ||
-      this.config.port ||
-      (request.headers.host!.match(/:([0-9]+)$/) || [])[1] ||
-      '';
+    let {host, port} = this._parseHostAndPort(
+      request.get('x-forwarded-host') || request.headers.host,
+    );
+
+    const forwardedPort = (request.get('x-forwarded-port') || '').split(',')[0];
+    port = forwardedPort || port;
+
+    if (!host) {
+      // No host detected from http headers. Use the configured values
+      host = this.config.host!;
+      port = this.config.port == null ? '' : this.config.port.toString();
+    }
 
     // clear default ports
     port = protocol === 'https' && port === '443' ? '' : port;
