@@ -18,7 +18,7 @@ export class <%= project.applicationName %> extends BootMixin(
 -%>
 export class <%= project.applicationName %> extends BootMixin(RestApplication) {
 <% } -%>
-  constructor(options?: ApplicationConfig) {
+  constructor(options: ApplicationConfig = {}) {
     super(options);
 
     // Set up the custom sequence

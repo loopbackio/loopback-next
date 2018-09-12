@@ -147,11 +147,10 @@ export class RestServer extends Context implements Server, HttpServerLike {
    */
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE) app: Application,
-    @inject(RestBindings.CONFIG) config?: RestServerConfig,
+    @inject(RestBindings.CONFIG, {optional: true})
+    config: RestServerConfig = {},
   ) {
     super(app);
-
-    config = config || {};
 
     // Can't check falsiness, 0 is a valid port.
     if (config.port == null) {

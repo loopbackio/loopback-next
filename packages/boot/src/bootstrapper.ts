@@ -34,7 +34,8 @@ export class Bootstrapper {
     @inject(CoreBindings.APPLICATION_INSTANCE)
     private app: Application & Bootable,
     @inject(BootBindings.PROJECT_ROOT) private projectRoot: string,
-    @inject(BootBindings.BOOT_OPTIONS) private bootOptions: BootOptions = {},
+    @inject(BootBindings.BOOT_OPTIONS, {optional: true})
+    private bootOptions: BootOptions = {},
   ) {
     // Resolve path to projectRoot and re-bind
     this.projectRoot = resolve(this.projectRoot);

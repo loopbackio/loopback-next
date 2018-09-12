@@ -12,7 +12,7 @@ import {MySequence} from './sequence';
 export class TodoListApplication extends BootMixin(
   RepositoryMixin(RestApplication),
 ) {
-  constructor(options?: ApplicationConfig) {
+  constructor(options: ApplicationConfig = {}) {
     super(options);
 
     // Set up the custom sequence

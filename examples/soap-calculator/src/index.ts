@@ -1,7 +1,7 @@
 import {SoapCalculatorApplication} from './application';
 import {ApplicationConfig} from '@loopback/core';
 
-export async function main(options?: ApplicationConfig) {
+export async function main(options: ApplicationConfig = {}) {
   const app = new SoapCalculatorApplication(options);
   await app.boot();
   await app.start();
