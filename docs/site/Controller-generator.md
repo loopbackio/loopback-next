@@ -73,7 +73,7 @@ From the LoopBack 4 project that the CLI is run in, the CLI tool will search for
 the following files in the LoopBack 4 project it runs in:
 
 - `src/repositories/*.repository.ts`
-- `src/repositores/*.repository.js`
+- `src/repositories/*.repository.js`
 - `src/models/*.model.ts`
 - `src/models/*.model.js`
 
