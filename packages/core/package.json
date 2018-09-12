@@ -1,6 +1,6 @@
 {
   "name": "@loopback/core",
-  "version": "0.11.7",
+  "version": "0.11.8",
   "description": "",
   "engines": {
     "node": ">=8.9"
@@ -23,12 +23,12 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^0.12.7",
+    "@loopback/context": "^0.12.8",
     "@loopback/dist-util": "^0.3.7"
   },
   "devDependencies": {
-    "@loopback/build": "^0.7.2",
-    "@loopback/testlab": "^0.12.1",
+    "@loopback/build": "^0.7.3",
+    "@loopback/testlab": "^0.12.2",
     "@types/node": "^10.1.1"
   },
   "files": [

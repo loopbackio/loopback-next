@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.22.7"></a>
+## [0.22.7](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.22.6...@loopback/cli@0.22.7) (2018-09-12)
+
+
+### Bug Fixes
+
+* make `lb model` prompts clearer ([2ec4d2f](https://github.com/strongloop/loopback-next/commit/2ec4d2f))
+
+
+
+
+
 <a name="0.22.6"></a>
 ## [0.22.6](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.22.5...@loopback/cli@0.22.6) (2018-09-10)
 

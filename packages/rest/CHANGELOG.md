@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.21.1"></a>
+## [0.21.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.21.0...@loopback/rest@0.21.1) (2018-09-12)
+
+
+### Bug Fixes
+
+* **rest:** tidy up host/port parsing and client url building ([b692f45](https://github.com/strongloop/loopback-next/commit/b692f45))
+
+
+
+
+
 <a name="0.21.0"></a>
 # [0.21.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.20.0...@loopback/rest@0.21.0) (2018-09-10)
 
