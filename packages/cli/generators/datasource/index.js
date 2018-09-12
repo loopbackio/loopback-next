@@ -150,11 +150,12 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
   promptConnectorConfig() {
     debug('prompting for connector config');
     // Check to make sure connector is from connectors list (not custom)
-    const settings = connectors[this.artifactInfo.connector]
-      ? connectors[this.artifactInfo.connector]['settings']
-      : {};
-
+    const settings =
+      (connectors[this.artifactInfo.connector] &&
+        connectors[this.artifactInfo.connector]['settings']) ||
+      {};
     const prompts = [];
+
     // Create list of questions to prompt the user
     Object.entries(settings).forEach(([key, setting]) => {
       // Set defaults and merge with `setting` to override properties
