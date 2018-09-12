@@ -14,12 +14,10 @@ import {CoreBindings} from './keys';
  * and models.
  */
 export class Application extends Context {
-  constructor(public options?: ApplicationConfig) {
+  constructor(public options: ApplicationConfig = {}) {
     super();
-    if (!options) options = {};
 
-    // Bind to self to allow injection of application context in other
-    // modules.
+    // Bind to self to allow injection of application context in other modules.
     this.bind(CoreBindings.APPLICATION_INSTANCE).to(this);
     // Make options available to other modules as well.
     this.bind(CoreBindings.APPLICATION_CONFIG).to(options);

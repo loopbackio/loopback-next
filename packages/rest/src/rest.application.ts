@@ -65,8 +65,8 @@ export class RestApplication extends Application implements HttpServerLike {
     return this.restServer.requestHandler;
   }
 
-  constructor(config?: ApplicationConfig) {
-    super(Object.assign({}, config));
+  constructor(config: ApplicationConfig = {}) {
+    super(config);
     this.component(RestComponent);
   }
 
