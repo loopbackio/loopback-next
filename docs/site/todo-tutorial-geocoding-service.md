@@ -34,16 +34,6 @@ for example IBM's [Weather Company Data](https://console.bluemix.net/catalog/ser
 or [Google Maps Platform](https://developers.google.com/maps/documentation/geocoding).
 " %}
 
-### Install `@loopback/service-proxy`
-
-`@loopback/service-proxy` provides a common set of interfaces for interacting
-with service oriented backends such as REST APIs, SOAP Web Services, and gRPC
-microservices. Install it in your project by running the following command:
-
-```
-npm i @loopback/service-proxy
-```
-
 ### Configure the backing datasource
 
 Run `lb4 datasource` to define a new datasource connecting to Geocoder REST
