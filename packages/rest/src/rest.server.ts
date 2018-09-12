@@ -155,8 +155,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
     // Can't check falsiness, 0 is a valid port.
     if (config.port == null) {
-      config.port = 3000;
+      config.port = process.env.PORT ? +process.env.PORT : 3000;
     }
+
     if (config.host == null) {
       // Set it to '' so that the http server will listen on all interfaces
       config.host = undefined;
