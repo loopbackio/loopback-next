@@ -93,13 +93,17 @@ function validateValueAgainstJsonSchema(
   const ajv = new AJV({
     allErrors: true,
   });
+
   try {
     if (ajv.validate(schemaWithRef, body)) {
       debug('Request body passed AJV validation.');
       return;
     }
   } catch (err) {
-    debug('Cannot execute AJV validation: %s', util.inspect(err));
+    debug('Fails to execute AJV validation:', err);
+    // TODO: [rfeng] Do we want to introduce a flag to disable validation
+    // or sink validation errors?
+    throw err;
   }
 
   debug('Invalid request body: %s', util.inspect(ajv.errors));

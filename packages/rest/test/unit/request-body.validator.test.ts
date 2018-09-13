@@ -43,6 +43,14 @@ const ADDRESS_SCHEMA = {
   },
 };
 
+const INVALID_ACCOUNT_SCHEMA = {
+  title: 'Account',
+  properties: {
+    title: {type: 'string'},
+    address: {$ref: '#/components/schemas/Invalid'},
+  },
+};
+
 describe('validateRequestBody', () => {
   it('accepts valid data omitting optional properties', () => {
     validateRequestBody({title: 'work'}, aBodySpec(TODO_SCHEMA));
@@ -110,6 +118,14 @@ describe('validateRequestBody', () => {
         isComplete: 'a string value',
       },
       aBodySpec(TODO_SCHEMA),
+    );
+  });
+
+  it('reports schema generation errors', () => {
+    expect(() =>
+      validateRequestBody({}, aBodySpec(INVALID_ACCOUNT_SCHEMA)),
+    ).to.throw(
+      "can't resolve reference #/components/schemas/Invalid from id #",
     );
   });
 

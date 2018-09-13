@@ -56,8 +56,7 @@ function getContentType(req: Request): string | undefined {
  * controller method
  *
  * @param request Incoming HTTP request
- * @param operationSpec Swagger spec defined in the controller
- * @param pathParams Path parameters in incoming HTTP request
+ * @param route Resolved Route
  */
 export async function parseOperationArgs(
   request: Request,
