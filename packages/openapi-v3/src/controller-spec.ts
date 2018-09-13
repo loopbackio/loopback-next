@@ -16,8 +16,9 @@ import {getJsonSchema} from '@loopback/repository-json-schema';
 import {OAI3Keys} from './keys';
 import {jsonToSchemaObject} from './json-to-schema';
 import * as _ from 'lodash';
+import {resolveSchema} from './generate-schema';
 
-const debug = require('debug')('loopback:openapi3:metadata');
+const debug = require('debug')('loopback:openapi3:metadata:controller-spec');
 
 // tslint:disable:no-any
 
@@ -89,15 +90,50 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
       endpointName = `${fullMethodName} (${verb} ${path})`;
     }
 
+    const defaultResponse = {
+      '200': {
+        description: `Return value of ${constructor.name}.${op}`,
+      },
+    };
+
     let operationSpec = endpoint.spec;
     if (!operationSpec) {
       // The operation was defined via @operation(verb, path) with no spec
       operationSpec = {
-        responses: {},
+        responses: defaultResponse,
       };
       endpoint.spec = operationSpec;
     }
     debug('  operation for method %s: %j', op, endpoint);
+
+    debug('  spec responses for method %s: %o', op, operationSpec.responses);
+
+    const TS_TYPE_KEY = 'x-ts-type';
+
+    for (const code in operationSpec.responses) {
+      for (const c in operationSpec.responses[code].content) {
+        debug('  evaluating response code %s with content: %o', code, c);
+        const content = operationSpec.responses[code].content[c];
+        const tsType = content[TS_TYPE_KEY];
+        debug('  %s => %o', TS_TYPE_KEY, tsType);
+        if (tsType) {
+          content.schema = resolveSchema(tsType, content.schema);
+
+          // We don't want a Function type in the final spec.
+          delete content[TS_TYPE_KEY];
+        }
+
+        if (content.schema.type === 'array') {
+          content.schema.items = resolveSchema(
+            content.schema.items[TS_TYPE_KEY],
+            content.schema.items,
+          );
+
+          // We don't want a Function type in the final spec.
+          delete content.schema.items[TS_TYPE_KEY];
+        }
+      }
+    }
 
     debug('  processing parameters for method %s', op);
     let params = MetadataInspector.getAllParameterMetadata<ParameterObject>(

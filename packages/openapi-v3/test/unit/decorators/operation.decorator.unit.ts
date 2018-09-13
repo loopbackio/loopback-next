@@ -207,7 +207,7 @@ describe('Routing metadata', () => {
 
     expect(actualSpec.paths['/greet']['get']).to.eql({
       'x-operation-name': 'greet',
-      responses: {},
+      responses: {'200': {description: 'Return value of MyController.greet'}},
     });
   });
 
@@ -221,7 +221,9 @@ describe('Routing metadata', () => {
 
     expect(actualSpec.paths['/greeting']['post']).to.eql({
       'x-operation-name': 'createGreeting',
-      responses: {},
+      responses: {
+        '200': {description: 'Return value of MyController.createGreeting'},
+      },
     });
   });
 

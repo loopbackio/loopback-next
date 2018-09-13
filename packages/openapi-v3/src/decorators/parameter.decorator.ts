@@ -11,7 +11,7 @@ import {
   SchemaObject,
 } from '@loopback/openapi-v3-types';
 import {MetadataInspector, ParameterDecoratorFactory} from '@loopback/context';
-import {getSchemaForParam} from '../generate-schema';
+import {resolveSchema} from '../generate-schema';
 import {OAI3Keys} from '../keys';
 
 /**
@@ -48,8 +48,8 @@ export function param(paramSpec: ParameterObject) {
         // generate schema if `paramSpec` has `schema` but without `type`
         (isSchemaObject(paramSpec.schema) && !paramSpec.schema.type)
       ) {
-        // please note `getSchemaForParam` only adds `type` and `format` for `schema`
-        paramSpec.schema = getSchemaForParam(paramType, paramSpec.schema);
+        // please note `resolveSchema` only adds `type` and `format` for `schema`
+        paramSpec.schema = resolveSchema(paramType, paramSpec.schema);
       }
     }
 

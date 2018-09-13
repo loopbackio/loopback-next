@@ -33,6 +33,7 @@ describe('Routing metadata for parameters', () => {
       const expectedSpec = anOperationSpec()
         .withOperationName('greet')
         .withParameter(paramSpec)
+        .withResponse(200, {description: 'Return value of MyController.greet'})
         .build();
       expect(actualSpec.paths['/greet']['get']).to.eql(expectedSpec);
     });
@@ -75,6 +76,7 @@ describe('Routing metadata for parameters', () => {
 
       const expectedSpec = anOperationSpec()
         .withOperationName('update')
+        .withResponse(200, {description: 'Return value of MyController.update'})
         .withParameter({
           name: 'id',
           schema: {
@@ -143,6 +145,7 @@ describe('Routing metadata for parameters', () => {
 
       const expectedSpec = anOperationSpec()
         .withOperationName('greet')
+        .withResponse(200, {description: 'Return value of MyController.greet'})
         .withParameter({
           name: 'names',
           schema: {
@@ -188,6 +191,7 @@ describe('Routing metadata for parameters', () => {
 
       const expectedSpec = anOperationSpec()
         .withOperationName('greet')
+        .withResponse(200, {description: 'Return value of MyController.greet'})
         .withParameter({
           name: 'names',
           schema: {
