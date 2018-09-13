@@ -241,34 +241,96 @@ function checkRestCrudContents() {
   assert.fileContent(expectedFile, /barRepository \: BarRepository/);
 
   // Assert that the decorators are present in the correct groupings!
-  assert.fileContent(
-    expectedFile,
-    /\@post\('\/product-reviews'\)\s{1,}async create\(\@requestBody\(\)/,
-  );
-  assert.fileContent(
-    expectedFile,
-    /\@get\('\/product-reviews\/count'\)\s{1,}async count\(\@param.query.string\('where'\)/,
-  );
-  assert.fileContent(
-    expectedFile,
-    /\@get\('\/product-reviews'\)\s{1,}async find\(\@param.query.string\('filter'\)/,
-  );
-  assert.fileContent(
-    expectedFile,
-    /\@patch\('\/product-reviews'\)\s{1,}async updateAll\(\s{1,}\@requestBody\(\).*,\s{1,}\@param.query.string\('where'\) where\?: Where/,
-  );
-  assert.fileContent(
-    expectedFile,
-    /\@get\('\/product-reviews\/{id}'\)\s{1,}async findById\(\@param.path.number\('id'\)/,
-  );
-  assert.fileContent(
-    expectedFile,
-    /\@patch\('\/product-reviews\/{id}'\)\s{1,}async updateById\(\s{1,}\@param.path.number\('id'\) id: number,\s{1,}\@requestBody\(\)/,
-  );
-  assert.fileContent(
-    expectedFile,
-    /\@del\('\/product-reviews\/{id}'\)\s{1,}async deleteById\(\@param.path.number\('id'\) id: number\)/,
-  );
+  // @post - create
+  const postCreateRegEx = [
+    /\@post\('\/product-reviews', {/,
+    /responses: {/,
+    /'200': {/,
+    /description: 'ProductReview model instance'/,
+    /content: {'application\/json': {'x-ts-type': ProductReview}},\s{1,}},\s{1,}},\s{1,}}\)/,
+    /async create\(\@requestBody\(\)/,
+  ];
+  postCreateRegEx.forEach(regex => {
+    assert.fileContent(expectedFile, regex);
+  });
+
+  // @get - count
+  const getCountRegEx = [
+    /\@get\('\/product-reviews\/count', {/,
+    /responses: {/,
+    /'200': {/,
+    /description: 'ProductReview model count'/,
+    /content: {'application\/json': {'x-ts-type': Number}},\s{1,}},\s{1,}},\s{1,}}\)/,
+    /async count\(\@param.query.string\('where'\)/,
+  ];
+  getCountRegEx.forEach(regex => {
+    assert.fileContent(expectedFile, regex);
+  });
+
+  // @get - find
+  const getFindRegEx = [
+    /\@get\('\/product-reviews', {/,
+    /responses: {/,
+    /'200': {/,
+    /description: 'Array of ProductReview model instances'/,
+    /content: {'application\/json': {'x-ts-type': ProductReview}},\s{1,}},\s{1,}},\s{1,}}\)/,
+    /async find\(\@param.query.string\('filter'\)/,
+  ];
+  getFindRegEx.forEach(regex => {
+    assert.fileContent(expectedFile, regex);
+  });
+
+  // @patch - updateAll
+  const patchUpdateAllRegEx = [
+    /\@patch\('\/product-reviews', {/,
+    /responses: {/,
+    /'200': {/,
+    /description: 'ProductReview PATCH success count'/,
+    /content: {'application\/json': {'x-ts-type': Number}},\s{1,}},\s{1,}},\s{1,}}\)/,
+    /async updateAll\(\s{1,}\@requestBody\(\).*,\s{1,}\@param.query.string\('where'\) where\?: Where/,
+  ];
+  patchUpdateAllRegEx.forEach(regex => {
+    assert.fileContent(expectedFile, regex);
+  });
+
+  // @get - findById
+  const getFindByIdRegEx = [
+    /\@get\('\/product-reviews\/{id}', {/,
+    /responses: {/,
+    /'200': {/,
+    /description: 'ProductReview model instance'/,
+    /content: {'application\/json': {'x-ts-type': ProductReview}},\s{1,}},\s{1,}},\s{1,}}\)/,
+    /async findById\(\@param.path.number\('id'\)/,
+  ];
+  getFindByIdRegEx.forEach(regex => {
+    assert.fileContent(expectedFile, regex);
+  });
+
+  // @patch - updateById
+  const patchUpdateByIdRegEx = [
+    /\@patch\('\/product-reviews\/{id}'/,
+    /responses: {/,
+    /'200': {/,
+    /description: 'ProductReview PATCH success'/,
+    /content: {'application\/json': {'x-ts-type': Boolean}},\s{1,}},\s{1,}},\s{1,}}\)/,
+    /async updateById\(\s{1,}\@param.path.number\('id'\) id: number,\s{1,}\@requestBody\(\)/,
+  ];
+  patchUpdateByIdRegEx.forEach(regex => {
+    assert.fileContent(expectedFile, regex);
+  });
+
+  // @del - deleteById
+  const deleteByIdRegEx = [
+    /\@del\('\/product-reviews\/{id}', {/,
+    /responses: {/,
+    /'200': {/,
+    /description: 'ProductReview DELETE success'/,
+    /content: {'application\/json': {'x-ts-type': Boolean}},\s{1,}},\s{1,}},\s{1,}}\)/,
+    /async deleteById\(\@param.path.number\('id'\) id: number\)/,
+  ];
+  deleteByIdRegEx.forEach(regex => {
+    assert.fileContent(expectedFile, regex);
+  });
 }
 
 /**
@@ -278,30 +340,30 @@ function checkRestCrudContents() {
 function checkRestPaths(restUrl) {
   assert.fileContent(
     expectedFile,
-    new RegExp(/@post\('/.source + restUrl + /'\)/.source),
+    new RegExp(/@post\('/.source + restUrl + /', {/.source),
   );
   assert.fileContent(
     expectedFile,
-    new RegExp(/@get\('/.source + restUrl + /\/count'\)/.source),
+    new RegExp(/@get\('/.source + restUrl + /\/count', {/.source),
   );
   assert.fileContent(
     expectedFile,
-    new RegExp(/@get\('/.source + restUrl + /'\)/.source),
+    new RegExp(/@get\('/.source + restUrl + /', {/.source),
   );
   assert.fileContent(
     expectedFile,
-    new RegExp(/@patch\('/.source + restUrl + /'\)/.source),
+    new RegExp(/@patch\('/.source + restUrl + /', {/.source),
   );
   assert.fileContent(
     expectedFile,
-    new RegExp(/@get\('/.source + restUrl + /\/{id}'\)/.source),
+    new RegExp(/@get\('/.source + restUrl + /\/{id}', {/.source),
   );
   assert.fileContent(
     expectedFile,
-    new RegExp(/@patch\('/.source + restUrl + /\/{id}'\)/.source),
+    new RegExp(/@patch\('/.source + restUrl + /\/{id}', {/.source),
   );
   assert.fileContent(
     expectedFile,
-    new RegExp(/@del\('/.source + restUrl + /\/{id}'\)/.source),
+    new RegExp(/@del\('/.source + restUrl + /\/{id}', {/.source),
   );
 }
