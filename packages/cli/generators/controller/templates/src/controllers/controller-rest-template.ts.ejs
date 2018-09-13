@@ -16,24 +16,56 @@ export class <%= className %>Controller {
     public <%= repositoryNameCamel %> : <%= repositoryName %>,
   ) {}
 
-  @post('<%= httpPathName %>')
+  @post('<%= httpPathName %>', {
+    responses: {
+      '200': {
+        description: '<%= modelName %> model instance',
+        content: {'application/json': {'x-ts-type': <%= modelName %>}},
+      },
+    },
+  })
   async create(@requestBody() <%= name %>: <%= modelName %>)
     : Promise<<%= modelName %>> {
     return await this.<%= repositoryNameCamel %>.create(<%= name %>);
   }
 
-  @get('<%= httpPathName %>/count')
+  @get('<%= httpPathName %>/count', {
+    responses: {
+      '200': {
+        description: '<%= modelName %> model count',
+        content: {'application/json': {'x-ts-type': Number}},
+      },
+    },
+  })
   async count(@param.query.string('where') where?: Where): Promise<number> {
     return await this.<%= repositoryNameCamel %>.count(where);
   }
 
-  @get('<%= httpPathName %>')
+  @get('<%= httpPathName %>', {
+    responses: {
+      '200': {
+        description: 'Array of <%= modelName %> model instances',
+        content: {
+          'application/json': {
+            schema: {type: 'array', items: {'x-ts-type': <%= modelName %>}},
+          },
+        },
+      },
+    },
+  })
   async find(@param.query.string('filter') filter?: Filter)
     : Promise<<%= modelName %>[]> {
     return await this.<%= repositoryNameCamel %>.find(filter);
   }
 
-  @patch('<%= httpPathName %>')
+  @patch('<%= httpPathName %>', {
+    responses: {
+      '200': {
+        description: '<%= modelName %> PATCH success count',
+        content: {'application/json': {'x-ts-type': Number}},
+      },
+    },
+  })
   async updateAll(
     @requestBody() <%= name %>: <%= modelName %>,
     @param.query.string('where') where?: Where
@@ -41,12 +73,26 @@ export class <%= className %>Controller {
     return await this.<%= repositoryNameCamel %>.updateAll(<%= name %>, where);
   }
 
-  @get('<%= httpPathName %>/{id}')
+  @get('<%= httpPathName %>/{id}', {
+    responses: {
+      '200': {
+        description: '<%= modelName %> model instance',
+        content: {'application/json': {'x-ts-type': <%= modelName %>}},
+      },
+    },
+  })
   async findById(@param.path.<%= idType %>('id') id: <%= idType %>): Promise<<%= modelName %>> {
     return await this.<%= repositoryNameCamel %>.findById(id);
   }
 
-  @patch('<%= httpPathName %>/{id}')
+  @patch('<%= httpPathName %>/{id}', {
+    responses: {
+      '200': {
+        description: '<%= modelName %> PATCH success',
+        content: {'application/json': {'x-ts-type': Boolean}},
+      },
+    },
+  })
   async updateById(
     @param.path.<%= idType %>('id') id: <%= idType %>,
     @requestBody() <%= name %>: <%= modelName %>
@@ -54,7 +100,14 @@ export class <%= className %>Controller {
     return await this.<%= repositoryNameCamel %>.updateById(id, <%= name %>);
   }
 
-  @del('<%= httpPathName %>/{id}')
+  @del('<%= httpPathName %>/{id}', {
+    responses: {
+      '200': {
+        description: '<%= modelName %> DELETE success',
+        content: {'application/json': {'x-ts-type': Boolean}},
+      },
+    },
+  })
   async deleteById(@param.path.<%= idType %>('id') id: <%= idType %>): Promise<boolean> {
     return await this.<%= repositoryNameCamel %>.deleteById(id);
   }
