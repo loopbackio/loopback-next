@@ -9,7 +9,7 @@ import {
   ReferenceObject,
 } from '@loopback/openapi-v3-types';
 import {MetadataInspector, ParameterDecoratorFactory} from '@loopback/context';
-import {getSchemaForRequestBody} from '../generate-schema';
+import {resolveSchema} from '../generate-schema';
 import {OAI3Keys} from '../keys';
 import * as _ from 'lodash';
 import {inspect} from 'util';
@@ -94,7 +94,7 @@ export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
     const paramTypes = (methodSig && methodSig.parameterTypes) || [];
 
     const paramType = paramTypes[index];
-    const schema = getSchemaForRequestBody(paramType);
+    const schema = resolveSchema(paramType);
     debug('  inferred schema: %s', inspect(schema, {depth: null}));
     requestBodySpec.content = _.mapValues(requestBodySpec.content, c => {
       if (!c.schema) {

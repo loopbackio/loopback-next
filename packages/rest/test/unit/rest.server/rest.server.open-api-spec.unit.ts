@@ -118,7 +118,7 @@ describe('RestServer.getApiSpec()', () => {
 
   it('honors tags in the operation spec', () => {
     class MyController {
-      @get('/greet', {responses: {}, tags: ['MyTag']})
+      @get('/greet', {responses: {'200': {description: ''}}, tags: ['MyTag']})
       greet() {}
     }
     app.controller(MyController);
@@ -127,7 +127,7 @@ describe('RestServer.getApiSpec()', () => {
     expect(spec.paths).to.eql({
       '/greet': {
         get: {
-          responses: {},
+          responses: {'200': {description: ''}},
           'x-controller-name': 'MyController',
           'x-operation-name': 'greet',
           tags: ['MyTag'],
@@ -147,7 +147,9 @@ describe('RestServer.getApiSpec()', () => {
     expect(spec.paths).to.eql({
       '/greet': {
         get: {
-          responses: {},
+          responses: {
+            '200': {description: 'Return value of MyController.greet'},
+          },
           'x-controller-name': 'MyController',
           'x-operation-name': 'greet',
           tags: ['MyController'],

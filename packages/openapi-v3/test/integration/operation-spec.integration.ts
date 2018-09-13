@@ -33,7 +33,9 @@ describe('operation arguments', () => {
       paths: {
         '/users/{location}': {
           post: {
-            responses: {},
+            responses: {
+              '200': {description: 'Return value of MyController.createUser'},
+            },
             parameters: [
               {name: 'type', in: 'query', schema: {type: 'string'}},
               {name: 'token', in: 'header', schema: {type: 'string'}},
