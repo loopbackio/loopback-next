@@ -61,6 +61,30 @@ describe('lb4 repository', () => {
       );
     });
 
+    it('generates a custom name repository', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(
+          SANDBOX_PATH,
+          async () => await prepareGeneratorForRepository(SANDBOX_PATH),
+        )
+        .withArguments('myrepo --datasource dbmem --model MultiWord');
+      const expectedFile = path.join(
+        SANDBOX_PATH,
+        REPOSITORY_APP_PATH,
+        'myrepo.repository.ts',
+      );
+
+      assert.file(expectedFile);
+      assert.fileContent(
+        expectedFile,
+        /export class MyrepoRepository extends DefaultCrudRepository</,
+      );
+      assert.fileContent(expectedFile, /typeof MultiWord.prototype.pk/);
+      assert.file(INDEX_FILE);
+      assert.fileContent(INDEX_FILE, /export \* from '.\/myrepo.repository';/);
+    });
+
     it('generates a crud repository from a config file', async () => {
       await testUtils
         .executeGenerator(generator)
@@ -208,7 +232,7 @@ describe('lb4 repository', () => {
           SANDBOX_PATH,
           async () => await prepareGeneratorForRepository(SANDBOX_PATH),
         )
-        .withArguments('dbmem --model decoratordefined');
+        .withArguments('--datasource dbmem --model decoratordefined');
       const expectedFile = path.join(
         SANDBOX_PATH,
         REPOSITORY_APP_PATH,
@@ -239,7 +263,7 @@ describe('lb4 repository', () => {
           SANDBOX_PATH,
           async () => await prepareGeneratorForRepository(SANDBOX_PATH),
         )
-        .withArguments('dbkv --model Defaultmodel');
+        .withArguments('--datasource dbkv --model Defaultmodel');
       const expectedFile = path.join(
         SANDBOX_PATH,
         REPOSITORY_APP_PATH,
@@ -302,7 +326,7 @@ const SANDBOX_FILES = [
     path: CONFIG_PATH,
     file: 'myconfig.json',
     content: `{
-      "name": "dbmem",
+      "datasource": "dbmem",
       "model": "decoratordefined"
     }`,
   },

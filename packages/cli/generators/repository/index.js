@@ -31,7 +31,7 @@ const ERROR_READING_FILE = 'Error reading file';
 const ERROR_NO_DATA_SOURCES_FOUND = 'No datasources found in';
 const ERROR_NO_MODELS_FOUND = 'No models found in';
 const ERROR_NO_MODEL_SELECTED = 'You did not select a valid model';
-const ERROR_NO_DIRECTORY = "couldn't find the directory";
+const ERROR_NO_DIRECTORY = 'The directory was not found';
 
 module.exports = class RepositoryGenerator extends ArtifactGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -140,7 +140,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
 
   _setupGenerator() {
     this.artifactInfo = {
-      type: 'datasource to use ',
+      type: 'repository ',
       rootDir: 'src',
     };
 
@@ -169,6 +169,12 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       type: String,
       required: false,
       description: 'A valid ID property name for the specified model',
+    });
+
+    this.option('datasource', {
+      type: String,
+      required: false,
+      description: 'A valid datasource name',
     });
 
     return super._setupGenerator();
@@ -212,8 +218,8 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
     let datasourcesList;
 
     // grab the datasourcename from the command line
-    cmdDatasourceName = this.options.name
-      ? utils.toClassName(this.options.name) + 'Datasource'
+    cmdDatasourceName = this.options.datasource
+      ? utils.toClassName(this.options.datasource) + 'Datasource'
       : '';
 
     debug(`command line datasource is  ${cmdDatasourceName}`);
@@ -344,6 +350,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
 
   async promptModelId() {
     if (this.shouldExit()) return false;
+    let idType;
 
     debug(`Model ID property name from command line: ${this.options.id}`);
     debug(`Selected Models: ${this.artifactInfo.modelNameList}`);
@@ -364,26 +371,22 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
           },
         ];
 
-        let idType = await this._getModelIdType(item);
+        // user supplied the id from the command line
+        if (this.options.id) {
+          debug(`passing thru this.options.id with value : ${this.options.id}`);
 
-        /**
-         *  fallback by asking the user for ID property name if the user
-         *  didn't supplied any from the command line. If we inferred it, then
-         *  the supplied argument is ignored
-         */
-        if (idType === null) {
-          if (this.options.id) {
-            idType = this.options.id;
-            /**  make sure it is only used once, in case user selected more
-             * than one model.
-             */
-            delete this.options.id;
-          } else {
+          idType = this.options.id;
+          /**  make sure it is only used once, in case user selected more
+           * than one model.
+           */
+          delete this.options.id;
+        } else {
+          idType = await this._getModelIdType(item);
+          if (idType === null) {
             const answer = await this.prompt(prompts);
             idType = answer.propertyName;
           }
         }
-
         this.artifactInfo.idType = idType;
         // Generate this repository
         await this._scaffold();
@@ -394,12 +397,20 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
   async _scaffold() {
     if (this.shouldExit()) return false;
 
-    this.artifactInfo.className = utils.toClassName(
-      this.artifactInfo.modelName,
-    );
+    if (this.options.name) {
+      this.artifactInfo.className = utils.toClassName(this.options.name);
+      this.artifactInfo.outFile =
+        utils.kebabCase(this.options.name) + '.repository.ts';
 
-    this.artifactInfo.outFile =
-      utils.kebabCase(this.artifactInfo.modelName) + '.repository.ts';
+      // make sure the name supplied from cmd line is only used once
+      delete this.options.name;
+    } else {
+      this.artifactInfo.className = utils.toClassName(
+        this.artifactInfo.modelName,
+      );
+      this.artifactInfo.outFile =
+        utils.kebabCase(this.artifactInfo.modelName) + '.repository.ts';
+    }
 
     if (debug.enabled) {
       debug(`Artifact output filename set to: ${this.artifactInfo.outFile}`);

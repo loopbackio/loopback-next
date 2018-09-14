@@ -223,6 +223,10 @@ children:
     url: Model-generator.html
     output: 'web, pdf'
 
+  - title: 'Repository generator'
+    url: Repository-generator.html
+    output: 'web, pdf'
+
   - title: 'OpenAPI generator'
     url: OpenAPI-generator.html
     output: 'web, pdf'
