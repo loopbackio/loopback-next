@@ -137,6 +137,32 @@ export class ModelDefinition {
   }
 }
 
+function asJSON(value: any): any {
+  if (value == null) return value;
+  if (typeof value.toJSON === 'function') {
+    return value.toJSON();
+  }
+  // Handle arrays
+  if (Array.isArray(value)) {
+    return value.map(item => asJSON(item));
+  }
+  return value;
+}
+
+function asObject(value: any, options?: Options): any {
+  if (value == null) return value;
+  if (typeof value.toObject === 'function') {
+    return value.toObject(options);
+  }
+  if (typeof value.toJSON === 'function') {
+    return value.toJSON();
+  }
+  if (Array.isArray(value)) {
+    return value.map(item => asObject(item, options));
+  }
+  return value;
+}
+
 /**
  * Base class for models
  */
@@ -148,19 +174,15 @@ export abstract class Model {
    * Serialize into a plain JSON object
    */
   toJSON(): Object {
-    const json: AnyObject = {};
     const def = (<typeof Model>this.constructor).definition;
     if (def == null || def.settings.strict === false) {
       return this.toObject({ignoreUnknownProperties: false});
     }
 
+    const json: AnyObject = {};
     for (const p in def.properties) {
       if (p in this) {
-        let val = (this as AnyObject)[p];
-        if (val != null && typeof val.toJSON === 'function') {
-          val = val.toJSON();
-        }
-        json[p] = val;
+        json[p] = asJSON((this as AnyObject)[p]);
       }
     }
     return json;
@@ -175,13 +197,7 @@ export abstract class Model {
       obj = {};
       for (const p in this) {
         let val = (this as AnyObject)[p];
-        if (val != null && typeof val.toObject === 'function') {
-          val = val.toObject(options);
-        } else if (val != null && typeof val.toJSON === 'function') {
-          // Fallback to toJSON()
-          val = val.toJSON();
-        }
-        obj[p] = val;
+        obj[p] = asObject(val, options);
       }
     } else {
       obj = this.toJSON();
