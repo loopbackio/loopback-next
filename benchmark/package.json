@@ -1,6 +1,6 @@
 {
   "name": "@loopback/benchmark",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "private": true,
   "description": "Benchmarks measuring performance of our framework.",
   "keywords": [
@@ -38,7 +38,7 @@
   ],
   "dependencies": {
     "@loopback/dist-util": "^0.3.7",
-    "@loopback/example-todo": "^0.17.3",
+    "@loopback/example-todo": "^0.17.4",
     "@types/byline": "^4.2.31",
     "@types/debug": "0.0.30",
     "@types/p-event": "^1.3.0",

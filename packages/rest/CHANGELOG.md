@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.22.1"></a>
+## [0.22.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.22.0...@loopback/rest@0.22.1) (2018-09-14)
+
+
+### Bug Fixes
+
+* **rest:** make sure validation system error is reported ([fe4fe16](https://github.com/strongloop/loopback-next/commit/fe4fe16))
+
+
+
+
+
 <a name="0.22.0"></a>
 # [0.22.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.21.1...@loopback/rest@0.22.0) (2018-09-14)
 
