@@ -1,6 +1,6 @@
 {
   "name": "@loopback/boot",
-  "version": "0.13.2",
+  "version": "0.13.3",
   "description": "A collection of Booters for LoopBack 4 Applications",
   "engines": {
     "node": ">=8.9"
@@ -27,10 +27,10 @@
   "license": "MIT",
   "dependencies": {
     "@loopback/context": "^0.12.8",
-    "@loopback/core": "^0.11.8",
+    "@loopback/core": "^0.11.9",
     "@loopback/dist-util": "^0.3.7",
-    "@loopback/repository": "^0.16.2",
-    "@loopback/service-proxy": "^0.8.2",
+    "@loopback/repository": "^0.16.3",
+    "@loopback/service-proxy": "^0.8.3",
     "@types/debug": "0.0.30",
     "@types/glob": "^5.0.35",
     "debug": "^3.1.0",
@@ -38,8 +38,8 @@
   },
   "devDependencies": {
     "@loopback/build": "^0.7.3",
-    "@loopback/openapi-v3": "^0.13.2",
-    "@loopback/rest": "^0.21.1",
+    "@loopback/openapi-v3": "^0.14.0",
+    "@loopback/rest": "^0.22.0",
     "@loopback/testlab": "^0.12.2",
     "@types/node": "^10.1.1"
   },

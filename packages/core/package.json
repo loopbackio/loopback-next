@@ -1,6 +1,6 @@
 {
   "name": "@loopback/core",
-  "version": "0.11.8",
+  "version": "0.11.9",
   "description": "",
   "engines": {
     "node": ">=8.9"

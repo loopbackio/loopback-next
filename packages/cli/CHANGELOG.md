@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.22.8"></a>
+## [0.22.8](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.22.7...@loopback/cli@0.22.8) (2018-09-14)
+
+
+### Bug Fixes
+
+* **cli:** enforce an empty object on connectors without settings property ([111442b](https://github.com/strongloop/loopback-next/commit/111442b)), closes [#1697](https://github.com/strongloop/loopback-next/issues/1697)
+* **cli:** git-ignore all "dist*" dirs in scaffolded projects ([1cab517](https://github.com/strongloop/loopback-next/commit/1cab517))
+* **cli:** update template with responses object ([a2bbbc9](https://github.com/strongloop/loopback-next/commit/a2bbbc9))
+
+
+
+
+
 <a name="0.22.7"></a>
 ## [0.22.7](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.22.6...@loopback/cli@0.22.7) (2018-09-12)
 

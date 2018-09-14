@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.17.3"></a>
+## [0.17.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.17.2...@loopback/example-todo@0.17.3) (2018-09-14)
+
+
+### Bug Fixes
+
+* **example-todo:** add responses to controllers ([a7fc210](https://github.com/strongloop/loopback-next/commit/a7fc210))
+
+
+
+
+
 <a name="0.17.2"></a>
 ## [0.17.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.17.1...@loopback/example-todo@0.17.2) (2018-09-12)
 
