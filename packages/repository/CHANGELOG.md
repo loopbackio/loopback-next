@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.16.5"></a>
+## [0.16.5](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.16.4...@loopback/repository@0.16.5) (2018-09-14)
+
+
+### Bug Fixes
+
+* **repository:** convert array items to json ([33124db](https://github.com/strongloop/loopback-next/commit/33124db))
+
+
+
+
+
 <a name="0.16.4"></a>
 ## [0.16.4](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.16.3...@loopback/repository@0.16.4) (2018-09-14)
 
