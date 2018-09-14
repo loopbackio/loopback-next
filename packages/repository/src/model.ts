@@ -156,7 +156,11 @@ export abstract class Model {
 
     for (const p in def.properties) {
       if (p in this) {
-        json[p] = (this as AnyObject)[p];
+        let val = (this as AnyObject)[p];
+        if (val != null && typeof val.toJSON === 'function') {
+          val = val.toJSON();
+        }
+        json[p] = val;
       }
     }
     return json;
@@ -170,7 +174,14 @@ export abstract class Model {
     if (options && options.ignoreUnknownProperties === false) {
       obj = {};
       for (const p in this) {
-        obj[p] = this[p];
+        let val = (this as AnyObject)[p];
+        if (val != null && typeof val.toObject === 'function') {
+          val = val.toObject(options);
+        } else if (val != null && typeof val.toJSON === 'function') {
+          // Fallback to toJSON()
+          val = val.toJSON();
+        }
+        obj[p] = val;
       }
     } else {
       obj = this.toJSON();

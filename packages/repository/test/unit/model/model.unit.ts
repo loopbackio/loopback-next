@@ -8,12 +8,20 @@ import {STRING} from '../../../';
 import {Entity, ModelDefinition} from '../../../';
 
 describe('model', () => {
+  const addressDef = new ModelDefinition('Address');
+  addressDef
+    .addProperty('street', 'string')
+    .addProperty('city', 'string')
+    .addProperty('state', String)
+    .addProperty('zipCode', STRING);
+
   const customerDef = new ModelDefinition('Customer');
   customerDef
     .addProperty('id', 'string')
     .addProperty('email', 'string')
     .addProperty('firstName', String)
     .addProperty('lastName', STRING)
+    .addProperty('address', 'object')
     .addSetting('id', 'id');
 
   const realmCustomerDef = new ModelDefinition('RealmCustomer');
@@ -36,12 +44,25 @@ describe('model', () => {
     .addProperty('id', {type: 'string', id: true})
     .addSetting('strict', false);
 
+  class Address extends Entity {
+    static definition = addressDef;
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+
+    constructor(data?: Partial<Address>) {
+      super(data);
+    }
+  }
+
   class Customer extends Entity {
     static definition = customerDef;
     id: string;
     email: string;
     firstName: string;
     lastName: string;
+    address?: Address;
 
     constructor(data?: Partial<Customer>) {
       super(data);
@@ -89,6 +110,19 @@ describe('model', () => {
     return customer;
   }
 
+  function createCustomerWithAddress() {
+    const customer = new Customer();
+    customer.id = '123';
+    customer.email = 'xyz@example.com';
+    customer.address = new Address({
+      street: '123 A St',
+      city: 'San Jose',
+      state: 'CA',
+      zipCode: '95131',
+    });
+    return customer;
+  }
+
   function createRealmCustomer() {
     const customer = new RealmCustomer();
     customer.realm = 'org1';
@@ -124,6 +158,20 @@ describe('model', () => {
     // notice that "extra" property was discarded from the output
   });
 
+  it('converts to json recursively', () => {
+    const customer = createCustomerWithAddress();
+    expect(customer.toJSON()).to.eql({
+      id: '123',
+      email: 'xyz@example.com',
+      address: {
+        street: '123 A St',
+        city: 'San Jose',
+        state: 'CA',
+        zipCode: '95131',
+      },
+    });
+  });
+
   it('supports non-strict model in toJSON()', () => {
     const DATA = {id: 'uid', extra: 'additional data'};
     const instance = new Flexible(DATA);
@@ -139,6 +187,34 @@ describe('model', () => {
       id: '123',
       email: 'xyz@example.com',
       unknown: 'abc',
+    });
+  });
+
+  it('converts to plain object recursively', () => {
+    const customer = createCustomerWithAddress();
+    Object.assign(customer, {unknown: 'abc'});
+    Object.assign(customer.address, {unknown: 'xyz'});
+    expect(customer.toObject()).to.eql({
+      id: '123',
+      email: 'xyz@example.com',
+      address: {
+        street: '123 A St',
+        city: 'San Jose',
+        state: 'CA',
+        zipCode: '95131',
+      },
+    });
+    expect(customer.toObject({ignoreUnknownProperties: false})).to.eql({
+      id: '123',
+      email: 'xyz@example.com',
+      unknown: 'abc',
+      address: {
+        street: '123 A St',
+        city: 'San Jose',
+        state: 'CA',
+        zipCode: '95131',
+        unknown: 'xyz',
+      },
     });
   });
 
