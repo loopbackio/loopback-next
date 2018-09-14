@@ -8,13 +8,6 @@ import {STRING} from '../../../';
 import {Entity, ModelDefinition} from '../../../';
 
 describe('model', () => {
-  const addressDef = new ModelDefinition('Address');
-  addressDef
-    .addProperty('street', 'string')
-    .addProperty('city', 'string')
-    .addProperty('state', String)
-    .addProperty('zipCode', STRING);
-
   const customerDef = new ModelDefinition('Customer');
   customerDef
     .addProperty('id', 'string')
@@ -22,6 +15,7 @@ describe('model', () => {
     .addProperty('firstName', String)
     .addProperty('lastName', STRING)
     .addProperty('address', 'object')
+    .addProperty('phones', 'array')
     .addSetting('id', 'id');
 
   const realmCustomerDef = new ModelDefinition('RealmCustomer');
@@ -44,6 +38,13 @@ describe('model', () => {
     .addProperty('id', {type: 'string', id: true})
     .addSetting('strict', false);
 
+  const addressDef = new ModelDefinition('Address');
+  addressDef
+    .addProperty('street', 'string')
+    .addProperty('city', 'string')
+    .addProperty('state', String)
+    .addProperty('zipCode', STRING);
+
   class Address extends Entity {
     static definition = addressDef;
     street: string;
@@ -56,6 +57,19 @@ describe('model', () => {
     }
   }
 
+  const phoneDef = new ModelDefinition('Phone');
+  phoneDef.addProperty('number', 'string').addProperty('label', 'string');
+
+  class Phone extends Entity {
+    static definition = phoneDef;
+    number: string;
+    label: string;
+
+    constructor(data?: Partial<Phone>) {
+      super(data);
+    }
+  }
+
   class Customer extends Entity {
     static definition = customerDef;
     id: string;
@@ -63,6 +77,7 @@ describe('model', () => {
     firstName: string;
     lastName: string;
     address?: Address;
+    phones?: Phone[];
 
     constructor(data?: Partial<Customer>) {
       super(data);
@@ -110,7 +125,7 @@ describe('model', () => {
     return customer;
   }
 
-  function createCustomerWithAddress() {
+  function createCustomerWithContact() {
     const customer = new Customer();
     customer.id = '123';
     customer.email = 'xyz@example.com';
@@ -120,6 +135,10 @@ describe('model', () => {
       state: 'CA',
       zipCode: '95131',
     });
+    customer.phones = [
+      new Phone({label: 'home', number: '111-222-3333'}),
+      new Phone({label: 'work', number: '111-222-5555'}),
+    ];
     return customer;
   }
 
@@ -159,7 +178,7 @@ describe('model', () => {
   });
 
   it('converts to json recursively', () => {
-    const customer = createCustomerWithAddress();
+    const customer = createCustomerWithContact();
     expect(customer.toJSON()).to.eql({
       id: '123',
       email: 'xyz@example.com',
@@ -169,6 +188,10 @@ describe('model', () => {
         state: 'CA',
         zipCode: '95131',
       },
+      phones: [
+        {label: 'home', number: '111-222-3333'},
+        {label: 'work', number: '111-222-5555'},
+      ],
     });
   });
 
@@ -191,7 +214,7 @@ describe('model', () => {
   });
 
   it('converts to plain object recursively', () => {
-    const customer = createCustomerWithAddress();
+    const customer = createCustomerWithContact();
     Object.assign(customer, {unknown: 'abc'});
     Object.assign(customer.address, {unknown: 'xyz'});
     expect(customer.toObject()).to.eql({
@@ -203,6 +226,10 @@ describe('model', () => {
         state: 'CA',
         zipCode: '95131',
       },
+      phones: [
+        {label: 'home', number: '111-222-3333'},
+        {label: 'work', number: '111-222-5555'},
+      ],
     });
     expect(customer.toObject({ignoreUnknownProperties: false})).to.eql({
       id: '123',
@@ -215,6 +242,10 @@ describe('model', () => {
         zipCode: '95131',
         unknown: 'xyz',
       },
+      phones: [
+        {label: 'home', number: '111-222-3333'},
+        {label: 'work', number: '111-222-5555'},
+      ],
     });
   });
 
