@@ -45,8 +45,8 @@ file.
 
 ### Notes
 
-Service oriented datasources such as REST or SOAP are not considered valid and
-thus not presented to you in the selection list.
+Service oriented datasources such as REST or SOAP are not considered valid in
+this context and will not be presented to you in the selection list.
 
 There should be at least one valid _(KeyValue or Persisted)_ data source and one
 model already created in their respective directories.
@@ -65,12 +65,12 @@ The tool will prompt you for:
 
 - **Please select the datasource.** _(name)_ If the name of the datasource had
   been supplied from the command line, the prompt is skipped, otherwise it will
-  present you, the list of available datasources to select one. It will use this
+  present you the list of available datasources to select one. It will use this
   datasource to check what kind of repository it will generate.
 
 - **Select the model(s) you want to generate a repository.** _(model)_ If the
   name of the model had been supplied from the command line with `--model`
-  option and it is a valid model, the the prompt is skipped, otherwise it will
+  option and it is a valid model, then the prompt is skipped, otherwise it will
   present the error `Error: No models found` in the console.
 
   If no `--model` is supplied, then the it will present you with a valid list of

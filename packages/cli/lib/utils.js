@@ -370,3 +370,24 @@ function validateValue(name, unallowedCharacters) {
   }
   return true;
 }
+/**
+ *  Returns the modelName in the directory file format for the model
+ * @param {string} modelName
+ */
+exports.getModelFileName = function(modelName) {
+  return `${_.kebabCase(modelName)}.model.ts`;
+};
+
+/**
+ * Returns the repositoryName in the directory file format for the repository
+ * @param {string} repositoryName
+ */
+exports.getRepositoryFileName = function(repositoryName) {
+  return `${_.kebabCase(repositoryName)}.repository.ts`;
+};
+
+// literal strings with artifacts directory locations
+exports.repositoriesDir = 'repositories';
+exports.datasourcesDir = 'datasources';
+exports.modelsDir = 'models';
+exports.sourceRootDir = 'src';

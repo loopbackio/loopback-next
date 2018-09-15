@@ -47,7 +47,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
     let fileContent = '';
     let modelFile = path.join(
       this.artifactInfo.modelDir,
-      `${utils.kebabCase(modelName)}.model.ts`,
+      utils.getModelFileName(modelName),
     );
     try {
       fileContent = this.fs.read(modelFile, {});
@@ -63,12 +63,12 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
    * helper method to inspect and validate a repository type
    */
   async _inferRepositoryType() {
-    if (!this.artifactInfo.dataSourceClassName) {
+    if (!this.artifactInfo.dataSourceClass) {
       return;
     }
     let result = this._isConnectorOfType(
       KEY_VALUE_CONNECTOR,
-      this.artifactInfo.dataSourceClassName,
+      this.artifactInfo.dataSourceClass,
     );
     debug(`KeyValue Connector: ${result}`);
 
@@ -81,17 +81,19 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
     }
 
     // assign the data source name to the information artifact
-    let dataSourceName = this.artifactInfo.dataSourceClassName
+    let dataSourceName = this.artifactInfo.dataSourceClass
       .replace('Datasource', '')
       .toLowerCase();
-    let dataSourceImportName = this.artifactInfo.dataSourceClassName.replace(
+
+    let dataSourceClassName = this.artifactInfo.dataSourceClass.replace(
       'Datasource',
       'DataSource',
     );
 
     Object.assign(this.artifactInfo, {
-      dataSourceImportName: dataSourceImportName,
+      dataSourceClassName: dataSourceClassName,
     });
+
     Object.assign(this.artifactInfo, {
       dataSourceName: dataSourceName,
     });
@@ -102,19 +104,17 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
    * connectorType supplied for the given connector name
    * @param {string} connectorType single or a comma separated string array
    */
-  _isConnectorOfType(connectorType, dataSourceClassName) {
+  _isConnectorOfType(connectorType, dataSourceClass) {
     debug(`calling isConnectorType ${connectorType}`);
     let jsonFileContent = '';
     let result = false;
 
-    if (!dataSourceClassName) {
+    if (!dataSourceClass) {
       return false;
     }
     let datasourceJSONFile = path.join(
       this.artifactInfo.datasourcesDir,
-      dataSourceClassName
-        .replace('Datasource', '.datasource.json')
-        .toLowerCase(),
+      dataSourceClass.replace('Datasource', '.datasource.json').toLowerCase(),
     );
 
     try {
@@ -141,20 +141,20 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
   _setupGenerator() {
     this.artifactInfo = {
       type: 'repository ',
-      rootDir: 'src',
+      rootDir: utils.sourceRootDir,
     };
 
     this.artifactInfo.outDir = path.resolve(
       this.artifactInfo.rootDir,
-      'repositories',
+      utils.repositoriesDir,
     );
     this.artifactInfo.datasourcesDir = path.resolve(
       this.artifactInfo.rootDir,
-      'datasources',
+      utils.datasourcesDir,
     );
     this.artifactInfo.modelDir = path.resolve(
       this.artifactInfo.rootDir,
-      'models',
+      utils.modelsDir,
     );
 
     this.artifactInfo.defaultTemplate = REPOSITORY_CRUD_TEMPLATE;
@@ -230,7 +230,11 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
         'datasource',
         true,
       );
-      debug(`datasourcesList from src/datasources : ${datasourcesList}`);
+      debug(
+        `datasourcesList from ${utils.sourceRootDir}/${
+          utils.datasourcesDir
+        } : ${datasourcesList}`,
+      );
     } catch (err) {
       return this.exit(err);
     }
@@ -244,17 +248,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       return result;
     });
 
-    if (availableDatasources.includes(cmdDatasourceName)) {
-      Object.assign(this.artifactInfo, {
-        dataSourceClassName: cmdDatasourceName,
-      });
-    }
-
-    debug(
-      `artifactInfo.dataSourceClassName ${
-        this.artifactInfo.dataSourceClassName
-      }`,
-    );
+    debug(`artifactInfo.dataSourceClass ${this.artifactInfo.dataSourceClass}`);
 
     if (availableDatasources.length === 0) {
       return this.exit(
@@ -267,13 +261,19 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       );
     }
 
+    if (availableDatasources.includes(cmdDatasourceName)) {
+      Object.assign(this.artifactInfo, {
+        dataSourceClass: cmdDatasourceName,
+      });
+    }
+
     return this.prompt([
       {
         type: 'list',
-        name: 'dataSourceClassName',
+        name: 'dataSourceClass',
         message: PROMPT_MESSAGE_DATA_SOURCE,
         choices: availableDatasources,
-        when: !this.artifactInfo.dataSourceClassName,
+        when: !this.artifactInfo.dataSourceClass,
         default: availableDatasources[0],
         validate: utils.validateClassName,
       },
@@ -310,7 +310,11 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
 
       this.options.model = utils.toClassName(this.options.model);
       // assign the model name from the command line only if it is valid
-      if (modelList.length > 0 && modelList.includes(this.options.model)) {
+      if (
+        modelList &&
+        modelList.length > 0 &&
+        modelList.includes(this.options.model)
+      ) {
         Object.assign(this.artifactInfo, {modelNameList: [this.options.model]});
       } else {
         modelList = [];
@@ -399,8 +403,9 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
 
     if (this.options.name) {
       this.artifactInfo.className = utils.toClassName(this.options.name);
-      this.artifactInfo.outFile =
-        utils.kebabCase(this.options.name) + '.repository.ts';
+      this.artifactInfo.outFile = utils.getRepositoryFileName(
+        this.options.name,
+      );
 
       // make sure the name supplied from cmd line is only used once
       delete this.options.name;
@@ -408,8 +413,9 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       this.artifactInfo.className = utils.toClassName(
         this.artifactInfo.modelName,
       );
-      this.artifactInfo.outFile =
-        utils.kebabCase(this.artifactInfo.modelName) + '.repository.ts';
+      this.artifactInfo.outFile = utils.getRepositoryFileName(
+        this.artifactInfo.modelName,
+      );
     }
 
     if (debug.enabled) {
@@ -417,7 +423,11 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
     }
 
     const source = this.templatePath(
-      path.join('src', 'repositories', this.artifactInfo.defaultTemplate),
+      path.join(
+        utils.sourceRootDir,
+        utils.repositoriesDir,
+        this.artifactInfo.defaultTemplate,
+      ),
     );
 
     if (debug.enabled) {
