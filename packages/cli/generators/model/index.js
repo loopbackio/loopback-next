@@ -30,12 +30,12 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
   _setupGenerator() {
     this.artifactInfo = {
       type: 'model',
-      rootDir: 'src',
+      rootDir: utils.sourceRootDir,
     };
 
     this.artifactInfo.outDir = path.resolve(
       this.artifactInfo.rootDir,
-      'models',
+      utils.modelsDir,
     );
 
     // Model Property Types
@@ -190,8 +190,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     debug('scaffolding');
 
     // Data for templates
-    this.artifactInfo.fileName = utils.kebabCase(this.artifactInfo.name);
-    this.artifactInfo.outFile = `${this.artifactInfo.fileName}.model.ts`;
+    this.artifactInfo.outFile = utils.getModelFileName(this.artifactInfo.name);
 
     // Resolved Output Path
     const tsPath = this.destinationPath(

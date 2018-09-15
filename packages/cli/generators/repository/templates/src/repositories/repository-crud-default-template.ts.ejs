@@ -1,5 +1,6 @@
 import {<%= repositoryTypeClass %>, juggler} from '@loopback/repository';
 import {<%= modelName %>} from '../models';
+import {<%= dataSourceClassName %>} from '../datasources';
 import {inject} from '@loopback/core';
 
 export class <%= className %>Repository extends <%= repositoryTypeClass %><
@@ -7,7 +8,7 @@ export class <%= className %>Repository extends <%= repositoryTypeClass %><
   typeof <%= modelName %>.prototype.<%= idType %>
 > {
   constructor(
-    @inject('datasources.<%= dataSourceName %>') protected datasource: juggler.DataSource,
+    @inject('datasources.<%= dataSourceName %>') protected datasource: <%= dataSourceClassName %>,
   ) {
     super(<%= modelName %>, datasource);
   }

@@ -30,7 +30,7 @@ describe('lb4 repository', () => {
   describe('generate repositories on special conditions', () => {
     it('generates a multi-word crud repository', async () => {
       const multiItemPrompt = {
-        dataSourceClassName: 'DbmemDatasource',
+        dataSourceClass: 'DbmemDatasource',
         modelNameList: ['MultiWord'],
       };
 
@@ -116,7 +116,7 @@ describe('lb4 repository', () => {
 
     it('generates a repository asking for the ID name', async () => {
       const multiItemPrompt = {
-        dataSourceClassName: 'DbmemDatasource',
+        dataSourceClass: 'DbmemDatasource',
         modelNameList: ['InvalidId'],
         propertyName: 'myid',
       };
@@ -152,7 +152,7 @@ describe('lb4 repository', () => {
   describe('all invalid parameters and usage', () => {
     it('does not run with an invalid model name', async () => {
       const basicPrompt = {
-        dataSourceClassName: 'DbmemDatasource',
+        dataSourceClass: 'DbmemDatasource',
       };
       return expect(
         testUtils
@@ -168,7 +168,7 @@ describe('lb4 repository', () => {
 
     it("does not run when user doesn't select a model", async () => {
       const basicPrompt = {
-        dataSourceClassName: 'DbmemDatasource',
+        dataSourceClass: 'DbmemDatasource',
       };
       return expect(
         testUtils
@@ -197,7 +197,7 @@ describe('lb4 repository', () => {
   describe('valid generation of crud repositories', () => {
     it('generates a crud repository from default model', async () => {
       const basicPrompt = {
-        dataSourceClassName: 'DbmemDatasource',
+        dataSourceClass: 'DbmemDatasource',
       };
       await testUtils
         .executeGenerator(generator)
@@ -283,7 +283,7 @@ describe('lb4 repository', () => {
 
     it('generates a kv repository from decorator defined model', async () => {
       const basicPrompt = {
-        dataSourceClassName: 'DbkvDatasource',
+        dataSourceClass: 'DbkvDatasource',
       };
       await testUtils
         .executeGenerator(generator)
