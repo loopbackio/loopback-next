@@ -14,7 +14,7 @@
     "build": "tsc --outDir dist --target es2017",
     "build:all-dist": "npm run build",
     "build:watch": "tsc --outDir dist --target es2017 --watch",
-    "clean": "rm -rf dist",
+    "clean": "rimraf dist",
 <% if (project.prettier && project.tslint) { -%>
     "lint": "npm run prettier:check && npm run tslint",
     "lint:fix": "npm run tslint:fix && npm run prettier:fix",
@@ -79,6 +79,7 @@
 <% } -%>
   },
   "devDependencies": {
+    "rimraf": "<%= project.dependencies['rimraf'] -%>",
     "@loopback/testlab": "<%= project.dependencies['@loopback/testlab'] -%>",
 <% if (project.mocha) { -%>
     "@types/mocha": "<%= project.dependencies['@types/mocha'] -%>",
