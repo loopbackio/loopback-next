@@ -332,6 +332,7 @@ module.exports = function(projGenerator, props, projectType) {
         );
         assert.noFileContent([
           ['package.json', '@loopback/build'],
+          ['package.json', '@loopback/dist-util'],
           ['tslint.json', '@loopback/build'],
           ['tsconfig.json', '@loopback/build'],
         ]);
@@ -341,6 +342,7 @@ module.exports = function(projGenerator, props, projectType) {
           ['package.json', '"prettier"'],
           ['tslint.json', '"rules"'],
           ['tsconfig.json', '"compilerOptions"'],
+          ['index.js', "require('./dist')"],
         ]);
       });
     });
