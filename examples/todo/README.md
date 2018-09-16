@@ -42,7 +42,7 @@ section.
 5.  [Add a controller](http://loopback.io/doc/en/lb4/todo-tutorial-controller.html)
 6.  [Putting it all together](http://loopback.io/doc/en/lb4/todo-tutorial-putting-it-together.html)
 7.  Bonus:
-    [Integrate with a geo-coding service](http://loopback.io/doc/en/lb4/todo-tutorial-geocoder-service.html)
+    [Integrate with a geo-coding service](http://loopback.io/doc/en/lb4/todo-tutorial-geocoding-service.html)
 
 ## Try it out
 
