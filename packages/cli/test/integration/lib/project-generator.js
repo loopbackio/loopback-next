@@ -330,6 +330,7 @@ module.exports = function(projGenerator, props, projectType) {
           'package.json',
           `"@loopback/context": "${deps['@loopback/context']}"`,
         );
+        assert.fileContent('package.json', `"rimraf": "${deps['rimraf']}"`);
         assert.noFileContent([
           ['package.json', '@loopback/build'],
           ['package.json', '@loopback/dist-util'],
@@ -337,6 +338,7 @@ module.exports = function(projGenerator, props, projectType) {
           ['tsconfig.json', '@loopback/build'],
         ]);
         assert.fileContent([
+          ['package.json', '"clean": "rimraf dist"'],
           ['package.json', '"typescript"'],
           ['package.json', '"tslint"'],
           ['package.json', '"prettier"'],
