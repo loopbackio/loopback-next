@@ -28,6 +28,18 @@ describe('reject', () => {
     expect(result).to.have.property('statusCode', 500);
   });
 
+  it('converts error code ENTITY_NOT_FOUND to status code 404', async () => {
+    const reject = new RejectProvider(noopLogger).value();
+
+    const notFoundError: Error & {code?: string} = new Error('not found');
+    notFoundError.code = 'ENTITY_NOT_FOUND';
+
+    reject(contextStub, notFoundError);
+    const result = await contextStub.result;
+
+    expect(result.statusCode).to.equal(404);
+  });
+
   it('logs the error', async () => {
     const logger = sinon.spy() as LogError & SinonSpy;
     const reject = new RejectProvider(logger).value();
