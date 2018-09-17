@@ -7,12 +7,22 @@ export namespace RestHttpErrors {
     extraProperties?: Props,
   ): HttpErrors.HttpError & Props {
     const msg = `Invalid data ${JSON.stringify(data)} for parameter ${name}!`;
-    return Object.assign(new HttpErrors.BadRequest(msg), extraProperties);
+    return Object.assign(
+      new HttpErrors.BadRequest(msg),
+      {
+        code: 'INVALID_PARAMETER_VALUE',
+        parameterName: name,
+      },
+      extraProperties,
+    );
   }
 
   export function missingRequired(name: string): HttpErrors.HttpError {
     const msg = `Required parameter ${name} is missing!`;
-    return new HttpErrors.BadRequest(msg);
+    return Object.assign(new HttpErrors.BadRequest(msg), {
+      code: 'MISSING_REQUIRED_PARAMETER',
+      parameterName: name,
+    });
   }
 
   export function invalidParamLocation(location: string): HttpErrors.HttpError {
@@ -23,7 +33,12 @@ export namespace RestHttpErrors {
   export const INVALID_REQUEST_BODY_MESSAGE =
     'The request body is invalid. See error object `details` property for more info.';
   export function invalidRequestBody(): HttpErrors.HttpError {
-    return new HttpErrors.UnprocessableEntity(INVALID_REQUEST_BODY_MESSAGE);
+    return Object.assign(
+      new HttpErrors.UnprocessableEntity(INVALID_REQUEST_BODY_MESSAGE),
+      {
+        code: 'VALIDATION_FAILED',
+      },
+    );
   }
 
   /**
