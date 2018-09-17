@@ -40,7 +40,7 @@ describe('update-index unit tests', () => {
   });
 
   it('throws an error when given a non-ts file', async () => {
-    expect(updateIndex(SANDBOX_PATH, 'test.js')).to.be.rejectedWith(
+    await expect(updateIndex(SANDBOX_PATH, 'test.js')).to.be.rejectedWith(
       /test.js must be a TypeScript \(.ts\) file/,
     );
   });
