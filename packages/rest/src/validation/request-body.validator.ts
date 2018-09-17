@@ -33,8 +33,18 @@ export function validateRequestBody(
   requestBodySpec: RequestBodyObject | undefined,
   globalSchemas?: SchemasObject,
 ) {
-  if (requestBodySpec && requestBodySpec.required && body == undefined)
-    throw new HttpErrors.BadRequest('Request body is required');
+  if (!requestBodySpec) return;
+
+  if (requestBodySpec.required && body == undefined) {
+    const err = Object.assign(
+      new HttpErrors.BadRequest('Request body is required'),
+      {
+        code: 'MISSING_REQUIRED_PARAMETER',
+        parameterName: 'request body',
+      },
+    );
+    throw err;
+  }
 
   const schema = getRequestBodySchema(requestBodySpec);
   debug('Request body schema: %j', util.inspect(schema, {depth: null}));
@@ -49,10 +59,8 @@ export function validateRequestBody(
  * @param requestBodySpec The requestBody specification defined in `@requestBody()`.
  */
 function getRequestBodySchema(
-  requestBodySpec: RequestBodyObject | undefined,
+  requestBodySpec: RequestBodyObject,
 ): SchemaObject | undefined {
-  if (!requestBodySpec) return;
-
   const content = requestBodySpec.content;
   // FIXME(bajtos) we need to find the entry matching the content-type
   // header from the incoming request (e.g. "application/json").

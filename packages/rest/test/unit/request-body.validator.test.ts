@@ -67,6 +67,7 @@ describe('validateRequestBody', () => {
     ];
     verifyValidationRejectsInputWithError(
       INVALID_MSG,
+      'VALIDATION_FAILED',
       details,
       {
         description: 'missing required "title"',
@@ -86,6 +87,7 @@ describe('validateRequestBody', () => {
     ];
     verifyValidationRejectsInputWithError(
       INVALID_MSG,
+      'VALIDATION_FAILED',
       details,
       {
         title: 'todo with a string value of "isComplete"',
@@ -112,6 +114,7 @@ describe('validateRequestBody', () => {
     ];
     verifyValidationRejectsInputWithError(
       INVALID_MSG,
+      'VALIDATION_FAILED',
       details,
       {
         description: 'missing title and a string value of "isComplete"',
@@ -140,6 +143,7 @@ describe('validateRequestBody', () => {
     ];
     verifyValidationRejectsInputWithError(
       INVALID_MSG,
+      'VALIDATION_FAILED',
       details,
       {description: 'missing title'},
       aBodySpec({$ref: '#/components/schemas/Todo'}),
@@ -150,6 +154,7 @@ describe('validateRequestBody', () => {
   it('rejects empty values when body is required', () => {
     verifyValidationRejectsInputWithError(
       'Request body is required',
+      'MISSING_REQUIRED_PARAMETER',
       undefined,
       null,
       aBodySpec(TODO_SCHEMA, {required: true}),
@@ -176,6 +181,7 @@ describe('validateRequestBody', () => {
     };
     verifyValidationRejectsInputWithError(
       INVALID_MSG,
+      'VALIDATION_FAILED',
       details,
       {count: 'string value'},
       aBodySpec(schema),
@@ -205,6 +211,7 @@ describe('validateRequestBody', () => {
       };
       verifyValidationRejectsInputWithError(
         INVALID_MSG,
+        'VALIDATION_FAILED',
         details,
         {orders: ['order1', 1]},
         aBodySpec(schema),
@@ -228,6 +235,7 @@ describe('validateRequestBody', () => {
       };
       verifyValidationRejectsInputWithError(
         INVALID_MSG,
+        'VALIDATION_FAILED',
         details,
         [{title: 'a good todo'}, {description: 'a todo item missing title'}],
         aBodySpec(schema),
@@ -263,6 +271,7 @@ describe('validateRequestBody', () => {
       };
       verifyValidationRejectsInputWithError(
         INVALID_MSG,
+        'VALIDATION_FAILED',
         details,
         {
           todos: [
@@ -298,6 +307,7 @@ describe('validateRequestBody', () => {
       };
       verifyValidationRejectsInputWithError(
         INVALID_MSG,
+        'VALIDATION_FAILED',
         details,
         {
           accounts: [
@@ -314,8 +324,9 @@ describe('validateRequestBody', () => {
 // ----- HELPERS ----- /
 
 function verifyValidationRejectsInputWithError(
-  errorMatcher: Error | RegExp | string,
-  details: RestHttpErrors.ValidationErrorDetails[] | undefined,
+  expectedMessage: string,
+  expectedCode: string,
+  expectedDetails: RestHttpErrors.ValidationErrorDetails[] | undefined,
   body: object | null,
   spec: RequestBodyObject | undefined,
   schemas?: SchemasObject,
@@ -326,7 +337,8 @@ function verifyValidationRejectsInputWithError(
       "expected Function { name: 'validateRequestBody' } to throw exception",
     );
   } catch (err) {
-    expect(err.message).to.equal(errorMatcher);
-    expect(err.details).to.deepEqual(details);
+    expect(err.message).to.equal(expectedMessage);
+    expect(err.code).to.equal(expectedCode);
+    expect(err.details).to.deepEqual(expectedDetails);
   }
 }
