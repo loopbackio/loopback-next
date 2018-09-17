@@ -25,7 +25,7 @@ $ lb4 controller
 ? Controller class name: TodoList
 ? What kind of controller would you like to generate? REST Controller with CRUD functions
 ? What is the name of the model to use with this CRUD repository? TodoList
-? What is the name of your CRUD repository? TodoRepository
+? What is the name of your CRUD repository? TodoListRepository
 ? What is the type of your ID? number
 ? What is the base HTTP path name of the CRUD operations? /todo-lists
    create src/controllers/todo-list.controller.ts
