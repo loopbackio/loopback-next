@@ -244,15 +244,14 @@ describe('resolveUntil', () => {
     expect(result).to.eql('A');
   });
 
-  it('handles a rejected promise from resolver', () => {
+  it('handles a rejected promise from resolver', async () => {
     const source = ['a', 'b', 'c'];
     const result = resolveUntil<string, string>(
       source[Symbol.iterator](),
       v => Promise.reject(new Error(v)),
       (s, v) => true,
     );
-    // tslint:disable-next-line:no-floating-promises
-    expect(result).be.rejectedWith('a');
+    await expect(result).be.rejectedWith('a');
   });
 
   it('reports an error thrown from resolver', () => {
@@ -268,7 +267,7 @@ describe('resolveUntil', () => {
     expect(task).throw('a');
   });
 
-  it('handles a rejected promise from evaluator', () => {
+  it('handles a rejected promise from evaluator', async () => {
     const source = ['a', 'b', 'c'];
     const result = resolveUntil<string, string>(
       source[Symbol.iterator](),
@@ -277,8 +276,7 @@ describe('resolveUntil', () => {
         throw new Error(v);
       },
     );
-    // tslint:disable-next-line:no-floating-promises
-    expect(result).be.rejectedWith('A');
+    await expect(result).be.rejectedWith('A');
   });
 
   it('handles mixed value and promise items ', async () => {
@@ -341,12 +339,11 @@ describe('transformValueOrPromise', () => {
     expect(result).to.eql('A');
   });
 
-  it('handles a rejected promise from the transformer', () => {
+  it('handles a rejected promise from the transformer', async () => {
     const result = transformValueOrPromise('a', v =>
       Promise.reject(new Error(v)),
     );
-    // tslint:disable-next-line:no-floating-promises
-    expect(result).be.rejectedWith('a');
+    await expect(result).be.rejectedWith('a');
   });
 
   it('handles an error thrown from the transformer', () => {
