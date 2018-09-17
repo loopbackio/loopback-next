@@ -96,6 +96,10 @@ describe('Application', () => {
       expect(result.body).to.deepEqual(expected);
     });
 
+    it('returns 404 when a todo does not exist', () => {
+      return client.get('/todos/99999').expect(404);
+    });
+
     it('replaces the todo by ID', async () => {
       const updatedTodo = givenTodo({
         title: 'DO SOMETHING AWESOME',
