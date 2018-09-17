@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.22.11"></a>
+## [0.22.11](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.22.10...@loopback/cli@0.22.11) (2018-09-17)
+
+
+### Bug Fixes
+
+* **cli:** generate correct index.js without loopback build ([1c8cb3e](https://github.com/strongloop/loopback-next/commit/1c8cb3e))
+* **cli:** use rimraf to replace rm -rf ([479f363](https://github.com/strongloop/loopback-next/commit/479f363))
+
+
+
+
+
 <a name="0.22.10"></a>
 ## [0.22.10](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.22.9...@loopback/cli@0.22.10) (2018-09-14)
 

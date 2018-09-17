@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.17.6"></a>
+## [0.17.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.17.5...@loopback/example-todo@0.17.6) (2018-09-17)
+
+
+### Bug Fixes
+
+* **example-todo:** fix typo in README ([e56dcc5](https://github.com/strongloop/loopback-next/commit/e56dcc5))
+
+
+
+
+
 <a name="0.17.5"></a>
 ## [0.17.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.17.4...@loopback/example-todo@0.17.5) (2018-09-14)
 
