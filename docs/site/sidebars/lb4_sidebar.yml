@@ -182,6 +182,10 @@ children:
       url: Decorators_repository.html
       output: 'web, pdf'
 
+  - title: 'Error handling'
+    url: Error-handling.html
+    output: 'web, pdf'
+
 - title: 'Booting an Application'
   url: Booting-an-Application.html
   output: 'web, pdf'
