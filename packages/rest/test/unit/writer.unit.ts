@@ -68,6 +68,15 @@ describe('writer', () => {
     expect(result.payload).to.equal('ABC123');
   });
 
+  it('sends 204 No Content when the response is undefined', async () => {
+    writeResultToResponse(response, undefined);
+    const result = await observedResponse;
+
+    expect(result.statusCode).to.equal(204);
+    expect(result.headers).to.not.have.property('content-type');
+    expect(result.payload).to.equal('');
+  });
+
   function setupResponseMock() {
     const responseMock = stubExpressContext();
     response = responseMock.response;

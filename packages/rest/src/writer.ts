@@ -19,34 +19,37 @@ export function writeResultToResponse(
   // result returned back from invoking controller method
   result: OperationRetval,
 ): void {
-  if (result) {
-    if (result instanceof Readable || typeof result.pipe === 'function') {
-      response.setHeader('Content-Type', 'application/octet-stream');
-      // Stream
-      result.pipe(response);
-      return;
-    }
-    switch (typeof result) {
-      case 'object':
-      case 'boolean':
-      case 'number':
-        if (Buffer.isBuffer(result)) {
-          // Buffer for binary data
-          response.setHeader('Content-Type', 'application/octet-stream');
-        } else {
-          // TODO(ritch) remove this, should be configurable
-          // See https://github.com/strongloop/loopback-next/issues/436
-          response.setHeader('Content-Type', 'application/json');
-          // TODO(bajtos) handle errors - JSON.stringify can throw
-          result = JSON.stringify(result);
-        }
-        break;
-      default:
-        response.setHeader('Content-Type', 'text/plain');
-        result = result.toString();
-        break;
-    }
-    response.write(result);
+  if (!result) {
+    response.statusCode = 204;
+    response.end();
+    return;
   }
-  response.end();
+
+  if (result instanceof Readable || typeof result.pipe === 'function') {
+    response.setHeader('Content-Type', 'application/octet-stream');
+    // Stream
+    result.pipe(response);
+    return;
+  }
+  switch (typeof result) {
+    case 'object':
+    case 'boolean':
+    case 'number':
+      if (Buffer.isBuffer(result)) {
+        // Buffer for binary data
+        response.setHeader('Content-Type', 'application/octet-stream');
+      } else {
+        // TODO(ritch) remove this, should be configurable
+        // See https://github.com/strongloop/loopback-next/issues/436
+        response.setHeader('Content-Type', 'application/json');
+        // TODO(bajtos) handle errors - JSON.stringify can throw
+        result = JSON.stringify(result);
+      }
+      break;
+    default:
+      response.setHeader('Content-Type', 'text/plain');
+      result = result.toString();
+      break;
+  }
+  response.end(result);
 }
