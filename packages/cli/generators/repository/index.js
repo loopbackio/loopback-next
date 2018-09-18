@@ -28,8 +28,8 @@ const PROMPT_MESSAGE_MODEL =
   'Select the model(s) you want to generate a repository';
 const PROMPT_MESSAGE_DATA_SOURCE = 'Please select the datasource';
 const ERROR_READING_FILE = 'Error reading file';
-const ERROR_NO_DATA_SOURCES_FOUND = 'No datasources found in';
-const ERROR_NO_MODELS_FOUND = 'No models found in';
+const ERROR_NO_DATA_SOURCES_FOUND = 'No datasources found at';
+const ERROR_NO_MODELS_FOUND = 'No models found at';
 const ERROR_NO_MODEL_SELECTED = 'You did not select a valid model';
 const ERROR_NO_DIRECTORY = 'The directory was not found';
 
@@ -192,7 +192,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
     if (!fs.existsSync(this.artifactInfo.datasourcesDir)) {
       return this.exit(
         new Error(
-          `${ERROR_NO_DIRECTORY} ${this.artifactInfo.datasourcesDir}.
+          `${ERROR_NO_DATA_SOURCES_FOUND} ${this.artifactInfo.datasourcesDir}.
         ${chalk.yellow(
           'Please visit https://loopback.io/doc/en/lb4/DataSource-generator.html for information on how datasources are discovered',
         )}`,
@@ -204,7 +204,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
     if (!fs.existsSync(this.artifactInfo.modelDir)) {
       return this.exit(
         new Error(
-          `${ERROR_NO_DIRECTORY} ${this.artifactInfo.modelDir}.
+          `${ERROR_NO_MODELS_FOUND} ${this.artifactInfo.modelDir}.
         ${chalk.yellow(
           'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
         )}`,
