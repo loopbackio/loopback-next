@@ -358,7 +358,7 @@ paths:
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
   });
 
-  it('exposes "GET /swagger-ui" endpoint', async () => {
+  it('exposes "GET /explorer" endpoint', async () => {
     const app = new Application();
     app.component(RestComponent);
     const server = await app.getServer(RestServer);
@@ -373,12 +373,12 @@ paths:
     server.route(new Route('get', '/greet', greetSpec, function greet() {}));
 
     const response = await createClientForHandler(server.requestHandler).get(
-      '/swagger-ui',
+      '/explorer',
     );
     await server.get(RestBindings.PORT);
     const expectedUrl = new RegExp(
       [
-        'https://loopback.io/api-explorer',
+        'http://explorer.loopback.io',
         '\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/openapi.json',
       ].join(''),
     );
@@ -393,14 +393,14 @@ paths:
     const server = await app.getServer(RestServer);
 
     const response = await createClientForHandler(server.requestHandler)
-      .get('/swagger-ui')
+      .get('/explorer')
       .set('x-forwarded-proto', 'https')
       .set('x-forwarded-host', 'example.com')
       .set('x-forwarded-port', '8080');
     await server.get(RestBindings.PORT);
     const expectedUrl = new RegExp(
       [
-        'https://loopback.io/api-explorer',
+        'https://explorer.loopback.io',
         '\\?url=https://example.com:8080/openapi.json',
       ].join(''),
     );
@@ -413,13 +413,13 @@ paths:
     const server = await app.getServer(RestServer);
 
     const response = await createClientForHandler(server.requestHandler)
-      .get('/swagger-ui')
+      .get('/explorer')
       .set('x-forwarded-proto', 'http')
       .set('x-forwarded-host', 'example.com:8080,my.example.com:9080');
     await server.get(RestBindings.PORT);
     const expectedUrl = new RegExp(
       [
-        'https://loopback.io/api-explorer',
+        'http://explorer.loopback.io',
         '\\?url=http://example.com:8080/openapi.json',
       ].join(''),
     );
@@ -432,21 +432,21 @@ paths:
     const server = await app.getServer(RestServer);
 
     const response = await createClientForHandler(server.requestHandler)
-      .get('/swagger-ui')
+      .get('/explorer')
       .set('x-forwarded-proto', 'https')
       .set('x-forwarded-host', 'example.com')
       .set('x-forwarded-port', '443');
     await server.get(RestBindings.PORT);
     const expectedUrl = new RegExp(
       [
-        'https://loopback.io/api-explorer',
+        'https://explorer.loopback.io',
         '\\?url=https://example.com/openapi.json',
       ].join(''),
     );
     expect(response.get('Location')).match(expectedUrl);
   });
 
-  it('exposes "GET /swagger-ui" endpoint with apiExplorer.url', async () => {
+  it('exposes "GET /explorer" endpoint with apiExplorer.url', async () => {
     const server = await givenAServer({
       rest: {
         apiExplorer: {
@@ -456,7 +456,7 @@ paths:
     });
 
     const response = await createClientForHandler(server.requestHandler).get(
-      '/swagger-ui',
+      '/explorer',
     );
     await server.get(RestBindings.PORT);
     const expectedUrl = new RegExp(
@@ -468,7 +468,7 @@ paths:
     expect(response.get('Location')).match(expectedUrl);
   });
 
-  it('exposes "GET /swagger-ui" endpoint with apiExplorer.urlForHttp', async () => {
+  it('exposes "GET /explorer" endpoint with apiExplorer.urlForHttp', async () => {
     const server = await givenAServer({
       rest: {
         apiExplorer: {
@@ -479,7 +479,7 @@ paths:
     });
 
     const response = await createClientForHandler(server.requestHandler).get(
-      '/swagger-ui',
+      '/explorer',
     );
     await server.get(RestBindings.PORT);
     const expectedUrl = new RegExp(
@@ -565,12 +565,12 @@ paths:
     const serverUrl = server.getSync(RestBindings.URL);
 
     // The `Location` header should be something like
-    // https://loopback.io/api-explorer?url=https://[::1]:58470/openapi.json
-    const res = await httpsGetAsync(serverUrl + '/swagger-ui');
+    // https://explorer.loopback.io?url=https://[::1]:58470/openapi.json
+    const res = await httpsGetAsync(serverUrl + '/explorer');
     const location = res.headers['location'];
     expect(location).to.match(/\[\:\:1\]\:\d+\/openapi.json/);
     expect(location).to.equal(
-      `https://loopback.io/api-explorer?url=${serverUrl}/openapi.json`,
+      `https://explorer.loopback.io?url=${serverUrl}/openapi.json`,
     );
     await server.stop();
   });

@@ -164,8 +164,8 @@ $ npm run build
 $ npm start
 ```
 
-5.  Go to http://localhost:3000/swagger-ui to load API Explorer and add a todo
-    or two.
+5.  Go to http://localhost:3000/explorer to load API Explorer and add a todo or
+    two.
 
 6.  Go to http://localhost:3000/todos to see the todos.
 
@@ -211,8 +211,8 @@ npm run build
 cf push mylb4app
 ```
 
-3.  Go to https://mylb4app.eu-gb.mybluemix.net/swagger-ui to load the API
-    Explorer and add a todo or two. The host `mylb4app.eu-gb.mybluemix.net` is
-    derived from the `name` and `domain` values in the `manifest.yml` file.
+3.  Go to https://mylb4app.eu-gb.mybluemix.net/explorer to load the API Explorer
+    and add a todo or two. The host `mylb4app.eu-gb.mybluemix.net` is derived
+    from the `name` and `domain` values in the `manifest.yml` file.
 
 4.  Go to https://mylb4app.eu-gb.mybluemix.net/todos to see the todos.

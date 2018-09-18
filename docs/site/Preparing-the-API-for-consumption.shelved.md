@@ -27,7 +27,7 @@ cd loopback4-example-todo
 npm start
 ```
 
-Open <http://localhost:3000/swagger-ui> to see the API endpoints defined by
+Open <http://localhost:3000/explorer> to see the API endpoints defined by
 `swagger.json`.
 
 {% include note.html content="
