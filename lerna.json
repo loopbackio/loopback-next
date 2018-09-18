@@ -9,6 +9,7 @@
   ],
   "command": {
     "bootstrap": {
+      "concurrency": 8,
       "ci": false
     },
     "version": {
