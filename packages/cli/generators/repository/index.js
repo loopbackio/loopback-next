@@ -43,7 +43,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
    * get the property name for the id field
    * @param {string} modelName
    */
-  async _getModelIdType(modelName) {
+  async _getModelIdProperty(modelName) {
     let fileContent = '';
     let modelFile = path.join(
       this.artifactInfo.modelDir,
@@ -156,6 +156,9 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       this.artifactInfo.rootDir,
       utils.modelsDir,
     );
+
+    // to be able to write multiple files to the index.ts
+    this.artifactInfo.indexesToBeUpdated = [];
 
     this.artifactInfo.defaultTemplate = REPOSITORY_CRUD_TEMPLATE;
 
@@ -354,7 +357,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
 
   async promptModelId() {
     if (this.shouldExit()) return false;
-    let idType;
+    let idProperty;
 
     debug(`Model ID property name from command line: ${this.options.id}`);
     debug(`Selected Models: ${this.artifactInfo.modelNameList}`);
@@ -379,19 +382,19 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
         if (this.options.id) {
           debug(`passing thru this.options.id with value : ${this.options.id}`);
 
-          idType = this.options.id;
+          idProperty = this.options.id;
           /**  make sure it is only used once, in case user selected more
            * than one model.
            */
           delete this.options.id;
         } else {
-          idType = await this._getModelIdType(item);
-          if (idType === null) {
+          idProperty = await this._getModelIdProperty(item);
+          if (idProperty === null) {
             const answer = await this.prompt(prompts);
-            idType = answer.propertyName;
+            idProperty = answer.propertyName;
           }
         }
-        this.artifactInfo.idType = idType;
+        this.artifactInfo.idProperty = idProperty;
         // Generate this repository
         await this._scaffold();
       }
@@ -413,13 +416,15 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       this.artifactInfo.className = utils.toClassName(
         this.artifactInfo.modelName,
       );
+
       this.artifactInfo.outFile = utils.getRepositoryFileName(
         this.artifactInfo.modelName,
       );
-    }
 
-    if (debug.enabled) {
-      debug(`Artifact output filename set to: ${this.artifactInfo.outFile}`);
+      this.artifactInfo.indexesToBeUpdated.push({
+        dir: this.artifactInfo.outDir,
+        file: this.artifactInfo.outFile,
+      });
     }
 
     const source = this.templatePath(
@@ -430,9 +435,6 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       ),
     );
 
-    if (debug.enabled) {
-      debug(`Using template at: ${source}`);
-    }
     const dest = this.destinationPath(
       path.join(this.artifactInfo.outDir, this.artifactInfo.outFile),
     );

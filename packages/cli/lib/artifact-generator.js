@@ -129,17 +129,19 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
     // Index Update Disabled
     if (this.artifactInfo.disableIndexUpdate) return;
 
+    if (!this.artifactInfo.indexesToBeUpdated) {
+      this.artifactInfo.indexesToBeUpdated = [];
+    }
+
     // No Array given for Index Update, Create default array
     if (
-      !this.artifactInfo.indexesToBeUpdated &&
       this.artifactInfo.outDir &&
-      this.artifactInfo.outFile
+      this.artifactInfo.outFile &&
+      this.artifactInfo.indexesToBeUpdated.length === 0
     ) {
       this.artifactInfo.indexesToBeUpdated = [
         {dir: this.artifactInfo.outDir, file: this.artifactInfo.outFile},
       ];
-    } else {
-      this.artifactInfo.indexesToBeUpdated = [];
     }
 
     for (const idx of this.artifactInfo.indexesToBeUpdated) {
