@@ -138,13 +138,13 @@ export class TodoController {
   async updateById(
     @param.path.number('id') id: number,
     @requestBody() obj: Todo,
-  ): Promise<boolean> {
-    return await this.todoRepository.updateById(id, obj);
+  ): Promise<void> {
+    await this.todoRepository.updateById(id, obj);
   }
 
   @del('/todos/{id}')
-  async deleteById(@param.path.number('id') id: number): Promise<boolean> {
-    return await this.todoRepository.deleteById(id);
+  async deleteById(@param.path.number('id') id: number): Promise<void> {
+    await this.todoRepository.deleteById(id);
   }
 }
 ```

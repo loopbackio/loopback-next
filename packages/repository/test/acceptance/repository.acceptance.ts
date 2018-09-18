@@ -71,36 +71,6 @@ describe('Repository in Thinking in LoopBack', () => {
     expect(stored).to.containDeep({extra: 'additional data'});
   });
 
-  it('enables strict delete by default', async () => {
-    await repo.create({slug: 'pencil'});
-    await expect(repo.deleteById(10000)).to.be.rejectedWith(
-      /No instance with id/,
-    );
-  });
-
-  it('disables strict delete via configuration', async () => {
-    @model({settings: {strictDelete: false}})
-    class Pencil extends Entity {
-      @property({id: true})
-      id: number;
-      @property({type: 'string'})
-      name: string;
-    }
-
-    const pencilRepo = new DefaultCrudRepository<
-      Pencil,
-      typeof Pencil.prototype.id
-    >(Pencil, new DataSource({connector: 'memory'}));
-
-    await pencilRepo.create({
-      name: 'Green Pencil',
-    });
-
-    // When `strictDelete` is set to `false`, `deleteById()` on a non-existing
-    // resource is resolved with `false`, instead of being rejected.
-    await expect(pencilRepo.deleteById(10000)).to.be.fulfilledWith(false);
-  });
-
   function givenProductRepository() {
     const db = new DataSource({
       connector: 'memory',

@@ -100,13 +100,11 @@ describe('TodoController', () => {
 
   describe('updateById', () => {
     it('successfully updates existing items', async () => {
-      updateById.resolves(true);
-      expect(
-        await controller.updateById(
-          aTodoListWithId.id as number,
-          aTodoListToPatchTo,
-        ),
-      ).to.eql(true);
+      updateById.resolves();
+      await controller.updateById(
+        aTodoListWithId.id as number,
+        aTodoListToPatchTo,
+      );
       sinon.assert.calledWith(
         updateById,
         aTodoListWithId.id,
@@ -117,10 +115,8 @@ describe('TodoController', () => {
 
   describe('deleteById', () => {
     it('successfully deletes existing items', async () => {
-      deleteById.resolves(true);
-      expect(await controller.deleteById(aTodoListWithId.id as number)).to.eql(
-        true,
-      );
+      deleteById.resolves();
+      await controller.deleteById(aTodoListWithId.id as number);
       sinon.assert.calledWith(deleteById, aTodoListWithId.id);
     });
   });

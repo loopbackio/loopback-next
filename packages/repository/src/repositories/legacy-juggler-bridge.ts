@@ -125,7 +125,14 @@ export class DefaultCrudRepository<T extends Entity, ID>
     this.modelClass = dataSource.createModel<juggler.PersistedModelClass>(
       definition.name,
       properties,
-      Object.assign({strict: true, strictDelete: true}, definition.settings),
+      Object.assign(
+        // settings that users can override
+        {strict: true},
+        // user-defined settings
+        definition.settings,
+        // settings enforced by the framework
+        {strictDelete: false},
+      ),
     );
     this.modelClass.attachTo(dataSource);
   }
@@ -183,15 +190,13 @@ export class DefaultCrudRepository<T extends Entity, ID>
     return this.toEntities(models);
   }
 
-  save(entity: T, options?: Options): Promise<T | null> {
+  async save(entity: T, options?: Options): Promise<T> {
     const id = this.entityClass.getIdOf(entity);
     if (id == null) {
       return this.create(entity, options);
     } else {
-      return this.replaceById(id, entity, options).then(
-        result =>
-          result ? (new this.entityClass(entity.toObject()) as T) : null,
-      );
+      await this.replaceById(id, entity, options);
+      return new this.entityClass(entity.toObject()) as T;
     }
   }
 
@@ -216,11 +221,11 @@ export class DefaultCrudRepository<T extends Entity, ID>
     return this.toEntity(model);
   }
 
-  update(entity: T, options?: Options): Promise<boolean> {
+  update(entity: T, options?: Options): Promise<void> {
     return this.updateById(entity.getId(), entity, options);
   }
 
-  delete(entity: T, options?: Options): Promise<boolean> {
+  delete(entity: T, options?: Options): Promise<void> {
     return this.deleteById(entity.getId(), options);
   }
 
@@ -235,21 +240,33 @@ export class DefaultCrudRepository<T extends Entity, ID>
     );
   }
 
-  updateById(id: ID, data: DataObject<T>, options?: Options): Promise<boolean> {
-    const idProp = this.modelClass.definition.idName();
-    const where = {} as Where;
-    where[idProp] = id;
-    return this.updateAll(data, where, options).then(count => count > 0);
-  }
-
-  replaceById(
+  async updateById(
     id: ID,
     data: DataObject<T>,
     options?: Options,
-  ): Promise<boolean> {
-    return ensurePromise(this.modelClass.replaceById(id, data, options)).then(
-      result => !!result,
-    );
+  ): Promise<void> {
+    const idProp = this.modelClass.definition.idName();
+    const where = {} as Where;
+    where[idProp] = id;
+    const count = await this.updateAll(data, where, options);
+    if (count === 0) {
+      throw new EntityNotFoundError(this.entityClass, id);
+    }
+  }
+
+  async replaceById(
+    id: ID,
+    data: DataObject<T>,
+    options?: Options,
+  ): Promise<void> {
+    try {
+      await ensurePromise(this.modelClass.replaceById(id, data, options));
+    } catch (err) {
+      if (err.statusCode === 404) {
+        throw new EntityNotFoundError(this.entityClass, id);
+      }
+      throw err;
+    }
   }
 
   deleteAll(where?: Where, options?: Options): Promise<number> {
@@ -258,10 +275,11 @@ export class DefaultCrudRepository<T extends Entity, ID>
     );
   }
 
-  deleteById(id: ID, options?: Options): Promise<boolean> {
-    return ensurePromise(this.modelClass.deleteById(id, options)).then(
-      result => result.count > 0,
-    );
+  async deleteById(id: ID, options?: Options): Promise<void> {
+    const result = await ensurePromise(this.modelClass.deleteById(id, options));
+    if (result.count === 0) {
+      throw new EntityNotFoundError(this.entityClass, id);
+    }
   }
 
   count(where?: Where, options?: Options): Promise<number> {

@@ -81,28 +81,26 @@ export class TodoListController {
 
   @patch('/todo-lists/{id}', {
     responses: {
-      '200': {
+      '204': {
         description: 'TodoList PATCH success',
-        content: {'application/json': {'x-ts-type': Boolean}},
       },
     },
   })
   async updateById(
     @param.path.number('id') id: number,
     @requestBody() obj: TodoList,
-  ): Promise<boolean> {
-    return await this.todoListRepository.updateById(id, obj);
+  ): Promise<void> {
+    await this.todoListRepository.updateById(id, obj);
   }
 
   @del('/todo-lists/{id}', {
     responses: {
-      '200': {
+      '204': {
         description: 'TodoList DELETE success',
-        content: {'application/json': {'x-ts-type': Boolean}},
       },
     },
   })
-  async deleteById(@param.path.number('id') id: number): Promise<boolean> {
-    return await this.todoListRepository.deleteById(id);
+  async deleteById(@param.path.number('id') id: number): Promise<void> {
+    await this.todoListRepository.deleteById(id);
   }
 }

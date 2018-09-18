@@ -111,27 +111,28 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * Save an entity. If no id is present, create a new entity
    * @param entity Entity to be saved
    * @param options Options for the operations
-   * @returns A promise of an entity saved or null if the entity does not exist
+   * @returns A promise that will be resolve if the operation succeeded or will
+   * be rejected if the entity was not found.
    */
-  save(entity: DataObject<T>, options?: Options): Promise<T | null>;
+  save(entity: DataObject<T>, options?: Options): Promise<T>;
 
   /**
    * Update an entity
    * @param entity Entity to be updated
    * @param options Options for the operations
-   * @returns Promise<true> if the entity is updated, otherwise
-   * Promise<false>
+   * @returns A promise that will be resolve if the operation succeeded or will
+   * be rejected if the entity was not found.
    */
-  update(entity: DataObject<T>, options?: Options): Promise<boolean>;
+  update(entity: DataObject<T>, options?: Options): Promise<void>;
 
   /**
    * Delete an entity
    * @param entity Entity to be deleted
    * @param options Options for the operations
-   * @returns Promise<true> if the entity is deleted, otherwise
-   * Promise<false>
+   * @returns A promise that will be resolve if the operation succeeded or will
+   * be rejected if the entity was not found.
    */
-  delete(entity: DataObject<T>, options?: Options): Promise<boolean>;
+  delete(entity: DataObject<T>, options?: Options): Promise<void>;
 
   /**
    * Find an entity by id, return a rejected promise if not found.
@@ -148,29 +149,29 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * @param data Data attributes to be updated
    * @param id Value for the entity id
    * @param options Options for the operations
-   * @returns Promise<true> if the entity is updated, otherwise
-   * Promise<false>
+   * @returns A promise that will be resolve if the operation succeeded or will
+   * be rejected if the entity was not found.
    */
-  updateById(id: ID, data: DataObject<T>, options?: Options): Promise<boolean>;
+  updateById(id: ID, data: DataObject<T>, options?: Options): Promise<void>;
 
   /**
    * Replace an entity by id
    * @param data Data attributes to be replaced
    * @param id Value for the entity id
    * @param options Options for the operations
-   * @returns Promise<true> if an entity is replaced, otherwise
-   * Promise<false>
+   * @returns A promise that will be resolve if the operation succeeded or will
+   * be rejected if the entity was not found.
    */
-  replaceById(id: ID, data: DataObject<T>, options?: Options): Promise<boolean>;
+  replaceById(id: ID, data: DataObject<T>, options?: Options): Promise<void>;
 
   /**
    * Delete an entity by id
    * @param id Value for the entity id
    * @param options Options for the operations
-   * @returns Promise<true> if an entity is deleted for the id, otherwise
-   * Promise<false>
+   * @returns A promise that will be resolve if the operation succeeded or will
+   * be rejected if the entity was not found.
    */
-  deleteById(id: ID, options?: Options): Promise<boolean>;
+  deleteById(id: ID, options?: Options): Promise<void>;
 
   /**
    * Check if an entity exists for the given id
@@ -234,18 +235,14 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     );
   }
 
-  save(entity: DataObject<T>, options?: Options): Promise<T | null> {
+  async save(entity: DataObject<T>, options?: Options): Promise<T> {
     if (typeof this.connector.save === 'function') {
       return this.toModel(this.connector.save(this.model, entity, options));
     } else {
       const id = this.model.getIdOf(entity);
       if (id != null) {
-        return this.replaceById(id, entity, options).then(
-          (result: boolean) =>
-            result
-              ? this.toModel(Promise.resolve(entity))
-              : Promise.reject(new Error('Not found')),
-        );
+        await this.replaceById(id, entity, options);
+        return this.toModel(Promise.resolve(entity));
       } else {
         return this.create(entity, options);
       }
@@ -270,11 +267,11 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     return entities[0];
   }
 
-  update(entity: DataObject<T>, options?: Options): Promise<boolean> {
+  update(entity: DataObject<T>, options?: Options): Promise<void> {
     return this.updateById(this.model.getIdOf(entity), entity, options);
   }
 
-  delete(entity: DataObject<T>, options?: Options): Promise<boolean> {
+  delete(entity: DataObject<T>, options?: Options): Promise<void> {
     return this.deleteById(this.model.getIdOf(entity), options);
   }
 
@@ -286,43 +283,61 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     return this.connector.updateAll(this.model, data, where, options);
   }
 
-  updateById(id: ID, data: DataObject<T>, options?: Options): Promise<boolean> {
-    if (typeof this.connector.updateById === 'function') {
-      return this.connector.updateById(this.model, id, data, options);
-    }
-    const where = this.model.buildWhereForId(id);
-    return this.updateAll(data, where, options).then(
-      (count: number) => count > 0,
-    );
-  }
-
-  replaceById(
+  async updateById(
     id: ID,
     data: DataObject<T>,
     options?: Options,
-  ): Promise<boolean> {
-    if (typeof this.connector.replaceById === 'function') {
-      return this.connector.replaceById(this.model, id, data, options);
+  ): Promise<void> {
+    let success: boolean;
+    if (typeof this.connector.updateById === 'function') {
+      success = await this.connector.updateById(this.model, id, data, options);
+    } else {
+      const where = this.model.buildWhereForId(id);
+      const count = await this.updateAll(data, where, options);
+      success = count > 0;
     }
-    // FIXME: populate inst with all properties
-    // tslint:disable-next-line:no-unused-variable
-    const inst = data;
-    const where = this.model.buildWhereForId(id);
-    return this.updateAll(data, where, options).then(
-      (count: number) => count > 0,
-    );
+    if (!success) {
+      throw new EntityNotFoundError(this.model, id);
+    }
+  }
+
+  async replaceById(
+    id: ID,
+    data: DataObject<T>,
+    options?: Options,
+  ): Promise<void> {
+    let success: boolean;
+    if (typeof this.connector.replaceById === 'function') {
+      success = await this.connector.replaceById(this.model, id, data, options);
+    } else {
+      // FIXME: populate inst with all properties
+      // tslint:disable-next-line:no-unused-variable
+      const inst = data;
+      const where = this.model.buildWhereForId(id);
+      const count = await this.updateAll(data, where, options);
+      success = count > 0;
+    }
+    if (!success) {
+      throw new EntityNotFoundError(this.model, id);
+    }
   }
 
   deleteAll(where?: Where, options?: Options): Promise<number> {
     return this.connector.deleteAll(this.model, where, options);
   }
 
-  deleteById(id: ID, options?: Options): Promise<boolean> {
+  async deleteById(id: ID, options?: Options): Promise<void> {
+    let success: boolean;
     if (typeof this.connector.deleteById === 'function') {
-      return this.connector.deleteById(this.model, id, options);
+      success = await this.connector.deleteById(this.model, id, options);
     } else {
       const where = this.model.buildWhereForId(id);
-      return this.deleteAll(where, options).then((count: number) => count > 0);
+      const count = await this.deleteAll(where, options);
+      success = count > 0;
+    }
+
+    if (!success) {
+      throw new EntityNotFoundError(this.model, id);
     }
   }
 

@@ -310,9 +310,8 @@ function checkRestCrudContents() {
   const patchUpdateByIdRegEx = [
     /\@patch\('\/product-reviews\/{id}'/,
     /responses: {/,
-    /'200': {/,
+    /'204': {/,
     /description: 'ProductReview PATCH success'/,
-    /content: {'application\/json': {'x-ts-type': Boolean}},\s{1,}},\s{1,}},\s{1,}}\)/,
     /async updateById\(\s{1,}\@param.path.number\('id'\) id: number,\s{1,}\@requestBody\(\)/,
   ];
   patchUpdateByIdRegEx.forEach(regex => {
@@ -323,9 +322,8 @@ function checkRestCrudContents() {
   const deleteByIdRegEx = [
     /\@del\('\/product-reviews\/{id}', {/,
     /responses: {/,
-    /'200': {/,
+    /'204': {/,
     /description: 'ProductReview DELETE success'/,
-    /content: {'application\/json': {'x-ts-type': Boolean}},\s{1,}},\s{1,}},\s{1,}}\)/,
     /async deleteById\(\@param.path.number\('id'\) id: number\)/,
   ];
   deleteByIdRegEx.forEach(regex => {
