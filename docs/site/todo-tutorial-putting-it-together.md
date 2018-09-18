@@ -81,7 +81,7 @@ $ npm start
 Server is running on port 3000
 ```
 
-Next, you can use the [API Explorer](http://localhost:3000/swagger-ui) to browse
+Next, you can use the [API Explorer](http://localhost:3000/explorer) to browse
 your API and make requests!
 
 Here are some requests you can try:

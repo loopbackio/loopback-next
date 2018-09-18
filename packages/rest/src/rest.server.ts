@@ -166,13 +166,14 @@ export class RestServer extends Context implements Server, HttpServerLike {
       config.openApiSpec.endpointMapping || OPENAPI_SPEC_MAPPING;
     config.apiExplorer = config.apiExplorer || {};
 
-    config.apiExplorer.url =
-      config.apiExplorer.url || 'https://loopback.io/api-explorer';
+    const url = config.apiExplorer.url || 'https://explorer.loopback.io';
 
     config.apiExplorer.httpUrl =
       config.apiExplorer.httpUrl ||
       config.apiExplorer.url ||
-      'https://loopback.io/api-explorer';
+      'http://explorer.loopback.io';
+
+    config.apiExplorer.url = url;
 
     this.config = config;
     this.bind(RestBindings.PORT).to(config.port);
@@ -245,7 +246,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
   }
 
   /**
-   * Mount /openapi.json, /openapi.yaml for specs and /swagger-ui, /api-explorer
+   * Mount /openapi.json, /openapi.yaml for specs and /swagger-ui, /explorer
    * to redirect to externally hosted API explorer
    */
   protected _setupOpenApiSpecEndpoints() {
@@ -263,7 +264,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
         this._serveOpenApiSpec(req, res, mapping[p]),
       );
     }
-    this._expressApp.get(['/swagger-ui', '/api-explorer'], (req, res) =>
+    this._expressApp.get(['/swagger-ui', '/explorer'], (req, res) =>
       this._redirectToSwaggerUI(req, res),
     );
   }
