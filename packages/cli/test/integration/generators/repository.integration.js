@@ -28,6 +28,63 @@ describe('lb4 repository', () => {
 
   // special cases regardless of the repository type
   describe('generate repositories on special conditions', () => {
+    it('generates multipe crud repositories', async () => {
+      const multiItemPrompt = {
+        dataSourceClass: 'DbmemDatasource',
+        modelNameList: ['MultiWord', 'Defaultmodel'],
+      };
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(
+          SANDBOX_PATH,
+          async () => await prepareGeneratorForRepository(SANDBOX_PATH),
+        )
+        .withPrompts(multiItemPrompt);
+
+      const expectedMultiWordFile = path.join(
+        SANDBOX_PATH,
+        REPOSITORY_APP_PATH,
+        'multi-word.repository.ts',
+      );
+      const expectedDefaultModelFile = path.join(
+        SANDBOX_PATH,
+        REPOSITORY_APP_PATH,
+        'defaultmodel.repository.ts',
+      );
+
+      assert.file(expectedMultiWordFile);
+      assert.file(expectedDefaultModelFile);
+
+      assert.fileContent(
+        expectedMultiWordFile,
+        /export class MultiWordRepository extends DefaultCrudRepository</,
+      );
+      assert.fileContent(
+        expectedMultiWordFile,
+        /typeof MultiWord.prototype.pk/,
+      );
+
+      assert.fileContent(
+        expectedDefaultModelFile,
+        /export class DefaultmodelRepository extends DefaultCrudRepository\</,
+      );
+      assert.fileContent(
+        expectedDefaultModelFile,
+        /typeof Defaultmodel.prototype.id/,
+      );
+
+      assert.file(INDEX_FILE);
+      assert.fileContent(
+        INDEX_FILE,
+        /export \* from '.\/multi-word.repository';/,
+      );
+      assert.fileContent(
+        INDEX_FILE,
+        /export \* from '.\/defaultmodel.repository';/,
+      );
+    });
+
     it('generates a multi-word crud repository', async () => {
       const multiItemPrompt = {
         dataSourceClass: 'DbmemDatasource',

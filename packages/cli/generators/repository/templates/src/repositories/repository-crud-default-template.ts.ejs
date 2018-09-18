@@ -5,7 +5,7 @@ import {inject} from '@loopback/core';
 
 export class <%= className %>Repository extends <%= repositoryTypeClass %><
   <%= modelName %>,
-  typeof <%= modelName %>.prototype.<%= idType %>
+  typeof <%= modelName %>.prototype.<%= idProperty %>
 > {
   constructor(
     @inject('datasources.<%= dataSourceName %>') protected datasource: <%= dataSourceClassName %>,
