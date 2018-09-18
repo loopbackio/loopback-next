@@ -9,7 +9,7 @@ import {Todo, TodoList} from '../../src/models/';
 import {TodoRepository, TodoListRepository} from '../../src/repositories/';
 import {givenTodo, givenTodoList} from '../helpers';
 
-describe('Application', () => {
+describe('TodoListApplication', () => {
   let app: TodoListApplication;
   let client: supertest.SuperTest<supertest.Test>;
   let todoRepo: TodoRepository;

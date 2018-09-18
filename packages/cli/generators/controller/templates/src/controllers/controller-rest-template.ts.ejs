@@ -88,28 +88,26 @@ export class <%= className %>Controller {
 
   @patch('<%= httpPathName %>/{id}', {
     responses: {
-      '200': {
+      '204': {
         description: '<%= modelName %> PATCH success',
-        content: {'application/json': {'x-ts-type': Boolean}},
       },
     },
   })
   async updateById(
     @param.path.<%= idType %>('id') id: <%= idType %>,
     @requestBody() <%= name %>: <%= modelName %>
-  ): Promise<boolean> {
-    return await this.<%= repositoryNameCamel %>.updateById(id, <%= name %>);
+  ): Promise<void> {
+    await this.<%= repositoryNameCamel %>.updateById(id, <%= name %>);
   }
 
   @del('<%= httpPathName %>/{id}', {
     responses: {
-      '200': {
+      '204': {
         description: '<%= modelName %> DELETE success',
-        content: {'application/json': {'x-ts-type': Boolean}},
       },
     },
   })
-  async deleteById(@param.path.<%= idType %>('id') id: <%= idType %>): Promise<boolean> {
-    return await this.<%= repositoryNameCamel %>.deleteById(id);
+  async deleteById(@param.path.<%= idType %>('id') id: <%= idType %>): Promise<void> {
+    await this.<%= repositoryNameCamel %>.deleteById(id);
   }
 }

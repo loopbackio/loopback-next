@@ -10,7 +10,7 @@ import {TodoList} from '../../src/models/';
 import {TodoListRepository} from '../../src/repositories/';
 import {givenTodoList} from '../helpers';
 
-describe('Application', () => {
+describe('TodoListApplication', () => {
   let app: TodoListApplication;
   let client: supertest.SuperTest<supertest.Test>;
   let todoListRepo: TodoListRepository;
@@ -92,7 +92,7 @@ describe('Application', () => {
       expect(result.body).to.deepEqual(expected);
     });
 
-    it('returns 404 when a todo does not exist', () => {
+    it('returns 404 when getting a todo-list that does not exist', () => {
       return client.get('/todo-lists/99999').expect(404);
     });
 
@@ -103,16 +103,23 @@ describe('Application', () => {
       await client
         .patch(`/todo-lists/${persistedTodoList.id}`)
         .send(updatedTodoList)
-        .expect(200);
+        .expect(204);
       const result = await todoListRepo.findById(persistedTodoList.id);
       expect(result).to.containEql(updatedTodoList);
+    });
+
+    it('returns 404 when updating a todo-list that does not exist', () => {
+      return client
+        .patch('/todos/99999')
+        .send(givenTodoList())
+        .expect(404);
     });
 
     it('deletes a todoList by ID', async () => {
       await client
         .del(`/todo-lists/${persistedTodoList.id}`)
         .send()
-        .expect(200);
+        .expect(204);
       await expect(
         todoListRepo.findById(persistedTodoList.id),
       ).to.be.rejectedWith(EntityNotFoundError);

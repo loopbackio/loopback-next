@@ -12,6 +12,7 @@ import {
   Entity,
   ModelDefinition,
 } from '../../../';
+import {EntityNotFoundError} from '../../../src';
 
 describe('legacy loopback-datasource-juggler', () => {
   let ds: juggler.DataSource;
@@ -198,15 +199,28 @@ describe('DefaultCrudRepository', () => {
   it('implements Repository.delete()', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
     const note = await repo.create({title: 't3', content: 'c3'});
-    const result = await repo.delete(note);
-    expect(result).to.eql(true);
+
+    await repo.delete(note);
+
+    const found = await repo.find({where: {id: note.id}});
+    expect(found).to.be.empty();
   });
 
   it('implements Repository.deleteById()', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
     const note = await repo.create({title: 't3', content: 'c3'});
-    const result = await repo.deleteById(note.id);
-    expect(result).to.eql(true);
+
+    await repo.deleteById(note.id);
+
+    const found = await repo.find({where: {id: note.id}});
+    expect(found).to.be.empty();
+  });
+
+  it('throws EntityNotFoundError when deleting an unknown id', async () => {
+    const repo = new DefaultCrudRepository(Note, ds);
+    await expect(repo.deleteById(99999)).to.be.rejectedWith(
+      EntityNotFoundError,
+    );
   });
 
   it('implements Repository.deleteAll()', async () => {
@@ -220,11 +234,20 @@ describe('DefaultCrudRepository', () => {
   it('implements Repository.updateById()', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
     const note = await repo.create({title: 't3', content: 'c3'});
-    note.content = 'c4';
+
     const id = note.id;
-    delete note.id;
-    const result = await repo.updateById(id, note);
-    expect(result).to.eql(true);
+    const delta = {content: 'c4'};
+    await repo.updateById(id, delta);
+
+    const updated = await repo.findById(id);
+    expect(updated.toJSON()).to.eql(Object.assign(note.toJSON(), delta));
+  });
+
+  it('throws EntityNotFound error when updating an unknown id', async () => {
+    const repo = new DefaultCrudRepository(Note, ds);
+    await expect(repo.updateById(9999, {title: 't4'})).to.be.rejectedWith(
+      EntityNotFoundError,
+    );
   });
 
   it('implements Repository.updateAll()', async () => {
@@ -274,13 +297,21 @@ describe('DefaultCrudRepository', () => {
 
   it('implements Repository.replaceById()', async () => {
     const repo = new DefaultCrudRepository(Note, ds);
-    const note1 = await repo.create({title: 't3', content: 'c3'});
-    note1.title = 't4';
-    note1.content = undefined;
-    const ok = await repo.replaceById(note1.id, note1);
-    expect(ok).to.be.true();
-    const result = await repo.findById(note1.id);
-    expect(result.toJSON()).to.eql(note1.toJSON());
+    const note = await repo.create({title: 't3', content: 'c3'});
+    await repo.replaceById(note.id, {title: 't4', content: undefined});
+    const result = await repo.findById(note.id);
+    expect(result.toJSON()).to.eql({
+      id: note.id,
+      title: 't4',
+      content: undefined,
+    });
+  });
+
+  it('throws EntityNotFound error when replacing an unknown id', async () => {
+    const repo = new DefaultCrudRepository(Note, ds);
+    await expect(repo.replaceById(9999, {title: 't4'})).to.be.rejectedWith(
+      EntityNotFoundError,
+    );
   });
 
   it('implements Repository.exists()', async () => {

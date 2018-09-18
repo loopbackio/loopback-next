@@ -69,43 +69,40 @@ export class TodoController {
 
   @put('/todos/{id}', {
     responses: {
-      '200': {
+      '204': {
         description: 'Todo PUT success',
-        content: {'application/json': {'x-ts-type': Boolean}},
       },
     },
   })
   async replaceTodo(
     @param.path.number('id') id: number,
     @requestBody() todo: Todo,
-  ): Promise<boolean> {
-    return await this.todoRepo.replaceById(id, todo);
+  ): Promise<void> {
+    await this.todoRepo.replaceById(id, todo);
   }
 
   @patch('/todos/{id}', {
     responses: {
-      '200': {
+      '204': {
         description: 'Todo PATCH success',
-        content: {'application/json': {'x-ts-type': Boolean}},
       },
     },
   })
   async updateTodo(
     @param.path.number('id') id: number,
     @requestBody() todo: Todo,
-  ): Promise<boolean> {
-    return await this.todoRepo.updateById(id, todo);
+  ): Promise<void> {
+    await this.todoRepo.updateById(id, todo);
   }
 
   @del('/todos/{id}', {
     responses: {
-      '200': {
+      '204': {
         description: 'Todo DELETE success',
-        content: {'application/json': {'x-ts-type': Boolean}},
       },
     },
   })
-  async deleteTodo(@param.path.number('id') id: number): Promise<boolean> {
-    return await this.todoRepo.deleteById(id);
+  async deleteTodo(@param.path.number('id') id: number): Promise<void> {
+    await this.todoRepo.deleteById(id);
   }
 }

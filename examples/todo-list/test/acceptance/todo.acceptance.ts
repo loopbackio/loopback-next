@@ -10,7 +10,7 @@ import {Todo} from '../../src/models/';
 import {TodoRepository} from '../../src/repositories/';
 import {givenTodo} from '../helpers';
 
-describe('Application', () => {
+describe('TodoListApplication', () => {
   let app: TodoListApplication;
   let client: supertest.SuperTest<supertest.Test>;
   let todoRepo: TodoRepository;
@@ -64,7 +64,7 @@ describe('Application', () => {
       expect(result.body).to.deepEqual(expected);
     });
 
-    it('returns 404 when a todo does not exist', () => {
+    it('returns 404 when getting a todo that does not exist', () => {
       return client.get('/todos/99999').expect(404);
     });
 
@@ -77,9 +77,16 @@ describe('Application', () => {
       await client
         .put(`/todos/${persistedTodo.id}`)
         .send(updatedTodo)
-        .expect(200);
+        .expect(204);
       const result = await todoRepo.findById(persistedTodo.id);
       expect(result).to.containEql(updatedTodo);
+    });
+
+    it('returns 404 when replacing a todo that does not exist', () => {
+      return client
+        .put('/todos/99999')
+        .send(givenTodo())
+        .expect(404);
     });
 
     it('updates the todo by ID ', async () => {
@@ -90,19 +97,30 @@ describe('Application', () => {
       await client
         .patch(`/todos/${persistedTodo.id}`)
         .send(updatedTodo)
-        .expect(200);
+        .expect(204);
       const result = await todoRepo.findById(persistedTodo.id);
       expect(result).to.containEql(updatedTodo);
+    });
+
+    it('returns 404 when updating a todo that does not exist', () => {
+      return client
+        .patch('/todos/99999')
+        .send(givenTodo())
+        .expect(404);
     });
 
     it('deletes the todo', async () => {
       await client
         .del(`/todos/${persistedTodo.id}`)
         .send()
-        .expect(200);
+        .expect(204);
       await expect(todoRepo.findById(persistedTodo.id)).to.be.rejectedWith(
         EntityNotFoundError,
       );
+    });
+
+    it('returns 404 when deleting a todo that does not exist', async () => {
+      await client.del(`/todos/99999`).expect(404);
     });
   });
 
