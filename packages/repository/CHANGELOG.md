@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.17.0"></a>
+# [0.17.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.16.5...@loopback/repository@0.17.0) (2018-09-19)
+
+
+### Features
+
+* **repository:** change Model.modelName to a computed property ([5a493cf](https://github.com/strongloop/loopback-next/commit/5a493cf))
+* **repository:** implement EntityNotFoundError ([d670d10](https://github.com/strongloop/loopback-next/commit/d670d10))
+* **repository:** rework *ById methods to throw if id not found ([264f231](https://github.com/strongloop/loopback-next/commit/264f231))
+
+
+
+
+
 <a name="0.16.5"></a>
 ## [0.16.5](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.16.4...@loopback/repository@0.16.5) (2018-09-14)
 

@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.19.0"></a>
+# [0.19.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.18.9...@loopback/docs@0.19.0) (2018-09-19)
+
+
+### Bug Fixes
+
+* **docs:** fix repository name typo ([53739da](https://github.com/strongloop/loopback-next/commit/53739da))
+
+
+### Features
+
+* **cli:** add test for multiple repositories ([6e6faad](https://github.com/strongloop/loopback-next/commit/6e6faad))
+* **cli:** add util shared functions and constants ([26915e5](https://github.com/strongloop/loopback-next/commit/26915e5))
+* **repository:** rework *ById methods to throw if id not found ([264f231](https://github.com/strongloop/loopback-next/commit/264f231))
+* **rest:** add error codes for REST validation errors ([1762765](https://github.com/strongloop/loopback-next/commit/1762765))
+
+
+
+
+
 <a name="0.18.9"></a>
 ## [0.18.9](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.18.8...@loopback/docs@0.18.9) (2018-09-17)
 

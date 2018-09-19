@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.23.0"></a>
+# [0.23.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.22.11...@loopback/cli@0.23.0) (2018-09-19)
+
+
+### Features
+
+* **cli:** add lb4 repository feature ([0397c04](https://github.com/strongloop/loopback-next/commit/0397c04)), closes [#1588](https://github.com/strongloop/loopback-next/issues/1588)
+* **cli:** add test for multiple repositories ([6e6faad](https://github.com/strongloop/loopback-next/commit/6e6faad))
+* **cli:** add util shared functions and constants ([26915e5](https://github.com/strongloop/loopback-next/commit/26915e5))
+* **cli:** ast-helper integration ([99a0bad](https://github.com/strongloop/loopback-next/commit/99a0bad))
+* **cli:** change msg when no datasource or repository exists ([739676b](https://github.com/strongloop/loopback-next/commit/739676b))
+* **repository:** rework *ById methods to throw if id not found ([264f231](https://github.com/strongloop/loopback-next/commit/264f231))
+
+
+
+
+
 <a name="0.22.11"></a>
 ## [0.22.11](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.22.10...@loopback/cli@0.22.11) (2018-09-17)
 

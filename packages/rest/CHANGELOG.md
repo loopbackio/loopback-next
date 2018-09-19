@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.23.0"></a>
+# [0.23.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.22.2...@loopback/rest@0.23.0) (2018-09-19)
+
+
+### Bug Fixes
+
+* **rest:** return 404 when a model was not found ([7a56bad](https://github.com/strongloop/loopback-next/commit/7a56bad))
+
+
+### Features
+
+* **rest:** add error codes for REST validation errors ([1762765](https://github.com/strongloop/loopback-next/commit/1762765))
+* **rest:** set status code to 204 when body is undefined ([047efcb](https://github.com/strongloop/loopback-next/commit/047efcb))
+
+
+
+
+
 <a name="0.22.2"></a>
 ## [0.22.2](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.22.1...@loopback/rest@0.22.2) (2018-09-14)
 

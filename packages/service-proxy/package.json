@@ -1,6 +1,6 @@
 {
   "name": "@loopback/service-proxy",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "Service integration for LoopBack 4",
   "engines": {
     "node": ">=8.9"
@@ -31,8 +31,8 @@
     "@loopback/testlab": "^0.12.2"
   },
   "dependencies": {
-    "@loopback/context": "^0.12.8",
-    "@loopback/core": "^0.11.9",
+    "@loopback/context": "^0.12.9",
+    "@loopback/core": "^0.11.10",
     "@loopback/dist-util": "^0.3.7",
     "loopback-datasource-juggler": "^3.23.0"
   },

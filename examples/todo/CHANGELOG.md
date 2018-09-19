@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.18.0"></a>
+# [0.18.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.17.6...@loopback/example-todo@0.18.0) (2018-09-19)
+
+
+### Bug Fixes
+
+* **rest:** return 404 when a model was not found ([7a56bad](https://github.com/strongloop/loopback-next/commit/7a56bad))
+
+
+### Features
+
+* **repository:** rework *ById methods to throw if id not found ([264f231](https://github.com/strongloop/loopback-next/commit/264f231))
+
+
+
+
+
 <a name="0.17.6"></a>
 ## [0.17.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.17.5...@loopback/example-todo@0.17.6) (2018-09-17)
 
