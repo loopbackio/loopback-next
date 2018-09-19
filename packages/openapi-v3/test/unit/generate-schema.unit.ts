@@ -24,7 +24,7 @@ describe('generate-schema unit tests', () => {
   });
 
   it('resolves type Date', () => {
-    expect(resolveSchema(Date)).to.eql({type: 'string', format: 'date'});
+    expect(resolveSchema(Date)).to.eql({type: 'string', format: 'date-time'});
   });
 
   it('resolves type Object', () => {

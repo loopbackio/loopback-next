@@ -70,6 +70,10 @@ describe('build-schema', () => {
         expect(isComplexType(Function)).to.eql(false);
       });
 
+      it('returns false for Date', () => {
+        expect(isComplexType(Date)).to.eql(false);
+      });
+
       it('returns false for Array', () => {
         expect(isComplexType(Array)).to.eql(false);
       });
@@ -88,20 +92,70 @@ describe('build-schema', () => {
       );
     });
 
-    it('converts types in strings', () => {
-      expect(metaToJsonProperty({type: 'number'})).to.eql({
-        type: 'number',
+    it('converts Boolean', () => {
+      expect(metaToJsonProperty({type: Boolean})).to.eql({
+        type: 'boolean',
       });
     });
 
-    it('converts primitives', () => {
+    it('converts String', () => {
+      expect(metaToJsonProperty({type: String})).to.eql({
+        type: 'string',
+      });
+    });
+
+    it('converts Number', () => {
       expect(metaToJsonProperty({type: Number})).to.eql({
         type: 'number',
       });
     });
 
-    it('converts arrays', () => {
+    it('converts Date', () => {
+      expect(metaToJsonProperty({type: Date})).to.eql({
+        type: 'string',
+        format: 'date-time',
+      });
+    });
+
+    it('converts Object', () => {
+      expect(metaToJsonProperty({type: Object})).to.eql({
+        type: 'object',
+      });
+    });
+
+    it('converts Array', () => {
       expect(metaToJsonProperty({type: Array})).to.eql({
+        type: 'array',
+      });
+    });
+
+    it('converts "boolean" in strings', () => {
+      expect(metaToJsonProperty({type: 'boolean'})).to.eql({
+        type: 'boolean',
+      });
+    });
+
+    it('converts "string" in strings', () => {
+      expect(metaToJsonProperty({type: 'string'})).to.eql({
+        type: 'string',
+      });
+    });
+
+    it('converts "date" in strings', () => {
+      expect(metaToJsonProperty({type: 'date'})).to.eql({
+        type: 'string',
+        format: 'date-time',
+      });
+    });
+
+    it('converts "object" in strings', () => {
+      expect(metaToJsonProperty({type: 'object'})).to.eql({
+        type: 'object',
+      });
+    });
+
+    it('converts "array" in strings', () => {
+      expect(metaToJsonProperty({type: 'array'})).to.eql({
         type: 'array',
       });
     });
