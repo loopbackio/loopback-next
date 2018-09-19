@@ -28,7 +28,7 @@ export function resolveSchema(
     } else if (fn === Boolean) {
       resolvedSchema = {type: 'boolean'};
     } else if (fn === Date) {
-      resolvedSchema = {type: 'string', format: 'date'};
+      resolvedSchema = {type: 'string', format: 'date-time'};
     } else if (fn === Object) {
       resolvedSchema = {type: 'object'};
     } else if (fn === Array) {

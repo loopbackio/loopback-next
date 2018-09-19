@@ -137,6 +137,23 @@ describe('build-schema', () => {
         expectValidJsonSchema(jsonSchema);
       });
 
+      it('properly converts date property', () => {
+        @model()
+        class TestModel {
+          @property()
+          date: Date;
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema.properties).to.deepEqual({
+          date: {
+            type: 'string',
+            format: 'date-time',
+          },
+        });
+        expectValidJsonSchema(jsonSchema);
+      });
+
       it('properly converts object properties', () => {
         @model()
         class TestModel {

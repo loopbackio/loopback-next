@@ -90,6 +90,7 @@ export function isComplexType(ctor: Function) {
     Object,
     Function,
     Array,
+    Date,
   ] as Function[]).includes(ctor);
 }
 
@@ -125,6 +126,11 @@ export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
 
   if (isComplexType(propertyType)) {
     Object.assign(propDef, {$ref: `#/definitions/${propertyType.name}`});
+  } else if (propertyType === Date) {
+    Object.assign(propDef, {
+      type: 'string',
+      format: 'date-time',
+    });
   } else {
     Object.assign(propDef, {
       type: <JSONSchemaTypeName>propertyType.name.toLowerCase(),
