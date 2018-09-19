@@ -40,12 +40,12 @@ by StrongLoop) connector from the list as shown below:
 #### Specify the SOAP web service endpoint
 
 Now we must tell **CLI** about the full URL path for our web service. In this
-case, let's type `http://lb4ws.eycgrupo.com/calculator` for the URL and
+case, let's type `http://lb4ws.eycgrupo.com/calculator/` for the URL and
 `http://lb4ws.eycgrupo.com/calculator/?wsdl` for the WSDL path.
 
 ```sh
 ? Select the connector for calculator: SOAP webservices (supported by StrongLoop)
-? URL to the SOAP web service endpoint: http://lb4ws.eycgrupo.com/calculator
+? URL to the SOAP web service endpoint: http://lb4ws.eycgrupo.com/calculator/
 ? HTTP URL or local file system path to the WSDL file: http://lb4ws.eycgrupo.com/calculator/?wsdl
 ```
 
