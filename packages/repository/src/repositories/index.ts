@@ -10,3 +10,4 @@ export * from './repository';
 export * from './relation.factory';
 export * from './relation.repository';
 export * from './constraint-utils';
+export * from './unsafe-crud-repository';
