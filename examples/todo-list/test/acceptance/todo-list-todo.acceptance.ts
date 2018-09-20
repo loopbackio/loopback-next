@@ -3,15 +3,20 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {createClientForHandler, expect, supertest} from '@loopback/testlab';
+import {
+  Client,
+  createRestAppClient,
+  expect,
+  givenHttpServerConfig,
+} from '@loopback/testlab';
 import {TodoListApplication} from '../../src/application';
 import {Todo, TodoList} from '../../src/models/';
-import {TodoRepository, TodoListRepository} from '../../src/repositories/';
+import {TodoListRepository, TodoRepository} from '../../src/repositories/';
 import {givenTodo, givenTodoList} from '../helpers';
 
 describe('TodoListApplication', () => {
   let app: TodoListApplication;
-  let client: supertest.SuperTest<supertest.Test>;
+  let client: Client;
   let todoRepo: TodoRepository;
   let todoListRepo: TodoListRepository;
 
@@ -23,7 +28,7 @@ describe('TodoListApplication', () => {
   before(givenTodoRepository);
   before(givenTodoListRepository);
   before(() => {
-    client = createClientForHandler(app.requestHandler);
+    client = createRestAppClient(app);
   });
 
   beforeEach(async () => {
@@ -119,9 +124,9 @@ describe('TodoListApplication', () => {
 
   async function givenRunningApplicationWithCustomConfiguration() {
     app = new TodoListApplication({
-      rest: {
+      rest: givenHttpServerConfig({
         port: 0,
-      },
+      }),
     });
 
     await app.boot();

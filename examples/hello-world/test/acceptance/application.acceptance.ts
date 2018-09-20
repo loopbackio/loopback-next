@@ -3,23 +3,22 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {createClientForHandler, expect, supertest} from '@loopback/testlab';
-import {RestServer} from '@loopback/rest';
+import {
+  Client,
+  createRestAppClient,
+  expect,
+  givenHttpServerConfig,
+} from '@loopback/testlab';
 import {HelloWorldApplication} from '../../src/application';
 
 describe('Application', () => {
   let app: HelloWorldApplication;
-  let client: supertest.SuperTest<supertest.Test>;
-  let server: RestServer;
+  let client: Client;
 
   before(givenAnApplication);
   before(async () => {
     await app.start();
-    server = await app.getServer(RestServer);
-  });
-
-  before(() => {
-    client = createClientForHandler(server.requestHandler);
+    client = createRestAppClient(app);
   });
   after(async () => {
     await app.stop();
@@ -32,9 +31,9 @@ describe('Application', () => {
 
   function givenAnApplication() {
     app = new HelloWorldApplication({
-      rest: {
+      rest: givenHttpServerConfig({
         port: 0,
-      },
+      }),
       disableConsoleLog: true,
     });
   }

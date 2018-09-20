@@ -1,10 +1,9 @@
-import {supertest} from '@loopback/testlab';
+import {Client, createRestAppClient, expect} from '@loopback/testlab';
 import {SoapCalculatorApplication} from '../../src/application';
-import {expect} from '@loopback/testlab';
 
 describe('Application', function() {
   let app: SoapCalculatorApplication;
-  let client: supertest.SuperTest<supertest.Test>;
+  let client: Client;
 
   // tslint:disable-next-line:no-invalid-this
   this.timeout(30000);
@@ -14,7 +13,7 @@ describe('Application', function() {
   before(async () => {
     await app.boot();
     await app.start();
-    client = supertest(app.restServer.url);
+    client = createRestAppClient(app);
   });
 
   after(async () => {

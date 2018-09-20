@@ -26,23 +26,31 @@ export function createClientForHandler(
   return supertest(server);
 }
 
-export async function createClientForRestServer(
-  server: RestServer,
-): Promise<Client> {
-  await server.start();
-  const port =
-    server.options && server.options.http ? server.options.http.port : 3000;
-  const url = `http://127.0.0.1:${port}`;
-  // TODO(bajtos) Find a way how to stop the server after all tests are done
+/**
+ * Create a SuperTest client for a running RestApplication instance.
+ * It is the responsibility of the caller to ensure that the app
+ * is running and to stop the application after all tests are done.
+ * @param app A running (listening) instance of a RestApplication.
+ */
+export function createRestAppClient(app: RestApplicationLike) {
+  const url = app.restServer.url;
+  if (!url) {
+    throw new Error(
+      `Cannot create client for ${app.constructor.name}, it is not listening.`,
+    );
+  }
   return supertest(url);
 }
 
-// These interfaces are meant to partially mirror the formats provided
-// in our other libraries to avoid circular imports.
-export interface RestServer {
-  start(): Promise<void>;
-  options?: {
-    // tslint:disable-next-line:no-any
-    [prop: string]: any;
-  };
+/*
+ * These interfaces are meant to partially mirror the formats provided
+ * in our other libraries to avoid circular imports.
+ */
+
+export interface RestApplicationLike {
+  restServer: RestServerLike;
+}
+
+export interface RestServerLike {
+  url?: string;
 }

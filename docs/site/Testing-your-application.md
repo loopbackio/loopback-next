@@ -833,7 +833,7 @@ Here is an example of an acceptance test:
 
 ```ts
 import {HelloWorldApplication} from '../..';
-import {expect, createClientForHandler, Client} from '@loopback/testlab';
+import {Client, createRestAppClient, expect} from '@loopback/testlab';
 import {givenEmptyDatabase, givenProduct} from '../helpers/database.helpers';
 import {RestServer, RestBindings} from '@loopback/rest';
 import {testdb} from '../fixtures/datasources/testdb.datasource';
@@ -870,14 +870,16 @@ describe('Product (acceptance)', () => {
   });
 
   async function givenRunningApp() {
-    app = new HelloWorldApplication();
+    app = new HelloWorldApplication({
+      rest: {
+        port: 0,
+      },
+    });
     app.dataSource(testdb);
-    const server = await app.getServer(RestServer);
-    server.bind(RestBindings.PORT).to(0);
     await app.boot();
     await app.start();
 
-    client = createClientForHandler(server.handleHttp);
+    client = createRestAppClient(app);
   }
 });
 ```

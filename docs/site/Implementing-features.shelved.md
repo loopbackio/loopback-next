@@ -40,11 +40,11 @@ Create `test/acceptance/product.acceptance.ts` with the following contents:
 ```ts
 import {HelloWorldApp} from '../..';
 import {RestBindings, RestServer} from '@loopback/rest';
-import {expect, supertest} from '@loopback/testlab';
+import {Client, expect, supertest} from '@loopback/testlab';
 
 describe('Product (acceptance)', () => {
   let app: HelloWorldApp;
-  let request: supertest.SuperTest<supertest.Test>;
+  let request: Client;
 
   before(givenEmptyDatabase);
   before(givenRunningApp);
@@ -84,13 +84,13 @@ describe('Product (acceptance)', () => {
   }
 
   async function givenRunningApp() {
-    app = new HelloWorldApp();
-    const server = await app.getServer(RestServer);
-    server.bind(RestBindings.PORT).to(0);
+    app = new HelloWorldApp({
+      rest: {
+        port: 0,
+      },
+    });
     await app.start();
-
-    const port: number = await server.get(RestBindings.PORT);
-    request = supertest(`http://127.0.0.1:${port}`);
+    request = supertest(app.restServer.url);
   }
 
   async function givenProduct(data: Object) {
