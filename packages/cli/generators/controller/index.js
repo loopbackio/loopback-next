@@ -207,6 +207,10 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       debug(`Artifact output filename set to: ${this.artifactInfo.outFile}`);
     }
 
+    this.artifactInfo.modelVariableName = utils.camelCase(
+      this.artifactInfo.modelName,
+    );
+
     // renames the file
     let template = 'controller-template.ts.ejs';
     switch (this.artifactInfo.controllerType) {

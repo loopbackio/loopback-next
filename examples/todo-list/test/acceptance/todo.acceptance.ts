@@ -9,6 +9,7 @@ import {
   createRestAppClient,
   expect,
   givenHttpServerConfig,
+  toJSON,
 } from '@loopback/testlab';
 import {TodoListApplication} from '../../src/application';
 import {Todo} from '../../src/models/';
@@ -59,14 +60,11 @@ describe('TodoListApplication', () => {
       persistedTodo = await givenTodoInstance();
     });
 
-    it('gets a todo by ID', async () => {
-      const result = await client
+    it('gets a todo by ID', () => {
+      return client
         .get(`/todos/${persistedTodo.id}`)
         .send()
-        .expect(200);
-      // Remove any undefined properties that cannot be represented in JSON/REST
-      const expected = JSON.parse(JSON.stringify(persistedTodo));
-      expect(result.body).to.deepEqual(expected);
+        .expect(200, toJSON(persistedTodo));
     });
 
     it('returns 404 when getting a todo that does not exist', () => {
@@ -127,6 +125,20 @@ describe('TodoListApplication', () => {
     it('returns 404 when deleting a todo that does not exist', async () => {
       await client.del(`/todos/99999`).expect(404);
     });
+  });
+
+  it('queries todos with a filter', async () => {
+    await givenTodoInstance({title: 'wake up', isComplete: true});
+
+    const todoInProgress = await givenTodoInstance({
+      title: 'go to sleep',
+      isComplete: false,
+    });
+
+    await client
+      .get('/todos')
+      .query({filter: {where: {isComplete: false}}})
+      .expect(200, [toJSON(todoInProgress)]);
   });
 
   /*

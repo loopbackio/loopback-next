@@ -9,6 +9,7 @@ import {
   createRestAppClient,
   expect,
   givenHttpServerConfig,
+  toJSON,
 } from '@loopback/testlab';
 import {TodoListApplication} from '../../src/application';
 import {TodoList} from '../../src/models/';
@@ -58,6 +59,14 @@ describe('TodoListApplication', () => {
       expect(response.body).to.eql(persistedTodoLists.length);
     });
 
+    it('counts a subset of todoLists', async () => {
+      const response = await client
+        .get('/todo-lists/count')
+        .query({where: {title: 'so many things to do wow'}})
+        .expect(200);
+      expect(response.body).to.equal(1);
+    });
+
     it('finds all todoLists', async () => {
       const response = await client
         .get('/todo-lists')
@@ -78,6 +87,31 @@ describe('TodoListApplication', () => {
         expect(todoList.color).to.eql(patchedColorTodo.color);
       }
     });
+
+    it('updates selected todoLists', async () => {
+      await todoListRepo.deleteAll();
+      await givenTodoListInstance({title: 'red-list', color: 'red'});
+      await givenTodoListInstance({title: 'green-list', color: 'green'});
+
+      const response = await client
+        .patch('/todo-lists')
+        .query({where: {color: 'red'}})
+        .send({color: 'purple'})
+        .expect(200);
+      expect(response.body).to.eql(1);
+
+      // the matched TodoList was updated
+      expect(await todoListRepo.findByTitle('red-list')).to.have.property(
+        'color',
+        'purple',
+      );
+
+      // the other TodoList was not modified
+      expect(await todoListRepo.findByTitle('green-list')).to.have.property(
+        'color',
+        'green',
+      );
+    });
   });
 
   context('when dealing with a single persisted todoList', () => {
@@ -92,8 +126,7 @@ describe('TodoListApplication', () => {
         .get(`/todo-lists/${persistedTodoList.id}`)
         .send()
         .expect(200);
-      // Remove any undefined properties that cannot be represented in JSON/REST
-      const expected = JSON.parse(JSON.stringify(persistedTodoList));
+      const expected = toJSON(persistedTodoList);
       expect(result.body).to.deepEqual(expected);
     });
 
@@ -129,6 +162,20 @@ describe('TodoListApplication', () => {
         todoListRepo.findById(persistedTodoList.id),
       ).to.be.rejectedWith(EntityNotFoundError);
     });
+  });
+
+  it('queries todo-lists with a filter', async () => {
+    await givenTodoListInstance({title: 'day', color: 'white'});
+
+    const listInBlack = await givenTodoListInstance({
+      title: 'night',
+      color: 'black',
+    });
+
+    await client
+      .get('/todo-lists')
+      .query({filter: {where: {color: 'black'}}})
+      .expect(200, [toJSON(listInBlack)]);
   });
 
   /*

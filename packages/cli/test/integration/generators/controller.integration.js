@@ -248,7 +248,7 @@ function checkRestCrudContents() {
     /'200': {/,
     /description: 'ProductReview model instance'/,
     /content: {'application\/json': {'x-ts-type': ProductReview}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async create\(\@requestBody\(\)/,
+    /async create\(\@requestBody\(\) productReview: ProductReview\)/,
   ];
   postCreateRegEx.forEach(regex => {
     assert.fileContent(expectedFile, regex);
@@ -261,7 +261,7 @@ function checkRestCrudContents() {
     /'200': {/,
     /description: 'ProductReview model count'/,
     /content: {'application\/json': {'x-ts-type': Number}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async count\(\@param.query.string\('where'\)/,
+    /async count\(\s+\@param\.query\.object\('where', getWhereSchemaFor\(ProductReview\)\) where\?: Where(|,\s+)\)/,
   ];
   getCountRegEx.forEach(regex => {
     assert.fileContent(expectedFile, regex);
@@ -274,7 +274,7 @@ function checkRestCrudContents() {
     /'200': {/,
     /description: 'Array of ProductReview model instances'/,
     /content: {'application\/json': {'x-ts-type': ProductReview}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async find\(\@param.query.string\('filter'\)/,
+    /async find\(\s*\@param\.query\.object\('filter', getFilterSchemaFor\(ProductReview\)\) filter\?: Filter(|,\s+)\)/,
   ];
   getFindRegEx.forEach(regex => {
     assert.fileContent(expectedFile, regex);
@@ -287,7 +287,7 @@ function checkRestCrudContents() {
     /'200': {/,
     /description: 'ProductReview PATCH success count'/,
     /content: {'application\/json': {'x-ts-type': Number}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async updateAll\(\s{1,}\@requestBody\(\).*,\s{1,}\@param.query.string\('where'\) where\?: Where/,
+    /async updateAll\(\s{1,}\@requestBody\(\) productReview: ProductReview,\s{1,} @param\.query\.object\('where', getWhereSchemaFor\(ProductReview\)\) where\?: Where(|,\s+)\)/,
   ];
   patchUpdateAllRegEx.forEach(regex => {
     assert.fileContent(expectedFile, regex);
@@ -312,7 +312,7 @@ function checkRestCrudContents() {
     /responses: {/,
     /'204': {/,
     /description: 'ProductReview PATCH success'/,
-    /async updateById\(\s{1,}\@param.path.number\('id'\) id: number,\s{1,}\@requestBody\(\)/,
+    /async updateById\(\s{1,}\@param.path.number\('id'\) id: number,\s{1,}\@requestBody\(\) productReview: ProductReview,\s+\)/,
   ];
   patchUpdateByIdRegEx.forEach(regex => {
     assert.fileContent(expectedFile, regex);

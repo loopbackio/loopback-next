@@ -3,8 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {repository} from '@loopback/repository';
-import {del, get, param, patch, post, put, requestBody} from '@loopback/rest';
+import {Filter, repository} from '@loopback/repository';
+import {
+  del,
+  get,
+  getFilterSchemaFor,
+  param,
+  patch,
+  post,
+  put,
+  requestBody,
+} from '@loopback/rest';
 import {Todo} from '../models';
 import {TodoRepository} from '../repositories';
 
@@ -50,8 +59,10 @@ export class TodoController {
       },
     },
   })
-  async findTodos(): Promise<Todo[]> {
-    return await this.todoRepo.find();
+  async findTodos(
+    @param.query.object('filter', getFilterSchemaFor(Todo)) filter?: Filter,
+  ): Promise<Todo[]> {
+    return await this.todoRepo.find(filter);
   }
 
   @put('/todos/{id}', {
