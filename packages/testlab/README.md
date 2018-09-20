@@ -53,6 +53,7 @@ Table of contents:
 - [givenHttpServerConfig](#givenhttpserverconfig) - Generate HTTP server config.
 - [httpGetAsync](#httpgetasync) - Async wrapper for HTTP GET requests.
 - [httpsGetAsync](#httpsgetasync) - Async wrapper for HTTPS GET requests.
+- [toJSON](#toJSON) - A helper to obtain JSON data representing a given object.
 
 ### `expect`
 
@@ -132,6 +133,24 @@ Async wrapper for making HTTPS GET requests.
 ```ts
 import {httpsGetAsync} from '@loopback/testlab';
 const response = await httpsGetAsync('https://example.com');
+```
+
+### `toJSON`
+
+JSON encoding does not preserve properties that are undefined. As a result,
+`deepEqual` checks fail because the expected model value contains these
+undefined property values, while the actual result returned by REST API does
+not. Use this function to convert a model instance into a data object as
+returned by REST API.
+
+```ts
+import {createClientForHandler, toJSON} from '@loopback/testlab';
+
+it('gets a todo by ID', () => {
+  return client
+    .get(`/todos/${persistedTodo.id}`)
+    .expect(200, toJSON(persistedTodo));
+});
 ```
 
 #### Test request parsing
