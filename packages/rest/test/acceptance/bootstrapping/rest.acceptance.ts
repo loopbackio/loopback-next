@@ -56,7 +56,7 @@ describe('Starting the application', () => {
 
   it('starts an HTTP server (using RestApplication)', async () => {
     const app = new RestApplication();
-    app.bind(RestBindings.PORT).to(0);
+    app.restServer.bind(RestBindings.PORT).to(0);
     app.handler(sequenceHandler);
     await startServerCheck(app);
   });

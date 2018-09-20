@@ -3,8 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Client, createClientForHandler, TestSandbox} from '@loopback/testlab';
-import {RestServer} from '@loopback/rest';
+import {
+  createRestAppClient,
+  givenHttpServerConfig,
+  TestSandbox,
+} from '@loopback/testlab';
 import {resolve} from 'path';
 import {BooterApp} from '../fixtures/application';
 
@@ -22,8 +25,7 @@ describe('controller booter acceptance tests', () => {
     await app.boot();
     await app.start();
 
-    const server: RestServer = await app.getServer(RestServer);
-    const client: Client = createClientForHandler(server.requestHandler);
+    const client = createRestAppClient(app);
 
     // Default Controllers = /controllers with .controller.js ending (nested = true);
     await client.get('/one').expect(200, 'ControllerOne.one()');
@@ -38,7 +40,9 @@ describe('controller booter acceptance tests', () => {
     );
 
     const MyApp = require(resolve(SANDBOX_PATH, 'application.js')).BooterApp;
-    app = new MyApp();
+    app = new MyApp({
+      rest: givenHttpServerConfig({port: 0}),
+    });
   }
 
   async function stopApp() {

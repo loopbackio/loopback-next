@@ -1,15 +1,15 @@
-import {createClientForHandler, supertest} from '@loopback/testlab';
-import {RestServer} from '@loopback/rest';
+import {
+  Client,
+  createRestAppClient,
+  givenHttpServerConfig,
+} from '@loopback/testlab';
 import {<%= project.applicationName %>} from '../..';
 
 describe('PingController', () => {
   let app: <%= project.applicationName %>;
-  let server: RestServer;
-  let client: supertest.SuperTest<supertest.Test>;
+  let client: Client;
 
   before(givenAnApplication);
-
-  before(givenARestServer);
 
   before(async () => {
     await app.boot();
@@ -17,7 +17,7 @@ describe('PingController', () => {
   });
 
   before(() => {
-    client = createClientForHandler(server.requestHandler);
+    client = createRestAppClient(app);
   });
 
   after(async () => {
@@ -30,13 +30,9 @@ describe('PingController', () => {
 
   function givenAnApplication() {
     app = new <%= project.applicationName %>({
-      rest: {
+      rest: givenHttpServerConfig({
         port: 0,
-      },
+      }),
     });
-  }
-
-  async function givenARestServer() {
-    server = await app.getServer(RestServer);
   }
 });

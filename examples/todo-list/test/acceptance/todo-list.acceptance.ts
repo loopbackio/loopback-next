@@ -4,7 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {EntityNotFoundError} from '@loopback/repository';
-import {createClientForHandler, expect, supertest} from '@loopback/testlab';
+import {
+  Client,
+  createRestAppClient,
+  expect,
+  givenHttpServerConfig,
+} from '@loopback/testlab';
 import {TodoListApplication} from '../../src/application';
 import {TodoList} from '../../src/models/';
 import {TodoListRepository} from '../../src/repositories/';
@@ -12,7 +17,7 @@ import {givenTodoList} from '../helpers';
 
 describe('TodoListApplication', () => {
   let app: TodoListApplication;
-  let client: supertest.SuperTest<supertest.Test>;
+  let client: Client;
   let todoListRepo: TodoListRepository;
 
   before(givenRunningApplicationWithCustomConfiguration);
@@ -20,7 +25,7 @@ describe('TodoListApplication', () => {
 
   before(givenTodoListRepository);
   before(() => {
-    client = createClientForHandler(app.requestHandler);
+    client = createRestAppClient(app);
   });
 
   beforeEach(async () => {
@@ -140,9 +145,9 @@ describe('TodoListApplication', () => {
 
   async function givenRunningApplicationWithCustomConfiguration() {
     app = new TodoListApplication({
-      rest: {
+      rest: givenHttpServerConfig({
         port: 0,
-      },
+      }),
     });
 
     await app.boot();

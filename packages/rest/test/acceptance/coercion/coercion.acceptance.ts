@@ -1,9 +1,14 @@
-import {supertest, createClientForHandler, sinon} from '@loopback/testlab';
-import {RestApplication, get, param} from '../../..';
+import {
+  Client,
+  createRestAppClient,
+  givenHttpServerConfig,
+  sinon,
+} from '@loopback/testlab';
+import {get, param, RestApplication} from '../../..';
 
 describe('Coercion', () => {
   let app: RestApplication;
-  let client: supertest.SuperTest<supertest.Test>;
+  let client: Client;
   let spy: sinon.SinonSpy;
 
   before(givenAClient);
@@ -91,9 +96,9 @@ describe('Coercion', () => {
   });
 
   async function givenAClient() {
-    app = new RestApplication();
+    app = new RestApplication({rest: givenHttpServerConfig({port: 0})});
     app.controller(MyController);
     await app.start();
-    client = createClientForHandler(app.requestHandler);
+    client = createRestAppClient(app);
   }
 });

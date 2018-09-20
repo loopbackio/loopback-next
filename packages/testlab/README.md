@@ -48,6 +48,8 @@ Table of contents:
 - [shot](#shot) - HTTP Request/Response stubs.
 - [validateApiSpec](#validateapispec) - Open API Spec validator.
 - [itSkippedOnTravis](#itskippedontravis) - Skip tests on Travis env.
+- [createRestAppClient](#createrestappclient) - Create a supertest client
+  connected to a running RestApplication.
 - [givenHttpServerConfig](#givenhttpserverconfig) - Generate HTTP server config.
 - [httpGetAsync](#httpgetasync) - Async wrapper for HTTP GET requests.
 - [httpsGetAsync](#httpsgetasync) - Async wrapper for HTTPS GET requests.
@@ -81,6 +83,33 @@ by Shot in your unit tests:
 
 Helper function for skipping tests on Travis environment. If you need to skip
 testing on Travis for any reason, use this instead of Mocha's `it`.
+
+### `createRestAppClient`
+
+Helper function to create a `supertest` client connected to a running
+RestApplication. It is the responsibility of the caller to ensure that the app
+is running and to stop the application after all tests are done.
+
+Example use:
+
+```ts
+import {Client, createRestAppClient} from '@loopback/testlab';
+
+describe('My application', () => {
+  app: MyApplication; // extends RestApplication
+  client: Client;
+
+  before(givenRunningApplication);
+  before(() => {
+    client = createRestAppClient(app);
+  });
+  after(() => app.stop());
+
+  it('invokes GET /ping', async () => {
+    await client.get('/ping?msg=world').expect(200);
+  });
+});
+```
 
 ### `givenhttpserverconfig`
 

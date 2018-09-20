@@ -5,20 +5,24 @@
 
 import {ControllerClass} from '@loopback/core';
 import {model, property} from '@loopback/repository';
-import {createClientForHandler, supertest} from '@loopback/testlab';
 import {
-  RestApplication,
+  Client,
+  createRestAppClient,
+  givenHttpServerConfig,
+} from '@loopback/testlab';
+import {
   api,
   getJsonSchema,
   jsonToSchemaObject,
   post,
   requestBody,
+  RestApplication,
 } from '../../..';
 import {aBodySpec} from '../../helpers';
 
 describe('Validation at REST level', () => {
   let app: RestApplication;
-  let client: supertest.SuperTest<supertest.Test>;
+  let client: Client;
 
   @model()
   class Product {
@@ -152,10 +156,10 @@ describe('Validation at REST level', () => {
   }
 
   async function givenAnAppAndAClient(controller: ControllerClass) {
-    app = new RestApplication();
+    app = new RestApplication({rest: givenHttpServerConfig({port: 0})});
     app.controller(controller);
     await app.start();
 
-    client = createClientForHandler(app.requestHandler);
+    client = createRestAppClient(app);
   }
 });
