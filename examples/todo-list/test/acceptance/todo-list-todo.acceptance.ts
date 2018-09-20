@@ -95,7 +95,38 @@ describe('TodoListApplication', () => {
       expect(notUpdatedTodo.toJSON()).to.not.containEql(patchedIsCompleteTodo);
     });
 
-    it('deletes todos for a todoList', async () => {
+    it('updates todos matching "where" condition', async () => {
+      await todoRepo.deleteAll();
+      const wip = await givenTodoInstanceOfTodoList(persistedTodoList.id, {
+        desc: 'not started yet',
+        isComplete: false,
+      });
+      const done = await givenTodoInstanceOfTodoList(persistedTodoList.id, {
+        desc: 'done done',
+        isComplete: true,
+      });
+
+      const response = await client
+        .patch(`/todo-lists/${persistedTodoList.id}/todos`)
+        .query({where: {isComplete: false}})
+        .send({desc: 'work in progress'})
+        .expect(200);
+      expect(response.body).to.equal(1);
+
+      // the matched Todo was updated
+      expect(await todoRepo.findById(wip.id)).to.have.property(
+        'desc',
+        'work in progress',
+      );
+
+      // the other Todo was not modified
+      expect(await todoRepo.findById(done.id)).to.have.property(
+        'desc',
+        'done done',
+      );
+    });
+
+    it('deletes all todos in a todoList', async () => {
       await client
         .del(`/todo-lists/${persistedTodoList.id}/todos`)
         .send()
@@ -107,6 +138,30 @@ describe('TodoListApplication', () => {
       const notDeletedTodo = await todoRepo.findById(notMyTodo.id);
       expect(myDeletedTodos).to.be.empty();
       expect(notDeletedTodo).to.eql(notMyTodo);
+    });
+
+    it('deletes selected todos in a todoList', async () => {
+      await todoListRepo.todos(persistedTodoList.id).delete();
+      await givenTodoInstanceOfTodoList(persistedTodoList.id, {
+        title: 'wip',
+        isComplete: false,
+      });
+      await givenTodoInstanceOfTodoList(persistedTodoList.id, {
+        title: 'done',
+        isComplete: true,
+      });
+
+      const response = await client
+        .del(`/todo-lists/${persistedTodoList.id}/todos`)
+        .query({where: {isComplete: true}})
+        .expect(200);
+
+      expect(response.body).to.equal(1);
+
+      const allRemainingTodos = await todoRepo.find();
+      expect(allRemainingTodos.map(t => t.title).sort()).to.deepEqual(
+        ['wip', notMyTodo.title].sort(),
+      );
     });
   });
 

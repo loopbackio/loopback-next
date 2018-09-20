@@ -98,47 +98,119 @@ Using our constraining factory as we did with the `POST` request, we'll define
 the controller methods for the rest of the HTTP verbs for the route. The
 completed controller should look as follows:
 
-#### src/controllers/todo-list-todo.controller.ts
+#### src/controllers/todo-list.controller.ts
 
 ```ts
-import {repository, Filter, Where} from '@loopback/repository';
+import {Filter, repository, Where} from '@loopback/repository';
+import {
+  del,
+  get,
+  getFilterSchemaFor,
+  getWhereSchemaFor,
+  param,
+  patch,
+  post,
+  requestBody,
+} from '@loopback/rest';
+import {TodoList} from '../models';
 import {TodoListRepository} from '../repositories';
-import {post, get, patch, del, param, requestBody} from '@loopback/rest';
-import {Todo} from '../models';
 
-export class TodoListTodoController {
+export class TodoListController {
   constructor(
-    @repository(TodoListRepository) protected todoListRepo: TodoListRepository,
+    @repository(TodoListRepository)
+    public todoListRepository: TodoListRepository,
   ) {}
 
-  @post('/todo-lists/{id}/todos')
-  async create(@param.path.number('id') id: number, @requestBody() todo: Todo) {
-    return await this.todoListRepo.todos(id).create(todo);
+  @post('/todo-lists', {
+    responses: {
+      '200': {
+        description: 'TodoList model instance',
+        content: {'application/json': {'x-ts-type': TodoList}},
+      },
+    },
+  })
+  async create(@requestBody() obj: TodoList): Promise<TodoList> {
+    return await this.todoListRepository.create(obj);
   }
 
-  @get('/todo-lists/{id}/todos')
+  @get('/todo-lists/count', {
+    responses: {
+      '200': {
+        description: 'TodoList model count',
+        content: {'application/json': {'x-ts-type': Number}},
+      },
+    },
+  })
+  async count(
+    @param.query.object('where', getWhereSchemaFor(TodoList)) where?: Where,
+  ): Promise<number> {
+    return await this.todoListRepository.count(where);
+  }
+
+  @get('/todo-lists', {
+    responses: {
+      '200': {
+        description: 'Array of TodoList model instances',
+        content: {'application/json': {'x-ts-type': TodoList}},
+      },
+    },
+  })
   async find(
-    @param.path.number('id') id: number,
-    @param.query.string('filter') filter?: Filter,
-  ) {
-    return await this.todoListRepo.todos(id).find(filter);
+    @param.query.object('filter', getFilterSchemaFor(TodoList)) filter?: Filter,
+  ): Promise<TodoList[]> {
+    return await this.todoListRepository.find(filter);
   }
 
-  @patch('/todo-lists/{id}/todos')
-  async patch(
-    @param.path.number('id') id: number,
-    @requestBody() todo: Partial<Todo>,
-    @param.query.string('where') where?: Where,
-  ) {
-    return await this.todoListRepo.todos(id).patch(todo, where);
+  @patch('/todo-lists', {
+    responses: {
+      '200': {
+        description: 'TodoList PATCH success count',
+        content: {'application/json': {'x-ts-type': Number}},
+      },
+    },
+  })
+  async updateAll(
+    @requestBody() obj: Partial<TodoList>,
+    @param.query.object('where', getWhereSchemaFor(TodoList)) where?: Where,
+  ): Promise<number> {
+    return await this.todoListRepository.updateAll(obj, where);
   }
 
-  @del('/todo-lists/{id}/todos')
-  async delete(
+  @get('/todo-lists/{id}', {
+    responses: {
+      '200': {
+        description: 'TodoList model instance',
+        content: {'application/json': {'x-ts-type': TodoList}},
+      },
+    },
+  })
+  async findById(@param.path.number('id') id: number): Promise<TodoList> {
+    return await this.todoListRepository.findById(id);
+  }
+
+  @patch('/todo-lists/{id}', {
+    responses: {
+      '204': {
+        description: 'TodoList PATCH success',
+      },
+    },
+  })
+  async updateById(
     @param.path.number('id') id: number,
-    @param.query.string('where') where?: Where,
-  ) {
-    return await this.todoListRepo.todos(id).delete(where);
+    @requestBody() obj: TodoList,
+  ): Promise<void> {
+    await this.todoListRepository.updateById(id, obj);
+  }
+
+  @del('/todo-lists/{id}', {
+    responses: {
+      '204': {
+        description: 'TodoList DELETE success',
+      },
+    },
+  })
+  async deleteById(@param.path.number('id') id: number): Promise<void> {
+    await this.todoListRepository.deleteById(id);
   }
 }
 ```

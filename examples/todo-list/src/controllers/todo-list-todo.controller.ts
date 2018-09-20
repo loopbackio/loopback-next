@@ -3,10 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {repository, Filter, Where} from '@loopback/repository';
-import {TodoListRepository} from '../repositories';
-import {post, get, patch, del, param, requestBody} from '@loopback/rest';
+import {Filter, repository, Where} from '@loopback/repository';
+import {
+  del,
+  get,
+  getWhereSchemaFor,
+  param,
+  patch,
+  post,
+  requestBody,
+} from '@loopback/rest';
 import {Todo} from '../models';
+import {TodoListRepository} from '../repositories';
 
 export class TodoListTodoController {
   constructor(
@@ -58,7 +66,7 @@ export class TodoListTodoController {
   async patch(
     @param.path.number('id') id: number,
     @requestBody() todo: Partial<Todo>,
-    @param.query.string('where') where?: Where,
+    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where,
   ): Promise<number> {
     return await this.todoListRepo.todos(id).patch(todo, where);
   }
@@ -73,7 +81,7 @@ export class TodoListTodoController {
   })
   async delete(
     @param.path.number('id') id: number,
-    @param.query.string('where') where?: Where,
+    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where,
   ): Promise<number> {
     return await this.todoListRepo.todos(id).delete(where);
   }

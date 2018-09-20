@@ -29,4 +29,8 @@ export class TodoListRepository extends DefaultCrudRepository<
       todoRepository,
     );
   }
+
+  public findByTitle(title: string) {
+    return this.findOne({where: {title}});
+  }
 }

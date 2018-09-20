@@ -4,7 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Filter, repository, Where} from '@loopback/repository';
-import {del, get, param, patch, post, requestBody} from '@loopback/rest';
+import {
+  del,
+  get,
+  getFilterSchemaFor,
+  getWhereSchemaFor,
+  param,
+  patch,
+  post,
+  requestBody,
+} from '@loopback/rest';
 import {TodoList} from '../models';
 import {TodoListRepository} from '../repositories';
 
@@ -34,7 +43,9 @@ export class TodoListController {
       },
     },
   })
-  async count(@param.query.string('where') where?: Where): Promise<number> {
+  async count(
+    @param.query.object('where', getWhereSchemaFor(TodoList)) where?: Where,
+  ): Promise<number> {
     return await this.todoListRepository.count(where);
   }
 
@@ -47,7 +58,7 @@ export class TodoListController {
     },
   })
   async find(
-    @param.query.string('filter') filter?: Filter,
+    @param.query.object('filter', getFilterSchemaFor(TodoList)) filter?: Filter,
   ): Promise<TodoList[]> {
     return await this.todoListRepository.find(filter);
   }
@@ -62,7 +73,7 @@ export class TodoListController {
   })
   async updateAll(
     @requestBody() obj: Partial<TodoList>,
-    @param.query.string('where') where?: Where,
+    @param.query.object('where', getWhereSchemaFor(TodoList)) where?: Where,
   ): Promise<number> {
     return await this.todoListRepository.updateAll(obj, where);
   }

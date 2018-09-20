@@ -96,8 +96,17 @@ Here's an example of what the template will produce given a `Todo` model and a
 `TodoRepository`:
 
 ```ts
-import {Filter, Where, repository} from '@loopback/repository';
-import {post, param, get, patch, del, requestBody} from '@loopback/rest';
+import {Filter, repository, Where} from '@loopback/repository';
+import {
+  post,
+  param,
+  get,
+  getFilterSchemaFor,
+  getWhereSchemaFor,
+  patch,
+  del,
+  requestBody,
+} from '@loopback/rest';
 import {Todo} from '../models';
 import {TodoRepository} from '../repositories';
 
@@ -106,43 +115,98 @@ export class TodoController {
     @repository(TodoRepository) public todoRepository: TodoRepository,
   ) {}
 
-  @post('/todos')
-  async create(@requestBody() obj: Todo): Promise<Todo> {
-    return await this.todoRepository.create(obj);
+  @post('/todos', {
+    responses: {
+      '200': {
+        description: 'Todo model instance',
+        content: {'application/json': {'x-ts-type': Todo}},
+      },
+    },
+  })
+  async create(@requestBody() data: Todo): Promise<Todo> {
+    return await this.todoRepository.create(data);
   }
 
-  @get('/todos/count')
-  async count(@param.query.string('where') where?: Where): Promise<number> {
+  @get('/todos/count', {
+    responses: {
+      '200': {
+        description: 'Todo model count',
+        content: {'application/json': {'x-ts-type': Number}},
+      },
+    },
+  })
+  async count(
+    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where,
+  ): Promise<number> {
     return await this.todoRepository.count(where);
   }
 
-  @get('/todos')
-  async find(@param.query.string('filter') filter?: Filter): Promise<Todo[]> {
+  @get('/todos', {
+    responses: {
+      '200': {
+        description: 'Array of Todo model instances',
+        content: {
+          'application/json': {
+            schema: {type: 'array', items: {'x-ts-type': Todo}},
+          },
+        },
+      },
+    },
+  })
+  async find(
+    @param.query.object('filter', getFilterSchemaFor(Todo)) filter?: Filter,
+  ): Promise<Todo[]> {
     return await this.todoRepository.find(filter);
   }
 
-  @patch('/todos')
+  @patch('/todos', {
+    responses: {
+      '200': {
+        description: 'Todo PATCH success count',
+        content: {'application/json': {'x-ts-type': Number}},
+      },
+    },
+  })
   async updateAll(
-    @requestBody() obj: Todo,
-    @param.query.string('where') where?: Where,
+    @requestBody() data: Todo,
+    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where,
   ): Promise<number> {
-    return await this.todoRepository.updateAll(obj, where);
+    return await this.todoRepository.updateAll(data, where);
   }
 
-  @get('/todos/{id}')
+  @get('/todos/{id}', {
+    responses: {
+      '200': {
+        description: 'Todo model instance',
+        content: {'application/json': {'x-ts-type': Todo}},
+      },
+    },
+  })
   async findById(@param.path.number('id') id: number): Promise<Todo> {
     return await this.todoRepository.findById(id);
   }
 
-  @patch('/todos/{id}')
+  @patch('/todos/{id}', {
+    responses: {
+      '204': {
+        description: 'Todo PATCH success',
+      },
+    },
+  })
   async updateById(
     @param.path.number('id') id: number,
-    @requestBody() obj: Todo,
+    @requestBody() data: Todo,
   ): Promise<void> {
-    await this.todoRepository.updateById(id, obj);
+    await this.todoRepository.updateById(id, data);
   }
 
-  @del('/todos/{id}')
+  @del('/todos/{id}', {
+    responses: {
+      '204': {
+        description: 'Todo DELETE success',
+      },
+    },
+  })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.todoRepository.deleteById(id);
   }

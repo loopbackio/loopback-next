@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Filter} from '@loopback/repository';
 import {expect, sinon} from '@loopback/testlab';
 import {TodoController} from '../../../src/controllers';
 import {Todo} from '../../../src/models/index';
@@ -98,6 +99,14 @@ describe('TodoController', () => {
       find.resolves(expected);
       expect(await controller.findTodos()).to.eql(expected);
       sinon.assert.called(find);
+    });
+
+    it('uses the provided filter', async () => {
+      const filter: Filter = {where: {isCompleted: false}};
+
+      find.resolves(aListOfTodos);
+      await controller.findTodos(filter);
+      sinon.assert.calledWith(find, filter);
     });
   });
 
