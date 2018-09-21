@@ -95,13 +95,6 @@
   "devDependencies": {
     "@loopback/build": "<%= project.dependencies['@loopback/build'] -%>",
     "@loopback/testlab": "<%= project.dependencies['@loopback/testlab'] -%>",
-<% if (project.mocha) { -%>
-    "@types/mocha": "<%= project.dependencies['@types/mocha'] -%>",
-<% } -%>
-    "@types/node": "<%= project.dependencies['@types/node'] -%>"<% if (project.mocha) { -%>,<% } %>
-<% if (project.mocha) { -%>
-    "mocha": "<%= project.dependencies['mocha'] -%>",
-    "source-map-support": "<%= project.dependencies['source-map-support'] -%>"
-<% } -%>
+    "@types/node": "<%= project.dependencies['@types/node'] -%>"
   }
 }
