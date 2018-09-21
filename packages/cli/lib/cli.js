@@ -68,6 +68,10 @@ function setupGenerators() {
     PREFIX + 'repository',
   );
   env.register(
+    path.join(__dirname, '../generators/service'),
+    PREFIX + 'service',
+  );
+  env.register(
     path.join(__dirname, '../generators/example'),
     PREFIX + 'example',
   );
