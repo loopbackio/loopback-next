@@ -27,7 +27,7 @@ import {isEntityNotFoundError} from '../errors';
  * `undefined`, as opposed to EntityCrudRepository that throws EntityNotFound
  * error.
  */
-export interface UnsafeCrudRepository<T extends Entity, ID>
+export interface UncheckedCrudRepository<T extends Entity, ID>
   extends EntityRepository<T, ID>,
     CrudRepository<T> {
   /**
@@ -107,8 +107,8 @@ export interface UnsafeCrudRepository<T extends Entity, ID>
   exists(id: ID, options?: Options): Promise<boolean>;
 }
 
-export class UnsafeCrudRepositoryImpl<T extends Entity, ID>
-  implements UnsafeCrudRepository<T, ID> {
+export class UncheckedCrudRepositoryImpl<T extends Entity, ID>
+  implements UncheckedCrudRepository<T, ID> {
   /**
    * @param crudRepository An instance of EntityCrudRepository providing an
    * implementation of CRUD operations.

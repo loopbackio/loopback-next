@@ -8,8 +8,8 @@ import {
   DefaultCrudRepository,
   Entity,
   juggler,
-  UnsafeCrudRepository,
-  UnsafeCrudRepositoryImpl,
+  UncheckedCrudRepository,
+  UncheckedCrudRepositoryImpl,
   model,
 } from '../../..';
 import {property} from '../../../src';
@@ -17,7 +17,7 @@ import {property} from '../../../src';
 describe('UnsafeCrudRepository', () => {
   const DUMMY_OPTIONS = {test: true};
 
-  let unsafeRepository: UnsafeCrudRepository<
+  let unsafeRepository: UncheckedCrudRepository<
     Customer,
     typeof Customer.prototype.id
   >;
@@ -69,7 +69,7 @@ describe('UnsafeCrudRepository', () => {
   function givenUnsafeCustomerRepository() {
     const db = new juggler.DataSource({connector: 'memory'});
     defaultRepo = new DefaultCrudRepository(Customer, db);
-    unsafeRepository = new UnsafeCrudRepositoryImpl(defaultRepo);
+    unsafeRepository = new UncheckedCrudRepositoryImpl(defaultRepo);
   }
 
   function givenCustomer(data?: Partial<Customer>) {
