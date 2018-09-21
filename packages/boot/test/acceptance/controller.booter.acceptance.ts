@@ -41,7 +41,7 @@ describe('controller booter acceptance tests', () => {
 
     const MyApp = require(resolve(SANDBOX_PATH, 'application.js')).BooterApp;
     app = new MyApp({
-      rest: givenHttpServerConfig({port: 0}),
+      rest: givenHttpServerConfig(),
     });
   }
 

@@ -124,9 +124,7 @@ describe('TodoListApplication', () => {
 
   async function givenRunningApplicationWithCustomConfiguration() {
     app = new TodoListApplication({
-      rest: givenHttpServerConfig({
-        port: 0,
-      }),
+      rest: givenHttpServerConfig(),
     });
 
     await app.boot();

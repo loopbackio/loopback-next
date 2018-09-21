@@ -158,9 +158,9 @@ describe('HttpServer (integration)', () => {
   });
 
   it('supports HTTPS protocol with a pfx file', async () => {
-    const options = {usePfx: true};
-    const serverOptions = givenHttpServerConfig();
-    Object.assign(serverOptions, options);
+    const serverOptions = givenHttpServerConfig({
+      usePfx: true,
+    });
     const httpsServer: HttpServer = givenHttpsServer(serverOptions);
     await httpsServer.start();
     const response = await httpsGetAsync(httpsServer.url);
