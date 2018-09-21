@@ -79,6 +79,9 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
     if (this.shouldExit()) return false;
     debug('Prompting for service name');
 
+    if (this.options.name) {
+      Object.assign(this.artifactInfo, {name: this.options.name});
+    }
     const prompts = [
       {
         type: 'input',
