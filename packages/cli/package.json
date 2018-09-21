@@ -58,6 +58,7 @@
     "swagger-parser": "^5.0.0",
     "swagger2openapi": "^2.11.16",
     "unicode-10.0.0": "^0.7.4",
+    "update-notifier": "^2.5.0",
     "url-slug": "^2.0.0",
     "validate-npm-package-name": "^3.0.0",
     "yeoman-generator": "^3.1.1"

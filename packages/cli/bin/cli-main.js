@@ -8,8 +8,9 @@
 
 const checkNodeVersion = require('@loopback/dist-util').checkNodeVersion;
 
+const pkg = require('../package.json');
 try {
-  const range = require('../package.json').engines.node;
+  const range = pkg.engines.node;
   checkNodeVersion(range);
 } catch (e) {
   console.error(e.message);
@@ -26,4 +27,13 @@ const opts = minimist(process.argv.slice(2), {
     commands: 'l', // --commands or -l: print commands
   },
 });
+
+const updateNotifier = require('update-notifier');
+// Force version check with `lb4 --version`
+const interval = opts.version ? 0 : undefined;
+updateNotifier({
+  pkg: pkg,
+  updateCheckInterval: interval,
+}).notify({isGlobal: true});
+
 main(opts);
