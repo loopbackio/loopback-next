@@ -63,10 +63,11 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
     if (!fs.existsSync(this.artifactInfo.datasourcesDir)) {
       return this.exit(
         new Error(
-          `${ERROR_NO_DATA_SOURCES_FOUND} ${this.artifactInfo.datasourcesDir}.
-        ${chalk.yellow(
-          'Please visit https://loopback.io/doc/en/lb4/DataSource-generator.html for information on how datasources are discovered',
-        )}`,
+          `${ERROR_NO_DATA_SOURCES_FOUND} ${
+            this.artifactInfo.datasourcesDir
+          }.${chalk.yellow(
+            'Please visit https://loopback.io/doc/en/lb4/DataSource-generator.html for information on how datasources are discovered',
+          )}`,
         ),
       );
     }
@@ -142,10 +143,11 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
     if (availableDatasources.length === 0) {
       return this.exit(
         new Error(
-          `${ERROR_NO_DATA_SOURCES_FOUND} ${this.artifactInfo.datasourcesDir}.
-        ${chalk.yellow(
-          'Please visit https://loopback.io/doc/en/lb4/DataSource-generator.html for information on how datasources are discovered',
-        )}`,
+          `${ERROR_NO_DATA_SOURCES_FOUND} ${
+            this.artifactInfo.datasourcesDir
+          }.${chalk.yellow(
+            'Please visit https://loopback.io/doc/en/lb4/DataSource-generator.html for information on how datasources are discovered',
+          )}`,
         ),
       );
     }
@@ -183,7 +185,9 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
   /**
    * this method will be in charge of inferring and create
    * the remote interfaces from either SOAP wsdl or REST openApi json
-   * TODO: @marioestradarosa
+   *
+   * TODO: add functionality to inspect service specs to generate
+   * strongly-typed service proxies and corresponding model definitions.
    */
   async inferInterfaces() {
     let connectorType = utils.getDataSourceConnectorName(

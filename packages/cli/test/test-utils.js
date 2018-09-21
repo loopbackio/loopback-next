@@ -63,10 +63,13 @@ exports.executeGenerator = function(GeneratorOrNamespace, settings) {
  * @property {boolean} excludeDataSourcesDir Excludes the datasources directory
  * @property {boolean} includeDummyModel Creates a dummy model file in /src/models/product-review.model.ts
  * @property {boolean} includeDummyRepository Creates a dummy repository file in /src/repositories/bar.repository.ts
+ * @property {boolean} includeSandboxFilesFixtures creates files specified in SANDBOX_FILES array
+ * @param {Object[]} sandBoxFiles specify files, directories and their content to be included as fixtures
  */
-exports.givenLBProject = function(rootDir, options) {
+exports.givenLBProject = function(rootDir, options, sandBoxFiles) {
   options = options || {};
-  const context = {};
+  sandBoxFiles = sandBoxFiles || [];
+
   const content = {};
   if (!options.excludeKeyword) {
     content.keywords = ['loopback'];
@@ -109,5 +112,14 @@ exports.givenLBProject = function(rootDir, options) {
   if (options.includeDummyRepository) {
     const repoPath = path.join(rootDir, '/src/repositories/bar.repository.ts');
     fs.writeFileSync(repoPath, '--DUMMY VALUE--');
+  }
+
+  if (options.includeSandboxFilesFixtures && sandBoxFiles.length > 0) {
+    for (let theFile of sandBoxFiles) {
+      const fullPath = path.join(rootDir, theFile.path, theFile.file);
+      if (!fs.existsSync(fullPath)) {
+        fs.writeFileSync(fullPath, theFile.content);
+      }
+    }
   }
 };

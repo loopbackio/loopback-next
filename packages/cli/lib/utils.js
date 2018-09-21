@@ -419,7 +419,7 @@ exports.getDataSourceConnectorName = function(datasourcesDir, dataSourceClass) {
     jsonFileContent = JSON.parse(fs.readFileSync(datasourceJSONFile, 'utf8'));
   } catch (err) {
     debug(`Error reading file ${datasourceJSONFile}: ${err.message}`);
-    throw new Error(err);
+    throw err;
   }
 
   if (jsonFileContent.connector) {
@@ -458,7 +458,7 @@ exports.isConnectorOfType = function(
     jsonFileContent = JSON.parse(fs.readFileSync(datasourceJSONFile, 'utf8'));
   } catch (err) {
     debug(`Error reading file ${datasourceJSONFile}: ${err.message}`);
-    throw new Error(err);
+    throw err;
   }
 
   for (let connector of Object.values(connectors)) {

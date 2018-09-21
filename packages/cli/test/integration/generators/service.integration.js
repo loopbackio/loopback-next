@@ -8,7 +8,6 @@
 const path = require('path');
 const assert = require('yeoman-assert');
 const testlab = require('@loopback/testlab');
-const fs = require('fs');
 
 const expect = testlab.expect;
 const TestSandbox = testlab.TestSandbox;
@@ -29,13 +28,11 @@ describe('lb4 service', () => {
   describe('invalid generation of services', () => {
     it('does not run with empty datasource list', async () => {
       return expect(
-        testUtils.executeGenerator(generator).inDir(
-          SANDBOX_PATH,
-          async () =>
-            await prepareGeneratorForServices(SANDBOX_PATH, {
-              noFixtures: true,
-            }),
-        ),
+        testUtils
+          .executeGenerator(generator)
+          .inDir(SANDBOX_PATH, () =>
+            testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+          ),
       ).to.be.rejectedWith(/No datasources found/);
     });
   });
@@ -44,11 +41,86 @@ describe('lb4 service', () => {
     it('generates a basic soap service from command line arguments', async () => {
       await testUtils
         .executeGenerator(generator)
-        .inDir(
-          SANDBOX_PATH,
-          async () => await prepareGeneratorForServices(SANDBOX_PATH),
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(
+            SANDBOX_PATH,
+            {includeSandboxFilesFixtures: true},
+            SANDBOX_FILES,
+          ),
         )
         .withArguments('myService --datasource myds');
+      const expectedFile = path.join(
+        SANDBOX_PATH,
+        SERVICE_APP_PATH,
+        'my-service.service.ts',
+      );
+      assert.file(expectedFile);
+      assert.fileContent(
+        expectedFile,
+        /export class MyServiceServiceProvider implements Provider<MyServiceService> {/,
+      );
+      assert.fileContent(expectedFile, /export interface MyServiceService {/);
+      assert.fileContent(expectedFile, /\@inject\('datasources.myds'\)/);
+      assert.fileContent(
+        expectedFile,
+        /value\(\): Promise\<MyServiceService\> {/,
+      );
+      assert.file(INDEX_FILE);
+      assert.fileContent(INDEX_FILE, /export \* from '.\/my-service.service';/);
+    });
+
+    it('generates a soap service from a config file', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(
+            SANDBOX_PATH,
+            {includeSandboxFilesFixtures: true},
+            SANDBOX_FILES,
+          ),
+        )
+        .withArguments('--config mysoapconfig.json');
+      const expectedFile = path.join(
+        SANDBOX_PATH,
+        SERVICE_APP_PATH,
+        'multi-word-service.service.ts',
+      );
+      assert.file(expectedFile);
+      assert.fileContent(
+        expectedFile,
+        /export class MultiWordServiceServiceProvider implements Provider\<MultiWordServiceService\> {/,
+      );
+      assert.fileContent(
+        expectedFile,
+        /protected datasource: MydsDataSource = new MydsDataSource\(\),/,
+      );
+      assert.fileContent(
+        expectedFile,
+        /value\(\): Promise\<MultiWordServiceService\> {/,
+      );
+      assert.file(INDEX_FILE);
+      assert.fileContent(
+        INDEX_FILE,
+        /export \* from '.\/multi-word-service.service';/,
+      );
+    });
+
+    it('generates a basic soap service from the prompts', async () => {
+      const multiItemPrompt = {
+        name: 'myService',
+        dataSourceClass: 'MydsDatasource',
+      };
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(
+            SANDBOX_PATH,
+            {includeSandboxFilesFixtures: true},
+            SANDBOX_FILES,
+          ),
+        )
+        .withPrompts(multiItemPrompt);
+
       const expectedFile = path.join(
         SANDBOX_PATH,
         SERVICE_APP_PATH,
@@ -77,9 +149,12 @@ describe('lb4 service', () => {
 
       await testUtils
         .executeGenerator(generator)
-        .inDir(
-          SANDBOX_PATH,
-          async () => await prepareGeneratorForServices(SANDBOX_PATH),
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(
+            SANDBOX_PATH,
+            {includeSandboxFilesFixtures: true},
+            SANDBOX_FILES,
+          ),
         )
         .withPrompts(multiItemPrompt);
 
@@ -102,39 +177,66 @@ describe('lb4 service', () => {
       assert.file(INDEX_FILE);
       assert.fileContent(INDEX_FILE, /export \* from '.\/myservice.service';/);
     });
-  });
-
-  it('generates a soap service from a config file', async () => {
-    await testUtils
-      .executeGenerator(generator)
-      .inDir(
+    it('generates a basic rest service from a config file', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(
+            SANDBOX_PATH,
+            {includeSandboxFilesFixtures: true},
+            SANDBOX_FILES,
+          ),
+        )
+        .withArguments('--config myrestconfig.json');
+      const expectedFile = path.join(
         SANDBOX_PATH,
-        async () => await prepareGeneratorForServices(SANDBOX_PATH),
-      )
-      .withArguments('--config myconfig.json');
-    const expectedFile = path.join(
-      SANDBOX_PATH,
-      SERVICE_APP_PATH,
-      'multi-word-service.service.ts',
-    );
-    assert.file(expectedFile);
-    assert.fileContent(
-      expectedFile,
-      /export class MultiWordServiceServiceProvider implements Provider\<MultiWordServiceService\> {/,
-    );
-    assert.fileContent(
-      expectedFile,
-      /protected datasource: MydsDataSource = new MydsDataSource\(\),/,
-    );
-    assert.fileContent(
-      expectedFile,
-      /value\(\): Promise\<MultiWordServiceService\> {/,
-    );
-    assert.file(INDEX_FILE);
-    assert.fileContent(
-      INDEX_FILE,
-      /export \* from '.\/multi-word-service.service';/,
-    );
+        SERVICE_APP_PATH,
+        'myservice.service.ts',
+      );
+      assert.file(expectedFile);
+      assert.fileContent(
+        expectedFile,
+        /export class MyserviceServiceProvider implements Provider<MyserviceService> {/,
+      );
+      assert.fileContent(expectedFile, /export interface MyserviceService {/);
+      assert.fileContent(expectedFile, /\@inject\('datasources.restdb'\)/);
+      assert.fileContent(
+        expectedFile,
+        /value\(\): Promise\<MyserviceService\> {/,
+      );
+      assert.file(INDEX_FILE);
+      assert.fileContent(INDEX_FILE, /export \* from '.\/myservice.service';/);
+    });
+    it('generates a basic rest service from command line arguments', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(
+            SANDBOX_PATH,
+            {includeSandboxFilesFixtures: true},
+            SANDBOX_FILES,
+          ),
+        )
+        .withArguments('myservice --datasource restdb');
+      const expectedFile = path.join(
+        SANDBOX_PATH,
+        SERVICE_APP_PATH,
+        'myservice.service.ts',
+      );
+      assert.file(expectedFile);
+      assert.fileContent(
+        expectedFile,
+        /export class MyserviceServiceProvider implements Provider<MyserviceService> {/,
+      );
+      assert.fileContent(expectedFile, /export interface MyserviceService {/);
+      assert.fileContent(expectedFile, /\@inject\('datasources.restdb'\)/);
+      assert.fileContent(
+        expectedFile,
+        /value\(\): Promise\<MyserviceService\> {/,
+      );
+      assert.file(INDEX_FILE);
+      assert.fileContent(INDEX_FILE, /export \* from '.\/myservice.service';/);
+    });
   });
 });
 
@@ -148,10 +250,18 @@ const DUMMY_CONTENT = '--DUMMY VALUE--';
 const SANDBOX_FILES = [
   {
     path: CONFIG_PATH,
-    file: 'myconfig.json',
+    file: 'mysoapconfig.json',
     content: `{
       "name": "MultiWordService",
       "datasource": "myds"
+    }`,
+  },
+  {
+    path: CONFIG_PATH,
+    file: 'myrestconfig.json',
+    content: `{
+      "name": "myservice",
+      "datasource": "restdb"
     }`,
   },
   {
@@ -194,57 +304,3 @@ const SANDBOX_FILES = [
     content: DUMMY_CONTENT,
   },
 ];
-
-async function prepareGeneratorForServices(rootDir, options) {
-  options = options || {};
-  const content = {};
-  if (!options.excludeKeyword) {
-    content.keywords = ['loopback'];
-  }
-
-  if (!options.excludePackageJSON) {
-    fs.writeFileSync(
-      path.join(rootDir, 'package.json'),
-      JSON.stringify(content),
-    );
-  }
-
-  if (!options.excludeYoRcJSON) {
-    fs.writeFileSync(path.join(rootDir, '.yo-rc.json'), JSON.stringify({}));
-  }
-
-  fs.mkdirSync(path.join(rootDir, 'src'));
-
-  if (!options.excludeControllersDir) {
-    fs.mkdirSync(path.join(rootDir, 'src', 'controllers'));
-  }
-
-  if (!options.excludeModelsDir) {
-    fs.mkdirSync(path.join(rootDir, 'src', 'models'));
-  }
-
-  if (!options.excludeRepositoriesDir) {
-    fs.mkdirSync(path.join(rootDir, 'src', 'repositories'));
-  }
-
-  if (!options.excludeDataSourcesDir) {
-    fs.mkdirSync(path.join(rootDir, 'src', 'datasources'));
-  }
-
-  if (!options.excludeDataSourcesDir) {
-    fs.mkdirSync(path.join(rootDir, 'src', 'services'));
-  }
-
-  if (!options.noFixtures) {
-    copyFixtures();
-  }
-}
-
-function copyFixtures() {
-  for (let theFile of SANDBOX_FILES) {
-    const fullPath = path.join(SANDBOX_PATH, theFile.path, theFile.file);
-    if (!fs.existsSync(fullPath)) {
-      fs.writeFileSync(fullPath, theFile.content);
-    }
-  }
-}
