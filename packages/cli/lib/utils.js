@@ -16,12 +16,14 @@ var semver = require('semver');
 const regenerate = require('regenerate');
 const _ = require('lodash');
 const pascalCase = require('change-case').pascalCase;
+const lowerCase = require('change-case').lowerCase;
 const promisify = require('util').promisify;
 const camelCase = require('change-case').camelCase;
 const pluralize = require('pluralize');
 const urlSlug = require('url-slug');
 const validate = require('validate-npm-package-name');
 const Conflicter = require('yeoman-generator/lib/util/conflicter');
+const connectors = require('../generators/datasource/connectors.json');
 
 const readdirAsync = promisify(fs.readdir);
 
@@ -114,8 +116,8 @@ exports.toClassName = function(name) {
   return name.substring(0, 1).toUpperCase() + name.substring(1);
 };
 
+exports.lowerCase = lowerCase;
 exports.kebabCase = _.kebabCase;
-
 exports.pascalCase = pascalCase;
 exports.camelCase = camelCase;
 exports.pluralize = pluralize;
@@ -386,8 +388,96 @@ exports.getRepositoryFileName = function(repositoryName) {
   return `${_.kebabCase(repositoryName)}.repository.ts`;
 };
 
+/**
+ * Returns the serviceName in the directory file format for the service
+ * @param {string} serviceName
+ */
+exports.getServiceFileName = function(serviceName) {
+  return `${_.kebabCase(serviceName)}.service.ts`;
+};
+
+/**
+ *
+ * Returns the connector property for the datasource file
+ * @param {string} datasourcesDir path for sources
+ * @param {string} dataSourceClass class name for the datasoure
+ */
+exports.getDataSourceConnectorName = function(datasourcesDir, dataSourceClass) {
+  if (!dataSourceClass) {
+    return false;
+  }
+  let result;
+  let jsonFileContent;
+
+  let datasourceJSONFile = path.join(
+    datasourcesDir,
+    dataSourceClass.replace('Datasource', '.datasource.json').toLowerCase(),
+  );
+
+  debug(`reading ${datasourceJSONFile}`);
+  try {
+    jsonFileContent = JSON.parse(fs.readFileSync(datasourceJSONFile, 'utf8'));
+  } catch (err) {
+    debug(`Error reading file ${datasourceJSONFile}: ${err.message}`);
+    throw new Error(err);
+  }
+
+  if (jsonFileContent.connector) {
+    result = jsonFileContent.connector;
+  }
+  return result;
+};
+
+/**
+ *
+ * load the connectors available and check if the basedModel matches any
+ * connectorType supplied for the given connector name
+ * @param {string} connectorType single or a comma separated string array
+ * @param {string} datasourcesDir path for sources
+ * @param {string} dataSourceClass class name for the datasoure
+ */
+exports.isConnectorOfType = function(
+  connectorType,
+  datasourcesDir,
+  dataSourceClass,
+) {
+  debug(`calling isConnectorType ${connectorType}`);
+  let jsonFileContent = '';
+  let result = false;
+
+  if (!dataSourceClass) {
+    return false;
+  }
+  let datasourceJSONFile = path.join(
+    datasourcesDir,
+    dataSourceClass.replace('Datasource', '.datasource.json').toLowerCase(),
+  );
+
+  debug(`reading ${datasourceJSONFile}`);
+  try {
+    jsonFileContent = JSON.parse(fs.readFileSync(datasourceJSONFile, 'utf8'));
+  } catch (err) {
+    debug(`Error reading file ${datasourceJSONFile}: ${err.message}`);
+    throw new Error(err);
+  }
+
+  for (let connector of Object.values(connectors)) {
+    const matchedConnector =
+      jsonFileContent.connector === connector.name ||
+      jsonFileContent.connector === `loopback-connector-${connector.name}`;
+
+    if (matchedConnector && connectorType.includes(connector.baseModel)) {
+      result = true;
+      break;
+    }
+  }
+
+  return result;
+};
+
 // literal strings with artifacts directory locations
 exports.repositoriesDir = 'repositories';
 exports.datasourcesDir = 'datasources';
+exports.servicesDir = 'services';
 exports.modelsDir = 'models';
 exports.sourceRootDir = 'src';
