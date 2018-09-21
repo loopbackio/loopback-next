@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.20.0"></a>
+# [0.20.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.19.0...@loopback/docs@0.20.0) (2018-09-21)
+
+
+### Bug Fixes
+
+* **docs:** fix incorrect soap url ([bd6c2ed](https://github.com/strongloop/loopback-next/commit/bd6c2ed))
+
+
+### Features
+
+* **testlab:** add createRestAppClient(), simplify usage in tests ([d75be77](https://github.com/strongloop/loopback-next/commit/d75be77))
+
+
+
+
+
 <a name="0.19.0"></a>
 # [0.19.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.18.9...@loopback/docs@0.19.0) (2018-09-19)
 

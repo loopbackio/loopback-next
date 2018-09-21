@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.14.0"></a>
+# [0.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@0.13.6...@loopback/boot@0.14.0) (2018-09-21)
+
+
+### Features
+
+* **testlab:** add createRestAppClient(), simplify usage in tests ([d75be77](https://github.com/strongloop/loopback-next/commit/d75be77))
+* **testlab:** set port to 0 in givenHttpServerConfig ([90a0bfb](https://github.com/strongloop/loopback-next/commit/90a0bfb))
+
+
+
+
+
 <a name="0.13.6"></a>
 ## [0.13.6](https://github.com/strongloop/loopback-next/compare/@loopback/boot@0.13.5...@loopback/boot@0.13.6) (2018-09-19)
 

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.24.0"></a>
+# [0.24.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.23.0...@loopback/cli@0.24.0) (2018-09-21)
+
+
+### Bug Fixes
+
+* **cli:** removed unused dependencies from project template ([3907df4](https://github.com/strongloop/loopback-next/commit/3907df4))
+
+
+### Features
+
+* **cli:** add update notifier to remind cli upgrade ([61255cc](https://github.com/strongloop/loopback-next/commit/61255cc))
+* **testlab:** add createRestAppClient(), simplify usage in tests ([d75be77](https://github.com/strongloop/loopback-next/commit/d75be77))
+* **testlab:** set port to 0 in givenHttpServerConfig ([90a0bfb](https://github.com/strongloop/loopback-next/commit/90a0bfb))
+
+
+
+
+
 <a name="0.23.0"></a>
 # [0.23.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.22.11...@loopback/cli@0.23.0) (2018-09-19)
 

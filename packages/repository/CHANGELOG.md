@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.17.1"></a>
+## [0.17.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.17.0...@loopback/repository@0.17.1) (2018-09-21)
+
+**Note:** Version bump only for package @loopback/repository
+
+
+
+
+
 <a name="0.17.0"></a>
 # [0.17.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.16.5...@loopback/repository@0.17.0) (2018-09-19)
 

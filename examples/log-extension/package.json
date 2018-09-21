@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-log-extension",
-  "version": "0.11.13",
+  "version": "0.11.14",
   "description": "An example extension project for LoopBack 4",
   "main": "index.js",
   "engines": {
@@ -45,16 +45,16 @@
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/examples/log-extension",
   "devDependencies": {
     "@loopback/build": "^0.7.3",
-    "@loopback/testlab": "^0.12.2",
+    "@loopback/testlab": "^0.13.0",
     "@types/debug": "0.0.30",
     "@types/node": "^10.1.1"
   },
   "dependencies": {
-    "@loopback/context": "^0.12.9",
-    "@loopback/core": "^0.11.10",
+    "@loopback/context": "^0.12.10",
+    "@loopback/core": "^0.11.11",
     "@loopback/dist-util": "^0.3.7",
-    "@loopback/openapi-v3": "^0.14.3",
-    "@loopback/rest": "^0.23.0",
+    "@loopback/openapi-v3": "^0.14.4",
+    "@loopback/rest": "^0.24.0",
     "chalk": "^2.3.2",
     "debug": "^3.1.0"
   }
