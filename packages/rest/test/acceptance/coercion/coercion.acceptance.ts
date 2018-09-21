@@ -96,7 +96,7 @@ describe('Coercion', () => {
   });
 
   async function givenAClient() {
-    app = new RestApplication({rest: givenHttpServerConfig({port: 0})});
+    app = new RestApplication({rest: givenHttpServerConfig()});
     app.controller(MyController);
     await app.start();
     client = createRestAppClient(app);

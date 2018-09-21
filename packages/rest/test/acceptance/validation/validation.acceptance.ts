@@ -156,7 +156,7 @@ describe('Validation at REST level', () => {
   }
 
   async function givenAnAppAndAClient(controller: ControllerClass) {
-    app = new RestApplication({rest: givenHttpServerConfig({port: 0})});
+    app = new RestApplication({rest: givenHttpServerConfig()});
     app.controller(controller);
     await app.start();
 

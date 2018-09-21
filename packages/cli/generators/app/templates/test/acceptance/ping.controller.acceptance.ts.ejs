@@ -30,9 +30,7 @@ describe('PingController', () => {
 
   function givenAnApplication() {
     app = new <%= project.applicationName %>({
-      rest: givenHttpServerConfig({
-        port: 0,
-      }),
+      rest: givenHttpServerConfig(),
     });
   }
 });

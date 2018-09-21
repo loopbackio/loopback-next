@@ -31,9 +31,7 @@ describe('Application', () => {
 
   function givenAnApplication() {
     app = new HelloWorldApplication({
-      rest: givenHttpServerConfig({
-        port: 0,
-      }),
+      rest: givenHttpServerConfig(),
       disableConsoleLog: true,
     });
   }
