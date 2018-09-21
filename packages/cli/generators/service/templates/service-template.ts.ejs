@@ -2,13 +2,10 @@ import {getService, juggler} from '@loopback/service-proxy';
 import {inject, Provider} from '@loopback/core';
 import {<%= dataSourceClassName %>} from '../datasources';
 
-/**
- * this is where you define the Node.js methods that will be
- * mapped to the SOAP operations as stated in the datasource
- * json file.
- */
 export interface <%= className %>Service {
-
+  // this is where you define the Node.js methods that will be
+  // mapped to the SOAP operations as stated in the datasource
+  // json file.
 }
 
 export class <%= className %>ServiceProvider implements Provider<<%= className %>Service> {
