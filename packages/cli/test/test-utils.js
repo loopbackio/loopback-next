@@ -114,7 +114,7 @@ exports.givenLBProject = function(rootDir, options, sandBoxFiles) {
     fs.writeFileSync(repoPath, '--DUMMY VALUE--');
   }
 
-  if (options.includeSandboxFilesFixtures && sandBoxFiles.length > 0) {
+  if (sandBoxFiles.length > 0) {
     for (let theFile of sandBoxFiles) {
       const fullPath = path.join(rootDir, theFile.path, theFile.file);
       if (!fs.existsSync(fullPath)) {

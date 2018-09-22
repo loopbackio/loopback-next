@@ -77,7 +77,6 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
    * Ask for Service Name
    */
   async promptArtifactName() {
-    if (this.shouldExit()) return false;
     debug('Prompting for service name');
 
     if (this.options.name) {
@@ -100,8 +99,6 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
   }
 
   async promptDataSourceName() {
-    if (this.shouldExit()) return false;
-
     debug('Prompting for a datasource ');
     let cmdDatasourceName;
     let datasourcesList;

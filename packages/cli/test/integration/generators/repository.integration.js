@@ -14,14 +14,17 @@ const expect = testlab.expect;
 const TestSandbox = testlab.TestSandbox;
 
 const generator = path.join(__dirname, '../../../generators/repository');
-
+const SANDBOX_FILES = require('../../fixtures/repository').SANDBOX_FILES;
 const testUtils = require('../../test-utils');
 
 // Test Sandbox
 const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
 const sandbox = new TestSandbox(SANDBOX_PATH);
 
-describe('lb4 repository', () => {
+describe('lb4 repository', function() {
+  // tslint:disable-next-line:no-invalid-this
+  this.timeout(30000);
+
   beforeEach('reset sandbox', async () => {
     await sandbox.reset();
   });
@@ -37,11 +40,7 @@ describe('lb4 repository', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(
-            SANDBOX_PATH,
-            {includeSandboxFilesFixtures: true},
-            SANDBOX_FILES,
-          ),
+          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
         )
         .withPrompts(multiItemPrompt);
 
@@ -97,11 +96,7 @@ describe('lb4 repository', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(
-            SANDBOX_PATH,
-            {includeSandboxFilesFixtures: true},
-            SANDBOX_FILES,
-          ),
+          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
         )
         .withPrompts(multiItemPrompt);
 
@@ -128,11 +123,7 @@ describe('lb4 repository', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(
-            SANDBOX_PATH,
-            {includeSandboxFilesFixtures: true},
-            SANDBOX_FILES,
-          ),
+          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
         )
         .withArguments('myrepo --datasource dbmem --model MultiWord');
       const expectedFile = path.join(
@@ -155,11 +146,7 @@ describe('lb4 repository', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(
-            SANDBOX_PATH,
-            {includeSandboxFilesFixtures: true},
-            SANDBOX_FILES,
-          ),
+          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
         )
         .withArguments('--config myconfig.json');
       const expectedFile = path.join(
@@ -193,11 +180,7 @@ describe('lb4 repository', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(
-            SANDBOX_PATH,
-            {includeSandboxFilesFixtures: true},
-            SANDBOX_FILES,
-          ),
+          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
         )
         .withPrompts(multiItemPrompt);
 
@@ -230,11 +213,7 @@ describe('lb4 repository', () => {
         testUtils
           .executeGenerator(generator)
           .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(
-              SANDBOX_PATH,
-              {includeSandboxFilesFixtures: true},
-              SANDBOX_FILES,
-            ),
+            testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
           )
           .withPrompts(basicPrompt)
           .withArguments(' --model InvalidModel'),
@@ -249,11 +228,7 @@ describe('lb4 repository', () => {
         testUtils
           .executeGenerator(generator)
           .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(
-              SANDBOX_PATH,
-              {includeSandboxFilesFixtures: true},
-              SANDBOX_FILES,
-            ),
+            testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
           )
           .withPrompts(basicPrompt),
       ).to.be.rejectedWith(/You did not select a valid model/);
@@ -263,13 +238,7 @@ describe('lb4 repository', () => {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(
-              SANDBOX_PATH,
-              {includeSandboxFilesFixtures: false},
-              SANDBOX_FILES,
-            ),
-          ),
+          .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH)),
       ).to.be.rejectedWith(/No datasources found/);
     });
   });
@@ -282,11 +251,7 @@ describe('lb4 repository', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(
-            SANDBOX_PATH,
-            {includeSandboxFilesFixtures: true},
-            SANDBOX_FILES,
-          ),
+          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
         )
         .withPrompts(basicPrompt)
         .withArguments(' --model Defaultmodel');
@@ -312,11 +277,7 @@ describe('lb4 repository', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(
-            SANDBOX_PATH,
-            {includeSandboxFilesFixtures: true},
-            SANDBOX_FILES,
-          ),
+          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
         )
         .withArguments('--datasource dbmem --model decoratordefined');
       const expectedFile = path.join(
@@ -346,11 +307,7 @@ describe('lb4 repository', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(
-            SANDBOX_PATH,
-            {includeSandboxFilesFixtures: true},
-            SANDBOX_FILES,
-          ),
+          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
         )
         .withArguments('--datasource dbkv --model Defaultmodel');
       const expectedFile = path.join(
@@ -377,11 +334,7 @@ describe('lb4 repository', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(
-            SANDBOX_PATH,
-            {includeSandboxFilesFixtures: true},
-            SANDBOX_FILES,
-          ),
+          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
         )
         .withPrompts(basicPrompt)
         .withArguments('--model decoratordefined');
@@ -406,166 +359,6 @@ describe('lb4 repository', () => {
 });
 
 // Sandbox constants
-const DATASOURCE_APP_PATH = 'src/datasources';
-const MODEL_APP_PATH = 'src/models';
-const CONFIG_PATH = '.';
+
 const REPOSITORY_APP_PATH = 'src/repositories';
 const INDEX_FILE = path.join(SANDBOX_PATH, REPOSITORY_APP_PATH, 'index.ts');
-const DUMMY_CONTENT = '--DUMMY VALUE--';
-
-const SANDBOX_FILES = [
-  {
-    path: CONFIG_PATH,
-    file: 'myconfig.json',
-    content: `{
-      "datasource": "dbmem",
-      "model": "decoratordefined"
-    }`,
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'dbkv.datasource.json',
-    content: JSON.stringify({
-      name: 'dbkv',
-      connector: 'kv-redis',
-    }),
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'dbkv.datasource.ts',
-    content: DUMMY_CONTENT,
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'dbmem.datasource.json',
-    content: JSON.stringify({
-      name: 'dbmem',
-      connector: 'memory',
-    }),
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'dbmem.datasource.ts',
-    content: DUMMY_CONTENT,
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'restdb.datasource.json',
-    content: JSON.stringify({
-      name: 'restdb',
-      connector: 'rest',
-    }),
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'restdb.datasource.ts',
-    content: DUMMY_CONTENT,
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'decoratordefined.model.ts',
-    content: `
-    import {Entity, model} from '@loopback/repository';
-
-    @model({
-      name: 'Product',
-      properties: {
-        thePK: {type: 'number', id: true},
-        name: {type: 'string', required: true},
-      },
-    })
-    export class DecoratorDefined extends Entity {
-      thePK: number;
-      name: string;
-
-      constructor(data?: Partial<DecoratorDefined>) {
-        super(data);
-      }
-    }
-    `,
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'defaultmodel.model.ts',
-    content: `
-    import {Entity, model, property} from '@loopback/repository';
-
-    @model()
-    export class DefaultModel extends Entity {
-      @property({
-        type: 'number',
-        id: true,
-        default: 0,
-      })
-      id?: number;
-
-      @property({
-        type: 'string',
-      })
-      desc?: string;
-
-      @property({
-        type: 'number',
-        default: 0,
-      })
-      balance?: number;
-
-      constructor(data?: Partial<DefaultModel>) {
-        super(data);
-      }
-    }
-    `,
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'multi-word.model.ts',
-    content: `
-    import {Entity, model, property} from '@loopback/repository';
-
-    @model()
-    export class MultiWord extends Entity {
-      @property({
-        type: 'string',
-        id: true,
-        default: 0,
-      })
-      pk?: string;
-
-      @property({
-        type: 'string',
-      })
-      desc?: string;
-
-      constructor(data?: Partial<MultiWord>) {
-        super(data);
-      }
-    }
-    `,
-  },
-  {
-    path: MODEL_APP_PATH,
-    file: 'invalid-id.model.ts',
-    content: `
-    import {Entity, model, property} from '@loopback/repository';
-
-    @model()
-    export class InvalidID extends Entity {
-      @property({
-        type: 'string',
-        required: true,
-        default: 0,
-      })
-      id: string;
-
-      @property({
-        type: 'string',
-      })
-      desc?: string;
-
-      constructor(data?: Partial<InvalidID>) {
-        super(data);
-      }
-    }
-    `,
-  },
-];
