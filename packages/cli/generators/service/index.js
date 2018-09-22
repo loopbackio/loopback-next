@@ -61,14 +61,12 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
   async checkPaths() {
     // check for datasources
     if (!fs.existsSync(this.artifactInfo.datasourcesDir)) {
-      return this.exit(
-        new Error(
-          `${ERROR_NO_DATA_SOURCES_FOUND} ${
-            this.artifactInfo.datasourcesDir
-          }.${chalk.yellow(
-            'Please visit https://loopback.io/doc/en/lb4/DataSource-generator.html for information on how datasources are discovered',
-          )}`,
-        ),
+      new Error(
+        `${ERROR_NO_DATA_SOURCES_FOUND} ${
+          this.artifactInfo.datasourcesDir
+        }. ${chalk.yellow(
+          'Please visit https://loopback.io/doc/en/lb4/DataSource-generator.html for information on how datasources are discovered',
+        )}`,
       );
     }
   }
@@ -142,7 +140,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
         new Error(
           `${ERROR_NO_DATA_SOURCES_FOUND} ${
             this.artifactInfo.datasourcesDir
-          }.${chalk.yellow(
+          }. ${chalk.yellow(
             'Please visit https://loopback.io/doc/en/lb4/DataSource-generator.html for information on how datasources are discovered',
           )}`,
         ),
@@ -223,10 +221,9 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
       path.join(this.artifactInfo.outDir, this.artifactInfo.outFile),
     );
 
-    if (debug.enabled) {
-      debug(`artifactInfo: ${inspect(this.artifactInfo)}`);
-      debug(`Copying artifact to: ${dest}`);
-    }
+    debug(`artifactInfo: ${inspect(this.artifactInfo)}`);
+    debug(`Copying artifact to: ${dest}`);
+
     this.fs.copyTpl(
       source,
       dest,
@@ -235,6 +232,19 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
       {globOptions: {dot: true}},
     );
     return;
+  }
+
+  install() {
+    if (this.shouldExit()) return false;
+    debug('install npm dependencies');
+    const pkgJson = this.packageJson || {};
+    const deps = pkgJson.dependencies || {};
+    const pkgs = [];
+
+    if (!deps['@loopback/service-proxy']) {
+      pkgs.push('@loopback/service-proxy');
+    }
+    if (pkgs.length) this.npmInstall(pkgs, {save: true});
   }
 
   async end() {
