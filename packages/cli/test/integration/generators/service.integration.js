@@ -13,7 +13,7 @@ const expect = testlab.expect;
 const TestSandbox = testlab.TestSandbox;
 
 const generator = path.join(__dirname, '../../../generators/service');
-
+const SANDBOX_FILES = require('../../fixtures/service').SANDBOX_FILES;
 const testUtils = require('../../test-utils');
 
 // Test Sandbox
@@ -30,9 +30,7 @@ describe('lb4 service', () => {
       return expect(
         testUtils
           .executeGenerator(generator)
-          .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
-          ),
+          .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH)),
       ).to.be.rejectedWith(/No datasources found/);
     });
   });
@@ -42,11 +40,7 @@ describe('lb4 service', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(
-            SANDBOX_PATH,
-            {includeSandboxFilesFixtures: true},
-            SANDBOX_FILES,
-          ),
+          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
         )
         .withArguments('myService --datasource myds');
       const expectedFile = path.join(
@@ -73,11 +67,7 @@ describe('lb4 service', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(
-            SANDBOX_PATH,
-            {includeSandboxFilesFixtures: true},
-            SANDBOX_FILES,
-          ),
+          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
         )
         .withArguments('--config mysoapconfig.json');
       const expectedFile = path.join(
@@ -113,11 +103,7 @@ describe('lb4 service', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(
-            SANDBOX_PATH,
-            {includeSandboxFilesFixtures: true},
-            SANDBOX_FILES,
-          ),
+          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
         )
         .withPrompts(multiItemPrompt);
 
@@ -150,11 +136,7 @@ describe('lb4 service', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(
-            SANDBOX_PATH,
-            {includeSandboxFilesFixtures: true},
-            SANDBOX_FILES,
-          ),
+          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
         )
         .withPrompts(multiItemPrompt);
 
@@ -181,11 +163,7 @@ describe('lb4 service', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(
-            SANDBOX_PATH,
-            {includeSandboxFilesFixtures: true},
-            SANDBOX_FILES,
-          ),
+          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
         )
         .withArguments('--config myrestconfig.json');
       const expectedFile = path.join(
@@ -211,11 +189,7 @@ describe('lb4 service', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(
-            SANDBOX_PATH,
-            {includeSandboxFilesFixtures: true},
-            SANDBOX_FILES,
-          ),
+          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
         )
         .withArguments('myservice --datasource restdb');
       const expectedFile = path.join(
@@ -241,66 +215,5 @@ describe('lb4 service', () => {
 });
 
 // Sandbox constants
-const DATASOURCE_APP_PATH = 'src/datasources';
-const CONFIG_PATH = '.';
 const SERVICE_APP_PATH = 'src/services';
 const INDEX_FILE = path.join(SANDBOX_PATH, SERVICE_APP_PATH, 'index.ts');
-const DUMMY_CONTENT = '--DUMMY VALUE--';
-
-const SANDBOX_FILES = [
-  {
-    path: CONFIG_PATH,
-    file: 'mysoapconfig.json',
-    content: `{
-      "name": "MultiWordService",
-      "datasource": "myds"
-    }`,
-  },
-  {
-    path: CONFIG_PATH,
-    file: 'myrestconfig.json',
-    content: `{
-      "name": "myservice",
-      "datasource": "restdb"
-    }`,
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'myds.datasource.json',
-    content: JSON.stringify({
-      name: 'myds',
-      connector: 'soap',
-    }),
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'myds.datasource.ts',
-    content: DUMMY_CONTENT,
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'dbmem.datasource.json',
-    content: JSON.stringify({
-      name: 'dbmem',
-      connector: 'memory',
-    }),
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'dbmem.datasource.ts',
-    content: DUMMY_CONTENT,
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'restdb.datasource.json',
-    content: JSON.stringify({
-      name: 'restdb',
-      connector: 'rest',
-    }),
-  },
-  {
-    path: DATASOURCE_APP_PATH,
-    file: 'restdb.datasource.ts',
-    content: DUMMY_CONTENT,
-  },
-];
