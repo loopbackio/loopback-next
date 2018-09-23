@@ -18,6 +18,10 @@ lb4 model [options] [<name>]
 
 ### Options
 
+`--base` : _(Optional)_ a valid model already created in src/models or any of
+the core based class models Entity or Model. Your new model will extend this
+selected base model class.
+
 {% include_relative includes/CLI-std-options.md %}
 
 ### Arguments
@@ -32,6 +36,11 @@ The tool will prompt you for:
 - **Name of the model.** _(modelName)_ If the name had been supplied from the
   command line, the prompt is skipped and the datasource is built with the name
   from the command-line argument.
+
+- **Model base class.** _(modelBaseClass)_ If the command line option --base had
+  been supplied with a valid model class name, the prompt is skipped. It will
+  present you with a list of available models from `src/models` including the
+  **Entity** and **Model** at the top of the list.
 
 The tool will next recursively prompt you for the model's properties until a
 blank one is entered. Properties will be prompted for as follows:
