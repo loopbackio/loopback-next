@@ -7,9 +7,15 @@
 
 const ArtifactGenerator = require('../../lib/artifact-generator');
 const debug = require('../../lib/debug')('model-generator');
+const inspect = require('util').inspect;
 const utils = require('../../lib/utils');
 const chalk = require('chalk');
 const path = require('path');
+
+const PROMPT_BASE_MODEL_CLASS = 'Please select the model base class';
+const ERROR_NO_MODELS_FOUND = 'Model was not found in';
+const BASE_MODELS = ['Entity', 'Model'];
+const MODEL_TEMPLATE_PATH = 'model.ts.ejs';
 
 /**
  * Model Generator
@@ -54,6 +60,17 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     this.artifactInfo.properties = {};
     this.propCounter = 0;
 
+    this.artifactInfo.modelDir = path.resolve(
+      this.artifactInfo.rootDir,
+      utils.modelsDir,
+    );
+
+    this.option('base', {
+      type: String,
+      required: false,
+      description: 'A valid based model',
+    });
+
     return super._setupGenerator();
   }
 
@@ -70,15 +87,82 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     if (this.shouldExit()) return;
     await super.promptArtifactName();
     this.artifactInfo.className = utils.toClassName(this.artifactInfo.name);
-    this.log();
-    this.log(
-      `Let's add a property to ${chalk.yellow(this.artifactInfo.className)}`,
-    );
+  }
+
+  // Ask for Model base class
+  async promptModelBaseClassName() {
+    const availableModelBaseClasses = [];
+
+    availableModelBaseClasses.push(...BASE_MODELS);
+
+    try {
+      debug(`model list dir ${this.artifactInfo.modelDir}`);
+      const modelList = await utils.getArtifactList(
+        this.artifactInfo.modelDir,
+        'model',
+      );
+      debug(`modelist ${modelList}`);
+
+      if (modelList && modelList.length > 0) {
+        availableModelBaseClasses.push(...modelList);
+        debug(`availableModelBaseClasses ${availableModelBaseClasses}`);
+      }
+    } catch (err) {
+      debug(`error ${err}`);
+      return this.exit(err);
+    }
+
+    if (
+      this.options.base &&
+      availableModelBaseClasses.includes(this.options.base)
+    ) {
+      this.artifactInfo.modelBaseClass = utils.toClassName(this.options.base);
+    } else {
+      if (this.options.base) {
+        // the model specified in the command line does not exists
+        return this.exit(
+          new Error(
+            `${ERROR_NO_MODELS_FOUND} ${
+              this.artifactInfo.modelDir
+            }.${chalk.yellow(
+              'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
+            )}`,
+          ),
+        );
+      }
+    }
+
+    return this.prompt([
+      {
+        type: 'list',
+        name: 'modelBaseClass',
+        message: PROMPT_BASE_MODEL_CLASS,
+        choices: availableModelBaseClasses,
+        when: !this.artifactInfo.modelBaseClass,
+        default: availableModelBaseClasses[0],
+        validate: utils.validateClassName,
+      },
+    ])
+      .then(props => {
+        Object.assign(this.artifactInfo, props);
+        debug(`props after model base class prompt: ${inspect(props)}`);
+        this.log(
+          `Let's add a property to ${chalk.yellow(
+            this.artifactInfo.className,
+          )}`,
+        );
+        return props;
+      })
+      .catch(err => {
+        debug(`Error during model base class prompt: ${err}`);
+        return this.exit(err);
+      });
   }
 
   // Prompt for a Property Name
   async promptPropertyName() {
-    if (this.shouldExit()) return;
+    if (this.shouldExit()) return false;
+
     this.log(`Enter an empty property name when done`);
     this.log();
 
@@ -200,7 +284,11 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
       this.artifactInfo.outFile,
     );
 
-    const modelTemplatePath = this.templatePath('model.ts.ejs');
+    this.artifactInfo.isModelBaseBuiltin = BASE_MODELS.includes(
+      this.artifactInfo.modelBaseClass,
+    )
+      ? true
+      : false;
 
     // Set up types for Templating
     const TS_TYPES = ['string', 'number', 'object', 'boolean', 'any'];
@@ -253,7 +341,11 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
       }
     });
 
-    this.fs.copyTpl(modelTemplatePath, tsPath, this.artifactInfo);
+    this.fs.copyTpl(
+      this.templatePath(MODEL_TEMPLATE_PATH),
+      tsPath,
+      this.artifactInfo,
+    );
   }
 
   async end() {
