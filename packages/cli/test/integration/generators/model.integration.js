@@ -60,6 +60,17 @@ describe('lb4 model integration', () => {
     ).to.be.rejectedWith(/No `loopback` keyword found in/);
   });
 
+  it('does not run if passed an invalid model from command line', () => {
+    return expect(
+      testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(SANDBOX_PATH, {excludeKeyword: true}),
+        )
+        .withArguments('myNewModel --base InvalidModel'),
+    ).to.be.rejectedWith(/Model was not found in/);
+  });
+
   describe('model generator', () => {
     it('scaffolds correct files with input', async () => {
       await testUtils
@@ -71,6 +82,58 @@ describe('lb4 model integration', () => {
         });
 
       basicModelFileChecks();
+    });
+
+    it('scaffolds correct files with model base class', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .withPrompts({
+          name: 'test',
+          propName: null,
+          modelBaseClass: 'Model',
+        });
+
+      assert.file(expectedModelFile);
+      assert.file(expectedIndexFile);
+
+      // Actual Model File
+      assert.fileContent(
+        expectedModelFile,
+        /import {Model, model, property} from '@loopback\/repository';/,
+      );
+      assert.fileContent(expectedModelFile, /@model()/);
+      assert.fileContent(
+        expectedModelFile,
+        /export class Test extends Model {/,
+      );
+    });
+
+    it('scaffolds correct files with model custom class', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(SANDBOX_PATH, {includeDummyModel: true}),
+        )
+        .withPrompts({
+          name: 'test',
+          propName: null,
+          modelBaseClass: 'ProductReview',
+        });
+
+      assert.file(expectedModelFile);
+      assert.file(expectedIndexFile);
+
+      // Actual Model File
+      assert.fileContent(
+        expectedModelFile,
+        /import {model, property} from '@loopback\/repository';/,
+      );
+      assert.fileContent(expectedModelFile, /@model()/);
+      assert.fileContent(
+        expectedModelFile,
+        /export class Test extends ProductReview {/,
+      );
     });
 
     it('scaffolds correct files with args', async () => {
