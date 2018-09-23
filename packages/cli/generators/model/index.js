@@ -14,7 +14,11 @@ const path = require('path');
 
 const PROMPT_BASE_MODEL_CLASS = 'Please select the model base class';
 const ERROR_NO_MODELS_FOUND = 'Model was not found in';
-const BASE_MODELS = ['Entity', 'Model'];
+const BASE_MODELS = [
+  'Entity',
+  'Model',
+  {type: 'separator', line: '----- Custom Models -----'},
+];
 const MODEL_TEMPLATE_PATH = 'model.ts.ejs';
 
 /**
@@ -286,9 +290,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
 
     this.artifactInfo.isModelBaseBuiltin = BASE_MODELS.includes(
       this.artifactInfo.modelBaseClass,
-    )
-      ? true
-      : false;
+    );
 
     // Set up types for Templating
     const TS_TYPES = ['string', 'number', 'object', 'boolean', 'any'];
