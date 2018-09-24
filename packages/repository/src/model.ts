@@ -3,9 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Options, AnyObject, DataObject} from './common-types';
-import {Type} from './types';
+import {AnyObject, DataObject, Options} from './common-types';
 import {RelationDefinitionBase} from './decorators/relation.decorator';
+import {TypeResolver} from './type-resolver';
+import {Type} from './types';
 
 /**
  * This module defines the key classes representing building blocks for Domain
@@ -15,7 +16,12 @@ import {RelationDefinitionBase} from './decorators/relation.decorator';
 
 // tslint:disable:no-any
 
-export type PropertyType = string | Function | Object | Type<any>;
+export type PropertyType =
+  | string
+  | Function
+  | Object
+  | Type<any>
+  | TypeResolver<Model>;
 
 /**
  * Property definition for a model

@@ -3,16 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  ModelMetadataHelper,
-  PropertyDefinition,
-  ModelDefinition,
-} from '@loopback/repository';
 import {MetadataInspector} from '@loopback/context';
 import {
-  JSONSchema6 as JSONSchema,
-  JSONSchema6TypeName as JSONSchemaTypeName,
-} from 'json-schema';
+  isBuiltinType,
+  ModelDefinition,
+  ModelMetadataHelper,
+  PropertyDefinition,
+  resolveType,
+} from '@loopback/repository';
+import {JSONSchema6 as JSONSchema} from 'json-schema';
 import {JSON_SCHEMA_KEY} from './keys';
 
 /**
@@ -79,22 +78,6 @@ export function stringTypeToWrapper(type: string | Function): Function {
 }
 
 /**
- * Determines whether the given constructor is a custom type or not
- * @param ctor Constructor
- */
-export function isComplexType(ctor: Function) {
-  return !([
-    String,
-    Number,
-    Boolean,
-    Object,
-    Function,
-    Array,
-    Date,
-  ] as Function[]).includes(ctor);
-}
-
-/**
  * Determines whether a given string or constructor is array type or not
  * @param type Type as string or wrapper
  */
@@ -122,19 +105,20 @@ export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
     result = propDef;
   }
 
-  propertyType = stringTypeToWrapper(propertyType);
+  const wrappedType = stringTypeToWrapper(propertyType);
+  const resolvedType = resolveType(wrappedType);
 
-  if (isComplexType(propertyType)) {
-    Object.assign(propDef, {$ref: `#/definitions/${propertyType.name}`});
-  } else if (propertyType === Date) {
+  if (resolvedType === Date) {
     Object.assign(propDef, {
       type: 'string',
       format: 'date-time',
     });
-  } else {
+  } else if (isBuiltinType(resolvedType)) {
     Object.assign(propDef, {
-      type: <JSONSchemaTypeName>propertyType.name.toLowerCase(),
+      type: resolvedType.name.toLowerCase(),
     });
+  } else {
+    Object.assign(propDef, {$ref: `#/definitions/${resolvedType.name}`});
   }
 
   return result;
@@ -176,34 +160,40 @@ export function modelToJsonSchema(ctor: Function): JSONSchema {
     // populating "properties" key
     result.properties[p] = metaToJsonProperty(metaProperty);
 
-    // populating JSON Schema 'definitions'
-    const referenceType = isArrayType(metaProperty.type as string | Function)
-      ? // shimks: ugly type casting; this should be replaced by logic to throw
-        // error if itemType/type is not a string or a function
-        (metaProperty.itemType as string | Function)
-      : (metaProperty.type as string | Function);
-    if (typeof referenceType === 'function' && isComplexType(referenceType)) {
-      const propSchema = getJsonSchema(referenceType);
-
-      if (propSchema && Object.keys(propSchema).length > 0) {
-        result.definitions = result.definitions || {};
-
-        // delete nested definition
-        if (propSchema.definitions) {
-          for (const key in propSchema.definitions) {
-            result.definitions[key] = propSchema.definitions[key];
-          }
-          delete propSchema.definitions;
-        }
-
-        result.definitions[referenceType.name] = propSchema;
-      }
-    }
-
     // handling 'required' metadata
     if (metaProperty.required) {
       result.required = result.required || [];
       result.required.push(p);
+    }
+
+    // populating JSON Schema 'definitions'
+    // shimks: ugly type casting; this should be replaced by logic to throw
+    // error if itemType/type is not a string or a function
+    const resolvedType = resolveType(metaProperty.type) as string | Function;
+    const referenceType = isArrayType(resolvedType)
+      ? // shimks: ugly type casting; this should be replaced by logic to throw
+        // error if itemType/type is not a string or a function
+        resolveType(metaProperty.itemType as string | Function)
+      : resolvedType;
+
+    if (typeof referenceType !== 'function' || isBuiltinType(referenceType)) {
+      continue;
+    }
+
+    const propSchema = getJsonSchema(referenceType);
+
+    if (propSchema && Object.keys(propSchema).length > 0) {
+      result.definitions = result.definitions || {};
+
+      // delete nested definition
+      if (propSchema.definitions) {
+        for (const key in propSchema.definitions) {
+          result.definitions[key] = propSchema.definitions[key];
+        }
+        delete propSchema.definitions;
+      }
+
+      result.definitions[referenceType.name] = propSchema;
     }
   }
   return result;

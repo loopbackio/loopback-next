@@ -387,6 +387,39 @@ describe('build-schema', () => {
           expectValidJsonSchema(jsonSchema);
         });
 
+        it('properly converts decorated custom array type with a resolver', () => {
+          @model()
+          class Address {
+            @property()
+            city: string;
+          }
+
+          @model()
+          class TestModel {
+            @property.array(() => Address)
+            addresses: Address[];
+          }
+
+          const jsonSchema = modelToJsonSchema(TestModel);
+          expect(jsonSchema.properties).to.deepEqual({
+            addresses: {
+              type: 'array',
+              items: {$ref: '#/definitions/Address'},
+            },
+          });
+          expect(jsonSchema.definitions).to.deepEqual({
+            Address: {
+              title: 'Address',
+              properties: {
+                city: {
+                  type: 'string',
+                },
+              },
+            },
+          });
+          expectValidJsonSchema(jsonSchema);
+        });
+
         it('creates definitions only at the root level of the schema', () => {
           @model()
           class CustomTypeFoo {

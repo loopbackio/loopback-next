@@ -3,10 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {PropertyDefinition} from '@loopback/repository';
 import {expect} from '@loopback/testlab';
-import {isComplexType, stringTypeToWrapper, metaToJsonProperty} from '../..';
+import {metaToJsonProperty, stringTypeToWrapper} from '../..';
 
 describe('build-schema', () => {
+  class CustomType {}
   describe('stringTypeToWrapper', () => {
     context('when given primitive types in string', () => {
       it('returns String for "string"', () => {
@@ -45,43 +47,6 @@ describe('build-schema', () => {
       expect(() => {
         stringTypeToWrapper('function');
       }).to.throw(/Unsupported type/);
-    });
-  });
-
-  describe('isComplextype', () => {
-    context('when given primitive wrappers', () => {
-      it('returns false for Number', () => {
-        expect(isComplexType(Number)).to.eql(false);
-      });
-
-      it('returns false for String', () => {
-        expect(isComplexType(String)).to.eql(false);
-      });
-
-      it('returns false for Boolean', () => {
-        expect(isComplexType(Boolean)).to.eql(false);
-      });
-
-      it('returns false for Object', () => {
-        expect(isComplexType(Object)).to.eql(false);
-      });
-
-      it('returns false for Function', () => {
-        expect(isComplexType(Function)).to.eql(false);
-      });
-
-      it('returns false for Date', () => {
-        expect(isComplexType(Date)).to.eql(false);
-      });
-
-      it('returns false for Array', () => {
-        expect(isComplexType(Array)).to.eql(false);
-      });
-    });
-
-    it('returns true if any other wrappers are passed in', () => {
-      class CustomType {}
-      expect(isComplexType(CustomType)).to.eql(true);
     });
   });
 
@@ -161,8 +126,14 @@ describe('build-schema', () => {
     });
 
     it('converts complex types', () => {
-      class CustomType {}
       expect(metaToJsonProperty({type: CustomType})).to.eql({
+        $ref: '#/definitions/CustomType',
+      });
+    });
+
+    it('converts complex types with resolver', () => {
+      const propDef: PropertyDefinition = {type: () => CustomType};
+      expect(metaToJsonProperty(propDef)).to.eql({
         $ref: '#/definitions/CustomType',
       });
     });
@@ -175,8 +146,18 @@ describe('build-schema', () => {
     });
 
     it('converts arrays of custom types', () => {
-      class CustomType {}
       expect(metaToJsonProperty({type: Array, itemType: CustomType})).to.eql({
+        type: 'array',
+        items: {$ref: '#/definitions/CustomType'},
+      });
+    });
+
+    it('converts arrays of resolved types', () => {
+      const propDef: PropertyDefinition = {
+        type: Array,
+        itemType: () => CustomType,
+      };
+      expect(metaToJsonProperty(propDef)).to.eql({
         type: 'array',
         items: {$ref: '#/definitions/CustomType'},
       });
