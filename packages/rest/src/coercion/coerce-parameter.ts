@@ -67,9 +67,18 @@ export function coerceParameter(
       return coerceObject(data, spec);
     case 'string':
     case 'password':
+      return coerceString(data, spec);
     default:
       return data;
   }
+}
+
+function coerceString(data: string | object, spec: ParameterObject) {
+  if (typeof data !== 'string')
+    throw RestHttpErrors.invalidData(data, spec.name);
+
+  debug('data of type string is coerced to %s', data);
+  return data;
 }
 
 function coerceBuffer(data: string | object, spec: ParameterObject) {
