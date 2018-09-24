@@ -214,6 +214,55 @@ export class HelloController {
 - `@param.query.number` specifies in the spec being generated that the route
   takes a parameter via query which will be a number.
 
+## Custom Response Writing
+
+By default, LoopBack serializes the return value from the controller methods
+into HTTP response based on the data type. For example, a string return value
+will be written to HTTP response as follows:
+
+status code: `200` Content-Type header: `text/plain` body: `the string value`
+
+In some cases, it's desirable for a controller method to customize how to
+produce the HTTP response. For example, we want to set the content type as
+`text/html`.
+
+```ts
+import {get} from '@loopback/openapi-v3';
+import {inject} from '@loopback/context';
+import {RestBindings, Response} from '@loopback/rest';
+
+export class HomePageController {
+  // ...
+  constructor(@inject(RestBindings.Http.RESPONSE) private res: Response) {
+    // ...
+  }
+  @get('/')
+  homePage() {
+    const homePage = '<html><body><h1>Hello</h1></body></html>';
+    this.res
+      .status(200)
+      .contentType('html')
+      .send(homePage);
+    // Return the `response` object itself to bypass further writing to HTTP
+    return this.res;
+  }
+}
+```
+
+Alternatively, the controller method can set status code and content type but
+leave the body to be populated by the LoopBack HTTP response writer.
+
+```ts
+@get('/')
+  homePage() {
+    const homePage = '<html><body><h1>Hello</h1></body></html>';
+    this.res
+      .status(200)
+      .contentType('html');
+    return homePage;
+  }
+```
+
 ## Handling Errors in Controllers
 
 In order to specify errors for controller methods to throw, the class
