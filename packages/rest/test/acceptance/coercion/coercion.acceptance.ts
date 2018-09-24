@@ -17,7 +17,9 @@ describe('Coercion', () => {
     await app.stop();
   });
 
-  afterEach(() => spy.restore());
+  afterEach(() => {
+    if (spy) spy.restore();
+  });
 
   class MyController {
     @get('/create-number-from-path/{num}')
@@ -33,6 +35,11 @@ describe('Coercion', () => {
     @get('/create-number-from-header')
     createNumberFromHeader(@param.header.number('num') num: number) {
       return num;
+    }
+
+    @get('/string-from-query')
+    getStringFromQuery(@param.query.string('where') where: string) {
+      return where;
     }
 
     @get('/object-from-query')
@@ -93,6 +100,17 @@ describe('Coercion', () => {
         active: 'true',
       },
     });
+  });
+
+  it('rejects object value constructed by qs for string parameter', async () => {
+    await client
+      .get('/string-from-query')
+      .query({
+        'where[id]': 1,
+        'where[name]': 'Pen',
+        'where[active]': true,
+      })
+      .expect(400);
   });
 
   async function givenAClient() {
