@@ -52,12 +52,16 @@ describe('app-generator specific files', () => {
     assert.fileContent('src/controllers/ping.controller.ts', /@inject/);
     assert.fileContent(
       'src/controllers/ping.controller.ts',
-      /@get\('\/ping'\)/,
+      /@get\('\/ping'\, \{/,
     );
     assert.fileContent('src/controllers/ping.controller.ts', /ping\(\)/);
     assert.fileContent(
       'src/controllers/ping.controller.ts',
       /\'\@loopback\/rest\'/,
+    );
+    assert.fileContent(
+      'test/acceptance/ping.controller.acceptance.ts',
+      /describe\('PingController'/,
     );
   });
 });
