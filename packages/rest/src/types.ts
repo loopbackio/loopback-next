@@ -51,8 +51,13 @@ export type InvokeMethod = (
  *
  * @param response The response the response to send to.
  * @param result The operation result to send.
+ * @param contentType The content type to send
  */
-export type Send = (response: Response, result: OperationRetval) => void;
+export type Send = (
+  response: Response,
+  result: OperationRetval,
+  contentType?: string,
+) => void;
 
 /**
  * Reject the request with an error.
