@@ -68,6 +68,13 @@ describe('writer', () => {
     expect(result.payload).to.equal('ABC123');
   });
 
+  it('writes null object result to response as JSON', async () => {
+    writeResultToResponse(response, null);
+    const result = await observedResponse;
+    expect(result.headers['content-type']).to.eql('application/json');
+    expect(result.payload).to.equal('null');
+  });
+
   it('sends 204 No Content when the response is undefined', async () => {
     writeResultToResponse(response, undefined);
     const result = await observedResponse;
@@ -75,6 +82,36 @@ describe('writer', () => {
     expect(result.statusCode).to.equal(204);
     expect(result.headers).to.not.have.property('content-type');
     expect(result.payload).to.equal('');
+  });
+
+  it('skips writing when the return value is the response', async () => {
+    response
+      .status(200)
+      .contentType('text/html; charset=utf-8')
+      .send('<html><body>Hi</body></html>');
+    writeResultToResponse(response, response);
+    const result = await observedResponse;
+    expect(result.statusCode).to.equal(200);
+    expect(result.headers).to.have.property(
+      'content-type',
+      'text/html; charset=utf-8',
+    );
+    expect(result.payload).to.equal('<html><body>Hi</body></html>');
+  });
+
+  it('skips writing when the response headers are sent', async () => {
+    response
+      .status(200)
+      .contentType('text/html; charset=utf-8')
+      .send('<html><body>Hi</body></html>');
+    writeResultToResponse(response, undefined);
+    const result = await observedResponse;
+    expect(result.statusCode).to.equal(200);
+    expect(result.headers).to.have.property(
+      'content-type',
+      'text/html; charset=utf-8',
+    );
+    expect(result.payload).to.equal('<html><body>Hi</body></html>');
   });
 
   function setupResponseMock() {

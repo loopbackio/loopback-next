@@ -19,13 +19,21 @@ export function writeResultToResponse(
   // result returned back from invoking controller method
   result: OperationRetval,
 ): void {
-  if (!result) {
+  // Bypass response writing if the controller method returns `response` itself
+  // or the response headers have been sent
+  if (result === response || response.headersSent) {
+    return;
+  }
+  if (result === undefined) {
     response.statusCode = 204;
     response.end();
     return;
   }
 
-  if (result instanceof Readable || typeof result.pipe === 'function') {
+  const isStream =
+    result instanceof Readable || typeof (result && result.pipe) === 'function';
+
+  if (isStream) {
     response.setHeader('Content-Type', 'application/octet-stream');
     // Stream
     result.pipe(response);
