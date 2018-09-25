@@ -47,9 +47,9 @@ export class DataSourceBooter extends BaseArtifactBooter {
     await super.load();
 
     /**
-     * If Repository Classes were discovered, we need to make sure RepositoryMixin
-     * was used (so we have `app.repository()`) to perform the binding of a
-     * Repository Class.
+     * If DataSource Classes were discovered, we need to make sure RepositoryMixin
+     * was used (so we have `app.dataSource()`) to perform the binding of a
+     * DataSource Class.
      */
     if (this.classes.length > 0) {
       if (!this.app.dataSource) {
