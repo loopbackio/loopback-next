@@ -64,11 +64,11 @@ exports.executeGenerator = function(GeneratorOrNamespace, settings) {
  * @property {boolean} includeDummyModel Creates a dummy model file in /src/models/product-review.model.ts
  * @property {boolean} includeDummyRepository Creates a dummy repository file in /src/repositories/bar.repository.ts
  * @property {boolean} includeSandboxFilesFixtures creates files specified in SANDBOX_FILES array
- * @param {Object[]} sandBoxFiles specify files, directories and their content to be included as fixtures
+ * @param {array} additionalFiles specify files, directories and their content to be included as fixtures
  */
-exports.givenLBProject = function(rootDir, options, sandBoxFiles) {
+exports.givenLBProject = function(rootDir, options) {
   options = options || {};
-  sandBoxFiles = sandBoxFiles || [];
+  const sandBoxFiles = options.additionalFiles || [];
 
   const content = {};
   if (!options.excludeKeyword) {

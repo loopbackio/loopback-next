@@ -40,7 +40,9 @@ describe('lb4 repository', function() {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
         )
         .withPrompts(multiItemPrompt);
 
@@ -96,7 +98,9 @@ describe('lb4 repository', function() {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
         )
         .withPrompts(multiItemPrompt);
 
@@ -123,7 +127,9 @@ describe('lb4 repository', function() {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
         )
         .withArguments('myrepo --datasource dbmem --model MultiWord');
       const expectedFile = path.join(
@@ -146,7 +152,9 @@ describe('lb4 repository', function() {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
         )
         .withArguments('--config myconfig.json');
       const expectedFile = path.join(
@@ -180,7 +188,9 @@ describe('lb4 repository', function() {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
         )
         .withPrompts(multiItemPrompt);
 
@@ -213,7 +223,9 @@ describe('lb4 repository', function() {
         testUtils
           .executeGenerator(generator)
           .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+            testUtils.givenLBProject(SANDBOX_PATH, {
+              additionalFiles: SANDBOX_FILES,
+            }),
           )
           .withPrompts(basicPrompt)
           .withArguments(' --model InvalidModel'),
@@ -228,7 +240,9 @@ describe('lb4 repository', function() {
         testUtils
           .executeGenerator(generator)
           .inDir(SANDBOX_PATH, () =>
-            testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+            testUtils.givenLBProject(SANDBOX_PATH, {
+              additionalFiles: SANDBOX_FILES,
+            }),
           )
           .withPrompts(basicPrompt),
       ).to.be.rejectedWith(/You did not select a valid model/);
@@ -251,7 +265,9 @@ describe('lb4 repository', function() {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
         )
         .withPrompts(basicPrompt)
         .withArguments(' --model Defaultmodel');
@@ -277,7 +293,9 @@ describe('lb4 repository', function() {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
         )
         .withArguments('--datasource dbmem --model decoratordefined');
       const expectedFile = path.join(
@@ -307,7 +325,9 @@ describe('lb4 repository', function() {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
         )
         .withArguments('--datasource dbkv --model Defaultmodel');
       const expectedFile = path.join(
@@ -334,7 +354,9 @@ describe('lb4 repository', function() {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
         )
         .withPrompts(basicPrompt)
         .withArguments('--model decoratordefined');
@@ -359,6 +381,5 @@ describe('lb4 repository', function() {
 });
 
 // Sandbox constants
-
 const REPOSITORY_APP_PATH = 'src/repositories';
 const INDEX_FILE = path.join(SANDBOX_PATH, REPOSITORY_APP_PATH, 'index.ts');
