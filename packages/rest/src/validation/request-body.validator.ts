@@ -87,6 +87,9 @@ function convertToJsonSchema(openapiSchema: SchemaObject) {
  * @param schema The JSON schema used to perform the validation.
  * @param globalSchemas Schema references.
  */
+
+const compiledSchemaCache = new WeakMap();
+
 function validateValueAgainstJsonSchema(
   // tslint:disable-next-line:no-any
   body: any,
@@ -102,22 +105,23 @@ function validateValueAgainstJsonSchema(
     allErrors: true,
   });
 
-  try {
-    if (ajv.validate(schemaWithRef, body)) {
-      debug('Request body passed AJV validation.');
-      return;
-    }
-  } catch (err) {
-    debug('Fails to execute AJV validation:', err);
-    // TODO: [rfeng] Do we want to introduce a flag to disable validation
-    // or sink validation errors?
-    throw err;
+  if (!compiledSchemaCache.has(jsonSchema)) {
+    const compiled = ajv.compile(schemaWithRef);
+    compiledSchemaCache.set(jsonSchema, compiled);
   }
 
-  debug('Invalid request body: %s', util.inspect(ajv.errors));
+  const validate = compiledSchemaCache.get(jsonSchema);
+  if (validate(body)) {
+    debug('Request body passed AJV validation.');
+    return;
+  }
+
+  const validationErrors = validate.errors;
+
+  debug('Invalid request body: %s', util.inspect(validationErrors));
 
   const error = RestHttpErrors.invalidRequestBody();
-  error.details = _.map(ajv.errors, e => {
+  error.details = _.map(validationErrors, e => {
     return {
       path: e.dataPath,
       code: e.keyword,
