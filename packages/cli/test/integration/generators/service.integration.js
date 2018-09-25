@@ -40,7 +40,9 @@ describe('lb4 service', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
         )
         .withArguments('myService --datasource myds');
       const expectedFile = path.join(
@@ -67,7 +69,9 @@ describe('lb4 service', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
         )
         .withArguments('--config mysoapconfig.json');
       const expectedFile = path.join(
@@ -103,7 +107,9 @@ describe('lb4 service', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
         )
         .withPrompts(multiItemPrompt);
 
@@ -136,7 +142,9 @@ describe('lb4 service', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
         )
         .withPrompts(multiItemPrompt);
 
@@ -163,7 +171,9 @@ describe('lb4 service', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
         )
         .withArguments('--config myrestconfig.json');
       const expectedFile = path.join(
@@ -189,7 +199,9 @@ describe('lb4 service', () => {
       await testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {}, SANDBOX_FILES),
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
         )
         .withArguments('myservice --datasource restdb');
       const expectedFile = path.join(
