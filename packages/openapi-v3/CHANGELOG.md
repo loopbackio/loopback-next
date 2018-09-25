@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.15.0"></a>
+# [0.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@0.14.4...@loopback/openapi-v3@0.15.0) (2018-09-25)
+
+
+### Features
+
+* builders for Filter and Where schemas ([ca8d96e](https://github.com/strongloop/loopback-next/commit/ca8d96e))
+* support built-in JavaScript/Node schema types ([d65a17f](https://github.com/strongloop/loopback-next/commit/d65a17f))
+
+
+
+
+
 <a name="0.14.4"></a>
 ## [0.14.4](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@0.14.3...@loopback/openapi-v3@0.14.4) (2018-09-21)
 

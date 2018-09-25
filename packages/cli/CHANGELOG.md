@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.25.0"></a>
+# [0.25.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.24.0...@loopback/cli@0.25.0) (2018-09-25)
+
+
+### Features
+
+* add "filter" parameter to "find" endpoints ([7e1acfc](https://github.com/strongloop/loopback-next/commit/7e1acfc))
+* **cli:** add responses for PingController.ping() ([ec52b89](https://github.com/strongloop/loopback-next/commit/ec52b89))
+
+
+
+
+
 <a name="0.24.0"></a>
 # [0.24.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.23.0...@loopback/cli@0.24.0) (2018-09-21)
 

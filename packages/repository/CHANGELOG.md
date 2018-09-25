@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.18.0"></a>
+# [0.18.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.17.1...@loopback/repository@0.18.0) (2018-09-25)
+
+
+### Features
+
+* builders for Filter and Where schemas ([ca8d96e](https://github.com/strongloop/loopback-next/commit/ca8d96e))
+* type resolver for property decorators ([49454aa](https://github.com/strongloop/loopback-next/commit/49454aa))
+
+
+
+
+
 <a name="0.17.1"></a>
 ## [0.17.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.17.0...@loopback/repository@0.17.1) (2018-09-21)
 

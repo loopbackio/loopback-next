@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.25.0"></a>
+# [0.25.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.24.0...@loopback/rest@0.25.0) (2018-09-25)
+
+
+### Bug Fixes
+
+* **rest:** coerce string parameters (reject object values) ([1f49844](https://github.com/strongloop/loopback-next/commit/1f49844))
+
+
+### Features
+
+* builders for Filter and Where schemas ([ca8d96e](https://github.com/strongloop/loopback-next/commit/ca8d96e))
+* **cli:** add responses for PingController.ping() ([ec52b89](https://github.com/strongloop/loopback-next/commit/ec52b89))
+* **rest:** allow controller methods to handle response writing ([2bfd50e](https://github.com/strongloop/loopback-next/commit/2bfd50e))
+
+
+
+
+
 <a name="0.24.0"></a>
 # [0.24.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.23.0...@loopback/rest@0.24.0) (2018-09-21)
 

@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@0.10.14...@loopback/repository-json-schema@0.11.0) (2018-09-25)
+
+
+### Features
+
+* builders for Filter and Where schemas ([ca8d96e](https://github.com/strongloop/loopback-next/commit/ca8d96e))
+* support built-in JavaScript/Node schema types ([d65a17f](https://github.com/strongloop/loopback-next/commit/d65a17f))
+* type resolver for property decorators ([49454aa](https://github.com/strongloop/loopback-next/commit/49454aa))
+
+
+
+
+
 <a name="0.10.14"></a>
 ## [0.10.14](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@0.10.13...@loopback/repository-json-schema@0.10.14) (2018-09-21)
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.14.0"></a>
+# [0.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.13.0...@loopback/testlab@0.14.0) (2018-09-25)
+
+
+### Features
+
+* **testlab:** add a new helper deserializedFromJson ([8d105e4](https://github.com/strongloop/loopback-next/commit/8d105e4))
+
+
+
+
+
 <a name="0.13.0"></a>
 # [0.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.12.2...@loopback/testlab@0.13.0) (2018-09-21)
 
