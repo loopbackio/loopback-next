@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {BindingKey} from '@loopback/context';
-import {Application, ControllerClass} from './application';
+import {Application, ControllerClass, ApplicationMetadata} from './application';
 
 /**
  * Namespace for core binding keys
@@ -23,6 +23,13 @@ export namespace CoreBindings {
    */
   export const APPLICATION_CONFIG = BindingKey.create<object>(
     'application.config',
+  );
+
+  /**
+   * Binding key for the content of `package.json`
+   */
+  export const APPLICATION_METADATA = BindingKey.create<ApplicationMetadata>(
+    'application.metadata',
   );
 
   // server

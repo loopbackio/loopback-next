@@ -11,6 +11,7 @@ import {
   RepositoryBooter,
   DataSourceBooter,
   ServiceBooter,
+  ApplicationMetadataBooter,
 } from './booters';
 import {BootBindings} from './keys';
 
@@ -23,6 +24,7 @@ export class BootComponent implements Component {
   // Export a list of default booters in the component so they get bound
   // automatically when this component is mounted.
   booters = [
+    ApplicationMetadataBooter,
     ControllerBooter,
     RepositoryBooter,
     ServiceBooter,

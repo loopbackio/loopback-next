@@ -192,6 +192,16 @@ export class Application extends Context {
     const instance = this.getSync<Component>(componentKey);
     mountComponent(this, instance);
   }
+
+  /**
+   * Set application metadata. `@loopback/boot` calls this method to populate
+   * the metadata from `package.json`.
+   *
+   * @param metadata Application metadata
+   */
+  public setMetadata(metadata: ApplicationMetadata) {
+    this.bind(CoreBindings.APPLICATION_METADATA).to(metadata);
+  }
 }
 
 /**
@@ -207,3 +217,22 @@ export interface ApplicationConfig {
 
 // tslint:disable-next-line:no-any
 export type ControllerClass = Constructor<any>;
+
+/**
+ * Type definition for JSON
+ */
+export type JSONPrimitive = string | number | boolean | null;
+export type JSONValue = JSONPrimitive | JSONObject | JSONArray;
+export interface JSONObject {
+  [property: string]: JSONValue;
+}
+export interface JSONArray extends Array<JSONValue> {}
+
+/**
+ * Type description for `package.json`
+ */
+export interface ApplicationMetadata extends JSONObject {
+  name: string;
+  version: string;
+  description: string;
+}
