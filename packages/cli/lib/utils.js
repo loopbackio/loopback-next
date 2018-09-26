@@ -411,7 +411,7 @@ exports.getDataSourceConnectorName = function(datasourcesDir, dataSourceClass) {
 
   let datasourceJSONFile = path.join(
     datasourcesDir,
-    dataSourceClass.replace('Datasource', '.datasource.json').toLowerCase(),
+    exports.dataSourceToJSONFileName(dataSourceClass),
   );
 
   debug(`reading ${datasourceJSONFile}`);
@@ -448,9 +448,10 @@ exports.isConnectorOfType = function(
   if (!dataSourceClass) {
     return false;
   }
+
   let datasourceJSONFile = path.join(
     datasourcesDir,
-    dataSourceClass.replace('Datasource', '.datasource.json').toLowerCase(),
+    exports.dataSourceToJSONFileName(dataSourceClass),
   );
 
   debug(`reading ${datasourceJSONFile}`);
@@ -473,6 +474,44 @@ exports.isConnectorOfType = function(
   }
 
   return result;
+};
+
+/**
+ *
+ * returns the name property inside the datasource json file
+ * @param {string} datasourcesDir path for sources
+ * @param {string} dataSourceClass class name for the datasoure
+ */
+exports.getDataSourceName = function(datasourcesDir, dataSourceClass) {
+  if (!dataSourceClass) {
+    return false;
+  }
+  let result;
+  let jsonFileContent;
+
+  let datasourceJSONFile = path.join(
+    datasourcesDir,
+    exports.dataSourceToJSONFileName(dataSourceClass),
+  );
+
+  debug(`reading ${datasourceJSONFile}`);
+  try {
+    jsonFileContent = JSON.parse(fs.readFileSync(datasourceJSONFile, 'utf8'));
+  } catch (err) {
+    debug(`Error reading file ${datasourceJSONFile}: ${err.message}`);
+    throw err;
+  }
+
+  if (jsonFileContent.name) {
+    result = jsonFileContent.name;
+  }
+  return result;
+};
+
+exports.dataSourceToJSONFileName = function(dataSourceClass) {
+  return path.join(
+    _.kebabCase(dataSourceClass.replace('Datasource', '')) + '.datasource.json',
+  );
 };
 
 // literal strings with artifacts directory locations

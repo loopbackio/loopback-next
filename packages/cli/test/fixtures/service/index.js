@@ -29,6 +29,14 @@ exports.SANDBOX_FILES = [
   },
   {
     path: DATASOURCE_APP_PATH,
+    file: 'map-ds.datasource.json',
+    content: JSON.stringify({
+      name: 'MapDS',
+      connector: 'soap',
+    }),
+  },
+  {
+    path: DATASOURCE_APP_PATH,
     file: 'myds.datasource.ts',
     content: DUMMY_CONTENT,
   },
