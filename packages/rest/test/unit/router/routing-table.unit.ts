@@ -10,7 +10,14 @@ import {
   expect,
   stubExpressContext,
 } from '@loopback/testlab';
-import {ControllerRoute, Request, RoutingTable} from '../../..';
+import {
+  ControllerRoute,
+  Request,
+  RoutingTable,
+  RestRouter,
+  RegExpRouter,
+  TrieRouter,
+} from '../../..';
 
 describe('RoutingTable', () => {
   it('joins basePath and path', () => {
@@ -29,7 +36,17 @@ describe('RoutingTable', () => {
       '/root/x/a/b/c',
     );
   });
+});
 
+describe('RoutingTable with RegExpRouter', () => {
+  runTestsWithRouter(new RegExpRouter());
+});
+
+describe('RoutingTable with TrieRouter', () => {
+  runTestsWithRouter(new TrieRouter());
+});
+
+function runTestsWithRouter(router: RestRouter) {
   it('does not fail if some of the parameters are not decorated', () => {
     class TestController {
       @get('/greet')
@@ -38,7 +55,7 @@ describe('RoutingTable', () => {
       }
     }
     const spec = getControllerSpec(TestController);
-    const table = new RoutingTable();
+    const table = givenRoutingTable();
     table.registerController(spec, TestController);
     const paths = table.describeApiPaths();
     const params = paths['/greet']['get'].parameters;
@@ -57,7 +74,7 @@ describe('RoutingTable', () => {
 
     class TestController {}
 
-    const table = new RoutingTable();
+    const table = givenRoutingTable();
     table.registerController(spec, TestController);
 
     const request = givenRequest({
@@ -88,7 +105,7 @@ describe('RoutingTable', () => {
 
     class TestController {}
 
-    const table = new RoutingTable();
+    const table = givenRoutingTable();
     table.registerController(spec, TestController);
 
     const request = givenRequest({
@@ -106,7 +123,75 @@ describe('RoutingTable', () => {
     expect(route.describe()).to.equal('TestController.greet');
   });
 
+  it('finds simple "GET /hello/world" endpoint', () => {
+    const spec = anOpenApiSpec()
+      .withOperationReturningString('get', '/hello/{msg}', 'greet')
+      .withOperationReturningString('get', '/hello/world', 'greetWorld')
+      .build();
+
+    class TestController {}
+
+    const table = givenRoutingTable();
+    table.registerController(spec, TestController);
+
+    const request = givenRequest({
+      method: 'get',
+      url: '/hello/world',
+    });
+
+    const route = table.find(request);
+    expect(route)
+      .to.have.property('spec')
+      .containEql(spec.paths['/hello/world'].get);
+    expect(route).to.have.property('pathParams', {});
+    expect(route.describe()).to.equal('TestController.greetWorld');
+  });
+
+  it('finds simple "GET /add/{arg1}/{arg2}" endpoint', () => {
+    const spec = anOpenApiSpec()
+      .withOperationReturningString('get', '/add/{arg1}/{arg2}', 'add')
+      .withOperationReturningString(
+        'get',
+        '/subtract/{arg1}/{arg2}',
+        'subtract',
+      )
+      .build();
+
+    // @jannyHou: please note ` anOpenApiSpec()` returns an openapi spec,
+    // not controller spec, should be FIXED
+    // the routing table test expects an empty spec for
+    // interface `ControllerSpec`
+    spec.basePath = '/my';
+
+    class TestController {}
+
+    const table = givenRoutingTable();
+    table.registerController(spec, TestController);
+
+    let request = givenRequest({
+      method: 'get',
+      url: '/my/add/1/2',
+    });
+
+    let route = table.find(request);
+    expect(route.path).to.eql('/my/add/{arg1}/{arg2}');
+    expect(route.pathParams).to.containEql({arg1: '1', arg2: '2'});
+
+    request = givenRequest({
+      method: 'get',
+      url: '/my/subtract/3/2',
+    });
+
+    route = table.find(request);
+    expect(route.path).to.eql('/my/subtract/{arg1}/{arg2}');
+    expect(route.pathParams).to.containEql({arg1: '3', arg2: '2'});
+  });
+
   function givenRequest(options?: ShotRequestOptions): Request {
     return stubExpressContext(options).request;
   }
-});
+
+  function givenRoutingTable() {
+    return new RoutingTable(router);
+  }
+}

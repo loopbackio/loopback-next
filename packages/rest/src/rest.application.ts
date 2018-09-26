@@ -14,6 +14,7 @@ import {
   RouteEntry,
   ControllerClass,
   ControllerFactory,
+  Route,
 } from './router/routing-table';
 import {OperationObject, OpenApiSpec} from '@loopback/openapi-v3-types';
 import {ServeStaticOptions} from 'serve-static';
@@ -141,23 +142,44 @@ export class RestApplication extends Application implements HttpServerLike {
    */
   route(route: RouteEntry): Binding;
 
+  /**
+   * Register a new route.
+   *
+   * ```ts
+   * function greet(name: string) {
+   *  return `hello ${name}`;
+   * }
+   * app.route('get', '/', operationSpec, greet);
+   * ```
+   */
+  route(
+    verb: string,
+    path: string,
+    spec: OperationObject,
+    handler: Function,
+  ): Binding;
+
   route<T>(
     routeOrVerb: RouteEntry | string,
     path?: string,
     spec?: OperationObject,
-    controllerCtor?: ControllerClass<T>,
+    controllerCtorOrHandler?: ControllerClass<T> | Function,
     controllerFactory?: ControllerFactory<T>,
     methodName?: string,
   ): Binding {
     const server = this.restServer;
     if (typeof routeOrVerb === 'object') {
       return server.route(routeOrVerb);
+    } else if (arguments.length === 4) {
+      return server.route(
+        new Route(routeOrVerb, path!, spec!, controllerCtorOrHandler!),
+      );
     } else {
       return server.route(
         routeOrVerb,
         path!,
         spec!,
-        controllerCtor!,
+        controllerCtorOrHandler as ControllerClass<T>,
         controllerFactory!,
         methodName!,
       );

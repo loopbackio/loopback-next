@@ -30,6 +30,7 @@ import {
 import {HttpProtocol} from '@loopback/http-server';
 import * as https from 'https';
 import {ErrorWriterOptions} from 'strong-error-handler';
+import {RestRouter} from './router';
 
 /**
  * RestServer-specific bindings
@@ -65,6 +66,12 @@ export namespace RestBindings {
    * Internal binding key for http-handler
    */
   export const HANDLER = BindingKey.create<HttpHandler>('rest.handler');
+
+  /**
+   * Internal binding key for rest router
+   */
+  export const ROUTER = BindingKey.create<RestRouter>('rest.router');
+
   /**
    * Binding key for setting and injecting Reject action's error handling
    * options.

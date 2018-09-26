@@ -7,10 +7,10 @@ import {
   ControllerRoute,
   createControllerFactoryForClass,
   createControllerFactoryForBinding,
+  ControllerFactory,
 } from '../../..';
 import {expect} from '@loopback/testlab';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
-import {ControllerFactory} from '../../..';
 
 describe('ControllerRoute', () => {
   it('rejects routes with no methodName', () => {

@@ -140,6 +140,10 @@ children:
     output: 'web, pdf'
     children:
 
+    - title: 'Routing requests'
+      url: Routing-requests.html
+      output: 'web, pdf'
+
     - title: 'Parsing requests'
       url: Parsing-requests.html
       output: 'web, pdf'

@@ -34,6 +34,7 @@ import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 import {inject, Context, BindingScope} from '@loopback/context';
 
 import {createUnexpectedHttpErrorLogger} from '../../helpers';
+import {RegExpRouter} from '../../..';
 
 /* # Feature: Routing
  * - In order to build REST APIs
@@ -699,6 +700,43 @@ describe('Routing', () => {
       await createClientForHandler(app.requestHandler)
         .get('/')
         .expect(200, 'hello');
+    });
+
+    it('allows pluggable router', async () => {
+      const app = new RestApplication();
+      app.bind(RestBindings.ROUTER).toClass(RegExpRouter);
+      const server = await app.getServer(RestServer);
+      const handler = await server.get(RestBindings.HANDLER);
+      // Use a hack to verify the bound router is used by the handler
+      // tslint:disable-next-line:no-any
+      expect((handler as any)._routes._router).to.be.instanceof(RegExpRouter);
+    });
+
+    it('matches routes based on their specifics', async () => {
+      const app = new RestApplication();
+
+      app.route(
+        'get',
+        '/greet/{name}',
+        anOperationSpec()
+          .withParameter({name: 'name', in: 'path', type: 'string'})
+          .build(),
+        (name: string) => `hello ${name}`,
+      );
+
+      app.route(
+        'get',
+        '/greet/world',
+        anOperationSpec().build(),
+        () => 'HELLO WORLD',
+      );
+
+      await whenIMakeRequestTo(app)
+        .get('/greet/john')
+        .expect(200, 'hello john');
+      await whenIMakeRequestTo(app)
+        .get('/greet/world')
+        .expect(200, 'HELLO WORLD');
     });
   });
 
