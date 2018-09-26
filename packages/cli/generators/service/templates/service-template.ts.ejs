@@ -1,4 +1,4 @@
-import {getService, juggler} from '@loopback/service-proxy';
+import {getService} from '@loopback/service-proxy';
 import {inject, Provider} from '@loopback/core';
 import {<%= dataSourceClassName %>} from '../datasources';
 
@@ -12,7 +12,7 @@ export class <%= className %>ServiceProvider implements Provider<<%= className %
   constructor(
     // <%= dataSourceName %> must match the name property in the datasource json file
     @inject('datasources.<%= dataSourceName %>')
-    protected datasource: <%= dataSourceClassName %> = new <%= dataSourceClassName %>(),
+    protected datasource: <%= dataSourceName %>DataSource = new <%= dataSourceClassName %>(),
   ) {}
 
   value(): Promise<<%= className %>Service> {

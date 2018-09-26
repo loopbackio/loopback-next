@@ -80,13 +80,14 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
     if (this.options.name) {
       Object.assign(this.artifactInfo, {name: this.options.name});
     }
+
     const prompts = [
       {
         type: 'input',
         name: 'name',
         // capitalization
         message: utils.toClassName(this.artifactInfo.type) + ' name:',
-        when: this.artifactInfo.name === undefined,
+        when: !this.artifactInfo.name,
         validate: utils.validateClassName,
       },
     ];
@@ -198,14 +199,13 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
   scaffold() {
     if (this.shouldExit()) return false;
 
-    this.artifactInfo.dataSourceClassName = this.artifactInfo.dataSourceClass.replace(
-      'Datasource',
-      'DataSource',
+    this.artifactInfo.dataSourceName = utils.getDataSourceName(
+      this.artifactInfo.datasourcesDir,
+      this.artifactInfo.dataSourceClass,
     );
 
-    this.artifactInfo.dataSourceName = utils.lowerCase(
-      this.artifactInfo.dataSourceClass.replace('Datasource', ''),
-    );
+    this.artifactInfo.dataSourceClassName =
+      this.artifactInfo.dataSourceName + 'DataSource';
 
     // Setting up data for templates
     this.artifactInfo.className = utils.toClassName(this.artifactInfo.name);

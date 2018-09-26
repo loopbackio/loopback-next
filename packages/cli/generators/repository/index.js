@@ -80,23 +80,13 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       this.artifactInfo.defaultTemplate = REPOSITORY_CRUD_TEMPLATE;
     }
 
-    // assign the data source name to the information artifact
-    let dataSourceName = this.artifactInfo.dataSourceClass
-      .replace('Datasource', '')
-      .toLowerCase();
-
-    let dataSourceClassName = this.artifactInfo.dataSourceClass.replace(
-      'Datasource',
-      'DataSource',
+    this.artifactInfo.dataSourceName = utils.getDataSourceName(
+      this.artifactInfo.datasourcesDir,
+      this.artifactInfo.dataSourceClass,
     );
 
-    Object.assign(this.artifactInfo, {
-      dataSourceClassName: dataSourceClassName,
-    });
-
-    Object.assign(this.artifactInfo, {
-      dataSourceName: dataSourceName,
-    });
+    this.artifactInfo.dataSourceClassName =
+      this.artifactInfo.dataSourceName + 'DataSource';
   }
 
   /**

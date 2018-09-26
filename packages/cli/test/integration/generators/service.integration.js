@@ -86,7 +86,7 @@ describe('lb4 service', () => {
       );
       assert.fileContent(
         expectedFile,
-        /protected datasource: MydsDataSource = new MydsDataSource\(\),/,
+        /protected datasource: mydsDataSource = new mydsDataSource\(\),/,
       );
       assert.fileContent(
         expectedFile,
@@ -216,6 +216,50 @@ describe('lb4 service', () => {
       );
       assert.fileContent(expectedFile, /export interface MyserviceService {/);
       assert.fileContent(expectedFile, /\@inject\('datasources.restdb'\)/);
+      assert.fileContent(
+        expectedFile,
+        /value\(\): Promise\<MyserviceService\> {/,
+      );
+      assert.file(INDEX_FILE);
+      assert.fileContent(INDEX_FILE, /export \* from '.\/myservice.service';/);
+    });
+
+    it('generates a basic soap service with capital datasource name', async () => {
+      const multiItemPrompt = {
+        name: 'myservice',
+        dataSourceClass: 'MapDsDatasource',
+      };
+
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withPrompts(multiItemPrompt);
+
+      const expectedFile = path.join(
+        SANDBOX_PATH,
+        SERVICE_APP_PATH,
+        'myservice.service.ts',
+      );
+      assert.file(expectedFile);
+      assert.fileContent(
+        expectedFile,
+        /export class MyserviceServiceProvider implements Provider<MyserviceService> {/,
+      );
+      assert.fileContent(expectedFile, /export interface MyserviceService {/);
+      assert.fileContent(
+        expectedFile,
+        /import {MapDSDataSource} from '..\/datasources';/,
+      );
+      assert.fileContent(
+        expectedFile,
+        /protected datasource: MapDSDataSource = new MapDSDataSource()/,
+      );
+
+      assert.fileContent(expectedFile, /\@inject\('datasources.MapDS'\)/);
       assert.fileContent(
         expectedFile,
         /value\(\): Promise\<MyserviceService\> {/,

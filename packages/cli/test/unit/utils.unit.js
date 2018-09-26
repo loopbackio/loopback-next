@@ -380,4 +380,40 @@ describe('Utils', () => {
       expect(utils.validateStringObject('array')('[1, 2, 3]')).to.be.True();
     });
   });
+
+  describe('getDataSourceName', () => {
+    it('returns false on missing dataSourceClass parameter', () => {
+      expect(utils.getDataSourceName('src/datasources')).to.be.False();
+    });
+  });
+
+  describe('getDataSourceConnectorName', () => {
+    it('returns false on missing dataSourceClass parameter', () => {
+      expect(utils.getDataSourceConnectorName('src/datasources')).to.be.False();
+    });
+  });
+
+  describe('isConnectorOfType', () => {
+    it('returns false on missing dataSourceClass parameter', () => {
+      expect(
+        utils.isConnectorOfType('src/datasources', 'PersistedModel'),
+      ).to.be.False();
+    });
+  });
+
+  describe('getServiceFileName', () => {
+    it('returns the file class name', () => {
+      expect(utils.getServiceFileName('MyService')).to.equal(
+        'my-service.service.ts',
+      );
+    });
+  });
+
+  describe('dataSourceToJSONFileName', () => {
+    it('returns the datasource json file name', () => {
+      expect(utils.dataSourceToJSONFileName('MapDS')).to.equal(
+        'map-ds.datasource.json',
+      );
+    });
+  });
 });
