@@ -1,0 +1,19 @@
+{
+  "name": "boot-test-app",
+  "version": "1.0.0",
+  "description": "boot-test-app",
+  "keywords": [
+    "loopback-application",
+    "loopback"
+  ],
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {
+  },
+  "repository": {
+    "type": "git"
+  },
+  "author": "",
+  "license": ""
+}
