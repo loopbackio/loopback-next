@@ -18,6 +18,7 @@
     "pretest": "npm run clean && npm run build",
     "test": "lb-mocha \"dist/test\"",
     "prestart": "npm run build",
+    "benchmark:routing": "node ./dist/src/rest-routing/routing-table",
     "start": "node ."
   },
   "repository": {
@@ -35,13 +36,16 @@
   ],
   "dependencies": {
     "@loopback/example-todo": "^0.21.2",
+    "@loopback/openapi-spec-builder": "^0.9.5",
+    "@loopback/rest": "^0.25.4",
     "@types/byline": "^4.2.31",
-    "@types/debug": "0.0.30",
+    "@types/debug": "0.0.31",
     "@types/p-event": "^1.3.0",
     "@types/request-promise-native": "^1.0.15",
     "autocannon": "^3.0.0",
     "byline": "^5.0.0",
     "debug": "^4.0.1",
+    "path-to-regexp": "^2.4.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5"
   },

@@ -130,8 +130,7 @@ function greet(name: string) {
 }
 
 const app = new RestApplication();
-const route = new Route('get', '/', spec, greet);
-app.route(route); // attaches route to RestServer
+app.route('get', '/', spec, greet); // attaches route to RestServer
 
 app.start();
 ```
