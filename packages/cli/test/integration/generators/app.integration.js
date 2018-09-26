@@ -63,6 +63,22 @@ describe('app-generator specific files', () => {
       'test/acceptance/ping.controller.acceptance.ts',
       /describe\('PingController'/,
     );
+    assert.fileContent(
+      'src/controllers/home-page.controller.ts',
+      /export class HomePageController/,
+    );
+    assert.fileContent(
+      'src/controllers/home-page.controller.ts',
+      /homePage\(\)/,
+    );
+    assert.fileContent(
+      'test/acceptance/home-page.controller.acceptance.ts',
+      /describe\('HomePageController'/,
+    );
+    assert.fileContent(
+      'test/acceptance/test-helper.ts',
+      /export async function setupApplication/,
+    );
   });
 });
 
