@@ -21,12 +21,14 @@ import {RestBindings} from './keys';
 import {RequestContext} from './request-context';
 
 export class HttpHandler {
-  protected _routes: RoutingTable = new RoutingTable();
   protected _apiDefinitions: SchemasObject;
 
   public handleRequest: (request: Request, response: Response) => Promise<void>;
 
-  constructor(protected _rootContext: Context) {
+  constructor(
+    protected _rootContext: Context,
+    protected _routes = new RoutingTable(),
+  ) {
     this.handleRequest = (req, res) => this._handleRequest(req, res);
   }
 

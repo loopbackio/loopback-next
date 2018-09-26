@@ -12,8 +12,8 @@ _Average number of requests handled every second._
 
 | scenario          |  rps |
 | ----------------- | ---: |
-| find all todos    | 4569 |
-| create a new todo |  348 |
+| find all todos    | 6230 |
+| create a new todo |  377 |
 
 ### Latency
 
@@ -21,8 +21,8 @@ _Average time to handle a request in milliseconds._
 
 | scenario          | latency |
 | ----------------- | ------: |
-| find all todos    |    1.68 |
-| create a new todo |   28.27 |
+| find all todos    |    1.11 |
+| create a new todo |   26.03 |
 
 ## Basic use
 
