@@ -3,14 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ServerRequest, ServerResponse} from 'http';
+import {IncomingMessage, ServerResponse} from 'http';
 import * as http from 'http';
 import * as https from 'https';
 import {AddressInfo} from 'net';
 
 import * as pEvent from 'p-event';
 
-export type RequestListener = (req: ServerRequest, res: ServerResponse) => void;
+export type RequestListener = (
+  req: IncomingMessage,
+  res: ServerResponse,
+) => void;
 
 /**
  * Basic HTTP server listener options
