@@ -16,7 +16,7 @@ import {AssertionError} from 'assert';
 import * as cors from 'cors';
 import * as express from 'express';
 import {PathParams} from 'express-serve-static-core';
-import {ServerRequest, ServerResponse} from 'http';
+import {IncomingMessage, ServerResponse} from 'http';
 import {safeDump} from 'js-yaml';
 import * as pathToRegExp from 'path-to-regexp';
 import {ServeStaticOptions} from 'serve-static';
@@ -49,7 +49,7 @@ import {ServerOptions} from 'https';
 const debug = require('debug')('loopback:rest:server');
 
 export type HttpRequestListener = (
-  req: ServerRequest,
+  req: IncomingMessage,
   res: ServerResponse,
 ) => void;
 

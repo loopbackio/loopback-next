@@ -8,7 +8,7 @@ import {
   RequestBodyObject,
   SchemaObject,
 } from '@loopback/openapi-v3-types';
-import {ServerRequest} from 'http';
+import {IncomingMessage} from 'http';
 import {LogError} from '..';
 
 export function createUnexpectedHttpErrorLogger(
@@ -17,7 +17,7 @@ export function createUnexpectedHttpErrorLogger(
   return function logUnexpectedHttpError(
     err: Error,
     statusCode: number,
-    req: ServerRequest,
+    req: IncomingMessage,
   ) {
     if (statusCode === expectedStatusCode) return;
 

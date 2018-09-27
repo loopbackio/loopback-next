@@ -35,7 +35,9 @@ export function jsonToSchemaObject(json: JsonSchema): SchemaObject {
         break;
       }
       case 'allOf': {
-        result.allOf = _.map(json.allOf, item => jsonToSchemaObject(item));
+        result.allOf = _.map(json.allOf, item =>
+          jsonToSchemaObject(item as JsonSchema),
+        );
         break;
       }
       case 'definitions': {

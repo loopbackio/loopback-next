@@ -7,7 +7,7 @@ import * as debugFactory from 'debug';
 import {
   OutgoingHttpHeaders,
   Server as HttpServer,
-  ServerRequest,
+  IncomingMessage,
   ServerResponse,
   createServer,
 } from 'http';
@@ -78,7 +78,7 @@ export class HttpCachingProxy {
    */
   async start() {
     this._server = createServer(
-      (request: ServerRequest, response: ServerResponse) => {
+      (request: IncomingMessage, response: ServerResponse) => {
         this._handle(request, response);
       },
     );
@@ -109,7 +109,7 @@ export class HttpCachingProxy {
     await pEvent(server, 'close');
   }
 
-  private _handle(request: ServerRequest, response: ServerResponse) {
+  private _handle(request: IncomingMessage, response: ServerResponse) {
     const onerror = (error: Error) => {
       this.logError(request, error);
       response.statusCode = error.name === 'RequestError' ? 502 : 500;
@@ -123,7 +123,10 @@ export class HttpCachingProxy {
     }
   }
 
-  private async _handleAsync(request: ServerRequest, response: ServerResponse) {
+  private async _handleAsync(
+    request: IncomingMessage,
+    response: ServerResponse,
+  ) {
     debug(
       'Incoming request %s %s',
       request.method,
@@ -153,7 +156,7 @@ export class HttpCachingProxy {
     await this._forwardRequest(request, response);
   }
 
-  private _getCacheKey(request: ServerRequest): string {
+  private _getCacheKey(request: IncomingMessage): string {
     // TODO(bajtos) consider adding selected/all headers to the key
     return `${request.method} ${request.url}`;
   }
@@ -168,7 +171,7 @@ export class HttpCachingProxy {
   }
 
   private async _forwardRequest(
-    clientRequest: ServerRequest,
+    clientRequest: IncomingMessage,
     clientResponse: ServerResponse,
   ) {
     // tslint:disable-next-line:await-promise
@@ -223,7 +226,7 @@ export class HttpCachingProxy {
     clientResponse.end(backendResponse.body);
   }
 
-  public logError(request: ServerRequest, error: Error) {
+  public logError(request: IncomingMessage, error: Error) {
     console.log(
       'Cannot proxy %s %s.',
       request.method,

@@ -188,7 +188,7 @@ describe('HttpCachingProxy', () => {
 
   let stubServer: http.Server | undefined,
     stubServerHandler:
-      | ((request: http.ServerRequest, response: http.ServerResponse) => void)
+      | ((request: http.IncomingMessage, response: http.ServerResponse) => void)
       | undefined;
   async function givenStubServer() {
     stubServerHandler = undefined;

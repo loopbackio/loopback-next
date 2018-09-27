@@ -26,16 +26,16 @@
     "@types/sinon": "^4.3.0",
     "@types/supertest": "^2.0.4",
     "express": "^4.16.3",
-    "fs-extra": "^6.0.1",
+    "fs-extra": "^7.0.0",
+    "oas-validator": "^1.1.9",
     "shot": "^4.0.5",
     "should": "^13.2.1",
-    "sinon": "^4.5.0",
-    "supertest": "^3.0.0",
-    "swagger2openapi": "^2.11.16"
+    "sinon": "^6.3.4",
+    "supertest": "^3.0.0"
   },
   "devDependencies": {
     "@loopback/build": "^0.7.3",
-    "@types/node": "^10.1.1"
+    "@types/node": "^10.11.2"
   },
   "files": [
     "README.md",

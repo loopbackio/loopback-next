@@ -28,7 +28,8 @@
   "license": "MIT",
   "devDependencies": {
     "@loopback/build": "^0.7.3",
-    "@loopback/testlab": "^0.14.0"
+    "@loopback/testlab": "^0.14.0",
+    "@types/node": "^10.11.2"
   },
   "dependencies": {
     "@loopback/context": "^0.12.11",

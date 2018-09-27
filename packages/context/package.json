@@ -24,7 +24,7 @@
   "dependencies": {
     "@loopback/dist-util": "^0.3.7",
     "@loopback/metadata": "^0.9.10",
-    "debug": "^3.1.0",
+    "debug": "^4.0.1",
     "uuid": "^3.2.1"
   },
   "devDependencies": {
@@ -32,7 +32,7 @@
     "@loopback/testlab": "^0.14.0",
     "@types/bluebird": "^3.5.20",
     "@types/debug": "^0.0.30",
-    "@types/node": "^10.1.1",
+    "@types/node": "^10.11.2",
     "@types/uuid": "^3.4.3",
     "bluebird": "^3.5.1"
   },

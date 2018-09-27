@@ -25,7 +25,7 @@
     "@loopback/build": "^0.7.3",
     "@loopback/testlab": "^0.14.0",
     "@types/lodash": "^4.14.108",
-    "@types/node": "^10.1.1"
+    "@types/node": "^10.11.2"
   },
   "dependencies": {
     "@loopback/context": "^0.12.11",
