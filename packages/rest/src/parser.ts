@@ -11,7 +11,7 @@ import {
   SchemasObject,
 } from '@loopback/openapi-v3-types';
 import * as debugModule from 'debug';
-import {ServerRequest} from 'http';
+import {IncomingMessage} from 'http';
 import * as HttpErrors from 'http-errors';
 import * as parseUrl from 'parseurl';
 import {parse as parseQuery} from 'qs';
@@ -32,7 +32,7 @@ Object.freeze(QUERY_NOT_PARSED);
 // tslint:disable-next-line:no-any
 type MaybeBody = any | undefined;
 
-const parseJsonBody: (req: ServerRequest) => Promise<MaybeBody> = promisify(
+const parseJsonBody: (req: IncomingMessage) => Promise<MaybeBody> = promisify(
   require('body/json'),
 );
 

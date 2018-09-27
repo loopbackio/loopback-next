@@ -31,12 +31,12 @@
     "@loopback/dist-util": "^0.3.7",
     "@loopback/metadata": "^0.9.10",
     "@loopback/repository": "^0.18.0",
-    "@types/json-schema": "^6.0.1"
+    "@types/json-schema": "^7.0.1"
   },
   "devDependencies": {
     "@loopback/build": "^0.7.3",
     "@loopback/testlab": "^0.14.0",
-    "@types/node": "^10.1.1",
+    "@types/node": "^10.11.2",
     "ajv": "^6.5.0"
   },
   "files": [

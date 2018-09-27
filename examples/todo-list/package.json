@@ -53,7 +53,7 @@
     "@loopback/http-caching-proxy": "^0.3.10",
     "@loopback/testlab": "^0.14.0",
     "@types/lodash": "^4.14.109",
-    "@types/node": "^10.1.1",
+    "@types/node": "^10.11.2",
     "lodash": "^4.17.10"
   },
   "keywords": [

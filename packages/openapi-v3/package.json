@@ -12,7 +12,7 @@
     "@loopback/testlab": "^0.14.0",
     "@types/debug": "0.0.30",
     "@types/lodash": "^4.14.106",
-    "@types/node": "^10.1.1"
+    "@types/node": "^10.11.2"
   },
   "scripts": {
     "build:all-dist": "npm run build:dist8 && npm run build:dist10",
@@ -55,7 +55,7 @@
     "@loopback/dist-util": "^0.3.7",
     "@loopback/openapi-v3-types": "^0.9.4",
     "@loopback/repository-json-schema": "^0.11.0",
-    "debug": "^3.1.0",
+    "debug": "^4.0.1",
     "lodash": "^4.17.5"
   }
 }

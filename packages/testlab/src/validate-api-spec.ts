@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-const validator = require('swagger2openapi/validate.js');
+const validator = require('oas-validator');
 import {promisify} from 'util';
 
 const validateAsync = promisify(validator.validate);

@@ -29,7 +29,7 @@
   "devDependencies": {
     "@loopback/build": "^0.7.3",
     "@loopback/testlab": "^0.14.0",
-    "@types/node": "^10.1.1"
+    "@types/node": "^10.11.2"
   },
   "files": [
     "README.md",

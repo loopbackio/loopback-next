@@ -36,7 +36,7 @@
     "ajv": "^6.5.1",
     "body": "^5.1.0",
     "cors": "^2.8.4",
-    "debug": "^3.1.0",
+    "debug": "^4.0.1",
     "express": "^4.16.3",
     "http-errors": "^1.6.3",
     "js-yaml": "^3.11.0",
@@ -58,7 +58,7 @@
     "@types/debug": "0.0.30",
     "@types/js-yaml": "^3.11.1",
     "@types/lodash": "^4.14.106",
-    "@types/node": "^10.1.1"
+    "@types/node": "^10.11.2"
   },
   "files": [
     "README.md",

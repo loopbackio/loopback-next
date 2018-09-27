@@ -47,7 +47,7 @@
     "@loopback/build": "^0.7.3",
     "@loopback/testlab": "^0.14.0",
     "@types/debug": "0.0.30",
-    "@types/node": "^10.1.1"
+    "@types/node": "^10.11.2"
   },
   "dependencies": {
     "@loopback/context": "^0.12.11",
@@ -56,6 +56,6 @@
     "@loopback/openapi-v3": "^0.15.0",
     "@loopback/rest": "^0.25.0",
     "chalk": "^2.3.2",
-    "debug": "^3.1.0"
+    "debug": "^4.0.1"
   }
 }
