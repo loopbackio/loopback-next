@@ -59,7 +59,8 @@ export class DefaultKeyValueRepository<T extends Entity>
     if (modelData == null) return modelData;
     let data = modelData;
     if (typeof modelData.toObject === 'function') {
-      data = modelData.toObject();
+      // tslint:disable-next-line:no-any
+      data = (modelData as any).toObject();
     }
     return new this.entityClass(data) as T;
   }

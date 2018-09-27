@@ -44,6 +44,7 @@ import {
   Response,
   Send,
 } from './types';
+import {ServerOptions} from 'https';
 
 const debug = require('debug')('loopback:rest:server');
 
@@ -179,7 +180,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     this.bind(RestBindings.PORT).to(config.port);
     this.bind(RestBindings.HOST).to(config.host);
     this.bind(RestBindings.PROTOCOL).to(config.protocol || 'http');
-    this.bind(RestBindings.HTTPS_OPTIONS).to(config);
+    this.bind(RestBindings.HTTPS_OPTIONS).to(config as ServerOptions);
 
     if (config.sequence) {
       this.sequence(config.sequence);
