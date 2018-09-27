@@ -12,7 +12,7 @@ import {
   givenHttpServerConfig,
 } from '@loopback/testlab';
 import * as makeRequest from 'request-promise-native';
-import {ServerRequest, ServerResponse} from 'http';
+import {IncomingMessage, ServerResponse} from 'http';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -191,7 +191,10 @@ describe('HttpServer (integration)', () => {
     expect(server.url).to.equal(`http://127.0.0.1:${server.port}`);
   });
 
-  function dummyRequestHandler(req: ServerRequest, res: ServerResponse): void {
+  function dummyRequestHandler(
+    req: IncomingMessage,
+    res: ServerResponse,
+  ): void {
     res.end();
   }
 

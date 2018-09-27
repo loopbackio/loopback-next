@@ -20,7 +20,7 @@ export type Client = supertest.SuperTest<supertest.Test>;
  * @param handler
  */
 export function createClientForHandler(
-  handler: (req: http.ServerRequest, res: http.ServerResponse) => void,
+  handler: (req: http.IncomingMessage, res: http.ServerResponse) => void,
 ): Client {
   const server = http.createServer(handler);
   return supertest(server);

@@ -10,7 +10,7 @@
 
 // tslint:disable:no-any
 
-import {ServerRequest, ServerResponse} from 'http';
+import {IncomingMessage, ServerResponse} from 'http';
 import * as util from 'util';
 
 import {
@@ -25,9 +25,11 @@ export {inject, ShotRequestOptions};
 
 // tslint:disable-next-line:variable-name
 const ShotRequest: ShotRequestCtor = require('shot/lib/request');
-type ShotRequestCtor = new (options: ShotRequestOptions) => ServerRequest;
+type ShotRequestCtor = new (options: ShotRequestOptions) => IncomingMessage;
 
-export function stubServerRequest(options: ShotRequestOptions): ServerRequest {
+export function stubServerRequest(
+  options: ShotRequestOptions,
+): IncomingMessage {
   const stub = new ShotRequest(options);
   // Hacky workaround for Express, see
   // https://github.com/expressjs/express/blob/4.16.3/lib/middleware/init.js
@@ -42,12 +44,12 @@ const ShotResponse: ShotResponseCtor = require('shot/lib/response');
 export type ShotCallback = (response: ResponseObject) => void;
 
 export type ShotResponseCtor = new (
-  request: ServerRequest,
+  request: IncomingMessage,
   onEnd: ShotCallback,
 ) => ServerResponse;
 
 export function stubServerResponse(
-  request: ServerRequest,
+  request: IncomingMessage,
   onEnd: ShotCallback,
 ): ServerResponse {
   const stub = new ShotResponse(request, onEnd);
@@ -62,7 +64,7 @@ export function stubServerResponse(
 export type ObservedResponse = ResponseObject;
 
 export interface HandlerContextStub {
-  request: ServerRequest;
+  request: IncomingMessage;
   response: ServerResponse;
   result: Promise<ObservedResponse>;
 }
