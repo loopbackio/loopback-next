@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.26.0"></a>
+# [0.26.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.25.0...@loopback/cli@0.26.0) (2018-09-27)
+
+
+### Bug Fixes
+
+* **cli:** datasource class being referenced in generators ([6d345f7](https://github.com/strongloop/loopback-next/commit/6d345f7))
+
+
+### Features
+
+* **cli:** add basic scaffolding for lb4 service ([bed83b3](https://github.com/strongloop/loopback-next/commit/bed83b3))
+* **cli:** add integration tests for lb4 service ([3731f5b](https://github.com/strongloop/loopback-next/commit/3731f5b))
+* **cli:** change location fixtures service/repository ([d4f5b5c](https://github.com/strongloop/loopback-next/commit/d4f5b5c))
+* **cli:** lb4 service install service-proxy if missing ([b086d2d](https://github.com/strongloop/loopback-next/commit/b086d2d))
+* **cli:** lb4 service/repository shared scaffold ([9bafc6d](https://github.com/strongloop/loopback-next/commit/9bafc6d))
+
+
+
+
+
 <a name="0.25.0"></a>
 # [0.25.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.24.0...@loopback/cli@0.25.0) (2018-09-25)
 

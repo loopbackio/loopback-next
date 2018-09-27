@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-soap-calculator",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Integrate a SOAP webservice with LoopBack 4",
   "keywords": [
     "loopback",
@@ -43,19 +43,19 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/boot": "^0.14.1",
-    "@loopback/context": "^0.12.11",
-    "@loopback/core": "^0.11.12",
+    "@loopback/boot": "^0.14.2",
+    "@loopback/context": "^0.12.12",
+    "@loopback/core": "^0.11.13",
     "@loopback/dist-util": "^0.3.7",
-    "@loopback/openapi-v3": "^0.15.0",
-    "@loopback/repository": "^0.18.0",
-    "@loopback/rest": "^0.25.0",
-    "@loopback/service-proxy": "^0.8.6",
+    "@loopback/openapi-v3": "^0.15.1",
+    "@loopback/repository": "^0.18.1",
+    "@loopback/rest": "^0.25.1",
+    "@loopback/service-proxy": "^0.8.7",
     "loopback-connector-soap": "^4.2.0"
   },
   "devDependencies": {
-    "@loopback/build": "^0.7.3",
-    "@loopback/testlab": "^0.14.0",
+    "@loopback/build": "^0.7.4",
+    "@loopback/testlab": "^0.14.1",
     "@types/mocha": "^5.0.0",
     "@types/node": "^10.11.2",
     "mocha": "^5.1.1",
