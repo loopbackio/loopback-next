@@ -86,7 +86,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
     );
 
     this.artifactInfo.dataSourceClassName =
-      this.artifactInfo.dataSourceName + 'DataSource';
+      utils.toClassName(this.artifactInfo.dataSourceName) + 'DataSource';
   }
 
   /**
