@@ -205,7 +205,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
     );
 
     this.artifactInfo.dataSourceClassName =
-      this.artifactInfo.dataSourceName + 'DataSource';
+      utils.toClassName(this.artifactInfo.dataSourceName) + 'DataSource';
 
     // Setting up data for templates
     this.artifactInfo.className = utils.toClassName(this.artifactInfo.name);

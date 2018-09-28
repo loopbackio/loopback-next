@@ -86,7 +86,7 @@ describe('lb4 service', () => {
       );
       assert.fileContent(
         expectedFile,
-        /protected datasource: mydsDataSource = new mydsDataSource\(\),/,
+        /protected datasource: mydsDataSource = new MydsDataSource\(\),/,
       );
       assert.fileContent(
         expectedFile,
