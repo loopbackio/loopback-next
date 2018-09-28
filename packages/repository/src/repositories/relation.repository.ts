@@ -9,7 +9,7 @@ import {
   constrainFilter,
   constrainWhere,
 } from './constraint-utils';
-import {DataObject, Options} from '../common-types';
+import {DataObject, Options, Count} from '../common-types';
 import {Entity} from '../model';
 import {Filter, Where} from '../query';
 
@@ -40,7 +40,7 @@ export interface HasManyRepository<Target extends Entity> {
    * @param options
    * @returns A promise which resolves the deleted target model instances
    */
-  delete(where?: Where, options?: Options): Promise<number>;
+  delete(where?: Where, options?: Options): Promise<Count>;
   /**
    * Patch multiple target model instances
    * @param dataObject The fields and their new values to patch
@@ -52,7 +52,7 @@ export interface HasManyRepository<Target extends Entity> {
     dataObject: DataObject<Target>,
     where?: Where,
     options?: Options,
-  ): Promise<number>;
+  ): Promise<Count>;
 }
 
 export class DefaultHasManyEntityCrudRepository<
@@ -88,7 +88,7 @@ export class DefaultHasManyEntityCrudRepository<
     );
   }
 
-  async delete(where?: Where, options?: Options): Promise<number> {
+  async delete(where?: Where, options?: Options): Promise<Count> {
     return await this.targetRepository.deleteAll(
       constrainWhere(where, this.constraint),
       options,
@@ -99,8 +99,8 @@ export class DefaultHasManyEntityCrudRepository<
     dataObject: DataObject<TargetEntity>,
     where?: Where,
     options?: Options,
-  ): Promise<number> {
-    return await this.targetRepository.updateAll(
+  ): Promise<Count> {
+    return this.targetRepository.updateAll(
       constrainDataObject(dataObject, this.constraint),
       constrainWhere(where, this.constraint),
       options,

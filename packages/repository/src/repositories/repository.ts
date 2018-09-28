@@ -11,6 +11,7 @@ import {
   Command,
   NamedParameters,
   PositionalParameters,
+  Count,
 } from '../common-types';
 import {DataSource} from '../datasource';
 import {CrudConnector} from '../connectors';
@@ -76,7 +77,7 @@ export interface CrudRepository<T extends ValueObject | Entity>
     dataObject: DataObject<T>,
     where?: Where,
     options?: Options,
-  ): Promise<number>;
+  ): Promise<Count>;
 
   /**
    * Delete matching records
@@ -84,7 +85,7 @@ export interface CrudRepository<T extends ValueObject | Entity>
    * @param options Options for the operations
    * @returns A promise of number of records deleted
    */
-  deleteAll(where?: Where, options?: Options): Promise<number>;
+  deleteAll(where?: Where, options?: Options): Promise<Count>;
 
   /**
    * Count matching records
@@ -92,7 +93,7 @@ export interface CrudRepository<T extends ValueObject | Entity>
    * @param options Options for the operations
    * @returns A promise of number of records matched
    */
-  count(where?: Where, options?: Options): Promise<number>;
+  count(where?: Where, options?: Options): Promise<Count>;
 }
 
 /**
@@ -279,7 +280,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     data: DataObject<T>,
     where?: Where,
     options?: Options,
-  ): Promise<number> {
+  ): Promise<Count> {
     return this.connector.updateAll(this.model, data, where, options);
   }
 
@@ -293,8 +294,8 @@ export class CrudRepositoryImpl<T extends Entity, ID>
       success = await this.connector.updateById(this.model, id, data, options);
     } else {
       const where = this.model.buildWhereForId(id);
-      const count = await this.updateAll(data, where, options);
-      success = count > 0;
+      const result = await this.updateAll(data, where, options);
+      success = result.count > 0;
     }
     if (!success) {
       throw new EntityNotFoundError(this.model, id);
@@ -314,15 +315,15 @@ export class CrudRepositoryImpl<T extends Entity, ID>
       // tslint:disable-next-line:no-unused-variable
       const inst = data;
       const where = this.model.buildWhereForId(id);
-      const count = await this.updateAll(data, where, options);
-      success = count > 0;
+      const result = await this.updateAll(data, where, options);
+      success = result.count > 0;
     }
     if (!success) {
       throw new EntityNotFoundError(this.model, id);
     }
   }
 
-  deleteAll(where?: Where, options?: Options): Promise<number> {
+  deleteAll(where?: Where, options?: Options): Promise<Count> {
     return this.connector.deleteAll(this.model, where, options);
   }
 
@@ -332,8 +333,8 @@ export class CrudRepositoryImpl<T extends Entity, ID>
       success = await this.connector.deleteById(this.model, id, options);
     } else {
       const where = this.model.buildWhereForId(id);
-      const count = await this.deleteAll(where, options);
-      success = count > 0;
+      const result = await this.deleteAll(where, options);
+      success = result.count > 0;
     }
 
     if (!success) {
@@ -341,7 +342,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     }
   }
 
-  count(where?: Where, options?: Options): Promise<number> {
+  count(where?: Where, options?: Options): Promise<Count> {
     return this.connector.count(this.model, where, options);
   }
 
@@ -350,7 +351,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
       return this.connector.exists(this.model, id, options);
     } else {
       const where = this.model.buildWhereForId(id);
-      return this.count(where, options).then(result => result > 0);
+      return this.count(where, options).then(result => result.count > 0);
     }
   }
 

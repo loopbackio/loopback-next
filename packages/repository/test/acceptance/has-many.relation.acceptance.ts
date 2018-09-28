@@ -87,7 +87,7 @@ describe('HasMany relation', () => {
       existingCustomerId,
       patchObject,
     );
-    expect(arePatched).to.equal(2);
+    expect(arePatched.count).to.equal(2);
     const patchedData = _.map(
       await controller.findCustomerOrders(existingCustomerId),
       d => _.pick(d, ['customerId', 'description', 'isDelivered']),
@@ -124,7 +124,7 @@ describe('HasMany relation', () => {
     const deletedOrders = await controller.deleteCustomerOrders(
       existingCustomerId,
     );
-    expect(deletedOrders).to.equal(2);
+    expect(deletedOrders.count).to.equal(2);
     const relatedOrders = await controller.findCustomerOrders(
       existingCustomerId,
     );

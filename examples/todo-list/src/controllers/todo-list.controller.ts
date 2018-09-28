@@ -3,7 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Filter, repository, Where} from '@loopback/repository';
+import {
+  Count,
+  CountSchema,
+  Filter,
+  repository,
+  Where,
+} from '@loopback/repository';
 import {
   del,
   get,
@@ -39,13 +45,13 @@ export class TodoListController {
     responses: {
       '200': {
         description: 'TodoList model count',
-        content: {'application/json': {'x-ts-type': Number}},
+        content: {'application/json': {schema: CountSchema}},
       },
     },
   })
   async count(
     @param.query.object('where', getWhereSchemaFor(TodoList)) where?: Where,
-  ): Promise<number> {
+  ): Promise<Count> {
     return await this.todoListRepository.count(where);
   }
 
@@ -67,14 +73,14 @@ export class TodoListController {
     responses: {
       '200': {
         description: 'TodoList PATCH success count',
-        content: {'application/json': {'x-ts-type': Number}},
+        content: {'application/json': {schema: CountSchema}},
       },
     },
   })
   async updateAll(
     @requestBody() obj: Partial<TodoList>,
     @param.query.object('where', getWhereSchemaFor(TodoList)) where?: Where,
-  ): Promise<number> {
+  ): Promise<Count> {
     return await this.todoListRepository.updateAll(obj, where);
   }
 

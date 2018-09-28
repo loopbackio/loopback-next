@@ -3,7 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Filter, repository, Where} from '@loopback/repository';
+import {
+  Count,
+  CountSchema,
+  Filter,
+  repository,
+  Where,
+} from '@loopback/repository';
 import {
   del,
   get,
@@ -59,7 +65,7 @@ export class TodoListTodoController {
     responses: {
       '200': {
         description: 'TodoList.Todo PATCH success count',
-        content: {'application/json': {'x-ts-type': Number}},
+        content: {'application/json': {schema: CountSchema}},
       },
     },
   })
@@ -67,7 +73,7 @@ export class TodoListTodoController {
     @param.path.number('id') id: number,
     @requestBody() todo: Partial<Todo>,
     @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where,
-  ): Promise<number> {
+  ): Promise<Count> {
     return await this.todoListRepo.todos(id).patch(todo, where);
   }
 
@@ -75,14 +81,14 @@ export class TodoListTodoController {
     responses: {
       '200': {
         description: 'TodoList.Todo DELETE success count',
-        content: {'application/json': {'x-ts-type': Number}},
+        content: {'application/json': {schema: CountSchema}},
       },
     },
   })
   async delete(
     @param.path.number('id') id: number,
     @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where,
-  ): Promise<number> {
+  ): Promise<Count> {
     return await this.todoListRepo.todos(id).delete(where);
   }
 }

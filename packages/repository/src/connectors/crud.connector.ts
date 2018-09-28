@@ -6,7 +6,7 @@
 import {Connector} from './connector';
 import {Entity, EntityData} from '../model';
 import {Filter, Where} from '../query';
-import {Class, Options} from '../common-types';
+import {Class, Options, Count} from '../common-types';
 
 /**
  * CRUD operations for connector implementations
@@ -118,7 +118,7 @@ export interface CrudConnector extends Connector {
     data: EntityData,
     where?: Where,
     options?: Options,
-  ): Promise<number>;
+  ): Promise<Count>;
 
   /**
    * Update an entity by id
@@ -163,7 +163,7 @@ export interface CrudConnector extends Connector {
     modelClass: Class<Entity>,
     where?: Where,
     options?: Options,
-  ): Promise<number>;
+  ): Promise<Count>;
 
   /**
    * Delete an entity by id
@@ -190,7 +190,7 @@ export interface CrudConnector extends Connector {
     modelClass: Class<Entity>,
     where?: Where,
     options?: Options,
-  ): Promise<number>;
+  ): Promise<Count>;
 
   /**
    * Check if an entity exists for the id

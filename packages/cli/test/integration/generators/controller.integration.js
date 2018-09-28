@@ -260,7 +260,7 @@ function checkRestCrudContents() {
     /responses: {/,
     /'200': {/,
     /description: 'ProductReview model count'/,
-    /content: {'application\/json': {'x-ts-type': Number}},\s{1,}},\s{1,}},\s{1,}}\)/,
+    /content: {'application\/json': {schema: CountSchema}},\s{1,}},\s{1,}},\s{1,}}\)/,
     /async count\(\s+\@param\.query\.object\('where', getWhereSchemaFor\(ProductReview\)\) where\?: Where(|,\s+)\)/,
   ];
   getCountRegEx.forEach(regex => {
@@ -286,7 +286,7 @@ function checkRestCrudContents() {
     /responses: {/,
     /'200': {/,
     /description: 'ProductReview PATCH success count'/,
-    /content: {'application\/json': {'x-ts-type': Number}},\s{1,}},\s{1,}},\s{1,}}\)/,
+    /content: {'application\/json': {schema: CountSchema}},\s{1,}},\s{1,}},\s{1,}}\)/,
     /async updateAll\(\s{1,}\@requestBody\(\) productReview: ProductReview,\s{1,} @param\.query\.object\('where', getWhereSchemaFor\(ProductReview\)\) where\?: Where(|,\s+)\)/,
   ];
   patchUpdateAllRegEx.forEach(regex => {

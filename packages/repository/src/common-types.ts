@@ -82,3 +82,20 @@ export type NamedParameters = AnyObject;
  */
 // tslint:disable-next-line:no-any
 export type PositionalParameters = any[];
+
+/**
+ * Count of Model instances that were successful for methods like `updateAll`,
+ * `deleteAll`, etc.
+ */
+export interface Count {
+  count: number;
+}
+
+/**
+ * JSON Schema describing the Count interface. It's the response type for
+ * REST calls to APIs which return Count
+ */
+export const CountSchema = {
+  type: 'object',
+  properties: {count: {type: 'number'}},
+};
