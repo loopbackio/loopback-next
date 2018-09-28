@@ -16,6 +16,7 @@ import {
   Options,
   DataObject,
   Where,
+  Count,
 } from '../../..';
 
 describe('relation repository', () => {
@@ -45,7 +46,7 @@ describe('relation repository', () => {
         /* istanbul ignore next */
         throw new Error('Method not implemented.');
       }
-      async delete(where?: Where, options?: Options): Promise<number> {
+      async delete(where?: Where, options?: Options): Promise<Count> {
         /* istanbul ignore next */
         throw new Error('Method not implemented.');
       }
@@ -53,7 +54,7 @@ describe('relation repository', () => {
         dataObject: DataObject<T>,
         where?: Where,
         options?: Options,
-      ): Promise<number> {
+      ): Promise<Count> {
         /* istanbul ignore next */
         throw new Error('Method not implemented.');
       }

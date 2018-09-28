@@ -17,6 +17,7 @@ import {
   Options,
   CrudConnector,
   AnyObject,
+  Count,
 } from '../../..';
 
 /**
@@ -60,30 +61,30 @@ class CrudConnectorStub implements CrudConnector {
     data: EntityData,
     where?: Where,
     options?: Options,
-  ): Promise<number> {
+  ): Promise<Count> {
     for (const p in data) {
       for (const e of this.entities) {
         (e as AnyObject)[p] = (data as AnyObject)[p];
       }
     }
-    return Promise.resolve(this.entities.length);
+    return Promise.resolve({count: this.entities.length});
   }
 
   deleteAll(
     modelClass: Class<Entity>,
     where?: Where,
     options?: Options,
-  ): Promise<number> {
+  ): Promise<Count> {
     const items = this.entities.splice(0, this.entities.length);
-    return Promise.resolve(items.length);
+    return Promise.resolve({count: items.length});
   }
 
   count(
     modelClass: Class<Entity>,
     where?: Where,
     options?: Options,
-  ): Promise<number> {
-    return Promise.resolve(this.entities.length);
+  ): Promise<Count> {
+    return Promise.resolve({count: this.entities.length});
   }
 }
 
@@ -131,8 +132,8 @@ describe('CrudRepositoryImpl', () => {
   it('updates all entities', async () => {
     await repo.create({id: 1, email: 'john@example.com'});
     await repo.create({id: 2, email: 'mary@example.com'});
-    const count = await repo.updateAll({email: 'xyz@example.com'});
-    expect(count).to.be.eql(2);
+    const result = await repo.updateAll({email: 'xyz@example.com'});
+    expect(result.count).to.be.eql(2);
   });
 
   it('find all entities', async () => {
@@ -145,13 +146,13 @@ describe('CrudRepositoryImpl', () => {
   it('delete all entities', async () => {
     await repo.create({id: 1, email: 'john@example.com'});
     await repo.create({id: 2, email: 'mary@example.com'});
-    const count = await repo.deleteAll();
-    expect(count).to.be.eql(2);
+    const result = await repo.deleteAll();
+    expect(result.count).to.be.eql(2);
   });
 
   it('count all entities', async () => {
     await repo.create({id: 1, email: 'john@example.com'});
-    const count = await repo.count();
-    expect(count).to.be.eql(1);
+    const result = await repo.count();
+    expect(result.count).to.be.eql(1);
   });
 });

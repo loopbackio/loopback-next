@@ -56,7 +56,7 @@ describe('TodoListApplication', () => {
         .get('/todo-lists/count')
         .send()
         .expect(200);
-      expect(response.body).to.eql(persistedTodoLists.length);
+      expect(response.body.count).to.eql(persistedTodoLists.length);
     });
 
     it('counts a subset of todoLists', async () => {
@@ -64,7 +64,7 @@ describe('TodoListApplication', () => {
         .get('/todo-lists/count')
         .query({where: {title: 'so many things to do wow'}})
         .expect(200);
-      expect(response.body).to.equal(1);
+      expect(response.body.count).to.equal(1);
     });
 
     it('finds all todoLists', async () => {
@@ -81,7 +81,7 @@ describe('TodoListApplication', () => {
         .patch('/todo-lists')
         .send(patchedColorTodo)
         .expect(200);
-      expect(response.body).to.eql(persistedTodoLists.length);
+      expect(response.body.count).to.eql(persistedTodoLists.length);
       const updatedTodoLists = await todoListRepo.find();
       for (const todoList of updatedTodoLists) {
         expect(todoList.color).to.eql(patchedColorTodo.color);
@@ -98,7 +98,7 @@ describe('TodoListApplication', () => {
         .query({where: {color: 'red'}})
         .send({color: 'purple'})
         .expect(200);
-      expect(response.body).to.eql(1);
+      expect(response.body.count).to.eql(1);
 
       // the matched TodoList was updated
       expect(await todoListRepo.findByTitle('red-list')).to.have.property(

@@ -22,7 +22,7 @@ describe('Repository in Thinking in LoopBack', () => {
   beforeEach(givenProductRepository);
 
   it('counts models in empty database', async () => {
-    expect(await repo.count()).to.equal(0);
+    expect(await repo.count()).to.deepEqual({count: 0});
   });
 
   it('creates a new model', async () => {

@@ -13,6 +13,7 @@ import {
   NamedParameters,
   Options,
   PositionalParameters,
+  Count,
 } from '../common-types';
 import {HasManyDefinition} from '../decorators/relation.decorator';
 import {EntityNotFoundError} from '../errors';
@@ -229,15 +230,16 @@ export class DefaultCrudRepository<T extends Entity, ID>
     return this.deleteById(entity.getId(), options);
   }
 
-  updateAll(
+  async updateAll(
     data: DataObject<T>,
     where?: Where,
     options?: Options,
-  ): Promise<number> {
+  ): Promise<Count> {
     where = where || {};
-    return ensurePromise(this.modelClass.updateAll(where, data, options)).then(
-      result => result.count,
+    const result = await ensurePromise(
+      this.modelClass.updateAll(where, data, options),
     );
+    return {count: result.count};
   }
 
   async updateById(
@@ -248,8 +250,8 @@ export class DefaultCrudRepository<T extends Entity, ID>
     const idProp = this.modelClass.definition.idName();
     const where = {} as Where;
     where[idProp] = id;
-    const count = await this.updateAll(data, where, options);
-    if (count === 0) {
+    const result = await this.updateAll(data, where, options);
+    if (result.count === 0) {
       throw new EntityNotFoundError(this.entityClass, id);
     }
   }
@@ -269,10 +271,11 @@ export class DefaultCrudRepository<T extends Entity, ID>
     }
   }
 
-  deleteAll(where?: Where, options?: Options): Promise<number> {
-    return ensurePromise(this.modelClass.deleteAll(where, options)).then(
-      result => result.count,
+  async deleteAll(where?: Where, options?: Options): Promise<Count> {
+    const result = await ensurePromise(
+      this.modelClass.deleteAll(where, options),
     );
+    return {count: result.count};
   }
 
   async deleteById(id: ID, options?: Options): Promise<void> {
@@ -282,8 +285,9 @@ export class DefaultCrudRepository<T extends Entity, ID>
     }
   }
 
-  count(where?: Where, options?: Options): Promise<number> {
-    return ensurePromise(this.modelClass.count(where, options));
+  async count(where?: Where, options?: Options): Promise<Count> {
+    const result = await ensurePromise(this.modelClass.count(where, options));
+    return {count: result};
   }
 
   exists(id: ID, options?: Options): Promise<boolean> {

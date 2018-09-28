@@ -84,7 +84,7 @@ describe('TodoListApplication', () => {
         .send(patchedIsCompleteTodo)
         .expect(200);
 
-      expect(response.body).to.eql(myTodos.length);
+      expect(response.body.count).to.eql(myTodos.length);
       const updatedTodos = await todoListRepo
         .todos(persistedTodoList.id)
         .find();
@@ -111,7 +111,7 @@ describe('TodoListApplication', () => {
         .query({where: {isComplete: false}})
         .send({desc: 'work in progress'})
         .expect(200);
-      expect(response.body).to.equal(1);
+      expect(response.body.count).to.equal(1);
 
       // the matched Todo was updated
       expect(await todoRepo.findById(wip.id)).to.have.property(
@@ -156,7 +156,7 @@ describe('TodoListApplication', () => {
         .query({where: {isComplete: true}})
         .expect(200);
 
-      expect(response.body).to.equal(1);
+      expect(response.body.count).to.equal(1);
 
       const allRemainingTodos = await todoRepo.find();
       expect(allRemainingTodos.map(t => t.title).sort()).to.deepEqual(
