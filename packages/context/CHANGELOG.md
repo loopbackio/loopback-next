@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.12.13"></a>
+## [0.12.13](https://github.com/strongloop/loopback-next/compare/@loopback/context@0.12.12...@loopback/context@0.12.13) (2018-09-28)
+
+**Note:** Version bump only for package @loopback/context
+
+
+
+
+
 <a name="0.12.12"></a>
 ## [0.12.12](https://github.com/strongloop/loopback-next/compare/@loopback/context@0.12.11...@loopback/context@0.12.12) (2018-09-27)
 

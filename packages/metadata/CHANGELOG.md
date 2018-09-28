@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.9.12"></a>
+## [0.9.12](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@0.9.11...@loopback/metadata@0.9.12) (2018-09-28)
+
+
+### Bug Fixes
+
+* **metadata:** remove the default type to work around a TS bug ([fc89a2c](https://github.com/strongloop/loopback-next/commit/fc89a2c))
+
+
+
+
+
 <a name="0.9.11"></a>
 ## [0.9.11](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@0.9.10...@loopback/metadata@0.9.11) (2018-09-27)
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.11.2"></a>
+## [0.11.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@0.11.1...@loopback/repository-json-schema@0.11.2) (2018-09-28)
+
+
+### Bug Fixes
+
+* **metadata:** remove the default type to work around a TS bug ([fc89a2c](https://github.com/strongloop/loopback-next/commit/fc89a2c))
+
+
+
+
+
 <a name="0.11.1"></a>
 ## [0.11.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@0.11.0...@loopback/repository-json-schema@0.11.1) (2018-09-27)
 

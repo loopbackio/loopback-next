@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.11.17"></a>
+## [0.11.17](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@0.11.16...@loopback/authentication@0.11.17) (2018-09-28)
+
+
+### Bug Fixes
+
+* **metadata:** remove the default type to work around a TS bug ([fc89a2c](https://github.com/strongloop/loopback-next/commit/fc89a2c))
+
+
+
+
+
 <a name="0.11.16"></a>
 ## [0.11.16](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@0.11.15...@loopback/authentication@0.11.16) (2018-09-27)
 

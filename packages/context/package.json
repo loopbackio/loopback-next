@@ -1,6 +1,6 @@
 {
   "name": "@loopback/context",
-  "version": "0.12.12",
+  "version": "0.12.13",
   "description": "LoopBack's container for Inversion of Control",
   "engines": {
     "node": ">=8.9"
@@ -23,7 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "@loopback/dist-util": "^0.3.7",
-    "@loopback/metadata": "^0.9.11",
+    "@loopback/metadata": "^0.9.12",
     "debug": "^4.0.1",
     "uuid": "^3.2.1"
   },

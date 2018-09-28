@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.27.0"></a>
+# [0.27.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.26.0...@loopback/cli@0.27.0) (2018-09-28)
+
+
+### Bug Fixes
+
+* **cli:** fixes final datasource class name on repository and service ([d0994af](https://github.com/strongloop/loopback-next/commit/d0994af)), closes [#1771](https://github.com/strongloop/loopback-next/issues/1771)
+
+
+### Features
+
+* **cli:** add code template for default home page controller ([f4be330](https://github.com/strongloop/loopback-next/commit/f4be330))
+* **repository:** return an object for count and updateAll ([c146366](https://github.com/strongloop/loopback-next/commit/c146366))
+
+
+
+
+
 <a name="0.26.0"></a>
 # [0.26.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.25.0...@loopback/cli@0.26.0) (2018-09-27)
 
