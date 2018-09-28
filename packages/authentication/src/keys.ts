@@ -105,5 +105,6 @@ export namespace AuthenticationBindings {
  * The key used to store log-related via @loopback/metadata and reflection.
  */
 export const AUTHENTICATION_METADATA_KEY = MetadataAccessor.create<
-  AuthenticationMetadata
+  AuthenticationMetadata,
+  MethodDecorator
 >('authentication.operationsMetadata');

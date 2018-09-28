@@ -30,7 +30,7 @@ export class MetadataAccessor<T, D extends DecoratorType = DecoratorType> {
    * @typeparam T Type of the metadata value
    * @typeparam D Type of the decorator
    */
-  static create<T, D extends DecoratorType = DecoratorType>(key: string) {
+  static create<T, D extends DecoratorType>(key: string) {
     return new MetadataAccessor<T, D>(key);
   }
 }
