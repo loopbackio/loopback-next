@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@loopback/dist-util": "^0.3.7",
-    "@phenomnomnominal/tsquery": "^2.0.1",
+    "@phenomnomnominal/tsquery": "^2.1.1",
     "camelcase-keys": "^4.2.0",
     "chalk": "^2.3.2",
     "change-case": "^3.0.2",
