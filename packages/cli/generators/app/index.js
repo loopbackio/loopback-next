@@ -54,10 +54,12 @@ module.exports = class AppGenerator extends ProjectGenerator {
   }
 
   promptProjectName() {
+    if (this.shouldExit()) return;
     return super.promptProjectName();
   }
 
   promptProjectDir() {
+    if (this.shouldExit()) return;
     return super.promptProjectDir();
   }
 
@@ -83,6 +85,7 @@ module.exports = class AppGenerator extends ProjectGenerator {
   }
 
   promptOptions() {
+    if (this.shouldExit()) return;
     return super.promptOptions();
   }
 

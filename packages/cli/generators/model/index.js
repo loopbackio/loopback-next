@@ -67,6 +67,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
 
   // Prompt a user for Model Name
   async promptArtifactName() {
+    if (this.shouldExit()) return;
     await super.promptArtifactName();
     this.artifactInfo.className = utils.toClassName(this.artifactInfo.name);
     this.log();
@@ -77,6 +78,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
 
   // Prompt for a Property Name
   async promptPropertyName() {
+    if (this.shouldExit()) return;
     this.log(`Enter an empty property name when done`);
     this.log();
 

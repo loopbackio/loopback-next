@@ -58,7 +58,12 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
     return super.setOptions();
   }
 
+  checkLoopBackProject() {
+    return super.checkLoopBackProject();
+  }
+
   async checkPaths() {
+    if (this.shouldExit()) return;
     // check for datasources
     if (!fs.existsSync(this.artifactInfo.datasourcesDir)) {
       new Error(
@@ -76,6 +81,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
    */
   async promptArtifactName() {
     debug('Prompting for service name');
+    if (this.shouldExit()) return;
 
     if (this.options.name) {
       Object.assign(this.artifactInfo, {name: this.options.name});
@@ -99,6 +105,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
 
   async promptDataSourceName() {
     debug('Prompting for a datasource ');
+    if (this.shouldExit()) return;
     let cmdDatasourceName;
     let datasourcesList;
 
@@ -186,6 +193,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
    * strongly-typed service proxies and corresponding model definitions.
    */
   async inferInterfaces() {
+    if (this.shouldExit()) return;
     let connectorType = utils.getDataSourceConnectorName(
       this.artifactInfo.datasourcesDir,
       this.artifactInfo.dataSourceClass,
