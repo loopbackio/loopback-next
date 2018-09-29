@@ -66,11 +66,13 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   }
 
   promptArtifactName() {
+    if (this.shouldExit()) return;
     return super.promptArtifactName();
   }
 
   promptArtifactType() {
     debug('Prompting for controller type');
+    if (this.shouldExit()) return;
     return this.prompt([
       {
         type: 'list',
@@ -92,6 +94,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   }
 
   async promptArtifactCrudVars() {
+    if (this.shouldExit()) return;
     if (
       !this.artifactInfo.controllerType ||
       this.artifactInfo.controllerType === ControllerGenerator.BASIC

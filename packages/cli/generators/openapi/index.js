@@ -46,6 +46,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
   }
 
   async askForSpecUrlOrPath() {
+    if (this.shouldExit()) return;
     const prompts = [
       {
         name: 'url',
@@ -64,6 +65,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
   }
 
   async loadAndBuildApiSpec() {
+    if (this.shouldExit()) return;
     try {
       const result = await loadAndBuildSpec(this.url, {
         log: this.log,

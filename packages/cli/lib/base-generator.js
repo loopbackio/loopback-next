@@ -10,9 +10,8 @@ const chalk = require('chalk');
 const {StatusConflicter, readTextFromStdin} = require('./utils');
 const path = require('path');
 const fs = require('fs');
-const readline = require('readline');
 const debug = require('./debug')('base-generator');
-const assert = require('assert');
+const semver = require('semver');
 
 /**
  * Base Generator for LoopBack 4
@@ -130,17 +129,16 @@ module.exports = class BaseGenerator extends Generator {
    * @param {*} question
    */
   async _getDefaultAnswer(question, answers) {
+    // First check existing answers
+    let defaultVal = answers[question.name];
+    if (defaultVal != null) return defaultVal;
+
+    // Now check the `default` of the prompt
     let def = question.default;
     if (typeof question.default === 'function') {
       def = await question.default(answers);
     }
-    let defaultVal = def;
-
-    if (def == null) {
-      // No `default` is set for the question, check existing answers
-      defaultVal = answers[question.name];
-      if (defaultVal != null) return defaultVal;
-    }
+    defaultVal = def;
 
     if (question.type === 'confirm') {
       return defaultVal != null ? defaultVal : true;
@@ -274,7 +272,7 @@ module.exports = class BaseGenerator extends Generator {
    * keyword 'loopback' under 'keywords' attribute in package.json.
    * 'keywords' is an array
    */
-  checkLoopBackProject() {
+  async checkLoopBackProject() {
     debug('Checking for loopback project');
     if (this.shouldExit()) return false;
     const pkg = this.fs.readJSON(this.destinationPath('package.json'));
@@ -297,8 +295,48 @@ module.exports = class BaseGenerator extends Generator {
           'The command must be run in a LoopBack project.',
       );
       this.exit(err);
+      return;
     }
     this.packageJson = pkg;
+
+    const projectDeps = pkg.dependencies || {};
+    const projectDevDeps = pkg.devDependencies || {};
+
+    const cliPkg = require('../package.json');
+    const templateDeps = cliPkg.config.templateDependencies;
+    const incompatibleDeps = {};
+    for (const d in templateDeps) {
+      const versionRange = projectDeps[d] || projectDevDeps[d];
+      if (!versionRange || semver.intersects(versionRange, templateDeps[d]))
+        continue;
+      incompatibleDeps[d] = [versionRange, templateDeps[d]];
+    }
+
+    if (Object.keys(incompatibleDeps).length === 0) {
+      // No incompatible dependencies
+      return;
+    }
+    this.log(
+      chalk.red(
+        'The project has dependencies with incompatible versions required by the CLI:',
+      ),
+    );
+    for (const d in incompatibleDeps) {
+      this.log(chalk.yellow('- %s: %s (cli %s)'), d, ...incompatibleDeps[d]);
+    }
+    const prompts = [
+      {
+        name: 'ignoreIncompatibleDependencies',
+        message: `Continue to run the command?`,
+        type: 'confirm',
+        default: false,
+      },
+    ];
+    const answers = await this.prompt(prompts);
+    if (answers && answers.ignoreIncompatibleDependencies) {
+      return;
+    }
+    this.exit(new Error('Incompatible dependencies'));
   }
 
   _runNpmScript(projectDir, args) {

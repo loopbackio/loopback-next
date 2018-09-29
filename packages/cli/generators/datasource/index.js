@@ -99,6 +99,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
    */
   promptConnector() {
     debug('prompting for datasource connector');
+    if (this.shouldExit()) return;
     const prompts = [
       {
         name: 'connector',
@@ -123,6 +124,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
    * `npm` module name for the connector.
    */
   promptCustomConnectorInfo() {
+    if (this.shouldExit()) return;
     if (this.artifactInfo.connector !== 'other') {
       debug('custom connector option was not selected');
       return;
@@ -149,6 +151,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
    */
   promptConnectorConfig() {
     debug('prompting for connector config');
+    if (this.shouldExit()) return;
     // Check to make sure connector is from connectors list (not custom)
     const settings =
       (connectors[this.artifactInfo.connector] &&

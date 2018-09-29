@@ -177,7 +177,12 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
     return super.setOptions();
   }
 
+  checkLoopBackProject() {
+    return super.checkLoopBackProject();
+  }
+
   async checkPaths() {
+    if (this.shouldExit()) return;
     // check for datasources
     if (!fs.existsSync(this.artifactInfo.datasourcesDir)) {
       return this.exit(

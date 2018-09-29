@@ -54,6 +54,7 @@ module.exports = class extends BaseGenerator {
   _describeExamples() {}
 
   promptExampleName() {
+    if (this.shouldExit()) return;
     if (this.options['example-name']) {
       this.exampleName = this.options['example-name'];
       return;
@@ -80,6 +81,7 @@ module.exports = class extends BaseGenerator {
   }
 
   validateExampleName() {
+    if (this.shouldExit()) return;
     if (this.exampleName in EXAMPLES) return;
     this.exit(
       `Invalid example name: ${this.exampleName}\n` +

@@ -85,27 +85,38 @@ module.exports = function(artiGenerator) {
         /No `loopback` keyword found/,
       );
 
-      it('passes if "keywords" maps to "loopback"', () => {
+      testCheckLoopBack(
+        'throws an error if dependencies have incompatible versions',
+        {
+          keywords: ['loopback'],
+          dependencies: {'@loopback/context': '^0.0.0'},
+        },
+        /Incompatible dependencies/,
+      );
+
+      it('passes if "keywords" maps to "loopback"', async () => {
         gen.fs.readJSON.returns({keywords: ['test', 'loopback']});
-        assert.doesNotThrow(() => {
-          gen.checkLoopBackProject();
-        }, Error);
+        await gen.checkLoopBackProject();
       });
 
       function testCheckLoopBack(testName, obj, expected) {
-        it(testName, () => {
+        it(testName, async () => {
           let logs = [];
           gen.log = function(...args) {
             logs = logs.concat(args);
           };
+          gen.prompt = async () => ({
+            ignoreIncompatibleDependencies: false,
+          });
           gen.fs.readJSON.returns(obj);
-          gen.checkLoopBackProject();
+          await gen.checkLoopBackProject();
           assert(gen.exitGeneration instanceof Error);
           assert(gen.exitGeneration.message.match(expected));
           gen.end();
-          assert.deepEqual(logs, [
+          assert.equal(
+            logs[logs.length - 1],
             chalk.red('Generation is aborted:', gen.exitGeneration),
-          ]);
+          );
         });
       }
     });
