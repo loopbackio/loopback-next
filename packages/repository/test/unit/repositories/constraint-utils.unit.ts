@@ -8,7 +8,6 @@ import {
   FilterBuilder,
   Filter,
   Where,
-  WhereBuilder,
   constrainFilter,
   constrainWhere,
   constrainDataObject,
@@ -58,7 +57,10 @@ describe('constraint utility functions', () => {
     });
   });
   context('constrainWhere', () => {
-    const inputWhere = whereBuilderHelper({x: 'x', y: 'y'});
+    const inputWhere: Where<{x: string; y: string; id: string}> = {
+      x: 'x',
+      y: 'y',
+    };
 
     it('enforces a constraint', () => {
       const constraint = {id: '5'};
@@ -123,14 +125,6 @@ describe('constraint utility functions', () => {
         default:
           throw Error('unsupported filter fields');
       }
-    }
-    return builder.build();
-  }
-
-  function whereBuilderHelper(where: Where) {
-    const builder = new WhereBuilder();
-    for (const key in where) {
-      builder.eq(key, where[key]);
     }
     return builder.build();
   }

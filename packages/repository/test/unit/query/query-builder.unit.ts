@@ -4,7 +4,15 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {FilterBuilder, WhereBuilder, filterTemplate, isFilter} from '../../../';
+import {
+  FilterBuilder,
+  WhereBuilder,
+  filterTemplate,
+  isFilter,
+  AnyObject,
+  Where,
+  KeyOf,
+} from '../../../';
 
 describe('WhereBuilder', () => {
   it('builds where object', () => {
@@ -128,7 +136,7 @@ describe('WhereBuilder', () => {
   });
 
   it('builds where object from an existing one', () => {
-    const whereBuilder = new WhereBuilder({y: 'y'});
+    const whereBuilder = new WhereBuilder<AnyObject>({y: 'y'});
     const where = whereBuilder
       .eq('a', 1)
       .gt('b', 2)
@@ -139,9 +147,43 @@ describe('WhereBuilder', () => {
   });
 
   it('constrains an existing where object with another where filter', () => {
-    const builder = new WhereBuilder({x: 'x'});
+    const builder = new WhereBuilder<AnyObject>({x: 'x'});
     const where = builder.impose({x: 'y', z: 'z'}).build();
     expect(where).to.be.deepEqual({and: [{x: 'x'}, {x: 'y', z: 'z'}]});
+  });
+
+  it('compiles valid where clause', () => {
+    interface Post {
+      id: number;
+      title: string;
+      author: string;
+      likes: number;
+      gte: number;
+      regexp: unknown;
+    }
+
+    type Key = KeyOf<Post>;
+
+    const k1: Key = 'id';
+    // const k2: Key = 'regexp'; // fail to compile, regexp is a keyword
+    // const k3: Key = 'gte'; // fail to compile, gte is a keyword
+
+    const t1: Where<Post> = {
+      // id: 'foo', // fail to compile, wrong type
+      or: [{id: 42}],
+    };
+
+    const t2: Where<Post> = {
+      id: 42,
+      // or: [{id: 'foo'}], // fail to compile wrong type
+    };
+
+    const t3: Where<Post> = {
+      id: 42,
+      // or: [{idX: 'foo'}], // fail to compile, wrong property names
+    };
+    // Force usage to disable unused var warnings
+    expect([k1, t1, t2, t3]).to.eql([k1, t1, t2, t3]);
   });
 });
 
@@ -441,7 +483,7 @@ describe('FilterTemplate', () => {
     });
   });
 
-  it('builds filter object with numner literals', () => {
+  it('builds filter object with number literals', () => {
     const value = 25;
     const filter = filterTemplate`{"where": {${'key'}: ${value}}}`;
     const result = filter({

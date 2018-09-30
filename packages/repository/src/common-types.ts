@@ -52,7 +52,7 @@ export type DeepPartial<T> = {[P in keyof T]?: DeepPartial<T[P]>};
 /**
  * Type alias for strongly or weakly typed objects of T
  */
-export type DataObject<T> = T | DeepPartial<T>;
+export type DataObject<T extends object> = T | DeepPartial<T>;
 
 /**
  * Type alias for Node.js options object
