@@ -14,6 +14,7 @@ import {
   constrainDataObject,
   constrainDataObjects,
   Entity,
+  AnyObject,
 } from '../../..';
 
 describe('constraint utility functions', () => {
@@ -130,7 +131,7 @@ describe('constraint utility functions', () => {
   function whereBuilderHelper(where: Where) {
     const builder = new WhereBuilder();
     for (const key in where) {
-      builder.eq(key, where[key]);
+      builder.eq(key, (where as AnyObject)[key]);
     }
     return builder.build();
   }

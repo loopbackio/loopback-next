@@ -31,21 +31,38 @@ export enum Operators {
 }
 
 /**
+ * Matching predicate comparison
+ */
+export type PredicateComparison<PT> = {
+  eq?: PT;
+  neq?: PT;
+  gt?: PT;
+  gte?: PT;
+  lt?: PT;
+  lte?: PT;
+  inq?: PT;
+  between?: [PT, PT];
+  exists?: boolean;
+};
+
+type ShortHandEqualType = string | number | boolean | Date;
+
+/**
+ * Matching predicate condition
+ */
+export type PredicateCondition<MT> = {
+  [P in keyof MT]?: PredicateComparison<MT[P]> | (MT[P] & ShortHandEqualType)
+} & {and?: never; or?: never};
+
+/**
  * Matching condition
  */
-export interface Condition {
-  eq?: any;
-  neq?: any;
-  gt?: any;
-  gte?: any;
-  lt?: any;
-  lte?: any;
-  inq?: any[];
-  between?: any[];
-  exists?: boolean;
-  and?: Where[];
-  or?: Where[];
-}
+export type Condition<MT> =
+  | {
+      and?: Condition<MT>[]; // AND
+      or?: Condition<MT>[]; // OR
+    }
+  | PredicateCondition<MT>;
 
 /**
  * Where object
@@ -55,11 +72,7 @@ export interface Condition {
  * `{and: [{fieldone: 'one'}, {fieldtwo: 'two'}]}`
  * `{or: [{fieldone: 'one'}, {fieldtwo: 'two'}]}`
  */
-export interface Where {
-  and?: Where[]; // AND
-  or?: Where[]; // OR
-  [property: string]: Condition | any; // Other criteria
-}
+export type Where<MT = AnyObject> = Condition<MT>;
 
 /**
  * Order by direction
@@ -72,9 +85,7 @@ export type Direction = 'ASC' | 'DESC';
  * Example:
  * `{afieldname: 'ASC'}`
  */
-export interface Order {
-  [property: string]: Direction;
-}
+export type Order<MT = AnyObject> = {[P in keyof MT]: Direction};
 
 /**
  * Selection of fields
@@ -82,9 +93,7 @@ export interface Order {
  * Example:
  * `{afieldname: true}`
  */
-export interface Fields {
-  [property: string]: boolean;
-}
+export type Fields<MT = AnyObject> = {[P in keyof MT | string]?: boolean};
 
 /**
  * Inclusion of related items
@@ -94,23 +103,23 @@ export interface Fields {
  * Example:
  * `{relation: 'aRelationName', scope: {<AFilterObject>}}`
  */
-export interface Inclusion {
+export interface Inclusion<MT = AnyObject> {
   relation: string;
-  scope?: Filter;
+  scope?: Filter<MT>;
 }
 
 /**
  * Query filter object
  */
-export interface Filter {
+export interface Filter<MT = AnyObject> {
   /**
    * The matching criteria
    */
-  where?: Where;
+  where?: Where<MT>;
   /**
    * To include/exclude fields
    */
-  fields?: Fields;
+  fields?: Fields<MT>;
   /**
    * Sorting order for matched entities. Each item should be formatted as
    * `fieldName ASC` or `fieldName DESC`.
@@ -135,10 +144,10 @@ export interface Filter {
   /**
    * To include related objects
    */
-  include?: Inclusion[];
+  include?: Inclusion<MT>[];
 }
 
-export function isFilter(arg: any): arg is Filter {
+export function isFilter<MT>(arg: any): arg is Filter<MT> {
   if (typeof arg === 'object') {
     const filterFields = [
       'where',
@@ -173,14 +182,26 @@ export function isFilter(arg: any): arg is Filter {
  *   .build();
  * ```
  */
-export class WhereBuilder {
-  where: Where;
+export class WhereBuilder<MT = AnyObject> {
+  where: Where<MT>;
 
-  constructor(w?: Where) {
+  constructor(w?: Where<MT>) {
     this.where = w || {};
   }
 
-  private add(w: Where): this {
+  private add(w: Where<MT>): this {
+    if (this.where.and) {
+      // add new condition to existing `and` conditions
+      this.where.and.push(w);
+      return this;
+    }
+    if (this.where.or) {
+      // create new `and` condition and join the existing conditions
+      // with the new one
+      this.where = {and: [this.where, w]};
+      return this;
+    }
+    // we are about to add a new predicate to existing predicates
     for (const k of Object.keys(w)) {
       if (k in this.where) {
         // Found conflicting keys, create an `and` operator to join the existing
@@ -198,24 +219,50 @@ export class WhereBuilder {
    * Add an `and` clause.
    * @param w One or more where objects
    */
-  and(...w: (Where | Where[])[]): this {
-    let clauses: Where[] = [];
+  and(...w: (Where<MT> | Where<MT>[])[]): this {
+    let clauses: Where<MT>[] = [];
     w.forEach(where => {
       clauses = clauses.concat(Array.isArray(where) ? where : [where]);
     });
-    return this.add({and: clauses});
+    if (Object.keys(this.where).length === 0) {
+      // create a new condition
+      this.where = {and: clauses};
+    } else {
+      if (this.where.and) {
+        // add new conditions to the existing `and` condition
+        this.where.and.push(...clauses);
+      } else {
+        // create new `and` condition and join the existing conditions
+        // with the new one
+        this.where = {and: [this.where, ...clauses]};
+      }
+    }
+    return this;
   }
 
   /**
    * Add an `or` clause.
    * @param w One or more where objects
    */
-  or(...w: (Where | Where[])[]): this {
-    let clauses: Where[] = [];
+  or(...w: (Where<MT> | Where<MT>[])[]): this {
+    let clauses: Where<MT>[] = [];
     w.forEach(where => {
       clauses = clauses.concat(Array.isArray(where) ? where : [where]);
     });
-    return this.add({or: clauses});
+    if (Object.keys(this.where).length === 0) {
+      // create a new condition
+      this.where = {or: clauses};
+    } else {
+      if (this.where.and) {
+        // add new conditions to the existing `and` condition
+        this.where.and.push(...clauses);
+      } else {
+        // create new `and` condition and join the existing conditions
+        // with the new `or` condition
+        this.where = {and: [this.where, {or: clauses}]};
+      }
+    }
+    return this;
   }
 
   /**
@@ -223,7 +270,7 @@ export class WhereBuilder {
    * @param key Property name
    * @param val Property value
    */
-  eq(key: string, val: any): this {
+  eq(key: keyof MT, val: MT[keyof MT]): this {
     return this.add({[key]: val});
   }
 
@@ -232,7 +279,7 @@ export class WhereBuilder {
    * @param key Property name
    * @param val Property value
    */
-  neq(key: string, val: any): this {
+  neq(key: keyof MT, val: MT[keyof MT]): this {
     return this.add({[key]: {neq: val}});
   }
 
@@ -241,7 +288,7 @@ export class WhereBuilder {
    * @param key Property name
    * @param val Property value
    */
-  gt(key: string, val: any): this {
+  gt(key: keyof MT, val: MT[keyof MT]): this {
     return this.add({[key]: {gt: val}});
   }
 
@@ -250,7 +297,7 @@ export class WhereBuilder {
    * @param key Property name
    * @param val Property value
    */
-  gte(key: string, val: any): this {
+  gte(key: keyof MT, val: MT[keyof MT]): this {
     return this.add({[key]: {gte: val}});
   }
 
@@ -259,7 +306,7 @@ export class WhereBuilder {
    * @param key Property name
    * @param val Property value
    */
-  lt(key: string, val: any): this {
+  lt(key: keyof MT, val: MT[keyof MT]): this {
     return this.add({[key]: {lt: val}});
   }
 
@@ -268,7 +315,7 @@ export class WhereBuilder {
    * @param key Property name
    * @param val Property value
    */
-  lte(key: string, val: any): this {
+  lte(key: keyof MT, val: MT[keyof MT]): this {
     return this.add({[key]: {lte: val}});
   }
 
@@ -277,7 +324,7 @@ export class WhereBuilder {
    * @param key Property name
    * @param val An array of property values
    */
-  inq(key: string, val: any[]): this {
+  inq(key: keyof MT, val: MT[keyof MT][]): this {
     return this.add({[key]: {inq: val}});
   }
 
@@ -287,7 +334,7 @@ export class WhereBuilder {
    * @param val1 Property value lower bound
    * @param val2 Property value upper bound
    */
-  between(key: string, val1: any, val2: any): this {
+  between(key: keyof MT, val1: MT[keyof MT], val2: MT[keyof MT]): this {
     return this.add({[key]: {between: [val1, val2]}});
   }
 
@@ -296,7 +343,7 @@ export class WhereBuilder {
    * @param key Property name
    * @param val Exists or not
    */
-  exists(key: string, val?: boolean): this {
+  exists(key: keyof MT, val?: boolean): this {
     return this.add({[key]: {exists: !!val || val == null}});
   }
   /**
@@ -304,7 +351,7 @@ export class WhereBuilder {
    * create an `and` clause.
    * @param where Where filter
    */
-  impose(where: Where): this {
+  impose(where: Where<MT>): this {
     if (!this.where) {
       this.where = where || {};
     } else {
@@ -337,10 +384,10 @@ export class WhereBuilder {
  *   .build();
  * ```
  */
-export class FilterBuilder {
-  filter: Filter;
+export class FilterBuilder<MT = AnyObject> {
+  filter: Filter<MT>;
 
-  constructor(f?: Filter) {
+  constructor(f?: Filter<MT>) {
     this.filter = f || {};
   }
 
@@ -376,7 +423,7 @@ export class FilterBuilder {
    * @param f A field name to be included, an array of field names to be
    * included, or an Fields object for the inclusion/exclusion
    */
-  fields(...f: (Fields | string[] | string)[]): this {
+  fields(...f: (Fields<MT> | string[] | string)[]): this {
     if (!this.filter.fields) {
       this.filter.fields = {};
     }
@@ -401,7 +448,7 @@ export class FilterBuilder {
    * @param f A field name with optional direction, an array of field names,
    * or an Order object for the field/direction pairs
    */
-  order(...o: (string | string[] | Order)[]): this {
+  order(...o: (string | string[] | Order<MT>)[]): this {
     if (!this.filter.order) {
       this.filter.order = [];
     }
@@ -437,7 +484,7 @@ export class FilterBuilder {
    * @param i A relation name, an array of relation names, or an `Inclusion`
    * object for the relation/scope definitions
    */
-  include(...i: (string | string[] | Inclusion)[]): this {
+  include(...i: (string | string[] | Inclusion<MT>)[]): this {
     if (!this.filter.include) {
       this.filter.include = [];
     }
@@ -457,7 +504,7 @@ export class FilterBuilder {
    * Declare a where clause
    * @param w Where object
    */
-  where(w: Where): this {
+  where(w: Where<MT>): this {
     this.filter.where = w;
     return this;
   }
@@ -470,13 +517,13 @@ export class FilterBuilder {
    *
    * @param constraint a constraint object to merge with own filter object
    */
-  impose(constraint: Filter | Where): this {
+  impose(constraint: Filter<MT> | Where<MT>): this {
     if (!this.filter) {
       // if constraint is a Where, turn into a Filter
       if (!isFilter(constraint)) {
         constraint = {where: constraint};
       }
-      this.filter = (constraint as Filter) || {};
+      this.filter = (constraint as Filter<MT>) || {};
     } else {
       if (isFilter(constraint)) {
         // throw error if imposed Filter has non-where fields

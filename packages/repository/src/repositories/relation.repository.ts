@@ -33,14 +33,14 @@ export interface HasManyRepository<Target extends Entity> {
    * @param options Options for the operation
    * @returns A promise which resolves with the found target instance(s)
    */
-  find(filter?: Filter, options?: Options): Promise<Target[]>;
+  find(filter?: Filter<Target>, options?: Options): Promise<Target[]>;
   /**
    * Delete multiple target model instances
    * @param where Instances within the where scope are deleted
    * @param options
    * @returns A promise which resolves the deleted target model instances
    */
-  delete(where?: Where, options?: Options): Promise<Count>;
+  delete(where?: Where<Target>, options?: Options): Promise<Count>;
   /**
    * Patch multiple target model instances
    * @param dataObject The fields and their new values to patch
@@ -50,7 +50,7 @@ export interface HasManyRepository<Target extends Entity> {
    */
   patch(
     dataObject: DataObject<Target>,
-    where?: Where,
+    where?: Where<Target>,
     options?: Options,
   ): Promise<Count>;
 }
@@ -81,14 +81,17 @@ export class DefaultHasManyEntityCrudRepository<
     );
   }
 
-  async find(filter?: Filter, options?: Options): Promise<TargetEntity[]> {
+  async find(
+    filter?: Filter<TargetEntity>,
+    options?: Options,
+  ): Promise<TargetEntity[]> {
     return await this.targetRepository.find(
       constrainFilter(filter, this.constraint),
       options,
     );
   }
 
-  async delete(where?: Where, options?: Options): Promise<Count> {
+  async delete(where?: Where<TargetEntity>, options?: Options): Promise<Count> {
     return await this.targetRepository.deleteAll(
       constrainWhere(where, this.constraint),
       options,
@@ -97,7 +100,7 @@ export class DefaultHasManyEntityCrudRepository<
 
   async patch(
     dataObject: DataObject<TargetEntity>,
-    where?: Where,
+    where?: Where<TargetEntity>,
     options?: Options,
   ): Promise<Count> {
     return this.targetRepository.updateAll(
