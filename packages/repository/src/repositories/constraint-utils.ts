@@ -16,12 +16,12 @@ import {Entity} from '../model';
  * @returns Filter the modified filter with the constraint, otherwise
  * the original filter
  */
-export function constrainFilter(
-  originalFilter: Filter | undefined,
+export function constrainFilter<T extends object>(
+  originalFilter: Filter<T> | undefined,
   constraint: AnyObject,
-): Filter {
+): Filter<T> {
   const filter = cloneDeep(originalFilter);
-  const builder = new FilterBuilder(filter);
+  const builder = new FilterBuilder<T>(filter);
   return builder.impose(constraint).build();
 }
 
@@ -33,12 +33,12 @@ export function constrainFilter(
  * @returns Filter the modified filter with the constraint, otherwise
  * the original filter
  */
-export function constrainWhere(
-  originalWhere: Where | undefined,
-  constraint: AnyObject,
-): Where {
+export function constrainWhere<T extends object>(
+  originalWhere: Where<T> | undefined,
+  constraint: Where<T>,
+): Where<T> {
   const where = cloneDeep(originalWhere);
-  const builder = new WhereBuilder(where);
+  const builder = new WhereBuilder<T>(where);
   return builder.impose(constraint).build();
 }
 /**
