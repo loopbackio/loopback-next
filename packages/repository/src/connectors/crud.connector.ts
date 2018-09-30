@@ -116,7 +116,7 @@ export interface CrudConnector extends Connector {
   updateAll(
     modelClass: Class<Entity>,
     data: EntityData,
-    where?: Where,
+    where?: Where<Entity>,
     options?: Options,
   ): Promise<Count>;
 
@@ -161,7 +161,7 @@ export interface CrudConnector extends Connector {
    */
   deleteAll(
     modelClass: Class<Entity>,
-    where?: Where,
+    where?: Where<Entity>,
     options?: Options,
   ): Promise<Count>;
 
@@ -188,7 +188,7 @@ export interface CrudConnector extends Connector {
    */
   count(
     modelClass: Class<Entity>,
-    where?: Where,
+    where?: Where<Entity>,
     options?: Options,
   ): Promise<Count>;
 
