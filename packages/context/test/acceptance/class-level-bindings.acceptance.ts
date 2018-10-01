@@ -175,6 +175,12 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     expect(ctx.getSync('key')).to.equal('a-value');
   });
 
+  it('creates getter from a value', () => {
+    const getter = Getter.fromValue('data');
+    expect(getter).to.be.a.Function();
+    return expect(getter()).to.be.fulfilledWith('data');
+  });
+
   it('injects a nested property', async () => {
     class TestComponent {
       constructor(@inject('config#test') public config: string) {}
