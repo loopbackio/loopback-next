@@ -3,15 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {EntityCrudRepository} from './repository';
+import {Count, DataObject, Options} from '../common-types';
+import {Entity} from '../model';
+import {Filter, Where} from '../query';
 import {
   constrainDataObject,
   constrainFilter,
   constrainWhere,
 } from './constraint-utils';
-import {DataObject, Options, Count} from '../common-types';
-import {Entity} from '../model';
-import {Filter, Where} from '../query';
+import {EntityCrudRepository} from './repository';
+import {Getter} from '@loopback/context';
 
 /**
  * CRUD operations for a target repository of a HasMany relation
@@ -62,12 +63,12 @@ export class DefaultHasManyEntityCrudRepository<
 > implements HasManyRepository<TargetEntity> {
   /**
    * Constructor of DefaultHasManyEntityCrudRepository
-   * @param targetRepository the related target model repository instance
+   * @param getTargetRepository the getter of the related target model repository instance
    * @param constraint the key value pair representing foreign key name to constrain
    * the target repository instance
    */
   constructor(
-    public targetRepository: TargetRepository,
+    public getTargetRepository: Getter<TargetRepository>,
     public constraint: DataObject<TargetEntity>,
   ) {}
 
@@ -75,21 +76,24 @@ export class DefaultHasManyEntityCrudRepository<
     targetModelData: DataObject<TargetEntity>,
     options?: Options,
   ): Promise<TargetEntity> {
-    return await this.targetRepository.create(
+    const targetRepository = await this.getTargetRepository();
+    return targetRepository.create(
       constrainDataObject(targetModelData, this.constraint),
       options,
     );
   }
 
   async find(filter?: Filter, options?: Options): Promise<TargetEntity[]> {
-    return await this.targetRepository.find(
+    const targetRepository = await this.getTargetRepository();
+    return targetRepository.find(
       constrainFilter(filter, this.constraint),
       options,
     );
   }
 
   async delete(where?: Where, options?: Options): Promise<Count> {
-    return await this.targetRepository.deleteAll(
+    const targetRepository = await this.getTargetRepository();
+    return targetRepository.deleteAll(
       constrainWhere(where, this.constraint),
       options,
     );
@@ -100,7 +104,8 @@ export class DefaultHasManyEntityCrudRepository<
     where?: Where,
     options?: Options,
   ): Promise<Count> {
-    return this.targetRepository.updateAll(
+    const targetRepository = await this.getTargetRepository();
+    return targetRepository.updateAll(
       constrainDataObject(dataObject, this.constraint),
       constrainWhere(where, this.constraint),
       options,

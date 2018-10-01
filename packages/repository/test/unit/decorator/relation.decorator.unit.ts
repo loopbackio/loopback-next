@@ -10,25 +10,6 @@ import {MODEL_PROPERTIES_KEY, model, getModelRelations} from '../../../src';
 
 describe('relation decorator', () => {
   context('hasMany', () => {
-    it('throws when foreign key is not defined in the target TypeScript model', () => {
-      expect(() => {
-        @model()
-        class Address extends Entity {
-          addressId: number;
-          street: string;
-          province: string;
-        }
-
-        // tslint:disable-next-line:no-unused-variable
-        class AddressBook extends Entity {
-          id: number;
-
-          @hasMany(Address)
-          addresses: Address[];
-        }
-      }).throw(/addressBookId not found on Address/);
-    });
-
     it('takes in complex property type and infers foreign key via source model name', () => {
       @model()
       class Address extends Entity {
@@ -42,7 +23,7 @@ describe('relation decorator', () => {
       class AddressBook extends Entity {
         id: number;
 
-        @hasMany(Address)
+        @hasMany(() => Address)
         addresses: Address[];
       }
 
@@ -58,11 +39,14 @@ describe('relation decorator', () => {
       );
       expect(meta).to.eql({
         type: RelationType.hasMany,
-        keyTo: 'addressBookId',
+        name: 'addresses',
+        source: AddressBook,
+        target: () => Address,
       });
+
       expect(jugglerMeta).to.eql({
         type: Array,
-        itemType: Address,
+        itemType: () => Address,
       });
     });
 
@@ -76,7 +60,7 @@ describe('relation decorator', () => {
       class AddressBook extends Entity {
         id: number;
 
-        @hasMany(Address, {keyTo: 'someForeignKey'})
+        @hasMany(() => Address, {keyTo: 'someForeignKey'})
         addresses: Address[];
       }
 
@@ -92,16 +76,18 @@ describe('relation decorator', () => {
       );
       expect(meta).to.eql({
         type: RelationType.hasMany,
+        name: 'addresses',
+        source: AddressBook,
+        target: () => Address,
         keyTo: 'someForeignKey',
       });
       expect(jugglerMeta).to.eql({
         type: Array,
-        itemType: Address,
+        itemType: () => Address,
       });
     });
 
     context('when interacting with @property.array', () => {
-      // Do you think this test case is necessary?
       it('does not get its property metadata overwritten by @property.array', () => {
         expect(() => {
           class Address extends Entity {
@@ -114,7 +100,7 @@ describe('relation decorator', () => {
           class AddressBook extends Entity {
             id: number;
             @property.array(Entity)
-            @hasMany(Address, {
+            @hasMany(() => Address, {
               keyTo: 'someForeignKey',
             })
             addresses: Address[];
@@ -135,7 +121,7 @@ describe('getModelRelations', () => {
 
     @model()
     class User extends Entity {
-      @hasMany(AccessToken)
+      @hasMany(() => AccessToken)
       accessTokens: AccessToken[];
     }
 
@@ -147,19 +133,21 @@ describe('getModelRelations', () => {
 
     @model()
     class Customer extends User {
-      @hasMany(Order)
+      @hasMany(() => Order)
       orders: Order[];
     }
 
     const relations = getModelRelations(Customer);
-    expect(relations).to.deepEqual({
+    expect(relations).to.containDeep({
       accessTokens: {
-        keyTo: 'userId',
+        name: 'accessTokens',
         type: 'hasMany',
+        target: () => AccessToken,
       },
       orders: {
-        keyTo: 'customerId',
+        name: 'orders',
         type: 'hasMany',
+        target: () => Order,
       },
     });
   });

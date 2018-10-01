@@ -23,6 +23,7 @@ import {
   ValueObject,
 } from '../../../';
 import {MetadataInspector} from '@loopback/context';
+import {RelationDefinitionMap} from '../../../src';
 
 describe('model decorator', () => {
   @model()
@@ -124,7 +125,7 @@ describe('model decorator', () => {
     @referencesOne()
     profile: Profile;
 
-    @hasMany(Order)
+    @hasMany(() => Order)
     orders?: Order[];
 
     @hasOne()
@@ -258,14 +259,16 @@ describe('model decorator', () => {
   });
 
   it('adds hasMany metadata', () => {
-    const meta =
+    const meta: RelationDefinitionMap =
       MetadataInspector.getAllPropertyMetadata(
         RELATIONS_KEY,
         Customer.prototype,
       ) || /* istanbul ignore next */ {};
     expect(meta.orders).to.eql({
       type: RelationType.hasMany,
-      keyTo: 'customerId',
+      name: 'orders',
+      source: Customer,
+      target: () => Order,
     });
   });
 
@@ -310,7 +313,7 @@ describe('model decorator', () => {
     class House extends Entity {
       @property()
       name: string;
-      @hasMany(Person, {keyTo: 'fk'})
+      @hasMany(() => Person, {keyTo: 'fk'})
       person: Person[];
     }
 
