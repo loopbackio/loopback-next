@@ -31,7 +31,6 @@ const ERROR_READING_FILE = 'Error reading file';
 const ERROR_NO_DATA_SOURCES_FOUND = 'No datasources found at';
 const ERROR_NO_MODELS_FOUND = 'No models found at';
 const ERROR_NO_MODEL_SELECTED = 'You did not select a valid model';
-const ERROR_NO_DIRECTORY = 'The directory was not found';
 
 module.exports = class RepositoryGenerator extends ArtifactGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -66,8 +65,9 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
     if (!this.artifactInfo.dataSourceClass) {
       return;
     }
-    let result = this._isConnectorOfType(
+    let result = utils.isConnectorOfType(
       KEY_VALUE_CONNECTOR,
+      this.artifactInfo.datasourcesDir,
       this.artifactInfo.dataSourceClass,
     );
     debug(`KeyValue Connector: ${result}`);
@@ -87,45 +87,6 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
 
     this.artifactInfo.dataSourceClassName =
       utils.toClassName(this.artifactInfo.dataSourceName) + 'DataSource';
-  }
-
-  /**
-   * load the connectors available and check if the basedModel matches any
-   * connectorType supplied for the given connector name
-   * @param {string} connectorType single or a comma separated string array
-   */
-  _isConnectorOfType(connectorType, dataSourceClass) {
-    debug(`calling isConnectorType ${connectorType}`);
-    let jsonFileContent = '';
-    let result = false;
-
-    if (!dataSourceClass) {
-      return false;
-    }
-    let datasourceJSONFile = path.join(
-      this.artifactInfo.datasourcesDir,
-      dataSourceClass.replace('Datasource', '.datasource.json').toLowerCase(),
-    );
-
-    try {
-      jsonFileContent = this.fs.readJSON(datasourceJSONFile, {});
-    } catch (err) {
-      debug(`${ERROR_READING_FILE} ${datasourceJSONFile}: ${err.message}`);
-      return this.exit(err);
-    }
-
-    for (let connector of Object.values(connectors)) {
-      const matchedConnector =
-        jsonFileContent.connector === connector.name ||
-        jsonFileContent.connector === `loopback-connector-${connector.name}`;
-
-      if (matchedConnector && connectorType.includes(connector.baseModel)) {
-        result = true;
-        break;
-      }
-    }
-
-    return result;
   }
 
   _setupGenerator() {
@@ -238,9 +199,10 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
     }
 
     const availableDatasources = datasourcesList.filter(item => {
-      debug(`data source unfiltered list: ${item}`);
-      const result = this._isConnectorOfType(
+      debug(`data source inspecting item: ${item}`);
+      const result = utils.isConnectorOfType(
         VALID_CONNECTORS_FOR_REPOSITORY,
+        this.artifactInfo.datasourcesDir,
         item,
       );
       return result;
