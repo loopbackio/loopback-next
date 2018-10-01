@@ -21,7 +21,7 @@
     "clean": "lb-clean loopback-docs*.tgz package api-docs"
   },
   "devDependencies": {
-    "@loopback/build": "^0.3.3"
+    "@loopback/build": "^0.7.4"
   },
   "publishConfig": {
     "access": "public"
