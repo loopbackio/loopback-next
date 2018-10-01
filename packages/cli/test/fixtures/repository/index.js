@@ -36,6 +36,14 @@ exports.SANDBOX_FILES = [
   },
   {
     path: DATASOURCE_APP_PATH,
+    file: 'my-ds.datasource.json',
+    content: JSON.stringify({
+      name: 'MyDS',
+      connector: 'memory',
+    }),
+  },
+  {
+    path: DATASOURCE_APP_PATH,
     file: 'dbmem.datasource.ts',
     content: DUMMY_CONTENT,
   },

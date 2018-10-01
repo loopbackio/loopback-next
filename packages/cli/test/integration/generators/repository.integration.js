@@ -289,6 +289,45 @@ describe('lb4 repository', function() {
       );
     });
 
+    it('generates a crud repository from hyphened model file name', async () => {
+      const basicPrompt = {
+        dataSourceClass: 'MyDsDatasource',
+      };
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withPrompts(basicPrompt)
+        .withArguments(' --model Defaultmodel');
+      const expectedFile = path.join(
+        SANDBOX_PATH,
+        REPOSITORY_APP_PATH,
+        'defaultmodel.repository.ts',
+      );
+      assert.file(expectedFile);
+      assert.fileContent(
+        expectedFile,
+        /import {MyDSDataSource} from '..\/datasources';/,
+      );
+      assert.fileContent(
+        expectedFile,
+        /\@inject\('datasources.MyDS'\) protected datasource: MyDSDataSource,/,
+      );
+      assert.fileContent(
+        expectedFile,
+        /export class DefaultmodelRepository extends DefaultCrudRepository\</,
+      );
+      assert.fileContent(expectedFile, /typeof Defaultmodel.prototype.id/);
+      assert.file(INDEX_FILE);
+      assert.fileContent(
+        INDEX_FILE,
+        /export \* from '.\/defaultmodel.repository';/,
+      );
+    });
+
     it('generates a crud repository from decorator defined model', async () => {
       await testUtils
         .executeGenerator(generator)
