@@ -14,6 +14,7 @@ import {
   ModelDefinition,
   ModelDefinitionSyntax,
   PropertyDefinition,
+  PropertyType,
   RelationDefinitionMap,
 } from '../model';
 import {RELATIONS_KEY} from './relation.decorator';
@@ -104,12 +105,13 @@ export namespace property {
 
   /**
    *
-   * @param itemType The class of the array to decorate
+   * @param itemType The type of array items.
+   * Examples: `number`, `Product`, `() => Order`.
    * @param definition Optional PropertyDefinition object for additional
    * metadata
    */
   export function array(
-    itemType: Function,
+    itemType: PropertyType,
     definition?: Partial<PropertyDefinition>,
   ) {
     return function(target: Object, propertyName: string) {
