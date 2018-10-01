@@ -25,6 +25,7 @@
     "release": "lerna version && lerna publish from-git --yes",
     "update-template-deps": "node bin/update-template-deps -f",
     "version": "npm run update-template-deps && npm run apidocs",
+    "outdated": "npm outdated --depth 0 && lerna exec --no-bail \"npm outdated --depth 0\"",
     "apidocs": "node bin/run-lerna run build:apidocs",
     "coverage:ci": "node packages/build/bin/run-nyc report --reporter=text-lcov | coveralls",
     "precoverage": "npm test",
