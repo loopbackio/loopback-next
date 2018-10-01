@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {AnyObject, DataObject, Options} from './common-types';
-import {RelationDefinitionBase} from './decorators/relation.decorator';
+import {RelationMetadata} from './decorators/relation.decorator';
 import {TypeResolver} from './type-resolver';
 import {Type} from './types';
 
@@ -49,7 +49,7 @@ export interface PropertyForm {
  * A relation name is used as the key, a relation definition is the value.
  */
 export type RelationDefinitionMap = {
-  [relationName: string]: RelationDefinitionBase;
+  [relationName: string]: RelationMetadata;
 };
 
 /**
@@ -116,6 +116,15 @@ export class ModelDefinition {
    */
   addSetting(name: string, value: any): this {
     this.settings[name] = value;
+    return this;
+  }
+
+  /**
+   * Define a new relation.
+   * @param definition The definition of the new relation.
+   */
+  addRelation(definition: RelationMetadata): this {
+    this.relations[definition.name] = definition;
     return this;
   }
 
@@ -314,3 +323,5 @@ export class Event {
 }
 
 export type EntityData = DataObject<Entity>;
+
+export type EntityResolver<T extends Entity> = TypeResolver<T, typeof Entity>;

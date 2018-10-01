@@ -3,13 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Context, inject, Injection} from '@loopback/context';
 import * as assert from 'assert';
-import {Model, Entity} from '../model';
-import {Repository, DefaultCrudRepository} from '../repositories';
-import {DataSource} from '../datasource';
-import {juggler} from '../repositories/legacy-juggler-bridge';
-import {inject, Context, Injection} from '@loopback/context';
 import {Class} from '../common-types';
+import {DataSource} from '../datasource';
+import {Entity, Model} from '../model';
+import {DefaultCrudRepository, Repository} from '../repositories';
+import {juggler} from '../repositories/legacy-juggler-bridge';
 
 /**
  * Type definition for decorators returned by `@repository` decorator factory
@@ -170,6 +170,20 @@ export function repository(
     // Mixin repository into the class
     throw new Error('Class level @repository is not implemented');
   };
+}
+
+export namespace repository {
+  /**
+   * Decorator used to inject a Getter for a repository
+   * Mainly intended for usage with repository injections on relation repository
+   * factory
+   * @param nameOrClass The repository class (ProductRepository) or a string name ('ProductRepository').
+   */
+  export function getter(nameOrClass: string | Class<Repository<Model>>) {
+    const name =
+      typeof nameOrClass === 'string' ? nameOrClass : nameOrClass.name;
+    return inject.getter(`repositories.${name}`);
+  }
 }
 
 /**

@@ -17,7 +17,7 @@ import {
 } from '../..';
 import {expect} from '@loopback/testlab';
 import * as _ from 'lodash';
-import {inject} from '@loopback/context';
+import {inject, Getter} from '@loopback/context';
 import {Application} from '@loopback/core';
 
 describe('HasMany relation', () => {
@@ -188,7 +188,7 @@ describe('HasMany relation', () => {
     })
     name: string;
 
-    @hasMany(Order)
+    @hasMany(() => Order)
     orders: Order[];
   }
 
@@ -211,12 +211,13 @@ describe('HasMany relation', () => {
     >;
     constructor(
       @inject('datasources.db') protected db: juggler.DataSource,
-      @repository(OrderRepository) orderRepository: OrderRepository,
+      @repository.getter(OrderRepository)
+      orderRepositoryGetter: Getter<OrderRepository>,
     ) {
       super(Customer, db);
       this.orders = this._createHasManyRepositoryFactoryFor(
         'orders',
-        orderRepository,
+        orderRepositoryGetter,
       );
     }
   }

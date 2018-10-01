@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {model, property} from '@loopback/repository';
+import {model, property, Entity, hasMany} from '@loopback/repository';
 import {
   modelToJsonSchema,
   JSON_SCHEMA_KEY,
@@ -418,6 +418,49 @@ describe('build-schema', () => {
             },
           });
           expectValidJsonSchema(jsonSchema);
+        });
+
+        it('properly converts models with hasMany properties', () => {
+          @model()
+          class Order extends Entity {
+            @property({id: true})
+            id: number;
+
+            @property()
+            customerId: number;
+          }
+
+          @model()
+          class Customer extends Entity {
+            @property({id: true})
+            id: number;
+
+            @hasMany(() => Order)
+            orders: Order[];
+          }
+
+          const customerSchema = modelToJsonSchema(Customer);
+
+          expectValidJsonSchema(customerSchema);
+
+          expect(customerSchema.properties).to.deepEqual({
+            id: {type: 'number'},
+            orders: {
+              type: 'array',
+              items: {$ref: '#/definitions/Order'},
+            },
+          });
+          expect(customerSchema.definitions).to.deepEqual({
+            Order: {
+              title: 'Order',
+              properties: {
+                id: {
+                  type: 'number',
+                },
+                customerId: {type: 'number'},
+              },
+            },
+          });
         });
 
         it('creates definitions only at the root level of the schema', () => {

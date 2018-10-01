@@ -3,14 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Getter, inject} from '@loopback/core';
 import {
   DefaultCrudRepository,
-  juggler,
   HasManyRepositoryFactory,
+  juggler,
   repository,
 } from '@loopback/repository';
-import {TodoList, Todo} from '../models';
-import {inject} from '@loopback/core';
+import {Todo, TodoList} from '../models';
 import {TodoRepository} from './todo.repository';
 
 export class TodoListRepository extends DefaultCrudRepository<
@@ -21,12 +21,13 @@ export class TodoListRepository extends DefaultCrudRepository<
 
   constructor(
     @inject('datasources.db') protected datasource: juggler.DataSource,
-    @repository(TodoRepository) protected todoRepository: TodoRepository,
+    @repository.getter(TodoRepository)
+    protected todoRepositoryGetter: Getter<TodoRepository>,
   ) {
     super(TodoList, datasource);
     this.todos = this._createHasManyRepositoryFactoryFor(
       'todos',
-      todoRepository,
+      todoRepositoryGetter,
     );
   }
 

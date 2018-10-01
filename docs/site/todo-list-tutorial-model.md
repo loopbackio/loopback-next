@@ -77,7 +77,7 @@ model. Add the following property to the `TodoList` model:
 export class TodoList extends Entity {
   // ...properties defined by the CLI...
 
-  @hasMany(Todo)
+  @hasMany(() => Todo)
   todos?: Todo[];
 
   // ...constructor def...

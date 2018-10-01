@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  MetadataInspector,
   ClassDecoratorFactory,
-  PropertyDecoratorFactory,
-  MetadataMap,
   MetadataAccessor,
+  MetadataInspector,
+  MetadataMap,
+  PropertyDecoratorFactory,
 } from '@loopback/context';
 import {
   ModelDefinition,

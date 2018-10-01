@@ -181,6 +181,6 @@ class Customer extends Entity {
   @property()
   name: string;
 
-  @hasMany(Order)
+  @hasMany(() => Order)
   orders?: Order[];
 }
