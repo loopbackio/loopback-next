@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Getter} from '@loopback/context';
-import {expect, sinon} from '@loopback/testlab';
+import {createStubInstance, expect} from '@loopback/testlab';
 import {
   createHasManyRepositoryFactory,
   DefaultCrudRepository,
@@ -98,7 +98,7 @@ describe('createHasManyRepositoryFactory', () => {
   }
 
   function givenStubbedCustomerRepo() {
-    customerRepo = sinon.createStubInstance(CustomerRepository);
+    customerRepo = createStubInstance(CustomerRepository);
   }
 
   function givenHasManyDefinition(

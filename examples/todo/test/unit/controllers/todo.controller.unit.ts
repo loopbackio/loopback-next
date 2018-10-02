@@ -4,7 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Filter} from '@loopback/repository';
-import {expect, sinon} from '@loopback/testlab';
+import {
+  createStubInstance,
+  expect,
+  sinon,
+  StubbedInstanceWithSinonAccessor,
+} from '@loopback/testlab';
 import {TodoController} from '../../../src/controllers';
 import {Todo} from '../../../src/models/index';
 import {TodoRepository} from '../../../src/repositories';
@@ -12,7 +17,7 @@ import {GeocoderService} from '../../../src/services';
 import {aLocation, givenTodo} from '../../helpers';
 
 describe('TodoController', () => {
-  let todoRepo: TodoRepository;
+  let todoRepo: StubbedInstanceWithSinonAccessor<TodoRepository>;
   let geoService: GeocoderService;
 
   /*
@@ -135,7 +140,7 @@ describe('TodoController', () => {
   });
 
   function resetRepositories() {
-    todoRepo = sinon.createStubInstance(TodoRepository);
+    todoRepo = createStubInstance(TodoRepository);
     aTodo = givenTodo();
     aTodoWithId = givenTodo({
       id: 1,
@@ -153,12 +158,14 @@ describe('TodoController', () => {
     });
 
     // Setup CRUD fakes
-    create = todoRepo.create as sinon.SinonStub;
-    findById = todoRepo.findById as sinon.SinonStub;
-    find = todoRepo.find as sinon.SinonStub;
-    updateById = todoRepo.updateById as sinon.SinonStub;
-    replaceById = todoRepo.replaceById as sinon.SinonStub;
-    deleteById = todoRepo.deleteById as sinon.SinonStub;
+    ({
+      create,
+      findById,
+      find,
+      updateById,
+      replaceById,
+      deleteById,
+    } = todoRepo.stubs);
 
     geoService = {geocode: sinon.stub()};
     geocode = geoService.geocode as sinon.SinonStub;
