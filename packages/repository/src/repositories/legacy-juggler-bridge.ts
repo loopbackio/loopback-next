@@ -201,20 +201,24 @@ export class DefaultCrudRepository<T extends Entity, ID>
     }
   }
 
-  async find(filter?: Filter, options?: Options): Promise<T[]> {
-    const models = await ensurePromise(this.modelClass.find(filter, options));
+  async find(filter?: Filter<T>, options?: Options): Promise<T[]> {
+    const models = await ensurePromise(
+      this.modelClass.find(filter as legacy.Filter, options),
+    );
     return this.toEntities(models);
   }
 
-  async findOne(filter?: Filter, options?: Options): Promise<T | null> {
-    const model = await ensurePromise(this.modelClass.findOne(filter, options));
+  async findOne(filter?: Filter<T>, options?: Options): Promise<T | null> {
+    const model = await ensurePromise(
+      this.modelClass.findOne(filter as legacy.Filter, options),
+    );
     if (!model) return null;
     return this.toEntity(model);
   }
 
-  async findById(id: ID, filter?: Filter, options?: Options): Promise<T> {
+  async findById(id: ID, filter?: Filter<T>, options?: Options): Promise<T> {
     const model = await ensurePromise(
-      this.modelClass.findById(id, filter, options),
+      this.modelClass.findById(id, filter as legacy.Filter, options),
     );
     if (!model) {
       throw new EntityNotFoundError(this.entityClass, id);
@@ -232,7 +236,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
 
   async updateAll(
     data: DataObject<T>,
-    where?: Where,
+    where?: Where<T>,
     options?: Options,
   ): Promise<Count> {
     where = where || {};
@@ -248,8 +252,8 @@ export class DefaultCrudRepository<T extends Entity, ID>
     options?: Options,
   ): Promise<void> {
     const idProp = this.modelClass.definition.idName();
-    const where = {} as Where;
-    where[idProp] = id;
+    const where = {} as Where<T>;
+    (where as AnyObject)[idProp] = id;
     const result = await this.updateAll(data, where, options);
     if (result.count === 0) {
       throw new EntityNotFoundError(this.entityClass, id);
@@ -271,7 +275,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
     }
   }
 
-  async deleteAll(where?: Where, options?: Options): Promise<Count> {
+  async deleteAll(where?: Where<T>, options?: Options): Promise<Count> {
     const result = await ensurePromise(
       this.modelClass.deleteAll(where, options),
     );
@@ -285,7 +289,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
     }
   }
 
-  async count(where?: Where, options?: Options): Promise<Count> {
+  async count(where?: Where<T>, options?: Options): Promise<Count> {
     const result = await ensurePromise(this.modelClass.count(where, options));
     return {count: result};
   }

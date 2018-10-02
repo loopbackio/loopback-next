@@ -4,7 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {FilterBuilder, WhereBuilder, filterTemplate, isFilter} from '../../../';
+import {
+  FilterBuilder,
+  WhereBuilder,
+  filterTemplate,
+  isFilter,
+  AnyObject,
+} from '../../../';
 
 describe('WhereBuilder', () => {
   it('builds where object', () => {
@@ -84,10 +90,14 @@ describe('WhereBuilder', () => {
       .or({x: 'x'}, {y: {gt: 1}}, [{a: 1}, {b: 2}])
       .build();
     expect(where).to.eql({
-      a: 1,
-      b: {gt: 2},
-      c: {lt: 2},
-      or: [{x: 'x'}, {y: {gt: 1}}, {a: 1}, {b: 2}],
+      and: [
+        {
+          a: 1,
+          b: {gt: 2},
+          c: {lt: 2},
+        },
+        {or: [{x: 'x'}, {y: {gt: 1}}, {a: 1}, {b: 2}]},
+      ],
     });
   });
 
@@ -100,10 +110,13 @@ describe('WhereBuilder', () => {
       .and({x: 'x'}, {y: {gt: 1}}, [{a: 1}, {b: 2}])
       .build();
     expect(where).to.eql({
-      a: 1,
-      b: {gt: 2},
-      c: {lt: 2},
-      and: [{x: 'x'}, {y: {gt: 1}}, {a: 1}, {b: 2}],
+      and: [
+        {a: 1, b: {gt: 2}, c: {lt: 2}},
+        {x: 'x'},
+        {y: {gt: 1}},
+        {a: 1},
+        {b: 2},
+      ],
     });
   });
 
@@ -115,20 +128,12 @@ describe('WhereBuilder', () => {
       .and({b: 'b'}, {c: {lt: 1}})
       .build();
     expect(where).to.eql({
-      and: [
-        {
-          a: 1,
-          and: [{x: 'x'}, {y: {gt: 1}}],
-        },
-        {
-          and: [{b: 'b'}, {c: {lt: 1}}],
-        },
-      ],
+      and: [{a: 1}, {x: 'x'}, {y: {gt: 1}}, {b: 'b'}, {c: {lt: 1}}],
     });
   });
 
   it('builds where object from an existing one', () => {
-    const whereBuilder = new WhereBuilder({y: 'y'});
+    const whereBuilder = new WhereBuilder<AnyObject>({y: 'y'});
     const where = whereBuilder
       .eq('a', 1)
       .gt('b', 2)
@@ -139,7 +144,7 @@ describe('WhereBuilder', () => {
   });
 
   it('constrains an existing where object with another where filter', () => {
-    const builder = new WhereBuilder({x: 'x'});
+    const builder = new WhereBuilder<AnyObject>({x: 'x'});
     const where = builder.impose({x: 'y', z: 'z'}).build();
     expect(where).to.be.deepEqual({and: [{x: 'x'}, {x: 'y', z: 'z'}]});
   });

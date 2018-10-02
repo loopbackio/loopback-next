@@ -64,7 +64,7 @@ export interface CrudRepository<T extends ValueObject | Entity>
    * @param options Options for the operations
    * @returns A promise of an array of records found
    */
-  find(filter?: Filter, options?: Options): Promise<T[]>;
+  find(filter?: Filter<T>, options?: Options): Promise<T[]>;
 
   /**
    * Updating matching records with attributes from the data object
@@ -143,7 +143,7 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * @param options Options for the operations
    * @returns A promise of an entity found for the id
    */
-  findById(id: ID, filter?: Filter, options?: Options): Promise<T>;
+  findById(id: ID, filter?: Filter<T>, options?: Options): Promise<T>;
 
   /**
    * Update an entity by id with property/value pairs in the data object
@@ -250,11 +250,11 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     }
   }
 
-  find(filter?: Filter, options?: Options): Promise<T[]> {
+  find(filter?: Filter<T>, options?: Options): Promise<T[]> {
     return this.toModels(this.connector.find(this.model, filter, options));
   }
 
-  async findById(id: ID, filter?: Filter, options?: Options): Promise<T> {
+  async findById(id: ID, filter?: Filter<T>, options?: Options): Promise<T> {
     if (typeof this.connector.findById === 'function') {
       return this.toModel(this.connector.findById(this.model, id, options));
     }
@@ -278,7 +278,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
 
   updateAll(
     data: DataObject<T>,
-    where?: Where,
+    where?: Where<T>,
     options?: Options,
   ): Promise<Count> {
     return this.connector.updateAll(this.model, data, where, options);
@@ -323,7 +323,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     }
   }
 
-  deleteAll(where?: Where, options?: Options): Promise<Count> {
+  deleteAll(where?: Where<T>, options?: Options): Promise<Count> {
     return this.connector.deleteAll(this.model, where, options);
   }
 
@@ -342,7 +342,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     }
   }
 
-  count(where?: Where, options?: Options): Promise<Count> {
+  count(where?: Where<T>, options?: Options): Promise<Count> {
     return this.connector.count(this.model, where, options);
   }
 
