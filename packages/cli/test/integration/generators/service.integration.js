@@ -86,7 +86,7 @@ describe('lb4 service', () => {
       );
       assert.fileContent(
         expectedFile,
-        /protected datasource: mydsDataSource = new MydsDataSource\(\),/,
+        /dataSource: mydsDataSource = new MydsDataSource\(\),/,
       );
       assert.fileContent(
         expectedFile,
@@ -256,7 +256,7 @@ describe('lb4 service', () => {
       );
       assert.fileContent(
         expectedFile,
-        /protected datasource: MapDSDataSource = new MapDSDataSource()/,
+        /protected dataSource: MapDSDataSource = new MapDSDataSource()/,
       );
 
       assert.fileContent(expectedFile, /\@inject\('datasources.MapDS'\)/);

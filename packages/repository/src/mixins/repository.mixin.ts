@@ -93,7 +93,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * app.dataSource(ds);
      *
      * // The datasource can be injected with
-     * constructor(@inject('datasources.db') protected datasource: DataSourceType) {
+     * constructor(@inject('datasources.db') dataSource: DataSourceType) {
      *
      * }
      * ```
@@ -253,7 +253,7 @@ export class RepositoryMixinDoc {
    * app.dataSource(ds);
    *
    * // The datasource can be injected with
-   * constructor(@inject('datasources.db') protected datasource: DataSourceType) {
+   * constructor(@inject('datasources.db') dataSource: DataSourceType) {
    *
    * }
    * ```

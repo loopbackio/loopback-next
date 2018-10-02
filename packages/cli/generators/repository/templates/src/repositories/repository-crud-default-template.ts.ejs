@@ -8,7 +8,7 @@ export class <%= className %>Repository extends <%= repositoryTypeClass %><
   typeof <%= modelName %>.prototype.<%= idProperty %>
 > {
   constructor(
-    @inject('datasources.<%= dataSourceName %>') protected datasource: <%= dataSourceClassName %>,
+    @inject('datasources.<%= dataSourceName %>') dataSource: <%= dataSourceClassName %>,
   ) {
     super(<%= modelName %>, datasource);
   }

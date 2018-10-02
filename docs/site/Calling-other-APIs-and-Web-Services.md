@@ -140,11 +140,11 @@ import {GeocoderDataSource} from '../datasources/geocoder.datasource';
 export class GeoServiceProvider implements Provider<GeoService> {
   constructor(
     @inject('datasources.geoService')
-    protected datasource: juggler.DataSource = new GeocoderDataSource(),
+    protected dataSource: juggler.DataSource = new GeocoderDataSource(),
   ) {}
 
   value(): Promise<GeocoderService> {
-    return getService(this.datasource);
+    return getService(this.dataSource);
   }
 }
 ```

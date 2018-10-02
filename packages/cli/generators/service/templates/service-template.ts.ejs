@@ -12,10 +12,10 @@ export class <%= className %>ServiceProvider implements Provider<<%= className %
   constructor(
     // <%= dataSourceName %> must match the name property in the datasource json file
     @inject('datasources.<%= dataSourceName %>')
-    protected datasource: <%= dataSourceName %>DataSource = new <%= dataSourceClassName %>(),
+    protected dataSource: <%= dataSourceName %>DataSource = new <%= dataSourceClassName %>(),
   ) {}
 
   value(): Promise<<%= className %>Service> {
-    return getService(this.datasource);
+    return getService(this.dataSource);
   }
 }

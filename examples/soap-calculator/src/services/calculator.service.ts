@@ -37,10 +37,10 @@ export interface CalculatorService {
 export class CalculatorServiceProvider implements Provider<CalculatorService> {
   constructor(
     @inject('datasources.calculator')
-    protected datasource: juggler.DataSource = new CalculatorDataSource(),
+    protected dataSource: juggler.DataSource = new CalculatorDataSource(),
   ) {}
 
   value(): Promise<CalculatorService> {
-    return getService(this.datasource);
+    return getService(this.dataSource);
   }
 }
