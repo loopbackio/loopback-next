@@ -46,7 +46,7 @@ repository, which we'll use to perform our operations against the datasource.
 
 ```ts
 import {repository} from '@loopback/repository';
-import {TodoRepository} from '../repositories';
+import {TodoRepository} from '../repositories/todo.repository';
 
 export class TodoController {
   constructor(@repository(TodoRepository) protected todoRepo: TodoRepository) {}
@@ -149,7 +149,7 @@ export class TodoController {
   async replaceTodo(
     @param.path.number('id') id: number,
     @requestBody() todo: Todo,
-  ): Promise<boolean> {
+  ): Promise<void> {
     return await this.todoRepo.replaceById(id, todo);
   }
 
