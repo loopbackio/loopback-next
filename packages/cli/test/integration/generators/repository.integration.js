@@ -314,7 +314,7 @@ describe('lb4 repository', function() {
       );
       assert.fileContent(
         expectedFile,
-        /\@inject\('datasources.MyDS'\) protected datasource: MyDSDataSource,/,
+        /\@inject\('datasources.MyDS'\) dataSource: MyDSDataSource,/,
       );
       assert.fileContent(
         expectedFile,

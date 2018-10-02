@@ -120,7 +120,7 @@ using **LB4** Dependency Injection.
 ```ts
 constructor(
     @inject('datasources.calculator')
-    protected datasource: juggler.DataSource = new CalculatorDataSource(),
+    protected dataSource: juggler.DataSource = new CalculatorDataSource(),
   ) {}
 ```
 

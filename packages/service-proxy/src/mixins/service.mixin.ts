@@ -50,11 +50,11 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
      * export class GeocoderServiceProvider implements Provider<GeocoderService> {
      *   constructor(
      *     @inject('datasources.geocoder')
-     *     protected datasource: juggler.DataSource = new GeocoderDataSource(),
+     *     protected dataSource: juggler.DataSource = new GeocoderDataSource(),
      *   ) {}
      *
      *   value(): Promise<GeocoderService> {
-     *     return getService(this.datasource);
+     *     return getService(this.dataSource);
      *   }
      * }
      *
@@ -152,11 +152,11 @@ export class ServiceMixinDoc {
    * export class GeocoderServiceProvider implements Provider<GeocoderService> {
    *   constructor(
    *     @inject('datasources.geocoder')
-   *     protected datasource: juggler.DataSource = new GeocoderDataSource(),
+   *     protected dataSource: juggler.DataSource = new GeocoderDataSource(),
    *   ) {}
    *
    *   value(): Promise<GeocoderService> {
-   *     return getService(this.datasource);
+   *     return getService(this.dataSource);
    *   }
    * }
    *

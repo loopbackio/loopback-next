@@ -125,11 +125,11 @@ export interface GeocoderService {
 export class GeocoderServiceProvider implements Provider<GeocoderService> {
   constructor(
     @inject('datasources.geocoder')
-    protected datasource: juggler.DataSource = new GeocoderDataSource(),
+    protected dataSource: juggler.DataSource = new GeocoderDataSource(),
   ) {}
 
   value(): Promise<GeocoderService> {
-    return getService(this.datasource);
+    return getService(this.dataSource);
   }
 }
 ```

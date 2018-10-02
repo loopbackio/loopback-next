@@ -76,10 +76,8 @@ export class TodoRepository extends DefaultCrudRepository<
   Todo,
   typeof Todo.prototype.id
 > {
-  constructor(
-    @inject('datasources.db') protected datasource: juggler.DataSource,
-  ) {
-    super(Todo, datasource);
+  constructor(@inject('datasources.db') dataSource: juggler.DataSource) {
+    super(Todo, dataSource);
   }
 }
 ```
