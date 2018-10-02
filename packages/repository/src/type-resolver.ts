@@ -14,17 +14,15 @@ import {Class} from './common-types';
  * the actual reference to the class itself until later, when both sides
  * of the relation are created as JavaScript classes.
  *
- * The template has two generic parameters:
+ * @template Type The type we are resolving, for example `Entity` or `Product`.
+ * This parameter is required.
  *
- *  - `Type` (required) represents the type we are resolving,
- *     for example `Entity` or `Product`.
- *
- *  - `StaticMembers` (optional) describe static properties available on the
- *     type class. For example, all models have static `modelName` property.
- *     When `StaticMembers` are not provided, we default to static properties of
- *     a `Function` - `name`, `length`, `apply`, `call`, etc.
- *     Please note the value returned by the resolver is described as having
- *     arbitrary additional static properties (see how Class is defined).
+ * @template StaticMembers The static properties available on the
+ * type class. For example, all models have static `modelName` property.
+ * When `StaticMembers` are not provided, we default to static properties of
+ * a `Function` - `name`, `length`, `apply`, `call`, etc.
+ * Please note the value returned by the resolver is described as having
+ * arbitrary additional static properties (see how Class is defined).
  */
 export type TypeResolver<
   Type extends Object,
