@@ -4,7 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Getter} from '@loopback/context';
-import {expect, sinon} from '@loopback/testlab';
+import {
+  createStubInstance,
+  expect,
+  sinon,
+  StubbedInstanceWithSinonAccessor,
+} from '@loopback/testlab';
 import {
   AnyObject,
   Count,
@@ -21,6 +26,10 @@ import {
 } from '../../..';
 
 describe('relation repository', () => {
+  let customerRepo: StubbedInstanceWithSinonAccessor<CustomerRepository>;
+
+  beforeEach(setupStubbedCustomerRepository);
+
   context('HasManyRepository interface', () => {
     /**
      * The class below is declared as test for the HasManyEntityCrudRepository
@@ -67,16 +76,20 @@ describe('relation repository', () => {
       const constraint: Partial<Customer> = {age: 25};
       const HasManyCrudInstance = givenDefaultHasManyCrudInstance(constraint);
       await HasManyCrudInstance.create({id: 1, name: 'Joe'});
-      const createStub = repo.create as sinon.SinonStub;
-      sinon.assert.calledWithMatch(createStub, {id: 1, name: 'Joe', age: 25});
+      sinon.assert.calledWithMatch(customerRepo.stubs.create, {
+        id: 1,
+        name: 'Joe',
+        age: 25,
+      });
     });
 
     it('can find related model instance', async () => {
       const constraint: Partial<Customer> = {name: 'Jane'};
       const HasManyCrudInstance = givenDefaultHasManyCrudInstance(constraint);
       await HasManyCrudInstance.find({where: {id: 3}});
-      const findStub = repo.find as sinon.SinonStub;
-      sinon.assert.calledWithMatch(findStub, {where: {id: 3, name: 'Jane'}});
+      sinon.assert.calledWithMatch(customerRepo.stubs.find, {
+        where: {id: 3, name: 'Jane'},
+      });
     });
 
     context('patch', async () => {
@@ -84,9 +97,8 @@ describe('relation repository', () => {
         const constraint: Partial<Customer> = {name: 'Jane'};
         const HasManyCrudInstance = givenDefaultHasManyCrudInstance(constraint);
         await HasManyCrudInstance.patch({country: 'US'}, {id: 3});
-        const patchStub = repo.updateAll as sinon.SinonStub;
         sinon.assert.calledWith(
-          patchStub,
+          customerRepo.stubs.updateAll,
           {country: 'US', name: 'Jane'},
           {id: 3, name: 'Jane'},
         );
@@ -105,8 +117,10 @@ describe('relation repository', () => {
       const constraint: Partial<Customer> = {name: 'Jane'};
       const HasManyCrudInstance = givenDefaultHasManyCrudInstance(constraint);
       await HasManyCrudInstance.delete({id: 3});
-      const deleteStub = repo.deleteAll as sinon.SinonStub;
-      sinon.assert.calledWith(deleteStub, {id: 3, name: 'Jane'});
+      sinon.assert.calledWith(customerRepo.stubs.deleteAll, {
+        id: 3,
+        name: 'Jane',
+      });
     });
   });
 
@@ -128,14 +142,15 @@ describe('relation repository', () => {
     }
   }
 
-  let repo: CustomerRepository;
+  function setupStubbedCustomerRepository() {
+    customerRepo = createStubInstance(CustomerRepository);
+  }
 
   function givenDefaultHasManyCrudInstance(constraint: DataObject<Customer>) {
-    repo = sinon.createStubInstance(CustomerRepository);
     return new DefaultHasManyEntityCrudRepository<
       Customer,
       typeof Customer.prototype.id,
       CustomerRepository
-    >(Getter.fromValue(repo), constraint);
+    >(Getter.fromValue(customerRepo), constraint);
   }
 });

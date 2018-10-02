@@ -3,19 +3,26 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect, sinon} from '@loopback/testlab';
-import {TodoListTodoController} from '../../../src/controllers';
-import {TodoList, Todo} from '../../../src/models';
-import {TodoListRepository} from '../../../src/repositories';
-import {givenTodoList, givenTodo} from '../../helpers';
 import {
   DefaultHasManyEntityCrudRepository,
   HasManyRepository,
 } from '@loopback/repository';
+import {
+  createStubInstance,
+  expect,
+  sinon,
+  StubbedInstanceWithSinonAccessor,
+} from '@loopback/testlab';
+import {TodoListTodoController} from '../../../src/controllers';
+import {Todo, TodoList} from '../../../src/models';
+import {TodoListRepository} from '../../../src/repositories';
+import {givenTodo, givenTodoList} from '../../helpers';
 
 describe('TodoController', () => {
-  let todoListRepo: TodoListRepository;
-  let constrainedTodoRepo: HasManyRepository<Todo>;
+  let todoListRepo: StubbedInstanceWithSinonAccessor<TodoListRepository>;
+  let constrainedTodoRepo: StubbedInstanceWithSinonAccessor<
+    HasManyRepository<Todo>
+  >;
 
   /*
   =============================================================================
@@ -113,8 +120,8 @@ describe('TodoController', () => {
   });
 
   function resetRepositories() {
-    todoListRepo = sinon.createStubInstance(TodoListRepository);
-    constrainedTodoRepo = sinon.createStubInstance(
+    todoListRepo = createStubInstance(TodoListRepository);
+    constrainedTodoRepo = createStubInstance<HasManyRepository<Todo>>(
       DefaultHasManyEntityCrudRepository,
     );
 
@@ -139,17 +146,14 @@ describe('TodoController', () => {
       title: aTodoToPatchTo.title,
     });
 
-    todoListRepo.todos = sinon
+    todos = sinon
       .stub()
       .withArgs(aTodoListWithId.id!)
       .returns(constrainedTodoRepo);
-    todos = todoListRepo.todos as sinon.SinonStub;
+    todoListRepo.todos = todos;
 
     // Setup CRUD fakes
-    create = constrainedTodoRepo.create as sinon.SinonStub;
-    find = constrainedTodoRepo.find as sinon.SinonStub;
-    patch = constrainedTodoRepo.patch as sinon.SinonStub;
-    del = constrainedTodoRepo.delete as sinon.SinonStub;
+    ({create, find, patch, delete: del} = constrainedTodoRepo.stubs);
 
     controller = new TodoListTodoController(todoListRepo);
   }

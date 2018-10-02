@@ -3,14 +3,19 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect, sinon} from '@loopback/testlab';
+import {
+  createStubInstance,
+  expect,
+  sinon,
+  StubbedInstanceWithSinonAccessor,
+} from '@loopback/testlab';
 import {TodoListController} from '../../../src/controllers';
 import {TodoList} from '../../../src/models';
 import {TodoListRepository} from '../../../src/repositories';
 import {givenTodoList} from '../../helpers';
 
 describe('TodoController', () => {
-  let todoListRepo: TodoListRepository;
+  let todoListRepo: StubbedInstanceWithSinonAccessor<TodoListRepository>;
 
   /*
   =============================================================================
@@ -122,7 +127,7 @@ describe('TodoController', () => {
   });
 
   function resetRepositories() {
-    todoListRepo = sinon.createStubInstance(TodoListRepository);
+    todoListRepo = createStubInstance(TodoListRepository);
     aTodoList = givenTodoList();
     aTodoListWithId = givenTodoList({
       id: 1,
@@ -143,13 +148,15 @@ describe('TodoController', () => {
     });
 
     // Setup CRUD fakes
-    create = todoListRepo.create as sinon.SinonStub;
-    count = todoListRepo.count as sinon.SinonStub;
-    find = todoListRepo.find as sinon.SinonStub;
-    updateAll = todoListRepo.updateAll as sinon.SinonStub;
-    findById = todoListRepo.findById as sinon.SinonStub;
-    updateById = todoListRepo.updateById as sinon.SinonStub;
-    deleteById = todoListRepo.deleteById as sinon.SinonStub;
+    ({
+      create,
+      count,
+      find,
+      updateAll,
+      findById,
+      updateById,
+      deleteById,
+    } = todoListRepo.stubs);
 
     controller = new TodoListController(todoListRepo);
   }
