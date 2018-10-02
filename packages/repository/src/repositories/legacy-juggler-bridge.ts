@@ -15,11 +15,16 @@ import {
   Options,
   PositionalParameters,
 } from '../common-types';
-import {HasManyDefinition} from '../decorators/relation.decorator';
+import {
+  BelongsToDefinition,
+  HasManyDefinition,
+} from '../decorators/relation.decorator';
 import {EntityNotFoundError} from '../errors';
 import {Entity, ModelDefinition} from '../model';
 import {Filter, Where} from '../query';
 import {
+  BelongsToAccessor,
+  createBelongsToAccessor,
   createHasManyRepositoryFactory,
   HasManyRepositoryFactory,
 } from './relation.factory';
@@ -176,6 +181,18 @@ export class DefaultCrudRepository<T extends Entity, ID>
     return createHasManyRepositoryFactory<Target, TargetID, ForeignKeyType>(
       meta as HasManyDefinition,
       targetRepoGetter,
+    );
+  }
+
+  protected _createBelongsToAccessorFor<Target extends Entity, TargetId>(
+    relationName: string,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetId>>,
+  ): BelongsToAccessor<Target, ID> {
+    const meta = this.entityClass.definition.relations[relationName];
+    return createBelongsToAccessor<Target, TargetId, T, ID>(
+      meta as BelongsToDefinition,
+      targetRepoGetter,
+      this,
     );
   }
 

@@ -3,30 +3,34 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  Entity,
-  DefaultCrudRepository,
-  juggler,
-  EntityCrudRepository,
-  RelationType,
-  HasManyRepository,
-  ModelDefinition,
-  createHasManyRepositoryFactory,
-  HasManyDefinition,
-  HasManyRepositoryFactory,
-} from '../../..';
 import {expect} from '@loopback/testlab';
-import {Getter} from '@loopback/context';
+import {
+  BelongsToAccessor,
+  BelongsToDefinition,
+  createBelongsToAccessor,
+  createHasManyRepositoryFactory,
+  DefaultCrudRepository,
+  Entity,
+  EntityCrudRepository,
+  EntityNotFoundError,
+  Getter,
+  HasManyDefinition,
+  HasManyRepository,
+  HasManyRepositoryFactory,
+  juggler,
+  ModelDefinition,
+  RelationType,
+} from '../../..';
+
+// Given a Customer and Order models - see definitions at the bottom
+let db: juggler.DataSource;
+let customerRepo: EntityCrudRepository<Customer, typeof Customer.prototype.id>;
+let orderRepo: EntityCrudRepository<Order, typeof Order.prototype.id>;
+let reviewRepo: EntityCrudRepository<Review, typeof Review.prototype.id>;
 
 describe('HasMany relation', () => {
-  // Given a Customer and Order models - see definitions at the bottom
-  let db: juggler.DataSource;
-  let customerRepo: EntityCrudRepository<
-    Customer,
-    typeof Customer.prototype.id
-  >;
-  let orderRepo: EntityCrudRepository<Order, typeof Order.prototype.id>;
-  let reviewRepo: EntityCrudRepository<Review, typeof Review.prototype.id>;
+  let existingCustomerId: number;
+
   let customerOrderRepo: HasManyRepository<Order>;
   let customerAuthoredReviewFactoryFn: HasManyRepositoryFactory<
     Review,
@@ -36,13 +40,13 @@ describe('HasMany relation', () => {
     Review,
     typeof Customer.prototype.id
   >;
-  let existingCustomerId: number;
 
   before(givenCrudRepositories);
   before(givenPersistedCustomerInstance);
   before(givenConstrainedRepositories);
   before(givenRepositoryFactoryFunctions);
-  afterEach(async function resetOrderRepository() {
+
+  beforeEach(async function resetDatabase() {
     await orderRepo.deleteAll();
     await reviewRepo.deleteAll();
   });
@@ -119,88 +123,9 @@ describe('HasMany relation', () => {
 
   //--- HELPERS ---//
 
-  class Order extends Entity {
-    id: number;
-    description: string;
-    customerId: number;
-
-    static definition = new ModelDefinition({
-      name: 'Order',
-      properties: {
-        id: {type: 'number', id: true},
-        description: {type: 'string', required: true},
-        customerId: {type: 'number', required: true},
-      },
-    });
-  }
-
-  class Review extends Entity {
-    id: number;
-    description: string;
-    authorId: number;
-    approvedId: number;
-
-    static definition = new ModelDefinition({
-      name: 'Review',
-      properties: {
-        id: {type: 'number', id: true},
-        description: {type: 'string', required: true},
-        authorId: {type: 'number', required: false},
-        approvedId: {type: 'number', required: false},
-      },
-    });
-  }
-
-  class Customer extends Entity {
-    id: number;
-    name: string;
-    orders: Order[];
-    reviewsAuthored: Review[];
-    reviewsApproved: Review[];
-
-    static definition: ModelDefinition = new ModelDefinition({
-      name: 'Customer',
-      properties: {
-        id: {type: 'number', id: true},
-        name: {type: 'string', required: true},
-        orders: {type: Order, array: true},
-        reviewsAuthored: {type: Review, array: true},
-        reviewsApproved: {type: Review, array: true},
-      },
-    })
-      .addRelation({
-        name: 'orders',
-        type: RelationType.hasMany,
-        source: Customer,
-        target: () => Order,
-        keyTo: 'customerId',
-      })
-      .addRelation({
-        name: 'reviewsAuthored',
-        type: RelationType.hasMany,
-        source: Customer,
-        target: () => Review,
-        keyTo: 'authorId',
-      })
-      .addRelation({
-        name: 'reviewsApproved',
-        type: RelationType.hasMany,
-        source: Customer,
-        target: () => Review,
-        keyTo: 'approvedId',
-      });
-  }
-
-  function givenCrudRepositories() {
-    db = new juggler.DataSource({connector: 'memory'});
-
-    customerRepo = new DefaultCrudRepository(Customer, db);
-    orderRepo = new DefaultCrudRepository(Order, db);
-    reviewRepo = new DefaultCrudRepository(Review, db);
-  }
-
   async function givenPersistedCustomerInstance() {
-    existingCustomerId = (await customerRepo.create({name: 'a customer'})).id;
+    const customer = await customerRepo.create({name: 'a customer'});
+    existingCustomerId = customer.id;
   }
 
   function givenConstrainedRepositories() {
@@ -227,3 +152,131 @@ describe('HasMany relation', () => {
     );
   }
 });
+
+describe('BelongsTo relation', () => {
+  let findCustomerOfOrder: BelongsToAccessor<
+    Customer,
+    typeof Order.prototype.id
+  >;
+
+  before(givenCrudRepositories);
+  before(givenAccessor);
+  beforeEach(async function resetDatabase() {
+    await Promise.all([
+      customerRepo.deleteAll(),
+      orderRepo.deleteAll(),
+      reviewRepo.deleteAll(),
+    ]);
+  });
+
+  it('finds an instance of the related model', async () => {
+    const customer = await customerRepo.create({name: 'Order McForder'});
+    const order = await orderRepo.create({
+      customerId: customer.id,
+      description: 'Order from Order McForder, the hoarder of Mordor',
+    });
+
+    const result = await findCustomerOfOrder(order.id);
+
+    expect(result).to.deepEqual(customer);
+  });
+
+  it('throws EntityNotFound error when the related model does not exist', async () => {
+    const order = await orderRepo.create({
+      customerId: 999, // does not exist
+      description: 'Order of a fictional customer',
+    });
+
+    await expect(findCustomerOfOrder(order.id)).to.be.rejectedWith(
+      EntityNotFoundError,
+    );
+  });
+
+  //--- HELPERS ---//
+
+  function givenAccessor() {
+    findCustomerOfOrder = createBelongsToAccessor(
+      Order.definition.relations.customer as BelongsToDefinition,
+      Getter.fromValue(customerRepo),
+      orderRepo,
+    );
+  }
+});
+
+//--- HELPERS ---//
+
+class Order extends Entity {
+  id: number;
+  description: string;
+  customerId: number;
+
+  static definition = new ModelDefinition('Order')
+    .addProperty('id', {type: 'number', id: true})
+    .addProperty('description', {type: 'string', required: true})
+    .addProperty('customerId', {type: 'number', required: true})
+    .addRelation({
+      name: 'customer',
+      type: RelationType.belongsTo,
+      source: Order,
+      target: () => Customer,
+      keyFrom: 'customerId',
+      keyTo: 'id',
+    });
+}
+
+class Review extends Entity {
+  id: number;
+  description: string;
+  authorId: number;
+  approvedId: number;
+
+  static definition = new ModelDefinition('Review')
+    .addProperty('id', {type: 'number', id: true})
+    .addProperty('description', {type: 'string', required: true})
+    .addProperty('authorId', {type: 'number', required: false})
+    .addProperty('approvedId', {type: 'number', required: false});
+}
+
+class Customer extends Entity {
+  id: number;
+  name: string;
+  orders: Order[];
+  reviewsAuthored: Review[];
+  reviewsApproved: Review[];
+
+  static definition: ModelDefinition = new ModelDefinition('Customer')
+    .addProperty('id', {type: 'number', id: true})
+    .addProperty('name', {type: 'string', required: true})
+    .addProperty('orders', {type: Order, array: true})
+    .addProperty('reviewsAuthored', {type: Review, array: true})
+    .addProperty('reviewsApproved', {type: Review, array: true})
+    .addRelation({
+      name: 'orders',
+      type: RelationType.hasMany,
+      source: Customer,
+      target: () => Order,
+      keyTo: 'customerId',
+    })
+    .addRelation({
+      name: 'reviewsAuthored',
+      type: RelationType.hasMany,
+      source: Customer,
+      target: () => Review,
+      keyTo: 'authorId',
+    })
+    .addRelation({
+      name: 'reviewsApproved',
+      type: RelationType.hasMany,
+      source: Customer,
+      target: () => Review,
+      keyTo: 'approvedId',
+    });
+}
+
+function givenCrudRepositories() {
+  db = new juggler.DataSource({connector: 'memory'});
+
+  customerRepo = new DefaultCrudRepository(Customer, db);
+  orderRepo = new DefaultCrudRepository(Order, db);
+  reviewRepo = new DefaultCrudRepository(Review, db);
+}

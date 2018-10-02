@@ -3,16 +3,22 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {model, property, Entity, hasMany} from '@loopback/repository';
+import {MetadataInspector} from '@loopback/context';
 import {
-  modelToJsonSchema,
-  JSON_SCHEMA_KEY,
+  belongsTo,
+  Entity,
+  hasMany,
+  model,
+  property,
+} from '@loopback/repository';
+import {expect} from '@loopback/testlab';
+import * as Ajv from 'ajv';
+import {
   getJsonSchema,
   JsonSchema,
+  JSON_SCHEMA_KEY,
+  modelToJsonSchema,
 } from '../..';
-import {expect} from '@loopback/testlab';
-import {MetadataInspector} from '@loopback/context';
-import * as Ajv from 'ajv';
 
 describe('build-schema', () => {
   describe('modelToJsonSchema', () => {
@@ -420,13 +426,13 @@ describe('build-schema', () => {
           expectValidJsonSchema(jsonSchema);
         });
 
-        it('properly converts models with hasMany properties', () => {
+        it('properly converts models with hasMany/belongsTo relation', () => {
           @model()
           class Order extends Entity {
             @property({id: true})
             id: number;
 
-            @property()
+            @belongsTo(() => Customer)
             customerId: number;
           }
 
@@ -439,10 +445,16 @@ describe('build-schema', () => {
             orders: Order[];
           }
 
+          const orderSchema = modelToJsonSchema(Order);
           const customerSchema = modelToJsonSchema(Customer);
 
           expectValidJsonSchema(customerSchema);
+          expectValidJsonSchema(orderSchema);
 
+          expect(orderSchema.properties).to.deepEqual({
+            id: {type: 'number'},
+            customerId: {type: 'number'},
+          });
           expect(customerSchema.properties).to.deepEqual({
             id: {type: 'number'},
             orders: {

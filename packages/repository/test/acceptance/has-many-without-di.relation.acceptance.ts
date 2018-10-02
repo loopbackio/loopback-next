@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Getter} from '@loopback/context';
 import {expect} from '@loopback/testlab';
 import {
   DefaultCrudRepository,
@@ -14,6 +13,7 @@ import {
   juggler,
   model,
   property,
+  Getter,
 } from '../..';
 
 describe('HasMany relation', () => {
@@ -28,10 +28,8 @@ describe('HasMany relation', () => {
   before(givenOrderRepository);
   before(givenCustomerRepository);
   beforeEach(async () => {
-    existingCustomerId = (await givenPersistedCustomerInstance()).id;
-  });
-  afterEach(async () => {
     await orderRepo.deleteAll();
+    existingCustomerId = (await givenPersistedCustomerInstance()).id;
   });
 
   it('can create an instance of the related model', async () => {

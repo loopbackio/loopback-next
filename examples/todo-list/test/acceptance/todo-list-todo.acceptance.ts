@@ -8,6 +8,7 @@ import {
   createRestAppClient,
   expect,
   givenHttpServerConfig,
+  toJSON,
 } from '@loopback/testlab';
 import {TodoListApplication} from '../../src/application';
 import {Todo, TodoList} from '../../src/models/';
@@ -41,13 +42,17 @@ describe('TodoListApplication', () => {
   });
 
   it('creates todo for a todoList', async () => {
-    const todo = givenTodo();
+    const todo = givenTodo({todoListId: undefined});
     const response = await client
       .post(`/todo-lists/${persistedTodoList.id}/todos`)
       .send(todo)
       .expect(200);
 
-    expect(response.body).to.containDeep(todo);
+    const expected = {...todo, todoListId: persistedTodoList.id};
+    expect(response.body).to.containEql(expected);
+
+    const created = await todoRepo.findById(response.body.id);
+    expect(toJSON(created)).to.deepEqual({id: response.body.id, ...expected});
   });
 
   context('when dealing with multiple persisted Todos', () => {
@@ -213,7 +218,9 @@ describe('TodoListApplication', () => {
     id: typeof Todo.prototype.id,
     todo?: Partial<Todo>,
   ) {
-    return await todoListRepo.todos(id).create(givenTodo(todo));
+    const data = givenTodo(todo);
+    delete data.todoListId;
+    return await todoListRepo.todos(id).create(data);
   }
 
   async function givenTodoListInstance(todoList?: Partial<TodoList>) {

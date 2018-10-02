@@ -35,6 +35,7 @@ export function givenTodo(todo?: Partial<Todo>) {
       title: 'do a thing',
       desc: 'There are some things that need doing',
       isComplete: false,
+      todoListId: 999,
     },
     todo,
   );

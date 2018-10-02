@@ -108,6 +108,9 @@ export interface EntityRepository<T extends Entity, ID>
 export interface EntityCrudRepository<T extends Entity, ID>
   extends EntityRepository<T, ID>,
     CrudRepository<T> {
+  // entityClass should have type "typeof T", but that's not supported by TSC
+  entityClass: typeof Entity & {prototype: T};
+
   /**
    * Save an entity. If no id is present, create a new entity
    * @param entity Entity to be saved
@@ -213,34 +216,38 @@ export class CrudRepositoryImpl<T extends Entity, ID>
   constructor(
     public dataSource: DataSource,
     // model should have type "typeof T", but that's not supported by TSC
-    public model: typeof Entity & {prototype: T},
+    public entityClass: typeof Entity & {prototype: T},
   ) {
     this.connector = dataSource.connector as CrudConnector;
   }
 
   private toModels(data: Promise<DataObject<Entity>[]>): Promise<T[]> {
-    return data.then(items => items.map(i => new this.model(i) as T));
+    return data.then(items => items.map(i => new this.entityClass(i) as T));
   }
 
   private toModel(data: Promise<DataObject<Entity>>): Promise<T> {
-    return data.then(d => new this.model(d) as T);
+    return data.then(d => new this.entityClass(d) as T);
   }
 
   create(entity: DataObject<T>, options?: Options): Promise<T> {
-    return this.toModel(this.connector.create(this.model, entity, options));
+    return this.toModel(
+      this.connector.create(this.entityClass, entity, options),
+    );
   }
 
   createAll(entities: DataObject<T>[], options?: Options): Promise<T[]> {
     return this.toModels(
-      this.connector.createAll!(this.model, entities, options),
+      this.connector.createAll!(this.entityClass, entities, options),
     );
   }
 
   async save(entity: DataObject<T>, options?: Options): Promise<T> {
     if (typeof this.connector.save === 'function') {
-      return this.toModel(this.connector.save(this.model, entity, options));
+      return this.toModel(
+        this.connector.save(this.entityClass, entity, options),
+      );
     } else {
-      const id = this.model.getIdOf(entity);
+      const id = this.entityClass.getIdOf(entity);
       if (id != null) {
         await this.replaceById(id, entity, options);
         return this.toModel(Promise.resolve(entity));
@@ -251,29 +258,33 @@ export class CrudRepositoryImpl<T extends Entity, ID>
   }
 
   find(filter?: Filter, options?: Options): Promise<T[]> {
-    return this.toModels(this.connector.find(this.model, filter, options));
+    return this.toModels(
+      this.connector.find(this.entityClass, filter, options),
+    );
   }
 
   async findById(id: ID, filter?: Filter, options?: Options): Promise<T> {
     if (typeof this.connector.findById === 'function') {
-      return this.toModel(this.connector.findById(this.model, id, options));
+      return this.toModel(
+        this.connector.findById(this.entityClass, id, options),
+      );
     }
-    const where = this.model.buildWhereForId(id);
+    const where = this.entityClass.buildWhereForId(id);
     const entities = await this.toModels(
-      this.connector.find(this.model, {where: where}, options),
+      this.connector.find(this.entityClass, {where: where}, options),
     );
     if (!entities.length) {
-      throw new EntityNotFoundError(this.model, id);
+      throw new EntityNotFoundError(this.entityClass, id);
     }
     return entities[0];
   }
 
   update(entity: DataObject<T>, options?: Options): Promise<void> {
-    return this.updateById(this.model.getIdOf(entity), entity, options);
+    return this.updateById(this.entityClass.getIdOf(entity), entity, options);
   }
 
   delete(entity: DataObject<T>, options?: Options): Promise<void> {
-    return this.deleteById(this.model.getIdOf(entity), options);
+    return this.deleteById(this.entityClass.getIdOf(entity), options);
   }
 
   updateAll(
@@ -281,7 +292,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     where?: Where,
     options?: Options,
   ): Promise<Count> {
-    return this.connector.updateAll(this.model, data, where, options);
+    return this.connector.updateAll(this.entityClass, data, where, options);
   }
 
   async updateById(
@@ -291,14 +302,19 @@ export class CrudRepositoryImpl<T extends Entity, ID>
   ): Promise<void> {
     let success: boolean;
     if (typeof this.connector.updateById === 'function') {
-      success = await this.connector.updateById(this.model, id, data, options);
+      success = await this.connector.updateById(
+        this.entityClass,
+        id,
+        data,
+        options,
+      );
     } else {
-      const where = this.model.buildWhereForId(id);
+      const where = this.entityClass.buildWhereForId(id);
       const result = await this.updateAll(data, where, options);
       success = result.count > 0;
     }
     if (!success) {
-      throw new EntityNotFoundError(this.model, id);
+      throw new EntityNotFoundError(this.entityClass, id);
     }
   }
 
@@ -309,48 +325,53 @@ export class CrudRepositoryImpl<T extends Entity, ID>
   ): Promise<void> {
     let success: boolean;
     if (typeof this.connector.replaceById === 'function') {
-      success = await this.connector.replaceById(this.model, id, data, options);
+      success = await this.connector.replaceById(
+        this.entityClass,
+        id,
+        data,
+        options,
+      );
     } else {
       // FIXME: populate inst with all properties
       // tslint:disable-next-line:no-unused-variable
       const inst = data;
-      const where = this.model.buildWhereForId(id);
+      const where = this.entityClass.buildWhereForId(id);
       const result = await this.updateAll(data, where, options);
       success = result.count > 0;
     }
     if (!success) {
-      throw new EntityNotFoundError(this.model, id);
+      throw new EntityNotFoundError(this.entityClass, id);
     }
   }
 
   deleteAll(where?: Where, options?: Options): Promise<Count> {
-    return this.connector.deleteAll(this.model, where, options);
+    return this.connector.deleteAll(this.entityClass, where, options);
   }
 
   async deleteById(id: ID, options?: Options): Promise<void> {
     let success: boolean;
     if (typeof this.connector.deleteById === 'function') {
-      success = await this.connector.deleteById(this.model, id, options);
+      success = await this.connector.deleteById(this.entityClass, id, options);
     } else {
-      const where = this.model.buildWhereForId(id);
+      const where = this.entityClass.buildWhereForId(id);
       const result = await this.deleteAll(where, options);
       success = result.count > 0;
     }
 
     if (!success) {
-      throw new EntityNotFoundError(this.model, id);
+      throw new EntityNotFoundError(this.entityClass, id);
     }
   }
 
   count(where?: Where, options?: Options): Promise<Count> {
-    return this.connector.count(this.model, where, options);
+    return this.connector.count(this.entityClass, where, options);
   }
 
   exists(id: ID, options?: Options): Promise<boolean> {
     if (typeof this.connector.exists === 'function') {
-      return this.connector.exists(this.model, id, options);
+      return this.connector.exists(this.entityClass, id, options);
     } else {
-      const where = this.model.buildWhereForId(id);
+      const where = this.entityClass.buildWhereForId(id);
       return this.count(where, options).then(result => result.count > 0);
     }
   }

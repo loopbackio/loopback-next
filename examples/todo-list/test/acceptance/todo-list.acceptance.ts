@@ -148,7 +148,7 @@ describe('TodoListApplication', () => {
 
     it('returns 404 when updating a todo-list that does not exist', () => {
       return client
-        .patch('/todos/99999')
+        .patch('/todo-lists/99999')
         .send(givenTodoList())
         .expect(404);
     });
