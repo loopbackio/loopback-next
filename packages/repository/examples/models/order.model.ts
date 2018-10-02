@@ -24,8 +24,7 @@ class Order extends Entity {
   // as simple types string, number, boolean can be inferred
   @property({type: 'string', id: true, generated: true})
   id: string;
-  customerId: string;
 
-  @belongsTo()
-  customer: Customer;
+  @belongsTo(() => Customer)
+  customerId: string;
 }
