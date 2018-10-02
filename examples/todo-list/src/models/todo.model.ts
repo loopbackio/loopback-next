@@ -3,7 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, property, model} from '@loopback/repository';
+import {Entity, property, model, belongsTo} from '@loopback/repository';
+import {TodoList} from './todo-list.model';
 
 @model()
 export class Todo extends Entity {
@@ -29,7 +30,7 @@ export class Todo extends Entity {
   })
   isComplete: boolean;
 
-  @property()
+  @belongsTo(() => TodoList)
   todoListId: number;
 
   getId() {

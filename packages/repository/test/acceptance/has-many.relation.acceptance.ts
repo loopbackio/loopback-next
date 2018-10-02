@@ -3,22 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  model,
-  property,
-  Entity,
-  DefaultCrudRepository,
-  juggler,
-  hasMany,
-  repository,
-  RepositoryMixin,
-  ApplicationWithRepositories,
-  HasManyRepositoryFactory,
-} from '../..';
+import {Application} from '@loopback/core';
 import {expect} from '@loopback/testlab';
 import * as _ from 'lodash';
-import {inject, Getter} from '@loopback/context';
-import {Application} from '@loopback/core';
+import {
+  ApplicationWithRepositories,
+  juggler,
+  repository,
+  RepositoryMixin,
+} from '../..';
+import {Order} from '../fixtures/models';
+import {CustomerRepository, OrderRepository} from '../fixtures/repositories';
 
 describe('HasMany relation', () => {
   // Given a Customer and Order models - see definitions at the bottom
@@ -34,10 +29,11 @@ describe('HasMany relation', () => {
   before(givenCustomerController);
 
   beforeEach(async () => {
-    existingCustomerId = (await givenPersistedCustomerInstance()).id;
-  });
-  afterEach(async () => {
     await orderRepo.deleteAll();
+  });
+
+  beforeEach(async () => {
+    existingCustomerId = (await givenPersistedCustomerInstance()).id;
   });
 
   it('can create an instance of the related model', async () => {
@@ -76,13 +72,13 @@ describe('HasMany relation', () => {
   it('can patch many instances', async () => {
     await controller.createCustomerOrders(existingCustomerId, {
       description: 'order 1',
-      isDelivered: false,
+      isShipped: false,
     });
     await controller.createCustomerOrders(existingCustomerId, {
       description: 'order 2',
-      isDelivered: false,
+      isShipped: false,
     });
-    const patchObject = {isDelivered: true};
+    const patchObject = {isShipped: true};
     const arePatched = await controller.patchCustomerOrders(
       existingCustomerId,
       patchObject,
@@ -90,18 +86,18 @@ describe('HasMany relation', () => {
     expect(arePatched.count).to.equal(2);
     const patchedData = _.map(
       await controller.findCustomerOrders(existingCustomerId),
-      d => _.pick(d, ['customerId', 'description', 'isDelivered']),
+      d => _.pick(d, ['customerId', 'description', 'isShipped']),
     );
     expect(patchedData).to.eql([
       {
         customerId: existingCustomerId,
         description: 'order 1',
-        isDelivered: true,
+        isShipped: true,
       },
       {
         customerId: existingCustomerId,
         description: 'order 2',
-        isDelivered: true,
+        isShipped: true,
       },
     ]);
   });
@@ -145,82 +141,6 @@ describe('HasMany relation', () => {
 
   // This should be enforced by the database to avoid race conditions
   it.skip('reject create request when the customer does not exist');
-
-  //--- HELPERS ---//
-
-  @model()
-  class Order extends Entity {
-    @property({
-      type: 'number',
-      id: true,
-    })
-    id: number;
-
-    @property({
-      type: 'string',
-      required: true,
-    })
-    description: string;
-
-    @property({
-      type: 'boolean',
-      required: false,
-    })
-    isDelivered: boolean;
-
-    @property({
-      type: 'number',
-      required: true,
-    })
-    customerId: number;
-  }
-
-  @model()
-  class Customer extends Entity {
-    @property({
-      type: 'number',
-      id: true,
-    })
-    id: number;
-
-    @property({
-      type: 'string',
-    })
-    name: string;
-
-    @hasMany(() => Order)
-    orders: Order[];
-  }
-
-  class OrderRepository extends DefaultCrudRepository<
-    Order,
-    typeof Order.prototype.id
-  > {
-    constructor(@inject('datasources.db') protected db: juggler.DataSource) {
-      super(Order, db);
-    }
-  }
-
-  class CustomerRepository extends DefaultCrudRepository<
-    Customer,
-    typeof Customer.prototype.id
-  > {
-    public orders: HasManyRepositoryFactory<
-      Order,
-      typeof Customer.prototype.id
-    >;
-    constructor(
-      @inject('datasources.db') protected db: juggler.DataSource,
-      @repository.getter(OrderRepository)
-      orderRepositoryGetter: Getter<OrderRepository>,
-    ) {
-      super(Customer, db);
-      this.orders = this._createHasManyRepositoryFactoryFor(
-        'orders',
-        orderRepositoryGetter,
-      );
-    }
-  }
 
   class CustomerController {
     constructor(

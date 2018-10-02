@@ -3,13 +3,22 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
-import {Entity, hasMany, RELATIONS_KEY, RelationType, property} from '../../..';
 import {MetadataInspector} from '@loopback/context';
-import {MODEL_PROPERTIES_KEY, model, getModelRelations} from '../../../src';
+import {expect} from '@loopback/testlab';
+import {
+  belongsTo,
+  Entity,
+  getModelRelations,
+  hasMany,
+  model,
+  MODEL_PROPERTIES_KEY,
+  property,
+  RELATIONS_KEY,
+  RelationType,
+} from '../../..';
 
 describe('relation decorator', () => {
-  context('hasMany', () => {
+  describe('hasMany', () => {
     it('takes in complex property type and infers foreign key via source model name', () => {
       @model()
       class Address extends Entity {
@@ -106,6 +115,84 @@ describe('relation decorator', () => {
             addresses: Address[];
           }
         }).to.throw(/Decorator cannot be applied more than once/);
+      });
+    });
+  });
+
+  describe('belongsTo', () => {
+    it('creates juggler property metadata', () => {
+      @model()
+      class AddressBook extends Entity {
+        @property({id: true})
+        id: number;
+      }
+      class Address extends Entity {
+        @belongsTo(() => AddressBook)
+        addressBookId: number;
+      }
+      const jugglerMeta = MetadataInspector.getAllPropertyMetadata(
+        MODEL_PROPERTIES_KEY,
+        Address.prototype,
+      );
+      expect(jugglerMeta).to.eql({
+        addressBookId: {
+          type: Number,
+        },
+      });
+    });
+
+    it('assigns it to target key', () => {
+      class Address extends Entity {
+        addressId: number;
+        street: string;
+        province: string;
+        @belongsTo(() => AddressBook)
+        addressBookId: number;
+      }
+
+      class AddressBook extends Entity {
+        id: number;
+        addresses: Address[];
+      }
+
+      const meta = MetadataInspector.getPropertyMetadata(
+        RELATIONS_KEY,
+        Address.prototype,
+        'addressBookId',
+      );
+      expect(meta).to.eql({
+        type: RelationType.belongsTo,
+        name: 'addressBook',
+        source: Address,
+        target: () => AddressBook,
+        keyFrom: 'addressBookId',
+      });
+    });
+
+    it('accepts explicit keyFrom and keyTo', () => {
+      class Address extends Entity {
+        addressId: number;
+        street: string;
+        province: string;
+        @belongsTo(() => AddressBook, {
+          keyFrom: 'aForeignKey',
+          keyTo: 'aPrimaryKey',
+        })
+        addressBookId: number;
+      }
+
+      class AddressBook extends Entity {
+        id: number;
+        addresses: Address[];
+      }
+      const meta = MetadataInspector.getPropertyMetadata(
+        RELATIONS_KEY,
+        Address.prototype,
+        'addressBookId',
+      );
+      expect(meta).to.containEql({
+        keyFrom: 'aForeignKey',
+        keyTo: 'aPrimaryKey',
       });
     });
   });

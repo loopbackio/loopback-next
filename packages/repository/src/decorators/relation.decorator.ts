@@ -3,8 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {PropertyDecoratorFactory} from '@loopback/context';
-import {Entity, EntityResolver, Model, RelationDefinitionMap} from '../model';
+import {MetadataInspector, PropertyDecoratorFactory} from '@loopback/context';
+import {
+  Entity,
+  EntityResolver,
+  Model,
+  PropertyDefinition,
+  RelationDefinitionMap,
+} from '../model';
 import {TypeResolver} from '../type-resolver';
 import {property} from './model.decorator';
 
@@ -21,19 +27,65 @@ export enum RelationType {
 export const RELATIONS_KEY = 'loopback:relations';
 
 export interface RelationDefinitionBase {
+  /**
+   * The type of the relation, must be one of RelationType values.
+   */
   type: RelationType;
+
+  /**
+   * The relation name, typically matching the name of the accessor property
+   * defined on the source model. For example "orders" or "customer".
+   */
   name: string;
+
+  /**
+   * The source model of this relation.
+   *
+   * E.g. when a Customer has many Order instances, then Customer is the source.
+   */
   source: typeof Entity;
+
+  /**
+   * The target model of this relation.
+   *
+   * E.g. when a Customer has many Order instances, then Order is the target.
+   */
   target: TypeResolver<Entity, typeof Entity>;
 }
 
 export interface HasManyDefinition extends RelationDefinitionBase {
   type: RelationType.hasMany;
+
+  /**
+   * The foreign key used by the target model.
+   *
+   * E.g. when a Customer has many Order instances, then keyTo is "customerId".
+   * Note that "customerId" is the default FK assumed by the framework, users
+   * can provide a custom FK name by setting "keyTo".
+   */
   keyTo?: string;
 }
 
-// TODO(bajtos) add other relation types, e.g. BelongsToDefinition
-export type RelationMetadata = HasManyDefinition | RelationDefinitionBase;
+export interface BelongsToDefinition extends RelationDefinitionBase {
+  type: RelationType.belongsTo;
+
+  /*
+   * The foreign key in the source model, e.g. Order#customerId.
+   */
+  keyFrom: string;
+
+  /*
+   * The primary key of the target model, e.g Customer#id.
+   */
+  keyTo?: string;
+}
+
+export type RelationMetadata =
+  | HasManyDefinition
+  | BelongsToDefinition
+  // TODO(bajtos) add other relation types and remove RelationDefinitionBase once
+  // all relation types are covered.
+  | RelationDefinitionBase;
 
 /**
  * Decorator for relations
@@ -48,12 +100,45 @@ export function relation(definition?: Object) {
 /**
  * Decorator for belongsTo
  * @param definition
- * @returns {(target:any, key:string)}
+ * @returns {(target: Object, key:string)}
  */
-export function belongsTo(definition?: Object) {
-  // Apply model definition to the model class
-  const rel = Object.assign({type: RelationType.belongsTo}, definition);
-  return PropertyDecoratorFactory.createDecorator(RELATIONS_KEY, rel);
+export function belongsTo<T extends Entity>(
+  targetResolver: EntityResolver<T>,
+  definition?: Partial<BelongsToDefinition>,
+) {
+  return function(decoratedTarget: Entity, decoratedKey: string) {
+    const propMeta: PropertyDefinition = {
+      type: MetadataInspector.getDesignTypeForProperty(
+        decoratedTarget,
+        decoratedKey,
+      ),
+      // TODO(bajtos) Make the foreign key required once our REST API layer
+      // allows controller methods to exclude required properties
+      // required: true,
+    };
+    property(propMeta)(decoratedTarget, decoratedKey);
+
+    // @belongsTo() is typically decorating the foreign key property,
+    // e.g. customerId. We need to strip the trailing "Id" suffix from the name.
+    const relationName = decoratedKey.replace(/Id$/, '');
+
+    const meta: BelongsToDefinition = Object.assign(
+      // default values, can be customized by the caller
+      {
+        keyFrom: decoratedKey,
+      },
+      // properties provided by the caller
+      definition,
+      // properties enforced by the decorator
+      {
+        type: RelationType.belongsTo,
+        name: relationName,
+        source: decoratedTarget.constructor,
+        target: targetResolver,
+      },
+    );
+    relation(meta)(decoratedTarget, decoratedKey);
+  };
 }
 
 /**
@@ -78,14 +163,13 @@ export function hasMany<T extends Entity>(
   targetResolver: EntityResolver<T>,
   definition?: Partial<HasManyDefinition>,
 ) {
-  // todo(shimks): extract out common logic (such as @property.array) to
-  // @relation
   return function(decoratedTarget: Object, key: string) {
     property.array(targetResolver)(decoratedTarget, key);
 
     const meta: HasManyDefinition = Object.assign(
+      // default values, can be customized by the caller
       {},
-      // properties customizable by users
+      // properties provided by the caller
       definition,
       // properties enforced by the decorator
       {
