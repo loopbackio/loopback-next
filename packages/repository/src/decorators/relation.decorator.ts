@@ -3,12 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, Model, RelationDefinitionMap} from '../model';
 import {PropertyDecoratorFactory} from '@loopback/context';
+import {Entity, EntityResolver, Model, RelationDefinitionMap} from '../model';
+import {TypeResolver} from '../type-resolver';
 import {property} from './model.decorator';
-import {camelCase} from 'lodash';
-
-// tslint:disable:no-any
 
 export enum RelationType {
   belongsTo = 'belongsTo',
@@ -22,20 +20,20 @@ export enum RelationType {
 
 export const RELATIONS_KEY = 'loopback:relations';
 
-export class RelationMetadata {
-  type: RelationType;
-  target: string | typeof Entity;
-  as: string;
-}
-
 export interface RelationDefinitionBase {
   type: RelationType;
+  name: string;
+  source: typeof Entity;
+  target: TypeResolver<Entity, typeof Entity>;
 }
 
 export interface HasManyDefinition extends RelationDefinitionBase {
   type: RelationType.hasMany;
-  keyTo: string;
+  keyTo?: string;
 }
+
+// TODO(bajtos) add other relation types, e.g. BelongsToDefinition
+export type RelationMetadata = HasManyDefinition | RelationDefinitionBase;
 
 /**
  * Decorator for relations
@@ -72,41 +70,32 @@ export function hasOne(definition?: Object) {
  * Decorator for hasMany
  * Calls property.array decorator underneath the hood and infers foreign key
  * name from target model name unless explicitly specified
- * @param targetModel Target model for hasMany relation
+ * @param targetResolver Target model for hasMany relation
  * @param definition Optional metadata for setting up hasMany relation
  * @returns {(target:any, key:string)}
  */
-export function hasMany<T extends typeof Entity>(
-  targetModel: T,
+export function hasMany<T extends Entity>(
+  targetResolver: EntityResolver<T>,
   definition?: Partial<HasManyDefinition>,
 ) {
   // todo(shimks): extract out common logic (such as @property.array) to
   // @relation
-  return function(target: Object, key: string) {
-    property.array(targetModel)(target, key);
+  return function(decoratedTarget: Object, key: string) {
+    property.array(targetResolver)(decoratedTarget, key);
 
-    const defaultFkName = camelCase(target.constructor.name + '_id');
-    const hasKeyTo = definition && definition.keyTo;
-    const hasDefaultFkProperty =
-      targetModel.definition &&
-      targetModel.definition.properties &&
-      targetModel.definition.properties[defaultFkName];
-    if (!(hasKeyTo || hasDefaultFkProperty)) {
-      // note(shimks): should we also check for the existence of explicitly
-      // given foreign key name on the juggler definition?
-      throw new Error(
-        `foreign key ${defaultFkName} not found on ${
-          targetModel.name
-        } model's juggler definition`,
-      );
-    }
-    const meta = {keyTo: defaultFkName};
-    Object.assign(meta, definition, {type: RelationType.hasMany});
-
-    PropertyDecoratorFactory.createDecorator(
-      RELATIONS_KEY,
-      meta as HasManyDefinition,
-    )(target, key);
+    const meta: HasManyDefinition = Object.assign(
+      {},
+      // properties customizable by users
+      definition,
+      // properties enforced by the decorator
+      {
+        type: RelationType.hasMany,
+        name: key,
+        source: decoratedTarget.constructor,
+        target: targetResolver,
+      },
+    );
+    relation(meta)(decoratedTarget, key);
   };
 }
 

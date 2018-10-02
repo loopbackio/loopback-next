@@ -56,7 +56,7 @@ export class Customer extends Entity {
   })
   name: string;
 
-  @hasMany(Order)
+  @hasMany(() => Order)
   orders?: Order[];
 
   constructor(data: Partial<Customer>) {
@@ -66,13 +66,13 @@ export class Customer extends Entity {
 ```
 
 The definition of the `hasMany` relation is inferred by using the `@hasMany`
-decorator. The decorator takes in the target model class constructor and
-optionally a custom foreign key to store the relation metadata. The decorator
-logic also designates the relation type and tries to infer the foreign key on
-the target model (`keyTo` in the relation metadata) to a default value (source
-model name appended with `id` in camel case, same as LoopBack 3). It also calls
-`property.array()` to ensure that the type of the property is inferred properly
-as an array of the target model instances.
+decorator. The decorator takes in a function resolving the target model class
+constructor and optionally a custom foreign key to store the relation metadata.
+The decorator logic also designates the relation type and tries to infer the
+foreign key on the target model (`keyTo` in the relation metadata) to a default
+value (source model name appended with `id` in camel case, same as LoopBack 3).
+It also calls `property.array()` to ensure that the type of the property is
+inferred properly as an array of the target model instances.
 
 The decorated property name is used as the relation name and stored as part of
 the source model definition's relation metadata. The property type metadata is
@@ -85,7 +85,7 @@ as follows:
 // import statements
 class Customer extends Entity {
   // constructor, properties, etc.
-  @hasMany(Order, {keyTo: 'custId'})
+  @hasMany(() => Order, {keyTo: 'custId'})
   orders?: Order[];
 }
 ```
@@ -97,8 +97,12 @@ repository level. Once `hasMany` relation is defined on the source model, then
 there are a couple of steps involved to configure it and use it. On the source
 repository, the following are required:
 
-- Use [Dependency Injection](Dependency-injection.md) to inject an instance of
-  the target repository in the constructor of your source repository class.
+- In the constructor of your source repository class, use
+  [Dependency Injection](Dependency-injection.md) to receive a getter function
+  for obtaining an instance of the target repository. _Note: We need a getter
+  function instead of a repository instance in order to break a cyclic
+  dependency between a repository with a hasMany relation and a repository with
+  the matching belongsTo relation._
 - Declare a property with the factory function type
   `HasManyRepositoryFactory<targetModel, typeof sourceModel.prototype.id>` on
   the source repository class.
@@ -121,7 +125,7 @@ import {
   HasManyRepositoryFactory,
   repository,
 } from '@loopback/repository';
-import {inject} from '@loopback/core';
+import {inject, Getter} from '@loopback/core';
 
 class CustomerRepository extends DefaultCrudRepository<
   Customer,
@@ -130,12 +134,13 @@ class CustomerRepository extends DefaultCrudRepository<
   public orders: HasManyRepositoryFactory<Order, typeof Customer.prototype.id>;
   constructor(
     @inject('datasources.db') protected db: juggler.DataSource,
-    @repository(OrderRepository) orderRepository: OrderRepository,
+    @repository.getter(OrderRepository)
+    getOrderRepository: Getter<OrderRepository>,
   ) {
     super(Customer, db);
     this.orders = this._createHasManyRepositoryFactoryFor(
       'orders',
-      orderRepository,
+      getOrderRepository,
     );
   }
 }

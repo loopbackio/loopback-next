@@ -3,17 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Getter} from '@loopback/context';
+import {expect} from '@loopback/testlab';
 import {
-  model,
-  property,
-  Entity,
   DefaultCrudRepository,
-  juggler,
+  Entity,
+  EntityCrudRepository,
   hasMany,
   HasManyRepositoryFactory,
-  EntityCrudRepository,
+  juggler,
+  model,
+  property,
 } from '../..';
-import {expect} from '@loopback/testlab';
 
 describe('HasMany relation', () => {
   // Given a Customer and Order models - see definitions at the bottom
@@ -116,7 +117,7 @@ describe('HasMany relation', () => {
     })
     name: string;
 
-    @hasMany(Order)
+    @hasMany(() => Order)
     orders: Order[];
   }
 
@@ -140,12 +141,14 @@ describe('HasMany relation', () => {
 
     constructor(
       protected db: juggler.DataSource,
-      orderRepository: EntityCrudRepository<Order, typeof Order.prototype.id>,
+      orderRepositoryGetter: Getter<
+        EntityCrudRepository<Order, typeof Order.prototype.id>
+      >,
     ) {
       super(Customer, db);
       this.orders = this._createHasManyRepositoryFactoryFor(
         'orders',
-        orderRepository,
+        orderRepositoryGetter,
       );
     }
   }
@@ -159,7 +162,7 @@ describe('HasMany relation', () => {
   }
 
   function givenCustomerRepository() {
-    customerRepo = new CustomerRepository(ds, orderRepo);
+    customerRepo = new CustomerRepository(ds, Getter.fromValue(orderRepo));
   }
 
   async function givenPersistedCustomerInstance() {

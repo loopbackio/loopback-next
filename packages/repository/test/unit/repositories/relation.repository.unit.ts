@@ -3,20 +3,21 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {sinon, expect} from '@loopback/testlab';
+import {Getter} from '@loopback/context';
+import {expect, sinon} from '@loopback/testlab';
 import {
-  EntityCrudRepository,
-  HasManyRepository,
+  AnyObject,
+  Count,
+  DataObject,
   DefaultCrudRepository,
-  juggler,
   DefaultHasManyEntityCrudRepository,
   Entity,
-  AnyObject,
+  EntityCrudRepository,
   Filter,
+  HasManyRepository,
+  juggler,
   Options,
-  DataObject,
   Where,
-  Count,
 } from '../../..';
 
 describe('relation repository', () => {
@@ -135,6 +136,6 @@ describe('relation repository', () => {
       Customer,
       typeof Customer.prototype.id,
       CustomerRepository
-    >(repo, constraint);
+    >(Getter.fromValue(repo), constraint);
   }
 });

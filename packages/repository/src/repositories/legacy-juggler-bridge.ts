@@ -3,17 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {isPromiseLike} from '@loopback/context';
+import {Getter, isPromiseLike} from '@loopback/context';
 import * as assert from 'assert';
 import * as legacy from 'loopback-datasource-juggler';
 import {
   AnyObject,
   Command,
+  Count,
   DataObject,
   NamedParameters,
   Options,
   PositionalParameters,
-  Count,
 } from '../common-types';
 import {HasManyDefinition} from '../decorators/relation.decorator';
 import {EntityNotFoundError} from '../errors';
@@ -170,12 +170,12 @@ export class DefaultCrudRepository<T extends Entity, ID>
     ForeignKeyType
   >(
     relationName: string,
-    targetRepo: EntityCrudRepository<Target, TargetID>,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
   ): HasManyRepositoryFactory<Target, ForeignKeyType> {
     const meta = this.entityClass.definition.relations[relationName];
     return createHasManyRepositoryFactory<Target, TargetID, ForeignKeyType>(
       meta as HasManyDefinition,
-      targetRepo,
+      targetRepoGetter,
     );
   }
 

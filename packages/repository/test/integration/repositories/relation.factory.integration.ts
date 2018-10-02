@@ -16,6 +16,7 @@ import {
   HasManyRepositoryFactory,
 } from '../../..';
 import {expect} from '@loopback/testlab';
+import {Getter} from '@loopback/context';
 
 describe('HasMany relation', () => {
   // Given a Customer and Order models - see definitions at the bottom
@@ -116,18 +117,6 @@ describe('HasMany relation', () => {
     );
   });
 
-  it('errors when keyTo is not available hasMany metadata', () => {
-    const keytolessMeta = {
-      type: RelationType.hasMany,
-    };
-    expect(
-      createHasManyRepositoryFactory(
-        keytolessMeta as HasManyDefinition,
-        reviewRepo,
-      ),
-    ).to.throw(/The foreign key property name \(keyTo\) must be specified/);
-  });
-
   //--- HELPERS ---//
 
   class Order extends Entity {
@@ -169,7 +158,7 @@ describe('HasMany relation', () => {
     reviewsAuthored: Review[];
     reviewsApproved: Review[];
 
-    static definition = new ModelDefinition({
+    static definition: ModelDefinition = new ModelDefinition({
       name: 'Customer',
       properties: {
         id: {type: 'number', id: true},
@@ -178,21 +167,28 @@ describe('HasMany relation', () => {
         reviewsAuthored: {type: Review, array: true},
         reviewsApproved: {type: Review, array: true},
       },
-      relations: {
-        orders: {
-          type: RelationType.hasMany,
-          keyTo: 'customerId',
-        },
-        reviewsAuthored: {
-          type: RelationType.hasMany,
-          keyTo: 'authorId',
-        },
-        reviewsApproved: {
-          type: RelationType.hasMany,
-          keyTo: 'approvedId',
-        },
-      },
-    });
+    })
+      .addRelation({
+        name: 'orders',
+        type: RelationType.hasMany,
+        source: Customer,
+        target: () => Order,
+        keyTo: 'customerId',
+      })
+      .addRelation({
+        name: 'reviewsAuthored',
+        type: RelationType.hasMany,
+        source: Customer,
+        target: () => Review,
+        keyTo: 'authorId',
+      })
+      .addRelation({
+        name: 'reviewsApproved',
+        type: RelationType.hasMany,
+        source: Customer,
+        target: () => Review,
+        keyTo: 'approvedId',
+      });
   }
 
   function givenCrudRepositories() {
@@ -212,7 +208,10 @@ describe('HasMany relation', () => {
       Order,
       typeof Order.prototype.id,
       typeof Customer.prototype.id
-    >(Customer.definition.relations.orders as HasManyDefinition, orderRepo);
+    >(
+      Customer.definition.relations.orders as HasManyDefinition,
+      Getter.fromValue(orderRepo),
+    );
 
     customerOrderRepo = orderFactoryFn(existingCustomerId);
   }
@@ -220,11 +219,11 @@ describe('HasMany relation', () => {
   function givenRepositoryFactoryFunctions() {
     customerAuthoredReviewFactoryFn = createHasManyRepositoryFactory(
       Customer.definition.relations.reviewsAuthored as HasManyDefinition,
-      reviewRepo,
+      Getter.fromValue(reviewRepo),
     );
     customerApprovedReviewFactoryFn = createHasManyRepositoryFactory(
       Customer.definition.relations.reviewsApproved as HasManyDefinition,
-      reviewRepo,
+      Getter.fromValue(reviewRepo),
     );
   }
 });

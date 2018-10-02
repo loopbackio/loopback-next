@@ -179,6 +179,16 @@ export function inject(
  */
 export type Getter<T> = () => Promise<T>;
 
+export namespace Getter {
+  /**
+   * Convert a value into a Getter returning that value.
+   * @param value
+   */
+  export function fromValue<T>(value: T): Getter<T> {
+    return () => Promise.resolve(value);
+  }
+}
+
 /**
  * The function injected by `@inject.setter(key)`.
  */
