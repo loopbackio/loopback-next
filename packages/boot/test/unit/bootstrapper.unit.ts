@@ -3,10 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
 import {Application} from '@loopback/core';
-import {Bootstrapper, Booter, BootBindings, BootMixin} from '../../index';
 import {RepositoryMixin} from '@loopback/repository';
+import {expect} from '@loopback/testlab';
+import {BootBindings, Booter, BootMixin, Bootstrapper} from '../..';
 
 describe('boot-strapper unit tests', () => {
   // RepositoryMixin is added to avoid warning message printed logged to console

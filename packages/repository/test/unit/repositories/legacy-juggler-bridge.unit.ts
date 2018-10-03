@@ -4,15 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-
 import {
-  juggler,
   bindModel,
   DefaultCrudRepository,
   Entity,
+  EntityNotFoundError,
+  juggler,
   ModelDefinition,
-} from '../../../';
-import {EntityNotFoundError} from '../../../src';
+} from '../../..';
 
 describe('legacy loopback-datasource-juggler', () => {
   let ds: juggler.DataSource;

@@ -10,18 +10,18 @@ import {
   SchemaObject,
 } from '@loopback/openapi-v3-types';
 import {
-  ShotRequestOptions,
   expect,
+  ShotRequestOptions,
   stubExpressContext,
 } from '@loopback/testlab';
 import {
-  PathParameterValues,
-  Request,
-  Route,
   createResolvedRoute,
   parseOperationArgs,
+  PathParameterValues,
+  Request,
+  RestHttpErrors,
+  Route,
 } from '../..';
-import {RestHttpErrors} from '../../src';
 
 describe('operationArgsParser', () => {
   it('parses path parameters', async () => {

@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Constructor, Context} from '@loopback/context';
 import {expect} from '@loopback/testlab';
-import {Application, Server, Component} from '../../index';
-import {Context, Constructor} from '@loopback/context';
+import {Application, Component, Server} from '../..';
 
 describe('Application', () => {
   describe('controller binding', () => {

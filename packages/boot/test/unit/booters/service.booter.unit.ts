@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect, TestSandbox, sinon} from '@loopback/testlab';
-import {resolve} from 'path';
-import {ApplicationWithServices, ServiceMixin} from '@loopback/service-proxy';
-import {ServiceBooter, ServiceDefaults} from '../../../src';
 import {Application} from '@loopback/core';
+import {ApplicationWithServices, ServiceMixin} from '@loopback/service-proxy';
+import {expect, sinon, TestSandbox} from '@loopback/testlab';
+import {resolve} from 'path';
+import {ServiceBooter, ServiceDefaults} from '../../..';
 
 describe('service booter unit tests', () => {
   const SANDBOX_PATH = resolve(__dirname, '../../../.sandbox');

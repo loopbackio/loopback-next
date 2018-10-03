@@ -3,16 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ModelMetadataHelper} from '../../../src';
+import {MetadataInspector} from '@loopback/context';
+import {expect} from '@loopback/testlab';
 import {
-  property,
   model,
   ModelDefinition,
+  ModelMetadataHelper,
   MODEL_KEY,
   MODEL_WITH_PROPERTIES_KEY,
+  property,
 } from '../../..';
-import {expect} from '@loopback/testlab';
-import {MetadataInspector} from '@loopback/context';
 
 describe('Repository', () => {
   describe('getAllClassMetadata', () => {

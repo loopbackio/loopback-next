@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {JsonSchema} from '../../src';
+import {JsonSchema} from '../..';
 
 describe('JSON Schema type', () => {
   describe('JsonSchema interface', () => {

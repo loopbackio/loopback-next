@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {discoverFiles, isClass, loadClassesFromFiles} from '../../../index';
+import {expect, TestSandbox} from '@loopback/testlab';
 import {resolve} from 'path';
-import {TestSandbox, expect} from '@loopback/testlab';
+import {discoverFiles, isClass, loadClassesFromFiles} from '../../..';
 
 describe('booter-utils unit tests', () => {
   const SANDBOX_PATH = resolve(__dirname, '../../../.sandbox');
