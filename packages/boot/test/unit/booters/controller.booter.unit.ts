@@ -3,10 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect, TestSandbox} from '@loopback/testlab';
 import {Application} from '@loopback/core';
-import {ControllerBooter, ControllerDefaults} from '../../../index';
+import {expect, TestSandbox} from '@loopback/testlab';
 import {resolve} from 'path';
+import {ControllerBooter, ControllerDefaults} from '../../..';
 
 describe('controller booter unit tests', () => {
   const SANDBOX_PATH = resolve(__dirname, '../../../.sandbox');

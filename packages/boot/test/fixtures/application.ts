@@ -7,7 +7,7 @@ import {ApplicationConfig} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
-import {BootMixin} from '../../index';
+import {BootMixin} from '../..';
 
 export class BooterApp extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),

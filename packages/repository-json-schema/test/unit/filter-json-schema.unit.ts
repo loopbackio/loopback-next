@@ -6,7 +6,7 @@
 import {Entity, Filter, hasMany, model, property} from '@loopback/repository';
 import {expect} from '@loopback/testlab';
 import * as Ajv from 'ajv';
-import {JsonSchema} from '../../src';
+import {JsonSchema} from '../..';
 import {
   getFilterJsonSchemaFor,
   getWhereJsonSchemaFor,

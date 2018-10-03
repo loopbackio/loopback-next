@@ -3,17 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {expect} from '@loopback/testlab';
 import {DataSource} from 'loopback-datasource-juggler';
+import {AnyObject, DefaultCrudRepository, Entity, model, property} from '../..';
 import {Product} from '../fixtures/models/product.model';
 import {ProductRepository} from '../fixtures/repositories/product.repository';
-import {expect} from '@loopback/testlab';
-import {
-  Entity,
-  model,
-  DefaultCrudRepository,
-  property,
-  AnyObject,
-} from '../../src';
 
 // This test shows the recommended way how to use @loopback/repository
 // together with existing connectors when building LoopBack applications

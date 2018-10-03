@@ -5,11 +5,11 @@
 
 import {expect} from '@loopback/testlab';
 import {
-  SchemaObject,
+  isReferenceObject,
   isSchemaObject,
   ReferenceObject,
-  isReferenceObject,
-} from '../../src';
+  SchemaObject,
+} from '../..';
 
 describe('type-guards unit tests', () => {
   describe('isSchemaObject()', () => {

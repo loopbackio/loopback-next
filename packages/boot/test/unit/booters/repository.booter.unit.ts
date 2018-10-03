@@ -3,14 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect, TestSandbox, sinon} from '@loopback/testlab';
 import {Application} from '@loopback/core';
 import {
-  RepositoryMixin,
   ApplicationWithRepositories,
+  RepositoryMixin,
 } from '@loopback/repository';
-import {RepositoryBooter, RepositoryDefaults} from '../../../index';
+import {expect, sinon, TestSandbox} from '@loopback/testlab';
 import {resolve} from 'path';
+import {RepositoryBooter, RepositoryDefaults} from '../../..';
 
 describe('repository booter unit tests', () => {
   const SANDBOX_PATH = resolve(__dirname, '../../../.sandbox');

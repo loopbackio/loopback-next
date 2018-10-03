@@ -17,7 +17,7 @@ import {IncomingMessage, ServerResponse} from 'http';
 import * as yaml from 'js-yaml';
 import * as path from 'path';
 import * as fs from 'fs';
-import {RestServerConfig} from '../../src';
+import {RestServerConfig} from '../..';
 
 describe('RestServer (integration)', () => {
   it('exports url property', async () => {

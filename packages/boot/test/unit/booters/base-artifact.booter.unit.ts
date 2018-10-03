@@ -3,10 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BaseArtifactBooter} from '../../../index';
 import {expect} from '@loopback/testlab';
 import {resolve} from 'path';
-import {ArtifactOptions} from '../../../src';
+import {ArtifactOptions, BaseArtifactBooter} from '../../..';
 
 describe('base-artifact booter unit tests', () => {
   const TEST_OPTIONS = {
