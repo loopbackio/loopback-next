@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.28.0"></a>
+# [0.28.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.27.0...@loopback/cli@0.28.0) (2018-10-03)
+
+
+### Bug Fixes
+
+* **cli:** fixed ds names that were hyphened ([568307c](https://github.com/strongloop/loopback-next/commit/568307c)), closes [#1791](https://github.com/strongloop/loopback-next/issues/1791)
+* clean up dataSource usage ([69506a4](https://github.com/strongloop/loopback-next/commit/69506a4))
+
+
+### Features
+
+* **cli:** check project deps against cli template ([8d056c4](https://github.com/strongloop/loopback-next/commit/8d056c4))
+
+
+
+
+
 <a name="0.27.0"></a>
 # [0.27.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.26.0...@loopback/cli@0.27.0) (2018-09-28)
 

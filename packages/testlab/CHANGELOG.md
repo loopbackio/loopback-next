@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.15.0"></a>
+# [0.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.14.1...@loopback/testlab@0.15.0) (2018-10-03)
+
+
+### Features
+
+* **testlab:** add StubbedInstanceWithSinonAccessor ([1dc2304](https://github.com/strongloop/loopback-next/commit/1dc2304))
+
+
+
+
+
 <a name="0.14.1"></a>
 ## [0.14.1](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.14.0...@loopback/testlab@0.14.1) (2018-09-27)
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.25.3"></a>
+## [0.25.3](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.25.2...@loopback/rest@0.25.3) (2018-10-03)
+
+
+### Performance Improvements
+
+* improve schema validation peformance ([353b202](https://github.com/strongloop/loopback-next/commit/353b202))
+
+
+
+
+
 <a name="0.25.2"></a>
 ## [0.25.2](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.25.1...@loopback/rest@0.25.2) (2018-09-28)
 
