@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.20.0"></a>
+# [0.20.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.19.0...@loopback/repository@0.20.0) (2018-10-03)
+
+
+### Bug Fixes
+
+* **repository:** use PropertyType instead of Function ([ec9f325](https://github.com/strongloop/loopback-next/commit/ec9f325))
+* clean up dataSource usage ([69506a4](https://github.com/strongloop/loopback-next/commit/69506a4))
+
+
+### Features
+
+* **testlab:** add StubbedInstanceWithSinonAccessor ([1dc2304](https://github.com/strongloop/loopback-next/commit/1dc2304))
+
+
+
+
+
 <a name="0.19.0"></a>
 # [0.19.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.18.1...@loopback/repository@0.19.0) (2018-09-28)
 

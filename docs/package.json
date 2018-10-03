@@ -1,6 +1,6 @@
 {
   "name": "@loopback/docs",
-  "version": "0.22.0",
+  "version": "0.22.1",
   "description": "Documentation for LoopBack 4",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/docs",
   "author": {
@@ -21,7 +21,7 @@
     "clean": "lb-clean loopback-docs*.tgz package api-docs"
   },
   "devDependencies": {
-    "@loopback/build": "^0.7.4"
+    "@loopback/build": "^0.7.5"
   },
   "publishConfig": {
     "access": "public"

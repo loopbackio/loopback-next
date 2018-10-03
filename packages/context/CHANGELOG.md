@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@0.12.13...@loopback/context@0.13.0) (2018-10-03)
+
+
+### Features
+
+* **context:** add a helper `Getter.fromValue()` ([4764166](https://github.com/strongloop/loopback-next/commit/4764166))
+
+
+
+
+
 <a name="0.12.13"></a>
 ## [0.12.13](https://github.com/strongloop/loopback-next/compare/@loopback/context@0.12.12...@loopback/context@0.12.13) (2018-09-28)
 

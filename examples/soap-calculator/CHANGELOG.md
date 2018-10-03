@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.4"></a>
+## [0.4.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@0.4.3...@loopback/example-soap-calculator@0.4.4) (2018-10-03)
+
+
+### Bug Fixes
+
+* clean up dataSource usage ([69506a4](https://github.com/strongloop/loopback-next/commit/69506a4))
+
+
+
+
+
 <a name="0.4.3"></a>
 ## [0.4.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@0.4.2...@loopback/example-soap-calculator@0.4.3) (2018-09-28)
 

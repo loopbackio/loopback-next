@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.8.9"></a>
+## [0.8.9](https://github.com/strongloop/loopback-next/compare/@loopback/service-proxy@0.8.8...@loopback/service-proxy@0.8.9) (2018-10-03)
+
+
+### Bug Fixes
+
+* clean up dataSource usage ([69506a4](https://github.com/strongloop/loopback-next/commit/69506a4))
+
+
+
+
+
 <a name="0.8.8"></a>
 ## [0.8.8](https://github.com/strongloop/loopback-next/compare/@loopback/service-proxy@0.8.7...@loopback/service-proxy@0.8.8) (2018-09-28)
 

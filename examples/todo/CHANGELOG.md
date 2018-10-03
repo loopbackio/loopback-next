@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.21.0"></a>
+# [0.21.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.20.2...@loopback/example-todo@0.21.0) (2018-10-03)
+
+
+### Bug Fixes
+
+* clean up dataSource usage ([69506a4](https://github.com/strongloop/loopback-next/commit/69506a4))
+
+
+### Features
+
+* **testlab:** add StubbedInstanceWithSinonAccessor ([1dc2304](https://github.com/strongloop/loopback-next/commit/1dc2304))
+
+
+
+
+
 <a name="0.20.2"></a>
 ## [0.20.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@0.20.1...@loopback/example-todo@0.20.2) (2018-09-28)
 
