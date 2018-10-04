@@ -156,7 +156,7 @@ describe('build', function() {
       true,
     );
     assert(
-      command.indexOf('--outDir ./dist') !== -1,
+      command.indexOf('--outDir dist') !== -1,
       '--outDir should be honored',
     );
   });
