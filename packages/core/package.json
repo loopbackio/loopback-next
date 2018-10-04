@@ -6,25 +6,21 @@
     "node": ">=8.9"
   },
   "scripts": {
-    "acceptance": "lb-mocha \"DIST/test/acceptance/**/*.js\"",
-    "build:all-dist": "npm run build:dist8 && npm run build:dist10",
+    "acceptance": "lb-mocha \"dist/test/acceptance/**/*.js\"",
     "build:apidocs": "lb-apidocs",
-    "build": "lb-tsc",
-    "build:dist8": "lb-tsc es2017",
-    "build:dist10": "lb-tsc es2018",
-    "clean": "lb-clean loopback-core*.tgz dist* package api-docs",
+    "build": "lb-tsc es2017 --outDir dist",
+    "clean": "lb-clean loopback-core*.tgz dist package api-docs",
     "pretest": "npm run build",
-    "integration": "lb-mocha \"DIST/test/integration/**/*.js\"",
-    "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/integration/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
-    "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",
+    "integration": "lb-mocha \"dist/test/integration/**/*.js\"",
+    "test": "lb-mocha \"dist/test/unit/**/*.js\" \"dist/test/integration/**/*.js\" \"dist/test/acceptance/**/*.js\"",
+    "unit": "lb-mocha \"dist/test/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-core*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^0.13.0",
-    "@loopback/dist-util": "^0.3.7"
+    "@loopback/context": "^0.13.0"
   },
   "devDependencies": {
     "@loopback/build": "^0.7.5",
@@ -35,8 +31,8 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist*/src",
-    "dist*/index*",
+    "dist/src",
+    "dist/index*",
     "src"
   ],
   "repository": {

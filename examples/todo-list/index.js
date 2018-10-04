@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-const application = require('@loopback/dist-util').loadDist(__dirname);
+const application = require('./dist');
 
 module.exports = application;
 

@@ -7,13 +7,10 @@
     "node": ">=8.9"
   },
   "scripts": {
-    "build:all-dist": "npm run build:dist8 && npm run build:dist10",
     "build:apidocs": "lb-apidocs",
-    "build": "lb-tsc",
-    "build:dist8": "lb-tsc es2017",
-    "build:dist10": "lb-tsc es2018",
-    "build:watch": "lb-tsc --watch",
-    "clean": "lb-clean *example-log-extension-*.tgz dist* package api-docs",
+    "build": "lb-tsc es2017 --outDir dist",
+    "build:watch": "lb-tsc es2017 --outDir dist --watch",
+    "clean": "lb-clean *example-log-extension-*.tgz dist package api-docs",
     "lint": "npm run prettier:check && npm run tslint",
     "lint:fix": "npm run tslint:fix && npm run prettier:fix",
     "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
@@ -22,9 +19,9 @@
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
     "pretest": "npm run clean && npm run build",
-    "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/acceptance/**/*.js\"",
+    "test": "lb-mocha \"dist/test/unit/**/*.js\" \"dist/test/acceptance/**/*.js\"",
     "posttest": "npm run lint",
-    "test:dev": "lb-mocha --allow-console-logs DIST/test/**/*.js && npm run posttest",
+    "test:dev": "lb-mocha --allow-console-logs dist/test/**/*.js && npm run posttest",
     "verify": "npm pack && tar xf *example-log-extension*.tgz && tree package && npm run clean"
   },
   "repository": {
@@ -52,7 +49,6 @@
   "dependencies": {
     "@loopback/context": "^0.13.0",
     "@loopback/core": "^0.11.15",
-    "@loopback/dist-util": "^0.3.7",
     "@loopback/openapi-v3": "^0.15.3",
     "@loopback/rest": "^0.25.3",
     "chalk": "^2.3.2",

@@ -7,17 +7,14 @@
   },
   "main": "index",
   "scripts": {
-    "acceptance": "lb-mocha \"DIST/test/acceptance/**/*.js\"",
-    "build:all-dist": "npm run build:dist8 && npm run build:dist10",
+    "acceptance": "lb-mocha \"dist/test/acceptance/**/*.js\"",
     "build:apidocs": "lb-apidocs",
-    "build": "lb-tsc",
-    "build:dist8": "lb-tsc es2017",
-    "build:dist10": "lb-tsc es2018",
-    "clean": "lb-clean loopback-service-proxy*.tgz dist* package api-docs",
-    "integration": "lb-mocha \"DIST/test/integration/**/*.js\"",
+    "build": "lb-tsc es2017 --outDir dist",
+    "clean": "lb-clean loopback-service-proxy*.tgz dist package api-docs",
+    "integration": "lb-mocha \"dist/test/integration/**/*.js\"",
     "pretest": "npm run build",
-    "test": "lb-mocha \"DIST/test/unit/**/*.js\" \"DIST/test/acceptance/**/*.js\" \"DIST/test/integration/**/*.js\"",
-    "unit": "lb-mocha \"DIST/test/unit/**/*.js\"",
+    "test": "lb-mocha \"dist/test/unit/**/*.js\" \"dist/test/acceptance/**/*.js\" \"dist/test/integration/**/*.js\"",
+    "unit": "lb-mocha \"dist/test/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-service-proxy*.tgz && tree package && npm run clean"
   },
   "publishConfig": {
@@ -34,15 +31,14 @@
   "dependencies": {
     "@loopback/context": "^0.13.0",
     "@loopback/core": "^0.11.15",
-    "@loopback/dist-util": "^0.3.7",
     "loopback-datasource-juggler": "^3.23.0"
   },
   "files": [
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist*/src",
-    "dist*/index*",
+    "dist/src",
+    "dist/index*",
     "src"
   ],
   "repository": {

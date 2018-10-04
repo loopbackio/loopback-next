@@ -11,13 +11,10 @@
     "node": ">=8.9"
   },
   "scripts": {
-    "build:all-dist": "npm run build:dist8 && npm run build:dist10",
     "build:apidocs": "lb-apidocs",
-    "build": "lb-tsc",
-    "build:dist8": "lb-tsc es2017",
-    "build:dist10": "lb-tsc es2018",
+    "build": "lb-tsc es2017 --outDir dist",
     "build:watch": "lb-tsc --watch",
-    "clean": "lb-clean dist*",
+    "clean": "lb-clean dist",
 <% if (project.prettier && project.tslint) { -%>
     "lint": "npm run prettier:check && npm run tslint",
     "lint:fix": "npm run tslint:fix && npm run prettier:fix",
@@ -39,15 +36,15 @@
 <% } -%>
     "pretest": "npm run clean && npm run build",
 <% if (project.mocha) { -%>
-    "test": "lb-mocha --allow-console-logs \"DIST/test\"",
+    "test": "lb-mocha --allow-console-logs \"dist/test\"",
 <% } -%>
 <% if (project.prettier || project.tslint) { -%>
     "posttest": "npm run lint",
 <% } -%>
 <% if (project.mocha && (project.prettier || project.tslint)) { -%>
-    "test:dev": "lb-mocha --allow-console-logs DIST/test/**/*.js && npm run posttest",
+    "test:dev": "lb-mocha --allow-console-logs dist/test/**/*.js && npm run posttest",
 <% } else if (project.mocha) { -%>
-    "test:dev": "lb-mocha --allow-console-logs DIST/test/**/*.js",
+    "test:dev": "lb-mocha --allow-console-logs dist/test/**/*.js",
 <% } -%>
 <% if (project.projectType === 'application') { -%>
     "prestart": "npm run build",
@@ -67,8 +64,8 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist*/src",
-    "dist*/index*",
+    "dist/src",
+    "dist/index*",
     "src"
   ],
   "dependencies": {
