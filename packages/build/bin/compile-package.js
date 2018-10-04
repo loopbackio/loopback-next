@@ -71,7 +71,11 @@ function run(argv, options) {
 
   var outDir;
 
-  if (!isOutDirSet) {
+  if (isOutDirSet) {
+    const outDirIx = compilerOpts.indexOf('--outDir');
+    outDir = path.resolve(process.cwd(), compilerOpts[outDirIx + 1]);
+    compilerOpts.splice(outDirIx, 2);
+  } else {
     outDir = path.join(packageDir, utils.getDistribution(target));
   }
 
@@ -121,7 +125,7 @@ function run(argv, options) {
   }
 
   if (outDir) {
-    args.push('--outDir', outDir);
+    args.push('--outDir', path.relative(cwd, outDir));
 
     // Since outDir is set, ts files are compiled into that directory.
     // If ignore-resources flag is not passed, copy resources (non-ts files)
