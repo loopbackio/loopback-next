@@ -150,7 +150,9 @@ describe('TodoController', () => {
       .stub()
       .withArgs(aTodoListWithId.id!)
       .returns(constrainedTodoRepo);
-    todoListRepo.todos = todos;
+
+    // tslint:disable-next-line:no-any
+    (todoListRepo as any).todos = todos;
 
     // Setup CRUD fakes
     ({create, find, patch, delete: del} = constrainedTodoRepo.stubs);
