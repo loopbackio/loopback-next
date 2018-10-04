@@ -6,21 +6,17 @@
     "node": ">=8.9"
   },
   "scripts": {
-    "build:all-dist": "npm run build:dist8 && npm run build:dist10",
     "build:apidocs": "lb-apidocs",
-    "build": "lb-tsc",
-    "build:dist8": "lb-tsc es2017",
-    "build:dist10": "lb-tsc es2018",
-    "clean": "lb-clean loopback-caching-proxy*.tgz dist* package api-docs",
+    "build": "lb-tsc es2017 --outDir dist",
+    "clean": "lb-clean loopback-caching-proxy*.tgz dist package api-docs",
     "pretest": "npm run build",
-    "test": "lb-mocha \"DIST/test/integration/**/*.js\"",
+    "test": "lb-mocha \"dist/test/integration/**/*.js\"",
     "verify": "npm pack && tar xf loopback-caching-proxy*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/dist-util": "^0.3.7",
     "cacache": "^11.0.2",
     "debug": "^4.0.1",
     "p-event": "^2.1.0",
@@ -49,8 +45,8 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist*/src",
-    "dist*/index*",
+    "dist/src",
+    "dist/index*",
     "src"
   ],
   "publishConfig": {

@@ -18,6 +18,5 @@
     "url": "https://github.com/strongloop/loopback-next.git"
   },
   "dependencies": {
-    "@loopback/dist-util": "^0.3.7"
   }
 }

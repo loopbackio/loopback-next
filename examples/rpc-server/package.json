@@ -10,13 +10,10 @@
     "node": ">=8.9"
   },
   "scripts": {
-    "build:all-dist": "npm run build:dist8 && npm run build:dist10",
     "build:apidocs": "lb-apidocs",
-    "build": "lb-tsc",
-    "build:dist8": "lb-tsc es2017",
-    "build:dist10": "lb-tsc es2018",
-    "build:watch": "lb-tsc --watch",
-    "clean": "lb-clean dist*",
+    "build": "lb-tsc es2017 --outDir dist",
+    "build:watch": "lb-tsc es2017 --outDir dist --watch",
+    "clean": "lb-clean dist",
     "lint": "npm run prettier:check && npm run tslint",
     "lint:fix": "npm run tslint:fix && npm run prettier:fix",
     "prettier:cli": "lb-prettier \"**/*.ts\"",
@@ -25,9 +22,9 @@
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
     "pretest": "npm run clean && npm run build",
-    "test": "lb-mocha DIST/test",
+    "test": "lb-mocha dist/test",
     "posttest": "npm run lint",
-    "test:dev": "lb-mocha --allow-console-logs DIST/test/**/*.js && npm run posttest",
+    "test:dev": "lb-mocha --allow-console-logs dist/test/**/*.js && npm run posttest",
     "prestart": "npm run build",
     "start": "node ."
   },
@@ -43,7 +40,6 @@
   "dependencies": {
     "@loopback/context": "^0.13.0",
     "@loopback/core": "^0.11.15",
-    "@loopback/dist-util": "^0.3.7",
     "express": "^4.16.3",
     "p-event": "^2.1.0"
   },

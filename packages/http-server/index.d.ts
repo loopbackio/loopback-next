@@ -1,1 +1,1 @@
-export * from './dist8';
+export * from './dist';

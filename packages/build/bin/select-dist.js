@@ -11,14 +11,14 @@ Usage:
   node ./bin/select-dist command [arguments...]
 
 The script will scan all arguments (including the command) and replace
-the string DIST with either dist or dist6, depending on the current
+the string dist with either dist or dist6, depending on the current
 Node.js version.
 
 Then the provided command is executed with the modified arguments.
 
 Example usage:
 
-  node ./bin/select-dist mocha DIST/test
+  node ./bin/select-dist mocha dist/test
 
 ========
 */

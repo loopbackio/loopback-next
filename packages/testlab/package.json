@@ -6,20 +6,16 @@
     "node": ">=8.9"
   },
   "scripts": {
-    "build:all-dist": "npm run build:dist8 && npm run build:dist10",
-    "build": "lb-tsc",
-    "build:dist8": "lb-tsc es2017",
-    "build:dist10": "lb-tsc es2018",
-    "clean": "lb-clean loopback-testlab*.tgz dist* package api-docs",
+    "build": "lb-tsc es2017 --outDir dist",
+    "clean": "lb-clean loopback-testlab*.tgz dist package api-docs",
     "pretest": "npm run build",
-    "test": "lb-mocha \"DIST/test\"",
+    "test": "lb-mocha \"dist/test\"",
     "verify": "npm pack && tar xf loopback-testlab*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/dist-util": "^0.3.7",
     "@types/express": "^4.11.1",
     "@types/fs-extra": "^5.0.1",
     "@types/shot": "^3.4.0",
@@ -41,8 +37,8 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist*/src",
-    "dist*/index*",
+    "dist/src",
+    "dist/index*",
     "should-as-function.d.ts",
     "src"
   ],

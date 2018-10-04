@@ -65,7 +65,6 @@
   },
   "scripts": {
     "build": "node ./bin/download-connector-list.js",
-    "build:all-dist": "npm run build",
     "test": "lb-mocha \"test/**/*.js\"",
     "smoke-test": "lb-mocha --allow-console-logs \"smoke-test/**/*.smoke.js\""
   },
@@ -109,7 +108,6 @@
       "@loopback/example-rpc-server": "^0.11.12",
       "@loopback/example-todo": "^0.21.0",
       "@loopback/example-soap-calculator": "^0.4.4",
-      "@loopback/dist-util": "^0.3.7",
       "@loopback/service-proxy": "^0.8.9",
       "@loopback/http-caching-proxy": "^0.3.12",
       "@loopback/http-server": "^0.4.4",
