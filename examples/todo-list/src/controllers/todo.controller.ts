@@ -14,7 +14,7 @@ import {
   put,
   requestBody,
 } from '@loopback/rest';
-import {Todo} from '../models';
+import {Todo, TodoList} from '../models';
 import {TodoRepository} from '../repositories';
 
 export class TodoController {
@@ -102,5 +102,17 @@ export class TodoController {
   })
   async deleteTodo(@param.path.number('id') id: number): Promise<void> {
     await this.todoRepo.deleteById(id);
+  }
+
+  @get('/todos/{id}/todo-list', {
+    responses: {
+      '200': {
+        description: 'TodoList model instance',
+        content: {'application/json': {'x-ts-type': TodoList}},
+      },
+    },
+  })
+  async findOwningList(@param.path.number('id') id: number): Promise<TodoList> {
+    return await this.todoRepo.todoList(id);
   }
 }
