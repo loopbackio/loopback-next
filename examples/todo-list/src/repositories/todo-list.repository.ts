@@ -17,7 +17,10 @@ export class TodoListRepository extends DefaultCrudRepository<
   TodoList,
   typeof TodoList.prototype.id
 > {
-  public todos: HasManyRepositoryFactory<Todo, typeof TodoList.prototype.id>;
+  public readonly todos: HasManyRepositoryFactory<
+    Todo,
+    typeof TodoList.prototype.id
+  >;
 
   constructor(
     @inject('datasources.db') dataSource: juggler.DataSource,

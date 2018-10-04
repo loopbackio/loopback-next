@@ -132,7 +132,7 @@ describe('HasMany relation', () => {
     Customer,
     typeof Customer.prototype.id
   > {
-    public orders: HasManyRepositoryFactory<
+    public readonly orders: HasManyRepositoryFactory<
       Order,
       typeof Customer.prototype.id
     >;
