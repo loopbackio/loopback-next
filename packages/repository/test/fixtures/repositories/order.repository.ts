@@ -17,7 +17,10 @@ export class OrderRepository extends DefaultCrudRepository<
   Order,
   typeof Order.prototype.id
 > {
-  public customer: BelongsToAccessor<Customer, typeof Order.prototype.id>;
+  public readonly customer: BelongsToAccessor<
+    Customer,
+    typeof Order.prototype.id
+  >;
 
   constructor(
     @inject('datasources.db') protected db: juggler.DataSource,
