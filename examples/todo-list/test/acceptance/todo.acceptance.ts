@@ -12,19 +12,20 @@ import {
   toJSON,
 } from '@loopback/testlab';
 import {TodoListApplication} from '../../src/application';
-import {Todo} from '../../src/models/';
-import {TodoRepository} from '../../src/repositories/';
-import {givenTodo} from '../helpers';
+import {Todo, TodoList} from '../../src/models/';
+import {TodoRepository, TodoListRepository} from '../../src/repositories/';
+import {givenTodo, givenTodoList} from '../helpers';
 
 describe('TodoListApplication', () => {
   let app: TodoListApplication;
   let client: Client;
   let todoRepo: TodoRepository;
+  let todoListRepo: TodoListRepository;
 
   before(givenRunningApplicationWithCustomConfiguration);
   after(() => app.stop());
 
-  before(givenTodoRepository);
+  before(givenTodoRepositories);
   before(() => {
     client = createRestAppClient(app);
   });
@@ -125,6 +126,13 @@ describe('TodoListApplication', () => {
     it('returns 404 when deleting a todo that does not exist', async () => {
       await client.del(`/todos/99999`).expect(404);
     });
+
+    it('returns the owning todo-list', async () => {
+      const list = await givenTodoListInstance();
+      const todo = await givenTodoInstance({todoListId: list.id});
+
+      await client.get(`/todos/${todo.id}/todo-list`).expect(200, toJSON(list));
+    });
   });
 
   it('queries todos with a filter', async () => {
@@ -173,11 +181,16 @@ describe('TodoListApplication', () => {
     await app.start();
   }
 
-  async function givenTodoRepository() {
+  async function givenTodoRepositories() {
     todoRepo = await app.getRepository(TodoRepository);
+    todoListRepo = await app.getRepository(TodoListRepository);
   }
 
   async function givenTodoInstance(todo?: Partial<Todo>) {
     return await todoRepo.create(givenTodo(todo));
+  }
+
+  async function givenTodoListInstance(data?: Partial<TodoList>) {
+    return await todoListRepo.create(givenTodoList(data));
   }
 });

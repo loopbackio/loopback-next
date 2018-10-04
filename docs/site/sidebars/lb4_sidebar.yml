@@ -161,6 +161,10 @@ children:
       url: HasMany-relation.html
       output: 'web, pdf'
 
+    - title: 'BelongsTo Relation'
+      url: BelongsTo-relation.html
+      output: 'web, pdf'
+
   - title: 'Decorators'
     url: Decorators.html
     output: 'web, pdf'
