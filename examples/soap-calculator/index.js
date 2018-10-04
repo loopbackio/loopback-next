@@ -1,4 +1,4 @@
-const application = require('@loopback/dist-util').loadDist(__dirname);
+const application = require('./dist');
 
 module.exports = application;
 

@@ -13,13 +13,10 @@
     "node": ">=8.9"
   },
   "scripts": {
-    "build:all-dist": "npm run build:dist8 && npm run build:dist10",
-    "build": "lb-tsc",
-    "build:dist8": "lb-tsc es2017",
-    "build:dist10": "lb-tsc es2018",
-    "clean": "lb-clean dist*",
+    "build": "lb-tsc es2017 --outDir dist",
+    "clean": "lb-clean dist",
     "pretest": "npm run clean && npm run build",
-    "test": "lb-mocha \"DIST/test\"",
+    "test": "lb-mocha \"dist/test\"",
     "prestart": "npm run build",
     "start": "node ."
   },
@@ -32,12 +29,11 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist*/src",
-    "dist*/index*",
+    "dist/src",
+    "dist/index*",
     "src"
   ],
   "dependencies": {
-    "@loopback/dist-util": "^0.3.7",
     "@loopback/example-todo": "^0.21.0",
     "@types/byline": "^4.2.31",
     "@types/debug": "0.0.30",

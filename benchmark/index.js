@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-const bench = require('@loopback/dist-util').loadDist(__dirname);
+const bench = require('./dist');
 
 module.exports = bench;
 
