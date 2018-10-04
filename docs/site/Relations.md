@@ -36,6 +36,7 @@ navigational property on the source repository.
 Here are the currently supported relations:
 
 - [HasMany](HasMany-relation.md)
+- [BelongsTo](BelongsTo-relation.md)
 
 The articles on each type of relation above will show you how to leverage the
 new relation engine to define and configure relations in your LoopBack

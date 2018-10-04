@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, model, property, belongsTo} from '../..';
+import {belongsTo, Entity, model, property} from '../..';
 import {Customer} from './customer.model';
 
 // tslint:disable:no-unused-variable
