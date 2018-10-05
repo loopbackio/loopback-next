@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.7.6"></a>
+## [0.7.6](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.7.5...@loopback/build@0.7.6) (2018-10-05)
+
+
+### Bug Fixes
+
+* **build:** preserve `--outDir` path as relative to CWD ([0e72ab9](https://github.com/strongloop/loopback-next/commit/0e72ab9))
+
+
+
+
+
 <a name="0.7.5"></a>
 ## [0.7.5](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.7.4...@loopback/build@0.7.5) (2018-10-03)
 

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@0.8.0...@loopback/example-todo-list@0.9.0) (2018-10-05)
+
+
+### Bug Fixes
+
+* mark HasManyRepository as a readonly property ([39227eb](https://github.com/strongloop/loopback-next/commit/39227eb))
+
+
+### Features
+
+* **repository:** implement belongsTo relation ([df8c64c](https://github.com/strongloop/loopback-next/commit/df8c64c))
+
+
+
+
+
 <a name="0.8.0"></a>
 # [0.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@0.7.0...@loopback/example-todo-list@0.8.0) (2018-10-03)
 

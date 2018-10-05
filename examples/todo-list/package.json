@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-todo-list",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Continuation of the todo example using relations in LoopBack 4.",
   "main": "index.js",
   "engines": {
@@ -34,20 +34,20 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/boot": "^0.14.4",
-    "@loopback/context": "^0.13.0",
-    "@loopback/core": "^0.11.15",
-    "@loopback/openapi-v3": "^0.15.3",
-    "@loopback/openapi-v3-types": "^0.9.6",
-    "@loopback/repository": "^0.20.0",
-    "@loopback/rest": "^0.25.3",
-    "@loopback/service-proxy": "^0.8.9",
+    "@loopback/boot": "^0.14.5",
+    "@loopback/context": "^0.13.1",
+    "@loopback/core": "^0.11.16",
+    "@loopback/openapi-v3": "^0.15.4",
+    "@loopback/openapi-v3-types": "^0.9.7",
+    "@loopback/repository": "^0.21.0",
+    "@loopback/rest": "^0.25.4",
+    "@loopback/service-proxy": "^0.8.10",
     "loopback-connector-rest": "^3.1.1"
   },
   "devDependencies": {
-    "@loopback/build": "^0.7.5",
-    "@loopback/http-caching-proxy": "^0.3.12",
-    "@loopback/testlab": "^0.15.0",
+    "@loopback/build": "^0.7.6",
+    "@loopback/http-caching-proxy": "^0.3.13",
+    "@loopback/testlab": "^0.15.1",
     "@types/lodash": "^4.14.109",
     "@types/node": "^10.11.2",
     "lodash": "^4.17.10"
