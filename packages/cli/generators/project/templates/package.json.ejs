@@ -73,7 +73,6 @@
     "@loopback/context": "<%= project.dependencies['@loopback/context'] -%>",
 <% if (project.projectType === 'application') { -%>
     "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
-    "@loopback/dist-util": "<%= project.dependencies['@loopback/dist-util'] -%>",
     "@loopback/openapi-v3": "<%= project.dependencies['@loopback/openapi-v3'] -%>",
 <% if (project.repositories) { -%>
     "@loopback/repository": "<%= project.dependencies['@loopback/repository'] -%>",
@@ -85,8 +84,7 @@
     "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>"
 <% } -%>
 <% } else { /* NOT AN APPLICATION */-%>
-    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
-    "@loopback/dist-util": "<%= project.dependencies['@loopback/dist-util'] -%>"
+    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>"
 <% } -%>
   },
   "devDependencies": {
