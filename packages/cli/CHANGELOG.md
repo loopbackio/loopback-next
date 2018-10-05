@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.29.0"></a>
+# [0.29.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.28.0...@loopback/cli@0.29.0) (2018-10-05)
+
+
+### Features
+
+* **cli:** add lb4 model option to select base model class ([4c0ce80](https://github.com/strongloop/loopback-next/commit/4c0ce80)), closes [#1698](https://github.com/strongloop/loopback-next/issues/1698)
+
+
+
+
+
 <a name="0.28.0"></a>
 # [0.28.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.27.0...@loopback/cli@0.28.0) (2018-10-03)
 
