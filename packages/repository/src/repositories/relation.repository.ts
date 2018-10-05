@@ -71,7 +71,7 @@ export interface BelongsToRepository<Target extends Entity> {
   get(options?: Options): Promise<Target>;
 }
 
-export class DefaultHasManyEntityCrudRepository<
+export class DefaultHasManyRepository<
   TargetEntity extends Entity,
   TargetID,
   TargetRepository extends EntityCrudRepository<TargetEntity, TargetID>

@@ -15,7 +15,7 @@ import {
   Count,
   DataObject,
   DefaultCrudRepository,
-  DefaultHasManyEntityCrudRepository,
+  DefaultHasManyRepository,
   Entity,
   EntityCrudRepository,
   Filter,
@@ -74,8 +74,8 @@ describe('relation repository', () => {
   context('DefaultHasManyEntityCrudRepository', () => {
     it('can create related model instance', async () => {
       const constraint: Partial<Customer> = {age: 25};
-      const HasManyCrudInstance = givenDefaultHasManyCrudInstance(constraint);
-      await HasManyCrudInstance.create({id: 1, name: 'Joe'});
+      const hasManyCrudInstance = givenDefaultHasManyInstance(constraint);
+      await hasManyCrudInstance.create({id: 1, name: 'Joe'});
       sinon.assert.calledWithMatch(customerRepo.stubs.create, {
         id: 1,
         name: 'Joe',
@@ -85,8 +85,8 @@ describe('relation repository', () => {
 
     it('can find related model instance', async () => {
       const constraint: Partial<Customer> = {name: 'Jane'};
-      const HasManyCrudInstance = givenDefaultHasManyCrudInstance(constraint);
-      await HasManyCrudInstance.find({where: {id: 3}});
+      const hasManyCrudInstance = givenDefaultHasManyInstance(constraint);
+      await hasManyCrudInstance.find({where: {id: 3}});
       sinon.assert.calledWithMatch(customerRepo.stubs.find, {
         where: {id: 3, name: 'Jane'},
       });
@@ -95,8 +95,8 @@ describe('relation repository', () => {
     context('patch', async () => {
       it('can patch related model instance', async () => {
         const constraint: Partial<Customer> = {name: 'Jane'};
-        const HasManyCrudInstance = givenDefaultHasManyCrudInstance(constraint);
-        await HasManyCrudInstance.patch({country: 'US'}, {id: 3});
+        const hasManyCrudInstance = givenDefaultHasManyInstance(constraint);
+        await hasManyCrudInstance.patch({country: 'US'}, {id: 3});
         sinon.assert.calledWith(
           customerRepo.stubs.updateAll,
           {country: 'US', name: 'Jane'},
@@ -106,17 +106,17 @@ describe('relation repository', () => {
 
       it('cannot override the constrain data', async () => {
         const constraint: Partial<Customer> = {name: 'Jane'};
-        const HasManyCrudInstance = givenDefaultHasManyCrudInstance(constraint);
+        const hasManyCrudInstance = givenDefaultHasManyInstance(constraint);
         await expect(
-          HasManyCrudInstance.patch({name: 'Joe'}),
+          hasManyCrudInstance.patch({name: 'Joe'}),
         ).to.be.rejectedWith(/Property "name" cannot be changed!/);
       });
     });
 
     it('can delete related model instance', async () => {
       const constraint: Partial<Customer> = {name: 'Jane'};
-      const HasManyCrudInstance = givenDefaultHasManyCrudInstance(constraint);
-      await HasManyCrudInstance.delete({id: 3});
+      const hasManyCrudInstance = givenDefaultHasManyInstance(constraint);
+      await hasManyCrudInstance.delete({id: 3});
       sinon.assert.calledWith(customerRepo.stubs.deleteAll, {
         id: 3,
         name: 'Jane',
@@ -146,8 +146,8 @@ describe('relation repository', () => {
     customerRepo = createStubInstance(CustomerRepository);
   }
 
-  function givenDefaultHasManyCrudInstance(constraint: DataObject<Customer>) {
-    return new DefaultHasManyEntityCrudRepository<
+  function givenDefaultHasManyInstance(constraint: DataObject<Customer>) {
+    return new DefaultHasManyRepository<
       Customer,
       typeof Customer.prototype.id,
       CustomerRepository
