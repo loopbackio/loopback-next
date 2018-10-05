@@ -46,7 +46,7 @@ repository, which we'll use to perform our operations against the datasource.
 
 ```ts
 import {repository} from '@loopback/repository';
-import {TodoRepository} from '../repositories/todo.repository';
+import {TodoRepository} from '../repositories';
 
 export class TodoController {
   constructor(@repository(TodoRepository) protected todoRepo: TodoRepository) {}
