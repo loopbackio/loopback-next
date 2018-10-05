@@ -78,17 +78,21 @@ describe('DefaultCrudRepository', () => {
             type: 'number',
             id: true,
           },
+          created: {
+            type: () => Date,
+          },
           toBuy: {
             type: 'array',
             itemType: 'string',
           },
           toVisit: {
             type: Array,
-            itemType: String,
+            itemType: () => String,
           },
         },
       });
 
+      created: Date;
       toBuy: String[];
       toVisit: String[];
     }
@@ -101,6 +105,7 @@ describe('DefaultCrudRepository', () => {
       const listDefinition = new DefaultCrudRepository(ShoppingList, ds)
         .modelClass.definition;
       const jugglerPropertyDefinition = {
+        created: {type: Date},
         toBuy: {
           type: [String],
         },

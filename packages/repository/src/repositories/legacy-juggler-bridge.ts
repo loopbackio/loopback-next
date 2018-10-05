@@ -29,6 +29,7 @@ import {
   HasManyRepositoryFactory,
 } from './relation.factory';
 import {EntityCrudRepository} from './repository';
+import {resolveType} from '../type-resolver';
 
 export namespace juggler {
   export import DataSource = legacy.DataSource;
@@ -122,9 +123,10 @@ export class DefaultCrudRepository<T extends Entity, ID>
     // the juggler understands
     Object.entries(definition.properties).forEach(([key, value]) => {
       if (value.type === 'array' || value.type === Array) {
-        value = Object.assign({}, value, {type: [value.itemType]});
+        value = Object.assign({}, value, {type: [resolveType(value.itemType)]});
         delete value.itemType;
       }
+      value.type = resolveType(value.type);
       properties[key] = Object.assign({}, value);
     });
 
