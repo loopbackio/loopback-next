@@ -6,14 +6,18 @@
 
 'use strict';
 
-const checkNodeVersion = require('@loopback/dist-util').checkNodeVersion;
-
 const pkg = require('../package.json');
-try {
-  const range = pkg.engines.node;
-  checkNodeVersion(range);
-} catch (e) {
-  console.error(e.message);
+const semver = require('semver');
+
+// Make sure node version meets the requirement. This code intentionally only
+// uses ES5 features so that it can be run with lower versions of Node
+// to report the version requirement.
+const nodeVer = process.versions.node;
+const requiredVer = pkg.engines.node;
+const ok = semver.satisfies(nodeVer, requiredVer);
+if (!ok) {
+  const format = 'Node.js %s is not supported. Please use a version %s.';
+  console.error(format, nodeVer, requiredVer);
   process.exit(1);
 }
 
