@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  DefaultHasManyEntityCrudRepository,
+  DefaultHasManyRepository,
   HasManyRepository,
 } from '@loopback/repository';
 import {
@@ -122,7 +122,7 @@ describe('TodoController', () => {
   function resetRepositories() {
     todoListRepo = createStubInstance(TodoListRepository);
     constrainedTodoRepo = createStubInstance<HasManyRepository<Todo>>(
-      DefaultHasManyEntityCrudRepository,
+      DefaultHasManyRepository,
     );
 
     aTodoListWithId = givenTodoList({

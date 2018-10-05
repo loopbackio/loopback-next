@@ -14,7 +14,7 @@ import {
 import {Entity} from '../model';
 import {
   DefaultBelongsToRepository,
-  DefaultHasManyEntityCrudRepository,
+  DefaultHasManyRepository,
   Getter,
   HasManyRepository,
 } from './relation.repository';
@@ -56,7 +56,7 @@ export function createHasManyRepositoryFactory<
   return function(fkValue: ForeignKeyType) {
     // tslint:disable-next-line:no-any
     const constraint: any = {[meta.keyTo]: fkValue};
-    return new DefaultHasManyEntityCrudRepository<
+    return new DefaultHasManyRepository<
       Target,
       TargetID,
       EntityCrudRepository<Target, TargetID>
