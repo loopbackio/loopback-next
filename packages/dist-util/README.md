@@ -1,5 +1,20 @@
 # @loopback/dist-util
 
+**This package is no longer actively maintained.**
+
+Please upgrade your project to use a single compilation target, for example by
+changing your `build` script in `package.json` as follows:
+
+```json
+{
+  "scripts": {
+    "build": "lb-tsc es2017 --outDir dist"
+  }
+}
+```
+
+## Overview
+
 Utilities to work with `dist` folders used by different Node.js versions.
 
 | version | directory       |
