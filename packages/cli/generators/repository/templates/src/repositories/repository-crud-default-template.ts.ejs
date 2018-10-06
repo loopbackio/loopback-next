@@ -10,6 +10,6 @@ export class <%= className %>Repository extends <%= repositoryTypeClass %><
   constructor(
     @inject('datasources.<%= dataSourceName %>') dataSource: <%= dataSourceClassName %>,
   ) {
-    super(<%= modelName %>, datasource);
+    super(<%= modelName %>, dataSource);
   }
 }
