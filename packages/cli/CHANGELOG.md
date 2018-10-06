@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.30.0"></a>
+# [0.30.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.29.0...@loopback/cli@0.30.0) (2018-10-06)
+
+
+### Bug Fixes
+
+* **cli:** generate matching arg names for repository constructors ([190fbf3](https://github.com/strongloop/loopback-next/commit/190fbf3))
+* **cli:** remove dist-util from project templates ([f6c3048](https://github.com/strongloop/loopback-next/commit/f6c3048))
+
+
+### Features
+
+* deprecate dist-util package ([91a343c](https://github.com/strongloop/loopback-next/commit/91a343c))
+
+
+
+
+
 <a name="0.29.0"></a>
 # [0.29.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.28.0...@loopback/cli@0.29.0) (2018-10-05)
 

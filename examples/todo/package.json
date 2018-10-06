@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-todo",
-  "version": "0.21.1",
+  "version": "0.21.2",
   "description": "Tutorial example on how to build an application with LoopBack 4.",
   "main": "index.js",
   "engines": {
@@ -34,13 +34,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/boot": "^0.14.5",
+    "@loopback/boot": "^0.14.6",
     "@loopback/context": "^0.13.1",
     "@loopback/core": "^0.11.16",
-    "@loopback/openapi-v3": "^0.15.4",
+    "@loopback/openapi-v3": "^0.15.5",
     "@loopback/openapi-v3-types": "^0.9.7",
-    "@loopback/repository": "^0.21.0",
-    "@loopback/rest": "^0.25.4",
+    "@loopback/repository": "^0.21.1",
+    "@loopback/rest": "^0.25.5",
     "@loopback/service-proxy": "^0.8.10",
     "loopback-connector-rest": "^3.1.1"
   },
