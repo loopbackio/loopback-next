@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/dist-util@0.3.7...@loopback/dist-util@0.4.0) (2018-10-06)
+
+
+### Features
+
+* deprecate dist-util package ([91a343c](https://github.com/strongloop/loopback-next/commit/91a343c))
+
+
+
+
+
 <a name="0.3.7"></a>
 ## [0.3.7](https://github.com/strongloop/loopback-next/compare/@loopback/dist-util@0.3.6...@loopback/dist-util@0.3.7) (2018-09-10)
 
