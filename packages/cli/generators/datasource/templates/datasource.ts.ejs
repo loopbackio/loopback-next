@@ -1,13 +1,13 @@
 import {inject} from '@loopback/core';
-import {juggler, AnyObject} from '@loopback/repository';
-const config = require('./<%= jsonFileName %>');
+import {juggler} from '@loopback/repository';
+import * as config from './<%= jsonFileName %>';
 
 export class <%= className %>DataSource extends juggler.DataSource {
   static dataSourceName = '<%= name %>';
 
   constructor(
     @inject('datasources.config.<%= name %>', {optional: true})
-    dsConfig: AnyObject = config,
+    dsConfig: object = config,
   ) {
     super(dsConfig);
   }

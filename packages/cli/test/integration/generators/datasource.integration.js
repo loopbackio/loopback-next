@@ -163,11 +163,11 @@ function checkBasicDataSourceFiles() {
   assert.fileContent(expectedTSFile, /import {inject} from '@loopback\/core';/);
   assert.fileContent(
     expectedTSFile,
-    /import {juggler, AnyObject} from '@loopback\/repository';/,
+    /import {juggler} from '@loopback\/repository';/,
   );
   assert.fileContent(
     expectedTSFile,
-    /const config = require\('.\/ds.datasource.json'\)/,
+    /import \* as config from '.\/ds.datasource.json';/,
   );
   assert.fileContent(
     expectedTSFile,

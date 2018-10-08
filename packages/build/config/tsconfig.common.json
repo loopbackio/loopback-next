@@ -5,6 +5,7 @@
     "experimentalDecorators": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
+    "resolveJsonModule": true,
 
     "lib": ["es2018", "dom", "esnext.asynciterable"],
     "module": "commonjs",
