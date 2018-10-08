@@ -92,9 +92,9 @@ Now you run the scripts, such as:
 
   - The following un-official compiler options are available:
 
-    | Option               | Description                         |
-    | -------------------- | ----------------------------------- |
-    | `--ignore-resources` | Do not copy any resources to outDir |
+    | Option             | Description                                                                                       |
+    | ------------------ | ------------------------------------------------------------------------------------------------- |
+    | `--copy-resources` | Copy all non-typescript files from `src` and `test` to `outDir`, preserving their relative paths. |
 
 - lb-tslint
 
