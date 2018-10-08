@@ -19,6 +19,8 @@ import * as path from 'path';
 import * as fs from 'fs';
 import {RestServerConfig} from '../..';
 
+const FIXTURES = path.resolve(__dirname, '../../../fixtures');
+
 describe('RestServer (integration)', () => {
   it('exports url property', async () => {
     // Explicitly setting host to IPv4 address so test runs on Travis
@@ -79,7 +81,7 @@ describe('RestServer (integration)', () => {
   });
 
   it('does not allow static assets to be mounted at /', async () => {
-    const root = path.join(__dirname, 'fixtures');
+    const root = FIXTURES;
     const server = await givenAServer({
       rest: {
         port: 0,
@@ -112,7 +114,7 @@ describe('RestServer (integration)', () => {
   });
 
   it('allows static assets via api', async () => {
-    const root = path.join(__dirname, 'fixtures');
+    const root = FIXTURES;
     const server = await givenAServer({
       rest: {
         port: 0,
@@ -130,7 +132,7 @@ describe('RestServer (integration)', () => {
   });
 
   it('allows static assets via api after start', async () => {
-    const root = path.join(__dirname, 'fixtures');
+    const root = FIXTURES;
     const server = await givenAServer({
       rest: {
         port: 0,
@@ -148,7 +150,7 @@ describe('RestServer (integration)', () => {
   });
 
   it('allows non-static routes after assets', async () => {
-    const root = path.join(__dirname, 'fixtures');
+    const root = FIXTURES;
     const server = await givenAServer({
       rest: {
         port: 0,
@@ -163,7 +165,7 @@ describe('RestServer (integration)', () => {
   });
 
   it('serve static assets if matches before other routes', async () => {
-    const root = path.join(__dirname, 'fixtures');
+    const root = FIXTURES;
     const server = await givenAServer({
       rest: {
         port: 0,
@@ -492,8 +494,8 @@ paths:
   });
 
   it('supports HTTPS protocol with key and certificate files', async () => {
-    const keyPath = path.join(__dirname, 'key.pem');
-    const certPath = path.join(__dirname, 'cert.pem');
+    const keyPath = path.join(FIXTURES, 'key.pem');
+    const certPath = path.join(FIXTURES, 'cert.pem');
     const options = {
       port: 0,
       protocol: 'https',
@@ -510,7 +512,7 @@ paths:
   });
 
   it('supports HTTPS protocol with a pfx file', async () => {
-    const pfxPath = path.join(__dirname, 'pfx.pfx');
+    const pfxPath = path.join(FIXTURES, 'pfx.pfx');
     const options = {
       port: 0,
       protocol: 'https',
@@ -528,8 +530,8 @@ paths:
   });
 
   itSkippedOnTravis('handles IPv6 loopback address in HTTPS', async () => {
-    const keyPath = path.join(__dirname, 'key.pem');
-    const certPath = path.join(__dirname, 'cert.pem');
+    const keyPath = path.join(FIXTURES, 'key.pem');
+    const certPath = path.join(FIXTURES, 'cert.pem');
     const server = await givenAServer({
       rest: {
         port: 0,
@@ -549,8 +551,8 @@ paths:
 
   // https://github.com/strongloop/loopback-next/issues/1623
   itSkippedOnTravis('handles IPv6 address for API Explorer UI', async () => {
-    const keyPath = path.join(__dirname, 'key.pem');
-    const certPath = path.join(__dirname, 'cert.pem');
+    const keyPath = path.join(FIXTURES, 'key.pem');
+    const certPath = path.join(FIXTURES, 'cert.pem');
     const server = await givenAServer({
       rest: {
         port: 0,
@@ -576,8 +578,8 @@ paths:
   });
 
   it('honors HTTPS config binding after instantiation', async () => {
-    const keyPath = path.join(__dirname, 'key.pem');
-    const certPath = path.join(__dirname, 'cert.pem');
+    const keyPath = path.join(FIXTURES, 'key.pem');
+    const certPath = path.join(FIXTURES, 'cert.pem');
     const options = {
       port: 0,
       protocol: 'https',

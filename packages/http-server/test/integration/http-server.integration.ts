@@ -211,13 +211,14 @@ describe('HttpServer (integration)', () => {
     host?: string;
   }): HttpServer {
     const options: HttpServerOptions = {protocol: 'https', host};
+    const certDir = path.resolve(__dirname, '../../../fixtures');
     if (usePfx) {
-      const pfxPath = path.join(__dirname, 'pfx.pfx');
+      const pfxPath = path.join(certDir, 'pfx.pfx');
       options.pfx = fs.readFileSync(pfxPath);
       options.passphrase = 'loopback4';
     } else {
-      const keyPath = path.join(__dirname, 'key.pem');
-      const certPath = path.join(__dirname, 'cert.pem');
+      const keyPath = path.join(certDir, 'key.pem');
+      const certPath = path.join(certDir, 'cert.pem');
       options.key = fs.readFileSync(keyPath);
       options.cert = fs.readFileSync(certPath);
     }
