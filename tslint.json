@@ -4,7 +4,8 @@
   "linterOptions": {
     "exclude": [
       "./packages/cli/generators/*/templates/**/*",
-      "./packages/cli/test/sandbox/**/*"
+      "./packages/cli/test/sandbox/**/*",
+      "**/*.json"
     ]
   }
 }

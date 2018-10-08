@@ -8,6 +8,7 @@ import {merge} from 'lodash';
 import * as path from 'path';
 import {Todo} from '../src/models/index';
 import {GeoPoint} from '../src/services/geocoder.service';
+import * as GEO_CODER_CONFIG from '../src/datasources/geocoder.datasource.json';
 
 /*
  ==============================================================================
@@ -53,8 +54,6 @@ export const aLocation = {
     return `${this.geopoint.y},${this.geopoint.x}`;
   },
 };
-
-const GEO_CODER_CONFIG = require('../src/datasources/geocoder.datasource.json');
 
 export function getProxiedGeoCoderConfig(proxy: HttpCachingProxy) {
   return merge({}, GEO_CODER_CONFIG, {

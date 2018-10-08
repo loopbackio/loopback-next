@@ -652,8 +652,7 @@ instance:
 
 ```ts
 import {merge} from 'lodash';
-
-const GEO_CODER_CONFIG = require('../src/datasources/geo.datasource.json');
+import * as GEO_CODER_CONFIG from '../src/datasources/geo.datasource.json';
 
 function givenGeoService() {
   const config = merge({}, GEO_CODER_CONFIG, {
