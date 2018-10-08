@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.31.0"></a>
+# [0.31.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.30.0...@loopback/cli@0.31.0) (2018-10-08)
+
+
+### Features
+
+* use resolveJsonModule to load datasource config ([73e19ff](https://github.com/strongloop/loopback-next/commit/73e19ff))
+
+
+
+
+
 <a name="0.30.0"></a>
 # [0.30.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.29.0...@loopback/cli@0.30.0) (2018-10-06)
 

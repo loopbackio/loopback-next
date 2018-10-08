@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.7.6...@loopback/build@0.8.0) (2018-10-08)
+
+
+### Features
+
+* use resolveJsonModule to load datasource config ([73e19ff](https://github.com/strongloop/loopback-next/commit/73e19ff))
+* **build:** rename --ignore-resources to --copy-resources ([2958ace](https://github.com/strongloop/loopback-next/commit/2958ace))
+
+
+
+
+
 <a name="0.7.6"></a>
 ## [0.7.6](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.7.5...@loopback/build@0.7.6) (2018-10-05)
 

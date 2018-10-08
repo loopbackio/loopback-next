@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@0.2.19...@loopback/benchmark@0.3.0) (2018-10-08)
+
+
+### Features
+
+* **rest:** switch to trie based routing ([a682ce2](https://github.com/strongloop/loopback-next/commit/a682ce2))
+
+
+
+
+
 <a name="0.2.19"></a>
 ## [0.2.19](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@0.2.18...@loopback/benchmark@0.2.19) (2018-10-06)
 
