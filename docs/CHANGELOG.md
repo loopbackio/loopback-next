@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.23.0"></a>
+# [0.23.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.22.3...@loopback/docs@0.23.0) (2018-10-08)
+
+
+### Features
+
+* use resolveJsonModule to load datasource config ([73e19ff](https://github.com/strongloop/loopback-next/commit/73e19ff))
+* **rest:** switch to trie based routing ([a682ce2](https://github.com/strongloop/loopback-next/commit/a682ce2))
+
+
+
+
+
 <a name="0.22.3"></a>
 ## [0.22.3](https://github.com/strongloop/loopback-next/compare/@loopback/docs@0.22.2...@loopback/docs@0.22.3) (2018-10-06)
 

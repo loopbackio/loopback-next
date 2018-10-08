@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.10.0"></a>
+# [0.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@0.9.1...@loopback/example-todo-list@0.10.0) (2018-10-08)
+
+
+### Features
+
+* use resolveJsonModule to load datasource config ([73e19ff](https://github.com/strongloop/loopback-next/commit/73e19ff))
+
+
+
+
+
 <a name="0.9.1"></a>
 ## [0.9.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@0.9.0...@loopback/example-todo-list@0.9.1) (2018-10-06)
 
