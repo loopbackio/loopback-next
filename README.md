@@ -72,12 +72,12 @@ You can join the team by posting a comment to
 
 ### Project Maintainers
 
-|                                           |                                             |                                                                                                              |                                       |
-| :---------------------------------------: | :-----------------------------------------: | :----------------------------------------------------------------------------------------------------------: | :-----------------------------------: |
-|              Taranveer Virk               |               Biniam Admikew                |                                                   Kyu Shim                                                   |               Diana Lau               |
-|  [![virkt25]](http://github.com/virkt25)  |  [![b-admike]](http://github.com/b-admike)  | [<img src="https://avatars3.githubusercontent.com/u/18518689?v=3&s=60" height=60>](http://github.com/shimks) | [![dhmlau]](http://github.com/dhmlau) |
-|                 Janny Hou                 |                  Simon Ho                   |                                                  Hage Yaapa                                                  |                                       |
-| [![jannyhou]](http://github.com/jannyHou) | [![superkhau]](http://github.com/superkhau) |                               [![hacksparrow]](https://github.com/hacksparrow)                               |                                       |
+|                                                  |                                                  |                                                            |
+| :----------------------------------------------: | :----------------------------------------------: | :--------------------------------------------------------: |
+|                  Biniam Admikew                  |                    Diana Lau                     |                         Janny Hou                          |
+|    [![b-admike]](http://github.com/b-admike)     |      [![dhmlau]](http://github.com/dhmlau)       |         [![jannyhou]](http://github.com/jannyHou)          |
+|                    Hage Yaapa                    |                 Nora Abdelgadir                  |                       Mario Estrada                        |
+| [![hacksparrow]](https://github.com/hacksparrow) | [![nabdelgadir]](https://github.com/nabdelgadir) | [![marioestradarosa]](https://github.com/marioestradarosa) |
 
 See
 [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
@@ -92,7 +92,6 @@ See
 [b-admike]: https://avatars0.githubusercontent.com/u/13950637?v=3&s=60
 [dhmlau]: https://avatars2.githubusercontent.com/u/25489897?v=3&s=60
 [jannyhou]: https://avatars2.githubusercontent.com/u/12554153?v=3&s=60
-[superkhau]: https://avatars1.githubusercontent.com/u/1617364?v=3&s=60
-[loay]: https://avatars3.githubusercontent.com/u/1986928?v=3&s=60
-[virkt25]: https://avatars1.githubusercontent.com/u/3311536?v=3&s=60
 [hacksparrow]: https://avatars2.githubusercontent.com/u/950112?v=3&s=60
+[nabdelgadir]: https://avatars0.githubusercontent.com/u/42985749?v=3&s=60
+[marioestradarosa]: https://avatars2.githubusercontent.com/u/4633823?v=3&s=60
