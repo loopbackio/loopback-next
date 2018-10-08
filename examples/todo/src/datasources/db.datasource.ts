@@ -4,15 +4,15 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {inject} from '@loopback/core';
-import {juggler, DataSource} from '@loopback/repository';
-const config = require('./db.datasource.json');
+import {juggler} from '@loopback/repository';
+import * as config from './db.datasource.json';
 
 export class DbDataSource extends juggler.DataSource {
   static dataSourceName = 'db';
 
   constructor(
     @inject('datasources.config.db', {optional: true})
-    dsConfig: DataSource = config,
+    dsConfig: object = config,
   ) {
     super(dsConfig);
   }

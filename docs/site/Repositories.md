@@ -326,7 +326,7 @@ context.
 ```ts
 import {inject} from '@loopback/core';
 import {juggler, AnyObject} from '@loopback/repository';
-const config = require('./redis.datasource.json');
+import * as config from './redis.datasource.json';
 
 export class RedisDataSource extends juggler.DataSource {
   static dataSourceName = 'redis';
