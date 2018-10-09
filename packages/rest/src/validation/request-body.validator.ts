@@ -50,8 +50,7 @@ export function validateRequestBody(
   debug('Request body schema: %j', util.inspect(schema, {depth: null}));
   if (!schema) return;
 
-  const jsonSchema = convertToJsonSchema(schema);
-  validateValueAgainstJsonSchema(body, jsonSchema, globalSchemas);
+  validateValueAgainstSchema(body, schema, globalSchemas);
 }
 
 /**
@@ -90,27 +89,21 @@ function convertToJsonSchema(openapiSchema: SchemaObject) {
 
 const compiledSchemaCache = new WeakMap();
 
-function validateValueAgainstJsonSchema(
+function validateValueAgainstSchema(
   // tslint:disable-next-line:no-any
   body: any,
-  jsonSchema: object,
+  schema: SchemaObject,
   globalSchemas?: SchemasObject,
 ) {
-  const schemaWithRef = Object.assign({components: {}}, jsonSchema);
-  schemaWithRef.components = {
-    schemas: globalSchemas,
-  };
+  let validate;
 
-  const ajv = new AJV({
-    allErrors: true,
-  });
-
-  if (!compiledSchemaCache.has(jsonSchema)) {
-    const compiled = ajv.compile(schemaWithRef);
-    compiledSchemaCache.set(jsonSchema, compiled);
+  if (compiledSchemaCache.has(schema)) {
+    validate = compiledSchemaCache.get(schema);
+  } else {
+    validate = createValidator(schema, globalSchemas);
+    compiledSchemaCache.set(schema, validate);
   }
 
-  const validate = compiledSchemaCache.get(jsonSchema);
   if (validate(body)) {
     debug('Request body passed AJV validation.');
     return;
@@ -130,4 +123,22 @@ function validateValueAgainstJsonSchema(
     };
   });
   throw error;
+}
+
+function createValidator(
+  schema: SchemaObject,
+  globalSchemas?: SchemasObject,
+): Function {
+  const jsonSchema = convertToJsonSchema(schema);
+
+  const schemaWithRef = Object.assign({components: {}}, jsonSchema);
+  schemaWithRef.components = {
+    schemas: globalSchemas,
+  };
+
+  const ajv = new AJV({
+    allErrors: true,
+  });
+
+  return ajv.compile(schemaWithRef);
 }
