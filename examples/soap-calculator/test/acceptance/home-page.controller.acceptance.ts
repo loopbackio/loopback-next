@@ -1,31 +1,28 @@
-import {get} from '@loopback/openapi-v3';
-import * as fs from 'fs';
-import * as path from 'path';
-import {inject} from '@loopback/context';
-import {RestBindings, Response} from '@loopback/rest';
+// Copyright IBM Corp. 2018. All Rights Reserved.
+// Node module: @loopback/example-shopping
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
 
-export class HomePageController {
-  private html: string;
-  constructor(@inject(RestBindings.Http.RESPONSE) private response: Response) {
-    this.html = fs.readFileSync(
-      path.join(__dirname, '../../../public/index.html'),
-      'utf-8',
-    );
-  }
+import {Client} from '@loopback/testlab';
+import {SoapCalculatorApplication} from '../..';
+import {setupApplication} from './test-helper';
 
-  @get('/', {
-    responses: {
-      '200': {
-        description: 'Home Page',
-        content: {'text/html': {schema: {type: 'string'}}},
-      },
-    },
-  })
-  homePage() {
-    this.response
-      .status(200)
-      .contentType('html')
-      .send(this.html);
-    return this.response;
-  }
-}
+describe('HomePageController', () => {
+  let app: SoapCalculatorApplication;
+  let client: Client;
+
+  before('setupApplication', async () => {
+    ({app, client} = await setupApplication());
+  });
+
+  after(async () => {
+    await app.stop();
+  });
+
+  it('exposes a default home page', async () => {
+    await client
+      .get('/')
+      .expect(200)
+      .expect('Content-Type', /text\/html/);
+  });
+});
