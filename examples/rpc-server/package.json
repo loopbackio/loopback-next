@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-rpc-server",
-  "version": "0.11.14",
+  "version": "0.11.15",
   "description": "A basic RPC server using a made-up protocol.",
   "keywords": [
     "loopback-application",
@@ -39,7 +39,7 @@
   "license": "MIT",
   "dependencies": {
     "@loopback/context": "^0.13.2",
-    "@loopback/core": "^0.11.17",
+    "@loopback/core": "^0.12.0",
     "express": "^4.16.3",
     "p-event": "^2.1.0"
   },

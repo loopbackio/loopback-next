@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.22.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.21.2...@loopback/repository@0.22.0) (2018-10-09)
+
+
+### Features
+
+* **repository:** add type safety for query filter/where ([bac050c](https://github.com/strongloop/loopback-next/commit/bac050c))
+
+
+
+
+
 <a name="0.21.2"></a>
 ## [0.21.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.21.1...@loopback/repository@0.21.2) (2018-10-08)
 
