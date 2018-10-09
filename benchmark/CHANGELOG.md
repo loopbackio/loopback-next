@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@0.3.0...@loopback/benchmark@0.3.1) (2018-10-09)
+
+
+### Performance Improvements
+
+* further optimize AJV validation cache ([6526aef](https://github.com/strongloop/loopback-next/commit/6526aef))
+
+
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@0.2.19...@loopback/benchmark@0.3.0) (2018-10-08)
 
