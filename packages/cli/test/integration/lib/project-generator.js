@@ -344,6 +344,7 @@ module.exports = function(projGenerator, props, projectType) {
           ['package.json', '"prettier"'],
           ['tslint.json', '"rules"'],
           ['tsconfig.json', '"compilerOptions"'],
+          ['tsconfig.json', '"resolveJsonModule": true'],
           ['index.js', "require('./dist')"],
         ]);
       });
