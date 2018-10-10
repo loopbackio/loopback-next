@@ -17,6 +17,7 @@ import {
 import {
   createResolvedRoute,
   parseOperationArgs,
+  loadRequestBodyIfNeeded,
   PathParameterValues,
   Request,
   RestHttpErrors,
@@ -56,6 +57,223 @@ describe('operationArgsParser', () => {
     const args = await parseOperationArgs(req, route);
 
     expect(args).to.eql([{key: 'value'}]);
+  });
+
+  it('parses body parameter for urlencoded', async () => {
+    const req = givenRequest({
+      url: '/',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      payload: 'key=value',
+    });
+
+    const spec = givenOperationWithRequestBody({
+      description: 'data',
+      content: {
+        'application/x-www-form-urlencoded': {schema: {type: 'object'}},
+      },
+    });
+    const route = givenResolvedRoute(spec);
+
+    const args = await parseOperationArgs(req, route);
+
+    expect(args).to.eql([{key: 'value'}]);
+  });
+
+  it('parses body parameter for urlencoded with simple types', async () => {
+    const req = givenRequest({
+      url: '/',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      payload: 'key1=value&key2=1&key3=true',
+    });
+
+    const spec = givenOperationWithRequestBody({
+      description: 'data',
+      content: {
+        'application/x-www-form-urlencoded': {
+          schema: {
+            type: 'object',
+            properties: {
+              key1: {type: 'string'},
+              key2: {type: 'number'},
+              key3: {type: 'boolean'},
+            },
+          },
+        },
+      },
+    });
+    const route = givenResolvedRoute(spec);
+
+    const args = await parseOperationArgs(req, route);
+
+    expect(args).to.eql([{key1: 'value', key2: 1, key3: true}]);
+  });
+
+  it('parses body parameter for urlencoded with number[] types', async () => {
+    const req = givenRequest({
+      url: '/',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      payload: 'key=1&key=2',
+    });
+
+    const spec = givenOperationWithRequestBody({
+      description: 'data',
+      content: {
+        'application/x-www-form-urlencoded': {
+          schema: {
+            type: 'object',
+            properties: {
+              key: {type: 'array', items: {type: 'number'}},
+            },
+          },
+        },
+      },
+    });
+    const route = givenResolvedRoute(spec);
+
+    const args = await parseOperationArgs(req, route);
+
+    expect(args).to.eql([{key: [1, 2]}]);
+  });
+
+  it('parses body parameter for urlencoded with complex types', async () => {
+    const req = givenRequest({
+      url: '/',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      payload:
+        'name=IBM%20HQ&location[lat]=0.741895&location[lng]=-73.989308&tags[0]=IT&tags[1]=NY',
+    });
+
+    const spec = givenOperationWithRequestBody({
+      description: 'data',
+      content: {
+        'application/x-www-form-urlencoded': {
+          schema: {
+            type: 'object',
+            properties: {
+              name: {type: 'string'},
+              location: {
+                type: 'object',
+                properties: {
+                  lat: {type: 'number'},
+                  lng: {type: 'number'},
+                },
+              },
+              tags: {
+                type: 'array',
+                items: {type: 'string'},
+              },
+            },
+          },
+        },
+      },
+    });
+    const route = givenResolvedRoute(spec);
+
+    const args = await parseOperationArgs(req, route);
+
+    expect(args).to.eql([
+      {
+        name: 'IBM HQ',
+        location: {lat: 0.741895, lng: -73.989308},
+        tags: ['IT', 'NY'],
+      },
+    ]);
+  });
+
+  it('parses body parameter for urlencoded with string[] types', async () => {
+    const req = givenRequest({
+      url: '/',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      payload: 'key1=value1&key1=value2',
+    });
+
+    const spec = givenOperationWithRequestBody({
+      description: 'data',
+      content: {
+        'application/x-www-form-urlencoded': {
+          schema: {
+            type: 'object',
+            properties: {
+              key1: {type: 'array', items: {type: 'string'}},
+            },
+          },
+        },
+      },
+    });
+    const route = givenResolvedRoute(spec);
+
+    const args = await parseOperationArgs(req, route);
+
+    expect(args).to.eql([{key1: ['value1', 'value2']}]);
+  });
+
+  describe('body parser', () => {
+    it('parses body parameter with multiple media types', async () => {
+      const req = givenRequest({
+        url: '/',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        payload: 'key=value',
+      });
+
+      const urlencodedSchema = {
+        type: 'object',
+        properties: {
+          key: {type: 'string'},
+        },
+      };
+      const spec = givenOperationWithRequestBody({
+        description: 'data',
+        content: {
+          'application/json': {schema: {type: 'object'}},
+          'application/x-www-form-urlencoded': {
+            schema: urlencodedSchema,
+          },
+        },
+      });
+      const requestBody = await loadRequestBodyIfNeeded(spec, req);
+      expect(requestBody).to.eql({
+        value: {key: 'value'},
+        coercionRequired: true,
+        mediaType: 'application/x-www-form-urlencoded',
+        schema: urlencodedSchema,
+      });
+    });
+
+    it('allows application/json to be default', async () => {
+      const req = givenRequest({
+        url: '/',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        payload: {key: 'value'},
+      });
+
+      const defaultSchema = {
+        type: 'object',
+      };
+      const spec = givenOperationWithRequestBody({
+        description: 'data',
+        content: {},
+      });
+      const requestBody = await loadRequestBodyIfNeeded(spec, req);
+      expect(requestBody).to.eql({
+        value: {key: 'value'},
+        mediaType: 'application/json',
+        schema: defaultSchema,
+      });
+    });
   });
 
   context('in:query style:deepObject', () => {

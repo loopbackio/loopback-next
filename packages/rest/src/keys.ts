@@ -25,6 +25,7 @@ import {
   ParseParams,
   Reject,
   Send,
+  RequestBodyParserOptions,
 } from './types';
 
 import {HttpProtocol} from '@loopback/http-server';
@@ -83,6 +84,10 @@ export namespace RestBindings {
   export const ERROR_WRITER_OPTIONS = BindingKey.create<ErrorWriterOptions>(
     'rest.errorWriterOptions',
   );
+
+  export const REQUEST_BODY_PARSER_OPTIONS = BindingKey.create<
+    RequestBodyParserOptions
+  >('rest.requestBodyParserOptions');
 
   /**
    * Binding key for setting and injecting an OpenAPI spec

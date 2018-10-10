@@ -6,36 +6,38 @@
 import {
   RequestBodyObject,
   SchemaObject,
+  ReferenceObject,
   SchemasObject,
 } from '@loopback/openapi-v3-types';
 import * as AJV from 'ajv';
 import * as debugModule from 'debug';
 import * as util from 'util';
-import {HttpErrors} from '..';
-import {RestHttpErrors} from '..';
+import {HttpErrors, RestHttpErrors, RequestBody} from '..';
 import * as _ from 'lodash';
 
 const toJsonSchema = require('openapi-schema-to-json-schema');
 const debug = debugModule('loopback:rest:validation');
 
+export type RequestBodyValidationOptions = AJV.Options;
+
 /**
  * Check whether the request body is valid according to the provided OpenAPI schema.
  * The JSON schema is generated from the OpenAPI schema which is typically defined
  * by `@requestBody()`.
- * The validation leverages AJS shema validator.
- * @param body The body data from an HTTP request.
+ * The validation leverages AJS schema validator.
+ * @param body The request body parsed from an HTTP request.
  * @param requestBodySpec The OpenAPI requestBody specification defined in `@requestBody()`.
  * @param globalSchemas The referenced schemas generated from `OpenAPISpec.components.schemas`.
  */
 export function validateRequestBody(
-  // tslint:disable-next-line:no-any
-  body: any,
-  requestBodySpec: RequestBodyObject | undefined,
-  globalSchemas?: SchemasObject,
+  body: RequestBody,
+  requestBodySpec?: RequestBodyObject,
+  globalSchemas: SchemasObject = {},
+  options: RequestBodyValidationOptions = {},
 ) {
-  if (!requestBodySpec) return;
+  const required = requestBodySpec && requestBodySpec.required;
 
-  if (requestBodySpec.required && body == undefined) {
+  if (required && body.value == undefined) {
     const err = Object.assign(
       new HttpErrors.BadRequest('Request body is required'),
       {
@@ -46,24 +48,15 @@ export function validateRequestBody(
     throw err;
   }
 
-  const schema = getRequestBodySchema(requestBodySpec);
-  debug('Request body schema: %j', util.inspect(schema, {depth: null}));
+  const schema = body.schema;
+  /* istanbul ignore if */
+  if (debug.enabled) {
+    debug('Request body schema: %j', util.inspect(schema, {depth: null}));
+  }
   if (!schema) return;
 
-  validateValueAgainstSchema(body, schema, globalSchemas);
-}
-
-/**
- * Get the schema from requestBody specification.
- * @param requestBodySpec The requestBody specification defined in `@requestBody()`.
- */
-function getRequestBodySchema(
-  requestBodySpec: RequestBodyObject,
-): SchemaObject | undefined {
-  const content = requestBodySpec.content;
-  // FIXME(bajtos) we need to find the entry matching the content-type
-  // header from the incoming request (e.g. "application/json").
-  return content[Object.keys(content)[0]].schema;
+  options = Object.assign({coerceTypes: body.coercionRequired}, options);
+  validateValueAgainstSchema(body.value, schema, globalSchemas, options);
 }
 
 /**
@@ -73,10 +66,13 @@ function getRequestBodySchema(
 function convertToJsonSchema(openapiSchema: SchemaObject) {
   const jsonSchema = toJsonSchema(openapiSchema);
   delete jsonSchema['$schema'];
-  debug(
-    'Converted OpenAPI schema to JSON schema: %s',
-    util.inspect(jsonSchema, {depth: null}),
-  );
+  /* istanbul ignore if */
+  if (debug.enabled) {
+    debug(
+      'Converted OpenAPI schema to JSON schema: %s',
+      util.inspect(jsonSchema, {depth: null}),
+    );
+  }
   return jsonSchema;
 }
 
@@ -92,15 +88,16 @@ const compiledSchemaCache = new WeakMap();
 function validateValueAgainstSchema(
   // tslint:disable-next-line:no-any
   body: any,
-  schema: SchemaObject,
+  schema: SchemaObject | ReferenceObject,
   globalSchemas?: SchemasObject,
+  options?: RequestBodyValidationOptions,
 ) {
   let validate;
 
   if (compiledSchemaCache.has(schema)) {
     validate = compiledSchemaCache.get(schema);
   } else {
-    validate = createValidator(schema, globalSchemas);
+    validate = createValidator(schema, globalSchemas, options);
     compiledSchemaCache.set(schema, validate);
   }
 
@@ -111,7 +108,10 @@ function validateValueAgainstSchema(
 
   const validationErrors = validate.errors;
 
-  debug('Invalid request body: %s', util.inspect(validationErrors));
+  /* istanbul ignore if */
+  if (debug.enabled) {
+    debug('Invalid request body: %s', util.inspect(validationErrors));
+  }
 
   const error = RestHttpErrors.invalidRequestBody();
   error.details = _.map(validationErrors, e => {
@@ -128,6 +128,7 @@ function validateValueAgainstSchema(
 function createValidator(
   schema: SchemaObject,
   globalSchemas?: SchemasObject,
+  options?: RequestBodyValidationOptions,
 ): Function {
   const jsonSchema = convertToJsonSchema(schema);
 
@@ -136,9 +137,15 @@ function createValidator(
     schemas: globalSchemas,
   };
 
-  const ajv = new AJV({
-    allErrors: true,
-  });
+  const ajv = new AJV(
+    Object.assign(
+      {},
+      {
+        allErrors: true,
+      },
+      options,
+    ),
+  );
 
   return ajv.compile(schemaWithRef);
 }
