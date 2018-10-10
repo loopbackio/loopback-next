@@ -7,7 +7,6 @@ import {
   HttpHandler,
   DefaultSequence,
   writeResultToResponse,
-  parseOperationArgs,
   RestBindings,
   FindRouteProvider,
   InvokeMethodProvider,
@@ -21,6 +20,7 @@ import {ParameterObject, RequestBodyObject} from '@loopback/openapi-v3-types';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 import {createUnexpectedHttpErrorLogger} from '../helpers';
 import * as express from 'express';
+import {ParseParamsProvider} from '../../src';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -233,6 +233,10 @@ describe('HttpHandler', () => {
   });
 
   context('with a body request route', () => {
+    let bodyParamControllerInvoked = false;
+    beforeEach(() => {
+      bodyParamControllerInvoked = false;
+    });
     beforeEach(givenBodyParamController);
 
     it('returns the value sent in json-encoded body', () => {
@@ -242,19 +246,11 @@ describe('HttpHandler', () => {
         .expect(200, {key: 'value'});
     });
 
-    it('rejects url-encoded request body', () => {
-      logErrorsExcept(415);
+    it('allows url-encoded request body', () => {
       return client
         .post('/show-body')
         .send('key=value')
-        .expect(415, {
-          error: {
-            message:
-              'Content-type application/x-www-form-urlencoded is not supported.',
-            name: 'UnsupportedMediaTypeError',
-            statusCode: 415,
-          },
-        });
+        .expect(200, {key: 'value'});
     });
 
     it('returns 400 for malformed JSON body', () => {
@@ -272,6 +268,88 @@ describe('HttpHandler', () => {
         });
     });
 
+    it('rejects unsupported request body', () => {
+      logErrorsExcept(415);
+      return client
+        .post('/show-body')
+        .set('content-type', 'application/xml')
+        .send('<key>value</key>')
+        .expect(415, {
+          error: {
+            code: 'UNSUPPORTED_MEDIA_TYPE',
+            message:
+              'Content-type application/xml does not match ' +
+              '[application/json,application/x-www-form-urlencoded].',
+            name: 'UnsupportedMediaTypeError',
+            statusCode: 415,
+          },
+        });
+    });
+
+    it('rejects over-limit request form body', () => {
+      logErrorsExcept(413);
+      return client
+        .post('/show-body')
+        .set('content-type', 'application/x-www-form-urlencoded')
+        .send('key=' + givenLargeRequest())
+        .expect(413, {
+          error: {
+            message: 'request entity too large',
+            name: 'Error',
+            statusCode: 413,
+          },
+        })
+        .catch(ignorePipeError)
+        .then(() => expect(bodyParamControllerInvoked).be.false());
+    });
+
+    it('rejects over-limit request json body', () => {
+      logErrorsExcept(413);
+      return client
+        .post('/show-body')
+        .set('content-type', 'application/json')
+        .send({key: givenLargeRequest()})
+        .expect(413, {
+          error: {
+            message: 'request entity too large',
+            name: 'Error',
+            statusCode: 413,
+          },
+        })
+        .catch(ignorePipeError)
+        .then(() => expect(bodyParamControllerInvoked).be.false());
+    });
+
+    it('allows customization of request body parser options', () => {
+      const body = {key: givenLargeRequest()};
+      rootContext
+        .bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS)
+        .to({limit: 4 * 1024 * 1024}); // Set limit to 4MB
+      return client
+        .post('/show-body')
+        .set('content-type', 'application/json')
+        .send(body)
+        .expect(200, body);
+    });
+
+    /**
+     * Ignore the EPIPE error
+     * See https://github.com/nodejs/node/issues/12339
+     * @param err
+     */
+    function ignorePipeError(err: HttpErrors.HttpError) {
+      // The server side can close the socket before the client
+      // side can send out all data. For example, `response.end()`
+      // is called before all request data has been processed due
+      // to size limit
+      if (err && err.code !== 'EPIPE') throw err;
+    }
+
+    function givenLargeRequest() {
+      const data = Buffer.alloc(2 * 1024 * 1024, 'A', 'utf-8');
+      return data.toString();
+    }
+
     function givenBodyParamController() {
       const spec = anOpenApiSpec()
         .withOperation('post', '/show-body', {
@@ -281,6 +359,9 @@ describe('HttpHandler', () => {
             required: true,
             content: {
               'application/json': {
+                schema: {type: 'object'},
+              },
+              'application/x-www-form-urlencoded': {
                 schema: {type: 'object'},
               },
             },
@@ -302,6 +383,7 @@ describe('HttpHandler', () => {
 
       class RouteParamController {
         async showBody(data: Object): Promise<Object> {
+          bodyParamControllerInvoked = true;
           return data;
         }
       }
@@ -472,7 +554,9 @@ describe('HttpHandler', () => {
   function givenHandler() {
     rootContext = new Context();
     rootContext.bind(SequenceActions.FIND_ROUTE).toProvider(FindRouteProvider);
-    rootContext.bind(SequenceActions.PARSE_PARAMS).to(parseOperationArgs);
+    rootContext
+      .bind(SequenceActions.PARSE_PARAMS)
+      .toProvider(ParseParamsProvider);
     rootContext
       .bind(SequenceActions.INVOKE_METHOD)
       .toProvider(InvokeMethodProvider);

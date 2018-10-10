@@ -11,7 +11,7 @@ import {
   createControllerFactoryForClass,
 } from '../../..';
 import {get, post, requestBody} from '@loopback/openapi-v3';
-import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
+import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 import {model, property} from '@loopback/repository';
 
 describe('RestServer.getApiSpec()', () => {
@@ -192,6 +192,44 @@ describe('RestServer.getApiSpec()', () => {
         },
       },
     });
+  });
+
+  it('emits all media types for request body', () => {
+    const expectedOpSpec = anOperationSpec()
+      .withRequestBody({
+        description: 'Any object value.',
+        required: true,
+        content: {
+          'application/json': {
+            schema: {type: 'object'},
+          },
+          'application/x-www-form-urlencoded': {
+            schema: {type: 'object'},
+          },
+        },
+      })
+      .withResponse(200, {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+        description: '',
+      })
+      .build();
+
+    class MyController {
+      @post('/show-body', expectedOpSpec)
+      showBody(body: object) {
+        return body;
+      }
+    }
+    app.controller(MyController);
+
+    const spec = server.getApiSpec();
+    expect(spec.paths['/show-body'].post).to.containDeep(expectedOpSpec);
   });
 
   it('returns routes registered via app.controller()', () => {
