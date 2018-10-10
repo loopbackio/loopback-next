@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Node module: @loopback/rest
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import * as HttpErrors from 'http-errors';
 
 export namespace RestHttpErrors {
@@ -15,6 +20,21 @@ export namespace RestHttpErrors {
       },
       extraProperties,
     );
+  }
+
+  export function unsupportedMediaType(
+    contentType: string,
+    allowedTypes: string[] = [],
+  ) {
+    const msg =
+      allowedTypes && allowedTypes.length
+        ? `Content-type ${contentType} does not match [${allowedTypes}].`
+        : `Content-type ${contentType} is not supported.`;
+    return Object.assign(new HttpErrors.UnsupportedMediaType(msg), {
+      code: 'UNSUPPORTED_MEDIA_TYPE',
+      contentType: contentType,
+      allowedMediaTypes: allowedTypes,
+    });
   }
 
   export function missingRequired(name: string): HttpErrors.HttpError {

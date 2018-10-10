@@ -179,6 +179,77 @@ in/by the `@requestBody` decorator. Please refer to the documentation on
 [@requestBody decorator](Decorators.md#requestbody-decorator) to get a
 comprehensive idea of defining custom validation rules for your models.
 
+We support `json` and `urlencoded` content types. The client should set
+`Content-Type` http header to `application/json` or
+`application/x-www-form-urlencoded`. Its value is matched against the list of
+media types defined in the `requestBody.content` object of the OpenAPI operation
+spec. If no matching media types is found or the type is not supported yet, an
+UnsupportedMediaTypeError (http statusCode 415) will be reported.
+
+Please note that `urlencoded` media type does not support data typing. For
+example, `key=3` is parsed as `{key: '3'}`. The raw result is then coerced by
+AJV based on the matching content schema. The coercion rules are described in
+[AJV type coercion rules](https://github.com/epoberezkin/ajv/blob/master/COERCION.md).
+
+The [qs](https://github.com/ljharb/qs) is used to parse complex strings. For
+example, given the following request body definition:
+
+```ts
+const requestBodyObject = {
+  description: 'data',
+  content: {
+    'application/x-www-form-urlencoded': {
+      schema: {
+        type: 'object',
+        properties: {
+          name: {type: 'string'},
+          location: {
+            type: 'object',
+            properties: {
+              lat: {type: 'number'},
+              lng: {type: 'number'},
+            },
+          },
+          tags: {
+            type: 'array',
+            items: {type: 'string'},
+          },
+        },
+      },
+    },
+  },
+};
+```
+
+The encoded value
+`'name=IBM%20HQ&location[lat]=0.741895&location[lng]=-73.989308&tags[0]=IT&tags[1]=NY'`
+is parsed and coerced as:
+
+```ts
+{
+  name: 'IBM HQ',
+  location: {lat: 0.741895, lng: -73.989308},
+  tags: ['IT', 'NY'],
+}
+```
+
+The request body parser options (such as `limit`) can now be configured by
+binding the value to `RestBindings.REQUEST_BODY_PARSER_OPTIONS`
+('rest.requestBodyParserOptions'). For example,
+
+```ts
+server
+  .bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS)
+  .to({limit: 4 * 1024 * 1024}); // Set limit to 4MB
+```
+
+The list of options can be found in the [body](https://github.com/Raynos/body)
+module.
+
+By default, the `limit` is `1024 * 1024` (1MB). Any request with a body length
+exceeding the limit will be rejected with http status code 413 (request entity
+too large).
+
 A few tips worth mentioning:
 
 - If a model property's type refers to another model, make sure it is also

@@ -8,7 +8,7 @@ import {validateRequestBody} from '../../src/validation/request-body.validator';
 import {RestHttpErrors} from '../../';
 import {aBodySpec} from '../helpers';
 import {
-  RequestBodyObject,
+  ReferenceObject,
   SchemaObject,
   SchemasObject,
 } from '@loopback/openapi-v3-types';
@@ -53,7 +53,10 @@ const INVALID_ACCOUNT_SCHEMA = {
 
 describe('validateRequestBody', () => {
   it('accepts valid data omitting optional properties', () => {
-    validateRequestBody({title: 'work'}, aBodySpec(TODO_SCHEMA));
+    validateRequestBody(
+      {value: {title: 'work'}, schema: TODO_SCHEMA},
+      aBodySpec(TODO_SCHEMA),
+    );
   });
 
   it('rejects data missing a required property', () => {
@@ -72,7 +75,7 @@ describe('validateRequestBody', () => {
       {
         description: 'missing required "title"',
       },
-      aBodySpec(TODO_SCHEMA),
+      TODO_SCHEMA,
     );
   });
 
@@ -93,7 +96,7 @@ describe('validateRequestBody', () => {
         title: 'todo with a string value of "isComplete"',
         isComplete: 'a string value',
       },
-      aBodySpec(TODO_SCHEMA),
+      TODO_SCHEMA,
     );
   });
 
@@ -120,13 +123,13 @@ describe('validateRequestBody', () => {
         description: 'missing title and a string value of "isComplete"',
         isComplete: 'a string value',
       },
-      aBodySpec(TODO_SCHEMA),
+      TODO_SCHEMA,
     );
   });
 
   it('reports schema generation errors', () => {
     expect(() =>
-      validateRequestBody({}, aBodySpec(INVALID_ACCOUNT_SCHEMA)),
+      validateRequestBody({value: {}, schema: INVALID_ACCOUNT_SCHEMA}),
     ).to.throw(
       "can't resolve reference #/components/schemas/Invalid from id #",
     );
@@ -146,7 +149,7 @@ describe('validateRequestBody', () => {
       'VALIDATION_FAILED',
       details,
       {description: 'missing title'},
-      aBodySpec({$ref: '#/components/schemas/Todo'}),
+      {$ref: '#/components/schemas/Todo'},
       {Todo: TODO_SCHEMA},
     );
   });
@@ -157,12 +160,17 @@ describe('validateRequestBody', () => {
       'MISSING_REQUIRED_PARAMETER',
       undefined,
       null,
-      aBodySpec(TODO_SCHEMA, {required: true}),
+      TODO_SCHEMA,
+      {},
+      true,
     );
   });
 
   it('allows empty values when body is optional', () => {
-    validateRequestBody(null, aBodySpec(TODO_SCHEMA, {required: false}));
+    validateRequestBody(
+      {value: null, schema: TODO_SCHEMA},
+      aBodySpec(TODO_SCHEMA, {required: false}),
+    );
   });
 
   it('rejects invalid values for number properties', () => {
@@ -184,7 +192,7 @@ describe('validateRequestBody', () => {
       'VALIDATION_FAILED',
       details,
       {count: 'string value'},
-      aBodySpec(schema),
+      schema,
     );
   });
 
@@ -214,7 +222,7 @@ describe('validateRequestBody', () => {
         'VALIDATION_FAILED',
         details,
         {orders: ['order1', 1]},
-        aBodySpec(schema),
+        schema,
       );
     });
 
@@ -238,7 +246,7 @@ describe('validateRequestBody', () => {
         'VALIDATION_FAILED',
         details,
         [{title: 'a good todo'}, {description: 'a todo item missing title'}],
-        aBodySpec(schema),
+        schema,
         {Todo: TODO_SCHEMA},
       );
     });
@@ -280,7 +288,7 @@ describe('validateRequestBody', () => {
             {description: 'a todo with wrong type of title', title: 2},
           ],
         },
-        aBodySpec(schema),
+        schema,
         {Todo: TODO_SCHEMA},
       );
     });
@@ -314,7 +322,7 @@ describe('validateRequestBody', () => {
             {title: 'an account with invalid address', address: {city: 1}},
           ],
         },
-        aBodySpec(schema),
+        schema,
         {Account: ACCOUNT_SCHEMA, Address: ADDRESS_SCHEMA},
       );
     });
@@ -328,11 +336,16 @@ function verifyValidationRejectsInputWithError(
   expectedCode: string,
   expectedDetails: RestHttpErrors.ValidationErrorDetails[] | undefined,
   body: object | null,
-  spec: RequestBodyObject | undefined,
+  schema: SchemaObject | ReferenceObject,
   schemas?: SchemasObject,
+  required?: boolean,
 ) {
   try {
-    validateRequestBody(body, spec, schemas);
+    validateRequestBody(
+      {value: body, schema},
+      aBodySpec(schema, {required}),
+      schemas,
+    );
     throw new Error(
       "expected Function { name: 'validateRequestBody' } to throw exception",
     );

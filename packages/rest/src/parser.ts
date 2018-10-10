@@ -8,6 +8,8 @@ import {
   isReferenceObject,
   OperationObject,
   ParameterObject,
+  ReferenceObject,
+  SchemaObject,
   SchemasObject,
 } from '@loopback/openapi-v3-types';
 import * as debugModule from 'debug';
@@ -19,8 +21,15 @@ import {promisify} from 'util';
 import {coerceParameter} from './coercion/coerce-parameter';
 import {RestHttpErrors} from './index';
 import {ResolvedRoute} from './router/routing-table';
-import {OperationArgs, PathParameterValues, Request} from './types';
+import {
+  OperationArgs,
+  PathParameterValues,
+  Request,
+  RequestBodyParserOptions,
+} from './types';
 import {validateRequestBody} from './validation/request-body.validator';
+import {is} from 'type-is';
+import * as qs from 'qs';
 
 type HttpError = HttpErrors.HttpError;
 
@@ -29,26 +38,30 @@ const debug = debugModule('loopback:rest:parser');
 export const QUERY_NOT_PARSED = {};
 Object.freeze(QUERY_NOT_PARSED);
 
-// tslint:disable-next-line:no-any
-type MaybeBody = any | undefined;
+// tslint:disable:no-any
+export type RequestBody = {
+  value: any | undefined;
+  coercionRequired?: boolean;
+  mediaType?: string;
+  schema?: SchemaObject | ReferenceObject;
+};
 
-const parseJsonBody: (req: IncomingMessage) => Promise<MaybeBody> = promisify(
-  require('body/json'),
-);
+const parseJsonBody: (
+  req: IncomingMessage,
+  options: {},
+) => Promise<any> = promisify(require('body/json'));
+
+const parseFormBody: (
+  req: IncomingMessage,
+  options: {},
+) => Promise<any> = promisify(require('body/form'));
 
 /**
  * Get the content-type header value from the request
  * @param req Http request
  */
 function getContentType(req: Request): string | undefined {
-  const val = req.headers['content-type'];
-  if (typeof val === 'string') {
-    return val;
-  } else if (Array.isArray(val)) {
-    // Assume only one value is present
-    return val[0];
-  }
-  return undefined;
+  return req.get('content-type');
 }
 
 /**
@@ -61,11 +74,12 @@ function getContentType(req: Request): string | undefined {
 export async function parseOperationArgs(
   request: Request,
   route: ResolvedRoute,
+  options: RequestBodyParserOptions = {},
 ): Promise<OperationArgs> {
   debug('Parsing operation arguments for route %s', route.describe());
   const operationSpec = route.spec;
   const pathParams = route.pathParams;
-  const body = await loadRequestBodyIfNeeded(operationSpec, request);
+  const body = await loadRequestBodyIfNeeded(operationSpec, request, options);
   return buildOperationArguments(
     operationSpec,
     request,
@@ -75,32 +89,111 @@ export async function parseOperationArgs(
   );
 }
 
-async function loadRequestBodyIfNeeded(
+function normalizeParsingError(err: HttpError) {
+  debug('Cannot parse request body %j', err);
+  if (!err.statusCode || err.statusCode >= 500) {
+    err.statusCode = 400;
+  }
+  return err;
+}
+
+export async function loadRequestBodyIfNeeded(
   operationSpec: OperationObject,
   request: Request,
-): Promise<MaybeBody> {
-  if (!operationSpec.requestBody) return Promise.resolve();
+  options: RequestBodyParserOptions = {},
+): Promise<RequestBody> {
+  const requestBody: RequestBody = {
+    value: undefined,
+  };
+  if (!operationSpec.requestBody) return Promise.resolve(requestBody);
 
-  const contentType = getContentType(request);
+  debug('Request body parser options: %j', options);
+
+  const contentType = getContentType(request) || 'application/json';
   debug('Loading request body with content type %j', contentType);
-  if (contentType && !/json/.test(contentType)) {
-    throw new HttpErrors.UnsupportedMediaType(
-      `Content-type ${contentType} is not supported.`,
+
+  // the type of `operationSpec.requestBody` could be `RequestBodyObject`
+  // or `ReferenceObject`, resolving a `$ref` value is not supported yet.
+  if (isReferenceObject(operationSpec.requestBody)) {
+    throw new Error('$ref requestBody is not supported yet.');
+  }
+
+  let content = operationSpec.requestBody.content || {};
+  if (!Object.keys(content).length) {
+    content = {
+      // default to allow json and urlencoded
+      'application/json': {schema: {type: 'object'}},
+      'application/x-www-form-urlencoded': {schema: {type: 'object'}},
+    };
+  }
+
+  // Check of the request content type matches one of the expected media
+  // types in the request body spec
+  let matchedMediaType: string | false = false;
+  for (const type in content) {
+    matchedMediaType = is(contentType, type);
+    if (matchedMediaType) {
+      requestBody.mediaType = type;
+      requestBody.schema = content[type].schema;
+      break;
+    }
+  }
+
+  if (!matchedMediaType) {
+    // No matching media type found, fail fast
+    throw RestHttpErrors.unsupportedMediaType(
+      contentType,
+      Object.keys(content),
     );
   }
 
-  return await parseJsonBody(request).catch((err: HttpError) => {
-    debug('Cannot parse request body %j', err);
-    err.statusCode = 400;
-    throw err;
-  });
+  if (is(matchedMediaType, 'urlencoded')) {
+    try {
+      const body = await parseFormBody(
+        request,
+        // use `qs` modules to handle complex objects
+        Object.assign(
+          {
+            querystring: {
+              parse: (str: string, cb: Function) => {
+                cb(null, qs.parse(str));
+              },
+            },
+          },
+          options,
+        ),
+      );
+      return Object.assign(requestBody, {
+        // form parser returns an object without prototype
+        // create a new copy to simplify shouldjs assertions
+        value: Object.assign({}, body),
+        // urlencoded body only provide string values
+        // set the flag so that AJV can coerce them based on the schema
+        coercionRequired: true,
+      });
+    } catch (err) {
+      throw normalizeParsingError(err);
+    }
+  }
+
+  if (is(matchedMediaType, 'json')) {
+    try {
+      const jsonBody = await parseJsonBody(request, options);
+      requestBody.value = jsonBody;
+      return requestBody;
+    } catch (err) {
+      throw normalizeParsingError(err);
+    }
+  }
+
+  throw RestHttpErrors.unsupportedMediaType(matchedMediaType);
 }
 
 function buildOperationArguments(
   operationSpec: OperationObject,
   request: Request,
   pathParams: PathParameterValues,
-  body: MaybeBody,
+  body: RequestBody,
   globalSchemas: SchemasObject,
 ): OperationArgs {
   let requestBodyIndex: number = -1;
@@ -131,7 +224,7 @@ function buildOperationArguments(
   debug('Validating request body - value %j', body);
   validateRequestBody(body, operationSpec.requestBody, globalSchemas);
 
-  if (requestBodyIndex > -1) paramArgs.splice(requestBodyIndex, 0, body);
+  if (requestBodyIndex > -1) paramArgs.splice(requestBodyIndex, 0, body.value);
   return paramArgs;
 }
 
