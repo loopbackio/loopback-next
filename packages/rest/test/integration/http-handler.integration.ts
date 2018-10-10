@@ -294,9 +294,9 @@ describe('HttpHandler', () => {
         .send('key=' + givenLargeRequest())
         .expect(413, {
           error: {
-            message: 'request entity too large',
-            name: 'Error',
             statusCode: 413,
+            name: 'PayloadTooLargeError',
+            message: 'request entity too large',
           },
         })
         .catch(ignorePipeError)
@@ -311,9 +311,9 @@ describe('HttpHandler', () => {
         .send({key: givenLargeRequest()})
         .expect(413, {
           error: {
-            message: 'request entity too large',
-            name: 'Error',
             statusCode: 413,
+            name: 'PayloadTooLargeError',
+            message: 'request entity too large',
           },
         })
         .catch(ignorePipeError)
@@ -324,7 +324,7 @@ describe('HttpHandler', () => {
       const body = {key: givenLargeRequest()};
       rootContext
         .bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS)
-        .to({limit: 4 * 1024 * 1024}); // Set limit to 4MB
+        .to({limit: '4mb'}); // Set limit to 4MB
       return client
         .post('/show-body')
         .set('content-type', 'application/json')
@@ -345,6 +345,18 @@ describe('HttpHandler', () => {
       // On Windows, ECONNRESET is sometimes emitted instead of EPIPE.
       if (err && err.code !== 'EPIPE' && err.code !== 'ECONNRESET') throw err;
     }
+    
+    it('allows customization of request body parser options', () => {
+      const body = {key: givenLargeRequest()};
+      rootContext
+        .bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS)
+        .to({limit: 4 * 1024 * 1024}); // Set limit to 4MB
+      return client
+        .post('/show-body')
+        .set('content-type', 'application/json')
+        .send(body)
+        .expect(200, body);
+    });
 
     function givenLargeRequest() {
       const data = Buffer.alloc(2 * 1024 * 1024, 'A', 'utf-8');

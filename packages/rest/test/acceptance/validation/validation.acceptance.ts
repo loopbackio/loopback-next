@@ -65,7 +65,10 @@ describe('Validation at REST level', () => {
     it('rejects requests with no (empty) body', async () => {
       // NOTE(bajtos) An empty body cannot be parsed as a JSON,
       // therefore this test request does not even reach the validation logic.
-      await client.post('/products').expect(400);
+      await client
+        .post('/products')
+        .type('json')
+        .expect(422);
     });
 
     it('rejects requests with null body', async () => {
