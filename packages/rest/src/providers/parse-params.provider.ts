@@ -18,6 +18,7 @@ import {RequestBodyParser} from '../body-parsers';
  * @returns {ParseParams} The handler function that will parse request args.
  */
 export class ParseParamsProvider implements Provider<ParseParams> {
+
   constructor(
     @inject(RestBindings.REQUEST_BODY_PARSER)
     private requestBodyParser: RequestBodyParser,

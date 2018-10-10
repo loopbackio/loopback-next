@@ -398,6 +398,18 @@ describe('HttpHandler', () => {
       // On Windows, ECONNRESET is sometimes emitted instead of EPIPE.
       if (err && err.code !== 'EPIPE' && err.code !== 'ECONNRESET') throw err;
     }
+    
+    it('allows customization of request body parser options', () => {
+      const body = {key: givenLargeRequest()};
+      rootContext
+        .bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS)
+        .to({limit: 4 * 1024 * 1024}); // Set limit to 4MB
+      return client
+        .post('/show-body')
+        .set('content-type', 'application/json')
+        .send(body)
+        .expect(200, body);
+    });
 
     function givenLargeRequest() {
       const data = Buffer.alloc(2 * 1024 * 1024, 'A', 'utf-8');
