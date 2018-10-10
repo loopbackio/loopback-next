@@ -49,13 +49,13 @@ in the `src/datasources` directory.
 
 The tool will prompt you for:
 
-- **Service name.** _(name)_ If the name of the service to be generated had been
-  supplied from the command line, the prompt is skipped.
-
 - **Please select the datasource.** _(datasource)_ If the name of the datasource
   had been supplied from the command line with `--datasource` option and it is a
   valid one, then the prompt is skipped, otherwise it will present you the list
   of all valid datasources from the `src/datasources` directory.
+
+- **Service name.** _(name)_ If the name of the service to be generated had been
+  supplied from the command line, the prompt is skipped.
 
 ### Output
 

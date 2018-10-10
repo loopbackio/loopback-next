@@ -76,33 +76,6 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
     }
   }
 
-  /**
-   * Ask for Service Name
-   */
-  async promptArtifactName() {
-    debug('Prompting for service name');
-    if (this.shouldExit()) return;
-
-    if (this.options.name) {
-      Object.assign(this.artifactInfo, {name: this.options.name});
-    }
-
-    const prompts = [
-      {
-        type: 'input',
-        name: 'name',
-        // capitalization
-        message: utils.toClassName(this.artifactInfo.type) + ' name:',
-        when: !this.artifactInfo.name,
-        validate: utils.validateClassName,
-      },
-    ];
-    return this.prompt(prompts).then(props => {
-      Object.assign(this.artifactInfo, props);
-      return props;
-    });
-  }
-
   async promptDataSourceName() {
     debug('Prompting for a datasource ');
     if (this.shouldExit()) return;
@@ -183,6 +156,33 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
         debug(`Error during datasource prompt: ${err}`);
         return this.exit(err);
       });
+  }
+
+  /**
+   * Ask for Service Name
+   */
+  async promptArtifactName() {
+    debug('Prompting for service name');
+    if (this.shouldExit()) return;
+
+    if (this.options.name) {
+      Object.assign(this.artifactInfo, {name: this.options.name});
+    }
+
+    const prompts = [
+      {
+        type: 'input',
+        name: 'name',
+        // capitalization
+        message: utils.toClassName(this.artifactInfo.type) + ' name:',
+        when: !this.artifactInfo.name,
+        validate: utils.validateClassName,
+      },
+    ];
+    return this.prompt(prompts).then(props => {
+      Object.assign(this.artifactInfo, props);
+      return props;
+    });
   }
 
   /**
