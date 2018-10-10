@@ -58,6 +58,117 @@ describe('operationArgsParser', () => {
     expect(args).to.eql([{key: 'value'}]);
   });
 
+  it('parses body parameter for form data', async () => {
+    const req = givenRequest({
+      url: '/',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      payload: 'key=value',
+    });
+
+    const spec = givenOperationWithRequestBody({
+      description: 'data',
+      content: {
+        'application/x-www-form-urlencoded': {schema: {type: 'object'}},
+      },
+    });
+    const route = givenResolvedRoute(spec);
+
+    const args = await parseOperationArgs(req, route);
+
+    expect(args).to.eql([{key: 'value'}]);
+  });
+
+  it('parses body parameter for form data with simple types', async () => {
+    const req = givenRequest({
+      url: '/',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      payload: 'key1=value&key2=1&key3=true',
+    });
+
+    const spec = givenOperationWithRequestBody({
+      description: 'data',
+      content: {
+        'application/x-www-form-urlencoded': {
+          schema: {
+            type: 'object',
+            properties: {
+              key1: {type: 'string'},
+              key2: {type: 'number'},
+              key3: {type: 'boolean'},
+            },
+          },
+        },
+      },
+    });
+    const route = givenResolvedRoute(spec);
+
+    const args = await parseOperationArgs(req, route);
+
+    expect(args).to.eql([{key1: 'value', key2: 1, key3: true}]);
+  });
+
+  it('parses body parameter for form data with number[] types', async () => {
+    const req = givenRequest({
+      url: '/',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      payload: 'key=1&key=2',
+    });
+
+    const spec = givenOperationWithRequestBody({
+      description: 'data',
+      content: {
+        'application/x-www-form-urlencoded': {
+          schema: {
+            type: 'object',
+            properties: {
+              key: {type: 'array', items: {type: 'number'}},
+            },
+          },
+        },
+      },
+    });
+    const route = givenResolvedRoute(spec);
+
+    const args = await parseOperationArgs(req, route);
+
+    expect(args).to.eql([{key: [1, 2]}]);
+  });
+
+  it('parses body parameter for form data with string[] types', async () => {
+    const req = givenRequest({
+      url: '/',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      payload: 'key1=value1&key1=value2',
+    });
+
+    const spec = givenOperationWithRequestBody({
+      description: 'data',
+      content: {
+        'application/x-www-form-urlencoded': {
+          schema: {
+            type: 'object',
+            properties: {
+              key1: {type: 'array', items: {type: 'string'}},
+            },
+          },
+        },
+      },
+    });
+    const route = givenResolvedRoute(spec);
+
+    const args = await parseOperationArgs(req, route);
+
+    expect(args).to.eql([{key1: ['value1', 'value2']}]);
+  });
+
   context('in:query style:deepObject', () => {
     it('parses JSON-encoded string value', async () => {
       const req = givenRequest({

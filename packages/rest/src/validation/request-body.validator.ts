@@ -32,6 +32,7 @@ export function validateRequestBody(
   body: any,
   requestBodySpec: RequestBodyObject | undefined,
   globalSchemas?: SchemasObject,
+  options?: AJV.Options,
 ) {
   if (!requestBodySpec) return;
 
@@ -50,7 +51,7 @@ export function validateRequestBody(
   debug('Request body schema: %j', util.inspect(schema, {depth: null}));
   if (!schema) return;
 
-  validateValueAgainstSchema(body, schema, globalSchemas);
+  validateValueAgainstSchema(body, schema, globalSchemas, options);
 }
 
 /**
@@ -94,13 +95,14 @@ function validateValueAgainstSchema(
   body: any,
   schema: SchemaObject,
   globalSchemas?: SchemasObject,
+  options?: AJV.Options,
 ) {
   let validate;
 
   if (compiledSchemaCache.has(schema)) {
     validate = compiledSchemaCache.get(schema);
   } else {
-    validate = createValidator(schema, globalSchemas);
+    validate = createValidator(schema, globalSchemas, options);
     compiledSchemaCache.set(schema, validate);
   }
 
@@ -128,6 +130,7 @@ function validateValueAgainstSchema(
 function createValidator(
   schema: SchemaObject,
   globalSchemas?: SchemasObject,
+  options?: AJV.Options,
 ): Function {
   const jsonSchema = convertToJsonSchema(schema);
 
@@ -136,9 +139,15 @@ function createValidator(
     schemas: globalSchemas,
   };
 
-  const ajv = new AJV({
-    allErrors: true,
-  });
+  const ajv = new AJV(
+    Object.assign(
+      {},
+      {
+        allErrors: true,
+      },
+      options,
+    ),
+  );
 
   return ajv.compile(schemaWithRef);
 }
