@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.31.2](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.31.1...@loopback/cli@0.31.2) (2018-10-10)
+
+
+### Bug Fixes
+
+* **cli:** enable --resolveJsonModule for plain tsconfig ([26af3d9](https://github.com/strongloop/loopback-next/commit/26af3d9))
+
+
+
+
+
 ## [0.31.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@0.31.0...@loopback/cli@0.31.1) (2018-10-09)
 
 **Note:** Version bump only for package @loopback/cli
