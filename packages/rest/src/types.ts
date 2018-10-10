@@ -6,6 +6,12 @@
 import {Binding, BoundValue} from '@loopback/context';
 import {ResolvedRoute, RouteEntry} from './router';
 import {Request, Response} from 'express';
+import {
+  OptionsJson,
+  OptionsUrlencoded,
+  OptionsText,
+  Options,
+} from 'body-parser';
 
 export {Request, Response};
 
@@ -80,23 +86,13 @@ export type LogError = (
 
 /**
  * Options for request body parsing
- * See https://github.com/Raynos/body
+ * See https://github.com/expressjs/body-parser/#options
  */
-export type RequestBodyParserOptions = {
-  /**
-   * The limit of request body size. By default it is 1MB (1024 * 1024). If a
-   * stream contains more than 1MB, it returns an error. This prevents someone
-   * from attacking your HTTP server with an infinite body causing an out of
-   * memory attack.
-   */
-  limit?: number;
-  /**
-   * All encodings that are valid on a Buffer are valid options. It defaults to
-   * 'utf8'
-   */
-  encoding?: string;
-  [property: string]: any;
-};
+export interface RequestBodyParserOptions extends Options {
+  json?: OptionsJson;
+  urlencoded?: OptionsUrlencoded;
+  text?: OptionsText;
+}
 
 export type PathParameterValues = {[key: string]: any};
 export type OperationArgs = any[];
