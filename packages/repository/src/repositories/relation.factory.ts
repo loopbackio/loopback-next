@@ -9,8 +9,8 @@ import {DataObject, isTypeResolver} from '..';
 import {
   BelongsToDefinition,
   HasManyDefinition,
-  RelationMetadata,
 } from '../decorators/relation.decorator';
+import {InvalidRelationError} from '../errors';
 import {Entity} from '../model';
 import {
   DefaultBelongsToRepository,
@@ -77,7 +77,7 @@ function resolveHasManyMetadata(
 ): HasManyResolvedDefinition {
   if (!isTypeResolver(relationMeta.target)) {
     const reason = 'target must be a type resolver';
-    throw new Error(invalidDefinition(relationMeta, reason));
+    throw new InvalidRelationError(reason, relationMeta);
   }
 
   if (relationMeta.keyTo) {
@@ -88,7 +88,7 @@ function resolveHasManyMetadata(
   const sourceModel = relationMeta.source;
   if (!sourceModel || !sourceModel.modelName) {
     const reason = 'source model must be defined';
-    throw new Error(invalidDefinition(relationMeta, reason));
+    throw new InvalidRelationError(reason, relationMeta);
   }
 
   const targetModel = relationMeta.target();
@@ -107,7 +107,7 @@ function resolveHasManyMetadata(
     const reason = `target model ${
       targetModel.name
     } is missing definition of foreign key ${defaultFkName}`;
-    throw new Error(invalidDefinition(relationMeta, reason));
+    throw new InvalidRelationError(reason, relationMeta);
   }
 
   return Object.assign(relationMeta, {keyTo: defaultFkName});
@@ -154,18 +154,18 @@ type BelongsToResolvedDefinition = BelongsToDefinition & {keyTo: string};
 function resolveBelongsToMetadata(relationMeta: BelongsToDefinition) {
   if (!isTypeResolver(relationMeta.target)) {
     const reason = 'target must be a type resolver';
-    throw new Error(invalidDefinition(relationMeta, reason));
+    throw new InvalidRelationError(reason, relationMeta);
   }
 
   if (!relationMeta.keyFrom) {
     const reason = 'keyFrom is required';
-    throw new Error(invalidDefinition(relationMeta, reason));
+    throw new InvalidRelationError(reason, relationMeta);
   }
 
   const sourceModel = relationMeta.source;
   if (!sourceModel || !sourceModel.modelName) {
     const reason = 'source model must be defined';
-    throw new Error(invalidDefinition(relationMeta, reason));
+    throw new InvalidRelationError(reason, relationMeta);
   }
 
   const targetModel = relationMeta.target();
@@ -183,14 +183,8 @@ function resolveBelongsToMetadata(relationMeta: BelongsToDefinition) {
   const targetPrimaryKey = targetModel.definition.idProperties()[0];
   if (!targetPrimaryKey) {
     const reason = `${targetName} does not have any primary key (id property)`;
-    throw new Error(invalidDefinition(relationMeta, reason));
+    throw new InvalidRelationError(reason, relationMeta);
   }
 
   return Object.assign(relationMeta, {keyTo: targetPrimaryKey});
-}
-
-function invalidDefinition(relationMeta: RelationMetadata, reason: string) {
-  const {name, type, source} = relationMeta;
-  const model = (source && source.modelName) || '<Unknown Model>';
-  return `Invalid ${type} definition for ${model}#${name}: ${reason}`;
 }
