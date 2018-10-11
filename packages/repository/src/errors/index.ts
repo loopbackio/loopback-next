@@ -4,3 +4,4 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './entity-not-found.error';
+export * from './invalid-relation.error';
