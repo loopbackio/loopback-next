@@ -26,6 +26,10 @@ matrix:
       # using the default script to build & run the tests
 
     - node_js: "12"
+      os: windows
+      # using the default script to build & run the tests
+
+    - node_js: "12"
       os: linux
       env: TASK=code-lint
       # Running Code Linter -- Requires @loopback/build so it's bootstrapped
