@@ -9,7 +9,7 @@ summary: LoopBack 4 Todo Application Tutorial - Putting it all together
 
 ### Putting it all together
 
-We've got all of our artifacts now, and all that's left is to bind them to our
+We've got all of our artifacts now, and they are all automatically bound to our
 [Application](Application.md) so that LoopBack's
 [Dependency injection](Dependency-injection.md) system can tie it all together
 for us!
@@ -30,49 +30,6 @@ artifacts and inject them into our application for use.
 > To find out how to customize this behavior, see the
 > [Booters](Booting-an-Application.md#booters) section of
 > [Booting an Application](Booting-an-Application.md).
-
-#### src/application.ts
-
-```ts
-import {BootMixin} from '@loopback/boot';
-import {ApplicationConfig} from '@loopback/core';
-import {RepositoryMixin} from '@loopback/repository';
-import {RestApplication, RestServer} from '@loopback/rest';
-import {MySequence} from './sequence';
-
-export class TodoListApplication extends BootMixin(
-  RepositoryMixin(RestApplication),
-) {
-  constructor(options?: ApplicationConfig) {
-    super(options);
-
-    // Set up the custom sequence
-    this.sequence(MySequence);
-
-    this.projectRoot = __dirname;
-    // Customize @loopback/boot Booter Conventions here
-    this.bootOptions = {
-      controllers: {
-        // Customize ControllerBooter Conventions here
-        dirs: ['controllers'],
-        extensions: ['.controller.js'],
-        nested: true,
-      },
-    };
-  }
-
-  async start() {
-    await super.start();
-
-    const server = await this.getServer(RestServer);
-    const port = await server.get<number>('rest.port');
-    console.log(`Server is running at http://127.0.0.1:${port}`);
-    console.log(`Try http://127.0.0.1:${port}/ping`);
-  }
-}
-```
-
-### Try it out
 
 Let's try out our application! First, you'll want to start the app.
 
