@@ -24,67 +24,29 @@ For more information about Repositories, see
 
 ### Create your repository
 
-In the `src/repositories` directory, create two files:
+From inside the project folder, run the `lb4 repository` command to create a
+repository for your to-do model using the `db` datasource from the previous
+step. The `db` datasource shows up by its class name `DbDataSource` from the
+list of available datasources.
 
-- `index.ts` (our export helper)
-- `todo.repository.ts`
+```sh
+lb4 repository
+? Please select the datasource DbDatasource
+? Select the model(s) you want to generate a repository Todo
+   create src/repositories/todo.repository.ts
+   update src/repositories/index.ts
 
-> **NOTE:** The `index.ts` file is an export helper file; this pattern is a huge
-> time-saver as the number of models in your project grows, because it allows
-> you to point to the _directory_ when attempting to import types from a file
-> within the target folder. **We will use this concept throughout the tutorial!
-> For more info, see TypeScript's
-> [Module Resolution](https://www.typescriptlang.org/docs/handbook/module-resolution.html)
-> docs.**
-
-```ts
-// in src/models/index.ts
-export * from './foo.model';
-export * from './bar.model';
-export * from './baz.model';
-
-// elsewhere...
-
-// with index.ts
-import {Foo, Bar, Baz} from './models';
-// ...and without index.ts
-import {Foo} from './models/foo.model';
-import {Bar} from './models/bar.model';
-import {Baz} from './models/baz.model';
-// Using an index.ts in your artifact folders really helps keep
-// things tidy and succinct!
+Repository Todo was created in src/repositories/
 ```
 
-Our TodoRepository will extend a small base class that uses the
-`DefaultCrudRepository` class from
-[`@loopback/repository`](https://github.com/strongloop/loopback-next/tree/master/packages/repository)
-and will define the model type we're working with, as well as its ID type. This
-automatically gives us the basic CRUD methods required for performing operations
-against our database (or any other kind of datasource).
+The `src/repositories/index.ts` file makes exporting artifacts central and also
+easier to import.
 
-We'll also inject our datasource so that this repository can connect to it when
-executing data operations.
-
-#### src/repositories/todo.repository.ts
-
-```ts
-import {DefaultCrudRepository, juggler} from '@loopback/repository';
-import {Todo} from '../models';
-import {inject} from '@loopback/core';
-
-export class TodoRepository extends DefaultCrudRepository<
-  Todo,
-  typeof Todo.prototype.id
-> {
-  constructor(@inject('datasources.db') dataSource: juggler.DataSource) {
-    super(Todo, dataSource);
-  }
-}
-```
-
-Now we have everything we need to perform CRUD operations for our Todo list,
-we'll need to build the [Controller](todo-tutorial-controller.md) to handle our
-incoming requests.
+The newly created `todo.repository.ts` class has the necessary connections that
+are needed to perform CRUD operations for our to-do model. It leverages the Todo
+model definition and 'db' datasource configuration and retrieves the datasource
+using
+[Dependency Injection](https://loopback.io/doc/en/lb4/Dependency-injection.html).
 
 ### Navigation
 
