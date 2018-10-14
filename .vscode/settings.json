@@ -1,6 +1,6 @@
 {
   "editor.rulers": [80],
-  "editor.tabCompletion": true,
+  "editor.tabCompletion": "on",
   "editor.tabSize": 2,
   "editor.trimAutoWhitespace": true,
   "editor.formatOnSave": true,
