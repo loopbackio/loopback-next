@@ -68,6 +68,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
    * Ensure CLI is being run in a LoopBack 4 project.
    */
   checkLoopBackProject() {
+    if (this.shouldExit()) return;
     return super.checkLoopBackProject();
   }
 
