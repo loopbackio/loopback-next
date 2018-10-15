@@ -59,6 +59,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
   }
 
   checkLoopBackProject() {
+    if (this.shouldExit()) return;
     return super.checkLoopBackProject();
   }
 

@@ -83,6 +83,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
   }
 
   checkLoopBackProject() {
+    if (this.shouldExit()) return;
     return super.checkLoopBackProject();
   }
 
@@ -95,6 +96,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
 
   // Ask for Model base class
   async promptModelBaseClassName() {
+    if (this.shouldExit()) return;
     const availableModelBaseClasses = [];
 
     availableModelBaseClasses.push(...BASE_MODELS);
