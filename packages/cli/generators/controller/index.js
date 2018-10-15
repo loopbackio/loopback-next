@@ -62,6 +62,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   }
 
   checkLoopBackProject() {
+    if (this.shouldExit()) return;
     return super.checkLoopBackProject();
   }
 
