@@ -19,6 +19,8 @@ import {Request, Response} from './types';
 
 import {RestBindings} from './keys';
 import {RequestContext} from './request-context';
+import {PathParams} from 'express-serve-static-core';
+import {ServeStaticOptions} from 'serve-static';
 
 export class HttpHandler {
   protected _apiDefinitions: SchemasObject;
@@ -46,6 +48,14 @@ export class HttpHandler {
 
   registerApiDefinitions(defs: SchemasObject) {
     this._apiDefinitions = Object.assign({}, this._apiDefinitions, defs);
+  }
+
+  registerStaticAssets(
+    path: PathParams,
+    rootDir: string,
+    options?: ServeStaticOptions,
+  ) {
+    this._routes.registerStaticAssets(path, rootDir, options);
   }
 
   getApiDefinitions() {

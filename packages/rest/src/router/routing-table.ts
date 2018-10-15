@@ -27,6 +27,8 @@ import {
   OperationRetval,
 } from '../types';
 
+import * as express from 'express';
+
 import {ControllerSpec} from '@loopback/openapi-v3';
 
 import * as assert from 'assert';
@@ -35,6 +37,9 @@ const debug = require('debug')('loopback:rest:routing-table');
 import {CoreBindings} from '@loopback/core';
 import {validateApiPath} from './openapi-path';
 import {TrieRouter} from './trie-router';
+import {RequestContext} from '../request-context';
+import {ServeStaticOptions} from 'serve-static';
+import {PathParams} from 'express-serve-static-core';
 
 /**
  * A controller instance with open properties/methods
@@ -83,6 +88,19 @@ export interface RestRouter {
  */
 export class RoutingTable {
   constructor(private readonly _router: RestRouter = new TrieRouter()) {}
+
+  private _staticAssetsRoute: StaticAssetsRoute;
+
+  registerStaticAssets(
+    path: PathParams,
+    rootDir: string,
+    options?: ServeStaticOptions,
+  ) {
+    if (!this._staticAssetsRoute) {
+      this._staticAssetsRoute = new StaticAssetsRoute();
+    }
+    this._staticAssetsRoute.registerAssets(path, rootDir, options);
+  }
 
   /**
    * Register a controller as the route
@@ -149,6 +167,7 @@ export class RoutingTable {
     }
 
     validateApiPath(route.path);
+
     this._router.add(route);
   }
 
@@ -179,6 +198,17 @@ export class RoutingTable {
     if (found) {
       debug('Route matched: %j', found);
       return found;
+    }
+
+    // this._staticAssetsRoute will be set only if app.static() was called
+    if (this._staticAssetsRoute) {
+      debug(
+        'No API route found for %s %s, trying to find a static asset',
+        request.method,
+        request.path,
+      );
+
+      return this._staticAssetsRoute;
     }
 
     debug('No route found for %s %s', request.method, request.path);
@@ -269,6 +299,88 @@ export abstract class BaseRoute implements RouteEntry {
   describe(): string {
     return `"${this.verb} ${this.path}"`;
   }
+}
+
+export class StaticAssetsRoute implements RouteEntry, ResolvedRoute {
+  // ResolvedRoute API
+  readonly pathParams: PathParameterValues = [];
+  readonly schemas: SchemasObject = {};
+
+  // RouteEntry implementation
+  readonly verb: string = 'get';
+  readonly path: string = '/*';
+  readonly spec: OperationObject = {
+    description: 'LoopBack static assets route',
+    'x-visibility': 'undocumented',
+    responses: {},
+  };
+
+  private readonly _expressRouter: express.Router = express.Router();
+
+  public registerAssets(
+    path: PathParams,
+    rootDir: string,
+    options?: ServeStaticOptions,
+  ) {
+    this._expressRouter.use(path, express.static(rootDir, options));
+  }
+
+  updateBindings(requestContext: Context): void {
+    // no-op
+  }
+
+  async invokeHandler(
+    {request, response}: RequestContext,
+    args: OperationArgs,
+  ): Promise<OperationRetval> {
+    const handled = await executeRequestHandler(
+      this._expressRouter,
+      request,
+      response,
+    );
+
+    if (!handled) {
+      // Express router called next, which means no route was matched
+      throw new HttpErrors.NotFound(
+        `Endpoint "${request.method} ${request.path}" not found.`,
+      );
+    }
+  }
+
+  describe(): string {
+    return 'final route to handle static assets';
+  }
+}
+
+/**
+ * Execute an Express-style callback-based request handler.
+ *
+ * @param handler
+ * @param request
+ * @param response
+ * @returns A promise resolved to:
+ * - `true` when the request was handled
+ * - `false` when the handler called `next()` to proceed to the next
+ *    handler (middleware) in the chain.
+ */
+function executeRequestHandler(
+  handler: express.RequestHandler,
+  request: Request,
+  response: express.Response,
+): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    const onceFinished = () => resolve(true);
+    response.once('finish', onceFinished);
+    handler(request, response, (err: Error) => {
+      response.removeListener('finish', onceFinished);
+      if (err) {
+        reject(err);
+      } else {
+        // Express router called next, which means no route was matched
+        resolve(false);
+      }
+    });
+  });
 }
 
 export function createResolvedRoute(
