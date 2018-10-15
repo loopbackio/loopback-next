@@ -14,11 +14,12 @@ import {
 } from '@loopback/openapi-v3-types';
 import {AssertionError} from 'assert';
 import * as cors from 'cors';
+import * as debugFactory from 'debug';
 import * as express from 'express';
 import {PathParams} from 'express-serve-static-core';
 import {IncomingMessage, ServerResponse} from 'http';
+import {ServerOptions} from 'https';
 import {safeDump} from 'js-yaml';
-import * as pathToRegExp from 'path-to-regexp';
 import {ServeStaticOptions} from 'serve-static';
 import {HttpHandler} from './http-handler';
 import {RestBindings} from './keys';
@@ -34,7 +35,6 @@ import {
   RouteEntry,
   RoutingTable,
 } from './router/routing-table';
-
 import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
 import {
   FindRoute,
@@ -45,9 +45,8 @@ import {
   Response,
   Send,
 } from './types';
-import {ServerOptions} from 'https';
 
-const debug = require('debug')('loopback:rest:server');
+const debug = debugFactory('loopback:rest:server');
 
 export type HttpRequestListener = (
   req: IncomingMessage,
@@ -127,7 +126,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
   protected _httpServer: HttpServer | undefined;
 
   protected _expressApp: express.Application;
-  protected _routerForStaticAssets: express.Router;
 
   get listening(): boolean {
     return this._httpServer ? this._httpServer.listening : false;
@@ -217,9 +215,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
     };
     this._expressApp.use(cors(corsOptions));
 
-    // Place the assets router here before controllers
-    this._setupRouterForStaticAssets();
-
     // Set up endpoints for OpenAPI spec/ui
     this._setupOpenApiSpecEndpoints();
 
@@ -234,17 +229,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
         this._onUnhandledError(req, res, err);
       },
     );
-  }
-
-  /**
-   * Set up an express router for all static assets so that middleware for
-   * all directories are invoked at the same phase
-   */
-  protected _setupRouterForStaticAssets() {
-    if (!this._routerForStaticAssets) {
-      this._routerForStaticAssets = express.Router();
-      this._expressApp.use(this._routerForStaticAssets);
-    }
   }
 
   /**
@@ -626,18 +610,11 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * See https://expressjs.com/en/4x/api.html#express.static
    * @param path The path(s) to serve the asset.
    * See examples at https://expressjs.com/en/4x/api.html#path-examples
-   * To avoid performance penalty, `/` is not allowed for now.
    * @param rootDir The root directory from which to serve static assets
    * @param options Options for serve-static
    */
   static(path: PathParams, rootDir: string, options?: ServeStaticOptions) {
-    const re = pathToRegExp(path, [], {end: false});
-    if (re.test('/')) {
-      throw new Error(
-        'Static assets cannot be mount to "/" to avoid performance penalty.',
-      );
-    }
-    this._routerForStaticAssets.use(path, express.static(rootDir, options));
+    this.httpHandler.registerStaticAssets(path, rootDir, options);
   }
 
   /**

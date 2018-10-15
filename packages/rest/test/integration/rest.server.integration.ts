@@ -80,7 +80,7 @@ describe('RestServer (integration)', () => {
       .expect(500);
   });
 
-  it('does not allow static assets to be mounted at /', async () => {
+  it('allows static assets to be mounted at /', async () => {
     const root = FIXTURES;
     const server = await givenAServer({
       rest: {
@@ -88,29 +88,12 @@ describe('RestServer (integration)', () => {
       },
     });
 
-    expect(() => server.static('/', root)).to.throw(
-      'Static assets cannot be mount to "/" to avoid performance penalty.',
-    );
-
-    expect(() => server.static('', root)).to.throw(
-      'Static assets cannot be mount to "/" to avoid performance penalty.',
-    );
-
-    expect(() => server.static(['/'], root)).to.throw(
-      'Static assets cannot be mount to "/" to avoid performance penalty.',
-    );
-
-    expect(() => server.static(['/html', ''], root)).to.throw(
-      'Static assets cannot be mount to "/" to avoid performance penalty.',
-    );
-
-    expect(() => server.static(/.*/, root)).to.throw(
-      'Static assets cannot be mount to "/" to avoid performance penalty.',
-    );
-
-    expect(() => server.static('/(.*)', root)).to.throw(
-      'Static assets cannot be mount to "/" to avoid performance penalty.',
-    );
+    expect(() => server.static('/', root)).to.not.throw();
+    expect(() => server.static('', root)).to.not.throw();
+    expect(() => server.static(['/'], root)).to.not.throw();
+    expect(() => server.static(['/html', ''], root)).to.not.throw();
+    expect(() => server.static(/.*/, root)).to.not.throw();
+    expect(() => server.static('/(.*)', root)).to.not.throw();
   });
 
   it('allows static assets via api', async () => {
@@ -164,7 +147,7 @@ describe('RestServer (integration)', () => {
       .expect(200, 'Hello');
   });
 
-  it('serve static assets if matches before other routes', async () => {
+  it('gives precedence to API routes over static assets', async () => {
     const root = FIXTURES;
     const server = await givenAServer({
       rest: {
@@ -174,12 +157,9 @@ describe('RestServer (integration)', () => {
     server.static('/html', root);
     server.handler(dummyRequestHandler);
 
-    const content = fs
-      .readFileSync(path.join(root, 'index.html'))
-      .toString('utf-8');
     await createClientForHandler(server.requestHandler)
       .get('/html/index.html')
-      .expect(200, content);
+      .expect(200, 'Hello');
   });
 
   it('allows cors', async () => {
