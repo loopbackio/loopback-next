@@ -27,6 +27,8 @@ import {
   OperationRetval,
 } from '../types';
 
+import {RestBindings} from '../keys';
+
 import {ControllerSpec} from '@loopback/openapi-v3';
 
 import * as assert from 'assert';
@@ -71,6 +73,8 @@ export interface RestRouter {
    * @returns The resolved route, if not found, `undefined` is returned
    */
   find(request: Request): ResolvedRoute | undefined;
+
+  getStaticAssetsRouter(): ResolvedRoute;
 
   /**
    * List all routes
@@ -181,10 +185,8 @@ export class RoutingTable {
       return found;
     }
 
-    debug('No route found for %s %s', request.method, request.path);
-    throw new HttpErrors.NotFound(
-      `Endpoint "${request.method} ${request.path}" not found.`,
-    );
+    const staticAssetsRouter = this._router.getStaticAssetsRouter();
+    return staticAssetsRouter;
   }
 }
 
@@ -239,6 +241,31 @@ export interface ResolvedRoute extends RouteEntry {
   readonly schemas: SchemasObject;
 }
 
+export class StaticRoute implements RouteEntry {
+  public readonly verb: string = 'get';
+  public readonly path: string = '*';
+  public readonly spec: OperationObject = {responses: {}};
+
+  constructor(private _handler: Function) {}
+
+  updateBindings(requestContext: Context): void {
+    // no-op
+  }
+
+  async invokeHandler(
+    requestContext: Context,
+    args: OperationArgs,
+  ): Promise<OperationRetval> {
+    const req = await requestContext.get(RestBindings.Http.REQUEST);
+    const res = await requestContext.get(RestBindings.Http.RESPONSE);
+    return this._handler(req, res);
+  }
+
+  describe(): string {
+    return 'final route to handle static assets';
+  }
+}
+
 /**
  * Base implementation of RouteEntry
  */
@@ -291,7 +318,7 @@ export class Route extends BaseRoute {
     verb: string,
     path: string,
     public readonly spec: OperationObject,
-    protected readonly _handler: Function,
+    protected readonly _handler: Function, // <-- doesn't this Function have a signature?
   ) {
     super(verb, path, spec);
   }

@@ -49,6 +49,11 @@ export abstract class BaseRouter implements RestRouter {
     else return this.findRouteWithPathVars(request);
   }
 
+  getStaticAssetsRouter() {
+    const route = this.routesWithoutPathVars['/get/*'];
+    return createResolvedRoute(route, {});
+  }
+
   list() {
     let routes = Object.values(this.routesWithoutPathVars);
     routes = routes.concat(this.listRoutesWithPathVars());
