@@ -33,6 +33,7 @@ import {
   Route,
   RouteEntry,
   RoutingTable,
+  StaticRoute,
 } from './router/routing-table';
 
 import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
@@ -46,6 +47,7 @@ import {
   Send,
 } from './types';
 import {ServerOptions} from 'https';
+import * as HttpErrors from 'http-errors';
 
 const debug = require('debug')('loopback:rest:server');
 
@@ -190,6 +192,25 @@ export class RestServer extends Context implements Server, HttpServerLike {
     this._setupRequestHandler();
 
     this.bind(RestBindings.HANDLER).toDynamicValue(() => this.httpHandler);
+
+    // LB4's static assets serving router
+    const staticAssetsRouter = new StaticRoute(
+      (req: Request, res: Response) => {
+        return new Promise((resolve, reject) => {
+          const onFinished = () => resolve();
+          res.once('finish', onFinished);
+          this._routerForStaticAssets.handle(req, res, (err: Error) => {
+            if (err) {
+              return reject(err);
+            }
+            // Express router called next, which means no route was matched
+            return reject(new HttpErrors.NotFound());
+          });
+        });
+      },
+    );
+
+    this.httpHandler.registerRoute(staticAssetsRouter);
   }
 
   protected _setupRequestHandler() {
@@ -243,7 +264,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
   protected _setupRouterForStaticAssets() {
     if (!this._routerForStaticAssets) {
       this._routerForStaticAssets = express.Router();
-      this._expressApp.use(this._routerForStaticAssets);
     }
   }
 
@@ -631,12 +651,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * @param options Options for serve-static
    */
   static(path: PathParams, rootDir: string, options?: ServeStaticOptions) {
-    const re = pathToRegExp(path, [], {end: false});
-    if (re.test('/')) {
-      throw new Error(
-        'Static assets cannot be mount to "/" to avoid performance penalty.',
-      );
-    }
     this._routerForStaticAssets.use(path, express.static(rootDir, options));
   }
 
