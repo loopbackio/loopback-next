@@ -14,3 +14,4 @@ export * from './datasource';
 export * from './model';
 export * from './query';
 export * from './type-resolver';
+export * from './relations';
