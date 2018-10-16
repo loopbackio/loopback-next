@@ -17,7 +17,7 @@ import {
   PropertyType,
   RelationDefinitionMap,
 } from '../model';
-import {RELATIONS_KEY} from './relation.decorator';
+import {RELATIONS_KEY} from '../relations/relation.decorator';
 
 export const MODEL_KEY = MetadataAccessor.create<
   Partial<ModelDefinitionSyntax>,

@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {RelationType, RelationMetadata} from '../decorators/relation.decorator';
+import {RelationType, RelationMetadata} from '../relations';
 
 export class InvalidRelationError<Props extends object = {}> extends Error {
   code: string;
