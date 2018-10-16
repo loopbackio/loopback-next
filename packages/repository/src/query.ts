@@ -583,17 +583,21 @@ export class FilterBuilder<MT extends object = AnyObject> {
     } else {
       if (isFilter(constraint)) {
         // throw error if imposed Filter has non-where fields
-        Object.keys(constraint).forEach(key => {
-          if (
-            ['fields', 'order', 'limit', 'skip', 'offset', 'include'].includes(
-              key,
-            )
-          ) {
+        const nonWhereFields = [
+          'fields',
+          'order',
+          'limit',
+          'skip',
+          'offset',
+          'include',
+        ];
+        for (const key of Object.keys(constraint)) {
+          if (nonWhereFields.includes(key)) {
             throw new Error(
               'merging strategy for selection, pagination, and sorting not implemented',
             );
           }
-        });
+        }
       }
       this.filter.where = isFilter(constraint)
         ? new WhereBuilder(this.filter.where).impose(constraint.where!).build()
