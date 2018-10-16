@@ -51,6 +51,7 @@ these steps:
 ```sh
 lb4 model
 ? Model class name: todo
+? Please select the model base class Entity
 
 Let's add a property to Todo
 Enter an empty property name when done
