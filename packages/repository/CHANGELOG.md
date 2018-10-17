@@ -3,20 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.22.0...@loopback/repository@1.0.0) (2018-10-10)
-
-**Note:** Version bump only for package @loopback/repository
-
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.0.0...@loopback/repository@1.0.1) (2018-10-17)
 
 
+### Performance Improvements
 
-
-# [0.22.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.21.2...@loopback/repository@0.22.0) (2018-10-09)
-
-
-### Features
-
-* **repository:** add type safety for query filter/where ([bac050c](https://github.com/strongloop/loopback-next/commit/bac050c))
+* **repository:** prevent multiple array allocation ([691981c](https://github.com/strongloop/loopback-next/commit/691981c))
 
 
 
