@@ -21,13 +21,14 @@ import * as HttpErrors from 'http-errors';
 import {inspect} from 'util';
 
 import {
+  Response,
   Request,
   PathParameterValues,
   OperationArgs,
   OperationRetval,
 } from '../types';
 
-import {RestBindings} from '../keys';
+import * as express from 'express';
 
 import {ControllerSpec} from '@loopback/openapi-v3';
 
@@ -37,6 +38,11 @@ const debug = require('debug')('loopback:rest:routing-table');
 import {CoreBindings} from '@loopback/core';
 import {validateApiPath} from './openapi-path';
 import {TrieRouter} from './trie-router';
+import {RequestContext} from '../request-context';
+
+export interface ExpressRouter extends express.Router {
+  handle: express.RequestHandler;
+}
 
 /**
  * A controller instance with open properties/methods
@@ -74,8 +80,6 @@ export interface RestRouter {
    */
   find(request: Request): ResolvedRoute | undefined;
 
-  getStaticAssetsRouter(): ResolvedRoute;
-
   /**
    * List all routes
    */
@@ -87,6 +91,8 @@ export interface RestRouter {
  */
 export class RoutingTable {
   constructor(private readonly _router: RestRouter = new TrieRouter()) {}
+
+  private _staticAssetsRoute: ResolvedRoute;
 
   /**
    * Register a controller as the route
@@ -154,6 +160,9 @@ export class RoutingTable {
 
     validateApiPath(route.path);
     this._router.add(route);
+    if (route.path === '/*') {
+      this._staticAssetsRoute = createResolvedRoute(route, {});
+    }
   }
 
   describeApiPaths(): PathObject {
@@ -185,8 +194,21 @@ export class RoutingTable {
       return found;
     }
 
-    const staticAssetsRouter = this._router.getStaticAssetsRouter();
-    return staticAssetsRouter;
+    debug(
+      'No API route found for %s %s, trying to find a static asset',
+      request.method,
+      request.path,
+    );
+
+    // this._staticAssetsRoute will be set only if app.static() was called
+    if (this._staticAssetsRoute) {
+      return this._staticAssetsRoute;
+    }
+
+    debug('No static asset found for %s %s', request.method, request.path);
+    throw new HttpErrors.NotFound(
+      `Endpoint "${request.method} ${request.path}" not found.`,
+    );
   }
 }
 
@@ -241,31 +263,6 @@ export interface ResolvedRoute extends RouteEntry {
   readonly schemas: SchemasObject;
 }
 
-export class StaticRoute implements RouteEntry {
-  public readonly verb: string = 'get';
-  public readonly path: string = '*';
-  public readonly spec: OperationObject = {responses: {}};
-
-  constructor(private _handler: Function) {}
-
-  updateBindings(requestContext: Context): void {
-    // no-op
-  }
-
-  async invokeHandler(
-    requestContext: Context,
-    args: OperationArgs,
-  ): Promise<OperationRetval> {
-    const req = await requestContext.get(RestBindings.Http.REQUEST);
-    const res = await requestContext.get(RestBindings.Http.RESPONSE);
-    return this._handler(req, res);
-  }
-
-  describe(): string {
-    return 'final route to handle static assets';
-  }
-}
-
 /**
  * Base implementation of RouteEntry
  */
@@ -298,6 +295,50 @@ export abstract class BaseRoute implements RouteEntry {
   }
 }
 
+export class StaticAssetsRoute implements RouteEntry {
+  public readonly verb: string = 'get';
+  public readonly path: string = '/*';
+  public readonly spec: OperationObject = {
+    description: 'LoopBack static assets route',
+    'x-visibility': 'undocumented',
+    responses: {},
+  };
+  private _handler: Function;
+  constructor(private _routerForStaticAssets: ExpressRouter) {
+    this._handler = (request: Request, response: Response) => {
+      return new Promise((resolve, reject) => {
+        const onFinished = () => resolve();
+        response.once('finish', onFinished);
+        this._routerForStaticAssets.handle(request, response, (err: Error) => {
+          if (err) {
+            reject(err);
+          } else {
+            // Express router called next, which means no route was matched
+            reject(
+              new HttpErrors.NotFound(
+                `Endpoint "${request.method} ${request.path}" not found.`,
+              ),
+            );
+          }
+        });
+      });
+    };
+  }
+  updateBindings(requestContext: Context): void {
+    // no-op
+  }
+  async invokeHandler(
+    requestContext: RequestContext,
+    args: OperationArgs,
+  ): Promise<OperationRetval> {
+    const {request, response} = requestContext;
+    return this._handler(request, response);
+  }
+  describe(): string {
+    return 'final route to handle static assets';
+  }
+}
+
 export function createResolvedRoute(
   route: RouteEntry,
   pathParams: PathParameterValues,
@@ -318,7 +359,7 @@ export class Route extends BaseRoute {
     verb: string,
     path: string,
     public readonly spec: OperationObject,
-    protected readonly _handler: Function, // <-- doesn't this Function have a signature?
+    protected readonly _handler: Function,
   ) {
     super(verb, path, spec);
   }

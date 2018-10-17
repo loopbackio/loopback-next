@@ -18,7 +18,6 @@ import * as express from 'express';
 import {PathParams} from 'express-serve-static-core';
 import {IncomingMessage, ServerResponse} from 'http';
 import {safeDump} from 'js-yaml';
-import * as pathToRegExp from 'path-to-regexp';
 import {ServeStaticOptions} from 'serve-static';
 import {HttpHandler} from './http-handler';
 import {RestBindings} from './keys';
@@ -33,7 +32,7 @@ import {
   Route,
   RouteEntry,
   RoutingTable,
-  StaticRoute,
+  StaticAssetsRoute,
 } from './router/routing-table';
 
 import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
@@ -47,7 +46,6 @@ import {
   Send,
 } from './types';
 import {ServerOptions} from 'https';
-import * as HttpErrors from 'http-errors';
 
 const debug = require('debug')('loopback:rest:server');
 
@@ -58,6 +56,10 @@ export type HttpRequestListener = (
 
 export interface HttpServerLike {
   requestHandler: HttpRequestListener;
+}
+
+interface ExpressRouter extends express.Router {
+  handle: express.RequestHandler;
 }
 
 const SequenceActions = RestBindings.SequenceActions;
@@ -129,7 +131,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
   protected _httpServer: HttpServer | undefined;
 
   protected _expressApp: express.Application;
-  protected _routerForStaticAssets: express.Router;
+  protected _routerForStaticAssets: ExpressRouter;
 
   get listening(): boolean {
     return this._httpServer ? this._httpServer.listening : false;
@@ -192,25 +194,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
     this._setupRequestHandler();
 
     this.bind(RestBindings.HANDLER).toDynamicValue(() => this.httpHandler);
-
-    // LB4's static assets serving router
-    const staticAssetsRouter = new StaticRoute(
-      (req: Request, res: Response) => {
-        return new Promise((resolve, reject) => {
-          const onFinished = () => resolve();
-          res.once('finish', onFinished);
-          this._routerForStaticAssets.handle(req, res, (err: Error) => {
-            if (err) {
-              return reject(err);
-            }
-            // Express router called next, which means no route was matched
-            return reject(new HttpErrors.NotFound());
-          });
-        });
-      },
-    );
-
-    this.httpHandler.registerRoute(staticAssetsRouter);
   }
 
   protected _setupRequestHandler() {
@@ -238,9 +221,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
     };
     this._expressApp.use(cors(corsOptions));
 
-    // Place the assets router here before controllers
-    this._setupRouterForStaticAssets();
-
     // Set up endpoints for OpenAPI spec/ui
     this._setupOpenApiSpecEndpoints();
 
@@ -255,6 +235,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
         this._onUnhandledError(req, res, err);
       },
     );
+
+    // LB4's static assets serving router
+    this._setupRouterForStaticAssets();
   }
 
   /**
@@ -263,7 +246,13 @@ export class RestServer extends Context implements Server, HttpServerLike {
    */
   protected _setupRouterForStaticAssets() {
     if (!this._routerForStaticAssets) {
-      this._routerForStaticAssets = express.Router();
+      this._routerForStaticAssets = express.Router() as ExpressRouter;
+
+      const staticAssetsRouter = new StaticAssetsRoute(
+        this._routerForStaticAssets,
+      );
+
+      this.route(staticAssetsRouter);
     }
   }
 
@@ -646,7 +635,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * See https://expressjs.com/en/4x/api.html#express.static
    * @param path The path(s) to serve the asset.
    * See examples at https://expressjs.com/en/4x/api.html#path-examples
-   * To avoid performance penalty, `/` is not allowed for now.
    * @param rootDir The root directory from which to serve static assets
    * @param options Options for serve-static
    */
