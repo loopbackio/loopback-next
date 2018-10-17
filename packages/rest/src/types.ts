@@ -77,6 +77,16 @@ export type LogError = (
 ) => void;
 
 // tslint:disable:no-any
+
+/**
+ * Options for request body parsing
+ */
+export type RequestBodyParserOptions = {
+  limit?: number;
+  encoding?: string;
+  [property: string]: any;
+};
+
 export type PathParameterValues = {[key: string]: any};
 export type OperationArgs = any[];
 

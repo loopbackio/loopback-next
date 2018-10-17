@@ -7,7 +7,6 @@ import {
   HttpHandler,
   DefaultSequence,
   writeResultToResponse,
-  parseOperationArgs,
   RestBindings,
   FindRouteProvider,
   InvokeMethodProvider,
@@ -21,6 +20,7 @@ import {ParameterObject, RequestBodyObject} from '@loopback/openapi-v3-types';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 import {createUnexpectedHttpErrorLogger} from '../helpers';
 import * as express from 'express';
+import {ParseParamsProvider} from '../../src';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -279,6 +279,7 @@ describe('HttpHandler', () => {
         });
     });
 
+    let bodyParamControllerInvoked = false;
     it('rejects over-limit request form body', () => {
       logErrorsExcept(413);
       return client
@@ -292,11 +293,8 @@ describe('HttpHandler', () => {
             statusCode: 413,
           },
         })
-        .catch(err => {
-          // The server side can close the socket before the client
-          // side can send out all data
-          if (err && err.code !== 'EPIPE') throw err;
-        });
+        .catch(catchEpipeError)
+        .then(() => expect(bodyParamControllerInvoked).be.false());
     });
 
     it('rejects over-limit request json body', () => {
@@ -312,12 +310,29 @@ describe('HttpHandler', () => {
             statusCode: 413,
           },
         })
-        .catch(err => {
-          // The server side can close the socket before the client
-          // side can send out all data
-          if (err && err.code !== 'EPIPE') throw err;
-        });
+        .catch(catchEpipeError)
+        .then(() => expect(bodyParamControllerInvoked).be.false());
     });
+
+    it('allows customization of request body parser options', () => {
+      const body = {key: givenLargeRequest()};
+      rootContext
+        .bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS)
+        .to({limit: 4 * 1024 * 1024}); // Set limit to 4MB
+      return client
+        .post('/show-body')
+        .set('content-type', 'application/json')
+        .send(body)
+        .expect(200, body);
+    });
+
+    function catchEpipeError(err: HttpErrors.HttpError) {
+      // The server side can close the socket before the client
+      // side can send out all data. For example, `response.end()`
+      // is called before all request data has been processed due
+      // to size limit
+      if (err && err.code !== 'EPIPE') throw err;
+    }
 
     function givenLargeRequest() {
       const data = Buffer.alloc(2 * 1024 * 1024, 'A', 'utf-8');
@@ -325,6 +340,7 @@ describe('HttpHandler', () => {
     }
 
     function givenBodyParamController() {
+      bodyParamControllerInvoked = false;
       const spec = anOpenApiSpec()
         .withOperation('post', '/show-body', {
           'x-operation-name': 'showBody',
@@ -354,6 +370,7 @@ describe('HttpHandler', () => {
 
       class RouteParamController {
         async showBody(data: Object): Promise<Object> {
+          bodyParamControllerInvoked = true;
           return data;
         }
       }
@@ -524,7 +541,9 @@ describe('HttpHandler', () => {
   function givenHandler() {
     rootContext = new Context();
     rootContext.bind(SequenceActions.FIND_ROUTE).toProvider(FindRouteProvider);
-    rootContext.bind(SequenceActions.PARSE_PARAMS).to(parseOperationArgs);
+    rootContext
+      .bind(SequenceActions.PARSE_PARAMS)
+      .toProvider(ParseParamsProvider);
     rootContext
       .bind(SequenceActions.INVOKE_METHOD)
       .toProvider(InvokeMethodProvider);

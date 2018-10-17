@@ -19,7 +19,12 @@ import {promisify} from 'util';
 import {coerceParameter} from './coercion/coerce-parameter';
 import {RestHttpErrors} from './index';
 import {ResolvedRoute} from './router/routing-table';
-import {OperationArgs, PathParameterValues, Request} from './types';
+import {
+  OperationArgs,
+  PathParameterValues,
+  Request,
+  RequestBodyParserOptions,
+} from './types';
 import {validateRequestBody} from './validation/request-body.validator';
 
 type HttpError = HttpErrors.HttpError;
@@ -29,21 +34,21 @@ const debug = debugModule('loopback:rest:parser');
 export const QUERY_NOT_PARSED = {};
 Object.freeze(QUERY_NOT_PARSED);
 
+// tslint:disable:no-any
 type RequestBody = {
-  // tslint:disable-next-line:no-any
   value: any | undefined;
   coercionRequired?: boolean;
 };
 
-// tslint:disable-next-line:no-any
-const parseJsonBody: (req: IncomingMessage) => Promise<any> = promisify(
-  require('body/json'),
-);
+const parseJsonBody: (
+  req: IncomingMessage,
+  options: {},
+) => Promise<any> = promisify(require('body/json'));
 
-// tslint:disable-next-line:no-any
-const parseFormBody: (req: IncomingMessage) => Promise<any> = promisify(
-  require('body/form'),
-);
+const parseFormBody: (
+  req: IncomingMessage,
+  options: {},
+) => Promise<any> = promisify(require('body/form'));
 
 /**
  * Get the content-type header value from the request
@@ -70,11 +75,12 @@ function getContentType(req: Request): string | undefined {
 export async function parseOperationArgs(
   request: Request,
   route: ResolvedRoute,
+  options: RequestBodyParserOptions = {},
 ): Promise<OperationArgs> {
   debug('Parsing operation arguments for route %s', route.describe());
   const operationSpec = route.spec;
   const pathParams = route.pathParams;
-  const body = await loadRequestBodyIfNeeded(operationSpec, request);
+  const body = await loadRequestBodyIfNeeded(operationSpec, request, options);
   return buildOperationArguments(
     operationSpec,
     request,
@@ -87,8 +93,11 @@ export async function parseOperationArgs(
 async function loadRequestBodyIfNeeded(
   operationSpec: OperationObject,
   request: Request,
+  options: RequestBodyParserOptions = {},
 ): Promise<RequestBody> {
   if (!operationSpec.requestBody) return Promise.resolve({value: undefined});
+
+  debug('Request body parser options: %j', options);
 
   const contentType = getContentType(request);
   debug('Loading request body with content type %j', contentType);
@@ -97,13 +106,15 @@ async function loadRequestBodyIfNeeded(
     contentType &&
     contentType.startsWith('application/x-www-form-urlencoded')
   ) {
-    const body = await parseFormBody(request).catch((err: HttpError) => {
-      debug('Cannot parse request body %j', err);
-      if (!err.statusCode || err.statusCode >= 500) {
-        err.statusCode = 400;
-      }
-      throw err;
-    });
+    const body = await parseFormBody(request, options).catch(
+      (err: HttpError) => {
+        debug('Cannot parse request body %j', err);
+        if (!err.statusCode || err.statusCode >= 500) {
+          err.statusCode = 400;
+        }
+        throw err;
+      },
+    );
     // form parser returns an object with prototype
     return {
       value: Object.assign({}, body),
@@ -117,13 +128,15 @@ async function loadRequestBodyIfNeeded(
     );
   }
 
-  const jsonBody = await parseJsonBody(request).catch((err: HttpError) => {
-    debug('Cannot parse request body %j', err);
-    if (!err.statusCode || err.statusCode >= 500) {
-      err.statusCode = 400;
-    }
-    throw err;
-  });
+  const jsonBody = await parseJsonBody(request, options).catch(
+    (err: HttpError) => {
+      debug('Cannot parse request body %j', err);
+      if (!err.statusCode || err.statusCode >= 500) {
+        err.statusCode = 400;
+      }
+      throw err;
+    },
+  );
   return {value: jsonBody};
 }
 
