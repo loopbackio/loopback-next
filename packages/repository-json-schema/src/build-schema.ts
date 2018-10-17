@@ -121,6 +121,12 @@ export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
     Object.assign(propDef, {$ref: `#/definitions/${resolvedType.name}`});
   }
 
+  if (meta.description) {
+    Object.assign(propDef, {
+      description: meta.description,
+    });
+  }
+
   return result;
 }
 

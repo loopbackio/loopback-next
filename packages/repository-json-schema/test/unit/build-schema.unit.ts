@@ -162,5 +162,12 @@ describe('build-schema', () => {
         items: {$ref: '#/definitions/CustomType'},
       });
     });
+
+    it('keeps description on property', () => {
+      expect(metaToJsonProperty({type: String, description: 'test'})).to.eql({
+        type: 'string',
+        description: 'test',
+      });
+    });
   });
 });
