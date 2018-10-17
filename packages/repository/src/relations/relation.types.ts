@@ -70,12 +70,26 @@ export interface BelongsToDefinition extends RelationDefinitionBase {
   keyTo?: string;
 }
 
+export interface HasOneDefinition extends RelationDefinitionBase {
+  type: RelationType.hasOne;
+
+  /**
+   * The foreign key used by the target model.
+   *
+   * E.g. when a Customer has many Order instances, then keyTo is "customerId".
+   * Note that "customerId" is the default FK assumed by the framework, users
+   * can provide a custom FK name by setting "keyTo".
+   */
+  keyTo?: string;
+}
+
 /**
  * A union type describing all possible Relation metadata objects.
  */
 export type RelationMetadata =
   | HasManyDefinition
   | BelongsToDefinition
+  | HasOneDefinition
   // TODO(bajtos) add other relation types and remove RelationDefinitionBase once
   // all relation types are covered.
   | RelationDefinitionBase;

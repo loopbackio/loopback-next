@@ -125,7 +125,7 @@ describe('model decorator', () => {
     @hasMany(() => Order)
     orders?: Order[];
 
-    @hasOne()
+    @hasOne(() => Order)
     lastOrder?: Order;
 
     @relation({type: RelationType.hasMany})

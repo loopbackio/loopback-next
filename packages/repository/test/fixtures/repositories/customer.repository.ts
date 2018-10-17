@@ -10,8 +10,10 @@ import {
   juggler,
   repository,
 } from '../../..';
-import {Customer, Order} from '../models';
+import {Customer, Order, Address} from '../models';
 import {OrderRepository} from './order.repository';
+import {HasOneRepositoryFactory} from '../../../src';
+import {AddressRepository} from './address.repository';
 
 export class CustomerRepository extends DefaultCrudRepository<
   Customer,
@@ -21,15 +23,25 @@ export class CustomerRepository extends DefaultCrudRepository<
     Order,
     typeof Customer.prototype.id
   >;
+  public readonly address: HasOneRepositoryFactory<
+    Address,
+    typeof Customer.prototype.id
+  >;
   constructor(
     @inject('datasources.db') protected db: juggler.DataSource,
     @repository.getter('OrderRepository')
     orderRepositoryGetter: Getter<OrderRepository>,
+    @repository.getter('AddressRepository')
+    addressRepositoryGetter: Getter<AddressRepository>,
   ) {
     super(Customer, db);
     this.orders = this._createHasManyRepositoryFactoryFor(
       'orders',
       orderRepositoryGetter,
+    );
+    this.address = this._createHasOneRepositoryFactoryFor(
+      'address',
+      addressRepositoryGetter,
     );
   }
 }
