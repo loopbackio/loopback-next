@@ -93,7 +93,14 @@ describe('model decorator', () => {
     @property({type: 'string', id: true, generated: true})
     id: string;
 
-    @belongsTo(() => Customer)
+    @belongsTo(
+      () => Customer,
+      {},
+      {
+        id: false,
+        generated: true,
+      },
+    )
     customerId: string;
 
     // Validates that property no longer requires a parameter
@@ -125,7 +132,7 @@ describe('model decorator', () => {
     @hasMany(() => Order)
     orders?: Order[];
 
-    @hasOne()
+    @hasOne(() => Order)
     lastOrder?: Order;
 
     @relation({type: RelationType.hasMany})
@@ -286,14 +293,30 @@ describe('model decorator', () => {
     expect(relationDef.target()).to.be.exactly(Customer);
   });
 
+  it('passes property metadata from belongsTo', () => {
+    const propMeta =
+      MetadataInspector.getAllPropertyMetadata(
+        MODEL_PROPERTIES_KEY,
+        Order.prototype,
+      ) || /* istanbul ignore next */ {};
+
+    expect(propMeta.customerId).to.containEql({
+      id: false,
+      generated: true,
+    });
+  });
+
   it('adds hasOne metadata', () => {
     const meta =
       MetadataInspector.getAllPropertyMetadata(
         RELATIONS_KEY,
         Customer.prototype,
       ) || /* istanbul ignore next */ {};
-    expect(meta.lastOrder).to.eql({
+    expect(meta.lastOrder).to.containEql({
       type: RelationType.hasOne,
+      name: 'lastOrder',
+      target: () => Order,
+      source: Customer,
     });
   });
 
