@@ -25,6 +25,9 @@ import {
   createHasManyRepositoryFactory,
   BelongsToAccessor,
   createBelongsToAccessor,
+  createHasOneRepositoryFactory,
+  HasOneDefinition,
+  HasOneRepositoryFactory,
 } from '../relations';
 import {resolveType} from '../type-resolver';
 import {EntityCrudRepository} from './repository';
@@ -193,6 +196,21 @@ export class DefaultCrudRepository<T extends Entity, ID>
       meta as BelongsToDefinition,
       targetRepoGetter,
       this,
+    );
+  }
+
+  protected _createHasOneRepositoryFactoryFor<
+    Target extends Entity,
+    TargetID,
+    ForeignKeyType
+  >(
+    relationName: string,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+  ): HasOneRepositoryFactory<Target, ForeignKeyType> {
+    const meta = this.entityClass.definition.relations[relationName];
+    return createHasOneRepositoryFactory<Target, TargetID, ForeignKeyType>(
+      meta as HasOneDefinition,
+      targetRepoGetter,
     );
   }
 
