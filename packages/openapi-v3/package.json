@@ -1,6 +1,6 @@
 {
   "name": "@loopback/openapi-v3",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Processes openapi v3 related metadata",
   "engines": {
     "node": ">=8.9"
@@ -8,7 +8,7 @@
   "devDependencies": {
     "@loopback/build": "^1.0.0",
     "@loopback/openapi-spec-builder": "^1.0.0",
-    "@loopback/repository": "^1.0.0",
+    "@loopback/repository": "^1.0.1",
     "@loopback/testlab": "^1.0.0",
     "@types/debug": "0.0.30",
     "@types/lodash": "^4.14.106",
@@ -50,7 +50,7 @@
   "dependencies": {
     "@loopback/context": "^1.0.0",
     "@loopback/openapi-v3-types": "^1.0.0",
-    "@loopback/repository-json-schema": "^1.0.0",
+    "@loopback/repository-json-schema": "^1.0.1",
     "debug": "^4.0.1",
     "lodash": "^4.17.5"
   }

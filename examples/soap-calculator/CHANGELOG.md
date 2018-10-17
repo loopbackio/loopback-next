@@ -3,20 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@0.5.1...@loopback/example-soap-calculator@1.0.0) (2018-10-10)
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@1.0.0...@loopback/example-soap-calculator@1.0.1) (2018-10-17)
 
 **Note:** Version bump only for package @loopback/example-soap-calculator
-
-
-
-
-
-## [0.5.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@0.5.0...@loopback/example-soap-calculator@0.5.1) (2018-10-09)
-
-
-### Bug Fixes
-
-* **example-soap-calculator:** fix decreased coverage on accpetance test ([214560c](https://github.com/strongloop/loopback-next/commit/214560c))
 
 
 
