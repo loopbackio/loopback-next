@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {AnyObject, DataObject, Options} from './common-types';
-import {RelationMetadata} from './decorators/relation.decorator';
+import {RelationMetadata} from './relations';
 import {TypeResolver} from './type-resolver';
 import {Type} from './types';
 

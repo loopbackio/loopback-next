@@ -22,7 +22,7 @@ name, type, and other constraints.
 Models are used for data exchange on the wire or between different systems.
 
 For more information about Models and how they are used in LoopBack, see
-[Models](https://loopback.io/doc/en/lb4/todo-tutorial-model.html).
+[Models](https://loopback.io/doc/en/lb4/Model.html).
 
 > **NOTE:** LoopBack 3 treated models as the "center" of operations; in LoopBack
 > 4, that is no longer the case. While LoopBack 4 provides many of the helper
@@ -36,13 +36,12 @@ let you label tasks so that you can distinguish between them, add extra
 information to describe those tasks, and finally, provide a way of tracking
 whether or not they're complete.
 
-For our Todo model to represent our Todo instances for our business domain, it
-will need:
+The to-do model has the following properties:
 
-- a unique id
-- a title
-- a description that details what the todo is all about
-- a boolean flag for whether or not we've completed the task
+- `id`: a unique id
+- `title`: a title
+- `desc`: a description that details the specific task to be accomplished
+- `isComplete`: a boolean flag for whether or not we’ve completed the task
 
 We can use the `lb4 model` command and answer the prompts to generate the model
 for us. Press `return` with an empty property name to generate the model. Follow
@@ -51,14 +50,15 @@ these steps:
 ```sh
 lb4 model
 ? Model class name: todo
+? Please select the model base class: Entity
 
 Let's add a property to Todo
 Enter an empty property name when done
 
 ? Enter the property name: id
 ? Property type: number
-? Is ID field? Yes
-? Required?: No
+? Is id the ID property? Yes
+? Is it required?: No
 ? Default value [leave blank for none]:
 
 Let's add another property to Todo
@@ -66,7 +66,7 @@ Enter an empty property name when done
 
 ? Enter the property name: title
 ? Property type: string
-? Required?: Yes
+? Is it required?: Yes
 ? Default value [leave blank for none]:
 
 Let's add another property to Todo
@@ -74,7 +74,7 @@ Enter an empty property name when done
 
 ? Enter the property name: desc
 ? Property type: string
-? Required?: No
+? Is it required?: No
 ? Default value [leave blank for none]:
 
 Let's add another property to Todo
@@ -82,7 +82,7 @@ Enter an empty property name when done
 
 ? Enter the property name: isComplete
 ? Property type: boolean
-? Required?: No
+? Is it required?: No
 ? Default value [leave blank for none]:
 
 Let's add another property to Todo

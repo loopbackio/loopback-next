@@ -65,7 +65,7 @@ describe('lb4 model integration', () => {
       testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {excludeKeyword: true}),
+          testUtils.givenLBProject(SANDBOX_PATH, {excludeKeyword: false}),
         )
         .withArguments('myNewModel --base InvalidModel'),
     ).to.be.rejectedWith(/Model was not found in/);

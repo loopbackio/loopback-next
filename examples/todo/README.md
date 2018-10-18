@@ -5,7 +5,8 @@ This is the basic tutorial for getting started with Loopback 4!
 ## Overview
 
 This tutorial demonstrates how to create a basic API for a todo list using
-LoopBack 4.
+LoopBack 4. You will experience how you can create REST APIs with just
+[5 steps](#steps).
 
 ![todo-tutorial-overview](https://loopback.io/pages/en/lb4/imgs/todo-overview.png)
 
