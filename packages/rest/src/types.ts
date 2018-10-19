@@ -6,6 +6,7 @@
 import {Binding, BoundValue} from '@loopback/context';
 import {ResolvedRoute, RouteEntry} from './router/routing-table';
 import {Request, Response} from 'express';
+import {File} from 'multiparty';
 
 export {Request, Response};
 
@@ -100,3 +101,11 @@ export type OperationRetval = any;
 
 export type GetFromContext = (key: string) => Promise<BoundValue>;
 export type BindElement = (key: string) => Binding;
+
+export {File};
+export interface FileArray {
+  /*
+   * the file arrays
+   */
+  file?: File[];
+}
