@@ -26,6 +26,7 @@ import {
   RequestBodyParserOptions,
 } from './types';
 import {validateRequestBody} from './validation/request-body.validator';
+import {Form} from 'multiparty';
 
 type HttpError = HttpErrors.HttpError;
 
@@ -90,6 +91,19 @@ export async function parseOperationArgs(
   );
 }
 
+async function parseMultiParty(request: IncomingMessage, options: any) {
+  return new Promise((resolve, reject) => {
+    const form = new Form(options);
+
+    form.parse(request, function (error: Error, fields: any, files: any) {
+      if (error) {
+        return reject(error);
+      }
+      resolve({...fields, files: files});
+    });
+  });
+}
+
 async function loadRequestBodyIfNeeded(
   operationSpec: OperationObject,
   request: Request,
@@ -101,6 +115,26 @@ async function loadRequestBodyIfNeeded(
 
   const contentType = getContentType(request);
   debug('Loading request body with content type %j', contentType);
+
+  if (
+    contentType &&
+    contentType.startsWith('multipart/form-data')
+  ) {
+    const body = await parseMultiParty(request, options).catch(
+      (err: HttpError) => {
+        debug('Cannot parse request body %j', err);
+        if (!err.statusCode || err.statusCode >= 500) {
+          err.statusCode = 400;
+        }
+        throw err;
+      },
+    );
+    // form parser returns an object with prototype
+    return {
+      value: Object.assign({}, body),
+      coercionRequired: true,
+    };
+  }
 
   if (
     contentType &&
