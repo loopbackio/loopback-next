@@ -125,5 +125,5 @@ To summarize:
 - Watch out for integration points that are not covered by unit-tests and add
   integration tests to verify your units work well together.
 
-See [Testing Your Application](Testing-Your-application.md) for a reference
+See [Testing Your Application](Testing-your-application.md) for a reference
 manual on automated tests.
