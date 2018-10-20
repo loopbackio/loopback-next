@@ -100,7 +100,7 @@ async function parseMultiParty(request: IncomingMessage, options: any) {
         return reject(error);
       }
 
-      let json: { [key: string]: any } = {};
+      const json: any = {};
       for (const key of Object.keys(fields)) {
         const value = fields[key];
 
