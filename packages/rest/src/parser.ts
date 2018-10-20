@@ -99,7 +99,18 @@ async function parseMultiParty(request: IncomingMessage, options: any) {
       if (error) {
         return reject(error);
       }
-      resolve({...fields, files: files});
+
+      let json: { [key: string]: any } = {};
+      for (const key of Object.keys(fields)) {
+        const value = fields[key];
+
+        if (value instanceof Array) {
+          json[key] = value[0];
+        } else {
+          json[key] = value;
+        }
+      }
+      resolve({...json, files: files});
     });
   });
 }
