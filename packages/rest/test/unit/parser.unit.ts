@@ -21,9 +21,115 @@ import {
   Request,
   RestHttpErrors,
   Route,
+  File,
 } from '../..';
 
 describe('operationArgsParser', () => {
+  it('parses body parameter for multipart form data with simple types', async () => {
+    const req = givenRequest({
+      url: '/',
+      headers: {
+        'Content-Type': 'multipart/form-data; boundary=--------------------------961406998938770617032718',
+      },
+      payload: '----------------------------961406998938770617032718\r\n'
+        + 'Content-Disposition: form-data; name="key1"\r\n\r\n' + 'value\r\n'
+        + '----------------------------961406998938770617032718\r\n'
+        + 'Content-Disposition: form-data; name="key2"\r\n\r\n' + '1\r\n'
+        + '----------------------------961406998938770617032718\r\n'
+        + 'Content-Disposition: form-data; name="key3"\r\n\r\n' + 'true\r\n'
+        + '----------------------------961406998938770617032718--\r\n',
+    });
+
+    const spec = givenOperationWithRequestBody({
+      description: 'data',
+      content: {
+        'multipart/form-data': {
+          schema: {
+            type: 'object',
+            properties: {
+              key1: {type: 'string'},
+              key2: {type: 'number'},
+              key3: {type: 'boolean'},
+              files: {type: 'object'},
+            },
+          },
+        },
+      },
+    });
+    const route = givenResolvedRoute(spec);
+
+    const args = await parseOperationArgs(req, route);
+
+    expect(args).to.eql([{key1: 'value', key2: 1, key3: true, files: {}}]);
+  });
+
+  it('parses body parameter for multipart form data with text file', async () => {
+    const req = givenRequest({
+      url: '/',
+      headers: {
+        'Content-Type': 'multipart/form-data; boundary=--------------------------961406998938770617032718',
+      },
+      payload: '----------------------------961406998938770617032718\r\n'
+        + 'Content-Disposition: form-data; name="key1"\r\n\r\n' + 'value\r\n'
+        + '----------------------------961406998938770617032718\r\n'
+        + 'Content-Disposition: form-data; name="key2"\r\n\r\n' + '1\r\n'
+        + '----------------------------961406998938770617032718\r\n'
+        + 'Content-Disposition: form-data; name="key3"\r\n\r\n' + 'true\r\n'
+        + '----------------------------961406998938770617032718\r\n'
+        + 'Content-Disposition: form-data; name=""; filename="HelloWorld.txt"\r\n'
+        + 'Content-Type: text/plain\r\n\r\n'
+        + 'Hello, LoopBack v4\r\n\r\n'
+        + '----------------------------961406998938770617032718--\r\n',
+    });
+
+    const spec = givenOperationWithRequestBody({
+      description: 'data',
+      content: {
+        'multipart/form-data': {
+          schema: {
+            type: 'object',
+            properties: {
+              key1: {type: 'string'},
+              key2: {type: 'number'},
+              key3: {type: 'boolean'},
+              files: {type: 'object'},
+            },
+          },
+        },
+      },
+    });
+    const route = givenResolvedRoute(spec);
+
+    const args = await parseOperationArgs(req, route);
+
+    const { files } = args[0];
+    const fileArray = files['null'];
+
+    // exclude testing file path.
+    if (fileArray) {
+      fileArray.forEach(async function(file: File) {
+        file['path'] = '';
+      });
+    }
+
+    const testFiles = {
+      'null': [
+        {
+          fieldName: null,
+          originalFilename: 'HelloWorld.txt',
+          path: '',
+          headers: {
+            'content-disposition': 'form-data; name=""; filename="HelloWorld.txt"',
+            'content-type': 'text/plain',
+          },
+          size: 20,
+        },
+      ],
+    };
+
+    expect(args).to.eql([{key1: 'value', key2: 1, key3: true, files: testFiles}]);
+  });
+
   it('parses path parameters', async () => {
     const req = givenRequest();
     const spec = givenOperationWithParameters([
