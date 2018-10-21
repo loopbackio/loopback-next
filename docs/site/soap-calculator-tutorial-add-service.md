@@ -128,7 +128,7 @@ And finally implement the value() method required by the Provider class.
 
 ```ts
   value(): Promise<CalculatorService> {
-    return getService(this.datasource);
+    return getService(this.dataSource);
   }
 }
 ```
