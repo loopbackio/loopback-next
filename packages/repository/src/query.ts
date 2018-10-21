@@ -13,6 +13,17 @@ import * as assert from 'assert';
 
 // tslint:disable:no-any
 
+const nonWhereFields = [
+  'fields',
+  'order',
+  'limit',
+  'skip',
+  'offset',
+  'include',
+];
+
+const filterFields = ['where', ...nonWhereFields];
+
 /**
  * Operators for where clauses
  */
@@ -208,15 +219,6 @@ export function isFilter<MT extends object>(
   candidate: any,
 ): candidate is Filter<MT> {
   if (typeof candidate !== 'object') return false;
-  const filterFields = [
-    'where',
-    'fields',
-    'order',
-    'limit',
-    'skip',
-    'offset',
-    'include',
-  ];
   for (const key in candidate) {
     if (!filterFields.includes(key)) {
       return false;
@@ -583,14 +585,6 @@ export class FilterBuilder<MT extends object = AnyObject> {
     } else {
       if (isFilter(constraint)) {
         // throw error if imposed Filter has non-where fields
-        const nonWhereFields = [
-          'fields',
-          'order',
-          'limit',
-          'skip',
-          'offset',
-          'include',
-        ];
         for (const key of Object.keys(constraint)) {
           if (nonWhereFields.includes(key)) {
             throw new Error(
