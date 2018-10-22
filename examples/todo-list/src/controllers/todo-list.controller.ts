@@ -105,7 +105,7 @@ export class TodoListController {
   })
   async updateById(
     @param.path.number('id') id: number,
-    @requestBody() obj: TodoList,
+    @requestBody() obj: Partial<TodoList>,
   ): Promise<void> {
     await this.todoListRepository.updateById(id, obj);
   }

@@ -168,7 +168,7 @@ export class TodoController {
     },
   })
   async updateAll(
-    @requestBody() data: Todo,
+    @requestBody() data: Partial<Todo>,
     @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where,
   ): Promise<number> {
     return await this.todoRepository.updateAll(data, where);
@@ -195,7 +195,7 @@ export class TodoController {
   })
   async updateById(
     @param.path.number('id') id: number,
-    @requestBody() data: Todo,
+    @requestBody() data: Partial<Todo>,
   ): Promise<void> {
     await this.todoRepository.updateById(id, data);
   }

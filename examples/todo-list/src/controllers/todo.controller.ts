@@ -88,7 +88,7 @@ export class TodoController {
   })
   async updateTodo(
     @param.path.number('id') id: number,
-    @requestBody() todo: Todo,
+    @requestBody() todo: Partial<Todo>,
   ): Promise<void> {
     await this.todoRepo.updateById(id, todo);
   }
