@@ -86,6 +86,27 @@ describe('RestServer.getApiSpec()', () => {
     });
   });
 
+  it('ignores routes marked as "x-visibility" via app.route(route)', () => {
+    function greet() {}
+    function meet() {}
+    server.route(
+      'get',
+      '/greet',
+      {'x-visibility': 'undocumented', responses: {}, spec: {}},
+      greet,
+    );
+    server.route('get', '/meet', {responses: {}, spec: {}}, meet);
+    const spec = server.getApiSpec();
+    expect(spec.paths).to.eql({
+      '/meet': {
+        get: {
+          responses: {},
+          spec: {},
+        },
+      },
+    });
+  });
+
   it('returns routes registered via app.route(..., Controller, method)', () => {
     class MyController {
       greet() {}
@@ -108,6 +129,46 @@ describe('RestServer.getApiSpec()', () => {
           'x-controller-name': 'MyController',
           'x-operation-name': 'greet',
           tags: ['MyController'],
+        },
+      },
+    });
+  });
+
+  it('ignores routes marked as "x-visibility" via app.route(..., Controller, method)', () => {
+    class GreetController {
+      greet() {}
+    }
+
+    class MeetController {
+      meet() {}
+    }
+
+    server.route(
+      'get',
+      '/greet',
+      {'x-visibility': 'undocumented', responses: {}},
+      GreetController,
+      createControllerFactoryForClass(GreetController),
+      'greet',
+    );
+
+    server.route(
+      'get',
+      '/meet',
+      {responses: {}},
+      MeetController,
+      createControllerFactoryForClass(MeetController),
+      'meet',
+    );
+
+    const spec = server.getApiSpec();
+    expect(spec.paths).to.eql({
+      '/meet': {
+        get: {
+          responses: {},
+          'x-controller-name': 'MeetController',
+          'x-operation-name': 'meet',
+          tags: ['MeetController'],
         },
       },
     });
