@@ -3,22 +3,21 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, ApplicationConfig, Server} from '@loopback/core';
-import {RestComponent} from './rest.component';
-import {SequenceHandler, SequenceFunction} from './sequence';
 import {Binding, Constructor} from '@loopback/context';
+import {Application, ApplicationConfig, Server} from '@loopback/core';
+import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
+import {PathParams} from 'express-serve-static-core';
+import {ServeStaticOptions} from 'serve-static';
 import {format} from 'util';
 import {RestBindings} from './keys';
-import {RestServer, HttpRequestListener, HttpServerLike} from './rest.server';
+import {RestComponent} from './rest.component';
+import {HttpRequestListener, HttpServerLike, RestServer} from './rest.server';
 import {
-  RouteEntry,
   ControllerClass,
   ControllerFactory,
-  Route,
+  RouteEntry,
 } from './router/routing-table';
-import {OperationObject, OpenApiSpec} from '@loopback/openapi-v3-types';
-import {ServeStaticOptions} from 'serve-static';
-import {PathParams} from 'express-serve-static-core';
+import {SequenceFunction, SequenceHandler} from './sequence';
 
 export const ERR_NO_MULTI_SERVER = format(
   'RestApplication does not support multiple servers!',
@@ -128,6 +127,29 @@ export class RestApplication extends Application implements HttpServerLike {
   ): Binding;
 
   /**
+   * Register a new route invoking a handler function.
+   *
+   * ```ts
+   * function greet(name: string) {
+   *  return `hello ${name}`;
+   * }
+   * app.route('get', '/', operationSpec, greet);
+   * ```
+   *
+   * @param verb HTTP verb of the endpoint
+   * @param path URL path of the endpoint
+   * @param spec The OpenAPI spec describing the endpoint (operation)
+   * @param handler The function to invoke with the request parameters
+   * described in the spec.
+   */
+  route(
+    verb: string,
+    path: string,
+    spec: OperationObject,
+    handler: Function,
+  ): Binding;
+
+  /**
    * Register a new route.
    *
    * ```ts
@@ -172,7 +194,10 @@ export class RestApplication extends Application implements HttpServerLike {
       return server.route(routeOrVerb);
     } else if (arguments.length === 4) {
       return server.route(
-        new Route(routeOrVerb, path!, spec!, controllerCtorOrHandler!),
+        routeOrVerb,
+        path!,
+        spec!,
+        controllerCtorOrHandler as Function,
       );
     } else {
       return server.route(

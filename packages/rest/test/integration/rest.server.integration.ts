@@ -12,7 +12,7 @@ import {
   httpsGetAsync,
   givenHttpServerConfig,
 } from '@loopback/testlab';
-import {Route, RestBindings, RestServer, RestComponent} from '../..';
+import {RestBindings, RestServer, RestComponent} from '../..';
 import {IncomingMessage, ServerResponse} from 'http';
 import * as yaml from 'js-yaml';
 import * as path from 'path';
@@ -238,7 +238,7 @@ describe('RestServer (integration)', () => {
         },
       },
     };
-    server.route(new Route('get', '/greet', greetSpec, function greet() {}));
+    server.route('get', '/greet', greetSpec, function greet() {});
 
     const response = await createClientForHandler(server.requestHandler).get(
       '/openapi.json',
@@ -330,7 +330,7 @@ describe('RestServer (integration)', () => {
         },
       },
     };
-    server.route(new Route('get', '/greet', greetSpec, function greet() {}));
+    server.route('get', '/greet', greetSpec, function greet() {});
 
     const response = await createClientForHandler(server.requestHandler).get(
       '/openapi.yaml',
@@ -372,7 +372,7 @@ paths:
         },
       },
     };
-    server.route(new Route('get', '/greet', greetSpec, function greet() {}));
+    server.route('get', '/greet', greetSpec, function greet() {});
 
     const response = await createClientForHandler(server.requestHandler).get(
       '/explorer',
