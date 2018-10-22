@@ -156,11 +156,13 @@ export class RoutingTable {
     const paths: PathObject = {};
 
     for (const route of this._router.list()) {
-      if (!paths[route.path]) {
-        paths[route.path] = {};
-      }
+      if (!route.spec['x-internal']) {
+        if (!paths[route.path]) {
+          paths[route.path] = {};
+        }
 
-      paths[route.path][route.verb] = route.spec;
+        paths[route.path][route.verb] = route.spec;
+      }
     }
 
     return paths;
@@ -187,6 +189,10 @@ export class RoutingTable {
   }
 }
 
+export interface LB4OperationObject extends OperationObject {
+  readonly 'x-internal'?: boolean;
+}
+
 /**
  * An entry in the routing table
  */
@@ -202,7 +208,7 @@ export interface RouteEntry {
   /**
    * OpenAPI operation spec
    */
-  readonly spec: OperationObject;
+  readonly spec: LB4OperationObject;
 
   /**
    * Update bindings for the request context

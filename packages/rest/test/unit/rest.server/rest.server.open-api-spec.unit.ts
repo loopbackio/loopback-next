@@ -89,6 +89,29 @@ describe('RestServer.getApiSpec()', () => {
     });
   });
 
+  it('ignores routes marked as "x-internal" via app.route(route)', () => {
+    function greet() {}
+    function meet() {}
+    server.route(
+      new Route(
+        'get',
+        '/greet',
+        {'x-internal': true, responses: {}, spec: {}},
+        greet,
+      ),
+    );
+    server.route(new Route('get', '/meet', {responses: {}, spec: {}}, meet));
+    const spec = server.getApiSpec();
+    expect(spec.paths).to.eql({
+      '/meet': {
+        get: {
+          responses: {},
+          spec: {},
+        },
+      },
+    });
+  });
+
   it('returns routes registered via app.route(..., Controller, method)', () => {
     class MyController {
       greet() {}
@@ -111,6 +134,46 @@ describe('RestServer.getApiSpec()', () => {
           'x-controller-name': 'MyController',
           'x-operation-name': 'greet',
           tags: ['MyController'],
+        },
+      },
+    });
+  });
+
+  it('ignores routes marked as "x-internal" via app.route(..., Controller, method)', () => {
+    class GreetController {
+      greet() {}
+    }
+
+    class MeetController {
+      meet() {}
+    }
+
+    server.route(
+      'get',
+      '/greet',
+      {'x-internal': true, responses: {}},
+      GreetController,
+      createControllerFactoryForClass(GreetController),
+      'greet',
+    );
+
+    server.route(
+      'get',
+      '/meet',
+      {responses: {}},
+      MeetController,
+      createControllerFactoryForClass(MeetController),
+      'meet',
+    );
+
+    const spec = server.getApiSpec();
+    expect(spec.paths).to.eql({
+      '/meet': {
+        get: {
+          responses: {},
+          'x-controller-name': 'MeetController',
+          'x-operation-name': 'meet',
+          tags: ['MeetController'],
         },
       },
     });
