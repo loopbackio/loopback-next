@@ -156,6 +156,7 @@ export class RoutingTable {
     const paths: PathObject = {};
 
     for (const route of this._router.list()) {
+      if (route.spec['x-visibility'] === 'undocumented') continue;
       if (!paths[route.path]) {
         paths[route.path] = {};
       }
