@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {property} from '../../decorators/model.decorator';
 import {Entity, EntityResolver} from '../../model';
 import {relation} from '../relation.decorator';
 import {HasOneDefinition, RelationType} from '../relation.types';

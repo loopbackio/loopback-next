@@ -11,12 +11,14 @@ import {
   juggler,
   repository,
   RepositoryMixin,
+  Filter,
 } from '../..';
 import {Address} from '../fixtures/models';
 import {CustomerRepository, AddressRepository} from '../fixtures/repositories';
+import {Where} from '../..';
 
-describe.only('hasOne relation', () => {
-  // Given a Customer and Order models - see definitions at the bottom
+describe('hasOne relation', () => {
+  // Given a Customer and Address models - see definitions at the bottom
 
   let app: ApplicationWithRepositories;
   let controller: CustomerController;
@@ -49,6 +51,30 @@ describe.only('hasOne relation', () => {
     expect(persisted.toObject()).to.deepEqual(address.toObject());
   });
 
+  it("doesn't allow to create related model instance twice", async () => {
+    const address = await controller.createCustomerAddress(existingCustomerId, {
+      street: '123 test avenue',
+    });
+    expect(
+      controller.createCustomerAddress(existingCustomerId, {
+        street: '456 test street',
+        zipcode: '44012',
+      }),
+    ).to.be.rejectedWith(
+      /does not allow creation of more than one target model instance/,
+    );
+    expect(address.toObject()).to.containDeep({
+      customerId: existingCustomerId,
+      street: '123 test avenue',
+    });
+
+    const persisted = await addressRepo.findById(address.zipcode);
+    expect(persisted.toObject()).to.deepEqual(address.toObject());
+    expect(addressRepo.findById('44012')).to.be.rejectedWith(
+      /Entity not found/,
+    );
+  });
+
   it('can find instance of the related model', async () => {
     const address = await controller.createCustomerAddress(existingCustomerId, {
       street: '123 test avenue',
@@ -64,6 +90,25 @@ describe.only('hasOne relation', () => {
     );
     expect(foundAddress).to.containEql(address);
     expect(foundAddress).to.not.containEql(notMyAddress);
+
+    const persisted = await addressRepo.find({
+      where: {customerId: existingCustomerId},
+    });
+    expect(persisted[0]).to.deepEqual(foundAddress);
+  });
+
+  it('does not allow where filter to find related model instance', async () => {
+    const address = await controller.createCustomerAddress(existingCustomerId, {
+      street: '123 test avenue',
+    });
+
+    const foundAddress = await controller.findCustomerAddressWithFilter(
+      existingCustomerId,
+      {where: {street: '123 test avenue'}},
+    );
+    // TODO: make sure this test fails when where condition is supplied
+    // compiler should have errored out (?)
+    expect(foundAddress).to.containEql(address);
 
     const persisted = await addressRepo.find({
       where: {customerId: existingCustomerId},
@@ -89,7 +134,14 @@ describe.only('hasOne relation', () => {
     }
 
     async findCustomerAddress(customerId: number) {
-      return await this.customerRepository.address(customerId).findOne();
+      return await this.customerRepository.address(customerId).get();
+    }
+
+    async findCustomerAddressWithFilter(
+      customerId: number,
+      filter: Filter<Address>,
+    ) {
+      return await this.customerRepository.address(customerId).get(filter);
     }
   }
 

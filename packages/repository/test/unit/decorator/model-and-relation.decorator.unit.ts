@@ -292,8 +292,11 @@ describe('model decorator', () => {
         RELATIONS_KEY,
         Customer.prototype,
       ) || /* istanbul ignore next */ {};
-    expect(meta.lastOrder).to.eql({
+    expect(meta.lastOrder).to.containEql({
       type: RelationType.hasOne,
+      name: 'lastOrder',
+      target: () => Order,
+      source: Customer,
     });
   });
 

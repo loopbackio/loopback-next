@@ -185,14 +185,6 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * Promise<false>
    */
   exists(id: ID, options?: Options): Promise<boolean>;
-
-  /**
-   * Find one matching record. Same as 'find', but limited to one result.
-   * @param filter Query filter
-   * @param options Options for the operations
-   * @returns A promise of the target object or null if not found.
-   */
-  findOne(filter?: Filter<T>, options?: Options): Promise<T | null>;
 }
 
 /**
@@ -285,15 +277,6 @@ export class CrudRepositoryImpl<T extends Entity, ID>
       throw new EntityNotFoundError(this.entityClass, id);
     }
     return entities[0];
-  }
-
-  findOne(
-    filter?: Filter<T> | undefined,
-    options?: AnyObject | undefined,
-  ): Promise<T | null> {
-    // const found = this.find(Object.assign({limit: 1}, filter), options);
-    // return this.toModel(found);
-    throw new Error('Method not implemented');
   }
 
   update(entity: DataObject<T>, options?: Options): Promise<void> {

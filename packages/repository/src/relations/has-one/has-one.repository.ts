@@ -4,13 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Getter} from '@loopback/context';
-import {Count, DataObject, Options} from '../../common-types';
+import {DataObject, Options} from '../../common-types';
 import {Entity} from '../../model';
 import {Filter, Where} from '../../query';
 import {
   constrainDataObject,
   constrainFilter,
-  constrainWhere,
 } from '../../repositories/constraint-utils';
 import {EntityCrudRepository} from '../../repositories/repository';
 
@@ -28,21 +27,17 @@ export interface HasOneRepository<Target extends Entity> {
     targetModelData: DataObject<Target>,
     options?: Options,
   ): Promise<Target>;
-  /**
-   * Find target model instance
-   * @param Filter A filter object for where, order, limit, etc.
-   * @param options Options for the operation
-   * @returns A promise which resolves with the found target instance(s)
-   */
-  find(filter?: Filter<Target>, options?: Options): Promise<Target[]>;
 
   /**
    * Find the only target model instance that belongs to the declaring model.
-   * @param filter Query filter
+   * @param filter Query filter without a Where condition
    * @param options Options for the operations
    * @returns A promise of the target object or null if not found.
    */
-  findOne(filter?: Filter<Target>, options?: Options): Promise<Target | null>;
+  get(
+    filter?: Exclude<Filter<Target>, Where<Target>>,
+    options?: Options,
+  ): Promise<Target | undefined>;
 }
 
 export class DefaultHasOneRepository<
@@ -66,32 +61,33 @@ export class DefaultHasOneRepository<
     options?: Options,
   ): Promise<TargetEntity> {
     const targetRepository = await this.getTargetRepository();
-    return targetRepository.create(
-      constrainDataObject(targetModelData, this.constraint),
-      options,
+    // should we have an in memory LUT instead of a db query to increase
+    // performance here?
+    const found = await targetRepository.find(
+      constrainFilter({}, this.constraint),
     );
+    if (found.length > 0) {
+      throw new Error(
+        'HasOne relation does not allow creation of more than one target model instance',
+      );
+    } else {
+      return await targetRepository.create(
+        constrainDataObject(targetModelData, this.constraint),
+        options,
+      );
+    }
   }
 
-  async find(
-    filter?: Filter<TargetEntity>,
+  async get(
+    filter?: Exclude<Filter<TargetEntity>, Where<TargetEntity>>,
     options?: Options,
-  ): Promise<TargetEntity[]> {
-    const targetRepository = await this.getTargetRepository();
-    return targetRepository.find(
-      constrainFilter(filter, this.constraint),
-      options,
-    );
-  }
-
-  async findOne(
-    filter?: Filter<TargetEntity>,
-    options?: Options,
-  ): Promise<TargetEntity | null> {
+  ): Promise<TargetEntity | undefined> {
     const targetRepository = await this.getTargetRepository();
     const found = await targetRepository.find(
       Object.assign({limit: 1}, constrainFilter(filter, this.constraint)),
       options,
     );
+    // TODO: throw EntityNotFound error when target model instance not found
     return found[0];
   }
 }

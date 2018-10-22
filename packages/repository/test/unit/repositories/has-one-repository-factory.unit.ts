@@ -15,7 +15,7 @@ import {
   RelationType,
 } from '../../..';
 
-describe.only('createHasOneRepositoryFactory', () => {
+describe('createHasOneRepositoryFactory', () => {
   let customerRepo: CustomerRepository;
 
   beforeEach(givenStubbedCustomerRepo);
