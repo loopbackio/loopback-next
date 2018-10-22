@@ -520,7 +520,30 @@ export class RestServer extends Context implements Server, HttpServerLike {
   ): Binding;
 
   /**
-   * Register a new route.
+   * Register a new route invoking a handler function.
+   *
+   * ```ts
+   * function greet(name: string) {
+   *  return `hello ${name}`;
+   * }
+   * app.route('get', '/', operationSpec, greet);
+   * ```
+   *
+   * @param verb HTTP verb of the endpoint
+   * @param path URL path of the endpoint
+   * @param spec The OpenAPI spec describing the endpoint (operation)
+   * @param handler The function to invoke with the request parameters
+   * described in the spec.
+   */
+  route(
+    verb: string,
+    path: string,
+    spec: OperationObject,
+    handler: Function,
+  ): Binding;
+
+  /**
+   * Register a new generic route.
    *
    * ```ts
    * function greet(name: string) {
@@ -534,12 +557,12 @@ export class RestServer extends Context implements Server, HttpServerLike {
    */
   route(route: RouteEntry): Binding;
 
-  route<I>(
+  route<T>(
     routeOrVerb: RouteEntry | string,
     path?: string,
     spec?: OperationObject,
-    controllerCtor?: ControllerClass<I>,
-    controllerFactory?: ControllerFactory<I>,
+    controllerCtorOrHandler?: ControllerClass<T> | Function,
+    controllerFactory?: ControllerFactory<T>,
     methodName?: string,
   ): Binding {
     if (typeof routeOrVerb === 'object') {
@@ -563,7 +586,18 @@ export class RestServer extends Context implements Server, HttpServerLike {
       });
     }
 
-    if (!controllerCtor) {
+    if (arguments.length === 4) {
+      if (!controllerCtorOrHandler) {
+        throw new AssertionError({
+          message: 'handler function is required for a handler-based route',
+        });
+      }
+      return this.route(
+        new Route(routeOrVerb, path, spec, controllerCtorOrHandler as Function),
+      );
+    }
+
+    if (!controllerCtorOrHandler) {
       throw new AssertionError({
         message: 'controller is required for a controller-based route',
       });
@@ -580,7 +614,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
         routeOrVerb,
         path,
         spec,
-        controllerCtor,
+        controllerCtorOrHandler as ControllerClass<T>,
         controllerFactory,
         methodName,
       ),

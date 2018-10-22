@@ -6,7 +6,6 @@
 import {
   Request,
   Response,
-  Route,
   RestBindings,
   RestServer,
   RestComponent,
@@ -408,8 +407,7 @@ describe('Routing', () => {
       return `hello ${name}`;
     }
 
-    const route = new Route('get', '/greet', routeSpec, greet);
-    server.route(route);
+    server.route('get', '/greet', routeSpec, greet);
 
     const client = whenIMakeRequestTo(server);
     await client.get('/greet?name=world').expect(200, 'hello world');
@@ -609,8 +607,7 @@ describe('Routing', () => {
         return `hello ${name}`;
       }
 
-      const route = new Route('get', '/greet', routeSpec, greet);
-      app.route(route);
+      app.route('get', '/greet', routeSpec, greet);
 
       await whenIMakeRequestTo(app)
         .get('/greet?name=world')

@@ -7,7 +7,6 @@ import {expect, validateApiSpec} from '@loopback/testlab';
 import {Application} from '@loopback/core';
 import {
   RestServer,
-  Route,
   RestComponent,
   createControllerFactoryForClass,
 } from '../../..';
@@ -51,9 +50,7 @@ describe('RestServer.getApiSpec()', () => {
 
   it('binds a route via app.route(route)', () => {
     function greet() {}
-    const binding = server.route(
-      new Route('get', '/greet', {responses: {}}, greet),
-    );
+    const binding = server.route('get', '/greet', {responses: {}}, greet);
     expect(binding.key).to.eql('routes.get %2Fgreet');
     expect(binding.tagNames).containEql('route');
   });
@@ -77,7 +74,7 @@ describe('RestServer.getApiSpec()', () => {
 
   it('returns routes registered via app.route(route)', () => {
     function greet() {}
-    server.route(new Route('get', '/greet', {responses: {}}, greet));
+    server.route('get', '/greet', {responses: {}}, greet);
 
     const spec = server.getApiSpec();
     expect(spec.paths).to.eql({
@@ -195,7 +192,7 @@ describe('RestServer.getApiSpec()', () => {
     );
 
     function greet() {}
-    server.route(new Route('get', '/greet', {responses: {}}, greet));
+    server.route('get', '/greet', {responses: {}}, greet);
 
     const spec = server.getApiSpec();
     expect(spec.paths).to.eql({
