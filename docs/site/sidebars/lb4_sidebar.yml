@@ -98,9 +98,6 @@ children:
     - title: 'Run and Test it'
       url: soap-calculator-tutorial-run-and-test.html
       output: 'web, pdf'
-  - title: 'Deploying to IBM Cloud'
-    url: Deploying-to-IBM-Cloud.html
-    output: 'web, pdf'
 
 - title: 'Key concepts'
   url: Concepts.html
@@ -193,6 +190,18 @@ children:
   - title: 'Error handling'
     url: Error-handling.html
     output: 'web, pdf'
+
+- title: 'How tos'
+  url: Concepts.html
+  output: 'web, pdf'
+  children:
+    - title: 'Exposing GraphQL APIs'
+      url: exposing-graphql-apis.html
+      output: 'web, pdf'
+
+    - title: 'Deploying to IBM Cloud'
+      url: Deploying-to-IBM-Cloud.html
+      output: 'web, pdf'
 
 - title: 'Booting an Application'
   url: Booting-an-Application.html
