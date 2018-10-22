@@ -77,7 +77,7 @@ export class <%= className %>Controller {
     },
   })
   async updateAll(
-    @requestBody() <%= modelVariableName %>: <%= modelName %>,
+    @requestBody() <%= modelVariableName %>: Partial<<%= modelName %>>,
     @param.query.object('where', getWhereSchemaFor(<%= modelName %>)) where?: Where,
   ): Promise<Count> {
     return await this.<%= repositoryNameCamel %>.updateAll(<%= modelVariableName %>, where);
@@ -104,7 +104,7 @@ export class <%= className %>Controller {
   })
   async updateById(
     @param.path.<%= idType %>('id') id: <%= idType %>,
-    @requestBody() <%= modelVariableName %>: <%= modelName %>,
+    @requestBody() <%= modelVariableName %>: Partial<<%= modelName %>>,
   ): Promise<void> {
     await this.<%= repositoryNameCamel %>.updateById(id, <%= modelVariableName %>);
   }
