@@ -1,9 +1,0 @@
-{
-  "content": [
-    "README.md",
-    {"title": "Node.js API", "depth": 2},
-    "lib/docs.js"
-  ],
-  "codeSectionDepth": 3,
-  "assets": "assets"
-}

@@ -1,0 +1,15 @@
+<!--
+// Copyright IBM Corp. 2018. All Rights Reserved.
+// Node module: @loopback/tsdocs
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+-->
+<section class="code-doc ">
+  <a name="<%-anchorId%>"></a>
+  <%
+  var title = tsHelpers.getVariableStr({name: name, kindString: kindString,
+    flags: flags, defaultValue: locals.defaultValue || ''});
+  %>
+  <h3 class="code-ref"><%- title %></h3>
+  <% include comments %>
+</section>

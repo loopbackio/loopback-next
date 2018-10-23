@@ -1,0 +1,13 @@
+<%
+// Copyright IBM Corp. 2018. All Rights Reserved.
+// Node module: @loopback/tsdocs
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+-%>
+<% include header %>
+<ul>
+<% repos.forEach(function (repo) { %>
+  <li><a href="/<%= repo.repo %>"><%= repo.repo %></a></li>
+<% }); %>
+</ul>
+<% include footer %>

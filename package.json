@@ -47,7 +47,7 @@
     "test:ci": "node packages/build/bin/run-nyc npm run mocha --scripts-prepend-node-path",
     "verify:docs": "npm run build:site -- --verify",
     "build:site": "./bin/build-docs-site.sh",
-    "mocha": "node packages/build/bin/run-mocha \"packages/*/dist/test/**/*.js\" \"examples/*/dist/test/**/*.js\" \"packages/cli/test/**/*.js\" \"packages/build/test/*/*.js\"",
+    "mocha": "node packages/build/bin/run-mocha \"packages/*/dist/test/**/*.js\" \"examples/*/dist/test/**/*.js\" \"packages/tsdocs/test/**/*.js\" \"packages/cli/test/**/*.js\" \"packages/build/test/*/*.js\"",
     "posttest": "npm run lint"
   },
   "config": {

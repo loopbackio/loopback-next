@@ -1,0 +1,26 @@
+<!--
+// Copyright IBM Corp. 2018. All Rights Reserved.
+// Node module: @loopback/tsdocs
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+-->
+
+<!--
+  Used for displaying comments in Class, Interface, Properties Constructor,
+  Function and Parameters of constructor or function.
+  (Excludes Type alias).
+-->
+<%
+  if (locals.comment) {%>
+    <div class="code-desc">
+        <p><%-comment.shortText%></p>
+        <p><%-comment.text%></p>
+    </div>
+  <% if (comment.returns) { %>
+        Returns: <p><%-comment.returns%></p>
+  <%}
+  }
+%>
+
+
+

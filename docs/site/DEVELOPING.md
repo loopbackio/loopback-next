@@ -144,9 +144,9 @@ test/unit/application.unit.ts
 
 ## API Documentation
 
-We use [strong-docs](https://github.com/strongloop/strong-docs) to generate API
-documentation for all our packages. This documentation is generated when
-publishing new releases to npmjs.org and it's picked up by
+We use [@loopback/tsdocs](https://github.com/strongloop/@loopback/tsdocs) to
+generate API documentation for all our packages. This documentation is generated
+when publishing new releases to npmjs.org and it's picked up by
 <http://apidocs.loopback.io/>.
 
 You can preview API docs locally by opening the file `docs/apidocs.html` in your

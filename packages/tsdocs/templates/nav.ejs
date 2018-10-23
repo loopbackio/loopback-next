@@ -1,0 +1,14 @@
+<%
+// Copyright IBM Corp. 2018. All Rights Reserved.
+// Node module: @loopback/tsdocs
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+-%>
+<ul class="nav nav-pills nav-stacked">
+  <div id="versions"></div>
+  <% docs.sections.forEach(function(section) { %>
+    <li class="depth-<%= section.depth %>">
+      <a href="#<%= section.anchor %>"><%= section.title %></a>
+    </li>
+  <% }) %>
+</ul>

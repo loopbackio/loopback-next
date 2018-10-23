@@ -10,9 +10,13 @@ function run(argv, options) {
   const utils = require('./utils');
   const fs = require('fs-extra');
   const path = require('path');
+  const typedocLocation = require('@loopback/tsdocs').typedocLocation;
   var tsPath;
   try {
-    tsPath = require.resolve('typedoc/node_modules/typescript/package.json');
+    tsPath = path.resolve(
+      typedocLocation,
+      'node_modules/typescript/package.json',
+    );
   } catch (e) {
     // Ignore the error
   }
@@ -70,7 +74,7 @@ function run(argv, options) {
     }
   }
   args.push(...apidocsOpts);
-  return utils.runCLI('strong-docs/bin/cli', args, options);
+  return utils.runCLI('@loopback/tsdocs/bin/cli', args, options);
 }
 
 module.exports = run;

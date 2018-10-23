@@ -23,6 +23,7 @@ packages/repository-json-schema/* @bajtos
 packages/rest/* @bajtos @raymondfeng
 packages/service-proxy/* @raymondfeng
 packages/testlab/* @bajtos
+packages/tsdocs/* @raymondfeng
 examples/todo/* @bajtos @hacksparrow
 examples/hello-world/* @b-admike
 examples/log-extension/* @hacksparrow

@@ -172,8 +172,7 @@ describe('build', function() {
         fs.existsSync(path.join(projectDir, 'api-docs')),
         'api-docs should have been created',
       );
-      var typedocDir = require.resolve('typedoc/package.json');
-      typedocDir = path.resolve(typedocDir, '..');
+      var typedocDir = require('@loopback/tsdocs').typedocLocation;
       assert(
         !fs.existsSync(path.join(typedocDir, './node_modules/typescript')),
         'typedoc local dependency of typescript should have been renamed',

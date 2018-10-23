@@ -83,7 +83,7 @@
       "prettier": "^1.14.0",
       "rimraf": "^2.6.2",
       "source-map-support": "^0.5.5",
-      "strong-docs": "^4.0.0",
+      "@loopback/tsdocs": "^0.1.0",
       "tslint": "^5.9.1",
       "typescript": "^3.1.1",
       "@loopback/authentication": "^1.0.1",
