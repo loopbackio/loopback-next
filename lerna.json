@@ -1,11 +1,11 @@
 {
-  "lerna": "3.3.0",
+  "lerna": "3.4.0",
   "packages": [
-    "benchmark",
-    "docs",
-    "examples/*",
     "packages/*",
-    "sandbox/*"
+    "examples/*",
+    "sandbox/*",
+    "benchmark",
+    "docs"
   ],
   "command": {
     "bootstrap": {
