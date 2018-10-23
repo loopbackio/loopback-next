@@ -40,6 +40,10 @@ describe('app-generator specific files', () => {
     assert.fileContent('src/application.ts', /constructor\(/);
     assert.fileContent('src/application.ts', /this.projectRoot = __dirname/);
 
+    assert.file('index.js');
+    assert.fileContent('index.js', /openApiSpec: {/);
+    assert.fileContent('index.js', /setServersFromRequest: true/);
+
     assert.file('src/index.ts');
     assert.fileContent('src/index.ts', /new MyAppApplication/);
     assert.fileContent('src/index.ts', /await app.start\(\);/);
