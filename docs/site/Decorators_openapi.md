@@ -317,3 +317,72 @@ class MyController {
 _We plan to support more `@requestBody` shortcuts in the future. You can track
 the feature in
 [story 1064](https://github.com/strongloop/loopback-next/issues/1064)._
+
+### x-ts-type extension
+
+To simplify schema definition and reference, LoopBack allows `x-ts-type`
+extension for the OpenAPI schema object. The `x-ts-type` points to a model class
+or simple types. It can be used for parameters, request body and responses. For
+example,
+
+```ts
+import {model, property} from '@loopback/repository';
+import {requestBody, post, get} from '@loopback/openapi-v3';
+
+@model()
+class MyModel {
+  @property()
+  name: string;
+}
+
+class MyController {
+  @get('/', {
+    responses: {
+      '200': {
+        description: 'hello world',
+        content: {'application/json': {schema: {'x-ts-type': MyModel}}},
+      },
+    },
+  })
+  hello() {
+    return 'hello world';
+  }
+
+  @post('/')
+  greet(
+    @requestBody({
+      content: {'application/json': {{'x-ts-type': MyModel}}},
+    })
+    body: MyModel,
+  ) {
+    return `hello ${body.name}`;
+  }
+}
+```
+
+The `x-ts-type` can be used for array and object properties too:
+
+```ts
+const schemaWithArray = {
+  type: 'array',
+  items: {
+    type: 'array',
+    items: {
+      'x-ts-type': MyModel,
+    },
+  },
+};
+
+const schema = {
+  type: 'object',
+  properties: {
+    myModel: {
+      'x-ts-type': MyModel,
+    },
+  },
+};
+```
+
+When the OpenAPI spec is generated, the `xs-ts-type` is mapped to
+`{$ref: '#/components/schemas/MyModel'}` and a corresponding schema is added to
+`components.schemas.MyModel` of the spec.
