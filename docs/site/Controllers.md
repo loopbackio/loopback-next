@@ -8,7 +8,7 @@ permalink: /doc/en/lb4/Controllers.html
 
 ## Overview
 
-A `Controller` is a class that implements operations defined by application's
+A `Controller` is a class that implements operations defined by an application's
 API. It implements an application's business logic and acts as a bridge between
 the HTTP/REST API and domain/database models. Decorations are added to a
 `Controller` class and its members to map the API operations of the application
