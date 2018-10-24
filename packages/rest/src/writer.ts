@@ -5,6 +5,8 @@
 
 import {OperationRetval, Response} from './types';
 import {Readable} from 'stream';
+import {ResolvedRoute} from './router';
+import {ResponseObject} from '@loopback/openapi-v3-types';
 
 /**
  * Writes the result from Application controller method
@@ -18,6 +20,7 @@ export function writeResultToResponse(
   response: Response,
   // result returned back from invoking controller method
   result: OperationRetval,
+  route?: ResolvedRoute,
 ): void {
   // Bypass response writing if the controller method returns `response` itself
   // or the response headers have been sent
@@ -28,6 +31,14 @@ export function writeResultToResponse(
     response.statusCode = 204;
     response.end();
     return;
+  }
+
+  let mediaType = undefined;
+  if (route) {
+    const responses = route.spec.responses;
+    const responseObject: ResponseObject = responses['200'] || responses['201'];
+    const content = responseObject.content || {};
+    mediaType = Object.keys(content)[0];
   }
 
   const isStream =
@@ -55,8 +66,7 @@ export function writeResultToResponse(
       }
       break;
     default:
-      response.setHeader('Content-Type', 'text/plain');
-      result = result.toString();
+      response.setHeader('Content-Type', mediaType || 'text/plain');
       break;
   }
   response.end(result);

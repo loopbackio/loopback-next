@@ -7,7 +7,13 @@ import {expect} from '@loopback/testlab';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
 import {Binding, Context} from '@loopback/context';
 import {Application} from '@loopback/core';
-import {RestServer, Route, RestBindings, RestComponent} from '../../..';
+import {
+  RestServer,
+  Route,
+  RestBindings,
+  RestComponent,
+  createResolvedRoute,
+} from '../../..';
 
 describe('RestServer', () => {
   describe('"bindElement" binding', () => {
@@ -47,7 +53,7 @@ describe('RestServer', () => {
         RestBindings.SequenceActions.INVOKE_METHOD,
       );
 
-      const result = await invokeMethod(route, []);
+      const result = await invokeMethod(createResolvedRoute(route, {}), []);
       expect(result).to.equal('Hello world');
     });
   });

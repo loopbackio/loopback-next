@@ -6,6 +6,7 @@
 import {Response, writeResultToResponse} from '../..';
 import {Duplex} from 'stream';
 import {expect, ObservedResponse, stubExpressContext} from '@loopback/testlab';
+import {Route, createResolvedRoute} from '../../src';
 
 describe('writer', () => {
   let response: Response;
@@ -111,6 +112,32 @@ describe('writer', () => {
       'content-type',
       'text/html; charset=utf-8',
     );
+    expect(result.payload).to.equal('<html><body>Hi</body></html>');
+  });
+
+  it('honors response body media type', async () => {
+    const route = new Route(
+      'get',
+      '/',
+      {
+        responses: {
+          '200': {
+            description: 'Home Page',
+            content: {'text/html': {schema: {type: 'string'}}},
+          },
+        },
+      },
+      () => {},
+    );
+    const resolvedRoute = createResolvedRoute(route, {});
+    writeResultToResponse(
+      response,
+      '<html><body>Hi</body></html>',
+      resolvedRoute,
+    );
+    const result = await observedResponse;
+    expect(result.statusCode).to.equal(200);
+    expect(result.headers).to.have.property('content-type', 'text/html');
     expect(result.payload).to.equal('<html><body>Hi</body></html>');
   });
 

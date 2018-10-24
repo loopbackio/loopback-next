@@ -98,7 +98,7 @@ export class DefaultSequence implements SequenceHandler {
       const result = await this.invoke(route, args);
 
       debug('%s result -', route.describe(), result);
-      this.send(response, result);
+      this.send(response, result, route);
     } catch (error) {
       this.reject(context, error);
     }

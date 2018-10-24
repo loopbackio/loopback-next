@@ -8,6 +8,7 @@ import {inject, Provider} from '@loopback/context';
 import {HttpError} from 'http-errors';
 import {RestBindings} from '../keys';
 import {writeErrorToResponse, ErrorWriterOptions} from 'strong-error-handler';
+import {ResolvedRoute} from '../router';
 
 // TODO(bajtos) Make this mapping configurable at RestServer level,
 // allow apps and extensions to contribute additional mappings.
@@ -24,10 +25,14 @@ export class RejectProvider implements Provider<Reject> {
   ) {}
 
   value(): Reject {
-    return (context, error) => this.action(context, error);
+    return (context, error, route) => this.action(context, error);
   }
 
-  action({request, response}: HandlerContext, error: Error) {
+  action(
+    {request, response}: HandlerContext,
+    error: Error,
+    route?: ResolvedRoute,
+  ) {
     const err = <HttpError>error;
 
     if (!err.status && !err.statusCode && err.code) {

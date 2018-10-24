@@ -48,7 +48,7 @@ export type ParseParams = (
  * @returns OperationRetval Result from method invocation
  */
 export type InvokeMethod = (
-  route: RouteEntry,
+  route: ResolvedRoute,
   args: OperationArgs,
 ) => Promise<OperationRetval>;
 
@@ -57,8 +57,13 @@ export type InvokeMethod = (
  *
  * @param response The response the response to send to.
  * @param result The operation result to send.
+ * @param route The resolved route
  */
-export type Send = (response: Response, result: OperationRetval) => void;
+export type Send = (
+  response: Response,
+  result: OperationRetval,
+  route?: ResolvedRoute,
+) => void;
 
 /**
  * Reject the request with an error.
@@ -67,7 +72,11 @@ export type Send = (response: Response, result: OperationRetval) => void;
  * and other data  needed to handle an incoming HTTP request.
  * @param err The error.
  */
-export type Reject = (handlerContext: HandlerContext, err: Error) => void;
+export type Reject = (
+  handlerContext: HandlerContext,
+  err: Error,
+  route?: ResolvedRoute,
+) => void;
 
 /**
  * Log information about a failed request.
