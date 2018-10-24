@@ -5,8 +5,9 @@
 
 import {expect} from '@loopback/testlab';
 import {model, property} from '@loopback/repository';
-import {ParameterObject} from '@loopback/openapi-v3-types';
+import {ParameterObject, SchemaObject} from '@loopback/openapi-v3-types';
 import {param, requestBody, getControllerSpec, post, get} from '../../';
+import {ControllerSpec} from '../../src';
 
 describe('controller spec', () => {
   it('adds property schemas in components.schemas', () => {
@@ -194,61 +195,222 @@ describe('controller spec', () => {
     });
   });
 
-  it('generates schema from `x-ts-type`', () => {
-    class MyController {
-      @get('/', {
-        responses: {
-          '200': {
-            description: 'hello world',
-            content: {'application/json': {'x-ts-type': String}},
-          },
-        },
-      })
-      hello() {
-        return 'hello world';
-      }
+  describe('x-ts-type', () => {
+    @model()
+    class MyModel {
+      @property()
+      name: string;
     }
 
-    const spec = getControllerSpec(MyController);
-    expect(spec.paths['/'].get).to.have.property('responses');
-    expect(spec.paths['/'].get.responses).to.eql({
-      '200': {
-        description: 'hello world',
-        content: {'application/json': {schema: {type: 'string'}}},
+    const myModelSchema = {
+      properties: {
+        name: {
+          type: 'string',
+        },
       },
-    });
-  });
+      title: 'MyModel',
+    };
 
-  it('generates schema for an array from `x-ts-type`', () => {
-    class MyController {
-      @get('/', {
-        responses: {
-          '200': {
-            description: 'hello world array',
-            content: {
-              'application/json': {
-                schema: {type: 'array', items: {'x-ts-type': String}},
+    it('generates schema for response content', () => {
+      const controllerClass = givenControllerWithResponseSchema({
+        'x-ts-type': String,
+      });
+      const spec = getControllerSpec(controllerClass);
+      expect(spec.paths['/'].get).to.have.property('responses');
+      expect(spec.paths['/'].get.responses).to.eql({
+        '200': {
+          description: 'hello world',
+          content: {'application/json': {schema: {type: 'string'}}},
+        },
+      });
+    });
+
+    it('generates schema for a model in response', () => {
+      const controllerClass = givenControllerWithResponseSchema({
+        'x-ts-type': MyModel,
+      });
+      const spec = getControllerSpec(controllerClass);
+      expect(spec.paths['/'].get).to.have.property('responses');
+      expect(spec.paths['/'].get.responses).to.eql({
+        '200': {
+          description: 'hello world',
+          content: {
+            'application/json': {
+              schema: {$ref: '#/components/schemas/MyModel'},
+            },
+          },
+        },
+      });
+      assertMyModelSchemaInSpec(spec);
+    });
+
+    it('generates schema for an array in response', () => {
+      const controllerClass = givenControllerWithResponseSchema({
+        type: 'array',
+        items: {'x-ts-type': String},
+      });
+
+      const spec = getControllerSpec(controllerClass);
+      expect(spec.paths['/'].get).to.have.property('responses');
+      expect(spec.paths['/'].get.responses).to.eql({
+        '200': {
+          description: 'hello world',
+          content: {
+            'application/json': {
+              schema: {type: 'array', items: {type: 'string'}},
+            },
+          },
+        },
+      });
+    });
+
+    it('generates schema for a model array in response', () => {
+      const controllerClass = givenControllerWithResponseSchema({
+        type: 'array',
+        items: {'x-ts-type': MyModel},
+      });
+
+      const spec = getControllerSpec(controllerClass);
+      expect(spec.paths['/'].get).to.have.property('responses');
+      expect(spec.paths['/'].get.responses).to.eql({
+        '200': {
+          description: 'hello world',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'array',
+                items: {$ref: '#/components/schemas/MyModel'},
               },
             },
           },
         },
-      })
-      hello() {
-        return ['hello', 'world'];
-      }
-    }
+      });
+      assertMyModelSchemaInSpec(spec);
+    });
 
-    const spec = getControllerSpec(MyController);
-    expect(spec.paths['/'].get).to.have.property('responses');
-    expect(spec.paths['/'].get.responses).to.eql({
-      '200': {
-        description: 'hello world array',
-        content: {
-          'application/json': {
-            schema: {type: 'array', items: {type: 'string'}},
+    it('generates schema for a nesting model array in response', () => {
+      const controllerClass = givenControllerWithResponseSchema({
+        type: 'array',
+        items: {
+          type: 'array',
+          items: {
+            'x-ts-type': MyModel,
           },
         },
-      },
+      });
+
+      const spec = getControllerSpec(controllerClass);
+      expect(spec.paths['/'].get).to.have.property('responses');
+      expect(spec.paths['/'].get.responses).to.eql({
+        '200': {
+          description: 'hello world',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'array',
+                items: {
+                  type: 'array',
+                  items: {$ref: '#/components/schemas/MyModel'},
+                },
+              },
+            },
+          },
+        },
+      });
+      assertMyModelSchemaInSpec(spec);
     });
+
+    it('generates schema for a model property in response', () => {
+      const controllerClass = givenControllerWithResponseSchema({
+        type: 'object',
+        properties: {
+          myModel: {
+            'x-ts-type': MyModel,
+          },
+        },
+      });
+
+      const spec = getControllerSpec(controllerClass);
+      expect(spec.paths['/'].get).to.have.property('responses');
+      expect(spec.paths['/'].get.responses).to.eql({
+        '200': {
+          description: 'hello world',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {myModel: {$ref: '#/components/schemas/MyModel'}},
+              },
+            },
+          },
+        },
+      });
+      assertMyModelSchemaInSpec(spec);
+    });
+
+    it('generates schema for a type in request', () => {
+      const controllerClass = givenControllerWithRequestSchema({
+        'x-ts-type': String,
+      });
+
+      const spec = getControllerSpec(controllerClass);
+      expect(spec.paths['/'].post).to.have.property('requestBody');
+      expect(spec.paths['/'].post.requestBody).to.eql({
+        content: {
+          'application/json': {schema: {type: 'string'}},
+        },
+      });
+    });
+
+    it('generates schema for a model in request', () => {
+      const controllerClass = givenControllerWithRequestSchema({
+        'x-ts-type': MyModel,
+      });
+
+      const spec = getControllerSpec(controllerClass);
+      expect(spec.paths['/'].post).to.have.property('requestBody');
+      expect(spec.paths['/'].post.requestBody).to.eql({
+        content: {
+          'application/json': {schema: {$ref: '#/components/schemas/MyModel'}},
+        },
+      });
+      assertMyModelSchemaInSpec(spec);
+    });
+
+    function assertMyModelSchemaInSpec(spec: ControllerSpec) {
+      expect(spec.components).to.eql({schemas: {MyModel: myModelSchema}});
+    }
+
+    function givenControllerWithResponseSchema(schema: SchemaObject) {
+      class MyController {
+        @get('/', {
+          responses: {
+            '200': {
+              description: 'hello world',
+              content: {'application/json': {schema}},
+            },
+          },
+        })
+        hello() {
+          return 'hello world';
+        }
+      }
+      return MyController;
+    }
+
+    function givenControllerWithRequestSchema(schema: SchemaObject) {
+      class MyController {
+        @post('/')
+        hello(
+          @requestBody({
+            content: {'application/json': {schema}},
+          })
+          body: MyModel,
+        ) {
+          return `hello ${body.name}`;
+        }
+      }
+      return MyController;
+    }
   });
 });
