@@ -206,7 +206,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
         this.artifactInfo.datasourcesDir,
         item,
       );
-      return result;
+      return result !== false;
     });
 
     debug(`artifactInfo.dataSourceClass ${this.artifactInfo.dataSourceClass}`);

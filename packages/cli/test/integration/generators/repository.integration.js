@@ -31,7 +31,7 @@ describe('lb4 repository', function() {
 
   // special cases regardless of the repository type
   describe('generate repositories on special conditions', () => {
-    it('generates multipe crud repositories', async () => {
+    it('generates multiple crud repositories', async () => {
       const multiItemPrompt = {
         dataSourceClass: 'DbmemDatasource',
         modelNameList: ['MultiWord', 'Defaultmodel'],
@@ -287,6 +287,33 @@ describe('lb4 repository', function() {
         INDEX_FILE,
         /export \* from '.\/defaultmodel.repository';/,
       );
+    });
+
+    it('allows other connectors', async () => {
+      const files = SANDBOX_FILES.filter(
+        e =>
+          e.path !== 'src/datasources' ||
+          e.file.includes('sqlite-3.datasource.'),
+      );
+      const basicPrompt = {
+        dataSourceClass: 'Sqlite_3Datasource',
+      };
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            // Only use the sqlite3 datasource
+            additionalFiles: files,
+          }),
+        )
+        .withPrompts(basicPrompt)
+        .withArguments(' --model Defaultmodel');
+      const expectedFile = path.join(
+        SANDBOX_PATH,
+        REPOSITORY_APP_PATH,
+        'defaultmodel.repository.ts',
+      );
+      assert.file(expectedFile);
     });
 
     it('generates a crud repository from hyphened model file name', async () => {

@@ -13,8 +13,6 @@ const testlab = require('@loopback/testlab');
 const expect = testlab.expect;
 const TestSandbox = testlab.TestSandbox;
 
-const debug = require('../../../lib/debug')('lb4:datasource:test');
-const DataSourceGenerator = require('../../../generators/datasource');
 const generator = path.join(__dirname, '../../../generators/datasource');
 const tests = require('../lib/artifact-generator')(generator);
 const baseTests = require('../lib/base-generator')(generator);
