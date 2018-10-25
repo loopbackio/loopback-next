@@ -57,6 +57,19 @@ exports.SANDBOX_FILES = [
   },
   {
     path: DATASOURCE_APP_PATH,
+    file: 'sqlite-3.datasource.json',
+    content: JSON.stringify({
+      name: 'sqlite3',
+      connector: 'loopback-connector-sqlite3',
+    }),
+  },
+  {
+    path: DATASOURCE_APP_PATH,
+    file: 'sqlite-3.datasource.ts',
+    content: DUMMY_CONTENT,
+  },
+  {
+    path: DATASOURCE_APP_PATH,
     file: 'restdb.datasource.ts',
     content: DUMMY_CONTENT,
   },
