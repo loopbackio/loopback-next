@@ -153,4 +153,4 @@ injection if possible. Use `@inject.context` only when the code needs to access
 the current context object for advanced use cases.
 
 For more information, see the [Dependency Injection](Dependency-Injection.md)
-section under [LoopBack Core Concepts](Concepts.md)
+section under [LoopBack Core Concepts](Concepts.md).
