@@ -146,29 +146,29 @@ export async function main(options?: ApplicationConfig) {
 
 ## Running the app locally
 
-1.  Install all dependencies:
+1. Install all dependencies:
 
 ```sh
 $ npm i
 ```
 
-2.  Build the app:
+2. Build the app:
 
 ```sh
 $ npm run build
 ```
 
-3.  Ensure Cloudant is running locally.
-4.  Start the app:
+3. Ensure Cloudant is running locally.
+4. Start the app:
 
 ```sh
 $ npm start
 ```
 
-5.  Go to http://localhost:3000/explorer to load API Explorer and add a todo or
-    two.
+5. Go to http://localhost:3000/explorer to load API Explorer and add a todo or
+   two.
 
-6.  Go to http://localhost:3000/todos to see the todos.
+6. Go to http://localhost:3000/todos to see the todos.
 
 ## Deploying the app
 
@@ -178,9 +178,9 @@ further.
 We'll need to create the following Cloud Foundry artifacts to deploy our app to
 IBM Cloud:
 
-1.  `.cfignore` - not mandatory, prevents `cf` from uploading the listed files
-    to IBM Cloud.
-2.  `manifest.yml` - details about the app.
+1. `.cfignore` - not mandatory, prevents `cf` from uploading the listed files to
+   IBM Cloud.
+2. `manifest.yml` - details about the app.
 
 Create a file named `.cfignore` in the app directory with the following content.
 
@@ -200,20 +200,20 @@ $ cf create-app-manifest mylb4app -p manifest.yml
 
 Now we are ready to deploy the app to IBM Cloud.
 
-1.  Build the app locally:
+1. Build the app locally:
 
 ```sh
 npm run build
 ```
 
-2.  Push the app to Cloud Foundry:
+2. Push the app to Cloud Foundry:
 
 ```
 cf push mylb4app
 ```
 
-3.  Go to https://mylb4app.eu-gb.mybluemix.net/explorer to load the API Explorer
-    and add a todo or two. The host `mylb4app.eu-gb.mybluemix.net` is derived
-    from the `name` and `domain` values in the `manifest.yml` file.
+3. Go to https://mylb4app.eu-gb.mybluemix.net/explorer to load the API Explorer
+   and add a todo or two. The host `mylb4app.eu-gb.mybluemix.net` is derived
+   from the `name` and `domain` values in the `manifest.yml` file.
 
-4.  Go to https://mylb4app.eu-gb.mybluemix.net/todos to see the todos.
+4. Go to https://mylb4app.eu-gb.mybluemix.net/todos to see the todos.

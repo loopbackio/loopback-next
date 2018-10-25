@@ -315,5 +315,5 @@ class MyController {
 ```
 
 _We plan to support more `@requestBody` shortcuts in the future. You can track
-the feature in story_
-_(https://github.com/strongloop/loopback-next/issues/1064)_
+the feature in
+[story 1064](https://github.com/strongloop/loopback-next/issues/1064)._
