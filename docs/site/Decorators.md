@@ -22,7 +22,7 @@ tie into an API.
 
 As a default, LoopBack comes with some pre-defined decorators:
 
-- [Route Decorators](Decorators_route.md)
+- [OpenAPI Decorators](Decorators_openapi.md)
 - [Dependency Injection Decorator](Decorators_inject.md)
 - [Authentication Decorator](Decorators_authenticate.md)
 - [Repository Decorators](Decorators_repository.md)
