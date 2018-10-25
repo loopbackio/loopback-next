@@ -30,7 +30,7 @@ export interface HasManyRepository<Target extends Entity> {
   ): Promise<Target>;
   /**
    * Find target model instance(s)
-   * @param Filter A filter object for where, order, limit, etc.
+   * @param filter A filter object for where, order, limit, etc.
    * @param options Options for the operation
    * @returns A promise which resolves with the found target instance(s)
    */

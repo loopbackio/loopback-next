@@ -95,8 +95,8 @@ export class ModelDefinition {
 
   /**
    * Add a property
-   * @param property Property definition or name (string)
-   * @param type Property type
+   * @param name Property definition or name (string)
+   * @param definitionOrType Definition or property type
    */
   addProperty(
     name: string,
