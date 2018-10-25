@@ -6,11 +6,6 @@
 import {AnyObject} from './common-types';
 import * as assert from 'assert';
 
-// Copyright IBM Corp. 2017. All Rights Reserved.
-// Node module: @loopback/repository
-// This file is licensed under the MIT License.
-// License text available at https://opensource.org/licenses/MIT
-
 // tslint:disable:no-any
 
 const nonWhereFields = [
@@ -503,7 +498,7 @@ export class FilterBuilder<MT extends object = AnyObject> {
 
   /**
    * Describe the sorting order
-   * @param f A field name with optional direction, an array of field names,
+   * @param o A field name with optional direction, an array of field names,
    * or an Order object for the field/direction pairs
    */
   order(...o: (string | string[] | Order<MT>)[]): this {

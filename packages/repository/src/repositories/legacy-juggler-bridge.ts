@@ -80,7 +80,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
 
   /**
    * Constructor of DefaultCrudRepository
-   * @param modelClass Legacy model class
+   * @param entityClass Legacy entity class
    * @param dataSource Legacy data source
    */
   constructor(
