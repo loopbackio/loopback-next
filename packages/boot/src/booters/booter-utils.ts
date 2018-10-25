@@ -44,6 +44,7 @@ export function isClass(target: any): target is Constructor<any> {
  * and then testing each exported member to see if it's a class or not.
  *
  * @param files An array of string of absolute file paths
+ * @param projectRootDir The project root directory
  * @returns {Constructor<{}>[]} An array of Class constructors from a file
  */
 export function loadClassesFromFiles(
@@ -54,8 +55,6 @@ export function loadClassesFromFiles(
   for (const file of files) {
     debug('Loading artifact file %j', path.relative(projectRootDir, file));
     const moduleObj = require(file);
-    // WORKAROUND: use `for in` instead of Object.values().
-    // See https://github.com/nodejs/node/issues/20278
     for (const k in moduleObj) {
       const exported = moduleObj[k];
       if (isClass(exported)) {
