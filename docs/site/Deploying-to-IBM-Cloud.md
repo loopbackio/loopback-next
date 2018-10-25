@@ -70,8 +70,9 @@ docker run \
       ibmcom/cloudant-developer
 ```
 
-3.  Log on to the local Cloudant Dashboard using `admin`:`pass` as the
-    crendentials.
+3.  Log on to the local Cloudant
+    [Dashboard](http://localhost:8080/dashboard.html) using `admin`:`pass` as
+    the crendentials.
 4.  Create a database named `todo`.
 
 ### Updates to the app
