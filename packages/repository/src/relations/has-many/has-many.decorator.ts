@@ -8,7 +8,7 @@ import {Entity, EntityResolver} from '../../model';
 import {relation} from '../relation.decorator';
 import {HasManyDefinition, RelationType} from '../relation.types';
 
-/*
+/**
  * Decorator for hasMany
  * Calls property.array decorator underneath the hood and infers foreign key
  * name from target model name unless explicitly specified

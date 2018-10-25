@@ -61,6 +61,7 @@ export interface KeyValueRepository<T extends Model> extends Repository<T> {
    * Set up ttl for an entry by key
    *
    * @param key Key for the entry
+   * @param ttl Ttl for the entry
    * @param options Options for the operation
    */
   expire(key: string, ttl: number, options?: Options): Promise<void>;

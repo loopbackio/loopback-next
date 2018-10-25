@@ -11,6 +11,7 @@ import {BelongsToDefinition, RelationType} from '../relation.types';
 
 /**
  * Decorator for belongsTo
+ * @param targetResolver
  * @param definition
  * @returns {(target: Object, key:string)}
  */

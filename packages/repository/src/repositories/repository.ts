@@ -150,8 +150,8 @@ export interface EntityCrudRepository<T extends Entity, ID>
 
   /**
    * Update an entity by id with property/value pairs in the data object
-   * @param data Data attributes to be updated
    * @param id Value for the entity id
+   * @param data Data attributes to be updated
    * @param options Options for the operations
    * @returns A promise that will be resolve if the operation succeeded or will
    * be rejected if the entity was not found.
@@ -160,8 +160,8 @@ export interface EntityCrudRepository<T extends Entity, ID>
 
   /**
    * Replace an entity by id
-   * @param data Data attributes to be replaced
    * @param id Value for the entity id
+   * @param data Data attributes to be replaced
    * @param options Options for the operations
    * @returns A promise that will be resolve if the operation succeeded or will
    * be rejected if the entity was not found.
