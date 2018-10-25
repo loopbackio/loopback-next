@@ -58,10 +58,6 @@ export interface HttpServerLike {
   requestHandler: HttpRequestListener;
 }
 
-interface ExpressRouter extends express.Router {
-  handle: express.RequestHandler;
-}
-
 const SequenceActions = RestBindings.SequenceActions;
 
 // NOTE(bajtos) we cannot use `import * as cloneDeep from 'lodash/cloneDeep'
@@ -131,7 +127,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
   protected _httpServer: HttpServer | undefined;
 
   protected _expressApp: express.Application;
-  protected _routerForStaticAssets: ExpressRouter;
+  protected _routerForStaticAssets: express.Router;
 
   get listening(): boolean {
     return this._httpServer ? this._httpServer.listening : false;
@@ -246,7 +242,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    */
   protected _setupRouterForStaticAssets() {
     if (!this._routerForStaticAssets) {
-      this._routerForStaticAssets = express.Router() as ExpressRouter;
+      this._routerForStaticAssets = express.Router();
 
       const staticAssetsRouter = new StaticAssetsRoute(
         this._routerForStaticAssets,
