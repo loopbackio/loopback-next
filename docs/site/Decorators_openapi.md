@@ -1,9 +1,9 @@
 ---
 lang: en
-title: 'Route Decorators'
+title: 'OpenAPI Decorators'
 keywords: LoopBack 4.0, LoopBack-Next
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/Decorators_route.html
+permalink: /doc/en/lb4/Decorators_openapi.html
 ---
 
 ## Route Decorators

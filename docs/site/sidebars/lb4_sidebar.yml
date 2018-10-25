@@ -174,8 +174,8 @@ children:
     output: 'web, pdf'
     children:
 
-    - title: 'Route Decorators'
-      url: Decorators_route.html
+    - title: 'OpenAPI Decorators'
+      url: Decorators_openapi.html
       output: 'web, pdf'
 
     - title: 'Dependency Injection Decorator'
