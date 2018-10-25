@@ -6,8 +6,6 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Model.html
 ---
 
-{% include content/tbd.html %}
-
 ## Overview
 
 A model describes business domain objects, for example, `Customer`, `Address`,
