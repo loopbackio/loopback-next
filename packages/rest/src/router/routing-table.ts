@@ -40,10 +40,6 @@ import {validateApiPath} from './openapi-path';
 import {TrieRouter} from './trie-router';
 import {RequestContext} from '../request-context';
 
-export interface ExpressRouter extends express.Router {
-  handle: express.RequestHandler;
-}
-
 /**
  * A controller instance with open properties/methods
  */
@@ -159,9 +155,11 @@ export class RoutingTable {
     }
 
     validateApiPath(route.path);
-    this._router.add(route);
+
     if (route.path === '/*') {
       this._staticAssetsRoute = createResolvedRoute(route, {});
+    } else {
+      this._router.add(route);
     }
   }
 
@@ -303,36 +301,33 @@ export class StaticAssetsRoute implements RouteEntry {
     'x-visibility': 'undocumented',
     responses: {},
   };
-  private _handler: Function;
-  constructor(private _routerForStaticAssets: ExpressRouter) {
-    this._handler = (request: Request, response: Response) => {
-      return new Promise((resolve, reject) => {
-        const onFinished = () => resolve();
-        response.once('finish', onFinished);
-        this._routerForStaticAssets.handle(request, response, (err: Error) => {
-          if (err) {
-            reject(err);
-          } else {
-            // Express router called next, which means no route was matched
-            reject(
-              new HttpErrors.NotFound(
-                `Endpoint "${request.method} ${request.path}" not found.`,
-              ),
-            );
-          }
-        });
-      });
-    };
-  }
+
+  constructor(private _routerForStaticAssets: express.Router) {}
   updateBindings(requestContext: Context): void {
     // no-op
   }
-  async invokeHandler(
-    requestContext: RequestContext,
+
+  invokeHandler(
+    {request, response}: RequestContext,
     args: OperationArgs,
   ): Promise<OperationRetval> {
-    const {request, response} = requestContext;
-    return this._handler(request, response);
+    return new Promise((resolve, reject) => {
+      const onceFinished = () => resolve();
+      response.once('finish', onceFinished);
+      this._routerForStaticAssets(request, response, (err: Error) => {
+        response.removeListener('finish', onceFinished);
+        if (err) {
+          reject(err);
+        } else {
+          // Express router called next, which means no route was matched
+          reject(
+            new HttpErrors.NotFound(
+              `Endpoint "${request.method} ${request.path}" not found.`,
+            ),
+          );
+        }
+      });
+    });
   }
   describe(): string {
     return 'final route to handle static assets';

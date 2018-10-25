@@ -147,7 +147,7 @@ describe('RestServer (integration)', () => {
       .expect(200, 'Hello');
   });
 
-  it('does not serve static assets even if matches before other routes', async () => {
+  it('gives precedence to API routes over static assets', async () => {
     const root = FIXTURES;
     const server = await givenAServer({
       rest: {
