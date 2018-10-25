@@ -134,7 +134,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
       const prompts = [
         {
           name: 'customConnector',
-          message: "Enter the connector's module name",
+          message: "Enter the connector's package name:",
           validate: utils.validate,
         },
       ];
@@ -309,6 +309,10 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
       }
 
       debug(`npmModule - ${pkgs[0]}`);
+    } else {
+      const connectorName = this.artifactInfo.connector;
+      // Other connectors
+      if (!deps[connectorName]) pkgs.push(connectorName);
     }
 
     if (!deps['@loopback/repository']) {
