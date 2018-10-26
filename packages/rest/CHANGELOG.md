@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.0.1...@loopback/rest@1.1.0) (2018-10-26)
+
+
+### Bug Fixes
+
+* **rest:** don't rely on transitive dependencies from express ([a3d5d0c](https://github.com/strongloop/loopback-next/commit/a3d5d0c))
+* optimize serving static files ([392c7cd](https://github.com/strongloop/loopback-next/commit/392c7cd))
+* remove unnecessary dependency from [#1918](https://github.com/strongloop/loopback-next/issues/1918) ([63d367b](https://github.com/strongloop/loopback-next/commit/63d367b))
+* review 1 ([0b8a78e](https://github.com/strongloop/loopback-next/commit/0b8a78e))
+* review 2 ([7471c10](https://github.com/strongloop/loopback-next/commit/7471c10))
+* tests for RestApplication ([9c86e14](https://github.com/strongloop/loopback-next/commit/9c86e14))
+
+
+### Features
+
+* **rest:** push route(verb, path, spec, fn) down to RestServer ([c49b65a](https://github.com/strongloop/loopback-next/commit/c49b65a))
+* add 'x-visibility' extension property to OpenAPI spec ([5634e18](https://github.com/strongloop/loopback-next/commit/5634e18))
+
+
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.0.0...@loopback/rest@1.0.1) (2018-10-17)
 

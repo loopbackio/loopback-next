@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.0.1...@loopback/docs@1.0.2) (2018-10-26)
+
+
+### Bug Fixes
+
+* change invalid reference link to valid link ([b27cc2d](https://github.com/strongloop/loopback-next/commit/b27cc2d))
+* **openapi-v3:** generate schemas for x-ts-type ([07f0d6c](https://github.com/strongloop/loopback-next/commit/07f0d6c))
+
+
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.0.0...@loopback/docs@1.0.1) (2018-10-17)
 

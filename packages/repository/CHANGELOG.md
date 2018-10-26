@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.0.1...@loopback/repository@1.0.2) (2018-10-26)
+
+
+### Performance Improvements
+
+* **repository:** prevent multiple array allocation ([a026d33](https://github.com/strongloop/loopback-next/commit/a026d33))
+
+
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.0.0...@loopback/repository@1.0.1) (2018-10-17)
 
