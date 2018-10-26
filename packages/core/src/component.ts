@@ -11,6 +11,7 @@ import {
   Provider,
 } from '@loopback/context';
 import {Application, ControllerClass} from './application';
+import {LifeCycleObserver} from './lifecycle';
 import {Server} from './server';
 
 /**
@@ -66,6 +67,8 @@ export interface Component {
   servers?: {
     [name: string]: Constructor<Server>;
   };
+
+  lifeCycleObservers?: Constructor<LifeCycleObserver>[];
 
   /**
    * An array of bindings to be aded to the application context. For example,
@@ -124,6 +127,12 @@ export function mountComponent(app: Application, component: Component) {
   if (component.servers) {
     for (const serverKey in component.servers) {
       app.server(component.servers[serverKey], serverKey);
+    }
+  }
+
+  if (component.lifeCycleObservers) {
+    for (const observer of component.lifeCycleObservers) {
+      app.lifeCycleObserver(observer);
     }
   }
 }
