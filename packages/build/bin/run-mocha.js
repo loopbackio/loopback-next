@@ -17,25 +17,19 @@ Usage:
 
 function run(argv, options) {
   const utils = require('./utils');
-  const path = require('path');
 
   // Substitute the dist variable with the dist folder
   const dist = utils.getDistribution();
   const mochaOpts = argv.slice(2).map(a => a.replace(/\bDIST\b/g, dist));
 
-  // Add default options
-  if (mochaOpts.indexOf('--opts') === -1) {
-    const optsPath = require.resolve('../mocha.opts');
-    mochaOpts.unshift('--opts', optsPath);
-  }
+  const setMochaOpts =
+    !utils.isOptionSet(mochaOpts, '--opts') &&
+    !utils.mochaOptsFileProjectExists();
 
-  // Add source map support
-  if (mochaOpts.indexOf('source-map-support/register') === -1) {
-    // Resolve source-map-support so that the path can be used by mocha
-    const sourceMapRegisterPath = require.resolve(
-      'source-map-support/register',
-    );
-    mochaOpts.unshift('--require', sourceMapRegisterPath);
+  // Add default options
+  if (setMochaOpts) {
+    const mochaOptsFile = utils.getConfigFile('mocha.opts');
+    mochaOpts.unshift('--opts', mochaOptsFile);
   }
 
   const allowConsoleLogsIx = mochaOpts.indexOf('--allow-console-logs');

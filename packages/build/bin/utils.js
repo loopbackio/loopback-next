@@ -207,6 +207,11 @@ function isOptionSet(opts, ...optionNames) {
   );
 }
 
+function mochaOptsFileProjectExists() {
+  const configFile = path.join(getPackageDir(), 'test/mocha.opts');
+  return fs.existsSync(configFile);
+}
+
 exports.getCompilationTarget = getCompilationTarget;
 exports.getDistribution = getDistribution;
 exports.getRootDir = getRootDir;
@@ -216,3 +221,4 @@ exports.resolveCLI = resolveCLI;
 exports.runCLI = runCLI;
 exports.runShell = runShell;
 exports.isOptionSet = isOptionSet;
+exports.mochaOptsFileProjectExists = mochaOptsFileProjectExists;
