@@ -200,18 +200,18 @@ export class RoutingTable {
       return found;
     }
 
-    debug(
-      'No API route found for %s %s, trying to find a static asset',
-      request.method,
-      request.path,
-    );
-
     // this._staticAssetsRoute will be set only if app.static() was called
     if (this._staticAssetsRoute) {
+      debug(
+        'No API route found for %s %s, trying to find a static asset',
+        request.method,
+        request.path,
+      );
+
       return this._staticAssetsRoute;
     }
 
-    debug('No static asset found for %s %s', request.method, request.path);
+    debug('No route found for %s %s', request.method, request.path);
     throw new HttpErrors.NotFound(
       `Endpoint "${request.method} ${request.path}" not found.`,
     );
