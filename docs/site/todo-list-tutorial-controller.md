@@ -101,7 +101,13 @@ completed controller should look as follows:
 #### src/controllers/todo-list.controller.ts
 
 ```ts
-import {Filter, repository, Where} from '@loopback/repository';
+import {
+  Filter,
+  repository,
+  Where,
+  Count,
+  CountSchema,
+} from '@loopback/repository';
 import {
   del,
   get,
