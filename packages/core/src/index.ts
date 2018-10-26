@@ -8,6 +8,8 @@ export * from './server';
 export * from './application';
 export * from './component';
 export * from './keys';
+export * from './lifecycle';
+export * from './lifecycle-registry';
 
 // Re-export public Core API coming from dependencies
 export * from '@loopback/context';

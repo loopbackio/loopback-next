@@ -5,7 +5,8 @@
     "src/component.ts",
     "src/index.ts",
     "src/keys.ts",
-    "src/server.ts"
+    "src/server.ts",
+    "src/lifecycle.ts"
   ],
   "codeSectionDepth": 4
 }
