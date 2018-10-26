@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.0.1...@loopback/cli@1.0.2) (2018-10-26)
+
+
+### Bug Fixes
+
+* change unmatched html tags, remove redundant 'px' from 0 ([46d08f6](https://github.com/strongloop/loopback-next/commit/46d08f6))
+* **cli:** allow other connectors to be used for repositories ([9a0d9a8](https://github.com/strongloop/loopback-next/commit/9a0d9a8))
+
+
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.0.0...@loopback/cli@1.0.1) (2018-10-17)
 
