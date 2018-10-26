@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-soap-calculator",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Integrate a SOAP webservice with LoopBack 4",
   "keywords": [
     "loopback",
@@ -40,12 +40,12 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/boot": "^1.0.1",
+    "@loopback/boot": "^1.0.2",
     "@loopback/context": "^1.0.0",
     "@loopback/core": "^1.0.0",
-    "@loopback/openapi-v3": "^1.0.1",
-    "@loopback/repository": "^1.0.1",
-    "@loopback/rest": "^1.0.1",
+    "@loopback/openapi-v3": "^1.0.2",
+    "@loopback/repository": "^1.0.2",
+    "@loopback/rest": "^1.1.0",
     "@loopback/service-proxy": "^1.0.0",
     "loopback-connector-soap": "^5.0.0"
   },

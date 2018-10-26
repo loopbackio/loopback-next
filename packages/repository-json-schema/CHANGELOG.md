@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.0.1...@loopback/repository-json-schema@1.1.0) (2018-10-26)
+
+
+### Features
+
+* **repository-json-schema:** add property description to JSON schema ([31c02f2](https://github.com/strongloop/loopback-next/commit/31c02f2))
+
+
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.0.0...@loopback/repository-json-schema@1.0.1) (2018-10-17)
 
