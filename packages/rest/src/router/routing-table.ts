@@ -21,7 +21,6 @@ import * as HttpErrors from 'http-errors';
 import {inspect} from 'util';
 
 import {
-  Response,
   Request,
   PathParameterValues,
   OperationArgs,
@@ -39,6 +38,8 @@ import {CoreBindings} from '@loopback/core';
 import {validateApiPath} from './openapi-path';
 import {TrieRouter} from './trie-router';
 import {RequestContext} from '../request-context';
+import {ServeStaticOptions} from 'serve-static';
+import {PathParams} from 'express-serve-static-core';
 
 /**
  * A controller instance with open properties/methods
@@ -88,7 +89,18 @@ export interface RestRouter {
 export class RoutingTable {
   constructor(private readonly _router: RestRouter = new TrieRouter()) {}
 
-  private _staticAssetsRoute: ResolvedRoute;
+  private _staticAssetsRoute: StaticAssetsRoute;
+
+  registerStaticAssets(
+    path: PathParams,
+    rootDir: string,
+    options?: ServeStaticOptions,
+  ) {
+    if (!this._staticAssetsRoute) {
+      this._staticAssetsRoute = new StaticAssetsRoute();
+    }
+    this._staticAssetsRoute.registerAssets(path, rootDir, options);
+  }
 
   /**
    * Register a controller as the route
@@ -156,11 +168,7 @@ export class RoutingTable {
 
     validateApiPath(route.path);
 
-    if (route.path === '/*') {
-      this._staticAssetsRoute = createResolvedRoute(route, {});
-    } else {
-      this._router.add(route);
-    }
+    this._router.add(route);
   }
 
   describeApiPaths(): PathObject {
@@ -293,45 +301,86 @@ export abstract class BaseRoute implements RouteEntry {
   }
 }
 
-export class StaticAssetsRoute implements RouteEntry {
-  public readonly verb: string = 'get';
-  public readonly path: string = '/*';
-  public readonly spec: OperationObject = {
+export class StaticAssetsRoute implements RouteEntry, ResolvedRoute {
+  // ResolvedRoute API
+  readonly pathParams: PathParameterValues = [];
+  readonly schemas: SchemasObject = {};
+
+  // RouteEntry implementation
+  readonly verb: string = 'get';
+  readonly path: string = '/*';
+  readonly spec: OperationObject = {
     description: 'LoopBack static assets route',
     'x-visibility': 'undocumented',
     responses: {},
   };
 
-  constructor(private _routerForStaticAssets: express.Router) {}
+  private readonly _expressRouter: express.Router = express.Router();
+
+  public registerAssets(
+    path: PathParams,
+    rootDir: string,
+    options?: ServeStaticOptions,
+  ) {
+    this._expressRouter.use(path, express.static(rootDir, options));
+  }
+
   updateBindings(requestContext: Context): void {
     // no-op
   }
 
-  invokeHandler(
+  async invokeHandler(
     {request, response}: RequestContext,
     args: OperationArgs,
   ): Promise<OperationRetval> {
-    return new Promise((resolve, reject) => {
-      const onceFinished = () => resolve();
-      response.once('finish', onceFinished);
-      this._routerForStaticAssets(request, response, (err: Error) => {
-        response.removeListener('finish', onceFinished);
-        if (err) {
-          reject(err);
-        } else {
-          // Express router called next, which means no route was matched
-          reject(
-            new HttpErrors.NotFound(
-              `Endpoint "${request.method} ${request.path}" not found.`,
-            ),
-          );
-        }
-      });
-    });
+    const handled = await executeRequestHandler(
+      this._expressRouter,
+      request,
+      response,
+    );
+
+    if (!handled) {
+      // Express router called next, which means no route was matched
+      throw new HttpErrors.NotFound(
+        `Endpoint "${request.method} ${request.path}" not found.`,
+      );
+    }
   }
+
   describe(): string {
     return 'final route to handle static assets';
   }
+}
+
+/**
+ * Execute an Express-style callback-based request handler.
+ *
+ * @param handler
+ * @param request
+ * @param response
+ * @returns A promise resolved to:
+ * - `true` when the request was handled
+ * - `false` when the handler called `next()` to proceed to the next
+ *    handler (middleware) in the chain.
+ */
+function executeRequestHandler(
+  handler: express.RequestHandler,
+  request: Request,
+  response: express.Response,
+): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    const onceFinished = () => resolve(true);
+    response.once('finish', onceFinished);
+    handler(request, response, (err: Error) => {
+      response.removeListener('finish', onceFinished);
+      if (err) {
+        reject(err);
+      } else {
+        // Express router called next, which means no route was matched
+        resolve(false);
+      }
+    });
+  });
 }
 
 export function createResolvedRoute(

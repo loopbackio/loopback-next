@@ -14,9 +14,11 @@ import {
 } from '@loopback/openapi-v3-types';
 import {AssertionError} from 'assert';
 import * as cors from 'cors';
+import * as debugFactory from 'debug';
 import * as express from 'express';
 import {PathParams} from 'express-serve-static-core';
 import {IncomingMessage, ServerResponse} from 'http';
+import {ServerOptions} from 'https';
 import {safeDump} from 'js-yaml';
 import {ServeStaticOptions} from 'serve-static';
 import {HttpHandler} from './http-handler';
@@ -32,9 +34,7 @@ import {
   Route,
   RouteEntry,
   RoutingTable,
-  StaticAssetsRoute,
 } from './router/routing-table';
-
 import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
 import {
   FindRoute,
@@ -45,9 +45,8 @@ import {
   Response,
   Send,
 } from './types';
-import {ServerOptions} from 'https';
 
-const debug = require('debug')('loopback:rest:server');
+const debug = debugFactory('loopback:rest:server');
 
 export type HttpRequestListener = (
   req: IncomingMessage,
@@ -127,7 +126,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
   protected _httpServer: HttpServer | undefined;
 
   protected _expressApp: express.Application;
-  protected _routerForStaticAssets: express.Router;
 
   get listening(): boolean {
     return this._httpServer ? this._httpServer.listening : false;
@@ -231,25 +229,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
         this._onUnhandledError(req, res, err);
       },
     );
-
-    // LB4's static assets serving router
-    this._setupRouterForStaticAssets();
-  }
-
-  /**
-   * Set up an express router for all static assets so that middleware for
-   * all directories are invoked at the same phase
-   */
-  protected _setupRouterForStaticAssets() {
-    if (!this._routerForStaticAssets) {
-      this._routerForStaticAssets = express.Router();
-
-      const staticAssetsRouter = new StaticAssetsRoute(
-        this._routerForStaticAssets,
-      );
-
-      this.route(staticAssetsRouter);
-    }
   }
 
   /**
@@ -635,7 +614,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * @param options Options for serve-static
    */
   static(path: PathParams, rootDir: string, options?: ServeStaticOptions) {
-    this._routerForStaticAssets.use(path, express.static(rootDir, options));
+    this.httpHandler.registerStaticAssets(path, rootDir, options);
   }
 
   /**
