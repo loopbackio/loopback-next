@@ -33,7 +33,8 @@ and tools contained in LoopBack repositories.
 
 - [Monorepo overview](./site/MONOREPO.md)
 - [Setting up development environment](./site/DEVELOPING.md#setting-up-development-environment)
-  - [Developing with VisualStudio Code](./site/VSCODE.md)
+  - [Developing with VisualStudio Code (recommended)](./site/VSCODE.md)
+  - [Developing with WebStorm](./site/WEBSTORM.md)
 - [How to contribute the code](http://loopback.io/doc/en/contrib/code-contrib.html#how-to-contribute-to-the-code)
 - [Building the project](./site/DEVELOPING.md#building-the-project)
 - [Running tests](./site/DEVELOPING.md#running-tests)
