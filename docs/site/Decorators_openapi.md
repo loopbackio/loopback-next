@@ -335,7 +335,7 @@ class MyModel {
   name: string;
 }
 
-class MyController {
+export class MyController {
   @get('/', {
     responses: {
       '200': {
@@ -351,7 +351,7 @@ class MyController {
   @post('/')
   greet(
     @requestBody({
-      content: {'application/json': {{'x-ts-type': MyModel}}},
+      content: {'application/json': {schema: {'x-ts-type': MyModel}}},
     })
     body: MyModel,
   ) {
@@ -363,7 +363,14 @@ class MyController {
 The `x-ts-type` can be used for array and object properties too:
 
 ```ts
-const schemaWithArray = {
+const schemaWithArrayOfMyModel = {
+  type: 'array',
+  items: {
+    'x-ts-type': MyModel,
+  },
+};
+
+const schemaDeepArrayOfMyModel = {
   type: 'array',
   items: {
     type: 'array',
@@ -373,7 +380,7 @@ const schemaWithArray = {
   },
 };
 
-const schema = {
+const schemaWithObjectPropOfMyModel = {
   type: 'object',
   properties: {
     myModel: {
@@ -381,6 +388,40 @@ const schema = {
     },
   },
 };
+
+export class SomeController {
+  @post('/my-controller')
+  greetObjectProperty(@requestBody({
+    content: {'application/json': {schema: schemaWithObjectPropOfMyModel}},
+  })
+  body: {
+    myModel: MyModel;
+  }): string {
+    return `hello ${body.myModel.name}!`;
+  }
+
+  @get('/my-controllers', {
+    responses: {
+      '200': {
+        description: 'hello world',
+        content: {'application/json': {schema: schemaWithArrayOfMyModel}},
+      },
+    },
+  })
+  everyone(): MyModel[] {
+    return [{name: 'blue'}, {name: 'red'}];
+  }
+
+  @post('/my-controllers')
+  greetEveryone(
+    @requestBody({
+      content: {'application/json': {schema: schemaDeepArrayOfMyModel}},
+    })
+    body: MyModel[][],
+  ): string {
+    return `hello ${body.map(objs => objs.map(m => m.name))}`;
+  }
+}
 ```
 
 When the OpenAPI spec is generated, the `xs-ts-type` is mapped to
