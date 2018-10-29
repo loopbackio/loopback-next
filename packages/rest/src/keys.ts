@@ -32,6 +32,7 @@ import {HttpProtocol} from '@loopback/http-server';
 import * as https from 'https';
 import {ErrorWriterOptions} from 'strong-error-handler';
 import {RestRouter} from './router';
+import {RequestBodyParser, BodyParser} from './body-parsers';
 
 /**
  * RestServer-specific bindings
@@ -85,9 +86,58 @@ export namespace RestBindings {
     'rest.errorWriterOptions',
   );
 
+  /**
+   * Binding key for request body parser options
+   */
   export const REQUEST_BODY_PARSER_OPTIONS = BindingKey.create<
     RequestBodyParserOptions
   >('rest.requestBodyParserOptions');
+
+  /**
+   * Binding key for request body parser
+   */
+  export const REQUEST_BODY_PARSER = BindingKey.create<RequestBodyParser>(
+    'rest.requestBodyParser',
+  );
+
+  function bodyParserBindingKey(parser: string) {
+    return `${REQUEST_BODY_PARSER}.${parser}`;
+  }
+
+  /**
+   * Binding key for request json body parser
+   */
+  export const REQUEST_BODY_PARSER_JSON = BindingKey.create<BodyParser>(
+    bodyParserBindingKey('JsonBodyParser'),
+  );
+
+  /**
+   * Binding key for request urlencoded body parser
+   */
+  export const REQUEST_BODY_PARSER_URLENCODED = BindingKey.create<BodyParser>(
+    bodyParserBindingKey('UrlEncodedBodyParser'),
+  );
+
+  /**
+   * Binding key for request text body parser
+   */
+  export const REQUEST_BODY_PARSER_TEXT = BindingKey.create<BodyParser>(
+    bodyParserBindingKey('TextBodyParser'),
+  );
+
+  /**
+   * Binding key for request raw body parser
+   */
+  export const REQUEST_BODY_PARSER_RAW = BindingKey.create<BodyParser>(
+    bodyParserBindingKey('RawBodyParser'),
+  );
+
+  /**
+   * Binding key for request raw body parser
+   */
+  export const REQUEST_BODY_PARSER_STREAM = BindingKey.create<BodyParser>(
+    bodyParserBindingKey('StreamBodyParser'),
+  );
 
   /**
    * Binding key for setting and injecting an OpenAPI spec

@@ -3,7 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, Constructor, Context, inject} from '@loopback/context';
+import {
+  Binding,
+  Constructor,
+  Context,
+  inject,
+  BindingScope,
+  BindingAddress,
+} from '@loopback/context';
 import {Application, CoreBindings, Server} from '@loopback/core';
 import {HttpServer, HttpServerOptions} from '@loopback/http-server';
 import {getControllerSpec} from '@loopback/openapi-v3';
@@ -21,6 +28,7 @@ import {IncomingMessage, ServerResponse} from 'http';
 import {ServerOptions} from 'https';
 import {safeDump} from 'js-yaml';
 import {ServeStaticOptions} from 'serve-static';
+import {BodyParser, REQUEST_BODY_PARSER_TAG} from './body-parsers';
 import {HttpHandler} from './http-handler';
 import {RestBindings} from './keys';
 import {QUERY_NOT_PARSED} from './parser';
@@ -720,6 +728,20 @@ export class RestServer extends Context implements Server, HttpServerLike {
   }
 
   /**
+   * Bind a body parser to the server context
+   * @param parserClass Body parser class
+   * @param address Optional binding address
+   */
+  bodyParser(
+    bodyParserClass: Constructor<BodyParser>,
+    address?: BindingAddress<BodyParser>,
+  ): Binding<BodyParser> {
+    const binding = createBodyParserBinding(bodyParserClass, address);
+    this.add(binding);
+    return binding;
+  }
+
+  /**
    * Start this REST API's HTTP/HTTPS server.
    *
    * @returns {Promise<void>}
@@ -775,6 +797,23 @@ export class RestServer extends Context implements Server, HttpServerLike {
       throw err;
     });
   }
+}
+
+/**
+ * Create a binding for the given body parser class
+ * @param parserClass Body parser class
+ * @param key Optional binding address
+ */
+export function createBodyParserBinding(
+  parserClass: Constructor<BodyParser>,
+  key?: BindingAddress<BodyParser>,
+): Binding<BodyParser> {
+  const address =
+    key || `${RestBindings.REQUEST_BODY_PARSER}.${parserClass.name}`;
+  return Binding.bind<BodyParser>(address)
+    .toClass(parserClass)
+    .inScope(BindingScope.SINGLETON)
+    .tag(REQUEST_BODY_PARSER_TAG);
 }
 
 /**

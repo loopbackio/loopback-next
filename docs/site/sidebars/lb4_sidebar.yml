@@ -307,6 +307,10 @@ children:
     url: Creating-servers.html
     output: 'web, pdf'
 
+  - title: 'Extending Request Body Parsing'
+    url: Extending-request-body-parsing.html
+    output: 'web, pdf'
+
   - title: 'Testing your extension'
     url: Testing-your-extension.html
     output: 'web, pdf'

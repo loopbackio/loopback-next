@@ -12,6 +12,7 @@ import {
   parseOperationArgs,
   PathParameterValues,
   Request,
+  RequestBodyParser,
   ResolvedRoute,
   Route,
 } from '../../..';
@@ -80,12 +81,13 @@ export async function testCoercion<T>(config: TestArgs<T>) {
         break;
     }
 
+    const requestBodyParser = new RequestBodyParser();
     if (config.expectError) {
-      await expect(parseOperationArgs(req, route)).to.be.rejectedWith(
-        config.expectedResult,
-      );
+      await expect(
+        parseOperationArgs(req, route, requestBodyParser),
+      ).to.be.rejectedWith(config.expectedResult);
     } else {
-      const args = await parseOperationArgs(req, route);
+      const args = await parseOperationArgs(req, route, requestBodyParser);
       expect(args).to.eql([config.expectedResult]);
     }
   } catch (err) {

@@ -110,7 +110,11 @@ function validateValueAgainstSchema(
 
   /* istanbul ignore if */
   if (debug.enabled) {
-    debug('Invalid request body: %s', util.inspect(validationErrors));
+    debug(
+      'Invalid request body: %s. Errors: %s',
+      util.inspect(body, {depth: null}),
+      util.inspect(validationErrors),
+    );
   }
 
   const error = RestHttpErrors.invalidRequestBody();

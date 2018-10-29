@@ -179,12 +179,13 @@ in/by the `@requestBody` decorator. Please refer to the documentation on
 [@requestBody decorator](Decorators.md#requestbody-decorator) to get a
 comprehensive idea of defining custom validation rules for your models.
 
-We support `json` and `urlencoded` content types. The client should set
-`Content-Type` http header to `application/json` or
-`application/x-www-form-urlencoded`. Its value is matched against the list of
-media types defined in the `requestBody.content` object of the OpenAPI operation
-spec. If no matching media types is found or the type is not supported yet, an
-UnsupportedMediaTypeError (http statusCode 415) will be reported.
+We support `json`, `urlencoded`, and `text` content types. The client should set
+`Content-Type` http header to `application/json`,
+`application/x-www-form-urlencoded`, or `text/plain`. Its value is matched
+against the list of media types defined in the `requestBody.content` object of
+the OpenAPI operation spec. If no matching media types is found or the type is
+not supported yet, an `UnsupportedMediaTypeError` (http statusCode 415) will be
+reported.
 
 Please note that `urlencoded` media type does not support data typing. For
 example, `key=3` is parsed as `{key: '3'}`. The raw result is then coerced by
@@ -238,17 +239,25 @@ binding the value to `RestBindings.REQUEST_BODY_PARSER_OPTIONS`
 ('rest.requestBodyParserOptions'). For example,
 
 ```ts
-server
-  .bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS)
-  .to({limit: 4 * 1024 * 1024}); // Set limit to 4MB
+server.bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS).to({
+  limit: '4MB',
+});
 ```
 
-The list of options can be found in the [body](https://github.com/Raynos/body)
-module.
+The options can be media type specific, for example:
 
-By default, the `limit` is `1024 * 1024` (1MB). Any request with a body length
-exceeding the limit will be rejected with http status code 413 (request entity
-too large).
+```ts
+server.bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS).to({
+  json: {limit: '4MB'},
+  text: {limit: '1MB'},
+});
+```
+
+The list of options can be found in the
+[body-parser](https://github.com/expressjs/body-parser/#options) module.
+
+By default, the `limit` is `1MB`. Any request with a body length exceeding the
+limit will be rejected with http status code 413 (request entity too large).
 
 A few tips worth mentioning:
 
@@ -259,6 +268,86 @@ A few tips worth mentioning:
   request body specification in decorators like `route()` and
   [`api()`](Decorators.md#api-decorator), this requires you to provide a
   completed request body specification.
+
+#### Extend Request Body Parsing
+
+See [Extending request body parsing](./Extending-request-body-parsing.md) for
+more details.
+
+#### Specify Custom Parser by Controller Methods
+
+In some cases, a controller method wants to handle request body parsing by
+itself, such as, to accept `multipart/form-data` for file uploads or stream-line
+a large json document. To bypass body parsing, the `'x-parser'` extension can be
+set to `'stream'` for a media type of the request body content. For example,
+
+```ts
+class FileUploadController {
+  async upload(
+    @requestBody({
+      description: 'multipart/form-data value.',
+      required: true,
+      content: {
+        'multipart/form-data': {
+          // Skip body parsing
+          'x-parser': 'stream',
+          schema: {type: 'object'},
+        },
+      },
+    })
+    request: Request,
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+  ): Promise<object> {
+    const storage = multer.memoryStorage();
+    const upload = multer({storage});
+    return new Promise<object>((resolve, reject) => {
+      upload.any()(request, response, err => {
+        if (err) reject(err);
+        else {
+          resolve({
+            files: request.files,
+            // tslint:disable-next-line:no-any
+            fields: (request as any).fields,
+          });
+        }
+      });
+    });
+  }
+}
+```
+
+The `x-parser` value can be one of the following:
+
+1. Name of the parser, such as `json`, `raw`, or `stream`
+
+- `stream`: keeps the http request body as a stream without parsing
+- `raw`: parses the http request body as a `Buffer`
+
+```ts
+{
+  'x-parser': 'stream'
+}
+```
+
+2. A body parser class
+
+```ts
+{
+  'x-parser': JsonBodyParser
+}
+```
+
+3. A body parser function, for example:
+
+```ts
+function parseJson(request: Request): Promise<RequestBody> {
+  return new JsonBodyParser().parse(request);
+}
+
+{
+  'x-parser': parseJson
+}
+```
 
 #### Localizing Errors
 

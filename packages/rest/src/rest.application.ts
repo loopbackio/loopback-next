@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, Constructor} from '@loopback/context';
+import {Binding, Constructor, BindingAddress} from '@loopback/context';
 import {Application, ApplicationConfig, Server} from '@loopback/core';
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
 import {PathParams} from 'express-serve-static-core';
@@ -14,6 +14,7 @@ import {RestComponent} from './rest.component';
 import {HttpRequestListener, HttpServerLike, RestServer} from './rest.server';
 import {ControllerClass, ControllerFactory, RouteEntry} from './router';
 import {SequenceFunction, SequenceHandler} from './sequence';
+import {BodyParser} from './body-parsers';
 
 export const ERR_NO_MULTI_SERVER = format(
   'RestApplication does not support multiple servers!',
@@ -92,6 +93,18 @@ export class RestApplication extends Application implements HttpServerLike {
    */
   static(path: PathParams, rootDir: string, options?: ServeStaticOptions) {
     this.restServer.static(path, rootDir, options);
+  }
+
+  /**
+   * Bind a body parser to the server context
+   * @param parserClass Body parser class
+   * @param address Optional binding address
+   */
+  bodyParser(
+    bodyParserClass: Constructor<BodyParser>,
+    address?: BindingAddress<BodyParser>,
+  ): Binding<BodyParser> {
+    return this.restServer.bodyParser(bodyParserClass, address);
   }
 
   /**
