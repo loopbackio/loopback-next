@@ -24,7 +24,7 @@ export class TodoController {
     responses: {
       '200': {
         description: 'Todo model instance',
-        content: {'application/json': {'x-ts-type': Todo}},
+        content: {'application/json': {schema: {'x-ts-type': Todo}}},
       },
     },
   })
@@ -36,7 +36,7 @@ export class TodoController {
     responses: {
       '200': {
         description: 'Todo model instance',
-        content: {'application/json': {'x-ts-type': Todo}},
+        content: {'application/json': {schema: {'x-ts-type': Todo}}},
       },
     },
   })
@@ -108,7 +108,7 @@ export class TodoController {
     responses: {
       '200': {
         description: 'TodoList model instance',
-        content: {'application/json': {'x-ts-type': TodoList}},
+        content: {'application/json': {schema: {'x-ts-type': TodoList}}},
       },
     },
   })

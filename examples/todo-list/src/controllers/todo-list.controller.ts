@@ -33,7 +33,7 @@ export class TodoListController {
     responses: {
       '200': {
         description: 'TodoList model instance',
-        content: {'application/json': {'x-ts-type': TodoList}},
+        content: {'application/json': {schema: {'x-ts-type': TodoList}}},
       },
     },
   })
@@ -59,7 +59,7 @@ export class TodoListController {
     responses: {
       '200': {
         description: 'Array of TodoList model instances',
-        content: {'application/json': {'x-ts-type': TodoList}},
+        content: {'application/json': {schema: {'x-ts-type': TodoList}}},
       },
     },
   })
@@ -88,7 +88,7 @@ export class TodoListController {
     responses: {
       '200': {
         description: 'TodoList model instance',
-        content: {'application/json': {'x-ts-type': TodoList}},
+        content: {'application/json': {schema: {'x-ts-type': TodoList}}},
       },
     },
   })
