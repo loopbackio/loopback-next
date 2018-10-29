@@ -155,6 +155,38 @@ export async function main() {
 }
 ```
 
+### Customize CORS
+
+[CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) is enabled
+by default for REST servers with the following options:
+
+```ts
+{
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  maxAge: 86400,
+  credentials: true,
+}
+```
+
+The application code can customize CORS via REST configuration:
+
+```ts
+export async function main() {
+  const options = {
+    rest: {
+      cors: {...},
+    },
+  };
+  const app = new RestApplication(options);
+}
+```
+
+For a complete list of CORS options, see
+https://github.com/expressjs/cors#configuration-options.
+
 ### `rest` options
 
 | Property    | Type                | Purpose                                                                                                   |
@@ -163,6 +195,7 @@ export async function main() {
 | protocol    | string (http/https) | Specify the protocol on which the RestServer will listen for traffic.                                     |
 | key         | string              | Specify the SSL private key for https.                                                                    |
 | cert        | string              | Specify the SSL certificate for https.                                                                    |
+| cors        | CorsOptions         | Specify the CORS options.                                                                                 |
 | sequence    | SequenceHandler     | Use a custom SequenceHandler to change the behavior of the RestServer for the request-response lifecycle. |
 | openApiSpec | OpenApiSpecOptions  | Customize how OpenAPI spec is served                                                                      |
 | apiExplorer | ApiExplorerOptions  | Customize how API explorer is served                                                                      |
