@@ -39,13 +39,13 @@ export function belongsTo<T extends Entity>(
       // default values, can be customized by the caller
       {
         keyFrom: decoratedKey,
+        name: relationName,
       },
       // properties provided by the caller
       definition,
       // properties enforced by the decorator
       {
         type: RelationType.belongsTo,
-        name: relationName,
         source: decoratedTarget.constructor,
         target: targetResolver,
       },

@@ -29,6 +29,7 @@ describe('relation decorator', () => {
         addressBookId: number;
       }
 
+      @model()
       class AddressBook extends Entity {
         id: number;
 
@@ -56,6 +57,15 @@ describe('relation decorator', () => {
       expect(jugglerMeta).to.eql({
         type: Array,
         itemType: () => Address,
+      });
+
+      expect(AddressBook.definition.relations).to.eql({
+        addresses: {
+          type: RelationType.hasMany,
+          name: 'addresses',
+          source: AddressBook,
+          target: () => Address,
+        },
       });
     });
 
@@ -126,6 +136,7 @@ describe('relation decorator', () => {
         @property({id: true})
         id: number;
       }
+      @model()
       class Address extends Entity {
         @belongsTo(() => AddressBook)
         addressBookId: number;
@@ -137,6 +148,13 @@ describe('relation decorator', () => {
       expect(jugglerMeta).to.eql({
         addressBookId: {
           type: Number,
+        },
+      });
+      expect(Address.definition.relations).to.containDeep({
+        addressBook: {
+          keyFrom: 'addressBookId',
+          name: 'addressBook',
+          type: 'belongsTo',
         },
       });
     });
@@ -170,6 +188,7 @@ describe('relation decorator', () => {
     });
 
     it('accepts explicit keyFrom and keyTo', () => {
+      @model()
       class Address extends Entity {
         addressId: number;
         street: string;
@@ -177,6 +196,7 @@ describe('relation decorator', () => {
         @belongsTo(() => AddressBook, {
           keyFrom: 'aForeignKey',
           keyTo: 'aPrimaryKey',
+          name: 'address-book',
         })
         addressBookId: number;
       }
@@ -193,6 +213,13 @@ describe('relation decorator', () => {
       expect(meta).to.containEql({
         keyFrom: 'aForeignKey',
         keyTo: 'aPrimaryKey',
+      });
+      expect(Address.definition.relations).to.containDeep({
+        'address-book': {
+          type: 'belongsTo',
+          keyFrom: 'aForeignKey',
+          keyTo: 'aPrimaryKey',
+        },
       });
     });
   });
