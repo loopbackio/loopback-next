@@ -6,6 +6,7 @@
 import {PropertyDecoratorFactory} from '@loopback/context';
 import {Model, RelationDefinitionMap} from '../model';
 import {RelationType} from './relation.types';
+import {buildModelDefinition} from '../decorators';
 
 export const RELATIONS_KEY = 'loopback:relations';
 
@@ -28,7 +29,9 @@ export function relation(definition?: Object) {
 export function getModelRelations(
   modelCtor: typeof Model,
 ): RelationDefinitionMap {
-  return (modelCtor.definition && modelCtor.definition.relations) || {};
+  // Build model definitions if `@model` is missing
+  const modelDef = buildModelDefinition(modelCtor);
+  return (modelDef && modelDef.relations) || {};
 }
 
 //
