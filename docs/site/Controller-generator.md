@@ -119,7 +119,7 @@ export class TodoController {
     responses: {
       '200': {
         description: 'Todo model instance',
-        content: {'application/json': {'x-ts-type': Todo}},
+        content: {'application/json': {schema: {'x-ts-type': Todo}}},
       },
     },
   })
@@ -131,7 +131,7 @@ export class TodoController {
     responses: {
       '200': {
         description: 'Todo model count',
-        content: {'application/json': {'x-ts-type': Number}},
+        content: {'application/json': {schema: {'x-ts-type': Number}}},
       },
     },
   })
@@ -163,7 +163,7 @@ export class TodoController {
     responses: {
       '200': {
         description: 'Todo PATCH success count',
-        content: {'application/json': {'x-ts-type': Number}},
+        content: {'application/json': {schema: {'x-ts-type': Number}}},
       },
     },
   })
@@ -178,7 +178,7 @@ export class TodoController {
     responses: {
       '200': {
         description: 'Todo model instance',
-        content: {'application/json': {'x-ts-type': Todo}},
+        content: {'application/json': {schema: {'x-ts-type': Todo}}},
       },
     },
   })

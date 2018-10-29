@@ -31,7 +31,7 @@ export class TodoListTodoController {
     responses: {
       '200': {
         description: 'TodoList.Todo model instance',
-        content: {'application/json': {'x-ts-type': Todo}},
+        content: {'application/json': {schema: {'x-ts-type': Todo}}},
       },
     },
   })
