@@ -392,10 +392,10 @@ const schemaWithObjectPropOfMyModel = {
 export class SomeController {
   @post('/my-controller')
   greetObjectProperty(
-      @requestBody({
-        content: {'application/json': {schema: schemaWithObjectPropOfMyModel}},
-      })
-          body: { myModel: MyModel },
+    @requestBody({
+      content: {'application/json': {schema: schemaWithObjectPropOfMyModel}},
+    })
+    body: { myModel: MyModel },
   ): string {
     return `hello ${body.myModel.name}!`;
   }
@@ -414,13 +414,14 @@ export class SomeController {
 
   @post('/my-controllers')
   greetEveryone(
-      @requestBody({
-        content: {'application/json': {schema: schemaDeepArrayOfMyModel}},
-      })
-          body: MyModel[][],
+    @requestBody({
+      content: {'application/json': {schema: schemaDeepArrayOfMyModel}},
+    })
+    body: MyModel[][],
   ): string {
     return `hello ${body.map(objs => objs.map(m => m.name))}`;
   }
+}
 ```
 
 When the OpenAPI spec is generated, the `xs-ts-type` is mapped to
