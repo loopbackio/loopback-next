@@ -7,8 +7,8 @@ import {Provider, inject} from '@loopback/context';
 import {parseOperationArgs} from '../parser';
 import {RestBindings} from '../keys';
 import {ResolvedRoute} from '../router';
-import {Request, ParseParams, RequestBodyParserOptions} from '../types';
-import {RequestBodyParser} from '../body-parser';
+import {Request, ParseParams} from '../types';
+import {RequestBodyParser} from '../body-parsers';
 /**
  * Provides the function for parsing args in requests at runtime.
  *
@@ -18,14 +18,10 @@ import {RequestBodyParser} from '../body-parser';
  * @returns {ParseParams} The handler function that will parse request args.
  */
 export class ParseParamsProvider implements Provider<ParseParams> {
-  private requestBodyParser: RequestBodyParser;
-
   constructor(
-    @inject(RestBindings.REQUEST_BODY_PARSER_OPTIONS, {optional: true})
-    private options?: RequestBodyParserOptions,
-  ) {
-    this.requestBodyParser = new RequestBodyParser(options);
-  }
+    @inject(RestBindings.REQUEST_BODY_PARSER)
+    private requestBodyParser: RequestBodyParser,
+  ) {}
   value() {
     return (request: Request, route: ResolvedRoute) =>
       parseOperationArgs(request, route, this.requestBodyParser);

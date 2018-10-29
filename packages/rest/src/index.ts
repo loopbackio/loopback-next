@@ -8,7 +8,7 @@ export * from './router';
 export * from './providers';
 
 export * from './parser';
-export * from './body-parser';
+export * from './body-parsers';
 export * from './writer';
 export * from './http-handler';
 export * from './request-context';
