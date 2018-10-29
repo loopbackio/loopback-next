@@ -25,13 +25,12 @@ export function hasMany<T extends Entity>(
 
     const meta: HasManyDefinition = Object.assign(
       // default values, can be customized by the caller
-      {},
+      {name: key},
       // properties provided by the caller
       definition,
       // properties enforced by the decorator
       {
         type: RelationType.hasMany,
-        name: key,
         source: decoratedTarget.constructor,
         target: targetResolver,
       },
