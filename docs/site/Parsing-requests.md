@@ -179,12 +179,13 @@ in/by the `@requestBody` decorator. Please refer to the documentation on
 [@requestBody decorator](Decorators.md#requestbody-decorator) to get a
 comprehensive idea of defining custom validation rules for your models.
 
-We support `json` and `urlencoded` content types. The client should set
-`Content-Type` http header to `application/json` or
-`application/x-www-form-urlencoded`. Its value is matched against the list of
-media types defined in the `requestBody.content` object of the OpenAPI operation
-spec. If no matching media types is found or the type is not supported yet, an
-UnsupportedMediaTypeError (http statusCode 415) will be reported.
+We support `json`, `urlencoded`, and `text` content types. The client should set
+`Content-Type` http header to `application/json`,
+`application/x-www-form-urlencoded`, or `text/plain`. Its value is matched
+against the list of media types defined in the `requestBody.content` object of
+the OpenAPI operation spec. If no matching media types is found or the type is
+not supported yet, an UnsupportedMediaTypeError (http statusCode 415) will be
+reported.
 
 Please note that `urlencoded` media type does not support data typing. For
 example, `key=3` is parsed as `{key: '3'}`. The raw result is then coerced by
@@ -238,17 +239,25 @@ binding the value to `RestBindings.REQUEST_BODY_PARSER_OPTIONS`
 ('rest.requestBodyParserOptions'). For example,
 
 ```ts
-server
-  .bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS)
-  .to({limit: 4 * 1024 * 1024}); // Set limit to 4MB
+server.bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS).to({
+  limit: '4MB',
+});
 ```
 
-The list of options can be found in the [body](https://github.com/Raynos/body)
-module.
+The options can be media type specific, for example:
 
-By default, the `limit` is `1024 * 1024` (1MB). Any request with a body length
-exceeding the limit will be rejected with http status code 413 (request entity
-too large).
+```ts
+server.bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS).to({
+  json: {limit: '4MB'},
+  text: {limit: '1MB'},
+});
+```
+
+The list of options can be found in the
+[body-parser](https://github.com/expressjs/body-parser/#options) module.
+
+By default, the `limit` is `1MB`. Any request with a body length exceeding the
+limit will be rejected with http status code 413 (request entity too large).
 
 A few tips worth mentioning:
 
