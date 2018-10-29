@@ -3,21 +3,21 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import * as debugModule from 'debug';
+import {BindingAddress, BindingKey} from './binding-key';
 import {Context} from './context';
-import {BindingKey} from './binding-key';
+import {Provider} from './provider';
 import {ResolutionSession} from './resolution-session';
 import {instantiateClass} from './resolver';
 import {
+  BoundValue,
   Constructor,
   isPromiseLike,
-  BoundValue,
-  ValueOrPromise,
   MapObject,
   transformValueOrPromise,
+  ValueOrPromise,
 } from './value-promise';
-import {Provider} from './provider';
 
-import * as debugModule from 'debug';
 const debug = debugModule('loopback:context:binding');
 
 /**
@@ -443,7 +443,7 @@ export class Binding<T = BoundValue> {
    * easy to read.
    * @param key Binding key
    */
-  static bind(key: string): Binding {
-    return new Binding(key);
+  static bind<T = unknown>(key: BindingAddress<T>): Binding {
+    return new Binding(key.toString());
   }
 }

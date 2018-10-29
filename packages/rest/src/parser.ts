@@ -11,17 +11,13 @@ import {
   SchemasObject,
 } from '@loopback/openapi-v3-types';
 import * as debugModule from 'debug';
-import * as HttpErrors from 'http-errors';
 import * as parseUrl from 'parseurl';
 import {parse as parseQuery} from 'qs';
+import {RequestBody, RequestBodyParser} from './body-parsers';
 import {coerceParameter} from './coercion/coerce-parameter';
 import {RestHttpErrors} from './rest-http-error';
 import {ResolvedRoute} from './router';
-import {
-  OperationArgs,
-  PathParameterValues,
-  Request,
-} from './types';
+import {OperationArgs, PathParameterValues, Request} from './types';
 import {validateRequestBody} from './validation/request-body.validator';
 
 const debug = debugModule('loopback:rest:parser');
@@ -39,7 +35,7 @@ Object.freeze(QUERY_NOT_PARSED);
 export async function parseOperationArgs(
   request: Request,
   route: ResolvedRoute,
-  requestBodyParser: RequestBodyParser = new RequestBodyParser({}),
+  requestBodyParser: RequestBodyParser = new RequestBodyParser(),
 ): Promise<OperationArgs> {
   debug('Parsing operation arguments for route %s', route.describe());
   const operationSpec = route.spec;

@@ -12,7 +12,15 @@ import {
   httpsGetAsync,
   givenHttpServerConfig,
 } from '@loopback/testlab';
-import {RestBindings, RestServer, RestComponent, get} from '../..';
+import {
+  RestBindings,
+  RestServer,
+  RestComponent,
+  get,
+  Request,
+  RestServerConfig,
+  BodyParser,
+} from '../..';
 import {IncomingMessage, ServerResponse} from 'http';
 import * as yaml from 'js-yaml';
 import * as path from 'path';
@@ -20,7 +28,8 @@ import * as fs from 'fs';
 import * as util from 'util';
 const readFileAsync = util.promisify(fs.readFile);
 
-import {RestServerConfig} from '../..';
+import {is} from 'type-is';
+import {requestBody, post} from '../../src';
 
 const FIXTURES = path.resolve(__dirname, '../../../fixtures');
 const ASSETS = path.resolve(FIXTURES, 'assets');
@@ -228,6 +237,35 @@ describe('RestServer (integration)', () => {
     await createClientForHandler(server.requestHandler)
       .get('/html')
       .expect(200, 'Hi');
+  });
+
+  it('allows request body parser extensions', async () => {
+    const body = '<key>value</key>';
+
+    /**
+     * A mock-up xml parser
+     */
+    class XmlBodyParser implements BodyParser {
+      name: string = 'xml';
+      supports(mediaType: string) {
+        return !!is(mediaType, 'xml');
+      }
+
+      async parse(request: Request) {
+        return {value: {key: 'value'}};
+      }
+    }
+
+    const server = await givenAServer({rest: {port: 0}});
+    // Register a request body parser for xml
+    server.bodyParser(XmlBodyParser);
+    server.controller(DummyXmlController);
+
+    await createClientForHandler(server.requestHandler)
+      .post('/')
+      .set('Content-Type', 'application/xml')
+      .send(body)
+      .expect(200, {key: 'value'});
   });
 
   it('allows cors', async () => {
@@ -685,6 +723,25 @@ paths:
     })
     ping(): string {
       return 'Hi';
+    }
+  }
+
+  class DummyXmlController {
+    constructor() {}
+    @post('/')
+    echo(
+      @requestBody({
+        content: {
+          'application/xml': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+      })
+      body: object,
+    ): object {
+      return body;
     }
   }
 

@@ -62,12 +62,19 @@ describe('Validation at REST level', () => {
     it('rejects missing required properties', () =>
       serverRejectsRequestWithMissingRequiredValues());
 
-    it('rejects requests with no (empty) body', async () => {
-      // NOTE(bajtos) An empty body cannot be parsed as a JSON,
-      // therefore this test request does not even reach the validation logic.
+    it('rejects requests with no body', async () => {
+      // An empty body is now parsed as `undefined`
       await client
         .post('/products')
         .type('json')
+        .expect(400);
+    });
+
+    it('rejects requests with empty json body', async () => {
+      await client
+        .post('/products')
+        .type('json')
+        .send('{}')
         .expect(422);
     });
 
