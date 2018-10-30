@@ -326,7 +326,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
   }
 
   protected toEntity(model: juggler.PersistedModel): T {
-    return new this.entityClass(model.toObject()) as T;
+    return new this.entityClass(model.toJSON()) as T;
   }
 
   protected toEntities(models: juggler.PersistedModel[]): T[] {

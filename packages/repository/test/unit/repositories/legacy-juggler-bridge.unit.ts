@@ -49,12 +49,17 @@ describe('DefaultCrudRepository', () => {
       properties: {
         title: 'string',
         content: 'string',
+        secret: 'string',
         id: {name: 'id', type: 'number', id: true},
+      },
+      settings: {
+        hiddenProperties: ['secret'],
       },
     });
 
     title?: string;
     content?: string;
+    secret?: string;
     id: number;
 
     constructor(data: Partial<Note>) {
@@ -135,6 +140,18 @@ describe('DefaultCrudRepository', () => {
     const note = await repo.create({title: 't3', content: 'c3'});
     const result = await repo.findById(note.id);
     expect(result.toJSON()).to.eql(note.toJSON());
+  });
+
+  it('hides hidden properties', async () => {
+    const repo = new DefaultCrudRepository(Note, ds);
+    const note = await repo.create({
+      title: 't3',
+      content: 'c3',
+      secret: 'secret',
+    });
+    expect(note.secret).to.be.undefined();
+    const result = await repo.findById(note.id);
+    expect(result.secret).to.be.undefined();
   });
 
   it('implements Repository.createAll()', async () => {
