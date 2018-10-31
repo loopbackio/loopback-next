@@ -6,7 +6,13 @@
 import {OperationRetval, Response} from './types';
 import {Readable} from 'stream';
 import {ResolvedRoute} from './router';
-import {ResponseObject} from '@loopback/openapi-v3-types';
+import {
+  ResponseObject,
+  ReferenceObject,
+  OperationObject,
+  isReferenceObject,
+} from '@loopback/openapi-v3-types';
+import {is} from 'type-is';
 
 /**
  * Writes the result from Application controller method
@@ -36,7 +42,8 @@ export function writeResultToResponse(
   let mediaType = undefined;
   if (route) {
     const responses = route.spec.responses;
-    const responseObject: ResponseObject = responses['200'] || responses['201'];
+    const responseObject: ResponseObject =
+      responses['200'] || responses['201'] || {};
     const content = responseObject.content || {};
     mediaType = Object.keys(content)[0];
   }
@@ -70,4 +77,68 @@ export function writeResultToResponse(
       break;
   }
   response.end(result);
+}
+
+function getResponseObject(spec: OperationObject, statusCode: number | string) {
+  statusCode = (statusCode || '200').toString();
+  const responses = spec.responses || {};
+  const responseObj: ResponseObject | ReferenceObject = responses[statusCode];
+  if (isReferenceObject(responseObj)) {
+    return;
+  }
+  if (responseObj) return responseObj;
+  return responses.default;
+}
+
+function getResponseMediaType(responseObject: ResponseObject, accept: string) {
+  const content = responseObject.content || {};
+  for (const mediaType in content) {
+    if (is(mediaType, accept)) {
+      return {
+        mediaType,
+        mediaTypeObject: content[mediaType],
+      };
+    }
+  }
+  return undefined;
+}
+/**
+ * Interface to be implemented by response writer extensions
+ */
+export interface ResponseWriter {
+  /**
+   * Optional name of the parser for debugging
+   */
+  name?: string;
+  /**
+   * Indicate if the given media type is supported
+   * @param mediaType Media type
+   */
+  supports(mediaType: string): boolean;
+  /**
+   * Parse the request body
+   * @param request http request
+   */
+  // tslint:disable-next-line:no-any
+  write(response: Response, result: any): Promise<void>;
+}
+
+/**
+ * Interface to be implemented by error writer extensions
+ */
+export interface ErrorResponseWriter {
+  /**
+   * Optional name of the parser for debugging
+   */
+  name?: string;
+  /**
+   * Indicate if the given media type is supported
+   * @param mediaType Media type
+   */
+  supports(mediaType: string): boolean;
+  /**
+   * Parse the request body
+   * @param request http request
+   */
+  write(response: Response, error: Error): Promise<void>;
 }
