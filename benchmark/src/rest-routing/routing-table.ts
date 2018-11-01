@@ -3,13 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Context} from '@loopback/context';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {
-  RoutingTable,
-  TrieRouter,
-  RestRouter,
-  RegExpRouter,
+  HttpHandler,
   OpenApiSpec,
+  RegExpRouter,
+  RestRouter,
+  TrieRouter,
 } from '@loopback/rest';
 
 function runBenchmark(count = 1000) {
@@ -75,7 +76,7 @@ function givenRouter(router: RestRouter, spec: OpenApiSpec, count: number) {
     log('Creating %s, %d', name, count);
     let start = process.hrtime();
 
-    const table = new RoutingTable(router);
+    const table = new HttpHandler(new Context(), router);
     table.registerController(spec, TestController);
     router.list(); // Force sorting
     log('Created %s %s', name, process.hrtime(start));
@@ -97,7 +98,7 @@ function givenRouter(router: RestRouter, spec: OpenApiSpec, count: number) {
       };
 
       try {
-        table.find(request);
+        table.findRoute(request);
         found++;
       } catch (e) {
         missed++;

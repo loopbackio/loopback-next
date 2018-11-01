@@ -16,7 +16,6 @@ export * from './trie-router';
 export * from './regexp-router';
 
 // helpers
-export * from './routing-table';
 export * from './route-sort';
 export * from './openapi-path';
 export * from './trie';

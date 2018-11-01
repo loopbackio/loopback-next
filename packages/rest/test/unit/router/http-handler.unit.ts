@@ -6,43 +6,44 @@
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {get, getControllerSpec, param} from '@loopback/openapi-v3';
 import {
-  ShotRequestOptions,
   expect,
+  ShotRequestOptions,
   stubExpressContext,
 } from '@loopback/testlab';
 import {
   ControllerRoute,
-  Request,
-  RoutingTable,
-  RestRouter,
+  HttpHandler,
   RegExpRouter,
+  Request,
+  RestRouter,
   TrieRouter,
 } from '../../..';
+import {Context} from '@loopback/context';
 
-describe('RoutingTable', () => {
+describe('HttpHandler', () => {
   it('joins basePath and path', () => {
-    expect(RoutingTable.joinPath('', 'a')).to.equal('/a');
-    expect(RoutingTable.joinPath('/', '')).to.equal('/');
-    expect(RoutingTable.joinPath('/', 'a')).to.equal('/a');
-    expect(RoutingTable.joinPath('/root', 'a')).to.equal('/root/a');
-    expect(RoutingTable.joinPath('root', 'a')).to.equal('/root/a');
-    expect(RoutingTable.joinPath('root/', '/a')).to.equal('/root/a');
-    expect(RoutingTable.joinPath('root/', '/a/')).to.equal('/root/a');
-    expect(RoutingTable.joinPath('/root/', '/a/')).to.equal('/root/a');
-    expect(RoutingTable.joinPath('/root//x', '/a')).to.equal('/root/x/a');
-    expect(RoutingTable.joinPath('/root/', '/')).to.equal('/root');
-    expect(RoutingTable.joinPath('/root/x', '/a/b')).to.equal('/root/x/a/b');
-    expect(RoutingTable.joinPath('//root//x', '//a///b////c')).to.equal(
+    expect(HttpHandler.joinPath('', 'a')).to.equal('/a');
+    expect(HttpHandler.joinPath('/', '')).to.equal('/');
+    expect(HttpHandler.joinPath('/', 'a')).to.equal('/a');
+    expect(HttpHandler.joinPath('/root', 'a')).to.equal('/root/a');
+    expect(HttpHandler.joinPath('root', 'a')).to.equal('/root/a');
+    expect(HttpHandler.joinPath('root/', '/a')).to.equal('/root/a');
+    expect(HttpHandler.joinPath('root/', '/a/')).to.equal('/root/a');
+    expect(HttpHandler.joinPath('/root/', '/a/')).to.equal('/root/a');
+    expect(HttpHandler.joinPath('/root//x', '/a')).to.equal('/root/x/a');
+    expect(HttpHandler.joinPath('/root/', '/')).to.equal('/root');
+    expect(HttpHandler.joinPath('/root/x', '/a/b')).to.equal('/root/x/a/b');
+    expect(HttpHandler.joinPath('//root//x', '//a///b////c')).to.equal(
       '/root/x/a/b/c',
     );
   });
 });
 
-describe('RoutingTable with RegExpRouter', () => {
+describe('HttpHandler with RegExpRouter', () => {
   runTestsWithRouter(new RegExpRouter());
 });
 
-describe('RoutingTable with TrieRouter', () => {
+describe('HttpHandler with TrieRouter', () => {
   runTestsWithRouter(new TrieRouter());
 });
 
@@ -55,9 +56,9 @@ function runTestsWithRouter(router: RestRouter) {
       }
     }
     const spec = getControllerSpec(TestController);
-    const table = givenRoutingTable();
-    table.registerController(spec, TestController);
-    const paths = table.describeApiPaths();
+    const handler = givenHttpHandler();
+    handler.registerController(spec, TestController);
+    const paths = handler.describeApiPaths();
     const params = paths['/greet']['get'].parameters;
     expect(params).to.have.property('length', 1);
     expect(params[0]).to.have.properties({
@@ -74,15 +75,15 @@ function runTestsWithRouter(router: RestRouter) {
 
     class TestController {}
 
-    const table = givenRoutingTable();
-    table.registerController(spec, TestController);
+    const handler = givenHttpHandler();
+    handler.registerController(spec, TestController);
 
     const request = givenRequest({
       method: 'get',
       url: '/hello',
     });
 
-    const route = table.find(request);
+    const route = handler.findRoute(request);
 
     expect(route).to.be.instanceOf(ControllerRoute);
     expect(route)
@@ -99,21 +100,21 @@ function runTestsWithRouter(router: RestRouter) {
 
     // @jannyHou: please note ` anOpenApiSpec()` returns an openapi spec,
     // not controller spec, should be FIXED
-    // the routing table test expects an empty spec for
+    // the routing handler test expects an empty spec for
     // interface `ControllerSpec`
     spec.basePath = '/my';
 
     class TestController {}
 
-    const table = givenRoutingTable();
-    table.registerController(spec, TestController);
+    const handler = givenHttpHandler();
+    handler.registerController(spec, TestController);
 
     const request = givenRequest({
       method: 'get',
       url: '/my/hello',
     });
 
-    const route = table.find(request);
+    const route = handler.findRoute(request);
 
     expect(route).to.be.instanceOf(ControllerRoute);
     expect(route)
@@ -131,15 +132,15 @@ function runTestsWithRouter(router: RestRouter) {
 
     class TestController {}
 
-    const table = givenRoutingTable();
-    table.registerController(spec, TestController);
+    const handler = givenHttpHandler();
+    handler.registerController(spec, TestController);
 
     const request = givenRequest({
       method: 'get',
       url: '/hello/world',
     });
 
-    const route = table.find(request);
+    const route = handler.findRoute(request);
     expect(route)
       .to.have.property('spec')
       .containEql(spec.paths['/hello/world'].get);
@@ -159,21 +160,21 @@ function runTestsWithRouter(router: RestRouter) {
 
     // @jannyHou: please note ` anOpenApiSpec()` returns an openapi spec,
     // not controller spec, should be FIXED
-    // the routing table test expects an empty spec for
+    // the routing handler test expects an empty spec for
     // interface `ControllerSpec`
     spec.basePath = '/my';
 
     class TestController {}
 
-    const table = givenRoutingTable();
-    table.registerController(spec, TestController);
+    const handler = givenHttpHandler();
+    handler.registerController(spec, TestController);
 
     let request = givenRequest({
       method: 'get',
       url: '/my/add/1/2',
     });
 
-    let route = table.find(request);
+    let route = handler.findRoute(request);
     expect(route.path).to.eql('/my/add/{arg1}/{arg2}');
     expect(route.pathParams).to.containEql({arg1: '1', arg2: '2'});
 
@@ -182,7 +183,7 @@ function runTestsWithRouter(router: RestRouter) {
       url: '/my/subtract/3/2',
     });
 
-    route = table.find(request);
+    route = handler.findRoute(request);
     expect(route.path).to.eql('/my/subtract/{arg1}/{arg2}');
     expect(route.pathParams).to.containEql({arg1: '3', arg2: '2'});
   });
@@ -191,7 +192,7 @@ function runTestsWithRouter(router: RestRouter) {
     return stubExpressContext(options).request;
   }
 
-  function givenRoutingTable() {
-    return new RoutingTable(router);
+  function givenHttpHandler() {
+    return new HttpHandler(new Context(), router);
   }
 }

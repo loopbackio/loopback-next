@@ -33,7 +33,6 @@ import {
   createControllerFactoryForBinding,
   Route,
   RouteEntry,
-  RoutingTable,
 } from './router';
 import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
 import {
@@ -266,13 +265,10 @@ export class RestServer extends Context implements Server, HttpServerLike {
     // See https://github.com/strongloop/loopback-next/issues/433
     if (this._httpHandler) return;
 
-    /**
-     * Check if there is custom router in the context
-     */
+    // Check if there is custom router in the context
     const router = this.getSync(RestBindings.ROUTER, {optional: true});
-    const routingTable = new RoutingTable(router);
+    this._httpHandler = new HttpHandler(this, router);
 
-    this._httpHandler = new HttpHandler(this, routingTable);
     for (const b of this.find('controllers.*')) {
       const controllerName = b.key.replace(/^controllers\./, '');
       const ctor = b.valueConstructor;

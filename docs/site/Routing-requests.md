@@ -10,7 +10,7 @@ permalink: /doc/en/lb4/Routing-requests.html
 
 This is an action in the default HTTP sequence. Its responsibility is to find a
 route that can handle a given http request. By default, the `FindRoute` action
-uses the `RoutingTable` from `@loopback/rest` to match requests against
+uses the `HttpHandler` from `@loopback/rest` to match requests against
 registered routes including controller methods using `request.method` and
 `request.path`. For example:
 
