@@ -4,10 +4,27 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding, BoundValue} from '@loopback/context';
+import {Component as CoreComponent} from '@loopback/core';
 import {ResolvedRoute, RouteEntry} from './router/routing-table';
 import {Request, Response} from 'express';
 
 export {Request, Response};
+
+/**
+ * Static assets settings
+ */
+export interface StaticAssetsConfig {
+  path: string;
+  rootDir: string;
+  options?: object;
+}
+
+export interface Component extends CoreComponent {
+  /**
+   * An array of directory to serve static assets
+   */
+  staticAssets?: StaticAssetsConfig[];
+}
 
 /**
  * An object holding HTTP request, response and other data

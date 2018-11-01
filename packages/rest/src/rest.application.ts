@@ -8,7 +8,6 @@ import {
   Application,
   ApplicationConfig,
   Server,
-  Component,
   mountComponent,
   BindingScope,
 } from '@loopback/core';
@@ -18,7 +17,6 @@ import {ServeStaticOptions} from 'serve-static';
 import {format} from 'util';
 import {RestBindings} from './keys';
 import {RestComponent} from './rest.component';
-import {ExplorerComponent} from './explorer.component';
 import {HttpRequestListener, HttpServerLike, RestServer} from './rest.server';
 import {
   ControllerClass,
@@ -26,6 +24,7 @@ import {
   RouteEntry,
 } from './router/routing-table';
 import {SequenceFunction, SequenceHandler} from './sequence';
+import {Component, StaticAssetsConfig} from './types';
 
 export const ERR_NO_MULTI_SERVER = format(
   'RestApplication does not support multiple servers!',
@@ -73,22 +72,26 @@ export class RestApplication extends Application implements HttpServerLike {
     return this.restServer.requestHandler;
   }
 
-  constructor(config: ApplicationConfig = {}) {
+  constructor(readonly config: ApplicationConfig = {}) {
     super(config);
     this.component(RestComponent);
-    if (config.enableExplorer) {
-      const name = ExplorerComponent.name;
-      const componentKey = `components.${name}`;
-      this.bind(componentKey)
-        .toClass(ExplorerComponent)
-        .inScope(BindingScope.SINGLETON)
-        .tag('component');
-      // Assuming components can be synchronously instantiated
-      const explorerInstance = this.getSync<Component>(componentKey);
-      mountComponent(this, explorerInstance);
-      console.log(explorerInstance.staticAssets);
-      const explorer = explorerInstance.staticAssets![0];
-      this.static(explorer.path, explorer.rootDir, explorer.options);
+  }
+
+  component(componentCtor: Constructor<Component>, name?: string) {
+    name = name || componentCtor.name;
+    const componentKey = `components.${name}`;
+    this.bind(componentKey)
+      .toClass(componentCtor)
+      .inScope(BindingScope.SINGLETON)
+      .tag('component');
+    // Assuming components can be synchronously instantiated
+    const instance = this.getSync<Component>(componentKey);
+    mountComponent(this, instance);
+    console.log(instance.staticAssets);
+    if (instance.staticAssets) {
+      instance.staticAssets.forEach((config: StaticAssetsConfig) => {
+        this.static(config.path, config.rootDir, config.options);
+      });
     }
   }
 
