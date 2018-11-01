@@ -333,7 +333,7 @@ describe('HttpHandler', () => {
     });
 
     /**
-     * Ignore the EPIPE error
+     * Ignore the EPIPE and ECONNRESET errors.
      * See https://github.com/nodejs/node/issues/12339
      * @param err
      */
@@ -341,8 +341,9 @@ describe('HttpHandler', () => {
       // The server side can close the socket before the client
       // side can send out all data. For example, `response.end()`
       // is called before all request data has been processed due
-      // to size limit
-      if (err && err.code !== 'EPIPE') throw err;
+      // to size limit.
+      // On Windows, ECONNRESET is sometimes emitted instead of EPIPE.
+      if (err && err.code !== 'EPIPE' && err.code !== 'ECONNRESET') throw err;
     }
 
     function givenLargeRequest() {
