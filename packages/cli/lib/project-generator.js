@@ -192,14 +192,12 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     if (this.shouldExit()) return false;
 
     // First copy common files from ../../project/templates
-    this.fs.copyTpl(
+    this.copyTemplatedFiles(
       this.templatePath('../../project/templates/**/*'),
       this.destinationPath(''),
       {
         project: this.projectInfo,
       },
-      {},
-      {globOptions: {dot: true}},
     );
 
     // Rename `_.gitignore` back to `.gitignore`.
@@ -211,14 +209,12 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     );
 
     // Copy project type specific files from ./templates
-    this.fs.copyTpl(
+    this.copyTemplatedFiles(
       this.templatePath('**/*'),
       this.destinationPath(''),
       {
         project: this.projectInfo,
       },
-      {},
-      {globOptions: {dot: true}},
     );
 
     if (!this.projectInfo.tslint) {
