@@ -14,7 +14,7 @@ import {
   RouteEntry,
   ControllerClass,
   ControllerFactory,
-} from './router/routing-table';
+} from './router';
 import {Request, Response} from './types';
 
 import {RestBindings} from './keys';

@@ -6,7 +6,7 @@
 import {Context, inject, Provider} from '@loopback/context';
 import {InvokeMethod, OperationArgs, OperationRetval} from '../types';
 import {RestBindings} from '../keys';
-import {RouteEntry} from '../router/routing-table';
+import {RouteEntry} from '../router';
 
 export class InvokeMethodProvider implements Provider<InvokeMethod> {
   constructor(@inject(RestBindings.Http.CONTEXT) protected context: Context) {}

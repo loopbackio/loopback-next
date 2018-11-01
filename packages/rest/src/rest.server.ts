@@ -34,7 +34,7 @@ import {
   Route,
   RouteEntry,
   RoutingTable,
-} from './router/routing-table';
+} from './router';
 import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
 import {
   FindRoute,

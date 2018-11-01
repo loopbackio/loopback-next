@@ -19,8 +19,8 @@ import * as parseUrl from 'parseurl';
 import {parse as parseQuery} from 'qs';
 import {promisify} from 'util';
 import {coerceParameter} from './coercion/coerce-parameter';
-import {RestHttpErrors} from './index';
-import {ResolvedRoute} from './router/routing-table';
+import {RestHttpErrors} from './rest-http-error';
+import {ResolvedRoute} from './router';
 import {
   OperationArgs,
   PathParameterValues,

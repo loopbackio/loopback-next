@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding, BoundValue} from '@loopback/context';
-import {ResolvedRoute, RouteEntry} from './router/routing-table';
+import {ResolvedRoute, RouteEntry} from './router';
 import {Request, Response} from 'express';
 
 export {Request, Response};

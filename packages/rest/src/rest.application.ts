@@ -12,11 +12,7 @@ import {format} from 'util';
 import {RestBindings} from './keys';
 import {RestComponent} from './rest.component';
 import {HttpRequestListener, HttpServerLike, RestServer} from './rest.server';
-import {
-  ControllerClass,
-  ControllerFactory,
-  RouteEntry,
-} from './router/routing-table';
+import {ControllerClass, ControllerFactory, RouteEntry} from './router';
 import {SequenceFunction, SequenceHandler} from './sequence';
 
 export const ERR_NO_MULTI_SERVER = format(
