@@ -4,13 +4,21 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding, Constructor} from '@loopback/context';
-import {Application, ApplicationConfig, Server} from '@loopback/core';
+import {
+  Application,
+  ApplicationConfig,
+  Server,
+  Component,
+  mountComponent,
+  BindingScope,
+} from '@loopback/core';
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
 import {PathParams} from 'express-serve-static-core';
 import {ServeStaticOptions} from 'serve-static';
 import {format} from 'util';
 import {RestBindings} from './keys';
 import {RestComponent} from './rest.component';
+import {ExplorerComponent} from './explorer.component';
 import {HttpRequestListener, HttpServerLike, RestServer} from './rest.server';
 import {
   ControllerClass,
@@ -68,6 +76,20 @@ export class RestApplication extends Application implements HttpServerLike {
   constructor(config: ApplicationConfig = {}) {
     super(config);
     this.component(RestComponent);
+    if (config.enableExplorer) {
+      const name = ExplorerComponent.name;
+      const componentKey = `components.${name}`;
+      this.bind(componentKey)
+        .toClass(ExplorerComponent)
+        .inScope(BindingScope.SINGLETON)
+        .tag('component');
+      // Assuming components can be synchronously instantiated
+      const explorerInstance = this.getSync<Component>(componentKey);
+      mountComponent(this, explorerInstance);
+      console.log(explorerInstance.staticAssets);
+      const explorer = explorerInstance.staticAssets![0];
+      this.static(explorer.path, explorer.rootDir, explorer.options);
+    }
   }
 
   server(server: Constructor<Server>, name?: string): Binding {

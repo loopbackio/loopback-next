@@ -15,6 +15,15 @@ export interface ProviderMap {
 }
 
 /**
+ * Static assets settings
+ */
+export type staticAssetsSettings = {
+  path: string;
+  rootDir: string;
+  options?: object;
+};
+
+/**
  * A component declares a set of artifacts so that they cane be contributed to
  * an application as a group
  */
@@ -33,6 +42,10 @@ export interface Component {
   servers?: {
     [name: string]: Constructor<Server>;
   };
+  /**
+   * An array of directory to serve static assets
+   */
+  staticAssets?: staticAssetsSettings[];
 
   /**
    * Other properties
