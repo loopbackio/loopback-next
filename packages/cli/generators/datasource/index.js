@@ -286,7 +286,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
 
     // Copy Templates
     this.fs.writeJSON(jsonPath, ds);
-    this.fs.copyTpl(classTemplatePath, tsPath, this.artifactInfo);
+    this.copyTemplatedFiles(classTemplatePath, tsPath, this.artifactInfo);
   }
 
   install() {

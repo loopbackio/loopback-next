@@ -401,13 +401,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       debug(`artifactInfo: ${inspect(this.artifactInfo)}`);
       debug(`Copying artifact to: ${dest}`);
     }
-    this.fs.copyTpl(
-      source,
-      dest,
-      this.artifactInfo,
-      {},
-      {globOptions: {dot: true}},
-    );
+    this.copyTemplatedFiles(source, dest, this.artifactInfo);
     return;
   }
 

@@ -268,6 +268,42 @@ module.exports = class BaseGenerator extends Generator {
   }
 
   /**
+   * Wrapper for mem-fs-editor.copyTpl() to ensure consistent options
+   *
+   * See https://github.com/SBoudrias/mem-fs-editor/blob/master/lib/actions/copy-tpl.js
+   *
+   * @param {string} from
+   * @param {string} to
+   * @param {object} context
+   * @param {object} templateOptions
+   * @param {object} copyOptions
+   */
+  copyTemplatedFiles(
+    from,
+    to,
+    context,
+    templateOptions = {},
+    copyOptions = {
+      // See https://github.com/mrmlnc/fast-glob#options-1
+      globOptions: {
+        // Allow patterns to match filenames starting with a period (files &
+        // directories), even if the pattern does not explicitly have a period
+        // in that spot.
+        dot: true,
+        // Disable expansion of brace patterns ({a,b}, {1..3}).
+        nobrace: true,
+        // Disable extglob support (patterns like +(a|b)), so that extglobs
+        // are regarded as literal characters. This flag allows us to support
+        // Windows paths such as
+        // `D:\Users\BKU\oliverkarst\AppData(Roaming)\npm\node_modules\@loopback\cli`
+        noext: true,
+      },
+    },
+  ) {
+    return this.fs.copyTpl(from, to, context, templateOptions, copyOptions);
+  }
+
+  /**
    * Checks if current directory is a LoopBack project by checking for
    * keyword 'loopback' under 'keywords' attribute in package.json.
    * 'keywords' is an array
