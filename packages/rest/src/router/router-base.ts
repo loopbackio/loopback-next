@@ -3,15 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  RestRouter,
-  RouteEntry,
-  createResolvedRoute,
-  ResolvedRoute,
-} from './routing-table';
 import {Request} from '../types';
 import {getPathVariables} from './openapi-path';
+import {createResolvedRoute, ResolvedRoute, RouteEntry} from './route-entry';
 import {compareRoute} from './route-sort';
+import {RestRouter} from './rest-router';
 
 /**
  * Base router implementation that only handles path without variables
