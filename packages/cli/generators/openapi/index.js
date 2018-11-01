@@ -126,7 +126,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       if (debug.enabled) {
         debug('Copying artifact to: %s', dest);
       }
-      this.fs.copyTpl(source, dest, c, {}, {globOptions: {dot: true}});
+      this.copyTemplatedFiles(source, dest, c);
     }
   }
 
@@ -144,7 +144,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
         debug('Copying artifact to: %s', dest);
       }
       const source = m.kind === 'class' ? modelSource : typeSource;
-      this.fs.copyTpl(source, dest, m, {}, {globOptions: {dot: true}});
+      this.copyTemplatedFiles(source, dest, m);
     }
   }
 

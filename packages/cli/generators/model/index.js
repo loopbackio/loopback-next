@@ -345,7 +345,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
       }
     });
 
-    this.fs.copyTpl(
+    this.copyTemplatedFiles(
       this.templatePath(MODEL_TEMPLATE_PATH),
       tsPath,
       this.artifactInfo,

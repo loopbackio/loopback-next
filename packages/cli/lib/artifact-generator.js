@@ -71,12 +71,10 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
 
     // Copy template files from ./templates
     // Renaming of the files should be done in the generator inheriting from this one
-    this.fs.copyTpl(
+    this.copyTemplatedFiles(
       this.templatePath('**/*'),
       this.destinationPath(),
       this.artifactInfo,
-      {},
-      {globOptions: {dot: true}},
     );
   }
 
