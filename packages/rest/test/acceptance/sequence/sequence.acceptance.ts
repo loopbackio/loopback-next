@@ -3,30 +3,28 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  FindRoute,
-  InvokeMethod,
-  Send,
-  Reject,
-  SequenceHandler,
-  ParseParams,
-  DefaultSequence,
-  RestBindings,
-  RestServer,
-  RestComponent,
-  RestApplication,
-  HttpServerLike,
-  RequestContext,
-} from '../../..';
-import {api} from '@loopback/openapi-v3';
-import {Application} from '@loopback/core';
-import {Client, createClientForHandler} from '@loopback/testlab';
-import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {inject} from '@loopback/context';
+import {Application} from '@loopback/core';
+import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
+import {api} from '@loopback/openapi-v3';
+import {Client, createClientForHandler} from '@loopback/testlab';
 import {
   ControllerClass,
   ControllerInstance,
-} from '../../../src/router/routing-table';
+  DefaultSequence,
+  FindRoute,
+  HttpServerLike,
+  InvokeMethod,
+  ParseParams,
+  Reject,
+  RequestContext,
+  RestApplication,
+  RestBindings,
+  RestComponent,
+  RestServer,
+  Send,
+  SequenceHandler,
+} from '../../..';
 
 const SequenceActions = RestBindings.SequenceActions;
 

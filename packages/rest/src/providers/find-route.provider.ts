@@ -7,7 +7,7 @@ import {Context, inject, Provider} from '@loopback/context';
 import {FindRoute, Request} from '../types';
 import {HttpHandler} from '../http-handler';
 import {RestBindings} from '../keys';
-import {ResolvedRoute} from '../router/routing-table';
+import {ResolvedRoute} from '../router';
 
 export class FindRouteProvider implements Provider<FindRoute> {
   constructor(

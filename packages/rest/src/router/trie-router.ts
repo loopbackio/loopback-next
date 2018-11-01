@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {RouteEntry, createResolvedRoute} from './routing-table';
+import {RouteEntry, createResolvedRoute} from './route-entry';
 import {Trie} from './trie';
 import {Request} from '../types';
 import {inspect} from 'util';
