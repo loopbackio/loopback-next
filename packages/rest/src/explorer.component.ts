@@ -3,10 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Component} from './types';
+import {StaticComponent} from './types';
 import * as path from 'path';
 
-export class ExplorerComponent implements Component {
+export class ExplorerComponent implements StaticComponent {
   staticAssets = [
     {
       path: '/explorer1',

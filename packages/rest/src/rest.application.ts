@@ -10,6 +10,7 @@ import {
   Server,
   mountComponent,
   BindingScope,
+  Component,
 } from '@loopback/core';
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
 import {PathParams} from 'express-serve-static-core';
@@ -24,7 +25,7 @@ import {
   RouteEntry,
 } from './router/routing-table';
 import {SequenceFunction, SequenceHandler} from './sequence';
-import {Component, StaticAssetsConfig} from './types';
+import {StaticComponent, StaticAssetsConfig} from './types';
 
 export const ERR_NO_MULTI_SERVER = format(
   'RestApplication does not support multiple servers!',
@@ -77,7 +78,10 @@ export class RestApplication extends Application implements HttpServerLike {
     this.component(RestComponent);
   }
 
-  component(componentCtor: Constructor<Component>, name?: string) {
+  component(
+    componentCtor: Constructor<Component | StaticComponent>,
+    name?: string,
+  ) {
     name = name || componentCtor.name;
     const componentKey = `components.${name}`;
     this.bind(componentKey)
@@ -85,11 +89,10 @@ export class RestApplication extends Application implements HttpServerLike {
       .inScope(BindingScope.SINGLETON)
       .tag('component');
     // Assuming components can be synchronously instantiated
-    const instance = this.getSync<Component>(componentKey);
+    const instance = this.getSync<Component | StaticComponent>(componentKey);
     mountComponent(this, instance);
-    console.log(instance.staticAssets);
-    if (instance.staticAssets) {
-      instance.staticAssets.forEach((config: StaticAssetsConfig) => {
+    if ('staticAssets' in instance && this.config.enableExplorer) {
+      instance.staticAssets!.forEach((config: StaticAssetsConfig) => {
         this.static(config.path, config.rootDir, config.options);
       });
     }
