@@ -108,4 +108,11 @@ function givenRouter(router: RestRouter, spec: OpenApiSpec, count: number) {
   };
 }
 
-runBenchmark(+process.argv[2] || 1000);
+let tests = process.argv.slice(2);
+if (!tests.length) {
+  tests = ['1000'];
+}
+tests.forEach(n => {
+  runBenchmark(+n);
+  console.log('\n');
+});
