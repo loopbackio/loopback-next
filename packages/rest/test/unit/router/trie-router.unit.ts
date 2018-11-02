@@ -56,19 +56,19 @@ describe('trie router', () => {
 
   it('lists routes by order', () => {
     expect(router.list().map(getVerbAndPath)).to.eql([
-      {verb: 'post', path: '/orders'},
+      {verb: 'get', path: '/orders/count'},
+      {verb: 'get', path: '/orders/{id}/exists'},
       {verb: 'put', path: '/orders/{id}'},
       {verb: 'patch', path: '/orders/{id}'},
+      {verb: 'get', path: '/orders/{id}'},
+      {verb: 'delete', path: '/orders/{id}'},
+      {verb: 'post', path: '/orders'},
       {verb: 'patch', path: '/orders'},
-      {verb: 'get', path: '/orders/{id}/exists'},
+      {verb: 'get', path: '/orders'},
+      {verb: 'delete', path: '/orders'},
       {verb: 'get', path: '/users/{userId}/orders'},
       {verb: 'get', path: '/users/{id}/products'},
-      {verb: 'get', path: '/orders/count'},
-      {verb: 'get', path: '/orders/{id}'},
       {verb: 'get', path: '/users/{id}'},
-      {verb: 'get', path: '/orders'},
-      {verb: 'delete', path: '/orders/{id}'},
-      {verb: 'delete', path: '/orders'},
     ]);
   });
 
