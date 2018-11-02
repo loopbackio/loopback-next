@@ -203,6 +203,10 @@ children:
       url: Deploying-to-IBM-Cloud.html
       output: 'web, pdf'
 
+    - title: 'Database Migrations'
+      url: Database-migrations.html
+      output: 'web, pdf'
+
 - title: 'Booting an Application'
   url: Booting-an-Application.html
   output: 'web, pdf'
