@@ -103,20 +103,19 @@ function traverse<T>(root: Node<T>, visitor: (node: NodeWithValue<T>) => void) {
 }
 
 /**
- * Match the given key to a child of the parent node
+ * Match the given key to one or more children of the parent node
  * @param key Key
  * @param parent Parent node
  */
-function matchChild<T>(
-  key: string,
-  parent: Node<T>,
-): ResolvedNode<T> | undefined {
+function matchChildren<T>(key: string, parent: Node<T>): ResolvedNode<T>[] {
+  const resolvedNodes: ResolvedNode<T>[] = [];
   // Match key literal first
   let child = parent.children[key];
   if (child) {
-    return {
+    resolvedNodes.push({
       node: child,
-    };
+    });
+    return resolvedNodes;
   }
 
   // Match templates
@@ -131,9 +130,10 @@ function matchChild<T>(
         const val = match[++i];
         resolved.params![n] = decodeURIComponent(val);
       }
-      return resolved;
+      resolvedNodes.push(resolved);
     }
   }
+  return resolvedNodes;
 }
 
 /**
@@ -154,10 +154,15 @@ function search<T>(
   const resolved: ResolvedNode<T> = {node: parent, params};
   if (key === undefined) return resolved;
 
-  const child = matchChild(key, parent);
-  if (child) {
-    Object.assign(params, child.params);
-    return search(keys, index + 1, params, child.node);
+  const children = matchChildren(key, parent);
+  if (children.length === 0) return undefined;
+  // There might be multiple matches, such as `/users/{id}` and `/users/{userId}`
+  for (const child of children) {
+    const result = search(keys, index + 1, params, child.node);
+    if (result) {
+      Object.assign(params, child.params);
+      return result;
+    }
   }
   // no matches found
   return undefined;
