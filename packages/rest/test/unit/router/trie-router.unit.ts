@@ -12,20 +12,15 @@ import {TrieRouter, RouteEntry, Request} from '../../..';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
 import {ResolvedRoute} from '../../../src';
 
-describe('trie router', () => {
-  class TestTrieRouter extends TrieRouter {
-    get staticRoutes() {
-      return Object.values(this.routesWithoutPathVars);
-    }
+class TestTrieRouter extends TrieRouter {
+  get staticRoutes() {
+    return Object.values(this.routesWithoutPathVars);
   }
+}
 
+describe('trie router', () => {
   let router: TestTrieRouter;
-  beforeEach(givenTrieRouter);
-
-  const getVerbAndPath = (r?: RouteEntry) => ({
-    verb: r && r.verb,
-    path: r && r.path,
-  });
+  before(givenRouter);
 
   it('adds routes to routesWithoutPathVars', () => {
     const staticRoutes = router.staticRoutes.map(getVerbAndPath);
@@ -72,6 +67,56 @@ describe('trie router', () => {
     ]);
   });
 
+  function getVerbAndPath(r?: RouteEntry) {
+    return {
+      verb: r && r.verb,
+      path: r && r.path,
+    };
+  }
+
+  function givenRoutes() {
+    const routes: RouteEntry[] = [];
+    addRoute(routes, 'create', 'post', '/orders');
+    addRoute(routes, 'findAll', 'get', '/orders');
+    addRoute(routes, 'findById', 'get', '/orders/{id}');
+    addRoute(routes, 'updateById', 'patch', '/orders/{id}');
+    addRoute(routes, 'replaceById', 'put', '/orders/{id}');
+    addRoute(routes, 'count', 'get', '/orders/count');
+    addRoute(routes, 'exists', 'get', '/orders/{id}/exists');
+    addRoute(routes, 'deleteById', 'delete', '/orders/{id}');
+    addRoute(routes, 'deleteAll', 'delete', '/orders');
+    addRoute(routes, 'updateAll', 'patch', '/orders');
+
+    addRoute(routes, 'getUserById', 'get', '/users/{id}');
+    addRoute(routes, 'getUserOrders', 'get', '/users/{userId}/orders');
+    addRoute(routes, 'getUserRecommendation', 'get', '/users/{id}/products');
+
+    return routes;
+  }
+
+  function givenRouter() {
+    router = givenTrieRouter(givenRoutes());
+  }
+});
+
+/**
+ * This suite covers the following trie-based routes:
+ * ```
+ * get
+ *   |_ users
+ *      |_ {id} (get /users/{id})
+ *         |_ products (get /users/{id}/products)
+ *      |_ {userId}
+ *         |_ orders (get /users/{userId}/orders)
+ * ```
+ *
+ * To match `GET /users/{userId}/orders`, the trie router needs to try both
+ * `/users/{id}` and `/users/{userId}` sub-trees.
+ */
+describe('trie router - overlapping paths with different var names', () => {
+  let router: TestTrieRouter;
+  before(givenRouter);
+
   it('finds route for GET /users/{id}', () => {
     const req = givenRequest({method: 'get', url: '/users/123'});
     const route = router.find(req);
@@ -114,44 +159,43 @@ describe('trie router', () => {
     return stubExpressContext(options).request;
   }
 
-  function givenTrieRouter() {
-    router = new TestTrieRouter();
-    for (const r of givenRoutes()) {
-      router.add(r);
-    }
-    return router;
-  }
-
-  function givenRoutes() {
+  function givenRoutesWithDifferentVars() {
     const routes: RouteEntry[] = [];
-    function addRoute(op: string, verb: string, path: string) {
-      routes.push({
-        verb,
-        path,
-        spec: anOperationSpec()
-          .withOperationName(op)
-          .build(),
-        updateBindings: () => {},
-        invokeHandler: async () => {},
-        describe: () => op,
-      });
-    }
 
-    addRoute('create', 'post', '/orders');
-    addRoute('findAll', 'get', '/orders');
-    addRoute('findById', 'get', '/orders/{id}');
-    addRoute('updateById', 'patch', '/orders/{id}');
-    addRoute('replaceById', 'put', '/orders/{id}');
-    addRoute('count', 'get', '/orders/count');
-    addRoute('exists', 'get', '/orders/{id}/exists');
-    addRoute('deleteById', 'delete', '/orders/{id}');
-    addRoute('deleteAll', 'delete', '/orders');
-    addRoute('updateAll', 'patch', '/orders');
-
-    addRoute('getUserById', 'get', '/users/{id}');
-    addRoute('getUserOrders', 'get', '/users/{userId}/orders');
-    addRoute('getUserRecommendation', 'get', '/users/{id}/products');
+    addRoute(routes, 'getUserById', 'get', '/users/{id}');
+    addRoute(routes, 'getUserOrders', 'get', '/users/{userId}/orders');
+    addRoute(routes, 'getUserRecommendation', 'get', '/users/{id}/products');
 
     return routes;
   }
+
+  function givenRouter() {
+    router = givenTrieRouter(givenRoutesWithDifferentVars());
+  }
 });
+
+function givenTrieRouter(routes: RouteEntry[]) {
+  const router = new TestTrieRouter();
+  for (const r of routes) {
+    router.add(r);
+  }
+  return router;
+}
+
+function addRoute(
+  routes: RouteEntry[],
+  op: string,
+  verb: string,
+  path: string,
+) {
+  routes.push({
+    verb,
+    path,
+    spec: anOperationSpec()
+      .withOperationName(op)
+      .build(),
+    updateBindings: () => {},
+    invokeHandler: async () => {},
+    describe: () => op,
+  });
+}

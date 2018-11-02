@@ -19,6 +19,7 @@ describe('route sorter', () => {
       ['replaceById', {verb: 'put', path: '/orders/{id}'}],
       ['updateById', {verb: 'patch', path: '/orders/{id}'}],
       ['findById', {verb: 'get', path: '/orders/{id}'}],
+      ['removeById', {verb: 'delete', path: '/orders/{id}'}],
       ['deleteById', {verb: 'delete', path: '/orders/{id}'}],
       ['create', {verb: 'post', path: '/orders'}],
       ['updateAll', {verb: 'patch', path: '/orders'}],
@@ -58,6 +59,11 @@ describe('route sorter', () => {
         path: '/orders/{id}/exists',
       },
       deleteById: {
+        verb: 'delete',
+        path: '/orders/{id}',
+      },
+      // Add a duplicate route to test sorting
+      removeById: {
         verb: 'delete',
         path: '/orders/{id}',
       },
