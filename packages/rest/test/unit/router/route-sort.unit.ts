@@ -14,15 +14,15 @@ describe('route sorter', () => {
       compareRoute(a[1], b[1]),
     );
     expect(sortedEndpoints).to.eql([
-      ['create', {verb: 'post', path: '/orders'}],
+      ['count', {verb: 'get', path: '/orders/count'}],
+      ['exists', {verb: 'get', path: '/orders/{id}/exists'}],
       ['replaceById', {verb: 'put', path: '/orders/{id}'}],
       ['updateById', {verb: 'patch', path: '/orders/{id}'}],
-      ['updateAll', {verb: 'patch', path: '/orders'}],
-      ['exists', {verb: 'get', path: '/orders/{id}/exists'}],
-      ['count', {verb: 'get', path: '/orders/count'}],
       ['findById', {verb: 'get', path: '/orders/{id}'}],
-      ['findAll', {verb: 'get', path: '/orders'}],
       ['deleteById', {verb: 'delete', path: '/orders/{id}'}],
+      ['create', {verb: 'post', path: '/orders'}],
+      ['updateAll', {verb: 'patch', path: '/orders'}],
+      ['findAll', {verb: 'get', path: '/orders'}],
       ['deleteAll', {verb: 'delete', path: '/orders'}],
     ]);
   });
