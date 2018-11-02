@@ -138,7 +138,7 @@ export class RoutingTable {
    * @param request
    */
   find(request: Request): ResolvedRoute {
-    debug('Finding route %s for %s %s', request.method, request.path);
+    debug('Finding route for %s %s', request.method, request.path);
 
     const found = this._router.find(request);
 
