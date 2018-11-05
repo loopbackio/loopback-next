@@ -1,0 +1,49 @@
+{
+  "name": "@loopback/events",
+  "version": "1.0.0",
+  "description": "LoopBack's implementation of events pattern",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {
+    "acceptance": "lb-mocha \"dist/test/acceptance/**/*.js\"",
+    "build:apidocs": "lb-apidocs",
+    "build": "lb-tsc es2017 --outDir dist",
+    "clean": "lb-clean loopback-events*.tgz dist package api-docs",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/test/unit/**/*.js\" \"dist/test/acceptance/**/*.js\"",
+    "unit": "lb-mocha \"dist/test/unit/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-events*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^4.0.1"
+  },
+  "devDependencies": {
+    "@loopback/build": "^1.0.0",
+    "@loopback/testlab": "^1.0.0",
+    "@types/debug": "^0.0.30",
+    "@types/node": "^10.11.2"
+  },
+  "keywords": [
+    "LoopBack",
+    "Event"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist/src",
+    "dist/index*",
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
+}
