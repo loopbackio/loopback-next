@@ -18,6 +18,7 @@ import {
   RegExpRouter,
   TrieRouter,
 } from '../../..';
+import * as HttpErrors from 'http-errors';
 
 describe('RoutingTable', () => {
   it('joins basePath and path', () => {
@@ -185,6 +186,17 @@ function runTestsWithRouter(router: RestRouter) {
     route = table.find(request);
     expect(route.path).to.eql('/my/subtract/{arg1}/{arg2}');
     expect(route.pathParams).to.containEql({arg1: '3', arg2: '2'});
+  });
+
+  it('throws if router is not found', () => {
+    const table = givenRoutingTable();
+
+    const request = givenRequest({
+      method: 'get',
+      url: '/hi',
+    });
+
+    expect(() => table.find(request)).to.throwError(HttpErrors.NotFound);
   });
 
   function givenRequest(options?: ShotRequestOptions): Request {
