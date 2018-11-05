@@ -111,3 +111,33 @@ export type OperationRetval = any;
 
 export type GetFromContext = (key: string) => Promise<BoundValue>;
 export type BindElement = (key: string) => Binding;
+
+export interface File {
+    /**
+     * same as name - the field name for this file
+     */
+    fieldName: string;
+    /**
+     * the filename that the user reports for the file
+     */
+    originalFilename: string;
+    /**
+     * the absolute path of the uploaded file on disk
+     */
+    path: string;
+    /**
+     * the HTTP headers that were sent along with this file
+     */
+    headers: any;
+    /**
+     * size of the file in bytes
+     */
+    size: number;
+}
+
+export interface FileArray {
+  /*
+   * the file arrays
+   */
+  file?: File[];
+}

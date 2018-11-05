@@ -30,6 +30,7 @@ import {
 import {validateRequestBody} from './validation/request-body.validator';
 import {is} from 'type-is';
 import * as qs from 'qs';
+import {Form} from 'multiparty';
 
 type HttpError = HttpErrors.HttpError;
 
@@ -55,6 +56,34 @@ const parseFormBody: (
   req: IncomingMessage,
   options: {},
 ) => Promise<any> = promisify(require('body/form'));
+
+/**
+ * Parse the multipart/form-data from the request
+ * @param request Incoming HTTP request
+ */
+function parseMultiParty(request: IncomingMessage, options: any) {
+  return new Promise((resolve, reject) => {
+    const form = new Form(options);
+
+    form.parse(request, function (error: Error, fields: any, files: any) {
+      if (error) {
+        return reject(error);
+      }
+
+      const json: any = {};
+      for (const key of Object.keys(fields)) {
+        const value = fields[key];
+
+        if (value instanceof Array) {
+          json[key] = value[0];
+        } else {
+          json[key] = value;
+        }
+      }
+      resolve({...json, files: files});
+    });
+  });
+}
 
 /**
  * Get the content-type header value from the request
@@ -124,6 +153,7 @@ export async function loadRequestBodyIfNeeded(
       // default to allow json and urlencoded
       'application/json': {schema: {type: 'object'}},
       'application/x-www-form-urlencoded': {schema: {type: 'object'}},
+      'multipart/form-data': {schema: {type: 'object'}},
     };
   }
 
@@ -145,6 +175,22 @@ export async function loadRequestBodyIfNeeded(
       contentType,
       Object.keys(content),
     );
+  }
+
+  if (is(matchedMediaType, 'multipart/form-data')) {
+    try {
+      const body = await parseMultiParty(request, options);
+      return Object.assign(requestBody, {
+        // form parser returns an object without prototype
+        // create a new copy to simplify shouldjs assertions
+        value: Object.assign({}, body),
+        // urlencoded body only provide string values
+        // set the flag so that AJV can coerce them based on the schema
+        coercionRequired: true,
+      });
+    } catch (err) {
+      throw normalizeParsingError(err);
+    }
   }
 
   if (is(matchedMediaType, 'urlencoded')) {
