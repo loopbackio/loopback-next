@@ -5,7 +5,7 @@
 
 import {Context} from '@loopback/context';
 import {OperationObject, SchemasObject} from '@loopback/openapi-v3-types';
-import * as express from 'express';
+import {Router, RequestHandler, static as serveStatic} from 'express';
 import {PathParams} from 'express-serve-static-core';
 import * as HttpErrors from 'http-errors';
 import {ServeStaticOptions} from 'serve-static';
@@ -15,6 +15,7 @@ import {
   OperationRetval,
   PathParameterValues,
   Request,
+  Response,
 } from '../types';
 import {ResolvedRoute, RouteEntry} from './route-entry';
 
@@ -32,14 +33,14 @@ export class StaticAssetsRoute implements RouteEntry, ResolvedRoute {
     responses: {},
   };
 
-  private readonly _expressRouter: express.Router = express.Router();
+  constructor(private readonly _expressRouter: Router = Router()) {}
 
   public registerAssets(
     path: PathParams,
     rootDir: string,
     options?: ServeStaticOptions,
   ) {
-    this._expressRouter.use(path, express.static(rootDir, options));
+    this._expressRouter.use(path, serveStatic(rootDir, options));
   }
 
   updateBindings(requestContext: Context): void {
@@ -81,9 +82,9 @@ export class StaticAssetsRoute implements RouteEntry, ResolvedRoute {
  *    handler (middleware) in the chain.
  */
 function executeRequestHandler(
-  handler: express.RequestHandler,
+  handler: RequestHandler,
   request: Request,
-  response: express.Response,
+  response: Response,
 ): Promise<boolean> {
   return new Promise((resolve, reject) => {
     const onceFinished = () => resolve(true);

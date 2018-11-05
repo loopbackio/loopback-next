@@ -12,14 +12,18 @@ import {
   httpsGetAsync,
   givenHttpServerConfig,
 } from '@loopback/testlab';
-import {RestBindings, RestServer, RestComponent} from '../..';
+import {RestBindings, RestServer, RestComponent, get} from '../..';
 import {IncomingMessage, ServerResponse} from 'http';
 import * as yaml from 'js-yaml';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as util from 'util';
+const readFileAsync = util.promisify(fs.readFile);
+
 import {RestServerConfig} from '../..';
 
 const FIXTURES = path.resolve(__dirname, '../../../fixtures');
+const ASSETS = path.resolve(FIXTURES, 'assets');
 
 describe('RestServer (integration)', () => {
   it('exports url property', async () => {
@@ -81,7 +85,7 @@ describe('RestServer (integration)', () => {
   });
 
   it('allows static assets to be mounted at /', async () => {
-    const root = FIXTURES;
+    const root = ASSETS;
     const server = await givenAServer({
       rest: {
         port: 0,
@@ -97,7 +101,7 @@ describe('RestServer (integration)', () => {
   });
 
   it('allows static assets via api', async () => {
-    const root = FIXTURES;
+    const root = ASSETS;
     const server = await givenAServer({
       rest: {
         port: 0,
@@ -114,8 +118,57 @@ describe('RestServer (integration)', () => {
       .expect(200, content);
   });
 
+  it('allows static assets to be mounted on multiple paths', async () => {
+    const root = ASSETS;
+    const server = await givenAServer({
+      rest: {
+        port: 0,
+      },
+    });
+
+    server.static('/html-0', root);
+    server.static('/html-1', root);
+
+    const content = fs
+      .readFileSync(path.join(root, 'index.html'))
+      .toString('utf-8');
+    await createClientForHandler(server.requestHandler)
+      .get('/html-0/index.html')
+      .expect('Content-Type', /text\/html/)
+      .expect(200, content);
+    await createClientForHandler(server.requestHandler)
+      .get('/html-1/index.html')
+      .expect('Content-Type', /text\/html/)
+      .expect(200, content);
+  });
+
+  it('merges different static asset directories when mounted on the same path', async () => {
+    const root = ASSETS;
+    const otherAssets = path.join(FIXTURES, 'other-assets');
+    const server = await givenAServer({
+      rest: {
+        port: 0,
+      },
+    });
+
+    server.static('/html', root);
+    server.static('/html', otherAssets);
+
+    let content = await readFileFromDirectory(root, 'index.html');
+    await createClientForHandler(server.requestHandler)
+      .get('/html/index.html')
+      .expect('Content-Type', /text\/html/)
+      .expect(200, content);
+
+    content = await readFileFromDirectory(otherAssets, 'robots.txt');
+    await createClientForHandler(server.requestHandler)
+      .get('/html/robots.txt')
+      .expect('Content-Type', /text\/plain/)
+      .expect(200, content);
+  });
+
   it('allows static assets via api after start', async () => {
-    const root = FIXTURES;
+    const root = ASSETS;
     const server = await givenAServer({
       rest: {
         port: 0,
@@ -133,7 +186,7 @@ describe('RestServer (integration)', () => {
   });
 
   it('allows non-static routes after assets', async () => {
-    const root = FIXTURES;
+    const root = ASSETS;
     const server = await givenAServer({
       rest: {
         port: 0,
@@ -148,7 +201,7 @@ describe('RestServer (integration)', () => {
   });
 
   it('gives precedence to API routes over static assets', async () => {
-    const root = FIXTURES;
+    const root = ASSETS;
     const server = await givenAServer({
       rest: {
         port: 0,
@@ -160,6 +213,21 @@ describe('RestServer (integration)', () => {
     await createClientForHandler(server.requestHandler)
       .get('/html/index.html')
       .expect(200, 'Hello');
+  });
+
+  it('registers controllers defined later than static assets', async () => {
+    const root = ASSETS;
+    const server = await givenAServer({
+      rest: {
+        port: 0,
+      },
+    });
+    server.static('/html', root);
+    server.controller(DummyController);
+
+    await createClientForHandler(server.requestHandler)
+      .get('/html')
+      .expect(200, 'Hi');
   });
 
   it('allows cors', async () => {
@@ -596,5 +664,22 @@ paths:
     const {response} = handler;
     response.write('Hello');
     response.end();
+  }
+
+  class DummyController {
+    constructor() {}
+    @get('/html', {
+      responses: {},
+    })
+    ping(): string {
+      return 'Hi';
+    }
+  }
+
+  function readFileFromDirectory(
+    dirname: string,
+    filename: string,
+  ): Promise<string> {
+    return readFileAsync(path.join(dirname, filename), {encoding: 'utf-8'});
   }
 });
