@@ -7,7 +7,16 @@ import {createRestAppClient, Client, expect} from '@loopback/testlab';
 import {RestApplication} from '../..';
 import * as path from 'path';
 import * as fs from 'fs';
-import {RestServer, RestServerConfig} from '../../src';
+import {
+  RestServer,
+  RestServerConfig,
+  Request,
+  RestBindings,
+  ResponseObject,
+  get,
+} from '../../src';
+//import {Request, RestBindings, get, ResponseObject} from '@loopback/rest';
+import {inject} from '@loopback/context';
 
 const ASSETS = path.resolve(__dirname, '../../../fixtures/assets');
 
@@ -71,6 +80,19 @@ describe('RestApplication (integration)', () => {
       .expect(content);
   });
 
+  it('gives precedence to API controllers over static assets', async () => {
+    const root = FIXTURES;
+    givenApplication();
+    restApp.static('/html', root);
+    restApp.controller(DummyController);
+    await restApp.start();
+    client = createRestAppClient(restApp);
+    await client
+      .get('/html')
+      .expect(200)
+      .expect('Hello');
+  });
+
   it('adds new route', async () => {
     givenApplication();
     const greetSpec = {
@@ -127,5 +149,15 @@ describe('RestApplication (integration)', () => {
   function givenApplication(options?: {rest: RestServerConfig}) {
     options = options || {rest: {port: 0, host: '127.0.0.1'}};
     restApp = new RestApplication(options);
+  }
+
+  class DummyController {
+    constructor() {}
+    @get('/html', {
+      responses: {},
+    })
+    ping(): string {
+      return 'Hello';
+    }
   }
 });

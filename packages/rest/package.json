@@ -45,6 +45,7 @@
     "path-to-regexp": "^2.2.0",
     "qs": "^6.5.2",
     "strong-error-handler": "^3.2.0",
+    "swagger-ui-dist": "^3.19.4",
     "type-is": "^1.6.16",
     "validator": "^10.4.0"
   },

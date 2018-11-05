@@ -39,6 +39,8 @@ export abstract class BaseRouter implements RestRouter {
   }
 
   find(request: Request) {
+    //console.log('>> BASE ROUER');
+    //console.log(this.routesWithoutPathVars);
     const path = this.getKeyForRequest(request);
     let route = this.routesWithoutPathVars[path];
     if (route) return createResolvedRoute(route, {});
