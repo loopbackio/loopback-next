@@ -61,13 +61,13 @@ const parseFormBody: (
  * Parse the multipart/form-data from the request
  * @param request Incoming HTTP request
  */
-function parseMultiParty(request: IncomingMessage, options: any) {
+function parseMultiParty(request: IncomingMessage, options: {}): Promise<any> {
   return new Promise((resolve, reject) => {
     const form = new Form(options);
-
-    form.parse(request, function (error: Error, fields: any, files: any) {
+    form.parse(request, (error: Error, fields: any, files: any) => {
       if (error) {
-        return reject(error);
+        reject(error);
+        return;
       }
 
       const json: any = {};
