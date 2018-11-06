@@ -23,6 +23,8 @@ import {
   RestHttpErrors,
   Route,
   File,
+  FileMap,
+  MultiPart,
 } from '../..';
 
 describe('operationArgsParser', () => {
@@ -278,18 +280,31 @@ describe('operationArgsParser', () => {
   });
 
   it('parses body parameter for multipart form data with simple types', async () => {
+    const boundary = `--------------------------961406998938770617032718`;
+    const boundaryLine = `--${boundary}\r\n`;
+    const boundaryEndLine = `--${boundary}--\r\n`;
+    const contentType = `multipart/form-data; boundary=${boundary}`;
+    // const inputData: Map<string, any> = { 'key1': 'value', 'key2': 1, 'key3': true };
+
+    let payload = boundaryLine;
+    payload += `Content-Disposition: form-data; name="key1"\r\n\r\n`;
+    payload += `value\r\n`;
+
+    payload += boundaryLine;
+    payload += `Content-Disposition: form-data; name="key2"\r\n\r\n`;
+    payload += `1\r\n`;
+
+    payload += boundaryLine;
+    payload += `Content-Disposition: form-data; name="key3"\r\n\r\n`;
+    payload += `true\r\n`;
+    payload += boundaryEndLine;
+
     const req = givenRequest({
       url: '/',
       headers: {
-        'Content-Type': 'multipart/form-data; boundary=--------------------------961406998938770617032718',
+        'Content-Type': contentType,
       },
-      payload: '----------------------------961406998938770617032718\r\n'
-        + 'Content-Disposition: form-data; name="key1"\r\n\r\n' + 'value\r\n'
-        + '----------------------------961406998938770617032718\r\n'
-        + 'Content-Disposition: form-data; name="key2"\r\n\r\n' + '1\r\n'
-        + '----------------------------961406998938770617032718\r\n'
-        + 'Content-Disposition: form-data; name="key3"\r\n\r\n' + 'true\r\n'
-        + '----------------------------961406998938770617032718--\r\n',
+      payload: payload,
     });
 
     const spec = givenOperationWithRequestBody({
@@ -316,22 +331,36 @@ describe('operationArgsParser', () => {
   });
 
   it('parses body parameter for multipart form data with text file', async () => {
+    const boundary = `--------------------------961406998938770617032718`;
+    const boundaryLine = `--${boundary}\r\n`;
+    const boundaryEndLine = `--${boundary}--\r\n`;
+    const contentType = `multipart/form-data; boundary=${boundary}`;
+    // const inputData: Map<string, any> = { 'key1': 'value', 'key2': 1, 'key3': true };
+
+    let payload = boundaryLine;
+    payload += `Content-Disposition: form-data; name="key1"\r\n\r\n`;
+    payload += `value\r\n`;
+
+    payload += boundaryLine;
+    payload += `Content-Disposition: form-data; name="key2"\r\n\r\n`;
+    payload += `1\r\n`;
+
+    payload += boundaryLine;
+    payload += `Content-Disposition: form-data; name="key3"\r\n\r\n`;
+    payload += `true\r\n`;
+
+    payload += boundaryLine;
+    payload += `Content-Disposition: form-data; name="file"; filename="HelloWorld.txt"\r\n`;
+    payload += `Content-Type: text/plain\r\n\r\n`;
+    payload += `Hello, LoopBack v4\r\n\r\n`;
+    payload += boundaryEndLine;
+
     const req = givenRequest({
       url: '/',
       headers: {
-        'Content-Type': 'multipart/form-data; boundary=--------------------------961406998938770617032718',
+        'Content-Type': contentType,
       },
-      payload: '----------------------------961406998938770617032718\r\n'
-        + 'Content-Disposition: form-data; name="key1"\r\n\r\n' + 'value\r\n'
-        + '----------------------------961406998938770617032718\r\n'
-        + 'Content-Disposition: form-data; name="key2"\r\n\r\n' + '1\r\n'
-        + '----------------------------961406998938770617032718\r\n'
-        + 'Content-Disposition: form-data; name="key3"\r\n\r\n' + 'true\r\n'
-        + '----------------------------961406998938770617032718\r\n'
-        + 'Content-Disposition: form-data; name=""; filename="HelloWorld.txt"\r\n'
-        + 'Content-Type: text/plain\r\n\r\n'
-        + 'Hello, LoopBack v4\r\n\r\n'
-        + '----------------------------961406998938770617032718--\r\n',
+      payload: payload,
     });
 
     const spec = givenOperationWithRequestBody({
@@ -354,32 +383,33 @@ describe('operationArgsParser', () => {
 
     const args = await parseOperationArgs(req, route);
 
-    const { files } = args[0];
-    const fileArray = files['null'];
+    const files = (args[0] as MultiPart).files;
 
-    // exclude testing file path.
-    if (fileArray) {
-      fileArray.forEach(async function(file: File) {
+    if (files && files['file']) {
+      files['file'].forEach(async (file: File) => {
         file['path'] = '';
       });
     }
 
-    const testFiles = {
-      'null': [
-        {
-          fieldName: null,
-          originalFilename: 'HelloWorld.txt',
-          path: '',
-          headers: {
-            'content-disposition': 'form-data; name=""; filename="HelloWorld.txt"',
-            'content-type': 'text/plain',
+    const testFiles: MultiPart = {
+      files: {
+        file: [
+          {
+            fieldName: 'file',
+            headers: {
+              'content-disposition': `form-data; name="file"; filename="HelloWorld.txt"`,
+              'content-type': 'text/plain',
+            },
+            originalFilename: 'HelloWorld.txt',
+            path: '',
+            size: 20,
           },
-          size: 20,
-        },
-      ],
+        ],
+      },
     };
-
-    expect(args).to.eql([{key1: 'value', key2: 1, key3: true, files: testFiles}]);
+    expect(args).to.eql([
+      {key1: 'value', key2: 1, key3: true, files: testFiles.files},
+    ]);
   });
 
   context('in:query style:deepObject', () => {
