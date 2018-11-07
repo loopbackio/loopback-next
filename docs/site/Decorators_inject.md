@@ -152,5 +152,5 @@ const component = ctx.getSync<MyComponent>('my-component');
 injection if possible. Use `@inject.context` only when the code needs to access
 the current context object for advanced use cases.
 
-For more information, see the [Dependency Injection](Dependency-Injection.md)
+For more information, see the [Dependency Injection](Dependency-injection.md)
 section under [LoopBack Core Concepts](Concepts.md).
