@@ -48,6 +48,9 @@ model definition and 'db' datasource configuration and retrieves the datasource
 using
 [Dependency Injection](https://loopback.io/doc/en/lb4/Dependency-injection.html).
 
+Now we can expose the `Todo` API through the
+[controller](todo-tutorial-controller.md).
+
 ### Navigation
 
 Previous step: [Add a datasource](todo-tutorial-datasource.md)

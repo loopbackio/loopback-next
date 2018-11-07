@@ -134,7 +134,7 @@ of your routes and `@param` or `@requestBody` to its parameters:
 
 ```ts
 import {Todo} from '../models/todo.model';
-import {post, get, param, requestBody} from '@loopback/openapi-v3';
+import {post, get, param, requestBody} from '@loopback/rest';
 
 export class TodoController {
   constructor() {}

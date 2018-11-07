@@ -20,15 +20,22 @@ building a constrained version of `TodoRepository`.
 
 ### Create your repository
 
-In the `src/repositories` directory:
+From inside the project folder, run the `lb4 repository` command to create a
+repository for the `TodoList` model using the `db` datasource. The `db`
+datasource shows up by its class name `DbDataSource` from the list of available
+datasources.
 
-- create `todo-list.repository.ts`
-- update `index.ts` to export the newly created repository
+```sh
+lb4 repository
+? Please select the datasource DbDatasource
+? Select the model(s) you want to generate a repository TodoList
+   create src/repositories/todo-list.repository.ts
+   update src/repositories/index.ts
 
-Like `TodoRepository`, we'll use `DefaultCrudRepository` to extend our
-`TodoListRepository`. Since we're going to be using the same database used for
-`TodoRepository`, inject `datasources.db` in this repository as well. From there
-we'll need to make two more additions:
+Repository TodoList was created in src/repositories/
+```
+
+From there, we'll need to make two more additions:
 
 - define the `todos` property, which will be used to build a constrained
   `TodoRepository`
@@ -42,14 +49,14 @@ repository instance to constrain as the arguments for the function.
 #### src/repositories/todo-list.repository.ts
 
 ```ts
+import {Getter, inject} from '@loopback/core';
 import {
   DefaultCrudRepository,
-  juggler,
   HasManyRepositoryFactory,
+  juggler,
   repository,
 } from '@loopback/repository';
-import {TodoList, Todo} from '../models';
-import {inject, Getter} from '@loopback/core';
+import {Todo, TodoList} from '../models';
 import {TodoRepository} from './todo.repository';
 
 export class TodoListRepository extends DefaultCrudRepository<

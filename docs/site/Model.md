@@ -99,7 +99,7 @@ To define a model for use with the juggler bridge, extend your classes from
 `Entity` and decorate them with the `@model` and `@property` decorators.
 
 ```ts
-import {model, property} from '@loopback/repository';
+import {model, property, Entity} from '@loopback/repository';
 
 @model()
 export class Product extends Entity {

@@ -45,6 +45,7 @@ the following:
 ```text
 src/
   controllers/
+    home-page.controller.ts
     README.md
     ping.controller.ts
   datasources/
@@ -60,6 +61,7 @@ test/
   README.md
   mocha.opts
   acceptance/
+    home-page.controller.acceptance.ts
     ping.controller.acceptance.ts
 node_modules/
   ***

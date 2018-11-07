@@ -174,6 +174,7 @@ Controller constructor to receive `GeocodeService` as a new dependency.
 #### src/controllers/todo.controller.ts
 
 ```ts
+import {inject} from '@loopback/core';
 import {GeocoderService} from '../services';
 
 export class TodoController {

@@ -73,6 +73,9 @@ follows:
 lb4 controller
 ```
 
+- _Note: If your application is still running, press **CTRL+C** to stop it
+  before calling the command_
+
 - Answer the prompts as follows:
 
   ```sh
@@ -81,7 +84,7 @@ lb4 controller
     create src/controllers/hello.controller.ts
     update src/controllers/index.ts
 
-  Controller Hello was now created in src/controllers/
+  Controller hello was now created in src/controllers/
   ```
 
 - Paste the following contents into the file
@@ -99,9 +102,6 @@ lb4 controller
   ```
 
 - Start the application using `npm start`.
-
-  - _Note: If your application is still running, press **CTRL+C** to stop it
-    before restarting it_
 
 - Visit <http://127.0.0.1:3000/hello> to see `Hello world!`
 
