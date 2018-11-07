@@ -132,18 +132,16 @@ describe('resolveList', () => {
 
   it('resolves an array of promises or values', async () => {
     const source = ['a', 'b'];
-    const result = await resolveList(
-      source,
-      v => (v === 'a' ? 'A' : Promise.resolve(v.toUpperCase())),
+    const result = await resolveList(source, v =>
+      v === 'a' ? 'A' : Promise.resolve(v.toUpperCase()),
     );
     expect(result).to.eql(['A', 'B']);
   });
 
   it('resolves an array of promises or values with index', async () => {
     const source = ['a', 'b'];
-    const result = await resolveList(
-      source,
-      (v, i) => (v === 'a' ? 'A' + i : Promise.resolve(v.toUpperCase() + i)),
+    const result = await resolveList(source, (v, i) =>
+      v === 'a' ? 'A' + i : Promise.resolve(v.toUpperCase() + i),
     );
     expect(result).to.eql(['A0', 'B1']);
   });
@@ -189,18 +187,16 @@ describe('resolveMap', () => {
 
   it('resolves an object of promises or values', async () => {
     const source = {a: 'x', b: 'y'};
-    const result = await resolveMap(
-      source,
-      v => (v === 'x' ? 'X' : Promise.resolve(v.toUpperCase())),
+    const result = await resolveMap(source, v =>
+      v === 'x' ? 'X' : Promise.resolve(v.toUpperCase()),
     );
     expect(result).to.eql({a: 'X', b: 'Y'});
   });
 
   it('resolves an object of promises or values with key', async () => {
     const source = {a: 'x', b: 'y'};
-    const result = await resolveMap(
-      source,
-      (v, p) => (v === 'x' ? 'X' + p : Promise.resolve(v.toUpperCase() + p)),
+    const result = await resolveMap(source, (v, p) =>
+      v === 'x' ? 'X' + p : Promise.resolve(v.toUpperCase() + p),
     );
     expect(result).to.eql({a: 'Xa', b: 'Yb'});
   });
