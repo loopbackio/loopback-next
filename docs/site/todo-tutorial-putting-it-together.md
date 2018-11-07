@@ -35,7 +35,7 @@ Let's try out our application! First, you'll want to start the app.
 
 ```sh
 $ npm start
-Server is running on port 3000
+Server is running at http://[::1]:3000
 ```
 
 Next, you can use the [API Explorer](http://localhost:3000/explorer) to browse
@@ -46,7 +46,8 @@ Here are some requests you can try:
 - `POST /todos` with a body of `{ "title": "get the milk" }`
 - `GET /todos/{id}` using the ID you received from your `POST`, and see if you
   get your Todo object back.
-- `PATCH /todos/{id}` with a body of `{ "desc": "need milk for cereal" }`
+- `PATCH /todos/{id}` using the same ID, with a body of
+  `{ "desc": "need milk for cereal" }`
 
 That's it! You've just created your first LoopBack 4 application!
 

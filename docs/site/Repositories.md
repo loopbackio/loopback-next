@@ -156,16 +156,17 @@ configured earlier. It's recommended that you use
 TypeScript version:
 
 ```ts
-import {DefaultCrudRepository, DataSourceType} from '@loopback/repository';
-import {inject} from '@loopback/context';
+import {DefaultCrudRepository, juggler} from '@loopback/repository';
 import {Account} from '../models';
+import {DbDataSource} from '../datasources';
+import {inject} from '@loopback/context';
 
 export class AccountRepository extends DefaultCrudRepository<
   Account,
   typeof Account.prototype.id
 > {
-  constructor(@inject('datasources.db') protected db: DataSourceType) {
-    super(Account, db);
+  constructor(@inject('datasources.db') dataSource: DbDataSource) {
+    super(Account, dataSource);
   }
 }
 ```

@@ -114,11 +114,11 @@ repository, the following are required:
 The following code snippet shows how it would look like:
 
 {% include code-caption.html
-content="/src/repositories/customer.repository.ts.ts" %}
+content="/src/repositories/customer.repository.ts" %}
 
 ```ts
 import {Order, Customer} from '../models';
-import {OrderRepository} from './order.repository.ts';
+import {OrderRepository} from './order.repository';
 import {
   DefaultCrudRepository,
   juggler,
@@ -127,7 +127,7 @@ import {
 } from '@loopback/repository';
 import {inject, Getter} from '@loopback/core';
 
-class CustomerRepository extends DefaultCrudRepository<
+export class CustomerRepository extends DefaultCrudRepository<
   Customer,
   typeof Customer.prototype.id
 > {

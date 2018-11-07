@@ -34,10 +34,16 @@ Example DataSource Class:
 
 ```ts
 import {inject} from '@loopback/core';
-import {juggler, DataSource} from '@loopback/repository';
+import {juggler} from '@loopback/repository';
+import * as config from './db.datasource.json';
 
 export class DbDataSource extends juggler.DataSource {
-  constructor(@inject('datasources.config.db') dsConfig: DataSource) {
+  static dataSourceName = 'db';
+
+  constructor(
+    @inject('datasources.config.db', {optional: true})
+    dsConfig: object = config,
+  ) {
     super(dsConfig);
   }
 }

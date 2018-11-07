@@ -68,11 +68,14 @@ Model TodoList was created in src/models/
 ```
 
 Now that we have our new model, we need to define its relation with the `Todo`
-model. Add the following property to the `TodoList` model:
+model. Add the following import statements and property to the `TodoList` model:
 
 #### src/models/todo-list.model.ts
 
 ```ts
+import {hasMany} from '@loopback/repository';
+import {Todo} from './todo.model';
+
 @model()
 export class TodoList extends Entity {
   // ...properties defined by the CLI...

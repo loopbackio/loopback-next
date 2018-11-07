@@ -221,6 +221,10 @@ export class TodoListController {
 }
 ```
 
+Check out our todo-list example to see the full source code generated for
+TodoListTodo controller:
+[src/controllers/todo-list-todo.controller.ts](https://github.com/strongloop/loopback-next/blob/master/examples/todo-list/src/controllers/todo-list-todo.controller.ts)
+
 ### Try it out
 
 With the controllers complete, your application is ready to start up again!
