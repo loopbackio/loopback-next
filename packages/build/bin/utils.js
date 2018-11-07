@@ -19,8 +19,8 @@ function getCompilationTarget() {
   return nodeMajorVersion >= 10
     ? 'es2018'
     : nodeMajorVersion >= 7
-      ? 'es2017'
-      : 'es2015';
+    ? 'es2017'
+    : 'es2015';
 }
 
 /**
