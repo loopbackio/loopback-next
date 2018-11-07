@@ -13,18 +13,37 @@ describe('route sorter', () => {
     const sortedEndpoints = Object.entries(routes).sort((a, b) =>
       compareRoute(a[1], b[1]),
     );
-    expect(sortedEndpoints).to.eql([
-      ['create', {verb: 'post', path: '/orders'}],
-      ['replaceById', {verb: 'put', path: '/orders/{id}'}],
-      ['updateById', {verb: 'patch', path: '/orders/{id}'}],
-      ['updateAll', {verb: 'patch', path: '/orders'}],
-      ['exists', {verb: 'get', path: '/orders/{id}/exists'}],
-      ['count', {verb: 'get', path: '/orders/count'}],
-      ['findById', {verb: 'get', path: '/orders/{id}'}],
-      ['findAll', {verb: 'get', path: '/orders'}],
-      ['deleteById', {verb: 'delete', path: '/orders/{id}'}],
-      ['deleteAll', {verb: 'delete', path: '/orders'}],
-    ]);
+    if (sortedEndpoints[5][0] === 'removeById') {
+      expect(sortedEndpoints).to.eql([
+        ['count', {verb: 'get', path: '/orders/count'}],
+        ['exists', {verb: 'get', path: '/orders/{id}/exists'}],
+        ['replaceById', {verb: 'put', path: '/orders/{id}'}],
+        ['updateById', {verb: 'patch', path: '/orders/{id}'}],
+        ['findById', {verb: 'get', path: '/orders/{id}'}],
+        ['removeById', {verb: 'delete', path: '/orders/{id}'}],
+        ['deleteById', {verb: 'delete', path: '/orders/{id}'}],
+        ['create', {verb: 'post', path: '/orders'}],
+        ['updateAll', {verb: 'patch', path: '/orders'}],
+        ['findAll', {verb: 'get', path: '/orders'}],
+        ['deleteAll', {verb: 'delete', path: '/orders'}],
+      ]);
+    } else {
+      // Node 11.x and above. The sort is now stable
+      // https://bugs.chromium.org/p/v8/issues/detail?id=90
+      expect(sortedEndpoints).to.eql([
+        ['count', {verb: 'get', path: '/orders/count'}],
+        ['exists', {verb: 'get', path: '/orders/{id}/exists'}],
+        ['replaceById', {verb: 'put', path: '/orders/{id}'}],
+        ['updateById', {verb: 'patch', path: '/orders/{id}'}],
+        ['findById', {verb: 'get', path: '/orders/{id}'}],
+        ['deleteById', {verb: 'delete', path: '/orders/{id}'}],
+        ['removeById', {verb: 'delete', path: '/orders/{id}'}],
+        ['create', {verb: 'post', path: '/orders'}],
+        ['updateAll', {verb: 'patch', path: '/orders'}],
+        ['findAll', {verb: 'get', path: '/orders'}],
+        ['deleteAll', {verb: 'delete', path: '/orders'}],
+      ]);
+    }
   });
 
   function givenRoutes() {
@@ -58,6 +77,11 @@ describe('route sorter', () => {
         path: '/orders/{id}/exists',
       },
       deleteById: {
+        verb: 'delete',
+        path: '/orders/{id}',
+      },
+      // Add a duplicate route to test sorting
+      removeById: {
         verb: 'delete',
         path: '/orders/{id}',
       },
