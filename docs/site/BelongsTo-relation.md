@@ -101,7 +101,7 @@ repository, the following are required:
 The following code snippet shows how it would look like:
 
 {% include code-caption.html
-content="/src/repositories/order.repository.ts.ts" %}
+content="/src/repositories/order.repository.ts" %}
 
 ```ts
 import {Getter, inject} from '@loopback/context';
