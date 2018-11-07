@@ -5,7 +5,7 @@
 
 import {Strategy} from 'passport';
 import {AuthenticateFn, UserProfile} from './types';
-import {AuthenticationMetadata} from './decorators/authenticate.decorator';
+import {AuthenticationMetadata} from './decorators';
 import {BindingKey} from '@loopback/context';
 import {MetadataAccessor} from '@loopback/metadata';
 
