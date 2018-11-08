@@ -3,12 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.0.1...@loopback/openapi-v3@1.0.2) (2018-10-26)
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.0.1...@loopback/openapi-v3@1.1.0) (2018-11-08)
 
 
 ### Bug Fixes
 
 * **openapi-v3:** generate schemas for x-ts-type ([07f0d6c](https://github.com/strongloop/loopback-next/commit/07f0d6c))
+
+
+### Features
+
+* **rest:** add support for form request body ([2d9e0a8](https://github.com/strongloop/loopback-next/commit/2d9e0a8))
 
 
 

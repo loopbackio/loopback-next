@@ -3,13 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.0.1...@loopback/docs@1.0.2) (2018-10-26)
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.0.1...@loopback/docs@1.1.0) (2018-11-08)
 
 
 ### Bug Fixes
 
 * change invalid reference link to valid link ([b27cc2d](https://github.com/strongloop/loopback-next/commit/b27cc2d))
+* **docs:** use correct params and imports ([2e099eb](https://github.com/strongloop/loopback-next/commit/2e099eb))
 * **openapi-v3:** generate schemas for x-ts-type ([07f0d6c](https://github.com/strongloop/loopback-next/commit/07f0d6c))
+* update usage of `x-ts-type` for schemas ([57c694e](https://github.com/strongloop/loopback-next/commit/57c694e))
+* **repository:** build relations based on their names ([2046701](https://github.com/strongloop/loopback-next/commit/2046701))
+
+
+### Features
+
+* **rest:** add support for form request body ([2d9e0a8](https://github.com/strongloop/loopback-next/commit/2d9e0a8))
 
 
 

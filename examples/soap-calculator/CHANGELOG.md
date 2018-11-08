@@ -3,12 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@1.0.1...@loopback/example-soap-calculator@1.0.2) (2018-10-26)
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@1.0.1...@loopback/example-soap-calculator@1.1.0) (2018-11-08)
 
 
 ### Bug Fixes
 
 * change unmatched html tags, remove redundant 'px' from 0 ([46d08f6](https://github.com/strongloop/loopback-next/commit/46d08f6))
+
+
+### Features
+
+* **cli:** use app.static for default home page ([1dcf169](https://github.com/strongloop/loopback-next/commit/1dcf169))
 
 
 
