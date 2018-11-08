@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Client} from '@loopback/testlab';
-import {SoapCalculatorApplication} from '../..';
+import {TodoListApplication} from '../..';
 import {setupApplication} from './test-helper';
 
-describe('HomePageController', () => {
-  let app: SoapCalculatorApplication;
+describe('HomePage', () => {
+  let app: TodoListApplication;
   let client: Client;
 
   before('setupApplication', async () => {

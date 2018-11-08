@@ -68,16 +68,8 @@ describe('app-generator specific files', () => {
       /describe\('PingController'/,
     );
     assert.fileContent(
-      'src/controllers/home-page.controller.ts',
-      /export class HomePageController/,
-    );
-    assert.fileContent(
-      'src/controllers/home-page.controller.ts',
-      /homePage\(\)/,
-    );
-    assert.fileContent(
-      'test/acceptance/home-page.controller.acceptance.ts',
-      /describe\('HomePageController'/,
+      'test/acceptance/home-page.acceptance.ts',
+      /describe\('HomePage'/,
     );
     assert.fileContent(
       'test/acceptance/test-helper.ts',
