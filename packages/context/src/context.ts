@@ -57,7 +57,7 @@ export class Context {
    * same key, an error will be thrown.
    * @param binding The configured binding to be added
    */
-  add<ValueType = BoundValue>(binding: Binding<ValueType>): this {
+  add(binding: Binding<unknown>): this {
     const key = binding.key;
     /* istanbul ignore if */
     if (debug.enabled) {
@@ -85,7 +85,7 @@ export class Context {
    * @param key Binding key
    * @returns true if the binding key is found and removed from this context
    */
-  unbind<ValueType = BoundValue>(key: BindingAddress<ValueType>): boolean {
+  unbind(key: BindingAddress<unknown>): boolean {
     key = BindingKey.validate(key);
     const binding = this.registry.get(key);
     if (binding == null) return false;
@@ -99,7 +99,7 @@ export class Context {
    * delegating to the parent context
    * @param key Binding key
    */
-  contains<ValueType = BoundValue>(key: BindingAddress<ValueType>): boolean {
+  contains(key: BindingAddress<unknown>): boolean {
     key = BindingKey.validate(key);
     return this.registry.has(key);
   }
@@ -108,7 +108,7 @@ export class Context {
    * Check if a key is bound in the context or its ancestors
    * @param key Binding key
    */
-  isBound<ValueType = BoundValue>(key: BindingAddress<ValueType>): boolean {
+  isBound(key: BindingAddress<unknown>): boolean {
     if (this.contains(key)) return true;
     if (this._parent) {
       return this._parent.isBound(key);
@@ -120,9 +120,7 @@ export class Context {
    * Get the owning context for a binding key
    * @param key Binding key
    */
-  getOwnerContext<ValueType = BoundValue>(
-    key: BindingAddress<ValueType>,
-  ): Context | undefined {
+  getOwnerContext(key: BindingAddress<unknown>): Context | undefined {
     if (this.contains(key)) return this;
     if (this._parent) {
       return this._parent.getOwnerContext(key);
