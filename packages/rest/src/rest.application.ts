@@ -14,6 +14,7 @@ import {RestComponent} from './rest.component';
 import {HttpRequestListener, HttpServerLike, RestServer} from './rest.server';
 import {ControllerClass, ControllerFactory, RouteEntry} from './router';
 import {SequenceFunction, SequenceHandler} from './sequence';
+import {ExplorerComponent} from './explorer.component';
 
 export const ERR_NO_MULTI_SERVER = format(
   'RestApplication does not support multiple servers!',
@@ -64,6 +65,7 @@ export class RestApplication extends Application implements HttpServerLike {
   constructor(readonly config: ApplicationConfig = {}) {
     super(config);
     this.component(RestComponent);
+    this.component(ExplorerComponent);
   }
 
   server(server: Constructor<Server>, name?: string): Binding {

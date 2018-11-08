@@ -251,8 +251,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
         this._serveOpenApiSpec(req, res, mapping[p]),
       );
     }
-    this._expressApp.get(['/swagger-ui', '/explorer'], (req, res) =>
-      this._redirectToSwaggerUI(req, res),
+    this._expressApp.get(
+      this.config.apiExplorer!.explorerPath || ['/swagger-ui', '/explorer'],
+      (req, res) => this._redirectToSwaggerUI(req, res),
     );
   }
 
@@ -817,6 +818,10 @@ export interface OpenApiSpecOptions {
 }
 
 export interface ApiExplorerOptions {
+  /**
+   * Path of the explorer being served
+   */
+  explorerPath?: string;
   /**
    * URL for the hosted API explorer UI
    * default to https://loopback.io/api-explorer

@@ -7,18 +7,10 @@ import {createRestAppClient, Client, expect} from '@loopback/testlab';
 import {RestApplication} from '../..';
 import * as path from 'path';
 import * as fs from 'fs';
-import {
-  RestServer,
-  RestServerConfig,
-  Request,
-  RestBindings,
-  ResponseObject,
-  get,
-} from '../../src';
-//import {Request, RestBindings, get, ResponseObject} from '@loopback/rest';
-import {inject} from '@loopback/context';
+import {RestServer, RestServerConfig, get} from '../..';
 
-const ASSETS = path.resolve(__dirname, '../../../fixtures/assets');
+const FIXTURES = path.resolve(__dirname, '../../../fixtures');
+const ASSETS = path.resolve(FIXTURES, 'assets');
 
 describe('RestApplication (integration)', () => {
   let restApp: RestApplication;
