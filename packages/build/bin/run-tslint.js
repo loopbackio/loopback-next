@@ -37,6 +37,8 @@ function run(argv, options) {
   if (tslintConfigFile) {
     args.push('-c', tslintConfigFile);
   }
+  // Exclude json files
+  args.push('-e', '**/*.json');
   args.push(...tslintOpts);
 
   return utils.runCLI('tslint/bin/tslint', args, options);

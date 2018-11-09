@@ -11,9 +11,7 @@ import {
 } from '@loopback/openapi-v3-types';
 import * as assert from 'assert';
 import * as debugFactory from 'debug';
-import {PathParams} from 'express-serve-static-core';
 import * as HttpErrors from 'http-errors';
-import {ServeStaticOptions} from 'serve-static';
 import {inspect} from 'util';
 import {Request} from '../types';
 import {
@@ -33,19 +31,17 @@ const debug = debugFactory('loopback:rest:routing-table');
  * Routing table
  */
 export class RoutingTable {
-  constructor(private readonly _router: RestRouter = new TrieRouter()) {}
-
+  /**
+   * A route for static assets
+   */
   private _staticAssetsRoute: StaticAssetsRoute;
-
-  registerStaticAssets(
-    path: PathParams,
-    rootDir: string,
-    options?: ServeStaticOptions,
+  constructor(
+    private readonly _router: RestRouter = new TrieRouter(),
+    staticAssetsRoute?: StaticAssetsRoute,
   ) {
-    if (!this._staticAssetsRoute) {
-      this._staticAssetsRoute = new StaticAssetsRoute();
+    if (staticAssetsRoute) {
+      this._staticAssetsRoute = staticAssetsRoute;
     }
-    this._staticAssetsRoute.registerAssets(path, rootDir, options);
   }
 
   /**

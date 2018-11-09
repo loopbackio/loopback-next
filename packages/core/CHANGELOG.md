@@ -3,20 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@0.12.0...@loopback/core@1.0.0) (2018-10-10)
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.0.0...@loopback/core@1.0.1) (2018-11-08)
 
 **Note:** Version bump only for package @loopback/core
-
-
-
-
-
-# [0.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@0.11.17...@loopback/core@0.12.0) (2018-10-09)
-
-
-### Features
-
-* **boot:** bind content of package.json to app context ([82f0ebe](https://github.com/strongloop/loopback-next/commit/82f0ebe))
 
 
 

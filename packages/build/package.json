@@ -5,7 +5,7 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
     "node": ">=8.9"
   },
@@ -21,7 +21,7 @@
     "glob": "^7.1.2",
     "mocha": "^5.1.1",
     "nyc": "^13.0.1",
-    "prettier": "^1.14.0",
+    "prettier": "^1.15.1",
     "rimraf": "^2.6.2",
     "source-map-support": "^0.5.5",
     "strong-docs": "^4.0.0",

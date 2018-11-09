@@ -9,7 +9,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import {RestServer, RestServerConfig} from '../../src';
 
-const FIXTURES = path.resolve(__dirname, '../../../fixtures');
+const ASSETS = path.resolve(__dirname, '../../../fixtures/assets');
 
 describe('RestApplication (integration)', () => {
   let restApp: RestApplication;
@@ -23,10 +23,10 @@ describe('RestApplication (integration)', () => {
 
   it('serves static assets from root path', async () => {
     givenApplication();
-    restApp.static('/', FIXTURES);
+    restApp.static('/', ASSETS);
     await restApp.start();
     const content = fs
-      .readFileSync(path.join(FIXTURES, 'index.html'))
+      .readFileSync(path.join(ASSETS, '', 'index.html'))
       .toString('utf-8');
     client = createRestAppClient(restApp);
     await client
@@ -37,10 +37,10 @@ describe('RestApplication (integration)', () => {
 
   it('serves static assets from non-root path', async () => {
     givenApplication();
-    restApp.static('/public', FIXTURES);
+    restApp.static('/public', ASSETS);
     await restApp.start();
     const content = fs
-      .readFileSync(path.join(FIXTURES, 'index.html'))
+      .readFileSync(path.join(ASSETS, 'index.html'))
       .toString('utf-8');
     client = createRestAppClient(restApp);
     await client
@@ -51,7 +51,7 @@ describe('RestApplication (integration)', () => {
 
   it('returns 404 if asset is not found', async () => {
     givenApplication();
-    restApp.static('/', FIXTURES);
+    restApp.static('/', ASSETS);
     await restApp.start();
     client = createRestAppClient(restApp);
     await client.get('/404.html').expect(404);
@@ -60,9 +60,9 @@ describe('RestApplication (integration)', () => {
   it('allows static assets via api after start', async () => {
     givenApplication();
     await restApp.start();
-    restApp.static('/', FIXTURES);
+    restApp.static('/', ASSETS);
     const content = fs
-      .readFileSync(path.join(FIXTURES, 'index.html'))
+      .readFileSync(path.join(ASSETS, 'index.html'))
       .toString('utf-8');
     client = createRestAppClient(restApp);
     await client
