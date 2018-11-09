@@ -74,7 +74,7 @@ describe('Application', () => {
     });
 
     it('binds bindings from a component', () => {
-      const binding = new Binding('foo');
+      const binding = Binding.bind('foo');
       class MyComponentWithBindings implements Component {
         bindings = [binding];
       }

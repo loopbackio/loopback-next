@@ -24,8 +24,8 @@ export class MyComponent implements Component {
       'my-validator': MyValidator,
     };
 
-    const bindingX = new Binding('x').to('Value X');
-    const bindingY = new Binding('y').toClass(ClassY);
+    const bindingX = Binding.bind('x').to('Value X');
+    const bindingY = Binding.bind('y').toClass(ClassY);
     this.bindings = [bindingX, bindingY];
   }
 }
@@ -45,7 +45,7 @@ Please note that `providers` and `classes` are shortcuts for provider and class
 `bindings`.
 
 The example `MyComponent` above will add `MyController` to application's API and
-create the following bindings to the application context:
+create the following bindings in the application context:
 
 - `my-value` -> `MyValueProvider` (provider)
 - `my-validator` -> `MyValidator` (class)
