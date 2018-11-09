@@ -64,7 +64,7 @@ export interface Component {
   /**
    * An array of bindings to be aded to the application context. For example,
    * ```ts
-   * const bindingX = new Binding('x').to('Value X');
+   * const bindingX = Binding.bind('x').to('Value X');
    * this.bindings = [bindingX]
    * ```
    */
