@@ -29,7 +29,7 @@ From your LoopBack application, run the following command to install OASGraph
 and the required dependencies:
 
 ```sh
-npm i --save oasgraph express express-graphql
+npm i --save oasgraph-cli
 ```
 
 ### Start the GraphQL Server
@@ -50,7 +50,7 @@ npx oasgraph http://localhost:3000/openapi.json
 _Haven't heard about `npx` yet? It's a cool helper provided by `npm` and
 available out of the box since Node.js 8.x. Learn more in their announcement
 blog post:
-[Introducing npx: an npm package runner](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b))_
+[Introducing npx: an npm package runner](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b)_
 
 That’s it! You’re now ready to try out some tests and requests in the browser at
 http://localhost:3001/graphql.
