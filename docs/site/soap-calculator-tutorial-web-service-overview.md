@@ -43,9 +43,9 @@ sample for the Add method.
 
 #### SOAP WS Response
 
-The SOAP Web Servie will respond to **LB4** with the following xml result, based
-on the corresponding succesfully invoked method, in this case the sample is just
-for the Add method.
+The SOAP Web Service will respond to **LB4** with the following xml result,
+based on the corresponding succesfully invoked method, in this case the sample
+is just for the Add method.
 
 ```xml
 <SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1=\"http://wsdl.example.org/\">
