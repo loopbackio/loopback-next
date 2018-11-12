@@ -129,7 +129,7 @@ const app = new RestApplication({
 To disable redirect to the externally hosted API Explorer, set the config option
 `rest.apiExplorer.disabled` to `true`.
 
-````ts
+```ts
 const app = new RestApplication({
   rest: {
     apiExplorer: {
@@ -138,6 +138,15 @@ const app = new RestApplication({
   },
 });
 ```
+
+### Use a self-hosted API Explorer
+
+Hosting the API Explorer at an external URL has a few downsides, for example a
+working internet connection is required to explore the API. As a recommended
+alternative, LoopBack comes with an extension that provides a self-hosted
+Explorer UI. Please refer to
+[Self-hosted REST API Explorer](./Self-hosted-rest-api-explorer.md) for more
+details.
 
 ### Enable HTTPS
 
@@ -168,7 +177,7 @@ export async function main() {
   const url = app.restServer.url;
   console.log(`Server is running at ${url}`);
 }
-````
+```
 
 ### Customize CORS
 

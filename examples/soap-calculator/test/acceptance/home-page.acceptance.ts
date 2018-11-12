@@ -25,4 +25,12 @@ describe('HomePage', () => {
       .expect(200)
       .expect('Content-Type', /text\/html/);
   });
+
+  it('exposes self-hosted explorer', async () => {
+    await client
+      .get('/explorer/')
+      .expect(200)
+      .expect('Content-Type', /text\/html/)
+      .expect(/<title>LoopBack API Explorer/);
+  });
 });

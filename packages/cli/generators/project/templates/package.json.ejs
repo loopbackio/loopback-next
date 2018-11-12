@@ -77,11 +77,12 @@
 <% if (project.repositories) { -%>
     "@loopback/repository": "<%= project.dependencies['@loopback/repository'] -%>",
 <% } -%>
-<% if (project.services) { -%>
     "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>",
+<% if (project.services) { -%>
+    "@loopback/rest-explorer": "<%= project.dependencies['@loopback/rest-explorer'] -%>",
     "@loopback/service-proxy": "<%= project.dependencies['@loopback/service-proxy'] -%>"
 <% } else { -%>
-    "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>"
+    "@loopback/rest-explorer": "<%= project.dependencies['@loopback/rest-explorer'] -%>"
 <% } -%>
 <% } else { /* NOT AN APPLICATION */-%>
     "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>"
