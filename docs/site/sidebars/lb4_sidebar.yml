@@ -218,6 +218,11 @@ children:
 - title: 'Using Components'
   url: Using-components.html
   output: 'web, pdf'
+  children:
+
+  - title: Self-hosted REST API Explorer
+    url: Self-hosted-rest-api-explorer.html
+    output: 'web, pdf'
 
 - title: 'Calling other APIs'
   url: Calling-other-APIs-and-web-services.html

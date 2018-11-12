@@ -5,11 +5,12 @@
 
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
+import {RestExplorerComponent} from '@loopback/rest-explorer';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
-import {MySequence} from './sequence';
 import * as path from 'path';
+import {MySequence} from './sequence';
 
 export class TodoListApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
@@ -22,6 +23,8 @@ export class TodoListApplication extends BootMixin(
 
     // Set up default home page
     this.static('/', path.join(__dirname, '../../public'));
+
+    this.component(RestExplorerComponent);
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here

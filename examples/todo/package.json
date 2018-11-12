@@ -37,6 +37,7 @@
     "@loopback/boot": "^1.0.4",
     "@loopback/context": "^1.1.0",
     "@loopback/core": "^1.1.0",
+    "@loopback/rest-explorer": "^0.1.0",
     "@loopback/openapi-v3": "^1.1.1",
     "@loopback/openapi-v3-types": "^1.0.1",
     "@loopback/repository": "^1.0.4",
