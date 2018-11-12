@@ -124,6 +124,21 @@ const app = new RestApplication({
 });
 ```
 
+#### Disable redirect to API Explorer
+
+To disable redirect to the externally hosted API Explorer, set the config option
+`rest.apiExplorer.disabled` to `true`.
+
+````ts
+const app = new RestApplication({
+  rest: {
+    apiExplorer: {
+      disabled: true,
+    },
+  },
+});
+```
+
 ### Enable HTTPS
 
 Enabling HTTPS for the LoopBack REST server is just a matter of specifying the
@@ -153,7 +168,7 @@ export async function main() {
   const url = app.restServer.url;
   console.log(`Server is running at ${url}`);
 }
-```
+````
 
 ### Customize CORS
 
