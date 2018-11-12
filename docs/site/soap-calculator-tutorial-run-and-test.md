@@ -19,7 +19,8 @@ npm start
 You will see the following output:
 
 ```sh
-Server is running at http://[::1]:3000
+Server is running at http://127.0.0.1:3000
+Try http://127.0.0.1:3000/ping
 ```
 
 #### Test the Application
@@ -42,7 +43,7 @@ property. Your client application will have access to result value using the
 normal convention `result.AddResult` and get the `100`.
 
 ```sh
-{"result":{"AddResult":100},"envelope":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1=\"http://wsdl.example.org/\"><SOAP-ENV:Body><ns1:AddResponse><AddResult>100</AddResult></ns1:AddResponse></SOAP
+{"result":{"AddResult":100},"envelope":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1=\"http://wsdl.example.org/\"><SOAP-ENV:Body><ns1:AddResponse><AddResult>100</AddResult></ns1:AddResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>
 ```
 
 ### Changing the listening URL and PORT number

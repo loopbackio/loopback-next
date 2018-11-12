@@ -71,7 +71,7 @@ cd loopback4-example-soap-calculator
 ```sh
 $ npm start
 
-Server is running on port 3000
+Server is running at http://127.0.0.1:3000
 ```
 
 Feel free to look around in the application's code to get a feel for how it
