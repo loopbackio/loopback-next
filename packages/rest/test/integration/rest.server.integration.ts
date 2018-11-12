@@ -437,6 +437,18 @@ paths:
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
   });
 
+  it('can be configured to disable "GET /explorer"', async () => {
+    const server = await givenAServer({
+      rest: {
+        ...givenHttpServerConfig(),
+        apiExplorer: {disabled: true},
+      },
+    });
+
+    const request = createClientForHandler(server.requestHandler);
+    await request.get('/explorer').expect(404);
+  });
+
   it('honors "x-forwarded-*" headers', async () => {
     const app = new Application();
     app.component(RestComponent);
