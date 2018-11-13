@@ -18,7 +18,8 @@
   ],
   "scripts": {
     "build:apidocs": "lb-apidocs --html-file=index.html",
-    "clean": "lb-clean loopback-docs*.tgz package api-docs"
+    "prepublishOnly": "node ./bin/copy-readmes",
+    "clean": "lb-clean loopback-docs*.tgz package api-docs site/readmes"
   },
   "devDependencies": {
     "@loopback/build": "^1.0.1"
@@ -31,5 +32,8 @@
     "url": "https://github.com/strongloop/loopback-next"
   },
   "copyright.owner": "IBM Corp.",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^7.0.1"
+  }
 }
