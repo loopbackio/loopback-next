@@ -242,8 +242,7 @@ Here are some new requests you can try out:
 - `POST /todo-lists/{id}/todos` using the ID you got back from the previous
   `POST` request and a body for a todo. Notice that response body you get back
   contains property `todoListId` with the ID from before.
-- `GET /todo-lists/{id}/todos` and see if you get the todo you created from
-  before.
+- `GET /todo-lists/{id}/todos` and see if you get the todo you created from before.
 
 And there you have it! You now have the power to define APIs for related models!
 
