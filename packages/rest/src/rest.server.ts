@@ -244,16 +244,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
       );
     }
 
-    const explorerConfig = this.config.apiExplorer || {};
-    if (explorerConfig.disabled) {
-      debug('Redirect to swagger-ui was disabled by configuration.');
-      return;
-    }
-
     const explorerPaths = ['/swagger-ui', '/explorer'];
-    debug('Setting up redirect to swagger-ui. URL paths: %j', explorerPaths);
-    this._expressApp.get(explorerPaths, (req, res) =>
-      this._redirectToSwaggerUI(req, res),
+    this._expressApp.get(explorerPaths, (req, res, next) =>
+      this._redirectToSwaggerUI(req, res, next),
     );
   }
 
@@ -444,8 +437,19 @@ export class RestServer extends Context implements Server, HttpServerLike {
     return protocol + '://' + host;
   }
 
-  private async _redirectToSwaggerUI(request: Request, response: Response) {
+  private async _redirectToSwaggerUI(
+    request: Request,
+    response: Response,
+    next: express.NextFunction,
+  ) {
     const config = this.config.apiExplorer!;
+
+    if (config.disabled) {
+      debug('Redirect to swagger-ui was disabled by configuration.');
+      return next();
+    }
+
+    debug('Redirecting to swagger-ui from %j.', request.originalUrl);
     const protocol = this._getProtocolForRequest(request);
     const baseUrl = protocol === 'http' ? config.httpUrl : config.url;
     const openApiUrl = `${this._getUrlForClient(request)}/openapi.json`;
