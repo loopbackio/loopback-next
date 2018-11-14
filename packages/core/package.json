@@ -1,6 +1,6 @@
 {
   "name": "@loopback/core",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "",
   "engines": {
     "node": ">=8.9"
@@ -20,7 +20,7 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^1.0.1"
+    "@loopback/context": "^1.1.0"
   },
   "devDependencies": {
     "@loopback/build": "^1.0.1",
