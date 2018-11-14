@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.0.1...@loopback/context@1.1.0) (2018-11-14)
+
+
+### Features
+
+* **context:** add support for context.add(binding) ([8f77cef](https://github.com/strongloop/loopback-next/commit/8f77cef))
+* **core:** allow components to expose an array of bindings ([eae0da3](https://github.com/strongloop/loopback-next/commit/eae0da3))
+
+
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.0.0...@loopback/context@1.0.1) (2018-11-08)
 
