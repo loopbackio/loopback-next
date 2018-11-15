@@ -6,3 +6,4 @@
 export * from './types';
 export * from './listener-registry';
 export * from './event-source';
+export * from './event-iterator';
