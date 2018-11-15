@@ -87,9 +87,10 @@ repository, the following are required:
 - In the constructor of your source repository class, use
   [Dependency Injection](Dependency-injection.md) to receive a getter function
   for obtaining an instance of the target repository. _Note: We need a getter
-  function instead of a repository instance in order to break a cyclic
-  dependency between a repository with a belongsTo relation and a repository
-  with the matching hasMany relation._
+  function, accepting a string repository name instead of a repository
+  constructor, or a repository instance, in order to break a cyclic dependency
+  between a repository with a belongsTo relation and a repository with the
+  matching hasMany relation._
 - Declare a property with the factory function type
   `BelongsToAccessor<targetModel, typeof sourceModel.prototype.id>` on the
   source repository class.
