@@ -15,9 +15,15 @@ possible options, refer to
 "[IBM Cloud Continuous Delivery: Build, deploy, and manage apps with toolchains](https://www.ibm.com/cloud/garage/content/deliver/tool_continuous_delivery/)"
 for the details.
 
-Before we begin make sure the following are installed:
+## Before we begin
 
-1.  [Cloud Foundy CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html)
+Since we will be deploying to IBM Cloud,
+[sign up for an account](https://console.bluemix.net/) if you don't have one
+already.
+
+Make sure the following are installed:
+
+1.  [Cloud Foundry CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html)
 2.  [Docker](https://www.docker.com/)
 
 Consider the
@@ -36,10 +42,31 @@ Cloudant connector, so data is persisted.
 
 ## Cloud setup
 
-### Database
+### Cloudant database service
 
 1.  Provision a Cloudant database service, and name it `myCloudant`.
-2.  Log on to the Cloudant Dashboard and create a database named `todo`.
+
+- Go to the
+  [IBM Cloud Catalog](https://console.bluemix.net/catalog/?category=databases),
+  select `Cloudant` under `All Categories` > `Databases`.
+- Name your Cloudant service name as `myCloudant`. Keep the defaults for region
+  and resource group. Select "Use both legacy credentials and IAM" as the
+  available authentication methods
+
+  <img src="./imgs/deploytocloud-mycloudant.png" alt="myCloudant service name" style="width: 300px"/>
+
+- Click Create.
+
+2.  Create a database named `todo`.
+
+- Go to your [IBM Cloud dashboard](https://console.bluemix.net/dashboard/apps).
+- Click on `myCloudant` under `Services`.
+- Click `Launch Cloudant Dashboard`.
+  <img src="./imgs/deploytocloud-launchcdashboard.png" alt="launch cloudant dashboard" style="width: 300px"/>
+- In the Cloudant dashboard, click `Create Database` at the top of the page and
+  name it as `todo`.
+
+  <img src="./imgs/deploytocloud-createdb.png" alt="create database" style="width: 300px"/>
 
 ### Connecting the database to app
 
@@ -125,6 +152,7 @@ export async function main(options?: ApplicationConfig) {
   if (!options) options = {};
   if (!options.rest) options.rest = {};
   options.rest.port = appEnv.isLocal ? options.rest.port : appEnv.port;
+  options.rest.host = appEnv.isLocal ? options.rest.host : appEnv.host;
 
   const app = new TodoListApplication(options);
   // If running on IBM Cloud, we get the Cloudant service details from VCAP_SERVICES
