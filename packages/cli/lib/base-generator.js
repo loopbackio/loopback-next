@@ -343,8 +343,12 @@ module.exports = class BaseGenerator extends Generator {
     const incompatibleDeps = {};
     for (const d in templateDeps) {
       const versionRange = projectDeps[d] || projectDevDeps[d];
-      if (!versionRange || semver.intersects(versionRange, templateDeps[d]))
-        continue;
+      if (!versionRange) continue;
+      // https://github.com/strongloop/loopback-next/issues/2028
+      // https://github.com/npm/node-semver/pull/238
+      // semver.intersects does not like `*`, `x`, or `X`
+      if (versionRange.match(/^\*|x|X/)) continue;
+      if (semver.intersects(versionRange, templateDeps[d])) continue;
       incompatibleDeps[d] = [versionRange, templateDeps[d]];
     }
 

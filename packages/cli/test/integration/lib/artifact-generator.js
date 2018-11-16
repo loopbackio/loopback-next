@@ -94,6 +94,19 @@ module.exports = function(artiGenerator) {
         /Incompatible dependencies/,
       );
 
+      testCheckLoopBack(
+        'allows */x/X for version range',
+        {
+          keywords: ['loopback'],
+          devDependencies: {'@types/node': '*'},
+          dependencies: {
+            '@loopback/context': 'x.x',
+            '@loopback/core': 'X.*',
+          },
+        },
+        // No expected error here
+      );
+
       it('passes if "keywords" maps to "loopback"', async () => {
         gen.fs.readJSON.returns({keywords: ['test', 'loopback']});
         await gen.checkLoopBackProject();
@@ -110,6 +123,10 @@ module.exports = function(artiGenerator) {
           });
           gen.fs.readJSON.returns(obj);
           await gen.checkLoopBackProject();
+          if (!expected) {
+            assert(gen.exitGeneration == null);
+            return;
+          }
           assert(gen.exitGeneration instanceof Error);
           assert(gen.exitGeneration.message.match(expected));
           gen.end();
