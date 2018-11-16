@@ -68,8 +68,15 @@ export function buildModelDefinition(
   target: Function & {definition?: ModelDefinition | undefined},
   def?: ModelDefinitionSyntax,
 ) {
-  // Check if the definition for this class has been built
-  if (!def && target.definition && target.definition.name === target.name) {
+  // Check if the definition for this class has been built (not from the super
+  // class)
+  const baseClass = Object.getPrototypeOf(target);
+  if (
+    !def &&
+    target.definition &&
+    baseClass &&
+    target.definition !== baseClass.definition
+  ) {
     return target.definition;
   }
   const modelDef = new ModelDefinition(def || {name: target.name});
