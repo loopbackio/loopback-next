@@ -40,7 +40,8 @@
     "index.d.ts",
     "dist/src",
     "dist/index*",
-    "src"
+    "src",
+    "templates"
   ],
   "publishConfig": {
     "access": "public"
