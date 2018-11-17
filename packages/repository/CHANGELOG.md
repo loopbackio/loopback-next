@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.5](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.0.4...@loopback/repository@1.0.5) (2018-11-17)
+
+
+### Bug Fixes
+
+* **repository:** make sure model definition is built correctly ([2effa30](https://github.com/strongloop/loopback-next/commit/2effa30))
+
+
+
+
+
 ## [1.0.4](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.0.3...@loopback/repository@1.0.4) (2018-11-14)
 
 **Note:** Version bump only for package @loopback/repository

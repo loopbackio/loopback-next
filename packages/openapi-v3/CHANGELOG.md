@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.1.1...@loopback/openapi-v3@1.1.2) (2018-11-17)
+
+
+### Bug Fixes
+
+* **repository:** make sure model definition is built correctly ([2effa30](https://github.com/strongloop/loopback-next/commit/2effa30))
+
+
+
+
+
 ## [1.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.1.0...@loopback/openapi-v3@1.1.1) (2018-11-14)
 
 **Note:** Version bump only for package @loopback/openapi-v3

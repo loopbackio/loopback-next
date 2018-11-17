@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.1.1...@loopback/example-todo-list@1.2.0) (2018-11-17)
+
+
+### Bug Fixes
+
+* todo-list example index.js ([cfea04c](https://github.com/strongloop/loopback-next/commit/cfea04c))
+
+
+### Features
+
+* an extension adding a self-hosted REST API Explorer ([4c165c7](https://github.com/strongloop/loopback-next/commit/4c165c7))
+
+
+
+
+
 ## [1.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.1.0...@loopback/example-todo-list@1.1.1) (2018-11-14)
 
 **Note:** Version bump only for package @loopback/example-todo-list

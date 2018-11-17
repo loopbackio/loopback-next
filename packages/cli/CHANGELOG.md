@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.1.1...@loopback/cli@1.2.0) (2018-11-17)
+
+
+### Bug Fixes
+
+* **cli:** allow `*` for version range ([0a42541](https://github.com/strongloop/loopback-next/commit/0a42541))
+
+
+### Features
+
+* an extension adding a self-hosted REST API Explorer ([4c165c7](https://github.com/strongloop/loopback-next/commit/4c165c7))
+
+
+
+
+
 ## [1.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.1.0...@loopback/cli@1.1.1) (2018-11-14)
 
 **Note:** Version bump only for package @loopback/cli
