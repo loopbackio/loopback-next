@@ -53,7 +53,7 @@ Cloudant connector, so data is persisted.
   and resource group. Select "Use both legacy credentials and IAM" as the
   available authentication methods
 
-  <img src="./imgs/deploytocloud-mycloudant.png" alt="myCloudant service name" style="width: 300px"/>
+  ![myCloudant service name](./imgs/deploytocloud-mycloudant.png)
 
 - Click Create.
 
@@ -62,11 +62,12 @@ Cloudant connector, so data is persisted.
 - Go to your [IBM Cloud dashboard](https://console.bluemix.net/dashboard/apps).
 - Click on `myCloudant` under `Services`.
 - Click `Launch Cloudant Dashboard`.
-  <img src="./imgs/deploytocloud-launchcdashboard.png" alt="launch cloudant dashboard" style="width: 300px"/>
+  ![launch cloudant dashboard](./imgs/deploytocloud-launchcdashboard.png)
+
 - In the Cloudant dashboard, click `Create Database` at the top of the page and
   name it as `todo`.
 
-  <img src="./imgs/deploytocloud-createdb.png" alt="create database" style="width: 300px"/>
+  ![create database](./imgs/deploytocloud-createdb.png)
 
 ### Connecting the database to app
 
