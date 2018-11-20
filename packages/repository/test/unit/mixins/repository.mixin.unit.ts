@@ -3,10 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
-
-import {juggler, RepositoryMixin, Class, Repository} from '../../../';
-import {Application, Component} from '@loopback/core';
+import {Application, BindingScope, Component} from '@loopback/core';
+import {expect, sinon} from '@loopback/testlab';
+import {
+  Class,
+  DataSource,
+  DefaultCrudRepository,
+  Entity,
+  juggler,
+  ModelDefinition,
+  Repository,
+  RepositoryMixin,
+} from '../../..';
 
 // tslint:disable:no-any
 
@@ -61,6 +69,108 @@ describe('RepositoryMixin', () => {
 
     expectComponentToBeBound(myApp, TestComponent);
     expectNoteRepoToBeBound(myApp);
+  });
+
+  context('migrateSchema', () => {
+    let app: AppWithRepoMixin;
+    let migrateStub: sinon.SinonStub;
+    let updateStub: sinon.SinonStub;
+    let DataSourceStub: typeof juggler.DataSource;
+
+    beforeEach(setupTestHelpers);
+
+    it('is a method provided by the mixin', () => {
+      expect(typeof app.migrateSchema).to.be.eql('function');
+    });
+
+    it('calls autoupdate on registered datasources', async () => {
+      app.dataSource(DataSourceStub);
+
+      await app.migrateSchema({existingSchema: 'alter'});
+
+      sinon.assert.called(updateStub);
+      sinon.assert.notCalled(migrateStub);
+    });
+
+    it('calls automigrate on registered datasources', async () => {
+      app.dataSource(DataSourceStub);
+
+      await app.migrateSchema({existingSchema: 'drop'});
+
+      sinon.assert.called(migrateStub);
+      sinon.assert.notCalled(updateStub);
+    });
+
+    it('skips datasources not implementing schema migrations', async () => {
+      class OtherDataSource implements DataSource {
+        name: string = 'other';
+        connector = undefined;
+        settings = {};
+      }
+
+      // Bypass app.dataSource type checks and bind a custom datasource class
+      app
+        .bind('datasources.other')
+        .toClass(OtherDataSource)
+        .tag('datasource')
+        .inScope(BindingScope.SINGLETON);
+
+      await app.migrateSchema({existingSchema: 'drop'});
+      // the test passes when migrateSchema() does not throw any error
+    });
+
+    it('attaches all models to datasources', async () => {
+      let modelsMigrated = ['no models were migrated'];
+
+      const ds = new juggler.DataSource({name: 'db', connector: 'memory'});
+      // FIXME(bajtos) typings for connectors are missing autoupdate/autoupgrade
+      (ds.connector as any).automigrate = function(
+        models: string[],
+        cb: Function,
+      ) {
+        modelsMigrated = models;
+        cb();
+      };
+      app.dataSource(ds);
+
+      class Product extends Entity {
+        static definition = new ModelDefinition('Product').addProperty('id', {
+          type: 'number',
+          id: true,
+        });
+      }
+      class ProductRepository extends DefaultCrudRepository<Product, number> {
+        constructor() {
+          super(Product, ds);
+        }
+      }
+      app.repository(ProductRepository);
+
+      await app.migrateSchema({existingSchema: 'drop'});
+
+      expect(modelsMigrated).to.eql(['Product']);
+    });
+
+    it('migrates selected models only', async () => {
+      app.dataSource(DataSourceStub);
+
+      await app.migrateSchema({existingSchema: 'drop', models: ['Category']});
+
+      sinon.assert.calledWith(migrateStub, ['Category']);
+      sinon.assert.notCalled(updateStub);
+    });
+
+    function setupTestHelpers() {
+      app = new AppWithRepoMixin();
+
+      migrateStub = sinon.stub().resolves();
+      updateStub = sinon.stub().resolves();
+
+      DataSourceStub = class extends juggler.DataSource {
+        automigrate = migrateStub;
+        autoupdate = updateStub;
+      };
+    }
   });
 
   class AppWithRepoMixin extends RepositoryMixin(Application) {}
