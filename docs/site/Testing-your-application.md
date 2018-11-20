@@ -138,6 +138,28 @@ export async function givenEmptyDatabase() {
 }
 ```
 
+In case a repository includes a relation to another repository, ie. Product
+belongs to Category, include it in the repository call, for example:
+
+{% include code-caption.html content="test/helpers/database.helpers.ts" %}
+
+```ts
+import {Getter} from '@loopback/context';
+import {ProductRepository, CategoryRepository} from '../../src/repositories';
+import {testdb} from '../fixtures/datasources/testdb.datasource';
+
+export async function givenEmptyDatabase() {
+  const categoryRepository = new CategoryRepository(testdb);
+  const productRepository = new ProductRepository(
+    testdb,
+    Getter.fromValue(categoryRepository),
+  );
+
+  await productRepository.deleteAll();
+  await categoryRepository.deleteAll();
+}
+```
+
 {% include code-caption.html content="test/integration/controllers/product.controller.integration.ts" %}
 
 ```ts
