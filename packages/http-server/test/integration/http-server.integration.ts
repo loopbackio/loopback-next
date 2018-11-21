@@ -2,19 +2,22 @@
 // Node module: @loopback/http-server
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-import {HttpServer, HttpOptions, HttpServerOptions} from '../../';
 import {
-  supertest,
   expect,
-  itSkippedOnTravis,
+  givenHttpServerConfig,
   httpGetAsync,
   httpsGetAsync,
-  givenHttpServerConfig,
+  itSkippedOnTravis,
+  supertest,
 } from '@loopback/testlab';
-import * as makeRequest from 'request-promise-native';
-import {IncomingMessage, ServerResponse, Server} from 'http';
-import * as path from 'path';
 import * as fs from 'fs';
+import {IncomingMessage, Server, ServerResponse} from 'http';
+import {Agent} from 'https';
+import * as path from 'path';
+import * as makeRequest from 'request-promise-native';
+import * as spdy from 'spdy';
+import {HttpOptions, HttpServer, HttpServerOptions} from '../../';
+import {Http2Options} from '../../src';
 
 describe('HttpServer (integration)', () => {
   let server: HttpServer | undefined;
@@ -156,9 +159,9 @@ describe('HttpServer (integration)', () => {
 
   it('supports HTTPS protocol with key and certificate files', async () => {
     const serverOptions = givenHttpServerConfig();
-    const httpsServer: HttpServer = givenHttpsServer(serverOptions);
-    await httpsServer.start();
-    const response = await httpsGetAsync(httpsServer.url);
+    server = givenHttpsServer(serverOptions);
+    await server.start();
+    const response = await httpsGetAsync(server.url);
     expect(response.statusCode).to.equal(200);
   });
 
@@ -166,19 +169,19 @@ describe('HttpServer (integration)', () => {
     const serverOptions = givenHttpServerConfig({
       usePfx: true,
     });
-    const httpsServer: HttpServer = givenHttpsServer(serverOptions);
-    await httpsServer.start();
-    const response = await httpsGetAsync(httpsServer.url);
+    server = givenHttpsServer(serverOptions);
+    await server.start();
+    const response = await httpsGetAsync(server.url);
     expect(response.statusCode).to.equal(200);
   });
 
   itSkippedOnTravis('handles IPv6 loopback address in HTTPS', async () => {
-    const httpsServer: HttpServer = givenHttpsServer({
+    server = givenHttpsServer({
       host: '::1',
     });
-    await httpsServer.start();
-    expect(httpsServer.address!.family).to.equal('IPv6');
-    const response = await httpsGetAsync(httpsServer.url);
+    await server.start();
+    expect(server.address!.family).to.equal('IPv6');
+    const response = await httpsGetAsync(server.url);
     expect(response.statusCode).to.equal(200);
   });
 
@@ -194,6 +197,42 @@ describe('HttpServer (integration)', () => {
     server = new HttpServer(dummyRequestHandler, {host: '0.0.0.0'});
     await server.start();
     expect(server.url).to.equal(`http://127.0.0.1:${server.port}`);
+  });
+
+  it('supports HTTP/2 protocol with key and certificate files', async () => {
+    const serverOptions: Http2Options = Object.assign(
+      {
+        protocol: 'http2' as 'http2',
+        rejectUnauthorized: false,
+        spdy: {protocols: ['h2' as 'h2']},
+      },
+      givenHttpServerConfig(),
+    );
+    server = givenHttp2Server(serverOptions);
+    await server.start();
+
+    // http2 does not have its own url scheme
+    expect(server.url).to.match(/^https\:/);
+
+    const agent = spdy.createAgent({
+      rejectUnauthorized: false,
+      port: server.port,
+      host: server.host,
+
+      // Optional SPDY options
+      spdy: {
+        plain: false,
+        ssl: true,
+      },
+    }) as Agent;
+
+    const response = await httpsGetAsync(server.url, agent);
+    expect(response.statusCode).to.equal(200);
+
+    // We need to close the agent so that server.close() returns
+    // `@types/spdy@3.x` is not fully compatible with `spdy@4.0.0`
+    // tslint:disable-next-line:no-any
+    (agent as any).close();
   });
 
   function dummyRequestHandler(
@@ -227,6 +266,17 @@ describe('HttpServer (integration)', () => {
       options.key = fs.readFileSync(keyPath);
       options.cert = fs.readFileSync(certPath);
     }
+    return new HttpServer(dummyRequestHandler, options);
+  }
+
+  function givenHttp2Server(options: Http2Options): HttpServer {
+    const certDir = path.resolve(__dirname, '../../../fixtures');
+
+    const keyPath = path.join(certDir, 'key.pem');
+    const certPath = path.join(certDir, 'cert.pem');
+    options.key = fs.readFileSync(keyPath);
+    options.cert = fs.readFileSync(certPath);
+
     return new HttpServer(dummyRequestHandler, options);
   }
 });

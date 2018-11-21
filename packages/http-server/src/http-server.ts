@@ -3,12 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {IncomingMessage, ServerResponse} from 'http';
 import * as http from 'http';
+import {IncomingMessage, ServerResponse} from 'http';
 import * as https from 'https';
 import {AddressInfo} from 'net';
-
 import * as pEvent from 'p-event';
+import * as spdy from 'spdy';
 
 export type RequestListener = (
   req: IncomingMessage,
@@ -47,12 +47,19 @@ export interface HttpsOptions extends ListenerOptions, https.ServerOptions {
 }
 
 /**
+ * HTTP/2 server options based on `spdy`
+ */
+export interface Http2Options extends ListenerOptions, spdy.ServerOptions {
+  protocol: 'http2' | 'https';
+}
+
+/**
  * Possible server options
  *
  * @export
  * @type HttpServerOptions
  */
-export type HttpServerOptions = HttpOptions | HttpsOptions;
+export type HttpServerOptions = HttpOptions | HttpsOptions | Http2Options;
 
 /**
  * Supported protocols
@@ -60,7 +67,7 @@ export type HttpServerOptions = HttpOptions | HttpsOptions;
  * @export
  * @type HttpProtocol
  */
-export type HttpProtocol = 'http' | 'https'; // Will be extended to `http2` in the future
+export type HttpProtocol = 'http' | 'https' | 'http2';
 
 /**
  * HTTP / HTTPS server used by LoopBack's RestServer
@@ -84,14 +91,22 @@ export class HttpServer {
    */
   constructor(
     requestListener: RequestListener,
-    serverOptions?: HttpServerOptions,
+    serverOptions: HttpServerOptions = {},
   ) {
     this.requestListener = requestListener;
     this.serverOptions = serverOptions;
     this._port = serverOptions ? serverOptions.port || 0 : 0;
     this._host = serverOptions ? serverOptions.host : undefined;
     this._protocol = serverOptions ? serverOptions.protocol || 'http' : 'http';
-    if (this._protocol === 'https') {
+    if (
+      this._protocol === 'http2' ||
+      (this._protocol === 'https' && serverOptions.hasOwnProperty('spdy'))
+    ) {
+      this.server = spdy.createServer(
+        this.serverOptions as spdy.ServerOptions,
+        this.requestListener,
+      );
+    } else if (this._protocol === 'https') {
       this.server = https.createServer(
         this.serverOptions as https.ServerOptions,
         this.requestListener,
@@ -116,8 +131,14 @@ export class HttpServer {
    */
   public async stop() {
     if (!this.server) return;
-    this.server.close();
-    await pEvent(this.server, 'close');
+    if (!this.server.listening) return;
+    await new Promise<void>((resolve, reject) => {
+      this.server.close((err: unknown) => {
+        if (!err) resolve();
+        else reject(err);
+      });
+    });
+
     this._listening = false;
   }
 
@@ -153,7 +174,8 @@ export class HttpServer {
     } else if (host === '0.0.0.0') {
       host = '127.0.0.1';
     }
-    return `${this._protocol}://${host}:${this.port}`;
+    const protocol = this._protocol === 'http2' ? 'https' : this._protocol;
+    return `${protocol}://${host}:${this.port}`;
   }
 
   /**
