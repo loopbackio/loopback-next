@@ -12,7 +12,7 @@ import {
   givenHttpServerConfig,
 } from '@loopback/testlab';
 import * as makeRequest from 'request-promise-native';
-import {IncomingMessage, ServerResponse} from 'http';
+import {IncomingMessage, ServerResponse, Server} from 'http';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -119,6 +119,11 @@ describe('HttpServer (integration)', () => {
     expect(server)
       .to.have.property('address')
       .which.is.an.Object();
+  });
+
+  it('exports server before start', async () => {
+    server = new HttpServer(dummyRequestHandler);
+    expect(server.server).to.be.instanceOf(Server);
   });
 
   it('resets address when server is stopped', async () => {

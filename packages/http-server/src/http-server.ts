@@ -75,7 +75,7 @@ export class HttpServer {
   private _protocol: HttpProtocol;
   private _address: AddressInfo;
   private requestListener: RequestListener;
-  private server: http.Server | https.Server;
+  readonly server: http.Server | https.Server;
   private serverOptions?: HttpServerOptions;
 
   /**
@@ -91,12 +91,6 @@ export class HttpServer {
     this._port = serverOptions ? serverOptions.port || 0 : 0;
     this._host = serverOptions ? serverOptions.host : undefined;
     this._protocol = serverOptions ? serverOptions.protocol || 'http' : 'http';
-  }
-
-  /**
-   * Starts the HTTP / HTTPS server
-   */
-  public async start() {
     if (this._protocol === 'https') {
       this.server = https.createServer(
         this.serverOptions as https.ServerOptions,
@@ -105,6 +99,12 @@ export class HttpServer {
     } else {
       this.server = http.createServer(this.requestListener);
     }
+  }
+
+  /**
+   * Starts the HTTP / HTTPS server
+   */
+  public async start() {
     this.server.listen(this._port, this._host);
     await pEvent(this.server, 'listening');
     this._listening = true;
