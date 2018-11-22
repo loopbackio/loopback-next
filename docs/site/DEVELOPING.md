@@ -1,3 +1,12 @@
+---
+lang: en
+title: 'Contributing code in LoopBack 4'
+keywords: LoopBack 4.0, contributing, community
+sidebar: contrib_sidebar
+permalink: /doc/en/contrib/code-contrib-lb4.html
+toc: false
+---
+
 # Developing LoopBack
 
 This document describes how to develop modules living in loopback-next monorepo.
