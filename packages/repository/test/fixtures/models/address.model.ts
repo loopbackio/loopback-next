@@ -14,7 +14,6 @@ export class Address extends Entity {
   street: String;
   @property({
     type: 'string',
-    id: true,
   })
   zipcode: String;
   @property({
@@ -27,5 +26,9 @@ export class Address extends Entity {
   province: String;
 
   @belongsTo(() => Customer)
+  @property({
+    id: true,
+    generated: false,
+  })
   customerId: number;
 }

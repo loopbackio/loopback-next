@@ -99,5 +99,12 @@ function resolveHasOneMetadata(
     throw new InvalidRelationError(reason, relationMeta);
   }
 
+  if (
+    !targetModel.definition.properties[defaultFkName].id === true &&
+    !targetModel.definition.properties[defaultFkName].generated === false
+  ) {
+    // throw InvalidRelationError('property must be a generated id field')
+  }
+
   return Object.assign(relationMeta, {keyTo: defaultFkName});
 }
