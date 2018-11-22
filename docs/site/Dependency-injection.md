@@ -177,7 +177,7 @@ dependencies as method arguments.
 ```ts
 class InfoController {
   greet(@inject(AuthenticationBindings.CURRENT_USER) user: UserProfile) {
-    return `Hello, ${userProfile.name}`;
+    return `Hello, ${user.name}`;
   }
 }
 ```
