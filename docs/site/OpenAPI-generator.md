@@ -54,26 +54,26 @@ TypeScript type declarations. Object types are mapped to TypeScript classes.
 
 For example,
 
-src/models/message.model.ts:
+{% include code-caption.html content="src/models/message.model.ts" %}
 
 ```ts
 export type Message = string;
 ```
 
-src/models/order-enum.model.ts:
+{% include code-caption.html content="src/models/order-enum.model.ts" %}
 
 ```ts
 export type OrderEnum = 'ascending' | 'descending';
 ```
 
-src/models/comments.model.ts:
+{% include code-caption.html content="src/models/comments.model.ts" %}
 
 ```ts
 import {Comment} from './comment.model';
 export type Comments = Comment[];
 ```
 
-src/models/cart.model.ts:
+{% include code-caption.html content="src/models/cart.model.ts" %}
 
 ```ts
 import {model, property} from '@loopback/repository';
@@ -122,13 +122,13 @@ export class Cart {
 }
 ```
 
-src/models/id-type.model.ts:
+{% include code-caption.html content="src/models/id-type.model.ts" %}
 
 ```ts
 export type IdType = string | number;
 ```
 
-src/models/pet.model.ts:
+{% include code-caption.html content="src/models/pet.model.ts" %}
 
 ```ts
 import {NewPet} from './new-pet.model.ts';

@@ -94,8 +94,9 @@ When a `DataSource` is instantiated, the configuration properties will be used
 to initialize the connector to connect to the backend system. You can define a
 DataSource using legacy Juggler in your LoopBack 4 app as follows:
 
+{% include code-caption.html content="src/datsources/db.datasource.ts" %}
+
 ```ts
-// src/datsources/db.datasource.ts
 import {juggler} from '@loopback/repository';
 
 // this is just an example, 'test' database doesn't actually exist

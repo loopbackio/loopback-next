@@ -239,8 +239,9 @@ codes is found
 The example below shows the previous controller revamped with `HttpErrors` along
 with a test to verify that the error is thrown properly.
 
+{% include code-caption.html content="test/integration/controllers/hello.controller.integration.ts" %}
+
 ```ts
-// test/integration/controllers/hello.controller.integration.ts
 import {HelloController} from '../../../src/controllers';
 import {HelloRepository} from '../../../src/repositories';
 import {testdb} from '../../fixtures/datasources/testdb.datasource';
@@ -262,8 +263,9 @@ describe('Hello Controller', () => {
 });
 ```
 
+{% include code-caption.html content="src/controllers/hello.controller.ts" %}
+
 ```ts
-// src/controllers/hello.controller.ts
 import {HelloRepository} from '../repositories';
 import {HelloMessage} from '../models';
 import {get, param, HttpErrors} from '@loopback/rest';

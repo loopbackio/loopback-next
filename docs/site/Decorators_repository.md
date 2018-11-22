@@ -49,7 +49,7 @@ By using a model decorator, you can define a model as your repository's
 metadata, which then allows you to choose between two ways of creating the
 repository instance:
 
-1. Inject your repository and resolve it with the datasource juggler bridge  
+1. Inject your repository and resolve it with the datasource juggler bridge
    that's complete with CRUD operations for accessing the model's data. A use
    case can be found in this section:
    [Repository decorator](#repository-decorator)
@@ -88,8 +88,9 @@ The injection example can be found in
 To create a repository in a controller, you can define your model and datasource
 first, then import them in your controller file:
 
+{% include code-caption.html content="src/controllers/todo.controller.ts" %}
+
 ```ts
-// src/controllers/todo.controller.ts
 import {Todo} from '../models';
 import {db} from '../datasources/db.datasource';
 import {repository, EntityCrudRepository} from '@loopback/repository';

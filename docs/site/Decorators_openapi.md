@@ -240,8 +240,9 @@ _To learn more about decorating models and the corresponding OpenAPI schema, see
 The model decorators allow type information of the model to be visible to the
 spec generator so that `@requestBody` can be used on the parameter:
 
+{% include code-caption.html content="/src/controllers/user.controller.ts" %}
+
 ```ts
-// in file '/src/controllers/user.controller.ts'
 import {User} from '../models/user.model';
 import {put} from '@loopback/rest';
 

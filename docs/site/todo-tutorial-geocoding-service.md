@@ -59,7 +59,7 @@ Edit the newly created datasource configuration to configure Geocoder API
 endpoints. Configuration options provided by REST Connector are described in our
 docs here: [REST connector](/doc/en/lb3/REST-connector.html).
 
-#### /src/datasources/geocoder.datasource.json
+{% include code-caption.html content="/src/datasources/geocoder.datasource.json" %}
 
 ```json
 {
@@ -99,7 +99,7 @@ Create a new directory `src/services` and add the following two new files:
 - `src/services/index.ts` providing a conventient access to all services via a
   single `import` statement.
 
-#### src/services/geocoder.service.ts
+{% include code-caption.html content="src/services/geocoder.service.ts" %}
 
 ```ts
 import {getService, juggler} from '@loopback/service-proxy';
@@ -134,7 +134,7 @@ export class GeocoderServiceProvider implements Provider<GeocoderService> {
 }
 ```
 
-#### src/services/index.ts
+{% include code-caption.html content="src/services/index.ts" %}
 
 ```ts
 export * from './geocoder.service';
@@ -144,7 +144,7 @@ export * from './geocoder.service';
 
 Add two new properties to our Todo model: `remindAtAddress` and `remindAtGeo`.
 
-#### src/models/todo.model.ts
+{% include code-caption.html content="src/models/todo.model.ts" %}
 
 ```ts
 @model()
@@ -171,7 +171,7 @@ coordinates when a new Todo item is created.
 Import `GeocodeService` interface into the `TodoController` and then modify the
 Controller constructor to receive `GeocodeService` as a new dependency.
 
-#### src/controllers/todo.controller.ts
+{% include code-caption.html content="src/controllers/todo.controller.ts" %}
 
 ```ts
 import {inject} from '@loopback/core';
@@ -190,7 +190,7 @@ export class TodoController {
 Modify `createTodo` method to look up the address provided in `remindAtAddress`
 property and convert it to GPS coordinates stored in `remindAtGeo`.
 
-#### src/controllers/todo.controller.ts
+{% include code-caption.html content="src/controllers/todo.controller.ts" %}
 
 ```ts
 export class TodoController {

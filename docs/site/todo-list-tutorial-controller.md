@@ -53,7 +53,7 @@ Controller TodoListTodo was created in src/controllers/
 
 Let's add in an injection for our `TodoListRepository`:
 
-#### src/controllers/todo-list-todo.controller.ts
+{% include code-caption.html content="src/controllers/todo-list-todo.controller.ts" %}
 
 ```ts
 import {repository} from '@loopback/repository';
@@ -74,7 +74,7 @@ factory function that we defined earlier in `TodoListRepository`.
 The `POST` request from `/todo-lists/{id}/todos` should look similar to the
 following request:
 
-#### src/controllers/todo-list-todo.controller.ts
+{% include code-caption.html content="src/controllers/todo-list-todo.controller.ts" %}
 
 ```ts
 import {repository} from '@loopback/repository';
@@ -98,7 +98,7 @@ Using our constraining factory as we did with the `POST` request, we'll define
 the controller methods for the rest of the HTTP verbs for the route. The
 completed controller should look as follows:
 
-#### src/controllers/todo-list.controller.ts
+{% include code-caption.html content="src/controllers/todo-list.controller.ts" %}
 
 ```ts
 import {
@@ -242,7 +242,8 @@ Here are some new requests you can try out:
 - `POST /todo-lists/{id}/todos` using the ID you got back from the previous
   `POST` request and a body for a todo. Notice that response body you get back
   contains property `todoListId` with the ID from before.
-- `GET /todos/{id}/todos` and see if you get the todo you created from before.
+- `GET /todo-lists/{id}/todos` and see if you get the todo you created from
+  before.
 
 And there you have it! You now have the power to define APIs for related models!
 
