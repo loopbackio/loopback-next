@@ -56,7 +56,7 @@ export class TodoListTodoController {
   })
   async find(
     @param.path.number('id') id: number,
-    @param.query.string('filter') filter?: Filter,
+    @param.query.object('filter') filter?: Filter,
   ): Promise<Todo[]> {
     return await this.todoListRepo.todos(id).find(filter);
   }

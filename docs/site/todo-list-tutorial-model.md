@@ -70,7 +70,7 @@ Model TodoList was created in src/models/
 Now that we have our new model, we need to define its relation with the `Todo`
 model. Add the following import statements and property to the `TodoList` model:
 
-#### src/models/todo-list.model.ts
+{% include code-caption.html content="src/models/todo-list.model.ts" %}
 
 ```ts
 import {hasMany} from '@loopback/repository';
@@ -94,7 +94,7 @@ items.
 To complement `TodoList`'s relationship to `Todo`, we'll add in the `todoListId`
 property on the `Todo` model to define the relation on both ends:
 
-### src/models/todo.model.ts
+{% include code-caption.html content="src/models/todo.model.ts" %}
 
 ```ts
 @model()

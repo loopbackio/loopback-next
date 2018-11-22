@@ -39,7 +39,7 @@ lb4 service
 Service Calculator was created in src/services/
 ```
 
-#### src/services/calculator.service.ts
+{% include code-caption.html content="src/services/calculator.service.ts" %}
 
 ```ts
 import {getService} from '@loopback/service-proxy';

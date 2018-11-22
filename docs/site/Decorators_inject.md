@@ -20,8 +20,9 @@ instance or a request context instance. You can bind values, class definitions,
 and provider functions to those contexts and then resolve the values (or the
 results of functions that return those values!) in other areas of your code.
 
+{% include code-caption.html content="src/application.ts" %}
+
 ```ts
-// src/application.ts
 import {Application} from '@loopback/core';
 import * as fs from 'fs-extra';
 import * as path from 'path';
@@ -46,8 +47,9 @@ Now that we've bound the 'config.widget' key to our configuration object, and
 the 'logger.widget' key to the function `logInfo()`, we can inject them in our
 WidgetController:
 
+{% include code-caption.html content="src/controllers/widget.controller.ts" %}
+
 ```ts
-// src/controllers/widget.controller.ts
 import {inject} from '@loopback/context';
 
 export class WidgetController {
