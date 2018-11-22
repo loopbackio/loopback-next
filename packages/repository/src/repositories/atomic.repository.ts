@@ -10,6 +10,11 @@ import {
 import * as assert from 'assert';
 import * as legacy from 'loopback-datasource-juggler';
 
+export interface FindOrCreateResult<T extends Entity> {
+  entity: T;
+  found: boolean;
+}
+
 export interface AtomicCrudRepository<T extends Entity, ID>
   extends EntityCrudRepository<T, ID> {
   /**
@@ -30,7 +35,7 @@ export interface AtomicCrudRepository<T extends Entity, ID>
     filter: Filter<T>,
     entity: DataObject<T>,
     options?: Options,
-  ): Promise<[T, boolean]>;
+  ): FindOrCreateResult<T>;
 }
 
 export class DefaultAtomicCrudRepository<T extends Entity, ID>
@@ -53,17 +58,18 @@ export class DefaultAtomicCrudRepository<T extends Entity, ID>
     filter: Filter<T>,
     entity: DataObject<T>,
     options?: AnyObject | undefined,
-  ): Promise<[T, boolean]> {
-    if (
-      this.dataSource.connector &&
-      typeof this.dataSource.connector.findOrCreate === 'function'
-    ) {
-      const result = await ensurePromise(
-        this.modelClass.findOrCreate(filter as legacy.Filter, entity, options),
-      );
-      return [this.toEntity(result[0]), result[1]];
-    } else {
+  ): Promise<FindOrCreateResult<T>> {
+    const canRunAtomically =
+      typeof this.dataSource.connector!.findOrCreate === 'function';
+    if (!canRunAtomically) {
       throw new Error('Method not implemented.');
+      // FIXME add machine-readable `err.code`
     }
+
+    const result = await ensurePromise(
+      this.modelClass.findOrCreate(filter as legacy.Filter, entity, options),
+    );
+
+    return {entity: this.toEntity(result[0]), found: !result[1]};
   }
 }
