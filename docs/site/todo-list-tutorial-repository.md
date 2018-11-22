@@ -46,7 +46,7 @@ Once the property type for `todos` has been defined, use
 factory function. Pass in the name of the relationship (`todos`) and the Todo
 repository instance to constrain as the arguments for the function.
 
-#### src/repositories/todo-list.repository.ts
+{% include code-caption.html content="src/repositories/todo-list.repository.ts" %}
 
 ```ts
 import {Getter, inject} from '@loopback/core';

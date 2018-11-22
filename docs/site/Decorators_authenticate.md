@@ -16,8 +16,9 @@ requires a strategy name as a parameter.
 Here's an example using 'BasicStrategy': to authenticate user in function
 `whoAmI`:
 
+{% include code-caption.html content="src/controllers/who-am-i.controller.ts" %}
+
 ```ts
-// src/controllers/who-am-i.controller.ts
 import {inject} from '@loopback/context';
 import {
   AuthenticationBindings,

@@ -105,7 +105,7 @@ bind the Node.js method _Multiply_.
 Edit the file `src/datasources/calculator.datasource.json` and add the following
 configuration after the `remoteEnabled: true,` property as follows:
 
-##### src/datasources/calculator.datasource.json
+{% include code-caption.html content="src/datasources/calculator.datasource.json" %}
 
 ```ts
 "operations": {
