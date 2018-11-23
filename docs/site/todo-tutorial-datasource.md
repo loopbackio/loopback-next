@@ -67,6 +67,11 @@ Create a `data` folder in the applications root and add a new file called
 }
 ```
 
+{% include note.html content="If you are using a relational database as the
+datasource, don't forget to create the corresponding table or follow the
+[Database migration instruction](https://loopback.io/doc/en/lb4/Database-migrations.html) to get it created programmatically.
+" %}
+
 Once you're ready, we'll move onto adding a
 [repository](todo-tutorial-repository.md) for the datasource.
 

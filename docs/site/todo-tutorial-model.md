@@ -24,10 +24,8 @@ Models are used for data exchange on the wire or between different systems.
 For more information about Models and how they are used in LoopBack, see
 [Models](https://loopback.io/doc/en/lb4/Model.html).
 
-> **NOTE:** LoopBack 3 treated models as the "center" of operations; in LoopBack
-> 4, that is no longer the case. While LoopBack 4 provides many of the helper
-> methods and decorators that allow you to utilize models in a similar way, you
-> are no longer _required_ to do so!
+{% include note.html content="LoopBack 3 treated models as the 'center' of operations; in LoopBack 4, that is no longer the case. While LoopBack 4 provides many of the helper methods and decorators that allow you to utilize models in a similar way, you are no longer _required_ to do so!
+" %}
 
 ### Building your Todo model
 
