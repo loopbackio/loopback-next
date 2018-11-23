@@ -1,12 +1,5 @@
 # Developing with Webstorm
 
-There is currently an issue opened with Webstorm :
-[WEB-34416](https://youtrack.jetbrains.com/issue/WEB-34416)
-
-It should be fixed in `2018.3`, WebStorm is indexing symlinks create by Lerna
-inside `node_modules`, so it takes ages. As a workaround you need to exclude
-every `node_modules` directory or you can use [VisualStudio Code](./VSCODE.md).
-
 For contributors using [WebStorm](https://www.jetbrains.com/webstorm/) as their
 preferred development environment, we recommend the following extensions to be
 installed:
@@ -19,6 +12,9 @@ We also recommend our contributors to enable
 to highlight and auto-fix linting problems directly in the editor. Make sure you
 are using the TSLint package from loopback-next
 `loopback-next/packages/build/node_modules/tslint`.
+
+Please note that you should at least use WebStorm `2018.3` to avoid
+[an indexing issue](https://youtrack.jetbrains.com/issue/WEB-34416).
 
 ## How to verify TypeScript setup
 
