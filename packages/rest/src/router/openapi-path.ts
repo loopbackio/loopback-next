@@ -34,7 +34,7 @@ export function validateApiPath(path: string = '/') {
     );
   }
 
-  const regexpPath = path.replace(POSSIBLE_VARNAME_PATTERN, ':$1');
+  const regexpPath = toExpressPath(path);
   tokens = pathToRegExp.parse(regexpPath);
   for (const token of tokens) {
     if (typeof token === 'string') continue;
@@ -62,5 +62,7 @@ export function getPathVariables(path: string) {
  * @param path OpenAPI path with optional variables as `{var}`
  */
 export function toExpressPath(path: string) {
-  return path.replace(POSSIBLE_VARNAME_PATTERN, ':$1');
+  // Convert `.` to `\\.` so that path-to-regexp will treat it as the plain
+  // `.` character
+  return path.replace(POSSIBLE_VARNAME_PATTERN, ':$1').replace('.', '\\.');
 }

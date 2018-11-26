@@ -188,6 +188,32 @@ function runTestsWithRouter(router: RestRouter) {
     expect(route.pathParams).to.containEql({arg1: '3', arg2: '2'});
   });
 
+  it('finds "GET /getProfile/{userId}.{format}" endpoint', () => {
+    const spec = anOpenApiSpec()
+      .withOperationReturningString(
+        'get',
+        '/getProfile/{userId}.{format}',
+        'getProfile',
+      )
+      .build();
+
+    spec.basePath = '/my';
+
+    class TestController {}
+
+    const table = givenRoutingTable();
+    table.registerController(spec, TestController);
+
+    let request = givenRequest({
+      method: 'get',
+      url: '/my/getProfile/1.json',
+    });
+
+    let route = table.find(request);
+    expect(route.path).to.eql('/my/getProfile/{userId}.{format}');
+    expect(route.pathParams).to.containEql({userId: '1', format: 'json'});
+  });
+
   it('throws if router is not found', () => {
     const table = givenRoutingTable();
 
