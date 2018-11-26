@@ -12,7 +12,11 @@ import {
   BindingAddress,
 } from '@loopback/context';
 import {Application, CoreBindings, Server} from '@loopback/core';
-import {HttpServer, HttpServerOptions} from '@loopback/http-server';
+import {
+  HttpServer,
+  HttpServerOptions,
+  DefaultHttpServer,
+} from '@loopback/http-server';
 import {getControllerSpec} from '@loopback/openapi-v3';
 import {
   OpenApiSpec,
@@ -761,7 +765,12 @@ export class RestServer extends Context implements Server, HttpServerLike {
     if (protocol === 'https') Object.assign(serverOptions, httpsOptions);
     Object.assign(serverOptions, {port, host, protocol});
 
-    this._httpServer = new HttpServer(this.requestHandler, serverOptions);
+    const httpServer: HttpServer =
+      (await this.get(RestBindings.HTTP_SERVER, {
+        optional: true,
+      })) || new DefaultHttpServer(this.requestHandler, serverOptions);
+
+    this._httpServer = httpServer;
 
     await this._httpServer.start();
 

@@ -2,19 +2,29 @@
 // Node module: @loopback/http-server
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-import {HttpServer, HttpOptions, HttpServerOptions} from '../../';
 import {
-  supertest,
   expect,
-  itSkippedOnTravis,
+  givenHttpServerConfig,
   httpGetAsync,
   httpsGetAsync,
-  givenHttpServerConfig,
+  itSkippedOnTravis,
+  supertest,
 } from '@loopback/testlab';
-import * as makeRequest from 'request-promise-native';
-import {IncomingMessage, ServerResponse, Server} from 'http';
-import * as path from 'path';
 import * as fs from 'fs';
+import {IncomingMessage, Server, ServerResponse} from 'http';
+import * as path from 'path';
+import * as makeRequest from 'request-promise-native';
+import {
+  DefaultHttpServer,
+  RequestListener,
+  HttpOptions,
+  HttpServer,
+  HttpServerOptions,
+  Http2Options,
+  ProtocolServerFactory,
+} from '../..';
+
+import spdy = require('spdy');
 
 describe('HttpServer (integration)', () => {
   let server: HttpServer | undefined;
@@ -22,7 +32,7 @@ describe('HttpServer (integration)', () => {
   afterEach(stopServer);
 
   itSkippedOnTravis('formats IPv6 url correctly', async () => {
-    server = new HttpServer(dummyRequestHandler, {
+    server = givenHttpServer(dummyRequestHandler, {
       host: '::1',
     } as HttpOptions);
     await server.start();
@@ -33,7 +43,7 @@ describe('HttpServer (integration)', () => {
 
   it('starts server', async () => {
     const serverOptions = givenHttpServerConfig();
-    server = new HttpServer(dummyRequestHandler, serverOptions);
+    server = givenHttpServer(dummyRequestHandler, serverOptions);
     await server.start();
     await supertest(server.url)
       .get('/')
@@ -42,7 +52,7 @@ describe('HttpServer (integration)', () => {
 
   it('stops server', async () => {
     const serverOptions = givenHttpServerConfig();
-    server = new HttpServer(dummyRequestHandler, serverOptions);
+    server = givenHttpServer(dummyRequestHandler, serverOptions);
     await server.start();
     await server.stop();
     await expect(
@@ -53,14 +63,14 @@ describe('HttpServer (integration)', () => {
   });
 
   it('exports original port', async () => {
-    server = new HttpServer(dummyRequestHandler, {port: 0});
+    server = givenHttpServer(dummyRequestHandler, {port: 0});
     expect(server)
       .to.have.property('port')
       .which.is.equal(0);
   });
 
   it('exports reported port', async () => {
-    server = new HttpServer(dummyRequestHandler);
+    server = givenHttpServer(dummyRequestHandler);
     await server.start();
     expect(server)
       .to.have.property('port')
@@ -69,7 +79,7 @@ describe('HttpServer (integration)', () => {
   });
 
   it('does not permanently bind to the initial port', async () => {
-    server = new HttpServer(dummyRequestHandler);
+    server = givenHttpServer(dummyRequestHandler);
     await server.start();
     const port = server.port;
     await server.stop();
@@ -81,14 +91,14 @@ describe('HttpServer (integration)', () => {
   });
 
   it('exports original host', async () => {
-    server = new HttpServer(dummyRequestHandler);
+    server = givenHttpServer(dummyRequestHandler);
     expect(server)
       .to.have.property('host')
       .which.is.equal(undefined);
   });
 
   it('exports reported host', async () => {
-    server = new HttpServer(dummyRequestHandler);
+    server = givenHttpServer(dummyRequestHandler);
     await server.start();
     expect(server)
       .to.have.property('host')
@@ -96,7 +106,7 @@ describe('HttpServer (integration)', () => {
   });
 
   it('exports protocol', async () => {
-    server = new HttpServer(dummyRequestHandler);
+    server = givenHttpServer(dummyRequestHandler);
     await server.start();
     expect(server)
       .to.have.property('protocol')
@@ -105,7 +115,7 @@ describe('HttpServer (integration)', () => {
   });
 
   it('exports url', async () => {
-    server = new HttpServer(dummyRequestHandler);
+    server = givenHttpServer(dummyRequestHandler);
     await server.start();
     expect(server)
       .to.have.property('url')
@@ -114,7 +124,7 @@ describe('HttpServer (integration)', () => {
   });
 
   it('exports address', async () => {
-    server = new HttpServer(dummyRequestHandler);
+    server = givenHttpServer(dummyRequestHandler);
     await server.start();
     expect(server)
       .to.have.property('address')
@@ -122,12 +132,12 @@ describe('HttpServer (integration)', () => {
   });
 
   it('exports server before start', async () => {
-    server = new HttpServer(dummyRequestHandler);
+    server = givenHttpServer(dummyRequestHandler);
     expect(server.server).to.be.instanceOf(Server);
   });
 
   it('resets address when server is stopped', async () => {
-    server = new HttpServer(dummyRequestHandler);
+    server = givenHttpServer(dummyRequestHandler);
     await server.start();
     expect(server)
       .to.have.property('address')
@@ -137,7 +147,7 @@ describe('HttpServer (integration)', () => {
   });
 
   it('exports listening', async () => {
-    server = new HttpServer(dummyRequestHandler);
+    server = givenHttpServer(dummyRequestHandler);
     await server.start();
     expect(server.listening).to.be.true();
     await server.stop();
@@ -145,10 +155,10 @@ describe('HttpServer (integration)', () => {
   });
 
   it('reports error when the server cannot be started', async () => {
-    server = new HttpServer(dummyRequestHandler);
+    server = givenHttpServer(dummyRequestHandler);
     await server.start();
     const port = server.port;
-    const anotherServer = new HttpServer(dummyRequestHandler, {
+    const anotherServer = givenHttpServer(dummyRequestHandler, {
       port: port,
     });
     await expect(anotherServer.start()).to.be.rejectedWith(/EADDRINUSE/);
@@ -184,16 +194,51 @@ describe('HttpServer (integration)', () => {
 
   it('converts host from [::] to [::1] in url', async () => {
     // Safari on MacOS does not support http://[::]:3000/
-    server = new HttpServer(dummyRequestHandler, {host: '::'});
+    server = givenHttpServer(dummyRequestHandler, {host: '::'});
     await server.start();
     expect(server.url).to.equal(`http://[::1]:${server.port}`);
   });
 
   it('converts host from 0.0.0.0 to 127.0.0.1 in url', async () => {
     // Windows does not support http://0.0.0.0:3000/
-    server = new HttpServer(dummyRequestHandler, {host: '0.0.0.0'});
+    server = givenHttpServer(dummyRequestHandler, {host: '0.0.0.0'});
     await server.start();
     expect(server.url).to.equal(`http://127.0.0.1:${server.port}`);
+  });
+
+  it('supports HTTP/2 protocol with key and certificate files', async () => {
+    // For some reason, spdy fails with Node 11
+    if (+process.versions.node.split('.')[0] > 10) return;
+    const serverOptions: Http2Options = Object.assign(
+      {
+        // TypeScript infers `string` as the type for `protocol` and emits
+        // a compilation error if we don't cast it as `http2`
+        protocol: 'http2' as 'http2',
+        rejectUnauthorized: false,
+        spdy: {protocols: ['h2' as 'h2']},
+      },
+      givenHttpServerConfig(),
+    );
+    server = givenHttp2Server(serverOptions);
+    await server.start();
+    // http2 does not have its own url scheme
+    expect(server.url).to.match(/^https\:/);
+    const agent = spdy.createAgent({
+      rejectUnauthorized: false,
+      port: server.port,
+      host: server.host,
+      // Optional SPDY options
+      spdy: {
+        plain: false,
+        ssl: true,
+      },
+    }) as spdy.Agent;
+    const response = await httpsGetAsync(server.url, agent);
+    expect(response.statusCode).to.equal(200);
+    // We need to close the agent so that server.close() returns
+    // `@types/spdy@3.x` is not fully compatible with `spdy@4.0.0`
+    // tslint:disable-next-line:no-any
+    (agent as any).close();
   });
 
   function dummyRequestHandler(
@@ -206,6 +251,13 @@ describe('HttpServer (integration)', () => {
   async function stopServer() {
     if (!server) return;
     await server.stop();
+  }
+
+  function givenHttpServer(
+    requestListener: RequestListener,
+    serverOptions?: HttpServerOptions,
+  ) {
+    return new DefaultHttpServer(requestListener, serverOptions);
   }
 
   function givenHttpsServer({
@@ -227,6 +279,35 @@ describe('HttpServer (integration)', () => {
       options.key = fs.readFileSync(keyPath);
       options.cert = fs.readFileSync(certPath);
     }
-    return new HttpServer(dummyRequestHandler, options);
+    return new DefaultHttpServer(dummyRequestHandler, options);
+  }
+
+  class Http2ProtocolServerFactory implements ProtocolServerFactory {
+    supports(protocol: string, serverOptions: HttpServerOptions) {
+      return protocol === 'http2' || serverOptions.hasOwnProperty('spdy');
+    }
+
+    createServer(
+      protocol: string,
+      requestListener: RequestListener,
+      serverOptions: HttpServerOptions,
+    ) {
+      const http2Server = spdy.createServer(
+        serverOptions as spdy.ServerOptions,
+        requestListener,
+      );
+      return {server: http2Server, urlScheme: 'https'};
+    }
+  }
+
+  function givenHttp2Server(options: Http2Options): HttpServer {
+    const certDir = path.resolve(__dirname, '../../../fixtures');
+    const keyPath = path.join(certDir, 'key.pem');
+    const certPath = path.join(certDir, 'cert.pem');
+    options.key = fs.readFileSync(keyPath);
+    options.cert = fs.readFileSync(certPath);
+    return new DefaultHttpServer(dummyRequestHandler, options, [
+      new Http2ProtocolServerFactory(),
+    ]);
   }
 });

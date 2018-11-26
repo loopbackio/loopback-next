@@ -22,10 +22,15 @@ export function httpGetAsync(urlString: string): Promise<IncomingMessage> {
  * Async wrapper for making HTTPS GET requests
  * @param urlString
  */
-export function httpsGetAsync(urlString: string): Promise<IncomingMessage> {
-  const agent = new https.Agent({
-    rejectUnauthorized: false,
-  });
+export function httpsGetAsync(
+  urlString: string,
+  agent?: https.Agent,
+): Promise<IncomingMessage> {
+  agent =
+    agent ||
+    new https.Agent({
+      rejectUnauthorized: false,
+    });
 
   const urlOptions = url.parse(urlString);
   const options = {agent, ...urlOptions};
