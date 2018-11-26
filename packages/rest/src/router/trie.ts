@@ -4,6 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {PathParameterValues} from '../types';
+import {toExpressPath} from './openapi-path';
+import pathToRegexp = require('path-to-regexp');
 
 /**
  * A Node in the trie
@@ -215,17 +217,13 @@ function createNode<T>(
   }
 
   // Check if the key has variables such as `{var}`
-  const pattern = /\{([^\{]*)\}/g;
-  const names: string[] = [];
-  let match;
-  while ((match = pattern.exec(key))) {
-    names.push(match[1]);
-  }
+  const path = toExpressPath(key);
+  const params: pathToRegexp.Key[] = [];
+  const re = pathToRegexp(path, params);
 
-  if (names.length) {
-    child.names = names;
-    const re = '^' + key.replace(/\{([^\}]+)\}/g, '(.+)') + '$';
-    child.regexp = new RegExp(re);
+  if (params.length) {
+    child.names = params.map(p => `${p.name}`);
+    child.regexp = re;
   }
 
   // Add the node to the parent
