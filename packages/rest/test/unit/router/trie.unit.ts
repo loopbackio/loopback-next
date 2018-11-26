@@ -53,7 +53,7 @@ describe('Trie', () => {
                   key: '{id}',
                   value: getOrderById,
                   names: ['id'],
-                  regexp: /^(.+)$/,
+                  regexp: /^([^\/]+?)(?:\/)?$/i,
                   children: {},
                 },
               },
@@ -89,7 +89,7 @@ describe('Trie', () => {
         key: '{id}',
         value: {verb: 'get', path: '/orders/{id}'},
         names: ['id'],
-        regexp: /^(.+)$/,
+        regexp: /^([^\/]+?)(?:\/)?$/i,
       },
     ]);
   });
@@ -104,7 +104,7 @@ describe('Trie', () => {
         key: '{id}',
         value: {verb: 'get', path: '/orders/{id}'},
         names: ['id'],
-        regexp: /^(.+)$/,
+        regexp: /^([^\/]+?)(?:\/)?$/i,
         children: {},
       },
     ]);
