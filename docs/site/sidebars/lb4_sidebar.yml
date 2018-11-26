@@ -191,8 +191,8 @@ children:
     url: Error-handling.html
     output: 'web, pdf'
 
-- title: 'How tos'
-  url: Concepts.html
+- title: 'How-tos'
+  url: How-tos.html
   output: 'web, pdf'
   children:
     - title: 'Exposing GraphQL APIs'
