@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.0.2...@loopback/http-server@1.1.0) (2018-11-26)
+
+
+### Features
+
+* **http-server:** exposes underlying http server before start ([ba76ecf](https://github.com/strongloop/loopback-next/commit/ba76ecf))
+
+
+
+
+
 ## [1.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.0.1...@loopback/http-server@1.0.2) (2018-11-14)
 
 **Note:** Version bump only for package @loopback/http-server
