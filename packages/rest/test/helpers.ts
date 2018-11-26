@@ -31,15 +31,23 @@ export function createUnexpectedHttpErrorLogger(
   };
 }
 
+/**
+ * Create an OpenAPI request body spec with the given content
+ * @param schema The schema object
+ * @param options Other attributes for the spec
+ * @param mediaType Optional media type, default to `application/json`
+ */
 export function aBodySpec(
   schema: SchemaObject | ReferenceObject,
-  options?: Partial<RequestBodyObject>,
+  options: Partial<RequestBodyObject> = {},
+  mediaType: string = 'application/json',
 ): RequestBodyObject {
-  return Object.assign({}, options, {
-    content: {
-      'application/json': {
-        schema: schema,
-      },
+  const spec = Object.assign({}, options);
+  spec.content = spec.content || {};
+  Object.assign(spec.content, {
+    [mediaType]: {
+      schema: schema,
     },
   });
+  return spec as RequestBodyObject;
 }
