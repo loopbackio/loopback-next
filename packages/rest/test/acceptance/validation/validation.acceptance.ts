@@ -42,8 +42,14 @@ describe('Validation at REST level', () => {
 
   const PRODUCT_SPEC = jsonToSchemaObject(getJsonSchema(Product));
 
+  // Add a schema that requires `description`
+  const PRODUCT_SPEC_WITH_DESCRIPTION = jsonToSchemaObject(
+    getJsonSchema(Product),
+  );
+  PRODUCT_SPEC_WITH_DESCRIPTION.required!.push('description');
+
   // This is the standard use case that most LB4 applications should use.
-  // The request body specification is infered from a decorated model class.
+  // The request body specification is inferred from a decorated model class.
   context('for request body specified via model definition', () => {
     class ProductController {
       @post('/products')
@@ -87,7 +93,7 @@ describe('Validation at REST level', () => {
     });
   });
 
-  // A request body schema can be provied explicitly by the user
+  // A request body schema can be provided explicitly by the user
   // as an inlined content[type].schema property.
   context('for fully-specified request body', () => {
     class ProductControllerWithFullSchema {
@@ -109,6 +115,37 @@ describe('Validation at REST level', () => {
 
     it('rejects missing required properties', () =>
       serverRejectsRequestWithMissingRequiredValues());
+  });
+
+  context('for different schemas per media type', () => {
+    let spec = aBodySpec(PRODUCT_SPEC, {}, 'application/json');
+    spec = aBodySpec(
+      PRODUCT_SPEC_WITH_DESCRIPTION,
+      spec,
+      'application/x-www-form-urlencoded',
+    );
+    class ProductControllerWithFullSchema {
+      @post('/products')
+      async create(
+        @requestBody(spec) data: object,
+        //    ^^^^^^
+        // use "object" instead of "Product" to verify the situation when
+        // body schema cannot be inferred from the argument type
+      ): Promise<Product> {
+        return new Product(data);
+      }
+    }
+
+    before(() => givenAnAppAndAClient(ProductControllerWithFullSchema));
+    after(() => app.stop());
+
+    it('accepts valid values for json', () => serverAcceptsValidRequestBody());
+
+    it('accepts valid values for urlencoded', () =>
+      serverAcceptsValidRequestBodyForUrlencoded());
+
+    it('rejects missing required properties for urlencoded', () =>
+      serverRejectsMissingDescriptionForUrlencoded());
   });
 
   // A request body schema can be provided explicitly by the user as a reference
@@ -154,6 +191,29 @@ describe('Validation at REST level', () => {
       .post('/products')
       .send(DATA)
       .expect(200, DATA);
+  }
+
+  async function serverAcceptsValidRequestBodyForUrlencoded() {
+    const DATA =
+      'name=Pencil&price=10&description=An optional description of a pencil';
+    await client
+      .post('/products')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .send(DATA)
+      .expect(200, {
+        name: 'Pencil',
+        description: 'An optional description of a pencil',
+        price: 10,
+      });
+  }
+
+  async function serverRejectsMissingDescriptionForUrlencoded() {
+    const DATA = 'name=Pencil&price=10';
+    await client
+      .post('/products')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .send(DATA)
+      .expect(422);
   }
 
   async function serverRejectsRequestWithMissingRequiredValues() {
