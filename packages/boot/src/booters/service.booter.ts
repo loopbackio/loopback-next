@@ -13,14 +13,14 @@ import {BootBindings} from '../keys';
 type ServiceProviderClass = Constructor<Provider<object>>;
 
 /**
- * A class that extends BaseArtifactBooter to boot the 'DataSource' artifact type.
+ * A class that extends BaseArtifactBooter to boot the 'Service' artifact type.
  * Discovered DataSources are bound using `app.controller()`.
  *
  * Supported phases: configure, discover, load
  *
  * @param app Application instance
  * @param projectRoot Root of User Project relative to which all paths are resolved
- * @param [bootConfig] DataSource Artifact Options Object
+ * @param [bootConfig] Service Artifact Options Object
  */
 export class ServiceBooter extends BaseArtifactBooter {
   serviceProviders: ServiceProviderClass[];
@@ -34,7 +34,7 @@ export class ServiceBooter extends BaseArtifactBooter {
   ) {
     super(
       projectRoot,
-      // Set DataSource Booter Options if passed in via bootConfig
+      // Set Service Booter Options if passed in via bootConfig
       Object.assign({}, ServiceDefaults, serviceConfig),
     );
   }
