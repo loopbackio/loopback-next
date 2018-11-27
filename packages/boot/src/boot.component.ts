@@ -3,16 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Bootstrapper} from './bootstrapper';
-import {Component, Application, CoreBindings} from '@loopback/core';
-import {inject, BindingScope} from '@loopback/context';
+import {BindingScope, inject} from '@loopback/context';
+import {Application, Component, CoreBindings} from '@loopback/core';
 import {
-  ControllerBooter,
-  RepositoryBooter,
-  DataSourceBooter,
-  ServiceBooter,
   ApplicationMetadataBooter,
+  ControllerBooter,
+  DataSourceBooter,
+  RepositoryBooter,
+  ServiceBooter,
+  LifeCycleObserverBooter,
 } from './booters';
+import {Bootstrapper} from './bootstrapper';
 import {BootBindings} from './keys';
 
 /**
@@ -29,6 +30,7 @@ export class BootComponent implements Component {
     RepositoryBooter,
     ServiceBooter,
     DataSourceBooter,
+    LifeCycleObserverBooter,
   ];
 
   /**
