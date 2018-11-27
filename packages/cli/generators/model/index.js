@@ -14,9 +14,13 @@ const path = require('path');
 
 const PROMPT_BASE_MODEL_CLASS = 'Please select the model base class';
 const ERROR_NO_MODELS_FOUND = 'Model was not found in';
-const BASE_MODELS = [
-  'Entity',
-  'Model',
+const BASE_MODELS = ['Entity', 'Model'];
+const CLI_BASE_MODELS = [
+  {
+    name: `Entity ${chalk.gray('(A persisted model with an ID)')}`,
+    value: 'Entity',
+  },
+  {name: `Model ${chalk.gray('(A business domain object)')}`, value: 'Model'},
   {type: 'separator', line: '----- Custom Models -----'},
 ];
 const MODEL_TEMPLATE_PATH = 'model.ts.ejs';
@@ -99,7 +103,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     if (this.shouldExit()) return;
     const availableModelBaseClasses = [];
 
-    availableModelBaseClasses.push(...BASE_MODELS);
+    availableModelBaseClasses.push(...CLI_BASE_MODELS);
 
     try {
       debug(`model list dir ${this.artifactInfo.modelDir}`);
@@ -150,6 +154,9 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
       },
     ])
       .then(props => {
+        if (typeof props.modelBaseClass === 'object')
+          props.modelBaseClass = props.modelBaseClass.value;
+
         Object.assign(this.artifactInfo, props);
         debug(`props after model base class prompt: ${inspect(props)}`);
         this.log(

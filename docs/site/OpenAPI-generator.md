@@ -234,9 +234,10 @@ export class AccountController {
 
 Try out the following specs or your own with `lb4 openapi`:
 
-- https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore-expanded.yaml
-- https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/uspto.yaml
-- https://api.apis.guru/v2/specs/api2cart.com/1.0.0/swagger.json
-- https://api.apis.guru/v2/specs/amazonaws.com/codecommit/2015-04-13/swagger.json
+- [Swagger Petstore API](https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore-expanded.yaml)
+- [USPTO Data Set API](https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/uspto.yaml)
+- [Swagger API2Cart](https://api.apis.guru/v2/specs/api2cart.com/1.0.0/swagger.json)
+- [AWS CodeCommit API](https://api.apis.guru/v2/specs/amazonaws.com/codecommit/2015-04-13/swagger.json)
 
-For more real world OpenAPI specs, see https://api.apis.guru/v2/list.json.
+For more real world OpenAPI specs, see
+[https://api.apis.guru/v2/list.json](https://api.apis.guru/v2/list.json).
