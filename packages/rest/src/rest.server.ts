@@ -31,7 +31,6 @@ import {ServeStaticOptions} from 'serve-static';
 import {BodyParser, REQUEST_BODY_PARSER_TAG} from './body-parsers';
 import {HttpHandler} from './http-handler';
 import {RestBindings} from './keys';
-import {QUERY_NOT_PARSED} from './parser';
 import {RequestContext} from './request-context';
 import {
   ControllerClass,
@@ -193,15 +192,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
   protected _setupRequestHandler() {
     this._expressApp = express();
-
-    // Disable express' built-in query parser, we parse queries ourselves
-    // Note that when disabled, express sets query to an empty object,
-    // which makes it difficult for us to detect whether the query
-    // has been parsed or not. At the same time, we want `request.query`
-    // to remain as an object, because everybody in express ecosystem expects
-    // that property to be defined. A static singleton object to the rescue!
-    this._expressApp.set('query parser fn', (str: string) => QUERY_NOT_PARSED);
-
+    this._expressApp.set('query parser', 'extended');
     this.requestHandler = this._expressApp;
 
     // Allow CORS support for all endpoints so that users

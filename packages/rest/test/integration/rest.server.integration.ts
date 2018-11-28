@@ -5,39 +5,39 @@
 
 import {Application} from '@loopback/core';
 import {
-  supertest,
-  expect,
   createClientForHandler,
-  itSkippedOnTravis,
-  httpsGetAsync,
+  expect,
   givenHttpServerConfig,
+  httpsGetAsync,
+  itSkippedOnTravis,
+  supertest,
 } from '@loopback/testlab';
-import {
-  RestBindings,
-  RestServer,
-  RestComponent,
-  get,
-  Request,
-  RestServerConfig,
-  BodyParser,
-} from '../..';
+import * as fs from 'fs';
 import {IncomingMessage, ServerResponse} from 'http';
 import * as yaml from 'js-yaml';
 import * as path from 'path';
-import * as fs from 'fs';
-import * as util from 'util';
-const readFileAsync = util.promisify(fs.readFile);
-
 import {is} from 'type-is';
-import {requestBody, post} from '../../src';
+import * as util from 'util';
+import {
+  BodyParser,
+  get,
+  post,
+  Request,
+  requestBody,
+  RequestContext,
+  RestBindings,
+  RestComponent,
+  RestServer,
+  RestServerConfig,
+} from '../..';
+const readFileAsync = util.promisify(fs.readFile);
 
 const FIXTURES = path.resolve(__dirname, '../../../fixtures');
 const ASSETS = path.resolve(FIXTURES, 'assets');
 
 describe('RestServer (integration)', () => {
   it('exports url property', async () => {
-    // Explicitly setting host to IPv4 address so test runs on Travis
-    const server = await givenAServer({rest: {port: 0, host: '127.0.0.1'}});
+    const server = await givenAServer();
     server.handler(dummyRequestHandler);
     expect(server.url).to.be.undefined();
     await server.start();
@@ -52,8 +52,26 @@ describe('RestServer (integration)', () => {
     expect(server.url).to.be.undefined();
   });
 
+  it('parses query without decorated rest query params', async () => {
+    // This handler responds with the query object (which is expected to
+    // be parsed by Express)
+    function requestWithQueryHandler({request, response}: RequestContext) {
+      response.json(request.query);
+      response.end();
+    }
+
+    // See https://github.com/strongloop/loopback-next/issues/2088
+    const server = await givenAServer();
+    server.handler(requestWithQueryHandler);
+    await server.start();
+    await supertest(server.url)
+      .get('/?x=1&y[a]=2')
+      .expect(200, {x: '1', y: {a: '2'}});
+    await server.stop();
+  });
+
   it('updates rest.port binding when listening on ephemeral port', async () => {
-    const server = await givenAServer({rest: {port: 0}});
+    const server = await givenAServer();
     await server.start();
     expect(server.getSync(RestBindings.PORT)).to.be.above(0);
     await server.stop();
@@ -73,7 +91,7 @@ describe('RestServer (integration)', () => {
   });
 
   it('responds with 500 when Sequence fails with unhandled error', async () => {
-    const server = await givenAServer({rest: {port: 0}});
+    const server = await givenAServer();
     server.handler((context, sequence) => {
       return Promise.reject(new Error('unhandled test error'));
     });
@@ -111,11 +129,7 @@ describe('RestServer (integration)', () => {
 
   it('allows static assets via api', async () => {
     const root = ASSETS;
-    const server = await givenAServer({
-      rest: {
-        port: 0,
-      },
-    });
+    const server = await givenAServer();
 
     server.static('/html', root);
     const content = fs
@@ -129,11 +143,7 @@ describe('RestServer (integration)', () => {
 
   it('allows static assets to be mounted on multiple paths', async () => {
     const root = ASSETS;
-    const server = await givenAServer({
-      rest: {
-        port: 0,
-      },
-    });
+    const server = await givenAServer();
 
     server.static('/html-0', root);
     server.static('/html-1', root);
@@ -154,11 +164,7 @@ describe('RestServer (integration)', () => {
   it('merges different static asset directories when mounted on the same path', async () => {
     const root = ASSETS;
     const otherAssets = path.join(FIXTURES, 'other-assets');
-    const server = await givenAServer({
-      rest: {
-        port: 0,
-      },
-    });
+    const server = await givenAServer();
 
     server.static('/html', root);
     server.static('/html', otherAssets);
@@ -178,11 +184,7 @@ describe('RestServer (integration)', () => {
 
   it('allows static assets via api after start', async () => {
     const root = ASSETS;
-    const server = await givenAServer({
-      rest: {
-        port: 0,
-      },
-    });
+    const server = await givenAServer();
     await createClientForHandler(server.requestHandler)
       .get('/html/index.html')
       .expect(404);
@@ -196,11 +198,7 @@ describe('RestServer (integration)', () => {
 
   it('allows non-static routes after assets', async () => {
     const root = ASSETS;
-    const server = await givenAServer({
-      rest: {
-        port: 0,
-      },
-    });
+    const server = await givenAServer();
     server.static('/html', root);
     server.handler(dummyRequestHandler);
 
@@ -211,11 +209,7 @@ describe('RestServer (integration)', () => {
 
   it('gives precedence to API routes over static assets', async () => {
     const root = ASSETS;
-    const server = await givenAServer({
-      rest: {
-        port: 0,
-      },
-    });
+    const server = await givenAServer();
     server.static('/html', root);
     server.handler(dummyRequestHandler);
 
@@ -226,11 +220,7 @@ describe('RestServer (integration)', () => {
 
   it('registers controllers defined later than static assets', async () => {
     const root = ASSETS;
-    const server = await givenAServer({
-      rest: {
-        port: 0,
-      },
-    });
+    const server = await givenAServer();
     server.static('/html', root);
     server.controller(DummyController);
 
@@ -256,7 +246,7 @@ describe('RestServer (integration)', () => {
       }
     }
 
-    const server = await givenAServer({rest: {port: 0}});
+    const server = await givenAServer();
     // Register a request body parser for xml
     server.bodyParser(XmlBodyParser);
     server.controller(DummyXmlController);
@@ -269,7 +259,7 @@ describe('RestServer (integration)', () => {
   });
 
   it('allows cors', async () => {
-    const server = await givenAServer({rest: {port: 0}});
+    const server = await givenAServer();
     server.handler(dummyRequestHandler);
 
     await createClientForHandler(server.requestHandler)
@@ -280,7 +270,7 @@ describe('RestServer (integration)', () => {
   });
 
   it('allows cors preflight', async () => {
-    const server = await givenAServer({rest: {port: 0}});
+    const server = await givenAServer();
     server.handler(dummyRequestHandler);
 
     await createClientForHandler(server.requestHandler)
@@ -311,11 +301,7 @@ describe('RestServer (integration)', () => {
   });
 
   it('exposes "GET /openapi.json" endpoint', async () => {
-    const server = await givenAServer({
-      rest: {
-        port: 0,
-      },
-    });
+    const server = await givenAServer();
     const greetSpec = {
       responses: {
         200: {
@@ -407,7 +393,7 @@ describe('RestServer (integration)', () => {
   });
 
   it('exposes "GET /openapi.yaml" endpoint', async () => {
-    const server = await givenAServer({rest: {port: 0}});
+    const server = await givenAServer();
     const greetSpec = {
       responses: {
         200: {
@@ -701,7 +687,10 @@ paths:
     await server.stop();
   });
 
-  async function givenAServer(options?: {rest: RestServerConfig}) {
+  async function givenAServer(
+    options: {rest: RestServerConfig} = {rest: {port: 0}},
+  ) {
+    options.rest = givenHttpServerConfig(options.rest);
     const app = new Application(options);
     app.component(RestComponent);
     return await app.getServer(RestServer);
