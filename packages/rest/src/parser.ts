@@ -10,20 +10,14 @@ import {
   ParameterObject,
   SchemasObject,
 } from '@loopback/openapi-v3-types';
-import * as debugModule from 'debug';
-import * as parseUrl from 'parseurl';
-import {parse as parseQuery} from 'qs';
+import * as debugFactory from 'debug';
 import {RequestBody, RequestBodyParser} from './body-parsers';
 import {coerceParameter} from './coercion/coerce-parameter';
 import {RestHttpErrors} from './rest-http-error';
 import {ResolvedRoute} from './router';
 import {OperationArgs, PathParameterValues, Request} from './types';
 import {validateRequestBody} from './validation/request-body.validator';
-
-const debug = debugModule('loopback:rest:parser');
-
-export const QUERY_NOT_PARSED = {};
-Object.freeze(QUERY_NOT_PARSED);
+const debug = debugFactory('loopback:rest:parser');
 
 /**
  * Parses the request to derive arguments to be passed in for the Application
@@ -99,29 +93,15 @@ function getParamFromRequest(
 ) {
   switch (spec.in) {
     case 'query':
-      ensureRequestQueryWasParsed(request);
       return request.query[spec.name];
     case 'path':
       return pathParams[spec.name];
     case 'header':
       // @jannyhou TBD: check edge cases
       return request.headers[spec.name.toLowerCase()];
-      break;
     // TODO(jannyhou) to support `cookie`,
     // see issue https://github.com/strongloop/loopback-next/issues/997
     default:
       throw RestHttpErrors.invalidParamLocation(spec.in);
   }
-}
-
-function ensureRequestQueryWasParsed(request: Request) {
-  if (request.query && request.query !== QUERY_NOT_PARSED) return;
-
-  const input = parseUrl(request)!.query;
-  if (input && typeof input === 'string') {
-    request.query = parseQuery(input);
-  } else {
-    request.query = {};
-  }
-  debug('Parsed request query: ', request.query);
 }
