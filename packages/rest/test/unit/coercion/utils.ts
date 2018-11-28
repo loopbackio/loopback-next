@@ -54,8 +54,7 @@ export async function testCoercion<T>(config: TestArgs<T>) {
   /* istanbul ignore next */
   try {
     const pathParams: PathParameterValues = {};
-
-    const req = givenRequest();
+    let url = '/';
     const spec = givenOperationWithParameters([config.paramSpec]);
     const route = givenResolvedRoute(spec, pathParams);
 
@@ -68,7 +67,7 @@ export async function testCoercion<T>(config: TestArgs<T>) {
           {aparameter: config.rawValue},
           {encodeValuesOnly: true},
         );
-        req.url += `?${q}`;
+        url += `?${q}`;
         break;
       case 'header':
       case 'cookie':
@@ -80,6 +79,10 @@ export async function testCoercion<T>(config: TestArgs<T>) {
         // to allow the tests to verify how invalid param spec is handled
         break;
     }
+
+    // Create the request after url is fully populated so that request.query
+    // is parsed
+    const req = givenRequest({url});
 
     const requestBodyParser = new RequestBodyParser();
     if (config.expectError) {
