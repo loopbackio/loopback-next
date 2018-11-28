@@ -203,6 +203,10 @@ children:
       url: Deploying-to-IBM-Cloud.html
       output: 'web, pdf'
 
+    - title: 'Deploying with pm2 and nginx'
+      url: deploying-with-pm2-and-nginx.html
+      output: 'web, pdf'
+
     - title: 'Serving static files'
       url: Serving-static-files.html
       output: 'web, pdf'
