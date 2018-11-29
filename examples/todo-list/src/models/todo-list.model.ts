@@ -3,8 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, model, property, hasMany} from '@loopback/repository';
+import {Entity, model, property, hasMany, hasOne} from '@loopback/repository';
 import {Todo} from './todo.model';
+import {Author} from './author.model';
 
 @model()
 export class TodoList extends Entity {
@@ -27,6 +28,9 @@ export class TodoList extends Entity {
 
   @hasMany(() => Todo)
   todos: Todo[];
+
+  @hasOne(() => Author)
+  author: Author;
 
   constructor(data?: Partial<TodoList>) {
     super(data);

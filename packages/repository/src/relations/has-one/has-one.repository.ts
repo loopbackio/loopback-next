@@ -12,6 +12,7 @@ import {
   constrainFilter,
 } from '../../repositories/constraint-utils';
 import {EntityCrudRepository} from '../../repositories/repository';
+import {EntityNotFoundError} from '../../errors';
 
 /**
  * CRUD operations for a target repository of a HasMany relation
@@ -70,13 +71,17 @@ export class DefaultHasOneRepository<
   async get(
     filter?: Exclude<Filter<TargetEntity>, Where<TargetEntity>>,
     options?: Options,
-  ): Promise<TargetEntity | undefined> {
+  ): Promise<TargetEntity> {
     const targetRepository = await this.getTargetRepository();
     const found = await targetRepository.find(
       Object.assign({limit: 1}, constrainFilter(filter, this.constraint)),
       options,
     );
-    // TODO: throw EntityNotFound error when target model instance not found
+    if (found.length < 1) {
+      // We don't have a direct access to the foreign key value here :(
+      const id = 'constraint ' + JSON.stringify(this.constraint);
+      throw new EntityNotFoundError(targetRepository.entityClass, id);
+    }
     return found[0];
   }
 }
