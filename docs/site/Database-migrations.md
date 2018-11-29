@@ -31,9 +31,9 @@ breakdown of behaviors for automigrate! " %}
 
 LoopBack applications are typically using `RepositoryMixin` to enhance the core
 `Application` class with additional repository-related APIs. One of such methods
-is `migrateSchema`, which iterates over all registered repositories and asks
-them to migrate their schema. Repositories that do not support schema migrations
-are silently skipped.
+is `migrateSchema`, which iterates over all registered datasources and asks them
+to migrate schema of models they are backing. Datasources that do not support
+schema migrations are silently skipped.
 
 In the future, we would like to provide finer-grained control of database schema
 updates, learn more in the GitHub issue
@@ -65,33 +65,35 @@ export async function main(options: ApplicationConfig = {}) {
 ### Auto-update the database explicitly
 
 It's usually better to have more control about the database migration and
-trigger the updates explicitly. To do so, you can implement a custom script as
-shown below.
+trigger the updates explicitly. To do so, projects scaffolded using `lb4 app`
+come with a custom CLI script `src/migrate.ts` to run schema migration. Check
+out e.g.
+[Todo example app](https://github.com/strongloop/loopback-next/blob/master/examples/todo/src/migrate.ts)
+to see the full source code of the script.
 
-{% include code-caption.html content="src/migrate.ts" %}
+Besides the migration CLI, new projects come with a handy npm script to run the
+migration too.
 
-```ts
-import {TodoListApplication} from './application';
+The migration process consists of two steps now:
 
-export async function migrate(args: string[]) {
-  const dropExistingTables = args.includes('--rebuild');
-  console.log('Migrating schemas (%s)', rebuild ? 'rebuild' : 'update');
+1. Build the project:
 
-  const app = new TodoListApplication();
-  await app.boot();
-  await app.migrateSchema({dropExistingTables});
-}
+   ```sh
+   $ npm run build
+   ```
 
-migrate(process.argv).catch(err => {
-  console.error('Cannot migrate database schema', err);
-  process.exit(1);
-});
-```
+2. Migrate database schemas (alter existing tables):
 
-After you have compiled your application via `npm run build`, you can update
-your database by running `node dist/src/migrate` and rebuild it from scratch by
-running `node dist/src/migrate --rebuild`. It is also possible to save this
-commands as `npm` scripts in your `package.json` file.
+   ```sh
+   $ npm run migrate
+   ```
+
+   Alternatively, you can also tell the migration script to drop any existing
+   schemas:
+
+   ```sh
+   $ npm run migrate -- --rebuild
+   ```
 
 ### Implement additional migration steps
 

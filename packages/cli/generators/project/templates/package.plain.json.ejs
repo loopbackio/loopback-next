@@ -46,6 +46,7 @@
     "test:dev": "mocha dist/test/**/*.js",
 <% } -%>
 <% if (project.projectType === 'application') { -%>
+    "migrate": "node ./dist/src/migrate",
     "start": "npm run build && node .",
 <% } -%>
     "prepare": "npm run build"

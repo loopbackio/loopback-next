@@ -5,6 +5,8 @@
 
 'use strict';
 
+const fs = require('fs');
+const {promisify} = require('util');
 const path = require('path');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
@@ -13,6 +15,7 @@ const props = {
   name: 'my-app',
   description: 'My app for LoopBack 4',
 };
+const {expect} = require('@loopback/testlab');
 
 const tests = require('../lib/project-generator')(
   generator,
@@ -20,6 +23,8 @@ const tests = require('../lib/project-generator')(
   'application',
 );
 const baseTests = require('../lib/base-generator')(generator);
+
+const readFile = promisify(fs.readFile);
 
 describe('app-generator extending BaseGenerator', baseTests);
 describe('generator-loopback4:app', tests);
@@ -75,6 +80,25 @@ describe('app-generator specific files', () => {
       'test/acceptance/test-helper.ts',
       /export async function setupApplication/,
     );
+  });
+
+  it('generates database migration script', () => {
+    assert.fileContent(
+      'src/migrate.ts',
+      /import {MyAppApplication} from '\.\/application'/,
+    );
+
+    assert.fileContent(
+      'src/migrate.ts',
+      /const app = new MyAppApplication\(\);/,
+    );
+
+    assert.fileContent('src/migrate.ts', /export async function migrate/);
+  });
+
+  it('creates npm script "migrate-db"', async () => {
+    const pkg = JSON.parse(await readFile('package.json'));
+    expect(pkg.scripts).to.have.property('migrate', 'node ./dist/src/migrate');
   });
 });
 
