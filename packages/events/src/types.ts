@@ -30,7 +30,7 @@ export type ListenerFunction<T> = (
    * Event Name
    */
   eventName: EventName,
-) => Promise<void>;
+) => Promise<void> | void;
 
 /**
  * Async event listener Object
@@ -45,7 +45,7 @@ export interface ListenerObject<T> {
    * @param event Event data
    * @param eventName Event Name
    */
-  listen(event: T, eventName: EventName<T>): Promise<void>;
+  listen(event: T, eventName: EventName<T>): Promise<void> | void;
 }
 
 /**
@@ -182,3 +182,4 @@ export interface ListenerRegistry {
    */
   createEventEmitter(source: object): AsyncEventEmitter;
 }
+
