@@ -11,9 +11,9 @@ import {
   repository,
   HasOneRepositoryFactory,
 } from '@loopback/repository';
-import {Todo, TodoList, Author} from '../models';
+import {Todo, TodoList, TodoListImage} from '../models';
 import {TodoRepository} from './todo.repository';
-import {AuthorRepository} from './author.repository';
+import {TodoListImageRepository} from './todo-list-image.repository';
 
 export class TodoListRepository extends DefaultCrudRepository<
   TodoList,
@@ -23,8 +23,8 @@ export class TodoListRepository extends DefaultCrudRepository<
     Todo,
     typeof TodoList.prototype.id
   >;
-  public readonly author: HasOneRepositoryFactory<
-    Author,
+  public readonly image: HasOneRepositoryFactory<
+    TodoListImage,
     typeof TodoList.prototype.id
   >;
 
@@ -32,16 +32,16 @@ export class TodoListRepository extends DefaultCrudRepository<
     @inject('datasources.db') dataSource: juggler.DataSource,
     @repository.getter('TodoRepository')
     protected todoRepositoryGetter: Getter<TodoRepository>,
-    @repository.getter('AuthorRepository')
-    protected todoListImageRepositoryGetter: Getter<AuthorRepository>,
+    @repository.getter('TodoListImageRepository')
+    protected todoListImageRepositoryGetter: Getter<TodoListImageRepository>,
   ) {
     super(TodoList, dataSource);
     this.todos = this._createHasManyRepositoryFactoryFor(
       'todos',
       todoRepositoryGetter,
     );
-    this.author = this._createHasOneRepositoryFactoryFor(
-      'author',
+    this.image = this._createHasOneRepositoryFactoryFor(
+      'image',
       todoListImageRepositoryGetter,
     );
   }

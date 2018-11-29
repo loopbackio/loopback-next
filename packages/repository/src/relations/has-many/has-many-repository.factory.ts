@@ -28,9 +28,9 @@ export type HasManyRepositoryFactory<Target extends Entity, ForeignKeyType> = (
  * via a HasMany relation, then, the relational repository returned by the
  * factory function would be constrained by a Customer model instance's id(s).
  *
- * @param relationMeta The relation metadata used to describe the
+ * @param relationMetadata The relation metadata used to describe the
  * relationship and determine how to apply the constraint.
- * @param targetRepo The repository which represents the target model of a
+ * @param targetRepositoryGetter The repository which represents the target model of a
  * relation attached to a datasource.
  * @returns The factory function which accepts a foreign key value to constrain
  * the given target repository

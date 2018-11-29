@@ -12,7 +12,7 @@ import {
 } from '../../..';
 import {Customer, Order, Address} from '../models';
 import {OrderRepository} from './order.repository';
-import {HasOneRepositoryFactory} from '../../../src';
+import {HasOneRepositoryFactory} from '../../../';
 import {AddressRepository} from './address.repository';
 
 export class CustomerRepository extends DefaultCrudRepository<

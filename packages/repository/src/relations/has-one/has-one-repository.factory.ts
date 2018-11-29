@@ -25,9 +25,9 @@ export type HasOneRepositoryFactory<Target extends Entity, ForeignKeyType> = (
  * via a HasOne relation, then, the relational repository returned by the
  * factory function would be constrained by a Customer model instance's id(s).
  *
- * @param relationMeta The relation metadata used to describe the
+ * @param relationMetadata The relation metadata used to describe the
  * relationship and determine how to apply the constraint.
- * @param targetRepo The repository which represents the target model of a
+ * @param targetRepositoryGetter The repository which represents the target model of a
  * relation attached to a datasource.
  * @returns The factory function which accepts a foreign key value to constrain
  * the given target repository
@@ -56,10 +56,10 @@ export function createHasOneRepositoryFactory<
 type HasOneResolvedDefinition = HasOneDefinition & {keyTo: string};
 
 /**
- * Resolves given hasMany metadata if target is specified to be a resolver.
+ * Resolves given hasOne metadata if target is specified to be a resolver.
  * Mainly used to infer what the `keyTo` property should be from the target's
- * belongsTo metadata
- * @param relationMeta hasMany metadata to resolve
+ * hasOne metadata
+ * @param relationMeta hasOne metadata to resolve
  */
 function resolveHasOneMetadata(
   relationMeta: HasOneDefinition,
