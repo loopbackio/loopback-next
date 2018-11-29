@@ -64,6 +64,12 @@ export namespace RestBindings {
   export const HTTPS_OPTIONS = BindingKey.create<https.ServerOptions>(
     'rest.httpsOptions',
   );
+
+  /**
+   * Internal binding key for basePath
+   */
+  export const BASE_PATH = BindingKey.create<string>('rest.basePath');
+
   /**
    * Internal binding key for http-handler
    */

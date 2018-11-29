@@ -687,6 +687,56 @@ paths:
     await server.stop();
   });
 
+  describe('basePath', () => {
+    const root = ASSETS;
+    let server: RestServer;
+
+    beforeEach(async () => {
+      server = await givenAServer({
+        rest: {
+          basePath: '/api',
+          port: 0,
+        },
+      });
+    });
+
+    it('controls static assets', async () => {
+      server.static('/html', root);
+
+      const content = fs
+        .readFileSync(path.join(root, 'index.html'))
+        .toString('utf-8');
+      await createClientForHandler(server.requestHandler)
+        .get('/api/html/index.html')
+        .expect('Content-Type', /text\/html/)
+        .expect(200, content);
+    });
+
+    it('controls controller routes', async () => {
+      server.controller(DummyController);
+
+      await createClientForHandler(server.requestHandler)
+        .get('/api/html')
+        .expect(200, 'Hi');
+    });
+
+    it('reports 404 if not found', async () => {
+      server.static('/html', root);
+      server.controller(DummyController);
+
+      await createClientForHandler(server.requestHandler)
+        .get('/html')
+        .expect(404);
+    });
+
+    it('controls server urls', async () => {
+      const response = await createClientForHandler(server.requestHandler).get(
+        '/openapi.json',
+      );
+      expect(response.body.servers).to.containEql({url: '/api'});
+    });
+  });
+
   async function givenAServer(
     options: {rest: RestServerConfig} = {rest: {port: 0}},
   ) {
