@@ -6,12 +6,12 @@
 import {Getter} from '@loopback/context';
 import {DataObject, Options} from '../../common-types';
 import {Entity} from '../../model';
-import {Filter, Where} from '../../query';
+import {Filter} from '../../query';
 import {
   constrainDataObject,
   constrainFilter,
-} from '../../repositories/constraint-utils';
-import {EntityCrudRepository} from '../../repositories/repository';
+  EntityCrudRepository,
+} from '../../repositories';
 import {EntityNotFoundError} from '../../errors';
 
 /**
@@ -36,9 +36,9 @@ export interface HasOneRepository<Target extends Entity> {
    * @returns A promise of the target object or null if not found.
    */
   get(
-    filter?: Exclude<Filter<Target>, Where<Target>>,
+    filter?: Pick<Filter<Target>, Exclude<keyof Filter<Target>, 'where'>>,
     options?: Options,
-  ): Promise<Target | undefined>;
+  ): Promise<Target>;
 }
 
 export class DefaultHasOneRepository<
@@ -69,7 +69,10 @@ export class DefaultHasOneRepository<
   }
 
   async get(
-    filter?: Exclude<Filter<TargetEntity>, Where<TargetEntity>>,
+    filter?: Pick<
+      Filter<TargetEntity>,
+      Exclude<keyof Filter<TargetEntity>, 'where'>
+    >,
     options?: Options,
   ): Promise<TargetEntity> {
     const targetRepository = await this.getTargetRepository();

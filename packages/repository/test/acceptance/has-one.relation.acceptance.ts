@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application} from '@loopback/core';
-import {expect} from '@loopback/testlab';
+import {expect, toJSON} from '@loopback/testlab';
 import * as _ from 'lodash';
 import {
   ApplicationWithRepositories,
@@ -12,10 +12,10 @@ import {
   repository,
   RepositoryMixin,
   Filter,
+  EntityNotFoundError,
 } from '../..';
 import {Address} from '../fixtures/models';
 import {CustomerRepository, AddressRepository} from '../fixtures/repositories';
-import {Where} from '../..';
 
 describe('hasOne relation', () => {
   // Given a Customer and Address models - see definitions at the bottom
@@ -32,9 +32,6 @@ describe('hasOne relation', () => {
 
   beforeEach(async () => {
     await addressRepo.deleteAll();
-  });
-
-  beforeEach(async () => {
     existingCustomerId = (await givenPersistedCustomerInstance()).id;
   });
 
@@ -51,7 +48,7 @@ describe('hasOne relation', () => {
     expect(persisted.toObject()).to.deepEqual(address.toObject());
   });
 
-  it("doesn't allow to create related model instance twice", async () => {
+  it('refuses to create related model instance twice', async () => {
     const address = await controller.createCustomerAddress(existingCustomerId, {
       street: '123 test avenue',
     });
@@ -73,17 +70,11 @@ describe('hasOne relation', () => {
     const address = await controller.createCustomerAddress(existingCustomerId, {
       street: '123 test avenue',
     });
-    const notMyAddress = await controller.createCustomerAddress(
-      existingCustomerId + 1,
-      {
-        street: '456 test road',
-      },
-    );
     const foundAddress = await controller.findCustomerAddress(
       existingCustomerId,
     );
     expect(foundAddress).to.containEql(address);
-    expect(foundAddress).to.not.containEql(notMyAddress);
+    expect(toJSON(foundAddress)).to.deepEqual(toJSON(address));
 
     const persisted = await addressRepo.find({
       where: {customerId: existingCustomerId},
@@ -91,23 +82,35 @@ describe('hasOne relation', () => {
     expect(persisted[0]).to.deepEqual(foundAddress);
   });
 
-  it('does not allow where filter to find related model instance', async () => {
-    const address = await controller.createCustomerAddress(existingCustomerId, {
-      street: '123 test avenue',
-    });
-
+  // FIXME(b-admike): make sure the test fails with compiler error
+  it.skip('ignores where filter to find related model instance', async () => {
     const foundAddress = await controller.findCustomerAddressWithFilter(
       existingCustomerId,
-      {where: {street: '123 test avenue'}},
+      // the compiler should complain that the where field is
+      // not accepted in the filter object for the get() method
+      // if the following line is uncommented
+      {
+        where: {street: '456 test road'},
+      },
     );
-    // TODO: make sure this test fails when where condition is supplied
-    // compiler should have errored out (?)
-    expect(foundAddress).to.containEql(address);
 
     const persisted = await addressRepo.find({
       where: {customerId: existingCustomerId},
     });
+    // TODO: make sure this test fails when where condition is supplied
+    // compiler should have errored out (?)
     expect(persisted[0]).to.deepEqual(foundAddress);
+  });
+
+  it('reports EntityNotFound error when related model is deleted', async () => {
+    const address = await controller.createCustomerAddress(existingCustomerId, {
+      street: '123 test avenue',
+    });
+    await addressRepo.deleteById(address.customerId);
+
+    await expect(
+      controller.findCustomerAddress(existingCustomerId),
+    ).to.be.rejectedWith(EntityNotFoundError);
   });
 
   /*---------------- HELPERS -----------------*/
