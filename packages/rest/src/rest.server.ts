@@ -123,9 +123,18 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * @param req The request.
    * @param res The response.
    */
-  public requestHandler: HttpRequestListener;
+
+  protected _requestHandler: HttpRequestListener;
+  public get requestHandler(): HttpRequestListener {
+    if (this._requestHandler == null) {
+      this._setupRequestHandlerIfNeeded();
+    }
+    return this._requestHandler;
+  }
 
   public readonly config: RestServerConfig;
+  private _basePath: string;
+
   protected _httpHandler: HttpHandler;
   protected get httpHandler(): HttpHandler {
     this._setupHandlerIfNeeded();
@@ -185,15 +194,17 @@ export class RestServer extends Context implements Server, HttpServerLike {
       this.sequence(config.sequence);
     }
 
-    this._setupRequestHandler();
+    this.basePath(config.basePath);
 
+    this.bind(RestBindings.BASE_PATH).toDynamicValue(() => this._basePath);
     this.bind(RestBindings.HANDLER).toDynamicValue(() => this.httpHandler);
   }
 
-  protected _setupRequestHandler() {
+  protected _setupRequestHandlerIfNeeded() {
+    if (this._expressApp) return;
     this._expressApp = express();
     this._expressApp.set('query parser', 'extended');
-    this.requestHandler = this._expressApp;
+    this._requestHandler = this._expressApp;
 
     // Allow CORS support for all endpoints so that users
     // can test with online SwaggerUI instance
@@ -211,7 +222,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     this._setupOpenApiSpecEndpoints();
 
     // Mount our router & request handler
-    this._expressApp.use((req, res, next) => {
+    this._expressApp.use(this._basePath, (req, res, next) => {
       this._handleHttpRequest(req, res).catch(next);
     });
 
@@ -365,6 +376,15 @@ export class RestServer extends Context implements Server, HttpServerLike {
       specObj.servers = [{url: this._getUrlForClient(request)}];
     }
 
+    if (specObj.servers && this._basePath) {
+      for (const s of specObj.servers) {
+        // Update the default server url to honor `basePath`
+        if (s.url === '/') {
+          s.url = this._basePath;
+        }
+      }
+    }
+
     if (specForm.format === 'json') {
       const spec = JSON.stringify(specObj, null, 2);
       response.setHeader('content-type', 'application/json; charset=utf-8');
@@ -433,7 +453,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     // add port number of present
     host += port !== '' ? ':' + port : '';
 
-    return protocol + '://' + host;
+    return protocol + '://' + host + this._basePath;
   }
 
   private async _redirectToSwaggerUI(
@@ -733,12 +753,30 @@ export class RestServer extends Context implements Server, HttpServerLike {
   }
 
   /**
+   * Configure the `basePath` for the rest server
+   * @param path Base path
+   */
+  basePath(path: string = '') {
+    if (this._requestHandler) {
+      throw new Error(
+        'Base path cannot be set as the request handler has been created',
+      );
+    }
+    // Trim leading and trailing `/`
+    path = path.replace(/(^\/)|(\/$)/, '');
+    if (path) path = '/' + path;
+    this._basePath = path;
+  }
+
+  /**
    * Start this REST API's HTTP/HTTPS server.
    *
    * @returns {Promise<void>}
    * @memberof RestServer
    */
   async start(): Promise<void> {
+    // Set up the Express app if not done yet
+    this._setupRequestHandlerIfNeeded();
     // Setup the HTTP handler so that we can verify the configuration
     // of API spec, controllers and routes at startup time.
     this._setupHandlerIfNeeded();
@@ -875,6 +913,10 @@ export interface ApiExplorerOptions {
  * Options for RestServer configuration
  */
 export interface RestServerOptions {
+  /**
+   * Base path for API/static routes
+   */
+  basePath?: string;
   cors?: cors.CorsOptions;
   openApiSpec?: OpenApiSpecOptions;
   apiExplorer?: ApiExplorerOptions;

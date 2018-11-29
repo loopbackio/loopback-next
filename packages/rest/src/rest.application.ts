@@ -108,6 +108,14 @@ export class RestApplication extends Application implements HttpServerLike {
   }
 
   /**
+   * Configure the `basePath` for the rest server
+   * @param path Base path
+   */
+  basePath(path: string = '') {
+    this.restServer.basePath(path);
+  }
+
+  /**
    * Register a new Controller-based route.
    *
    * ```ts
