@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {createRestAppClient, Client, expect} from '@loopback/testlab';
-import {RestApplication} from '../..';
-import * as path from 'path';
+import {anOperationSpec} from '@loopback/openapi-spec-builder';
+import {Client, createRestAppClient, expect} from '@loopback/testlab';
 import * as fs from 'fs';
-import {RestServer, RestServerConfig} from '../../src';
+import * as path from 'path';
+import {RestApplication, RestServer, RestServerConfig} from '../..';
 
 const ASSETS = path.resolve(__dirname, '../../../fixtures/assets');
 
@@ -90,6 +90,27 @@ describe('RestApplication (integration)', () => {
       .get('/greet')
       .expect(200)
       .expect('Hello');
+  });
+
+  it('honors basePath for static assets', async () => {
+    givenApplication();
+    restApp.basePath('/html');
+    restApp.static('/', ASSETS);
+    await restApp.start();
+    client = createRestAppClient(restApp);
+    await client.get('/html/index.html').expect(200);
+  });
+
+  it('honors basePath for routes', async () => {
+    givenApplication();
+    restApp.basePath('/api');
+    restApp.route('get', '/status', anOperationSpec().build(), () => ({
+      running: true,
+    }));
+
+    await restApp.start();
+    client = createRestAppClient(restApp);
+    await client.get('/api/status').expect(200, {running: true});
   });
 
   it('returns RestServer instance', async () => {

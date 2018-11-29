@@ -86,6 +86,43 @@ describe('RestServer', () => {
       expect(server.getSync(RestBindings.PORT)).to.equal(4000);
       expect(server.getSync(RestBindings.HOST)).to.equal('my-host');
     });
+
+    it('honors basePath in config', async () => {
+      const app = new Application({
+        rest: {port: 0, basePath: '/api'},
+      });
+      app.component(RestComponent);
+      const server = await app.getServer(RestServer);
+      expect(server.getSync(RestBindings.BASE_PATH)).to.equal('/api');
+    });
+
+    it('honors basePath via api', async () => {
+      const app = new Application({
+        rest: {port: 0},
+      });
+      app.component(RestComponent);
+      const server = await app.getServer(RestServer);
+      server.basePath('/api');
+      expect(server.getSync(RestBindings.BASE_PATH)).to.equal('/api');
+    });
+
+    it('rejects basePath if request handler is created', async () => {
+      const app = new Application({
+        rest: {port: 0},
+      });
+      app.component(RestComponent);
+      const server = await app.getServer(RestServer);
+      expect(() => {
+        // Force the `getter` function to be triggered by referencing
+        // `server.requestHandler` so that the servers has `requestHandler`
+        // populated to prevent `basePath` to be set.
+        if (server.requestHandler) {
+          server.basePath('/api');
+        }
+      }).to.throw(
+        /Base path cannot be set as the request handler has been created/,
+      );
+    });
   });
 
   async function givenRequestContext() {
