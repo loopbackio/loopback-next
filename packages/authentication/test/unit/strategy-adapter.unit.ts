@@ -18,10 +18,7 @@ describe('Strategy Adapter', () => {
       // TODO: (as suggested by @bajtos) use sinon spy
       class Strategy extends MockStrategy {
         // override authenticate method to set calledFlag
-        async authenticate(
-          req: Express.Request,
-          options?: AuthenticateOptions,
-        ) {
+        async authenticate(req: Request, options?: AuthenticateOptions) {
           calledFlag = true;
           await MockStrategy.prototype.authenticate.call(this, req, options);
         }
