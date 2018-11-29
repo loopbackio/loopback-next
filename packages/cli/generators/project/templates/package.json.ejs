@@ -47,6 +47,7 @@
     "test:dev": "lb-mocha --allow-console-logs dist/test/**/*.js",
 <% } -%>
 <% if (project.projectType === 'application') { -%>
+    "migrate": "node ./dist/src/migrate",
     "prestart": "npm run build",
     "start": "node .",
 <% } -%>
