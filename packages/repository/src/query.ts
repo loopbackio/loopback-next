@@ -103,9 +103,10 @@ export type Condition<MT extends object> = {
  * }
  * ```
  */
-export type Where<MT extends object = AnyObject> = Condition<MT> &
-  Partial<AndClause<MT>> &
-  Partial<OrClause<MT>>;
+export type Where<MT extends object = AnyObject> =
+  | Condition<MT>
+  | AndClause<MT>
+  | OrClause<MT>;
 
 /**
  * And clause
@@ -249,8 +250,7 @@ export class WhereBuilder<MT extends object = AnyObject> {
       if (k in this.where) {
         // Found conflicting keys, create an `and` operator to join the existing
         // conditions with the new one
-        const where: Where<MT> = {};
-        where.and = [this.where, w];
+        const where = {and: [this.where, w]};
         this.where = where;
         return this;
       }
@@ -261,19 +261,15 @@ export class WhereBuilder<MT extends object = AnyObject> {
   }
 
   /**
+   * @deprecated
+   * Starting from TypeScript 3.2, we don't have to cast any more. This method
+   * should be considered as `deprecated`.
+   *
    * Cast an `and`, `or`, or condition clause to Where
    * @param clause And/Or/Condition clause
    */
   cast(clause: AndClause<MT> | OrClause<MT> | Condition<MT>): Where<MT> {
-    const w: Where<MT> = {};
-    if ('and' in clause) {
-      w.and = clause.and;
-    } else if ('or' in clause) {
-      w.or = clause.or;
-    } else {
-      Object.assign(w, clause);
-    }
-    return w;
+    return clause;
   }
 
   /**
@@ -285,7 +281,7 @@ export class WhereBuilder<MT extends object = AnyObject> {
     w.forEach(where => {
       clauses = clauses.concat(Array.isArray(where) ? where : [where]);
     });
-    return this.add(this.cast({and: clauses}));
+    return this.add({and: clauses});
   }
 
   /**
@@ -297,7 +293,7 @@ export class WhereBuilder<MT extends object = AnyObject> {
     w.forEach(where => {
       clauses = clauses.concat(Array.isArray(where) ? where : [where]);
     });
-    return this.add(this.cast({or: clauses}));
+    return this.add({or: clauses});
   }
 
   /**
@@ -480,13 +476,14 @@ export class FilterBuilder<MT extends object = AnyObject> {
     if (!this.filter.fields) {
       this.filter.fields = {};
     }
+    const fields = this.filter.fields;
     for (const field of f) {
       if (Array.isArray(field)) {
-        (field as (keyof MT)[]).forEach(i => (this.filter.fields![i] = true));
+        (field as (keyof MT)[]).forEach(i => (fields[i] = true));
       } else if (typeof field === 'string') {
-        this.filter.fields[field as keyof MT] = true;
+        fields[field as keyof MT] = true;
       } else {
-        Object.assign(this.filter.fields, field);
+        Object.assign(fields, field);
       }
     }
     return this;
