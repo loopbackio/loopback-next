@@ -1,28 +1,27 @@
 import {
   DefaultCrudRepository,
-  juggler,
   repository,
   BelongsToAccessor,
 } from '@loopback/repository';
-import {Author, TodoList} from '../models';
+import {TodoListImage, TodoList} from '../models';
 import {DbDataSource} from '../datasources';
 import {inject, Getter} from '@loopback/core';
 import {TodoListRepository} from './todo-list.repository';
 
-export class AuthorRepository extends DefaultCrudRepository<
-  Author,
-  typeof Author.prototype.todoListId
+export class TodoListImageRepository extends DefaultCrudRepository<
+  TodoListImage,
+  typeof TodoListImage.prototype.todoListId
 > {
   public readonly todoList: BelongsToAccessor<
     TodoList,
-    typeof Author.prototype.todoListId
+    typeof TodoListImage.prototype.todoListId
   >;
   constructor(
     @inject('datasources.db') dataSource: DbDataSource,
     @repository.getter('TodoListRepository')
     protected todoListRepositoryGetter: Getter<TodoListRepository>,
   ) {
-    super(Author, dataSource);
+    super(TodoListImage, dataSource);
     this.todoList = this._createBelongsToAccessorFor(
       'todoList',
       todoListRepositoryGetter,

@@ -81,7 +81,7 @@ describe('createHasOneRepositoryFactory', () => {
   it('rejects relations with keyTo that is not an id', () => {
     const relationMeta = givenHasOneDefinition({
       name: 'order',
-      target: () => Order,
+      target: () => ModelWithoutIndexFK,
     });
 
     expect(() =>
@@ -97,7 +97,7 @@ describe('createHasOneRepositoryFactory', () => {
   it('rejects relations with keyTo that is a generated id property', () => {
     const relationMeta = givenHasOneDefinition({
       name: 'profile',
-      target: () => Profile,
+      target: () => ModelWithGeneratedFK,
     });
 
     expect(() =>
@@ -132,8 +132,11 @@ describe('createHasOneRepositoryFactory', () => {
     province: String;
   }
 
-  class Order extends Entity {
-    static definition = new ModelDefinition('Order')
+  // added an id property because the model itself extends from Entity, but the
+  // purpose here is the decorated relational property is not part of the
+  // composite index, thus the name ModelWithoutIndexFK.
+  class ModelWithoutIndexFK extends Entity {
+    static definition = new ModelDefinition('ModelWithoutIndexFK')
       .addProperty('customerId', {
         type: 'string',
         id: false,
@@ -142,18 +145,23 @@ describe('createHasOneRepositoryFactory', () => {
         type: 'string',
         required: true,
       })
+      .addProperty('id', {
+        type: 'number',
+        id: true,
+      })
 
       .addProperty('isShipped', {
         type: 'boolean',
         required: false,
       });
+    id: number;
     customerId: string;
     description: string;
     isShipped: boolean;
   }
 
-  class Profile extends Entity {
-    static definition = new ModelDefinition('Profile')
+  class ModelWithGeneratedFK extends Entity {
+    static definition = new ModelDefinition('ModelWithGeneratedFK')
       .addProperty('customerId', {
         type: 'string',
         id: true,

@@ -5,7 +5,7 @@
 
 import {Entity, model, property, hasMany, hasOne} from '@loopback/repository';
 import {Todo} from './todo.model';
-import {Author} from './author.model';
+import {TodoListImage} from './todo-list-image.model';
 
 @model()
 export class TodoList extends Entity {
@@ -29,8 +29,8 @@ export class TodoList extends Entity {
   @hasMany(() => Todo)
   todos: Todo[];
 
-  @hasOne(() => Author)
-  author: Author;
+  @hasOne(() => TodoListImage)
+  image: TodoListImage;
 
   constructor(data?: Partial<TodoList>) {
     super(data);
