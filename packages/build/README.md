@@ -63,7 +63,7 @@ Now you run the scripts, such as:
   By default, `lb-tsc` searches your project's root directory for
   `tsconfig.build.json` then `tsconfig.json`. If neither of them exists, a
   `tsconfig.json` will be created to extend from
-  `./node_modules/@loopback/build/config/tsconfig.common.json`.
+  `@loopback/build/config/tsconfig.common.json`.
 
   To customize the configuration:
 
@@ -73,7 +73,7 @@ Now you run the scripts, such as:
     ```json
     {
       "$schema": "http://json.schemastore.org/tsconfig",
-      "extends": "./node_modules/@loopback/build/config/tsconfig.common.json",
+      "extends": "@loopback/build/config/tsconfig.common.json",
       "compilerOptions": {
         "rootDir": "."
       },
