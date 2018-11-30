@@ -19,6 +19,7 @@ See [Monorepo overview](./MONOREPO.md) for a list of all packages.
 - [File naming convention](#file-naming-convention)
 - [API documentation](#api-documentation)
 - [Commit message guidelines](#commit-message-guidelines)
+- [Making breaking changes](#making-breaking-changes)
 - [Releasing new versions](#releasing-new-versions)
 - [Adding a new package](#adding-a-new-package)
 - [How to test infrastructure changes](#how-to-test-infrastructure-changes)
@@ -263,6 +264,90 @@ npm i -g commitizen
 
 And to use it, simply call `git cz` instead of `git commit`. The tool will help
 you generate a commit message that follows the above guidelines.
+
+## Making breaking changes
+
+LoopBack is following [Semantic Versioning](https://semver.org). Any change
+that's not fully backward compatible with previous versions has to increase the
+major version number, e.g. `1.4.2 -> 2.0.0`.
+
+In general, we try to avoid breaking backward compatibility too often and strive
+to limit the frequency of major releases to about once or twice a year.
+
+- Breaking changes make it difficult for our users to always stay at the latest
+  version of the framework.
+- Every additional major version we have to support adds extra maintenance
+  overhead.
+- In our
+  [Long Term Support policy](https://loopback.io/doc/en/contrib/Long-term-support.html),
+  we are committing to support every major module version for at least 12 months
+  after it entered LTS mode and also support it for the entire LTS lifetime of
+  the connected Node.js major version. If we release major versions too often,
+  we can end up with a long list of versions we have to keep supporting for long
+  time.
+
+Whenever possible, consider implementing a feature flag that allows users to
+decide when to migrate to the new behavior. Make this flag disabled by default
+to preserve backward compatibility.
+
+However, we do recognize that often a breaking change is the most sensible thing
+to do. When that time comes:
+
+- Describe incompatibilites for release notes
+- Look for more breaking changes to include in the release
+- Update list of supported versions
+
+### Describe incompatibilites for release notes
+
+In the pull request introducing the breaking change, provide a descriptive
+[footer](#footer-optional) explaining the breaking change to our users. This
+content will be used by release tooling to compile comprehensive release notes.
+
+Put yourself in the shoes of module users and try to answer the following
+questions:
+
+- How can I find if my project is affected by this change?
+
+- What does this change means for my project? What is going to change?
+
+- How can I migrate my project to the new major version? What steps do I need to
+  make?
+
+### Look for more breaking changes
+
+Look for other features or fixes that require a breaking change. Consider
+grouping multiple backward incompatible changes into a single semver major
+release.
+
+Few examples of changes that are usually easy to make:
+
+- Change the default value of a feature flag from "false" (backward-compatible
+  behavior) to "true" (the new behavior).
+
+- Deprecate a compatibility feature flag that's already enabled by default.
+
+- Remove a deprecated feature flag.
+
+- Drop support for a major version of Node.js that has already reached it's end
+  of life or that will reach it soon (in the next 4-8 weeks).
+
+### Update list of supported versions
+
+Make sure the package's README has an up-to-date section about the supported
+versions. Read our
+[Long Term Support policy](https://loopback.io/doc/en/contrib/Long-term-support.html)
+to understand the rules governing transition between different support levels.
+
+- There should be at most one version in Active LTS mode. This version moves to
+  Maintenance LTS.
+
+- The version listed as Current is entering Active LTS mode.
+
+- The new major version is becoming Current.
+
+It is important to make these updates _before_ publishing the new major version,
+so that new content is included on the package page provided by
+[npmjs.com](https://www.npmjs.com/).
 
 ## Releasing new versions
 
