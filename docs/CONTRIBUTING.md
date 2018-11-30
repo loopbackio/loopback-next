@@ -41,6 +41,7 @@ and tools contained in LoopBack repositories.
 - [Coding rules](./site/DEVELOPING.md#coding-rules)
 - [API documentation](./site/DEVELOPING.md#api-documentation)
 - [Git commit messages](./site/DEVELOPING.md#commit-message-guidelines)
+- [Making breaking changes](./site/DEVELOPING.md#making-breaking-changes)
 - [Reviewing pull requests](http://loopback.io/doc/en/contrib/triaging-pull-requests.html)
 - [Contributor License Agreement (CLA)](http://loopback.io/doc/en/contrib/code-contrib.html#agreeing-to-the-cla)
 
