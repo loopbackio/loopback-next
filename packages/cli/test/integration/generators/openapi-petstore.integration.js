@@ -25,7 +25,10 @@ const props = {
   url: specPath,
 };
 
-describe('openapi-generator specific files', () => {
+describe('openapi-generator specific files', function() {
+  // These tests take longer to execute, they used to time out on Travis CI
+  this.timeout(10000);
+
   const index = path.resolve(SANDBOX_PATH, 'src/controllers/index.ts');
   const controller = path.resolve(
     SANDBOX_PATH,
