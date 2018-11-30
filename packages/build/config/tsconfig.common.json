@@ -6,6 +6,7 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
     "resolveJsonModule": true,
+    "strictBindCallApply": true,
 
     "lib": ["es2018", "dom", "esnext.asynciterable"],
     "module": "commonjs",
