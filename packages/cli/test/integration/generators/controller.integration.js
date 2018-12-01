@@ -318,6 +318,18 @@ function checkRestCrudContents() {
     assert.fileContent(expectedFile, regex);
   });
 
+  // @put - replaceById
+  const putReplaceByIdRegEx = [
+    /\@put\('\/product-reviews\/{id}'/,
+    /responses: {/,
+    /'204': {/,
+    /description: 'ProductReview PUT success'/,
+    /async replaceById\(\s{1,}\@param.path.number\('id'\) id: number,\s{1,}\@requestBody\(\) productReview: ProductReview,\s+\)/,
+  ];
+  putReplaceByIdRegEx.forEach(regex => {
+    assert.fileContent(expectedFile, regex);
+  });
+
   // @del - deleteById
   const deleteByIdRegEx = [
     /\@del\('\/product-reviews\/{id}', {/,
