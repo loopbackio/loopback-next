@@ -88,7 +88,7 @@ Enter an empty property name when done
 
 ? Enter the property name:
 
-   create src/models/test.model.ts
+   create src/models/todo.model.ts
    update src/models/index.ts
 
 Model todo was created in src/models/
