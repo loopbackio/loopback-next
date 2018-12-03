@@ -293,9 +293,19 @@ function resolveAsGetter(
 }
 
 function resolveAsSetter(ctx: Context, injection: Injection) {
+  const key = injection.bindingKey;
+  if (!ctx.contains(key)) {
+    // TODO(bajtos) Throw an Error in the next semver-major version
+    console.warn(
+      'To avoid a common source of errors, bindings set via `@inject.setter` ' +
+        'should be defined via bind(key).toDeferred() first. ' +
+        `The binding key: "${key}"`,
+    );
+  }
+
   // No resolution session should be propagated into the setter
   return function setter(value: BoundValue) {
-    ctx.bind(injection.bindingKey).to(value);
+    ctx.bind(key).to(value);
   };
 }
 
