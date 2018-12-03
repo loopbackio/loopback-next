@@ -462,7 +462,7 @@ configuration, it's important to verify that all usage scenarios keep working.
     <https://github.com/strongloop/loopback-next/issues/1010>)_
 
 5.  Test integration with supported IDEs:
-    - [VS Code](./VSCode.md#how-to-verify-typescript-setup)
+    - [VS Code](./VSCODE.md#how-to-verify-typescript-setup)
 
 ### Verify TSLint setup
 
@@ -487,4 +487,4 @@ configuration, it's important to verify that all usage scenarios keep working.
 
 5.  Test integration with supported IDEs:
 
-    - [VS Code](./VSCode.md#how-to-verify-tslint-setup)
+    - [VS Code](./VSCODE.md#how-to-verify-tslint-setup)
