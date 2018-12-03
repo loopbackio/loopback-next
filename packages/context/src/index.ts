@@ -21,11 +21,13 @@ export {
 
 export {Binding, BindingScope, BindingType, TagMap} from './binding';
 
-export {Context} from './context';
+export {Context, BindingFilter} from './context';
 export {BindingKey, BindingAddress} from './binding-key';
 export {ResolutionSession} from './resolution-session';
 export {inject, Setter, Getter, Injection, InjectionMetadata} from './inject';
 export {Provider} from './provider';
+
+export {ContextWatcher} from './context-watcher';
 
 export {instantiateClass, invokeMethod} from './resolver';
 // internals for testing

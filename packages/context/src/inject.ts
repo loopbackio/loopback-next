@@ -12,10 +12,11 @@ import {
   MetadataAccessor,
   InspectionOptions,
 } from '@loopback/metadata';
-import {BoundValue, ValueOrPromise, resolveList} from './value-promise';
-import {Context} from './context';
+import {BoundValue, ValueOrPromise} from './value-promise';
+import {Context, BindingFilter} from './context';
 import {BindingKey, BindingAddress} from './binding-key';
 import {ResolutionSession} from './resolution-session';
+import {ContextWatcher} from './context-watcher';
 
 const PARAMETERS_KEY = MetadataAccessor.create<Injection, ParameterDecorator>(
   'inject:parameters',
@@ -251,7 +252,7 @@ export namespace inject {
    * @param bindingTag Tag name or regex
    * @param metadata Optional metadata to help the injection
    */
-  export const tag = function injectTag(
+  export const tag = function injectByTag(
     bindingTag: string | RegExp,
     metadata?: InjectionMetadata,
   ) {
@@ -259,7 +260,42 @@ export namespace inject {
       {decorator: '@inject.tag', tag: bindingTag},
       metadata,
     );
-    return inject('', metadata, resolveByTag);
+    return filter(Context.bindingTagFilter(bindingTag), metadata);
+  };
+
+  /**
+   * Inject matching bound values by the filter function
+   *
+   * ```ts
+   * class MyControllerWithGetter {
+   *   @inject.filter(Context.bindingTagFilter('foo'))
+   *   getter: Getter<string[]>;
+   * }
+   *
+   * class MyControllerWithValues {
+   *   constructor(
+   *     @inject.filter(Context.bindingTagFilter('foo'))
+   *     public values: string[],
+   *   ) {}
+   * }
+   *
+   * class MyControllerWithTracker {
+   *   @inject.filter(Context.bindingTagFilter('foo'))
+   *   watcher: BindingTracker<string[]>;
+   * }
+   * ```
+   * @param bindingFilter A binding filter function
+   * @param metadata
+   */
+  export const filter = function injectByFilter(
+    bindingFilter: BindingFilter,
+    metadata?: InjectionMetadata,
+  ) {
+    metadata = Object.assign(
+      {decorator: '@inject.filter', bindingFilter},
+      metadata,
+    );
+    return inject('', metadata, resolveByFilter);
   };
 
   /**
@@ -331,19 +367,54 @@ export function describeInjectedArguments(
   return meta || [];
 }
 
-function resolveByTag(
+/**
+ * Inspect the target type
+ * @param injection
+ */
+function inspectTargetType(injection: Readonly<Injection>) {
+  let type = MetadataInspector.getDesignTypeForProperty(
+    injection.target,
+    injection.member!,
+  );
+  if (type) {
+    return type;
+  }
+  const designType = MetadataInspector.getDesignTypeForMethod(
+    injection.target,
+    injection.member!,
+  );
+  type =
+    designType.parameterTypes[
+      injection.methodDescriptorOrParameterIndex as number
+    ];
+  return type;
+}
+
+/**
+ * Resolve values by a binding filter function
+ * @param ctx Context object
+ * @param injection Injection information
+ * @param session Resolution session
+ */
+function resolveByFilter(
   ctx: Context,
   injection: Readonly<Injection>,
   session?: ResolutionSession,
 ) {
-  const tag: string | RegExp = injection.metadata!.tag;
-  const bindings = ctx.findByTag(tag);
+  const bindingFilter = injection.metadata!.bindingFilter;
+  const watcher = new ContextWatcher(ctx, bindingFilter);
+  const watch = injection.metadata!.watch;
 
-  return resolveList(bindings, b => {
-    // We need to clone the session so that resolution of multiple bindings
-    // can be tracked in parallel
-    return b.getValue(ctx, ResolutionSession.fork(session));
-  });
+  const targetType = inspectTargetType(injection);
+  if (targetType === Function) {
+    if (watch !== false) watcher.watch();
+    return watcher.asGetter();
+  } else if (targetType === ContextWatcher) {
+    if (watch !== false) watcher.watch();
+    return watcher;
+  } else {
+    return watcher.resolve(session);
+  }
 }
 
 /**

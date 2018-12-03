@@ -12,7 +12,10 @@ import {v1 as uuidv1} from 'uuid';
 
 import * as debugModule from 'debug';
 import {ValueOrPromise} from '.';
+import {ContextWatcher} from './context-watcher';
 const debug = debugModule('loopback:context');
+
+export type BindingFilter = (binding: Readonly<Binding<unknown>>) => boolean;
 
 /**
  * Context provides an implementation of Inversion of Control (IoC) container
@@ -24,6 +27,10 @@ export class Context {
   readonly name: string;
   protected readonly registry: Map<string, Binding> = new Map();
   protected _parent?: Context;
+  /**
+   * A list of registered context watchers
+   */
+  protected watchers: ContextWatcher[] = [];
 
   /**
    * Create a new context
@@ -36,6 +43,13 @@ export class Context {
     }
     this._parent = _parent;
     this.name = name || uuidv1();
+  }
+
+  /**
+   * Get the parent context
+   */
+  get parent() {
+    return this._parent;
   }
 
   /**
@@ -64,14 +78,21 @@ export class Context {
       debug('Adding binding: %s', key);
     }
 
+    let existingBinding: Binding | undefined;
     const keyExists = this.registry.has(key);
     if (keyExists) {
-      const existingBinding = this.registry.get(key);
+      existingBinding = this.registry.get(key);
       const bindingIsLocked = existingBinding && existingBinding.isLocked;
       if (bindingIsLocked)
         throw new Error(`Cannot rebind key "${key}" to a locked binding`);
     }
     this.registry.set(key, binding);
+    if (existingBinding !== binding) {
+      if (existingBinding != null) {
+        this.publish('unbind', existingBinding);
+      }
+      this.publish('bind', binding);
+    }
     return this;
   }
 
@@ -91,7 +112,72 @@ export class Context {
     if (binding == null) return false;
     if (binding && binding.isLocked)
       throw new Error(`Cannot unbind key "${key}" of a locked binding`);
-    return this.registry.delete(key);
+    const found = this.registry.delete(key);
+    this.publish('unbind', binding);
+    return found;
+  }
+
+  /**
+   * Add the context watcher as an event listener to the context chain,
+   * including its ancestors
+   * @param watcher Context watcher
+   */
+  subscribe(watcher: ContextWatcher) {
+    let ctx: Context | undefined = this;
+    while (ctx != null) {
+      if (!ctx.watchers.includes(watcher)) {
+        ctx.watchers.push(watcher);
+      }
+      ctx = ctx._parent;
+    }
+  }
+
+  /**
+   * Remove the context watcher  from the context chain
+   * @param watcher Context watcher
+   */
+  unsubscribe(watcher: ContextWatcher) {
+    let ctx: Context | undefined = this;
+    while (ctx != null) {
+      const index = ctx.watchers.indexOf(watcher);
+      if (index !== -1) {
+        ctx.watchers.splice(index, 1);
+      }
+      ctx = ctx._parent;
+    }
+  }
+
+  /**
+   * Watch the context chain with the given binding filter
+   * @param filter A function to match bindings
+   */
+  watch(filter: BindingFilter) {
+    const watcher = new ContextWatcher(this, filter);
+    this.subscribe(watcher);
+    return watcher;
+  }
+
+  /**
+   * Publish an event to the registered watchers. Please note the
+   * notification happens using `process.nextTick` so that we allow fluent APIs
+   * such as `ctx.bind('key').to(...).tag(...);` and give watchers the fully
+   * populated binding
+   *
+   * @param event Event names: `bind` or `unbind`
+   * @param binding Binding bound or unbound
+   */
+  protected publish(
+    event: 'bind' | 'unbind',
+    binding: Readonly<Binding<unknown>>,
+  ) {
+    // Notify watchers in the next tick
+    process.nextTick(() => {
+      for (const watcher of this.watchers) {
+        if (watcher.filter(binding)) {
+          watcher.listen(event, binding);
+        }
+      }
+    });
   }
 
   /**
@@ -129,23 +215,6 @@ export class Context {
   }
 
   /**
-   * Convert a wildcard pattern to RegExp
-   * @param pattern A wildcard string with `*` and `?` as special characters.
-   * - `*` matches zero or more characters except `.` and `:`
-   * - `?` matches exactly one character except `.` and `:`
-   */
-  private wildcardToRegExp(pattern: string): RegExp {
-    // Escape reserved chars for RegExp:
-    // `- \ ^ $ + . ( ) | { } [ ] :`
-    let regexp = pattern.replace(/[\-\[\]\/\{\}\(\)\+\.\\\^\$\|\:]/g, '\\$&');
-    // Replace wildcard chars `*` and `?`
-    // `*` matches zero or more characters except `.` and `:`
-    // `?` matches one character except `.` and `:`
-    regexp = regexp.replace(/\*/g, '[^.:]*').replace(/\?/g, '[^.:]');
-    return new RegExp(`^${regexp}$`);
-  }
-
-  /**
    * Find bindings using the key pattern
    * @param pattern A regexp or wildcard pattern with optional `*` and `?`. If
    * it matches the binding key, the binding is included. For a wildcard:
@@ -162,27 +231,19 @@ export class Context {
    * include the binding or `false` to exclude the binding.
    */
   find<ValueType = BoundValue>(
-    filter: (binding: Readonly<Binding<ValueType>>) => boolean,
+    filter: BindingFilter,
   ): Readonly<Binding<ValueType>>[];
 
   find<ValueType = BoundValue>(
-    pattern?:
-      | string
-      | RegExp
-      | ((binding: Readonly<Binding<ValueType>>) => boolean),
+    pattern?: string | RegExp | BindingFilter,
   ): Readonly<Binding<ValueType>>[] {
-    let bindings: Readonly<Binding>[] = [];
-    let filter: (binding: Readonly<Binding>) => boolean;
-    if (!pattern) {
-      filter = binding => true;
-    } else if (typeof pattern === 'string') {
-      const regex = this.wildcardToRegExp(pattern);
-      filter = binding => regex.test(binding.key);
-    } else if (pattern instanceof RegExp) {
-      filter = binding => pattern.test(binding.key);
-    } else {
-      filter = pattern;
-    }
+    const bindings: Readonly<Binding>[] = [];
+    const filter: BindingFilter =
+      pattern == null ||
+      typeof pattern === 'string' ||
+      pattern instanceof RegExp
+        ? Context.bindingKeyFilter(pattern)
+        : pattern;
 
     for (const b of this.registry.values()) {
       if (filter(b)) bindings.push(b);
@@ -190,6 +251,21 @@ export class Context {
 
     const parentBindings = this._parent && this._parent.find(filter);
     return this._mergeWithParent(bindings, parentBindings);
+  }
+
+  /**
+   * Create a binding filter from key pattern
+   * @param keyPattern Binding key, wildcard, or regexp
+   */
+  static bindingKeyFilter(keyPattern?: string | RegExp) {
+    let filter: BindingFilter = binding => true;
+    if (typeof keyPattern === 'string') {
+      const regex = wildcardToRegExp(keyPattern);
+      filter = binding => regex.test(binding.key);
+    } else if (keyPattern instanceof RegExp) {
+      filter = binding => keyPattern.test(binding.key);
+    }
+    return filter;
   }
 
   /**
@@ -209,22 +285,32 @@ export class Context {
   findByTag<ValueType = BoundValue>(
     tagFilter: string | RegExp | TagMap,
   ): Readonly<Binding<ValueType>>[] {
-    if (typeof tagFilter === 'string' || tagFilter instanceof RegExp) {
-      const regexp =
-        typeof tagFilter === 'string'
-          ? this.wildcardToRegExp(tagFilter)
-          : tagFilter;
-      return this.find(b => Array.from(b.tagNames).some(t => regexp!.test(t)));
-    }
+    return this.find(Context.bindingTagFilter(tagFilter));
+  }
 
-    return this.find(b => {
-      for (const t in tagFilter) {
-        // One tag name/value does not match
-        if (b.tagMap[t] !== tagFilter[t]) return false;
-      }
-      // All tag name/value pairs match
-      return true;
-    });
+  /**
+   * Create a binding filter for the tag pattern
+   * @param tagPattern
+   */
+  static bindingTagFilter(tagPattern: string | RegExp | TagMap) {
+    let bindingFilter: BindingFilter;
+    if (typeof tagPattern === 'string' || tagPattern instanceof RegExp) {
+      const regexp =
+        typeof tagPattern === 'string'
+          ? wildcardToRegExp(tagPattern)
+          : tagPattern;
+      bindingFilter = b => Array.from(b.tagNames).some(t => regexp!.test(t));
+    } else {
+      bindingFilter = b => {
+        for (const t in tagPattern) {
+          // One tag name/value does not match
+          if (b.tagMap[t] !== tagPattern[t]) return false;
+        }
+        // All tag name/value pairs match
+        return true;
+      };
+    }
+    return bindingFilter;
   }
 
   protected _mergeWithParent<ValueType>(
@@ -493,4 +579,21 @@ export class Context {
     }
     return json;
   }
+}
+
+/**
+ * Convert a wildcard pattern to RegExp
+ * @param pattern A wildcard string with `*` and `?` as special characters.
+ * - `*` matches zero or more characters except `.` and `:`
+ * - `?` matches exactly one character except `.` and `:`
+ */
+function wildcardToRegExp(pattern: string): RegExp {
+  // Escape reserved chars for RegExp:
+  // `- \ ^ $ + . ( ) | { } [ ] :`
+  let regexp = pattern.replace(/[\-\[\]\/\{\}\(\)\+\.\\\^\$\|\:]/g, '\\$&');
+  // Replace wildcard chars `*` and `?`
+  // `*` matches zero or more characters except `.` and `:`
+  // `?` matches one character except `.` and `:`
+  regexp = regexp.replace(/\*/g, '[^.:]*').replace(/\?/g, '[^.:]');
+  return new RegExp(`^${regexp}$`);
 }
