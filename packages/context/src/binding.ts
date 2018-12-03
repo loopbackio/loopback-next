@@ -112,6 +112,11 @@ export enum BindingType {
    * A provider class with `value()` function to get the value
    */
   PROVIDER = 'Provider',
+
+  /**
+   * A value that will be bound later.
+   */
+  DEFERRED = 'Deferred',
 }
 
 // tslint:disable-next-line:no-any
@@ -415,6 +420,24 @@ export class Binding<T = BoundValue> {
     this.type = BindingType.CLASS;
     this._getValue = (ctx, session) => instantiateClass(ctor, ctx!, session);
     this.valueConstructor = ctor;
+    return this;
+  }
+
+  /**
+   * Define the binding as deferred: the actual value will be configured
+   * later, typically via `@inject.setter`.
+   */
+  toDeferred(): this {
+    debug('Bind %s as deferred', this.key);
+    this.type = BindingType.DEFERRED;
+    this._getValue = (ctx, session) =>
+      Promise.reject(
+        new Error(
+          `There was no value provided for "${
+            this.key
+          }" yet. Consider using \`@inject.getter()\`.`,
+        ),
+      );
     return this;
   }
 

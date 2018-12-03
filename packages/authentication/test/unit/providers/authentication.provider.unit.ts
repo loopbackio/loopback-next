@@ -17,6 +17,7 @@ describe('AuthenticateActionProvider', () => {
       const context = new Context();
       const strategy = new MockStrategy();
       context.bind(AuthenticationBindings.STRATEGY).to(strategy);
+      context.bind(AuthenticationBindings.CURRENT_USER).toDeferred();
       const provider = await instantiateClass(
         AuthenticateActionProvider,
         context,
