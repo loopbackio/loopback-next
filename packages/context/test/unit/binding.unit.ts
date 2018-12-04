@@ -173,6 +173,15 @@ describe('Binding', () => {
     });
   });
 
+  describe('toDeferred()', () => {
+    it('throws a helpful error', () => {
+      binding.toDeferred();
+      expect(() => binding.getValue(ctx)).to.throw(
+        /foo.*was not set.*inject\.getter/,
+      );
+    });
+  });
+
   describe('toJSON()', () => {
     it('converts a keyed binding to plain JSON object', () => {
       const json = binding.toJSON();

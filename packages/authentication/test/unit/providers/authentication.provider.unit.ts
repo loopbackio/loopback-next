@@ -10,14 +10,14 @@ import {AuthenticateFn, UserProfile, AuthenticationBindings} from '../../..';
 import {MockStrategy} from '../fixtures/mock-strategy';
 import {Strategy} from 'passport';
 import {AuthenticateActionProvider} from '../../../src/providers';
+import {givenContext} from '../unit-helpers';
 
 describe('AuthenticateActionProvider', () => {
   describe('constructor()', () => {
     it('instantiateClass injects authentication.strategy in the constructor', async () => {
-      const context = new Context();
+      const context = givenContext();
       const strategy = new MockStrategy();
       context.bind(AuthenticationBindings.STRATEGY).to(strategy);
-      context.bind(AuthenticationBindings.CURRENT_USER).toDeferred();
       const provider = await instantiateClass(
         AuthenticateActionProvider,
         context,
@@ -53,7 +53,7 @@ describe('AuthenticateActionProvider', () => {
 
     describe('context.get(provider_key)', () => {
       it('returns a function which authenticates a request and returns a user', async () => {
-        const context: Context = new Context();
+        const context: Context = givenContext();
         context.bind(AuthenticationBindings.STRATEGY).to(strategy);
         context
           .bind(AuthenticationBindings.AUTH_ACTION)
@@ -67,7 +67,7 @@ describe('AuthenticateActionProvider', () => {
       });
 
       it('throws an error if the injected passport strategy is not valid', async () => {
-        const context: Context = new Context();
+        const context: Context = givenContext();
         context.bind(AuthenticationBindings.STRATEGY).to({} as Strategy);
         context
           .bind(AuthenticationBindings.AUTH_ACTION)
@@ -86,7 +86,7 @@ describe('AuthenticateActionProvider', () => {
       });
 
       it('throws Unauthorized error when authentication fails', async () => {
-        const context: Context = new Context();
+        const context: Context = givenContext();
         context.bind(AuthenticationBindings.STRATEGY).to(strategy);
         context
           .bind(AuthenticationBindings.AUTH_ACTION)

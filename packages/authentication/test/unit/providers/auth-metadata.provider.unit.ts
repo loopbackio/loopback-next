@@ -8,6 +8,7 @@ import {CoreBindings} from '@loopback/core';
 import {Context, Provider} from '@loopback/context';
 import {AuthenticationMetadata, authenticate} from '../../..';
 import {AuthMetadataProvider} from '../../../src/providers';
+import {givenContext} from '../unit-helpers';
 
 describe('AuthMetadataProvider', () => {
   let provider: Provider<AuthenticationMetadata | undefined>;
@@ -36,7 +37,7 @@ describe('AuthMetadataProvider', () => {
 
     describe('context.get(provider_key)', () => {
       it('returns the auth metadata of a controller method', async () => {
-        const context: Context = new Context();
+        const context: Context = givenContext();
         context.bind(CoreBindings.CONTROLLER_CLASS).to(TestController);
         context.bind(CoreBindings.CONTROLLER_METHOD_NAME).to('whoAmI');
         context
@@ -52,7 +53,7 @@ describe('AuthMetadataProvider', () => {
       });
 
       it('returns undefined if no auth metadata is defined', async () => {
-        const context: Context = new Context();
+        const context: Context = givenContext();
         context
           .bind(CoreBindings.CONTROLLER_CLASS)
           .to(ControllerWithNoMetadata);

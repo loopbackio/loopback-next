@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect, sinon} from '@loopback/testlab';
 import {
   Context,
   inject,
@@ -18,7 +18,10 @@ const INFO_CONTROLLER = 'controllers.info';
 
 describe('Context bindings - Injecting dependencies of classes', () => {
   let ctx: Context;
+  let stub: sinon.SinonStub;
+
   beforeEach('given a context', createContext);
+  afterEach('reset stubs', resetStubs);
 
   it('injects constructor args', async () => {
     ctx.bind('application.name').to('CodeHub');
@@ -163,6 +166,8 @@ describe('Context bindings - Injecting dependencies of classes', () => {
   });
 
   it('injects a setter function', async () => {
+    ctx.bind('key').toDeferred();
+
     class Store {
       constructor(@inject.setter('key') public setter: Setter<string>) {}
     }
@@ -173,6 +178,39 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     expect(store.setter).to.be.Function();
     store.setter('a-value');
     expect(ctx.getSync('key')).to.equal('a-value');
+  });
+
+  it('warns when injecting a setter for an unknown key', () => {
+    stub = sinon.stub(console, 'warn');
+
+    class Store {
+      constructor(
+        @inject.setter('current.user') public setter: Setter<string>,
+      ) {}
+    }
+    ctx.bind('store').toClass(Store);
+    ctx.getSync<Store>('store');
+
+    sinon.assert.calledWith(
+      stub,
+      sinon.match(/inject\.setter.*toDeferred.*current.user/),
+    );
+  });
+
+  it('injecting a setter for a key inherited from a parent context', () => {
+    stub = sinon.stub(console, 'warn');
+
+    class Store {
+      constructor(
+        @inject.setter('current.user') public setter: Setter<string>,
+      ) {}
+    }
+    ctx.bind('store').toClass(Store);
+    ctx.bind('current.user').toDeferred();
+    const childCtx = new Context(ctx, 'child-context');
+    childCtx.getSync<Store>('store');
+
+    sinon.assert.notCalled(stub);
   });
 
   it('creates getter from a value', () => {
@@ -324,5 +362,9 @@ describe('Context bindings - Injecting dependencies of classes', () => {
 
   function createContext() {
     ctx = new Context();
+  }
+
+  function resetStubs() {
+    if (stub) stub.restore();
   }
 });

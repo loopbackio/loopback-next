@@ -430,14 +430,12 @@ export class Binding<T = BoundValue> {
   toDeferred(): this {
     debug('Bind %s as deferred', this.key);
     this.type = BindingType.DEFERRED;
-    this._getValue = (ctx, session) =>
-      Promise.reject(
-        new Error(
-          `There was no value provided for "${
-            this.key
-          }" yet. Consider using \`@inject.getter()\`.`,
-        ),
+    this._getValue = (ctx, session) => {
+      throw new Error(
+        `The value for "${this.key}" was not set yet. ` +
+          'Use `@inject.getter()` to defer value resolution until later.',
       );
+    };
     return this;
   }
 

@@ -233,7 +233,13 @@ export namespace inject {
     bindingKey: BindingAddress<BoundValue>,
     metadata?: InjectionMetadata,
   ) {
-    metadata = Object.assign({decorator: '@inject.setter'}, metadata);
+    metadata = Object.assign(
+      {
+        decorator: '@inject.setter',
+        callSite: new Error(),
+      },
+      metadata,
+    );
     return inject(bindingKey, metadata, resolveAsSetter);
   };
 
@@ -294,13 +300,21 @@ function resolveAsGetter(
 
 function resolveAsSetter(ctx: Context, injection: Injection) {
   const key = injection.bindingKey;
-  if (!ctx.contains(key)) {
+  if (!ctx.isBound(key)) {
     // TODO(bajtos) Throw an Error in the next semver-major version
     console.warn(
       'To avoid a common source of errors, bindings set via `@inject.setter` ' +
         'should be defined via bind(key).toDeferred() first. ' +
-        `The binding key: "${key}"`,
+        `Binding key: "${key}"`,
     );
+    const callSite = injection.metadata && injection.metadata.callSite;
+    if (callSite) {
+      const stack = callSite.stack
+        .split(/\n/)
+        .slice(2) // remove error-message and our stack frame
+        .join('\n');
+      console.warn(stack);
+    }
   }
 
   // No resolution session should be propagated into the setter
