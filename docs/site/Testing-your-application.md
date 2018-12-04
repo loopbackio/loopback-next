@@ -404,37 +404,44 @@ Unit tests should apply to the smallest piece of code possible to ensure that
 other variables and state changes do not pollute the result. A typical unit test
 creates a controller instance with dependencies replaced by test doubles and
 directly calls the tested method. The example below gives the controller a stub
-implementation of its repository dependency, ensures the controller calls the
-repository's `find()` method with a correct query, and returns back the query
-results. See [Create a stub repository](#create-a-stub-repository) for a
-detailed explanation.
+implementation of its repository dependency using the `testlab`
+`createStubInstance` function, ensures the controller calls the repository's
+`find()` method with a correct query, and returns back the query results. See
+[Create a stub repository](#create-a-stub-repository) for a detailed
+explanation.
 
 {% include code-caption.html content="test/unit/controllers/product.controller.unit.ts" %}
 
 ```ts
-import {expect, sinon} from '@loopback/testlab';
+import {
+  createStubInstance,
+  expect,
+  sinon,
+  StubbedInstanceWithSinonAccessor,
+} from '@loopback/testlab';
 import {ProductRepository} from '../../../src/repositories';
 import {ProductController} from '../../../src/controllers';
 
 describe('ProductController (unit)', () => {
-  let repository: ProductRepository;
+  let repository: StubbedInstanceWithSinonAccessor<ProductRepository>;
   beforeEach(givenStubbedRepository);
 
   describe('getDetails()', () => {
     it('retrieves details of a product', async () => {
       const controller = new ProductController(repository);
-      const findStub = repository.find as sinon.SinonStub;
-      findStub.resolves([{name: 'Pen', slug: 'pen'}]);
+      repository.stubs.find.resolves([{name: 'Pen', slug: 'pen'}]);
 
       const details = await controller.getDetails('pen');
 
       expect(details).to.containEql({name: 'Pen', slug: 'pen'});
-      sinon.assert.calledWithMatch(findStub, {where: {slug: 'pen'}});
+      sinon.assert.calledWithMatch(repository.stubs.find, {
+        where: {slug: 'pen'},
+      });
     });
   });
 
   function givenStubbedRepository() {
-    repository = sinon.createStubInstance(ProductRepository);
+    repository = createStubInstance(ProductRepository);
   }
 });
 ```
