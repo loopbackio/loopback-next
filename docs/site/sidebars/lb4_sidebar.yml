@@ -116,6 +116,10 @@ children:
     url: Context.html
     output: 'web, pdf'
 
+  - title: 'Binding'
+    url: Binding.html
+    output: 'web, pdf'
+
   - title: 'Dependency injection'
     url: Dependency-injection.html
     output: 'web, pdf'
