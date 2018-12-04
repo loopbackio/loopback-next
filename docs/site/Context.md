@@ -135,93 +135,27 @@ class MySequence extends DefaultSequence {
 
 ## Storing and retrieving items from a Context
 
-Items in the Context are indexed via a key and bound to a `ContextValue`. A
-`ContextKey` is simply a string value and is used to look up whatever you store
+Items in the Context are indexed via a key and bound to a `BoundValue`. A
+`BindingKey` is simply a string value and is used to look up whatever you store
 along with the key. For example:
 
 ```ts
 // app level
 const app = new Application();
-app.bind('hello').to('world'); // ContextKey='hello', ContextValue='world'
+app.bind('hello').to('world'); // BindingKey='hello', BoundValue='world'
 console.log(app.getSync<string>('hello')); // => 'world'
 ```
 
-In this case, we bind the 'world' string ContextValue to the 'hello' ContextKey.
-When we fetch the ContextValue via `getSync`, we give it the ContextKey and it
-returns the ContextValue that was initially bound (we can do other fancy things
+In this case, we bind the 'world' string BoundValue to the 'hello' BindingKey.
+When we fetch the BoundValue via `getSync`, we give it the BindingKey and it
+returns the BoundValue that was initially bound (we can do other fancy things
 too -- ie. instantiate your classes, etc)
 
-The process of registering a ContextValue into the Context is known as
-_binding_. Sequence-level bindings work the same way.
+The process of registering a BoundValue into the Context is known as _binding_.
+Please find more details at [Binding](Binding.md).
 
 For a list of the available functions you can use for binding, visit the
 [Context API Docs](http://apidocs.loopback.io/@loopback%2fdocs/context.html).
-
-### Encoding value types in binding keys
-
-Consider the example from the previous section:
-
-```ts
-app.bind('hello').to('world');
-console.log(app.getSync<string>('hello'));
-```
-
-The code obtaining the bound value is explicitly specifying the type of this
-value. Such solution is far from ideal:
-
-1.  Consumers have to know the exact name of the type that's associated with
-    each binding key and also where to import it from.
-2.  Consumers must explicitly provide this type to the compiler when calling
-    ctx.get in order to benefit from compile-type checks.
-3.  It's easy to accidentally provide a wrong type when retrieving the value and
-    get a false sense of security.
-
-The third point is important because the bugs can be subtle and difficult to
-spot.
-
-Consider the following REST binding key:
-
-```ts
-export const HOST = 'rest.host';
-```
-
-The binding key does not provide any indication that `undefined` is a valid
-value for the HOST binding. Without that knowledge, one could write the
-following code and get it accepted by TypeScript compiler, only to learn at
-runtime that HOST may be also undefined and the code needs to find the server's
-host name using a different way.:
-
-```ts
-const resolve = promisify(dns.resolve);
-
-const host = await ctx.get<string>(RestBindings.HOST);
-const records = await resolve(host);
-// etc.
-```
-
-To address this problem, LoopBack provides a templated wrapper class allowing
-binding keys to encode the value type too. The `HOST` binding described above
-can be defined as follows:
-
-```ts
-export const HOST = new BindingKey<string | undefined>('rest.host');
-```
-
-Context methods like `.get()` and `.getSync()` understand this wrapper and use
-the value type from the binding key to describe the type of the value they are
-returning themselves. This allows binding consumers to omit the expected value
-type when calling `.get()` and `.getSync()`.
-
-When we rewrite the failing snippet resolving HOST names to use the new API, the
-TypeScript compiler immediatelly tells us about the problem:
-
-```ts
-const host = await ctx.get(RestBindings.HOST);
-const records = await resolve(host);
-// Compiler complains:
-// - cannot convert string | undefined to string
-//  - cannot convert undefined to string
-```
 
 ## Dependency injection
 
