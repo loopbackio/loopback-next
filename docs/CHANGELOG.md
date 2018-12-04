@@ -412,7 +412,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 has been renamed to ForeignKeyType and switched with Target generic.
 Also, the function createHasManyRepositoryFactory also renames the same
 generic and makes it the last declared generic. Lastly, the generic
-ForeignKeyType is added to DefaultCrudRepository#_createHasManyRepository
+ForeignKeyType is added to DefaultCrudRepository#createHasManyRepository
 FactoryFor function. Assuming there is an Order and Customer model defined,
 see the following examples for upgrade instructions:
 

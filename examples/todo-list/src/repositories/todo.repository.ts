@@ -29,7 +29,7 @@ export class TodoRepository extends DefaultCrudRepository<
   ) {
     super(Todo, dataSource);
 
-    this.todoList = this._createBelongsToAccessorFor(
+    this.todoList = this.createBelongsToAccessorFor(
       'todoList',
       todoListRepositoryGetter,
     );

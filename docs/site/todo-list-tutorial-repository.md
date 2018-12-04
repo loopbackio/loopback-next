@@ -42,7 +42,7 @@ From there, we'll need to make two more additions:
 - inject `TodoRepository` instance
 
 Once the property type for `todos` has been defined, use
-`this._createHasManyRepositoryFactoryFor` to assign it a repository constraining
+`this.createHasManyRepositoryFactoryFor` to assign it a repository constraining
 factory function. Pass in the name of the relationship (`todos`) and the Todo
 repository instance to constrain as the arguments for the function.
 
@@ -74,7 +74,7 @@ export class TodoListRepository extends DefaultCrudRepository<
     protected todoRepositoryGetter: Getter<TodoRepository>,
   ) {
     super(TodoList, dataSource);
-    this.todos = this._createHasManyRepositoryFactoryFor(
+    this.todos = this.createHasManyRepositoryFactoryFor(
       'todos',
       todoRepositoryGetter,
     );
