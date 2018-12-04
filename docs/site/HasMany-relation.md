@@ -108,7 +108,7 @@ repository, the following are required:
 - Declare a property with the factory function type
   `HasManyRepositoryFactory<targetModel, typeof sourceModel.prototype.id>` on
   the source repository class.
-- call the `_createHasManyRepositoryFactoryFor` function in the constructor of
+- call the `createHasManyRepositoryFactoryFor` function in the constructor of
   the source repository class with the relation name (decorated relation
   property on the source model) and target repository instance and assign it the
   property mentioned above.
@@ -143,7 +143,7 @@ export class CustomerRepository extends DefaultCrudRepository<
     getOrderRepository: Getter<OrderRepository>,
   ) {
     super(Customer, db);
-    this.orders = this._createHasManyRepositoryFactoryFor(
+    this.orders = this.createHasManyRepositoryFactoryFor(
       'orders',
       getOrderRepository,
     );
