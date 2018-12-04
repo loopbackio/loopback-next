@@ -30,64 +30,65 @@ export enum BindingScope {
    *
    * For example, with the following context hierarchy:
    *
-   * - app (with a binding 'b1' that produces sequential values 0, 1, ...)
+   * - `app` (with a binding `'b1'` that produces sequential values 0, 1, ...)
    *   - req1
    *   - req2
    *
-   * // get('b1') produces a new value each time for app and its descendants
-   * app.get('b1') ==> 0
-   * req1.get('b1') ==> 1
-   * req2.get('b1') ==> 2
-   * req2.get('b1') ==> 3
-   * app.get('b1') ==> 4
+   * Now `'b1'` is resolved to a new value each time for `app` and its
+   * descendants `req1` and `req2`:
+   * - app.get('b1') ==> 0
+   * - req1.get('b1') ==> 1
+   * - req2.get('b1') ==> 2
+   * - req2.get('b1') ==> 3
+   * - app.get('b1') ==> 4
    */
   TRANSIENT = 'Transient',
 
   /**
    * The binding provides a value as a singleton within each local context. The
-   * value is calculated only once per context and cached for subsequenicial
+   * value is calculated only once per context and cached for subsequential
    * uses. Child contexts have their own value and do not share with their
    * ancestors.
    *
    * For example, with the following context hierarchy:
    *
-   * - app (with a binding 'b1' that produces sequential values 0, 1, ...)
+   * - `app` (with a binding `'b1'` that produces sequential values 0, 1, ...)
    *   - req1
    *   - req2
    *
-   * // 0 is the singleton for app afterward
-   * app.get('b1') ==> 0
+   * 1. `0` is the resolved value for `'b1'` within the `app` afterward
+   * - app.get('b1') ==> 0 (always)
    *
-   * // 'b1' is found in app but not in req1, a new value 1 is calculated.
-   * // 1 is the singleton for req1 afterward
-   * req1.get('b1') ==> 1
+   * 2. `'b1'` is resolved in `app` but not in `req1`, a new value `1` is
+   * calculated and used for `req1` afterward
+   * - req1.get('b1') ==> 1 (always)
    *
-   * // 'b1' is found in app but not in req2, a new value 2 is calculated.
-   * // 2 is the singleton for req2 afterward
-   * req2.get('b1') ==> 2
+   * 3. `'b1'` is resolved in `app` but not in `req2`, a new value `2` is
+   * calculated and used for `req2` afterward
+   * - req2.get('b1') ==> 2 (always)
    */
   CONTEXT = 'Context',
 
   /**
    * The binding provides a value as a singleton within the context hierarchy
    * (the owning context and its descendants). The value is calculated only
-   * once for the owning context and cached for subsequenicial uses. Child
+   * once for the owning context and cached for subsequential uses. Child
    * contexts share the same value as their ancestors.
    *
    * For example, with the following context hierarchy:
    *
-   * - app (with a binding 'b1' that produces sequential values 0, 1, ...)
+   * - `app` (with a binding `'b1'` that produces sequential values 0, 1, ...)
    *   - req1
    *   - req2
    *
-   * // 0 is the singleton for app afterward
-   * app.get('b1') ==> 0
+   * 1. `0` is the singleton for `app` afterward
+   * - app.get('b1') ==> 0 (always)
    *
-   * // 'b1' is found in app, reuse it
-   * req1.get('b1') ==> 0
+   * 2. `'b1'` is resolved in `app`, reuse it for `req1`
+   * - req1.get('b1') ==> 0 (always)
    *
-   * // 'b1' is found in app, reuse it
-   * req2.get('b1') ==> 0
+   * 3. `'b1'` is resolved in `app`, reuse it for `req2`
+   * - req2.get('b1') ==> 0 (always)
    */
   SINGLETON = 'Singleton',
 }
@@ -420,6 +421,25 @@ export class Binding<T = BoundValue> {
 
   unlock(): this {
     this.isLocked = false;
+    return this;
+  }
+
+  /**
+   * Apply a template function to set up the binding with scope, tags, and
+   * other attributes as a group.
+   *
+   * For example,
+   * ```ts
+   * const serverTemplate = (binding: Binding) =>
+   *   binding.inScope(BindingScope.SINGLETON).tag('server');
+   *
+   * const serverBinding = new Binding<RestServer>('servers.RestServer1');
+   * serverBinding.apply(serverTemplate);
+   * ```
+   * @param templateFn A function to configure the binding
+   */
+  apply(templateFn: (binding: Binding<T>) => void): this {
+    templateFn(this);
     return this;
   }
 
