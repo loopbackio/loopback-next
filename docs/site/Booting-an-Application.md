@@ -46,10 +46,12 @@ package (with custom booters).
 ## BootMixin
 
 Boot functionality can be added to a LoopBack 4 Application by mixing it with
-the `BootMixin`. The Mixin adds the `BootComponent` to your Application as well
-as convenience methods such as `app.boot()` and `app.booters()`. The Mixin also
-allows Components to set the property `booters` as an Array of `Booters`. They
-will be bound to the Application and called by the `Bootstrapper`.
+the `BootMixin`
+[mixin](http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/).
+This mixin adds the `BootComponent` to your Application as well as convenience
+methods such as `app.boot()` and `app.booters()`. The Mixin also allows
+Components to set the property `booters` as an Array of `Booters`. They will be
+bound to the Application and called by the `Bootstrapper`.
 
 Since this is a convention-based Bootstrapper, it is important to set a
 `projectRoot`, as all other artifact paths will be resolved relative to this
