@@ -173,6 +173,29 @@ describe('Binding', () => {
     });
   });
 
+  describe('apply(templateFn)', () => {
+    it('applies a template function', async () => {
+      binding.apply(b => {
+        b.inScope(BindingScope.SINGLETON).tag('myTag');
+      });
+      expect(binding.scope).to.eql(BindingScope.SINGLETON);
+      expect(binding.tagNames).to.eql(['myTag']);
+    });
+
+    it('sets up a placeholder value', async () => {
+      const toBeBound = (b: Binding<unknown>) => {
+        b.toDynamicValue(() => {
+          throw new Error(`Binding ${b.key} is not bound to a value yet`);
+        });
+      };
+      binding.apply(toBeBound);
+      ctx.add(binding);
+      await expect(ctx.get(binding.key)).to.be.rejectedWith(
+        /Binding foo is not bound to a value yet/,
+      );
+    });
+  });
+
   describe('toJSON()', () => {
     it('converts a keyed binding to plain JSON object', () => {
       const json = binding.toJSON();
