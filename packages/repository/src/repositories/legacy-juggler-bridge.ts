@@ -147,6 +147,29 @@ export class DefaultCrudRepository<T extends Entity, ID>
   }
 
   /**
+   * @deprecated
+   * Function to create a constrained relation repository factory
+   *
+   * Use `this.createHasManyRepositoryFactoryFor()` instaed
+   *
+   * @param relationName Name of the relation defined on the source model
+   * @param targetRepo Target repository instance
+   */
+  protected _createHasManyRepositoryFactoryFor<
+    Target extends Entity,
+    TargetID,
+    ForeignKeyType
+  >(
+    relationName: string,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+  ): HasManyRepositoryFactory<Target, ForeignKeyType> {
+    return this.createHasManyRepositoryFactoryFor(
+      relationName,
+      targetRepoGetter,
+    );
+  }
+
+  /**
    * Function to create a constrained relation repository factory
    *
    * ```ts
@@ -172,7 +195,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
    * @param relationName Name of the relation defined on the source model
    * @param targetRepo Target repository instance
    */
-  protected _createHasManyRepositoryFactoryFor<
+  protected createHasManyRepositoryFactoryFor<
     Target extends Entity,
     TargetID,
     ForeignKeyType
@@ -187,7 +210,29 @@ export class DefaultCrudRepository<T extends Entity, ID>
     );
   }
 
+  /**
+   * @deprecated
+   * Function to create a belongs to accessor
+   *
+   * Use `this.createBelongsToAccessorFor()` instaed
+   *
+   * @param relationName Name of the relation defined on the source model
+   * @param targetRepo Target repository instance
+   */
   protected _createBelongsToAccessorFor<Target extends Entity, TargetId>(
+    relationName: string,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetId>>,
+  ): BelongsToAccessor<Target, ID> {
+    return this.createBelongsToAccessorFor(relationName, targetRepoGetter);
+  }
+
+  /**
+   * Function to create a belongs to accessor
+   *
+   * @param relationName Name of the relation defined on the source model
+   * @param targetRepo Target repository instance
+   */
+  protected createBelongsToAccessorFor<Target extends Entity, TargetId>(
     relationName: string,
     targetRepoGetter: Getter<EntityCrudRepository<Target, TargetId>>,
   ): BelongsToAccessor<Target, ID> {

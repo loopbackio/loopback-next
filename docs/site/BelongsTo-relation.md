@@ -94,7 +94,7 @@ repository, the following are required:
 - Declare a property with the factory function type
   `BelongsToAccessor<targetModel, typeof sourceModel.prototype.id>` on the
   source repository class.
-- call the `_createBelongsToAccessorFor` function in the constructor of the
+- call the `createBelongsToAccessorFor` function in the constructor of the
   source repository class with the relation name (decorated relation property on
   the source model) and target repository instance and assign it the property
   mentioned above.
@@ -130,7 +130,7 @@ export class OrderRepository extends DefaultCrudRepository<
     customerRepositoryGetter: Getter<CustomerRepository>,
   ) {
     super(Order, db);
-    this.customer = this._createBelongsToAccessorFor(
+    this.customer = this.createBelongsToAccessorFor(
       'customer',
       customerRepositoryGetter,
     );
