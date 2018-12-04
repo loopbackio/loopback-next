@@ -68,8 +68,10 @@ export class WidgetController {
 A few variants of `@inject` are provided to declare special forms of
 dependencies:
 
-- `@inject.getter`: inject a getter function that returns a promise of the bound
-  value of the key
+### `@inject.getter`
+
+The getter decorator injects a getter function that returns a promise of the
+bound value of the key.
 
 Syntax: `@inject.getter(bindingKey: string)`.
 
@@ -92,7 +94,10 @@ export class HelloController {
 }
 ```
 
-- `@inject.setter`: inject a setter function to set the bound value of the key
+### `@inject.setter`
+
+The setter decorator injects a setter function to set the bound value of the
+key.
 
 Syntax: `@inject.setter(bindingKey: string)`.
 
@@ -111,8 +116,17 @@ export class HelloController {
 }
 ```
 
-- `@inject.tag`: inject an array of values by a pattern or regexp to match
-  binding tags
+{% include note.html content="Values bound via `@inject.setter` must be
+typically consumed via `@inject.getter`. Users (application developers) are
+often not aware of this distinction and use `@inject` to receive the new Element
+before it was bound. To make troubleshooting easier, you must declare these
+Elements during application or component setup using `bind(key).toDeferred()`
+API." %}
+
+### `@inject.tag`
+
+The tag decorator injects an array of values by a pattern or regexp to match
+binding tags.
 
 Syntax: `@inject.tag(tag: string | RegExp)`.
 
@@ -135,7 +149,9 @@ const store = ctx.getSync<Store>('store');
 console.log(store.locations); // ['San Francisco', 'San Jose']
 ```
 
-- `@inject.context`: inject the current context
+### `@inject.context`
+
+The context decorator injects the current context.
 
 Syntax: `@inject.context()`.
 

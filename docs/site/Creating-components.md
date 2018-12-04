@@ -322,6 +322,29 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
 }
 ```
 
+Elements contributed via `@inject.setter` must be typically consumed via
+`@inject.getter`. Users (application developers) are often not aware of this
+distinction and use `@inject` to receive the new Element before it was bound. To
+make troubleshooting easier, you must declare these Elements during component
+setup using `bind(key).toDeferred()` API.
+
+For example:
+
+```ts
+export class AuthenticationComponent implements Component {
+  bindings: Binding[] = [];
+  // ...
+
+  constructor() {
+    // ...
+
+    this.bindings.push(
+      Binding.bind(AuthenticationBindings.CURRENT_USER).toDeferred(),
+    );
+  }
+}
+```
+
 ## Extending Application with Mixins
 
 When binding a component to an app, you may want to extend the app with the
