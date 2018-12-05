@@ -33,5 +33,9 @@ export class TodoRepository extends DefaultCrudRepository<
       'todoList',
       todoListRepositoryGetter,
     );
+    this._inclusionHandler.registerHandler<
+      TodoList,
+      typeof TodoList.prototype.id
+    >('todoList', todoListRepositoryGetter);
   }
 }

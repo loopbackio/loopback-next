@@ -56,7 +56,7 @@ export function createHasManyRepositoryFactory<
   };
 }
 
-type HasManyResolvedDefinition = HasManyDefinition & {keyTo: string};
+export type HasManyResolvedDefinition = HasManyDefinition & {keyTo: string};
 
 /**
  * Resolves given hasMany metadata if target is specified to be a resolver.
@@ -64,7 +64,7 @@ type HasManyResolvedDefinition = HasManyDefinition & {keyTo: string};
  * belongsTo metadata
  * @param relationMeta hasMany metadata to resolve
  */
-function resolveHasManyMetadata(
+export function resolveHasManyMetadata(
   relationMeta: HasManyDefinition,
 ): HasManyResolvedDefinition {
   if (!isTypeResolver(relationMeta.target)) {
@@ -73,7 +73,7 @@ function resolveHasManyMetadata(
   }
 
   if (relationMeta.keyTo) {
-    // The explict cast is needed because of a limitation of type inference
+    // The explicit cast is needed because of a limitation of type inference
     return relationMeta as HasManyResolvedDefinition;
   }
 

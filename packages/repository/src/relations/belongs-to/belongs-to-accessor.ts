@@ -48,7 +48,7 @@ export function createBelongsToAccessor<
   };
 }
 
-type BelongsToResolvedDefinition = BelongsToDefinition & {keyTo: string};
+export type BelongsToResolvedDefinition = BelongsToDefinition & {keyTo: string};
 
 /**
  * Resolves given belongsTo metadata if target is specified to be a resolver.
@@ -56,7 +56,7 @@ type BelongsToResolvedDefinition = BelongsToDefinition & {keyTo: string};
  * property id metadata
  * @param relationMeta belongsTo metadata to resolve
  */
-function resolveBelongsToMetadata(relationMeta: BelongsToDefinition) {
+export function resolveBelongsToMetadata(relationMeta: BelongsToDefinition) {
   if (!isTypeResolver(relationMeta.target)) {
     const reason = 'target must be a type resolver';
     throw new InvalidRelationError(reason, relationMeta);

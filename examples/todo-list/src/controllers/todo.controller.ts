@@ -43,8 +43,12 @@ export class TodoController {
   async findTodoById(
     @param.path.number('id') id: number,
     @param.query.boolean('items') items?: boolean,
+    @param.query.object('filter') filter?: Filter<Todo>,
   ): Promise<Todo> {
-    return await this.todoRepo.findById(id);
+    const hardcodedFilterForPoC = {
+      include: [{relation: 'todoList'}],
+    };
+    return await this.todoRepo.findById(id, hardcodedFilterForPoC);
   }
 
   @get('/todos', {

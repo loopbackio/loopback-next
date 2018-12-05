@@ -92,8 +92,18 @@ export class TodoListController {
       },
     },
   })
-  async findById(@param.path.number('id') id: number): Promise<TodoList> {
+  async findById(
     return await this.todoListRepository.findById(id);
+    @param.path.number('id') id: number,
+    @param.query.object('filter') filter?: Filter<TodoList>,
+  ): Promise<TodoList> {
+    // somehow the filter sent in the request query is undefined
+    // will dig more.
+    // hardcoded the inclusion filter in the PoC PR
+    const hardcodedFilterForPoC = {
+      include: [{relation: 'todos'}],
+    };
+    return await this.todoListRepository.findById(id, hardcodedFilterForPoC);
   }
 
   @patch('/todo-lists/{id}', {

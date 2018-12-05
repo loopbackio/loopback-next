@@ -155,6 +155,8 @@ export type Order<MT = AnyObject> = {[P in keyof MT]: Direction};
  */
 export type Fields<MT = AnyObject> = {[P in keyof MT]?: boolean};
 
+// The entity type provided for the scope filter is the source model
+// while it should be the target(related) model
 /**
  * Inclusion of related items
  *

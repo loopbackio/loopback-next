@@ -39,6 +39,18 @@ describe('BelongsTo relation', () => {
     expect(result).to.deepEqual(customer);
   });
 
+  it('can find order includes customer', async () => {
+    const customer = await customerRepo.create({name: 'Order McForder'});
+    const order = await orderRepo.create({
+      customerId: customer.id,
+      description: 'Order from Order McForder, the hoarder of Mordor',
+    });
+    const result = await controller.findOrderIncludesCustomer(order.id);
+    // The code won't work since Order model doesn't have a property called customer
+    // expect(result.customer.length).to.equal(1);
+    // expect(result.customer[0]).to.deepEqual(customer);
+  });
+
   //--- HELPERS ---//
 
   class OrderController {
@@ -48,6 +60,10 @@ describe('BelongsTo relation', () => {
 
     async findOwnerOfOrder(orderId: string) {
       return await this.orderRepository.customer(orderId);
+    }
+    async findOrderIncludesCustomer(orderId: string) {
+      const inclusionFilter = {include: [{relation: 'customer'}]};
+      return await this.orderRepository.findById(orderId, inclusionFilter);
     }
   }
 

@@ -69,6 +69,23 @@ describe('HasMany relation', () => {
     expect(persisted).to.deepEqual(foundOrders);
   });
 
+  it('can find related instances with include filter', async () => {
+    const order = await controller.createCustomerOrders(existingCustomerId, {
+      description: 'order 1',
+    });
+    const notMyOrder = await controller.createCustomerOrders(
+      existingCustomerId + 1,
+      {
+        description: 'order 2',
+      },
+    );
+    const foundCustomer = await controller.findCustomerIncludesOrders(
+      existingCustomerId,
+    );
+    expect(foundCustomer.orders.length).to.equal(1);
+    expect(foundCustomer.orders[0]).to.containEql(order);
+  });
+
   it('can patch many instances', async () => {
     await controller.createCustomerOrders(existingCustomerId, {
       description: 'order 1',
@@ -165,6 +182,14 @@ describe('HasMany relation', () => {
 
     async deleteCustomerOrders(customerId: number) {
       return await this.customerRepository.orders(customerId).delete();
+    }
+
+    async findCustomerIncludesOrders(customerId: number) {
+      const inclusionFilter = {include: [{relation: 'orders'}]};
+      return await this.customerRepository.findById(
+        customerId,
+        inclusionFilter,
+      );
     }
   }
 
