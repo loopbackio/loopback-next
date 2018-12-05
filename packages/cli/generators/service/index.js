@@ -83,7 +83,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
     let cmdDatasourceName;
     let datasourcesList;
 
-    // grab the datasourcename from the command line
+    // grab the datasource name from the command line
     cmdDatasourceName = this.options.datasource
       ? utils.toClassName(this.options.datasource) + 'Datasource'
       : '';
