@@ -44,7 +44,7 @@ describe('hasOne relation', () => {
       street: '123 test avenue',
     });
 
-    const persisted = await addressRepo.findById(address.customerId);
+    const persisted = await addressRepo.findById(address.zipcode);
     expect(persisted.toObject()).to.deepEqual(address.toObject());
   });
 
@@ -52,17 +52,19 @@ describe('hasOne relation', () => {
     const address = await controller.createCustomerAddress(existingCustomerId, {
       street: '123 test avenue',
     });
+    // FIXME(b-admike): memory connector doesn't support unique indexes
+    // need to see if we can make it work there.
     expect(
       controller.createCustomerAddress(existingCustomerId, {
         street: '456 test street',
       }),
-    ).to.be.rejectedWith(/Duplicate entry for Address.customerId/);
+    ).to.be.rejectedWith(/Duplicate entry/);
     expect(address.toObject()).to.containDeep({
       customerId: existingCustomerId,
       street: '123 test avenue',
     });
 
-    const persisted = await addressRepo.findById(address.customerId);
+    const persisted = await addressRepo.findById(address.zipcode);
     expect(persisted.toObject()).to.deepEqual(address.toObject());
   });
 
@@ -106,7 +108,7 @@ describe('hasOne relation', () => {
     const address = await controller.createCustomerAddress(existingCustomerId, {
       street: '123 test avenue',
     });
-    await addressRepo.deleteById(address.customerId);
+    await addressRepo.deleteById(address.zipcode);
 
     await expect(
       controller.findCustomerAddress(existingCustomerId),

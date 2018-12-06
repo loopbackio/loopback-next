@@ -78,7 +78,7 @@ describe('createHasOneRepositoryFactory', () => {
     ).to.throw(/target model Address is missing.*foreign key customerId/);
   });
 
-  it('rejects relations with keyTo that is not an id', () => {
+  it('rejects relations with keyTo that is not an index', () => {
     const relationMeta = givenHasOneDefinition({
       name: 'order',
       target: () => ModelWithoutIndexFK,
@@ -89,15 +89,13 @@ describe('createHasOneRepositoryFactory', () => {
         relationMeta,
         Getter.fromValue(customerRepo),
       ),
-    ).to.throw(
-      /foreign key customerId must be an id property that is not auto generated/,
-    );
+    ).to.throw(/foreign key customerId must be a unique index property/);
   });
 
-  it('rejects relations with keyTo that is a generated id property', () => {
+  it('rejects relations with keyTo that is not a unique index', () => {
     const relationMeta = givenHasOneDefinition({
       name: 'profile',
-      target: () => ModelWithGeneratedFK,
+      target: () => ModelWithoutUniqueIndexFK,
     });
 
     expect(() =>
@@ -105,9 +103,7 @@ describe('createHasOneRepositoryFactory', () => {
         relationMeta,
         Getter.fromValue(customerRepo),
       ),
-    ).to.throw(
-      /foreign key customerId must be an id property that is not auto generated/,
-    );
+    ).to.throw(/foreign key customerId must be a unique index property/);
   });
 
   /*------------- HELPERS ---------------*/
@@ -132,14 +128,11 @@ describe('createHasOneRepositoryFactory', () => {
     province: String;
   }
 
-  // added an id property because the model itself extends from Entity, but the
-  // purpose here is the decorated relational property is not part of the
-  // composite index, thus the name ModelWithoutIndexFK.
   class ModelWithoutIndexFK extends Entity {
-    static definition = new ModelDefinition('ModelWithoutIndexFK')
+    static definition = new ModelDefinition('ModelWithoutUniqueIndex')
       .addProperty('customerId', {
         type: 'string',
-        id: false,
+        index: false,
       })
       .addProperty('description', {
         type: 'string',
@@ -160,12 +153,13 @@ describe('createHasOneRepositoryFactory', () => {
     isShipped: boolean;
   }
 
-  class ModelWithGeneratedFK extends Entity {
-    static definition = new ModelDefinition('ModelWithGeneratedFK')
+  class ModelWithoutUniqueIndexFK extends Entity {
+    static definition = new ModelDefinition('ModelWithoutUniqueIndexFK')
       .addProperty('customerId', {
         type: 'string',
-        id: true,
-        generated: true,
+        index: {
+          unique: false,
+        },
       })
       .addProperty('description', {
         type: 'string',

@@ -100,8 +100,9 @@ function resolveHasOneMetadata(
   }
 
   const defaultFkProp = targetModel.definition.properties[defaultFkName];
-  if (!defaultFkProp.id || defaultFkProp.generated) {
-    const reason = `foreign key ${defaultFkName} must be an id property that is not auto generated`;
+  const uniqueFK = defaultFkProp.index && defaultFkProp.index.unique === true;
+  if (!uniqueFK) {
+    const reason = `foreign key ${defaultFkName} must be a unique index property`;
     throw new InvalidRelationError(reason, relationMeta);
   }
 
