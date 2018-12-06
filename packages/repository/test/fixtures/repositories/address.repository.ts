@@ -15,11 +15,11 @@ import {CustomerRepository} from '../repositories';
 
 export class AddressRepository extends DefaultCrudRepository<
   Address,
-  typeof Address.prototype.customerId
+  typeof Address.prototype.zipcode
 > {
   public readonly customer: BelongsToAccessor<
     Customer,
-    typeof Address.prototype.customerId
+    typeof Address.prototype.zipcode
   >;
 
   constructor(

@@ -130,35 +130,6 @@ describe('relation decorator', () => {
   });
 
   describe('belongsTo', () => {
-    it('creates juggler property metadata', () => {
-      @model()
-      class AddressBook extends Entity {
-        @property({id: true})
-        id: number;
-      }
-      @model()
-      class Address extends Entity {
-        @belongsTo(() => AddressBook)
-        addressBookId: number;
-      }
-      const jugglerMeta = MetadataInspector.getAllPropertyMetadata(
-        MODEL_PROPERTIES_KEY,
-        Address.prototype,
-      );
-      expect(jugglerMeta).to.eql({
-        addressBookId: {
-          type: Number,
-        },
-      });
-      expect(Address.definition.relations).to.containDeep({
-        addressBook: {
-          keyFrom: 'addressBookId',
-          name: 'addressBook',
-          type: 'belongsTo',
-        },
-      });
-    });
-
     it('assigns it to target key', () => {
       class Address extends Entity {
         addressId: number;

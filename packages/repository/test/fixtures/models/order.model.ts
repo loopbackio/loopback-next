@@ -27,5 +27,6 @@ export class Order extends Entity {
   isShipped: boolean;
 
   @belongsTo(() => Customer)
+  @property()
   customerId: number;
 }
