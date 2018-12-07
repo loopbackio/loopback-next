@@ -47,9 +47,11 @@ and tools contained in LoopBack repositories.
 
 ## [Documentation](http://loopback.io/doc/en/contrib/doc-contrib.html)
 
-LoopBack documentation is sourced in the
-[strongloop/loopback.io](https://github.com/strongloop/loopback.io) GitHub
-repository.
+LoopBack documentation is sourced in both the
+[strongloop/loopback.io](https://github.com/strongloop/loopback.io) and
+[strongloop/loopback-next](https://github.com/strongloop/loopback-next/tree/master/docs/site)
+GitHub repositories. The `loopback-next` repository holds the documentation for
+LoopBack 4.
 
 - [How LoopBack documentation works](http://loopback.io/doc/en/contrib/doc-contrib.html#how-loopback-documentation-works)
 - [Using Jekyll](http://loopback.io/doc/en/contrib/jekyll_getting_started.html)
