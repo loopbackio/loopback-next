@@ -93,7 +93,6 @@ export class TodoListController {
     },
   })
   async findById(
-    return await this.todoListRepository.findById(id);
     @param.path.number('id') id: number,
     @param.query.object('filter') filter?: Filter<TodoList>,
   ): Promise<TodoList> {

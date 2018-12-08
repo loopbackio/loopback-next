@@ -260,11 +260,12 @@ export class DefaultCrudRepository<T extends Entity, ID>
     const relatedItems = {} as AnyObject;
     if (filter && filter.include) {
       for (let i of filter.include) {
-        relatedItems[i.relation] = await this._fetchIncludedItems(
+        const results = await this._fetchIncludedItems(
           i.relation,
           [id],
           i.scope,
         );
+        if (results) relatedItems[i.relation] = results;
       }
       delete filter.include;
     }
@@ -288,7 +289,6 @@ export class DefaultCrudRepository<T extends Entity, ID>
     }
     const includedItems = await handler(ids, filter);
     return includedItems;
-  }
   }
 
   update(entity: T, options?: Options): Promise<void> {
