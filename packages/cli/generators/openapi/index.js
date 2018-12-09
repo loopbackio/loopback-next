@@ -38,6 +38,14 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       default: false,
       type: Boolean,
     });
+
+    this.option('promote-anonymous-schemas', {
+      description: 'Promote anonymous schemas as models',
+      required: false,
+      default: false,
+      type: Boolean,
+    });
+
     return super._setupGenerator();
   }
 
@@ -70,6 +78,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       const result = await loadAndBuildSpec(this.url, {
         log: this.log,
         validate: this.options.validate,
+        promoteAnonymousSchemas: this.options['promote-anonymous-schemas'],
       });
       debugJson('OpenAPI spec', result.apiSpec);
       Object.assign(this, result);
