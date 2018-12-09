@@ -4,14 +4,17 @@
 // License text available at https://opensource.org/licenses/MIT
 
 const expect = require('@loopback/testlab').expect;
-const {loadSpec} = require('../../../generators/openapi/spec-loader');
+const {
+  loadSpec,
+  loadAndBuildSpec,
+} = require('../../../generators/openapi/spec-loader');
 const {
   generateModelSpecs,
 } = require('../../../generators/openapi/schema-helper');
 const path = require('path');
 
 describe('schema to model', () => {
-  let usptoSpec, petstoreSpec, customerSepc;
+  let usptoSpec, usptoSpecAnonymous, petstoreSpec, customerSepc;
   const uspto = path.join(__dirname, '../../fixtures/openapi/3.0/uspto.yaml');
   const petstore = path.join(
     __dirname,
@@ -24,6 +27,9 @@ describe('schema to model', () => {
 
   before(async () => {
     usptoSpec = await loadSpec(uspto);
+    usptoSpecAnonymous = await loadAndBuildSpec(uspto, {
+      promoteAnonymousSchemas: true,
+    });
     petstoreSpec = await loadSpec(petstore);
     customerSepc = await loadSpec(customer);
   });
@@ -59,6 +65,103 @@ describe('schema to model', () => {
           '  apiVersionNumber?: string;\n  apiUrl?: string;\n' +
           '  apiDocumentationUrl?: string;\n}[];\n}',
         signature: 'DataSetList',
+      },
+    ]);
+  });
+
+  it('generates models for uspto with promoted anonymous schemas', () => {
+    const models = usptoSpecAnonymous.modelSpecs;
+    expect(models).to.eql([
+      {
+        description: 'dataSetList',
+        name: 'dataSetList',
+        className: 'DataSetList',
+        fileName: 'data-set-list.model.ts',
+        properties: [
+          {
+            name: 'total',
+            signature: 'total?: number;',
+            decoration: "@property({name: 'total'})",
+          },
+          {
+            name: 'apis',
+            signature:
+              'apis?: {\n  apiKey?: string;\n  apiVersionNumber?: string;\n  ' +
+              'apiUrl?: string;\n  apiDocumentationUrl?: string;\n}[];',
+            decoration: "@property({name: 'apis'})",
+          },
+        ],
+        imports: [],
+        import: "import {DataSetList} from './data-set-list.model';",
+        kind: 'class',
+        declaration:
+          '{\n  total?: number;\n  apis?: {\n  apiKey?: string;\n  ' +
+          'apiVersionNumber?: string;\n  apiUrl?: string;\n  ' +
+          'apiDocumentationUrl?: string;\n}[];\n}',
+        signature: 'DataSetList',
+      },
+      {
+        description: 'performSearchRequestBody',
+        name: 'performSearchRequestBody',
+        className: 'PerformSearchRequestBody',
+        fileName: 'perform-search-request-body.model.ts',
+        properties: [
+          {
+            name: 'criteria',
+            signature: "criteria: string = '*:*';",
+            decoration: "@property({name: 'criteria'})",
+            description:
+              'Uses Lucene Query Syntax in the format of propertyName:value, ' +
+              'propertyName:[num1 TO num2] and date range format: ' +
+              'propertyName:[yyyyMMdd TO yyyyMMdd]. In the response please ' +
+              "see the 'docs' element which has the list of record objects. " +
+              'Each record structure would consist of all the fields and ' +
+              'their corresponding values.',
+          },
+          {
+            name: 'start',
+            signature: 'start?: number = 0;',
+            decoration: "@property({name: 'start'})",
+            description: 'Starting record number. Default value is 0.',
+          },
+          {
+            name: 'rows',
+            signature: 'rows?: number = 100;',
+            decoration: "@property({name: 'rows'})",
+            description:
+              'Specify number of rows to be returned. If you run the search ' +
+              "with default values, in the response you will see 'numFound' " +
+              'attribute which will tell the number of records available in ' +
+              'the dataset.',
+          },
+        ],
+        imports: [],
+        import:
+          "import {PerformSearchRequestBody} from './perform-search-request-body.model';",
+        kind: 'class',
+        declaration:
+          "{\n  criteria: string = '*:*';\n  start?: number = 0;\n  " +
+          'rows?: number = 100;\n}',
+        signature: 'PerformSearchRequestBody',
+      },
+      {
+        description: 'performSearchResponseBody',
+        name: '{\n  [additionalProperty: string]: {\n  \n};\n}[]',
+        className: 'PerformSearchResponseBody',
+        fileName: 'perform-search-response-body.model.ts',
+        properties: [],
+        imports: [],
+        import:
+          'import {PerformSearchResponseBody} from ' +
+          "'./perform-search-response-body.model';",
+        declaration: '{\n  [additionalProperty: string]: {\n  \n};\n}[]',
+        signature: 'PerformSearchResponseBody',
+        itemType: {
+          imports: [],
+          declaration: '{\n  [additionalProperty: string]: {\n  \n};\n}',
+          properties: [],
+          signature: '{\n  [additionalProperty: string]: {\n  \n};\n}',
+        },
       },
     ]);
   });
