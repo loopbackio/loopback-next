@@ -46,8 +46,16 @@ Here are some requests you can try:
 - `POST /todos` with a body of `{ "title": "get the milk" }`
 - `GET /todos/{id}` using the ID you received from your `POST`, and see if you
   get your Todo object back.
-- `PATCH /todos/{id}` using the same ID, with a body of
+- `PATCH /todos/{id}`, using the same ID, with a body of
   `{ "desc": "need milk for cereal" }`
+
+{% include note.html content="
+For the meantime, use
+`{ \"title\": \"get the milk\", \"desc\": \"need milk for cereal\" }` as the
+body for `PATCH/todos/{id}`, as LoopBack 4 doesn't support partial updates yet.
+For more info, see
+[GitHub issue 1722](https://github.com/strongloop/loopback-next/issues/1722).
+" %}
 
 That's it! You've just created your first LoopBack 4 application!
 
