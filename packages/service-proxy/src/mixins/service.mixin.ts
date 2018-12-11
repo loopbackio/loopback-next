@@ -3,7 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Provider} from '@loopback/context';
+import {
+  Provider,
+  createBindingFromClass,
+  BindingScope,
+  Binding,
+} from '@loopback/context';
 import {Application} from '@loopback/core';
 
 /**
@@ -49,7 +54,7 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
      *
      * export class GeocoderServiceProvider implements Provider<GeocoderService> {
      *   constructor(
-     *     @inject('datasources.geocoder')
+     *     @inject('services.geocoder')
      *     protected dataSource: juggler.DataSource = new GeocoderDataSource(),
      *   ) {}
      *
@@ -61,12 +66,18 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
      * app.serviceProvider(GeocoderServiceProvider);
      * ```
      */
-    serviceProvider<S>(provider: Class<Provider<S>>): void {
-      const serviceName = provider.name.replace(/Provider$/, '');
-      const repoKey = `services.${serviceName}`;
-      this.bind(repoKey)
-        .toProvider(provider)
-        .tag('service');
+    serviceProvider<S>(
+      provider: Class<Provider<S>>,
+      name?: string,
+    ): Binding<S> {
+      const serviceName = name || provider.name.replace(/Provider$/, '');
+      const binding = createBindingFromClass(provider, {
+        name: serviceName,
+        namespace: 'services',
+        type: 'service',
+      }).inScope(BindingScope.SINGLETON);
+      this.add(binding);
+      return binding;
     }
 
     /**
@@ -89,8 +100,8 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
      * app.component(ProductComponent);
      * ```
      */
-    public component(component: Class<{}>) {
-      super.component(component);
+    public component(component: Class<unknown>, name?: string) {
+      super.component(component, name);
       this.mountComponentServices(component);
     }
 
@@ -101,7 +112,7 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
      *
      * @param component The component to mount services of
      */
-    mountComponentServices(component: Class<{}>) {
+    mountComponentServices(component: Class<unknown>) {
       const componentKey = `components.${component.name}`;
       const compInstance = this.getSync(componentKey);
 
@@ -119,8 +130,8 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
  */
 export interface ApplicationWithServices extends Application {
   // tslint:disable-next-line:no-any
-  serviceProvider<S>(provider: Class<Provider<S>>): void;
-  component(component: Class<{}>): void;
+  serviceProvider<S>(provider: Class<Provider<S>>, name?: string): Binding<S>;
+  component(component: Class<{}>, name?: string): Binding;
   mountComponentServices(component: Class<{}>): void;
 }
 
@@ -163,7 +174,9 @@ export class ServiceMixinDoc {
    * app.serviceProvider(GeocoderServiceProvider);
    * ```
    */
-  serviceProvider<S>(provider: Class<Provider<S>>): void {}
+  serviceProvider<S>(provider: Class<Provider<S>>): Binding<S> {
+    throw new Error();
+  }
 
   /**
    * Add a component to this application. Also mounts
@@ -185,7 +198,9 @@ export class ServiceMixinDoc {
    * app.component(ProductComponent);
    * ```
    */
-  public component(component: Class<{}>) {}
+  public component(component: Class<unknown>): Binding {
+    throw new Error();
+  }
 
   /**
    * Get an instance of a component and mount all it's
@@ -194,5 +209,5 @@ export class ServiceMixinDoc {
    *
    * @param component The component to mount services of
    */
-  mountComponentServices(component: Class<{}>) {}
+  mountComponentServices(component: Class<unknown>) {}
 }

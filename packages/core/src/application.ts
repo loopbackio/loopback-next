@@ -3,10 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, Binding, BindingScope, Constructor} from '@loopback/context';
-import {Server} from './server';
+import {
+  Binding,
+  BindingScope,
+  Constructor,
+  Context,
+  createBindingFromClass,
+} from '@loopback/context';
 import {Component, mountComponent} from './component';
 import {CoreBindings} from './keys';
+import {Server} from './server';
 
 /**
  * Application is the container for various types of artifacts, such as
@@ -40,10 +46,13 @@ export class Application extends Context {
    * ```
    */
   controller(controllerCtor: ControllerClass, name?: string): Binding {
-    name = name || controllerCtor.name;
-    return this.bind(`controllers.${name}`)
-      .toClass(controllerCtor)
-      .tag('controller');
+    const binding = createBindingFromClass(controllerCtor, {
+      name,
+      namespace: 'controllers',
+      type: 'controller',
+    });
+    this.add(binding);
+    return binding;
   }
 
   /**
@@ -66,13 +75,14 @@ export class Application extends Context {
   public server<T extends Server>(
     ctor: Constructor<T>,
     name?: string,
-  ): Binding {
-    const suffix = name || ctor.name;
-    const key = `${CoreBindings.SERVERS}.${suffix}`;
-    return this.bind(key)
-      .toClass(ctor)
-      .tag('server')
-      .inScope(BindingScope.SINGLETON);
+  ): Binding<T> {
+    const binding = createBindingFromClass(ctor, {
+      name,
+      namespace: CoreBindings.SERVERS,
+      type: 'server',
+    }).inScope(BindingScope.SINGLETON);
+    this.add(binding);
+    return binding;
   }
 
   /**
@@ -182,15 +192,16 @@ export class Application extends Context {
    * ```
    */
   public component(componentCtor: Constructor<Component>, name?: string) {
-    name = name || componentCtor.name;
-    const componentKey = `components.${name}`;
-    this.bind(componentKey)
-      .toClass(componentCtor)
-      .inScope(BindingScope.SINGLETON)
-      .tag('component');
+    const binding = createBindingFromClass(componentCtor, {
+      name,
+      namespace: 'components',
+      type: 'component',
+    }).inScope(BindingScope.SINGLETON);
+    this.add(binding);
     // Assuming components can be synchronously instantiated
-    const instance = this.getSync<Component>(componentKey);
+    const instance = this.getSync<Component>(binding.key);
     mountComponent(this, instance);
+    return binding;
   }
 
   /**
