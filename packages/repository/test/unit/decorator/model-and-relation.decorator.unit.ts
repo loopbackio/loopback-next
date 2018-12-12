@@ -8,7 +8,6 @@ import {expect} from '@loopback/testlab';
 import {RelationMetadata} from '../../..';
 import {
   belongsTo,
-  belongsToUniquely,
   embedsMany,
   embedsOne,
   Entity,
@@ -94,28 +93,12 @@ describe('model decorator', () => {
     @property({type: 'string', id: true, generated: true})
     id: string;
 
-    @belongsTo(
-      () => Customer,
-      {},
-      {
-        id: true,
-        generated: false,
-      },
-    )
+    @belongsTo(() => Customer)
     customerId: string;
 
     // Validates that property no longer requires a parameter
     @property()
     isShipped: boolean;
-  }
-
-  @model()
-  class RegistrationDate extends Entity {
-    @belongsToUniquely(() => Customer)
-    customerId: number;
-
-    @property()
-    registeredOn: Date;
   }
 
   @model()
@@ -301,32 +284,6 @@ describe('model decorator', () => {
     });
     expect(relationDef.source).to.be.exactly(Order);
     expect(relationDef.target()).to.be.exactly(Customer);
-  });
-
-  it('passes property metadata from belongsToUniquely', () => {
-    const propMeta =
-      MetadataInspector.getAllPropertyMetadata(
-        MODEL_PROPERTIES_KEY,
-        RegistrationDate.prototype,
-      ) || /* istanbul ignore next */ {};
-
-    expect(propMeta.customerId).to.containEql({
-      id: true,
-      generated: false,
-    });
-  });
-
-  it('passes property metadata from belongsTo', () => {
-    const propMeta =
-      MetadataInspector.getAllPropertyMetadata(
-        MODEL_PROPERTIES_KEY,
-        Order.prototype,
-      ) || /* istanbul ignore next */ {};
-
-    expect(propMeta.customerId).to.containEql({
-      id: true,
-      generated: false,
-    });
   });
 
   it('adds hasOne metadata', () => {

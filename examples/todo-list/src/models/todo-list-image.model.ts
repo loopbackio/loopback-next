@@ -1,9 +1,15 @@
-import {Entity, model, property, belongsToUniquely} from '@loopback/repository';
+import {Entity, model, property, belongsTo} from '@loopback/repository';
 import {TodoList} from './todo-list.model';
 
 @model()
 export class TodoListImage extends Entity {
-  @belongsToUniquely(() => TodoList)
+  @property({
+    type: 'number',
+    id: true,
+  })
+  id: number;
+
+  @belongsTo(() => TodoList)
   todoListId?: number;
 
   @property({
