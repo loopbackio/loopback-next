@@ -47,7 +47,7 @@ export class DefaultHasOneRepository<
   TargetRepository extends EntityCrudRepository<TargetEntity, TargetID>
 > implements HasOneRepository<TargetEntity> {
   /**
-   * Constructor of DefaultHasManyEntityCrudRepository
+   * Constructor of DefaultHasOneEntityCrudRepository
    * @param getTargetRepository the getter of the related target model repository instance
    * @param constraint the key value pair representing foreign key name to constrain
    * the target repository instance

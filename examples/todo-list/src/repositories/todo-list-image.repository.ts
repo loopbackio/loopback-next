@@ -10,11 +10,11 @@ import {TodoListRepository} from './todo-list.repository';
 
 export class TodoListImageRepository extends DefaultCrudRepository<
   TodoListImage,
-  typeof TodoListImage.prototype.todoListId
+  typeof TodoListImage.prototype.id
 > {
   public readonly todoList: BelongsToAccessor<
     TodoList,
-    typeof TodoListImage.prototype.todoListId
+    typeof TodoListImage.prototype.id
   >;
   constructor(
     @inject('datasources.db') dataSource: DbDataSource,
