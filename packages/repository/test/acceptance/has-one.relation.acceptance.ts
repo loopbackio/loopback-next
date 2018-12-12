@@ -44,11 +44,14 @@ describe('hasOne relation', () => {
       street: '123 test avenue',
     });
 
-    const persisted = await addressRepo.findById(address.customerId);
+    const persisted = await addressRepo.findById(address.zipcode);
     expect(persisted.toObject()).to.deepEqual(address.toObject());
   });
 
-  it('refuses to create related model instance twice', async () => {
+  // We do not enforce referential integrity at the moment. It is up to
+  // our users to set up unique constraint(s) between related models at the
+  // database level
+  it.skip('refuses to create related model instance twice', async () => {
     const address = await controller.createCustomerAddress(existingCustomerId, {
       street: '123 test avenue',
     });
@@ -62,7 +65,7 @@ describe('hasOne relation', () => {
       street: '123 test avenue',
     });
 
-    const persisted = await addressRepo.findById(address.customerId);
+    const persisted = await addressRepo.findById(address.zipcode);
     expect(persisted.toObject()).to.deepEqual(address.toObject());
   });
 
@@ -106,7 +109,7 @@ describe('hasOne relation', () => {
     const address = await controller.createCustomerAddress(existingCustomerId, {
       street: '123 test avenue',
     });
-    await addressRepo.deleteById(address.customerId);
+    await addressRepo.deleteById(address.zipcode);
 
     await expect(
       controller.findCustomerAddress(existingCustomerId),

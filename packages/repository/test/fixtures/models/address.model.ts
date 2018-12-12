@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, model, property, belongsToUniquely} from '../../..';
+import {Entity, model, property, belongsTo} from '../../..';
 import {Customer} from './customer.model';
 
 @model()
@@ -14,6 +14,7 @@ export class Address extends Entity {
   street: String;
   @property({
     type: 'string',
+    id: true,
   })
   zipcode: String;
   @property({
@@ -25,6 +26,6 @@ export class Address extends Entity {
   })
   province: String;
 
-  @belongsToUniquely(() => Customer)
+  @belongsTo(() => Customer)
   customerId: number;
 }

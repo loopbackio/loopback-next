@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Todo, TodoList} from '../src/models';
+import {Todo, TodoList, TodoListImage} from '../src/models';
 
 /*
  ==============================================================================
@@ -54,4 +54,18 @@ export function givenTodoList(todoList?: Partial<TodoList>) {
     todoList,
   );
   return new TodoList(data);
+}
+
+/**
+ * Generate a complete TodoListImage object for use with tests.
+ * @param todoListImage A partial (or complete) TodoListImage object.
+ */
+export function givenTodoListImage(todoListImage?: Partial<TodoListImage>) {
+  const data = Object.assign(
+    {
+      value: 'A picture of a basket of fruits',
+    },
+    todoListImage,
+  );
+  return new TodoListImage(data);
 }

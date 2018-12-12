@@ -78,38 +78,6 @@ describe('createHasOneRepositoryFactory', () => {
     ).to.throw(/target model Address is missing.*foreign key customerId/);
   });
 
-  it('rejects relations with keyTo that is not an id', () => {
-    const relationMeta = givenHasOneDefinition({
-      name: 'order',
-      target: () => ModelWithoutIndexFK,
-    });
-
-    expect(() =>
-      createHasOneRepositoryFactory(
-        relationMeta,
-        Getter.fromValue(customerRepo),
-      ),
-    ).to.throw(
-      /foreign key customerId must be an id property that is not auto generated/,
-    );
-  });
-
-  it('rejects relations with keyTo that is a generated id property', () => {
-    const relationMeta = givenHasOneDefinition({
-      name: 'profile',
-      target: () => ModelWithGeneratedFK,
-    });
-
-    expect(() =>
-      createHasOneRepositoryFactory(
-        relationMeta,
-        Getter.fromValue(customerRepo),
-      ),
-    ).to.throw(
-      /foreign key customerId must be an id property that is not auto generated/,
-    );
-  });
-
   /*------------- HELPERS ---------------*/
 
   class Address extends Entity {
@@ -131,51 +99,6 @@ describe('createHasOneRepositoryFactory', () => {
     city: String;
     province: String;
   }
-
-  // added an id property because the model itself extends from Entity, but the
-  // purpose here is the decorated relational property is not part of the
-  // composite index, thus the name ModelWithoutIndexFK.
-  class ModelWithoutIndexFK extends Entity {
-    static definition = new ModelDefinition('ModelWithoutIndexFK')
-      .addProperty('customerId', {
-        type: 'string',
-        id: false,
-      })
-      .addProperty('description', {
-        type: 'string',
-        required: true,
-      })
-      .addProperty('id', {
-        type: 'number',
-        id: true,
-      })
-
-      .addProperty('isShipped', {
-        type: 'boolean',
-        required: false,
-      });
-    id: number;
-    customerId: string;
-    description: string;
-    isShipped: boolean;
-  }
-
-  class ModelWithGeneratedFK extends Entity {
-    static definition = new ModelDefinition('ModelWithGeneratedFK')
-      .addProperty('customerId', {
-        type: 'string',
-        id: true,
-        generated: true,
-      })
-      .addProperty('description', {
-        type: 'string',
-        required: true,
-      });
-
-    customerId: string;
-    description: string;
-  }
-
   class Customer extends Entity {
     static definition = new ModelDefinition('Customer').addProperty('id', {
       type: Number,
