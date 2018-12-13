@@ -465,7 +465,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
     if (config.disabled) {
       debug('Redirect to swagger-ui was disabled by configuration.');
-      return next();
+      next();
+      return;
     }
 
     debug('Redirecting to swagger-ui from %j.', request.originalUrl);
