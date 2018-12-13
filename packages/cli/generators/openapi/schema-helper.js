@@ -160,7 +160,13 @@ function mapObjectType(schema, options) {
       );
       // The property name might have chars such as `-`
       const propName = escapePropertyOrMethodName(p);
+
       let propDecoration = `@property({name: '${p}'})`;
+
+      if (required.includes(p)) {
+        propDecoration = `@property({name: '${p}', required: true})`;
+      }
+
       if (propertyType.itemType && propertyType.itemType.kind === 'class') {
         // Use `@property.array` for array types
         propDecoration = `@property.array(${
