@@ -55,7 +55,7 @@ describe('hasOne relation', () => {
     const address = await controller.createCustomerAddress(existingCustomerId, {
       street: '123 test avenue',
     });
-    expect(
+    await expect(
       controller.createCustomerAddress(existingCustomerId, {
         street: '456 test street',
       }),
