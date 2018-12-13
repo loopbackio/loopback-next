@@ -69,7 +69,7 @@ describe('openapi-generator specific files', () => {
     assert.fileContent(newPetModel, `export class NewPet {`);
     assert.fileContent(newPetModel, `constructor(data?: Partial<NewPet>) {`);
     assert.fileContent(newPetModel, `@model({name: 'NewPet'})`);
-    assert.fileContent(newPetModel, `@property({name: 'name'})`);
+    assert.fileContent(newPetModel, `@property({name: 'name', required: true})`);
     assert.fileContent(newPetModel, `name: string;`);
     assert.fileContent(newPetModel, `@property({name: 'tag'})`);
     assert.fileContent(newPetModel, `tag?: string`);
