@@ -252,7 +252,32 @@ Run the following command to install the CLI.
       url  # URL or file path of the OpenAPI spec  Type: String  Required: false
     ```
 
-10. To list available commands
+10. To generate a life cycle observer class
+
+    ```sh
+    cd <your-project-directory>
+    lb4 observer
+    ```
+
+    ```sh
+    Usage:
+      lb4 observer [<name>] [options]
+
+    Options:
+      -h,   --help           # Print the generator's options and usage
+            --skip-cache     # Do not remember prompt answers                                Default: false
+            --skip-install   # Do not automatically install dependencies                     Default: false
+            --force-install  # Fail on install dependencies error                            Default: false
+            --group          # Name of the observer group for ordering
+      -c,   --config         # JSON file name or value to configure options
+      -y,   --yes            # Skip all confirmation prompts with default or provided value
+            --format         # Format generated code using npm run lint:fix
+
+    Arguments:
+      name  # Name for the observer  Type: String  Required: false
+    ```
+
+11. To list available commands
 
     `lb4 --commands` (or `lb4 -l`)
 
@@ -271,7 +296,7 @@ Run the following command to install the CLI.
 
     Please note `lb4 --help` also prints out available commands.
 
-11. To print out version information
+12. To print out version information
 
     `lb4 --version` (or `lb4 -v`)
 
