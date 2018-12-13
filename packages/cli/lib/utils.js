@@ -396,6 +396,14 @@ exports.getServiceFileName = function(serviceName) {
 };
 
 /**
+ * Returns the observerName in the directory file format for the observer
+ * @param {string} observerName
+ */
+exports.getObserverFileName = function(observerName) {
+  return `${_.kebabCase(observerName)}.observer.ts`;
+};
+
+/**
  *
  * Returns the connector property for the datasource file
  * @param {string} datasourcesDir path for sources
@@ -515,4 +523,5 @@ exports.repositoriesDir = 'repositories';
 exports.datasourcesDir = 'datasources';
 exports.servicesDir = 'services';
 exports.modelsDir = 'models';
+exports.observersDir = 'observers';
 exports.sourceRootDir = 'src';
