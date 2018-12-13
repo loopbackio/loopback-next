@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingScope, Binding} from '@loopback/context';
+import {BindingScope, Binding, createBindingFromClass} from '@loopback/context';
 import {Application} from '@loopback/core';
 import * as debugFactory from 'debug';
 import {Class} from '../common-types';
@@ -38,7 +38,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
     /**
      * Add a repository to this application.
      *
-     * @param repo The repository to add.
+     * @param repoClass The repository to add.
      *
      * ```ts
      *
@@ -63,11 +63,17 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * ```
      */
     // tslint:disable-next-line:no-any
-    repository(repo: Class<Repository<any>>): void {
-      const repoKey = `repositories.${repo.name}`;
-      this.bind(repoKey)
-        .toClass(repo)
-        .tag('repository');
+    repository<R extends Repository<any>>(
+      repoClass: Class<R>,
+      name?: string,
+    ): Binding<R> {
+      const binding = createBindingFromClass(repoClass, {
+        name,
+        namespace: 'repositories',
+        type: 'repository',
+      }).inScope(BindingScope.SINGLETON);
+      this.add(binding);
+      return binding;
     }
 
     /**
@@ -101,24 +107,24 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * }
      * ```
      */
-    dataSource(
-      dataSource: Class<juggler.DataSource> | juggler.DataSource,
+    dataSource<D extends juggler.DataSource>(
+      dataSource: Class<D> | D,
       name?: string,
-    ) {
+    ): Binding<D> {
       // We have an instance of
       if (dataSource instanceof juggler.DataSource) {
         const key = `datasources.${name || dataSource.name}`;
-        this.bind(key)
+        return this.bind(key)
           .to(dataSource)
           .tag('datasource');
       } else if (typeof dataSource === 'function') {
-        const key = `datasources.${name ||
-          dataSource.dataSourceName ||
-          dataSource.name}`;
-        this.bind(key)
-          .toClass(dataSource)
-          .tag('datasource')
-          .inScope(BindingScope.SINGLETON);
+        const binding = createBindingFromClass(dataSource, {
+          name: name || dataSource.dataSourceName,
+          namespace: 'datasources',
+          type: 'datasource',
+        }).inScope(BindingScope.SINGLETON);
+        this.add(binding);
+        return binding;
       } else {
         throw new Error('not a valid DataSource.');
       }
@@ -144,8 +150,8 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * app.component(ProductComponent);
      * ```
      */
-    public component(component: Class<{}>) {
-      super.component(component);
+    public component(component: Class<unknown>, name?: string) {
+      super.component(component, name);
       this.mountComponentRepositories(component);
     }
 
@@ -156,7 +162,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      *
      * @param component The component to mount repositories of
      */
-    mountComponentRepositories(component: Class<{}>) {
+    mountComponentRepositories(component: Class<unknown>) {
       const componentKey = `components.${component.name}`;
       const compInstance = this.getSync(componentKey);
 
@@ -214,15 +220,18 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
  */
 export interface ApplicationWithRepositories extends Application {
   // tslint:disable-next-line:no-any
-  repository(repo: Class<any>): void;
+  repository<R extends Repository<any>>(
+    repo: Class<R>,
+    name?: string,
+  ): Binding<R>;
   // tslint:disable-next-line:no-any
   getRepository<R extends Repository<any>>(repo: Class<R>): Promise<R>;
-  dataSource(
-    dataSource: Class<juggler.DataSource> | juggler.DataSource,
+  dataSource<D extends juggler.DataSource>(
+    dataSource: Class<D> | D,
     name?: string,
-  ): void;
-  component(component: Class<{}>): void;
-  mountComponentRepositories(component: Class<{}>): void;
+  ): Binding<D>;
+  component(component: Class<unknown>, name?: string): Binding;
+  mountComponentRepositories(component: Class<unknown>): void;
   migrateSchema(options?: SchemaMigrationOptions): Promise<void>;
 }
 
@@ -269,7 +278,9 @@ export class RepositoryMixinDoc {
    * ```
    */
   // tslint:disable-next-line:no-any
-  repository(repo: Class<Repository<any>>): void {}
+  repository(repo: Class<Repository<any>>): Binding {
+    throw new Error();
+  }
 
   /**
    * Retrieve the repository instance from the given Repository class
@@ -305,7 +316,9 @@ export class RepositoryMixinDoc {
   dataSource(
     dataSource: Class<juggler.DataSource> | juggler.DataSource,
     name?: string,
-  ) {}
+  ): Binding {
+    throw new Error();
+  }
 
   /**
    * Add a component to this application. Also mounts
@@ -327,7 +340,9 @@ export class RepositoryMixinDoc {
    * app.component(ProductComponent);
    * ```
    */
-  public component(component: Class<{}>) {}
+  public component(component: Class<{}>): Binding {
+    throw new Error();
+  }
 
   /**
    * Get an instance of a component and mount all it's

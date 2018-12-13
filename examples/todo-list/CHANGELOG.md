@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.2.2...@loopback/example-todo-list@1.3.0) (2018-12-13)
+
+
+### Bug Fixes
+
+* **repository:** revert hasOne target FK as PK implementation ([fcc76df](https://github.com/strongloop/loopback-next/commit/fcc76df))
+
+
+### Features
+
+* scaffold DB migration script for new app projects ([f783f07](https://github.com/strongloop/loopback-next/commit/f783f07))
+* **repository:** add belongsToUniquely sugar syntax method ([1b5b66a](https://github.com/strongloop/loopback-next/commit/1b5b66a))
+
+
+
+
+
 ## [1.2.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.2.1...@loopback/example-todo-list@1.2.2) (2018-11-26)
 
 **Note:** Version bump only for package @loopback/example-todo-list
