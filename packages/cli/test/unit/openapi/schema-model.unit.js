@@ -109,7 +109,7 @@ describe('schema to model', () => {
           {
             name: 'criteria',
             signature: "criteria: string = '*:*';",
-            decoration: "@property({name: 'criteria'})",
+            decoration: "@property({name: 'criteria', required: true})",
             description:
               'Uses Lucene Query Syntax in the format of propertyName:value, ' +
               'propertyName:[num1 TO num2] and date range format: ' +
@@ -188,7 +188,7 @@ describe('schema to model', () => {
               {
                 name: 'name',
                 signature: 'name: string;',
-                decoration: "@property({name: 'name'})",
+                decoration: "@property({name: 'name', required: true})",
               },
               {
                 name: 'tag',
@@ -208,7 +208,7 @@ describe('schema to model', () => {
               {
                 name: 'id',
                 signature: 'id: number;',
-                decoration: "@property({name: 'id'})",
+                decoration: "@property({name: 'id', required: true})",
               },
             ],
             signature: '{\n  id: number;\n}',
@@ -228,7 +228,7 @@ describe('schema to model', () => {
           {
             name: 'name',
             signature: 'name: string;',
-            decoration: "@property({name: 'name'})",
+            decoration: "@property({name: 'name', required: true})",
           },
           {
             name: 'tag',
@@ -251,12 +251,12 @@ describe('schema to model', () => {
           {
             name: 'code',
             signature: 'code: number;',
-            decoration: "@property({name: 'code'})",
+            decoration: "@property({name: 'code', required: true})",
           },
           {
             name: 'message',
             signature: 'message: string;',
-            decoration: "@property({name: 'message'})",
+            decoration: "@property({name: 'message', required: true})",
           },
         ],
         imports: [],
@@ -326,7 +326,7 @@ describe('schema to model', () => {
           {
             name: 'id',
             signature: 'id: number;',
-            decoration: "@property({name: 'id'})",
+            decoration: "@property({name: 'id', required: true})",
           },
           {
             name: 'first-name',
