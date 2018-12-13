@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.2.2...@loopback/cli@1.3.0) (2018-12-13)
+
+
+### Bug Fixes
+
+* add model/entity descriptions ([8156f9d](https://github.com/strongloop/loopback-next/commit/8156f9d))
+* **cli:** add missing PUT method in rest controller template ([8394c74](https://github.com/strongloop/loopback-next/commit/8394c74))
+* change service generator ds to uppercase ([83840a3](https://github.com/strongloop/loopback-next/commit/83840a3))
+
+
+### Features
+
+* scaffold DB migration script for new app projects ([f783f07](https://github.com/strongloop/loopback-next/commit/f783f07))
+* **cli:** allow annonymous schemas in openapi to be mapped to models ([eedec1e](https://github.com/strongloop/loopback-next/commit/eedec1e))
+
+
+
+
+
 ## [1.2.2](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.2.1...@loopback/cli@1.2.2) (2018-11-26)
 
 **Note:** Version bump only for package @loopback/cli

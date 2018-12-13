@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.4.0...@loopback/docs@1.5.0) (2018-12-13)
+
+
+### Bug Fixes
+
+* add model/entity descriptions ([8156f9d](https://github.com/strongloop/loopback-next/commit/8156f9d))
+
+
+### Features
+
+* scaffold DB migration script for new app projects ([f783f07](https://github.com/strongloop/loopback-next/commit/f783f07))
+* **cli:** allow annonymous schemas in openapi to be mapped to models ([eedec1e](https://github.com/strongloop/loopback-next/commit/eedec1e))
+* **repository:** migrateSchema APIs ([ad0229b](https://github.com/strongloop/loopback-next/commit/ad0229b))
+* **rest:** allow basePath for rest servers ([1016a09](https://github.com/strongloop/loopback-next/commit/1016a09))
+
+
+
+
+
 # [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.3.1...@loopback/docs@1.4.0) (2018-11-26)
 
 

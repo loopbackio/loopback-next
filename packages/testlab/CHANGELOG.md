@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.0.1...@loopback/testlab@1.0.2) (2018-12-13)
+
+
+### Bug Fixes
+
+* **rest:** parse query string even when there is no rest query param ([ad905a5](https://github.com/strongloop/loopback-next/commit/ad905a5))
+
+
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.0.0...@loopback/testlab@1.0.1) (2018-11-08)
 

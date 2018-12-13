@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@1.2.2...@loopback/example-todo@1.3.0) (2018-12-13)
+
+
+### Features
+
+* **repository:** migrateSchema APIs ([ad0229b](https://github.com/strongloop/loopback-next/commit/ad0229b))
+* scaffold DB migration script for new app projects ([f783f07](https://github.com/strongloop/loopback-next/commit/f783f07))
+
+
+
+
+
 ## [1.2.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@1.2.1...@loopback/example-todo@1.2.2) (2018-11-26)
 
 **Note:** Version bump only for package @loopback/example-todo
