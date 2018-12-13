@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.0.6...@loopback/repository@1.1.0) (2018-12-13)
+
+
+### Bug Fixes
+
+* **repository:** revert hasOne target FK as PK implementation ([fcc76df](https://github.com/strongloop/loopback-next/commit/fcc76df))
+
+
+### Features
+
+* **repository:** add belongsToUniquely sugar syntax method ([1b5b66a](https://github.com/strongloop/loopback-next/commit/1b5b66a))
+* **repository:** hasOne relation ([7c2080a](https://github.com/strongloop/loopback-next/commit/7c2080a))
+* **repository:** migrateSchema APIs ([ad0229b](https://github.com/strongloop/loopback-next/commit/ad0229b))
+
+
+
+
+
 ## [1.0.6](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.0.5...@loopback/repository@1.0.6) (2018-11-26)
 
 **Note:** Version bump only for package @loopback/repository

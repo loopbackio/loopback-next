@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.2.0...@loopback/context@1.3.0) (2018-12-13)
+
+
+### Features
+
+* **context:** add binding.apply(templateFn) ([f046b30](https://github.com/strongloop/loopback-next/commit/f046b30))
+
+
+
+
+
 # [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.1.0...@loopback/context@1.2.0) (2018-11-26)
 
 
