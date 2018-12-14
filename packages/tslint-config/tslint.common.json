@@ -1,0 +1,26 @@
+{
+  // See https://palantir.github.io/tslint/rules/
+  "rules": {
+    // These rules find errors related to TypeScript features.
+    "adjacent-overload-signatures": true,
+    "prefer-for-of": true,
+    "unified-signatures": true,
+    "no-any": true,
+
+    // These rules catch common errors in JS programming or otherwise
+    // confusing constructs that are prone to producing bugs.
+
+    "label-position": true,
+    "no-arg": true,
+    "no-construct": true,
+    "no-duplicate-variable": true,
+
+    "no-invalid-this": true,
+    "no-misused-new": true,
+    "no-shadowed-variable": true,
+    "no-string-throw": true,
+    "no-unused-expression": true,
+    "no-var-keyword": true,
+    "triple-equals": [true, "allow-null-check", "allow-undefined-check"]
+  }
+}
