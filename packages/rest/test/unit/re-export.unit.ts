@@ -6,7 +6,7 @@ import {get} from '../..';
 
 describe('re-export controller decorators', () => {
   it('exports functions from @loopback/openapi-v3', async () => {
-    /* tslint:disable-next-line:no-unused-variable */
+    /* tslint:disable-next-line:no-unused */
     class Test {
       // Make sure the decorators are exported
       @get('/test')

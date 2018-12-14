@@ -13,7 +13,7 @@ const debugSession = debugModule('loopback:context:resolver:session');
 const getTargetName = DecoratorFactory.getTargetName;
 
 // NOTE(bajtos) The following import is required to satisfy TypeScript compiler
-// tslint:disable-next-line:no-unused-variable
+// tslint:disable-next-line:no-unused
 import {BindingKey} from './binding-key';
 
 /**

@@ -76,7 +76,7 @@ async function startServerCheck(app: Application) {
 }
 
 function sequenceHandler(
-  {request, response}: RequestContext,
+  {response}: RequestContext,
   sequence: DefaultSequence,
 ) {
   sequence.send(response, 'hello world');

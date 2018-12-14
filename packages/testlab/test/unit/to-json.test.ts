@@ -64,7 +64,7 @@ describe('toJSON', () => {
 
   it('handles classes with custom toJSON', () => {
     class Customer {
-      // tslint:disable-next-line:no-unused-variable
+      // tslint:disable-next-line:no-unused
       private __data: object;
 
       constructor(public id: string, public email: string) {
