@@ -17,7 +17,8 @@
     // tell tslint that it's ok to `await` such promises.
     "await-promise": [true, "PromiseLike", "RequestPromise"],
     "no-floating-promises": [true, "PromiseLike", "RequestPromise"],
-    "no-unused-variable": true,
+    // Explicitly disable this rule, we are using "no-unused" rule instead
+    "no-unused-variable": false,
     "no-void-expression": [true, "ignore-arrow-function-shorthand"]
   }
 }
