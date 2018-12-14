@@ -170,6 +170,10 @@ children:
       url: BelongsTo-relation.html
       output: 'web, pdf'
 
+    - title: 'HasOne Relation'
+      url: hasOne-relation.html
+      output: 'web, pdf'
+
   - title: 'Decorators'
     url: Decorators.html
     output: 'web, pdf'
