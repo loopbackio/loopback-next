@@ -54,7 +54,7 @@ exports.executeGenerator = function(GeneratorOrNamespace, settings) {
  *
  * @param {string} rootDir Root directory in which to create the project
  * @param {Object} options
- * @property {boolean} excludeKeyword Excludes the 'loopback' keyword in package.json
+ * @property {boolean} excludeLoopbackCore Excludes the '@loopback/core' dependency in package.json
  * @property {boolean} excludePackageJSON Excludes package.json
  * @property {boolean} excludeYoRcJSON Excludes .yo-rc.json
  * @property {boolean} excludeControllersDir Excludes the controllers directory
@@ -70,9 +70,16 @@ exports.givenLBProject = function(rootDir, options) {
   options = options || {};
   const sandBoxFiles = options.additionalFiles || [];
 
-  const content = {};
-  if (!options.excludeKeyword) {
-    content.keywords = ['loopback'];
+  const content = {
+    dependencies: {
+      '@loopback/core': '*',
+    },
+  };
+
+  // We infer if a project is loopback by checking whether its dependencies includes @loopback/core or not.
+  // This flag is created for testing invalid loopback projects.
+  if (options.excludeLoopbackCore) {
+    delete content.dependencies['@loopback/core'];
   }
 
   if (!options.excludePackageJSON) {
