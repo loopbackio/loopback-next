@@ -17,6 +17,7 @@ export type DecoratorType =
  * @typeparam T Type of the metadata value
  * @typeparam D Type of the decorator
  */
+// tslint:disable-next-line:no-unused
 export class MetadataAccessor<T, D extends DecoratorType = DecoratorType> {
   private constructor(public readonly key: string) {}
 

@@ -5,7 +5,7 @@
 
 export type BindingAddress<T> = string | BindingKey<T>;
 
-// tslint:disable-next-line:no-unused-variable
+// tslint:disable-next-line:no-unused
 export class BindingKey<ValueType> {
   static readonly PROPERTY_SEPARATOR = '#';
 
