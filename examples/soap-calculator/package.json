@@ -53,6 +53,7 @@
   "devDependencies": {
     "@loopback/build": "^1.0.2",
     "@loopback/testlab": "^1.0.2",
+    "@loopback/tslint-config": "^1.0.0-1",
     "@types/mocha": "^5.0.0",
     "@types/node": "^10.11.2",
     "mocha": "^5.1.1",

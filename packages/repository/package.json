@@ -21,6 +21,7 @@
   "devDependencies": {
     "@loopback/build": "^1.0.2",
     "@loopback/testlab": "^1.0.2",
+    "@loopback/tslint-config": "^1.0.0-1",
     "@types/lodash": "^4.14.108",
     "@types/node": "^10.11.2"
   },

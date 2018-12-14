@@ -32,6 +32,7 @@
     "@loopback/build": "^1.0.2",
     "@loopback/openapi-spec-builder": "^1.0.2",
     "@loopback/testlab": "^1.0.2",
+    "@loopback/tslint-config": "^1.0.0-1",
     "@types/node": "^10.11.2",
     "@types/passport": "^0.4.4",
     "@types/passport-http": "^0.3.6",

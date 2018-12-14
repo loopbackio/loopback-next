@@ -26,6 +26,7 @@
   "devDependencies": {
     "@loopback/build": "^1.0.2",
     "@loopback/testlab": "^1.0.2",
+    "@loopback/tslint-config": "^1.0.0-1",
     "@types/ejs": "^2.6.0",
     "@types/node": "^10.1.1"
   },
