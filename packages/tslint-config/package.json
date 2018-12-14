@@ -1,0 +1,23 @@
+{
+  "name": "@loopback/tslint-config",
+  "version": "1.0.0-1",
+  "description": "",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "author": "IBM",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "peerDependencies": {
+    "tslint": ">=5.11.0"
+  },
+  "files": [
+    "README.md",
+    "tslint.common.json",
+    "tslint.build.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
+}
