@@ -249,7 +249,7 @@ module.exports = function(projGenerator, props, projectType) {
         assert.jsonFileContent('package.json', props);
         assert.fileContent([
           ['package.json', '@loopback/build'],
-          ['tslint.json', '@loopback/build'],
+          ['tslint.json', '@loopback/tslint-config'],
           ['tsconfig.json', '@loopback/build'],
         ]);
         assert.noFileContent([
