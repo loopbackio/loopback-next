@@ -112,6 +112,7 @@ function resolveCLI(cli) {
  * @param {string} cli Path of the cli command
  * @param {string[]} args The arguments
  * @param {object} options Options to control dryRun and spawn
+ * - nodeArgs An array of args for `node`
  * - dryRun Controls if the cli will be executed or not. If set
  * to true, the command itself will be returned without running it
  */
@@ -125,6 +126,12 @@ function runCLI(cli, args, options) {
   if (options.dryRun) {
     return util.format('%s %s', process.execPath, args.join(' '));
   }
+  if (options.nodeArgs) {
+    debug('node args: %s', options.nodeArgs.join(' '));
+    // For example, [--no-warnings]
+    args = options.nodeArgs.concat(args);
+  }
+  debug('Spawn %s %s', process.execPath, args.join(' '));
   var child = spawn(
     process.execPath, // Typically '/usr/local/bin/node'
     args,

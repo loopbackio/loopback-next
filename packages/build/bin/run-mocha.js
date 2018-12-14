@@ -27,6 +27,9 @@ function run(argv, options) {
     !utils.mochaOptsFileProjectExists();
 
   // Add default options
+  // Keep it backward compatible as dryRun
+  if (typeof options === 'boolean') options = {dryRun: options};
+  options = options || {};
   if (setMochaOpts) {
     const mochaOptsFile = utils.getConfigFile('mocha.opts');
     mochaOpts.unshift('--opts', mochaOptsFile);
@@ -36,6 +39,7 @@ function run(argv, options) {
   if (allowConsoleLogsIx === -1) {
     // Fail any tests that are printing to console.
     mochaOpts.unshift(
+      '--no-warnings', // Disable node.js warnings
       '--require',
       require.resolve('../src/fail-on-console-logs'),
     );
