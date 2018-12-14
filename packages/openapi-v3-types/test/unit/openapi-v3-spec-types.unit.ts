@@ -57,7 +57,7 @@ describe('openapi-v3-types unit tests', () => {
      * original OAS 3 definition. (Though some interfaces allow for extensibility).
      */
 
-    // tslint:disable-next-line:no-unused-variable
+    // tslint:disable-next-line:no-unused
     class TestObject implements ExampleObject {
       summary: 'test object';
       description: 'test object';
@@ -66,12 +66,12 @@ describe('openapi-v3-types unit tests', () => {
       randomProperty: 'extension value';
     }
 
-    // tslint:disable-next-line:no-unused-variable
+    // tslint:disable-next-line:no-unused
     class ReferenceTestObject implements ReferenceObject {
       $ref: '#def/reference-object';
     }
 
-    // tslint:disable-next-line:no-unused-variable
+    // tslint:disable-next-line:no-unused
     class DiscriminatorTestObject implements DiscriminatorObject {
       propertyName: 'test';
       mapping: {
@@ -79,7 +79,7 @@ describe('openapi-v3-types unit tests', () => {
       };
     }
 
-    // tslint:disable-next-line:no-unused-variable
+    // tslint:disable-next-line:no-unused
     class XMLTestObject implements XmlObject {
       name: 'test';
       namespace: 'test';
@@ -88,13 +88,13 @@ describe('openapi-v3-types unit tests', () => {
       wrapped: false;
     }
 
-    // tslint:disable-next-line:no-unused-variable
+    // tslint:disable-next-line:no-unused
     class TestExternalDocumentationObject
       implements ExternalDocumentationObject {
       url: 'https://test.com/test.html';
     }
 
-    // tslint:disable-next-line:no-unused-variable
+    // tslint:disable-next-line:no-unused
     class TestISpecificationExtension implements ISpecificationExtension {
       test: 'test';
     }

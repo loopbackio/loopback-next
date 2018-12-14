@@ -10,7 +10,7 @@ import {ServiceMixin} from '@loopback/service-proxy';
 import {BootMixin} from '../..';
 
 // Force package.json to be copied to `dist` by `tsc`
-//tslint:disable-next-line:no-unused-variable
+//tslint:disable-next-line:no-unused
 import * as pkg from './package.json';
 
 export class BooterApp extends BootMixin(

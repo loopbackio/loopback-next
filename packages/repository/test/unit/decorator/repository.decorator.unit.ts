@@ -80,7 +80,7 @@ describe('repository decorator', () => {
   it('throws not implemented for class-level @repository', () => {
     expect(() => {
       @repository('noteRepo')
-      // tslint:disable-next-line:no-unused-variable
+      // tslint:disable-next-line:no-unused
       class Controller1 {}
     }).to.throw(/not implemented/);
   });

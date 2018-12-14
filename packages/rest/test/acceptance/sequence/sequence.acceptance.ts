@@ -44,7 +44,7 @@ describe('Sequence', () => {
   });
 
   it('allows users to define a custom sequence as a function', () => {
-    server.handler(({request, response}, sequence) => {
+    server.handler(({response}, sequence) => {
       sequence.send(response, 'hello world');
     });
     return whenIRequest()
@@ -98,7 +98,7 @@ describe('Sequence', () => {
     class MySequence implements SequenceHandler {
       constructor(@inject(SequenceActions.SEND) protected send: Send) {}
 
-      async handle({request, response}: RequestContext) {
+      async handle({response}: RequestContext) {
         this.send(response, 'MySequence was invoked.');
       }
     }

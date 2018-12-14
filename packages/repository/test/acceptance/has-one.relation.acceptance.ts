@@ -5,7 +5,6 @@
 
 import {Application} from '@loopback/core';
 import {expect, toJSON} from '@loopback/testlab';
-import * as _ from 'lodash';
 import {
   ApplicationWithRepositories,
   juggler,

@@ -17,7 +17,6 @@ import {
   DefaultCrudRepository,
   DefaultHasManyRepository,
   Entity,
-  EntityCrudRepository,
   Filter,
   HasManyRepository,
   juggler,
@@ -36,12 +35,9 @@ describe('relation repository', () => {
      * interface. The TS Compiler will complain if the interface changes.
      */
 
-    // tslint:disable-next-line:no-unused-variable
-    class testHasManyEntityCrudRepository<
-      T extends Entity,
-      ID,
-      TargetRepository extends EntityCrudRepository<T, ID>
-    > implements HasManyRepository<T> {
+    // tslint:disable-next-line:no-unused
+    class testHasManyEntityCrudRepository<T extends Entity>
+      implements HasManyRepository<T> {
       create(
         targetModelData: DataObject<T>,
         options?: AnyObject | undefined,

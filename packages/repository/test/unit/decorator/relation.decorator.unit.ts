@@ -115,7 +115,7 @@ describe('relation decorator', () => {
             province: string;
           }
 
-          // tslint:disable-next-line:no-unused-variable
+          // tslint:disable-next-line:no-unused
           class AddressBook extends Entity {
             id: number;
             @property.array(Entity)

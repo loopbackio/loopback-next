@@ -351,7 +351,7 @@ describe('model decorator', () => {
       it('throws when @property.array is used on a non-array property', () => {
         expect.throws(
           () => {
-            // tslint:disable-next-line:no-unused-variable
+            // tslint:disable-next-line:no-unused
             class Oops {
               @property.array(Product)
               product: Product;
