@@ -49,15 +49,15 @@ describe('lb4 model integration', () => {
     ).to.be.rejectedWith(/No package.json found in/);
   });
 
-  it('does not run without the loopback keyword', () => {
+  it('does not run without the "@loopback/core" dependency', () => {
     return expect(
       testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {excludeKeyword: true}),
+          testUtils.givenLBProject(SANDBOX_PATH, {excludeLoopbackCore: true}),
         )
         .withPrompts(basicCLIInput),
-    ).to.be.rejectedWith(/No `loopback` keyword found in/);
+    ).to.be.rejectedWith(/No `@loopback\/core` package found/);
   });
 
   it('does not run if passed an invalid model from command line', () => {
@@ -65,7 +65,7 @@ describe('lb4 model integration', () => {
       testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {excludeKeyword: false}),
+          testUtils.givenLBProject(SANDBOX_PATH, {excludeLoopbackCore: false}),
         )
         .withArguments('myNewModel --base InvalidModel'),
     ).to.be.rejectedWith(/Model was not found in/);
