@@ -16,5 +16,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-next.git"
+  },
+  "devDependencies": {
+    "@loopback/tslint-config": "^1.0.0-1"
   }
 }

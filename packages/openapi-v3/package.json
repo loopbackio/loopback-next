@@ -10,6 +10,7 @@
     "@loopback/openapi-spec-builder": "^1.0.2",
     "@loopback/repository": "^1.1.0",
     "@loopback/testlab": "^1.0.2",
+    "@loopback/tslint-config": "^1.0.0-1",
     "@types/debug": "0.0.30",
     "@types/lodash": "^4.14.106",
     "@types/node": "^10.11.2"
