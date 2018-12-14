@@ -1,7 +1,7 @@
 {
   "$schema": "http://json.schemastore.org/tslint",
 <% if (project.loopbackBuild) { -%>
-  "extends": ["./node_modules/@loopback/build/config/tslint.common.json"]
+  "extends": ["@loopback/tslint-config/tslint.common.json"]
 <% } else { -%>
   // See https://palantir.github.io/tslint/rules/
   "rules": {

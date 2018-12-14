@@ -113,7 +113,8 @@
       "@loopback/http-server": "^1.1.1",
       "@loopback/example-todo-list": "^1.3.0",
       "@loopback/dist-util": "^0.4.0",
-      "@loopback/rest-explorer": "^1.1.3"
+      "@loopback/rest-explorer": "^1.1.3",
+      "@loopback/tslint-config": "^1.0.0-1"
     }
   },
   "copyright.owner": "IBM Corp.",
