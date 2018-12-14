@@ -13,6 +13,7 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
+    "@loopback/tslint-config": "^1.0.0-1",
     "@types/mocha": "^5.0.0",
     "@types/node": "^10.11.2",
     "cross-spawn": "^6.0.5",
