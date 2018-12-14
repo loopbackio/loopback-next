@@ -47,35 +47,7 @@
         "lint"
       ],
       "problemMatcher": [
-        {
-          // linting errors - relative paths
-          "owner": "tslint",
-          "fileLocation": [
-            "relative",
-            "${workspaceRoot}"
-          ],
-          "severity": "warning",
-          "pattern": {
-            "regexp": "^([^/]\\S.*)\\[(\\d+), (\\d+)\\]:\\s+(.*)$",
-            "file": 1,
-            "line": 2,
-            "column": 3,
-            "message": 4
-          }
-        },
-        {
-          // linting errors - absolute paths
-          "owner": "tslint",
-          "fileLocation": "absolute",
-          "severity": "warning",
-          "pattern": {
-            "regexp": "^(/\\S.*)\\[(\\d+), (\\d+)\\]:\\s+(.*)$",
-            "file": 1,
-            "line": 2,
-            "column": 3,
-            "message": 4
-          }
-        },
+        "$tslint5",
         {
           // compilation errors - relative paths
           "owner": "tslint",
