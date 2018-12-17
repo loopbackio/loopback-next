@@ -457,22 +457,9 @@ describe('build-schema', () => {
           });
           expect(customerSchema.properties).to.deepEqual({
             id: {type: 'number'},
-            orders: {
-              type: 'array',
-              items: {$ref: '#/definitions/Order'},
-            },
+
           });
-          expect(customerSchema.definitions).to.deepEqual({
-            Order: {
-              title: 'Order',
-              properties: {
-                id: {
-                  type: 'number',
-                },
-                customerId: {type: 'number'},
-              },
-            },
-          });
+
         });
 
         it('creates definitions only at the root level of the schema', () => {

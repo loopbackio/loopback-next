@@ -21,7 +21,7 @@ export function hasMany<T extends Entity>(
   definition?: Partial<HasManyDefinition>,
 ) {
   return function(decoratedTarget: Object, key: string) {
-    property.array(targetResolver)(decoratedTarget, key);
+    //property.array(targetResolver)(decoratedTarget, key);
 
     const meta: HasManyDefinition = Object.assign(
       // default values, can be customized by the caller
@@ -34,6 +34,9 @@ export function hasMany<T extends Entity>(
         source: decoratedTarget.constructor,
         target: targetResolver,
       },
+
+
+
     );
     relation(meta)(decoratedTarget, key);
   };

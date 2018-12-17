@@ -54,11 +54,6 @@ describe('relation decorator', () => {
         target: () => Address,
       });
 
-      expect(jugglerMeta).to.eql({
-        type: Array,
-        itemType: () => Address,
-      });
-
       expect(AddressBook.definition.relations).to.eql({
         addresses: {
           type: RelationType.hasMany,
@@ -100,33 +95,9 @@ describe('relation decorator', () => {
         target: () => Address,
         keyTo: 'someForeignKey',
       });
-      expect(jugglerMeta).to.eql({
-        type: Array,
-        itemType: () => Address,
-      });
+
     });
 
-    context('when interacting with @property.array', () => {
-      it('does not get its property metadata overwritten by @property.array', () => {
-        expect(() => {
-          class Address extends Entity {
-            addressId: number;
-            street: string;
-            province: string;
-          }
-
-          // tslint:disable-next-line:no-unused-variable
-          class AddressBook extends Entity {
-            id: number;
-            @property.array(Entity)
-            @hasMany(() => Address, {
-              keyTo: 'someForeignKey',
-            })
-            addresses: Address[];
-          }
-        }).to.throw(/Decorator cannot be applied more than once/);
-      });
-    });
   });
 
   describe('belongsTo', () => {

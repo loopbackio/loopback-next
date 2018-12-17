@@ -191,4 +191,17 @@ describe('HasMany relation', () => {
   async function givenPersistedCustomerInstance() {
     return customerRepo.create({name: 'a customer'});
   }
+
+    async function givenPersistedCustomerInstanceWithOrder() {
+        return customerRepo.create({
+            name: 'a customer'
+
+            ,
+            orders: [{
+                description: 'order 1',
+            }]
+
+        });
+    }
+
 });
