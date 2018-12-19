@@ -9,8 +9,8 @@ permalink: /doc/en/lb4/deploying-with-pm2-and-nginx.html
 This is a basic guide for deploying a LoopBack 4 (LB4) app using
 [pm2](https://www.npmjs.com/package/pm2) behind nginx reverse proxy.
 
-PM2 is a Production Runtime and Process Manager for Node.js applications with a
-built-in Load Balancer. It allows you to keep applications alive forever, to
+`pm2` is a Production Runtime and Process Manager for Node.js applications with
+a built-in Load Balancer. It allows you to keep applications alive forever, to
 reload them without downtime and facilitate common Devops tasks.
 
 NGINX is open source software for web serving, reverse proxying, caching, load
@@ -44,8 +44,8 @@ section of documentation for detailed instructions.
 ### pm2 setup
 
 > You might find yourself in a situation in which you do not have access to the
-> CLI to start your Node.js applications. In such a situation, pm2 must be added
-> as a dependency and must be called with the start script.
+> CLI to start your Node.js applications. In such a situation, `pm2` must be
+> added as a dependency and must be called with the start script.
 
 1. Generate an ecosystem.config.js template with:
 
@@ -78,7 +78,7 @@ section of documentation for detailed instructions.
    };
    ```
 
-3. Add pm2 as a dependency to your projet using following command
+3. Add `pm2` as a dependency to your project using following command
 
    ```sh
    $ npm install pm2 --save
@@ -98,16 +98,15 @@ section of documentation for detailed instructions.
 
 ## Deployment
 
-1. Register and start your application with pm2 using following command at the
+1. Register and start your application with `pm2` using following command at the
    app root directory:
 
    ```sh
    $ npm start
    ```
 
-   This creates a dist folder which containes the transpiled code. At you app
-   root level, you already have an `index.js` which can be user to run the
-   application using pm2.
+   This creates a dist folder which contains the transpiled code. Use `index.js`
+   at your app's root level for starting the server using `pm2`.
 
    Now you can visit [http://127.0.0.1:3000/](http://127.0.0.1:3000/) to check
    your newly deployed API.
@@ -128,7 +127,7 @@ section of documentation for detailed instructions.
 
 3. All set! Now you can hit your localhost at `http://localhost:3000/fooapi`
    (assuming nginx is listening to port 80) and your requests will be passed on
-   to pm2 process running your loopback application.
+   to `pm2` process running your loopback application.
 
 **NOTE**: This is one of the many ways to expose your APIs. If you notice, there
 are three main components to this recipe. A node application, a process manager
