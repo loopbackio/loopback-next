@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.0.2...@loopback/build@1.1.0) (2018-12-20)
+
+
+### Features
+
+* move tslint config into a standalone package ([26f3543](https://github.com/strongloop/loopback-next/commit/26f3543))
+
+
+
+
+
 ## [1.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.0.1...@loopback/build@1.0.2) (2018-12-13)
 
 **Note:** Version bump only for package @loopback/build

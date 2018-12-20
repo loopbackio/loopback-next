@@ -1,6 +1,6 @@
 {
   "name": "@loopback/tslint-config",
-  "version": "1.0.0-1",
+  "version": "1.0.0",
   "description": "",
   "engines": {
     "node": ">=8.9"

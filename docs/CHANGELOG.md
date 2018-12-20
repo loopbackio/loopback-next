@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.5.0...@loopback/docs@1.6.0) (2018-12-20)
+
+
+### Features
+
+* **context:** add `[@bind](https://github.com/bind)` to decorate classes with more information ([b8f9792](https://github.com/strongloop/loopback-next/commit/b8f9792))
+
+
+
+
+
 # [1.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.4.0...@loopback/docs@1.5.0) (2018-12-13)
 
 
