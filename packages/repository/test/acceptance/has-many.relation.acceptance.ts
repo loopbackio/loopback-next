@@ -139,6 +139,19 @@ describe('HasMany relation', () => {
     expect(_.pick(orders[0], ['customerId', 'description'])).to.eql(newOrder);
   });
 
+  it('does not create an array of the related model', async () => {
+    await expect(
+      customerRepo.create({
+        name: 'a customer',
+        orders: [
+          {
+            description: 'order 1',
+          },
+        ],
+      }),
+    ).to.be.rejectedWith(/`orders` is not defined/);
+  });
+
   // This should be enforced by the database to avoid race conditions
   it.skip('reject create request when the customer does not exist');
 
@@ -170,6 +183,7 @@ describe('HasMany relation', () => {
 
   function givenApplicationWithMemoryDB() {
     class TestApp extends RepositoryMixin(Application) {}
+
     app = new TestApp();
     app.dataSource(new juggler.DataSource({name: 'db', connector: 'memory'}));
   }
