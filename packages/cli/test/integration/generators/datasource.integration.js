@@ -6,6 +6,7 @@
 'use strict';
 
 // Imports
+const fse = require('fs-extra');
 const path = require('path');
 const assert = require('yeoman-assert');
 const testlab = require('@loopback/testlab');
@@ -116,6 +117,50 @@ describe('lb4 datasource integration', () => {
 
       checkBasicDataSourceFiles();
       assert.jsonFileContent(expectedJSONFile, basicCLIInput);
+    });
+  });
+
+  describe('In-memory db datasource', async () => {
+    it('should generate the database file', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .withPrompts({
+          name: 'memory',
+          connector: 'memory',
+        });
+      const dbPath = path.join(SANDBOX_PATH, 'memory.db.json');
+      assert.file(dbPath);
+    });
+
+    it('should create the database directory', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .withPrompts({
+          name: 'memory',
+          connector: 'memory',
+          file: 'data/db.json',
+        });
+      const dbPath = path.join(SANDBOX_PATH, 'data', 'db.json');
+      assert.file(dbPath);
+    });
+
+    it('should generate a database file with a random name', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () => {
+          testUtils.givenLBProject(SANDBOX_PATH);
+          fse.ensureFileSync(path.join(SANDBOX_PATH, 'memory.db.json'));
+        })
+        .withPrompts({
+          name: 'memory',
+          connector: 'memory',
+        });
+      const dbFiles = fse
+        .readdirSync(SANDBOX_PATH)
+        .filter(file => file.endsWith('.db.json'));
+      assert.equal(dbFiles.length, 2);
     });
   });
 

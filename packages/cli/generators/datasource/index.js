@@ -11,6 +11,7 @@ const chalk = require('chalk');
 const path = require('path');
 const utils = require('../../lib/utils');
 const connectors = require('./connectors.json');
+const fse = require('fs-extra');
 
 /**
  * DataSource Generator -- CLI
@@ -287,6 +288,30 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
     // Copy Templates
     this.fs.writeJSON(jsonPath, ds);
     this.copyTemplatedFiles(classTemplatePath, tsPath, this.artifactInfo);
+
+    if (ds.connector === 'memory') {
+      if (!this.artifactInfo.settings.file) {
+        const suggestedFile = './' + this.artifactInfo.name + '.db.json';
+        if (fse.existsSync(suggestedFile)) {
+          this.artifactInfo.settings.file =
+            './' + generateRandomFileName(this.artifactInfo.name);
+        } else {
+          this.artifactInfo.settings.file = suggestedFile;
+        }
+      }
+      const dbFilePath = path.resolve(this.artifactInfo.settings.file);
+      fse.ensureFileSync(dbFilePath);
+    }
+
+    function generateRandomFileName(artifactName) {
+      return (
+        artifactName +
+        Math.random()
+          .toString(36)
+          .slice(7) +
+        '.db.json'
+      );
+    }
   }
 
   install() {
