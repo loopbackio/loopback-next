@@ -30,7 +30,7 @@ already.
 
 ### Loopback app
 
-Before we start with deployment, let's get our app ready. If you have loopback
+Before we start with deployment, let's get our app ready. If you have Loopback
 cli installed, run the following command to create a new app:
 
 ```sh
@@ -53,7 +53,7 @@ section of documentation for detailed instructions.
    $ pm2 init
    ```
 
-2. Modify the generated file to match loopback requirements:
+2. Modify the generated file to match Loopback requirements:
 
    {% include code-caption.html content="/ecosystem.config.js" %}
 
@@ -78,7 +78,7 @@ section of documentation for detailed instructions.
    };
    ```
 
-3. Add `pm2` as a dependency to your project using following command
+3. Add `pm2` as a dependency to your project using the following command
 
    ```sh
    $ npm install pm2 --save
@@ -98,8 +98,8 @@ section of documentation for detailed instructions.
 
 ## Deployment
 
-1. Register and start your application with `pm2` using following command at the
-   app root directory:
+1. Register and start your application with `pm2` using the following command at
+   the app root directory:
 
    ```sh
    $ npm start
@@ -127,10 +127,10 @@ section of documentation for detailed instructions.
 
 3. All set! Now you can hit your localhost at `http://localhost:3000/fooapi`
    (assuming nginx is listening to port 80) and your requests will be passed on
-   to `pm2` process running your loopback application.
+   to `pm2` process running your Loopback application.
 
 **NOTE**: This is one of the many ways to expose your APIs. If you notice, there
 are three main components to this recipe. A node application, a process manager
-and a reverse proxy server. Since loopback is the node application in our
+and a reverse proxy server. Since Loopback is the node application in our
 context, this will be a constant thing. You can choose any process manager for
 node and any server instead of `pm2` and `nginx`.
