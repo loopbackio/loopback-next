@@ -13,7 +13,3 @@ export async function main(options: ApplicationConfig = {}) {
   console.log(`Server is running on port ${app.options.port}`);
   return app;
 }
-
-main().catch(err => {
-  console.error('Unhandled exception!');
-});
