@@ -179,3 +179,49 @@ with the name following the pattern `__{methodName}__{relationName}__` (e.g.
 `Order.__get__customer`). While we recommend to create a new controller for each
 hasMany relation in LoopBack 4, we also think it's best to use the main CRUD
 controller as the place where to explose `belongsTo` API.
+
+## Handling recursive relations
+
+Given an e-commerce system has many `Category`, each `Category` may have several
+sub-categories, and may belong to 1 parent-category.
+
+```ts
+export class Category extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    generated: true,
+  })
+  id?: number;
+
+  @belongsTo(() => Category)
+  parentId: number;
+
+  constructor(data?: Partial<Category>) {
+    super(data);
+  }
+}
+```
+
+The `CategoryRepository` must be declared like below
+
+```ts
+export class CategoryRepository extends DefaultCrudRepository<
+  Category,
+  typeof Category.prototype.id
+> {
+  public readonly parent: BelongsToAccessor<Category, number>;
+  constructor(@inject('datasources.db') dataSource: DbDataSource) {
+    super(Category, dataSource);
+    this.parent = this._createBelongsToAccessorFor(
+      'parent',
+      Getter.fromValue(this),
+    ); // for recursive relationship
+  }
+}
+```
+
+DO NOT declare
+`@repository.getter(CategoryRepository) protected categoryRepositoryGetter: Getter<CategoryRepository>`
+on constructor to avoid "Circular dependency" error (see
+[issue #2118](https://github.com/strongloop/loopback-next/issues/2118))
