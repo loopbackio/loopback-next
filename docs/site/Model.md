@@ -127,8 +127,8 @@ persistence layer respects this constraint and configures underlying
 PersistedModel classes to enforce `strict` mode.
 
 To create a model that allows both well-defined but also arbitrary extra
-properties, you need to disable `strict` mode in model settings and tell
-TypeScript to allow arbitrary additional properties to be set on model
+properties, you need to disable `strict` mode in model settings through the CLI
+and tell TypeScript to allow arbitrary additional properties to be set on model
 instances.
 
 ```ts
