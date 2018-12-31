@@ -154,20 +154,42 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
       },
     ])
       .then(props => {
-        if (typeof props.modelBaseClass === 'object')
+        if (typeof props.modelBaseClass === 'object') {
           props.modelBaseClass = props.modelBaseClass.value;
+        }
 
         Object.assign(this.artifactInfo, props);
         debug(`props after model base class prompt: ${inspect(props)}`);
+        return props;
+      })
+      .catch(err => {
+        debug(`Error during model base class prompt: ${err}`);
+        return this.exit(err);
+      });
+  }
+
+  async promptStrictMode() {
+    if (this.shouldExit()) return false;
+    return this.prompt([
+      {
+        name: 'allowAdditionalProperties',
+        message: 'Allow additional (free-form) properties?',
+        type: 'confirm',
+        default: false,
+        when: !this.artifactInfo.allowAdditionalProperties,
+      },
+    ])
+      .then(setting => {
+        Object.assign(this.artifactInfo, setting);
+
         this.log(
           `Let's add a property to ${chalk.yellow(
             this.artifactInfo.className,
           )}`,
         );
-        return props;
       })
       .catch(err => {
-        debug(`Error during model base class prompt: ${err}`);
+        debug(`Error during model strict mode prompt: ${err}`);
         return this.exit(err);
       });
   }

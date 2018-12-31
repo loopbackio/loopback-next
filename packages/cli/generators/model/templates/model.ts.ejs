@@ -5,7 +5,11 @@ import {model, property} from '@loopback/repository';
 import {<%= modelBaseClass %>} from '.';
 <% } -%>
 
+<% if(allowAdditionalProperties) { -%>
+@model({settings: {strict: false}})
+<% } else { -%>
 @model()
+<% } -%>
 export class <%= className %> extends <%= modelBaseClass %> {
 <% Object.entries(properties).forEach(([key, val]) => { -%>
   @property({
@@ -16,8 +20,16 @@ export class <%= className %> extends <%= modelBaseClass %> {
   <%_ }) -%>
   })
   <%= key %><%if (!val.required) {%>?<% } %>: <%= val.tsType %>;
-
 <% }) -%>
+
+<% if(allowAdditionalProperties) { -%>
+  // Define well-known properties here
+
+
+  // Indexer property to allow additional data
+  [prop: string]: any;
+<% } -%>
+
   constructor(data?: Partial<<%= className %>>) {
     super(data);
   }
