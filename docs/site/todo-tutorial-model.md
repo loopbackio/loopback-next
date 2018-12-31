@@ -49,6 +49,7 @@ these steps:
 lb4 model
 ? Model class name: todo
 ? Please select the model base class: Entity
+? Allow additional (free-form) properties? No
 
 Let's add a property to Todo
 Enter an empty property name when done
