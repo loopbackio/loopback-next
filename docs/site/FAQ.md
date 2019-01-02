@@ -60,7 +60,7 @@ reasons:
   scalability is the reason TypeScript exists and is gaining traction.
 - **Improved extensibility** and flexibility. LoopBack 4's core is simpler than
   LoopBack 3.x with well-defined extension points. A lot of responsibility will
-  be shifted to extensions (componnets), which can be JavaScript or TypeScript.
+  be shifted to extensions (components), which can be JavaScript or TypeScript.
 - Unified tooling. TypeScript developers all use the same IDE: Visual Studio
   Code. The LoopBack ecosystem could someday be filled with useful best
   practices around that IDE and even great developer plugins. Right now that
