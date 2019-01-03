@@ -93,6 +93,10 @@
     "@loopback/build": "<%= project.dependencies['@loopback/build'] -%>",
     "@loopback/testlab": "<%= project.dependencies['@loopback/testlab'] -%>",
     "@loopback/tslint-config": "<%= project.dependencies['@loopback/tslint-config'] -%>",
-    "@types/node": "<%= project.dependencies['@types/node'] -%>"
+    "@types/node": "<%= project.dependencies['@types/node'] -%>",
+    <% if (project.tslint) { -%>
+    "tslint": "<%= project.dependencies['tslint'] -%>",
+    <% } -%>
+    "typescript": "<%= project.dependencies['typescript'] -%>"
   }
 }
