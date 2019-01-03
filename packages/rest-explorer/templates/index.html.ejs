@@ -13,6 +13,7 @@
       box-sizing: border-box;
       overflow: -moz-scrollbars-vertical;
       overflow-y: scroll;
+      font-family: sans-serif;
     }
 
     *,
@@ -25,16 +26,106 @@
       margin: 0;
       background: #fafafa;
     }
+
+    #header {
+      padding: 6px 20px;
+      background: #3f5dff;
+      color: #dee4ff;
+      display: grid;
+      grid-template-columns: auto auto;
+    }
+
+    #logo {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    #logo a {
+      text-decoration: none;
+      color: #fff;
+    }
+
+    #header form {
+      text-align: right;
+    }
+
+    #accessTokenInput {
+      width: 590px;
+      padding: 3px 5px 3px;
+      font-size: 15px;
+      border: none;
+      border-radius: 2px;
+      color: gray;
+      position: relative;
+      top: 2px;
+    }
+
+    #accessTokenButton {
+      background: #f7f7f7;
+      padding: 5px 8px 6px;
+      border: none;
+      border-radius: 2px;
+    }
+
+    .swagger-ui .wrapper .info {
+      margin: 30px 0;
+    }
+
+    .swagger-ui .info .title {
+      font-size: 20px;
+      font-weight: normal;
+    }
+
+    .swagger-ui .info .title span {
+      position: relative;
+      top: 10px;
+    }
+
+    .swagger-ui .scheme-container {
+      padding: 18px 0;
+    }
+
+    .swagger-ui .scheme-container {
+      display: none;
+    }
+
+    .filter-container {
+      display: none;
+    }
+
+    .swagger-ui .opblock-tag {
+      font-size: 19px;
+    }
+
+    .opblock-summary-path {
+      font-weight: normal !important;
+    }
+
   </style>
 </head>
 
 <body>
+  <div id='header'>
+    <div id="logo">
+      <a href="/api-explorer">LoopBack API Explorer</a>
+    </div>
+    <form>
+      <input id="accessTokenInput" name="accessToken" type="text"/>
+      <button id="accessTokenButton" type="submit">Set Access Token</button>
+    </form>
+  </div>
   <div id="swagger-ui"></div>
 
   <script src="./swagger-ui-bundle.js"> </script>
   <script src="./swagger-ui-standalone-preset.js"> </script>
   <script>
+    var lsKey = 'swaggerAccessToken';
     window.onload = function () {
+
+      var accessToken = window.localStorage.getItem(lsKey);
+      if (accessToken) {
+        document.querySelector('#accessTokenInput').value = accessToken;
+      }
 
       // Build a system
       const ui = SwaggerUIBundle({
@@ -57,6 +148,17 @@
       })
 
       window.ui = ui
+
+      document.querySelector('#accessTokenButton').addEventListener('click', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var accessToken = document.querySelector('#accessTokenInput').value;
+        // Save this token to localStorage if we can to make it persist on refresh.
+        if (window.localStorage) {
+          window.localStorage.setItem(lsKey, accessToken);
+        }
+        console.log(window.ui)
+      });
     }
   </script>
 </body>
