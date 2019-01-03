@@ -22,6 +22,7 @@ See [Monorepo overview](./MONOREPO.md) for a list of all packages.
 - [Making breaking changes](#making-breaking-changes)
 - [Releasing new versions](#releasing-new-versions)
 - [Adding a new package](#adding-a-new-package)
+- [Upgrading TypeScript/tslint](#upgrading-typescripttslint)
 - [How to test infrastructure changes](#how-to-test-infrastructure-changes)
 
 ## Setting up development environment
@@ -436,6 +437,27 @@ Please register the new package in the following files:
 - Ask somebody from the IBM team (e.g. [@bajtos](https://github.com/bajtos) or
   [@raymondfeng](https://github.com/raymondfeng) to enlist the new package on
   <http://apidocs.loopback.io/>.
+
+## Upgrading TypeScript/tslint
+
+In order to support tslint extensions with a peer dependency on tslint, we have
+to specify `typescript` and `tslint` dependency in multiple places in our
+monorepo.
+
+Steps to upgrade `typescript` or `tslint` to a newer version:
+
+1. Update the dependencies in `@loopback/build`, this is the source of truth for
+   the rest of the monorepo.
+
+   ```shell
+   $ (cd packages/build && npm update typescript tslint)
+   ```
+
+2. Propagate the change to other places to keep everything consistent.
+
+   ```shell
+   $ node bin/sync-dev-deps
+   ```
 
 ## How to test infrastructure changes
 

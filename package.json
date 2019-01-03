@@ -17,13 +17,16 @@
     "coveralls": "^3.0.0",
     "cz-conventional-changelog": "^2.1.0",
     "husky": "^1.2.0",
-    "lerna": "^3.5.1"
+    "lerna": "^3.5.1",
+    "tslint": "^5.12.0",
+    "typescript": "^3.2.2"
   },
   "scripts": {
     "postinstall": "lerna bootstrap",
     "prerelease": "npm run build:full && npm run mocha && npm run lint",
     "release": "lerna version && lerna publish from-git --yes",
     "update-template-deps": "node bin/update-template-deps -f",
+    "sync-dev-deps": "node bin/sync-dev-deps",
     "version": "npm run update-template-deps && npm run apidocs",
     "outdated": "npm outdated --depth 0 && lerna exec --no-bail \"npm outdated --depth 0\"",
     "apidocs": "node bin/run-lerna run build:apidocs",
