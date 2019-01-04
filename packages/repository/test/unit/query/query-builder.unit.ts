@@ -44,6 +44,15 @@ describe('WhereBuilder', () => {
     expect(where).to.eql({x: {inq: [1, 2, 3]}, y: {inq: ['a', 'b']}});
   });
 
+  it('builds where object with nin', () => {
+    const whereBuilder = new WhereBuilder();
+    const where = whereBuilder
+      .nin('x', [1, 2, 3])
+      .nin('y', ['a', 'b'])
+      .build();
+    expect(where).to.eql({x: {nin: [1, 2, 3]}, y: {nin: ['a', 'b']}});
+  });
+
   it('builds where object with neq', () => {
     const whereBuilder = new WhereBuilder();
     const where = whereBuilder.neq('x', 1).build();
