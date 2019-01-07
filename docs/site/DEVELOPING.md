@@ -510,3 +510,25 @@ configuration, it's important to verify that all usage scenarios keep working.
 5.  Test integration with supported IDEs:
 
     - [VS Code](./VSCODE.md#how-to-verify-tslint-setup)
+
+### tsconfig files
+
+In the [`loopback-next`](https://github.com/strongloop/loopback-next) monorepo,
+`TypeScript` is set up in two places:
+
+1. When using VS Code, the `TypeScript` engine views `loopback-next` as a single
+   big project.
+
+   This enables the "refactor - rename" command to change all places using the
+   renamed symbol, and also makes "go to definition" command jump to `.ts` files
+   containing the original source code. Otherwise "refactor - rename" works
+   within the same package only and "go to definition" jumps to `.d.ts` files.
+
+2. When building the monorepo, we need to build the packages individually, so
+   that one `dist` directory is created for each package.
+
+This is why we have two sets of `tsconfig` files:
+
+- At monorepo root, there is `tsconfig.json` used by VS Code.
+- Inside each package, there is `tsconfig.build.json` used by `npm run build`
+  command.
