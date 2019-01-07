@@ -65,6 +65,17 @@ describe('AuthMetadataProvider', () => {
         );
         expect(authMetadata).to.be.undefined();
       });
+
+      it('returns undefined when the class or method is missing', async () => {
+        const context: Context = new Context();
+        context
+          .bind(CoreBindings.CONTROLLER_METHOD_META)
+          .toProvider(AuthMetadataProvider);
+        const authMetadata = await context.get(
+          CoreBindings.CONTROLLER_METHOD_META,
+        );
+        expect(authMetadata).to.be.undefined();
+      });
     });
   });
 
