@@ -32,7 +32,7 @@ function runCommand(env, opts, log, dryRun) {
   }
   debug('invoking generator', args);
   // `yo` is adding flags converted to CamelCase
-  const options = camelCaseKeys(opts, {exclude: ['--', /^\w$/, 'argv']});
+  const options = camelCaseKeys(opts, { exclude: ['--', /^\w$/, 'argv'] });
   Object.assign(options, opts);
   debug('env.run %j %j', args, options);
   if (!dryRun) {
@@ -78,6 +78,10 @@ function setupGenerators() {
   env.register(
     path.join(__dirname, '../generators/openapi'),
     PREFIX + 'openapi',
+  );
+  env.register(
+    path.join(__dirname, '../generators/relation'),
+    PREFIX + 'relation',
   );
   return env;
 }
