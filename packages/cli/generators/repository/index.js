@@ -14,12 +14,34 @@ const chalk = require('chalk');
 const utils = require('../../lib/utils');
 const connectors = require('../datasource/connectors.json');
 const tsquery = require('../../lib/ast-helper');
+const pascalCase = require('change-case').pascalCase;
 
 const VALID_CONNECTORS_FOR_REPOSITORY = ['KeyValueModel', 'PersistedModel'];
 const KEY_VALUE_CONNECTOR = ['KeyValueModel'];
 
 const DEFAULT_CRUD_REPOSITORY = 'DefaultCrudRepository';
 const KEY_VALUE_REPOSITORY = 'DefaultKeyValueRepository';
+const BASE_REPOSITORIES = [DEFAULT_CRUD_REPOSITORY, KEY_VALUE_REPOSITORY];
+const CLI_BASE_CRUD_REPOSITORIES = [
+  {
+    name: `${DEFAULT_CRUD_REPOSITORY} ${chalk.gray('(Legacy juggler bridge)')}`,
+    value: DEFAULT_CRUD_REPOSITORY,
+  },
+];
+const CLI_BASE_KEY_VALUE_REPOSITORIES = [
+  {
+    name: `${KEY_VALUE_REPOSITORY} ${chalk.gray(
+      '(For access to a key-value store)',
+    )}`,
+    value: KEY_VALUE_REPOSITORY,
+  },
+];
+const CLI_BASE_SEPARATOR = [
+  {
+    type: 'separator',
+    line: '----- Custom Repositories -----',
+  },
+];
 
 const REPOSITORY_KV_TEMPLATE = 'repository-kv-template.ts.ejs';
 const REPOSITORY_CRUD_TEMPLATE = 'repository-crud-default-template.ts.ejs';
@@ -27,6 +49,7 @@ const REPOSITORY_CRUD_TEMPLATE = 'repository-crud-default-template.ts.ejs';
 const PROMPT_MESSAGE_MODEL =
   'Select the model(s) you want to generate a repository';
 const PROMPT_MESSAGE_DATA_SOURCE = 'Please select the datasource';
+const PROMPT_BASE_REPOSITORY_CLASS = 'Please select the repository base class';
 const ERROR_READING_FILE = 'Error reading file';
 const ERROR_NO_DATA_SOURCES_FOUND = 'No datasources found at';
 const ERROR_NO_MODELS_FOUND = 'No models found at';
@@ -36,6 +59,35 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);
+  }
+
+  /**
+   * Find all the base artifacts in the given path whose type matches the
+   * provided artifactType.
+   * For example, a artifactType of "repository" will search the target path for
+   * matches to "*.repository.base.ts"
+   * @param {string} dir The target directory from which to load artifacts.
+   * @param {string} artifactType The artifact type (ex. "model", "repository")
+   */
+  async _findBaseClasses(dir, artifactType) {
+    const paths = await utils.findArtifactPaths(dir, artifactType + '.base');
+    debug(`repository artifact paths: ${paths}`);
+
+    // get base class and path
+    const baseRepositoryList = [];
+    for (const p of paths) {
+      //get name removing anything from .artifactType.base
+      const artifactFile = path.parse(_.last(_.split(p, path.sep))).name;
+      const firstWord = _.first(_.split(artifactFile, '.'));
+      const artifactName =
+        utils.toClassName(firstWord) + utils.toClassName(artifactType);
+
+      const baseRepository = {name: artifactName, file: artifactFile};
+      baseRepositoryList.push(baseRepository);
+    }
+
+    debug(`repository base classes: ${inspect(baseRepositoryList)}`);
+    return baseRepositoryList;
   }
 
   /**
@@ -129,6 +181,13 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       type: String,
       required: false,
       description: 'A valid datasource name',
+    });
+
+    this.option('repositoryBaseClass', {
+      type: String,
+      required: false,
+      description: 'A valid repository base class',
+      default: 'DefaultCrudRepository',
     });
 
     return super._setupGenerator();
@@ -313,6 +372,65 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       });
   }
 
+  async promptBaseClass() {
+    debug('Prompting for repository base');
+    if (this.shouldExit()) return;
+
+    const availableRepositoryList = [];
+
+    debug(`repositoryTypeClass ${this.artifactInfo.repositoryTypeClass}`);
+    // Add base repositories based on datasource type
+    if (this.artifactInfo.repositoryTypeClass === KEY_VALUE_REPOSITORY)
+      availableRepositoryList.push(...CLI_BASE_KEY_VALUE_REPOSITORIES);
+    else availableRepositoryList.push(...CLI_BASE_CRUD_REPOSITORIES);
+    availableRepositoryList.push(...CLI_BASE_SEPARATOR);
+
+    try {
+      this.artifactInfo.baseRepositoryList = await this._findBaseClasses(
+        this.artifactInfo.outDir,
+        'repository',
+      );
+      if (
+        this.artifactInfo.baseRepositoryList &&
+        this.artifactInfo.baseRepositoryList.length > 0
+      ) {
+        availableRepositoryList.push(...this.artifactInfo.baseRepositoryList);
+        debug(`availableRepositoryList ${availableRepositoryList}`);
+      }
+    } catch (err) {
+      return this.exit(err);
+    }
+
+    if (this.options.repositoryBaseClass) {
+      debug(
+        `Base repository received from command line: ${
+          this.options.repositoryBaseClass
+        }`,
+      );
+      this.artifactInfo.repositoryBaseClass = this.options.repositoryBaseClass;
+    }
+
+    return this.prompt([
+      {
+        type: 'list',
+        name: 'repositoryBaseClass',
+        message: PROMPT_BASE_REPOSITORY_CLASS,
+        when: this.artifactInfo.repositoryBaseClass === undefined,
+        choices: availableRepositoryList,
+        default: availableRepositoryList[0],
+      },
+    ])
+      .then(props => {
+        debug(`props after custom repository prompt: ${inspect(props)}`);
+        Object.assign(this.artifactInfo, props);
+        return props;
+      })
+      .catch(err => {
+        debug(`Error during repository base class prompt: ${err.stack}`);
+        return this.exit(err);
+      });
+  }
+
   async promptModelId() {
     if (this.shouldExit()) return false;
     let idProperty;
@@ -362,6 +480,22 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
   async _scaffold() {
     if (this.shouldExit()) return false;
 
+    this.artifactInfo.isRepositoryBaseBuiltin = BASE_REPOSITORIES.includes(
+      this.artifactInfo.repositoryBaseClass,
+    );
+    debug(
+      `isRepositoryBaseBuiltin : ${this.artifactInfo.isRepositoryBaseBuiltin}`,
+    );
+    if (!this.artifactInfo.isRepositoryBaseBuiltin) {
+      const baseIndex = _.findIndex(this.artifactInfo.baseRepositoryList, [
+        'name',
+        this.artifactInfo.repositoryBaseClass,
+      ]);
+      this.artifactInfo.repositoryBaseFile = this.artifactInfo.baseRepositoryList[
+        baseIndex
+      ].file;
+    }
+
     if (this.options.name) {
       this.artifactInfo.className = utils.toClassName(this.options.name);
       this.artifactInfo.outFile = utils.getRepositoryFileName(
@@ -401,6 +535,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       debug(`artifactInfo: ${inspect(this.artifactInfo)}`);
       debug(`Copying artifact to: ${dest}`);
     }
+
     this.copyTemplatedFiles(source, dest, this.artifactInfo);
     return;
   }
@@ -411,6 +546,13 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
       this.artifactInfo.modelNameList.length > 1
         ? 'Repositories'
         : 'Repository';
+
+    this.artifactInfo.modelNameList = _.map(
+      this.artifactInfo.modelNameList,
+      repositoryName => {
+        return repositoryName + 'Repository';
+      },
+    );
 
     this.artifactInfo.name = this.artifactInfo.modelNameList
       ? this.artifactInfo.modelNameList.join()
