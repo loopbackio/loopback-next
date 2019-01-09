@@ -66,6 +66,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     ];
 
     this.artifactInfo.properties = {};
+    this.artifactInfo.modelSettings = {};
     this.propCounter = 0;
 
     this.artifactInfo.modelDir = path.resolve(
@@ -181,6 +182,10 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     ])
       .then(setting => {
         Object.assign(this.artifactInfo, setting);
+
+        if (this.artifactInfo.allowAdditionalProperties) {
+          Object.assign(this.artifactInfo.modelSettings, {strict: false});
+        }
 
         this.log(
           `Let's add a property to ${chalk.yellow(
