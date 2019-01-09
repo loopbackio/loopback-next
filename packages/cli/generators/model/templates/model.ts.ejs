@@ -5,8 +5,8 @@ import {model, property} from '@loopback/repository';
 import {<%= modelBaseClass %>} from '.';
 <% } -%>
 
-<% if(allowAdditionalProperties) { -%>
-@model({settings: {strict: false}})
+<% if(Object.keys(modelSettings).length > 0) { -%>
+@model({settings: <%- JSON.stringify(modelSettings) %>})
 <% } else { -%>
 @model()
 <% } -%>
@@ -20,11 +20,10 @@ export class <%= className %> extends <%= modelBaseClass %> {
   <%_ }) -%>
   })
   <%= key %><%if (!val.required) {%>?<% } %>: <%= val.tsType %>;
-<% }) -%>
 
+<% }) -%>
 <% if(allowAdditionalProperties) { -%>
   // Define well-known properties here
-
 
   // Indexer property to allow additional data
   [prop: string]: any;
