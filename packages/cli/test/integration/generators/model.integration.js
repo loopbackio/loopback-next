@@ -157,7 +157,7 @@ describe('lb4 model integration', () => {
       );
       assert.fileContent(
         expectedModelFile,
-        /@model\({settings: {strict: false}}\)/,
+        /@model\({settings: {"strict":false}}\)/,
       );
       assert.fileContent(
         expectedModelFile,
