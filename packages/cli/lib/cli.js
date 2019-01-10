@@ -83,6 +83,10 @@ function setupGenerators() {
     path.join(__dirname, '../generators/observer'),
     PREFIX + 'observer',
   );
+  env.register(
+    path.join(__dirname, '../generators/discover'),
+    PREFIX + 'discover',
+  );
   return env;
 }
 

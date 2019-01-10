@@ -287,6 +287,10 @@ children:
     url: Model-generator.html
     output: 'web, pdf'
 
+  - title: 'Model discovery'
+    url: Discovering-models.html
+    output: 'web, pdf'
+
   - title: 'Repository generator'
     url: Repository-generator.html
     output: 'web, pdf'

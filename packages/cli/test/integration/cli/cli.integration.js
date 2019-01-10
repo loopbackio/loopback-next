@@ -25,7 +25,7 @@ describe('cli', () => {
       'Available commands: ',
       '  lb4 app\n  lb4 extension\n  lb4 controller\n  lb4 datasource\n  ' +
         'lb4 model\n  lb4 repository\n  lb4 service\n  lb4 example\n  ' +
-        'lb4 openapi\n  lb4 observer',
+        'lb4 openapi\n  lb4 observer\n  lb4 discover',
     ]);
   });
 
@@ -44,7 +44,7 @@ describe('cli', () => {
     expect(entries).to.containEql(
       '  lb4 app\n  lb4 extension\n  lb4 controller\n  lb4 datasource\n  ' +
         'lb4 model\n  lb4 repository\n  lb4 service\n  lb4 example\n  ' +
-        'lb4 openapi\n  lb4 observer',
+        'lb4 openapi\n  lb4 observer\n  lb4 discover',
     );
   });
 

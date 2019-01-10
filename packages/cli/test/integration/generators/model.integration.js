@@ -17,9 +17,11 @@ const generator = path.join(__dirname, '../../../generators/model');
 const tests = require('../lib/artifact-generator')(generator);
 const baseTests = require('../lib/base-generator')(generator);
 const testUtils = require('../../test-utils');
+const basicModelFileChecks = require('../lib/file-check').basicModelFileChecks;
 
 // Test Sandbox
 const SANDBOX_PATH = path.resolve(__dirname, '../.sandbox');
+const DISCOVER_SANDBOX_FILES = require('../../fixtures/discover').SANDBOX_FILES;
 const sandbox = new TestSandbox(SANDBOX_PATH);
 
 // Basic CLI Input
@@ -80,6 +82,30 @@ describe('lb4 model integration', () => {
     assert.file(expectedModelFile);
   });
 
+  it('will discover a model through a datasource', async () => {
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(SANDBOX_PATH, () =>
+        testUtils.givenLBProject(SANDBOX_PATH, {
+          additionalFiles: DISCOVER_SANDBOX_FILES,
+        }),
+      )
+      .withArguments('--dataSource mem --table Test');
+    assert.file(expectedModelFile);
+  });
+  it('will fail gracefully if datasource discovery does not find the model ', async () => {
+    return expect(
+      testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: DISCOVER_SANDBOX_FILES,
+          }),
+        )
+        .withArguments('--dataSource mem --table Foo'),
+    ).to.be.rejectedWith(/Could not locate table:/);
+  });
+
   describe('model generator', () => {
     it('scaffolds correct files with input', async () => {
       await testUtils
@@ -90,7 +116,7 @@ describe('lb4 model integration', () => {
           propName: null,
         });
 
-      basicModelFileChecks();
+      basicModelFileChecks(expectedModelFile, expectedIndexFile);
     });
 
     it('scaffolds correct files with model base class', async () => {
@@ -184,7 +210,7 @@ describe('lb4 model integration', () => {
           propName: null,
         });
 
-      basicModelFileChecks();
+      basicModelFileChecks(expectedModelFile, expectedIndexFile);
     });
   });
 });
@@ -196,7 +222,7 @@ describe('model generator using --config option', () => {
       .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
       .withArguments(['--config', '{"name":"test", "base":"Entity"}', '--yes']);
 
-    basicModelFileChecks();
+    basicModelFileChecks(expectedModelFile, expectedIndexFile);
   });
 
   it('does not run if pass invalid json', () => {
@@ -212,25 +238,3 @@ describe('model generator using --config option', () => {
     ).to.be.rejectedWith(/Model was not found in/);
   });
 });
-
-// Checks to ensure expected files exist with the current file contents
-function basicModelFileChecks() {
-  assert.file(expectedModelFile);
-  assert.file(expectedIndexFile);
-
-  // Actual Model File
-  assert.fileContent(
-    expectedModelFile,
-    /import {Entity, model, property} from '@loopback\/repository';/,
-  );
-  assert.fileContent(expectedModelFile, /@model()/);
-  assert.fileContent(expectedModelFile, /export class Test extends Entity {/);
-  assert.fileContent(
-    expectedModelFile,
-    /constructor\(data\?\: Partial<Test>\) {/,
-  );
-  assert.fileContent(expectedModelFile, /super\(data\)/);
-
-  // Actual Index File
-  assert.fileContent(expectedIndexFile, /export \* from '.\/test.model';/);
-}

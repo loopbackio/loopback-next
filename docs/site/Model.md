@@ -97,6 +97,12 @@ export class Customer {
 }
 ```
 
+## Model Discovery
+
+LoopBack can automatically create model definitions by discovering the schema of
+your database. See [Discovering models](Discovering-models.md) for more details
+and a list of connectors supporting model discovery.
+
 ## Using the Juggler Bridge
 
 To define a model for use with the juggler bridge, extend your classes from

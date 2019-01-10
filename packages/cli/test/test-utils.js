@@ -2,13 +2,12 @@
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-
 'use strict';
 
 const yeoman = require('yeoman-environment');
 const path = require('path');
 const helpers = require('yeoman-test');
-const fs = require('fs');
+const fs = require('fs-extra');
 
 exports.testSetUpGen = function(genName, arg) {
   arg = arg || {};
@@ -125,6 +124,7 @@ exports.givenLBProject = function(rootDir, options) {
     for (let theFile of sandBoxFiles) {
       const fullPath = path.join(rootDir, theFile.path, theFile.file);
       if (!fs.existsSync(fullPath)) {
+        fs.ensureDirSync(path.dirname(fullPath));
         fs.writeFileSync(fullPath, theFile.content);
       }
     }
