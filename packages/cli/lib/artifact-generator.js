@@ -52,7 +52,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
         // capitalization
         message: utils.toClassName(this.artifactInfo.type) + ' class name:',
         when: this.artifactInfo.name === undefined,
-        default: this.artifactInfo.name,
+        default: this.artifactInfo.defaultName,
         validate: utils.validateClassName,
       },
     ];
@@ -84,11 +84,14 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
       return;
     }
 
-    let generationStatus = true;
     // Check all files being generated to ensure they succeeded
-    Object.entries(this.conflicter.generationStatus).forEach(([key, val]) => {
-      if (val === 'skip' || val === 'identical') generationStatus = false;
+    let generationStatus = !!Object.entries(
+      this.conflicter.generationStatus,
+    ).find(([key, val]) => {
+      // If a file was modified, update the indexes and say stuff about it
+      return val !== 'skip' && val !== 'identical';
     });
+    debug(`Generation status: ${generationStatus}`);
 
     if (generationStatus) {
       await this._updateIndexFiles();
@@ -124,6 +127,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
    * }, {dir: '...', file: '...'}]
    */
   async _updateIndexFiles() {
+    debug(`Indexes to be updated ${this.artifactInfo.indexesToBeUpdated}`);
     // Index Update Disabled
     if (this.artifactInfo.disableIndexUpdate) return;
 
