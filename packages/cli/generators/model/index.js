@@ -5,6 +5,9 @@
 
 'use strict';
 
+const modelDiscoverer = require('../../lib/model-discoverer');
+const fs = require('fs');
+
 const ArtifactGenerator = require('../../lib/artifact-generator');
 const debug = require('../../lib/debug')('model-generator');
 const inspect = require('util').inspect;
@@ -14,6 +17,7 @@ const path = require('path');
 
 const PROMPT_BASE_MODEL_CLASS = 'Please select the model base class';
 const ERROR_NO_MODELS_FOUND = 'Model was not found in';
+
 const BASE_MODELS = ['Entity', 'Model'];
 const CLI_BASE_MODELS = [
   {
@@ -87,6 +91,27 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     // This flag is to indicate whether the base class has been validated.
     this.isBaseClassChecked = false;
 
+    this.option('dataSource', {
+      type: String,
+      required: false,
+      description:
+        'The name of the dataSource which contains this model and suppots model discovery',
+    });
+
+    this.option('table', {
+      type: String,
+      required: false,
+      description:
+        'If discovering a model from a dataSource, specify the name of its table/view',
+    });
+
+    this.option('schema', {
+      type: String,
+      required: false,
+      description:
+        'If discovering a model from a dataSource, specify the schema which contains it',
+    });
+
     return super._setupGenerator();
   }
 
@@ -97,6 +122,63 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
   checkLoopBackProject() {
     if (this.shouldExit()) return;
     return super.checkLoopBackProject();
+  }
+
+  async getDataSource() {
+    if (!this.options.dataSource) {
+      debug('Not loading any dataSources because none specified');
+      return;
+    }
+
+    this.artifactInfo.dataSource = modelDiscoverer.loadDataSourceByName(
+      this.options.dataSource,
+    );
+
+    if (!this.artifactInfo.dataSource) {
+      const s = `Could not find dataSource ${this.options.dataSource}`;
+      debug(s);
+      return this.exit(
+        new Error(
+          `${s}.${chalk.yellow(
+            'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
+          )}`,
+        ),
+      );
+    }
+  }
+
+  // Use the dataSource to discover model properties
+  async discoverModelPropertiesWithDatasource() {
+    if (this.shouldExit()) return false;
+    if (!this.options.dataSource) return;
+    if (!this.artifactInfo.dataSource) {
+    }
+
+    const schemaDef = await modelDiscoverer.discoverSingleModel(
+      this.artifactInfo.dataSource,
+      this.options.table,
+      {
+        schema: this.options.schema,
+        views: true,
+      },
+    );
+
+    if (!schemaDef) {
+      this.exit(
+        new Error(
+          `Could not locate table: ${this.options.table} in schema: ${
+            this.options.schema
+          }
+          ${chalk.yellow(
+            'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
+          )}`,
+        ),
+      );
+    }
+
+    Object.assign(this.artifactInfo, schemaDef);
+    this.artifactInfo.defaultName = this.artifactInfo.name;
+    delete this.artifactInfo.name;
   }
 
   // Prompt a user for Model Name
@@ -362,6 +444,10 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     if (this.shouldExit()) return false;
 
     debug('scaffolding');
+
+    Object.entries(this.artifactInfo.properties).forEach(([k, v]) =>
+      modelDiscoverer.sanitizeProperty(v),
+    );
 
     // Data for templates
     this.artifactInfo.outFile = utils.getModelFileName(this.artifactInfo.name);

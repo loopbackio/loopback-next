@@ -275,9 +275,35 @@ Run the following command to install the CLI.
 
     Arguments:
       name  # Name for the observer  Type: String  Required: false
+
     ```
 
-11. To list available commands
+11. To discover a model from a supported datasource
+
+    ```sh
+    cd <your-project-directory>
+    lb4 discover
+      lb4 discover [<name>] [options]
+
+    Options:
+      -h,    --help           # Print the generator's options and usage
+             --skip-cache     # Do not remember prompt answers                                              Default: false
+             --skip-install   # Do not automatically install dependencies                                   Default: false
+             --force-install  # Fail on install dependencies error                                          Default: false
+      -c,    --config         # JSON file name or value to configure options
+      -y,    --yes            # Skip all confirmation prompts with default or provided value
+             --format         # Format generated code using npm run lint:fix
+      -ds,   --dataSource     # The name of the datasource to discover
+             --views          # Boolean to discover views                                                   Default: true
+             --schema         # Schema to discover
+             --all            # Discover all models without prompting users to select                       Default: false
+             --outDir         # Specify the directory into which the `model.model.ts` files will be placed
+
+    Arguments:
+      name  # Name for the discover  Type: String  Required: false
+    ```
+
+12. To list available commands
 
     `lb4 --commands` (or `lb4 -l`)
 
@@ -296,7 +322,7 @@ Run the following command to install the CLI.
 
     Please note `lb4 --help` also prints out available commands.
 
-12. To print out version information
+13. To print out version information
 
     `lb4 --version` (or `lb4 -v`)
 
