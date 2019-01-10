@@ -12,6 +12,7 @@ import {
   RepositoryMixin,
   Filter,
   EntityNotFoundError,
+  Count,
 } from '../..';
 import {Address} from '../fixtures/models';
 import {CustomerRepository, AddressRepository} from '../fixtures/repositories';
@@ -115,6 +116,27 @@ describe('hasOne relation', () => {
     ).to.be.rejectedWith(EntityNotFoundError);
   });
 
+  it('can update related model instance', async () => {
+    const customerAddress = await controller.createCustomerAddress(
+      existingCustomerId,
+      {street: '76 Yonge Street'},
+    );
+    const updatedAddress: Partial<Address> = {zipcode: '22145'};
+
+    const updatedCount = await controller.updateCustomerAddress(
+      existingCustomerId,
+      updatedAddress,
+    );
+
+    const foundAddress = await addressRepo.find({
+      where: {customerId: existingCustomerId},
+    });
+
+    expect(updatedCount).to.deepEqual({count: 1});
+    expect(toJSON(foundAddress[0])).to.containEql({zipcode: '22145'});
+  });
+
+  it('can delete related model instance', async () => {});
   /*---------------- HELPERS -----------------*/
 
   class CustomerController {
@@ -141,6 +163,15 @@ describe('hasOne relation', () => {
       filter: Filter<Address>,
     ) {
       return await this.customerRepository.address(customerId).get(filter);
+    }
+
+    async updateCustomerAddress(
+      customerId: number,
+      addressData: Partial<Address>,
+    ): Promise<Count> {
+      return await this.customerRepository
+        .address(customerId)
+        .patch(addressData);
     }
   }
 

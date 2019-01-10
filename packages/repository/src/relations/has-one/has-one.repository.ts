@@ -4,13 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Getter} from '@loopback/context';
-import {DataObject, Options} from '../../common-types';
+import {DataObject, Options, Count} from '../../common-types';
 import {Entity} from '../../model';
-import {Filter} from '../../query';
+import {Filter, Where} from '../../query';
 import {
   constrainDataObject,
   constrainFilter,
   EntityCrudRepository,
+  constrainWhere,
 } from '../../repositories';
 import {EntityNotFoundError} from '../../errors';
 
@@ -39,6 +40,14 @@ export interface HasOneRepository<Target extends Entity> {
     filter?: Pick<Filter<Target>, Exclude<keyof Filter<Target>, 'where'>>,
     options?: Options,
   ): Promise<Target>;
+
+  /**
+   * Patch related target model instance
+   * @param dataObject The target model fields and their new values to patch
+   * @param options
+   * @returns A promise which resolves the patched target model instances
+   */
+  patch(dataObject: DataObject<Target>, options?: Options): Promise<Count>;
 }
 
 export class DefaultHasOneRepository<
@@ -86,5 +95,17 @@ export class DefaultHasOneRepository<
       throw new EntityNotFoundError(targetRepository.entityClass, id);
     }
     return found[0];
+  }
+
+  async patch(
+    dataObject: DataObject<TargetEntity>,
+    options?: Options,
+  ): Promise<Count> {
+    const targetRepository = await this.getTargetRepository();
+    const entity = targetRepository.entityClass;
+    return await targetRepository.updateAll(
+      dataObject,
+      constrainWhere({}, this.constraint as Where<TargetEntity>),
+    );
   }
 }
