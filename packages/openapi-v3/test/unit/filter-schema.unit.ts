@@ -12,11 +12,9 @@ describe('filterSchema', () => {
     name: 'my-user-model',
   })
   class MyUserModel extends Entity {
-    @property()
-    id: string;
+    @property() id: string;
 
-    @property()
-    age: number;
+    @property() age: number;
   }
 
   it('generate filter schema', () => {
@@ -24,8 +22,16 @@ describe('filterSchema', () => {
     expect(MyUserModel.definition.name).to.eql('my-user-model');
     expect(schema).to.eql({
       properties: {
-        where: {type: 'object'},
-        fields: {type: 'object'},
+        where: {
+          type: 'object',
+        },
+        fields: {
+          type: 'object',
+          properties: {
+            id: {type: 'boolean'},
+            age: {type: 'boolean'},
+          },
+        },
         offset: {type: 'integer', minimum: 0},
         limit: {type: 'integer', minimum: 0},
         skip: {type: 'integer', minimum: 0},
