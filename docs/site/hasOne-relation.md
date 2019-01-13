@@ -172,7 +172,7 @@ repository, the following are required:
   `HasOneRepositoryFactory<targetModel, typeof sourceModel.prototype.id>` on the
   source repository class.
 
-- Call the `createHasOneRepositoryFactoryFor` function in the constructor of the
+- Call the `_createHasOneRepositoryFactoryFor` function in the constructor of the
   source repository class with the relation name (decorated relation property on
   the source model) and target repository instance and assign it the property
   mentioned above.
@@ -207,7 +207,7 @@ export class SupplierRepository extends DefaultCrudRepository<
     getAccountRepository: Getter<AccountRepository>,
   ) {
     super(Customer, db);
-    this.account = this.createHasOneRepositoryFactoryFor(
+    this.account = this._createHasOneRepositoryFactoryFor(
       'account',
       getAccountRepository,
     );
