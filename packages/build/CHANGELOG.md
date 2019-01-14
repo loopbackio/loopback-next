@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.1.0...@loopback/build@1.2.0) (2019-01-14)
+
+
+### Bug Fixes
+
+* **build:** fix path lookup in build helpers ([16311c5](https://github.com/strongloop/loopback-next/commit/16311c5))
+
+
+### Features
+
+* always include tslint and typescript in project dev-dependencies ([e0df285](https://github.com/strongloop/loopback-next/commit/e0df285))
+
+
+
+
+
 # [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.0.2...@loopback/build@1.1.0) (2018-12-20)
 
 
