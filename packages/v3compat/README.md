@@ -1,7 +1,6 @@
 # @loopback/v3compat
 
-A compatibility layer allowing LoopBack 3 projects to carry over their
-models to LoopBack 4+.
+A compatibility layer simplifying migration of LoopBack 3 models to LoopBack 4+.
 
 ## Installation
 
