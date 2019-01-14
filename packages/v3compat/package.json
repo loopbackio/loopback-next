@@ -1,0 +1,47 @@
+{
+  "name": "@loopback/v3compat",
+  "description": "A compatibility layer allowing LoopBack 3 projects to carry over their models to LoopBack 4+.",
+  "version": "0.1.0",
+  "keywords": [
+    "LoopBack",
+    "Compatibility",
+    "LB3"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {
+    "build:apidocs": "lb-apidocs",
+    "build": "lb-tsc es2017 --outDir dist",
+    "clean": "lb-clean loopback-explorer*.tgz dist package api-docs",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/test/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-explorer*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@loopback/build": "^1.1.0",
+    "@loopback/testlab": "^1.0.3",
+    "@loopback/tslint-config": "^1.0.0",
+    "@types/node": "^10.1.1"
+  },
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist/src",
+    "dist/index*",
+    "src"
+  ]
+}
