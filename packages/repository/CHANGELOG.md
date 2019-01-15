@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.2...@loopback/repository@1.1.3) (2019-01-15)
+
+
+### Bug Fixes
+
+* **repository:** remove property.array() call from hasMany decorator ([56ab017](https://github.com/strongloop/loopback-next/commit/56ab017)), closes [#1944](https://github.com/strongloop/loopback-next/issues/1944)
+
+
+
+
+
 ## [1.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.1...@loopback/repository@1.1.2) (2019-01-14)
 
 

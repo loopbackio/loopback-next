@@ -1,6 +1,6 @@
 {
   "name": "@loopback/authentication",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "A LoopBack component for authentication support.",
   "engines": {
     "node": ">=8.9"
@@ -23,8 +23,8 @@
     "@loopback/context": "^1.4.1",
     "@loopback/core": "^1.1.4",
     "@loopback/metadata": "^1.0.4",
-    "@loopback/openapi-v3": "^1.1.6",
-    "@loopback/rest": "^1.5.2",
+    "@loopback/openapi-v3": "^1.1.7",
+    "@loopback/rest": "^1.5.3",
     "passport": "^0.4.0",
     "passport-strategy": "^1.0.0"
   },
