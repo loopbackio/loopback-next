@@ -3,7 +3,4 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export * from './remoting-types';
-export * from './shared-class';
-export * from './shared-method';
-export * from './rest-adapter';
+export class RestAdapter {}

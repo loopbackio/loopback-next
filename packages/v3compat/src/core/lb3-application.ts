@@ -9,7 +9,7 @@ import {ModelClass} from './lb3-model';
 import {Lb3Registry} from './lb3-registry';
 import {DataSource, DataSourceConfig, ModelConfig} from './lb3-types';
 
-const debug = debugFactory('loopback:v3compat:mixin');
+const debug = debugFactory('loopback:v3compat:application');
 
 export class Lb3Application {
   readonly registry: Lb3Registry;

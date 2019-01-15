@@ -35,6 +35,62 @@ export type RemotingErrorHookCallback = (
   next: (err?: Error) => void,
 ) => void;
 
+export interface RemoteClassOptions {
+  // TODO: are there any well-known class options?
+}
+
 export interface RemoteMethodOptions {
-  // todo: describe http, accepts, returns, etc.
+  aliases?: string[];
+  isStatic?: boolean;
+  accepts?: ParameterOptions | ParameterOptions[];
+  returns?: RetvalOptions | RetvalOptions[];
+  // TODO: errors
+  description?: string;
+  notes?: string;
+  documented?: boolean;
+  http?: RestRouteSettings | RestRouteSettings[];
+  // TODO: rest
+  shared?: boolean;
+
+  // user-defined extensions
+  [customKey: string]: unknown;
+}
+
+export interface ParameterOptions {
+  arg?: string;
+  type?: string | [string];
+  model?: string;
+  required?: boolean;
+  description?: string;
+  http?: RestParameterMapping; // TODO: support function `(ctx) => value`
+}
+
+export interface RestParameterMapping {
+  source?:
+    | 'req'
+    | 'res'
+    | 'body'
+    | 'form'
+    | 'query'
+    | 'path'
+    | 'header'
+    | 'context';
+}
+
+export interface RetvalOptions {
+  arg?: string;
+  type?: string | [string];
+  model?: string;
+  root?: boolean;
+  description?: string;
+  http?: RestRetvalMapping;
+}
+
+export interface RestRetvalMapping {
+  target?: 'status' | 'header';
+}
+
+export interface RestRouteSettings {
+  path?: string;
+  verb?: string;
 }
