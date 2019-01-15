@@ -199,7 +199,8 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       const features = choices.map(c => {
         return {
           key: c.key,
-          value: settings.indexOf(c.short) !== -1,
+          value:
+            settings.indexOf(c.name) !== -1 || settings.indexOf(c.short) !== -1,
         };
       });
       features.forEach(f => (this.projectInfo[f.key] = f.value));
