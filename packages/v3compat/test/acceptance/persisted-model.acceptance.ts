@@ -37,6 +37,20 @@ describe('v3compat (acceptance)', () => {
     beforeEach(givenClient);
     afterEach(stopServers);
 
+    it('custom models inherit from PersistedModel by default', () => {
+      expect(Todo.base.modelName).to.equal('PersistedModel');
+    });
+
+    it('defines remote methods', () => {
+      const methodNames = Todo.sharedClass.methods().map(m => m.stringName);
+      expect(methodNames).to.deepEqual([
+        'Todo.create',
+        'Todo.find',
+        'Todo.findById',
+        // TODO: add other CRUD methods
+      ]);
+    });
+
     it('exposes Todo.find() method', async () => {
       const todos = await Todo.find();
       expect(todos).to.deepEqual([]);

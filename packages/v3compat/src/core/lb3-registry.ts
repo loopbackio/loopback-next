@@ -43,8 +43,8 @@ export class Lb3Registry {
 
   createModel<T = ModelClass>(
     nameOrDefinition: string | ModelDefinition,
-    properties?: ModelProperties,
-    settings?: ModelSettings,
+    properties: ModelProperties = {},
+    settings: ModelSettings = {},
   ): T {
     if (typeof nameOrDefinition !== 'string')
       // TODO
@@ -58,6 +58,10 @@ export class Lb3Registry {
       nameOrDefinition,
       properties,
     );
+
+    if (!(settings.base || settings.super)) {
+      settings.base = 'PersistedModel';
+    }
 
     // TODO: use the code from LB3's lib/registry.ts
     const modelCtor = this.modelBuilder.define(
