@@ -71,6 +71,15 @@ describe('lb4 model integration', () => {
     ).to.be.rejectedWith(/Model was not found in/);
   });
 
+  it('run if passed a valid base model from command line', async () => {
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .withArguments('test --base Model');
+
+    assert.file(expectedModelFile);
+  });
+
   describe('model generator', () => {
     it('scaffolds correct files with input', async () => {
       await testUtils
@@ -177,6 +186,30 @@ describe('lb4 model integration', () => {
 
       basicModelFileChecks();
     });
+  });
+});
+
+describe('model generator using --config option', () => {
+  it('create models with valid json', async () => {
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .withArguments(['--config', '{"name":"test", "base":"Entity"}', '--yes']);
+
+    basicModelFileChecks();
+  });
+
+  it('does not run if pass invalid json', () => {
+    return expect(
+      testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .withArguments([
+          '--config',
+          '{"name":"test", "base":"InvalidBaseModel"}',
+          '--yes',
+        ]),
+    ).to.be.rejectedWith(/Model was not found in/);
   });
 });
 
