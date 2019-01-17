@@ -58,6 +58,7 @@ export interface RemoteMethodOptions {
 
 export interface ParameterOptions {
   arg?: string;
+  name?: string; // alias for "arg"
   type?: string | [string];
   model?: string;
   required?: boolean;
@@ -65,16 +66,18 @@ export interface ParameterOptions {
   http?: RestParameterMapping; // TODO: support function `(ctx) => value`
 }
 
+export type RestParameterSource =
+  | 'req'
+  | 'res'
+  | 'body'
+  | 'form'
+  | 'query'
+  | 'path'
+  | 'header'
+  | 'context';
+
 export interface RestParameterMapping {
-  source?:
-    | 'req'
-    | 'res'
-    | 'body'
-    | 'form'
-    | 'query'
-    | 'path'
-    | 'header'
-    | 'context';
+  source?: RestParameterSource;
 }
 
 export interface RetvalOptions {
@@ -93,4 +96,9 @@ export interface RestRetvalMapping {
 export interface RestRouteSettings {
   path?: string;
   verb?: string;
+}
+
+export interface RestRoute extends RestRouteSettings {
+  path: string;
+  verb: string;
 }

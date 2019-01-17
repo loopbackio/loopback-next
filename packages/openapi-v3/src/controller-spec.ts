@@ -204,7 +204,9 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
       constructor.prototype,
       op,
     );
-    const paramTypes = opMetadata.parameterTypes;
+
+    // TODO(bajtos) Add a unit-test for this fix
+    const paramTypes = opMetadata.parameterTypes || [];
 
     const isComplexType = (ctor: Function) =>
       !_.includes([String, Number, Boolean, Array, Object], ctor);

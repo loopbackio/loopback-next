@@ -7,13 +7,21 @@ import {
   RemoteClassOptions,
   RestRouteSettings,
   RemoteMethodOptions,
+  RestRoute,
 } from './remoting-types';
 import {SharedMethod} from './shared-method';
 import assert = require('assert');
 
 export type CtorFunction = Function & {
-  http?: RestRouteSettings;
+  http?: RestRouteSettings | RestRouteSettings[];
   sharedCtor?: Function;
+  settings?: {
+    swagger?: {
+      tag?: {
+        name?: string;
+      };
+    };
+  };
 
   [staticKey: string]: Function | unknown;
 };
@@ -21,7 +29,7 @@ export type CtorFunction = Function & {
 // See strong-remoting's lib/shared-class.js
 export class SharedClass {
   private readonly _methods: SharedMethod[] = [];
-  readonly http: RestRouteSettings;
+  readonly http: RestRoute;
   readonly sharedCtor: SharedMethod;
 
   // TODO: _resolvers, _disabledMethods
@@ -33,19 +41,18 @@ export class SharedClass {
   ) {
     const http = ctor && ctor.http;
 
-    const defaultHttp: RestRouteSettings = {};
-    defaultHttp.path = '/' + this.name;
+    const defaultHttp: RestRoute = {
+      path: '/' + this.name,
+      verb: 'POST',
+    };
 
-    if (Array.isArray(http)) {
-      // use array as is
-      this.http = http;
-      if (http.length === 0) {
-        http.push(defaultHttp);
-      }
-    } else {
+    this.http = Object.assign(
       // set http.path using the name unless it is defined
-      this.http = Object.assign(defaultHttp, http);
-    }
+      defaultHttp,
+      Array.isArray(http)
+        ? http[0] // LB3 does not support multiple http entries for a class
+        : http,
+    );
 
     if (typeof ctor === 'function' && ctor.sharedCtor) {
       this.sharedCtor = new SharedMethod(ctor.sharedCtor, 'sharedCtor', this);

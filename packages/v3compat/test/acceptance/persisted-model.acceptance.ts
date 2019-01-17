@@ -80,9 +80,39 @@ describe('v3compat (acceptance)', () => {
       expect(Todo.app.models.Todo).to.equal(Todo);
     });
 
-    it.skip('exposes "GET /" endpoint', () => {
-      return client.get('/api/todos').expect(200, []);
+    it('exposes "GET /api/Todos" endpoint', () => {
+      return client.get('/api/Todos').expect(200, []);
     });
+
+    it('exposes "GET /api/Todos/:id" endpoint', async () => {
+      const created = await Todo.create({title: 'a task'});
+      await client.get(`/api/Todos/${created.id}`).expect(200, toJSON(created));
+    });
+
+    it('supports ?filter argument encoded as deep-object', async () => {
+      const list = await Promise.all([
+        Todo.create({title: 'first task'}),
+        Todo.create({title: 'second task'}),
+      ]);
+      await client
+        .get('/api/Todos')
+        .query({'filter[where][title]': 'first task'})
+        .expect(200, [toJSON(list[0])]);
+    });
+
+    it('supports ?filter argument encoded as JSON', async () => {
+      const list = await Promise.all([
+        Todo.create({title: 'first task'}),
+        Todo.create({title: 'second task'}),
+      ]);
+      await client
+        .get('/api/Todos')
+        .query({filter: JSON.stringify({where: {title: 'second task'}})})
+        .expect(200, [toJSON(list[1])]);
+    });
+
+    // TODO
+    it.skip('supports POST /api/Todos');
   });
 
   async function givenApplication() {

@@ -24,6 +24,7 @@ TODO:
 - set options from HTTP context (`http: 'optionsFromRequest'`)
 - `{rest: {after: convertNullToNotFoundError}}`
 - mixins
+- case-insensitive URL paths (?) (/Todo is same as /todo)
 
 ## Model
 

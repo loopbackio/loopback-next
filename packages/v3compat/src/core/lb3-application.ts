@@ -5,6 +5,7 @@
 
 import {Application} from '@loopback/core';
 import * as debugFactory from 'debug';
+import {RestAdapter} from '../remoting';
 import {ModelClass} from './lb3-model';
 import {Lb3Registry} from './lb3-registry';
 import {DataSource, DataSourceConfig, ModelConfig} from './lb3-types';
@@ -12,6 +13,7 @@ import {DataSource, DataSourceConfig, ModelConfig} from './lb3-types';
 const debug = debugFactory('loopback:v3compat:application');
 
 export class Lb3Application {
+  readonly restAdapter: RestAdapter;
   readonly registry: Lb3Registry;
 
   readonly dataSources: {
@@ -24,6 +26,7 @@ export class Lb3Application {
 
   constructor(protected lb4app: Application) {
     this.registry = new Lb3Registry(lb4app);
+    this.restAdapter = new RestAdapter(lb4app);
     this.dataSources = Object.create(null);
     this.models = Object.create(null);
   }
@@ -46,6 +49,9 @@ export class Lb3Application {
     this.registry.configureModel(modelCtor, config);
     this.models[modelCtor.modelName] = modelCtor;
     modelCtor.app = this;
+
+    // TODO: register Model schema
+    this.restAdapter.registerSharedClass(modelCtor.sharedClass);
   }
 
   deleteModelByName(modelName: string): void {

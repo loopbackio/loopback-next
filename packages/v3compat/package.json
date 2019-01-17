@@ -31,6 +31,7 @@
   "dependencies": {
     "@loopback/context": "^1.4.0",
     "@loopback/core": "^1.1.3",
+    "@loopback/rest": "^1.5.3",
     "debug": "^4.1.1",
     "loopback-datasource-juggler": "^4.5.0"
   },

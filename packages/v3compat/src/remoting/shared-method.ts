@@ -7,7 +7,7 @@ import * as assert from 'assert';
 import {
   ParameterOptions,
   RemoteMethodOptions,
-  RestRouteSettings,
+  RestRoute,
   RetvalOptions,
 } from './remoting-types';
 import {CtorFunction, SharedClass} from './shared-class';
@@ -20,7 +20,7 @@ export class SharedMethod {
   readonly description?: string;
   readonly notes?: string;
   readonly documented: boolean;
-  readonly http: RestRouteSettings[];
+  readonly http: RestRoute[];
   readonly shared: boolean;
   readonly ctor?: CtorFunction;
   readonly sharedCtor: SharedMethod;
@@ -47,7 +47,6 @@ export class SharedMethod {
     this.notes = options.notes || fnMeta.notes;
     this.documented =
       options.documented !== false && fnMeta.documented !== false;
-    const http = options.http || fnMeta.http || {};
     // TODO: this.rest = options.rest || fn.rest || {};
     this.shared = isShared(fnMeta, options);
     this.sharedClass = sharedClass;
@@ -69,7 +68,11 @@ export class SharedMethod {
     this.returns = returns && !Array.isArray(returns) ? [returns] : returns;
     this.returns.forEach(normalizeArgumentDescriptor);
 
-    this.http = http && !Array.isArray(http) ? [http] : http;
+    const http = options.http || fnMeta.http || {};
+    this.http = (http && !Array.isArray(http) ? [http] : http).map(h => ({
+      verb: h.verb || 'POST',
+      path: h.path || '/' + name,
+    }));
 
     // TODO: handle stream types
     // TODO: handle error.options
@@ -142,6 +145,14 @@ export class SharedMethod {
       rest: fn.rest,
     });
   }
+
+  getEndpoints(): RestRoute[] {
+    return this.http.map(route => ({
+      verb: route.verb,
+      // TODO: normalize HTTP paths (if configured)
+      path: joinUrlPaths(this.sharedClass.http.path, route.path),
+    }));
+  }
 }
 
 function isShared(fn: RemoteMethodOptions, options: RemoteMethodOptions) {
@@ -153,4 +164,17 @@ function isShared(fn: RemoteMethodOptions, options: RemoteMethodOptions) {
 
 function normalizeArgumentDescriptor(desc: ParameterOptions | RetvalOptions) {
   if (desc.type === 'array') desc.type = ['any'];
+}
+
+export function joinUrlPaths(
+  left: string | undefined,
+  right: string | undefined,
+): string {
+  if (!left) return right || '/';
+  if (!right || right === '/') return left;
+
+  const glue = left[left.length - 1] + right[0];
+  if (glue === '//') return left + right.slice(1);
+  else if (glue[0] === '/' || glue[1] === '/') return left + right;
+  else return left + '/' + right;
 }
