@@ -9,6 +9,7 @@ import {
   ResponseObject,
   SchemaObject,
   ParameterLocation,
+  RequestBodyObject,
 } from '@loopback/rest';
 import {
   ParameterOptions,
@@ -33,6 +34,7 @@ export function buildRemoteMethodSpec(
     sharedMethod.accepts,
     defaultSource,
   );
+  const requestBody = buildRequestBodyObject(sharedMethod.accepts);
   const response = convertReturnsToOpenApi(sharedMethod.returns);
   // TODO: support custom status codes
   // TODO: filter out status/header retvals before deciding the status code
@@ -51,7 +53,7 @@ export function buildRemoteMethodSpec(
     notes: sharedMethod.notes,
     operationId,
     parameters,
-    // TODO: requestBody,
+    requestBody,
     responses: {
       [statusCode]: response,
     },
@@ -87,6 +89,27 @@ function convertAcceptsToOpenApi(
   });
 
   return accepts.map(a => buildParameterSchema(a, defaultSource));
+}
+
+function buildRequestBodyObject(
+  accepts: ParameterOptions[],
+): RequestBodyObject | undefined {
+  const bodyArgs = accepts.filter(a => a.http && a.http.source === 'body');
+  if (bodyArgs.length < 1) return undefined;
+  if (bodyArgs.length > 1)
+    throw new Error(
+      'v3compat does not support multiple request-body parameters',
+    );
+  const arg = bodyArgs[0];
+  const schema = buildSchemaFromRemotingType(arg.type);
+
+  return {
+    description: arg.description,
+    content: {
+      'application/json': {schema},
+    },
+    required: arg.required,
+  };
 }
 
 function convertReturnsToOpenApi(returns: RetvalOptions[]): ResponseObject {

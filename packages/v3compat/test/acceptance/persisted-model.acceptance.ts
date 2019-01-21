@@ -111,8 +111,17 @@ describe('v3compat (acceptance)', () => {
         .expect(200, [toJSON(list[1])]);
     });
 
-    // TODO
-    it.skip('supports POST /api/Todos');
+    it('supports POST /api/Todos', async () => {
+      const result = await client.post('/api/Todos').send({
+        title: 'new task',
+      });
+
+      const expected = {id: 1, title: 'new task'};
+      expect(result.body).to.deepEqual(expected);
+
+      const found = await Todo.findOne();
+      expect(toJSON(found)).to.deepEqual(expected);
+    });
   });
 
   async function givenApplication() {
