@@ -32,7 +32,7 @@ export class Lb3Application {
   }
 
   dataSource(name: string, config: DataSourceConfig): DataSource {
-    debug('registering datasource %s with config %j', name, config);
+    debug('Registering datasource %j with config %j', name, config);
     // TODO: use the implementation from LB3's lib/application.js
     const ds = this.registry.createDataSource(name, config);
     this.dataSources[name] = ds;
@@ -46,7 +46,7 @@ export class Lb3Application {
   }
 
   model(modelCtor: ModelClass, config: ModelConfig) {
-    debug('registering model %s with config %s', modelCtor.modelName, config);
+    debug('Registering model %j with config %j', modelCtor.modelName, config);
     // TODO: use the implementation from LB3's lib/application.js
     if (typeof config.dataSource === 'string') {
       const dataSource = this.dataSources[config.dataSource];
@@ -56,7 +56,7 @@ export class Lb3Application {
     this.models[modelCtor.modelName] = modelCtor;
     modelCtor.app = this;
 
-    // TODO: register Model schema
+    // TODO: register Model schema for OpenAPI spec
     this.restAdapter.registerSharedClass(modelCtor.sharedClass);
   }
 

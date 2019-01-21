@@ -5,7 +5,8 @@
 
 import {Constructor} from '@loopback/context';
 import {Application} from '@loopback/core';
-import {Lb3Application} from './core/lb3-application';
+import {CompatComponent} from './compat.component';
+import {Lb3Application} from './core';
 
 /**
  * A mixin class for Application that adds `v3compat` property providing
@@ -39,6 +40,7 @@ export function CompatMixin<T extends Constructor<any>>(superClass: T) {
     constructor(...args: any[]) {
       super(...args);
       this.v3compat = new Lb3Application((this as unknown) as Application);
+      this.component(CompatComponent);
     }
   };
 }

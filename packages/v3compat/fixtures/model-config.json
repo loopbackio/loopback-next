@@ -1,0 +1,6 @@
+{
+  "Todo": {
+    "dataSource": "db",
+    "public": true
+  }
+}

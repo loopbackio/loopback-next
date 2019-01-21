@@ -1,0 +1,11 @@
+{
+  "name": "Todo",
+  "base": "PersistedModel",
+  "strict": false,
+  "properties": {
+    "title": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

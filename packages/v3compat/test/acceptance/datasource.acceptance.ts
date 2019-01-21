@@ -3,25 +3,19 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {RestApplication, RestServerConfig} from '@loopback/rest';
-import {expect, givenHttpServerConfig} from '@loopback/testlab';
-import {CompatMixin} from '../..';
+import {expect} from '@loopback/testlab';
+import {CompatApp, createCompatApplication} from './compat-app';
 
 describe('v3compat (acceptance)', () => {
-  class CompatApp extends CompatMixin(RestApplication) {}
-
   let app: CompatApp;
 
-  beforeEach(givenApplication);
+  beforeEach(async function givenApplication() {
+    app = await createCompatApplication();
+  });
 
   it('registers datasource with LB4 app', () => {
     const created = app.v3compat.dataSource('db', {connector: 'memory'});
     const bound = app.getSync('datasources.db');
     expect(bound).to.equal(created);
   });
-
-  async function givenApplication() {
-    const rest: RestServerConfig = Object.assign({}, givenHttpServerConfig());
-    app = new CompatApp({rest});
-  }
 });

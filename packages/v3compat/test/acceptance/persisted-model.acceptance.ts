@@ -3,23 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {RestApplication, RestServerConfig} from '@loopback/rest';
-import {
-  Client,
-  createRestAppClient,
-  expect,
-  givenHttpServerConfig,
-  toJSON,
-} from '@loopback/testlab';
-import {CompatMixin, PersistedModelClass} from '../..';
+import {Client, createRestAppClient, expect, toJSON} from '@loopback/testlab';
+import {PersistedModelClass} from '../..';
+import {CompatApp, createCompatApplication} from './compat-app';
 
 describe('v3compat (acceptance)', () => {
-  class CompatApp extends CompatMixin(RestApplication) {}
-
   let app: CompatApp;
   let client: Client;
 
-  beforeEach(givenApplication);
+  beforeEach(async function givenApplication() {
+    app = await createCompatApplication();
+  });
 
   context('simple PersistedModel', () => {
     let Todo: PersistedModelClass;
@@ -123,11 +117,6 @@ describe('v3compat (acceptance)', () => {
       expect(toJSON(found)).to.deepEqual(expected);
     });
   });
-
-  async function givenApplication() {
-    const rest: RestServerConfig = Object.assign({}, givenHttpServerConfig());
-    app = new (CompatMixin(RestApplication))({rest});
-  }
 
   async function givenClient() {
     await app.start();

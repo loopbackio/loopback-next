@@ -46,18 +46,22 @@ export class Lb3Registry {
     properties: ModelProperties = {},
     settings: ModelSettings = {},
   ): T {
-    if (typeof nameOrDefinition !== 'string')
-      // TODO
-      throw new Error(
-        'createModel from a definition object is not supported yet',
-      );
-    const name = nameOrDefinition;
+    let name: string;
+    if (typeof nameOrDefinition === 'string') {
+      name = nameOrDefinition;
+    } else {
+      const config = nameOrDefinition;
+      name = config.name;
+      properties = config.properties;
+      settings = buildModelOptionsFromConfig(config);
 
-    debug(
-      'Creating a new model %s with properties %j',
-      nameOrDefinition,
-      properties,
-    );
+      assert(
+        typeof name === 'string',
+        'The model-config property `name` must be a string',
+      );
+    }
+
+    debug('Creating a new model %s with properties %j', name, properties);
 
     if (!(settings.base || settings.super)) {
       settings.base = 'PersistedModel';
@@ -106,4 +110,23 @@ export class Lb3Registry {
     if (model) return model;
     throw new Error(`Model not found: ${modelName}`);
   }
+}
+
+function buildModelOptionsFromConfig(config: ModelSettings) {
+  const options = Object.assign({}, config.options);
+  for (const key in config) {
+    if (['name', 'properties', 'options'].indexOf(key) !== -1) {
+      // Skip items which have special meaning
+      continue;
+    }
+
+    if (options[key] !== undefined) {
+      // When both `config.key` and `config.options.key` are set,
+      // use the latter one
+      continue;
+    }
+
+    options[key] = config[key];
+  }
+  return options;
 }

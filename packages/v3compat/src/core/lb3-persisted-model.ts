@@ -3,8 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Constructor} from '@loopback/core';
 import {RemoteMethodOptions} from '../remoting';
-import {Model} from './lb3-model';
+import {AnyStaticMethods, Model} from './lb3-model';
 import {Lb3Registry} from './lb3-registry';
 import {
   Callback,

@@ -6,32 +6,36 @@ How to test code migrated from strong-remoting and loopback (v3)? Do we want to
 copy existing tests over? Migrate them to async/await style? Don't bother with
 testing at all, use few acceptance-level tests only?
 
-How to split 1k+ lines of new (migrated) code into smaller chunks that will be
+How to split 2k+ lines of new (migrated) code into smaller chunks that will be
 easier to review?
 
-TODO:
-
-1. expose remote methods via REST
-2. boot
+Should we register LB3 Models for dependency injection into LB4 code? Register
+them as repositories, models, services, or something else?
 
 ## Should have/next iterations:
 
 - PersistedModel - all CRUD APIs
-- register Models and DataSources for dependency injection?
-- allow LB3 models to be attached to LB4 dataSources?
 - pick up models/methods added after app start
 - hasUpdateOnlyProps (different request body schema for "create" method)
 - set options from HTTP context (`http: 'optionsFromRequest'`)
 - `{rest: {after: convertNullToNotFoundError}}`
 - mixins
 - case-insensitive URL paths (?) (/Todo is same as /todo)
+- model-sources and mixin-sources in model-config.json
 
-## Model
+On aside
+
+- https://github.com/Microsoft/TypeScript/issues/6480
+- extract the Booter contract into a standalone package so that v3compat does
+  not have to inherit entire boot
+
+### Model
 
 - beforeRemote/afterRemote/afterRemoteError
 - disableRemoteMethodByName(name)
 
-## HttpContext
+### HttpContext
+
 - method
 - req
 - res
@@ -40,13 +44,15 @@ TODO:
 - methodString
 - result
 
-## SharedMethod
+### SharedMethod
+
 - isMethodEnabled(sharedMethod)
 - resolve(resolver)
 - findMethodByName
 - disableMethodByName
 
 ### Application
+
 - app.connector(name, connector)
 - app.connectors.{name}
 
@@ -74,10 +80,12 @@ TODO:
 
 ### Remoting features
 
-- respond with a  Buffer, respond with a ReadableStream
+- respond with a Buffer, respond with a ReadableStream
 
-## Won't have
+## WILL NOT HAVE
 
+- allow LB3 models to be attached to LB4 dataSources. This won't work
+  because LB3 requires all datasources to share the same ModelBuilder
 - CLS-based context
 - global registry: loopback.createModel, loopback.findModel, etc.
 - Model.checkAccess(token, modelId, sharedMethod, ctx, cb)
@@ -102,6 +110,7 @@ TODO:
   - fillCustomChangeProperties
 
 built-in models
+
 - Access-token
 - Acl
 - Application
@@ -114,13 +123,16 @@ built-in models
 - User
 
 SharedClass
+
 - find: was already deprecated
 - disableMethod: was already deprecated
 
 SharedMethod
+
 - prototype.invoke(scope, args, remotingOptions, ctx, cb)
 
 HttpContext
+
 - ~~typeRegistry~~
 - ~~supportedTypes~~
 - invoke
@@ -134,6 +146,11 @@ HttpContext
 - (etc.)
 
 Remoting
+
 - XML
 - JSON API
 - piping retval of remote function into response
+
+Booting
+
+- datasources

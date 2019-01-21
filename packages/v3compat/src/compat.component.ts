@@ -3,7 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export * from './compat.mixin';
-export * from './core';
-export * from './remoting';
-export * from './boot';
+import {Component} from '@loopback/core';
+import {Lb3ModelBooter} from './boot';
+
+export class CompatComponent implements Component {
+  booters = [Lb3ModelBooter];
+}

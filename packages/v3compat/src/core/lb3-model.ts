@@ -20,6 +20,14 @@ import {
 } from './lb3-types';
 import {PersistedModelClass} from './lb3-persisted-model';
 
+// A workaround for https://github.com/Microsoft/TypeScript/issues/6480
+// I was not able to find a way how to mix arbitrary static properties
+// while preserving constructor signature. We need to contribute this
+// feature to TypeScript ourselves.
+export interface AnyStaticMethods {
+  [methodName: string]: Function;
+}
+
 export type ModelClass = typeof Model;
 
 export declare class Model extends ModelBase {
