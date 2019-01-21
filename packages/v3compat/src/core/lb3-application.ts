@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Application} from '@loopback/core';
+import * as assert from 'assert';
 import * as debugFactory from 'debug';
 import {RestAdapter} from '../remoting';
 import {ModelClass} from './lb3-model';
@@ -50,6 +51,15 @@ export class Lb3Application {
     // TODO: use the implementation from LB3's lib/application.js
     if (typeof config.dataSource === 'string') {
       const dataSource = this.dataSources[config.dataSource];
+      if (!dataSource) {
+        assert.fail(
+          `${
+            modelCtor.modelName
+          } is referencing a dataSource that does not exist: "${
+            config.dataSource
+          }"`,
+        );
+      }
       config = Object.assign({}, config, {dataSource});
     }
     this.registry.configureModel(modelCtor, config);
