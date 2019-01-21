@@ -56,9 +56,6 @@ export class RestAdapter {
       this: Lb3ModelController,
       ...args: OperationArgs
     ) {
-      debug('%s initial args %j', sharedMethod.stringName, args);
-      args = this.buildMethodArguments(sharedMethod, args);
-      debug('resolved args %j', args);
       if (!sharedMethod.isStatic) {
         // TODO: invoke sharedCtor to obtain the model instance
         throw new HttpErrors.NotImplemented(
@@ -66,11 +63,7 @@ export class RestAdapter {
         );
       }
 
-      // TODO: beforeRemote, afterRemote, afterRemoteError hooks
-
-      const handler = sharedMethod.getFunction();
-      // TODO: callback mode
-      return await handler.apply(sharedMethod.ctor, args);
+      return this.invokeStaticMethod(sharedMethod, args);
     };
 
     debug('    %s %s %j', verb, path, spec);
