@@ -1,0 +1,65 @@
+{
+  "name": "@loopback/example-lb3models",
+  "version": "0.1.0",
+  "description": "An example on how to add LoopBack 3 models into a LoopBack 4 application.",
+  "main": "index.js",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {
+    "build:apidocs": "lb-apidocs",
+    "build": "lb-tsc es2017 --outDir dist",
+    "build:watch": "lb-tsc es2017 --outDir dist --watch",
+    "clean": "lb-clean *example-lb3models*.tgz dist package api-docs",
+    "lint": "npm run prettier:check && npm run tslint",
+    "lint:fix": "npm run tslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "tslint": "lb-tslint",
+    "tslint:fix": "npm run tslint -- --fix",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/test/*/**/*.js\"",
+    "test:dev": "lb-mocha --allow-console-logs dist/test/**/*.js && npm run posttest",
+    "verify": "npm pack && tar xf loopback-todo*.tgz && tree package && npm run clean",
+    "migrate": "node ./dist/src/migrate",
+    "prestart": "npm run build",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/boot": "^1.0.10",
+    "@loopback/context": "^1.4.1",
+    "@loopback/core": "^1.1.4",
+    "@loopback/rest": "^1.5.3",
+    "@loopback/rest-explorer": "^1.1.6",
+    "@loopback/v3compat": "^0.1.0",
+    "loopback-connector-mysql": "^5.3.1"
+  },
+  "devDependencies": {
+    "@loopback/build": "^1.2.0",
+    "@loopback/testlab": "^1.0.4",
+    "@loopback/tslint-config": "^2.0.0",
+    "@types/lodash": "^4.14.109",
+    "@types/node": "^10.11.2",
+    "lodash": "^4.17.10",
+    "tslint": "^5.12.0",
+    "typescript": "^3.2.2"
+  },
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "tutorial",
+    "CRUD",
+    "models",
+    "todo"
+  ]
+}

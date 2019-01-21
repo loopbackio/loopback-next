@@ -1,0 +1,6 @@
+{
+  "CoffeeShop": {
+    "dataSource": "mysqlDs",
+    "public": true
+  }
+}
