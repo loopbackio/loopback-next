@@ -36,6 +36,12 @@ export class Lb3Application {
     // TODO: use the implementation from LB3's lib/application.js
     const ds = this.registry.createDataSource(name, config);
     this.dataSources[name] = ds;
+
+    this.lb4app
+      .bind(`datasources.${name}`)
+      .to(ds)
+      .tag('datasource');
+
     return ds;
   }
 
