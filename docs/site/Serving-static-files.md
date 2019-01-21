@@ -37,9 +37,21 @@ export class TodoListApplication extends BootMixin(
 
     // ...
 
-    this.static('/', path.join(__dirname, '../../public'));
+    this.static('/public', path.join(__dirname, '../../public'));
   }
 }
+```
+
+If the path prefix overlaps with controller routes (e.g. `'/'`), then you should
+only add the static route _after_ the controllers have been loaded.
+
+```ts
+  async boot() {
+    await super.boot();
+
+    // After all the controllers have loaded, add this fallback route
+    this.static('/', path.join(__dirname, '../../public'));
+  }
 ```
 
 You can call `app.static()` multiple times to configure the app to serve static
@@ -67,4 +79,25 @@ And `app.static()` can be called even after the app have started.
 await app.boot();
 await app.start();
 app.static('/files', path.join(__dirname, 'files'));
+```
+
+### Authentication
+
+The static router
+[does not](https://github.com/strongloop/loopback-next/issues/1144#issuecomment-438359985)
+work smoothly with authentication. If you are using authentication, then you
+should change the way `authenticateRequest` is called in `sequence.ts` to
+operate like this:
+
+```ts
+  async handle(context: RequestContext) {
+    // ...
+
+      // Only attempt authentication on non-static routes, because authenticateRequest fails on static routes
+      if (!(route instanceof StaticAssetsRoute)) {
+        await this.authenticateRequest(request);
+      }
+
+    // ...
+  }
 ```
