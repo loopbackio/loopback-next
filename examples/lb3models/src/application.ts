@@ -36,11 +36,6 @@ export class TodoListApplication extends CompatMixin(
         extensions: ['.controller.js'],
         nested: true,
       },
-
-      v3compat: {
-        // from "/dist/src/application.ts" to "/legacy"
-        root: '../../legacy',
-      },
     };
 
     this.v3compat.dataSource('mysqlDs', {

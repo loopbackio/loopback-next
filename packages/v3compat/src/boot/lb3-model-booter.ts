@@ -16,7 +16,8 @@ const fileExists = promisify(fs.exists);
 const debug = debugFactory('loopback:v3compat:model-booter');
 
 const DefaultOptions = {
-  root: './legacy',
+  // from "/dist/src/application.ts" to "/legacy"
+  root: '../../legacy',
 };
 
 export class Lb3ModelBooter implements Booter {

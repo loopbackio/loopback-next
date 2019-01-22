@@ -39,19 +39,7 @@ application.
    }
    ```
 
-5. Edit your boot configuration in `src/application.ts` and add the following
-   section:
-
-   ```ts
-   {
-     v3compat: {
-        // from "/dist/src/application.ts" to "/legacy"
-       root: '../../legacy',
-     },
-   }
-   ```
-
-6. Register your legacy datasources in Application's constructor.
+5. Register your legacy datasources in Application's constructor.
 
    ```ts
    this.v3compat.dataSource('mysqlDs', {
