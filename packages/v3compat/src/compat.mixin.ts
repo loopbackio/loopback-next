@@ -3,8 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor} from '@loopback/context';
-import {Application} from '@loopback/core';
+import {Application, Constructor} from '@loopback/core';
 import {CompatComponent} from './compat.component';
 import {Lb3Application} from './core';
 
