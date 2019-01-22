@@ -12,7 +12,7 @@ import {
   convertVerb,
   getClassTags,
 } from '../specgen';
-import {Lb3ModelController} from './Lb3ModelController';
+import {Lb3ModelController} from './lb3-model-controller';
 import {SharedClass} from './shared-class';
 import {SharedMethod, joinUrlPaths} from './shared-method';
 
