@@ -1,0 +1,96 @@
+// Copyright IBM Corp. 2018. All Rights Reserved.
+// Node module: @loopback/example-todo-list
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+// Author: Raphael Drai at F5.com
+
+import {
+  Count,
+  CountSchema,
+  Filter,
+  repository,
+  Where,
+} from '@loopback/repository';
+import {
+  del,
+  get,
+  getWhereSchemaFor,
+  param,
+  patch,
+  post,
+  requestBody,
+} from '@loopback/rest';
+import {<%= modelName %>} from '../models';
+import {<%= repositoryName %>} from '../repositories';
+
+export class <%= className %>Controller {
+  constructor(
+    @repository(<%= repositoryName %>) protected <%= repositoryVariableName %>: <%= repositoryName %>,
+  ) {}
+
+  @post('<%= httpPathName %>/{<%= foreignKey %>}/<%= dstModel %>s', {
+    responses: {
+      '200': {
+        description: '<%= relationModel %> model instance',
+        content: {'application/json': {schema: {'x-ts-type': <%= modelName %>}}},
+      },
+    },
+  })
+  async create(
+    @param.path.<%= keyType %>('<%= foreignKey %>') <%= foreignKey %>: <%= keyType %>,
+    @requestBody() <%= dstModel %>: <%= modelName %>,
+  ): Promise<<%= modelName %>> {
+    return await this.<%= repositoryVariableName %>.<%= dstModel %>s(<%= foreignKey %>).create(<%= dstModel %>);
+  }
+
+  @get('<%= httpPathName %>/{<%= foreignKey %>}/<%= dstModel %>s', {
+    responses: {
+      '200': {
+        description: "Array of <%= modelName %>'s belonging to <%= srcModel %>",
+        content: {
+          'application/json': {
+            schema: {type: 'array', items: {'x-ts-type': <%= modelName %>}},
+          },
+        },
+      },
+    },
+  })
+  async find(
+    @param.path.<%= keyType %>('<%= foreignKey %>') <%= foreignKey %>: <%= keyType %>,
+    @param.query.object('filter') filter?: Filter,
+  ): Promise<<%= modelName %>[]> {
+    return await this.<%= repositoryVariableName %>.<%= dstModel %>s(<%= foreignKey %>).find(filter);
+  }
+
+  @patch('<%= httpPathName %>/{<%= foreignKey %>}/<%= dstModel %>s', {
+    responses: {
+      '200': {
+        description: '<%= relationModel %> PATCH success count',
+        content: {'application/json': {schema: CountSchema}},
+      },
+    },
+  })
+  async patch(
+    @param.path.<%= keyType %>('<%= foreignKey %>') <%= foreignKey %>: <%= keyType %>,
+    @requestBody() <%= dstModel %>: Partial<<%= modelName %>>,
+    @param.query.object('where', getWhereSchemaFor(<%= modelName %>)) where?: Where,
+  ): Promise<Count> {
+    return await this.<%= repositoryVariableName %>.<%= dstModel %>s(<%= foreignKey %>).patch(<%= dstModel %>, where);
+  }
+
+  @del('<%= httpPathName %>/{<%= foreignKey %>}/<%= dstModel %>s', {
+    responses: {
+      '200': {
+        description: '<%= relationModel %> DELETE success count',
+        content: {'application/json': {schema: CountSchema}},
+      },
+    },
+  })
+  async delete(
+    @param.path.<%= keyType %>('<%= foreignKey %>') <%= foreignKey %>: <%= keyType %>,
+    @param.query.object('where', getWhereSchemaFor(<%= modelName %>)) where?: Where,
+  ): Promise<Count> {
+    return await this.<%= repositoryVariableName %>.<%= dstModel %>s(<%= foreignKey %>).delete(where);
+  }
+
+}
