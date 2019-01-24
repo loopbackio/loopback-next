@@ -255,7 +255,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     }
 
     if (!this.projectInfo.mocha) {
-      this.fs.delete(this.destinationPath('test/mocha.opts'));
+      this.fs.delete(this.destinationPath('.mocharc.json'));
     }
 
     if (!this.projectInfo.vscode) {

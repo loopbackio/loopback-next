@@ -214,9 +214,18 @@ function isOptionSet(opts, ...optionNames) {
   );
 }
 
-function mochaOptsFileProjectExists() {
-  const configFile = path.join(getPackageDir(), 'test/mocha.opts');
-  return fs.existsSync(configFile);
+function mochaConfiguredForProject() {
+  const configFiles = [
+    '.mocharc.js',
+    '.mocharc.json',
+    '.mocharc.yaml',
+    '.mocharc.yml',
+    'test/mocha.opts',
+  ];
+  return configFiles.some(f => {
+    const configFile = path.join(getPackageDir(), f);
+    return fs.existsSync(configFile);
+  });
 }
 
 exports.getCompilationTarget = getCompilationTarget;
@@ -228,4 +237,4 @@ exports.resolveCLI = resolveCLI;
 exports.runCLI = runCLI;
 exports.runShell = runShell;
 exports.isOptionSet = isOptionSet;
-exports.mochaOptsFileProjectExists = mochaOptsFileProjectExists;
+exports.mochaConfiguredForProject = mochaConfiguredForProject;
