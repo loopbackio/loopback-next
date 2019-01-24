@@ -365,7 +365,7 @@ describe('mocha', function() {
 
   function cleanup() {
     var run = require('../../bin/run-clean');
-    run(['node', 'bin/run-clean', 'test/mocha.opts']);
+    run(['node', 'bin/run-clean', '.mocharc.json']);
   }
 
   beforeEach(() => {
@@ -378,42 +378,42 @@ describe('mocha', function() {
     process.chdir(cwd);
   });
 
-  it('loads built-in mocha.opts file', () => {
+  it('loads built-in .mocharc.json file', () => {
     var run = require('../../bin/run-mocha');
     var command = run(['node', 'bin/run-mocha', '"dist/test"'], true);
     const builtInMochaOptsFile = path.join(
       __dirname,
-      '../../config/mocha.opts',
+      '../../config/.mocharc.json',
     );
     assert(
       command.indexOf(builtInMochaOptsFile) !== -1,
-      '--opts should be set by default',
+      '--config should be set by default',
     );
   });
 
-  it('honors --opts option', () => {
+  it('honors --config option', () => {
     var run = require('../../bin/run-mocha');
     var command = run(
-      ['node', 'bin/run-mocha', '--opts custom/mocha.opts', '"dist/test"'],
+      ['node', 'bin/run-mocha', '--config custom/.mocharc.json', '"dist/test"'],
       true,
     );
     assert(
-      command.indexOf('--opts custom/mocha.opts') !== -1,
-      '--opts custom/mocha.opts should be honored',
+      command.indexOf('--config custom/.mocharc.json') !== -1,
+      '--config custom/.mocharc.json should be honored',
     );
   });
 
-  it('loads mocha.opts specific project file', () => {
+  it('loads .mocharc.json specific project file', () => {
     var run = require('../../bin/run-mocha');
-    const buitInMochaOptsPath = path.join(__dirname, '../../config/mocha.opts');
-    const destPath = path.join(__dirname, './fixtures/test/mocha.opts');
+    const buitInMochaOptsPath = path.join(__dirname, '../../config/.mocharc.json');
+    const destPath = path.join(__dirname, './fixtures/.mocharc.json');
 
     fs.copyFileSync(buitInMochaOptsPath, destPath);
 
     var command = run(['node', 'bin/run-mocha', '"dist/test"'], true);
     assert(
-      command.indexOf('--opts') === -1,
-      'should skip built-in mocha.opts file when specific project file exist',
+      command.indexOf('--config') === -1,
+      'should skip built-in .mocharc.json file when specific project file exist',
     );
   });
 });

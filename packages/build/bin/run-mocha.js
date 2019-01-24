@@ -31,8 +31,8 @@ function run(argv, options) {
   if (typeof options === 'boolean') options = {dryRun: options};
   options = options || {};
   if (setMochaOpts) {
-    const mochaOptsFile = utils.getConfigFile('mocha.opts');
-    mochaOpts.unshift('--opts', mochaOptsFile);
+    const mochaOptsFile = utils.getConfigFile('.mocharc.json');
+    mochaOpts.unshift('--config', mochaOptsFile);
   }
 
   const allowConsoleLogsIx = mochaOpts.indexOf('--allow-console-logs');

@@ -215,7 +215,7 @@ function isOptionSet(opts, ...optionNames) {
 }
 
 function mochaOptsFileProjectExists() {
-  const configFile = path.join(getPackageDir(), 'test/mocha.opts');
+  const configFile = path.join(getPackageDir(), '.mocharc.json');
   return fs.existsSync(configFile);
 }
 

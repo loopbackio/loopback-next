@@ -59,7 +59,6 @@ src/
   sequence.ts
 test/
   README.md
-  mocha.opts
   acceptance/
     home-page.controller.acceptance.ts
     ping.controller.acceptance.ts
@@ -73,6 +72,7 @@ package.json
 tsconfig.json
 tslint.build.json
 tslint.json
+.mocharc.json
 ```
 
 | File                                          | Purpose                                                                                                                                                                                                                                                                                                                                                                                   |
@@ -83,6 +83,7 @@ tslint.json
 | tsconfig.json                                 | The TypeScript project configuration. See [tsconfig.json](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html) for details.                                                                                                                                                                                                                                                    |
 | tslint.json                                   | [TSLint configuration](https://palantir.github.io/tslint/usage/tslint-json/)                                                                                                                                                                                                                                                                                                              |
 | tslint.build.json                             | [TSLint configuration (build only)](https://palantir.github.io/tslint/usage/tslint-json/)                                                                                                                                                                                                                                                                                                 |
+| .mocharc.json                                 | [Mocha](https://mochajs.org/) configuration for running your application's tests.                                                                                                                                                                                                                                                                                                         |
 | README.md                                     | The Markdown-based README generated for your application.                                                                                                                                                                                                                                                                                                                                 |
 | LICENSE                                       | A copy of the MIT license. If you do not wish to use this license, please delete this file.                                                                                                                                                                                                                                                                                               |
 | src/application.ts                            | The application class, which extends [`RestApplication`](http://apidocs.strongloop.com/@loopback%2fdocs/rest.html#RestApplication) by default. This is the root of your application, and is where your application will be configured. It also extends [`RepositoryMixin`](https://apidocs.strongloop.com/@loopback%2fdocs/repository.html#RepositoryMixin) which defines the datasource. |
@@ -94,7 +95,6 @@ tslint.json
 | src/models/README.md                          | Provides information about the models directory, how to generate new models, and where to find more information.                                                                                                                                                                                                                                                                          |
 | src/repositories/README.md                    | Provides information about the repositories directory, how to generate new repositories, and where to find more information.                                                                                                                                                                                                                                                              |
 | test/README.md                                | Please place your tests in this folder.                                                                                                                                                                                                                                                                                                                                                   |
-| test/mocha.opts                               | [Mocha](https://mochajs.org/) configuration for running your application's tests.                                                                                                                                                                                                                                                                                                         |
 | test/acceptance/ping.controller.acceptance.ts | An example test to go with the ping controller in `src/controllers`.                                                                                                                                                                                                                                                                                                                      |
 
 ### Navigation
