@@ -110,10 +110,3 @@ Some of the highlights of LoopBack 4 include:
   - Services: interact with existing REST APIs, SOAP Web Services, and other
     forms of services/microservices
 - Refactor the ORM into separate modules for different concerns
-
-## Tentative roadmap
-
-> Disclaimer: The release plan is tentative and it's subject to changes as the
-> core team and community contributors make progress incrementally.
-
-- [Upcoming releases](https://github.com/strongloop/loopback-next/wiki/Upcoming-Releases)
