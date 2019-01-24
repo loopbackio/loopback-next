@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '../../src/expect';
-import {toJSON} from '../../src/to-json';
+import {expect} from '../../expect';
+import {toJSON} from '../../to-json';
 
 describe('toJSON', () => {
   it('removes properties set to undefined', () => {
