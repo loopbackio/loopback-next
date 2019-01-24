@@ -6,10 +6,6 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Preparing-the-API-for-consumption.html
 ---
 
-{% include previous.html content=" This article continues
-from [Implementing features](./Implementing-features.md).
-" %}
-
 ## Preparing your API for consumption
 
 ### Interacting with your API
