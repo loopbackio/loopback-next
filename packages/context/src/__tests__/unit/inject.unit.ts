@@ -25,7 +25,7 @@ describe('function argument injection', () => {
     }
 
     const meta = describeInjectedArguments(TestClass);
-    expect(meta.map(m => m.bindingKey)).to.deepEqual(['foo']);
+    expect(meta.map(m => m.bindingSelector)).to.deepEqual(['foo']);
   });
 
   it('can retrieve information about injected method arguments', () => {
@@ -35,7 +35,7 @@ describe('function argument injection', () => {
     }
 
     const meta = describeInjectedArguments(TestClass.prototype, 'test');
-    expect(meta.map(m => m.bindingKey)).to.deepEqual(['foo']);
+    expect(meta.map(m => m.bindingSelector)).to.deepEqual(['foo']);
   });
 
   it('can retrieve information about injected static method arguments', () => {
@@ -44,7 +44,7 @@ describe('function argument injection', () => {
     }
 
     const meta = describeInjectedArguments(TestClass, 'test');
-    expect(meta.map(m => m.bindingKey)).to.deepEqual(['foo']);
+    expect(meta.map(m => m.bindingSelector)).to.deepEqual(['foo']);
   });
 
   it('returns an empty array when no ctor arguments are decorated', () => {
@@ -63,7 +63,7 @@ describe('function argument injection', () => {
 
     class SubTestClass extends TestClass {}
     const meta = describeInjectedArguments(SubTestClass);
-    expect(meta.map(m => m.bindingKey)).to.deepEqual(['foo']);
+    expect(meta.map(m => m.bindingSelector)).to.deepEqual(['foo']);
   });
 
   it('supports inheritance with overriding constructor', () => {
@@ -77,7 +77,7 @@ describe('function argument injection', () => {
       }
     }
     const meta = describeInjectedArguments(SubTestClass);
-    expect(meta.map(m => m.bindingKey)).to.deepEqual(['bar']);
+    expect(meta.map(m => m.bindingSelector)).to.deepEqual(['bar']);
   });
 
   it('supports inheritance with overriding constructor - no args', () => {
@@ -91,7 +91,7 @@ describe('function argument injection', () => {
       }
     }
     const meta = describeInjectedArguments(SubTestClass);
-    expect(meta.map(m => m.bindingKey)).to.deepEqual([]);
+    expect(meta.map(m => m.bindingSelector)).to.deepEqual([]);
   });
 });
 
@@ -112,7 +112,7 @@ describe('property injection', () => {
     }
 
     const meta = describeInjectedProperties(TestClass.prototype);
-    expect(meta.foo.bindingKey).to.eql('foo');
+    expect(meta.foo.bindingSelector).to.eql('foo');
   });
 
   it('returns an empty object when no properties are decorated', () => {
@@ -152,7 +152,7 @@ describe('property injection', () => {
 
     class SubTestClass extends TestClass {}
     const meta = describeInjectedProperties(SubTestClass.prototype);
-    expect(meta.foo.bindingKey).to.eql('foo');
+    expect(meta.foo.bindingSelector).to.eql('foo');
   });
 
   it('supports inheritance with overriding property', () => {
@@ -167,10 +167,10 @@ describe('property injection', () => {
     }
 
     const base = describeInjectedProperties(TestClass.prototype);
-    expect(base.foo.bindingKey).to.eql('foo');
+    expect(base.foo.bindingSelector).to.eql('foo');
 
     const sub = describeInjectedProperties(SubTestClass.prototype);
-    expect(sub.foo.bindingKey).to.eql('bar');
+    expect(sub.foo.bindingSelector).to.eql('bar');
   });
 
   it('supports inherited and own properties', () => {
@@ -184,8 +184,8 @@ describe('property injection', () => {
       bar: string;
     }
     const meta = describeInjectedProperties(SubTestClass.prototype);
-    expect(meta.foo.bindingKey).to.eql('foo');
-    expect(meta.bar.bindingKey).to.eql('bar');
+    expect(meta.foo.bindingSelector).to.eql('foo');
+    expect(meta.bar.bindingSelector).to.eql('bar');
   });
 
   it('does not clone metadata deeply', () => {

@@ -6,7 +6,12 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Decorators_inject.html
 ---
 
-## Dependency Injection Decorator
+## Dependency Injection Decorators
+
+### @inject
+
+Syntax:
+`@inject(bindingSelector: BindingSelector, metadata?: InjectionMetadata)`.
 
 `@inject` is a decorator to annotate class properties or constructor arguments
 for automatic injection by LoopBack's IoC container.
@@ -65,13 +70,28 @@ export class WidgetController {
 }
 ```
 
+The `@inject` decorator now also accepts a binding filter function so that an
+array of values can be injected. If the target type is not `Array`, an error
+will be thrown.
+
+```ts
+class MyControllerWithValues {
+  constructor(
+    @inject(binding => binding.tagNames.includes('foo'))
+    public values: string[],
+  ) {}
+}
+```
+
 A few variants of `@inject` are provided to declare special forms of
-dependencies:
+dependencies.
 
-- `@inject.getter`: inject a getter function that returns a promise of the bound
-  value of the key
+### @inject.getter
 
-Syntax: `@inject.getter(bindingKey: string)`.
+`@inject.getter` injects a getter function that returns a promise of the bound
+value of the key.
+
+Syntax: `@inject.getter(bindingSelector: BindingSelector)`.
 
 ```ts
 import {inject, Getter} from '@loopback/context';
@@ -92,7 +112,19 @@ export class HelloController {
 }
 ```
 
-- `@inject.setter`: inject a setter function to set the bound value of the key
+`@inject.getter` also allows the getter function to return an array of values
+from bindings that match a filter function.
+
+```ts
+class MyControllerWithGetter {
+  @inject.getter(filterByTag('prime'))
+  getter: Getter<number[]>;
+}
+```
+
+### @inject.setter
+
+`@inject.setter` injects a setter function to set the bound value of the key.
 
 Syntax: `@inject.setter(bindingKey: string)`.
 
@@ -111,10 +143,12 @@ export class HelloController {
 }
 ```
 
-- `@inject.tag`: inject an array of values by a pattern or regexp to match
-  binding tags
+### @inject.tag
 
-Syntax: `@inject.tag(tag: string | RegExp)`.
+`@inject.tag` injects an array of values by a pattern or regexp to match binding
+tags.
+
+Syntax: `@inject.tag(tag: BindingTag | RegExp)`.
 
 ```ts
 class Store {
@@ -135,7 +169,47 @@ const store = ctx.getSync<Store>('store');
 console.log(store.locations); // ['San Francisco', 'San Jose']
 ```
 
-- `@inject.context`: inject the current context
+### @inject.view
+
+`@inject.view` injects a `ContextView` to track a list of bound values matching
+a filter function.
+
+```ts
+import {inject} from '@loopback/context';
+import {DataSource} from '@loopback/repository';
+
+export class DataSourceTracker {
+  constructor(
+    @inject.view(filterByTag('datasource'))
+    private dataSources: ContextView<DataSource[]>,
+  ) {}
+
+  async listDataSources(): Promise<DataSource[]> {
+    // Use the Getter function to resolve data source instances
+    return await this.dataSources.values();
+  }
+}
+```
+
+In the example above, `filterByTag` is a helper function that creates a filter
+function that matches a given tag. You can define your own filter functions,
+such as:
+
+```ts
+export class DataSourceTracker {
+  constructor(
+    @inject.view(binding => binding.tagNames.includes('datasource'))
+    private dataSources: ContextView<DataSource[]>,
+  ) {}
+}
+```
+
+The `@inject.view` decorator takes a `BindingFilter` function. It can only be
+applied to a property or method parameter of `ContextView` type.
+
+### @inject.context
+
+`@inject.context` injects the current context.
 
 Syntax: `@inject.context()`.
 

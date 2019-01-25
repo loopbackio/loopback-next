@@ -181,6 +181,32 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     return expect(getter()).to.be.fulfilledWith('data');
   });
 
+  it('reports an error if @inject.getter has a non-function target', async () => {
+    ctx.bind('key').to('value');
+
+    class Store {
+      constructor(@inject.getter('key') public getter: string) {}
+    }
+
+    ctx.bind('store').toClass(Store);
+    expect(() => ctx.getSync<Store>('store')).to.throw(
+      'The type of Store.constructor[0] (String) is not a Getter function',
+    );
+  });
+
+  it('reports an error if @inject.setter has a non-function target', async () => {
+    ctx.bind('key').to('value');
+
+    class Store {
+      constructor(@inject.setter('key') public setter: object) {}
+    }
+
+    ctx.bind('store').toClass(Store);
+    expect(() => ctx.getSync<Store>('store')).to.throw(
+      'The type of Store.constructor[0] (Object) is not a Setter function',
+    );
+  });
+
   it('injects a nested property', async () => {
     class TestComponent {
       constructor(@inject('config#test') public config: string) {}
