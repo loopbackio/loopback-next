@@ -71,13 +71,6 @@ describe('API Explorer (acceptance)', () => {
       const body = response.body;
       expect(body).to.match(/^\s*url: '\/apispec',\s*$/m);
     });
-
-    async function givenAppWithCustomRestConfig(config: RestServerConfig) {
-      app = givenRestApplication(config);
-      app.component(RestExplorerComponent);
-      await app.start();
-      request = createRestAppClient(app);
-    }
   });
 
   context('with custom RestExplorerConfig', () => {
@@ -109,8 +102,53 @@ describe('API Explorer (acceptance)', () => {
     }
   });
 
+  context('with custom server root', async () => {
+    beforeEach(async () => {
+      await givenAppWithCustomRestConfig({
+        openApiSpec: {
+          servers: [{url: '/external/proxy/root'}],
+        },
+      });
+    });
+
+    it('prepends server root path to OpenAPI path', async () => {
+      const response = await request.get('/explorer/').expect(200);
+      const body = response.body;
+      expect(body).to.match(
+        /^\s*url: '\/external\/proxy\/root\/openapi.json',\s*$/m,
+      );
+    });
+
+    it('prepends server root path to /explorer redirect', async () => {
+      await request
+        .get('/explorer')
+        .expect(301)
+        .expect('location', '/external/proxy/root/explorer/');
+    });
+
+    it('handles server root with trailing slash', async () => {
+      await givenAppWithCustomRestConfig({
+        openApiSpec: {
+          servers: [{url: '/external/proxy/root/'}],
+        },
+      });
+      const response = await request.get('/explorer/').expect(200);
+      const body = response.body;
+      expect(body).to.match(
+        /^\s*url: '\/external\/proxy\/root\/openapi.json',\s*$/m,
+      );
+    });
+  });
+
   function givenRestApplication(config?: RestServerConfig) {
     const rest = Object.assign({}, givenHttpServerConfig(), config);
     return new RestApplication({rest});
+  }
+
+  async function givenAppWithCustomRestConfig(config: RestServerConfig) {
+    app = givenRestApplication(config);
+    app.component(RestExplorerComponent);
+    await app.start();
+    request = createRestAppClient(app);
   }
 });

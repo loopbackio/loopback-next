@@ -21,6 +21,7 @@ const template = fs.readFileSync(indexHtml, 'utf-8');
 const templateFn = ejs.compile(template);
 
 export class ExplorerController {
+  private serverRootPath: string;
   private openApiSpecUrl: string;
 
   constructor(
@@ -29,11 +30,12 @@ export class ExplorerController {
     @inject(RestBindings.Http.REQUEST) private request: Request,
     @inject(RestBindings.Http.RESPONSE) private response: Response,
   ) {
+    this.serverRootPath = this.getServerRootPath(restConfig);
     this.openApiSpecUrl = this.getOpenApiSpecUrl(restConfig);
   }
 
   indexRedirect() {
-    this.response.redirect(301, this.request.url + '/');
+    this.response.redirect(301, this.serverRootPath + this.request.url + '/');
   }
 
   index() {
@@ -48,13 +50,24 @@ export class ExplorerController {
       .send(homePage);
   }
 
+  private getServerRootPath(restConfig: RestServerConfig): string {
+    const openApiConfig = restConfig.openApiSpec || {};
+    const servers = openApiConfig.servers || [];
+    let url = servers[0] ? servers[0].url : '';
+    // trim trailing '/' so we can safely append rooted paths to it
+    if (url.endsWith('/')) {
+      url = url.substring(0, url.length - 1);
+    }
+    return url;
+  }
+
   private getOpenApiSpecUrl(restConfig: RestServerConfig): string {
     const openApiConfig = restConfig.openApiSpec || {};
     const endpointMapping = openApiConfig.endpointMapping || {};
     const endpoint = Object.keys(endpointMapping).find(k =>
       isOpenApiV3Json(endpointMapping[k]),
     );
-    return endpoint || '/openapi.json';
+    return this.serverRootPath + (endpoint || '/openapi.json');
   }
 }
 
