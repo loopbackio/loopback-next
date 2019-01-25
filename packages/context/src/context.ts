@@ -10,6 +10,7 @@ import {ValueOrPromise} from '.';
 import {Binding, BindingTag} from './binding';
 import {BindingFilter, filterByKey, filterByTag} from './binding-filter';
 import {BindingAddress, BindingKey} from './binding-key';
+import {ContextView} from './context-view';
 import {
   ContextEventObserver,
   ContextEventType,
@@ -417,6 +418,16 @@ export class Context extends EventEmitter {
   isSubscribed(observer: ContextObserver) {
     if (!this.observers) return false;
     return this.observers.has(observer);
+  }
+
+  /**
+   * Create a view of the context chain with the given binding filter
+   * @param filter A function to match bindings
+   */
+  createView<T = unknown>(filter: BindingFilter) {
+    const view = new ContextView<T>(this, filter);
+    view.open();
+    return view;
   }
 
   /**
