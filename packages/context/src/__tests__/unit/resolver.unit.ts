@@ -5,12 +5,13 @@
 
 import {expect} from '@loopback/testlab';
 import {
+  BindingAddress,
   Context,
+  Getter,
   inject,
+  Injection,
   instantiateClass,
   invokeMethod,
-  Injection,
-  Getter,
   ResolutionSession,
 } from '../..';
 
@@ -82,7 +83,7 @@ describe('constructor injection', () => {
         @inject('foo', {x: 'bar'}, (c: Context, injection: Injection) => {
           const barKey = injection.metadata && injection.metadata.x;
           const b = c.getSync(barKey);
-          const f = c.getSync(injection.bindingKey);
+          const f = c.getSync(injection.bindingSelector as BindingAddress);
           return f + ':' + b;
         })
         public fooBar: string,
@@ -377,7 +378,7 @@ describe('property injection', () => {
       @inject('foo', {x: 'bar'}, (c: Context, injection: Injection) => {
         const barKey = injection.metadata && injection.metadata.x;
         const b = c.getSync(barKey);
-        const f = c.getSync(injection.bindingKey);
+        const f = c.getSync(injection.bindingSelector as BindingAddress);
         return f + ':' + b;
       })
       public fooBar: string;
@@ -586,7 +587,7 @@ function customDecorator(def: Object) {
   return inject('foo', def, (c: Context, injection: Injection) => {
     const barKey = injection.metadata && injection.metadata.x;
     const b = c.getSync(barKey);
-    const f = c.getSync(injection.bindingKey);
+    const f = c.getSync(injection.bindingSelector as BindingAddress);
     return f + ':' + b;
   });
 }
@@ -595,7 +596,7 @@ function customAsyncDecorator(def: Object) {
   return inject('foo', def, async (c: Context, injection: Injection) => {
     const barKey = injection.metadata && injection.metadata.x;
     const b = await c.get(barKey);
-    const f = await c.get(injection.bindingKey);
+    const f = await c.get(injection.bindingSelector as BindingAddress);
     return f + ':' + b;
   });
 }
