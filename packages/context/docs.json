@@ -1,16 +1,7 @@
 {
   "content": [
     "index.ts",
-    "src/binding-key.ts",
-    "src/binding.ts",
-    "src/context.ts",
-    "src/index.ts",
-    "src/inject.ts",
-    "src/value-promise.ts",
-    "src/bind-decorator.ts",
-    "src/provider.ts",
-    "src/resolution-session.ts",
-    "src/resolver.ts"
+    "src/*.ts"
   ],
   "codeSectionDepth": 4
 }
