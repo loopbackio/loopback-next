@@ -50,7 +50,7 @@ important when testing code interacting with external services like a database
 or an OAuth2 provider. Instead of making expensive network requests, the test
 can provide a lightweight implementation returning pre-defined responses.
 
-## Configuring what to inject
+## Configure what to inject
 
 Now that we write a class that gets the dependencies injected, you are probably
 wondering where are these values going to be injected from and how to configure
@@ -238,6 +238,18 @@ export class MyController {
   }
 }
 ```
+
+## Additional `inject.*` decorators
+
+There are a few special decorators from the `inject` namespace.
+
+- [`@inject.getter`](Decorators_inject.md#@inject.getter)
+- [`@inject.setter`](Decorators_inject.md#@inject.setter)
+- [`@inject.context`](Decorators_inject.md#@inject.context)
+- [`@inject.tag`](Decorators_inject.md#@inject.tag)
+- [`@inject.view`](Decorators_inject.md#@inject.view)
+
+See [Inject decorators](Decorators_inject.md) for more details.
 
 ## Circular dependencies
 

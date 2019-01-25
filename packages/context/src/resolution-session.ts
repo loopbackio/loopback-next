@@ -169,7 +169,7 @@ export class ResolutionSession {
     );
     return {
       targetName: name,
-      bindingKey: injection.bindingKey,
+      bindingKey: injection.bindingSelector,
       // Cast to Object so that we don't have to expose InjectionMetadata
       metadata: injection.metadata as Object,
     };

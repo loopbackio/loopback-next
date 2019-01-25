@@ -14,7 +14,7 @@ describe('ResolutionSession', () => {
   function givenInjection(): Injection {
     return {
       target: MyController,
-      bindingKey: 'b',
+      bindingSelector: 'b',
       methodDescriptorOrParameterIndex: 0,
     };
   }
