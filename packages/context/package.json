@@ -21,6 +21,7 @@
   "dependencies": {
     "@loopback/metadata": "^1.0.6",
     "debug": "^4.0.1",
+    "p-event": "^2.3.1",
     "uuid": "^3.2.1"
   },
   "devDependencies": {
