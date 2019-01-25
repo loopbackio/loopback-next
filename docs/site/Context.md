@@ -229,3 +229,195 @@ class HelloController {
 These "sugar" decorators allow you to quickly build up your application without
 having to code up all the additional logic by simply giving LoopBack hints (in
 the form of metadata) to your intent.
+
+## Context events
+
+The `Context` emits the following events:
+
+- `bind`: Emitted when a new binding is added to the context.
+  - binding: the newly added binding object
+  - context: Owner context of the binding object
+- `unbind`: Emitted when an existing binding is removed from the context
+  - binding: the newly removed binding object
+  - context: Owner context of the binding object
+- `error`: Emitted when an observer throws an error during the notification
+  process
+  - err: the error object thrown
+
+When an existing binding key is replaced with a new one, an `unbind` event is
+emitted for the existing binding followed by a `bind` event for the new binding.
+
+If a context has a parent, binding events from the parent are re-emitted on the
+context when the binding key does not exist within the current context.
+
+## Context observers
+
+Bindings can be added or removed to a context object. With emitted context
+events, we can add listeners to a context object to be invoked when bindings
+come and go. There are a few caveats associated with that:
+
+1. The binding object might not be fully configured when a `bind` event is
+   emitted.
+
+   For example:
+
+   ```ts
+   const ctx = new Context();
+   ctx
+     .bind('foo')
+     .to('foo-value')
+     .tag('foo-tag');
+   ctx.on('bind', binding => {
+     console.log(binding.tagNames); // returns an empty array `[]`
+   });
+   ```
+
+   The context object emits a `bind` event when `ctx.bind` method is called. It
+   does not control the fluent apis `.to('foo-value').tag('foo-tag')`, which
+   happens on the newly created binding object. As a result, the `bind` event
+   listener receives a binding object which only has the binding key populated.
+
+   A workaround is to create the binding first before add it to a context:
+
+   ```ts
+   const ctx = new Context();
+   const binding = Binding.create('foo')
+     .to('foo-value')
+     .tag('foo-tag');
+   ctx.add(binding);
+   ctx.on('bind', binding => {
+     console.log(binding.tagMap); // returns `['foo-tag']`
+   });
+   ```
+
+2. It's hard for event listeners to perform asynchronous operations.
+
+To make it easy to support asynchronous event processing, we introduce
+`ContextObserver` and corresponding APIs on `Context`:
+
+1. `ContextObserverFn` type and `ContextObserver` interface
+
+```ts
+/**
+ * Listen on `bind`, `unbind`, or other events
+ * @param eventType Context event type
+ * @param binding The binding as event source
+ * @param context Context object for the binding event
+ */
+export type ContextObserverFn = (
+  eventType: ContextEventType,
+  binding: Readonly<Binding<unknown>>,
+  context: Context,
+) => ValueOrPromise<void>;
+
+/**
+ * Observers of context bind/unbind events
+ */
+export interface ContextObserver {
+  /**
+   * An optional filter function to match bindings. If not present, the listener
+   * will be notified of all binding events.
+   */
+  filter?: BindingFilter;
+
+  /**
+   * Listen on `bind`, `unbind`, or other events
+   * @param eventType Context event type
+   * @param binding The binding as event source
+   */
+  observe: ContextObserverFn;
+}
+
+/**
+ * Context event observer type - An instance of `ContextObserver` or a function
+ */
+export type ContextEventObserver = ContextObserver | ContextObserverFn;
+```
+
+If `filter` is not required, we can simply use `ContextObserverFn`.
+
+2. Context APIs
+
+- `subscribe(observer: ContextEventObserver)`
+
+  Add a context event observer to the context chain, including its ancestors
+
+- `unsubscribe(observer: ContextEventObserver)`
+
+  Remove the context event observer from the context chain
+
+- `close()`
+
+  Close the context and release references to other objects in the context
+  chain. Please note a child context registers event listeners with its parent
+  context. As a result, the `close` method must be called to avoid memory leak
+  if the child context is to be recycled.
+
+To react on context events asynchronously, we need to implement the
+`ContextObserver` interface or provide a `ContextObserverFn` and register it
+with the context.
+
+For example:
+
+```ts
+const app = new Context('app');
+server = new Context(app, 'server');
+
+const observer: ContextObserver = {
+  // Only interested in bindings tagged with `foo`
+  filter: binding => binding.tagMap.foo != null,
+
+  observe(event: ContextEventType, binding: Readonly<Binding<unknown>>) {
+    if (event === 'bind') {
+      console.log('bind: %s', binding.key);
+      // ... perform async operation
+    } else if (event === 'unbind') {
+      console.log('unbind: %s', binding.key);
+      // ... perform async operation
+    }
+  },
+};
+
+server.subscribe(observer);
+server
+  .bind('foo-server')
+  .to('foo-value')
+  .tag('foo');
+app
+  .bind('foo-app')
+  .to('foo-value')
+  .tag('foo');
+
+// The following messages will be printed:
+// bind: foo-server
+// bind: foo-app
+```
+
+Please note when an observer subscribes to a context, it will be registered with
+all contexts on the chain. In the example above, the observer is added to both
+`server` and `app` contexts so that it can be notified when bindings are added
+or removed from any of the context on the chain.
+
+- Observers are called in the next turn of
+  [Promise micro-task queue](https://jsblog.insiderattack.net/promises-next-ticks-and-immediates-nodejs-event-loop-part-3-9226cbe7a6aa)
+
+- When there are multiple async observers registered, they are notified in
+  series for an event.
+
+- When multiple binding events are emitted in the same event loop tick and there
+  are async observers registered, such events are queued and observers are
+  notified by the order of events.
+
+### Observer error handling
+
+It's recommended that `ContextEventObserver` implementations should not throw
+errors in their code. Errors thrown by context event observers are reported as
+follows over the context chain.
+
+1. Check if the current context object has `error` listeners, if yes, emit an
+   `error` event on the context and we're done. if not, try its parent context
+   by repeating step 1.
+
+2. If no context object of the chain has `error` listeners, emit an `error`
+   event on the current context. As a result, the process exits abnormally. See
+   https://nodejs.org/api/events.html#events_error_events for more details.
