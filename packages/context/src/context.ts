@@ -10,6 +10,7 @@ import {Binding, BindingTag} from './binding';
 import {BindingAddress, BindingKey} from './binding-key';
 import {ResolutionOptions, ResolutionSession} from './resolution-session';
 import {BoundValue, getDeepProperty, isPromiseLike} from './value-promise';
+import {BindingFilter, filterByKey, filterByTag} from './binding-filter';
 
 const debug = debugModule('loopback:context');
 
@@ -21,7 +22,15 @@ export class Context {
    * Name of the context
    */
   readonly name: string;
+
+  /**
+   * Key to binding map as the internal registry
+   */
   protected readonly registry: Map<string, Binding> = new Map();
+
+  /**
+   * Parent context
+   */
   protected _parent?: Context;
 
   /**
@@ -128,60 +137,24 @@ export class Context {
   }
 
   /**
-   * Convert a wildcard pattern to RegExp
-   * @param pattern A wildcard string with `*` and `?` as special characters.
-   * - `*` matches zero or more characters except `.` and `:`
-   * - `?` matches exactly one character except `.` and `:`
-   */
-  private wildcardToRegExp(pattern: string): RegExp {
-    // Escape reserved chars for RegExp:
-    // `- \ ^ $ + . ( ) | { } [ ] :`
-    let regexp = pattern.replace(/[\-\[\]\/\{\}\(\)\+\.\\\^\$\|\:]/g, '\\$&');
-    // Replace wildcard chars `*` and `?`
-    // `*` matches zero or more characters except `.` and `:`
-    // `?` matches one character except `.` and `:`
-    regexp = regexp.replace(/\*/g, '[^.:]*').replace(/\?/g, '[^.:]');
-    return new RegExp(`^${regexp}$`);
-  }
-
-  /**
    * Find bindings using the key pattern
-   * @param pattern A regexp or wildcard pattern with optional `*` and `?`. If
-   * it matches the binding key, the binding is included. For a wildcard:
+   * @param pattern A filter function, a regexp or a wildcard pattern with
+   * optional `*` and `?`. Find returns such bindings where the key matches
+   * the provided pattern.
+   *
+   * For a wildcard:
    * - `*` matches zero or more characters except `.` and `:`
    * - `?` matches exactly one character except `.` and `:`
+   *
+   * For a filter function:
+   * - return `true` to include the binding in the results
+   * - return `false` to exclude it.
    */
   find<ValueType = BoundValue>(
-    pattern?: string | RegExp,
-  ): Readonly<Binding<ValueType>>[];
-
-  /**
-   * Find bindings using a filter function
-   * @param filter A function to test on the binding. It returns `true` to
-   * include the binding or `false` to exclude the binding.
-   */
-  find<ValueType = BoundValue>(
-    filter: (binding: Readonly<Binding<ValueType>>) => boolean,
-  ): Readonly<Binding<ValueType>>[];
-
-  find<ValueType = BoundValue>(
-    pattern?:
-      | string
-      | RegExp
-      | ((binding: Readonly<Binding<ValueType>>) => boolean),
+    pattern?: string | RegExp | BindingFilter,
   ): Readonly<Binding<ValueType>>[] {
-    let bindings: Readonly<Binding>[] = [];
-    let filter: (binding: Readonly<Binding>) => boolean;
-    if (!pattern) {
-      filter = binding => true;
-    } else if (typeof pattern === 'string') {
-      const regex = this.wildcardToRegExp(pattern);
-      filter = binding => regex.test(binding.key);
-    } else if (pattern instanceof RegExp) {
-      filter = binding => pattern.test(binding.key);
-    } else {
-      filter = pattern;
-    }
+    const bindings: Readonly<Binding>[] = [];
+    const filter = filterByKey(pattern);
 
     for (const b of this.registry.values()) {
       if (filter(b)) bindings.push(b);
@@ -208,22 +181,7 @@ export class Context {
   findByTag<ValueType = BoundValue>(
     tagFilter: BindingTag | RegExp,
   ): Readonly<Binding<ValueType>>[] {
-    if (typeof tagFilter === 'string' || tagFilter instanceof RegExp) {
-      const regexp =
-        typeof tagFilter === 'string'
-          ? this.wildcardToRegExp(tagFilter)
-          : tagFilter;
-      return this.find(b => Array.from(b.tagNames).some(t => regexp!.test(t)));
-    }
-
-    return this.find(b => {
-      for (const t in tagFilter) {
-        // One tag name/value does not match
-        if (b.tagMap[t] !== tagFilter[t]) return false;
-      }
-      // All tag name/value pairs match
-      return true;
-    });
+    return this.find(filterByTag(tagFilter));
   }
 
   protected _mergeWithParent<ValueType>(
