@@ -174,7 +174,7 @@ export type BindingFromClassOptions = {
   /**
    * Binding key
    */
-  key?: BindingAddress<unknown>;
+  key?: BindingAddress;
   /**
    * Artifact type, such as `server`, `controller`, `repository` or `service`
    */
