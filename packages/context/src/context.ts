@@ -84,7 +84,7 @@ export class Context {
    * @param key Binding key
    * @returns true if the binding key is found and removed from this context
    */
-  unbind(key: BindingAddress<unknown>): boolean {
+  unbind(key: BindingAddress): boolean {
     key = BindingKey.validate(key);
     const binding = this.registry.get(key);
     if (binding == null) return false;
@@ -98,7 +98,7 @@ export class Context {
    * delegating to the parent context
    * @param key Binding key
    */
-  contains(key: BindingAddress<unknown>): boolean {
+  contains(key: BindingAddress): boolean {
     key = BindingKey.validate(key);
     return this.registry.has(key);
   }
@@ -107,7 +107,7 @@ export class Context {
    * Check if a key is bound in the context or its ancestors
    * @param key Binding key
    */
-  isBound(key: BindingAddress<unknown>): boolean {
+  isBound(key: BindingAddress): boolean {
     if (this.contains(key)) return true;
     if (this._parent) {
       return this._parent.isBound(key);
@@ -119,7 +119,7 @@ export class Context {
    * Get the owning context for a binding key
    * @param key Binding key
    */
-  getOwnerContext(key: BindingAddress<unknown>): Context | undefined {
+  getOwnerContext(key: BindingAddress): Context | undefined {
     if (this.contains(key)) return this;
     if (this._parent) {
       return this._parent.getOwnerContext(key);
