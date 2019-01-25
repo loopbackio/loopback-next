@@ -466,7 +466,7 @@ configuration, it's important to verify that all usage scenarios keep working.
 
 ### Verify TypeScript setup
 
-1.  Open any existing TypeScript file, e.g. `packages/src/index.ts`
+1.  Open any existing TypeScript file, e.g. `packages/core/src/index.ts`
 
 2.  Add a small bit of code to break TypeScript's type checks, for example:
 
@@ -478,10 +478,6 @@ configuration, it's important to verify that all usage scenarios keep working.
 
 4.  Verify that the build failed and the compiler error message shows a path
     relative to monorepo root, e.g. `packages/src/index.ts`.
-
-    _(This is does not work now, `tsc` is reporting paths relative to individual
-    package directories. See
-    <https://github.com/strongloop/loopback-next/issues/1010>)_
 
 5.  Test integration with supported IDEs:
     - [VS Code](./VSCODE.md#how-to-verify-typescript-setup)
