@@ -20,7 +20,7 @@ Our monorepo comes with few preconfigured
 
 ### Compilation errors
 
-1.  Open any existing TypeScript file, e.g. `packages/src/index.ts`
+1.  Open any existing TypeScript file, e.g. `packages/core/src/index.ts`
 
 2.  Add a small bit of code to break TypeScript's type checks, for example:
 
@@ -51,9 +51,7 @@ Our monorepo comes with few preconfigured
     VSCode.
 
 8.  Verify that compilation errors are correctly associated with the problematic
-    source code line. _(This is does not work now, `tsc` is reporting paths
-    relative to individual package directories. See
-    <https://github.com/strongloop/loopback-next/issues/1010>)_
+    source code line.
 
 ### Navigation in VS Code
 
