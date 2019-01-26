@@ -166,6 +166,14 @@ factory `orders` for instances of `customerRepository`:
   instance
   ([API Docs](https://apidocs.strongloop.com/@loopback%2fdocs/repository.html#HasManyRepository.prototype.patch))
 
+For **updating** (full replace of all properties on a `PUT` endpoint for
+instance) a target model you have to directly use this model repository. In this
+case, the caller must provide both the foreignKey value and the primary key
+(id). Since the caller already has access to the primary key of the target
+model, there is no need to go through the relation repository and the operation
+can be performed directly on `DefaultCrudRepository` for the target model
+(`OrderRepository` in our example).
+
 ## Using hasMany constrained repository in a controller
 
 The same pattern used for ordinary repositories to expose their CRUD APIs via
