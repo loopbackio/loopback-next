@@ -35,7 +35,6 @@ module.exports = class RepositoryRelation extends ArtifactGenerator {
     relationName,
   ) {
     let result;
-
     let projectPath = this.artifactInfo.repositoryDir;
 
     if (!this.doesRepositoryExists(projectPath, sourceModel)) {

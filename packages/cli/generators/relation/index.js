@@ -2,7 +2,7 @@
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-// Author: Raphael Drai at r.drai@F5.com
+// Author: Raphael Drai at r.drai@f5.com
 
 'use strict';
 
