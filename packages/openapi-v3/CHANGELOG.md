@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.1.7...@loopback/openapi-v3@1.2.0) (2019-01-28)
+
+
+### Features
+
+* **repository-json-schema:** enumerate fields ([15ca819](https://github.com/strongloop/loopback-next/commit/15ca819))
+
+
+
+
+
 ## [1.1.7](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.1.6...@loopback/openapi-v3@1.1.7) (2019-01-15)
 
 **Note:** Version bump only for package @loopback/openapi-v3

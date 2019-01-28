@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.2.7...@loopback/repository-json-schema@1.3.0) (2019-01-28)
+
+
+### Features
+
+* **repository-json-schema:** enumerate fields ([15ca819](https://github.com/strongloop/loopback-next/commit/15ca819))
+
+
+
+
+
 ## [1.2.7](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.2.6...@loopback/repository-json-schema@1.2.7) (2019-01-15)
 
 

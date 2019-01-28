@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.4.1...@loopback/context@1.5.0) (2019-01-28)
+
+
+### Features
+
+* **context:** add default template argument for BindingAddress ([7113105](https://github.com/strongloop/loopback-next/commit/7113105))
+* **context:** binding filters ([ff85e74](https://github.com/strongloop/loopback-next/commit/ff85e74))
+
+
+
+
+
 ## [1.4.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.4.0...@loopback/context@1.4.1) (2019-01-14)
 
 
