@@ -39,7 +39,8 @@ export type Operators =
   | 'nlike' // NOT LIKE
   | 'ilike' // ILIKE'
   | 'nilike' // NOT ILIKE
-  | 'regexp'; // REGEXP'
+  | 'regexp' // REGEXP'
+  | 'near'; // NEAR
 
 /**
  * Matching predicate comparison
@@ -60,6 +61,7 @@ export type PredicateComparison<PT> = {
   ilike?: PT;
   nilike?: PT;
   regexp?: string | RegExp;
+  near?: object;
   // [extendedOperation: string]: any;
 };
 

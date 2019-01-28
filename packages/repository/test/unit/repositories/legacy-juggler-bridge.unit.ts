@@ -62,6 +62,33 @@ describe('DefaultCrudRepository', () => {
     }
   }
 
+  interface GeoPoint {
+    /**
+     * latitude
+     */
+    lat: number;
+
+    /**
+     * longitude
+     */
+    lng: number;
+  }
+  class Address extends Entity {
+    static definition = new ModelDefinition({
+      name: 'Address',
+      properties: {
+        mGeoPoint: {type: 'GeoPoint', required: true},
+        mBelongToId: 'number',
+        mId: {name: 'id', type: 'number', id: true, generated: true},
+      },
+    });
+    mId?: number;
+
+    mBelongToId?: number;
+
+    mGeoPoint: GeoPoint;
+  }
+
   beforeEach(() => {
     ds = new juggler.DataSource({
       name: 'db',
@@ -153,6 +180,28 @@ describe('DefaultCrudRepository', () => {
       {title: 't2', content: 'c2'},
     ]);
     const notes = await repo.find({where: {title: 't1'}});
+    expect(notes.length).to.eql(1);
+  });
+
+  it('implements Repository.find() with GeoPoint property', async () => {
+    const repo = new DefaultCrudRepository(Address, ds);
+    await repo.createAll([
+      {mBelongToId: 5, mGeoPoint: {lat: 5, lng: 10}},
+      {mBelongToId: 6, mGeoPoint: {lat: 10, lng: 20}},
+    ]);
+    const notes = await repo.find({
+      where: {
+        and: [
+          {
+            mGeoPoint: {
+              near: {lat: 3, lng: 8},
+              maxDistance: 3,
+              unit: 'degrees',
+            },
+          },
+        ],
+      },
+    });
     expect(notes.length).to.eql(1);
   });
 
