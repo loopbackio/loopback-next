@@ -13,9 +13,7 @@ module.exports = class RepositoryRelation extends ArtifactGenerator {
     }
 
     _setupGenerator() {
-
         super._setupGenerator();
-
         this.artifactInfo = {
             type: 'relation',
             rootDir: utils.sourceRootDir

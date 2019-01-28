@@ -51,7 +51,6 @@ module.exports = class RepositoryRelation extends ArtifactGenerator {
     ) {
       throw Error('relation is invalid');
     }
-
     generateRelation(projectPath, sourceModel, targetModel, relationName);
   }
 
