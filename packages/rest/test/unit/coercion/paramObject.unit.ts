@@ -87,7 +87,7 @@ describe('coerce object param - optional', function() {
     test(OPTIONAL_ANY_OBJECT, {key: 'value'}, {key: 'value'});
     test(OPTIONAL_ANY_OBJECT, undefined, undefined);
     test(OPTIONAL_ANY_OBJECT, '', undefined);
-    test(OPTIONAL_ANY_OBJECT, 'null', null);
+    test(OPTIONAL_ANY_OBJECT, {key: 'null'}, {key: 'null'});
   });
 
   context('nested values are not coerced', () => {
