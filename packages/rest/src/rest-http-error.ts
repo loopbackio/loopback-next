@@ -60,6 +60,17 @@ export namespace RestHttpErrors {
       },
     );
   }
+  export const INVALID_REQUEST_QUERY_MESSAGE =
+    'The request query is invalid. See error object details property for more info.';
+
+  export function invalidRequestQuery(): HttpErrors.HttpError {
+    return Object.assign(
+      new HttpErrors.UnprocessableEntity(INVALID_REQUEST_QUERY_MESSAGE),
+      {
+        code: 'VALIDATION_FAILED',
+      },
+    );
+  }
 
   /**
    * An invalid request body error contains a `details` property as the machine-readable error.
