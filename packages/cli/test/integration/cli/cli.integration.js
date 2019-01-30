@@ -11,7 +11,7 @@ const main = require('../../../lib/cli');
 
 function getLog(buffer) {
   buffer = buffer || [];
-  return function (format, ...params) {
+  return function(format, ...params) {
     buffer.push(util.format(format, ...params));
     return buffer;
   };
@@ -20,18 +20,18 @@ function getLog(buffer) {
 describe('cli', () => {
   it('lists available commands', () => {
     const entries = [];
-    main({ commands: true }, getLog(entries));
+    main({commands: true}, getLog(entries));
     expect(entries).to.eql([
       'Available commands: ',
       '  lb4 app\n  lb4 extension\n  lb4 controller\n  lb4 datasource\n  ' +
-      'lb4 model\n  lb4 repository\n  lb4 service\n  lb4 example\n  ' +
-      'lb4 openapi\n  lb4 relation',
+        'lb4 model\n  lb4 repository\n  lb4 service\n  lb4 example\n  ' +
+        'lb4 openapi\n  lb4 relation',
     ]);
   });
 
   it('lists versions', () => {
     const entries = [];
-    main({ version: true }, getLog(entries));
+    main({version: true}, getLog(entries));
     const logs = entries.join('');
     expect(logs).to.match(/@loopback\/cli version\:/);
     expect(logs).to.match(/@loopback\/\* dependencies:/);
@@ -39,18 +39,18 @@ describe('cli', () => {
 
   it('prints commands with --help', () => {
     const entries = [];
-    main({ help: true, _: [] }, getLog(entries), true);
+    main({help: true, _: []}, getLog(entries), true);
     expect(entries).to.containEql('Available commands: ');
     expect(entries).to.containEql(
       '  lb4 app\n  lb4 extension\n  lb4 controller\n  lb4 datasource\n  ' +
-      'lb4 model\n  lb4 repository\n  lb4 service\n  lb4 example\n  ' +
-      'lb4 openapi\n  lb4 relation',
+        'lb4 model\n  lb4 repository\n  lb4 service\n  lb4 example\n  ' +
+        'lb4 openapi\n  lb4 relation',
     );
   });
 
   it('does not print commands with --help for a given command', () => {
     const entries = [];
-    main({ help: true, _: ['app'] }, getLog(entries), true);
+    main({help: true, _: ['app']}, getLog(entries), true);
     expect(entries).to.not.containEql('Available commands: ');
   });
 });

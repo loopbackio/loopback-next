@@ -56,6 +56,7 @@
     "semver": "^5.5.0",
     "swagger-parser": "^5.0.0",
     "swagger2openapi": "^3.2.10",
+    "ts-simple-ast": "^21.0.2",
     "typescript": "^3.1.1",
     "unicode-10.0.0": "^0.7.4",
     "update-notifier": "^2.5.0",
