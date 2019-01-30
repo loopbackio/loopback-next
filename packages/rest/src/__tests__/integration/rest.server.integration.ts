@@ -735,6 +735,39 @@ paths:
       );
       expect(response.body.servers).to.containEql({url: '/api'});
     });
+
+    it('can redirect routes when it does not exist', async () => {
+      server.controller(DummyController);
+      server.redirect('/page/html', '/html');
+      const response = await createClientForHandler(server.requestHandler)
+        .get('/api/page/html')
+        .expect(303);
+      await createClientForHandler(server.requestHandler)
+        .get(response.header.location)
+        .expect(200, 'Hi');
+    });
+
+    it('can redirect routes', async () => {
+      server.controller(DummyController);
+      server.redirect('/hello', '/endpoint');
+      const response = await createClientForHandler(server.requestHandler)
+        .get('/api/hello')
+        .expect(303);
+      await createClientForHandler(server.requestHandler)
+        .get(response.header.location)
+        .expect(200, 'hello');
+    });
+
+    it('can server redirect routes with custom status', async () => {
+      server.controller(DummyController);
+      server.redirect('/hello', '/endpoint', 304);
+      const response = await createClientForHandler(server.requestHandler)
+        .get('/api/hello')
+        .expect(304);
+      await createClientForHandler(server.requestHandler)
+        .get(response.header.location)
+        .expect(200, 'hello');
+    });
   });
 
   async function givenAServer(
@@ -762,6 +795,12 @@ paths:
     })
     ping(): string {
       return 'Hi';
+    }
+    @get('/endpoint', {
+      responses: {},
+    })
+    hello(): string {
+      return 'hello';
     }
   }
 

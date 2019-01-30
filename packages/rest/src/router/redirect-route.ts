@@ -37,6 +37,6 @@ export class RedirectRoute implements RouteEntry, ResolvedRoute {
   }
 
   describe(): string {
-    return `RedirectRoute.${this.sourcePath}.${this.targetPath}`;
+    return `RedirectRoute from "${this.sourcePath}" to "${this.targetPath}"`;
   }
 }

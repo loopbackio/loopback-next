@@ -238,8 +238,8 @@ export class RestApplication extends Application implements HttpServerLike {
    * @param source URL path of the redirect endpoint
    * @param target URL path of the endpoint
    */
-  redirect(source: string, target: string): Binding {
-    return this.restServer.redirect(source, target);
+  redirect(source: string, target: string, statusCode?: number): Binding {
+    return this.restServer.redirect(source, target, statusCode);
   }
 
   /**

@@ -7,7 +7,7 @@ import {anOperationSpec} from '@loopback/openapi-spec-builder';
 import {Client, createRestAppClient, expect} from '@loopback/testlab';
 import * as fs from 'fs';
 import * as path from 'path';
-import {RestApplication, RestServer, RestServerConfig} from '../..';
+import {RestApplication, RestServer, RestServerConfig, get} from '../..';
 
 const ASSETS = path.resolve(__dirname, '../../../fixtures/assets');
 
@@ -145,8 +145,28 @@ describe('RestApplication (integration)', () => {
     });
   });
 
+  it('can app redirect routes with custom status', async () => {
+    givenApplication();
+    restApp.controller(DummyController);
+    restApp.redirect('/fake/html', '/html', 304);
+    await restApp.start();
+    client = createRestAppClient(restApp);
+    const response = await client.get('/fake/html').expect(304);
+    await client.get(response.header.location).expect(200, 'Hi');
+  });
+
   function givenApplication(options?: {rest: RestServerConfig}) {
     options = options || {rest: {port: 0, host: '127.0.0.1'}};
     restApp = new RestApplication(options);
   }
 });
+
+class DummyController {
+  constructor() {}
+  @get('/html', {
+    responses: {},
+  })
+  ping(): string {
+    return 'Hi';
+  }
+}

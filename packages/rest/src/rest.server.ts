@@ -640,8 +640,10 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * @param source URL path of the redirect endpoint
    * @param target URL path of the endpoint
    */
-  redirect(source: string, target: string): Binding {
-    return this.route(new RedirectRoute(source, this._basePath + target));
+  redirect(source: string, target: string, statusCode?: number): Binding {
+    return this.route(
+      new RedirectRoute(source, this._basePath + target, statusCode),
+    );
   }
 
   // The route for static assets
