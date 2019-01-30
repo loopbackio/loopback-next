@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export type BindingAddress<T> = string | BindingKey<T>;
+export type BindingAddress<T = unknown> = string | BindingKey<T>;
 
-// tslint:disable-next-line:no-unused-variable
+// tslint:disable-next-line:no-unused
 export class BindingKey<ValueType> {
   static readonly PROPERTY_SEPARATOR = '#';
 

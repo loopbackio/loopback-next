@@ -14,6 +14,10 @@ We provide the following "how to" guides:
 - [Deploying to IBM Cloud](Deploying-to-IBM-Cloud.md): a basic guide for
   deploying LoopBack 4 applications to IBM Cloud using Cloudfoundry.
 
+- [Deploying to Kubernetes on IBM Cloud](Deploying_to_ibm_cloud_kubernetes.md):
+  a basic guide for deploying LoopBack 4 applications to IBM Cloud using
+  Kubernetes.
+
 - [Serving static files](Serving-static-files.md): a guide for setting up static
   assets (e.g. HTML5 front-end).
 

@@ -99,9 +99,9 @@ function getConfigFile(name, defaultName) {
  * @param {string} cli
  */
 function resolveCLI(cli) {
-  const path = './node_modules/' + cli;
+  const modulePath = './node_modules/' + cli;
   try {
-    return require.resolve(path.join(getPackageDir(), path));
+    return require.resolve(path.join(getPackageDir(), modulePath));
   } catch (e) {
     return require.resolve(cli);
   }

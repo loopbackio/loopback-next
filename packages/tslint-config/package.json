@@ -1,6 +1,6 @@
 {
   "name": "@loopback/tslint-config",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
   "engines": {
     "node": ">=8.9"
@@ -8,6 +8,9 @@
   "author": "IBM",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
+  "dependencies": {
+    "tslint-consistent-codestyle": "^1.14.1"
+  },
   "peerDependencies": {
     "tslint": ">=5.11.0"
   },

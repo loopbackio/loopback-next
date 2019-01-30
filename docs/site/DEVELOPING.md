@@ -22,6 +22,7 @@ See [Monorepo overview](./MONOREPO.md) for a list of all packages.
 - [Making breaking changes](#making-breaking-changes)
 - [Releasing new versions](#releasing-new-versions)
 - [Adding a new package](#adding-a-new-package)
+- [Upgrading TypeScript/tslint](#upgrading-typescripttslint)
 - [How to test infrastructure changes](#how-to-test-infrastructure-changes)
 
 ## Setting up development environment
@@ -437,6 +438,27 @@ Please register the new package in the following files:
   [@raymondfeng](https://github.com/raymondfeng) to enlist the new package on
   <http://apidocs.loopback.io/>.
 
+## Upgrading TypeScript/tslint
+
+In order to support tslint extensions with a peer dependency on tslint, we have
+to specify `typescript` and `tslint` dependency in multiple places in our
+monorepo.
+
+Steps to upgrade `typescript` or `tslint` to a newer version:
+
+1. Update the dependencies in `@loopback/build`, this is the source of truth for
+   the rest of the monorepo.
+
+   ```shell
+   $ (cd packages/build && npm update typescript tslint)
+   ```
+
+2. Propagate the change to other places to keep everything consistent.
+
+   ```shell
+   $ node bin/sync-dev-deps
+   ```
+
 ## How to test infrastructure changes
 
 When making changes to project infrastructure, e.g. modifying `tsc` or `tslint`
@@ -488,3 +510,25 @@ configuration, it's important to verify that all usage scenarios keep working.
 5.  Test integration with supported IDEs:
 
     - [VS Code](./VSCODE.md#how-to-verify-tslint-setup)
+
+### tsconfig files
+
+In the [`loopback-next`](https://github.com/strongloop/loopback-next) monorepo,
+`TypeScript` is set up in two places:
+
+1. When using VS Code, the `TypeScript` engine views `loopback-next` as a single
+   big project.
+
+   This enables the "refactor - rename" command to change all places using the
+   renamed symbol, and also makes "go to definition" command jump to `.ts` files
+   containing the original source code. Otherwise "refactor - rename" works
+   within the same package only and "go to definition" jumps to `.d.ts` files.
+
+2. When building the monorepo, we need to build the packages individually, so
+   that one `dist` directory is created for each package.
+
+This is why we have two sets of `tsconfig` files:
+
+- At monorepo root, there is `tsconfig.json` used by VS Code.
+- Inside each package, there is `tsconfig.build.json` used by `npm run build`
+  command.

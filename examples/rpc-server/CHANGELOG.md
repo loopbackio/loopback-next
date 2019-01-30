@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-rpc-server@1.1.0...@loopback/example-rpc-server@1.1.1) (2019-01-28)
+
+**Note:** Version bump only for package @loopback/example-rpc-server
+
+
+
+
+
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-rpc-server@1.0.6...@loopback/example-rpc-server@1.1.0) (2019-01-14)
+
+
+### Bug Fixes
+
+* remove multiple application start calls ([1db1dad](https://github.com/strongloop/loopback-next/commit/1db1dad))
+
+
+### Features
+
+* always include tslint and typescript in project dev-dependencies ([e0df285](https://github.com/strongloop/loopback-next/commit/e0df285))
+
+
+
+
+
 ## [1.0.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-rpc-server@1.0.5...@loopback/example-rpc-server@1.0.6) (2018-12-20)
 
 **Note:** Version bump only for package @loopback/example-rpc-server

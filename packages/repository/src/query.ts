@@ -30,6 +30,7 @@ export type Operators =
   | 'lt' // <
   | 'lte' // <=
   | 'inq' // IN
+  | 'nin' // NOT IN
   | 'between' // BETWEEN [val1, val2]
   | 'exists'
   | 'and' // AND
@@ -51,6 +52,7 @@ export type PredicateComparison<PT> = {
   lt?: PT;
   lte?: PT;
   inq?: PT[];
+  nin?: PT[];
   between?: [PT, PT];
   exists?: boolean;
   like?: PT;
@@ -370,6 +372,17 @@ export class WhereBuilder<MT extends object = AnyObject> {
   inq<K extends KeyOf<MT>>(key: K, val: MT[K][]): this {
     const w: Where<MT> = {};
     w[key] = {inq: val};
+    return this.add(w);
+  }
+
+  /**
+   * Add a `nin` condition
+   * @param key Property name
+   * @param val An array of property values
+   */
+  nin<K extends KeyOf<MT>>(key: K, val: MT[K][]): this {
+    const w: Where<MT> = {};
+    w[key] = {nin: val};
     return this.add(w);
   }
 

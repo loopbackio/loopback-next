@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.2.7...@loopback/repository-json-schema@1.3.0) (2019-01-28)
+
+
+### Features
+
+* **repository-json-schema:** enumerate fields ([15ca819](https://github.com/strongloop/loopback-next/commit/15ca819))
+
+
+
+
+
+## [1.2.7](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.2.6...@loopback/repository-json-schema@1.2.7) (2019-01-15)
+
+
+### Bug Fixes
+
+* **repository:** remove property.array() call from hasMany decorator ([56ab017](https://github.com/strongloop/loopback-next/commit/56ab017)), closes [#1944](https://github.com/strongloop/loopback-next/issues/1944)
+
+
+
+
+
+## [1.2.6](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.2.5...@loopback/repository-json-schema@1.2.6) (2019-01-14)
+
+
+### Bug Fixes
+
+* rework tslint comments disabling "no-unused-variable" rule ([a18a3d7](https://github.com/strongloop/loopback-next/commit/a18a3d7))
+
+
+
+
+
 ## [1.2.5](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.2.4...@loopback/repository-json-schema@1.2.5) (2018-12-20)
 
 **Note:** Version bump only for package @loopback/repository-json-schema

@@ -42,13 +42,13 @@ Answer the prompts as follows:
 ? Project root directory: (getting-started)
 ? Application class name: StarterApplication
 ? Select features to enable in the project:
-❯◉ Enable tslint
- ◉ Enable prettier
- ◉ Enable mocha
- ◉ Enable loopbackBuild
- ◉ Enable vscode
- ◉ Enable repositories
- ◉ Enable services
+❯◉ Enable tslint: add a linter with pre-configured lint rules
+ ◉ Enable prettier: add new npm scripts to facilitate consistent code formatting
+ ◉ Enable mocha: install mocha to assist with running tests
+ ◉ Enable loopbackBuild: use @loopback/build helpers (e.g. lb-tslint)
+ ◉ Enable vscode: add VSCode config files
+ ◉ Enable repositories: include repository imports and RepositoryMixin
+ ◉ Enable services: include service-proxy imports and ServiceMixin
 ```
 
 ### Starting the project

@@ -40,7 +40,7 @@ how to define a `hasMany` relation on a source model `Customer`.
 {% include code-caption.html content="/src/models/customer.model.ts" %}
 
 ```ts
-import {Order} from './order.model.ts';
+import {Order} from './order.model';
 import {Entity, property, hasMany} from '@loopback/repository';
 
 export class Customer extends Entity {
