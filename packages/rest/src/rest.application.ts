@@ -229,6 +229,20 @@ export class RestApplication extends Application implements HttpServerLike {
   }
 
   /**
+   * Redirect route by invoking a handler function.
+   *
+   * ```ts
+   * app.redirect('/explorer', '/explorer/');
+   * ```
+   *
+   * @param source URL path of the redirect endpoint
+   * @param target URL path of the endpoint
+   */
+  redirect(source: string, target: string): Binding {
+    return this.restServer.redirect(source, target);
+  }
+
+  /**
    * Set the OpenAPI specification that defines the REST API schema for this
    * application. All routes, parameter definitions and return types will be
    * defined in this way.

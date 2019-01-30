@@ -42,6 +42,7 @@ import {
   RouteEntry,
   RoutingTable,
   StaticAssetsRoute,
+  RedirectRoute,
 } from './router';
 import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
 import {
@@ -627,6 +628,20 @@ export class RestServer extends Context implements Server, HttpServerLike {
         methodName,
       ),
     );
+  }
+
+  /**
+   * Redirect route by invoking a handler function.
+   *
+   * ```ts
+   * server.redirect('/explorer', '/explorer/');
+   * ```
+   *
+   * @param source URL path of the redirect endpoint
+   * @param target URL path of the endpoint
+   */
+  redirect(source: string, target: string): Binding {
+    return this.route(new RedirectRoute(source, this._basePath + target));
   }
 
   // The route for static assets
