@@ -42,6 +42,7 @@ import {
   RouteEntry,
   RoutingTable,
   StaticAssetsRoute,
+  RedirectRoute,
 } from './router';
 import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
 import {
@@ -663,6 +664,30 @@ export class RestServer extends Context implements Server, HttpServerLike {
         controllerFactory,
         methodName,
       ),
+    );
+  }
+
+  /**
+   * Register a route redirecting callers to a different URL.
+   *
+   * ```ts
+   * server.redirect('/explorer', '/explorer/');
+   * ```
+   *
+   * @param fromPath URL path of the redirect endpoint
+   * @param toPathOrUrl Location (URL path or full URL) where to redirect to.
+   * If your server is configured with a custom `basePath`, then the base path
+   * is prepended to the target location.
+   * @param statusCode HTTP status code to respond with,
+   *   defaults to 303 (See Other).
+   */
+  redirect(
+    fromPath: string,
+    toPathOrUrl: string,
+    statusCode?: number,
+  ): Binding {
+    return this.route(
+      new RedirectRoute(fromPath, this._basePath + toPathOrUrl, statusCode),
     );
   }
 

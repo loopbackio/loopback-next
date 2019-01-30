@@ -735,6 +735,53 @@ describe('Routing', () => {
         .get('/greet/world')
         .expect(200, 'HELLO WORLD');
     });
+
+    it('gives precedence to redirect routes over controller methods', async () => {
+      class MyController {
+        @get('/hello', {
+          responses: {},
+        })
+        hello(): string {
+          return 'hello';
+        }
+        @get('/hello/world')
+        helloWorld() {
+          return `hello world`;
+        }
+      }
+      const app = givenAnApplication();
+      const server = await givenAServer(app);
+      server.basePath('/api');
+      server.redirect('/test/hello', '/hello/world');
+      givenControllerInApp(app, MyController);
+      const response = await whenIMakeRequestTo(server)
+        .get('/api/test/hello')
+        .expect(303);
+      // new request to verify the redirect target
+      await whenIMakeRequestTo(server)
+        .get(response.header.location)
+        .expect(200, 'hello world');
+    });
+
+    it('gives precedence to redirect routes over route methods', async () => {
+      const app = new RestApplication();
+      app.route(
+        'get',
+        '/greet/{name}',
+        anOperationSpec()
+          .withParameter({name: 'name', in: 'path', type: 'string'})
+          .build(),
+        (name: string) => `hello ${name}`,
+      );
+      app.redirect('/hello/john', '/greet/john');
+      const response = await whenIMakeRequestTo(app)
+        .get('/hello/john')
+        .expect(303);
+      // new request to verify the redirect target
+      await whenIMakeRequestTo(app)
+        .get(response.header.location)
+        .expect(200, 'hello john');
+    });
   });
 
   /* ===== HELPERS ===== */

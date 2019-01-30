@@ -7,7 +7,7 @@ import {anOperationSpec} from '@loopback/openapi-spec-builder';
 import {Client, createRestAppClient, expect} from '@loopback/testlab';
 import * as fs from 'fs';
 import * as path from 'path';
-import {RestApplication, RestServer, RestServerConfig} from '../..';
+import {RestApplication, RestServer, RestServerConfig, get} from '../..';
 
 const ASSETS = path.resolve(__dirname, '../../../fixtures/assets');
 
@@ -143,6 +143,24 @@ describe('RestApplication (integration)', () => {
       paths: {},
       'x-foo': 'bar',
     });
+  });
+
+  it('creates a redirect route with a custom status code', async () => {
+    givenApplication();
+
+    class PingController {
+      @get('/ping')
+      ping(): string {
+        return 'Hi';
+      }
+    }
+    restApp.controller(PingController);
+
+    restApp.redirect('/custom/ping', '/ping', 304);
+    await restApp.start();
+    client = createRestAppClient(restApp);
+    const response = await client.get('/custom/ping').expect(304);
+    await client.get(response.header.location).expect(200, 'Hi');
   });
 
   function givenApplication(options?: {rest: RestServerConfig}) {

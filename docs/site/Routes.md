@@ -201,3 +201,28 @@ class MySequence extends DefaultSequence {
   }
 }
 ```
+
+## Implementing HTTP redirects
+
+Both `RestServer` and `RestApplication` classes provide API for registering
+routes that will redirect clients to a given URL.
+
+Example use:
+
+{% include code-caption.html content="src/application.ts" %}
+
+```ts
+import {RestApplication} from '@loopback/rest';
+
+export class MyApplication extends RestApplication {
+  constructor(options: ApplicationConfig = {}) {
+    super(options);
+
+    // Use the default status code 303 See Other
+    this.redirect('/', '/home');
+
+    // Specify a custom status code 301 Moved Permanently
+    this.redirect('/stats', '/status', 301);
+  }
+}
+```
