@@ -42,6 +42,7 @@ describe('build-schema', () => {
         class NoPropertyMeta {
           prop: string;
         }
+
         @model()
         class OnePropertyDecorated {
           @property()
@@ -64,6 +65,7 @@ describe('build-schema', () => {
 
       it('does not convert models that have not been decorated with @model()', () => {
         class Empty {}
+
         class NoModelMeta {
           @property()
           foo: string;
@@ -106,6 +108,7 @@ describe('build-schema', () => {
         const topMeta = {
           description: 'Test description',
         };
+
         @model(topMeta)
         class TestModel {
           @property()
@@ -457,12 +460,14 @@ describe('build-schema', () => {
           });
           expect(customerSchema.properties).to.deepEqual({
             id: {type: 'number'},
+          });
+          expect(customerSchema.properties).to.not.containDeep({
             orders: {
               type: 'array',
               items: {$ref: '#/definitions/Order'},
             },
           });
-          expect(customerSchema.definitions).to.deepEqual({
+          expect(customerSchema.definitions).to.not.containEql({
             Order: {
               title: 'Order',
               properties: {
@@ -548,6 +553,7 @@ describe('build-schema', () => {
         @property()
         foo: number;
       }
+
       const cachedSchema: JsonSchema = {
         properties: {
           cachedProperty: {
@@ -560,11 +566,9 @@ describe('build-schema', () => {
         cachedSchema,
         TestModel,
       );
-
       const jsonSchema = getJsonSchema(TestModel);
       expect(jsonSchema).to.eql(cachedSchema);
     });
-
     it('creates JSON schema if one does not already exist', () => {
       @model()
       class NewModel {

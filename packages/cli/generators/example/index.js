@@ -10,6 +10,7 @@ const chalk = require('chalk');
 const downloadAndExtractExample = require('./downloader');
 const path = require('path');
 const utils = require('../../lib/utils');
+const fs = require('fs-extra');
 
 const EXAMPLES = {
   todo: 'Tutorial example on how to build an application with LoopBack 4.',
@@ -94,6 +95,10 @@ module.exports = class extends BaseGenerator {
     const cwd = process.cwd();
     const absOutDir = await downloadAndExtractExample(this.exampleName, cwd);
     this.outDir = path.relative(cwd, absOutDir);
+    fs.rename(
+      `${this.outDir}/tsconfig.build.json`,
+      `${this.outDir}/tsconfig.json`,
+    );
   }
 
   install() {

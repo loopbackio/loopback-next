@@ -74,22 +74,20 @@ module.exports = function(artiGenerator) {
         undefined,
         /No package.json found/,
       );
+
       testCheckLoopBack(
-        'throws an error if "keywords" key does not exist',
-        {foobar: 'test'},
-        /No `loopback` keyword found/,
-      );
-      testCheckLoopBack(
-        'throws an error if "keywords" key does not map to an array with "loopback" as a member',
-        {keywords: ['foobar', 'test']},
-        /No `loopback` keyword found/,
+        'throws an error if "@loopback/core" is not a dependency',
+        {dependencies: {}},
+        /No `@loopback\/core` package found/,
       );
 
       testCheckLoopBack(
         'throws an error if dependencies have incompatible versions',
         {
-          keywords: ['loopback'],
-          dependencies: {'@loopback/context': '^0.0.0'},
+          dependencies: {
+            '@loopback/context': '^0.0.0',
+            '@loopback/core': '^0.0.0',
+          },
         },
         /Incompatible dependencies/,
       );
@@ -97,7 +95,6 @@ module.exports = function(artiGenerator) {
       testCheckLoopBack(
         'allows */x/X for version range',
         {
-          keywords: ['loopback'],
           devDependencies: {'@types/node': '*'},
           dependencies: {
             '@loopback/context': 'x.x',
@@ -107,8 +104,7 @@ module.exports = function(artiGenerator) {
         // No expected error here
       );
 
-      it('passes if "keywords" maps to "loopback"', async () => {
-        gen.fs.readJSON.returns({keywords: ['test', 'loopback']});
+      it('passes if "@loopback/core" is a dependency', async () => {
         await gen.checkLoopBackProject();
       });
 

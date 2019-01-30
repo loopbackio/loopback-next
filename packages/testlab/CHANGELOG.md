@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.5](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.0.4...@loopback/testlab@1.0.5) (2019-01-28)
+
+**Note:** Version bump only for package @loopback/testlab
+
+
+
+
+
+## [1.0.4](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.0.3...@loopback/testlab@1.0.4) (2019-01-14)
+
+
+### Bug Fixes
+
+* rework tslint comments disabling "no-unused-variable" rule ([a18a3d7](https://github.com/strongloop/loopback-next/commit/a18a3d7))
+* **testlab:** add api docs during build ([5b5018d](https://github.com/strongloop/loopback-next/commit/5b5018d))
+
+
+
+
+
 ## [1.0.3](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.0.2...@loopback/testlab@1.0.3) (2018-12-20)
 
 **Note:** Version bump only for package @loopback/testlab

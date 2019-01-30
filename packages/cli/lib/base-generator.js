@@ -305,14 +305,14 @@ module.exports = class BaseGenerator extends Generator {
 
   /**
    * Checks if current directory is a LoopBack project by checking for
-   * keyword 'loopback' under 'keywords' attribute in package.json.
-   * 'keywords' is an array
+   * "@loopback/core" package in the dependencies section of the
+   * package.json.
    */
   async checkLoopBackProject() {
     debug('Checking for loopback project');
     if (this.shouldExit()) return false;
     const pkg = this.fs.readJSON(this.destinationPath('package.json'));
-    const key = 'loopback';
+
     if (!pkg) {
       const err = new Error(
         'No package.json found in ' +
@@ -323,9 +323,18 @@ module.exports = class BaseGenerator extends Generator {
       this.exit(err);
       return;
     }
-    if (!pkg.keywords || !pkg.keywords.includes(key)) {
+
+    this.packageJson = pkg;
+
+    const projectDeps = pkg.dependencies || {};
+    const projectDevDeps = pkg.devDependencies || {};
+
+    const dependentPackage = '@loopback/core';
+    const projectDepsNames = Object.keys(projectDeps);
+
+    if (!projectDepsNames.includes(dependentPackage)) {
       const err = new Error(
-        'No `loopback` keyword found in ' +
+        'No `@loopback/core` package found in the "dependencies" section of ' +
           this.destinationPath('package.json') +
           '. ' +
           'The command must be run in a LoopBack project.',
@@ -333,10 +342,6 @@ module.exports = class BaseGenerator extends Generator {
       this.exit(err);
       return;
     }
-    this.packageJson = pkg;
-
-    const projectDeps = pkg.dependencies || {};
-    const projectDevDeps = pkg.devDependencies || {};
 
     const cliPkg = require('../package.json');
     const templateDeps = cliPkg.config.templateDependencies;

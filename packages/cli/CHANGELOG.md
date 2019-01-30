@@ -3,6 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.2](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.5.1...@loopback/cli@1.5.2) (2019-01-28)
+
+
+### Bug Fixes
+
+* **cli:** add fs-extra dependency as it's used by lb example ([3c74ffa](https://github.com/strongloop/loopback-next/commit/3c74ffa))
+* **cli:** allow base class exist for model config option ([9605ed1](https://github.com/strongloop/loopback-next/commit/9605ed1))
+
+
+
+
+
+## [1.5.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.5.0...@loopback/cli@1.5.1) (2019-01-15)
+
+
+### Bug Fixes
+
+* **cli:** change enable setting check ([f4a9dc0](https://github.com/strongloop/loopback-next/commit/f4a9dc0))
+
+
+
+
+
+# [1.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.4.0...@loopback/cli@1.5.0) (2019-01-14)
+
+
+### Bug Fixes
+
+* **cli:** add descriptions to features ([8a94f8f](https://github.com/strongloop/loopback-next/commit/8a94f8f))
+* **cli:** remove license header from test code template ([1fd35f4](https://github.com/strongloop/loopback-next/commit/1fd35f4))
+
+
+### Features
+
+* always include tslint and typescript in project dev-dependencies ([e0df285](https://github.com/strongloop/loopback-next/commit/e0df285))
+* use dependency instead of keyword to check loopback projects ([bb6ee51](https://github.com/strongloop/loopback-next/commit/bb6ee51))
+* **cli:** add property modelSettings ([e0f75ac](https://github.com/strongloop/loopback-next/commit/e0f75ac))
+* **cli:** add strict prompt to model generator ([a68d78b](https://github.com/strongloop/loopback-next/commit/a68d78b))
+
+
+
+
+
 # [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.3.0...@loopback/cli@1.4.0) (2018-12-20)
 
 
