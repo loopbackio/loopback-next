@@ -24,22 +24,30 @@ import {
 const SequenceActions = RestBindings.SequenceActions;
 describe('RestComponent', () => {
   describe('Providers', () => {
-    describe('Default implementations are bound', async () => {
-      const app = new Application();
-      app.component(RestComponent);
+    describe('Default implementations are bound', () => {
+      let app: Application;
+      let comp: Component;
 
-      // Stub constructor requirements for some providers.
-      app.bind(RestBindings.Http.CONTEXT).to(new Context());
-      app.bind(RestBindings.HANDLER).to(new HttpHandler(app));
+      before(async () => {
+        app = new Application();
+        app.component(RestComponent);
 
-      const comp = await app.get<Component>('components.RestComponent');
-      for (const key in comp.providers || {}) {
-        it(key, async () => {
-          const result = await app.get(key);
-          const expected: Provider<BoundValue> = new comp.providers![key]();
-          expect(result).to.deepEqual(expected.value());
-        });
-      }
+        // Stub constructor requirements for some providers.
+        app.bind(RestBindings.Http.CONTEXT).to(new Context());
+        app.bind(RestBindings.HANDLER).to(new HttpHandler(app));
+
+        comp = await app.get<Component>('components.RestComponent');
+      });
+
+      it('', async () => {
+        for (const key in comp.providers || {}) {
+          it(key, async () => {
+            const result = await app.get(key);
+            const expected: Provider<BoundValue> = new comp.providers![key]();
+            expect(result).to.deepEqual(expected.value());
+          });
+        }
+      });
     });
     describe('LOG_ERROR', () => {
       it('matches expected argument signature', async () => {
