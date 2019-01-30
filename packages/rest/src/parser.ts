@@ -11,12 +11,14 @@ import {
   SchemasObject,
 } from '@loopback/openapi-v3-types';
 import * as debugFactory from 'debug';
+//import {RequestBody, RequestBodyParser,RequestQueryParser} from './body-parsers';
 import {RequestBody, RequestBodyParser} from './body-parsers';
 import {coerceParameter} from './coercion/coerce-parameter';
 import {RestHttpErrors} from './rest-http-error';
 import {ResolvedRoute} from './router';
 import {OperationArgs, PathParameterValues, Request} from './types';
 import {validateRequestBody} from './validation/request-body.validator';
+import {validateRequestQuery} from './validation/request-query.validator';
 const debug = debugFactory('loopback:rest:parser');
 
 /**
@@ -30,6 +32,7 @@ export async function parseOperationArgs(
   request: Request,
   route: ResolvedRoute,
   requestBodyParser: RequestBodyParser = new RequestBodyParser(),
+
 ): Promise<OperationArgs> {
   debug('Parsing operation arguments for route %s', route.describe());
   const operationSpec = route.spec;
@@ -38,11 +41,18 @@ export async function parseOperationArgs(
     operationSpec,
     request,
   );
+
+  const query = await requestBodyParser.loadRequestBodyIfNeeded(
+    operationSpec,
+    request,
+  );
+
   return buildOperationArguments(
     operationSpec,
     request,
     pathParams,
     body,
+    query,
     route.schemas,
   );
 }
@@ -52,6 +62,7 @@ function buildOperationArguments(
   request: Request,
   pathParams: PathParameterValues,
   body: RequestBody,
+  query: RequestBody,
   globalSchemas: SchemasObject,
 ): OperationArgs {
   let requestBodyIndex: number = -1;
@@ -67,6 +78,12 @@ function buildOperationArguments(
 
   const paramArgs: OperationArgs = [];
 
+  let isQuery = false;
+  let paramName = '';
+  let paramSchema = {};
+  let queryValue = {};
+  let schemasValue = {};
+
   for (const paramSpec of operationSpec.parameters || []) {
     if (isReferenceObject(paramSpec)) {
       // TODO(bajtos) implement $ref parameters
@@ -77,11 +94,30 @@ function buildOperationArguments(
     const rawValue = getParamFromRequest(spec, request, pathParams);
     const coercedValue = coerceParameter(rawValue, spec);
     paramArgs.push(coercedValue);
+
+    if (spec.in === 'query' && paramSpec.schema != null) {
+      isQuery = true;
+      paramName = paramSpec.name;
+      paramSchema = paramSpec.schema || [];
+      // tslint:disable-next-line:no-any
+      (<any>queryValue)[paramName] = coercedValue;
+      // tslint:disable-next-line:no-any
+      (<any>schemasValue)[paramName] = paramSchema;
+    }
   }
 
-  debug('Validating request body - value %j', body);
-  validateRequestBody(body, operationSpec.requestBody, globalSchemas);
-
+  //if query parameters from URL - send to query validation
+  if (isQuery) {
+    query.value = queryValue;
+    globalSchemas = {properties: schemasValue};
+    query.schema = globalSchemas;
+    validateRequestQuery(query, operationSpec.requestBody, globalSchemas);
+  }
+  //if body parameters - send to body validation
+  else {
+    debug('Validating request body - value %j', body);
+    validateRequestBody(body, operationSpec.requestBody, globalSchemas);
+  }
   if (requestBodyIndex > -1) paramArgs.splice(requestBodyIndex, 0, body.value);
   return paramArgs;
 }
