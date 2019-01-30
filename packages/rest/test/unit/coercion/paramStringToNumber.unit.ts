@@ -56,7 +56,7 @@ describe('coerce param from string to number - required', () => {
 });
 
 describe('coerce param from string to number - optional', () => {
-  context('valid values', async () => {
+  context('valid values', () => {
     test(NUMBER_PARAM, '0', 0);
     test(NUMBER_PARAM, '1', 1);
     test(NUMBER_PARAM, '-1', -1);
