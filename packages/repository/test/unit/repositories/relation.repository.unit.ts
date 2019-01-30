@@ -88,7 +88,7 @@ describe('relation repository', () => {
       });
     });
 
-    context('patch', async () => {
+    context('patch', () => {
       it('can patch related model instance', async () => {
         const constraint: Partial<Customer> = {name: 'Jane'};
         const hasManyCrudInstance = givenDefaultHasManyInstance(constraint);

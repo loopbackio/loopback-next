@@ -55,7 +55,7 @@ describe('API Explorer (acceptance)', () => {
     });
   });
 
-  context('with custom RestServerConfig', async () => {
+  context('with custom RestServerConfig', () => {
     it('honours custom OpenAPI path', async () => {
       await givenAppWithCustomRestConfig({
         openApiSpec: {
