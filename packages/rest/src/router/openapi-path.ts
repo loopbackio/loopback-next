@@ -42,7 +42,11 @@ export function validateApiPath(path: string = '/') {
       // Such as /(.*)
       throw new Error(`Unnamed parameter is not allowed in path '${path}'`);
     }
-    if (token.optional || token.repeat || token.pattern !== '[^\\/]+?') {
+    if (
+      (token.optional || token.repeat || token.pattern !== '[^\\/]+?') &&
+      // Required by path-to-regexp@3.x
+      token.prefix === '/'
+    ) {
       // Such as /:foo*, /:foo+, /:foo?, or /:foo(\\d+)
       throw new Error(`Parameter modifier is not allowed in path '${path}'`);
     }
