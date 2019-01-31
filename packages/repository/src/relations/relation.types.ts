@@ -8,12 +8,13 @@ import {TypeResolver} from '../type-resolver';
 
 export enum RelationType {
   belongsTo = 'belongsTo',
-  hasOne = 'hasOne',
-  hasMany = 'hasMany',
-  embedsOne = 'embedsOne',
   embedsMany = 'embedsMany',
-  referencesOne = 'referencesOne',
+  embedsOne = 'embedsOne',
+  hasAndBelongsToMany = 'hasAndBelongsToMany',
+  hasMany = 'hasMany',
+  hasOne = 'hasOne',
   referencesMany = 'referencesMany',
+  referencesOne = 'referencesOne',
 }
 
 export interface RelationDefinitionBase {
@@ -45,6 +46,19 @@ export interface RelationDefinitionBase {
 
 export interface HasManyDefinition extends RelationDefinitionBase {
   type: RelationType.hasMany;
+
+  /**
+   * The foreign key used by the target model.
+   *
+   * E.g. when a Customer has many Order instances, then keyTo is "customerId".
+   * Note that "customerId" is the default FK assumed by the framework, users
+   * can provide a custom FK name by setting "keyTo".
+   */
+  keyTo?: string;
+}
+
+export interface HasAndBelongsToManyDefinition extends RelationDefinitionBase {
+  type: RelationType.hasAndBelongsToMany;
 
   /**
    * The foreign key used by the target model.
@@ -90,6 +104,7 @@ export type RelationMetadata =
   | HasManyDefinition
   | BelongsToDefinition
   | HasOneDefinition
+  | HasAndBelongsToManyDefinition
   // TODO(bajtos) add other relation types and remove RelationDefinitionBase once
   // all relation types are covered.
   | RelationDefinitionBase;

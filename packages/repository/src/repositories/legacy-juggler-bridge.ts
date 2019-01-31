@@ -19,15 +19,18 @@ import {EntityNotFoundError} from '../errors';
 import {Entity, ModelDefinition} from '../model';
 import {Filter, Where} from '../query';
 import {
+  BelongsToAccessor,
   BelongsToDefinition,
+  HasAndBelongsToManyDefinition,
+  HasAndBelongsToManyRepositoryFactory,
   HasManyDefinition,
   HasManyRepositoryFactory,
-  createHasManyRepositoryFactory,
-  BelongsToAccessor,
-  createBelongsToAccessor,
-  createHasOneRepositoryFactory,
   HasOneDefinition,
   HasOneRepositoryFactory,
+  createBelongsToAccessor,
+  createHasAndBelongsToManyRepositoryFactory,
+  createHasManyRepositoryFactory,
+  createHasOneRepositoryFactory,
 } from '../relations';
 import {resolveType} from '../type-resolver';
 import {EntityCrudRepository} from './repository';
@@ -208,6 +211,71 @@ export class DefaultCrudRepository<T extends Entity, ID>
       meta as HasManyDefinition,
       targetRepoGetter,
     );
+  }
+
+  /**
+   * @deprecated
+   * Function to create a constrained relation repository factory
+   *
+   * Use `this.createHasAndBelongsToManyRepositoryFactoryFor()` instaed
+   *
+   * @param relationName Name of the relation defined on the source model
+   * @param targetRepo Target repository instance
+   */
+  protected _createHasAndBelongsToManyRepositoryFactoryFor<
+    Target extends Entity,
+    TargetID,
+    ForeignKeyType
+  >(
+    relationName: string,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+  ): HasAndBelongsToManyRepositoryFactory<Target, ForeignKeyType> {
+    return this.createHasAndBelongsToManyRepositoryFactoryFor(
+      relationName,
+      targetRepoGetter,
+    );
+  }
+
+  /**
+   * Function to create a constrained relation repository factory
+   *
+   * ```ts
+   * class CustomerRepository extends DefaultCrudRepository<
+   *   Customer,
+   *   typeof Customer.prototype.id
+   * > {
+   *   public readonly orders: HasAndBelongsToManyRepositoryFactory<Order, typeof Customer.prototype.id>;
+   *
+   *   constructor(
+   *     protected db: juggler.DataSource,
+   *     orderRepository: EntityCrudRepository<Order, typeof Order.prototype.id>,
+   *   ) {
+   *     super(Customer, db);
+   *     this.orders = this._createHasAndBelongsToManyRepositoryFactoryFor(
+   *       'orders',
+   *       orderRepository,
+   *     );
+   *   }
+   * }
+   * ```
+   *
+   * @param relationName Name of the relation defined on the source model
+   * @param targetRepo Target repository instance
+   */
+  protected createHasAndBelongsToManyRepositoryFactoryFor<
+    Target extends Entity,
+    TargetID,
+    ForeignKeyType
+  >(
+    relationName: string,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+  ): HasAndBelongsToManyRepositoryFactory<Target, ForeignKeyType> {
+    const meta = this.entityClass.definition.relations[relationName];
+    return createHasAndBelongsToManyRepositoryFactory<
+      Target,
+      TargetID,
+      ForeignKeyType
+    >(meta as HasAndBelongsToManyDefinition, targetRepoGetter);
   }
 
   /**
