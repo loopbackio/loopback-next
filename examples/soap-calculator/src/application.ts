@@ -17,7 +17,7 @@ export class SoapCalculatorApplication extends BootMixin(
     this.sequence(MySequence);
 
     // Set up default home page
-    this.static('/', path.join(__dirname, '../../public'));
+    this.static('/', path.join(__dirname, '../public'));
 
     this.component(RestExplorerComponent);
 
