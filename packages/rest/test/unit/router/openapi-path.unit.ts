@@ -32,6 +32,11 @@ describe('validateApiPath', () => {
     expect(path).to.eql('/{foo}@{bar}');
   });
 
+  it('allows /{foo}#{bar}', () => {
+    const path = validateApiPath('/{foo}#{bar}');
+    expect(path).to.eql('/{foo}#{bar}');
+  });
+
   it('allows /{_foo}/{bar}', () => {
     const path = validateApiPath('/{_foo}/{bar}');
     expect(path).to.eql('/{_foo}/{bar}');
