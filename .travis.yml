@@ -31,3 +31,4 @@ matrix:
 branches:
   only:
     - master
+    - /^greenkeeper/.*$/
