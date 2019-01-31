@@ -1,0 +1,15 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "mysqlDs": {
+    "name": "mysqlDs",
+    "connector": "mysql",
+    "host": "demo.strongloop.com",
+    "port": 3306,
+    "database": "getting_started",
+    "username": "demo",
+    "password": "L00pBack"
+  }
+}

@@ -42,7 +42,15 @@
     "@loopback/openapi-v3-types": "^1.0.5",
     "@loopback/repository": "^1.1.4",
     "@loopback/rest": "^1.5.4",
-    "@loopback/rest-explorer": "^1.1.7"
+    "@loopback/rest-explorer": "^1.1.7",
+    "compression": "^1.0.3",
+    "cors": "^2.5.2",
+    "helmet": "^3.15.0",
+    "loopback": "^3.0.0",
+    "loopback-boot": "^3.1.1",
+    "loopback-connector-mysql": "^5.3.1",
+    "serve-favicon": "^2.0.1",
+    "strong-error-handler": "^3.2.0"
   },
   "devDependencies": {
     "@loopback/build": "^1.2.1",
