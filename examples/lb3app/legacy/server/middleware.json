@@ -41,9 +41,6 @@
     }
   },
   "files": {
-    "loopback#static": {
-      "params": "$!../client"
-    }
   },
   "final": {
   },
