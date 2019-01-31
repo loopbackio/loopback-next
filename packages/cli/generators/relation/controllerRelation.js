@@ -15,7 +15,9 @@ const chalk = require('chalk');
 const utils = require('../../lib/utils');
 const ast = require('ts-simple-ast');
 
-const CONTROLLER_TEMPLATE_PATH = 'controller-relation-template.ts.ejs';
+const CONTROLLER_TEMPLATE_PATH = 'controller-relation-template-has-many.ts.ejs';
+const CONTROLLER_TEMPLATE_PATH_HAS_MANY = 'controller-relation-template-has-many.ts.ejs';
+const CONTROLLER_TEMPLATE_PATH_HAS_ONE = 'controller-relation-template-has-one.ts.ejs';
 
 // Exportable constants
 module.exports = class ControllerRelation extends ArtifactGenerator {
@@ -59,7 +61,16 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
     return;
   }
 
-  generateRelationController(
+  generateControllerRelationBelongsTo(
+    sourceModel,
+    targetModel,
+    foreignKey,
+    relationName,
+  ) {
+    throw new Error('Not implemented');
+  }
+
+  generateControllerRelationHasMany(
     sourceModel,
     targetModel,
     foreignKey,
@@ -73,14 +84,15 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
 
     this.options.keyType = this.getKeyType(sourceFile, this.options.foreignKey);
 
+    //@todo: update relationPropertyName
+    this.artifactInfo.relationPropertyName = 'foo';
     this.artifactInfo.foreignKey = foreignKey;
     this.artifactInfo.keyType = this.options.keyType;
-    this.artifactInfo.repositoryVariableName = utils.camelCase(
-      sourceModel + 'Repo',
-    );
-    this.artifactInfo.srcModel = utils.camelCase(sourceModel);
-    this.artifactInfo.dstModel = utils.camelCase(targetModel);
-    this.artifactInfo.modelName = utils.toClassName(targetModel);
+    this.artifactInfo.sourceRepositoryName = sourceModel + 'Repo';
+    this.artifactInfo.sourceClassName = sourceModel;
+    this.artifactInfo.targetClassName = targetModel;
+    this.artifactInfo.controllerClassName = this.artifactInfo.sourceClassName + this.artifactInfo.targetClassName;
+    this.artifactInfo.modelName = targetModel;
     this.artifactInfo.className = utils.toClassName(
       this.artifactInfo.srcModel + this.artifactInfo.modelName,
     );
@@ -122,6 +134,14 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
     return;
   }
 
+  generateControllerRelationHasOne(
+    sourceModel,
+    targetModel,
+    foreignKey,
+    relationName,
+  ) {
+    throw new Error('Not implemented');
+  }
   getKeyType(sourceFile, propertyName) {
     const classObj = this.getClassObj(sourceFile);
     if (

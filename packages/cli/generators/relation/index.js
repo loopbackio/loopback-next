@@ -75,45 +75,60 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     let ctrl = new ControllerRelation(this.args, this.opts);
     this.artifactInfo.name = this.options.relationType;
     this.artifactInfo.relPath = relPathCtrl;
-    if (this.options.relationType === 'belongsTo') {
-      ctrl.generateRelationController(
-        this.options.destinationModel,
-        this.options.sourceModel,
-        this.options.foreignKey,
-        this.options.relationType,
-      );
-    } else {
-      ctrl.generateRelationController(
-        this.options.sourceModel,
-        this.options.destinationModel,
-        this.options.foreignKey,
-        this.options.relationType,
-      );
+
+    switch (this.options.relationType) {
+      case 'belongsTo':
+        ctrl.generateControllerRelationBelongsTo(
+          this.options.destinationModel,
+          this.options.sourceModel,
+          this.options.foreignKey,
+          this.options.relationType,
+        );
+        break;
+      case 'hasMany':
+        ctrl.generateControllerRelationHasMany(
+          this.options.sourceModel,
+          this.options.destinationModel,
+          this.options.foreignKey,
+          this.options.relationType,
+        );
+        break;
+      case 'hasOne':
+        ctrl.generateControllerRelationHasOne(
+          this.options.sourceModel,
+          this.options.destinationModel,
+          this.options.foreignKey,
+          this.options.relationType,
+        );
+        break;
+      default:
+        throw new Error('Incorrect Relation Type');
     }
 
-    //Invoke here Model and Repository Generators
-    debug('Invoke Model generator...');
-    let model = new ModelRelation(this.args, this.opts);
-    this.artifactInfo.name = this.options.relationType;
-    this.artifactInfo.relPath = relPathModel;
-    model.generateRelationModel(
-      this.options.sourceModel,
-      this.options.destinationModel,
-      this.options.foreignKey,
-      this.options.relationType,
-    );
+    /*
+        //Invoke here Model and Repository Generators
+        debug('Invoke Model generator...');
+        let model = new ModelRelation(this.args, this.opts);
+        this.artifactInfo.name = this.options.relationType;
+        this.artifactInfo.relPath = relPathModel;
+        model.generateRelationModel(
+          this.options.sourceModel,
+          this.options.destinationModel,
+          this.options.foreignKey,
+          this.options.relationType,
+        );
 
-    debug('Invoke Repository generator...');
-    let repo = new RepositoryRelation(this.args, this.opts);
-    this.artifactInfo.name = this.options.relationType;
-    this.artifactInfo.relPath = relPathRepo;
-    repo.generateRelationRepository(
-      this.options.sourceModel,
-      this.options.destinationModel,
-      this.options.foreignKey,
-      this.options.relationType,
-    );
-
+        debug('Invoke Repository generator...');
+        let repo = new RepositoryRelation(this.args, this.opts);
+        this.artifactInfo.name = this.options.relationType;
+        this.artifactInfo.relPath = relPathRepo;
+        repo.generateRelationRepository(
+          this.options.sourceModel,
+          this.options.destinationModel,
+          this.options.foreignKey,
+          this.options.relationType,
+        );
+    */
     return;
   }
 
@@ -141,7 +156,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         validate: utils.validateClassName,
       },
     ]);
-    this.options.relationType = this.artifactInfo.relationType;
+    this.options.relationType = this.artifactInfo.relationType.relationBaseClass;
     return this.artifactInfo.relationType;
   }
 
