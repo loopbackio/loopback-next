@@ -206,17 +206,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     this._expressApp.set('query parser', 'extended');
     this._requestHandler = this._expressApp;
 
-    // Allow CORS support for all endpoints so that users
-    // can test with online SwaggerUI instance
-    const corsOptions = this.config.cors || {
-      origin: '*',
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-      preflightContinue: false,
-      optionsSuccessStatus: 204,
-      maxAge: 86400,
-      credentials: true,
-    };
-    this._expressApp.use(cors(corsOptions));
+    this._setupPreprocessingMiddleware();
 
     // Set up endpoints for OpenAPI spec/ui
     this._setupOpenApiSpecEndpoints();
@@ -232,6 +222,20 @@ export class RestServer extends Context implements Server, HttpServerLike {
         this._onUnhandledError(req, res, err);
       },
     );
+  }
+
+  protected _setupPreprocessingMiddleware() {
+    // Allow CORS support for all endpoints so that users
+    // can test with online SwaggerUI instance
+    const corsOptions = this.config.cors || {
+      origin: '*',
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      preflightContinue: false,
+      optionsSuccessStatus: 204,
+      maxAge: 86400,
+      credentials: true,
+    };
+    this._expressApp.use(cors(corsOptions));
   }
 
   /**

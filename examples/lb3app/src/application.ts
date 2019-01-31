@@ -6,7 +6,12 @@
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
-import {RestApplication, OpenAPIObject, OperationObject} from '@loopback/rest';
+import {
+  RestApplication,
+  OpenAPIObject,
+  OperationObject,
+  RestServer,
+} from '@loopback/rest';
 import {RestExplorerComponent} from '@loopback/rest-explorer';
 import * as path from 'path';
 import {promisify} from 'util';
@@ -53,6 +58,21 @@ export class TodoListApplication extends BootMixin(
     });
 
     const openApiSpec: OpenAPIObject = result.openapi;
+
+    // Normalize endpoint paths (if needed)
+    const basePath = swaggerSpec.basePath;
+    const hasBasePath = basePath && basePath !== '/';
+    const servers = openApiSpec.servers || [];
+    const firstServer = servers[0] || {};
+    if (hasBasePath && firstServer.url === basePath) {
+      // move the basePath from server url to endpoint paths
+      const oldPaths = openApiSpec.paths;
+      openApiSpec.paths = {};
+      for (const p in oldPaths)
+        openApiSpec.paths[`${basePath}${p}`] = oldPaths[p];
+    }
+
+    // Setup dummy route handler function - needed by LB4
     for (const p in openApiSpec.paths) {
       for (const v in openApiSpec.paths[p]) {
         const spec: OperationObject = openApiSpec.paths[p][v];
@@ -73,7 +93,24 @@ export class TodoListApplication extends BootMixin(
 
     this.api(openApiSpec);
 
-    // Boot the actual LB4 app second
+    // A super-hacky way how to mount LB3 app as an express route
+    // Obviously, we need to find a better solution - a generic extension point
+    // provided by REST API layer.
+    // tslint:disable-next-line:no-any
+    (this.restServer as any)._setupPreprocessingMiddleware = function(
+      this: RestServer,
+    ) {
+      // call the original implementation
+      Object.getPrototypeOf(this)._setupPreprocessingMiddleware.apply(
+        this,
+        arguments,
+      );
+
+      // Add our additional middleware
+      this._expressApp.use(legacyApp);
+    };
+
+    // Boot the new LB4 layer now
     return super.boot();
   }
 }
