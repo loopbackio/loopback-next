@@ -5,11 +5,15 @@
 
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
-import {RestExplorerComponent} from '@loopback/rest-explorer';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
+import {RestExplorerComponent} from '@loopback/rest-explorer';
 import * as path from 'path';
+import {promisify} from 'util';
 import {MySequence} from './sequence';
+
+const legacyApp = require('../../legacy/server/server');
+const legacyBoot = promisify(require('loopback-boot'));
 
 export class TodoListApplication extends BootMixin(
   RepositoryMixin(RestApplication),
@@ -35,5 +39,14 @@ export class TodoListApplication extends BootMixin(
         nested: true,
       },
     };
+  }
+
+  async boot() {
+    // Boot the legacy LB3 app first
+    await legacyBoot(legacyApp);
+    console.log('LB3 models', Object.keys(legacyApp.models));
+
+    // Boot the actual LB4 app second
+    return super.boot();
   }
 }
