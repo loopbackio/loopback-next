@@ -24,7 +24,7 @@
     "@types/supertest": "^2.0.7",
     "express": "^4.16.4",
     "fs-extra": "^7.0.1",
-    "oas-validator": "^2.0.0",
+    "oas-validator": "^3.1.0",
     "shot": "^4.0.7",
     "should": "^13.2.3",
     "sinon": "^7.2.2",
