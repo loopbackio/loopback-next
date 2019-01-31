@@ -196,7 +196,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         when: this.artifactInfo.modelNameList === undefined,
       },
     ]);
-    this.options.sourceModel = this.artifactInfo.sourceModel;
+    this.options.sourceModel = this.artifactInfo.sourceModel.modelNameList;
     return this.artifactInfo.sourceModel;
   }
 
@@ -250,7 +250,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         when: this.artifactInfo.modelNameList === undefined,
       },
     ]);
-    this.options.destinationModel = this.artifactInfo.targetModel;
+    this.options.destinationModel = this.artifactInfo.targetModel.modelNameList;
     return this.artifactInfo.targetModel;
   }
 

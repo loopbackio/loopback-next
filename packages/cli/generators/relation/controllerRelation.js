@@ -68,8 +68,9 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
     let project = new ast.Project();
     const sourceFile = this.addFileToProject(
       project,
-      this.artifactInfo.modelDir + '/' + this.options.sourceModel + '.model.ts',
+      this.artifactInfo.modelDir + '/' + utils.getModelFileName(this.options.sourceModel),
     );
+
     this.options.keyType = this.getKeyType(sourceFile, this.options.foreignKey);
 
     this.artifactInfo.foreignKey = foreignKey;
