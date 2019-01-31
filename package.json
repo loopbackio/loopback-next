@@ -26,8 +26,9 @@
     "prerelease": "npm run build:full && npm run mocha && npm run lint",
     "release": "lerna version && lerna publish from-git --yes",
     "update-template-deps": "node bin/update-template-deps -f",
+    "update-greenkeeper-json": "node bin/update-greenkeeper-json -f",
     "sync-dev-deps": "node bin/sync-dev-deps",
-    "version": "npm run update-template-deps && npm run apidocs",
+    "version": "npm run update-template-deps && npm run update-greenkeeper-json && npm run apidocs",
     "outdated": "npm outdated --depth 0 && lerna exec --no-bail \"npm outdated --depth 0\"",
     "apidocs": "node bin/run-lerna run build:apidocs",
     "coverage:ci": "node packages/build/bin/run-nyc report --reporter=text-lcov | coveralls",
@@ -62,6 +63,25 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "greenkeeper": {
+    "commitMessages": {
+      "initialBadge": "docs: add Greenkeeper badge",
+      "initialDependencies": "chore: update dependencies",
+      "initialBranches": "chore: whitelist greenkeeper branches",
+      "dependencyUpdate": "chore: update ${dependency} to version ${version}",
+      "devDependencyUpdate": "chore: update ${dependency} to version ${version}",
+      "dependencyPin": "chore: pin ${dependency} to ${oldVersion}",
+      "devDependencyPin": "chore: pin ${dependency} to ${oldVersion}"
+    },
+    "prTitles": {
+      "initialPR": "[greenkeeper] update dependencies to enable Greenkeeper",
+      "initialPrBadge": "[greenkeeper] add badge to enable Greenkeeper",
+      "initialPrBadgeOnly": "[greenkeeper] add Greenkeeper badge",
+      "initialSubgroupPR": "[greenkeeper] update dependencies for ${group}",
+      "basicPR": "[greenkeeper] update ${dependency} to the latest",
+      "groupPR": "[greenkeeper] update ${dependency} in group ${group} to the latest"
     }
   }
 }
