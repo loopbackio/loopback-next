@@ -49,8 +49,7 @@
     "loopback": "^3.0.0",
     "loopback-boot": "^3.1.1",
     "loopback-connector-mysql": "^5.3.1",
-    "serve-favicon": "^2.0.1",
-    "strong-error-handler": "^3.2.0"
+    "serve-favicon": "^2.0.1"
   },
   "devDependencies": {
     "@loopback/build": "^1.2.1",

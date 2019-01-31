@@ -42,13 +42,11 @@
   },
   "files": {
     "loopback#static": {
-      "params": "$!../client" 
+      "params": "$!../client"
     }
   },
   "final": {
-    "loopback#urlNotFound": {}
   },
   "final:after": {
-    "strong-error-handler": {}
   }
 }
