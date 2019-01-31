@@ -19,9 +19,9 @@
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
     "pretest": "npm run clean && npm run build",
-    "test": "lb-mocha \"dist/test/unit/**/*.js\" \"dist/test/acceptance/**/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "posttest": "npm run lint",
-    "test:dev": "lb-mocha --allow-console-logs dist/test/**/*.js && npm run posttest",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
     "verify": "npm pack && tar xf *example-log-extension*.tgz && tree package && npm run clean"
   },
   "repository": {
