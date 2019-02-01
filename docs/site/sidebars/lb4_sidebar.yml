@@ -244,7 +244,7 @@ children:
   url: Calling-other-APIs-and-web-services.html
   output: 'web, pdf'
 
-- title: 'For current LoopBack users'
+- title: 'For LoopBack 3.x users'
   url: LoopBack-3.x.html
   output: 'web, pdf'
 
