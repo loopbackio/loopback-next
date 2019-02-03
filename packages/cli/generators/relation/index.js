@@ -20,7 +20,16 @@ const ModelRelation = require('./modelRelation');
 const PROMPT_BASE_RELATION_CLASS = 'Please select the relation type';
 const PROMPT_MESSAGE__SOURCE_MODEL = 'Please select source model';
 const PROMPT_MESSAGE__TARGET__MODEL = 'Please select target model';
-const availableRelationsBaseClasses = ['belongsTo', 'hasMany', 'hasOne'];
+
+const RELATION_TYPE_BELONGS_TO = 'belongsTo';
+const RELATION_TYPE_HAS_MANY = 'hasMany';
+const RELATION_TYPE_HAS_ONE = 'hasOne';
+
+const availableRelationsBaseClasses = [
+  RELATION_TYPE_BELONGS_TO,
+  RELATION_TYPE_HAS_MANY,
+  RELATION_TYPE_HAS_ONE
+];
 
 const relPathControllersFolder = '/controllers';
 const relPathModelsFolder = '/models';
@@ -77,7 +86,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     this.artifactInfo.relPath = relPathCtrl;
 
     switch (this.options.relationType) {
-      case 'belongsTo':
+      case RELATION_TYPE_BELONGS_TO:
         ctrl.generateControllerRelationBelongsTo(
           this.options.destinationModel,
           this.options.sourceModel,
@@ -85,7 +94,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           this.options.relationType,
         );
         break;
-      case 'hasMany':
+      case RELATION_TYPE_HAS_MANY:
         ctrl.generateControllerRelationHasMany(
           this.options.sourceModel,
           this.options.destinationModel,
@@ -93,7 +102,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           this.options.relationType,
         );
         break;
-      case 'hasOne':
+      case RELATION_TYPE_HAS_ONE:
         ctrl.generateControllerRelationHasOne(
           this.options.sourceModel,
           this.options.destinationModel,
