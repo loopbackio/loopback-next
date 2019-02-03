@@ -208,7 +208,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     }
 
     // Prompt a user for model.
-    return await this.prompt([
+    this.artifactInfo[parameter] = await this.prompt([
       {
         type: 'list',
         name: 'modelNameList',
@@ -217,34 +217,28 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         when: this.artifactInfo.modelNameList === undefined,
       },
     ]);
+    this.options[parameter] = this.artifactInfo[parameter].modelNameList;
+    return this.artifactInfo[parameter];
   }
 
-  //Get model list for source model
+  // Get model list for source model.
   async promptSourceModels() {
     if (this.shouldExit()) return false;
 
-    // Prompt a user for source model
-    this.artifactInfo.sourceModel = await this._promptModelList(
+    return await this._promptModelList(
       PROMPT_MESSAGE__SOURCE_MODEL,
       'sourceModel'
     );
-    this.options.sourceModel = this.artifactInfo.sourceModel.modelNameList;
-
-    return this.artifactInfo.sourceModel;
   }
 
-  //Get model list for target model
+  // Get model list for target model.
   async promptTargetModels() {
     if (this.shouldExit()) return false;
-    // Prompt a user for a target model
 
-    this.artifactInfo.targetModel = await this._promptModelList(
+    return await this._promptModelList(
       PROMPT_MESSAGE__TARGET__MODEL,
       'destinationModel'
     );
-    this.options.destinationModel = this.artifactInfo.targetModel.modelNameList;
-
-    return this.artifactInfo.targetModel;
   }
 
   //Prompt ID
