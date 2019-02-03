@@ -169,13 +169,10 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     return this.artifactInfo.relationType;
   }
 
-  //Get model list for source model
-  async promptSourceModels() {
-    if (this.shouldExit()) return false;
-
+  async _promptModelList(message, parameter) {
     let modelList;
     try {
-      //debug(`model list dir ${this.artifactInfo.modelDir}`);
+      debug(`model list dir ${this.artifactInfo.modelDir}`);
       modelList = await utils.getArtifactList(
         this.artifactInfo.modelDir,
         'model',
@@ -184,17 +181,17 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       return this.exit(err);
     }
 
-    if (this.options.model) {
-      // debug(`Model name received from command line: ${this.options.model}`);
+    if (this.options[parameter]) {
+      debug(`Model name received from command line: ${this.options[parameter]}`);
 
-      this.options.model = utils.toClassName(this.options.model);
+      this.options.model = utils.toClassName(this.options[parameter]);
       // assign the model name from the command line only if it is valid
       if (
         modelList &&
         modelList.length > 0 &&
         modelList.includes(this.options.model)
       ) {
-        Object.assign(this.artifactInfo, { modelNameList: [this.options.model] });
+        Object.assign(this.artifactInfo, { modelNameList: [this.options[parameter]] });
       } else {
         modelList = [];
       }
@@ -210,71 +207,43 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       );
     }
 
-    // Prompt a user for source model
-    this.artifactInfo.sourceModel = await this.prompt([
+    // Prompt a user for model.
+    return await this.prompt([
       {
         type: 'list',
         name: 'modelNameList',
-        message: PROMPT_MESSAGE__SOURCE_MODEL,
+        message: message,
         choices: modelList,
         when: this.artifactInfo.modelNameList === undefined,
       },
     ]);
+  }
+
+  //Get model list for source model
+  async promptSourceModels() {
+    if (this.shouldExit()) return false;
+
+    // Prompt a user for source model
+    this.artifactInfo.sourceModel = await this._promptModelList(
+      PROMPT_MESSAGE__SOURCE_MODEL,
+      'sourceModel'
+    );
     this.options.sourceModel = this.artifactInfo.sourceModel.modelNameList;
+
     return this.artifactInfo.sourceModel;
   }
 
   //Get model list for target model
   async promptTargetModels() {
     if (this.shouldExit()) return false;
-
-    let modelList;
-    try {
-      //debug(`model list dir ${this.artifactInfo.modelDir}`);
-      modelList = await utils.getArtifactList(
-        this.artifactInfo.modelDir,
-        'model',
-      );
-    } catch (err) {
-      return this.exit(err);
-    }
-
-    if (this.options.model) {
-      // debug(`Model name received from command line: ${this.options.model}`);
-
-      this.options.model = utils.toClassName(this.options.model);
-      // assign the model name from the command line only if it is valid
-      if (
-        modelList &&
-        modelList.length > 0 &&
-        modelList.includes(this.options.model)
-      ) {
-        Object.assign(this.artifactInfo, { modelNameList: [this.options.model] });
-      } else {
-        modelList = [];
-      }
-    }
-    if (modelList.length === 0) {
-      return this.exit(
-        new Error(
-          `${ERROR_NO_MODELS_FOUND} ${this.artifactInfo.modelDir}.
-        ${chalk.yellow(
-            'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
-          )}`,
-        ),
-      );
-    }
     // Prompt a user for a target model
-    this.artifactInfo.targetModel = await this.prompt([
-      {
-        type: 'list',
-        name: 'modelNameList',
-        message: PROMPT_MESSAGE__TARGET__MODEL,
-        choices: modelList,
-        when: this.artifactInfo.modelNameList === undefined,
-      },
-    ]);
+
+    this.artifactInfo.targetModel = await this._promptModelList(
+      PROMPT_MESSAGE__TARGET__MODEL,
+      'destinationModel'
+    );
     this.options.destinationModel = this.artifactInfo.targetModel.modelNameList;
+
     return this.artifactInfo.targetModel;
   }
 
