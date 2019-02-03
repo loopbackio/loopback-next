@@ -10,16 +10,16 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@commitlint/cli": "^7.0.0",
-    "@commitlint/config-conventional": "^7.0.0",
-    "@commitlint/travis-cli": "^7.0.0",
+    "@commitlint/cli": "^7.4.0",
+    "@commitlint/config-conventional": "^7.3.1",
+    "@commitlint/travis-cli": "^7.4.0",
     "@types/mocha": "^5.0.0",
     "coveralls": "^3.0.0",
     "cz-conventional-changelog": "^2.1.0",
-    "husky": "^1.2.0",
-    "lerna": "^3.5.1",
+    "husky": "^1.3.1",
+    "lerna": "^3.10.7",
     "tslint": "^5.12.0",
-    "typescript": "^3.2.2"
+    "typescript": "^3.3.1"
   },
   "scripts": {
     "postinstall": "lerna bootstrap",
@@ -50,7 +50,7 @@
     "test:ci": "node packages/build/bin/run-nyc npm run mocha --scripts-prepend-node-path",
     "verify:docs": "npm run build:site -- --verify",
     "build:site": "./bin/build-docs-site.sh",
-    "mocha": "node packages/build/bin/run-mocha \"packages/*/dist/test/**/*.js\" \"packages/*/dist/__tests__/**/*.js\" \"examples/*/dist/test/**/*.js\" \"packages/cli/test/**/*.js\" \"packages/build/test/*/*.js\"",
+    "mocha": "node packages/build/bin/run-mocha \"packages/*/dist/test/**/*.js\" \"packages/*/dist/__tests__/**/*.js\" \"examples/*/dist/__tests__/**/*.js\" \"packages/cli/test/**/*.js\" \"packages/build/test/*/*.js\"",
     "posttest": "npm run lint"
   },
   "config": {

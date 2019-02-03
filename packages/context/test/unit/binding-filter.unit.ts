@@ -25,7 +25,51 @@ describe('BindingFilter', () => {
       expect(filter(binding)).to.be.false();
     });
 
-    // TODO: filter by tag map, filter by regexp
+    it('accepts bindings MATCHING the provided tag regexp', () => {
+      const filter = filterByTag(/^c/);
+      binding.tag('controller');
+      expect(filter(binding)).to.be.true();
+    });
+
+    it('rejects bindings NOT MATCHING the provided tag regexp', () => {
+      const filter = filterByTag(/^c/);
+      binding.tag('dataSource');
+      expect(filter(binding)).to.be.false();
+    });
+
+    it('accepts bindings MATCHING the provided tag map', () => {
+      const filter = filterByTag({controller: 'my-controller'});
+      binding.tag({controller: 'my-controller'});
+      binding.tag({name: 'my-controller'});
+      expect(filter(binding)).to.be.true();
+    });
+
+    it('accepts bindings MATCHING the provided tag map with multiple tags', () => {
+      const filter = filterByTag({
+        controller: 'my-controller',
+        name: 'my-name',
+      });
+      binding.tag({controller: 'my-controller'});
+      binding.tag({name: 'my-name'});
+      expect(filter(binding)).to.be.true();
+    });
+
+    it('rejects bindings NOT MATCHING the provided tag map', () => {
+      const filter = filterByTag({controller: 'your-controller'});
+      binding.tag({controller: 'my-controller'});
+      binding.tag({name: 'my-controller'});
+      expect(filter(binding)).to.be.false();
+    });
+
+    it('rejects bindings NOT MATCHING the provided tag map with multiple tags', () => {
+      const filter = filterByTag({
+        controller: 'my-controller',
+        name: 'my-name',
+      });
+      binding.tag({controller: 'my-controller'});
+      binding.tag({name: 'my-controller'});
+      expect(filter(binding)).to.be.false();
+    });
   });
 
   describe('filterByKey', () => {
@@ -39,7 +83,25 @@ describe('BindingFilter', () => {
       expect(filter(binding)).to.be.false();
     });
 
-    // TODO: filter by regexp, filter by BindingFunction
+    it('accepts bindings MATCHING the provided key regexp', () => {
+      const filter = filterByKey(/f.*/);
+      expect(filter(binding)).to.be.true();
+    });
+
+    it('rejects bindings NOT MATCHING the provided key regexp', () => {
+      const filter = filterByKey(/^ba/);
+      expect(filter(binding)).to.be.false();
+    });
+
+    it('accepts bindings MATCHING the provided filter', () => {
+      const filter = filterByKey(b => b.key === key);
+      expect(filter(binding)).to.be.true();
+    });
+
+    it('rejects bindings NOT MATCHING the provided filter', () => {
+      const filter = filterByKey(b => b.key !== key);
+      expect(filter(binding)).to.be.false();
+    });
   });
 
   function givenBinding() {
