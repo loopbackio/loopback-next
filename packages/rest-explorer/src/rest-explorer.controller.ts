@@ -16,7 +16,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 // TODO(bajtos) Allow users to customize the template
-const indexHtml = path.resolve(__dirname, '../../templates/index.html.ejs');
+const indexHtml = path.resolve(__dirname, '../templates/index.html.ejs');
 const template = fs.readFileSync(indexHtml, 'utf-8');
 const templateFn = ejs.compile(template);
 

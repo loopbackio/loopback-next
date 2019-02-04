@@ -6,14 +6,14 @@
     "node": ">=8.9"
   },
   "scripts": {
-    "acceptance": "lb-mocha \"dist/test/acceptance/**/*.js\"",
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
     "clean": "lb-clean loopback-core*.tgz dist package api-docs",
     "pretest": "npm run build",
-    "integration": "lb-mocha \"dist/test/integration/**/*.js\"",
-    "test": "lb-mocha \"dist/test/unit/**/*.js\" \"dist/test/integration/**/*.js\" \"dist/test/acceptance/**/*.js\"",
-    "unit": "lb-mocha \"dist/test/unit/**/*.js\"",
+    "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/unit/**/*.js\" \"dist/__tests__/integration/**/*.js\" \"dist/__tests__/acceptance/**/*.js\"",
+    "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-core*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
@@ -32,9 +32,9 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist/src",
-    "dist/index*",
-    "src"
+    "dist",
+    "src",
+    "!*/__tests__"
   ],
   "repository": {
     "type": "git",
