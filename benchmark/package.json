@@ -16,7 +16,7 @@
     "build": "lb-tsc es2017 --outDir dist",
     "clean": "lb-clean dist",
     "pretest": "npm run clean && npm run build",
-    "test": "lb-mocha \"dist/test\"",
+    "test": "lb-mocha \"dist/__tests__\"",
     "prestart": "npm run build",
     "benchmark:routing": "node ./dist/src/rest-routing/routing-table",
     "start": "node ."
