@@ -5,10 +5,9 @@
       "examples/*/dist"
     ],
     "exclude": [
-      "packages/*/dist/test/",
       "packages/*/dist/__tests__/",
       "packages/cli/test/",
-      "examples/*/dist/test/",
+      "examples/*/dist/__tests__/",
       "**/.sandbox/"
     ],
     "extension": [

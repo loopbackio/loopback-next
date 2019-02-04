@@ -7,12 +7,12 @@
   },
   "main": "index",
   "scripts": {
-    "acceptance": "lb-mocha \"dist/test/acceptance/**/*.js\"",
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
     "clean": "lb-clean loopback-repository*.tgz dist package api-docs",
     "pretest": "npm run build",
-    "test": "lb-mocha \"dist/test/**/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-repository*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
@@ -37,9 +37,9 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist/src",
-    "dist/index*",
-    "src"
+    "dist",
+    "src",
+    "!*/__tests__"
   ],
   "repository": {
     "type": "git",

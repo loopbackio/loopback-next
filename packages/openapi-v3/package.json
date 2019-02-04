@@ -19,10 +19,10 @@
     "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
     "clean": "lb-clean loopback-openapi-v3*.tgz dist package",
-    "integration": "lb-mocha \"dist/test/integration/**/*.js\"",
+    "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
     "pretest": "npm run build",
-    "test": "lb-mocha \"dist/test/unit/**/*.js\" \"dist/test/integration/**/*.js\"",
-    "unit": "lb-mocha \"dist/test/unit/**/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/unit/**/*.js\" \"dist/__tests__/integration/**/*.js\"",
+    "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-openapi-v3*.tgz && tree package && npm run clean"
   },
   "author": "IBM",
@@ -37,9 +37,9 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist/src",
-    "dist/index*",
-    "src"
+    "dist",
+    "src",
+    "!*/__tests__"
   ],
   "publishConfig": {
     "access": "public"
