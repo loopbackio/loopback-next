@@ -1,0 +1,23 @@
+import {
+  repository,
+} from '@loopback/repository';
+import {
+  param,
+  get,
+} from '@loopback/rest';
+import { <%= sourceClassName %>, <%= targetClassName %> } from '../models';
+import { <%= repositoryName %> } from '../repositories';
+
+export class <%= className %>Controller {
+  constructor(
+    @repository(<%= repositoryName %>)
+    public <%= repositoryProperty %>: <%= repositoryName %>,
+  ) { }
+
+  @get('/<%= sourceModelName %>s/{id}/<%= targetModelName %>')
+  async get<%= targetClassName %>(
+    @param.path.number('id') <%= relationPropertyName %>: typeof <%= sourceClassName %>.prototype.id,
+  ): Promise<<%= targetClassName %>> {
+    return await this.<%= repositoryProperty %>.<%= targetModelName %>(<%= relationPropertyName %>);
+  }
+}

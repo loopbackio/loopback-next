@@ -88,8 +88,8 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     switch (this.options.relationType) {
       case RELATION_TYPE_BELONGS_TO:
         ctrl.generateControllerRelationBelongsTo(
-          this.options.destinationModel,
           this.options.sourceModel,
+          this.options.destinationModel,
           this.options.foreignKey,
           this.options.relationType,
         );
