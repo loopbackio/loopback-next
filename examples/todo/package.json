@@ -22,7 +22,7 @@
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
     "verify": "npm pack && tar xf loopback-todo*.tgz && tree package && npm run clean",
-    "migrate": "node ./dist/src/migrate",
+    "migrate": "node ./dist/migrate",
     "prestart": "npm run build",
     "start": "node ."
   },
