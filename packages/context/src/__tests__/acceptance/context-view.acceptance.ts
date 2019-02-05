@@ -97,7 +97,6 @@ describe('@inject.* - injects a live collection of matching bindings', async () 
     const view = inst.view;
     expect(await view.values()).to.eql([3, 5]);
     // Add a new binding that matches the filter
-    // Add a new binding that matches the filter
     givenPrime(server, 7);
     // The view picks up the new binding
     expect(await view.values()).to.eql([3, 7, 5]);
