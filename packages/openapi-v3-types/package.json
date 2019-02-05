@@ -20,8 +20,8 @@
     "clean": "lb-clean loopback-openapi-v3-types*.tgz dist package api-docs",
     "verify": "npm pack && tar xf loopback-openapi-v3-types*.tgz && tree package && npm run clean",
     "pretest": "npm run build",
-    "test": "lb-mocha \"dist/test/**/*.js\"",
-    "unit": "npm run build && lb-mocha \"dist/test/unit/**/*.js\""
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "unit": "npm run build && lb-mocha \"dist/__tests__/unit/**/*.js\""
   },
   "author": "IBM",
   "copyright.owner": "IBM Corp.",
@@ -35,9 +35,9 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist/src",
-    "dist/index*",
-    "src"
+    "dist",
+    "src",
+    "!*/__tests__"
   ],
   "publishConfig": {
     "access": "public"
