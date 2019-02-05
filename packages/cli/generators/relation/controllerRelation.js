@@ -13,7 +13,7 @@ const utils = require('../../lib/utils');
 
 const CONTROLLER_TEMPLATE_PATH_HAS_MANY = 'controller-relation-template-has-many.ts.ejs';
 const CONTROLLER_TEMPLATE_PATH_HAS_ONE = 'controller-relation-template-has-one.ts.ejs';
-const CONTROLLER_TEMPLATE_PATH_BELONGSTO = 'controller-relation-template-belongsto.ts.ejs';
+const CONTROLLER_TEMPLATE_PATH_BELONGS_TO = 'controller-relation-template-belongsto.ts.ejs';
 
 // Exportable constants
 module.exports = class ControllerRelation extends ArtifactGenerator {
@@ -77,9 +77,9 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
     this.artifactInfo.sourceModelName = utils.kebabCase(sourceModel);
     this.artifactInfo.targetModelName = utils.kebabCase(targetModel);
 
-    this.artifactInfo.relationPropertyName = 'fooo';
+    this.artifactInfo.relationPropertyName = relationName;
 
-    const source = this.templatePath(CONTROLLER_TEMPLATE_PATH_BELONGSTO);
+    const source = this.templatePath(CONTROLLER_TEMPLATE_PATH_BELONGS_TO);
 
     this.artifactInfo.name = sourceModel + '-' + targetModel;
     this.artifactInfo.outFile = utils.kebabCase(this.artifactInfo.name) + '.controller.ts';
@@ -110,7 +110,7 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
 
     this.artifactInfo.sourceModelName = utils.kebabCase(sourceModel);
     this.artifactInfo.targetModelName = utils.kebabCase(targetModel);
-    this.artifactInfo.relationPropertyName = 'fooo';
+    this.artifactInfo.relationPropertyName = relationName;
     this.artifactInfo.foreignKey = foreignKey;
 
     const source = this.templatePath(CONTROLLER_TEMPLATE_PATH_HAS_MANY);

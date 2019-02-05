@@ -81,6 +81,8 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
     debug('Invoke Controller generator...');
 
+    this.options.relationName = 'bzzzzzzzzzzzzzzz';
+
     let ctrl = new ControllerRelation(this.args, this.opts);
     this.artifactInfo.name = this.options.relationType;
     this.artifactInfo.relPath = relPathCtrl;
@@ -91,7 +93,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           this.options.sourceModel,
           this.options.destinationModel,
           this.options.foreignKey,
-          this.options.relationType,
+          this.options.relationName,
         );
         break;
       case RELATION_TYPE_HAS_MANY:
@@ -99,7 +101,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           this.options.sourceModel,
           this.options.destinationModel,
           this.options.foreignKey,
-          this.options.relationType,
+          this.options.relationName,
         );
         break;
       case RELATION_TYPE_HAS_ONE:
@@ -107,7 +109,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           this.options.sourceModel,
           this.options.destinationModel,
           this.options.foreignKey,
-          this.options.relationType,
+          this.options.relationName,
         );
         break;
       default:
