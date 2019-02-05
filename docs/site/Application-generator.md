@@ -76,6 +76,7 @@ the following files and directories:
 ```text
 .
 ├── src/
+|   ├── __tests__/
 |   ├── controllers/
 |   |   └── ping.controller.ts
 |   ├── datasources/
@@ -84,7 +85,6 @@ the following files and directories:
 |   ├── application.ts
 |   ├── index.ts
 |   └── sequence.ts
-├── test/
 └── package.json
 ```
 
