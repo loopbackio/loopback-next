@@ -148,9 +148,9 @@ tests (unit, acceptance and integration), with the convention
 Examples are:
 
 ```
-test/acceptance/application.acceptance.ts
-test/integration/user.controller.integration.ts
-test/unit/application.unit.ts
+src/__tests__/acceptance/application.acceptance.ts
+src/__tests__/integration/user.controller.integration.ts
+src/__tests__/unit/application.unit.ts
 ```
 
 ## API Documentation
