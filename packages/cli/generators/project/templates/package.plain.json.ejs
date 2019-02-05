@@ -35,18 +35,18 @@
 <% } -%>
     "pretest": "npm run clean && npm run build",
 <% if (project.mocha) { -%>
-    "test": "mocha dist/test",
+    "test": "mocha dist/__tests__",
 <% } -%>
 <% if (project.prettier || project.tslint) { -%>
     "posttest": "npm run lint",
 <% } -%>
 <% if (project.mocha && (project.prettier || project.tslint)) { -%>
-    "test:dev": "mocha dist/test/**/*.js && npm run posttest",
+    "test:dev": "mocha dist/__tests__/**/*.js && npm run posttest",
 <% } else if (project.mocha) { -%>
-    "test:dev": "mocha dist/test/**/*.js",
+    "test:dev": "mocha dist/__tests__/**/*.js",
 <% } -%>
 <% if (project.projectType === 'application') { -%>
-    "migrate": "node ./dist/src/migrate",
+    "migrate": "node ./dist/migrate",
     "start": "npm run build && node .",
 <% } -%>
     "prepare": "npm run build"
@@ -64,7 +64,8 @@
     "index.js",
     "index.d.ts",
     "dist",
-    "src"
+    "src",
+    "!*/__tests__"
   ],
   "dependencies": {
     "@loopback/boot": "<%= project.dependencies['@loopback/boot'] -%>",

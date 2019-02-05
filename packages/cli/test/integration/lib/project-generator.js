@@ -254,10 +254,7 @@ module.exports = function(projGenerator, props, projectType) {
           ['tslint.json', '@loopback/tslint-config'],
           ['tsconfig.json', '@loopback/build'],
         ]);
-        assert.noFileContent([
-          ['tslint.json', '"rules"'],
-          ['tsconfig.json', '"compilerOptions"'],
-        ]);
+        assert.noFileContent([['tslint.json', '"rules"']]);
 
         if (projectType === 'application') {
           assert.fileContent(
