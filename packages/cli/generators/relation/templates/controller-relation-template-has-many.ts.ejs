@@ -14,36 +14,21 @@ import {
   post,
   requestBody,
 } from '@loopback/rest';
-import {<%= targetClassName %>} from '../models';
-import {<%= sourceRepositoryName %>} from '../repositories';
+import { <%= sourceModelClassName %>, <%= targetModelClassName %> } from '../models';
+import { <%= sourceRepositoryClassName %> } from '../repositories';
 
-export class <%= controllerClassName %>Controller {
+export class <%= controllerClassName %> {
   constructor(
-    @repository({<%= sourceRepositoryName %>}) protected todoListRepo: <%= sourceRepositoryName %>,
-  ) {}
+    @repository(<%= sourceRepositoryClassName %>) protected <%= paramSourceRepository %>: <%= sourceRepositoryClassName %>,
+  ) { }
 
-  @post('/<%= sourceClassName %>/{id}/<%= relationPropertyName %>', {
+  @get('/<%= sourceModelName %>s/{id}/<%= targetModelName %>s', {
     responses: {
       '200': {
-        description: '<%= sourceClassName %>.<%= targetClassName %> model instance',
-        content: {'application/json': {schema: {'x-ts-type': Todo}}},
-      },
-    },
-  })
-  async create(
-    @param.path.number('id') id: number,
-    @requestBody() todo: Todo,
-  ): Promise<Todo> {
-    return await this.<%= targetClassName %>ListRepo.<%= relationPropertyName %>(id).create(todo);
-  }
-
-  @get('/<%= sourceClassName %>/{id}/<%= relationPropertyName %>', {
-    responses: {
-      '200': {
-        description: "Array of Todo's belonging to TodoList",
+        description: "Array of <%= targetModelClassName %>'s belonging to <%= sourceModelClassName %>",
         content: {
           'application/json': {
-            schema: {type: 'array', items: {'x-ts-type': Todo}},
+            schema: { type: 'array', items: { 'x-ts-type': <%= targetModelClassName %> } },
           },
         },
       },
@@ -52,38 +37,53 @@ export class <%= controllerClassName %>Controller {
   async find(
     @param.path.number('id') id: number,
     @param.query.object('filter') filter?: Filter,
-  ): Promise<Todo[]> {
-    return await this.<%= targetClassName %>ListRepo.<%= relationPropertyName %>(id).find(filter);
+  ): Promise<<%= targetModelClassName %>[]> {
+    return await this.<%= paramSourceRepository %>.<%= targetModelName %>s(id).find(filter);
   }
 
-  @patch('/<%= sourceClassName %>/{id}/<%= relationPropertyName %>', {
+  @post('/<%= sourceModelName %>s/{id}/<%= targetModelName %>s', {
     responses: {
       '200': {
-        description: '<%= sourceClassName %>.<%= targetClassName %> PATCH success count',
-        content: {'application/json': {schema: CountSchema}},
+        description: '<%= sourceModelClassName %> model instance',
+        content: { 'application/json': { schema: { 'x-ts-type': <%= targetModelClassName %> } } },
+      },
+    },
+  })
+  async create(
+    @param.path.number('id') poolId: typeof <%= sourceModelClassName %>.prototype.id,
+    @requestBody() <%= targetModelName %>: <%= targetModelClassName %>,
+  ): Promise<<%= targetModelClassName %>> {
+    return await this.<%= paramSourceRepository %>.<%= targetModelName %>s(poolId).create(<%= targetModelName %>);
+  }
+
+  @patch('/<%= sourceModelName %>s/{id}/<%= targetModelName %>s', {
+    responses: {
+      '200': {
+        description: '<%= sourceModelClassName %>.<%= targetModelClassName %> PATCH success count',
+        content: { 'application/json': { schema: CountSchema } },
       },
     },
   })
   async patch(
     @param.path.number('id') id: number,
-    @requestBody() todo: Partial<Todo>,
-    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where,
+    @requestBody() <%= targetModelName %>: Partial<<%= targetModelClassName %>>,
+    @param.query.object('where', getWhereSchemaFor(<%= targetModelClassName %>)) where?: Where,
   ): Promise<Count> {
-    return await this.<%= targetClassName %>ListRepo.<%= relationPropertyName %>(id).patch(todo, where);
+    return await this.<%= paramSourceRepository %>.<%= targetModelName %>s(id).patch(<%= targetModelName %>, where);
   }
 
-  @del('/<%= sourceClassName %>/{id}/<%= relationPropertyName %>', {
+  @del('/<%= sourceModelName %>s/{id}/<%= targetModelName %>s', {
     responses: {
       '200': {
-        description: '<%= sourceClassName %>.<%= targetClassName %> DELETE success count',
-        content: {'application/json': {schema: CountSchema}},
+        description: '<%= sourceModelClassName %>.<%= targetModelClassName %> DELETE success count',
+        content: { 'application/json': { schema: CountSchema } },
       },
     },
   })
   async delete(
     @param.path.number('id') id: number,
-    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where,
+    @param.query.object('where', getWhereSchemaFor(<%= targetModelClassName %>)) where?: Where,
   ): Promise<Count> {
-    return await this.<%= targetClassName %>ListRepo.<%= relationPropertyName %>(id).delete(where);
+    return await this.<%= paramSourceRepository %>.<%= targetModelName %>s(id).delete(where);
   }
 }

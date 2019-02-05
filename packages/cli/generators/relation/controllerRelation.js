@@ -78,8 +78,8 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
       this.artifactInfo.sourceModelClassName + 'Repository',
     );
 
-    this.artifactInfo.sourceModelName = utils.lowerCase(sourceModel);
-    this.artifactInfo.targetModelName = utils.lowerCase(targetModel);
+    this.artifactInfo.sourceModelName = utils.kebabCase(sourceModel);
+    this.artifactInfo.targetModelName = utils.kebabCase(targetModel);
 
     this.artifactInfo.relationPropertyName = 'fooo';
 
@@ -103,59 +103,27 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
     foreignKey,
     relationName,
   ) {
-    let project = new ast.Project();
-    const sourceFile = this.addFileToProject(
-      project,
-      this.artifactInfo.modelDir + '/' + utils.getModelFileName(this.options.sourceModel),
+    this.artifactInfo.sourceModelClassName = sourceModel;
+    this.artifactInfo.targetModelClassName = targetModel;
+    this.artifactInfo.sourceRepositoryClassName =
+      this.artifactInfo.sourceModelClassName + 'Repository';
+    this.artifactInfo.controllerClassName =
+      this.artifactInfo.sourceModelClassName + this.artifactInfo.targetModelClassName + 'Controller';
+    this.artifactInfo.paramSourceRepository = utils.camelCase(
+      this.artifactInfo.sourceModelClassName + 'Repository',
     );
 
-    this.options.keyType = this.getKeyType(sourceFile, this.options.foreignKey);
+    this.artifactInfo.sourceModelName = utils.kebabCase(sourceModel);
+    this.artifactInfo.targetModelName = utils.kebabCase(targetModel);
 
-    //@todo: update relationPropertyName
-    this.artifactInfo.relationPropertyName = 'foo';
-    this.artifactInfo.foreignKey = foreignKey;
-    this.artifactInfo.keyType = this.options.keyType;
-    this.artifactInfo.sourceRepositoryName = sourceModel + 'Repo';
-    this.artifactInfo.sourceClassName = sourceModel;
-    this.artifactInfo.targetClassName = targetModel;
-    this.artifactInfo.controllerClassName = this.artifactInfo.sourceClassName + this.artifactInfo.targetClassName;
-    this.artifactInfo.modelName = targetModel;
-    this.artifactInfo.className = utils.toClassName(
-      this.artifactInfo.srcModel + this.artifactInfo.modelName,
-    );
-    this.artifactInfo.repositoryName = utils.toClassName(
-      this.artifactInfo.srcModel + 'Repository',
-    );
-    this.artifactInfo.relationModel = utils.toClassName(
-      this.artifactInfo.srcModel + '.' + this.artifactInfo.modelName,
-    );
+    const source = this.templatePath(CONTROLLER_TEMPLATE_PATH_HAS_MANY);
 
-    this.artifactInfo.name = utils.camelCase(sourceModel + '-' + targetModel);
+    this.artifactInfo.name = sourceModel + '-' + targetModel;
+    this.artifactInfo.outFile = utils.kebabCase(this.artifactInfo.name) + '.controller.ts';
 
-    this.artifactInfo.httpPathName = '/' + sourceModel + 's';
-    if (this.shouldExit()) return false;
-
-    this.artifactInfo.outFile =
-      utils.kebabCase(this.artifactInfo.name) + '.controller.ts';
-    if (debug.enabled) {
-      debug('Artifact output filename set to: ${this.artifactInfo.outFile}');
-    }
-
-    // renames the file
-    let template = CONTROLLER_TEMPLATE_PATH_HAS_MANY;
-
-    const source = this.templatePath(template);
-    if (debug.enabled) {
-      debug('Using template at: ${source}');
-    }
     const dest = this.destinationPath(
       path.join(this.artifactInfo.outDir, this.artifactInfo.outFile),
     );
-
-    if (debug.enabled) {
-      debug('artifactInfo: ${inspect(this.artifactInfo)}');
-      debug('Copying artifact to: ${dest}');
-    }
 
     this.copyTemplatedFiles(source, dest, this.artifactInfo);
     return;
