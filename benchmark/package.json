@@ -18,7 +18,7 @@
     "pretest": "npm run clean && npm run build",
     "test": "lb-mocha \"dist/__tests__\"",
     "prestart": "npm run build",
-    "benchmark:routing": "node ./dist/src/rest-routing/routing-table",
+    "benchmark:routing": "node ./dist/rest-routing/routing-table",
     "start": "node ."
   },
   "repository": {
@@ -30,9 +30,9 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist/src",
-    "dist/index*",
-    "src"
+    "dist",
+    "src",
+    "!*/__tests__"
   ],
   "dependencies": {
     "@loopback/example-todo": "^1.4.2",
