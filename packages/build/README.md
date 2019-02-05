@@ -40,7 +40,7 @@ To use `@loopback/build` for your package:
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
     "pretest": "npm run clean && npm run build",
-    "test": "lb-mocha \"dist/test\"",
+    "test": "lb-mocha \"dist/__tests__\"",
     "posttest": "npm run lint",
     "start": "npm run build && node .",
     "prepublishOnly": "npm run test"
