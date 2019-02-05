@@ -8,12 +8,8 @@
 
 const _ = require('lodash');
 const ArtifactGenerator = require('../../lib/artifact-generator');
-const debug = require('../../lib/debug')('relation-generator');
-const inspect = require('util').inspect;
 const path = require('path');
-const chalk = require('chalk');
 const utils = require('../../lib/utils');
-const ast = require('ts-simple-ast');
 
 const CONTROLLER_TEMPLATE_PATH_HAS_MANY = 'controller-relation-template-has-many.ts.ejs';
 const CONTROLLER_TEMPLATE_PATH_HAS_ONE = 'controller-relation-template-has-one.ts.ejs';
@@ -96,7 +92,6 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
     return;
   }
 
-
   generateControllerRelationHasMany(
     sourceModel,
     targetModel,
@@ -115,6 +110,8 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
 
     this.artifactInfo.sourceModelName = utils.kebabCase(sourceModel);
     this.artifactInfo.targetModelName = utils.kebabCase(targetModel);
+    this.artifactInfo.relationPropertyName = 'fooo';
+    this.artifactInfo.foreignKey = foreignKey;
 
     const source = this.templatePath(CONTROLLER_TEMPLATE_PATH_HAS_MANY);
 
@@ -136,25 +133,6 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
     relationName,
   ) {
     throw new Error('Not implemented');
-  }
-  getKeyType(sourceFile, propertyName) {
-    const classObj = this.getClassObj(sourceFile);
-    if (
-      classObj
-        .getProperties()
-        .map(x => x.getName())
-        .includes(propertyName)
-    ) {
-      return classObj
-        .getProperty(propertyName)
-        .getType()
-        .getText();
-    }
-  }
-
-  getClassObj(fileName) {
-    const className = fileName.getClasses()[0].getNameOrThrow();
-    return fileName.getClassOrThrow(className);
   }
 
   addFileToProject(project, fileName) {

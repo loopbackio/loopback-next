@@ -50,10 +50,10 @@ export class <%= controllerClassName %> {
     },
   })
   async create(
-    @param.path.number('id') poolId: typeof <%= sourceModelClassName %>.prototype.id,
+    @param.path.number('id') <%= relationPropertyName %>: typeof <%= sourceModelClassName %>.prototype.<%= foreignKey %>,
     @requestBody() <%= targetModelName %>: <%= targetModelClassName %>,
   ): Promise<<%= targetModelClassName %>> {
-    return await this.<%= paramSourceRepository %>.<%= targetModelName %>s(poolId).create(<%= targetModelName %>);
+    return await this.<%= paramSourceRepository %>.<%= targetModelName %>s(<%= relationPropertyName %>).create(<%= targetModelName %>);
   }
 
   @patch('/<%= sourceModelName %>s/{id}/<%= targetModelName %>s', {
