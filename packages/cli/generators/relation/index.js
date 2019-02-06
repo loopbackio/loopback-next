@@ -17,6 +17,8 @@ const ControllerRelation = require('./controllerRelation');
 const RepositoryRelation = require('./repositoryRelation');
 const ModelRelation = require('./modelRelation');
 
+const ERROR_INCORRECT_RELATION_TYPE = 'Incorrect Relation Type';
+
 const PROMPT_BASE_RELATION_CLASS = 'Please select the relation type';
 const PROMPT_MESSAGE__SOURCE_MODEL = 'Please select source model';
 const PROMPT_MESSAGE__TARGET__MODEL = 'Please select target model';
@@ -112,7 +114,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
             );
             break;
           default:
-            throw new Error('Incorrect Relation Type');
+            throw new Error(ERROR_INCORRECT_RELATION_TYPE);
         }
         */
     //Invoke here Model and Repository Generators
@@ -326,7 +328,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         defaultRelationName = utils.camelCase(this.options.destinationModel);
         break;
       default:
-        throw new Error('Incorrect Relation Type');
+        throw new Error(ERROR_INCORRECT_RELATION_TYPE);
     }
 
     return defaultRelationName;
