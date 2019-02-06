@@ -22,7 +22,6 @@ module.exports = class ModelRelation extends ArtifactGenerator {
     );
   }
 
-
   generateRelationModel(sourceModel, targetModel, foreignKey, relationType, relationName) {
     let modelPath = this.artifactInfo.modelDir;
     this.generateModel(sourceModel, targetModel, relationType, modelPath, foreignKey, relationName);
@@ -37,12 +36,9 @@ module.exports = class ModelRelation extends ArtifactGenerator {
     return fileName.getClasses().length;
   }
 
-
-
   getClassObj(fileName, modelName) {
     return fileName.getClassOrThrow(modelName);
   }
-
 
   isClassExist(fileName) {
     return (this.getClassesCount(fileName) == 1);
@@ -63,21 +59,6 @@ module.exports = class ModelRelation extends ArtifactGenerator {
   isPropertyExist(classObj, propertyName) {
     return this.getClassProperties(classObj).map(x => x.getName()).includes(propertyName)
   }
-
-
-  getKey(classObj) {
-    for (let i = 0; i < this.getPropertiesCount(classObj); i++) {
-      if (classObj.getProperties()[i].getDecorators()[0].getName() == 'property') {
-        if (classObj.getProperties()[i].getDecorators()[0].getArguments()[0].getProperties().map(x => x.getName()).includes('id')) {
-          if (classObj.getProperties()[i].getDecorators()[0].getArguments()[0].getProperty('id').getInitializer().getText() == 'true') {
-            return (classObj.getProperties()[i].getName())
-          }
-        }
-      }
-    }
-    throw new Error(' primary Key is missing ')
-  }
-
 
   getType(classObj, propertyName) {
     return classObj.getProperty(propertyName).getType().getText()
@@ -115,12 +96,8 @@ module.exports = class ModelRelation extends ArtifactGenerator {
           console.log('property ' + relationName + ' exsist in the model')
           throw new Error(' Property exsists')
         }
-        if (this.isPropertyExist((targetClass), foreignKey)) {
-          console.log('worng property ' + foreignKey + ' in the target model ')
-          throw new Error(' FK is Missing')
-        }
         else {
-          modelProperty = this.getHasOne(targetModel);
+          modelProperty = this.getHasOne(targetModel, relationName);
         }
         break;
       case "belongsTo":
@@ -152,13 +129,12 @@ module.exports = class ModelRelation extends ArtifactGenerator {
     return (relationProperty)
   }
 
-  getHasOne(className) {
+  getHasOne(className, relationName) {
     let relationProperty = {
       decorators: [{ name: "hasOne", arguments: ['() => ' + className] }],
-      name: className.toLocaleLowerCase(),
+      name: relationName,
       type: className,
     }
-
     return (relationProperty)
   }
 
