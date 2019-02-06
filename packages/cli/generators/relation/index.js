@@ -116,19 +116,18 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         throw new Error('Incorrect Relation Type');
     }
 
+    //Invoke here Model and Repository Generators
+    debug('Invoke Model generator...');
+    let model = new ModelRelation(this.args, this.opts);
+    this.artifactInfo.name = this.options.relationType;
+    this.artifactInfo.relPath = relPathModel;
+    model.generateRelationModel(
+      this.options.sourceModel,
+      this.options.destinationModel,
+      this.options.foreignKey,
+      this.options.relationType,
+    );
     /*
-        //Invoke here Model and Repository Generators
-        debug('Invoke Model generator...');
-        let model = new ModelRelation(this.args, this.opts);
-        this.artifactInfo.name = this.options.relationType;
-        this.artifactInfo.relPath = relPathModel;
-        model.generateRelationModel(
-          this.options.sourceModel,
-          this.options.destinationModel,
-          this.options.foreignKey,
-          this.options.relationType,
-        );
-
         debug('Invoke Repository generator...');
         let repo = new RepositoryRelation(this.args, this.opts);
         this.artifactInfo.name = this.options.relationType;
