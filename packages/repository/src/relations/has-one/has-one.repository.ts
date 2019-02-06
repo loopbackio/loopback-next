@@ -4,13 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Getter} from '@loopback/context';
-import {DataObject, Options} from '../../common-types';
+import {DataObject, Options, Count} from '../../common-types';
 import {Entity} from '../../model';
-import {Filter} from '../../query';
+import {Filter, Where} from '../../query';
 import {
   constrainDataObject,
   constrainFilter,
   EntityCrudRepository,
+  constrainWhere,
 } from '../../repositories';
 import {EntityNotFoundError} from '../../errors';
 
@@ -39,6 +40,14 @@ export interface HasOneRepository<Target extends Entity> {
     filter?: Pick<Filter<Target>, Exclude<keyof Filter<Target>, 'where'>>,
     options?: Options,
   ): Promise<Target>;
+
+  /**
+   * Delete multiple target model instances
+   * @param where Instances within the where scope are deleted
+   * @param options
+   * @returns A promise which resolves the deleted target model instances
+   */
+  delete(where?: Where<Target>, options?: Options): Promise<Count>;
 }
 
 export class DefaultHasOneRepository<
@@ -86,5 +95,13 @@ export class DefaultHasOneRepository<
       throw new EntityNotFoundError(targetRepository.entityClass, id);
     }
     return found[0];
+  }
+
+  async delete(where?: Where<TargetEntity>, options?: Options): Promise<Count> {
+    const targetRepository = await this.getTargetRepository();
+    return targetRepository.deleteAll(
+      constrainWhere(where, this.constraint as Where<TargetEntity>),
+      options,
+    );
   }
 }

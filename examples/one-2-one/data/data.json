@@ -1,0 +1,17 @@
+{
+  "ids": {
+    "Supplier": 3,
+    "Account": 6
+  },
+  "models": {
+    "Supplier": {
+      "one": "{\"id\":\"one\",\"name\":\"Raphael\"}",
+      "two": "{\"id\":\"two\",\"name\":\"Drai\"}"
+    },
+    "Account": {
+      "no-relation": "{\"id\":\"no-relation\",\"accountManager\":\"Unknown Manager\"}",
+      "ac-1": "{\"id\":\"ac-1\",\"accountManager\":\"RaphaelDraiManager\",\"supplierId\":\"one\"}",
+      "ac-2": "{\"id\":\"ac-2\",\"accountManager\":\"Flora\",\"supplierId\":\"two\"}"
+    }
+  }
+}
