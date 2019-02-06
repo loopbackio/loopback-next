@@ -8,8 +8,7 @@ permalink: /doc/en/lb4/Relation-generator.html
 
 {% include content/generator-create-app.html lang=page.lang %}
 
-The models involved in the relation must also exist before running this
-generator.
+The models involved in the relation must exist before running this generator.
 
 ### Synopsis
 
@@ -26,9 +25,9 @@ TBD
 
 ### Arguments
 
-`<idProperty>` - Name of the ID property in the source model to create as an
-argument to the command. If provided, the tool will use that as the default when
-it prompts for the ID property name.
+`<idProperty>` - Name of the ID property that will be created in the source
+model. If not provided, the tool will use `id` as the default name when it
+prompts for the ID property name.
 
 ### Interactive Prompts
 
@@ -36,7 +35,7 @@ The tool will prompt you for:
 
 - **Relation `type` between models.** _(relationBaseClass)_ Prompts a list of
   available relations to choose from as the type of the relation between the
-  source model and the target model. Relation types supported:
+  source model and the target model. Supported relation types:
 
   - hasMany
   - hasOne
@@ -46,12 +45,12 @@ The tool will prompt you for:
   models to choose from as the source model of the relation.
 
 - **Name of the `target` model.** _(targetModel)_ Prompts a list of available
-  models to choose from as the target model of the relation. Please note - this
-  will not let you choose the same model as the source model chosen.
+  models to choose from as the target model of the relation. Note: The selected
+  `source` model will not appear in the `target` model list.
 
 - **Name of the `ID property` in the source model.** _(Optional, default: `id`)_
   Prompts for the ID property name (serves as the foreign key) in the source
-  model. Leave blank for using default.
+  model. Note: Leave blank to use the default.
 
 - **Name for the `property relation` in the source model.** TBD
 
