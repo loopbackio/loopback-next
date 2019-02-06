@@ -15,6 +15,7 @@ import {
   builtinParsers,
 } from './body-parser.helpers';
 import {BodyParser, RequestBody} from './types';
+import {sanitizeJsonParse} from '../parse-json';
 
 export class JsonBodyParser implements BodyParser {
   name = builtinParsers.json;
@@ -25,6 +26,7 @@ export class JsonBodyParser implements BodyParser {
     options: RequestBodyParserOptions = {},
   ) {
     const jsonOptions = getParserOptions('json', options);
+    jsonOptions.reviver = sanitizeJsonParse(jsonOptions.reviver);
     this.jsonParser = json(jsonOptions);
   }
 

@@ -186,6 +186,24 @@ describe('body parser', () => {
     });
   });
 
+  it('reports error for json payload with "__proto__" key', () => {
+    const req = givenRequest({
+      url: '/',
+      payload: '{"x": 1, "__proto__": {"y": "2"}}',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const spec = givenOperationWithRequestBody({
+      description: 'data',
+      content: {},
+    });
+    return expect(
+      requestBodyParser.loadRequestBodyIfNeeded(spec, req),
+    ).to.be.rejectedWith('JSON string cannot contain "__proto__" key.');
+  });
+
   it('sorts body parsers', () => {
     const options: RequestBodyParserOptions = {};
     const bodyParser = new RequestBodyParser([
