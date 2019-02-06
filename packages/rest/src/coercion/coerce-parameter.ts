@@ -3,20 +3,21 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ParameterObject, isReferenceObject} from '@loopback/openapi-v3-types';
-import {Validator} from './validator';
+import {isReferenceObject, ParameterObject} from '@loopback/openapi-v3-types';
 import * as debugModule from 'debug';
 import {RestHttpErrors} from '../';
+import {parseJson} from '../parse-json';
 import {
+  DateCoercionOptions,
   getOAIPrimitiveType,
+  IntegerCoercionOptions,
   isEmpty,
   isFalse,
   isTrue,
   isValidDateTime,
   matchDateFormat,
-  DateCoercionOptions,
-  IntegerCoercionOptions,
 } from './utils';
+import {Validator} from './validator';
 const isRFC3339 = require('validator/lib/isRFC3339');
 const debug = debugModule('loopback:rest:coercion');
 
@@ -185,7 +186,7 @@ function parseJsonIfNeeded(
   }
 
   try {
-    const result = JSON.parse(data);
+    const result = parseJson(data);
     debug('Parsed parameter %s as %j', spec.name, result);
     return result;
   } catch (err) {
