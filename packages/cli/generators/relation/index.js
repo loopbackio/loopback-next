@@ -292,7 +292,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
   async promptRelationName() {
     if (this.shouldExit()) return false;
 
-    const defaultRelationName = utils.pluralize(utils.camelCase(this.options.destinationModel));
+    const defaultRelationName = this._getDefaultRelationName();
 
     this.artifactInfo.relationName = await this.prompt([
       {
@@ -307,5 +307,28 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
     //Generate this repository
     await this._scaffold();
+  }
+
+  _getDefaultRelationName() {
+    var defaultRelationName;
+    switch (this.options.relationType) {
+      case RELATION_TYPE_BELONGS_TO:
+        defaultRelationName =
+          utils.camelCase(this.options.destinationModel) +
+          utils.toClassName(this.options.foreignKey);
+        break;
+      case RELATION_TYPE_HAS_MANY:
+        defaultRelationName = utils.pluralize(
+          utils.camelCase(this.options.destinationModel)
+        );
+        break;
+      case RELATION_TYPE_HAS_ONE:
+        defaultRelationName = utils.camelCase(this.options.destinationModel);
+        break;
+      default:
+        throw new Error('Incorrect Relation Type');
+    }
+
+    return defaultRelationName;
   }
 };
