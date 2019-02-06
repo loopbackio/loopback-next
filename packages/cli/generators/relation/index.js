@@ -20,6 +20,7 @@ const ModelRelation = require('./modelRelation');
 const PROMPT_BASE_RELATION_CLASS = 'Please select the relation type';
 const PROMPT_MESSAGE__SOURCE_MODEL = 'Please select source model';
 const PROMPT_MESSAGE__TARGET__MODEL = 'Please select target model';
+const PROMPT_MESSAGE__PROPERTY_NAME = 'Property name for the relation';
 
 const RELATION_TYPE_BELONGS_TO = 'belongsTo';
 const RELATION_TYPE_HAS_MANY = 'hasMany';
@@ -81,8 +82,6 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
     debug('Invoke Controller generator...');
 
-    this.options.relationName = 'bzzzzzzzzzzzzzzz';
-
     let ctrl = new ControllerRelation(this.args, this.opts);
     this.artifactInfo.name = this.options.relationType;
     this.artifactInfo.relPath = relPathCtrl;
@@ -115,30 +114,30 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       default:
         throw new Error('Incorrect Relation Type');
     }
-
-    //Invoke here Model and Repository Generators
-    debug('Invoke Model generator...');
-    let model = new ModelRelation(this.args, this.opts);
-    this.artifactInfo.name = this.options.relationType;
-    this.artifactInfo.relPath = relPathModel;
-    model.generateRelationModel(
-      this.options.sourceModel,
-      this.options.destinationModel,
-      this.options.foreignKey,
-      this.options.relationType,
-    );
     /*
-        debug('Invoke Repository generator...');
-        let repo = new RepositoryRelation(this.args, this.opts);
+        //Invoke here Model and Repository Generators
+        debug('Invoke Model generator...');
+        let model = new ModelRelation(this.args, this.opts);
         this.artifactInfo.name = this.options.relationType;
-        this.artifactInfo.relPath = relPathRepo;
-        repo.generateRelationRepository(
+        this.artifactInfo.relPath = relPathModel;
+        model.generateRelationModel(
           this.options.sourceModel,
           this.options.destinationModel,
           this.options.foreignKey,
           this.options.relationType,
         );
-    */
+
+            debug('Invoke Repository generator...');
+            let repo = new RepositoryRelation(this.args, this.opts);
+            this.artifactInfo.name = this.options.relationType;
+            this.artifactInfo.relPath = relPathRepo;
+            repo.generateRelationRepository(
+              this.options.sourceModel,
+              this.options.destinationModel,
+              this.options.foreignKey,
+              this.options.relationType,
+            );
+        */
     return;
   }
 
@@ -284,9 +283,28 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         }
       }
       this.options.foreignKey = idProperty;
-      //Generate this repository
-      await this._scaffold();
+
       //}
     }
+  }
+
+  async promptRelationName() {
+    if (this.shouldExit()) return false;
+
+    const defaultRelationName = utils.pluralize(utils.camelCase(this.options.destinationModel));
+
+    this.artifactInfo.relationName = await this.prompt([
+      {
+        type: 'string',
+        name: 'value',
+        message: PROMPT_MESSAGE__PROPERTY_NAME,
+        default: defaultRelationName,
+        when: !this.artifactInfo.relationName,
+      },
+    ]);
+    this.options.relationName = this.artifactInfo.relationName.value;
+
+    //Generate this repository
+    await this._scaffold();
   }
 };
