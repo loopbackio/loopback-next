@@ -23,15 +23,9 @@ module.exports = class ModelRelation extends ArtifactGenerator {
   }
 
 
-  generateRelationModel(sourceModel, targetModel, foreignKey, relationName) {
+  generateRelationModel(sourceModel, targetModel, foreignKey, relationType, relationName) {
     let modelPath = this.artifactInfo.modelDir;
-    if ((relationName == "hasMany") || (relationName == "hasOne")) {
-      this.generateModel(sourceModel, targetModel, relationName, modelPath, foreignKey);
-      this.generateModel(targetModel, sourceModel, "belongsTo", modelPath);
-    }
-    else {
-      this.generateModel(sourceModel, targetModel, relationName, modelPath, foreignKey);
-    }
+    this.generateModel(sourceModel, targetModel, relationType, modelPath, foreignKey, relationName);
   }
 
   addFileToProject(project, path, modelName) {
@@ -45,9 +39,8 @@ module.exports = class ModelRelation extends ArtifactGenerator {
 
 
 
-  getClassObj(fileName) {
-    const className = fileName.getClasses()[0].getNameOrThrow();
-    return fileName.getClassOrThrow(className);
+  getClassObj(fileName, modelName) {
+    return fileName.getClassOrThrow(modelName);
   }
 
 
@@ -71,10 +64,6 @@ module.exports = class ModelRelation extends ArtifactGenerator {
     return this.getClassProperties(classObj).map(x => x.getName()).includes(propertyName)
   }
 
-  generatePorperty(fileName) {
-    let name = fileName.getClasses()[0].getNameOrThrow()
-    return name.charAt(0).toLowerCase() + name.slice(1)
-  }
 
   getKey(classObj) {
     for (let i = 0; i < this.getPropertiesCount(classObj); i++) {
@@ -89,22 +78,11 @@ module.exports = class ModelRelation extends ArtifactGenerator {
     throw new Error(' primary Key is missing ')
   }
 
-  getForeignKey(classObj, foreignKey) {
-    if (foreignKey === undefined) {
-      return this.getKey(classObj)
-    } else {
-      if (foreignKey == this.getKey(classObj)) {
-        let name = classObj.getName()
-        return (name.charAt(0).toLowerCase() + name.slice(1) + foreignKey.charAt(0).toUpperCase() + foreignKey.slice(1))
-      }
-    }
-    return (foreignKey)
-  }
 
   getType(classObj, propertyName) {
     return classObj.getProperty(propertyName).getType().getText()
   }
-  generateModel(sourceModel, targetModel, relationName, path, foreignKey) {
+  generateModel(sourceModel, targetModel, relationType, path, foreignKey, relationName) {
 
     let project = new ast.Project();
 
@@ -112,76 +90,62 @@ module.exports = class ModelRelation extends ArtifactGenerator {
     if (!this.isClassExist(sourceFile)) {
       return;
     }
-    const sourceClass = this.getClassObj(sourceFile);
+    const sourceClass = this.getClassObj(sourceFile, sourceModel);
 
     const targetFile = this.addFileToProject(project, path, utils.kebabCase(targetModel));
     if (!this.isClassExist(targetFile)) {
       return;
     }
-    const targetClass = this.getClassObj(targetFile);
+    const targetClass = this.getClassObj(targetFile, targetModel);
     let modelProperty;
 
-    switch (relationName) {
+    switch (relationType) {
       case "hasMany":
-        if (this.isPropertyExist((sourceClass), (this.generatePorperty(targetFile) + 's'))) {
-          // TODO add error to CLI UI
-          console.log('property ' + this.generatePorperty(targetFile) + 's exsist in the model')
+        if (this.isPropertyExist((sourceClass), relationName)) {
+          console.log('property ' + relationName + ' exsist in the model')
           throw new Error(' Property exsists')
         }
-        if (this.isPropertyExist((targetClass), this.getForeignKey(sourceClass, foreignKey))) {
-          // TODO add error to CLI UI
-          console.log('worng property ' + this.getForeignKey(sourceClass, foreignKey) + ' in the target model ')
-          throw new Error(' FK is Missing')
-        }
         else {
-          modelProperty = this.getHasMany(targetClass.getName(), this.getForeignKey(sourceClass, foreignKey));
+          modelProperty = this.getHasMany(targetModel, relationName);
 
         }
         break;
       case "hasOne":
-        if (this.isPropertyExist((sourceClass), (this.generatePorperty(targetFile)))) {
-          // TODO add error to CLI UI
-          console.log('property ' + generatePorperty(targetFile) + ' exsist in the model')
+        if (this.isPropertyExist((sourceClass), relationName)) {
+          console.log('property ' + relationName + ' exsist in the model')
           throw new Error(' Property exsists')
         }
-        if (this.isPropertyExist((targetClass), this.getForeignKey(sourceClass, foreignKey))) {
-          // TODO add error to CLI UI
-          console.log('worng property ' + this.getForeignKey(sourceClass, foreignKey) + ' in the target model ')
+        if (this.isPropertyExist((targetClass), foreignKey)) {
+          console.log('worng property ' + foreignKey + ' in the target model ')
           throw new Error(' FK is Missing')
         }
         else {
-          modelProperty = this.getHasOne(targetClass.getName());
+          modelProperty = this.getHasOne(targetModel);
         }
         break;
       case "belongsTo":
-
-        if (this.isPropertyExist((sourceClass), (this.generatePorperty(targetFile) + 'Id'))) {
-          // TODO add error to CLI UI
-          console.log('property ' + this.generatePorperty(targetFile) + 'Id exsist in the model')
+        //fix remvove ID
+        if (this.isPropertyExist((sourceClass), (relationName + 'Id'))) {
+          console.log('property ' + relationName + 'Id exsist in the model')
           throw new Error(' Property exsists')
         }
-        if (!(this.isPropertyExist((targetClass), this.getForeignKey(sourceClass, foreignKey)))) {
-          // TODO add error to CLI UI
-          console.log('worng property ' + this.getForeignKey(sourceClass, foreignKey) + ' in the target model ')
-          throw new Error(' FK is Missing')
-        }
         else {
-          modelProperty = this.getBelongsTo(targetClass.getName(), this.getForeignKey(sourceClass, foreignKey), this.getType(targetClass, this.getForeignKey(sourceClass, foreignKey)));
+          modelProperty = this.getBelongsTo(targetModel, relationName, 'Number');
         }
         break;
     }
     sourceClass.insertProperty(this.getPropertiesCount(sourceClass), modelProperty);
     sourceClass.insertText(this.getPropertyStartPos(sourceClass), "\n")
-    this.addRequiredImports(sourceFile, targetModel, relationName, targetClass.getName());
+    this.addRequiredImports(sourceFile, targetModel, relationType, targetModel);
     sourceClass.formatText()
     sourceFile.save();
   }
 
 
-  getHasMany(className, fk) {
+  getHasMany(className, relationName) {
     let relationProperty = {
-      decorators: [{ name: "hasMany", arguments: ['() => ' + className + ", {keyTo: '" + fk + "' }"] }],
-      name: className.toLocaleLowerCase() + "s",
+      decorators: [{ name: "hasMany", arguments: ['() => ' + className] }],
+      name: relationName,
       type: className + "[]",
     }
 
@@ -198,19 +162,19 @@ module.exports = class ModelRelation extends ArtifactGenerator {
     return (relationProperty)
   }
 
-  getBelongsTo(className, fk, fktype) {
+  getBelongsTo(className, relationName, fktype) {
     let relationProperty
     relationProperty = {
-      decorators: [{ name: "belongsTo", arguments: ['() => ' + className + ", {keyTo: '" + fk + "' }"] }],
-      name: className.toLocaleLowerCase() + 'Id',
+      decorators: [{ name: "belongsTo", arguments: ['() => ' + className] }],
+      name: relationName + 'Id',
       type: fktype,
     }
     return (relationProperty)
   }
 
 
-  addRequiredImports(sourceFile, targetModel, relationName, targetClassName) {
-    let importsArray = this.getRequiredImports(targetModel, relationName, targetClassName);
+  addRequiredImports(sourceFile, targetModel, relationType, targetClassName) {
+    let importsArray = this.getRequiredImports(targetModel, relationType, targetClassName);
     while (importsArray.length > 0) {
       let currentImport = importsArray.pop();
       this.addCurrentImport(sourceFile, currentImport);
@@ -218,13 +182,13 @@ module.exports = class ModelRelation extends ArtifactGenerator {
   }
 
 
-  getRequiredImports(targetModel, relationName, targetClassName) {
+  getRequiredImports(targetModel, relationType, targetClassName) {
 
     let importsArray = [{
       name: targetClassName,
       module: "./" + targetModel + ".model"
     }, {
-      name: relationName,
+      name: relationType,
       module: "@loopback/repository"
     },
     ];
