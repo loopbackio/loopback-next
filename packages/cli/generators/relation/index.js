@@ -12,6 +12,7 @@ const path = require('path');
 const chalk = require('chalk');
 const utils = require('../../lib/utils');
 const tsquery = require('../../lib/ast-helper');
+const ast = require('ts-simple-ast');
 
 const ControllerRelation = require('./controllerRelation');
 const RepositoryRelation = require('./repositoryRelation');
@@ -66,6 +67,25 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     }
 
     return tsquery.getIdFromModel(fileContent);
+  }
+
+  _getKeyType(sourceFile, propertyName) {
+    const classObj = this._getClassObj(sourceFile);
+    if (
+      classObj
+        .getProperties()
+        .map(x => x.getName())
+        .includes(propertyName)
+    ) {
+      return classObj
+        .getProperty(propertyName)
+        .getType()
+        .getText();
+    }
+  }
+  _getClassObj(fileName) {
+    const className = fileName.getClasses()[0].getNameOrThrow();
+    return fileName.getClassOrThrow(className);
   }
 
   async _scaffold() {
@@ -286,8 +306,14 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         }
       }
       this.options.foreignKey = idProperty;
+      let project = new ast.Project();
 
-      //}
+      const sourceFile = path.join(
+        this.artifactInfo.modelDir,
+        utils.getModelFileName(this.artifactInfo.sourceModel.modelNameList),
+      );
+      const sf = project.addExistingSourceFile(sourceFile);
+      this.options.foreignKeyType = this._getKeyType(sf, this.options.foreignKey);
     }
   }
 
