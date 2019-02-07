@@ -1,11 +1,16 @@
-import {<%= repositoryTypeClass %>} from '@loopback/repository';
+<%if (isRepositoryBaseBuiltin) {  -%>
+import {<%= repositoryTypeClass %>, juggler} from '@loopback/repository';
+<% } -%>
 import {<%= modelName %>} from '../models';
 import {<%= dataSourceClassName %>} from '../datasources';
 import {inject} from '@loopback/core';
+<%if ( !isRepositoryBaseBuiltin ) { -%>
+import {<%=repositoryBaseClass %>} from './<%=repositoryBaseFile %>';
+<% } -%>
 
-export class <%= className %>Repository extends <%= repositoryTypeClass %><
+export class <%= className %>Repository extends <%= repositoryBaseClass %><
   <%= modelName %>
- > {
+> {
   constructor(
     @inject('datasources.<%= dataSourceName %>') dataSource: <%= dataSourceClassName %>,
   ) {

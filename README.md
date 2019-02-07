@@ -4,6 +4,7 @@
 [![Travis Build Status](https://travis-ci.org/strongloop/loopback-next.svg?branch=master)](https://travis-ci.org/strongloop/loopback-next)
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/q8vp7wrdn2ak6801/branch/master?svg=true)](https://ci.appveyor.com/project/strongloop/loopback-next/branch/master)
 [![Coverage Status](https://coveralls.io/repos/github/strongloop/loopback-next/badge.svg?branch=master)](https://coveralls.io/github/strongloop/loopback-next?branch=master)
+[![Greenkeeper badge](https://badges.greenkeeper.io/strongloop/loopback-next.svg)](https://greenkeeper.io/)
 
 LoopBack makes it easy to build modern applications that require complex
 integrations.
@@ -92,8 +93,8 @@ You can join the team by posting a comment to
 |    [![b-admike]](http://github.com/b-admike)     |      [![dhmlau]](http://github.com/dhmlau)       |         [![jannyhou]](http://github.com/jannyHou)          |
 |                    Hage Yaapa                    |                 Nora Abdelgadir                  |                       Mario Estrada                        |
 | [![hacksparrow]](https://github.com/hacksparrow) | [![nabdelgadir]](https://github.com/nabdelgadir) | [![marioestradarosa]](https://github.com/marioestradarosa) |
-|                   Hugo Da Roit                   |                                                  |                                                            |
-|        [![yaty]](https://github.com/yaty)        |                                                  |                                                            |
+|                   Hugo Da Roit                   |                 Dominique Emond                  |                                                            |
+|        [![yaty]](https://github.com/yaty)        |     [![emonddr]](https://github.com/emonddr)     |                                                            |
 
 See
 [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
@@ -112,3 +113,4 @@ See
 [nabdelgadir]: https://avatars0.githubusercontent.com/u/42985749?v=3&s=60
 [marioestradarosa]: https://avatars2.githubusercontent.com/u/4633823?v=3&s=60
 [yaty]: https://avatars3.githubusercontent.com/u/11981803?v=3&s=60
+[emonddr]: https://avatars0.githubusercontent.com/u/6864736??v=3&s=60

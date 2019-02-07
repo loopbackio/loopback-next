@@ -408,7 +408,7 @@ module provides a helper function for checking whether a specification conforms
 to OpenAPI Spec. Just add a new Mocha test that calls this helper function to
 the test suite:
 
-{% include code-caption.html content="test/acceptance/api-spec.acceptance.ts" %}
+{% include code-caption.html content="src/__tests__/acceptance/api-spec.acceptance.ts" %}
 
 ```ts
 import {validateApiSpec} from '@loopback/testlab';

@@ -19,10 +19,10 @@
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
     "pretest": "npm run build",
-    "test": "lb-mocha \"dist/test/*/**/*.js\"",
-    "test:dev": "lb-mocha --allow-console-logs dist/test/**/*.js && npm run posttest",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
     "verify": "npm pack && tar xf loopback-todo*.tgz && tree package && npm run clean",
-    "migrate": "node ./dist/src/migrate",
+    "migrate": "node ./dist/migrate",
     "prestart": "npm run build",
     "start": "node ."
   },
@@ -55,7 +55,7 @@
     "@types/node": "^10.11.2",
     "lodash": "^4.17.10",
     "tslint": "^5.12.0",
-    "typescript": "^3.2.2"
+    "typescript": "^3.3.1"
   },
   "keywords": [
     "loopback",

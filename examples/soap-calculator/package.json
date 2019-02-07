@@ -26,9 +26,9 @@
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
     "pretest": "npm run clean && npm run build",
-    "test": "lb-mocha \"dist/test\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "posttest": "npm run lint",
-    "test:dev": "lb-mocha --allow-console-logs dist/test/**/*.js && npm run posttest",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
     "prestart": "npm run build",
     "start": "node ."
   },
@@ -59,6 +59,6 @@
     "mocha": "^5.1.1",
     "source-map-support": "^0.5.5",
     "tslint": "^5.12.0",
-    "typescript": "^3.2.2"
+    "typescript": "^3.3.1"
   }
 }

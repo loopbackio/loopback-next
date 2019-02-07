@@ -380,7 +380,7 @@ describe('mocha', function() {
 
   it('loads built-in mocha.opts file', () => {
     var run = require('../../bin/run-mocha');
-    var command = run(['node', 'bin/run-mocha', '"dist/test"'], true);
+    var command = run(['node', 'bin/run-mocha', '"dist/__tests__"'], true);
     const builtInMochaOptsFile = path.join(
       __dirname,
       '../../config/mocha.opts',
@@ -394,7 +394,7 @@ describe('mocha', function() {
   it('honors --opts option', () => {
     var run = require('../../bin/run-mocha');
     var command = run(
-      ['node', 'bin/run-mocha', '--opts custom/mocha.opts', '"dist/test"'],
+      ['node', 'bin/run-mocha', '--opts custom/mocha.opts', '"dist/__tests__"'],
       true,
     );
     assert(
@@ -410,7 +410,7 @@ describe('mocha', function() {
 
     fs.copyFileSync(buitInMochaOptsPath, destPath);
 
-    var command = run(['node', 'bin/run-mocha', '"dist/test"'], true);
+    var command = run(['node', 'bin/run-mocha', '"dist/__tests__"'], true);
     assert(
       command.indexOf('--opts') === -1,
       'should skip built-in mocha.opts file when specific project file exist',

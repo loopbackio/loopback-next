@@ -19,6 +19,7 @@ export * from './rest.component';
 export * from './rest.server';
 export * from './sequence';
 export * from './rest-http-error';
+export * from './parse-json';
 
 // export all errors from external http-errors package
 import * as HttpErrors from 'http-errors';

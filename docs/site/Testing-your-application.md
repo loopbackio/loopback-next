@@ -103,7 +103,7 @@ database is not something we want to clean before each test it's handy to use an
 independent in-memory datasource which is filled appropriately using
 [test data builders](#use-test-data-builders) before each test run.
 
-{% include code-caption.html content="test/fixtures/datasources/testdb.datasource.ts" %}
+{% include code-caption.html content="src/__tests__/fixtures/datasources/testdb.datasource.ts" %}
 
 ```ts
 import {juggler} from '@loopback/repository';
@@ -126,7 +126,7 @@ database in the state that caused the test to fail.
 To clean the database before each test, set up a `beforeEach` hook to call a
 helper method; for example:
 
-{% include code-caption.html content="test/helpers/database.helpers.ts" %}
+{% include code-caption.html content="src/__tests__/helpers/database.helpers.ts" %}
 
 ```ts
 import {ProductRepository, CategoryRepository} from '../../src/repositories';
@@ -141,7 +141,7 @@ export async function givenEmptyDatabase() {
 In case a repository includes a relation to another repository, ie. Product
 belongs to Category, include it in the repository call, for example:
 
-{% include code-caption.html content="test/helpers/database.helpers.ts" %}
+{% include code-caption.html content="src/__tests__/helpers/database.helpers.ts" %}
 
 ```ts
 import {Getter} from '@loopback/context';
@@ -160,7 +160,7 @@ export async function givenEmptyDatabase() {
 }
 ```
 
-{% include code-caption.html content="test/integration/controllers/product.controller.integration.ts" %}
+{% include code-caption.html content="src/__tests__/integration/controllers/product.controller.integration.ts" %}
 
 ```ts
 // in your test file
@@ -198,7 +198,7 @@ documents.
 In practice, a simple function that adds missing required properties is
 sufficient.
 
-{% include code-caption.html content="test/helpers/database.helpers.ts" %}
+{% include code-caption.html content="src/__tests__/helpers/database.helpers.ts" %}
 
 ```ts
 // ...
@@ -432,7 +432,7 @@ implementation of its repository dependency using the `testlab`
 [Create a stub repository](#create-a-stub-repository) for a detailed
 explanation.
 
-{% include code-caption.html content="test/unit/controllers/product.controller.unit.ts" %}
+{% include code-caption.html content="src/__tests__/unit/controllers/product.controller.unit.ts" %}
 
 ```ts
 import {
@@ -482,7 +482,7 @@ unit tests to verify the implementation of this additional method.
 Remember to use [Test data builders](#use-test-data-builders) whenever you need
 valid data to create a new model instance.
 
-{% include code-caption.html content="test/unit/models/person.model.unit.ts" %}
+{% include code-caption.html content="src/__tests__/unit/models/person.model.unit.ts" %}
 
 ```ts
 import {Person} from '../../../src/models';
@@ -569,7 +569,7 @@ Integration tests are one of the places to put the best practices in
 Here is an example showing how to write an integration test for a custom
 repository method `findByName`:
 
-{% include code-caption.html content="test/integration/repositories/category.repository.integration.ts" %}
+{% include code-caption.html content="src/__tests__/integration/repositories/category.repository.integration.ts" %}
 
 ```ts
 import {
@@ -604,7 +604,7 @@ commands and queries produce expected results when executed on a real database.
 These tests are similar to repository tests with controllers added as another
 ingredient.
 
-{% include code-caption.html content="test/integration/controllers/product.controller.integration.ts" %}
+{% include code-caption.html content="src/__tests__/integration/controllers/product.controller.integration.ts" %}
 
 ```ts
 import {expect} from '@loopback/testlab';
@@ -742,10 +742,9 @@ provides a helper method `validateApiSpec` that builds on top of the popular
 
 Example usage:
 
-{% include code-caption.html content= "test/acceptance/api-spec.acceptance.ts" %}
+{% include code-caption.html content= "src/__tests__/acceptance/api-spec.acceptance.ts" %}
 
 ```ts
-// test/acceptance/api-spec.test.ts
 import {HelloWorldApplication} from '../..';
 import {RestServer} from '@loopback/rest';
 import {validateApiSpec} from '@loopback/testlab';
@@ -785,7 +784,7 @@ developers consuming your API will find them useful too.
 
 Here is an example showing how to run Dredd to test your API against the spec:
 
-{% include code-caption.html content= "test/acceptance/api-spec.acceptance.ts" %}
+{% include code-caption.html content= "src/__tests__/acceptance/api-spec.acceptance.ts" %}
 
 ```ts
 import {expect} from '@loopback/testlab';
@@ -857,7 +856,7 @@ two tests (one test for each user role).
 
 Here is an example of an acceptance test:
 
-{% include code-caption.html content= "test/acceptance/product.acceptance.ts" %}
+{% include code-caption.html content= "src/__tests__/acceptance/product.acceptance.ts" %}
 
 ```ts
 import {HelloWorldApplication} from '../..';
