@@ -30,7 +30,7 @@
     "@loopback/core": "^1.1.5",
     "@types/debug": "^4.1.0",
     "debug": "^4.0.1",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.11",
     "loopback-datasource-juggler": "^4.0.0"
   },
   "files": [
