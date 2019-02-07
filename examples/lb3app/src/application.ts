@@ -17,7 +17,7 @@ import * as path from 'path';
 import {promisify} from 'util';
 import {MySequence} from './sequence';
 
-const legacyApp = require('../../legacy/server/server');
+const legacyApp = require('../legacy/server/server');
 const legacyBoot = promisify(require('loopback-boot'));
 const {generateSwaggerSpec} = require('loopback-swagger');
 const swagger2openapi = require('swagger2openapi');
@@ -32,7 +32,7 @@ export class TodoListApplication extends BootMixin(
     this.sequence(MySequence);
 
     // Set up default home page
-    this.static('/', path.join(__dirname, '../../public'));
+    this.static('/', path.join(__dirname, '../public'));
 
     this.component(RestExplorerComponent);
 
