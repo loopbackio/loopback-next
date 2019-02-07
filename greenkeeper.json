@@ -6,6 +6,7 @@
         "benchmark/package.json",
         "docs/package.json",
         "examples/hello-world/package.json",
+        "examples/lb3app/package.json",
         "examples/log-extension/package.json",
         "examples/rpc-server/package.json",
         "examples/soap-calculator/package.json",
