@@ -3,18 +3,24 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, Constructor, BindingAddress} from '@loopback/context';
+import {Binding, BindingAddress, Constructor} from '@loopback/context';
 import {Application, ApplicationConfig, Server} from '@loopback/core';
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
 import {PathParams} from 'express-serve-static-core';
 import {ServeStaticOptions} from 'serve-static';
 import {format} from 'util';
+import {BodyParser} from './body-parsers';
 import {RestBindings} from './keys';
 import {RestComponent} from './rest.component';
-import {HttpRequestListener, HttpServerLike, RestServer} from './rest.server';
+import {
+  ExpressRequestHandler,
+  HttpRequestListener,
+  HttpServerLike,
+  RestServer,
+  RouterSpec,
+} from './rest.server';
 import {ControllerClass, ControllerFactory, RouteEntry} from './router';
 import {SequenceFunction, SequenceHandler} from './sequence';
-import {BodyParser} from './body-parsers';
 
 export const ERR_NO_MULTI_SERVER = format(
   'RestApplication does not support multiple servers!',
@@ -241,5 +247,13 @@ export class RestApplication extends Application implements HttpServerLike {
    */
   api(spec: OpenApiSpec): Binding {
     return this.bind(RestBindings.API_SPEC).to(spec);
+  }
+
+  mountExpressRouter(
+    basePath: string,
+    spec: RouterSpec,
+    router: ExpressRequestHandler,
+  ): void {
+    this.restServer.mountExpressRouter(basePath, spec, router);
   }
 }

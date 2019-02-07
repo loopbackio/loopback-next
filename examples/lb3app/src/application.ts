@@ -7,10 +7,9 @@ import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
 import {
-  RestApplication,
   OpenAPIObject,
-  OperationObject,
-  RestServer,
+  rebaseOpenApiSpec,
+  RestApplication,
 } from '@loopback/rest';
 import {RestExplorerComponent} from '@loopback/rest-explorer';
 import * as path from 'path';
@@ -56,59 +55,34 @@ export class TodoListApplication extends BootMixin(
     const result = await swagger2openapi.convertObj(swaggerSpec, {
       // swagger2openapi options
     });
-
     const openApiSpec: OpenAPIObject = result.openapi;
 
-    // Normalize endpoint paths (if needed)
-    const basePath = swaggerSpec.basePath;
-    const hasBasePath = basePath && basePath !== '/';
-    const servers = openApiSpec.servers || [];
-    const firstServer = servers[0] || {};
-    if (hasBasePath && firstServer.url === basePath) {
-      // move the basePath from server url to endpoint paths
-      const oldPaths = openApiSpec.paths;
-      openApiSpec.paths = {};
-      for (const p in oldPaths)
-        openApiSpec.paths[`${basePath}${p}`] = oldPaths[p];
-    }
+    // Option A: mount the entire LB3 app, including any request-preprocessing
+    // middleware like CORS, Helmet, loopback#token, etc.
 
-    // Setup dummy route handler function - needed by LB4
-    for (const p in openApiSpec.paths) {
-      for (const v in openApiSpec.paths[p]) {
-        const spec: OperationObject = openApiSpec.paths[p][v];
-        if (!spec.responses) {
-          // not an operation object
-          // paths can have extra properties, e.g. "parameters"
-          // in addition to operations mapped to HTTP verbs
-          continue;
-        }
-        spec['x-operation'] = function noop() {
-          const msg =
-            `The endpoint "${v} ${p}" is a LoopBack v3 route ` +
-            'handled by the compatibility layer.';
-          return Promise.reject(new Error(msg));
-        };
-      }
-    }
+    // 1. Rebase the spec, e.g. from `GET /Products` to `GET /api/Products`.
+    const specInRoot = rebaseOpenApiSpec(openApiSpec, swaggerSpec.basePath);
+    // 2. Mount the full Express app
+    this.mountExpressRouter('/', specInRoot, legacyApp);
 
-    this.api(openApiSpec);
+    /* Options B: mount LB3 REST handler only.
+     * Important! This does not mount `loopback#token` middleware!
 
-    // A super-hacky way how to mount LB3 app as an express route
-    // Obviously, we need to find a better solution - a generic extension point
-    // provided by REST API layer.
-    // tslint:disable-next-line:no-any
-    (this.restServer as any)._setupPreprocessingMiddleware = function(
-      this: RestServer,
-    ) {
-      // call the original implementation
-      Object.getPrototypeOf(this)._setupPreprocessingMiddleware.apply(
-        this,
-        arguments,
-      );
+    this.mountExpressRouter(
+      '/api', // we can use any value here,
+              // no need to call legacyApp.get('restApiRoot')
+      openApiSpec,
+      // TODO(bajtos) reload the handler when a model/method was added/removed
+      legacyApp.handler('rest')
+    );
+      */
 
-      // Add our additional middleware
-      this._expressApp.use(legacyApp);
-    };
+    // TODO(bajtos) Listen for the following events to update the OpenAPI spec:
+    // - modelRemoted
+    // - modelDeleted
+    // - remoteMethodAdded
+    // - remoteMethodDisabled
+    // Note: LB4 does not support live spec updates yet.
 
     // Boot the new LB4 layer now
     return super.boot();

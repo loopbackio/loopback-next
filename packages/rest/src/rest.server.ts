@@ -73,6 +73,9 @@ const SequenceActions = RestBindings.SequenceActions;
 //  a non-module entity and cannot be imported using this construct.
 const cloneDeep: <T>(value: T) => T = require('lodash/cloneDeep');
 
+export type RouterSpec = Pick<OpenApiSpec, 'paths' | 'components' | 'tags'>;
+export type ExpressRequestHandler = express.RequestHandler;
+
 /**
  * A REST API server for use with Loopback.
  * Add this server to your application by importing the RestComponent.
@@ -143,6 +146,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
   protected _httpServer: HttpServer | undefined;
 
   protected _expressApp: express.Application;
+  protected _additionalExpressRoutes: express.Router;
+  protected _specForAdditionalExpressRoutes: RouterSpec;
 
   get listening(): boolean {
     return this._httpServer ? this._httpServer.listening : false;
@@ -198,6 +203,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
     this.bind(RestBindings.BASE_PATH).toDynamicValue(() => this._basePath);
     this.bind(RestBindings.HANDLER).toDynamicValue(() => this.httpHandler);
+
+    this._additionalExpressRoutes = express.Router();
+    this._specForAdditionalExpressRoutes = {paths: {}};
   }
 
   protected _setupRequestHandlerIfNeeded() {
@@ -215,6 +223,12 @@ export class RestServer extends Context implements Server, HttpServerLike {
     this._expressApp.use(this._basePath, (req, res, next) => {
       this._handleHttpRequest(req, res).catch(next);
     });
+
+    // Mount router for additional Express routes
+    // FIXME: this will not work!
+    //   1) we will get invoked after static assets
+    //   2) errors are not routed to `reject` sequence action
+    this._expressApp.use(this._basePath, this._additionalExpressRoutes);
 
     // Mount our error handler
     this._expressApp.use(
@@ -685,6 +699,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
       spec.components = spec.components || {};
       spec.components.schemas = cloneDeep(defs);
     }
+
+    assignRouterSpec(spec, this._specForAdditionalExpressRoutes);
+
     return spec;
   }
 
@@ -831,6 +848,73 @@ export class RestServer extends Context implements Server, HttpServerLike {
       throw err;
     });
   }
+
+  /**
+   * Mount an Express router to expose additional REST endpoints handled
+   * via legacy Express-based stack.
+   *
+   * @param basePath Path where to mount the router at, e.g. `/` or `/api`.
+   * @param spec A partial OpenAPI spec describing endpoints provided by the router.
+   * LoopBack will prepend `basePath` to all endpoints automatically. Use `undefined`
+   * if you don't want to document the routes.
+   * @param router The Express router to handle the requests.
+   */
+  mountExpressRouter(
+    basePath: string,
+    spec: RouterSpec = {paths: {}},
+    router: ExpressRequestHandler,
+  ): void {
+    spec = rebaseOpenApiSpec(spec, basePath);
+
+    // Merge OpenAPI specs
+    assignRouterSpec(this._specForAdditionalExpressRoutes, spec);
+
+    // Mount the actual Express router/handler
+    this._additionalExpressRoutes.use(basePath, router);
+  }
+}
+
+export function assignRouterSpec(target: RouterSpec, additions: RouterSpec) {
+  if (additions.components && additions.components.schemas) {
+    if (!target.components) target.components = {};
+    if (!target.components.schemas) target.components.schemas = {};
+    Object.assign(target.components.schemas, additions.components.schemas);
+  }
+
+  for (const url in additions.paths) {
+    if (!(url in target.paths)) target.paths[url] = {};
+    for (const verbOrKey in additions.paths[url]) {
+      // routes registered earlier takes precedence
+      if (verbOrKey in target.paths[url]) continue;
+      target.paths[url][verbOrKey] = additions.paths[url][verbOrKey];
+    }
+  }
+
+  if (additions.tags && additions.tags.length > 1) {
+    if (!target.tags) target.tags = [];
+    for (const tag of additions.tags) {
+      // tags defined earlier take precedence
+      if (target.tags.some(t => t.name === tag.name)) continue;
+      target.tags.push(tag);
+    }
+  }
+}
+
+export function rebaseOpenApiSpec<T extends Partial<OpenApiSpec>>(
+  spec: T,
+  basePath: string,
+): T {
+  if (!spec.paths) return spec;
+  if (!basePath || basePath === '/') return spec;
+
+  const localPaths = spec.paths;
+  // Don't modify the spec object provided to us.
+  spec = Object.assign({}, spec, {paths: {}});
+  for (const url in spec.paths) {
+    spec.paths[`${basePath}${url}`] = localPaths[url];
+  }
+
+  return spec;
 }
 
 /**
