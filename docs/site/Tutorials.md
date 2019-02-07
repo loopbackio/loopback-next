@@ -20,6 +20,9 @@ LoopBack 4 comes with the following tutorials:
 - **[log-extension](https://github.com/strongloop/loopback-next/tree/master/examples/log-extension)**:
   Tutorial on building a log extension.
 
+- **[express-composition](express-with-lb4-rest-tutorial.md)**: Tutorial on
+  mounting LoopBack 4 REST API on an Express application.
+
 You can download any of the tutorial projects using our CLI tool `lb4`:
 
 ```sh
@@ -31,6 +34,7 @@ $ lb4 example
   log-extension: An example extension project for LoopBack 4.
   rpc-server: A basic RPC server using a made-up protocol.
   soap-calculator: An example on how to integrate SOAP web services.
+  express-composition: A simple Express application that uses LoopBack 4 REST API.
 ```
 
 Please follow the instructions in

@@ -5,6 +5,7 @@
         "package.json",
         "benchmark/package.json",
         "docs/package.json",
+        "examples/express-composition/package.json",
         "examples/hello-world/package.json",
         "examples/log-extension/package.json",
         "examples/rpc-server/package.json",
