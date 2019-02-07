@@ -9,3 +9,4 @@ sandbox/**/*
 *.json
 CHANGELOG.md
 *.yml
+examples/lb3app/legacy
