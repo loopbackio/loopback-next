@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.2.1...@loopback/build@1.3.0) (2019-02-08)
+
+
+### Features
+
+* **build:** use `dist/__tests__` in code examples and tests ([a3da024](https://github.com/strongloop/loopback-next/commit/a3da024))
+
+
+
+
+
 ## [1.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.2.0...@loopback/build@1.2.1) (2019-01-28)
 
 **Note:** Version bump only for package @loopback/build

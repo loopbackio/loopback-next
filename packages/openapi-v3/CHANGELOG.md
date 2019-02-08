@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.2.0...@loopback/openapi-v3@1.2.1) (2019-02-08)
+
+
+### Bug Fixes
+
+* update to the most recent lodash version ([65ee865](https://github.com/strongloop/loopback-next/commit/65ee865))
+
+
+
+
+
 # [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.1.7...@loopback/openapi-v3@1.2.0) (2019-01-28)
 
 

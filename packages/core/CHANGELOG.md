@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.6](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.1.5...@loopback/core@1.1.6) (2019-02-08)
+
+**Note:** Version bump only for package @loopback/core
+
+
+
+
+
 ## [1.1.5](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.1.4...@loopback/core@1.1.5) (2019-01-28)
 
 **Note:** Version bump only for package @loopback/core
