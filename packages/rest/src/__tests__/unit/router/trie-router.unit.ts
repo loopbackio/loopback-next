@@ -10,6 +10,7 @@ import {
   stubExpressContext,
 } from '@loopback/testlab';
 import {Request, ResolvedRoute, RouteEntry, TrieRouter} from '../../..';
+import {RestRouterOptions} from '../../../router';
 
 class TestTrieRouter extends TrieRouter {
   get staticRoutes() {
@@ -146,18 +147,6 @@ describe('trie router - overlapping paths with different var names', () => {
     });
   });
 
-  function getRouteInfo(r?: ResolvedRoute) {
-    return {
-      verb: r && r.verb,
-      path: r && r.path,
-      params: r && r.pathParams,
-    };
-  }
-
-  function givenRequest(options?: ShotRequestOptions): Request {
-    return stubExpressContext(options).request;
-  }
-
   function givenRoutesWithDifferentVars() {
     const routes: RouteEntry[] = [];
 
@@ -173,8 +162,104 @@ describe('trie router - overlapping paths with different var names', () => {
   }
 });
 
-function givenTrieRouter(routes: RouteEntry[]) {
-  const router = new TestTrieRouter();
+describe('trie router with options', () => {
+  let router: TestTrieRouter;
+
+  describe('strict: true', () => {
+    before(givenStrictRouter);
+    it('finds route for GET /users/', () => {
+      testStrictRouter('/users/');
+    });
+
+    it('fails to find route for GET /users', () => {
+      const req = givenRequest({method: 'get', url: '/users'});
+      const route = router.find(req);
+      expect(route).to.be.undefined();
+    });
+
+    it('finds route for GET /orders', () => {
+      testStrictRouter('/orders');
+    });
+
+    it('fails to find route for GET /orders/', () => {
+      const req = givenRequest({method: 'get', url: '/orders/'});
+      const route = router.find(req);
+      expect(route).to.be.undefined();
+    });
+
+    function testStrictRouter(path: string) {
+      const req = givenRequest({method: 'get', url: path});
+      const route = router.find(req);
+      expect(getRouteInfo(route)).to.containEql({
+        verb: 'get',
+        path,
+        params: {},
+      });
+    }
+
+    function givenStrictRouter() {
+      router = givenTrieRouter(givenRoutesWithDifferentVars(), {strict: true});
+    }
+  });
+
+  describe('strict: false', () => {
+    before(givenNonStrictRouter);
+    it('finds route for GET /users/', () => {
+      testNonStrictRouter('/users/');
+    });
+
+    it('finds route for GET /users', () => {
+      testNonStrictRouter('/users', '/users/');
+    });
+
+    it('finds route for GET /orders/', () => {
+      testNonStrictRouter('/orders/', '/orders');
+    });
+
+    it('finds route for GET /orders', () => {
+      testNonStrictRouter('/orders');
+    });
+
+    function testNonStrictRouter(path: string, expected?: string) {
+      expected = expected || path;
+      const req = givenRequest({method: 'get', url: path});
+      const route = router.find(req);
+      expect(getRouteInfo(route)).to.containEql({
+        verb: 'get',
+        path: expected,
+        params: {},
+      });
+    }
+
+    function givenNonStrictRouter() {
+      router = givenTrieRouter(givenRoutesWithDifferentVars(), {strict: false});
+    }
+  });
+
+  function givenRoutesWithDifferentVars() {
+    const routes: RouteEntry[] = [];
+
+    addRoute(routes, 'getUsers', 'get', '/users/');
+    addRoute(routes, 'getOrders', 'get', '/orders');
+
+    return routes;
+  }
+});
+
+function getRouteInfo(r?: ResolvedRoute) {
+  return {
+    verb: r && r.verb,
+    path: r && r.path,
+    params: r && r.pathParams,
+  };
+}
+
+function givenRequest(options?: ShotRequestOptions): Request {
+  return stubExpressContext(options).request;
+}
+
+function givenTrieRouter(routes: RouteEntry[], options?: RestRouterOptions) {
+  const router = new TestTrieRouter(options);
   for (const r of routes) {
     router.add(r);
   }

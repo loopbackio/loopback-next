@@ -143,7 +143,7 @@ describe('RestServer', () => {
       );
     });
 
-    it('assigns express settings', () => {
+    describe('express settings', () => {
       class TestRestServer extends RestServer {
         constructor(application: Application, config: RestServerConfig) {
           super(application, config);
@@ -155,19 +155,32 @@ describe('RestServer', () => {
         }
       }
 
-      const app = new Application();
-      const server = new TestRestServer(app, {
-        expressSettings: {
-          'x-powered-by': false,
-          env: 'production',
-        },
+      it('honors expressSettings', () => {
+        const app = new Application();
+        const server = new TestRestServer(app, {
+          expressSettings: {
+            'x-powered-by': false,
+            env: 'production',
+          },
+        });
+        const expressApp = server.expressApp;
+        expect(expressApp.get('x-powered-by')).to.equal(false);
+        expect(expressApp.get('env')).to.equal('production');
+        // `extended` is the default setting by Express
+        expect(expressApp.get('query parser')).to.equal('extended');
+        expect(expressApp.get('not set')).to.equal(undefined);
       });
-      const expressApp = server.expressApp;
-      expect(expressApp.get('x-powered-by')).to.equal(false);
-      expect(expressApp.get('env')).to.equal('production');
-      // `extended` is the default setting by Express
-      expect(expressApp.get('query parser')).to.equal('extended');
-      expect(expressApp.get('not set')).to.equal(undefined);
+
+      it('honors strict', () => {
+        const app = new Application();
+        const server = new TestRestServer(app, {
+          router: {
+            strict: true,
+          },
+        });
+        const expressApp = server.expressApp;
+        expect(expressApp.get('strict routing')).to.equal(true);
+      });
     });
   });
 
