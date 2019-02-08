@@ -256,6 +256,23 @@ app.basePath('/api');
 With the `basePath`, all REST APIs and static assets are served on URLs starting
 with the base path.
 
+### Configure the router
+
+The router can be configured to enforce `strict` mode as follows:
+
+1. `strict` is true:
+
+- request `/orders` matches route `/orders` but not `/orders/`
+- request `/orders/` matches route `/orders/` but not `/orders`
+
+2. `strict` is false (default)
+
+- request `/orders` matches route `/orders` first and falls back to `/orders/`
+- request `/orders/` matches route `/orders/` first and falls back to `/orders`
+
+See `strict routing` at http://expressjs.com/en/4x/api.html#app for more
+information.
+
 ### Configure the request body parser options
 
 We can now configure request body parser options as follows:
@@ -286,6 +303,7 @@ for more details.
 | openApiSpec       | OpenApiSpecOptions       | Customize how OpenAPI spec is served                                                                      |
 | apiExplorer       | ApiExplorerOptions       | Customize how API explorer is served                                                                      |
 | requestBodyParser | RequestBodyParserOptions | Customize how request body is parsed                                                                      |
+| router            | RouterOptions            | Customize how trailing slashes are used for routing                                                       |
 
 ## Add servers to application instance
 
