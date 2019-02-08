@@ -6,19 +6,19 @@
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {get, getControllerSpec, param} from '@loopback/openapi-v3';
 import {
-  ShotRequestOptions,
   expect,
+  ShotRequestOptions,
   stubExpressContext,
 } from '@loopback/testlab';
+import * as HttpErrors from 'http-errors';
 import {
   ControllerRoute,
-  Request,
-  RoutingTable,
-  RestRouter,
   RegExpRouter,
+  Request,
+  RestRouter,
+  RoutingTable,
   TrieRouter,
 } from '../../..';
-import * as HttpErrors from 'http-errors';
 
 describe('RoutingTable', () => {
   it('joins basePath and path', () => {
@@ -220,16 +220,22 @@ function runTestsWithRouter(router: RestRouter) {
       async getOrderById(@param.path.number('id') id: number): Promise<object> {
         return {id};
       }
-      @get('/orders')
-      async findOrders(): Promise<object[]> {
-        return [];
-      }
       // A path that overlaps with `/orders/{id}`. Please note a different var
       // name is used - `{orderId}`
       @get('/orders/{orderId}/shipments')
       async getShipmentsForOrder(
         @param.path.number('orderId') id: number,
       ): Promise<object> {
+        return [];
+      }
+      // With trailing `/`
+      @get('/orders/')
+      async findOrders(): Promise<object[]> {
+        return [];
+      }
+      // Without trailing `/`
+      @get('/pendingOrders')
+      async findPendingOrders(): Promise<object[]> {
         return [];
       }
     }
@@ -250,6 +256,9 @@ function runTestsWithRouter(router: RestRouter) {
     findAndCheckRoute('/orders/1', '/orders/{id}');
     findAndCheckRoute('/orders/1/shipments', '/orders/{orderId}/shipments');
     findAndCheckRoute('/orders', '/orders');
+    findAndCheckRoute('/orders/', '/orders');
+    findAndCheckRoute('/pendingOrders', '/pendingOrders');
+    findAndCheckRoute('/pendingOrders/', '/pendingOrders');
   });
 
   it('throws if router is not found', () => {
