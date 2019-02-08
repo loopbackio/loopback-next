@@ -36,6 +36,7 @@ navigational property on the source repository.
 Here are the currently supported relations:
 
 - [HasMany](HasMany-relation.md)
+- [HasManyThrough](HasManyThrough-relation.md)
 - [BelongsTo](BelongsTo-relation.md)
 - [HasOne](hasOne-relation.md)
 

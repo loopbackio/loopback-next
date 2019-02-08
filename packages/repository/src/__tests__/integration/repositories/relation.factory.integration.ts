@@ -9,6 +9,7 @@ import {
   BelongsToDefinition,
   createBelongsToAccessor,
   createHasManyRepositoryFactory,
+  createHasManyThroughRepositoryFactory,
   DefaultCrudRepository,
   Entity,
   EntityCrudRepository,
@@ -17,21 +18,27 @@ import {
   HasManyDefinition,
   HasManyRepository,
   HasManyRepositoryFactory,
+  HasManyThroughRepository,
+  HasManyThroughDefinition,
+  HasManyThroughRepositoryFactory,
   juggler,
   ModelDefinition,
   RelationType,
 } from '../../..';
+import {Seller} from '../../fixtures/models';
 
 // Given a Customer and Order models - see definitions at the bottom
 let db: juggler.DataSource;
 let customerRepo: EntityCrudRepository<Customer, typeof Customer.prototype.id>;
 let orderRepo: EntityCrudRepository<Order, typeof Order.prototype.id>;
+let sellerRepo: EntityCrudRepository<Seller, typeof Seller.prototype.id>;
 let reviewRepo: EntityCrudRepository<Review, typeof Review.prototype.id>;
 
 describe('HasMany relation', () => {
   let existingCustomerId: number;
 
   let customerOrderRepo: HasManyRepository<Order>;
+  let customerSellerRepo: HasManyThroughRepository<Seller, Order>;
   let customerAuthoredReviewFactoryFn: HasManyRepositoryFactory<
     Review,
     typeof Customer.prototype.id
@@ -79,6 +86,57 @@ describe('HasMany relation', () => {
     expect(orders).to.containEql(order);
     expect(orders).to.not.containEql(notMyOrder);
     expect(orders).to.deepEqual(persistedOrders);
+  });
+
+  it('can create an instance of a related model through a junction table', async () => {
+    const seller = await customerSellerRepo.create(
+      {
+        name: 'Jam Risser',
+      },
+      {
+        description: 'some order description',
+      },
+    );
+    const persisted = await sellerRepo.findById(seller.id);
+
+    expect(seller).to.deepEqual(persisted);
+  });
+
+  it('can find an instance of a related model through a junction table', async () => {
+    const seller = await customerSellerRepo.create(
+      {
+        name: 'Jam Risser',
+      },
+      {
+        description: 'some order description',
+      },
+    );
+    const notTheSeller = await sellerRepo.create(
+      {
+        name: 'Mark Twain',
+      },
+      {
+        description: 'some order description',
+      },
+    );
+
+    const persistedOrders = await orderRepo.find({
+      where: {
+        customerId: existingCustomerId,
+      },
+    });
+    const persistedSellers = await sellerRepo.find({
+      where: {
+        or: persistedOrders.map((order: Order) => ({
+          id: order.sellerId,
+        })),
+      },
+    });
+    const sellers = await customerSellerRepo.find();
+
+    expect(sellers).to.containEql(seller);
+    expect(sellers).to.not.containEql(notTheSeller);
+    expect(sellers).to.deepEqual(persistedSellers);
   });
 
   it('finds appropriate related model instances for multiple relations', async () => {
@@ -138,7 +196,24 @@ describe('HasMany relation', () => {
       Getter.fromValue(orderRepo),
     );
 
+    const sellerFactoryFn: HasManyThroughRepositoryFactory<
+      Seller,
+      Order,
+      typeof Customer.prototype.id
+    > = createHasManyThroughRepositoryFactory<
+      Seller,
+      typeof Seller.prototype.id,
+      Order,
+      typeof Order.prototype.id,
+      typeof Customer.prototype.id
+    >(
+      Customer.definition.relations.sellers as HasManyThroughDefinition,
+      Getter.fromValue(sellerRepo),
+      Getter.fromValue(orderRepo),
+    );
+
     customerOrderRepo = orderFactoryFn(existingCustomerId);
+    customerSellerRepo = sellerFactoryFn(existingCustomerId);
   }
 
   function givenRepositoryFactoryFunctions() {
@@ -208,11 +283,14 @@ describe('BelongsTo relation', () => {
 class Order extends Entity {
   id: number;
   description: string;
-  customerId: number;
+  customerId?: number;
+  sellerId?: number;
 
   static definition = new ModelDefinition('Order')
     .addProperty('id', {type: 'number', id: true})
     .addProperty('description', {type: 'string', required: true})
+    .addProperty('customerId', {type: 'number'})
+    .addProperty('sellerId', {type: 'number'})
     .addProperty('customerId', {type: 'number', required: true})
     .addRelation({
       name: 'customer',
@@ -243,6 +321,7 @@ class Customer extends Entity {
   orders: Order[];
   reviewsAuthored: Review[];
   reviewsApproved: Review[];
+  sellers: Seller[];
 
   static definition: ModelDefinition = new ModelDefinition('Customer')
     .addProperty('id', {type: 'number', id: true})
@@ -273,6 +352,13 @@ class Customer extends Entity {
       source: Customer,
       target: () => Review,
       keyTo: 'approvedId',
+    })
+    .addRelation({
+      name: 'sellers',
+      type: RelationType.hasMany,
+      source: Customer,
+      target: () => Seller,
+      through: () => Order,
     });
 }
 
@@ -282,4 +368,5 @@ function givenCrudRepositories() {
   customerRepo = new DefaultCrudRepository(Customer, db);
   orderRepo = new DefaultCrudRepository(Order, db);
   reviewRepo = new DefaultCrudRepository(Review, db);
+  sellerRepo = new DefaultCrudRepository(Seller, db);
 }

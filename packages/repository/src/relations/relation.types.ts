@@ -68,6 +68,42 @@ export interface HasManyDefinition extends RelationDefinitionBase {
   keyTo?: string;
 }
 
+export interface HasManyThroughDefinition extends RelationDefinitionBase {
+  type: RelationType.hasMany;
+  targetsMany: true;
+
+  /**
+   * The through model of this relation.
+   *
+   * E.g. when a Customer has many Order instances and a Seller has many Order instances,
+   * then Order is through.
+   */
+  through: TypeResolver<Entity, typeof Entity>;
+
+  /**
+   * The foreign key used by the through model to reference the source model.
+   *
+   * E.g. when a Customer has many Order instances and a Seller has many Order instances,
+   * then keyTo is "customerId".
+   * Note that "customerId" is the default FK assumed by the framework, users
+   * can provide a custom FK name by setting "keyTo".
+   */
+  keyTo?: string;
+
+  /**
+   * The foreign key used by the through model to reference the target model.
+   *
+   * E.g. when a Customer has many Order instances and a Seller has many Order instances,
+   * then keyThrough is "sellerId".
+   */
+  keyThrough?: string;
+
+  /*
+   * The primary key in the target model when using through, e.g. Seller#id.
+   */
+  targetPrimaryKey?: string;
+}
+
 export interface BelongsToDefinition extends RelationDefinitionBase {
   type: RelationType.belongsTo;
   targetsMany: false;
@@ -102,6 +138,7 @@ export interface HasOneDefinition extends RelationDefinitionBase {
  */
 export type RelationMetadata =
   | HasManyDefinition
+  | HasManyThroughDefinition
   | BelongsToDefinition
   | HasOneDefinition
   // TODO(bajtos) add other relation types and remove RelationDefinitionBase once
