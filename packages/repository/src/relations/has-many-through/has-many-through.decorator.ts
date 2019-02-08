@@ -17,6 +17,7 @@ import {HasManyThroughDefinition, RelationType} from '../relation.types';
  */
 export function hasManyThrough<T extends Entity>(
   targetResolver: EntityResolver<T>,
+  throughResolver: EntityResolver<T>,
   definition?: Partial<HasManyThroughDefinition>,
 ) {
   return function(decoratedTarget: Object, key: string) {
@@ -30,6 +31,7 @@ export function hasManyThrough<T extends Entity>(
         type: RelationType.hasManyThrough,
         source: decoratedTarget.constructor,
         target: targetResolver,
+        through: throughResolver,
       },
     );
     relation(meta)(decoratedTarget, key);

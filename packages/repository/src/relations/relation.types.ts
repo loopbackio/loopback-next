@@ -61,6 +61,13 @@ export interface HasManyThroughDefinition extends RelationDefinitionBase {
   type: RelationType.hasManyThrough;
 
   /**
+   * The through model of this relation.
+   *
+   * E.g. when a Customer has many Order instances and a Seller has many Order instances, then Order is through.
+   */
+  through: TypeResolver<Entity, typeof Entity>;
+
+  /**
    * The foreign key used by the target model.
    *
    * E.g. when a Customer has many Order instances, then keyTo is "customerId".
@@ -68,6 +75,8 @@ export interface HasManyThroughDefinition extends RelationDefinitionBase {
    * can provide a custom FK name by setting "keyTo".
    */
   keyTo?: string;
+
+  targetFkName?: string;
 }
 
 export interface BelongsToDefinition extends RelationDefinitionBase {
