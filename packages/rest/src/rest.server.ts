@@ -5,11 +5,11 @@
 
 import {
   Binding,
+  BindingAddress,
+  BindingScope,
   Constructor,
   Context,
   inject,
-  BindingScope,
-  BindingAddress,
 } from '@loopback/context';
 import {Application, CoreBindings, Server} from '@loopback/core';
 import {HttpServer, HttpServerOptions} from '@loopback/http-server';
@@ -38,11 +38,12 @@ import {
   ControllerInstance,
   ControllerRoute,
   createControllerFactoryForBinding,
+  ExternalExpressRoutes,
+  RedirectRoute,
+  RestRouterOptions,
   Route,
   RouteEntry,
   RoutingTable,
-  ExternalExpressRoutes,
-  RedirectRoute,
 } from './router';
 import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
 import {
@@ -51,9 +52,9 @@ import {
   ParseParams,
   Reject,
   Request,
+  RequestBodyParserOptions,
   Response,
   Send,
-  RequestBodyParserOptions,
 } from './types';
 
 const debug = debugFactory('loopback:rest:server');
@@ -206,6 +207,10 @@ export class RestServer extends Context implements Server, HttpServerLike {
       this.sequence(config.sequence);
     }
 
+    if (config.router) {
+      this.bind(RestBindings.ROUTER_OPTIONS).to(config.router);
+    }
+
     this.basePath(config.basePath);
 
     this.bind(RestBindings.BASE_PATH).toDynamicValue(() => this._basePath);
@@ -253,6 +258,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
     const settings = this.config.expressSettings || {};
     for (const key in settings) {
       this._expressApp.set(key, settings[key]);
+    }
+    if (this.config.router && typeof this.config.router.strict === 'boolean') {
+      this._expressApp.set('strict routing', this.config.router.strict);
     }
   }
 
@@ -993,6 +1001,7 @@ export interface RestServerOptions {
   sequence?: Constructor<SequenceHandler>;
   // tslint:disable-next-line:no-any
   expressSettings?: {[name: string]: any};
+  router?: RestRouterOptions;
 }
 
 /**
