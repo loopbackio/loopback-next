@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.5.2...@loopback/cli@1.6.0) (2019-02-08)
+
+
+### Bug Fixes
+
+* remove unused juggler import ([0121c10](https://github.com/strongloop/loopback-next/commit/0121c10))
+* update to the most recent lodash version ([65ee865](https://github.com/strongloop/loopback-next/commit/65ee865))
+
+
+### Features
+
+* **cli:** scaffold test files to `src/__tests__` ([d3a3bea](https://github.com/strongloop/loopback-next/commit/d3a3bea))
+* **cli:** use a custom repository base class ([edbbe88](https://github.com/strongloop/loopback-next/commit/edbbe88))
+
+
+
+
+
 ## [1.5.2](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.5.1...@loopback/cli@1.5.2) (2019-01-28)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.10](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.9...@loopback/benchmark@1.1.10) (2019-02-08)
+
+
+### Bug Fixes
+
+* **benchmark:** set TypeScript's rootDir to src ([51cba45](https://github.com/strongloop/loopback-next/commit/51cba45))
+
+
+
+
+
 ## [1.1.9](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.8...@loopback/benchmark@1.1.9) (2019-01-28)
 
 **Note:** Version bump only for package @loopback/benchmark

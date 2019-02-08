@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.5](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.5.4...@loopback/rest@1.5.5) (2019-02-08)
+
+
+### Bug Fixes
+
+* **rest:** sanitize json for JSON.parse() ([5042698](https://github.com/strongloop/loopback-next/commit/5042698))
+* update to the most recent lodash version ([65ee865](https://github.com/strongloop/loopback-next/commit/65ee865))
+
+
+
+
+
 ## [1.5.4](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.5.3...@loopback/rest@1.5.4) (2019-01-28)
 
 **Note:** Version bump only for package @loopback/rest

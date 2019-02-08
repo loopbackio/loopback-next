@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.3](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.7.2...@loopback/docs@1.7.3) (2019-02-08)
+
+
+### Bug Fixes
+
+* **docs:** remove .ts from imports ([c601c4c](https://github.com/strongloop/loopback-next/commit/c601c4c))
+* **docs:** update link in todo-tutorial-geocoding-service ([e6a8d73](https://github.com/strongloop/loopback-next/commit/e6a8d73))
+* **docs:** update test paths to `src/__tests__` ([75731f9](https://github.com/strongloop/loopback-next/commit/75731f9))
+
+
+
+
+
 ## [1.7.2](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.7.1...@loopback/docs@1.7.2) (2019-01-28)
 
 **Note:** Version bump only for package @loopback/docs
