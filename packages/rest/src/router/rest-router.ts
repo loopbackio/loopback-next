@@ -29,3 +29,12 @@ export interface RestRouter {
    */
   list(): RouteEntry[];
 }
+
+export type RestRouterOptions = {
+  /**
+   * When true it allows an optional trailing slash to match. (default: false)
+   *
+   * See `strict routing` at http://expressjs.com/en/4x/api.html#app
+   */
+  strict?: boolean;
+};

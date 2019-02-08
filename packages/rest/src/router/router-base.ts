@@ -7,7 +7,7 @@ import {Request} from '../types';
 import {getPathVariables} from './openapi-path';
 import {createResolvedRoute, ResolvedRoute, RouteEntry} from './route-entry';
 import {compareRoute} from './route-sort';
-import {RestRouter} from './rest-router';
+import {RestRouter, RestRouterOptions} from './rest-router';
 
 /**
  * Base router implementation that only handles path without variables
@@ -16,12 +16,12 @@ export abstract class BaseRouter implements RestRouter {
   /**
    * A map to optimize matching for routes without variables in the path
    */
-  protected routesWithoutPathVars: {[path: string]: RouteEntry} = {};
+  protected routesWithoutPathVars: {[key: string]: RouteEntry} = {};
+
+  constructor(protected options: RestRouterOptions = {strict: false}) {}
 
   protected getKeyForRoute(route: RouteEntry) {
-    const path = route.path.startsWith('/') ? route.path : `/${route.path}`;
-    const verb = route.verb.toLowerCase() || 'get';
-    return `/${verb}${path}`;
+    return this.getKey(route.verb, route.path);
   }
 
   add(route: RouteEntry) {
@@ -34,15 +34,33 @@ export abstract class BaseRouter implements RestRouter {
   }
 
   protected getKeyForRequest(request: Request) {
-    const method = request.method.toLowerCase();
-    return `/${method}${request.path}`;
+    return this.getKey(request.method, request.path);
   }
 
   find(request: Request) {
-    const path = this.getKeyForRequest(request);
-    let route = this.routesWithoutPathVars[path];
+    if (this.options.strict) {
+      return this.findRoute(request.method, request.path);
+    }
+    // Non-strict mode
+    let path = request.path;
+    // First try the exact match
+    let route = this.findRoute(request.method, path);
+    if (route || path === '/') return route;
+    if (path.endsWith('/')) {
+      // Fall back to the path without trailing slash
+      path = path.substring(0, path.length - 1);
+    } else {
+      // Fall back to the path with trailing slash
+      path = path + '/';
+    }
+    return this.findRoute(request.method, path);
+  }
+
+  private findRoute(verb: string, path: string) {
+    const key = this.getKey(verb, path);
+    let route = this.routesWithoutPathVars[key];
     if (route) return createResolvedRoute(route, {});
-    else return this.findRouteWithPathVars(request);
+    else return this.findRouteWithPathVars(verb, path);
   }
 
   list() {
@@ -52,23 +70,55 @@ export abstract class BaseRouter implements RestRouter {
     return routes.sort(compareRoute);
   }
 
+  /**
+   * Build a key for verb+path as `/<verb>/<path>`
+   * @param verb HTTP verb/method
+   * @param path URL path
+   */
+  protected getKey(verb: string, path: string) {
+    verb = normalizeVerb(verb);
+    path = normalizePath(path);
+    return `/${verb}${path}`;
+  }
+
   // The following abstract methods need to be implemented by its subclasses
   /**
    * Add a route with path variables
-   * @param route
+   * @param route Route
    */
   protected abstract addRouteWithPathVars(route: RouteEntry): void;
 
   /**
-   * Find a route with path variables
-   * @param route
+   * Find a route with path variables for a given request
+   * @param request Http request
    */
   protected abstract findRouteWithPathVars(
-    request: Request,
+    verb: string,
+    path: string,
   ): ResolvedRoute | undefined;
 
   /**
    * List routes with path variables
    */
   protected abstract listRoutesWithPathVars(): RouteEntry[];
+}
+
+/**
+ * Normalize http verb to lowercase
+ * @param verb Http verb
+ */
+function normalizeVerb(verb: string) {
+  // Use lower case, default to `get`
+  return (verb && verb.toLowerCase()) || 'get';
+}
+
+/**
+ * Normalize path to make sure it starts with `/`
+ * @param path Path
+ */
+function normalizePath(path: string) {
+  // Prepend `/` if needed
+  path = path || '/';
+  path = path.startsWith('/') ? path : `/${path}`;
+  return path;
 }

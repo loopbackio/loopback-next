@@ -42,6 +42,7 @@ import {
   RouteEntry,
   RoutingTable,
   StaticAssetsRoute,
+  RestRouterOptions,
 } from './router';
 import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
 import {
@@ -194,6 +195,10 @@ export class RestServer extends Context implements Server, HttpServerLike {
       this.sequence(config.sequence);
     }
 
+    if (config.router) {
+      this.bind(RestBindings.ROUTER_OPTIONS).to(config.router);
+    }
+
     this.basePath(config.basePath);
 
     this.bind(RestBindings.BASE_PATH).toDynamicValue(() => this._basePath);
@@ -204,6 +209,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
     if (this._expressApp) return;
     this._expressApp = express();
     this._expressApp.set('query parser', 'extended');
+    if (this.config.router && typeof this.config.router.strict === 'boolean') {
+      this._expressApp.set('strict routing', this.config.router.strict);
+    }
     this._requestHandler = this._expressApp;
 
     // Allow CORS support for all endpoints so that users
@@ -937,6 +945,7 @@ export interface RestServerOptions {
   openApiSpec?: OpenApiSpecOptions;
   apiExplorer?: ApiExplorerOptions;
   sequence?: Constructor<SequenceHandler>;
+  router?: RestRouterOptions;
 }
 
 /**
