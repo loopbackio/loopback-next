@@ -24,7 +24,7 @@ const debug = debugFactory(
 export type HasManyThroughRepositoryFactory<
   Target extends Entity,
   ForeignKeyType
-> = (fkValue: ForeignKeyType) => Promise<HasManyThroughRepository<Target>>;
+> = (fkValue: ForeignKeyType) => HasManyThroughRepository<Target>;
 
 /**
  * Enforces a constraint on a repository based on a relationship contract
@@ -52,27 +52,30 @@ export function createHasManyThroughRepositoryFactory<
 ): HasManyThroughRepositoryFactory<Target, ForeignKeyType> {
   const meta = resolveHasManyThroughMetadata(relationMetadata);
   debug('Resolved HasManyThrough relation metadata: %o', meta);
-  return async function(fkValue: ForeignKeyType) {
-    // tslint:disable-next-line:no-any
-    const throughConstraint: any = {[meta.keyTo]: fkValue};
-    const throughRepo = await getThroughRepository();
-    const throughInstances = await throughRepo.find(
-      constrainFilter(undefined, throughConstraint),
-    );
-    if (!throughInstances.length) {
-      const id = 'through constraint ' + JSON.stringify(throughConstraint);
-      throw new EntityNotFoundError(throughRepo.entityClass, id);
+  return function(fkValue: ForeignKeyType) {
+    async function getConstraint(): Promise<DataObject<Target>> {
+      // tslint:disable-next-line:no-any
+      const throughConstraint: any = {[meta.keyTo]: fkValue};
+      const throughRepo = await getThroughRepository();
+      const throughInstances = await throughRepo.find(
+        constrainFilter(undefined, throughConstraint),
+      );
+      if (!throughInstances.length) {
+        const id = 'through constraint ' + JSON.stringify(throughConstraint);
+        throw new EntityNotFoundError(throughRepo.entityClass, id);
+      }
+      const constraint = {
+        or: throughInstances.map((throughInstance: Through) => {
+          return {id: throughInstance[meta.targetFkName as keyof Through]};
+        }),
+      };
+      return constraint as DataObject<Target>;
     }
-    const constraint = {
-      or: throughInstances.map((throughInstance: Through) => {
-        return {id: throughInstance[meta.targetFkName as keyof Through]};
-      }),
-    };
     return new DefaultHasManyThroughRepository<
       Target,
       TargetID,
       EntityCrudRepository<Target, TargetID>
-    >(targetRepositoryGetter, constraint as DataObject<Target>);
+    >(targetRepositoryGetter, getConstraint);
   };
 }
 

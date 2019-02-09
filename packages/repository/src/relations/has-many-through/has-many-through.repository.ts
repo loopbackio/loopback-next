@@ -69,7 +69,7 @@ export class DefaultHasManyThroughRepository<
    */
   constructor(
     public getTargetRepository: Getter<TargetRepository>,
-    public constraint: DataObject<TargetEntity>,
+    public getConstraint: () => Promise<DataObject<TargetEntity>>,
   ) {}
 
   async create(
@@ -78,7 +78,7 @@ export class DefaultHasManyThroughRepository<
   ): Promise<TargetEntity> {
     const targetRepository = await this.getTargetRepository();
     return targetRepository.create(
-      constrainDataObject(targetModelData, this.constraint),
+      constrainDataObject(targetModelData, await this.getConstraint()),
       options,
     );
   }
@@ -89,7 +89,7 @@ export class DefaultHasManyThroughRepository<
   ): Promise<TargetEntity[]> {
     const targetRepository = await this.getTargetRepository();
     return targetRepository.find(
-      constrainFilter(filter, this.constraint),
+      constrainFilter(filter, await this.getConstraint()),
       options,
     );
   }
@@ -97,7 +97,9 @@ export class DefaultHasManyThroughRepository<
   async delete(where?: Where<TargetEntity>, options?: Options): Promise<Count> {
     const targetRepository = await this.getTargetRepository();
     return targetRepository.deleteAll(
-      constrainWhere(where, this.constraint as Where<TargetEntity>),
+      constrainWhere(where, (await this.getConstraint()) as Where<
+        TargetEntity
+      >),
       options,
     );
   }
@@ -109,8 +111,10 @@ export class DefaultHasManyThroughRepository<
   ): Promise<Count> {
     const targetRepository = await this.getTargetRepository();
     return targetRepository.updateAll(
-      constrainDataObject(dataObject, this.constraint),
-      constrainWhere(where, this.constraint as Where<TargetEntity>),
+      constrainDataObject(dataObject, await this.getConstraint()),
+      constrainWhere(where, (await this.getConstraint()) as Where<
+        TargetEntity
+      >),
       options,
     );
   }
