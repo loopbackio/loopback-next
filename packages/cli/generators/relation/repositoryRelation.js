@@ -1,117 +1,166 @@
 const ArtifactGenerator = require('../../lib/artifact-generator');
-const debug = require('../../lib/debug')('relation-generator');
-const inspect = require('util').inspect;
-const path = require('path');
-const chalk = require('chalk');
-const utils = require('../../lib/utils');
 
-const fs = require('fs');
 const ast = require('ts-simple-ast');
+const path = require('path');
+const utils = require('../../lib/utils');
+const relationUtils = require('./relationutils');
 
-const relationType = {
-  hasOne: 'hasOne',
-  hasMany: 'hasMany',
-  belongsTo: 'belongsTo',
-};
 
 module.exports = class RepositoryRelation extends ArtifactGenerator {
+
+  constructor(args, opts) {
+    super(args, opts);
+  }
+
   _setupGenerator() {
+
     super._setupGenerator();
+
     this.artifactInfo = {
       type: 'relation',
-      rootDir: utils.sourceRootDir,
+      rootDir: utils.sourceRootDir
     };
-
-    this.artifactInfo.repositoryDir = path.resolve(
+    this.artifactInfo.repositoriesDir = path.resolve(
       this.artifactInfo.rootDir,
-      'repositories',
+      'repositories'
+    );
+    this.artifactInfo.modelsDir = path.resolve(
+      this.artifactInfo.rootDir,
+      'models',
     );
   }
 
-  generateRelationRepository(
-    sourceModel,
-    targetModel,
-    foreignKey,
-    relationName,
-  ) {
-    let result;
-    let projectPath = this.artifactInfo.repositoryDir;
+  generateRelationRepository(sourceModel, targetModel,
+    foreignKey, relationName) {
+    this.initializeProperties(sourceModel, targetModel, relationName);
+    this.handleImports();
+    this.handleProperties();
+    this.handleConstructor();
+    this.artifactInfo.srcRepositoryFile.save();
+  }
 
-    if (!this.doesRepositoryExists(projectPath, sourceModel)) {
-      throw Error("repository for source model doesn't exist");
+  initializeProperties(sourceModel, targetModel, relationName) {
+
+    this.artifactInfo.srcModelFile = path.resolve(
+      this.artifactInfo.modelsDir,
+      sourceModel + ".model.ts");
+
+    this.artifactInfo.dstModelFile = path.resolve(
+      this.artifactInfo.modelsDir,
+      targetModel + ".model.ts");
+
+    this.artifactInfo.srcModelClass =
+      this.getClassName(this.artifactInfo.srcModelFile);
+
+    this.artifactInfo.dstModelClass =
+      this.getClassName(this.artifactInfo.dstModelFile);
+
+    this.artifactInfo.srcRepositoryFile = path.resolve(
+      this.artifactInfo.repositoriesDir,
+      sourceModel + ".repository.ts"
+    )
+
+    this.artifactInfo.dstRepositoryFile = path.resolve(
+      this.artifactInfo.repositoriesDir,
+      targetModel + ".repository.ts"
+    )
+
+    this.artifactInfo.srcRepositoryClassName =
+      this.getClassName(this.artifactInfo.srcRepositoryFile);
+
+    this.artifactInfo.dstRepositoryClassName =
+      this.getClassName(this.artifactInfo.dstRepositoryFile);
+
+    this.artifactInfo.relationName = relationName;
+
+
+    this.artifactInfo.relationProperty = {
+      name: this.getRelationPropertyName(),
+      type: this.getRelationPropertyType()
     }
-    if (!doesRepositoryExists(projectPath, targetModel)) {
-      throw Error("repository for target model doesn't exist");
+
+    this.artifactInfo.srcRepositoryFile = new ast.Project().
+      addExistingSourceFile(this.artifactInfo.srcRepositoryFile);
+  }
+
+  getRelationPropertyName() {
+    let propertyName = this.artifactInfo.dstModelClass[0].toLowerCase();
+    propertyName += this.artifactInfo.dstModelClass.substring(1);
+
+    if (this.artifactInfo.relationName == relationUtils.relationType.hasMany) {
+      propertyName += "s";
     }
-    if (
-      relationName != relationType.hasOne &&
-      relationName != relationType.hasMany &&
-      relationName != relationType.belongsTo
-    ) {
-      throw Error('relation is invalid');
+    return propertyName;
+  }
+
+  getRelationPropertyType() {
+    let propertyType =
+      this.capitalizeFirstLetter(this.artifactInfo.relationName);
+    if (this.artifactInfo.relationName == relationUtils.relationType.belongsTo) {
+      propertyType += "Accessor";
     }
-
-    generateRelation(projectPath, sourceModel, targetModel, relationName);
-  }
-
-  doesRepositoryExists(path, model) {
-    let tempPath = path + '/src/repositories/' + model + '.repository.ts';
-    let result = fs.existsSync(tempPath);
-    return result;
-  }
-
-  generateRelation(projectPath, sourceModel, targetModel, relationName) {
-    let sourceFile = initiateSourceFile(projectPath, sourceModel);
-    addRequiredImports(sourceFile, targetModel, relationName);
-    addRequiredProperties(sourceFile, sourceModel, targetModel, relationName);
-    editConstructor(sourceFile, sourceModel, targetModel, relationName);
-    sourceFile.save();
-  }
-
-  initiateSourceFile(basePath, modelName) {
-    let repoPath = createRepositoryPath(basePath, modelName);
-    let project = new ast.Project();
-    let sourceFile = project.addExistingSourceFile(repoPath);
-
-    return sourceFile;
-  }
-
-  createRepositoryPath(basePath, modelName) {
-    return basePath + '/src/repositories/' + modelName + '.repository.ts';
-  }
-
-  addRequiredImports(sourceFile, targetModel, relationName) {
-    let importsArray = getRequiredImports(targetModel, relationName);
-    while (importsArray.length > 0) {
-      let currentImport = importsArray.pop();
-      addCurrentImport(sourceFile, currentImport);
+    else if (this.artifactInfo.relationName == relationType.hasOne ||
+      this.artifactInfo.relationName == relationUtils.relationType.hasMany) {
+      propertyType += "RepositoryFactory"
     }
+    else {
+      throw Error("relation is invalid");
+    }
+    propertyType = propertyType +
+      "<" + this.capitalizeFirstLetter(this.artifactInfo.dstModelClass) +
+      ", typeof " +
+      this.capitalizeFirstLetter(this.artifactInfo.srcModelClass) +
+      ".prototype.id>";
+
+    return (propertyType);
   }
 
-  getRequiredImports(targetModel, relationName) {
-    let capRelationName = capitalizeFirstLetter(relationName);
+  getClassName(fileName) {
+    let sourceFile = new ast.Project().addExistingSourceFile(fileName);
+    let className = sourceFile.getClasses()[0].getNameOrThrow();
+    return className;
+  }
 
-    let importsArray = getSharedImports(targetModel);
+  handleImports() {
+    let requierdImports = this.getRequiredImports();
+    this.addRequiredImports(requierdImports);
+  }
 
-    switch (relationName) {
-      case relationType.hasMany:
+  getRequiredImports() {
+    let importsArray = [{
+      name: this.artifactInfo.dstModelClass,
+      module: "../models"
+    }, {
+      name: "repository",
+      module: "@loopback/repository"
+    }, {
+      name: "Getter",
+      module: "@loopback/core"
+    }, {
+      name: this.artifactInfo.dstRepositoryClassName,
+      module: "./index"
+    }];
+
+    let RelationName =
+      this.capitalizeFirstLetter(this.artifactInfo.relationName);
+    switch (this.artifactInfo.relationName) {
+      case (relationType.hasMany):
         importsArray.push({
-          name: capRelationName + 'RepositoryFactory',
-          module: '@loopback/repository',
+          name: RelationName + "RepositoryFactory",
+          module: "@loopback/repository"
+        });
+        break;
+      case (relationType.hasOne):
+        importsArray.push({
+          name: RelationName + "RepositoryFactory",
+          module: "@loopback/repository"
         });
         break;
 
-      case relationType.hasOne:
+      case (relationType.belongsTo):
         importsArray.push({
-          name: capRelationName + 'RepositoryFactory',
-          module: '@loopback/repository',
-        });
-        break;
-
-      case relationType.belongsTo:
-        importsArray.push({
-          name: capRelationName + 'Accessor',
-          module: '@loopback/repository',
+          name: RelationName + "Accessor",
+          module: "@loopback/repository"
         });
         break;
 
@@ -122,169 +171,141 @@ module.exports = class RepositoryRelation extends ArtifactGenerator {
     return importsArray;
   }
 
-  getSharedImports(targetModel) {
-    let capTargetModel = capitalizeFirstLetter(targetModel);
-    let importsArray = [
-      {
-        name: capTargetModel,
-        module: '../models',
-      },
-      {
-        name: capTargetModel + 'Repository',
-        module: './index',
-      },
-      {
-        name: 'repository',
-        module: '@loopback/repository',
-      },
-      {
-        name: 'Getter',
-        module: '@loopback/core',
-      },
-    ];
-    return importsArray;
-  }
-
-  addCurrentImport(sourceFile, currentImport) {
-    if (!doesModuleExists(sourceFile, currentImport.module)) {
-      sourceFile.addImportDeclaration({
-        moduleSpecifier: currentImport.module,
-      });
-    }
-    if (!doesImportExistInModule(sourceFile, currentImport)) {
-      sourceFile
-        .getImportDeclarationOrThrow(currentImport.module)
-        .addNamedImport(currentImport.name);
+  addRequiredImports(requiredImports) {
+    for (let currentImport of requiredImports) {
+      this.addImport(currentImport, this.artifactInfo.srcRepositoryFile);
     }
   }
 
-  doesModuleExists(sourceFile, moduleName) {
-    return sourceFile.getImportDeclaration(moduleName);
-  }
-
-  doesImportExistInModule(sourceFile, currentImport) {
-    let identicalImport;
-    let relevantImports = getNamedImportsFromModule(
-      sourceFile,
-      currentImport.module,
-    );
-    if (relevantImports.length > 0) {
-      identicalImport = relevantImports[0]
-        .getNamedImports()
-        .filter(imp => imp.getName() == currentImport.name);
+  addImport(requiredImport) {
+    if (!this.doesModuleExist(requiredImport)) {
+      this.addImportWithNonExistingModule(requiredImport);
     }
-
-    return identicalImport && identicalImport.length > 0;
+    else {
+      this.addImportsWithExistingModule(requiredImport);
+    }
   }
 
-  getNamedImportsFromModule(sourceFile, moduleName) {
-    let allImports = sourceFile.getImportDeclarations();
-    let relevantImports = allImports.filter(
-      imp => imp.getModuleSpecifierValue() == moduleName,
-    );
-    return relevantImports;
+  addImportWithNonExistingModule(requiredImport) {
+    this.artifactInfo.srcRepositoryFile.addImportDeclaration({
+      moduleSpecifier: requiredImport.module,
+      namedImports: [requiredImport.name]
+    });
   }
 
-  capitalizeFirstLetter(string) {
-    string = string[0].toUpperCase() + string.substring(1);
-    return string;
+  addImportsWithExistingModule(requiredImport) {
+    let moduleName = requiredImport.module;
+    let importDeclcaration =
+      this.artifactInfo.srcRepositoryFile.
+        getImportDeclarationOrThrow(moduleName);
+    if (!this.doesImportExist(importDeclcaration, requiredImport.name)) {
+      importDeclcaration.addNamedImport(requiredImport.name);
+    }
   }
 
-  addRequiredProperties(sourceFile, sourceModel, targetModel, relationName) {
-    let classDeclaration = sourceFile.getClassOrThrow(
-      capitalizeFirstLetter(sourceModel) + 'Repository',
-    );
+  doesImportExist(importDelcaration, importName) {
+    let allNamedImports = importDelcaration.getNamedImports();
+    for (let currentNamedImport of allNamedImports) {
+      if (currentNamedImport.getName() == importName) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  doesModuleExist(importDeclaration) {
+    let moduleName = importDeclaration.module;
+    let relevantImport = this.artifactInfo.srcRepositoryFile.
+      getImportDeclaration(moduleName);
+    return (relevantImport != undefined);
+  }
+
+  handleProperties() {
+
+    let classDeclaration =
+      this.artifactInfo.srcRepositoryFile.
+        getClassOrThrow(this.artifactInfo.srcRepositoryClassName);
+
+    this.addProperty(classDeclaration);
+
+    this.orderProperties(classDeclaration);
+  }
+
+  addProperty(classDeclaration) {
     classDeclaration.addProperty({
       scope: ast.Scope.Public,
       isReadonly: true,
-      name: getTargetPropertyName(targetModel, relationName),
-      type: getTargetPropertyType(sourceModel, targetModel, relationName),
+      name: this.artifactInfo.relationProperty.name,
+      type: this.artifactInfo.relationProperty.type,
     });
-    orderProperties(classDeclaration);
-  }
-
-  getTargetPropertyName(targetModel, relationName) {
-    let propertyName = targetModel[0].toLowerCase();
-    propertyName += targetModel.substring(1);
-
-    if (relationName == relationType.hasMany) {
-      propertyName += 's';
-    }
-    return propertyName;
-  }
-
-  getTargetPropertyType(sourceModel, targetModel, relationName) {
-    let propertyType = capitalizeFirstLetter(relationName);
-    if (relationName == relationType.belongsTo) {
-      propertyType += 'Accessor';
-    } else if (
-      relationName == relationType.hasOne ||
-      relationName == relationType.hasMany
-    ) {
-      propertyType += 'RepositoryFactory';
-    } else {
-      throw Error('relation is invalid');
-    }
-    propertyType +=
-      '<' +
-      capitalizeFirstLetter(targetModel) +
-      ', typeof ' +
-      capitalizeFirstLetter(sourceModel) +
-      '.prototype.id>';
-
-    return propertyType;
   }
 
   orderProperties(classDeclaration) {
-    classDeclaration.getProperties().forEach(function(currentProperty) {
+    classDeclaration.getProperties().forEach(function (currentProperty) {
       currentProperty.setOrder(0);
-    });
+    })
   }
 
-  editConstructor(sourceFile, sourceModel, targetModel, relationName) {
-    let capSourceModel = capitalizeFirstLetter(sourceModel);
-    let classDeclaration = sourceFile.getClassOrThrow(
-      capSourceModel + 'Repository',
-    );
+  handleConstructor() {
+
+    let classDeclaration =
+      this.artifactInfo.srcRepositoryFile.
+        getClassOrThrow(this.artifactInfo.srcRepositoryClassName);
     let classConstructor = classDeclaration.getConstructors()[0];
-    addParameters(classConstructor, targetModel);
-    addCreator(classConstructor, targetModel, relationName);
+
+    this.addParameters(classConstructor);
+
+    this.addCreator(classConstructor);
   }
 
-  addParameters(classConstructor, targetModel) {
+  addParameters(classConstructor) {
     classConstructor.addParameter({
-      decorators: [
-        {
-          name: 'repository.getter',
-          arguments: ["'" + capitalizeFirstLetter(targetModel) + "Repository'"],
-        },
-      ],
-      name: targetModel + 'RepositoryGetter',
-      type: 'Getter<' + capitalizeFirstLetter(targetModel) + 'Repository>,',
-    });
+      decorators: [{
+        name: "repository.getter",
+        arguments: ["\'" +
+          this.artifactInfo.dstRepositoryClassName + "\'"]
+      }],
+      name: this.regularizeFirstLetter(this.artifactInfo.dstRepositoryClassName) +
+        "Getter",
+      type: "Getter<" + this.artifactInfo.dstRepositoryClassName + ">,",
+      scope: ast.Scope.Protected
+    })
   }
 
-  addCreator(classConstructor, targetModel, relationName) {
-    var propertyName = getTargetPropertyName(targetModel, relationName);
-    var method = 'this.create' + capitalizeFirstLetter(relationName);
-    if (relationName == relationType.belongsTo) {
-      method += 'Accessor';
-    } else if (
-      relationName == relationType.hasMany ||
-      relationName == relationType.hasOne
-    ) {
-      method += 'RepositoryFactory';
-    } else {
-      throw Error('relation is invalid');
+
+  addCreator(classConstructor) {
+    let statement = "this.create" +
+      this.capitalizeFirstLetter(this.artifactInfo.relationName);
+    if (this.artifactInfo.relationName == relationType.belongsTo) {
+      statement += "Accessor";
     }
-    method += 'For(';
+    else if (this.artifactInfo.relationName == relationType.hasMany ||
+      this.artifactInfo.relationName == relationType.hasOne) {
+      statement += "RepositoryFactory";
+    }
+    else {
+      throw Error("relation is invalid");
+    }
+    statement += "For(";
 
-    var parameter1 = "'" + propertyName + "',";
-    var paramater2 = 'get' + capitalizeFirstLetter(targetModel) + 'Repository,';
+    let parameter1 = "\'" + this.artifactInfo.relationProperty.name + "\',";
+    let paramater2 =
+      this.regularizeFirstLetter(this.artifactInfo.dstRepositoryClassName) +
+      "Getter,";
 
-    let creatorStatement =
-      'this.' + propertyName + '=' + method + parameter1 + paramater2 + ');';
+    statement = "this." +
+      this.artifactInfo.relationProperty.name + "=" + statement +
+      parameter1 + paramater2 + ");";
 
-    classConstructor.insertStatements(1, creatorStatement);
+    classConstructor.insertStatements(1, statement);
   }
-};
+
+  capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  regularizeFirstLetter(string) {
+    return string.charAt(0).toLowerCase() + string.slice(1);
+  }
+
+}
