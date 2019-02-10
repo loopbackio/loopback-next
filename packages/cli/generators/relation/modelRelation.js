@@ -21,13 +21,7 @@ module.exports = class ModelRelation extends ArtifactGenerator {
     );
   }
 
-  generateRelationModel(options
-    // sourceModel,
-    // targetModel,
-    // foreignKey,
-    // relationType,
-    // relationName,
-  ) {
+  generateRelationModel(options) {
     let modelPath = this.artifactInfo.modelDir;
     this.generateModel(
       this.options.sourceModel,

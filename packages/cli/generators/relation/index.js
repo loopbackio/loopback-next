@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
+
 const _ = require('lodash');
 const ArtifactGenerator = require('../../lib/artifact-generator');
 const debug = require('../../lib/debug')('relation-generator');
@@ -21,9 +22,9 @@ const ModelRelation = require('./modelRelation');
 const ERROR_INCORRECT_RELATION_TYPE = 'Incorrect Relation Type';
 
 const PROMPT_BASE_RELATION_CLASS = 'Please select the relation type';
-const PROMPT_MESSAGE__SOURCE_MODEL = 'Please select source model';
-const PROMPT_MESSAGE__TARGET__MODEL = 'Please select target model';
-const PROMPT_MESSAGE__PROPERTY_NAME = 'Property name for the relation';
+const PROMPT_MESSAGE_SOURCE_MODEL = 'Please select source model';
+const PROMPT_MESSAGE_TARGET_MODEL = 'Please select target model';
+const PROMPT_MESSAGE_PROPERTY_NAME = 'Property name for the relation';
 
 const RELATION_TYPE_BELONGS_TO = 'belongsTo';
 const RELATION_TYPE_HAS_MANY = 'hasMany';
@@ -32,7 +33,7 @@ const RELATION_TYPE_HAS_ONE = 'hasOne';
 const availableRelationsBaseClasses = [
   RELATION_TYPE_BELONGS_TO,
   RELATION_TYPE_HAS_MANY,
-  RELATION_TYPE_HAS_ONE
+  RELATION_TYPE_HAS_ONE,
 ];
 
 const relPathControllersFolder = '/controllers';
@@ -136,13 +137,11 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     //Invoke here Model and Repository Generators
     debug('Invoke Model generator...');
     let model = new ModelRelation(this.args, this.opts);
-    this.artifactInfo.name = this.options.relationType;
     this.artifactInfo.relPath = relPathModel;
     //model.generateRelationModel(this.options);
     /*
                 debug('Invoke Repository generator...');
                 let repo = new RepositoryRelation(this.args, this.opts);
-                this.artifactInfo.name = this.options.relationType;
                 this.artifactInfo.relPath = relPathRepo;
                 repo.generateRelationRepository(
                   this.options.sourceModel,
@@ -166,20 +165,27 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     );
   }
 
-  // Prompt a user for Relation type
-  async promptRelationBaseClassName() {
-    this.artifactInfo.relationType = await this.prompt([
-      {
-        type: 'list',
-        name: 'relationBaseClass',
-        message: PROMPT_BASE_RELATION_CLASS,
-        choices: availableRelationsBaseClasses,
-        when: !this.artifactInfo.availableRelationsBaseClasses,
-        validate: utils.validateClassName,
-      },
-    ]);
-    this.options.relationType = this.artifactInfo.relationType.relationBaseClass;
-    return this.artifactInfo.relationType;
+  _getDefaultRelationName() {
+    var defaultRelationName;
+    switch (this.options.relationType) {
+      case RELATION_TYPE_BELONGS_TO:
+        defaultRelationName =
+          utils.camelCase(this.options.destinationModel) +
+          utils.toClassName(this.options.foreignKey);
+        break;
+      case RELATION_TYPE_HAS_MANY:
+        defaultRelationName = utils.pluralize(
+          utils.camelCase(this.options.destinationModel),
+        );
+        break;
+      case RELATION_TYPE_HAS_ONE:
+        defaultRelationName = utils.camelCase(this.options.destinationModel);
+        break;
+      default:
+        throw new Error(ERROR_INCORRECT_RELATION_TYPE);
+    }
+
+    return defaultRelationName;
   }
 
   async _promptModelList(message, parameter) {
@@ -195,7 +201,9 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     }
 
     if (this.options[parameter]) {
-      debug(`Model name received from command line: ${this.options[parameter]}`);
+      debug(
+        `Model name received from command line: ${this.options[parameter]}`,
+      );
 
       this.options.model = utils.toClassName(this.options[parameter]);
       // assign the model name from the command line only if it is valid
@@ -204,7 +212,9 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         modelList.length > 0 &&
         modelList.includes(this.options.model)
       ) {
-        Object.assign(this.artifactInfo, { modelNameList: [this.options[parameter]] });
+        Object.assign(this.artifactInfo, {
+          modelNameList: [this.options[parameter]],
+        });
       } else {
         modelList = [];
       }
@@ -214,8 +224,8 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         new Error(
           `${ERROR_NO_MODELS_FOUND} ${this.artifactInfo.modelDir}.
         ${chalk.yellow(
-            'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
-          )}`,
+          'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
+        )}`,
         ),
       );
     }
@@ -234,13 +244,29 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     return this.artifactInfo[parameter];
   }
 
+  // Prompt a user for Relation type
+  async promptRelationBaseClassName() {
+    this.artifactInfo.relationType = await this.prompt([
+      {
+        type: 'list',
+        name: 'relationBaseClass',
+        message: PROMPT_BASE_RELATION_CLASS,
+        choices: availableRelationsBaseClasses,
+        when: !this.artifactInfo.availableRelationsBaseClasses,
+        validate: utils.validateClassName,
+      },
+    ]);
+    this.options.relationType = this.artifactInfo.relationType.relationBaseClass;
+    return this.artifactInfo.relationType;
+  }
+
   // Get model list for source model.
   async promptSourceModels() {
     if (this.shouldExit()) return false;
 
     return await this._promptModelList(
-      PROMPT_MESSAGE__SOURCE_MODEL,
-      'sourceModel'
+      PROMPT_MESSAGE_SOURCE_MODEL,
+      'sourceModel',
     );
   }
 
@@ -249,8 +275,8 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     if (this.shouldExit()) return false;
 
     return await this._promptModelList(
-      PROMPT_MESSAGE__TARGET__MODEL,
-      'destinationModel'
+      PROMPT_MESSAGE_TARGET_MODEL,
+      'destinationModel',
     );
   }
 
@@ -271,7 +297,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           name: 'propertyName',
           message: `Please enter the name of the ID property for ${
             this.artifactInfo.sourceModel
-            }:`,
+          }:`,
           default: 'id',
         },
       ];
@@ -309,7 +335,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       {
         type: 'string',
         name: 'value',
-        message: PROMPT_MESSAGE__PROPERTY_NAME,
+        message: PROMPT_MESSAGE_PROPERTY_NAME,
         default: defaultRelationName,
         when: !this.artifactInfo.relationName,
       },
@@ -318,28 +344,5 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
     //Generate this repository
     await this._scaffold();
-  }
-
-  _getDefaultRelationName() {
-    var defaultRelationName;
-    switch (this.options.relationType) {
-      case RELATION_TYPE_BELONGS_TO:
-        defaultRelationName =
-          utils.camelCase(this.options.destinationModel) +
-          utils.toClassName(this.options.foreignKey);
-        break;
-      case RELATION_TYPE_HAS_MANY:
-        defaultRelationName = utils.pluralize(
-          utils.camelCase(this.options.destinationModel)
-        );
-        break;
-      case RELATION_TYPE_HAS_ONE:
-        defaultRelationName = utils.camelCase(this.options.destinationModel);
-        break;
-      default:
-        throw new Error(ERROR_INCORRECT_RELATION_TYPE);
-    }
-
-    return defaultRelationName;
   }
 };
