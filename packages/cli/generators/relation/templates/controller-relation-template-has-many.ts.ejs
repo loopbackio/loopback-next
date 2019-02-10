@@ -53,7 +53,7 @@ export class <%= controllerClassName %> {
     @param.path.<%= foreignKeyType %>('id') id: typeof <%= sourceModelClassName %>.prototype.<%= foreignKey %>,
     @requestBody() <%= targetModelName %>: <%= targetModelClassName %>,
   ): Promise<<%= targetModelClassName %>> {
-    return await this.<%= paramSourceRepository %>.<%= targetModelName %>s(<%= relationPropertyName %>).create(<%= targetModelName %>);
+    return await this.<%= paramSourceRepository %>.<%= targetModelName %>s(id).create(<%= targetModelName %>);
   }
 
   @patch('/<%= sourceModelName %>s/{id}/<%= targetModelName %>s', {
