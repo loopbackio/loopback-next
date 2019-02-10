@@ -5,24 +5,21 @@ const path = require('path');
 const utils = require('../../lib/utils');
 const relationUtils = require('./relationutils');
 
-
 module.exports = class RepositoryRelation extends ArtifactGenerator {
-
   constructor(args, opts) {
     super(args, opts);
   }
 
   _setupGenerator() {
-
     super._setupGenerator();
 
     this.artifactInfo = {
       type: 'relation',
-      rootDir: utils.sourceRootDir
+      rootDir: utils.sourceRootDir,
     };
     this.artifactInfo.repositoriesDir = path.resolve(
       this.artifactInfo.rootDir,
-      'repositories'
+      'repositories',
     );
     this.artifactInfo.modelsDir = path.resolve(
       this.artifactInfo.rootDir,
@@ -30,8 +27,12 @@ module.exports = class RepositoryRelation extends ArtifactGenerator {
     );
   }
 
-  generateRelationRepository(sourceModel, targetModel,
-    foreignKey, relationName) {
+  generateRelationRepository(
+    sourceModel,
+    targetModel,
+    foreignKey,
+    relationName,
+  ) {
     this.initializeProperties(sourceModel, targetModel, relationName);
     this.handleImports();
     this.handleProperties();
@@ -40,47 +41,52 @@ module.exports = class RepositoryRelation extends ArtifactGenerator {
   }
 
   initializeProperties(sourceModel, targetModel, relationName) {
-
     this.artifactInfo.srcModelFile = path.resolve(
       this.artifactInfo.modelsDir,
-      sourceModel + ".model.ts");
+      sourceModel + '.model.ts',
+    );
 
     this.artifactInfo.dstModelFile = path.resolve(
       this.artifactInfo.modelsDir,
-      targetModel + ".model.ts");
+      targetModel + '.model.ts',
+    );
 
-    this.artifactInfo.srcModelClass =
-      this.getClassName(this.artifactInfo.srcModelFile);
+    this.artifactInfo.srcModelClass = this.getClassName(
+      this.artifactInfo.srcModelFile,
+    );
 
-    this.artifactInfo.dstModelClass =
-      this.getClassName(this.artifactInfo.dstModelFile);
+    this.artifactInfo.dstModelClass = this.getClassName(
+      this.artifactInfo.dstModelFile,
+    );
 
     this.artifactInfo.srcRepositoryFile = path.resolve(
       this.artifactInfo.repositoriesDir,
-      sourceModel + ".repository.ts"
-    )
+      sourceModel + '.repository.ts',
+    );
 
     this.artifactInfo.dstRepositoryFile = path.resolve(
       this.artifactInfo.repositoriesDir,
-      targetModel + ".repository.ts"
-    )
+      targetModel + '.repository.ts',
+    );
 
-    this.artifactInfo.srcRepositoryClassName =
-      this.getClassName(this.artifactInfo.srcRepositoryFile);
+    this.artifactInfo.srcRepositoryClassName = this.getClassName(
+      this.artifactInfo.srcRepositoryFile,
+    );
 
-    this.artifactInfo.dstRepositoryClassName =
-      this.getClassName(this.artifactInfo.dstRepositoryFile);
+    this.artifactInfo.dstRepositoryClassName = this.getClassName(
+      this.artifactInfo.dstRepositoryFile,
+    );
 
     this.artifactInfo.relationName = relationName;
 
-
     this.artifactInfo.relationProperty = {
       name: this.getRelationPropertyName(),
-      type: this.getRelationPropertyType()
-    }
+      type: this.getRelationPropertyType(),
+    };
 
-    this.artifactInfo.srcRepositoryFile = new ast.Project().
-      addExistingSourceFile(this.artifactInfo.srcRepositoryFile);
+    this.artifactInfo.srcRepositoryFile = new ast.Project().addExistingSourceFile(
+      this.artifactInfo.srcRepositoryFile,
+    );
   }
 
   getRelationPropertyName() {
@@ -88,31 +94,36 @@ module.exports = class RepositoryRelation extends ArtifactGenerator {
     propertyName += this.artifactInfo.dstModelClass.substring(1);
 
     if (this.artifactInfo.relationName == relationUtils.relationType.hasMany) {
-      propertyName += "s";
+      propertyName += 's';
     }
     return propertyName;
   }
 
   getRelationPropertyType() {
-    let propertyType =
-      this.capitalizeFirstLetter(this.artifactInfo.relationName);
-    if (this.artifactInfo.relationName == relationUtils.relationType.belongsTo) {
-      propertyType += "Accessor";
+    let propertyType = this.capitalizeFirstLetter(
+      this.artifactInfo.relationName,
+    );
+    if (
+      this.artifactInfo.relationName == relationUtils.relationType.belongsTo
+    ) {
+      propertyType += 'Accessor';
+    } else if (
+      this.artifactInfo.relationName == relationType.hasOne ||
+      this.artifactInfo.relationName == relationUtils.relationType.hasMany
+    ) {
+      propertyType += 'RepositoryFactory';
+    } else {
+      throw Error('relation is invalid');
     }
-    else if (this.artifactInfo.relationName == relationType.hasOne ||
-      this.artifactInfo.relationName == relationUtils.relationType.hasMany) {
-      propertyType += "RepositoryFactory"
-    }
-    else {
-      throw Error("relation is invalid");
-    }
-    propertyType = propertyType +
-      "<" + this.capitalizeFirstLetter(this.artifactInfo.dstModelClass) +
-      ", typeof " +
+    propertyType =
+      propertyType +
+      '<' +
+      this.capitalizeFirstLetter(this.artifactInfo.dstModelClass) +
+      ', typeof ' +
       this.capitalizeFirstLetter(this.artifactInfo.srcModelClass) +
-      ".prototype.id>";
+      '.prototype.id>';
 
-    return (propertyType);
+    return propertyType;
   }
 
   getClassName(fileName) {
@@ -127,40 +138,46 @@ module.exports = class RepositoryRelation extends ArtifactGenerator {
   }
 
   getRequiredImports() {
-    let importsArray = [{
-      name: this.artifactInfo.dstModelClass,
-      module: "../models"
-    }, {
-      name: "repository",
-      module: "@loopback/repository"
-    }, {
-      name: "Getter",
-      module: "@loopback/core"
-    }, {
-      name: this.artifactInfo.dstRepositoryClassName,
-      module: "./index"
-    }];
+    let importsArray = [
+      {
+        name: this.artifactInfo.dstModelClass,
+        module: '../models',
+      },
+      {
+        name: 'repository',
+        module: '@loopback/repository',
+      },
+      {
+        name: 'Getter',
+        module: '@loopback/core',
+      },
+      {
+        name: this.artifactInfo.dstRepositoryClassName,
+        module: './index',
+      },
+    ];
 
-    let RelationName =
-      this.capitalizeFirstLetter(this.artifactInfo.relationName);
+    let RelationName = this.capitalizeFirstLetter(
+      this.artifactInfo.relationName,
+    );
     switch (this.artifactInfo.relationName) {
-      case (relationType.hasMany):
+      case relationType.hasMany:
         importsArray.push({
-          name: RelationName + "RepositoryFactory",
-          module: "@loopback/repository"
+          name: RelationName + 'RepositoryFactory',
+          module: '@loopback/repository',
         });
         break;
-      case (relationType.hasOne):
+      case relationType.hasOne:
         importsArray.push({
-          name: RelationName + "RepositoryFactory",
-          module: "@loopback/repository"
+          name: RelationName + 'RepositoryFactory',
+          module: '@loopback/repository',
         });
         break;
 
-      case (relationType.belongsTo):
+      case relationType.belongsTo:
         importsArray.push({
-          name: RelationName + "Accessor",
-          module: "@loopback/repository"
+          name: RelationName + 'Accessor',
+          module: '@loopback/repository',
         });
         break;
 
@@ -180,8 +197,7 @@ module.exports = class RepositoryRelation extends ArtifactGenerator {
   addImport(requiredImport) {
     if (!this.doesModuleExist(requiredImport)) {
       this.addImportWithNonExistingModule(requiredImport);
-    }
-    else {
+    } else {
       this.addImportsWithExistingModule(requiredImport);
     }
   }
@@ -189,15 +205,15 @@ module.exports = class RepositoryRelation extends ArtifactGenerator {
   addImportWithNonExistingModule(requiredImport) {
     this.artifactInfo.srcRepositoryFile.addImportDeclaration({
       moduleSpecifier: requiredImport.module,
-      namedImports: [requiredImport.name]
+      namedImports: [requiredImport.name],
     });
   }
 
   addImportsWithExistingModule(requiredImport) {
     let moduleName = requiredImport.module;
-    let importDeclcaration =
-      this.artifactInfo.srcRepositoryFile.
-        getImportDeclarationOrThrow(moduleName);
+    let importDeclcaration = this.artifactInfo.srcRepositoryFile.getImportDeclarationOrThrow(
+      moduleName,
+    );
     if (!this.doesImportExist(importDeclcaration, requiredImport.name)) {
       importDeclcaration.addNamedImport(requiredImport.name);
     }
@@ -215,16 +231,16 @@ module.exports = class RepositoryRelation extends ArtifactGenerator {
 
   doesModuleExist(importDeclaration) {
     let moduleName = importDeclaration.module;
-    let relevantImport = this.artifactInfo.srcRepositoryFile.
-      getImportDeclaration(moduleName);
-    return (relevantImport != undefined);
+    let relevantImport = this.artifactInfo.srcRepositoryFile.getImportDeclaration(
+      moduleName,
+    );
+    return relevantImport != undefined;
   }
 
   handleProperties() {
-
-    let classDeclaration =
-      this.artifactInfo.srcRepositoryFile.
-        getClassOrThrow(this.artifactInfo.srcRepositoryClassName);
+    let classDeclaration = this.artifactInfo.srcRepositoryFile.getClassOrThrow(
+      this.artifactInfo.srcRepositoryClassName,
+    );
 
     this.addProperty(classDeclaration);
 
@@ -241,16 +257,15 @@ module.exports = class RepositoryRelation extends ArtifactGenerator {
   }
 
   orderProperties(classDeclaration) {
-    classDeclaration.getProperties().forEach(function (currentProperty) {
+    classDeclaration.getProperties().forEach(function(currentProperty) {
       currentProperty.setOrder(0);
-    })
+    });
   }
 
   handleConstructor() {
-
-    let classDeclaration =
-      this.artifactInfo.srcRepositoryFile.
-        getClassOrThrow(this.artifactInfo.srcRepositoryClassName);
+    let classDeclaration = this.artifactInfo.srcRepositoryFile.getClassOrThrow(
+      this.artifactInfo.srcRepositoryClassName,
+    );
     let classConstructor = classDeclaration.getConstructors()[0];
 
     this.addParameters(classConstructor);
@@ -260,42 +275,49 @@ module.exports = class RepositoryRelation extends ArtifactGenerator {
 
   addParameters(classConstructor) {
     classConstructor.addParameter({
-      decorators: [{
-        name: "repository.getter",
-        arguments: ["\'" +
-          this.artifactInfo.dstRepositoryClassName + "\'"]
-      }],
-      name: this.regularizeFirstLetter(this.artifactInfo.dstRepositoryClassName) +
-        "Getter",
-      type: "Getter<" + this.artifactInfo.dstRepositoryClassName + ">,",
-      scope: ast.Scope.Protected
-    })
+      decorators: [
+        {
+          name: 'repository.getter',
+          arguments: ["'" + this.artifactInfo.dstRepositoryClassName + "'"],
+        },
+      ],
+      name:
+        this.regularizeFirstLetter(this.artifactInfo.dstRepositoryClassName) +
+        'Getter',
+      type: 'Getter<' + this.artifactInfo.dstRepositoryClassName + '>,',
+      scope: ast.Scope.Protected,
+    });
   }
 
-
   addCreator(classConstructor) {
-    let statement = "this.create" +
+    let statement =
+      'this.create' +
       this.capitalizeFirstLetter(this.artifactInfo.relationName);
     if (this.artifactInfo.relationName == relationType.belongsTo) {
-      statement += "Accessor";
+      statement += 'Accessor';
+    } else if (
+      this.artifactInfo.relationName == relationType.hasMany ||
+      this.artifactInfo.relationName == relationType.hasOne
+    ) {
+      statement += 'RepositoryFactory';
+    } else {
+      throw Error('relation is invalid');
     }
-    else if (this.artifactInfo.relationName == relationType.hasMany ||
-      this.artifactInfo.relationName == relationType.hasOne) {
-      statement += "RepositoryFactory";
-    }
-    else {
-      throw Error("relation is invalid");
-    }
-    statement += "For(";
+    statement += 'For(';
 
-    let parameter1 = "\'" + this.artifactInfo.relationProperty.name + "\',";
+    let parameter1 = "'" + this.artifactInfo.relationProperty.name + "',";
     let paramater2 =
       this.regularizeFirstLetter(this.artifactInfo.dstRepositoryClassName) +
-      "Getter,";
+      'Getter,';
 
-    statement = "this." +
-      this.artifactInfo.relationProperty.name + "=" + statement +
-      parameter1 + paramater2 + ");";
+    statement =
+      'this.' +
+      this.artifactInfo.relationProperty.name +
+      '=' +
+      statement +
+      parameter1 +
+      paramater2 +
+      ');';
 
     classConstructor.insertStatements(1, statement);
   }
@@ -307,5 +329,4 @@ module.exports = class RepositoryRelation extends ArtifactGenerator {
   regularizeFirstLetter(string) {
     return string.charAt(0).toLowerCase() + string.slice(1);
   }
-
-}
+};
