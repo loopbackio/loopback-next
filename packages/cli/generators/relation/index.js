@@ -32,7 +32,7 @@ const RELATION_TYPE_HAS_ONE = 'hasOne';
 const availableRelationsBaseClasses = [
   RELATION_TYPE_BELONGS_TO,
   RELATION_TYPE_HAS_MANY,
-  RELATION_TYPE_HAS_ONE
+  RELATION_TYPE_HAS_ONE,
 ];
 
 const relPathControllersFolder = '/controllers';
@@ -195,7 +195,9 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     }
 
     if (this.options[parameter]) {
-      debug(`Model name received from command line: ${this.options[parameter]}`);
+      debug(
+        `Model name received from command line: ${this.options[parameter]}`,
+      );
 
       this.options.model = utils.toClassName(this.options[parameter]);
       // assign the model name from the command line only if it is valid
@@ -204,7 +206,9 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         modelList.length > 0 &&
         modelList.includes(this.options.model)
       ) {
-        Object.assign(this.artifactInfo, { modelNameList: [this.options[parameter]] });
+        Object.assign(this.artifactInfo, {
+          modelNameList: [this.options[parameter]],
+        });
       } else {
         modelList = [];
       }
@@ -214,8 +218,8 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         new Error(
           `${ERROR_NO_MODELS_FOUND} ${this.artifactInfo.modelDir}.
         ${chalk.yellow(
-            'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
-          )}`,
+          'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
+        )}`,
         ),
       );
     }
@@ -240,7 +244,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
     return await this._promptModelList(
       PROMPT_MESSAGE__SOURCE_MODEL,
-      'sourceModel'
+      'sourceModel',
     );
   }
 
@@ -250,7 +254,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
     return await this._promptModelList(
       PROMPT_MESSAGE__TARGET__MODEL,
-      'destinationModel'
+      'destinationModel',
     );
   }
 
@@ -271,7 +275,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           name: 'propertyName',
           message: `Please enter the name of the ID property for ${
             this.artifactInfo.sourceModel
-            }:`,
+          }:`,
           default: 'id',
         },
       ];
@@ -330,7 +334,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         break;
       case RELATION_TYPE_HAS_MANY:
         defaultRelationName = utils.pluralize(
-          utils.camelCase(this.options.destinationModel)
+          utils.camelCase(this.options.destinationModel),
         );
         break;
       case RELATION_TYPE_HAS_ONE:

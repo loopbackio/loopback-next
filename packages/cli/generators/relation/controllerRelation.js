@@ -11,9 +11,12 @@ const ArtifactGenerator = require('../../lib/artifact-generator');
 const path = require('path');
 const utils = require('../../lib/utils');
 
-const CONTROLLER_TEMPLATE_PATH_HAS_MANY = 'controller-relation-template-has-many.ts.ejs';
-const CONTROLLER_TEMPLATE_PATH_HAS_ONE = 'controller-relation-template-has-one.ts.ejs';
-const CONTROLLER_TEMPLATE_PATH_BELONGS_TO = 'controller-relation-template-belongsto.ts.ejs';
+const CONTROLLER_TEMPLATE_PATH_HAS_MANY =
+  'controller-relation-template-has-many.ts.ejs';
+const CONTROLLER_TEMPLATE_PATH_HAS_ONE =
+  'controller-relation-template-has-one.ts.ejs';
+const CONTROLLER_TEMPLATE_PATH_BELONGS_TO =
+  'controller-relation-template-belongsto.ts.ejs';
 
 // Exportable constants
 module.exports = class ControllerRelation extends ArtifactGenerator {
@@ -63,14 +66,18 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
     this.artifactInfo.sourceRepositoryClassName =
       this.artifactInfo.sourceModelClassName + 'Repository';
     this.artifactInfo.controllerClassName =
-      this.artifactInfo.sourceModelClassName + this.artifactInfo.targetModelClassName + 'Controller';
+      this.artifactInfo.sourceModelClassName +
+      this.artifactInfo.targetModelClassName +
+      'Controller';
 
     this.artifactInfo.paramSourceRepository = utils.camelCase(
       this.artifactInfo.sourceModelClassName + 'Repository',
     );
 
     this.artifactInfo.sourceModelName = utils.kebabCase(options.sourceModel);
-    this.artifactInfo.targetModelName = utils.kebabCase(options.destinationModel);
+    this.artifactInfo.targetModelName = utils.kebabCase(
+      options.destinationModel,
+    );
 
     this.artifactInfo.relationPropertyName = options.relationName;
     this.artifactInfo.foreignKey = options.foreignKey;
@@ -78,8 +85,10 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
 
     const source = this.templatePath(CONTROLLER_TEMPLATE_PATH_BELONGS_TO);
 
-    this.artifactInfo.name = options.sourceModel + '-' + options.destinationModel;
-    this.artifactInfo.outFile = utils.kebabCase(this.artifactInfo.name) + '.controller.ts';
+    this.artifactInfo.name =
+      options.sourceModel + '-' + options.destinationModel;
+    this.artifactInfo.outFile =
+      utils.kebabCase(this.artifactInfo.name) + '.controller.ts';
 
     const dest = this.destinationPath(
       path.join(this.artifactInfo.outDir, this.artifactInfo.outFile),
@@ -95,21 +104,27 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
     this.artifactInfo.sourceRepositoryClassName =
       this.artifactInfo.sourceModelClassName + 'Repository';
     this.artifactInfo.controllerClassName =
-      this.artifactInfo.sourceModelClassName + this.artifactInfo.targetModelClassName + 'Controller';
+      this.artifactInfo.sourceModelClassName +
+      this.artifactInfo.targetModelClassName +
+      'Controller';
     this.artifactInfo.paramSourceRepository = utils.camelCase(
       this.artifactInfo.sourceModelClassName + 'Repository',
     );
 
     this.artifactInfo.sourceModelName = utils.kebabCase(options.sourceModel);
-    this.artifactInfo.targetModelName = utils.kebabCase(options.destinationModel);
+    this.artifactInfo.targetModelName = utils.kebabCase(
+      options.destinationModel,
+    );
     this.artifactInfo.relationPropertyName = options.destinationModel;
     this.artifactInfo.foreignKey = options.foreignKey;
     this.artifactInfo.foreignKeyType = options.foreignKeyType;
 
     const source = this.templatePath(CONTROLLER_TEMPLATE_PATH_HAS_MANY);
 
-    this.artifactInfo.name = options.sourceModel + '-' + options.destinationModel;
-    this.artifactInfo.outFile = utils.kebabCase(this.artifactInfo.name) + '.controller.ts';
+    this.artifactInfo.name =
+      options.sourceModel + '-' + options.destinationModel;
+    this.artifactInfo.outFile =
+      utils.kebabCase(this.artifactInfo.name) + '.controller.ts';
 
     const dest = this.destinationPath(
       path.join(this.artifactInfo.outDir, this.artifactInfo.outFile),

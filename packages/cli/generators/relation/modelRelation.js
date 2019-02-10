@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 const ArtifactGenerator = require('../../lib/artifact-generator');
 const debug = require('../../lib/debug')('relation-generator');
 const inspect = require('util').inspect;
@@ -8,7 +8,6 @@ const utils = require('../../lib/utils');
 const ast = require('ts-simple-ast');
 
 module.exports = class ModelRelation extends ArtifactGenerator {
-
   _setupGenerator() {
     super._setupGenerator();
     this.artifactInfo = {
@@ -22,13 +21,26 @@ module.exports = class ModelRelation extends ArtifactGenerator {
     );
   }
 
-  generateRelationModel(sourceModel, targetModel, foreignKey, relationType, relationName) {
+  generateRelationModel(
+    sourceModel,
+    targetModel,
+    foreignKey,
+    relationType,
+    relationName,
+  ) {
     let modelPath = this.artifactInfo.modelDir;
-    this.generateModel(sourceModel, targetModel, relationType, modelPath, foreignKey, relationName);
+    this.generateModel(
+      sourceModel,
+      targetModel,
+      relationType,
+      modelPath,
+      foreignKey,
+      relationName,
+    );
   }
 
   addFileToProject(project, path, modelName) {
-    const fileName = path + "/" + modelName + '.model.ts';
+    const fileName = path + '/' + modelName + '.model.ts';
     return project.addExistingSourceFile(fileName);
   }
 
@@ -41,7 +53,7 @@ module.exports = class ModelRelation extends ArtifactGenerator {
   }
 
   isClassExist(fileName) {
-    return (this.getClassesCount(fileName) == 1);
+    return this.getClassesCount(fileName) == 1;
   }
 
   getPropertiesCount(classObj) {
@@ -49,31 +61,53 @@ module.exports = class ModelRelation extends ArtifactGenerator {
   }
 
   getPropertyStartPos(classObj) {
-    return classObj.getChildSyntaxList().getChildAtIndex(this.getPropertiesCount(classObj) - 1).getPos()
+    return classObj
+      .getChildSyntaxList()
+      .getChildAtIndex(this.getPropertiesCount(classObj) - 1)
+      .getPos();
   }
 
   getClassProperties(classObj) {
-    return classObj.getProperties()
+    return classObj.getProperties();
   }
 
   isPropertyExist(classObj, propertyName) {
-    return this.getClassProperties(classObj).map(x => x.getName()).includes(propertyName)
+    return this.getClassProperties(classObj)
+      .map(x => x.getName())
+      .includes(propertyName);
   }
 
   getType(classObj, propertyName) {
-    return classObj.getProperty(propertyName).getType().getText()
+    return classObj
+      .getProperty(propertyName)
+      .getType()
+      .getText();
   }
-  generateModel(sourceModel, targetModel, relationType, path, foreignKey, relationName) {
-
+  generateModel(
+    sourceModel,
+    targetModel,
+    relationType,
+    path,
+    foreignKey,
+    relationName,
+  ) {
     let project = new ast.Project();
 
-    const sourceFile = this.addFileToProject(project, path, utils.kebabCase(sourceModel));
+    const sourceFile = this.addFileToProject(
+      project,
+      path,
+      utils.kebabCase(sourceModel),
+    );
     if (!this.isClassExist(sourceFile)) {
       return;
     }
     const sourceClass = this.getClassObj(sourceFile, sourceModel);
 
-    const targetFile = this.addFileToProject(project, path, utils.kebabCase(targetModel));
+    const targetFile = this.addFileToProject(
+      project,
+      path,
+      utils.kebabCase(targetModel),
+    );
     if (!this.isClassExist(targetFile)) {
       return;
     }
@@ -81,92 +115,97 @@ module.exports = class ModelRelation extends ArtifactGenerator {
     let modelProperty;
 
     switch (relationType) {
-      case "hasMany":
-        if (this.isPropertyExist((sourceClass), relationName)) {
-          console.log('property ' + relationName + ' exsist in the model')
-          throw new Error(' Property exsists')
-        }
-        else {
+      case 'hasMany':
+        if (this.isPropertyExist(sourceClass, relationName)) {
+          console.log('property ' + relationName + ' exsist in the model');
+          throw new Error(' Property exsists');
+        } else {
           modelProperty = this.getHasMany(targetModel, relationName);
-
         }
         break;
-      case "hasOne":
-        if (this.isPropertyExist((sourceClass), relationName)) {
-          console.log('property ' + relationName + ' exsist in the model')
-          throw new Error(' Property exsists')
-        }
-        else {
+      case 'hasOne':
+        if (this.isPropertyExist(sourceClass, relationName)) {
+          console.log('property ' + relationName + ' exsist in the model');
+          throw new Error(' Property exsists');
+        } else {
           modelProperty = this.getHasOne(targetModel, relationName);
         }
         break;
-      case "belongsTo":
+      case 'belongsTo':
         //fix remvove ID
-        if (this.isPropertyExist((sourceClass), (relationName + 'Id'))) {
-          console.log('property ' + relationName + 'Id exsist in the model')
-          throw new Error(' Property exsists')
-        }
-        else {
-          modelProperty = this.getBelongsTo(targetModel, relationName, 'Number');
+        if (this.isPropertyExist(sourceClass, relationName + 'Id')) {
+          console.log('property ' + relationName + 'Id exsist in the model');
+          throw new Error(' Property exsists');
+        } else {
+          modelProperty = this.getBelongsTo(
+            targetModel,
+            relationName,
+            'Number',
+          );
         }
         break;
     }
-    sourceClass.insertProperty(this.getPropertiesCount(sourceClass), modelProperty);
-    sourceClass.insertText(this.getPropertyStartPos(sourceClass), "\n")
+    sourceClass.insertProperty(
+      this.getPropertiesCount(sourceClass),
+      modelProperty,
+    );
+    sourceClass.insertText(this.getPropertyStartPos(sourceClass), '\n');
     this.addRequiredImports(sourceFile, targetModel, relationType, targetModel);
-    sourceClass.formatText()
+    sourceClass.formatText();
     sourceFile.save();
   }
 
-
   getHasMany(className, relationName) {
     let relationProperty = {
-      decorators: [{ name: "hasMany", arguments: ['() => ' + className] }],
+      decorators: [{name: 'hasMany', arguments: ['() => ' + className]}],
       name: relationName,
-      type: className + "[]",
-    }
+      type: className + '[]',
+    };
 
-    return (relationProperty)
+    return relationProperty;
   }
 
   getHasOne(className, relationName) {
     let relationProperty = {
-      decorators: [{ name: "hasOne", arguments: ['() => ' + className] }],
+      decorators: [{name: 'hasOne', arguments: ['() => ' + className]}],
       name: relationName,
       type: className,
-    }
-    return (relationProperty)
+    };
+    return relationProperty;
   }
 
   getBelongsTo(className, relationName, fktype) {
-    let relationProperty
+    let relationProperty;
     relationProperty = {
-      decorators: [{ name: "belongsTo", arguments: ['() => ' + className] }],
+      decorators: [{name: 'belongsTo', arguments: ['() => ' + className]}],
       name: relationName + 'Id',
       type: fktype,
-    }
-    return (relationProperty)
+    };
+    return relationProperty;
   }
 
-
   addRequiredImports(sourceFile, targetModel, relationType, targetClassName) {
-    let importsArray = this.getRequiredImports(targetModel, relationType, targetClassName);
+    let importsArray = this.getRequiredImports(
+      targetModel,
+      relationType,
+      targetClassName,
+    );
     while (importsArray.length > 0) {
       let currentImport = importsArray.pop();
       this.addCurrentImport(sourceFile, currentImport);
     }
   }
 
-
   getRequiredImports(targetModel, relationType, targetClassName) {
-
-    let importsArray = [{
-      name: targetClassName,
-      module: "./" + targetModel + ".model"
-    }, {
-      name: relationType,
-      module: "@loopback/repository"
-    },
+    let importsArray = [
+      {
+        name: targetClassName,
+        module: './' + targetModel + '.model',
+      },
+      {
+        name: relationType,
+        module: '@loopback/repository',
+      },
     ];
 
     return importsArray;
@@ -175,14 +214,15 @@ module.exports = class ModelRelation extends ArtifactGenerator {
   addCurrentImport(sourceFile, currentImport) {
     if (!this.doesModuleExists(sourceFile, currentImport.module)) {
       sourceFile.addImportDeclaration({
-        moduleSpecifier: currentImport.module
+        moduleSpecifier: currentImport.module,
       });
     }
     if (!this.doesImportExistInModule(sourceFile, currentImport)) {
-      sourceFile.getImportDeclarationOrThrow(currentImport.module).addNamedImport(currentImport.name);
+      sourceFile
+        .getImportDeclarationOrThrow(currentImport.module)
+        .addNamedImport(currentImport.name);
     }
   }
-
 
   doesModuleExists(sourceFile, moduleName) {
     return sourceFile.getImportDeclaration(moduleName);
@@ -190,18 +230,24 @@ module.exports = class ModelRelation extends ArtifactGenerator {
 
   doesImportExistInModule(sourceFile, currentImport) {
     let identicalImport;
-    let relevantImports = this.getNamedImportsFromModule(sourceFile, currentImport.module);
+    let relevantImports = this.getNamedImportsFromModule(
+      sourceFile,
+      currentImport.module,
+    );
     if (relevantImports.length > 0) {
-      identicalImport = relevantImports[0].getNamedImports().filter(imp => imp.getName() == currentImport.name);
+      identicalImport = relevantImports[0]
+        .getNamedImports()
+        .filter(imp => imp.getName() == currentImport.name);
     }
 
-    return (identicalImport && identicalImport.length > 0);
+    return identicalImport && identicalImport.length > 0;
   }
 
   getNamedImportsFromModule(sourceFile, moduleName) {
     let allImports = sourceFile.getImportDeclarations();
-    let relevantImports = allImports.filter(imp => imp.getModuleSpecifierValue() == moduleName);
+    let relevantImports = allImports.filter(
+      imp => imp.getModuleSpecifierValue() == moduleName,
+    );
     return relevantImports;
   }
-
-}
+};
