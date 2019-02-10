@@ -129,7 +129,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     debug('Invoke Model generator...');
     let model = new ModelRelation(this.args, this.opts);
     this.artifactInfo.relPath = relPathModel;
-    model.generateRelationModel(this.options);
+    //model.generateRelationModel(this.options);
     /*
                 debug('Invoke Repository generator...');
                 let repo = new RepositoryRelation(this.args, this.opts);
@@ -271,7 +271,14 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     );
   }
 
-  //Prompt ID
+  /**
+   * Prompt Foreign key if not exist:
+   *  1. From source model get primary key. If primary key does not exist error.
+   *  2. Get primary key type from source model.
+   *  3. Generate foreign key (camelCase source class Name + primary key name).
+   *  4. Check is foreign key exist in destination model. If not - prompt.
+   *  Error - if type is not the same.
+   */
   async promptModelId() {
     if (this.shouldExit()) return false;
     let idProperty;
