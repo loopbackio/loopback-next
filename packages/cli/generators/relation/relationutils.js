@@ -1,5 +1,5 @@
 exports.relationType = relationType = {
-  hasOne: 'hasOne',
-  hasMany: 'hasMany',
   belongsTo: 'belongsTo',
+  hasMany: 'hasMany',
+  hasOne: 'hasOne',
 };

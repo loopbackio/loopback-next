@@ -14,6 +14,7 @@ const chalk = require('chalk');
 const utils = require('../../lib/utils');
 const tsquery = require('../../lib/ast-helper');
 const ast = require('ts-simple-ast');
+const relationUtils = require('./relationutils');
 
 const ControllerRelation = require('./controllerRelation');
 const RepositoryRelation = require('./repositoryRelation');
@@ -25,16 +26,6 @@ const PROMPT_BASE_RELATION_CLASS = 'Please select the relation type';
 const PROMPT_MESSAGE_SOURCE_MODEL = 'Please select source model';
 const PROMPT_MESSAGE_TARGET_MODEL = 'Please select target model';
 const PROMPT_MESSAGE_PROPERTY_NAME = 'Property name for the relation';
-
-const RELATION_TYPE_BELONGS_TO = 'belongsTo';
-const RELATION_TYPE_HAS_MANY = 'hasMany';
-const RELATION_TYPE_HAS_ONE = 'hasOne';
-
-const availableRelationsBaseClasses = [
-  RELATION_TYPE_BELONGS_TO,
-  RELATION_TYPE_HAS_MANY,
-  RELATION_TYPE_HAS_ONE,
-];
 
 const relPathControllersFolder = '/controllers';
 const relPathModelsFolder = '/models';
@@ -121,13 +112,13 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     this.artifactInfo.relPath = relPathCtrl;
 
     switch (this.options.relationType) {
-      case RELATION_TYPE_BELONGS_TO:
+      case relationUtils.relationType.belongsTo:
         ctrl.generateControllerRelationBelongsTo(this.options);
         break;
-      case RELATION_TYPE_HAS_MANY:
+      case relationUtils.relationType.hasMany:
         ctrl.generateControllerRelationHasMany(this.options);
         break;
-      case RELATION_TYPE_HAS_ONE:
+      case relationUtils.relationType.hasOne:
         ctrl.generateControllerRelationHasOne(this.options);
         break;
       default:
@@ -168,17 +159,17 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
   _getDefaultRelationName() {
     var defaultRelationName;
     switch (this.options.relationType) {
-      case RELATION_TYPE_BELONGS_TO:
+      case relationUtils.relationType.belongsTo:
         defaultRelationName =
           utils.camelCase(this.options.destinationModel) +
           utils.toClassName(this.options.foreignKey);
         break;
-      case RELATION_TYPE_HAS_MANY:
+      case relationUtils.relationType.hasMany:
         defaultRelationName = utils.pluralize(
           utils.camelCase(this.options.destinationModel),
         );
         break;
-      case RELATION_TYPE_HAS_ONE:
+      case relationUtils.relationType.hasOne:
         defaultRelationName = utils.camelCase(this.options.destinationModel);
         break;
       default:
@@ -224,8 +215,8 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         new Error(
           `${ERROR_NO_MODELS_FOUND} ${this.artifactInfo.modelDir}.
         ${chalk.yellow(
-          'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
-        )}`,
+            'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
+          )}`,
         ),
       );
     }
@@ -251,8 +242,8 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         type: 'list',
         name: 'relationBaseClass',
         message: PROMPT_BASE_RELATION_CLASS,
-        choices: availableRelationsBaseClasses,
-        when: !this.artifactInfo.availableRelationsBaseClasses,
+        choices: Object.keys(relationUtils.relationType),
+        when: !this.artifactInfo.relationType,
         validate: utils.validateClassName,
       },
     ]);
@@ -297,7 +288,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           name: 'propertyName',
           message: `Please enter the name of the ID property for ${
             this.artifactInfo.sourceModel
-          }:`,
+            }:`,
           default: 'id',
         },
       ];
