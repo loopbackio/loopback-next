@@ -63,7 +63,9 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
   generateControllerRelationBelongsTo(options) {
     this.artifactInfo.sourceModelClassName = options.sourceModel;
     this.artifactInfo.targetModelClassName = options.destinationModel;
-    this.artifactInfo.paramTargetModel = utils.camelCase(options.destinationModel);
+    this.artifactInfo.paramTargetModel = utils.camelCase(
+      options.destinationModel,
+    );
     this.artifactInfo.sourceRepositoryClassName =
       this.artifactInfo.sourceModelClassName + 'Repository';
     this.artifactInfo.controllerClassName =

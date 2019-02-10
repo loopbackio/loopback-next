@@ -153,7 +153,7 @@ module.exports = class ModelRelation extends ArtifactGenerator {
 
   getHasMany(className, relationName) {
     let relationProperty = {
-      decorators: [{ name: 'hasMany', arguments: ['() => ' + className] }],
+      decorators: [{name: 'hasMany', arguments: ['() => ' + className]}],
       name: relationName,
       type: className + '[]',
     };
@@ -163,7 +163,7 @@ module.exports = class ModelRelation extends ArtifactGenerator {
 
   getHasOne(className, relationName) {
     let relationProperty = {
-      decorators: [{ name: 'hasOne', arguments: ['() => ' + className] }],
+      decorators: [{name: 'hasOne', arguments: ['() => ' + className]}],
       name: relationName,
       type: className,
     };
@@ -173,7 +173,7 @@ module.exports = class ModelRelation extends ArtifactGenerator {
   getBelongsTo(className, relationName, fktype) {
     let relationProperty;
     relationProperty = {
-      decorators: [{ name: 'belongsTo', arguments: ['() => ' + className] }],
+      decorators: [{name: 'belongsTo', arguments: ['() => ' + className]}],
       name: relationName + 'Id',
       type: fktype,
     };
