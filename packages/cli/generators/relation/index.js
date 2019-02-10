@@ -110,26 +110,26 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     let ctrl = new ControllerRelation(this.args, this.opts);
     this.artifactInfo.name = this.options.relationType;
     this.artifactInfo.relPath = relPathCtrl;
-
-    switch (this.options.relationType) {
-      case relationUtils.relationType.belongsTo:
-        ctrl.generateControllerRelationBelongsTo(this.options);
-        break;
-      case relationUtils.relationType.hasMany:
-        ctrl.generateControllerRelationHasMany(this.options);
-        break;
-      case relationUtils.relationType.hasOne:
-        ctrl.generateControllerRelationHasOne(this.options);
-        break;
-      default:
-        throw new Error(ERROR_INCORRECT_RELATION_TYPE);
-    }
-
+    /*
+        switch (this.options.relationType) {
+          case relationUtils.relationType.belongsTo:
+            ctrl.generateControllerRelationBelongsTo(this.options);
+            break;
+          case relationUtils.relationType.hasMany:
+            ctrl.generateControllerRelationHasMany(this.options);
+            break;
+          case relationUtils.relationType.hasOne:
+            ctrl.generateControllerRelationHasOne(this.options);
+            break;
+          default:
+            throw new Error(ERROR_INCORRECT_RELATION_TYPE);
+        }
+    */
     //Invoke here Model and Repository Generators
     debug('Invoke Model generator...');
     let model = new ModelRelation(this.args, this.opts);
     this.artifactInfo.relPath = relPathModel;
-    //model.generateRelationModel(this.options);
+    model.generateRelationModel(this.options);
     /*
                 debug('Invoke Repository generator...');
                 let repo = new RepositoryRelation(this.args, this.opts);
