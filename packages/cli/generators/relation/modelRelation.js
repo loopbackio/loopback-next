@@ -196,7 +196,7 @@ module.exports = class ModelRelation extends ArtifactGenerator {
     let importsArray = [
       {
         name: targetClassName,
-        module: './' + targetModel + '.model',
+        module: './' + utils.kebabCase(targetModel) + '.model',
       },
       {
         name: relationType,
