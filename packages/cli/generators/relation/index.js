@@ -137,13 +137,11 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     //Invoke here Model and Repository Generators
     debug('Invoke Model generator...');
     let model = new ModelRelation(this.args, this.opts);
-    this.artifactInfo.name = this.options.relationType;
     this.artifactInfo.relPath = relPathModel;
     //model.generateRelationModel(this.options);
     /*
                 debug('Invoke Repository generator...');
                 let repo = new RepositoryRelation(this.args, this.opts);
-                this.artifactInfo.name = this.options.relationType;
                 this.artifactInfo.relPath = relPathRepo;
                 repo.generateRelationRepository(
                   this.options.sourceModel,
