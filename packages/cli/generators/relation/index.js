@@ -83,9 +83,21 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         .getText();
     }
   }
+
   _getClassObj(fileName) {
     const className = fileName.getClasses()[0].getNameOrThrow();
     return fileName.getClassOrThrow(className);
+  }
+
+  _calcForeignKeyType() {
+    let project = new ast.Project();
+
+    const sourceFile = path.join(
+      this.artifactInfo.modelDir,
+      utils.getModelFileName(this.artifactInfo.sourceModel.modelNameList),
+    );
+    const sf = project.addExistingSourceFile(sourceFile);
+    this.options.foreignKeyType = this._getKeyType(sf, this.options.foreignKey);
   }
 
   async _scaffold() {
@@ -101,54 +113,32 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         "'sourceModel' and 'destinationModel' parameter values should be different.",
       );
     }
-    /*
-        debug('Invoke Controller generator...');
+    debug('Invoke Controller generator...');
 
-        let ctrl = new ControllerRelation(this.args, this.opts);
-        this.artifactInfo.name = this.options.relationType;
-        this.artifactInfo.relPath = relPathCtrl;
+    let ctrl = new ControllerRelation(this.args, this.opts);
+    this.artifactInfo.name = this.options.relationType;
+    this.artifactInfo.relPath = relPathCtrl;
 
-        switch (this.options.relationType) {
-          case RELATION_TYPE_BELONGS_TO:
-            ctrl.generateControllerRelationBelongsTo(
-              this.options.sourceModel,
-              this.options.destinationModel,
-              this.options.foreignKey,
-              this.options.relationName,
-            );
-            break;
-          case RELATION_TYPE_HAS_MANY:
-            ctrl.generateControllerRelationHasMany(
-              this.options.sourceModel,
-              this.options.destinationModel,
-              this.options.foreignKey,
-              this.options.relationName,
-            );
-            break;
-          case RELATION_TYPE_HAS_ONE:
-            ctrl.generateControllerRelationHasOne(
-              this.options.sourceModel,
-              this.options.destinationModel,
-              this.options.foreignKey,
-              this.options.relationName,
-            );
-            break;
-          default:
-            throw new Error(ERROR_INCORRECT_RELATION_TYPE);
-        }
-        */
+    switch (this.options.relationType) {
+      case RELATION_TYPE_BELONGS_TO:
+        ctrl.generateControllerRelationBelongsTo(this.options);
+        break;
+      case RELATION_TYPE_HAS_MANY:
+        ctrl.generateControllerRelationHasMany(this.options);
+        break;
+      case RELATION_TYPE_HAS_ONE:
+        ctrl.generateControllerRelationHasOne(this.options);
+        break;
+      default:
+        throw new Error(ERROR_INCORRECT_RELATION_TYPE);
+    }
+
     //Invoke here Model and Repository Generators
     debug('Invoke Model generator...');
     let model = new ModelRelation(this.args, this.opts);
     this.artifactInfo.name = this.options.relationType;
     this.artifactInfo.relPath = relPathModel;
-    model.generateRelationModel(
-      this.options.sourceModel,
-      this.options.destinationModel,
-      this.options.foreignKey,
-      this.options.relationType,
-      this.options.relationName,
-    );
+    //model.generateRelationModel(this.options);
     /*
                 debug('Invoke Repository generator...');
                 let repo = new RepositoryRelation(this.args, this.opts);
@@ -306,14 +296,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         }
       }
       this.options.foreignKey = idProperty;
-      let project = new ast.Project();
-
-      const sourceFile = path.join(
-        this.artifactInfo.modelDir,
-        utils.getModelFileName(this.artifactInfo.sourceModel.modelNameList),
-      );
-      const sf = project.addExistingSourceFile(sourceFile);
-      this.options.foreignKeyType = this._getKeyType(sf, this.options.foreignKey);
+      this._calcForeignKeyType();
     }
   }
 

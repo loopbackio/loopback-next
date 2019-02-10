@@ -57,14 +57,9 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
     return;
   }
 
-  generateControllerRelationBelongsTo(
-    sourceModel,
-    targetModel,
-    foreignKey,
-    relationName,
-  ) {
-    this.artifactInfo.sourceModelClassName = sourceModel;
-    this.artifactInfo.targetModelClassName = targetModel;
+  generateControllerRelationBelongsTo(options) {
+    this.artifactInfo.sourceModelClassName = options.sourceModel;
+    this.artifactInfo.targetModelClassName = options.destinationModel;
     this.artifactInfo.sourceRepositoryClassName =
       this.artifactInfo.sourceModelClassName + 'Repository';
     this.artifactInfo.controllerClassName =
@@ -74,14 +69,14 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
       this.artifactInfo.sourceModelClassName + 'Repository',
     );
 
-    this.artifactInfo.sourceModelName = utils.kebabCase(sourceModel);
-    this.artifactInfo.targetModelName = utils.kebabCase(targetModel);
+    this.artifactInfo.sourceModelName = utils.kebabCase(options.sourceModel);
+    this.artifactInfo.targetModelName = utils.kebabCase(options.destinationModel);
 
-    this.artifactInfo.relationPropertyName = relationName;
+    this.artifactInfo.relationPropertyName = options.relationName;
 
     const source = this.templatePath(CONTROLLER_TEMPLATE_PATH_BELONGS_TO);
 
-    this.artifactInfo.name = sourceModel + '-' + targetModel;
+    this.artifactInfo.name = options.sourceModel + '-' + options.destinationModel;
     this.artifactInfo.outFile = utils.kebabCase(this.artifactInfo.name) + '.controller.ts';
 
     const dest = this.destinationPath(
@@ -92,14 +87,9 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
     return;
   }
 
-  generateControllerRelationHasMany(
-    sourceModel,
-    targetModel,
-    foreignKey,
-    relationName,
-  ) {
-    this.artifactInfo.sourceModelClassName = sourceModel;
-    this.artifactInfo.targetModelClassName = targetModel;
+  generateControllerRelationHasMany(options) {
+    this.artifactInfo.sourceModelClassName = options.sourceModel;
+    this.artifactInfo.targetModelClassName = options.destinationModel;
     this.artifactInfo.sourceRepositoryClassName =
       this.artifactInfo.sourceModelClassName + 'Repository';
     this.artifactInfo.controllerClassName =
@@ -108,14 +98,15 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
       this.artifactInfo.sourceModelClassName + 'Repository',
     );
 
-    this.artifactInfo.sourceModelName = utils.kebabCase(sourceModel);
-    this.artifactInfo.targetModelName = utils.kebabCase(targetModel);
-    this.artifactInfo.relationPropertyName = relationName;
-    this.artifactInfo.foreignKey = foreignKey;
+    this.artifactInfo.sourceModelName = utils.kebabCase(options.sourceModel);
+    this.artifactInfo.targetModelName = utils.kebabCase(options.destinationModel);
+    this.artifactInfo.relationPropertyName = options.destinationModel;
+    this.artifactInfo.foreignKey = options.foreignKey;
+    this.artifactInfo.foreignKeyType = options.foreignKeyType;
 
     const source = this.templatePath(CONTROLLER_TEMPLATE_PATH_HAS_MANY);
 
-    this.artifactInfo.name = sourceModel + '-' + targetModel;
+    this.artifactInfo.name = options.sourceModel + '-' + options.destinationModel;
     this.artifactInfo.outFile = utils.kebabCase(this.artifactInfo.name) + '.controller.ts';
 
     const dest = this.destinationPath(
@@ -126,12 +117,7 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
     return;
   }
 
-  generateControllerRelationHasOne(
-    sourceModel,
-    targetModel,
-    foreignKey,
-    relationName,
-  ) {
+  generateControllerRelationHasOne(options) {
     throw new Error('Not implemented');
   }
 
