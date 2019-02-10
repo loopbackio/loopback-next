@@ -167,20 +167,27 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     );
   }
 
-  // Prompt a user for Relation type
-  async promptRelationBaseClassName() {
-    this.artifactInfo.relationType = await this.prompt([
-      {
-        type: 'list',
-        name: 'relationBaseClass',
-        message: PROMPT_BASE_RELATION_CLASS,
-        choices: availableRelationsBaseClasses,
-        when: !this.artifactInfo.availableRelationsBaseClasses,
-        validate: utils.validateClassName,
-      },
-    ]);
-    this.options.relationType = this.artifactInfo.relationType.relationBaseClass;
-    return this.artifactInfo.relationType;
+  _getDefaultRelationName() {
+    var defaultRelationName;
+    switch (this.options.relationType) {
+      case RELATION_TYPE_BELONGS_TO:
+        defaultRelationName =
+          utils.camelCase(this.options.destinationModel) +
+          utils.toClassName(this.options.foreignKey);
+        break;
+      case RELATION_TYPE_HAS_MANY:
+        defaultRelationName = utils.pluralize(
+          utils.camelCase(this.options.destinationModel),
+        );
+        break;
+      case RELATION_TYPE_HAS_ONE:
+        defaultRelationName = utils.camelCase(this.options.destinationModel);
+        break;
+      default:
+        throw new Error(ERROR_INCORRECT_RELATION_TYPE);
+    }
+
+    return defaultRelationName;
   }
 
   async _promptModelList(message, parameter) {
@@ -237,6 +244,22 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     ]);
     this.options[parameter] = this.artifactInfo[parameter].modelNameList;
     return this.artifactInfo[parameter];
+  }
+
+  // Prompt a user for Relation type
+  async promptRelationBaseClassName() {
+    this.artifactInfo.relationType = await this.prompt([
+      {
+        type: 'list',
+        name: 'relationBaseClass',
+        message: PROMPT_BASE_RELATION_CLASS,
+        choices: availableRelationsBaseClasses,
+        when: !this.artifactInfo.availableRelationsBaseClasses,
+        validate: utils.validateClassName,
+      },
+    ]);
+    this.options.relationType = this.artifactInfo.relationType.relationBaseClass;
+    return this.artifactInfo.relationType;
   }
 
   // Get model list for source model.
@@ -323,28 +346,5 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
     //Generate this repository
     await this._scaffold();
-  }
-
-  _getDefaultRelationName() {
-    var defaultRelationName;
-    switch (this.options.relationType) {
-      case RELATION_TYPE_BELONGS_TO:
-        defaultRelationName =
-          utils.camelCase(this.options.destinationModel) +
-          utils.toClassName(this.options.foreignKey);
-        break;
-      case RELATION_TYPE_HAS_MANY:
-        defaultRelationName = utils.pluralize(
-          utils.camelCase(this.options.destinationModel),
-        );
-        break;
-      case RELATION_TYPE_HAS_ONE:
-        defaultRelationName = utils.camelCase(this.options.destinationModel);
-        break;
-      default:
-        throw new Error(ERROR_INCORRECT_RELATION_TYPE);
-    }
-
-    return defaultRelationName;
   }
 };
