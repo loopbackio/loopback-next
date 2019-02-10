@@ -138,7 +138,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     debug('Invoke Model generator...');
     let model = new ModelRelation(this.args, this.opts);
     this.artifactInfo.relPath = relPathModel;
-    //model.generateRelationModel(this.options);
+    model.generateRelationModel(this.options);
     /*
                 debug('Invoke Repository generator...');
                 let repo = new RepositoryRelation(this.args, this.opts);
@@ -224,8 +224,8 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         new Error(
           `${ERROR_NO_MODELS_FOUND} ${this.artifactInfo.modelDir}.
         ${chalk.yellow(
-          'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
-        )}`,
+            'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
+          )}`,
         ),
       );
     }
@@ -297,7 +297,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           name: 'propertyName',
           message: `Please enter the name of the ID property for ${
             this.artifactInfo.sourceModel
-          }:`,
+            }:`,
           default: 'id',
         },
       ];
