@@ -73,6 +73,8 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
     this.artifactInfo.targetModelName = utils.kebabCase(options.destinationModel);
 
     this.artifactInfo.relationPropertyName = options.relationName;
+    this.artifactInfo.foreignKey = options.foreignKey;
+    this.artifactInfo.foreignKeyType = options.foreignKeyType;
 
     const source = this.templatePath(CONTROLLER_TEMPLATE_PATH_BELONGS_TO);
 
