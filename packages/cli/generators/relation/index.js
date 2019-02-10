@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
+
 const _ = require('lodash');
 const ArtifactGenerator = require('../../lib/artifact-generator');
 const debug = require('../../lib/debug')('relation-generator');
@@ -21,9 +22,9 @@ const ModelRelation = require('./modelRelation');
 const ERROR_INCORRECT_RELATION_TYPE = 'Incorrect Relation Type';
 
 const PROMPT_BASE_RELATION_CLASS = 'Please select the relation type';
-const PROMPT_MESSAGE__SOURCE_MODEL = 'Please select source model';
-const PROMPT_MESSAGE__TARGET__MODEL = 'Please select target model';
-const PROMPT_MESSAGE__PROPERTY_NAME = 'Property name for the relation';
+const PROMPT_MESSAGE_SOURCE_MODEL = 'Please select source model';
+const PROMPT_MESSAGE_TARGET_MODEL = 'Please select target model';
+const PROMPT_MESSAGE_PROPERTY_NAME = 'Property name for the relation';
 
 const RELATION_TYPE_BELONGS_TO = 'belongsTo';
 const RELATION_TYPE_HAS_MANY = 'hasMany';
@@ -243,7 +244,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     if (this.shouldExit()) return false;
 
     return await this._promptModelList(
-      PROMPT_MESSAGE__SOURCE_MODEL,
+      PROMPT_MESSAGE_SOURCE_MODEL,
       'sourceModel',
     );
   }
@@ -253,7 +254,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     if (this.shouldExit()) return false;
 
     return await this._promptModelList(
-      PROMPT_MESSAGE__TARGET__MODEL,
+      PROMPT_MESSAGE_TARGET_MODEL,
       'destinationModel',
     );
   }
@@ -313,7 +314,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       {
         type: 'string',
         name: 'value',
-        message: PROMPT_MESSAGE__PROPERTY_NAME,
+        message: PROMPT_MESSAGE_PROPERTY_NAME,
         default: defaultRelationName,
         when: !this.artifactInfo.relationName,
       },
