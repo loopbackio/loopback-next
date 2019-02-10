@@ -119,6 +119,8 @@ module.exports = class ModelRelation extends ArtifactGenerator {
     fktype,
     foreignKey
   ) {
+    // TOFO fix keyTppe and Foreignkey
+    // add keyTo when needed in both hasMany and belongsTo relation
     let sourceModelPrimaryKeyType = 'number'
     foreignKey = 'todoLId'
     let project = new ast.Project();
@@ -165,7 +167,6 @@ module.exports = class ModelRelation extends ArtifactGenerator {
         }
         break;
       case 'belongsTo':
-        //fix remvove ID
         this.isRelationExist(sourceClass, relationName)
         modelProperty = this.getBelongsTo(
           targetModel,
