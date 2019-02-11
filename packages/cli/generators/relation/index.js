@@ -21,11 +21,14 @@ const RepositoryRelation = require('./repositoryRelation');
 const ModelRelation = require('./modelRelation');
 
 const ERROR_INCORRECT_RELATION_TYPE = 'Incorrect Relation Type';
+const ERROR_NO_SOURCE_MODEL_SELECTED = 'No source model selected';
+const ERROR_NO_DESTINATION_MODEL_SELECTED = 'No destination model selected';
 
 const PROMPT_BASE_RELATION_CLASS = 'Please select the relation type';
 const PROMPT_MESSAGE_SOURCE_MODEL = 'Please select source model';
 const PROMPT_MESSAGE_TARGET_MODEL = 'Please select target model';
 const PROMPT_MESSAGE_PROPERTY_NAME = 'Property name for the relation';
+const PROMPT_MESSAGE_FOREIGN_KEY_NAME = 'Foreign key name for the relation';
 
 const relPathControllersFolder = '/controllers';
 const relPathModelsFolder = '/models';
@@ -45,7 +48,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
    * get the property name for the id field
    * @param {string} modelName
    */
-  async _getModelIdProperty(modelName) {
+  async _getModelPrimaryKeyProperty(modelName) {
     let fileContent = '';
     let modelFile = path.join(
       this.artifactInfo.modelDir,
@@ -81,7 +84,22 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     return fileName.getClassOrThrow(className);
   }
 
-  _calcForeignKeyType() {
+  async _calcSourceModelPrimaryKey() {
+    this.options.sourceModelPrimaryKey = await this._getModelPrimaryKeyProperty(
+      this.options.sourceModel,
+    );
+
+    if (this.options.sourceModelPrimaryKey === null) {
+      throw new Error("Source model primary key does not exist.");
+    }
+  }
+
+  /**
+   * Read source model file and get type of the primary key.
+   *
+   * @return string
+   */
+  _calcSourceModelPrimaryKeyType() {
     let project = new ast.Project();
 
     const sourceFile = path.join(
@@ -89,8 +107,22 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       utils.getModelFileName(this.artifactInfo.sourceModel.modelNameList),
     );
     const sf = project.addExistingSourceFile(sourceFile);
-    this.options.foreignKeyType = this._getKeyType(sf, this.options.foreignKey);
+    this.options.sourceModelPrimaryKeyType = this._getKeyType(
+      sf,
+      this.options.sourceModelPrimaryKey
+    );
   }
+
+  /**
+   * Generate default foreign key name. Foreign key name use in target model.
+   */
+  _calcDefaultForeignKey() {
+    this.options.defaultForeignKeyName =
+      utils.camelCase(this.options.sourceModel) +
+      utils.toClassName(this.options.sourceModelPrimaryKey);
+  }
+
+
 
   async _scaffold() {
     let relPathCtrl = this.artifactInfo.relPath + relPathControllersFolder;
@@ -110,21 +142,21 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     let ctrl = new ControllerRelation(this.args, this.opts);
     this.artifactInfo.name = this.options.relationType;
     this.artifactInfo.relPath = relPathCtrl;
-    /*
-        switch (this.options.relationType) {
-          case relationUtils.relationType.belongsTo:
-            ctrl.generateControllerRelationBelongsTo(this.options);
-            break;
-          case relationUtils.relationType.hasMany:
-            ctrl.generateControllerRelationHasMany(this.options);
-            break;
-          case relationUtils.relationType.hasOne:
-            ctrl.generateControllerRelationHasOne(this.options);
-            break;
-          default:
-            throw new Error(ERROR_INCORRECT_RELATION_TYPE);
-        }
-    */
+
+    switch (this.options.relationType) {
+      case relationUtils.relationType.belongsTo:
+        ctrl.generateControllerRelationBelongsTo(this.options);
+        break;
+      case relationUtils.relationType.hasMany:
+        ctrl.generateControllerRelationHasMany(this.options);
+        break;
+      case relationUtils.relationType.hasOne:
+        ctrl.generateControllerRelationHasOne(this.options);
+        break;
+      default:
+        throw new Error(ERROR_INCORRECT_RELATION_TYPE);
+    }
+
     //Invoke here Model and Repository Generators
     debug('Invoke Model generator...');
     let model = new ModelRelation(this.args, this.opts);
@@ -272,14 +304,60 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
   }
 
   /**
-   * Prompt Foreign key if not exist:
-   *  1. From source model get primary key. If primary key does not exist error.
+   * Prompt foreign key if not exist:
+   *  1. From source model get primary key. If primary key does not exist -
+   *  error.
    *  2. Get primary key type from source model.
    *  3. Generate foreign key (camelCase source class Name + primary key name).
    *  4. Check is foreign key exist in destination model. If not - prompt.
    *  Error - if type is not the same.
    */
-  async promptModelId() {
+  async promptForeignKey() {
+    if (this.shouldExit()) return false;
+
+    if (_.isEmpty(this.options.sourceModel)) {
+      return this.exit(new Error(`${ERROR_NO_SOURCE_MODEL_SELECTED}`));
+    }
+
+    if (_.isEmpty(this.options.destinationModel)) {
+      return this.exit(new Error(`${ERROR_NO_DESTINATION_MODEL_SELECTED}`));
+    }
+
+    await this._calcSourceModelPrimaryKey();
+    this._calcSourceModelPrimaryKeyType();
+    this._calcDefaultForeignKey();
+
+    let project = new ast.Project();
+
+    const destinationFile = path.join(
+      this.artifactInfo.modelDir,
+      utils.getModelFileName(this.options.destinationModel),
+    );
+    const df = project.addExistingSourceFile(destinationFile);
+    const cl = this._getClassObj(df);
+    this.options.destinationModelForeignKeyExist =
+      cl
+        .getProperties()
+        .map(x => x.getName())
+        .includes(this.options.defaultForeignKeyName);
+
+    if (!this.options.destinationModelForeignKeyExist) {
+      this.artifactInfo.destinationModelForeignKeyName = await this.prompt([
+        {
+          type: 'string',
+          name: 'value',
+          message: PROMPT_MESSAGE_FOREIGN_KEY_NAME,
+          default: this.options.defaultForeignKeyName,
+          when: !this.artifactInfo.destinationModelForeignKeyName,
+        },
+      ]);
+      this.options.destinationModelForeignKeyName = this.artifactInfo.destinationModelForeignKeyName;
+    } else {
+      this.options.destinationModelForeignKeyName = this.options.defaultForeignKeyName;
+    }
+  }
+
+  async _promptModelId() {
     if (this.shouldExit()) return false;
     let idProperty;
 
