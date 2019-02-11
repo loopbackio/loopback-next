@@ -15,11 +15,14 @@ import {RestExplorerComponent} from '@loopback/rest-explorer';
 import * as path from 'path';
 import {promisify} from 'util';
 import {MySequence} from './sequence';
+import * as debugFactory from 'debug';
 
 const legacyApp = require('../legacy/server/server');
 const legacyBoot = promisify(require('loopback-boot'));
 const {generateSwaggerSpec} = require('loopback-swagger');
 const swagger2openapi = require('swagger2openapi');
+
+const debug = debugFactory('loopback:example:lb3app');
 
 export class TodoListApplication extends BootMixin(
   RepositoryMixin(RestApplication),
@@ -62,6 +65,9 @@ export class TodoListApplication extends BootMixin(
 
     // 1. Rebase the spec, e.g. from `GET /Products` to `GET /api/Products`.
     const specInRoot = rebaseOpenApiSpec(openApiSpec, swaggerSpec.basePath);
+    if (debug.enabled)
+      debug('API of LB3 app', JSON.stringify(specInRoot, null, 2));
+
     // 2. Mount the full Express app
     this.mountExpressRouter('/', specInRoot, legacyApp);
 
