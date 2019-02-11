@@ -24,7 +24,7 @@ const swagger2openapi = require('swagger2openapi');
 
 const debug = debugFactory('loopback:example:lb3app');
 
-export class TodoListApplication extends BootMixin(
+export class CoffeeShopsApplication extends BootMixin(
   RepositoryMixin(RestApplication),
 ) {
   constructor(options: ApplicationConfig = {}) {

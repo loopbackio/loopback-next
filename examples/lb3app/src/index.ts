@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {TodoListApplication} from './application';
 import {ApplicationConfig} from '@loopback/core';
+import {CoffeeShopsApplication} from './application';
 
 export async function main(options: ApplicationConfig = {}) {
-  const app = new TodoListApplication(options);
+  const app = new CoffeeShopsApplication(options);
   await app.boot();
   await app.start();
 
@@ -16,4 +16,4 @@ export async function main(options: ApplicationConfig = {}) {
   return app;
 }
 
-export {TodoListApplication};
+export {CoffeeShopsApplication};

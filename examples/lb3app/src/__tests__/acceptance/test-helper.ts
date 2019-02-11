@@ -1,4 +1,9 @@
-import {TodoListApplication} from '../..';
+// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Node module: @loopback/example-todo
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+import {CoffeeShopsApplication} from '../..';
 import {
   createRestAppClient,
   givenHttpServerConfig,
@@ -6,7 +11,7 @@ import {
 } from '@loopback/testlab';
 
 export async function setupApplication(): Promise<AppWithClient> {
-  const app = new TodoListApplication({
+  const app = new CoffeeShopsApplication({
     rest: givenHttpServerConfig(),
   });
 
@@ -19,6 +24,6 @@ export async function setupApplication(): Promise<AppWithClient> {
 }
 
 export interface AppWithClient {
-  app: TodoListApplication;
+  app: CoffeeShopsApplication;
   client: Client;
 }

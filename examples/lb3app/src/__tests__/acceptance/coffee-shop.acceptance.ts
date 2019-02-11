@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Client, expect} from '@loopback/testlab';
-import {TodoListApplication} from '../..';
+import {CoffeeShopsApplication} from '../..';
 import {setupApplication} from './test-helper';
 
 describe('CoffeeShop API', () => {
-  let app: TodoListApplication;
+  let app: CoffeeShopsApplication;
   let client: Client;
 
   before('setupApplication', async () => {
