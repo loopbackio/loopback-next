@@ -909,8 +909,9 @@ export function rebaseOpenApiSpec<T extends Partial<OpenApiSpec>>(
 
   const localPaths = spec.paths;
   // Don't modify the spec object provided to us.
-  spec = Object.assign({}, spec, {paths: {}});
-  for (const url in spec.paths) {
+  spec = Object.assign({}, spec);
+  spec.paths = {};
+  for (const url in localPaths) {
     spec.paths[`${basePath}${url}`] = localPaths[url];
   }
 
