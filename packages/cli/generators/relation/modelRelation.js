@@ -26,14 +26,13 @@ module.exports = class ModelRelation extends ArtifactGenerator {
     let sourceModel = this.options.sourceModel;
     let targetModel = this.options.destinationModel;
     let relationType = this.options.relationType;
-    let sourceModelPrimaryKey = this.options.foreignKey;
+    let sourceModelPrimaryKey = this.options.sourceModelPrimaryKey;
     let relationName = this.options.relationName;
-    let fktype = this.options.foreignKeyType;
+    let fktype = this.options.sourceModelPrimaryKeyType;
+    let foreignKey = this.options.defaultForeignKeyName;
+    let isForeignKeyExist = this.options.destinationModelForeignKeyExist;
 
-    // TOFO fix keyTppe and Foreignkey
     // add keyTo when needed in both hasMany and belongsTo relation
-    let sourceModelPrimaryKeyType = 'number'
-    let foreignKey = 'todoLId'
 
     let project = new ast.Project();
 
@@ -66,13 +65,14 @@ module.exports = class ModelRelation extends ArtifactGenerator {
     switch (relationType) {
       case 'hasMany':
         this.isRelationExist(sourceClass, relationName)
-        if ((this.isForeignKeyExist(targetClass, foreignKey))) {
-          this.vlidateType(targetClass, foreignKey, sourceModelPrimaryKeyType)
+        if (isForeignKeyExist) {
+          this.vlidateType(targetClass, foreignKey, fktype)
+        } else {
+          modelProperty = this.addForeginKey(foreignKey, fktype)
+          this.addPropertyToModel(targetClass, modelProperty);
+          targetClass.formatText();
+          targetFile.save();
         }
-        modelProperty = this.addForeginKey(foreignKey, sourceModelPrimaryKeyType)
-        this.addPropertyToModel(targetClass, modelProperty);
-        targetClass.formatText();
-        targetFile.save();
         modelProperty = this.getHasMany(targetModel, relationName);
         break;
       case 'hasOne':
@@ -121,14 +121,6 @@ module.exports = class ModelRelation extends ArtifactGenerator {
     return
 
   }
-  isDefaultForeignKey(classObj, sourceModelPrimaryKey, foreignKey) {
-    let defaultForeignKey = utils.camelCase(classObj.getName()) + utils.toClassName(sourceModelPrimaryKey)
-    if (defaultForeignKey === foreignKey) {
-      console.log('default foreignKey is missing in the target model');
-      throw new Error(' missing foreginKey');
-    }
-    return
-  }
 
   isPropertyExist(classObj, propertyName) {
     return this.getClassProperties(classObj)
@@ -137,16 +129,11 @@ module.exports = class ModelRelation extends ArtifactGenerator {
   }
 
   isRelationExist(classObj, propertyName) {
-    if (this.isForeignKeyExist(classObj, propertyName)) {
+    if (this.isPropertyExist(classObj, propertyName)) {
       console.log('property ' + propertyName + ' exsist in the model');
       throw new Error(' Property exsists');
     }
     return
-  }
-
-
-  isForeignKeyExist(classObj, foreignKey) {
-    return this.isPropertyExist(classObj, foreignKey)
   }
 
   getType(classObj, propertyName) {
