@@ -20,97 +20,84 @@ children:
   output: 'web, pdf'
   children:
 
-  - title: 'Tutorials'
-    url: Tutorials.html
+  - title: 'Todo Tutorial'
+    url: todo-tutorial.html
     output: 'web, pdf'
     children:
 
-    - title: 'Todo Tutorial'
-      url: todo-tutorial.html
+    - title: 'Create your app scaffolding'
+      url: todo-tutorial-scaffolding.html
       output: 'web, pdf'
-      children:
 
-      - title: 'Create your app scaffolding'
-        url: todo-tutorial-scaffolding.html
-        output: 'web, pdf'
-
-      - title: 'Add the Todo model'
-        url: todo-tutorial-model.html
-        output: 'web, pdf'
-
-      - title: 'Add a Datasource'
-        url: todo-tutorial-datasource.html
-        output: 'web, pdf'
-
-      - title: 'Add a Repository'
-        url: todo-tutorial-repository.html
-        output: 'web, pdf'
-
-      - title: 'Add a Controller'
-        url: todo-tutorial-controller.html
-        output: 'web, pdf'
-
-      - title: 'Putting it all together'
-        url: todo-tutorial-putting-it-together.html
-        output: 'web, pdf'
-
-      - title: 'Bonus: Integrate with a geo-coding service'
-        url: todo-tutorial-geocoding-service.html
-        output: 'web, pdf'
-
-    - title: 'TodoList Tutorial'
-      url: todo-list-tutorial.html
+    - title: 'Add the Todo model'
+      url: todo-tutorial-model.html
       output: 'web, pdf'
-      children:
 
-      - title: 'Add TodoList Model'
-        url: todo-list-tutorial-model.html
-        output: 'web, pdf'
-
-      - title: 'Add TodoList Repository'
-        url: todo-list-tutorial-repository.html
-        output: 'web, pdf'
-
-      - title: 'Add TodoList Controller'
-        url: todo-list-tutorial-controller.html
-        output: 'web, pdf'
-
-    - title: 'SOAP Web Service Tutorial'
-      url: soap-calculator-tutorial.html
+    - title: 'Add a Datasource'
+      url: todo-tutorial-datasource.html
       output: 'web, pdf'
-      children:
 
-      - title: 'SOAP Web Service Overview'
-        url: soap-calculator-tutorial-web-service-overview.html
-        output: 'web, pdf'
+    - title: 'Add a Repository'
+      url: todo-tutorial-repository.html
+      output: 'web, pdf'
 
-      - title: 'App scaffolding'
-        url: soap-calculator-tutorial-scaffolding.html
-        output: 'web, pdf'
+    - title: 'Add a Controller'
+      url: todo-tutorial-controller.html
+      output: 'web, pdf'
 
-      - title: 'Add a Datasource'
-        url: soap-calculator-tutorial-add-datasource.html
-        output: 'web, pdf'
+    - title: 'Putting it all together'
+      url: todo-tutorial-putting-it-together.html
+      output: 'web, pdf'
 
-      - title: 'Add a Service'
-        url: soap-calculator-tutorial-add-service.html
-        output: 'web, pdf'
+    - title: 'Bonus: Integrate with a geo-coding service'
+      url: todo-tutorial-geocoding-service.html
+      output: 'web, pdf'
 
-      - title: 'Add a Controller'
-        url: soap-calculator-tutorial-add-controller.html
-        output: 'web, pdf'
-
-      - title: 'Run and Test it'
-        url: soap-calculator-tutorial-run-and-test.html
-        output: 'web, pdf'
-
-  - title: 'Examples'
-    url: Examples.html
+  - title: 'TodoList Tutorial'
+    url: todo-list-tutorial.html
     output: 'web, pdf'
+    children:
 
-  - title: 'Contributions from the LoopBack Community'
-    url: Contributions.html
+    - title: 'Add TodoList Model'
+      url: todo-list-tutorial-model.html
+      output: 'web, pdf'
+
+    - title: 'Add TodoList Repository'
+      url: todo-list-tutorial-repository.html
+      output: 'web, pdf'
+
+    - title: 'Add TodoList Controller'
+      url: todo-list-tutorial-controller.html
+      output: 'web, pdf'
+
+  - title: 'SOAP Web Service Tutorial'
+    url: soap-calculator-tutorial.html
     output: 'web, pdf'
+    children:
+
+    - title: 'SOAP Web Service Overview'
+      url: soap-calculator-tutorial-web-service-overview.html
+      output: 'web, pdf'
+
+    - title: 'App scaffolding'
+      url: soap-calculator-tutorial-scaffolding.html
+      output: 'web, pdf'
+
+    - title: 'Add a Datasource'
+      url: soap-calculator-tutorial-add-datasource.html
+      output: 'web, pdf'
+
+    - title: 'Add a Service'
+      url: soap-calculator-tutorial-add-service.html
+      output: 'web, pdf'
+
+    - title: 'Add a Controller'
+      url: soap-calculator-tutorial-add-controller.html
+      output: 'web, pdf'
+
+    - title: 'Run and Test it'
+      url: soap-calculator-tutorial-run-and-test.html
+      output: 'web, pdf'
 
 - title: 'Examples'
   url: Examples.html
