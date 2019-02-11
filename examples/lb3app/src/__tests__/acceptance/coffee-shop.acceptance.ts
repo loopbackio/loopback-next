@@ -27,7 +27,7 @@ describe('CoffeeShop API', () => {
   });
 
   it('can query coffee shops', async () => {
-    const response = await await client.get('/api/CoffeeShops').expect(200);
+    const response = await client.get('/api/CoffeeShops').expect(200);
     expect(response.body).to.have.length(3);
   });
 });

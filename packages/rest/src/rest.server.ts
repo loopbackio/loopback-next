@@ -41,7 +41,6 @@ import {
   Route,
   RouteEntry,
   RoutingTable,
-  StaticAssetsRoute,
 } from './router';
 import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
 import {
@@ -53,6 +52,11 @@ import {
   Response,
   Send,
 } from './types';
+import {
+  ExternalExpressRoutes,
+  ExpressRequestHandler,
+} from './router/external-express-routes';
+import {assignRouterSpec, RouterSpec} from './router/router-spec';
 
 const debug = debugFactory('loopback:rest:server');
 
@@ -72,9 +76,6 @@ const SequenceActions = RestBindings.SequenceActions;
 //  Module '"(...)/node_modules/@types/lodash/cloneDeep/index"' resolves to
 //  a non-module entity and cannot be imported using this construct.
 const cloneDeep: <T>(value: T) => T = require('lodash/cloneDeep');
-
-export type RouterSpec = Pick<OpenApiSpec, 'paths' | 'components' | 'tags'>;
-export type ExpressRequestHandler = express.RequestHandler;
 
 /**
  * A REST API server for use with Loopback.
@@ -146,8 +147,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
   protected _httpServer: HttpServer | undefined;
 
   protected _expressApp: express.Application;
-  protected _additionalExpressRoutes: express.Router;
-  protected _specForAdditionalExpressRoutes: RouterSpec;
 
   get listening(): boolean {
     return this._httpServer ? this._httpServer.listening : false;
@@ -203,9 +202,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
     this.bind(RestBindings.BASE_PATH).toDynamicValue(() => this._basePath);
     this.bind(RestBindings.HANDLER).toDynamicValue(() => this.httpHandler);
-
-    this._additionalExpressRoutes = express.Router();
-    this._specForAdditionalExpressRoutes = {paths: {}};
   }
 
   protected _setupRequestHandlerIfNeeded() {
@@ -223,12 +219,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
     this._expressApp.use(this._basePath, (req, res, next) => {
       this._handleHttpRequest(req, res).catch(next);
     });
-
-    // Mount router for additional Express routes
-    // FIXME: this will not work!
-    //   1) we will get invoked after static assets
-    //   2) errors are not routed to `reject` sequence action
-    this._expressApp.use(this._basePath, this._additionalExpressRoutes);
 
     // Mount our error handler
     this._expressApp.use(
@@ -293,7 +283,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
      * Check if there is custom router in the context
      */
     const router = this.getSync(RestBindings.ROUTER, {optional: true});
-    const routingTable = new RoutingTable(router, this._staticAssetRoute);
+    const routingTable = new RoutingTable(router, this._externalRoutes);
 
     this._httpHandler = new HttpHandler(this, routingTable);
     for (const b of this.find('controllers.*')) {
@@ -647,8 +637,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
     );
   }
 
-  // The route for static assets
-  private _staticAssetRoute = new StaticAssetsRoute();
+  // The route for external routes & static assets
+  private _externalRoutes = new ExternalExpressRoutes();
 
   /**
    * Mount static assets to the REST server.
@@ -659,7 +649,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * @param options Options for serve-static
    */
   static(path: PathParams, rootDir: string, options?: ServeStaticOptions) {
-    this._staticAssetRoute.registerAssets(path, rootDir, options);
+    this._externalRoutes.registerAssets(path, rootDir, options);
   }
 
   /**
@@ -700,7 +690,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
       spec.components.schemas = cloneDeep(defs);
     }
 
-    assignRouterSpec(spec, this._specForAdditionalExpressRoutes);
+    assignRouterSpec(spec, this._externalRoutes.routerSpec);
 
     return spec;
   }
@@ -861,61 +851,11 @@ export class RestServer extends Context implements Server, HttpServerLike {
    */
   mountExpressRouter(
     basePath: string,
-    spec: RouterSpec = {paths: {}},
     router: ExpressRequestHandler,
+    spec?: RouterSpec,
   ): void {
-    spec = rebaseOpenApiSpec(spec, basePath);
-
-    // Merge OpenAPI specs
-    assignRouterSpec(this._specForAdditionalExpressRoutes, spec);
-
-    // Mount the actual Express router/handler
-    this._additionalExpressRoutes.use(basePath, router);
+    this._externalRoutes.mountRouter(basePath, router, spec);
   }
-}
-
-export function assignRouterSpec(target: RouterSpec, additions: RouterSpec) {
-  if (additions.components && additions.components.schemas) {
-    if (!target.components) target.components = {};
-    if (!target.components.schemas) target.components.schemas = {};
-    Object.assign(target.components.schemas, additions.components.schemas);
-  }
-
-  for (const url in additions.paths) {
-    if (!(url in target.paths)) target.paths[url] = {};
-    for (const verbOrKey in additions.paths[url]) {
-      // routes registered earlier takes precedence
-      if (verbOrKey in target.paths[url]) continue;
-      target.paths[url][verbOrKey] = additions.paths[url][verbOrKey];
-    }
-  }
-
-  if (additions.tags && additions.tags.length > 1) {
-    if (!target.tags) target.tags = [];
-    for (const tag of additions.tags) {
-      // tags defined earlier take precedence
-      if (target.tags.some(t => t.name === tag.name)) continue;
-      target.tags.push(tag);
-    }
-  }
-}
-
-export function rebaseOpenApiSpec<T extends Partial<OpenApiSpec>>(
-  spec: T,
-  basePath: string,
-): T {
-  if (!spec.paths) return spec;
-  if (!basePath || basePath === '/') return spec;
-
-  const localPaths = spec.paths;
-  // Don't modify the spec object provided to us.
-  spec = Object.assign({}, spec);
-  spec.paths = {};
-  for (const url in localPaths) {
-    spec.paths[`${basePath}${url}`] = localPaths[url];
-  }
-
-  return spec;
 }
 
 /**

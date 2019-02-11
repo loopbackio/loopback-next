@@ -12,15 +12,15 @@ import {format} from 'util';
 import {BodyParser} from './body-parsers';
 import {RestBindings} from './keys';
 import {RestComponent} from './rest.component';
+import {HttpRequestListener, HttpServerLike, RestServer} from './rest.server';
 import {
+  ControllerClass,
+  ControllerFactory,
+  RouteEntry,
   ExpressRequestHandler,
-  HttpRequestListener,
-  HttpServerLike,
-  RestServer,
-  RouterSpec,
-} from './rest.server';
-import {ControllerClass, ControllerFactory, RouteEntry} from './router';
+} from './router';
 import {SequenceFunction, SequenceHandler} from './sequence';
+import {RouterSpec} from './router/router-spec';
 
 export const ERR_NO_MULTI_SERVER = format(
   'RestApplication does not support multiple servers!',
@@ -251,9 +251,9 @@ export class RestApplication extends Application implements HttpServerLike {
 
   mountExpressRouter(
     basePath: string,
-    spec: RouterSpec,
     router: ExpressRequestHandler,
+    spec?: RouterSpec,
   ): void {
-    this.restServer.mountExpressRouter(basePath, spec, router);
+    this.restServer.mountExpressRouter(basePath, router, spec);
   }
 }

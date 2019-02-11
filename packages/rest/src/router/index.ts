@@ -8,7 +8,7 @@ export * from './route-entry';
 export * from './base-route';
 export * from './controller-route';
 export * from './handler-route';
-export * from './static-assets-route';
+export * from './external-express-routes';
 
 // routers
 export * from './rest-router';

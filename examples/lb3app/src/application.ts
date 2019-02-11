@@ -81,7 +81,7 @@ export class CoffeeShopsApplication extends BootMixin(
       );
 
     // 2. Mount the full Express app
-    this.mountExpressRouter('/', specInRoot, legacyApp);
+    this.mountExpressRouter('/', legacyApp, specInRoot);
 
     /* Options B: mount LB3 REST handler only.
      * Important! This does not mount `loopback#token` middleware!
@@ -89,11 +89,11 @@ export class CoffeeShopsApplication extends BootMixin(
     this.mountExpressRouter(
       '/api', // we can use any value here,
               // no need to call legacyApp.get('restApiRoot')
-      openApiSpec,
       // TODO(bajtos) reload the handler when a model/method was added/removed
-      legacyApp.handler('rest')
+      legacyApp.handler('rest'),
+      openApiSpec,
     );
-      */
+     */
 
     // TODO(bajtos) Listen for the following events to update the OpenAPI spec:
     // - modelRemoted
