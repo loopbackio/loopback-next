@@ -357,51 +357,6 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     }
   }
 
-  async _promptModelId() {
-    if (this.shouldExit()) return false;
-    let idProperty;
-
-    debug(`Model ID property name from command line: ${this.options.id}`);
-    debug(`Selected Models: ${this.artifactInfo.sourceModel}`);
-
-    if (_.isEmpty(this.artifactInfo.sourceModel)) {
-      return this.exit(new Error(`${ERROR_NO_MODEL_SELECTED}`));
-    } else {
-      const prompts = [
-        {
-          type: 'input',
-          name: 'propertyName',
-          message: `Please enter the name of the ID property for ${
-            this.artifactInfo.sourceModel
-            }:`,
-          default: 'id',
-        },
-      ];
-
-      // user supplied the id from the command line
-      if (this.options.id) {
-        debug(`passing thru this.options.id with value : ${this.options.id}`);
-
-        idProperty = this.options.id;
-        /**  make sure it is only used once, in case user selected more
-         * than one model.
-         */
-        delete this.options.id;
-      } else {
-        idProperty = await this._getModelIdProperty(
-          this.artifactInfo.sourceModel.modelNameList,
-        );
-
-        if (idProperty === null) {
-          const answer = await this.prompt(prompts);
-          idProperty = answer.propertyName;
-        }
-      }
-      this.options.foreignKey = idProperty;
-      this._calcForeignKeyType();
-    }
-  }
-
   async promptRelationName() {
     if (this.shouldExit()) return false;
 
