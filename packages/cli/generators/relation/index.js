@@ -90,7 +90,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     );
 
     if (this.options.sourceModelPrimaryKey === null) {
-      throw new Error("Source model primary key does not exist.");
+      throw new Error('Source model primary key does not exist.');
     }
   }
 
@@ -109,7 +109,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     const sf = project.addExistingSourceFile(sourceFile);
     this.options.sourceModelPrimaryKeyType = this._getKeyType(
       sf,
-      this.options.sourceModelPrimaryKey
+      this.options.sourceModelPrimaryKey,
     );
   }
 
@@ -121,8 +121,6 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       utils.camelCase(this.options.sourceModel) +
       utils.toClassName(this.options.sourceModelPrimaryKey);
   }
-
-
 
   async _scaffold() {
     let relPathCtrl = this.artifactInfo.relPath + relPathControllersFolder;
@@ -247,8 +245,8 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         new Error(
           `${ERROR_NO_MODELS_FOUND} ${this.artifactInfo.modelDir}.
         ${chalk.yellow(
-            'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
-          )}`,
+          'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
+        )}`,
         ),
       );
     }
@@ -315,8 +313,6 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
   async promptForeignKey() {
     if (this.shouldExit()) return false;
 
-
-
     if (_.isEmpty(this.options.sourceModel)) {
       return this.exit(new Error(`${ERROR_NO_SOURCE_MODEL_SELECTED}`));
     }
@@ -340,11 +336,10 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     );
     const df = project.addExistingSourceFile(destinationFile);
     const cl = this._getClassObj(df);
-    this.options.destinationModelForeignKeyExist =
-      cl
-        .getProperties()
-        .map(x => x.getName())
-        .includes(this.options.defaultForeignKeyName);
+    this.options.destinationModelForeignKeyExist = cl
+      .getProperties()
+      .map(x => x.getName())
+      .includes(this.options.defaultForeignKeyName);
 
     if (!this.options.destinationModelForeignKeyExist) {
       this.artifactInfo.destinationModelForeignKeyName = await this.prompt([

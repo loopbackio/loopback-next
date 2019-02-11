@@ -36,7 +36,6 @@ module.exports = class ModelRelation extends ArtifactGenerator {
 
     let project = new ast.Project();
 
-
     const sourceFile = this.addFileToProject(
       project,
       path,
@@ -64,11 +63,11 @@ module.exports = class ModelRelation extends ArtifactGenerator {
 
     switch (relationType) {
       case 'hasMany':
-        this.isRelationExist(sourceClass, relationName)
+        this.isRelationExist(sourceClass, relationName);
         if (isForeignKeyExist) {
-          this.vlidateType(targetClass, foreignKey, fktype)
+          this.vlidateType(targetClass, foreignKey, fktype);
         } else {
-          modelProperty = this.addForeginKey(foreignKey, fktype)
+          modelProperty = this.addForeginKey(foreignKey, fktype);
           this.addPropertyToModel(targetClass, modelProperty);
           targetClass.formatText();
           targetFile.save();
@@ -84,16 +83,16 @@ module.exports = class ModelRelation extends ArtifactGenerator {
         }
         break;
       case 'belongsTo':
-        this.isRelationExist(sourceClass, relationName)
+        this.isRelationExist(sourceClass, relationName);
         modelProperty = this.getBelongsTo(
           targetModel,
           relationName,
           utils.toClassName(fktype),
-        )
+        );
         break;
     }
 
-    this.addPropertyToModel(sourceClass, modelProperty)
+    this.addPropertyToModel(sourceClass, modelProperty);
     this.addRequiredImports(sourceFile, targetModel, relationType, targetModel);
     sourceClass.formatText();
     sourceFile.save();
@@ -105,21 +104,23 @@ module.exports = class ModelRelation extends ArtifactGenerator {
   }
 
   addPropertyToModel(classOBj, modelProperty) {
-    classOBj.insertProperty(
-      this.getPropertiesCount(classOBj),
-      modelProperty,
-    );
+    classOBj.insertProperty(this.getPropertiesCount(classOBj), modelProperty);
     classOBj.insertText(this.getPropertyStartPos(classOBj), '\n');
   }
 
-
   vlidateType(classObj, foriegnKeyName, foriegnKeyType) {
-    if (utils.lowerCase(classObj.getProperty(foriegnKeyName).getType().getText()) != foriegnKeyType) {
+    if (
+      utils.lowerCase(
+        classObj
+          .getProperty(foriegnKeyName)
+          .getType()
+          .getText(),
+      ) != foriegnKeyType
+    ) {
       console.log(' foreignKey type has wrong Type ');
       throw new Error('foreginKey Type Error');
     }
-    return
-
+    return;
   }
 
   isPropertyExist(classObj, propertyName) {
@@ -133,7 +134,7 @@ module.exports = class ModelRelation extends ArtifactGenerator {
       console.log('property ' + propertyName + ' exsist in the model');
       throw new Error(' Property exsists');
     }
-    return
+    return;
   }
 
   getType(classObj, propertyName) {
@@ -172,7 +173,12 @@ module.exports = class ModelRelation extends ArtifactGenerator {
 
   addForeginKey(foreginKey, sourceModelPrimaryKeyType) {
     let fkProperty = {
-      decorators: [{ name: 'property', arguments: ["{\n type : '" + sourceModelPrimaryKeyType + "',\n}"] }],
+      decorators: [
+        {
+          name: 'property',
+          arguments: ["{\n type : '" + sourceModelPrimaryKeyType + "',\n}"],
+        },
+      ],
       name: foreginKey + '?',
       type: sourceModelPrimaryKeyType,
     };
@@ -181,7 +187,7 @@ module.exports = class ModelRelation extends ArtifactGenerator {
 
   getHasMany(className, relationName) {
     let relationProperty = {
-      decorators: [{ name: 'hasMany', arguments: ['() => ' + className] }],
+      decorators: [{name: 'hasMany', arguments: ['() => ' + className]}],
       name: relationName,
       type: className + '[]',
     };
@@ -191,7 +197,7 @@ module.exports = class ModelRelation extends ArtifactGenerator {
 
   getHasOne(className, relationName) {
     let relationProperty = {
-      decorators: [{ name: 'hasOne', arguments: ['() => ' + className] }],
+      decorators: [{name: 'hasOne', arguments: ['() => ' + className]}],
       name: relationName,
       type: className,
     };
@@ -201,7 +207,7 @@ module.exports = class ModelRelation extends ArtifactGenerator {
   getBelongsTo(className, relationName, fktype) {
     let relationProperty;
     relationProperty = {
-      decorators: [{ name: 'belongsTo', arguments: ['() => ' + className] }],
+      decorators: [{name: 'belongsTo', arguments: ['() => ' + className]}],
       name: relationName,
       type: fktype,
     };
