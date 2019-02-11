@@ -13,12 +13,11 @@ import {
 } from '@loopback/rest';
 import {RestExplorerComponent} from '@loopback/rest-explorer';
 import * as path from 'path';
-import {promisify} from 'util';
 import {MySequence} from './sequence';
 import * as debugFactory from 'debug';
+import * as pEvent from 'p-event';
 
 const legacyApp = require('../legacy/server/server');
-const legacyBoot = promisify(require('loopback-boot'));
 const {generateSwaggerSpec} = require('loopback-swagger');
 const swagger2openapi = require('swagger2openapi');
 
@@ -51,9 +50,13 @@ export class CoffeeShopsApplication extends BootMixin(
   }
 
   async boot() {
-    // Boot the legacy LB3 app first
-    await legacyBoot(legacyApp);
+    debug('LEGACY BOOT');
+    if (legacyApp.booting) {
+      // Wait until the legacy LB3 app boots
+      await pEvent(legacyApp, 'booted');
+    }
 
+    debug('MOUNT LB3 APP');
     const swaggerSpec = generateSwaggerSpec(legacyApp);
     const result = await swagger2openapi.convertObj(swaggerSpec, {
       // swagger2openapi options
@@ -66,7 +69,16 @@ export class CoffeeShopsApplication extends BootMixin(
     // 1. Rebase the spec, e.g. from `GET /Products` to `GET /api/Products`.
     const specInRoot = rebaseOpenApiSpec(openApiSpec, swaggerSpec.basePath);
     if (debug.enabled)
-      debug('API of LB3 app', JSON.stringify(specInRoot, null, 2));
+      debug(
+        'API of LB3 app',
+        Object.keys(specInRoot.paths)
+          .map(p =>
+            Object.keys(specInRoot.paths[p])
+              .map(v => `\n\t${v.toUpperCase()} ${p}`)
+              .join(''),
+          )
+          .join(''),
+      );
 
     // 2. Mount the full Express app
     this.mountExpressRouter('/', specInRoot, legacyApp);
@@ -90,7 +102,10 @@ export class CoffeeShopsApplication extends BootMixin(
     // - remoteMethodDisabled
     // Note: LB4 does not support live spec updates yet.
 
+    debug('LB4 BOOT');
     // Boot the new LB4 layer now
-    return super.boot();
+    await super.boot();
+
+    debug('BOOTED');
   }
 }

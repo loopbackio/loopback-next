@@ -11,11 +11,13 @@ describe('HomePage', () => {
   let app: CoffeeShopsApplication;
   let client: Client;
 
-  before('setupApplication', async () => {
+  before('setupApplication', async function(this: Mocha.Context) {
+    this.timeout(30000);
     ({app, client} = await setupApplication());
   });
 
   after(async () => {
+    if (!app) return;
     await app.stop();
   });
 
