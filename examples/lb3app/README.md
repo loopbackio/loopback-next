@@ -60,7 +60,21 @@ new LoopBack 4 project.
 
    - `files` >> `loopback#static`
 
-6. TODO(bajtos): describe how to use our new Booter to load LB3 app
+6. Install and configure `@loopback/booter-lb3app` to boot and mount the LB3 application:
+
+   1. `npm install --save @loopback/booter-lb3app`
+
+   2. Import the booter at the top of your `src/application.ts` file.
+
+      ```ts
+      import {Lb3AppBooter} from '@loopback/booter-lb3app';
+      ```
+
+   3. Register the booter in Application's constructor:
+
+      ```ts
+      this.booters(Lb3AppBooter);
+      ```
 
 ## Try it out
 

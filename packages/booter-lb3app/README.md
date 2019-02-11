@@ -10,7 +10,17 @@ npm install --save @loopback/booter-lb3app
 
 ## Basic use
 
-TBD
+Import the booter at the top of your `src/application.ts` file.
+
+```ts
+import {Lb3AppBooter} from '@loopback/booter-lb3app';
+```
+
+Register the booter in Application's constructor:
+
+```ts
+this.booters(Lb3AppBooter);
+```
 
 ## Contributions
 
