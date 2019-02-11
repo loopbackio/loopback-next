@@ -1,6 +1,8 @@
 'use strict';
 
-module.exports = function(app) {
+const debug = require('debug')('loopback:example:lb3app');
+
+module.exports = function(app, cb) {
   app.dataSources.mysqlDs.automigrate('CoffeeShop', function(err) {
     if (err) throw err;
 
@@ -14,9 +16,9 @@ module.exports = function(app) {
       name: 'Caffe Artigiano',
       city: 'Vancouver',
     }], function(err, coffeeShops) {
-      if (err) throw err;
-
-      console.log('Models created: \n', coffeeShops);
+      if (err) return cb(err);
+      debug('Models created: \n', coffeeShops);
+      cb();
     });
   });
 };
