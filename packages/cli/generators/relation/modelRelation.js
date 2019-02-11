@@ -22,16 +22,81 @@ module.exports = class ModelRelation extends ArtifactGenerator {
   }
 
   generateRelationModel(options) {
-    let modelPath = this.artifactInfo.modelDir;
-    this.generateModel(
-      this.options.sourceModel,
-      this.options.destinationModel,
-      this.options.relationType,
-      modelPath,
-      this.options.foreignKey,
-      this.options.relationName,
-      this.options.foreignKeyType,
+    let path = this.artifactInfo.modelDir;
+    let sourceModel = this.options.sourceModel;
+    let targetModel = this.options.destinationModel;
+    let relationType = this.options.relationType;
+    let sourceModelPrimaryKey = this.options.foreignKey;
+    let relationName = this.options.relationName;
+    let fktype = this.options.foreignKeyType;
+
+    // TOFO fix keyTppe and Foreignkey
+    // add keyTo when needed in both hasMany and belongsTo relation
+    let sourceModelPrimaryKeyType = 'number'
+    let foreignKey = 'todoLId'
+
+    let project = new ast.Project();
+
+
+    const sourceFile = this.addFileToProject(
+      project,
+      path,
+      utils.kebabCase(sourceModel),
     );
+
+    const targetFile = this.addFileToProject(
+      project,
+      path,
+      utils.kebabCase(targetModel),
+    );
+
+    const sourceClass = this.getClassObj(sourceFile, sourceModel);
+
+    const targetClass = this.getClassObj(targetFile, targetModel);
+
+    if (!this.isClassExist(sourceFile)) {
+      return;
+    }
+    if (!this.isClassExist(targetFile)) {
+      return;
+    }
+
+    let modelProperty;
+
+    switch (relationType) {
+      case 'hasMany':
+        this.isRelationExist(sourceClass, relationName)
+        if ((this.isForeignKeyExist(targetClass, foreignKey))) {
+          this.vlidateType(targetClass, foreignKey, sourceModelPrimaryKeyType)
+        }
+        modelProperty = this.addForeginKey(foreignKey, sourceModelPrimaryKeyType)
+        this.addPropertyToModel(targetClass, modelProperty);
+        targetClass.formatText();
+        targetFile.save();
+        modelProperty = this.getHasMany(targetModel, relationName);
+        break;
+      case 'hasOne':
+        if (this.isPropertyExist(sourceClass, relationName)) {
+          console.log('property ' + relationName + ' exsist in the model');
+          throw new Error(' Property exsists');
+        } else {
+          modelProperty = this.getHasOne(targetModel, relationName);
+        }
+        break;
+      case 'belongsTo':
+        this.isRelationExist(sourceClass, relationName)
+        modelProperty = this.getBelongsTo(
+          targetModel,
+          relationName,
+          utils.toClassName(sourceModelPrimaryKeyType),
+        )
+        break;
+    }
+
+    this.addPropertyToModel(sourceClass, modelProperty)
+    this.addRequiredImports(sourceFile, targetModel, relationType, targetModel);
+    sourceClass.formatText();
+    sourceFile.save();
   }
 
   addFileToProject(project, path, modelName) {
@@ -39,31 +104,30 @@ module.exports = class ModelRelation extends ArtifactGenerator {
     return project.addExistingSourceFile(fileName);
   }
 
-  getClassesCount(fileName) {
-    return fileName.getClasses().length;
+  addPropertyToModel(classOBj, modelProperty) {
+    classOBj.insertProperty(
+      this.getPropertiesCount(classOBj),
+      modelProperty,
+    );
+    classOBj.insertText(this.getPropertyStartPos(classOBj), '\n');
   }
 
-  getClassObj(fileName, modelName) {
-    return fileName.getClassOrThrow(modelName);
-  }
 
-  isClassExist(fileName) {
-    return this.getClassesCount(fileName) == 1;
-  }
+  vlidateType(classObj, foriegnKeyName, foriegnKeyType) {
+    if ((classObj.getProperty(foriegnKeyName).getType().getText()) != foriegnKeyType) {
+      console.log(' foreignKey type has wrong Type ');
+      throw new Error('foreginKey Type Error');
+    }
+    return
 
-  getPropertiesCount(classObj) {
-    return classObj.getProperties().length;
   }
-
-  getPropertyStartPos(classObj) {
-    return classObj
-      .getChildSyntaxList()
-      .getChildAtIndex(this.getPropertiesCount(classObj) - 1)
-      .getPos();
-  }
-
-  getClassProperties(classObj) {
-    return classObj.getProperties();
+  isDefaultForeignKey(classObj, sourceModelPrimaryKey, foreignKey) {
+    let defaultForeignKey = utils.camelCase(classObj.getName()) + utils.toClassName(sourceModelPrimaryKey)
+    if (defaultForeignKey === foreignKey) {
+      console.log('default foreignKey is missing in the target model');
+      throw new Error(' missing foreginKey');
+    }
+    return
   }
 
   isPropertyExist(classObj, propertyName) {
@@ -92,100 +156,37 @@ module.exports = class ModelRelation extends ArtifactGenerator {
       .getText();
   }
 
-  isDefaultForeignKey(classObj, sourceModelPrimaryKey, foreignKey) {
-    let defaultForeignKey = utils.camelCase(classObj.getName()) + utils.toClassName(sourceModelPrimaryKey)
-    if (defaultForeignKey === foreignKey) {
-      console.log('default foreignKey is missing in the target model');
-      throw new Error(' missing foreginKey');
-    }
-    return
+  getPropertiesCount(classObj) {
+    return classObj.getProperties().length;
   }
 
-  addPropertyToModel(classOBj, modelProperty) {
-    classOBj.insertProperty(
-      this.getPropertiesCount(classOBj),
-      modelProperty,
-    );
-    classOBj.insertText(this.getPropertyStartPos(classOBj), '\n');
+  getPropertyStartPos(classObj) {
+    return classObj
+      .getChildSyntaxList()
+      .getChildAtIndex(this.getPropertiesCount(classObj) - 1)
+      .getPos();
   }
 
-  generateModel(
-    sourceModel,
-    targetModel,
-    relationType,
-    path,
-    sourceModelPrimaryKey,
-    relationName,
-    fktype,
-    foreignKey
-  ) {
-    // TOFO fix keyTppe and Foreignkey
-    // add keyTo when needed in both hasMany and belongsTo relation
-    let sourceModelPrimaryKeyType = 'number'
-    foreignKey = 'todoLId'
-    let project = new ast.Project();
+  getClassProperties(classObj) {
+    return classObj.getProperties();
+  }
 
-    const sourceFile = this.addFileToProject(
-      project,
-      path,
-      utils.kebabCase(sourceModel),
-    );
-    if (!this.isClassExist(sourceFile)) {
-      return;
-    }
-    const sourceClass = this.getClassObj(sourceFile, sourceModel);
+  getClassesCount(fileName) {
+    return fileName.getClasses().length;
+  }
 
-    const targetFile = this.addFileToProject(
-      project,
-      path,
-      utils.kebabCase(targetModel),
-    );
-    if (!this.isClassExist(targetFile)) {
-      return;
-    }
-    const targetClass = this.getClassObj(targetFile, targetModel);
-    let modelProperty;
+  getClassObj(fileName, modelName) {
+    return fileName.getClassOrThrow(modelName);
+  }
 
-    switch (relationType) {
-      case 'hasMany':
-        this.isRelationExist(sourceClass, relationName)
-        if (!(this.isForeignKeyExist(targetClass, foreignKey))) {
-          this.isDefaultForeignKey(sourceClass, sourceModelPrimaryKey, foreignKey)
-          modelProperty = this.addForeginKey(foreignKey, sourceModelPrimaryKeyType)
-          this.addPropertyToModel(targetClass, modelProperty);
-          targetClass.formatText();
-          targetFile.save();
-        }
-        modelProperty = this.getHasMany(targetModel, relationName);
-        break;
-      case 'hasOne':
-        if (this.isPropertyExist(sourceClass, relationName)) {
-          console.log('property ' + relationName + ' exsist in the model');
-          throw new Error(' Property exsists');
-        } else {
-          modelProperty = this.getHasOne(targetModel, relationName);
-        }
-        break;
-      case 'belongsTo':
-        this.isRelationExist(sourceClass, relationName)
-        modelProperty = this.getBelongsTo(
-          targetModel,
-          relationName,
-          utils.toClassName(sourceModelPrimaryKeyType),
-        )
-        break;
-    }
-
-    this.addPropertyToModel(sourceClass, modelProperty)
-    this.addRequiredImports(sourceFile, targetModel, relationType, targetModel);
-    sourceClass.formatText();
-    sourceFile.save();
+  isClassExist(fileName) {
+    return this.getClassesCount(fileName) == 1;
   }
 
   addForeginKey(foreginKey, sourceModelPrimaryKeyType) {
     let fkProperty = {
       decorators: [{ name: 'property', arguments: ["{\n type : '" + sourceModelPrimaryKeyType + "',\n}"] }],
-      name: foreginKey,
+      name: foreginKey + '?',
       type: sourceModelPrimaryKeyType,
     };
     return fkProperty;
