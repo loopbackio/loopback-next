@@ -65,22 +65,27 @@ production-ready implementation.
 
 1. Implement `app.mountExpressRouter()`, including test coverage and
    documentation.
+
 2. Describe request handling steps. Explain the order in which different
    middleware and route handlers are invoked in LB4, what extension points are
    provided. This content can go into a new section to [Advanced topics in
    Sequence](https://loopback.io/doc/en/lb4/Sequence.html#advanced-topics] or we
    can create an entirely new page.
+
 3. Implement `@loopback/booter-lb3app`, including test coverage and
    documentation. As part of this effort, create a new package to hold types
    needed by Booter implementations. The idea is to decouple API contract
    between Bootstrapper and Booters from the actual Bootstrapper implementation.
    `@loopback/booter-lb3app` should not have any runtime dependency on
    `@loopback/boot` (a dev-dependency for tests is ok).
+
 4. Create an example app based on `loopback-getting-started`
    (`@loopback/example-lb3app`) to showcase LB3+LB4 integration. Add acceptance
    tests to verify few REST endpoints, also a test to verify that LB3 endpoints
    are included in the OpenAPI spec produced by the LB4 app.
+
 5. Migration guide.
+
    - Start by reorganizing the
      [docs for LoopBack 3.x users](https://loopback.io/doc/en/lb4/LoopBack-3.x.html):
      keep the current page as a top-level overview.
@@ -90,3 +95,13 @@ production-ready implementation.
      `Lb3AppBooter`. Explain the differences (breaking changes) introduced by
      the migration. I believe the only difference is in the spec format: LB3
      produces Swagger (OpenApi v2), LB4 produces OpenApi v3.
+
+6. Spike: dynamically updated LB3 API (routes + spec). In LB3, it's possible to
+   change the shape of REST API at runtime by adding or removing shared methods
+   or even entire models. The PoC version of LB3+LB4 does not support spec
+   updates, we need to do a spike to find the best solution. (For example,
+   `mountExpressRouter` can accept a spec getter instead of the spec object.) As
+   for the actual request handling, the PoC version reloads route handlers in
+   "full" mode but does not reload in "router" mode. As part of the stories
+   created from the spike, we should fix "router" mode to reload the LB3 handler
+   when needed.
