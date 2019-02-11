@@ -1,74 +1,70 @@
-# @loopback/example-todo
+# @loopback/example-lb3app
 
-This is the basic tutorial for getting started with Loopback 4!
-
-## Overview
-
-This tutorial demonstrates how to create a basic API for a todo list using
-LoopBack 4. You will experience how you can create REST APIs with just
-[5 steps](#steps).
-
-![todo-tutorial-overview](https://loopback.io/pages/en/lb4/imgs/todo-overview.png)
-
-## Setup
-
-First, you'll need to install a supported version of Node:
-
-- [Node.js](https://nodejs.org/en/) at v8.9 or greater
-
-Additionally, this tutorial assumes that you are comfortable with certain
-technologies, languages and concepts.
-
-- JavaScript (ES6)
-- [REST](http://www.restapitutorial.com/lessons/whatisrest.html)
-
-Lastly, you'll need to install the LoopBack 4 CLI toolkit:
-
-```sh
-npm i -g @loopback/cli
-```
+This example demonstrates how to mount your existing LoopBack 3 application in a
+new LoopBack 4 project.
 
 ## Tutorial
 
-To follow this tutorial, begin with the
-[Create your app scaffolding](http://loopback.io/doc/en/lb4/todo-tutorial-scaffolding.html)
-section.
+1. Create a new LoopBack 4 project using `lb4 app`.
 
-### Steps
+   ```
+   $ lb4 app
+   ```
 
-1.  [Create your app scaffolding](http://loopback.io/doc/en/lb4/todo-tutorial-scaffolding.html)
-2.  [Add your Todo model](http://loopback.io/doc/en/lb4/todo-tutorial-model.html)
-3.  [Add a datasource](http://loopback.io/doc/en/lb4/todo-tutorial-datasource.html)
-4.  [Add a repository](http://loopback.io/doc/en/lb4/todo-tutorial-repository.html)
-5.  [Add a controller](http://loopback.io/doc/en/lb4/todo-tutorial-controller.html)
-6.  [Putting it all together](http://loopback.io/doc/en/lb4/todo-tutorial-putting-it-together.html)
-7.  Bonus:
-    [Integrate with a geo-coding service](http://loopback.io/doc/en/lb4/todo-tutorial-geocoding-service.html)
+2. Create a new directory `legacy` and copy your existing LoopBack 3 application
+   there. You should end up with the following directory layout
+
+   ```
+   legacy/
+     # LoopBack 3 application in JavaScript
+     common/
+       models/
+         # LB3 model files
+     server/
+       boot/
+         # LB3 boot scripts
+   public/
+     # front-end assets (LB4 way)
+   src/
+     # LoopBack 4 application in TypeScript
+   ```
+
+3. Move LB3 dependencies to the main package.json file and remove
+   `legacy/package.json`. Typically you will need to add the following entries,
+   plus any connectors or components you are using in your LB3 application.
+
+   ```json
+   {
+     "compression": "^1.0.3",
+     "cors": "^2.5.2",
+     "helmet": "^3.15.0",
+     "loopback": "^3.0.0",
+     "loopback-boot": "^3.1.1",
+     "loopback-connector-mysql": "^5.3.1",
+     "serve-favicon": "^2.0.1",
+     "strong-error-handler": "^3.2.0"
+   }
+   ```
+
+4. Disable error handling in your LB3 app, leave it for the new LB4 app.
+
+   - Remove `legacy/server/middleware.development.json`
+   - Edit `legacy/server/middleware.json` and remove the following two entries:
+     - `final` >> `loopback#urlNotFound`
+     - `final:after` >> `strong-error-handler`
+   - Remove `strong-error-handler` from `package.json` dependencies.
+
+5. Move your front-end files from `legacy/client` to `public/` directory and
+   disable static assets in your LB3 app by removing the following entry in
+   `legacy/server/middleware.json`:
+
+   - `files` >> `loopback#static`
+
+6. TODO(bajtos): describe how to use our new Booter to load LB3 app
 
 ## Try it out
 
-If you'd like to see the final results of this tutorial as an example
-application, follow these steps:
-
-1.  Run the `lb4 example` command to select and clone the todo repository:
-
-    ```sh
-    $ lb4 example
-    ? What example would you like to clone? (Use arrow keys)
-    > todo: Tutorial example on how to build an application with LoopBack 4.
-    todo-list: Continuation of the todo example using relations in LoopBack 4.
-    hello-world: A simple hello-world Application using LoopBack 4.
-    log-extension: An example extension project for LoopBack 4.
-    rpc-server: A basic RPC server using a made-up protocol.
-    ```
-
-2.  Switch to the directory.
-
-    ```sh
-    cd loopback4-example-todo
-    ```
-
-3.  Finally, start the application!
+Start the new LB4 application
 
     ```sh
     $ npm start
@@ -76,9 +72,8 @@ application, follow these steps:
     Server is running at http://127.0.0.1:3000
     ```
 
-Feel free to look around in the application's code to get a feel for how it
-works. If you're interested in learning how to build it step-by-step, then
-continue with this tutorial!
+Open the URL printed to console to view your front-end served from `public`
+directory or go to `http://127.0.0.1:3000/explorer` to explore the REST API.
 
 ### Need help?
 
