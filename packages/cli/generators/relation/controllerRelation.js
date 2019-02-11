@@ -83,8 +83,8 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
     );
 
     this.artifactInfo.relationPropertyName = options.relationName;
-    this.artifactInfo.foreignKey = options.foreignKey;
-    this.artifactInfo.foreignKeyType = options.foreignKeyType;
+    this.artifactInfo.sourceModelPrimaryKey = options.sourceModelPrimaryKey;
+    this.artifactInfo.sourceModelPrimaryKeyType = options.sourceModelPrimaryKeyType;
 
     const source = this.templatePath(CONTROLLER_TEMPLATE_PATH_BELONGS_TO);
 
@@ -119,8 +119,8 @@ module.exports = class ControllerRelation extends ArtifactGenerator {
       options.destinationModel,
     );
     this.artifactInfo.relationPropertyName = options.destinationModel;
-    this.artifactInfo.foreignKey = options.foreignKey;
-    this.artifactInfo.foreignKeyType = options.foreignKeyType;
+    this.artifactInfo.sourceModelPrimaryKey = options.sourceModelPrimaryKey;
+    this.artifactInfo.sourceModelPrimaryKeyType = options.sourceModelPrimaryKeyType;
 
     const source = this.templatePath(CONTROLLER_TEMPLATE_PATH_HAS_MANY);
 

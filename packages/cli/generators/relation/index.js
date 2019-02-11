@@ -142,21 +142,21 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     let ctrl = new ControllerRelation(this.args, this.opts);
     this.artifactInfo.name = this.options.relationType;
     this.artifactInfo.relPath = relPathCtrl;
-    /*
-        switch (this.options.relationType) {
-          case relationUtils.relationType.belongsTo:
-            ctrl.generateControllerRelationBelongsTo(this.options);
-            break;
-          case relationUtils.relationType.hasMany:
-            ctrl.generateControllerRelationHasMany(this.options);
-            break;
-          case relationUtils.relationType.hasOne:
-            ctrl.generateControllerRelationHasOne(this.options);
-            break;
-          default:
-            throw new Error(ERROR_INCORRECT_RELATION_TYPE);
-        }
-    */
+
+    switch (this.options.relationType) {
+      case relationUtils.relationType.belongsTo:
+        ctrl.generateControllerRelationBelongsTo(this.options);
+        break;
+      case relationUtils.relationType.hasMany:
+        ctrl.generateControllerRelationHasMany(this.options);
+        break;
+      case relationUtils.relationType.hasOne:
+        ctrl.generateControllerRelationHasOne(this.options);
+        break;
+      default:
+        throw new Error(ERROR_INCORRECT_RELATION_TYPE);
+    }
+
     //Invoke here Model and Repository Generators
     debug('Invoke Model generator...');
     let model = new ModelRelation(this.args, this.opts);
@@ -194,7 +194,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       case relationUtils.relationType.belongsTo:
         defaultRelationName =
           utils.camelCase(this.options.destinationModel) +
-          utils.toClassName(this.options.foreignKey);
+          utils.toClassName(this.options.sourceModelPrimaryKey);
         break;
       case relationUtils.relationType.hasMany:
         defaultRelationName = utils.pluralize(
@@ -315,6 +315,8 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
   async promptForeignKey() {
     if (this.shouldExit()) return false;
 
+
+
     if (_.isEmpty(this.options.sourceModel)) {
       return this.exit(new Error(`${ERROR_NO_SOURCE_MODEL_SELECTED}`));
     }
@@ -327,6 +329,9 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     this._calcSourceModelPrimaryKeyType();
     this._calcDefaultForeignKey();
 
+    if (this.options.relationType === relationUtils.relationType.belongsTo) {
+      return;
+    }
     let project = new ast.Project();
 
     const destinationFile = path.join(

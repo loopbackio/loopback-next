@@ -16,7 +16,7 @@ export class <%= controllerClassName %> {
 
   @get('/<%= sourceModelName %>s/{id}/<%= targetModelName %>')
   async get<%= targetModelClassName %>(
-    @param.path.<%= foreignKeyType %>('id') <%= relationPropertyName %>: typeof <%= sourceModelClassName %>.prototype.<%= foreignKey %>,
+    @param.path.<%= sourceModelPrimaryKeyType %>('id') <%= relationPropertyName %>: typeof <%= sourceModelClassName %>.prototype.<%= sourceModelPrimaryKey %>,
   ): Promise<<%= targetModelClassName %>> {
     return await this.<%= paramSourceRepository %>.<%= paramTargetModel %>(<%= relationPropertyName %>);
   }

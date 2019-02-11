@@ -35,7 +35,7 @@ export class <%= controllerClassName %> {
     },
   })
   async find(
-    @param.path.<%= foreignKeyType %>('id') id: <%= foreignKeyType %>,
+    @param.path.<%= sourceModelPrimaryKeyType %>('id') id: <%= sourceModelPrimaryKeyType %>,
     @param.query.object('filter') filter?: Filter,
   ): Promise<<%= targetModelClassName %>[]> {
     return await this.<%= paramSourceRepository %>.<%= targetModelName %>s(id).find(filter);
@@ -50,7 +50,7 @@ export class <%= controllerClassName %> {
     },
   })
   async create(
-    @param.path.<%= foreignKeyType %>('id') id: typeof <%= sourceModelClassName %>.prototype.<%= foreignKey %>,
+    @param.path.<%= sourceModelPrimaryKeyType %>('id') id: typeof <%= sourceModelClassName %>.prototype.<%= sourceModelPrimaryKey %>,
     @requestBody() <%= targetModelName %>: <%= targetModelClassName %>,
   ): Promise<<%= targetModelClassName %>> {
     return await this.<%= paramSourceRepository %>.<%= targetModelName %>s(id).create(<%= targetModelName %>);
@@ -65,7 +65,7 @@ export class <%= controllerClassName %> {
     },
   })
   async patch(
-    @param.path.<%= foreignKeyType %>('id') id: <%= foreignKeyType %>,
+    @param.path.<%= sourceModelPrimaryKeyType %>('id') id: <%= sourceModelPrimaryKeyType %>,
     @requestBody() <%= targetModelName %>: Partial<<%= targetModelClassName %>>,
     @param.query.object('where', getWhereSchemaFor(<%= targetModelClassName %>)) where?: Where,
   ): Promise<Count> {
@@ -81,7 +81,7 @@ export class <%= controllerClassName %> {
     },
   })
   async delete(
-    @param.path.<%= foreignKeyType %>('id') id: <%= foreignKeyType %>,
+    @param.path.<%= sourceModelPrimaryKeyType %>('id') id: <%= sourceModelPrimaryKeyType %>,
     @param.query.object('where', getWhereSchemaFor(<%= targetModelClassName %>)) where?: Where,
   ): Promise<Count> {
     return await this.<%= paramSourceRepository %>.<%= targetModelName %>s(id).delete(where);

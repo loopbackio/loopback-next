@@ -88,7 +88,7 @@ module.exports = class ModelRelation extends ArtifactGenerator {
         modelProperty = this.getBelongsTo(
           targetModel,
           relationName,
-          utils.toClassName(sourceModelPrimaryKeyType),
+          utils.toClassName(fktype),
         )
         break;
     }
@@ -114,7 +114,7 @@ module.exports = class ModelRelation extends ArtifactGenerator {
 
 
   vlidateType(classObj, foriegnKeyName, foriegnKeyType) {
-    if ((classObj.getProperty(foriegnKeyName).getType().getText()) != foriegnKeyType) {
+    if (utils.lowerCase(classObj.getProperty(foriegnKeyName).getType().getText()) != foriegnKeyType) {
       console.log(' foreignKey type has wrong Type ');
       throw new Error('foreginKey Type Error');
     }
