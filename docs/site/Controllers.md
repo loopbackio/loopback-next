@@ -17,24 +17,6 @@ processed input and abstractions of backend services / databases.
 
 This page will only cover a `Controller`'s usage with REST APIs.
 
-### Review questions
-
-{% include content/tbd.html %}
-
-Simplest possible example of a Controller
-
-- `app.controller()`
-- a few methods
-- no usage of `@api`
-
-How to create a basic `Controller` (beyond the hello world)
-
-- Using DI (`@inject`)
-- Using decorators (eg. `@authenticate`)
-- Defining routes via sugar annoations (`@get`, `@post`)
-- Errors
-- Using `async` / `await` and `Promise`s
-
 ## Operations
 
 In the Operation example in [Routes](Routes.md), the `greet()` operation was
