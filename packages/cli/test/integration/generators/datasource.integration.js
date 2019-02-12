@@ -157,6 +157,7 @@ function checkBasicDataSourceFiles() {
   assert.file(expectedTSFile);
   assert.file(expectedJSONFile);
   assert.file(expectedIndexFile);
+  assert.noFile(path.join(SANDBOX_PATH, 'node_modules/memory'));
 
   assert.fileContent(expectedTSFile, /import {inject} from '@loopback\/core';/);
   assert.fileContent(
