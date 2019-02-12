@@ -148,19 +148,18 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     switch (this.options.relationType) {
       case relationUtils.relationType.belongsTo:
         relation = new RelationBelongsTo(this.args, this.opts);
-        relation.generateControllers(this.options);
         break;
       case relationUtils.relationType.hasMany:
         relation = new RelationHasMany(this.args, this.opts);
-        relation.generateControllers(this.options);
         break;
       case relationUtils.relationType.hasOne:
         relation = new RelationHasOne(this.args, this.opts);
-        relation.generateControllers(this.options);
         break;
       default:
         throw new Error(ERROR_INCORRECT_RELATION_TYPE);
     }
+
+    relation.generateControllers(this.options);
 
     //Invoke here Model and Repository Generators
     debug('Invoke Model generator...');
