@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.4...@loopback/repository@1.1.5) (2019-02-08)
+
+
+### Bug Fixes
+
+* update to the most recent lodash version ([65ee865](https://github.com/strongloop/loopback-next/commit/65ee865))
+
+
+
+
+
 ## [1.1.4](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.3...@loopback/repository@1.1.4) (2019-01-28)
 
 **Note:** Version bump only for package @loopback/repository

@@ -1,6 +1,6 @@
 {
   "name": "@loopback/openapi-v3-types",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "TypeScript type definitions for OpenAPI Specifications.",
   "engines": {
     "node": ">=8.9"
@@ -9,8 +9,8 @@
     "openapi3-ts": "^1.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^1.2.1",
-    "@loopback/testlab": "^1.0.5",
+    "@loopback/build": "^1.3.0",
+    "@loopback/testlab": "^1.0.6",
     "@loopback/tslint-config": "^2.0.0",
     "@types/node": "^10.11.2"
   },
@@ -20,8 +20,8 @@
     "clean": "lb-clean loopback-openapi-v3-types*.tgz dist package api-docs",
     "verify": "npm pack && tar xf loopback-openapi-v3-types*.tgz && tree package && npm run clean",
     "pretest": "npm run build",
-    "test": "lb-mocha \"dist/test/**/*.js\"",
-    "unit": "npm run build && lb-mocha \"dist/test/unit/**/*.js\""
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "unit": "npm run build && lb-mocha \"dist/__tests__/unit/**/*.js\""
   },
   "author": "IBM",
   "copyright.owner": "IBM Corp.",
@@ -35,9 +35,9 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist/src",
-    "dist/index*",
-    "src"
+    "dist",
+    "src",
+    "!*/__tests__"
   ],
   "publishConfig": {
     "access": "public"

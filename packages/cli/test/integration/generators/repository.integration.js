@@ -384,6 +384,41 @@ describe('lb4 repository', function() {
         /export \* from '.\/decoratordefined.repository';/,
       );
     });
+    it('generates a crud repository from custom base class', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withArguments(
+          '--datasource dbmem --model decoratordefined --repositoryBaseClass DefaultmodelRepository',
+        );
+      const expectedFile = path.join(
+        SANDBOX_PATH,
+        REPOSITORY_APP_PATH,
+        'decoratordefined.repository.ts',
+      );
+      assert.file(expectedFile);
+      assert.fileContent(
+        expectedFile,
+        /import {DefaultmodelRepository} from '.\/defaultmodel.repository.base';/,
+      );
+      assert.fileContent(
+        expectedFile,
+        /export class DecoratordefinedRepository extends DefaultmodelRepository\</,
+      );
+      assert.fileContent(
+        expectedFile,
+        /typeof Decoratordefined.prototype.thePK/,
+      );
+      assert.file(INDEX_FILE);
+      assert.fileContent(
+        INDEX_FILE,
+        /export \* from '.\/decoratordefined.repository';/,
+      );
+    });
   });
 
   describe('valid generation of kv repositories', () => {
@@ -395,7 +430,9 @@ describe('lb4 repository', function() {
             additionalFiles: SANDBOX_FILES,
           }),
         )
-        .withArguments('--datasource dbkv --model Defaultmodel');
+        .withArguments(
+          '--datasource dbkv --model Defaultmodel --repositoryBaseClass DefaultKeyValueRepository',
+        );
       const expectedFile = path.join(
         SANDBOX_PATH,
         REPOSITORY_APP_PATH,
@@ -425,7 +462,9 @@ describe('lb4 repository', function() {
           }),
         )
         .withPrompts(basicPrompt)
-        .withArguments('--model decoratordefined');
+        .withArguments(
+          '--model decoratordefined --repositoryBaseClass DefaultKeyValueRepository',
+        );
       const expectedFile = path.join(
         SANDBOX_PATH,
         REPOSITORY_APP_PATH,

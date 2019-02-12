@@ -1,5 +1,6 @@
 const DATASOURCE_APP_PATH = 'src/datasources';
 const MODEL_APP_PATH = 'src/models';
+const REPOSITORY_APP_PATH = 'src/repositories';
 const CONFIG_PATH = '.';
 const DUMMY_CONTENT = '--DUMMY VALUE--';
 const fs = require('fs');
@@ -106,5 +107,15 @@ exports.SANDBOX_FILES = [
     content: fs.readFileSync(require.resolve('./models/invalid-id.model.txt'), {
       encoding: 'utf-8',
     }),
+  },
+  {
+    path: REPOSITORY_APP_PATH,
+    file: 'defaultmodel.repository.base.ts',
+    content: fs.readFileSync(
+      require.resolve('./repositories/defaultmodel.repository.base.ts'),
+      {
+        encoding: 'utf-8',
+      },
+    ),
   },
 ];

@@ -473,7 +473,7 @@ There are several key pillars to make extensibility a reality for LoopBack 4.
 - [Context](Context.md), the IoC container to manage services
 - [Dependency injection](Dependency-injection.md) to facilitate composition
 - [Decorators](Decorators.md) to supply metadata using annotations
-- [Component](Component.md) as the packaging model to bundle extensions
+- [Component](Using-components.md) as the packaging model to bundle extensions
 
 Please check out [Extending LoopBack 4](Extending-LoopBack-4.md).
 

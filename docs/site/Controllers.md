@@ -239,11 +239,11 @@ codes is found
 The example below shows the previous controller revamped with `HttpErrors` along
 with a test to verify that the error is thrown properly.
 
-{% include code-caption.html content="test/integration/controllers/hello.controller.integration.ts" %}
+{% include code-caption.html content="src/__tests__/integration/controllers/hello.controller.integration.ts" %}
 
 ```ts
-import {HelloController} from '../../../src/controllers';
-import {HelloRepository} from '../../../src/repositories';
+import {HelloController} from '../../../controllers';
+import {HelloRepository} from '../../../repositories';
 import {testdb} from '../../fixtures/datasources/testdb.datasource';
 import {expect} from '@loopback/testlab';
 import {HttpErrors} from '@loopback/rest';
