@@ -38,7 +38,7 @@
     "@loopback/rest": "^1.5.5",
     "@loopback/testlab": "^1.0.6",
     "@loopback/tslint-config": "^2.0.0",
-    "@types/node": "^10.11.2"
+    "@types/node": "^11.9.2"
   },
   "files": [
     "README.md",
