@@ -73,7 +73,13 @@ export class Lb3AppBooter implements Booter {
     debug('Loading LB3 app from', this.appPath);
     const legacyApp = require(this.appPath);
 
-    if (legacyApp.booting) {
+    // NOTE(bajtos) loopback-boot@3 sets "booting" flag asynchronously,
+    // it can have one of the following values:
+    // - undefined: boot has not started yet or is in (early) progress
+    // - true: boot is in progress
+    // - false: boot was finished
+    if (legacyApp.booting !== false) {
+      debug('  waiting for boot process to finish');
       // Wait until the legacy LB3 app boots
       await pEvent(legacyApp, 'booted');
     }
