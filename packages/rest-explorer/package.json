@@ -28,7 +28,7 @@
     "@loopback/testlab": "^1.0.6",
     "@loopback/tslint-config": "^2.0.0",
     "@types/ejs": "^2.6.0",
-    "@types/node": "^10.1.1"
+    "@types/node": "^11.9.1"
   },
   "keywords": [
     "LoopBack",
