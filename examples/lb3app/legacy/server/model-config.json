@@ -33,7 +33,7 @@
     "public": false
   },
   "CoffeeShop": {
-    "dataSource": "mysqlDs",
+    "dataSource": "db",
     "public": true
   }
 }

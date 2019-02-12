@@ -3,8 +3,8 @@
 const debug = require('debug')('loopback:example:lb3app');
 
 module.exports = function(app, cb) {
-  app.dataSources.mysqlDs.automigrate('CoffeeShop', function(err) {
-    if (err) throw err;
+  app.dataSources.db.automigrate('CoffeeShop', function(err) {
+    if (err) return cb(err);
 
     app.models.CoffeeShop.create([{
       name: 'Bel Cafe',
