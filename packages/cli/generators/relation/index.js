@@ -16,7 +16,10 @@ const tsquery = require('../../lib/ast-helper');
 const ast = require('ts-simple-ast');
 const relationUtils = require('./relationutils');
 
-const ControllerRelation = require('./controllerRelation');
+const RelationBelongsTo = require('./relationBelongsTo');
+const RelationHasMany = require('./relationHasMany');
+const RelationHasOne = require('./relationHasOne');
+
 const RepositoryRelation = require('./repositoryRelation');
 const ModelRelation = require('./modelRelation');
 
@@ -137,19 +140,23 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     }
     debug('Invoke Controller generator...');
 
-    let ctrl = new ControllerRelation(this.args, this.opts);
+    var relation;
+
     this.artifactInfo.name = this.options.relationType;
     this.artifactInfo.relPath = relPathCtrl;
 
     switch (this.options.relationType) {
       case relationUtils.relationType.belongsTo:
-        ctrl.generateControllerRelationBelongsTo(this.options);
+        relation = new RelationBelongsTo(this.args, this.opts);
+        relation.generateControllers(this.options);
         break;
       case relationUtils.relationType.hasMany:
-        ctrl.generateControllerRelationHasMany(this.options);
+        relation = new RelationHasMany(this.args, this.opts);
+        relation.generateControllers(this.options);
         break;
       case relationUtils.relationType.hasOne:
-        ctrl.generateControllerRelationHasOne(this.options);
+        relation = new RelationHasOne(this.args, this.opts);
+        relation.generateControllers(this.options);
         break;
       default:
         throw new Error(ERROR_INCORRECT_RELATION_TYPE);
@@ -245,8 +252,8 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         new Error(
           `${ERROR_NO_MODELS_FOUND} ${this.artifactInfo.modelDir}.
         ${chalk.yellow(
-          'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
-        )}`,
+            'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
+          )}`,
         ),
       );
     }
