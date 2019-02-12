@@ -5,10 +5,12 @@
 
 import {Context} from '@loopback/context';
 import {OperationObject, SchemasObject} from '@loopback/openapi-v3-types';
-import {Router, RequestHandler, static as serveStatic} from 'express';
+import {RequestHandler, Router, static as serveStatic} from 'express';
 import {PathParams} from 'express-serve-static-core';
 import * as HttpErrors from 'http-errors';
+import * as onFinished from 'on-finished';
 import {ServeStaticOptions} from 'serve-static';
+import {promisify} from 'util';
 import {RequestContext} from '../request-context';
 import {
   OperationArgs,
@@ -70,6 +72,8 @@ export class StaticAssetsRoute implements RouteEntry, ResolvedRoute {
   }
 }
 
+const onFinishedAsync = promisify(onFinished);
+
 /**
  * Execute an Express-style callback-based request handler.
  *
@@ -86,11 +90,9 @@ function executeRequestHandler(
   request: Request,
   response: Response,
 ): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    const onceFinished = () => resolve(true);
-    response.once('finish', onceFinished);
-    handler(request, response, (err: Error) => {
-      response.removeListener('finish', onceFinished);
+  const responseWritten = onFinishedAsync(response).then(() => true);
+  const handlerFinished = new Promise<boolean>((resolve, reject) => {
+    handler(request, response, err => {
       if (err) {
         reject(err);
       } else {
@@ -99,4 +101,5 @@ function executeRequestHandler(
       }
     });
   });
+  return Promise.race([handlerFinished, responseWritten]);
 }
