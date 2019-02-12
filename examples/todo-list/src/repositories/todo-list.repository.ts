@@ -40,7 +40,7 @@ export class TodoListRepository extends DefaultCrudRepository<
       'todos',
       todoRepositoryGetter,
     );
-    this.image = this._createHasOneRepositoryFactoryFor(
+    this.image = this.createHasOneRepositoryFactoryFor(
       'image',
       todoListImageRepositoryGetter,
     );
