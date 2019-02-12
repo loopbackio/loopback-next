@@ -13,7 +13,7 @@
     "@loopback/tslint-config": "^2.0.0",
     "@types/debug": "^4.1.0",
     "@types/lodash": "^4.14.106",
-    "@types/node": "^10.11.2"
+    "@types/node": "^11.9.0"
   },
   "scripts": {
     "build:apidocs": "lb-apidocs",
