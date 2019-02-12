@@ -55,7 +55,7 @@
     "@types/mocha": "^5.0.0",
     "@types/node": "^10.11.2",
     "mocha": "^5.1.1",
-    "p-event": "^2.1.0",
+    "p-event": "^2.3.1",
     "source-map-support": "^0.5.5"
   }
 }
