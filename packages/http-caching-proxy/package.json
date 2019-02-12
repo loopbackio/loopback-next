@@ -19,7 +19,7 @@
   "dependencies": {
     "cacache": "^11.0.2",
     "debug": "^4.0.1",
-    "p-event": "^2.1.0",
+    "p-event": "^2.3.1",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.5",
     "rimraf": "^2.6.2"
