@@ -3,16 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {getFilterSchemaFor} from '../..';
 import {Entity, model, property} from '@loopback/repository';
 import {expect} from '@loopback/testlab';
+import {getFilterSchemaFor} from '../..';
 
 describe('filterSchema', () => {
   @model({
     name: 'my-user-model',
   })
   class MyUserModel extends Entity {
-    @property() id: string;
+    @property({id: true}) id: string;
 
     @property() age: number;
   }
@@ -33,7 +33,7 @@ describe('filterSchema', () => {
           },
         },
         offset: {type: 'integer', minimum: 0},
-        limit: {type: 'integer', minimum: 0},
+        limit: {type: 'integer', minimum: 1, examples: [100]},
         skip: {type: 'integer', minimum: 0},
         order: {type: 'array', items: {type: 'string'}},
       },

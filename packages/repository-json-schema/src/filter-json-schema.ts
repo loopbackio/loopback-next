@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Model, model, getModelRelations} from '@loopback/repository';
+import {getModelRelations, Model, model} from '@loopback/repository';
 import {JSONSchema6 as JsonSchema} from 'json-schema';
 
 @model({settings: {strict: false}})
@@ -34,7 +34,8 @@ export function getFilterJsonSchemaFor(modelCtor: typeof Model): JsonSchema {
 
       limit: {
         type: 'integer',
-        minimum: 0,
+        minimum: 1,
+        examples: [100],
       },
 
       skip: {
