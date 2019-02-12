@@ -60,7 +60,8 @@ new LoopBack 4 project.
 
    - `files` >> `loopback#static`
 
-6. Install and configure `@loopback/booter-lb3app` to boot and mount the LB3 application:
+6. Install and configure `@loopback/booter-lb3app` to boot and mount the LB3
+   application:
 
    1. `npm install --save @loopback/booter-lb3app`
 
