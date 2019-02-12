@@ -244,7 +244,34 @@ export class DefaultCrudRepository<T extends Entity, ID>
     );
   }
 
+  /**
+   * @deprecated
+   * Function to create a constrained hasOne relation repository factory
+   *
+   * @param relationName Name of the relation defined on the source model
+   * @param targetRepo Target repository instance
+   */
   protected _createHasOneRepositoryFactoryFor<
+    Target extends Entity,
+    TargetID,
+    ForeignKeyType
+  >(
+    relationName: string,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+  ): HasOneRepositoryFactory<Target, ForeignKeyType> {
+    return this.createHasOneRepositoryFactoryFor(
+      relationName,
+      targetRepoGetter,
+    );
+  }
+
+  /**
+   * Function to create a constrained hasOne relation repository factory
+   *
+   * @param relationName Name of the relation defined on the source model
+   * @param targetRepo Target repository instance
+   */
+  protected createHasOneRepositoryFactoryFor<
     Target extends Entity,
     TargetID,
     ForeignKeyType
