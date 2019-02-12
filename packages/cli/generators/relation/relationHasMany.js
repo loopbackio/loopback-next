@@ -78,15 +78,7 @@ module.exports = class RelationHasMany extends RelationGenerator {
     );
 
     const sourceClass = relationUtils.getClassObj(sourceFile, sourceModel);
-
     const targetClass = relationUtils.getClassObj(targetFile, targetModel);
-
-    if (!relationUtils.isClassExist(sourceFile)) {
-      return;
-    }
-    if (!relationUtils.isClassExist(targetFile)) {
-      return;
-    }
 
     let modelProperty;
 
@@ -118,7 +110,7 @@ module.exports = class RelationHasMany extends RelationGenerator {
 
   getHasMany(className, relationName) {
     let relationProperty = {
-      decorators: [{name: 'hasMany', arguments: ['() => ' + className]}],
+      decorators: [{ name: 'hasMany', arguments: ['() => ' + className] }],
       name: relationName,
       type: className + '[]',
     };

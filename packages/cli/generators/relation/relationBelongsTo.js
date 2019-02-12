@@ -81,15 +81,7 @@ module.exports = class RelationBelongsTo extends RelationGenerator {
     );
 
     const sourceClass = relationUtils.getClassObj(sourceFile, sourceModel);
-
     const targetClass = relationUtils.getClassObj(targetFile, targetModel);
-
-    if (!relationUtils.isClassExist(sourceFile)) {
-      return;
-    }
-    if (!relationUtils.isClassExist(targetFile)) {
-      return;
-    }
 
     let modelProperty;
 
@@ -118,7 +110,7 @@ module.exports = class RelationBelongsTo extends RelationGenerator {
   getBelongsTo(className, relationName, fktype) {
     let relationProperty;
     relationProperty = {
-      decorators: [{name: 'belongsTo', arguments: ['() => ' + className]}],
+      decorators: [{ name: 'belongsTo', arguments: ['() => ' + className] }],
       name: relationName,
       type: fktype,
     };
