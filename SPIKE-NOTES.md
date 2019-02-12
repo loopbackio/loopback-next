@@ -73,11 +73,14 @@ production-ready implementation.
    can create an entirely new page.
 
 3. Implement `@loopback/booter-lb3app`, including test coverage and
-   documentation. As part of this effort, create a new package to hold types
-   needed by Booter implementations. The idea is to decouple API contract
-   between Bootstrapper and Booters from the actual Bootstrapper implementation.
-   `@loopback/booter-lb3app` should not have any runtime dependency on
-   `@loopback/boot` (a dev-dependency for tests is ok).
+   documentation. The booter package should not have any runtime dependency on
+   `@loopback/boot`, it should use `peerDependencies` to specify which core
+   packages it works with and dev-dependencies for development & testing. List
+   of packages to put in peer dependencies:
+
+   - `@loopback/core`
+   - `@loopback/boot`
+   - `@loopback/rest`
 
 4. Create an example app based on `loopback-getting-started`
    (`@loopback/example-lb3app`) to showcase LB3+LB4 integration. Add acceptance
