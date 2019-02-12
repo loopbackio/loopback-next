@@ -93,7 +93,6 @@ module.exports = class RelationBelongsTo extends RelationGenerator {
 
     let modelProperty;
 
-
     relationUtils.isRelationExist(sourceClass, relationName);
     modelProperty = this.getBelongsTo(
       targetModel,
@@ -101,9 +100,13 @@ module.exports = class RelationBelongsTo extends RelationGenerator {
       utils.toClassName(fktype),
     );
 
-
     relationUtils.addPropertyToModel(sourceClass, modelProperty);
-    relationUtils.addRequiredImports(sourceFile, targetModel, relationType, targetModel);
+    relationUtils.addRequiredImports(
+      sourceFile,
+      targetModel,
+      relationType,
+      targetModel,
+    );
     sourceClass.formatText();
     sourceFile.save();
   }
@@ -115,7 +118,7 @@ module.exports = class RelationBelongsTo extends RelationGenerator {
   getBelongsTo(className, relationName, fktype) {
     let relationProperty;
     relationProperty = {
-      decorators: [{ name: 'belongsTo', arguments: ['() => ' + className] }],
+      decorators: [{name: 'belongsTo', arguments: ['() => ' + className]}],
       name: relationName,
       type: fktype,
     };

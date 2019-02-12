@@ -8,38 +8,39 @@ exports.relationType = {
   hasOne: 'hasOne',
 };
 
-exports.addFileToProject = function (project, path, modelName) {
+exports.addFileToProject = function(project, path, modelName) {
   const fileName = path + '/' + modelName + '.model.ts';
   return project.addExistingSourceFile(fileName);
 };
 
-exports.getClassObj = function (fileName, modelName) {
+exports.getClassObj = function(fileName, modelName) {
   return fileName.getClassOrThrow(modelName);
 };
 
-exports.getClassesCount = function (fileName) {
+exports.getClassesCount = function(fileName) {
   return fileName.getClasses().length;
-}
+};
 
-exports.isClassExist = function (fileName) {
+exports.isClassExist = function(fileName) {
   return this.getClassesCount(fileName) == 1;
 };
 
-exports.isPropertyExist = function (classObj, propertyName) {
-  return classObj.getProperties()
+exports.isPropertyExist = function(classObj, propertyName) {
+  return classObj
+    .getProperties()
     .map(x => x.getName())
     .includes(propertyName);
 };
 
-exports.isRelationExist = function (classObj, propertyName) {
+exports.isRelationExist = function(classObj, propertyName) {
   if (this.isPropertyExist(classObj, propertyName)) {
     console.log('property ' + propertyName + ' exsist in the model');
     throw new Error(' Property exsists');
   }
   return;
-}
+};
 
-exports.vlidateType = function (classObj, foriegnKeyName, foriegnKeyType) {
+exports.vlidateType = function(classObj, foriegnKeyName, foriegnKeyType) {
   if (
     utils.lowerCase(
       classObj
@@ -54,7 +55,7 @@ exports.vlidateType = function (classObj, foriegnKeyName, foriegnKeyType) {
   return;
 };
 
-exports.addForeginKey = function (foreginKey, sourceModelPrimaryKeyType) {
+exports.addForeginKey = function(foreginKey, sourceModelPrimaryKeyType) {
   let fkProperty = {
     decorators: [
       {
@@ -66,25 +67,30 @@ exports.addForeginKey = function (foreginKey, sourceModelPrimaryKeyType) {
     type: sourceModelPrimaryKeyType,
   };
   return fkProperty;
-}
+};
 
-exports.addPropertyToModel = function (classOBj, modelProperty) {
+exports.addPropertyToModel = function(classOBj, modelProperty) {
   classOBj.insertProperty(this.getPropertiesCount(classOBj), modelProperty);
   classOBj.insertText(this.getPropertyStartPos(classOBj), '\n');
-}
+};
 
-exports.getPropertiesCount = function (classObj) {
+exports.getPropertiesCount = function(classObj) {
   return classObj.getProperties().length;
-}
+};
 
-exports.getPropertyStartPos = function (classObj) {
+exports.getPropertyStartPos = function(classObj) {
   return classObj
     .getChildSyntaxList()
     .getChildAtIndex(this.getPropertiesCount(classObj) - 1)
     .getPos();
 };
 
-exports.addRequiredImports = function (sourceFile, targetModel, relationType, targetClassName) {
+exports.addRequiredImports = function(
+  sourceFile,
+  targetModel,
+  relationType,
+  targetClassName,
+) {
   let importsArray = this.getRequiredImports(
     targetModel,
     relationType,
@@ -96,7 +102,11 @@ exports.addRequiredImports = function (sourceFile, targetModel, relationType, ta
   }
 };
 
-exports.getRequiredImports = function (targetModel, relationType, targetClassName) {
+exports.getRequiredImports = function(
+  targetModel,
+  relationType,
+  targetClassName,
+) {
   let importsArray = [
     {
       name: targetClassName,
@@ -111,7 +121,7 @@ exports.getRequiredImports = function (targetModel, relationType, targetClassNam
   return importsArray;
 };
 
-exports.addCurrentImport = function (sourceFile, currentImport) {
+exports.addCurrentImport = function(sourceFile, currentImport) {
   if (!this.doesModuleExists(sourceFile, currentImport.module)) {
     sourceFile.addImportDeclaration({
       moduleSpecifier: currentImport.module,
@@ -122,13 +132,13 @@ exports.addCurrentImport = function (sourceFile, currentImport) {
       .getImportDeclarationOrThrow(currentImport.module)
       .addNamedImport(currentImport.name);
   }
-}
+};
 
-exports.doesModuleExists = function (sourceFile, moduleName) {
+exports.doesModuleExists = function(sourceFile, moduleName) {
   return sourceFile.getImportDeclaration(moduleName);
-}
+};
 
-exports.doesImportExistInModule = function (sourceFile, currentImport) {
+exports.doesImportExistInModule = function(sourceFile, currentImport) {
   let identicalImport;
   let relevantImports = this.getNamedImportsFromModule(
     sourceFile,
@@ -141,9 +151,9 @@ exports.doesImportExistInModule = function (sourceFile, currentImport) {
   }
 
   return identicalImport && identicalImport.length > 0;
-}
+};
 
-exports.getNamedImportsFromModule = function (sourceFile, moduleName) {
+exports.getNamedImportsFromModule = function(sourceFile, moduleName) {
   let allImports = sourceFile.getImportDeclarations();
   let relevantImports = allImports.filter(
     imp => imp.getModuleSpecifierValue() == moduleName,
