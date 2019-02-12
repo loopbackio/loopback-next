@@ -35,11 +35,11 @@ export class CustomerRepository extends DefaultCrudRepository<
     addressRepositoryGetter: Getter<AddressRepository>,
   ) {
     super(Customer, db);
-    this.orders = this._createHasManyRepositoryFactoryFor(
+    this.orders = this.createHasManyRepositoryFactoryFor(
       'orders',
       orderRepositoryGetter,
     );
-    this.address = this._createHasOneRepositoryFactoryFor(
+    this.address = this.createHasOneRepositoryFactoryFor(
       'address',
       addressRepositoryGetter,
     );
