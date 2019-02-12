@@ -21,7 +21,6 @@ const RelationHasMany = require('./relationHasMany');
 const RelationHasOne = require('./relationHasOne');
 
 const RepositoryRelation = require('./repositoryRelation');
-const ModelRelation = require('./modelRelation');
 
 const ERROR_INCORRECT_RELATION_TYPE = 'Incorrect Relation Type';
 const ERROR_NO_SOURCE_MODEL_SELECTED = 'No source model selected';
@@ -161,11 +160,9 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
     relation.generateControllers(this.options);
 
-    //Invoke here Model and Repository Generators
     debug('Invoke Model generator...');
-    let model = new ModelRelation(this.args, this.opts);
     this.artifactInfo.relPath = relPathModel;
-    model.generateRelationModel(this.options);
+    relation.generateModels(this.options);
     /*
                 debug('Invoke Repository generator...');
                 let repo = new RepositoryRelation(this.args, this.opts);
