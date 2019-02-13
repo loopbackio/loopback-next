@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=8.9"
   },
-  "author": "IBM",
+  "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {

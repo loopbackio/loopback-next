@@ -9,6 +9,7 @@
   "engines": {
     "node": ">=8.9"
   },
+  "author": "IBM Corp.",
   "main": "index.js",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
