@@ -63,7 +63,13 @@ module.exports = class RelationHasMany extends RelationGenerator {
 
     // add keyTo when needed in both hasMany and belongsTo relation
 
+    if (!isForeignKeyExist) {
+      foreignKey = options.destinationModelForeignKeyName
+    }
+    let isDefaultForeignKey = (options.defaultForeignKeyName == options.destinationModelForeignKeyName)
+
     let project = new ast.Project();
+
 
     const sourceFile = relationUtils.addFileToProject(
       project,
@@ -91,7 +97,7 @@ module.exports = class RelationHasMany extends RelationGenerator {
       targetClass.formatText();
       targetFile.save();
     }
-    modelProperty = this.getHasMany(targetModel, relationName);
+    modelProperty = this.getHasMany(targetModel, relationName, isDefaultForeignKey, foreignKey);
 
     relationUtils.addPropertyToModel(sourceClass, modelProperty);
     relationUtils.addRequiredImports(
@@ -108,13 +114,17 @@ module.exports = class RelationHasMany extends RelationGenerator {
     throw new Error('Not implemented');
   }
 
-  getHasMany(className, relationName) {
+  getHasMany(className, relationName, isDefaultForeignKey, foreignKey) {
+    let relationDecoretor = [{ name: 'hasMany', arguments: ['() => ' + className + " ,{keyTo: '" + foreignKey + "'}"] }]
+    if (isDefaultForeignKey) {
+      relationDecoretor = [{ name: 'hasMany', arguments: ['() => ' + className] }]
+    }
     let relationProperty = {
-      decorators: [{ name: 'hasMany', arguments: ['() => ' + className] }],
+      //  decorators: [{ name: 'hasMany', arguments: ['() => ' + className] }],
+      decorators: relationDecoretor,
       name: relationName,
       type: className + '[]',
     };
-
     return relationProperty;
   }
 };
