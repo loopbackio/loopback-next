@@ -8,7 +8,7 @@ import {Request} from '../types';
 /**
  * Request body with metadata
  */
-export type RequestBody = {
+export type ValueWithSchema = {
   /**
    * Parsed value of the request body
    */
@@ -46,13 +46,13 @@ export interface BodyParser {
    * Parse the request body
    * @param request http request
    */
-  parse(request: Request): Promise<RequestBody>;
+  parse(request: Request): Promise<ValueWithSchema>;
 }
 
 /**
  * Plain function for body parsing
  */
-export type BodyParserFunction = (request: Request) => Promise<RequestBody>;
+export type BodyParserFunction = (request: Request) => Promise<ValueWithSchema>;
 
 /**
  * Binding tag for request body parser extensions

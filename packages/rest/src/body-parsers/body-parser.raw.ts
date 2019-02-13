@@ -14,7 +14,7 @@ import {
   invokeBodyParserMiddleware,
   builtinParsers,
 } from './body-parser.helpers';
-import {BodyParser, RequestBody} from './types';
+import {BodyParser, ValueWithSchema} from './types';
 
 /**
  * Parsing the request body into Buffer
@@ -35,7 +35,7 @@ export class RawBodyParser implements BodyParser {
     return !!is(mediaType, 'application/octet-stream');
   }
 
-  async parse(request: Request): Promise<RequestBody> {
+  async parse(request: Request): Promise<ValueWithSchema> {
     const body = await invokeBodyParserMiddleware(this.rawParser, request);
     return {value: body};
   }

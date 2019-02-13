@@ -14,7 +14,7 @@ import {
   JsonBodyParser,
   RawBodyParser,
   Request,
-  RequestBody,
+  ValueWithSchema,
   RequestBodyParser,
   RequestBodyParserOptions,
   StreamBodyParser,
@@ -254,7 +254,7 @@ describe('body parser', () => {
   describe('x-parser extension', () => {
     let spec: OperationObject;
     let req: Request;
-    let requestBody: RequestBody;
+    let requestBody: ValueWithSchema;
 
     it('skips body parsing', async () => {
       await loadRequestBodyWithXStream('stream');

@@ -14,7 +14,7 @@ import {
   invokeBodyParserMiddleware,
   builtinParsers,
 } from './body-parser.helpers';
-import {BodyParser, RequestBody} from './types';
+import {BodyParser, ValueWithSchema} from './types';
 
 export class UrlEncodedBodyParser implements BodyParser {
   name = builtinParsers.urlencoded;
@@ -32,7 +32,7 @@ export class UrlEncodedBodyParser implements BodyParser {
     return !!is(mediaType, 'urlencoded');
   }
 
-  async parse(request: Request): Promise<RequestBody> {
+  async parse(request: Request): Promise<ValueWithSchema> {
     const body = await invokeBodyParserMiddleware(
       this.urlencodedParser,
       request,

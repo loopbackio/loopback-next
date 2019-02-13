@@ -14,7 +14,7 @@ import {
   invokeBodyParserMiddleware,
   builtinParsers,
 } from './body-parser.helpers';
-import {BodyParser, RequestBody} from './types';
+import {BodyParser, ValueWithSchema} from './types';
 import {sanitizeJsonParse} from '../parse-json';
 
 export class JsonBodyParser implements BodyParser {
@@ -34,7 +34,7 @@ export class JsonBodyParser implements BodyParser {
     return !!is(mediaType, '*/json', '*/*+json');
   }
 
-  async parse(request: Request): Promise<RequestBody> {
+  async parse(request: Request): Promise<ValueWithSchema> {
     let body = await invokeBodyParserMiddleware(this.jsonParser, request);
     // https://github.com/expressjs/body-parser/blob/master/lib/types/json.js#L71-L76
     const contentLength = request.get('content-length');

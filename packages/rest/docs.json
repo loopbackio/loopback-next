@@ -26,7 +26,8 @@
     "src/providers/reject.provider.ts",
     "src/providers/send.provider.ts",
     "src/router/routing-table.ts",
-    "src/validation/request-body.validator.ts"
+    "src/validation/request-body.validator.ts",
+    "src/validation/request-query.validator.ts"
   ],
   "codeSectionDepth": 4
 }

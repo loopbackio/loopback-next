@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Request} from '../types';
-import {BodyParser, RequestBody} from './types';
+import {BodyParser, ValueWithSchema} from './types';
 import {builtinParsers} from './body-parser.helpers';
 
 /**
@@ -21,7 +21,7 @@ export class StreamBodyParser implements BodyParser {
     return false;
   }
 
-  async parse(request: Request): Promise<RequestBody> {
+  async parse(request: Request): Promise<ValueWithSchema> {
     return {value: request};
   }
 }

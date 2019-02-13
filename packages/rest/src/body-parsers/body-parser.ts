@@ -22,7 +22,7 @@ import {
 import {
   BodyParser,
   BodyParserFunction,
-  RequestBody,
+  ValueWithSchema,
   REQUEST_BODY_PARSER_TAG,
 } from './types';
 
@@ -45,7 +45,7 @@ export class RequestBodyParser {
   async loadRequestBodyIfNeeded(
     operationSpec: OperationObject,
     request: Request,
-  ): Promise<RequestBody> {
+  ): Promise<ValueWithSchema> {
     const {requestBody, customParser} = await this._matchRequestBodySpec(
       operationSpec,
       request,
@@ -78,7 +78,7 @@ export class RequestBodyParser {
     operationSpec: OperationObject,
     request: Request,
   ) {
-    const requestBody: RequestBody = {
+    const requestBody: ValueWithSchema = {
       value: undefined,
     };
     if (!operationSpec.requestBody) return {requestBody};

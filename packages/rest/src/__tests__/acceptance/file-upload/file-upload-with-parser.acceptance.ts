@@ -16,7 +16,7 @@ import {
   post,
   Request,
   requestBody,
-  RequestBody,
+  ValueWithSchema,
   RestApplication,
 } from '../../..';
 
@@ -97,10 +97,10 @@ class MultipartFormDataBodyParser implements BodyParser {
     return mediaType.startsWith(FORM_DATA);
   }
 
-  async parse(request: Request): Promise<RequestBody> {
+  async parse(request: Request): Promise<ValueWithSchema> {
     const storage = multer.memoryStorage();
     const upload = multer({storage});
-    return new Promise<RequestBody>((resolve, reject) => {
+    return new Promise<ValueWithSchema>((resolve, reject) => {
       // tslint:disable-next-line:no-any
       upload.any()(request, {} as any, err => {
         if (err) reject(err);

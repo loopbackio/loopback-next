@@ -14,7 +14,7 @@ import {
   invokeBodyParserMiddleware,
   builtinParsers,
 } from './body-parser.helpers';
-import {BodyParser, RequestBody} from './types';
+import {BodyParser, ValueWithSchema} from './types';
 
 export class TextBodyParser implements BodyParser {
   name = builtinParsers.text;
@@ -37,7 +37,7 @@ export class TextBodyParser implements BodyParser {
     return !!is(mediaType, 'text/*');
   }
 
-  async parse(request: Request): Promise<RequestBody> {
+  async parse(request: Request): Promise<ValueWithSchema> {
     const body = await invokeBodyParserMiddleware(this.textParser, request);
     return {value: body};
   }
