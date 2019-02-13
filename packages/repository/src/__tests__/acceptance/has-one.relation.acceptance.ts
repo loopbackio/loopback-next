@@ -115,6 +115,70 @@ describe('hasOne relation', () => {
     ).to.be.rejectedWith(EntityNotFoundError);
   });
 
+  it('can PATCH hasOne instances', async () => {
+    existingCustomerId = 11;
+    const address = await controller.createCustomerAddress(existingCustomerId, {
+      street: '1 Amedee Bonnet',
+      zipcode: '69740',
+      city: 'Genas',
+      province: 'Rhone',
+    });
+
+    const persisted = await addressRepo.findById(address.zipcode);
+    expect(persisted.toObject()).to.deepEqual(address.toObject());
+
+    const patchObject = {city: 'Lyon-Genas'};
+    const arePached = await controller.patchCustomerAddress(
+      existingCustomerId,
+      patchObject,
+    );
+
+    expect(arePached.count).to.equal(1);
+    const patchedData = await addressRepo.findById(address.zipcode);
+    expect(patchedData.city).to.containEql(address.city);
+  });
+
+  it('can PUT hasOne instances', async () => {
+    existingCustomerId = 11;
+    const address = await controller.createCustomerAddress(existingCustomerId, {
+      street: '1 Amedee Bonnet',
+      zipcode: '69740',
+      city: 'Genas',
+      province: 'Rhone',
+    });
+
+    const persisted = await addressRepo.findById(address.zipcode);
+    expect(persisted.toObject()).to.deepEqual(address.toObject());
+
+    const putObject = {
+      city: 'Lyon-Genas',
+      province: 'Rhone-Alpe',
+      zipcode: '69740',
+    };
+    await controller.putCustomerAddress(existingCustomerId, putObject);
+    const putData = await addressRepo.findById(address.zipcode);
+    expect(putData.city).to.containEql(address.city);
+    expect(putData.province).to.containEql(address.province);
+  });
+
+  it('can DELETE hasOne instances', async () => {
+    existingCustomerId = 12;
+    const address = await controller.createCustomerAddress(existingCustomerId, {
+      street: '1 Amedee Bonnet',
+      zipcode: '69740',
+      city: 'Genas',
+      province: 'Rhone',
+    });
+
+    const persisted = await addressRepo.findById(address.zipcode);
+    expect(persisted.toObject()).to.deepEqual(address.toObject());
+
+    const arePached = await controller.deleteCustomerAddress(
+      existingCustomerId,
+    );
+    expect(arePached.count).to.equal(1);
+  });
+
   /*---------------- HELPERS -----------------*/
 
   class CustomerController {
@@ -141,6 +205,26 @@ describe('hasOne relation', () => {
       filter: Filter<Address>,
     ) {
       return await this.customerRepository.address(customerId).get(filter);
+    }
+    async patchCustomerAddress(
+      customerId: number,
+      addressData: Partial<Address>,
+    ) {
+      return await this.customerRepository
+        .address(customerId)
+        .patch(addressData);
+    }
+
+    async putCustomerAddress(
+      customerId: number,
+      addressData: Partial<Address>,
+    ) {
+      await this.customerRepository.address(customerId).put(addressData);
+      return;
+    }
+
+    async deleteCustomerAddress(customerId: number) {
+      return await this.customerRepository.address(customerId).delete();
     }
   }
 

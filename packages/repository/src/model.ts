@@ -156,6 +156,16 @@ export class ModelDefinition {
     );
     return idProps;
   }
+
+  /**
+   * Returns the primary key(s) of a given model.
+   * Implemented by Raphael Drai for the purpose of PUT operations
+   * in relations models.
+   *
+   */
+  idNames(): string[] {
+    return this.idProperties();
+  }
 }
 
 function asJSON(value: any): any {
@@ -261,6 +271,17 @@ export abstract class Entity extends Model implements Persistable {
 
     const idName = this.definition.idName();
     return entityOrData[idName];
+  }
+  /**
+   * Get the identity value of the primary key(s) for a given entity
+   * instance or entity data object.
+   *
+   * @param entityOrData The data object for which to determine the primary
+   * key(s).
+   */
+  static getPrimaryKey(entityOrData: AnyObject): any {
+    const idName = this.definition.idNames();
+    return idName;
   }
 
   /**
