@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Getter} from '@loopback/context';
-import {DataObject, Options, Count} from '../../common-types';
+import {AnyObject, DataObject, Options, Count} from '../../common-types';
 import {Entity} from '../../model';
 import {Filter, Where} from '../../query';
 import {
@@ -48,6 +48,22 @@ export interface HasOneRepository<Target extends Entity> {
    * @returns A promise which resolves the deleted target model instances
    */
   delete(where?: Where<Target>, options?: Options): Promise<Count>;
+
+  /**
+   * Patch related target model instance
+   * @param dataObject The target model fields and their new values to patch
+   * @param options
+   * @returns A promise which resolves the patched target model instances
+   */
+  patch(dataObject: DataObject<Target>, options?: Options): Promise<Count>;
+
+  /**
+   * Put related target model instance
+   * @param dataObject The target model fields and their new values to put
+   * @param options
+   * @returns A promise which resolves the patched target model instances
+   */
+  put(dataObject: DataObject<Target>, options?: Options): Promise<void>;
 }
 
 export class DefaultHasOneRepository<
@@ -103,5 +119,40 @@ export class DefaultHasOneRepository<
       constrainWhere(where, this.constraint as Where<TargetEntity>),
       options,
     );
+  }
+
+  async patch(
+    dataObject: DataObject<TargetEntity>,
+    options?: Options,
+  ): Promise<Count> {
+    const targetRepository = await this.getTargetRepository();
+    return await targetRepository.updateAll(
+      dataObject,
+      constrainWhere({}, this.constraint as Where<TargetEntity>),
+    );
+  }
+
+  async put(
+    dataObject: DataObject<TargetEntity>,
+    options?: Options,
+  ): Promise<void> {
+    const targetRepository = await this.getTargetRepository();
+    const entity = targetRepository.entityClass;
+    const primaryKeys = targetRepository.entityClass.getPrimaryKey(entity);
+    let id = (this as AnyObject)[''];
+    if (primaryKeys.length === 1 || primaryKeys.length === 0) {
+      id = Reflect.get(dataObject, primaryKeys[0]);
+    } else if (primaryKeys.length > 1) {
+      for (let idx = 0; idx < primaryKeys.length; idx++) {
+        id[idx] = Reflect.get(dataObject, primaryKeys[idx]);
+      }
+    }
+
+    await targetRepository.replaceById(
+      id,
+      dataObject,
+      constrainWhere({}, this.constraint as Where<TargetEntity>),
+    );
+    return;
   }
 }
