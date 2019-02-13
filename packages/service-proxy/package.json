@@ -20,7 +20,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "author": "IBM",
+  "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "devDependencies": {
