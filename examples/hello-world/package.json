@@ -6,6 +6,7 @@
   "engines": {
     "node": ">=8.9"
   },
+  "author": "IBM Corp.",
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build:apidocs": "lb-apidocs",

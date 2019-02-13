@@ -8,6 +8,7 @@
   "engines": {
     "node": ">=8.9"
   },
+  "author": "IBM Corp.",
   "license": "MIT",
   "devDependencies": {
     "@commitlint/cli": "^7.5.0",

@@ -3,9 +3,7 @@
   "version": "1.6.0",
   "description": "Yeoman generator for LoopBack 4",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/packages/cli",
-  "author": {
-    "name": "IBM"
-  },
+  "author": "IBM Corp.",
   "engines": {
     "node": ">=8.9"
   },

@@ -35,7 +35,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "author": "",
+  "author": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
     "@loopback/context": "^1.5.1",
