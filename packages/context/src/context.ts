@@ -10,11 +10,10 @@ import {ValueOrPromise} from '.';
 import {Binding, BindingTag} from './binding';
 import {BindingFilter, filterByKey, filterByTag} from './binding-filter';
 import {BindingAddress, BindingKey} from './binding-key';
+import {ContextEventNotifier} from './context-event-notifier';
 import {
   ContextEventObserver,
-  ContextEventType,
   ContextObserver,
-  Notification,
   Subscription,
 } from './context-observer';
 import {ResolutionOptions, ResolutionSession} from './resolution-session';
@@ -28,9 +27,6 @@ if (!Symbol.asyncIterator) {
   // tslint:disable-next-line:no-any
   (Symbol as any).asyncIterator = Symbol.for('Symbol.asyncIterator');
 }
-
-// FIXME: `@types/p-event` is out of date against `p-event@2.2.0`
-const pEvent = require('p-event');
 
 const debug = debugModule('loopback:context');
 
@@ -67,21 +63,9 @@ export class Context extends EventEmitter {
     | undefined;
 
   /**
-   * A list of registered context observers. The Set will be created when the
-   * first observer is added.
+   * Class maintaining ContextEvent observers and dispatching notifications.
    */
-  protected observers: Set<ContextEventObserver> | undefined;
-
-  /**
-   * Internal counter for pending notification events which are yet to be
-   * processed by observers.
-   */
-  private pendingNotifications = 0;
-
-  /**
-   * Queue for background notifications for observers
-   */
-  private notificationQueue: AsyncIterableIterator<Notification> | undefined;
+  protected eventNotifier: ContextEventNotifier | undefined;
 
   /**
    * Create a new context. For example,
@@ -135,21 +119,30 @@ export class Context extends EventEmitter {
    * upon `bind` and `unbind` events. This method will be called lazily when
    * the first observer is added.
    */
-  private setupEventHandlersIfNeeded() {
-    if (this.notificationQueue != null) return;
+  private setupEventNotifierIfNeeded() {
+    if (this.eventNotifier) return;
+
+    this.eventNotifier = new ContextEventNotifier(this._debug.bind(this));
+    this.eventNotifier.on('error', err => this.handleNotificationError(err));
+
+    // For backwards compatibility
+    this.eventNotifier.on(
+      'observersNotified',
+      this.emit.bind(this, 'observersNotified'),
+    );
+
+    // The following are two async functions. Returned promises are ignored as
+    // they are long-running background tasks.
+    this.eventNotifier.start().catch(err => {
+      this.handleNotificationError(err);
+    });
 
     this.addParentEventListener('bind');
     this.addParentEventListener('unbind');
 
-    // The following are two async functions. Returned promises are ignored as
-    // they are long-running background tasks.
-    this.startNotificationTask().catch(err => {
-      this.handleNotificationError(err);
-    });
-
     let ctx = this._parent;
     while (ctx) {
-      ctx.setupEventHandlersIfNeeded();
+      ctx.setupEventNotifierIfNeeded();
       ctx = ctx._parent;
     }
   }
@@ -190,6 +183,15 @@ export class Context extends EventEmitter {
         context.name,
         this.name,
       );
+
+      if (this.eventNotifier) {
+        this._debug('  calling evenNotifier to dispatch the event');
+        this.eventNotifier.emit(event, binding, context);
+      } else {
+        this._debug('  evenNotifier was not setup, discarding the event');
+      }
+
+      // For backwards compatibility
       this.emit(event, binding, context);
     };
     this._parentEventListeners.set(event, parentEventListener);
@@ -222,72 +224,6 @@ export class Context extends EventEmitter {
   }
 
   /**
-   * Start a background task to listen on context events and notify observers
-   */
-  private startNotificationTask() {
-    // Set up listeners on `bind` and `unbind` for notifications
-    this.setupNotification('bind', 'unbind');
-
-    // Create an async iterator for the `notification` event as a queue
-    this.notificationQueue = pEvent.iterator(this, 'notification');
-
-    return this.processNotifications();
-  }
-
-  /**
-   * Process notification events as they arrive on the queue
-   */
-  private async processNotifications() {
-    const events = this.notificationQueue;
-    if (events == null) return;
-    for await (const {eventType, binding, context, observers} of events) {
-      // The loop will happen asynchronously upon events
-      try {
-        // The execution of observers happen in the Promise micro-task queue
-        await this.notifyObservers(eventType, binding, context, observers);
-        this.pendingNotifications--;
-        this._debug(
-          'Observers notified for %s of binding %s',
-          eventType,
-          binding.key,
-        );
-        this.emit('observersNotified', {eventType, binding});
-      } catch (err) {
-        this.pendingNotifications--;
-        this._debug('Error caught from observers', err);
-        // Errors caught from observers. Emit it to the current context.
-        // If no error listeners are registered, crash the process.
-        this.emit('error', err);
-      }
-    }
-  }
-
-  /**
-   * Listen on given event types and emit `notification` event. This method
-   * merge multiple event types into one for notification.
-   * @param eventTypes Context event types
-   */
-  private setupNotification(...eventTypes: ContextEventType[]) {
-    for (const eventType of eventTypes) {
-      this.on(eventType, (binding, context) => {
-        // No need to schedule notifications if no observers are present
-        if (!this.observers || this.observers.size === 0) return;
-        // Track pending events
-        this.pendingNotifications++;
-        // Take a snapshot of current observers to ensure notifications of this
-        // event will only be sent to current ones. Emit a new event to notify
-        // current context observers.
-        this.emit('notification', {
-          eventType,
-          binding,
-          context,
-          observers: new Set(this.observers),
-        });
-      });
-    }
-  }
-
-  /**
    * Wait until observers are notified for all of currently pending notification
    * events.
    *
@@ -295,9 +231,16 @@ export class Context extends EventEmitter {
    * notified for relevant events.
    */
   protected async waitUntilPendingNotificationsDone(timeout?: number) {
-    const count = this.pendingNotifications;
-    if (count === 0) return;
-    await pEvent.multiple(this, 'observersNotified', {count, timeout});
+    if (!this.eventNotifier) return;
+    const errorHandler = () => {
+      // no-op, eventNotifier will report this error as a rejected promise
+    };
+    this.once('error', errorHandler);
+    try {
+      await this.eventNotifier.waitUntilPendingNotificationsDone(timeout);
+    } finally {
+      this.removeListener('error', errorHandler);
+    }
   }
 
   /**
@@ -333,8 +276,13 @@ export class Context extends EventEmitter {
     this.registry.set(key, binding);
     if (existingBinding !== binding) {
       if (existingBinding != null) {
+        if (this.eventNotifier)
+          this.eventNotifier.emit('unbind', existingBinding, this);
+        // backwards compatibility
         this.emit('unbind', existingBinding, this);
       }
+      if (this.eventNotifier) this.eventNotifier.emit('bind', binding, this);
+      // backwards compatibility
       this.emit('bind', binding, this);
     }
     return this;
@@ -359,6 +307,8 @@ export class Context extends EventEmitter {
     if (binding && binding.isLocked)
       throw new Error(`Cannot unbind key "${key}" of a locked binding`);
     this.registry.delete(key);
+    if (this.eventNotifier) this.eventNotifier.emit('unbind', binding, this);
+    // backwards compatibility
     this.emit('unbind', binding, this);
     return true;
   }
@@ -368,10 +318,8 @@ export class Context extends EventEmitter {
    * @param observer Context observer instance or function
    */
   subscribe(observer: ContextEventObserver): Subscription {
-    this.observers = this.observers || new Set();
-    this.setupEventHandlersIfNeeded();
-    this.observers.add(observer);
-    return new ContextSubscription(this, observer);
+    this.setupEventNotifierIfNeeded();
+    return this.eventNotifier!.subscribe(observer);
   }
 
   /**
@@ -379,8 +327,8 @@ export class Context extends EventEmitter {
    * @param observer Context event observer
    */
   unsubscribe(observer: ContextEventObserver): boolean {
-    if (!this.observers) return false;
-    return this.observers.delete(observer);
+    if (!this.eventNotifier) return false;
+    return this.eventNotifier.unsubscribe(observer);
   }
 
   /**
@@ -393,13 +341,12 @@ export class Context extends EventEmitter {
    */
   close() {
     this._debug('Closing context...');
-    this.observers = undefined;
-    if (this.notificationQueue != null) {
-      // Cancel the notification iterator
-      this.notificationQueue.return!(undefined).catch(err => {
+    if (this.eventNotifier) {
+      this.eventNotifier.close().catch(err => {
         this.handleNotificationError(err);
       });
-      this.notificationQueue = undefined;
+
+      this.eventNotifier = undefined;
     }
     if (this._parent && this._parentEventListeners) {
       for (const [event, listener] of this._parentEventListeners) {
@@ -416,36 +363,8 @@ export class Context extends EventEmitter {
    * @param observer Context observer
    */
   isSubscribed(observer: ContextObserver) {
-    if (!this.observers) return false;
-    return this.observers.has(observer);
-  }
-
-  /**
-   * Publish an event to the registered observers. Please note the
-   * notification is queued and performed asynchronously so that we allow fluent
-   * APIs such as `ctx.bind('key').to(...).tag(...);` and give observers the
-   * fully populated binding.
-   *
-   * @param eventType Event names: `bind` or `unbind`
-   * @param binding Binding bound or unbound
-   * @param context Owner context
-   * @param observers Current set of context observers
-   */
-  protected async notifyObservers(
-    eventType: ContextEventType,
-    binding: Readonly<Binding<unknown>>,
-    context: Context,
-    observers = this.observers,
-  ) {
-    if (!observers || observers.size === 0) return;
-
-    for (const observer of observers) {
-      if (typeof observer === 'function') {
-        await observer(eventType, binding, context);
-      } else if (!observer.filter || observer.filter(binding)) {
-        await observer.observe(eventType, binding, context);
-      }
-    }
+    if (!this.eventNotifier) return false;
+    return this.eventNotifier.isSubscribed(observer);
   }
 
   /**
@@ -790,26 +709,5 @@ export class Context extends EventEmitter {
       json[k] = v.toJSON();
     }
     return json;
-  }
-}
-
-/**
- * An implementation of `Subscription` interface for context events
- */
-class ContextSubscription implements Subscription {
-  constructor(
-    protected context: Context,
-    protected observer: ContextEventObserver,
-  ) {}
-
-  private _closed = false;
-
-  unsubscribe() {
-    this.context.unsubscribe(this.observer);
-    this._closed = true;
-  }
-
-  get closed() {
-    return this._closed;
   }
 }
