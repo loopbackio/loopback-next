@@ -43,3 +43,4 @@ the prefix. Example: `@loopback/authentication` component uses the prefix
 - [RestBindings](https://loopback.io/doc/en/lb4/apidocs.rest.restbindings.html)
 - [RestBindings.Http](https://loopback.io/doc/en/lb4/apidocs.rest.http.html)
 - [RestBindings.SequenceActions](https://loopback.io/doc/en/lb4/apidocs.rest.sequenceactions.html)
+- [ExpressBindings](https://loopback.io/doc/en/lb4/apidocs.express-middleware.expressbindings.html)

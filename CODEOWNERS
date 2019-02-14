@@ -21,6 +21,7 @@ packages/cli/* @raymondfeng @bajtos
 packages/context/* @bajtos @raymondfeng
 packages/core/* @bajtos @raymondfeng
 packages/eslint-config/* @raymondfeng
+packages/express-middleware/* @raymondfeng
 packages/metadata/* @raymondfeng
 packages/model-api-builder/* @bajtos @nabdelgadir
 packages/openapi-spec-builder/* @bajtos @raymondfeng
