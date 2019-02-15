@@ -9,13 +9,13 @@ import {Binding} from './binding';
 import {BindingFilter} from './binding-filter';
 import {Context} from './context';
 import {
-  ContextObserver,
   ContextEventType,
+  ContextObserver,
   Subscription,
 } from './context-observer';
 import {Getter} from './inject';
 import {ResolutionSession} from './resolution-session';
-import {resolveList, ValueOrPromise} from './value-promise';
+import {isPromiseLike, resolveList, ValueOrPromise} from './value-promise';
 const debug = debugFactory('loopback:context:view');
 const nextTick = promisify(process.nextTick);
 
@@ -100,24 +100,28 @@ export class ContextView<T = unknown> implements ContextObserver {
    */
   resolve(session?: ResolutionSession): ValueOrPromise<T[]> {
     debug('Resolving values');
-    // We don't cache values with this method as it returns `ValueOrPromise`
-    // for inject `resolve` function to allow `getSync` but `this._cachedValues`
-    // expects `T[]`
-    return resolveList(this.bindings, b => {
+    if (this._cachedValues != null) return this._cachedValues;
+    let result = resolveList(this.bindings, b => {
       return b.getValue(this.context, ResolutionSession.fork(session));
     });
+    if (isPromiseLike(result)) {
+      result = result.then(values => (this._cachedValues = values));
+    } else {
+      this._cachedValues = result;
+    }
+    return result;
   }
 
   /**
    * Get the list of resolved values. If they are not cached, it tries to find
    * and resolve them.
    */
-  async values(): Promise<T[]> {
+  async values(session?: ResolutionSession): Promise<T[]> {
     debug('Reading values');
     // Wait for the next tick so that context event notification can be emitted
     await nextTick();
     if (this._cachedValues == null) {
-      this._cachedValues = await this.resolve();
+      this._cachedValues = await this.resolve(session);
     }
     return this._cachedValues;
   }
@@ -125,7 +129,7 @@ export class ContextView<T = unknown> implements ContextObserver {
   /**
    * As a `Getter` function
    */
-  asGetter(): Getter<T[]> {
-    return () => this.values();
+  asGetter(session?: ResolutionSession): Getter<T[]> {
+    return () => this.values(session);
   }
 }

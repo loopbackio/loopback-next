@@ -13,7 +13,12 @@ import {
   PropertyDecoratorFactory,
 } from '@loopback/metadata';
 import {BindingTag} from './binding';
-import {BindingFilter, filterByTag} from './binding-filter';
+import {
+  BindingFilter,
+  BindingSelector,
+  filterByTag,
+  isBindingAddress,
+} from './binding-filter';
 import {BindingAddress} from './binding-key';
 import {Context} from './context';
 import {ContextView} from './context-view';
@@ -56,13 +61,6 @@ export interface InjectionMetadata {
    */
   [attribute: string]: BoundValue;
 }
-
-/**
- * Select binding(s) by key or a filter function
- */
-export type BindingSelector<ValueType = unknown> =
-  | BindingAddress<ValueType>
-  | BindingFilter<ValueType>;
 
 /**
  * Descriptor for an injection point
@@ -227,7 +225,13 @@ export namespace inject {
     metadata?: InjectionMetadata,
   ) {
     metadata = Object.assign({decorator: '@inject.getter'}, metadata);
-    return inject(bindingSelector, metadata, resolveAsGetter);
+    return inject(
+      bindingSelector,
+      metadata,
+      isBindingAddress(bindingSelector)
+        ? resolveAsGetter
+        : resolveAsGetterByFilter,
+    );
   };
 
   /**
@@ -244,7 +248,7 @@ export namespace inject {
    * @param metadata Optional metadata to help the injection
    */
   export const setter = function injectSetter(
-    bindingKey: BindingAddress<BoundValue>,
+    bindingKey: BindingAddress,
     metadata?: InjectionMetadata,
   ) {
     metadata = Object.assign({decorator: '@inject.setter'}, metadata);
@@ -311,29 +315,13 @@ export namespace inject {
   };
 }
 
-function isBindingAddress(
-  bindingSelector: BindingSelector,
-): bindingSelector is BindingAddress {
-  return typeof bindingSelector !== 'function';
-}
-
 function resolveAsGetter(
   ctx: Context,
   injection: Readonly<Injection>,
   session?: ResolutionSession,
 ) {
-  const targetType = inspectTargetType(injection);
-  if (targetType && targetType !== Function) {
-    const targetName = ResolutionSession.describeInjection(injection)!
-      .targetName;
-    throw new Error(
-      `The type of ${targetName} (${targetType.name}) is not a Getter function`,
-    );
-  }
-  const bindingSelector = injection.bindingSelector;
-  if (!isBindingAddress(bindingSelector)) {
-    return resolveAsGetterByFilter(ctx, injection, session);
-  }
+  assertTargetIsGetter(injection);
+  const bindingSelector = injection.bindingSelector as BindingAddress;
   // We need to clone the session for the getter as it will be resolved later
   session = ResolutionSession.fork(session);
   return function getter() {
@@ -342,6 +330,17 @@ function resolveAsGetter(
       optional: injection.metadata && injection.metadata.optional,
     });
   };
+}
+
+function assertTargetIsGetter(injection: Readonly<Injection>) {
+  const targetType = inspectTargetType(injection);
+  if (targetType && targetType !== Function) {
+    const targetName = ResolutionSession.describeInjection(injection)!
+      .targetName;
+    throw new Error(
+      `The type of ${targetName} (${targetType.name}) is not a Getter function`,
+    );
+  }
 }
 
 function resolveAsSetter(ctx: Context, injection: Injection) {
@@ -430,8 +429,14 @@ function resolveValuesByFilter(
   injection: Readonly<Injection>,
   session?: ResolutionSession,
 ) {
-  const targetType = inspectTargetType(injection);
+  assertTargetIsArray(injection);
+  const bindingFilter = injection.bindingSelector as BindingFilter;
+  const view = new ContextView(ctx, bindingFilter);
+  return view.resolve(session);
+}
 
+function assertTargetIsArray(injection: Readonly<Injection>) {
+  const targetType = inspectTargetType(injection);
   if (targetType !== Array) {
     const targetName = ResolutionSession.describeInjection(injection)!
       .targetName;
@@ -439,10 +444,6 @@ function resolveValuesByFilter(
       `The type of ${targetName} (${targetType.name}) is not Array`,
     );
   }
-
-  const bindingFilter = injection.bindingSelector as BindingFilter;
-  const view = new ContextView(ctx, bindingFilter);
-  return view.resolve(session);
 }
 
 /**
@@ -458,10 +459,11 @@ function resolveAsGetterByFilter(
   injection: Readonly<Injection>,
   session?: ResolutionSession,
 ) {
+  assertTargetIsGetter(injection);
   const bindingFilter = injection.bindingSelector as BindingFilter;
   const view = new ContextView(ctx, bindingFilter);
   view.open();
-  return view.asGetter();
+  return view.asGetter(session);
 }
 
 /**
