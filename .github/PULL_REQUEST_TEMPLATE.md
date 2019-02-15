@@ -17,3 +17,4 @@ See also #23
 - [ ] Documentation in [/docs/site](../tree/master/docs/site) was updated
 - [ ] Affected artifact templates in `packages/cli` were updated
 - [ ] Affected example projects in `examples/*` were updated
+- [ ] Agree to the CLA (Contributor License Agreement) by [clicking and signing](https://cla.strongloop.com/agreements/strongloop/loopback-next)
