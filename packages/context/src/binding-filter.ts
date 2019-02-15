@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding, BindingTag} from './binding';
+import {BindingAddress} from './binding-key';
 
 /**
  * A function that filters bindings. It returns `true` to select a given
@@ -12,6 +13,23 @@ import {Binding, BindingTag} from './binding';
 export type BindingFilter<ValueType = unknown> = (
   binding: Readonly<Binding<ValueType>>,
 ) => boolean;
+
+/**
+ * Select binding(s) by key or a filter function
+ */
+export type BindingSelector<ValueType = unknown> =
+  | BindingAddress<ValueType>
+  | BindingFilter<ValueType>;
+
+/**
+ * Type guard for binding address
+ * @param bindingSelector
+ */
+export function isBindingAddress(
+  bindingSelector: BindingSelector,
+): bindingSelector is BindingAddress {
+  return typeof bindingSelector !== 'function';
+}
 
 /**
  * Create a binding filter for the tag pattern
