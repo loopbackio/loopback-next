@@ -28,7 +28,7 @@ export type PropertyType =
  */
 export interface PropertyDefinition {
   type: PropertyType; // For example, 'string', String, or {}
-  id?: boolean;
+  id?: boolean | number;
   json?: PropertyForm;
   store?: PropertyForm;
   itemType?: PropertyType; // type of array
