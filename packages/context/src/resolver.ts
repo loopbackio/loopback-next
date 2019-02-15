@@ -4,27 +4,26 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {DecoratorFactory} from '@loopback/metadata';
-import {Context} from './context';
+import * as assert from 'assert';
+import * as debugModule from 'debug';
+import {isBindingAddress} from './binding-filter';
 import {BindingAddress} from './binding-key';
-import {
-  BoundValue,
-  Constructor,
-  ValueOrPromise,
-  MapObject,
-  resolveList,
-  resolveMap,
-  transformValueOrPromise,
-} from './value-promise';
-
+import {Context} from './context';
 import {
   describeInjectedArguments,
   describeInjectedProperties,
   Injection,
 } from './inject';
 import {ResolutionSession} from './resolution-session';
-
-import * as assert from 'assert';
-import * as debugModule from 'debug';
+import {
+  BoundValue,
+  Constructor,
+  MapObject,
+  resolveList,
+  resolveMap,
+  transformValueOrPromise,
+  ValueOrPromise,
+} from './value-promise';
 
 const debug = debugModule('loopback:context:resolver');
 const getTargetName = DecoratorFactory.getTargetName;
@@ -101,6 +100,10 @@ function resolve<T>(
         return injection.resolve(ctx, injection, s);
       } else {
         // Default to resolve the value from the context by binding key
+        assert(
+          isBindingAddress(injection.bindingSelector),
+          'The binding selector must be an address (string or BindingKey)',
+        );
         const key = injection.bindingSelector as BindingAddress;
         return ctx.getValueOrPromise(key, {
           session: s,
