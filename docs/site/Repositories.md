@@ -10,6 +10,10 @@ A `Repository` represents a specialized `Service` interface that provides
 strong-typed data access (for example, CRUD) operations of a domain model
 against the underlying database or service.
 
+{% include note.html content="Repositories are adding behavior to Models. Models describe the shape of data, Repositories provide behavior like CRUD operations. This is different from LoopBack 3.x where models implement behavior too." %}
+
+{% include tip.html content="A single model can be used with multiple different Repositories." %}
+
 A `Repository` can be defined and implemented by application developers.
 LoopBack ships a few predefined `Repository` interfaces for typical CRUD and KV
 operations. These `Repository` implementations leverage `Model` definition and
@@ -296,7 +300,7 @@ application.
 ## Access KeyValue Stores
 
 We can now access key-value stores such as [Redis](https://redis.io/) using the
-[KeyValueRepository]((https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/kv.repository.ts).
+[KeyValueRepository](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/kv.repository.ts).
 
 ### Define a KeyValue Datasource
 

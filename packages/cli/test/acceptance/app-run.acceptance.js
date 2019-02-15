@@ -61,7 +61,10 @@ describe('app-generator (SLOW)', function() {
     });
   });
 
-  after(() => {
+  after(function() {
+    // Increase the timeout to accommodate slow CI build machines
+    this.timeout(30 * 1000);
+
     process.chdir(rootDir);
     build.clean(['node', 'run-clean', sandbox]);
     process.chdir(cwd);

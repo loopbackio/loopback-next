@@ -86,15 +86,15 @@ describe('lb4 datasource integration', () => {
     ).to.be.rejectedWith(/No package.json found in/);
   });
 
-  it('does not run without the loopback keyword', () => {
+  it('does not run without the "@loopback/core" dependency', () => {
     return expect(
       testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {excludeKeyword: true}),
+          testUtils.givenLBProject(SANDBOX_PATH, {excludeLoopbackCore: true}),
         )
         .withPrompts(basicCLIInput),
-    ).to.be.rejectedWith(/No `loopback` keyword found in/);
+    ).to.be.rejectedWith(/No `@loopback\/core` package found/);
   });
 
   describe('basic datasource', () => {
@@ -157,6 +157,7 @@ function checkBasicDataSourceFiles() {
   assert.file(expectedTSFile);
   assert.file(expectedJSONFile);
   assert.file(expectedIndexFile);
+  assert.noFile(path.join(SANDBOX_PATH, 'node_modules/memory'));
 
   assert.fileContent(expectedTSFile, /import {inject} from '@loopback\/core';/);
   assert.fileContent(

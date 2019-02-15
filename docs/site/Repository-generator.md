@@ -29,6 +29,10 @@ src/datasources
 model. If you supply this value, the CLI will not try to infer this value from
 the selected model file.
 
+`--repositoryBaseClass` : _(Optional)_ _(Default: DefaultCrudRepository)_ name
+of the base class the repository will inherit. If no value was supplied,
+**DefaultCrudRepository** will be used.
+
 ### Configuration file
 
 This generator supports a config file with the following format, see the
@@ -40,7 +44,8 @@ file.
   "name": "repositoryNameToBeGenerated",
   "datasource": "validDataSourceName",
   "model": "validDModelName",
-  "id": "anOptionalNameForID"
+  "id": "anOptionalNameForID",
+  "repositoryBaseClass": "validRepositoryBaseClass"
 }
 ```
 
@@ -81,6 +86,14 @@ The tool will prompt you for:
 
   **NOTE:** The tool will inspect each of the selected models and try to find
   the name of the property serving as **ID** for the model.
+
+- **Please select the repository base class.** _(repository)_ if the name of a
+  valid base class has been supplied from the command line, the prompt is
+  skipped, otherwise it will present you a list of repositories. The default
+  repository is infered from the datasource type.
+
+  Any repository in the `src/repository` folder with the file format
+  `*.repository.base.ts` will be added to the list too.
 
 - **Please enter the name of the ID property for _modelName_.** _(id)_ If the
   CLI cannot find the corresponding ID property name for the model, it will

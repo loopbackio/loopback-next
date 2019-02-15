@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.4...@loopback/repository@1.1.5) (2019-02-08)
+
+
+### Bug Fixes
+
+* update to the most recent lodash version ([65ee865](https://github.com/strongloop/loopback-next/commit/65ee865))
+
+
+
+
+
+## [1.1.4](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.3...@loopback/repository@1.1.4) (2019-01-28)
+
+**Note:** Version bump only for package @loopback/repository
+
+
+
+
+
+## [1.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.2...@loopback/repository@1.1.3) (2019-01-15)
+
+
+### Bug Fixes
+
+* **repository:** remove property.array() call from hasMany decorator ([56ab017](https://github.com/strongloop/loopback-next/commit/56ab017)), closes [#1944](https://github.com/strongloop/loopback-next/issues/1944)
+
+
+
+
+
+## [1.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.1...@loopback/repository@1.1.2) (2019-01-14)
+
+
+### Bug Fixes
+
+* add nin operator to query typing and builder ([#2215](https://github.com/strongloop/loopback-next/issues/2215)) ([c38bd4e](https://github.com/strongloop/loopback-next/commit/c38bd4e))
+* rework tslint comments disabling "no-unused-variable" rule ([a18a3d7](https://github.com/strongloop/loopback-next/commit/a18a3d7))
+
+
+
+
+
 ## [1.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.0...@loopback/repository@1.1.1) (2018-12-20)
 
 **Note:** Version bump only for package @loopback/repository

@@ -161,7 +161,7 @@ function search<T>(
   // There might be multiple matches, such as `/users/{id}` and `/users/{userId}`
   for (const child of children) {
     const result = search(keys, index + 1, params, child.node);
-    if (result) {
+    if (result && isNodeWithValue(result.node)) {
       Object.assign(params, child.params);
       return result;
     }

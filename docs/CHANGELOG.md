@@ -3,6 +3,54 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.3](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.7.2...@loopback/docs@1.7.3) (2019-02-08)
+
+
+### Bug Fixes
+
+* **docs:** remove .ts from imports ([c601c4c](https://github.com/strongloop/loopback-next/commit/c601c4c))
+* **docs:** update link in todo-tutorial-geocoding-service ([e6a8d73](https://github.com/strongloop/loopback-next/commit/e6a8d73))
+* **docs:** update test paths to `src/__tests__` ([75731f9](https://github.com/strongloop/loopback-next/commit/75731f9))
+
+
+
+
+
+## [1.7.2](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.7.1...@loopback/docs@1.7.2) (2019-01-28)
+
+**Note:** Version bump only for package @loopback/docs
+
+
+
+
+
+## [1.7.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.7.0...@loopback/docs@1.7.1) (2019-01-15)
+
+**Note:** Version bump only for package @loopback/docs
+
+
+
+
+
+# [1.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.6.0...@loopback/docs@1.7.0) (2019-01-14)
+
+
+### Bug Fixes
+
+* **cli:** add descriptions to features ([8a94f8f](https://github.com/strongloop/loopback-next/commit/8a94f8f))
+* **docs:** fix a typo ([c2f8cdd](https://github.com/strongloop/loopback-next/commit/c2f8cdd))
+* **docs:** fix example for using --config option ([5a670ef](https://github.com/strongloop/loopback-next/commit/5a670ef))
+
+
+### Features
+
+* always include tslint and typescript in project dev-dependencies ([e0df285](https://github.com/strongloop/loopback-next/commit/e0df285))
+* **cli:** add strict prompt to model generator ([a68d78b](https://github.com/strongloop/loopback-next/commit/a68d78b))
+
+
+
+
+
 # [1.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.5.0...@loopback/docs@1.6.0) (2018-12-20)
 
 

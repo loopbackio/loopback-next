@@ -11,8 +11,14 @@ module.exports = class AppGenerator extends ProjectGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);
-    this.buildOptions.push('repositories');
-    this.buildOptions.push('services');
+    this.buildOptions.push({
+      name: 'repositories',
+      description: 'include repository imports and RepositoryMixin',
+    });
+    this.buildOptions.push({
+      name: 'services',
+      description: 'include service-proxy imports and ServiceMixin',
+    });
   }
 
   _setupGenerator() {

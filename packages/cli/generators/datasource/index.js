@@ -311,8 +311,10 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
       debug(`npmModule - ${pkgs[0]}`);
     } else {
       const connectorName = this.artifactInfo.connector;
-      // Other connectors
-      if (!deps[connectorName]) pkgs.push(connectorName);
+      // Other connectors that are not listed in `connectors.json`.
+      // No install is needed for those in connectors.json but without a
+      // package name as they are built-in connectors
+      if (!deps[connectorName] && !connector) pkgs.push(connectorName);
     }
 
     if (!deps['@loopback/repository']) {

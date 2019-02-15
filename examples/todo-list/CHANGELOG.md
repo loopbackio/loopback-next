@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.4.2...@loopback/example-todo-list@1.4.3) (2019-02-08)
+
+
+### Bug Fixes
+
+* **example-todo-list:** "npm run migration" script path ([bf26cc3](https://github.com/strongloop/loopback-next/commit/bf26cc3))
+
+
+
+
+
+## [1.4.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.4.1...@loopback/example-todo-list@1.4.2) (2019-01-28)
+
+**Note:** Version bump only for package @loopback/example-todo-list
+
+
+
+
+
+## [1.4.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.4.0...@loopback/example-todo-list@1.4.1) (2019-01-15)
+
+**Note:** Version bump only for package @loopback/example-todo-list
+
+
+
+
+
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.3.1...@loopback/example-todo-list@1.4.0) (2019-01-14)
+
+
+### Features
+
+* always include tslint and typescript in project dev-dependencies ([e0df285](https://github.com/strongloop/loopback-next/commit/e0df285))
+
+
+
+
+
 ## [1.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.3.0...@loopback/example-todo-list@1.3.1) (2018-12-20)
 
 **Note:** Version bump only for package @loopback/example-todo-list

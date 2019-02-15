@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.12](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@1.0.11...@loopback/authentication@1.0.12) (2019-02-08)
+
+**Note:** Version bump only for package @loopback/authentication
+
+
+
+
+
+## [1.0.11](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@1.0.10...@loopback/authentication@1.0.11) (2019-01-28)
+
+**Note:** Version bump only for package @loopback/authentication
+
+
+
+
+
+## [1.0.10](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@1.0.9...@loopback/authentication@1.0.10) (2019-01-15)
+
+**Note:** Version bump only for package @loopback/authentication
+
+
+
+
+
+## [1.0.9](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@1.0.8...@loopback/authentication@1.0.9) (2019-01-14)
+
+
+### Bug Fixes
+
+* optional auth metadata ([6145e54](https://github.com/strongloop/loopback-next/commit/6145e54))
+
+
+
+
+
 ## [1.0.8](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@1.0.7...@loopback/authentication@1.0.8) (2018-12-20)
 
 **Note:** Version bump only for package @loopback/authentication

@@ -211,6 +211,10 @@ children:
       url: Deploying-to-IBM-Cloud.html
       output: 'web, pdf'
 
+    - title: 'Deploying to Kubernetes on IBM Cloud'
+      url: deploying_to_ibm_cloud_kubernetes.html
+      output: 'web, pdf'
+
     - title: 'Deploying with pm2 and nginx'
       url: deploying-with-pm2-and-nginx.html
       output: 'web, pdf'

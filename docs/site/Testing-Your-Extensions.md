@@ -84,7 +84,7 @@ export class PingController {
 }
 ```
 
-{% include code-caption.html content="test/unit/controllers/ping.controller.unit.ts" %}
+{% include code-caption.html content="src/__tests__/unit/controllers/ping.controller.unit.ts" %}
 
 ```ts
 import {PingController} from '../../..';
@@ -145,7 +145,7 @@ export function getTestMetadata(
 }
 ```
 
-{% include code-caption.html content="test/unit/decorators/test.decorator.unit.ts" %}
+{% include code-caption.html content="src/__tests__/unit/decorators/test.decorator.unit.ts" %}
 
 ```ts
 import {test, getTestMetadata} from '../../..';
@@ -194,7 +194,7 @@ export class RandomNumberProvider implements Provider<number> {
 }
 ```
 
-{% include code-caption.html content="test/unit/providers/random-number.provider.unit.ts" %}
+{% include code-caption.html content="src/__tests__/unit/providers/random-number.provider.unit.ts" %}
 
 ```ts
 import {RandomNumberProvider} from '../../..';
@@ -255,7 +255,7 @@ export function TimeMixin<T extends Constructor<any>>(superClass: T) {
 }
 ```
 
-{% include code-caption.html content="test/integration/mixins/time.mixin.integration.ts" %}
+{% include code-caption.html content="src/__tests__/integration/mixins/time.mixin.integration.ts" %}
 
 ```ts
 import {expect} from '@loopback/testlab';
@@ -302,4 +302,4 @@ Have a look at
 [loopback4-example-log-extension](https://github.com/strongloop/loopback-next/tree/master/examples/log-extension)
 to understand the extension artifacts and their usage. An Acceptance test can be
 seen here:
-[test/acceptance/log.extension.acceptance.ts](https://github.com/strongloop/loopback-next/blob/master/examples/log-extension/test/acceptance/log.extension.acceptance.ts).
+[src/**tests**/acceptance/log.extension.acceptance.ts](https://github.com/strongloop/loopback-next/blob/master/examples/log-extension/src/__tests__/acceptance/log.extension.acceptance.ts).

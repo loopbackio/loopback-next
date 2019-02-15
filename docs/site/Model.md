@@ -12,6 +12,10 @@ A model describes business domain objects, for example, `Customer`, `Address`,
 and `Order`. It usually defines a list of properties with name, type, and other
 constraints.
 
+{% include note.html content="Models describe the shape of data. Behavior like CRUD operations is added by repositories. This is different from LoopBack 3.x where models implement behavior too." %}
+
+{% include tip.html content="A single model can be used with multiple different Repositories." %}
+
 Models can be used for data exchange on the wire or between different systems.
 For example, a JSON object conforming to the `Customer` model definition can be
 passed in REST/HTTP payload to create a new customer or stored in a document
@@ -127,8 +131,8 @@ persistence layer respects this constraint and configures underlying
 PersistedModel classes to enforce `strict` mode.
 
 To create a model that allows both well-defined but also arbitrary extra
-properties, you need to disable `strict` mode in model settings and tell
-TypeScript to allow arbitrary additional properties to be set on model
+properties, you need to disable `strict` mode in model settings through the CLI
+and tell TypeScript to allow arbitrary additional properties to be set on model
 instances.
 
 ```ts

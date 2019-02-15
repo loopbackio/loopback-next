@@ -36,18 +36,18 @@
 <% } -%>
     "pretest": "npm run clean && npm run build",
 <% if (project.mocha) { -%>
-    "test": "lb-mocha --allow-console-logs \"dist/test\"",
+    "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
 <% } -%>
 <% if (project.prettier || project.tslint) { -%>
     "posttest": "npm run lint",
 <% } -%>
 <% if (project.mocha && (project.prettier || project.tslint)) { -%>
-    "test:dev": "lb-mocha --allow-console-logs dist/test/**/*.js && npm run posttest",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
 <% } else if (project.mocha) { -%>
-    "test:dev": "lb-mocha --allow-console-logs dist/test/**/*.js",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js",
 <% } -%>
 <% if (project.projectType === 'application') { -%>
-    "migrate": "node ./dist/src/migrate",
+    "migrate": "node ./dist/migrate",
     "prestart": "npm run build",
     "start": "node .",
 <% } -%>
@@ -65,9 +65,9 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist/src",
-    "dist/index*",
-    "src"
+    "dist",
+    "src",
+    "!*/__tests__"
   ],
   "dependencies": {
     "@loopback/boot": "<%= project.dependencies['@loopback/boot'] -%>",
@@ -93,6 +93,10 @@
     "@loopback/build": "<%= project.dependencies['@loopback/build'] -%>",
     "@loopback/testlab": "<%= project.dependencies['@loopback/testlab'] -%>",
     "@loopback/tslint-config": "<%= project.dependencies['@loopback/tslint-config'] -%>",
-    "@types/node": "<%= project.dependencies['@types/node'] -%>"
+    "@types/node": "<%= project.dependencies['@types/node'] -%>",
+    <% if (project.tslint) { -%>
+    "tslint": "<%= project.dependencies['tslint'] -%>",
+    <% } -%>
+    "typescript": "<%= project.dependencies['typescript'] -%>"
   }
 }

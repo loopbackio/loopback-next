@@ -1,11 +1,9 @@
 {
   "name": "@loopback/docs",
-  "version": "1.6.0",
+  "version": "1.7.3",
   "description": "Documentation for LoopBack 4",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/docs",
-  "author": {
-    "name": "IBM"
-  },
+  "author": "IBM Corp.",
   "engines": {
     "node": ">=8.9"
   },
@@ -22,7 +20,7 @@
     "clean": "lb-clean loopback-docs*.tgz package api-docs site/readmes"
   },
   "devDependencies": {
-    "@loopback/build": "^1.1.0"
+    "@loopback/build": "^1.3.0"
   },
   "publishConfig": {
     "access": "public"

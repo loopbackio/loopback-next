@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {property} from '../../decorators/model.decorator';
 import {Entity, EntityResolver} from '../../model';
 import {relation} from '../relation.decorator';
 import {HasManyDefinition, RelationType} from '../relation.types';
@@ -21,8 +20,6 @@ export function hasMany<T extends Entity>(
   definition?: Partial<HasManyDefinition>,
 ) {
   return function(decoratedTarget: Object, key: string) {
-    property.array(targetResolver)(decoratedTarget, key);
-
     const meta: HasManyDefinition = Object.assign(
       // default values, can be customized by the caller
       {name: key},

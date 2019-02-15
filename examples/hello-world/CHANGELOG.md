@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-hello-world@1.1.2...@loopback/example-hello-world@1.1.3) (2019-02-08)
+
+**Note:** Version bump only for package @loopback/example-hello-world
+
+
+
+
+
+## [1.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-hello-world@1.1.1...@loopback/example-hello-world@1.1.2) (2019-01-28)
+
+**Note:** Version bump only for package @loopback/example-hello-world
+
+
+
+
+
+## [1.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-hello-world@1.1.0...@loopback/example-hello-world@1.1.1) (2019-01-15)
+
+**Note:** Version bump only for package @loopback/example-hello-world
+
+
+
+
+
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-hello-world@1.0.8...@loopback/example-hello-world@1.1.0) (2019-01-14)
+
+
+### Features
+
+* always include tslint and typescript in project dev-dependencies ([e0df285](https://github.com/strongloop/loopback-next/commit/e0df285))
+
+
+
+
+
 ## [1.0.8](https://github.com/strongloop/loopback-next/compare/@loopback/example-hello-world@1.0.7...@loopback/example-hello-world@1.0.8) (2018-12-20)
 
 **Note:** Version bump only for package @loopback/example-hello-world
