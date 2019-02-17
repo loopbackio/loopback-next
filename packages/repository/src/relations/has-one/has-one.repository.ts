@@ -4,15 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Getter} from '@loopback/context';
-import {DataObject, Options} from '../../common-types';
+import {Count, DataObject, Options} from '../../common-types';
+import {EntityNotFoundError} from '../../errors';
 import {Entity} from '../../model';
 import {Filter} from '../../query';
 import {
   constrainDataObject,
   constrainFilter,
+  constrainWhere,
   EntityCrudRepository,
 } from '../../repositories';
-import {EntityNotFoundError} from '../../errors';
 
 /**
  * CRUD operations for a target repository of a HasMany relation
@@ -39,6 +40,21 @@ export interface HasOneRepository<Target extends Entity> {
     filter?: Pick<Filter<Target>, Exclude<keyof Filter<Target>, 'where'>>,
     options?: Options,
   ): Promise<Target>;
+
+  /**
+   * Delete the related target model instance
+   * @param options
+   * @returns A promise which resolves the deleted target model instances
+   */
+  delete(options?: Options): Promise<Count>;
+
+  /**
+   * Patch the  related target model instance
+   * @param dataObject The target model fields and their new values to patch
+   * @param options
+   * @returns A promise which resolves the patched target model instances
+   */
+  patch(dataObject: DataObject<Target>, options?: Options): Promise<Count>;
 }
 
 export class DefaultHasOneRepository<
@@ -86,5 +102,24 @@ export class DefaultHasOneRepository<
       throw new EntityNotFoundError(targetRepository.entityClass, id);
     }
     return found[0];
+  }
+  async delete(options?: Options): Promise<Count> {
+    const targetRepository = await this.getTargetRepository();
+    return targetRepository.deleteAll(
+      constrainWhere({}, this.constraint),
+      options,
+    );
+  }
+
+  async patch(
+    dataObject: DataObject<TargetEntity>,
+    options?: Options,
+  ): Promise<Count> {
+    const targetRepository = await this.getTargetRepository();
+    return await targetRepository.updateAll(
+      constrainDataObject(dataObject, this.constraint),
+      constrainWhere({}, this.constraint),
+      options,
+    );
   }
 }
