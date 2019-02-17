@@ -4,4 +4,5 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './has-one.decorator';
+export * from './has-one.repository';
 export * from './has-one-repository.factory';

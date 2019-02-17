@@ -7,14 +7,14 @@ import {Application} from '@loopback/core';
 import {expect, toJSON} from '@loopback/testlab';
 import {
   ApplicationWithRepositories,
+  EntityNotFoundError,
+  Filter,
   juggler,
   repository,
   RepositoryMixin,
-  Filter,
-  EntityNotFoundError,
 } from '../..';
 import {Address} from '../fixtures/models';
-import {CustomerRepository, AddressRepository} from '../fixtures/repositories';
+import {AddressRepository, CustomerRepository} from '../fixtures/repositories';
 
 describe('hasOne relation', () => {
   // Given a Customer and Address models - see definitions at the bottom
@@ -115,6 +115,91 @@ describe('hasOne relation', () => {
     ).to.be.rejectedWith(EntityNotFoundError);
   });
 
+  it('can PATCH hasOne instances', async () => {
+    const address = await controller.createCustomerAddress(existingCustomerId, {
+      street: '1 Amedee Bonnet',
+      zipcode: '69740',
+      city: 'Genas',
+      province: 'Rhone',
+    });
+
+    const patchObject = {city: 'Lyon-Genas'};
+    const arePatched = await controller.patchCustomerAddress(
+      existingCustomerId,
+      patchObject,
+    );
+
+    expect(arePatched).to.deepEqual({count: 1});
+    const patchedData = await addressRepo.findById(address.zipcode);
+    expect(toJSON(patchedData)).to.deepEqual({
+      customerId: existingCustomerId,
+      street: '1 Amedee Bonnet',
+      zipcode: '69740',
+      city: 'Lyon-Genas',
+      province: 'Rhone',
+    });
+  });
+
+  it('patches the related instance only', async () => {
+    const bob = await customerRepo.create({name: 'Bob'});
+    await customerRepo.address(bob.id).create({city: 'Paris'});
+
+    const alice = await customerRepo.create({name: 'Alice'});
+    await customerRepo.address(alice.id).create({city: 'London'});
+
+    const result = await controller.patchCustomerAddress(alice.id, {
+      city: 'New York',
+    });
+
+    expect(result).to.deepEqual({count: 1});
+
+    const found = await customerRepo.address(bob.id).get();
+    expect(toJSON(found)).to.containDeep({city: 'Paris'});
+  });
+
+  it('throws an error when PATCH tries to change the foreignKey', async () => {
+    try {
+      await expect(
+        controller.patchCustomerAddress(existingCustomerId, {
+          customerId: existingCustomerId + 1,
+        }),
+      ).to.be.rejectedWith(/Property "customerId" cannot be changed!/);
+    } catch (err) {}
+  });
+
+  it('can DELETE hasOne relation instances', async () => {
+    await controller.createCustomerAddress(existingCustomerId, {
+      street: '1 Amedee Bonnet',
+      zipcode: '69740',
+      city: 'Genas',
+      province: 'Rhone',
+    });
+
+    const areDeleted = await controller.deleteCustomerAddress(
+      existingCustomerId,
+    );
+    expect(areDeleted).to.deepEqual({count: 1});
+
+    await expect(
+      controller.findCustomerAddress(existingCustomerId),
+    ).to.be.rejectedWith(EntityNotFoundError);
+  });
+
+  it('deletes the related model instance only', async () => {
+    const bob = await customerRepo.create({name: 'Bob'});
+    await customerRepo.address(bob.id).create({city: 'Paris'});
+
+    const alice = await customerRepo.create({name: 'Alice'});
+    await customerRepo.address(alice.id).create({city: 'London'});
+
+    const result = await controller.deleteCustomerAddress(alice.id);
+
+    expect(result).to.deepEqual({count: 1});
+
+    const found = await addressRepo.find();
+    expect(found).to.have.length(1);
+  });
+
   /*---------------- HELPERS -----------------*/
 
   class CustomerController {
@@ -141,6 +226,18 @@ describe('hasOne relation', () => {
       filter: Filter<Address>,
     ) {
       return await this.customerRepository.address(customerId).get(filter);
+    }
+    async patchCustomerAddress(
+      customerId: number,
+      addressData: Partial<Address>,
+    ) {
+      return await this.customerRepository
+        .address(customerId)
+        .patch(addressData);
+    }
+
+    async deleteCustomerAddress(customerId: number) {
+      return await this.customerRepository.address(customerId).delete();
     }
   }
 
