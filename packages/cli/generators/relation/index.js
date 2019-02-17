@@ -258,13 +258,15 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     this.artifactInfo[parameter] = await this.prompt([
       {
         type: 'list',
-        name: 'modelNameList',
+        name: parameter,
         message: message,
         choices: modelList,
         when: this.artifactInfo.modelNameList === undefined,
       },
     ]);
-    this.options[parameter] = this.artifactInfo[parameter].modelNameList;
+
+    this.options[parameter] = this.artifactInfo[parameter][parameter];
+
     return this.artifactInfo[parameter];
   }
 
