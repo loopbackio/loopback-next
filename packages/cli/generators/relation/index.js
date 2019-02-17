@@ -273,14 +273,14 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     this.artifactInfo.relationType = await this.prompt([
       {
         type: 'list',
-        name: 'relationBaseClass',
+        name: 'relationType',
         message: PROMPT_BASE_RELATION_CLASS,
         choices: Object.keys(relationUtils.relationType),
         when: !this.artifactInfo.relationType,
         validate: utils.validateClassName,
       },
     ]);
-    this.options.relationType = this.artifactInfo.relationType.relationBaseClass;
+    this.options.relationType = this.artifactInfo.relationType.relationType;
     return this.artifactInfo.relationType;
   }
 
