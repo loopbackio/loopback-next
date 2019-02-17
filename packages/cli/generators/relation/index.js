@@ -106,7 +106,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
     const sourceFile = path.join(
       this.artifactInfo.modelDir,
-      utils.getModelFileName(this.artifactInfo.sourceModel.modelNameList),
+      utils.getModelFileName(this.options.sourceModel),
     );
     const sf = project.addExistingSourceFile(sourceFile);
     this.options.sourceModelPrimaryKeyType = this._getKeyType(
