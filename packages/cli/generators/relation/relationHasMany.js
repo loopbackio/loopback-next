@@ -61,7 +61,6 @@ module.exports = class RelationHasMany extends RelationGenerator {
     let foreignKey = options.defaultForeignKeyName;
     let isForeignKeyExist = options.destinationModelForeignKeyExist;
 
-    // add keyTo when needed in both hasMany and belongsTo relation
 
     if (!isForeignKeyExist) {
       foreignKey = options.destinationModelForeignKeyName
@@ -120,7 +119,6 @@ module.exports = class RelationHasMany extends RelationGenerator {
       relationDecoretor = [{ name: 'hasMany', arguments: ['() => ' + className] }]
     }
     let relationProperty = {
-      //  decorators: [{ name: 'hasMany', arguments: ['() => ' + className] }],
       decorators: relationDecoretor,
       name: relationName,
       type: className + '[]',
