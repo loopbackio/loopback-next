@@ -50,7 +50,7 @@ export class Order extends Entity {
   id: number;
 
   @belongsTo(() => Customer)
-  customerId: string;
+  customerId: number;
 
   @property({type: 'number'})
   quantity: number;
@@ -73,7 +73,7 @@ above example is as follows:
 class Order extends Entity {
   // constructor, properties, etc.
   @belongsTo(() => Customer, {keyTo: 'pk'})
-  customerId: string;
+  customerId: number;
 }
 ```
 
