@@ -14,7 +14,7 @@ const {
 const path = require('path');
 
 describe('schema to model', () => {
-  let usptoSpec, usptoSpecAnonymous, petstoreSpec, customerSepc;
+  let usptoSpec, usptoSpecAnonymous, petstoreSpec, customerSpec;
   const uspto = path.join(__dirname, '../../fixtures/openapi/3.0/uspto.yaml');
   const petstore = path.join(
     __dirname,
@@ -31,7 +31,7 @@ describe('schema to model', () => {
       promoteAnonymousSchemas: true,
     });
     petstoreSpec = await loadSpec(petstore);
-    customerSepc = await loadSpec(customer);
+    customerSpec = await loadSpec(customer);
   });
 
   it('generates models for uspto', () => {
@@ -269,7 +269,7 @@ describe('schema to model', () => {
 
   it('generates models for customer', () => {
     const objectTypeMapping = new Map();
-    const models = generateModelSpecs(customerSepc, {objectTypeMapping});
+    const models = generateModelSpecs(customerSpec, {objectTypeMapping});
     expect(models).to.eql([
       {
         description: 'Name',
@@ -339,6 +339,11 @@ describe('schema to model', () => {
             decoration: "@property({name: 'last-name'})",
           },
           {
+            decoration: "@property.array(String, {name: 'emails'})",
+            name: 'emails',
+            signature: 'emails?: string[];',
+          },
+          {
             name: 'addresses',
             signature: 'addresses?: Address[];',
             decoration: "@property.array(Address, {name: 'addresses'})",
@@ -351,8 +356,8 @@ describe('schema to model', () => {
         import: "import {Customer} from './customer.model';",
         kind: 'class',
         declaration:
-          "{\n  id: number;\n  'first-name'?: string;\n  'last-name'?: " +
-          'Name;\n  addresses?: Address[];\n}',
+          "{\n  id: number;\n  'first-name'?: string;\n  'last-name'?: Name;\n" +
+          '  emails?: string[];\n  addresses?: Address[];\n}',
         signature: 'Customer',
       },
     ]);
