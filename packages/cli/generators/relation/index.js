@@ -303,19 +303,37 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
   }
 
   // Prompt a user for Relation type
-  async promptRelationBaseClassName() {
-    this.artifactInfo.relationType = await this.prompt([
+  async promptRelationType() {
+    if (this.options.relationType) {
+      debug(
+        `Relation type received from command line: ${
+          this.options.relationType
+        }`,
+      );
+      this.artifactInfo.relationType = this.options.relationType;
+    }
+
+    const relationTypeChoices = Object.keys(relationUtils.relationType);
+    return this.prompt([
       {
         type: 'list',
         name: 'relationType',
         message: PROMPT_BASE_RELATION_CLASS,
-        choices: Object.keys(relationUtils.relationType),
-        when: !this.artifactInfo.relationType,
+        choices: relationTypeChoices,
+        when: this.artifactInfo.relationType === undefined,
         validate: utils.validateClassName,
+        default: relationTypeChoices[0],
       },
-    ]);
-    this.options.relationType = this.artifactInfo.relationType.relationType;
-    return this.artifactInfo.relationType;
+    ])      
+      .then(props => {
+        debug(`props after relation type prompt: ${inspect(props)}`);
+        Object.assign(this.artifactInfo, props);
+        return props;
+      })
+      .catch(err => {
+        debug(`Error during relation type prompt: ${err.stack}`);
+        return this.exit(err);
+      });
   }
 
   // Get model list for source model.
