@@ -28,12 +28,6 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       this.artifactInfo.rootDir,
       'repositories',
     );
-
-    this.option('controllerType', {
-      type: String,
-      required: false,
-      description: 'Type for the ' + this.artifactInfo.type,
-    });
   }
 
   scaffold() {
