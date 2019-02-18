@@ -432,8 +432,6 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
   async promptRelationName() {
     if (this.shouldExit()) return false;
 
-    const defaultRelationName = this._getDefaultRelationName();
-
     if (this.options.relationName) {
       debug(
         `Relation name received from command line: ${
@@ -443,14 +441,13 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       this.artifactInfo.relationName = this.options.relationName;
     }
 
-
     return this.prompt([
       {
         type: 'string',
         name: 'relationName',
         message: PROMPT_MESSAGE_PROPERTY_NAME,
         when: this.artifactInfo.relationName === undefined,
-        default: defaultRelationName,
+        default: this._getDefaultRelationName(),
       },
     ])
       .then(props => {
