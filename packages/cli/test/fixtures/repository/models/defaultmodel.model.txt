@@ -1,7 +1,7 @@
 import {Entity, model, property} from '@loopback/repository';
 
 @model()
-export class DefaultModel extends Entity {
+export class Defaultmodel extends Entity {
   @property({
     type: 'number',
     id: true,
@@ -20,7 +20,7 @@ export class DefaultModel extends Entity {
   })
   balance?: number;
 
-  constructor(data?: Partial<DefaultModel>) {
+  constructor(data?: Partial<Defaultmodel>) {
     super(data);
   }
 }

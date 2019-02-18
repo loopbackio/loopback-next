@@ -7,11 +7,11 @@ import {Entity, model} from '@loopback/repository';
         name: {type: 'string', required: true},
       },
     })
-    export class DecoratorDefined extends Entity {
+    export class Decoratordefined extends Entity {
       thePK: number;
       name: string;
 
-      constructor(data?: Partial<DecoratorDefined>) {
+      constructor(data?: Partial<Decoratordefined>) {
         super(data);
       }
     }
