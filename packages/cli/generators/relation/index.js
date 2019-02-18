@@ -176,6 +176,10 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
             */
     return;
   }
+    
+    setOptions() {
+        return super.setOptions();
+    }
 
   _setupGenerator() {
     this.artifactInfo = {
