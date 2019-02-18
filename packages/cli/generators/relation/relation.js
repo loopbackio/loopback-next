@@ -37,6 +37,13 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
     return;
   }
+
+    generateAll(options) {
+        this.generateControllers(options);
+        this.generateModels(options);
+
+    }
+
   generateControllers(options) {
     throw new Error('Not implemented');
   }

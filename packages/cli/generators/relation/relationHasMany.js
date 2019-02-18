@@ -63,7 +63,7 @@ module.exports = class RelationHasMany extends RelationGenerator {
 
 
     if (!isForeignKeyExist) {
-      foreignKey = options.destinationModelForeignKeyName
+      foreignKey = options.foreignKeyName
     }
     let isDefaultForeignKey = (options.defaultForeignKeyName == options.destinationModelForeignKeyName)
 

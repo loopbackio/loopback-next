@@ -427,10 +427,6 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
   }
 
   scaffold() {
-    let relPathCtrl = this.artifactInfo.relPath + relPathControllersFolder;
-    let relPathModel = this.artifactInfo.relPath + relPathModelsFolder;
-    let relPathRepo = this.artifactInfo.relPath + relPathRepositoriesFolder;
-
     if (!this.artifactInfo.relationType) {
       throw new Error("'relationType' parameters should be specified.");
     }
@@ -444,7 +440,6 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     var relation;
 
     this.artifactInfo.name = this.artifactInfo.relationType;
-    this.artifactInfo.relPath = relPathCtrl;
 
     switch (this.artifactInfo.relationType) {
       case relationUtils.relationType.belongsTo:
@@ -460,23 +455,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         throw new Error(ERROR_INCORRECT_RELATION_TYPE);
     }
 
-    relation.generateControllers(this.artifactInfo);
-
-    debug('Invoke Model generator...');
-    this.artifactInfo.relPath = relPathModel;
-    relation.generateModels(this.artifactInfo);
-    /*
-                debug('Invoke Repository generator...');
-                let repo = new RepositoryRelation(this.args, this.opts);
-                this.artifactInfo.relPath = relPathRepo;
-                repo.generateRelationRepository(
-                  this.options.sourceModel,
-                  this.options.destinationModel,
-                  this.options.foreignKey,
-                  this.options.relationType,
-                );
-            */
-    return;
+    relation.generateAll(this.artifactInfo);
   }
 
   async end() {
