@@ -286,20 +286,35 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       );
     }
 
+    if (this.options[parameter]) {
+      debug(
+        `${parameter} received from command line: ${
+          this.options[parameter]
+        }`,
+      );
+      this.artifactInfo[parameter] = this.options[parameter];
+    }
+
     // Prompt a user for model.
-    this.artifactInfo[parameter] = await this.prompt([
+    return this.prompt([
       {
         type: 'list',
         name: parameter,
         message: message,
         choices: modelList,
-        when: this.artifactInfo.modelNameList === undefined,
+        when: this.artifactInfo[parameter] === undefined,
+        default: modelList[0]
       },
-    ]);
-
-    this.options[parameter] = this.artifactInfo[parameter][parameter];
-
-    return this.artifactInfo[parameter];
+    ])      
+     .then(props => {
+        debug(`props after ${parameter} prompt: ${inspect(props)}`);
+        Object.assign(this.artifactInfo, props);
+        return props;
+      })
+      .catch(err => {
+        debug(`Error during ${parameter} prompt: ${err.stack}`);
+        return this.exit(err);
+      });
   }
 
   // Prompt a user for Relation type
