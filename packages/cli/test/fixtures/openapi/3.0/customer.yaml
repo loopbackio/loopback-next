@@ -1,4 +1,4 @@
-openapi: "3.0.0"
+openapi: '3.0.0'
 info:
   version: 1.0.0
   title: Customer
@@ -117,9 +117,11 @@ components:
           type: string
         last-name:
           $ref: '#/components/schemas/Name'
+        emails:
+          type: array
+          items:
+            type: string
         addresses:
           type: array
           items:
             $ref: '#/components/schemas/Address'
-
-

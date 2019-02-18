@@ -167,11 +167,15 @@ function mapObjectType(schema, options) {
         propDecoration = `@property({name: '${p}', required: true})`;
       }
 
-      if (propertyType.itemType && propertyType.itemType.kind === 'class') {
-        // Use `@property.array` for array types
-        propDecoration = `@property.array(${
-          propertyType.itemType.className
-        }, {name: '${p}'})`;
+      if (propertyType.itemType) {
+        const itemType =
+          propertyType.itemType.kind === 'class'
+            ? propertyType.itemType.className
+            : getJSType(propertyType.itemType.name);
+        if (itemType) {
+          // Use `@property.array` for array types
+          propDecoration = `@property.array(${itemType}, {name: '${p}'})`;
+        }
       }
       const propSpec = {
         name: p,
@@ -256,6 +260,23 @@ function mapPrimitiveType(schema, options) {
   typeSpec.signature = typeSpec.className || typeSpec.declaration + defaultVal;
   typeSpec.name = typeSpec.name || jsType;
   return typeSpec;
+}
+
+const JSTypeMapping = {
+  number: Number,
+  boolean: Boolean,
+  string: String,
+  Date: Date,
+  Buffer: Buffer,
+};
+
+/**
+ * Mapping simple type names to JS Type constructors
+ * @param {string} type Simple type name
+ */
+function getJSType(type) {
+  const ctor = JSTypeMapping[type];
+  return (ctor && ctor.name) || type;
 }
 
 /**
