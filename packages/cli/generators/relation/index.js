@@ -23,8 +23,9 @@ const RelationHasOne = require('./relationHasOne');
 const RepositoryRelation = require('./repositoryRelation');
 
 const ERROR_INCORRECT_RELATION_TYPE = 'Incorrect Relation Type';
-const ERROR_NO_SOURCE_MODEL_SELECTED = 'No source model selected';
 const ERROR_NO_DESTINATION_MODEL_SELECTED = 'No destination model selected';
+const ERROR_NO_MODELS_FOUND = 'Model was not found in';
+const ERROR_NO_SOURCE_MODEL_SELECTED = 'No source model selected';
 
 const PROMPT_BASE_RELATION_CLASS = 'Please select the relation type';
 const PROMPT_MESSAGE_SOURCE_MODEL = 'Please select source model';
