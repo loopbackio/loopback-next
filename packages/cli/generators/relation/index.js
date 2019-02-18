@@ -42,6 +42,36 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     super(args, opts);
     this.args = args;
     this.opts = opts;
+
+    this.option('relationType', {
+      type: String,
+      required: false,
+      description: 'Relation type',
+    });
+
+    this.option('sourceModel', {
+      type: String,
+      required: false,
+      description: 'Source model',
+    });
+
+    this.option('destinationModel', {
+      type: String,
+      required: false,
+      description: 'Destination model',
+    });
+
+    this.option('foreignKeyName', {
+      type: String,
+      required: false,
+      description: 'Destination model foreign key name',
+    });
+
+    this.option('relationName', {
+      type: String,
+      required: false,
+      description: 'Relation name',
+    });
   }
 
   /**
