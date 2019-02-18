@@ -151,59 +151,6 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       utils.camelCase(this.options.sourceModel) +
       utils.toClassName(this.options.sourceModelPrimaryKey);
   }
-
-  async scaffold() {
-    let relPathCtrl = this.artifactInfo.relPath + relPathControllersFolder;
-    let relPathModel = this.artifactInfo.relPath + relPathModelsFolder;
-    let relPathRepo = this.artifactInfo.relPath + relPathRepositoriesFolder;
-
-    if (!this.options.relationType) {
-      throw new Error("'relationType' parameters should be specified.");
-    }
-    if (this.options.sourceModel === this.options.destinationModel) {
-      throw new Error(
-        "'sourceModel' and 'destinationModel' parameter values should be different.",
-      );
-    }
-    debug('Invoke Controller generator...');
-
-    var relation;
-
-    this.artifactInfo.name = this.options.relationType;
-    this.artifactInfo.relPath = relPathCtrl;
-
-    switch (this.options.relationType) {
-      case relationUtils.relationType.belongsTo:
-        relation = new RelationBelongsTo(this.args, this.opts);
-        break;
-      case relationUtils.relationType.hasMany:
-        relation = new RelationHasMany(this.args, this.opts);
-        break;
-      case relationUtils.relationType.hasOne:
-        relation = new RelationHasOne(this.args, this.opts);
-        break;
-      default:
-        throw new Error(ERROR_INCORRECT_RELATION_TYPE);
-    }
-
-    relation.generateControllers(this.options);
-
-    debug('Invoke Model generator...');
-    this.artifactInfo.relPath = relPathModel;
-    relation.generateModels(this.options);
-    /*
-                debug('Invoke Repository generator...');
-                let repo = new RepositoryRelation(this.args, this.opts);
-                this.artifactInfo.relPath = relPathRepo;
-                repo.generateRelationRepository(
-                  this.options.sourceModel,
-                  this.options.destinationModel,
-                  this.options.foreignKey,
-                  this.options.relationType,
-                );
-            */
-    return;
-  }
     
     setOptions() {
         return super.setOptions();
@@ -459,5 +406,58 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         debug(`Error during relation name prompt: ${err.stack}`);
         return this.exit(err);
       });
+  }
+
+  async scaffold() {
+    let relPathCtrl = this.artifactInfo.relPath + relPathControllersFolder;
+    let relPathModel = this.artifactInfo.relPath + relPathModelsFolder;
+    let relPathRepo = this.artifactInfo.relPath + relPathRepositoriesFolder;
+
+    if (!this.options.relationType) {
+      throw new Error("'relationType' parameters should be specified.");
+    }
+    if (this.options.sourceModel === this.options.destinationModel) {
+      throw new Error(
+        "'sourceModel' and 'destinationModel' parameter values should be different.",
+      );
+    }
+    debug('Invoke Controller generator...');
+
+    var relation;
+
+    this.artifactInfo.name = this.options.relationType;
+    this.artifactInfo.relPath = relPathCtrl;
+
+    switch (this.options.relationType) {
+      case relationUtils.relationType.belongsTo:
+        relation = new RelationBelongsTo(this.args, this.opts);
+        break;
+      case relationUtils.relationType.hasMany:
+        relation = new RelationHasMany(this.args, this.opts);
+        break;
+      case relationUtils.relationType.hasOne:
+        relation = new RelationHasOne(this.args, this.opts);
+        break;
+      default:
+        throw new Error(ERROR_INCORRECT_RELATION_TYPE);
+    }
+
+    relation.generateControllers(this.options);
+
+    debug('Invoke Model generator...');
+    this.artifactInfo.relPath = relPathModel;
+    relation.generateModels(this.options);
+    /*
+                debug('Invoke Repository generator...');
+                let repo = new RepositoryRelation(this.args, this.opts);
+                this.artifactInfo.relPath = relPathRepo;
+                repo.generateRelationRepository(
+                  this.options.sourceModel,
+                  this.options.destinationModel,
+                  this.options.foreignKey,
+                  this.options.relationType,
+                );
+            */
+    return;
   }
 };
