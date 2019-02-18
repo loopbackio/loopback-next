@@ -198,6 +198,25 @@ describe('build-schema', () => {
         expectValidJsonSchema(jsonSchema);
       });
 
+      it('properly converts optional primitive array properties', () => {
+        @model()
+        class TestModel {
+          @property.array('number')
+          numArr?: number[];
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema.properties).to.deepEqual({
+          numArr: {
+            type: 'array',
+            items: {
+              type: 'number',
+            },
+          },
+        });
+        expectValidJsonSchema(jsonSchema);
+      });
+
       it('properly converts properties with recursive arrays', () => {
         @model()
         class RecursiveArray {
