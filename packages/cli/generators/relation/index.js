@@ -26,7 +26,8 @@ const ERROR_INCORRECT_RELATION_TYPE = 'Incorrect Relation Type';
 const ERROR_NO_DESTINATION_MODEL_SELECTED = 'No destination model selected';
 const ERROR_NO_MODELS_FOUND = 'Model was not found in';
 const ERROR_NO_SOURCE_MODEL_SELECTED = 'No source model selected';
-const ERROR_SOURCE_MODEL_PRIMARY_KEY_DOES_NOT_EXIST = 'Source model primary key does not exist.';
+const ERROR_SOURCE_MODEL_PRIMARY_KEY_DOES_NOT_EXIST =
+  'Source model primary key does not exist.';
 
 const PROMPT_BASE_RELATION_CLASS = 'Please select the relation type';
 const PROMPT_MESSAGE_SOURCE_MODEL = 'Please select source model';
@@ -152,10 +153,10 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       utils.camelCase(this.artifactInfo.sourceModel) +
       utils.toClassName(this.artifactInfo.sourceModelPrimaryKey);
   }
-    
-    setOptions() {
-        return super.setOptions();
-    }
+
+  setOptions() {
+    return super.setOptions();
+  }
 
   _setupGenerator() {
     this.artifactInfo = {
@@ -228,17 +229,15 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         new Error(
           `${ERROR_NO_MODELS_FOUND} ${this.artifactInfo.modelDir}.
         ${chalk.yellow(
-            'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
-          )}`,
+          'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
+        )}`,
         ),
       );
     }
 
     if (this.options[parameter]) {
       debug(
-        `${parameter} received from command line: ${
-          this.options[parameter]
-        }`,
+        `${parameter} received from command line: ${this.options[parameter]}`,
       );
       this.artifactInfo[parameter] = this.options[parameter];
     }
@@ -251,10 +250,10 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         message: message,
         choices: modelList,
         when: this.artifactInfo[parameter] === undefined,
-        default: modelList[0]
+        default: modelList[0],
       },
-    ])      
-     .then(props => {
+    ])
+      .then(props => {
         debug(`props after ${parameter} prompt: ${inspect(props)}`);
         Object.assign(this.artifactInfo, props);
         return props;
@@ -289,7 +288,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         validate: utils.validateClassName,
         default: relationTypeChoices[0],
       },
-    ])      
+    ])
       .then(props => {
         debug(`props after relation type prompt: ${inspect(props)}`);
         Object.assign(this.artifactInfo, props);
@@ -332,7 +331,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
    */
   async promptForeignKey() {
     if (this.shouldExit()) return false;
-    
+
     if (_.isEmpty(this.artifactInfo.sourceModel)) {
       return this.exit(new Error(`${ERROR_NO_SOURCE_MODEL_SELECTED}`));
     }
@@ -345,7 +344,9 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     this._calcSourceModelPrimaryKeyType();
     this._calcDefaultForeignKey();
 
-    if (this.artifactInfo.relationType === relationUtils.relationType.belongsTo) {
+    if (
+      this.artifactInfo.relationType === relationUtils.relationType.belongsTo
+    ) {
       return;
     }
     let project = new ast.Project();
@@ -362,14 +363,14 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       .includes(this.artifactInfo.defaultForeignKeyName);
 
     if (!this.artifactInfo.destinationModelForeignKeyExist) {
-        if (this.options.foreignKeyName) {
-          debug(
-            `Foreign key name received from command line: ${
-              this.options.foreignKeyName
-            }`,
-          );
-          this.artifactInfo.foreignKeyName = this.options.foreignKeyName;
-        }
+      if (this.options.foreignKeyName) {
+        debug(
+          `Foreign key name received from command line: ${
+            this.options.foreignKeyName
+          }`,
+        );
+        this.artifactInfo.foreignKeyName = this.options.foreignKeyName;
+      }
 
       return this.prompt([
         {
@@ -380,15 +381,15 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           when: this.artifactInfo.foreignKeyName === undefined,
         },
       ])
-      .then(props => {
-        debug(`props after foreign key name prompt: ${inspect(props)}`);
-        Object.assign(this.artifactInfo, props);
-        return props;
-      })
-      .catch(err => {
-        debug(`Error during foreign key name prompt: ${err.stack}`);
-        return this.exit(err);
-      });
+        .then(props => {
+          debug(`props after foreign key name prompt: ${inspect(props)}`);
+          Object.assign(this.artifactInfo, props);
+          return props;
+        })
+        .catch(err => {
+          debug(`Error during foreign key name prompt: ${err.stack}`);
+          return this.exit(err);
+        });
     } else {
       this.artifactInfo.foreignKeyName = this.artifactInfo.defaultForeignKeyName;
     }
@@ -461,5 +462,4 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
   async end() {
     await super.end();
   }
-
 };

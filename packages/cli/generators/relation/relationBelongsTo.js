@@ -110,7 +110,7 @@ module.exports = class RelationBelongsTo extends RelationGenerator {
   getBelongsTo(className, relationName, fktype) {
     let relationProperty;
     relationProperty = {
-      decorators: [{ name: 'belongsTo', arguments: ['() => ' + className] }],
+      decorators: [{name: 'belongsTo', arguments: ['() => ' + className]}],
       name: relationName,
       type: fktype,
     };
