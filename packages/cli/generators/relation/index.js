@@ -37,9 +37,6 @@ const relPathControllersFolder = '/controllers';
 const relPathModelsFolder = '/models';
 const relPathRepositoriesFolder = '/repositories';
 
-let args;
-let opts;
-
 module.exports = class RelationGenerator extends ArtifactGenerator {
   constructor(args, opts) {
     super(args, opts);
