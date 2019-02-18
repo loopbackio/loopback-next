@@ -152,7 +152,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       utils.toClassName(this.options.sourceModelPrimaryKey);
   }
 
-  async _scaffold() {
+  async scaffold() {
     let relPathCtrl = this.artifactInfo.relPath + relPathControllersFolder;
     let relPathModel = this.artifactInfo.relPath + relPathModelsFolder;
     let relPathRepo = this.artifactInfo.relPath + relPathRepositoriesFolder;
@@ -319,6 +319,8 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
   // Prompt a user for Relation type
   async promptRelationType() {
+    if (this.shouldExit()) return false;
+
     if (this.options.relationType) {
       debug(
         `Relation type received from command line: ${
@@ -432,18 +434,33 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
     const defaultRelationName = this._getDefaultRelationName();
 
-    this.artifactInfo.relationName = await this.prompt([
+    if (this.options.relationName) {
+      debug(
+        `Relation name received from command line: ${
+          this.options.relationName
+        }`,
+      );
+      this.artifactInfo.relationName = this.options.relationName;
+    }
+
+
+    return this.prompt([
       {
         type: 'string',
-        name: 'value',
+        name: 'relationName',
         message: PROMPT_MESSAGE_PROPERTY_NAME,
+        when: this.artifactInfo.relationName === undefined,
         default: defaultRelationName,
-        when: !this.artifactInfo.relationName,
       },
-    ]);
-    this.options.relationName = this.artifactInfo.relationName.value;
-
-    //Generate this repository
-    await this._scaffold();
+    ])
+      .then(props => {
+        debug(`props after relation name prompt: ${inspect(props)}`);
+        Object.assign(this.artifactInfo, props);
+        return props;
+      })
+      .catch(err => {
+        debug(`Error during relation name prompt: ${err.stack}`);
+        return this.exit(err);
+      });
   }
 };
