@@ -61,7 +61,6 @@ describe('lb4 relation', function() {
         /import \{Entity, model, property, hasMany \} from '@loopback\/repository';/,
       );
 
-
       assert.fileContent(
         expectedFile,
         /import \{ Order \} from "\.\/order\.model";/,
