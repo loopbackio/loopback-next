@@ -13,7 +13,7 @@
     "test": "lb-mocha \"dist/__tests__/unit/**/*.js\" \"dist/__tests__/integration/**/*.js\" \"dist/__tests__/acceptance/**/*.js\"",
     "verify": "npm pack && tar xf loopback-json-schema*.tgz && tree package && npm run clean"
   },
-  "author": "IBM",
+  "author": "IBM Corp.",
   "license": "MIT",
   "keywords": [
     "LoopBack",

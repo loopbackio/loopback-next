@@ -23,7 +23,7 @@
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "unit": "npm run build && lb-mocha \"dist/__tests__/unit/**/*.js\""
   },
-  "author": "IBM",
+  "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "keywords": [

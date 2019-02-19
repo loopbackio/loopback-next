@@ -4,8 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from '@loopback/context';
-import {HandlerContext, Request, Response} from './types';
+import * as onFinished from 'on-finished';
 import {RestBindings} from './keys';
+import {HandlerContext, Request, Response} from './types';
 
 /**
  * A per-request Context combining an IoC container with handler context
@@ -20,6 +21,9 @@ export class RequestContext extends Context implements HandlerContext {
   ) {
     super(parent, name);
     this._setupBindings(request, response);
+    onFinished(this.response, () => {
+      this.close();
+    });
   }
 
   private _setupBindings(request: Request, response: Response) {

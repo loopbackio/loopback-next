@@ -214,6 +214,44 @@ function runTestsWithRouter(router: RestRouter) {
     expect(route.pathParams).to.containEql({userId: '1', format: 'json'});
   });
 
+  it('finds "GET /orders, /orders/{id}, /orders/{orderId}/shipments" endpoints', () => {
+    class TestController {
+      @get('/orders/{id}')
+      async getOrderById(@param.path.number('id') id: number): Promise<object> {
+        return {id};
+      }
+      @get('/orders')
+      async findOrders(): Promise<object[]> {
+        return [];
+      }
+      // A path that overlaps with `/orders/{id}`. Please note a different var
+      // name is used - `{orderId}`
+      @get('/orders/{orderId}/shipments')
+      async getShipmentsForOrder(
+        @param.path.number('orderId') id: number,
+      ): Promise<object> {
+        return [];
+      }
+    }
+
+    const table = givenRoutingTable();
+    const spec = getControllerSpec(TestController);
+    table.registerController(spec, TestController);
+
+    const findAndCheckRoute = (url: string, expectedPath: string) => {
+      let request = givenRequest({
+        method: 'get',
+        url,
+      });
+      const route = table.find(request);
+      expect(route.path).to.eql(expectedPath);
+    };
+
+    findAndCheckRoute('/orders/1', '/orders/{id}');
+    findAndCheckRoute('/orders/1/shipments', '/orders/{orderId}/shipments');
+    findAndCheckRoute('/orders', '/orders');
+  });
+
   it('throws if router is not found', () => {
     const table = givenRoutingTable();
 

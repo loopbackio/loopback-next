@@ -15,12 +15,13 @@
     "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-context*.tgz && tree package && npm run clean"
   },
-  "author": "IBM",
+  "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
     "@loopback/metadata": "^1.0.6",
     "debug": "^4.0.1",
+    "p-event": "^2.3.1",
     "uuid": "^3.2.1"
   },
   "devDependencies": {

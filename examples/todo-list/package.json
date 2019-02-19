@@ -6,6 +6,7 @@
   "engines": {
     "node": ">=8.9"
   },
+  "author": "IBM Corp.",
   "scripts": {
     "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",

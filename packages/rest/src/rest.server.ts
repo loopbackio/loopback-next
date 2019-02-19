@@ -249,7 +249,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     const mapping = this.config.openApiSpec!.endpointMapping!;
     // Serving OpenAPI spec
     for (const p in mapping) {
-      this._expressApp.use(p, (req, res) =>
+      this._expressApp.get(p, (req, res) =>
         this._serveOpenApiSpec(req, res, mapping[p]),
       );
     }
@@ -376,11 +376,12 @@ export class RestServer extends Context implements Server, HttpServerLike {
       specObj.servers = [{url: this._getUrlForClient(request)}];
     }
 
-    if (specObj.servers && this._basePath) {
+    const basePath = this.getBasePathFor(request);
+    if (specObj.servers && basePath) {
       for (const s of specObj.servers) {
         // Update the default server url to honor `basePath`
         if (s.url === '/') {
-          s.url = this._basePath;
+          s.url = basePath;
         }
       }
     }
@@ -453,7 +454,21 @@ export class RestServer extends Context implements Server, HttpServerLike {
     // add port number of present
     host += port !== '' ? ':' + port : '';
 
-    return protocol + '://' + host + this._basePath;
+    return protocol + '://' + host + this.getBasePathFor(request);
+  }
+
+  /**
+   * Get the base for the request. It honors `baseUrl` sets by express if the
+   * application is mounted to an express app, such as:
+   * expressApp.use('/api', app.requestHandler);
+   * @param request Http request
+   */
+  private getBasePathFor(request: Request) {
+    let basePath = this._basePath;
+    if (request.baseUrl && request.baseUrl !== '/') {
+      basePath = request.baseUrl + basePath;
+    }
+    return basePath;
   }
 
   private async _redirectToSwaggerUI(

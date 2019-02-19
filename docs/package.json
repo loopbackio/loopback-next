@@ -3,9 +3,7 @@
   "version": "1.7.3",
   "description": "Documentation for LoopBack 4",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/docs",
-  "author": {
-    "name": "IBM"
-  },
+  "author": "IBM Corp.",
   "engines": {
     "node": ">=8.9"
   },

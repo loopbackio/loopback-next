@@ -11,7 +11,7 @@
     "clean": "lb-clean loopback-openapi-spec-builder*.tgz dist package api-docs",
     "verify": "npm pack && tar xf loopback-openapi-spec-builder*.tgz && tree package && npm run clean"
   },
-  "author": "IBM",
+  "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "keywords": [

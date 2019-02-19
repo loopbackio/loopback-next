@@ -300,7 +300,7 @@ application.
 ## Access KeyValue Stores
 
 We can now access key-value stores such as [Redis](https://redis.io/) using the
-[KeyValueRepository]((https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/kv.repository.ts).
+[KeyValueRepository](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/repositories/kv.repository.ts).
 
 ### Define a KeyValue Datasource
 

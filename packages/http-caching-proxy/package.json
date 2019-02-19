@@ -13,13 +13,13 @@
     "test": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
     "verify": "npm pack && tar xf loopback-caching-proxy*.tgz && tree package && npm run clean"
   },
-  "author": "IBM",
+  "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
     "cacache": "^11.0.2",
     "debug": "^4.0.1",
-    "p-event": "^2.1.0",
+    "p-event": "^2.3.1",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.5",
     "rimraf": "^2.6.2"
