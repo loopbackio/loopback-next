@@ -23,8 +23,9 @@ const RelationHasOne = require('./relationHasOne');
 const RepositoryRelation = require('./repositoryRelation');
 
 const ERROR_INCORRECT_RELATION_TYPE = 'Incorrect Relation Type';
+const ERROR_MODEL_DOES_NOT_EXIST = 'model does not exist.';
 const ERROR_NO_DESTINATION_MODEL_SELECTED = 'No destination model selected';
-const ERROR_NO_MODELS_FOUND = 'Model was not found in';
+const ERROR_NO_MODELS_FOUND = 'No models found in';
 const ERROR_NO_SOURCE_MODEL_SELECTED = 'No source model selected';
 const ERROR_RELATION_TYPE_PARAMETER_SHOULD_BE_SPECIFIED = 
   "'relationType' parameter should be specified.";
@@ -201,37 +202,20 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       return this.exit(err);
     }
 
-    if (this.options[parameter]) {
-      debug(
-        `Model name received from command line: ${this.options[parameter]}`,
-      );
-
-      this.options.model = utils.toClassName(this.options[parameter]);
-      // assign the model name from the command line only if it is valid
-      if (
-        modelList &&
-        modelList.length > 0 &&
-        modelList.includes(this.options.model)
-      ) {
-        Object.assign(this.artifactInfo, {
-          modelNameList: [this.options[parameter]],
-        });
-      } else {
-        modelList = [];
-      }
-    }
     if (modelList.length === 0) {
-      return this.exit(
-        new Error(
+        throw new Error(
           `${ERROR_NO_MODELS_FOUND} ${this.artifactInfo.modelDir}.
         ${chalk.yellow(
           'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
         )}`,
-        ),
       );
     }
 
     if (this.options[parameter]) {
+      if (!modelList.includes(this.options[parameter])) {
+        throw new Error(`"${this.options[parameter]}" ${ERROR_MODEL_DOES_NOT_EXIST}`);
+      }
+
       debug(
         `${parameter} received from command line: ${this.options[parameter]}`,
       );
