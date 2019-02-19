@@ -431,11 +431,6 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     if (!this.artifactInfo.relationType) {
       throw new Error("'relationType' parameters should be specified.");
     }
-    if (this.artifactInfo.sourceModel === this.artifactInfo.destinationModel) {
-      throw new Error(
-        "'sourceModel' and 'destinationModel' parameter values should be different.",
-      );
-    }
     debug('Invoke generator...');
 
     var relation;
