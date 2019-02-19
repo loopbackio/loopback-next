@@ -214,7 +214,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
   protected _setupRequestHandlerIfNeeded() {
     if (this._expressApp) return;
     this._expressApp = express();
-    this._expressApp.set('query parser', 'extended');
+    this._applyExpressSettings();
     this._requestHandler = this._expressApp;
 
     // Allow CORS support for all endpoints so that users
@@ -243,6 +243,16 @@ export class RestServer extends Context implements Server, HttpServerLike {
         this._onUnhandledError(req, res, err);
       },
     );
+  }
+
+  /**
+   * Apply express settings.
+   */
+  protected _applyExpressSettings() {
+    const settings = this.config.expressSettings || {};
+    for (const key in settings) {
+      this._expressApp.set(key, settings[key]);
+    }
   }
 
   /**
@@ -954,6 +964,8 @@ export interface RestServerOptions {
   apiExplorer?: ApiExplorerOptions;
   requestBodyParser?: RequestBodyParserOptions;
   sequence?: Constructor<SequenceHandler>;
+  // tslint:disable-next-line:no-any
+  expressSettings?: {[name: string]: any};
 }
 
 /**
