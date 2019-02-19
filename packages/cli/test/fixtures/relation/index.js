@@ -77,21 +77,15 @@ exports.SANDBOX_FILES = [
   {
     path: MODEL_APP_PATH,
     file: 'customer.model.ts',
-    content: fs.readFileSync(
-      require.resolve('./models/customer.model.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
+    content: fs.readFileSync(require.resolve('./models/customer.model.ts'), {
+      encoding: 'utf-8',
+    }),
   },
   {
     path: MODEL_APP_PATH,
     file: 'order.model.ts',
-    content: fs.readFileSync(
-      require.resolve('./models/order.model.ts'),
-      {
-        encoding: 'utf-8',
-      },
-    ),
+    content: fs.readFileSync(require.resolve('./models/order.model.ts'), {
+      encoding: 'utf-8',
+    }),
   },
 ];

@@ -27,7 +27,7 @@ const ERROR_MODEL_DOES_NOT_EXIST = 'model does not exist.';
 const ERROR_NO_DESTINATION_MODEL_SELECTED = 'No destination model selected';
 const ERROR_NO_MODELS_FOUND = 'No models found in';
 const ERROR_NO_SOURCE_MODEL_SELECTED = 'No source model selected';
-const ERROR_RELATION_TYPE_PARAMETER_SHOULD_BE_SPECIFIED = 
+const ERROR_RELATION_TYPE_PARAMETER_SHOULD_BE_SPECIFIED =
   "'relationType' parameter should be specified.";
 const ERROR_SOURCE_MODEL_PRIMARY_KEY_DOES_NOT_EXIST =
   'Source model primary key does not exist.';
@@ -181,7 +181,9 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         );
         break;
       case relationUtils.relationType.hasOne:
-        defaultRelationName = utils.camelCase(this.artifactInfo.destinationModel);
+        defaultRelationName = utils.camelCase(
+          this.artifactInfo.destinationModel,
+        );
         break;
       default:
         throw new Error(ERROR_INCORRECT_RELATION_TYPE);
@@ -203,8 +205,8 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     }
 
     if (modelList.length === 0) {
-        throw new Error(
-          `${ERROR_NO_MODELS_FOUND} ${this.artifactInfo.modelDir}.
+      throw new Error(
+        `${ERROR_NO_MODELS_FOUND} ${this.artifactInfo.modelDir}.
         ${chalk.yellow(
           'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
         )}`,
@@ -213,7 +215,9 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
     if (this.options[parameter]) {
       if (!modelList.includes(this.options[parameter])) {
-        throw new Error(`"${this.options[parameter]}" ${ERROR_MODEL_DOES_NOT_EXIST}`);
+        throw new Error(
+          `"${this.options[parameter]}" ${ERROR_MODEL_DOES_NOT_EXIST}`,
+        );
       }
 
       debug(
