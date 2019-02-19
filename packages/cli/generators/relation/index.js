@@ -26,6 +26,8 @@ const ERROR_INCORRECT_RELATION_TYPE = 'Incorrect Relation Type';
 const ERROR_NO_DESTINATION_MODEL_SELECTED = 'No destination model selected';
 const ERROR_NO_MODELS_FOUND = 'Model was not found in';
 const ERROR_NO_SOURCE_MODEL_SELECTED = 'No source model selected';
+const ERROR_RELATION_TYPE_PARAMETER_SHOULD_BE_SPECIFIED = 
+  "'relationType' parameter should be specified.";
 const ERROR_SOURCE_MODEL_PRIMARY_KEY_DOES_NOT_EXIST =
   'Source model primary key does not exist.';
 
@@ -429,7 +431,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
   scaffold() {
     if (!this.artifactInfo.relationType) {
-      throw new Error("'relationType' parameters should be specified.");
+      throw new Error(ERROR_RELATION_TYPE_PARAMETER_SHOULD_BE_SPECIFIED);
     }
     debug('Invoke generator...');
 
