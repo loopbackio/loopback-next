@@ -30,14 +30,6 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     );
   }
 
-  scaffold() {
-    // We don't want to call the base scaffold function since it copies
-    // all of the templates!
-    // we can set here additional specific this.artifactInfo.xxx parameters if needed
-
-    return;
-  }
-
   generateAll(options) {
     this.generateControllers(options);
     this.generateModels(options);
