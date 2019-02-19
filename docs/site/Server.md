@@ -213,6 +213,25 @@ export async function main() {
 For a complete list of CORS options, see
 https://github.com/expressjs/cors#configuration-options.
 
+### Express settings
+
+Override the default express settings and/or assign your own settings:
+
+```ts
+const app = new RestApplication({
+  rest: {
+    expressSettings: {
+      'x-powered-by': false,
+      env: 'production',
+      ...
+    },
+  },
+});
+```
+
+Checkout `express` [documentation](http://expressjs.com/fr/api.html#app.set) for
+more details about the build-in settings.
+
 ### Configure the Base Path
 
 Sometime it's desirable to expose REST endpoints using a base path, such as
