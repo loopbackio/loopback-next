@@ -172,19 +172,19 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
   _getDefaultRelationName() {
     var defaultRelationName;
-    switch (this.options.relationType) {
+    switch (this.artifactInfo.relationType) {
       case relationUtils.relationType.belongsTo:
         defaultRelationName =
-          utils.camelCase(this.options.destinationModel) +
-          utils.toClassName(this.options.sourceModelPrimaryKey);
+          utils.camelCase(this.artifactInfo.destinationModel) +
+          utils.toClassName(this.artifactInfo.sourceModelPrimaryKey);
         break;
       case relationUtils.relationType.hasMany:
         defaultRelationName = utils.pluralize(
-          utils.camelCase(this.options.destinationModel),
+          utils.camelCase(this.artifactInfo.destinationModel),
         );
         break;
       case relationUtils.relationType.hasOne:
-        defaultRelationName = utils.camelCase(this.options.destinationModel);
+        defaultRelationName = utils.camelCase(this.artifactInfo.destinationModel);
         break;
       default:
         throw new Error(ERROR_INCORRECT_RELATION_TYPE);
