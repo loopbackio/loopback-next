@@ -83,17 +83,11 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
    * @param {string} modelName
    */
   async _getModelPrimaryKeyProperty(modelName) {
-    let fileContent = '';
-    let modelFile = path.join(
+    const modelFile = path.join(
       this.artifactInfo.modelDir,
       utils.getModelFileName(modelName),
     );
-    try {
-      fileContent = this.fs.read(modelFile, {});
-    } catch (err) {
-      //debug(`${ERROR_READING_FILE} ${modelFile}: ${err.message}`);
-      return this.exit(err);
-    }
+    const fileContent = this.fs.read(modelFile, {});
 
     return tsquery.getIdFromModel(fileContent);
   }
