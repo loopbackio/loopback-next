@@ -30,9 +30,9 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     );
   }
 
-  generateAll(options) {
+  async generateAll(options) {
     this.generateControllers(options);
-    this.generateModels(options);
+    await this.generateModels(options);
   }
 
   generateControllers(options) {

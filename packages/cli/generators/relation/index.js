@@ -409,7 +409,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       });
   }
 
-  scaffold() {
+  async scaffold() {
     if (!this.artifactInfo.relationType) {
       throw new Error(ERROR_RELATION_TYPE_PARAMETER_SHOULD_BE_SPECIFIED);
     }
@@ -433,7 +433,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         throw new Error(ERROR_INCORRECT_RELATION_TYPE);
     }
 
-    relation.generateAll(this.artifactInfo);
+    await relation.generateAll(this.artifactInfo);
   }
 
   async end() {

@@ -56,7 +56,7 @@ module.exports = class RelationBelongsTo extends RelationGenerator {
     return;
   }
 
-  generateModels(options) {
+  async generateModels(options) {
     let path = this.artifactInfo.modelDir;
     let sourceModel = options.sourceModel;
     let targetModel = options.destinationModel;
@@ -100,7 +100,7 @@ module.exports = class RelationBelongsTo extends RelationGenerator {
       targetModel,
     );
     sourceClass.formatText();
-    sourceFile.save();
+    await sourceFile.save();
   }
 
   generateRepositories(options) {
