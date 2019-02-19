@@ -436,7 +436,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
         "'sourceModel' and 'destinationModel' parameter values should be different.",
       );
     }
-    debug('Invoke Controller generator...');
+    debug('Invoke generator...');
 
     var relation;
 
