@@ -20,8 +20,6 @@ const RelationBelongsTo = require('./relationBelongsTo');
 const RelationHasMany = require('./relationHasMany');
 const RelationHasOne = require('./relationHasOne');
 
-const RepositoryRelation = require('./repositoryRelation');
-
 const ERROR_INCORRECT_RELATION_TYPE = 'Incorrect Relation Type';
 const ERROR_MODEL_DOES_NOT_EXIST = 'model does not exist.';
 const ERROR_NO_DESTINATION_MODEL_SELECTED = 'No destination model selected';
