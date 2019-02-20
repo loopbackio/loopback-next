@@ -47,7 +47,7 @@ Datasource db was created in src/datasources/
 ```
 
 Create a `data` folder in the applications root and add a new file called
-`db.json` contain and example database.
+`db.json` containing an example database.
 
 {% include code-caption.html content="data/db.json" %}
 
