@@ -57,7 +57,7 @@
     "@loopback/tslint-config": "^2.0.0",
     "@types/mocha": "^5.0.0",
     "@types/node": "^10.11.2",
-    "mocha": "^5.1.1",
+    "mocha": "^6.0.0",
     "source-map-support": "^0.5.5",
     "tslint": "^5.12.0",
     "typescript": "^3.3.1"
