@@ -80,6 +80,14 @@ describe('app-generator specific files', () => {
       'src/__tests__/acceptance/test-helper.ts',
       /export async function setupApplication/,
     );
+    assert.fileContent(
+      'src/__tests__/acceptance/test-helper.ts',
+      "process.env.HOST || '127.0.0.1'",
+    );
+    assert.fileContent(
+      'src/__tests__/acceptance/test-helper.ts',
+      '+(process.env.PORT || 0)',
+    );
   });
 
   it('generates database migration script', () => {
