@@ -22,12 +22,11 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       },
       {
         name: 'prettier',
-        description:
-          'add new npm scripts to facilitate consistent code formatting',
+        description: 'install prettier to format code conforming to rules',
       },
       {
         name: 'mocha',
-        description: 'install mocha to assist with running tests',
+        description: 'install mocha to run tests',
       },
       {
         name: 'loopbackBuild',
@@ -167,7 +166,6 @@ module.exports = class ProjectGenerator extends BaseGenerator {
 
     return this.prompt(prompts).then(props => {
       Object.assign(this.projectInfo, props);
-      this.destinationRoot(this.projectInfo.outdir);
     });
   }
 
@@ -175,13 +173,15 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     if (this.shouldExit()) return false;
     const choices = [];
     this.buildOptions.forEach(f => {
-      if (!this.options[f.name]) {
+      if (this.options[f.name] == null) {
         choices.push({
           name: `Enable ${f.name}: ${chalk.gray(f.description)}`,
           key: f.name,
           short: `Enable ${f.name}`,
           checked: true,
         });
+      } else {
+        this.projectInfo[f.name] = this.options[f.name];
       }
     });
     const prompts = [
@@ -210,6 +210,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
   scaffold() {
     if (this.shouldExit()) return false;
 
+    this.destinationRoot(this.projectInfo.outdir);
     // First copy common files from ../../project/templates
     this.copyTemplatedFiles(
       this.templatePath('../../project/templates/**/*'),
