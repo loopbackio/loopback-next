@@ -47,6 +47,10 @@
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js",
 <% } -%>
 <% if (project.projectType === 'application') { -%>
+  <% if (project.docker) { -%>
+    "docker:build": "docker build -t <%= project.name -%> .",
+    "docker:run": "docker run -p 3000:3000 -d <%= project.name -%>",
+  <% } -%>
     "migrate": "node ./dist/migrate",
     "prestart": "npm run build",
     "start": "node .",
