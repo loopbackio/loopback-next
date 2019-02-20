@@ -52,6 +52,7 @@ import {
   Request,
   Response,
   Send,
+  RequestBodyParserOptions,
 } from './types';
 
 const debug = debugFactory('loopback:rest:server');
@@ -189,6 +190,12 @@ export class RestServer extends Context implements Server, HttpServerLike {
     this.bind(RestBindings.HOST).to(config.host);
     this.bind(RestBindings.PROTOCOL).to(config.protocol || 'http');
     this.bind(RestBindings.HTTPS_OPTIONS).to(config as ServerOptions);
+
+    if (config.requestBodyParser) {
+      this.bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS).to(
+        config.requestBodyParser,
+      );
+    }
 
     if (config.sequence) {
       this.sequence(config.sequence);
@@ -936,6 +943,7 @@ export interface RestServerOptions {
   cors?: cors.CorsOptions;
   openApiSpec?: OpenApiSpecOptions;
   apiExplorer?: ApiExplorerOptions;
+  requestBodyParser?: RequestBodyParserOptions;
   sequence?: Constructor<SequenceHandler>;
 }
 

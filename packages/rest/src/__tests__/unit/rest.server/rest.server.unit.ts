@@ -8,6 +8,7 @@ import {anOperationSpec} from '@loopback/openapi-spec-builder';
 import {Binding, Context} from '@loopback/context';
 import {Application} from '@loopback/core';
 import {RestServer, Route, RestBindings, RestComponent} from '../../..';
+import {RequestBodyParserOptions} from '../../../types';
 
 describe('RestServer', () => {
   describe('"bindElement" binding', () => {
@@ -121,6 +122,18 @@ describe('RestServer', () => {
         }
       }).to.throw(
         /Base path cannot be set as the request handler has been created/,
+      );
+    });
+
+    it('honors requestBodyParser options in config', async () => {
+      const parserOptions: RequestBodyParserOptions = {json: {limit: '1mb'}};
+      const app = new Application({
+        rest: {requestBodyParser: parserOptions},
+      });
+      app.component(RestComponent);
+      const server = await app.getServer(RestServer);
+      expect(server.getSync(RestBindings.REQUEST_BODY_PARSER_OPTIONS)).to.equal(
+        parserOptions,
       );
     });
   });
