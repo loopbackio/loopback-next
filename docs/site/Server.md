@@ -235,20 +235,36 @@ app.basePath('/api');
 With the `basePath`, all REST APIs and static assets are served on URLs starting
 with the base path.
 
+### Configure the request body parser options
+
+We can now configure request body parser options as follows:
+
+```ts
+const app = new Application({
+  rest: {requestBodyParser: {json: {limit: '1mb'}}},
+});
+```
+
+The value of `rest.requestBodyParser` will be bound to
+RestBindings.REQUEST_BODY_PARSER_OPTIONS. See
+[Customize request body parser options](Parsing-requests.md#customize-parser-options)
+for more details.
+
 ### `rest` options
 
-| Property    | Type                | Purpose                                                                                                   |
-| ----------- | ------------------- | --------------------------------------------------------------------------------------------------------- |
-| host        | string              | Specify the hostname or ip address on which the RestServer will listen for traffic.                       |
-| port        | number              | Specify the port on which the RestServer listens for traffic.                                             |
-| protocol    | string (http/https) | Specify the protocol on which the RestServer listens for traffic.                                         |
-| basePath    | string              | Specify the base path that RestServer exposes http endpoints.                                             |
-| key         | string              | Specify the SSL private key for https.                                                                    |
-| cert        | string              | Specify the SSL certificate for https.                                                                    |
-| cors        | CorsOptions         | Specify the CORS options.                                                                                 |
-| sequence    | SequenceHandler     | Use a custom SequenceHandler to change the behavior of the RestServer for the request-response lifecycle. |
-| openApiSpec | OpenApiSpecOptions  | Customize how OpenAPI spec is served                                                                      |
-| apiExplorer | ApiExplorerOptions  | Customize how API explorer is served                                                                      |
+| Property          | Type                     | Purpose                                                                                                   |
+| ----------------- | ------------------------ | --------------------------------------------------------------------------------------------------------- |
+| host              | string                   | Specify the hostname or ip address on which the RestServer will listen for traffic.                       |
+| port              | number                   | Specify the port on which the RestServer listens for traffic.                                             |
+| protocol          | string (http/https)      | Specify the protocol on which the RestServer listens for traffic.                                         |
+| basePath          | string                   | Specify the base path that RestServer exposes http endpoints.                                             |
+| key               | string                   | Specify the SSL private key for https.                                                                    |
+| cert              | string                   | Specify the SSL certificate for https.                                                                    |
+| cors              | CorsOptions              | Specify the CORS options.                                                                                 |
+| sequence          | SequenceHandler          | Use a custom SequenceHandler to change the behavior of the RestServer for the request-response lifecycle. |
+| openApiSpec       | OpenApiSpecOptions       | Customize how OpenAPI spec is served                                                                      |
+| apiExplorer       | ApiExplorerOptions       | Customize how API explorer is served                                                                      |
+| requestBodyParser | RequestBodyParserOptions | Customize how request body is parsed                                                                      |
 
 ## Add servers to application instance
 
