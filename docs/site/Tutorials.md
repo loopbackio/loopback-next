@@ -14,11 +14,11 @@ LoopBack 4 comes with the following tutorials:
 - **[todo-list](todo-list-tutorial.md)**: Tutorial on introducing related models
   and building their API from the Todo tutorial
 
-- **[log-extension](https://github.com/strongloop/loopback-next/tree/master/examples/log-extension)**:
-  Tutorial on building a log extension.
-
 - **[soap-calculator](soap-calculator-tutorial.md)**: Tutorial on integrating
   SOAP web services.
+
+- **[log-extension](https://github.com/strongloop/loopback-next/tree/master/examples/log-extension)**:
+  Tutorial on building a log extension.
 
 You can download any of the tutorial projects using our CLI tool `lb4`:
 
