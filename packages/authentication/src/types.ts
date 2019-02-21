@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Request} from '@loopback/rest';
+import {Entity} from '@loopback/repository';
 
 /**
  * interface definition of a function which accepts a request
@@ -21,4 +22,32 @@ export interface UserProfile {
   id: string;
   name?: string;
   email?: string;
+}
+
+export type Credentials = {
+  email: string;
+  password: string;
+};
+
+export type AuthenticatedUser<U extends Entity> = {
+  authenticated: boolean;
+  userInfo?: U;
+};
+
+/**
+ * An interface describes the common authentication strategy.
+ *
+ * An authentication strategy is usually a class with an
+ * authenticate method that verifies a user's identity and
+ * returns the corresponding user profile.
+ *
+ * Please note this file should be moved to @loopback/authentication
+ */
+export interface AuthenticationStrategy {
+  authenticateRequest(request: Request): Promise<UserProfile | undefined>;
+  authenticateUser<U extends Entity>(
+    credentials: Credentials,
+  ): Promise<AuthenticatedUser<U>>;
+  generateAccesstoken(user: UserProfile): Promise<string>;
+  decodeAccesstoken(token: string): Promise<UserProfile | undefined>;
 }
