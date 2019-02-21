@@ -10,6 +10,8 @@ See also #23
 
 ## Checklist
 
+👉 [Read and sign the CLA (Contributor License Agreement)](https://cla.strongloop.com/agreements/strongloop/loopback-next) 👈
+
 - [ ] `npm test` passes on your machine
 - [ ] New tests added or existing tests modified to cover all changes
 - [ ] Code conforms with the [style guide](http://loopback.io/doc/en/contrib/style-guide.html)
@@ -17,4 +19,3 @@ See also #23
 - [ ] Documentation in [/docs/site](../tree/master/docs/site) was updated
 - [ ] Affected artifact templates in `packages/cli` were updated
 - [ ] Affected example projects in `examples/*` were updated
-- [ ] Agree to the CLA (Contributor License Agreement) by [clicking and signing](https://cla.strongloop.com/agreements/strongloop/loopback-next)
