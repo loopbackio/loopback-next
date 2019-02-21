@@ -198,6 +198,51 @@ describe('relation decorator', () => {
         },
       });
     });
+
+    it('accepts additional property metadata', () => {
+      @model()
+      class AddressBook extends Entity {
+        @property({id: true})
+        id: string;
+      }
+
+      @model()
+      class Address extends Entity {
+        id: string;
+        @belongsTo(
+          () => AddressBook,
+          {},
+          {
+            length: 36,
+            postgresql: {
+              dataType: 'uuid',
+            },
+          },
+        )
+        addressBookId: string;
+      }
+
+      const jugglerMeta = MetadataInspector.getAllPropertyMetadata(
+        MODEL_PROPERTIES_KEY,
+        Address.prototype,
+      );
+      expect(jugglerMeta).to.eql({
+        addressBookId: {
+          type: String,
+          length: 36,
+          postgresql: {
+            dataType: 'uuid',
+          },
+        },
+      });
+      expect(Address.definition.relations).to.containDeep({
+        addressBook: {
+          keyFrom: 'addressBookId',
+          name: 'addressBook',
+          type: 'belongsTo',
+        },
+      });
+    });
   });
 });
 
