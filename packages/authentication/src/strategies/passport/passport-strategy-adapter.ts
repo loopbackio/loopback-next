@@ -5,7 +5,7 @@
 
 import {HttpErrors, Request} from '@loopback/rest';
 import {Strategy} from 'passport';
-import {UserProfile} from './types';
+import {UserProfile} from '../../types';
 
 const passportRequestMixin = require('passport/lib/http/request');
 

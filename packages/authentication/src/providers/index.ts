@@ -4,4 +4,4 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './auth-metadata.provider';
-export * from './authentication.provider';
+export * from './auth-action/passport/auth-action.provider';

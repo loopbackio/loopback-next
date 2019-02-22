@@ -8,11 +8,15 @@ import {AuthenticateFn, UserProfile} from './types';
 import {AuthenticationMetadata} from './decorators';
 import {BindingKey} from '@loopback/context';
 import {MetadataAccessor} from '@loopback/metadata';
+import {AuthenticationServices} from './services/authentication.service';
 
 /**
  * Binding keys used by this component.
  */
 export namespace AuthenticationBindings {
+  export const SERVICES = BindingKey.create<AuthenticationServices>(
+    'authentication.services',
+  );
   /**
    * Key used to bind an authentication strategy to the context for the
    * authentication function to use.
@@ -23,8 +27,8 @@ export namespace AuthenticationBindings {
    *   .toProvider(MyPassportStrategyProvider);
    * ```
    */
-  export const STRATEGY = BindingKey.create<Strategy | undefined>(
-    'authentication.strategy',
+  export const STRATEGY_RESOLVER = BindingKey.create<Strategy | undefined>(
+    'authentication.strategy.resolver',
   );
 
   /**

@@ -6,9 +6,9 @@
 import {Getter, Provider, Setter, inject} from '@loopback/context';
 import {Request} from '@loopback/rest';
 import {Strategy} from 'passport';
-import {AuthenticationBindings} from '../keys';
-import {StrategyAdapter} from '../strategy-adapter';
-import {AuthenticateFn, UserProfile} from '../types';
+import {AuthenticationBindings} from '../../../keys';
+import {StrategyAdapter} from '../../../strategies/passport/passport-strategy-adapter';
+import {AuthenticateFn, UserProfile} from '../../../types';
 
 /**
  * @description Provider of a function which authenticates

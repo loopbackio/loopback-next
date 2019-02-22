@@ -25,6 +25,7 @@
     "@loopback/metadata": "^1.0.6",
     "@loopback/openapi-v3": "^1.2.1",
     "@loopback/rest": "^1.5.5",
+    "lodash": "^4.17.11",
     "passport": "^0.4.0",
     "passport-strategy": "^1.0.0"
   },
