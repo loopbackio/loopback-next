@@ -8,13 +8,13 @@ permalink: /doc/en/lb4/Examples.html
 
 LoopBack 4 comes with the following example projects:
 
--**[hello-world](https://github.com/strongloop/loopback-next/tree/master/examples/hello-world)**:
-An example showing how to set up a simple application using LoopBack 4.
+- **[hello-world](https://github.com/strongloop/loopback-next/tree/master/examples/hello-world)**:
+  An example showing how to set up a simple application using LoopBack 4.
 
 - **[rpc-server](https://github.com/strongloop/loopback-next/tree/master/examples/rpc-server)**:
   An example showing how to implement a made-up RPC protocol.
 
-You can download any of the example projects using our CLI tool `lb4`:
+You can download the example projects using our CLI tool `lb4`:
 
 ```sh
 $ lb4 example
