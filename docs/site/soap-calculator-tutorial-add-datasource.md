@@ -40,13 +40,14 @@ by StrongLoop) connector from the list as shown below:
 #### Specify the SOAP web service endpoint
 
 Now we must tell **CLI** about the full URL path for our web service. In this
-case, let's type `http://lb4ws.eycgrupo.com/calculator/` for the URL and
-`http://lb4ws.eycgrupo.com/calculator/?wsdl` for the WSDL path.
+case, let's type `https://calculator-webservice.mybluemix.net/calculator` for
+the URL and `https://calculator-webservice.mybluemix.net/calculator?wsdl` for
+the WSDL path.
 
 ```sh
 ? Select the connector for calculator: SOAP webservices (supported by StrongLoop)
-? URL to the SOAP web service endpoint: http://lb4ws.eycgrupo.com/calculator/
-? HTTP URL or local file system path to the WSDL file: http://lb4ws.eycgrupo.com/calculator/?wsdl
+? URL to the SOAP web service endpoint: https://calculator-webservice.mybluemix.net/calculator
+? HTTP URL or local file system path to the WSDL file: https://calculator-webservice.mybluemix.net/calculator?wsdl
 ```
 
 #### Enabling expose REST API operations
@@ -79,10 +80,10 @@ The **SOAP** web service is exposing 4 operations, all of them share the same
 SOAP port, which in this case is **CalculatorSoap** and the service
 **Calculator**. The operations are:
 
-- Multiply
-- Add
-- Subtract
-- Divide
+- multiply
+- add
+- subtract
+- divide
 
 We need to configure in the Datasource JSON file, the corresponding Node.js
 methods for these remote SOAP operations. For simplicity, we will name the
@@ -94,10 +95,10 @@ bind the Node.js method _Multiply_.
 
 ```ts
 "operations": {
-     "Multiply": {
-      "service": "Calculator",
-      "port": "CalculatorSoap",
-      "operation": "Multiply"
+     "multiply": {
+      "service": "CalculatorService",
+      "port": "CalculatorPort",
+      "operation": "multiply"
    }
  }
 ```
@@ -109,24 +110,24 @@ configuration after the `remoteEnabled: true,` property as follows:
 
 ```ts
 "operations": {
-     "Multiply": {
-      "service": "Calculator",
-      "port": "CalculatorSoap",
+     "multiply": {
+      "service": "CalculatorService",
+      "port": "CalculatorPort",
       "operation": "Multiply"
     },
-    "Add": {
-      "service": "Calculator",
-      "port": "CalculatorSoap",
+    "add": {
+      "service": "CalculatorService",
+      "port": "CalculatorPort",
       "operation": "Add"
     },
-    "Subtract": {
-      "service": "Calculator",
-      "port": "CalculatorSoap",
+    "subtract": {
+      "service": "CalculatorService",
+      "port": "CalculatorPort",
       "operation": "Subtract"
     },
-    "Divide": {
-      "service": "Calculator",
-      "port": "CalculatorSoap",
+    "divide": {
+      "service": "CalculatorService",
+      "port": "CalculatorPort",
       "operation": "Divide"
     }
   }
