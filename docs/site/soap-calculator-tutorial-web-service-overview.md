@@ -9,14 +9,14 @@ permalink: /doc/en/lb4/soap-calculator-tutorial-web-service-overview.html
 ### Overview
 
 The calculator is a web service using the **SOAP** protocol and reside in this
-[server](http://lb4ws.eycgrupo.com/calculator/?wsdl), exclusively used by this
-**LB4** tutorial, it is exposing four end points that resembles the operation of
-a basic calculator as follows:
+[server](https://calculator-webservice.mybluemix.net/calculator?wsdl),
+exclusively used by this **LB4** tutorial, it is exposing four end points that
+resembles the operation of a basic calculator as follows:
 
-1. **Add**
-2. **Subtract**
-3. **Divide**
-4. **Multiply**
+1. **add**
+2. **subtract**
+3. **divide**
+4. **multiply**
 
 ### SOAP Calculator Payloads
 
@@ -44,15 +44,15 @@ sample for the Add method.
 #### SOAP WS Response
 
 The SOAP Web Service will respond to **LB4** with the following xml result,
-based on the corresponding succesfully invoked method, in this case the sample
+based on the corresponding successfully invoked method, in this case the sample
 is just for the Add method.
 
 ```xml
 <SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1=\"http://wsdl.example.org/\">
    <SOAP-ENV:Body>
-      <ns1:AddResponse>
-         <AddResult>55</AddResult>
-      </ns1:AddResponse>
+      <ns1:addResponse>
+         <value>55</value>
+      </ns1:addResponse>
    </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
 ```
@@ -84,7 +84,7 @@ convert it to JSON format before sending it back to the client application.
 
 ```ts
 result: {
-  AddResult: 55;
+  value: 55;
 }
 ```
 
