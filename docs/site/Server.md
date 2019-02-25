@@ -77,6 +77,8 @@ is served by the given REST server.
 - servers: Configure servers for OpenAPI spec
 - setServersFromRequest: Set `servers` based on HTTP request headers, default to
   `false`
+- disabled: Set to `true` to disable endpoints for the OpenAPI spec. It will
+  disable API Explorer too.
 - endpointMapping: Maps urls for various forms of the spec. Default to:
 
 ```js
