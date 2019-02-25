@@ -184,6 +184,10 @@ export class RestServer extends Context implements Server, HttpServerLike {
       config.openApiSpec.endpointMapping || OPENAPI_SPEC_MAPPING;
 
     config.apiExplorer = normalizeApiExplorerConfig(config.apiExplorer);
+    if (config.openApiSpec.disabled) {
+      // Disable apiExplorer if the OpenAPI spec endpoint is disabled
+      config.apiExplorer.disabled = true;
+    }
 
     this.config = config;
     this.bind(RestBindings.PORT).to(config.port);
@@ -246,6 +250,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * to redirect to externally hosted API explorer
    */
   protected _setupOpenApiSpecEndpoints() {
+    if (this.config.openApiSpec!.disabled) return;
     // NOTE(bajtos) Regular routes are handled through Sequence.
     // IMO, this built-in endpoint should not run through a Sequence,
     // because it's not part of the application API itself.
@@ -908,6 +913,10 @@ export interface OpenApiSpecOptions {
    * Configure servers for OpenAPI spec
    */
   servers?: ServerObject[];
+  /**
+   * Set this flag to disable the endpoint for OpenAPI spec
+   */
+  disabled?: true;
 }
 
 export interface ApiExplorerOptions {

@@ -432,6 +432,22 @@ paths:
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
   });
 
+  it('disables endpoints with openApiSpec.disabled = true', async () => {
+    const server = await givenAServer({
+      rest: {
+        port: 0,
+        openApiSpec: {
+          disabled: true,
+        },
+      },
+    });
+
+    const test = createClientForHandler(server.requestHandler);
+    await test.get('/openapi.json').expect(404);
+    await test.get('/openapi.yaml').expect(404);
+    await test.get('/explorer').expect(404);
+  });
+
   it('exposes "GET /explorer" endpoint', async () => {
     const app = new Application();
     app.component(RestComponent);
