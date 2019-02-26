@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-// tslint:disable:no-unused
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import {EntityCrudRepository, repository} from '../..';
 import {Customer} from '../models/customer.model';

@@ -6,6 +6,7 @@ LoopBack 4 or other TypeScript modules, including:
 - lb-tsc: Use
   [`tsc`](https://www.typescriptlang.org/docs/handbook/compiler-options.html) to
   compile typescript files
+- lb-eslint: Run [`eslint`](https://typescript-eslint.io/)
 - lb-tslint: Run [`tslint`](https://github.com/palantir/tslint)
 - lb-prettier: Run [`prettier`](https://github.com/prettier/prettier)
 - lb-mocha: Run [`mocha`](https://mochajs.org/) to execute test cases
@@ -32,13 +33,13 @@ To use `@loopback/build` for your package:
     "build": "lb-tsc",
     "build:watch": "lb-tsc --watch",
     "clean": "lb-clean",
-    "lint": "npm run prettier:check && npm run tslint",
-    "lint:fix": "npm run prettier:fix && npm run tslint:fix",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run prettier:fix && npm run eslint:fix",
     "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
-    "tslint": "lb-tslint",
-    "tslint:fix": "npm run tslint -- --fix",
+    "eslint": "lb-eslint",
+    "eslint:fix": "npm run eslint -- --fix",
     "pretest": "npm run clean && npm run build",
     "test": "lb-mocha \"dist/__tests__\"",
     "posttest": "npm run lint",
@@ -54,7 +55,7 @@ Now you run the scripts, such as:
 - `npm run build` - Compile TypeScript files and copy resources (non `.ts`
   files) to outDir
 - `npm test` - Run all mocha tests
-- `npm run lint` - Run `tslint` and `prettier` on source files
+- `npm run lint` - Run `eslint` and `prettier` on source files
 
 3.  Override default configurations in your project
 

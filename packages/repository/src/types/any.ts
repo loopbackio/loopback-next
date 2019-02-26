@@ -5,7 +5,7 @@
 
 import {Type} from './type';
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
  * Any type

@@ -35,7 +35,7 @@ describe('Strategy Adapter', () => {
       strategy.setMockUser(mockUser);
       const adapter = new StrategyAdapter(strategy);
       const request = <Request>{};
-      const user: Object = await adapter.authenticate(request);
+      const user: object = await adapter.authenticate(request);
       expect(user).to.be.eql(mockUser);
     });
 

@@ -5,7 +5,9 @@
 
 import 'reflect-metadata';
 
-/* tslint:disable:no-any */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/unified-signatures */
 
 /*
  * namespaced wrapper to handle reflect api
@@ -178,7 +180,7 @@ export class NamespacedReflect {
     }
   }
 
-  /* tslint:disable-next-line:no-any */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata(
     metadataKey: string,
     metadataValue: any,
@@ -191,5 +193,5 @@ export class NamespacedReflect {
   }
 }
 
-/* tslint:disable-next-line:variable-name */
+// eslint-disable-next-line  variable-name */
 export const Reflector = new NamespacedReflect('loopback');

@@ -6,7 +6,7 @@
 /**
  * Common types/interfaces such as Class/Constructor/Options/Callback
  */
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
  * Interface for classes with `new` operator and static properties/methods
@@ -82,7 +82,7 @@ export type NamedParameters = AnyObject;
 /**
  * Positional parameters, such as [1, 'a']
  */
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type PositionalParameters = any[];
 
 /**

@@ -18,7 +18,7 @@ export function hasOne<T extends Entity>(
   targetResolver: EntityResolver<T>,
   definition?: Partial<HasOneDefinition>,
 ) {
-  return function(decoratedTarget: Object, key: string) {
+  return function(decoratedTarget: object, key: string) {
     // property.array(targetResolver)(decoratedTarget, key);
 
     const meta: HasOneDefinition = Object.assign(

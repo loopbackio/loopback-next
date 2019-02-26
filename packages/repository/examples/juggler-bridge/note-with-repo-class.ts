@@ -40,7 +40,7 @@ class MyNoteRepository extends DefaultCrudRepository<Note, string> {
     // FIXME For some reason ts-node fails by complaining that
     // juggler is undefined if the following is used:
     // @inject('dataSources.memory') dataSource: juggler.DataSource
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     @inject('dataSources.memory') dataSource: any,
   ) {
     super(myModel, dataSource);

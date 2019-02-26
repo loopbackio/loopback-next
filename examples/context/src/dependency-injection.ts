@@ -109,7 +109,7 @@ export async function main() {
     .tag('greeter');
 
   // Get an instance of the greeting service
-  let greetingService = await ctx.get(GREETING_SERVICE);
+  const greetingService = await ctx.get(GREETING_SERVICE);
 
   // Invoke `greet` as a method
   let greeting = await greetingService.greet('en', 'Jane');

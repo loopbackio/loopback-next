@@ -38,7 +38,7 @@ export type NodeWithValue<T> = Node<T> & {value: T};
 
 export interface ResolvedNode<T> {
   node: Node<T>;
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params?: PathParameterValues;
 }
 
@@ -148,7 +148,7 @@ function matchChildren<T>(key: string, parent: Node<T>): ResolvedNode<T>[] {
 function search<T>(
   keys: string[],
   index: number,
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: {[name: string]: any},
   parent: Node<T>,
 ): ResolvedNode<T> | undefined {

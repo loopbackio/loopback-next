@@ -330,7 +330,7 @@ class FileUploadController {
         else {
           resolve({
             files: request.files,
-            // tslint:disable-next-line:no-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             fields: (request as any).fields,
           });
         }

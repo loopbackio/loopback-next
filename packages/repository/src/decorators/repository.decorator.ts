@@ -11,13 +11,15 @@ import {Entity, Model} from '../model';
 import {DefaultCrudRepository, Repository} from '../repositories';
 import {juggler} from '../repositories/legacy-juggler-bridge';
 
+/* eslint-disable @typescript-eslint/ban-types */
+
 /**
  * Type definition for decorators returned by `@repository` decorator factory
  */
 export type RepositoryDecorator = (
   target: Object,
   key?: string,
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
 ) => void;
 
@@ -149,7 +151,7 @@ export function repository(
   return function(
     target: Object,
     key?: string,
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ) {
     if (key || typeof descriptorOrIndex === 'number') {

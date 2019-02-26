@@ -19,7 +19,7 @@ async function run(argv, options) {
   const rootPath = project.rootPath;
 
   process.env.LERNA_ROOT_PATH = rootPath;
-  let args = argv.slice(2);
+  const args = argv.slice(2);
 
   return build.runCLI('lerna/cli', args, options);
 }

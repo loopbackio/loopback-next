@@ -94,7 +94,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     expect(instance).to.have.property('isAuthenticated', false);
   });
 
-  // tslint:disable-next-line:max-line-length
+  // eslint-disable-next-line max-len
   it('creates instance synchronously when all dependencies are sync too', () => {
     ctx.bind('appName').to('CodeHub');
     class InfoController {
@@ -128,7 +128,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     expect(instance).to.have.property('isAuthenticated', false);
   });
 
-  // tslint:disable-next-line:max-line-length
+  // eslint-disable-next-line max-len
   it('creates instance synchronously when property/constructor dependencies are sync too', () => {
     ctx.bind('appName').to('CodeHub');
     ctx.bind('authenticated').to(false);

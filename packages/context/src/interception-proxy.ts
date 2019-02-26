@@ -21,7 +21,7 @@ export type AsValueOrPromise<T> = T extends Promise<unknown>
  */
 export type AsInterceptedFunction<T> = T extends (
   ...args: InvocationArgs
-) => // tslint:disable-next-line:no-unused (possible tslint bug to treat `R` as unused)
+) => // eslint-disable-next-line @typescript-eslint/no-unused-vars (possible tslint bug to treat `R` as unused)
 infer R
   ? (...args: InvocationArgs) => AsValueOrPromise<R>
   : T;
@@ -66,7 +66,7 @@ export class InterceptionHandler<T extends object> implements ProxyHandler<T> {
   constructor(private context = new Context()) {}
 
   get(target: T, propertyName: PropertyKey, receiver: unknown) {
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const targetObj = target as any;
     if (typeof propertyName !== 'string') return targetObj[propertyName];
     const propertyOrMethod = targetObj[propertyName];

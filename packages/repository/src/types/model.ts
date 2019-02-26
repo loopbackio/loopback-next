@@ -7,7 +7,7 @@ import {Class} from '../common-types';
 import {Model} from '../model';
 import {ObjectType} from './object';
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
  * Model type

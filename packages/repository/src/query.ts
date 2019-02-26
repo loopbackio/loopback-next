@@ -6,7 +6,7 @@
 import * as assert from 'assert';
 import {AnyObject} from './common-types';
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 const nonWhereFields = [
   'fields',

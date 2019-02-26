@@ -45,6 +45,6 @@ export class RPCServer extends Context implements Server {
 
 export type RPCServerConfig = {
   port?: number;
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 };

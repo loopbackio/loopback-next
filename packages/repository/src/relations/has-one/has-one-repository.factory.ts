@@ -43,7 +43,7 @@ export function createHasOneRepositoryFactory<
   const meta = resolveHasOneMetadata(relationMetadata);
   debug('Resolved HasOne relation metadata: %o', meta);
   return function(fkValue: ForeignKeyType) {
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const constraint: any = {[meta.keyTo]: fkValue};
     return new DefaultHasOneRepository<
       Target,

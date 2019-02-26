@@ -68,11 +68,13 @@ export async function testCoercion<T>(config: TestArgs<T>) {
         pathParams.aparameter = config.rawValue;
         break;
       case 'query':
-        const q = qs.stringify(
-          {aparameter: config.rawValue},
-          {encodeValuesOnly: true},
-        );
-        url += `?${q}`;
+        {
+          const q = qs.stringify(
+            {aparameter: config.rawValue},
+            {encodeValuesOnly: true},
+          );
+          url += `?${q}`;
+        }
         break;
       case 'header':
       case 'cookie':

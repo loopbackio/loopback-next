@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-//tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 // These utilities are introduced to mitigate the prototype pollution issue
 // with `JSON.parse`.

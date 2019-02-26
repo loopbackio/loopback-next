@@ -15,9 +15,11 @@ export interface TestContext {
   timeout(ms: number | string): this;
   retries(n: number): this;
   slow(ms: number): this;
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [index: string]: any;
 }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type TestCallbackRetval = void | PromiseLike<any>;
 
 /**
  * Helper function for skipping tests on Travis env

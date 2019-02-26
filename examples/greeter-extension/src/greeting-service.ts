@@ -52,7 +52,7 @@ export class GreetingService {
    * @param name - Name
    */
   async greet(language: string, name: string): Promise<string> {
-    let greeting: string = '';
+    let greeting = '';
 
     const greeter = await this.findGreeter(language);
     if (greeter) {

@@ -34,11 +34,11 @@ async function discoverSingleModel(ds, modelName, options) {
  * Loads a DataSource from a file
  * If the path provided is a JSON, it instantiates a juggler.DataSource with the config as the only argument
  * Else it requires it like a compiled loopback datasource
- * @param path
+ * @param modulePath
  * @returns juggler.DataSource
  */
-function loadDataSource(path) {
-  const ds = require(path);
+function loadDataSource(modulePath) {
+  const ds = require(modulePath);
   const key = Object.keys(ds)[0];
   const val = new ds[key]();
   return val;
@@ -54,6 +54,7 @@ function loadDataSourceByName(name) {
   const dataSourceFiles = getAllDataSourceFiles();
   debug(`Loaded ${dataSourceFiles.length} dataSource files`);
 
+  // eslint-disable-next-line @typescript-eslint/prefer-for-of
   for (let i = 0; i < dataSourceFiles.length; i++) {
     const f = dataSourceFiles[i];
     const ds = loadDataSource(path.resolve(DEFAULT_DATASOURCE_DIRECTORY, f));

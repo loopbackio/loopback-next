@@ -61,7 +61,7 @@ describe('repository decorator', () => {
     ctx.bind('controllers.MyController').toClass(MyController);
   });
 
-  // tslint:disable-next-line:max-line-length
+  // eslint-disable-next-line max-len
   it('supports referencing predefined repository by name via constructor', async () => {
     const myController = await ctx.get<MyController>(
       'controllers.MyController',
@@ -69,7 +69,7 @@ describe('repository decorator', () => {
     expect(myController.noteRepo).exactly(defaultRepo);
   });
 
-  // tslint:disable-next-line:max-line-length
+  // eslint-disable-next-line max-len
   it('supports referencing predefined repository by name via property', async () => {
     const myController = await ctx.get<MyController>(
       'controllers.MyController',
@@ -80,7 +80,7 @@ describe('repository decorator', () => {
   it('throws not implemented for class-level @repository', () => {
     expect(() => {
       @repository('noteRepo')
-      // tslint:disable-next-line:no-unused
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       class Controller1 {}
     }).to.throw(/not implemented/);
   });

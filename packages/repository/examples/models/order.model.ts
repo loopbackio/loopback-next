@@ -6,7 +6,7 @@
 import {belongsTo, Entity, model, property} from '../..';
 import {Customer} from './customer.model';
 
-// tslint:disable:no-unused
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 @model()
 class Order extends Entity {

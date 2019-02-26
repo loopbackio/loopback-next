@@ -19,7 +19,7 @@ export function hasMany<T extends Entity>(
   targetResolver: EntityResolver<T>,
   definition?: Partial<HasManyDefinition>,
 ) {
-  return function(decoratedTarget: Object, key: string) {
+  return function(decoratedTarget: object, key: string) {
     const meta: HasManyDefinition = Object.assign(
       // default values, can be customized by the caller
       {name: key},

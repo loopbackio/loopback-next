@@ -46,7 +46,7 @@ export function createHasManyRepositoryFactory<
   const meta = resolveHasManyMetadata(relationMetadata);
   debug('Resolved HasMany relation metadata: %o', meta);
   return function(fkValue: ForeignKeyType) {
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const constraint: any = {[meta.keyTo]: fkValue};
     return new DefaultHasManyRepository<
       Target,

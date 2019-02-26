@@ -18,7 +18,7 @@ import {EntityNotFoundError} from '../errors';
 import {Entity, Model, ValueObject} from '../model';
 import {Filter, Where} from '../query';
 
-// tslint:disable:no-unused
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 export interface Repository<T extends Model> {}
 
@@ -341,7 +341,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
       );
     } else {
       // FIXME: populate inst with all properties
-      // tslint:disable-next-line:no-unused
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const inst = data;
       const where = this.entityClass.buildWhereForId(id);
       const result = await this.updateAll(data, where, options);

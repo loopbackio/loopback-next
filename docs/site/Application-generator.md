@@ -22,7 +22,7 @@ lb4 [app] [options] [<name>]
 
 `--outDir` : Project root directory for the application.
 
-`--tslint` : Add TSLint to LoopBack4 application project.
+`--eslint` : Add ESLint to LoopBack4 application project.
 
 `--prettier` : Add Prettier to LoopBack4 application project.
 
@@ -65,7 +65,7 @@ The tool will prompt you for:
   help format, test, and build a LoopBack4 application. Defaults to `true` for
   all of the modules. The prompted modules are:
 
-  - [`tslint`](https://www.npmjs.com/package/tslint)
+  - [`eslint`](https://www.npmjs.com/package/eslint)
   - [`prettier`](https://www.npmjs.com/package/prettier)
   - [`mocha`](https://www.npmjs.com/package/mocha)
   - [`@loopback/build`](https://www.npmjs.com/package/@loopback/build)

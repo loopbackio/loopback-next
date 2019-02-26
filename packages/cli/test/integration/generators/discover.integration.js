@@ -71,6 +71,7 @@ describe('lb4 discover integration', () => {
     beforeEach('reset sandbox', () => sandbox.reset());
 
     it('generates all models without prompts using --all --dataSource', async function() {
+      // eslint-disable-next-line no-invalid-this
       this.timeout(10000);
       await testUtils
         .executeGenerator(generator)

@@ -10,7 +10,7 @@ describe('Application', function() {
   let app: SoapCalculatorApplication;
   let client: Client;
 
-  // tslint:disable-next-line:no-invalid-this
+  // eslint-disable-next-line no-invalid-this
   this.timeout(30000);
 
   before(givenAnApplication);

@@ -8,7 +8,7 @@
  * https://github.com/hapijs/shot
  */
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import * as express from 'express';
 import {IncomingMessage, ServerResponse} from 'http';
@@ -27,7 +27,7 @@ const inject: (
 
 export {inject, ShotRequestOptions};
 
-// tslint:disable-next-line:variable-name
+// eslint-disable-next-line variable-name
 const ShotRequest: ShotRequestCtor = require('@hapi/shot/lib/request');
 type ShotRequestCtor = new (options: ShotRequestOptions) => IncomingMessage;
 
@@ -43,7 +43,7 @@ export function stubServerRequest(
   return stub;
 }
 
-// tslint:disable-next-line:variable-name
+// eslint-disable-next-line variable-name
 const ShotResponse: ShotResponseCtor = require('@hapi/shot/lib/response');
 export type ShotCallback = (response: ResponseObject) => void;
 
@@ -78,7 +78,7 @@ export function stubHandlerContext(
 ): HandlerContextStub {
   const request = stubServerRequest(requestOptions);
   let response: ServerResponse | undefined;
-  let result = new Promise<ObservedResponse>(resolve => {
+  const result = new Promise<ObservedResponse>(resolve => {
     response = new ShotResponse(request, resolve);
   });
 
@@ -114,7 +114,7 @@ export function stubExpressContext(
   parseQuery(request);
 
   let response: express.Response | undefined;
-  let result = new Promise<ObservedResponse>(resolve => {
+  const result = new Promise<ObservedResponse>(resolve => {
     response = new ShotResponse(request, resolve) as express.Response;
     // mix in Express Response API
     Object.assign(response, (express as any).response);

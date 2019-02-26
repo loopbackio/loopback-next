@@ -25,6 +25,7 @@ describe('TodoController', () => {
     HasManyRepository<Todo>
   >;
 
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   /*
   =============================================================================
   REPOSITORY FACTORY STUB
@@ -33,7 +34,6 @@ describe('TodoController', () => {
   in our tests themselves.
   =============================================================================
    */
-  // tslint:disable:no-any
   let todos: sinon.SinonStub<any[], Todo[]>;
 
   /*
@@ -48,7 +48,7 @@ describe('TodoController', () => {
   let find: sinon.SinonStub<any[], Promise<Todo[]>>;
   let patch: sinon.SinonStub<any[], Promise<Count>>;
   let del: sinon.SinonStub<any[], Promise<Count>>;
-  // tslint:enable:no-any
+  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   /*
   =============================================================================
@@ -154,11 +154,11 @@ describe('TodoController', () => {
       .withArgs(aTodoListWithId.id!)
       .returns(constrainedTodoRepo);
 
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (todoListRepo as any).todos = todos;
 
     // Setup CRUD fakes
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ({create, find, patch, delete: del} = constrainedTodoRepo.stubs as any);
 
     controller = new TodoListTodoController(todoListRepo);

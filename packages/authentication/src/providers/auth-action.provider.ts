@@ -52,7 +52,7 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
     const userProfile = await strategy.authenticate(request);
     if (!userProfile) {
       // important to throw a non-protocol-specific error here
-      let error = new Error(
+      const error = new Error(
         `User profile not returned from strategy's authenticate function`,
       );
       Object.assign(error, {

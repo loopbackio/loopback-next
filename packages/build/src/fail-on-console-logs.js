@@ -47,7 +47,7 @@ process.on('warning', warning => {
 
 process.on('exit', code => {
   if (!warnings.length) {
-    for (w of warnings) {
+    for (const w of warnings) {
       originalConsole.warn(w);
     }
   }

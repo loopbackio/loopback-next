@@ -11,7 +11,7 @@ const path = require('path');
 const util = require('util');
 const stream = require('stream');
 const readline = require('readline');
-var semver = require('semver');
+const semver = require('semver');
 const regenerate = require('regenerate');
 const _ = require('lodash');
 const pascalCase = require('change-case').pascalCase;
@@ -43,13 +43,13 @@ function generateValidRegex() {
   const get = function(what) {
     return require('unicode-10.0.0/' + what + '/code-points.js');
   };
-  const ID_Start = get('Binary_Property/ID_Start');
-  const ID_Continue = get('Binary_Property/ID_Continue');
+  const idStart = get('Binary_Property/ID_Start');
+  const idContinue = get('Binary_Property/ID_Continue');
   const compileRegex = _.template(
     '^(?:<%= identifierStart %>)(?:<%= identifierPart %>)*$',
   );
-  const identifierStart = regenerate(ID_Start).add('$', '_');
-  const identifierPart = regenerate(ID_Continue).add(
+  const identifierStart = regenerate(idStart).add('$', '_');
+  const identifierPart = regenerate(idContinue).add(
     '$',
     '_',
     '\u200C',
@@ -100,9 +100,9 @@ exports.validateClassName = function(name) {
 /**
  * Validate project directory to not exist
  */
-exports.validateNotExisting = function(path) {
-  if (fs.existsSync(path)) {
-    return util.format('Directory %s already exists.', path);
+exports.validateNotExisting = function(projDir) {
+  if (fs.existsSync(projDir)) {
+    return util.format('Directory %s already exists.', projDir);
   }
   return true;
 };
@@ -111,7 +111,7 @@ exports.validateNotExisting = function(path) {
  * Converts a name to class name after validation
  */
 exports.toClassName = function(name) {
-  if (name == '') return new Error('no input');
+  if (name === '') return new Error('no input');
   if (typeof name != 'string' || name == null) return new Error('bad input');
   return pascalCase(name);
 };
@@ -167,7 +167,7 @@ exports.StatusConflicter = class StatusConflicter extends Conflicter {
 
   checkForCollision(filepath, contents, callback) {
     super.checkForCollision(filepath, contents, (err, status) => {
-      let filename = filepath.split('/').pop();
+      const filename = filepath.split('/').pop();
       this.generationStatus[filename] = status;
       callback(err, status);
     });
@@ -186,12 +186,12 @@ exports.StatusConflicter = class StatusConflicter extends Conflicter {
  * paths. Must return a Promise.
  * @returns {Promise<string[]>} The filtered list of paths.
  */
-exports.findArtifactPaths = async function(path, artifactType, reader) {
+exports.findArtifactPaths = async function(dir, artifactType, reader) {
   const readdir = reader || readdirAsync;
-  debug(`Finding artifact paths at: ${path}`);
+  debug(`Finding artifact paths at: ${dir}`);
 
   // Wrapping readdir in case it's not a promise.
-  const files = await readdir(path);
+  const files = await readdir(dir);
   return _.filter(files, f => {
     return (
       _.endsWith(f, `${artifactType}.js`) || _.endsWith(f, `${artifactType}.ts`)
@@ -233,7 +233,7 @@ exports.getDependencies = function() {
     version = pkg.config.loopbackVersion;
   }
   // Set it to be `^x.y.0`
-  let loopbackVersion =
+  const loopbackVersion =
     '^' + semver.major(version) + '.' + semver.minor(version) + '.0';
 
   const deps = {};
@@ -276,7 +276,7 @@ exports.renameEJS = function() {
  * @param {String} type 'object' OR 'array'
  */
 exports.validateStringObject = function(type) {
-  return function validate(val) {
+  return function validateStringified(val) {
     if (val === null || val === '') {
       return true;
     }
@@ -288,7 +288,7 @@ exports.validateStringObject = function(type) {
     }
 
     try {
-      var result = JSON.parse(val);
+      const result = JSON.parse(val);
       if (type === 'array' && !Array.isArray(result)) {
         return err;
       }
@@ -339,7 +339,7 @@ exports.readTextFromStdin = function() {
  * @returns {String|Boolean}
  */
 exports.checkPropertyName = function(name) {
-  var result = exports.validateRequiredName(name);
+  const result = exports.validateRequiredName(name);
   if (result !== true) return result;
   if (RESERVED_PROPERTY_NAMES.includes(name)) {
     return `${name} is a reserved keyword. Please use another name`;
@@ -417,7 +417,7 @@ exports.getDataSourceConnectorName = function(datasourcesDir, dataSourceClass) {
   let result;
   let jsonFileContent;
 
-  let datasourceJSONFile = path.join(
+  const datasourceJSONFile = path.join(
     datasourcesDir,
     exports.dataSourceToJSONFileName(dataSourceClass),
   );
@@ -456,7 +456,7 @@ exports.isConnectorOfType = function(
     return false;
   }
 
-  let datasourceJSONFile = path.join(
+  const datasourceJSONFile = path.join(
     datasourcesDir,
     exports.dataSourceToJSONFileName(dataSourceClass),
   );
@@ -469,7 +469,7 @@ exports.isConnectorOfType = function(
     throw err;
   }
 
-  for (let connector of Object.values(connectors)) {
+  for (const connector of Object.values(connectors)) {
     const matchedConnector =
       jsonFileContent.connector === connector.name ||
       jsonFileContent.connector === `loopback-connector-${connector.name}`;
@@ -494,7 +494,7 @@ exports.getDataSourceName = function(datasourcesDir, dataSourceClass) {
   let result;
   let jsonFileContent;
 
-  let datasourceJSONFile = path.join(
+  const datasourceJSONFile = path.join(
     datasourcesDir,
     exports.dataSourceToJSONFileName(dataSourceClass),
   );

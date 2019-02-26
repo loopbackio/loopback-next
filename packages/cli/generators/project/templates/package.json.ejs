@@ -15,33 +15,33 @@
     "build": "lb-tsc es2017 --outDir dist",
     "build:watch": "lb-tsc --watch",
     "clean": "lb-clean dist",
-<% if (project.prettier && project.tslint) { -%>
-    "lint": "npm run prettier:check && npm run tslint",
-    "lint:fix": "npm run tslint:fix && npm run prettier:fix",
+<% if (project.prettier && project.eslint) { -%>
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
 <% } else if (project.prettier) { -%>
     "lint": "npm run prettier:check",
     "lint:fix": "npm run prettier:fix",
-<% } else if (project.tslint) { -%>
-    "lint": "npm run tslint",
-    "lint:fix": "npm run tslint:fix",
+<% } else if (project.eslint) { -%>
+    "lint": "npm run eslint",
+    "lint:fix": "npm run eslint:fix",
 <% } -%>
 <% if (project.prettier) { -%>
     "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
 <% } -%>
-<% if (project.tslint) { -%>
-    "tslint": "lb-tslint",
-    "tslint:fix": "npm run tslint -- --fix",
+<% if (project.eslint) { -%>
+    "eslint": "lb-eslint",
+    "eslint:fix": "npm run eslint -- --fix",
 <% } -%>
     "pretest": "npm run clean && npm run build",
 <% if (project.mocha) { -%>
     "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
 <% } -%>
-<% if (project.prettier || project.tslint) { -%>
+<% if (project.prettier || project.eslint) { -%>
     "posttest": "npm run lint",
 <% } -%>
-<% if (project.mocha && (project.prettier || project.tslint)) { -%>
+<% if (project.mocha && (project.prettier || project.eslint)) { -%>
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
 <% } else if (project.mocha) { -%>
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js",
@@ -96,10 +96,10 @@
   "devDependencies": {
     "@loopback/build": "<%= project.dependencies['@loopback/build'] -%>",
     "@loopback/testlab": "<%= project.dependencies['@loopback/testlab'] -%>",
-    "@loopback/tslint-config": "<%= project.dependencies['@loopback/tslint-config'] -%>",
+    "@loopback/eslint-config": "<%= project.dependencies['@loopback/eslint-config'] -%>",
     "@types/node": "<%= project.dependencies['@types/node'] -%>",
-    <% if (project.tslint) { -%>
-    "tslint": "<%= project.dependencies['tslint'] -%>",
+    <% if (project.eslint) { -%>
+    "eslint": "<%= project.dependencies['eslint'] -%>",
     <% } -%>
     "typescript": "<%= project.dependencies['typescript'] -%>"
   }

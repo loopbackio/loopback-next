@@ -10,12 +10,13 @@ const path = require('path');
 const fs = require('fs-extra');
 
 describe('build', function() {
+  // eslint-disable-next-line no-invalid-this
   this.timeout(30000);
-  var cwd = process.cwd();
-  var projectDir = path.resolve(__dirname, './fixtures');
+  const cwd = process.cwd();
+  const projectDir = path.resolve(__dirname, './fixtures');
 
   function cleanup() {
-    var run = require('../../bin/run-clean');
+    const run = require('../../bin/run-clean');
     run([
       'node',
       'bin/run-clean',
@@ -37,8 +38,8 @@ describe('build', function() {
   });
 
   it('compiles ts files', done => {
-    var run = require('../../bin/compile-package');
-    var childProcess = run(['node', 'bin/compile-package', 'es2015']);
+    const run = require('../../bin/compile-package');
+    const childProcess = run(['node', 'bin/compile-package', 'es2015']);
     childProcess.on('close', code => {
       assert.equal(code, 0);
       assert(
@@ -49,7 +50,7 @@ describe('build', function() {
         fs.existsSync(path.join(projectDir, 'tsconfig.json')),
         'tsconfig.json should have been created',
       );
-      var tsConfig = fs.readJSONSync(path.join(projectDir, 'tsconfig.json'));
+      const tsConfig = fs.readJSONSync(path.join(projectDir, 'tsconfig.json'));
       assert.equal(tsConfig.extends, '../../../config/tsconfig.common.json');
       done();
     });
@@ -66,8 +67,8 @@ describe('build', function() {
       include: ['src', 'test'],
       exclude: ['node_modules/**', 'packages/*/node_modules/**', '**/*.d.ts'],
     });
-    var run = require('../../bin/compile-package');
-    var command = run(['node', 'bin/compile-package'], true);
+    const run = require('../../bin/compile-package');
+    const command = run(['node', 'bin/compile-package'], true);
     assert(
       command.indexOf('-p tsconfig.build.json') !== -1,
       'project level tsconfig.build.json should be honored',
@@ -80,8 +81,8 @@ describe('build', function() {
       include: ['src', 'test'],
       exclude: ['node_modules/**', 'packages/*/node_modules/**', '**/*.d.ts'],
     });
-    var run = require('../../bin/compile-package');
-    var command = run(['node', 'bin/compile-package'], true);
+    const run = require('../../bin/compile-package');
+    const command = run(['node', 'bin/compile-package'], true);
     assert(
       command.indexOf('-p tsconfig.json') !== -1,
       'project level tsconfig.json should be honored',
@@ -89,8 +90,8 @@ describe('build', function() {
   });
 
   it('honors -p option for tsc', () => {
-    var run = require('../../bin/compile-package');
-    var command = run(
+    const run = require('../../bin/compile-package');
+    const command = run(
       ['node', 'bin/compile-package', '-p', 'tsconfig.my.json'],
       true,
     );
@@ -101,8 +102,8 @@ describe('build', function() {
   });
 
   it('honors --project option for tsc', () => {
-    var run = require('../../bin/compile-package');
-    var command = run(
+    const run = require('../../bin/compile-package');
+    const command = run(
       ['node', 'bin/compile-package', '--project', 'tsconfig.my.json'],
       true,
     );
@@ -113,8 +114,8 @@ describe('build', function() {
   });
 
   it('honors --target option for tsc', () => {
-    var run = require('../../bin/compile-package');
-    var command = run(
+    const run = require('../../bin/compile-package');
+    const command = run(
       ['node', 'bin/compile-package', '--target', 'es2015'],
       true,
     );
@@ -125,8 +126,8 @@ describe('build', function() {
   });
 
   it('honors no-option as target for tsc', () => {
-    var run = require('../../bin/compile-package');
-    var command = run(['node', 'bin/compile-package', 'es2015'], true);
+    const run = require('../../bin/compile-package');
+    const command = run(['node', 'bin/compile-package', 'es2015'], true);
     assert(
       command.indexOf('--target es2015') !== -1,
       '--target should be honored',
@@ -134,8 +135,8 @@ describe('build', function() {
   });
 
   it('honors no-option as target with -p for tsc', () => {
-    var run = require('../../bin/compile-package');
-    var command = run(
+    const run = require('../../bin/compile-package');
+    const command = run(
       ['node', 'bin/compile-package', 'es2015', '-p', 'tsconfig.my.json'],
       true,
     );
@@ -150,8 +151,8 @@ describe('build', function() {
   });
 
   it('honors --outDir option for tsc', () => {
-    var run = require('../../bin/compile-package');
-    var command = run(
+    const run = require('../../bin/compile-package');
+    const command = run(
       ['node', 'bin/compile-package', '--outDir', './dist'],
       true,
     );
@@ -162,8 +163,8 @@ describe('build', function() {
   });
 
   it('generates apidocs', done => {
-    var run = require('../../bin/generate-apidocs');
-    var childProcess = run(['node', 'bin/generate-apidocs'], {
+    const run = require('../../bin/generate-apidocs');
+    const childProcess = run(['node', 'bin/generate-apidocs'], {
       stdio: [process.stdin, 'ignore', process.stderr],
     });
     childProcess.on('close', code => {
@@ -172,7 +173,7 @@ describe('build', function() {
         fs.existsSync(path.join(projectDir, 'api-docs')),
         'api-docs should have been created',
       );
-      var typedocDir = require.resolve('typedoc/package.json');
+      let typedocDir = require.resolve('typedoc/package.json');
       typedocDir = path.resolve(typedocDir, '..');
       assert(
         !fs.existsSync(path.join(typedocDir, './node_modules/typescript')),
@@ -189,8 +190,8 @@ describe('build', function() {
   });
 
   it('honors --tsconfig for apidocs', () => {
-    var run = require('../../bin/generate-apidocs');
-    var command = run(
+    const run = require('../../bin/generate-apidocs');
+    const command = run(
       ['node', 'bin/generate-apidocs', '--tsconfig', 'tsconfig.my.json'],
       true,
     );
@@ -201,8 +202,8 @@ describe('build', function() {
   });
 
   it('honors --tstarget for apidocs', () => {
-    var run = require('../../bin/generate-apidocs');
-    var command = run(
+    const run = require('../../bin/generate-apidocs');
+    const command = run(
       ['node', 'bin/generate-apidocs', '--tstarget', 'es2017'],
       true,
     );
@@ -213,8 +214,8 @@ describe('build', function() {
   });
 
   it('honors --skip-public-assets for apidocs', () => {
-    var run = require('../../bin/generate-apidocs');
-    var command = run(
+    const run = require('../../bin/generate-apidocs');
+    const command = run(
       ['node', 'bin/generate-apidocs', '--skip-public-assets'],
       true,
     );
@@ -225,8 +226,8 @@ describe('build', function() {
   });
 
   it('honors --html-file for apidocs', () => {
-    var run = require('../../bin/generate-apidocs');
-    var command = run(
+    const run = require('../../bin/generate-apidocs');
+    const command = run(
       ['node', 'bin/generate-apidocs', '--html-file=my.html'],
       true,
     );
@@ -237,8 +238,8 @@ describe('build', function() {
   });
 
   it('runs tslint against ts files', done => {
-    var run = require('../../bin/run-tslint');
-    var childProcess = run(['node', 'bin/run-tslint']);
+    const run = require('../../bin/run-tslint');
+    const childProcess = run(['node', 'bin/run-tslint']);
     childProcess.on('close', code => {
       assert.equal(code, 0);
       done();
@@ -246,14 +247,17 @@ describe('build', function() {
   });
 
   it('honors -c option for tslint', () => {
-    var run = require('../../bin/run-tslint');
-    var command = run(['node', 'bin/un-tslint', '-c', 'tslint.my.json'], true);
+    const run = require('../../bin/run-tslint');
+    const command = run(
+      ['node', 'bin/un-tslint', '-c', 'tslint.my.json'],
+      true,
+    );
     assert(command.indexOf('-c tslint.my.json') !== -1, '-c should be honored');
   });
 
   it('honors --config option for tslint', () => {
-    var run = require('../../bin/run-tslint');
-    var command = run(
+    const run = require('../../bin/run-tslint');
+    const command = run(
       ['node', 'bin/un-tslint', '--config', 'tslint.my.json'],
       true,
     );
@@ -264,15 +268,18 @@ describe('build', function() {
   });
 
   it('honors -p option for tslint', () => {
-    var run = require('../../bin/run-tslint');
-    var command = run(['node', 'bin/un-tslint', '-p', 'tsonfig.my.json'], true);
+    const run = require('../../bin/run-tslint');
+    const command = run(
+      ['node', 'bin/un-tslint', '-p', 'tsonfig.my.json'],
+      true,
+    );
     assert(command.indexOf('-p tsonfig') !== -1, '-p should be honored');
   });
 
   it('honors --project option for tslint', () => {
-    var run = require('../../bin/run-tslint');
-    var command = run(
-      ['node', 'bin/un-tslint', '--project', 'tsonfig.my.json'],
+    const run = require('../../bin/run-tslint');
+    const command = run(
+      ['node', 'bin/run-tslint', '--project', 'tsonfig.my.json'],
       true,
     );
     assert(
@@ -282,8 +289,8 @@ describe('build', function() {
   });
 
   it('runs prettier against ts files', done => {
-    var run = require('../../bin/run-prettier');
-    var childProcess = run(
+    const run = require('../../bin/run-prettier');
+    const childProcess = run(
       ['node', 'bin/run-prettier', '**/src/*.ts', '--', '-l'],
       {
         stdio: [process.stdin, 'ignore', process.stderr],
@@ -296,8 +303,8 @@ describe('build', function() {
   });
 
   it('removes directories/files', () => {
-    var run = require('../../bin/run-clean');
-    var command = run(
+    const run = require('../../bin/run-clean');
+    const command = run(
       ['node', 'bin/run-clean', 'tsconfig.json', 'dist', 'api-docs'],
       true,
     );
@@ -305,8 +312,8 @@ describe('build', function() {
   });
 
   it('does not remove directories/files outside the project', () => {
-    var run = require('../../bin/run-clean');
-    var command = run(
+    const run = require('../../bin/run-clean');
+    const command = run(
       [
         'node',
         'bin/run-clean',
@@ -324,8 +331,8 @@ describe('build', function() {
     before(() => (process.env.LERNA_ROOT_PATH = repoRoot));
 
     it('sets --skip-public-assets for apidocs', () => {
-      var run = require('../../bin/generate-apidocs');
-      var command = run(['node', 'bin/generate-apidocs'], true);
+      const run = require('../../bin/generate-apidocs');
+      const command = run(['node', 'bin/generate-apidocs'], true);
       assert(
         command.indexOf('--skip-public-assets') !== -1,
         '--skip-public-assets should be set by default',
@@ -333,8 +340,8 @@ describe('build', function() {
     });
 
     it('sets --html-file for apidocs', () => {
-      var run = require('../../bin/generate-apidocs');
-      var command = run(['node', 'bin/generate-apidocs'], true);
+      const run = require('../../bin/generate-apidocs');
+      const command = run(['node', 'bin/generate-apidocs'], true);
       assert(
         command.indexOf('--html-file ts-test-proj.html') !== -1,
         '--html-file should be set to the package name by default',
@@ -342,8 +349,8 @@ describe('build', function() {
     });
 
     it('sets --project option for tsc', () => {
-      var run = require('../../bin/compile-package');
-      var command = run(['node', 'bin/compile-package'], true);
+      const run = require('../../bin/compile-package');
+      const command = run(['node', 'bin/compile-package'], true);
       const tsConfig = path.relative(
         repoRoot,
         path.join(__dirname, './fixtures/tsconfig.json'),
@@ -359,12 +366,13 @@ describe('build', function() {
 });
 
 describe('mocha', function() {
+  // eslint-disable-next-line no-invalid-this
   this.timeout(30000);
-  var cwd = process.cwd();
-  var projectDir = path.resolve(__dirname, './fixtures');
+  const cwd = process.cwd();
+  const projectDir = path.resolve(__dirname, './fixtures');
 
   function cleanup() {
-    var run = require('../../bin/run-clean');
+    const run = require('../../bin/run-clean');
     run(['node', 'bin/run-clean', '.mocharc.json']);
   }
 
@@ -379,8 +387,8 @@ describe('mocha', function() {
   });
 
   it('loads built-in .mocharc.json file', () => {
-    var run = require('../../bin/run-mocha');
-    var command = run(['node', 'bin/run-mocha', '"dist/__tests__"'], true);
+    const run = require('../../bin/run-mocha');
+    const command = run(['node', 'bin/run-mocha', '"dist/__tests__"'], true);
     const builtInMochaOptsFile = path.join(
       __dirname,
       '../../config/.mocharc.json',
@@ -392,8 +400,8 @@ describe('mocha', function() {
   });
 
   it('honors --config option', () => {
-    var run = require('../../bin/run-mocha');
-    var command = run(
+    const run = require('../../bin/run-mocha');
+    const command = run(
       [
         'node',
         'bin/run-mocha',
@@ -409,7 +417,7 @@ describe('mocha', function() {
   });
 
   it('loads .mocharc.json specific project file', () => {
-    var run = require('../../bin/run-mocha');
+    const run = require('../../bin/run-mocha');
     const buitInMochaOptsPath = path.join(
       __dirname,
       '../../config/.mocharc.json',
@@ -418,7 +426,7 @@ describe('mocha', function() {
 
     fs.copyFileSync(buitInMochaOptsPath, destPath);
 
-    var command = run(['node', 'bin/run-mocha', '"dist/__tests__"'], true);
+    const command = run(['node', 'bin/run-mocha', '"dist/__tests__"'], true);
     assert(
       command.indexOf('--config') === -1,
       'should skip built-in .mocharc.json file when specific project file exist',

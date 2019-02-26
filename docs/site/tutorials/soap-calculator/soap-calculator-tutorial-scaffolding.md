@@ -44,10 +44,10 @@ Enable all options besides `docker`, unless you know what you are doing, see
 
 ```sh
 ? Select features to enable in the project:
- ◉ Enable tslint: add a linter with pre-configured lint rules
+ ◉ Enable eslint: add a linter with pre-configured lint rules
  ◉ Enable prettier: install prettier to format code conforming to rules
  ◉ Enable mocha: install mocha to run tests
- ◉ Enable loopbackBuild: use @loopback/build helpers (e.g. lb-tslint)
+ ◉ Enable loopbackBuild: use @loopback/build helpers (e.g. lb-eslint)
  ◉ Enable vscode: add VSCode config files
 ❯◯ Enable docker: include Dockerfile and .dockerignore
  ◉ Enable repositories: include repository imports and RepositoryMixin

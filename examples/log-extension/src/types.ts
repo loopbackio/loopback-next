@@ -14,7 +14,7 @@ export interface LogFn {
   (
     req: Request,
     args: OperationArgs,
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     result: any,
     startTime?: HighResTime,
   ): Promise<void>;

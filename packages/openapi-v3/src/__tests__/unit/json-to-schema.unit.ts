@@ -135,7 +135,7 @@ describe('jsonToSchemaObject', () => {
 
   // Helper function to check conversion of JSON Schema properties
   // to Swagger versions
-  function propertyConversionTest(property: Object, expected: Object) {
+  function propertyConversionTest(property: object, expected: object) {
     expect(jsonToSchemaObject(property)).to.deepEqual(expected);
   }
 });

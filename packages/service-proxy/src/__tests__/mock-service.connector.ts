@@ -16,7 +16,7 @@ export class MockConnector {
 
   static initialize(
     dataSource: juggler.DataSource,
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     cb: (err: any, result: any) => void,
   ) {
     const connector = new MockConnector();
@@ -26,7 +26,7 @@ export class MockConnector {
   }
 
   connect(
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     cb: (err: any, connected: boolean) => void,
   ) {
     this.connected = true;

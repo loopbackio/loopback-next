@@ -23,10 +23,10 @@ $ lb4 app
 ? Project root directory: (todo-list)
 ? Application class name: (TodoListApplication)
 ? Select features to enable in the project:
- ◉ Enable tslint: add a linter with pre-configured lint rules
+ ◉ Enable eslint: add a linter with pre-configured lint rules
  ◉ Enable prettier: install prettier to format code conforming to rules
  ◉ Enable mocha: install mocha to run tests
- ◉ Enable loopbackBuild: use @loopback/build helpers (e.g. lb-tslint)
+ ◉ Enable loopbackBuild: use @loopback/build helpers (e.g. lb-eslint)
  ◉ Enable vscode: add VSCode config files
 ❯◯ Enable docker: include Dockerfile and .dockerignore
  ◉ Enable repositories: include repository imports and RepositoryMixin
@@ -36,7 +36,7 @@ $ lb4 app
 ```
 
 For this tutorial, when prompted with the options for enabling certain project
-features (LoopBack's build, tslint, mocha, etc.), leave them all enabled except
+features (LoopBack's build, eslint, mocha, etc.), leave them all enabled except
 for `docker`.
 
 ### Structure
@@ -76,8 +76,8 @@ index.js
 index.ts
 package.json
 tsconfig.json
-tslint.build.json
-tslint.json
+eslint.build.json
+eslint.json
 .mocharc.json
 ```
 
@@ -87,8 +87,8 @@ tslint.json
 | `index.js`                                               | Top-level file connecting components of the application.                                                                                                                                                                                                                                                                                                                                  |
 | `package.json`                                           | Your application's package manifest. See [package.json](https://docs.npmjs.com/files/package.json) for details.                                                                                                                                                                                                                                                                           |
 | `tsconfig.json`                                          | The TypeScript project configuration. See [tsconfig.json](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html) for details.                                                                                                                                                                                                                                                    |
-| `tslint.json`                                            | [TSLint configuration](https://palantir.github.io/tslint/usage/tslint-json/)                                                                                                                                                                                                                                                                                                              |
-| `tslint.build.json`                                      | [TSLint configuration (build only)](https://palantir.github.io/tslint/usage/tslint-json/)                                                                                                                                                                                                                                                                                                 |
+| `eslint.json`                                            | [ESLint configuration](https://palantir.github.io/eslint/usage/eslint-json/)                                                                                                                                                                                                                                                                                                              |
+| `eslint.build.json`                                      | [ESLint configuration (build only)](https://palantir.github.io/eslint/usage/eslint-json/)                                                                                                                                                                                                                                                                                                 |
 | `README.md`                                              | The Markdown-based README generated for your application.                                                                                                                                                                                                                                                                                                                                 |
 | `LICENSE`                                                | A copy of the MIT license. If you do not wish to use this license, please delete this file.                                                                                                                                                                                                                                                                                               |
 | `src/application.ts`                                     | The application class, which extends [`RestApplication`](http://apidocs.strongloop.com/@loopback%2fdocs/rest.html#RestApplication) by default. This is the root of your application, and is where your application will be configured. It also extends [`RepositoryMixin`](https://apidocs.strongloop.com/@loopback%2fdocs/repository.html#RepositoryMixin) which defines the datasource. |

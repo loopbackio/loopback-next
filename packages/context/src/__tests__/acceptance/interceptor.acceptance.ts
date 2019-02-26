@@ -235,7 +235,7 @@ describe('Interceptor', () => {
 
   it('does not allow @intercept on properties', () => {
     expect(() => {
-      // tslint:disable-next-line:no-unused
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       class MyControllerWithProps {
         @intercept(log)
         private status: string;

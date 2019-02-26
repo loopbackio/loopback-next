@@ -26,11 +26,11 @@ const debug = debugFactory('loopback:repository:mixin');
  * called <a href="#RepositoryMixinDoc">RepositoryMixinDoc</a>
  *
  */
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function RepositoryMixin<T extends Class<any>>(superClass: T) {
   return class extends superClass {
     // A mixin class has to take in a type any[] argument!
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constructor(...args: any[]) {
       super(...args);
     }
@@ -63,7 +63,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * app.repository(NoteRepo);
      * ```
      */
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     repository<R extends Repository<any>>(
       repoClass: Class<R>,
       name?: string,
@@ -83,7 +83,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      *
      * @param repo - The repository class to retrieve the instance of
      */
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async getRepository<R extends Repository<any>>(repo: Class<R>): Promise<R> {
       return await this.get(`repositories.${repo.name}`);
     }
@@ -224,12 +224,12 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
  * Interface for an Application mixed in with RepositoryMixin
  */
 export interface ApplicationWithRepositories extends Application {
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   repository<R extends Repository<any>>(
     repo: Class<R>,
     name?: string,
   ): Binding<R>;
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getRepository<R extends Repository<any>>(repo: Class<R>): Promise<R>;
   dataSource<D extends juggler.DataSource>(
     dataSource: Class<D> | D,
@@ -248,7 +248,7 @@ export interface ApplicationWithRepositories extends Application {
  * <a href="#RepositoryMixin">RepositoryMixin</a>
  */
 export class RepositoryMixinDoc {
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(...args: any[]) {
     throw new Error(
       'This is a dummy class created for apidoc!' + 'Please do not use it!',
@@ -283,7 +283,7 @@ export class RepositoryMixinDoc {
    * app.repository(NoteRepo);
    * ```
    */
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   repository(repo: Class<Repository<any>>): Binding {
     throw new Error();
   }
@@ -293,7 +293,7 @@ export class RepositoryMixinDoc {
    *
    * @param repo - The repository class to retrieve the instance of
    */
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async getRepository<R extends Repository<any>>(repo: Class<R>): Promise<R> {
     return new repo() as R;
   }

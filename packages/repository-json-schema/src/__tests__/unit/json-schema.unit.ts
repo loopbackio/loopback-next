@@ -15,7 +15,7 @@ describe('JSON Schema type', () => {
      * Inspired by https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/json-schema/json-schema-tests.ts
      */
 
-    // tslint:disable-next-line:no-unused
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const testSchema: JsonSchema = {
       $id: 'test',
       $ref: 'test/sub',

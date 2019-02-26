@@ -12,10 +12,10 @@
  * A class constructor accepting arbitrary arguments.
  */
 export type Constructor<T> =
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   new (...args: any[]) => T;
 
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type BoundValue = any;
 
 /**
@@ -164,7 +164,7 @@ export function resolveList<T, V>(
     result[index] = val;
   };
 
-  // tslint:disable-next-line:prefer-for-of
+  // eslint-disable-next-line prefer-for-of
   for (let ix = 0; ix < list.length; ix++) {
     const valueOrPromise = resolver(list[ix], ix, list);
     if (isPromiseLike(valueOrPromise)) {
@@ -232,6 +232,7 @@ export function resolveUntil<T, V>(
   evaluator: (sourceVal: T, targetVal: V | undefined) => boolean,
 ): ValueOrPromise<V | undefined> {
   // Do iteration in loop for synchronous values to avoid stack overflow
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     const next = source.next();
     if (next.done) return undefined; // End of the iterator

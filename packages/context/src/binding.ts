@@ -27,6 +27,8 @@ import {
 
 const debug = debugFactory('loopback:context:binding');
 
+/* eslint-disable @typescript-eslint/ban-types */
+
 /**
  * Scope for binding values
  */
@@ -126,7 +128,7 @@ export enum BindingType {
   ALIAS = 'Alias',
 }
 
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type TagMap = MapObject<any>;
 
 /**
@@ -289,7 +291,7 @@ export class Binding<T = BoundValue> {
     }
     const options = asResolutionOptions(optionsOrSession);
     if (this._getValue) {
-      let result = ResolutionSession.runWithBinding(
+      const result = ResolutionSession.runWithBinding(
         s => {
           const optionsWithSession = Object.assign({}, options, {session: s});
           return this._getValue(ctx, optionsWithSession);
@@ -579,7 +581,7 @@ export class Binding<T = BoundValue> {
    * Convert to a plain JSON object
    */
   toJSON(): Object {
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const json: {[name: string]: any} = {
       key: this.key,
       scope: this.scope,

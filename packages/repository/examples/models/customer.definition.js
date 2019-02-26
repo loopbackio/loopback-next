@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-var Address = require('./address').Address;
+const Address = require('./address').Address;
 
 module.exports = {
   name: 'Customer',

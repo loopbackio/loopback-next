@@ -38,7 +38,7 @@ export class BasicAuthenticationStrategy implements AuthenticationStrategy {
     }
 
     // for example : Basic Z2l6bW9AZ21haWwuY29tOnBhc3N3b3Jk
-    let authHeaderValue = request.headers.authorization;
+    const authHeaderValue = request.headers.authorization;
 
     if (!authHeaderValue.startsWith('Basic')) {
       throw new HttpErrors.Unauthorized(

@@ -48,7 +48,7 @@ function runCommand(env, opts, log, dryRun) {
  * Set up yeoman generators
  */
 function setupGenerators() {
-  var env = yeoman.createEnv();
+  const env = yeoman.createEnv();
   env.register(path.join(__dirname, '../generators/app'), PREFIX + 'app');
   env.register(
     path.join(__dirname, '../generators/extension'),
@@ -117,7 +117,7 @@ function printVersions(log) {
  */
 function printCommands(env, log) {
   log('Available commands: ');
-  var list = Object.keys(env.getGeneratorsMeta())
+  const list = Object.keys(env.getGeneratorsMeta())
     .filter(name => /^loopback4:/.test(name))
     .map(name => name.replace(/^loopback4:/, '  lb4 '));
   log(list.join('\n'));
@@ -130,7 +130,7 @@ function main(opts, log, dryRun) {
     return;
   }
 
-  var env = setupGenerators();
+  const env = setupGenerators();
 
   // list generators
   if (opts.commands) {

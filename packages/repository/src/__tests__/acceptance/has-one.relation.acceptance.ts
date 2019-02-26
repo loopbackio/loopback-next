@@ -158,13 +158,11 @@ describe('hasOne relation', () => {
   });
 
   it('throws an error when PATCH tries to change the foreignKey', async () => {
-    try {
-      await expect(
-        controller.patchCustomerAddress(existingCustomerId, {
-          customerId: existingCustomerId + 1,
-        }),
-      ).to.be.rejectedWith(/Property "customerId" cannot be changed!/);
-    } catch (err) {}
+    await expect(
+      controller.patchCustomerAddress(existingCustomerId, {
+        customerId: existingCustomerId + 1,
+      }),
+    ).to.be.rejectedWith(/Property "customerId" cannot be changed!/);
   });
 
   it('can DELETE hasOne relation instances', async () => {

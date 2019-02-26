@@ -5,14 +5,14 @@
 
 import {expect} from '@loopback/testlab';
 import {
-  ExampleObject,
-  ReferenceObject,
+  createEmptyApiSpec,
   DiscriminatorObject,
-  XmlObject,
+  ExampleObject,
   ExternalDocumentationObject,
   ISpecificationExtension,
-  createEmptyApiSpec,
   OpenAPIObject,
+  ReferenceObject,
+  XmlObject,
 } from '../..';
 
 describe('openapi-v3-types unit tests', () => {
@@ -57,7 +57,7 @@ describe('openapi-v3-types unit tests', () => {
      * original OAS 3 definition. (Though some interfaces allow for extensibility).
      */
 
-    // tslint:disable-next-line:no-unused
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     class TestObject implements ExampleObject {
       summary: 'test object';
       description: 'test object';
@@ -66,12 +66,12 @@ describe('openapi-v3-types unit tests', () => {
       randomProperty: 'extension value';
     }
 
-    // tslint:disable-next-line:no-unused
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     class ReferenceTestObject implements ReferenceObject {
       $ref: '#def/reference-object';
     }
 
-    // tslint:disable-next-line:no-unused
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     class DiscriminatorTestObject implements DiscriminatorObject {
       propertyName: 'test';
       mapping: {
@@ -79,7 +79,7 @@ describe('openapi-v3-types unit tests', () => {
       };
     }
 
-    // tslint:disable-next-line:no-unused
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     class XMLTestObject implements XmlObject {
       name: 'test';
       namespace: 'test';
@@ -88,13 +88,13 @@ describe('openapi-v3-types unit tests', () => {
       wrapped: false;
     }
 
-    // tslint:disable-next-line:no-unused
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     class TestExternalDocumentationObject
       implements ExternalDocumentationObject {
       url: 'https://test.com/test.html';
     }
 
-    // tslint:disable-next-line:no-unused
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     class TestISpecificationExtension implements ISpecificationExtension {
       test: 'test';
     }

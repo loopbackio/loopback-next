@@ -8,6 +8,7 @@
     "bin/run-mocha.js",
     "bin/run-prettier.js",
     "bin/run-tslint.js",
+    "bin/run-eslint.js",
     "bin/select-dist.js",
     "bin/utils.js"
   ],

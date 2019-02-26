@@ -10,7 +10,7 @@ describe('HttpCachingProxy', () => {
   describe('constructor', () => {
     it('rejects missing cachePath option', () => {
       expect(
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         () => new HttpCachingProxy({cachedPath: undefined} as any),
       ).throwError(/required option.*cachePath/i);
     });

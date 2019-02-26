@@ -8,6 +8,7 @@ const fs = require('fs');
 const util = require('util');
 const _ = require('lodash');
 const json5 = require('json5');
+const url = require('url');
 
 const utils = require('../../lib/utils');
 const debug = require('../../lib/debug')('openapi-generator');
@@ -47,11 +48,11 @@ function validateUrlOrFile(specUrlStr) {
   if (!specUrlStr) {
     return 'API spec url or file path is required.';
   }
-  var specUrl = url.parse(specUrlStr);
+  const specUrl = url.parse(specUrlStr);
   if (specUrl.protocol === 'http:' || specUrl.protocol === 'https:') {
     return true;
   } else {
-    var stat = fs.existsSync(specUrlStr) && fs.statSync(specUrlStr);
+    const stat = fs.existsSync(specUrlStr) && fs.statSync(specUrlStr);
     if (stat && stat.isFile()) {
       return true;
     } else {

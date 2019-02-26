@@ -16,7 +16,7 @@ const APIDOCS_ROOT = path.join(MONOREPO_ROOT, 'docs/apidocs');
 const SITE_APIDOCS_ROOT = path.join(MONOREPO_ROOT, 'docs/site/apidocs');
 
 describe('tsdocs', function() {
-  // tslint:disable-next-line:no-invalid-this
+  // eslint-disable-next-line no-invalid-this
   this.timeout(10000);
 
   const API_MD_FILES = [

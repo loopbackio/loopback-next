@@ -90,7 +90,7 @@ function inferExtensionPointName(
   currentBinding?: Readonly<Binding<unknown>>,
 ): string {
   if (currentBinding) {
-    let name =
+    const name =
       currentBinding.tagMap[CoreTags.EXTENSION_POINT] ||
       currentBinding.tagMap[ContextTags.NAME];
 

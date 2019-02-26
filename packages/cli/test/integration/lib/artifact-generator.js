@@ -8,7 +8,7 @@ const assert = require('yeoman-assert');
 const sinon = require('sinon');
 const chalk = require('chalk');
 const testUtils = require('../../test-utils');
-var fs = require('mem-fs-editor').create(require('mem-fs').create());
+const fs = require('mem-fs-editor').create(require('mem-fs').create());
 
 module.exports = function(artiGenerator) {
   return function() {
@@ -41,8 +41,8 @@ module.exports = function(artiGenerator) {
       });
 
       it('has name argument set up', () => {
-        let gen = testUtils.testSetUpGen(artiGenerator);
-        let helpText = gen.help();
+        const gen = testUtils.testSetUpGen(artiGenerator);
+        const helpText = gen.help();
         assert(helpText.match(/\[<name>\]/));
         assert(helpText.match(/# Name for the /));
         assert(helpText.match(/Type: String/));
@@ -50,7 +50,7 @@ module.exports = function(artiGenerator) {
       });
 
       it('sets up artifactInfo', async () => {
-        let gen = testUtils.testSetUpGen(artiGenerator, {args: ['test']});
+        const gen = testUtils.testSetUpGen(artiGenerator, {args: ['test']});
         await gen.setOptions();
         assert(gen.artifactInfo);
         assert.equal(gen.artifactInfo.name, 'test');

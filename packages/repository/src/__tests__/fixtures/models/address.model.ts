@@ -11,20 +11,20 @@ export class Address extends Entity {
   @property({
     type: 'string',
   })
-  street: String;
+  street: string;
   @property({
     type: 'string',
     id: true,
   })
-  zipcode: String;
+  zipcode: string;
   @property({
     type: 'string',
   })
-  city: String;
+  city: string;
   @property({
     type: 'string',
   })
-  province: String;
+  province: string;
 
   @belongsTo(() => Customer)
   customerId: number;

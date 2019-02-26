@@ -88,7 +88,7 @@ describe('Interception proxy', () => {
     const proxy = createProxyWithInterceptors(new MyController(), ctx);
 
     // Enforce compile time check to ensure the AsyncProxy typing works for TS
-    // tslint:disable-next-line:no-unused
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const check: ExpectedAsyncProxyForMyController = proxy;
   });
 

@@ -57,7 +57,7 @@ export class BaseArtifactBooter implements Booter {
   /**
    * List of exported classes discovered in the files
    */
-  classes: Array<Constructor<{}>>;
+  classes: Constructor<{}>[];
 
   constructor(projectRoot: string, options: ArtifactOptions) {
     this.projectRoot = projectRoot;

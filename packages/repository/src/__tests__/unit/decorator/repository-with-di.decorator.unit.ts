@@ -3,16 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
 import {Context, inject} from '@loopback/context';
-
+import {expect} from '@loopback/testlab';
 import {
-  juggler,
-  Repository,
-  Entity,
-  repository,
   DefaultCrudRepository,
+  Entity,
+  juggler,
   ModelDefinition,
+  Repository,
+  repository,
 } from '../../../';
 
 describe('repository class', () => {
@@ -20,7 +19,7 @@ describe('repository class', () => {
 
   before(givenCtx);
 
-  // tslint:disable-next-line:max-line-length
+  // eslint-disable-next-line max-len
   it('supports referencing predefined repository by name via constructor', async () => {
     const myController = await ctx.get<StringBoundController>(
       'controllers.StringBoundController',

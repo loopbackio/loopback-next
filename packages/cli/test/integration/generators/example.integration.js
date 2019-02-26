@@ -6,7 +6,6 @@
 'use strict';
 
 const assert = require('yeoman-assert');
-const fs = require('fs');
 const expect = require('@loopback/testlab').expect;
 const path = require('path');
 
@@ -18,6 +17,7 @@ const ALL_EXAMPLES = require('../../../generators/example').getAllExamples();
 const VALID_EXAMPLE = 'todo';
 
 describe('lb4 example', function() {
+  // eslint-disable-next-line no-invalid-this
   this.timeout(10000);
 
   describe('correctly extends BaseGenerator', baseTests);

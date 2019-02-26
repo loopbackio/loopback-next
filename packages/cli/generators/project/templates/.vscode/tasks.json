@@ -23,7 +23,7 @@
         "kind": "test",
         "isDefault": true
       },
-      "problemMatcher": ["$tsc", "$tslint5"]
+      "problemMatcher": ["$tsc", "$eslint-compact", "$eslint-stylish"]
     }
   ]
 }

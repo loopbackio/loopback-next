@@ -16,6 +16,15 @@
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
 
-  "tslint.ignoreDefinitionFiles": true,
-  "typescript.tsdk": "./node_modules/typescript/lib"
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "eslint.autoFixOnSave": true,
+  "eslint.run": "onSave",
+  "eslint.nodePath": "./node_modules",
+  "eslint.validate": [
+    "javascript",
+    {
+        "language": "typescript",
+        "autoFix": true
+    }
+  ]
 }

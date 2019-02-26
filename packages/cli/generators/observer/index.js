@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-const _ = require('lodash');
 const ArtifactGenerator = require('../../lib/artifact-generator');
 const debug = require('../../lib/debug')('observer-generator');
 const inspect = require('util').inspect;

@@ -25,13 +25,27 @@ async function syncDevDeps() {
   const buildDeps = require(path.join(rootPath, 'packages/build/package.json'))
     .dependencies;
 
-  const masterDeps = {
-    typescript: buildDeps.typescript,
-    tslint: buildDeps.tslint,
-  };
+  const deps = [
+    'typescript',
+    'eslint',
+    '@typescript-eslint/eslint-plugin',
+    '@typescript-eslint/parser',
+    'eslint-plugin-eslint-plugin',
+  ];
+  const masterDeps = {};
+  for (const d of deps) {
+    if (buildDeps[d] == null) {
+      console.error(
+        'Dependency %s is missing in packages/build/package.json',
+        d,
+      );
+    }
+    masterDeps[d] = buildDeps[d];
+  }
 
-  // Update typescript & tslint dependencies in individual packages
+  // Update typescript & eslint dependencies in individual packages
   for (const pkg of packages) {
+    if (pkg.name === '@loopback/build') continue;
     const pkgFile = pkg.manifestLocation;
     updatePackageJson(pkgFile, masterDeps);
   }
@@ -48,9 +62,20 @@ async function syncDevDeps() {
  */
 function updatePackageJson(pkgFile, masterDeps) {
   const data = readJsonFile(pkgFile);
+  const isExample = data.name.startsWith('@loopback/example-');
+  const isRoot = data.name === 'loopback-next';
+
   let modified = false;
+  if (isExample && data.devDependencies && data.devDependencies.tslint) {
+    delete data.devDependencies.tslint;
+    modified = true;
+  }
   for (const dep in masterDeps) {
-    if (data.devDependencies && dep in data.devDependencies) {
+    if (
+      data.devDependencies &&
+      // Force update for examples and loopback-next
+      (isExample || isRoot || dep in data.devDependencies)
+    ) {
       modified = modified || data.devDependencies[dep] !== masterDeps[dep];
       data.devDependencies[dep] = masterDeps[dep];
     }

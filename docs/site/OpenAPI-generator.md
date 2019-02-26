@@ -232,7 +232,7 @@ additional model files are generated:
 {% include code-caption.html content="src/models/perform-search-body.model.ts" %}
 
 ```ts
-/* tslint:disable:no-any */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {model, property} from '@loopback/repository';
 
 /**

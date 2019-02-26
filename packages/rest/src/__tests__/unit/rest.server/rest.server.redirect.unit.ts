@@ -13,7 +13,7 @@ describe('RestServer.redirect()', () => {
     app.component(RestComponent);
     const server = await app.getServer(RestServer);
     server.redirect('/test', '/test/');
-    let boundRoutes = server.find('routes.*').map(b => b.key);
+    const boundRoutes = server.find('routes.*').map(b => b.key);
     expect(boundRoutes).to.containEql('routes.get %2Ftest');
   });
 });

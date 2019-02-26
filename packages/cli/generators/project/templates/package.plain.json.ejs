@@ -14,33 +14,33 @@
     "build": "tsc --outDir dist --target es2017",
     "build:watch": "tsc --outDir dist --target es2017 --watch",
     "clean": "rimraf dist",
-<% if (project.prettier && project.tslint) { -%>
-    "lint": "npm run prettier:check && npm run tslint",
-    "lint:fix": "npm run tslint:fix && npm run prettier:fix",
+<% if (project.prettier && project.eslint) { -%>
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
 <% } else if (project.prettier) { -%>
     "lint": "npm run prettier:check",
     "lint:fix": "npm run prettier:fix",
-<% } else if (project.tslint) { -%>
-    "lint": "npm run tslint",
-    "lint:fix": "npm run tslint:fix",
+<% } else if (project.eslint) { -%>
+    "lint": "npm run eslint",
+    "lint:fix": "npm run eslint:fix",
 <% } -%>
 <% if (project.prettier) { -%>
     "prettier:cli": "prettier \"**/*.ts\" \"**/*.js\"",
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
 <% } -%>
-<% if (project.tslint) { -%>
-    "tslint": "tslint -p .",
-    "tslint:fix": "npm run tslint -- --fix",
+<% if (project.eslint) { -%>
+    "eslint": "eslint -p .",
+    "eslint:fix": "npm run eslint -- --fix",
 <% } -%>
     "pretest": "npm run clean && npm run build",
 <% if (project.mocha) { -%>
     "test": "mocha dist/__tests__",
 <% } -%>
-<% if (project.prettier || project.tslint) { -%>
+<% if (project.prettier || project.eslint) { -%>
     "posttest": "npm run lint",
 <% } -%>
-<% if (project.mocha && (project.prettier || project.tslint)) { -%>
+<% if (project.mocha && (project.prettier || project.eslint)) { -%>
     "test:dev": "mocha dist/__tests__/**/*.js && npm run posttest",
 <% } else if (project.mocha) { -%>
     "test:dev": "mocha dist/__tests__/**/*.js",
@@ -100,8 +100,9 @@
 <% if (project.mocha) { -%>
     "source-map-support": "<%= project.dependencies['source-map-support'] -%>",
 <% } -%>
-<% if (project.tslint) { -%>
-    "tslint": "<%= project.dependencies['tslint'] -%>",
+<% if (project.eslint) { -%>
+    "eslint": "<%= project.dependencies['eslint'] -%>",
+    "@loopback/eslint-config": "<%= project.dependencies['@loopback/eslint-config'] -%>",
 <% } -%>
     "typescript": "<%= project.dependencies['typescript'] -%>"
   }

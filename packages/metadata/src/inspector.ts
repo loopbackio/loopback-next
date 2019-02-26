@@ -11,6 +11,8 @@ import {
   DecoratorType,
 } from './types';
 
+/* eslint-disable @typescript-eslint/ban-types */
+
 /**
  * TypeScript reflector without a namespace. The TypeScript compiler can be
  * configured to add design time metadata.

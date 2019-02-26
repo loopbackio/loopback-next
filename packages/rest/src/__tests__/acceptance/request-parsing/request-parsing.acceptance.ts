@@ -21,7 +21,7 @@ import {
 describe('request parsing', () => {
   let client: Client;
   let app: RestApplication;
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let parsedRequestBodyValue: any;
 
   beforeEach(givenAClient);
@@ -116,7 +116,7 @@ describe('request parsing', () => {
             },
           },
         })
-        request: // tslint:disable-next-line:no-any
+        request: // eslint-disable-next-line @typescript-eslint/no-explicit-any
         any,
       ): Promise<object> {
         parsedRequestBodyValue = request;

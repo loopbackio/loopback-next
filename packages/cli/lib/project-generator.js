@@ -17,7 +17,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     // build settings for their project.
     this.buildOptions = [
       {
-        name: 'tslint',
+        name: 'eslint',
         description: 'add a linter with pre-configured lint rules',
       },
       {
@@ -30,7 +30,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       },
       {
         name: 'loopbackBuild',
-        description: 'use @loopback/build helpers (e.g. lb-tslint)',
+        description: 'use @loopback/build helpers (e.g. lb-eslint)',
       },
       {name: 'vscode', description: 'add VSCode config files'},
     ];
@@ -53,9 +53,9 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       description: 'Project root directory for the ' + this.projectType,
     });
 
-    this.option('tslint', {
+    this.option('eslint', {
       type: Boolean,
-      description: 'Enable tslint',
+      description: 'Enable eslint',
     });
 
     this.option('prettier', {
@@ -237,8 +237,9 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       },
     );
 
-    if (!this.projectInfo.tslint) {
-      this.fs.delete(this.destinationPath('tslint.*json.ejs'));
+    if (!this.projectInfo.eslint) {
+      this.fs.delete(this.destinationPath('.eslintrc.*.ejs'));
+      this.fs.delete(this.destinationPath('.eslintignore'));
     }
 
     if (!this.projectInfo.prettier) {

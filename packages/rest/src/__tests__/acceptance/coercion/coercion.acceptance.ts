@@ -48,7 +48,7 @@ describe('Coercion', () => {
     }
 
     @get('/object-from-query')
-    getObjectFromQuery(@param.query.object('filter') filter: Object) {
+    getObjectFromQuery(@param.query.object('filter') filter: object) {
       return filter;
     }
   }

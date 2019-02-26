@@ -6,6 +6,7 @@
 import * as legacy from 'loopback-datasource-juggler';
 
 export namespace juggler {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   export import DataSource = legacy.DataSource;
 }
 
@@ -13,7 +14,7 @@ export namespace juggler {
  * A generic service interface with any number of methods that return a promise
  */
 export interface GenericService {
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [methodName: string]: (...args: any[]) => Promise<any>;
 }
 
@@ -28,6 +29,6 @@ export async function getService<T = GenericService>(
   ds: legacy.DataSource,
 ): Promise<T> {
   await ds.connect();
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return ds.DataAccessObject as any;
 }

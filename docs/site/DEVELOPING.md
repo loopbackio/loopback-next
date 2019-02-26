@@ -23,7 +23,7 @@ See [Monorepo overview](./MONOREPO.md) for a list of all packages.
 - [Making breaking changes](#making-breaking-changes)
 - [Releasing new versions](#releasing-new-versions)
 - [Adding a new package](#adding-a-new-package)
-- [Upgrading TypeScript/tslint](#upgrading-typescripttslint)
+- [Upgrading TypeScript/eslint](#upgrading-typescripteslint)
 - [How to test infrastructure changes](#how-to-test-infrastructure-changes)
 
 ## Setting up development environment
@@ -91,7 +91,7 @@ It does all you need:
 - Compile TypeScript
 - Run all tests
 - Check code formatting using [Prettier](https://prettier.io/)
-- Lint the code using [TSLint](https://palantir.github.io/tslint/)
+- Lint the code using [ESLint](https://typescript-eslint.io/)
 
 ## Coding rules
 
@@ -107,8 +107,8 @@ It does all you need:
 
 We use two tools to keep our codebase healthy:
 
-- [TSLint](https://palantir.github.io/tslint/) to statically analyse our source
-  code and detect common problems.
+- [ESLint](https://typescript-eslint.io/) to statically analyse our source code
+  and detect common problems.
 - [Prettier](https://prettier.io/) to keep our code always formatted the same
   way, avoid style discussions in code reviews, and save everybody's time an
   energy.
@@ -427,7 +427,7 @@ The `release` script will automatically perform the tasks for all packages:
 - Install/link dependencies
 - Transpile TypeScript files into JavaScript
 - Run mocha tests
-- Check lint (tslint and prettier) issues
+- Check lint (eslint and prettier) issues
 
 If all steps are successful, it prompts you to publish packages into npm
 repository.
@@ -501,19 +501,19 @@ Please register the new package in the following files:
   [@raymondfeng](https://github.com/raymondfeng) to enlist the new package on
   <http://apidocs.loopback.io/>.
 
-## Upgrading TypeScript/tslint
+## Upgrading TypeScript/eslint
 
-In order to support tslint extensions with a peer dependency on tslint, we have
-to specify `typescript` and `tslint` dependency in multiple places in our
+In order to support eslint extensions with a peer dependency on eslint, we have
+to specify `typescript` and `eslint` dependency in multiple places in our
 monorepo.
 
-Steps to upgrade `typescript` or `tslint` to a newer version:
+Steps to upgrade `typescript` or `eslint` to a newer version:
 
 1. Update the dependencies in `@loopback/build`, this is the source of truth for
    the rest of the monorepo.
 
    ```shell
-   $ (cd packages/build && npm update typescript tslint)
+   $ (cd packages/build && npm update typescript eslint)
    ```
 
 2. Propagate the change to other places to keep everything consistent.
@@ -524,7 +524,7 @@ Steps to upgrade `typescript` or `tslint` to a newer version:
 
 ## How to test infrastructure changes
 
-When making changes to project infrastructure, e.g. modifying `tsc` or `tslint`
+When making changes to project infrastructure, e.g. modifying `tsc` or `eslint`
 configuration, it's important to verify that all usage scenarios keep working.
 
 ### Verify TypeScript setup
@@ -545,7 +545,7 @@ configuration, it's important to verify that all usage scenarios keep working.
 5.  Test integration with supported IDEs:
     - [VS Code](./VSCODE.md#how-to-verify-typescript-setup)
 
-### Verify TSLint setup
+### Verify ESLint setup
 
 1.  Open any existing TypeScript file, e.g. `packages/src/index.ts`
 
@@ -568,7 +568,7 @@ configuration, it's important to verify that all usage scenarios keep working.
 
 5.  Test integration with supported IDEs:
 
-    - [VS Code](./VSCODE.md#how-to-verify-tslint-setup)
+    - [VS Code](./VSCODE.md#how-to-verify-eslint-setup)
 
 ### tsconfig files
 

@@ -47,12 +47,12 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
     await this.generateRepositories(options);
   }
 
-  generateControllers(options) {
+  async generateControllers(options) {
     /* istanbul ignore next */
     throw new Error('Not implemented');
   }
 
-  generateModels(options) {
+  async generateModels(options) {
     /* istanbul ignore next */
     throw new Error('Not implemented');
   }

@@ -5,7 +5,6 @@
 
 'use strict';
 
-const _ = require('lodash');
 const ArtifactGenerator = require('../../lib/artifact-generator');
 const debug = require('../../lib/debug')('relation-generator');
 const inspect = require('util').inspect;

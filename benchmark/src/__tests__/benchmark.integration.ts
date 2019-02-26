@@ -17,7 +17,7 @@ const DUMMY_STATS: EndpointStats = {
 
 describe('Benchmark (SLOW)', function() {
   // Unfortunately, the todo app requires one second to start
-  // tslint:disable-next-line:no-invalid-this
+  // eslint-disable-next-line no-invalid-this
   this.timeout(5000);
   it('works', async () => {
     const bench = new Benchmark();
@@ -37,7 +37,7 @@ describe('Benchmark (SLOW)', function() {
     async execute(
       title: string,
       urlPath: string,
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       options?: any,
     ): Promise<EndpointStats> {
       if (!options) options = {};

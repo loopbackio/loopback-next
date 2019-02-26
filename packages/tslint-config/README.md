@@ -19,7 +19,7 @@ An example `tslint.json` file:
 }
 ```
 
-An example `tslint.buid.json` file:
+An example `tslint.build.json` file:
 
 ```json5
 {

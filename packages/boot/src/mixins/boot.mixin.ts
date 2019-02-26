@@ -40,13 +40,13 @@ export {Binding};
  * Example (class MyApp extends BootMixin(RepositoryMixin(Application))) {};
  ********************* END OF NOTE ********************
  */
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function BootMixin<T extends Constructor<any>>(superClass: T) {
   return class extends superClass implements Bootable {
     projectRoot: string;
     bootOptions?: BootOptions;
 
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constructor(...args: any[]) {
       super(...args);
       this.component(BootComponent);

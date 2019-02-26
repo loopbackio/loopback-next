@@ -16,7 +16,7 @@ import {
   RepositoryMixin,
 } from '../../..';
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 describe('RepositoryMixin', () => {
   it('mixed class has .repository()', () => {

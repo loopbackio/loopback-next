@@ -58,7 +58,7 @@ describe('TestSandbox integration tests', () => {
     const sourceMapString = `//# sourceMappingURL=${resolvedFile}.map`;
 
     await sandbox.copyFile(resolvedFile);
-    let fileContents = (await readFile(resolve(path, file), 'utf8')).split(
+    const fileContents = (await readFile(resolve(path, file), 'utf8')).split(
       '\n',
     );
 
@@ -90,8 +90,7 @@ describe('TestSandbox integration tests', () => {
   });
 
   describe('after deleting sandbox', () => {
-    const ERR: string =
-      'TestSandbox instance was deleted. Create a new instance.';
+    const ERR = 'TestSandbox instance was deleted. Create a new instance.';
 
     beforeEach(callSandboxDelete);
 

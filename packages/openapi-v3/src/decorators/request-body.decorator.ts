@@ -75,14 +75,14 @@ export const REQUEST_BODY_INDEX = 'x-parameter-index';
  * }
  * ```
  *
- * @param requestBodySpec - The complete requestBody Object or partial of it.
+ * @param requestBodySpec - The complete requestBody object or partial of it.
  * "partial" for allowing no `content` in spec, for example:
  * ```
  * @requestBody({description: 'a request body'}) user: User
  * ```
  */
 export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
-  return function(target: Object, member: string, index: number) {
+  return function(target: object, member: string, index: number) {
     debug('@requestBody() on %s.%s', target.constructor.name, member);
     debug('  parameter index: %s', index);
     /* istanbul ignore if */

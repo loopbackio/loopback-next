@@ -3,7 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const util = require('util');

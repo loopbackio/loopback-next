@@ -44,7 +44,7 @@ export function normalizeParsingError(err: HttpError) {
   return err;
 }
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
  * Parse the request body asynchronously

@@ -239,11 +239,11 @@ describe('build-schema', () => {
         @model()
         class TestModel {
           @property({type: 'string'})
-          hardStr: Number;
+          hardStr: number;
           @property({type: 'boolean'})
-          hardBool: String;
+          hardBool: string;
           @property({type: 'number'})
-          hardNum: Boolean;
+          hardNum: boolean;
         }
 
         const jsonSchema = modelToJsonSchema(TestModel);
@@ -281,7 +281,7 @@ describe('build-schema', () => {
         @model()
         class TestModel {
           @property({type: 'NotPrimitive'})
-          bad: String;
+          bad: string;
         }
 
         expect(() => modelToJsonSchema(TestModel)).to.throw(/Unsupported type/);

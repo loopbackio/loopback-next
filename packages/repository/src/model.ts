@@ -8,18 +8,20 @@ import {RelationMetadata} from './relations';
 import {TypeResolver} from './type-resolver';
 import {Type} from './types';
 
+/* eslint-disable @typescript-eslint/ban-types */
+
 /**
  * This module defines the key classes representing building blocks for Domain
  * Driven Design.
  * See https://en.wikipedia.org/wiki/Domain-driven_design#Building_blocks
  */
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export type PropertyType =
   | string
   | Function
-  | Object
+  | object
   | Type<any>
   | TypeResolver<Model>;
 
@@ -223,7 +225,7 @@ export abstract class Model {
     if (options && options.ignoreUnknownProperties === false) {
       obj = {};
       for (const p in this) {
-        let val = (this as AnyObject)[p];
+        const val = (this as AnyObject)[p];
         obj[p] = asObject(val, options);
       }
     } else {
