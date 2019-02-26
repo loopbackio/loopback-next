@@ -1,65 +1,24 @@
-import {inject} from '@loopback/core';
-import {AuthenticationBindings} from '../keys';
-import {AuthenticationServices} from '../services';
-import {UserProfile, AuthenticatedUser, Credentials} from '../types';
-import {Entity} from '@loopback/repository';
-import {HttpErrors} from '@loopback/rest';
-import {toJSON} from '@loopback/testlab';
-import * as _ from 'lodash';
+import {Request} from '@loopback/rest';
+import {Model} from '@loopback/repository';
 
 /**
- * An interface describes the common authentication strategy.
+ * An interface describes a typical authentication strategy.
  *
  * An authentication strategy is usually a class with an
  * authenticate method that verifies a user's identity and
  * returns the corresponding user profile.
- *
- * Please note this file should be moved to @loopback/authentication
  */
-export abstract class AuthenticationStrategy {
-  constructor(
-    @inject(AuthenticationBindings.SERVICES)
-    private services: AuthenticationServices,
-  ) {}
-  abstract async authenticateRequest(
-    request: Request,
-  ): Promise<UserProfile | undefined>;
 
-  async authenticateUser<U extends Entity>(
-    credentials: Credentials,
-  ): Promise<AuthenticatedUser<U>> {
-    return this.services.authenticateUser(credentials);
-  }
+export interface AuthStrategy<U extends Model> {
+  verify(request: Request): Promise<U | undefined>;
 
-  async comparePassword<T = string>(
-    credentialPass: T,
-    userPass: T,
-  ): Promise<boolean> {
-    return this.services.comparePassword(credentialPass, userPass);
-  }
+  register(request: Request): Promise<U | undefined>;
 
-  async generateAccessToken(user: UserProfile): Promise<string> {
-    return this.services.generateAccessToken(user);
-  }
-
-  async decodeAccessToken(token: string): Promise<UserProfile | undefined> {
-    return this.services.decodeAccessToken(token);
-  }
-
-  async getAccessTokenForUser(credentials: Credentials): Promise<string> {
-    const user = await this.authenticateUser(credentials);
-    // There is no guarantee that an Entity contains field `password`
-    const userWithPassword = Object.assign({password: ''}, user);
-    const passwordMatched = await this.comparePassword(
-      credentials.password,
-      userWithPassword.password,
-    );
-    if (!passwordMatched) {
-      throw new HttpErrors.Unauthorized('The credentials are not correct.');
-    }
-
-    const userProfile = _.pick(toJSON(user), ['id', 'email', 'firstName']);
-    const token = await this.generateAccessToken(userProfile);
-    return token;
-  }
+  /**
+   * Discussion:
+   * 1. how do we decide what's the return data of login operation?
+   *    it could be an access token, or a user, or something else.
+   * @param request
+   */
+  login(request: Request): Promise<U | undefined>;
 }

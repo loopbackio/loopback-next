@@ -5,7 +5,8 @@
 
 import {CoreBindings} from '@loopback/core';
 import {Constructor, Provider, inject} from '@loopback/context';
-import {AuthenticationMetadata, getAuthenticateMetadata} from '../decorators';
+import {getAuthenticateMetadata} from '../decorators';
+import {AuthenticationMetadata} from '../';
 
 /**
  * @description Provides authentication metadata of a controller method

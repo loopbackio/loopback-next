@@ -4,15 +4,15 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Request} from '@loopback/rest';
-import {Entity} from '@loopback/repository';
+import {Entity, Model} from '@loopback/repository';
 
-/**
- * interface definition of a function which accepts a request
- * and returns an authenticated user
- */
-export interface AuthenticateFn {
-  (request: Request): Promise<UserProfile | undefined>;
-}
+// /**
+//  * interface definition of a function which accepts a request
+//  * and returns an authenticated user
+//  */
+// export interface AuthenticateFn<U extends Model> {
+//   (request: Request): Promise<U | undefined>;
+// }
 
 /**
  * interface definition of a user profile
@@ -33,3 +33,32 @@ export type AuthenticatedUser<U extends Entity> = {
   authenticated: boolean;
   userInfo?: U;
 };
+
+/**
+ * Some user scenarios to consider
+ *
+ * - If
+ *
+ * @example
+ * @authenticate({
+ *   strategy: 'JWT',
+ *   extractor: 'header',
+ *   action: 'verify'
+ * })
+ * async findOrdersForUser() {
+ *   const user = this.currentUser;
+ *   return await userRepo.orders(user.id);
+ * }
+ */
+export type AuthenticationMetadata = {
+  action?: ActionType;
+  strategy?: string;
+  extractor?: string;
+  options: Object;
+};
+
+/**
+ * The action from a particular strategy that an endpoint
+ * wants to perform.
+ */
+export type ActionType = 'register' | 'login' | 'verify';
