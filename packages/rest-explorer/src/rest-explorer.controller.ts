@@ -33,12 +33,20 @@ export class ExplorerController {
   }
 
   indexRedirect() {
-    this.response.redirect(301, this.request.url + '/');
+    let url = this.request.url + '/';
+    if (this.request.baseUrl && this.request.baseUrl !== '/') {
+      url = this.request.baseUrl + url;
+    }
+    this.response.redirect(301, url);
   }
 
   index() {
+    let openApiSpecUrl = this.openApiSpecUrl;
+    if (this.request.baseUrl && this.request.baseUrl !== '/') {
+      openApiSpecUrl = this.request.baseUrl + openApiSpecUrl;
+    }
     const data = {
-      openApiSpecUrl: this.openApiSpecUrl,
+      openApiSpecUrl,
     };
 
     const homePage = templateFn(data);
