@@ -75,10 +75,6 @@ module.exports = class BelongsToRelationGenerator extends BaseRelationGenerator 
   async generateModels(options) {
     const modelDir = this.artifactInfo.modelDir;
     const sourceModel = options.sourceModel;
-    const sourceModelFile = path.resolve(
-      modelDir,
-      utils.getModelFileName(sourceModel),
-    );
 
     const targetModel = options.destinationModel;
     const relationType = options.relationType;
@@ -114,7 +110,7 @@ module.exports = class BelongsToRelationGenerator extends BaseRelationGenerator 
   }
 
   _getRepositoryRequiredImports(dstModelClassName, dstRepositoryClassName) {
-    let importsArray = super._getRepositoryRequiredImports(
+    const importsArray = super._getRepositoryRequiredImports(
       dstModelClassName,
       dstRepositoryClassName,
     );

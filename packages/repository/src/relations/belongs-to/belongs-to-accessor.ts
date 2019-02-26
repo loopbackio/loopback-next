@@ -38,7 +38,7 @@ export function createBelongsToAccessor<
     const primaryKey = meta.keyTo;
     const sourceModel = await sourceRepository.findById(sourceId);
     const foreignKeyValue = sourceModel[foreignKey as keyof Source];
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const constraint: any = {[primaryKey]: foreignKeyValue};
     const constrainedRepo = new DefaultBelongsToRepository(
       targetRepoGetter,

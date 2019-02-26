@@ -7,7 +7,7 @@ import * as util from 'util';
 import {Type} from './type';
 import {Options} from '../common-types';
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
  * Buffer (binary) type

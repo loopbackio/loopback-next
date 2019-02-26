@@ -951,7 +951,7 @@ export interface RestServerResolvedOptions {
   apiExplorer: ApiExplorerOptions;
   requestBodyParser?: RequestBodyParserOptions;
   sequence?: Constructor<SequenceHandler>;
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expressSettings: {[name: string]: any};
   router: RestRouterOptions;
 }

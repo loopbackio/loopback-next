@@ -6,12 +6,12 @@
 import {Type} from './type';
 import * as util from 'util';
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
  * Array type, such as string[]
  */
-export class ArrayType<T> implements Type<Array<T>> {
+export class ArrayType<T> implements Type<T[]> {
   constructor(public itemType: Type<T>) {}
 
   readonly name = 'array';
@@ -21,7 +21,7 @@ export class ArrayType<T> implements Type<Array<T>> {
     if (!Array.isArray(value)) {
       return false;
     }
-    const list = value as Array<T | null | undefined>;
+    const list = value as (T | null | undefined)[];
     return list.every(i => this.itemType.isInstance(i));
   }
 
@@ -33,7 +33,7 @@ export class ArrayType<T> implements Type<Array<T>> {
     return value.every(i => this.itemType.isCoercible(i));
   }
 
-  defaultValue(): Array<T> {
+  defaultValue(): T[] {
     return [];
   }
 
@@ -46,7 +46,7 @@ export class ArrayType<T> implements Type<Array<T>> {
     return value.map(i => this.itemType.coerce(i));
   }
 
-  serialize(value: Array<T> | null | undefined) {
+  serialize(value: T[] | null | undefined) {
     if (value == null) return value;
     return value.map(i => this.itemType.serialize(i));
   }

@@ -3,18 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  RestApplication,
-  RestServer,
-  RestComponent,
-  ERR_NO_MULTI_SERVER,
-} from '../../..';
 import {expect} from '@loopback/testlab';
+import {
+  ERR_NO_MULTI_SERVER,
+  RestApplication,
+  RestComponent,
+  RestServer,
+} from '../../..';
 
 describe('RestApplication', () => {
   describe('throws', () => {
     it('when attempting to bind another server', () => {
-      // tslint:disable-next-line:no-unused
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const app = new RestApplication();
       expect.throws(
         () => {
@@ -26,7 +26,7 @@ describe('RestApplication', () => {
     });
 
     it('when attempting to bind an array of servers', () => {
-      // tslint:disable-next-line:no-unused
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const app = new RestApplication();
       expect.throws(
         () => {
@@ -41,7 +41,7 @@ describe('RestApplication', () => {
       class OtherRestComponent extends RestComponent {}
       expect.throws(
         () => {
-          // tslint:disable-next-line:no-unused
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const app = new RestApplication();
           app.component(RestComponent);
           app.component(OtherRestComponent);

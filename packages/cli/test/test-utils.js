@@ -121,7 +121,7 @@ exports.givenLBProject = function(rootDir, options) {
   }
 
   if (sandBoxFiles.length > 0) {
-    for (let theFile of sandBoxFiles) {
+    for (const theFile of sandBoxFiles) {
       const fullPath = path.join(rootDir, theFile.path, theFile.file);
       if (!fs.existsSync(fullPath)) {
         fs.ensureDirSync(path.dirname(fullPath));

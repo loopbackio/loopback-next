@@ -174,7 +174,7 @@ export class HttpCachingProxy {
     clientRequest: IncomingMessage,
     clientResponse: ServerResponse,
   ) {
-    // tslint:disable-next-line:await-promise
+    // eslint-disable-next-line await-promise
     const backendResponse = await makeRequest({
       resolveWithFullResponse: true,
       simple: false,

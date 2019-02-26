@@ -13,7 +13,7 @@ export async function setupExpressApplication(): Promise<AppWithClient> {
   await server.boot();
   await server.start();
 
-  let lbApp = server.lbApp;
+  const lbApp = server.lbApp;
 
   const client = supertest('http://127.0.0.1:3000');
 

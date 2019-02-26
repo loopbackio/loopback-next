@@ -34,7 +34,7 @@
       "args": [
         "test"
       ],
-      "problemMatcher": ["$tsc", "$tslint5"]
+      "problemMatcher": ["$tsc", "$eslint-stylish", "$eslint-compact"]
     },
     {
       "label": "Lint all packages",
@@ -47,10 +47,11 @@
         "lint"
       ],
       "problemMatcher": [
-        "$tslint5",
+        "$eslint-stylish",
+        "$eslint-compact",
         {
           // compilation errors - relative paths
-          "owner": "tslint",
+          "owner": "eslint",
           "fileLocation": [
             "relative",
             "${workspaceRoot}"
@@ -66,7 +67,7 @@
         },
         {
           // compilation errors - absolute paths
-          "owner": "tslint",
+          "owner": "eslint",
           "fileLocation": "absolute",
           "severity": "error",
           "pattern": {

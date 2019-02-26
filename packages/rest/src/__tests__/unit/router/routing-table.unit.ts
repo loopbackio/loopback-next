@@ -204,12 +204,12 @@ function runTestsWithRouter(router: RestRouter) {
     const table = givenRoutingTable();
     table.registerController(spec, TestController);
 
-    let request = givenRequest({
+    const request = givenRequest({
       method: 'get',
       url: '/my/getProfile/1.json',
     });
 
-    let route = table.find(request);
+    const route = table.find(request);
     expect(route.path).to.eql('/my/getProfile/{userId}.{format}');
     expect(route.pathParams).to.containEql({userId: '1', format: 'json'});
   });
@@ -245,7 +245,7 @@ function runTestsWithRouter(router: RestRouter) {
     table.registerController(spec, TestController);
 
     const findAndCheckRoute = (url: string, expectedPath: string) => {
-      let request = givenRequest({
+      const request = givenRequest({
         method: 'get',
         url,
       });

@@ -14,7 +14,7 @@ export interface DataSource {
   connector?: Connector; // The underlying connector instance
 
   settings: AnyObject; // Settings
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [property: string]: any; // Other properties that vary by connectors
 }
 

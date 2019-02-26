@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-// tslint:disable:no-unused
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import {EntityCrudRepository, repository} from '../..';
 import {Customer} from '../models/customer.model';
@@ -15,7 +15,7 @@ import {Customer} from '../models/customer.model';
 export class CustomerController {
   constructor(
     // Use constructor dependency injection
-    // tslint:disable-next-line:no-unused
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @repository('Customer', 'mongodbDataSource')
     private _repository: EntityCrudRepository<Customer, string>,
   ) {}

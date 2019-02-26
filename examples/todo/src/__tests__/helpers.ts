@@ -6,9 +6,9 @@
 import {HttpCachingProxy} from '@loopback/http-caching-proxy';
 import {merge} from 'lodash';
 import * as path from 'path';
+import * as GEO_CODER_CONFIG from '../datasources/geocoder.datasource.json';
 import {Todo} from '../models/index';
 import {GeoPoint} from '../services/geocoder.service';
-import * as GEO_CODER_CONFIG from '../datasources/geocoder.datasource.json';
 
 /*
  ==============================================================================
@@ -50,7 +50,7 @@ export const aLocation = {
   address: '1 New Orchard Road, Armonk, 10504',
   geopoint: <GeoPoint>{y: 41.109653, x: -73.72467},
   get geostring() {
-    // tslint:disable-next-line:no-invalid-this
+    // eslint-disable-next-line no-invalid-this
     return `${this.geopoint.y},${this.geopoint.x}`;
   },
 };

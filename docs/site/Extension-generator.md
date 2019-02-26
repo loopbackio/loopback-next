@@ -20,7 +20,7 @@ lb4 extension [options] [<name>]
 
 `--outDir` : Project root directory for the extension.
 
-`--tslint` : Add TSLint to LoopBack4 extension project.
+`--eslint` : Add ESLint to LoopBack4 extension project.
 
 `--prettier` : Add Prettier to LoopBack4 extension project.
 
@@ -56,7 +56,7 @@ The tool will prompt you for:
   help format, test, and build a LoopBack4 extension. Defaults to `true` for all
   of the modules. The prompted modules are:
 
-  - [`tslint`](https://www.npmjs.com/package/tslint)
+  - [`eslint`](https://www.npmjs.com/package/eslint)
   - [`prettier`](https://www.npmjs.com/package/prettier)
   - [`mocha`](https://www.npmjs.com/package/mocha)
   - [`@loopback/build`](https://www.npmjs.com/package/@loopback/build)

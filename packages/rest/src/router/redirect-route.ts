@@ -15,7 +15,7 @@ export class RedirectRoute implements RouteEntry, ResolvedRoute {
 
   // RouteEntry implementation
   readonly verb: string = 'get';
-  readonly path: string = this.sourcePath;
+  readonly path: string;
   readonly spec: OperationObject = {
     description: 'LoopBack Redirect route',
     'x-visibility': 'undocumented',
@@ -26,7 +26,9 @@ export class RedirectRoute implements RouteEntry, ResolvedRoute {
     private readonly sourcePath: string,
     private readonly targetLocation: string,
     private readonly statusCode: number = 303,
-  ) {}
+  ) {
+    this.path = sourcePath;
+  }
 
   async invokeHandler(
     {response}: RequestContext,

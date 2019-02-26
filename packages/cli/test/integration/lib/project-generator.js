@@ -17,6 +17,7 @@ module.exports = function(projGenerator, props, projectType) {
   return function() {
     // Increase the timeout to 60 seconds to accomodate
     // for possibly slow CI build machines
+    // eslint-disable-next-line no-invalid-this
     this.timeout(60 * 1000);
 
     describe('help', () => {
@@ -68,8 +69,8 @@ module.exports = function(projGenerator, props, projectType) {
       });
       describe('argument and options setup', () => {
         it('has name argument set up', () => {
-          let gen = testUtils.testSetUpGen(projGenerator);
-          let helpText = gen.help();
+          const gen = testUtils.testSetUpGen(projGenerator);
+          const helpText = gen.help();
           assert(helpText.match(/\[<name>\]/));
           assert(helpText.match(/# Project name for the /));
           assert(helpText.match(/Type: String/));
@@ -77,22 +78,22 @@ module.exports = function(projGenerator, props, projectType) {
         });
 
         it('has description option set up', () => {
-          let gen = testUtils.testSetUpGen(projGenerator);
-          let helpText = gen.help();
+          const gen = testUtils.testSetUpGen(projGenerator);
+          const helpText = gen.help();
           assert(helpText.match(/--description/));
           assert(helpText.match(/# Description for the /));
         });
 
         it('has outdir option set up', () => {
-          let gen = testUtils.testSetUpGen(projGenerator);
-          let helpText = gen.help();
+          const gen = testUtils.testSetUpGen(projGenerator);
+          const helpText = gen.help();
           assert(helpText.match(/--outdir/));
           assert(helpText.match(/# Project root directory /));
         });
 
         it('has private option set up', () => {
-          let gen = testUtils.testSetUpGen(projGenerator);
-          let helpText = gen.help();
+          const gen = testUtils.testSetUpGen(projGenerator);
+          const helpText = gen.help();
           assert(helpText.match(/--private/));
           assert(
             helpText.match(
@@ -101,37 +102,37 @@ module.exports = function(projGenerator, props, projectType) {
           );
         });
 
-        it('has tslint option set up', () => {
-          let gen = testUtils.testSetUpGen(projGenerator);
-          let helpText = gen.help();
-          assert(helpText.match(/--tslint/));
-          assert(helpText.match(/# Enable tslint/));
+        it('has eslint option set up', () => {
+          const gen = testUtils.testSetUpGen(projGenerator);
+          const helpText = gen.help();
+          assert(helpText.match(/--eslint/));
+          assert(helpText.match(/# Enable eslint/));
         });
 
         it('has prettier option set up', () => {
-          let gen = testUtils.testSetUpGen(projGenerator);
-          let helpText = gen.help();
+          const gen = testUtils.testSetUpGen(projGenerator);
+          const helpText = gen.help();
           assert(helpText.match(/--prettier/));
           assert(helpText.match(/# Enable prettier/));
         });
 
         it('has mocha option set up', () => {
-          let gen = testUtils.testSetUpGen(projGenerator);
-          let helpText = gen.help();
+          const gen = testUtils.testSetUpGen(projGenerator);
+          const helpText = gen.help();
           assert(helpText.match(/--mocha/));
           assert(helpText.match(/# Enable mocha/));
         });
 
         it('has loopbackBuild option set up', () => {
-          let gen = testUtils.testSetUpGen(projGenerator);
-          let helpText = gen.help();
+          const gen = testUtils.testSetUpGen(projGenerator);
+          const helpText = gen.help();
           assert(helpText.match(/--loopbackBuild/));
           assert(helpText.match(/# Use @loopback\/build/));
         });
 
         it('has vscode option set up', () => {
-          let gen = testUtils.testSetUpGen(projGenerator);
-          let helpText = gen.help();
+          const gen = testUtils.testSetUpGen(projGenerator);
+          const helpText = gen.help();
           assert(helpText.match(/--vscode/));
           assert(helpText.match(/# Use preconfigured VSCode settings/));
         });
@@ -140,12 +141,12 @@ module.exports = function(projGenerator, props, projectType) {
 
     describe('setOptions', () => {
       it('has projectInfo set up', async () => {
-        let gen = testUtils.testSetUpGen(projGenerator);
+        const gen = testUtils.testSetUpGen(projGenerator);
         gen.options = {
           name: 'foobar',
           description: null,
           outdir: null,
-          tslint: null,
+          eslint: null,
           prettier: true,
           mocha: null,
           loopbackBuild: null,
@@ -168,7 +169,7 @@ module.exports = function(projGenerator, props, projectType) {
 
     describe('promptProjectName', () => {
       it('incorporates user input into projectInfo', () => {
-        let gen = testUtils.testSetUpGen(projGenerator);
+        const gen = testUtils.testSetUpGen(projGenerator);
         return testPrompt(
           gen,
           {
@@ -188,7 +189,7 @@ module.exports = function(projGenerator, props, projectType) {
 
     describe('promptProjectDir', () => {
       it('incorporates user input into projectInfo', () => {
-        let gen = testUtils.testSetUpGen(projGenerator);
+        const gen = testUtils.testSetUpGen(projGenerator);
         return testPrompt(
           gen,
           {
@@ -205,12 +206,12 @@ module.exports = function(projGenerator, props, projectType) {
 
     describe('promptOptions', () => {
       it('incorporates user input into projectInfo', () => {
-        let gen = testUtils.testSetUpGen(projGenerator);
+        const gen = testUtils.testSetUpGen(projGenerator);
         return testPrompt(
           gen,
           {
             settings: [
-              'Enable tslint',
+              'Enable eslint',
               'Enable prettier',
               'Enable mocha',
               'Enable loopbackBuild',
@@ -220,7 +221,7 @@ module.exports = function(projGenerator, props, projectType) {
           'promptOptions',
         ).then(() => {
           gen.prompt.restore();
-          assert(gen.projectInfo.tslint === true);
+          assert(gen.projectInfo.eslint === true);
           assert(gen.projectInfo.prettier === true);
           assert(gen.projectInfo.mocha === true);
           assert(gen.projectInfo.loopbackBuild === true);
@@ -241,7 +242,7 @@ module.exports = function(projGenerator, props, projectType) {
           '.prettierrc',
           '.gitignore',
           '.npmrc',
-          'tslint.json',
+          '.eslintrc.js',
           'src/index.ts',
           '.vscode/settings.json',
           '.vscode/tasks.json',
@@ -250,11 +251,11 @@ module.exports = function(projGenerator, props, projectType) {
         assert.fileContent([
           ['package.json', '@loopback/build'],
           ['package.json', '"typescript"'],
-          ['package.json', '"tslint"'],
-          ['tslint.json', '@loopback/tslint-config'],
+          ['package.json', '"eslint"'],
+          ['.eslintrc.js', '@loopback/eslint-config'],
           ['tsconfig.json', '@loopback/build'],
         ]);
-        assert.noFileContent([['tslint.json', '"rules"']]);
+        assert.noFileContent([['.eslintrc.js', '"rules"']]);
 
         if (projectType === 'application') {
           assert.fileContent(
@@ -307,7 +308,7 @@ module.exports = function(projGenerator, props, projectType) {
               settings: [
                 // Force Enable loopbackBuild to be unchecked
                 'Disable loopbackBuild',
-                'Enable tslint',
+                'Enable eslint',
                 'Enable prettier',
                 'Enable mocha',
                 'Enable vscode',
@@ -332,15 +333,14 @@ module.exports = function(projGenerator, props, projectType) {
         assert.noFileContent([
           ['package.json', '@loopback/build'],
           ['package.json', '@loopback/dist-util'],
-          ['tslint.json', '@loopback/build'],
           ['tsconfig.json', '@loopback/build'],
         ]);
         assert.fileContent([
           ['package.json', '"clean": "rimraf dist"'],
           ['package.json', '"typescript"'],
-          ['package.json', '"tslint"'],
+          ['package.json', '"eslint"'],
           ['package.json', '"prettier"'],
-          ['tslint.json', '"rules"'],
+          ['.eslintrc.js', "extends: '@loopback/eslint-config'"],
           ['tsconfig.json', '"compilerOptions"'],
           ['tsconfig.json', '"resolveJsonModule": true'],
           ['index.js', "require('./dist')"],
@@ -355,7 +355,7 @@ module.exports = function(projGenerator, props, projectType) {
             {
               settings: [
                 'Enable loopbackBuild',
-                'Enable tslint',
+                'Enable eslint',
                 'Disable prettier', // Force Enable prettier to be unchecked
                 'Enable mocha',
                 'Enable vscode',
@@ -372,14 +372,14 @@ module.exports = function(projGenerator, props, projectType) {
       });
     });
 
-    describe('with tslint disabled', () => {
+    describe('with eslint disabled', () => {
       before(() => {
         return helpers.run(projGenerator).withPrompts(
           Object.assign(
             {
               settings: [
                 'Enable loopbackBuild',
-                'Disable tslint', // Force Enable tslint to be unchecked
+                'Disable eslint', // Force Enable eslint to be unchecked
                 'Enable prettier',
                 'Enable mocha',
                 'Enable vscode',
@@ -391,12 +391,12 @@ module.exports = function(projGenerator, props, projectType) {
       });
 
       it('creates files', () => {
-        assert.noFile(['tslint.json', 'tslint.build.json']);
+        assert.noFile(['.eslintrc.js', 'eslint.build.json']);
         assert.jsonFileContent('package.json', props);
       });
     });
 
-    describe('with loopbackBuild & tslint disabled', () => {
+    describe('with loopbackBuild & eslint disabled', () => {
       before(() => {
         return helpers.run(projGenerator).withPrompts(
           Object.assign(
@@ -404,8 +404,8 @@ module.exports = function(projGenerator, props, projectType) {
               settings: [
                 // Force Enable loopbackBuild to be unchecked
                 'Disable loopbackBuild',
-                // Force Enable tslint to be unchecked
-                'Disable tslint',
+                // Force Enable eslint to be unchecked
+                'Disable eslint',
                 'Enable prettier',
                 'Enable mocha',
                 'Enable vscode',
@@ -418,10 +418,10 @@ module.exports = function(projGenerator, props, projectType) {
 
       it('creates files', () => {
         assert.jsonFileContent('package.json', props);
-        assert.noFile(['tslint.json', 'tslint.build.json']);
+        assert.noFile(['.eslintrc.js', 'eslint.build.json']);
         assert.noFileContent([
           ['package.json', '@loopback/build'],
-          ['package.json', '"tslint"'],
+          ['package.json', '"eslint"'],
           ['tsconfig.json', '@loopback/build'],
         ]);
         assert.fileContent([
@@ -429,7 +429,7 @@ module.exports = function(projGenerator, props, projectType) {
           ['package.json', '"prettier"'],
           ['tsconfig.json', '"compilerOptions"'],
         ]);
-        assert.noFileContent([['package.json', '"tslint"']]);
+        assert.noFileContent([['package.json', '"eslint"']]);
       });
     });
 
@@ -440,7 +440,7 @@ module.exports = function(projGenerator, props, projectType) {
             {
               settings: [
                 'Enable loopbackBuild',
-                'Enable tslint',
+                'Enable eslint',
                 'Enable prettier',
                 'Enable mocha',
                 'Disable vscode', // Force Enable vscode to be unchecked
@@ -472,10 +472,10 @@ module.exports = function(projGenerator, props, projectType) {
       });
     });
 
-    async function testPrompt(gen, props, fnName) {
+    async function testPrompt(gen, prompts, fnName) {
       await gen.setOptions();
       gen.prompt = sinon.stub(gen, 'prompt');
-      gen.prompt.resolves(props);
+      gen.prompt.resolves(prompts);
       return await gen[fnName]();
     }
   };

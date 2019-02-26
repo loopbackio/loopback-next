@@ -27,23 +27,24 @@ import {
 const debug = debugFactory('loopback:context:interceptor');
 const getTargetName = DecoratorFactory.getTargetName;
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /**
  * Array of arguments for a method invocation
  */
-// tslint:disable-next-line:no-any
 export type InvocationArgs = any[];
 
 /**
  * Return value for a method invocation
  */
-// tslint:disable-next-line:no-any
 export type InvocationResult = any;
 
 /**
  * A type for class or its prototype
  */
-// tslint:disable-next-line:no-any
 type ClassOrPrototype = any;
+
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 /**
  * InvocationContext represents the context to invoke interceptors for a method.
@@ -342,7 +343,7 @@ export function intercept(...interceptorOrKeys: InterceptorOrKey[]) {
     method?: string,
     // Use `any` to for `TypedPropertyDescriptor`
     // See https://github.com/strongloop/loopback-next/pull/2704
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     methodDescriptor?: TypedPropertyDescriptor<any>,
   ) {
     if (method && methodDescriptor) {

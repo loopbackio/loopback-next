@@ -10,6 +10,7 @@ import {buildModelDefinition} from '../decorators';
 
 export const RELATIONS_KEY = 'loopback:relations';
 
+/* eslint-disable @typescript-eslint/ban-types */
 /**
  * Decorator for relations
  * @param definition

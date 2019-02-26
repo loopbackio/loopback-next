@@ -5,6 +5,8 @@
 
 import {Class} from './common-types';
 
+/* eslint-disable @typescript-eslint/ban-types */
+
 /**
  * A type resolver is a function that returns a class representing the type,
  * typically a Model or Entity (e.g. Product).
@@ -33,8 +35,8 @@ export type TypeResolver<
  * A function that checks whether a function is a TypeResolver or not.
  * @param fn - The value to check.
  */
-export function isTypeResolver<T extends Object>(
-  // tslint:disable-next-line:no-any
+export function isTypeResolver<T extends object>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fn: any,
 ): fn is TypeResolver<T> {
   // 1. A type provider must be a function

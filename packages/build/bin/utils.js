@@ -31,7 +31,7 @@ function getDistribution(target) {
   if (!target) {
     target = getCompilationTarget();
   }
-  var dist;
+  let dist;
   switch (target) {
     case 'es2018':
       dist = 'dist10';
@@ -71,8 +71,8 @@ function getPackageDir() {
  * @param {string} defaultName Default file
  */
 function getConfigFile(name, defaultName) {
-  var dir = getPackageDir();
-  var configFile = path.join(dir, name);
+  const dir = getPackageDir();
+  let configFile = path.join(dir, name);
   if (!fs.existsSync(configFile)) {
     debug('%s does not exist', configFile);
     if (defaultName) {
@@ -132,7 +132,7 @@ function runCLI(cli, args, options) {
     args = options.nodeArgs.concat(args);
   }
   debug('Spawn %s %s', process.execPath, args.join(' '));
-  var child = spawn(
+  const child = spawn(
     process.execPath, // Typically '/usr/local/bin/node'
     args,
     Object.assign(
@@ -167,7 +167,7 @@ function runShell(command, args, options) {
   if (options.dryRun) {
     return util.format('%s %s', command, args.join(' '));
   }
-  var child = spawn(
+  const child = spawn(
     command,
     args,
     Object.assign(

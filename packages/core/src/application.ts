@@ -250,11 +250,11 @@ export interface ApplicationConfig {
   /**
    * Other properties
    */
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [prop: string]: any;
 }
 
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ControllerClass = Constructor<any>;
 
 /**

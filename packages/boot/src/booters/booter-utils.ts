@@ -31,7 +31,7 @@ export async function discoverFiles(
  * @param target - The function to check if it's a class or not.
  * @returns True if target is a class. False otherwise.
  */
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isClass(target: any): target is Constructor<any> {
   return (
     typeof target === 'function' && target.toString().indexOf('class') === 0
@@ -51,7 +51,7 @@ export function loadClassesFromFiles(
   files: string[],
   projectRootDir: string,
 ): Constructor<{}>[] {
-  const classes: Array<Constructor<{}>> = [];
+  const classes: Constructor<{}>[] = [];
   for (const file of files) {
     debug('Loading artifact file %j', path.relative(projectRootDir, file));
     const moduleObj = require(file);

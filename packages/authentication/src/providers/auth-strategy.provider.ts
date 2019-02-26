@@ -41,7 +41,7 @@ export class AuthenticationStrategyProvider
     const strategy = await this.findAuthenticationStrategy(name);
     if (!strategy) {
       // important to throw a non-protocol-specific error here
-      let error = new Error(`The strategy '${name}' is not available.`);
+      const error = new Error(`The strategy '${name}' is not available.`);
       Object.assign(error, {
         code: AUTHENTICATION_STRATEGY_NOT_FOUND,
       });

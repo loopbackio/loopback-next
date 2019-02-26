@@ -157,6 +157,7 @@ describe('app-generator with --applicationName', () => {
 // The test takes about 1 min to install dependencies
 function testFormat() {
   before(function() {
+    // eslint-disable-next-line no-invalid-this
     this.timeout(90 * 1000);
     return helpers
       .run(generator)
@@ -188,6 +189,7 @@ function testFormat() {
 }
 
 // Skip the test for CI
+// eslint-disable-next-line no-unused-expressions
 process.env.CI && !process.env.DEBUG
   ? describe.skip
   : describe('app-generator with --format', testFormat);

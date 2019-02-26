@@ -34,7 +34,7 @@ export const MODEL_WITH_PROPERTIES_KEY = MetadataAccessor.create<
 
 export type PropertyMap = MetadataMap<PropertyDefinition>;
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
  * Decorator for model definitions
@@ -132,7 +132,7 @@ export namespace property {
     itemType: PropertyType,
     definition?: Partial<PropertyDefinition>,
   ) {
-    return function(target: Object, propertyName: string) {
+    return function(target: object, propertyName: string) {
       const propType = MetadataInspector.getDesignTypeForProperty(
         target,
         propertyName,

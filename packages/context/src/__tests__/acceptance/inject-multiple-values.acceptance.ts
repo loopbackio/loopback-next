@@ -95,7 +95,7 @@ describe('@inject.* to receive multiple values matching a filter', () => {
 
     it('throws error if bindingComparator is provided without a filter', () => {
       expect(() => {
-        // tslint:disable-next-line:no-unused
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         class ControllerWithInvalidInject {
           constructor(
             @inject('my-key', {

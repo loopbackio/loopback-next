@@ -48,7 +48,7 @@ describe('ContextView', () => {
   }
 
   async function getControllers() {
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (await viewOfControllers.values()).map((v: any) => v.name);
   }
 });

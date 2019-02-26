@@ -6,7 +6,7 @@
 import * as util from 'util';
 import {Type} from './type';
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
  * Date type

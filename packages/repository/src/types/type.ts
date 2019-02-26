@@ -8,7 +8,7 @@
  */
 import {Options} from '../common-types';
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export interface Type<T> {
   /**

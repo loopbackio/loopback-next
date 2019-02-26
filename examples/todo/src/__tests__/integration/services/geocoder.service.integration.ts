@@ -4,16 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
+import {GeocoderDataSource} from '../../../datasources/geocoder.datasource';
 import {GeocoderService, GeocoderServiceProvider} from '../../../services';
 import {
-  HttpCachingProxy,
-  givenCachingProxy,
   getProxiedGeoCoderConfig,
+  givenCachingProxy,
+  HttpCachingProxy,
 } from '../../helpers';
-import {GeocoderDataSource} from '../../../datasources/geocoder.datasource';
 
 describe('GeoLookupService', function() {
-  // tslint:disable-next-line:no-invalid-this
+  // eslint-disable-next-line no-invalid-this
   this.timeout(30 * 1000);
 
   let cachingProxy: HttpCachingProxy;

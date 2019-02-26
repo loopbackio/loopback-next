@@ -7,7 +7,7 @@ import * as util from 'util';
 import {Class, AnyObject} from '../common-types';
 import {Type} from './type';
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
  * Object type

@@ -859,7 +859,7 @@ const Dredd = require('dredd');
 
 describe('API (acceptance)', () => {
   let app: HelloWorldApplication;
-  // tslint:disable no-any
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   let dredd: any;
   before(initEnvironment);
   after(async () => {

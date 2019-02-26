@@ -36,7 +36,7 @@ function run(argv, options) {
     '--copy-resources',
   );
 
-  var target;
+  let target;
 
   // --copy-resources is not a TS Compiler option so we remove it from the
   // list of compiler options to avoid compiler errors.
@@ -47,7 +47,7 @@ function run(argv, options) {
   if (!isTargetSet) {
     // Find the last non-option argument as the `target`
     // For example `-p tsconfig.json es2017` or `es2017 -p tsconfig.json`
-    for (var i = compilerOpts.length - 1; i >= 0; i--) {
+    for (let i = compilerOpts.length - 1; i >= 0; i--) {
       target = compilerOpts[i];
       // It's an option
       if (target.indexOf('-') === 0) {
@@ -69,7 +69,7 @@ function run(argv, options) {
     }
   }
 
-  var outDir;
+  let outDir;
 
   if (isOutDirSet) {
     const outDirIx = compilerOpts.indexOf('--outDir');
@@ -79,14 +79,15 @@ function run(argv, options) {
     outDir = path.join(packageDir, utils.getDistribution(target));
   }
 
-  var tsConfigFile;
+  let tsConfigFile;
 
+  let rootDir;
   if (!isProjectSet) {
-    var rootDir = utils.getRootDir();
+    rootDir = utils.getRootDir();
     tsConfigFile = utils.getConfigFile('tsconfig.build.json', 'tsconfig.json');
     if (tsConfigFile === path.join(rootDir, 'config/tsconfig.build.json')) {
       // No local tsconfig.build.json or tsconfig.json found
-      var baseConfigFile = path.join(rootDir, 'config/tsconfig.common.json');
+      let baseConfigFile = path.join(rootDir, 'config/tsconfig.common.json');
       baseConfigFile = path.relative(packageDir, baseConfigFile);
       if (baseConfigFile.indexOf('..' + path.sep) !== 0) {
         // tsconfig only supports relative or rooted path

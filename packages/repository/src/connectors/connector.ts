@@ -24,7 +24,7 @@ export interface Connector {
   ping(): Promise<void>; // Ping the underlying system
   execute?(
     command: Command,
-    // tslint:disable:no-any
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     parameters: NamedParameters | PositionalParameters,
     options?: Options,
   ): Promise<AnyObject>;

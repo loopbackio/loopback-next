@@ -20,7 +20,7 @@ import {BaseRoute} from './base-route';
 /*
  * A controller instance with open properties/methods
  */
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ControllerInstance = {[name: string]: any} & object;
 
 /**

@@ -44,7 +44,7 @@ export abstract class BaseRouter implements RestRouter {
     // Non-strict mode
     let path = request.path;
     // First try the exact match
-    let route = this.findRoute(request.method, path);
+    const route = this.findRoute(request.method, path);
     if (route || path === '/') return route;
     if (path.endsWith('/')) {
       // Fall back to the path without trailing slash
@@ -58,7 +58,7 @@ export abstract class BaseRouter implements RestRouter {
 
   private findRoute(verb: string, path: string) {
     const key = this.getKey(verb, path);
-    let route = this.routesWithoutPathVars[key];
+    const route = this.routesWithoutPathVars[key];
     if (route) return createResolvedRoute(route, {});
     else return this.findRouteWithPathVars(verb, path);
   }

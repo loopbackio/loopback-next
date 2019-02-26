@@ -45,7 +45,7 @@ export class BuilderBase<T extends ISpecificationExtension> {
    */
   withExtension(
     key: string,
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any,
   ): this {
     assert(
@@ -55,7 +55,7 @@ export class BuilderBase<T extends ISpecificationExtension> {
 
     // `this._spec[key] = value;` is broken in TypeScript 3.5
     // See https://github.com/microsoft/TypeScript/issues/31661
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (this._spec as Record<string, any>)[key] = value;
     return this;
   }

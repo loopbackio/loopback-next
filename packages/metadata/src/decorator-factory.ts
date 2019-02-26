@@ -9,7 +9,9 @@ import {Reflector} from './reflect';
 import {DecoratorType, MetadataKey, MetadataMap} from './types';
 const debug = debugModule('loopback:metadata:decorator');
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-types */
+
 /**
  * Options for a decorator
  */
@@ -97,7 +99,7 @@ export class DecoratorFactory<
   protected inherit(inheritedMetadata: T | undefined | null): T {
     if (!this.allowInheritance()) return this.spec;
     if (inheritedMetadata == null) return this.spec;
-    if (this.spec == undefined) return inheritedMetadata;
+    if (this.spec == null) return inheritedMetadata;
     if (typeof inheritedMetadata !== 'object') return this.spec;
     if (Array.isArray(inheritedMetadata) || Array.isArray(this.spec)) {
       // For arrays, we don't merge
@@ -716,7 +718,7 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
     ownMetadata = ownMetadata || {};
     const index = this.getParameterIndex(target, methodName, methodDescriptor);
 
-    let params =
+    const params =
       ownMetadata[methodName!] || new Array(index + 1).fill(undefined);
     params[index] = this.withTarget(<T>this.inherit(params[index]), target);
     ownMetadata[methodName!] = params;

@@ -61,7 +61,7 @@ export class Validator {
    *
    * @param value
    */
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   isAbsent(value: any) {
     if (value === '' || value === undefined) return true;
 

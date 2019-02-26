@@ -92,8 +92,8 @@ describe('BindingComparator', () => {
   }
 
   function assertOrder(...keys: string[]) {
-    let prev: number = -1;
-    let prevKey: string = '';
+    let prev = -1;
+    let prevKey = '';
     for (const key of keys) {
       const current = sortedBindingKeys.indexOf(key);
       expect(current).to.greaterThan(

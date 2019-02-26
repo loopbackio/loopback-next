@@ -47,7 +47,7 @@ export type Controller = {
 
 function sendErrResponse(
   resp: express.Response,
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   send: any,
   statusCode: number,
 ) {

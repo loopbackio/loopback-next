@@ -2,12 +2,12 @@
 
 module.exports = function(CoffeeShop) {
   CoffeeShop.status = function(cb) {
-    var currentDate = new Date();
-    var currentHour = currentDate.getHours();
-    var OPEN_HOUR = 6;
-    var CLOSE_HOUR = 20;
+    const currentDate = new Date();
+    const currentHour = currentDate.getHours();
+    const OPEN_HOUR = 6;
+    const CLOSE_HOUR = 20;
 
-    var response;
+    let response;
     if (currentHour >= OPEN_HOUR && currentHour < CLOSE_HOUR) {
       response = 'We are open for business.';
     } else {
@@ -27,7 +27,7 @@ module.exports = function(CoffeeShop) {
   });
   CoffeeShop.getName = function(shopId, cb) {
     CoffeeShop.findById(shopId, function(err, instance) {
-      var response = 'Name of coffee shop is ' + instance.name;
+      const response = 'Name of coffee shop is ' + instance.name;
       cb(null, response);
     });
   };

@@ -19,8 +19,8 @@ module.exports = function(app) {
           city: 'Vancouver',
         },
       ],
-      function(err, coffeeShops) {
-        if (err) throw err;
+      function(err2, coffeeShops) {
+        if (err2) throw err2;
       },
     );
   });

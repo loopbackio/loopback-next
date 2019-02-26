@@ -37,7 +37,7 @@ describe('Reflect Context', () => {
     afterEach(resetMetadata);
 
     it('adds metadata to a class', () => {
-      const metadataValue: Object = {value: 'sample'};
+      const metadataValue: object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
       reflectContext.defineMetadata('key', metadataValue, SubClass);
 
@@ -63,7 +63,7 @@ describe('Reflect Context', () => {
     });
 
     it('adds metadata to a static method', () => {
-      const metadataValue: Object = {value: 'sample'};
+      const metadataValue: object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
       reflectContext.defineMetadata(
         'key',
@@ -99,7 +99,7 @@ describe('Reflect Context', () => {
     });
 
     it('adds metadata to a prototype method', () => {
-      const metadataValue: Object = {value: 'sample'};
+      const metadataValue: object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
       reflectContext.defineMetadata(
         'key',
@@ -139,7 +139,7 @@ describe('Reflect Context', () => {
     });
 
     it('deletes metadata from a class', () => {
-      const metadataValue: Object = {value: 'sample'};
+      const metadataValue: object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
       reflectContext.defineMetadata('key', metadataValue, SubClass);
 
@@ -164,7 +164,7 @@ describe('Reflect Context', () => {
     });
 
     it('deletes metadata from a class static menthod', () => {
-      const metadataValue: Object = {value: 'sample'};
+      const metadataValue: object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
       reflectContext.defineMetadata(
         'key',
@@ -218,7 +218,7 @@ describe('Reflect Context', () => {
     });
 
     it('deletes metadata from a class prototype menthod', () => {
-      const metadataValue: Object = {value: 'sample'};
+      const metadataValue: object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
       reflectContext.defineMetadata(
         'key',
@@ -248,7 +248,7 @@ describe('Reflect Context', () => {
     });
 
     it('adds metadata to a base class', () => {
-      const metadataValue: Object = {value: 'sample'};
+      const metadataValue: object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
       reflectContext.defineMetadata('key', metadataValue, BaseClass);
 
@@ -267,7 +267,7 @@ describe('Reflect Context', () => {
     });
 
     it('adds metadata to a base static method', () => {
-      const metadataValue: Object = {value: 'sample'};
+      const metadataValue: object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
       reflectContext.defineMetadata(
         'key',
@@ -309,7 +309,7 @@ describe('Reflect Context', () => {
     });
 
     it('adds metadata to a base prototype method', () => {
-      const metadataValue: Object = {value: 'sample'};
+      const metadataValue: object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
       reflectContext.defineMetadata(
         'key',
@@ -351,7 +351,7 @@ describe('Reflect Context', () => {
     });
 
     it('lists metadata keys of classes', () => {
-      const metadataValue: Object = {value: 'sample'};
+      const metadataValue: object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
       reflectContext.defineMetadata('key1', metadataValue, SubClass);
       reflectContext.defineMetadata('key2', {}, BaseClass);
@@ -370,7 +370,7 @@ describe('Reflect Context', () => {
     });
 
     it('lists metadata keys of class methods', () => {
-      const metadataValue: Object = {value: 'sample'};
+      const metadataValue: object = {value: 'sample'};
 
       reflectContext.defineMetadata(
         'key3',
@@ -433,7 +433,7 @@ describe('Reflect Context', () => {
     });
 
     it('checks hasMetadata against a class', () => {
-      const metadataValue: Object = {value: 'sample'};
+      const metadataValue: object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
       reflectContext.defineMetadata('key1', metadataValue, SubClass);
       reflectContext.defineMetadata('key2', {}, BaseClass);
@@ -452,7 +452,7 @@ describe('Reflect Context', () => {
     });
 
     it('checks hasOwnMetadata against a class', () => {
-      const metadataValue: Object = {value: 'sample'};
+      const metadataValue: object = {value: 'sample'};
       // define a metadata using the namespaced reflectContext
       reflectContext.defineMetadata('key1', metadataValue, SubClass);
       reflectContext.defineMetadata('key2', {}, BaseClass);
@@ -470,7 +470,7 @@ describe('Reflect Context', () => {
       expect(result).to.be.true();
     });
 
-    function deleteMetadata(target: Object, propertyKey?: string) {
+    function deleteMetadata(target: object, propertyKey?: string) {
       if (propertyKey) {
         const keys = reflectContext.getOwnMetadataKeys(target, propertyKey);
         for (const k of keys) {

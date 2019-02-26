@@ -29,7 +29,7 @@ import {OAI3Keys} from './keys';
 
 const debug = require('debug')('loopback:openapi3:metadata:controller-spec');
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export interface ControllerSpec {
   /**

@@ -7,7 +7,7 @@ import {expect} from '@loopback/testlab';
 import {Provider} from '../../';
 
 describe('Provider', () => {
-  let provider: Provider<String>;
+  let provider: Provider<string>;
 
   beforeEach(givenProvider);
 
@@ -22,9 +22,9 @@ describe('Provider', () => {
   }
 });
 
-class MyProvider implements Provider<String> {
+class MyProvider implements Provider<string> {
   constructor(private _msg: string) {}
-  value(): String {
+  value(): string {
     return this._msg + ' world';
   }
 }

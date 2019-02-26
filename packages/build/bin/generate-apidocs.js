@@ -10,7 +10,7 @@ function run(argv, options) {
   const utils = require('./utils');
   const fs = require('fs-extra');
   const path = require('path');
-  var tsPath;
+  let tsPath;
   try {
     tsPath = require.resolve('typedoc/node_modules/typescript/package.json');
   } catch (e) {

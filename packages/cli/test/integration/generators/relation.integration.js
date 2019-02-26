@@ -8,7 +8,6 @@
 const path = require('path');
 const assert = require('yeoman-assert');
 const testlab = require('@loopback/testlab');
-const fs = require('fs');
 const expect = testlab.expect;
 const TestSandbox = testlab.TestSandbox;
 const generator = path.join(__dirname, '../../../generators/relation');
@@ -20,14 +19,11 @@ const testUtils = require('../../test-utils');
 
 // Test Sandbox
 const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
-const MODEL_APP_PATH = 'src/models';
 const CONTROLLER_PATH = 'src/controllers';
-const REPOSITORY_APP_PATH = 'src/repositories';
 const sandbox = new TestSandbox(SANDBOX_PATH);
 
 describe('lb4 relation', function() {
-  // tslint:disable-next-line:no-invalid-this
-
+  // eslint-disable-next-line no-invalid-this
   this.timeout(30000);
 
   beforeEach('reset sandbox', async () => {

@@ -26,12 +26,12 @@ export function toJSON(value: object): object;
 // In practice, they should not be necessary, as they simply return the input
 // value without any modifications.
 
-// tslint:disable-next-line:unified-signatures
+// eslint-disable-next-line unified-signatures
 export function toJSON(value: undefined): undefined;
 export function toJSON(value: null): null;
 export function toJSON(value: number): number;
 export function toJSON(value: boolean): boolean;
-// tslint:disable-next-line:unified-signatures
+// eslint-disable-next-line unified-signatures
 export function toJSON(value: string): string;
 
 export function toJSON<T>(value: T) {

@@ -33,7 +33,7 @@ export class InvalidRelationError<Props extends object = {}> extends Error {
   }
 }
 
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isInvalidRelationError(e: any): e is InvalidRelationError<any> {
   return e instanceof InvalidRelationError;
 }

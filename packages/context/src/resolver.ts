@@ -46,7 +46,7 @@ export function instantiateClass<T>(
   ctor: Constructor<T>,
   ctx: Context,
   session?: ResolutionSession,
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   nonInjectedArgs?: any[],
 ): ValueOrPromise<T> {
   /* istanbul ignore if */
@@ -137,7 +137,7 @@ function resolve<T>(
   }
 
   ctx = resolveContext(ctx, injection, session);
-  let resolved = ResolutionSession.runWithInjection(
+  const resolved = ResolutionSession.runWithInjection(
     s => {
       if (injection.resolve) {
         // A custom resolve function is provided
@@ -179,11 +179,11 @@ function resolve<T>(
  * @param nonInjectedArgs - Optional array of args for non-injected parameters
  */
 export function resolveInjectedArguments(
-  target: Object,
+  target: object,
   method: string,
   ctx: Context,
   session?: ResolutionSession,
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   nonInjectedArgs?: any[],
 ): ValueOrPromise<BoundValue[]> {
   /* istanbul ignore if */
@@ -257,10 +257,10 @@ export function resolveInjectedArguments(
  * @param nonInjectedArgs - Optional array of args for non-injected parameters
  */
 export function invokeMethod(
-  target: Object,
+  target: object,
   method: string,
   ctx: Context,
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   nonInjectedArgs?: any[],
 ): ValueOrPromise<BoundValue> {
   const methodName = getTargetName(target, method);

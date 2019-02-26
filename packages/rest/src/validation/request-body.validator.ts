@@ -4,16 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  ReferenceObject,
   RequestBodyObject,
   SchemaObject,
-  ReferenceObject,
   SchemasObject,
 } from '@loopback/openapi-v3-types';
 import * as AJV from 'ajv';
 import * as debugModule from 'debug';
-import * as util from 'util';
-import {HttpErrors, RestHttpErrors, RequestBody} from '..';
 import * as _ from 'lodash';
+import * as util from 'util';
+import {HttpErrors, RequestBody, RestHttpErrors} from '..';
 
 const toJsonSchema = require('openapi-schema-to-json-schema');
 const debug = debugModule('loopback:rest:validation');
@@ -37,7 +37,7 @@ export function validateRequestBody(
 ) {
   const required = requestBodySpec && requestBodySpec.required;
 
-  if (required && body.value == undefined) {
+  if (required && body.value == null) {
     const err = Object.assign(
       new HttpErrors.BadRequest('Request body is required'),
       {
@@ -86,7 +86,7 @@ function convertToJsonSchema(openapiSchema: SchemaObject) {
 const compiledSchemaCache = new WeakMap();
 
 function validateValueAgainstSchema(
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body: any,
   schema: SchemaObject | ReferenceObject,
   globalSchemas?: SchemasObject,

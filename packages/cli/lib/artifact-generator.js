@@ -85,7 +85,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
     }
 
     // Check all files being generated to ensure they succeeded
-    let generationStatus = !!Object.entries(
+    const generationStatus = !!Object.entries(
       this.conflicter.generationStatus,
     ).find(([key, val]) => {
       // If a file was modified, update the indexes and say stuff about it

@@ -33,6 +33,7 @@ import {isTypeResolver, resolveType} from '../type-resolver';
 import {EntityCrudRepository} from './repository';
 
 export namespace juggler {
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   export import DataSource = legacy.DataSource;
   export import ModelBase = legacy.ModelBase;
   export import ModelBaseClass = legacy.ModelBaseClass;
@@ -63,16 +64,16 @@ export function bindModel<T extends juggler.ModelBaseClass>(
   modelClass: T,
   ds: juggler.DataSource,
 ): T {
-  const boundModelClass = class extends modelClass {};
-  boundModelClass.attachTo(ds);
-  return boundModelClass;
+  const BoundModelClass = class extends modelClass {};
+  BoundModelClass.attachTo(ds);
+  return BoundModelClass;
 }
 
 /**
  * Ensure the value is a promise
  * @param p - Promise or void
  */
-/* tslint:disable-next-line:no-any */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ensurePromise<T>(p: legacy.PromiseOrVoid<T>): Promise<T> {
   if (p && isPromiseLike(p)) {
     // Juggler uses promise-like Bluebird instead of native Promise
@@ -450,6 +451,7 @@ export class DefaultCrudRepository<
 
   async execute(
     command: Command,
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     parameters: NamedParameters | PositionalParameters,
     options?: Options,
   ): Promise<AnyObject> {

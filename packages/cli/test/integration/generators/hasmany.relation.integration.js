@@ -8,9 +8,6 @@
 const path = require('path');
 const assert = require('yeoman-assert');
 const testlab = require('@loopback/testlab');
-const fs = require('fs');
-
-const expect = testlab.expect;
 const TestSandbox = testlab.TestSandbox;
 
 const generator = path.join(__dirname, '../../../generators/relation');
@@ -48,7 +45,7 @@ const repositoryFileName = [
 ];
 
 describe('lb4 relation', function() {
-  // tslint:disable-next-line:no-invalid-this
+  // eslint-disable-next-line no-invalid-this
   this.timeout(30000);
 
   beforeEach('reset sandbox', async () => {
@@ -81,7 +78,7 @@ describe('lb4 relation', function() {
       /import \{OrderClassType\} from '\.\/order-class-type\.model';\n/,
     ];
     const expectedDecoretor = [
-      /\@hasMany\(\(\) => Order\)\n  orders: Order\[\];\n/,
+      /\@hasMany\(\(\) => Order\)\n {2}orders: Order\[\];\n/,
       /\@hasMany\(\(\) => OrderClass ,\{keyTo: 'customerClassCustNumber'\}\)/,
       /\@hasMany\(\(\) => OrderClassType ,\{keyTo: 'customerClassTypeCustNumber'\}\)/,
     ];
@@ -140,14 +137,14 @@ describe('lb4 relation', function() {
       /import \{OrderClassType\} from '\.\/order-class-type\.model';\n/,
     ];
     const expectedDecoretor = [
-      /\@hasMany\(\(\) => Order\)\n  myOrders: Order\[\];\n/,
+      /\@hasMany\(\(\) => Order\)\n {2}myOrders: Order\[\];\n/,
       /\@hasMany\(\(\) => OrderClass ,\{keyTo: 'customerClassCustNumber'\}\)/,
       /\@hasMany\(\(\) => OrderClassType ,\{keyTo: 'customerClassTypeCustNumber'\}\)/,
     ];
     const expectedProperty = [
-      /@property\(\{\n    type: 'number',\n  \}\)\n  customerId\?\: number;\n/,
-      /@property\(\{\n    type: 'number',\n  \}\)\n  customerClassCustNumber\?\: number;\n/,
-      /@property\(\{\n    type: 'number',\n  \}\)\n  customerClassTypeCustNumber\?\: number;\n/,
+      /@property\(\{\n {4}type: 'number',\n {2}\}\)\n {2}customerId\?\: number;\n/,
+      /@property\(\{\n {4}type: 'number',\n {2}\}\)\n {2}customerClassCustNumber\?\: number;\n/,
+      /@property\(\{\n {4}type: 'number',\n {2}\}\)\n {2}customerClassTypeCustNumber\?\: number;\n/,
     ];
 
     promptArray.forEach(function(multiItemPrompt, i) {
@@ -212,11 +209,11 @@ describe('lb4 relation', function() {
       /import \{OrderClassType\} from '\.\/order-class-type\.model';\n/,
     ];
     const expectedDecoretor = [
-      /\@hasMany\(\(\) => Order ,\{keyTo: 'mykey'\}\)\n  orders: Order\[\];\n/,
-      /\@hasMany\(\(\) => OrderClass ,\{keyTo: 'mykey'\}\)\n  orderClasses: OrderClass\[\];\n/,
-      /\@hasMany\(\(\) => OrderClassType ,\{keyTo: 'mykey'\}\)\n  orderClassTypes: OrderClassType\[\];\n/,
+      /\@hasMany\(\(\) => Order ,\{keyTo: 'mykey'\}\)\n {2}orders: Order\[\];\n/,
+      /\@hasMany\(\(\) => OrderClass ,\{keyTo: 'mykey'\}\)\n {2}orderClasses: OrderClass\[\];\n/,
+      /\@hasMany\(\(\) => OrderClassType ,\{keyTo: 'mykey'\}\)\n {2}orderClassTypes: OrderClassType\[\];\n/,
     ];
-    const expectedProperty = /@property\(\{\n    type: 'number',\n  \}\)\n  mykey\?\: number;\n/;
+    const expectedProperty = /@property\(\{\n {4}type: 'number',\n {2}\}\)\n {2}mykey\?\: number;\n/;
 
     promptArray.forEach(function(multiItemPrompt, i) {
       it('add the keyTo to the source model', async () => {
@@ -272,7 +269,7 @@ describe('lb4 relation', function() {
     ];
 
     const expectedDecoretor = [
-      /\@hasMany\(\(\) => Order\)\n  orders: Order\[\];\n/,
+      /\@hasMany\(\(\) => Order\)\n {2}orders: Order\[\];\n/,
       /\@hasMany\(\(\) => OrderClass ,\{keyTo: 'customerClassCustNumber'\}\)\n/,
       /\@hasMany\(\(\) => OrderClassType ,\{keyTo: 'customerClassTypeCustNumber'\}\)\n/,
     ];
@@ -324,9 +321,9 @@ context('check if the controller file created ', () => {
     /class CustomerClassTypeOrderClassTypeController/,
   ];
   const controllerConstructor = [
-    /constructor\(\n    \@repository\(CustomerRepository\) protected customerRepository: CustomerRepository,\n  \) \{ \}\n/,
-    /constructor\(\n    \@repository\(CustomerClassRepository\) protected customerClassRepository: CustomerClassRepository,\n  \) \{ \}\n/,
-    /constructor\(\n    \@repository\(CustomerClassTypeRepository\) protected customerClassTypeRepository: CustomerClassTypeRepository,\n  \) \{ \}\n/,
+    /constructor\(\n {4}\@repository\(CustomerRepository\) protected customerRepository: CustomerRepository,\n {2}\) \{ \}\n/,
+    /constructor\(\n {4}\@repository\(CustomerClassRepository\) protected customerClassRepository: CustomerClassRepository,\n {2}\) \{ \}\n/,
+    /constructor\(\n {4}\@repository\(CustomerClassTypeRepository\) protected customerClassTypeRepository: CustomerClassTypeRepository,\n {2}\) \{ \}\n/,
   ];
 
   const indexExport = [
@@ -383,37 +380,37 @@ context('check if the controller file created ', () => {
         sourceClassnames[i],
       async () => {
         const getOrdersByCustomerIdRegEx = [
-          /\@get\('\/customers\/{id}\/orders', {\n    responses: {\n      '200': {\n/,
+          /\@get\('\/customers\/{id}\/orders', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'Array of Order\\'s belonging to Customer',\n/,
-          /content: {\n          'application\/json': {\n/,
+          /content: {\n {10}'application\/json': {\n/,
           /schema: { type: 'array', items: { 'x-ts-type': Order } },/,
-          /},\n .      },\n .    },\n .  },\n  }\)\n/,
-          /async find\(\n .  \@param.path.number\('id'\) id: number,\n/,
+          /},\n . {6}},\n . {4}},\n . {2}},\n {2}}\)\n/,
+          /async find\(\n . {2}\@param.path.number\('id'\) id: number,\n/,
           /\@param.query.object\('filter'\) filter\?: Filter,\n/,
           /\)\: Promise<Order\[]> {\n/,
-          /return await this\.customerRepository\.orders\(id\)\.find\(filter\);\n  }\n/,
+          /return await this\.customerRepository\.orders\(id\)\.find\(filter\);\n {2}}\n/,
         ];
         const getOrdersClassByCustomerClassIdRegEx = [
-          /\@get\('\/customer-classes\/{id}\/order-classes', {\n    responses: {\n      '200': {\n/,
+          /\@get\('\/customer-classes\/{id}\/order-classes', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'Array of OrderClass\\'s belonging to CustomerClass',\n/,
-          /content: {\n          'application\/json': {\n/,
+          /content: {\n {10}'application\/json': {\n/,
           /schema: { type: 'array', items: { 'x-ts-type': OrderClass } },/,
-          /},\n .      },\n .    },\n .  },\n  }\)\n/,
-          /async find\(\n .  \@param.path.number\('id'\) id: number,\n/,
+          /},\n . {6}},\n . {4}},\n . {2}},\n {2}}\)\n/,
+          /async find\(\n . {2}\@param.path.number\('id'\) id: number,\n/,
           /\@param.query.object\('filter'\) filter\?: Filter,\n/,
           /\)\: Promise<OrderClass\[]> {\n/,
-          /return await this\.customerClassRepository\.orderClasses\(id\)\.find\(filter\);\n  }\n/,
+          /return await this\.customerClassRepository\.orderClasses\(id\)\.find\(filter\);\n {2}}\n/,
         ];
         const getOrdersClassTypeByCustomerClassTypeIdRegEx = [
-          /\@get\('\/customer-class-types\/{id}\/order-class-types', {\n    responses: {\n      '200': {\n/,
+          /\@get\('\/customer-class-types\/{id}\/order-class-types', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'Array of OrderClassType\\'s belonging to CustomerClassType',\n/,
-          /content: {\n          'application\/json': {\n/,
+          /content: {\n {10}'application\/json': {\n/,
           /schema: { type: 'array', items: { 'x-ts-type': OrderClassType } },/,
-          /},\n .      },\n .    },\n .  },\n  }\)\n/,
-          /async find\(\n .  \@param.path.number\('id'\) id: number,\n/,
+          /},\n . {6}},\n . {4}},\n . {2}},\n {2}}\)\n/,
+          /async find\(\n . {2}\@param.path.number\('id'\) id: number,\n/,
           /\@param.query.object\('filter'\) filter\?: Filter,\n/,
           /\)\: Promise<OrderClassType\[]> {\n/,
-          /return await this\.customerClassTypeRepository\.orderClassTypes\(id\).find\(filter\);\n  }\n/,
+          /return await this\.customerClassTypeRepository\.orderClassTypes\(id\).find\(filter\);\n {2}}\n/,
         ];
 
         const getRegEx = [
@@ -437,34 +434,34 @@ context('check if the controller file created ', () => {
       'controller POST ' + targetClassnames[i] + ' to ' + sourceClassnames[i],
       async () => {
         const postClassCreateRegEx = [
-          /\@post\('\/customers\/{id}\/orders', {\n    responses: {\n      '200': {\n/,
+          /\@post\('\/customers\/{id}\/orders', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'Customer model instance',\n/,
           /content: { 'application\/json': { schema: { 'x-ts-type': Order } } },\n/,
-          /},\n .  },\n .}\)\n  async create\(\n/,
+          /},\n . {2}},\n .}\)\n {2}async create\(\n/,
           /\@param\.path\.number\('id'\) id: typeof Customer\.prototype\.id,\n/,
           /\@requestBody\(\) order: Order,\n/,
           /\): Promise<Order> {\n/,
-          /return await this\.customerRepository\.orders\(id\)\.create\(order\);\n  }\n/,
+          /return await this\.customerRepository\.orders\(id\)\.create\(order\);\n {2}}\n/,
         ];
         const postMultiWordClassCreateRegEx = [
-          /\@post\('\/customer-classes\/{id}\/order-classes', {\n    responses: {\n      '200': {\n/,
+          /\@post\('\/customer-classes\/{id}\/order-classes', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'CustomerClass model instance',\n/,
           /content: { 'application\/json': { schema: { 'x-ts-type': OrderClass } } },\n/,
-          /},\n .  },\n .}\)\n  async create\(\n/,
+          /},\n . {2}},\n .}\)\n {2}async create\(\n/,
           /\@param\.path\.number\('id'\) id: typeof CustomerClass\.prototype\.custNumber,\n/,
           /\@requestBody\(\) orderClass: OrderClass,\n/,
           /\): Promise<OrderClass> {\n/,
-          /return await this\.customerClassRepository\.orderClasses\(id\)\.create\(orderClass\);\n  }\n/,
+          /return await this\.customerClassRepository\.orderClasses\(id\)\.create\(orderClass\);\n {2}}\n/,
         ];
         const postTypeClassCreateRegEx = [
-          /\@post\('\/customer-class-types\/{id}\/order-class-types', {\n    responses: {\n      '200': {\n/,
+          /\@post\('\/customer-class-types\/{id}\/order-class-types', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'CustomerClassType model instance',\n/,
           /content: { 'application\/json': { schema: { 'x-ts-type': OrderClassType } } },\n/,
-          /},\n .  },\n .}\)\n  async create\(\n/,
+          /},\n . {2}},\n .}\)\n {2}async create\(\n/,
           /\@param\.path\.number\('id'\) id: typeof CustomerClassType\.prototype\.custNumber,\n/,
           /\@requestBody\(\) orderClassType: OrderClassType,\n/,
           /\): Promise<OrderClassType> {\n/,
-          /return await this\.customerClassTypeRepository\.orderClassTypes\(id\)\.create\(orderClassType\);\n  }\n/,
+          /return await this\.customerClassTypeRepository\.orderClassTypes\(id\)\.create\(orderClassType\);\n {2}}\n/,
         ];
 
         const expectedControllerFile = path.join(
@@ -493,36 +490,36 @@ context('check if the controller file created ', () => {
         ' id',
       async () => {
         const updateOrderByCustomerIdRegEx = [
-          /\@patch\('\/customers\/{id}\/orders', {\n    responses: {\n      '200': {\n/,
+          /\@patch\('\/customers\/{id}\/orders', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'Customer.Order PATCH success count',\n/,
           /content: { 'application\/json': { schema: CountSchema } },\n/,
-          /},\n    },\n  }\)\n  async patch\(\n/,
-          /\@param\.path\.number\('id'\) id: number,\n    \@requestBody\(\) order: Partial<Order>,\n/,
+          /},\n {4}},\n {2}}\)\n {2}async patch\(\n/,
+          /\@param\.path\.number\('id'\) id: number,\n {4}\@requestBody\(\) order: Partial<Order>,\n/,
           /\@param\.query\.object\('where', getWhereSchemaFor\(Order\)\) where\?: Where,\n/,
           /\): Promise<Count> {\n/,
-          /return await this\.customerRepository\.orders\(id\).patch\(order, where\);\n  }\n/,
+          /return await this\.customerRepository\.orders\(id\).patch\(order, where\);\n {2}}\n/,
         ];
 
         const updateOrderClassByCustomerClassIdRegEx = [
-          /\@patch\('\/customer-classes\/{id}\/order-classes', {\n    responses: {\n      '200': {\n/,
+          /\@patch\('\/customer-classes\/{id}\/order-classes', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'CustomerClass.OrderClass PATCH success count',\n/,
           /content: { 'application\/json': { schema: CountSchema } },\n/,
-          /},\n    },\n  }\)\n  async patch\(\n/,
-          /\@param\.path\.number\('id'\) id: number,\n    \@requestBody\(\) orderClass: Partial<OrderClass>,\n/,
+          /},\n {4}},\n {2}}\)\n {2}async patch\(\n/,
+          /\@param\.path\.number\('id'\) id: number,\n {4}\@requestBody\(\) orderClass: Partial<OrderClass>,\n/,
           /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClass\)\) where\?: Where,\n/,
           /\): Promise<Count> {\n/,
-          /return await this\.customerClassRepository\.orderClasses\(id\)\.patch\(orderClass, where\);\n  }\n/,
+          /return await this\.customerClassRepository\.orderClasses\(id\)\.patch\(orderClass, where\);\n {2}}\n/,
         ];
 
         const updateOrderClassByCustomerClassTypeIdRegEx = [
-          /\@patch\('\/customer-class-types\/{id}\/order-class-types', {\n    responses: {\n      '200': {\n/,
+          /\@patch\('\/customer-class-types\/{id}\/order-class-types', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'CustomerClassType.OrderClassType PATCH success count',\n/,
           /content: { 'application\/json': { schema: CountSchema } },\n/,
-          /},\n    },\n  }\)\n  async patch\(\n/,
-          /\@param\.path\.number\('id'\) id: number,\n    \@requestBody\(\) orderClassType: Partial<OrderClassType>,\n/,
+          /},\n {4}},\n {2}}\)\n {2}async patch\(\n/,
+          /\@param\.path\.number\('id'\) id: number,\n {4}\@requestBody\(\) orderClassType: Partial<OrderClassType>,\n/,
           /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClassType\)\) where\?: Where,\n/,
           /\): Promise<Count> {\n/,
-          /return await this\.customerClassTypeRepository\.orderClassTypes\(id\).patch\(orderClassType, where\);\n  }\n/,
+          /return await this\.customerClassTypeRepository\.orderClassTypes\(id\).patch\(orderClassType, where\);\n {2}}\n/,
         ];
 
         const expectedControllerFile = path.join(
@@ -551,36 +548,36 @@ context('check if the controller file created ', () => {
         ' id',
       async () => {
         const deleteOrderByCustomerIdRegEx = [
-          /\@del\('\/customers\/{id}\/orders', {\n    responses: {\n      '200': {\n/,
+          /\@del\('\/customers\/{id}\/orders', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'Customer.Order DELETE success count',\n/,
           /content: { 'application\/json': { schema: CountSchema } },\n/,
-          /},\n    },\n  }\)\n  async delete\(\n/,
+          /},\n {4}},\n {2}}\)\n {2}async delete\(\n/,
           /\@param\.path\.number\('id'\) id: number,\n /,
           /\@param\.query\.object\('where', getWhereSchemaFor\(Order\)\) where\?: Where,\n/,
           /\): Promise<Count> {\n/,
-          /return await this\.customerRepository\.orders\(id\)\.delete\(where\);\n  }\n}\n/,
+          /return await this\.customerRepository\.orders\(id\)\.delete\(where\);\n {2}}\n}\n/,
         ];
 
         const deleteOrderClassByCustomerClassIdRegEx = [
-          /\@del\('\/customer-classes\/{id}\/order-classes', {\n    responses: {\n      '200': {\n/,
+          /\@del\('\/customer-classes\/{id}\/order-classes', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'CustomerClass.OrderClass DELETE success count',\n/,
           /content: { 'application\/json': { schema: CountSchema } },\n/,
-          /},\n    },\n  }\)\n  async delete\(\n/,
+          /},\n {4}},\n {2}}\)\n {2}async delete\(\n/,
           /\@param\.path\.number\('id'\) id: number,\n /,
           /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClass\)\) where\?: Where,\n/,
           /\): Promise<Count> {\n/,
-          /return await this\.customerClassRepository\.orderClasses\(id\)\.delete\(where\);\n  }\n}\n/,
+          /return await this\.customerClassRepository\.orderClasses\(id\)\.delete\(where\);\n {2}}\n}\n/,
         ];
 
         const deleteOrderClassTypeByCustomerClassTypeIdRegEx = [
-          /\@del\('\/customer-class-types\/{id}\/order-class-types', {\n    responses: {\n      '200': {\n/,
+          /\@del\('\/customer-class-types\/{id}\/order-class-types', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'CustomerClassType.OrderClassType DELETE success count',\n/,
           /content: { 'application\/json': { schema: CountSchema } },\n/,
-          /},\n    },\n  }\)\n  async delete\(\n/,
+          /},\n {4}},\n {2}}\)\n {2}async delete\(\n/,
           /\@param\.path\.number\('id'\) id: number,\n /,
           /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClassType\)\) where\?: Where,\n/,
           /\): Promise<Count> {\n/,
-          /return await this\.customerClassTypeRepository\.orderClassTypes\(id\)\.delete\(where\);\n  }\n}\n/,
+          /return await this\.customerClassTypeRepository\.orderClassTypes\(id\)\.delete\(where\);\n {2}}\n}\n/,
         ];
 
         const expectedControllerFile = path.join(
@@ -678,18 +675,18 @@ context('check source class repository ', () => {
       const singleWordClassConstractor = [
         /public readonly orders: HasManyRepositoryFactory<Order, typeof Customer\.prototype\.id>;\n/,
         /constructor\(\@inject\('datasources\.db'\) dataSource: DbDataSource, \@repository\.getter\('OrderRepository'\) protected orderRepositoryGetter: Getter<OrderRepository>,\) \{\n/,
-        /super\(Customer, dataSource\);\n    this.orders = this.createHasManyRepositoryFactoryFor\('orders', orderRepositoryGetter,\);\n  \}\n/,
+        /super\(Customer, dataSource\);\n {4}this.orders = this.createHasManyRepositoryFactoryFor\('orders', orderRepositoryGetter,\);\n {2}\}\n/,
       ];
 
       const multiWordClassConstractor = [
         /public readonly orderClasses: HasManyRepositoryFactory<OrderClass, typeof CustomerClass\.prototype\.custNumber>;\n/,
         /constructor\(\@inject\('datasources\.myDB'\) dataSource: MyDBDataSource, \@repository\.getter\('OrderClassRepository'\) protected orderClassRepositoryGetter: Getter<OrderClassRepository>,\) \{\n/,
-        /super\(CustomerClass, dataSource\);\n    this\.orderClasses = this\.createHasManyRepositoryFactoryFor\('orderClasses', orderClassRepositoryGetter,\);\n  \}\n/,
+        /super\(CustomerClass, dataSource\);\n {4}this\.orderClasses = this\.createHasManyRepositoryFactoryFor\('orderClasses', orderClassRepositoryGetter,\);\n {2}\}\n/,
       ];
       const typeClassConstractor = [
         /public readonly orderClassTypes: HasManyRepositoryFactory<OrderClassType, typeof CustomerClassType\.prototype\.custNumber>;\n/,
         /constructor\(@inject\('datasources\.myDB'\) dataSource: MyDBDataSource, @repository\.getter\('OrderClassTypeRepository'\) protected orderClassTypeRepositoryGetter: Getter<OrderClassTypeRepository>,\) \{\n/,
-        /super\(CustomerClassType, dataSource\);\n    this\.orderClassTypes = this\.createHasManyRepositoryFactoryFor\('orderClassTypes', orderClassTypeRepositoryGetter,\);\n  \}/,
+        /super\(CustomerClassType, dataSource\);\n {4}this\.orderClassTypes = this\.createHasManyRepositoryFactoryFor\('orderClassTypes', orderClassTypeRepositoryGetter,\);\n {2}\}/,
       ];
 
       const sourceRepositoryFile = path.join(

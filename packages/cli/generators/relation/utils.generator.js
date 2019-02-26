@@ -144,7 +144,7 @@ exports.getPropertyType = function(classObj, propertyName) {
  */
 
 exports.isValidPropertyType = function(classObj, propertyName, propertyType) {
-  return this.getPropertyType(classObj, propertyName) == propertyType;
+  return this.getPropertyType(classObj, propertyName) === propertyType;
 };
 
 exports.doesParameterExist = function(classConstructor, parameterName) {
@@ -184,7 +184,7 @@ exports.getPropertyStartPos = function(classObj) {
 };
 
 exports.addRequiredImports = function(sourceFile, imports) {
-  for (let currentImport of imports) {
+  for (const currentImport of imports) {
     this.addCurrentImport(sourceFile, currentImport);
   }
 };
@@ -228,7 +228,7 @@ exports.doesImportExistInModule = function(sourceFile, currentImport) {
   if (relevantImports.length > 0) {
     identicalImport = relevantImports[0]
       .getNamedImports()
-      .filter(imp => imp.getName() == currentImport.name);
+      .filter(imp => imp.getName() === currentImport.name);
   }
 
   return identicalImport && identicalImport.length > 0;
@@ -236,5 +236,5 @@ exports.doesImportExistInModule = function(sourceFile, currentImport) {
 
 exports.getNamedImportsFromModule = function(sourceFile, moduleName) {
   const allImports = sourceFile.getImportDeclarations();
-  return allImports.filter(imp => imp.getModuleSpecifierValue() == moduleName);
+  return allImports.filter(imp => imp.getModuleSpecifierValue() === moduleName);
 };

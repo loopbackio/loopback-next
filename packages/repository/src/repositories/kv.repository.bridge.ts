@@ -16,9 +16,9 @@ import {juggler, ensurePromise} from './legacy-juggler-bridge';
  * Polyfill for Symbol.asyncIterator
  * See https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-3.html
  */
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 if (!(Symbol as any).asyncIterator) {
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (Symbol as any).asyncIterator = Symbol.for('Symbol.asyncIterator');
 }
 
@@ -59,7 +59,7 @@ export class DefaultKeyValueRepository<T extends Entity>
     if (modelData == null) return modelData;
     let data = modelData;
     if (typeof modelData.toObject === 'function') {
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data = (modelData as any).toObject();
     }
     return new this.entityClass(data) as T;

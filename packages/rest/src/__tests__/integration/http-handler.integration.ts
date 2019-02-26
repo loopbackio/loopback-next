@@ -444,7 +444,7 @@ describe('HttpHandler', () => {
         .build();
 
       class RouteParamController {
-        async showBody(data: Object): Promise<Object> {
+        async showBody(data: object): Promise<object> {
           bodyParamControllerInvoked = true;
           return data;
         }
@@ -466,7 +466,7 @@ describe('HttpHandler', () => {
         .build();
 
       class TestController {
-        public async getObject(): Promise<Object> {
+        public async getObject(): Promise<object> {
           return {key: 'value'};
         }
       }
@@ -668,8 +668,8 @@ describe('HttpHandler', () => {
   }
 
   function givenControllerClass(
-    // tslint:disable-next-line:no-any
-    ctor: new (...args: any[]) => Object,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ctor: new (...args: any[]) => object,
     spec: ControllerSpec,
   ) {
     handler.registerController(spec, ctor);

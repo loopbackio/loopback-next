@@ -67,8 +67,9 @@ module.exports = class BaseGenerator extends Generator {
       );
     }
 
+    let jsonStr;
     try {
-      const jsonStr = await readTextFromStdin();
+      jsonStr = await readTextFromStdin();
       return JSON.parse(jsonStr);
     } catch (e) {
       if (!process.stdin.isTTY) {

@@ -15,7 +15,6 @@ const tsArtifact = {
   CallExpression: 'CallExpression',
   ObjectLiteralExpression: 'ObjectLiteralExpression',
   PropertyAssignment: 'PropertyAssignment',
-  PropertyDeclaration: 'PropertyDeclaration',
   TrueKeywordTrue: 'TrueKeyword[value="true"]',
   // the following are placed in case it is needed to explore more artifacts
   IfStatement: 'IfStatement',
@@ -113,14 +112,14 @@ exports.getIdFromModel = async function(fileContent) {
   let retVal = null;
 
   const ast = tsquery.ast(fileContent);
-  for (let rootNodes of RootNodesFindID) {
+  for (const rootNodes of RootNodesFindID) {
     const propertyArr = [];
     const stRootNode = rootNodes.join('>');
     const nodes = tsquery(ast, stRootNode);
 
     debug(`rootNode ${stRootNode}`);
 
-    for (let a of nodes) {
+    for (const a of nodes) {
       propertyArr.push(a.escapedText);
     }
 
@@ -128,7 +127,7 @@ exports.getIdFromModel = async function(fileContent) {
     const subnodes = tsquery(ast, stChildNode);
 
     let i = 0;
-    for (let a of subnodes) {
+    for (const a of subnodes) {
       if (a.parent.name.escapedText === 'id') {
         // we found the primary key for the model
         retVal = propertyArr[i];

@@ -76,7 +76,7 @@ describe('multipart/form-data', () => {
       })
       request: Request,
       @inject(RestBindings.Http.RESPONSE) response: Response,
-    ): Promise<Object> {
+    ): Promise<object> {
       const storage = multer.memoryStorage();
       const upload = multer({storage});
       return new Promise<object>((resolve, reject) => {
@@ -85,7 +85,7 @@ describe('multipart/form-data', () => {
           else {
             resolve({
               files: request.files,
-              // tslint:disable-next-line:no-any
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               fields: (request as any).fields,
             });
           }

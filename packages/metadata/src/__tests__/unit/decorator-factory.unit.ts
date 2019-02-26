@@ -6,11 +6,11 @@
 import {expect} from '@loopback/testlab';
 import {
   ClassDecoratorFactory,
-  PropertyDecoratorFactory,
-  MethodDecoratorFactory,
-  ParameterDecoratorFactory,
-  MethodParameterDecoratorFactory,
   DecoratorFactory,
+  MethodDecoratorFactory,
+  MethodParameterDecoratorFactory,
+  ParameterDecoratorFactory,
+  PropertyDecoratorFactory,
   Reflector,
 } from '../..';
 
@@ -113,7 +113,7 @@ describe('ClassDecoratorFactory', () => {
     expect(() => {
       @classDecorator({x: 1})
       @classDecorator({y: 2})
-      // tslint:disable-next-line:no-unused
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       class MyController {}
     }).to.throw(
       /Decorator cannot be applied more than once on class MyController/,
@@ -352,7 +352,7 @@ describe('PropertyDecoratorFactory', () => {
 
   it('throws if applied more than once on the same property', () => {
     expect(() => {
-      // tslint:disable-next-line:no-unused
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       class MyController {
         @propertyDecorator({x: 1})
         @propertyDecorator({y: 2})
@@ -400,7 +400,7 @@ describe('PropertyDecoratorFactory for static properties', () => {
 
   it('throws if applied more than once on the same static property', () => {
     expect(() => {
-      // tslint:disable-next-line:no-unused
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       class MyController {
         @propertyDecorator({x: 1})
         @propertyDecorator({y: 2})
@@ -448,7 +448,7 @@ describe('MethodDecoratorFactory', () => {
 
   it('throws if applied more than once on the same method', () => {
     expect(() => {
-      // tslint:disable-next-line:no-unused
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       class MyController {
         @methodDecorator({x: 1})
         @methodDecorator({y: 2})
@@ -496,7 +496,7 @@ describe('MethodDecoratorFactory for static methods', () => {
 
   it('throws if applied more than once on the same static method', () => {
     expect(() => {
-      // tslint:disable-next-line:no-unused
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       class MyController {
         @methodDecorator({x: 1})
         @methodDecorator({y: 2})
@@ -545,7 +545,7 @@ describe('ParameterDecoratorFactory', () => {
 
   it('throws if applied more than once on the same parameter', () => {
     expect(() => {
-      // tslint:disable-next-line:no-unused
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       class MyController {
         myMethod(
           @parameterDecorator({x: 1})
@@ -634,7 +634,7 @@ describe('ParameterDecoratorFactory for a static method', () => {
 
   it('throws if applied more than once on the same parameter', () => {
     expect(() => {
-      // tslint:disable-next-line:no-unused
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       class MyController {
         static myMethod(
           @parameterDecorator({x: 1})
@@ -695,7 +695,7 @@ describe('MethodParameterDecoratorFactory with invalid decorations', () => {
 
   it('reports error if the # of decorations exceeeds the # of params', () => {
     expect(() => {
-      // tslint:disable-next-line:no-unused
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       class MyController {
         @methodParameterDecorator({x: 1}) // Causing error
         @methodParameterDecorator({x: 2}) // For a

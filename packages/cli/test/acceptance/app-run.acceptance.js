@@ -25,6 +25,7 @@ describe('app-generator (SLOW)', function() {
 
   before('scaffold a new application', async function createAppProject() {
     // Increase the timeout to 1 minute to accommodate slow CI build machines
+    // eslint-disable-next-line no-invalid-this
     this.timeout(60 * 1000);
     await helpers
       .run(generator)
@@ -37,14 +38,20 @@ describe('app-generator (SLOW)', function() {
   before('install dependencies', async function installDependencies() {
     // Run `lerna bootstrap --scope @loopback/sandbox-app`
     // WARNING: It takes a while to run `lerna bootstrap`
+    // eslint-disable-next-line no-invalid-this
     this.timeout(15 * 60 * 1000);
     process.chdir(rootDir);
-    await lernaBootstrap(appName);
+    await lernaBootstrap([
+      appName,
+      '@loopback/build',
+      '@loopback/eslint-config',
+    ]);
   });
 
   it('passes `npm test` for the generated project', function() {
     // Increase the timeout to 5 minutes,
     // the tests can take more than 2 seconds to run.
+    // eslint-disable-next-line no-invalid-this
     this.timeout(5 * 60 * 1000);
 
     return new Promise((resolve, reject) => {
@@ -63,6 +70,7 @@ describe('app-generator (SLOW)', function() {
 
   after(function() {
     // Increase the timeout to accommodate slow CI build machines
+    // eslint-disable-next-line no-invalid-this
     this.timeout(30 * 1000);
 
     process.chdir(rootDir);

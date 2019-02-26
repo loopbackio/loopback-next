@@ -54,7 +54,7 @@ describe('CoffeeShopApplication', () => {
   });
 
   context('LoopBack 3 authentication', () => {
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let User: any;
 
     before(() => {

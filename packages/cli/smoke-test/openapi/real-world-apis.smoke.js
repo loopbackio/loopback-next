@@ -5,14 +5,11 @@
 
 'use strict';
 
-const {supertest, TestSandbox} = require('@loopback/testlab');
-const path = require('path');
-const assert = require('yeoman-assert');
+const {supertest} = require('@loopback/testlab');
 
 const {
   createAppProject,
   generateOpenApiArtifacts,
-  cleanSandbox,
   runLintFix,
   runNpmTest,
 } = require('./code-gen-utils');
@@ -49,6 +46,7 @@ describe('Real-world APIs', () => {
     }
 
     // This hook sometimes takes several seconds, due to the large download
+    // eslint-disable-next-line no-invalid-this
     this.timeout(10000);
 
     // Download a list of over 1500 real-world Swagger APIs from apis.guru
@@ -60,7 +58,7 @@ describe('Real-world APIs', () => {
     }
 
     // Remove certain APIs that are known to cause problems
-    var apis = res.body;
+    const apis = res.body;
 
     // GitHub's CORS policy blocks this request
     delete apis['googleapis.com:adsense'];
@@ -83,6 +81,7 @@ describe('Real-world APIs', () => {
   });
 
   it('generates all the proper files', async function() {
+    // eslint-disable-next-line no-invalid-this
     this.timeout(0);
     let count = 0;
     for (const api of realWorldAPIs) {

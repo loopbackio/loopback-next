@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@loopback/build": "^1.6.1",
-    "@loopback/tslint-config": "^2.0.4",
+    "@loopback/eslint-config": "^1.0.0",
     "@types/node": "^10.11.2"
   },
   "files": [

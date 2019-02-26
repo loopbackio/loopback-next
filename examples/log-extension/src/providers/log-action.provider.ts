@@ -37,7 +37,7 @@ export class LogActionProvider implements Provider<LogFn> {
     const fn = <LogFn>((
       req: Request,
       args: OperationArgs,
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       result: any,
       start?: HighResTime,
     ) => {
@@ -54,7 +54,7 @@ export class LogActionProvider implements Provider<LogFn> {
   private async action(
     req: Request,
     args: OperationArgs,
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     result: any,
     start?: HighResTime,
   ): Promise<void> {
@@ -80,6 +80,7 @@ export class LogActionProvider implements Provider<LogFn> {
       if (start) {
         const timeDiff: HighResTime = this.timer(start);
         const time: number =
+          // eslint-disable-next-line no-mixed-operators
           timeDiff[0] * 1000 + Math.round(timeDiff[1] * 1e-4) / 100;
         msg = `${time}ms: ${msg}`;
       }

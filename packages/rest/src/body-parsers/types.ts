@@ -12,7 +12,7 @@ export type RequestBody = {
   /**
    * Parsed value of the request body
    */
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any | undefined;
   /**
    * Is coercion required? Some forms of request such as urlencoded don't

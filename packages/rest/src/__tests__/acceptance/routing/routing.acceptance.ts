@@ -758,7 +758,7 @@ describe('Routing', () => {
       const server = await app.getServer(RestServer);
       const handler = await server.get(RestBindings.HANDLER);
       // Use a hack to verify the bound router is used by the handler
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       expect((handler as any)._routes._router).to.be.instanceof(RegExpRouter);
     });
 

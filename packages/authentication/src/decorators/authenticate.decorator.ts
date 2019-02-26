@@ -15,7 +15,7 @@ import {AUTHENTICATION_METADATA_KEY} from '../keys';
  */
 export interface AuthenticationMetadata {
   strategy: string;
-  options?: Object;
+  options?: object;
 }
 
 /**

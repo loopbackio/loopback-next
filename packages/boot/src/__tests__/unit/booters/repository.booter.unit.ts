@@ -22,7 +22,7 @@ describe('repository booter unit tests', () => {
   class RepoApp extends RepositoryMixin(Application) {}
 
   let app: RepoApp;
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let stub: sinon.SinonStub<[any?, ...any[]], void>;
 
   beforeEach('reset sandbox', () => sandbox.reset());

@@ -4,8 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {STRING} from '../../../';
-import {Entity, ModelDefinition} from '../../../';
+import {Entity, ModelDefinition, STRING} from '../../../';
 
 describe('model', () => {
   const customerDef = new ModelDefinition('Customer');
@@ -96,7 +95,7 @@ describe('model', () => {
     }
   }
 
-  // tslint:disable-next-line:no-unused
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   class User extends Entity {
     static definition = userDef;
     id: string;

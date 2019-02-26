@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BoundValue, Context, Provider, inject} from '@loopback/context';
+import {BoundValue, Context, inject, Provider} from '@loopback/context';
 import {
   Application,
   Component,
@@ -61,9 +61,9 @@ describe('RestComponent', () => {
         expect(logError.length).to.equal(3); // (err, statusCode, request)
       });
 
-      // tslint:disable-next-line:max-line-length
+      // eslint-disable-next-line max-len
       it('can be customized by extending RestComponent', async () => {
-        let lastLog: string = 'logError() was not called';
+        let lastLog = 'logError() was not called';
 
         class CustomRestComponent extends RestComponent {
           providers: ProviderMap = {

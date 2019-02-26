@@ -99,7 +99,7 @@ describe('@bind - customize classes with binding attributes', () => {
     });
 
     it('honors binding scope from @bind over defaultScope', () => {
-      let binding = createBindingFromClass(MySingletonController, {
+      const binding = createBindingFromClass(MySingletonController, {
         defaultScope: BindingScope.TRANSIENT,
       });
       expect(binding.scope).to.equal(BindingScope.SINGLETON);

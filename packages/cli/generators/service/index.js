@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-const _ = require('lodash');
 const ArtifactGenerator = require('../../lib/artifact-generator');
 const fs = require('fs');
 const debug = require('../../lib/debug')('service-generator');
@@ -80,11 +79,10 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
   async promptDataSourceName() {
     debug('Prompting for a datasource ');
     if (this.shouldExit()) return;
-    let cmdDatasourceName;
     let datasourcesList;
 
     // grab the datasource name from the command line
-    cmdDatasourceName = this.options.datasource
+    const cmdDatasourceName = this.options.datasource
       ? utils.toClassName(this.options.datasource) + 'Datasource'
       : '';
 
@@ -195,7 +193,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
    */
   async inferInterfaces() {
     if (this.shouldExit()) return;
-    let connectorType = utils.getDataSourceConnectorName(
+    const connectorType = utils.getDataSourceConnectorName(
       this.artifactInfo.datasourcesDir,
       this.artifactInfo.dataSourceClass,
     );

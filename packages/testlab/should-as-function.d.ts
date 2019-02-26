@@ -24,6 +24,9 @@ interface Object {
 }
 */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/unified-signatures */
+
 interface ShouldAssertion {
   // basic grammar
   a: ShouldAssertion;
@@ -211,7 +214,6 @@ interface Internal extends ShouldInternal {
 }
 
 declare var should: Internal;
-declare var Should: Internal;
 interface Window {
   Should: Internal;
 }

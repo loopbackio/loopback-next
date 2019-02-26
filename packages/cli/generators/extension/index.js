@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-const Generator = require('yeoman-generator');
 const utils = require('../../lib/utils');
 
 const ProjectGenerator = require('../../lib/project-generator');

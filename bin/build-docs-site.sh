@@ -22,7 +22,7 @@ REPO_ROOT=$DIR/..
 pushd $REPO_ROOT >/dev/null
 
 # Update apidocs
-lerna bootstrap --scope @loopback/tsdocs
+lerna bootstrap
 lerna run --scope @loopback/docs prepack
 
 # Clean up sandbox/loopback.io directory
@@ -31,8 +31,8 @@ rm -rf sandbox/loopback.io/
 # Shadow clone the `strongloop/loopback.io` github repo
 git clone --depth 1 https://github.com/strongloop/loopback.io.git sandbox/loopback.io
 
-# Bootstrap the `loopback.io` package
-lerna bootstrap --scope loopback.io-workflow-scripts --scope @loopback/docs
+# Add loopback.io-workflow-scripts with @loopback/docs linked
+lerna bootstrap --scope @loopback/docs --scope loopback.io-workflow-scripts
 
 pushd $REPO_ROOT/sandbox/loopback.io/ >/dev/null
 

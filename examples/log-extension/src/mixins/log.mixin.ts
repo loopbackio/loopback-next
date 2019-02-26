@@ -17,11 +17,11 @@ import {LogComponent} from '../component';
  * class MyApplication extends LogMixin(Application) {}
  * ```
  */
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function LogMixin<T extends Constructor<any>>(superClass: T) {
   return class extends superClass {
     // A mixin class has to take in a type any[] argument!
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constructor(...args: any[]) {
       super(...args);
       if (this.options && this.options.logLevel) {

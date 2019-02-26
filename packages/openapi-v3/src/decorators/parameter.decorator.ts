@@ -33,7 +33,7 @@ import {OAI3Keys} from '../keys';
  * @param paramSpec - Parameter specification.
  */
 export function param(paramSpec: ParameterObject) {
-  return function(target: Object, member: string, index: number) {
+  return function(target: object, member: string, index: number) {
     paramSpec = paramSpec || {};
     // Get the design time method parameter metadata
     const methodSig = MetadataInspector.getDesignTypeForMethod(target, member);
@@ -41,7 +41,7 @@ export function param(paramSpec: ParameterObject) {
 
     // Map design-time parameter type to the OpenAPI param type
 
-    let paramType = paramTypes[index];
+    const paramType = paramTypes[index];
 
     if (paramType) {
       if (
@@ -441,14 +441,14 @@ export namespace param {
   };
 }
 
-interface paramShortcutOptions {
+interface ParamShortcutOptions {
   type: string;
   format?: string;
 }
 
 function createParamShortcut(
   source: ParameterLocation,
-  options: paramShortcutOptions,
+  options: ParamShortcutOptions,
 ) {
   return (name: string) => {
     return param({name, in: source, schema: {...options}});

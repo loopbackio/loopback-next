@@ -225,7 +225,7 @@ describe('Routing metadata for parameters', () => {
     it('sets in:query style:deepObject and a default schema', () => {
       class MyController {
         @get('/greet')
-        greet(@param.query.object('filter') filter: Object) {}
+        greet(@param.query.object('filter') filter: object) {}
       }
       const expectedParamSpec = <ParameterObject>{
         name: 'filter',
@@ -251,7 +251,7 @@ describe('Routing metadata for parameters', () => {
               limit: {type: 'number'},
             },
           })
-          filter: Object,
+          filter: object,
         ) {}
       }
       const expectedParamSpec: ParameterObject = {

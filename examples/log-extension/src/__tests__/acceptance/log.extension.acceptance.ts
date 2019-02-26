@@ -215,9 +215,9 @@ describe('log extension acceptance test', () => {
       async handle(context: RequestContext): Promise<void> {
         const {request, response} = context;
 
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let args: any = [];
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let result: any;
 
         try {

@@ -54,7 +54,7 @@ function buildOperationArguments(
   body: RequestBody,
   globalSchemas: SchemasObject,
 ): OperationArgs {
-  let requestBodyIndex: number = -1;
+  let requestBodyIndex = -1;
   if (operationSpec.requestBody) {
     // the type of `operationSpec.requestBody` could be `RequestBodyObject`
     // or `ReferenceObject`, resolving a `$ref` value is not supported yet.
