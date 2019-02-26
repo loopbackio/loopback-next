@@ -15,6 +15,7 @@ packages/http-server/* @hacksparrow @bajtos
 packages/cli/* @raymondfeng @bajtos
 packages/context/* @bajtos @raymondfeng
 packages/core/* @bajtos @raymondfeng
+packages/eslint-config/* @raymondfeng
 packages/metadata/* @raymondfeng
 packages/openapi-spec-builder/* @bajtos @raymondfeng
 packages/openapi-v3/* @bajtos @jannyHou
