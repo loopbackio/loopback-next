@@ -19,7 +19,7 @@ See [Crafting LoopBack 4](Crafting-LoopBack-4.md) for more details.
 
 ### Where are the tutorials?
 
-See [Examples and tutorials](Examples-and-tutorials.md).
+See [Examples](Examples.md) and [Tutorials](Tutorials.md).
 
 ### What features are planned?
 

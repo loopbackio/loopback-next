@@ -87,6 +87,7 @@ the following files and directories:
 |   ├── repositories/
 |   ├── application.ts
 |   ├── index.ts
+|   ├── migrate.ts
 |   └── sequence.ts
 └── package.json
 ```
