@@ -64,7 +64,8 @@ To create your first LoopBack 4 application, see
 - [API documentation](http://apidocs.loopback.io/#LoopBack4)
 - [FAQ](http://loopback.io/doc/en/lb4/FAQ.html)
 - [LoopBack 3 vs LoopBack 4](http://loopback.io/doc/en/lb4/LoopBack-3.x.html)
-- [Tutorials and examples](http://loopback.io/doc/en/lb4/Examples-and-tutorials.html)
+- [Tutorials](http://loopback.io/doc/en/lb4/Tutorials.html)
+- [Examples](http://loopback.io/doc/en/lb4/Examples.html)
 
 ## Contributing
 

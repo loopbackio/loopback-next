@@ -35,7 +35,8 @@ Let's try out our application! First, you'll want to start the app.
 
 ```sh
 $ npm start
-Server is running at http://[::1]:3000
+
+Server is running at http://127.0.0.1:3000
 ```
 
 Next, you can use the [API Explorer](http://localhost:3000/explorer) to browse
@@ -50,10 +51,10 @@ Here are some requests you can try:
   `{ "desc": "need milk for cereal" }`
 
 {% include note.html content="
-For the meantime, use
+In the meantime, use
 `{ \"title\": \"get the milk\", \"desc\": \"need milk for cereal\" }` as the
 body for `PATCH/todos/{id}`, as LoopBack 4 doesn't support partial updates yet.
-For more info, see
+For more information, see
 [GitHub issue 1722](https://github.com/strongloop/loopback-next/issues/1722).
 " %}
 
@@ -79,8 +80,8 @@ left off here to guide you through adding in an additional feature:
 ### More examples and tutorials
 
 Eager to continue learning about LoopBack 4? Check out our
-[examples and tutorials](Examples-and-tutorials.md) section to find examples for
-creating your own custom components, sequences and more!
+[Examples](Examples.md) and [Tutorials](Tutorials.md) sections to find examples
+for creating your own custom components, sequences and more!
 
 ### Navigation
 
