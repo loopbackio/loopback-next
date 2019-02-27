@@ -35,7 +35,7 @@ $ lb4 app
 ```
 
 For this tutorial, when prompted with the options for enabling certain project
-features (loopback's build, tslint, mocha, etc.), leave them all enabled.
+features (LoopBack's build, tslint, mocha, etc.), leave them all enabled.
 
 ### Structure
 
@@ -43,15 +43,17 @@ After your application is generated, you will have a folder structure similar to
 the following:
 
 ```text
+public/
+  index.html
 src/
   __tests__/
     README.md
-    mocha.opts
     acceptance/
-      home-page.controller.acceptance.ts
+      home-page.acceptance.ts
       ping.controller.acceptance.ts
+      test-helper.ts
   controllers/
-    home-page.controller.ts
+    index.ts
     README.md
     ping.controller.ts
   datasources/
@@ -62,7 +64,10 @@ src/
     README.md
   application.ts
   index.ts
+  migrate.ts
   sequence.ts
+test/
+  mocha.opts
 node_modules/
   ***
 LICENSE

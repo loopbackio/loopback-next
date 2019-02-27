@@ -113,7 +113,7 @@ v4.
 
 #### 1. Fork the loopback-next repository
 
-In your browser, navigate to <https://github.com/strongloop/loopback-next> .
+In your browser, navigate to <https://github.com/strongloop/loopback-next>.
 
 Create your own fork of the repository by pressing the `Fork` link on the
 right-hand side.
@@ -121,7 +121,7 @@ right-hand side.
 ![submit_pr_fork_main_repo.png](./imgs/submit_pr_fork_main_repo.png)
 
 When the forking process is complete, the repository will show up as
-`{ your user id }/loopback-next`. In my case, it is `emonddr/loopback-next` .
+`{ your user id }/loopback-next`. In my case, it is `emonddr/loopback-next`.
 
 ![submit_pr_my_forked_repo.png](./imgs/submit_pr_my_forked_repo.png)
 
@@ -137,7 +137,7 @@ Click on the `Clone or download` button
 
 ![submit_pr_create_feature_branch_1.png](./imgs/submit_pr_create_feature_branch_1.png)
 
-This brings up tiny dialog with different choices : Clone with SSH, Use HTTPS,
+This brings up tiny dialog with different choices: Clone with SSH, Use HTTPS,
 Open in Desktop, or Download Zip.
 
 In my case, I will leave it as `Clone with SSH`, and click on the
@@ -147,7 +147,7 @@ to paste this value in a terminal window soon).
 ![submit_pr_create_feature_branch_2.png](./imgs/submit_pr_create_feature_branch_2.png)
 
 Open a terminal window, and navigate to the directory where you want to clone
-the repository. In my case, this is `/Users/dremond/git` .
+the repository. In my case, this is `/Users/dremond/git`.
 
 To create the `feature` branch, run:
 
@@ -299,7 +299,7 @@ In my case, the fork of the repository is behind by several commits.
 
 ![submit_pr_rebase_1.png](./imgs/submit_pr_rebase_1.png)
 
-It is necessary to perform a `rebase` .
+It is necessary to perform a `rebase`.
 
 To `rebase` your forked repository's `master` branch off of the original
 repository, run:
@@ -408,7 +408,7 @@ into one.
 Ensure that you currently have your feature branch checked out, and that your
 local feature branch is in sync with your remote feature branch.
 
-Run :
+Run:
 
 ```
 git status
@@ -422,7 +422,7 @@ feature branch.
 Now let's rebase the feature branch off of the master branch in an interactive
 mode that allows us to `squash` the commits.
 
-Run :
+Run:
 
 ```
 git rebase -i master
@@ -456,7 +456,7 @@ message.
 
 If I had a large number of commits and didn't want all commit messages to be
 appended together, I would have specified: `pick, fixup, fixup` instead of
-`pick, squash, squash` . The command `fixup` is like `squash`, except that it
+`pick, squash, squash`. The command `fixup` is like `squash`, except that it
 discards a commit's log message.
 
 In my case, I only like the message of the first commit, so I will delete the
@@ -468,7 +468,7 @@ Save the changes, and the interactive `rebase` command finally completes.
 
 Push the changes from the local feature branch to the remote feature branch.
 
-Run :
+Run:
 
 ```
 git push --force-with-lease
