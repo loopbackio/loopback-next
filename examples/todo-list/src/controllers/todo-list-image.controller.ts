@@ -1,6 +1,6 @@
 import {TodoListRepository} from '../repositories';
 import {repository} from '@loopback/repository';
-import {param, post, requestBody, get} from '@loopback/rest';
+import {param, post, requestBody, get, HttpErrors} from '@loopback/rest';
 import {TodoListImage} from '../models';
 
 export class TodoListImageController {
@@ -32,6 +32,10 @@ export class TodoListImageController {
     },
   })
   async find(@param.path.number('id') id: number): Promise<TodoListImage> {
-    return await this.todoListRepo.image(id).get();
+    const foundImage = await this.todoListRepo.image(id).get();
+    if (!foundImage) {
+      throw new HttpErrors.NotFound();
+    }
+    return foundImage;
   }
 }
