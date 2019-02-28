@@ -11,7 +11,6 @@ import {
   repository,
   RepositoryMixin,
   Filter,
-  EntityNotFoundError,
 } from '../..';
 import {Address} from '../fixtures/models';
 import {CustomerRepository, AddressRepository} from '../fixtures/repositories';
