@@ -5,7 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 import {BootMixin, Booter, BootBindings} from '../../..';
-import {Application} from '@loopback/core';
+import {Application, bind} from '@loopback/core';
 
 describe('BootMxiin unit tests', () => {
   let app: AppWithBootMixin;
@@ -26,6 +26,14 @@ describe('BootMxiin unit tests', () => {
     app.booters(TestBooter);
     const booter = await app.get(`${BootBindings.BOOTER_PREFIX}.TestBooter`);
     expect(booter).to.be.an.instanceOf(TestBooter);
+  });
+
+  it('binds booter with `@bind` from app.booters()', async () => {
+    app.booters(TestBooterWithBind);
+    const booterBinding = app.getBinding(
+      `${BootBindings.BOOTER_PREFIX}.TestBooterWithBind`,
+    );
+    expect(booterBinding.tagMap).to.containEql({artifactType: 'xsd'});
   });
 
   it('binds multiple booter classes from app.booters()', async () => {
@@ -62,6 +70,15 @@ describe('BootMxiin unit tests', () => {
   });
 
   class TestBooter implements Booter {
+    configured = false;
+
+    async configure() {
+      this.configured = true;
+    }
+  }
+
+  @bind({tags: {artifactType: 'xsd'}})
+  class TestBooterWithBind implements Booter {
     configured = false;
 
     async configure() {
