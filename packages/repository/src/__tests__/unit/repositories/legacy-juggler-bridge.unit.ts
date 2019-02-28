@@ -10,7 +10,9 @@ import {
   Entity,
   EntityNotFoundError,
   juggler,
+  model,
   ModelDefinition,
+  property,
 } from '../../..';
 
 describe('legacy loopback-datasource-juggler', () => {
@@ -120,6 +122,74 @@ describe('DefaultCrudRepository', () => {
       expect(ShoppingList.definition.properties).to.containDeep(
         originalPropertyDefinition,
       );
+    });
+
+    it('converts PropertyDefinition with model type', () => {
+      @model()
+      class Role {
+        @property()
+        name: String;
+      }
+
+      @model()
+      class Address {
+        @property()
+        street: String;
+      }
+
+      @model()
+      class User extends Entity {
+        @property({
+          type: 'number',
+          id: true,
+        })
+        id: number;
+
+        @property({type: 'string'})
+        name: String;
+
+        @property.array(Role)
+        roles: Role[];
+
+        @property()
+        address: Address;
+      }
+
+      expect(ds.getModel('User')).undefined();
+
+      // tslint:disable-next-line:no-unused-expression
+      new DefaultCrudRepository(User, ds);
+
+      const JugglerUser = ds.getModel('User')!;
+      expect(JugglerUser).to.be.a.Function();
+
+      const addressProperty = JugglerUser.definition.properties.address;
+      const addressModel = addressProperty.type as typeof juggler.ModelBase;
+      expect(addressModel).to.be.a.Function();
+      expect(addressModel).to.equal(ds.getModel('Address'));
+
+      expect(addressModel.name).to.equal('Address');
+      expect(addressModel.definition).to.containDeep({
+        name: 'Address',
+        properties: {street: {type: String}},
+      });
+
+      const rolesProperty = JugglerUser.definition.properties.roles;
+      expect(rolesProperty.type)
+        .to.be.an.Array()
+        .of.length(1);
+
+      // FIXME(bajtos) PropertyDefinition in juggler does not allow array type!
+      // tslint:disable-next-line:no-any
+      const rolesModel = (rolesProperty.type as any)[0] as typeof juggler.ModelBase;
+      expect(rolesModel).to.be.a.Function();
+      expect(rolesModel).to.equal(ds.getModel('Role'));
+
+      expect(rolesModel.name).to.equal('Role');
+      expect(rolesModel.definition).to.containDeep({
+        name: 'Role',
+        properties: {name: {type: String}},
+      });
     });
   });
 
