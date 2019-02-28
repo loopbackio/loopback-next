@@ -65,6 +65,54 @@ describe('Repository in Thinking in LoopBack', () => {
     expect(stored).to.containDeep({extra: 'additional data'});
   });
 
+  it('allows models to allow nested model properties', async () => {
+    @model()
+    class Role extends Entity {
+      @property()
+      name: String;
+    }
+
+    @model()
+    class Address extends Entity {
+      @property()
+      street: String;
+    }
+
+    @model()
+    class User extends Entity {
+      @property({
+        type: 'number',
+        id: true,
+      })
+      id: number;
+
+      @property({type: 'string'})
+      name: String;
+
+      @property.array(Role)
+      roles: Role[];
+
+      @property()
+      address: Address;
+    }
+
+    const userRepo = new DefaultCrudRepository<User, typeof User.prototype.id>(
+      User,
+      new DataSource({connector: 'memory'}),
+    );
+
+    const user = {
+      id: 1,
+      name: 'foo',
+      roles: [{name: 'admin'}, {name: 'user'}],
+      address: {street: 'backstreet'},
+    };
+    const created = await userRepo.create(user);
+
+    const stored = await userRepo.findById(created.id);
+    expect(stored).to.containDeep(user);
+  });
+
   function givenProductRepository() {
     const db = new DataSource({
       connector: 'memory',
