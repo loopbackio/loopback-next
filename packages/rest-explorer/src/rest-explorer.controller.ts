@@ -33,11 +33,8 @@ export class ExplorerController {
   }
 
   indexRedirect() {
-    let url = this.request.url + '/';
-    if (this.request.baseUrl && this.request.baseUrl !== '/') {
-      url = this.request.baseUrl + url;
-    }
-    this.response.redirect(301, url);
+    const url = this.request.originalUrl || this.request.url;
+    this.response.redirect(301, url + '/');
   }
 
   index() {
