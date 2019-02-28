@@ -3,10 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor, Binding, BindingScope, Context} from '@loopback/context';
-import {Booter, BootOptions, Bootable} from '../interfaces';
+import {
+  Binding,
+  Constructor,
+  Context,
+  createBindingFromClass,
+} from '@loopback/context';
 import {BootComponent} from '../boot.component';
 import {Bootstrapper} from '../bootstrapper';
+import {Bootable, Booter, BootOptions} from '../interfaces';
 import {BootBindings} from '../keys';
 
 // Binding is re-exported as Binding / Booter types are needed when consuming
@@ -78,8 +83,9 @@ export function BootMixin<T extends Constructor<any>>(superClass: T) {
      * ```
      */
     booters(...booterCls: Constructor<Booter>[]): Binding[] {
-      // tslint:disable-next-line:no-any
-      return booterCls.map(cls => _bindBooter(<Context>(<any>this), cls));
+      return booterCls.map(cls =>
+        _bindBooter((this as unknown) as Context, cls),
+      );
     }
 
     /**
@@ -134,9 +140,9 @@ export function _bindBooter(
   ctx: Context,
   booterCls: Constructor<Booter>,
 ): Binding {
-  return ctx
-    .bind(`${BootBindings.BOOTER_PREFIX}.${booterCls.name}`)
-    .toClass(booterCls)
-    .inScope(BindingScope.CONTEXT)
-    .tag(BootBindings.BOOTER_TAG);
+  const binding = createBindingFromClass(booterCls, {
+    namespace: BootBindings.BOOTER_PREFIX,
+  }).tag(BootBindings.BOOTER_TAG);
+  ctx.add(binding);
+  return binding;
 }
