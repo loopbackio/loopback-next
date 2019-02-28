@@ -64,7 +64,7 @@ describe('request parsing', () => {
   });
 
   it('allows built-in body parsers to be removed', async () => {
-    app.unbind(RestBindings.REQUEST_BODY_PARSER_JSON);
+    app.restServer.unbind(RestBindings.REQUEST_BODY_PARSER_JSON);
     await postRequest('/show-body', 415);
   });
 

@@ -3,13 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, BindingScope, Constructor, inject} from '@loopback/context';
+import {Binding, BindingScope, inject} from '@loopback/context';
 import {
   Application,
   Component,
   CoreBindings,
   ProviderMap,
-  Server,
 } from '@loopback/core';
 import {createEmptyApiSpec} from '@loopback/openapi-v3-types';
 import {
@@ -49,39 +48,6 @@ export class RestComponent implements Component {
     [RestBindings.SequenceActions.PARSE_PARAMS.key]: ParseParamsProvider,
     [RestBindings.SequenceActions.SEND.key]: SendProvider,
   };
-  /**
-   * Add built-in body parsers
-   */
-  bindings = [
-    Binding.bind(RestBindings.REQUEST_BODY_PARSER)
-      .toClass(RequestBodyParser)
-      .inScope(BindingScope.SINGLETON),
-    createBodyParserBinding(
-      JsonBodyParser,
-      RestBindings.REQUEST_BODY_PARSER_JSON,
-    ),
-    createBodyParserBinding(
-      TextBodyParser,
-      RestBindings.REQUEST_BODY_PARSER_TEXT,
-    ),
-    createBodyParserBinding(
-      UrlEncodedBodyParser,
-      RestBindings.REQUEST_BODY_PARSER_URLENCODED,
-    ),
-    createBodyParserBinding(
-      RawBodyParser,
-      RestBindings.REQUEST_BODY_PARSER_RAW,
-    ),
-    createBodyParserBinding(
-      StreamBodyParser,
-      RestBindings.REQUEST_BODY_PARSER_STREAM,
-    ),
-  ];
-  servers: {
-    [name: string]: Constructor<Server>;
-  } = {
-    RestServer,
-  };
 
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE) app: Application,
@@ -94,6 +60,53 @@ export class RestComponent implements Component {
       Object.assign(apiSpec, {servers: config.openApiSpec.servers});
     }
     app.bind(RestBindings.API_SPEC).to(apiSpec);
+    app.server(RestServer);
+    this.bindBodyParsers(app);
+  }
+
+  /**
+   * Bind body parsers to the `RestServer`. This is needed because
+   * we bind `RequestBodyParser` as a singleton so that all body parser bindings
+   * need to be added to the same context.
+   *
+   * @param app Application instance
+   */
+  private bindBodyParsers(app: Application) {
+    const server = app.getSync<RestServer>(
+      `${CoreBindings.SERVERS}.RestServer`,
+    );
+
+    /**
+     * Add built-in body parsers
+     */
+    const bindings = [
+      Binding.bind(RestBindings.REQUEST_BODY_PARSER)
+        .toClass(RequestBodyParser)
+        .inScope(BindingScope.SINGLETON),
+      createBodyParserBinding(
+        JsonBodyParser,
+        RestBindings.REQUEST_BODY_PARSER_JSON,
+      ),
+      createBodyParserBinding(
+        TextBodyParser,
+        RestBindings.REQUEST_BODY_PARSER_TEXT,
+      ),
+      createBodyParserBinding(
+        UrlEncodedBodyParser,
+        RestBindings.REQUEST_BODY_PARSER_URLENCODED,
+      ),
+      createBodyParserBinding(
+        RawBodyParser,
+        RestBindings.REQUEST_BODY_PARSER_RAW,
+      ),
+      createBodyParserBinding(
+        StreamBodyParser,
+        RestBindings.REQUEST_BODY_PARSER_STREAM,
+      ),
+    ];
+    for (const binding of bindings) {
+      server.add(binding);
+    }
   }
 }
 
