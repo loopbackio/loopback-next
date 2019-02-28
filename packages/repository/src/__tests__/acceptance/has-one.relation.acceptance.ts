@@ -75,8 +75,9 @@ describe('hasOne relation', () => {
     const foundAddress = await controller.findCustomerAddress(
       existingCustomerId,
     );
-    expect(foundAddress).to.containEql(address);
-    expect(toJSON(foundAddress)).to.deepEqual(toJSON(address));
+    expect(foundAddress).to.not.be.null();
+    expect(foundAddress!).to.containEql(address);
+    expect(toJSON(foundAddress!)).to.deepEqual(toJSON(address));
 
     const persisted = await addressRepo.find({
       where: {customerId: existingCustomerId},
@@ -104,15 +105,16 @@ describe('hasOne relation', () => {
     expect(persisted[0]).to.deepEqual(foundAddress);
   });
 
-  it('reports EntityNotFound error when related model is deleted', async () => {
+  it('returns null when related model is deleted', async () => {
     const address = await controller.createCustomerAddress(existingCustomerId, {
       street: '123 test avenue',
     });
     await addressRepo.deleteById(address.zipcode);
 
-    await expect(
-      controller.findCustomerAddress(existingCustomerId),
-    ).to.be.rejectedWith(EntityNotFoundError);
+    const foundAddress = await controller.findCustomerAddress(
+      existingCustomerId,
+    );
+    expect(foundAddress).to.be.null();
   });
 
   /*---------------- HELPERS -----------------*/
