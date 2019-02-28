@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, Component, Provider} from '@loopback/core';
+import {Application, Component, Provider, BindingScope} from '@loopback/core';
 import {expect} from '@loopback/testlab';
 import {Class, ServiceMixin} from '../../../';
 
@@ -15,7 +15,7 @@ describe('ServiceMixin', () => {
     expect(typeof myApp.serviceProvider).to.be.eql('function');
   });
 
-  it('binds repository from app.serviceProvider()', async () => {
+  it('binds service from app.serviceProvider()', async () => {
     const myApp = new AppWithServiceMixin();
 
     expectGeocoderToNotBeBound(myApp);
@@ -56,16 +56,17 @@ describe('ServiceMixin', () => {
     geocode(address: string): Promise<GeoPoint>;
   }
 
-  // A dummy service instance to make unit testing easier
-  const GeocoderSingleton: GeocoderService = {
+  class DummyGeocoder implements GeocoderService {
     geocode(address: string) {
       return Promise.resolve({lat: 0, lng: 0});
-    },
-  };
+    }
+  }
 
   class GeocoderServiceProvider implements Provider<GeocoderService> {
     value(): Promise<GeocoderService> {
-      return Promise.resolve(GeocoderSingleton);
+      // Returns different instances so that we can verify the TRANSIENT
+      // binding scope, which is now the default for service proxies
+      return Promise.resolve(new DummyGeocoder());
     }
   }
 
@@ -74,15 +75,19 @@ describe('ServiceMixin', () => {
   }
 
   async function expectGeocoderToBeBound(myApp: Application) {
-    const boundRepositories = myApp.find('services.*').map(b => b.key);
-    expect(boundRepositories).to.containEql('services.GeocoderService');
-    const repoInstance = await myApp.get('services.GeocoderService');
-    expect(repoInstance).to.equal(GeocoderSingleton);
+    const boundServices = myApp.find('services.*').map(b => b.key);
+    expect(boundServices).to.containEql('services.GeocoderService');
+    const binding = myApp.getBinding('services.GeocoderService');
+    expect(binding.scope).to.equal(BindingScope.TRANSIENT);
+    const serviceInstance1 = await myApp.get('services.GeocoderService');
+    expect(serviceInstance1).to.be.instanceOf(DummyGeocoder);
+    const serviceInstance2 = await myApp.get('services.GeocoderService');
+    expect(serviceInstance2).to.not.be.equal(serviceInstance1);
   }
 
   function expectGeocoderToNotBeBound(myApp: Application) {
-    const boundRepos = myApp.find('services.*').map(b => b.key);
-    expect(boundRepos).to.be.empty();
+    const boundServices = myApp.find('services.*').map(b => b.key);
+    expect(boundServices).to.be.empty();
   }
 
   function expectComponentToBeBound(
