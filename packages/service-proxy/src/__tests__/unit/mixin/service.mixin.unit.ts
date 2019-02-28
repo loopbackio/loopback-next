@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, Component, Provider} from '@loopback/core';
+import {Application, Component, Provider, BindingScope} from '@loopback/core';
 import {expect} from '@loopback/testlab';
 import {Class, ServiceMixin} from '../../../';
 
@@ -74,15 +74,17 @@ describe('ServiceMixin', () => {
   }
 
   async function expectGeocoderToBeBound(myApp: Application) {
-    const boundRepositories = myApp.find('services.*').map(b => b.key);
-    expect(boundRepositories).to.containEql('services.GeocoderService');
-    const repoInstance = await myApp.get('services.GeocoderService');
-    expect(repoInstance).to.equal(GeocoderSingleton);
+    const boundServices = myApp.find('services.*').map(b => b.key);
+    expect(boundServices).to.containEql('services.GeocoderService');
+    const binding = myApp.getBinding('services.GeocoderService');
+    expect(binding.scope).to.equal(BindingScope.TRANSIENT);
+    const serviceInstance = await myApp.get('services.GeocoderService');
+    expect(serviceInstance).to.equal(GeocoderSingleton);
   }
 
   function expectGeocoderToNotBeBound(myApp: Application) {
-    const boundRepos = myApp.find('services.*').map(b => b.key);
-    expect(boundRepos).to.be.empty();
+    const boundServices = myApp.find('services.*').map(b => b.key);
+    expect(boundServices).to.be.empty();
   }
 
   function expectComponentToBeBound(
