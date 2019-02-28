@@ -235,7 +235,7 @@ class User {
 ```
 
 _To learn more about decorating models and the corresponding OpenAPI schema, see
-[model decorators](#model-decorators)._
+[model decorators](Model.md#model-decorator)._
 
 The model decorators allow type information of the model to be visible to the
 spec generator so that `@requestBody` can be used on the parameter:
