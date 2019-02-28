@@ -82,11 +82,11 @@ describe('app-generator specific files', () => {
     );
     assert.fileContent(
       'src/__tests__/acceptance/test-helper.ts',
-      "process.env.HOST || '127.0.0.1'",
+      'process.env.HOST',
     );
     assert.fileContent(
       'src/__tests__/acceptance/test-helper.ts',
-      '+(process.env.PORT || 0)',
+      '+process.env.PORT',
     );
   });
 
