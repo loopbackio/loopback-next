@@ -229,6 +229,28 @@ const binding = createBindingFromClass(MyService);
 ctx.add(binding);
 ```
 
+Please note `createBindingFromClass` also accepts an optional `options`
+parameter of `BindingFromClassOptions` type with the following settings:
+
+- key: Binding key, such as `controllers.MyController`
+- type: Artifact type, such as `server`, `controller`, `repository` or `service`
+- name: Artifact name, such as `my-rest-server` and `my-controller`, default to
+  the name of the bound class
+- namespace: Namespace for the binding key, such as `servers` and `controllers`.
+  If `key` does not exist, its value is calculated as `<namespace>.<name>`.
+- typeNamespaceMapping: Mapping artifact type to binding key namespaces, such
+  as:
+
+  ```ts
+  {
+    controller: 'controllers',
+    repository: 'repositories'
+  }
+  ```
+
+- defaultScope: Default scope if the binding does not have an explicit scope
+  set. The `scope` from `@bind` of the bound class takes precedence.
+
 ### Encoding value types in binding keys
 
 String keys for bindings do not help enforce the value type. Consider the

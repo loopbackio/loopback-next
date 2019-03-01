@@ -50,6 +50,7 @@ export class Application extends Context {
       name,
       namespace: 'controllers',
       type: 'controller',
+      defaultScope: BindingScope.TRANSIENT,
     });
     this.add(binding);
     return binding;
@@ -80,7 +81,8 @@ export class Application extends Context {
       name,
       namespace: CoreBindings.SERVERS,
       type: 'server',
-    }).inScope(BindingScope.SINGLETON);
+      defaultScope: BindingScope.SINGLETON,
+    });
     this.add(binding);
     return binding;
   }
@@ -196,7 +198,8 @@ export class Application extends Context {
       name,
       namespace: 'components',
       type: 'component',
-    }).inScope(BindingScope.SINGLETON);
+      defaultScope: BindingScope.SINGLETON,
+    });
     this.add(binding);
     // Assuming components can be synchronously instantiated
     const instance = this.getSync<Component>(binding.key);
