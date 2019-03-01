@@ -234,7 +234,6 @@ export class ExpressServer {
   }
 
   async start() {
-    await this.lbApp.start();
     const server = this.app.listen(3000);
     await pEvent(server, 'listening');
   }
