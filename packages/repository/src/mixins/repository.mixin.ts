@@ -71,6 +71,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
         name,
         namespace: 'repositories',
         type: 'repository',
+        defaultScope: BindingScope.TRANSIENT,
       });
       this.add(binding);
       return binding;
@@ -122,7 +123,8 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
           name: name || dataSource.dataSourceName,
           namespace: 'datasources',
           type: 'datasource',
-        }).inScope(BindingScope.SINGLETON);
+          defaultScope: BindingScope.SINGLETON,
+        });
         this.add(binding);
         return binding;
       } else {
