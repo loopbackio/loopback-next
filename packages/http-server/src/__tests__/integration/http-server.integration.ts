@@ -154,6 +154,22 @@ describe('HttpServer (integration)', () => {
     await expect(anotherServer.start()).to.be.rejectedWith(/EADDRINUSE/);
   });
 
+  it('supports HTTP over IPv4', async () => {
+    server = new HttpServer(dummyRequestHandler, {host: '127.0.0.1'});
+    await server.start();
+    expect(server.address!.family).to.equal('IPv4');
+    const response = await httpGetAsync(server.url);
+    expect(response.statusCode).to.equal(200);
+  });
+
+  itSkippedOnTravis('supports HTTP over IPv6', async () => {
+    server = new HttpServer(dummyRequestHandler, {host: '::1'});
+    await server.start();
+    expect(server.address!.family).to.equal('IPv6');
+    const response = await httpGetAsync(server.url);
+    expect(response.statusCode).to.equal(200);
+  });
+
   it('supports HTTPS protocol with key and certificate files', async () => {
     const serverOptions = givenHttpServerConfig();
     const httpsServer: HttpServer = givenHttpsServer(serverOptions);
