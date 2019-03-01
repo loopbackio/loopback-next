@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.8.0...@loopback/docs@1.9.0) (2019-03-01)
+
+
+### Bug Fixes
+
+* **docs:** add missing backtick for todo tutorial table ([e3dd42d](https://github.com/strongloop/loopback-next/commit/e3dd42d))
+* **example-soap-calculator:** switch to a new soap calculator webservice ([4cee896](https://github.com/strongloop/loopback-next/commit/4cee896))
+
+
+### Features
+
+* **rest:** allow express settings to be customized ([962f1cb](https://github.com/strongloop/loopback-next/commit/962f1cb))
+* add express example ([dd2400e](https://github.com/strongloop/loopback-next/commit/dd2400e))
+
+
+
+
+
 # [1.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.7.3...@loopback/docs@1.8.0) (2019-02-25)
 
 

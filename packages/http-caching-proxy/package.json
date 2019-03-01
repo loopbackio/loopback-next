@@ -1,6 +1,6 @@
 {
   "name": "@loopback/http-caching-proxy",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A caching HTTP proxy for integration tests. NOT SUITABLE FOR PRODUCTION USE!",
   "engines": {
     "node": ">=8.9"

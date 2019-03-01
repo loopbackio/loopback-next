@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.10](https://github.com/strongloop/loopback-next/compare/@loopback/rest-explorer@1.1.9...@loopback/rest-explorer@1.1.10) (2019-03-01)
+
+
+### Bug Fixes
+
+* **rest-explorer:** allow explorer for a rest app to be mounted to express ([5d2db07](https://github.com/strongloop/loopback-next/commit/5d2db07))
+
+
+
+
+
 ## [1.1.9](https://github.com/strongloop/loopback-next/compare/@loopback/rest-explorer@1.1.8...@loopback/rest-explorer@1.1.9) (2019-02-25)
 
 **Note:** Version bump only for package @loopback/rest-explorer

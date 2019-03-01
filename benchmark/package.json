@@ -1,6 +1,6 @@
 {
   "name": "@loopback/benchmark",
-  "version": "1.1.11",
+  "version": "1.1.12",
   "private": true,
   "description": "Benchmarks measuring performance of our framework.",
   "keywords": [
@@ -35,9 +35,9 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/example-todo": "^1.4.4",
+    "@loopback/example-todo": "^1.5.0",
     "@loopback/openapi-spec-builder": "^1.0.7",
-    "@loopback/rest": "^1.6.0",
+    "@loopback/rest": "^1.7.0",
     "@types/byline": "^4.2.31",
     "@types/debug": "^4.1.0",
     "@types/p-event": "^2.3.0",

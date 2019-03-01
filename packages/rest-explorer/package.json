@@ -1,6 +1,6 @@
 {
   "name": "@loopback/rest-explorer",
-  "version": "1.1.9",
+  "version": "1.1.10",
   "description": "LoopBack's API Explorer",
   "engines": {
     "node": ">=8.9"
@@ -19,7 +19,7 @@
   "dependencies": {
     "@loopback/context": "^1.6.0",
     "@loopback/core": "^1.1.7",
-    "@loopback/rest": "^1.6.0",
+    "@loopback/rest": "^1.7.0",
     "ejs": "^2.6.1",
     "swagger-ui-dist": "^3.20.0"
   },
