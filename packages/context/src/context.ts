@@ -555,7 +555,7 @@ export class Context extends EventEmitter {
   }
 
   /**
-   * Get the value bound to the given key, throw an error when no value was
+   * Get the value bound to the given key, throw an error when no value is
    * bound for the given key.
    *
    * @example
@@ -586,7 +586,7 @@ export class Context extends EventEmitter {
    *
    * ```ts
    * // get "rest" property from the value bound to "config"
-   * // use "undefined" when not config was provided
+   * // use `undefined` when no config is provided
    * const config = await ctx.get<RestComponentConfig>('config#rest', {
    *   optional: true
    * });
@@ -597,7 +597,7 @@ export class Context extends EventEmitter {
    * @param optionsOrSession Options or session for resolution. An instance of
    * `ResolutionSession` is accepted for backward compatibility.
    * @returns A promise of the bound value, or a promise of undefined when
-   * the optional binding was not found.
+   * the optional binding is not found.
    */
   get<ValueType>(
     keyWithPath: BindingAddress<ValueType>,
@@ -654,7 +654,7 @@ export class Context extends EventEmitter {
    *
    * ```ts
    * // get "rest" property from the value bound to "config"
-   * // use "undefined" when no config was provided
+   * // use "undefined" when no config is provided
    * const config = await ctx.getSync<RestComponentConfig>('config#rest', {
    *   optional: true
    * });
@@ -664,7 +664,7 @@ export class Context extends EventEmitter {
    *   (deeply) nested property to retrieve.
    * * @param optionsOrSession Options or session for resolution. An instance of
    * `ResolutionSession` is accepted for backward compatibility.
-   * @returns The bound value, or undefined when an optional binding was not found.
+   * @returns The bound value, or undefined when an optional binding is not found.
    */
   getSync<ValueType>(
     keyWithPath: BindingAddress<ValueType>,
@@ -732,7 +732,9 @@ export class Context extends EventEmitter {
     }
 
     if (options && options.optional) return undefined;
-    throw new Error(`The key ${key} was not bound to any value.`);
+    throw new Error(
+      `The key '${key}' is not bound to any value in context ${this.name}`,
+    );
   }
 
   /**
@@ -759,7 +761,7 @@ export class Context extends EventEmitter {
    *   (deeply) nested property to retrieve.
    * @param optionsOrSession Options for resolution or a session
    * @returns The bound value or a promise of the bound value, depending
-   *   on how the binding was configured.
+   *   on how the binding is configured.
    * @internal
    */
   getValueOrPromise<ValueType>(
