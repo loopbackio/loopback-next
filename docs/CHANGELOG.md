@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.9.0...@loopback/docs@1.9.1) (2019-03-01)
+
+
+### Bug Fixes
+
+* **example-express-composition:** remove prepublishOnly and lbApp.start() ([c095a6c](https://github.com/strongloop/loopback-next/commit/c095a6c))
+
+
+
+
+
 # [1.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.8.0...@loopback/docs@1.9.0) (2019-03-01)
 
 
