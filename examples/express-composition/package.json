@@ -1,5 +1,5 @@
 {
-  "name": "express-composition",
+  "name": "@loopback/example-express-composition",
   "version": "1.1.0",
   "description": "LoopBack 4 REST API on Express",
   "keywords": [
@@ -35,7 +35,11 @@
     "prepublishOnly": "npm run test"
   },
   "repository": {
-    "type": "git"
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "author": "IBM Corp.",
   "license": "MIT",
