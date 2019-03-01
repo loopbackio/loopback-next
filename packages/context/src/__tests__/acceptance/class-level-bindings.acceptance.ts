@@ -5,13 +5,15 @@
 
 import {expect} from '@loopback/testlab';
 import {
+  BindingScope,
   Context,
-  inject,
-  Setter,
   Getter,
-  Provider,
+  inject,
   Injection,
+  invokeMethod,
+  Provider,
   ResolutionSession,
+  Setter,
 } from '../..';
 
 const INFO_CONTROLLER = 'controllers.info';
@@ -145,26 +147,124 @@ describe('Context bindings - Injecting dependencies of classes', () => {
   });
 
   it('injects a getter function', async () => {
-    ctx.bind('key').to('value');
+    ctx.bind('hash').to('123');
 
     class Store {
-      constructor(@inject.getter('key') public getter: Getter<string>) {}
+      constructor(@inject.getter('hash') public getter: Getter<string>) {}
     }
 
     ctx.bind('store').toClass(Store);
     const store = ctx.getSync<Store>('store');
 
     expect(store.getter).to.be.Function();
-    expect(await store.getter()).to.equal('value');
+    expect(await store.getter()).to.equal('123');
 
     // rebind the value to verify that getter always returns a fresh value
-    ctx.bind('key').to('new-value');
-    expect(await store.getter()).to.equal('new-value');
+    ctx.bind('hash').to('456');
+    expect(await store.getter()).to.equal('456');
+  });
+
+  describe('in SINGLETON scope', () => {
+    it('throws if a getter cannot be resolved by the owning context', async () => {
+      class Store {
+        constructor(@inject.getter('hash') public getter: Getter<string>) {}
+      }
+
+      // Create a child context of `ctx`
+      const requestCtx = new Context(ctx, 'child');
+      // Bind `hash` to `value`
+      requestCtx.bind('hash').to('123');
+
+      // Bind `Store` as a singleton
+      ctx
+        .bind('store')
+        .toClass(Store)
+        .inScope(BindingScope.SINGLETON);
+
+      // Create the store instance from the child context
+      // Now the singleton references a `getter` to `binding`
+      const store = requestCtx.getSync<Store>('store');
+
+      await expect(store.getter()).to.be.rejectedWith(
+        /The key 'hash' is not bound to any value in context .+/,
+      );
+
+      // bind the value to to ctx
+      ctx.bind('hash').to('456');
+      expect(await store.getter()).to.equal('456');
+    });
+
+    it('throws if a value cannot be resolved by the owning context', async () => {
+      class Store {
+        constructor(@inject('hash') public hash: string) {}
+      }
+
+      // Create a child context of `ctx`
+      const requestCtx = new Context(ctx, 'child');
+      // Bind `hash` to `value`
+      requestCtx.bind('hash').to('123');
+
+      // Bind `Store` as a singleton
+      ctx
+        .bind('store')
+        .toClass(Store)
+        .inScope(BindingScope.SINGLETON);
+
+      await expect(requestCtx.get('store')).to.be.rejectedWith(
+        /The key 'hash' is not bound to any value in context .+/,
+      );
+
+      // bind the value to to ctx
+      ctx.bind('hash').to('456');
+      const store = await requestCtx.get<Store>('store');
+      expect(store.hash).to.equal('456');
+    });
+
+    it('injects method parameters from a context below the chain', async () => {
+      class Store {
+        private name = 'my-store';
+
+        static getHash(@inject('hash') hash: string) {
+          return hash;
+        }
+
+        getHashWithName(@inject('hash') hash: string) {
+          return `${hash}: ${this.name}`;
+        }
+      }
+
+      // Create a child context of `ctx`
+      const requestCtx = new Context(ctx, 'child');
+      // Bind `hash` to `value`
+      requestCtx.bind('hash').to('123');
+
+      // Bind `Store` as a singleton
+      ctx
+        .bind('store')
+        .toClass(Store)
+        .inScope(BindingScope.SINGLETON);
+
+      let value = await invokeMethod(Store, 'getHash', requestCtx);
+      expect(value).to.equal('123');
+
+      const store = await requestCtx.get<Store>('store');
+      value = await invokeMethod(store, 'getHashWithName', requestCtx);
+      expect(value).to.equal('123: my-store');
+
+      // bind the value to to ctx
+      ctx.bind('hash').to('456');
+
+      value = await invokeMethod(Store, 'getHash', ctx);
+      expect(value).to.equal('456');
+
+      value = await invokeMethod(store, 'getHashWithName', ctx);
+      expect(value).to.equal('456: my-store');
+    });
   });
 
   it('injects a setter function', async () => {
     class Store {
-      constructor(@inject.setter('key') public setter: Setter<string>) {}
+      constructor(@inject.setter('hash') public setter: Setter<string>) {}
     }
 
     ctx.bind('store').toClass(Store);
@@ -172,7 +272,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
 
     expect(store.setter).to.be.Function();
     store.setter('a-value');
-    expect(ctx.getSync('key')).to.equal('a-value');
+    expect(ctx.getSync('hash')).to.equal('a-value');
   });
 
   it('creates getter from a value', () => {

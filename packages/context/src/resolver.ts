@@ -4,26 +4,25 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {DecoratorFactory} from '@loopback/metadata';
+import * as assert from 'assert';
+import * as debugModule from 'debug';
+import {BindingScope} from './binding';
 import {Context} from './context';
-import {
-  BoundValue,
-  Constructor,
-  ValueOrPromise,
-  MapObject,
-  resolveList,
-  resolveMap,
-  transformValueOrPromise,
-} from './value-promise';
-
 import {
   describeInjectedArguments,
   describeInjectedProperties,
   Injection,
 } from './inject';
 import {ResolutionSession} from './resolution-session';
-
-import * as assert from 'assert';
-import * as debugModule from 'debug';
+import {
+  BoundValue,
+  Constructor,
+  MapObject,
+  resolveList,
+  resolveMap,
+  transformValueOrPromise,
+  ValueOrPromise,
+} from './value-promise';
 
 const debug = debugModule('loopback:context:resolver');
 const getTargetName = DecoratorFactory.getTargetName;
@@ -92,6 +91,21 @@ function resolve<T>(
       'Resolving an injection:',
       ResolutionSession.describeInjection(injection),
     );
+  }
+  /**
+   * If the scope of current binding is `SINGLETON`, reset the context
+   * to be the one that owns the current binding to make sure a singleton
+   * does not have dependencies injected from child contexts unless the
+   * injection is for method (excluding constructor) parameters.
+   */
+  const currentBinding = session && session.currentBinding;
+  if (currentBinding && currentBinding.scope === BindingScope.SINGLETON) {
+    if (
+      !injection.member ||
+      typeof injection.methodDescriptorOrParameterIndex !== 'number'
+    ) {
+      ctx = ctx.getOwnerContext(currentBinding.key)!;
+    }
   }
   let resolved = ResolutionSession.runWithInjection(
     s => {

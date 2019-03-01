@@ -648,7 +648,7 @@ describe('Context', () => {
       expect(ctx.bindingMap.size).to.eql(0);
     });
 
-    it('dereferences parent', () => {
+    it('set parent to undefined', () => {
       const childCtx = new TestContext(ctx);
       expect(childCtx.parent).to.equal(ctx);
       childCtx.close();

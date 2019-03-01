@@ -11,6 +11,7 @@ import {
 } from '../../..';
 import {expect} from '@loopback/testlab';
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
+import {Context, CoreBindings, BindingScope} from '@loopback/core';
 
 describe('ControllerRoute', () => {
   it('rejects routes with no methodName', () => {
@@ -83,6 +84,59 @@ describe('ControllerRoute', () => {
     );
 
     expect(route._controllerName).to.eql('my-controller');
+  });
+
+  describe('updateBindings()', () => {
+    let appCtx: Context;
+    let requestCtx: Context;
+
+    before(givenContextsAndControllerRoute);
+
+    it('adds bindings to a request context', async () => {
+      expect(requestCtx.contains(CoreBindings.CONTROLLER_CURRENT));
+      expect(
+        requestCtx.getBinding(CoreBindings.CONTROLLER_CURRENT).scope,
+      ).to.equal(BindingScope.SINGLETON);
+      expect(await requestCtx.get(CoreBindings.CONTROLLER_CLASS)).to.equal(
+        MyController,
+      );
+      expect(
+        await requestCtx.get(CoreBindings.CONTROLLER_METHOD_NAME),
+      ).to.equal('greet');
+    });
+
+    it('binds current controller to a request context as singleton', async () => {
+      const controller1 = await requestCtx.get(CoreBindings.CONTROLLER_CURRENT);
+      expect(controller1).instanceOf(MyController);
+
+      const controller2 = await requestCtx.get(CoreBindings.CONTROLLER_CURRENT);
+      expect(controller2).to.be.exactly(controller1);
+
+      const childCtx = new Context(requestCtx);
+      const controller3 = await childCtx.get(CoreBindings.CONTROLLER_CURRENT);
+      expect(controller3).to.be.exactly(controller1);
+
+      await expect(
+        appCtx.get(CoreBindings.CONTROLLER_CURRENT),
+      ).to.be.rejectedWith(/The key .+ is not bound to any value/);
+    });
+
+    function givenContextsAndControllerRoute() {
+      const spec = anOperationSpec().build();
+
+      const route = new MyRoute(
+        'get',
+        '/greet',
+        spec,
+        MyController,
+        myControllerFactory,
+        'greet',
+      );
+
+      appCtx = new Context('application');
+      requestCtx = new Context(appCtx, 'request');
+      route.updateBindings(requestCtx);
+    }
   });
 
   class MyController {

@@ -3,37 +3,32 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Context, inject, BindingScope} from '@loopback/context';
+import {Application, CoreBindings} from '@loopback/core';
+import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
+import {api, get, param, post, requestBody} from '@loopback/openapi-v3';
 import {
-  Request,
-  Response,
-  RestBindings,
-  RestServer,
-  RestComponent,
-  RestApplication,
-  SequenceActions,
-  HttpServerLike,
+  OperationObject,
+  ParameterObject,
+  ResponseObject,
+} from '@loopback/openapi-v3-types';
+import {Client, createClientForHandler, expect} from '@loopback/testlab';
+import {
   ControllerClass,
   ControllerInstance,
   createControllerFactoryForClass,
   createControllerFactoryForInstance,
+  HttpServerLike,
+  RegExpRouter,
+  Request,
+  Response,
+  RestApplication,
+  RestBindings,
+  RestComponent,
+  RestServer,
+  SequenceActions,
 } from '../../..';
-
-import {api, get, post, param, requestBody} from '@loopback/openapi-v3';
-
-import {Application, CoreBindings} from '@loopback/core';
-
-import {
-  ParameterObject,
-  OperationObject,
-  ResponseObject,
-} from '@loopback/openapi-v3-types';
-
-import {expect, Client, createClientForHandler} from '@loopback/testlab';
-import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
-import {inject, Context, BindingScope} from '@loopback/context';
-
 import {createUnexpectedHttpErrorLogger} from '../../helpers';
-import {RegExpRouter} from '../../..';
 
 /* # Feature: Routing
  * - In order to build REST APIs
@@ -361,7 +356,7 @@ describe('Routing', () => {
       });
   });
 
-  it('binds the current controller', async () => {
+  it('binds the current controller as singleton', async () => {
     const app = givenAnApplication();
     const server = await givenAServer(app);
     const spec = anOpenApiSpec()
@@ -378,7 +373,7 @@ describe('Routing', () => {
         };
       }
     }
-    givenControllerInApp(app, GetCurrentController);
+    givenControllerInApp(app, GetCurrentController, BindingScope.SINGLETON);
 
     return whenIMakeRequestTo(server)
       .get('/name')
@@ -761,8 +756,9 @@ describe('Routing', () => {
   function givenControllerInApp(
     app: Application,
     controller: ControllerClass<ControllerInstance>,
+    scope = BindingScope.TRANSIENT,
   ) {
-    app.controller(controller).inScope(BindingScope.CONTEXT);
+    app.controller(controller).inScope(scope);
   }
 
   function whenIMakeRequestTo(serverOrApp: HttpServerLike): Client {
