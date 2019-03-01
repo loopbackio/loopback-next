@@ -35,7 +35,6 @@ export class ExpressServer {
   }
 
   public async start() {
-    await this.lbApp.start();
     this.server = this.app.listen(3000);
     await pEvent(this.server, 'listening');
   }
