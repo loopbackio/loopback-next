@@ -1,6 +1,6 @@
 {
   "name": "express-composition",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "LoopBack 4 REST API on Express",
   "keywords": [
     "loopback-application",
@@ -48,13 +48,13 @@
     "src"
   ],
   "dependencies": {
-    "@loopback/boot": "^1.0.13",
+    "@loopback/boot": "^1.0.14",
     "@loopback/context": "^1.6.0",
     "@loopback/core": "^1.1.7",
-    "@loopback/openapi-v3": "^1.2.2",
-    "@loopback/repository": "^1.1.6",
-    "@loopback/rest": "^1.6.0",
-    "@loopback/rest-explorer": "^1.1.9",
+    "@loopback/openapi-v3": "^1.2.3",
+    "@loopback/repository": "^1.1.7",
+    "@loopback/rest": "^1.7.0",
+    "@loopback/rest-explorer": "^1.1.10",
     "@loopback/service-proxy": "^1.0.9",
     "express": "^4.16.4",
     "p-event": "^2.3.1"
