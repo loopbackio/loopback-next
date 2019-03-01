@@ -650,7 +650,7 @@ describe('method injection', () => {
 
     expect(() => {
       invokeMethod(TestClass.prototype, 'test', ctx);
-    }).to.throw(/The key .+ was not bound to any value/);
+    }).to.throw(/The key .+ is not bound to any value/);
   });
 
   it('resolves arguments for a static method', () => {
