@@ -219,7 +219,7 @@ Finally, we can add functions to boot the `Note` application and start the
 Express application:
 
 ```ts
-import * as pEvent from 'p-event';
+import pEvent from 'p-event';
 
 export class ExpressServer {
   private app: express.Application;

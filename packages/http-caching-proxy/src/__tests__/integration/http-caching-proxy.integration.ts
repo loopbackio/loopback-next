@@ -7,7 +7,7 @@ import {expect} from '@loopback/testlab';
 import delay from 'delay';
 import * as http from 'http';
 import {AddressInfo} from 'net';
-import * as pEvent from 'p-event';
+import pEvent from 'p-event';
 import * as path from 'path';
 import * as makeRequest from 'request-promise-native';
 import * as rimrafCb from 'rimraf';
