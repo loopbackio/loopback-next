@@ -5,7 +5,7 @@
 
 import * as byline from 'byline';
 import {ChildProcess, spawn} from 'child_process';
-import * as pEvent from 'p-event';
+import pEvent from 'p-event';
 import {Autocannon, EndpointStats} from './autocannon';
 import {Client} from './client';
 import {scenarios} from './scenarios';

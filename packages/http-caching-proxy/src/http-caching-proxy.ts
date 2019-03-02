@@ -12,7 +12,7 @@ import {
   createServer,
 } from 'http';
 import {AddressInfo} from 'net';
-import * as pEvent from 'p-event';
+import pEvent from 'p-event';
 import * as makeRequest from 'request-promise-native';
 
 const cacache = require('cacache');
