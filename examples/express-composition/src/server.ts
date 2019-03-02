@@ -3,7 +3,7 @@ import {ApplicationConfig} from '@loopback/core';
 import {Request, Response} from 'express';
 import * as express from 'express';
 import * as path from 'path';
-import * as pEvent from 'p-event';
+import pEvent from 'p-event';
 import * as http from 'http';
 
 export class ExpressServer {

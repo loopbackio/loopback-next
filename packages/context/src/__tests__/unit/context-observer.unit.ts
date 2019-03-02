@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
+import pEvent from 'p-event';
 import {promisify} from 'util';
 import {
   Binding,
@@ -13,7 +14,6 @@ import {
   filterByTag,
 } from '../..';
 
-const pEvent = require('p-event');
 const setImmediateAsync = promisify(setImmediate);
 
 /**

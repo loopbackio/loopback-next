@@ -28,9 +28,8 @@ if (!Symbol.asyncIterator) {
   // tslint:disable-next-line:no-any
   (Symbol as any).asyncIterator = Symbol.for('Symbol.asyncIterator');
 }
-
-// FIXME: `@types/p-event` is out of date against `p-event@2.2.0`
-const pEvent = require('p-event');
+// This import must happen after the polyfill
+import {iterator, multiple} from 'p-event';
 
 const debug = debugModule('loopback:context');
 
@@ -229,7 +228,7 @@ export class Context extends EventEmitter {
     this.setupNotification('bind', 'unbind');
 
     // Create an async iterator for the `notification` event as a queue
-    this.notificationQueue = pEvent.iterator(this, 'notification');
+    this.notificationQueue = iterator(this, 'notification');
 
     return this.processNotifications();
   }
@@ -297,7 +296,7 @@ export class Context extends EventEmitter {
   protected async waitUntilPendingNotificationsDone(timeout?: number) {
     const count = this.pendingNotifications;
     if (count === 0) return;
-    await pEvent.multiple(this, 'observersNotified', {count, timeout});
+    await multiple(this, 'observersNotified', {count, timeout});
   }
 
   /**
