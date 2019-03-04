@@ -8,6 +8,7 @@ import {
   Constructor,
   Context,
   createBindingFromClass,
+  BindingScope,
 } from '@loopback/context';
 import {BootComponent} from '../boot.component';
 import {Bootstrapper} from '../bootstrapper';
@@ -142,7 +143,9 @@ export function _bindBooter(
 ): Binding {
   const binding = createBindingFromClass(booterCls, {
     namespace: BootBindings.BOOTER_PREFIX,
-  }).tag(BootBindings.BOOTER_TAG);
+  })
+    .tag(BootBindings.BOOTER_TAG)
+    .inScope(BindingScope.SINGLETON);
   ctx.add(binding);
   return binding;
 }
