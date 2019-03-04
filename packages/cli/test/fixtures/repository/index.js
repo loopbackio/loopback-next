@@ -11,7 +11,7 @@ exports.SANDBOX_FILES = [
     file: 'myconfig.json',
     content: JSON.stringify({
       datasource: 'dbmem',
-      model: 'decoratordefined',
+      model: 'DecoratorDefined',
     }),
   },
   {
@@ -76,9 +76,9 @@ exports.SANDBOX_FILES = [
   },
   {
     path: MODEL_APP_PATH,
-    file: 'decoratordefined.model.ts',
+    file: 'decorator-defined.model.ts',
     content: fs.readFileSync(
-      require.resolve('./models/decoratordefined.model.txt'),
+      require.resolve('./models/decorator-defined.model.txt'),
       {
         encoding: 'utf-8',
       },
@@ -86,9 +86,9 @@ exports.SANDBOX_FILES = [
   },
   {
     path: MODEL_APP_PATH,
-    file: 'defaultmodel.model.ts',
+    file: 'default-model.model.ts',
     content: fs.readFileSync(
-      require.resolve('./models/defaultmodel.model.txt'),
+      require.resolve('./models/default-model.model.txt'),
       {
         encoding: 'utf-8',
       },
@@ -110,9 +110,9 @@ exports.SANDBOX_FILES = [
   },
   {
     path: REPOSITORY_APP_PATH,
-    file: 'defaultmodel.repository.base.ts',
+    file: 'default-model.repository.base.ts',
     content: fs.readFileSync(
-      require.resolve('./repositories/defaultmodel.repository.base.ts'),
+      require.resolve('./repositories/default-model.repository.base.ts'),
       {
         encoding: 'utf-8',
       },

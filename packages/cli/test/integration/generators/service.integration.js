@@ -252,11 +252,11 @@ describe('lb4 service', () => {
       assert.fileContent(expectedFile, /export interface MyserviceService {/);
       assert.fileContent(
         expectedFile,
-        /import {MapDSDataSource} from '..\/datasources';/,
+        /import {MapDsDataSource} from '..\/datasources';/,
       );
       assert.fileContent(
         expectedFile,
-        /protected dataSource: MapDSDataSource = new MapDSDataSource()/,
+        /protected dataSource: MapDsDataSource = new MapDsDataSource()/,
       );
 
       assert.fileContent(expectedFile, /\@inject\('datasources.MapDS'\)/);
