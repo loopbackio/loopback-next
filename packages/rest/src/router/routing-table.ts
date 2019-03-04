@@ -22,7 +22,7 @@ import {
 import {validateApiPath} from './openapi-path';
 import {RestRouter} from './rest-router';
 import {ResolvedRoute, RouteEntry} from './route-entry';
-import {StaticAssetsRoute} from './static-assets-route';
+import {ExternalExpressRoutes} from './external-express-routes';
 import {TrieRouter} from './trie-router';
 
 const debug = debugFactory('loopback:rest:routing-table');
@@ -31,18 +31,10 @@ const debug = debugFactory('loopback:rest:routing-table');
  * Routing table
  */
 export class RoutingTable {
-  /**
-   * A route for static assets
-   */
-  private _staticAssetsRoute: StaticAssetsRoute;
   constructor(
     private readonly _router: RestRouter = new TrieRouter(),
-    staticAssetsRoute?: StaticAssetsRoute,
-  ) {
-    if (staticAssetsRoute) {
-      this._staticAssetsRoute = staticAssetsRoute;
-    }
-  }
+    private _externalRoutes?: ExternalExpressRoutes,
+  ) {}
 
   /**
    * Register a controller as the route
@@ -143,15 +135,14 @@ export class RoutingTable {
       return found;
     }
 
-    // this._staticAssetsRoute will be set only if app.static() was called
-    if (this._staticAssetsRoute) {
+    if (this._externalRoutes) {
       debug(
         'No API route found for %s %s, trying to find a static asset',
         request.method,
         request.path,
       );
 
-      return this._staticAssetsRoute;
+      return this._externalRoutes.find(request);
     }
 
     debug('No route found for %s %s', request.method, request.path);

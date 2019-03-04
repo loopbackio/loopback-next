@@ -41,7 +41,7 @@ import {
   Route,
   RouteEntry,
   RoutingTable,
-  StaticAssetsRoute,
+  ExternalExpressRoutes,
   RedirectRoute,
 } from './router';
 import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
@@ -298,7 +298,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
      * Check if there is custom router in the context
      */
     const router = this.getSync(RestBindings.ROUTER, {optional: true});
-    const routingTable = new RoutingTable(router, this._staticAssetRoute);
+    const routingTable = new RoutingTable(router, this._externalRoutes);
 
     this._httpHandler = new HttpHandler(this, routingTable);
     for (const b of this.find('controllers.*')) {
@@ -691,8 +691,10 @@ export class RestServer extends Context implements Server, HttpServerLike {
     );
   }
 
-  // The route for static assets
-  private _staticAssetRoute = new StaticAssetsRoute();
+  /*
+   * Registry of external routes & static assets
+   */
+  private _externalRoutes = new ExternalExpressRoutes();
 
   /**
    * Mount static assets to the REST server.
@@ -703,7 +705,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * @param options Options for serve-static
    */
   static(path: PathParams, rootDir: string, options?: ServeStaticOptions) {
-    this._staticAssetRoute.registerAssets(path, rootDir, options);
+    this._externalRoutes.registerAssets(path, rootDir, options);
   }
 
   /**
