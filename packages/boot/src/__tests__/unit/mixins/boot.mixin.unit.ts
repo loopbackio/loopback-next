@@ -36,6 +36,13 @@ describe('BootMxiin unit tests', () => {
     expect(booterBinding.tagMap).to.containEql({artifactType: 'xsd'});
   });
 
+  it('binds booter from app.booters() as singletons by default', async () => {
+    app.booters(TestBooter);
+    const booter1 = await app.get(`${BootBindings.BOOTER_PREFIX}.TestBooter`);
+    const booter2 = await app.get(`${BootBindings.BOOTER_PREFIX}.TestBooter`);
+    expect(booter1).to.be.exactly(booter2);
+  });
+
   it('binds multiple booter classes from app.booters()', async () => {
     app.booters(TestBooter, AnotherTestBooter);
     const booter = await app.get(`${BootBindings.BOOTER_PREFIX}.TestBooter`);
