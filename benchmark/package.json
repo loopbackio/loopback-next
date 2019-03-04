@@ -40,7 +40,6 @@
     "@loopback/rest": "^1.7.0",
     "@types/byline": "^4.2.31",
     "@types/debug": "^4.1.0",
-    "@types/p-event": "^2.3.0",
     "@types/request-promise-native": "^1.0.15",
     "autocannon": "^3.0.0",
     "byline": "^5.0.0",
