@@ -34,7 +34,7 @@ describe('lb4 repository', function() {
     it('generates multiple crud repositories', async () => {
       const multiItemPrompt = {
         dataSourceClass: 'DbmemDatasource',
-        modelNameList: ['MultiWord', 'Defaultmodel'],
+        modelNameList: ['MultiWord', 'DefaultModel'],
       };
 
       await testUtils
@@ -54,7 +54,7 @@ describe('lb4 repository', function() {
       const expectedDefaultModelFile = path.join(
         SANDBOX_PATH,
         REPOSITORY_APP_PATH,
-        'defaultmodel.repository.ts',
+        'default-model.repository.ts',
       );
 
       assert.file(expectedMultiWordFile);
@@ -71,11 +71,11 @@ describe('lb4 repository', function() {
 
       assert.fileContent(
         expectedDefaultModelFile,
-        /export class DefaultmodelRepository extends DefaultCrudRepository\</,
+        /export class DefaultModelRepository extends DefaultCrudRepository\</,
       );
       assert.fileContent(
         expectedDefaultModelFile,
-        /typeof Defaultmodel.prototype.id/,
+        /typeof DefaultModel.prototype.id/,
       );
 
       assert.file(INDEX_FILE);
@@ -85,7 +85,7 @@ describe('lb4 repository', function() {
       );
       assert.fileContent(
         INDEX_FILE,
-        /export \* from '.\/defaultmodel.repository';/,
+        /export \* from '.\/default-model.repository';/,
       );
     });
 
@@ -160,21 +160,21 @@ describe('lb4 repository', function() {
       const expectedFile = path.join(
         SANDBOX_PATH,
         REPOSITORY_APP_PATH,
-        'decoratordefined.repository.ts',
+        'decorator-defined.repository.ts',
       );
       assert.file(expectedFile);
       assert.fileContent(
         expectedFile,
-        /export class DecoratordefinedRepository extends DefaultCrudRepository\</,
+        /export class DecoratorDefinedRepository extends DefaultCrudRepository\</,
       );
       assert.fileContent(
         expectedFile,
-        /typeof Decoratordefined.prototype.thePK/,
+        /typeof DecoratorDefined.prototype.thePK/,
       );
       assert.file(INDEX_FILE);
       assert.fileContent(
         INDEX_FILE,
-        /export \* from '.\/decoratordefined.repository';/,
+        /export \* from '.\/decorator-defined.repository';/,
       );
     });
 
@@ -270,22 +270,22 @@ describe('lb4 repository', function() {
           }),
         )
         .withPrompts(basicPrompt)
-        .withArguments(' --model Defaultmodel');
+        .withArguments(' --model DefaultModel');
       const expectedFile = path.join(
         SANDBOX_PATH,
         REPOSITORY_APP_PATH,
-        'defaultmodel.repository.ts',
+        'default-model.repository.ts',
       );
       assert.file(expectedFile);
       assert.fileContent(
         expectedFile,
-        /export class DefaultmodelRepository extends DefaultCrudRepository\</,
+        /export class DefaultModelRepository extends DefaultCrudRepository\</,
       );
-      assert.fileContent(expectedFile, /typeof Defaultmodel.prototype.id/);
+      assert.fileContent(expectedFile, /typeof DefaultModel.prototype.id/);
       assert.file(INDEX_FILE);
       assert.fileContent(
         INDEX_FILE,
-        /export \* from '.\/defaultmodel.repository';/,
+        /export \* from '.\/default-model.repository';/,
       );
     });
 
@@ -307,11 +307,11 @@ describe('lb4 repository', function() {
           }),
         )
         .withPrompts(basicPrompt)
-        .withArguments(' --model Defaultmodel');
+        .withArguments(' --model DefaultModel');
       const expectedFile = path.join(
         SANDBOX_PATH,
         REPOSITORY_APP_PATH,
-        'defaultmodel.repository.ts',
+        'default-model.repository.ts',
       );
       assert.file(expectedFile);
     });
@@ -328,30 +328,30 @@ describe('lb4 repository', function() {
           }),
         )
         .withPrompts(basicPrompt)
-        .withArguments(' --model Defaultmodel');
+        .withArguments(' --model DefaultModel');
       const expectedFile = path.join(
         SANDBOX_PATH,
         REPOSITORY_APP_PATH,
-        'defaultmodel.repository.ts',
+        'default-model.repository.ts',
       );
       assert.file(expectedFile);
       assert.fileContent(
         expectedFile,
-        /import {MyDSDataSource} from '..\/datasources';/,
+        /import {MyDsDataSource} from '..\/datasources';/,
       );
       assert.fileContent(
         expectedFile,
-        /\@inject\('datasources.MyDS'\) dataSource: MyDSDataSource,/,
+        /\@inject\('datasources.MyDS'\) dataSource: MyDsDataSource,/,
       );
       assert.fileContent(
         expectedFile,
-        /export class DefaultmodelRepository extends DefaultCrudRepository\</,
+        /export class DefaultModelRepository extends DefaultCrudRepository\</,
       );
-      assert.fileContent(expectedFile, /typeof Defaultmodel.prototype.id/);
+      assert.fileContent(expectedFile, /typeof DefaultModel.prototype.id/);
       assert.file(INDEX_FILE);
       assert.fileContent(
         INDEX_FILE,
-        /export \* from '.\/defaultmodel.repository';/,
+        /export \* from '.\/default-model.repository';/,
       );
     });
 
@@ -363,25 +363,25 @@ describe('lb4 repository', function() {
             additionalFiles: SANDBOX_FILES,
           }),
         )
-        .withArguments('--datasource dbmem --model decoratordefined');
+        .withArguments('--datasource dbmem --model DecoratorDefined');
       const expectedFile = path.join(
         SANDBOX_PATH,
         REPOSITORY_APP_PATH,
-        'decoratordefined.repository.ts',
+        'decorator-defined.repository.ts',
       );
       assert.file(expectedFile);
       assert.fileContent(
         expectedFile,
-        /export class DecoratordefinedRepository extends DefaultCrudRepository\</,
+        /export class DecoratorDefinedRepository extends DefaultCrudRepository\</,
       );
       assert.fileContent(
         expectedFile,
-        /typeof Decoratordefined.prototype.thePK/,
+        /typeof DecoratorDefined.prototype.thePK/,
       );
       assert.file(INDEX_FILE);
       assert.fileContent(
         INDEX_FILE,
-        /export \* from '.\/decoratordefined.repository';/,
+        /export \* from '.\/decorator-defined.repository';/,
       );
     });
     it('generates a crud repository from custom base class', async () => {
@@ -393,30 +393,30 @@ describe('lb4 repository', function() {
           }),
         )
         .withArguments(
-          '--datasource dbmem --model decoratordefined --repositoryBaseClass DefaultmodelRepository',
+          '--datasource dbmem --model DecoratorDefined --repositoryBaseClass DefaultModelRepository',
         );
       const expectedFile = path.join(
         SANDBOX_PATH,
         REPOSITORY_APP_PATH,
-        'decoratordefined.repository.ts',
+        'decorator-defined.repository.ts',
       );
       assert.file(expectedFile);
       assert.fileContent(
         expectedFile,
-        /import {DefaultmodelRepository} from '.\/defaultmodel.repository.base';/,
+        /import {DefaultModelRepository} from '.\/default-model.repository.base';/,
       );
       assert.fileContent(
         expectedFile,
-        /export class DecoratordefinedRepository extends DefaultmodelRepository\</,
+        /export class DecoratorDefinedRepository extends DefaultModelRepository\</,
       );
       assert.fileContent(
         expectedFile,
-        /typeof Decoratordefined.prototype.thePK/,
+        /typeof DecoratorDefined.prototype.thePK/,
       );
       assert.file(INDEX_FILE);
       assert.fileContent(
         INDEX_FILE,
-        /export \* from '.\/decoratordefined.repository';/,
+        /export \* from '.\/decorator-defined.repository';/,
       );
     });
   });
@@ -431,22 +431,22 @@ describe('lb4 repository', function() {
           }),
         )
         .withArguments(
-          '--datasource dbkv --model Defaultmodel --repositoryBaseClass DefaultKeyValueRepository',
+          '--datasource dbkv --model DefaultModel --repositoryBaseClass DefaultKeyValueRepository',
         );
       const expectedFile = path.join(
         SANDBOX_PATH,
         REPOSITORY_APP_PATH,
-        'defaultmodel.repository.ts',
+        'default-model.repository.ts',
       );
       assert.file(expectedFile);
       assert.fileContent(
         expectedFile,
-        /DefaultmodelRepository extends DefaultKeyValueRepository</,
+        /DefaultModelRepository extends DefaultKeyValueRepository</,
       );
       assert.file(INDEX_FILE);
       assert.fileContent(
         INDEX_FILE,
-        /export \* from '.\/defaultmodel.repository';/,
+        /export \* from '.\/default-model.repository';/,
       );
     });
 
@@ -463,23 +463,23 @@ describe('lb4 repository', function() {
         )
         .withPrompts(basicPrompt)
         .withArguments(
-          '--model decoratordefined --repositoryBaseClass DefaultKeyValueRepository',
+          '--model DecoratorDefined --repositoryBaseClass DefaultKeyValueRepository',
         );
       const expectedFile = path.join(
         SANDBOX_PATH,
         REPOSITORY_APP_PATH,
-        'decoratordefined.repository.ts',
+        'decorator-defined.repository.ts',
       );
 
       assert.file(expectedFile);
       assert.fileContent(
         expectedFile,
-        /DecoratordefinedRepository extends DefaultKeyValueRepository</,
+        /DecoratorDefinedRepository extends DefaultKeyValueRepository</,
       );
       assert.file(INDEX_FILE);
       assert.fileContent(
         INDEX_FILE,
-        /export \* from '.\/decoratordefined.repository';/,
+        /export \* from '.\/decorator-defined.repository';/,
       );
     });
   });

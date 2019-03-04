@@ -1,0 +1,17 @@
+import {Entity, model} from '@loopback/repository';
+
+@model({
+  name: 'Product',
+  properties: {
+    thePK: {type: 'number', id: true},
+    name: {type: 'string', required: true},
+  },
+})
+export class DecoratorDefined extends Entity {
+  thePK: number;
+  name: string;
+
+  constructor(data?: Partial<DecoratorDefined>) {
+    super(data);
+  }
+}
