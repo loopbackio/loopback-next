@@ -11,25 +11,25 @@ describe('ContextView', () => {
   let server: Context;
 
   let bindings: Binding<unknown>[];
-  let contextView: ContextView;
+  let taggedAsFoo: ContextView;
 
   beforeEach(givenContextView);
 
   it('tracks bindings', () => {
-    expect(contextView.bindings).to.eql(bindings);
+    expect(taggedAsFoo.bindings).to.eql(bindings);
   });
 
   it('resolves bindings', async () => {
-    expect(await contextView.resolve()).to.eql(['BAR', 'FOO']);
-    expect(await contextView.values()).to.eql(['BAR', 'FOO']);
+    expect(await taggedAsFoo.resolve()).to.eql(['BAR', 'FOO']);
+    expect(await taggedAsFoo.values()).to.eql(['BAR', 'FOO']);
   });
 
   it('resolves bindings as a getter', async () => {
-    expect(await contextView.asGetter()()).to.eql(['BAR', 'FOO']);
+    expect(await taggedAsFoo.asGetter()()).to.eql(['BAR', 'FOO']);
   });
 
   it('reloads bindings after refresh', async () => {
-    contextView.refresh();
+    taggedAsFoo.refresh();
     const abcBinding = server
       .bind('abc')
       .to('ABC')
@@ -38,10 +38,10 @@ describe('ContextView', () => {
       .bind('xyz')
       .to('XYZ')
       .tag('foo');
-    expect(contextView.bindings).to.containEql(xyzBinding);
+    expect(taggedAsFoo.bindings).to.containEql(xyzBinding);
     // `abc` does not have the matching tag
-    expect(contextView.bindings).to.not.containEql(abcBinding);
-    expect(await contextView.values()).to.eql(['BAR', 'XYZ', 'FOO']);
+    expect(taggedAsFoo.bindings).to.not.containEql(abcBinding);
+    expect(await taggedAsFoo.values()).to.eql(['BAR', 'XYZ', 'FOO']);
   });
 
   it('reloads bindings if context bindings are added', async () => {
@@ -53,20 +53,20 @@ describe('ContextView', () => {
       .bind('xyz')
       .to('XYZ')
       .tag('foo');
-    expect(contextView.bindings).to.containEql(xyzBinding);
+    expect(taggedAsFoo.bindings).to.containEql(xyzBinding);
     // `abc` does not have the matching tag
-    expect(contextView.bindings).to.not.containEql(abcBinding);
-    expect(await contextView.values()).to.eql(['BAR', 'XYZ', 'FOO']);
+    expect(taggedAsFoo.bindings).to.not.containEql(abcBinding);
+    expect(await taggedAsFoo.values()).to.eql(['BAR', 'XYZ', 'FOO']);
   });
 
   it('reloads bindings if context bindings are removed', async () => {
     server.unbind('bar');
-    expect(await contextView.values()).to.eql(['FOO']);
+    expect(await taggedAsFoo.values()).to.eql(['FOO']);
   });
 
   it('reloads bindings if context bindings are rebound', async () => {
     server.bind('bar').to('BAR'); // No more tagged with `foo`
-    expect(await contextView.values()).to.eql(['FOO']);
+    expect(await taggedAsFoo.values()).to.eql(['FOO']);
   });
 
   it('reloads bindings if parent context bindings are added', async () => {
@@ -74,26 +74,26 @@ describe('ContextView', () => {
       .bind('xyz')
       .to('XYZ')
       .tag('foo');
-    expect(contextView.bindings).to.containEql(xyzBinding);
-    expect(await contextView.values()).to.eql(['BAR', 'FOO', 'XYZ']);
+    expect(taggedAsFoo.bindings).to.containEql(xyzBinding);
+    expect(await taggedAsFoo.values()).to.eql(['BAR', 'FOO', 'XYZ']);
   });
 
   it('reloads bindings if parent context bindings are removed', async () => {
     app.unbind('foo');
-    expect(await contextView.values()).to.eql(['BAR']);
+    expect(await taggedAsFoo.values()).to.eql(['BAR']);
   });
 
   it('stops watching', async () => {
-    expect(await contextView.values()).to.eql(['BAR', 'FOO']);
-    contextView.close();
+    expect(await taggedAsFoo.values()).to.eql(['BAR', 'FOO']);
+    taggedAsFoo.close();
     app.unbind('foo');
-    expect(await contextView.values()).to.eql(['BAR', 'FOO']);
+    expect(await taggedAsFoo.values()).to.eql(['BAR', 'FOO']);
   });
 
   function givenContextView() {
     bindings = [];
     givenContext();
-    contextView = server.createView(filterByTag('foo'));
+    taggedAsFoo = server.createView(filterByTag('foo'));
   }
 
   function givenContext() {
