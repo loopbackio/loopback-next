@@ -5,7 +5,8 @@
 
 import {Context} from '@loopback/context';
 import {OperationObject, SchemasObject} from '@loopback/openapi-v3-types';
-import {RequestHandler, Router, static as serveStatic} from 'express';
+import * as express from 'express';
+import {RequestHandler} from 'express';
 import {PathParams} from 'express-serve-static-core';
 import * as HttpErrors from 'http-errors';
 import * as onFinished from 'on-finished';
@@ -21,29 +22,46 @@ import {
 } from '../types';
 import {ResolvedRoute, RouteEntry} from './route-entry';
 
-export class StaticAssetsRoute implements RouteEntry, ResolvedRoute {
-  // ResolvedRoute API
-  readonly pathParams: PathParameterValues = [];
-  readonly schemas: SchemasObject = {};
+export type ExpressRequestHandler = express.RequestHandler;
 
-  // RouteEntry implementation
-  readonly verb: string = 'get';
-  readonly path: string = '/*';
-  readonly spec: OperationObject = {
-    description: 'LoopBack static assets route',
-    'x-visibility': 'undocumented',
-    responses: {},
-  };
-
-  constructor(private readonly _expressRouter: Router = Router()) {}
+/**
+ * A registry of external, Express-style routes. These routes are invoked
+ * _after_ no LB4 route (controller or handler based) matched the incoming
+ * request.
+ *
+ * @private
+ */
+export class ExternalExpressRoutes {
+  protected _staticRoutes: express.Router = express.Router();
 
   public registerAssets(
     path: PathParams,
     rootDir: string,
     options?: ServeStaticOptions,
   ) {
-    this._expressRouter.use(path, serveStatic(rootDir, options));
+    this._staticRoutes.use(path, express.static(rootDir, options));
   }
+
+  find(request: Request): ResolvedRoute {
+    return new ExternalRoute(this._staticRoutes, request.method, request.url, {
+      description: 'LoopBack static assets route',
+      'x-visibility': 'undocumented',
+      responses: {},
+    });
+  }
+}
+
+class ExternalRoute implements RouteEntry, ResolvedRoute {
+  // ResolvedRoute API
+  readonly pathParams: PathParameterValues = [];
+  readonly schemas: SchemasObject = {};
+
+  constructor(
+    private readonly _staticAssets: express.Router,
+    public readonly verb: string,
+    public readonly path: string,
+    public readonly spec: OperationObject,
+  ) {}
 
   updateBindings(requestContext: Context): void {
     // no-op
@@ -54,21 +72,21 @@ export class StaticAssetsRoute implements RouteEntry, ResolvedRoute {
     args: OperationArgs,
   ): Promise<OperationRetval> {
     const handled = await executeRequestHandler(
-      this._expressRouter,
+      this._staticAssets,
       request,
       response,
     );
+    if (handled) return;
 
-    if (!handled) {
-      // Express router called next, which means no route was matched
-      throw new HttpErrors.NotFound(
-        `Endpoint "${request.method} ${request.path}" not found.`,
-      );
-    }
+    // Express router called next, which means no route was matched
+    throw new HttpErrors.NotFound(
+      `Endpoint "${request.method} ${request.path}" not found.`,
+    );
   }
 
   describe(): string {
-    return 'final route to handle static assets';
+    // TODO(bajtos) provide better description for Express routes with spec
+    return `External Express route "${this.verb} ${this.path}"`;
   }
 }
 
