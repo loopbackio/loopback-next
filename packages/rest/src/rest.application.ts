@@ -244,7 +244,7 @@ export class RestApplication extends Application implements HttpServerLike {
    */
   redirect(
     fromPath: string,
-    toPathOrUrl: string,
+    toPathOrUrl: string | Function,
     statusCode?: number,
   ): Binding {
     return this.restServer.redirect(fromPath, toPathOrUrl, statusCode);

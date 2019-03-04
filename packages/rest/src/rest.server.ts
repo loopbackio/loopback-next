@@ -683,11 +683,11 @@ export class RestServer extends Context implements Server, HttpServerLike {
    */
   redirect(
     fromPath: string,
-    toPathOrUrl: string,
+    toPathOrUrl: string | Function,
     statusCode?: number,
   ): Binding {
     return this.route(
-      new RedirectRoute(fromPath, this._basePath + toPathOrUrl, statusCode),
+      new RedirectRoute(fromPath, toPathOrUrl, statusCode),
     );
   }
 
