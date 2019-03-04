@@ -9,7 +9,11 @@ os:
   - linux
   - osx
 
-script: ./bin/travis.sh
+script:
+  - npm run postinstall
+  - npm run build
+  - npm run test:ci
+
 env: TASK=test
 install: npm install --ignore-scripts
 
@@ -21,12 +25,18 @@ matrix:
     - node_js: "8"
       os: linux
       env: TASK=code-lint
+      # Running Code Linter -- Requires @loopback/build so it's bootstrapped
+      script:
+        - lerna bootstrap --scope @loopback/build --scope @loopback/tslint-config
+        - npm run lint
     - node_js: "8"
       os: linux
       env: TASK=commit-lint
+      script: commitlint-travis
     - node_js: "8"
       os: linux
       env: TASK=verify-docs
+      script: ./bin/verify-doc-changes.sh
 
 branches:
   only:

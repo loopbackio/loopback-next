@@ -48,7 +48,6 @@
     "build:full": "npm run clean:lerna && npm install && npm run clean && npm run build",
     "pretest": "npm run clean && npm run build",
     "test": "node packages/build/bin/run-nyc npm run mocha --scripts-prepend-node-path",
-    "pretest:ci": "npm run build",
     "test:ci": "node packages/build/bin/run-nyc npm run mocha --scripts-prepend-node-path",
     "verify:docs": "npm run build:site -- --verify",
     "build:site": "./bin/build-docs-site.sh",
