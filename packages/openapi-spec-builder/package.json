@@ -9,6 +9,8 @@
     "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
     "clean": "lb-clean loopback-openapi-spec-builder*.tgz dist package api-docs",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-openapi-spec-builder*.tgz && tree package && npm run clean"
   },
   "author": "IBM Corp.",
@@ -26,6 +28,7 @@
   },
   "devDependencies": {
     "@loopback/build": "^1.3.1",
+    "@loopback/testlab": "^1.0.7",
     "@loopback/tslint-config": "^2.0.1",
     "@types/node": "^10.11.2"
   },
