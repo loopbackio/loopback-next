@@ -23,11 +23,12 @@ $ lb4 app
 ? Project root directory: (todo-list)
 ? Application class name: (TodoListApplication)
 ? Select features to enable in the project:
-❯◉ Enable tslint: add a linter with pre-configured lint rules
- ◉ Enable prettier: add new npm scripts to facilitate consistent code formatting
- ◉ Enable mocha: install mocha to assist with running tests
+ ◉ Enable tslint: add a linter with pre-configured lint rules
+ ◉ Enable prettier: install prettier to format code conforming to rules
+ ◉ Enable mocha: install mocha to run tests
  ◉ Enable loopbackBuild: use @loopback/build helpers (e.g. lb-tslint)
  ◉ Enable vscode: add VSCode config files
+❯◯ Enable docker: include Dockerfile and .dockerignore
  ◉ Enable repositories: include repository imports and RepositoryMixin
  ◉ Enable services: include service-proxy imports and ServiceMixin
  # npm will install dependencies now
@@ -35,7 +36,8 @@ $ lb4 app
 ```
 
 For this tutorial, when prompted with the options for enabling certain project
-features (LoopBack's build, tslint, mocha, etc.), leave them all enabled.
+features (LoopBack's build, tslint, mocha, etc.), leave them all enabled except
+for `docker`.
 
 ### Structure
 
