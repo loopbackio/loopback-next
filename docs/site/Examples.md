@@ -25,6 +25,7 @@ $ lb4 example
   log-extension: An example extension project for LoopBack 4.
   rpc-server: A basic RPC server using a made-up protocol.
   soap-calculator: An example on how to integrate SOAP web services.
+  express-composition: A simple Express application that uses LoopBack 4 REST API.
 ```
 
 Please follow the instructions in

@@ -53,9 +53,9 @@ application, follow these steps:
     Server is running at http://127.0.0.1:3000
     ```
 
-### Create your LoopBack Application
+## Create your LoopBack Application
 
-#### Scaffold your Application
+### Scaffold your Application
 
 Run `lb4 app note` to scaffold your application and fill out the following
 prompts as follows:
@@ -65,24 +65,25 @@ $ lb4 app
 ? Project description: An application for recording notes.
 ? Project root directory: (note)
 ? Application class name: (NoteApplication)
-❯◉ Enable tslint: add a linter with pre-configured lint rules
- ◉ Enable prettier: add new npm scripts to facilitate consistent code formatting
- ◉ Enable mocha: install mocha to assist with running tests
+ ◉ Enable tslint: add a linter with pre-configured lint rules
+ ◉ Enable prettier: install prettier to format code conforming to rules
+ ◉ Enable mocha: install mocha to run tests
  ◉ Enable loopbackBuild: use @loopback/build helpers (e.g. lb-tslint)
  ◉ Enable vscode: add VSCode config files
+❯◯ Enable docker: include Dockerfile and .dockerignore
  ◉ Enable repositories: include repository imports and RepositoryMixin
  ◉ Enable services: include service-proxy imports and ServiceMixin
  # npm will install dependencies now
  Application note was created in note.
 ```
 
-#### Add Note Model
+### Add Note Model
 
 Inside the project folder, run `lb4 model` to create the `Note` model with
 `Entity` model base class. Add an `id` property with type `number`, a required
 `title` property with type `string`, and a `content` property of type `string`.
 
-#### Add a DataSource
+### Add a DataSource
 
 Now, let's create a simple in-memory datasource by running the
 `lb4 datasource ds` command and the following full path to file:
@@ -112,19 +113,19 @@ Then copy and paste the following into the `ds.json` file:
 }
 ```
 
-#### Add Note Repository
+### Add Note Repository
 
 To create the repository, run the `lb4 repository` command and choose the
 `DsDataSource` as the datasource and `Note` model as the model.
 
-#### Add Note Controller
+### Add Note Controller
 
 To complete the `Note` application, create a controller using the
 `lb4 controller note` command, with the `REST Controller with CRUD functions`
 type, `Note` model, and `NoteRepository` repository. The `id`'s type will be
 `number` and base HTTP path name is the default `/notes`.
 
-### Create a Facade Express Application
+## Create a Facade Express Application
 
 Let's start by installing dependencies for the `express` module:
 
