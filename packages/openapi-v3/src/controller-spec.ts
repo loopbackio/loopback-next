@@ -186,6 +186,18 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     }
 
     operationSpec['x-operation-name'] = op;
+    operationSpec['x-controller-name'] =
+      operationSpec['x-controller-name'] || constructor.name;
+
+    if (operationSpec.operationId == null) {
+      // Build the operationId as `<controllerName>.<operationName>`
+      // Please note API explorer (https://github.com/swagger-api/swagger-js/)
+      // will normalize it as `<controllerName>_<operationName>`
+      operationSpec.operationId =
+        operationSpec['x-controller-name'] +
+        '.' +
+        operationSpec['x-operation-name'];
+    }
 
     if (!spec.paths[path]) {
       spec.paths[path] = {};

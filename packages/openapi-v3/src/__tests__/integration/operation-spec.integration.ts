@@ -5,7 +5,7 @@
 
 import {expect} from '@loopback/testlab';
 import {model, property} from '@loopback/repository';
-import {param, requestBody, getControllerSpec, post} from '../../';
+import {param, requestBody, getControllerSpec, post, get} from '../../';
 
 describe('operation arguments', () => {
   it('generate parameters and requestBody for operation', () => {
@@ -54,7 +54,9 @@ describe('operation arguments', () => {
               },
               'x-parameter-index': 3,
             },
+            'x-controller-name': 'MyController',
             'x-operation-name': 'createUser',
+            operationId: 'MyController.createUser',
           },
         },
       },
@@ -63,6 +65,36 @@ describe('operation arguments', () => {
           User: {
             title: 'User',
             properties: {name: {type: 'string'}, password: {type: 'number'}},
+          },
+        },
+      },
+    };
+    const spec = getControllerSpec(MyController);
+    expect(spec).to.eql(expectedSpec);
+  });
+
+  it('allows operation metadata in @get', () => {
+    class MyController {
+      @get('/users', {
+        operationId: 'find_users',
+        responses: {
+          '200': {description: 'Users found'},
+        },
+      })
+      async findUsers(): Promise<string[]> {
+        return [];
+      }
+    }
+    const expectedSpec = {
+      paths: {
+        '/users': {
+          get: {
+            responses: {
+              '200': {description: 'Users found'},
+            },
+            'x-controller-name': 'MyController',
+            'x-operation-name': 'findUsers',
+            operationId: 'find_users',
           },
         },
       },

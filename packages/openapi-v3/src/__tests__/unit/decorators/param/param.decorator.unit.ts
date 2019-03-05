@@ -32,6 +32,7 @@ describe('Routing metadata for parameters', () => {
 
       const expectedSpec = anOperationSpec()
         .withOperationName('greet')
+        .withControllerName('MyController')
         .withParameter(paramSpec)
         .withResponse(200, {description: 'Return value of MyController.greet'})
         .build();
@@ -76,6 +77,7 @@ describe('Routing metadata for parameters', () => {
 
       const expectedSpec = anOperationSpec()
         .withOperationName('update')
+        .withControllerName('MyController')
         .withResponse(200, {description: 'Return value of MyController.update'})
         .withParameter({
           name: 'id',
@@ -145,6 +147,7 @@ describe('Routing metadata for parameters', () => {
 
       const expectedSpec = anOperationSpec()
         .withOperationName('greet')
+        .withControllerName('MyController')
         .withResponse(200, {description: 'Return value of MyController.greet'})
         .withParameter({
           name: 'names',
@@ -191,6 +194,7 @@ describe('Routing metadata for parameters', () => {
 
       const expectedSpec = anOperationSpec()
         .withOperationName('greet')
+        .withControllerName('MyController')
         .withResponse(200, {description: 'Return value of MyController.greet'})
         .withParameter({
           name: 'names',
