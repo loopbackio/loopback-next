@@ -12,23 +12,32 @@ Run the following command to install the CLI.
 
 1.  To scaffold a LoopBack 4 application
 
-    `lb4`
+    `lb4` (or `lb4 app`)
 
     ```sh
     Usage:
-      lb4 [options] [<name>]
+      lb4 [<name>] [options]
 
     Options:
       -h,   --help             # Print the generator's options and usage
             --skip-cache       # Do not remember prompt answers              Default: false
             --skip-install     # Do not automatically install dependencies   Default: false
+            --force-install    # Fail on install dependencies error          Default: false
             --applicationName  # Application name
+            --docker           # Include Dockerfile and .dockerignore
+            --repositories     # Include repository imports and RepositoryMixin
+            --services         # Include service-proxy imports and ServiceMixin
             --description      # Description for the application
             --outdir           # Project root directory for the application
             --tslint           # Enable tslint
             --prettier         # Enable prettier
             --mocha            # Enable mocha
             --loopbackBuild    # Use @loopback/build
+            --vscode           # Use preconfigured VSCode settings
+            --private          # Mark the project private (excluded from npm publish)
+      -c,   --config           # JSON file name or value to configure options
+      -y,   --yes              # Skip all confirmation prompts with default or provided value
+            --format           # Format generated code using npm run lint:fix
 
     Arguments:
       name  # Project name for the application  Type: String  Required: false
@@ -40,19 +49,28 @@ Run the following command to install the CLI.
 
     ```sh
     Usage:
-      lb4 extension [options] [<name>]
+      lb4 extension [<name>] [options]
 
     Options:
       -h,   --help           # Print the generator's options and usage
             --skip-cache     # Do not remember prompt answers             Default: false
             --skip-install   # Do not automatically install dependencies  Default: false
+            --force-install  # Fail on install dependencies error         Default: false
+            --componentName  # Component name
             --description    # Description for the extension
             --outdir         # Project root directory for the extension
             --tslint         # Enable tslint
             --prettier       # Enable prettier
             --mocha          # Enable mocha
             --loopbackBuild  # Use @loopback/build
-            --componentName  # Component name
+            --vscode         # Use preconfigured VSCode settings
+            --private        # Mark the project private (excluded from npm publish)
+      -c,   --config         # JSON file name or value to configure options
+      -y,   --yes            # Skip all confirmation prompts with default or provided value
+            --format         # Format generated code using npm run lint:fix
+
+    Arguments:
+      name  # Project name for the extension  Type: String  Required: false
     ```
 
 3.  To scaffold a Controller into your application
@@ -64,12 +82,16 @@ Run the following command to install the CLI.
 
     ```sh
     Usage:
-      lb4 controller [options] [<name>]
+      lb4 controller [<name>] [options]
 
     Options:
       -h,   --help            # Print the generator's options and usage
-            --skip-cache      # Do not remember prompt answers             Default: false
-            --skip-install    # Do not automatically install dependencies  Default: false
+            --skip-cache      # Do not remember prompt answers                                Default: false
+            --skip-install    # Do not automatically install dependencies                     Default: false
+            --force-install   # Fail on install dependencies error                            Default: false
+      -c,   --config          # JSON file name or value to configure options
+      -y,   --yes             # Skip all confirmation prompts with default or provided value
+            --format          # Format generated code using npm run lint:fix
             --controllerType  # Type for the controller
 
     Arguments:
@@ -85,11 +107,16 @@ Run the following command to install the CLI.
 
     ```sh
     Usage:
-      lb4 datasource [options] [<name>]
+      lb4 datasource [<name>] [options]
 
     Options:
-      -h,   --help            # Print the generator's options and usage
-            --connector       # Name of datasource connector
+      -h,   --help           # Print the generator's options and usage
+            --skip-cache     # Do not remember prompt answers                                Default: false
+            --skip-install   # Do not automatically install dependencies                     Default: false
+            --force-install  # Fail on install dependencies error                            Default: false
+      -c,   --config         # JSON file name or value to configure options
+      -y,   --yes            # Skip all confirmation prompts with default or provided value
+            --format         # Format generated code using npm run lint:fix
 
     Arguments:
       name  # Name for the datasource  Type: String  Required: true
@@ -104,7 +131,7 @@ Run the following command to install the CLI.
 
     ```sh
     Usage:
-      lb4 model [options] [<name>]
+      lb4 model [<name>] [options]
 
     Options:
       -h,   --help            # Print the generator's options and usage
@@ -123,13 +150,20 @@ Run the following command to install the CLI.
 
     ```sh
     Usage:
-      lb4 repository [options] [<name>]
+      lb4 repository [<name>] [options]
 
     Options:
-      -h,   --help           # Print the generator's options and usage
-            --model          # A valid model name
-            --id             # A valid ID property name for the specified model
-            --datasource     # A valid datasource name
+      -h,   --help                 # Print the generator's options and usage
+            --skip-cache           # Do not remember prompt answers                                Default: false
+            --skip-install         # Do not automatically install dependencies                     Default: false
+            --force-install        # Fail on install dependencies error                            Default: false
+            --model                # A valid model name
+            --id                   # A valid ID property name for the specified model
+            --datasource           # A valid datasource name
+            --repositoryBaseClass  # A valid repository base class                                 Default: DefaultCrudRepository
+      -c,   --config               # JSON file name or value to configure options
+      -y,   --yes                  # Skip all confirmation prompts with default or provided value
+            --format               # Format generated code using npm run lint:fix
 
     Arguments:
       name  # Name for the repository   Type: String  Required: false
@@ -148,7 +182,13 @@ Run the following command to install the CLI.
 
     Options:
       -h,   --help           # Print the generator's options and usage
+            --skip-cache     # Do not remember prompt answers                                Default: false
+            --skip-install   # Do not automatically install dependencies                     Default: false
+            --force-install  # Fail on install dependencies error                            Default: false
             --datasource     # A valid datasource name
+      -c,   --config         # JSON file name or value to configure options
+      -y,   --yes            # Skip all confirmation prompts with default or provided value
+            --format         # Format generated code using npm run lint:fix
 
     Arguments:
       name  # Name for the service  Type: String  Required: false
@@ -160,12 +200,28 @@ Run the following command to install the CLI.
 
     ```sh
     Usage:
-      lb4 example [options] [<example-name>]
+      lb4 example [<example-name>] [options]
 
     Options:
       -h,   --help           # Print the generator's options and usage
-            --skip-cache     # Do not remember prompt answers             Default: false
-            --skip-install   # Do not automatically install dependencies  Default: false
+            --skip-cache     # Do not remember prompt answers                                Default: false
+            --skip-install   # Do not automatically install dependencies                     Default: false
+            --force-install  # Fail on install dependencies error                            Default: false
+      -c,   --config         # JSON file name or value to configure options
+      -y,   --yes            # Skip all confirmation prompts with default or provided value
+            --format         # Format generated code using npm run lint:fix
+
+    Arguments:
+      example-name  # Name of the example to clone  Type: String  Required: false
+
+    Available examples:
+      todo: Tutorial example on how to build an application with LoopBack 4.
+      todo-list: Continuation of the todo example using relations in LoopBack 4.
+      hello-world: A simple hello-world Application using LoopBack 4.
+      log-extension: An example extension project for LoopBack 4.
+      rpc-server: A basic RPC server using a made-up protocol.
+      soap-calculator: An example on how to integrate SOAP web services
+      express-composition: A simple Express application that uses LoopBack 4 REST API.
     ```
 
 9.  To generate artifacts from an OpenAPI spec into your application
@@ -181,9 +237,15 @@ Run the following command to install the CLI.
 
     Options:
       -h,   --help                       # Print the generator's options and usage
+            --skip-cache                 # Do not remember prompt answers                                Default: false
+            --skip-install               # Do not automatically install dependencies                     Default: false
+            --force-install              # Fail on install dependencies error                            Default: false
             --url                        # URL or file path of the OpenAPI spec
             --validate                   # Validate the OpenAPI spec                                     Default: false
             --promote-anonymous-schemas  # Promote anonymous schemas as models                           Default: false
+      -c,   --config                     # JSON file name or value to configure options
+      -y,   --yes                        # Skip all confirmation prompts with default or provided value
+            --format                     # Format generated code using npm run lint:fix
 
     Arguments:
       url  # URL or file path of the OpenAPI spec  Type: String  Required: false
@@ -213,23 +275,27 @@ Run the following command to install the CLI.
     `lb4 --version` (or `lb4 -v`)
 
     ```sh
-    @loopback/cli version: 1.5.1
+    @loopback/cli version: 1.8.1
 
     @loopback/* dependencies:
-      - @loopback/authentication: ^1.0.10
-      - @loopback/boot: ^1.0.10
-      - @loopback/build: ^1.2.0
-      - @loopback/context: ^1.4.1
-      - @loopback/core: ^1.1.4
-      - @loopback/metadata: ^1.0.4
-      - @loopback/openapi-spec-builder: ^1.0.4
-      - @loopback/openapi-v3-types: ^1.0.4
-      - @loopback/openapi-v3: ^1.1.7
-      - @loopback/repository-json-schema: ^1.2.7
-      - @loopback/repository: ^1.1.3
-      - @loopback/rest: ^1.5.3
-      - @loopback/testlab: ^1.0.4
-      - @loopback/docs: ^1.7.1
+      - @loopback/authentication: ^1.0.14
+      - @loopback/boot: ^1.0.14
+      - @loopback/build: ^1.3.1
+      - @loopback/context: ^1.6.0
+      - @loopback/core: ^1.1.7
+      - @loopback/metadata: ^1.0.7
+      - @loopback/openapi-spec-builder: ^1.0.7
+      - @loopback/openapi-v3-types: ^1.0.7
+      - @loopback/openapi-v3: ^1.2.3
+      - @loopback/repository-json-schema: ^1.3.3
+      - @loopback/repository: ^1.1.7
+      - @loopback/rest: ^1.7.0
+      - @loopback/testlab: ^1.0.7
+      - @loopback/docs: ^1.9.1
+      - @loopback/service-proxy: ^1.0.9
+      - @loopback/http-caching-proxy: ^1.0.8
+      - @loopback/http-server: ^1.1.7
+      - @loopback/rest-explorer: ^1.1.10
     ```
 
 ## Contributions
