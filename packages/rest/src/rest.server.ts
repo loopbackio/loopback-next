@@ -41,7 +41,8 @@ import {
   Route,
   RouteEntry,
   RoutingTable,
-  StaticAssetsRoute,
+  ExternalExpressRoutes,
+  RedirectRoute,
 } from './router';
 import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
 import {
@@ -52,6 +53,7 @@ import {
   Request,
   Response,
   Send,
+  RequestBodyParserOptions,
 } from './types';
 
 const debug = debugFactory('loopback:rest:server');
@@ -183,12 +185,22 @@ export class RestServer extends Context implements Server, HttpServerLike {
       config.openApiSpec.endpointMapping || OPENAPI_SPEC_MAPPING;
 
     config.apiExplorer = normalizeApiExplorerConfig(config.apiExplorer);
+    if (config.openApiSpec.disabled) {
+      // Disable apiExplorer if the OpenAPI spec endpoint is disabled
+      config.apiExplorer.disabled = true;
+    }
 
     this.config = config;
     this.bind(RestBindings.PORT).to(config.port);
     this.bind(RestBindings.HOST).to(config.host);
     this.bind(RestBindings.PROTOCOL).to(config.protocol || 'http');
     this.bind(RestBindings.HTTPS_OPTIONS).to(config as ServerOptions);
+
+    if (config.requestBodyParser) {
+      this.bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS).to(
+        config.requestBodyParser,
+      );
+    }
 
     if (config.sequence) {
       this.sequence(config.sequence);
@@ -203,7 +215,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
   protected _setupRequestHandlerIfNeeded() {
     if (this._expressApp) return;
     this._expressApp = express();
-    this._expressApp.set('query parser', 'extended');
+    this._applyExpressSettings();
     this._requestHandler = this._expressApp;
 
     // Allow CORS support for all endpoints so that users
@@ -235,10 +247,21 @@ export class RestServer extends Context implements Server, HttpServerLike {
   }
 
   /**
+   * Apply express settings.
+   */
+  protected _applyExpressSettings() {
+    const settings = this.config.expressSettings || {};
+    for (const key in settings) {
+      this._expressApp.set(key, settings[key]);
+    }
+  }
+
+  /**
    * Mount /openapi.json, /openapi.yaml for specs and /swagger-ui, /explorer
    * to redirect to externally hosted API explorer
    */
   protected _setupOpenApiSpecEndpoints() {
+    if (this.config.openApiSpec!.disabled) return;
     // NOTE(bajtos) Regular routes are handled through Sequence.
     // IMO, this built-in endpoint should not run through a Sequence,
     // because it's not part of the application API itself.
@@ -275,7 +298,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
      * Check if there is custom router in the context
      */
     const router = this.getSync(RestBindings.ROUTER, {optional: true});
-    const routingTable = new RoutingTable(router, this._staticAssetRoute);
+    const routingTable = new RoutingTable(router, this._externalRoutes);
 
     this._httpHandler = new HttpHandler(this, routingTable);
     for (const b of this.find('controllers.*')) {
@@ -644,8 +667,34 @@ export class RestServer extends Context implements Server, HttpServerLike {
     );
   }
 
-  // The route for static assets
-  private _staticAssetRoute = new StaticAssetsRoute();
+  /**
+   * Register a route redirecting callers to a different URL.
+   *
+   * ```ts
+   * server.redirect('/explorer', '/explorer/');
+   * ```
+   *
+   * @param fromPath URL path of the redirect endpoint
+   * @param toPathOrUrl Location (URL path or full URL) where to redirect to.
+   * If your server is configured with a custom `basePath`, then the base path
+   * is prepended to the target location.
+   * @param statusCode HTTP status code to respond with,
+   *   defaults to 303 (See Other).
+   */
+  redirect(
+    fromPath: string,
+    toPathOrUrl: string,
+    statusCode?: number,
+  ): Binding {
+    return this.route(
+      new RedirectRoute(fromPath, this._basePath + toPathOrUrl, statusCode),
+    );
+  }
+
+  /*
+   * Registry of external routes & static assets
+   */
+  private _externalRoutes = new ExternalExpressRoutes();
 
   /**
    * Mount static assets to the REST server.
@@ -656,7 +705,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * @param options Options for serve-static
    */
   static(path: PathParams, rootDir: string, options?: ServeStaticOptions) {
-    this._staticAssetRoute.registerAssets(path, rootDir, options);
+    this._externalRoutes.registerAssets(path, rootDir, options);
   }
 
   /**
@@ -901,6 +950,10 @@ export interface OpenApiSpecOptions {
    * Configure servers for OpenAPI spec
    */
   servers?: ServerObject[];
+  /**
+   * Set this flag to disable the endpoint for OpenAPI spec
+   */
+  disabled?: true;
 }
 
 export interface ApiExplorerOptions {
@@ -936,7 +989,10 @@ export interface RestServerOptions {
   cors?: cors.CorsOptions;
   openApiSpec?: OpenApiSpecOptions;
   apiExplorer?: ApiExplorerOptions;
+  requestBodyParser?: RequestBodyParserOptions;
   sequence?: Constructor<SequenceHandler>;
+  // tslint:disable-next-line:no-any
+  expressSettings?: {[name: string]: any};
 }
 
 /**

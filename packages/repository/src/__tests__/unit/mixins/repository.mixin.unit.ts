@@ -199,6 +199,8 @@ describe('RepositoryMixin', () => {
   function expectNoteRepoToBeBound(myApp: Application) {
     const boundRepositories = myApp.find('repositories.*').map(b => b.key);
     expect(boundRepositories).to.containEql('repositories.NoteRepo');
+    const binding = myApp.getBinding('repositories.NoteRepo');
+    expect(binding.scope).to.equal(BindingScope.TRANSIENT);
     const repoInstance = myApp.getSync('repositories.NoteRepo');
     expect(repoInstance).to.be.instanceOf(NoteRepo);
   }

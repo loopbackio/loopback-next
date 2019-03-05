@@ -3,11 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
-import {anOperationSpec} from '@loopback/openapi-spec-builder';
 import {Binding, Context} from '@loopback/context';
 import {Application} from '@loopback/core';
-import {RestServer, Route, RestBindings, RestComponent} from '../../..';
+import {anOperationSpec} from '@loopback/openapi-spec-builder';
+import {expect} from '@loopback/testlab';
+import {
+  RequestBodyParserOptions,
+  RestBindings,
+  RestComponent,
+  RestServer,
+  RestServerConfig,
+  Route,
+} from '../../..';
 
 describe('RestServer', () => {
   describe('"bindElement" binding', () => {
@@ -122,6 +129,45 @@ describe('RestServer', () => {
       }).to.throw(
         /Base path cannot be set as the request handler has been created/,
       );
+    });
+
+    it('honors requestBodyParser options in config', async () => {
+      const parserOptions: RequestBodyParserOptions = {json: {limit: '1mb'}};
+      const app = new Application({
+        rest: {requestBodyParser: parserOptions},
+      });
+      app.component(RestComponent);
+      const server = await app.getServer(RestServer);
+      expect(server.getSync(RestBindings.REQUEST_BODY_PARSER_OPTIONS)).to.equal(
+        parserOptions,
+      );
+    });
+
+    it('assigns express settings', () => {
+      class TestRestServer extends RestServer {
+        constructor(application: Application, config: RestServerConfig) {
+          super(application, config);
+          this._setupRequestHandlerIfNeeded();
+        }
+
+        get expressApp() {
+          return this._expressApp;
+        }
+      }
+
+      const app = new Application();
+      const server = new TestRestServer(app, {
+        expressSettings: {
+          'x-powered-by': false,
+          env: 'production',
+        },
+      });
+      const expressApp = server.expressApp;
+      expect(expressApp.get('x-powered-by')).to.equal(false);
+      expect(expressApp.get('env')).to.equal('production');
+      // `extended` is the default setting by Express
+      expect(expressApp.get('query parser')).to.equal('extended');
+      expect(expressApp.get('not set')).to.equal(undefined);
     });
   });
 

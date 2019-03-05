@@ -432,6 +432,22 @@ paths:
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
   });
 
+  it('disables endpoints with openApiSpec.disabled = true', async () => {
+    const server = await givenAServer({
+      rest: {
+        port: 0,
+        openApiSpec: {
+          disabled: true,
+        },
+      },
+    });
+
+    const test = createClientForHandler(server.requestHandler);
+    await test.get('/openapi.json').expect(404);
+    await test.get('/openapi.yaml').expect(404);
+    await test.get('/explorer').expect(404);
+  });
+
   it('exposes "GET /explorer" endpoint', async () => {
     const app = new Application();
     app.component(RestComponent);
@@ -687,6 +703,30 @@ paths:
     await server.stop();
   });
 
+  it('creates a redirect route with the default status code', async () => {
+    const server = await givenAServer();
+    server.controller(DummyController);
+    server.redirect('/page/html', '/html');
+    const response = await createClientForHandler(server.requestHandler)
+      .get('/page/html')
+      .expect(303);
+    await createClientForHandler(server.requestHandler)
+      .get(response.header.location)
+      .expect(200, 'Hi');
+  });
+
+  it('creates a redirect route with a custom status code', async () => {
+    const server = await givenAServer();
+    server.controller(DummyController);
+    server.redirect('/page/html', '/html', 304);
+    const response = await createClientForHandler(server.requestHandler)
+      .get('/page/html')
+      .expect(304);
+    await createClientForHandler(server.requestHandler)
+      .get(response.header.location)
+      .expect(200, 'Hi');
+  });
+
   describe('basePath', () => {
     const root = ASSETS;
     let server: RestServer;
@@ -735,6 +775,17 @@ paths:
       );
       expect(response.body.servers).to.containEql({url: '/api'});
     });
+
+    it('controls redirect locations', async () => {
+      server.controller(DummyController);
+      server.redirect('/page/html', '/html');
+      const response = await createClientForHandler(server.requestHandler)
+        .get('/api/page/html')
+        .expect(303);
+      await createClientForHandler(server.requestHandler)
+        .get(response.header.location)
+        .expect(200, 'Hi');
+    });
   });
 
   async function givenAServer(
@@ -762,6 +813,12 @@ paths:
     })
     ping(): string {
       return 'Hi';
+    }
+    @get('/endpoint', {
+      responses: {},
+    })
+    hello(): string {
+      return 'hello';
     }
   }
 

@@ -3,6 +3,56 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.9.0...@loopback/docs@1.9.1) (2019-03-01)
+
+
+### Bug Fixes
+
+* **example-express-composition:** remove prepublishOnly and lbApp.start() ([c095a6c](https://github.com/strongloop/loopback-next/commit/c095a6c))
+
+
+
+
+
+# [1.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.8.0...@loopback/docs@1.9.0) (2019-03-01)
+
+
+### Bug Fixes
+
+* **docs:** add missing backtick for todo tutorial table ([e3dd42d](https://github.com/strongloop/loopback-next/commit/e3dd42d))
+* **example-soap-calculator:** switch to a new soap calculator webservice ([4cee896](https://github.com/strongloop/loopback-next/commit/4cee896))
+
+
+### Features
+
+* **rest:** allow express settings to be customized ([962f1cb](https://github.com/strongloop/loopback-next/commit/962f1cb))
+* add express example ([dd2400e](https://github.com/strongloop/loopback-next/commit/dd2400e))
+
+
+
+
+
+# [1.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.7.3...@loopback/docs@1.8.0) (2019-02-25)
+
+
+### Bug Fixes
+
+* **docs:** broken link in Crafting in LB ([7707fa5](https://github.com/strongloop/loopback-next/commit/7707fa5))
+* **docs:** grammar fix on todo-tutorial-datasource.md ([ca88a41](https://github.com/strongloop/loopback-next/commit/ca88a41))
+* **docs:** remove review questions section for Controller page ([93f7bbf](https://github.com/strongloop/loopback-next/commit/93f7bbf))
+
+
+### Features
+
+* **cli:** add `--docker` option to generate docker files ([4cd2442](https://github.com/strongloop/loopback-next/commit/4cd2442))
+* **context:** introduce async context observers for bind/unbind events ([e5e5fc4](https://github.com/strongloop/loopback-next/commit/e5e5fc4))
+* **rest:** add `disabled` option for OpenAPI spec endpoints ([af5b16a](https://github.com/strongloop/loopback-next/commit/af5b16a))
+* **rest:** introduce requestBodyParser options in RestServerOptions ([c7f59ba](https://github.com/strongloop/loopback-next/commit/c7f59ba))
+
+
+
+
+
 ## [1.7.3](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.7.2...@loopback/docs@1.7.3) (2019-02-08)
 
 

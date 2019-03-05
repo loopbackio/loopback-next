@@ -63,10 +63,12 @@ npm start
 ```
 
 You will see the app running on port 3000 by default, you can point your browser
-to http://localhost:3000/ping and see a greeting message from **LB4**.
+to <http://localhost:3000/ping> and see a greeting message from **LB4**.
 
-**NOTE:** Press Ctrl-C to stop running the application and continue to the next
+{% include note.html content="
+Press Ctrl-C to stop running the application and continue to the next
 step.
+" %}
 
 ### Navigation
 

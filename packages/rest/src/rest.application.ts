@@ -229,6 +229,28 @@ export class RestApplication extends Application implements HttpServerLike {
   }
 
   /**
+   * Register a route redirecting callers to a different URL.
+   *
+   * ```ts
+   * app.redirect('/explorer', '/explorer/');
+   * ```
+   *
+   * @param fromPath URL path of the redirect endpoint
+   * @param toPathOrUrl Location (URL path or full URL) where to redirect to.
+   * If your server is configured with a custom `basePath`, then the base path
+   * is prepended to the target location.
+   * @param statusCode HTTP status code to respond with,
+   *   defaults to 303 (See Other).
+   */
+  redirect(
+    fromPath: string,
+    toPathOrUrl: string,
+    statusCode?: number,
+  ): Binding {
+    return this.restServer.redirect(fromPath, toPathOrUrl, statusCode);
+  }
+
+  /**
    * Set the OpenAPI specification that defines the REST API schema for this
    * application. All routes, parameter definitions and return types will be
    * defined in this way.

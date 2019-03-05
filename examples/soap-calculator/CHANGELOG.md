@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@1.3.4...@loopback/example-soap-calculator@1.4.0) (2019-03-01)
+
+
+### Bug Fixes
+
+* **example-soap-calculator:** switch to a new soap calculator webservice ([4cee896](https://github.com/strongloop/loopback-next/commit/4cee896))
+
+
+### Features
+
+* add express example ([dd2400e](https://github.com/strongloop/loopback-next/commit/dd2400e))
+
+
+
+
+
+## [1.3.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@1.3.3...@loopback/example-soap-calculator@1.3.4) (2019-02-25)
+
+**Note:** Version bump only for package @loopback/example-soap-calculator
+
+
+
+
+
 ## [1.3.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@1.3.2...@loopback/example-soap-calculator@1.3.3) (2019-02-08)
 
 **Note:** Version bump only for package @loopback/example-soap-calculator

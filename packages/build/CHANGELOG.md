@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.3.0...@loopback/build@1.3.1) (2019-02-25)
+
+
+### Bug Fixes
+
+* update version of nyc ([f8db27c](https://github.com/strongloop/loopback-next/commit/f8db27c))
+
+
+
+
+
 # [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.2.1...@loopback/build@1.3.0) (2019-02-08)
 
 

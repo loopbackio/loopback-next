@@ -7,7 +7,7 @@ import {inject, Context} from '@loopback/context';
 import {Server, Application, CoreBindings} from '@loopback/core';
 import * as express from 'express';
 import * as http from 'http';
-import * as pEvent from 'p-event';
+import pEvent from 'p-event';
 import {rpcRouter} from './rpc.router';
 
 export class RPCServer extends Context implements Server {

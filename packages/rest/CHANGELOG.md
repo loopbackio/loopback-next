@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.6.0...@loopback/rest@1.7.0) (2019-03-01)
+
+
+### Features
+
+* **rest:** allow express settings to be customized ([962f1cb](https://github.com/strongloop/loopback-next/commit/962f1cb))
+
+
+
+
+
+# [1.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.5.5...@loopback/rest@1.6.0) (2019-02-25)
+
+
+### Bug Fixes
+
+* **rest:** only return matched trie nodes with values ([669ede1](https://github.com/strongloop/loopback-next/commit/669ede1))
+
+
+### Features
+
+* **context:** introduce async context observers for bind/unbind events ([e5e5fc4](https://github.com/strongloop/loopback-next/commit/e5e5fc4))
+* **rest:** add `disabled` option for OpenAPI spec endpoints ([af5b16a](https://github.com/strongloop/loopback-next/commit/af5b16a))
+* **rest:** allow rest-server to be mounted on a path to express ([de8f626](https://github.com/strongloop/loopback-next/commit/de8f626))
+* **rest:** introduce requestBodyParser options in RestServerOptions ([c7f59ba](https://github.com/strongloop/loopback-next/commit/c7f59ba))
+
+
+
+
+
 ## [1.5.5](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.5.4...@loopback/rest@1.5.5) (2019-02-08)
 
 

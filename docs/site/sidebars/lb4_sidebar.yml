@@ -15,8 +15,8 @@ children:
   url: Getting-started.html
   output: 'web, pdf'
 
-- title: 'Examples and tutorials'
-  url: Examples-and-tutorials.html
+- title: 'Tutorials'
+  url: Tutorials.html
   output: 'web, pdf'
   children:
 
@@ -98,6 +98,14 @@ children:
     - title: 'Run and Test it'
       url: soap-calculator-tutorial-run-and-test.html
       output: 'web, pdf'
+
+  - title: 'Creating an Express Application with LoopBack REST API'
+    url: express-with-lb4-rest-tutorial.html
+    output: 'web, pdf'
+
+- title: 'Examples'
+  url: Examples.html
+  output: 'web, pdf'
 
 - title: 'Key concepts'
   url: Concepts.html
@@ -203,6 +211,7 @@ children:
   url: How-tos.html
   output: 'web, pdf'
   children:
+
     - title: 'Exposing GraphQL APIs'
       url: exposing-graphql-apis.html
       output: 'web, pdf'
@@ -244,7 +253,7 @@ children:
   url: Calling-other-APIs-and-web-services.html
   output: 'web, pdf'
 
-- title: 'For current LoopBack users'
+- title: 'For LoopBack 3.x users'
   url: LoopBack-3.x.html
   output: 'web, pdf'
 

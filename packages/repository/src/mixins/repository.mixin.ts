@@ -71,7 +71,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
         name,
         namespace: 'repositories',
         type: 'repository',
-      }).inScope(BindingScope.SINGLETON);
+      });
       this.add(binding);
       return binding;
     }

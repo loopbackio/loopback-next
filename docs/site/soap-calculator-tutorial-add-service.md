@@ -73,24 +73,24 @@ expecting the same pair of arguments intA and intB. Now, it is time to define
 this scenario using interfaces as follows:
 
 ```ts
-export interface MultiplyResult {
+export interface MultiplyResponse {
   result: {
-    MultiplyResult: number;
+    value: number;
   };
 }
-export interface AddResult {
+export interface AddResponse {
   result: {
-    AddResult: number;
+    value: number;
   };
 }
-export interface SubtractResult {
+export interface SubtractResponse {
   result: {
-    SubtractResult: number;
+    value: number;
   };
 }
-export interface DivideResult {
+export interface DivideResponse {
   result: {
-    DivideResult: number;
+    value: number;
   };
 }
 export interface CalculatorParameters {
@@ -106,10 +106,10 @@ follows:
 
 ```ts
 export interface CalculatorService {
-  Multiply(args: CalculatorParameters): Promise<MultiplyResult>;
-  Add(args: CalculatorParameters): Promise<AddResult>;
-  Divide(args: CalculatorParameters): Promise<DivideResult>;
-  Subtract(args: CalculatorParameters): Promise<SubtractResult>;
+  multiply(args: CalculatorParameters): Promise<MultiplyResponse>;
+  add(args: CalculatorParameters): Promise<AddResponse>;
+  divide(args: CalculatorParameters): Promise<DivideResponse>;
+  subtract(args: CalculatorParameters): Promise<SubtractResponse>;
 }
 ```
 

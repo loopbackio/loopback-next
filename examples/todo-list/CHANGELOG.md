@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.4.4...@loopback/example-todo-list@1.5.0) (2019-03-01)
+
+
+### Bug Fixes
+
+* **repository:** change default binding scope to TRANSIENT for repos ([55461af](https://github.com/strongloop/loopback-next/commit/55461af))
+
+
+### Features
+
+* add express example ([dd2400e](https://github.com/strongloop/loopback-next/commit/dd2400e))
+
+
+
+
+
+## [1.4.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.4.3...@loopback/example-todo-list@1.4.4) (2019-02-25)
+
+
+### Bug Fixes
+
+* **example-todo-list:** change rootDir in compilerOptions ([70ebbad](https://github.com/strongloop/loopback-next/commit/70ebbad))
+
+
+
+
+
 ## [1.4.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.4.2...@loopback/example-todo-list@1.4.3) (2019-02-08)
 
 

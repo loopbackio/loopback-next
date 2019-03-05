@@ -77,6 +77,8 @@ async function lernaBootstrap(scope) {
     ci: false,
     scope: scope,
     loglevel: 'silent',
+    // Disable progress bars
+    progress: false,
   });
   await cmd;
 }

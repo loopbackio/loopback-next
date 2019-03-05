@@ -8,7 +8,7 @@ import * as http from 'http';
 import * as https from 'https';
 import {AddressInfo} from 'net';
 
-import * as pEvent from 'p-event';
+import pEvent from 'p-event';
 
 export type RequestListener = (
   req: IncomingMessage,

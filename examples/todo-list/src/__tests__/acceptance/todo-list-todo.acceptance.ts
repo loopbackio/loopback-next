@@ -82,6 +82,19 @@ describe('TodoListApplication', () => {
         .and.not.containEql(notMyTodo.toJSON());
     });
 
+    // https://github.com/strongloop/loopback-next/issues/2495
+    it('finds todos for a todoList more than once', async () => {
+      await client
+        .get(`/todo-lists/${persistedTodoList.id}/todos`)
+        .send()
+        .expect(200);
+
+      await client
+        .get(`/todo-lists/${persistedTodoList.id}/todos`)
+        .send()
+        .expect(200);
+    });
+
     it('updates todos for a todoList', async () => {
       const patchedIsCompleteTodo = {isComplete: true};
       const response = await client
