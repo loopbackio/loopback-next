@@ -69,7 +69,9 @@ describe('Routing metadata', () => {
       paths: {
         '/greet': {
           get: {
+            'x-controller-name': 'MyController',
             'x-operation-name': 'greet',
+            operationId: 'MyController.greet',
             ...operationSpec,
           },
         },
@@ -93,7 +95,9 @@ describe('Routing metadata', () => {
       paths: {
         '/greeting': {
           post: {
+            'x-controller-name': 'MyController',
             'x-operation-name': 'createGreeting',
+            operationId: 'MyController.createGreeting',
             ...operationSpec,
           },
         },
@@ -117,7 +121,9 @@ describe('Routing metadata', () => {
       paths: {
         '/greeting': {
           put: {
+            'x-controller-name': 'MyController',
             'x-operation-name': 'updateGreeting',
+            operationId: 'MyController.updateGreeting',
             ...operationSpec,
           },
         },
@@ -141,7 +147,9 @@ describe('Routing metadata', () => {
       paths: {
         '/greeting': {
           patch: {
+            'x-controller-name': 'MyController',
             'x-operation-name': 'patchGreeting',
+            operationId: 'MyController.patchGreeting',
             ...operationSpec,
           },
         },
@@ -165,7 +173,9 @@ describe('Routing metadata', () => {
       paths: {
         '/greeting': {
           delete: {
+            'x-controller-name': 'MyController',
             'x-operation-name': 'deleteGreeting',
+            operationId: 'MyController.deleteGreeting',
             ...operationSpec,
           },
         },
@@ -189,7 +199,9 @@ describe('Routing metadata', () => {
       paths: {
         '/greeting': {
           post: {
+            'x-controller-name': 'MyController',
             'x-operation-name': 'createGreeting',
+            operationId: 'MyController.createGreeting',
             ...operationSpec,
           },
         },
@@ -206,7 +218,9 @@ describe('Routing metadata', () => {
     const actualSpec = getControllerSpec(MyController);
 
     expect(actualSpec.paths['/greet']['get']).to.eql({
+      'x-controller-name': 'MyController',
       'x-operation-name': 'greet',
+      operationId: 'MyController.greet',
       responses: {'200': {description: 'Return value of MyController.greet'}},
     });
   });
@@ -220,7 +234,9 @@ describe('Routing metadata', () => {
     const actualSpec = getControllerSpec(MyController);
 
     expect(actualSpec.paths['/greeting']['post']).to.eql({
+      'x-controller-name': 'MyController',
       'x-operation-name': 'createGreeting',
+      operationId: 'MyController.createGreeting',
       responses: {
         '200': {description: 'Return value of MyController.createGreeting'},
       },
@@ -252,13 +268,17 @@ describe('Routing metadata', () => {
       paths: {
         '/parent': {
           get: {
+            'x-controller-name': 'Child',
             'x-operation-name': 'getParentName',
+            operationId: 'Child.getParentName',
             ...operationSpec,
           },
         },
         '/child': {
           get: {
+            'x-controller-name': 'Child',
             'x-operation-name': 'getChildName',
+            operationId: 'Child.getChildName',
             ...operationSpec,
           },
         },
