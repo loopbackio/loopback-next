@@ -36,71 +36,35 @@ After you have scaffolded a LoopBack4 application, you’ll get a default endpoi
 
 ## Step 1: Scaffold LoopBack 4 app
 
-Run `lb4 app` command.
+Run the `lb4 app` command, and specify all the values provided below.
 
 ```
 $ lb4 app
-? Project name: deploy-test
-? Project description: loopback example
-? Project root directory: deploy-test
-? Application class name: DeployTestApplication
-? Select features to enable in the project Enable tslint, Enable prettier, Enable mocha, Enable loopback
-Build, Enable vscode, Enable repositories, Enable services
-...
-Application deploy-test was created in deploy-test.
-Next steps:
-$ cd deploy-test
-$ npm start
+? Project name: lb4-simple-web-app
+? Project description: lb4-simple-web-app
+? Project root directory: lb4-simple-web-app
+? Application class name: Lb4SimpleWebAppApplication
+? Select features to enable in the project (Press <space> to select, <a> to toggle all, <i> to invert selection)
+ ◉ Enable tslint: add a linter with pre-configured lint rules
+ ◉ Enable prettier: install prettier to format code conforming to rules
+ ◉ Enable mocha: install mocha to run tests
+ ◉ Enable loopbackBuild: use @loopback/build helpers (e.g. lb-tslint)
+ ◉ Enable vscode: add VSCode config files
+ ◉ Enable docker: include Dockerfile and .dockerignore
+ ◉ Enable repositories: include repository imports and RepositoryMixin
+ ◉ Enable services: include service-proxy imports and ServiceMixin
+(Move up and down to reveal more choices)
 ```
 
-Navigate to the main directory of your project
+The `lb4-simple-web-app` project is created.
+
+Navigate to the main directory of the project
 
 ```
-cd deploy-test
+cd lb4-simple-web-app
 ```
 
-Let's **not** run `npm start` yet, we have some changes to make to certain
-files.
-
-## Step 2: Modify deploy-test/index.js
-
-{% include tip.html content="It is important for the host to be <b>'0.0.0.0'</b> and the port to be consistent in
-several places. We will use a port of <b>8080</b>." %}
-
-```
-  const config = {
-    rest: {
-      port: 8080,
-      host: '0.0.0.0',
-      openApiSpec: {
-        // useful when used with OASGraph to locate your application
-        setServersFromRequest: true,
-      },
-    },
-  };
-```
-
-## Step 3: Add .dockerignore file
-
-At project root, create a file called `.dockerignore` with the following
-content:
-
-```
-node_modules
-npm-debug.log
-```
-
-## Step 4: Build the application
-
-In a command window, navigate the main directory of your project and type :
-
-```
-npm run build
-```
-
-Make sure there are no errors before continuing to the next step.
-
-## Step 5: Run the application locally
+## Step 2: Run the application locally
 
 In a command window in the main directory of your project, type:
 
@@ -108,22 +72,23 @@ In a command window in the main directory of your project, type:
 npm start
 ```
 
-The server should start up successfully and display
+The application will build, and then the server should start up successfully and
+display
 
 ```
-Server is running at http://127.0.0.1:8080
-Try http://127.0.0.1:8080/ping
+Server is running at http://[::1]:3000
+Try http://[::1]:3000/ping
 ```
 
 Open your browser and attempt to access all these urls
 
-<http://127.0.0.1:8080/>
+<http://[::1]:3000/>
 
-<http://127.0.0.1:8080/ping>
+<http://[::1]:3000/ping>
 
-<http://127.0.0.1:8080/explorer>
+<http://[::1]:3000/explorer>
 
-<http://127.0.0.1:8080/openapi.json>
+<http://[::1]:3000/openapi.json>
 
 ![lb4_k8s_ibm_cloud_app_website_1.png](./imgs/lb4_k8s_ibm_cloud_app_website_1.png)
 
@@ -135,38 +100,27 @@ In the command window, stop the application with
 Ctrl + C
 ```
 
-## Step 6: Create a Dockerfile
+## Step 3: Build a Docker image
 
-Let's get the application running in Docker.
+Review the two Docker-related files that have been conveniently provided,
+`.dockerignore` and `Dockerfile`, but leave them unchanged for this tutorial.
 
-In the main project directory, create a file named `Dockerfile` .
-
-Place this inside:
-
-```
-FROM node:10.14-alpine
-
-EXPOSE 8080
-
-COPY package.json package.json
-RUN npm install
-
-COPY . .
-
-
-RUN npm run build
-
-CMD ["npm", "start" ]
-```
-
-{% include tip.html content="Notice the port is <b>8080</b> . It matches the port we specified in the application." %}
-
-## Step 7: Build a Docker image
-
-This will build a docker image and give it a tag name.
+Notice the `HOST` and `PORT` environment variable values:
 
 ```
-docker build -t lb4-simple-web-app .
+ENV HOST=0.0.0.0 PORT=3000
+```
+
+In the `package.json` file, a `docker:build` command has been provided.
+
+```
+"docker:build": "docker build -t lb4-simple-web-app ."
+```
+
+Run the command:
+
+```
+npm run docker:build
 ```
 
 When it completes, you will see :
@@ -188,17 +142,19 @@ It will display something like this :
 lb4-simple-web-app   latest 7d26df6c1561
 ```
 
-## Step 8: Run the application in Docker
+## Step 4: Run the application in Docker
 
-To run the application in a Docker container, type:
+In the `package.json` file, a `docker:run` command has been provided.
 
 ```
-docker run -d -i -t  -p 8080:8080 lb4-simple-web-app
+"docker:run": "docker run -p 3000:3000 -d lb4-simple-web-app"
 ```
 
-This starts the container in detached mode (-d), connects your machine's 8080
-port to the 8080 port of the container (-p), and permits you to open a bash
-shell into the container later on if you'd like (-i -t).
+Run the command:
+
+```
+npm run docker:run
+```
 
 Afterwards, type:
 
@@ -211,7 +167,7 @@ You should see something like this:
 ```
 
 CONTAINER ID   IMAGE                COMMAND          CREATED             STATUS         PORTS
-a9962339e863   lb4-simple-web-app   "npm start"      8 seconds ago       Up 7 seconds   0.0.0.0:8080->8080/tcp
+a9962339e863   lb4-simple-web-app   "node ."         8 seconds ago       Up 7 seconds   0.0.0.0:3000->3000/tcp
 
 ```
 
@@ -224,24 +180,21 @@ docker logs <container id>    For example : a9962339e863
 You should see something like:
 
 ```
-> deploy-test@1.0.0 start /
-> node .
-
-Server is running at http://127.0.0.1:8080
-Try http://127.0.0.1:8080/ping
+Server is running at http://127.0.0.1:3000
+Try http://127.0.0.1:3000/ping
 ```
 
 Open your browser and attempt to access all these urls
 
-<http://127.0.0.1:8080/>
+<http://127.0.0.1:3000/>
 
-<http://127.0.0.1:8080/ping>
+<http://127.0.0.1:3000/ping>
 
-<http://127.0.0.1:8080/explorer>
+<http://127.0.0.1:3000/explorer>
 
-<http://127.0.0.1:8080/openapi.json>
+<http://127.0.0.1:3000/openapi.json>
 
-## Step 9: Stop the application running in Docker
+## Step 5: Stop the application running in Docker
 
 Find the container id
 
@@ -252,7 +205,7 @@ docker ps | grep lb4
 You should see something like this:
 
 ```
-a9962339e863        lb4-simple-web-app      "npm start"
+a9962339e863        lb4-simple-web-app      "node ."
 ```
 
 The leftmost value is the container id.
@@ -263,7 +216,7 @@ Type:
 docker stop <container id>         For example : a9962339e863
 ```
 
-## Step 10: Log into IBM Cloud using ibmcloud login command
+## Step 6: Log into IBM Cloud using ibmcloud login command
 
 Use `ibmcloud login` command to login.
 
@@ -282,7 +235,7 @@ Org:
 Space:
 ```
 
-## Step 11: Log into IBM Cloud Container Registry
+## Step 7: Log into IBM Cloud Container Registry
 
 ```
 ibmcloud cr login
@@ -296,7 +249,7 @@ Logged in to 'registry.ng.bluemix.net'.
 OK
 ```
 
-## Step 12: Upload a docker image to the Container Registry
+## Step 8: Upload a docker image to the Container Registry
 
 This requires several steps, let's quickly go through them.
 
@@ -414,7 +367,7 @@ Wait until it completes.
 In your IBM Cloud account, you can view your images
 [here](https://cloud.ibm.com/containers-kubernetes/registry/main/images).
 
-## Step 13: Point to your Kubernetes Cluster
+## Step 9: Point to your Kubernetes Cluster
 
 In a browser, log into your IBM Cloud account, and navigate to **Kubernetes >
 Clusters**.
@@ -470,7 +423,7 @@ NAME           STATUS    ROLES     AGE       VERSION
 
 Ok, so now we are ready to deploy our Loopback4 application to Kubernetes!
 
-## Step 14: Deploy your Loopback4 application to Kubernetes
+## Step 10: Deploy your Loopback4 application to Kubernetes
 
 ### Create a deployment
 
@@ -507,12 +460,8 @@ kubectl logs lb4-simple-web-app-deployment-5bfcb546d8-r7cs4
 and you will see something like this:
 
 ```
-
-> deploy-test@1.0.0 start /
-> node .
-
-Server is running at http://127.0.0.1:8080
-Try http://127.0.0.1:8080/ping
+Server is running at http://127.0.0.1:3000
+Try http://127.0.0.1:3000/ping
 ```
 
 ### Create a service
@@ -520,12 +469,8 @@ Try http://127.0.0.1:8080/ping
 Expose your deployment with a service named : lb4-simple-web-app-service
 
 ```
-kubectl expose deployment/lb4-simple-web-app-deployment --type=NodePort --port=8080 --name=lb4-simple-web-app-service --target-port=8080
-
+kubectl expose deployment/lb4-simple-web-app-deployment --type=NodePort --port=3000 --name=lb4-simple-web-app-service --target-port=3000
 ```
-
-{% include tip.html content="Notice the port numbers we are specifying here. They match the port
-numbers we used in the loopback4 application." %}
 
 ### Obtain the NodePort of your service
 
@@ -544,15 +489,14 @@ Labels:                   run=lb4-simple-web-app-deployment
 Annotations:              <none>
 Selector:                 run=lb4-simple-web-app-deployment
 Type:                     NodePort
-IP:                       172.21.138.39
-Port:                     <unset>  8080/TCP
-TargetPort:               8080/TCP
+IP:                       172.21.103.26
+Port:                     <unset>  3000/TCP
+TargetPort:               3000/TCP
 NodePort:                 <unset>  31701/TCP
-Endpoints:                172.30.29.115:8080
+Endpoints:                172.30.78.136:3000
 Session Affinity:         None
 External Traffic Policy:  Cluster
 Events:                   <none>
-
 ```
 
 In this case, the NodePort is 31701 .
@@ -597,7 +541,7 @@ http://184.173.5.187:31701/openapi.json
 
 ![lb4_k8s_ibm_cloud_app_website_on_cloud_k8s.png](./imgs/lb4_k8s_ibm_cloud_app_website_on_cloud_k8s.png)
 
-## Step 15: View your app in the Kubernetes Dashboard
+## Step 11: View your app in the Kubernetes Dashboard
 
 Let's go take a look at your application in the Kubernetes dashboard.
 
