@@ -28,7 +28,6 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   }
 
   _setupGenerator() {
-    super._setupGenerator();
     this.artifactInfo = {
       type: 'controller',
       rootDir: 'src',
@@ -55,6 +54,8 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       required: false,
       description: 'Type for the ' + this.artifactInfo.type,
     });
+
+    return super._setupGenerator();
   }
 
   setOptions() {
