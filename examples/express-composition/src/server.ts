@@ -35,7 +35,9 @@ export class ExpressServer {
   }
 
   public async start() {
-    this.server = this.app.listen(3000);
+    const port = this.lbApp.restServer.config.port || 3000;
+    const host = this.lbApp.restServer.config.host || '127.0.0.1';
+    this.server = this.app.listen(port, host);
     await pEvent(this.server, 'listening');
   }
 
