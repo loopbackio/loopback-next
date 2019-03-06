@@ -12,6 +12,10 @@ import {
   inject,
 } from '@loopback/context';
 import {Application, CoreBindings, Server} from '@loopback/core';
+import {
+  ExpressBindings,
+  MiddlewareRegistry,
+} from '@loopback/express-middleware';
 import {HttpServer, HttpServerOptions} from '@loopback/http-server';
 import {
   getControllerSpec,
@@ -223,24 +227,50 @@ export class RestServer extends Context implements Server, HttpServerLike {
     this._applyExpressSettings();
     this._requestHandler = this._expressApp;
 
-    // Allow CORS support for all endpoints so that users
-    // can test with online SwaggerUI instance
-    this._expressApp.use(cors(this.config.cors));
-
-    // Set up endpoints for OpenAPI spec/ui
-    this._setupOpenApiSpecEndpoints();
-
-    // Mount our router & request handler
-    this._expressApp.use(this._basePath, (req, res, next) => {
-      this._handleHttpRequest(req, res).catch(next);
+    if (!this.isBound(ExpressBindings.EXPRESS_MIDDLEWARE_REGISTRY)) {
+      // Set up the default express middleware registry
+      this.bind(ExpressBindings.EXPRESS_MIDDLEWARE_REGISTRY).toClass(
+        MiddlewareRegistry,
+      );
+    }
+    const middlewareRegistry = this.getSync(
+      ExpressBindings.EXPRESS_MIDDLEWARE_REGISTRY,
+    );
+    middlewareRegistry.setMiddlewareRegistryOptions({
+      phasesByOrder: ['cors', 'openapi-spec', 'rest'],
     });
 
+    // Allow CORS support for all endpoints so that users
+    // can test with online SwaggerUI instance
+    middlewareRegistry.middleware(cors(this.config.cors), {
+      phase: 'cors',
+      name: 'cors',
+    });
+
+    // Set up endpoints for OpenAPI spec/ui
+    this._setupOpenApiSpecEndpoints(middlewareRegistry);
+
+    // Mount our router & request handler
+    middlewareRegistry.middleware(
+      (req, res, next) => {
+        this._handleHttpRequest(req, res).catch(next);
+      },
+      {
+        path: this._basePath,
+        phase: 'rest',
+        name: 'rest',
+      },
+    );
+
     // Mount our error handler
-    this._expressApp.use(
+    middlewareRegistry.errorMiddleware(
       (err: Error, req: Request, res: Response, next: Function) => {
         this._onUnhandledError(req, res, err);
       },
+      {name: 'error'},
     );
+
+    this._expressApp.use(middlewareRegistry.requestHandler);
   }
 
   /**
@@ -260,17 +290,29 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * Mount /openapi.json, /openapi.yaml for specs and /swagger-ui, /explorer
    * to redirect to externally hosted API explorer
    */
-  protected _setupOpenApiSpecEndpoints() {
+  protected _setupOpenApiSpecEndpoints(middlewareRegistry: MiddlewareRegistry) {
     if (this.config.openApiSpec.disabled) return;
     const mapping = this.config.openApiSpec.endpointMapping!;
     // Serving OpenAPI spec
     for (const p in mapping) {
-      this.addOpenApiSpecEndpoint(p, mapping[p]);
+      middlewareRegistry.middleware(
+        (req, res) => this._serveOpenApiSpec(req, res, mapping[p]),
+        {
+          path: p,
+          method: 'get',
+          phase: 'openapi-spec',
+        },
+      );
     }
 
     const explorerPaths = ['/swagger-ui', '/explorer'];
-    this._expressApp.get(explorerPaths, (req, res, next) =>
-      this._redirectToSwaggerUI(req, res, next),
+    middlewareRegistry.middleware(
+      (req, res, next) => this._redirectToSwaggerUI(req, res, next),
+      {
+        path: explorerPaths,
+        method: 'get',
+        phase: 'openapi-spec',
+      },
     );
   }
 
