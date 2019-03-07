@@ -90,6 +90,49 @@ describe('ContextView', () => {
     expect(await taggedAsFoo.values()).to.eql(['BAR', 'FOO']);
   });
 
+  describe('EventEmitter', () => {
+    let events: string[] = [];
+
+    beforeEach(setupListeners);
+
+    it('emits close', () => {
+      taggedAsFoo.close();
+      expect(events).to.eql(['close']);
+      // 2nd close does not emit `close` as it's closed
+      taggedAsFoo.close();
+      expect(events).to.eql(['close']);
+    });
+
+    it('emits refresh', () => {
+      taggedAsFoo.refresh();
+      expect(events).to.eql(['refresh']);
+    });
+
+    it('emits resolve', async () => {
+      await taggedAsFoo.values();
+      expect(events).to.eql(['resolve']);
+      // Second call does not resolve as values are cached
+      await taggedAsFoo.values();
+      expect(events).to.eql(['resolve']);
+    });
+
+    it('emits refresh & resolve when bindings are changed', async () => {
+      server
+        .bind('xyz')
+        .to('XYZ')
+        .tag('foo');
+      await taggedAsFoo.values();
+      expect(events).to.eql(['refresh', 'resolve']);
+    });
+
+    function setupListeners() {
+      events = [];
+      ['open', 'close', 'refresh', 'resolve'].forEach(t =>
+        taggedAsFoo.on(t, () => events.push(t)),
+      );
+    }
+  });
+
   function givenContextView() {
     bindings = [];
     givenContext();
