@@ -105,7 +105,7 @@ describe('app-generator specific files', () => {
   });
 
   it('generates docker files', () => {
-    assert.fileContent('Dockerfile', /FROM node:10/);
+    assert.fileContent('Dockerfile', /FROM node:10-slim/);
     assert.fileContent('.dockerignore', /node_modules/);
 
     assert.fileContent('package.json', /"docker:build": "docker build/);
