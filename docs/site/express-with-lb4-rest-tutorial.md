@@ -116,7 +116,8 @@ Then copy and paste the following into the `ds.json` file:
 ### Add Note Repository
 
 To create the repository, run the `lb4 repository` command and choose the
-`DsDataSource` as the datasource and `Note` model as the model.
+`DsDataSource`, as the datasource, `Note` model as the model, and
+`DefaultCrudRepository` as the repository base class.
 
 ### Add Note Controller
 
@@ -252,7 +253,7 @@ Now that our **src/server.ts** file is ready, then we can modify our
 import {ExpressServer} from './server';
 import {ApplicationConfig} from '@loopback/core';
 
-export {ExpressServer};
+export {ExpressServer, NoteApplication};
 
 export async function main(options: ApplicationConfig = {}) {
   const server = new ExpressServer(options);
