@@ -5,11 +5,11 @@
 
 import {
   Binding,
+  BindingAddress,
+  BindingScope,
   Constructor,
   Context,
   inject,
-  BindingScope,
-  BindingAddress,
 } from '@loopback/context';
 import {Application, CoreBindings, Server} from '@loopback/core';
 import {HttpServer, HttpServerOptions} from '@loopback/http-server';
@@ -26,7 +26,6 @@ import * as express from 'express';
 import {PathParams} from 'express-serve-static-core';
 import {IncomingMessage, ServerResponse} from 'http';
 import {ServerOptions} from 'https';
-import {safeDump} from 'js-yaml';
 import {ServeStaticOptions} from 'serve-static';
 import {BodyParser, REQUEST_BODY_PARSER_TAG} from './body-parsers';
 import {HttpHandler} from './http-handler';
@@ -38,12 +37,13 @@ import {
   ControllerInstance,
   ControllerRoute,
   createControllerFactoryForBinding,
+  ExternalExpressRoutes,
+  RedirectRoute,
   Route,
   RouteEntry,
   RoutingTable,
-  ExternalExpressRoutes,
-  RedirectRoute,
 } from './router';
+import {ServeApiSpecRoute} from './router/serve-api-spec.route';
 import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
 import {
   FindRoute,
@@ -51,9 +51,9 @@ import {
   ParseParams,
   Reject,
   Request,
+  RequestBodyParserOptions,
   Response,
   Send,
-  RequestBodyParserOptions,
 } from './types';
 
 const debug = debugFactory('loopback:rest:server');
@@ -236,21 +236,13 @@ export class RestServer extends Context implements Server, HttpServerLike {
    */
   protected _setupOpenApiSpecEndpoints() {
     if (this.config.openApiSpec.disabled) return;
-    // NOTE(bajtos) Regular routes are handled through Sequence.
-    // IMO, this built-in endpoint should not run through a Sequence,
-    // because it's not part of the application API itself.
-    // E.g. if the app implements access/audit logs, I don't want
-    // this endpoint to trigger a log entry. If the server implements
-    // content-negotiation to support XML clients, I don't want the OpenAPI
-    // spec to be converted into an XML response.
-    const mapping = this.config.openApiSpec.endpointMapping!;
     // Serving OpenAPI spec
+    const mapping = this.config.openApiSpec.endpointMapping!;
     for (const p in mapping) {
-      this._expressApp.get(p, (req, res) =>
-        this._serveOpenApiSpec(req, res, mapping[p]),
-      );
+      this.route(new ServeApiSpecRoute(p, this, mapping[p]));
     }
 
+    // Redirect to externally hosted swagger-ui instance
     const explorerPaths = ['/swagger-ui', '/explorer'];
     this._expressApp.get(explorerPaths, (req, res, next) =>
       this._redirectToSwaggerUI(req, res, next),
@@ -361,45 +353,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
     );
   }
 
-  private async _serveOpenApiSpec(
-    request: Request,
-    response: Response,
-    specForm?: OpenApiSpecForm,
-  ) {
-    const requestContext = new RequestContext(
-      request,
-      response,
-      this,
-      this.config,
-    );
-
-    specForm = specForm || {version: '3.0.0', format: 'json'};
-    let specObj = this.getApiSpec();
-    if (this.config.openApiSpec.setServersFromRequest) {
-      specObj = Object.assign({}, specObj);
-      specObj.servers = [{url: requestContext.requestedBaseUrl}];
-    }
-
-    const basePath = requestContext.basePath;
-    if (specObj.servers && basePath) {
-      for (const s of specObj.servers) {
-        // Update the default server url to honor `basePath`
-        if (s.url === '/') {
-          s.url = basePath;
-        }
-      }
-    }
-
-    if (specForm.format === 'json') {
-      const spec = JSON.stringify(specObj, null, 2);
-      response.setHeader('content-type', 'application/json; charset=utf-8');
-      response.end(spec, 'utf-8');
-    } else {
-      const yaml = safeDump(specObj, {});
-      response.setHeader('content-type', 'text/yaml; charset=utf-8');
-      response.end(yaml, 'utf-8');
-    }
-  }
   private async _redirectToSwaggerUI(
     request: Request,
     response: Response,

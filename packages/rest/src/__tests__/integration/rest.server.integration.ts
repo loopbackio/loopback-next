@@ -787,9 +787,9 @@ paths:
     });
 
     it('controls server urls', async () => {
-      const response = await createClientForHandler(server.requestHandler).get(
-        '/openapi.json',
-      );
+      const response = await createClientForHandler(server.requestHandler)
+        .get('openapi.json')
+        .expect(200);
       expect(response.body.servers).to.containEql({url: '/api'});
     });
 
