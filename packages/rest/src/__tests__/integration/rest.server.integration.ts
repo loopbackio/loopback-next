@@ -771,9 +771,23 @@ paths:
 
     it('controls server urls', async () => {
       const response = await createClientForHandler(server.requestHandler).get(
-        '/openapi.json',
+        '/api/openapi.json',
       );
       expect(response.body.servers).to.containEql({url: '/api'});
+    });
+
+    it('controls /explorer route', async () => {
+      const response = await createClientForHandler(server.requestHandler).get(
+        '/api/explorer',
+      );
+      expect(response.status).to.eql(308);
+    });
+
+    it('controls /swagger-ui route', async () => {
+      const response = await createClientForHandler(server.requestHandler).get(
+        '/api/swagger-ui',
+      );
+      expect(response.status).to.eql(308);
     });
 
     it('controls redirect locations', async () => {

@@ -282,7 +282,10 @@ export class RestServer extends Context implements Server, HttpServerLike {
       );
     }
 
-    const explorerPaths = [`${this._basePath}/swagger-ui`, `${this._basePath}/explorer`];
+    const explorerPaths = [
+      `${this._basePath}/swagger-ui`,
+      `${this._basePath}/explorer`,
+    ];
     this._expressApp.get(explorerPaths, (req, res, next) =>
       this._redirectToSwaggerUI(req, res, next),
     );
@@ -515,7 +518,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
     debug('Redirecting to swagger-ui from %j.', request.originalUrl);
     const protocol = this._getProtocolForRequest(request);
     const baseUrl = protocol === 'http' ? config.httpUrl : config.url;
-    const openApiUrl = `${this._getUrlForClient(request)}${this._basePath}/openapi.json`;
+    const openApiUrl = `${this._getUrlForClient(request)}${
+      this._basePath
+    }/openapi.json`;
     const fullUrl = `${baseUrl}?url=${openApiUrl}`;
     response.redirect(308, fullUrl);
   }
