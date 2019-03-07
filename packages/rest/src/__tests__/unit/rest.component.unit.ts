@@ -20,6 +20,7 @@ import {
   RestComponentConfig,
   RestServer,
 } from '../..';
+import {aRestServerConfig} from '../helpers';
 
 const SequenceActions = RestBindings.SequenceActions;
 describe('RestComponent', () => {
@@ -34,7 +35,9 @@ describe('RestComponent', () => {
 
         // Stub constructor requirements for some providers.
         app.bind(RestBindings.Http.CONTEXT).to(new Context());
-        app.bind(RestBindings.HANDLER).to(new HttpHandler(app));
+        app
+          .bind(RestBindings.HANDLER)
+          .to(new HttpHandler(app, aRestServerConfig()));
 
         comp = await app.get<Component>('components.RestComponent');
       });
