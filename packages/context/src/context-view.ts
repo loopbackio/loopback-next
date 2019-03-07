@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as debugFactory from 'debug';
+import {EventEmitter} from 'events';
 import {promisify} from 'util';
 import {Binding} from './binding';
 import {BindingFilter} from './binding-filter';
@@ -28,8 +29,13 @@ const nextTick = promisify(process.nextTick);
  * points. For example, the RestServer can react to `controller` bindings even
  * they are added/removed/updated after the application starts.
  *
+ * `ContextView` is an event emitter that emits the following events:
+ * - 'close': when the view is closed (stopped observing context events)
+ * - 'refresh': when the view is refreshed as bindings are added/removed
+ * - 'resolve': when the cached values are resolved and updated
  */
-export class ContextView<T = unknown> implements ContextObserver {
+export class ContextView<T = unknown> extends EventEmitter
+  implements ContextObserver {
   protected _cachedBindings: Readonly<Binding<T>>[] | undefined;
   protected _cachedValues: T[] | undefined;
   private _subscription: Subscription | undefined;
@@ -37,14 +43,20 @@ export class ContextView<T = unknown> implements ContextObserver {
   constructor(
     protected readonly context: Context,
     public readonly filter: BindingFilter,
-  ) {}
+  ) {
+    super();
+  }
 
   /**
    * Start listening events from the context
    */
   open() {
     debug('Start listening on changes of context %s', this.context.name);
-    return (this._subscription = this.context.subscribe(this));
+    if (this.context.isSubscribed(this)) {
+      return this._subscription;
+    }
+    this._subscription = this.context.subscribe(this);
+    return this._subscription;
   }
 
   /**
@@ -55,6 +67,7 @@ export class ContextView<T = unknown> implements ContextObserver {
     if (!this._subscription || this._subscription.closed) return;
     this._subscription.unsubscribe();
     this._subscription = undefined;
+    this.emit('close');
   }
 
   /**
@@ -92,6 +105,7 @@ export class ContextView<T = unknown> implements ContextObserver {
     debug('Refreshing the view by invalidating cache');
     this._cachedBindings = undefined;
     this._cachedValues = undefined;
+    this.emit('refresh');
   }
 
   /**
@@ -105,9 +119,14 @@ export class ContextView<T = unknown> implements ContextObserver {
       return b.getValue(this.context, ResolutionSession.fork(session));
     });
     if (isPromiseLike(result)) {
-      result = result.then(values => (this._cachedValues = values));
+      result = result.then(values => {
+        this._cachedValues = values;
+        this.emit('resolve', values);
+        return values;
+      });
     } else {
       this._cachedValues = result;
+      this.emit('resolve', result);
     }
     return result;
   }
