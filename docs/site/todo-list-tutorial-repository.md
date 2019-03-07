@@ -31,6 +31,8 @@ lb4 repository
 ? Select the model(s) you want to generate a repository TodoList
    create src/repositories/todo-list.repository.ts
    update src/repositories/index.ts
+? Please select the repository base class DefaultCrudRepository (Legacy juggler
+bridge)
 
 Repository TodoList was created in src/repositories/
 ```

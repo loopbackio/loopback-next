@@ -35,6 +35,8 @@ lb4 repository
 ? Select the model(s) you want to generate a repository Todo
    create src/repositories/todo.repository.ts
    update src/repositories/index.ts
+? Please select the repository base class DefaultCrudRepository (Legacy juggler
+bridge)
 
 Repository Todo was created in src/repositories/
 ```
