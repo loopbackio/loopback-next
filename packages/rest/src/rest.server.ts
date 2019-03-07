@@ -180,6 +180,13 @@ export class RestServer extends Context implements Server, HttpServerLike {
       config.host = undefined;
     }
 
+    this.basePath(config.basePath);
+
+    const OPENAPI_SPEC_MAPPING: {[key: string]: OpenApiSpecForm} = {
+      [`${this._basePath}/openapi.json`]: {version: '3.0.0', format: 'json'},
+      [`${this._basePath}/openapi.yaml`]: {version: '3.0.0', format: 'yaml'},
+    };
+
     config.openApiSpec = config.openApiSpec || {};
     config.openApiSpec.endpointMapping =
       config.openApiSpec.endpointMapping || OPENAPI_SPEC_MAPPING;
@@ -205,8 +212,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
     if (config.sequence) {
       this.sequence(config.sequence);
     }
-
-    this.basePath(config.basePath);
 
     this.bind(RestBindings.BASE_PATH).toDynamicValue(() => this._basePath);
     this.bind(RestBindings.HANDLER).toDynamicValue(() => this.httpHandler);
@@ -277,7 +282,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
       );
     }
 
-    const explorerPaths = ['/swagger-ui', '/explorer'];
+    const explorerPaths = [`${this._basePath}/swagger-ui`, `${this._basePath}/explorer`];
     this._expressApp.get(explorerPaths, (req, res, next) =>
       this._redirectToSwaggerUI(req, res, next),
     );
@@ -510,7 +515,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     debug('Redirecting to swagger-ui from %j.', request.originalUrl);
     const protocol = this._getProtocolForRequest(request);
     const baseUrl = protocol === 'http' ? config.httpUrl : config.url;
-    const openApiUrl = `${this._getUrlForClient(request)}/openapi.json`;
+    const openApiUrl = `${this._getUrlForClient(request)}${this._basePath}/openapi.json`;
     const fullUrl = `${baseUrl}?url=${openApiUrl}`;
     response.redirect(308, fullUrl);
   }
@@ -919,11 +924,6 @@ export interface OpenApiSpecForm {
   version?: string;
   format?: string;
 }
-
-const OPENAPI_SPEC_MAPPING: {[key: string]: OpenApiSpecForm} = {
-  '/openapi.json': {version: '3.0.0', format: 'json'},
-  '/openapi.yaml': {version: '3.0.0', format: 'yaml'},
-};
 
 /**
  * Options to customize how OpenAPI specs are served
