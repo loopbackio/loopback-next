@@ -492,3 +492,41 @@ the context with `listen()`.
 If your dependency needs to follow the context for values from bindings matching
 a filter, use [`@inject.view`](Decorators_inject.md#@inject.view) for dependency
 injection.
+
+### ContextView events
+
+A `ContextView` object can emit one of the following events:
+
+- 'refresh': when the view is refreshed as bindings are added/removed
+- 'resolve': when the cached values are resolved and updated
+- 'close': when the view is closed (stopped observing context events)
+
+Such as events can be used to update other states/cached values other than the
+values watched by the `ContextView` object itself. For example:
+
+```ts
+class MyController {
+  private _total: number | undefined = undefined;
+  constructor(
+    @inject.view(filterByTag('counter'))
+    private taggedAsFoo: ContextView<Counter>,
+  ) {
+    // Invalidate cached `_total` if the view is refreshed
+    taggedAsFoo.on('refresh', () => {
+      this._total = undefined;
+    });
+  }
+
+  async total() {
+    if (this._total != null) return this._total;
+    // Calculate the total of all counters
+    const counters = await this.taggedAsFoo.values();
+    let result = 0;
+    for (const c of counters) {
+      result += c.value;
+    }
+    this._total = result;
+    return this._total;
+  }
+}
+```
