@@ -11,6 +11,7 @@ import {
   httpsGetAsync,
   itSkippedOnTravis,
   supertest,
+  createRestAppClient,
 } from '@loopback/testlab';
 import * as fs from 'fs';
 import {IncomingMessage, ServerResponse} from 'http';
@@ -29,6 +30,7 @@ import {
   RestComponent,
   RestServer,
   RestServerConfig,
+  RestApplication,
 } from '../..';
 const readFileAsync = util.promisify(fs.readFile);
 
@@ -545,6 +547,21 @@ paths:
         '\\?url=https://example.com/openapi.json',
       ].join(''),
     );
+    expect(response.get('Location')).match(expectedUrl);
+  });
+
+  it('handles requests with missing Host header', async () => {
+    const app = new RestApplication({
+      rest: {port: 0, host: '127.0.0.1'},
+    });
+    await app.start();
+    const port = await app.restServer.get(RestBindings.PORT);
+
+    const response = await createRestAppClient(app)
+      .get('/explorer')
+      .set('host', '');
+    await app.stop();
+    const expectedUrl = new RegExp(`\\?url=http://127.0.0.1:${port}`);
     expect(response.get('Location')).match(expectedUrl);
   });
 
