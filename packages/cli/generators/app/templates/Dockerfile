@@ -1,4 +1,5 @@
-FROM node:10
+# Check out https://hub.docker.com/_/node to select a new base image
+FROM node:10-slim
 
 # Set to a non-root built-in user `node`
 USER node
