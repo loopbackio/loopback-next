@@ -274,7 +274,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     const router = this.getSync(RestBindings.ROUTER, {optional: true});
     const routingTable = new RoutingTable(router, this._externalRoutes);
 
-    this._httpHandler = new HttpHandler(this, routingTable);
+    this._httpHandler = new HttpHandler(this, this.config, routingTable);
     for (const b of this.find('controllers.*')) {
       const controllerName = b.key.replace(/^controllers\./, '');
       const ctor = b.valueConstructor;
@@ -366,14 +366,21 @@ export class RestServer extends Context implements Server, HttpServerLike {
     response: Response,
     specForm?: OpenApiSpecForm,
   ) {
+    const requestContext = new RequestContext(
+      request,
+      response,
+      this,
+      this.config,
+    );
+
     specForm = specForm || {version: '3.0.0', format: 'json'};
     let specObj = this.getApiSpec();
     if (this.config.openApiSpec.setServersFromRequest) {
       specObj = Object.assign({}, specObj);
-      specObj.servers = [{url: this._getUrlForClient(request)}];
+      specObj.servers = [{url: requestContext.requestedBaseUrl}];
     }
 
-    const basePath = this.getBasePathFor(request);
+    const basePath = requestContext.basePath;
     if (specObj.servers && basePath) {
       for (const s of specObj.servers) {
         // Update the default server url to honor `basePath`
@@ -393,82 +400,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
       response.end(yaml, 'utf-8');
     }
   }
-
-  /**
-   * Get the protocol for a request
-   * @param request Http request
-   */
-  private _getProtocolForRequest(request: Request) {
-    return (
-      (request.get('x-forwarded-proto') || '').split(',')[0] ||
-      request.protocol ||
-      this.config.protocol ||
-      'http'
-    );
-  }
-
-  /**
-   * Parse the host:port string into an object for host and port
-   * @param host The host string
-   */
-  private _parseHostAndPort(host: string | undefined) {
-    host = host || '';
-    host = host.split(',')[0];
-    const portPattern = /:([0-9]+)$/;
-    const port = (host.match(portPattern) || [])[1] || '';
-    host = host.replace(portPattern, '');
-    return {host, port};
-  }
-
-  /**
-   * Get the URL of the request sent by the client
-   * @param request Http request
-   */
-  private _getUrlForClient(request: Request) {
-    const protocol = this._getProtocolForRequest(request);
-    // The host can be in one of the forms
-    // [::1]:3000
-    // [::1]
-    // 127.0.0.1:3000
-    // 127.0.0.1
-    let {host, port} = this._parseHostAndPort(
-      request.get('x-forwarded-host') || request.headers.host,
-    );
-
-    const forwardedPort = (request.get('x-forwarded-port') || '').split(',')[0];
-    port = forwardedPort || port;
-
-    if (!host) {
-      // No host detected from http headers
-      // Use the configured values or the local network address
-      host = this.config.host || request.socket.localAddress;
-      port = (this.config.port || request.socket.localPort).toString();
-    }
-
-    // clear default ports
-    port = protocol === 'https' && port === '443' ? '' : port;
-    port = protocol === 'http' && port === '80' ? '' : port;
-
-    // add port number of present
-    host += port !== '' ? ':' + port : '';
-
-    return protocol + '://' + host + this.getBasePathFor(request);
-  }
-
-  /**
-   * Get the base for the request. It honors `baseUrl` sets by express if the
-   * application is mounted to an express app, such as:
-   * expressApp.use('/api', app.requestHandler);
-   * @param request Http request
-   */
-  private getBasePathFor(request: Request) {
-    let basePath = this._basePath;
-    if (request.baseUrl && request.baseUrl !== '/') {
-      basePath = request.baseUrl + basePath;
-    }
-    return basePath;
-  }
-
   private async _redirectToSwaggerUI(
     request: Request,
     response: Response,
@@ -483,9 +414,15 @@ export class RestServer extends Context implements Server, HttpServerLike {
     }
 
     debug('Redirecting to swagger-ui from %j.', request.originalUrl);
-    const protocol = this._getProtocolForRequest(request);
+    const requestContext = new RequestContext(
+      request,
+      response,
+      this,
+      this.config,
+    );
+    const protocol = requestContext.requestedProtocol;
     const baseUrl = protocol === 'http' ? config.httpUrl : config.url;
-    const openApiUrl = `${this._getUrlForClient(request)}/openapi.json`;
+    const openApiUrl = `${requestContext.requestedBaseUrl}/openapi.json`;
     const fullUrl = `${baseUrl}?url=${openApiUrl}`;
     response.redirect(308, fullUrl);
   }
@@ -982,7 +919,8 @@ export interface RestServerResolvedOptions {
  */
 export type RestServerConfig = RestServerOptions & HttpServerOptions;
 
-type RestServerResolvedConfig = RestServerResolvedOptions & HttpServerOptions;
+export type RestServerResolvedConfig = RestServerResolvedOptions &
+  HttpServerOptions;
 
 const DEFAULT_CONFIG: RestServerResolvedConfig = {
   port: 3000,
