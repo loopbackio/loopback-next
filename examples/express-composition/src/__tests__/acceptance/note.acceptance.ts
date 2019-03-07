@@ -12,6 +12,7 @@ describe('NoteApplication', () => {
 
   before('setupApplication', async () => {
     ({server, client, lbApp} = await setupExpressApplication());
+    await changeDataSourceConfig();
     await givenNoteRepository();
   });
 
@@ -56,5 +57,16 @@ describe('NoteApplication', () => {
 
   async function givenNoteRepository() {
     noteRepo = await lbApp.getRepository(NoteRepository);
+  }
+
+  async function changeDataSourceConfig() {
+    /**
+     * Override default config for DataSource for testing so we don't write
+     * test data to file when using the memory connector.
+     */
+    lbApp.bind('datasources.config.ds').to({
+      name: 'ds',
+      connector: 'memory',
+    });
   }
 });

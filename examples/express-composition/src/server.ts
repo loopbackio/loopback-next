@@ -20,14 +20,14 @@ export class ExpressServer {
 
     // Custom Express routes
     this.app.get('/', function(_req: Request, res: Response) {
-      res.sendFile(path.resolve('public/express.html'));
+      res.sendFile(path.join(__dirname, '../public/express.html'));
     });
     this.app.get('/hello', function(_req: Request, res: Response) {
       res.send('Hello world!');
     });
 
     // Serve static files in the public folder
-    this.app.use(express.static('public'));
+    this.app.use(express.static(path.join(__dirname, '../public')));
   }
 
   public async boot() {
