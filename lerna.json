@@ -9,8 +9,7 @@
   ],
   "command": {
     "bootstrap": {
-      "concurrency": 8,
-      "ci": false
+      "concurrency": 8
     },
     "version": {
       "forcePublish": "@loopback/cli,@loopback/docs",
