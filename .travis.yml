@@ -15,7 +15,7 @@ script:
   - npm run test:ci
 
 env: TASK=test
-install: npm install --ignore-scripts
+install: npm ci --ignore-scripts
 
 after_success:
   - if [[ "${TRAVIS_OS_NAME}" == "linux" ]] && [[ $(echo $TRAVIS_NODE_VERSION | cut -d'.' -f1) == "10" ]]; then npm run coverage:ci; fi
