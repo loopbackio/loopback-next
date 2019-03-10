@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2018. All Rights Reserved.
+// Node module: @loopback/cli
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 const DATASOURCE_APP_PATH = 'src/datasources';
 const CONFIG_PATH = '.';
 const DUMMY_CONTENT = '--DUMMY VALUE--';
