@@ -1,7 +1,8 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/context
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
+
 /**
  * This module contains types for values and/or promises as well as a set of
  * utility methods to handle values and/or promises.
