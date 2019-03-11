@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
+// Node module: @loopback/example-soap-calculator
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {inject} from '@loopback/core';
 import {get, param, HttpErrors} from '@loopback/rest';
 
