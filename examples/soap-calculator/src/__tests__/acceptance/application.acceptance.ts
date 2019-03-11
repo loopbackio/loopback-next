@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2019. All Rights Reserved.
+// Node module: @loopback/example-soap-calculator
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {Client, createRestAppClient, expect} from '@loopback/testlab';
 import {SoapCalculatorApplication} from '../../application';
 

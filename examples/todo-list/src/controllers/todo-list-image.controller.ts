@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2018. All Rights Reserved.
+// Node module: @loopback/example-todo-list
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {TodoListRepository} from '../repositories';
 import {repository} from '@loopback/repository';
 import {param, post, requestBody, get} from '@loopback/rest';
