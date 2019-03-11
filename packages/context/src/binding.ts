@@ -473,7 +473,7 @@ export class Binding<T = BoundValue> {
    * easy to read.
    * @param key Binding key
    */
-  static bind<T = unknown>(key: BindingAddress<T>): Binding {
+  static bind<T = unknown>(key: BindingAddress<T>): Binding<T> {
     return new Binding(key.toString());
   }
 }
