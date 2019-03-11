@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2018. All Rights Reserved.
+// Node module: @loopback/openapi-v3
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {MetadataAccessor} from '@loopback/context';
 import {RestEndpoint, ControllerSpec} from '.';
 import {ParameterObject, RequestBodyObject} from '@loopback/openapi-v3-types';
