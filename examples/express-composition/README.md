@@ -52,7 +52,7 @@ application, follow these steps:
 2. Jump into the directory and then install the required dependencies:
 
    ```sh
-   cd loopback4-example-example-composition
+   cd loopback4-example-express-composition
    ```
 
 3. Finally, start the application!
