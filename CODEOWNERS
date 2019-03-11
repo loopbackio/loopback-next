@@ -24,6 +24,7 @@ packages/rest/* @bajtos @raymondfeng
 packages/service-proxy/* @raymondfeng
 packages/testlab/* @bajtos
 examples/todo/* @bajtos @hacksparrow
+examples/express-composition/* @nabdelgadir
 examples/hello-world/* @b-admike
 examples/log-extension/* @hacksparrow
 examples/rpc-server/* @hacksparrow
