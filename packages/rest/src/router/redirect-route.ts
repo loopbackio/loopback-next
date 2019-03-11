@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2019. All Rights Reserved.
+// Node module: @loopback/rest
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {RouteEntry, ResolvedRoute} from '.';
 import {RequestContext} from '../request-context';
 import {OperationObject, SchemasObject} from '@loopback/openapi-v3-types';
