@@ -77,8 +77,11 @@ export function ensurePromise<T>(p: legacy.PromiseOrVoid<T>): Promise<T> {
  * Default implementation of CRUD repository using legacy juggler model
  * and data source
  */
-export class DefaultCrudRepository<T extends Entity, ID>
-  implements EntityCrudRepository<T, ID> {
+export class DefaultCrudRepository<
+  T extends Entity,
+  ID,
+  FindResult extends T = T
+> implements EntityCrudRepository<T, ID, FindResult> {
   modelClass: juggler.PersistedModelClass;
 
   /**
@@ -308,10 +311,11 @@ export class DefaultCrudRepository<T extends Entity, ID>
     }
   }
 
-  async find(filter?: Filter<T>, options?: Options): Promise<T[]> {
+  async find(filter?: Filter<T>, options?: Options): Promise<FindResult[]> {
     const models = await ensurePromise(
       this.modelClass.find(filter as legacy.Filter, options),
     );
+    // FIXME!!!! FindResult must be specified as Model+optional relations
     return this.toEntities(models);
   }
 
@@ -323,7 +327,11 @@ export class DefaultCrudRepository<T extends Entity, ID>
     return this.toEntity(model);
   }
 
-  async findById(id: ID, filter?: Filter<T>, options?: Options): Promise<T> {
+  async findById(
+    id: ID,
+    filter?: Filter<T>,
+    options?: Options,
+  ): Promise<FindResult> {
     const model = await ensurePromise(
       this.modelClass.findById(id, filter as legacy.Filter, options),
     );

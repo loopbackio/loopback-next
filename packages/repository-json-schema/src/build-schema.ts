@@ -19,13 +19,16 @@ import {JSON_SCHEMA_KEY} from './keys';
  * in a cache. If not, one is generated and then cached.
  * @param ctor Contructor of class to get JSON Schema from
  */
-export function getJsonSchema(ctor: Function): JSONSchema {
+export function getJsonSchema(
+  ctor: Function,
+  visited: {[key: string]: JSONSchema} = {},
+): JSONSchema {
   // NOTE(shimks) currently impossible to dynamically update
   const jsonSchema = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor);
   if (jsonSchema) {
     return jsonSchema;
   } else {
-    const newSchema = modelToJsonSchema(ctor);
+    const newSchema = modelToJsonSchema(ctor, visited);
     MetadataInspector.defineMetadata(JSON_SCHEMA_KEY.key, newSchema, ctor);
     return newSchema;
   }
@@ -138,16 +141,22 @@ export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
  * reflection API
  * @param ctor Constructor of class to convert from
  */
-export function modelToJsonSchema(ctor: Function): JSONSchema {
+export function modelToJsonSchema(
+  ctor: Function,
+  visited: {[key: string]: JSONSchema} = {},
+): JSONSchema {
   const meta: ModelDefinition | {} = ModelMetadataHelper.getModelMetadata(ctor);
-  const result: JSONSchema = {};
 
   // returns an empty object if metadata is an empty object
   if (!(meta instanceof ModelDefinition)) {
     return {};
   }
 
-  result.title = meta.title || ctor.name;
+  const title = meta.title || ctor.name;
+  if (title in visited) return visited[title];
+
+  const result: JSONSchema = {title};
+  visited[title] = result;
 
   if (meta.description) {
     result.description = meta.description;
@@ -186,7 +195,7 @@ export function modelToJsonSchema(ctor: Function): JSONSchema {
       continue;
     }
 
-    const propSchema = getJsonSchema(referenceType);
+    const propSchema = getJsonSchema(referenceType, visited);
 
     if (propSchema && Object.keys(propSchema).length > 0) {
       result.definitions = result.definitions || {};
@@ -194,6 +203,7 @@ export function modelToJsonSchema(ctor: Function): JSONSchema {
       // delete nested definition
       if (propSchema.definitions) {
         for (const key in propSchema.definitions) {
+          if (key === title) continue;
           result.definitions[key] = propSchema.definitions[key];
         }
         delete propSchema.definitions;

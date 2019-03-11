@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, property, model, belongsTo} from '@loopback/repository';
+import {Entity, property, model, belongsTo, Value} from '@loopback/repository';
 import {TodoList} from './todo-list.model';
 
 @model()
@@ -38,6 +38,16 @@ export class Todo extends Entity {
   }
 
   constructor(data?: Partial<Todo>) {
+    super(data);
+  }
+}
+
+@model()
+export class TodoWithRelations extends Todo {
+  @property(() => TodoList)
+  todoList?: Value<TodoList>;
+
+  constructor(data?: Partial<TodoWithRelations>) {
     super(data);
   }
 }

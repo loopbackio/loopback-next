@@ -14,7 +14,7 @@ import {
   put,
   requestBody,
 } from '@loopback/rest';
-import {Todo, TodoList} from '../models';
+import {Todo, TodoList, TodoWithRelations} from '../models';
 import {TodoRepository} from '../repositories';
 
 export class TodoController {
@@ -62,7 +62,25 @@ export class TodoController {
   async findTodos(
     @param.query.object('filter', getFilterSchemaFor(Todo)) filter?: Filter,
   ): Promise<Todo[]> {
-    return await this.todoRepo.find(filter);
+    const result = await this.todoRepo.find(filter);
+    // poor-mans inclusion resolver, this should be handled by Repository
+    if (
+      filter &&
+      filter.include &&
+      filter.include.length &&
+      filter.include[0].relation === 'todoList'
+    ) {
+      return Promise.all(
+        result.map(async r => {
+          const todoList = await this.todoRepo.todoList(r.id);
+          return new TodoWithRelations({
+            ...r,
+            todoList,
+          });
+        }),
+      );
+    }
+    return result;
   }
 
   @put('/todos/{id}', {

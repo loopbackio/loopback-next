@@ -99,3 +99,10 @@ export const CountSchema = {
   type: 'object',
   properties: {count: {type: 'number'}},
 };
+
+/**
+ * A wrapper type to disable design:type metadata as a workaround for
+ * circular reference problem in relational properties.
+ * See https://github.com/Microsoft/TypeScript/issues/27519
+ */
+export type Value<T> = object & T;

@@ -3,9 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, model, property, hasMany, hasOne} from '@loopback/repository';
-import {Todo} from './todo.model';
+import {
+  Entity,
+  hasMany,
+  hasOne,
+  model,
+  property,
+  Value,
+} from '@loopback/repository';
 import {TodoListImage} from './todo-list-image.model';
+import {Todo} from './todo.model';
 
 @model()
 export class TodoList extends Entity {
@@ -26,11 +33,15 @@ export class TodoList extends Entity {
   })
   color?: string;
 
+  // FIXME(bajtos) use a class-based decorator
   @hasMany(() => Todo)
-  todos: Todo[];
+  @property(() => Todo)
+  todos?: Value<Todo>[];
 
+  // FIXME(bajtos) use a class-based decorator
   @hasOne(() => TodoListImage)
-  image: TodoListImage;
+  @property(() => TodoListImage)
+  image?: Value<TodoListImage>;
 
   constructor(data?: Partial<TodoList>) {
     super(data);

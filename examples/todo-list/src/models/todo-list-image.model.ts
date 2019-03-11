@@ -1,4 +1,4 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {belongsTo, Entity, model, property, Value} from '@loopback/repository';
 import {TodoList} from './todo-list.model';
 
 @model()
@@ -23,4 +23,10 @@ export class TodoListImage extends Entity {
   constructor(data?: Partial<TodoListImage>) {
     super(data);
   }
+}
+
+@model()
+export class TodoListImageWithRelations extends TodoListImage {
+  @property(() => TodoList)
+  todoList?: Value<TodoList>;
 }

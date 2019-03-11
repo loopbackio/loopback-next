@@ -66,7 +66,21 @@ export class TodoListController {
   async find(
     @param.query.object('filter', getFilterSchemaFor(TodoList)) filter?: Filter,
   ): Promise<TodoList[]> {
-    return await this.todoListRepository.find(filter);
+    const result = await this.todoListRepository.find(filter);
+    // poor-mans inclusion resolver, this should be handled by Repository
+    if (
+      filter &&
+      filter.include &&
+      filter.include.length &&
+      filter.include[0].relation === 'todos'
+    ) {
+      await Promise.all(
+        result.map(async r => {
+          r.todos = await this.todoListRepository.todos(r.id).find();
+        }),
+      );
+    }
+    return result;
   }
 
   @patch('/todo-lists', {
