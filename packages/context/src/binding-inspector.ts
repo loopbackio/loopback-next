@@ -136,7 +136,9 @@ export function removeNameAndKeyTags(binding: Binding<unknown>) {
  *
  * @param cls A class with optional `@bind`
  */
-export function bindingTemplateFor(cls: Constructor<unknown>): BindingTemplate {
+export function bindingTemplateFor<T = unknown>(
+  cls: Constructor<T | Provider<T>>,
+): BindingTemplate<T> {
   const spec = getBindingMetadata(cls);
   const templateFunctions = (spec && spec.templates) || [
     asClassOrProvider(cls),
@@ -198,16 +200,16 @@ export type BindingFromClassOptions = {
  * @param cls A class
  * @param options Options to customize the binding key
  */
-export function createBindingFromClass(
-  cls: Constructor<unknown>,
+export function createBindingFromClass<T = unknown>(
+  cls: Constructor<T | Provider<T>>,
   options: BindingFromClassOptions = {},
-): Binding {
+): Binding<T> {
   const templateFn = bindingTemplateFor(cls);
   let key = options.key;
   if (!key) {
     key = buildBindingKey(cls, options);
   }
-  const binding = Binding.bind(key).apply(templateFn);
+  const binding = Binding.bind<T>(key).apply(templateFn);
   if (options.name) {
     binding.tag({name: options.name});
   }
