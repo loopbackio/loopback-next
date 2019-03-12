@@ -10,6 +10,10 @@ component, it is not production ready.**
 The component demonstrates how to leverage Passport module and extension points
 provided by LoopBack 4 to implement an authentication layer.
 
+To handle multiple authentication strategies without using the Passport module,
+please read
+[Multiple Authentication strategies](./packages/authentication/docs/authentication-system.md).
+
 ## Installation
 
 ```shell
