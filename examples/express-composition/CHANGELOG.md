@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.2.0...@loopback/example-express-composition@1.2.1) (2019-03-12)
+
+
+### Bug Fixes
+
+* **example-express-composition:** update npm files ([d0fb755](https://github.com/strongloop/loopback-next/commit/d0fb755))
+* **example-express-composition:** use rest options ([7e22757](https://github.com/strongloop/loopback-next/commit/7e22757))
+
+
+
+
+
 # 1.2.0 (2019-03-01)
 
 

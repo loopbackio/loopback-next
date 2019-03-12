@@ -1,6 +1,6 @@
 {
   "name": "@loopback/service-proxy",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Service integration for LoopBack 4",
   "engines": {
     "node": ">=8.9"
@@ -24,14 +24,14 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "devDependencies": {
-    "@loopback/build": "^1.3.1",
-    "@loopback/testlab": "^1.0.7",
-    "@loopback/tslint-config": "^2.0.1",
+    "@loopback/build": "^1.3.2",
+    "@loopback/testlab": "^1.1.0",
+    "@loopback/tslint-config": "^2.0.2",
     "@types/node": "^10.11.2"
   },
   "dependencies": {
-    "@loopback/context": "^1.6.0",
-    "@loopback/core": "^1.1.7",
+    "@loopback/context": "^1.7.0",
+    "@loopback/core": "^1.1.8",
     "loopback-datasource-juggler": "^4.0.0"
   },
   "files": [

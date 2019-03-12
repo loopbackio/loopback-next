@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.0.7...@loopback/testlab@1.1.0) (2019-03-12)
+
+
+### Features
+
+* **testlab:** always use IPv4 host in HTTP server config ([3d487b2](https://github.com/strongloop/loopback-next/commit/3d487b2))
+
+
+
+
+
 ## [1.0.7](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.0.6...@loopback/testlab@1.0.7) (2019-02-25)
 
 **Note:** Version bump only for package @loopback/testlab
