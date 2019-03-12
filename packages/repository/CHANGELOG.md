@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.8](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.7...@loopback/repository@1.1.8) (2019-03-12)
+
+
+### Bug Fixes
+
+* model id type is now boolean|number instead of boolean ([71292e9](https://github.com/strongloop/loopback-next/commit/71292e9))
+
+
+
+
+
 ## [1.1.7](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.6...@loopback/repository@1.1.7) (2019-03-01)
 
 

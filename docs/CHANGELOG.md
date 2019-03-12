@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.9.1...@loopback/docs@1.10.0) (2019-03-12)
+
+
+### Bug Fixes
+
+* **example-express-composition:** use rest options ([7e22757](https://github.com/strongloop/loopback-next/commit/7e22757))
+
+
+### Features
+
+* **context:** add [@inject](https://github.com/inject).view and extend [@inject](https://github.com/inject) for multiple bindings ([d64268b](https://github.com/strongloop/loopback-next/commit/d64268b))
+* **context:** add events to ContextView ([fb10efc](https://github.com/strongloop/loopback-next/commit/fb10efc))
+* **rest:** add strict option for routers ([c3c5dab](https://github.com/strongloop/loopback-next/commit/c3c5dab))
+* **rest:** add support for redirect routes ([53bce7f](https://github.com/strongloop/loopback-next/commit/53bce7f))
+
+
+
+
+
 ## [1.9.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.9.0...@loopback/docs@1.9.1) (2019-03-01)
 
 

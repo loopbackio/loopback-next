@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.10](https://github.com/strongloop/loopback-next/compare/@loopback/service-proxy@1.0.9...@loopback/service-proxy@1.0.10) (2019-03-12)
+
+
+### Bug Fixes
+
+* **service-proxy:** change default binding scope to TRANSIENT for service proxies ([c73e8d0](https://github.com/strongloop/loopback-next/commit/c73e8d0))
+
+
+
+
+
 ## [1.0.9](https://github.com/strongloop/loopback-next/compare/@loopback/service-proxy@1.0.8...@loopback/service-proxy@1.0.9) (2019-02-25)
 
 **Note:** Version bump only for package @loopback/service-proxy

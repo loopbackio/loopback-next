@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.2.3...@loopback/openapi-v3@1.3.0) (2019-03-12)
+
+
+### Features
+
+* **openapi-v3:** add operationId based on controller/method names ([89f905b](https://github.com/strongloop/loopback-next/commit/89f905b))
+
+
+
+
+
 ## [1.2.3](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.2.2...@loopback/openapi-v3@1.2.3) (2019-03-01)
 
 **Note:** Version bump only for package @loopback/openapi-v3
