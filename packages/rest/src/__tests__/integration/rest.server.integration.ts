@@ -683,6 +683,8 @@ paths:
     const options = {
       port: 0,
       protocol: 'https',
+      key: undefined,
+      cert: undefined,
     };
     const serverOptions = givenHttpServerConfig(options);
     const server = await givenAServer({rest: serverOptions});
