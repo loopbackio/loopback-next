@@ -215,8 +215,9 @@ The **type** must be one of the following:
 #### scope
 
 The **scope** must be a list of one or more packages contained in this monorepo.
-Each scope name must match a directory name in [packages/](../packages), e.g.
-`core` or `context`.
+Each scope name must match a directory name in
+[packages/](https://github.com/strongloop/loopback-next/tree/master/packages),
+e.g. `core` or `context`.
 
 _Note: If multiple packages are affected by a pull request, don't list the
 scopes as the commit linter currently only supports only one scope being listed
@@ -376,8 +377,9 @@ repository.
 
 ### Create a new package
 
-To add a new package, create a folder in [`packages`](packages) as the root
-directory of your module. For example,
+To add a new package, create a folder in
+[`packages`](https://github.com/strongloop/loopback-next/tree/master/packages)
+as the root directory of your module. For example,
 
 ```sh
 cd loopback-next/packages
@@ -428,12 +430,14 @@ Please register the new package in the following files:
 
 - Update [MONOREPO.md](./MONOREPO.md) - insert a new table row to describe the
   new package, please keep the rows sorted by package name.
-- Update [docs/apidocs.html](../apidocs.html) - add a link to API docs for this
-  new package.
-- Update [Reserved-binding-keys.md](./Reserved-binding-keys.mds) - add a link to
+- Update
+  [docs/apidocs.html](https://github.com/strongloop/loopback-next/blob/master/docs/apidocs.html) -
+  add a link to API docs for this new package.
+- Update [Reserved-binding-keys.md](./Reserved-binding-keys.md) - add a link to
   the apidocs on Binding Keys if the new package has any.
-- Update [CODEOWNERS](../../CODEOWNERS) - add a new entry listing the primary
-  maintainers (owners) of the new package.
+- Update
+  [CODEOWNERS](https://github.com/strongloop/loopback-next/blob/master/CODEOWNERS) -
+  add a new entry listing the primary maintainers (owners) of the new package.
 - Ask somebody from the IBM team (e.g. [@bajtos](https://github.com/bajtos) or
   [@raymondfeng](https://github.com/raymondfeng) to enlist the new package on
   <http://apidocs.loopback.io/>.
