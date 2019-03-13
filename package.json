@@ -26,7 +26,7 @@
     "postinstall": "lerna bootstrap && npm run -s update-greenkeeper-json",
     "prerelease": "npm run build:full && npm run mocha && npm run lint",
     "release": "lerna version && lerna publish from-git --yes",
-    "update-package-lock-json": "lerna exec \"npm install -s --ignore-scripts --package-lock-only --no-audit\" && git add **/package-lock.json",
+    "update-package-lock-json": "lerna exec \"npm install -s --ignore-scripts --package-lock-only --no-audit\" && git add \"**/package-lock.json\"",
     "update-template-deps": "node bin/update-template-deps -f",
     "update-greenkeeper-json": "node bin/update-greenkeeper-json -f",
     "sync-dev-deps": "node bin/sync-dev-deps",
