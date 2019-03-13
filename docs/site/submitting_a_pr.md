@@ -21,13 +21,13 @@ To contribute high-quality code/docs, please read
 and [Contributing to docs](https://loopback.io/doc/en/contrib/doc-contrib.html),
 before diving into the PR process.
 
-### Expert Instructions
+## Expert Instructions
 
 In addition to your knowledge about GitHub and creating a pull request, we have
 specific conventions and requirements you need to follow when submitting a pull
 request for LoopBack 4.
 
-#### 1. Commits to local repository
+### 1. Commits to local repository
 
 Our commit messages are formatted according to
 [Conventional Commits](https://conventionalcommits.org/).
@@ -42,7 +42,7 @@ To change an existing commit please refer to
 {% include note.html content="Run <b>npm install</b> inside <b>loopback-next</b> after <b>git clone</b>. This will automatically set up git <b>commit-msg</b> hooks to check the conventions and block invalid messages.
 " %}
 
-#### 2. Before pushing to remote repository
+### 2. Before pushing to remote repository
 
 Before pushing to the remote repository, ensure your files are free of
 formatting, syntax, and logical/execution errors by running:
@@ -53,7 +53,7 @@ npm run lint:fix && npm test
 
 {% include note.html content="<b>npm run lint:fix</b> might reformat the source code and fix style issues. Be sure to add such changes to your commit." %}
 
-#### 3. After creating PR, sign the CLA and fill out checklist
+### 3. After creating PR, sign the CLA and fill out checklist
 
 After creating the pull request, make sure the Contributor License Agreement
 (CLA) has been signed for the `loopback-next` repository.
@@ -70,7 +70,7 @@ Click on the
 [Read and sign the CLA (Contributor License Agreement)](https://cla.strongloop.com/agreements/strongloop/loopback-next)
 link, and sign it. This is done once per repository.
 
-#### 4. Check CI status
+### 4. Check CI status
 
 Ensure that the continuous integration (CI) jobs associated with your pull
 request complete successfully.
@@ -88,7 +88,7 @@ us to the Travis CI build page.
 
 Here you can investigate the status of the job, its sub-jobs, or restart them.
 
-#### 5. PR Review Process
+### 5. PR Review Process
 
 The review process is iterative, so it is normal that `multiple commits` may be
 required until the pull request is finally accepted.
@@ -99,19 +99,19 @@ Reactively [rebase](https://help.github.com/articles/about-git-rebase/) your
 forked repository against the upstream master branch to keep them in sync; if
 needed.
 
-#### 6. Before your PR is merged by a maintainer
+### 6. Before your PR is merged by a maintainer
 
 Before the PR is merged by a maintainer, your may be asked to clean up the
 commits by
 [squashing commits](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History)
 to ensure meaningful change logs. Use the `git rebase -i` command if necessary.
 
-### Beginner Instructions
+## Beginner Instructions
 
 Here is a complete tutorial on how to submit a pull request (PR) for LoopBack
 v4.
 
-#### 1. Fork the loopback-next repository
+### 1. Fork the loopback-next repository
 
 In your browser, navigate to <https://github.com/strongloop/loopback-next>.
 
@@ -125,7 +125,7 @@ When the forking process is complete, the repository will show up as
 
 ![submit_pr_my_forked_repo.png](./imgs/submit_pr_my_forked_repo.png)
 
-#### 2. Create the feature branch
+### 2. Create the feature branch
 
 Notice your repo has a `master` branch already created (refer to bottom left
 corner of the picture above). It is commonplace to have this branch represent
@@ -163,7 +163,7 @@ To install the package dependencies, run
 npm install
 ```
 
-#### 3. Make changes locally
+### 3. Make changes locally
 
 Whether you are contributing to code or documentation, make all your changes
 inside in the local feature branch directory.
@@ -177,7 +177,7 @@ npm run lint:fix && npm test
 
 {% include note.html content="<b>npm run lint:fix</b> might reformat the source code and fix style issues. Be sure to add such changes to your commit." %}
 
-#### 4. Commit changes to the local feature branch
+### 4. Commit changes to the local feature branch
 
 When you are pleased with the work you have done on the local copy of your
 feature branch, you will want to `stage` your changes in preparation for a
@@ -234,7 +234,7 @@ git cz
 
 Follow the prompts for the various fields.
 
-In my case I have entered :
+In my case I have entered:
 
 ```
 type                : docs
@@ -250,7 +250,7 @@ affects open issues : N
 The interactive `commitizen` prompts complete and the commit is created with a
 properly formatted message.
 
-#### 5. Push commits to the remote feature branch
+### 5. Push commits to the remote feature branch
 
 It is now time to push your local committed changes of your local feature branch
 directory to your remote feature branch; to keep them in sync.
@@ -287,7 +287,7 @@ pull request is being reviewed.
 You can always re-organize commits or compress the number of commits later
 through a step called `Squashing Commits`.
 
-#### 6. Rebasing
+### 6. Rebasing
 
 Eventually your fork of the original repository will become stale, and it will
 be necessary to bring it up-to-date.
@@ -331,7 +331,7 @@ branch, and not `behind` on any number of commits.
 
 ![submit_pr_rebase_2.png](./imgs/submit_pr_rebase_2.png)
 
-#### 7. Create the pull request (PR)
+### 7. Create the pull request (PR)
 
 In your browser, navigate to your remote `feature` branch, and press the
 `Compare & pull request` button.
@@ -366,7 +366,7 @@ The pull request is created.
 Some continuous integration (CI) jobs commence; ensure they complete
 successfully.
 
-#### 8. Agree to the contributor license agreement (CLA)
+### 8. Agree to the contributor license agreement (CLA)
 
 You must agree to the contributor license agreement (CLA) before the pull
 request can be `approved` and `merged` by the maintainers.
@@ -375,7 +375,7 @@ In the checklist of your pull request, click on the
 [Read and sign the CLA (Contributor License Agreement)](https://cla.strongloop.com/agreements/strongloop/loopback-next)
 link, and sign it. This is done once per repository.
 
-#### 9. PR review process
+### 9. PR review process
 
 Once your PR is created, the appropriate reviewer(s) will be notified. This is
 determined by the configuration settings in `/loopback-next/CODEOWNERS`.
@@ -391,7 +391,7 @@ request.
 
 ![submit_pr_pr_review_1.png](./imgs/submit_pr_pr_review_1.png)
 
-#### 10. Final rebase and squashing of commits
+### 10. Final rebase and squashing of commits
 
 Once the pull request is finally approved, repeat the `Rebase` section;if
 necessary.
@@ -478,7 +478,7 @@ The remote feature branch and the pull request now have one commit.
 
 ![submit_pr_squash_commits_7.png](./imgs/submit_pr_squash_commits_7.png)
 
-#### 11. Ensure CI jobs complete successfully
+### 11. Ensure CI jobs complete successfully
 
 The `post-condition` to your pull request being approved, is that all the
 continuous integration (CI) jobs complete successfully.
@@ -498,13 +498,13 @@ us to the Travis CI build page.
 
 Here you can investigate the status of the job, its sub-jobs, or restart them.
 
-#### 12. Maintainer merges the pull request
+### 12. Maintainer merges the pull request
 
 When a project maintainer is satisfied with the pull request, he/she will
 `merge` it into the `master` branch of the `strongloop/loopback-next`
 [repo](https://github.com/strongloop/loopback-next).
 
-#### References
+## References
 
 - [Getting into open source for the first time](https://www.nearform.com/blog/getting-into-open-source-for-the-first-time/)
 
