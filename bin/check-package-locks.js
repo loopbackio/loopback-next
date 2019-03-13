@@ -15,6 +15,7 @@ const fs = require('fs');
 const promisify = require('util').promisify;
 
 const readFile = promisify(fs.readFile);
+const exists = promisify(fs.exists);
 
 const Project = require('@lerna/project');
 
@@ -58,6 +59,8 @@ if (require.main === module) {
 }
 
 async function checkLockFile(lockFile) {
+  const found = await exists(lockFile);
+  if (!found) return [];
   const data = JSON.parse(await readFile(lockFile, 'utf-8'));
   return Object.keys(data.dependencies || []).filter(dep =>
     dep.startsWith('@loopback/'),
