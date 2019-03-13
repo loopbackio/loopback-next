@@ -27,7 +27,7 @@ matrix:
       env: TASK=code-lint
       # Running Code Linter -- Requires @loopback/build so it's bootstrapped
       script:
-        - lerna bootstrap --scope @loopback/build --scope @loopback/tslint-config
+        - lerna bootstrap --scope @loopback/build --scope @loopback/tslint-config --scope @loopback/eslint-config
         - npm run lint
     - node_js: "8"
       os: linux
