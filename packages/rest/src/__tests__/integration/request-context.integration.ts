@@ -73,6 +73,21 @@ describe('RequestContext', () => {
 
       expect(observedCtx.basePath).to.equal('/api');
     });
+
+    it('combines both baseUrl and basePath', async () => {
+      const lbApp = new RestApplication();
+      lbApp.handler(contextObservingHandler);
+      lbApp.basePath('/v1'); // set basePath at LoopBack level
+
+      const expressApp = express();
+      expressApp.use('/api', lbApp.requestHandler); // mount the app at baseUrl
+
+      await supertest(expressApp)
+        .get('/api/v1/products')
+        .expect(200);
+
+      expect(observedCtx.basePath).to.equal('/api/v1');
+    });
   });
 
   describe('requestedBaseUrl', () => {
