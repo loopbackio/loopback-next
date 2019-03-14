@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Entity, property, model, belongsTo} from '@loopback/repository';
-import {TodoList} from './todo-list.model';
+import {TodoList, TodoListLinks} from './todo-list.model';
 
 @model()
 export class Todo extends Entity {
@@ -40,4 +40,8 @@ export class Todo extends Entity {
   constructor(data?: Partial<Todo>) {
     super(data);
   }
+}
+
+export interface TodoLinks {
+  todoList?: TodoList & TodoListLinks;
 }

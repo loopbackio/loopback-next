@@ -40,8 +40,10 @@ export interface ExecutableRepository<T extends Model> extends Repository<T> {
 /**
  * Basic CRUD operations for ValueObject and Entity. No ID is required.
  */
-export interface CrudRepository<T extends ValueObject | Entity>
-  extends Repository<T> {
+export interface CrudRepository<
+  T extends ValueObject | Entity,
+  Links extends object = {}
+> extends Repository<T> {
   /**
    * Create a new record
    * @param dataObject The data to be created
@@ -64,7 +66,7 @@ export interface CrudRepository<T extends ValueObject | Entity>
    * @param options Options for the operations
    * @returns A promise of an array of records found
    */
-  find(filter?: Filter<T>, options?: Options): Promise<T[]>;
+  find(filter?: Filter<T>, options?: Options): Promise<(T & Partial<Links>)[]>;
 
   /**
    * Updating matching records with attributes from the data object
@@ -105,9 +107,11 @@ export interface EntityRepository<T extends Entity, ID>
 /**
  * CRUD operations for a repository of entities
  */
-export interface EntityCrudRepository<T extends Entity, ID>
-  extends EntityRepository<T, ID>,
-    CrudRepository<T> {
+export interface EntityCrudRepository<
+  T extends Entity,
+  ID,
+  Links extends object = {}
+> extends EntityRepository<T, ID>, CrudRepository<T, Links> {
   // entityClass should have type "typeof T", but that's not supported by TSC
   entityClass: typeof Entity & {prototype: T};
 
@@ -146,7 +150,11 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * @param options Options for the operations
    * @returns A promise of an entity found for the id
    */
-  findById(id: ID, filter?: Filter<T>, options?: Options): Promise<T>;
+  findById(
+    id: ID,
+    filter?: Filter<T>,
+    options?: Options,
+  ): Promise<T & Partial<Links>>;
 
   /**
    * Update an entity by id with property/value pairs in the data object
