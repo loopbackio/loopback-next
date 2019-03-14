@@ -13,6 +13,7 @@ import {
   post,
   put,
   requestBody,
+  getModelSchemaRef,
 } from '@loopback/rest';
 import {Todo, TodoList} from '../models';
 import {TodoRepository} from '../repositories';
@@ -53,7 +54,10 @@ export class TodoController {
         description: 'Array of Todo model instances',
         content: {
           'application/json': {
-            schema: {type: 'array', items: {'x-ts-type': Todo}},
+            schema: {
+              type: 'array',
+              items: getModelSchemaRef(Todo, {includeRelations: true}),
+            },
           },
         },
       },

@@ -3,13 +3,24 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ParameterObject, SchemaObject} from '@loopback/openapi-v3-types';
-import {model, property} from '@loopback/repository';
+import {
+  OperationObject,
+  ParameterObject,
+  SchemaObject,
+} from '@loopback/openapi-v3-types';
+import {
+  belongsTo,
+  Entity,
+  hasMany,
+  model,
+  property,
+} from '@loopback/repository';
 import {expect} from '@loopback/testlab';
 import {
   ControllerSpec,
   get,
   getControllerSpec,
+  getModelSchemaRef,
   param,
   post,
   requestBody,
@@ -420,5 +431,68 @@ describe('controller spec', () => {
       }
       return MyController;
     }
+  });
+
+  it('supports getModelSchemaRef with relations', () => {
+    @model()
+    class Product extends Entity {
+      @belongsTo(() => Category)
+      categoryId: number;
+    }
+
+    @model()
+    class Category extends Entity {
+      @hasMany(() => Product)
+      products?: Product[];
+    }
+
+    class CategoryController {
+      @get('/categories', {
+        responses: {
+          '200': {
+            description: 'Array of Category model instances',
+            content: {
+              'application/json': {
+                schema: getModelSchemaRef(Category, {includeRelations: true}),
+              },
+            },
+          },
+        },
+      })
+      async find(): Promise<Category[]> {
+        return []; // dummy implementation, it's never called
+      }
+    }
+
+    const spec = getControllerSpec(CategoryController);
+    const opSpec: OperationObject = spec.paths['/categories'].get;
+    const responseSpec = opSpec.responses['200'].content['application/json'];
+    expect(responseSpec.schema).to.deepEqual({
+      $ref: '#/components/schemas/CategoryWithLinks',
+    });
+
+    const globalSchemas = (spec.components || {}).schemas;
+    expect(globalSchemas).to.deepEqual({
+      CategoryWithLinks: {
+        title: 'CategoryWithLinks',
+        properties: {
+          products: {
+            type: 'array',
+            items: {$ref: '#/components/schemas/ProductWithLinks'},
+          },
+        },
+      },
+      ProductWithLinks: {
+        title: 'ProductWithLinks',
+        properties: {
+          categoryId: {
+            type: 'number',
+          },
+          category: {
+            $ref: '#/components/schemas/CategoryWithLinks',
+          },
+        },
+      },
+    });
   });
 });

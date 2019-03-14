@@ -15,6 +15,7 @@ import {
   get,
   getFilterSchemaFor,
   getWhereSchemaFor,
+  getModelSchemaRef,
   param,
   patch,
   post,
@@ -59,7 +60,14 @@ export class TodoListController {
     responses: {
       '200': {
         description: 'Array of TodoList model instances',
-        content: {'application/json': {schema: {'x-ts-type': TodoList}}},
+        content: {
+          'application/json': {
+            schema: {
+              type: 'array',
+              items: getModelSchemaRef(TodoList, {includeRelations: true}),
+            }
+          },
+        },
       },
     },
   })
