@@ -14,21 +14,60 @@ import {
 import {JSONSchema6 as JSONSchema} from 'json-schema';
 import {JSON_SCHEMA_KEY} from './keys';
 
+export interface JsonSchemaOptions {
+  includeRelations?: boolean;
+  visited?: {[key: string]: JSONSchema};
+}
+
 /**
  * Gets the JSON Schema of a TypeScript model/class by seeing if one exists
  * in a cache. If not, one is generated and then cached.
  * @param ctor Contructor of class to get JSON Schema from
  */
-export function getJsonSchema(ctor: Function): JSONSchema {
+export function getJsonSchema(
+  ctor: Function,
+  options: JsonSchemaOptions = {},
+): JSONSchema {
   // NOTE(shimks) currently impossible to dynamically update
-  const jsonSchema = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor);
-  if (jsonSchema) {
-    return jsonSchema;
+  const cached = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor);
+  const key = options.includeRelations ? 'modelWithLinks' : 'modelOnly';
+
+  if (cached && cached[key]) {
+    return cached[key];
   } else {
-    const newSchema = modelToJsonSchema(ctor);
-    MetadataInspector.defineMetadata(JSON_SCHEMA_KEY.key, newSchema, ctor);
+    const newSchema = modelToJsonSchema(ctor, options);
+    if (cached) {
+      cached[key] = newSchema;
+    } else {
+      MetadataInspector.defineMetadata(
+        JSON_SCHEMA_KEY.key,
+        {[key]: newSchema},
+        ctor,
+      );
+    }
     return newSchema;
   }
+}
+
+export function getJsonSchemaRef(
+  ctor: Function,
+  options: JsonSchemaOptions = {},
+): JSONSchema {
+  const schemaWithDefinitions = getJsonSchema(ctor, options);
+  const key = schemaWithDefinitions.title;
+
+  // ctor is not a model
+  if (!key) return schemaWithDefinitions;
+
+  const definitions = Object.assign({}, schemaWithDefinitions.definitions);
+  const schema = Object.assign({}, schemaWithDefinitions);
+  delete schema.definitions;
+  definitions[key] = schema;
+
+  return {
+    $ref: `#/definitions/${key}`,
+    definitions,
+  };
 }
 
 /**
@@ -138,16 +177,28 @@ export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
  * reflection API
  * @param ctor Constructor of class to convert from
  */
-export function modelToJsonSchema(ctor: Function): JSONSchema {
+export function modelToJsonSchema(
+  ctor: Function,
+  options: JsonSchemaOptions = {},
+): JSONSchema {
+  options.visited = options.visited || {};
+
   const meta: ModelDefinition | {} = ModelMetadataHelper.getModelMetadata(ctor);
-  const result: JSONSchema = {};
 
   // returns an empty object if metadata is an empty object
   if (!(meta instanceof ModelDefinition)) {
     return {};
   }
 
-  result.title = meta.title || ctor.name;
+  let title = meta.title || ctor.name;
+  if (options.includeRelations) {
+    title += 'WithLinks';
+  }
+
+  if (title in options.visited) return options.visited[title];
+
+  const result: JSONSchema = {title};
+  options.visited[title] = result;
 
   if (meta.description) {
     result.description = meta.description;
@@ -187,20 +238,47 @@ export function modelToJsonSchema(ctor: Function): JSONSchema {
     }
 
     const propSchema = getJsonSchema(referenceType);
+    includeReferencedSchema(referenceType.name, propSchema);
+  }
 
-    if (propSchema && Object.keys(propSchema).length > 0) {
-      result.definitions = result.definitions || {};
+  if (options.includeRelations) {
+    for (const r in meta.relations) {
+      result.properties = result.properties || {};
+      const relMeta = meta.relations[r];
+      const targetType = resolveType(relMeta.target);
+      const targetSchema = getJsonSchema(targetType, options);
+      const targetRef = {$ref: `#/definitions/${targetSchema.title}`};
 
-      // delete nested definition
-      if (propSchema.definitions) {
-        for (const key in propSchema.definitions) {
-          result.definitions[key] = propSchema.definitions[key];
-        }
-        delete propSchema.definitions;
-      }
+      const propDef = relMeta.targetsMany
+        ? <JSONSchema>{
+            type: 'array',
+            items: targetRef,
+          }
+        : targetRef;
 
-      result.definitions[referenceType.name] = propSchema;
+      // IMPORTANT: r !== relMeta.name
+      // E.g. belongsTo sets r="categoryId" but name="category"
+      result.properties[relMeta.name] =
+        result.properties[relMeta.name] || propDef;
+      includeReferencedSchema(targetSchema.title!, targetSchema);
     }
   }
   return result;
+
+  function includeReferencedSchema(name: string, propSchema: JSONSchema) {
+    if (!propSchema || !Object.keys(propSchema).length) return;
+
+    result.definitions = result.definitions || {};
+
+    // promote nested definition to the top level
+    if (propSchema.definitions) {
+      for (const key in propSchema.definitions) {
+        if (key === title) continue;
+        result.definitions[key] = propSchema.definitions[key];
+      }
+      delete propSchema.definitions;
+    }
+
+    result.definitions[name] = propSchema;
+  }
 }

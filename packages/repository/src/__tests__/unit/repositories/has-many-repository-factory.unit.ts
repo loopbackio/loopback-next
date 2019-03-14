@@ -114,6 +114,7 @@ describe('createHasManyRepositoryFactory', () => {
 
     const defaults: HasManyDefinition = {
       type: RelationType.hasMany,
+      targetsMany: true,
       name: 'customers',
       target: () => Customer,
       source: Company,

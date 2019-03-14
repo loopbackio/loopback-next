@@ -582,7 +582,7 @@ describe('build-schema', () => {
       };
       MetadataInspector.defineMetadata(
         JSON_SCHEMA_KEY,
-        cachedSchema,
+        {modelOnly: cachedSchema},
         TestModel,
       );
       const jsonSchema = getJsonSchema(TestModel);

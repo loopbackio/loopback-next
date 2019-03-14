@@ -23,6 +23,13 @@ export interface RelationDefinitionBase {
   type: RelationType;
 
   /**
+   * True for relations targeting multiple instances (e.g. HasMany),
+   * false for relations with a single target (e.g. BelongsTo, HasOne).
+   * This property is need by OpenAPI/JSON Schema generator.
+   */
+  targetsMany: boolean;
+
+  /**
    * The relation name, typically matching the name of the accessor property
    * defined on the source model. For example "orders" or "customer".
    */
@@ -45,6 +52,7 @@ export interface RelationDefinitionBase {
 
 export interface HasManyDefinition extends RelationDefinitionBase {
   type: RelationType.hasMany;
+  targetsMany: true;
 
   /**
    * The foreign key used by the target model.
@@ -58,6 +66,7 @@ export interface HasManyDefinition extends RelationDefinitionBase {
 
 export interface BelongsToDefinition extends RelationDefinitionBase {
   type: RelationType.belongsTo;
+  targetsMany: false;
 
   /*
    * The foreign key in the source model, e.g. Order#customerId.
@@ -72,6 +81,7 @@ export interface BelongsToDefinition extends RelationDefinitionBase {
 
 export interface HasOneDefinition extends RelationDefinitionBase {
   type: RelationType.hasOne;
+  targetsMany: false;
 
   /**
    * The foreign key used by the target model.

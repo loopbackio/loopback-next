@@ -98,6 +98,7 @@ describe('createBelongsToAccessor', () => {
 
     const relationMeta: BelongsToDefinition = {
       type: RelationType.belongsTo,
+      targetsMany: false,
       name: 'category',
       source: Product,
       target: () => Category,
@@ -165,6 +166,7 @@ describe('createBelongsToAccessor', () => {
   ): BelongsToDefinition {
     const defaults: BelongsToDefinition = {
       type: RelationType.belongsTo,
+      targetsMany: false,
       name: 'company',
       source: Company,
       target: () => Customer,
