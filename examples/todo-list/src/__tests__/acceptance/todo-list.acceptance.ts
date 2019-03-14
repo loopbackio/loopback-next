@@ -12,9 +12,9 @@ import {
   toJSON,
 } from '@loopback/testlab';
 import {TodoListApplication} from '../../application';
-import {TodoList} from '../../models/';
-import {TodoListRepository} from '../../repositories/';
-import {givenTodoList} from '../helpers';
+import {Todo, TodoList} from '../../models';
+import {TodoListRepository, TodoRepository} from '../../repositories';
+import {givenTodo, givenTodoList} from '../helpers';
 
 describe('TodoListApplication', () => {
   let app: TodoListApplication;
@@ -178,6 +178,20 @@ describe('TodoListApplication', () => {
       .expect(200, [toJSON(listInBlack)]);
   });
 
+  it('includes Todos in query result', async () => {
+    const list = await givenTodoListInstance();
+    const todo = await givenTodoInstance({todoListId: list.id});
+
+    const response = await client.get('/todo-lists').query({
+      filter: JSON.stringify({include: [{relation: 'todos'}]}),
+    });
+    expect(response.body).to.have.length(1);
+    expect(response.body[0]).to.deepEqual({
+      ...toJSON(list),
+      todos: [toJSON(todo)],
+    });
+  });
+
   /*
    ============================================================================
    TEST HELPERS
@@ -216,6 +230,11 @@ describe('TodoListApplication', () => {
 
   async function givenTodoListInstance(todoList?: Partial<TodoList>) {
     return await todoListRepo.create(givenTodoList(todoList));
+  }
+
+  async function givenTodoInstance(todo?: Partial<Todo>) {
+    const repo = await app.getRepository(TodoRepository);
+    return await repo.create(givenTodo(todo));
   }
 
   function givenMutlipleTodoListInstances() {

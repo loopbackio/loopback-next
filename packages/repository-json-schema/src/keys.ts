@@ -10,6 +10,6 @@ import {JSONSchema6 as JSONSchema} from 'json-schema';
  * Metadata key used to set or retrieve repository JSON Schema
  */
 export const JSON_SCHEMA_KEY = MetadataAccessor.create<
-  JSONSchema,
+  {[options: string]: JSONSchema},
   ClassDecorator
 >('loopback:json-schema');

@@ -10,7 +10,8 @@ import {
   MODEL_WITH_PROPERTIES_KEY,
   PropertyMap,
 } from './model.decorator';
-import {ModelDefinition} from '../model';
+import {ModelDefinition, RelationDefinitionMap} from '../model';
+import {RELATIONS_KEY} from '../relations';
 
 export class ModelMetadataHelper {
   /**
@@ -60,6 +61,16 @@ export class ModelMetadataHelper {
             options,
           ),
         );
+
+        meta.relations = Object.assign(
+          <RelationDefinitionMap>{},
+          MetadataInspector.getAllPropertyMetadata(
+            RELATIONS_KEY,
+            target.prototype,
+            options,
+          ),
+        );
+
         MetadataInspector.defineMetadata(
           MODEL_WITH_PROPERTIES_KEY.key,
           meta,

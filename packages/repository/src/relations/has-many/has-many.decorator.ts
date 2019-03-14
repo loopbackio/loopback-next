@@ -28,6 +28,7 @@ export function hasMany<T extends Entity>(
       // properties enforced by the decorator
       {
         type: RelationType.hasMany,
+        targetsMany: true,
         source: decoratedTarget.constructor,
         target: targetResolver,
       },

@@ -49,6 +49,7 @@ describe('relation decorator', () => {
       );
       expect(meta).to.eql({
         type: RelationType.hasMany,
+        targetsMany: true,
         name: 'addresses',
         source: AddressBook,
         target: () => Address,
@@ -60,6 +61,7 @@ describe('relation decorator', () => {
       expect(AddressBook.definition.relations).to.eql({
         addresses: {
           type: RelationType.hasMany,
+          targetsMany: true,
           name: 'addresses',
           source: AddressBook,
           target: () => Address,
@@ -93,6 +95,7 @@ describe('relation decorator', () => {
       );
       expect(meta).to.eql({
         type: RelationType.hasMany,
+        targetsMany: true,
         name: 'addresses',
         source: AddressBook,
         target: () => Address,
@@ -131,6 +134,7 @@ describe('relation decorator', () => {
           keyFrom: 'addressBookId',
           name: 'addressBook',
           type: 'belongsTo',
+          targetsMany: false,
         },
       });
     });
@@ -156,6 +160,7 @@ describe('relation decorator', () => {
       );
       expect(meta).to.eql({
         type: RelationType.belongsTo,
+        targetsMany: false,
         name: 'addressBook',
         source: Address,
         target: () => AddressBook,

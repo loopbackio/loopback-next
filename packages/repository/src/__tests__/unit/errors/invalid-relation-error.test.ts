@@ -48,6 +48,7 @@ function givenAnErrorInstance() {
   return new InvalidRelationError('a reason', {
     name: 'products',
     type: RelationType.hasMany,
+    targetsMany: true,
     source: Category,
     target: () => Product,
   });

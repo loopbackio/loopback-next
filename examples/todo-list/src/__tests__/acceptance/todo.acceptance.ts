@@ -149,6 +149,20 @@ describe('TodoListApplication', () => {
       .expect(200, [toJSON(todoInProgress)]);
   });
 
+  it('includes TodoList in query result', async () => {
+    const list = await givenTodoListInstance();
+    const todo = await givenTodoInstance({todoListId: list.id});
+
+    const response = await client.get('/todos').query({
+      filter: JSON.stringify({include: [{relation: 'todoList'}]}),
+    });
+    expect(response.body).to.have.length(1);
+    expect(response.body[0]).to.deepEqual({
+      ...toJSON(todo),
+      todoList: toJSON(list),
+    });
+  });
+
   /*
    ============================================================================
    TEST HELPERS

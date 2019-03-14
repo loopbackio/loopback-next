@@ -209,6 +209,12 @@ export abstract class Model {
         json[p] = asJSON((this as AnyObject)[p]);
       }
     }
+    // Include relational links in the JSON representation
+    for (const r in def.relations) {
+      if (r in this) {
+        json[r] = asJSON((this as AnyObject)[r]);
+      }
+    }
     return json;
   }
 
