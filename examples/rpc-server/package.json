@@ -22,7 +22,7 @@
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
     "pretest": "npm run clean && npm run build",
-    "test": "lb-mocha dist/__tests__/**/*.js",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "posttest": "npm run lint",
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
     "prestart": "npm run build",

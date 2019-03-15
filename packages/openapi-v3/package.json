@@ -21,7 +21,7 @@
     "clean": "lb-clean loopback-openapi-v3*.tgz dist package",
     "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
     "pretest": "npm run build",
-    "test": "lb-mocha \"dist/__tests__/unit/**/*.js\" \"dist/__tests__/integration/**/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-openapi-v3*.tgz && tree package && npm run clean"
   },
