@@ -12,7 +12,7 @@
     "clean": "lb-clean loopback-core*.tgz dist package api-docs",
     "pretest": "npm run build",
     "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
-    "test": "lb-mocha \"dist/__tests__/unit/**/*.js\" \"dist/__tests__/integration/**/*.js\" \"dist/__tests__/acceptance/**/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-core*.tgz && tree package && npm run clean"
   },
