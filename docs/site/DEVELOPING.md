@@ -133,39 +133,49 @@ We use npm's
 [package-lock feature](https://docs.npmjs.com/files/package-lock.json) to speed
 up our development workflow and CI builds.
 
-When installing dependencies in individual packages, `lerna bootstrap` calls
-`npm ci` to install (deep) dependencies as specified in `package-lock.json`
-file.
+For individual packages within the monorepo, `lerna bootstrap` calls `npm ci` in
+a CI environment or with `--ci` to install (deep) dependencies as specified in
+`package-lock.json` file. Otherwise, `npm install` is run with the corresponding
+`package.json`.
 
-Top-level dependencies are installed either from `package-lock.json` (when you
-run `npm ci`), or resolved freshly from the npm registry (when you run
-`npm install`).
+Top-level (`loopback-next`) dependencies are installed either from
+`package-lock.json` (when you run `npm ci`), or resolved freshly from the npm
+registry (when you run `npm install`).
 
 **IMPORTANT: Dependencies resolved locally within the monorepo must be excluded
 from package-lock files.**
 
-### Fixing package locks
+### Updating package locks
 
-If you ever end up with corrupted package locks, run the following commands to
-fix the problem:
+If you ever end up with corrupted or out-of-date package locks, run the
+following commands to fix the problem:
 
 ```
-$ npx lerna clean && npx lerna bootstrap --no-ci
+$ npm run update-package-locks
 ```
 
 ### Adding or updating dependencies
 
 Use the following command to add or update dependency `dep` in a package `name`:
 
-```
+```sh
 $ npx lerna add --scope ${name} ${dep}
 ```
 
-At the moment, lerna does not update package-lock files when adding a dependency
-to a scope, see [lerna#1989](https://github.com/lerna/lerna/issues/1989).
+For example:
 
-You have to re-create package locks manually, see
-[Fixing package locks](#fixing-package-locks) above.
+```sh
+$ npx lerna add --scope @loopback/rest debug
+```
+
+See [lerna add](https://github.com/lerna/lerna/blob/master/commands/add#readme)
+for more details.
+
+**NOTE**: At the moment, `lerna` does not update `package-lock.json` files when
+adding a dependency to a scope, see
+[lerna#1989](https://github.com/lerna/lerna/issues/1989). You have to re-create
+package locks manually, see [Updating package locks](#updating-package-locks)
+above.
 
 ## File naming convention
 
@@ -479,6 +489,8 @@ Please register the new package in the following files:
 - Update
   [CODEOWNERS](https://github.com/strongloop/loopback-next/blob/master/CODEOWNERS) -
   add a new entry listing the primary maintainers (owners) of the new package.
+- Run `npm run update-packages` to make sure the newly added package will be
+  monitored by greenkeeper and corresponding `package-lock.json` is updated.
 - Ask somebody from the IBM team (e.g. [@bajtos](https://github.com/bajtos) or
   [@raymondfeng](https://github.com/raymondfeng) to enlist the new package on
   <http://apidocs.loopback.io/>.
