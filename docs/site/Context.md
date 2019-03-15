@@ -448,7 +448,7 @@ const serverCtx = new Context(appCtx, 'server'); // server -> app
 const controllerFilter = binding => binding.tagMap.controller != null;
 
 // Watch for bindings with tag `controller`
-const view = serverCtx.watch(controllerFilter);
+const view = serverCtx.createView(controllerFilter);
 
 // No controllers yet
 await view.values(); // returns []
