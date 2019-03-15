@@ -10,7 +10,7 @@
     "build": "lb-tsc es2017 --outDir dist",
     "clean": "lb-clean loopback-json-schema*.tgz dist package api-docs",
     "pretest": "npm run build",
-    "test": "lb-mocha \"dist/__tests__/unit/**/*.js\" \"dist/__tests__/integration/**/*.js\" \"dist/__tests__/acceptance/**/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-json-schema*.tgz && tree package && npm run clean"
   },
   "author": "IBM Corp.",
