@@ -12,7 +12,7 @@ import {
   repository,
   RepositoryMixin,
 } from '../..';
-import {Order} from '../fixtures/models';
+import {Customer, Order} from '../fixtures/models';
 import {CustomerRepository, OrderRepository} from '../fixtures/repositories';
 
 describe('HasMany relation', () => {
@@ -152,6 +152,35 @@ describe('HasMany relation', () => {
     ).to.be.rejectedWith(/`orders` is not defined/);
   });
 
+  // The following tests test hasMany Entity to itself
+
+  it('gets the parent entity through the child entity', async () => {
+    const parent = await customerRepo.create({name: 'parent customer'});
+    const child = await customerRepo.create({
+      name: 'child customer',
+      parentId: parent.id,
+    });
+
+    const childsParent = await controller.getParentCustomer(child.id);
+
+    expect(_.pick(childsParent, ['id', 'name'])).to.eql(
+      _.pick(parent, ['id', 'name']),
+    );
+  });
+
+  it('creates a child entity through the parent entity', async () => {
+    const parent = await customerRepo.create({
+      name: 'parent customer',
+    });
+    const child = await controller.createCustomerChildren(parent.id, {
+      name: 'child customer',
+    });
+    expect(child.parentId).to.equal(parent.id);
+
+    const children = await controller.findCustomerChildren(parent.id);
+    expect(children).to.containEql(child);
+  });
+
   // This should be enforced by the database to avoid race conditions
   it.skip('reject create request when the customer does not exist');
 
@@ -178,6 +207,23 @@ describe('HasMany relation', () => {
 
     async deleteCustomerOrders(customerId: number) {
       return await this.customerRepository.orders(customerId).delete();
+    }
+
+    async getParentCustomer(customerId: number) {
+      return await this.customerRepository.parent(customerId);
+    }
+
+    async createCustomerChildren(
+      customerId: number,
+      customerData: Partial<Customer>,
+    ) {
+      return await this.customerRepository
+        .customers(customerId)
+        .create(customerData);
+    }
+
+    async findCustomerChildren(customerId: number) {
+      return await this.customerRepository.customers(customerId).find();
     }
   }
 
