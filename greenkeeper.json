@@ -31,11 +31,11 @@
         "packages/rest-explorer/package.json",
         "packages/rest/package.json",
         "packages/service-proxy/package.json",
+        "packages/socketio/package.json",
         "packages/testlab/package.json",
         "packages/tslint-config/package.json",
         "sandbox/example/package.json"
       ]
     }
-  },
-  "ignore": ["@types/node"]
+  }
 }
