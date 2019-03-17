@@ -333,6 +333,13 @@
 # - Standby owner(s): n/a
 /bodyparsers/rest-msgpack @achrinza
 
+# WebSocket/SockIO
+#
+# - Issue label: WebSocket
+# - Primary owner(s): @raymondfeng
+# - Standby owner(s): n/a
+/extensions/socketio @raymondfeng
+
 #
 # Build & internal tooling
 #
