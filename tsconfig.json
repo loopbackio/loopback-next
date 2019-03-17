@@ -113,6 +113,9 @@
       "path": "extensions/pooling/tsconfig.json"
     },
     {
+      "path": "extensions/socketio/tsconfig.json"
+    },
+    {
       "path": "extensions/typeorm/tsconfig.json"
     },
     {

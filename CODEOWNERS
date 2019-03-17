@@ -325,6 +325,14 @@
 /examples/graphql @raymondfeng
 
 #
+# WebSocket/SockIO
+#
+# - Issue label: WebSocket
+# - Primary owner(s): @raymondfeng
+# - Standby owner(s): n/a
+/extensions/socketio @raymondfeng
+
+#
 # Build & internal tooling
 #
 # - Issue label: Internal Tooling
