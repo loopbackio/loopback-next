@@ -1,35 +1,39 @@
 <% if (isModelBaseBuiltin) { -%>
-import {<%= modelBaseClass %>, model, property} from '@loopback/repository';
-<% } else { -%>
-import {model, property} from '@loopback/repository';
-import {<%= modelBaseClass %>} from '.';
-<% } -%>
+  import {<%= modelBaseClass %>, model, property} from '@loopback/repository';
+  <% } else { -%>
+  import {model, property} from '@loopback/repository';
+  import {<%= modelBaseClass %>} from '.';
+  <% } -%>
 
-<% if(Object.keys(modelSettings).length > 0) { -%>
-@model({settings: <%- JSON.stringify(modelSettings) %>})
-<% } else { -%>
-@model()
-<% } -%>
-export class <%= className %> extends <%= modelBaseClass %> {
-<% Object.entries(properties).forEach(([key, val]) => { -%>
-  @property({
-  <%_ Object.entries(val).forEach(([propKey, propVal]) => { -%>
-    <%_ if (!['tsType'].includes(propKey)) { -%>
-    <%= propKey %>: <%- propVal %>,
-    <%_ } -%>
-  <%_ }) -%>
+  <% if(Object.keys(modelSettings).length > 0) { -%>
+    @model({
+      settings: {
+          <%- modelSettings %>
+      }
   })
-  <%= key %><%if (!val.required) {%>?<% } %>: <%= val.tsType %>;
+  <% } else { -%>
+  @model()
+  <% } -%>
+  export class <%= className %> extends <%= modelBaseClass %> {
+  <% Object.entries(properties).forEach(([key, val]) => { -%>
+    @property({
+    <%_ Object.entries(val).forEach(([propKey, propVal]) => { -%>
+      <%_ if (!['tsType'].includes(propKey)) { -%>
+      <%= propKey %>: <%- propVal %>,
+      <%_ } -%>
+    <%_ }) -%>
+    })
+    <%= key %><%if (!val.required) {%>?<% } %>: <%= val.tsType %>;
 
-<% }) -%>
-<% if(allowAdditionalProperties) { -%>
-  // Define well-known properties here
+  <% }) -%>
+  <% if(allowAdditionalProperties) { -%>
+    // Define well-known properties here
 
-  // Indexer property to allow additional data
-  [prop: string]: any;
-<% } -%>
+    // Indexer property to allow additional data
+    [prop: string]: any;
+  <% } -%>
 
-  constructor(data?: Partial<<%= className %>>) {
-    super(data);
+    constructor(data?: Partial<<%= className %>>) {
+      super(data);
+    }
   }
-}
