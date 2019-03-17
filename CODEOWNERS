@@ -23,6 +23,7 @@ packages/repository/* @raymondfeng
 packages/repository-json-schema/* @bajtos
 packages/rest/* @bajtos @raymondfeng
 packages/service-proxy/* @raymondfeng
+packages/socketio/* @raymondfeng
 packages/testlab/* @bajtos
 examples/todo/* @bajtos @hacksparrow
 examples/express-composition/* @nabdelgadir
