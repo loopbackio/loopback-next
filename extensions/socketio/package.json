@@ -1,0 +1,61 @@
+{
+  "name": "@loopback/socketio",
+  "version": "0.0.1",
+  "description": "LoopBack's WebSocket server based on socket.io",
+  "engines": {
+    "node": ">=10.16"
+  },
+  "types": "dist/index.d.ts",
+  "main": "dist/index.js",
+  "scripts": {
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-socketio*.tgz dist package *.tsbuildinfo",
+    "pretest": "npm run build",
+    "test": "lb-mocha --allow-console-logs \"dist/__tests__/**/*.js\"",
+    "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-socketio*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/context": "^3.9.4",
+    "@loopback/core": "^2.9.3",
+    "@loopback/http-server": "^2.1.11",
+    "debug": "^4.1.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.2.0",
+    "@loopback/eslint-config": "^9.0.0",
+    "@loopback/testlab": "^3.2.2",
+    "@types/debug": "^4.1.5",
+    "@types/node": "^10.17.28",
+    "@types/socket.io": "^2.1.4",
+    "@types/socket.io-client": "^1.4.32",
+    "p-event": "^4.1.0",
+    "socket.io-client": "^2.3.0"
+  },
+  "keywords": [
+    "LoopBack",
+    "Socket.IO",
+    "WebSocket"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "extensions/socketio"
+  }
+}
