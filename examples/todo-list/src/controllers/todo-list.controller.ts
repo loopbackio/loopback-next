@@ -65,7 +65,7 @@ export class TodoListController {
             schema: {
               type: 'array',
               items: getModelSchemaRef(TodoList, {includeRelations: true}),
-            }
+            },
           },
         },
       },

@@ -13,7 +13,13 @@ import {
   Filter,
   Options,
 } from '@loopback/repository';
-import {Todo, TodoList, TodoListImage, TodoListLinks} from '../models';
+import {
+  Todo,
+  TodoList,
+  TodoListImage,
+  TodoListLinks,
+  TodoListWithLinks,
+} from '../models';
 import {TodoRepository} from './todo.repository';
 import {TodoListImageRepository} from './todo-list-image.repository';
 
@@ -56,7 +62,7 @@ export class TodoListRepository extends DefaultCrudRepository<
   async find(
     filter?: Filter<TodoList>,
     options?: Options,
-  ): Promise<(TodoList & Partial<TodoListLinks>)[]> {
+  ): Promise<TodoListWithLinks[]> {
     // Prevent juggler for applying "include" filter
     // Juggler is not aware of LB4 relations
     const include = filter && filter.include;

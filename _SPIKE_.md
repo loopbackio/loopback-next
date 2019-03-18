@@ -87,6 +87,8 @@ class Product extends Entity {
 interface ProductLinks {
   category?: Category & CategoryLinks;
 }
+
+type ProductWithLinks = Product & ProductLinks;
 ```
 
 HasMany relation:
@@ -101,6 +103,8 @@ class Category extends Entity {
 interface CategoryLinks {
   products?: Product & ProductLinks;
 }
+
+type CategoryWithLinks = Category & CategoryLinks;
 ```
 
 This solution has few important properties I'd like to explicitly point out:
@@ -296,7 +300,7 @@ via OpenAPI spec extensions. For example:
 
 6. Update `examples/todo-list` to leverage these new features:
 
-- Define `{Model}Links` interfaces
+- Define `{Model}Links` interfaces and `{Model}WithLinks` types
 - Update `{Model}Repository` implementations to use these new interfaces
 - Update repositories to include related models: overwrite `find` and `findById`
   methods, add a hard-coded retrieval of related models.

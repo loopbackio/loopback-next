@@ -45,3 +45,5 @@ export class Todo extends Entity {
 export interface TodoLinks {
   todoList?: TodoList & TodoListLinks;
 }
+
+export type TodoWithLinks = Todo & TodoLinks;

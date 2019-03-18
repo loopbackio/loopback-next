@@ -7,12 +7,12 @@ import {Getter, inject} from '@loopback/core';
 import {
   BelongsToAccessor,
   DefaultCrudRepository,
-  juggler,
-  repository,
-  Options,
   Filter,
+  juggler,
+  Options,
+  repository,
 } from '@loopback/repository';
-import {Todo, TodoList, TodoLinks} from '../models';
+import {Todo, TodoLinks, TodoList, TodoWithLinks} from '../models';
 import {TodoListRepository} from './todo-list.repository';
 
 export class TodoRepository extends DefaultCrudRepository<
@@ -41,7 +41,7 @@ export class TodoRepository extends DefaultCrudRepository<
   async find(
     filter?: Filter<Todo>,
     options?: Options,
-  ): Promise<(Todo & Partial<TodoLinks>)[]> {
+  ): Promise<TodoWithLinks[]> {
     // Prevent juggler for applying "include" filter
     // Juggler is not aware of LB4 relations
     const include = filter && filter.include;
