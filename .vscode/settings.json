@@ -7,6 +7,9 @@
   "[html]": {
     "editor.formatOnSave": false
   },
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
+  },
   "files.exclude": {
     "**/.DS_Store": true,
     "**/.git": true,
