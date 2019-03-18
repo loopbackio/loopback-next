@@ -22,7 +22,7 @@
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
     "pretest": "npm run clean && npm run build",
-    "test": "lb-mocha dist/__tests__/**/*.js",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "posttest": "npm run lint",
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
     "prestart": "npm run build",
@@ -41,7 +41,7 @@
     "@loopback/context": "^1.7.0",
     "@loopback/core": "^1.1.8",
     "express": "^4.16.3",
-    "p-event": "^3.0.0"
+    "p-event": "^4.0.0"
   },
   "devDependencies": {
     "@loopback/build": "^1.3.2",

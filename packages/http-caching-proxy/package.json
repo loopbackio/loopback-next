@@ -10,7 +10,7 @@
     "build": "lb-tsc es2017 --outDir dist",
     "clean": "lb-clean loopback-caching-proxy*.tgz dist package api-docs",
     "pretest": "npm run build",
-    "test": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-caching-proxy*.tgz && tree package && npm run clean"
   },
   "author": "IBM Corp.",
@@ -19,7 +19,7 @@
   "dependencies": {
     "cacache": "^11.0.2",
     "debug": "^4.0.1",
-    "p-event": "^3.0.0",
+    "p-event": "^4.0.0",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.5",
     "rimraf": "^2.6.2"

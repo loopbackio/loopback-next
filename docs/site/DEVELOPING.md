@@ -16,6 +16,7 @@ See [Monorepo overview](./MONOREPO.md) for a list of all packages.
 - [Building the project](#building-the-project)
 - [Running tests](#running-tests)
 - [Coding rules](#coding-rules)
+- [Working with dependencies](#working-with-dependencies)
 - [File naming convention](#file-naming-convention)
 - [API documentation](#api-documentation)
 - [Commit message guidelines](#commit-message-guidelines)
@@ -64,7 +65,7 @@ command will install npm dependencies for all packages and create symbolic links
 for intra-dependencies:
 
 ```sh
-npm install
+npm ci
 ```
 
 The next step is to compile all packages from TypeScript to JavaScript:
@@ -125,6 +126,46 @@ npm script `lint:fix`.
 ```sh
 npm run lint:fix
 ```
+
+## Working with dependencies
+
+We use npm's
+[package-lock feature](https://docs.npmjs.com/files/package-lock.json) to speed
+up our development workflow and CI builds.
+
+When installing dependencies in individual packages, `lerna bootstrap` calls
+`npm ci` to install (deep) dependencies as specified in `package-lock.json`
+file.
+
+Top-level dependencies are installed either from `package-lock.json` (when you
+run `npm ci`), or resolved freshly from the npm registry (when you run
+`npm install`).
+
+**IMPORTANT: Dependencies resolved locally within the monorepo must be excluded
+from package-lock files.**
+
+### Fixing package locks
+
+If you ever end up with corrupted package locks, run the following commands to
+fix the problem:
+
+```
+$ npx lerna clean && npx lerna bootstrap --no-ci
+```
+
+### Adding or updating dependencies
+
+Use the following command to add or update dependency `dep` in a package `name`:
+
+```
+$ npx lerna add --scope ${name} ${dep}
+```
+
+At the moment, lerna does not update package-lock files when adding a dependency
+to a scope, see [lerna#1989](https://github.com/lerna/lerna/issues/1989).
+
+You have to re-create package locks manually, see
+[Fixing package locks](#fixing-package-locks) above.
 
 ## File naming convention
 
@@ -215,8 +256,9 @@ The **type** must be one of the following:
 #### scope
 
 The **scope** must be a list of one or more packages contained in this monorepo.
-Each scope name must match a directory name in [packages/](../packages), e.g.
-`core` or `context`.
+Each scope name must match a directory name in
+[packages/](https://github.com/strongloop/loopback-next/tree/master/packages),
+e.g. `core` or `context`.
 
 _Note: If multiple packages are affected by a pull request, don't list the
 scopes as the commit linter currently only supports only one scope being listed
@@ -376,8 +418,9 @@ repository.
 
 ### Create a new package
 
-To add a new package, create a folder in [`packages`](packages) as the root
-directory of your module. For example,
+To add a new package, create a folder in
+[`packages`](https://github.com/strongloop/loopback-next/tree/master/packages)
+as the root directory of your module. For example,
 
 ```sh
 cd loopback-next/packages
@@ -428,12 +471,14 @@ Please register the new package in the following files:
 
 - Update [MONOREPO.md](./MONOREPO.md) - insert a new table row to describe the
   new package, please keep the rows sorted by package name.
-- Update [docs/apidocs.html](../apidocs.html) - add a link to API docs for this
-  new package.
-- Update [Reserved-binding-keys.md](./Reserved-binding-keys.mds) - add a link to
+- Update
+  [docs/apidocs.html](https://github.com/strongloop/loopback-next/blob/master/docs/apidocs.html) -
+  add a link to API docs for this new package.
+- Update [Reserved-binding-keys.md](./Reserved-binding-keys.md) - add a link to
   the apidocs on Binding Keys if the new package has any.
-- Update [CODEOWNERS](../../CODEOWNERS) - add a new entry listing the primary
-  maintainers (owners) of the new package.
+- Update
+  [CODEOWNERS](https://github.com/strongloop/loopback-next/blob/master/CODEOWNERS) -
+  add a new entry listing the primary maintainers (owners) of the new package.
 - Ask somebody from the IBM team (e.g. [@bajtos](https://github.com/bajtos) or
   [@raymondfeng](https://github.com/raymondfeng) to enlist the new package on
   <http://apidocs.loopback.io/>.

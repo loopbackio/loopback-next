@@ -11,7 +11,7 @@
     "build": "lb-tsc es2017 --outDir dist",
     "clean": "lb-clean loopback-metadata*.tgz dist package api-docs",
     "pretest": "npm run build",
-    "test": "lb-mocha \"dist/__tests__/unit/**/*.js\" \"dist/__tests__/acceptance/**/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-metadata*.tgz && tree package && npm run clean"
   },

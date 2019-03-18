@@ -135,7 +135,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     return this._requestHandler;
   }
 
-  public readonly config: RestServerConfig;
+  public readonly config: RestServerResolvedConfig;
   private _basePath: string;
 
   protected _httpHandler: HttpHandler;
@@ -172,27 +172,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
   ) {
     super(app);
 
-    // Can't check falsiness, 0 is a valid port.
-    if (config.port == null) {
-      config.port = 3000;
-    }
-    if (config.host == null) {
-      // Set it to '' so that the http server will listen on all interfaces
-      config.host = undefined;
-    }
+    this.config = resolveRestServerConfig(config);
 
-    config.openApiSpec = config.openApiSpec || {};
-    config.openApiSpec.endpointMapping =
-      config.openApiSpec.endpointMapping || OPENAPI_SPEC_MAPPING;
-
-    config.apiExplorer = normalizeApiExplorerConfig(config.apiExplorer);
-    if (config.openApiSpec.disabled) {
-      // Disable apiExplorer if the OpenAPI spec endpoint is disabled
-      config.apiExplorer.disabled = true;
-    }
-
-    this.config = config;
-    this.bind(RestBindings.PORT).to(config.port);
+    this.bind(RestBindings.PORT).to(this.config.port);
     this.bind(RestBindings.HOST).to(config.host);
     this.bind(RestBindings.PROTOCOL).to(config.protocol || 'http');
     this.bind(RestBindings.HTTPS_OPTIONS).to(config as ServerOptions);
@@ -225,15 +207,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
     // Allow CORS support for all endpoints so that users
     // can test with online SwaggerUI instance
-    const corsOptions = this.config.cors || {
-      origin: '*',
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-      preflightContinue: false,
-      optionsSuccessStatus: 204,
-      maxAge: 86400,
-      credentials: true,
-    };
-    this._expressApp.use(cors(corsOptions));
+    this._expressApp.use(cors(this.config.cors));
 
     // Set up endpoints for OpenAPI spec/ui
     this._setupOpenApiSpecEndpoints();
@@ -255,7 +229,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * Apply express settings.
    */
   protected _applyExpressSettings() {
-    const settings = this.config.expressSettings || {};
+    const settings = this.config.expressSettings;
     for (const key in settings) {
       this._expressApp.set(key, settings[key]);
     }
@@ -269,7 +243,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * to redirect to externally hosted API explorer
    */
   protected _setupOpenApiSpecEndpoints() {
-    if (this.config.openApiSpec!.disabled) return;
+    if (this.config.openApiSpec.disabled) return;
     // NOTE(bajtos) Regular routes are handled through Sequence.
     // IMO, this built-in endpoint should not run through a Sequence,
     // because it's not part of the application API itself.
@@ -277,7 +251,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     // this endpoint to trigger a log entry. If the server implements
     // content-negotiation to support XML clients, I don't want the OpenAPI
     // spec to be converted into an XML response.
-    const mapping = this.config.openApiSpec!.endpointMapping!;
+    const mapping = this.config.openApiSpec.endpointMapping!;
     // Serving OpenAPI spec
     for (const p in mapping) {
       this._expressApp.get(p, (req, res) =>
@@ -308,7 +282,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     const router = this.getSync(RestBindings.ROUTER, {optional: true});
     const routingTable = new RoutingTable(router, this._externalRoutes);
 
-    this._httpHandler = new HttpHandler(this, routingTable);
+    this._httpHandler = new HttpHandler(this, this.config, routingTable);
     for (const b of this.find('controllers.*')) {
       const controllerName = b.key.replace(/^controllers\./, '');
       const ctor = b.valueConstructor;
@@ -400,14 +374,21 @@ export class RestServer extends Context implements Server, HttpServerLike {
     response: Response,
     specForm?: OpenApiSpecForm,
   ) {
+    const requestContext = new RequestContext(
+      request,
+      response,
+      this,
+      this.config,
+    );
+
     specForm = specForm || {version: '3.0.0', format: 'json'};
     let specObj = this.getApiSpec();
-    if (this.config.openApiSpec!.setServersFromRequest) {
+    if (this.config.openApiSpec.setServersFromRequest) {
       specObj = Object.assign({}, specObj);
-      specObj.servers = [{url: this._getUrlForClient(request)}];
+      specObj.servers = [{url: requestContext.requestedBaseUrl}];
     }
 
-    const basePath = this.getBasePathFor(request);
+    const basePath = requestContext.basePath;
     if (specObj.servers && basePath) {
       for (const s of specObj.servers) {
         // Update the default server url to honor `basePath`
@@ -427,87 +408,12 @@ export class RestServer extends Context implements Server, HttpServerLike {
       response.end(yaml, 'utf-8');
     }
   }
-
-  /**
-   * Get the protocol for a request
-   * @param request Http request
-   */
-  private _getProtocolForRequest(request: Request) {
-    return (
-      (request.get('x-forwarded-proto') || '').split(',')[0] ||
-      request.protocol ||
-      this.config.protocol ||
-      'http'
-    );
-  }
-
-  /**
-   * Parse the host:port string into an object for host and port
-   * @param host The host string
-   */
-  private _parseHostAndPort(host: string | undefined) {
-    host = host || '';
-    host = host.split(',')[0];
-    const portPattern = /:([0-9]+)$/;
-    const port = (host.match(portPattern) || [])[1] || '';
-    host = host.replace(portPattern, '');
-    return {host, port};
-  }
-
-  /**
-   * Get the URL of the request sent by the client
-   * @param request Http request
-   */
-  private _getUrlForClient(request: Request) {
-    const protocol = this._getProtocolForRequest(request);
-    // The host can be in one of the forms
-    // [::1]:3000
-    // [::1]
-    // 127.0.0.1:3000
-    // 127.0.0.1
-    let {host, port} = this._parseHostAndPort(
-      request.get('x-forwarded-host') || request.headers.host,
-    );
-
-    const forwardedPort = (request.get('x-forwarded-port') || '').split(',')[0];
-    port = forwardedPort || port;
-
-    if (!host) {
-      // No host detected from http headers. Use the configured values
-      host = this.config.host!;
-      port = this.config.port == null ? '' : this.config.port.toString();
-    }
-
-    // clear default ports
-    port = protocol === 'https' && port === '443' ? '' : port;
-    port = protocol === 'http' && port === '80' ? '' : port;
-
-    // add port number of present
-    host += port !== '' ? ':' + port : '';
-
-    return protocol + '://' + host + this.getBasePathFor(request);
-  }
-
-  /**
-   * Get the base for the request. It honors `baseUrl` sets by express if the
-   * application is mounted to an express app, such as:
-   * expressApp.use('/api', app.requestHandler);
-   * @param request Http request
-   */
-  private getBasePathFor(request: Request) {
-    let basePath = this._basePath;
-    if (request.baseUrl && request.baseUrl !== '/') {
-      basePath = request.baseUrl + basePath;
-    }
-    return basePath;
-  }
-
   private async _redirectToSwaggerUI(
     request: Request,
     response: Response,
     next: express.NextFunction,
   ) {
-    const config = this.config.apiExplorer!;
+    const config = this.config.apiExplorer;
 
     if (config.disabled) {
       debug('Redirect to swagger-ui was disabled by configuration.');
@@ -516,9 +422,15 @@ export class RestServer extends Context implements Server, HttpServerLike {
     }
 
     debug('Redirecting to swagger-ui from %j.', request.originalUrl);
-    const protocol = this._getProtocolForRequest(request);
+    const requestContext = new RequestContext(
+      request,
+      response,
+      this,
+      this.config,
+    );
+    const protocol = requestContext.requestedProtocol;
     const baseUrl = protocol === 'http' ? config.httpUrl : config.url;
-    const openApiUrl = `${this._getUrlForClient(request)}/openapi.json`;
+    const openApiUrl = `${requestContext.requestedBaseUrl}/openapi.json`;
     const fullUrl = `${baseUrl}?url=${openApiUrl}`;
     response.redirect(308, fullUrl);
   }
@@ -987,21 +899,25 @@ export interface ApiExplorerOptions {
 }
 
 /**
- * Options for RestServer configuration
+ * RestServer options
  */
-export interface RestServerOptions {
+export type RestServerOptions = Partial<RestServerResolvedOptions>;
+
+export interface RestServerResolvedOptions {
+  port: number;
+
   /**
    * Base path for API/static routes
    */
   basePath?: string;
-  cors?: cors.CorsOptions;
-  openApiSpec?: OpenApiSpecOptions;
-  apiExplorer?: ApiExplorerOptions;
+  cors: cors.CorsOptions;
+  openApiSpec: OpenApiSpecOptions;
+  apiExplorer: ApiExplorerOptions;
   requestBodyParser?: RequestBodyParserOptions;
   sequence?: Constructor<SequenceHandler>;
   // tslint:disable-next-line:no-any
-  expressSettings?: {[name: string]: any};
-  router?: RestRouterOptions;
+  expressSettings: {[name: string]: any};
+  router: RestRouterOptions;
 }
 
 /**
@@ -1011,6 +927,57 @@ export interface RestServerOptions {
  * @interface RestServerConfig
  */
 export type RestServerConfig = RestServerOptions & HttpServerOptions;
+
+export type RestServerResolvedConfig = RestServerResolvedOptions &
+  HttpServerOptions;
+
+const DEFAULT_CONFIG: RestServerResolvedConfig = {
+  port: 3000,
+  openApiSpec: {},
+  apiExplorer: {},
+  cors: {
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    maxAge: 86400,
+    credentials: true,
+  },
+  expressSettings: {},
+  router: {},
+};
+
+function resolveRestServerConfig(
+  config: RestServerConfig,
+): RestServerResolvedConfig {
+  const result: RestServerResolvedConfig = Object.assign(
+    {},
+    DEFAULT_CONFIG,
+    config,
+  );
+
+  // Can't check falsiness, 0 is a valid port.
+  if (result.port == null) {
+    result.port = 3000;
+  }
+
+  if (result.host == null) {
+    // Set it to '' so that the http server will listen on all interfaces
+    result.host = undefined;
+  }
+
+  if (!result.openApiSpec.endpointMapping)
+    result.openApiSpec.endpointMapping = OPENAPI_SPEC_MAPPING;
+
+  result.apiExplorer = normalizeApiExplorerConfig(config.apiExplorer);
+
+  if (result.openApiSpec.disabled) {
+    // Disable apiExplorer if the OpenAPI spec endpoint is disabled
+    result.apiExplorer.disabled = true;
+  }
+
+  return result;
+}
 
 function normalizeApiExplorerConfig(
   input: ApiExplorerOptions | undefined,

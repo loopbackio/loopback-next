@@ -72,4 +72,42 @@ describe('@bind - customize classes with binding attributes', () => {
       'controllers.my-controller',
     ]);
   });
+
+  it('supports default binding scope in options', () => {
+    const binding = createBindingFromClass(MyController, {
+      defaultScope: BindingScope.SINGLETON,
+    });
+    expect(binding.scope).to.equal(BindingScope.SINGLETON);
+  });
+
+  describe('binding scope', () => {
+    @bind({
+      // Explicitly set the binding scope to be `SINGLETON` as the developer
+      // choose to implement the controller as a singleton without depending
+      // on request specific information
+      scope: BindingScope.SINGLETON,
+    })
+    class MySingletonController {}
+
+    it('allows singleton controller with @bind', () => {
+      const binding = createBindingFromClass(MySingletonController, {
+        type: 'controller',
+      });
+      expect(binding.key).to.equal('controllers.MySingletonController');
+      expect(binding.tagMap).to.containEql({controller: 'controller'});
+      expect(binding.scope).to.equal(BindingScope.SINGLETON);
+    });
+
+    it('honors binding scope from @bind over defaultScope', () => {
+      let binding = createBindingFromClass(MySingletonController, {
+        defaultScope: BindingScope.TRANSIENT,
+      });
+      expect(binding.scope).to.equal(BindingScope.SINGLETON);
+    });
+
+    it('honors binding scope from @bind', () => {
+      const binding = createBindingFromClass(MySingletonController);
+      expect(binding.scope).to.equal(BindingScope.SINGLETON);
+    });
+  });
 });

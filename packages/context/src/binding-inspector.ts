@@ -136,7 +136,9 @@ export function removeNameAndKeyTags(binding: Binding<unknown>) {
  *
  * @param cls A class with optional `@bind`
  */
-export function bindingTemplateFor(cls: Constructor<unknown>): BindingTemplate {
+export function bindingTemplateFor<T = unknown>(
+  cls: Constructor<T | Provider<T>>,
+): BindingTemplate<T> {
   const spec = getBindingMetadata(cls);
   const templateFunctions = (spec && spec.templates) || [
     asClassOrProvider(cls),
@@ -191,28 +193,40 @@ export type BindingFromClassOptions = {
    * Mapping artifact type to binding key namespaces
    */
   typeNamespaceMapping?: TypeNamespaceMapping;
+  /**
+   * Default scope if the binding does not have an explicit scope
+   */
+  defaultScope?: BindingScope;
 };
 
 /**
- * Create a binding from a class with decorated metadata
- * @param cls A class
+ * Create a binding from a class with decorated metadata. The class is attached
+ * to the binding as follows:
+ * - `binding.toClass(cls)`: if `cls` is a plain class such as `MyController`
+ * - `binding.toProvider(cls)`: it `cls` is a value provider class with a
+ * prototype method `value()`
+ *
+ * @param cls A class. It can be either a plain class or  a value provider class
  * @param options Options to customize the binding key
  */
-export function createBindingFromClass(
-  cls: Constructor<unknown>,
+export function createBindingFromClass<T = unknown>(
+  cls: Constructor<T | Provider<T>>,
   options: BindingFromClassOptions = {},
-): Binding {
+): Binding<T> {
   const templateFn = bindingTemplateFor(cls);
   let key = options.key;
   if (!key) {
     key = buildBindingKey(cls, options);
   }
-  const binding = Binding.bind(key).apply(templateFn);
+  const binding = Binding.bind<T>(key).apply(templateFn);
   if (options.name) {
     binding.tag({name: options.name});
   }
   if (options.type) {
     binding.tag({type: options.type}, options.type);
+  }
+  if (options.defaultScope) {
+    binding.applyDefaultScope(options.defaultScope);
   }
   return binding;
 }

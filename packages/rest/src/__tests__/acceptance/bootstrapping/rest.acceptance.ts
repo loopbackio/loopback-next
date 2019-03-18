@@ -24,11 +24,12 @@ describe('Bootstrapping with RestComponent', () => {
       // At this moment, the Sequence is not ready to be resolved
       // as RestBindings.Http.CONTEXT is not bound
       const binding = server.getBinding(RestBindings.SEQUENCE);
-      expect(binding.valueConstructor.name).to.equal('UserDefinedSequence');
+      expect(binding.valueConstructor).to.equal(UserDefinedSequence);
     });
 
+    class UserDefinedSequence extends DefaultSequence {}
+
     async function givenAppWithUserDefinedSequence() {
-      class UserDefinedSequence extends DefaultSequence {}
       app = new Application({
         rest: {
           sequence: UserDefinedSequence,

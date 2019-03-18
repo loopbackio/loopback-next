@@ -10,7 +10,7 @@
     "build:apidocs": "lb-apidocs",
     "clean": "lb-clean loopback-testlab*.tgz dist package api-docs",
     "pretest": "npm run build",
-    "test": "lb-mocha \"dist/__tests__\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-testlab*.tgz && tree package && npm run clean"
   },
   "author": "IBM Corp.",
@@ -28,7 +28,7 @@
     "shot": "^4.0.7",
     "should": "^13.2.3",
     "sinon": "^7.2.2",
-    "supertest": "^3.3.0"
+    "supertest": "^4.0.2"
   },
   "devDependencies": {
     "@loopback/build": "^1.3.2",

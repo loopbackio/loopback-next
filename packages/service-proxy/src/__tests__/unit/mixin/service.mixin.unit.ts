@@ -3,7 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, Component, Provider, BindingScope} from '@loopback/core';
+import {
+  Application,
+  bind,
+  BindingScope,
+  Component,
+  Provider,
+} from '@loopback/core';
 import {expect} from '@loopback/testlab';
 import {Class, ServiceMixin} from '../../../';
 
@@ -21,6 +27,15 @@ describe('ServiceMixin', () => {
     expectGeocoderToNotBeBound(myApp);
     myApp.serviceProvider(GeocoderServiceProvider);
     await expectGeocoderToBeBound(myApp);
+  });
+
+  it('binds singleton service from app.serviceProvider()', async () => {
+    @bind({scope: BindingScope.SINGLETON})
+    class SingletonGeocoderServiceProvider extends GeocoderServiceProvider {}
+    const myApp = new AppWithServiceMixin();
+
+    const binding = myApp.serviceProvider(SingletonGeocoderServiceProvider);
+    expect(binding.scope).to.equal(BindingScope.SINGLETON);
   });
 
   it('binds a component without services', () => {

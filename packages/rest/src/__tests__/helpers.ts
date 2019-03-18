@@ -10,6 +10,7 @@ import {
 } from '@loopback/openapi-v3-types';
 import {IncomingMessage} from 'http';
 import {LogError} from '..';
+import {RestServerConfig, RestServerResolvedConfig} from '../rest.server';
 
 export function createUnexpectedHttpErrorLogger(
   expectedStatusCode: number = 0,
@@ -50,4 +51,20 @@ export function aBodySpec(
     },
   });
   return spec as RequestBodyObject;
+}
+
+export function aRestServerConfig(
+  customConfig?: RestServerConfig,
+): RestServerResolvedConfig {
+  return Object.assign(
+    {
+      port: 3000,
+      openApiSpec: {disabled: true},
+      apiExplorer: {disabled: true},
+      cors: {},
+      expressSettings: {},
+      router: {},
+    },
+    customConfig,
+  );
 }

@@ -28,7 +28,7 @@ export class OrderRepository extends DefaultCrudRepository<
     customerRepositoryGetter: Getter<CustomerRepository>,
   ) {
     super(Order, db);
-    this.customer = this._createBelongsToAccessorFor(
+    this.customer = this.createBelongsToAccessorFor(
       'customer',
       customerRepositoryGetter,
     );

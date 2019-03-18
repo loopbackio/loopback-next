@@ -3,15 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
-import {Application, Server, Component, CoreBindings} from '../..';
 import {
-  Context,
-  Constructor,
+  bind,
   Binding,
-  Provider,
+  BindingScope,
+  Constructor,
+  Context,
   inject,
+  Provider,
 } from '@loopback/context';
+import {expect} from '@loopback/testlab';
+import {Application, Component, CoreBindings, Server} from '../..';
 
 describe('Application', () => {
   describe('controller binding', () => {
@@ -24,6 +26,7 @@ describe('Application', () => {
       const binding = app.controller(MyController);
       expect(Array.from(binding.tagNames)).to.containEql('controller');
       expect(binding.key).to.equal('controllers.MyController');
+      expect(binding.scope).to.equal(BindingScope.TRANSIENT);
       expect(findKeysByTag(app, 'controller')).to.containEql(binding.key);
     });
 
@@ -31,6 +34,15 @@ describe('Application', () => {
       const binding = app.controller(MyController, 'my-controller');
       expect(Array.from(binding.tagNames)).to.containEql('controller');
       expect(binding.key).to.equal('controllers.my-controller');
+      expect(findKeysByTag(app, 'controller')).to.containEql(binding.key);
+    });
+
+    it('binds a singleton controller', () => {
+      @bind({scope: BindingScope.SINGLETON})
+      class MySingletonController {}
+
+      const binding = app.controller(MySingletonController);
+      expect(binding.scope).to.equal(BindingScope.SINGLETON);
       expect(findKeysByTag(app, 'controller')).to.containEql(binding.key);
     });
 
@@ -47,7 +59,8 @@ describe('Application', () => {
     beforeEach(givenApp);
 
     it('binds a component', () => {
-      app.component(MyComponent);
+      const binding = app.component(MyComponent);
+      expect(binding.scope).to.equal(BindingScope.SINGLETON);
       expect(findKeysByTag(app, 'component')).to.containEql(
         'components.MyComponent',
       );
@@ -58,6 +71,14 @@ describe('Application', () => {
       expect(findKeysByTag(app, 'component')).to.containEql(
         'components.my-component',
       );
+    });
+
+    it('binds a transient component', () => {
+      @bind({scope: BindingScope.TRANSIENT})
+      class MyTransientComponent {}
+
+      const binding = app.component(MyTransientComponent);
+      expect(binding.scope).to.equal(BindingScope.TRANSIENT);
     });
 
     it('binds controllers from a component', () => {
@@ -133,16 +154,26 @@ describe('Application', () => {
   });
 
   describe('server binding', () => {
+    let app: Application;
+    beforeEach(givenApplication);
+
     it('defaults to constructor name', async () => {
-      const app = new Application();
       const binding = app.server(FakeServer);
+      expect(binding.scope).to.equal(BindingScope.SINGLETON);
       expect(Array.from(binding.tagNames)).to.containEql('server');
       const result = await app.getServer(FakeServer.name);
       expect(result.constructor.name).to.equal(FakeServer.name);
     });
 
+    it('binds a server with a different scope than SINGLETON', async () => {
+      @bind({scope: BindingScope.TRANSIENT})
+      class TransientServer extends FakeServer {}
+
+      const binding = app.server(TransientServer);
+      expect(binding.scope).to.equal(BindingScope.TRANSIENT);
+    });
+
     it('allows custom name', async () => {
-      const app = new Application();
       const name = 'customName';
       app.server(FakeServer, name);
       const result = await app.getServer(name);
@@ -150,7 +181,6 @@ describe('Application', () => {
     });
 
     it('allows binding of multiple servers as an array', async () => {
-      const app = new Application();
       const bindings = app.servers([FakeServer, AnotherServer]);
       expect(Array.from(bindings[0].tagNames)).to.containEql('server');
       expect(Array.from(bindings[1].tagNames)).to.containEql('server');
@@ -159,6 +189,10 @@ describe('Application', () => {
       const AnotherResult = await app.getServer(AnotherServer);
       expect(AnotherResult.constructor.name).to.equal(AnotherServer.name);
     });
+
+    function givenApplication() {
+      app = new Application();
+    }
   });
 
   describe('start', () => {

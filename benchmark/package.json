@@ -16,7 +16,7 @@
     "build": "lb-tsc es2017 --outDir dist",
     "clean": "lb-clean dist",
     "pretest": "npm run clean && npm run build",
-    "test": "lb-mocha \"dist/__tests__\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "prestart": "npm run build",
     "benchmark:routing": "node ./dist/rest-routing/routing-table",
     "start": "node ."
@@ -54,7 +54,7 @@
     "@types/mocha": "^5.0.0",
     "@types/node": "^10.11.2",
     "mocha": "^6.0.0",
-    "p-event": "^3.0.0",
+    "p-event": "^4.0.0",
     "source-map-support": "^0.5.5"
   }
 }
