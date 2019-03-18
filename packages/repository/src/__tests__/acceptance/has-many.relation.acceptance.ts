@@ -152,33 +152,33 @@ describe('HasMany relation', () => {
     ).to.be.rejectedWith(/`orders` is not defined/);
   });
 
-  // The following tests test hasMany Entity to itself
+  context('when targeting the source model', () => {
+    it('gets the parent entity through the child entity', async () => {
+      const parent = await customerRepo.create({name: 'parent customer'});
+      const child = await customerRepo.create({
+        name: 'child customer',
+        parentId: parent.id,
+      });
 
-  it('gets the parent entity through the child entity', async () => {
-    const parent = await customerRepo.create({name: 'parent customer'});
-    const child = await customerRepo.create({
-      name: 'child customer',
-      parentId: parent.id,
+      const childsParent = await controller.getParentCustomer(child.id);
+
+      expect(_.pick(childsParent, ['id', 'name'])).to.eql(
+        _.pick(parent, ['id', 'name']),
+      );
     });
 
-    const childsParent = await controller.getParentCustomer(child.id);
+    it('creates a child entity through the parent entity', async () => {
+      const parent = await customerRepo.create({
+        name: 'parent customer',
+      });
+      const child = await controller.createCustomerChildren(parent.id, {
+        name: 'child customer',
+      });
+      expect(child.parentId).to.equal(parent.id);
 
-    expect(_.pick(childsParent, ['id', 'name'])).to.eql(
-      _.pick(parent, ['id', 'name']),
-    );
-  });
-
-  it('creates a child entity through the parent entity', async () => {
-    const parent = await customerRepo.create({
-      name: 'parent customer',
+      const children = await controller.findCustomerChildren(parent.id);
+      expect(children).to.containEql(child);
     });
-    const child = await controller.createCustomerChildren(parent.id, {
-      name: 'child customer',
-    });
-    expect(child.parentId).to.equal(parent.id);
-
-    const children = await controller.findCustomerChildren(parent.id);
-    expect(children).to.containEql(child);
   });
 
   // This should be enforced by the database to avoid race conditions
