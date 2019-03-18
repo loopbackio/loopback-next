@@ -166,7 +166,7 @@ describe('lb4 model integration', () => {
       );
       assert.fileContent(
         expectedModelFile,
-        /@model\({settings: {"strict":false}}\)/,
+        /@model\({\n\s*settings: {\n\s*strict : false\n\s*}\n\s*}\)/,
       );
       assert.fileContent(
         expectedModelFile,
@@ -210,6 +210,30 @@ describe('model generator using --config option', () => {
           '--yes',
         ]),
     ).to.be.rejectedWith(/Model was not found in/);
+  });
+
+  describe('model generator using --config option with model settings', () => {
+    it('create models with valid extention json', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .withArguments([
+          '--config',
+          '{"name":"test", "base":"Entity", \
+          "modelSettings": {"annotations": \
+          [{"destinationClass": "class1","argument": 0}],\
+          "foreignKeys": {"fk_destination": {"name": "fk_destination"}}},\
+          "allowAdditionalProperties":true}',
+          '--yes',
+        ]);
+
+      basicModelFileChecks();
+
+      assert.fileContent(
+        expectedModelFile,
+        /@model\({\n\s*settings: {\n\s*annotations : \[\n\s*{\n\s*destinationClass: 'class1',\n\s*argument: 0\n\s*}\n\s*],\n\s*foreignKeys : {\n\s*fk_destination: {\n\s*name: 'fk_destination'\n\s*}\n\s*},\n\s*strict : false\n\s* }\n\s*}\)/,
+      );
+    });
   });
 });
 

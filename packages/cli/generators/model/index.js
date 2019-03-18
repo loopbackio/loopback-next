@@ -215,6 +215,22 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
           Object.assign(this.artifactInfo.modelSettings, {strict: false});
         }
 
+        if (this.artifactInfo.modelSettings) {
+          let output = '';
+          for (var key in this.artifactInfo.modelSettings) {
+            if (output.length > 0) {
+              output += ',\n';
+            }
+            output +=
+              key +
+              ' : ' +
+              JSON.stringify(this.artifactInfo.modelSettings[key], null, 5)
+                .replace(/\"([^(\")"]+)\":/g, '$1:')
+                .replace(/\"/g, "'");
+          }
+          this.artifactInfo.modelSettings = output;
+        }
+
         this.log(
           `Let's add a property to ${chalk.yellow(
             this.artifactInfo.className,
