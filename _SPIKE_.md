@@ -21,10 +21,16 @@ The solution consists of three parts:
 
    - 2.1: A new option `includeRelations` controlling whether navigational
      properties are included in the generated schema.
-   - 2.2: Support for cyclic references. For example: `CategoryWithLinks` has a
-     property `products` containing an array of `ProductWithLinks`.
-     `ProductWithLinks` has a property `category` containing
-     `CategoryWithLinks`.
+
+   - 2.2: Support for cyclic references.
+
+     For example: `CategoryWithLinks` has a property `products` containing an
+     array of `ProductWithLinks`. `ProductWithLinks` has a property `category`
+     containing `CategoryWithLinks`.
+
+     Please note this example is NOT using the approach for model inclusion,
+     it's just an acceptance criteria.
+
    - 2.3: A new helper function `modelToJsonSchemaRef` that emits JSON Schema
      reference and includes definitions of all references models.
 
