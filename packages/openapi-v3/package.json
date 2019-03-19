@@ -5,6 +5,8 @@
   "engines": {
     "node": ">=8.9"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "devDependencies": {
     "@loopback/build": "^1.6.1",
     "@loopback/openapi-spec-builder": "^1.1.13",
@@ -35,8 +37,6 @@
   ],
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"

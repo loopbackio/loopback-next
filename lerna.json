@@ -23,7 +23,7 @@
       "loglevel": "silent",
       "stream": true,
       "concurrency": 8,
-      "sort": false
+      "sort": true
     },
     "clean": {
       "loglevel": "silent",

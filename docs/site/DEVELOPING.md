@@ -578,11 +578,6 @@ In the [`loopback-next`](https://github.com/strongloop/loopback-next) monorepo,
 1. When using VS Code, the `TypeScript` engine views `loopback-next` as a single
    big project.
 
-   This enables the "refactor - rename" command to change all places using the
-   renamed symbol, and also makes "go to definition" command jump to `.ts` files
-   containing the original source code. Otherwise "refactor - rename" works
-   within the same package only and "go to definition" jumps to `.d.ts` files.
-
 2. When building the monorepo, we need to build the packages individually, so
    that one `dist` directory is created for each package.
 

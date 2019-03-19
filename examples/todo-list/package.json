@@ -3,6 +3,7 @@
   "version": "1.6.3",
   "description": "Continuation of the todo example using relations in LoopBack 4.",
   "main": "index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=8.9"
   },

@@ -2,7 +2,8 @@
   "name": "@loopback/example-log-extension",
   "version": "1.1.20",
   "description": "An example extension project for LoopBack 4",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=8.9"
   },

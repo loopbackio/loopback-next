@@ -5,6 +5,8 @@
   "engines": {
     "node": ">=8.9"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -42,8 +44,6 @@
   },
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"

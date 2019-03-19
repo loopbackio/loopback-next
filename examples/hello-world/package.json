@@ -3,6 +3,7 @@
   "version": "1.1.20",
   "description": "A simple hello-world Application using LoopBack 4",
   "main": "index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=8.9"
   },

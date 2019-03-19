@@ -3,6 +3,7 @@
   "version": "1.5.15",
   "description": "Tutorial example on how to build an application with LoopBack 4.",
   "main": "index.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=8.9"
   },

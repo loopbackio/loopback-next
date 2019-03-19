@@ -9,6 +9,7 @@
     "benchmark"
   ],
   "main": "index.js",
+  "types:": "dist/index.d.ts",
   "engines": {
     "node": ">=8.9"
   },
