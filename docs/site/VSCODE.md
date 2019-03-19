@@ -63,9 +63,23 @@ opposed to jumping to a `.d.ts` file in `dist`)
 #### Refactoring in VS Code
 
 Verify that refactorings like "rename symbol" (`F2`) will change all places
-using the renamed entity. Two different scenarios to verify: rename at the place
-where the entity is defined, rename at the place where the entity is used. (You
-can e.g. rename `inject` to test.)
+using the renamed entity. Two different scenarios to verify, you can e.g. rename
+`inject` to test.
+
+1. Rename at the place where the entity is defined. In the current versions of
+   TypeScript, VS Code performs the rename at `import` level only.
+
+   ```ts
+   import {oldName as newName} from 'module';
+   ```
+
+2. Rename at the place where the entity is used.
+
+   Due to limitations of the current TypeScript implementation and our project
+   setup, the refactoring is applied only to files in the same package. The
+   changes are not applied in other packages in our monorepo. Fortunately, the
+   TypeScript compiler will tell you which other places you need to change
+   manually.
 
 ## How to verify TSLint setup
 

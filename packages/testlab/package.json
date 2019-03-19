@@ -5,6 +5,8 @@
   "engines": {
     "node": ">=8.9"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "lb-tsc es2017 --outDir dist",
     "build:apidocs": "lb-apidocs",
@@ -37,8 +39,6 @@
   },
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "fixtures",
     "should-as-function.d.ts",

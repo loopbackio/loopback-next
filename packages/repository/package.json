@@ -5,7 +5,8 @@
   "engines": {
     "node": ">=8.9"
   },
-  "main": "index",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build:apidocs": "lb-apidocs",
@@ -35,8 +36,6 @@
   },
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
     "dist",
     "src",
     "!*/__tests__"
