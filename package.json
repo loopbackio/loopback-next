@@ -74,6 +74,7 @@
       "initialBranches": "chore: whitelist greenkeeper branches",
       "dependencyUpdate": "chore: update ${dependency} to version ${version}",
       "devDependencyUpdate": "chore: update ${dependency} to version ${version}",
+      "lockfileUpdate": "chore: update lockfile ${lockfilePath}",
       "dependencyPin": "chore: pin ${dependency} to ${oldVersion}",
       "devDependencyPin": "chore: pin ${dependency} to ${oldVersion}"
     },
