@@ -223,7 +223,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
             }
             output +=
               key +
-              ' : ' +
+              ': ' +
               JSON.stringify(this.artifactInfo.modelSettings[key], null, 5)
                 .replace(/\"([^(\")"]+)\":/g, '$1:')
                 .replace(/\"/g, "'");
