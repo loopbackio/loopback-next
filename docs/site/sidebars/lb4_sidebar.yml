@@ -231,9 +231,17 @@ children:
   - title: 'Creating Other Forms of APIs'
     output: 'web, pdf'
     children:
+      - title: 'Creating GraphQL APIs'
+        url: GraphQL.html
+        output: 'web, pdf'
+
       - title: 'Exposing GraphQL APIs'
         url: exposing-graphql-apis.html
         output: 'web, pdf'
+
+  - title: 'Running cron jobs'
+    url: Running-cron-jobs.html
+    output: 'web, pdf'
 
   - title: 'Accessing Databases'
     output: 'web, pdf'

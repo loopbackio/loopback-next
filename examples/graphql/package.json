@@ -1,0 +1,70 @@
+{
+  "name": "@loopback/example-graphql",
+  "version": "0.0.1",
+  "description": "GraphQL Example Application",
+  "keywords": [
+    "loopback-application",
+    "loopback"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=10.16"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean *example-graphql*.tgz dist *.tsbuildinfo package",
+    "verify": "npm pack && tar xf *example-graphql*.tgz && tree package && npm run clean",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run clean && npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "test:dev": "lb-mocha dist/__tests__/**/*.js && npm run posttest",
+    "prestart": "npm run build",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/graphql"
+  },
+  "author": "IBM Corp.",
+  "license": "MIT",
+  "files": [
+    "README.md",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "dependencies": {
+    "@loopback/graphql": "^0.0.1",
+    "@loopback/boot": "^2.4.0",
+    "@loopback/core": "^2.9.2",
+    "@loopback/repository": "^2.10.0",
+    "@loopback/rest": "^5.2.1",
+    "tslib": "^2.0.0",
+    "class-transformer": "^0.2.3"
+  },
+  "devDependencies": {
+    "@loopback/build": "^6.1.1",
+    "@loopback/eslint-config": "^8.0.4",
+    "@loopback/testlab": "^3.2.1",
+    "@types/multer": "^1.4.3",
+    "@types/node": "^10.17.27",
+    "eslint": "^7.5.0",
+    "typescript": "~3.9.7",
+    "rimraf": "^3.0.2",
+    "source-map-support": "^0.5.19"
+  },
+  "copyright.owner": "IBM Corp."
+}
