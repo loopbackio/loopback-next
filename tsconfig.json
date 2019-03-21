@@ -35,6 +35,9 @@
       "path": "examples/file-transfer/tsconfig.json"
     },
     {
+      "path": "examples/graphql/tsconfig.json"
+    },
+    {
       "path": "examples/greeter-extension/tsconfig.json"
     },
     {
@@ -93,6 +96,9 @@
     },
     {
       "path": "extensions/cron/tsconfig.json"
+    },
+    {
+      "path": "extensions/graphql/tsconfig.json"
     },
     {
       "path": "extensions/health/tsconfig.json"
