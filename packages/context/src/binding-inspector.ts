@@ -255,6 +255,7 @@ function getNamespace(type: string, typeNamespaces = DEFAULT_TYPE_NAMESPACES) {
  * `<namespace>.<name>`.
  *   - namespace
  *     - `options.namespace`
+ *     - `namespace` tag value
  *     - Map `options.type` or `type` tag value to a namespace, for example,
  *       'controller` to 'controller'.
  *   - name
@@ -276,7 +277,8 @@ function buildBindingKey(
   let key: string = options.key || bindingTemplate.tagMap[ContextTags.KEY];
   if (key) return key;
 
-  let namespace = options.namespace;
+  let namespace =
+    options.namespace || bindingTemplate.tagMap[ContextTags.NAMESPACE];
   if (!namespace) {
     const namespaces = Object.assign(
       {},
