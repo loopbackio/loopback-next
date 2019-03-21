@@ -20,6 +20,7 @@
         "packages/cli/package.json",
         "packages/context/package.json",
         "packages/core/package.json",
+        "packages/graphql/package.json",
         "packages/http-caching-proxy/package.json",
         "packages/http-server/package.json",
         "packages/metadata/package.json",
@@ -36,6 +37,5 @@
         "sandbox/example/package.json"
       ]
     }
-  },
-  "ignore": ["@types/node"]
+  }
 }
