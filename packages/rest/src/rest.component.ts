@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, BindingScope, Constructor, inject} from '@loopback/context';
+import {Binding, Constructor, inject} from '@loopback/context';
 import {
   Application,
   Component,
@@ -53,9 +53,9 @@ export class RestComponent implements Component {
    * Add built-in body parsers
    */
   bindings = [
-    Binding.bind(RestBindings.REQUEST_BODY_PARSER)
-      .toClass(RequestBodyParser)
-      .inScope(BindingScope.SINGLETON),
+    // FIXME(rfeng): We now register request body parsers in TRANSIENT scope
+    // so that they can be bound at application or server level
+    Binding.bind(RestBindings.REQUEST_BODY_PARSER).toClass(RequestBodyParser),
     createBodyParserBinding(
       JsonBodyParser,
       RestBindings.REQUEST_BODY_PARSER_JSON,

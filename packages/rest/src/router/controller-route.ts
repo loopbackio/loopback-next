@@ -4,12 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  BindingScope,
   Constructor,
   Context,
   instantiateClass,
   invokeMethod,
   ValueOrPromise,
+  BindingScope,
 } from '@loopback/context';
 import {CoreBindings} from '@loopback/core';
 import {OperationObject} from '@loopback/openapi-v3-types';
@@ -100,6 +100,19 @@ export class ControllerRoute<T> extends BaseRoute {
   }
 
   updateBindings(requestContext: Context) {
+    /*
+     * Bind current controller to the request context in `SINGLETON` scope.
+     * Within the same request, we always get the same instance of the
+     * current controller when `requestContext.get(CoreBindings.CONTROLLER_CURRENT)`
+     * is invoked.
+     *
+     * Please note the controller class itself can be bound to other scopes,
+     * such as SINGLETON or TRANSIENT (default) in the application or server
+     * context.
+     *
+     * - SINGLETON: all requests share the same instance of a given controller
+     * - TRANSIENT: each request has its own instance of a given controller
+     */
     requestContext
       .bind(CoreBindings.CONTROLLER_CURRENT)
       .toDynamicValue(() => this._controllerFactory(requestContext))

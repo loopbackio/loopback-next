@@ -3,37 +3,32 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {BindingScope, Constructor, Context, inject} from '@loopback/context';
+import {Application, CoreBindings} from '@loopback/core';
+import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
+import {api, get, param, post, requestBody} from '@loopback/openapi-v3';
 import {
-  Request,
-  Response,
-  RestBindings,
-  RestServer,
-  RestComponent,
-  RestApplication,
-  SequenceActions,
-  HttpServerLike,
+  OperationObject,
+  ParameterObject,
+  ResponseObject,
+} from '@loopback/openapi-v3-types';
+import {Client, createClientForHandler, expect} from '@loopback/testlab';
+import {
   ControllerClass,
   ControllerInstance,
   createControllerFactoryForClass,
   createControllerFactoryForInstance,
+  HttpServerLike,
+  RegExpRouter,
+  Request,
+  Response,
+  RestApplication,
+  RestBindings,
+  RestComponent,
+  RestServer,
+  SequenceActions,
 } from '../../..';
-
-import {api, get, post, param, requestBody} from '@loopback/openapi-v3';
-
-import {Application, CoreBindings} from '@loopback/core';
-
-import {
-  ParameterObject,
-  OperationObject,
-  ResponseObject,
-} from '@loopback/openapi-v3-types';
-
-import {expect, Client, createClientForHandler} from '@loopback/testlab';
-import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
-import {inject, Context, BindingScope} from '@loopback/context';
-
 import {createUnexpectedHttpErrorLogger} from '../../helpers';
-import {RegExpRouter} from '../../..';
 
 /* # Feature: Routing
  * - In order to build REST APIs
@@ -361,30 +356,84 @@ describe('Routing', () => {
       });
   });
 
-  it('binds the current controller', async () => {
-    const app = givenAnApplication();
-    const server = await givenAServer(app);
-    const spec = anOpenApiSpec()
-      .withOperationReturningString('get', '/name', 'checkController')
-      .build();
+  describe('current controller', () => {
+    let app: Application;
+    let server: RestServer;
+    let controllerClass: Constructor<ControllerInstance>;
 
-    @api(spec)
-    class GetCurrentController {
-      async checkController(
-        @inject('controllers.GetCurrentController') inst: GetCurrentController,
-      ): Promise<object> {
-        return {
-          result: this === inst,
-        };
-      }
+    beforeEach(setupApplicationAndServer);
+    beforeEach(setupController);
+
+    it('binds current controller resolved from a transient binding', async () => {
+      givenControllerInApp(app, controllerClass);
+
+      await whenIMakeRequestTo(server)
+        .get('/name')
+        .expect({
+          count: 1,
+          isSingleton: false,
+          result: true,
+        });
+
+      // Make a second call
+      await whenIMakeRequestTo(server)
+        .get('/name')
+        .expect({
+          count: 1, // The count is still 1 as it's from a new instance
+          isSingleton: false,
+          result: true,
+        });
+    });
+
+    it('binds current controller resolved from a singleton binding', async () => {
+      app.controller(controllerClass).inScope(BindingScope.SINGLETON);
+
+      await whenIMakeRequestTo(server)
+        .get('/name')
+        .expect({
+          count: 1,
+          isSingleton: true,
+          result: true,
+        });
+
+      // Make a second call
+      await whenIMakeRequestTo(server)
+        .get('/name')
+        .expect({
+          count: 2, // The count increases as the controller is singleton
+          isSingleton: true,
+          result: true,
+        });
+    });
+
+    async function setupApplicationAndServer() {
+      app = givenAnApplication();
+      server = await givenAServer(app);
     }
-    givenControllerInApp(app, GetCurrentController);
 
-    return whenIMakeRequestTo(server)
-      .get('/name')
-      .expect({
-        result: true,
-      });
+    async function setupController() {
+      const spec = anOpenApiSpec()
+        .withOperationReturningString('get', '/name', 'checkController')
+        .build();
+
+      @api(spec)
+      class GetCurrentController {
+        private count = 0;
+        async checkController(
+          @inject('controllers.GetCurrentController')
+          inst: GetCurrentController,
+          @inject(CoreBindings.CONTROLLER_CURRENT)
+          currentInst: GetCurrentController,
+        ): Promise<object> {
+          return {
+            count: ++this.count,
+            isSingleton: this === inst,
+            result: this === currentInst,
+          };
+        }
+      }
+      controllerClass = GetCurrentController;
+    }
   });
 
   it('supports function-based routes', async () => {
@@ -809,7 +858,7 @@ describe('Routing', () => {
     app: Application,
     controller: ControllerClass<ControllerInstance>,
   ) {
-    app.controller(controller).inScope(BindingScope.CONTEXT);
+    return app.controller(controller);
   }
 
   function whenIMakeRequestTo(serverOrApp: HttpServerLike): Client {

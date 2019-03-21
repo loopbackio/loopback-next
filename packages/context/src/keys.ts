@@ -12,6 +12,10 @@ export namespace ContextTags {
    */
   export const TYPE = 'type';
   /**
+   * Namespace of the artifact
+   */
+  export const NAMESPACE = 'namespace';
+  /**
    * Name of the artifact
    */
   export const NAME = 'name';
