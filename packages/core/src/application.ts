@@ -11,7 +11,7 @@ import {
   createBindingFromClass,
 } from '@loopback/context';
 import {Component, mountComponent} from './component';
-import {CoreBindings} from './keys';
+import {CoreBindings, CoreTags} from './keys';
 import {Server} from './server';
 
 /**
@@ -21,7 +21,7 @@ import {Server} from './server';
  */
 export class Application extends Context {
   constructor(public options: ApplicationConfig = {}) {
-    super();
+    super('application');
 
     // Bind to self to allow injection of application context in other modules.
     this.bind(CoreBindings.APPLICATION_INSTANCE).to(this);
@@ -48,8 +48,8 @@ export class Application extends Context {
   controller(controllerCtor: ControllerClass, name?: string): Binding {
     const binding = createBindingFromClass(controllerCtor, {
       name,
-      namespace: 'controllers',
-      type: 'controller',
+      namespace: CoreBindings.CONTROLLERS,
+      type: CoreTags.CONTROLLER,
       defaultScope: BindingScope.TRANSIENT,
     });
     this.add(binding);
@@ -80,7 +80,7 @@ export class Application extends Context {
     const binding = createBindingFromClass(ctor, {
       name,
       namespace: CoreBindings.SERVERS,
-      type: 'server',
+      type: CoreTags.SERVER,
       defaultScope: BindingScope.SINGLETON,
     });
     this.add(binding);
@@ -122,7 +122,7 @@ export class Application extends Context {
    * @memberof Application
    */
   public async getServer<T extends Server>(
-    target: Constructor<T> | String,
+    target: Constructor<T> | string,
   ): Promise<T> {
     let key: string;
     // instanceof check not reliable for string.
@@ -196,8 +196,8 @@ export class Application extends Context {
   public component(componentCtor: Constructor<Component>, name?: string) {
     const binding = createBindingFromClass(componentCtor, {
       name,
-      namespace: 'components',
-      type: 'component',
+      namespace: CoreBindings.COMPONENTS,
+      type: CoreTags.COMPONENT,
       defaultScope: BindingScope.SINGLETON,
     });
     this.add(binding);
