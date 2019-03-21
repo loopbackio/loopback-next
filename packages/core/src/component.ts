@@ -3,9 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor, Provider, BoundValue, Binding} from '@loopback/context';
-import {Server} from './server';
+import {
+  Binding,
+  BoundValue,
+  Constructor,
+  createBindingFromClass,
+  Provider,
+} from '@loopback/context';
 import {Application, ControllerClass} from './application';
+import {Server} from './server';
 
 /**
  * A map of provider classes to be bound to a context
@@ -87,13 +93,19 @@ export interface Component {
 export function mountComponent(app: Application, component: Component) {
   if (component.classes) {
     for (const classKey in component.classes) {
-      app.bind(classKey).toClass(component.classes[classKey]);
+      const binding = createBindingFromClass(component.classes[classKey], {
+        key: classKey,
+      });
+      app.add(binding);
     }
   }
 
   if (component.providers) {
     for (const providerKey in component.providers) {
-      app.bind(providerKey).toProvider(component.providers[providerKey]);
+      const binding = createBindingFromClass(component.providers[providerKey], {
+        key: providerKey,
+      });
+      app.add(binding);
     }
   }
 
