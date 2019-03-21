@@ -7,6 +7,7 @@
     "strictNullChecks": true,
     "resolveJsonModule": true,
     "strictBindCallApply": true,
+    "skipLibCheck": true,
 
     "lib": ["es2018", "dom", "esnext.asynciterable"],
     "module": "commonjs",
