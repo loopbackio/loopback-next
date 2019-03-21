@@ -3,20 +3,20 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, ValueObject, Model} from '../model';
 import {
-  DataObject,
-  Options,
   AnyObject,
   Command,
-  NamedParameters,
-  PositionalParameters,
   Count,
+  DataObject,
+  NamedParameters,
+  Options,
+  PositionalParameters,
 } from '../common-types';
-import {DataSource} from '../datasource';
 import {CrudConnector} from '../connectors';
-import {Filter, Where} from '../query';
+import {DataSource} from '../datasource';
 import {EntityNotFoundError} from '../errors';
+import {Entity, Model, ValueObject} from '../model';
+import {Filter, Where} from '../query';
 
 // tslint:disable:no-unused
 
@@ -66,7 +66,7 @@ export interface CrudRepository<
    * @param options Options for the operations
    * @returns A promise of an array of records found
    */
-  find(filter?: Filter<T>, options?: Options): Promise<(T & Partial<Links>)[]>;
+  find(filter?: Filter<T>, options?: Options): Promise<(T & Links)[]>;
 
   /**
    * Updating matching records with attributes from the data object
@@ -150,11 +150,7 @@ export interface EntityCrudRepository<
    * @param options Options for the operations
    * @returns A promise of an entity found for the id
    */
-  findById(
-    id: ID,
-    filter?: Filter<T>,
-    options?: Options,
-  ): Promise<T & Partial<Links>>;
+  findById(id: ID, filter?: Filter<T>, options?: Options): Promise<T & Links>;
 
   /**
    * Update an entity by id with property/value pairs in the data object

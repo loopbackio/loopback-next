@@ -337,10 +337,7 @@ export class DefaultCrudRepository<
     }
   }
 
-  async find(
-    filter?: Filter<T>,
-    options?: Options,
-  ): Promise<(T & Partial<Links>)[]> {
+  async find(filter?: Filter<T>, options?: Options): Promise<(T & Links)[]> {
     const models = await ensurePromise(
       this.modelClass.find(filter as legacy.Filter, options),
     );
@@ -359,14 +356,14 @@ export class DefaultCrudRepository<
     id: ID,
     filter?: Filter<T>,
     options?: Options,
-  ): Promise<T & Partial<Links>> {
+  ): Promise<T & Links> {
     const model = await ensurePromise(
       this.modelClass.findById(id, filter as legacy.Filter, options),
     );
     if (!model) {
       throw new EntityNotFoundError(this.entityClass, id);
     }
-    return this.toEntity<T & Partial<Links>>(model);
+    return this.toEntity<T & Links>(model);
   }
 
   update(entity: T, options?: Options): Promise<void> {
@@ -456,6 +453,6 @@ export class DefaultCrudRepository<
   }
 
   protected toEntities<R extends T>(models: juggler.PersistedModel[]): R[] {
-    return models.map(m => this.toEntity(m));
+    return models.map(m => this.toEntity<R>(m));
   }
 }

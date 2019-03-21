@@ -84,10 +84,16 @@ class Product extends Entity {
   categoryId: number;
 }
 
+/**
+ * Navigation properties of the Product model.
+ */
 interface ProductLinks {
-  category?: Category & CategoryLinks;
+  category?: CategoryWithLinks;
 }
 
+/**
+ * Product's own properties and navigation properties.
+ */
 type ProductWithLinks = Product & ProductLinks;
 ```
 
@@ -100,10 +106,16 @@ class Category extends Entity {
   products?: Product[];
 }
 
+/**
+ * Navigation properties of the Category model.
+ */
 interface CategoryLinks {
-  products?: Product & ProductLinks;
+  products?: ProductWithLinks[];
 }
 
+/**
+ * Category's own properties and navigation properties.
+ */
 type CategoryWithLinks = Category & CategoryLinks;
 ```
 
@@ -119,6 +131,10 @@ This solution has few important properties I'd like to explicitly point out:
 
 - It makes it easy to define a type where all navigational properties are
   optional. For example: `Product & Partial<ProductLinks>`
+
+  UPDATE: As it turns out, it's not enough to mark all navigational properties
+  as optional. See the discussion in
+  https://github.com/strongloop/loopback-next/pull/2592#discussion_r267600322
 
 ### Integration with CrudRepository APIs
 
@@ -213,6 +229,12 @@ schema. Here is an example as produced by `getJsonSchemaRef`:
 }
 ```
 
+The first schema defines `CategoryWithLinks` as the top-level schema,
+`definitions` contain only `ProductWithLinks` schema.
+
+The second schema contains only `$ref` entry at the top-level, the actual schema
+for `CategoryWithLinks` is defined in `definitions`.
+
 ### Controller spec
 
 The last missing piece is integration with controller spec builder.
@@ -241,7 +263,7 @@ class CategoryController {
   })
   async find(
     @param.query.object('filter', getFilterSchemaFor(Category)) filter?: Filter,
-  ): Promise<TodoList[]> {
+  ): Promise<CategoryWithLinks[]> {
     return await this.categoryRepository.find(filter);
   }
 }
@@ -295,8 +317,9 @@ via OpenAPI spec extensions. For example:
 
 - Add a new generic parameter `Links` to CRUD-related Repository interfaces and
   implementations.
-- Modify the signature `find` and `findById` to return `T & Partial<Links>`
-  instead of `T`.
+- Modify the signature `find` and `findById` to return `T & Links` instead of
+  `T`. If this requires too many explicit casts, then consider using
+  `T & Partial<Links>` instead, assuming it improves the situation.
 
 6. Update `examples/todo-list` to leverage these new features:
 
@@ -305,3 +328,7 @@ via OpenAPI spec extensions. For example:
 - Update repositories to include related models: overwrite `find` and `findById`
   methods, add a hard-coded retrieval of related models.
 - Update response schemas for controller methods `find` and `findById`
+
+7. Replace our temporary poor-man's relation resolver with a real one, as
+   described in https://github.com/strongloop/loopback-next/pull/2124. Update
+   the example app as part of this work.
