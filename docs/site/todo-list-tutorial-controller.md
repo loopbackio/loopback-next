@@ -98,125 +98,96 @@ Using our constraining factory as we did with the `POST` request, we'll define
 the controller methods for the rest of the HTTP verbs for the route. The
 completed controller should look as follows:
 
-{% include code-caption.html content="src/controllers/todo-list.controller.ts" %}
+{% include code-caption.html content="src/controllers/todo-list-todo.controller.ts" %}
 
 ```ts
 import {
+  Count,
+  CountSchema,
   Filter,
   repository,
   Where,
-  Count,
-  CountSchema,
 } from '@loopback/repository';
 import {
   del,
   get,
-  getFilterSchemaFor,
   getWhereSchemaFor,
   param,
   patch,
   post,
   requestBody,
 } from '@loopback/rest';
-import {TodoList} from '../models';
+import {Todo} from '../models';
 import {TodoListRepository} from '../repositories';
 
-export class TodoListController {
+export class TodoListTodoController {
   constructor(
-    @repository(TodoListRepository)
-    public todoListRepository: TodoListRepository,
+    @repository(TodoListRepository) protected todoListRepo: TodoListRepository,
   ) {}
 
-  @post('/todo-lists', {
+  @post('/todo-lists/{id}/todos', {
     responses: {
       '200': {
-        description: 'TodoList model instance',
-        content: {'application/json': {schema: {'x-ts-type': TodoList}}},
+        description: 'TodoList.Todo model instance',
+        content: {'application/json': {schema: {'x-ts-type': Todo}}},
       },
     },
   })
-  async create(@requestBody() obj: TodoList): Promise<TodoList> {
-    return await this.todoListRepository.create(obj);
+  async create(
+    @param.path.number('id') id: number,
+    @requestBody() todo: Todo,
+  ): Promise<Todo> {
+    return await this.todoListRepo.todos(id).create(todo);
   }
 
-  @get('/todo-lists/count', {
+  @get('/todo-lists/{id}/todos', {
     responses: {
       '200': {
-        description: 'TodoList model count',
-        content: {'application/json': {schema: CountSchema}},
-      },
-    },
-  })
-  async count(
-    @param.query.object('where', getWhereSchemaFor(TodoList)) where?: Where,
-  ): Promise<Count> {
-    return await this.todoListRepository.count(where);
-  }
-
-  @get('/todo-lists', {
-    responses: {
-      '200': {
-        description: 'Array of TodoList model instances',
-        content: {'application/json': {schema: {'x-ts-type': TodoList}}},
+        description: "Array of Todo's belonging to TodoList",
+        content: {
+          'application/json': {
+            schema: {type: 'array', items: {'x-ts-type': Todo}},
+          },
+        },
       },
     },
   })
   async find(
-    @param.query.object('filter', getFilterSchemaFor(TodoList)) filter?: Filter,
-  ): Promise<TodoList[]> {
-    return await this.todoListRepository.find(filter);
+    @param.path.number('id') id: number,
+    @param.query.object('filter') filter?: Filter,
+  ): Promise<Todo[]> {
+    return await this.todoListRepo.todos(id).find(filter);
   }
 
-  @patch('/todo-lists', {
+  @patch('/todo-lists/{id}/todos', {
     responses: {
       '200': {
-        description: 'TodoList PATCH success count',
+        description: 'TodoList.Todo PATCH success count',
         content: {'application/json': {schema: CountSchema}},
       },
     },
   })
-  async updateAll(
-    @requestBody() obj: Partial<TodoList>,
-    @param.query.object('where', getWhereSchemaFor(TodoList)) where?: Where,
+  async patch(
+    @param.path.number('id') id: number,
+    @requestBody() todo: Partial<Todo>,
+    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where,
   ): Promise<Count> {
-    return await this.todoListRepository.updateAll(obj, where);
+    return await this.todoListRepo.todos(id).patch(todo, where);
   }
 
-  @get('/todo-lists/{id}', {
+  @del('/todo-lists/{id}/todos', {
     responses: {
       '200': {
-        description: 'TodoList model instance',
-        content: {'application/json': {schema: {'x-ts-type': TodoList}}},
+        description: 'TodoList.Todo DELETE success count',
+        content: {'application/json': {schema: CountSchema}},
       },
     },
   })
-  async findById(@param.path.number('id') id: number): Promise<TodoList> {
-    return await this.todoListRepository.findById(id);
-  }
-
-  @patch('/todo-lists/{id}', {
-    responses: {
-      '204': {
-        description: 'TodoList PATCH success',
-      },
-    },
-  })
-  async updateById(
+  async delete(
     @param.path.number('id') id: number,
-    @requestBody() obj: TodoList,
-  ): Promise<void> {
-    await this.todoListRepository.updateById(id, obj);
-  }
-
-  @del('/todo-lists/{id}', {
-    responses: {
-      '204': {
-        description: 'TodoList DELETE success',
-      },
-    },
-  })
-  async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.todoListRepository.deleteById(id);
+    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where,
+  ): Promise<Count> {
+    return await this.todoListRepo.todos(id).delete(where);
   }
 }
 ```
