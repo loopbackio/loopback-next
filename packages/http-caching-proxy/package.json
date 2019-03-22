@@ -1,6 +1,6 @@
 {
   "name": "@loopback/http-caching-proxy",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "A caching HTTP proxy for integration tests. NOT SUITABLE FOR PRODUCTION USE!",
   "engines": {
     "node": ">=8.9"
@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@loopback/build": "^1.4.0",
-    "@loopback/testlab": "^1.2.0",
+    "@loopback/testlab": "^1.2.1",
     "@loopback/tslint-config": "^2.0.3",
     "@types/debug": "^4.1.0",
     "@types/node": "^10.11.2",

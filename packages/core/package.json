@@ -1,6 +1,6 @@
 {
   "name": "@loopback/core",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "engines": {
     "node": ">=8.9"
@@ -20,11 +20,11 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^1.8.0"
+    "@loopback/context": "^1.8.1"
   },
   "devDependencies": {
     "@loopback/build": "^1.4.0",
-    "@loopback/testlab": "^1.2.0",
+    "@loopback/testlab": "^1.2.1",
     "@loopback/tslint-config": "^2.0.3",
     "@types/node": "^10.11.2"
   },
