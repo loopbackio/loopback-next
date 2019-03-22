@@ -113,6 +113,21 @@ class MyValueProvider implements Provider<string> {
 binding.toProvider(MyValueProvider);
 ```
 
+#### An alias
+
+An alias is the key with optional path to resolve the value from another
+binding. For example, if we want to get options from RestServer for the API
+explorer, we can configure the `apiExplorer.options` to be resolved from
+`servers.RestServer.options#apiExplorer`.
+
+```ts
+ctx.bind('servers.RestServer.options').to({apiExplorer: {path: '/explorer'}});
+ctx
+  .bind('apiExplorer.options')
+  .toAlias('servers.RestServer.options#apiExplorer');
+const apiExplorerOptions = await ctx.get('apiExplorer.options'); // => {path: '/explorer'}
+```
+
 ### Configure the scope
 
 We allow a binding to be resolved within a context using one of the following

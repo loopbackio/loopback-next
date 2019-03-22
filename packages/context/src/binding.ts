@@ -118,6 +118,10 @@ export enum BindingType {
    * A provider class with `value()` function to get the value
    */
   PROVIDER = 'Provider',
+  /**
+   * A alias to another binding key with optional path
+   */
+  ALIAS = 'Alias',
 }
 
 // tslint:disable-next-line:no-any
@@ -503,6 +507,24 @@ export class Binding<T = BoundValue> {
       instantiateClass(ctor, ctx, options.session),
     );
     this._valueConstructor = ctor;
+    return this;
+  }
+
+  /**
+   * Bind the key to an alias of another binding
+   * @param keyWithPath Target binding key with optional path,
+   * such as `servers.RestServer.options#apiExplorer`
+   */
+  toAlias(keyWithPath: BindingAddress<T>) {
+    /* istanbul ignore if */
+    if (debug.enabled) {
+      debug('Bind %s to alias %s', this.key, keyWithPath);
+    }
+    this._type = BindingType.ALIAS;
+    this._setValueGetter((ctx, optionsOrSession) => {
+      const options = asResolutionOptions(optionsOrSession);
+      return ctx.getValueOrPromise(keyWithPath, options);
+    });
     return this;
   }
 

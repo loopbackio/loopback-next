@@ -191,6 +191,64 @@ describe('Binding', () => {
     });
   });
 
+  describe('toAlias(bindingKeyWithPath)', async () => {
+    it('binds to another binding with sync value', () => {
+      ctx.bind('parent.options').to({child: {disabled: true}});
+      ctx.bind('child.options').toAlias('parent.options#child');
+      const childOptions = ctx.getSync('child.options');
+      expect(childOptions).to.eql({disabled: true});
+    });
+
+    it('creates the alias even when the target is not bound yet', () => {
+      ctx.bind('child.options').toAlias('parent.options#child');
+      ctx.bind('parent.options').to({child: {disabled: true}});
+      const childOptions = ctx.getSync('child.options');
+      expect(childOptions).to.eql({disabled: true});
+    });
+
+    it('binds to another binding with async value', async () => {
+      ctx
+        .bind('parent.options')
+        .toDynamicValue(() => Promise.resolve({child: {disabled: true}}));
+      ctx.bind('child.options').toAlias('parent.options#child');
+      const childOptions = await ctx.get('child.options');
+      expect(childOptions).to.eql({disabled: true});
+    });
+
+    it('reports error if alias binding cannot be resolved', () => {
+      ctx.bind('child.options').toAlias('parent.options#child');
+      expect(() => ctx.getSync('child.options')).to.throw(
+        /The key 'parent.options' is not bound to any value in context/,
+      );
+    });
+
+    it('reports error if alias binding cannot be resolved - async', async () => {
+      ctx.bind('child.options').toAlias('parent.options#child');
+      return expect(ctx.get('child.options')).to.be.rejectedWith(
+        /The key 'parent.options' is not bound to any value in context/,
+      );
+    });
+
+    it('allows optional if alias binding cannot be resolved', () => {
+      ctx.bind('child.options').toAlias('parent.options#child');
+      const childOptions = ctx.getSync('child.options', {optional: true});
+      expect(childOptions).to.be.undefined();
+    });
+
+    it('allows optional if alias binding cannot be resolved - async', async () => {
+      ctx.bind('child.options').toAlias('parent.options#child');
+      const childOptions = await ctx.get('child.options', {optional: true});
+      expect(childOptions).to.be.undefined();
+    });
+
+    it('sets type to ALIAS', () => {
+      const childBinding = ctx
+        .bind('child.options')
+        .toAlias('parent.options#child');
+      expect(childBinding.type).to.equal(BindingType.ALIAS);
+    });
+  });
+
   describe('apply(templateFn)', () => {
     it('applies a template function', async () => {
       binding.apply(b => {
