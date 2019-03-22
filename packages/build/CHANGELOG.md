@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.3.2...@loopback/build@1.4.0) (2019-03-22)
+
+
+### Bug Fixes
+
+* **build:** remove "dom" from the list of global libraries ([781cd1d](https://github.com/strongloop/loopback-next/commit/781cd1d))
+
+
+### Features
+
+* **build:** enable TSC option "skipLibCheck" ([66bb506](https://github.com/strongloop/loopback-next/commit/66bb506))
+
+
+
+
+
 ## [1.3.2](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.3.1...@loopback/build@1.3.2) (2019-03-12)
 
 **Note:** Version bump only for package @loopback/build
