@@ -47,7 +47,7 @@
     "clean": "lerna run clean && node packages/build/bin/run-clean \"packages/*/dist\" \"examples/*/dist\" \"benchmark/dist\"",
     "clean:lerna": "lerna clean",
     "build": "node bin/run-lerna run build",
-    "build:full": "npm run clean:lerna && npm run ci && npm run clean && npm run build",
+    "build:full": "npm run clean:lerna && npm install && npm run clean && npm run build",
     "pretest": "npm run clean && npm run build",
     "test": "node packages/build/bin/run-nyc npm run mocha --scripts-prepend-node-path",
     "test:ci": "node packages/build/bin/run-nyc npm run mocha --scripts-prepend-node-path",
