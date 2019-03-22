@@ -260,7 +260,7 @@ export function modelToJsonSchema(
       continue;
     }
 
-    const propSchema = getJsonSchema(referenceType);
+    const propSchema = getJsonSchema(referenceType, options);
     includeReferencedSchema(referenceType.name, propSchema);
   }
 

@@ -302,17 +302,25 @@ via OpenAPI spec extensions. For example:
 
 1. Handle circular references when generating model JSON Schema
 
+   --> https://github.com/strongloop/loopback-next/issues/2628
+
 2. Support `schema: {$ref, definitions}` in resolveControllerSpec
+
+   --> https://github.com/strongloop/loopback-next/issues/2629
 
 3. Enhance `getJsonSchema` to describe navigational properties (introduce
    `includeRelations` option).
 
-- Add a new `RelationDefinition` property: `targetsMany: boolean`
-- Implement support for `includeRelations` in `getJsonSchema` & co.
+   - Add a new `RelationDefinition` property: `targetsMany: boolean`
+   - Implement support for `includeRelations` in `getJsonSchema` & co.
+
+   --> https://github.com/strongloop/loopback-next/issues/2630
 
 4. Implement `getJsonSchemaRef` and `getModelSchemaRef` helpers
 
-5. Modify Repository `find*` method signatures to include navigational
+   --> https://github.com/strongloop/loopback-next/issues/2631
+
+5) Modify Repository `find*` method signatures to include navigational
    properties in the description of the return type
 
 - Add a new generic parameter `Relations` to CRUD-related Repository interfaces

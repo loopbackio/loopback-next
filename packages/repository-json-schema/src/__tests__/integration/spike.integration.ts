@@ -32,6 +32,41 @@ describe('build-schema', () => {
       });
     });
 
+    it('handles circular references', () => {
+      @model()
+      class Category {
+        @property.array(() => Product)
+        products?: Product[];
+      }
+
+      @model()
+      class Product {
+        @property(() => Category)
+        category?: Category;
+      }
+
+      const schema = modelToJsonSchema(Category);
+      expect(schema).to.deepEqual({
+        title: 'Category',
+        properties: {
+          products: {
+            type: 'array',
+            items: {$ref: '#/definitions/Product'},
+          },
+        },
+        definitions: {
+          Product: {
+            title: 'Product',
+            properties: {
+              category: {
+                $ref: '#/definitions/Category',
+              },
+            },
+          },
+        },
+      });
+    });
+
     it('converts HasMany and BelongsTo relation links', () => {
       @model()
       class Product extends Entity {
