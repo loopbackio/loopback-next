@@ -42,7 +42,7 @@ export class ContextView<T = unknown> extends EventEmitter
 
   constructor(
     protected readonly context: Context,
-    public readonly filter: BindingFilter,
+    public readonly filter: BindingFilter<T>,
   ) {
     super();
   }
@@ -151,4 +151,20 @@ export class ContextView<T = unknown> extends EventEmitter
   asGetter(session?: ResolutionSession): Getter<T[]> {
     return () => this.values(session);
   }
+}
+
+/**
+ * Create a context view as a getter
+ * @param ctx Context object
+ * @param bindingFilter A function to match bindings
+ * @param session Resolution session
+ */
+export function createViewGetter<T = unknown>(
+  ctx: Context,
+  bindingFilter: BindingFilter<T>,
+  session?: ResolutionSession,
+): Getter<T[]> {
+  const view = new ContextView(ctx, bindingFilter);
+  view.open();
+  return view.asGetter(session);
 }

@@ -21,7 +21,7 @@ import {
 } from './binding-filter';
 import {BindingAddress} from './binding-key';
 import {Context} from './context';
-import {ContextView} from './context-view';
+import {ContextView, createViewGetter} from './context-view';
 import {ResolutionSession} from './resolution-session';
 import {BoundValue, ValueOrPromise} from './value-promise';
 
@@ -461,9 +461,7 @@ function resolveAsGetterByFilter(
 ) {
   assertTargetIsGetter(injection);
   const bindingFilter = injection.bindingSelector as BindingFilter;
-  const view = new ContextView(ctx, bindingFilter);
-  view.open();
-  return view.asGetter(session);
+  return createViewGetter(ctx, bindingFilter, session);
 }
 
 /**
