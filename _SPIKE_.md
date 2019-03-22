@@ -323,20 +323,26 @@ via OpenAPI spec extensions. For example:
 5) Modify Repository `find*` method signatures to include navigational
    properties in the description of the return type
 
-- Add a new generic parameter `Relations` to CRUD-related Repository interfaces
-  and implementations.
-- Modify the signature `find` and `findById` to return `T & Relations` instead
-  of `T`. If this requires too many explicit casts, then consider using
-  `T & Partial<Relations>` instead, assuming it improves the situation.
+   - Add a new generic parameter `Relations` to CRUD-related Repository
+     interfaces and implementations.
+   - Modify the signature `find` and `findById` to return `T & Relations`
+     instead of `T`. If this requires too many explicit casts, then consider
+     using `T & Partial<Relations>` instead, assuming it improves the situation.
+
+   --> https://github.com/strongloop/loopback-next/issues/2632
 
 6. Update `examples/todo-list` to leverage these new features:
 
-- Define `{Model}Relations` interfaces and `{Model}WithRelations` types
-- Update `{Model}Repository` implementations to use these new interfaces
-- Update repositories to include related models: overwrite `find` and `findById`
-  methods, add a hard-coded retrieval of related models.
-- Update response schemas for controller methods `find` and `findById`
+   - Define `{Model}Relations` interfaces and `{Model}WithRelations` types
+   - Update `{Model}Repository` implementations to use these new interfaces
+   - Update repositories to include related models: overwrite `find` and
+     `findById` methods, add a hard-coded retrieval of related models.
+   - Update response schemas for controller methods `find` and `findById`
+
+   --> https://github.com/strongloop/loopback-next/issues/2633
 
 7. Replace our temporary poor-man's relation resolver with a real one, as
    described in https://github.com/strongloop/loopback-next/pull/2124. Update
    the example app as part of this work.
+
+   --> https://github.com/strongloop/loopback-next/issues/2634
