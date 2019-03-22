@@ -1,6 +1,6 @@
 {
   "name": "@loopback/metadata",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "LoopBack's metadata utilities for reflection and decoration",
   "engines": {
     "node": ">=8.9"
@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@loopback/build": "^1.4.0",
-    "@loopback/testlab": "^1.2.0",
+    "@loopback/testlab": "^1.2.1",
     "@loopback/tslint-config": "^2.0.3",
     "@types/debug": "^4.1.0",
     "@types/lodash": "^4.14.106",

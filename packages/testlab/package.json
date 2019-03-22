@@ -1,6 +1,6 @@
 {
   "name": "@loopback/testlab",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A collection of test utilities we use to write LoopBack tests.",
   "engines": {
     "node": ">=8.9"
