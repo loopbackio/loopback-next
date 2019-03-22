@@ -42,7 +42,7 @@ export interface ExecutableRepository<T extends Model> extends Repository<T> {
  */
 export interface CrudRepository<
   T extends ValueObject | Entity,
-  Links extends object = {}
+  Relations extends object = {}
 > extends Repository<T> {
   /**
    * Create a new record
@@ -66,7 +66,7 @@ export interface CrudRepository<
    * @param options Options for the operations
    * @returns A promise of an array of records found
    */
-  find(filter?: Filter<T>, options?: Options): Promise<(T & Links)[]>;
+  find(filter?: Filter<T>, options?: Options): Promise<(T & Relations)[]>;
 
   /**
    * Updating matching records with attributes from the data object
@@ -110,8 +110,8 @@ export interface EntityRepository<T extends Entity, ID>
 export interface EntityCrudRepository<
   T extends Entity,
   ID,
-  Links extends object = {}
-> extends EntityRepository<T, ID>, CrudRepository<T, Links> {
+  Relations extends object = {}
+> extends EntityRepository<T, ID>, CrudRepository<T, Relations> {
   // entityClass should have type "typeof T", but that's not supported by TSC
   entityClass: typeof Entity & {prototype: T};
 
@@ -150,7 +150,11 @@ export interface EntityCrudRepository<
    * @param options Options for the operations
    * @returns A promise of an entity found for the id
    */
-  findById(id: ID, filter?: Filter<T>, options?: Options): Promise<T & Links>;
+  findById(
+    id: ID,
+    filter?: Filter<T>,
+    options?: Options,
+  ): Promise<T & Relations>;
 
   /**
    * Update an entity by id with property/value pairs in the data object

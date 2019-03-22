@@ -12,13 +12,13 @@ import {
   Options,
   repository,
 } from '@loopback/repository';
-import {Todo, TodoLinks, TodoList, TodoWithLinks} from '../models';
+import {Todo, TodoRelations, TodoList, TodoWithRelations} from '../models';
 import {TodoListRepository} from './todo-list.repository';
 
 export class TodoRepository extends DefaultCrudRepository<
   Todo,
   typeof Todo.prototype.id,
-  TodoLinks
+  TodoRelations
 > {
   public readonly todoList: BelongsToAccessor<
     TodoList,
@@ -41,7 +41,7 @@ export class TodoRepository extends DefaultCrudRepository<
   async find(
     filter?: Filter<Todo>,
     options?: Options,
-  ): Promise<TodoWithLinks[]> {
+  ): Promise<TodoWithRelations[]> {
     // Prevent juggler for applying "include" filter
     // Juggler is not aware of LB4 relations
     const include = filter && filter.include;

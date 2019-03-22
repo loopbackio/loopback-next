@@ -91,8 +91,8 @@ export function ensurePromise<T>(p: legacy.PromiseOrVoid<T>): Promise<T> {
 export class DefaultCrudRepository<
   T extends Entity,
   ID,
-  Links extends object = {}
-> implements EntityCrudRepository<T, ID, Links> {
+  Relations extends object = {}
+> implements EntityCrudRepository<T, ID, Relations> {
   modelClass: juggler.PersistedModelClass;
 
   /**
@@ -337,7 +337,10 @@ export class DefaultCrudRepository<
     }
   }
 
-  async find(filter?: Filter<T>, options?: Options): Promise<(T & Links)[]> {
+  async find(
+    filter?: Filter<T>,
+    options?: Options,
+  ): Promise<(T & Relations)[]> {
     const models = await ensurePromise(
       this.modelClass.find(filter as legacy.Filter, options),
     );
@@ -356,14 +359,14 @@ export class DefaultCrudRepository<
     id: ID,
     filter?: Filter<T>,
     options?: Options,
-  ): Promise<T & Links> {
+  ): Promise<T & Relations> {
     const model = await ensurePromise(
       this.modelClass.findById(id, filter as legacy.Filter, options),
     );
     if (!model) {
       throw new EntityNotFoundError(this.entityClass, id);
     }
-    return this.toEntity<T & Links>(model);
+    return this.toEntity<T & Relations>(model);
   }
 
   update(entity: T, options?: Options): Promise<void> {

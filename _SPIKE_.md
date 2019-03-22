@@ -24,9 +24,9 @@ The solution consists of three parts:
 
    - 2.2: Support for cyclic references.
 
-     For example: `CategoryWithLinks` has a property `products` containing an
-     array of `ProductWithLinks`. `ProductWithLinks` has a property `category`
-     containing `CategoryWithLinks`.
+     For example: `CategoryWithRelations` has a property `products` containing
+     an array of `ProductWithRelations`. `ProductWithRelations` has a property
+     `category` containing `CategoryWithRelations`.
 
      Please note this example is NOT using the approach for model inclusion,
      it's just an acceptance criteria.
@@ -61,8 +61,8 @@ properties:
 4. SHOULD HAVE: To support JavaScript developers and declarative support, the
    new types should be optional. At runtime, we should leverage the dynamic
    nature of JavaScript objects and add navigational properties to an instance
-   of the original mo/contrdel. Specifically, we should not require another
-   model class to represent model with links.
+   of the original model. Specifically, we should not require another model
+   class to represent model with relations.
 
 My proposed solution meets all requirements above. Additionally, it consists of
 several smaller building blocks that can be used beyond the scope of
@@ -70,7 +70,7 @@ navigational properties too.
 
 ## Solution details
 
-### Interface describing model links
+### Interface describing model navigational properties
 
 To describe navigation properties for TypeScript compiler, application
 developers will define a new interface for each model.
@@ -87,14 +87,14 @@ class Product extends Entity {
 /**
  * Navigation properties of the Product model.
  */
-interface ProductLinks {
-  category?: CategoryWithLinks;
+interface ProductRelations {
+  category?: CategoryWithRelations;
 }
 
 /**
  * Product's own properties and navigation properties.
  */
-type ProductWithLinks = Product & ProductLinks;
+type ProductWithRelations = Product & ProductRelations;
 ```
 
 HasMany relation:
@@ -109,14 +109,14 @@ class Category extends Entity {
 /**
  * Navigation properties of the Category model.
  */
-interface CategoryLinks {
-  products?: ProductWithLinks[];
+interface CategoryRelations {
+  products?: ProductWithRelations[];
 }
 
 /**
  * Category's own properties and navigation properties.
  */
-type CategoryWithLinks = Category & CategoryLinks;
+type CategoryWithRelations = Category & CategoryRelations;
 ```
 
 This solution has few important properties I'd like to explicitly point out:
@@ -130,7 +130,7 @@ This solution has few important properties I'd like to explicitly point out:
   https://github.com/Microsoft/TypeScript/issues/27519
 
 - It makes it easy to define a type where all navigational properties are
-  optional. For example: `Product & Partial<ProductLinks>`
+  optional. For example: `Product & Partial<ProductRelations>`
 
   UPDATE: As it turns out, it's not enough to mark all navigational properties
   as optional. See the discussion in
@@ -139,7 +139,7 @@ This solution has few important properties I'd like to explicitly point out:
 ### Integration with CrudRepository APIs
 
 The CRUD-related Repository interfaces and classes are accepting a new generic
-argument `Links` that's describing navigational properties.
+argument `Relations` that's describing navigational properties.
 
 Example use in application-level repositories:
 
@@ -147,7 +147,7 @@ Example use in application-level repositories:
 export class CategoryRepository extends DefaultCrudRepository<
   Category,
   typeof Category.prototype.id,
-  CategoryLinks
+  CategoryRelations
 > {
   // (no changes here)
 }
@@ -174,25 +174,25 @@ An example of the produced schema:
 
 ```js
 {
-  title: 'CategoryWithLinks',
+  title: 'CategoryWithRelations',
   properties: {
     // own properties
     id: {type: 'number'},
     // navigational properties
     products: {
       type: 'array',
-      items: {$ref: '#/definitions/ProductWithLinks'},
+      items: {$ref: '#/definitions/ProductWithRelations'},
     },
   },
   definitions: {
-    ProductWithLinks: {
-      title: 'ProductWithLinks',
+    ProductWithRelations: {
+      title: 'ProductWithRelations',
       properties: {
         // own properties
         id: {type: 'number'},
         categoryId: {type: 'number'},
         // navigational properties
-        category: {$ref: '#/definitions/CategoryWithLinks'},
+        category: {$ref: '#/definitions/CategoryWithRelations'},
       },
     },
   },
@@ -205,35 +205,35 @@ schema. Here is an example as produced by `getJsonSchemaRef`:
 
 ```js
 {
-  $ref: '#/definitions/CategoryWithLinks',
+  $ref: '#/definitions/CategoryWithRelations',
   definitions: {
-    CategoryWithLinks: {
-      title: 'CategoryWithLinks',
+    CategoryWithRelations: {
+      title: 'CategoryWithRelations',
       properties: {
         id: {type: 'number'},
         products: {
           type: 'array',
-          items: {$ref: '#/definitions/ProductWithLinks'},
+          items: {$ref: '#/definitions/ProductWithRelations'},
         },
       },
     }
-    ProductWithLinks: {
-      title: 'ProductWithLinks',
+    ProductWithRelations: {
+      title: 'ProductWithRelations',
       properties: {
         id: {type: 'number'},
         categoryId: {type: 'number'},
-        category: {$ref: '#/definitions/CategoryWithLinks'},
+        category: {$ref: '#/definitions/CategoryWithRelations'},
       },
     },
   },
 }
 ```
 
-The first schema defines `CategoryWithLinks` as the top-level schema,
-`definitions` contain only `ProductWithLinks` schema.
+The first schema defines `CategoryWithRelations` as the top-level schema,
+`definitions` contain only `ProductWithRelations` schema.
 
 The second schema contains only `$ref` entry at the top-level, the actual schema
-for `CategoryWithLinks` is defined in `definitions`.
+for `CategoryWithRelations` is defined in `definitions`.
 
 ### Controller spec
 
@@ -263,7 +263,7 @@ class CategoryController {
   })
   async find(
     @param.query.object('filter', getFilterSchemaFor(Category)) filter?: Filter,
-  ): Promise<CategoryWithLinks[]> {
+  ): Promise<CategoryWithRelations[]> {
     return await this.categoryRepository.find(filter);
   }
 }
@@ -312,18 +312,18 @@ via OpenAPI spec extensions. For example:
 
 4. Implement `getJsonSchemaRef` and `getModelSchemaRef` helpers
 
-5. Modify Repository `find*` method signatures to include links (navigational
-   properties) in the description of the return type
+5. Modify Repository `find*` method signatures to include navigational
+   properties in the description of the return type
 
-- Add a new generic parameter `Links` to CRUD-related Repository interfaces and
-  implementations.
-- Modify the signature `find` and `findById` to return `T & Links` instead of
-  `T`. If this requires too many explicit casts, then consider using
-  `T & Partial<Links>` instead, assuming it improves the situation.
+- Add a new generic parameter `Relations` to CRUD-related Repository interfaces
+  and implementations.
+- Modify the signature `find` and `findById` to return `T & Relations` instead
+  of `T`. If this requires too many explicit casts, then consider using
+  `T & Partial<Relations>` instead, assuming it improves the situation.
 
 6. Update `examples/todo-list` to leverage these new features:
 
-- Define `{Model}Links` interfaces and `{Model}WithLinks` types
+- Define `{Model}Relations` interfaces and `{Model}WithRelations` types
 - Update `{Model}Repository` implementations to use these new interfaces
 - Update repositories to include related models: overwrite `find` and `findById`
   methods, add a hard-coded retrieval of related models.

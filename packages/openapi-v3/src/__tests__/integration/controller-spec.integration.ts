@@ -468,28 +468,28 @@ describe('controller spec', () => {
     const opSpec: OperationObject = spec.paths['/categories'].get;
     const responseSpec = opSpec.responses['200'].content['application/json'];
     expect(responseSpec.schema).to.deepEqual({
-      $ref: '#/components/schemas/CategoryWithLinks',
+      $ref: '#/components/schemas/CategoryWithRelations',
     });
 
     const globalSchemas = (spec.components || {}).schemas;
     expect(globalSchemas).to.deepEqual({
-      CategoryWithLinks: {
-        title: 'CategoryWithLinks',
+      CategoryWithRelations: {
+        title: 'CategoryWithRelations',
         properties: {
           products: {
             type: 'array',
-            items: {$ref: '#/components/schemas/ProductWithLinks'},
+            items: {$ref: '#/components/schemas/ProductWithRelations'},
           },
         },
       },
-      ProductWithLinks: {
-        title: 'ProductWithLinks',
+      ProductWithRelations: {
+        title: 'ProductWithRelations',
         properties: {
           categoryId: {
             type: 'number',
           },
           category: {
-            $ref: '#/components/schemas/CategoryWithLinks',
+            $ref: '#/components/schemas/CategoryWithRelations',
           },
         },
       },

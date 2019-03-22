@@ -30,7 +30,7 @@ export function getJsonSchema(
 ): JSONSchema {
   // NOTE(shimks) currently impossible to dynamically update
   const cached = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor);
-  const key = options.includeRelations ? 'modelWithLinks' : 'modelOnly';
+  const key = options.includeRelations ? 'modelWithRelations' : 'modelOnly';
 
   if (cached && cached[key]) {
     return cached[key];
@@ -215,7 +215,7 @@ export function modelToJsonSchema(
 
   let title = meta.title || ctor.name;
   if (options.includeRelations) {
-    title += 'WithLinks';
+    title += 'WithRelations';
   }
 
   if (title in options.visited) return options.visited[title];

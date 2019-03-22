@@ -54,25 +54,25 @@ describe('build-schema', () => {
       const jsonSchema = modelToJsonSchema(Category, {includeRelations: true});
       expectValidJsonSchema(jsonSchema);
       expect(jsonSchema).to.deepEqual({
-        title: 'CategoryWithLinks',
+        title: 'CategoryWithRelations',
         properties: {
           // TODO(bajtos): inherit these properties from Category schema
           // See https://swagger.io/docs/specification/data-models/inheritance-and-polymorphism/
           id: {type: 'number'},
           products: {
             type: 'array',
-            items: {$ref: '#/definitions/ProductWithLinks'},
+            items: {$ref: '#/definitions/ProductWithRelations'},
           },
         },
         definitions: {
-          ProductWithLinks: {
-            title: 'ProductWithLinks',
+          ProductWithRelations: {
+            title: 'ProductWithRelations',
             properties: {
               // TODO(bajtos): inherit these properties from Product schema
               // See https://swagger.io/docs/specification/data-models/inheritance-and-polymorphism/
               id: {type: 'number'},
               categoryId: {type: 'number'},
-              category: {$ref: '#/definitions/CategoryWithLinks'},
+              category: {$ref: '#/definitions/CategoryWithRelations'},
             },
           },
         },
