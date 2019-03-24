@@ -321,7 +321,7 @@ its dependencies are resolved.
 
 Let's take a look at the following example:
 
-![binding-scopes](../img/binding-scopes.png)
+![binding-scopes](./imgs/binding-scopes.png)
 
 The corresponding code is:
 
