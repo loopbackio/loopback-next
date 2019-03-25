@@ -14,6 +14,9 @@ LoopBack 4 comes with the following example projects:
 - **[rpc-server](https://github.com/strongloop/loopback-next/tree/master/examples/rpc-server)**:
   An example showing how to implement a made-up RPC protocol.
 
+- **[loopback4-example-shopping](https://github.com/strongloop/loopback4-example-shopping)**:
+  An online e-commerce demo to validate/test the LoopBack 4 framework readiness.
+
 You can download the example projects using our CLI tool `lb4`:
 
 ```sh
