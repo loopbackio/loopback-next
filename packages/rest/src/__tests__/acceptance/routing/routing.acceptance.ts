@@ -262,7 +262,7 @@ describe('Routing', () => {
     server.bind('flag').to('original');
 
     // create a special binding returning the current context instance
-    server.bind('context').getValue = ctx => ctx;
+    server.bind('context').getValue = (ctx: Context) => ctx;
 
     const spec = anOpenApiSpec()
       .withOperationReturningString('put', '/flag', 'setFlag')

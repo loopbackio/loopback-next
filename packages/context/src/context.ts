@@ -3,14 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as debugModule from 'debug';
+import * as debugFactory from 'debug';
 import {EventEmitter} from 'events';
 import {v1 as uuidv1} from 'uuid';
-import {ValueOrPromise} from '.';
 import {Binding, BindingTag} from './binding';
 import {BindingFilter, filterByKey, filterByTag} from './binding-filter';
 import {BindingAddress, BindingKey} from './binding-key';
-import {ContextView} from './context-view';
 import {
   ContextEventObserver,
   ContextEventType,
@@ -18,8 +16,19 @@ import {
   Notification,
   Subscription,
 } from './context-observer';
-import {ResolutionOptions, ResolutionSession} from './resolution-session';
-import {BoundValue, getDeepProperty, isPromiseLike} from './value-promise';
+import {ContextView} from './context-view';
+import {
+  asResolutionOptions,
+  ResolutionOptions,
+  ResolutionOptionsOrSession,
+  ResolutionSession,
+} from './resolution-session';
+import {
+  BoundValue,
+  getDeepProperty,
+  isPromiseLike,
+  ValueOrPromise,
+} from './value-promise';
 
 /**
  * Polyfill Symbol.asyncIterator as required by TypeScript for Node 8.x.
@@ -32,7 +41,7 @@ if (!Symbol.asyncIterator) {
 // This import must happen after the polyfill
 import {iterator, multiple} from 'p-event';
 
-const debug = debugModule('loopback:context');
+const debug = debugFactory('loopback:context');
 
 /**
  * Context provides an implementation of Inversion of Control (IoC) container
@@ -574,9 +583,14 @@ export class Context extends EventEmitter {
    *
    * @param keyWithPath The binding key, optionally suffixed with a path to the
    *   (deeply) nested property to retrieve.
+   * @param session Optional session for resolution (accepted for backward
+   * compatibility)
    * @returns A promise of the bound value.
    */
-  get<ValueType>(keyWithPath: BindingAddress<ValueType>): Promise<ValueType>;
+  get<ValueType>(
+    keyWithPath: BindingAddress<ValueType>,
+    session?: ResolutionSession,
+  ): Promise<ValueType>;
 
   /**
    * Get the value bound to the given key, optionally return a (deep) property
@@ -594,20 +608,19 @@ export class Context extends EventEmitter {
    *
    * @param keyWithPath The binding key, optionally suffixed with a path to the
    *   (deeply) nested property to retrieve.
-   * @param optionsOrSession Options or session for resolution. An instance of
-   * `ResolutionSession` is accepted for backward compatibility.
+   * @param options Options for resolution.
    * @returns A promise of the bound value, or a promise of undefined when
    * the optional binding is not found.
    */
   get<ValueType>(
     keyWithPath: BindingAddress<ValueType>,
-    optionsOrSession?: ResolutionOptions | ResolutionSession,
+    options: ResolutionOptions,
   ): Promise<ValueType | undefined>;
 
   // Implementation
   async get<ValueType>(
     keyWithPath: BindingAddress<ValueType>,
-    optionsOrSession?: ResolutionOptions | ResolutionSession,
+    optionsOrSession?: ResolutionOptionsOrSession,
   ): Promise<ValueType | undefined> {
     this._debug('Resolving binding: %s', keyWithPath);
     return await this.getValueOrPromise<ValueType | undefined>(
@@ -636,11 +649,13 @@ export class Context extends EventEmitter {
    *
    * @param keyWithPath The binding key, optionally suffixed with a path to the
    *   (deeply) nested property to retrieve.
-   * * @param optionsOrSession Options or session for resolution. An instance of
-   * `ResolutionSession` is accepted for backward compatibility.
+   * @param session Session for resolution (accepted for backward compatibility)
    * @returns A promise of the bound value.
    */
-  getSync<ValueType>(keyWithPath: BindingAddress<ValueType>): ValueType;
+  getSync<ValueType>(
+    keyWithPath: BindingAddress<ValueType>,
+    session?: ResolutionSession,
+  ): ValueType;
 
   /**
    * Get the synchronous value bound to the given key, optionally
@@ -662,19 +677,18 @@ export class Context extends EventEmitter {
    *
    * @param keyWithPath The binding key, optionally suffixed with a path to the
    *   (deeply) nested property to retrieve.
-   * * @param optionsOrSession Options or session for resolution. An instance of
-   * `ResolutionSession` is accepted for backward compatibility.
+   * @param options Options for resolution.
    * @returns The bound value, or undefined when an optional binding is not found.
    */
   getSync<ValueType>(
     keyWithPath: BindingAddress<ValueType>,
-    optionsOrSession?: ResolutionOptions | ResolutionSession,
+    options?: ResolutionOptions,
   ): ValueType | undefined;
 
   // Implementation
   getSync<ValueType>(
     keyWithPath: BindingAddress<ValueType>,
-    optionsOrSession?: ResolutionOptions | ResolutionSession,
+    optionsOrSession?: ResolutionOptionsOrSession,
   ): ValueType | undefined {
     this._debug('Resolving binding synchronously: %s', keyWithPath);
 
@@ -766,22 +780,16 @@ export class Context extends EventEmitter {
    */
   getValueOrPromise<ValueType>(
     keyWithPath: BindingAddress<ValueType>,
-    optionsOrSession?: ResolutionOptions | ResolutionSession,
+    optionsOrSession?: ResolutionOptionsOrSession,
   ): ValueOrPromise<ValueType | undefined> {
     const {key, propertyPath} = BindingKey.parseKeyWithPath(keyWithPath);
 
-    // backwards compatibility
-    if (optionsOrSession instanceof ResolutionSession) {
-      optionsOrSession = {session: optionsOrSession};
-    }
+    optionsOrSession = asResolutionOptions(optionsOrSession);
 
     const binding = this.getBinding<ValueType>(key, optionsOrSession);
     if (binding == null) return undefined;
 
-    const boundValue = binding.getValue(
-      this,
-      optionsOrSession && optionsOrSession.session,
-    );
+    const boundValue = binding.getValue(this, optionsOrSession);
     if (propertyPath === undefined || propertyPath === '') {
       return boundValue;
     }

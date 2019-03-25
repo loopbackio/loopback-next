@@ -3,18 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {DecoratorFactory} from '@loopback/metadata';
+import * as debugModule from 'debug';
 import {Binding} from './binding';
 import {Injection} from './inject';
-import {ValueOrPromise, BoundValue, tryWithFinally} from './value-promise';
-import * as debugModule from 'debug';
-import {DecoratorFactory} from '@loopback/metadata';
+import {BoundValue, tryWithFinally, ValueOrPromise} from './value-promise';
 
 const debugSession = debugModule('loopback:context:resolver:session');
 const getTargetName = DecoratorFactory.getTargetName;
-
-// NOTE(bajtos) The following import is required to satisfy TypeScript compiler
-// tslint:disable-next-line:no-unused
-import {BindingKey} from './binding-key';
 
 /**
  * A function to be executed with the resolution session
@@ -169,7 +165,7 @@ export class ResolutionSession {
     );
     return {
       targetName: name,
-      bindingKey: injection.bindingSelector,
+      bindingSelector: injection.bindingSelector,
       // Cast to Object so that we don't have to expose InjectionMetadata
       metadata: injection.metadata as Object,
     };
@@ -342,4 +338,23 @@ export interface ResolutionOptions {
    * will return `undefined` instead of throwing an error.
    */
   optional?: boolean;
+}
+
+/**
+ * Resolution options or session
+ */
+export type ResolutionOptionsOrSession = ResolutionOptions | ResolutionSession;
+
+/**
+ * Normalize ResolutionOptionsOrSession to ResolutionOptions
+ * @param optionsOrSession resolution options or session
+ */
+export function asResolutionOptions(
+  optionsOrSession?: ResolutionOptionsOrSession,
+): ResolutionOptions {
+  // backwards compatibility
+  if (optionsOrSession instanceof ResolutionSession) {
+    return {session: optionsOrSession};
+  }
+  return optionsOrSession || {};
 }
