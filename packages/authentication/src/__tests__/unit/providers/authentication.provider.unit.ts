@@ -3,13 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
 import {Context, instantiateClass} from '@loopback/context';
 import {Request} from '@loopback/rest';
-import {AuthenticateFn, UserProfile, AuthenticationBindings} from '../../..';
-import {MockStrategy} from '../fixtures/mock-strategy';
+import {expect} from '@loopback/testlab';
 import {Strategy} from 'passport';
+import {AuthenticateFn, AuthenticationBindings, UserProfile} from '../../..';
 import {AuthenticateActionProvider} from '../../../providers';
+import {MockStrategy} from '../fixtures/mock-strategy';
 
 describe('AuthenticateActionProvider', () => {
   describe('constructor()', () => {

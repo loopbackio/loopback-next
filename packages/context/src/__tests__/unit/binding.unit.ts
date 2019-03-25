@@ -258,6 +258,19 @@ describe('Binding', () => {
       expect(binding.tagNames).to.eql(['myTag']);
     });
 
+    it('applies multiple template functions', async () => {
+      binding.apply(
+        b => {
+          b.inScope(BindingScope.SINGLETON);
+        },
+        b => {
+          b.tag('myTag');
+        },
+      );
+      expect(binding.scope).to.eql(BindingScope.SINGLETON);
+      expect(binding.tagNames).to.eql(['myTag']);
+    });
+
     it('sets up a placeholder value', async () => {
       const toBeBound = (b: Binding<unknown>) => {
         b.toDynamicValue(() => {

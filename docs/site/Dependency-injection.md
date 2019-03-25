@@ -245,6 +245,7 @@ There are a few special decorators from the `inject` namespace.
 
 - [`@inject.getter`](Decorators_inject.md#@inject.getter)
 - [`@inject.setter`](Decorators_inject.md#@inject.setter)
+- [`@inject.binding`](Decorators_inject.md#@inject.binding)
 - [`@inject.context`](Decorators_inject.md#@inject.context)
 - [`@inject.tag`](Decorators_inject.md#@inject.tag)
 - [`@inject.view`](Decorators_inject.md#@inject.view)
