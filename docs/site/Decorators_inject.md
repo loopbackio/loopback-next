@@ -126,7 +126,19 @@ class MyControllerWithGetter {
 
 `@inject.setter` injects a setter function to set the bound value of the key.
 
-Syntax: `@inject.setter(bindingKey: string)`.
+Syntax: `@inject.setter(bindingKey: BindingAddress, {bindingCreation?: ...})`.
+
+The `setter` function injected has the following signature:
+
+```ts
+export type Setter<T> = (value?: T) => void;
+```
+
+The binding resolution/creation is controlled by `bindingCreation` option. See
+[@inject.binding](#injectbinding) for possible settings.
+
+The following example shows the usage of `@inject.setter` and the injected
+setter function.
 
 ```ts
 export class HelloController {
@@ -141,6 +153,70 @@ export class HelloController {
     return defaultGreet;
   }
 }
+```
+
+Please note the setter function simply binds a `value` to the underlying binding
+using `binding.to(value)`.
+
+To set other types of value providers such as `toDynamicValue`or `toClass`, use
+`@inject.binding` instead.
+
+### @inject.binding
+
+`@inject.binding` injects a binding for the given key. It can be used to bind
+various types of value providers to the underlying binding or configure the
+binding. This is an advanced form of `@inject.setter`, which only allows to set
+a constant value (using `Binding.to(value)` behind the scene) to the underlying
+binding.
+
+Syntax: `@inject.binding(bindingKey: BindingAddress, {bindingCreation?: ...})`.
+
+```ts
+export class HelloController {
+  constructor(
+    @inject.binding('greeting') private greetingBinding: Binding<string>,
+  ) {}
+
+  @get('/hello')
+  async greet() {
+    // Bind `greeting` to a factory function that reads default greeting
+    // from a file or database
+    this.greetingBinding.toDynamicValue(() => readDefaultGreeting());
+    return await this.greetingBinding.get<string>(this.greetingBinding.key);
+  }
+}
+```
+
+The `@inject.binding` takes an optional `metadata` object which can contain
+`bindingCreation` to control how underlying binding is resolved or created based
+on the following values:
+
+```ts
+/**
+ * Policy to control if a binding should be created for the context
+ */
+export enum BindingCreationPolicy {
+  /**
+   * Always create a binding with the key for the context
+   */
+  ALWAYS_CREATE = 'Always',
+  /**
+   * Never create a binding for the context. If the key is not bound in the
+   * context, throw an error.
+   */
+  NEVER_CREATE = 'Never',
+  /**
+   * Create a binding if the key is not bound in the context. Otherwise, return
+   * the existing binding.
+   */
+  CREATE_IF_NOT_BOUND = 'IfNotBound',
+}
+```
+
+For example:
+
+```ts
+@inject.setter('binding-key', {bindingCreation: BindingCreationPolicy.NEVER_CREATES})
 ```
 
 ### @inject.tag

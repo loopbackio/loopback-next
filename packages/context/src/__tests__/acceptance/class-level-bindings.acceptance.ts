@@ -5,6 +5,8 @@
 
 import {expect} from '@loopback/testlab';
 import {
+  Binding,
+  BindingCreationPolicy,
   BindingKey,
   BindingScope,
   Constructor,
@@ -169,6 +171,25 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     expect(await store.getter()).to.equal('456');
   });
 
+  it('creates getter from a value', () => {
+    const getter = Getter.fromValue('data');
+    expect(getter).to.be.a.Function();
+    return expect(getter()).to.be.fulfilledWith('data');
+  });
+
+  it('reports an error if @inject.getter has a non-function target', async () => {
+    ctx.bind('key').to('value');
+
+    class Store {
+      constructor(@inject.getter('key') public getter: string) {}
+    }
+
+    ctx.bind(STORE_KEY).toClass(Store);
+    expect(() => ctx.getSync<Store>(STORE_KEY)).to.throw(
+      'The type of Store.constructor[0] (String) is not a Getter function',
+    );
+  });
+
   describe('in SINGLETON scope', () => {
     it('throws if a getter cannot be resolved by the owning context', async () => {
       class Store {
@@ -317,49 +338,120 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     }
   });
 
-  it('injects a setter function', async () => {
+  describe('@inject.setter', () => {
     class Store {
       constructor(@inject.setter(HASH_KEY) public setter: Setter<string>) {}
     }
 
-    ctx.bind(STORE_KEY).toClass(Store);
-    const store = ctx.getSync<Store>(STORE_KEY);
+    it('injects a setter function', () => {
+      ctx.bind(STORE_KEY).toClass(Store);
+      const store = ctx.getSync<Store>(STORE_KEY);
 
-    expect(store.setter).to.be.Function();
-    store.setter('a-value');
-    expect(ctx.getSync(HASH_KEY)).to.equal('a-value');
-  });
+      expect(store.setter).to.be.Function();
+      store.setter('a-value');
+      expect(ctx.getSync(HASH_KEY)).to.equal('a-value');
+    });
 
-  it('creates getter from a value', () => {
-    const getter = Getter.fromValue('data');
-    expect(getter).to.be.a.Function();
-    return expect(getter()).to.be.fulfilledWith('data');
-  });
+    it('injects a setter function that uses an existing binding', () => {
+      // Create a binding for hash key
+      ctx
+        .bind(HASH_KEY)
+        .to('123')
+        .tag('hash');
+      ctx.bind(STORE_KEY).toClass(Store);
+      const store = ctx.getSync<Store>(STORE_KEY);
+      // Change the hash value
+      store.setter('a-value');
+      expect(ctx.getSync(HASH_KEY)).to.equal('a-value');
+      // The tag is kept
+      expect(ctx.getBinding(HASH_KEY).tagNames).to.containEql('hash');
+    });
 
-  it('reports an error if @inject.getter has a non-function target', async () => {
-    ctx.bind('key').to('value');
+    it('reports an error if @inject.setter has a non-function target', () => {
+      class StoreWithWrongSetterType {
+        constructor(@inject.setter(HASH_KEY) public setter: object) {}
+      }
 
-    class Store {
-      constructor(@inject.getter('key') public getter: string) {}
-    }
+      ctx.bind('key').to('value');
 
-    ctx.bind(STORE_KEY).toClass(Store);
-    expect(() => ctx.getSync<Store>(STORE_KEY)).to.throw(
-      'The type of Store.constructor[0] (String) is not a Getter function',
-    );
-  });
+      ctx.bind(STORE_KEY).toClass(StoreWithWrongSetterType);
+      expect(() => ctx.getSync<Store>(STORE_KEY)).to.throw(
+        'The type of StoreWithWrongSetterType.constructor[0] (Object) is not a Setter function',
+      );
+    });
 
-  it('reports an error if @inject.setter has a non-function target', async () => {
-    ctx.bind('key').to('value');
+    describe('bindingCreation option', () => {
+      it('supports ALWAYS_CREATE', () => {
+        ctx
+          .bind(STORE_KEY)
+          .toClass(givenStoreClass(BindingCreationPolicy.ALWAYS_CREATE));
+        const store = ctx.getSync<Store>(STORE_KEY);
+        store.setter('a-value');
+        const binding1 = ctx.getBinding(HASH_KEY);
+        store.setter('b-value');
+        const binding2 = ctx.getBinding(HASH_KEY);
+        expect(binding1).to.not.exactly(binding2);
+      });
 
-    class Store {
-      constructor(@inject.setter('key') public setter: object) {}
-    }
+      it('supports NEVER_CREATE - throws if not bound', () => {
+        ctx
+          .bind(STORE_KEY)
+          .toClass(givenStoreClass(BindingCreationPolicy.NEVER_CREATE));
+        const store = ctx.getSync<Store>(STORE_KEY);
+        expect(() => store.setter('a-value')).to.throw(
+          /The key 'hash' is not bound to any value in context/,
+        );
+      });
 
-    ctx.bind(STORE_KEY).toClass(Store);
-    expect(() => ctx.getSync<Store>(STORE_KEY)).to.throw(
-      'The type of Store.constructor[0] (Object) is not a Setter function',
-    );
+      it('supports NEVER_CREATE with an existing binding', () => {
+        // Create a binding for hash key
+        const hashBinding = ctx
+          .bind(HASH_KEY)
+          .to('123')
+          .tag('hash');
+        ctx
+          .bind(STORE_KEY)
+          .toClass(givenStoreClass(BindingCreationPolicy.NEVER_CREATE));
+        const store = ctx.getSync<Store>(STORE_KEY);
+        store.setter('a-value');
+        expect(ctx.getBinding(HASH_KEY)).to.exactly(hashBinding);
+        expect(ctx.getSync(HASH_KEY)).to.equal('a-value');
+      });
+
+      it('supports CREATE_IF_NOT_BOUND without an existing binding', async () => {
+        ctx
+          .bind(STORE_KEY)
+          .toClass(givenStoreClass(BindingCreationPolicy.CREATE_IF_NOT_BOUND));
+        const store = ctx.getSync<Store>(STORE_KEY);
+        store.setter('a-value');
+        expect(ctx.getSync(HASH_KEY)).to.equal('a-value');
+      });
+
+      it('supports CREATE_IF_NOT_BOUND with an existing binding', () => {
+        // Create a binding for hash key
+        const hashBinding = ctx
+          .bind(HASH_KEY)
+          .to('123')
+          .tag('hash');
+        ctx
+          .bind(STORE_KEY)
+          .toClass(givenStoreClass(BindingCreationPolicy.CREATE_IF_NOT_BOUND));
+        const store = ctx.getSync<Store>(STORE_KEY);
+        store.setter('a-value');
+        expect(ctx.getBinding(HASH_KEY)).to.exactly(hashBinding);
+        expect(ctx.getSync(HASH_KEY)).to.equal('a-value');
+      });
+
+      function givenStoreClass(bindingCreation?: BindingCreationPolicy) {
+        class StoreWithInjectSetterMetadata {
+          constructor(
+            @inject.setter(HASH_KEY, {bindingCreation})
+            public setter: Setter<string>,
+          ) {}
+        }
+        return StoreWithInjectSetterMetadata;
+      }
+    });
   });
 
   it('injects a nested property', async () => {
@@ -372,6 +464,104 @@ describe('Context bindings - Injecting dependencies of classes', () => {
 
     const resolved = await ctx.get<TestComponent>('component');
     expect(resolved.config).to.equal('test-config');
+  });
+
+  describe('@inject.binding', () => {
+    class Store {
+      constructor(@inject.binding(HASH_KEY) public binding: Binding<string>) {}
+    }
+
+    it('injects a binding', () => {
+      ctx.bind(STORE_KEY).toClass(Store);
+      const store = ctx.getSync<Store>(STORE_KEY);
+      expect(store.binding).to.be.instanceOf(Binding);
+    });
+
+    it('injects a binding that exists', () => {
+      // Create a binding for hash key
+      const hashBinding = ctx
+        .bind(HASH_KEY)
+        .to('123')
+        .tag('hash');
+      ctx.bind(STORE_KEY).toClass(Store);
+      const store = ctx.getSync<Store>(STORE_KEY);
+      expect(store.binding).to.be.exactly(hashBinding);
+    });
+
+    it('reports an error if @inject.binding has a wrong target type', () => {
+      class StoreWithWrongBindingType {
+        constructor(@inject.binding(HASH_KEY) public binding: object) {}
+      }
+
+      ctx.bind(STORE_KEY).toClass(StoreWithWrongBindingType);
+      expect(() => ctx.getSync<Store>(STORE_KEY)).to.throw(
+        'The type of StoreWithWrongBindingType.constructor[0] (Object) is not Binding',
+      );
+    });
+
+    describe('bindingCreation option', () => {
+      it('supports ALWAYS_CREATE', () => {
+        ctx
+          .bind(STORE_KEY)
+          .toClass(givenStoreClass(BindingCreationPolicy.ALWAYS_CREATE));
+        const binding1 = ctx.getSync<Store>(STORE_KEY).binding;
+        const binding2 = ctx.getSync<Store>(STORE_KEY).binding;
+        expect(binding1).to.not.be.exactly(binding2);
+      });
+
+      it('supports NEVER_CREATE - throws if not bound', () => {
+        ctx
+          .bind(STORE_KEY)
+          .toClass(givenStoreClass(BindingCreationPolicy.NEVER_CREATE));
+        expect(() => ctx.getSync<Store>(STORE_KEY)).to.throw(
+          /The key 'hash' is not bound to any value in context/,
+        );
+      });
+
+      it('supports NEVER_CREATE with an existing binding', () => {
+        // Create a binding for hash key
+        const hashBinding = ctx
+          .bind(HASH_KEY)
+          .to('123')
+          .tag('hash');
+        ctx
+          .bind(STORE_KEY)
+          .toClass(givenStoreClass(BindingCreationPolicy.NEVER_CREATE));
+        const store = ctx.getSync<Store>(STORE_KEY);
+        expect(store.binding).to.be.exactly(hashBinding);
+      });
+
+      it('supports CREATE_IF_NOT_BOUND without an existing binding', async () => {
+        ctx
+          .bind(STORE_KEY)
+          .toClass(givenStoreClass(BindingCreationPolicy.CREATE_IF_NOT_BOUND));
+        const store = ctx.getSync<Store>(STORE_KEY);
+        expect(store.binding).to.be.instanceOf(Binding);
+      });
+
+      it('supports CREATE_IF_NOT_BOUND with an existing binding', () => {
+        // Create a binding for hash key
+        const hashBinding = ctx
+          .bind(HASH_KEY)
+          .to('123')
+          .tag('hash');
+        ctx
+          .bind(STORE_KEY)
+          .toClass(givenStoreClass(BindingCreationPolicy.CREATE_IF_NOT_BOUND));
+        const store = ctx.getSync<Store>(STORE_KEY);
+        expect(store.binding).to.be.exactly(hashBinding);
+      });
+
+      function givenStoreClass(bindingCreation?: BindingCreationPolicy) {
+        class StoreWithInjectBindingMetadata {
+          constructor(
+            @inject.binding(HASH_KEY, {bindingCreation})
+            public binding: Binding<string>,
+          ) {}
+        }
+        return StoreWithInjectBindingMetadata;
+      }
+    });
   });
 
   it('injects context with @inject.context', () => {

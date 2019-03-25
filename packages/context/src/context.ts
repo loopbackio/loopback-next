@@ -38,7 +38,11 @@ if (!Symbol.asyncIterator) {
   // tslint:disable-next-line:no-any
   (Symbol as any).asyncIterator = Symbol.for('Symbol.asyncIterator');
 }
-// This import must happen after the polyfill
+/**
+ * This import must happen after the polyfill.
+ *
+ * WARNING: VSCode organize import may change the order of this import
+ */
 import {iterator, multiple} from 'p-event';
 
 const debug = debugFactory('loopback:context');
@@ -752,6 +756,30 @@ export class Context extends EventEmitter {
   }
 
   /**
+   * Find or create a binding for the given key
+   * @param key Binding address
+   * @param policy Binding creation policy
+   */
+  findOrCreateBinding<T>(
+    key: BindingAddress<T>,
+    policy?: BindingCreationPolicy,
+  ) {
+    let binding: Binding<T>;
+    if (policy === BindingCreationPolicy.ALWAYS_CREATE) {
+      binding = this.bind(key);
+    } else if (policy === BindingCreationPolicy.NEVER_CREATE) {
+      binding = this.getBinding(key);
+    } else if (this.isBound(key)) {
+      // CREATE_IF_NOT_BOUND - the key is bound
+      binding = this.getBinding(key);
+    } else {
+      // CREATE_IF_NOT_BOUND - the key is not bound
+      binding = this.bind(key);
+    }
+    return binding;
+  }
+
+  /**
    * Get the value bound to the given key.
    *
    * This is an internal version that preserves the dual sync/async result
@@ -832,4 +860,24 @@ class ContextSubscription implements Subscription {
   get closed() {
     return this._closed;
   }
+}
+
+/**
+ * Policy to control if a binding should be created for the context
+ */
+export enum BindingCreationPolicy {
+  /**
+   * Always create a binding with the key for the context
+   */
+  ALWAYS_CREATE = 'Always',
+  /**
+   * Never create a binding for the context. If the key is not bound in the
+   * context, throw an error.
+   */
+  NEVER_CREATE = 'Never',
+  /**
+   * Create a binding if the key is not bound in the context. Otherwise, return
+   * the existing binding.
+   */
+  CREATE_IF_NOT_BOUND = 'IfNotBound',
 }
