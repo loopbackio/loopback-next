@@ -185,6 +185,27 @@ describe('createBindingFromClass()', () => {
     expect(binding.key).to.eql('classes.MyClass');
   });
 
+  it('honors namespace with @bind', () => {
+    @bind({tags: {namespace: 'services'}})
+    class MyService {}
+
+    const ctx = new Context();
+    const binding = givenBindingFromClass(MyService, ctx);
+
+    expect(binding.key).to.eql('services.MyService');
+  });
+
+  it('honors namespace with options', () => {
+    class MyService {}
+
+    const ctx = new Context();
+    const binding = givenBindingFromClass(MyService, ctx, {
+      namespace: 'services',
+    });
+
+    expect(binding.key).to.eql('services.MyService');
+  });
+
   function givenBindingFromClass(
     cls: Constructor<unknown>,
     ctx: Context = new Context(),

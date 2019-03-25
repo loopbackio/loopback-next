@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.2.0...@loopback/repository@1.2.1) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/repository
+
+
+
+
+
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.8...@loopback/repository@1.2.0) (2019-03-22)
+
+
+### Bug Fixes
+
+* **repository:** support embedded models in nested properties ([d298ec8](https://github.com/strongloop/loopback-next/commit/d298ec8))
+
+
+### Features
+
+* **context:** honor binding scope from [@bind](https://github.com/bind) ([3b30f01](https://github.com/strongloop/loopback-next/commit/3b30f01))
+* **repository:** add PATCH and DELETE for HasOne relation ([5936fb9](https://github.com/strongloop/loopback-next/commit/5936fb9))
+* **repository:** allow optional property definition on belongsTo decorator ([11c7baa](https://github.com/strongloop/loopback-next/commit/11c7baa))
+
+
+
+
+
 ## [1.1.8](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.7...@loopback/repository@1.1.8) (2019-03-12)
 
 

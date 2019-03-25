@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.8.0...@loopback/context@1.8.1) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/context
+
+
+
+
+
+# [1.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.7.0...@loopback/context@1.8.0) (2019-03-22)
+
+
+### Features
+
+* **context:** allow namespace tag for createBindingFromClass ([f6fe55e](https://github.com/strongloop/loopback-next/commit/f6fe55e))
+* **context:** honor binding scope from [@bind](https://github.com/bind) ([3b30f01](https://github.com/strongloop/loopback-next/commit/3b30f01))
+* **context:** improve typing for binding related methods ([f6cf0c6](https://github.com/strongloop/loopback-next/commit/f6cf0c6))
+* **context:** tidy up context for resolving injections of a singleton binding ([f5bf43c](https://github.com/strongloop/loopback-next/commit/f5bf43c))
+
+
+
+
+
 # [1.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.6.0...@loopback/context@1.7.0) (2019-03-12)
 
 

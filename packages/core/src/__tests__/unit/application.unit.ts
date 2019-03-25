@@ -135,6 +135,37 @@ describe('Application', () => {
       expect(app.getSync('my-provider')).to.be.eql('my-str');
     });
 
+    it('binds classes with @bind from a component', () => {
+      @bind({scope: BindingScope.SINGLETON, tags: ['foo']})
+      class MyClass {}
+
+      class MyComponentWithClasses implements Component {
+        classes = {'my-class': MyClass};
+      }
+
+      app.component(MyComponentWithClasses);
+      const binding = app.getBinding('my-class');
+      expect(binding.scope).to.eql(BindingScope.SINGLETON);
+      expect(binding.tagNames).to.containEql('foo');
+    });
+
+    it('binds providers from a component', () => {
+      @bind({tags: ['foo']})
+      class MyProvider implements Provider<string> {
+        value() {
+          return 'my-str';
+        }
+      }
+
+      class MyComponentWithProviders implements Component {
+        providers = {'my-provider': MyProvider};
+      }
+
+      app.component(MyComponentWithProviders);
+      const binding = app.getBinding('my-provider');
+      expect(binding.tagNames).to.containEql('foo');
+    });
+
     it('binds from a component constructor', () => {
       class MyComponentWithDI implements Component {
         constructor(@inject(CoreBindings.APPLICATION_INSTANCE) ctx: Context) {

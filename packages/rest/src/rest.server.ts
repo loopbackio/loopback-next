@@ -826,7 +826,7 @@ export function createBodyParserBinding(
     key || `${RestBindings.REQUEST_BODY_PARSER}.${parserClass.name}`;
   return Binding.bind<BodyParser>(address)
     .toClass(parserClass)
-    .inScope(BindingScope.SINGLETON)
+    .inScope(BindingScope.TRANSIENT)
     .tag(REQUEST_BODY_PARSER_TAG);
 }
 

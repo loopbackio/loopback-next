@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.9.0...@loopback/rest@1.9.1) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/rest
+
+
+
+
+
+# [1.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.8.0...@loopback/rest@1.9.0) (2019-03-22)
+
+
+### Features
+
+* **context:** honor binding scope from [@bind](https://github.com/bind) ([3b30f01](https://github.com/strongloop/loopback-next/commit/3b30f01))
+* **context:** tidy up context for resolving injections of a singleton binding ([f5bf43c](https://github.com/strongloop/loopback-next/commit/f5bf43c))
+* **rest:** add `requestedBaseUrl` API to RequestContext ([912bece](https://github.com/strongloop/loopback-next/commit/912bece))
+* **testlab:** add dummy HTTPS config ([a32c885](https://github.com/strongloop/loopback-next/commit/a32c885))
+
+
+
+
+
 # [1.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.7.0...@loopback/rest@1.8.0) (2019-03-12)
 
 

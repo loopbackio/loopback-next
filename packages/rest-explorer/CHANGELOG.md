@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.13](https://github.com/strongloop/loopback-next/compare/@loopback/rest-explorer@1.1.12...@loopback/rest-explorer@1.1.13) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/rest-explorer
+
+
+
+
+
+## [1.1.12](https://github.com/strongloop/loopback-next/compare/@loopback/rest-explorer@1.1.11...@loopback/rest-explorer@1.1.12) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/rest-explorer
+
+
+
+
+
 ## [1.1.11](https://github.com/strongloop/loopback-next/compare/@loopback/rest-explorer@1.1.10...@loopback/rest-explorer@1.1.11) (2019-03-12)
 
 **Note:** Version bump only for package @loopback/rest-explorer

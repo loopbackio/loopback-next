@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/service-proxy@1.1.0...@loopback/service-proxy@1.1.1) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/service-proxy
+
+
+
+
+
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/service-proxy@1.0.10...@loopback/service-proxy@1.1.0) (2019-03-22)
+
+
+### Features
+
+* **context:** honor binding scope from [@bind](https://github.com/bind) ([3b30f01](https://github.com/strongloop/loopback-next/commit/3b30f01))
+
+
+
+
+
 ## [1.0.10](https://github.com/strongloop/loopback-next/compare/@loopback/service-proxy@1.0.9...@loopback/service-proxy@1.0.10) (2019-03-12)
 
 

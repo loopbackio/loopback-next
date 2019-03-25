@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.11.0...@loopback/docs@1.11.1) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/docs
+
+
+
+
+
+# [1.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.10.0...@loopback/docs@1.11.0) (2019-03-22)
+
+
+### Bug Fixes
+
+* **docs:** add missing backtick to table ([2797153](https://github.com/strongloop/loopback-next/commit/2797153))
+* **docs:** add steps to call SOAP services ([66da58c](https://github.com/strongloop/loopback-next/commit/66da58c))
+* **docs:** change relative paths to absolute ([af92d42](https://github.com/strongloop/loopback-next/commit/af92d42))
+
+
+### Features
+
+* **context:** honor binding scope from [@bind](https://github.com/bind) ([3b30f01](https://github.com/strongloop/loopback-next/commit/3b30f01))
+* **context:** tidy up context for resolving injections of a singleton binding ([f5bf43c](https://github.com/strongloop/loopback-next/commit/f5bf43c))
+
+
+
+
+
 # [1.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.9.1...@loopback/docs@1.10.0) (2019-03-12)
 
 
