@@ -14,6 +14,12 @@ LoopBack 4 comes with the following example projects:
 - **[rpc-server](https://github.com/strongloop/loopback-next/tree/master/examples/rpc-server)**:
   An example showing how to implement a made-up RPC protocol.
 
+- **[greeter-extension](https://github.com/strongloop/loopback-next/tree/master/examples/greeter-extension)**:
+  An example showing how to implement the extension point/extension pattern.
+
+- **[loopback4-example-shopping](https://github.com/strongloop/loopback4-example-shopping)**:
+  An online e-commerce demo to validate/test the LoopBack 4 framework readiness.
+
 You can download the example projects using our CLI tool `lb4`:
 
 ```sh
@@ -26,6 +32,7 @@ $ lb4 example
   rpc-server: A basic RPC server using a made-up protocol.
   soap-calculator: An example on how to integrate SOAP web services.
   express-composition: A simple Express application that uses LoopBack 4 REST API.
+  greeter-extension: An example showing how to implement the extension point/extension pattern.
 ```
 
 Please follow the instructions in

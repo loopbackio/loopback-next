@@ -4,7 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Binding, BindingScope, filterByTag, Context, ContextView} from '../..';
+import {
+  Binding,
+  BindingScope,
+  Context,
+  ContextView,
+  createViewGetter,
+  filterByTag,
+} from '../..';
 
 describe('ContextView', () => {
   let app: Context;
@@ -131,6 +138,22 @@ describe('ContextView', () => {
         taggedAsFoo.on(t, () => events.push(t)),
       );
     }
+  });
+
+  describe('createViewGetter', () => {
+    it('creates a getter function for the binding filter', async () => {
+      const getter = createViewGetter(server, filterByTag('foo'));
+      expect(await getter()).to.eql(['BAR', 'FOO']);
+      server
+        .bind('abc')
+        .to('ABC')
+        .tag('abc');
+      server
+        .bind('xyz')
+        .to('XYZ')
+        .tag('foo');
+      expect(await getter()).to.eql(['BAR', 'XYZ', 'FOO']);
+    });
   });
 
   function givenContextView() {

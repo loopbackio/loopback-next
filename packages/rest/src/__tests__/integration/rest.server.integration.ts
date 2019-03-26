@@ -6,12 +6,12 @@
 import {Application} from '@loopback/core';
 import {
   createClientForHandler,
+  createRestAppClient,
   expect,
   givenHttpServerConfig,
   httpsGetAsync,
   itSkippedOnTravis,
   supertest,
-  createRestAppClient,
 } from '@loopback/testlab';
 import * as fs from 'fs';
 import {IncomingMessage, ServerResponse} from 'http';
@@ -26,11 +26,11 @@ import {
   Request,
   requestBody,
   RequestContext,
+  RestApplication,
   RestBindings,
   RestComponent,
   RestServer,
   RestServerConfig,
-  RestApplication,
 } from '../..';
 const readFileAsync = util.promisify(fs.readFile);
 
@@ -38,20 +38,76 @@ const FIXTURES = path.resolve(__dirname, '../../../fixtures');
 const ASSETS = path.resolve(FIXTURES, 'assets');
 
 describe('RestServer (integration)', () => {
-  it('exports url property', async () => {
-    const server = await givenAServer();
-    server.handler(dummyRequestHandler);
-    expect(server.url).to.be.undefined();
-    await server.start();
-    expect(server)
-      .to.have.property('url')
-      .which.is.a.String()
-      .match(/http|https\:\/\//);
-    await supertest(server.url)
-      .get('/')
-      .expect(200, 'Hello');
-    await server.stop();
-    expect(server.url).to.be.undefined();
+  describe('url/rootUrl properties', () => {
+    let server: RestServer;
+
+    afterEach('shuts down server', async () => {
+      if (!server) return;
+      await server.stop();
+      expect(server.url).to.be.undefined();
+      expect(server.rootUrl).to.be.undefined();
+    });
+
+    describe('url', () => {
+      it('exports url property', async () => {
+        server = await givenAServer();
+        server.handler(dummyRequestHandler);
+        expect(server.url).to.be.undefined();
+        await server.start();
+        expect(server)
+          .to.have.property('url')
+          .which.is.a.String()
+          .match(/http|https\:\/\//);
+        await supertest(server.url)
+          .get('/')
+          .expect(200, 'Hello');
+      });
+
+      it('includes basePath in the url property', async () => {
+        server = await givenAServer({rest: {basePath: '/api'}});
+        server.handler(dummyRequestHandler);
+        expect(server.url).to.be.undefined();
+        await server.start();
+        expect(server)
+          .to.have.property('url')
+          .which.is.a.String()
+          .match(/http|https\:\/\//);
+        expect(server.url).to.match(/api$/);
+        await supertest(server.url)
+          .get('/')
+          .expect(200, 'Hello');
+      });
+    });
+
+    describe('rootUrl', () => {
+      it('exports rootUrl property', async () => {
+        server = await givenAServer();
+        server.handler(dummyRequestHandler);
+        expect(server.rootUrl).to.be.undefined();
+        await server.start();
+        expect(server)
+          .to.have.property('rootUrl')
+          .which.is.a.String()
+          .match(/http|https\:\/\//);
+        await supertest(server.rootUrl)
+          .get('/api')
+          .expect(200, 'Hello');
+      });
+
+      it('does not include basePath in rootUrl', async () => {
+        server = await givenAServer({rest: {basePath: '/api'}});
+        server.handler(dummyRequestHandler);
+        expect(server.rootUrl).to.be.undefined();
+        await server.start();
+        expect(server)
+          .to.have.property('rootUrl')
+          .which.is.a.String()
+          .match(/http|https\:\/\//);
+        await supertest(server.rootUrl)
+          .get('/api')
+          .expect(200, 'Hello');
+      });
+    });
   });
 
   it('parses query without decorated rest query params', async () => {
