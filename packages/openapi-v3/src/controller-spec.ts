@@ -3,29 +3,28 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {MetadataInspector, DecoratorFactory} from '@loopback/context';
-
+import {DecoratorFactory, MetadataInspector} from '@loopback/context';
 import {
+  ComponentsObject,
+  ISpecificationExtension,
+  isReferenceObject,
   OperationObject,
   ParameterObject,
   PathObject,
-  ComponentsObject,
+  ReferenceObject,
   RequestBodyObject,
   ResponseObject,
-  ReferenceObject,
   SchemaObject,
-  isReferenceObject,
-  ISpecificationExtension,
 } from '@loopback/openapi-v3-types';
 import {
   getJsonSchema,
-  JsonSchemaOptions,
   getJsonSchemaRef,
+  JsonSchemaOptions,
 } from '@loopback/repository-json-schema';
-import {OAI3Keys} from './keys';
-import {jsonToSchemaObject} from './json-to-schema';
 import * as _ from 'lodash';
 import {resolveSchema} from './generate-schema';
+import {jsonToSchemaObject} from './json-to-schema';
+import {OAI3Keys} from './keys';
 
 const debug = require('debug')('loopback:openapi3:metadata:controller-spec');
 
@@ -349,9 +348,9 @@ export function getControllerSpec(constructor: Function): ControllerSpec {
   return spec;
 }
 
-export function getModelSchemaRef(
-  modelCtor: Function,
-  options: JsonSchemaOptions,
+export function getModelSchemaRef<T extends object = any>(
+  modelCtor: Function & {prototype: T},
+  options: JsonSchemaOptions<T> = {},
 ) {
   const jsonSchema = getJsonSchemaRef(modelCtor, options);
   return jsonToSchemaObject(jsonSchema);

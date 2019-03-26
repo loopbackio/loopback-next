@@ -14,8 +14,8 @@ import {
   del,
   get,
   getFilterSchemaFor,
-  getWhereSchemaFor,
   getModelSchemaRef,
+  getWhereSchemaFor,
   param,
   patch,
   post,
@@ -38,7 +38,16 @@ export class TodoListController {
       },
     },
   })
-  async create(@requestBody() obj: TodoList): Promise<TodoList> {
+  async create(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(TodoList, {exclude: ['id']}),
+        },
+      },
+    })
+    obj: Pick<TodoList, Exclude<keyof TodoList, 'id'>>,
+  ): Promise<TodoList> {
     return await this.todoListRepository.create(obj);
   }
 
@@ -86,7 +95,14 @@ export class TodoListController {
     },
   })
   async updateAll(
-    @requestBody() obj: Partial<TodoList>,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(TodoList, {partial: true}),
+        },
+      },
+    })
+    obj: Partial<TodoList>,
     @param.query.object('where', getWhereSchemaFor(TodoList)) where?: Where,
   ): Promise<Count> {
     return await this.todoListRepository.updateAll(obj, where);
@@ -113,7 +129,14 @@ export class TodoListController {
   })
   async updateById(
     @param.path.number('id') id: number,
-    @requestBody() obj: TodoList,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(TodoList, {partial: true}),
+        },
+      },
+    })
+    obj: Partial<TodoList>,
   ): Promise<void> {
     await this.todoListRepository.updateById(id, obj);
   }

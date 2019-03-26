@@ -14,8 +14,16 @@ import {
 import {JSONSchema6 as JSONSchema} from 'json-schema';
 import {JSON_SCHEMA_KEY} from './keys';
 
-export interface JsonSchemaOptions {
+// tslint:disable-next-line:no-any
+export interface JsonSchemaOptions<T extends object = any> {
   includeRelations?: boolean;
+
+  /// List of properties to exclude from the schema
+  exclude?: (keyof T)[];
+
+  /// Make all properties optional
+  partial?: boolean;
+
   visited?: {[key: string]: JSONSchema};
 }
 
@@ -24,13 +32,14 @@ export interface JsonSchemaOptions {
  * in a cache. If not, one is generated and then cached.
  * @param ctor Contructor of class to get JSON Schema from
  */
-export function getJsonSchema(
-  ctor: Function,
-  options: JsonSchemaOptions = {},
+// tslint:disable-next-line:no-any
+export function getJsonSchema<T extends object = any>(
+  ctor: Function & {prototype: T},
+  options: JsonSchemaOptions<T> = {},
 ): JSONSchema {
   // NOTE(shimks) currently impossible to dynamically update
   const cached = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor);
-  const key = options.includeRelations ? 'modelWithRelations' : 'modelOnly';
+  const key = 'config:' + JSON.stringify(options);
 
   if (cached && cached[key]) {
     return cached[key];
@@ -49,9 +58,10 @@ export function getJsonSchema(
   }
 }
 
-export function getJsonSchemaRef(
-  ctor: Function,
-  options: JsonSchemaOptions = {},
+// tslint:disable-next-line:no-any
+export function getJsonSchemaRef<T extends object = any>(
+  ctor: Function & {prototype: T},
+  options: JsonSchemaOptions<T> = {},
 ): JSONSchema {
   const schemaWithDefinitions = getJsonSchema(ctor, options);
   const key = schemaWithDefinitions.title;
@@ -198,9 +208,9 @@ export function modelToJsonSchemaRef(
  * reflection API
  * @param ctor Constructor of class to convert from
  */
-export function modelToJsonSchema(
-  ctor: Function,
-  options: JsonSchemaOptions = {},
+export function modelToJsonSchema<T extends object>(
+  ctor: Function & {prototype: T},
+  options: JsonSchemaOptions<T> = {},
 ): JSONSchema {
   options.visited = options.visited || {};
 
@@ -214,6 +224,12 @@ export function modelToJsonSchema(
   }
 
   let title = meta.title || ctor.name;
+  if (options.partial) {
+    title += 'Partial';
+  }
+  if (options.exclude) {
+    title += `Without(${options.exclude.join(',')})`;
+  }
   if (options.includeRelations) {
     title += 'WithRelations';
   }
@@ -227,8 +243,15 @@ export function modelToJsonSchema(
     result.description = meta.description;
   }
 
+  const propertySchemaOptions: JsonSchemaOptions = Object.assign({}, options);
+  delete propertySchemaOptions.exclude;
+
   for (const p in meta.properties) {
     if (!meta.properties[p].type) {
+      continue;
+    }
+
+    if (options.exclude && options.exclude.includes(p as keyof T)) {
       continue;
     }
 
@@ -260,8 +283,12 @@ export function modelToJsonSchema(
       continue;
     }
 
-    const propSchema = getJsonSchema(referenceType, options);
+    const propSchema = getJsonSchema(referenceType, propertySchemaOptions);
     includeReferencedSchema(referenceType.name, propSchema);
+  }
+
+  if (options.partial) {
+    delete result.required;
   }
 
   if (options.includeRelations) {
