@@ -19,10 +19,10 @@ import {
   ControllerFactory,
   ControllerRoute,
 } from './controller-route';
+import {ExternalExpressRoutes} from './external-express-routes';
 import {validateApiPath} from './openapi-path';
 import {RestRouter} from './rest-router';
 import {ResolvedRoute, RouteEntry} from './route-entry';
-import {ExternalExpressRoutes} from './external-express-routes';
 import {TrieRouter} from './trie-router';
 
 const debug = debugFactory('loopback:rest:routing-table');
@@ -137,7 +137,7 @@ export class RoutingTable {
 
     if (this._externalRoutes) {
       debug(
-        'No API route found for %s %s, trying to find a static asset',
+        'No API route found for %s %s, trying to find an external Express route',
         request.method,
         request.path,
       );

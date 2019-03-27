@@ -14,6 +14,12 @@ REST API can be mounted to an Express application and be used as middleware.
 This way the user can mix and match features from both frameworks to suit their
 needs.
 
+{% include note.html content="
+If you want to use LoopBack as the host instead and mount your Express
+application on a LoopBack 4 application, see
+[Mounting an Express Router](Routes.md#mounting-an-express-router).
+" %}
+
 This tutorial assumes familiarity with scaffolding a LoopBack 4 application,
 [`Models`](Model.md), [`DataSources`](DataSources.md),
 [`Repositories`](Repositories.md), and [`Controllers`](Controllers.md). To see

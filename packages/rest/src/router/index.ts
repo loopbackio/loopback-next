@@ -21,3 +21,4 @@ export * from './routing-table';
 export * from './route-sort';
 export * from './openapi-path';
 export * from './trie';
+export * from './router-spec';

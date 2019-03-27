@@ -226,3 +226,64 @@ export class MyApplication extends RestApplication {
   }
 }
 ```
+
+## Mounting an Express Router
+
+If you have an existing [Express](https://expressjs.com/) application that you
+want to use with LoopBack 4, you can mount the Express application on top of a
+LoopBack 4 application. This way you can mix and match both frameworks, while
+using LoopBack as the host. You can also do the opposite and use Express as the
+host by mounting LoopBack 4 REST API on an Express application. See
+[Creating an Express Application with LoopBack REST API](express-with-lb4-rest-tutorial.md)
+for the tutorial.
+
+Mounting an Express router on a LoopBack 4 application can be done using the
+`mountExpressRouter` function provided by both
+[`RestApplication`](http://apidocs.loopback.io/@loopback%2fdocs/rest.html#RestApplication)
+and
+[`RestServer`](http://apidocs.loopback.io/@loopback%2fdocs/rest.html#RestServer).
+
+Example use:
+
+{% include note.html content="
+Make sure [express](https://www.npmjs.com/package/express) is installed.
+" %}
+
+{% include code-caption.html content="src/express-app.ts" %}
+
+```ts
+import {Request, Response} from 'express';
+import * as express from 'express';
+
+const legacyApp = express();
+
+// your existing Express routes
+legacyApp.get('/pug', function(_req: Request, res: Response) {
+  res.send('Pug!');
+});
+
+export {legacyApp};
+```
+
+{% include code-caption.html content="src/application.ts" %}
+
+```ts
+import {RestApplication} from '@loopback/rest';
+
+const legacyApp = require('./express-app').legacyApp;
+
+const openApiSpecForLegacyApp: RouterSpec = {
+  // insert your spec here, your 'paths', 'components', and 'tags' will be used
+};
+
+class MyApplication extends RestApplication {
+  constructor(/* ... */) {
+    // ...
+
+    this.mountExpressRouter('/dogs', legacyApp, openApiSpecForLegacyApp);
+  }
+}
+```
+
+Any routes you define in your `legacyApp` will be mounted on top of the `/dogs`
+base path, e.g. if you visit the `/dogs/pug` endpoint, you'll see `Pug!`.
