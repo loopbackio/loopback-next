@@ -3,18 +3,24 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, Constructor, BindingAddress} from '@loopback/context';
+import {Binding, BindingAddress, Constructor} from '@loopback/context';
 import {Application, ApplicationConfig, Server} from '@loopback/core';
 import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
 import {PathParams} from 'express-serve-static-core';
 import {ServeStaticOptions} from 'serve-static';
 import {format} from 'util';
+import {BodyParser} from './body-parsers';
 import {RestBindings} from './keys';
 import {RestComponent} from './rest.component';
 import {HttpRequestListener, HttpServerLike, RestServer} from './rest.server';
-import {ControllerClass, ControllerFactory, RouteEntry} from './router';
+import {
+  ControllerClass,
+  ControllerFactory,
+  ExpressRequestHandler,
+  RouteEntry,
+} from './router';
+import {RouterSpec} from './router/router-spec';
 import {SequenceFunction, SequenceHandler} from './sequence';
-import {BodyParser} from './body-parsers';
 
 export const ERR_NO_MULTI_SERVER = format(
   'RestApplication does not support multiple servers!',
@@ -263,5 +269,24 @@ export class RestApplication extends Application implements HttpServerLike {
    */
   api(spec: OpenApiSpec): Binding {
     return this.bind(RestBindings.API_SPEC).to(spec);
+  }
+
+  /**
+   * Mount an Express router to expose additional REST endpoints handled
+   * via legacy Express-based stack.
+   *
+   * @param basePath Path where to mount the router at, e.g. `/` or `/api`.
+   * @param router The Express router to handle the requests.
+   * @param spec A partial OpenAPI spec describing endpoints provided by the
+   * router. LoopBack will prepend `basePath` to all endpoints automatically.
+   * This argument is optional. You can leave it out if you don't want to
+   * document the routes.
+   */
+  mountExpressRouter(
+    basePath: string,
+    router: ExpressRequestHandler,
+    spec?: RouterSpec,
+  ): void {
+    this.restServer.mountExpressRouter(basePath, router, spec);
   }
 }
