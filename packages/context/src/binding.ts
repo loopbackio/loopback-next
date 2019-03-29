@@ -212,6 +212,15 @@ export class Binding<T = BoundValue> {
   }
 
   /**
+   * Clear the cache
+   */
+  private _clearCache() {
+    if (!this._cache) return;
+    // WeakMap does not have a `clear` method
+    this._cache = new WeakMap();
+  }
+
+  /**
    * This is an internal function optimized for performance.
    * Users should use `@inject(key)` or `ctx.get(key)` instead.
    *
@@ -346,6 +355,7 @@ export class Binding<T = BoundValue> {
    * @param scope Binding scope
    */
   inScope(scope: BindingScope): this {
+    if (this._scope !== scope) this._clearCache();
     this._scope = scope;
     return this;
   }
@@ -357,7 +367,7 @@ export class Binding<T = BoundValue> {
    */
   applyDefaultScope(scope: BindingScope): this {
     if (!this._scope) {
-      this._scope = scope;
+      this.inScope(scope);
     }
     return this;
   }
@@ -367,6 +377,8 @@ export class Binding<T = BoundValue> {
    * @param getValue getValue function
    */
   private _setValueGetter(getValue: ValueGetter<T>) {
+    // Clear the cache
+    this._clearCache();
     this._getValue = getValue;
   }
 
