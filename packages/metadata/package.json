@@ -27,7 +27,7 @@
     "@loopback/build": "^1.4.0",
     "@loopback/testlab": "^1.2.1",
     "@loopback/tslint-config": "^2.0.3",
-    "@types/debug": "^4.1.0",
+    "@types/debug": "^4.1.3",
     "@types/lodash": "^4.14.106",
     "@types/node": "^10.11.2"
   },
