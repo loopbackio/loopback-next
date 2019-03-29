@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
+import {expect, sinon, SinonSpy} from '@loopback/testlab';
 import {
   Binding,
   BindingScope,
@@ -211,6 +211,68 @@ describe('Binding', () => {
       await expect(ctx.get(binding.key)).to.be.rejectedWith(
         /Binding foo is not bound to a value yet/,
       );
+    });
+  });
+
+  describe('cache', () => {
+    let spy: SinonSpy;
+    beforeEach(() => {
+      spy = sinon.spy();
+    });
+
+    it('clears cache if scope changes', () => {
+      const indexBinding = ctx
+        .bind<number>('index')
+        .toDynamicValue(spy)
+        .inScope(BindingScope.SINGLETON);
+
+      ctx.getSync(indexBinding.key);
+      sinon.assert.calledOnce(spy);
+      spy.resetHistory();
+
+      // Singleton
+      ctx.getSync(indexBinding.key);
+      sinon.assert.notCalled(spy);
+      spy.resetHistory();
+
+      indexBinding.inScope(BindingScope.CONTEXT);
+      ctx.getSync(indexBinding.key);
+      sinon.assert.calledOnce(spy);
+    });
+
+    it('clears cache if _getValue changes', () => {
+      const providerSpy = sinon.spy();
+      class IndexProvider implements Provider<number> {
+        value() {
+          return providerSpy();
+        }
+      }
+      const indexBinding = ctx
+        .bind<number>('index')
+        .toDynamicValue(spy)
+        .inScope(BindingScope.SINGLETON);
+
+      ctx.getSync(indexBinding.key);
+      sinon.assert.calledOnce(spy);
+      spy.resetHistory();
+
+      // Singleton
+      ctx.getSync(indexBinding.key);
+      sinon.assert.notCalled(spy);
+      spy.resetHistory();
+
+      // Now change the value getter
+      indexBinding.toProvider(IndexProvider);
+      ctx.getSync(indexBinding.key);
+      sinon.assert.notCalled(spy);
+      sinon.assert.calledOnce(providerSpy);
+      spy.resetHistory();
+      providerSpy.resetHistory();
+
+      // Singleton
+      ctx.getSync(indexBinding.key);
+      sinon.assert.notCalled(spy);
+      sinon.assert.notCalled(providerSpy);
     });
   });
 
