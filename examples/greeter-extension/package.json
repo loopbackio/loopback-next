@@ -46,8 +46,8 @@
     "@loopback/tslint-config": "^2.0.0",
     "@types/debug": "0.0.30",
     "@types/node": "^10.11.2",
-    "tslint": "^5.12.0",
-    "typescript": "^3.2.2"
+    "tslint": "^5.14.0",
+    "typescript": "^3.4.1"
   },
   "dependencies": {
     "@loopback/context": "^1.4.0",
