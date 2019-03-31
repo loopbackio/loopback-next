@@ -5,9 +5,17 @@
 
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
 import {Client, createRestAppClient, expect} from '@loopback/testlab';
+import * as express from 'express';
+import {Request, Response} from 'express';
 import * as fs from 'fs';
 import * as path from 'path';
-import {RestApplication, RestServer, RestServerConfig, get} from '../..';
+import {
+  get,
+  RestApplication,
+  RestServer,
+  RestServerConfig,
+  RouterSpec,
+} from '../..';
 
 const ASSETS = path.resolve(__dirname, '../../../fixtures/assets');
 
@@ -161,6 +169,103 @@ describe('RestApplication (integration)', () => {
     client = createRestAppClient(restApp);
     const response = await client.get('/custom/ping').expect(304);
     await client.get(response.header.location).expect(200, 'Hi');
+  });
+
+  context('mounting an Express router on a LoopBack application', async () => {
+    beforeEach('set up RestApplication', async () => {
+      givenApplication();
+      await restApp.start();
+      client = createRestAppClient(restApp);
+    });
+
+    it('gives precedence to an external route over a static route', async () => {
+      const router = express.Router();
+      router.get('/', function(_req: Request, res: Response) {
+        res.send('External dog');
+      });
+
+      restApp.static('/dogs', ASSETS);
+      restApp.mountExpressRouter('/dogs', router);
+
+      await client.get('/dogs/').expect(200, 'External dog');
+    });
+
+    it('mounts an express Router without spec', async () => {
+      const router = express.Router();
+      router.get('/poodle/', function(_req: Request, res: Response) {
+        res.send('Poodle!');
+      });
+      router.get('/pug', function(_req: Request, res: Response) {
+        res.send('Pug!');
+      });
+      restApp.mountExpressRouter('/dogs', router);
+
+      await client.get('/dogs/poodle/').expect(200, 'Poodle!');
+      await client.get('/dogs/pug').expect(200, 'Pug!');
+    });
+
+    it('mounts an express Router with spec', async () => {
+      const router = express.Router();
+      function greetDogs(_req: Request, res: Response) {
+        res.send('Hello dogs!');
+      }
+
+      const spec: RouterSpec = {
+        paths: {
+          '/hello': {
+            get: {
+              responses: {
+                '200': {
+                  description: 'greet the dogs',
+                  content: {
+                    'text/plain': {
+                      schema: {type: 'string'},
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      };
+      router.get('/hello', greetDogs);
+      restApp.mountExpressRouter('/dogs', router, spec);
+      await client.get('/dogs/hello').expect(200, 'Hello dogs!');
+
+      const openApiSpec = restApp.restServer.getApiSpec();
+      expect(openApiSpec.paths).to.deepEqual({
+        '/dogs/hello': {
+          get: {
+            responses: {
+              '200': {
+                description: 'greet the dogs',
+                content: {'text/plain': {schema: {type: 'string'}}},
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('mounts more than one express Router', async () => {
+      const router = express.Router();
+      router.get('/poodle', function(_req: Request, res: Response) {
+        res.send('Poodle!');
+      });
+
+      restApp.mountExpressRouter('/dogs', router);
+
+      const secondRouter = express.Router();
+
+      secondRouter.get('/persian', function(_req: Request, res: Response) {
+        res.send('Persian cat.');
+      });
+
+      restApp.mountExpressRouter('/cats', secondRouter);
+
+      await client.get('/dogs/poodle').expect(200, 'Poodle!');
+      await client.get('/cats/persian').expect(200, 'Persian cat.');
+    });
   });
 
   function givenApplication(options?: {rest: RestServerConfig}) {
