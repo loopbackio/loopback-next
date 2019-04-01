@@ -30,6 +30,7 @@
     "update-package-locks": "lerna clean && lerna bootstrap --no-ci",
     "update-template-deps": "node bin/update-template-deps -f",
     "update-greenkeeper-json": "node bin/update-greenkeeper-json -f",
+    "update-all-deps": "npm update && lerna exec -- npm update && npm run update-package-locks",
     "sync-dev-deps": "node bin/sync-dev-deps",
     "version": "npm run update-packages && git add greenkeeper.json \"**/package-lock.json\" && npm run update-template-deps && npm run apidocs",
     "outdated": "npm outdated --depth 0 && lerna exec --no-bail \"npm outdated --depth 0\"",
