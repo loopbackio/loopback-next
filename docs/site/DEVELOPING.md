@@ -150,11 +150,11 @@ from package-lock files.**
 If you ever end up with corrupted or out-of-date package locks, run the
 following commands to fix the problem:
 
-```
+```sh
 $ npm run update-package-locks
 ```
 
-### Adding or updating dependencies
+### Adding dependencies
 
 Use the following command to add or update dependency `dep` in a package `name`:
 
@@ -176,6 +176,14 @@ adding a dependency to a scope, see
 [lerna#1989](https://github.com/lerna/lerna/issues/1989). You have to re-create
 package locks manually, see [Updating package locks](#updating-package-locks)
 above.
+
+### Updating dependencies
+
+To update dependencies to their latest compatible versions:
+
+```sh
+npm run update-all-deps
+```
 
 ## File naming convention
 
