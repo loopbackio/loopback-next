@@ -39,14 +39,13 @@
     "@loopback/openapi-spec-builder": "^1.1.2",
     "@loopback/rest": "^1.9.1",
     "@types/byline": "^4.2.31",
+    "@types/got": "^9.4.1",
     "@types/debug": "^4.1.0",
-    "@types/request-promise-native": "^1.0.15",
     "autocannon": "^3.0.0",
     "byline": "^5.0.0",
     "debug": "^4.0.1",
-    "path-to-regexp": "^3.0.0",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.5"
+    "got": "^9.6.0",
+    "path-to-regexp": "^3.0.0"
   },
   "devDependencies": {
     "@loopback/build": "^1.4.0",

@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import * as request from 'request-promise-native';
+import * as request from 'got';
 import {Benchmark} from '..';
 import {Autocannon, EndpointStats} from '../autocannon';
 
@@ -42,20 +42,22 @@ describe('Benchmark (SLOW)', function() {
     ): Promise<EndpointStats> {
       if (!options) options = {};
 
-      const requestOptions: request.OptionsWithUrl = {
-        url: this.buildUrl(urlPath),
+      const url = this.buildUrl(urlPath);
+      const requestOptions: request.GotJSONOptions = {
         method: options.method || 'GET',
-        body: options.body,
+        json: true,
+        body: options.body && JSON.parse(options.body),
       };
 
       debug(
-        'Making a dummy autocannon request %s %s',
+        'Making a dummy autocannon request %s %s %j',
         requestOptions.method,
-        requestOptions.url,
+        url,
+        requestOptions,
       );
 
       // Verify that the server is implementing the requested URL
-      await request(requestOptions);
+      await request(url, requestOptions);
 
       return DUMMY_STATS;
     }

@@ -3,19 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {HttpServer, HttpOptions, HttpServerOptions} from '../../';
 import {
-  supertest,
   expect,
-  itSkippedOnTravis,
+  givenHttpServerConfig,
   httpGetAsync,
   httpsGetAsync,
-  givenHttpServerConfig,
+  itSkippedOnTravis,
+  supertest,
 } from '@loopback/testlab';
-import * as makeRequest from 'request-promise-native';
-import {IncomingMessage, ServerResponse, Server} from 'http';
-import * as path from 'path';
 import * as fs from 'fs';
+import {IncomingMessage, Server, ServerResponse} from 'http';
+import * as path from 'path';
+import {HttpOptions, HttpServer, HttpServerOptions} from '../../';
 
 describe('HttpServer (integration)', () => {
   let server: HttpServer | undefined;
@@ -46,11 +45,7 @@ describe('HttpServer (integration)', () => {
     server = new HttpServer(dummyRequestHandler, serverOptions);
     await server.start();
     await server.stop();
-    await expect(
-      makeRequest({
-        uri: server.url,
-      }),
-    ).to.be.rejectedWith(/ECONNREFUSED/);
+    await expect(httpGetAsync(server.url)).to.be.rejectedWith(/ECONNREFUSED/);
   });
 
   it('exports original port', async () => {
