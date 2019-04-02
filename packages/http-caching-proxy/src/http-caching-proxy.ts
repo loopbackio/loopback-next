@@ -4,16 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as debugFactory from 'debug';
+import * as makeRequest from 'got';
 import {
+  createServer,
+  IncomingMessage,
   OutgoingHttpHeaders,
   Server as HttpServer,
-  IncomingMessage,
   ServerResponse,
-  createServer,
 } from 'http';
 import {AddressInfo} from 'net';
 import pEvent from 'p-event';
-import * as makeRequest from 'request-promise-native';
 
 const cacache = require('cacache');
 
@@ -62,14 +62,23 @@ export class HttpCachingProxy {
    * URL where the proxy is listening on.
    * Provide this value to your HTTP client as the proxy configuration.
    */
-  public url: string;
+  get url(): string {
+    return this.port
+      ? `http://127.0.0.1:${this.port}`
+      : 'http://proxy-not-running';
+  }
+
+  /**
+   * Port where the proxy is listening on.
+   */
+  public port: number;
 
   constructor(options: ProxyOptions) {
     this._options = Object.assign({}, DEFAULT_OPTIONS, options);
     if (!this._options.cachePath) {
       throw new Error('Required option missing: "cachePath"');
     }
-    this.url = 'http://proxy-not-running';
+    this.port = 0;
     this._server = undefined;
   }
 
@@ -92,7 +101,7 @@ export class HttpCachingProxy {
     await pEvent(this._server, 'listening');
 
     const address = this._server.address() as AddressInfo;
-    this.url = `http://127.0.0.1:${address.port}`;
+    this.port = address.port;
   }
 
   /**
@@ -101,7 +110,7 @@ export class HttpCachingProxy {
   async stop() {
     if (!this._server) return;
 
-    this.url = 'http://proxy-not-running';
+    this.port = 0;
     const server = this._server;
     this._server = undefined;
 
@@ -175,14 +184,12 @@ export class HttpCachingProxy {
     clientResponse: ServerResponse,
   ) {
     // tslint:disable-next-line:await-promise
-    const backendResponse = await makeRequest({
-      resolveWithFullResponse: true,
-      simple: false,
-
+    const backendResponse = await makeRequest(clientRequest.url!, {
       method: clientRequest.method,
-      uri: clientRequest.url!,
       headers: clientRequest.headers,
       body: clientRequest,
+      retry: 0,
+      followRedirect: false,
     });
 
     debug(
@@ -194,10 +201,12 @@ export class HttpCachingProxy {
     );
 
     const metadata: CachedMetadata = {
-      statusCode: backendResponse.statusCode,
+      statusCode: backendResponse.statusCode!,
       headers: backendResponse.headers,
       createdAt: Date.now(),
     };
+
+    console.log('received body %s', backendResponse.body);
 
     // Ideally, we should pipe the backend response to both
     // client response and cachache.put.stream.
@@ -220,7 +229,7 @@ export class HttpCachingProxy {
     );
 
     clientResponse.writeHead(
-      backendResponse.statusCode,
+      backendResponse.statusCode!,
       backendResponse.headers,
     );
     clientResponse.end(backendResponse.body);

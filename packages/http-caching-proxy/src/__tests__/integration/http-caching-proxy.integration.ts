@@ -5,19 +5,26 @@
 
 import {expect} from '@loopback/testlab';
 import delay from 'delay';
+import * as got from 'got';
 import * as http from 'http';
 import {AddressInfo} from 'net';
 import pEvent from 'p-event';
 import * as path from 'path';
-import * as makeRequest from 'request-promise-native';
 import * as rimrafCb from 'rimraf';
 import * as util from 'util';
 import {HttpCachingProxy, ProxyOptions} from '../../http-caching-proxy';
+import HttpProxyAgent = require('http-proxy-agent');
 
 const CACHE_DIR = path.join(__dirname, '.cache');
 
 // tslint:disable:await-promise
 const rimraf = util.promisify(rimrafCb);
+
+// tslint:disable-next-line:no-any
+const makeRequest = (got as any).extend({
+  followRedirect: false,
+  retry: 0,
+}) as typeof got;
 
 describe('HttpCachingProxy', () => {
   let stubServerUrl: string;
@@ -40,32 +47,29 @@ describe('HttpCachingProxy', () => {
   });
 
   it('proxies HTTP requests', async function() {
-    // Increase the timeout to accomodate slow network connections
+    // Increase the timeout to accommodate slow network connections
     // tslint:disable-next-line:no-invalid-this
     this.timeout(30000);
 
     await givenRunningProxy();
     const result = await makeRequest({
-      uri: 'http://example.com',
-      proxy: proxy.url,
-      resolveWithFullResponse: true,
+      protocol: 'http:',
+      hostname: '127.0.0.1',
+      port: proxy.port,
+      path: 'http://example.com/',
     });
-
     expect(result.statusCode).to.equal(200);
     expect(result.body).to.containEql('example');
   });
 
   it('proxies HTTPs requests (no tunneling)', async function() {
-    // Increase the timeout to accomodate slow network connections
+    // Increase the timeout to accommodate slow network connections
     // tslint:disable-next-line:no-invalid-this
     this.timeout(30000);
 
     await givenRunningProxy();
-    const result = await makeRequest({
-      uri: 'https://example.com',
-      proxy: proxy.url,
-      tunnel: false,
-      resolveWithFullResponse: true,
+    const result = await makeRequest('https://example.com', {
+      agent: Object.assign(new HttpProxyAgent(proxy.url), {secureProxy: false}),
     });
 
     expect(result.statusCode).to.equal(200);
@@ -74,12 +78,8 @@ describe('HttpCachingProxy', () => {
 
   it('rejects CONNECT requests (HTTPS tunneling)', async () => {
     await givenRunningProxy();
-    const resultPromise = makeRequest({
-      uri: 'https://example.com',
-      proxy: proxy.url,
-      tunnel: true,
-      simple: false,
-      resolveWithFullResponse: true,
+    const resultPromise = makeRequest('https://example.com', {
+      agent: Object.assign(new HttpProxyAgent(proxy.url), {secureProxy: true}),
     });
 
     await expect(resultPromise).to.be.rejectedWith(
@@ -91,12 +91,10 @@ describe('HttpCachingProxy', () => {
     await givenRunningProxy();
     givenServerDumpsRequests();
 
-    const result = await makeRequest({
-      uri: stubServerUrl,
+    const result = await makeRequest(stubServerUrl, {
       json: true,
       headers: {'x-client': 'test'},
-      proxy: proxy.url,
-      resolveWithFullResponse: true,
+      agent: new HttpProxyAgent(proxy.url),
     });
 
     expect(result.headers).to.containEql({
@@ -111,11 +109,9 @@ describe('HttpCachingProxy', () => {
     await givenRunningProxy();
     stubServerHandler = (req, res) => req.pipe(res);
 
-    const result = await makeRequest({
-      method: 'POST',
-      uri: stubServerUrl,
+    const result = await makeRequest.post(stubServerUrl, {
       body: 'a text body',
-      proxy: proxy.url,
+      agent: new HttpProxyAgent(proxy.url),
     });
 
     expect(result).to.equal('a text body');
@@ -132,8 +128,7 @@ describe('HttpCachingProxy', () => {
     const opts = {
       uri: stubServerUrl,
       json: true,
-      proxy: proxy.url,
-      resolveWithFullResponse: true,
+      agent: new HttpProxyAgent(proxy.url),
     };
 
     const result1 = await makeRequest(opts);
@@ -154,7 +149,7 @@ describe('HttpCachingProxy', () => {
 
     const opts = {
       uri: stubServerUrl,
-      proxy: proxy.url,
+      agent: new HttpProxyAgent(proxy.url),
     };
 
     const result1 = await makeRequest(opts);
@@ -170,7 +165,9 @@ describe('HttpCachingProxy', () => {
     proxy.logError = (request, error) => {}; // no-op
 
     await expect(
-      makeRequest({uri: 'http://127.0.0.1:1/', proxy: proxy.url}),
+      makeRequest('http://127.0.0.1:1/', {
+        agent: new HttpProxyAgent(proxy.url),
+      }),
     ).to.be.rejectedWith({statusCode: 502});
   });
 

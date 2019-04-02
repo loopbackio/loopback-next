@@ -19,9 +19,8 @@
   "dependencies": {
     "cacache": "^11.0.2",
     "debug": "^4.0.1",
+    "got": "^9.6.0",
     "p-event": "^4.0.0",
-    "request": "^2.87.0",
-    "request-promise-native": "^1.0.5",
     "rimraf": "^2.6.2"
   },
   "devDependencies": {
@@ -29,10 +28,12 @@
     "@loopback/testlab": "^1.2.1",
     "@loopback/tslint-config": "^2.0.3",
     "@types/debug": "^4.1.0",
+    "@types/got": "^9.4.1",
+    "@types/http-proxy-agent": "^2.0.1",
     "@types/node": "^10.11.2",
-    "@types/request-promise-native": "^1.0.14",
     "@types/rimraf": "^2.0.2",
-    "delay": "^4.0.1"
+    "delay": "^4.0.1",
+    "http-proxy-agent": "^2.1.0"
   },
   "keywords": [
     "LoopBack",
