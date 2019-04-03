@@ -37,6 +37,9 @@ LoopBack 4 introduces some new concepts that are important to understand:
   Controller operates only on processed input and abstractions of backend
   services / databases.
 
+- [**Interceptors**](Interceptors.md): A function that intercepts static or
+  instance method invocations on a class or object.
+
 - [**Route**](Routes.md): The mapping between your API specification and an
   Operation. It tells LoopBack which Operation to `invoke()` when given an HTTP
   request.

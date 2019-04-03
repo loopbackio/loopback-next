@@ -22,7 +22,7 @@ import {
 import {BindingAddress} from './binding-key';
 import {BindingCreationPolicy, Context} from './context';
 import {ContextView, createViewGetter} from './context-view';
-import {ResolutionSession} from './resolution-session';
+import {ResolutionOptions, ResolutionSession} from './resolution-session';
 import {BoundValue, ValueOrPromise} from './value-promise';
 
 const PARAMETERS_KEY = MetadataAccessor.create<Injection, ParameterDecorator>(
@@ -46,16 +46,12 @@ export interface ResolverFunction {
 /**
  * An object to provide metadata for `@inject`
  */
-export interface InjectionMetadata {
+export interface InjectionMetadata extends ResolutionOptions {
   /**
    * Name of the decorator function, such as `@inject` or `@inject.setter`.
    * It's usually set by the decorator implementation.
    */
   decorator?: string;
-  /**
-   * Control if the dependency is optional, default to false
-   */
-  optional?: boolean;
   /**
    * Other attributes
    */
@@ -411,11 +407,12 @@ function resolveAsGetter(
   const bindingSelector = injection.bindingSelector as BindingAddress;
   // We need to clone the session for the getter as it will be resolved later
   const forkedSession = ResolutionSession.fork(session);
+  const options: ResolutionOptions = {
+    session: forkedSession,
+    ...injection.metadata,
+  };
   return function getter() {
-    return ctx.get(bindingSelector, {
-      session: forkedSession,
-      optional: injection.metadata.optional,
-    });
+    return ctx.get(bindingSelector, options);
   };
 }
 

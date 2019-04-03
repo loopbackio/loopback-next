@@ -338,6 +338,13 @@ export interface ResolutionOptions {
    * will return `undefined` instead of throwing an error.
    */
   optional?: boolean;
+
+  /**
+   * A boolean flag to control if a proxy should be created to apply
+   * interceptors for the resolved value. It's only honored for bindings backed
+   * by a class.
+   */
+  asProxyWithInterceptors?: boolean;
 }
 
 /**
