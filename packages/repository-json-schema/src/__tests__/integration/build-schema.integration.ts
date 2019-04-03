@@ -415,6 +415,45 @@ describe('build-schema', () => {
           expectValidJsonSchema(jsonSchema);
         });
 
+        it('properly handles AJV keywords in property decorator', () => {
+          @model()
+          class TestModel {
+            @property({
+              type: 'string',
+              required: true,
+              jsonSchema: {
+                format: 'email',
+                maxLength: 50,
+                minLength: 5,
+              },
+            })
+            email: string;
+
+            @property({
+              type: 'string',
+              required: true,
+              jsonSchema: {
+                pattern: '(a|b|c)',
+              },
+            })
+            type: string;
+          }
+
+          const jsonSchema = modelToJsonSchema(TestModel);
+          expect(jsonSchema.properties).to.eql({
+            email: {
+              type: 'string',
+              format: 'email',
+              maxLength: 50,
+              minLength: 5,
+            },
+            type: {
+              type: 'string',
+              pattern: '(a|b|c)',
+            },
+          });
+        });
+
         it('properly converts decorated custom array type with a resolver', () => {
           @model()
           class Address {
