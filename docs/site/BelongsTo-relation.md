@@ -50,7 +50,7 @@ export class Order extends Entity {
   id: number;
 
   @belongsTo(() => Customer)
-  customerId: string;
+  customerId: number;
 
   @property({type: 'number'})
   quantity: number;
@@ -73,7 +73,7 @@ above example is as follows:
 class Order extends Entity {
   // constructor, properties, etc.
   @belongsTo(() => Customer, {keyTo: 'pk'})
-  customerId: string;
+  customerId: number;
 }
 ```
 
@@ -87,13 +87,14 @@ repository, the following are required:
 - In the constructor of your source repository class, use
   [Dependency Injection](Dependency-injection.md) to receive a getter function
   for obtaining an instance of the target repository. _Note: We need a getter
-  function instead of a repository instance in order to break a cyclic
-  dependency between a repository with a belongsTo relation and a repository
-  with the matching hasMany relation._
+  function, accepting a string repository name instead of a repository
+  constructor, or a repository instance, in order to break a cyclic dependency
+  between a repository with a belongsTo relation and a repository with the
+  matching hasMany relation._
 - Declare a property with the factory function type
   `BelongsToAccessor<targetModel, typeof sourceModel.prototype.id>` on the
   source repository class.
-- call the `_createBelongsToAccessorFor` function in the constructor of the
+- call the `createBelongsToAccessorFor` function in the constructor of the
   source repository class with the relation name (decorated relation property on
   the source model) and target repository instance and assign it the property
   mentioned above.
@@ -101,7 +102,7 @@ repository, the following are required:
 The following code snippet shows how it would look like:
 
 {% include code-caption.html
-content="/src/repositories/order.repository.ts.ts" %}
+content="/src/repositories/order.repository.ts" %}
 
 ```ts
 import {Getter, inject} from '@loopback/context';
@@ -129,8 +130,8 @@ export class OrderRepository extends DefaultCrudRepository<
     customerRepositoryGetter: Getter<CustomerRepository>,
   ) {
     super(Order, db);
-    this.customer = this._createBelongsToAccessorFor(
-      'customerId',
+    this.customer = this.createBelongsToAccessorFor(
+      'customer',
       customerRepositoryGetter,
     );
   }
@@ -178,3 +179,49 @@ with the name following the pattern `__{methodName}__{relationName}__` (e.g.
 `Order.__get__customer`). While we recommend to create a new controller for each
 hasMany relation in LoopBack 4, we also think it's best to use the main CRUD
 controller as the place where to explose `belongsTo` API.
+
+## Handling recursive relations
+
+Given an e-commerce system has many `Category`, each `Category` may have several
+sub-categories, and may belong to 1 parent-category.
+
+```ts
+export class Category extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    generated: true,
+  })
+  id?: number;
+
+  @belongsTo(() => Category)
+  parentId: number;
+
+  constructor(data?: Partial<Category>) {
+    super(data);
+  }
+}
+```
+
+The `CategoryRepository` must be declared like below
+
+```ts
+export class CategoryRepository extends DefaultCrudRepository<
+  Category,
+  typeof Category.prototype.id
+> {
+  public readonly parent: BelongsToAccessor<Category, number>;
+  constructor(@inject('datasources.db') dataSource: DbDataSource) {
+    super(Category, dataSource);
+    this.parent = this._createBelongsToAccessorFor(
+      'parent',
+      Getter.fromValue(this),
+    ); // for recursive relationship
+  }
+}
+```
+
+DO NOT declare
+`@repository.getter(CategoryRepository) protected categoryRepositoryGetter: Getter<CategoryRepository>`
+on constructor to avoid "Circular dependency" error (see
+[issue #2118](https://github.com/strongloop/loopback-next/issues/2118))

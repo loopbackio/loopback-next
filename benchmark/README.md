@@ -4,7 +4,8 @@ Benchmarks for LoopBack framework.
 
 ## Results
 
-MacBookPro Mid 2015 Processor: 2.5 GHz Intel Core i7 Memory: 16 GB 1600 MHz DDR3
+MacBookPro Early 2015 Processor: 2.5 GHz Intel Core i5 Memory: 8 GB 1867 MHz
+DDR3
 
 ### Requests per seconds
 
@@ -12,8 +13,8 @@ _Average number of requests handled every second._
 
 | scenario          |  rps |
 | ----------------- | ---: |
-| find all todos    | 4569 |
-| create a new todo |  348 |
+| find all todos    | 2620 |
+| create a new todo | 2603 |
 
 ### Latency
 
@@ -21,8 +22,8 @@ _Average time to handle a request in milliseconds._
 
 | scenario          | latency |
 | ----------------- | ------: |
-| find all todos    |    1.68 |
-| create a new todo |   28.27 |
+| find all todos    |    3.31 |
+| create a new todo |    3.35 |
 
 ## Basic use
 

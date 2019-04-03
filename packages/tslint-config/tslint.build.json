@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json.schemastore.org/tslint",
+  "extends": [
+    "./tslint.common.json"
+  ],
+  // This configuration files enabled rules which require type checking
+  // and therefore cannot be run by Visual Studio Code TSLint extension
+  // See https://github.com/Microsoft/vscode-tslint/issues/70
+  "rules": {
+    // These rules find errors related to TypeScript features.
+
+    // These rules catch common errors in JS programming or otherwise
+    // confusing constructs that are prone to producing bugs.
+
+    // User-land promises like Bluebird implement "PromiseLike" (not "Promise")
+    // interface only. The string "PromiseLike" bellow is needed to
+    // tell tslint that it's ok to `await` such promises.
+    "await-promise": [true, "PromiseLike", "RequestPromise"],
+    "no-floating-promises": [true, "PromiseLike", "RequestPromise"],
+    // Explicitly disable this rule, we are using "no-unused" rule instead
+    "no-unused-variable": false,
+    "no-void-expression": [true, "ignore-arrow-function-shorthand"]
+  }
+}

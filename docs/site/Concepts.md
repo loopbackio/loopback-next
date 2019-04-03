@@ -23,6 +23,10 @@ LoopBack 4 introduces some new concepts that are important to understand:
   for everything in your app (configurations, state, dependencies, classes and
   so on).
 
+- [**Binding**](Binding.md): An abstraction of items managed by a context. Each
+  binding has a unique key within the context and a value provider to resolve
+  the key to a value.
+
 - [**Dependency Injection**](Dependency-injection.md): The technique used to
   separate the construction of dependencies of a class or function from its
   behavior to keep the code loosely coupled.

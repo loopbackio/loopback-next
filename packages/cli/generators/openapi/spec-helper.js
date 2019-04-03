@@ -1,14 +1,12 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-const fs = require('fs');
-const util = require('util');
 
 const debug = require('../../lib/debug')('openapi-generator');
-const {mapSchemaType} = require('./schema-helper');
+const {mapSchemaType, registerSchema} = require('./schema-helper');
 const {
   isExtension,
   titleCase,
@@ -17,7 +15,6 @@ const {
   camelCase,
   escapeIdentifier,
   escapePropertyOrMethodName,
-  toJsonStr,
 } = require('./utils');
 
 const HTTP_VERBS = [
@@ -143,6 +140,49 @@ function getMethodName(opSpec) {
   );
 }
 
+function registerAnonymousSchema(names, schema, typeRegistry) {
+  if (!typeRegistry.promoteAnonymousSchemas) {
+    // Skip anonymous schemas
+    return;
+  }
+
+  // Skip referenced schemas
+  if (schema['x-$ref']) return;
+
+  // Only map object/array types
+  if (
+    schema.properties ||
+    schema.type === 'object' ||
+    schema.type === 'array'
+  ) {
+    if (typeRegistry.anonymousSchemaNames == null) {
+      typeRegistry.anonymousSchemaNames = new Set();
+    }
+    // Infer the schema name
+    let schemaName;
+    if (Array.isArray(names)) {
+      schemaName = names.join('-');
+    } else if (typeof names === 'string') {
+      schemaName = names;
+    }
+
+    if (!schemaName && schema.title) {
+      schemaName = schema.title;
+    }
+
+    schemaName = camelCase(schemaName);
+
+    // Make sure the schema name is unique
+    let index = 1;
+    while (typeRegistry.anonymousSchemaNames.has(schemaName)) {
+      schemaName = schemaName + index++;
+    }
+    typeRegistry.anonymousSchemaNames.add(schemaName);
+
+    registerSchema(schemaName, schema, typeRegistry);
+  }
+}
+
 /**
  * Build method spec for an operation
  * @param {object} OpenAPI operation
@@ -162,6 +202,7 @@ function buildMethodSpec(controllerSpec, op, options) {
       } else {
         paramNames[name] = 1;
       }
+      registerAnonymousSchema([methodName, name], p.schema, options);
       const pType = mapSchemaType(p.schema, options);
       addImportsForType(pType);
       comments.push(`@param ${name} ${p.description || ''}`);
@@ -182,14 +223,22 @@ function buildMethodSpec(controllerSpec, op, options) {
      */
     let bodyType = {signature: 'any'};
     const content = op.spec.requestBody.content;
-    const jsonType = content && content['application/json'];
-    if (jsonType && jsonType.schema) {
-      bodyType = mapSchemaType(jsonType.schema, options);
-      addImportsForType(bodyType);
-    }
-    let bodyName = 'body';
+    const contentType =
+      content &&
+      (content['application/json'] || content[Object.keys(content)[0]]);
+
+    let bodyName = 'requestBody';
     if (bodyName in paramNames) {
       bodyName = `${bodyName}${paramNames[bodyName]++}`;
+    }
+    if (contentType && contentType.schema) {
+      registerAnonymousSchema(
+        [methodName, bodyName],
+        contentType.schema,
+        options,
+      );
+      bodyType = mapSchemaType(contentType.schema, options);
+      addImportsForType(bodyType);
     }
     const bodyParam = bodyName; // + (op.spec.requestBody.required ? '' : '?');
     // Add body as the 1st param
@@ -219,9 +268,16 @@ function buildMethodSpec(controllerSpec, op, options) {
       if (isExtension(code)) continue;
       if (code !== '200' && code !== '201') continue;
       const content = responses[code].content;
-      const jsonType = content && content['application/json'];
-      if (jsonType && jsonType.schema) {
-        returnType = mapSchemaType(jsonType.schema, options);
+      const contentType =
+        content &&
+        (content['application/json'] || content[Object.keys(content)[0]]);
+      if (contentType && contentType.schema) {
+        registerAnonymousSchema(
+          [methodName, 'responseBody'],
+          contentType.schema,
+          options,
+        );
+        returnType = mapSchemaType(contentType.schema, options);
         addImportsForType(returnType);
         comments.push(`@returns ${responses[code].description || ''}`);
         break;

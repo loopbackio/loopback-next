@@ -15,9 +15,15 @@ possible options, refer to
 "[IBM Cloud Continuous Delivery: Build, deploy, and manage apps with toolchains](https://www.ibm.com/cloud/garage/content/deliver/tool_continuous_delivery/)"
 for the details.
 
-Before we begin make sure the following are installed:
+## Before we begin
 
-1.  [Cloud Foundy CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html)
+Since we will be deploying to IBM Cloud,
+[sign up for an account](https://console.bluemix.net/) if you don't have one
+already.
+
+Make sure the following are installed:
+
+1.  [Cloud Foundry CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html)
 2.  [Docker](https://www.docker.com/)
 
 Consider the
@@ -36,10 +42,32 @@ Cloudant connector, so data is persisted.
 
 ## Cloud setup
 
-### Database
+### Cloudant database service
 
 1.  Provision a Cloudant database service, and name it `myCloudant`.
-2.  Log on to the Cloudant Dashboard and create a database named `todo`.
+
+- Go to the
+  [IBM Cloud Catalog](https://console.bluemix.net/catalog/?category=databases),
+  select `Cloudant` under `All Categories` > `Databases`.
+- Name your Cloudant service name as `myCloudant`. Keep the defaults for region
+  and resource group. Select "Use both legacy credentials and IAM" as the
+  available authentication methods
+
+  ![myCloudant service name](./imgs/deploytocloud-mycloudant.png)
+
+- Click Create.
+
+2.  Create a database named `todo`.
+
+- Go to your [IBM Cloud dashboard](https://console.bluemix.net/dashboard/apps).
+- Click on `myCloudant` under `Services`.
+- Click `Launch Cloudant Dashboard`.
+  ![launch cloudant dashboard](./imgs/deploytocloud-launchcdashboard.png)
+
+- In the Cloudant dashboard, click `Create Database` at the top of the page and
+  name it as `todo`.
+
+  ![create database](./imgs/deploytocloud-createdb.png)
 
 ### Connecting the database to app
 
@@ -70,8 +98,9 @@ docker run \
       ibmcom/cloudant-developer
 ```
 
-3.  Log on to the local Cloudant Dashboard using `admin`:`pass` as the
-    crendentials.
+3.  Log on to the local Cloudant
+    [Dashboard](http://localhost:8080/dashboard.html) using `admin`:`pass` as
+    the crendentials.
 4.  Create a database named `todo`.
 
 ### Updates to the app
@@ -124,6 +153,7 @@ export async function main(options?: ApplicationConfig) {
   if (!options) options = {};
   if (!options.rest) options.rest = {};
   options.rest.port = appEnv.isLocal ? options.rest.port : appEnv.port;
+  options.rest.host = appEnv.isLocal ? options.rest.host : appEnv.host;
 
   const app = new TodoListApplication(options);
   // If running on IBM Cloud, we get the Cloudant service details from VCAP_SERVICES
@@ -145,29 +175,29 @@ export async function main(options?: ApplicationConfig) {
 
 ## Running the app locally
 
-1.  Install all dependencies:
+1. Install all dependencies:
 
 ```sh
 $ npm i
 ```
 
-2.  Build the app:
+2. Build the app:
 
 ```sh
 $ npm run build
 ```
 
-3.  Ensure Cloudant is running locally.
-4.  Start the app:
+3. Ensure Cloudant is running locally.
+4. Start the app:
 
 ```sh
 $ npm start
 ```
 
-5.  Go to http://localhost:3000/explorer to load API Explorer and add a todo or
-    two.
+5. Go to http://localhost:3000/explorer to load API Explorer and add a todo or
+   two.
 
-6.  Go to http://localhost:3000/todos to see the todos.
+6. Go to http://localhost:3000/todos to see the todos.
 
 ## Deploying the app
 
@@ -177,9 +207,9 @@ further.
 We'll need to create the following Cloud Foundry artifacts to deploy our app to
 IBM Cloud:
 
-1.  `.cfignore` - not mandatory, prevents `cf` from uploading the listed files
-    to IBM Cloud.
-2.  `manifest.yml` - details about the app.
+1. `.cfignore` - not mandatory, prevents `cf` from uploading the listed files to
+   IBM Cloud.
+2. `manifest.yml` - details about the app.
 
 Create a file named `.cfignore` in the app directory with the following content.
 
@@ -199,20 +229,20 @@ $ cf create-app-manifest mylb4app -p manifest.yml
 
 Now we are ready to deploy the app to IBM Cloud.
 
-1.  Build the app locally:
+1. Build the app locally:
 
 ```sh
 npm run build
 ```
 
-2.  Push the app to Cloud Foundry:
+2. Push the app to Cloud Foundry:
 
 ```
 cf push mylb4app
 ```
 
-3.  Go to https://mylb4app.eu-gb.mybluemix.net/explorer to load the API Explorer
-    and add a todo or two. The host `mylb4app.eu-gb.mybluemix.net` is derived
-    from the `name` and `domain` values in the `manifest.yml` file.
+3. Go to https://mylb4app.eu-gb.mybluemix.net/explorer to load the API Explorer
+   and add a todo or two. The host `mylb4app.eu-gb.mybluemix.net` is derived
+   from the `name` and `domain` values in the `manifest.yml` file.
 
-4.  Go to https://mylb4app.eu-gb.mybluemix.net/todos to see the todos.
+4. Go to https://mylb4app.eu-gb.mybluemix.net/todos to see the todos.

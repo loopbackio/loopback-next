@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018. All Rights Reserved.
 // Node module: @loopback/build
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -355,5 +355,73 @@ describe('build', function() {
     });
 
     after(() => delete process.env.LERNA_ROOT_PATH);
+  });
+});
+
+describe('mocha', function() {
+  this.timeout(30000);
+  var cwd = process.cwd();
+  var projectDir = path.resolve(__dirname, './fixtures');
+
+  function cleanup() {
+    var run = require('../../bin/run-clean');
+    run(['node', 'bin/run-clean', '.mocharc.json']);
+  }
+
+  beforeEach(() => {
+    process.chdir(projectDir);
+    cleanup();
+  });
+
+  afterEach(() => {
+    cleanup();
+    process.chdir(cwd);
+  });
+
+  it('loads built-in .mocharc.json file', () => {
+    var run = require('../../bin/run-mocha');
+    var command = run(['node', 'bin/run-mocha', '"dist/__tests__"'], true);
+    const builtInMochaOptsFile = path.join(
+      __dirname,
+      '../../config/.mocharc.json',
+    );
+    assert(
+      command.indexOf(builtInMochaOptsFile) !== -1,
+      '--config should be set by default',
+    );
+  });
+
+  it('honors --config option', () => {
+    var run = require('../../bin/run-mocha');
+    var command = run(
+      [
+        'node',
+        'bin/run-mocha',
+        '--config custom/.mocharc.json',
+        '"dist/__tests__"',
+      ],
+      true,
+    );
+    assert(
+      command.indexOf('--config custom/.mocharc.json') !== -1,
+      '--config custom/.mocharc.json should be honored',
+    );
+  });
+
+  it('loads .mocharc.json specific project file', () => {
+    var run = require('../../bin/run-mocha');
+    const buitInMochaOptsPath = path.join(
+      __dirname,
+      '../../config/.mocharc.json',
+    );
+    const destPath = path.join(__dirname, './fixtures/.mocharc.json');
+
+    fs.copyFileSync(buitInMochaOptsPath, destPath);
+
+    var command = run(['node', 'bin/run-mocha', '"dist/__tests__"'], true);
+    assert(
+      command.indexOf('--config') === -1,
+      'should skip built-in .mocharc.json file when specific project file exist',
+    );
   });
 });

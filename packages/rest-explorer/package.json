@@ -1,0 +1,56 @@
+{
+  "name": "@loopback/rest-explorer",
+  "version": "1.1.13",
+  "description": "LoopBack's API Explorer",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {
+    "build:apidocs": "lb-apidocs",
+    "build": "lb-tsc es2017 --outDir dist",
+    "clean": "lb-clean loopback-explorer*.tgz dist package api-docs",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-explorer*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/context": "^1.8.1",
+    "@loopback/core": "^1.2.1",
+    "@loopback/rest": "^1.9.1",
+    "ejs": "^2.6.1",
+    "swagger-ui-dist": "^3.20.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^1.4.0",
+    "@loopback/testlab": "^1.2.1",
+    "@loopback/tslint-config": "^2.0.3",
+    "@types/ejs": "^2.6.0",
+    "@types/express": "^4.16.1",
+    "@types/node": "^10.1.1",
+    "express": "^4.16.4"
+  },
+  "keywords": [
+    "LoopBack",
+    "Explorer",
+    "Swagger"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__",
+    "templates"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
+}

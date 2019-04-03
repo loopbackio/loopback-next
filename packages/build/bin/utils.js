@@ -19,8 +19,8 @@ function getCompilationTarget() {
   return nodeMajorVersion >= 10
     ? 'es2018'
     : nodeMajorVersion >= 7
-      ? 'es2017'
-      : 'es2015';
+    ? 'es2017'
+    : 'es2015';
 }
 
 /**
@@ -99,9 +99,9 @@ function getConfigFile(name, defaultName) {
  * @param {string} cli
  */
 function resolveCLI(cli) {
-  const path = './node_modules/' + cli;
+  const modulePath = './node_modules/' + cli;
   try {
-    return require.resolve(path.join(getPackageDir(), path));
+    return require.resolve(path.join(getPackageDir(), modulePath));
   } catch (e) {
     return require.resolve(cli);
   }
@@ -112,6 +112,7 @@ function resolveCLI(cli) {
  * @param {string} cli Path of the cli command
  * @param {string[]} args The arguments
  * @param {object} options Options to control dryRun and spawn
+ * - nodeArgs An array of args for `node`
  * - dryRun Controls if the cli will be executed or not. If set
  * to true, the command itself will be returned without running it
  */
@@ -125,6 +126,12 @@ function runCLI(cli, args, options) {
   if (options.dryRun) {
     return util.format('%s %s', process.execPath, args.join(' '));
   }
+  if (options.nodeArgs) {
+    debug('node args: %s', options.nodeArgs.join(' '));
+    // For example, [--no-warnings]
+    args = options.nodeArgs.concat(args);
+  }
+  debug('Spawn %s %s', process.execPath, args.join(' '));
   var child = spawn(
     process.execPath, // Typically '/usr/local/bin/node'
     args,
@@ -207,6 +214,20 @@ function isOptionSet(opts, ...optionNames) {
   );
 }
 
+function mochaConfiguredForProject() {
+  const configFiles = [
+    '.mocharc.js',
+    '.mocharc.json',
+    '.mocharc.yaml',
+    '.mocharc.yml',
+    'test/mocha.opts',
+  ];
+  return configFiles.some(f => {
+    const configFile = path.join(getPackageDir(), f);
+    return fs.existsSync(configFile);
+  });
+}
+
 exports.getCompilationTarget = getCompilationTarget;
 exports.getDistribution = getDistribution;
 exports.getRootDir = getRootDir;
@@ -216,3 +237,4 @@ exports.resolveCLI = resolveCLI;
 exports.runCLI = runCLI;
 exports.runShell = runShell;
 exports.isOptionSet = isOptionSet;
+exports.mochaConfiguredForProject = mochaConfiguredForProject;

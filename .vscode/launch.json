@@ -11,9 +11,9 @@
       "program": "${workspaceRoot}/packages/build/node_modules/.bin/_mocha",
       "cwd": "${workspaceRoot}",
       "args": [
-        "--opts",
-        "${workspaceRoot}/test/mocha.opts",
-        "packages/*/dist/test/**/*.js",
+        "--config",
+        "${workspaceRoot}/packages/build/config/.mocharc.json",
+        "packages/*/dist/__tests__/**/*.js",
         "-t",
         "0"
       ]

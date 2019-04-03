@@ -1,11 +1,14 @@
 {
   "editor.rulers": [80],
-  "editor.tabCompletion": true,
+  "editor.tabCompletion": "on",
   "editor.tabSize": 2,
   "editor.trimAutoWhitespace": true,
   "editor.formatOnSave": true,
   "[html]": {
     "editor.formatOnSave": false
+  },
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
   },
   "files.exclude": {
     "**/.DS_Store": true,

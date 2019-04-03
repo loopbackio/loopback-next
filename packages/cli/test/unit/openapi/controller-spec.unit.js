@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -44,13 +44,13 @@ describe('openapi to controllers/models', () => {
             comments: [
               'Creates a new customer',
               '\n',
-              '@param body Customer to add',
+              '@param requestBody Customer to add',
               '@param accessToken Access token',
               '@returns customer response',
             ],
             decoration: "@operation('post', '/customers')",
             signature:
-              'async createCustomer(@requestBody() body: Customer, ' +
+              'async createCustomer(@requestBody() requestBody: Customer, ' +
               "@param({name: 'access-token', in: 'query'}) accessToken: " +
               'string): Promise<Customer>',
           },

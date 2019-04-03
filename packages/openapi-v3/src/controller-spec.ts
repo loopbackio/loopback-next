@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/openapi-v3
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -11,6 +11,10 @@ import {
   PathObject,
   ComponentsObject,
   RequestBodyObject,
+  ResponseObject,
+  ReferenceObject,
+  SchemaObject,
+  isReferenceObject,
 } from '@loopback/openapi-v3-types';
 import {getJsonSchema} from '@loopback/repository-json-schema';
 import {OAI3Keys} from './keys';
@@ -49,6 +53,8 @@ export interface RestEndpoint {
   path: string;
   spec?: OperationObject;
 }
+
+export const TS_TYPE_KEY = 'x-ts-type';
 
 /**
  * Build the api spec from class and method level decorations
@@ -108,30 +114,14 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
 
     debug('  spec responses for method %s: %o', op, operationSpec.responses);
 
-    const TS_TYPE_KEY = 'x-ts-type';
-
     for (const code in operationSpec.responses) {
-      for (const c in operationSpec.responses[code].content) {
+      const responseObject: ResponseObject | ReferenceObject =
+        operationSpec.responses[code];
+      if (isReferenceObject(responseObject)) continue;
+      const content = responseObject.content || {};
+      for (const c in content) {
         debug('  evaluating response code %s with content: %o', code, c);
-        const content = operationSpec.responses[code].content[c];
-        const tsType = content[TS_TYPE_KEY];
-        debug('  %s => %o', TS_TYPE_KEY, tsType);
-        if (tsType) {
-          content.schema = resolveSchema(tsType, content.schema);
-
-          // We don't want a Function type in the final spec.
-          delete content[TS_TYPE_KEY];
-        }
-
-        if (content.schema.type === 'array') {
-          content.schema.items = resolveSchema(
-            content.schema.items[TS_TYPE_KEY],
-            content.schema.items,
-          );
-
-          // We don't want a Function type in the final spec.
-          delete content.schema.items[TS_TYPE_KEY];
-        }
+        resolveTSType(spec, content[c].schema);
       }
     }
 
@@ -157,13 +147,15 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
        *   }
        * ```
        */
-      operationSpec.parameters = params.filter(p => p != null).map(p => {
-        // Per OpenAPI spec, `required` must be `true` for path parameters
-        if (p.in === 'path') {
-          p.required = true;
-        }
-        return p;
-      });
+      operationSpec.parameters = params
+        .filter(p => p != null)
+        .map(p => {
+          // Per OpenAPI spec, `required` must be `true` for path parameters
+          if (p.in === 'path') {
+            p.required = true;
+          }
+          return p;
+        });
     }
 
     debug('  processing requestBody for method %s', op);
@@ -185,10 +177,27 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
       debug('  requestBody for method %s: %j', op, requestBody);
       if (requestBody) {
         operationSpec.requestBody = requestBody;
+
+        const content = requestBody.content || {};
+        for (const mediaType in content) {
+          resolveTSType(spec, content[mediaType].schema);
+        }
       }
     }
 
     operationSpec['x-operation-name'] = op;
+    operationSpec['x-controller-name'] =
+      operationSpec['x-controller-name'] || constructor.name;
+
+    if (operationSpec.operationId == null) {
+      // Build the operationId as `<controllerName>.<operationName>`
+      // Please note API explorer (https://github.com/swagger-api/swagger-js/)
+      // will normalize it as `<controllerName>_<operationName>`
+      operationSpec.operationId =
+        operationSpec['x-controller-name'] +
+        '.' +
+        operationSpec['x-operation-name'];
+    }
 
     if (!spec.paths[path]) {
       spec.paths[path] = {};
@@ -214,45 +223,78 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
 
     for (const p of paramTypes) {
       if (isComplexType(p)) {
-        if (!spec.components) {
-          spec.components = {};
-        }
-        if (!spec.components.schemas) {
-          spec.components.schemas = {};
-        }
-        if (p.name in spec.components.schemas) {
-          // Preserve user-provided definitions
-          debug(
-            '    skipping parameter type %j as already defined',
-            p.name || p,
-          );
-          continue;
-        }
-        const jsonSchema = getJsonSchema(p);
-        const openapiSchema = jsonToSchemaObject(jsonSchema);
-        const outputSchemas = spec.components.schemas;
-        if (openapiSchema.definitions) {
-          for (const key in openapiSchema.definitions) {
-            // Preserve user-provided definitions
-            if (key in outputSchemas) continue;
-            const relatedSchema = openapiSchema.definitions[key];
-            debug(
-              '    defining referenced schema for %j: %j',
-              key,
-              relatedSchema,
-            );
-            outputSchemas[key] = relatedSchema;
-          }
-          delete openapiSchema.definitions;
-        }
-
-        debug('    defining schema for %j: %j', p.name, openapiSchema);
-        outputSchemas[p.name] = openapiSchema;
-        break;
+        generateOpenAPISchema(spec, p);
       }
     }
   }
   return spec;
+}
+
+/**
+ * Resolve the x-ts-type in the schema object
+ * @param spec Controller spec
+ * @param schema Schema object
+ */
+function resolveTSType(
+  spec: ControllerSpec,
+  schema?: SchemaObject | ReferenceObject,
+) {
+  debug('  evaluating schema: %j', schema);
+  if (!schema || isReferenceObject(schema)) return;
+  const tsType = schema[TS_TYPE_KEY];
+  debug('  %s => %o', TS_TYPE_KEY, tsType);
+  if (tsType) {
+    schema = resolveSchema(tsType, schema);
+    if (schema.$ref) generateOpenAPISchema(spec, tsType);
+
+    // We don't want a Function type in the final spec.
+    delete schema[TS_TYPE_KEY];
+    return;
+  }
+  if (schema.type === 'array') {
+    resolveTSType(spec, schema.items);
+  } else if (schema.type === 'object') {
+    if (schema.properties) {
+      for (const p in schema.properties) {
+        resolveTSType(spec, schema.properties[p]);
+      }
+    }
+  }
+}
+
+/**
+ * Generate json schema for a given x-ts-type
+ * @param spec Controller spec
+ * @param tsType TS Type
+ */
+function generateOpenAPISchema(spec: ControllerSpec, tsType: Function) {
+  if (!spec.components) {
+    spec.components = {};
+  }
+  if (!spec.components.schemas) {
+    spec.components.schemas = {};
+  }
+  if (tsType.name in spec.components.schemas) {
+    // Preserve user-provided definitions
+    debug('    skipping type %j as already defined', tsType.name || tsType);
+    return;
+  }
+  const jsonSchema = getJsonSchema(tsType);
+  const openapiSchema = jsonToSchemaObject(jsonSchema);
+  const outputSchemas = spec.components.schemas;
+  if (openapiSchema.definitions) {
+    for (const key in openapiSchema.definitions) {
+      // Preserve user-provided definitions
+      if (key in outputSchemas) continue;
+      const relatedSchema = openapiSchema.definitions[key];
+      debug('    defining referenced schema for %j: %j', key, relatedSchema);
+      outputSchemas[key] = relatedSchema;
+    }
+    delete openapiSchema.definitions;
+  }
+
+  debug('    defining schema for %j: %j', tsType.name, openapiSchema);
+  outputSchemas[tsType.name] = openapiSchema;
 }
 
 /**

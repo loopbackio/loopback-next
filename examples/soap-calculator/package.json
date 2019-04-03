@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-soap-calculator",
-  "version": "0.4.5",
+  "version": "1.4.3",
   "description": "Integrate a SOAP webservice with LoopBack 4",
   "keywords": [
     "loopback",
@@ -13,6 +13,7 @@
   "engines": {
     "node": ">=8"
   },
+  "author": "IBM Corp.",
   "scripts": {
     "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
@@ -26,9 +27,9 @@
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
     "pretest": "npm run clean && npm run build",
-    "test": "lb-mocha \"dist/test\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "posttest": "npm run lint",
-    "test:dev": "lb-mocha --allow-console-logs dist/test/**/*.js && npm run posttest",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
     "prestart": "npm run build",
     "start": "node ."
   },
@@ -40,21 +41,25 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/boot": "^0.14.5",
-    "@loopback/context": "^0.13.1",
-    "@loopback/core": "^0.11.16",
-    "@loopback/openapi-v3": "^0.15.4",
-    "@loopback/repository": "^0.21.0",
-    "@loopback/rest": "^0.25.4",
-    "@loopback/service-proxy": "^0.8.10",
+    "@loopback/boot": "^1.1.2",
+    "@loopback/context": "^1.8.1",
+    "@loopback/core": "^1.2.1",
+    "@loopback/openapi-v3": "^1.3.2",
+    "@loopback/repository": "^1.2.1",
+    "@loopback/rest": "^1.9.1",
+    "@loopback/rest-explorer": "^1.1.13",
+    "@loopback/service-proxy": "^1.1.1",
     "loopback-connector-soap": "^5.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^0.7.6",
-    "@loopback/testlab": "^0.15.1",
+    "@loopback/build": "^1.4.0",
+    "@loopback/testlab": "^1.2.1",
+    "@loopback/tslint-config": "^2.0.3",
     "@types/mocha": "^5.0.0",
     "@types/node": "^10.11.2",
-    "mocha": "^5.1.1",
-    "source-map-support": "^0.5.5"
+    "mocha": "^6.0.0",
+    "source-map-support": "^0.5.5",
+    "tslint": "^5.14.0",
+    "typescript": "^3.4.1"
   }
 }

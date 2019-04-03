@@ -31,7 +31,7 @@ export class TodoListTodoController {
     responses: {
       '200': {
         description: 'TodoList.Todo model instance',
-        content: {'application/json': {'x-ts-type': Todo}},
+        content: {'application/json': {schema: {'x-ts-type': Todo}}},
       },
     },
   })
@@ -56,7 +56,7 @@ export class TodoListTodoController {
   })
   async find(
     @param.path.number('id') id: number,
-    @param.query.string('filter') filter?: Filter,
+    @param.query.object('filter') filter?: Filter,
   ): Promise<Todo[]> {
     return await this.todoListRepo.todos(id).find(filter);
   }

@@ -5,7 +5,8 @@ This is the basic tutorial for getting started with Loopback 4!
 ## Overview
 
 This tutorial demonstrates how to create a basic API for a todo list using
-LoopBack 4.
+LoopBack 4. You will experience how you can create REST APIs with just
+[5 steps](#steps).
 
 ![todo-tutorial-overview](https://loopback.io/pages/en/lb4/imgs/todo-overview.png)
 
@@ -59,6 +60,7 @@ application, follow these steps:
     hello-world: A simple hello-world Application using LoopBack 4.
     log-extension: An example extension project for LoopBack 4.
     rpc-server: A basic RPC server using a made-up protocol.
+    express-composition: A simple Express application that uses LoopBack 4 REST API.
     ```
 
 2.  Switch to the directory.
@@ -72,7 +74,7 @@ application, follow these steps:
     ```sh
     $ npm start
 
-    Server is running on port 3000
+    Server is running at http://127.0.0.1:3000
     ```
 
 Feel free to look around in the application's code to get a feel for how it

@@ -15,8 +15,8 @@ children:
   url: Getting-started.html
   output: 'web, pdf'
 
-- title: 'Examples and tutorials'
-  url: Examples-and-tutorials.html
+- title: 'Tutorials'
+  url: Tutorials.html
   output: 'web, pdf'
   children:
 
@@ -98,9 +98,14 @@ children:
     - title: 'Run and Test it'
       url: soap-calculator-tutorial-run-and-test.html
       output: 'web, pdf'
-  - title: 'Deploying to IBM Cloud'
-    url: Deploying-to-IBM-Cloud.html
+
+  - title: 'Creating an Express Application with LoopBack REST API'
+    url: express-with-lb4-rest-tutorial.html
     output: 'web, pdf'
+
+- title: 'Examples'
+  url: Examples.html
+  output: 'web, pdf'
 
 - title: 'Key concepts'
   url: Concepts.html
@@ -119,9 +124,18 @@ children:
     url: Context.html
     output: 'web, pdf'
 
+  - title: 'Binding'
+    url: Binding.html
+    output: 'web, pdf'
+
   - title: 'Dependency injection'
     url: Dependency-injection.html
     output: 'web, pdf'
+    children:
+
+    - title: 'Reserved binding keys'
+      url: Reserved-binding-keys.html
+      output: 'web, pdf'
 
   - title: 'Controllers'
     url: Controllers.html
@@ -139,6 +153,10 @@ children:
     url: Sequence.html
     output: 'web, pdf'
     children:
+
+    - title: 'Routing requests'
+      url: Routing-requests.html
+      output: 'web, pdf'
 
     - title: 'Parsing requests'
       url: Parsing-requests.html
@@ -165,13 +183,17 @@ children:
       url: BelongsTo-relation.html
       output: 'web, pdf'
 
+    - title: 'HasOne Relation'
+      url: hasOne-relation.html
+      output: 'web, pdf'
+
   - title: 'Decorators'
     url: Decorators.html
     output: 'web, pdf'
     children:
 
-    - title: 'Route Decorators'
-      url: Decorators_route.html
+    - title: 'OpenAPI Decorators'
+      url: Decorators_openapi.html
       output: 'web, pdf'
 
     - title: 'Dependency Injection Decorator'
@@ -190,6 +212,35 @@ children:
     url: Error-handling.html
     output: 'web, pdf'
 
+- title: 'How-tos'
+  url: How-tos.html
+  output: 'web, pdf'
+  children:
+
+    - title: 'Exposing GraphQL APIs'
+      url: exposing-graphql-apis.html
+      output: 'web, pdf'
+
+    - title: 'Deploying to IBM Cloud'
+      url: Deploying-to-IBM-Cloud.html
+      output: 'web, pdf'
+
+    - title: 'Deploying to Kubernetes on IBM Cloud'
+      url: deploying_to_ibm_cloud_kubernetes.html
+      output: 'web, pdf'
+
+    - title: 'Deploying with pm2 and nginx'
+      url: deploying-with-pm2-and-nginx.html
+      output: 'web, pdf'
+
+    - title: 'Serving static files'
+      url: Serving-static-files.html
+      output: 'web, pdf'
+
+    - title: 'Database Migrations'
+      url: Database-migrations.html
+      output: 'web, pdf'
+
 - title: 'Booting an Application'
   url: Booting-an-Application.html
   output: 'web, pdf'
@@ -197,12 +248,17 @@ children:
 - title: 'Using Components'
   url: Using-components.html
   output: 'web, pdf'
+  children:
+
+  - title: Self-hosted REST API Explorer
+    url: Self-hosted-rest-api-explorer.html
+    output: 'web, pdf'
 
 - title: 'Calling other APIs'
   url: Calling-other-APIs-and-web-services.html
   output: 'web, pdf'
 
-- title: 'For current LoopBack users'
+- title: 'For LoopBack 3.x users'
   url: LoopBack-3.x.html
   output: 'web, pdf'
 
@@ -281,6 +337,10 @@ children:
     url: Creating-servers.html
     output: 'web, pdf'
 
+  - title: 'Extending Request Body Parsing'
+    url: Extending-request-body-parsing.html
+    output: 'web, pdf'
+
   - title: 'Testing your extension'
     url: Testing-your-extension.html
     output: 'web, pdf'
@@ -297,10 +357,6 @@ children:
   url: Reference.html
   output: 'web, pdf'
   children:
-
-  - title: 'Reserved binding keys'
-    url: Reserved-binding-keys.html
-    output: 'web, pdf'
 
   - title: 'Glossary'
     url: Glossary.html

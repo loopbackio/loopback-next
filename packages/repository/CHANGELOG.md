@@ -3,6 +3,207 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.2.0...@loopback/repository@1.2.1) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/repository
+
+
+
+
+
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.8...@loopback/repository@1.2.0) (2019-03-22)
+
+
+### Bug Fixes
+
+* **repository:** support embedded models in nested properties ([d298ec8](https://github.com/strongloop/loopback-next/commit/d298ec8))
+
+
+### Features
+
+* **context:** honor binding scope from [@bind](https://github.com/bind) ([3b30f01](https://github.com/strongloop/loopback-next/commit/3b30f01))
+* **repository:** add PATCH and DELETE for HasOne relation ([5936fb9](https://github.com/strongloop/loopback-next/commit/5936fb9))
+* **repository:** allow optional property definition on belongsTo decorator ([11c7baa](https://github.com/strongloop/loopback-next/commit/11c7baa))
+
+
+
+
+
+## [1.1.8](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.7...@loopback/repository@1.1.8) (2019-03-12)
+
+
+### Bug Fixes
+
+* model id type is now boolean|number instead of boolean ([71292e9](https://github.com/strongloop/loopback-next/commit/71292e9))
+
+
+
+
+
+## [1.1.7](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.6...@loopback/repository@1.1.7) (2019-03-01)
+
+
+### Bug Fixes
+
+* **repository:** change default binding scope to TRANSIENT for repos ([55461af](https://github.com/strongloop/loopback-next/commit/55461af))
+
+
+
+
+
+## [1.1.6](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.5...@loopback/repository@1.1.6) (2019-02-25)
+
+**Note:** Version bump only for package @loopback/repository
+
+
+
+
+
+## [1.1.5](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.4...@loopback/repository@1.1.5) (2019-02-08)
+
+
+### Bug Fixes
+
+* update to the most recent lodash version ([65ee865](https://github.com/strongloop/loopback-next/commit/65ee865))
+
+
+
+
+
+## [1.1.4](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.3...@loopback/repository@1.1.4) (2019-01-28)
+
+**Note:** Version bump only for package @loopback/repository
+
+
+
+
+
+## [1.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.2...@loopback/repository@1.1.3) (2019-01-15)
+
+
+### Bug Fixes
+
+* **repository:** remove property.array() call from hasMany decorator ([56ab017](https://github.com/strongloop/loopback-next/commit/56ab017)), closes [#1944](https://github.com/strongloop/loopback-next/issues/1944)
+
+
+
+
+
+## [1.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.1...@loopback/repository@1.1.2) (2019-01-14)
+
+
+### Bug Fixes
+
+* add nin operator to query typing and builder ([#2215](https://github.com/strongloop/loopback-next/issues/2215)) ([c38bd4e](https://github.com/strongloop/loopback-next/commit/c38bd4e))
+* rework tslint comments disabling "no-unused-variable" rule ([a18a3d7](https://github.com/strongloop/loopback-next/commit/a18a3d7))
+
+
+
+
+
+## [1.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.1.0...@loopback/repository@1.1.1) (2018-12-20)
+
+**Note:** Version bump only for package @loopback/repository
+
+
+
+
+
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.0.6...@loopback/repository@1.1.0) (2018-12-13)
+
+
+### Bug Fixes
+
+* **repository:** revert hasOne target FK as PK implementation ([fcc76df](https://github.com/strongloop/loopback-next/commit/fcc76df))
+
+
+### Features
+
+* **repository:** add belongsToUniquely sugar syntax method ([1b5b66a](https://github.com/strongloop/loopback-next/commit/1b5b66a))
+* **repository:** hasOne relation ([7c2080a](https://github.com/strongloop/loopback-next/commit/7c2080a))
+* **repository:** migrateSchema APIs ([ad0229b](https://github.com/strongloop/loopback-next/commit/ad0229b))
+
+
+
+
+
+## [1.0.6](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.0.5...@loopback/repository@1.0.6) (2018-11-26)
+
+**Note:** Version bump only for package @loopback/repository
+
+
+
+
+
+## [1.0.5](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.0.4...@loopback/repository@1.0.5) (2018-11-17)
+
+
+### Bug Fixes
+
+* **repository:** make sure model definition is built correctly ([2effa30](https://github.com/strongloop/loopback-next/commit/2effa30))
+
+
+
+
+
+## [1.0.4](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.0.3...@loopback/repository@1.0.4) (2018-11-14)
+
+**Note:** Version bump only for package @loopback/repository
+
+
+
+
+
+<a name="1.0.3"></a>
+## [1.0.3](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.0.1...@loopback/repository@1.0.3) (2018-11-08)
+
+
+### Bug Fixes
+
+* **repository:** build relations based on their names ([2046701](https://github.com/strongloop/loopback-next/commit/2046701))
+
+
+### Performance Improvements
+
+* **repository:** prevent multiple array allocation ([a026d33](https://github.com/strongloop/loopback-next/commit/a026d33))
+
+
+
+
+
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.0.0...@loopback/repository@1.0.1) (2018-10-17)
+
+
+### Performance Improvements
+
+* **repository:** prevent multiple array allocation ([691981c](https://github.com/strongloop/loopback-next/commit/691981c))
+
+
+
+
+
+<a name="0.21.2"></a>
+## [0.21.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.21.1...@loopback/repository@0.21.2) (2018-10-08)
+
+**Note:** Version bump only for package @loopback/repository
+
+
+
+
+
+<a name="0.21.1"></a>
+## [0.21.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.21.0...@loopback/repository@0.21.1) (2018-10-06)
+
+
+### Bug Fixes
+
+* **repository:** resolve types for juggler ([41e456c](https://github.com/strongloop/loopback-next/commit/41e456c))
+
+
+
+
+
 <a name="0.21.0"></a>
 # [0.21.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@0.20.0...@loopback/repository@0.21.0) (2018-10-05)
 

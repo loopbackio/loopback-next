@@ -35,17 +35,22 @@
 <% } -%>
     "pretest": "npm run clean && npm run build",
 <% if (project.mocha) { -%>
-    "test": "mocha dist/test",
+    "test": "mocha dist/__tests__",
 <% } -%>
 <% if (project.prettier || project.tslint) { -%>
     "posttest": "npm run lint",
 <% } -%>
 <% if (project.mocha && (project.prettier || project.tslint)) { -%>
-    "test:dev": "mocha dist/test/**/*.js && npm run posttest",
+    "test:dev": "mocha dist/__tests__/**/*.js && npm run posttest",
 <% } else if (project.mocha) { -%>
-    "test:dev": "mocha dist/test/**/*.js",
+    "test:dev": "mocha dist/__tests__/**/*.js",
 <% } -%>
 <% if (project.projectType === 'application') { -%>
+  <% if (project.docker) { -%>
+    "docker:build": "docker build -t <%= project.name -%> .",
+    "docker:run": "docker run -p 3000:3000 -d <%= project.name -%>",
+  <% } -%>
+    "migrate": "node ./dist/migrate",
     "start": "npm run build && node .",
 <% } -%>
     "prepare": "npm run build"
@@ -63,7 +68,8 @@
     "index.js",
     "index.d.ts",
     "dist",
-    "src"
+    "src",
+    "!*/__tests__"
   ],
   "dependencies": {
     "@loopback/boot": "<%= project.dependencies['@loopback/boot'] -%>",
@@ -72,7 +78,8 @@
     "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
     "@loopback/openapi-v3": "<%= project.dependencies['@loopback/openapi-v3'] -%>",
     "@loopback/repository": "<%= project.dependencies['@loopback/repository'] -%>",
-    "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>"
+    "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>",
+    "@loopback/rest-explorer": "<%= project.dependencies['@loopback/rest-explorer'] -%>"
 <% } else { -%>
     "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>"
 <% } -%>

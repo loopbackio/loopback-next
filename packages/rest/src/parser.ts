@@ -10,46 +10,14 @@ import {
   ParameterObject,
   SchemasObject,
 } from '@loopback/openapi-v3-types';
-import * as debugModule from 'debug';
-import {IncomingMessage} from 'http';
-import * as HttpErrors from 'http-errors';
-import * as parseUrl from 'parseurl';
-import {parse as parseQuery} from 'qs';
-import {promisify} from 'util';
+import * as debugFactory from 'debug';
+import {RequestBody, RequestBodyParser} from './body-parsers';
 import {coerceParameter} from './coercion/coerce-parameter';
-import {RestHttpErrors} from './index';
-import {ResolvedRoute} from './router/routing-table';
+import {RestHttpErrors} from './rest-http-error';
+import {ResolvedRoute} from './router';
 import {OperationArgs, PathParameterValues, Request} from './types';
 import {validateRequestBody} from './validation/request-body.validator';
-
-type HttpError = HttpErrors.HttpError;
-
-const debug = debugModule('loopback:rest:parser');
-
-export const QUERY_NOT_PARSED = {};
-Object.freeze(QUERY_NOT_PARSED);
-
-// tslint:disable-next-line:no-any
-type MaybeBody = any | undefined;
-
-const parseJsonBody: (req: IncomingMessage) => Promise<MaybeBody> = promisify(
-  require('body/json'),
-);
-
-/**
- * Get the content-type header value from the request
- * @param req Http request
- */
-function getContentType(req: Request): string | undefined {
-  const val = req.headers['content-type'];
-  if (typeof val === 'string') {
-    return val;
-  } else if (Array.isArray(val)) {
-    // Assume only one value is present
-    return val[0];
-  }
-  return undefined;
-}
+const debug = debugFactory('loopback:rest:parser');
 
 /**
  * Parses the request to derive arguments to be passed in for the Application
@@ -61,11 +29,15 @@ function getContentType(req: Request): string | undefined {
 export async function parseOperationArgs(
   request: Request,
   route: ResolvedRoute,
+  requestBodyParser: RequestBodyParser = new RequestBodyParser(),
 ): Promise<OperationArgs> {
   debug('Parsing operation arguments for route %s', route.describe());
   const operationSpec = route.spec;
   const pathParams = route.pathParams;
-  const body = await loadRequestBodyIfNeeded(operationSpec, request);
+  const body = await requestBodyParser.loadRequestBodyIfNeeded(
+    operationSpec,
+    request,
+  );
   return buildOperationArguments(
     operationSpec,
     request,
@@ -75,32 +47,11 @@ export async function parseOperationArgs(
   );
 }
 
-async function loadRequestBodyIfNeeded(
-  operationSpec: OperationObject,
-  request: Request,
-): Promise<MaybeBody> {
-  if (!operationSpec.requestBody) return Promise.resolve();
-
-  const contentType = getContentType(request);
-  debug('Loading request body with content type %j', contentType);
-  if (contentType && !/json/.test(contentType)) {
-    throw new HttpErrors.UnsupportedMediaType(
-      `Content-type ${contentType} is not supported.`,
-    );
-  }
-
-  return await parseJsonBody(request).catch((err: HttpError) => {
-    debug('Cannot parse request body %j', err);
-    err.statusCode = 400;
-    throw err;
-  });
-}
-
 function buildOperationArguments(
   operationSpec: OperationObject,
   request: Request,
   pathParams: PathParameterValues,
-  body: MaybeBody,
+  body: RequestBody,
   globalSchemas: SchemasObject,
 ): OperationArgs {
   let requestBodyIndex: number = -1;
@@ -131,7 +82,7 @@ function buildOperationArguments(
   debug('Validating request body - value %j', body);
   validateRequestBody(body, operationSpec.requestBody, globalSchemas);
 
-  if (requestBodyIndex > -1) paramArgs.splice(requestBodyIndex, 0, body);
+  if (requestBodyIndex > -1) paramArgs.splice(requestBodyIndex, 0, body.value);
   return paramArgs;
 }
 
@@ -142,29 +93,15 @@ function getParamFromRequest(
 ) {
   switch (spec.in) {
     case 'query':
-      ensureRequestQueryWasParsed(request);
       return request.query[spec.name];
     case 'path':
       return pathParams[spec.name];
     case 'header':
       // @jannyhou TBD: check edge cases
       return request.headers[spec.name.toLowerCase()];
-      break;
     // TODO(jannyhou) to support `cookie`,
     // see issue https://github.com/strongloop/loopback-next/issues/997
     default:
       throw RestHttpErrors.invalidParamLocation(spec.in);
   }
-}
-
-function ensureRequestQueryWasParsed(request: Request) {
-  if (request.query && request.query !== QUERY_NOT_PARSED) return;
-
-  const input = parseUrl(request)!.query;
-  if (input && typeof input === 'string') {
-    request.query = parseQuery(input);
-  } else {
-    request.query = {};
-  }
-  debug('Parsed request query: ', request.query);
 }

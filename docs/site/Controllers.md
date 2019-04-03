@@ -8,7 +8,7 @@ permalink: /doc/en/lb4/Controllers.html
 
 ## Overview
 
-A `Controller` is a class that implements operations defined by application's
+A `Controller` is a class that implements operations defined by an application's
 API. It implements an application's business logic and acts as a bridge between
 the HTTP/REST API and domain/database models. Decorations are added to a
 `Controller` class and its members to map the API operations of the application
@@ -16,24 +16,6 @@ to the corresponding controller's operations. A `Controller` operates only on
 processed input and abstractions of backend services / databases.
 
 This page will only cover a `Controller`'s usage with REST APIs.
-
-### Review questions
-
-{% include content/tbd.html %}
-
-Simplest possible example of a Controller
-
-- `app.controller()`
-- a few methods
-- no usage of `@api`
-
-How to create a basic `Controller` (beyond the hello world)
-
-- Using DI (`@inject`)
-- Using decorators (eg. `@authenticate`)
-- Defining routes via sugar annoations (`@get`, `@post`)
-- Errors
-- Using `async` / `await` and `Promise`s
 
 ## Operations
 
@@ -239,10 +221,11 @@ codes is found
 The example below shows the previous controller revamped with `HttpErrors` along
 with a test to verify that the error is thrown properly.
 
+{% include code-caption.html content="src/__tests__/integration/controllers/hello.controller.integration.ts" %}
+
 ```ts
-// test/integration/controllers/hello.controller.integration.ts
-import {HelloController} from '../../../src/controllers';
-import {HelloRepository} from '../../../src/repositories';
+import {HelloController} from '../../../controllers';
+import {HelloRepository} from '../../../repositories';
 import {testdb} from '../../fixtures/datasources/testdb.datasource';
 import {expect} from '@loopback/testlab';
 import {HttpErrors} from '@loopback/rest';
@@ -262,8 +245,9 @@ describe('Hello Controller', () => {
 });
 ```
 
+{% include code-caption.html content="src/controllers/hello.controller.ts" %}
+
 ```ts
-// src/controllers/hello.controller.ts
 import {HelloRepository} from '../repositories';
 import {HelloMessage} from '../models';
 import {get, param, HttpErrors} from '@loopback/rest';

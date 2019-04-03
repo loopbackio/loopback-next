@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/boot
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -69,10 +69,7 @@ export class Bootstrapper {
     // Bind booters passed in as a part of BootOptions
     // We use _bindBooter so this Class can be used without the Mixin
     if (execOptions && execOptions.booters) {
-      execOptions.booters.forEach(booter =>
-        // tslint:disable-next-line:no-any
-        _bindBooter(this.app, booter),
-      );
+      execOptions.booters.forEach(booter => _bindBooter(this.app, booter));
     }
 
     // Determine the phases to be run. If a user set a phases filter, those
@@ -94,7 +91,7 @@ export class Bootstrapper {
       binding.key.slice(prefix_length),
     );
 
-    // Determing the booters to be run. If a user set a booters filter (class
+    // Determining the booters to be run. If a user set a booters filter (class
     // names of booters that should be run), that is the value, otherwise it
     // is all the registered booters by default.
     const names = execOptions

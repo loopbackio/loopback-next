@@ -42,13 +42,14 @@ Answer the prompts as follows:
 ? Project root directory: (getting-started)
 ? Application class name: StarterApplication
 ? Select features to enable in the project:
-❯◉ Enable tslint
- ◉ Enable prettier
- ◉ Enable mocha
- ◉ Enable loopbackBuild
- ◉ Enable vscode
- ◉ Enable repositories
- ◉ Enable services
+❯◉ Enable tslint: add a linter with pre-configured lint rules
+ ◉ Enable prettier: install prettier to format code conforming to rules
+ ◉ Enable mocha: install mocha to run tests
+ ◉ Enable loopbackBuild: use @loopback/build helpers (e.g. lb-tslint)
+ ◉ Enable vscode: add VSCode config files
+ ◉ Enable docker: include Dockerfile and .dockerignore
+ ◉ Enable repositories: include repository imports and RepositoryMixin
+ ◉ Enable services: include service-proxy imports and ServiceMixin
 ```
 
 ### Starting the project
@@ -73,6 +74,9 @@ follows:
 lb4 controller
 ```
 
+- _Note: If your application is still running, press **CTRL+C** to stop it
+  before calling the command_
+
 - Answer the prompts as follows:
 
   ```sh
@@ -81,7 +85,7 @@ lb4 controller
     create src/controllers/hello.controller.ts
     update src/controllers/index.ts
 
-  Controller Hello was now created in src/controllers/
+  Controller hello was now created in src/controllers/
   ```
 
 - Paste the following contents into the file
@@ -99,9 +103,6 @@ lb4 controller
   ```
 
 - Start the application using `npm start`.
-
-  - _Note: If your application is still running, press **CTRL+C** to stop it
-    before restarting it_
 
 - Visit <http://127.0.0.1:3000/hello> to see `Hello world!`
 

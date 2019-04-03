@@ -25,7 +25,10 @@ const props = {
   url: specPath,
 };
 
-describe('openapi-generator specific files', () => {
+describe('openapi-generator specific files', function() {
+  // These tests take longer to execute, they used to time out on Travis CI
+  this.timeout(10000);
+
   const index = path.resolve(SANDBOX_PATH, 'src/controllers/index.ts');
   const controller = path.resolve(
     SANDBOX_PATH,
@@ -68,7 +71,10 @@ describe('openapi-generator specific files', () => {
     assert.file(newPetModel);
     assert.fileContent(newPetModel, `export class NewPet {`);
     assert.fileContent(newPetModel, `@model({name: 'NewPet'})`);
-    assert.fileContent(newPetModel, `@property({name: 'name'})`);
+    assert.fileContent(
+      newPetModel,
+      `@property({name: 'name', required: true})`,
+    );
     assert.fileContent(newPetModel, `name: string;`);
     assert.fileContent(newPetModel, `@property({name: 'tag'})`);
     assert.fileContent(newPetModel, `tag?: string`);

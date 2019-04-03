@@ -3,6 +3,230 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.9.0...@loopback/rest@1.9.1) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/rest
+
+
+
+
+
+# [1.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.8.0...@loopback/rest@1.9.0) (2019-03-22)
+
+
+### Features
+
+* **context:** honor binding scope from [@bind](https://github.com/bind) ([3b30f01](https://github.com/strongloop/loopback-next/commit/3b30f01))
+* **context:** tidy up context for resolving injections of a singleton binding ([f5bf43c](https://github.com/strongloop/loopback-next/commit/f5bf43c))
+* **rest:** add `requestedBaseUrl` API to RequestContext ([912bece](https://github.com/strongloop/loopback-next/commit/912bece))
+* **testlab:** add dummy HTTPS config ([a32c885](https://github.com/strongloop/loopback-next/commit/a32c885))
+
+
+
+
+
+# [1.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.7.0...@loopback/rest@1.8.0) (2019-03-12)
+
+
+### Features
+
+* **openapi-v3:** add operationId based on controller/method names ([89f905b](https://github.com/strongloop/loopback-next/commit/89f905b))
+* **rest:** add strict option for routers ([c3c5dab](https://github.com/strongloop/loopback-next/commit/c3c5dab))
+* **rest:** add support for redirect routes ([53bce7f](https://github.com/strongloop/loopback-next/commit/53bce7f))
+
+
+
+
+
+# [1.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.6.0...@loopback/rest@1.7.0) (2019-03-01)
+
+
+### Features
+
+* **rest:** allow express settings to be customized ([962f1cb](https://github.com/strongloop/loopback-next/commit/962f1cb))
+
+
+
+
+
+# [1.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.5.5...@loopback/rest@1.6.0) (2019-02-25)
+
+
+### Bug Fixes
+
+* **rest:** only return matched trie nodes with values ([669ede1](https://github.com/strongloop/loopback-next/commit/669ede1))
+
+
+### Features
+
+* **context:** introduce async context observers for bind/unbind events ([e5e5fc4](https://github.com/strongloop/loopback-next/commit/e5e5fc4))
+* **rest:** add `disabled` option for OpenAPI spec endpoints ([af5b16a](https://github.com/strongloop/loopback-next/commit/af5b16a))
+* **rest:** allow rest-server to be mounted on a path to express ([de8f626](https://github.com/strongloop/loopback-next/commit/de8f626))
+* **rest:** introduce requestBodyParser options in RestServerOptions ([c7f59ba](https://github.com/strongloop/loopback-next/commit/c7f59ba))
+
+
+
+
+
+## [1.5.5](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.5.4...@loopback/rest@1.5.5) (2019-02-08)
+
+
+### Bug Fixes
+
+* **rest:** sanitize json for JSON.parse() ([5042698](https://github.com/strongloop/loopback-next/commit/5042698))
+* update to the most recent lodash version ([65ee865](https://github.com/strongloop/loopback-next/commit/65ee865))
+
+
+
+
+
+## [1.5.4](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.5.3...@loopback/rest@1.5.4) (2019-01-28)
+
+**Note:** Version bump only for package @loopback/rest
+
+
+
+
+
+## [1.5.3](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.5.2...@loopback/rest@1.5.3) (2019-01-15)
+
+**Note:** Version bump only for package @loopback/rest
+
+
+
+
+
+## [1.5.2](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.5.1...@loopback/rest@1.5.2) (2019-01-14)
+
+
+### Bug Fixes
+
+* rework tslint comments disabling "no-unused-variable" rule ([a18a3d7](https://github.com/strongloop/loopback-next/commit/a18a3d7))
+
+
+
+
+
+## [1.5.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.5.0...@loopback/rest@1.5.1) (2018-12-20)
+
+**Note:** Version bump only for package @loopback/rest
+
+
+
+
+
+# [1.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.4.0...@loopback/rest@1.5.0) (2018-12-13)
+
+
+### Bug Fixes
+
+* **rest:** add tests for request validation per media type ([7be76a4](https://github.com/strongloop/loopback-next/commit/7be76a4))
+* **rest:** parse query string even when there is no rest query param ([ad905a5](https://github.com/strongloop/loopback-next/commit/ad905a5))
+
+
+### Features
+
+* **rest:** allow basePath for rest servers ([1016a09](https://github.com/strongloop/loopback-next/commit/1016a09))
+
+
+
+
+
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.3.1...@loopback/rest@1.4.0) (2018-11-26)
+
+
+### Bug Fixes
+
+* **rest:** allow `.` to be used in openapi path template ([47c24cb](https://github.com/strongloop/loopback-next/commit/47c24cb))
+
+
+### Features
+
+* **rest:** allow body parsers to be extended ([86bfcbc](https://github.com/strongloop/loopback-next/commit/86bfcbc))
+* **rest:** switch to express body-parser ([084837f](https://github.com/strongloop/loopback-next/commit/084837f))
+
+
+
+
+
+## [1.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.3.0...@loopback/rest@1.3.1) (2018-11-17)
+
+
+### Bug Fixes
+
+* **rest:** allow users to disable Explorer redirects after RestServer was created ([34af6a0](https://github.com/strongloop/loopback-next/commit/34af6a0))
+
+
+
+
+
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.2.0...@loopback/rest@1.3.0) (2018-11-14)
+
+
+### Features
+
+* **rest:** add config option to disable API Explorer redirects ([b4d9bc5](https://github.com/strongloop/loopback-next/commit/b4d9bc5))
+
+
+
+
+
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.0.1...@loopback/rest@1.2.0) (2018-11-08)
+
+
+### Bug Fixes
+
+* **rest:** don't rely on transitive dependencies from express ([a3d5d0c](https://github.com/strongloop/loopback-next/commit/a3d5d0c))
+* **rest:** handle overlapping paths with different vars ([17adc7a](https://github.com/strongloop/loopback-next/commit/17adc7a))
+* **rest:** improve route sorting to group by path and verb ([ce31bf7](https://github.com/strongloop/loopback-next/commit/ce31bf7))
+* **rest:** make sure the sorting test pass for node 11 ([614450b](https://github.com/strongloop/loopback-next/commit/614450b))
+* fix static assets router blocking controller registration ([0e1b06f](https://github.com/strongloop/loopback-next/commit/0e1b06f))
+* move serve-static [@types](https://github.com/types) to normal dependencies ([216bf85](https://github.com/strongloop/loopback-next/commit/216bf85)), closes [#1917](https://github.com/strongloop/loopback-next/issues/1917)
+* optimize serving static files ([57a94a5](https://github.com/strongloop/loopback-next/commit/57a94a5))
+* remove unnecessary dependency from [#1918](https://github.com/strongloop/loopback-next/issues/1918) ([63d367b](https://github.com/strongloop/loopback-next/commit/63d367b))
+
+
+### Features
+
+* add 'x-visibility' extension property to OpenAPI spec ([5634e18](https://github.com/strongloop/loopback-next/commit/5634e18))
+* **rest:** add support for form request body ([2d9e0a8](https://github.com/strongloop/loopback-next/commit/2d9e0a8))
+* **rest:** push route(verb, path, spec, fn) down to RestServer ([c49b65a](https://github.com/strongloop/loopback-next/commit/c49b65a))
+
+
+
+
+
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.0.0...@loopback/rest@1.0.1) (2018-10-17)
+
+**Note:** Version bump only for package @loopback/rest
+
+
+
+
+
+<a name="0.26.0"></a>
+# [0.26.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.25.5...@loopback/rest@0.26.0) (2018-10-08)
+
+
+### Features
+
+* **rest:** switch to trie based routing ([a682ce2](https://github.com/strongloop/loopback-next/commit/a682ce2))
+
+
+
+
+
+<a name="0.25.5"></a>
+## [0.25.5](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.25.4...@loopback/rest@0.25.5) (2018-10-06)
+
+**Note:** Version bump only for package @loopback/rest
+
+
+
+
+
 <a name="0.25.4"></a>
 ## [0.25.4](https://github.com/strongloop/loopback-next/compare/@loopback/rest@0.25.3...@loopback/rest@0.25.4) (2018-10-05)
 

@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/repository-json-schema
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -25,12 +25,7 @@ export function getFilterJsonSchemaFor(modelCtor: typeof Model): JsonSchema {
     properties: {
       where: getWhereJsonSchemaFor(modelCtor),
 
-      fields: {
-        type: 'object',
-        // TODO(bajtos) enumerate "model" properties
-        // See https://github.com/strongloop/loopback-next/issues/1748
-        additionalProperties: true,
-      },
+      fields: getFieldsJsonSchemaFor(modelCtor),
 
       offset: {
         type: 'integer',
@@ -92,6 +87,27 @@ export function getWhereJsonSchemaFor(modelCtor: typeof Model): JsonSchema {
     // TODO(bajtos) enumerate "model" properties and operators like "and"
     // See https://github.com/strongloop/loopback-next/issues/1748
     additionalProperties: true,
+  };
+  return schema;
+}
+
+/**
+ * Build a JSON schema describing the format of the "fields" object
+ * used to include or exclude properties of model instances.
+ *
+ * @param modelCtor The model constructor to build the filter schema for.
+ */
+
+export function getFieldsJsonSchemaFor(modelCtor: typeof Model): JsonSchema {
+  const schema: JsonSchema = {
+    type: 'object',
+    properties: Object.assign(
+      {},
+      ...Object.keys(modelCtor.definition.properties).map(k => ({
+        [k]: {type: 'boolean'},
+      })),
+    ),
+    additionalProperties: !modelCtor.definition.settings.strict,
   };
   return schema;
 }

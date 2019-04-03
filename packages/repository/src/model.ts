@@ -1,10 +1,10 @@
-// Copyright IBM Corp. 2017. All Rights Reserved.
+// Copyright IBM Corp. 2017,2019. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {AnyObject, DataObject, Options} from './common-types';
-import {RelationMetadata} from './decorators/relation.decorator';
+import {RelationMetadata} from './relations';
 import {TypeResolver} from './type-resolver';
 import {Type} from './types';
 
@@ -28,7 +28,7 @@ export type PropertyType =
  */
 export interface PropertyDefinition {
   type: PropertyType; // For example, 'string', String, or {}
-  id?: boolean;
+  id?: boolean | number;
   json?: PropertyForm;
   store?: PropertyForm;
   itemType?: PropertyType; // type of array
@@ -95,8 +95,8 @@ export class ModelDefinition {
 
   /**
    * Add a property
-   * @param property Property definition or name (string)
-   * @param type Property type
+   * @param name Property definition or name (string)
+   * @param definitionOrType Definition or property type
    */
   addProperty(
     name: string,

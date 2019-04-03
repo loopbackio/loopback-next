@@ -33,6 +33,9 @@ application project.
 
 `--vscode`: Add VSCode config files to LoopBack4 application project
 
+`--docker`: Generate Dockerfile and add npm scripts to build/run the project in
+a docker container.
+
 {% include_relative includes/CLI-std-options.md %}
 
 ### Arguments
@@ -76,6 +79,7 @@ the following files and directories:
 ```text
 .
 ├── src/
+|   ├── __tests__/
 |   ├── controllers/
 |   |   └── ping.controller.ts
 |   ├── datasources/
@@ -83,8 +87,8 @@ the following files and directories:
 |   ├── repositories/
 |   ├── application.ts
 |   ├── index.ts
+|   ├── migrate.ts
 |   └── sequence.ts
-├── test/
 └── package.json
 ```
 

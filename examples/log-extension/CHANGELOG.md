@@ -3,6 +3,157 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.8](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@1.1.7...@loopback/example-log-extension@1.1.8) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
+## [1.1.7](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@1.1.6...@loopback/example-log-extension@1.1.7) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
+## [1.1.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@1.1.5...@loopback/example-log-extension@1.1.6) (2019-03-12)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
+## [1.1.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@1.1.4...@loopback/example-log-extension@1.1.5) (2019-03-01)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
+## [1.1.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@1.1.3...@loopback/example-log-extension@1.1.4) (2019-02-25)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
+## [1.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@1.1.2...@loopback/example-log-extension@1.1.3) (2019-02-08)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
+## [1.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@1.1.1...@loopback/example-log-extension@1.1.2) (2019-01-28)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
+## [1.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@1.1.0...@loopback/example-log-extension@1.1.1) (2019-01-15)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@1.0.8...@loopback/example-log-extension@1.1.0) (2019-01-14)
+
+
+### Features
+
+* always include tslint and typescript in project dev-dependencies ([e0df285](https://github.com/strongloop/loopback-next/commit/e0df285))
+
+
+
+
+
+## [1.0.8](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@1.0.7...@loopback/example-log-extension@1.0.8) (2018-12-20)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
+## [1.0.7](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@1.0.6...@loopback/example-log-extension@1.0.7) (2018-12-13)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
+## [1.0.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@1.0.5...@loopback/example-log-extension@1.0.6) (2018-11-26)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
+## [1.0.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@1.0.4...@loopback/example-log-extension@1.0.5) (2018-11-17)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
+## [1.0.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@1.0.3...@loopback/example-log-extension@1.0.4) (2018-11-14)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
+<a name="1.0.3"></a>
+## [1.0.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@1.0.1...@loopback/example-log-extension@1.0.3) (2018-11-08)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@1.0.0...@loopback/example-log-extension@1.0.1) (2018-10-17)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
+<a name="0.11.21"></a>
+## [0.11.21](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@0.11.20...@loopback/example-log-extension@0.11.21) (2018-10-08)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
+<a name="0.11.20"></a>
+## [0.11.20](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@0.11.19...@loopback/example-log-extension@0.11.20) (2018-10-06)
+
+**Note:** Version bump only for package @loopback/example-log-extension
+
+
+
+
+
 <a name="0.11.19"></a>
 ## [0.11.19](https://github.com/strongloop/loopback-next/compare/@loopback/example-log-extension@0.11.18...@loopback/example-log-extension@0.11.19) (2018-10-05)
 

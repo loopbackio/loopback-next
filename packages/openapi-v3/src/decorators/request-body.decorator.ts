@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/openapi-v3
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -81,7 +81,9 @@ export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
   return function(target: Object, member: string, index: number) {
     debug('@requestBody() on %s.%s', target.constructor.name, member);
     debug('  parameter index: %s', index);
-    debug('  options: %s', inspect(requestBodySpec, {depth: null}));
+    /* istanbul ignore if */
+    if (debug.enabled)
+      debug('  options: %s', inspect(requestBodySpec, {depth: null}));
 
     // Use 'application/json' as default content if `requestBody` is undefined
     requestBodySpec = requestBodySpec || {content: {}};
@@ -95,7 +97,9 @@ export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
 
     const paramType = paramTypes[index];
     const schema = resolveSchema(paramType);
-    debug('  inferred schema: %s', inspect(schema, {depth: null}));
+    /* istanbul ignore if */
+    if (debug.enabled)
+      debug('  inferred schema: %s', inspect(schema, {depth: null}));
     requestBodySpec.content = _.mapValues(requestBodySpec.content, c => {
       if (!c.schema) {
         c.schema = schema;
@@ -109,7 +113,9 @@ export function requestBody(requestBodySpec?: Partial<RequestBodyObject>) {
       requestBodySpec[REQUEST_BODY_INDEX] = index;
     }
 
-    debug('  final spec: ', inspect(requestBodySpec, {depth: null}));
+    /* istanbul ignore if */
+    if (debug.enabled)
+      debug('  final spec: ', inspect(requestBodySpec, {depth: null}));
     ParameterDecoratorFactory.createDecorator<RequestBodyObject>(
       OAI3Keys.REQUEST_BODY_KEY,
       requestBodySpec as RequestBodyObject,

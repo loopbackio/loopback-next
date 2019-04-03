@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -17,7 +17,7 @@ import {
   PropertyType,
   RelationDefinitionMap,
 } from '../model';
-import {RELATIONS_KEY} from './relation.decorator';
+import {RELATIONS_KEY} from '../relations/relation.decorator';
 
 export const MODEL_KEY = MetadataAccessor.create<
   Partial<ModelDefinitionSyntax>,
@@ -55,35 +55,53 @@ export function model(definition?: Partial<ModelDefinitionSyntax>) {
     decorator(target);
 
     // Build "ModelDefinition" and store it on model constructor
-    const modelDef = new ModelDefinition(def);
-
-    const propertyMap: PropertyMap =
-      MetadataInspector.getAllPropertyMetadata(
-        MODEL_PROPERTIES_KEY,
-        target.prototype,
-      ) || {};
-
-    for (const p in propertyMap) {
-      const propertyDef = propertyMap[p];
-      const designType = MetadataInspector.getDesignTypeForProperty(
-        target.prototype,
-        p,
-      );
-      if (!propertyDef.type) {
-        propertyDef.type = designType;
-      }
-      modelDef.addProperty(p, propertyDef);
-    }
-
-    target.definition = modelDef;
-
-    const relationMap: RelationDefinitionMap =
-      MetadataInspector.getAllPropertyMetadata(
-        RELATIONS_KEY,
-        target.prototype,
-      ) || {};
-    target.definition.relations = relationMap;
+    buildModelDefinition(target, def);
   };
+}
+
+/**
+ * Build model definition from decorations
+ * @param target Target model class
+ * @param def Model definition spec
+ */
+export function buildModelDefinition(
+  target: Function & {definition?: ModelDefinition | undefined},
+  def?: ModelDefinitionSyntax,
+) {
+  // Check if the definition for this class has been built (not from the super
+  // class)
+  const baseClass = Object.getPrototypeOf(target);
+  if (
+    !def &&
+    target.definition &&
+    baseClass &&
+    target.definition !== baseClass.definition
+  ) {
+    return target.definition;
+  }
+  const modelDef = new ModelDefinition(def || {name: target.name});
+  const prototype = target.prototype;
+  const propertyMap: PropertyMap =
+    MetadataInspector.getAllPropertyMetadata(MODEL_PROPERTIES_KEY, prototype) ||
+    {};
+  for (const p in propertyMap) {
+    const propertyDef = propertyMap[p];
+    const designType = MetadataInspector.getDesignTypeForProperty(prototype, p);
+    if (!propertyDef.type) {
+      propertyDef.type = designType;
+    }
+    modelDef.addProperty(p, propertyDef);
+  }
+  target.definition = modelDef;
+  const relationMeta: RelationDefinitionMap =
+    MetadataInspector.getAllPropertyMetadata(RELATIONS_KEY, prototype) || {};
+  const relations: RelationDefinitionMap = {};
+  // Build an object keyed by relation names
+  Object.values(relationMeta).forEach(r => {
+    relations[r.name] = r;
+  });
+  target.definition.relations = relations;
+  return modelDef;
 }
 
 /**

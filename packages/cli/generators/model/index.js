@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -14,9 +14,13 @@ const path = require('path');
 
 const PROMPT_BASE_MODEL_CLASS = 'Please select the model base class';
 const ERROR_NO_MODELS_FOUND = 'Model was not found in';
-const BASE_MODELS = [
-  'Entity',
-  'Model',
+const BASE_MODELS = ['Entity', 'Model'];
+const CLI_BASE_MODELS = [
+  {
+    name: `Entity ${chalk.gray('(A persisted model with an ID)')}`,
+    value: 'Entity',
+  },
+  {name: `Model ${chalk.gray('(A business domain object)')}`, value: 'Model'},
   {type: 'separator', line: '----- Custom Models -----'},
 ];
 const MODEL_TEMPLATE_PATH = 'model.ts.ejs';
@@ -62,6 +66,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     ];
 
     this.artifactInfo.properties = {};
+    this.artifactInfo.modelSettings = {};
     this.propCounter = 0;
 
     this.artifactInfo.modelDir = path.resolve(
@@ -75,6 +80,13 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
       description: 'A valid based model',
     });
 
+    // The base class can be specified:
+    // 1. From the prompt
+    // 2. using the --base flag
+    // 3. in the json when using the --config flag
+    // This flag is to indicate whether the base class has been validated.
+    this.isBaseClassChecked = false;
+
     return super._setupGenerator();
   }
 
@@ -83,6 +95,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
   }
 
   checkLoopBackProject() {
+    if (this.shouldExit()) return;
     return super.checkLoopBackProject();
   }
 
@@ -95,9 +108,10 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
 
   // Ask for Model base class
   async promptModelBaseClassName() {
+    if (this.shouldExit()) return;
     const availableModelBaseClasses = [];
 
-    availableModelBaseClasses.push(...BASE_MODELS);
+    availableModelBaseClasses.push(...CLI_BASE_MODELS);
 
     try {
       debug(`model list dir ${this.artifactInfo.modelDir}`);
@@ -116,14 +130,17 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
       return this.exit(err);
     }
 
-    if (
-      this.options.base &&
-      availableModelBaseClasses.includes(this.options.base)
-    ) {
-      this.artifactInfo.modelBaseClass = utils.toClassName(this.options.base);
-    } else {
-      if (this.options.base) {
-        // the model specified in the command line does not exists
+    if (this.options.base) {
+      this.isBaseClassChecked = true;
+      if (
+        this.isValidBaseClass(
+          availableModelBaseClasses,
+          this.options.base,
+          true,
+        )
+      ) {
+        this.artifactInfo.modelBaseClass = utils.toClassName(this.options.base);
+      } else {
         return this.exit(
           new Error(
             `${ERROR_NO_MODELS_FOUND} ${
@@ -148,19 +165,86 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
       },
     ])
       .then(props => {
+        if (this.isBaseClassChecked) return;
+        if (typeof props.modelBaseClass === 'object')
+          props.modelBaseClass = props.modelBaseClass.value;
+        // Find whether the specified base class is one of the available base
+        // class list
+        const isValidBase = this.isValidBaseClass(
+          availableModelBaseClasses,
+          props.modelBaseClass,
+          false,
+        );
+        if (!props.modelBaseClass && !isValidBase) {
+          this.exit(
+            new Error(
+              `${ERROR_NO_MODELS_FOUND} ${
+                this.artifactInfo.modelDir
+              }.${chalk.yellow(
+                'Please visit https://loopback.io/doc/en/lb4/Model-generator.html for information on how models are discovered',
+              )}`,
+            ),
+          );
+        }
+
         Object.assign(this.artifactInfo, props);
         debug(`props after model base class prompt: ${inspect(props)}`);
-        this.log(
-          `Let's add a property to ${chalk.yellow(
-            this.artifactInfo.className,
-          )}`,
-        );
         return props;
       })
       .catch(err => {
         debug(`Error during model base class prompt: ${err}`);
         return this.exit(err);
       });
+  }
+
+  async promptStrictMode() {
+    if (this.shouldExit()) return false;
+    return this.prompt([
+      {
+        name: 'allowAdditionalProperties',
+        message: 'Allow additional (free-form) properties?',
+        type: 'confirm',
+        default: false,
+        when: !this.artifactInfo.allowAdditionalProperties,
+      },
+    ])
+      .then(setting => {
+        Object.assign(this.artifactInfo, setting);
+
+        if (this.artifactInfo.allowAdditionalProperties) {
+          Object.assign(this.artifactInfo.modelSettings, {strict: false});
+        }
+
+        this.log(
+          `Let's add a property to ${chalk.yellow(
+            this.artifactInfo.className,
+          )}`,
+        );
+      })
+      .catch(err => {
+        debug(`Error during model strict mode prompt: ${err}`);
+        return this.exit(err);
+      });
+  }
+
+  // Check whether the base class name is a valid one.
+  // It is either one of the predefined base classes,
+  // or an existing user defined class
+  // @isClassNameNullable - true if it is valid to have classname as null
+  isValidBaseClass(availableModelBaseClasses, classname, isClassNameNullable) {
+    if (!classname && !isClassNameNullable) return false;
+
+    for (var i in availableModelBaseClasses) {
+      var baseClass = '';
+      if (typeof availableModelBaseClasses[i] == 'object')
+        baseClass = availableModelBaseClasses[i].value;
+      else baseClass = availableModelBaseClasses[i];
+
+      if (classname == baseClass) {
+        return true;
+      }
+    }
+    return false;
   }
 
   // Prompt for a Property Name
@@ -343,7 +427,7 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
       }
     });
 
-    this.fs.copyTpl(
+    this.copyTemplatedFiles(
       this.templatePath(MODEL_TEMPLATE_PATH),
       tsPath,
       this.artifactInfo,

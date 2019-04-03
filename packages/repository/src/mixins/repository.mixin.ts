@@ -1,13 +1,16 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Class} from '../common-types';
-import {Repository} from '../repositories/repository';
-import {juggler} from '../repositories/legacy-juggler-bridge';
+import {BindingScope, Binding, createBindingFromClass} from '@loopback/context';
 import {Application} from '@loopback/core';
-import {BindingScope} from '@loopback/context';
+import * as debugFactory from 'debug';
+import {Class} from '../common-types';
+import {juggler, Repository} from '../repositories';
+import {SchemaMigrationOptions} from '../datasource';
+
+const debug = debugFactory('loopback:repository:mixin');
 
 /**
  * A mixin class for Application that creates a .repository()
@@ -35,7 +38,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
     /**
      * Add a repository to this application.
      *
-     * @param repo The repository to add.
+     * @param repoClass The repository to add.
      *
      * ```ts
      *
@@ -60,11 +63,18 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * ```
      */
     // tslint:disable-next-line:no-any
-    repository(repo: Class<Repository<any>>): void {
-      const repoKey = `repositories.${repo.name}`;
-      this.bind(repoKey)
-        .toClass(repo)
-        .tag('repository');
+    repository<R extends Repository<any>>(
+      repoClass: Class<R>,
+      name?: string,
+    ): Binding<R> {
+      const binding = createBindingFromClass(repoClass, {
+        name,
+        namespace: 'repositories',
+        type: 'repository',
+        defaultScope: BindingScope.TRANSIENT,
+      });
+      this.add(binding);
+      return binding;
     }
 
     /**
@@ -98,24 +108,25 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * }
      * ```
      */
-    dataSource(
-      dataSource: Class<juggler.DataSource> | juggler.DataSource,
+    dataSource<D extends juggler.DataSource>(
+      dataSource: Class<D> | D,
       name?: string,
-    ) {
+    ): Binding<D> {
       // We have an instance of
       if (dataSource instanceof juggler.DataSource) {
         const key = `datasources.${name || dataSource.name}`;
-        this.bind(key)
+        return this.bind(key)
           .to(dataSource)
           .tag('datasource');
       } else if (typeof dataSource === 'function') {
-        const key = `datasources.${name ||
-          dataSource.dataSourceName ||
-          dataSource.name}`;
-        this.bind(key)
-          .toClass(dataSource)
-          .tag('datasource')
-          .inScope(BindingScope.SINGLETON);
+        const binding = createBindingFromClass(dataSource, {
+          name: name || dataSource.dataSourceName,
+          namespace: 'datasources',
+          type: 'datasource',
+          defaultScope: BindingScope.SINGLETON,
+        });
+        this.add(binding);
+        return binding;
       } else {
         throw new Error('not a valid DataSource.');
       }
@@ -141,8 +152,8 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * app.component(ProductComponent);
      * ```
      */
-    public component(component: Class<{}>) {
-      super.component(component);
+    public component(component: Class<unknown>, name?: string) {
+      super.component(component, name);
       this.mountComponentRepositories(component);
     }
 
@@ -153,13 +164,53 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      *
      * @param component The component to mount repositories of
      */
-    mountComponentRepositories(component: Class<{}>) {
+    mountComponentRepositories(component: Class<unknown>) {
       const componentKey = `components.${component.name}`;
       const compInstance = this.getSync(componentKey);
 
       if (compInstance.repositories) {
         for (const repo of compInstance.repositories) {
           this.repository(repo);
+        }
+      }
+    }
+
+    /**
+     * Update or recreate the database schema for all repositories.
+     *
+     * **WARNING**: By default, `migrateSchema()` will attempt to preserve data
+     * while updating the schema in your target database, but this is not
+     * guaranteed to be safe.
+     *
+     * Please check the documentation for your specific connector(s) for
+     * a detailed breakdown of behaviors for automigrate!
+     *
+     * @param options Migration options, e.g. whether to update tables
+     * preserving data or rebuild everything from scratch.
+     */
+    async migrateSchema(options: SchemaMigrationOptions = {}): Promise<void> {
+      const operation =
+        options.existingSchema === 'drop' ? 'automigrate' : 'autoupdate';
+
+      // Instantiate all repositories to ensure models are registered & attached
+      // to their datasources
+      const repoBindings: Readonly<Binding<unknown>>[] = this.findByTag(
+        'repository',
+      );
+      await Promise.all(repoBindings.map(b => this.get(b.key)));
+
+      // Look up all datasources and update/migrate schemas one by one
+      const dsBindings: Readonly<Binding<object>>[] = this.findByTag(
+        'datasource',
+      );
+      for (const b of dsBindings) {
+        const ds = await this.get(b.key);
+
+        if (operation in ds && typeof ds[operation] === 'function') {
+          debug('Migrating dataSource %s', b.key);
+          await ds[operation](options.models);
+        } else {
+          debug('Skipping migration of dataSource %s', b.key);
         }
       }
     }
@@ -171,15 +222,19 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
  */
 export interface ApplicationWithRepositories extends Application {
   // tslint:disable-next-line:no-any
-  repository(repo: Class<any>): void;
+  repository<R extends Repository<any>>(
+    repo: Class<R>,
+    name?: string,
+  ): Binding<R>;
   // tslint:disable-next-line:no-any
   getRepository<R extends Repository<any>>(repo: Class<R>): Promise<R>;
-  dataSource(
-    dataSource: Class<juggler.DataSource> | juggler.DataSource,
+  dataSource<D extends juggler.DataSource>(
+    dataSource: Class<D> | D,
     name?: string,
-  ): void;
-  component(component: Class<{}>): void;
-  mountComponentRepositories(component: Class<{}>): void;
+  ): Binding<D>;
+  component(component: Class<unknown>, name?: string): Binding;
+  mountComponentRepositories(component: Class<unknown>): void;
+  migrateSchema(options?: SchemaMigrationOptions): Promise<void>;
 }
 
 /**
@@ -225,7 +280,9 @@ export class RepositoryMixinDoc {
    * ```
    */
   // tslint:disable-next-line:no-any
-  repository(repo: Class<Repository<any>>): void {}
+  repository(repo: Class<Repository<any>>): Binding {
+    throw new Error();
+  }
 
   /**
    * Retrieve the repository instance from the given Repository class
@@ -261,7 +318,9 @@ export class RepositoryMixinDoc {
   dataSource(
     dataSource: Class<juggler.DataSource> | juggler.DataSource,
     name?: string,
-  ) {}
+  ): Binding {
+    throw new Error();
+  }
 
   /**
    * Add a component to this application. Also mounts
@@ -283,7 +342,9 @@ export class RepositoryMixinDoc {
    * app.component(ProductComponent);
    * ```
    */
-  public component(component: Class<{}>) {}
+  public component(component: Class<{}>): Binding {
+    throw new Error();
+  }
 
   /**
    * Get an instance of a component and mount all it's
@@ -293,4 +354,19 @@ export class RepositoryMixinDoc {
    * @param component The component to mount repositories of
    */
   mountComponentRepository(component: Class<{}>) {}
+
+  /**
+   * Update or recreate the database schema for all repositories.
+   *
+   * **WARNING**: By default, `migrateSchema()` will attempt to preserve data
+   * while updating the schema in your target database, but this is not
+   * guaranteed to be safe.
+   *
+   * Please check the documentation for your specific connector(s) for
+   * a detailed breakdown of behaviors for automigrate!
+   *
+   * @param options Migration options, e.g. whether to update tables
+   * preserving data or rebuild everything from scratch.
+   */
+  async migrateSchema(options?: SchemaMigrationOptions): Promise<void> {}
 }

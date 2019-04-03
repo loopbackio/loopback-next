@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/http-server
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -8,7 +8,7 @@ import * as http from 'http';
 import * as https from 'https';
 import {AddressInfo} from 'net';
 
-import * as pEvent from 'p-event';
+import pEvent from 'p-event';
 
 export type RequestListener = (
   req: IncomingMessage,
@@ -75,7 +75,7 @@ export class HttpServer {
   private _protocol: HttpProtocol;
   private _address: AddressInfo;
   private requestListener: RequestListener;
-  private server: http.Server | https.Server;
+  readonly server: http.Server | https.Server;
   private serverOptions?: HttpServerOptions;
 
   /**
@@ -91,12 +91,6 @@ export class HttpServer {
     this._port = serverOptions ? serverOptions.port || 0 : 0;
     this._host = serverOptions ? serverOptions.host : undefined;
     this._protocol = serverOptions ? serverOptions.protocol || 'http' : 'http';
-  }
-
-  /**
-   * Starts the HTTP / HTTPS server
-   */
-  public async start() {
     if (this._protocol === 'https') {
       this.server = https.createServer(
         this.serverOptions as https.ServerOptions,
@@ -105,6 +99,12 @@ export class HttpServer {
     } else {
       this.server = http.createServer(this.requestListener);
     }
+  }
+
+  /**
+   * Starts the HTTP / HTTPS server
+   */
+  public async start() {
     this.server.listen(this._port, this._host);
     await pEvent(this.server, 'listening');
     this._listening = true;

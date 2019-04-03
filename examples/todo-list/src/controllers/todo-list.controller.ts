@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/example-todo-list
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -33,7 +33,7 @@ export class TodoListController {
     responses: {
       '200': {
         description: 'TodoList model instance',
-        content: {'application/json': {'x-ts-type': TodoList}},
+        content: {'application/json': {schema: {'x-ts-type': TodoList}}},
       },
     },
   })
@@ -59,7 +59,7 @@ export class TodoListController {
     responses: {
       '200': {
         description: 'Array of TodoList model instances',
-        content: {'application/json': {'x-ts-type': TodoList}},
+        content: {'application/json': {schema: {'x-ts-type': TodoList}}},
       },
     },
   })
@@ -88,7 +88,7 @@ export class TodoListController {
     responses: {
       '200': {
         description: 'TodoList model instance',
-        content: {'application/json': {'x-ts-type': TodoList}},
+        content: {'application/json': {schema: {'x-ts-type': TodoList}}},
       },
     },
   })

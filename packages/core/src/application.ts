@@ -3,10 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, Binding, BindingScope, Constructor} from '@loopback/context';
-import {Server} from './server';
+import {
+  Binding,
+  BindingScope,
+  Constructor,
+  Context,
+  createBindingFromClass,
+} from '@loopback/context';
 import {Component, mountComponent} from './component';
-import {CoreBindings} from './keys';
+import {CoreBindings, CoreTags} from './keys';
+import {Server} from './server';
 
 /**
  * Application is the container for various types of artifacts, such as
@@ -15,7 +21,7 @@ import {CoreBindings} from './keys';
  */
 export class Application extends Context {
   constructor(public options: ApplicationConfig = {}) {
-    super();
+    super('application');
 
     // Bind to self to allow injection of application context in other modules.
     this.bind(CoreBindings.APPLICATION_INSTANCE).to(this);
@@ -40,10 +46,14 @@ export class Application extends Context {
    * ```
    */
   controller(controllerCtor: ControllerClass, name?: string): Binding {
-    name = name || controllerCtor.name;
-    return this.bind(`controllers.${name}`)
-      .toClass(controllerCtor)
-      .tag('controller');
+    const binding = createBindingFromClass(controllerCtor, {
+      name,
+      namespace: CoreBindings.CONTROLLERS,
+      type: CoreTags.CONTROLLER,
+      defaultScope: BindingScope.TRANSIENT,
+    });
+    this.add(binding);
+    return binding;
   }
 
   /**
@@ -66,13 +76,15 @@ export class Application extends Context {
   public server<T extends Server>(
     ctor: Constructor<T>,
     name?: string,
-  ): Binding {
-    const suffix = name || ctor.name;
-    const key = `${CoreBindings.SERVERS}.${suffix}`;
-    return this.bind(key)
-      .toClass(ctor)
-      .tag('server')
-      .inScope(BindingScope.SINGLETON);
+  ): Binding<T> {
+    const binding = createBindingFromClass(ctor, {
+      name,
+      namespace: CoreBindings.SERVERS,
+      type: CoreTags.SERVER,
+      defaultScope: BindingScope.SINGLETON,
+    });
+    this.add(binding);
+    return binding;
   }
 
   /**
@@ -110,7 +122,7 @@ export class Application extends Context {
    * @memberof Application
    */
   public async getServer<T extends Server>(
-    target: Constructor<T> | String,
+    target: Constructor<T> | string,
   ): Promise<T> {
     let key: string;
     // instanceof check not reliable for string.
@@ -182,15 +194,27 @@ export class Application extends Context {
    * ```
    */
   public component(componentCtor: Constructor<Component>, name?: string) {
-    name = name || componentCtor.name;
-    const componentKey = `components.${name}`;
-    this.bind(componentKey)
-      .toClass(componentCtor)
-      .inScope(BindingScope.SINGLETON)
-      .tag('component');
+    const binding = createBindingFromClass(componentCtor, {
+      name,
+      namespace: CoreBindings.COMPONENTS,
+      type: CoreTags.COMPONENT,
+      defaultScope: BindingScope.SINGLETON,
+    });
+    this.add(binding);
     // Assuming components can be synchronously instantiated
-    const instance = this.getSync<Component>(componentKey);
+    const instance = this.getSync<Component>(binding.key);
     mountComponent(this, instance);
+    return binding;
+  }
+
+  /**
+   * Set application metadata. `@loopback/boot` calls this method to populate
+   * the metadata from `package.json`.
+   *
+   * @param metadata Application metadata
+   */
+  public setMetadata(metadata: ApplicationMetadata) {
+    this.bind(CoreBindings.APPLICATION_METADATA).to(metadata);
   }
 }
 
@@ -207,3 +231,22 @@ export interface ApplicationConfig {
 
 // tslint:disable-next-line:no-any
 export type ControllerClass = Constructor<any>;
+
+/**
+ * Type definition for JSON
+ */
+export type JSONPrimitive = string | number | boolean | null;
+export type JSONValue = JSONPrimitive | JSONObject | JSONArray;
+export interface JSONObject {
+  [property: string]: JSONValue;
+}
+export interface JSONArray extends Array<JSONValue> {}
+
+/**
+ * Type description for `package.json`
+ */
+export interface ApplicationMetadata extends JSONObject {
+  name: string;
+  version: string;
+  description: string;
+}

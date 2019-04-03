@@ -3,14 +3,19 @@ language: node_js
 node_js:
   - "8"
   - "10"
+  - "11"
 
 os:
   - linux
   - osx
 
-script: ./bin/travis.sh
+script:
+  - npm run postinstall
+  - npm run build
+  - npm run test:ci
+
 env: TASK=test
-install: npm install --ignore-scripts
+install: npm ci --ignore-scripts
 
 after_success:
   - if [[ "${TRAVIS_OS_NAME}" == "linux" ]] && [[ $(echo $TRAVIS_NODE_VERSION | cut -d'.' -f1) == "10" ]]; then npm run coverage:ci; fi
@@ -20,13 +25,20 @@ matrix:
     - node_js: "8"
       os: linux
       env: TASK=code-lint
+      # Running Code Linter -- Requires @loopback/build so it's bootstrapped
+      script:
+        - lerna bootstrap --scope @loopback/build --scope @loopback/tslint-config
+        - npm run lint
     - node_js: "8"
       os: linux
       env: TASK=commit-lint
+      script: commitlint-travis
     - node_js: "8"
       os: linux
       env: TASK=verify-docs
+      script: ./bin/verify-doc-changes.sh
 
 branches:
   only:
     - master
+    - /^greenkeeper/.*$/

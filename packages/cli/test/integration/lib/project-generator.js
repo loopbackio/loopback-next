@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -249,14 +249,12 @@ module.exports = function(projGenerator, props, projectType) {
         assert.jsonFileContent('package.json', props);
         assert.fileContent([
           ['package.json', '@loopback/build'],
-          ['tslint.json', '@loopback/build'],
+          ['package.json', '"typescript"'],
+          ['package.json', '"tslint"'],
+          ['tslint.json', '@loopback/tslint-config'],
           ['tsconfig.json', '@loopback/build'],
         ]);
-        assert.noFileContent([
-          ['package.json', '"typescript"'],
-          ['tslint.json', '"rules"'],
-          ['tsconfig.json', '"compilerOptions"'],
-        ]);
+        assert.noFileContent([['tslint.json', '"rules"']]);
 
         if (projectType === 'application') {
           assert.fileContent(
@@ -344,6 +342,7 @@ module.exports = function(projGenerator, props, projectType) {
           ['package.json', '"prettier"'],
           ['tslint.json', '"rules"'],
           ['tsconfig.json', '"compilerOptions"'],
+          ['tsconfig.json', '"resolveJsonModule": true'],
           ['index.js', "require('./dist')"],
         ]);
       });
@@ -422,6 +421,7 @@ module.exports = function(projGenerator, props, projectType) {
         assert.noFile(['tslint.json', 'tslint.build.json']);
         assert.noFileContent([
           ['package.json', '@loopback/build'],
+          ['package.json', '"tslint"'],
           ['tsconfig.json', '@loopback/build'],
         ]);
         assert.fileContent([

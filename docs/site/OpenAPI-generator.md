@@ -19,7 +19,9 @@ lb4 openapi [<url>] [options]
 ### Options
 
 - `--url`: URL or file path of the OpenAPI spec.
-- `--validate`: Validate the OpenAPI spec. Default: false.
+- `--validate`: Validate the OpenAPI spec. Default: `false`.
+- `--promote-anonymous-schemas`: Promote anonymous schemas as models classes.
+  Default: `false`.
 
 ### Arguments
 
@@ -54,26 +56,26 @@ TypeScript type declarations. Object types are mapped to TypeScript classes.
 
 For example,
 
-src/models/message.model.ts:
+{% include code-caption.html content="src/models/message.model.ts" %}
 
 ```ts
 export type Message = string;
 ```
 
-src/models/order-enum.model.ts:
+{% include code-caption.html content="src/models/order-enum.model.ts" %}
 
 ```ts
 export type OrderEnum = 'ascending' | 'descending';
 ```
 
-src/models/comments.model.ts:
+{% include code-caption.html content="src/models/comments.model.ts" %}
 
 ```ts
 import {Comment} from './comment.model';
 export type Comments = Comment[];
 ```
 
-src/models/cart.model.ts:
+{% include code-caption.html content="src/models/cart.model.ts" %}
 
 ```ts
 import {model, property} from '@loopback/repository';
@@ -122,23 +124,161 @@ export class Cart {
 }
 ```
 
-src/models/id-type.model.ts:
+{% include code-caption.html content="src/models/id-type.model.ts" %}
 
 ```ts
 export type IdType = string | number;
 ```
 
-src/models/pet.model.ts:
+{% include code-caption.html content="src/models/pet.model.ts" %}
 
 ```ts
 import {NewPet} from './new-pet.model.ts';
 export type Pet = NewPet & {id: number};
 ```
 
-2.  The generator groups operations (`paths.<path>.<verb>`) by tags. If no tag
-    is present, it defaults to `OpenApi`. For each tag, a controller class is
-    generated as `src/controllers/<tag-name>.controller.ts` to hold all
-    operations with the same tag.
+2. Anonymous schemas of object/array types are generated as inline TypeScript
+   type literals or separate model classes/types depending on
+   `--promote-anonymous-schemas` flag (default to `false`).
+
+For example, the following OpenAPI spec snippet uses anonymous schemas for
+request and response body objects.
+
+```yaml
+openapi: 3.0.0
+// ...
+paths:
+  // ...
+  /{dataset}/{version}/records:
+    post:
+      // ...
+      operationId: perform-search
+      parameters:
+        // ...
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties:
+                    type: object
+        '404':
+          description: No matching record found for the given criteria.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                criteria:
+                  description: >-
+                    Uses Lucene Query Syntax in the format of
+                    propertyName:value, propertyName:[num1 TO num2] and date
+                    range format: propertyName:[yyyyMMdd TO yyyyMMdd]. In the
+                    response please see the 'docs' element which has the list of
+                    record objects. Each record structure would consist of all
+                    the fields and their corresponding values.
+                  type: string
+                  default: '*:*'
+                start:
+                  description: Starting record number. Default value is 0.
+                  type: integer
+                  default: 0
+                rows:
+                  description: >-
+                    Specify number of rows to be returned. If you run the search
+                    with default values, in the response you will see 'numFound'
+                    attribute which will tell the number of records available in
+                    the dataset.
+                  type: integer
+                  default: 100
+              required:
+                - criteria
+```
+
+Without `--promote-anonymous-schemas`, no separate files are generated for
+anonymous schemas. The controller class uses inline TypeScript type literals as
+shown below.
+
+{% include code-caption.html content="src/controllers/search.controller.ts" %}
+
+```ts
+@operation('post', '/{dataset}/{version}/records')
+  async performSearch(
+    @requestBody()
+    body: {
+      criteria: string;
+      start?: number;
+      rows?: number;
+    },
+    @param({name: 'version', in: 'path'}) version: string,
+    @param({name: 'dataset', in: 'path'}) dataset: string,
+  ): Promise<
+    {
+      [additionalProperty: string]: {};
+    }[]
+  > {
+    throw new Error('Not implemented');
+  }
+```
+
+On contrast, if `lb4 openapi --promote-anonymous-schemas` is used, two
+additional model files are generated:
+
+{% include code-caption.html content="src/models/perform-search-body.model.ts" %}
+
+```ts
+/* tslint:disable:no-any */
+import {model, property} from '@loopback/repository';
+
+/**
+ * The model class is generated from OpenAPI schema - performSearchBody
+ * performSearchBody
+ */
+@model({name: 'performSearchBody'})
+export class PerformSearchBody {
+  constructor(data?: Partial<PerformSearchBody>) {
+    if (data != null && typeof data === 'object') {
+      Object.assign(this, data);
+    }
+  }
+
+  /**
+   * Uses Lucene Query Syntax in the format of propertyName:value, propertyName:[num1 TO num2] and date range format: propertyName:[yyyyMMdd TO yyyyMMdd]. In the response please see the 'docs' element which has the list of record objects. Each record structure would consist of all the fields and their corresponding values.
+   */
+  @property({name: 'criteria'})
+  criteria: string = '*:*';
+
+  /**
+   * Starting record number. Default value is 0.
+   */
+  @property({name: 'start'})
+  start?: number = 0;
+
+  /**
+   * Specify number of rows to be returned. If you run the search with default values, in the response you will see 'numFound' attribute which will tell the number of records available in the dataset.
+   */
+  @property({name: 'rows'})
+  rows?: number = 100;
+}
+```
+
+{% include code-caption.html content="src/models/perform-search-response-body.model.ts" %}
+
+```ts
+export type PerformSearchResponseBody = {
+  [additionalProperty: string]: {};
+}[];
+```
+
+3. The generator groups operations (`paths.<path>.<verb>`) by tags. If no tag is
+   present, it defaults to `OpenApi`. For each tag, a controller class is
+   generated as `src/controllers/<tag-name>.controller.ts` to hold all
+   operations with the same tag.
 
 Controller class names are derived from tag names. The `x-controller-name`
 property of an operation can be used to customize the controller name. Method
@@ -234,9 +374,10 @@ export class AccountController {
 
 Try out the following specs or your own with `lb4 openapi`:
 
-- https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore-expanded.yaml
-- https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/uspto.yaml
-- https://api.apis.guru/v2/specs/api2cart.com/1.0.0/swagger.json
-- https://api.apis.guru/v2/specs/amazonaws.com/codecommit/2015-04-13/swagger.json
+- [Swagger Petstore API](https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore-expanded.yaml)
+- [USPTO Data Set API](https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/uspto.yaml)
+- [Swagger API2Cart](https://api.apis.guru/v2/specs/api2cart.com/1.0.0/swagger.json)
+- [AWS CodeCommit API](https://api.apis.guru/v2/specs/amazonaws.com/codecommit/2015-04-13/swagger.json)
 
-For more real world OpenAPI specs, see https://api.apis.guru/v2/list.json.
+For more real world OpenAPI specs, see
+[https://api.apis.guru/v2/list.json](https://api.apis.guru/v2/list.json).

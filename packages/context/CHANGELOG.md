@@ -3,6 +3,146 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.8.0...@loopback/context@1.8.1) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/context
+
+
+
+
+
+# [1.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.7.0...@loopback/context@1.8.0) (2019-03-22)
+
+
+### Features
+
+* **context:** allow namespace tag for createBindingFromClass ([f6fe55e](https://github.com/strongloop/loopback-next/commit/f6fe55e))
+* **context:** honor binding scope from [@bind](https://github.com/bind) ([3b30f01](https://github.com/strongloop/loopback-next/commit/3b30f01))
+* **context:** improve typing for binding related methods ([f6cf0c6](https://github.com/strongloop/loopback-next/commit/f6cf0c6))
+* **context:** tidy up context for resolving injections of a singleton binding ([f5bf43c](https://github.com/strongloop/loopback-next/commit/f5bf43c))
+
+
+
+
+
+# [1.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.6.0...@loopback/context@1.7.0) (2019-03-12)
+
+
+### Features
+
+* **context:** add [@inject](https://github.com/inject).view and extend [@inject](https://github.com/inject) for multiple bindings ([d64268b](https://github.com/strongloop/loopback-next/commit/d64268b))
+* **context:** add events to ContextView ([fb10efc](https://github.com/strongloop/loopback-next/commit/fb10efc))
+* **context:** introduce context view to watch bindings by filter ([04209f7](https://github.com/strongloop/loopback-next/commit/04209f7))
+
+
+
+
+
+# [1.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.5.1...@loopback/context@1.6.0) (2019-02-25)
+
+
+### Features
+
+* **context:** introduce async context observers for bind/unbind events ([e5e5fc4](https://github.com/strongloop/loopback-next/commit/e5e5fc4))
+
+
+
+
+
+## [1.5.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.5.0...@loopback/context@1.5.1) (2019-02-08)
+
+**Note:** Version bump only for package @loopback/context
+
+
+
+
+
+# [1.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.4.1...@loopback/context@1.5.0) (2019-01-28)
+
+
+### Features
+
+* **context:** add default template argument for BindingAddress ([7113105](https://github.com/strongloop/loopback-next/commit/7113105))
+* **context:** binding filters ([ff85e74](https://github.com/strongloop/loopback-next/commit/ff85e74))
+
+
+
+
+
+## [1.4.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.4.0...@loopback/context@1.4.1) (2019-01-14)
+
+
+### Bug Fixes
+
+* rework tslint comments disabling "no-unused-variable" rule ([a18a3d7](https://github.com/strongloop/loopback-next/commit/a18a3d7))
+
+
+
+
+
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.3.0...@loopback/context@1.4.0) (2018-12-20)
+
+
+### Features
+
+* **context:** add `[@bind](https://github.com/bind)` to decorate classes with more information ([b8f9792](https://github.com/strongloop/loopback-next/commit/b8f9792))
+
+
+
+
+
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.2.0...@loopback/context@1.3.0) (2018-12-13)
+
+
+### Features
+
+* **context:** add binding.apply(templateFn) ([f046b30](https://github.com/strongloop/loopback-next/commit/f046b30))
+
+
+
+
+
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.1.0...@loopback/context@1.2.0) (2018-11-26)
+
+
+### Features
+
+* **rest:** allow body parsers to be extended ([86bfcbc](https://github.com/strongloop/loopback-next/commit/86bfcbc))
+
+
+
+
+
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.0.1...@loopback/context@1.1.0) (2018-11-14)
+
+
+### Features
+
+* **context:** add support for context.add(binding) ([8f77cef](https://github.com/strongloop/loopback-next/commit/8f77cef))
+* **core:** allow components to expose an array of bindings ([eae0da3](https://github.com/strongloop/loopback-next/commit/eae0da3))
+
+
+
+
+
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.0.0...@loopback/context@1.0.1) (2018-11-08)
+
+**Note:** Version bump only for package @loopback/context
+
+
+
+
+
+<a name="0.13.2"></a>
+## [0.13.2](https://github.com/strongloop/loopback-next/compare/@loopback/context@0.13.1...@loopback/context@0.13.2) (2018-10-08)
+
+**Note:** Version bump only for package @loopback/context
+
+
+
+
+
 <a name="0.13.1"></a>
 ## [0.13.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@0.13.0...@loopback/context@0.13.1) (2018-10-05)
 

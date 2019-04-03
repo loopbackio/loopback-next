@@ -12,6 +12,7 @@ import {
   getFilterSchemaFor,
   getWhereSchemaFor,
   patch,
+  put,
   del,
   requestBody,
 } from '@loopback/rest';
@@ -28,7 +29,7 @@ export class <%= className %>Controller {
     responses: {
       '200': {
         description: '<%= modelName %> model instance',
-        content: {'application/json': {'x-ts-type': <%= modelName %>}},
+        content: {'application/json': {schema: {'x-ts-type': <%= modelName %>}}},
       },
     },
   })
@@ -87,7 +88,7 @@ export class <%= className %>Controller {
     responses: {
       '200': {
         description: '<%= modelName %> model instance',
-        content: {'application/json': {'x-ts-type': <%= modelName %>}},
+        content: {'application/json': {schema: {'x-ts-type': <%= modelName %>}}},
       },
     },
   })
@@ -107,6 +108,20 @@ export class <%= className %>Controller {
     @requestBody() <%= modelVariableName %>: <%= modelName %>,
   ): Promise<void> {
     await this.<%= repositoryNameCamel %>.updateById(id, <%= modelVariableName %>);
+  }
+
+  @put('<%= httpPathName %>/{id}', {
+    responses: {
+      '204': {
+        description: '<%= modelName %> PUT success',
+      },
+    },
+  })
+  async replaceById(
+    @param.path.<%= idType %>('id') id: <%= idType %>,
+    @requestBody() <%= modelVariableName %>: <%= modelName %>,
+  ): Promise<void> {
+    await this.<%= repositoryNameCamel %>.replaceById(id, <%= modelVariableName %>);
   }
 
   @del('<%= httpPathName %>/{id}', {

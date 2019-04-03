@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/example-rpc-server
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -7,7 +7,7 @@ import {inject, Context} from '@loopback/context';
 import {Server, Application, CoreBindings} from '@loopback/core';
 import * as express from 'express';
 import * as http from 'http';
-import * as pEvent from 'p-event';
+import pEvent from 'p-event';
 import {rpcRouter} from './rpc.router';
 
 export class RPCServer extends Context implements Server {

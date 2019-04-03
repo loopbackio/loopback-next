@@ -1,29 +1,30 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2019. All Rights Reserved.
 // Node module: @loopback/context
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {DecoratorFactory} from '@loopback/metadata';
+import * as assert from 'assert';
+import * as debugModule from 'debug';
+import {BindingScope} from './binding';
+import {isBindingAddress} from './binding-filter';
+import {BindingAddress} from './binding-key';
 import {Context} from './context';
-import {
-  BoundValue,
-  Constructor,
-  ValueOrPromise,
-  MapObject,
-  resolveList,
-  resolveMap,
-  transformValueOrPromise,
-} from './value-promise';
-
 import {
   describeInjectedArguments,
   describeInjectedProperties,
   Injection,
 } from './inject';
 import {ResolutionSession} from './resolution-session';
-
-import * as assert from 'assert';
-import * as debugModule from 'debug';
+import {
+  BoundValue,
+  Constructor,
+  MapObject,
+  resolveList,
+  resolveMap,
+  transformValueOrPromise,
+  ValueOrPromise,
+} from './value-promise';
 
 const debug = debugModule('loopback:context:resolver');
 const getTargetName = DecoratorFactory.getTargetName;
@@ -76,6 +77,40 @@ export function instantiateClass<T>(
 }
 
 /**
+ * If the scope of current binding is `SINGLETON`, reset the context
+ * to be the one that owns the current binding to make sure a singleton
+ * does not have dependencies injected from child contexts unless the
+ * injection is for method (excluding constructor) parameters.
+ */
+function resolveContext(
+  ctx: Context,
+  injection: Readonly<Injection>,
+  session?: ResolutionSession,
+) {
+  const currentBinding = session && session.currentBinding;
+  if (
+    currentBinding == null ||
+    currentBinding.scope !== BindingScope.SINGLETON
+  ) {
+    // No current binding or its scope is not `SINGLETON`
+    return ctx;
+  }
+
+  const isConstructorOrPropertyInjection =
+    // constructor injection
+    !injection.member ||
+    // property injection
+    typeof injection.methodDescriptorOrParameterIndex !== 'number';
+
+  if (isConstructorOrPropertyInjection) {
+    // Set context to the owner context of the current binding for constructor
+    // or property injections against a singleton
+    ctx = ctx.getOwnerContext(currentBinding.key)!;
+  }
+  return ctx;
+}
+
+/**
  * Resolve the value or promise for a given injection
  * @param ctx Context
  * @param injection Descriptor of the injection
@@ -93,6 +128,8 @@ function resolve<T>(
       ResolutionSession.describeInjection(injection),
     );
   }
+
+  ctx = resolveContext(ctx, injection, session);
   let resolved = ResolutionSession.runWithInjection(
     s => {
       if (injection.resolve) {
@@ -100,7 +137,12 @@ function resolve<T>(
         return injection.resolve(ctx, injection, s);
       } else {
         // Default to resolve the value from the context by binding key
-        return ctx.getValueOrPromise(injection.bindingKey, {
+        assert(
+          isBindingAddress(injection.bindingSelector),
+          'The binding selector must be an address (string or BindingKey)',
+        );
+        const key = injection.bindingSelector as BindingAddress;
+        return ctx.getValueOrPromise(key, {
           session: s,
           // If the `optional` flag is set for the injection, the resolution
           // will return `undefined` instead of throwing an error
@@ -174,7 +216,10 @@ export function resolveInjectedArguments(
     // The `val` argument is not used as the resolver only uses `injectedArgs`
     // and `extraArgs` to return the new value
     const injection = ix < injectedArgs.length ? injectedArgs[ix] : undefined;
-    if (injection == null || (!injection.bindingKey && !injection.resolve)) {
+    if (
+      injection == null ||
+      (!injection.bindingSelector && !injection.resolve)
+    ) {
       if (nonInjectedIndex < extraArgs.length) {
         // Set the argument from the non-injected list
         return extraArgs[nonInjectedIndex++];
@@ -265,7 +310,7 @@ export function resolveInjectedProperties(
   const injectedProperties = describeInjectedProperties(constructor.prototype);
 
   return resolveMap(injectedProperties, (injection, p) => {
-    if (!injection.bindingKey && !injection.resolve) {
+    if (!injection.bindingSelector && !injection.resolve) {
       const name = getTargetName(constructor, p);
       throw new Error(
         `Cannot resolve injected property ${name}: ` +

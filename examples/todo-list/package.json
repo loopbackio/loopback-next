@@ -1,11 +1,12 @@
 {
   "name": "@loopback/example-todo-list",
-  "version": "0.9.0",
+  "version": "1.5.3",
   "description": "Continuation of the todo example using relations in LoopBack 4.",
   "main": "index.js",
   "engines": {
     "node": ">=8.9"
   },
+  "author": "IBM Corp.",
   "scripts": {
     "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
@@ -19,9 +20,10 @@
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
     "pretest": "npm run build",
-    "test": "lb-mocha \"dist/test/*/**/*.js\"",
-    "test:dev": "lb-mocha --allow-console-logs dist/test/**/*.js && npm run posttest",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
     "verify": "npm pack && tar xf loopback-todo-list*.tgz && tree package && npm run clean",
+    "migrate": "node ./dist/migrate",
     "prestart": "npm run build",
     "start": "node ."
   },
@@ -34,23 +36,27 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/boot": "^0.14.5",
-    "@loopback/context": "^0.13.1",
-    "@loopback/core": "^0.11.16",
-    "@loopback/openapi-v3": "^0.15.4",
-    "@loopback/openapi-v3-types": "^0.9.7",
-    "@loopback/repository": "^0.21.0",
-    "@loopback/rest": "^0.25.4",
-    "@loopback/service-proxy": "^0.8.10",
+    "@loopback/boot": "^1.1.2",
+    "@loopback/context": "^1.8.1",
+    "@loopback/core": "^1.2.1",
+    "@loopback/openapi-v3": "^1.3.2",
+    "@loopback/openapi-v3-types": "^1.0.10",
+    "@loopback/repository": "^1.2.1",
+    "@loopback/rest": "^1.9.1",
+    "@loopback/rest-explorer": "^1.1.13",
+    "@loopback/service-proxy": "^1.1.1",
     "loopback-connector-rest": "^3.1.1"
   },
   "devDependencies": {
-    "@loopback/build": "^0.7.6",
-    "@loopback/http-caching-proxy": "^0.3.13",
-    "@loopback/testlab": "^0.15.1",
+    "@loopback/build": "^1.4.0",
+    "@loopback/http-caching-proxy": "^1.0.11",
+    "@loopback/testlab": "^1.2.1",
+    "@loopback/tslint-config": "^2.0.3",
     "@types/lodash": "^4.14.109",
     "@types/node": "^10.11.2",
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.10",
+    "tslint": "^5.14.0",
+    "typescript": "^3.4.1"
   },
   "keywords": [
     "loopback",

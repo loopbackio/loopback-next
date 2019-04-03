@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017. All Rights Reserved.
+// Copyright IBM Corp. 2018. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -116,7 +116,7 @@ export interface CrudConnector extends Connector {
   updateAll(
     modelClass: Class<Entity>,
     data: EntityData,
-    where?: Where,
+    where?: Where<Entity>,
     options?: Options,
   ): Promise<Count>;
 
@@ -161,7 +161,7 @@ export interface CrudConnector extends Connector {
    */
   deleteAll(
     modelClass: Class<Entity>,
-    where?: Where,
+    where?: Where<Entity>,
     options?: Options,
   ): Promise<Count>;
 
@@ -188,7 +188,7 @@ export interface CrudConnector extends Connector {
    */
   count(
     modelClass: Class<Entity>,
-    where?: Where,
+    where?: Where<Entity>,
     options?: Options,
   ): Promise<Count>;
 

@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2019. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -28,7 +28,6 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   }
 
   _setupGenerator() {
-    super._setupGenerator();
     this.artifactInfo = {
       type: 'controller',
       rootDir: 'src',
@@ -55,6 +54,8 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       required: false,
       description: 'Type for the ' + this.artifactInfo.type,
     });
+
+    return super._setupGenerator();
   }
 
   setOptions() {
@@ -62,6 +63,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   }
 
   checkLoopBackProject() {
+    if (this.shouldExit()) return;
     return super.checkLoopBackProject();
   }
 
@@ -235,13 +237,7 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
       debug(`artifactInfo: ${inspect(this.artifactInfo)}`);
       debug(`Copying artifact to: ${dest}`);
     }
-    this.fs.copyTpl(
-      source,
-      dest,
-      this.artifactInfo,
-      {},
-      {globOptions: {dot: true}},
-    );
+    this.copyTemplatedFiles(source, dest, this.artifactInfo);
     return;
   }
 

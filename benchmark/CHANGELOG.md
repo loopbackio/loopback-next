@@ -3,6 +3,171 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.15](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.14...@loopback/benchmark@1.1.15) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
+## [1.1.14](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.13...@loopback/benchmark@1.1.14) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
+## [1.1.13](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.12...@loopback/benchmark@1.1.13) (2019-03-12)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
+## [1.1.12](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.11...@loopback/benchmark@1.1.12) (2019-03-01)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
+## [1.1.11](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.10...@loopback/benchmark@1.1.11) (2019-02-25)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
+## [1.1.10](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.9...@loopback/benchmark@1.1.10) (2019-02-08)
+
+
+### Bug Fixes
+
+* **benchmark:** set TypeScript's rootDir to src ([51cba45](https://github.com/strongloop/loopback-next/commit/51cba45))
+
+
+
+
+
+## [1.1.9](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.8...@loopback/benchmark@1.1.9) (2019-01-28)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
+## [1.1.8](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.7...@loopback/benchmark@1.1.8) (2019-01-15)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
+## [1.1.7](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.6...@loopback/benchmark@1.1.7) (2019-01-14)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
+## [1.1.6](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.5...@loopback/benchmark@1.1.6) (2018-12-20)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
+## [1.1.5](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.4...@loopback/benchmark@1.1.5) (2018-12-13)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
+## [1.1.4](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.3...@loopback/benchmark@1.1.4) (2018-11-26)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
+## [1.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.2...@loopback/benchmark@1.1.3) (2018-11-17)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
+## [1.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.1...@loopback/benchmark@1.1.2) (2018-11-17)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
+## [1.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.0...@loopback/benchmark@1.1.1) (2018-11-14)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.0.1...@loopback/benchmark@1.1.0) (2018-11-08)
+
+
+### Features
+
+* allow rest routing benchmarking to take multiple numbers ([3d561bc](https://github.com/strongloop/loopback-next/commit/3d561bc))
+
+
+
+
+
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.0.0...@loopback/benchmark@1.0.1) (2018-10-17)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@0.2.19...@loopback/benchmark@0.3.0) (2018-10-08)
+
+
+### Features
+
+* **rest:** switch to trie based routing ([a682ce2](https://github.com/strongloop/loopback-next/commit/a682ce2))
+
+
+
+
+
+<a name="0.2.19"></a>
+## [0.2.19](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@0.2.18...@loopback/benchmark@0.2.19) (2018-10-06)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
 <a name="0.2.18"></a>
 ## [0.2.18](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@0.2.17...@loopback/benchmark@0.2.18) (2018-10-05)
 

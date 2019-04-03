@@ -3,6 +3,120 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.3.2...@loopback/build@1.4.0) (2019-03-22)
+
+
+### Bug Fixes
+
+* **build:** remove "dom" from the list of global libraries ([781cd1d](https://github.com/strongloop/loopback-next/commit/781cd1d))
+
+
+### Features
+
+* **build:** enable TSC option "skipLibCheck" ([66bb506](https://github.com/strongloop/loopback-next/commit/66bb506))
+
+
+
+
+
+## [1.3.2](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.3.1...@loopback/build@1.3.2) (2019-03-12)
+
+**Note:** Version bump only for package @loopback/build
+
+
+
+
+
+## [1.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.3.0...@loopback/build@1.3.1) (2019-02-25)
+
+
+### Bug Fixes
+
+* update version of nyc ([f8db27c](https://github.com/strongloop/loopback-next/commit/f8db27c))
+
+
+
+
+
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.2.1...@loopback/build@1.3.0) (2019-02-08)
+
+
+### Features
+
+* **build:** use `dist/__tests__` in code examples and tests ([a3da024](https://github.com/strongloop/loopback-next/commit/a3da024))
+
+
+
+
+
+## [1.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.2.0...@loopback/build@1.2.1) (2019-01-28)
+
+**Note:** Version bump only for package @loopback/build
+
+
+
+
+
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.1.0...@loopback/build@1.2.0) (2019-01-14)
+
+
+### Bug Fixes
+
+* **build:** fix path lookup in build helpers ([16311c5](https://github.com/strongloop/loopback-next/commit/16311c5))
+
+
+### Features
+
+* always include tslint and typescript in project dev-dependencies ([e0df285](https://github.com/strongloop/loopback-next/commit/e0df285))
+
+
+
+
+
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.0.2...@loopback/build@1.1.0) (2018-12-20)
+
+
+### Features
+
+* move tslint config into a standalone package ([26f3543](https://github.com/strongloop/loopback-next/commit/26f3543))
+
+
+
+
+
+## [1.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.0.1...@loopback/build@1.0.2) (2018-12-13)
+
+**Note:** Version bump only for package @loopback/build
+
+
+
+
+
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.0.0...@loopback/build@1.0.1) (2018-11-08)
+
+
+### Bug Fixes
+
+* **cli:** exclude json files from tslint ([bd9f864](https://github.com/strongloop/loopback-next/commit/bd9f864))
+
+
+
+
+
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.7.6...@loopback/build@0.8.0) (2018-10-08)
+
+
+### Features
+
+* use resolveJsonModule to load datasource config ([73e19ff](https://github.com/strongloop/loopback-next/commit/73e19ff))
+* **build:** rename --ignore-resources to --copy-resources ([2958ace](https://github.com/strongloop/loopback-next/commit/2958ace))
+
+
+
+
+
 <a name="0.7.6"></a>
 ## [0.7.6](https://github.com/strongloop/loopback-next/compare/@loopback/build@0.7.5...@loopback/build@0.7.6) (2018-10-05)
 

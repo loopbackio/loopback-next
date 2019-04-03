@@ -3,6 +3,177 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.2](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.3.1...@loopback/openapi-v3@1.3.2) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/openapi-v3
+
+
+
+
+
+## [1.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.3.0...@loopback/openapi-v3@1.3.1) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/openapi-v3
+
+
+
+
+
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.2.3...@loopback/openapi-v3@1.3.0) (2019-03-12)
+
+
+### Features
+
+* **openapi-v3:** add operationId based on controller/method names ([89f905b](https://github.com/strongloop/loopback-next/commit/89f905b))
+
+
+
+
+
+## [1.2.3](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.2.2...@loopback/openapi-v3@1.2.3) (2019-03-01)
+
+**Note:** Version bump only for package @loopback/openapi-v3
+
+
+
+
+
+## [1.2.2](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.2.1...@loopback/openapi-v3@1.2.2) (2019-02-25)
+
+**Note:** Version bump only for package @loopback/openapi-v3
+
+
+
+
+
+## [1.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.2.0...@loopback/openapi-v3@1.2.1) (2019-02-08)
+
+
+### Bug Fixes
+
+* update to the most recent lodash version ([65ee865](https://github.com/strongloop/loopback-next/commit/65ee865))
+
+
+
+
+
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.1.7...@loopback/openapi-v3@1.2.0) (2019-01-28)
+
+
+### Features
+
+* **repository-json-schema:** enumerate fields ([15ca819](https://github.com/strongloop/loopback-next/commit/15ca819))
+
+
+
+
+
+## [1.1.7](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.1.6...@loopback/openapi-v3@1.1.7) (2019-01-15)
+
+**Note:** Version bump only for package @loopback/openapi-v3
+
+
+
+
+
+## [1.1.6](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.1.5...@loopback/openapi-v3@1.1.6) (2019-01-14)
+
+
+### Bug Fixes
+
+* rework tslint comments disabling "no-unused-variable" rule ([a18a3d7](https://github.com/strongloop/loopback-next/commit/a18a3d7))
+
+
+
+
+
+## [1.1.5](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.1.4...@loopback/openapi-v3@1.1.5) (2018-12-20)
+
+**Note:** Version bump only for package @loopback/openapi-v3
+
+
+
+
+
+## [1.1.4](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.1.3...@loopback/openapi-v3@1.1.4) (2018-12-13)
+
+**Note:** Version bump only for package @loopback/openapi-v3
+
+
+
+
+
+## [1.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.1.2...@loopback/openapi-v3@1.1.3) (2018-11-26)
+
+**Note:** Version bump only for package @loopback/openapi-v3
+
+
+
+
+
+## [1.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.1.1...@loopback/openapi-v3@1.1.2) (2018-11-17)
+
+
+### Bug Fixes
+
+* **repository:** make sure model definition is built correctly ([2effa30](https://github.com/strongloop/loopback-next/commit/2effa30))
+
+
+
+
+
+## [1.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.1.0...@loopback/openapi-v3@1.1.1) (2018-11-14)
+
+**Note:** Version bump only for package @loopback/openapi-v3
+
+
+
+
+
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.0.1...@loopback/openapi-v3@1.1.0) (2018-11-08)
+
+
+### Bug Fixes
+
+* **openapi-v3:** generate schemas for x-ts-type ([07f0d6c](https://github.com/strongloop/loopback-next/commit/07f0d6c))
+
+
+### Features
+
+* **rest:** add support for form request body ([2d9e0a8](https://github.com/strongloop/loopback-next/commit/2d9e0a8))
+
+
+
+
+
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.0.0...@loopback/openapi-v3@1.0.1) (2018-10-17)
+
+**Note:** Version bump only for package @loopback/openapi-v3
+
+
+
+
+
+<a name="0.15.6"></a>
+## [0.15.6](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@0.15.5...@loopback/openapi-v3@0.15.6) (2018-10-08)
+
+**Note:** Version bump only for package @loopback/openapi-v3
+
+
+
+
+
+<a name="0.15.5"></a>
+## [0.15.5](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@0.15.4...@loopback/openapi-v3@0.15.5) (2018-10-06)
+
+**Note:** Version bump only for package @loopback/openapi-v3
+
+
+
+
+
 <a name="0.15.4"></a>
 ## [0.15.4](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@0.15.3...@loopback/openapi-v3@0.15.4) (2018-10-05)
 

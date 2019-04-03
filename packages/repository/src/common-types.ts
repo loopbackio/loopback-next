@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017. All Rights Reserved.
+// Copyright IBM Corp. 2017,2019. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -52,7 +52,7 @@ export type DeepPartial<T> = {[P in keyof T]?: DeepPartial<T[P]>};
 /**
  * Type alias for strongly or weakly typed objects of T
  */
-export type DataObject<T> = T | DeepPartial<T>;
+export type DataObject<T extends object> = T | DeepPartial<T>;
 
 /**
  * Type alias for Node.js options object

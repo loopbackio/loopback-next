@@ -1,33 +1,35 @@
 {
   "name": "@loopback/context",
-  "version": "0.13.1",
+  "version": "1.8.1",
   "description": "LoopBack's container for Inversion of Control",
   "engines": {
     "node": ">=8.9"
   },
   "scripts": {
-    "acceptance": "lb-mocha \"dist/test/acceptance/**/*.js\"",
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
     "clean": "lb-clean loopback-context*.tgz dist package api-docs",
     "pretest": "npm run build",
-    "test": "lb-mocha \"dist/test/unit/**/*.js\" \"dist/test/acceptance/**/*.js\"",
-    "unit": "lb-mocha \"dist/test/unit/**/*.js\"",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf loopback-context*.tgz && tree package && npm run clean"
   },
-  "author": "IBM",
+  "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/metadata": "^0.9.14",
+    "@loopback/metadata": "^1.0.10",
     "debug": "^4.0.1",
+    "p-event": "^4.0.0",
     "uuid": "^3.2.1"
   },
   "devDependencies": {
-    "@loopback/build": "^0.7.6",
-    "@loopback/testlab": "^0.15.1",
+    "@loopback/build": "^1.4.0",
+    "@loopback/testlab": "^1.2.1",
+    "@loopback/tslint-config": "^2.0.3",
     "@types/bluebird": "^3.5.20",
-    "@types/debug": "^0.0.30",
+    "@types/debug": "^4.1.0",
     "@types/node": "^10.11.2",
     "@types/uuid": "^3.4.3",
     "bluebird": "^3.5.1"
@@ -45,9 +47,9 @@
     "README.md",
     "index.js",
     "index.d.ts",
-    "dist/src",
-    "dist/index*",
-    "src"
+    "dist",
+    "src",
+    "!*/__tests__"
   ],
   "repository": {
     "type": "git",

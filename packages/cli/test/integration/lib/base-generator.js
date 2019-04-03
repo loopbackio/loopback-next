@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017. All Rights Reserved.
+// Copyright IBM Corp. 2018. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -66,6 +66,14 @@ module.exports = function(generator) {
         assert.equal(gen.options.name, 'abc');
         assert.equal(gen.options.description, 'Test');
       });
+
+      it('fails fast if --config has invalid value', async () => {
+        const gen = testUtils.testSetUpGen(generator, {
+          args: ['--config', path.join(__dirname, 'base-config-invalid.json')],
+        });
+        await gen.setOptions();
+        assert(gen.exitGeneration instanceof Error);
+      });
     });
 
     describe('config from json value', () => {
@@ -73,6 +81,12 @@ module.exports = function(generator) {
         "name": "xyz",
         "description": "Test"
       }`;
+
+      const invalidJsonValue = `{
+        name: "xyz",
+        "description": "Test"
+      }`;
+
       it('accepts --config', async () => {
         const gen = testUtils.testSetUpGen(generator, {
           args: ['--config', jsonValue],
@@ -90,6 +104,14 @@ module.exports = function(generator) {
         assert.equal(gen.options['config'], jsonValue);
         assert.equal(gen.options.name, 'abc');
         assert.equal(gen.options.description, 'Test');
+      });
+
+      it('fails fast if --config has invalid value', async () => {
+        const gen = testUtils.testSetUpGen(generator, {
+          args: ['--config', invalidJsonValue],
+        });
+        await gen.setOptions();
+        assert(gen.exitGeneration instanceof Error);
       });
     });
 

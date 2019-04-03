@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2019. All Rights Reserved.
 // Node module: @loopback/build
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -18,7 +18,7 @@ Then the provided command is executed with the modified arguments.
 
 Example usage:
 
-  node ./bin/select-dist mocha dist/test
+  node ./bin/select-dist mocha dist/__tests__
 
 ========
 */

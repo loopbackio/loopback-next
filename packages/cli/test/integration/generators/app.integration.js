@@ -1,10 +1,12 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
 
+const fs = require('fs');
+const {promisify} = require('util');
 const path = require('path');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
@@ -13,6 +15,7 @@ const props = {
   name: 'my-app',
   description: 'My app for LoopBack 4',
 };
+const {expect} = require('@loopback/testlab');
 
 const tests = require('../lib/project-generator')(
   generator,
@@ -20,6 +23,8 @@ const tests = require('../lib/project-generator')(
   'application',
 );
 const baseTests = require('../lib/base-generator')(generator);
+
+const readFile = promisify(fs.readFile);
 
 describe('app-generator extending BaseGenerator', baseTests);
 describe('generator-loopback4:app', tests);
@@ -39,6 +44,10 @@ describe('app-generator specific files', () => {
     );
     assert.fileContent('src/application.ts', /constructor\(/);
     assert.fileContent('src/application.ts', /this.projectRoot = __dirname/);
+
+    assert.file('index.js');
+    assert.fileContent('index.js', /openApiSpec: {/);
+    assert.fileContent('index.js', /setServersFromRequest: true/);
 
     assert.file('src/index.ts');
     assert.fileContent('src/index.ts', /new MyAppApplication/);
@@ -60,25 +69,68 @@ describe('app-generator specific files', () => {
       /\'\@loopback\/rest\'/,
     );
     assert.fileContent(
-      'test/acceptance/ping.controller.acceptance.ts',
+      'src/__tests__/acceptance/ping.controller.acceptance.ts',
       /describe\('PingController'/,
     );
     assert.fileContent(
-      'src/controllers/home-page.controller.ts',
-      /export class HomePageController/,
+      'src/__tests__/acceptance/home-page.acceptance.ts',
+      /describe\('HomePage'/,
     );
     assert.fileContent(
-      'src/controllers/home-page.controller.ts',
-      /homePage\(\)/,
-    );
-    assert.fileContent(
-      'test/acceptance/home-page.controller.acceptance.ts',
-      /describe\('HomePageController'/,
-    );
-    assert.fileContent(
-      'test/acceptance/test-helper.ts',
+      'src/__tests__/acceptance/test-helper.ts',
       /export async function setupApplication/,
     );
+    assert.fileContent(
+      'src/__tests__/acceptance/test-helper.ts',
+      'process.env.HOST',
+    );
+    assert.fileContent(
+      'src/__tests__/acceptance/test-helper.ts',
+      '+process.env.PORT',
+    );
+  });
+
+  it('generates database migration script', () => {
+    assert.fileContent(
+      'src/migrate.ts',
+      /import {MyAppApplication} from '\.\/application'/,
+    );
+
+    assert.fileContent(
+      'src/migrate.ts',
+      /const app = new MyAppApplication\(\);/,
+    );
+
+    assert.fileContent('src/migrate.ts', /export async function migrate/);
+  });
+
+  it('generates docker files', () => {
+    assert.fileContent('Dockerfile', /FROM node:10-slim/);
+    assert.fileContent('.dockerignore', /node_modules/);
+
+    assert.fileContent('package.json', /"docker:build": "docker build/);
+    assert.fileContent('package.json', /"docker:run": "docker run/);
+  });
+
+  it('creates npm script "migrate-db"', async () => {
+    const pkg = JSON.parse(await readFile('package.json'));
+    expect(pkg.scripts).to.have.property('migrate', 'node ./dist/migrate');
+  });
+});
+
+describe('app-generator with docker disabled', () => {
+  before(() => {
+    return helpers
+      .run(generator)
+      .withOptions({docker: false})
+      .withPrompts(props);
+  });
+  it('does not generate docker files', () => {
+    assert.noFile('Dockerfile');
+    assert.noFile('.dockerignore');
+
+    assert.noFileContent('package.json', /"docker:build": "docker build/);
+    assert.noFileContent('package.json', /"docker:run": "docker run/);
   });
 });
 

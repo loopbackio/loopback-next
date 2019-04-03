@@ -1,11 +1,17 @@
-// Copyright IBM Corp. 2017. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding, BoundValue} from '@loopback/context';
-import {ResolvedRoute, RouteEntry} from './router/routing-table';
+import {ResolvedRoute, RouteEntry} from './router';
 import {Request, Response} from 'express';
+import {
+  OptionsJson,
+  OptionsUrlencoded,
+  OptionsText,
+  Options,
+} from 'body-parser';
 
 export {Request, Response};
 
@@ -77,6 +83,19 @@ export type LogError = (
 ) => void;
 
 // tslint:disable:no-any
+
+/**
+ * Options for request body parsing
+ * See https://github.com/expressjs/body-parser/#options
+ */
+export interface RequestBodyParserOptions extends Options {
+  json?: OptionsJson;
+  urlencoded?: OptionsUrlencoded;
+  text?: OptionsText;
+  raw?: Options;
+  [name: string]: unknown;
+}
+
 export type PathParameterValues = {[key: string]: any};
 export type OperationArgs = any[];
 

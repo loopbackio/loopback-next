@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2019. All Rights Reserved.
 // Node module: @loopback/testlab
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -107,6 +107,7 @@ export function stubExpressContext(
   }
   request.app = app;
   request.originalUrl = request.url;
+  parseQuery(request);
 
   let response: express.Response | undefined;
   let result = new Promise<ObservedResponse>(resolve => {
@@ -129,6 +130,17 @@ export function stubExpressContext(
   const context = {app, request, response: response!, result};
   defineCustomContextInspect(context, requestOptions);
   return context;
+}
+
+/**
+ * Use `express.query` to parse the query string into `request.query` object
+ * @param request Express http request object
+ */
+function parseQuery(request: express.Request) {
+  // Use `express.query` to parse the query string
+  // See https://github.com/expressjs/express/blob/master/lib/express.js#L79
+  // See https://github.com/expressjs/express/blob/master/lib/middleware/query.js
+  (express as any).query()(request, {}, () => {});
 }
 
 function defineCustomContextInspect(

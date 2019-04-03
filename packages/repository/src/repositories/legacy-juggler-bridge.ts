@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -15,19 +15,21 @@ import {
   Options,
   PositionalParameters,
 } from '../common-types';
-import {
-  BelongsToDefinition,
-  HasManyDefinition,
-} from '../decorators/relation.decorator';
 import {EntityNotFoundError} from '../errors';
-import {Entity, ModelDefinition} from '../model';
+import {Entity, Model, PropertyType} from '../model';
 import {Filter, Where} from '../query';
 import {
   BelongsToAccessor,
+  BelongsToDefinition,
   createBelongsToAccessor,
   createHasManyRepositoryFactory,
+  createHasOneRepositoryFactory,
+  HasManyDefinition,
   HasManyRepositoryFactory,
-} from './relation.factory';
+  HasOneDefinition,
+  HasOneRepositoryFactory,
+} from '../relations';
+import {isTypeResolver, resolveType} from '../type-resolver';
 import {EntityCrudRepository} from './repository';
 
 export namespace juggler {
@@ -37,6 +39,17 @@ export namespace juggler {
   export import PersistedModel = legacy.PersistedModel;
   export import KeyValueModel = legacy.KeyValueModel;
   export import PersistedModelClass = legacy.PersistedModelClass;
+}
+
+function isModelClass(
+  propertyType: PropertyType | undefined,
+): propertyType is typeof Model {
+  return (
+    !isTypeResolver(propertyType) &&
+    typeof propertyType === 'function' &&
+    typeof (propertyType as typeof Model).definition === 'object' &&
+    propertyType.toString().startsWith('class ')
+  );
 }
 
 /**
@@ -81,7 +94,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
 
   /**
    * Constructor of DefaultCrudRepository
-   * @param modelClass Legacy model class
+   * @param entityClass Legacy entity class
    * @param dataSource Legacy data source
    */
   constructor(
@@ -94,24 +107,30 @@ export class DefaultCrudRepository<T extends Entity, ID>
       !!definition,
       `Entity ${entityClass.name} must have valid model definition.`,
     );
-
     assert(
       definition.idProperties().length > 0,
       `Entity ${entityClass.name} must have at least one id/pk property.`,
     );
 
-    this.setupPersistedModel(definition);
+    this.modelClass = this.definePersistedModel(entityClass);
   }
 
   // Create an internal legacy Model attached to the datasource
-  private setupPersistedModel(definition: ModelDefinition) {
+  private definePersistedModel(
+    entityClass: typeof Model,
+  ): typeof juggler.PersistedModel {
+    const definition = entityClass.definition;
+    assert(
+      !!definition,
+      `Entity ${entityClass.name} must have valid model definition.`,
+    );
+
     const dataSource = this.dataSource;
 
     const model = dataSource.getModel(definition.name);
     if (model) {
       // The backing persisted model has been already defined.
-      this.modelClass = model as typeof juggler.PersistedModel;
-      return;
+      return model as typeof juggler.PersistedModel;
     }
 
     // We need to convert property definitions from PropertyDefinition
@@ -122,13 +141,15 @@ export class DefaultCrudRepository<T extends Entity, ID>
     // the juggler understands
     Object.entries(definition.properties).forEach(([key, value]) => {
       if (value.type === 'array' || value.type === Array) {
-        value = Object.assign({}, value, {type: [value.itemType]});
+        value = Object.assign({}, value, {
+          type: [value.itemType && this.resolvePropertyType(value.itemType)],
+        });
         delete value.itemType;
       }
+      value.type = this.resolvePropertyType(value.type);
       properties[key] = Object.assign({}, value);
     });
-
-    this.modelClass = dataSource.createModel<juggler.PersistedModelClass>(
+    const modelClass = dataSource.createModel<juggler.PersistedModelClass>(
       definition.name,
       properties,
       Object.assign(
@@ -140,7 +161,38 @@ export class DefaultCrudRepository<T extends Entity, ID>
         {strictDelete: false},
       ),
     );
-    this.modelClass.attachTo(dataSource);
+    modelClass.attachTo(dataSource);
+    return modelClass;
+  }
+
+  private resolvePropertyType(type: PropertyType): PropertyType {
+    const resolved = resolveType(type);
+    return isModelClass(resolved)
+      ? this.definePersistedModel(resolved)
+      : resolved;
+  }
+
+  /**
+   * @deprecated
+   * Function to create a constrained relation repository factory
+   *
+   * Use `this.createHasManyRepositoryFactoryFor()` instead
+   *
+   * @param relationName Name of the relation defined on the source model
+   * @param targetRepo Target repository instance
+   */
+  protected _createHasManyRepositoryFactoryFor<
+    Target extends Entity,
+    TargetID,
+    ForeignKeyType
+  >(
+    relationName: string,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+  ): HasManyRepositoryFactory<Target, ForeignKeyType> {
+    return this.createHasManyRepositoryFactoryFor(
+      relationName,
+      targetRepoGetter,
+    );
   }
 
   /**
@@ -169,7 +221,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
    * @param relationName Name of the relation defined on the source model
    * @param targetRepo Target repository instance
    */
-  protected _createHasManyRepositoryFactoryFor<
+  protected createHasManyRepositoryFactoryFor<
     Target extends Entity,
     TargetID,
     ForeignKeyType
@@ -184,7 +236,29 @@ export class DefaultCrudRepository<T extends Entity, ID>
     );
   }
 
+  /**
+   * @deprecated
+   * Function to create a belongs to accessor
+   *
+   * Use `this.createBelongsToAccessorFor()` instead
+   *
+   * @param relationName Name of the relation defined on the source model
+   * @param targetRepo Target repository instance
+   */
   protected _createBelongsToAccessorFor<Target extends Entity, TargetId>(
+    relationName: string,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetId>>,
+  ): BelongsToAccessor<Target, ID> {
+    return this.createBelongsToAccessorFor(relationName, targetRepoGetter);
+  }
+
+  /**
+   * Function to create a belongs to accessor
+   *
+   * @param relationName Name of the relation defined on the source model
+   * @param targetRepo Target repository instance
+   */
+  protected createBelongsToAccessorFor<Target extends Entity, TargetId>(
     relationName: string,
     targetRepoGetter: Getter<EntityCrudRepository<Target, TargetId>>,
   ): BelongsToAccessor<Target, ID> {
@@ -193,6 +267,48 @@ export class DefaultCrudRepository<T extends Entity, ID>
       meta as BelongsToDefinition,
       targetRepoGetter,
       this,
+    );
+  }
+
+  /**
+   * @deprecated
+   * Function to create a constrained hasOne relation repository factory
+   *
+   * @param relationName Name of the relation defined on the source model
+   * @param targetRepo Target repository instance
+   */
+  protected _createHasOneRepositoryFactoryFor<
+    Target extends Entity,
+    TargetID,
+    ForeignKeyType
+  >(
+    relationName: string,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+  ): HasOneRepositoryFactory<Target, ForeignKeyType> {
+    return this.createHasOneRepositoryFactoryFor(
+      relationName,
+      targetRepoGetter,
+    );
+  }
+
+  /**
+   * Function to create a constrained hasOne relation repository factory
+   *
+   * @param relationName Name of the relation defined on the source model
+   * @param targetRepo Target repository instance
+   */
+  protected createHasOneRepositoryFactoryFor<
+    Target extends Entity,
+    TargetID,
+    ForeignKeyType
+  >(
+    relationName: string,
+    targetRepoGetter: Getter<EntityCrudRepository<Target, TargetID>>,
+  ): HasOneRepositoryFactory<Target, ForeignKeyType> {
+    const meta = this.entityClass.definition.relations[relationName];
+    return createHasOneRepositoryFactory<Target, TargetID, ForeignKeyType>(
+      meta as HasOneDefinition,
+      targetRepoGetter,
     );
   }
 
@@ -218,20 +334,24 @@ export class DefaultCrudRepository<T extends Entity, ID>
     }
   }
 
-  async find(filter?: Filter, options?: Options): Promise<T[]> {
-    const models = await ensurePromise(this.modelClass.find(filter, options));
+  async find(filter?: Filter<T>, options?: Options): Promise<T[]> {
+    const models = await ensurePromise(
+      this.modelClass.find(filter as legacy.Filter, options),
+    );
     return this.toEntities(models);
   }
 
-  async findOne(filter?: Filter, options?: Options): Promise<T | null> {
-    const model = await ensurePromise(this.modelClass.findOne(filter, options));
+  async findOne(filter?: Filter<T>, options?: Options): Promise<T | null> {
+    const model = await ensurePromise(
+      this.modelClass.findOne(filter as legacy.Filter, options),
+    );
     if (!model) return null;
     return this.toEntity(model);
   }
 
-  async findById(id: ID, filter?: Filter, options?: Options): Promise<T> {
+  async findById(id: ID, filter?: Filter<T>, options?: Options): Promise<T> {
     const model = await ensurePromise(
-      this.modelClass.findById(id, filter, options),
+      this.modelClass.findById(id, filter as legacy.Filter, options),
     );
     if (!model) {
       throw new EntityNotFoundError(this.entityClass, id);
@@ -249,7 +369,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
 
   async updateAll(
     data: DataObject<T>,
-    where?: Where,
+    where?: Where<T>,
     options?: Options,
   ): Promise<Count> {
     where = where || {};
@@ -265,8 +385,8 @@ export class DefaultCrudRepository<T extends Entity, ID>
     options?: Options,
   ): Promise<void> {
     const idProp = this.modelClass.definition.idName();
-    const where = {} as Where;
-    where[idProp] = id;
+    const where = {} as Where<T>;
+    (where as AnyObject)[idProp] = id;
     const result = await this.updateAll(data, where, options);
     if (result.count === 0) {
       throw new EntityNotFoundError(this.entityClass, id);
@@ -288,7 +408,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
     }
   }
 
-  async deleteAll(where?: Where, options?: Options): Promise<Count> {
+  async deleteAll(where?: Where<T>, options?: Options): Promise<Count> {
     const result = await ensurePromise(
       this.modelClass.deleteAll(where, options),
     );
@@ -302,7 +422,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
     }
   }
 
-  async count(where?: Where, options?: Options): Promise<Count> {
+  async count(where?: Where<T>, options?: Options): Promise<Count> {
     const result = await ensurePromise(this.modelClass.count(where, options));
     return {count: result};
   }

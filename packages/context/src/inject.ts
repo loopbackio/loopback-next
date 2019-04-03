@@ -4,18 +4,26 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  MetadataInspector,
   DecoratorFactory,
+  InspectionOptions,
+  MetadataAccessor,
+  MetadataInspector,
+  MetadataMap,
   ParameterDecoratorFactory,
   PropertyDecoratorFactory,
-  MetadataMap,
-  MetadataAccessor,
-  InspectionOptions,
 } from '@loopback/metadata';
-import {BoundValue, ValueOrPromise, resolveList} from './value-promise';
+import {BindingTag} from './binding';
+import {
+  BindingFilter,
+  BindingSelector,
+  filterByTag,
+  isBindingAddress,
+} from './binding-filter';
+import {BindingAddress} from './binding-key';
 import {Context} from './context';
-import {BindingKey, BindingAddress} from './binding-key';
+import {ContextView, createViewGetter} from './context-view';
 import {ResolutionSession} from './resolution-session';
+import {BoundValue, ValueOrPromise} from './value-promise';
 
 const PARAMETERS_KEY = MetadataAccessor.create<Injection, ParameterDecorator>(
   'inject:parameters',
@@ -64,7 +72,7 @@ export interface Injection<ValueType = BoundValue> {
     | TypedPropertyDescriptor<ValueType>
     | number;
 
-  bindingKey: BindingAddress<ValueType>; // Binding key
+  bindingSelector: BindingSelector<ValueType>; // Binding selector
   metadata?: InjectionMetadata; // Related metadata
   resolve?: ResolverFunction; // A custom resolve function
 }
@@ -89,17 +97,20 @@ export interface Injection<ValueType = BoundValue> {
  *
  *  - TODO(bajtos)
  *
- * @param bindingKey What binding to use in order to resolve the value of the
+ * @param bindingSelector What binding to use in order to resolve the value of the
  * decorated constructor parameter or property.
  * @param metadata Optional metadata to help the injection
  * @param resolve Optional function to resolve the injection
  *
  */
 export function inject(
-  bindingKey: string | BindingKey<BoundValue>,
+  bindingSelector: BindingSelector,
   metadata?: InjectionMetadata,
   resolve?: ResolverFunction,
 ) {
+  if (typeof bindingSelector === 'function' && !resolve) {
+    resolve = resolveValuesByFilter;
+  }
   metadata = Object.assign({decorator: '@inject'}, metadata);
   return function markParameterOrPropertyAsInjected(
     target: Object,
@@ -119,7 +130,7 @@ export function inject(
           target,
           member,
           methodDescriptorOrParameterIndex,
-          bindingKey,
+          bindingSelector,
           metadata,
           resolve,
         },
@@ -155,7 +166,7 @@ export function inject(
           target,
           member,
           methodDescriptorOrParameterIndex,
-          bindingKey,
+          bindingSelector,
           metadata,
           resolve,
         },
@@ -175,7 +186,7 @@ export function inject(
 }
 
 /**
- * The function injected by `@inject.getter(key)`.
+ * The function injected by `@inject.getter(bindingSelector)`.
  */
 export type Getter<T> = () => Promise<T>;
 
@@ -205,15 +216,22 @@ export namespace inject {
    *
    * See also `Getter<T>`.
    *
-   * @param bindingKey The key of the value we want to eventually get.
+   * @param bindingSelector The binding key or filter we want to eventually get
+   * value(s) from.
    * @param metadata Optional metadata to help the injection
    */
   export const getter = function injectGetter(
-    bindingKey: BindingAddress<BoundValue>,
+    bindingSelector: BindingSelector<unknown>,
     metadata?: InjectionMetadata,
   ) {
     metadata = Object.assign({decorator: '@inject.getter'}, metadata);
-    return inject(bindingKey, metadata, resolveAsGetter);
+    return inject(
+      bindingSelector,
+      metadata,
+      isBindingAddress(bindingSelector)
+        ? resolveAsGetter
+        : resolveAsGetterByFilter,
+    );
   };
 
   /**
@@ -230,7 +248,7 @@ export namespace inject {
    * @param metadata Optional metadata to help the injection
    */
   export const setter = function injectSetter(
-    bindingKey: BindingAddress<BoundValue>,
+    bindingKey: BindingAddress,
     metadata?: InjectionMetadata,
   ) {
     metadata = Object.assign({decorator: '@inject.setter'}, metadata);
@@ -248,18 +266,38 @@ export namespace inject {
    *   ) {}
    * }
    * ```
-   * @param bindingTag Tag name or regex
+   * @param bindingTag Tag name, regex or object
    * @param metadata Optional metadata to help the injection
    */
-  export const tag = function injectTag(
-    bindingTag: string | RegExp,
+  export const tag = function injectByTag(
+    bindingTag: BindingTag | RegExp,
     metadata?: InjectionMetadata,
   ) {
     metadata = Object.assign(
       {decorator: '@inject.tag', tag: bindingTag},
       metadata,
     );
-    return inject('', metadata, resolveByTag);
+    return inject(filterByTag(bindingTag), metadata);
+  };
+
+  /**
+   * Inject matching bound values by the filter function
+   *
+   * ```ts
+   * class MyControllerWithView {
+   *   @inject.view(filterByTag('foo'))
+   *   view: ContextView<string[]>;
+   * }
+   * ```
+   * @param bindingFilter A binding filter function
+   * @param metadata
+   */
+  export const view = function injectByFilter(
+    bindingFilter: BindingFilter,
+    metadata?: InjectionMetadata,
+  ) {
+    metadata = Object.assign({decorator: '@inject.view'}, metadata);
+    return inject(bindingFilter, metadata, resolveAsContextView);
   };
 
   /**
@@ -282,20 +320,46 @@ function resolveAsGetter(
   injection: Readonly<Injection>,
   session?: ResolutionSession,
 ) {
+  assertTargetIsGetter(injection);
+  const bindingSelector = injection.bindingSelector as BindingAddress;
   // We need to clone the session for the getter as it will be resolved later
   session = ResolutionSession.fork(session);
   return function getter() {
-    return ctx.get(injection.bindingKey, {
+    return ctx.get(bindingSelector, {
       session,
       optional: injection.metadata && injection.metadata.optional,
     });
   };
 }
 
+function assertTargetIsGetter(injection: Readonly<Injection>) {
+  const targetType = inspectTargetType(injection);
+  if (targetType && targetType !== Function) {
+    const targetName = ResolutionSession.describeInjection(injection)!
+      .targetName;
+    throw new Error(
+      `The type of ${targetName} (${targetType.name}) is not a Getter function`,
+    );
+  }
+}
+
 function resolveAsSetter(ctx: Context, injection: Injection) {
+  const targetType = inspectTargetType(injection);
+  const targetName = ResolutionSession.describeInjection(injection)!.targetName;
+  if (targetType && targetType !== Function) {
+    throw new Error(
+      `The type of ${targetName} (${targetType.name}) is not a Setter function`,
+    );
+  }
+  const bindingSelector = injection.bindingSelector;
+  if (!isBindingAddress(bindingSelector)) {
+    throw new Error(
+      `@inject.setter for (${targetType.name}) does not allow BindingFilter`,
+    );
+  }
   // No resolution session should be propagated into the setter
-  return function setter(value: BoundValue) {
-    ctx.bind(injection.bindingKey).to(value);
+  return function setter(value: unknown) {
+    ctx.bind(bindingSelector).to(value);
   };
 }
 
@@ -331,19 +395,100 @@ export function describeInjectedArguments(
   return meta || [];
 }
 
-function resolveByTag(
+/**
+ * Inspect the target type
+ * @param injection
+ */
+function inspectTargetType(injection: Readonly<Injection>) {
+  let type = MetadataInspector.getDesignTypeForProperty(
+    injection.target,
+    injection.member!,
+  );
+  if (type) {
+    return type;
+  }
+  const designType = MetadataInspector.getDesignTypeForMethod(
+    injection.target,
+    injection.member!,
+  );
+  type =
+    designType.parameterTypes[
+      injection.methodDescriptorOrParameterIndex as number
+    ];
+  return type;
+}
+
+/**
+ * Resolve an array of bound values matching the filter function for `@inject`.
+ * @param ctx Context object
+ * @param injection Injection information
+ * @param session Resolution session
+ */
+function resolveValuesByFilter(
   ctx: Context,
   injection: Readonly<Injection>,
   session?: ResolutionSession,
 ) {
-  const tag: string | RegExp = injection.metadata!.tag;
-  const bindings = ctx.findByTag(tag);
+  assertTargetIsArray(injection);
+  const bindingFilter = injection.bindingSelector as BindingFilter;
+  const view = new ContextView(ctx, bindingFilter);
+  return view.resolve(session);
+}
 
-  return resolveList(bindings, b => {
-    // We need to clone the session so that resolution of multiple bindings
-    // can be tracked in parallel
-    return b.getValue(ctx, ResolutionSession.fork(session));
-  });
+function assertTargetIsArray(injection: Readonly<Injection>) {
+  const targetType = inspectTargetType(injection);
+  if (targetType !== Array) {
+    const targetName = ResolutionSession.describeInjection(injection)!
+      .targetName;
+    throw new Error(
+      `The type of ${targetName} (${targetType.name}) is not Array`,
+    );
+  }
+}
+
+/**
+ * Resolve to a getter function that returns an array of bound values matching
+ * the filter function for `@inject.getter`.
+ *
+ * @param ctx Context object
+ * @param injection Injection information
+ * @param session Resolution session
+ */
+function resolveAsGetterByFilter(
+  ctx: Context,
+  injection: Readonly<Injection>,
+  session?: ResolutionSession,
+) {
+  assertTargetIsGetter(injection);
+  const bindingFilter = injection.bindingSelector as BindingFilter;
+  return createViewGetter(ctx, bindingFilter, session);
+}
+
+/**
+ * Resolve to an instance of `ContextView` by the binding filter function
+ * for `@inject.view`
+ * @param ctx Context object
+ * @param injection Injection information
+ * @param session Resolution session
+ */
+function resolveAsContextView(
+  ctx: Context,
+  injection: Readonly<Injection>,
+  session?: ResolutionSession,
+) {
+  const targetType = inspectTargetType(injection);
+  if (targetType && targetType !== ContextView) {
+    const targetName = ResolutionSession.describeInjection(injection)!
+      .targetName;
+    throw new Error(
+      `The type of ${targetName} (${targetType.name}) is not ContextView`,
+    );
+  }
+
+  const bindingFilter = injection.bindingSelector as BindingFilter;
+  const view = new ContextView(ctx, bindingFilter);
+  view.open();
+  return view;
 }
 
 /**

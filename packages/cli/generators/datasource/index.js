@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -68,6 +68,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
    * Ensure CLI is being run in a LoopBack 4 project.
    */
   checkLoopBackProject() {
+    if (this.shouldExit()) return;
     return super.checkLoopBackProject();
   }
 
@@ -133,7 +134,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
       const prompts = [
         {
           name: 'customConnector',
-          message: "Enter the connector's module name",
+          message: "Enter the connector's package name:",
           validate: utils.validate,
         },
       ];
@@ -285,7 +286,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
 
     // Copy Templates
     this.fs.writeJSON(jsonPath, ds);
-    this.fs.copyTpl(classTemplatePath, tsPath, this.artifactInfo);
+    this.copyTemplatedFiles(classTemplatePath, tsPath, this.artifactInfo);
   }
 
   install() {
@@ -308,6 +309,12 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
       }
 
       debug(`npmModule - ${pkgs[0]}`);
+    } else {
+      const connectorName = this.artifactInfo.connector;
+      // Other connectors that are not listed in `connectors.json`.
+      // No install is needed for those in connectors.json but without a
+      // package name as they are built-in connectors
+      if (!deps[connectorName] && !connector) pkgs.push(connectorName);
     }
 
     if (!deps['@loopback/repository']) {

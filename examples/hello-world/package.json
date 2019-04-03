@@ -1,13 +1,14 @@
 {
   "name": "@loopback/example-hello-world",
-  "version": "0.10.5",
+  "version": "1.1.8",
   "description": "A simple hello-world Application using LoopBack 4",
   "main": "index.js",
   "engines": {
     "node": ">=8.9"
   },
+  "author": "IBM Corp.",
   "scripts": {
-    "acceptance": "lb-mocha \"dist/test/acceptance/**/*.js\"",
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
     "build:watch": "lb-tsc es2017 --outDir dist --watch",
@@ -21,9 +22,9 @@
     "tslint": "lb-tslint",
     "tslint:fix": "npm run tslint -- --fix",
     "pretest": "npm run clean && npm run build",
-    "test": "lb-mocha --allow-console-logs \"dist/test\"",
+    "test": "lb-mocha --allow-console-logs \"dist/__tests__/**/*.js\"",
     "posttest": "npm run lint",
-    "test:dev": "lb-mocha --allow-console-logs dist/test/**/*.js && npm run posttest",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
     "prestart": "npm run build",
     "start": "node ."
   },
@@ -36,13 +37,16 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/core": "^0.11.16",
-    "@loopback/rest": "^0.25.4"
+    "@loopback/core": "^1.2.1",
+    "@loopback/rest": "^1.9.1"
   },
   "devDependencies": {
-    "@loopback/build": "^0.7.6",
-    "@loopback/testlab": "^0.15.1",
-    "@types/node": "^10.11.2"
+    "@loopback/build": "^1.4.0",
+    "@loopback/testlab": "^1.2.1",
+    "@loopback/tslint-config": "^2.0.3",
+    "@types/node": "^10.11.2",
+    "tslint": "^5.14.0",
+    "typescript": "^3.4.1"
   },
   "keywords": [
     "loopback",

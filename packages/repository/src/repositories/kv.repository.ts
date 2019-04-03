@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -61,6 +61,7 @@ export interface KeyValueRepository<T extends Model> extends Repository<T> {
    * Set up ttl for an entry by key
    *
    * @param key Key for the entry
+   * @param ttl Ttl for the entry
    * @param options Options for the operation
    */
   expire(key: string, ttl: number, options?: Options): Promise<void>;

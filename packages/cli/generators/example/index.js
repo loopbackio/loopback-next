@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -9,7 +9,7 @@ const BaseGenerator = require('../../lib/base-generator');
 const chalk = require('chalk');
 const downloadAndExtractExample = require('./downloader');
 const path = require('path');
-const utils = require('../../lib/utils');
+const fs = require('fs-extra');
 
 const EXAMPLES = {
   todo: 'Tutorial example on how to build an application with LoopBack 4.',
@@ -18,7 +18,11 @@ const EXAMPLES = {
   'hello-world': 'A simple hello-world Application using LoopBack 4.',
   'log-extension': 'An example extension project for LoopBack 4.',
   'rpc-server': 'A basic RPC server using a made-up protocol.',
-  'soap-calculator': 'An example on how to integrate SOAP web services',
+  'soap-calculator': 'An example on how to integrate SOAP web services.',
+  'express-composition':
+    'A simple Express application that uses LoopBack 4 REST API.',
+  'greeter-extension':
+    'An example showing how to implement the extension point/extension pattern.',
 };
 Object.freeze(EXAMPLES);
 
@@ -94,6 +98,10 @@ module.exports = class extends BaseGenerator {
     const cwd = process.cwd();
     const absOutDir = await downloadAndExtractExample(this.exampleName, cwd);
     this.outDir = path.relative(cwd, absOutDir);
+    fs.rename(
+      `${this.outDir}/tsconfig.build.json`,
+      `${this.outDir}/tsconfig.json`,
+    );
   }
 
   install() {

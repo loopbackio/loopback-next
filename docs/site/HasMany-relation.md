@@ -40,8 +40,8 @@ how to define a `hasMany` relation on a source model `Customer`.
 {% include code-caption.html content="/src/models/customer.model.ts" %}
 
 ```ts
-import {Order} from './order.model.ts';
-import {Entity, property, hasmany} from '@loopback/repository';
+import {Order} from './order.model';
+import {Entity, property, hasMany} from '@loopback/repository';
 
 export class Customer extends Entity {
   @property({
@@ -100,13 +100,15 @@ repository, the following are required:
 - In the constructor of your source repository class, use
   [Dependency Injection](Dependency-injection.md) to receive a getter function
   for obtaining an instance of the target repository. _Note: We need a getter
-  function instead of a repository instance in order to break a cyclic
-  dependency between a repository with a hasMany relation and a repository with
-  the matching belongsTo relation._
+  function, accepting a string repository name instead of a repository
+  constructor, or a repository instance, in order to break a cyclic dependency
+  between a repository with a hasMany relation and a repository with the
+  matching belongsTo relation._
+
 - Declare a property with the factory function type
   `HasManyRepositoryFactory<targetModel, typeof sourceModel.prototype.id>` on
   the source repository class.
-- call the `_createHasManyRepositoryFactoryFor` function in the constructor of
+- call the `createHasManyRepositoryFactoryFor` function in the constructor of
   the source repository class with the relation name (decorated relation
   property on the source model) and target repository instance and assign it the
   property mentioned above.
@@ -114,11 +116,11 @@ repository, the following are required:
 The following code snippet shows how it would look like:
 
 {% include code-caption.html
-content="/src/repositories/customer.repository.ts.ts" %}
+content="/src/repositories/customer.repository.ts" %}
 
 ```ts
 import {Order, Customer} from '../models';
-import {OrderRepository} from './order.repository.ts';
+import {OrderRepository} from './order.repository';
 import {
   DefaultCrudRepository,
   juggler,
@@ -127,7 +129,7 @@ import {
 } from '@loopback/repository';
 import {inject, Getter} from '@loopback/core';
 
-class CustomerRepository extends DefaultCrudRepository<
+export class CustomerRepository extends DefaultCrudRepository<
   Customer,
   typeof Customer.prototype.id
 > {
@@ -137,11 +139,11 @@ class CustomerRepository extends DefaultCrudRepository<
   >;
   constructor(
     @inject('datasources.db') protected db: juggler.DataSource,
-    @repository.getter(OrderRepository)
+    @repository.getter('OrderRepository')
     getOrderRepository: Getter<OrderRepository>,
   ) {
     super(Customer, db);
-    this.orders = this._createHasManyRepositoryFactoryFor(
+    this.orders = this.createHasManyRepositoryFactoryFor(
       'orders',
       getOrderRepository,
     );
@@ -163,6 +165,14 @@ factory `orders` for instances of `customerRepository`:
 - `patch` for patching target model instance(s) belonging to customer model
   instance
   ([API Docs](https://apidocs.strongloop.com/@loopback%2fdocs/repository.html#HasManyRepository.prototype.patch))
+
+For **updating** (full replace of all properties on a `PUT` endpoint for
+instance) a target model you have to directly use this model repository. In this
+case, the caller must provide both the foreignKey value and the primary key
+(id). Since the caller already has access to the primary key of the target
+model, there is no need to go through the relation repository and the operation
+can be performed directly on `DefaultCrudRepository` for the target model
+(`OrderRepository` in our example).
 
 ## Using hasMany constrained repository in a controller
 

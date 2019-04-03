@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018. All Rights Reserved.
 // Node module: @loopback/build
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -17,31 +17,35 @@ Usage:
 
 function run(argv, options) {
   const utils = require('./utils');
-  const path = require('path');
 
   // Substitute the dist variable with the dist folder
   const dist = utils.getDistribution();
   const mochaOpts = argv.slice(2).map(a => a.replace(/\bDIST\b/g, dist));
 
-  // Add default options
-  if (mochaOpts.indexOf('--opts') === -1) {
-    const optsPath = require.resolve('../mocha.opts');
-    mochaOpts.unshift('--opts', optsPath);
-  }
+  const setMochaOpts =
+    !utils.isOptionSet(
+      mochaOpts,
+      '--config', // mocha 6.x
+      '--opts', // legacy
+      '--package', // mocha 6.x
+      '--no-config', // mocha 6.x
+    ) && !utils.mochaConfiguredForProject();
 
-  // Add source map support
-  if (mochaOpts.indexOf('source-map-support/register') === -1) {
-    // Resolve source-map-support so that the path can be used by mocha
-    const sourceMapRegisterPath = require.resolve(
-      'source-map-support/register',
-    );
-    mochaOpts.unshift('--require', sourceMapRegisterPath);
+  // Add default options
+  // Keep it backward compatible as dryRun
+  if (typeof options === 'boolean') options = {dryRun: options};
+  options = options || {};
+  if (setMochaOpts) {
+    // Use the default `.mocharc.json` from `@loopback/build`
+    const mochaOptsFile = utils.getConfigFile('.mocharc.json');
+    mochaOpts.unshift('--config', mochaOptsFile);
   }
 
   const allowConsoleLogsIx = mochaOpts.indexOf('--allow-console-logs');
   if (allowConsoleLogsIx === -1) {
     // Fail any tests that are printing to console.
     mochaOpts.unshift(
+      '--no-warnings', // Disable node.js warnings
       '--require',
       require.resolve('../src/fail-on-console-logs'),
     );

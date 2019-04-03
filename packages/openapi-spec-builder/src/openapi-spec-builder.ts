@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2017,2019. All Rights Reserved.
 // Node module: @loopback/openapi-spec-builder
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -147,15 +147,15 @@ export class OperationSpecBuilder extends BuilderBase<OperationObject> {
   }
 
   /**
-   * Describe a parameter accepted by the operation.
+   * Describe one more parameters accepted by the operation.
    * Note that parameters are positional in OpenAPI Spec, therefore
    * the first call of `withParameter` defines the first parameter,
    * the second call defines the second parameter, etc.
-   * @param parameterSpec
+   * @param parameterSpecs
    */
-  withParameter(parameterSpec: ParameterObject): this {
+  withParameter(...parameterSpecs: ParameterObject[]): this {
     if (!this._spec.parameters) this._spec.parameters = [];
-    this._spec.parameters.push(parameterSpec);
+    this._spec.parameters.push(...parameterSpecs);
     return this;
   }
 
@@ -170,7 +170,44 @@ export class OperationSpecBuilder extends BuilderBase<OperationObject> {
    * @param name The name of the controller method implementing this operation.
    */
   withOperationName(name: string): this {
-    return this.withExtension('x-operation-name', name);
+    this.withExtension('x-operation-name', name);
+    this.setupOperationId();
+    return this;
+  }
+
+  /**
+   * Define the controller name (controller name).
+   *
+   * @param name The name of the controller containing this operation.
+   */
+  withControllerName(name: string): this {
+    this.withExtension('x-controller-name', name);
+    this.setupOperationId();
+    return this;
+  }
+
+  /**
+   * Set up the `operationId` if not configured
+   */
+  private setupOperationId() {
+    if (this._spec.operationId) return;
+    const controllerName = this._spec['x-controller-name'];
+    const operationName = this._spec['x-operation-name'];
+    if (controllerName && operationName) {
+      // Build the operationId as `<controllerName>.<operationName>`
+      // Please note API explorer (https://github.com/swagger-api/swagger-js/)
+      // will normalize it as `<controllerName>_<operationName>`
+      this._spec.operationId = controllerName + '.' + operationName;
+    }
+  }
+
+  /**
+   * Define the operationId
+   * @param operationId Operation id
+   */
+  withOperationId(operationId: string): this {
+    this._spec.operationId = operationId;
+    return this;
   }
 
   /**
@@ -178,10 +215,9 @@ export class OperationSpecBuilder extends BuilderBase<OperationObject> {
    * @param tags
    */
   withTags(tags: string | string[]): this {
-    if (typeof tags === 'string') this._spec.tags = [tags];
-    else {
-      this._spec.tags = tags;
-    }
+    if (!this._spec.tags) this._spec.tags = [];
+    if (typeof tags === 'string') tags = [tags];
+    this._spec.tags.push(...tags);
     return this;
   }
 }

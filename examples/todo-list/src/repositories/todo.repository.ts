@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/example-todo-list
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -29,8 +29,8 @@ export class TodoRepository extends DefaultCrudRepository<
   ) {
     super(Todo, dataSource);
 
-    this.todoList = this._createBelongsToAccessorFor(
-      'todoListId',
+    this.todoList = this.createBelongsToAccessorFor(
+      'todoList',
       todoListRepositoryGetter,
     );
   }

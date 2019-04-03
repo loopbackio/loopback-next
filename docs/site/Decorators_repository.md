@@ -49,7 +49,7 @@ By using a model decorator, you can define a model as your repository's
 metadata, which then allows you to choose between two ways of creating the
 repository instance:
 
-1. Inject your repository and resolve it with the datasource juggler bridge  
+1. Inject your repository and resolve it with the datasource juggler bridge
    that's complete with CRUD operations for accessing the model's data. A use
    case can be found in this section:
    [Repository decorator](#repository-decorator)
@@ -88,8 +88,9 @@ The injection example can be found in
 To create a repository in a controller, you can define your model and datasource
 first, then import them in your controller file:
 
+{% include code-caption.html content="src/controllers/todo.controller.ts" %}
+
 ```ts
-// src/controllers/todo.controller.ts
 import {Todo} from '../models';
 import {db} from '../datasources/db.datasource';
 import {repository, EntityCrudRepository} from '@loopback/repository';
@@ -105,7 +106,7 @@ If the model or datasource is already bound to the app, you can create the
 repository by providing their names instead of the classes. For example:
 
 ```ts
-// with `datasource` and `Todo` already defined.
+// with `db` and `Todo` already defined.
 app.bind('datasources.db').to(db);
 app.bind('models.Todo').to(Todo);
 
@@ -118,9 +119,6 @@ export class TodoController {
 
 ### Relation Decorators
 
-_This feature has not yet been released in alpha form. Documentation will be
-added here as this feature progresses._
-
 The relation decorator defines the nature of a relationship between two models.
 
 #### Relation Decorator
@@ -132,19 +130,137 @@ Register a general relation.
 _This feature has not yet been released in alpha form. Documentation will be
 added here as this feature progresses._
 
-#### Specific Relation Decorator
+#### BelongsTo Decorator
 
 Syntax:
+`@belongsTo(targetResolver: EntityResolver<T>, definition?: Partial<BelongsToDefinition>)`
 
-- `@belongsTo`
-- `@hasOne`
-- `@hasMany`
+Many-to-one or one-to-one connection between models e.g. a `Todo` model belongs
+to a `TodoList` model. See [BelongsTo relation](BelongsTo-relation.md) for more
+details.
+
+{% include code-caption.html content="todo.model.ts" %}
+
+```ts
+import {belongsTo} from '@loopback/repository';
+import {TodoList} from './todo-list.model';
+
+export class Todo extends Entity {
+  // properties
+
+  @belongsTo(() => TodoList)
+  todoListId: number;
+
+  // etc
+}
+```
+
+#### HasOne Decorator
+
+Syntax:
+`@hasOne(targetResolver: EntityResolver<T>, definition?: Partial<HasOneDefinition>)`
+
+One-to-one connection between models e.g. a `TodoList` model has one
+`TodoListImage` model. See [HasOne relation](hasOne-relation.md) for more
+details.
+
+{% include code-caption.html content="todo-list.model.ts" %}
+
+```ts
+import {hasOne} from '@loopback/repository';
+import {TodoListImage} from './todo-list-image.model';
+
+export class TodoList extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+  })
+  id?: number;
+
+  // other properties
+
+  @hasOne(() => TodoListImage)
+  image: TodoListImage;
+
+  // etc
+}
+```
+
+{% include code-caption.html content="todo-list-image.model.ts" %}
+
+```ts
+import {belongsTo} from '@loopback/repository';
+import {TodoList} from './todo-list.model';
+
+export class TodoListImage extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+  })
+  id: number;
+
+  // other properties
+
+  @belongsTo(() => TodoList)
+  todoListId?: number;
+
+  // etc
+}
+```
+
+#### HasMany Decorator
+
+Syntax:
+`@hasMany(targetResolver: EntityResolver<T>, definition?: Partial<HasManyDefinition>)`
+
+One-to-many connection between models e.g. a `TodoList` model has many of the
+`Todo` model. See [HasMany relation](HasMany-relation.md) for more details.
+
+{% include code-caption.html content="todo-list.model.ts" %}
+
+```ts
+import {hasMany} from '@loopback/repository';
+import {Todo} from './todo.model';
+
+export class TodoList extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+  })
+  id?: number;
+
+  // other properties
+
+  @hasMany(() => Todo)
+  todos: Todo[];
+
+  // etc
+}
+```
+
+{% include code-caption.html content="todo.model.ts" %}
+
+```ts
+import {belongsTo} from '@loopback/repository';
+import {TodoList} from './todo-list.model';
+
+export class Todo extends Entity {
+  // other properties
+
+  @belongsTo(() => TodoList)
+  todoListId?: number;
+
+  // etc
+}
+```
+
+#### Other Decorators
+
+The following decorators are not implemented yet. To see their progress, please
+go to the
+[Relations epic](https://github.com/strongloop/loopback-next/issues/1450).
+
 - `@embedsOne`
 - `@embedsMany`
 - `@referencesOne`
 - `@referencesMany`
-
-Register a specific relation.
-
-_This feature has not yet been released in alpha form. Documentation will be
-added here as this feature progresses._

@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -59,6 +59,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
   }
 
   checkLoopBackProject() {
+    if (this.shouldExit()) return;
     return super.checkLoopBackProject();
   }
 
@@ -76,40 +77,13 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
     }
   }
 
-  /**
-   * Ask for Service Name
-   */
-  async promptArtifactName() {
-    debug('Prompting for service name');
-    if (this.shouldExit()) return;
-
-    if (this.options.name) {
-      Object.assign(this.artifactInfo, {name: this.options.name});
-    }
-
-    const prompts = [
-      {
-        type: 'input',
-        name: 'name',
-        // capitalization
-        message: utils.toClassName(this.artifactInfo.type) + ' name:',
-        when: !this.artifactInfo.name,
-        validate: utils.validateClassName,
-      },
-    ];
-    return this.prompt(prompts).then(props => {
-      Object.assign(this.artifactInfo, props);
-      return props;
-    });
-  }
-
   async promptDataSourceName() {
     debug('Prompting for a datasource ');
     if (this.shouldExit()) return;
     let cmdDatasourceName;
     let datasourcesList;
 
-    // grab the datasourcename from the command line
+    // grab the datasource name from the command line
     cmdDatasourceName = this.options.datasource
       ? utils.toClassName(this.options.datasource) + 'Datasource'
       : '';
@@ -186,6 +160,33 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
   }
 
   /**
+   * Ask for Service Name
+   */
+  async promptArtifactName() {
+    debug('Prompting for service name');
+    if (this.shouldExit()) return;
+
+    if (this.options.name) {
+      Object.assign(this.artifactInfo, {name: this.options.name});
+    }
+
+    const prompts = [
+      {
+        type: 'input',
+        name: 'name',
+        // capitalization
+        message: utils.toClassName(this.artifactInfo.type) + ' name:',
+        when: !this.artifactInfo.name,
+        validate: utils.validateClassName,
+      },
+    ];
+    return this.prompt(prompts).then(props => {
+      Object.assign(this.artifactInfo, props);
+      return props;
+    });
+  }
+
+  /**
    * this method will be in charge of inferring and create
    * the remote interfaces from either SOAP wsdl or REST openApi json
    *
@@ -232,13 +233,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
     debug(`artifactInfo: ${inspect(this.artifactInfo)}`);
     debug(`Copying artifact to: ${dest}`);
 
-    this.fs.copyTpl(
-      source,
-      dest,
-      this.artifactInfo,
-      {},
-      {globOptions: {dot: true}},
-    );
+    this.copyTemplatedFiles(source, dest, this.artifactInfo);
     return;
   }
 

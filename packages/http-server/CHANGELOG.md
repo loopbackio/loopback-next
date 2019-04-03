@@ -3,6 +3,123 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.10](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.1.9...@loopback/http-server@1.1.10) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/http-server
+
+
+
+
+
+## [1.1.9](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.1.8...@loopback/http-server@1.1.9) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/http-server
+
+
+
+
+
+## [1.1.8](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.1.7...@loopback/http-server@1.1.8) (2019-03-12)
+
+**Note:** Version bump only for package @loopback/http-server
+
+
+
+
+
+## [1.1.7](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.1.6...@loopback/http-server@1.1.7) (2019-03-01)
+
+**Note:** Version bump only for package @loopback/http-server
+
+
+
+
+
+## [1.1.6](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.1.5...@loopback/http-server@1.1.6) (2019-02-25)
+
+**Note:** Version bump only for package @loopback/http-server
+
+
+
+
+
+## [1.1.5](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.1.4...@loopback/http-server@1.1.5) (2019-02-08)
+
+**Note:** Version bump only for package @loopback/http-server
+
+
+
+
+
+## [1.1.4](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.1.3...@loopback/http-server@1.1.4) (2019-01-28)
+
+**Note:** Version bump only for package @loopback/http-server
+
+
+
+
+
+## [1.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.1.2...@loopback/http-server@1.1.3) (2019-01-14)
+
+**Note:** Version bump only for package @loopback/http-server
+
+
+
+
+
+## [1.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.1.1...@loopback/http-server@1.1.2) (2018-12-20)
+
+**Note:** Version bump only for package @loopback/http-server
+
+
+
+
+
+## [1.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.1.0...@loopback/http-server@1.1.1) (2018-12-13)
+
+**Note:** Version bump only for package @loopback/http-server
+
+
+
+
+
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.0.2...@loopback/http-server@1.1.0) (2018-11-26)
+
+
+### Features
+
+* **http-server:** exposes underlying http server before start ([ba76ecf](https://github.com/strongloop/loopback-next/commit/ba76ecf))
+
+
+
+
+
+## [1.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.0.1...@loopback/http-server@1.0.2) (2018-11-14)
+
+**Note:** Version bump only for package @loopback/http-server
+
+
+
+
+
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.0.0...@loopback/http-server@1.0.1) (2018-11-08)
+
+**Note:** Version bump only for package @loopback/http-server
+
+
+
+
+
+<a name="0.4.6"></a>
+## [0.4.6](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@0.4.5...@loopback/http-server@0.4.6) (2018-10-08)
+
+**Note:** Version bump only for package @loopback/http-server
+
+
+
+
+
 <a name="0.4.5"></a>
 ## [0.4.5](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@0.4.4...@loopback/http-server@0.4.5) (2018-10-05)
 

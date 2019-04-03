@@ -24,7 +24,7 @@ lb4 example [options] [<example-name>]
 `example-name` - Optional name of the example to clone. If provided, the tool
 will skip the example-name prompt and run in a non-interactive mode.
 
-See [Examples and tutorials](Examples-and-tutorials.md) for the list of
+See [Examples](Examples.md) and [Tutorials](Tutorials.md) for the list of
 available examples.
 
 ### Interactive Prompts

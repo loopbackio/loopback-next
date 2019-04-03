@@ -3,6 +3,112 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.2.0...@loopback/testlab@1.2.1) (2019-03-22)
+
+
+### Bug Fixes
+
+* **testlab:** make sure `fixtures` is included in npm package ([6edfa9d](https://github.com/strongloop/loopback-next/commit/6edfa9d))
+
+
+
+
+
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.1.0...@loopback/testlab@1.2.0) (2019-03-22)
+
+
+### Features
+
+* **testlab:** add dummy HTTPS config ([a32c885](https://github.com/strongloop/loopback-next/commit/a32c885))
+
+
+
+
+
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.0.7...@loopback/testlab@1.1.0) (2019-03-12)
+
+
+### Features
+
+* **testlab:** always use IPv4 host in HTTP server config ([3d487b2](https://github.com/strongloop/loopback-next/commit/3d487b2))
+
+
+
+
+
+## [1.0.7](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.0.6...@loopback/testlab@1.0.7) (2019-02-25)
+
+**Note:** Version bump only for package @loopback/testlab
+
+
+
+
+
+## [1.0.6](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.0.5...@loopback/testlab@1.0.6) (2019-02-08)
+
+**Note:** Version bump only for package @loopback/testlab
+
+
+
+
+
+## [1.0.5](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.0.4...@loopback/testlab@1.0.5) (2019-01-28)
+
+**Note:** Version bump only for package @loopback/testlab
+
+
+
+
+
+## [1.0.4](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.0.3...@loopback/testlab@1.0.4) (2019-01-14)
+
+
+### Bug Fixes
+
+* rework tslint comments disabling "no-unused-variable" rule ([a18a3d7](https://github.com/strongloop/loopback-next/commit/a18a3d7))
+* **testlab:** add api docs during build ([5b5018d](https://github.com/strongloop/loopback-next/commit/5b5018d))
+
+
+
+
+
+## [1.0.3](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.0.2...@loopback/testlab@1.0.3) (2018-12-20)
+
+**Note:** Version bump only for package @loopback/testlab
+
+
+
+
+
+## [1.0.2](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.0.1...@loopback/testlab@1.0.2) (2018-12-13)
+
+
+### Bug Fixes
+
+* **rest:** parse query string even when there is no rest query param ([ad905a5](https://github.com/strongloop/loopback-next/commit/ad905a5))
+
+
+
+
+
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.0.0...@loopback/testlab@1.0.1) (2018-11-08)
+
+**Note:** Version bump only for package @loopback/testlab
+
+
+
+
+
+<a name="0.15.2"></a>
+## [0.15.2](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.15.1...@loopback/testlab@0.15.2) (2018-10-08)
+
+**Note:** Version bump only for package @loopback/testlab
+
+
+
+
+
 <a name="0.15.1"></a>
 ## [0.15.1](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@0.15.0...@loopback/testlab@0.15.1) (2018-10-05)
 

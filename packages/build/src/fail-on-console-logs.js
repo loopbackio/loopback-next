@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018. All Rights Reserved.
 // Node module: @loopback/build
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -18,6 +18,7 @@ console.warn = recordForbiddenCall('warn');
 console.error = recordForbiddenCall('error');
 
 const problems = [];
+const warnings = [];
 
 function recordForbiddenCall(methodName) {
   return function recordForbiddenConsoleUsage(...args) {
@@ -40,7 +41,16 @@ function recordForbiddenCall(methodName) {
   };
 }
 
+process.on('warning', warning => {
+  warnings.push(warning);
+});
+
 process.on('exit', code => {
+  if (!warnings.length) {
+    for (w of warnings) {
+      originalConsole.warn(w);
+    }
+  }
   if (!problems.length) return;
   const log = originalConsole.log;
 

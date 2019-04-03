@@ -3,6 +3,166 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.6](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.3.5...@loopback/repository-json-schema@1.3.6) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
+## [1.3.5](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.3.4...@loopback/repository-json-schema@1.3.5) (2019-03-22)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
+## [1.3.4](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.3.3...@loopback/repository-json-schema@1.3.4) (2019-03-12)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
+## [1.3.3](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.3.2...@loopback/repository-json-schema@1.3.3) (2019-03-01)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
+## [1.3.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.3.1...@loopback/repository-json-schema@1.3.2) (2019-02-25)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
+## [1.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.3.0...@loopback/repository-json-schema@1.3.1) (2019-02-08)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.2.7...@loopback/repository-json-schema@1.3.0) (2019-01-28)
+
+
+### Features
+
+* **repository-json-schema:** enumerate fields ([15ca819](https://github.com/strongloop/loopback-next/commit/15ca819))
+
+
+
+
+
+## [1.2.7](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.2.6...@loopback/repository-json-schema@1.2.7) (2019-01-15)
+
+
+### Bug Fixes
+
+* **repository:** remove property.array() call from hasMany decorator ([56ab017](https://github.com/strongloop/loopback-next/commit/56ab017)), closes [#1944](https://github.com/strongloop/loopback-next/issues/1944)
+
+
+
+
+
+## [1.2.6](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.2.5...@loopback/repository-json-schema@1.2.6) (2019-01-14)
+
+
+### Bug Fixes
+
+* rework tslint comments disabling "no-unused-variable" rule ([a18a3d7](https://github.com/strongloop/loopback-next/commit/a18a3d7))
+
+
+
+
+
+## [1.2.5](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.2.4...@loopback/repository-json-schema@1.2.5) (2018-12-20)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
+## [1.2.4](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.2.3...@loopback/repository-json-schema@1.2.4) (2018-12-13)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
+## [1.2.3](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.2.2...@loopback/repository-json-schema@1.2.3) (2018-11-26)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
+## [1.2.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.2.1...@loopback/repository-json-schema@1.2.2) (2018-11-17)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
+## [1.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.2.0...@loopback/repository-json-schema@1.2.1) (2018-11-14)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.0.1...@loopback/repository-json-schema@1.2.0) (2018-11-08)
+
+
+### Features
+
+* **repository-json-schema:** add property description to JSON schema ([31c02f2](https://github.com/strongloop/loopback-next/commit/31c02f2))
+
+
+
+
+
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.0.0...@loopback/repository-json-schema@1.0.1) (2018-10-17)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
+<a name="0.12.2"></a>
+## [0.12.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@0.12.1...@loopback/repository-json-schema@0.12.2) (2018-10-08)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
+<a name="0.12.1"></a>
+## [0.12.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@0.12.0...@loopback/repository-json-schema@0.12.1) (2018-10-06)
+
+**Note:** Version bump only for package @loopback/repository-json-schema
+
+
+
+
+
 <a name="0.12.0"></a>
 # [0.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@0.11.3...@loopback/repository-json-schema@0.12.0) (2018-10-05)
 

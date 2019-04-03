@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017. All Rights Reserved.
+// Copyright IBM Corp. 2018. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -7,7 +7,7 @@ import {Context, inject, Provider} from '@loopback/context';
 import {FindRoute, Request} from '../types';
 import {HttpHandler} from '../http-handler';
 import {RestBindings} from '../keys';
-import {ResolvedRoute} from '../router/routing-table';
+import {ResolvedRoute} from '../router';
 
 export class FindRouteProvider implements Provider<FindRoute> {
   constructor(

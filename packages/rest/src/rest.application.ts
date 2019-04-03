@@ -1,23 +1,26 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Binding, BindingAddress, Constructor} from '@loopback/context';
 import {Application, ApplicationConfig, Server} from '@loopback/core';
-import {RestComponent} from './rest.component';
-import {SequenceHandler, SequenceFunction} from './sequence';
-import {Binding, Constructor} from '@loopback/context';
+import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
+import {PathParams} from 'express-serve-static-core';
+import {ServeStaticOptions} from 'serve-static';
 import {format} from 'util';
+import {BodyParser} from './body-parsers';
 import {RestBindings} from './keys';
-import {RestServer, HttpRequestListener, HttpServerLike} from './rest.server';
+import {RestComponent} from './rest.component';
+import {HttpRequestListener, HttpServerLike, RestServer} from './rest.server';
 import {
-  RouteEntry,
   ControllerClass,
   ControllerFactory,
-} from './router/routing-table';
-import {OperationObject, OpenApiSpec} from '@loopback/openapi-v3-types';
-import {ServeStaticOptions} from 'serve-static';
-import {PathParams} from 'express-serve-static-core';
+  ExpressRequestHandler,
+  RouteEntry,
+} from './router';
+import {RouterSpec} from './router/router-spec';
+import {SequenceFunction, SequenceHandler} from './sequence';
 
 export const ERR_NO_MULTI_SERVER = format(
   'RestApplication does not support multiple servers!',
@@ -99,6 +102,26 @@ export class RestApplication extends Application implements HttpServerLike {
   }
 
   /**
+   * Bind a body parser to the server context
+   * @param parserClass Body parser class
+   * @param address Optional binding address
+   */
+  bodyParser(
+    bodyParserClass: Constructor<BodyParser>,
+    address?: BindingAddress<BodyParser>,
+  ): Binding<BodyParser> {
+    return this.restServer.bodyParser(bodyParserClass, address);
+  }
+
+  /**
+   * Configure the `basePath` for the rest server
+   * @param path Base path
+   */
+  basePath(path: string = '') {
+    this.restServer.basePath(path);
+  }
+
+  /**
    * Register a new Controller-based route.
    *
    * ```ts
@@ -127,6 +150,29 @@ export class RestApplication extends Application implements HttpServerLike {
   ): Binding;
 
   /**
+   * Register a new route invoking a handler function.
+   *
+   * ```ts
+   * function greet(name: string) {
+   *  return `hello ${name}`;
+   * }
+   * app.route('get', '/', operationSpec, greet);
+   * ```
+   *
+   * @param verb HTTP verb of the endpoint
+   * @param path URL path of the endpoint
+   * @param spec The OpenAPI spec describing the endpoint (operation)
+   * @param handler The function to invoke with the request parameters
+   * described in the spec.
+   */
+  route(
+    verb: string,
+    path: string,
+    spec: OperationObject,
+    handler: Function,
+  ): Binding;
+
+  /**
    * Register a new route.
    *
    * ```ts
@@ -141,27 +187,73 @@ export class RestApplication extends Application implements HttpServerLike {
    */
   route(route: RouteEntry): Binding;
 
+  /**
+   * Register a new route.
+   *
+   * ```ts
+   * function greet(name: string) {
+   *  return `hello ${name}`;
+   * }
+   * app.route('get', '/', operationSpec, greet);
+   * ```
+   */
+  route(
+    verb: string,
+    path: string,
+    spec: OperationObject,
+    handler: Function,
+  ): Binding;
+
   route<T>(
     routeOrVerb: RouteEntry | string,
     path?: string,
     spec?: OperationObject,
-    controllerCtor?: ControllerClass<T>,
+    controllerCtorOrHandler?: ControllerClass<T> | Function,
     controllerFactory?: ControllerFactory<T>,
     methodName?: string,
   ): Binding {
     const server = this.restServer;
     if (typeof routeOrVerb === 'object') {
       return server.route(routeOrVerb);
+    } else if (arguments.length === 4) {
+      return server.route(
+        routeOrVerb,
+        path!,
+        spec!,
+        controllerCtorOrHandler as Function,
+      );
     } else {
       return server.route(
         routeOrVerb,
         path!,
         spec!,
-        controllerCtor!,
+        controllerCtorOrHandler as ControllerClass<T>,
         controllerFactory!,
         methodName!,
       );
     }
+  }
+
+  /**
+   * Register a route redirecting callers to a different URL.
+   *
+   * ```ts
+   * app.redirect('/explorer', '/explorer/');
+   * ```
+   *
+   * @param fromPath URL path of the redirect endpoint
+   * @param toPathOrUrl Location (URL path or full URL) where to redirect to.
+   * If your server is configured with a custom `basePath`, then the base path
+   * is prepended to the target location.
+   * @param statusCode HTTP status code to respond with,
+   *   defaults to 303 (See Other).
+   */
+  redirect(
+    fromPath: string,
+    toPathOrUrl: string,
+    statusCode?: number,
+  ): Binding {
+    return this.restServer.redirect(fromPath, toPathOrUrl, statusCode);
   }
 
   /**
@@ -177,5 +269,24 @@ export class RestApplication extends Application implements HttpServerLike {
    */
   api(spec: OpenApiSpec): Binding {
     return this.bind(RestBindings.API_SPEC).to(spec);
+  }
+
+  /**
+   * Mount an Express router to expose additional REST endpoints handled
+   * via legacy Express-based stack.
+   *
+   * @param basePath Path where to mount the router at, e.g. `/` or `/api`.
+   * @param router The Express router to handle the requests.
+   * @param spec A partial OpenAPI spec describing endpoints provided by the
+   * router. LoopBack will prepend `basePath` to all endpoints automatically.
+   * This argument is optional. You can leave it out if you don't want to
+   * document the routes.
+   */
+  mountExpressRouter(
+    basePath: string,
+    router: ExpressRequestHandler,
+    spec?: RouterSpec,
+  ): void {
+    this.restServer.mountExpressRouter(basePath, router, spec);
   }
 }

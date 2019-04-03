@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -18,7 +18,7 @@ import {CrudConnector} from '../connectors';
 import {Filter, Where} from '../query';
 import {EntityNotFoundError} from '../errors';
 
-// tslint:disable:no-unused-variable
+// tslint:disable:no-unused
 
 export interface Repository<T extends Model> {}
 
@@ -64,7 +64,7 @@ export interface CrudRepository<T extends ValueObject | Entity>
    * @param options Options for the operations
    * @returns A promise of an array of records found
    */
-  find(filter?: Filter, options?: Options): Promise<T[]>;
+  find(filter?: Filter<T>, options?: Options): Promise<T[]>;
 
   /**
    * Updating matching records with attributes from the data object
@@ -75,7 +75,7 @@ export interface CrudRepository<T extends ValueObject | Entity>
    */
   updateAll(
     dataObject: DataObject<T>,
-    where?: Where,
+    where?: Where<T>,
     options?: Options,
   ): Promise<Count>;
 
@@ -85,7 +85,7 @@ export interface CrudRepository<T extends ValueObject | Entity>
    * @param options Options for the operations
    * @returns A promise of number of records deleted
    */
-  deleteAll(where?: Where, options?: Options): Promise<Count>;
+  deleteAll(where?: Where<T>, options?: Options): Promise<Count>;
 
   /**
    * Count matching records
@@ -93,7 +93,7 @@ export interface CrudRepository<T extends ValueObject | Entity>
    * @param options Options for the operations
    * @returns A promise of number of records matched
    */
-  count(where?: Where, options?: Options): Promise<Count>;
+  count(where?: Where<T>, options?: Options): Promise<Count>;
 }
 
 /**
@@ -146,12 +146,12 @@ export interface EntityCrudRepository<T extends Entity, ID>
    * @param options Options for the operations
    * @returns A promise of an entity found for the id
    */
-  findById(id: ID, filter?: Filter, options?: Options): Promise<T>;
+  findById(id: ID, filter?: Filter<T>, options?: Options): Promise<T>;
 
   /**
    * Update an entity by id with property/value pairs in the data object
-   * @param data Data attributes to be updated
    * @param id Value for the entity id
+   * @param data Data attributes to be updated
    * @param options Options for the operations
    * @returns A promise that will be resolve if the operation succeeded or will
    * be rejected if the entity was not found.
@@ -160,8 +160,8 @@ export interface EntityCrudRepository<T extends Entity, ID>
 
   /**
    * Replace an entity by id
-   * @param data Data attributes to be replaced
    * @param id Value for the entity id
+   * @param data Data attributes to be replaced
    * @param options Options for the operations
    * @returns A promise that will be resolve if the operation succeeded or will
    * be rejected if the entity was not found.
@@ -257,13 +257,13 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     }
   }
 
-  find(filter?: Filter, options?: Options): Promise<T[]> {
+  find(filter?: Filter<T>, options?: Options): Promise<T[]> {
     return this.toModels(
       this.connector.find(this.entityClass, filter, options),
     );
   }
 
-  async findById(id: ID, filter?: Filter, options?: Options): Promise<T> {
+  async findById(id: ID, filter?: Filter<T>, options?: Options): Promise<T> {
     if (typeof this.connector.findById === 'function') {
       return this.toModel(
         this.connector.findById(this.entityClass, id, options),
@@ -289,7 +289,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
 
   updateAll(
     data: DataObject<T>,
-    where?: Where,
+    where?: Where<T>,
     options?: Options,
   ): Promise<Count> {
     return this.connector.updateAll(this.entityClass, data, where, options);
@@ -333,7 +333,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
       );
     } else {
       // FIXME: populate inst with all properties
-      // tslint:disable-next-line:no-unused-variable
+      // tslint:disable-next-line:no-unused
       const inst = data;
       const where = this.entityClass.buildWhereForId(id);
       const result = await this.updateAll(data, where, options);
@@ -344,7 +344,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     }
   }
 
-  deleteAll(where?: Where, options?: Options): Promise<Count> {
+  deleteAll(where?: Where<T>, options?: Options): Promise<Count> {
     return this.connector.deleteAll(this.entityClass, where, options);
   }
 
@@ -363,7 +363,7 @@ export class CrudRepositoryImpl<T extends Entity, ID>
     }
   }
 
-  count(where?: Where, options?: Options): Promise<Count> {
+  count(where?: Where<T>, options?: Options): Promise<Count> {
     return this.connector.count(this.entityClass, where, options);
   }
 

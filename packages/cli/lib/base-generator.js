@@ -268,15 +268,51 @@ module.exports = class BaseGenerator extends Generator {
   }
 
   /**
+   * Wrapper for mem-fs-editor.copyTpl() to ensure consistent options
+   *
+   * See https://github.com/SBoudrias/mem-fs-editor/blob/master/lib/actions/copy-tpl.js
+   *
+   * @param {string} from
+   * @param {string} to
+   * @param {object} context
+   * @param {object} templateOptions
+   * @param {object} copyOptions
+   */
+  copyTemplatedFiles(
+    from,
+    to,
+    context,
+    templateOptions = {},
+    copyOptions = {
+      // See https://github.com/mrmlnc/fast-glob#options-1
+      globOptions: {
+        // Allow patterns to match filenames starting with a period (files &
+        // directories), even if the pattern does not explicitly have a period
+        // in that spot.
+        dot: true,
+        // Disable expansion of brace patterns ({a,b}, {1..3}).
+        nobrace: true,
+        // Disable extglob support (patterns like +(a|b)), so that extglobs
+        // are regarded as literal characters. This flag allows us to support
+        // Windows paths such as
+        // `D:\Users\BKU\oliverkarst\AppData(Roaming)\npm\node_modules\@loopback\cli`
+        noext: true,
+      },
+    },
+  ) {
+    return this.fs.copyTpl(from, to, context, templateOptions, copyOptions);
+  }
+
+  /**
    * Checks if current directory is a LoopBack project by checking for
-   * keyword 'loopback' under 'keywords' attribute in package.json.
-   * 'keywords' is an array
+   * "@loopback/core" package in the dependencies section of the
+   * package.json.
    */
   async checkLoopBackProject() {
     debug('Checking for loopback project');
     if (this.shouldExit()) return false;
     const pkg = this.fs.readJSON(this.destinationPath('package.json'));
-    const key = 'loopback';
+
     if (!pkg) {
       const err = new Error(
         'No package.json found in ' +
@@ -287,9 +323,18 @@ module.exports = class BaseGenerator extends Generator {
       this.exit(err);
       return;
     }
-    if (!pkg.keywords || !pkg.keywords.includes(key)) {
+
+    this.packageJson = pkg;
+
+    const projectDeps = pkg.dependencies || {};
+    const projectDevDeps = pkg.devDependencies || {};
+
+    const dependentPackage = '@loopback/core';
+    const projectDepsNames = Object.keys(projectDeps);
+
+    if (!projectDepsNames.includes(dependentPackage)) {
       const err = new Error(
-        'No `loopback` keyword found in ' +
+        'No `@loopback/core` package found in the "dependencies" section of ' +
           this.destinationPath('package.json') +
           '. ' +
           'The command must be run in a LoopBack project.',
@@ -297,18 +342,18 @@ module.exports = class BaseGenerator extends Generator {
       this.exit(err);
       return;
     }
-    this.packageJson = pkg;
-
-    const projectDeps = pkg.dependencies || {};
-    const projectDevDeps = pkg.devDependencies || {};
 
     const cliPkg = require('../package.json');
     const templateDeps = cliPkg.config.templateDependencies;
     const incompatibleDeps = {};
     for (const d in templateDeps) {
       const versionRange = projectDeps[d] || projectDevDeps[d];
-      if (!versionRange || semver.intersects(versionRange, templateDeps[d]))
-        continue;
+      if (!versionRange) continue;
+      // https://github.com/strongloop/loopback-next/issues/2028
+      // https://github.com/npm/node-semver/pull/238
+      // semver.intersects does not like `*`, `x`, or `X`
+      if (versionRange.match(/^\*|x|X/)) continue;
+      if (semver.intersects(versionRange, templateDeps[d])) continue;
       incompatibleDeps[d] = [versionRange, templateDeps[d]];
     }
 

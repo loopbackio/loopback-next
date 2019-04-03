@@ -9,7 +9,7 @@ summary: LoopBack 4 Todo Application Tutorial - Putting it all together
 
 ### Putting it all together
 
-We've got all of our artifacts now, and all that's left is to bind them to our
+We've got all of our artifacts now, and they are all automatically bound to our
 [Application](Application.md) so that LoopBack's
 [Dependency injection](Dependency-injection.md) system can tie it all together
 for us!
@@ -31,54 +31,12 @@ artifacts and inject them into our application for use.
 > [Booters](Booting-an-Application.md#booters) section of
 > [Booting an Application](Booting-an-Application.md).
 
-#### src/application.ts
-
-```ts
-import {BootMixin} from '@loopback/boot';
-import {ApplicationConfig} from '@loopback/core';
-import {RepositoryMixin} from '@loopback/repository';
-import {RestApplication, RestServer} from '@loopback/rest';
-import {MySequence} from './sequence';
-
-export class TodoListApplication extends BootMixin(
-  RepositoryMixin(RestApplication),
-) {
-  constructor(options?: ApplicationConfig) {
-    super(options);
-
-    // Set up the custom sequence
-    this.sequence(MySequence);
-
-    this.projectRoot = __dirname;
-    // Customize @loopback/boot Booter Conventions here
-    this.bootOptions = {
-      controllers: {
-        // Customize ControllerBooter Conventions here
-        dirs: ['controllers'],
-        extensions: ['.controller.js'],
-        nested: true,
-      },
-    };
-  }
-
-  async start() {
-    await super.start();
-
-    const server = await this.getServer(RestServer);
-    const port = await server.get<number>('rest.port');
-    console.log(`Server is running at http://127.0.0.1:${port}`);
-    console.log(`Try http://127.0.0.1:${port}/ping`);
-  }
-}
-```
-
-### Try it out
-
 Let's try out our application! First, you'll want to start the app.
 
 ```sh
 $ npm start
-Server is running on port 3000
+
+Server is running at http://127.0.0.1:3000
 ```
 
 Next, you can use the [API Explorer](http://localhost:3000/explorer) to browse
@@ -89,7 +47,16 @@ Here are some requests you can try:
 - `POST /todos` with a body of `{ "title": "get the milk" }`
 - `GET /todos/{id}` using the ID you received from your `POST`, and see if you
   get your Todo object back.
-- `PATCH /todos/{id}` with a body of `{ "desc": "need milk for cereal" }`
+- `PATCH /todos/{id}`, using the same ID, with a body of
+  `{ "desc": "need milk for cereal" }`
+
+{% include note.html content="
+In the meantime, use
+`{ \"title\": \"get the milk\", \"desc\": \"need milk for cereal\" }` as the
+body for `PATCH/todos/{id}`, as LoopBack 4 doesn't support partial updates yet.
+For more information, see
+[GitHub issue 1722](https://github.com/strongloop/loopback-next/issues/1722).
+" %}
 
 That's it! You've just created your first LoopBack 4 application!
 
@@ -113,8 +80,8 @@ left off here to guide you through adding in an additional feature:
 ### More examples and tutorials
 
 Eager to continue learning about LoopBack 4? Check out our
-[examples and tutorials](Examples-and-tutorials.md) section to find examples for
-creating your own custom components, sequences and more!
+[Examples](Examples.md) and [Tutorials](Tutorials.md) sections to find examples
+for creating your own custom components, sequences and more!
 
 ### Navigation
 

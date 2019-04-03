@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -49,15 +49,15 @@ describe('lb4 model integration', () => {
     ).to.be.rejectedWith(/No package.json found in/);
   });
 
-  it('does not run without the loopback keyword', () => {
+  it('does not run without the "@loopback/core" dependency', () => {
     return expect(
       testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {excludeKeyword: true}),
+          testUtils.givenLBProject(SANDBOX_PATH, {excludeLoopbackCore: true}),
         )
         .withPrompts(basicCLIInput),
-    ).to.be.rejectedWith(/No `loopback` keyword found in/);
+    ).to.be.rejectedWith(/No `@loopback\/core` package found/);
   });
 
   it('does not run if passed an invalid model from command line', () => {
@@ -65,10 +65,19 @@ describe('lb4 model integration', () => {
       testUtils
         .executeGenerator(generator)
         .inDir(SANDBOX_PATH, () =>
-          testUtils.givenLBProject(SANDBOX_PATH, {excludeKeyword: true}),
+          testUtils.givenLBProject(SANDBOX_PATH, {excludeLoopbackCore: false}),
         )
         .withArguments('myNewModel --base InvalidModel'),
     ).to.be.rejectedWith(/Model was not found in/);
+  });
+
+  it('run if passed a valid base model from command line', async () => {
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .withArguments('test --base Model');
+
+    assert.file(expectedModelFile);
   });
 
   describe('model generator', () => {
@@ -92,6 +101,7 @@ describe('lb4 model integration', () => {
           name: 'test',
           propName: null,
           modelBaseClass: 'Model',
+          allowAdditionalProperties: false,
         });
 
       assert.file(expectedModelFile);
@@ -136,6 +146,35 @@ describe('lb4 model integration', () => {
       );
     });
 
+    it('scaffolds model with strict setting disabled', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .withPrompts({
+          name: 'test',
+          propName: null,
+          modelBaseClass: 'Entity',
+          allowAdditionalProperties: true,
+        });
+
+      assert.file(expectedModelFile);
+      assert.file(expectedIndexFile);
+
+      assert.fileContent(
+        expectedModelFile,
+        /import {Entity, model, property} from '@loopback\/repository';/,
+      );
+      assert.fileContent(
+        expectedModelFile,
+        /@model\({settings: {"strict":false}}\)/,
+      );
+      assert.fileContent(
+        expectedModelFile,
+        /export class Test extends Entity {/,
+      );
+      assert.fileContent(expectedModelFile, /\[prop: string\]: any;/);
+    });
+
     it('scaffolds correct files with args', async () => {
       await testUtils
         .executeGenerator(generator)
@@ -147,6 +186,30 @@ describe('lb4 model integration', () => {
 
       basicModelFileChecks();
     });
+  });
+});
+
+describe('model generator using --config option', () => {
+  it('create models with valid json', async () => {
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+      .withArguments(['--config', '{"name":"test", "base":"Entity"}', '--yes']);
+
+    basicModelFileChecks();
+  });
+
+  it('does not run if pass invalid json', () => {
+    return expect(
+      testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .withArguments([
+          '--config',
+          '{"name":"test", "base":"InvalidBaseModel"}',
+          '--yes',
+        ]),
+    ).to.be.rejectedWith(/Model was not found in/);
   });
 });
 

@@ -77,6 +77,8 @@ is served by the given REST server.
 - servers: Configure servers for OpenAPI spec
 - setServersFromRequest: Set `servers` based on HTTP request headers, default to
   `false`
+- disabled: Set to `true` to disable endpoints for the OpenAPI spec. It will
+  disable API Explorer too.
 - endpointMapping: Maps urls for various forms of the spec. Default to:
 
 ```js
@@ -124,6 +126,30 @@ const app = new RestApplication({
 });
 ```
 
+#### Disable redirect to API Explorer
+
+To disable redirect to the externally hosted API Explorer, set the config option
+`rest.apiExplorer.disabled` to `true`.
+
+```ts
+const app = new RestApplication({
+  rest: {
+    apiExplorer: {
+      disabled: true,
+    },
+  },
+});
+```
+
+### Use a self-hosted API Explorer
+
+Hosting the API Explorer at an external URL has a few downsides, for example a
+working internet connection is required to explore the API. As a recommended
+alternative, LoopBack comes with an extension that provides a self-hosted
+Explorer UI. Please refer to
+[Self-hosted REST API Explorer](./Self-hosted-REST-API-Explorer.md) for more
+details.
+
 ### Enable HTTPS
 
 Enabling HTTPS for the LoopBack REST server is just a matter of specifying the
@@ -155,17 +181,129 @@ export async function main() {
 }
 ```
 
+### Customize CORS
+
+[CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) is enabled
+by default for REST servers with the following options:
+
+```ts
+{
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  maxAge: 86400,
+  credentials: true,
+}
+```
+
+The application code can customize CORS via REST configuration:
+
+```ts
+export async function main() {
+  const options = {
+    rest: {
+      cors: {...},
+    },
+  };
+  const app = new RestApplication(options);
+}
+```
+
+For a complete list of CORS options, see
+https://github.com/expressjs/cors#configuration-options.
+
+### Express settings
+
+Override the default express settings and/or assign your own settings:
+
+```ts
+const app = new RestApplication({
+  rest: {
+    expressSettings: {
+      'x-powered-by': false,
+      env: 'production',
+      ...
+    },
+  },
+});
+```
+
+Checkout `express` [documentation](http://expressjs.com/fr/api.html#app.set) for
+more details about the build-in settings.
+
+### Configure the Base Path
+
+Sometime it's desirable to expose REST endpoints using a base path, such as
+`/api`. The base path can be set as part of the RestServer configuration.
+
+```ts
+const app = new RestApplication({
+  rest: {
+    basePath: '/api',
+  },
+});
+```
+
+The `RestApplication` and `RestServer` both provide a `basePath()` API:
+
+```ts
+const app: RestApplication;
+// ...
+app.basePath('/api');
+```
+
+With the `basePath`, all REST APIs and static assets are served on URLs starting
+with the base path.
+
+### Configure the router
+
+The router can be configured to enforce `strict` mode as follows:
+
+1. `strict` is true:
+
+- request `/orders` matches route `/orders` but not `/orders/`
+- request `/orders/` matches route `/orders/` but not `/orders`
+
+2. `strict` is false (default)
+
+- request `/orders` matches route `/orders` first and falls back to `/orders/`
+- request `/orders/` matches route `/orders/` first and falls back to `/orders`
+
+See `strict routing` at http://expressjs.com/en/4x/api.html#app for more
+information.
+
+### Configure the request body parser options
+
+We can now configure request body parser options as follows:
+
+```ts
+const app = new Application({
+  rest: {requestBodyParser: {json: {limit: '1mb'}}},
+});
+```
+
+The value of `rest.requestBodyParser` will be bound to
+RestBindings.REQUEST_BODY_PARSER_OPTIONS. See
+[Customize request body parser options](Parsing-requests.md#customize-parser-options)
+for more details.
+
 ### `rest` options
 
-| Property    | Type                | Purpose                                                                                                   |
-| ----------- | ------------------- | --------------------------------------------------------------------------------------------------------- |
-| port        | number              | Specify the port on which the RestServer will listen for traffic.                                         |
-| protocol    | string (http/https) | Specify the protocol on which the RestServer will listen for traffic.                                     |
-| key         | string              | Specify the SSL private key for https.                                                                    |
-| cert        | string              | Specify the SSL certificate for https.                                                                    |
-| sequence    | SequenceHandler     | Use a custom SequenceHandler to change the behavior of the RestServer for the request-response lifecycle. |
-| openApiSpec | OpenApiSpecOptions  | Customize how OpenAPI spec is served                                                                      |
-| apiExplorer | ApiExplorerOptions  | Customize how API explorer is served                                                                      |
+| Property          | Type                     | Purpose                                                                                                   |
+| ----------------- | ------------------------ | --------------------------------------------------------------------------------------------------------- |
+| host              | string                   | Specify the hostname or ip address on which the RestServer will listen for traffic.                       |
+| port              | number                   | Specify the port on which the RestServer listens for traffic.                                             |
+| protocol          | string (http/https)      | Specify the protocol on which the RestServer listens for traffic.                                         |
+| basePath          | string                   | Specify the base path that RestServer exposes http endpoints.                                             |
+| key               | string                   | Specify the SSL private key for https.                                                                    |
+| cert              | string                   | Specify the SSL certificate for https.                                                                    |
+| cors              | CorsOptions              | Specify the CORS options.                                                                                 |
+| sequence          | SequenceHandler          | Use a custom SequenceHandler to change the behavior of the RestServer for the request-response lifecycle. |
+| openApiSpec       | OpenApiSpecOptions       | Customize how OpenAPI spec is served                                                                      |
+| apiExplorer       | ApiExplorerOptions       | Customize how API explorer is served                                                                      |
+| requestBodyParser | RequestBodyParserOptions | Customize how request body is parsed                                                                      |
+| router            | RouterOptions            | Customize how trailing slashes are used for routing                                                       |
 
 ## Add servers to application instance
 

@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/repository-json-schema
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -119,6 +119,12 @@ export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
     });
   } else {
     Object.assign(propDef, {$ref: `#/definitions/${resolvedType.name}`});
+  }
+
+  if (meta.description) {
+    Object.assign(propDef, {
+      description: meta.description,
+    });
   }
 
   return result;

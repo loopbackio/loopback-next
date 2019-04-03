@@ -11,7 +11,6 @@ const path = require('path');
 const util = require('util');
 const stream = require('stream');
 const readline = require('readline');
-const chalk = require('chalk');
 var semver = require('semver');
 const regenerate = require('regenerate');
 const _ = require('lodash');
@@ -113,7 +112,7 @@ exports.validateNotExisting = function(path) {
 exports.toClassName = function(name) {
   if (name == '') return new Error('no input');
   if (typeof name != 'string' || name == null) return new Error('bad input');
-  return name.substring(0, 1).toUpperCase() + name.substring(1);
+  return pascalCase(name);
 };
 
 exports.lowerCase = lowerCase;
@@ -443,7 +442,6 @@ exports.isConnectorOfType = function(
 ) {
   debug(`calling isConnectorType ${connectorType}`);
   let jsonFileContent = '';
-  let result = false;
 
   if (!dataSourceClass) {
     return false;
@@ -467,13 +465,11 @@ exports.isConnectorOfType = function(
       jsonFileContent.connector === connector.name ||
       jsonFileContent.connector === `loopback-connector-${connector.name}`;
 
-    if (matchedConnector && connectorType.includes(connector.baseModel)) {
-      result = true;
-      break;
-    }
+    if (matchedConnector) return connectorType.includes(connector.baseModel);
   }
 
-  return result;
+  // Maybe for other connectors that are not in the supported list
+  return null;
 };
 
 /**

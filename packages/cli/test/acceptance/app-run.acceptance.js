@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -61,7 +61,10 @@ describe('app-generator (SLOW)', function() {
     });
   });
 
-  after(() => {
+  after(function() {
+    // Increase the timeout to accommodate slow CI build machines
+    this.timeout(30 * 1000);
+
     process.chdir(rootDir);
     build.clean(['node', 'run-clean', sandbox]);
     process.chdir(cwd);
@@ -74,6 +77,8 @@ async function lernaBootstrap(scope) {
     ci: false,
     scope: scope,
     loglevel: 'silent',
+    // Disable progress bars
+    progress: false,
   });
   await cmd;
 }

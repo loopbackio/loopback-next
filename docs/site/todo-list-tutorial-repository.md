@@ -20,36 +20,45 @@ building a constrained version of `TodoRepository`.
 
 ### Create your repository
 
-In the `src/repositories` directory:
+From inside the project folder, run the `lb4 repository` command to create a
+repository for the `TodoList` model using the `db` datasource. The `db`
+datasource shows up by its class name `DbDataSource` from the list of available
+datasources.
 
-- create `todo-list.repository.ts`
-- update `index.ts` to export the newly created repository
+```sh
+lb4 repository
+? Please select the datasource DbDatasource
+? Select the model(s) you want to generate a repository TodoList
+   create src/repositories/todo-list.repository.ts
+   update src/repositories/index.ts
+? Please select the repository base class DefaultCrudRepository (Legacy juggler
+bridge)
 
-Like `TodoRepository`, we'll use `DefaultCrudRepository` to extend our
-`TodoListRepository`. Since we're going to be using the same database used for
-`TodoRepository`, inject `datasources.db` in this repository as well. From there
-we'll need to make two more additions:
+Repository TodoList was created in src/repositories/
+```
+
+From there, we'll need to make two more additions:
 
 - define the `todos` property, which will be used to build a constrained
   `TodoRepository`
 - inject `TodoRepository` instance
 
 Once the property type for `todos` has been defined, use
-`this._createHasManyRepositoryFactoryFor` to assign it a repository constraining
+`this.createHasManyRepositoryFactoryFor` to assign it a repository constraining
 factory function. Pass in the name of the relationship (`todos`) and the Todo
 repository instance to constrain as the arguments for the function.
 
-#### src/repositories/todo-list.repository.ts
+{% include code-caption.html content="src/repositories/todo-list.repository.ts" %}
 
 ```ts
+import {Getter, inject} from '@loopback/core';
 import {
   DefaultCrudRepository,
-  juggler,
   HasManyRepositoryFactory,
+  juggler,
   repository,
 } from '@loopback/repository';
-import {TodoList, Todo} from '../models';
-import {inject} from '@loopback/core';
+import {Todo, TodoList} from '../models';
 import {TodoRepository} from './todo.repository';
 
 export class TodoListRepository extends DefaultCrudRepository<
@@ -63,12 +72,13 @@ export class TodoListRepository extends DefaultCrudRepository<
 
   constructor(
     @inject('datasources.db') dataSource: juggler.DataSource,
-    @repository(TodoRepository) protected todoRepository: TodoRepository,
+    @repository.getter(TodoRepository)
+    protected todoRepositoryGetter: Getter<TodoRepository>,
   ) {
     super(TodoList, dataSource);
-    this.todos = this._createHasManyRepositoryFactoryFor(
+    this.todos = this.createHasManyRepositoryFactoryFor(
       'todos',
-      todoRepository,
+      todoRepositoryGetter,
     );
   }
 }

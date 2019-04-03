@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -108,15 +108,23 @@ describe('Utils', () => {
 
     describe('should have no effect', () => {
       testExpectNoChange('if first letter is capitalized', 'FooBar');
-      testExpectNoChange('if first letter is not convertible', '$fooBar');
     });
 
     describe('should capitalize first letter', () => {
-      testExpectUpperCase('if first letter is lower case', 'fooBar', 'FooBar');
-      testExpectUpperCase(
+      testExpect('if first letter is not convertible', '$fooBar', 'FooBar');
+      testExpect('if first letter is lower case', 'fooBar', 'FooBar');
+      testExpect(
         'if first letter is lower case in different language',
         'óooBar',
         'ÓooBar',
+      );
+    });
+
+    describe('should use pascal case ', () => {
+      testExpect(
+        'if second letter starts with multiple upper case chars',
+        'myDSDataSource',
+        'MyDsDataSource',
       );
     });
 
@@ -132,7 +140,7 @@ describe('Utils', () => {
       });
     }
 
-    function testExpectUpperCase(testName, input, expected) {
+    function testExpect(testName, input, expected) {
       it(testName, () => {
         expect(utils.toClassName(input)).to.equal(expected);
       });

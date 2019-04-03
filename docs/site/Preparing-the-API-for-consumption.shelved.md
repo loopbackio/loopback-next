@@ -6,10 +6,6 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Preparing-the-API-for-consumption.html
 ---
 
-{% include previous.html content=" This article continues
-from [Implementing features](./Implementing-features.md).
-" %}
-
 ## Preparing your API for consumption
 
 ### Interacting with your API
@@ -37,11 +33,11 @@ environment to test the API endpoints defined by the raw spec found at
 flavour at <http://localhost:3000/openapi.yaml>
 " %}
 
-{% include image.html file="lb4/10000000.png" alt="" %}
+![10000000.png](./imgs/10000000.png)
 
 The Swagger UI displays all of the endpoints defined in your application.
 
-{% include image.html file="lb4/10000001.png" alt="" %}
+![10000001.png](./imgs/10000001.png)
 
 Clicking on one of the endpoints will show the endpoint's documentation as
 defined in your API spec. Next, click on `Try It Out` to send a request to the
@@ -49,7 +45,7 @@ endpoint. If the endpoint takes parameters, assign the values before the request
 is sent. If the parameter involves a body, a template is given for you to edit
 as specified in your spec. Click `Execute` to send the request:
 
-{% include image.html file="lb4/10000002.png" alt="" %}
+![10000002.png](./imgs/10000002.png)
 
 The response to the request can be seen below the `Execute` button, where the
 response code and the body are displayed. Ideally, each endpoint should be

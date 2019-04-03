@@ -1,11 +1,11 @@
-// Copyright IBM Corp. 2017. All Rights Reserved.
+// Copyright IBM Corp. 2017,2019. All Rights Reserved.
 // Node module: @loopback/authentication
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {Strategy} from 'passport';
 import {AuthenticateFn, UserProfile} from './types';
-import {AuthenticationMetadata} from './decorators/authenticate.decorator';
+import {AuthenticationMetadata} from './decorators';
 import {BindingKey} from '@loopback/context';
 import {MetadataAccessor} from '@loopback/metadata';
 

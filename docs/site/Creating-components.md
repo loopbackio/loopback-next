@@ -20,6 +20,30 @@ export class MyComponent implements Component {
     this.providers = {
       'my-value': MyValueProvider,
     };
+    this.classes = {
+      'my-validator': MyValidator,
+    };
+
+    const bindingX = Binding.bind('x').to('Value X');
+    const bindingY = Binding.bind('y').toClass(ClassY);
+    this.bindings = [bindingX, bindingY];
+  }
+}
+```
+
+You can inject anything from the context and access them from a component. In
+the following example, the REST application instance is made available in the
+component via dependency injection.
+
+```ts
+import {inject, Component, CoreBindings} from '@loopback/core';
+import {RestApplication} from '@loopback/rest';
+export class MyComponent implements Component {
+  constructor(
+    @inject(CoreBindings.APPLICATION_INSTANCE)
+    private application: RestApplication,
+  ) {
+    // The rest application instance can be accessed from this component
   }
 }
 ```
@@ -28,10 +52,22 @@ When a component is mounted to an application, a new instance of the component
 class is created and then:
 
 - Each Controller class is registered via `app.controller()`,
-- Each Provider is bound to its key in `providers` object.
+- Each Provider is bound to its key in `providers` object via
+  `app.bind(key).toProvider(providerClass)`
+- Each Class is bound to its key in `classes` object via
+  `app.bind(key).toClass(cls)`
+- Each Binding is added via `app.add(binding)`
+
+Please note that `providers` and `classes` are shortcuts for provider and class
+`bindings`.
 
 The example `MyComponent` above will add `MyController` to application's API and
-create a new binding `my-value` that will be resolved using `MyValueProvider`.
+create the following bindings in the application context:
+
+- `my-value` -> `MyValueProvider` (provider)
+- `my-validator` -> `MyValidator` (class)
+- `x` -> `'Value X'` (value)
+- `y` -> `ClassY` (class)
 
 ## Providers
 

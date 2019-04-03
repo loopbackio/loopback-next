@@ -3,5 +3,5 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-const distUtilPkg = require('@loopback/dist-util/package.json');
-console.log('Resolved dependency: %s@%s', distUtilPkg.name, distUtilPkg.version);
+const package = require('./package.json');
+console.log('Welcome to %s@%s', package.name, package.version);

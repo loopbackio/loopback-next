@@ -1,28 +1,28 @@
 {
   "name": "calculator",
   "connector": "soap",
-  "url": "http://lb4ws.eycgrupo.com/calculator/",
-  "wsdl": "http://lb4ws.eycgrupo.com/calculator/?wsdl",
+  "url": "https://calculator-webservice.mybluemix.net/calculator",
+  "wsdl": "https://calculator-webservice.mybluemix.net/calculator?wsdl",
   "remotingEnabled": true,
   "operations": {
-     "Multiply": {
-      "service": "Calculator",
-      "port": "CalculatorSoap",
+     "multiply": {
+      "service": "CalculatorService",
+      "port": "CalculatorPort",
       "operation": "Multiply"
     },
-    "Add": {
-      "service": "Calculator",
-      "port": "CalculatorSoap",
+    "add": {
+      "service": "CalculatorService",
+      "port": "CalculatorPort",
       "operation": "Add"
     },
-    "Subtract": {
-      "service": "Calculator",
-      "port": "CalculatorSoap",
+    "subtract": {
+      "service": "CalculatorService",
+      "port": "CalculatorPort",
       "operation": "Subtract"
     },
-    "Divide": {
-      "service": "Calculator",
-      "port": "CalculatorSoap",
+    "divide": {
+      "service": "CalculatorService",
+      "port": "CalculatorPort",
       "operation": "Divide"
     }
   }

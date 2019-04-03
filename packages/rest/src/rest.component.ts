@@ -1,16 +1,25 @@
-// Copyright IBM Corp. 2017. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Binding, Constructor, inject} from '@loopback/context';
 import {
+  Application,
   Component,
   CoreBindings,
   ProviderMap,
   Server,
-  Application,
 } from '@loopback/core';
-import {inject, Constructor} from '@loopback/context';
+import {createEmptyApiSpec} from '@loopback/openapi-v3-types';
+import {
+  JsonBodyParser,
+  RequestBodyParser,
+  StreamBodyParser,
+  TextBodyParser,
+  UrlEncodedBodyParser,
+} from './body-parsers';
+import {RawBodyParser} from './body-parsers/body-parser.raw';
 import {RestBindings} from './keys';
 import {
   BindElementProvider,
@@ -18,13 +27,16 @@ import {
   GetFromContextProvider,
   InvokeMethodProvider,
   LogErrorProvider,
-  RejectProvider,
   ParseParamsProvider,
+  RejectProvider,
   SendProvider,
 } from './providers';
-import {RestServer, RestServerConfig} from './rest.server';
+import {
+  createBodyParserBinding,
+  RestServer,
+  RestServerConfig,
+} from './rest.server';
 import {DefaultSequence} from './sequence';
-import {createEmptyApiSpec} from '@loopback/openapi-v3-types';
 
 export class RestComponent implements Component {
   providers: ProviderMap = {
@@ -37,6 +49,34 @@ export class RestComponent implements Component {
     [RestBindings.SequenceActions.PARSE_PARAMS.key]: ParseParamsProvider,
     [RestBindings.SequenceActions.SEND.key]: SendProvider,
   };
+  /**
+   * Add built-in body parsers
+   */
+  bindings = [
+    // FIXME(rfeng): We now register request body parsers in TRANSIENT scope
+    // so that they can be bound at application or server level
+    Binding.bind(RestBindings.REQUEST_BODY_PARSER).toClass(RequestBodyParser),
+    createBodyParserBinding(
+      JsonBodyParser,
+      RestBindings.REQUEST_BODY_PARSER_JSON,
+    ),
+    createBodyParserBinding(
+      TextBodyParser,
+      RestBindings.REQUEST_BODY_PARSER_TEXT,
+    ),
+    createBodyParserBinding(
+      UrlEncodedBodyParser,
+      RestBindings.REQUEST_BODY_PARSER_URLENCODED,
+    ),
+    createBodyParserBinding(
+      RawBodyParser,
+      RestBindings.REQUEST_BODY_PARSER_RAW,
+    ),
+    createBodyParserBinding(
+      StreamBodyParser,
+      RestBindings.REQUEST_BODY_PARSER_STREAM,
+    ),
+  ];
   servers: {
     [name: string]: Constructor<Server>;
   } = {

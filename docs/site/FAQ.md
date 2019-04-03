@@ -17,36 +17,22 @@ summary: LoopBack 4 is a completely new framework, also known as LoopBack-Next.
 
 See [Crafting LoopBack 4](Crafting-LoopBack-4.md) for more details.
 
-### What’s the timeline for LoopBack 4?
-
-See
-[Upcoming releases](https://github.com/strongloop/loopback-next/wiki/Upcoming-Releases).
-
 ### Where are the tutorials?
 
-See [Examples and tutorials](Examples-and-tutorials.md).
+See [Examples](Examples.md) and [Tutorials](Tutorials.md).
 
-### What features are planned ?
+### What features are planned?
 
-- 100% promise-based APIs and async and await as first-class keywords.
-- Being able to choose to use JavaScript or TypeScript.
-- Better extensibility, ability to override any aspect of the framework (for
-  example, no more built-in User - model pain, easily replace parts of ACL with
-  your own).
-- Define APIs / remote methods with OpenAPI (Swagger).
-- Organize business and other logic into controllers with their own opinionated
-  API or generate an PersistedModel style API.
-- Better routing performance
-- React SDK
-- Create GraphQL based APIs
-- GraphQL => juggler integration
-- Advanced declarative caching support
-- New DSL for defining APIs / Models
-- Completely new tooling w/ Visual Studio Code integration
-- More at
-  [Feature proposals](https://github.com/strongloop/loopback-next/wiki/Feature-proposals)
+Our roadmap is captured in
+[here](https://github.com/strongloop/loopback-next/labels/roadmap). You can also
+check out our
+[monthly milestone plans](https://github.com/strongloop/loopback-next/labels/Monthly%20Milestone).
 
-Add your feature requests at
+For LoopBack 3 users, here is the list of LB3 feature parity we wish to be
+implemented in the future:
+https://github.com/strongloop/loopback-next/issues/1920.
+
+Do you have some other features in mind? Add your feature requests at
 [loopback-next/issues/new](https://github.com/strongloop/loopback-next/issues/new).
 
 ### Why TypeScript?
@@ -60,7 +46,7 @@ reasons:
   scalability is the reason TypeScript exists and is gaining traction.
 - **Improved extensibility** and flexibility. LoopBack 4's core is simpler than
   LoopBack 3.x with well-defined extension points. A lot of responsibility will
-  be shifted to extensions (componnets), which can be JavaScript or TypeScript.
+  be shifted to extensions (components), which can be JavaScript or TypeScript.
 - Unified tooling. TypeScript developers all use the same IDE: Visual Studio
   Code. The LoopBack ecosystem could someday be filled with useful best
   practices around that IDE and even great developer plugins. Right now that

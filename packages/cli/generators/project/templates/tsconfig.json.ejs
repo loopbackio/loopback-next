@@ -1,30 +1,34 @@
 {
   "$schema": "http://json.schemastore.org/tsconfig",
 <% if (project.loopbackBuild) { -%>
-  "extends": "./node_modules/@loopback/build/config/tsconfig.common.json",
+  "extends": "@loopback/build/config/tsconfig.common.json",
+  "compilerOptions": {
+    "rootDir": "src"
+  },
+  "include": ["src"]
 <% } else { -%>
   "compilerOptions": {
+    "rootDir": "src",
+
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
 
-    "lib": ["es2018", "dom", "esnext.asynciterable"],
+    "lib": ["es2018", "esnext.asynciterable"],
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "es2017",
     "sourceMap": true,
     "declaration": true
   },
-<% } -%>
-  "include": [
-    "src",
-    "test",
-    "index.ts"
-  ],
+  "include": ["src"],
   "exclude": [
     "node_modules/**",
     "packages/*/node_modules/**",
     "**/*.d.ts"
   ]
+<% } -%>
 }

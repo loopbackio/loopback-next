@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
+// Copyright IBM Corp. 2018,2019. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -86,7 +86,7 @@ describe('lb4 service', () => {
       );
       assert.fileContent(
         expectedFile,
-        /dataSource: mydsDataSource = new MydsDataSource\(\),/,
+        /dataSource: MydsDataSource = new MydsDataSource\(\),/,
       );
       assert.fileContent(
         expectedFile,
@@ -252,11 +252,11 @@ describe('lb4 service', () => {
       assert.fileContent(expectedFile, /export interface MyserviceService {/);
       assert.fileContent(
         expectedFile,
-        /import {MapDSDataSource} from '..\/datasources';/,
+        /import {MapDsDataSource} from '..\/datasources';/,
       );
       assert.fileContent(
         expectedFile,
-        /protected dataSource: MapDSDataSource = new MapDSDataSource()/,
+        /protected dataSource: MapDsDataSource = new MapDsDataSource()/,
       );
 
       assert.fileContent(expectedFile, /\@inject\('datasources.MapDS'\)/);
