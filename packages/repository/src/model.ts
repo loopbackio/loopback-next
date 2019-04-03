@@ -30,6 +30,7 @@ export interface PropertyDefinition {
   type: PropertyType; // For example, 'string', String, or {}
   id?: boolean | number;
   json?: PropertyForm;
+  jsonSchema?: {[attribute: string]: any};
   store?: PropertyForm;
   itemType?: PropertyType; // type of array
   [attribute: string]: any; // Other attributes

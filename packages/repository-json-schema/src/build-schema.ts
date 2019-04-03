@@ -127,6 +127,10 @@ export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
     });
   }
 
+  if (meta.jsonSchema) {
+    Object.assign(propDef, meta.jsonSchema);
+  }
+
   return result;
 }
 

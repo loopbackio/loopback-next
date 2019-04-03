@@ -169,5 +169,25 @@ describe('build-schema', () => {
         description: 'test',
       });
     });
+
+    it('keeps AJV keywords', () => {
+      const schema = metaToJsonProperty({
+        type: String,
+        jsonSchema: {
+          pattern: '(a|b|c)',
+          format: 'email',
+          maxLength: 50,
+          minLength: 5,
+        },
+      });
+
+      expect(schema).to.eql({
+        type: 'string',
+        pattern: '(a|b|c)',
+        format: 'email',
+        maxLength: 50,
+        minLength: 5,
+      });
+    });
   });
 });
