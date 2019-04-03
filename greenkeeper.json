@@ -15,6 +15,7 @@
         "examples/todo/package.json",
         "packages/authentication/package.json",
         "packages/boot/package.json",
+        "packages/booter-lb3app/package.json",
         "packages/build/package.json",
         "packages/cli/package.json",
         "packages/context/package.json",

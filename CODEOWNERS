@@ -8,6 +8,7 @@
 
 packages/authentication/* @bajtos @raymondfeng
 packages/boot/* @raymondfeng @hacksparrow
+packages/booter-lb3app/* @bajtos @nabdelgadir
 packages/build/* @bajtos @raymondfeng
 packages/http-caching-proxy/* @bajtos
 packages/http-server/* @hacksparrow @bajtos
