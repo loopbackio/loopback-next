@@ -6,6 +6,7 @@
 import * as debugFactory from 'debug';
 import {BindingAddress, BindingKey} from './binding-key';
 import {Context} from './context';
+import {createProxyWithInterceptors} from './interception-proxy';
 import {Provider} from './provider';
 import {
   asResolutionOptions,
@@ -384,7 +385,16 @@ export class Binding<T = BoundValue> {
   private _setValueGetter(getValue: ValueGetter<T>) {
     // Clear the cache
     this._clearCache();
-    this._getValue = getValue;
+    this._getValue = (ctx: Context, options: ResolutionOptions) => {
+      if (options.asProxyWithInterceptors && this._type !== BindingType.CLASS) {
+        throw new Error(
+          `Binding '${this.key}' (${
+            this._type
+          }) does not support 'asProxyWithInterceptors'`,
+        );
+      }
+      return getValue(ctx, options);
+    };
   }
 
   /**
@@ -504,9 +514,11 @@ export class Binding<T = BoundValue> {
       debug('Bind %s to class %s', this.key, ctor.name);
     }
     this._type = BindingType.CLASS;
-    this._setValueGetter((ctx, options) =>
-      instantiateClass(ctor, ctx, options.session),
-    );
+    this._setValueGetter((ctx, options) => {
+      const instOrPromise = instantiateClass(ctor, ctx, options.session);
+      if (!options.asProxyWithInterceptors) return instOrPromise;
+      return createInterceptionProxyFromInstance(instOrPromise, ctx);
+    });
     this._valueConstructor = ctor;
     return this;
   }
@@ -522,8 +534,7 @@ export class Binding<T = BoundValue> {
       debug('Bind %s to alias %s', this.key, keyWithPath);
     }
     this._type = BindingType.ALIAS;
-    this._setValueGetter((ctx, optionsOrSession) => {
-      const options = asResolutionOptions(optionsOrSession);
+    this._setValueGetter((ctx, options) => {
       return ctx.getValueOrPromise(keyWithPath, options);
     });
     return this;
@@ -581,4 +592,18 @@ export class Binding<T = BoundValue> {
   static bind<T = unknown>(key: BindingAddress<T>): Binding<T> {
     return new Binding(key.toString());
   }
+}
+
+function createInterceptionProxyFromInstance<T>(
+  instOrPromise: ValueOrPromise<T>,
+  context: Context,
+) {
+  return transformValueOrPromise(instOrPromise, inst => {
+    if (typeof inst !== 'object') return inst;
+    return (createProxyWithInterceptors(
+      // Cast inst from `T` to `object`
+      (inst as unknown) as object,
+      context,
+    ) as unknown) as T;
+  });
 }

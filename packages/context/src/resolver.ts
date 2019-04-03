@@ -15,7 +15,8 @@ import {
   describeInjectedProperties,
   Injection,
 } from './inject';
-import {ResolutionSession} from './resolution-session';
+import {invokeMethodWithInterceptors} from './interceptor';
+import {ResolutionOptions, ResolutionSession} from './resolution-session';
 import {
   BoundValue,
   Constructor,
@@ -148,12 +149,11 @@ function resolve<T>(
           'The binding selector must be an address (string or BindingKey)',
         );
         const key = injection.bindingSelector as BindingAddress;
-        return ctx.getValueOrPromise(key, {
+        const options: ResolutionOptions = {
           session: s,
-          // If the `optional` flag is set for the injection, the resolution
-          // will return `undefined` instead of throwing an error
-          optional: injection.metadata.optional,
-        });
+          ...injection.metadata,
+        };
+        return ctx.getValueOrPromise(key, options);
       }
     },
     injection,
@@ -288,7 +288,7 @@ export function invokeMethod(
     if (debug.enabled) {
       debug('Injected arguments for %s:', methodName, args);
     }
-    return targetWithMethods[method](...args);
+    return invokeMethodWithInterceptors(ctx, targetWithMethods, method, args);
   });
 }
 

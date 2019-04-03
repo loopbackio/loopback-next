@@ -148,6 +148,10 @@ children:
   - title: 'Components'
     url: Components.html
     output: 'web, pdf'
+    
+  - title: 'Interceptors'
+    url: Interceptors.html
+    output: 'web, pdf'
 
   - title: 'DataSources'
     url: DataSources.html
