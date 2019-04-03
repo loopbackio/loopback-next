@@ -394,4 +394,25 @@ describe('DefaultCrudRepository', () => {
     const ok = await repo.exists(note1.id);
     expect(ok).to.be.true();
   });
+
+  it('implements Repository.execute()', async () => {
+    // Dummy implementation for execute() in datasource
+    ds.execute = (command, parameters, options) => {
+      return Promise.resolve({command, parameters, options});
+    };
+    const repo = new DefaultCrudRepository(Note, ds);
+    const result = await repo.execute('query', ['arg']);
+    expect(result).to.eql({
+      command: 'query',
+      parameters: ['arg'],
+      options: undefined,
+    });
+  });
+
+  it(`throws error when execute() not implemented by ds connector`, async () => {
+    const repo = new DefaultCrudRepository(Note, ds);
+    await expect(repo.execute('query', [])).to.be.rejectedWith(
+      'execute() must be implemented by the connector',
+    );
+  });
 });
