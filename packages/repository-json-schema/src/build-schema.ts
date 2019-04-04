@@ -14,18 +14,27 @@ import {
 import {JSONSchema6 as JSONSchema} from 'json-schema';
 import {JSON_SCHEMA_KEY} from './keys';
 
+export interface JsonSchemaOptions {
+  visited?: {[key: string]: JSONSchema};
+}
+
 /**
  * Gets the JSON Schema of a TypeScript model/class by seeing if one exists
  * in a cache. If not, one is generated and then cached.
  * @param ctor Contructor of class to get JSON Schema from
  */
-export function getJsonSchema(ctor: Function): JSONSchema {
-  // NOTE(shimks) currently impossible to dynamically update
-  const jsonSchema = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor);
-  if (jsonSchema) {
-    return jsonSchema;
+export function getJsonSchema(
+  ctor: Function,
+  options?: JsonSchemaOptions,
+): JSONSchema {
+  // In the near future the metadata will be an object with
+  // different titles as keys
+  const cached = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor);
+
+  if (cached) {
+    return cached;
   } else {
-    const newSchema = modelToJsonSchema(ctor);
+    const newSchema = modelToJsonSchema(ctor, options);
     MetadataInspector.defineMetadata(JSON_SCHEMA_KEY.key, newSchema, ctor);
     return newSchema;
   }
@@ -142,16 +151,26 @@ export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
  * reflection API
  * @param ctor Constructor of class to convert from
  */
-export function modelToJsonSchema(ctor: Function): JSONSchema {
+export function modelToJsonSchema(
+  ctor: Function,
+  jsonSchemaOptions: JsonSchemaOptions = {},
+): JSONSchema {
+  const options = {...jsonSchemaOptions};
+  options.visited = options.visited || {};
+
   const meta: ModelDefinition | {} = ModelMetadataHelper.getModelMetadata(ctor);
-  const result: JSONSchema = {};
 
   // returns an empty object if metadata is an empty object
   if (!(meta instanceof ModelDefinition)) {
     return {};
   }
 
-  result.title = meta.title || ctor.name;
+  const title = meta.title || ctor.name;
+
+  if (options.visited[title]) return options.visited[title];
+
+  const result: JSONSchema = {title};
+  options.visited[title] = result;
 
   if (meta.description) {
     result.description = meta.description;
@@ -190,20 +209,24 @@ export function modelToJsonSchema(ctor: Function): JSONSchema {
       continue;
     }
 
-    const propSchema = getJsonSchema(referenceType);
+    const propSchema = getJsonSchema(referenceType, options);
 
-    if (propSchema && Object.keys(propSchema).length > 0) {
+    includeReferencedSchema(referenceType.name, propSchema);
+
+    function includeReferencedSchema(name: string, schema: JSONSchema) {
+      if (!schema || !Object.keys(schema).length) return;
       result.definitions = result.definitions || {};
 
-      // delete nested definition
-      if (propSchema.definitions) {
-        for (const key in propSchema.definitions) {
-          result.definitions[key] = propSchema.definitions[key];
+      // promote nested definition to the top level
+      if (schema.definitions) {
+        for (const key in schema.definitions) {
+          if (key === title) continue;
+          result.definitions[key] = schema.definitions[key];
         }
-        delete propSchema.definitions;
+        delete schema.definitions;
       }
 
-      result.definitions[referenceType.name] = propSchema;
+      result.definitions[name] = schema;
     }
   }
   return result;
