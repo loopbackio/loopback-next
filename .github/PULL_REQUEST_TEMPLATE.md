@@ -19,3 +19,5 @@ See also #23
 - [ ] Documentation in [/docs/site](../tree/master/docs/site) was updated
 - [ ] Affected artifact templates in `packages/cli` were updated
 - [ ] Affected example projects in `examples/*` were updated
+
+👉 [Check out how to submit a PR](https://loopback.io/doc/en/lb4/submitting_a_pr.html) 👈
