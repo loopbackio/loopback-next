@@ -194,8 +194,11 @@ export class Category extends Entity {
   })
   id?: number;
 
+  @hasMany(() => Category, {keyTo: 'parentId'})
+  categories?: Category[];
+
   @belongsTo(() => Category)
-  parentId: number;
+  parentId?: number;
 
   constructor(data?: Partial<Category>) {
     super(data);
@@ -210,10 +213,22 @@ export class CategoryRepository extends DefaultCrudRepository<
   Category,
   typeof Category.prototype.id
 > {
-  public readonly parent: BelongsToAccessor<Category, number>;
+  public readonly parent: BelongsToAccessor<
+    Category,
+    typeof Category.prototype.id
+  >;
+  public readonly categories: HasManyRepositoryFactory<
+    Category,
+    typeof Category.prototype.id
+  >;
+
   constructor(@inject('datasources.db') dataSource: DbDataSource) {
     super(Category, dataSource);
-    this.parent = this._createBelongsToAccessorFor(
+    this.categories = this.createHasManyRepositoryFactoryFor(
+      'categories',
+      Getter.fromValue(this),
+    );
+    this.parent = this.createBelongsToAccessorFor(
       'parent',
       Getter.fromValue(this),
     ); // for recursive relationship
