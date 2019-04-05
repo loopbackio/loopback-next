@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@1.0.17...@loopback/authentication@1.1.0) (2019-04-05)
+
+
+### Features
+
+* design auth system with user scenario ([124c078](https://github.com/strongloop/loopback-next/commit/124c078))
+
+
+
+
+
 ## [1.0.17](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@1.0.16...@loopback/authentication@1.0.17) (2019-03-22)
 
 **Note:** Version bump only for package @loopback/authentication

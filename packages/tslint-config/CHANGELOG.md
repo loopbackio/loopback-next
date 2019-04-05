@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.4](https://github.com/strongloop/loopback-next/compare/@loopback/tslint-config@2.0.3...@loopback/tslint-config@2.0.4) (2019-04-05)
+
+**Note:** Version bump only for package @loopback/tslint-config
+
+
+
+
+
 ## [2.0.3](https://github.com/strongloop/loopback-next/compare/@loopback/tslint-config@2.0.2...@loopback/tslint-config@2.0.3) (2019-03-22)
 
 **Note:** Version bump only for package @loopback/tslint-config

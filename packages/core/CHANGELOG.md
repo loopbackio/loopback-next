@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.2.1...@loopback/core@1.3.0) (2019-04-05)
+
+
+### Features
+
+* **core:** add constants for namespaces and types ([a4778f7](https://github.com/strongloop/loopback-next/commit/a4778f7))
+* **core:** create bindings from classes for components ([e615657](https://github.com/strongloop/loopback-next/commit/e615657))
+
+
+
+
+
 ## [1.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.2.0...@loopback/core@1.2.1) (2019-03-22)
 
 **Note:** Version bump only for package @loopback/core
