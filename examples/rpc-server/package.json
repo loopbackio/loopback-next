@@ -41,7 +41,7 @@
     "@loopback/context": "^1.8.1",
     "@loopback/core": "^1.2.1",
     "express": "^4.16.3",
-    "p-event": "^4.0.0"
+    "p-event": "^4.1.0"
   },
   "devDependencies": {
     "@loopback/build": "^1.4.0",

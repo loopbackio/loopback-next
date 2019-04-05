@@ -21,7 +21,7 @@
   "dependencies": {
     "@loopback/metadata": "^1.0.10",
     "debug": "^4.0.1",
-    "p-event": "^4.0.0",
+    "p-event": "^4.1.0",
     "uuid": "^3.2.1"
   },
   "devDependencies": {
@@ -32,7 +32,7 @@
     "@types/debug": "^4.1.0",
     "@types/node": "^10.11.2",
     "@types/uuid": "^3.4.3",
-    "bluebird": "^3.5.1"
+    "bluebird": "^3.5.4"
   },
   "keywords": [
     "LoopBack",
