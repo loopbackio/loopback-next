@@ -19,21 +19,6 @@ describe('TodoController', () => {
 
   /*
   =============================================================================
-  METHOD STUBS
-  These handles give us a quick way to fake the response of our repository
-  without needing to wrangle fake repository objects or manage real ones
-  in our tests themselves.
-  =============================================================================
-   */
-  let create: sinon.SinonStub;
-  let findById: sinon.SinonStub;
-  let find: sinon.SinonStub;
-  let replaceById: sinon.SinonStub;
-  let updateById: sinon.SinonStub;
-  let deleteById: sinon.SinonStub;
-
-  /*
-  =============================================================================
   TEST VARIABLES
   Combining top-level objects with our resetRepositories method means we don't
   need to duplicate several variable assignments (and generation statements)
@@ -53,6 +38,7 @@ describe('TodoController', () => {
 
   describe('createTodo', () => {
     it('creates a Todo', async () => {
+      const create = todoRepo.stubs.create;
       create.resolves(aTodoWithId);
       const result = await controller.createTodo(aTodo);
       expect(result).to.eql(aTodoWithId);
@@ -62,6 +48,7 @@ describe('TodoController', () => {
 
   describe('findTodoById', () => {
     it('returns a todo if it exists', async () => {
+      const findById = todoRepo.stubs.findById;
       findById.resolves(aTodoWithId);
       expect(await controller.findTodoById(aTodoWithId.id as number)).to.eql(
         aTodoWithId,
@@ -72,12 +59,14 @@ describe('TodoController', () => {
 
   describe('findTodos', () => {
     it('returns multiple todos if they exist', async () => {
+      const find = todoRepo.stubs.find;
       find.resolves(aListOfTodos);
       expect(await controller.findTodos()).to.eql(aListOfTodos);
       sinon.assert.called(find);
     });
 
     it('returns empty list if no todos exist', async () => {
+      const find = todoRepo.stubs.find;
       const expected: Todo[] = [];
       find.resolves(expected);
       expect(await controller.findTodos()).to.eql(expected);
@@ -87,6 +76,7 @@ describe('TodoController', () => {
 
   describe('replaceTodo', () => {
     it('successfully replaces existing items', async () => {
+      const replaceById = todoRepo.stubs.replaceById;
       replaceById.resolves();
       await controller.replaceTodo(aTodoWithId.id as number, aChangedTodo);
       sinon.assert.calledWith(replaceById, aTodoWithId.id, aChangedTodo);
@@ -95,6 +85,7 @@ describe('TodoController', () => {
 
   describe('updateTodo', () => {
     it('successfully updates existing items', async () => {
+      const updateById = todoRepo.stubs.updateById;
       updateById.resolves();
       await controller.updateTodo(aTodoWithId.id as number, aChangedTodo);
       sinon.assert.calledWith(updateById, aTodoWithId.id, aChangedTodo);
@@ -103,6 +94,7 @@ describe('TodoController', () => {
 
   describe('deleteTodo', () => {
     it('successfully deletes existing items', async () => {
+      const deleteById = todoRepo.stubs.deleteById;
       deleteById.resolves();
       await controller.deleteTodo(aTodoWithId.id as number);
       sinon.assert.calledWith(deleteById, aTodoWithId.id);
@@ -126,16 +118,6 @@ describe('TodoController', () => {
       id: aTodoWithId.id,
       title: 'Do some important things',
     });
-
-    // Setup CRUD fakes
-    ({
-      create,
-      findById,
-      find,
-      updateById,
-      replaceById,
-      deleteById,
-    } = todoRepo.stubs);
 
     controller = new TodoController(todoRepo);
   }
