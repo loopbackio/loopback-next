@@ -4,7 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {isBuiltinType, isTypeResolver, resolveType} from '../../type-resolver';
+import {
+  isBuiltinType,
+  isTypeResolver,
+  resolveType,
+  TypeResolver,
+} from '../../type-resolver';
 
 class SomeModel {
   constructor(public name: string) {}
@@ -60,7 +65,8 @@ describe('isTypeResolver', () => {
 
 describe('resolveType', () => {
   it('resolves the arg when the value is a resolver', () => {
-    const ctor = resolveType(() => SomeModel);
+    const resolver: TypeResolver<SomeModel> = () => SomeModel;
+    const ctor = resolveType(resolver);
     expect(ctor).to.eql(SomeModel);
 
     const inst = new ctor('a-name');
