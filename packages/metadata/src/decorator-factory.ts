@@ -3,10 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Reflector} from './reflect';
-import * as _ from 'lodash';
 import * as debugModule from 'debug';
-import {MetadataMap, DecoratorType, MetadataKey} from './types';
+import * as _ from 'lodash';
+import {Reflector} from './reflect';
+import {DecoratorType, MetadataKey, MetadataMap} from './types';
 const debug = debugModule('loopback:metadata:decorator');
 
 // tslint:disable:no-any
@@ -124,7 +124,7 @@ export class DecoratorFactory<
    */
   static getTargetName(
     target: Object,
-    member?: string,
+    member?: string | symbol,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ) {
     let name =
@@ -135,13 +135,17 @@ export class DecoratorFactory<
       return `class ${name}`;
     }
     if (member == null) member = 'constructor';
+
+    const memberAccessor =
+      typeof member === 'symbol' ? '[' + member.toString() + ']' : '.' + member;
+
     if (typeof descriptorOrIndex === 'number') {
       // Parameter
-      name = `${name}.${member}[${descriptorOrIndex}]`;
+      name = `${name}${memberAccessor}[${descriptorOrIndex}]`;
     } else if (descriptorOrIndex != null) {
-      name = `${name}.${member}()`;
+      name = `${name}${memberAccessor}()`;
     } else {
-      name = `${name}.${member}`;
+      name = `${name}${memberAccessor}`;
     }
     return name;
   }
@@ -210,7 +214,7 @@ export class DecoratorFactory<
   protected mergeWithInherited(
     inheritedMetadata: M,
     target: Object,
-    member?: string,
+    member?: string | symbol,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ): M {
     throw new Error('mergeWithInherited() is not implemented');
@@ -232,7 +236,7 @@ export class DecoratorFactory<
   protected mergeWithOwn(
     ownMetadata: M,
     target: Object,
-    member?: string,
+    member?: string | symbol,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ): M {
     throw new Error('mergeWithOwn() is not implemented');
@@ -254,7 +258,7 @@ export class DecoratorFactory<
    */
   protected decorate(
     target: Object,
-    member?: string,
+    member?: string | symbol,
     descriptorOrIndex?: TypedPropertyDescriptor<any> | number,
   ) {
     const targetName = DecoratorFactory.getTargetName(
@@ -430,7 +434,7 @@ export class PropertyDecoratorFactory<T> extends DecoratorFactory<
   }
 
   create(): PropertyDecorator {
-    return (target: Object, propertyName: string) =>
+    return (target: Object, propertyName: string | symbol) =>
       this.decorate(target, propertyName);
   }
 
@@ -498,7 +502,7 @@ export class MethodDecoratorFactory<T> extends DecoratorFactory<
   create(): MethodDecorator {
     return (
       target: Object,
-      methodName: string,
+      methodName: string | symbol,
       descriptor: TypedPropertyDescriptor<any>,
     ) => this.decorate(target, methodName, descriptor);
   }
@@ -592,8 +596,11 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
   }
 
   create(): ParameterDecorator {
-    return (target: Object, methodName: string, parameterIndex: number) =>
-      this.decorate(target, methodName, parameterIndex);
+    return (
+      target: Object,
+      methodName: string | symbol,
+      parameterIndex: number,
+    ) => this.decorate(target, methodName, parameterIndex);
   }
 
   /**
@@ -723,7 +730,7 @@ export class MethodParameterDecoratorFactory<T> extends DecoratorFactory<
   create(): MethodDecorator {
     return (
       target: Object,
-      methodName: string,
+      methodName: string | symbol,
       descriptor: TypedPropertyDescriptor<any>,
     ) => this.decorate(target, methodName, descriptor);
   }
