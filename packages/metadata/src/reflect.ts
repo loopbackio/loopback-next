@@ -149,13 +149,30 @@ export class NamespacedReflect {
   }
 
   decorate(
+    decorators: (PropertyDecorator | MethodDecorator)[],
+    target: Object,
+    targetKey?: string | symbol,
+    descriptor?: PropertyDescriptor,
+  ): PropertyDescriptor | Function;
+
+  decorate(
+    decorators: ClassDecorator[],
+    target: Object,
+  ): PropertyDescriptor | Function;
+
+  decorate(
     decorators: (PropertyDecorator | MethodDecorator)[] | ClassDecorator[],
     target: Object,
-    targetKey?: string,
+    targetKey?: string | symbol,
     descriptor?: PropertyDescriptor,
   ): PropertyDescriptor | Function {
     if (targetKey) {
-      return Reflect.decorate(decorators, target, targetKey, descriptor);
+      return Reflect.decorate(
+        <(PropertyDecorator | MethodDecorator)[]>decorators,
+        target,
+        targetKey,
+        descriptor,
+      );
     } else {
       return Reflect.decorate(<ClassDecorator[]>decorators, <Function>target);
     }
@@ -167,7 +184,7 @@ export class NamespacedReflect {
     metadataValue: any,
   ): {
     (target: Function): void;
-    (target: Object, targetKey: string): void;
+    (target: Object, targetKey: string | symbol): void;
   } {
     metadataKey = this.getMetadataKey(metadataKey);
     return Reflect.metadata(metadataKey, metadataValue);
