@@ -19,22 +19,6 @@ describe('TodoController', () => {
 
   /*
   =============================================================================
-  METHOD STUBS
-  These handles give us a quick way to fake the response of our repository
-  without needing to wrangle fake repository objects or manage real ones
-  in our tests themselves.
-  =============================================================================
-   */
-  let create: sinon.SinonStub;
-  let count: sinon.SinonStub;
-  let find: sinon.SinonStub;
-  let updateAll: sinon.SinonStub;
-  let findById: sinon.SinonStub;
-  let updateById: sinon.SinonStub;
-  let deleteById: sinon.SinonStub;
-
-  /*
-  =============================================================================
   TEST VARIABLES
   Combining top-level objects with our resetRepositories method means we don't
   need to duplicate several variable assignments (and generation statements)
@@ -55,6 +39,7 @@ describe('TodoController', () => {
 
   describe('create()', () => {
     it('creates a TodoList', async () => {
+      const create = todoListRepo.stubs.create;
       create.resolves(aTodoListWithId);
       expect(await controller.create(aTodoList)).to.eql(aTodoListWithId);
       sinon.assert.calledWith(create, aTodoList);
@@ -63,20 +48,23 @@ describe('TodoController', () => {
 
   describe('count()', () => {
     it('returns the number of existing todoLists', async () => {
-      count.resolves(aListOfTodoLists.length);
-      expect(await controller.count()).to.eql(aListOfTodoLists.length);
+      const count = todoListRepo.stubs.count;
+      count.resolves({count: aListOfTodoLists.length});
+      expect(await controller.count()).to.eql({count: aListOfTodoLists.length});
       sinon.assert.called(count);
     });
   });
 
   describe('find()', () => {
     it('returns multiple todos if they exist', async () => {
+      const find = todoListRepo.stubs.find;
       find.resolves(aListOfTodoLists);
       expect(await controller.find()).to.eql(aListOfTodoLists);
       sinon.assert.called(find);
     });
 
     it('returns empty list if no todos exist', async () => {
+      const find = todoListRepo.stubs.find;
       const expected: TodoList[] = [];
       find.resolves(expected);
       expect(await controller.find()).to.eql(expected);
@@ -86,15 +74,18 @@ describe('TodoController', () => {
 
   describe('updateAll()', () => {
     it('returns a number of todos updated', async () => {
-      updateAll.resolves([aChangedTodoList].length);
+      const updateAll = todoListRepo.stubs.updateAll;
+      updateAll.resolves({count: [aChangedTodoList].length});
       const where = {title: aTodoListWithId.title};
-      expect(await controller.updateAll(aTodoListToPatchTo, where)).to.eql(1);
+      const result = await controller.updateAll(aTodoListToPatchTo, where);
+      expect(result).to.eql({count: 1});
       sinon.assert.calledWith(updateAll, aTodoListToPatchTo, where);
     });
   });
 
   describe('findById()', () => {
     it('returns a todo if it exists', async () => {
+      const findById = todoListRepo.stubs.findById;
       findById.resolves(aTodoListWithId);
       expect(await controller.findById(aTodoListWithId.id as number)).to.eql(
         aTodoListWithId,
@@ -105,6 +96,7 @@ describe('TodoController', () => {
 
   describe('updateById', () => {
     it('successfully updates existing items', async () => {
+      const updateById = todoListRepo.stubs.updateById;
       updateById.resolves();
       await controller.updateById(
         aTodoListWithId.id as number,
@@ -120,6 +112,7 @@ describe('TodoController', () => {
 
   describe('deleteById', () => {
     it('successfully deletes existing items', async () => {
+      const deleteById = todoListRepo.stubs.deleteById;
       deleteById.resolves();
       await controller.deleteById(aTodoListWithId.id as number);
       sinon.assert.calledWith(deleteById, aTodoListWithId.id);
@@ -146,17 +139,6 @@ describe('TodoController', () => {
       id: aTodoListWithId.id,
       title: aTodoListToPatchTo.title,
     });
-
-    // Setup CRUD fakes
-    ({
-      create,
-      count,
-      find,
-      updateAll,
-      findById,
-      updateById,
-      deleteById,
-    } = todoListRepo.stubs);
 
     controller = new TodoListController(todoListRepo);
   }
