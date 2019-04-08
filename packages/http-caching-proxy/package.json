@@ -32,7 +32,7 @@
     "@types/node": "^10.11.2",
     "@types/request-promise-native": "^1.0.14",
     "@types/rimraf": "^2.0.2",
-    "delay": "^4.0.1"
+    "delay": "^4.2.0"
   },
   "keywords": [
     "LoopBack",
