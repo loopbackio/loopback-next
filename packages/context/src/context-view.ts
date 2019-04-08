@@ -85,10 +85,11 @@ export class ContextView<T = unknown> extends EventEmitter
   /**
    * Find matching bindings and refresh the cache
    */
-  protected findBindings() {
+  protected findBindings(): Readonly<Binding<T>>[] {
     debug('Finding matching bindings');
-    this._cachedBindings = this.context.find(this.filter);
-    return this._cachedBindings;
+    const found = this.context.find(this.filter);
+    this._cachedBindings = found;
+    return found;
   }
 
   /**
