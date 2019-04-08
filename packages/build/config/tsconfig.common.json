@@ -3,11 +3,12 @@
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
     "resolveJsonModule": true,
-    "strictBindCallApply": true,
     "skipLibCheck": true,
+    "strict": true,
+
+    // FIXME(bajtos) LB4 is not compatible with this setting yet
+    "strictPropertyInitialization": false,
 
     "lib": ["es2018", "esnext.asynciterable"],
     "module": "commonjs",

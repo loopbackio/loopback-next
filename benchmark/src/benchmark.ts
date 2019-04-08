@@ -5,7 +5,7 @@
 
 import * as byline from 'byline';
 import {ChildProcess, spawn} from 'child_process';
-import pEvent from 'p-event';
+import pEvent, {Emitter} from 'p-event';
 import {Autocannon, EndpointStats} from './autocannon';
 import {Client} from './client';
 import {scenarios} from './scenarios';
@@ -111,5 +111,10 @@ function startWorker() {
 
 async function closeWorker(worker: ChildProcess) {
   worker.kill();
-  await pEvent(worker, 'close');
+  await pEvent(
+    // workaround for a bug in pEvent types which makes them
+    // incompatible with "strictFunctionTypes"
+    worker as Emitter<[unknown]>,
+    'close',
+  );
 }
