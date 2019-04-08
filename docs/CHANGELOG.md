@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.11.1...@loopback/docs@1.12.0) (2019-04-05)
+
+
+### Bug Fixes
+
+* **docs:** move binding scope diagram to the correct folder ([0151a3d](https://github.com/strongloop/loopback-next/commit/0151a3d))
+
+
+### Features
+
+* add greeter-extension example ([9b09298](https://github.com/strongloop/loopback-next/commit/9b09298))
+* **context:** add binding.toAlias() to resolve values from another binding ([15dcd16](https://github.com/strongloop/loopback-next/commit/15dcd16))
+* **rest:** add mountExpressRouter ([be21cde](https://github.com/strongloop/loopback-next/commit/be21cde))
+
+
+
+
+
 ## [1.11.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.11.0...@loopback/docs@1.11.1) (2019-03-22)
 
 **Note:** Version bump only for package @loopback/docs

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.9.1...@loopback/rest@1.10.0) (2019-04-05)
+
+
+### Bug Fixes
+
+* **rest:** make sure basePath is included in RestServer.url ([705bce4](https://github.com/strongloop/loopback-next/commit/705bce4))
+
+
+### Features
+
+* **context:** pass resolution options into binding.getValue() ([705dcd5](https://github.com/strongloop/loopback-next/commit/705dcd5))
+* **rest:** add mountExpressRouter ([be21cde](https://github.com/strongloop/loopback-next/commit/be21cde))
+
+
+
+
+
 ## [1.9.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.9.0...@loopback/rest@1.9.1) (2019-03-22)
 
 **Note:** Version bump only for package @loopback/rest

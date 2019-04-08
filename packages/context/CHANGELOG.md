@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.8.1...@loopback/context@1.9.0) (2019-04-05)
+
+
+### Bug Fixes
+
+* **context:** clear binding cache upon scope or value getter changes ([122fe7b](https://github.com/strongloop/loopback-next/commit/122fe7b))
+
+
+### Features
+
+* **context:** add a helper function to create a getter from binding filter ([41248f3](https://github.com/strongloop/loopback-next/commit/41248f3))
+* **context:** add binding.toAlias() to resolve values from another binding ([15dcd16](https://github.com/strongloop/loopback-next/commit/15dcd16))
+* **context:** pass resolution options into binding.getValue() ([705dcd5](https://github.com/strongloop/loopback-next/commit/705dcd5))
+
+
+
+
+
 ## [1.8.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.8.0...@loopback/context@1.8.1) (2019-03-22)
 
 **Note:** Version bump only for package @loopback/context

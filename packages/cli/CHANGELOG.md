@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.8.4...@loopback/cli@1.9.0) (2019-04-05)
+
+
+### Features
+
+* add greeter-extension example ([9b09298](https://github.com/strongloop/loopback-next/commit/9b09298))
+
+
+
+
+
 ## [1.8.4](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.8.3...@loopback/cli@1.8.4) (2019-03-22)
 
 **Note:** Version bump only for package @loopback/cli

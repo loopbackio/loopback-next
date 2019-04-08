@@ -433,12 +433,10 @@ export class DefaultCrudRepository<T extends Entity, ID>
 
   async execute(
     command: Command,
-    // tslint:disable:no-any
     parameters: NamedParameters | PositionalParameters,
     options?: Options,
   ): Promise<AnyObject> {
-    /* istanbul ignore next */
-    throw new Error('Not implemented');
+    return ensurePromise(this.dataSource.execute(command, parameters, options));
   }
 
   protected toEntity(model: juggler.PersistedModel): T {
