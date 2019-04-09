@@ -81,7 +81,7 @@ describe('constructor injection', () => {
     class TestClass {
       constructor(
         @inject('foo', {x: 'bar'}, (c: Context, injection: Injection) => {
-          const barKey = injection.metadata && injection.metadata.x;
+          const barKey = injection.metadata.x;
           const b = c.getSync(barKey);
           const f = c.getSync(injection.bindingSelector as BindingAddress);
           return f + ':' + b;
@@ -99,7 +99,7 @@ describe('constructor injection', () => {
     class TestClass {
       constructor(
         @inject('', {x: 'bar'}, (c: Context, injection: Injection) => {
-          const barKey = injection.metadata && injection.metadata.x;
+          const barKey = injection.metadata.x;
           const b = c.getSync(barKey);
           return 'foo' + ':' + b;
         })
@@ -254,7 +254,7 @@ describe('constructor injection', () => {
         (c: Context, injection: Injection, session: ResolutionSession) => {
           bindingPath = session.getBindingPath();
           resolutionPath = session.getResolutionPath();
-          decorators = session.injectionStack.map(i => i.metadata!.decorator);
+          decorators = session.injectionStack.map(i => i.metadata.decorator);
         },
       )
       myProp: string;
@@ -376,7 +376,7 @@ describe('property injection', () => {
   it('resolves injected properties with custom resolve function', () => {
     class TestClass {
       @inject('foo', {x: 'bar'}, (c: Context, injection: Injection) => {
-        const barKey = injection.metadata && injection.metadata.x;
+        const barKey = injection.metadata.x;
         const b = c.getSync(barKey);
         const f = c.getSync(injection.bindingSelector as BindingAddress);
         return f + ':' + b;
@@ -392,7 +392,7 @@ describe('property injection', () => {
   it('resolves inject properties with custom resolve function and no binding key', () => {
     class TestClass {
       @inject('', {x: 'bar'}, (c: Context, injection: Injection) => {
-        const barKey = injection.metadata && injection.metadata.x;
+        const barKey = injection.metadata.x;
         const b = c.getSync(barKey);
         return 'foo' + ':' + b;
       })
@@ -585,7 +585,7 @@ describe('sync constructor & async property injection', () => {
 
 function customDecorator(def: Object) {
   return inject('foo', def, (c: Context, injection: Injection) => {
-    const barKey = injection.metadata && injection.metadata.x;
+    const barKey = injection.metadata.x;
     const b = c.getSync(barKey);
     const f = c.getSync(injection.bindingSelector as BindingAddress);
     return f + ':' + b;
@@ -594,7 +594,7 @@ function customDecorator(def: Object) {
 
 function customAsyncDecorator(def: Object) {
   return inject('foo', def, async (c: Context, injection: Injection) => {
-    const barKey = injection.metadata && injection.metadata.x;
+    const barKey = injection.metadata.x;
     const b = await c.get(barKey);
     const f = await c.get(injection.bindingSelector as BindingAddress);
     return f + ':' + b;

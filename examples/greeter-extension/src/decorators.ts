@@ -33,8 +33,7 @@ export function extensionPoint(name: string) {
  * the name from `@extensionPoint` or the class name of the extension point.
  */
 export function extensions(extensionPointName?: string) {
-  return inject('', {decorator: '@extensions'}, (ctx, injection, session?) => {
-    if (!session) return undefined;
+  return inject('', {decorator: '@extensions'}, (ctx, injection, session) => {
     // Find the key of the target binding
     if (!session.currentBinding) return undefined;
 
@@ -71,14 +70,13 @@ export function configuration() {
   return inject(
     '',
     {decorator: '@inject.config', optional: true},
-    (ctx, injection, session?) => {
-      if (!session) return undefined;
+    (ctx, injection, session) => {
       // Find the key of the target binding
       if (!session.currentBinding) return undefined;
       const key = session.currentBinding!.key;
       return ctx.get(`${key}.options`, {
         session,
-        optional: injection.metadata && injection.metadata.optional,
+        optional: injection.metadata.optional,
       });
     },
   );
