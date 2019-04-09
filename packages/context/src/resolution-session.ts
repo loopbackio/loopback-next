@@ -16,7 +16,7 @@ const getTargetName = DecoratorFactory.getTargetName;
  * A function to be executed with the resolution session
  */
 export type ResolutionAction = (
-  session?: ResolutionSession,
+  session: ResolutionSession,
 ) => ValueOrPromise<BoundValue>;
 
 /**

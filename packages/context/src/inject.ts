@@ -39,7 +39,7 @@ export interface ResolverFunction {
   (
     ctx: Context,
     injection: Readonly<Injection>,
-    session?: ResolutionSession,
+    session: ResolutionSession,
   ): ValueOrPromise<BoundValue>;
 }
 
