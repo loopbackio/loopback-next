@@ -25,7 +25,8 @@ such artifacts are:
 
 - Components
 
-  - A component can register life cycle observers
+  - A component itself can be a life cycle observer and it can also contribute
+    life cycle observers
 
 - DataSources
 
@@ -53,9 +54,8 @@ export interface LifeCycleObserver {
 }
 ```
 
-Please note all methods are optional so that an observer can opt in certain
-events. Each main events such as `start` and `stop` are further divided into
-three sub-phases to allow the multiple-step processing.
+Both `start` and `stop` methods are optional so that an observer can opt in
+certain events.
 
 ## Register a life cycle observer
 
@@ -73,8 +73,12 @@ observers.
 Life cycle observers can be registered via a component too:
 
 ```ts
-export class MyComponentWithObservers {
-  lifeCycleObservers: [XObserver, YObserver];
+export class MyComponentWithObservers implements Component {
+  /**
+   * Populate `lifeCycleObservers` per `Component` interface to register life
+   * cycle observers
+   */
+  lifeCycleObservers = [XObserver, YObserver];
 }
 ```
 
@@ -97,9 +101,8 @@ two-dimension steps to control the order of life cycle actions.
 First of all, we allow each of the life cycle observers to be tagged with a
 group. For example:
 
-- datasource
+- datasource (connect/disconnect)
 
-  - connect/disconnect
   - mongodb
   - mysql
 
@@ -109,7 +112,6 @@ group. For example:
 
 We can then configure the application to trigger observers group by group as
 configured by an array of groups in order such as `['datasource', 'server']`.
-Observers within the same group can be notified in parallel.
 
 For example,
 
@@ -120,20 +122,23 @@ app
   .tag({
     [CoreTags.LIFE_CYCLE_OBSERVER_GROUP]: 'g1',
   })
-  .apply(asLifeCycleObserverBinding);
+  .apply(asLifeCycleObserver);
 ```
 
 The observer class can also be decorated with `@bind` to provide binding
 metadata.
 
 ```ts
+import {bind, createBindingFromClass} from '@loopback/context';
+import {CoreTags, asLifeCycleObserver} from '@loopback/core';
+
 @bind(
   {
     tags: {
       [CoreTags.LIFE_CYCLE_OBSERVER_GROUP]: 'g1',
     },
   },
-  asLifeCycleObserverBinding,
+  asLifeCycleObserver,
 )
 export class MyObserver {
   // ...
@@ -142,34 +147,65 @@ export class MyObserver {
 app.add(createBindingFromClass(MyObserver));
 ```
 
-The order of observers are controlled by a `groupsByOrder` property of
+Or even simpler with `@lifeCycleObserver`:
+
+```ts
+import {createBindingFromClass} from '@loopback/context';
+import {lifeCycleObserver} from '@loopback/core';
+
+@lifeCycleObserver('g1')
+export class MyObserver {
+  // ...
+}
+
+app.add(createBindingFromClass(MyObserver));
+```
+
+The order of observers is controlled by a `orderedGroups` property of
 `LifeCycleObserverRegistry`, which receives its options including the
-`groupsByOrder` from `CoreBindings.LIFE_CYCLE_OBSERVER_OPTIONS`. Thus the
-initial `groupsByOrder` can be set as follows:
+`orderedGroups` from `CoreBindings.LIFE_CYCLE_OBSERVER_OPTIONS`.
+
+```ts
+export type LifeCycleObserverOptions = {
+  /**
+   * Control the order of observer groups for notifications. For example,
+   * with `['datasource', 'server']`, the observers in `datasource` group are
+   * notified before those in `server` group during `start`. Please note that
+   * observers are notified in the reverse order during `stop`.
+   */
+  orderedGroups: string[];
+  /**
+   * Notify observers of the same group in parallel, default to `true`
+   */
+  parallel?: boolean;
+};
+```
+
+Thus the initial `orderedGroups` can be set as follows:
 
 ```ts
 app
   .bind(CoreBindings.LIFE_CYCLE_OBSERVER_OPTIONS)
-  .to({groupsByOrder: ['g1', 'g2', 'server']});
+  .to({orderedGroups: ['g1', 'g2', 'server']});
 ```
 
 Or:
 
 ```ts
 const registry = await app.get(CoreBindings.LIFE_CYCLE_OBSERVER_REGISTRY);
-registry.setGroupsByOrder(['g1', 'g2', 'server']);
+registry.setOrderedGroups(['g1', 'g2', 'server']);
 ```
 
-Observers are sorted using `groupsByOrder` as the relative order. If an observer
-is tagged with a group that are not in `groupsByOrder`, it will come before any
-groups within `groupsByOrder`. Such custom groups are also sorted by their names
-alphabetically.
+Observers are sorted using `orderedGroups` as the relative order. If an observer
+is tagged with a group that is not defined in `orderedGroups`, it will come
+before any groups included in `orderedGroups`. Such custom groups are also
+sorted by their names alphabetically.
 
-In the example below, `groupsByOrder` is set to `['g1', 'g2']`. Given the
-following observers:
+In the example below, `orderedGroups` is set to
+`['setup-servers', 'publish-services']`. Given the following observers:
 
-- 'my-observer-1' ('g1')
-- 'my-observer-2' ('g2')
+- 'my-observer-1' ('setup-servers')
+- 'my-observer-2' ('publish-services')
 - 'my-observer-4' ('2-custom-group')
 - 'my-observer-3' ('1-custom-group')
 
@@ -177,44 +213,20 @@ The sorted observer groups will be:
 
 ```ts
 {
-  '1-custom-group': ['my-observer-3'],
-  '2-custom-group': ['my-observer-4'],
-  'g1': ['my-observer-1'],
-  'g2': ['my-observer-2'],
+  '1-custom-group': ['my-observer-3'], // by alphabetical order
+  '2-custom-group': ['my-observer-4'], // by alphabetical order
+  'setup-servers': ['my-observer-1'], // by orderedGroups
+  'publish-services': ['my-observer-2'], // orderedGroups
 }
 ```
 
-### Event phases
+The execution order of observers within the same group is controlled by
+`LifeCycleObserverOptions.parallel`:
 
-It's also desirable for certain observers to do some processing before, upon, or
-after the `start` and `stop` events. To allow that, we notify each observer in
-three phases:
-
-- start: preStart, start, and postStart
-- stop: preStop, stop, and postStop
-
-Combining groups and event phases, it's flexible to manage multiple observers so
-that they can be started/stopped gracefully in order.
-
-For example, with a group order as `['datasource', 'server']` and three
-observers registered as follows:
-
-- datasource group: MySQLDataSource, MongoDBDataSource
-- server group: RestServer
-
-The start sequence will be:
-
-1. MySQLDataSource.preStart
-2. MongoDBDataSource.preStart
-3. RestServer.preStart
-
-4. MySQLDataSource.start
-5. MongoDBDataSource.start
-6. RestServer.start
-
-7. MySQLDataSource.postStart
-8. MongoDBDataSource.postStart
-9. RestServer.postStart
+- `true` (default): observers within the same group are notified in parallel
+- `false`: observers within the same group are notified one by one. The order is
+  not defined. If you want to have one to be invoked before the other, mark them
+  with two distinct groups.
 
 ## Add custom life cycle observers by convention
 
@@ -225,58 +237,20 @@ During application.boot(), such artifacts are discovered, loaded, and bound to
 the application context as life cycle observers. This is achieved by a built-in
 `LifeCycleObserverBooter` extension.
 
-## CLI command
+## CLI command to generate life cycle observers
 
 To make it easy for application developers to add custom life cycle observers,
 we introduce `lb4 observer` command as part the CLI.
 
-To add a life cycle observer:
-
-1. cd <my-loopback4-project>
-2. lb4 observer
-
-```
-? Observer name: Hello
-   create src/observers/my.hello-observer.ts
+```sh
+$ lb4 observer
+? Observer name: test
+? Observer group: g1
+   create src/observers/test.observer.ts
    update src/observers/index.ts
 
-Observer Hello was created in src/observers/
+Observer test was created in src/observers/
 ```
 
-The generated class looks like:
-
-```ts
-import {bind} from '@loopback/context';
-import {
-  /* inject, Application, */
-  CoreBindings,
-  LifeCycleObserver,
-} from '@loopback/core';
-
-/**
- * This class will be bound to the application as a `LifeCycleObserver` during
- * `boot`
- */
-@bind({tags: {[CoreBindings.LIFE_CYCLE_OBSERVER_GROUP]: ''}})
-export class HelloObserver implements LifeCycleObserver {
-  /*
-  constructor(
-    @inject(CoreBindings.APPLICATION_INSTANCE) private app: Application,
-  ) {}
-  */
-
-  /**
-   * This method will be invoked when the application starts
-   */
-  async start(): Promise<void> {
-    // Add your logic for start
-  }
-
-  /**
-   * This method will be invoked when the application stops
-   */
-  async stop(): Promise<void> {
-    // Add your logic for start
-  }
-}
-```
+See [Life cycle observer generator](Life-cycle-observer-generator.md) for more
+details.

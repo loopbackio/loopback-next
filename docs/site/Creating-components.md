@@ -15,15 +15,20 @@ import {MyValueProvider} from './providers/my-value.provider';
 import {Component} from '@loopback/core';
 
 export class MyComponent implements Component {
-  constructor() {
-    this.controllers = [MyController];
-    this.providers = {
-      'my-value': MyValueProvider,
-    };
-    this.classes = {
-      'my-validator': MyValidator,
-    };
+  servers = {
+    'my-server': MyServer,
+  };
+  lifeCycleObservers = [MyObserver];
+  controllers = [MyController];
+  providers = {
+    'my-value': MyValueProvider,
+  };
+  classes = {
+    'my-validator': MyValidator,
+  };
 
+  constructor() {
+    // Set up `bindings`
     const bindingX = Binding.bind('x').to('Value X');
     const bindingY = Binding.bind('y').toClass(ClassY);
     this.bindings = [bindingX, bindingY];
@@ -57,6 +62,8 @@ class is created and then:
 - Each Class is bound to its key in `classes` object via
   `app.bind(key).toClass(cls)`
 - Each Binding is added via `app.add(binding)`
+- Each Server class is registered via `app.server()`
+- Each LifeCycleObserver class is registered via `app.lifeCycleObserver()`
 
 Please note that `providers` and `classes` are shortcuts for provider and class
 `bindings`.
@@ -68,6 +75,8 @@ create the following bindings in the application context:
 - `my-validator` -> `MyValidator` (class)
 - `x` -> `'Value X'` (value)
 - `y` -> `ClassY` (class)
+- `my-server` -> `MyServer` (server)
+- `lifeCycleObservers.MyObserver` -> `MyObserver` (life cycle observer)
 
 ## Providers
 
