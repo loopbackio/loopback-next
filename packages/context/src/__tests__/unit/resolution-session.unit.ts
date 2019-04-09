@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {ResolutionSession, Binding, Injection, inject} from '../..';
+import {Binding, inject, Injection, ResolutionSession} from '../..';
 
 describe('ResolutionSession', () => {
   class MyController {
@@ -16,6 +16,7 @@ describe('ResolutionSession', () => {
       target: MyController,
       bindingSelector: 'b',
       methodDescriptorOrParameterIndex: 0,
+      metadata: {},
     };
   }
 
