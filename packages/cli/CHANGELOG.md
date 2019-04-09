@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.9.0...@loopback/cli@1.10.0) (2019-04-09)
+
+
+### Bug Fixes
+
+* **cli:** make sure the item type is imported for an array in openapi spec ([91b2381](https://github.com/strongloop/loopback-next/commit/91b2381))
+
+
+### Features
+
+* **cli:** add `lb4 observer` command to generate life cycle scripts ([d54651d](https://github.com/strongloop/loopback-next/commit/d54651d))
+
+
+
+
+
 # [1.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.8.4...@loopback/cli@1.9.0) (2019-04-05)
 
 

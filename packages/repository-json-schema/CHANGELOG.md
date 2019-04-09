@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.3.7...@loopback/repository-json-schema@1.4.0) (2019-04-09)
+
+
+### Features
+
+* **repository-json-schema:** refactor metaToJsonProperty to accept custom jsonSchema ([d0014c6](https://github.com/strongloop/loopback-next/commit/d0014c6))
+
+
+
+
+
 ## [1.3.7](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.3.6...@loopback/repository-json-schema@1.3.7) (2019-04-05)
 
 **Note:** Version bump only for package @loopback/repository-json-schema

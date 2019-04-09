@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.1](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.10.0...@loopback/rest@1.10.1) (2019-04-09)
+
+
+### Bug Fixes
+
+* **rest:** a small typo fix in code comments ([81d19bb](https://github.com/strongloop/loopback-next/commit/81d19bb))
+
+
+
+
+
 # [1.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.9.1...@loopback/rest@1.10.0) (2019-04-05)
 
 

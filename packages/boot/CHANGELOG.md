@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@1.1.3...@loopback/boot@1.2.0) (2019-04-09)
+
+
+### Features
+
+* **boot:** add a booter for life cycle scripts ([6912f76](https://github.com/strongloop/loopback-next/commit/6912f76))
+
+
+
+
+
 ## [1.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/boot@1.1.2...@loopback/boot@1.1.3) (2019-04-05)
 
 **Note:** Version bump only for package @loopback/boot

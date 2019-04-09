@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.3.0...@loopback/core@1.4.0) (2019-04-09)
+
+
+### Features
+
+* **core:** introduce life cycle support ([27c8127](https://github.com/strongloop/loopback-next/commit/27c8127))
+
+
+
+
+
 # [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.2.1...@loopback/core@1.3.0) (2019-04-05)
 
 
