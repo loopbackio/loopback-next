@@ -95,6 +95,10 @@ components:
   schemas:
     Name:
       type: string
+    AddressList:
+      items:
+        $ref: '#/components/schemas/Address'
+      type: array
     Address:
       type: object
       properties:
@@ -122,6 +126,4 @@ components:
           items:
             type: string
         addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/Address'
+          $ref: '#/components/schemas/AddressList'

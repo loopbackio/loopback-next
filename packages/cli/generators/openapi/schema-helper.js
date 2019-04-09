@@ -175,6 +175,7 @@ function mapObjectType(schema, options) {
         if (itemType) {
           // Use `@property.array` for array types
           propDecoration = `@property.array(${itemType}, {name: '${p}'})`;
+          collectImports(typeSpec, propertyType.itemType);
         }
       }
       const propSpec = {

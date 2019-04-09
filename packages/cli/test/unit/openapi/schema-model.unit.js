@@ -283,6 +283,51 @@ describe('schema to model', () => {
         signature: 'Name',
       },
       {
+        description: 'AddressList',
+        name: 'Address[]',
+        className: 'AddressList',
+        fileName: 'address-list.model.ts',
+        properties: [],
+        imports: ["import {Address} from './address.model';"],
+        import: "import {AddressList} from './address-list.model';",
+        declaration: 'Address[]',
+        signature: 'AddressList',
+        itemType: {
+          description: 'Address',
+          name: 'Address',
+          className: 'Address',
+          fileName: 'address.model.ts',
+          properties: [
+            {
+              name: 'street',
+              signature: 'street?: string;',
+              decoration: "@property({name: 'street'})",
+            },
+            {
+              name: 'city',
+              signature: 'city?: string;',
+              decoration: "@property({name: 'city'})",
+            },
+            {
+              name: 'state',
+              signature: 'state?: string;',
+              decoration: "@property({name: 'state'})",
+            },
+            {
+              name: 'zipCode',
+              signature: 'zipCode?: string;',
+              decoration: "@property({name: 'zipCode'})",
+            },
+          ],
+          imports: [],
+          import: "import {Address} from './address.model';",
+          kind: 'class',
+          declaration:
+            '{\n  street?: string;\n  city?: string;\n  state?: string;\n  zipCode?: string;\n}',
+          signature: 'Address',
+        },
+      },
+      {
         description: 'Address',
         name: 'Address',
         className: 'Address',
@@ -313,8 +358,7 @@ describe('schema to model', () => {
         import: "import {Address} from './address.model';",
         kind: 'class',
         declaration:
-          '{\n  street?: string;\n  city?: string;\n  state?: string;\n  ' +
-          'zipCode?: string;\n}',
+          '{\n  street?: string;\n  city?: string;\n  state?: string;\n  zipCode?: string;\n}',
         signature: 'Address',
       },
       {
@@ -339,25 +383,26 @@ describe('schema to model', () => {
             decoration: "@property({name: 'last-name'})",
           },
           {
-            decoration: "@property.array(String, {name: 'emails'})",
             name: 'emails',
             signature: 'emails?: string[];',
+            decoration: "@property.array(String, {name: 'emails'})",
           },
           {
             name: 'addresses',
-            signature: 'addresses?: Address[];',
+            signature: 'addresses?: AddressList;',
             decoration: "@property.array(Address, {name: 'addresses'})",
           },
         ],
         imports: [
           "import {Name} from './name.model';",
           "import {Address} from './address.model';",
+          "import {AddressList} from './address-list.model';",
         ],
         import: "import {Customer} from './customer.model';",
         kind: 'class',
         declaration:
           "{\n  id: number;\n  'first-name'?: string;\n  'last-name'?: Name;\n" +
-          '  emails?: string[];\n  addresses?: Address[];\n}',
+          '  emails?: string[];\n  addresses?: AddressList;\n}',
         signature: 'Customer',
       },
     ]);
