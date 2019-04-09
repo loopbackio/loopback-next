@@ -146,7 +146,7 @@ function resolve<T>(
           session: s,
           // If the `optional` flag is set for the injection, the resolution
           // will return `undefined` instead of throwing an error
-          optional: injection.metadata && injection.metadata.optional,
+          optional: injection.metadata.optional,
         });
       }
     },

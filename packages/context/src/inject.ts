@@ -73,7 +73,7 @@ export interface Injection<ValueType = BoundValue> {
     | number;
 
   bindingSelector: BindingSelector<ValueType>; // Binding selector
-  metadata?: InjectionMetadata; // Related metadata
+  metadata: InjectionMetadata; // Related metadata
   resolve?: ResolverFunction; // A custom resolve function
 }
 
@@ -111,7 +111,7 @@ export function inject(
   if (typeof bindingSelector === 'function' && !resolve) {
     resolve = resolveValuesByFilter;
   }
-  metadata = Object.assign({decorator: '@inject'}, metadata);
+  const injectionMetadata = Object.assign({decorator: '@inject'}, metadata);
   return function markParameterOrPropertyAsInjected(
     target: Object,
     member: string,
@@ -131,7 +131,7 @@ export function inject(
           member,
           methodDescriptorOrParameterIndex,
           bindingSelector,
-          metadata,
+          metadata: injectionMetadata,
           resolve,
         },
         // Do not deep clone the spec as only metadata is mutable and it's
@@ -167,7 +167,7 @@ export function inject(
           member,
           methodDescriptorOrParameterIndex,
           bindingSelector,
-          metadata,
+          metadata: injectionMetadata,
           resolve,
         },
         // Do not deep clone the spec as only metadata is mutable and it's
@@ -327,7 +327,7 @@ function resolveAsGetter(
   return function getter() {
     return ctx.get(bindingSelector, {
       session,
-      optional: injection.metadata && injection.metadata.optional,
+      optional: injection.metadata.optional,
     });
   };
 }
