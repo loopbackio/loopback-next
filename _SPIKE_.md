@@ -22,28 +22,12 @@ expressing `ON UPDATE` and `ON DELETE` behavior.
 
 ### Indexes at property level
 
-Keep the current generic form as the baseline:
-
-```js
-{
-  // property definitions:
-  email: {
-    type: 'string',
-    index: {
-      name: 'email_index',
-      kind: 'UNIQUE' // Additional MySQL kinds: FULLTEXT, SPATIAL
-      type: 'btree', // or hash
-    }
-  }
-}
-```
-
-Support the following two short-hand forms:
+Support the following two short-hand forms only. Ask users to use model-level
+form to define indexes that are more complex.
 
 - a "plain" index with no special configuration
 
   ```js
-  // property definitions:
   {
     email: {
       type: 'string',
@@ -55,7 +39,6 @@ Support the following two short-hand forms:
 - UNIQUE index with no special configuration
 
   ```js
-  // property definitions:
   {
     email: {
       type: 'string',
@@ -65,7 +48,7 @@ Support the following two short-hand forms:
   ```
 
 We should also allow models to configure indexes for certain databases only,
-using any of the three forms shown above.
+using any of the forms shown above.
 
 ```js
 {
@@ -91,6 +74,8 @@ two names can be different, especially when using database-specific config to
 map property names to custom column names.
 
 The proposal:
+
+
 
 **TBD**
 
@@ -170,6 +155,8 @@ cannot process. The flag can allow three values:
 - Spike: create a template implementation of index & constraint migration in
   `Connector` and `SqlConnector`, this will be a pre-requisite for later work in
   connectors.
+- Update `examples/todo-list` to define FK and UNIQUE constraints
+- Update CLI templates for relations to define the constraints too
 
 ## Detailed description of the current syntax
 
