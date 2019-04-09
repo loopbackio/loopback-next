@@ -329,20 +329,24 @@ children:
   output: 'web, pdf'
   children:
 
-  - title: 'Creating Components'
+  - title: 'Creating components'
     url: Creating-components.html
     output: 'web, pdf'
 
-  - title: 'Creating Decorators'
+  - title: 'Creating decorators'
     url: Creating-decorators.html
     output: 'web, pdf'
 
-  - title: 'Creating Servers'
+  - title: 'Creating servers'
     url: Creating-servers.html
     output: 'web, pdf'
 
-  - title: 'Extending Request Body Parsing'
+  - title: 'Extending request body parsing'
     url: Extending-request-body-parsing.html
+    output: 'web, pdf'
+
+  - title: 'Extension life cycle'
+    url: Extension-life-cycle.html
     output: 'web, pdf'
 
   - title: 'Testing your extension'
