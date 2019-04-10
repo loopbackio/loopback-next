@@ -109,7 +109,7 @@ class MultipartFormDataBodyParser implements BodyParser {
             value: {
               files: request.files,
               // tslint:disable-next-line:no-any
-              fields: (request as any).fields,
+              fields: request.body,
             },
           });
         }
