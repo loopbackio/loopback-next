@@ -258,6 +258,10 @@ children:
     url: Self-hosted-rest-api-explorer.html
     output: 'web, pdf'
 
+  - title: 'Authorization'
+    url: Loopback-component-authorization.html
+    output: 'web, pdf'
+
 - title: 'Calling other APIs'
   url: Calling-other-APIs-and-web-services.html
   output: 'web, pdf'
