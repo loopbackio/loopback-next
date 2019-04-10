@@ -13,7 +13,7 @@ import pathToRegExp = require('path-to-regexp');
  * allows `[A-Za-z0-9_]`
  */
 const POSSIBLE_VARNAME_PATTERN = /\{([^\}]+)\}/g;
-const INVALID_VARNAME_PATTERN = /\{([^\}]*[^\w\}][^\}]*)\}/;
+const INVALID_VARNAME_PATTERN = /\{([^\}]*[^\w\-\}][^\}]*)\}/;
 
 /**
  * Validate the path to be compatible with OpenAPI path template. No parameter

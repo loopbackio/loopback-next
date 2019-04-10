@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-
 import {validateApiPath} from '../../..';
 
 describe('validateApiPath', () => {
@@ -40,6 +39,16 @@ describe('validateApiPath', () => {
   it('allows /{_foo}/{bar}', () => {
     const path = validateApiPath('/{_foo}/{bar}');
     expect(path).to.eql('/{_foo}/{bar}');
+  });
+
+  it('allows /{foo-bar}', () => {
+    const path = validateApiPath('/{foo-bar}');
+    expect(path).to.eql('/{foo-bar}');
+  });
+
+  it('allows /{foo}-{bar}', () => {
+    const path = validateApiPath('/{foo}-{bar}');
+    expect(path).to.eql('/{foo}-{bar}');
   });
 
   it('disallows /:foo/bar', () => {
