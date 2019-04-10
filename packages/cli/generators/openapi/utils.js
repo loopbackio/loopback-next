@@ -146,25 +146,7 @@ function escapeIdentifier(name) {
     return '_' + name;
   }
   if (!name.match(SAFE_IDENTIFER)) {
-    return _.camelCase(name);
-  }
-  return name;
-}
-
-/**
- * Escape a property/method name by quoting it if it's not a safe JavaScript
- * identifier
- *
- * For example,
- * - `default` -> `'default'`
- * - `my-name` -> `'my-name'`
- *
- * @param {string} name
- */
-function escapePropertyOrMethodName(name) {
-  if (JS_KEYWORDS.includes(name) || !name.match(SAFE_IDENTIFER)) {
-    // Encode the name with ', for example: 'my-name'
-    return `'${name}'`;
+    name = _.camelCase(name);
   }
   return name;
 }
@@ -181,6 +163,6 @@ module.exports = {
   kebabCase: utils.kebabCase,
   camelCase: _.camelCase,
   escapeIdentifier,
-  escapePropertyOrMethodName,
   toJsonStr,
+  validateUrlOrFile,
 };

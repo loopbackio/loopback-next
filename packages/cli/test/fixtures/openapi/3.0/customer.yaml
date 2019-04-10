@@ -95,6 +95,8 @@ components:
   schemas:
     Name:
       type: string
+    profileId:
+      type: string
     AddressList:
       items:
         $ref: '#/components/schemas/Address'
@@ -110,6 +112,8 @@ components:
           type: string
         zipCode:
           type: string
+    USAddress:
+      $ref: '#/components/schemas/Address'
     Customer:
       required:
         - id
@@ -121,9 +125,15 @@ components:
           type: string
         last-name:
           $ref: '#/components/schemas/Name'
+        profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/profileId'
         emails:
           type: array
           items:
             type: string
         addresses:
           $ref: '#/components/schemas/AddressList'
+        us-office:
+          $ref: '#/components/schemas/USAddress'
