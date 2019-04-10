@@ -9,7 +9,7 @@ const {
   isExtension,
   titleCase,
   kebabCase,
-  escapePropertyOrMethodName,
+  escapeIdentifier,
   toJsonStr,
 } = require('./utils');
 
@@ -159,7 +159,7 @@ function mapObjectType(schema, options) {
         }),
       );
       // The property name might have chars such as `-`
-      const propName = escapePropertyOrMethodName(p);
+      const propName = escapeIdentifier(p);
 
       let propDecoration = `@property({name: '${p}'})`;
 
@@ -171,11 +171,17 @@ function mapObjectType(schema, options) {
         const itemType =
           propertyType.itemType.kind === 'class'
             ? propertyType.itemType.className
-            : getJSType(propertyType.itemType.name);
+            : // The item type can be an alias such as `export type ID = string`
+              getJSType(propertyType.itemType.declaration) ||
+              // The item type can be `string`
+              getJSType(propertyType.itemType.name);
         if (itemType) {
           // Use `@property.array` for array types
           propDecoration = `@property.array(${itemType}, {name: '${p}'})`;
-          collectImports(typeSpec, propertyType.itemType);
+          if (propertyType.itemType.className) {
+            // The referenced item type is either a class or type
+            collectImports(typeSpec, propertyType.itemType);
+          }
         }
       }
       const propSpec = {
@@ -277,7 +283,7 @@ const JSTypeMapping = {
  */
 function getJSType(type) {
   const ctor = JSTypeMapping[type];
-  return (ctor && ctor.name) || type;
+  return ctor && ctor.name;
 }
 
 /**
@@ -319,13 +325,12 @@ function mapSchemaType(schema, options) {
  * @param {object} schema
  */
 function resolveSchema(schemaMapping, schema) {
-  if (schema['x-$ref']) {
-    const resolved = schemaMapping[schema['x-$ref']];
-    if (resolved) {
-      return resolved;
-    }
+  if (!schema['x-$ref']) return schema;
+  let resolved = schema;
+  while (resolved && resolved['x-$ref']) {
+    resolved = schemaMapping[resolved['x-$ref']];
   }
-  return schema;
+  return resolved || schema;
 }
 
 /**
@@ -350,7 +355,10 @@ function generateModelSpecs(apiSpec, options) {
     // `model` is `undefined` for primitive types
     if (model == null) continue;
     if (model.className) {
-      models.push(model);
+      // The model might be a $ref
+      if (!models.includes(model)) {
+        models.push(model);
+      }
     }
   }
   return models;

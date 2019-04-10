@@ -14,7 +14,6 @@ const {
   kebabCase,
   camelCase,
   escapeIdentifier,
-  escapePropertyOrMethodName,
 } = require('./utils');
 
 const HTTP_VERBS = [
@@ -134,10 +133,7 @@ function groupOperationsByController(apiSpec) {
  * @param {object} opSpec OpenAPI operation spec
  */
 function getMethodName(opSpec) {
-  return (
-    opSpec['x-operation-name'] ||
-    escapePropertyOrMethodName(camelCase(opSpec.operationId))
-  );
+  return opSpec['x-operation-name'] || escapeIdentifier(opSpec.operationId);
 }
 
 function registerAnonymousSchema(names, schema, typeRegistry) {
