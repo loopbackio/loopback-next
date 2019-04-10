@@ -283,6 +283,17 @@ describe('schema to model', () => {
         signature: 'Name',
       },
       {
+        description: 'profileId',
+        name: 'profileId',
+        className: 'ProfileId',
+        fileName: 'profile-id.model.ts',
+        properties: [],
+        imports: [],
+        import: "import {ProfileId} from './profile-id.model';",
+        declaration: 'string',
+        signature: 'ProfileId',
+      },
+      {
         description: 'AddressList',
         name: 'Address[]',
         className: 'AddressList',
@@ -374,13 +385,18 @@ describe('schema to model', () => {
           },
           {
             name: 'first-name',
-            signature: "'first-name'?: string;",
+            signature: 'firstName?: string;',
             decoration: "@property({name: 'first-name'})",
           },
           {
             name: 'last-name',
-            signature: "'last-name'?: Name;",
+            signature: 'lastName?: Name;',
             decoration: "@property({name: 'last-name'})",
+          },
+          {
+            name: 'profiles',
+            signature: 'profiles?: ProfileId[];',
+            decoration: "@property.array(String, {name: 'profiles'})",
           },
           {
             name: 'emails',
@@ -392,17 +408,24 @@ describe('schema to model', () => {
             signature: 'addresses?: AddressList;',
             decoration: "@property.array(Address, {name: 'addresses'})",
           },
+          {
+            name: 'us-office',
+            signature: 'usOffice?: Address;',
+            decoration: "@property({name: 'us-office'})",
+          },
         ],
         imports: [
           "import {Name} from './name.model';",
+          "import {ProfileId} from './profile-id.model';",
           "import {Address} from './address.model';",
           "import {AddressList} from './address-list.model';",
         ],
         import: "import {Customer} from './customer.model';",
         kind: 'class',
         declaration:
-          "{\n  id: number;\n  'first-name'?: string;\n  'last-name'?: Name;\n" +
-          '  emails?: string[];\n  addresses?: AddressList;\n}',
+          '{\n  id: number;\n  firstName?: string;\n  lastName?: Name;\n' +
+          '  profiles?: ProfileId[];\n  emails?: string[];\n' +
+          '  addresses?: AddressList;\n  usOffice?: Address;\n}',
         signature: 'Customer',
       },
     ]);
