@@ -63,6 +63,5 @@ LoopBack 4 introduces some new concepts that are important to understand:
 - [**Decorator**](Decorators.md): The pattern used to annotate or modify your
   class declarations and their members with metadata.
 
-- **Component**: A package that bundles one or more Loopback extensions.
-  - See [Using components](Using-components.md) and
-    [Creating components](Creating-components.md) for more information.
+- [**Component**](Components.md): A package that bundles one or more LoopBack
+  extensions.
