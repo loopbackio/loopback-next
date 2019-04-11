@@ -59,13 +59,13 @@ describe('openapi to controllers/models', () => {
             comments: [
               'Returns a customer based on a single ID',
               '\n',
-              '@param id ID of customer to fetch',
+              '@param customerId ID of customer to fetch',
               '@returns customer response',
             ],
-            decoration: "@operation('get', '/customers/{id}')",
+            decoration: "@operation('get', '/customers/{customer_id}')",
             signature:
-              "async findCustomerById(@param({name: 'id', in: 'path'}) " +
-              'id: number): Promise<Customer>',
+              "async findCustomerById(@param({name: 'customer_id', " +
+              "in: 'path'}) customerId: number): Promise<Customer>",
             implementation:
               "return {id: id, 'first-name': 'John', last-name: 'Smith'};",
           },
