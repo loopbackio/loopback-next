@@ -3,10 +3,29 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, property, model, belongsTo} from '@loopback/repository';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {TodoList} from './todo-list.model';
 
-@model()
+@model({
+  indexes: {
+    /*==== Dummy demonstration of a model-level index definition ===*/
+    demo: {
+      properties: {desc: 'ASC'},
+      mysql: {
+        kind: 'FULLTEXT',
+      },
+    },
+  },
+  foreignKeys: {
+    /*==== Dummy demonstration of a model-level foreign-key definition ===*/
+    demo: {
+      sourceProperties: ['todoListId'],
+      targetModel: () => TodoList,
+      targetProperties: ['id'],
+      onDelete: 'CASCADE',
+    },
+  },
+})
 export class Todo extends Entity {
   @property({
     type: 'number',
@@ -17,6 +36,8 @@ export class Todo extends Entity {
   @property({
     type: 'string',
     required: true,
+    /*==== The title must be unique ====*/
+    unique: true,
   })
   title: string;
 
@@ -27,10 +48,23 @@ export class Todo extends Entity {
 
   @property({
     type: 'boolean',
+    /*==== Index this flag for faster lookup of completed todos ====*/
+    index: true,
   })
   isComplete: boolean;
 
-  @belongsTo(() => TodoList)
+  @belongsTo(
+    () => TodoList,
+    {},
+    {
+      /*==== Define a foreign key to enforce referential integrity ===*/
+      references: {
+        model: () => TodoList,
+        property: 'id',
+        onDelete: 'CASCADE',
+      },
+    },
+  )
   todoListId: number;
 
   getId() {

@@ -33,8 +33,33 @@ export interface PropertyDefinition {
   jsonSchema?: {[attribute: string]: any};
   store?: PropertyForm;
   itemType?: PropertyType; // type of array
+
+  index?: true;
+  unique?: true;
+  references?: PropertyForeignKeyDefinition;
+
   [attribute: string]: any; // Other attributes
 }
+
+export interface PropertyForeignKeyDefinition {
+  /// target model (name, class or resolver)
+  model: string | typeof Model | TypeResolver<Model>;
+  /// target property
+  property: string;
+
+  // referential action on update
+  onUpdate?: ForeignKeyReferenceAction;
+  // referential action on delete
+  onDelete?: ForeignKeyReferenceAction;
+}
+
+export type ForeignKeyReferenceAction =
+  | 'RESTRICT'
+  | 'CASCADE'
+  | 'NO ACTION'
+  | 'SET NULL'
+  | 'SET DEFAULT'
+  | string; // additional connector-specific actions
 
 /**
  * See https://github.com/strongloop/loopback-datasource-juggler/issues/432
@@ -61,7 +86,32 @@ export interface ModelDefinitionSyntax {
   properties?: {[name: string]: PropertyDefinition | PropertyType};
   settings?: {[name: string]: any};
   relations?: RelationDefinitionMap;
+  indexes?: {[name: string]: ModelIndexDefinition};
+  foreignKeys?: {[name: string]: ModelForeignKeyDefinition};
   [attribute: string]: any;
+}
+
+export interface ModelIndexDefinition {
+  unique?: true;
+  properties?: {
+    [propName: string]: 1 | -1 | 'ASC' | 'DESC' | string;
+  };
+  keys?: {
+    [key: string]: 1 | -1 | 'ASC' | 'DESC' | string;
+  };
+
+  // connector-specific options nested in a new object, e.g.
+  // mongodb: {sparse: true}
+  [connectorName: string]: any;
+}
+
+export interface ModelForeignKeyDefinition {
+  name?: string;
+  sourceProperties: string[];
+  targetModel: string | typeof Model | TypeResolver<Model>;
+  targetProperties: string[];
+  onUpdate?: ForeignKeyReferenceAction;
+  onDelete?: ForeignKeyReferenceAction;
 }
 
 /**
@@ -72,6 +122,8 @@ export class ModelDefinition {
   properties: {[name: string]: PropertyDefinition};
   settings: {[name: string]: any};
   relations: RelationDefinitionMap;
+  indexes: {[name: string]: ModelIndexDefinition};
+  foreignKeys: {[name: string]: ModelForeignKeyDefinition};
   // indexes: Map<string, any>;
   [attribute: string]: any; // Other attributes
 
@@ -79,7 +131,14 @@ export class ModelDefinition {
     if (typeof nameOrDef === 'string') {
       nameOrDef = {name: nameOrDef};
     }
-    const {name, properties, settings, relations} = nameOrDef;
+    const {
+      name,
+      properties,
+      settings,
+      relations,
+      indexes,
+      foreignKeys,
+    } = nameOrDef;
 
     this.name = name;
 
@@ -92,6 +151,8 @@ export class ModelDefinition {
 
     this.settings = settings || new Map();
     this.relations = relations || {};
+    this.indexes = indexes || {};
+    this.foreignKeys = foreignKeys || {};
   }
 
   /**
