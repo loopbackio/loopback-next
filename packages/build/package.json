@@ -26,7 +26,7 @@
     "prettier": "^1.16.1",
     "rimraf": "^2.6.2",
     "source-map-support": "^0.5.12",
-    "strong-docs": "^4.1.0",
+    "strong-docs": "^4.2.0",
     "tslint": "^5.15.0",
     "typescript": "^3.4.3"
   },
