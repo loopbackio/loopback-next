@@ -39,9 +39,9 @@ if (!Symbol.asyncIterator) {
   (Symbol as any).asyncIterator = Symbol.for('Symbol.asyncIterator');
 }
 /**
- * This import must happen after the polyfill.
- *
- * WARNING: VSCode organize import may change the order of this import
+ * WARNING: This following import must happen after the polyfill. The
+ * `auto-import` by an IDE such as VSCode may move the import before the
+ * polyfill. It must be then fixed manually.
  */
 import {iterator, multiple} from 'p-event';
 
@@ -522,7 +522,7 @@ export class Context extends EventEmitter {
   find<ValueType = BoundValue>(
     pattern?: string | RegExp | BindingFilter,
   ): Readonly<Binding<ValueType>>[] {
-    const bindings: Readonly<Binding>[] = [];
+    const bindings: Readonly<Binding<ValueType>>[] = [];
     const filter = filterByKey(pattern);
 
     for (const b of this.registry.values()) {
