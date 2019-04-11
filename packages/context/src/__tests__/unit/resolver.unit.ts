@@ -33,6 +33,23 @@ describe('constructor injection', () => {
     expect(t.foo).to.eql('FOO');
   });
 
+  it('allows non-injected arguments in constructor', () => {
+    class TestClass {
+      constructor(
+        @inject('foo') public foo: string,
+        public nonInjectedArg: string,
+      ) {}
+    }
+
+    let theNonInjectedArg = 'BAZ';
+
+    const test = instantiateClass(TestClass, ctx, undefined, [
+      theNonInjectedArg,
+    ]) as TestClass;
+    expect(test.foo).to.eql('FOO');
+    expect(test.nonInjectedArg).to.eql('BAZ');
+  });
+
   it('can report error for missing binding key', () => {
     class TestClass {
       constructor(@inject('', {x: 'bar'}) public fooBar: string) {}

@@ -55,7 +55,13 @@ export function instantiateClass<T>(
       debug('Non-injected arguments:', nonInjectedArgs);
     }
   }
-  const argsOrPromise = resolveInjectedArguments(ctor, '', ctx, session);
+  const argsOrPromise = resolveInjectedArguments(
+    ctor,
+    '',
+    ctx,
+    session,
+    nonInjectedArgs,
+  );
   const propertiesOrPromise = resolveInjectedProperties(ctor, ctx, session);
   const inst: ValueOrPromise<T> = transformValueOrPromise(
     argsOrPromise,
