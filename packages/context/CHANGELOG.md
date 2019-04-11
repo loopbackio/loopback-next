@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.10.0...@loopback/context@1.11.0) (2019-04-11)
+
+
+### Bug Fixes
+
+* **context:** instantiate class with non-injected arguments ([6699825](https://github.com/strongloop/loopback-next/commit/6699825))
+
+
+### Features
+
+* **context:** make Injection.metadata a required property ([dcc9cac](https://github.com/strongloop/loopback-next/commit/dcc9cac))
+
+
+
+
+
 # [1.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.9.0...@loopback/context@1.10.0) (2019-04-09)
 
 

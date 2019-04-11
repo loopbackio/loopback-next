@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.13.0...@loopback/docs@1.14.0) (2019-04-11)
+
+
+### Features
+
+* **cli:** add lb4 discover for model discovery ([35f719c](https://github.com/strongloop/loopback-next/commit/35f719c))
+
+
+
+
+
 # [1.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.12.0...@loopback/docs@1.13.0) (2019-04-09)
 
 

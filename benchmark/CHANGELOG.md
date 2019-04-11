@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.18](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.17...@loopback/benchmark@1.1.18) (2019-04-11)
+
+**Note:** Version bump only for package @loopback/benchmark
+
+
+
+
+
 ## [1.1.17](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.16...@loopback/benchmark@1.1.17) (2019-04-09)
 
 **Note:** Version bump only for package @loopback/benchmark
