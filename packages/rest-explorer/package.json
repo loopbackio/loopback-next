@@ -1,6 +1,6 @@
 {
   "name": "@loopback/rest-explorer",
-  "version": "1.1.15",
+  "version": "1.1.16",
   "description": "LoopBack's API Explorer",
   "engines": {
     "node": ">=8.9"
@@ -17,15 +17,15 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^1.10.0",
-    "@loopback/core": "^1.4.0",
-    "@loopback/rest": "^1.10.1",
+    "@loopback/context": "^1.11.0",
+    "@loopback/core": "^1.4.1",
+    "@loopback/rest": "^1.10.2",
     "ejs": "^2.6.1",
     "swagger-ui-dist": "^3.20.0"
   },
   "devDependencies": {
-    "@loopback/build": "^1.4.2",
-    "@loopback/testlab": "^1.2.3",
+    "@loopback/build": "^1.4.3",
+    "@loopback/testlab": "^1.2.4",
     "@loopback/tslint-config": "^2.0.4",
     "@types/ejs": "^2.6.0",
     "@types/express": "^4.16.1",

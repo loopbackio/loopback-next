@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.10.0...@loopback/cli@1.11.0) (2019-04-11)
+
+
+### Bug Fixes
+
+* **cli:** generate operation only for the 1st tag to avoid duplicate routes ([4843a1f](https://github.com/strongloop/loopback-next/commit/4843a1f))
+* **cli:** improve openapi code generation for naming and typing ([af20548](https://github.com/strongloop/loopback-next/commit/af20548))
+
+
+### Features
+
+* **cli:** add lb4 discover for model discovery ([35f719c](https://github.com/strongloop/loopback-next/commit/35f719c))
+* **cli:** normalize variable names for OpenAPI paths ([a3d0dfc](https://github.com/strongloop/loopback-next/commit/a3d0dfc))
+
+
+
+
+
 # [1.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.9.0...@loopback/cli@1.10.0) (2019-04-09)
 
 
