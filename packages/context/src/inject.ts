@@ -371,15 +371,15 @@ export namespace inject {
 function resolveAsGetter(
   ctx: Context,
   injection: Readonly<Injection>,
-  session?: ResolutionSession,
+  session: ResolutionSession,
 ) {
   assertTargetIsGetter(injection);
   const bindingSelector = injection.bindingSelector as BindingAddress;
   // We need to clone the session for the getter as it will be resolved later
-  session = ResolutionSession.fork(session);
+  const forkedSession = ResolutionSession.fork(session);
   return function getter() {
     return ctx.get(bindingSelector, {
-      session,
+      session: forkedSession,
       optional: injection.metadata.optional,
     });
   };
@@ -512,7 +512,7 @@ function inspectTargetType(injection: Readonly<Injection>) {
 function resolveValuesByFilter(
   ctx: Context,
   injection: Readonly<Injection>,
-  session?: ResolutionSession,
+  session: ResolutionSession,
 ) {
   assertTargetIsArray(injection);
   const bindingFilter = injection.bindingSelector as BindingFilter;
@@ -542,7 +542,7 @@ function assertTargetIsArray(injection: Readonly<Injection>) {
 function resolveAsGetterByFilter(
   ctx: Context,
   injection: Readonly<Injection>,
-  session?: ResolutionSession,
+  session: ResolutionSession,
 ) {
   assertTargetIsGetter(injection);
   const bindingFilter = injection.bindingSelector as BindingFilter;
@@ -554,13 +554,8 @@ function resolveAsGetterByFilter(
  * for `@inject.view`
  * @param ctx Context object
  * @param injection Injection information
- * @param session Resolution session
  */
-function resolveAsContextView(
-  ctx: Context,
-  injection: Readonly<Injection>,
-  session?: ResolutionSession,
-) {
+function resolveAsContextView(ctx: Context, injection: Readonly<Injection>) {
   const targetType = inspectTargetType(injection);
   if (targetType && targetType !== ContextView) {
     const targetName = ResolutionSession.describeInjection(injection)!
