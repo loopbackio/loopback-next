@@ -9,9 +9,37 @@ import {BindingAddress} from './binding-key';
 /**
  * A function that filters bindings. It returns `true` to select a given
  * binding.
+ *
+ * TODO(semver-major): We might change this type in the future to either remove
+ * the `<ValueType>` or make it as type guard by asserting the matched binding
+ * to be typed with `<ValueType>`.
+ *
+ * **NOTE**: Originally, we allow filters to be tied with a single value type.
+ * This actually does not make much sense - the filter function is typically
+ * invoked on all bindings to find those ones matching the given criteria.
+ * Filters must be prepared to handle bindings of any value type. We learned
+ * about this problem after enabling TypeScript's `strictFunctionTypes` check,
+ * but decided to preserve `ValueType` argument for backwards compatibility.
+ * The `<ValueType>` represents the value type for matched bindings but it's
+ * not used for checking.
+ *
+ * Ideally, `BindingFilter` should be declared as a type guard as follows:
+ * ```ts
+ * export type BindingFilterGuard<ValueType = unknown> = (
+ *   binding: Readonly<Binding<unknown>>,
+ * ) => binding is Readonly<Binding<ValueType>>;
+ * ```
+ *
+ * But TypeScript treats the following types as incompatible and does not accept
+ * type 1 for type 2.
+ *
+ * 1. `(binding: Readonly<Binding<unknown>>) => boolean`
+ * 2. `(binding: Readonly<Binding<unknown>>) => binding is Readonly<Binding<ValueType>>`
+ *
  */
+// tslint:disable-next-line:no-unused
 export type BindingFilter<ValueType = unknown> = (
-  binding: Readonly<Binding<ValueType>>,
+  binding: Readonly<Binding<unknown>>,
 ) => boolean;
 
 /**
