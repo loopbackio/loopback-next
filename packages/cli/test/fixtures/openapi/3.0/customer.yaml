@@ -69,7 +69,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Customer'
-  /customers/{id}:
+  /customers/{customer-id}:
     get:
       tags:
         - Customer
@@ -77,7 +77,7 @@ paths:
       x-implementation: "return {id: id, 'first-name': 'John', last-name: 'Smith'};"
       operationId: find customer by id
       parameters:
-        - name: id
+        - name: customer-id
           in: path
           description: ID of customer to fetch
           required: true
