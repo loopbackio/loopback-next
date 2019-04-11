@@ -14,7 +14,6 @@ const {
   kebabCase,
   camelCase,
   escapeIdentifier,
-  escapePropertyOrMethodName,
 } = require('./utils');
 
 const HTTP_VERBS = [
@@ -98,8 +97,9 @@ function groupOperationsByController(apiSpec) {
       let controllers = ['OpenApiController'];
       if (op['x-controller-name']) {
         controllers = [op['x-controller-name']];
-      } else if (op.tags) {
-        controllers = op.tags.map(t => titleCase(t + 'Controller'));
+      } else if (Array.isArray(op.tags) && op.tags.length) {
+        // Only add the operation to first tag to avoid duplicate routes
+        controllers = [titleCase(op.tags[0] + 'Controller')];
       }
       controllers.forEach((c, index) => {
         /**
@@ -134,10 +134,7 @@ function groupOperationsByController(apiSpec) {
  * @param {object} opSpec OpenAPI operation spec
  */
 function getMethodName(opSpec) {
-  return (
-    opSpec['x-operation-name'] ||
-    escapePropertyOrMethodName(camelCase(opSpec.operationId))
-  );
+  return opSpec['x-operation-name'] || escapeIdentifier(opSpec.operationId);
 }
 
 function registerAnonymousSchema(names, schema, typeRegistry) {
@@ -206,7 +203,13 @@ function buildMethodSpec(controllerSpec, op, options) {
       const pType = mapSchemaType(p.schema, options);
       addImportsForType(pType);
       comments.push(`@param ${name} ${p.description || ''}`);
-      return `@param({name: '${p.name}', in: '${p.in}'}) ${name}: ${
+
+      // Normalize parameter name to match `\w`
+      let paramName = p.name;
+      if (p.in === 'path') {
+        paramName = paramName.replace(/[^\w]+/g, '_');
+      }
+      return `@param({name: '${paramName}', in: '${p.in}'}) ${name}: ${
         pType.signature
       }`;
     });
@@ -288,10 +291,17 @@ function buildMethodSpec(controllerSpec, op, options) {
     returnType.signature
   }>`;
   comments.unshift(op.spec.description || '', '\n');
+
+  // Normalize path variable names to alphanumeric characters including the
+  // underscore (Equivalent to [A-Za-z0-9_]). Please note `@loopback/rest`
+  // does not allow other characters that don't match `\w`.
+  const opPath = op.path.replace(/\{[^\}]+\}/g, varName =>
+    varName.replace(/[^\w\{\}]+/g, '_'),
+  );
   const methodSpec = {
     description: op.spec.description,
     comments,
-    decoration: `@operation('${op.verb}', '${op.path}')`,
+    decoration: `@operation('${op.verb}', '${opPath}')`,
     signature,
   };
   if (op.spec['x-implementation']) {
