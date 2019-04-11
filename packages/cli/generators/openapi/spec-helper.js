@@ -97,8 +97,9 @@ function groupOperationsByController(apiSpec) {
       let controllers = ['OpenApiController'];
       if (op['x-controller-name']) {
         controllers = [op['x-controller-name']];
-      } else if (op.tags) {
-        controllers = op.tags.map(t => titleCase(t + 'Controller'));
+      } else if (Array.isArray(op.tags) && op.tags.length) {
+        // Only add the operation to first tag to avoid duplicate routes
+        controllers = [titleCase(op.tags[0] + 'Controller')];
       }
       controllers.forEach((c, index) => {
         /**
