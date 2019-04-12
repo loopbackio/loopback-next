@@ -28,7 +28,7 @@
     "@loopback/build": "^1.4.3",
     "@loopback/testlab": "^1.2.4",
     "@loopback/tslint-config": "^2.0.4",
-    "@types/debug": "^4.1.0",
+    "@types/debug": "^4.1.4",
     "@types/node": "^10.11.2",
     "@types/request-promise-native": "^1.0.14",
     "@types/rimraf": "^2.0.2",
