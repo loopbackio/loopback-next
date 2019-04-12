@@ -44,7 +44,7 @@
     "@loopback/build": "^1.4.3",
     "@loopback/testlab": "^1.2.4",
     "@loopback/tslint-config": "^2.0.4",
-    "@types/debug": "0.0.30",
+    "@types/debug": "4.1.4",
     "@types/node": "^10.11.2",
     "tslint": "^5.15.0",
     "typescript": "^3.4.3"
