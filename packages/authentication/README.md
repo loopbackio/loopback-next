@@ -12,7 +12,7 @@ provided by LoopBack 4 to implement an authentication layer.
 
 To handle multiple authentication strategies without using the Passport module,
 please read
-[Multiple Authentication strategies](./packages/authentication/docs/authentication-system.md).
+[Multiple Authentication strategies](./docs/authentication-system.md).
 
 ## Installation
 
