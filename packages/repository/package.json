@@ -28,7 +28,7 @@
   "dependencies": {
     "@loopback/context": "^1.11.0",
     "@loopback/core": "^1.4.1",
-    "@types/debug": "^4.1.0",
+    "@types/debug": "^4.1.4",
     "debug": "^4.0.1",
     "lodash": "^4.17.11",
     "loopback-datasource-juggler": "^4.0.0"
