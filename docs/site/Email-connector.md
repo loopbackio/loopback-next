@@ -4,8 +4,8 @@ lang: en
 layout: page
 keywords: LoopBack
 tags: connectors
-sidebar: lb3_sidebar
-permalink: /doc/en/lb3/Email-connector.html
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/Email-connector.html
 summary: The built-in email connectors enables applications to send email.
 ---
 

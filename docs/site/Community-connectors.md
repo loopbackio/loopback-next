@@ -4,19 +4,24 @@ lang: en
 layout: page
 keywords: LoopBack
 tags:
-sidebar: lb3_sidebar
-permalink: /doc/en/lb3/Community-connectors.html
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/Community-connectors.html
 summary:
 ---
 
-In addition to the connectors that StrongLoop provides and maintains, there are a number of connectors created by the open-source community.
+In addition to the connectors that StrongLoop provides and maintains, there are
+a number of connectors created by the open-source community.
 
-{% include warning.html content="IBM and StrongLoop do not support the connectors listed here; they are maintained by the LoopBack community and are listed here for convenience.
+{% include warning.html content="IBM and StrongLoop do not support the
+connectors listed here; they are maintained by the LoopBack community and are
+listed here for convenience.
 
-Please contact IBM/StrongLoop to request support for one of these connectors or to request an additional connector.
-" %}
+Please contact IBM/StrongLoop to request support for one of these connectors or
+to request an additional connector. " %}
 
-The following table lists some of the community connectors. See [npmjs.org](https://www.npmjs.org/search?q=loopback-connector) for a complete list.
+The following table lists some of the community connectors. See
+[npmjs.org](https://www.npmjs.org/search?q=loopback-connector) for a complete
+list.
 
 {% include note.html content="See also [https://github.com/pasindud/awesome-loopback](https://github.com/pasindud/awesome-loopback) for an extensive list of LoopBack community resources.
 " %}

@@ -479,10 +479,77 @@ children:
       url: zOSconnectEE.html
       output: 'web, pdf'
 
-  - title: 'Other connectors'
+- title: 'Other connectors'
     url: Other-connectors.html
     output: 'web'
     children:
+
+    - title: 'Email connector'
+      url: Email-connector.html
+      output: 'web, pdf'
+
+    - title: 'JSON RPC connector'
+      url: JSON-RPC-connector.html
+      output: 'web, pdf'
+
+    - title: 'MQ Light connector'
+      url: MQLight-connector.html
+      output: 'web, pdf'
+
+    - title: 'Push connector'
+      url: Push-connector.html
+      output: 'web, pdf'
+
+    - title: 'Remote connector'
+      url: Remote-connector.html
+      output: 'web, pdf'
+      children:
+
+      - title: 'Remote connector example'
+        url: Remote-connector-example.html
+        output: 'web, pdf'
+
+      - title: 'Strong Remoting'
+        url: Strong-Remoting.html
+        output: 'web, pdf'
+
+    - title: 'REST connector'
+      url: REST-connector.html
+      output: 'web, pdf'
+      children:
+
+      - title: 'REST connector example'
+        url: REST-connector-example.html
+        output: 'web, pdf'
+
+    - title: 'SOAP connector'
+      url: SOAP-connector.html
+      output: 'web, pdf'
+      children:
+
+      - title: 'Strong-soap'
+        url: Strong-soap.html
+        output: 'web, pdf'
+
+      - title: 'SOAP connector example'
+        url: SOAP-Connector-example.html
+        output: 'web, pdf'
+
+      - title: 'Connecting to SOAP web services'
+        url: Connecting-to-SOAP.html
+        output: 'web, pdf'
+
+    - title: 'Storage connector'
+      url: Storage-connector.html
+      output: 'web, pdf'
+
+    - title: 'Swagger connector'
+      url: Swagger-connector.html
+      output: 'web, pdf'
+
+  - title: 'Community connectors'
+    url: Community-connectors.html
+    output: 'web, pdf'
 
   - title: 'Application generator'
     url: Application-generator.html

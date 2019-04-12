@@ -4,8 +4,8 @@ lang: en
 layout: page
 keywords: LoopBack
 tags: connectors
-sidebar: lb3_sidebar
-permalink: /doc/en/lb3/Push-connector.html
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/Push-connector.html
 summary:
 ---
 

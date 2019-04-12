@@ -6,7 +6,7 @@ toc: false
 source: strong-soap
 keywords: LoopBack, connector
 tags: [connectors, readme]
-sidebar: lb3_sidebar
-permalink: /doc/en/lb3/Strong-soap.html
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/Strong-soap.html
 summary:
 ---

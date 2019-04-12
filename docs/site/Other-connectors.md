@@ -51,4 +51,4 @@ The model is configured to attach to the REST data source.
 
 The officially-supported non-database connectors are:
 
-{% include list-children.html in=site.data.sidebars.lb3_sidebar %}
+{% include list-children.html in=site.data.sidebars.lb4_sidebar %}

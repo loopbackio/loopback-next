@@ -4,8 +4,8 @@ lang: en
 layout: page
 keywords: LoopBack
 tags:
-sidebar: lb3_sidebar
-permalink: /doc/en/lb3/Using-MongoLab.html
+sidebar: lb4_sidebar
+permalink: /doc/en/lb4/Using-MongoLab.html
 summary:
 ---
 
