@@ -9,7 +9,7 @@ const {
   isExtension,
   titleCase,
   kebabCase,
-  escapeIdentifier,
+  escapePropertyName,
   toJsonStr,
 } = require('./utils');
 
@@ -159,12 +159,12 @@ function mapObjectType(schema, options) {
         }),
       );
       // The property name might have chars such as `-`
-      const propName = escapeIdentifier(p);
+      const propName = escapePropertyName(p);
 
-      let propDecoration = `@property({name: '${p}'})`;
+      let propDecoration = `@property()`;
 
       if (required.includes(p)) {
-        propDecoration = `@property({name: '${p}', required: true})`;
+        propDecoration = `@property({required: true})`;
       }
 
       if (propertyType.itemType) {
@@ -177,7 +177,7 @@ function mapObjectType(schema, options) {
               getJSType(propertyType.itemType.name);
         if (itemType) {
           // Use `@property.array` for array types
-          propDecoration = `@property.array(${itemType}, {name: '${p}'})`;
+          propDecoration = `@property.array(${itemType})`;
           if (propertyType.itemType.className) {
             // The referenced item type is either a class or type
             collectImports(typeSpec, propertyType.itemType);

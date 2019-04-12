@@ -22,4 +22,17 @@ describe('openapi utils', () => {
     expect(utils.escapeIdentifier('fooBar')).to.eql('fooBar');
     expect(utils.escapeIdentifier('Foobar')).to.eql('Foobar');
   });
+
+  it('escapes property names with illegal chars', () => {
+    expect(utils.escapePropertyName('customer-id')).to.eql("'customer-id'");
+    expect(utils.escapePropertyName('customer id')).to.eql("'customer id'");
+    expect(utils.escapePropertyName('customer.id')).to.eql("'customer.id'");
+    expect(utils.escapePropertyName('default')).to.eql("'default'");
+  });
+
+  it('does not escape property names with legal chars', () => {
+    expect(utils.escapePropertyName('customerId')).to.eql('customerId');
+    expect(utils.escapePropertyName('customer_id')).to.eql('customer_id');
+    expect(utils.escapePropertyName('customerid')).to.eql('customerid');
+  });
 });

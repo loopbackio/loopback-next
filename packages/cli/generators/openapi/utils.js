@@ -151,6 +151,17 @@ function escapeIdentifier(name) {
   return name;
 }
 
+/**
+ * Escape the property if it's not a valid JavaScript identifer
+ * @param {string} name
+ */
+function escapePropertyName(name) {
+  if (JS_KEYWORDS.includes(name) || !name.match(SAFE_IDENTIFER)) {
+    return toJsonStr(name);
+  }
+  return name;
+}
+
 function toJsonStr(val) {
   return json5.stringify(val, null, 2);
 }
@@ -163,6 +174,7 @@ module.exports = {
   kebabCase: utils.kebabCase,
   camelCase: _.camelCase,
   escapeIdentifier,
+  escapePropertyName,
   toJsonStr,
   validateUrlOrFile,
 };

@@ -50,14 +50,14 @@ describe('schema to model', () => {
           {
             name: 'total',
             signature: 'total?: number;',
-            decoration: "@property({name: 'total'})",
+            decoration: '@property()',
           },
           {
             name: 'apis',
             signature:
               'apis?: {\n  apiKey?: string;\n  apiVersionNumber?: string;\n' +
               '  apiUrl?: string;\n  apiDocumentationUrl?: string;\n}[];',
-            decoration: "@property({name: 'apis'})",
+            decoration: '@property()',
           },
         ],
         declaration:
@@ -81,14 +81,14 @@ describe('schema to model', () => {
           {
             name: 'total',
             signature: 'total?: number;',
-            decoration: "@property({name: 'total'})",
+            decoration: '@property()',
           },
           {
             name: 'apis',
             signature:
               'apis?: {\n  apiKey?: string;\n  apiVersionNumber?: string;\n  ' +
               'apiUrl?: string;\n  apiDocumentationUrl?: string;\n}[];',
-            decoration: "@property({name: 'apis'})",
+            decoration: '@property()',
           },
         ],
         imports: [],
@@ -109,7 +109,7 @@ describe('schema to model', () => {
           {
             name: 'criteria',
             signature: "criteria: string = '*:*';",
-            decoration: "@property({name: 'criteria', required: true})",
+            decoration: '@property({required: true})',
             description:
               'Uses Lucene Query Syntax in the format of propertyName:value, ' +
               'propertyName:[num1 TO num2] and date range format: ' +
@@ -121,13 +121,13 @@ describe('schema to model', () => {
           {
             name: 'start',
             signature: 'start?: number = 0;',
-            decoration: "@property({name: 'start'})",
+            decoration: '@property()',
             description: 'Starting record number. Default value is 0.',
           },
           {
             name: 'rows',
             signature: 'rows?: number = 100;',
-            decoration: "@property({name: 'rows'})",
+            decoration: '@property()',
             description:
               'Specify number of rows to be returned. If you run the search ' +
               "with default values, in the response you will see 'numFound' " +
@@ -188,12 +188,12 @@ describe('schema to model', () => {
               {
                 name: 'name',
                 signature: 'name: string;',
-                decoration: "@property({name: 'name', required: true})",
+                decoration: '@property({required: true})',
               },
               {
                 name: 'tag',
                 signature: 'tag?: string;',
-                decoration: "@property({name: 'tag'})",
+                decoration: '@property()',
               },
             ],
             imports: [],
@@ -208,7 +208,7 @@ describe('schema to model', () => {
               {
                 name: 'id',
                 signature: 'id: number;',
-                decoration: "@property({name: 'id', required: true})",
+                decoration: '@property({required: true})',
               },
             ],
             signature: '{\n  id: number;\n}',
@@ -228,12 +228,12 @@ describe('schema to model', () => {
           {
             name: 'name',
             signature: 'name: string;',
-            decoration: "@property({name: 'name', required: true})",
+            decoration: '@property({required: true})',
           },
           {
             name: 'tag',
             signature: 'tag?: string;',
-            decoration: "@property({name: 'tag'})",
+            decoration: '@property()',
           },
         ],
         imports: [],
@@ -251,12 +251,12 @@ describe('schema to model', () => {
           {
             name: 'code',
             signature: 'code: number;',
-            decoration: "@property({name: 'code', required: true})",
+            decoration: '@property({required: true})',
           },
           {
             name: 'message',
             signature: 'message: string;',
-            decoration: "@property({name: 'message', required: true})",
+            decoration: '@property({required: true})',
           },
         ],
         imports: [],
@@ -312,22 +312,22 @@ describe('schema to model', () => {
             {
               name: 'street',
               signature: 'street?: string;',
-              decoration: "@property({name: 'street'})",
+              decoration: '@property()',
             },
             {
               name: 'city',
               signature: 'city?: string;',
-              decoration: "@property({name: 'city'})",
+              decoration: '@property()',
             },
             {
               name: 'state',
               signature: 'state?: string;',
-              decoration: "@property({name: 'state'})",
+              decoration: '@property()',
             },
             {
               name: 'zipCode',
               signature: 'zipCode?: string;',
-              decoration: "@property({name: 'zipCode'})",
+              decoration: '@property()',
             },
           ],
           imports: [],
@@ -347,22 +347,22 @@ describe('schema to model', () => {
           {
             name: 'street',
             signature: 'street?: string;',
-            decoration: "@property({name: 'street'})",
+            decoration: '@property()',
           },
           {
             name: 'city',
             signature: 'city?: string;',
-            decoration: "@property({name: 'city'})",
+            decoration: '@property()',
           },
           {
             name: 'state',
             signature: 'state?: string;',
-            decoration: "@property({name: 'state'})",
+            decoration: '@property()',
           },
           {
             name: 'zipCode',
             signature: 'zipCode?: string;',
-            decoration: "@property({name: 'zipCode'})",
+            decoration: '@property()',
           },
         ],
         imports: [],
@@ -381,37 +381,37 @@ describe('schema to model', () => {
           {
             name: 'id',
             signature: 'id: number;',
-            decoration: "@property({name: 'id', required: true})",
+            decoration: '@property({required: true})',
           },
           {
             name: 'first-name',
-            signature: 'firstName?: string;',
-            decoration: "@property({name: 'first-name'})",
+            signature: "'first-name'?: string;",
+            decoration: '@property()',
           },
           {
             name: 'last-name',
-            signature: 'lastName?: Name;',
-            decoration: "@property({name: 'last-name'})",
+            signature: "'last-name'?: Name;",
+            decoration: '@property()',
           },
           {
             name: 'profiles',
             signature: 'profiles?: ProfileId[];',
-            decoration: "@property.array(String, {name: 'profiles'})",
+            decoration: '@property.array(String)',
           },
           {
             name: 'emails',
             signature: 'emails?: string[];',
-            decoration: "@property.array(String, {name: 'emails'})",
+            decoration: '@property.array(String)',
           },
           {
             name: 'addresses',
             signature: 'addresses?: AddressList;',
-            decoration: "@property.array(Address, {name: 'addresses'})",
+            decoration: '@property.array(Address)',
           },
           {
             name: 'us-office',
-            signature: 'usOffice?: Address;',
-            decoration: "@property({name: 'us-office'})",
+            signature: "'us-office'?: Address;",
+            decoration: '@property()',
           },
         ],
         imports: [
@@ -423,9 +423,9 @@ describe('schema to model', () => {
         import: "import {Customer} from './customer.model';",
         kind: 'class',
         declaration:
-          '{\n  id: number;\n  firstName?: string;\n  lastName?: Name;\n' +
+          "{\n  id: number;\n  'first-name'?: string;\n  'last-name'?: Name;\n" +
           '  profiles?: ProfileId[];\n  emails?: string[];\n' +
-          '  addresses?: AddressList;\n  usOffice?: Address;\n}',
+          "  addresses?: AddressList;\n  'us-office'?: Address;\n}",
         signature: 'Customer',
       },
     ]);
