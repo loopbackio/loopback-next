@@ -368,12 +368,44 @@ export namespace inject {
   };
 }
 
+/**
+ * Assert the target type inspected from TypeScript for injection to be the
+ * expected type. If the types don't match, an error is thrown.
+ * @param injection Injection information
+ * @param expectedType Expected type
+ * @param expectedTypeName Name of the expected type to be used in the error
+ * @returns The name of the target
+ */
+export function assertTargetType(
+  injection: Readonly<Injection>,
+  expectedType: Function,
+  expectedTypeName?: string,
+) {
+  const targetName = ResolutionSession.describeInjection(injection).targetName;
+  const targetType = inspectTargetType(injection);
+  if (targetType && targetType !== expectedType) {
+    expectedTypeName = expectedTypeName || expectedType.name;
+    throw new Error(
+      `The type of ${targetName} (${
+        targetType.name
+      }) is not ${expectedTypeName}`,
+    );
+  }
+  return targetName;
+}
+
+/**
+ * Resolver for `@inject.getter`
+ * @param ctx
+ * @param injection
+ * @param session
+ */
 function resolveAsGetter(
   ctx: Context,
   injection: Readonly<Injection>,
   session: ResolutionSession,
 ) {
-  assertTargetIsGetter(injection);
+  assertTargetType(injection, Function, 'Getter function');
   const bindingSelector = injection.bindingSelector as BindingAddress;
   // We need to clone the session for the getter as it will be resolved later
   const forkedSession = ResolutionSession.fork(session);
@@ -385,29 +417,17 @@ function resolveAsGetter(
   };
 }
 
-function assertTargetIsGetter(injection: Readonly<Injection>) {
-  const targetType = inspectTargetType(injection);
-  if (targetType && targetType !== Function) {
-    const targetName = ResolutionSession.describeInjection(injection)!
-      .targetName;
-    throw new Error(
-      `The type of ${targetName} (${targetType.name}) is not a Getter function`,
-    );
-  }
-}
-
+/**
+ * Resolver for `@inject.setter`
+ * @param ctx
+ * @param injection
+ */
 function resolveAsSetter(ctx: Context, injection: Injection) {
-  const targetType = inspectTargetType(injection);
-  const targetName = ResolutionSession.describeInjection(injection)!.targetName;
-  if (targetType && targetType !== Function) {
-    throw new Error(
-      `The type of ${targetName} (${targetType.name}) is not a Setter function`,
-    );
-  }
+  const targetName = assertTargetType(injection, Function, 'Setter function');
   const bindingSelector = injection.bindingSelector;
   if (!isBindingAddress(bindingSelector)) {
     throw new Error(
-      `@inject.setter for (${targetType.name}) does not allow BindingFilter`,
+      `@inject.setter (${targetName}) does not allow BindingFilter.`,
     );
   }
   // No resolution session should be propagated into the setter
@@ -418,17 +438,11 @@ function resolveAsSetter(ctx: Context, injection: Injection) {
 }
 
 function resolveAsBinding(ctx: Context, injection: Injection) {
-  const targetType = inspectTargetType(injection);
-  const targetName = ResolutionSession.describeInjection(injection)!.targetName;
-  if (targetType && targetType !== Binding) {
-    throw new Error(
-      `The type of ${targetName} (${targetType.name}) is not Binding`,
-    );
-  }
+  const targetName = assertTargetType(injection, Binding);
   const bindingSelector = injection.bindingSelector;
   if (!isBindingAddress(bindingSelector)) {
     throw new Error(
-      `@inject.binding for (${targetType.name}) does not allow BindingFilter`,
+      `@inject.binding (${targetName}) does not allow BindingFilter.`,
     );
   }
   return findOrCreateBindingForInjection(ctx, injection);
@@ -481,8 +495,9 @@ export function describeInjectedArguments(
 }
 
 /**
- * Inspect the target type
- * @param injection
+ * Inspect the target type for the injection to find out the corresponding
+ * JavaScript type
+ * @param injection Injection information
  */
 function inspectTargetType(injection: Readonly<Injection>) {
   let type = MetadataInspector.getDesignTypeForProperty(
@@ -514,21 +529,10 @@ function resolveValuesByFilter(
   injection: Readonly<Injection>,
   session: ResolutionSession,
 ) {
-  assertTargetIsArray(injection);
+  assertTargetType(injection, Array);
   const bindingFilter = injection.bindingSelector as BindingFilter;
   const view = new ContextView(ctx, bindingFilter);
   return view.resolve(session);
-}
-
-function assertTargetIsArray(injection: Readonly<Injection>) {
-  const targetType = inspectTargetType(injection);
-  if (targetType !== Array) {
-    const targetName = ResolutionSession.describeInjection(injection)!
-      .targetName;
-    throw new Error(
-      `The type of ${targetName} (${targetType.name}) is not Array`,
-    );
-  }
 }
 
 /**
@@ -544,7 +548,7 @@ function resolveAsGetterByFilter(
   injection: Readonly<Injection>,
   session: ResolutionSession,
 ) {
-  assertTargetIsGetter(injection);
+  assertTargetType(injection, Function, 'Getter function');
   const bindingFilter = injection.bindingSelector as BindingFilter;
   return createViewGetter(ctx, bindingFilter, session);
 }
@@ -556,14 +560,7 @@ function resolveAsGetterByFilter(
  * @param injection Injection information
  */
 function resolveAsContextView(ctx: Context, injection: Readonly<Injection>) {
-  const targetType = inspectTargetType(injection);
-  if (targetType && targetType !== ContextView) {
-    const targetName = ResolutionSession.describeInjection(injection)!
-      .targetName;
-    throw new Error(
-      `The type of ${targetName} (${targetType.name}) is not ContextView`,
-    );
-  }
+  assertTargetType(injection, ContextView);
 
   const bindingFilter = injection.bindingSelector as BindingFilter;
   const view = new ContextView(ctx, bindingFilter);
