@@ -368,7 +368,7 @@ In LoopBack, we handle the request in the following steps:
 Let's see how different kinds of Express middleware can be mapped to LoopBack
 concepts:
 
-#### Request-preprocessing middleware
+### Request-preprocessing middleware
 
 At the moment, LoopBack does not provide API for mounting arbitrary middleware,
 we are discussing this feature in issues
@@ -386,7 +386,7 @@ top-level Express application where you can add arbitrary middleware as needed.
 You can find more details about this approach in
 [Creating an Express Application with LoopBack REST API](express-with-lb4-rest-tutorial.md)
 
-#### Route handlers
+### Route handlers
 
 In Express, a route handler is a middleware function that serves the response
 and does not call `next()`. Handlers can be registered using APIs like
@@ -400,20 +400,19 @@ Router instance and add it to a LoopBack application as an external router - see
 [Mounting an Express Router](Routes.md#mounting-an-express-router). This way it
 is possible to implement server endpoints using Express APIs.
 
-#### Static files
+### Static files
 
 LoopBack provides native API for registering static assets as described in
-[Serve static files](Application.html#serve-static-files). Under the hood,
-static assets are served by
-[serve-static](https://www.npmjs.com/package/serve-static) middleware from
-Express.
+[Serve static files](Application.md#serve-static-files). Under the hood, static
+assets are served by [serve-static](https://www.npmjs.com/package/serve-static)
+middleware from Express.
 
 The main difference between LoopBack and vanilla Express applications: LoopBack
 ensures that static-asset middleware is always invoked as the last one, only
 when no other route handled the request. This is important for performance
 reasons to avoid costly filesystem calls.
 
-#### Error handling middleware
+### Error handling middleware
 
 In Express, errors are handled by a special form of middleware, one that's
 accepting four arguments: `err`, `request`, `response`, `next`. It's up to the
