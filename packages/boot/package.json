@@ -27,7 +27,7 @@
     "@loopback/core": "^1.4.1",
     "@loopback/repository": "^1.4.1",
     "@loopback/service-proxy": "^1.1.4",
-    "@types/debug": "^4.1.0",
+    "@types/debug": "^4.1.4",
     "@types/glob": "^7.1.1",
     "debug": "^4.0.1",
     "glob": "^7.1.2"

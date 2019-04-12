@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@phenomnomnominal/tsquery": "^3.0.0",
-    "camelcase-keys": "^5.0.0",
+    "camelcase-keys": "^5.1.0",
     "chalk": "^2.3.2",
     "change-case": "^3.0.2",
     "debug": "^4.0.1",
