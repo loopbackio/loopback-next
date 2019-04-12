@@ -479,9 +479,9 @@ children:
       url: zOSconnectEE.html
       output: 'web, pdf'
 
-- title: 'Other connectors'
+  - title: 'Other connectors'
     url: Other-connectors.html
-    output: 'web'
+    output: 'web, pdf'
     children:
 
     - title: 'Email connector'
