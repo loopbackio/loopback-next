@@ -186,7 +186,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
 
     ctx.bind(STORE_KEY).toClass(Store);
     expect(() => ctx.getSync<Store>(STORE_KEY)).to.throw(
-      'The type of Store.constructor[0] (String) is not a Getter function',
+      'The type of Store.constructor[0] (String) is not Getter function',
     );
   });
 
@@ -376,7 +376,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
 
       ctx.bind(STORE_KEY).toClass(StoreWithWrongSetterType);
       expect(() => ctx.getSync<Store>(STORE_KEY)).to.throw(
-        'The type of StoreWithWrongSetterType.constructor[0] (Object) is not a Setter function',
+        'The type of StoreWithWrongSetterType.constructor[0] (Object) is not Setter function',
       );
     });
 
