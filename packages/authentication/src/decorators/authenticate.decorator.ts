@@ -4,18 +4,23 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  MetadataInspector,
   Constructor,
+  MetadataInspector,
   MethodDecoratorFactory,
 } from '@loopback/context';
 import {AUTHENTICATION_METADATA_KEY} from '../keys';
 
+export interface AuthenticationOption {
+  isPassportStrategy?: boolean;
+  // tslint:disable-next-line:no-any
+  [key: string]: any;
+}
 /**
  * Authentication metadata stored via Reflection API
  */
 export interface AuthenticationMetadata {
   strategy: string;
-  options?: Object;
+  options?: AuthenticationOption;
 }
 
 /**

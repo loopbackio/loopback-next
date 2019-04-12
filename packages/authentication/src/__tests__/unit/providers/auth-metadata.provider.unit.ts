@@ -3,10 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
-import {CoreBindings} from '@loopback/core';
 import {Context, Provider} from '@loopback/context';
-import {AuthenticationMetadata, authenticate} from '../../..';
+import {CoreBindings} from '@loopback/core';
+import {expect} from '@loopback/testlab';
+import {authenticate, AuthenticationMetadata} from '../../..';
 import {AuthMetadataProvider} from '../../../providers';
 
 describe('AuthMetadataProvider', () => {

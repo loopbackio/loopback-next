@@ -25,7 +25,7 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
     @inject.getter(AuthenticationBindings.STRATEGY)
     readonly getStrategy: Getter<AuthenticationStrategy>,
     @inject.setter(AuthenticationBindings.CURRENT_USER)
-    readonly setCurrentUser: Setter<UserProfile>,
+    readonly setCurrentUser: Setter<UserProfile | undefined>,
   ) {}
 
   /**
