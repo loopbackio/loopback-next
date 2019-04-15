@@ -3,10 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Filter, WhereBuilder, Where, FilterBuilder} from '../query';
-import {AnyObject, DataObject} from '../common-types';
 import {cloneDeep} from 'lodash';
+import {AnyObject, DataObject} from '../common-types';
 import {Entity} from '../model';
+import {Filter, FilterBuilder, Where, WhereBuilder} from '../query';
 
 /**
  * A utility function which takes a filter and enforces constraint(s)
@@ -55,12 +55,16 @@ export function constrainDataObject<T extends Entity>(
 ): DataObject<T> {
   const constrainedData = cloneDeep(originalData);
   for (const c in constraint) {
-    if (constrainedData.hasOwnProperty(c))
+    if (constrainedData.hasOwnProperty(c)) {
+      // Known limitation: === does not work for objects such as ObjectId
+      if (originalData[c] === constraint[c]) continue;
       throw new Error(`Property "${c}" cannot be changed!`);
+    }
     (constrainedData as AnyObject)[c] = constraint[c];
   }
   return constrainedData;
 }
+
 /**
  * A utility function which takes an array of model instance data and
  * enforces constraint(s) on it
@@ -71,13 +75,7 @@ export function constrainDataObject<T extends Entity>(
  */
 export function constrainDataObjects<T extends Entity>(
   originalData: DataObject<T>[],
-  constraint: Partial<T>,
+  constraint: DataObject<T>,
 ): DataObject<T>[] {
-  const constrainedData = cloneDeep(originalData);
-  for (let obj of constrainedData) {
-    for (let prop in constraint) {
-      (obj as AnyObject)[prop] = constraint[prop];
-    }
-  }
-  return constrainedData;
+  return originalData.map(obj => constrainDataObject(obj, constraint));
 }
