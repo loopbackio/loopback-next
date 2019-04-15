@@ -215,6 +215,30 @@ The complete list of valid attributes for property definitions can be found in
 LoopBack 3's
 [Model definition section](https://loopback.io/doc/en/lb3/Model-definition-JSON-file.html#properties).
 
+You can also specify the validation rules in the field `jsonSchema`. For
+example:
+
+```ts
+@model()
+class Product extends Entity {
+  @property({
+    name: 'name',
+    description: "The product's common name.",
+    type: 'string',
+    // Specify the JSON validation rules here
+    jsonSchema: {
+      maxLength: 30,
+      minLength: 10,
+    },
+  })
+  public name: string;
+}
+```
+
+Check out the documentation of
+[Parsing requests](Parsing-requests.md#request-body) to see how to do it in
+details.
+
 <!-- NOTE(kjdelisle): Until we have a metadata docs section, link to the
 package in the repository. -->
 
