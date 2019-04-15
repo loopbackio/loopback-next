@@ -39,6 +39,14 @@ Here are the currently supported relations:
 - [BelongsTo](BelongsTo-relation.md)
 - [HasOne](hasOne-relation.md)
 
+{% include note.html content="
+The `hasMany` relation may alternatively be implemented using the
+`referencesMany` and `embedsMany` relations. These relations are similar, but
+not the same. Since each database paradigm comes with different trade-offs and
+thus different databases require the applications to use different relation
+types, use the [relation best suited for your database](https://github.com/strongloop/loopback-next/issues/2341).
+" %}
+
 The articles on each type of relation above will show you how to leverage the
 new relation engine to define and configure relations in your LoopBack
 application.
