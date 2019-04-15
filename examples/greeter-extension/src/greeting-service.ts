@@ -4,8 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Getter} from '@loopback/context';
+import {extensionPoint, extensions} from '@loopback/core';
 import chalk from 'chalk';
-import {configuration, extensionPoint, extensions} from './decorators';
+import {configuration} from './decorators';
 import {Greeter, GREETER_EXTENSION_POINT_NAME} from './types';
 
 /**
@@ -23,9 +24,9 @@ export class GreetingService {
   constructor(
     /**
      * Inject a getter function to fetch greeters (bindings tagged with
-     * `{extensionPoint: GREETER_EXTENSION_POINT_NAME}`)
+     * `{[CoreTags.EXTENSION_POINT]: GREETER_EXTENSION_POINT_NAME}`)
      */
-    @extensions() // Sugar for @inject.getter(filterByTag({extensionPoint: GREETER_EXTENSION_POINT_NAME}))
+    @extensions()
     private getGreeters: Getter<Greeter[]>,
     /**
      * An extension point should be able to receive its options via dependency
