@@ -320,6 +320,10 @@ connector cannot process. The flag can allow three values:
    ([#2333](https://github.com/strongloop/loopback-next/issues/2333)) and
    `SqlConnector` (see below).
 
+   Deprecate
+   [ModelDefinition.prototype.indexes()](https://github.com/strongloop/loopback-datasource-juggler/blob/fe83f3cfd11f3fa313a5f9a253149a3b8479a572/lib/
+   model-definition.js#L194) API in favor of this new `Connector` method.
+
 4. Spike: a template implementation of index & constraint migration in
    `SqlConnector`. The intention is to share as much of index/FK migration logic
    among all SQL connectors. This spike will allow us to better understand the
@@ -333,6 +337,8 @@ connector cannot process. The flag can allow three values:
 
 5. Modify the description of the story to implement index/FK in `memory`
    connector, require the connector to warn about index/PK fields not supported.
+
+   _Done on 2019-04-15._
 
 ## Detailed description of the current syntax
 
