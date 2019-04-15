@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingKey, MetadataAccessor} from '@loopback/context';
+import {BindingKey} from '@loopback/context';
 import {GreetingService} from './greeting-service';
 
 /**
@@ -12,8 +12,3 @@ import {GreetingService} from './greeting-service';
 export const GREETING_SERVICE = BindingKey.create<GreetingService>(
   'services.GreetingService',
 );
-
-export const EXTENSION_POINT_NAME = MetadataAccessor.create<
-  {name: string},
-  ClassDecorator
->('extensionPoint.name');

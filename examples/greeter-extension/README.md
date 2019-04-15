@@ -51,6 +51,8 @@ context. In our case, we mark `GreetingService` as the extension point that
 needs to access a list of greeters.
 
 ```ts
+import {Getter} from '@loopback/context';
+import {extensionFilter, CoreTags} from '@loopback/core';
 /**
  * An extension point for greeters that can greet in different languages
  */
@@ -58,21 +60,21 @@ export class GreetingService {
   constructor(
     /**
      * Inject a getter function to fetch greeters (bindings tagged with
-     * `{extensionPoint: GREETER_EXTENSION_POINT_NAME}`)
+     * `{extensionFor: GREETER_EXTENSION_POINT_NAME}`)
      */
-    @inject.getter(
-      bindingTagFilter({extensionPoint: GREETER_EXTENSION_POINT_NAME}),
-    )
+    @inject.getter(extensionFilter(GREETER_EXTENSION_POINT_NAME))
     private getGreeters: Getter<Greeter[]>,
   ) {}
   // ...
 }
 ```
 
-To customize metadata such as `id` for the extension point, we can use
+To customize metadata such as `name` for the extension point, we can use
 `@extensionPoint` to decorate the class, such as:
 
 ```ts
+import {extensionPoint} from '@loopback/core';
+
 @extensionPoint(GREETER_EXTENSION_POINT_NAME)
 export class GreetingService {}
 ```
@@ -83,14 +85,16 @@ To simplify access to extensions for a given extension point, we use dependency
 injection to receive a `getter` function that gives us a list of greeters.
 
 ```ts
+import {extensions, extensionPoint} from '@loopback/core';
+
 @extensionPoint(GREETER_EXTENSION_POINT_NAME)
 export class GreetingService {
   constructor(
     /**
      * Inject a getter function to fetch greeters (bindings tagged with
-     * `{extensionPoint: GREETER_EXTENSION_POINT_NAME}`)
+     * `{extensionFor: GREETER_EXTENSION_POINT_NAME}`)
      */
-    @extensions() // Sugar for @inject.getter(filterByTag({extensionPoint: GREETER_EXTENSION_POINT_NAME}))
+    @extensions()
     private getGreeters: Getter<Greeter[]>, // ...
   ) {}
 }
@@ -203,7 +207,7 @@ Please note we use
 [`@bind`](https://loopback.io/doc/en/lb4/Binding.html#configure-binding-attributes-for-a-class)
 to customize how the class can be bound. In this case, `asGreeter` is a binding
 template function, which is equivalent as configuring a binding with
-`{extensionPoint: 'greeter'}` tag and in the `SINGLETON` scope.
+`{extensionFor: 'greeter'}` tag and in the `SINGLETON` scope.
 
 ```ts
 /**
@@ -211,7 +215,7 @@ template function, which is equivalent as configuring a binding with
  * @param binding
  */
 export const asGreeter: BindingTemplate = binding =>
-  binding.inScope(BindingScope.SINGLETON).tag({extensionPoint: 'greeter'});
+  binding.inScope(BindingScope.SINGLETON).tag({extensionFor: 'greeter'});
 ```
 
 ## Register an extension point
@@ -254,7 +258,14 @@ export class GreeterComponent implements Component {
 
 To connect an extension to an extension point, we just have to bind the
 extension to the `Context` and tag the binding with
-`{extensionPoint: 'greeters'}`.
+`{extensionFor: 'greeters'}`.
+
+```ts
+import {addExtension} from '@loopback/core';
+addExtension(app, 'greeters', FrenchGreeter);
+```
+
+Or:
 
 ```ts
 app
@@ -263,7 +274,7 @@ app
   .apply(asGreeter);
 ```
 
-Or
+Or:
 
 ```ts
 app.add(createBindingFromClass(FrenchGreeter));
