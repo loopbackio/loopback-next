@@ -289,7 +289,9 @@ connector cannot process. The flag can allow three values:
    foreign keys; it needs to fill the corresponding fields in juggler model
    settings.
 
-   Update `examples/todo-list` to define FK and UNIQUE constraints
+   Update `examples/todo-list` and
+   [`loopback4-example-shopping`](https://github.com/strongloop/loopback4-example-shopping)
+   to define FK and UNIQUE constraints
 
    Update CLI templates for relations to define the constraints too. If the pull
    request [#2426](https://github.com/strongloop/loopback-next/pull/2426) is not
