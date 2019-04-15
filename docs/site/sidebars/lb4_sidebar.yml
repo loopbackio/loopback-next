@@ -349,6 +349,10 @@ children:
     url: Creating-servers.html
     output: 'web, pdf'
 
+  - title: 'Extension point and extensions'
+    url: Extension-point-and-extensions.html
+    output: 'web, pdf'
+
   - title: 'Extending request body parsing'
     url: Extending-request-body-parsing.html
     output: 'web, pdf'
