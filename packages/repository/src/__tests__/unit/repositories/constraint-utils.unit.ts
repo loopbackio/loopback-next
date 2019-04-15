@@ -5,14 +5,14 @@
 
 import {expect} from '@loopback/testlab';
 import {
-  FilterBuilder,
-  Filter,
-  Where,
-  constrainFilter,
-  constrainWhere,
   constrainDataObject,
   constrainDataObjects,
+  constrainFilter,
+  constrainWhere,
   Entity,
+  Filter,
+  FilterBuilder,
+  Where,
 } from '../../..';
 
 describe('constraint utility functions', () => {
@@ -87,7 +87,7 @@ describe('constraint utility functions', () => {
       });
     });
 
-    it('throws error when the query changes field in constrain', () => {
+    it('throws error when the query changes field in constraint', () => {
       const input = new Order({id: 1, description: 'order 1'});
       const constraint: Partial<Order> = {id: 2};
       expect(() => {
@@ -95,15 +95,49 @@ describe('constraint utility functions', () => {
       }).to.throwError(/Property "id" cannot be changed!/);
     });
 
+    it('allows constrained fields with the same values', () => {
+      const input = new Order({id: 2, description: 'order 1'});
+      const constraint: Partial<Order> = {id: 2};
+      const result = constrainDataObject(input, constraint);
+      expect(result).to.deepEqual(
+        new Order({
+          id: 2,
+          description: 'order 1',
+        }),
+      );
+    });
+  });
+
+  describe('constrainDataObjects', () => {
     it('constrains array of data objects', () => {
       const input = [
-        new Order({id: 1, description: 'order 1'}),
-        new Order({id: 2, description: 'order 2'}),
+        new Order({description: 'order 1'}),
+        new Order({description: 'order 2'}),
       ];
       const constraint: Partial<Order> = {id: 3};
       const result = constrainDataObjects(input, constraint);
       expect(result[0]).to.containDeep(Object.assign({}, input[0], constraint));
       expect(result[1]).to.containDeep(Object.assign({}, input[1], constraint));
+    });
+
+    it('throws error when the query changes field in constraint', () => {
+      const input = [new Order({id: 1, description: 'order 1'})];
+      const constraint: Partial<Order> = {id: 2};
+      expect(() => {
+        constrainDataObjects(input, constraint);
+      }).to.throwError(/Property "id" cannot be changed!/);
+    });
+
+    it('allows constrained fields with the same values', () => {
+      const input = [new Order({id: 2, description: 'order 1'})];
+      const constraint: Partial<Order> = {id: 2};
+      const result = constrainDataObjects(input, constraint);
+      expect(result).to.deepEqual([
+        new Order({
+          id: 2,
+          description: 'order 1',
+        }),
+      ]);
     });
   });
 
