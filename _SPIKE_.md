@@ -37,6 +37,12 @@ at the bottom.
 
 ## Proposal
 
+### Decorators
+
+I am proposing to reuse existing `@property` and `@model` decorators. They are
+accepting full Model/Property definition interfaces, no additional changes are
+needed to make them support the new index/FK syntax.
+
 ### Indexes at property level
 
 Support the following two short-hand forms only. Ask users to use model-level
@@ -44,40 +50,37 @@ form to define indexes that are more complex.
 
 - a "plain" index with no special configuration
 
-  ```js
-  {
-    email: {
-      type: 'string',
-      index: true,
-    }
-  }
+  ```ts
+  @property({
+    type: 'string',
+    index: true,
+  })
+  email: string;
   ```
 
 - UNIQUE index with no special configuration
 
-  ```js
-  {
-    email: {
-      type: 'string',
-      unique: true,
-    }
-  }
+  ```ts
+  @property({
+    type: 'string',
+    unique: true,
+  })
+  email: string;
   ```
 
 We should also allow models to configure indexes for certain databases only by
 using database-specific options we already use to control column name, storage
 data type, etc.
 
-```js
-{
-  email: {
-    type: 'string',
-    mysql: {
-      index: true,
-      // unique: true
-    }
+```ts
+@property({
+  type: 'string',
+  mysql: {
+    index: true,
+    // unique: true
   }
-}
+})
+email: string;
 ```
 
 ### Indexes at model level
@@ -98,8 +101,8 @@ At high-level, keep the current syntax where indexes are defined via a key-value
 map stored in `settings.indexes` property, the key is the index name and the
 value is an index definition object.
 
-```js
-{
+```ts
+@model({
   strict: false,
   forceID: true,
   indexes: {
@@ -108,9 +111,10 @@ value is an index definition object.
     },
     nameQueries: {
       // index definition
-    }
-  }
-}
+    },
+  },
+})
+class MyModel extends Entity {}
 ```
 
 Individual indexes can be defined as follows:
@@ -120,7 +124,7 @@ Individual indexes can be defined as follows:
 
   ```js
   // definition of an individual index
-  {
+  emailIndex: {
     properties: {
       email: 1, // ASC
       createdAt: 'DESC', // alias for -1
@@ -143,7 +147,7 @@ Individual indexes can be defined as follows:
 - Database-specific options will be stored under a key with the connector name:
 
   ```js
-  {
+  emailIndex: {
     properties: {
       email: 'ASC',
     },
@@ -173,7 +177,7 @@ Individual indexes can be defined as follows:
   `columns` should be nested inside connector-specific options:
 
   ```js
-  {
+  emailIndex: {
     properties: {
       // default setup used by most connectors
       email: 'ASC',
@@ -189,41 +193,43 @@ Individual indexes can be defined as follows:
 
 Introduce a new property metadata "references" (inspired by ANSI SQL):
 
-```js
-{
-  categoryId: {
-    type: 'number',
-    references: {
-      // a TypeResolver
-      model: () => Category,
-      // or a Model class
-      model: Category
-      // or a Model name
-      model: 'Category'
+```ts
+@property({
+  type: 'number',
+  required: true,
+  references: {
+    // a TypeResolver
+    model: () => Category,
+    // or a Model class
+    model: Category
+    // or a Model name
+    model: 'Category'
 
-      // name of the target property
-      property: 'id',
+    // name of the target property
+    property: 'id',
 
-      // referential actions
-      onUpdate: 'CASCADE',
-      onDelete: 'CASCADE',
-    }
-}
+    // referential actions
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  }
+})
+categoryId: number;
 ```
 
 Support connector-specific configuration too.
 
-```js
-{
-  categoryId: {
-    type: 'number',
-    mysql: {
-      references: {
-        model: () => Category,
-        property: 'id',
-      }
+```ts
+@property({
+  type: 'number',
+  required: true,
+  mysql: {
+    references: {
+      model: () => Category,
+      property: 'id',
     }
-}
+  }
+})
+categoryId: number;
 ```
 
 ### Foreign keys at model level
@@ -231,8 +237,8 @@ Support connector-specific configuration too.
 Modify the current connector-dependant syntax to make it easier to read and
 support composite foreign keys too.
 
-```js
-{
+```ts
+@model({
   foreignKeys: {
     [keyName]: {
       // optional, overrides keyName
@@ -241,7 +247,6 @@ support composite foreign keys too.
       // Property name(s) (will be mapped to column name)
       // formerly: foreignKey
       sourceProperties: ['source property name'],
-
 
       // formerly: entity
       targetModel: 'TargetModel',
@@ -253,16 +258,11 @@ support composite foreign keys too.
       // referential actions
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
-    }
-  }
-}
+    },
+  },
+})
+class MyModel extends Entity {}
 ```
-
-### Decorators
-
-I am proposing to reuse existing `@property` and `@model` decorators. They are
-accepting full Model/Property definition interfaces, no additional changes are
-needed to make them support the new index/FK syntax.
 
 ### Additional changes
 
