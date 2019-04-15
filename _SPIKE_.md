@@ -138,7 +138,7 @@ Individual indexes can be defined as follows:
 
 - Keep supporting `keys` field as a key-value map from database column name to
   indexing order, see the description of the actual status below. Entries from
-  `keys` should me merged with entries from `properties`, `keys` taking
+  `keys` should be merged with entries from `properties`, `keys` taking
   precedence (replacing `properties` entries).
 
 - Keep supporting `unique` field (set it to `true` to let the index enforce
