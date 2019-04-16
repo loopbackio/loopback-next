@@ -4,3 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 module.exports = require('./dist');
+
+if (require.main === module) {
+  const app = new module.exports.GreetingApplication();
+  app.main();
+}

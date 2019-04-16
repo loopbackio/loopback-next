@@ -3,19 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Application, bind, createBindingFromClass} from '@loopback/core';
+import {bind, createBindingFromClass} from '@loopback/core';
 import {expect} from '@loopback/testlab';
 import chalk from 'chalk';
-import {
-  asGreeter,
-  Greeter,
-  GreeterComponent,
-  GreetingService,
-  GREETING_SERVICE,
-} from '..';
+import {asGreeter, Greeter, GreetingService, GREETING_SERVICE} from '..';
+import {GreetingApplication} from '../application';
 
 describe('greeter-extension-pont', () => {
-  let app: Application;
+  let app: GreetingApplication;
   let greetingService: GreetingService;
 
   beforeEach(givenAppWithGreeterComponent);
@@ -71,11 +66,10 @@ describe('greeter-extension-pont', () => {
   });
 
   function givenAppWithGreeterComponent() {
-    app = new Application();
-    app.component(GreeterComponent);
+    app = new GreetingApplication();
   }
 
   async function findGreetingService() {
-    greetingService = await app.get(GREETING_SERVICE);
+    greetingService = await app.getGreetingService();
   }
 });

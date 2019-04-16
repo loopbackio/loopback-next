@@ -354,6 +354,16 @@ app.bind('greeters.ChineseGreeter.options').to({nameFirst: false});
 - [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
 - [Join the team](https://github.com/strongloop/loopback-next/issues/110)
 
+## Try out
+
+Run `npm start` from the root folder to run the sample application. You should
+see the following message:
+
+```
+English: Hello, Raymond
+Chinese: Raymond，你好
+```
+
 ## Tests
 
 Run `npm test` from the root folder.
