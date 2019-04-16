@@ -264,8 +264,10 @@ class MyModel extends Entity {}
 
 When a model specifies an index or constraint that's not supported by the
 connector running automigration, the connector should let the user know about
-the problem. To preserve backwards compatibility, I am proposing to print a
-console warning only.
+the problem. To preserve backwards compatibility, we will print a console
+warning and ignore any unsupported options.
+
+**OUT OF SCOPE OF THE INITIAL VERSION:**
 
 We can also introduce a new `options` flag for `autoupdate`/`automigrate` to
 control what happens when a model definition specifies metadata that the
