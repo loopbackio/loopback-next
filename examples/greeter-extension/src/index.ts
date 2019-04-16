@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+export * from './application';
 export * from './component';
 export * from './greeting-service';
 export * from './keys';
