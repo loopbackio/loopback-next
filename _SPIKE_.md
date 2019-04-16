@@ -200,10 +200,6 @@ Introduce a new property metadata "references" (inspired by ANSI SQL):
   references: {
     // a TypeResolver
     model: () => Category,
-    // or a Model class
-    model: Category
-    // or a Model name
-    model: 'Category'
 
     // name of the target property
     property: 'id',
@@ -324,6 +320,10 @@ connector cannot process. The flag can allow three values:
    [ModelDefinition.prototype.indexes()](https://github.com/strongloop/loopback-datasource-juggler/blob/fe83f3cfd11f3fa313a5f9a253149a3b8479a572/lib/
    model-definition.js#L194) API in favor of this new `Connector` method.
 
+   Create follow-up tasks to leverage the new helper in our NoSQL connectors and
+   thus let the connectors understand the new FK/INDEX definition syntax. (One
+   GH issue per connector please.)
+
 4. Spike: a template implementation of index & constraint migration in
    `SqlConnector`. The intention is to share as much of index/FK migration logic
    among all SQL connectors. This spike will allow us to better understand the
@@ -334,6 +334,10 @@ connector cannot process. The flag can allow three values:
    inspiration.
 
    Detect index/FK metadata not supported by SQL and report warnings to console.
+
+   Create follow-up tasks to leverage the new helper in our SQL connectors and
+   thus let the connectors understand the new FK/INDEX definition syntax. (One
+   GH issue per connector please.)
 
 5. Modify the description of the story to implement index/FK in `memory`
    connector, require the connector to warn about index/PK fields not supported.

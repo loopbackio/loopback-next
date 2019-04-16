@@ -108,7 +108,7 @@ export interface ModelIndexDefinition {
 export interface ModelForeignKeyDefinition {
   name?: string;
   sourceProperties: string[];
-  targetModel: string | typeof Model | TypeResolver<Model>;
+  targetModel: TypeResolver<Model>;
   targetProperties: string[];
   onUpdate?: ForeignKeyReferenceAction;
   onDelete?: ForeignKeyReferenceAction;
