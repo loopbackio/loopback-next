@@ -3,7 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {addExtension, Constructor, Context} from '@loopback/core';
 import {Request} from '@loopback/rest';
+import {AuthenticationBindings} from './keys';
 
 /**
  * interface definition of a function which accepts a request
@@ -50,4 +52,27 @@ export interface AuthenticationStrategy {
    * @param request
    */
   authenticate(request: Request): Promise<UserProfile | undefined>;
+}
+
+export const AUTHENTICATION_STRATEGY_NOT_FOUND =
+  'AUTHENTICATION_STRATEGY_NOT_FOUND';
+
+export const USER_PROFILE_NOT_FOUND = 'USER_PROFILE_NOT_FOUND';
+
+/**
+ * Registers an authentication strategy as an extension of the AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME extension point.
+ */
+export function registerAuthenticationStrategy(
+  context: Context,
+  strategyClass: Constructor<AuthenticationStrategy>,
+) {
+  addExtension(
+    context,
+    AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
+    strategyClass,
+    {
+      namespace:
+        AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
+    },
+  );
 }

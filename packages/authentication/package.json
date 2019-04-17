@@ -36,7 +36,8 @@
     "@types/node": "^10.11.2",
     "@types/passport": "^1.0.0",
     "@types/passport-http": "^0.3.6",
-    "passport-http": "^0.3.0"
+    "passport-http": "^0.3.0",
+    "jsonwebtoken": "^8.5.1"
   },
   "keywords": [
     "LoopBack",
