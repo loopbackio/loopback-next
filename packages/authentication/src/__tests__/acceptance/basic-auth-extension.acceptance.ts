@@ -3,13 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject} from '@loopback/context';
-import {addExtension, Application} from '@loopback/core';
+import {createBindingFromClass, inject} from '@loopback/context';
+import {Application} from '@loopback/core';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {api, get} from '@loopback/openapi-v3';
 import {
   FindRoute,
-  HttpErrors,
   InvokeMethod,
   ParseParams,
   Reject,
@@ -28,11 +27,12 @@ import {
   AuthenticationComponent,
   UserProfile,
 } from '../..';
-import {AuthenticationStrategyNotFoundError} from '../../types';
-import {BasicAuthenticationStrategyBindings, USER_REPO} from '../fixtures/keys';
-import {BasicAuthenticationUserService} from '../fixtures/services/basic-auth-user-service';
-import {BasicAuthenticationStrategy} from '../fixtures/strategies/basic-strategy';
-import {UserRepository} from '../fixtures/users/user.repository';
+import {AuthenticateActionProvider} from '../acceptance/authentication-action-provider/authentication-action.provider';
+import {BasicAuthenticationStrategy} from '../acceptance/strategies/basic-strategy';
+import {StrategyResolverProvider} from '../acceptance/strategy-resolver/strategy.resolver';
+import {BasicAuthenticationStrategyBindings} from './keys';
+import {BasicAuthenticationUserService} from './services/user-service';
+import {UserRepository} from './users/user.repository';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -75,7 +75,7 @@ describe('Basic Authentication', () => {
     const client = whenIMakeRequestTo(server);
 
     //not passing in 'Authorization' header
-    await client.get('/whoAmI').expect(401);
+    await client.get('/whoAmI').expect(404);
   });
 
   it(`returns error for missing 'Basic ' portion of Authorization header value`, async () => {
@@ -88,7 +88,7 @@ describe('Basic Authentication', () => {
     await client
       .get('/whoAmI')
       .set('Authorization', 'NotB@s1c ' + hash)
-      .expect(401);
+      .expect(404);
   });
 
   it(`returns error for missing ':' in decrypted Authorization header credentials value`, async () => {
@@ -101,7 +101,7 @@ describe('Basic Authentication', () => {
     await client
       .get('/whoAmI')
       .set('Authorization', 'Basic ' + hash)
-      .expect(401);
+      .expect(404);
   });
 
   it(`returns error for too many parts in decrypted Authorization header credentials value`, async () => {
@@ -116,7 +116,7 @@ describe('Basic Authentication', () => {
     await client
       .get('/whoAmI')
       .set('Authorization', 'Basic ' + hash)
-      .expect(401);
+      .expect(404);
   });
 
   it('allows anonymous requests to methods with no decorator', async () => {
@@ -174,21 +174,6 @@ describe('Basic Authentication', () => {
     app.controller(MyController);
   }
 
-  it('returns error for unknown authentication strategy', async () => {
-    class InfoController {
-      @get('/status')
-      @authenticate('doesnotexist')
-      status() {
-        return {running: true};
-      }
-    }
-
-    app.controller(InfoController);
-    await whenIMakeRequestTo(server)
-      .get('/status')
-      .expect(401);
-  });
-
   function givenAuthenticatedSequence() {
     class MySequence implements SequenceHandler {
       constructor(
@@ -207,31 +192,8 @@ describe('Basic Authentication', () => {
           const {request, response} = context;
           const route = this.findRoute(request);
 
-          //
-          // The authentication action utilizes a strategy resolver to find
-          // an authentication strategy by name, and then it calls
-          // strategy.authenticate(request).
-          //
-          // The strategy resolver throws a non-http error if it cannot
-          // resolve the strategy. It is necessary to catch this error
-          // and rethrow it as in http error (in our REST application example)
-          //
-          // Errors thrown by the strategy implementations are http errors
-          // (in our REST application example). We simply rethrow them.
-          //
-          try {
-            //call authentication action
-            await this.authenticateRequest(request);
-          } catch (e) {
-            // strategy not found error
-            if (e instanceof AuthenticationStrategyNotFoundError) {
-              throw new HttpErrors.Unauthorized(e.message);
-            } //if
-            else {
-              // strategy error
-              throw e;
-            } //endif
-          } //catch
+          // Authenticate
+          await this.authenticateRequest(request);
 
           // Authentication successful, proceed to invoke controller
           const args = await this.parseParams(request, route);
@@ -248,15 +210,15 @@ describe('Basic Authentication', () => {
   }
 
   function givenProviders() {
-    addExtension(
-      server,
-      AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
-      BasicAuthenticationStrategy,
-      {
-        namespace:
-          AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
-      },
-    );
+    server
+      .bind(AuthenticationBindings.STRATEGY)
+      .toProvider(StrategyResolverProvider);
+
+    server
+      .bind(AuthenticationBindings.AUTH_ACTION)
+      .toProvider(AuthenticateActionProvider);
+
+    server.add(createBindingFromClass(BasicAuthenticationStrategy));
 
     server
       .bind(BasicAuthenticationStrategyBindings.USER_SERVICE)
@@ -301,7 +263,7 @@ describe('Basic Authentication', () => {
       },
     });
 
-    server.bind(USER_REPO).to(users);
+    server.bind(BasicAuthenticationStrategyBindings.USER_REPO).to(users);
   }
 
   function whenIMakeRequestTo(restServer: RestServer): Client {

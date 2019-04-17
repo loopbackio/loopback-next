@@ -4,3 +4,5 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './authenticate.decorator';
+export * from './authentication-extension.constants';
+export * from './authentication-extension.decorators';

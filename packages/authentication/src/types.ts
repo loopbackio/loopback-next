@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Request} from '@loopback/rest';
+import { Request } from '@loopback/rest';
 
 /**
  * interface definition of a function which accepts a request
@@ -52,12 +52,48 @@ export interface AuthenticationStrategy {
   authenticate(request: Request): Promise<UserProfile | undefined>;
 }
 
-/**
- * The error thrown when the authentication strategy resolver
- * cannot find the specified authentication strategy by name.
- */
-export class AuthenticationStrategyNotFoundError extends Error {
-  constructor(error: string) {
-    super(error);
-  }
+export interface UserService<U, C> {
+  /**
+   * Verify the identity of a user, construct a corresponding user profile using
+   * the user information and return the user profile.
+   *
+   * A pseudo code for basic authentication:
+   * ```ts
+   * verifyCredentials(credentials: C): Promise<U> {
+   *   // the id field shouldn't be hardcoded
+   *   user = await UserRepo.find(credentials.id);
+   *   matched = await passwordService.compare(user.password, credentials.password);
+   *   if (matched) return user;
+   *   // throw a JS error, agnostic of the client type
+   *   throw new Error('authentication failed');
+   * };
+   * ```
+   *
+   * A pseudo code for 3rd party authentication:
+   * ```ts
+   * type UserInfo = {
+   *   accessToken: string;
+   *   refreshToken: string;
+   *   userProfile: string;
+   * };
+   * verifyCredentials(credentials: C): Promise<U> {
+   *   try {
+   *     userInfo: UserInfo = await getUserInfoFromFB(credentials);
+   *   } catch (e) {
+   *     // throw a JS error, agnostic of the client type
+   *     throw e;
+   *   }
+   * };
+   * ```
+   * @param credentials Credentials for basic auth or configurations for 3rd party.
+   *                    Example see the
+   */
+  verifyCredentials(credentials: C): Promise<U>;
+
+  /**
+   * Convert the user returned by `verifyCredentials()` to a common
+   * user profile that describes a user in your application
+   * @param user The user returned from `verifyCredentials()`
+   */
+  convertToUserProfile(user: U): UserProfile;
 }
