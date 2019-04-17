@@ -51,3 +51,6 @@ export interface AuthenticationStrategy {
    */
   authenticate(request: Request): Promise<UserProfile | undefined>;
 }
+
+export const AUTHENTICATION_STRATEGY_NOT_FOUND =
+  'AUTHENTICATION_STRATEGY_NOT_FOUND';

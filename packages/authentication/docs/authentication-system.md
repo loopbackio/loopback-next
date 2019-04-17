@@ -163,3 +163,193 @@ And the abstractions for:
     - return user
   - controller function:
     - process the injected user
+
+## Registering an authentication strategy via an extension point
+
+Authentication strategies register themselves to an authentication strategy
+provider using an
+[ExtensionPoint/Extension Pattern](https://wiki.eclipse.org/FAQ_What_are_extensions_and_extension_points%3F)
+as described in the
+[Greeter extension example](https://github.com/strongloop/loopback-next/tree/master/examples/greeter-extension).
+
+The `AuthenticationStrategyProvider` class in
+`src/providers/auth-strategy.provider.ts` (shown below) declares an
+`extension point` named
+`AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME` via the
+`@extensionPoint` decorator. The binding scope is set to **transient** because
+an authentication strategy **may** differ with each request.
+`AuthenticationStrategyProvider` is responsible for finding (with the aid of the
+`@extensions()` **getter** decorator) and returning an authentication strategy
+which has a specific **name** and has been registered as an **extension** of the
+aforementioned **extension point**.
+
+```ts
+@extensionPoint(
+  AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
+  {scope: BindingScope.TRANSIENT},
+)
+export class AuthenticationStrategyProvider
+  implements Provider<AuthenticationStrategy | undefined> {
+  constructor(
+    @inject(AuthenticationBindings.METADATA)
+    private metadata: AuthenticationMetadata,
+    @extensions()
+    private authenticationStrategies: Getter<AuthenticationStrategy[]>,
+  ) {}
+  async value(): Promise<AuthenticationStrategy | undefined> {
+    if (!this.metadata) {
+      return undefined;
+    }
+    const name = this.metadata.strategy;
+    const strategy = await this.findAuthenticationStrategy(name);
+    if (!strategy) {
+      // important not to throw a non-protocol-specific error here
+      let error = new Error(`The strategy '${name}' is not available.`);
+      Object.assign(error, {
+        code: AUTHENTICATION_STRATEGY_NOT_FOUND,
+      });
+      throw error;
+    }
+    return strategy;
+  }
+
+  async findAuthenticationStrategy(name: string) {
+    const strategies = await this.authenticationStrategies();
+    const matchingAuthStrategy = strategies.find(a => a.name === name);
+    return matchingAuthStrategy;
+  }
+}
+```
+
+The **name** of the strategy is specified in the `@authenticate` decorator that
+is added to a controller method when authentication is desired for a specific
+endpoint.
+
+```ts
+    class UserController {
+      constructor() {}
+      @get('/whoAmI')
+      @authenticate('basic')
+      whoAmI()
+      {
+        ...
+      }
+    }
+```
+
+An authentication strategy must implement the `AuthenticationStrategy` interface
+defined in `src/types.ts`.
+
+```ts
+export interface BasicAuthenticationStrategyCredentials {
+  email: string;
+  password: string;
+}
+
+export class BasicAuthenticationStrategy implements AuthenticationStrategy {
+  name: string = 'basic';
+
+  constructor(
+    @inject(BasicAuthenticationStrategyBindings.USER_SERVICE)
+    private user_service: BasicAuthenticationUserService,
+  ) {}
+
+  async authenticate(request: Request): Promise<UserProfile | undefined> {
+    const credentials: BasicAuthenticationStrategyCredentials = this.extractCredentals(
+      request,
+    );
+    const user = await this.user_service.verifyCredentials(credentials);
+    const userProfile = this.user_service.convertToUserProfile(user);
+
+    return userProfile;
+  }
+```
+
+A custom sequence must be created to insert the
+`AuthenticationBindings.AUTH_ACTION` action. The `AuthenticateFn` function
+interface is implemented by the `value()` function of
+`AuthenticateActionProvider` class in `/src/providers/auth-action.provider.ts`.
+
+```ts
+class SequenceIncludingAuthentication implements SequenceHandler {
+  constructor(
+    @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
+    @inject(SequenceActions.PARSE_PARAMS)
+    protected parseParams: ParseParams,
+    @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
+    @inject(SequenceActions.SEND) protected send: Send,
+    @inject(SequenceActions.REJECT) protected reject: Reject,
+    @inject(AuthenticationBindings.AUTH_ACTION)
+    protected authenticateRequest: AuthenticateFn,
+  ) {}
+
+  async handle(context: RequestContext) {
+    try {
+      const {request, response} = context;
+      const route = this.findRoute(request);
+      const args = await this.parseParams(request, route);
+
+      //
+      // The authentication action utilizes a strategy resolver to find
+      // an authentication strategy by name, and then it calls
+      // strategy.authenticate(request).
+      //
+      // The strategy resolver throws a non-http error if it cannot
+      // resolve the strategy. It is necessary to catch this error
+      // and rethrow it as in http error (in our REST application example)
+      //
+      // Errors thrown by the strategy implementations are http errors
+      // (in our REST application example). We simply rethrow them.
+      //
+      try {
+        //call authentication action
+        await this.authenticateRequest(request);
+      } catch (e) {
+        // strategy not found error
+        if (e instanceof AuthenticationStrategyNotFoundError) {
+          throw new HttpErrors.Unauthorized(e.message);
+        } //if
+        else {
+          // strategy error
+          throw e;
+        } //endif
+      } //catch
+
+      // Authentication successful, proceed to invoke controller
+      const result = await this.invoke(route, args);
+      this.send(response, result);
+    } catch (error) {
+      this.reject(context, error);
+      return;
+    }
+  }
+}
+```
+
+Then custom sequence must be bound to the application, and the authentication
+strategy must be added as an **extension** of the **extension point** using the
+`addExtension` function.
+
+```ts
+export class MyApplication extends BootMixin(
+  ServiceMixin(RepositoryMixin(RestApplication)),
+) {
+  constructor(options?: ApplicationConfig) {
+    super(options);
+
+    this.component(AuthenticationComponent);
+
+    this.sequence(SequenceIncludingAuthentication);
+
+    addExtension(
+      this,
+      AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
+      BasicAuthenticationStrategy,
+      {
+        namespace:
+          AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
+      },
+    );
+  }
+}
+```
