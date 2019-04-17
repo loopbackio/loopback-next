@@ -383,6 +383,12 @@ export function assertTargetType(
 ) {
   const targetName = ResolutionSession.describeInjection(injection).targetName;
   const targetType = inspectTargetType(injection);
+
+  if (!isDesignTypeSupported()) {
+    // If design:type is not emitted, skip the check
+    // See https://github.com/strongloop/loopback-next/issues/2764
+    return targetName;
+  }
   if (targetType && targetType !== expectedType) {
     expectedTypeName = expectedTypeName || expectedType.name;
     throw new Error(
@@ -392,6 +398,28 @@ export function assertTargetType(
     );
   }
   return targetName;
+}
+
+/**
+ * Cache the flag to see if `design:type` is supported
+ */
+let designTypeSupported: boolean | undefined = undefined;
+
+/**
+ * Check if `design:type` is emitted by TypeScript compiler
+ */
+function isDesignTypeSupported() {
+  if (typeof designTypeSupported === 'boolean') return designTypeSupported;
+  class DesignTypeTest {
+    @inject('env')
+    public getEnv: Getter<string>;
+  }
+  const designType = MetadataInspector.getDesignTypeForProperty(
+    DesignTypeTest.prototype,
+    'getEnv',
+  );
+  designTypeSupported = designType === Function;
+  return designTypeSupported;
 }
 
 /**
