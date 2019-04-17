@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Strategy} from 'passport';
-import {AuthenticateFn, UserProfile} from './types';
-import {AuthenticationMetadata} from './decorators';
 import {BindingKey} from '@loopback/context';
 import {MetadataAccessor} from '@loopback/metadata';
+import {Strategy} from 'passport';
+import {AuthenticationMetadata} from './decorators';
+import {AuthenticateFn, UserProfile} from './types';
 
 /**
  * Binding keys used by this component.
@@ -87,18 +87,22 @@ export namespace AuthenticationBindings {
   /**
    * Key used to inject the user instance retrieved by the
    * authentication function
-   *
+   * ```ts
    * class MyController {
    *   constructor(
    *     @inject(AuthenticationBindings.CURRENT_USER) private user: UserProfile,
    *   ) {}
    *
    * // ... routes that may need authentication
+   * ```
    * }
    */
   export const CURRENT_USER = BindingKey.create<UserProfile | undefined>(
     'authentication.currentUser',
   );
+
+  export const AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME =
+    'authentication-strategy';
 }
 
 /**

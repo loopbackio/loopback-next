@@ -51,3 +51,13 @@ export interface AuthenticationStrategy {
    */
   authenticate(request: Request): Promise<UserProfile | undefined>;
 }
+
+/**
+ * The error thrown when the authentication strategy resolver
+ * cannot find the specified authentication strategy by name.
+ */
+export class AuthenticationStrategyNotFoundError extends Error {
+  constructor(error: string) {
+    super(error);
+  }
+}
