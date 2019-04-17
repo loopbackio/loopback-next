@@ -1,4 +1,5 @@
 {
   "extension": [".js", ".ts"],
-  "reporter": ["html"]
+  "reporter": ["html"],
+  "exclude-after-remap": false
 }
