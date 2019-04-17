@@ -3,14 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Constructor, inject, Provider} from '@loopback/context';
 import {CoreBindings} from '@loopback/core';
-import {Constructor, Provider, inject} from '@loopback/context';
 import {AuthenticationMetadata, getAuthenticateMetadata} from '../decorators';
 
 /**
- * @description Provides authentication metadata of a controller method
- * @example `context.bind('authentication.meta')
- *   .toProvider(AuthMetadataProvider)`
+ * Provides authentication metadata of a controller method
+ * @example `context.bind('authentication.operationMetadata').toProvider(AuthMetadataProvider)`
  */
 export class AuthMetadataProvider
   implements Provider<AuthenticationMetadata | undefined> {
