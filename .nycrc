@@ -1,21 +1,21 @@
 {
-    "include": [
-      "packages/*/dist",
-      "packages/cli/",
-      "examples/*/dist"
-    ],
-    "exclude": [
-      "packages/*/dist/__tests__/",
-      "packages/cli/test/",
-      "examples/*/dist/__tests__/",
-      "**/.sandbox/"
-    ],
-    "extension": [
-      ".js",
-      ".ts"
-    ],
-    "reporter": [
-      "html"
-    ]
-  }
-
+  "include": [
+    "packages/*/dist",
+    "packages/cli/",
+    "examples/*/dist"
+  ],
+  "exclude": [
+    "packages/*/dist/__tests__/",
+    "packages/cli/test/",
+    "examples/*/dist/__tests__/",
+    "**/.sandbox/"
+  ],
+  "extension": [
+    ".js",
+    ".ts"
+  ],
+  "reporter": [
+    "html"
+  ],
+  "exclude-after-remap": false
+}

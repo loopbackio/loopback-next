@@ -17,7 +17,6 @@ Usage:
 
 function run(argv, options) {
   const utils = require('./utils');
-  const path = require('path');
 
   const nycOpts = argv.slice(2);
   const args = [...nycOpts];
