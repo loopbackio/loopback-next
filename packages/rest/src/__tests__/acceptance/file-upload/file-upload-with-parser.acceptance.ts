@@ -3,10 +3,22 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import { Client, createRestAppClient, expect, givenHttpServerConfig } from '@loopback/testlab';
+import {
+  Client,
+  createRestAppClient,
+  expect,
+  givenHttpServerConfig,
+} from '@loopback/testlab';
 import * as multer from 'multer';
 import * as path from 'path';
-import { BodyParser, post, Request, requestBody, RequestBody, RestApplication } from '../../..';
+import {
+  BodyParser,
+  post,
+  Request,
+  requestBody,
+  RequestBody,
+  RestApplication,
+} from '../../..';
 
 const FORM_DATA = 'multipart/form-data';
 
@@ -34,8 +46,8 @@ describe('multipart/form-data parser', () => {
       originalname: 'file-upload-test.txt',
       mimetype: FORM_DATA,
     });
-    expect(res.body.fields.user).equal('john');
-    expect(res.body.fields.email).equal('john@example.com');
+    expect(res.body.fields.user).to.equal('john');
+    expect(res.body.fields.email).to.equal('john@example.com');
   });
 
   class FileUploadController {
@@ -59,7 +71,7 @@ describe('multipart/form-data parser', () => {
         required: true,
         content: {
           [FORM_DATA]: {
-            schema: { type: 'object' },
+            schema: {type: 'object'},
           },
         },
       })
@@ -70,7 +82,7 @@ describe('multipart/form-data parser', () => {
   }
 
   async function givenAClient() {
-    app = new RestApplication({ rest: givenHttpServerConfig() });
+    app = new RestApplication({rest: givenHttpServerConfig()});
     app.bodyParser(MultipartFormDataBodyParser);
     app.controller(FileUploadController);
     await app.start();
@@ -89,7 +101,7 @@ class MultipartFormDataBodyParser implements BodyParser {
 
   async parse(request: Request): Promise<RequestBody> {
     const storage = multer.memoryStorage();
-    const upload = multer({ storage });
+    const upload = multer({storage});
     return new Promise<RequestBody>((resolve, reject) => {
       // tslint:disable-next-line:no-any
       upload.any()(request, {} as any, err => {
