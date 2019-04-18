@@ -21,7 +21,7 @@
     "@loopback/core": "^1.4.1",
     "@loopback/rest": "^1.10.2",
     "ejs": "^2.6.1",
-    "swagger-ui-dist": "^3.20.0"
+    "swagger-ui-dist": "^3.22.1"
   },
   "devDependencies": {
     "@loopback/build": "^1.4.3",
