@@ -3,10 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as express from 'express';
-import {RPCServer} from '../../rpc.server';
-import {routeHandler} from '../../rpc.router';
 import {expect, sinon} from '@loopback/testlab';
+import * as express from 'express';
+import {routeHandler} from '../../rpc.router';
+import {RPCServer} from '../../rpc.server';
 
 describe('rpcRouter', () => {
   describe('routeHandler', () => {
@@ -50,15 +50,16 @@ describe('rpcRouter', () => {
     });
 
     it('throws 500 on unhandled error', async () => {
-      server.get.resolves(
-        new class extends FakeController {
-          // tslint:disable-next-line:no-any
-          getFoo(input: any): string {
-            throw new Error('>:(');
-          }
-        }(),
-      );
+      class ControllerThrowingError extends FakeController {
+        // tslint:disable-next-line:no-any
+        getFoo(input: any): string {
+          throw new Error('>:(');
+        }
+      }
+      server.get.resolves(new ControllerThrowingError());
+
       await routeHandler(server, request, response);
+
       expect(response.statusCode).to.equal(500);
       sinon.assert.called(responseStub);
       expect(responseStub.firstCall.args[0].message).to.match('>:(');
