@@ -12,8 +12,13 @@ import {givenAConnectedDataSource} from '../../helpers';
 
 import {expect} from '@loopback/testlab';
 
-describe('CalculatorService', () => {
+describe('CalculatorService', function() {
   let calculatorService: CalculatorService;
+
+  // The calculator soap server is hosted in the cloud and it takes some time
+  // to wake up and respond to api requests
+  // tslint:disable-next-line:no-invalid-this
+  this.timeout(30000);
 
   before(givenACalculatorService);
 
