@@ -268,6 +268,22 @@ describe('RestApplication (integration)', () => {
     });
   });
 
+  it('mounts Express Router on top of rest basePath', async () => {
+    givenApplication();
+
+    const router = express.Router();
+    router.get('/poodle', function(_req: Request, res: Response) {
+      res.send('Poodle!');
+    });
+    restApp.mountExpressRouter('/dogs', router);
+
+    restApp.basePath('/api');
+    await restApp.start();
+    client = createRestAppClient(restApp);
+
+    await client.get('/api/dogs/poodle').expect(200, 'Poodle!');
+  });
+
   function givenApplication(options?: {rest: RestServerConfig}) {
     options = options || {rest: {port: 0, host: '127.0.0.1'}};
     restApp = new RestApplication(options);
