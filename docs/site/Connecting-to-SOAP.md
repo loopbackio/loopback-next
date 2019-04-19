@@ -3,7 +3,7 @@ title: 'Connecting to SOAP web services'
 toc: false
 layout: page
 keywords: LoopBack
-? tags
+tags:
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Connecting-to-SOAP.html
 summary:

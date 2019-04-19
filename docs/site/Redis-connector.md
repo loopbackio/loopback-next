@@ -1,5 +1,5 @@
 ---
-title: "Redis connector"
+title: 'Redis connector'
 lang: en
 layout: page
 toc: false
@@ -7,7 +7,9 @@ keywords: LoopBack
 tags: connectors
 sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Redis-connector.html
-summary: The Redis connector enables LoopBack applications to connect to Redis data sources.
+summary:
+  The Redis connector enables LoopBack applications to connect to Redis data
+  sources.
 ---
 
 {% include content/strongloop-labs.html lang=page.lang %}
@@ -25,15 +27,18 @@ In your application root directory, enter this command to install the connector:
 $ npm install loopback-connector-redis --save
 ```
 
-This will install the module and add it as a dependency to the application's [`package.json`](package.json) file.
+This will install the module and add it as a dependency to the
+application's [`package.json`](package.json) file.
 
 ## Creating a Redis data source
 
-Use the [data source generator](Data-source-generator.html) to add a Redis data source to your application.
-When prompted for the connector, choose **other,** then enter **redis** for the connector name.
-The entry in the application's `server/datasources.json` will look like this:
+Use the [data source generator](Data-source-generator.html) to add a Redis data
+source to your application. When prompted for the connector, choose **other,**
+then enter **redis** for the connector name. The entry in the application's
+`server/datasources.json` will look like this:
 
 {% include code-caption.html content="server/datasources.json" %}
+
 ```javascript
 "redisDS": {
   "name": "redisDS",
@@ -41,7 +46,8 @@ The entry in the application's `server/datasources.json` will look like this:
 }
 ```
 
-Edit `datasources.json` to add other properties that enable you to connect the data source to a Redis database.
+Edit `datasources.json` to add other properties that enable you to connect the
+data source to a Redis database.
 
 ### Properties
 

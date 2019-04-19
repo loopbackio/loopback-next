@@ -1,5 +1,5 @@
 ---
-title: "Email connector"
+title: 'Email connector'
 lang: en
 layout: page
 keywords: LoopBack
@@ -17,7 +17,8 @@ The email connector is essentially a LoopBack-integrated interface to the [nodem
 
 ## Creating an email data source
 
-Create a new email data source with the [data source generator](Data-source-generator.html):
+Create a new email data source with
+the [data source generator](Data-source-generator.html):
 
 ```shell
 $ lb datasource
@@ -29,9 +30,11 @@ With API Connect v5 developer toolkit:
 $ apic create --type datasource
 ```
 
-When prompted, select **Email** as the connector. This creates an entry in `datasources.json` like this (for example):
+When prompted, select **Email** as the connector. This creates an entry in
+`datasources.json` like this (for example):
 
 {% include code-caption.html content="server/datasources.json" %}
+
 ```javascript
 ...
 "myEmailDataSource": {
@@ -43,9 +46,11 @@ When prompted, select **Email** as the connector. This creates an entry in `data
 
 ## Configuring an email data source
 
-Configure the email data source by editing `/server/datasources.json` (for example):
+Configure the email data source by editing `/server/datasources.json` (for
+example):
 
 {% include code-caption.html content="server/datasources.json" %}
+
 ```javascript
 {
   ...
@@ -75,17 +80,17 @@ For full documentation of configuration options, **refer to the [nodemailer docu
 
 ### Using GMail
 
-{% include tip.html content="
-With GMail, you may need to enable the \"access for less secure apps\" option.
-See:
+{% include tip.html content=" With GMail, you may need to enable the \"access
+for less secure apps\" option. See:
 
 - [Nodemailer: Using GMail](https://github.com/andris9/Nodemailer#using-gmail)
-- [Nodemailer: Authentication](https://github.com/andris9/nodemailer-smtp-transport#authentication) for more information.
-" %}
+- [Nodemailer: Authentication](https://github.com/andris9/nodemailer-smtp-transport#authentication)
+  for more information. " %}
 
 For GMail, configure your email data source as follows:
 
 {% include code-caption.html content="server/datasources.json" %}
+
 ```javascript
 ...
 "Email": {
@@ -107,9 +112,11 @@ For GMail, configure your email data source as follows:
 
 ## Connecting a model to the email data source
 
-Then, connect models to the data source in `/server/model-config.json` as follows (for example):
+Then, connect models to the data source in `/server/model-config.json` as
+follows (for example):
 
 {% include code-caption.html content="server/model-config.json" %}
+
 ```javascript
 {
   ...
@@ -122,28 +129,35 @@ Then, connect models to the data source in `/server/model-config.json` as follow
 
 ## Sending email messages
 
-The following example illustrates how to send emails from an app. Add the following code to a file in the `/models` directory:
+The following example illustrates how to send emails from an app. Add the
+following code to a file in the `/models` directory:
 
 {% include code-caption.html content="server/models/model.js" %}
+
 ```javascript
 module.exports = function(MyModel) {
   // send an email
   MyModel.sendEmail = function(cb) {
-    MyModel.app.models.Email.send({
-      to: 'foo@bar.com',
-      from: 'you@gmail.com',
-      subject: 'my subject',
-      text: 'my text',
-      html: 'my <em>html</em>'
-    }, function(err, mail) {
-      console.log('email sent!');
-      cb(err);
-    });
-  }
+    MyModel.app.models.Email.send(
+      {
+        to: 'foo@bar.com',
+        from: 'you@gmail.com',
+        subject: 'my subject',
+        text: 'my text',
+        html: 'my <em>html</em>',
+      },
+      function(err, mail) {
+        console.log('email sent!');
+        cb(err);
+      },
+    );
+  };
 };
 ```
 
-The default model definition file is [common/models/email.json](https://github.com/strongloop/loopback/blob/master/common/models/email.json) in the LoopBack repository. 
+The default model definition file
+is [common/models/email.json](https://github.com/strongloop/loopback/blob/master/common/models/email.json)
+in the LoopBack repository.
 
 ## Confirming email address
 

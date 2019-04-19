@@ -9,12 +9,14 @@ permalink: /doc/en/lb4/Using-MongoLab.html
 summary:
 ---
 
-If you are using [mLab](https://mlab.com/) to host your MongoDB database, use the LoopBack `url` property to configure your data source,
-since the connection string is dynamically generated.
+If you are using [mLab](https://mlab.com/) to host your MongoDB database, use
+the LoopBack `url` property to configure your data source, since the connection
+string is dynamically generated.
 
-For example, the entry in `datasources.json` might look like this: 
+For example, the entry in `datasources.json` might look like this:
 
 {% include code-caption.html content="/server/datasources.json" %}
+
 ```javascript
 "mongodb": {
   "connector": "loopback-connector-mongodb",
@@ -22,4 +24,5 @@ For example, the entry in `datasources.json` might look like this: 
 }
 ```
 
-For information on how to get your connection URI, see the [mLab documentation](https://devcenter.heroku.com/articles/mongolab#getting-your-connection-uri).
+For information on how to get your connection URI, see
+the [mLab documentation](https://devcenter.heroku.com/articles/mongolab#getting-your-connection-uri).
