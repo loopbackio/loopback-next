@@ -46,6 +46,8 @@ describe('multipart/form-data parser', () => {
       originalname: 'file-upload-test.txt',
       mimetype: FORM_DATA,
     });
+    expect(res.body.fields.user).to.equal('john');
+    expect(res.body.fields.email).to.equal('john@example.com');
   });
 
   class FileUploadController {
@@ -108,8 +110,7 @@ class MultipartFormDataBodyParser implements BodyParser {
           resolve({
             value: {
               files: request.files,
-              // tslint:disable-next-line:no-any
-              fields: (request as any).fields,
+              fields: request.body,
             },
           });
         }
