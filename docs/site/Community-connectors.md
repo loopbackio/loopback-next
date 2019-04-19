@@ -5,7 +5,7 @@ layout: page
 keywords: LoopBack
 tags:
 sidebar: lb4_sidebar
-permalink: /doc/en/lb4/Community-connectors.html
+permalink: /doc/en/lb3/Community-connectors.html
 summary:
 ---
 
