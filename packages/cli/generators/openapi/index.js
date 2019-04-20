@@ -8,7 +8,7 @@
 const BaseGenerator = require('../../lib/base-generator');
 const {debug, debugJson} = require('./utils');
 const {loadAndBuildSpec} = require('./spec-loader');
-const {validateUrlOrFile} = require('./utils');
+const {validateUrlOrFile, escapeComment} = require('./utils');
 const {getControllerFileName} = require('./spec-helper');
 
 const updateIndex = require('../../lib/update-index');
@@ -135,7 +135,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
       if (debug.enabled) {
         debug('Copying artifact to: %s', dest);
       }
-      this.copyTemplatedFiles(source, dest, c);
+      this.copyTemplatedFiles(source, dest, mixinEscapeComment(c));
     }
   }
 
@@ -153,7 +153,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
         debug('Copying artifact to: %s', dest);
       }
       const source = m.kind === 'class' ? modelSource : typeSource;
-      this.copyTemplatedFiles(source, dest, m);
+      this.copyTemplatedFiles(source, dest, mixinEscapeComment(m));
     }
   }
 
@@ -173,3 +173,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     if (this.shouldExit()) return;
   }
 };
+
+function mixinEscapeComment(context) {
+  return Object.assign(context, {escapeComment});
+}

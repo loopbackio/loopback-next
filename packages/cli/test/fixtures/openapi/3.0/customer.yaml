@@ -14,14 +14,14 @@ paths:
     parameters:
       - name: access-token
         in: query
-        description: Access token
+        description: Access token (/* access_token */)
         required: false
         schema:
           type: string
     get:
       tags:
         - Customer
-      description: Returns all customers
+      description: Returns all customers (/* customers */)
       operationId: getCustomers
       parameters:
         - name: if

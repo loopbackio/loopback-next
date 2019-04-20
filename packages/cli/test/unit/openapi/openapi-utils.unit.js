@@ -41,4 +41,11 @@ describe('openapi utils', () => {
     expect(utils.escapePropertyName('customer_id')).to.eql('customer_id');
     expect(utils.escapePropertyName('customerid')).to.eql('customerid');
   });
+
+  it('escapes chars for comments', () => {
+    expect(utils.escapeComment('/* abc */')).to.eql('\\/* abc *\\/');
+    expect(utils.escapeComment('/* abc')).to.eql('\\/* abc');
+    expect(utils.escapeComment('abc */')).to.eql('abc *\\/');
+    expect(utils.escapeComment('abc')).to.eql('abc');
+  });
 });
