@@ -23,13 +23,13 @@ describe('openapi to controllers/models', () => {
         imports: ["import {Customer} from '../models/customer.model';"],
         methods: [
           {
-            description: 'Returns all customers',
+            description: 'Returns all customers (/* customers */)',
             comments: [
-              'Returns all customers',
+              'Returns all customers (/* customers */)',
               '\n',
               '@param _if if condition',
               '@param limit maximum number of results to return',
-              '@param accessToken Access token',
+              '@param accessToken Access token (/* access_token */)',
               '@returns customer response',
             ],
             decoration: "@operation('get', '/customers')",
@@ -45,7 +45,7 @@ describe('openapi to controllers/models', () => {
               'Creates a new customer',
               '\n',
               '@param _requestBody Customer to add',
-              '@param accessToken Access token',
+              '@param accessToken Access token (/* access_token */)',
               '@returns customer response',
             ],
             decoration: "@operation('post', '/customers')",

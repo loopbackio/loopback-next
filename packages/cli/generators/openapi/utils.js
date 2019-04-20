@@ -170,6 +170,16 @@ function escapePropertyName(name) {
   return name;
 }
 
+/**
+ * Escape a string to be used as a block comment
+ *
+ * @param {string} comment
+ */
+function escapeComment(comment) {
+  comment = comment || '';
+  return comment.replace(/\/\*/g, '\\/*').replace(/\*\//g, '*\\/');
+}
+
 function toJsonStr(val) {
   return json5.stringify(val, null, 2);
 }
@@ -183,6 +193,7 @@ module.exports = {
   camelCase: _.camelCase,
   escapeIdentifier,
   escapePropertyName,
+  escapeComment,
   toJsonStr,
   validateUrlOrFile,
 };
