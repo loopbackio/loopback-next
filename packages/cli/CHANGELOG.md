@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.11.0...@loopback/cli@1.11.1) (2019-04-20)
+
+
+### Bug Fixes
+
+* **cli:** keep or escape property names for models ([cb308ad](https://github.com/strongloop/loopback-next/commit/cb308ad))
+
+
+
+
+
 # [1.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.10.0...@loopback/cli@1.11.0) (2019-04-11)
 
 

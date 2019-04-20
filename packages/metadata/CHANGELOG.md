@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@1.0.13...@loopback/metadata@1.1.0) (2019-04-20)
+
+
+### Features
+
+* **metadata:** support symbols used as property/method keys ([9e7ea17](https://github.com/strongloop/loopback-next/commit/9e7ea17))
+
+
+
+
+
 ## [1.0.13](https://github.com/strongloop/loopback-next/compare/@loopback/metadata@1.0.12...@loopback/metadata@1.0.13) (2019-04-11)
 
 **Note:** Version bump only for package @loopback/metadata

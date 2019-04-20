@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.7](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@1.4.6...@loopback/example-soap-calculator@1.4.7) (2019-04-20)
+
+**Note:** Version bump only for package @loopback/example-soap-calculator
+
+
+
+
+
 ## [1.4.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-soap-calculator@1.4.5...@loopback/example-soap-calculator@1.4.6) (2019-04-11)
 
 **Note:** Version bump only for package @loopback/example-soap-calculator

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.14.0...@loopback/docs@1.15.0) (2019-04-20)
+
+
+### Bug Fixes
+
+* **docs:** fix sequence levels ([47350c3](https://github.com/strongloop/loopback-next/commit/47350c3))
+
+
+### Features
+
+* **context:** add `[@inject](https://github.com/inject).binding` and improve `[@inject](https://github.com/inject).setter` ([a396274](https://github.com/strongloop/loopback-next/commit/a396274))
+
+
+
+
+
 # [1.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.13.0...@loopback/docs@1.14.0) (2019-04-11)
 
 

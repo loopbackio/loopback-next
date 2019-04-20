@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.11.0...@loopback/context@1.12.0) (2019-04-20)
+
+
+### Features
+
+* **build:** add more TypeScript "strict" checks ([866aa2f](https://github.com/strongloop/loopback-next/commit/866aa2f))
+* **context:** add `[@inject](https://github.com/inject).binding` and improve `[@inject](https://github.com/inject).setter` ([a396274](https://github.com/strongloop/loopback-next/commit/a396274))
+* **context:** fix generic typing for BindingFilter ([372b406](https://github.com/strongloop/loopback-next/commit/372b406))
+
+
+
+
+
 # [1.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.10.0...@loopback/context@1.11.0) (2019-04-11)
 
 

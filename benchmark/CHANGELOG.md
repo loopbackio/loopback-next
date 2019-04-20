@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.18...@loopback/benchmark@1.2.0) (2019-04-20)
+
+
+### Features
+
+* **build:** add more TypeScript "strict" checks ([866aa2f](https://github.com/strongloop/loopback-next/commit/866aa2f))
+
+
+
+
+
 ## [1.1.18](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.17...@loopback/benchmark@1.1.18) (2019-04-11)
 
 **Note:** Version bump only for package @loopback/benchmark

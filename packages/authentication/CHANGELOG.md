@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@1.1.2...@loopback/authentication@1.2.0) (2019-04-20)
+
+
+### Bug Fixes
+
+* **authentication:** fix broken link in authentication docs ([ee071f6](https://github.com/strongloop/loopback-next/commit/ee071f6))
+
+
+### Features
+
+* **context:** add `[@inject](https://github.com/inject).binding` and improve `[@inject](https://github.com/inject).setter` ([a396274](https://github.com/strongloop/loopback-next/commit/a396274))
+* introduce an authentication strategy interface ([6ebb283](https://github.com/strongloop/loopback-next/commit/6ebb283))
+
+
+
+
+
 ## [1.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@1.1.1...@loopback/authentication@1.1.2) (2019-04-11)
 
 **Note:** Version bump only for package @loopback/authentication

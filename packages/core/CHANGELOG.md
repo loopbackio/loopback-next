@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.4.1...@loopback/core@1.5.0) (2019-04-20)
+
+
+### Features
+
+* **build:** add more TypeScript "strict" checks ([866aa2f](https://github.com/strongloop/loopback-next/commit/866aa2f))
+
+
+
+
+
 ## [1.4.1](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.4.0...@loopback/core@1.4.1) (2019-04-11)
 
 **Note:** Version bump only for package @loopback/core

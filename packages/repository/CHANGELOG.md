@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.4.1...@loopback/repository@1.5.0) (2019-04-20)
+
+
+### Bug Fixes
+
+* **repository:** relax constrain check to allow input containing constrained values ([c774ed1](https://github.com/strongloop/loopback-next/commit/c774ed1))
+
+
+### Features
+
+* **build:** add more TypeScript "strict" checks ([866aa2f](https://github.com/strongloop/loopback-next/commit/866aa2f))
+
+
+
+
+
 ## [1.4.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.4.0...@loopback/repository@1.4.1) (2019-04-11)
 
 **Note:** Version bump only for package @loopback/repository
