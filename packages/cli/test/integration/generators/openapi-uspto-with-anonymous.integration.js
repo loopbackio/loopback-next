@@ -55,7 +55,7 @@ describe('openapi-generator specific files', () => {
 
     assert.fileContent(
       searchController,
-      `async performSearch(@requestBody() requestBody: PerformSearchRequestBody, ` +
+      `async performSearch(@requestBody() _requestBody: PerformSearchRequestBody, ` +
         `@param({name: 'version', in: 'path'}) version: string, ` +
         `@param({name: 'dataset', in: 'path'}) dataset: string): ` +
         `Promise<PerformSearchResponseBody> {`,
