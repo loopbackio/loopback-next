@@ -2,12 +2,11 @@
 // Node module: @loopback/authentication
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-import {inject} from '@loopback/context';
-import {addExtension, Application} from '@loopback/core';
+import {createBindingFromClass, inject} from '@loopback/context';
+import {Application} from '@loopback/core';
 import {get} from '@loopback/openapi-v3';
 import {
   FindRoute,
-  HttpErrors,
   InvokeMethod,
   ParseParams,
   Reject,
@@ -26,18 +25,22 @@ import {
   AuthenticationComponent,
   UserProfile,
 } from '../..';
-import {AuthenticationStrategyNotFoundError} from '../../types';
-import {JWTAuthenticationStrategyBindings, USER_REPO} from '../fixtures/keys';
-import {JWTService} from '../fixtures/services/jwt-service';
-import {JWTAuthenticationStrategy} from '../fixtures/strategies/jwt-strategy';
-import {UserRepository} from '../fixtures/users/user.repository';
+import {AuthenticateActionProvider} from '../acceptance/authentication-action-provider/authentication-action.provider';
+import {JWTAuthenticationStrategy} from '../acceptance/strategies/jwt-strategy';
+import {StrategyResolverProvider} from '../acceptance/strategy-resolver/strategy.resolver';
+import {
+  BasicAuthenticationStrategyBindings,
+  JWTAuthenticationStrategyBindings,
+} from './keys';
+import {JWTService} from './services/token-service';
+import {UserRepository} from './users/user.repository';
 
 const SequenceActions = RestBindings.SequenceActions;
 
 describe('JWT Authentication', () => {
   let app: Application;
   let server: RestServer;
-  let test_users: UserRepository;
+  let users: UserRepository;
 
   beforeEach(givenAServer);
   beforeEach(givenAuthenticatedSequence);
@@ -48,7 +51,7 @@ describe('JWT Authentication', () => {
       constructor(
         @inject(JWTAuthenticationStrategyBindings.TOKEN_SERVICE)
         public tokenService: JWTService,
-        @inject(USER_REPO)
+        @inject(BasicAuthenticationStrategyBindings.USER_REPO)
         public users: UserRepository,
       ) {}
 
@@ -87,19 +90,19 @@ describe('JWT Authentication', () => {
 
     app.controller(InfoController);
 
-    const the_token: string = (await whenIMakeRequestTo(server)
+    const token: string = (await whenIMakeRequestTo(server)
       .get('/login')
       .expect(200)).text;
 
-    expect(the_token !== null).to.equal(true);
-    expect(typeof the_token === 'string').to.equal(true);
+    expect(token).to.be.not.Null;
+    expect(token).to.be.String;
 
     const email = (await whenIMakeRequestTo(server)
       .get('/whoAmI')
-      .set('access_token', the_token)
+      .set('access_token', token)
       .expect(200)).text;
 
-    expect(email).to.equal(test_users.list['joe@example.com'].user.email);
+    expect(email).to.equal(users.list['joe@example.com'].user.email);
   });
 
   it('returns error due to expired token', async () => {
@@ -189,7 +192,7 @@ describe('JWT Authentication', () => {
       constructor(
         @inject(JWTAuthenticationStrategyBindings.TOKEN_SERVICE)
         public tokenService: JWTService,
-        @inject(USER_REPO)
+        @inject(BasicAuthenticationStrategyBindings.USER_REPO)
         public users: UserRepository,
       ) {}
 
@@ -221,7 +224,7 @@ describe('JWT Authentication', () => {
       constructor(
         @inject(JWTAuthenticationStrategyBindings.TOKEN_SERVICE)
         public tokenService: JWTService,
-        @inject(USER_REPO)
+        @inject(BasicAuthenticationStrategyBindings.USER_REPO)
         public users: UserRepository,
       ) {}
 
@@ -262,21 +265,6 @@ describe('JWT Authentication', () => {
       .expect(200, {running: true});
   });
 
-  it('returns error for unknown authentication strategy', async () => {
-    class InfoController {
-      @get('/status')
-      @authenticate('doesnotexist')
-      status() {
-        return {running: true};
-      }
-    }
-
-    app.controller(InfoController);
-    await whenIMakeRequestTo(server)
-      .get('/status')
-      .expect(401);
-  });
-
   async function givenAServer() {
     app = new Application();
     app.component(AuthenticationComponent);
@@ -302,31 +290,8 @@ describe('JWT Authentication', () => {
           const {request, response} = context;
           const route = this.findRoute(request);
 
-          //
-          // The authentication action utilizes a strategy resolver to find
-          // an authentication strategy by name, and then it calls
-          // strategy.authenticate(request).
-          //
-          // The strategy resolver throws a non-http error if it cannot
-          // resolve the strategy. It is necessary to catch this error
-          // and rethrow it as in http error (in our REST application example)
-          //
-          // Errors thrown by the strategy implementations are http errors
-          // (in our REST application example). We simply rethrow them.
-          //
-          try {
-            //call authentication action
-            await this.authenticateRequest(request);
-          } catch (e) {
-            // strategy not found error
-            if (e instanceof AuthenticationStrategyNotFoundError) {
-              throw new HttpErrors.Unauthorized(e.message);
-            } //if
-            else {
-              // strategy error
-              throw e;
-            } //endif
-          } //catch
+          // Authenticate
+          await this.authenticateRequest(request);
 
           // Authentication successful, proceed to invoke controller
           const args = await this.parseParams(request, route);
@@ -343,15 +308,15 @@ describe('JWT Authentication', () => {
   }
 
   function givenProviders() {
-    addExtension(
-      server,
-      AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
-      JWTAuthenticationStrategy,
-      {
-        namespace:
-          AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
-      },
-    );
+    server
+      .bind(AuthenticationBindings.STRATEGY)
+      .toProvider(StrategyResolverProvider);
+
+    server
+      .bind(AuthenticationBindings.AUTH_ACTION)
+      .toProvider(AuthenticateActionProvider);
+
+    server.add(createBindingFromClass(JWTAuthenticationStrategy));
 
     server
       .bind(JWTAuthenticationStrategyBindings.TOKEN_SECRET)
@@ -363,7 +328,7 @@ describe('JWT Authentication', () => {
       .bind(JWTAuthenticationStrategyBindings.TOKEN_SERVICE)
       .toClass(JWTService);
 
-    test_users = new UserRepository({
+    users = new UserRepository({
       'joe@example.com': {
         user: {
           id: '1',
@@ -402,7 +367,7 @@ describe('JWT Authentication', () => {
       },
     });
 
-    server.bind(USER_REPO).to(test_users);
+    server.bind(BasicAuthenticationStrategyBindings.USER_REPO).to(users);
   }
 
   function whenIMakeRequestTo(restServer: RestServer): Client {

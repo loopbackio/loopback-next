@@ -1,5 +1,5 @@
-// Copyright IBM Corp. 2018. All Rights Reserved.
-// Node module: loopback4-example-shopping
+// Copyright IBM Corp. 2019. All Rights Reserved.
+// Node module: @loopback/authentication
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
@@ -52,8 +52,8 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
     if (!strategy.authenticate) {
       throw new Error('invalid strategy parameter');
     }
-    const user = await strategy.authenticate(request);
-    if (user) this.setCurrentUser(user);
-    return user;
+    const userProfile = await strategy.authenticate(request);
+    if (userProfile) this.setCurrentUser(userProfile);
+    return userProfile;
   }
 }

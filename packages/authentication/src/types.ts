@@ -97,3 +97,8 @@ export interface UserService<U, C> {
    */
   convertToUserProfile(user: U): UserProfile;
 }
+
+export interface TokenService {
+  verifyToken(token: string): Promise<UserProfile>;
+  generateToken(userProfile: UserProfile): Promise<string>;
+}

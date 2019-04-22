@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2019. All Rights Reserved.
+// Node module: @loopback/authentication
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {bind, inject} from '@loopback/context';
 import {HttpErrors, Request} from '@loopback/rest';
 import {asAuthenticationStrategy} from '../../../decorators/authentication-extension.constants';
@@ -8,10 +13,6 @@ import {BasicAuthenticationUserService} from '../services/user-service';
 export interface BasicAuthenticationStrategyCredentials {
   email: string;
   password: string;
-}
-
-export interface BasicAuthenticationStrategyOptions {
-  [property: string]: any;
 }
 
 @bind(asAuthenticationStrategy)
