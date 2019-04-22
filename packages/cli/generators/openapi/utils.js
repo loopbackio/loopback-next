@@ -128,6 +128,11 @@ const JS_KEYWORDS = [
   'false',
 ];
 
+/**
+ * Avoid tslint error - Shadowed name: 'requestBody'
+ */
+const DECORATOR_NAMES = ['operation', 'param', 'requestBody'];
+
 const SAFE_IDENTIFER = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/;
 
 /**
@@ -147,6 +152,9 @@ function escapeIdentifier(name) {
   }
   if (!name.match(SAFE_IDENTIFER)) {
     name = _.camelCase(name);
+  }
+  if (DECORATOR_NAMES.includes(name)) {
+    return '_' + name;
   }
   return name;
 }

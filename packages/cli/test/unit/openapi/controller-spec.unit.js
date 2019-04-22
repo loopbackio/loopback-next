@@ -44,13 +44,13 @@ describe('openapi to controllers/models', () => {
             comments: [
               'Creates a new customer',
               '\n',
-              '@param requestBody Customer to add',
+              '@param _requestBody Customer to add',
               '@param accessToken Access token',
               '@returns customer response',
             ],
             decoration: "@operation('post', '/customers')",
             signature:
-              'async createCustomer(@requestBody() requestBody: Customer, ' +
+              'async createCustomer(@requestBody() _requestBody: Customer, ' +
               "@param({name: 'access-token', in: 'query'}) accessToken: " +
               'string): Promise<Customer>',
           },

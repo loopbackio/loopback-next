@@ -11,6 +11,12 @@ describe('openapi utils', () => {
     expect(utils.escapeIdentifier('for')).to.eql('_for');
   });
 
+  it('escapes an identifier conflicting with decorators for ', () => {
+    expect(utils.escapeIdentifier('requestBody')).to.eql('_requestBody');
+    expect(utils.escapeIdentifier('operation')).to.eql('_operation');
+    expect(utils.escapeIdentifier('param')).to.eql('_param');
+  });
+
   it('escapes illegal chars for an identifier', () => {
     expect(utils.escapeIdentifier('foo bar')).to.eql('fooBar');
     expect(utils.escapeIdentifier('foo-bar')).to.eql('fooBar');
