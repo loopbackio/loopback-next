@@ -6,7 +6,8 @@
 import {inject} from '@loopback/context';
 import {HttpErrors} from '@loopback/rest';
 import {promisify} from 'util';
-import {TokenService, UserProfile} from '../../../types';
+import {TokenService} from '../../../services/token.service';
+import {UserProfile} from '../../../types';
 import {JWTAuthenticationStrategyBindings} from '../keys';
 const jwt = require('jsonwebtoken');
 const signAsync = promisify(jwt.sign);
