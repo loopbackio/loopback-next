@@ -9,11 +9,13 @@ const assert = require('yeoman-assert');
 const testUtils = require('../../test-utils');
 const path = require('path');
 const mockStdin = require('mock-stdin');
+const process = require('process');
 
 module.exports = function(generator) {
   return function() {
     describe('usage', () => {
       it('prints lb4', () => {
+        process.chdir(path.resolve(__dirname, '..', '..', '..'));
         const gen = testUtils.testSetUpGen(generator);
         const helpText = gen.help();
         assert(helpText.match(/lb4 /));

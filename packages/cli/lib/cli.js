@@ -87,6 +87,10 @@ function setupGenerators() {
     path.join(__dirname, '../generators/discover'),
     PREFIX + 'discover',
   );
+  env.register(
+    path.join(__dirname, '../generators/relation'),
+    PREFIX + 'relation',
+  );
   return env;
 }
 
