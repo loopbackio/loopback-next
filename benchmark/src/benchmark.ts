@@ -114,7 +114,7 @@ async function closeWorker(worker: ChildProcess) {
   await pEvent(
     // workaround for a bug in pEvent types which makes them
     // incompatible with "strictFunctionTypes"
-    worker as Emitter<[unknown]>,
+    worker as Emitter<'worker', [unknown]>,
     'close',
   );
 }
