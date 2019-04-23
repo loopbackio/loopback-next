@@ -304,7 +304,33 @@ Run the following command to install the CLI.
       name  # Name for the discover  Type: String  Required: false
     ```
 
-12. To list available commands
+12. To generate relation into your application
+
+    ```sh
+    cd <your-project-directory>
+    lb4 relation
+    ```
+
+    ```sh
+    Usage:
+      lb4 relation [options]
+
+    Options:
+      -h,   --help              # Print the generator's options and usage
+            --skip-cache        # Do not remember prompt answers                                Default: false
+            --skip-install      # Do not automatically install dependencies                     Default: false
+            --force-install     # Fail on install dependencies error                            Default: false
+            --relationType      # Relation type
+            --sourceModel       # Source model
+            --destinationModel  # Destination model
+            --foreignKeyName    # Destination model foreign key name
+            --relationName      # Relation name
+      -c,   --config            # JSON file name or value to configure options
+      -y,   --yes               # Skip all confirmation prompts with default or provided value
+            --format            # Format generated code using npm run lint:fix
+    ```
+
+13. To list available commands
 
     `lb4 --commands` (or `lb4 -l`)
 
@@ -319,11 +345,12 @@ Run the following command to install the CLI.
       lb4 service
       lb4 example
       lb4 openapi
+      lb4 relation
     ```
 
     Please note `lb4 --help` also prints out available commands.
 
-13. To print out version information
+14. To print out version information
 
     `lb4 --version` (or `lb4 -v`)
 
