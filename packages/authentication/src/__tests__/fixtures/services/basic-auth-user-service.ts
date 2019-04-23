@@ -34,7 +34,7 @@ export class BasicAuthenticationUserService
       throw new HttpErrors.Unauthorized(`'credentials.password' is null`);
     } //if
 
-    const foundUser = this.userRepository.find(
+    const foundUser = await this.userRepository.find(
       credentials.email,
       credentials.password,
     );

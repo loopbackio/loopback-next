@@ -3,8 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject} from '@loopback/context';
+import {bind, inject} from '@loopback/context';
 import {HttpErrors, Request} from '@loopback/rest';
+import {asAuthenticationStrategy} from '../../../decorators/authentication-extension.constants';
 import {AuthenticationStrategy, UserProfile} from '../../../types';
 import {BasicAuthenticationStrategyBindings} from '../keys';
 import {BasicAuthenticationUserService} from '../services/basic-auth-user-service';
@@ -14,6 +15,7 @@ export interface BasicAuthenticationStrategyCredentials {
   password: string;
 }
 
+@bind(asAuthenticationStrategy)
 export class BasicAuthenticationStrategy implements AuthenticationStrategy {
   name: string = 'basic';
 
@@ -35,7 +37,7 @@ export class BasicAuthenticationStrategy implements AuthenticationStrategy {
   extractCredentals(request: Request): BasicAuthenticationStrategyCredentials {
     if (!request.headers.authorization) {
       //throw an error
-      throw new HttpErrors.Unauthorized(`Authorization header not found.`);
+      throw new HttpErrors['NotFound'](`Authorization header not found.`);
     } //if
 
     // for example : Basic Z2l6bW9AZ21haWwuY29tOnBhc3N3b3Jk
@@ -43,7 +45,7 @@ export class BasicAuthenticationStrategy implements AuthenticationStrategy {
 
     if (!auth_header_value.startsWith('Basic')) {
       //throw an error
-      throw new HttpErrors.Unauthorized(
+      throw new HttpErrors['NotFound'](
         `Authorization header is not of type 'Basic'.`,
       );
     } //if
@@ -63,7 +65,7 @@ export class BasicAuthenticationStrategy implements AuthenticationStrategy {
 
     if (decryptedParts.length !== 2) {
       //throw an error
-      throw new HttpErrors.Unauthorized(
+      throw new HttpErrors['NotFound'](
         `Authorization header 'Basic' value does not contain two parts separated by ':'.`,
       );
     } //if

@@ -25,15 +25,12 @@ import {
   AuthenticationComponent,
   UserProfile,
 } from '../..';
-import {AuthenticateActionProvider} from '../acceptance/authentication-action-provider/authentication-action.provider';
-import {JWTAuthenticationStrategy} from '../acceptance/strategies/jwt-strategy';
-import {StrategyResolverProvider} from '../acceptance/strategy-resolver/strategy.resolver';
-import {
-  BasicAuthenticationStrategyBindings,
-  JWTAuthenticationStrategyBindings,
-} from './keys';
-import {JWTService} from './services/token-service';
-import {UserRepository} from './users/user.repository';
+import {AuthenticateActionProvider} from '../fixtures/authentication-action-provider/authentication-action.provider';
+import {JWTAuthenticationStrategyBindings, USER_REPO} from '../fixtures/keys';
+import {JWTService} from '../fixtures/services/jwt-service';
+import {JWTAuthenticationStrategy} from '../fixtures/strategies/jwt-strategy';
+import {StrategyResolverProvider} from '../fixtures/strategy-resolver/strategy.resolver';
+import {UserRepository} from '../fixtures/users/user.repository';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -51,7 +48,7 @@ describe('JWT Authentication', () => {
       constructor(
         @inject(JWTAuthenticationStrategyBindings.TOKEN_SERVICE)
         public tokenService: JWTService,
-        @inject(BasicAuthenticationStrategyBindings.USER_REPO)
+        @inject(USER_REPO)
         public users: UserRepository,
       ) {}
 
@@ -192,7 +189,7 @@ describe('JWT Authentication', () => {
       constructor(
         @inject(JWTAuthenticationStrategyBindings.TOKEN_SERVICE)
         public tokenService: JWTService,
-        @inject(BasicAuthenticationStrategyBindings.USER_REPO)
+        @inject(USER_REPO)
         public users: UserRepository,
       ) {}
 
@@ -224,7 +221,7 @@ describe('JWT Authentication', () => {
       constructor(
         @inject(JWTAuthenticationStrategyBindings.TOKEN_SERVICE)
         public tokenService: JWTService,
-        @inject(BasicAuthenticationStrategyBindings.USER_REPO)
+        @inject(USER_REPO)
         public users: UserRepository,
       ) {}
 
@@ -367,7 +364,7 @@ describe('JWT Authentication', () => {
       },
     });
 
-    server.bind(BasicAuthenticationStrategyBindings.USER_REPO).to(users);
+    server.bind(USER_REPO).to(users);
   }
 
   function whenIMakeRequestTo(restServer: RestServer): Client {

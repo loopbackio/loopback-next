@@ -27,12 +27,12 @@ import {
   AuthenticationComponent,
   UserProfile,
 } from '../..';
-import {AuthenticateActionProvider} from '../acceptance/authentication-action-provider/authentication-action.provider';
-import {BasicAuthenticationStrategy} from '../acceptance/strategies/basic-strategy';
-import {StrategyResolverProvider} from '../acceptance/strategy-resolver/strategy.resolver';
-import {BasicAuthenticationStrategyBindings} from './keys';
-import {BasicAuthenticationUserService} from './services/user-service';
-import {UserRepository} from './users/user.repository';
+import {AuthenticateActionProvider} from '../fixtures/authentication-action-provider/authentication-action.provider';
+import {BasicAuthenticationStrategyBindings, USER_REPO} from '../fixtures/keys';
+import {BasicAuthenticationUserService} from '../fixtures/services/basic-auth-user-service';
+import {BasicAuthenticationStrategy} from '../fixtures/strategies/basic-strategy';
+import {StrategyResolverProvider} from '../fixtures/strategy-resolver/strategy.resolver';
+import {UserRepository} from '../fixtures/users/user.repository';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -263,7 +263,7 @@ describe('Basic Authentication', () => {
       },
     });
 
-    server.bind(BasicAuthenticationStrategyBindings.USER_REPO).to(users);
+    server.bind(USER_REPO).to(users);
   }
 
   function whenIMakeRequestTo(restServer: RestServer): Client {
