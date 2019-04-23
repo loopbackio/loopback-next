@@ -3,31 +3,23 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingScope, Getter, inject} from '@loopback/context';
+import {Getter, inject} from '@loopback/context';
+import {Provider, ValueOrPromise} from '@loopback/core';
+import {AuthenticationMetadata} from '../decorators/authenticate.decorator';
 import {
   extensionPoint,
   extensions,
-  Provider,
-  ValueOrPromise,
-} from '@loopback/core';
-import {AuthenticationMetadata} from '../decorators/authenticate.decorator';
+} from '../decorators/authentication-extension.decorators';
 import {AuthenticationBindings} from '../keys';
-import {
-  AuthenticationStrategy,
-  AuthenticationStrategyNotFoundError,
-} from '../types';
+import {AuthenticationStrategy} from '../types';
 
-//this needs to be transient, e.g. for request level context.
-@extensionPoint(
-  AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
-  {scope: BindingScope.TRANSIENT},
-)
+@extensionPoint('authentication-strategy')
 export class AuthenticationStrategyProvider
   implements Provider<AuthenticationStrategy | undefined> {
   constructor(
     @inject(AuthenticationBindings.METADATA)
     private metadata: AuthenticationMetadata,
-    @extensions()
+    @extensions() // Sugar for @inject.getter(filterByTag({extensionPoint: 'greeter'}))
     private authenticationStrategies: Getter<AuthenticationStrategy[]>,
   ) {}
   value(): ValueOrPromise<AuthenticationStrategy | undefined> {
@@ -40,10 +32,7 @@ export class AuthenticationStrategyProvider
       if (strategy) {
         return strategy;
       } else {
-        // important not to throw a non-protocol-specific error here
-        throw new AuthenticationStrategyNotFoundError(
-          `The strategy '${name}' is not available.`,
-        );
+        throw new Error(`The strategy '${name}' is not available.`);
       }
     });
   }

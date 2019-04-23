@@ -27,11 +27,9 @@ import {
   AuthenticationComponent,
   UserProfile,
 } from '../..';
-import {AuthenticateActionProvider} from '../fixtures/authentication-action-provider/authentication-action.provider';
 import {BasicAuthenticationStrategyBindings, USER_REPO} from '../fixtures/keys';
 import {BasicAuthenticationUserService} from '../fixtures/services/basic-auth-user-service';
 import {BasicAuthenticationStrategy} from '../fixtures/strategies/basic-strategy';
-import {StrategyResolverProvider} from '../fixtures/strategy-resolver/strategy.resolver';
 import {UserRepository} from '../fixtures/users/user.repository';
 
 const SequenceActions = RestBindings.SequenceActions;
@@ -210,14 +208,6 @@ describe('Basic Authentication', () => {
   }
 
   function givenProviders() {
-    server
-      .bind(AuthenticationBindings.STRATEGY)
-      .toProvider(StrategyResolverProvider);
-
-    server
-      .bind(AuthenticationBindings.AUTH_ACTION)
-      .toProvider(AuthenticateActionProvider);
-
     server.add(createBindingFromClass(BasicAuthenticationStrategy));
 
     server

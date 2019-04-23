@@ -25,11 +25,9 @@ import {
   AuthenticationComponent,
   UserProfile,
 } from '../..';
-import {AuthenticateActionProvider} from '../fixtures/authentication-action-provider/authentication-action.provider';
 import {JWTAuthenticationStrategyBindings, USER_REPO} from '../fixtures/keys';
 import {JWTService} from '../fixtures/services/jwt-service';
 import {JWTAuthenticationStrategy} from '../fixtures/strategies/jwt-strategy';
-import {StrategyResolverProvider} from '../fixtures/strategy-resolver/strategy.resolver';
 import {UserRepository} from '../fixtures/users/user.repository';
 
 const SequenceActions = RestBindings.SequenceActions;
@@ -305,14 +303,6 @@ describe('JWT Authentication', () => {
   }
 
   function givenProviders() {
-    server
-      .bind(AuthenticationBindings.STRATEGY)
-      .toProvider(StrategyResolverProvider);
-
-    server
-      .bind(AuthenticationBindings.AUTH_ACTION)
-      .toProvider(AuthenticateActionProvider);
-
     server.add(createBindingFromClass(JWTAuthenticationStrategy));
 
     server

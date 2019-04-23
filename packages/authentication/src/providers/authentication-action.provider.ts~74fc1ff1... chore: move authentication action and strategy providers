@@ -5,12 +5,8 @@
 
 import {Getter, inject, Provider, Setter} from '@loopback/context';
 import {Request} from '@loopback/rest';
-import {AuthenticationBindings} from '../../../keys';
-import {
-  AuthenticateFn,
-  AuthenticationStrategy,
-  UserProfile,
-} from '../../../types';
+import {AuthenticationBindings} from '../keys';
+import {AuthenticateFn, AuthenticationStrategy, UserProfile} from '../types';
 
 /**
  * @description Provider of a function which authenticates
