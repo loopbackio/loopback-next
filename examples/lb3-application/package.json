@@ -1,0 +1,69 @@
+{
+  "name": "@loopback/example-lb3-application",
+  "version": "1.0.0-1",
+  "description": "Tutorial example on how to add existing an LB3 application to a LB4 project",
+  "main": "index.js",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "author": "IBM Corp.",
+  "scripts": {
+    "build:apidocs": "lb-apidocs",
+    "build": "lb-tsc es2017 --outDir dist",
+    "build:watch": "lb-tsc es2017 --outDir dist --watch",
+    "clean": "lb-clean *example-lb3-application*.tgz dist package api-docs",
+    "lint": "npm run prettier:check && npm run tslint",
+    "lint:fix": "npm run tslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "tslint": "lb-tslint",
+    "tslint:fix": "npm run tslint -- --fix",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "verify": "npm pack && tar xf loopback-lb3-application*.tgz && tree package && npm run clean",
+    "migrate": "node ./dist/migrate",
+    "prestart": "npm run build",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/booter-lb3app": "^1.1.2",
+    "@loopback/boot": "^1.2.6",
+    "@loopback/context": "^1.14.0",
+    "@loopback/core": "^1.6.3",
+    "@loopback/repository": "^1.5.4",
+    "@loopback/rest": "^1.11.1",
+    "@loopback/rest-explorer": "^1.1.21",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "debug": "^4.1.1",
+    "helmet": "^3.18.0",
+    "loopback": "^3.25.1",
+    "loopback-boot": "^3.3.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^1.5.3",
+    "@loopback/rest": "^1.11.1",
+    "@loopback/testlab": "^1.2.8",
+    "@loopback/tslint-config": "^2.0.4",
+    "@types/lodash": "^4.14.126",
+    "@types/node": "^10.11.2",
+    "lodash": "^4.17.11",
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.5"
+  },
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example"
+  ]
+}

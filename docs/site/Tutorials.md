@@ -23,6 +23,10 @@ LoopBack 4 comes with the following tutorials:
 - **[express-composition](express-with-lb4-rest-tutorial.md)**: Tutorial on
   mounting LoopBack 4 REST API on an Express application.
 
+- **[lb3-application](https://github.com/strongloop/loopback-next/tree/master/examples/lb3-application)**:
+  Tutorial on mounting an existing LoopBack 3 application in a new LoopBack 4
+  project.
+
 You can download any of the tutorial projects using our CLI tool `lb4`:
 
 ```sh
@@ -36,6 +40,7 @@ $ lb4 example
   soap-calculator: An example on how to integrate SOAP web services.
   express-composition: A simple Express application that uses LoopBack 4 REST API.
   greeter-extension: An example showing how to implement the extension point/extension pattern.
+  lb3-application: An example LoopBack 3 application mounted in a LoopBack 4 project.
 ```
 
 Please follow the instructions in
