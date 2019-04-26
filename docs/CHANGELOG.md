@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.15.0...@loopback/docs@1.16.0) (2019-04-26)
+
+
+### Features
+
+* add booter-lb3app package ([993a97f](https://github.com/strongloop/loopback-next/commit/993a97f))
+
+
+
+
+
 # [1.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.14.0...@loopback/docs@1.15.0) (2019-04-20)
 
 

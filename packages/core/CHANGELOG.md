@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.5.0...@loopback/core@1.6.0) (2019-04-26)
+
+
+### Features
+
+* **core:** add help functions/decorators for extension point/extension ([89f3cbc](https://github.com/strongloop/loopback-next/commit/89f3cbc))
+
+
+
+
+
 # [1.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.4.1...@loopback/core@1.5.0) (2019-04-20)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.2.0...@loopback/benchmark@1.2.1) (2019-04-26)
+
+
+### Bug Fixes
+
+* fix the emitter ([db7e01c](https://github.com/strongloop/loopback-next/commit/db7e01c))
+
+
+
+
+
 # [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.1.18...@loopback/benchmark@1.2.0) (2019-04-20)
 
 
