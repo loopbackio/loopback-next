@@ -223,6 +223,7 @@ Run the following command to install the CLI.
       soap-calculator: An example on how to integrate SOAP web services
       express-composition: A simple Express application that uses LoopBack 4 REST API.
       greeter-extension: An example showing how to implement the extension point/extension pattern.
+      lb3-application: An example LoopBack 3 application mounted in a LoopBack 4 project.
     ```
 
 9.  To generate artifacts from an OpenAPI spec into your application

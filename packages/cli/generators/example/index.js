@@ -23,6 +23,8 @@ const EXAMPLES = {
     'A simple Express application that uses LoopBack 4 REST API.',
   'greeter-extension':
     'An example showing how to implement the extension point/extension pattern.',
+  'lb3-application':
+    'An example LoopBack 3 application mounted in a LoopBack 4 project.',
 };
 Object.freeze(EXAMPLES);
 
