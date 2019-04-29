@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@phenomnomnominal/tsquery": "^3.0.0",
-    "camelcase-keys": "^5.1.0",
+    "camelcase-keys": "^5.2.0",
     "chalk": "^2.3.2",
     "change-case": "^3.0.2",
     "debug": "^4.0.1",
@@ -59,7 +59,7 @@
     "typescript": "^3.1.1",
     "unicode-10.0.0": "^0.7.4",
     "update-notifier": "^2.5.0",
-    "url-slug": "^2.0.0",
+    "url-slug": "^2.1.0",
     "validate-npm-package-name": "^3.0.0",
     "yeoman-generator": "^3.1.1"
   },
