@@ -32,9 +32,11 @@ To add a `hasMany` relation to your LoopBack application and expose its related
 routes, you need to perform the following steps:
 
 1.  Add a property to your model to access related model instances.
-2.  Modify the source model repository class to provide access to a constrained
+2.  Add a foreign key property in the target model referring to the source
+    model's id.
+3.  Modify the source model repository class to provide access to a constrained
     target model repository.
-3.  Call the constrained target model repository CRUD APIs in your controller
+4.  Call the constrained target model repository CRUD APIs in your controller
     methods.
 
 ## Defining a hasMany Relation
@@ -92,8 +94,75 @@ as follows:
 // import statements
 class Customer extends Entity {
   // constructor, properties, etc.
-  @hasMany(() => Order, {keyTo: 'custId'})
+  @hasMany(() => Order, {keyTo: 'customerId'})
   orders?: Order[];
+}
+```
+
+Add the source model's id as the foreign key property (`customerId`) in the
+target model.
+
+{% include code-caption.html content="/src/models/order.model.ts" %}
+
+```ts
+import {Entity, model, property} from '@loopback/repository';
+
+@model()
+export class Order extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    required: true,
+  })
+  id: number;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  name: string;
+
+  @property({
+    type: 'number',
+  })
+  customerId?: number;
+
+  constructor(data?: Partial<Order>) {
+    super(data);
+  }
+}
+```
+
+The foreign key property (`customerId`) in the target model can be added via a
+corresponding [belongsTo](BelongsTo-relation.md) relation, too.
+
+{% include code-caption.html content="/src/models/order.model.ts" %}
+
+```ts
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Customer} from './customer.model';
+
+@model()
+export class Order extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    required: true,
+  })
+  id: number;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  name: string;
+
+  @belongsTo(() => Customer)
+  customerId: number;
+
+  constructor(data?: Partial<Order>) {
+    super(data);
+  }
 }
 ```
 
