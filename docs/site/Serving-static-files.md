@@ -50,7 +50,7 @@ app.static('/files', path.join(__dirname, 'files'));
 app.static('/downloads', path.join(__dirname, 'mp3s'));
 ```
 
-You can also call `app.static()` multiple times on the same mounth path to merge
+You can also call `app.static()` multiple times on the same mount path to merge
 files from multiple filesystem directories and expose them on the same URL path.
 When a file with the same name is present in multiple directories mounted at the
 same URL path, then the precedence is given the file from the directory that was
