@@ -13,6 +13,7 @@ import {
 } from '@loopback/testlab';
 import * as fs from 'fs';
 import {IncomingMessage, Server, ServerResponse} from 'http';
+import * as os from 'os';
 import * as path from 'path';
 import {HttpOptions, HttpServer, HttpServerOptions} from '../../';
 
@@ -26,7 +27,7 @@ describe('HttpServer (integration)', () => {
       host: '::1',
     } as HttpOptions);
     await server.start();
-    expect(server.address!.family).to.equal('IPv6');
+    expect(getAddressFamily(server)).to.equal('IPv6');
     const response = await httpGetAsync(server.url);
     expect(response.statusCode).to.equal(200);
   });
@@ -122,6 +123,11 @@ describe('HttpServer (integration)', () => {
     expect(server.server).to.be.instanceOf(Server);
   });
 
+  it('stops server before start', async () => {
+    server = new HttpServer(dummyRequestHandler);
+    await server.stop();
+  });
+
   it('resets address when server is stopped', async () => {
     server = new HttpServer(dummyRequestHandler);
     await server.start();
@@ -153,7 +159,7 @@ describe('HttpServer (integration)', () => {
   it('supports HTTP over IPv4', async () => {
     server = new HttpServer(dummyRequestHandler, {host: '127.0.0.1'});
     await server.start();
-    expect(server.address!.family).to.equal('IPv4');
+    expect(getAddressFamily(server)).to.equal('IPv4');
     const response = await httpGetAsync(server.url);
     expect(response.statusCode).to.equal(200);
   });
@@ -161,7 +167,7 @@ describe('HttpServer (integration)', () => {
   itSkippedOnTravis('supports HTTP over IPv6', async () => {
     server = new HttpServer(dummyRequestHandler, {host: '::1'});
     await server.start();
-    expect(server.address!.family).to.equal('IPv6');
+    expect(getAddressFamily(server)).to.equal('IPv6');
     const response = await httpGetAsync(server.url);
     expect(response.statusCode).to.equal(200);
   });
@@ -189,7 +195,7 @@ describe('HttpServer (integration)', () => {
       host: '::1',
     });
     await httpsServer.start();
-    expect(httpsServer.address!.family).to.equal('IPv6');
+    expect(getAddressFamily(httpsServer)).to.equal('IPv6');
     const response = await httpsGetAsync(httpsServer.url);
     expect(response.statusCode).to.equal(200);
   });
@@ -207,6 +213,52 @@ describe('HttpServer (integration)', () => {
     await server.start();
     expect(server.url).to.equal(`http://127.0.0.1:${server.port}`);
   });
+
+  it('supports HTTP over unix socket', async () => {
+    if (os.platform() === 'win32') return;
+    const socketPath = path.join(os.tmpdir(), 'test.sock');
+    server = new HttpServer(dummyRequestHandler, {
+      path: socketPath,
+    });
+    await server.start();
+    expect(getAddressFamily(server)).to.equal('ipc');
+    expect(server.address).to.eql(socketPath);
+    expect(server.host).to.be.undefined();
+    expect(server.port).to.eql(0);
+    expect(server.url).to.eql('http+unix://' + encodeURIComponent(socketPath));
+    await supertest(server.url)
+      .get('/')
+      .expect(200);
+  });
+
+  it('supports HTTP over Windows named pipe', async () => {
+    if (os.platform() !== 'win32') return;
+    const namedPipe = path.join('\\\\?\\pipe', process.cwd(), 'test.pipe');
+    server = new HttpServer(dummyRequestHandler, {
+      path: namedPipe,
+    });
+    await server.start();
+    expect(getAddressFamily(server)).to.equal('ipc');
+    expect(server.url).to.eql(namedPipe);
+  });
+
+  it('rejects invalid named pipe on Windows', async () => {
+    if (os.platform() !== 'win32') return;
+    const namedPipe = 'test.pipe';
+    expect(() => {
+      server = new HttpServer(dummyRequestHandler, {
+        path: namedPipe,
+      });
+    }).to.throw(/Named pipe test\.pipe does NOT start with/);
+  });
+
+  function getAddressFamily(httpServer: HttpServer) {
+    if (!httpServer || !httpServer.address) return undefined;
+    if (typeof httpServer.address === 'string') {
+      return 'ipc';
+    }
+    return httpServer.address.family;
+  }
 
   function dummyRequestHandler(
     req: IncomingMessage,
