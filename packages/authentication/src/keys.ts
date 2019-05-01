@@ -5,9 +5,8 @@
 
 import {BindingKey} from '@loopback/context';
 import {MetadataAccessor} from '@loopback/metadata';
-import {Strategy} from 'passport';
 import {AuthenticationMetadata} from './decorators';
-import {AuthenticateFn, UserProfile} from './types';
+import {AuthenticateFn, AuthenticationStrategy, UserProfile} from './types';
 
 /**
  * Binding keys used by this component.
@@ -23,7 +22,7 @@ export namespace AuthenticationBindings {
    *   .toProvider(MyPassportStrategyProvider);
    * ```
    */
-  export const STRATEGY = BindingKey.create<Strategy | undefined>(
+  export const STRATEGY = BindingKey.create<AuthenticationStrategy | undefined>(
     'authentication.strategy',
   );
 
