@@ -5,7 +5,7 @@
 
 import {HttpErrors, Request} from '@loopback/rest';
 import {Strategy} from 'passport';
-import {UserProfile} from './types';
+import {AuthenticationStrategy, UserProfile} from './types';
 
 const passportRequestMixin = require('passport/lib/http/request');
 
@@ -17,12 +17,16 @@ const passportRequestMixin = require('passport/lib/http/request');
  *   3. provides state methods to the strategy instance
  * see: https://github.com/jaredhanson/passport
  */
-export class StrategyAdapter {
+export class StrategyAdapter implements AuthenticationStrategy {
+  originalStrategy: Strategy;
   /**
    * @param strategy instance of a class which implements a passport-strategy;
    * @description http://passportjs.org/
    */
-  constructor(private readonly strategy: Strategy) {}
+  constructor(private readonly strategy: Strategy, readonly name: string) {
+    this.name = name;
+    this.originalStrategy = strategy;
+  }
 
   /**
    * The function to invoke the contained passport strategy.

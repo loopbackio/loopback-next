@@ -10,6 +10,7 @@ import {
   AuthenticationStrategyProvider,
   AuthMetadataProvider,
 } from './providers';
+import {PassportStrategyProvider} from './providers/passport-auth-strategy.provider';
 
 export class AuthenticationComponent implements Component {
   providers?: ProviderMap;
@@ -18,6 +19,7 @@ export class AuthenticationComponent implements Component {
     this.providers = {
       [AuthenticationBindings.AUTH_ACTION.key]: AuthenticateActionProvider,
       [AuthenticationBindings.STRATEGY.key]: AuthenticationStrategyProvider,
+      [AuthenticationBindings.PASSPORT_STRATEGY.key]: PassportStrategyProvider,
       [AuthenticationBindings.METADATA.key]: AuthMetadataProvider,
     };
   }

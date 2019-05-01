@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject, Provider, ValueOrPromise} from '@loopback/context';
-import {Application} from '@loopback/core';
+import {inject} from '@loopback/context';
+import {addExtension, Application, Provider} from '@loopback/core';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {api, get} from '@loopback/openapi-v3';
 import {
@@ -20,20 +20,17 @@ import {
   SequenceHandler,
 } from '@loopback/rest';
 import {Client, createClientForHandler} from '@loopback/testlab';
-import {Strategy} from 'passport';
 import {BasicStrategy} from 'passport-http';
 import {
   authenticate,
   AuthenticateFn,
   AuthenticationBindings,
   AuthenticationComponent,
-  AuthenticationMetadata,
   UserProfile,
 } from '../..';
-
 const SequenceActions = RestBindings.SequenceActions;
 
-describe.skip('Basic Authentication', () => {
+describe('Basic Authentication', () => {
   let app: Application;
   let server: RestServer;
   let users: UserRepository;
@@ -41,7 +38,6 @@ describe.skip('Basic Authentication', () => {
   beforeEach(givenUserRepository);
   beforeEach(givenControllerInApp);
   beforeEach(givenAuthenticatedSequence);
-  beforeEach(givenProviders);
 
   it('authenticates successfully for correct credentials', async () => {
     const client = whenIMakeRequestTo(server);
@@ -87,10 +83,36 @@ describe.skip('Basic Authentication', () => {
     });
   }
 
+  // Since it has to be user's job to provide the `verify` function and
+  // instantiate the passport strategy, we cannot add the imported `BasicStrategy`
+  // class as extension directly, we need to wrap it as a strategy provider,
+  // then add the provider class as the extension.
+  // See Line 89 in the function `givenAServer`
+  class PassportBasicAuthProvider implements Provider<BasicStrategy> {
+    value(): BasicStrategy {
+      return new BasicStrategy(verify);
+    }
+  }
+
+  function verify(username: string, password: string, cb: Function) {
+    process.nextTick(() => {
+      users.find(username, password, cb);
+    });
+  }
+
   async function givenAServer() {
     app = new Application();
     app.component(AuthenticationComponent);
     app.component(RestComponent);
+    addExtension(
+      app,
+      AuthenticationBindings.PASSPORT_STRATEGY_EXTENSION_POINT_NAME,
+      PassportBasicAuthProvider,
+      {
+        namespace:
+          AuthenticationBindings.PASSPORT_STRATEGY_EXTENSION_POINT_NAME,
+      },
+    );
     server = await app.getServer(RestServer);
   }
 
@@ -115,7 +137,7 @@ describe.skip('Basic Authentication', () => {
         @inject(AuthenticationBindings.CURRENT_USER) private user: UserProfile,
       ) {}
 
-      @authenticate('BasicStrategy')
+      @authenticate('basic')
       async whoAmI(): Promise<string> {
         return this.user.id;
       }
@@ -156,35 +178,6 @@ describe.skip('Basic Authentication', () => {
     }
     // bind user defined sequence
     server.sequence(MySequence);
-  }
-
-  function givenProviders() {
-    class MyPassportStrategyProvider implements Provider<Strategy | undefined> {
-      constructor(
-        @inject(AuthenticationBindings.METADATA)
-        private metadata: AuthenticationMetadata,
-      ) {}
-      value(): ValueOrPromise<Strategy | undefined> {
-        if (!this.metadata) {
-          return undefined;
-        }
-        const name = this.metadata.strategy;
-        if (name === 'BasicStrategy') {
-          return new BasicStrategy(this.verify);
-        } else {
-          return Promise.reject(`The strategy ${name} is not available.`);
-        }
-      }
-      // callback method for BasicStrategy
-      verify(username: string, password: string, cb: Function) {
-        process.nextTick(() => {
-          users.find(username, password, cb);
-        });
-      }
-    }
-    server
-      .bind(AuthenticationBindings.STRATEGY)
-      .toProvider(MyPassportStrategyProvider);
   }
 
   function whenIMakeRequestTo(restServer: RestServer): Client {
