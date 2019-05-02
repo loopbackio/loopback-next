@@ -85,7 +85,9 @@ export class Lb3AppBooter implements Booter {
   }
 
   private async buildOpenApiSpec(lb3App: Lb3Application) {
-    const swaggerSpec = generateSwaggerSpec(lb3App);
+    const swaggerSpec = generateSwaggerSpec(lb3App, {
+      generateOperationScopedModels: true,
+    });
     const result = await swagger2openapi.convertObj(swaggerSpec, {
       // swagger2openapi options
     });
