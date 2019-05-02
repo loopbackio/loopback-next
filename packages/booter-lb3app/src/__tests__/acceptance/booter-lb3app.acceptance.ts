@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {OperationObject} from '@loopback/rest';
 import {Client, expect} from '@loopback/testlab';
 import * as _ from 'lodash';
 import {
@@ -27,6 +28,29 @@ describe('booter-lb3app', () => {
 
   after('closes application', async () => {
     if (app) await app.stop();
+  });
+
+  context('generated OpenAPI spec', () => {
+    it('uses different request-body schema for "create" operation', () => {
+      const spec = app.restServer.getApiSpec();
+      const createOp: OperationObject = spec.paths['/api/CoffeeShops'].post;
+      expect(createOp.requestBody).to.containDeep({
+        content: {
+          'application/json': {
+            schema: {$ref: '#/components/schemas/_new_CoffeeShop'},
+          },
+        },
+      });
+
+      const schemas = (spec.components || {}).schemas || {};
+      expect(schemas._new_CoffeeShop)
+        .to.have.property('properties')
+        .eql({
+          // id is excluded, it is not allowed in CREATE requests
+          name: {type: 'string'},
+          city: {type: 'string'},
+        });
+    });
   });
 
   context('mounting full LoopBack 3 application', () => {
