@@ -10,21 +10,25 @@
 
 // tslint:disable:no-any
 
+import * as express from 'express';
 import {IncomingMessage, ServerResponse} from 'http';
-import * as util from 'util';
-
 import {
+  Listener as ShotListener,
   RequestOptions as ShotRequestOptions,
   ResponseObject,
-  inject,
-} from 'shot';
+} from 'shot'; // <-- workaround for missing type-defs for @hapi/shot
+import * as util from 'util';
 
-import * as express from 'express';
+const inject: (
+  dispatchFunc: ShotListener,
+  options: ShotRequestOptions,
+) => Promise<ResponseObject> = require('@hapi/shot');
+// ^^ workaround for missing type-defs for @hapi/shot
 
 export {inject, ShotRequestOptions};
 
 // tslint:disable-next-line:variable-name
-const ShotRequest: ShotRequestCtor = require('shot/lib/request');
+const ShotRequest: ShotRequestCtor = require('@hapi/shot/lib/request');
 type ShotRequestCtor = new (options: ShotRequestOptions) => IncomingMessage;
 
 export function stubServerRequest(
@@ -40,7 +44,7 @@ export function stubServerRequest(
 }
 
 // tslint:disable-next-line:variable-name
-const ShotResponse: ShotResponseCtor = require('shot/lib/response');
+const ShotResponse: ShotResponseCtor = require('@hapi/shot/lib/response');
 export type ShotCallback = (response: ResponseObject) => void;
 
 export type ShotResponseCtor = new (
