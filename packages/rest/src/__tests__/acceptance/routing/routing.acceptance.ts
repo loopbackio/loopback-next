@@ -12,7 +12,12 @@ import {
   ParameterObject,
   ResponseObject,
 } from '@loopback/openapi-v3-types';
-import {Client, createClientForHandler, expect} from '@loopback/testlab';
+import {
+  Client,
+  createClientForHandler,
+  createUnexpectedHttpErrorLogger,
+  expect,
+} from '@loopback/testlab';
 import {
   ControllerClass,
   ControllerInstance,
@@ -28,7 +33,6 @@ import {
   RestServer,
   SequenceActions,
 } from '../../..';
-import {createUnexpectedHttpErrorLogger} from '../../helpers';
 
 /* # Feature: Routing
  * - In order to build REST APIs

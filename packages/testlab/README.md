@@ -54,6 +54,8 @@ Table of contents:
 - [httpGetAsync](#httpgetasync) - Async wrapper for HTTP GET requests.
 - [httpsGetAsync](#httpsgetasync) - Async wrapper for HTTPS GET requests.
 - [toJSON](#toJSON) - A helper to obtain JSON data representing a given object.
+- [createUnexpectedHttpErrorLogger](#createUnexpectedHttpErrorLogger) - An error
+  logger that only logs errors for unexpected HTTP statuses.
 
 ### `expect`
 
@@ -283,6 +285,46 @@ describe('MyApp', () => {
     const app = new MyApp();
     const server = await app.getServer(RestServer);
     await validateApiSpec(server.getApiSpec());
+  });
+});
+```
+
+### `createUnexpectedHttpErrorLogger`
+
+An error logger that logs the error only when the HTTP status code is not the
+expected HTTP status code. This is useful when writing tests for error
+responses:
+
+- When we don't want any error messages printed to the console when the server
+  responds with the expected error and the test passes.
+
+- When something else goes wrong and the server returns an unexpected error
+  status code, and we do want an error message to be printed to the console so
+  that we have enough information to troubleshoot the failing test.
+
+```ts
+import {createUnexpectedHttpErrorLogger} from '@loopback/testlab';
+import {RestApplication} from '@loopback/rest';
+
+describe('MyApp', () => {
+  it('does not log a known 401 error to console', async () => {
+    const app = new RestApplication();
+    const errorLogger = createUnexpectedHttpErrorLogger(401);
+
+    const spec = {
+      responses: {
+        /*...*/
+      },
+    };
+    function throwUnauthorizedError() {
+      throw new HttpErrors.Unauthorized('Unauthorized!');
+    }
+
+    app.route('get', '/', spec, throwUnauthorizedError);
+
+    // binds the custom error logger
+    app.bind(SequenceActions.LOG_ERROR).to(errorLogger);
+    await app.start();
   });
 });
 ```

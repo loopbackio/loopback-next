@@ -3,13 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export * from './expect';
-export * from './sinon';
 export * from './client';
-export * from './shot';
-export * from './validate-api-spec';
-export * from './test-sandbox';
-export * from './skip-travis';
-export * from './request';
+export * from './expect';
+export * from './http-error-logger';
 export * from './http-server-config';
+export * from './request';
+export * from './shot';
+export * from './sinon';
+export * from './skip-travis';
+export * from './test-sandbox';
 export * from './to-json';
+export * from './validate-api-spec';
