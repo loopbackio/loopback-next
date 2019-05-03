@@ -530,6 +530,7 @@ paths:
         '\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/openapi.json',
       ].join(''),
     );
+    expect(response.status).to.equal(302);
     expect(response.get('Location')).match(expectedUrl);
     expect(response.get('Access-Control-Allow-Origin')).to.equal('*');
     expect(response.get('Access-Control-Allow-Credentials')).to.equal('true');
@@ -640,6 +641,7 @@ paths:
         '\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/openapi.json',
       ].join(''),
     );
+    expect(response.status).to.equal(302);
     expect(response.get('Location')).match(expectedUrl);
   });
 
@@ -663,6 +665,7 @@ paths:
         '\\?url=http://\\d+.\\d+.\\d+.\\d+:\\d+/openapi.json',
       ].join(''),
     );
+    expect(response.status).to.equal(302);
     expect(response.get('Location')).match(expectedUrl);
   });
 
