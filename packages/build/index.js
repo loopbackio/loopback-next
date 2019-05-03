@@ -16,3 +16,9 @@ exports.clean = require('./bin/run-clean');
 const utils = require('./bin/utils');
 exports.runCLI = utils.runCLI;
 exports.runShell = utils.runShell;
+
+const path = require('path');
+exports.typeScriptPath = path.resolve(
+  require.resolve('typescript/package.json'),
+  '..',
+);

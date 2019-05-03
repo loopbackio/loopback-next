@@ -21,8 +21,9 @@ DIR=`dirname $0`
 REPO_ROOT=$DIR/..
 pushd $REPO_ROOT >/dev/null
 
-# Update README duplicates inside docs/site/readmes
-node docs/bin/copy-readmes.js
+# Update apidocs
+lerna bootstrap --scope @loopback/tsdocs
+lerna run --scope @loopback/docs prepack
 
 # Clean up sandbox/loopback.io directory
 rm -rf sandbox/loopback.io/

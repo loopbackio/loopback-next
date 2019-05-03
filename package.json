@@ -41,6 +41,7 @@
     "version": "npm run update-packages && git add greenkeeper.json \"**/package-lock.json\" && npm run update-template-deps && npm run apidocs",
     "outdated": "npm outdated --depth 0 && lerna exec --no-bail \"npm outdated --depth 0\"",
     "apidocs": "node bin/run-lerna run build:apidocs",
+    "tsdocs": "lerna run --scope @loopback/tsdocs build:tsdocs",
     "coverage:ci": "node packages/build/bin/run-nyc report --reporter=text-lcov | coveralls",
     "precoverage": "npm test",
     "coverage": "open coverage/index.html",
