@@ -16,8 +16,8 @@
   ],
   "scripts": {
     "build:apidocs": "lb-apidocs --html-file=index.html",
-    "prepublishOnly": "node ./bin/copy-readmes",
-    "clean": "lb-clean loopback-docs*.tgz package api-docs site/readmes"
+    "prepack": "node ./bin/copy-readmes && cd .. && npm run tsdocs",
+    "clean": "lb-clean loopback-docs*.tgz package api-docs apidocs site/readmes site/apidocs"
   },
   "devDependencies": {
     "@loopback/build": "^1.5.5"

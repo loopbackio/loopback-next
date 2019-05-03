@@ -34,6 +34,7 @@
         "packages/rest/package.json",
         "packages/service-proxy/package.json",
         "packages/testlab/package.json",
+        "packages/tsdocs/package.json",
         "packages/tslint-config/package.json"
       ]
     }

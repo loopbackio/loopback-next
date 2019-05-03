@@ -393,6 +393,10 @@ children:
   url: FAQ.html
   output: 'web, pdf'
 
+- title: 'API docs'
+  url: apidocs.index.html
+  output: 'web, pdf'
+
 - title: 'Reference'
   url: Reference.html
   output: 'web, pdf'

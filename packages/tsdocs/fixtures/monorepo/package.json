@@ -1,0 +1,15 @@
+{
+  "name": "root",
+  "version": "1.0.0",
+  "description": "Root",
+  "scripts": {
+    "clean": "../../../../node_modules/.bin/lerna run clean",
+    "bootstrap": "../../../../node_modules/.bin/lerna bootstrap",
+    "build": "npm -s run bootstrap && npm -s run clean && ../../../../node_modules/.bin/lerna run build"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@loopback/build": "file:../../../build"
+  }
+}

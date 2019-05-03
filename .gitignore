@@ -12,7 +12,14 @@ benchmark/dist
 **/package
 .sandbox
 packages/cli/generators/datasource/connectors.json
-docs/site/readmes
+packages/tsdocs/fixtures/monorepo/docs
+/docs/site/readmes
+/docs/apidocs/reports-temp
+/docs/apidocs/models
+
+# TBD: Exclude api reports from git for now
+/docs/apidocs/reports
+/docs/site/apidocs
 
 # Exclude all files under sandbox except README.md and example
 /sandbox/*

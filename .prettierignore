@@ -1,6 +1,10 @@
 /coverage
 **/*/api-docs
+/docs/apidocs
+/docs/site/apidocs
 packages/cli/generators/*/templates
+packages/tsdocs/fixtures/monorepo/docs
+packages/tsdocs/fixtures/monorepo/**/dist
 **/.sandbox
 packages/*/dist
 examples/*/dist
