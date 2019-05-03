@@ -451,7 +451,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     const baseUrl = protocol === 'http' ? config.httpUrl : config.url;
     const openApiUrl = `${requestContext.requestedBaseUrl}/openapi.json`;
     const fullUrl = `${baseUrl}?url=${openApiUrl}`;
-    response.redirect(308, fullUrl);
+    response.redirect(302, fullUrl);
   }
 
   /**
