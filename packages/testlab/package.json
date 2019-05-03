@@ -25,7 +25,7 @@
     "express": "^4.16.4",
     "fs-extra": "^7.0.1",
     "oas-validator": "^3.1.0",
-    "shot": "^4.0.7",
+    "@hapi/shot": "^4.0.7",
     "should": "^13.2.3",
     "sinon": "^7.3.2",
     "supertest": "^4.0.2"
