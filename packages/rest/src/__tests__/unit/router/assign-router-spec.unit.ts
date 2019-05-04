@@ -7,7 +7,7 @@ import {expect} from '@loopback/testlab';
 import {assignRouterSpec, RouterSpec} from '../../../';
 
 describe('assignRouterSpec', () => {
-  it('duplicates the additions spec if the target spec is empty', async () => {
+  it('duplicates the additions spec if the target spec is empty', () => {
     const target: RouterSpec = {paths: {}};
     const additions: RouterSpec = {
       paths: {
@@ -37,15 +37,26 @@ describe('assignRouterSpec', () => {
             },
           },
         },
+        requestBodies: {
+          Greeting: {
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/Greeting',
+                },
+              },
+            },
+          },
+        },
       },
       tags: [{name: 'greeting', description: 'greetings'}],
     };
 
     assignRouterSpec(target, additions);
-    expect(target).to.eql(additions);
+    expect(target).to.deepEqual(additions);
   });
 
-  it('does not assign components without schema', async () => {
+  it('assigns all components', () => {
     const target: RouterSpec = {
       paths: {},
       components: {},
@@ -54,15 +65,24 @@ describe('assignRouterSpec', () => {
     const additions: RouterSpec = {
       paths: {},
       components: {
-        parameters: {
-          addParam: {
-            name: 'add',
-            in: 'query',
-            description: 'number of items to add',
-            required: true,
-            schema: {
-              type: 'integer',
-              format: 'int32',
+        schemas: {
+          Greeting: {
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+              },
+            },
+          },
+        },
+        requestBodies: {
+          Greeting: {
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/Greeting',
+                },
+              },
             },
           },
         },
@@ -75,10 +95,15 @@ describe('assignRouterSpec', () => {
     };
 
     assignRouterSpec(target, additions);
-    expect(target.components).to.be.empty();
+    expect(target.components).to.deepEqual(additions.components);
+    expect(target.components).to.have.properties([
+      'schemas',
+      'requestBodies',
+      'responses',
+    ]);
   });
 
-  it('uses the route registered first', async () => {
+  it('uses the route registered first', () => {
     const originalPath = {
       '/': {
         get: {
@@ -129,7 +154,7 @@ describe('assignRouterSpec', () => {
     expect(target.paths).to.eql(originalPath);
   });
 
-  it('does not duplicate tags from the additional spec', async () => {
+  it('does not duplicate tags from the additional spec', () => {
     const target: RouterSpec = {
       paths: {},
       tags: [{name: 'greeting', description: 'greetings'}],
