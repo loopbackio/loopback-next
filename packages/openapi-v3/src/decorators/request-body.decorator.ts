@@ -3,16 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {MetadataInspector, ParameterDecoratorFactory} from '@loopback/context';
 import {
+  ReferenceObject,
   RequestBodyObject,
   SchemaObject,
-  ReferenceObject,
 } from '@loopback/openapi-v3-types';
-import {MetadataInspector, ParameterDecoratorFactory} from '@loopback/context';
-import {resolveSchema} from '../generate-schema';
-import {OAI3Keys} from '../keys';
 import * as _ from 'lodash';
 import {inspect} from 'util';
+import {resolveSchema} from '../generate-schema';
+import {OAI3Keys} from '../keys';
 
 const debug = require('debug')('loopback:openapi3:metadata:requestbody');
 export const REQUEST_BODY_INDEX = 'x-parameter-index';
@@ -38,7 +38,8 @@ export const REQUEST_BODY_INDEX = 'x-parameter-index';
  * as `application/json` by default.
  * If the `schema` object is not provided in a media type, this decorator
  * generates it for you based on the argument's type. In this case, please
- * make sure the argument type is a class decorated by @model from `@loopback/repository`
+ * make sure the argument type is a class decorated by `@model` from
+ * `@loopback/repository`
  *
  * The simplest usage is:
  *

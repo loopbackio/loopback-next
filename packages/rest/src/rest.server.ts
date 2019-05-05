@@ -103,11 +103,6 @@ const cloneDeep: <T>(value: T) => T = require('lodash/cloneDeep');
  * // OR
  * const server = await app.get('servers.foo');
  * ```
- *
- * @export
- * @class RestServer
- * @extends {Context}
- * @implements {Server}
  */
 export class RestServer extends Context implements Server, HttpServerLike {
   /**
@@ -175,7 +170,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
   }
 
   /**
-   * @memberof RestServer
+   *
    * Creates an instance of RestServer.
    *
    * @param {Application} app The application instance (injected via
@@ -657,7 +652,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    *
    * @param {OpenApiSpec} spec The OpenAPI specification, as an object.
    * @returns {Binding}
-   * @memberof RestServer
+   *
    */
   api(spec: OpenApiSpec): Binding {
     return this.bind(RestBindings.API_SPEC).to(spec);
@@ -778,7 +773,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * Start this REST API's HTTP/HTTPS server.
    *
    * @returns {Promise<void>}
-   * @memberof RestServer
+   *
    */
   async start(): Promise<void> {
     // Set up the Express app if not done yet
@@ -810,7 +805,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * Stop this REST API's HTTP/HTTPS server.
    *
    * @returns {Promise<void>}
-   * @memberof RestServer
+   *
    */
   async stop() {
     // Kill the server instance.
@@ -872,8 +867,6 @@ export function createBodyParserBinding(
 
 /**
  * The form of OpenAPI specs to be served
- *
- * @interface OpenApiSpecForm
  */
 export interface OpenApiSpecForm {
   version?: string;
@@ -962,9 +955,6 @@ export interface RestServerResolvedOptions {
 
 /**
  * Valid configuration for the RestServer constructor.
- *
- * @export
- * @interface RestServerConfig
  */
 export type RestServerConfig = RestServerOptions & HttpServerOptions;
 

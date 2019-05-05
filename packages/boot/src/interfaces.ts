@@ -32,9 +32,6 @@ export type ArtifactOptions = {
  * load(): Promise<void>
  *
  * A Booter will run through the above methods in order.
- *
- * @export
- * @interface Booter
  */
 export interface Booter {
   /**
@@ -60,10 +57,10 @@ export const BOOTER_PHASES = ['configure', 'discover', 'load'];
 /**
  * Type Object for Options passed into .boot()
  *
- * @property projectRoot Root of project. All other artifacts are resolved relative to this
- * @property booters An array of booters to bind to the application before running bootstrapper
- * @property filter.booters An array of booters that should be run by the bootstrapper
- * @property filter.phases An array of phases that should be run
+ * - projectRoot: Root of project. All other artifacts are resolved relative to this
+ * - booters: An array of booters to bind to the application before running bootstrapper
+ * - filter.booters: An array of booters that should be run by the bootstrapper
+ * - filter.phases: An array of phases that should be run
  */
 export type BootOptions = {
   controllers?: ArtifactOptions;

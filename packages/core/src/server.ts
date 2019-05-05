@@ -13,9 +13,6 @@ import {LifeCycleObserver} from './lifecycle';
  * Context, which inherits from the parent Application context. This way,
  * any Server-specific bindings will remain local to the Server instance,
  * and will avoid polluting its parent module scope.
- *
- * @export
- * @interface Server
  */
 export interface Server extends LifeCycleObserver {
   /**

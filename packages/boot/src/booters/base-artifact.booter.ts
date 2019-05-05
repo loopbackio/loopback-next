@@ -27,13 +27,13 @@ const debug = debugFactory('loopback:boot:base-artifact-booter');
  *
  * Currently supports the following boot phases: configure, discover, load
  *
- * @property options Options being used by the Booter
- * @property projectRoot Project root relative to which all other paths are resovled
- * @property dirs Directories to look for an artifact in
- * @property extensions File extensions to look for to match an artifact (this is a convention based booter)
- * @property glob Glob pattern to use to discover artifacts. Takes precedence over (dirs + extensions)
- * @property discovered List of files discovered by the Booter that matched artifact requirements
- * @property classes List of exported classes discovered in the files
+ * - options: Options being used by the Booter
+ * - projectRoot: Project root relative to which all other paths are resovled
+ * - dirs: Directories to look for an artifact in
+ * - extensions: File extensions to look for to match an artifact (this is a convention based booter)
+ * - glob: Glob pattern to use to discover artifacts. Takes precedence over (dirs + extensions)
+ * - discovered: List of files discovered by the Booter that matched artifact requirements
+ * - classes: List of exported classes discovered in the files
  */
 export class BaseArtifactBooter implements Booter {
   /**

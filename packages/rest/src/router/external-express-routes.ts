@@ -34,7 +34,7 @@ export type ExpressRequestHandler = express.RequestHandler;
  * _after_ no LB4 route (controller or handler based) matched the incoming
  * request.
  *
- * @private
+ * @internal
  */
 export class ExternalExpressRoutes {
   protected _externalRoutes: express.Router = express.Router();
