@@ -19,8 +19,6 @@ export type RequestListener = (
 /**
  * HTTP server options
  *
- * @export
- * @interface HttpOptions
  */
 export interface HttpOptions extends ListenOptions {
   protocol?: 'http';
@@ -29,8 +27,6 @@ export interface HttpOptions extends ListenOptions {
 /**
  * HTTPS server options
  *
- * @export
- * @interface HttpsOptions
  */
 export interface HttpsOptions extends ListenOptions, https.ServerOptions {
   protocol: 'https';
@@ -39,24 +35,17 @@ export interface HttpsOptions extends ListenOptions, https.ServerOptions {
 /**
  * Possible server options
  *
- * @export
- * @type HttpServerOptions
  */
 export type HttpServerOptions = HttpOptions | HttpsOptions;
 
 /**
  * Supported protocols
  *
- * @export
- * @type HttpProtocol
  */
 export type HttpProtocol = 'http' | 'https'; // Will be extended to `http2` in the future
 
 /**
  * HTTP / HTTPS server used by LoopBack's RestServer
- *
- * @export
- * @class HttpServer
  */
 export class HttpServer {
   private _listening: boolean = false;

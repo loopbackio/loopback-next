@@ -84,7 +84,7 @@ export class Application extends Context implements LifeCycleObserver {
    * @param {Constructor<Server>} server The server constructor.
    * @param {string=} name Optional override for key name.
    * @returns {Binding} Binding for the server class
-   * @memberof Application
+   *
    */
   public server<T extends Server>(
     ctor: Constructor<T>,
@@ -120,7 +120,7 @@ export class Application extends Context implements LifeCycleObserver {
    *
    * @param {Constructor<Server>[]} ctors An array of Server constructors.
    * @returns {Binding[]} An array of bindings for the registered server classes
-   * @memberof Application
+   *
    */
   public servers<T extends Server>(ctors: Constructor<T>[]): Binding[] {
     return ctors.map(ctor => this.server(ctor));
@@ -129,11 +129,11 @@ export class Application extends Context implements LifeCycleObserver {
   /**
    * Retrieve the singleton instance for a bound constructor.
    *
-   * @template T
+   * @typeparam T
    * @param {Constructor<T>=} ctor The constructor that was used to make the
    * binding.
    * @returns {Promise<T>}
-   * @memberof Application
+   *
    */
   public async getServer<T extends Server>(
     target: Constructor<T> | string,
@@ -153,7 +153,7 @@ export class Application extends Context implements LifeCycleObserver {
    * Start the application, and all of its registered observers.
    *
    * @returns {Promise}
-   * @memberof Application
+   *
    */
   public async start(): Promise<void> {
     const registry = await this.getLifeCycleObserverRegistry();
@@ -163,7 +163,7 @@ export class Application extends Context implements LifeCycleObserver {
   /**
    * Stop the application instance and all of its registered observers.
    * @returns {Promise}
-   * @memberof Application
+   *
    */
   public async stop(): Promise<void> {
     const registry = await this.getLifeCycleObserverRegistry();

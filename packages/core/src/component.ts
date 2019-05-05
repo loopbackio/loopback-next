@@ -89,7 +89,6 @@ export interface Component {
 /**
  * Mount a component to an Application.
  *
- * @export
  * @param {Application} app
  * @param {Component} component
  */
