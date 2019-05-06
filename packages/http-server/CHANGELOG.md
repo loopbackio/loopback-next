@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.1.15...@loopback/http-server@1.2.0) (2019-05-06)
+
+
+### Features
+
+* **http-server:** add support for unix socket/windows pipe path ([22400fe](https://github.com/strongloop/loopback-next/commit/22400fe))
+
+
+
+
+
 ## [1.1.15](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.1.14...@loopback/http-server@1.1.15) (2019-04-26)
 
 **Note:** Version bump only for package @loopback/http-server

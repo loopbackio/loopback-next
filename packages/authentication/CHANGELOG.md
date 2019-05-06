@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@1.2.1...@loopback/authentication@2.0.0) (2019-05-06)
+
+
+### Features
+
+* resolve authentication strategy registered via extension point ([e8b8e8b](https://github.com/strongloop/loopback-next/commit/e8b8e8b))
+
+
+### BREAKING CHANGES
+
+* the new interface and authentication action in 2.0 will require users to adjust existing code
+
+
+
+
+
 ## [1.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@1.2.0...@loopback/authentication@1.2.1) (2019-04-26)
 
 **Note:** Version bump only for package @loopback/authentication

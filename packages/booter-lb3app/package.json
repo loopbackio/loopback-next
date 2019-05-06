@@ -1,6 +1,6 @@
 {
   "name": "@loopback/booter-lb3app",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Boot a LoopBack 3 application in a LoopBack 4 project",
   "engines": {
     "node": ">=8.9"
@@ -30,12 +30,12 @@
     "@loopback/rest": "^1.10.3"
   },
   "devDependencies": {
-    "@loopback/boot": "^1.2.3",
-    "@loopback/build": "^1.5.0",
-    "@loopback/core": "^1.6.0",
-    "@loopback/repository": "^1.5.1",
-    "@loopback/rest": "^1.10.4",
-    "@loopback/testlab": "^1.2.5",
+    "@loopback/boot": "^1.2.4",
+    "@loopback/build": "^1.5.1",
+    "@loopback/core": "^1.6.1",
+    "@loopback/repository": "^1.5.2",
+    "@loopback/rest": "^1.10.5",
+    "@loopback/testlab": "^1.2.6",
     "@loopback/tslint-config": "^2.0.4",
     "@types/debug": "^4.1.4",
     "@types/lodash": "^4.14.123",

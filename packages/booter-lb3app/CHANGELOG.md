@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/booter-lb3app@1.0.0...@loopback/booter-lb3app@1.1.0) (2019-05-06)
+
+
+### Features
+
+* **booter-lb3app:** enable operation-scoped model schemas ([ff014fc](https://github.com/strongloop/loopback-next/commit/ff014fc))
+
+
+
+
+
 # 1.0.0 (2019-04-26)
 
 

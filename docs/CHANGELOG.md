@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.16.0...@loopback/docs@1.16.1) (2019-05-06)
+
+
+### Bug Fixes
+
+* **docs:** update Service-static-files.md to fix a typo ([1d35a68](https://github.com/strongloop/loopback-next/commit/1d35a68))
+* **example-todo-list:** add steps to run in sql db ([0122211](https://github.com/strongloop/loopback-next/commit/0122211))
+
+
+
+
+
 # [1.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.15.0...@loopback/docs@1.16.0) (2019-04-26)
 
 

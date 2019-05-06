@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.5](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.10.4...@loopback/rest@1.10.5) (2019-05-06)
+
+
+### Bug Fixes
+
+* **rest:** aggressive redirection to Swagger UI ([9f0d8ca](https://github.com/strongloop/loopback-next/commit/9f0d8ca))
+
+
+
+
+
 ## [1.10.4](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.10.3...@loopback/rest@1.10.4) (2019-04-26)
 
 **Note:** Version bump only for package @loopback/rest
