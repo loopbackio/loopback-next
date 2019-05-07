@@ -83,6 +83,23 @@ class MyControllerWithValues {
 }
 ```
 
+To sort matched bindings found by the binding filter function, `@inject` honors
+`bindingComparator` in `metadata`:
+
+```ts
+class MyControllerWithValues {
+  constructor(
+    @inject(binding => binding.tagNames.includes('foo'), {
+      bindingComparator: (a, b) => {
+        // Sort by value of `foo` tag
+        return a.tagMap.foo.localeCompare(b.tagMap.foo);
+      },
+    })
+    public values: string[],
+  ) {}
+}
+```
+
 A few variants of `@inject` are provided to declare special forms of
 dependencies.
 

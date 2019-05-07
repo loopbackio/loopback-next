@@ -4,7 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, ContextView, filterByTag, Getter, inject} from '../..';
+import {
+  compareBindingsByTag,
+  Context,
+  ContextView,
+  filterByTag,
+  Getter,
+  inject,
+} from '../..';
 
 let app: Context;
 let server: Context;
@@ -29,6 +36,26 @@ describe('@inject.* to receive multiple values matching a filter', async () => {
     expect(await getter()).to.eql([3, 7, 5]);
   });
 
+  it('injects as getter with bindingComparator', async () => {
+    class MyControllerWithGetter {
+      @inject.getter(workloadMonitorFilter, {
+        bindingComparator: compareBindingsByTag('name'),
+      })
+      getter: Getter<number[]>;
+    }
+
+    server.bind('my-controller').toClass(MyControllerWithGetter);
+    const inst = await server.get<MyControllerWithGetter>('my-controller');
+    const getter = inst.getter;
+    // app-reporter, server-reporter
+    expect(await getter()).to.eql([5, 3]);
+    // Add a new binding that matches the filter
+    givenWorkloadMonitor(server, 'server-reporter-2', 7);
+    // The getter picks up the new binding by order
+    // // app-reporter, server-reporter, server-reporter-2
+    expect(await getter()).to.eql([5, 3, 7]);
+  });
+
   describe('@inject', () => {
     class MyControllerWithValues {
       constructor(
@@ -47,6 +74,37 @@ describe('@inject.* to receive multiple values matching a filter', async () => {
       server.bind('my-controller').toClass(MyControllerWithValues);
       const inst = server.getSync<MyControllerWithValues>('my-controller');
       expect(inst.values).to.eql([3, 5]);
+    });
+
+    it('injects as values with bindingComparator', async () => {
+      class MyControllerWithBindingSorter {
+        constructor(
+          @inject(workloadMonitorFilter, {
+            bindingComparator: compareBindingsByTag('name'),
+          })
+          public values: number[],
+        ) {}
+      }
+      server.bind('my-controller').toClass(MyControllerWithBindingSorter);
+      const inst = await server.get<MyControllerWithBindingSorter>(
+        'my-controller',
+      );
+      // app-reporter, server-reporter
+      expect(inst.values).to.eql([5, 3]);
+    });
+
+    it('throws error if bindingComparator is provided without a filter', () => {
+      expect(() => {
+        // tslint:disable-next-line:no-unused
+        class ControllerWithInvalidInject {
+          constructor(
+            @inject('my-key', {
+              bindingComparator: compareBindingsByTag('name'),
+            })
+            public values: number[],
+          ) {}
+        }
+      }).to.throw('Binding sorter is only allowed with a binding filter');
     });
   });
 
@@ -68,6 +126,24 @@ describe('@inject.* to receive multiple values matching a filter', async () => {
     expect(await view.values()).to.eql([3, 5]);
   });
 
+  it('injects as a view with bindingComparator', async () => {
+    class MyControllerWithView {
+      @inject.view(workloadMonitorFilter, {
+        bindingComparator: compareBindingsByTag('name'),
+      })
+      view: ContextView<number[]>;
+    }
+
+    server.bind('my-controller').toClass(MyControllerWithView);
+    const inst = await server.get<MyControllerWithView>('my-controller');
+    const view = inst.view;
+    expect(view.bindings.map(b => b.tagMap.name)).to.eql([
+      'app-reporter',
+      'server-reporter',
+    ]);
+    expect(await view.values()).to.eql([5, 3]);
+  });
+
   function givenWorkloadMonitors() {
     givenServerWithinAnApp();
     givenWorkloadMonitor(server, 'server-reporter', 3);
@@ -84,7 +160,8 @@ describe('@inject.* to receive multiple values matching a filter', async () => {
     return ctx
       .bind(`workloadMonitors.${name}`)
       .to(workload)
-      .tag('workloadMonitor');
+      .tag('workloadMonitor')
+      .tag({name});
   }
 });
 
