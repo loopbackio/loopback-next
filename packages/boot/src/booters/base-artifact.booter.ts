@@ -25,26 +25,38 @@ const debug = debugFactory('loopback:boot:base-artifact-booter');
  * 2. Provide it's own logic for 'load' after calling 'await super.load()' to
  * actually boot the Artifact classes.
  *
- * Currently supports the following boot phases: configure, discover, load
+ * Currently supports the following boot phases: configure, discover, load.
  *
- * - options: Options being used by the Booter
- * - projectRoot: Project root relative to which all other paths are resovled
- * - dirs: Directories to look for an artifact in
- * - extensions: File extensions to look for to match an artifact (this is a convention based booter)
- * - glob: Glob pattern to use to discover artifacts. Takes precedence over (dirs + extensions)
- * - discovered: List of files discovered by the Booter that matched artifact requirements
- * - classes: List of exported classes discovered in the files
  */
 export class BaseArtifactBooter implements Booter {
   /**
    * Options being used by the Booter.
    */
   readonly options: ArtifactOptions;
+  /**
+   * Project root relative to which all other paths are resolved
+   */
   readonly projectRoot: string;
+  /**
+   * {@link ArtifactOptions.dirs}
+   */
   dirs: string[];
+  /**
+   * {@link ArtifactOptions.extensions}
+   */
   extensions: string[];
+  /**
+   * {@link ArtifactOptions.glob}
+   */
   glob: string;
+
+  /**
+   * List of files discovered by the Booter that matched artifact requirements
+   */
   discovered: string[];
+  /**
+   * List of exported classes discovered in the files
+   */
   classes: Array<Constructor<{}>>;
 
   constructor(projectRoot: string, options: ArtifactOptions) {
