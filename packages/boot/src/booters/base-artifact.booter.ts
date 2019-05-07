@@ -38,15 +38,15 @@ export class BaseArtifactBooter implements Booter {
    */
   readonly projectRoot: string;
   /**
-   * {@link ArtifactOptions.dirs}
+   * Relative paths of directories to be searched
    */
   dirs: string[];
   /**
-   * {@link ArtifactOptions.extensions}
+   * File extensions to be searched
    */
   extensions: string[];
   /**
-   * {@link ArtifactOptions.glob}
+   * `glob` pattern to match artifact paths
    */
   glob: string;
 
