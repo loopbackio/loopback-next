@@ -54,6 +54,7 @@
     "pluralize": "^7.0.0",
     "regenerate": "^1.3.3",
     "semver": "^6.0.0",
+    "stringify-object": "^3.3.0",
     "swagger-parser": "^6.0.5",
     "swagger2openapi": "^5.1.0",
     "typescript": "^3.1.1",
