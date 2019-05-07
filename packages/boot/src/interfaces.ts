@@ -3,33 +3,40 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor, Binding} from '@loopback/context';
+import {Binding, Constructor} from '@loopback/context';
 
 /**
  * Type definition for ArtifactOptions. These are the options supported by
  * this Booter.
- *
- * @param dirs String / String Array of directories to check for artifacts.
- * Paths must be relative. Defaults to ['controllers']
- * @param extensions String / String Array of file extensions to match artifact
- * files in dirs. Defaults to ['.controller.js']
- * @param nested Boolean to control if artifact discovery should check nested
- * folders or not. Default to true
- * @param glob  Optional. A `glob` string to use when searching for files. This takes
- * precendence over other options.
  */
 export type ArtifactOptions = {
+  /**
+   * Array of directories to check for artifacts.
+   * Paths must be relative. Defaults to ['controllers']
+   */
   dirs?: string | string[];
+  /**
+   * Array of file extensions to match artifact
+   * files in dirs. Defaults to ['.controller.js']
+   */
   extensions?: string | string[];
+  /**
+   * A flag to control if artifact discovery should check nested
+   * folders or not. Default to true
+   */
   nested?: boolean;
+  /**
+   * A `glob` string to use when searching for files. This takes
+   * precedence over other options.
+   */
   glob?: string;
 };
 
 /**
  * Defines the requirements to implement a Booter for LoopBack applications:
- * configure() : Promise<void>
- * discover() : Promise<void>
- * load(): Promise<void>
+ * - configure()
+ * - discover()
+ * - load()
  *
  * A Booter will run through the above methods in order.
  */
@@ -55,12 +62,7 @@ export interface Booter {
 export const BOOTER_PHASES = ['configure', 'discover', 'load'];
 
 /**
- * Type Object for Options passed into .boot()
- *
- * - projectRoot: Root of project. All other artifacts are resolved relative to this
- * - booters: An array of booters to bind to the application before running bootstrapper
- * - filter.booters: An array of booters that should be run by the bootstrapper
- * - filter.phases: An array of phases that should be run
+ * Options to configure `Bootstrapper`
  */
 export type BootOptions = {
   controllers?: ArtifactOptions;
@@ -72,6 +74,9 @@ export type BootOptions = {
   [prop: string]: any;
 };
 
+/**
+ * Options for boot() execution
+ */
 export type BootExecutionOptions = {
   /**
    * Optional array of Booter Classes to bind to the application before running bootstrapper.
@@ -102,8 +107,21 @@ export type BootExecutionOptions = {
  * that uses BootMixin.
  */
 export interface Bootable {
+  /**
+   * Root directory for the project to be booted
+   */
   projectRoot: string;
+  /**
+   * Options for boot
+   */
   bootOptions?: BootOptions;
+  /**
+   * Boot up the project
+   */
   boot(): Promise<void>;
-  booters(...booterCls: Constructor<Booter>[]): Binding[];
+  /**
+   * Register booters
+   * @param booterClasses A list of booter classes
+   */
+  booters(...booterClasses: Constructor<Booter>[]): Binding[];
 }
