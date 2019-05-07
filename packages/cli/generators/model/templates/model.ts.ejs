@@ -5,8 +5,8 @@ import {model, property} from '@loopback/repository';
 import {<%= modelBaseClass %>} from '.';
 <% } -%>
 
-<% if(Object.keys(modelSettings).length > 0) { -%>
-@model({settings: <%- JSON.stringify(modelSettings) %>})
+<% if (modelSettings) { -%>
+@model(<%- modelSettings %>)
 <% } else { -%>
 @model()
 <% } -%>
