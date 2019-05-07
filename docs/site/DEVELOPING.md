@@ -25,6 +25,7 @@ See [Monorepo overview](./MONOREPO.md) for a list of all packages.
 - [Adding a new package](#adding-a-new-package)
 - [Upgrading TypeScript/tslint](#upgrading-typescripttslint)
 - [How to test infrastructure changes](#how-to-test-infrastructure-changes)
+- [Debugging](#debugging)
 
 ## Setting up development environment
 
@@ -593,3 +594,80 @@ This is why we have two sets of `tsconfig` files:
 - At monorepo root, there is `tsconfig.json` used by VS Code.
 - Inside each package, there is `tsconfig.build.json` used by `npm run build`
   command.
+
+## Debugging
+
+Debugging a Loopback application requires your IDE to support Typescript and
+[Source Maps](https://www.html5rocks.com/en/tutorials/developertools/sourcemaps)
+so you can set breakpoints in your `.ts` files.
+
+### VisualStudio Code
+
+VisualStudio Code has
+[built-in](https://code.visualstudio.com/docs/nodejs/nodejs-debugging) debugging
+support for the Node.js and can debug JavaScript and TypeScript. Most features
+work out of the box, as long as you have the right
+[launch configuration](https://code.visualstudio.com/docs/editor/debugging) at
+`${projectRoot}/.vscode/launch.json`.
+
+Add this to your launch configuration for debugging the application using
+Node.js/[nodemon](https://nodemon.io/) or for debugging unit tests using
+`lb-mocha`:
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // Node.js debug config
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Loopback using node",
+      "runtimeExecutable": "node",
+      "program": "${workspaceFolder}/index.js",
+      "restart": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      // This is optional
+      "outFiles": ["${workspaceFolder}/**/*.js"],
+      // If you want to provide env vars from a .env file
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      // Nodemon debug config
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Loopback using nodemon",
+      "runtimeExecutable": "nodemon",
+      "program": "${workspaceFolder}/index.js",
+      "restart": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      // This is optional
+      "outFiles": ["${workspaceFolder}/**/*.js"],
+      // If you want to provide env vars from a .env file
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      // lb-mocha debug config for unit tests
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Loopback unit tests",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/lb-mocha",
+      "args": ["dist/test/*/**/*.js"],
+      "restart": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      // This is optional
+      "outFiles": ["${workspaceFolder}/**/*.js"],
+      // If you want to provide env vars from a .env file
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
+```
+
+**Note:** Debugging with `nodemon` will auto-restart the debugger whenever
+changes are made to code as long as you have the transpiler
+(`npm run build:watch` or `lb-tsc es2017 --outDir dist --watch`) running in a
+separate terminal.
