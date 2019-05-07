@@ -71,7 +71,12 @@ export function extensions(extensionPointName?: string) {
       inferExtensionPointName(injection.target, session.currentBinding);
 
     const bindingFilter = extensionFilter(extensionPointName);
-    return createViewGetter(ctx, bindingFilter, session);
+    return createViewGetter(
+      ctx,
+      bindingFilter,
+      injection.metadata.bindingComparator,
+      session,
+    );
   });
 }
 
