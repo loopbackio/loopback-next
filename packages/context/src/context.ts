@@ -97,7 +97,9 @@ export class Context extends EventEmitter {
   private notificationQueue: AsyncIterableIterator<Notification> | undefined;
 
   /**
-   * Create a new context. For example,
+   * Create a new context.
+   *
+   * @example
    * ```ts
    * // Create a new root context, let the framework to create a unique name
    * const rootCtx = new Context();
@@ -354,12 +356,15 @@ export class Context extends EventEmitter {
   }
 
   /**
-   * Unbind a binding from the context. No parent contexts will be checked. If
-   * you need to unbind a binding owned by a parent context, use the code below:
+   * Unbind a binding from the context. No parent contexts will be checked.
+   *
+   * @remarks
+   * If you need to unbind a binding owned by a parent context, use the code below:
    * ```ts
    * const ownerCtx = ctx.getOwnerContext(key);
    * return ownerCtx != null && ownerCtx.unbind(key);
    * ```
+   *
    * @param key Binding key
    * @returns true if the binding key is found and removed from this context
    */

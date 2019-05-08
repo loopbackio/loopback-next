@@ -20,6 +20,7 @@ export interface Class<T> {
  * function to register a service automatically. Also overrides
  * component function to allow it to register repositories automatically.
  *
+ * @example
  * ```ts
  * class MyApplication extends ServiceMixin(Application) {}
  * ```
@@ -42,6 +43,7 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
      *
      * @param provider The service provider to register.
      *
+     * @example
      * ```ts
      * export interface GeocoderService {
      *   geocode(address: string): Promise<GeoPoint[]>;
@@ -81,6 +83,7 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
      *
      * @param component The component to add.
      *
+     * @example
      * ```ts
      *
      * export class ProductComponent {
@@ -150,6 +153,7 @@ export class ServiceMixinDoc {
    *
    * @param provider The service provider to register.
    *
+   * @example
    * ```ts
    * export interface GeocoderService {
    *   geocode(address: string): Promise<GeoPoint[]>;
@@ -179,6 +183,7 @@ export class ServiceMixinDoc {
    *
    * @param component The component to add.
    *
+   * @example
    * ```ts
    *
    * export class ProductComponent {

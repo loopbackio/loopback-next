@@ -131,8 +131,10 @@ export class ModelDefinition {
 
   /**
    * Get an array of names of ID properties, which are specified in
-   * the model settings or properties with `id` attribute. For example,
-   * ```
+   * the model settings or properties with `id` attribute.
+   *
+   * @example
+   * ```ts
    * {
    *   settings: {
    *     id: ['id']

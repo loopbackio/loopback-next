@@ -103,7 +103,9 @@ const builtinTypes = {
  * takes an argument of `ParameterObject` to define how to map the parameter
  * to OpenAPI specification.
  *
- * `@param(paramSpec)` must be applied to parameters. For example,
+ * `@param(paramSpec)` must be applied to parameters.
+ *
+ * @example
  * ```ts
  * class MyController {
  *   @get('/')

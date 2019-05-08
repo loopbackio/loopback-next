@@ -85,6 +85,7 @@ export class RepositoryMetadata {
 /**
  * Decorator for repository injections on properties or method arguments
  *
+ * @example
  * ```ts
  * class CustomerController {
  *   @repository(CustomerRepository) public custRepo: CustomerRepository;
@@ -106,6 +107,7 @@ export function repository(
  * Decorator for DefaultCrudRepository generation and injection on properties
  * or method arguments based on the given model and dataSource (or their names)
  *
+ * @example
  * ```ts
  * class CustomerController {
  *   @repository('Customer', 'mySqlDataSource')

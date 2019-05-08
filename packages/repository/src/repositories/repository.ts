@@ -3,20 +3,20 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, ValueObject, Model} from '../model';
 import {
-  DataObject,
-  Options,
   AnyObject,
   Command,
-  NamedParameters,
-  PositionalParameters,
   Count,
+  DataObject,
+  NamedParameters,
+  Options,
+  PositionalParameters,
 } from '../common-types';
-import {DataSource} from '../datasource';
 import {CrudConnector} from '../connectors';
-import {Filter, Where} from '../query';
+import {DataSource} from '../datasource';
 import {EntityNotFoundError} from '../errors';
+import {Entity, Model, ValueObject} from '../model';
+import {Filter, Where} from '../query';
 
 // tslint:disable:no-unused
 
@@ -190,7 +190,7 @@ export interface EntityCrudRepository<T extends Entity, ID>
 /**
  * Repository implementation
  *
- * Example:
+ * @example
  *
  * User can import `CrudRepositoryImpl` and call its functions like:
  * `CrudRepositoryImpl.find(somefilters, someoptions)`

@@ -51,6 +51,7 @@ export class Application extends Context implements LifeCycleObserver {
    * further modify the binding, e.g. lock the value to prevent further
    * modifications.
    *
+   * @example
    * ```ts
    * class MyController {
    * }
@@ -74,6 +75,7 @@ export class Application extends Context implements LifeCycleObserver {
    * Each server constructor added in this way must provide a unique prefix
    * to prevent binding overlap.
    *
+   * @example
    * ```ts
    * app.server(RestServer);
    * // This server constructor will be bound under "servers.RestServer".
@@ -107,6 +109,7 @@ export class Application extends Context implements LifeCycleObserver {
    * Each server added in this way will automatically be named based on the
    * class constructor name with the "servers." prefix.
    *
+   * @remarks
    * If you wish to control the binding keys for particular server instances,
    * use the app.server function instead.
    * ```ts
@@ -181,6 +184,7 @@ export class Application extends Context implements LifeCycleObserver {
    * @param componentCtor The component class to add.
    * @param {string=} name Optional component name, default to the class name
    *
+   * @example
    * ```ts
    *
    * export class ProductComponent {

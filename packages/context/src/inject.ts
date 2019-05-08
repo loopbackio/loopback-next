@@ -81,6 +81,7 @@ export interface Injection<ValueType = BoundValue> {
  * A decorator to annotate method arguments for automatic injection
  * by LoopBack IoC container.
  *
+ * @example
  * Usage - Typescript:
  *
  * ```ts
@@ -206,7 +207,7 @@ export namespace Getter {
  * The function injected by `@inject.setter(bindingKey)`. It sets the underlying
  * binding to a constant value using `binding.to(value)`.
  *
- * For example:
+ * @example
  *
  * ```ts
  * setterFn('my-value');
@@ -282,7 +283,7 @@ export namespace inject {
    * `metadata.bindingCreation` option. See `BindingCreationPolicy` for more
    * details.
    *
-   * For example:
+   * @example
    *
    * ```ts
    * class MyAuthAction {
@@ -311,7 +312,7 @@ export namespace inject {
   /**
    * Inject an array of values by a tag pattern string or regexp
    *
-   * For example,
+   * @example
    * ```ts
    * class AuthenticationManager {
    *   constructor(
@@ -336,6 +337,7 @@ export namespace inject {
   /**
    * Inject matching bound values by the filter function
    *
+   * @example
    * ```ts
    * class MyControllerWithView {
    *   @inject.view(filterByTag('foo'))

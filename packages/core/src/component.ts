@@ -40,7 +40,8 @@ export interface Component {
 
   /**
    * A map of providers to be bound to the application context
-   * * For example:
+   *
+   * @example
    * ```ts
    * {
    *   'authentication.strategies.ldap': LdapStrategyProvider
@@ -52,7 +53,7 @@ export interface Component {
   /**
    * A map of classes to be bound to the application context.
    *
-   * For example:
+   * @example
    * ```ts
    * {
    *   'rest.body-parsers.xml': XmlBodyParser
@@ -71,7 +72,9 @@ export interface Component {
   lifeCycleObservers?: Constructor<LifeCycleObserver>[];
 
   /**
-   * An array of bindings to be aded to the application context. For example,
+   * An array of bindings to be aded to the application context.
+   *
+   * @example
    * ```ts
    * const bindingX = Binding.bind('x').to('Value X');
    * this.bindings = [bindingX]

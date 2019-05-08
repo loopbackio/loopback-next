@@ -12,6 +12,7 @@ import {LogComponent} from '../component';
  * Also provides .logLevel() to bind application wide logLevel.
  * Functions with a log level set to logLevel or higher sill log data
  *
+ * @example
  * ```ts
  * class MyApplication extends LogMixin(Application) {}
  * ```
@@ -34,6 +35,7 @@ export function LogMixin<T extends Constructor<any>>(superClass: T) {
      *
      * @param level The log level to set for @log decorator
      *
+     * @example
      * ```ts
      * app.logLevel(LOG_LEVEL.INFO);
      * ```

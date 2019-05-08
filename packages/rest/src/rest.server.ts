@@ -82,6 +82,8 @@ const cloneDeep: <T>(value: T) => T = require('lodash/cloneDeep');
 /**
  * A REST API server for use with Loopback.
  * Add this server to your application by importing the RestComponent.
+ *
+ * @example
  * ```ts
  * const app = new MyApplication();
  * app.component(RestComponent);
@@ -458,6 +460,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * further modify the binding, e.g. lock the value to prevent further
    * modifications.
    *
+   * @example
    * ```ts
    * class MyController {
    * }
@@ -474,6 +477,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
   /**
    * Register a new Controller-based route.
    *
+   * @example
    * ```ts
    * class MyController {
    *   greet(name: string) {
@@ -502,6 +506,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
   /**
    * Register a new route invoking a handler function.
    *
+   * @example
    * ```ts
    * function greet(name: string) {
    *  return `hello ${name}`;
@@ -525,6 +530,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
   /**
    * Register a new generic route.
    *
+   * @example
    * ```ts
    * function greet(name: string) {
    *  return `hello ${name}`;
@@ -604,6 +610,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
   /**
    * Register a route redirecting callers to a different URL.
    *
+   * @example
    * ```ts
    * server.redirect('/explorer', '/explorer/');
    * ```
@@ -687,6 +694,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
   /**
    * Configure a custom sequence class for handling incoming requests.
    *
+   * @example
    * ```ts
    * class MySequence implements SequenceHandler {
    *   constructor(
@@ -708,6 +716,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
   /**
    * Configure a custom sequence function for handling incoming requests.
    *
+   * @example
    * ```ts
    * app.handler(({request, response}, sequence) => {
    *   sequence.send(response, 'hello world');

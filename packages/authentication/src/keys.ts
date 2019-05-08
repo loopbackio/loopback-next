@@ -16,6 +16,7 @@ export namespace AuthenticationBindings {
    * Key used to bind an authentication strategy to the context for the
    * authentication function to use.
    *
+   * @example
    * ```ts
    * server
    *   .bind(AuthenticationBindings.STRATEGY)
@@ -29,6 +30,7 @@ export namespace AuthenticationBindings {
   /**
    * Key used to inject the authentication function into the sequence.
    *
+   * @example
    * ```ts
    * class MySequence implements SequenceHandler {
    *   constructor(
@@ -64,6 +66,7 @@ export namespace AuthenticationBindings {
    * Key used to inject authentication metadata, which is used to determine
    * whether a request requires authentication or not.
    *
+   * @example
    * ```ts
    * class MyPassportStrategyProvider implements Provider<Strategy | undefined> {
    *   constructor(
@@ -86,6 +89,8 @@ export namespace AuthenticationBindings {
   /**
    * Key used to inject the user instance retrieved by the
    * authentication function
+   *
+   * @example
    * ```ts
    * class MyController {
    *   constructor(

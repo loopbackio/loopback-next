@@ -5,9 +5,9 @@
 
 const debug = require('debug')('loopback:rest:sequence');
 import {inject} from '@loopback/context';
-import {FindRoute, InvokeMethod, Send, Reject, ParseParams} from './types';
 import {RestBindings} from './keys';
 import {RequestContext} from './request-context';
+import {FindRoute, InvokeMethod, ParseParams, Reject, Send} from './types';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -37,6 +37,7 @@ export interface SequenceHandler {
 /**
  * The default implementation of SequenceHandler.
  *
+ * @remarks
  * This class implements default Sequence for the LoopBack framework.
  * Default sequence is used if user hasn't defined their own Sequence
  * for their application.
@@ -45,6 +46,7 @@ export interface SequenceHandler {
  * when the API request comes in. User defines APIs in their Application
  * Controller class.
  *
+ * @example
  * User can bind their own Sequence to app as shown below
  * ```ts
  * app.bind(CoreBindings.SEQUENCE).toClass(MySequence);

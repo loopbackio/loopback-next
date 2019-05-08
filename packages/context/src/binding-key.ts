@@ -12,7 +12,7 @@ export class BindingKey<ValueType> {
   /**
    * Create a new key for a binding bound to a value of type `ValueType`.
    *
-   * **Example**
+   * @example
    *
    * ```ts
    * BindingKey.create<string>('application.name');

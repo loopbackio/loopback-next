@@ -233,9 +233,10 @@ export class Binding<T = BoundValue> {
    *  - the bound value
    *  - a promise of the bound value
    *
-   * Consumers wishing to consume sync values directly should use `isPromise`
+   * Consumers wishing to consume sync values directly should use `isPromiseLike`
    * to check the type of the returned value to decide how to handle it.
    *
+   * @example
    * ```
    * const result = binding.getValue(ctx);
    * if (isPromiseLike(result)) {
@@ -540,7 +541,7 @@ export class Binding<T = BoundValue> {
    * Apply one or more template functions to set up the binding with scope,
    * tags, and other attributes as a group.
    *
-   * For example,
+   * @example
    * ```ts
    * const serverTemplate = (binding: Binding) =>
    *   binding.inScope(BindingScope.SINGLETON).tag('server');

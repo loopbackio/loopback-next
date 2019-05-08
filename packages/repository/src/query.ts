@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {AnyObject} from './common-types';
 import * as assert from 'assert';
+import {AnyObject} from './common-types';
 
 // tslint:disable:no-any
 
@@ -78,7 +78,8 @@ export type KeyOf<MT extends object> = Exclude<
 
 /**
  * Condition clause
- * For example:
+ *
+ * @example
  * ```ts
  * {
  *   name: {inq: ['John', 'Mary']},
@@ -95,7 +96,8 @@ export type Condition<MT extends object> = {
 
 /**
  * Where clause
- * For example:
+ *
+ * @example
  * ```ts
  * {
  *   name: {inq: ['John', 'Mary']},
@@ -112,7 +114,8 @@ export type Where<MT extends object = AnyObject> =
 
 /**
  * And clause
- * For example:
+ *
+ * @example
  * ```ts
  * {
  *   and: [...],
@@ -125,7 +128,8 @@ export interface AndClause<MT extends object> {
 
 /**
  * Or clause
- * For example:
+ *
+ * @example
  * ```ts
  * {
  *   or: [...],

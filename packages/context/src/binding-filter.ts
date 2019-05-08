@@ -10,6 +10,7 @@ import {BindingAddress} from './binding-key';
  * A function that filters bindings. It returns `true` to select a given
  * binding.
  *
+ * @remarks
  * TODO(semver-major): We might change this type in the future to either remove
  * the `<ValueType>` or make it as type guard by asserting the matched binding
  * to be typed with `<ValueType>`.

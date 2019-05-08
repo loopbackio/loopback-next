@@ -79,6 +79,7 @@ export function BootMixin<T extends Constructor<any>>(superClass: T) {
      *
      * @param booterCls Booter classes to bind to the Application
      *
+     * @example
      * ```ts
      * app.booters(MyBooter, MyOtherBooter)
      * ```
@@ -94,6 +95,7 @@ export function BootMixin<T extends Constructor<any>>(superClass: T) {
      *
      * @param component The component to add.
      *
+     * @example
      * ```ts
      *
      * export class ProductComponent {
