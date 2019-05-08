@@ -23,6 +23,7 @@ export const REQUEST_BODY_INDEX = 'x-parameter-index';
  * A typical OpenAPI requestBody spec contains property
  * `description`, `required`, and `content`:
  *
+ * @example
  * ```ts
  * requestBodySpec: {
  *   description: 'a user',

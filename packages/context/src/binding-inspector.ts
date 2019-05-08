@@ -155,7 +155,9 @@ export function bindingTemplateFor<T = unknown>(
 }
 
 /**
- * Mapping artifact types to binding key namespaces (prefixes). For example:
+ * Mapping artifact types to binding key namespaces (prefixes).
+ *
+ * @example
  * ```ts
  * {
  *   repository: 'repositories'

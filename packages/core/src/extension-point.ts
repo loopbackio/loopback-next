@@ -21,8 +21,9 @@ import {CoreTags} from './keys';
 
 /**
  * Decorate a class as a named extension point. If the decoration is not
- * present, the name of the class will be used. For example:
+ * present, the name of the class will be used.
  *
+ * @example
  * ```ts
  * import {extensionPoint} from '@loopback/core';
  *
@@ -39,8 +40,9 @@ export function extensionPoint(name: string, ...specs: BindingSpec[]) {
 }
 
 /**
- * Shortcut to inject extensions for the given extension point. For example:
+ * Shortcut to inject extensions for the given extension point.
  *
+ * @example
  * ```ts
  * import {Getter} from '@loopback/context';
  * import {extensionPoint, extensions} from '@loopback/core';

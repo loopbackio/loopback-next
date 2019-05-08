@@ -55,6 +55,7 @@ export interface UserService<U, C> {
    * Verify the identity of a user, construct a corresponding user profile using
    * the user information and return the user profile.
    *
+   * @example
    * A pseudo code for basic authentication:
    * ```ts
    * verifyCredentials(credentials: C): Promise<U> {

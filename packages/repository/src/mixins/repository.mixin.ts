@@ -17,8 +17,8 @@ const debug = debugFactory('loopback:repository:mixin');
  * function to register a repository automatically. Also overrides
  * component function to allow it to register repositories automatically.
  *
+ * @example
  * ```ts
- *
  * class MyApplication extends RepositoryMixin(Application) {}
  * ```
  *
@@ -40,6 +40,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      *
      * @param repoClass The repository to add.
      *
+     * @example
      * ```ts
      *
      * class NoteRepo {
@@ -93,6 +94,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * @param dataSource The dataSource to add.
      * @param name The binding name of the datasource; defaults to dataSource.name
      *
+     * @example
      * ```ts
      *
      * const ds: juggler.DataSource = new juggler.DataSource({
@@ -138,6 +140,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      *
      * @param component The component to add.
      *
+     * @example
      * ```ts
      *
      * export class ProductComponent {
@@ -257,6 +260,7 @@ export class RepositoryMixinDoc {
    *
    * @param repo The repository to add.
    *
+   * @example
    * ```ts
    *
    * class NoteRepo {
@@ -300,6 +304,7 @@ export class RepositoryMixinDoc {
    * @param dataSource The dataSource to add.
    * @param name The binding name of the datasource; defaults to dataSource.name
    *
+   * @example
    * ```ts
    *
    * const ds: juggler.DataSource = new juggler.DataSource({
@@ -328,6 +333,7 @@ export class RepositoryMixinDoc {
    *
    * @param component The component to add.
    *
+   * @example
    * ```ts
    *
    * export class ProductComponent {

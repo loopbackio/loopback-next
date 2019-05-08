@@ -19,8 +19,10 @@ export interface Class<T> {
 }
 
 /**
- * Interface for constructor functions without `new` operator, for example,
- * ```
+ * Interface for constructor functions without `new` operator.
+ *
+ * @example
+ * ```ts
  * function Foo(x) {
  *   if (!(this instanceof Foo)) { return new Foo(x); }
  *   this.x = x;

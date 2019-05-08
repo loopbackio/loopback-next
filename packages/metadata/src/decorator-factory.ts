@@ -623,8 +623,11 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
 }
 
 /**
- * Factory for method level parameter decorator. For example, the following
- * code uses `@param` to declare two parameters for `greet()`.
+ * Factory for method level parameter decorator.
+ *
+ * @example
+ * For example, the following code uses `@param` to declare two parameters for
+ * `greet()`.
  * ```ts
  * class MyController {
  *   @param('name') // Parameter 0

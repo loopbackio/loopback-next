@@ -124,6 +124,7 @@ export class RestApplication extends Application implements HttpServerLike {
   /**
    * Register a new Controller-based route.
    *
+   * @example
    * ```ts
    * class MyController {
    *   greet(name: string) {
@@ -152,6 +153,7 @@ export class RestApplication extends Application implements HttpServerLike {
   /**
    * Register a new route invoking a handler function.
    *
+   * @example
    * ```ts
    * function greet(name: string) {
    *  return `hello ${name}`;
@@ -175,6 +177,7 @@ export class RestApplication extends Application implements HttpServerLike {
   /**
    * Register a new route.
    *
+   * @example
    * ```ts
    * function greet(name: string) {
    *  return `hello ${name}`;
@@ -190,6 +193,7 @@ export class RestApplication extends Application implements HttpServerLike {
   /**
    * Register a new route.
    *
+   * @example
    * ```ts
    * function greet(name: string) {
    *  return `hello ${name}`;
@@ -237,6 +241,7 @@ export class RestApplication extends Application implements HttpServerLike {
   /**
    * Register a route redirecting callers to a different URL.
    *
+   * @example
    * ```ts
    * app.redirect('/explorer', '/explorer/');
    * ```

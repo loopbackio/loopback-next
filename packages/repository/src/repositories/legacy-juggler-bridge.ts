@@ -198,6 +198,7 @@ export class DefaultCrudRepository<T extends Entity, ID>
   /**
    * Function to create a constrained relation repository factory
    *
+   * @example
    * ```ts
    * class CustomerRepository extends DefaultCrudRepository<
    *   Customer,
