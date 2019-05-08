@@ -62,7 +62,7 @@
     "update-notifier": "^2.5.0",
     "url-slug": "^2.1.0",
     "validate-npm-package-name": "^3.0.0",
-    "yeoman-generator": "^3.1.1"
+    "yeoman-generator": "^4.0.0"
   },
   "scripts": {
     "build": "node ./bin/download-connector-list.js",
