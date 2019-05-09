@@ -22,7 +22,7 @@
     "@loopback/build": "^1.5.1",
     "@loopback/testlab": "^1.2.6",
     "@loopback/tslint-config": "^2.0.4",
-    "@types/lodash": "^4.14.108",
+    "@types/lodash": "^4.14.124",
     "@types/node": "^10.11.2"
   },
   "dependencies": {
@@ -31,7 +31,7 @@
     "@types/debug": "^4.1.4",
     "debug": "^4.0.1",
     "lodash": "^4.17.11",
-    "loopback-datasource-juggler": "^4.6.2"
+    "loopback-datasource-juggler": "^4.6.3"
   },
   "files": [
     "README.md",
