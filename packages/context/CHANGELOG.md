@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.12.1...@loopback/context@1.13.0) (2019-05-09)
+
+
+### Features
+
+* **context:** add support for method interceptors ([293188d](https://github.com/strongloop/loopback-next/commit/293188d))
+
+
+
+
+
 ## [1.12.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.12.0...@loopback/context@1.12.1) (2019-05-06)
 
 **Note:** Version bump only for package @loopback/context

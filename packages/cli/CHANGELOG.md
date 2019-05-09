@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.11.3...@loopback/cli@1.12.0) (2019-05-09)
+
+
+### Features
+
+* **cli:** improve scaffolding of complex model settings ([5035c63](https://github.com/strongloop/loopback-next/commit/5035c63))
+
+
+
+
+
 ## [1.11.3](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.11.2...@loopback/cli@1.11.3) (2019-05-06)
 
 **Note:** Version bump only for package @loopback/cli

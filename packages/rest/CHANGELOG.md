@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.10.5...@loopback/rest@1.11.0) (2019-05-09)
+
+
+### Bug Fixes
+
+* **rest:** assign all component properties to target spec ([af06b69](https://github.com/strongloop/loopback-next/commit/af06b69))
+
+
+### Features
+
+* **context:** add support for method interceptors ([293188d](https://github.com/strongloop/loopback-next/commit/293188d))
+
+
+
+
+
 ## [1.10.5](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.10.4...@loopback/rest@1.10.5) (2019-05-06)
 
 
