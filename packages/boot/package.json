@@ -30,7 +30,7 @@
     "@types/debug": "^4.1.4",
     "@types/glob": "^7.1.1",
     "debug": "^4.0.1",
-    "glob": "^7.1.2"
+    "glob": "^7.1.4"
   },
   "devDependencies": {
     "@loopback/build": "^1.5.1",

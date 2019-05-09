@@ -35,7 +35,7 @@
     "@loopback/tslint-config": "^2.0.4",
     "@types/node": "^10.11.2",
     "@types/passport": "^1.0.0",
-    "@types/passport-http": "^0.3.6",
+    "@types/passport-http": "^0.3.8",
     "jsonwebtoken": "^8.5.1",
     "passport-http": "^0.3.0"
   },

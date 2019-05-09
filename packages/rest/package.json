@@ -58,7 +58,7 @@
     "@loopback/tslint-config": "^2.0.4",
     "@types/debug": "^4.1.4",
     "@types/js-yaml": "^3.12.1",
-    "@types/lodash": "^4.14.106",
+    "@types/lodash": "^4.14.124",
     "@types/multer": "^1.3.7",
     "@types/node": "^10.11.2",
     "@types/on-finished": "^2.3.1",
