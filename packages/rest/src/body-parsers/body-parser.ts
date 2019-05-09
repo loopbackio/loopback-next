@@ -4,8 +4,10 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  compareByOrder,
   Constructor,
   Context,
+  filterByTag,
   inject,
   instantiateClass,
 } from '@loopback/context';
@@ -32,7 +34,7 @@ export class RequestBodyParser {
   readonly parsers: BodyParser[];
 
   constructor(
-    @inject.tag(REQUEST_BODY_PARSER_TAG, {optional: true})
+    @inject(filterByTag(REQUEST_BODY_PARSER_TAG), {optional: true})
     parsers?: BodyParser[],
     @inject.context() private readonly ctx?: Context,
   ) {
@@ -197,9 +199,7 @@ function isBodyParserClass(
  * @param parsers
  */
 function sortParsers(parsers: BodyParser[]) {
-  return parsers.sort((a, b) => {
-    const i1 = builtinParsers.names.indexOf(a.name);
-    const i2 = builtinParsers.names.indexOf(b.name);
-    return i1 - i2;
-  });
+  return parsers.sort((a, b) =>
+    compareByOrder(a.name, b.name, builtinParsers.names),
+  );
 }

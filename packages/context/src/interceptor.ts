@@ -16,6 +16,7 @@ import * as debugFactory from 'debug';
 import {Binding, BindingTemplate} from './binding';
 import {filterByTag} from './binding-filter';
 import {BindingAddress} from './binding-key';
+import {sortBindingsByPhase} from './binding-sorter';
 import {Context} from './context';
 import {ContextBindings, ContextTags} from './keys';
 import {
@@ -91,21 +92,11 @@ export class InvocationContext extends Context {
       this.getSync(ContextBindings.GLOBAL_INTERCEPTOR_ORDERED_GROUPS, {
         optional: true,
       }) || [];
-    bindings.sort((a, b) => {
-      const g1: string = a.tagMap[ContextTags.GLOBAL_INTERCEPTOR_GROUP] || '';
-      const g2: string = b.tagMap[ContextTags.GLOBAL_INTERCEPTOR_GROUP] || '';
-      const i1 = orderedGroups.indexOf(g1);
-      const i2 = orderedGroups.indexOf(g2);
-      if (i1 !== -1 || i2 !== -1) {
-        // Honor the group order
-        return i1 - i2;
-      } else {
-        // Neither group is in the pre-defined order
-        // Use alphabetical order instead so that `1-group` is invoked before
-        // `2-group`
-        return g1 < g2 ? -1 : g1 > g2 ? 1 : 0;
-      }
-    });
+    return sortBindingsByPhase(
+      bindings,
+      ContextTags.GLOBAL_INTERCEPTOR_GROUP,
+      orderedGroups,
+    );
   }
 
   /**
