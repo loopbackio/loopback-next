@@ -31,7 +31,7 @@ describe('REST Explorer mounted as an express router', () => {
       .get('/api/explorer/')
       .expect(200)
       .expect('content-type', /html/)
-      .expect(/url\: '\/api\/openapi\.json'\,/);
+      .expect(/url\: '\/openapi\.json'\,/);
   });
 
   it('redirects from "/api/explorer" to "/api/explorer/"', async () => {

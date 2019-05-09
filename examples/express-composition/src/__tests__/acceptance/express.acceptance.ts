@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Client} from '@loopback/testlab';
-import {setupExpressApplication} from './test-helper';
 import {ExpressServer} from '../../server';
+import {setupExpressApplication} from './test-helper';
 
 describe('ExpressApplication', () => {
   let server: ExpressServer;
@@ -53,7 +53,7 @@ describe('ExpressApplication', () => {
       .get('/api/explorer/')
       .expect(200)
       .expect('content-type', /html/)
-      .expect(/url\: '\/api\/openapi\.json'\,/)
+      .expect(/url\: '\/openapi\.json'\,/)
       .expect(/<title>LoopBack API Explorer/);
   });
 });

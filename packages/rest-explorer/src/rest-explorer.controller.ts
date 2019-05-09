@@ -5,11 +5,11 @@
 
 import {inject} from '@loopback/context';
 import {
-  RestBindings,
-  RestServerConfig,
   OpenApiSpecForm,
   Request,
   Response,
+  RestBindings,
+  RestServerConfig,
 } from '@loopback/rest';
 import * as ejs from 'ejs';
 import * as fs from 'fs';
@@ -39,9 +39,13 @@ export class ExplorerController {
 
   index() {
     let openApiSpecUrl = this.openApiSpecUrl;
-    if (this.request.baseUrl && this.request.baseUrl !== '/') {
-      openApiSpecUrl = this.request.baseUrl + openApiSpecUrl;
-    }
+
+    // NOTE(bajtos) OpenAPI routes do not honor basePath setting (yet)
+    // See https://github.com/strongloop/loopback-next/pull/2554
+    // if (this.request.baseUrl && this.request.baseUrl !== '/') {
+    //  openApiSpecUrl = this.request.baseUrl + openApiSpecUrl;
+    // }
+
     const data = {
       openApiSpecUrl,
     };
