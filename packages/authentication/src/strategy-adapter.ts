@@ -10,6 +10,12 @@ import {UserProfile} from './types';
 const passportRequestMixin = require('passport/lib/http/request');
 
 /**
+ * @deprecated
+ *
+ * THIS CLASS IS DEPRECATED.
+ * We will be adding a new package to implement one or more new passport
+ * strategy adapters.
+ *
  * Adapter class to invoke passport-strategy
  *   1. provides express dependencies to the passport strategies
  *   2. provides shimming of requests for passport authentication
