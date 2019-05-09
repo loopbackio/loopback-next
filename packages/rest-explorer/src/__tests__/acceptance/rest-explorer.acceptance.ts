@@ -20,6 +20,11 @@ describe('API Explorer (acceptance)', () => {
   let app: RestApplication;
   let request: Client;
 
+  afterEach(async () => {
+    if (app) await app.stop();
+    (app as unknown) = undefined;
+  });
+
   context('with default config', () => {
     beforeEach(async () => {
       app = givenRestApplication();
@@ -107,6 +112,24 @@ describe('API Explorer (acceptance)', () => {
       await app.start();
       request = createRestAppClient(app);
     }
+  });
+
+  context('with custom basePath', () => {
+    beforeEach(async () => {
+      app = givenRestApplication();
+      app.basePath('/api');
+      app.component(RestExplorerComponent);
+      await app.start();
+      request = createRestAppClient(app);
+    });
+
+    it('uses correct URLs', async () => {
+      // static assets (including swagger-ui) honor basePath
+      const response = await request.get('/api/explorer/').expect(200);
+      const body = response.body;
+      // OpenAPI endpoints DO NOT honor basePath
+      expect(body).to.match(/^\s*url: '\/openapi.json',\s*$/m);
+    });
   });
 
   function givenRestApplication(config?: RestServerConfig) {

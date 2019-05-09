@@ -3,15 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  HttpRequestListener,
-  RestApplication,
-  RestServer,
-  RestServerConfig,
-} from '@loopback/rest';
+import {RestApplication, RestServer, RestServerConfig} from '@loopback/rest';
 import {
   Client,
   createClientForHandler,
+  expect,
   givenHttpServerConfig,
 } from '@loopback/testlab';
 import * as express from 'express';
@@ -21,7 +17,6 @@ describe('REST Explorer mounted as an express router', () => {
   let client: Client;
   let expressApp: express.Application;
   let server: RestServer;
-  let handler: HttpRequestListener;
   beforeEach(givenLoopBackApp);
   beforeEach(givenExpressApp);
   beforeEach(givenClient);
@@ -41,6 +36,14 @@ describe('REST Explorer mounted as an express router', () => {
       .expect('location', '/api/explorer/');
   });
 
+  it('honors basePath config', async () => {
+    server.basePath('/v1');
+    // static assets (including swagger-ui) honor basePath
+    const response = await client.get('/api/v1/explorer/').expect(200);
+    // OpenAPI endpoints DO NOT honor basePath
+    expect(response.body).to.match(/^\s*url: '\/api\/openapi.json',\s*$/m);
+  });
+
   async function givenLoopBackApp(
     options: {rest: RestServerConfig} = {rest: {port: 0}},
   ) {
@@ -48,7 +51,6 @@ describe('REST Explorer mounted as an express router', () => {
     const app = new RestApplication(options);
     app.component(RestExplorerComponent);
     server = await app.getServer(RestServer);
-    handler = server.requestHandler;
   }
 
   /**
@@ -56,7 +58,10 @@ describe('REST Explorer mounted as an express router', () => {
    */
   function givenExpressApp() {
     expressApp = express();
-    expressApp.use('/api', handler);
+    expressApp.use('/api', (req, res, _next) => {
+      // defer calling of `server.requestHandler` until a request arrives
+      server.requestHandler(req, res);
+    });
   }
 
   function givenClient() {
