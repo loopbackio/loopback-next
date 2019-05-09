@@ -5,11 +5,11 @@
 
 import {inject} from '@loopback/context';
 import {
-  RestBindings,
-  RestServerConfig,
   OpenApiSpecForm,
   Request,
   Response,
+  RestBindings,
+  RestServerConfig,
 } from '@loopback/rest';
 import * as ejs from 'ejs';
 import * as fs from 'fs';
@@ -26,6 +26,7 @@ export class ExplorerController {
   constructor(
     @inject(RestBindings.CONFIG, {optional: true})
     restConfig: RestServerConfig = {},
+    @inject(RestBindings.BASE_PATH) private serverBasePath: string,
     @inject(RestBindings.Http.REQUEST) private request: Request,
     @inject(RestBindings.Http.RESPONSE) private response: Response,
   ) {
@@ -39,7 +40,19 @@ export class ExplorerController {
 
   index() {
     let openApiSpecUrl = this.openApiSpecUrl;
-    if (this.request.baseUrl && this.request.baseUrl !== '/') {
+
+    // baseURL is composed from mountPath and basePath
+    // OpenAPI endpoints ignore basePath but do honor mountPath
+    let rootPath = this.request.baseUrl;
+    if (
+      this.serverBasePath &&
+      this.serverBasePath !== '/' &&
+      rootPath.endsWith(this.serverBasePath)
+    ) {
+      rootPath = rootPath.slice(0, -this.serverBasePath.length);
+    }
+
+    if (rootPath && rootPath !== '/') {
       openApiSpecUrl = this.request.baseUrl + openApiSpecUrl;
     }
     const data = {
