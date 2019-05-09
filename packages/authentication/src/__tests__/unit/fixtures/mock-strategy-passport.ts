@@ -3,18 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Request} from '@loopback/rest';
-import {AuthenticationStrategy, UserProfile} from '../../../types';
-
-class AuthenticationError extends Error {
-  statusCode?: number;
-}
+import {Request} from 'express';
+import {AuthenticateOptions, Strategy} from 'passport';
+import {UserProfile} from '../../../types';
 
 /**
  * Test fixture for a mock asynchronous passport-strategy
  */
-export class MockStrategy implements AuthenticationStrategy {
-  name: 'MockStrategy';
+export class MockPassportStrategy extends Strategy {
   // user to return for successful authentication
   private mockUser: UserProfile;
 
@@ -22,16 +18,12 @@ export class MockStrategy implements AuthenticationStrategy {
     this.mockUser = userObj;
   }
 
-  returnMockUser(): UserProfile {
-    return this.mockUser;
-  }
-
   /**
    * authenticate() function similar to passport-strategy packages
    * @param req
    */
-  async authenticate(req: Request): Promise<UserProfile> {
-    return await this.verify(req);
+  async authenticate(req: Request, options?: AuthenticateOptions) {
+    await this.verify(req);
   }
   /**
    * @param req
@@ -48,16 +40,28 @@ export class MockStrategy implements AuthenticationStrategy {
       request.headers.testState &&
       request.headers.testState === 'fail'
     ) {
-      const err = new AuthenticationError('authorization failed');
-      err.statusCode = 401;
-      throw err;
+      this.returnUnauthorized('authorization failed');
+      return;
     } else if (
       request.headers &&
       request.headers.testState &&
       request.headers.testState === 'error'
     ) {
-      throw new Error('unexpected error');
+      this.returnError('unexpected error');
+      return;
     }
-    return this.returnMockUser();
+    process.nextTick(this.returnMockUser.bind(this));
+  }
+
+  returnMockUser() {
+    this.success(this.mockUser);
+  }
+
+  returnUnauthorized(challenge?: string | number, status?: number) {
+    this.fail(challenge, status);
+  }
+
+  returnError(err: string) {
+    this.error(err);
   }
 }

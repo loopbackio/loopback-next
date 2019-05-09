@@ -6,7 +6,7 @@
 import {expect} from '@loopback/testlab';
 import {StrategyAdapter, UserProfile} from '../..';
 import {Request, HttpErrors} from '@loopback/rest';
-import {MockStrategy} from './fixtures/mock-strategy';
+import {MockPassportStrategy} from './fixtures/mock-strategy-passport';
 import {AuthenticateOptions} from 'passport';
 
 describe('Strategy Adapter', () => {
@@ -16,11 +16,11 @@ describe('Strategy Adapter', () => {
     it('calls the authenticate method of the strategy', async () => {
       let calledFlag = false;
       // TODO: (as suggested by @bajtos) use sinon spy
-      class Strategy extends MockStrategy {
+      class Strategy extends MockPassportStrategy {
         // override authenticate method to set calledFlag
         async authenticate(req: Request, options?: AuthenticateOptions) {
           calledFlag = true;
-          await MockStrategy.prototype.authenticate.call(this, req, options);
+          await super.authenticate(req, options);
         }
       }
       const strategy = new Strategy();
@@ -31,7 +31,7 @@ describe('Strategy Adapter', () => {
     });
 
     it('returns a promise which resolves to an object', async () => {
-      const strategy = new MockStrategy();
+      const strategy = new MockPassportStrategy();
       strategy.setMockUser(mockUser);
       const adapter = new StrategyAdapter(strategy);
       const request = <Request>{};
@@ -40,7 +40,7 @@ describe('Strategy Adapter', () => {
     });
 
     it('throws Unauthorized error when authentication fails', async () => {
-      const strategy = new MockStrategy();
+      const strategy = new MockPassportStrategy();
       strategy.setMockUser(mockUser);
       const adapter = new StrategyAdapter(strategy);
       const request = <Request>{};
@@ -55,7 +55,7 @@ describe('Strategy Adapter', () => {
     });
 
     it('throws InternalServerError when strategy returns error', async () => {
-      const strategy = new MockStrategy();
+      const strategy = new MockPassportStrategy();
       strategy.setMockUser(mockUser);
       const adapter = new StrategyAdapter(strategy);
       const request = <Request>{};
