@@ -28,7 +28,8 @@
   "devDependencies": {
     "@loopback/build": "^1.5.2",
     "@loopback/testlab": "^1.2.7",
-    "@types/debug": "^4.1.4"
+    "@types/debug": "^4.1.4",
+    "casbin": "^2.0.4"
   },
   "keywords": [
     "LoopBack",
@@ -40,7 +41,8 @@
     "index.d.ts",
     "dist",
     "src",
-    "!*/__tests__"
+    "!*/__tests__",
+    "!/fixtures"
   ],
   "repository": {
     "type": "git",
