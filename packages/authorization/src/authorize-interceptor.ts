@@ -6,7 +6,6 @@
 import {
   asGlobalInterceptor,
   bind,
-  BindingTemplate,
   filterByTag,
   inject,
   Interceptor,
@@ -22,11 +21,7 @@ import {
 
 const debug = debugFactory('loopback:authorization:interceptor');
 
-const globalInterceptorTemplate = asGlobalInterceptor(
-  'authorization',
-) as BindingTemplate;
-
-@bind(globalInterceptorTemplate)
+@bind(asGlobalInterceptor('authorization'))
 export class AuthorizationInterceptor implements Provider<Interceptor> {
   constructor(
     @inject(filterByTag('authorizationProvider'))
@@ -35,7 +30,7 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
 
   value(): Interceptor {
     return async (invocationCtx, next) => {
-      const description = debug.enabled ? invocationCtx.toString() : '';
+      const description = debug.enabled ? invocationCtx.description : '';
       const metadata = getAuthorizeMetadata(
         invocationCtx.target,
         invocationCtx.methodName,
@@ -45,11 +40,12 @@ export class AuthorizationInterceptor implements Provider<Interceptor> {
         return await next();
       }
       debug('Authorization metadata for %s', description, metadata);
-      const user = await invocationCtx.get<string>('current.user', {
+      const user = await invocationCtx.get<{name: string}>('current.user', {
         optional: true,
       });
+      debug('Current user', user);
       const authCtx: AuthorizationContext = {
-        principals: user ? [{name: user, type: 'USER'}] : [],
+        principals: user ? [{name: user.name, type: 'USER'}] : [],
         roles: [],
         scopes: [],
         resource: invocationCtx.targetName,

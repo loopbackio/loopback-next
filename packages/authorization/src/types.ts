@@ -47,6 +47,10 @@ export interface AuthorizationMetadata {
   voters?: (Voter | BindingAddress<Voter>)[];
 
   /**
+   * Name of the resource, default to the method name
+   */
+  resource?: string;
+  /**
    * Define the access scopes
    */
   scopes?: string[];

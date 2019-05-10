@@ -6,15 +6,15 @@
 import {Context, invokeMethod, Provider} from '@loopback/context';
 import {Application} from '@loopback/core';
 import {expect} from '@loopback/testlab';
-import {AuthorizationComponent} from '../../authorization-component';
-import {authorize} from '../../decorators/authorize';
 import {
+  AuthorizationComponent,
+  AuthorizationContext,
   AuthorizationDecision,
   AuthorizationMetadata,
+  authorize,
   AuthorizeFn,
   EVERYONE,
-  AuthorizationContext,
-} from '../../types';
+} from '../..';
 
 describe('Authorization', () => {
   let app: Application;
@@ -85,7 +85,7 @@ describe('Authorization', () => {
   function givenRequestContext() {
     events = [];
     reqCtx = new Context(app);
-    reqCtx.bind('current.user').to('user-01');
+    reqCtx.bind('current.user').to({name: 'user-01'});
     controller = new OrderController();
   }
 

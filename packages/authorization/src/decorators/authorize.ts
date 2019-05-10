@@ -53,6 +53,10 @@ export class AuthorizeMethodDecoratorFactory extends MethodDecoratorFactory<
       methodMeta.voters = this.merge(methodMeta.voters, this.spec.voters);
     }
 
+    if (this.spec.resource) {
+      methodMeta.resource = this.spec.resource;
+    }
+
     return ownMetadata;
   }
 
