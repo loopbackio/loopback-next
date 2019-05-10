@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.13.0...@loopback/context@1.14.0) (2019-05-10)
+
+
+### Bug Fixes
+
+* **context:** close invocation context only after async is done ([e71e990](https://github.com/strongloop/loopback-next/commit/e71e990))
+
+
+### Features
+
+* **context:** add more getters for InvocationContext ([12a3ecb](https://github.com/strongloop/loopback-next/commit/12a3ecb))
+
+
+
+
+
 # [1.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.12.1...@loopback/context@1.13.0) (2019-05-09)
 
 
