@@ -136,10 +136,23 @@ function run(argv, options) {
         ? tsConfig.include.join('|')
         : ['src', 'test'].join('|');
 
+      const compilerRootDir =
+        (tsConfig.compilerOptions && tsConfig.compilerOptions.rootDir) || '';
+
       const pattern = `@(${dirs})/**/!(*.ts)`;
       const files = glob.sync(pattern, {root: packageDir, nodir: true});
       for (const file of files) {
-        fse.copySync(path.join(packageDir, file), path.join(outDir, file));
+        /**
+         * Trim path that matches tsConfig.compilerOptions.rootDir
+         */
+        let targetFile = file;
+        if (compilerRootDir && file.startsWith(compilerRootDir + '/')) {
+          targetFile = file.substring(compilerRootDir.length + 1);
+        }
+        fse.copySync(
+          path.join(packageDir, file),
+          path.join(outDir, targetFile),
+        );
       }
     }
   }
