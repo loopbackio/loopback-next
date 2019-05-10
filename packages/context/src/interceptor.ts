@@ -105,6 +105,33 @@ export class InvocationContext extends Context {
   }
 
   /**
+   * The target class, such as `OrderController`
+   */
+  get targetClass() {
+    return typeof this.target === 'function'
+      ? this.target
+      : this.target.constructor;
+  }
+
+  /**
+   * The target name, such as `OrderController.prototype.cancelOrder`
+   */
+  get targetName() {
+    return DecoratorFactory.getTargetName(this.target, this.methodName);
+  }
+
+  /**
+   * Description of the invocation
+   */
+  get description() {
+    return `InvocationContext(${this.name}): ${this.targetName}`;
+  }
+
+  toString() {
+    return this.description;
+  }
+
+  /**
    * Load all interceptors for the given invocation context. It adds
    * interceptors from possibly three sources:
    * 1. method level `@intercept`
@@ -177,9 +204,7 @@ export class InvocationContext extends Context {
  * by tagging it with `ContextTags.INTERCEPTOR`
  * @param binding Binding object
  */
-export function asGlobalInterceptor(
-  group?: string,
-): BindingTemplate<Interceptor> {
+export function asGlobalInterceptor(group?: string): BindingTemplate {
   return binding => {
     binding.tag(ContextTags.GLOBAL_INTERCEPTOR);
     if (group) binding.tag({[ContextTags.GLOBAL_INTERCEPTOR_GROUP]: group});
