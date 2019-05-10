@@ -18,7 +18,11 @@ import {filterByTag} from './binding-filter';
 import {BindingAddress} from './binding-key';
 import {Context} from './context';
 import {ContextBindings, ContextTags} from './keys';
-import {transformValueOrPromise, ValueOrPromise} from './value-promise';
+import {
+  transformValueOrPromise,
+  tryWithFinally,
+  ValueOrPromise,
+} from './value-promise';
 const debug = debugFactory('loopback:context:interceptor');
 const getTargetName = DecoratorFactory.getTargetName;
 
@@ -390,12 +394,13 @@ export function invokeMethodWithInterceptors(
   );
 
   invocationCtx.assertMethodExists();
-  try {
-    const interceptors = invocationCtx.loadInterceptors();
-    return invokeInterceptors(invocationCtx, interceptors);
-  } finally {
-    invocationCtx.close();
-  }
+  return tryWithFinally(
+    () => {
+      const interceptors = invocationCtx.loadInterceptors();
+      return invokeInterceptors(invocationCtx, interceptors);
+    },
+    () => invocationCtx.close(),
+  );
 }
 
 /**

@@ -60,6 +60,12 @@ describe('InvocationContext', () => {
     expect(invocationCtxForCheckName.invokeTargetMethod()).to.eql(true);
   });
 
+  it('does not close when an interceptor is in processing', () => {
+    const result = invocationCtxForGreet.invokeTargetMethod();
+    expect(invocationCtxForGreet.isBound('abc'));
+    return result;
+  });
+
   class MyController {
     static checkName(name: string) {
       const firstLetter = name.substring(0, 1);
@@ -73,6 +79,7 @@ describe('InvocationContext', () => {
 
   function givenContext() {
     ctx = new Context();
+    ctx.bind('abc').to('xyz');
   }
 
   function givenInvocationContext() {
