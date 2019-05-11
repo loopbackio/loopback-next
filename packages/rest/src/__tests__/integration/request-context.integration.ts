@@ -9,13 +9,13 @@ import {
   createRestAppClient,
   expect,
   givenHttpServerConfig,
-  supertest,
   httpsGetAsync,
+  supertest,
 } from '@loopback/testlab';
 import * as express from 'express';
 import {RequestContext} from '../../request-context';
 import {RestApplication} from '../../rest.application';
-import {RestServerConfig} from '../../rest.server';
+import {RestServer, RestServerConfig} from '../../rest.server';
 import {DefaultSequence} from '../../sequence';
 
 let app: RestApplication;
@@ -116,6 +116,22 @@ describe('RequestContext', () => {
   });
 });
 
+describe('close', () => {
+  it('removes listeners from parent context', async () => {
+    await givenRunningAppWithClient();
+    const server = await app.getServer(RestServer);
+    // Running the request 5 times
+    for (let i = 0; i < 5; i++) {
+      await client
+        .get('/products')
+        .set('x-forwarded-proto', 'https')
+        .expect(200);
+    }
+    expect(observedCtx.contains('req.originalUrl'));
+    expect(server.listenerCount('bind')).to.eql(1);
+  });
+});
+
 function setup() {
   (app as unknown) = undefined;
   (client as unknown) = undefined;
@@ -141,5 +157,9 @@ function contextObservingHandler(
   _sequence: DefaultSequence,
 ) {
   observedCtx = ctx;
+  // Add a subscriber to verify `close()`
+  ctx.subscribe(() => {});
+  // Add a binding to the request context
+  ctx.bind('req.originalUrl').to(ctx.request.originalUrl);
   ctx.response.end('ok');
 }
