@@ -171,6 +171,46 @@ describe('Interceptor', () => {
     expect(events).to.eql(['logError: before-greet', 'logError: error-greet']);
   });
 
+  it('closes invocation context after invocation', async () => {
+    const testInterceptor: Interceptor = async (invocationCtx, next) => {
+      // Add observers to the invocation context, which in turn adds listeners
+      // to its parent - `ctx`
+      invocationCtx.subscribe(() => {});
+      return await next();
+    };
+
+    class MyController {
+      @intercept(testInterceptor)
+      async greet(name: string) {
+        return `Hello, ${name}`;
+      }
+    }
+
+    // No listeners yet
+    expect(ctx.listenerCount('bind')).to.eql(0);
+    const controller = new MyController();
+
+    // Run the invocation 5 times
+    for (let i = 0; i < 5; i++) {
+      const count = ctx.listenerCount('bind');
+      const invocationPromise = invokeMethodWithInterceptors(
+        ctx,
+        controller,
+        'greet',
+        ['John'],
+      );
+      // New listeners are added to `ctx`
+      expect(ctx.listenerCount('bind')).to.be.greaterThan(count);
+
+      // Wait until the invocation finishes
+      await invocationPromise;
+    }
+
+    // Listeners added by invocation context are gone now
+    // There is one left for ctx.observers
+    expect(ctx.listenerCount('bind')).to.eql(1);
+  });
+
   it('invokes static interceptors', async () => {
     class MyController {
       // Apply `log` to a static method

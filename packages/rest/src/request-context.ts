@@ -95,6 +95,8 @@ export class RequestContext extends Context implements HandlerContext {
     super(parent, name);
     this._setupBindings(request, response);
     onFinished(this.response, () => {
+      // Close the request context when the http response is finished so that
+      // it can be recycled by GC
       this.close();
     });
   }

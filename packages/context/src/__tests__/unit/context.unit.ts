@@ -11,6 +11,7 @@ import {
   BindingScope,
   BindingType,
   Context,
+  ContextEventObserver,
   isPromiseLike,
 } from '../..';
 
@@ -19,12 +20,16 @@ import {
  * for assertions
  */
 class TestContext extends Context {
+  observers: Set<ContextEventObserver> | undefined;
   get parent() {
     return this._parent;
   }
   get bindingMap() {
     const map = new Map(this.registry);
     return map;
+  }
+  get parentEventListeners() {
+    return this._parentEventListeners;
   }
 }
 
@@ -725,18 +730,48 @@ describe('Context', () => {
   });
 
   describe('close()', () => {
-    it('clears all bindings', () => {
-      ctx.bind('foo').to('foo-value');
-      expect(ctx.bindingMap.size).to.eql(1);
-      ctx.close();
-      expect(ctx.bindingMap.size).to.eql(0);
+    it('clears all observers', () => {
+      const childCtx = new TestContext(ctx);
+      childCtx.subscribe(() => {});
+      expect(childCtx.observers!.size).to.eql(1);
+      childCtx.close();
+      expect(childCtx.observers).to.be.undefined();
     });
 
-    it('dereferences parent', () => {
+    it('removes listeners from parent context', () => {
       const childCtx = new TestContext(ctx);
-      expect(childCtx.parent).to.equal(ctx);
+      childCtx.subscribe(() => {});
+      // Now we have one observer
+      expect(childCtx.observers!.size).to.eql(1);
+      // Two listeners are also added to the parent context
+      const parentEventListeners = childCtx.parentEventListeners!;
+      expect(parentEventListeners.size).to.eql(2);
+
+      // The map contains listeners added to the parent context
+      // Take a snapshot into `copy`
+      const copy = new Map(parentEventListeners);
+      for (const [key, val] of copy.entries()) {
+        expect(val).to.be.a.Function();
+        expect(ctx.listeners(key)).to.containEql(val);
+      }
+
+      // Now clear subscriptions
       childCtx.close();
-      expect(childCtx.parent).to.be.undefined();
+
+      // observers are gone
+      expect(childCtx.observers).to.be.undefined();
+      // listeners are removed from parent context
+      for (const [key, val] of copy.entries()) {
+        expect(ctx.listeners(key)).to.not.containEql(val);
+      }
+    });
+
+    it('keeps parent and bindings', () => {
+      const childCtx = new TestContext(ctx);
+      childCtx.bind('foo').to('foo-value');
+      childCtx.close();
+      expect(childCtx.parent).to.equal(ctx);
+      expect(childCtx.contains('foo'));
     });
   });
 
