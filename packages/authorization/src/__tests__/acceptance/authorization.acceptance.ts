@@ -100,21 +100,18 @@ describe('Authorization', () => {
      */
     value(): AuthorizeFn {
       return async (
-        securityContext: AuthorizationContext,
+        context: AuthorizationContext,
         metadata: AuthorizationMetadata,
       ) => {
-        return this.authorize(securityContext, metadata);
+        return this.authorize(context, metadata);
       };
     }
 
-    authorize(
-      securityContext: AuthorizationContext,
-      metadata: AuthorizationMetadata,
-    ) {
-      events.push(securityContext.resource);
+    authorize(context: AuthorizationContext, metadata: AuthorizationMetadata) {
+      events.push(context.resource);
       if (
-        securityContext.resource === 'OrderController.prototype.cancelOrder' &&
-        securityContext.principals[0].name === 'user-01'
+        context.resource === 'OrderController.prototype.cancelOrder' &&
+        context.principals[0].name === 'user-01'
       ) {
         return AuthorizationDecision.DENY;
       }
