@@ -2,10 +2,43 @@
 
 A LoopBack 4 component for authorization support.
 
-**This is a reference implementation showing how to implement an authorization
-component, it is not production ready.**
-
 ## Overview
+
+Authorization decides if a **subject** can perform specific **action** on an
+**object**.
+
+### Role based
+
+### Permission based
+
+### Vote based
+
+### Key building blocks
+
+1. Decorate a method to describe:
+
+- Permission (maps the method to an action on the protected resource)
+
+  - Type of the protected resource (such as `customer` or `order`)
+  - What action does the method represent (such as `changeEmail`, `createOrder`,
+    or `cancelOrder`)
+
+- ACL (provides role based rules)
+
+  - allowedRoles
+  - deniedRoles
+
+- Voters (supplies a list of function to vote on the decision)
+
+2. Intercept a method invocation
+
+- Build authorization context
+
+  - Subject (who) - from authentication
+  - Map principals to roles
+  - Inspect the target method for metadata - Permission, ACL, voters
+
+- Run through voters/enforcers to make decisions
 
 ## Installation
 
