@@ -25,7 +25,7 @@ export class AuthorizeMethodDecoratorFactory extends MethodDecoratorFactory<
     ownMetadata: MetadataMap<AuthorizationMetadata>,
     target: Object,
     methodName?: string,
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     methodDescriptor?: TypedPropertyDescriptor<any> | number,
   ) {
     ownMetadata = ownMetadata || {};
