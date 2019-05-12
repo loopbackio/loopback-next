@@ -32,6 +32,6 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "fs-extra": "^7.0.1"
+    "fs-extra": "^8.0.0"
   }
 }
