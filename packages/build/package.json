@@ -22,7 +22,7 @@
     "fs-extra": "^8.0.0",
     "glob": "^7.1.4",
     "mocha": "^6.1.4",
-    "nyc": "^14.1.0",
+    "nyc": "^14.1.1",
     "prettier": "^1.17.0",
     "rimraf": "^2.6.2",
     "source-map-support": "^0.5.12",
