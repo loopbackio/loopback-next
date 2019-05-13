@@ -14,6 +14,7 @@
         "examples/soap-calculator/package.json",
         "examples/todo-list/package.json",
         "examples/todo/package.json",
+        "experimental/socketio/package.json",
         "packages/authentication/package.json",
         "packages/boot/package.json",
         "packages/booter-lb3app/package.json",
@@ -32,7 +33,6 @@
         "packages/rest-explorer/package.json",
         "packages/rest/package.json",
         "packages/service-proxy/package.json",
-        "packages/socketio/package.json",
         "packages/testlab/package.json",
         "packages/tslint-config/package.json",
         "sandbox/example/package.json"
