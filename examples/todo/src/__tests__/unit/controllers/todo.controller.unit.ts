@@ -67,6 +67,7 @@ describe('TodoController', () => {
 
       expect(result).to.eql(expected);
       sinon.assert.calledWith(create, input);
+      sinon.assert.calledWith(geocode, input.remindAtAddress);
     });
   });
 
