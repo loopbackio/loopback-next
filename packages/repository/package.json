@@ -22,7 +22,7 @@
     "@loopback/build": "^1.5.3",
     "@loopback/testlab": "^1.2.8",
     "@loopback/tslint-config": "^2.0.4",
-    "@types/lodash": "^4.14.124",
+    "@types/lodash": "^4.14.126",
     "@types/node": "^10.11.2"
   },
   "dependencies": {
