@@ -53,7 +53,7 @@ export class ExplorerController {
     }
 
     if (rootPath && rootPath !== '/') {
-      openApiSpecUrl = this.request.baseUrl + openApiSpecUrl;
+      openApiSpecUrl = rootPath + openApiSpecUrl;
     }
     const data = {
       openApiSpecUrl,

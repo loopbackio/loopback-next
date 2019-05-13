@@ -125,10 +125,12 @@ describe('API Explorer (acceptance)', () => {
 
     it('uses correct URLs', async () => {
       // static assets (including swagger-ui) honor basePath
-      const response = await request.get('/api/explorer/').expect(200);
-      const body = response.body;
-      // OpenAPI endpoints DO NOT honor basePath
-      expect(body).to.match(/^\s*url: '\/openapi.json',\s*$/m);
+      await request
+        .get('/api/explorer/')
+        .expect(200)
+        .expect('content-type', /html/)
+        // OpenAPI endpoints DO NOT honor basePath
+        .expect(/url\: '\/openapi\.json'\,/);
     });
   });
 

@@ -7,7 +7,6 @@ import {RestApplication, RestServer, RestServerConfig} from '@loopback/rest';
 import {
   Client,
   createClientForHandler,
-  expect,
   givenHttpServerConfig,
 } from '@loopback/testlab';
 import * as express from 'express';
@@ -38,10 +37,13 @@ describe('REST Explorer mounted as an express router', () => {
 
   it('honors basePath config', async () => {
     server.basePath('/v1');
-    // static assets (including swagger-ui) honor basePath
-    const response = await client.get('/api/v1/explorer/').expect(200);
-    // OpenAPI endpoints DO NOT honor basePath
-    expect(response.body).to.match(/^\s*url: '\/api\/openapi.json',\s*$/m);
+    await client
+      // static assets (including swagger-ui) honor basePath
+      .get('/api/v1/explorer/')
+      .expect(200)
+      .expect('content-type', /html/)
+      // OpenAPI endpoints DO NOT honor basePath
+      .expect(/url\: '\/api\/openapi\.json'\,/);
   });
 
   async function givenLoopBackApp(
