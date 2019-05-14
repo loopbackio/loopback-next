@@ -111,6 +111,32 @@ describe('Interception proxy', () => {
     ]);
   });
 
+  it('accesses properties on the proxy', () => {
+    class MyController {
+      constructor(public prefix: string) {}
+
+      greet() {
+        return `${this.prefix}: Hello`;
+      }
+    }
+
+    const proxy = createProxyWithInterceptors(new MyController('abc'), ctx);
+    expect(proxy.prefix).to.eql('abc');
+    proxy.prefix = 'xyz';
+    expect(proxy.prefix).to.eql('xyz');
+  });
+
+  it('accesses static properties on the proxy', () => {
+    class MyController {
+      static count: number = 0;
+    }
+
+    const proxyForClass = createProxyWithInterceptors(MyController, ctx);
+    expect(proxyForClass.count).to.eql(0);
+    proxyForClass.count = 3;
+    expect(proxyForClass.count).to.eql(3);
+  });
+
   it('supports asProxyWithInterceptors resolution option', async () => {
     // Apply `log` to all methods on the class
     @intercept(log)
