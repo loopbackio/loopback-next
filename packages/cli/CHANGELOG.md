@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.12.1...@loopback/cli@1.13.0) (2019-05-14)
+
+
+### Features
+
+* add lb3 application ([bf60011](https://github.com/strongloop/loopback-next/commit/bf60011))
+
+
+
+
+
 ## [1.12.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.12.0...@loopback/cli@1.12.1) (2019-05-10)
 
 **Note:** Version bump only for package @loopback/cli

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.17.1...@loopback/docs@1.18.0) (2019-05-14)
+
+
+### Features
+
+* **context:** add binding comparator to sort bindings ([ae3d61f](https://github.com/strongloop/loopback-next/commit/ae3d61f))
+* add lb3 application ([bf60011](https://github.com/strongloop/loopback-next/commit/bf60011))
+
+
+
+
+
 ## [1.17.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.17.0...@loopback/docs@1.17.1) (2019-05-10)
 
 **Note:** Version bump only for package @loopback/docs

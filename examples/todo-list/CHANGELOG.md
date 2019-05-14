@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.5.11...@loopback/example-todo-list@1.6.0) (2019-05-14)
+
+
+### Features
+
+* add lb3 application ([bf60011](https://github.com/strongloop/loopback-next/commit/bf60011))
+
+
+
+
+
 ## [1.5.11](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.5.10...@loopback/example-todo-list@1.5.11) (2019-05-10)
 
 **Note:** Version bump only for package @loopback/example-todo-list
