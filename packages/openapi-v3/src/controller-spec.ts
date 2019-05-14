@@ -3,24 +3,24 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {MetadataInspector, DecoratorFactory} from '@loopback/context';
-
+import {DecoratorFactory, MetadataInspector} from '@loopback/context';
 import {
+  ComponentsObject,
+  ISpecificationExtension,
+  isReferenceObject,
   OperationObject,
   ParameterObject,
   PathObject,
-  ComponentsObject,
+  ReferenceObject,
   RequestBodyObject,
   ResponseObject,
-  ReferenceObject,
   SchemaObject,
-  isReferenceObject,
 } from '@loopback/openapi-v3-types';
 import {getJsonSchema} from '@loopback/repository-json-schema';
-import {OAI3Keys} from './keys';
-import {jsonToSchemaObject} from './json-to-schema';
 import * as _ from 'lodash';
 import {resolveSchema} from './generate-schema';
+import {jsonToSchemaObject} from './json-to-schema';
+import {OAI3Keys} from './keys';
 
 const debug = require('debug')('loopback:openapi3:metadata:controller-spec');
 
@@ -55,6 +55,8 @@ export interface RestEndpoint {
 }
 
 export const TS_TYPE_KEY = 'x-ts-type';
+
+type ComponentSchemaMap = {[key: string]: SchemaObject};
 
 /**
  * Build the api spec from class and method level decorations
@@ -120,8 +122,8 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
       if (isReferenceObject(responseObject)) continue;
       const content = responseObject.content || {};
       for (const c in content) {
-        debug('  evaluating response code %s with content: %o', code, c);
-        resolveTSType(spec, content[c].schema);
+        debug('  processing response code %s with content-type %', code, c);
+        processSchemaExtensions(spec, content[c].schema);
       }
     }
 
@@ -180,7 +182,7 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
 
         const content = requestBody.content || {};
         for (const mediaType in content) {
-          resolveTSType(spec, content[mediaType].schema);
+          processSchemaExtensions(spec, content[mediaType].schema);
         }
       }
     }
@@ -235,12 +237,18 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
  * @param spec Controller spec
  * @param schema Schema object
  */
-function resolveTSType(
+function processSchemaExtensions(
   spec: ControllerSpec,
-  schema?: SchemaObject | ReferenceObject,
+  schema?: SchemaObject | (ReferenceObject & ISpecificationExtension),
 ) {
-  debug('  evaluating schema: %j', schema);
-  if (!schema || isReferenceObject(schema)) return;
+  debug('  processing extensions in schema: %j', schema);
+  if (!schema) return;
+
+  assignRelatedSchemas(spec, schema.definitions);
+  delete schema.definitions;
+
+  if (isReferenceObject(schema)) return;
+
   const tsType = schema[TS_TYPE_KEY];
   debug('  %s => %o', TS_TYPE_KEY, tsType);
   if (tsType) {
@@ -252,11 +260,11 @@ function resolveTSType(
     return;
   }
   if (schema.type === 'array') {
-    resolveTSType(spec, schema.items);
+    processSchemaExtensions(spec, schema.items);
   } else if (schema.type === 'object') {
     if (schema.properties) {
       for (const p in schema.properties) {
-        resolveTSType(spec, schema.properties[p]);
+        processSchemaExtensions(spec, schema.properties[p]);
       }
     }
   }
@@ -281,20 +289,43 @@ function generateOpenAPISchema(spec: ControllerSpec, tsType: Function) {
   }
   const jsonSchema = getJsonSchema(tsType);
   const openapiSchema = jsonToSchemaObject(jsonSchema);
-  const outputSchemas = spec.components.schemas;
-  if (openapiSchema.definitions) {
-    for (const key in openapiSchema.definitions) {
-      // Preserve user-provided definitions
-      if (key in outputSchemas) continue;
-      const relatedSchema = openapiSchema.definitions[key];
-      debug('    defining referenced schema for %j: %j', key, relatedSchema);
-      outputSchemas[key] = relatedSchema;
-    }
-    delete openapiSchema.definitions;
-  }
+
+  assignRelatedSchemas(spec, openapiSchema.definitions);
+  delete openapiSchema.definitions;
 
   debug('    defining schema for %j: %j', tsType.name, openapiSchema);
-  outputSchemas[tsType.name] = openapiSchema;
+  spec.components.schemas[tsType.name] = openapiSchema;
+}
+
+/**
+ * Assign related schemas from definitions to the controller spec
+ * @param spec Controller spec
+ * @param definitions Schema definitions
+ */
+function assignRelatedSchemas(
+  spec: ControllerSpec,
+  definitions?: ComponentSchemaMap,
+) {
+  if (!definitions) return;
+  debug(
+    '    assigning related schemas: ',
+    definitions && Object.keys(definitions),
+  );
+  if (!spec.components) {
+    spec.components = {};
+  }
+  if (!spec.components.schemas) {
+    spec.components.schemas = {};
+  }
+  const outputSchemas = spec.components.schemas;
+
+  for (const key in definitions) {
+    // Preserve user-provided definitions
+    if (key in outputSchemas) continue;
+    const relatedSchema = definitions[key];
+    debug('    defining referenced schema for %j: %j', key, relatedSchema);
+    outputSchemas[key] = relatedSchema;
+  }
 }
 
 /**
