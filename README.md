@@ -94,8 +94,8 @@ You can join the team by posting a comment to
 |    [![b-admike]](http://github.com/b-admike)     |      [![dhmlau]](http://github.com/dhmlau)       |         [![jannyhou]](http://github.com/jannyHou)          |
 |                    Hage Yaapa                    |                 Nora Abdelgadir                  |                       Mario Estrada                        |
 | [![hacksparrow]](https://github.com/hacksparrow) | [![nabdelgadir]](https://github.com/nabdelgadir) | [![marioestradarosa]](https://github.com/marioestradarosa) |
-|                   Hugo Da Roit                   |                 Dominique Emond                  |                                                            |
-|        [![yaty]](https://github.com/yaty)        |     [![emonddr]](https://github.com/emonddr)     |                                                            |
+|                   Hugo Da Roit                   |                 Dominique Emond                  |                         Agnes Lin                          |
+|        [![yaty]](https://github.com/yaty)        |     [![emonddr]](https://github.com/emonddr)     |         [![agnes512]](https://github.com/agnes512)         |
 
 See
 [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
@@ -115,3 +115,4 @@ See
 [marioestradarosa]: https://avatars2.githubusercontent.com/u/4633823?v=3&s=60
 [yaty]: https://avatars3.githubusercontent.com/u/11981803?v=3&s=60
 [emonddr]: https://avatars0.githubusercontent.com/u/6864736??v=3&s=60
+[agnes512]: https://avatars3.githubusercontent.com/u/50331796?v=3&s=60
