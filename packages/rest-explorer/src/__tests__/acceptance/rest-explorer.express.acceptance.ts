@@ -35,7 +35,7 @@ describe('REST Explorer mounted as an express router', () => {
       .expect('location', '/api/explorer/');
   });
 
-  it('honors basePath config', async () => {
+  it('uses correct URLs when basePath is set', async () => {
     server.basePath('/v1');
     await client
       // static assets (including swagger-ui) honor basePath
