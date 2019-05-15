@@ -9,9 +9,10 @@ import {
   ApplicationMetadataBooter,
   ControllerBooter,
   DataSourceBooter,
+  InterceptorProviderBooter,
+  LifeCycleObserverBooter,
   RepositoryBooter,
   ServiceBooter,
-  LifeCycleObserverBooter,
 } from './booters';
 import {Bootstrapper} from './bootstrapper';
 import {BootBindings} from './keys';
@@ -31,6 +32,7 @@ export class BootComponent implements Component {
     ServiceBooter,
     DataSourceBooter,
     LifeCycleObserverBooter,
+    InterceptorProviderBooter,
   ];
 
   /**
