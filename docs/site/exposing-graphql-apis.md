@@ -94,7 +94,7 @@ The expected output looks like this:
 
 ```
  mutation {
-   postTodos(todoInput: {
+   todoControllerCreateTodo(todoInput: {
      title: "Take over the universe"
    }) {
      id
@@ -108,7 +108,7 @@ The expected output looks like this:
 ```json
 {
   "data": {
-    "postTodos": {
+    "todoControllerCreateTodo": {
       "id": 5,
       "title": "Take over the universe"
     }
