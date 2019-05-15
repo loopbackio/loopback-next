@@ -1,0 +1,42 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "package.json",
+        "benchmark/package.json",
+        "docs/package.json",
+        "examples/express-composition/package.json",
+        "examples/greeter-extension/package.json",
+        "examples/hello-world/package.json",
+        "examples/lb3-application/package.json",
+        "examples/log-extension/package.json",
+        "examples/rpc-server/package.json",
+        "examples/soap-calculator/package.json",
+        "examples/todo-list/package.json",
+        "examples/todo/package.json",
+        "packages/authentication/package.json",
+        "packages/boot/package.json",
+        "packages/booter-lb3app/package.json",
+        "packages/build/package.json",
+        "packages/cli/package.json",
+        "packages/context/package.json",
+        "packages/core/package.json",
+        "packages/http-caching-proxy/package.json",
+        "packages/http-server/package.json",
+        "packages/metadata/package.json",
+        "packages/openapi-spec-builder/package.json",
+        "packages/openapi-v3-types/package.json",
+        "packages/openapi-v3/package.json",
+        "packages/repository-json-schema/package.json",
+        "packages/repository/package.json",
+        "packages/rest-explorer/package.json",
+        "packages/rest/package.json",
+        "packages/security/package.json",
+        "packages/service-proxy/package.json",
+        "packages/testlab/package.json",
+        "packages/tslint-config/package.json",
+        "sandbox/example/package.json"
+      ]
+    }
+  }
+}
