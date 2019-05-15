@@ -1,0 +1,7 @@
+{
+  "content": [
+    "index.ts",
+    "src/**/*.ts"
+  ],
+  "codeSectionDepth": 4
+}
