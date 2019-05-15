@@ -818,8 +818,10 @@ describe('API specification', () => {
 
 {% include important.html content=" The top-down approach for building LoopBack
 applications is not yet fully supported. Therefore, the code outlined in this
-section is outdated and may not work out of the box. It will be revisitedafter
-our MVP release.
+section is outdated and may not work out of the box. Check out
+https://github.com/strongloop/loopback-next/issues/1882 for the epic tracking
+the feature and [OpenAPI generator](OpenAPI-generator.md) page for artifact
+generation from OpenAPI specs.
 " %}
 
 The formal validity of your application's spec does not guarantee that your
