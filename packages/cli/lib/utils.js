@@ -405,6 +405,14 @@ exports.getObserverFileName = function(observerName) {
 };
 
 /**
+ * Returns the interceptorName in the directory file format for the interceptor
+ * @param {string} interceptorName
+ */
+exports.getInterceptorFileName = function(interceptorName) {
+  return `${_.kebabCase(interceptorName)}.interceptor.ts`;
+};
+
+/**
  *
  * Returns the connector property for the datasource file
  * @param {string} datasourcesDir path for sources
@@ -536,4 +544,5 @@ exports.datasourcesDir = 'datasources';
 exports.servicesDir = 'services';
 exports.modelsDir = 'models';
 exports.observersDir = 'observers';
+exports.interceptorsDir = 'interceptors';
 exports.sourceRootDir = 'src';
