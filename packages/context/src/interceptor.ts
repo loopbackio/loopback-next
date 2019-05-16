@@ -14,11 +14,17 @@ import {
 import * as assert from 'assert';
 import * as debugFactory from 'debug';
 import {Binding, BindingTemplate} from './binding';
+import {bind} from './binding-decorator';
 import {filterByTag} from './binding-filter';
+import {BindingSpec} from './binding-inspector';
 import {BindingAddress} from './binding-key';
 import {sortBindingsByPhase} from './binding-sorter';
 import {Context} from './context';
-import {ContextBindings, ContextTags} from './keys';
+import {
+  ContextBindings,
+  ContextTags,
+  GLOBAL_INTERCEPTOR_NAMESPACE,
+} from './keys';
 import {
   transformValueOrPromise,
   tryWithFinally,
@@ -200,13 +206,24 @@ export class InvocationContext extends Context {
 /**
  * The `BindingTemplate` function to configure a binding as a global interceptor
  * by tagging it with `ContextTags.INTERCEPTOR`
- * @param binding - Binding object
+ * @param group - Group for ordering the interceptor
  */
 export function asGlobalInterceptor(group?: string): BindingTemplate {
   return binding => {
-    binding.tag(ContextTags.GLOBAL_INTERCEPTOR);
+    binding
+      .tag(ContextTags.GLOBAL_INTERCEPTOR)
+      .tag({[ContextTags.NAMESPACE]: GLOBAL_INTERCEPTOR_NAMESPACE});
     if (group) binding.tag({[ContextTags.GLOBAL_INTERCEPTOR_GROUP]: group});
   };
+}
+
+/**
+ * `@globalInterceptor` decorator to mark the class as a global interceptor
+ * @param group - Group for ordering the interceptor
+ * @param specs - Extra binding specs
+ */
+export function globalInterceptor(group?: string, ...specs: BindingSpec[]) {
+  return bind(asGlobalInterceptor(group), ...specs);
 }
 
 /**
