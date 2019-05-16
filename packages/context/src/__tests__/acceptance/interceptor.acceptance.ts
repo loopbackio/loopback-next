@@ -281,6 +281,92 @@ describe('Interceptor', () => {
     });
   });
 
+  context('method dependency injection without interceptors', () => {
+    it('does not invoke interceptors on a static method', async () => {
+      class MyController {
+        // Apply `log` to a static method with parameter injection
+        @intercept(log)
+        static async greetStaticWithDI(@inject('name') name: string) {
+          return `Hello, ${name}`;
+        }
+      }
+      ctx.bind('name').to('John');
+      const msg = await invokeMethod(
+        MyController,
+        'greetStaticWithDI',
+        ctx,
+        [],
+        {skipInterceptors: true},
+      );
+      expect(msg).to.equal('Hello, John');
+      expect(events).to.eql([]);
+    });
+
+    it('does not invoke interceptors on an instance method', async () => {
+      class MyController {
+        // Apply `log` to an async instance method with parameter injection
+        @intercept(log)
+        async greetWithDI(@inject('name') name: string) {
+          return `Hello, ${name}`;
+        }
+      }
+      const controller = new MyController();
+
+      ctx.bind('name').to('John');
+      const msg = await invokeMethod(controller, 'greetWithDI', ctx, [], {
+        skipInterceptors: true,
+      });
+      expect(msg).to.equal('Hello, John');
+      expect(events).to.eql([]);
+    });
+  });
+
+  context('method interception without injection', () => {
+    it('invokes interceptors on a static method', async () => {
+      class MyController {
+        // Apply `log` to a static method with parameter injection
+        @intercept(log)
+        static async greetStaticWithDI(@inject('name') name: string) {
+          return `Hello, ${name}`;
+        }
+      }
+      ctx.bind('name').to('John');
+      const msg = await invokeMethod(
+        MyController,
+        'greetStaticWithDI',
+        ctx,
+        ['John'],
+        {skipParameterInjection: true},
+      );
+      expect(msg).to.equal('Hello, John');
+      expect(events).to.eql([
+        'log: before-greetStaticWithDI',
+        'log: after-greetStaticWithDI',
+      ]);
+    });
+
+    it('invokes interceptors on an instance method', async () => {
+      class MyController {
+        // Apply `log` to an async instance method with parameter injection
+        @intercept(log)
+        async greetWithDI(@inject('name') name: string) {
+          return `Hello, ${name}`;
+        }
+      }
+      const controller = new MyController();
+
+      ctx.bind('name').to('John');
+      const msg = await invokeMethod(controller, 'greetWithDI', ctx, ['John'], {
+        skipParameterInjection: true,
+      });
+      expect(msg).to.equal('Hello, John');
+      expect(events).to.eql([
+        'log: before-greetWithDI',
+        'log: after-greetWithDI',
+      ]);
+    });
+  });
+
   context('class level interceptors', () => {
     it('invokes sync and async interceptors', async () => {
       // Apply `log` to all methods on the class

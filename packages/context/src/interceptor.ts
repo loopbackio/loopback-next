@@ -11,72 +11,35 @@ import {
   MetadataMap,
   MethodDecoratorFactory,
 } from '@loopback/metadata';
-import * as assert from 'assert';
 import * as debugFactory from 'debug';
 import {Binding, BindingTemplate} from './binding';
 import {bind} from './binding-decorator';
 import {filterByTag} from './binding-filter';
 import {BindingSpec} from './binding-inspector';
-import {BindingAddress} from './binding-key';
 import {sortBindingsByPhase} from './binding-sorter';
 import {Context} from './context';
+import {
+  GenericInterceptor,
+  GenericInterceptorOrKey,
+  invokeInterceptors,
+} from './interceptor-chain';
+import {
+  InvocationArgs,
+  InvocationContext,
+  InvocationResult,
+} from './invocation';
 import {
   ContextBindings,
   ContextTags,
   GLOBAL_INTERCEPTOR_NAMESPACE,
 } from './keys';
-import {
-  transformValueOrPromise,
-  tryWithFinally,
-  ValueOrPromise,
-} from './value-promise';
+import {tryWithFinally, ValueOrPromise} from './value-promise';
 const debug = debugFactory('loopback:context:interceptor');
-const getTargetName = DecoratorFactory.getTargetName;
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
- * Array of arguments for a method invocation
+ * A specialized InvocationContext for interceptors
  */
-export type InvocationArgs = any[];
-
-/**
- * Return value for a method invocation
- */
-export type InvocationResult = any;
-
-/**
- * A type for class or its prototype
- */
-type ClassOrPrototype = any;
-
-/* eslint-enable @typescript-eslint/no-explicit-any */
-
-/**
- * InvocationContext represents the context to invoke interceptors for a method.
- * The context can be used to access metadata about the invocation as well as
- * other dependencies.
- */
-export class InvocationContext extends Context {
-  /**
-   * Construct a new instance of `InvocationContext`
-   * @param parent - Parent context, such as the RequestContext
-   * @param target - Target class (for static methods) or prototype/object
-   * (for instance methods)
-   * @param methodName - Method name
-   * @param args - An array of arguments
-   */
-  constructor(
-    // Make `parent` public so that the interceptor can add bindings to
-    // the request context, for example, tracing id
-    public readonly parent: Context,
-    public readonly target: object,
-    public readonly methodName: string,
-    public readonly args: InvocationArgs,
-  ) {
-    super(parent);
-  }
-
+export class InterceptedInvocationContext extends InvocationContext {
   /**
    * Discover all binding keys for global interceptors (tagged by
    * ContextTags.GLOBAL_INTERCEPTOR)
@@ -86,7 +49,9 @@ export class InvocationContext extends Context {
       filterByTag(ContextTags.GLOBAL_INTERCEPTOR),
     );
     this.sortGlobalInterceptorBindings(bindings);
-    return bindings.map(b => b.key);
+    const keys = bindings.map(b => b.key);
+    debug('Global interceptor binding keys:', keys);
+    return keys;
   }
 
   /**
@@ -106,33 +71,6 @@ export class InvocationContext extends Context {
       ContextTags.GLOBAL_INTERCEPTOR_GROUP,
       orderedGroups,
     );
-  }
-
-  /**
-   * The target class, such as `OrderController`
-   */
-  get targetClass() {
-    return typeof this.target === 'function'
-      ? this.target
-      : this.target.constructor;
-  }
-
-  /**
-   * The target name, such as `OrderController.prototype.cancelOrder`
-   */
-  get targetName() {
-    return DecoratorFactory.getTargetName(this.target, this.methodName);
-  }
-
-  /**
-   * Description of the invocation
-   */
-  get description() {
-    return `InvocationContext(${this.name}): ${this.targetName}`;
-  }
-
-  toString() {
-    return this.description;
   }
 
   /**
@@ -159,47 +97,8 @@ export class InvocationContext extends Context {
     const globalInterceptors = this.getGlobalInterceptorBindingKeys();
     // Inserting global interceptors
     interceptors = mergeInterceptors(globalInterceptors, interceptors);
+    debug('Interceptors for %s', this.targetName, interceptors);
     return interceptors;
-  }
-
-  /**
-   * Assert the method exists on the target. An error will be thrown if otherwise.
-   * @param context - Invocation context
-   */
-  assertMethodExists() {
-    const targetWithMethods = this.target as Record<string, Function>;
-    if (typeof targetWithMethods[this.methodName] !== 'function') {
-      const targetName = getTargetName(this.target, this.methodName);
-      assert(false, `Method ${targetName} not found`);
-    }
-    return targetWithMethods;
-  }
-
-  /**
-   * Invoke the target method with the given context
-   * @param context - Invocation context
-   */
-  invokeTargetMethod() {
-    const targetWithMethods = this.assertMethodExists();
-    /* istanbul ignore if */
-    if (debug.enabled) {
-      debug(
-        'Invoking method %s',
-        getTargetName(this.target, this.methodName),
-        this.args,
-      );
-    }
-    // Invoke the target method
-    const result = targetWithMethods[this.methodName](...this.args);
-    /* istanbul ignore if */
-    if (debug.enabled) {
-      debug(
-        'Method invoked: %s',
-        getTargetName(this.target, this.methodName),
-        result,
-      );
-    }
-    return result;
   }
 }
 
@@ -231,23 +130,13 @@ export function globalInterceptor(group?: string, ...specs: BindingSpec[]) {
 /**
  * Interceptor function to intercept method invocations
  */
-export interface Interceptor {
-  /**
-   * @param context - Invocation context
-   * @param next - A function to invoke next interceptor or the target method
-   * @returns A result as value or promise
-   */
-  (
-    context: InvocationContext,
-    next: () => ValueOrPromise<InvocationResult>,
-  ): ValueOrPromise<InvocationResult>;
-}
+export interface Interceptor extends GenericInterceptor<InvocationContext> {}
 
 /**
  * Interceptor function or binding key that can be used as parameters for
  * `@intercept()`
  */
-export type InterceptorOrKey = BindingAddress<Interceptor> | Interceptor;
+export type InterceptorOrKey = GenericInterceptorOrKey<InvocationContext>;
 
 /**
  * Metadata key for method-level interceptors
@@ -358,7 +247,9 @@ class InterceptMethodDecoratorFactory extends MethodDecoratorFactory<
  */
 export function intercept(...interceptorOrKeys: InterceptorOrKey[]) {
   return function interceptDecoratorForClassOrMethod(
-    target: ClassOrPrototype,
+    // Class or a prototype
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    target: any,
     method?: string,
     // Use `any` to for `TypedPropertyDescriptor`
     // See https://github.com/strongloop/loopback-next/pull/2704
@@ -400,7 +291,7 @@ export function invokeMethodWithInterceptors(
   methodName: string,
   args: InvocationArgs,
 ): ValueOrPromise<InvocationResult> {
-  const invocationCtx = new InvocationContext(
+  const invocationCtx = new InterceptedInvocationContext(
     context,
     target,
     methodName,
@@ -411,66 +302,10 @@ export function invokeMethodWithInterceptors(
   return tryWithFinally(
     () => {
       const interceptors = invocationCtx.loadInterceptors();
+      const targetMethodInvoker = () => invocationCtx.invokeTargetMethod();
+      interceptors.push(targetMethodInvoker);
       return invokeInterceptors(invocationCtx, interceptors);
     },
     () => invocationCtx.close(),
   );
-}
-
-/**
- * Invoke the interceptor chain
- * @param context - Context object
- * @param interceptors - An array of interceptors
- */
-function invokeInterceptors(
-  context: InvocationContext,
-  interceptors: InterceptorOrKey[],
-): ValueOrPromise<InvocationResult> {
-  let index = 0;
-  return next();
-
-  /**
-   * Invoke downstream interceptors or the target method
-   */
-  function next(): ValueOrPromise<InvocationResult> {
-    // No more interceptors
-    if (index === interceptors.length) {
-      return context.invokeTargetMethod();
-    }
-    return invokeNextInterceptor();
-  }
-
-  /**
-   * Invoke downstream interceptors
-   */
-  function invokeNextInterceptor(): ValueOrPromise<InvocationResult> {
-    const interceptor = interceptors[index++];
-    const interceptorFn = loadInterceptor(interceptor);
-    return transformValueOrPromise(interceptorFn, fn => {
-      /* istanbul ignore if */
-      if (debug.enabled) {
-        debug(
-          'Invoking interceptor %d (%s) on %s',
-          index - 1,
-          fn.name,
-          getTargetName(context.target, context.methodName),
-          context.args,
-        );
-      }
-      return fn(context, next);
-    });
-  }
-
-  /**
-   * Return the interceptor function or resolve the interceptor function as a
-   * binding from the context
-   * @param interceptor - Interceptor function or binding key
-   */
-  function loadInterceptor(interceptor: InterceptorOrKey) {
-    if (typeof interceptor === 'function') return interceptor;
-    debug('Resolving interceptor binding %s', interceptor);
-    return context.getValueOrPromise(interceptor) as ValueOrPromise<
-      Interceptor
-    >;
-  }
 }
