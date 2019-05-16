@@ -8,10 +8,15 @@ import {
   asGlobalInterceptor,
   Context,
   ContextBindings,
+  ContextTags,
+  createBindingFromClass,
+  globalInterceptor,
+  GLOBAL_INTERCEPTOR_NAMESPACE,
   Interceptor,
   InterceptorOrKey,
   InvocationContext,
   mergeInterceptors,
+  Provider,
 } from '../..';
 
 describe('mergeInterceptors', () => {
@@ -138,6 +143,40 @@ describe('globalInterceptors', () => {
       'globalInterceptors.authInterceptor',
       'globalInterceptors.logInterceptor',
     ]);
+  });
+
+  it('applies asGlobalInterceptor', () => {
+    const binding = ctx
+      .bind('globalInterceptors.authInterceptor')
+      .to(authInterceptor)
+      .apply(asGlobalInterceptor('auth'));
+
+    expect(binding.tagMap).to.eql({
+      [ContextTags.NAMESPACE]: GLOBAL_INTERCEPTOR_NAMESPACE,
+      [ContextTags.GLOBAL_INTERCEPTOR]: ContextTags.GLOBAL_INTERCEPTOR,
+      [ContextTags.GLOBAL_INTERCEPTOR_GROUP]: 'auth',
+    });
+  });
+
+  it('supports @globalInterceptor', () => {
+    @globalInterceptor('auth', {
+      tags: {[ContextTags.NAME]: 'my-auth-interceptor'},
+    })
+    class MyAuthInterceptor implements Provider<Interceptor> {
+      value() {
+        return authInterceptor;
+      }
+    }
+    const binding = createBindingFromClass(MyAuthInterceptor);
+
+    expect(binding.tagMap).to.eql({
+      [ContextTags.TYPE]: 'provider',
+      [ContextTags.PROVIDER]: 'provider',
+      [ContextTags.NAMESPACE]: GLOBAL_INTERCEPTOR_NAMESPACE,
+      [ContextTags.GLOBAL_INTERCEPTOR]: ContextTags.GLOBAL_INTERCEPTOR,
+      [ContextTags.GLOBAL_INTERCEPTOR_GROUP]: 'auth',
+      [ContextTags.NAME]: 'my-auth-interceptor',
+    });
   });
 
   class MyController {

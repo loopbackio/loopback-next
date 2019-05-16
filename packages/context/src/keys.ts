@@ -39,11 +39,17 @@ export namespace ContextTags {
    * Binding tag for global interceptors
    */
   export const GLOBAL_INTERCEPTOR = 'globalInterceptor';
+
   /**
    * Binding tag for group name of global interceptors
    */
   export const GLOBAL_INTERCEPTOR_GROUP = 'globalInterceptorGroup';
 }
+
+/**
+ * Default namespace for global interceptors
+ */
+export const GLOBAL_INTERCEPTOR_NAMESPACE = 'globalInterceptors';
 
 /**
  * Namespace for context bindings
