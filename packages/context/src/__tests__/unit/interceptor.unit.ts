@@ -12,9 +12,9 @@ import {
   createBindingFromClass,
   globalInterceptor,
   GLOBAL_INTERCEPTOR_NAMESPACE,
+  InterceptedInvocationContext,
   Interceptor,
   InterceptorOrKey,
-  InvocationContext,
   mergeInterceptors,
   Provider,
 } from '../..';
@@ -190,6 +190,8 @@ describe('globalInterceptors', () => {
   }
 
   function givenInvocationContext() {
-    return new InvocationContext(ctx, new MyController(), 'greet', ['John']);
+    return new InterceptedInvocationContext(ctx, new MyController(), 'greet', [
+      'John',
+    ]);
   }
 });

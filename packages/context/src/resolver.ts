@@ -15,7 +15,6 @@ import {
   describeInjectedProperties,
   Injection,
 } from './inject';
-import {invokeMethodWithInterceptors} from './interceptor';
 import {ResolutionOptions, ResolutionSession} from './resolution-session';
 import {
   BoundValue,
@@ -245,50 +244,6 @@ export function resolveInjectedArguments(
       // Clone the session so that multiple arguments can be resolved in parallel
       ResolutionSession.fork(session),
     );
-  });
-}
-
-/**
- * Invoke an instance method with dependency injection
- * @param target - Target of the method, it will be the class for a static
- * method, and instance or class prototype for a prototype method
- * @param method - Name of the method
- * @param ctx - Context
- * @param nonInjectedArgs - Optional array of args for non-injected parameters
- */
-export function invokeMethod(
-  target: object,
-  method: string,
-  ctx: Context,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  nonInjectedArgs?: any[],
-): ValueOrPromise<BoundValue> {
-  const methodName = getTargetName(target, method);
-  /* istanbul ignore if */
-  if (debug.enabled) {
-    debug('Invoking method %s', methodName);
-    if (nonInjectedArgs && nonInjectedArgs.length) {
-      debug('Non-injected arguments:', nonInjectedArgs);
-    }
-  }
-  const argsOrPromise = resolveInjectedArguments(
-    target,
-    method,
-    ctx,
-    undefined,
-    nonInjectedArgs,
-  );
-  const targetWithMethods = <{[method: string]: Function}>target;
-  assert(
-    typeof targetWithMethods[method] === 'function',
-    `Method ${method} not found`,
-  );
-  return transformValueOrPromise(argsOrPromise, args => {
-    /* istanbul ignore if */
-    if (debug.enabled) {
-      debug('Injected arguments for %s:', methodName, args);
-    }
-    return invokeMethodWithInterceptors(ctx, targetWithMethods, method, args);
   });
 }
 
