@@ -8,23 +8,28 @@ import {Application} from '@loopback/core';
 import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
 import {api} from '@loopback/openapi-v3';
 import {Client, createClientForHandler} from '@loopback/testlab';
+import {Response} from 'express';
 import {
   ControllerClass,
   ControllerInstance,
   DefaultSequence,
-  FindRoute,
+  FindRouteAction,
+  HandlerContext,
   HttpServerLike,
-  InvokeMethod,
-  ParseParams,
-  Reject,
+  InvokeMethodAction,
+  OperationRetval,
+  ParseParamsAction,
+  RejectAction,
   RequestContext,
   RestApplication,
   RestBindings,
   RestComponent,
   RestServer,
   Send,
+  SendAction,
   SequenceHandler,
 } from '../../..';
+import {RestAction} from '../../../types';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -71,19 +76,21 @@ describe('Sequence', () => {
   it('allows users to bind a custom sequence class', () => {
     class MySequence implements SequenceHandler {
       constructor(
-        @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
+        @inject(SequenceActions.FIND_ROUTE)
+        protected findRouteAction: FindRouteAction,
         @inject(SequenceActions.PARSE_PARAMS)
-        protected parseParams: ParseParams,
-        @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
-        @inject(SequenceActions.SEND) protected send: Send,
+        protected parseParamsAction: ParseParamsAction,
+        @inject(SequenceActions.INVOKE_METHOD)
+        protected invokeMethodAction: InvokeMethodAction,
+        @inject(SequenceActions.SEND) protected sendAction: SendAction,
       ) {}
 
       async handle(context: RequestContext) {
         const {request, response} = context;
-        const route = this.findRoute(request);
-        const args = await this.parseParams(request, route);
-        const result = await this.invoke(route, args);
-        this.send(response, `MySequence ${result}`);
+        const route = this.findRouteAction.findRoute(request);
+        const args = await this.parseParamsAction.parseParams(request, route);
+        const result = await this.invokeMethodAction.invokeMethod(route, args);
+        this.sendAction.send(response, `MySequence ${result}`);
       }
     }
 
@@ -96,10 +103,12 @@ describe('Sequence', () => {
 
   it('allows users to bind a custom sequence class via app.sequence()', async () => {
     class MySequence implements SequenceHandler {
-      constructor(@inject(SequenceActions.SEND) protected send: Send) {}
+      constructor(
+        @inject(SequenceActions.SEND) protected sendAction: SendAction,
+      ) {}
 
       async handle({response}: RequestContext) {
-        this.send(response, 'MySequence was invoked.');
+        this.sendAction.send(response, 'MySequence was invoked.');
       }
     }
 
@@ -112,11 +121,13 @@ describe('Sequence', () => {
   });
 
   it('user-defined Send', () => {
-    const send: Send = (response, result) => {
-      response.setHeader('content-type', 'text/plain');
-      response.end(`CUSTOM FORMAT: ${result}`);
-    };
-    server.bind(SequenceActions.SEND).to(send);
+    class MySendAction extends SendAction {
+      send(response: Response, result: OperationRetval) {
+        response.setHeader('content-type', 'text/plain');
+        response.end(`CUSTOM FORMAT: ${result}`);
+      }
+    }
+    server.bind(SequenceActions.SEND).toClass(MySendAction);
 
     return whenIRequest()
       .get('/name')
@@ -124,11 +135,13 @@ describe('Sequence', () => {
   });
 
   it('user-defined Reject', () => {
-    const reject: Reject = ({response}, error) => {
-      response.statusCode = 418; // I'm a teapot
-      response.end();
-    };
-    server.bind(SequenceActions.REJECT).to(reject);
+    class MyRejectAction extends RejectAction {
+      reject({response}: HandlerContext, error: Error) {
+        response.statusCode = 418; // I'm a teapot
+        response.end();
+      }
+    }
+    server.bind(SequenceActions.REJECT).toClass(MyRejectAction);
 
     return whenIRequest()
       .get('/unknown-url')
@@ -148,19 +161,28 @@ describe('Sequence', () => {
 
   it('makes ctx available in a custom sequence class', () => {
     class MySequence extends DefaultSequence {
+      private actions: RestAction[];
+
       constructor(
-        @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
+        @inject(SequenceActions.FIND_ROUTE)
+        findRoute: FindRouteAction,
         @inject(SequenceActions.PARSE_PARAMS)
-        protected parseParams: ParseParams,
-        @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
-        @inject(SequenceActions.SEND) public send: Send,
-        @inject(SequenceActions.REJECT) public reject: Reject,
+        parseParams: ParseParamsAction,
+        @inject(SequenceActions.INVOKE_METHOD)
+        invoke: InvokeMethodAction,
+        @inject(SequenceActions.SEND) send: SendAction,
+        @inject(SequenceActions.REJECT) reject: RejectAction,
       ) {
-        super(findRoute, parseParams, invoke, send, reject);
+        super();
+        this.actions = [reject, send, findRoute, parseParams, invoke];
       }
 
       async handle(context: RequestContext) {
         this.send(context.response, context.getSync('test'));
+      }
+
+      async getActions() {
+        return this.actions;
       }
     }
 

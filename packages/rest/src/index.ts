@@ -3,27 +3,25 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export * from './router';
-
-export * from './providers';
-
-export * from './parser';
+export * from '@loopback/openapi-v3';
+export * from './actions';
 export * from './body-parsers';
-export * from './writer';
 export * from './http-handler';
-export * from './request-context';
-export * from './types';
 export * from './keys';
+export * from './parse-json';
+export * from './parser';
+export * from './providers';
+export * from './request-context';
+export * from './rest-http-error';
 export * from './rest.application';
 export * from './rest.component';
 export * from './rest.server';
+export * from './router';
 export * from './sequence';
-export * from './rest-http-error';
-export * from './parse-json';
-export * from './validation/request-body.validator';
+export * from './types';
+export * from './writer';
 
 // export all errors from external http-errors package
 import * as HttpErrors from 'http-errors';
 export {HttpErrors};
 
-export * from '@loopback/openapi-v3';

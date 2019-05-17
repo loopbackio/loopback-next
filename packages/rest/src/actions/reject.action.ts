@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {LogError, Reject, HandlerContext} from '../types';
-import {inject, Provider} from '@loopback/context';
+import {inject, Next} from '@loopback/context';
 import {HttpError} from 'http-errors';
+import {ErrorWriterOptions, writeErrorToResponse} from 'strong-error-handler';
 import {RestBindings} from '../keys';
-import {writeErrorToResponse, ErrorWriterOptions} from 'strong-error-handler';
+import {HandlerContext, LogError, RestAction, restAction} from '../types';
 
 // TODO(bajtos) Make this mapping configurable at RestServer level,
 // allow apps and extensions to contribute additional mappings.
@@ -15,7 +15,8 @@ const codeToStatusCodeMap: {[key: string]: number} = {
   ENTITY_NOT_FOUND: 404,
 };
 
-export class RejectProvider implements Provider<Reject> {
+@restAction('reject')
+export class RejectAction implements RestAction {
   constructor(
     @inject(RestBindings.SequenceActions.LOG_ERROR)
     protected logError: LogError,
@@ -23,22 +24,24 @@ export class RejectProvider implements Provider<Reject> {
     protected errorWriterOptions?: ErrorWriterOptions,
   ) {}
 
-  value(): Reject {
-    return (context, error) => this.action(context, error);
+  async action(ctx: HandlerContext, next: Next) {
+    try {
+      return await next();
+    } catch (error) {
+      this.reject(ctx, error);
+    }
   }
 
-  action({request, response}: HandlerContext, error: Error) {
-    const err = <HttpError>error;
-
+  reject({request, response}: HandlerContext, error: Error) {
+    const err = error as HttpError;
     if (!err.status && !err.statusCode && err.code) {
       const customStatus = codeToStatusCodeMap[err.code];
       if (customStatus) {
         err.statusCode = customStatus;
       }
     }
-
     const statusCode = err.statusCode || err.status || 500;
     writeErrorToResponse(err, request, response, this.errorWriterOptions);
-    this.logError(error, statusCode, request);
+    this.logError(err, statusCode, request);
   }
 }

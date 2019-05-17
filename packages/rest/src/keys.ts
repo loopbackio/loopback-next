@@ -11,20 +11,16 @@ import * as https from 'https';
 import {ErrorWriterOptions} from 'strong-error-handler';
 import {BodyParser, RequestBodyParser} from './body-parsers';
 import {HttpHandler} from './http-handler';
-import {RestRouter, RestRouterOptions} from './router';
+import {RestRouter, RestRouterOptions, RouteEntry} from './router';
 import {SequenceHandler} from './sequence';
 import {
-  BindElement,
-  FindRoute,
-  GetFromContext,
-  InvokeMethod,
   LogError,
-  ParseParams,
-  Reject,
+  OperationArgs,
+  OperationRetval,
   Request,
   RequestBodyParserOptions,
   Response,
-  Send,
+  RestAction,
 } from './types';
 
 /**
@@ -56,6 +52,18 @@ export namespace RestBindings {
    */
   export const HTTPS_OPTIONS = BindingKey.create<https.ServerOptions>(
     'rest.httpsOptions',
+  );
+
+  export const RESOLVED_ROUTE = BindingKey.create<RouteEntry>(
+    'rest.resolvedRoute',
+  );
+
+  export const OPERATION_ARGS = BindingKey.create<OperationArgs>(
+    'rest.operationArgs',
+  );
+
+  export const OPERATION_RESULT = BindingKey.create<OperationRetval>(
+    'rest.operationResult',
   );
 
   /**
@@ -158,19 +166,19 @@ export namespace RestBindings {
     /**
      * Binding key for setting and injecting a route finding function
      */
-    export const FIND_ROUTE = BindingKey.create<FindRoute>(
+    export const FIND_ROUTE = BindingKey.create<RestAction>(
       'rest.sequence.actions.findRoute',
     );
     /**
      * Binding key for setting and injecting a parameter parsing function
      */
-    export const PARSE_PARAMS = BindingKey.create<ParseParams>(
+    export const PARSE_PARAMS = BindingKey.create<RestAction>(
       'rest.sequence.actions.parseParams',
     );
     /**
      * Binding key for setting and injecting a controller route invoking function
      */
-    export const INVOKE_METHOD = BindingKey.create<InvokeMethod>(
+    export const INVOKE_METHOD = BindingKey.create<RestAction>(
       'rest.sequence.actions.invokeMethod',
     );
     /**
@@ -182,27 +190,16 @@ export namespace RestBindings {
     /**
      * Binding key for setting and injecting a response writing function
      */
-    export const SEND = BindingKey.create<Send>('rest.sequence.actions.send');
+    export const SEND = BindingKey.create<RestAction>(
+      'rest.sequence.actions.send',
+    );
     /**
      * Binding key for setting and injecting a bad response writing function
      */
-    export const REJECT = BindingKey.create<Reject>(
+    export const REJECT = BindingKey.create<RestAction>(
       'rest.sequence.actions.reject',
     );
   }
-
-  /**
-   * Binding key for setting and injecting a wrapper function for retrieving
-   * values from a given context
-   */
-  export const GET_FROM_CONTEXT = BindingKey.create<GetFromContext>(
-    'getFromContext',
-  );
-  /**
-   * Binding key for setting and injecting a wrapper function for setting values
-   * on a given context
-   */
-  export const BIND_ELEMENT = BindingKey.create<BindElement>('bindElement');
 
   /**
    * Request-specific bindings
@@ -223,4 +220,9 @@ export namespace RestBindings {
       'rest.http.request.context',
     );
   }
+}
+
+export namespace RestTags {
+  export const ACTION = 'restAction';
+  export const ACTION_PHASE = 'restActionPhase';
 }

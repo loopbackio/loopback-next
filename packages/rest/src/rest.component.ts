@@ -13,6 +13,13 @@ import {
 } from '@loopback/core';
 import {createEmptyApiSpec} from '@loopback/openapi-v3';
 import {
+  FindRouteAction,
+  InvokeMethodAction,
+  ParseParamsAction,
+  RejectAction,
+  SendAction,
+} from './actions';
+import {
   JsonBodyParser,
   RequestBodyParser,
   StreamBodyParser,
@@ -21,16 +28,7 @@ import {
 } from './body-parsers';
 import {RawBodyParser} from './body-parsers/body-parser.raw';
 import {RestBindings} from './keys';
-import {
-  BindElementProvider,
-  FindRouteProvider,
-  GetFromContextProvider,
-  InvokeMethodProvider,
-  LogErrorProvider,
-  ParseParamsProvider,
-  RejectProvider,
-  SendProvider,
-} from './providers';
+import {LogErrorProvider} from './providers';
 import {
   createBodyParserBinding,
   RestServer,
@@ -41,14 +39,15 @@ import {DefaultSequence} from './sequence';
 export class RestComponent implements Component {
   providers: ProviderMap = {
     [RestBindings.SequenceActions.LOG_ERROR.key]: LogErrorProvider,
-    [RestBindings.SequenceActions.FIND_ROUTE.key]: FindRouteProvider,
-    [RestBindings.SequenceActions.INVOKE_METHOD.key]: InvokeMethodProvider,
-    [RestBindings.SequenceActions.REJECT.key]: RejectProvider,
-    [RestBindings.BIND_ELEMENT.key]: BindElementProvider,
-    [RestBindings.GET_FROM_CONTEXT.key]: GetFromContextProvider,
-    [RestBindings.SequenceActions.PARSE_PARAMS.key]: ParseParamsProvider,
-    [RestBindings.SequenceActions.SEND.key]: SendProvider,
   };
+  classes = {
+    [RestBindings.SequenceActions.FIND_ROUTE.key]: FindRouteAction,
+    [RestBindings.SequenceActions.INVOKE_METHOD.key]: InvokeMethodAction,
+    [RestBindings.SequenceActions.REJECT.key]: RejectAction,
+    [RestBindings.SequenceActions.PARSE_PARAMS.key]: ParseParamsAction,
+    [RestBindings.SequenceActions.SEND.key]: SendAction,
+  };
+
   /**
    * Add built-in body parsers
    */

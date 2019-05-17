@@ -49,16 +49,7 @@ import {
 } from './router';
 import {assignRouterSpec} from './router/router-spec';
 import {DefaultSequence, SequenceFunction, SequenceHandler} from './sequence';
-import {
-  FindRoute,
-  InvokeMethod,
-  ParseParams,
-  Reject,
-  Request,
-  RequestBodyParserOptions,
-  Response,
-  Send,
-} from './types';
+import {Request, RequestBodyParserOptions, Response} from './types';
 
 const debug = debugFactory('loopback:rest:server');
 
@@ -727,19 +718,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
    */
   public handler(handlerFn: SequenceFunction) {
     class SequenceFromFunction extends DefaultSequence {
-      // NOTE(bajtos) Unfortunately, we have to duplicate the constructor
-      // in order for our DI/IoC framework to inject constructor arguments
-      constructor(
-        @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
-        @inject(SequenceActions.PARSE_PARAMS)
-        protected parseParams: ParseParams,
-        @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
-        @inject(SequenceActions.SEND) public send: Send,
-        @inject(SequenceActions.REJECT) public reject: Reject,
-      ) {
-        super(findRoute, parseParams, invoke, send, reject);
-      }
-
       async handle(context: RequestContext): Promise<void> {
         await Promise.resolve(handlerFn(context, this));
       }

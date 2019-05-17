@@ -4,13 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  ExpressContextStub,
-  SinonSpy,
   expect,
+  ExpressContextStub,
   sinon,
+  SinonSpy,
   stubExpressContext,
 } from '@loopback/testlab';
-import {LogError, RejectProvider} from '../../..';
+import {LogError, RejectAction} from '../../..';
 
 describe('reject', () => {
   const noopLogger: LogError = () => {};
@@ -20,21 +20,21 @@ describe('reject', () => {
   beforeEach(givenStubbedContext);
 
   it('returns HTTP response with status code 500 by default', async () => {
-    const reject = new RejectProvider(noopLogger).value();
+    const rejectAction = new RejectAction(noopLogger);
 
-    reject(contextStub, testError);
+    rejectAction.reject(contextStub, testError);
     const result = await contextStub.result;
 
     expect(result).to.have.property('statusCode', 500);
   });
 
   it('converts error code ENTITY_NOT_FOUND to status code 404', async () => {
-    const reject = new RejectProvider(noopLogger).value();
+    const rejectAction = new RejectAction(noopLogger);
 
     const notFoundError: Error & {code?: string} = new Error('not found');
     notFoundError.code = 'ENTITY_NOT_FOUND';
 
-    reject(contextStub, notFoundError);
+    rejectAction.reject(contextStub, notFoundError);
     const result = await contextStub.result;
 
     expect(result.statusCode).to.equal(404);
@@ -42,9 +42,9 @@ describe('reject', () => {
 
   it('logs the error', async () => {
     const logger = sinon.spy() as LogError & SinonSpy;
-    const reject = new RejectProvider(logger).value();
+    const rejectAction = new RejectAction(logger);
 
-    reject(contextStub, testError);
+    rejectAction.reject(contextStub, testError);
     await contextStub.result;
 
     sinon.assert.calledWith(logger, testError, 500, contextStub.request);

@@ -3,13 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-const debug = require('debug')('loopback:rest:sequence');
-import {inject} from '@loopback/context';
-import {RestBindings} from './keys';
+import {
+  compareBindingsByTag,
+  filterByTag,
+  Handler,
+  InvocationHandlerChain,
+} from '@loopback/context';
+import {Response} from 'express';
+import {RestTags} from './keys';
 import {RequestContext} from './request-context';
-import {FindRoute, InvokeMethod, ParseParams, Reject, Send} from './types';
-
-const SequenceActions = RestBindings.SequenceActions;
+import {OperationRetval, RestAction} from './types';
+import {writeResultToResponse} from './writer';
 
 /**
  * A sequence function is a function implementing a custom
@@ -54,29 +58,6 @@ export interface SequenceHandler {
  */
 export class DefaultSequence implements SequenceHandler {
   /**
-   * Constructor: Injects findRoute, invokeMethod & logError
-   * methods as promises.
-   *
-   * @param findRoute - Finds the appropriate controller method,
-   *  spec and args for invocation (injected via SequenceActions.FIND_ROUTE).
-   * @param parseParams - The parameter parsing function (injected
-   * via SequenceActions.PARSE_PARAMS).
-   * @param invoke - Invokes the method specified by the route
-   * (injected via SequenceActions.INVOKE_METHOD).
-   * @param send - The action to merge the invoke result with the response
-   * (injected via SequenceActions.SEND)
-   * @param reject - The action to take if the invoke returns a rejected
-   * promise result (injected via SequenceActions.REJECT).
-   */
-  constructor(
-    @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
-    @inject(SequenceActions.PARSE_PARAMS) protected parseParams: ParseParams,
-    @inject(SequenceActions.INVOKE_METHOD) protected invoke: InvokeMethod,
-    @inject(SequenceActions.SEND) public send: Send,
-    @inject(SequenceActions.REJECT) public reject: Reject,
-  ) {}
-
-  /**
    * Runs the default sequence. Given a handler context (request and response),
    * running the sequence will produce a response or an error.
    *
@@ -93,16 +74,35 @@ export class DefaultSequence implements SequenceHandler {
    * per-request IoC container and more.
    */
   async handle(context: RequestContext): Promise<void> {
-    try {
-      const {request, response} = context;
-      const route = this.findRoute(request);
-      const args = await this.parseParams(request, route);
-      const result = await this.invoke(route, args);
+    const restActions: RestAction[] = await this.getActions(context);
 
-      debug('%s result -', route.describe(), result);
-      this.send(response, result);
-    } catch (error) {
-      this.reject(context, error);
+    const actionHandlers: Handler<RequestContext>[] = restActions.map(
+      action => (ctx, next) => action.action(ctx, next),
+    );
+    const actionChain = new InvocationHandlerChain(context, actionHandlers);
+    await actionChain.invokeHandlers();
+  }
+
+  protected async getActions(context: RequestContext) {
+    const restActionBindings = context
+      .find<RestAction>(filterByTag(RestTags.ACTION))
+      .sort(
+        compareBindingsByTag(RestTags.ACTION_PHASE, [
+          'reject',
+          'send',
+          'route',
+          'parseParams',
+          'invoke',
+        ]),
+      );
+    const restActions: RestAction[] = [];
+    for (const actionBinding of restActionBindings) {
+      restActions.push(await context.get(actionBinding.key));
     }
+    return restActions;
+  }
+
+  send(response: Response, result: OperationRetval) {
+    writeResultToResponse(response, result);
   }
 }

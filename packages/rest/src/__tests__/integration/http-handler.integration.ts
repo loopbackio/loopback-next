@@ -3,7 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context} from '@loopback/context';
+import {
+  BindingAddress,
+  Constructor,
+  Context,
+  createBindingFromClass,
+} from '@loopback/context';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
 import {
   ControllerSpec,
@@ -24,20 +29,15 @@ import {
   BodyParser,
   createBodyParserBinding,
   DefaultSequence,
-  FindRouteProvider,
   HttpHandler,
-  InvokeMethodProvider,
   JsonBodyParser,
-  ParseParamsProvider,
   RawBodyParser,
-  RejectProvider,
   Request,
   RequestBodyParser,
   RestBindings,
   StreamBodyParser,
   TextBodyParser,
   UrlEncodedBodyParser,
-  writeResultToResponse,
 } from '../..';
 import {aRestServerConfig} from '../helpers';
 
@@ -617,20 +617,40 @@ describe('HttpHandler', () => {
 
   let rootContext: Context;
   let handler: HttpHandler;
-  function givenHandler() {
+
+  async function bindAction<T>(
+    ctx: Context,
+    key: BindingAddress<T>,
+    actionClass: Constructor<unknown>,
+  ) {
+    const binding = createBindingFromClass(actionClass, {key});
+    ctx.add(binding);
+    return binding;
+  }
+
+  async function givenHandler() {
     rootContext = new Context();
-    rootContext.bind(SequenceActions.FIND_ROUTE).toProvider(FindRouteProvider);
-    rootContext
-      .bind(SequenceActions.PARSE_PARAMS)
-      .toProvider(ParseParamsProvider);
-    rootContext
-      .bind(SequenceActions.INVOKE_METHOD)
-      .toProvider(InvokeMethodProvider);
+    const actions = await import('../../actions');
+    bindAction(
+      rootContext,
+      SequenceActions.FIND_ROUTE,
+      actions.FindRouteAction,
+    );
+    bindAction(
+      rootContext,
+      SequenceActions.PARSE_PARAMS,
+      actions.ParseParamsAction,
+    );
+    bindAction(
+      rootContext,
+      SequenceActions.INVOKE_METHOD,
+      actions.InvokeMethodAction,
+    );
     rootContext
       .bind(SequenceActions.LOG_ERROR)
       .to(createUnexpectedHttpErrorLogger());
-    rootContext.bind(SequenceActions.SEND).to(writeResultToResponse);
-    rootContext.bind(SequenceActions.REJECT).toProvider(RejectProvider);
+    bindAction(rootContext, SequenceActions.SEND, actions.SendAction);
+    bindAction(rootContext, SequenceActions.REJECT, actions.RejectAction);
 
     rootContext.bind(RestBindings.SEQUENCE).toClass(DefaultSequence);
 
