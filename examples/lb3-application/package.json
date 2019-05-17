@@ -70,5 +70,6 @@
     "loopback",
     "LoopBack",
     "example"
-  ]
+  ],
+  "private": true
 }

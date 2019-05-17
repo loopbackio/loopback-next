@@ -61,5 +61,6 @@
     "@loopback/rest": "^1.18.1",
     "chalk": "^2.4.2",
     "debug": "^4.1.1"
-  }
+  },
+  "private": true
 }

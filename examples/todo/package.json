@@ -70,5 +70,6 @@
     "CRUD",
     "models",
     "todo"
-  ]
+  ],
+  "private": true
 }

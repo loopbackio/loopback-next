@@ -58,5 +58,6 @@
     "LoopBack",
     "example",
     "tutorial"
-  ]
+  ],
+  "private": true
 }
