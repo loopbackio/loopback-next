@@ -190,6 +190,10 @@ describe('DefaultCrudRepository', () => {
         name: 'Role',
         properties: {name: {type: String}},
       });
+
+      // issue 2912: make sure the juggler leaves the original model definition alone
+      expect(User.definition.properties.roles.itemType).to.equal(Role);
+      expect(User.definition.properties.address.type).to.equal(Address);
     });
   });
 

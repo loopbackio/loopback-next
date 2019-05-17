@@ -140,13 +140,18 @@ export class DefaultCrudRepository<T extends Entity, ID>
     // We need to convert PropertyDefinition into the definition that
     // the juggler understands
     Object.entries(definition.properties).forEach(([key, value]) => {
+      // always clone value so that we do not modify the original model definition
+      // ensures that model definitions can be reused with multiple datasources
       if (value.type === 'array' || value.type === Array) {
         value = Object.assign({}, value, {
           type: [value.itemType && this.resolvePropertyType(value.itemType)],
         });
         delete value.itemType;
+      } else {
+        value = Object.assign({}, value, {
+          type: this.resolvePropertyType(value.type),
+        });
       }
-      value.type = this.resolvePropertyType(value.type);
       properties[key] = Object.assign({}, value);
     });
     const modelClass = dataSource.createModel<juggler.PersistedModelClass>(
