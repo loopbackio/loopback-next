@@ -72,5 +72,6 @@
     "models",
     "todo",
     "HasMany"
-  ]
+  ],
+  "private": true
 }

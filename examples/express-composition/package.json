@@ -66,5 +66,6 @@
     "eslint-plugin-eslint-plugin": "^2.1.0",
     "eslint-plugin-mocha": "^5.3.0",
     "typescript": "~3.5.2"
-  }
+  },
+  "private": true
 }

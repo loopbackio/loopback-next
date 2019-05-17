@@ -53,5 +53,6 @@
     "@loopback/repository-json-schema": "^1.7.0",
     "debug": "^4.1.1",
     "lodash": "^4.17.11"
-  }
+  },
+  "private": true
 }

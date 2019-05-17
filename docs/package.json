@@ -32,5 +32,6 @@
   "license": "MIT",
   "dependencies": {
     "fs-extra": "^8.0.1"
-  }
+  },
+  "private": true
 }
