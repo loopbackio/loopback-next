@@ -57,5 +57,6 @@
     "@loopback/openapi-v3": "^1.5.1",
     "chalk": "^2.4.2",
     "debug": "^4.0.1"
-  }
+  },
+  "private": true
 }
