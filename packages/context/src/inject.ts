@@ -54,7 +54,7 @@ export interface InjectionMetadata extends ResolutionOptions {
    */
   decorator?: string;
   /**
-   * Optional sorter for matched bindings
+   * Optional comparator for matched bindings
    */
   bindingComparator?: BindingComparator;
   /**
@@ -115,7 +115,7 @@ export function inject(
   }
   const injectionMetadata = Object.assign({decorator: '@inject'}, metadata);
   if (injectionMetadata.bindingComparator && !resolve) {
-    throw new Error('Binding sorter is only allowed with a binding filter');
+    throw new Error('Binding comparator is only allowed with a binding filter');
   }
   return function markParameterOrPropertyAsInjected(
     target: Object,

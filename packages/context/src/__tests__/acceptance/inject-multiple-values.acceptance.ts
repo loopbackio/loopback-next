@@ -104,7 +104,7 @@ describe('@inject.* to receive multiple values matching a filter', async () => {
             public values: number[],
           ) {}
         }
-      }).to.throw('Binding sorter is only allowed with a binding filter');
+      }).to.throw('Binding comparator is only allowed with a binding filter');
     });
   });
 

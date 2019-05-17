@@ -23,7 +23,7 @@ export class BasicAuthenticationStrategy implements AuthenticationStrategy {
   ) {}
 
   async authenticate(request: Request): Promise<UserProfile | undefined> {
-    const credentials: BasicAuthenticationStrategyCredentials = this.extractCredentals(
+    const credentials: BasicAuthenticationStrategyCredentials = this.extractCredentials(
       request,
     );
     const user = await this.userService.verifyCredentials(credentials);
@@ -32,7 +32,7 @@ export class BasicAuthenticationStrategy implements AuthenticationStrategy {
     return userProfile;
   }
 
-  extractCredentals(request: Request): BasicAuthenticationStrategyCredentials {
+  extractCredentials(request: Request): BasicAuthenticationStrategyCredentials {
     if (!request.headers.authorization) {
       throw new HttpErrors.Unauthorized(`Authorization header not found.`);
     }

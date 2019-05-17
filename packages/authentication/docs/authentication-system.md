@@ -254,7 +254,7 @@ export class BasicAuthenticationStrategy implements AuthenticationStrategy {
   ) {}
 
   async authenticate(request: Request): Promise<UserProfile | undefined> {
-    const credentials: BasicAuthenticationStrategyCredentials = this.extractCredentals(
+    const credentials: BasicAuthenticationStrategyCredentials = this.extractCredentials(
       request,
     );
     const user = await this.userService.verifyCredentials(credentials);
