@@ -44,7 +44,7 @@ export class ContextView<T = unknown> extends EventEmitter
   constructor(
     protected readonly context: Context,
     public readonly filter: BindingFilter,
-    public readonly sorter?: BindingComparator,
+    public readonly comparator?: BindingComparator,
   ) {
     super();
   }
@@ -90,8 +90,8 @@ export class ContextView<T = unknown> extends EventEmitter
   protected findBindings(): Readonly<Binding<T>>[] {
     debug('Finding matching bindings');
     const found = this.context.find(this.filter);
-    if (typeof this.sorter === 'function') {
-      found.sort(this.sorter);
+    if (typeof this.comparator === 'function') {
+      found.sort(this.comparator);
     }
     this._cachedBindings = found;
     return found;
