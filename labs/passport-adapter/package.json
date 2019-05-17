@@ -1,0 +1,35 @@
+{
+  "name": "@loopback/passport-adapter",
+  "version": "0.1.0",
+  "description": "A package creating adapters between the passport module and @loopback/authentication",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "keywords": [
+    "Passport",
+    "Authentication",
+    "TypeScript"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-lab.git"
+  }
+}
+
