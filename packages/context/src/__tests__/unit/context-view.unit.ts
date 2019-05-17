@@ -165,7 +165,7 @@ describe('ContextView', () => {
       expect(await getter()).to.eql(['BAR', 'XYZ', 'FOO']);
     });
 
-    it('creates a getter function for the binding filter and sorter', async () => {
+    it('creates a getter function for the binding filter and comparator', async () => {
       const getter = createViewGetter(server, filterByTag('foo'), (a, b) => {
         return a.key.localeCompare(b.key);
       });
