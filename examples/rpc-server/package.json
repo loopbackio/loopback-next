@@ -33,7 +33,7 @@
     "url": "https://github.com/strongloop/loopback-next.git"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "private"
   },
   "author": "IBM Corp.",
   "license": "MIT",

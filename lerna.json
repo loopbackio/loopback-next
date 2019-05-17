@@ -5,7 +5,8 @@
     "docs",
     "examples/*",
     "packages/*",
-    "sandbox/*"
+    "sandbox/*",
+    "labs/*"
   ],
   "command": {
     "bootstrap": {

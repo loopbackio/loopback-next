@@ -18,7 +18,7 @@
     "verify": "npm pack && tar xf loopback-service-proxy*.tgz && tree package && npm run clean"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "private"
   },
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",

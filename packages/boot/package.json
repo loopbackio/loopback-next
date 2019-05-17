@@ -6,7 +6,7 @@
     "node": ">=8.9"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "private"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",

@@ -30,7 +30,7 @@
     "url": "git+https://github.com/strongloop/loopback-next.git"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "private"
   },
   "keywords": [
     "loopback",

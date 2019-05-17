@@ -35,7 +35,7 @@
     "!*/__tests__"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "private"
   },
   "repository": {
     "type": "git",

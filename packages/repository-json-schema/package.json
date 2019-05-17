@@ -21,7 +21,7 @@
     "JSON Schema"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "private"
   },
   "dependencies": {
     "@loopback/context": "^1.15.0",
