@@ -65,5 +65,6 @@
     "mocha": "^6.1.4",
     "source-map-support": "^0.5.12",
     "typescript": "~3.5.1"
-  }
+  },
+  "private": true
 }
