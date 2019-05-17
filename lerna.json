@@ -7,6 +7,7 @@
     "examples/*",
     "packages/*",
     "extensions/*",
+    "labs/*",
     "sandbox/*"
   ],
   "command": {
