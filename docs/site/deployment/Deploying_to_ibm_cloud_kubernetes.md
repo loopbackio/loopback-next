@@ -90,7 +90,7 @@ Open your browser and attempt to access all these urls
 
 <http://[::1]:3000/openapi.json>
 
-![lb4_k8s_ibm_cloud_app_website_1.png](./imgs/lb4_k8s_ibm_cloud_app_website_1.png)
+![lb4_k8s_ibm_cloud_app_website_1.png](../imgs/lb4_k8s_ibm_cloud_app_website_1.png)
 
 Make sure that the application runs well before continuing to the next step.
 
@@ -345,7 +345,7 @@ ibmcloud cr image-list
 
 You should see your image listed.
 
-![lb4_k8s_ibm_cloud_container_registry_1.png](./imgs/lb4_k8s_ibm_cloud_container_registry_1.png)
+![lb4_k8s_ibm_cloud_container_registry_1.png](../imgs/lb4_k8s_ibm_cloud_container_registry_1.png)
 
 {% include tip.html content="One important column is the last one on the right <b>'Security Status'</b>. Initially it will have a value of <b>'Scanning...'</b> . Wait until the scanning is complete. My image has a <b>'No Issues'</b> status. This is good. If it instead stated <b>'9 Issues'</b> (in red), then I would need to take some extra steps later on in my account to view the issues, figure out a way to resolve them, or create an Exemption for them. <a href='https://console.bluemix.net/docs/services/va/va_index.html#va_index'>Managing image security with Vulnerability Advisor</a>" %}
 
@@ -372,7 +372,7 @@ In your IBM Cloud account, you can view your images
 In a browser, log into your IBM Cloud account, and navigate to **Kubernetes >
 Clusters**.
 
-![lb4_k8s_ibm_cloud_kubernetes_cluster_1.png](./imgs/lb4_k8s_ibm_cloud_kubernetes_cluster_1.png)
+![lb4_k8s_ibm_cloud_kubernetes_cluster_1.png](../imgs/lb4_k8s_ibm_cloud_kubernetes_cluster_1.png)
 
 I am choosing my cluster `dremondOne` in Dallas .
 
@@ -384,7 +384,7 @@ name. )
 
 Select the **'Access'** tab of your cluster and follow the instructions.
 
-![lb4_k8s_ibm_cloud_cluster_access_1.png](./imgs/lb4_k8s_ibm_cloud_cluster_access_1.png)
+![lb4_k8s_ibm_cloud_cluster_access_1.png](../imgs/lb4_k8s_ibm_cloud_cluster_access_1.png)
 
 We already logged into the IBM Cloud in an earlier step, so we only need to
 point to the cluster.
@@ -539,7 +539,7 @@ http://184.173.5.187:31701/explorer
 http://184.173.5.187:31701/openapi.json
 ```
 
-![lb4_k8s_ibm_cloud_app_website_on_cloud_k8s.png](./imgs/lb4_k8s_ibm_cloud_app_website_on_cloud_k8s.png)
+![lb4_k8s_ibm_cloud_app_website_on_cloud_k8s.png](../imgs/lb4_k8s_ibm_cloud_app_website_on_cloud_k8s.png)
 
 ## Step 11: View your app in the Kubernetes Dashboard
 
@@ -547,15 +547,15 @@ Let's go take a look at your application in the Kubernetes dashboard.
 
 Click the **'Kubernetes Dashboard'** button next to your cluster's name.
 
-![lb4_k8s_ibm_cloud_k8s_dashboard_1.png](./imgs/lb4_k8s_ibm_cloud_k8s_dashboard_1.png)
+![lb4_k8s_ibm_cloud_k8s_dashboard_1.png](../imgs/lb4_k8s_ibm_cloud_k8s_dashboard_1.png)
 
 Under **'Workloads'**, select **'Pods'**
 
-![lb4_k8s_ibm_cloud_k8s_dashboard_2.png](./imgs/lb4_k8s_ibm_cloud_k8s_dashboard_2.png)
+![lb4_k8s_ibm_cloud_k8s_dashboard_2.png](../imgs/lb4_k8s_ibm_cloud_k8s_dashboard_2.png)
 
 Locate your application, and click on its name
 
-![lb4_k8s_ibm_cloud_k8s_dashboard_3.png](./imgs/lb4_k8s_ibm_cloud_k8s_dashboard_3.png)
+![lb4_k8s_ibm_cloud_k8s_dashboard_3.png](../imgs/lb4_k8s_ibm_cloud_k8s_dashboard_3.png)
 
 If you want to open a shell into the container in the pod, click on the `EXEC`
 button.
@@ -563,7 +563,7 @@ button.
 If you want to view the logs of the container in the pod, click on the `LOGS`
 button.
 
-![lb4_k8s_ibm_cloud_k8s_dashboard_4.png](./imgs/lb4_k8s_ibm_cloud_k8s_dashboard_4.png)
+![lb4_k8s_ibm_cloud_k8s_dashboard_4.png](../imgs/lb4_k8s_ibm_cloud_k8s_dashboard_4.png)
 
 So there you have it! You have successfully deployed a Loopback4 application to
 Kubernetes on the IBM Cloud.
