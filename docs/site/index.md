@@ -20,6 +20,16 @@ multiple repos, as in v3. However, examples and externally-developed components
 will be in separate repositories.
 '%}
 
+LoopBack is a highly extensible, open-source Node.js framework based on Express
+that enables you to quickly create APIs and microservices composed from backend
+systems such as databases and SOAP or REST services.
+
+The diagram below demonstrates how LoopBack serves as a composition bridge
+between incoming requests and outgoing integrations. It also shows the different
+personas who are interested in various capabilities provided by LoopBack.
+
+![LoopBack 4 Overview](./imgs/lb4-high-level.png)
+
 ## Built for API developers
 
 - Define your API endpoints and schemas using the
