@@ -3,14 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, Getter, inject, Next} from '@loopback/context';
+import {Getter, inject, Next} from '@loopback/context';
 import {RequestBodyParser} from '../body-parsers';
 import {RestBindings} from '../keys';
 import {parseOperationArgs} from '../parser';
 import {ResolvedRoute} from '../router';
 import {
-  HandlerContext,
-  OperationArgs,
+  HttpContext,
+  ParseParams,
   Request,
   RestAction,
   restAction,
@@ -28,13 +28,11 @@ export class ParseParamsAction implements RestAction {
     private getRoute: Getter<ResolvedRoute>,
     @inject(RestBindings.REQUEST_BODY_PARSER)
     private requestBodyParser: RequestBodyParser,
-    @inject.binding(RestBindings.OPERATION_ARGS)
-    private binding: Binding<OperationArgs>,
   ) {}
 
-  async action(ctx: HandlerContext, next: Next) {
+  async action(ctx: HttpContext, next: Next) {
     const args = await this.parseParams(ctx.request, await this.getRoute());
-    this.binding.to(args);
+    ctx.bind(RestBindings.OPERATION_ARGS).to(args);
     return await next();
   }
 
@@ -44,5 +42,9 @@ export class ParseParamsAction implements RestAction {
       resolvedRoute,
       this.requestBodyParser,
     );
+  }
+
+  get handler(): ParseParams {
+    return this.parseParams.bind(this);
   }
 }

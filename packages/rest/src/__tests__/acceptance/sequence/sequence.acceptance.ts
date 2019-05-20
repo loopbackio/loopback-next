@@ -29,7 +29,7 @@ import {
   SendAction,
   SequenceHandler,
 } from '../../..';
-import {RestAction} from '../../../types';
+import {FindRoute, InvokeMethod, ParseParams, RestAction} from '../../../types';
 
 const SequenceActions = RestBindings.SequenceActions;
 
@@ -77,20 +77,20 @@ describe('Sequence', () => {
     class MySequence implements SequenceHandler {
       constructor(
         @inject(SequenceActions.FIND_ROUTE)
-        protected findRouteAction: FindRouteAction,
+        protected findRoute: FindRoute,
         @inject(SequenceActions.PARSE_PARAMS)
-        protected parseParamsAction: ParseParamsAction,
+        protected parseParams: ParseParams,
         @inject(SequenceActions.INVOKE_METHOD)
-        protected invokeMethodAction: InvokeMethodAction,
-        @inject(SequenceActions.SEND) protected sendAction: SendAction,
+        protected invokeMethod: InvokeMethod,
+        @inject(SequenceActions.SEND) protected send: Send,
       ) {}
 
       async handle(context: RequestContext) {
         const {request, response} = context;
-        const route = this.findRouteAction.findRoute(request);
-        const args = await this.parseParamsAction.parseParams(request, route);
-        const result = await this.invokeMethodAction.invokeMethod(route, args);
-        this.sendAction.send(response, `MySequence ${result}`);
+        const route = this.findRoute(request);
+        const args = await this.parseParams(request, route);
+        const result = await this.invokeMethod(route, args);
+        this.send(response, `MySequence ${result}`);
       }
     }
 
@@ -103,12 +103,10 @@ describe('Sequence', () => {
 
   it('allows users to bind a custom sequence class via app.sequence()', async () => {
     class MySequence implements SequenceHandler {
-      constructor(
-        @inject(SequenceActions.SEND) protected sendAction: SendAction,
-      ) {}
+      constructor(@inject(SequenceActions.SEND) protected send: Send) {}
 
       async handle({response}: RequestContext) {
-        this.sendAction.send(response, 'MySequence was invoked.');
+        this.send(response, 'MySequence was invoked.');
       }
     }
 
@@ -127,7 +125,7 @@ describe('Sequence', () => {
         response.end(`CUSTOM FORMAT: ${result}`);
       }
     }
-    server.bind(SequenceActions.SEND).toClass(MySendAction);
+    server.bind(SequenceActions.SEND_ACTION).toClass(MySendAction);
 
     return whenIRequest()
       .get('/name')
@@ -141,7 +139,7 @@ describe('Sequence', () => {
         response.end();
       }
     }
-    server.bind(SequenceActions.REJECT).toClass(MyRejectAction);
+    server.bind(SequenceActions.REJECT_ACTION).toClass(MyRejectAction);
 
     return whenIRequest()
       .get('/unknown-url')

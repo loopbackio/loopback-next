@@ -12,15 +12,20 @@ import {ErrorWriterOptions} from 'strong-error-handler';
 import {BodyParser, RequestBodyParser} from './body-parsers';
 import {HttpHandler} from './http-handler';
 import {RestRouter, RestRouterOptions, RouteEntry} from './router';
-import {SequenceHandler} from './sequence';
+import {SequenceHandler, SequenceOptions} from './sequence';
 import {
+  FindRoute,
+  InvokeMethod,
   LogError,
   OperationArgs,
   OperationRetval,
+  ParseParams,
+  Reject,
   Request,
   RequestBodyParserOptions,
   Response,
   RestAction,
+  Send,
 } from './types';
 
 /**
@@ -160,26 +165,33 @@ export namespace RestBindings {
   export const SEQUENCE = BindingKey.create<SequenceHandler>('rest.sequence');
 
   /**
+   * Binding key for sequence options
+   */
+  export const SEQUENCE_OPTIONS = BindingKey.create<SequenceOptions>(
+    'rest.sequence.options',
+  );
+
+  /**
    * Bindings for potential actions that could be used in a sequence
    */
   export namespace SequenceActions {
     /**
      * Binding key for setting and injecting a route finding function
      */
-    export const FIND_ROUTE = BindingKey.create<RestAction>(
-      'rest.sequence.actions.findRoute',
+    export const FIND_ROUTE = BindingKey.create<FindRoute>(
+      'rest.sequence.actions.findRoute#handler',
     );
     /**
      * Binding key for setting and injecting a parameter parsing function
      */
-    export const PARSE_PARAMS = BindingKey.create<RestAction>(
-      'rest.sequence.actions.parseParams',
+    export const PARSE_PARAMS = BindingKey.create<ParseParams>(
+      'rest.sequence.actions.parseParams#handler',
     );
     /**
      * Binding key for setting and injecting a controller route invoking function
      */
-    export const INVOKE_METHOD = BindingKey.create<RestAction>(
-      'rest.sequence.actions.invokeMethod',
+    export const INVOKE_METHOD = BindingKey.create<InvokeMethod>(
+      'rest.sequence.actions.invokeMethod#handler',
     );
     /**
      * Binding key for setting and injecting an error logging function
@@ -190,13 +202,45 @@ export namespace RestBindings {
     /**
      * Binding key for setting and injecting a response writing function
      */
-    export const SEND = BindingKey.create<RestAction>(
+    export const SEND = BindingKey.create<Send>(
+      'rest.sequence.actions.send#handler',
+    );
+    /**
+     * Binding key for setting and injecting a bad response writing function
+     */
+    export const REJECT = BindingKey.create<Reject>(
+      'rest.sequence.actions.reject#handler',
+    );
+
+    /**
+     * Binding key for setting and injecting a route finding function
+     */
+    export const FIND_ROUTE_ACTION = BindingKey.create<RestAction>(
+      'rest.sequence.actions.findRoute',
+    );
+    /**
+     * Binding key for setting and injecting a parameter parsing function
+     */
+    export const PARSE_PARAMS_ACTION = BindingKey.create<RestAction>(
+      'rest.sequence.actions.parseParams',
+    );
+    /**
+     * Binding key for setting and injecting a controller route invoking function
+     */
+    export const INVOKE_METHOD_ACTION = BindingKey.create<RestAction>(
+      'rest.sequence.actions.invokeMethod',
+    );
+
+    /**
+     * Binding key for setting and injecting a response writing function
+     */
+    export const SEND_ACTION = BindingKey.create<RestAction>(
       'rest.sequence.actions.send',
     );
     /**
      * Binding key for setting and injecting a bad response writing function
      */
-    export const REJECT = BindingKey.create<RestAction>(
+    export const REJECT_ACTION = BindingKey.create<RestAction>(
       'rest.sequence.actions.reject',
     );
   }

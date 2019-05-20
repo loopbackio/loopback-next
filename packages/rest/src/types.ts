@@ -42,7 +42,7 @@ export interface HandlerContext {
 export type FindRoute = (request: Request) => ResolvedRoute;
 
 /**
- *
+ * Parse parameters for an OpenAPI operation
  */
 export type ParseParams = (
   request: Request,
@@ -161,10 +161,22 @@ export type OperationArgs = InvocationArgs;
  */
 export type OperationRetval = InvocationResult;
 
+/**
+ * Http context for each request/response
+ */
+export type HttpContext = HandlerContext & Context;
+
+/**
+ * Action for REST request/response processing sequence
+ */
 export interface RestAction {
   action: GenericInterceptor<HandlerContext & Context>;
 }
 
+/**
+ * A binding template to configure an action
+ * @param phase
+ */
 export function asRestAction(phase?: string) {
   const template: BindingTemplate = binding => {
     binding.tag(RestTags.ACTION);

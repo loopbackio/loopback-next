@@ -630,27 +630,36 @@ describe('HttpHandler', () => {
 
   async function givenHandler() {
     rootContext = new Context();
+    rootContext
+      .bind(SequenceActions.LOG_ERROR)
+      .to(createUnexpectedHttpErrorLogger());
+
+    /**
+     * Use dynamic import to avoid circular Node.js require
+     */
     const actions = await import('../../actions');
+
     bindAction(
       rootContext,
-      SequenceActions.FIND_ROUTE,
+      SequenceActions.FIND_ROUTE_ACTION,
       actions.FindRouteAction,
     );
     bindAction(
       rootContext,
-      SequenceActions.PARSE_PARAMS,
+      SequenceActions.PARSE_PARAMS_ACTION,
       actions.ParseParamsAction,
     );
     bindAction(
       rootContext,
-      SequenceActions.INVOKE_METHOD,
+      SequenceActions.INVOKE_METHOD_ACTION,
       actions.InvokeMethodAction,
     );
-    rootContext
-      .bind(SequenceActions.LOG_ERROR)
-      .to(createUnexpectedHttpErrorLogger());
-    bindAction(rootContext, SequenceActions.SEND, actions.SendAction);
-    bindAction(rootContext, SequenceActions.REJECT, actions.RejectAction);
+    bindAction(rootContext, SequenceActions.SEND_ACTION, actions.SendAction);
+    bindAction(
+      rootContext,
+      SequenceActions.REJECT_ACTION,
+      actions.RejectAction,
+    );
 
     rootContext.bind(RestBindings.SEQUENCE).toClass(DefaultSequence);
 

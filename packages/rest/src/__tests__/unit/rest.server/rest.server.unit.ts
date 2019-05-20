@@ -15,7 +15,6 @@ import {
   RestServerConfig,
   Route,
 } from '../../..';
-import {InvokeMethodAction} from '../../../actions';
 
 describe('RestServer', () => {
   describe('"invokeMethod" binding', () => {
@@ -32,11 +31,11 @@ describe('RestServer', () => {
       );
 
       const ctx = await givenRequestContext();
-      const invokeMethodAction = (await ctx.get(
+      const invokeMethod = await ctx.get(
         RestBindings.SequenceActions.INVOKE_METHOD,
-      )) as InvokeMethodAction;
+      );
 
-      const result = await invokeMethodAction.invokeMethod(route, []);
+      const result = await invokeMethod(route, []);
       expect(result).to.equal('Hello world');
     });
   });

@@ -6,11 +6,12 @@
 import {Getter, inject, Next} from '@loopback/context';
 import {RestBindings} from '../keys';
 import {
-  HandlerContext,
+  HttpContext,
   OperationRetval,
   Response,
   RestAction,
   restAction,
+  Send,
 } from '../types';
 import {writeResultToResponse} from '../writer';
 
@@ -28,7 +29,7 @@ export class SendAction implements RestAction {
     private getReturnValue: Getter<OperationRetval>,
   ) {}
 
-  async action(ctx: HandlerContext, next: Next) {
+  async action(ctx: HttpContext, next: Next) {
     const result = await next();
     const returnVal = await this.getReturnValue();
     this.send(ctx.response, returnVal || result);
@@ -36,5 +37,9 @@ export class SendAction implements RestAction {
 
   send(response: Response, result: OperationRetval) {
     writeResultToResponse(response, result);
+  }
+
+  get handler(): Send {
+    return this.send.bind(this);
   }
 }

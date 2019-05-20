@@ -41,11 +41,11 @@ export class RestComponent implements Component {
     [RestBindings.SequenceActions.LOG_ERROR.key]: LogErrorProvider,
   };
   classes = {
-    [RestBindings.SequenceActions.FIND_ROUTE.key]: FindRouteAction,
-    [RestBindings.SequenceActions.INVOKE_METHOD.key]: InvokeMethodAction,
-    [RestBindings.SequenceActions.REJECT.key]: RejectAction,
-    [RestBindings.SequenceActions.PARSE_PARAMS.key]: ParseParamsAction,
-    [RestBindings.SequenceActions.SEND.key]: SendAction,
+    [RestBindings.SequenceActions.FIND_ROUTE_ACTION.key]: FindRouteAction,
+    [RestBindings.SequenceActions.INVOKE_METHOD_ACTION.key]: InvokeMethodAction,
+    [RestBindings.SequenceActions.REJECT_ACTION.key]: RejectAction,
+    [RestBindings.SequenceActions.PARSE_PARAMS_ACTION.key]: ParseParamsAction,
+    [RestBindings.SequenceActions.SEND_ACTION.key]: SendAction,
   };
 
   /**

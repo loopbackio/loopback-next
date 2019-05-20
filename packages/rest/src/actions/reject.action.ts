@@ -7,7 +7,14 @@ import {inject, Next} from '@loopback/context';
 import {HttpError} from 'http-errors';
 import {ErrorWriterOptions, writeErrorToResponse} from 'strong-error-handler';
 import {RestBindings} from '../keys';
-import {HandlerContext, LogError, RestAction, restAction} from '../types';
+import {
+  HandlerContext,
+  HttpContext,
+  LogError,
+  Reject,
+  RestAction,
+  restAction,
+} from '../types';
 
 // TODO(bajtos) Make this mapping configurable at RestServer level,
 // allow apps and extensions to contribute additional mappings.
@@ -24,7 +31,7 @@ export class RejectAction implements RestAction {
     protected errorWriterOptions?: ErrorWriterOptions,
   ) {}
 
-  async action(ctx: HandlerContext, next: Next) {
+  async action(ctx: HttpContext, next: Next) {
     try {
       return await next();
     } catch (error) {
@@ -43,5 +50,9 @@ export class RejectAction implements RestAction {
     const statusCode = err.statusCode || err.status || 500;
     writeErrorToResponse(err, request, response, this.errorWriterOptions);
     this.logError(err, statusCode, request);
+  }
+
+  get handler(): Reject {
+    return this.reject.bind(this);
   }
 }
