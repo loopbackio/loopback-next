@@ -21,10 +21,13 @@ import {
   OptionsUrlencoded,
 } from 'body-parser';
 import {Request, Response} from 'express';
+// export all errors from external http-errors package
+import * as HttpErrors from 'http-errors';
 import {RestTags} from './keys';
 import {ResolvedRoute, RouteEntry} from './router';
 
 export {Request, Response};
+export {HttpErrors};
 
 /**
  * An object holding HTTP request, response and other data
@@ -187,8 +190,8 @@ export function asRestAction(phase?: string) {
 
 /**
  * `@restAction` decorator to mark a provider class as RestAction
- * @param phase Phase
- * @param specs
+ * @param phase - Phase name
+ * @param specs - Binding specs
  */
 export function restAction(phase?: string, ...specs: BindingSpec[]) {
   return bind(asRestAction(phase), ...specs);

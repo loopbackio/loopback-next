@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {ParameterObject, SchemaObject} from '@loopback/openapi-v3';
-import {RestHttpErrors} from '../';
+import {RestHttpErrors} from '../rest-http-error';
 
 /**
  * A set of options to pass into the validator functions

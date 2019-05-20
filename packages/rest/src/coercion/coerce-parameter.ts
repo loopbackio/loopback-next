@@ -5,8 +5,8 @@
 
 import {isReferenceObject, ParameterObject} from '@loopback/openapi-v3';
 import * as debugModule from 'debug';
-import {RestHttpErrors} from '../';
 import {parseJson} from '../parse-json';
+import {RestHttpErrors} from '../rest-http-error';
 import {
   DateCoercionOptions,
   getOAIPrimitiveType,
