@@ -38,7 +38,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
     /**
      * Add a repository to this application.
      *
-     * @param repoClass The repository to add.
+     * @param repoClass - The repository to add.
      *
      * @example
      * ```ts
@@ -81,7 +81,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
     /**
      * Retrieve the repository instance from the given Repository class
      *
-     * @param repo The repository class to retrieve the instance of
+     * @param repo - The repository class to retrieve the instance of
      */
     // tslint:disable-next-line:no-any
     async getRepository<R extends Repository<any>>(repo: Class<R>): Promise<R> {
@@ -91,8 +91,8 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
     /**
      * Add the dataSource to this application.
      *
-     * @param dataSource The dataSource to add.
-     * @param name The binding name of the datasource; defaults to dataSource.name
+     * @param dataSource - The dataSource to add.
+     * @param name - The binding name of the datasource; defaults to dataSource.name
      *
      * @example
      * ```ts
@@ -138,7 +138,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * Add a component to this application. Also mounts
      * all the components repositories.
      *
-     * @param component The component to add.
+     * @param component - The component to add.
      *
      * @example
      * ```ts
@@ -165,7 +165,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * repositories. This function is intended to be used internally
      * by component()
      *
-     * @param component The component to mount repositories of
+     * @param component - The component to mount repositories of
      */
     mountComponentRepositories(component: Class<unknown>) {
       const componentKey = `components.${component.name}`;
@@ -188,7 +188,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      * Please check the documentation for your specific connector(s) for
      * a detailed breakdown of behaviors for automigrate!
      *
-     * @param options Migration options, e.g. whether to update tables
+     * @param options - Migration options, e.g. whether to update tables
      * preserving data or rebuild everything from scratch.
      */
     async migrateSchema(options: SchemaMigrationOptions = {}): Promise<void> {
@@ -258,7 +258,7 @@ export class RepositoryMixinDoc {
   /**
    * Add a repository to this application.
    *
-   * @param repo The repository to add.
+   * @param repo - The repository to add.
    *
    * @example
    * ```ts
@@ -291,7 +291,7 @@ export class RepositoryMixinDoc {
   /**
    * Retrieve the repository instance from the given Repository class
    *
-   * @param repo The repository class to retrieve the instance of
+   * @param repo - The repository class to retrieve the instance of
    */
   // tslint:disable-next-line:no-any
   async getRepository<R extends Repository<any>>(repo: Class<R>): Promise<R> {
@@ -301,8 +301,8 @@ export class RepositoryMixinDoc {
   /**
    * Add the dataSource to this application.
    *
-   * @param dataSource The dataSource to add.
-   * @param name The binding name of the datasource; defaults to dataSource.name
+   * @param dataSource - The dataSource to add.
+   * @param name - The binding name of the datasource; defaults to dataSource.name
    *
    * @example
    * ```ts
@@ -331,7 +331,7 @@ export class RepositoryMixinDoc {
    * Add a component to this application. Also mounts
    * all the components repositories.
    *
-   * @param component The component to add.
+   * @param component - The component to add.
    *
    * @example
    * ```ts
@@ -357,7 +357,7 @@ export class RepositoryMixinDoc {
    * repositories. This function is intended to be used internally
    * by component()
    *
-   * @param component The component to mount repositories of
+   * @param component - The component to mount repositories of
    */
   mountComponentRepository(component: Class<{}>) {}
 
@@ -371,7 +371,7 @@ export class RepositoryMixinDoc {
    * Please check the documentation for your specific connector(s) for
    * a detailed breakdown of behaviors for automigrate!
    *
-   * @param options Migration options, e.g. whether to update tables
+   * @param options - Migration options, e.g. whether to update tables
    * preserving data or rebuild everything from scratch.
    */
   async migrateSchema(options?: SchemaMigrationOptions): Promise<void> {}

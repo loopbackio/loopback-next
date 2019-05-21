@@ -25,8 +25,8 @@ const debug = debugModule('loopback:rest:coercion');
  * Coerce the http raw data to a JavaScript type data of a parameter
  * according to its OpenAPI schema specification.
  *
- * @param data The raw data get from http request
- * @param schema The parameter's schema defined in OpenAPI specification
+ * @param data - The raw data get from http request
+ * @param schema - The parameter's schema defined in OpenAPI specification
  */
 export function coerceParameter(
   data: string | undefined | object,

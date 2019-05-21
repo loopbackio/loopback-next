@@ -35,7 +35,7 @@ export class TestSandbox {
    * Will create a directory if it doesn't already exist. If it exists, you
    * still get an instance of the TestSandbox.
    *
-   * @param path Path of the TestSandbox. If relative (it will be resolved relative to cwd()).
+   * @param path - Path of the TestSandbox. If relative (it will be resolved relative to cwd()).
    */
   constructor(path: string) {
     // resolve ensures path is absolute / makes it absolute (relative to cwd())
@@ -77,7 +77,7 @@ export class TestSandbox {
   /**
    * Makes a directory in the TestSandbox
    *
-   * @param dir Name of directory to create (relative to TestSandbox path)
+   * @param dir - Name of directory to create (relative to TestSandbox path)
    */
   async mkdir(dir: string): Promise<void> {
     await ensureDir(resolve(this.path, dir));
@@ -89,8 +89,8 @@ export class TestSandbox {
    * will have its sourceMappingURL updated to point to the original file as
    * an absolute path so you don't need to copy the map file.
    *
-   * @param src Absolute path of file to be copied to the TestSandbox
-   * @param [dest] Optional. Destination filename of the copy operation
+   * @param src - Absolute path of file to be copied to the TestSandbox
+   * @param dest - Optional. Destination filename of the copy operation
    * (relative to TestSandbox). Original filename used if not specified.
    */
   async copyFile(src: string, dest?: string): Promise<void> {

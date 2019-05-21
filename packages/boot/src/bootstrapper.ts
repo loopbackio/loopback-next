@@ -25,9 +25,9 @@ const debug = debugModule('loopback:boot:bootstrapper');
  * NOTE: Bootstrapper should be bound as a SINGLETON so it can be cached as
  * it does not maintain any state of it's own.
  *
- * @param app Application instance
- * @param projectRoot The root directory of the project, relative to which all other paths are resolved
- * @param [bootOptions] The BootOptions describing the conventions to be used by various Booters
+ * @param app - Application instance
+ * @param projectRoot - The root directory of the project, relative to which all other paths are resolved
+ * @param bootOptions - The BootOptions describing the conventions to be used by various Booters
  */
 export class Bootstrapper {
   constructor(
@@ -51,7 +51,7 @@ export class Bootstrapper {
    * are bound to the Application instance. Each phase of an instance must
    * complete before the next phase is started.
    *
-   * @param {BootExecutionOptions} execOptions Execution options for boot. These
+   * @param execOptions - Execution options for boot. These
    * determine the phases and booters that are run.
    * @param {Context} [ctx] Optional Context to use to resolve bindings. This is
    * primarily useful when running app.boot() again but with different settings

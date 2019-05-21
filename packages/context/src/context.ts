@@ -115,8 +115,8 @@ export class Context extends EventEmitter {
    * // from `appCtx`
    * const reqCtx = new Context(appCtx, 'request');
    * ```
-   * @param _parent The optional parent context
-   * @param name Name of the context, if not provided, a `uuid` will be
+   * @param _parent - The optional parent context
+   * @param name - Name of the context, if not provided, a `uuid` will be
    * generated as the name
    */
   constructor(_parent?: Context | string, name?: string) {
@@ -132,7 +132,7 @@ export class Context extends EventEmitter {
   /**
    * Wrap the debug statement so that it always print out the context name
    * as the prefix
-   * @param args Arguments for the debug
+   * @param args - Arguments for the debug
    */
   // tslint:disable-next-line:no-any
   private _debug(...args: any[]) {
@@ -173,7 +173,7 @@ export class Context extends EventEmitter {
   /**
    * Add an event listener to its parent context so that this context will
    * be notified of parent events, such as `bind` or `unbind`.
-   * @param event Event name
+   * @param event - Event name
    */
   private addParentEventListener(event: string) {
     if (this._parent == null) return;
@@ -215,7 +215,7 @@ export class Context extends EventEmitter {
 
   /**
    * Handle errors caught during the notification of observers
-   * @param err Error
+   * @param err - Error
    */
   private handleNotificationError(err: unknown) {
     // Bubbling up the error event over the context chain
@@ -281,7 +281,7 @@ export class Context extends EventEmitter {
   /**
    * Listen on given event types and emit `notification` event. This method
    * merge multiple event types into one for notification.
-   * @param eventTypes Context event types
+   * @param eventTypes - Context event types
    */
   private setupNotification(...eventTypes: ContextEventType[]) {
     for (const eventType of eventTypes) {
@@ -320,7 +320,7 @@ export class Context extends EventEmitter {
    * Create a binding with the given key in the context. If a locked binding
    * already exists with the same key, an error will be thrown.
    *
-   * @param key Binding key
+   * @param key - Binding key
    */
   bind<ValueType = BoundValue>(
     key: BindingAddress<ValueType>,
@@ -333,7 +333,7 @@ export class Context extends EventEmitter {
   /**
    * Add a binding to the context. If a locked binding already exists with the
    * same key, an error will be thrown.
-   * @param binding The configured binding to be added
+   * @param binding - The configured binding to be added
    */
   add(binding: Binding<unknown>): this {
     const key = binding.key;
@@ -366,7 +366,7 @@ export class Context extends EventEmitter {
    * return ownerCtx != null && ownerCtx.unbind(key);
    * ```
    *
-   * @param key Binding key
+   * @param key - Binding key
    * @returns true if the binding key is found and removed from this context
    */
   unbind(key: BindingAddress): boolean {
@@ -384,7 +384,7 @@ export class Context extends EventEmitter {
 
   /**
    * Add a context event observer to the context
-   * @param observer Context observer instance or function
+   * @param observer - Context observer instance or function
    */
   subscribe(observer: ContextEventObserver): Subscription {
     this.observers = this.observers || new Set();
@@ -395,7 +395,7 @@ export class Context extends EventEmitter {
 
   /**
    * Remove the context event observer from the context
-   * @param observer Context event observer
+   * @param observer - Context event observer
    */
   unsubscribe(observer: ContextEventObserver): boolean {
     if (!this.observers) return false;
@@ -431,7 +431,7 @@ export class Context extends EventEmitter {
 
   /**
    * Check if an observer is subscribed to this context
-   * @param observer Context observer
+   * @param observer - Context observer
    */
   isSubscribed(observer: ContextObserver) {
     if (!this.observers) return false;
@@ -440,8 +440,8 @@ export class Context extends EventEmitter {
 
   /**
    * Create a view of the context chain with the given binding filter
-   * @param filter A function to match bindings
-   * @param comparator A function to sort matched bindings
+   * @param filter - A function to match bindings
+   * @param comparator - A function to sort matched bindings
    */
   createView<T = unknown>(
     filter: BindingFilter,
@@ -458,10 +458,10 @@ export class Context extends EventEmitter {
    * APIs such as `ctx.bind('key').to(...).tag(...);` and give observers the
    * fully populated binding.
    *
-   * @param eventType Event names: `bind` or `unbind`
-   * @param binding Binding bound or unbound
-   * @param context Owner context
-   * @param observers Current set of context observers
+   * @param eventType - Event names: `bind` or `unbind`
+   * @param binding - Binding bound or unbound
+   * @param context - Owner context
+   * @param observers - Current set of context observers
    */
   protected async notifyObservers(
     eventType: ContextEventType,
@@ -483,7 +483,7 @@ export class Context extends EventEmitter {
   /**
    * Check if a binding exists with the given key in the local context without
    * delegating to the parent context
-   * @param key Binding key
+   * @param key - Binding key
    */
   contains(key: BindingAddress): boolean {
     key = BindingKey.validate(key);
@@ -492,7 +492,7 @@ export class Context extends EventEmitter {
 
   /**
    * Check if a key is bound in the context or its ancestors
-   * @param key Binding key
+   * @param key - Binding key
    */
   isBound(key: BindingAddress): boolean {
     if (this.contains(key)) return true;
@@ -504,7 +504,7 @@ export class Context extends EventEmitter {
 
   /**
    * Get the owning context for a binding key
-   * @param key Binding key
+   * @param key - Binding key
    */
   getOwnerContext(key: BindingAddress): Context | undefined {
     if (this.contains(key)) return this;
@@ -516,7 +516,7 @@ export class Context extends EventEmitter {
 
   /**
    * Find bindings using a key pattern or filter function
-   * @param pattern A filter function, a regexp or a wildcard pattern with
+   * @param pattern - A filter function, a regexp or a wildcard pattern with
    * optional `*` and `?`. Find returns such bindings where the key matches
    * the provided pattern.
    *
@@ -594,9 +594,9 @@ export class Context extends EventEmitter {
    * const a = await ctx.get<number>('data#numbers.a');
    * ```
    *
-   * @param keyWithPath The binding key, optionally suffixed with a path to the
+   * @param keyWithPath - The binding key, optionally suffixed with a path to the
    *   (deeply) nested property to retrieve.
-   * @param session Optional session for resolution (accepted for backward
+   * @param session - Optional session for resolution (accepted for backward
    * compatibility)
    * @returns A promise of the bound value.
    */
@@ -619,9 +619,9 @@ export class Context extends EventEmitter {
    * });
    * ```
    *
-   * @param keyWithPath The binding key, optionally suffixed with a path to the
+   * @param keyWithPath - The binding key, optionally suffixed with a path to the
    *   (deeply) nested property to retrieve.
-   * @param options Options for resolution.
+   * @param options - Options for resolution.
    * @returns A promise of the bound value, or a promise of undefined when
    * the optional binding is not found.
    */
@@ -660,9 +660,9 @@ export class Context extends EventEmitter {
    * const config = await ctx.getSync<RestComponentConfig>('config#rest');
    * ```
    *
-   * @param keyWithPath The binding key, optionally suffixed with a path to the
+   * @param keyWithPath - The binding key, optionally suffixed with a path to the
    *   (deeply) nested property to retrieve.
-   * @param session Session for resolution (accepted for backward compatibility)
+   * @param session - Session for resolution (accepted for backward compatibility)
    * @returns A promise of the bound value.
    */
   getSync<ValueType>(
@@ -688,9 +688,9 @@ export class Context extends EventEmitter {
    * });
    * ```
    *
-   * @param keyWithPath The binding key, optionally suffixed with a path to the
+   * @param keyWithPath - The binding key, optionally suffixed with a path to the
    *   (deeply) nested property to retrieve.
-   * @param options Options for resolution.
+   * @param options - Options for resolution.
    * @returns The bound value, or undefined when an optional binding is not found.
    */
   getSync<ValueType>(
@@ -723,7 +723,7 @@ export class Context extends EventEmitter {
    * Look up a binding by key in the context and its ancestors. If no matching
    * binding is found, an error will be thrown.
    *
-   * @param key Binding key
+   * @param key - Binding key
    */
   getBinding<ValueType = BoundValue>(
     key: BindingAddress<ValueType>,
@@ -734,8 +734,8 @@ export class Context extends EventEmitter {
    * binding is found and `options.optional` is not set to true, an error will
    * be thrown.
    *
-   * @param key Binding key
-   * @param options Options to control if the binding is optional. If
+   * @param key - Binding key
+   * @param options - Options to control if the binding is optional. If
    * `options.optional` is set to true, the method will return `undefined`
    * instead of throwing an error if the binding key is not found.
    */
@@ -766,8 +766,8 @@ export class Context extends EventEmitter {
 
   /**
    * Find or create a binding for the given key
-   * @param key Binding address
-   * @param policy Binding creation policy
+   * @param key - Binding address
+   * @param policy - Binding creation policy
    */
   findOrCreateBinding<T>(
     key: BindingAddress<T>,
@@ -808,9 +808,9 @@ export class Context extends EventEmitter {
    * ctx.getValueOrPromise<number>('data#numbers.a');
    * ```
    *
-   * @param keyWithPath The binding key, optionally suffixed with a path to the
+   * @param keyWithPath - The binding key, optionally suffixed with a path to the
    *   (deeply) nested property to retrieve.
-   * @param optionsOrSession Options for resolution or a session
+   * @param optionsOrSession - Options for resolution or a session
    * @returns The bound value or a promise of the bound value, depending
    *   on how the binding is configured.
    * @internal

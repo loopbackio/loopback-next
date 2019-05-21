@@ -21,7 +21,7 @@ export interface GenericService {
  * Get a service proxy from a LoopBack 3.x data source backed by
  * service-oriented connectors such as `rest`, `soap`, and `grpc`.
  *
- * @param ds A legacy data source
+ * @param ds - A legacy data source
  * @typeparam T The generic type of service interface
  */
 export async function getService<T = GenericService>(

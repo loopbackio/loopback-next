@@ -54,8 +54,8 @@ export function serviceProxy(dataSource: string | juggler.DataSource) {
 
 /**
  * Resolve the @repository injection
- * @param ctx Context
- * @param injection Injection metadata
+ * @param ctx - Context
+ * @param injection - Injection metadata
  */
 async function resolve(ctx: Context, injection: Injection) {
   const meta = injection.metadata as ServiceProxyMetadata;

@@ -121,7 +121,7 @@ export interface Bootable {
   boot(): Promise<void>;
   /**
    * Register booters
-   * @param booterClasses A list of booter classes
+   * @param booterClasses - A list of booter classes
    */
   booters(...booterClasses: Constructor<Booter>[]): Binding[];
 }

@@ -23,8 +23,8 @@ const debug = debugFactory('loopback:rest:parser');
  * Parses the request to derive arguments to be passed in for the Application
  * controller method
  *
- * @param request Incoming HTTP request
- * @param route Resolved Route
+ * @param request - Incoming HTTP request
+ * @param route - Resolved Route
  */
 export async function parseOperationArgs(
   request: Request,

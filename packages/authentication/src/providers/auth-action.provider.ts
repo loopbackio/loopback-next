@@ -40,7 +40,7 @@ export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
 
   /**
    * The implementation of authenticate() sequence action.
-   * @param request The incoming request provided by the REST layer
+   * @param request - The incoming request provided by the REST layer
    */
   async action(request: Request): Promise<UserProfile | undefined> {
     const strategy = await this.getStrategy();

@@ -20,9 +20,9 @@ import {BootBindings} from '../keys';
  *
  * Supported phases: configure, discover, load
  *
- * @param app Application instance
- * @param projectRoot Root of User Project relative to which all paths are resolved
- * @param [bootConfig] DataSource Artifact Options Object
+ * @param app - Application instance
+ * @param projectRoot - Root of User Project relative to which all paths are resolved
+ * @param bootConfig - DataSource Artifact Options Object
  */
 export class DataSourceBooter extends BaseArtifactBooter {
   constructor(

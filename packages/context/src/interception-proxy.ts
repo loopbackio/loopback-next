@@ -87,8 +87,8 @@ export class InterceptionHandler<T extends object> implements ProxyHandler<T> {
 
 /**
  * Create a proxy that applies interceptors for method invocations
- * @param target Target class or object
- * @param context Context object
+ * @param target - Target class or object
+ * @param context - Context object
  */
 export function createProxyWithInterceptors<T extends object>(
   target: T,

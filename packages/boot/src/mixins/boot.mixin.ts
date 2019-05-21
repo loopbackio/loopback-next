@@ -77,7 +77,7 @@ export function BootMixin<T extends Constructor<any>>(superClass: T) {
      * Given a N number of Booter Classes, this method binds them using the
      * prefix and tag expected by the Bootstrapper.
      *
-     * @param booterCls Booter classes to bind to the Application
+     * @param booterCls - Booter classes to bind to the Application
      *
      * @example
      * ```ts
@@ -93,7 +93,7 @@ export function BootMixin<T extends Constructor<any>>(superClass: T) {
     /**
      * Override to ensure any Booter's on a Component are also mounted.
      *
-     * @param component The component to add.
+     * @param component - The component to add.
      *
      * @example
      * ```ts
@@ -119,7 +119,7 @@ export function BootMixin<T extends Constructor<any>>(superClass: T) {
      * booters. This function is intended to be used internally
      * by component()
      *
-     * @param component The component to mount booters of
+     * @param component - The component to mount booters of
      */
     mountComponentBooters(component: Constructor<{}>) {
       const componentKey = `components.${component.name}`;
@@ -136,8 +136,8 @@ export function BootMixin<T extends Constructor<any>>(superClass: T) {
  * Method which binds a given Booter to a given Context with the Prefix and
  * Tags expected by the Bootstrapper
  *
- * @param ctx The Context to bind the Booter Class
- * @param booterCls Booter class to be bound
+ * @param ctx - The Context to bind the Booter Class
+ * @param booterCls - Booter class to be bound
  */
 export function _bindBooter(
   ctx: Context,

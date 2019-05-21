@@ -73,7 +73,7 @@ export const REQUEST_BODY_INDEX = 'x-parameter-index';
  * }
  * ```
  *
- * @param requestBodySpec The complete requestBody Object or partial of it.
+ * @param requestBodySpec - The complete requestBody Object or partial of it.
  * "partial" for allowing no `content` in spec, for example:
  * ```
  * @requestBody({description: 'a request body'}) user: User
@@ -142,8 +142,8 @@ export namespace requestBody {
    * }
    * ```
    *
-   * @param properties The requestBody properties other than `content`
-   * @param itemSpec the full item object
+   * @param properties - The requestBody properties other than `content`
+   * @param itemSpec - the full item object
    */
   export const array = function(
     itemSpec: SchemaObject | ReferenceObject,

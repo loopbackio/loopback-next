@@ -30,7 +30,7 @@ export function createClientForHandler(
  * Create a SuperTest client for a running RestApplication instance.
  * It is the responsibility of the caller to ensure that the app
  * is running and to stop the application after all tests are done.
- * @param app A running (listening) instance of a RestApplication.
+ * @param app - A running (listening) instance of a RestApplication.
  */
 export function createRestAppClient(app: RestApplicationLike) {
   const url = app.restServer.rootUrl || app.restServer.url;

@@ -27,7 +27,7 @@ import {Todo, TodoList, TodoListImage} from '../models';
 
 /**
  * Generate a complete Todo object for use with tests.
- * @param todo A partial (or complete) Todo object.
+ * @param todo - A partial (or complete) Todo object.
  */
 export function givenTodo(todo?: Partial<Todo>) {
   const data = Object.assign(
@@ -44,7 +44,7 @@ export function givenTodo(todo?: Partial<Todo>) {
 
 /**
  * Generate a complete TodoList object for use with tests
- * @param todoList A partial (or complete) TodoList object.
+ * @param todoList - A partial (or complete) TodoList object.
  */
 export function givenTodoList(todoList?: Partial<TodoList>) {
   const data = Object.assign(
@@ -58,7 +58,7 @@ export function givenTodoList(todoList?: Partial<TodoList>) {
 
 /**
  * Generate a complete TodoListImage object for use with tests.
- * @param todoListImage A partial (or complete) TodoListImage object.
+ * @param todoListImage - A partial (or complete) TodoListImage object.
  */
 export function givenTodoListImage(todoListImage?: Partial<TodoListImage>) {
   const data = Object.assign(

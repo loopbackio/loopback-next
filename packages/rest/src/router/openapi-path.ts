@@ -63,7 +63,7 @@ export function getPathVariables(path: string) {
 
 /**
  * Convert an OpenAPI path to Express (path-to-regexp) style
- * @param path OpenAPI path with optional variables as `{var}`
+ * @param path - OpenAPI path with optional variables as `{var}`
  */
 export function toExpressPath(path: string) {
   // Convert `.` to `\\.` so that path-to-regexp will treat it as the plain

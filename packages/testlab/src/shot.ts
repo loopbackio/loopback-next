@@ -138,7 +138,7 @@ export function stubExpressContext(
 
 /**
  * Use `express.query` to parse the query string into `request.query` object
- * @param request Express http request object
+ * @param request - Express http request object
  */
 function parseQuery(request: express.Request) {
   // Use `express.query` to parse the query string

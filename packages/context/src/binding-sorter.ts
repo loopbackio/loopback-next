@@ -17,8 +17,8 @@ import {Binding} from './binding';
 export interface BindingComparator {
   /**
    * Compare two bindings
-   * @param bindingA First binding
-   * @param bindingB Second binding
+   * @param bindingA - First binding
+   * @param bindingB - Second binding
    * @returns A number to determine order of bindingA and bindingB
    * - 0 leaves bindingA and bindingB unchanged
    * - <0 bindingA comes before bindingB
@@ -46,8 +46,8 @@ export interface BindingComparator {
  * ordered by phase names alphabetically and symbol values come before string
  * values.
  *
- * @param phaseTagName Name of the binding tag for phase
- * @param orderOfPhases An array of phase names as the predefined order
+ * @param phaseTagName - Name of the binding tag for phase
+ * @param orderOfPhases - An array of phase names as the predefined order
  */
 export function compareBindingsByTag(
   phaseTagName: string = 'phase',
@@ -76,9 +76,9 @@ export function compareBindingsByTag(
  *   - symbol values come before string values
  *   - alphabetical order for two symbols or two strings
  *
- * @param a First value
- * @param b Second value
- * @param order An array of values as the predefined order
+ * @param a - First value
+ * @param b - Second value
+ * @param order - An array of values as the predefined order
  */
 export function compareByOrder(
   a: string | symbol | undefined | null,
@@ -109,11 +109,11 @@ export function compareByOrder(
 /**
  * Sort bindings by phase names denoted by a tag and the predefined order
  *
- * @param bindings An array of bindings
- * @param phaseTagName Tag name for phase, for example, we can use the value
+ * @param bindings - An array of bindings
+ * @param phaseTagName - Tag name for phase, for example, we can use the value
  * `'a'` of tag `order` as the phase name for `binding.tag({order: 'a'})`.
  *
- * @param orderOfPhases An array of phase names as the predefined order
+ * @param orderOfPhases - An array of phase names as the predefined order
  */
 export function sortBindingsByPhase(
   bindings: Readonly<Binding<unknown>>[],

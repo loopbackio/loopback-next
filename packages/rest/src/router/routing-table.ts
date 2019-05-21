@@ -85,7 +85,7 @@ export class RoutingTable {
 
   /**
    * Register a route
-   * @param route A route entry
+   * @param route - A route entry
    */
   registerRoute(route: RouteEntry) {
     // TODO(bajtos) handle the case where opSpec.parameters contains $ref

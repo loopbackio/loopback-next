@@ -20,9 +20,9 @@ export class BindingKey<ValueType> {
    * BindingKey.create<number>('config#rest.port');
    * ```
    *
-   * @param key The binding key. When propertyPath is not provided, the key
+   * @param key - The binding key. When propertyPath is not provided, the key
    *   is allowed to contain propertyPath as encoded via `BindingKey#toString()`
-   * @param propertyPath Optional path to a deep property of the bound value.
+   * @param propertyPath - Optional path to a deep property of the bound value.
    */
   public static create<ValueType>(
     key: string,
@@ -54,7 +54,7 @@ export class BindingKey<ValueType> {
    * Get a binding address for retrieving a deep property of the object
    * bound to the current binding key.
    *
-   * @param propertyPath A dot-separated path to a (deep) property, e.g. "server.port".
+   * @param propertyPath - A dot-separated path to a (deep) property, e.g. "server.port".
    */
   deepProperty<PropertyValueType>(propertyPath: string) {
     // TODO(bajtos) allow chaining of propertyPaths, e.g.
@@ -67,7 +67,7 @@ export class BindingKey<ValueType> {
    * Validate the binding key format. Please note that `#` is reserved.
    * Returns a string representation of the binding key.
    *
-   * @param key Binding key, such as `a`, `a.b`, `a:b`, or `a/b`
+   * @param key - Binding key, such as `a`, `a.b`, `a:b`, or `a/b`
    */
   static validate<T>(key: BindingAddress<T>): string {
     if (!key) throw new Error('Binding key must be provided.');
@@ -85,7 +85,7 @@ export class BindingKey<ValueType> {
    * Parse a string containing both the binding key and the path to the deeply
    * nested property to retrieve.
    *
-   * @param keyWithPath The key with an optional path,
+   * @param keyWithPath - The key with an optional path,
    *  e.g. "application.instance" or "config#rest.port".
    */
   static parseKeyWithPath<T>(keyWithPath: BindingAddress<T>): BindingKey<T> {

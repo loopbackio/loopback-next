@@ -152,9 +152,9 @@ describe('@inject.* to receive multiple values matching a filter', async () => {
 
   /**
    * Add a workload monitor to the given context
-   * @param ctx Context object
-   * @param name Name of the monitor
-   * @param workload Current workload
+   * @param ctx - Context object
+   * @param name - Name of the monitor
+   * @param workload - Current workload
    */
   function givenWorkloadMonitor(ctx: Context, name: string, workload: number) {
     return ctx

@@ -181,7 +181,7 @@ export class Application extends Context implements LifeCycleObserver {
    * Add a component to this application and register extensions such as
    * controllers, providers, and servers from the component.
    *
-   * @param componentCtor The component class to add.
+   * @param componentCtor - The component class to add.
    * @param {string=} name Optional component name, default to the class name
    *
    * @example
@@ -221,7 +221,7 @@ export class Application extends Context implements LifeCycleObserver {
    * Set application metadata. `@loopback/boot` calls this method to populate
    * the metadata from `package.json`.
    *
-   * @param metadata Application metadata
+   * @param metadata - Application metadata
    */
   public setMetadata(metadata: ApplicationMetadata) {
     this.bind(CoreBindings.APPLICATION_METADATA).to(metadata);
@@ -229,8 +229,8 @@ export class Application extends Context implements LifeCycleObserver {
 
   /**
    * Register a life cycle observer class
-   * @param ctor A class implements LifeCycleObserver
-   * @param name Optional name for the life cycle observer
+   * @param ctor - A class implements LifeCycleObserver
+   * @param name - Optional name for the life cycle observer
    */
   public lifeCycleObserver<T extends LifeCycleObserver>(
     ctor: Constructor<T>,

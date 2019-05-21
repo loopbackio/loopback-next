@@ -123,8 +123,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * httpServer.listen(3000);
    * ```
    *
-   * @param req The request.
-   * @param res The response.
+   * @param req - The request.
+   * @param res - The response.
    */
 
   protected _requestHandler: HttpRequestListener;
@@ -175,7 +175,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    *
    * Creates an instance of RestServer.
    *
-   * @param {Application} app The application instance (injected via
+   * @param app - The application instance (injected via
    * CoreBindings.APPLICATION_INSTANCE).
    * @param {RestServerConfig=} config The configuration options (injected via
    * RestBindings.CONFIG).
@@ -454,7 +454,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
   /**
    * Register a controller class with this server.
    *
-   * @param {Constructor} controllerCtor The controller class
+   * @param controllerCtor - The controller class
    * (constructor function).
    * @returns {Binding} The newly created binding, you can use the reference to
    * further modify the binding, e.g. lock the value to prevent further
@@ -487,12 +487,12 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * app.route('get', '/greet', operationSpec, MyController, 'greet');
    * ```
    *
-   * @param verb HTTP verb of the endpoint
-   * @param path URL path of the endpoint
-   * @param spec The OpenAPI spec describing the endpoint (operation)
-   * @param controllerCtor Controller constructor
-   * @param controllerFactory A factory function to create controller instance
-   * @param methodName The name of the controller method
+   * @param verb - HTTP verb of the endpoint
+   * @param path - URL path of the endpoint
+   * @param spec - The OpenAPI spec describing the endpoint (operation)
+   * @param controllerCtor - Controller constructor
+   * @param controllerFactory - A factory function to create controller instance
+   * @param methodName - The name of the controller method
    */
   route<I>(
     verb: string,
@@ -514,10 +514,10 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * app.route('get', '/', operationSpec, greet);
    * ```
    *
-   * @param verb HTTP verb of the endpoint
-   * @param path URL path of the endpoint
-   * @param spec The OpenAPI spec describing the endpoint (operation)
-   * @param handler The function to invoke with the request parameters
+   * @param verb - HTTP verb of the endpoint
+   * @param path - URL path of the endpoint
+   * @param spec - The OpenAPI spec describing the endpoint (operation)
+   * @param handler - The function to invoke with the request parameters
    * described in the spec.
    */
   route(
@@ -539,7 +539,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * app.route(route);
    * ```
    *
-   * @param route The route to add.
+   * @param route - The route to add.
    */
   route(route: RouteEntry): Binding;
 
@@ -615,11 +615,11 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * server.redirect('/explorer', '/explorer/');
    * ```
    *
-   * @param fromPath URL path of the redirect endpoint
-   * @param toPathOrUrl Location (URL path or full URL) where to redirect to.
+   * @param fromPath - URL path of the redirect endpoint
+   * @param toPathOrUrl - Location (URL path or full URL) where to redirect to.
    * If your server is configured with a custom `basePath`, then the base path
    * is prepended to the target location.
-   * @param statusCode HTTP status code to respond with,
+   * @param statusCode - HTTP status code to respond with,
    *   defaults to 303 (See Other).
    */
   redirect(
@@ -640,10 +640,10 @@ export class RestServer extends Context implements Server, HttpServerLike {
   /**
    * Mount static assets to the REST server.
    * See https://expressjs.com/en/4x/api.html#express.static
-   * @param path The path(s) to serve the asset.
+   * @param path - The path(s) to serve the asset.
    * See examples at https://expressjs.com/en/4x/api.html#path-examples
-   * @param rootDir The root directory from which to serve static assets
-   * @param options Options for serve-static
+   * @param rootDir - The root directory from which to serve static assets
+   * @param options - Options for serve-static
    */
   static(path: PathParams, rootDir: string, options?: ServeStaticOptions) {
     this._externalRoutes.registerAssets(path, rootDir, options);
@@ -657,7 +657,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * Note that this will override any routes defined via decorators at the
    * controller level (this function takes precedent).
    *
-   * @param {OpenApiSpec} spec The OpenAPI specification, as an object.
+   * @param spec - The OpenAPI specification, as an object.
    * @returns {Binding}
    *
    */
@@ -707,7 +707,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * }
    * ```
    *
-   * @param value The sequence to invoke for each incoming request.
+   * @param value - The sequence to invoke for each incoming request.
    */
   public sequence(value: Constructor<SequenceHandler>) {
     this.bind(RestBindings.SEQUENCE).toClass(value);
@@ -723,7 +723,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * });
    * ```
    *
-   * @param handlerFn The handler to invoke for each incoming request.
+   * @param handlerFn - The handler to invoke for each incoming request.
    */
   public handler(handlerFn: SequenceFunction) {
     class SequenceFromFunction extends DefaultSequence {
@@ -750,8 +750,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
   /**
    * Bind a body parser to the server context
-   * @param parserClass Body parser class
-   * @param address Optional binding address
+   * @param parserClass - Body parser class
+   * @param address - Optional binding address
    */
   bodyParser(
     bodyParserClass: Constructor<BodyParser>,
@@ -764,7 +764,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
   /**
    * Configure the `basePath` for the rest server
-   * @param path Base path
+   * @param path - Base path
    */
   basePath(path: string = '') {
     if (this._requestHandler) {
@@ -841,9 +841,9 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * Mount an Express router to expose additional REST endpoints handled
    * via legacy Express-based stack.
    *
-   * @param basePath Path where to mount the router at, e.g. `/` or `/api`.
-   * @param router The Express router to handle the requests.
-   * @param spec A partial OpenAPI spec describing endpoints provided by the
+   * @param basePath - Path where to mount the router at, e.g. `/` or `/api`.
+   * @param router - The Express router to handle the requests.
+   * @param spec - A partial OpenAPI spec describing endpoints provided by the
    * router. LoopBack will prepend `basePath` to all endpoints automatically.
    * This argument is optional. You can leave it out if you don't want to
    * document the routes.
@@ -859,8 +859,8 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
 /**
  * Create a binding for the given body parser class
- * @param parserClass Body parser class
- * @param key Optional binding address
+ * @param parserClass - Body parser class
+ * @param key - Optional binding address
  */
 export function createBodyParserBinding(
   parserClass: Constructor<BodyParser>,

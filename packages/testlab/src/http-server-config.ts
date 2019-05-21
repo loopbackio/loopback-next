@@ -25,7 +25,7 @@ export type ConfigRetval<T extends object> = T & {
  *    environments like Travis-CI.
  *  - Provide default TLS key & cert when `protocol` is set to `https`.
  *
- * @param customConfig Additional configuration options to apply.
+ * @param customConfig - Additional configuration options to apply.
  */
 export function givenHttpServerConfig<T extends object>(
   customConfig?: T & {protocol?: string},

@@ -19,7 +19,7 @@ import {OAI3Keys} from '../keys';
  * }
  * ```
  *
- * @param spec OpenAPI specification describing the endpoints
+ * @param spec - OpenAPI specification describing the endpoints
  * handled by this controller
  *
  * @decorator

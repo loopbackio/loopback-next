@@ -17,9 +17,9 @@ import {ArtifactOptions} from '../interfaces';
  *
  * Supported phases: configure, discover, load
  *
- * @param app Application instance
- * @param projectRoot Root of User Project relative to which all paths are resolved
- * @param [bootConfig] Repository Artifact Options Object
+ * @param app - Application instance
+ * @param projectRoot - Root of User Project relative to which all paths are resolved
+ * @param bootConfig - Repository Artifact Options Object
  */
 export class RepositoryBooter extends BaseArtifactBooter {
   constructor(

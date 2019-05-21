@@ -194,8 +194,8 @@ export class Binding<T = BoundValue> {
 
   /**
    * Cache the resolved value by the binding scope
-   * @param ctx The current context
-   * @param result The calculated value for the binding
+   * @param ctx - The current context
+   * @param result - The calculated value for the binding
    */
   private _cacheValue(
     ctx: Context,
@@ -247,8 +247,8 @@ export class Binding<T = BoundValue> {
    * }
    * ```
    *
-   * @param ctx Context for the resolution
-   * @param session Optional session for binding and dependency resolution
+   * @param ctx - Context for the resolution
+   * @param session - Optional session for binding and dependency resolution
    */
   getValue(ctx: Context, session?: ResolutionSession): ValueOrPromise<T>;
 
@@ -256,8 +256,8 @@ export class Binding<T = BoundValue> {
    * Returns a value or promise for this binding in the given context. The
    * resolved value can be `undefined` if `optional` is set to `true` in
    * `options`.
-   * @param ctx Context for the resolution
-   * @param options Optional options for binding and dependency resolution
+   * @param ctx - Context for the resolution
+   * @param options - Optional options for binding and dependency resolution
    */
   getValue(
     ctx: Context,
@@ -312,7 +312,7 @@ export class Binding<T = BoundValue> {
    * Tag the binding with names or name/value objects. A tag has a name and
    * an optional value. If not supplied, the tag name is used as the value.
    *
-   * @param tags A list of names or name/value objects. Each
+   * @param tags - A list of names or name/value objects. Each
    * parameter can be in one of the following forms:
    * - string: A tag name without value
    * - string[]: An array of tag names
@@ -358,7 +358,7 @@ export class Binding<T = BoundValue> {
 
   /**
    * Set the binding scope
-   * @param scope Binding scope
+   * @param scope - Binding scope
    */
   inScope(scope: BindingScope): this {
     if (this._scope !== scope) this._clearCache();
@@ -369,7 +369,7 @@ export class Binding<T = BoundValue> {
   /**
    * Apply default scope to the binding. It only changes the scope if it's not
    * set yet
-   * @param scope Default binding scope
+   * @param scope - Default binding scope
    */
   applyDefaultScope(scope: BindingScope): this {
     if (!this._scope) {
@@ -380,7 +380,7 @@ export class Binding<T = BoundValue> {
 
   /**
    * Set the `_getValue` function
-   * @param getValue getValue function
+   * @param getValue - getValue function
    */
   private _setValueGetter(getValue: ValueGetter<T>) {
     // Clear the cache
@@ -401,7 +401,7 @@ export class Binding<T = BoundValue> {
    * Bind the key to a constant value. The value must be already available
    * at binding time, it is not allowed to pass a Promise instance.
    *
-   * @param value The bound value.
+   * @param value - The bound value.
    *
    * @example
    *
@@ -443,7 +443,7 @@ export class Binding<T = BoundValue> {
   /**
    * Bind the key to a computed (dynamic) value.
    *
-   * @param factoryFn The factory function creating the value.
+   * @param factoryFn - The factory function creating the value.
    *   Both sync and async functions are supported.
    *
    * @example
@@ -482,7 +482,7 @@ export class Binding<T = BoundValue> {
    * }
    * ```
    *
-   * @param provider The value provider to use.
+   * @param provider - The value provider to use.
    */
   toProvider(providerClass: Constructor<Provider<T>>): this {
     /* istanbul ignore if */
@@ -504,7 +504,7 @@ export class Binding<T = BoundValue> {
   /**
    * Bind the key to an instance of the given class.
    *
-   * @param ctor The class constructor to call. Any constructor
+   * @param ctor - The class constructor to call. Any constructor
    *   arguments must be annotated with `@inject` so that
    *   we can resolve them from the context.
    */
@@ -525,7 +525,7 @@ export class Binding<T = BoundValue> {
 
   /**
    * Bind the key to an alias of another binding
-   * @param keyWithPath Target binding key with optional path,
+   * @param keyWithPath - Target binding key with optional path,
    * such as `servers.RestServer.options#apiExplorer`
    */
   toAlias(keyWithPath: BindingAddress<T>) {
@@ -560,7 +560,7 @@ export class Binding<T = BoundValue> {
    * const serverBinding = new Binding<RestServer>('servers.RestServer1');
    * serverBinding.apply(serverTemplate);
    * ```
-   * @param templateFns One or more functions to configure the binding
+   * @param templateFns - One or more functions to configure the binding
    */
   apply(...templateFns: BindingTemplate<T>[]): this {
     for (const fn of templateFns) {
@@ -587,7 +587,7 @@ export class Binding<T = BoundValue> {
    * A static method to create a binding so that we can do
    * `Binding.bind('foo').to('bar');` as `new Binding('foo').to('bar')` is not
    * easy to read.
-   * @param key Binding key
+   * @param key - Binding key
    */
   static bind<T = unknown>(key: BindingAddress<T>): Binding<T> {
     return new Binding(key.toString());

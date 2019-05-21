@@ -14,9 +14,9 @@ import {Class, Options, Count} from '../common-types';
 export interface CrudConnector extends Connector {
   /**
    * Create a new entity
-   * @param modelClass The model class
-   * @param entity The entity instance or data
-   * @param options Options for the operation
+   * @param modelClass - The model class
+   * @param entity - The entity instance or data
+   * @param options - Options for the operation
    * @returns A promise of the entity created
    */
   create(
@@ -27,9 +27,9 @@ export interface CrudConnector extends Connector {
 
   /**
    * Create multiple entities
-   * @param modelClass The model class
-   * @param entities An array of entity instances or data
-   * @param options Options for the operation
+   * @param modelClass - The model class
+   * @param entities - An array of entity instances or data
+   * @param options - Options for the operation
    * @returns A promise of an array of entities created
    */
   createAll?(
@@ -40,9 +40,9 @@ export interface CrudConnector extends Connector {
 
   /**
    * Save an entity
-   * @param modelClass The model class
-   * @param entity The entity instance or data
-   * @param options Options for the operation
+   * @param modelClass - The model class
+   * @param entity - The entity instance or data
+   * @param options - Options for the operation
    * @returns A promise of the entity saved
    */
   save?(
@@ -53,9 +53,9 @@ export interface CrudConnector extends Connector {
 
   /**
    * Find matching entities by the filter
-   * @param modelClass The model class
-   * @param filter The query filter
-   * @param options Options for the operation
+   * @param modelClass - The model class
+   * @param filter - The query filter
+   * @param options - Options for the operation
    * @returns A promise of an array of entities found for the filter
    */
   find(
@@ -66,9 +66,9 @@ export interface CrudConnector extends Connector {
 
   /**
    * Find an entity by id
-   * @param modelClass The model class
-   * @param id The entity id value
-   * @param options Options for the operation
+   * @param modelClass - The model class
+   * @param id - The entity id value
+   * @param options - Options for the operation
    * @returns A promise of the entity found for the id
    */
   findById?<IdType>(
@@ -79,9 +79,9 @@ export interface CrudConnector extends Connector {
 
   /**
    * Update an entity
-   * @param modelClass The model class
-   * @param entity The entity instance or data
-   * @param options Options for the operation
+   * @param modelClass - The model class
+   * @param entity - The entity instance or data
+   * @param options - Options for the operation
    * @returns Promise<true> if an entity is updated, otherwise
    * Promise<false>
    */
@@ -93,9 +93,9 @@ export interface CrudConnector extends Connector {
 
   /**
    * Delete an entity
-   * @param modelClass The model class
-   * @param entity The entity instance or data
-   * @param options Options for the operation
+   * @param modelClass - The model class
+   * @param entity - The entity instance or data
+   * @param options - Options for the operation
    * @returns Promise<true> if an entity is deleted, otherwise
    * Promise<false>
    */
@@ -107,10 +107,10 @@ export interface CrudConnector extends Connector {
 
   /**
    * Update matching entities
-   * @param modelClass The model class
-   * @param data The data attributes to be updated
-   * @param where The matching criteria
-   * @param options Options for the operation
+   * @param modelClass - The model class
+   * @param data - The data attributes to be updated
+   * @param where - The matching criteria
+   * @param options - Options for the operation
    * @returns A promise of number of matching entities deleted
    */
   updateAll(
@@ -122,10 +122,10 @@ export interface CrudConnector extends Connector {
 
   /**
    * Update an entity by id
-   * @param modelClass The model class
-   * @param id The entity id value
-   * @param data The data attributes to be updated
-   * @param options Options for the operation
+   * @param modelClass - The model class
+   * @param id - The entity id value
+   * @param data - The data attributes to be updated
+   * @param options - Options for the operation
    * @returns Promise<true> if an entity is updated for the id, otherwise
    * Promise<false>
    */
@@ -138,10 +138,10 @@ export interface CrudConnector extends Connector {
 
   /**
    * Replace an entity by id
-   * @param modelClass The model class
-   * @param id The entity id value
-   * @param data The data attributes to be updated
-   * @param options Options for the operation
+   * @param modelClass - The model class
+   * @param id - The entity id value
+   * @param data - The data attributes to be updated
+   * @param options - Options for the operation
    * @returns Promise<true> if an entity is replaced for the id, otherwise
    * Promise<false>
    */
@@ -154,9 +154,9 @@ export interface CrudConnector extends Connector {
 
   /**
    * Delete matching entities
-   * @param modelClass The model class
-   * @param where The matching criteria
-   * @param options Options for the operation
+   * @param modelClass - The model class
+   * @param where - The matching criteria
+   * @param options - Options for the operation
    * @returns A promise of number of matching entities deleted
    */
   deleteAll(
@@ -167,9 +167,9 @@ export interface CrudConnector extends Connector {
 
   /**
    * Delete an entity by id
-   * @param modelClass The model class
-   * @param id The entity id value
-   * @param options Options for the operation
+   * @param modelClass - The model class
+   * @param id - The entity id value
+   * @param options - Options for the operation
    * @returns Promise<true> if an entity is deleted for the id, otherwise
    * Promise<false>
    */
@@ -181,9 +181,9 @@ export interface CrudConnector extends Connector {
 
   /**
    * Count matching entities
-   * @param modelClass The model class
-   * @param where The matching criteria
-   * @param options Options for the operation
+   * @param modelClass - The model class
+   * @param where - The matching criteria
+   * @param options - Options for the operation
    * @returns A promise of number of matching entities
    */
   count(
@@ -194,9 +194,9 @@ export interface CrudConnector extends Connector {
 
   /**
    * Check if an entity exists for the id
-   * @param modelClass The model class
-   * @param id The entity id value
-   * @param options Options for the operation
+   * @param modelClass - The model class
+   * @param id - The entity id value
+   * @param options - Options for the operation
    * @returns Promise<true> if an entity exists for the id, otherwise
    * Promise<false>
    */

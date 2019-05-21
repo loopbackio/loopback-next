@@ -7,7 +7,7 @@ import {SchemaObject, ReferenceObject} from './openapi-v3-spec-types';
 
 /**
  * Type guard for OpenAPI 3.0.0 schema object
- * @param schema An OpenAPI 3.0.0 schema object
+ * @param schema - An OpenAPI 3.0.0 schema object
  */
 
 export function isSchemaObject(

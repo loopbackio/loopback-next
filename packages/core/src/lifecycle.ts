@@ -30,7 +30,7 @@ const lifeCycleMethods: (keyof LifeCycleObserver)[] = ['start', 'stop'];
 
 /**
  * Test if an object implements LifeCycleObserver
- * @param obj An object
+ * @param obj - An object
  */
 export function isLifeCycleObserver(obj: {
   [name: string]: unknown;
@@ -40,7 +40,7 @@ export function isLifeCycleObserver(obj: {
 
 /**
  * Test if a class implements LifeCycleObserver
- * @param ctor A class
+ * @param ctor - A class
  */
 export function isLifeCycleObserverClass(
   ctor: Constructor<unknown>,
@@ -52,7 +52,7 @@ export function isLifeCycleObserverClass(
  * A `BindingTemplate` function to configure the binding as life cycle observer
  * by tagging it with `CoreTags.LIFE_CYCLE_OBSERVER`.
  *
- * @param binding Binding object
+ * @param binding - Binding object
  */
 export function asLifeCycleObserver<T = unknown>(binding: Binding<T>) {
   return binding.tag(CoreTags.LIFE_CYCLE_OBSERVER);
@@ -68,8 +68,8 @@ export function lifeCycleObserverFilter(binding: Readonly<Binding>): boolean {
 
 /**
  * Sugar decorator to mark a class as life cycle observer
- * @param group Optional observer group name
- * @param specs Optional bindings specs
+ * @param group - Optional observer group name
+ * @param specs - Optional bindings specs
  */
 export function lifeCycleObserver(group = '', ...specs: BindingSpec[]) {
   return bind(

@@ -53,11 +53,11 @@ type ClassOrPrototype = any;
 export class InvocationContext extends Context {
   /**
    * Construct a new instance of `InvocationContext`
-   * @param parent Parent context, such as the RequestContext
-   * @param target Target class (for static methods) or prototype/object
+   * @param parent - Parent context, such as the RequestContext
+   * @param target - Target class (for static methods) or prototype/object
    * (for instance methods)
-   * @param methodName Method name
-   * @param args An array of arguments
+   * @param methodName - Method name
+   * @param args - An array of arguments
    */
   constructor(
     parent: Context,
@@ -82,7 +82,7 @@ export class InvocationContext extends Context {
 
   /**
    * Sort global interceptor bindings by `globalInterceptorGroup` tags
-   * @param bindings An array of global interceptor bindings
+   * @param bindings - An array of global interceptor bindings
    */
   private sortGlobalInterceptorBindings(
     bindings: Readonly<Binding<Interceptor>>[],
@@ -155,7 +155,7 @@ export class InvocationContext extends Context {
 
   /**
    * Assert the method exists on the target. An error will be thrown if otherwise.
-   * @param context Invocation context
+   * @param context - Invocation context
    */
   assertMethodExists() {
     const targetWithMethods = this.target as Record<string, Function>;
@@ -168,7 +168,7 @@ export class InvocationContext extends Context {
 
   /**
    * Invoke the target method with the given context
-   * @param context Invocation context
+   * @param context - Invocation context
    */
   invokeTargetMethod() {
     const targetWithMethods = this.assertMethodExists();
@@ -197,7 +197,7 @@ export class InvocationContext extends Context {
 /**
  * The `BindingTemplate` function to configure a binding as a global interceptor
  * by tagging it with `ContextTags.INTERCEPTOR`
- * @param binding Binding object
+ * @param binding - Binding object
  */
 export function asGlobalInterceptor(group?: string): BindingTemplate {
   return binding => {
@@ -211,8 +211,8 @@ export function asGlobalInterceptor(group?: string): BindingTemplate {
  */
 export interface Interceptor {
   /**
-   * @param context Invocation context
-   * @param next A function to invoke next interceptor or the target method
+   * @param context - Invocation context
+   * @param next - A function to invoke next interceptor or the target method
    * @returns A result as value or promise
    */
   (
@@ -247,8 +247,8 @@ export const INTERCEPT_METHOD_KEY = MetadataAccessor.create<
  * - [cache, log] + [] => [cache, log]
  * - [log] + [cache] => [log, cache]
  *
- * @param interceptorsFromSpec Interceptors from `@intercept`
- * @param existingInterceptors Interceptors already applied for the method
+ * @param interceptorsFromSpec - Interceptors from `@intercept`
+ * @param existingInterceptors - Interceptors already applied for the method
  */
 export function mergeInterceptors(
   interceptorsFromSpec: InterceptorOrKey[],
@@ -331,7 +331,7 @@ class InterceptMethodDecoratorFactory extends MethodDecoratorFactory<
  * }
  * ```
  *
- * @param interceptorOrKeys One or more interceptors or binding keys that are
+ * @param interceptorOrKeys - One or more interceptors or binding keys that are
  * resolved to be interceptors
  */
 export function intercept(...interceptorOrKeys: InterceptorOrKey[]) {
@@ -367,10 +367,10 @@ export function intercept(...interceptorOrKeys: InterceptorOrKey[]) {
 
 /**
  * Invoke a method with the given context
- * @param context Context object
- * @param target Target class (for static methods) or object (for instance methods)
- * @param methodName Method name
- * @param args An array of argument values
+ * @param context - Context object
+ * @param target - Target class (for static methods) or object (for instance methods)
+ * @param methodName - Method name
+ * @param args - An array of argument values
  */
 export function invokeMethodWithInterceptors(
   context: Context,
@@ -397,8 +397,8 @@ export function invokeMethodWithInterceptors(
 
 /**
  * Invoke the interceptor chain
- * @param context Context object
- * @param interceptors An array of interceptors
+ * @param context - Context object
+ * @param interceptors - An array of interceptors
  */
 function invokeInterceptors(
   context: InvocationContext,
@@ -442,7 +442,7 @@ function invokeInterceptors(
   /**
    * Return the interceptor function or resolve the interceptor function as a
    * binding from the context
-   * @param interceptor Interceptor function or binding key
+   * @param interceptor - Interceptor function or binding key
    */
   function loadInterceptor(interceptor: InterceptorOrKey) {
     if (typeof interceptor === 'function') return interceptor;

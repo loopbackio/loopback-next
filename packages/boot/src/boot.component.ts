@@ -35,7 +35,7 @@ export class BootComponent implements Component {
 
   /**
    *
-   * @param app Application instance
+   * @param app - Application instance
    */
   constructor(@inject(CoreBindings.APPLICATION_INSTANCE) app: Application) {
     // Bound as a SINGLETON so it can be cached as it has no state

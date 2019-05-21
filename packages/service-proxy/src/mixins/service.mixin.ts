@@ -41,7 +41,7 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
     /**
      * Add a service to this application.
      *
-     * @param provider The service provider to register.
+     * @param provider - The service provider to register.
      *
      * @example
      * ```ts
@@ -81,7 +81,7 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
      * Add a component to this application. Also mounts
      * all the components services.
      *
-     * @param component The component to add.
+     * @param component - The component to add.
      *
      * @example
      * ```ts
@@ -108,7 +108,7 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
      * services. This function is intended to be used internally
      * by component()
      *
-     * @param component The component to mount services of
+     * @param component - The component to mount services of
      */
     mountComponentServices(component: Class<unknown>) {
       const componentKey = `components.${component.name}`;
@@ -151,7 +151,7 @@ export class ServiceMixinDoc {
   /**
    * Add a service to this application.
    *
-   * @param provider The service provider to register.
+   * @param provider - The service provider to register.
    *
    * @example
    * ```ts
@@ -181,7 +181,7 @@ export class ServiceMixinDoc {
    * Add a component to this application. Also mounts
    * all the components services.
    *
-   * @param component The component to add.
+   * @param component - The component to add.
    *
    * @example
    * ```ts
@@ -207,7 +207,7 @@ export class ServiceMixinDoc {
    * services. This function is intended to be used internally
    * by component()
    *
-   * @param component The component to mount services of
+   * @param component - The component to mount services of
    */
   mountComponentServices(component: Class<unknown>) {}
 }

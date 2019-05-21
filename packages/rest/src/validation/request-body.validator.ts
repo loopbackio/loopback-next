@@ -25,9 +25,9 @@ export type RequestBodyValidationOptions = AJV.Options;
  * The JSON schema is generated from the OpenAPI schema which is typically defined
  * by `@requestBody()`.
  * The validation leverages AJV schema validator.
- * @param body The request body parsed from an HTTP request.
- * @param requestBodySpec The OpenAPI requestBody specification defined in `@requestBody()`.
- * @param globalSchemas The referenced schemas generated from `OpenAPISpec.components.schemas`.
+ * @param body - The request body parsed from an HTTP request.
+ * @param requestBodySpec - The OpenAPI requestBody specification defined in `@requestBody()`.
+ * @param globalSchemas - The referenced schemas generated from `OpenAPISpec.components.schemas`.
  */
 export function validateRequestBody(
   body: RequestBody,
@@ -61,7 +61,7 @@ export function validateRequestBody(
 
 /**
  * Convert an OpenAPI schema to the corresponding JSON schema.
- * @param openapiSchema The OpenAPI schema to convert.
+ * @param openapiSchema - The OpenAPI schema to convert.
  */
 function convertToJsonSchema(openapiSchema: SchemaObject) {
   const jsonSchema = toJsonSchema(openapiSchema);
@@ -78,9 +78,9 @@ function convertToJsonSchema(openapiSchema: SchemaObject) {
 
 /**
  * Validate the request body data against JSON schema.
- * @param body The request body data.
- * @param schema The JSON schema used to perform the validation.
- * @param globalSchemas Schema references.
+ * @param body - The request body data.
+ * @param schema - The JSON schema used to perform the validation.
+ * @param globalSchemas - Schema references.
  */
 
 const compiledSchemaCache = new WeakMap();

@@ -18,7 +18,7 @@ import {jsonToSchemaObject} from './json-to-schema';
  * Note we don't take the model properties into account yet and return
  * a generic json schema allowing any "where" condition.
  *
- * @param modelCtor The model constructor to build the filter schema for.
+ * @param modelCtor - The model constructor to build the filter schema for.
  */
 export function getFilterSchemaFor(modelCtor: typeof Model): SchemaObject {
   const jsonSchema = getFilterJsonSchemaFor(modelCtor);
@@ -33,7 +33,7 @@ export function getFilterSchemaFor(modelCtor: typeof Model): SchemaObject {
  * Note we don't take the model properties into account yet and return
  * a generic json schema allowing any "where" condition.
  *
- * @param modelCtor The model constructor to build the filter schema for.
+ * @param modelCtor - The model constructor to build the filter schema for.
  */
 export function getWhereSchemaFor(modelCtor: typeof Model): SchemaObject {
   const jsonSchema = getWhereJsonSchemaFor(modelCtor);

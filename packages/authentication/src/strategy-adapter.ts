@@ -25,7 +25,7 @@ const passportRequestMixin = require('passport/lib/http/request');
  */
 export class StrategyAdapter {
   /**
-   * @param strategy instance of a class which implements a passport-strategy;
+   * @param strategy - instance of a class which implements a passport-strategy;
    * @description http://passportjs.org/
    */
   constructor(private readonly strategy: Strategy) {}
@@ -35,7 +35,7 @@ export class StrategyAdapter {
    *     1. Create an instance of the strategy
    *     2. add success and failure state handlers
    *     3. authenticate using the strategy
-   * @param request The incoming request.
+   * @param request - The incoming request.
    */
   authenticate(request: Request): Promise<UserProfile> {
     return new Promise<UserProfile>((resolve, reject) => {

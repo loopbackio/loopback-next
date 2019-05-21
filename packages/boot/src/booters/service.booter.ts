@@ -18,9 +18,9 @@ type ServiceProviderClass = Constructor<Provider<object>>;
  *
  * Supported phases: configure, discover, load
  *
- * @param app Application instance
- * @param projectRoot Root of User Project relative to which all paths are resolved
- * @param [bootConfig] Service Artifact Options Object
+ * @param app - Application instance
+ * @param projectRoot - Root of User Project relative to which all paths are resolved
+ * @param bootConfig - Service Artifact Options Object
  */
 export class ServiceBooter extends BaseArtifactBooter {
   serviceProviders: ServiceProviderClass[];

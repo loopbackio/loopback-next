@@ -33,7 +33,7 @@ import {CoreTags} from './keys';
  * }
  * ```
  *
- * @param name Name of the extension point
+ * @param name - Name of the extension point
  */
 export function extensionPoint(name: string, ...specs: BindingSpec[]) {
   return bind({tags: {[CoreTags.EXTENSION_POINT]: name}}, ...specs);
@@ -58,7 +58,7 @@ export function extensionPoint(name: string, ...specs: BindingSpec[]) {
  * }
  * ```
  *
- * @param extensionPointName Name of the extension point. If not supplied, we
+ * @param extensionPointName - Name of the extension point. If not supplied, we
  * use the `name` tag from the extension point binding or the class name of the
  * extension point class. If a class needs to inject extensions from multiple
  * extension points, use different `extensionPointName` for different types of
@@ -82,8 +82,8 @@ export function extensions(extensionPointName?: string) {
 
 /**
  * Infer the extension point name from binding tags/class name
- * @param injectionTarget Target class or prototype
- * @param currentBinding Current binding
+ * @param injectionTarget - Target class or prototype
+ * @param currentBinding - Current binding
  */
 function inferExtensionPointName(
   injectionTarget: object,
@@ -111,7 +111,7 @@ function inferExtensionPointName(
 /**
  * A factory function to create binding filter for extensions of a named
  * extension point
- * @param extensionPointName Name of the extension point
+ * @param extensionPointName - Name of the extension point
  */
 export function extensionFilter(extensionPointName: string) {
   return filterByTag({
@@ -122,7 +122,7 @@ export function extensionFilter(extensionPointName: string) {
 /**
  * A factory function to create binding template for extensions of the given
  * extension point
- * @param extensionPointName Name of the extension point
+ * @param extensionPointName - Name of the extension point
  */
 export function extensionFor(extensionPointName: string): BindingTemplate {
   return binding => binding.tag({[CoreTags.EXTENSION_FOR]: extensionPointName});
@@ -130,10 +130,10 @@ export function extensionFor(extensionPointName: string): BindingTemplate {
 
 /**
  * Register an extension for the given extension point to the context
- * @param context Context object
- * @param extensionPointName Name of the extension point
- * @param extensionClass Class or a provider for an extension
- * @param options Options Options for the creation of binding from class
+ * @param context - Context object
+ * @param extensionPointName - Name of the extension point
+ * @param extensionClass - Class or a provider for an extension
+ * @param options - Options Options for the creation of binding from class
  */
 export function addExtension(
   context: Context,

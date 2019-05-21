@@ -49,10 +49,10 @@ export class RepositoryMetadata {
   /**
    * Constructor for RepositoryMetadata
    *
-   * @param modelOrRepo Name or class of the model. If the value is a string and
+   * @param modelOrRepo - Name or class of the model. If the value is a string and
    * `dataSource` is not present, it will treated as the name of a predefined
    * repository
-   * @param dataSource Name or instance of the data source
+   * @param dataSource - Name or instance of the data source
    *
    * For example:
    *
@@ -97,7 +97,7 @@ export class RepositoryMetadata {
  * }
  * ```
  *
- * @param repositoryName Name of the repo
+ * @param repositoryName - Name of the repo
  */
 export function repository(
   repositoryName: string | Class<Repository<Model>>,
@@ -127,8 +127,8 @@ export function repository(
  * }
  * ```
  *
- * @param model Name/class of the model
- * @param dataSource Name/instance of the dataSource
+ * @param model - Name/class of the model
+ * @param dataSource - Name/instance of the dataSource
  */
 export function repository(
   model: string | typeof Entity,
@@ -179,7 +179,7 @@ export namespace repository {
    * Decorator used to inject a Getter for a repository
    * Mainly intended for usage with repository injections on relation repository
    * factory
-   * @param nameOrClass The repository class (ProductRepository) or a string name ('ProductRepository').
+   * @param nameOrClass - The repository class (ProductRepository) or a string name ('ProductRepository').
    */
   export function getter(nameOrClass: string | Class<Repository<Model>>) {
     const name =
@@ -190,8 +190,8 @@ export namespace repository {
 
 /**
  * Resolve the @repository injection
- * @param ctx Context
- * @param injection Injection metadata
+ * @param ctx - Context
+ * @param injection - Injection metadata
  */
 async function resolve(ctx: Context, injection: Injection) {
   const meta = injection.metadata as RepositoryMetadata;

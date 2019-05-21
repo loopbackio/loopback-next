@@ -15,9 +15,9 @@ import {BootBindings} from '../keys';
  *
  * Supported phases: configure, discover, load
  *
- * @param app Application instance
- * @param projectRoot Root of User Project relative to which all paths are resolved
- * @param [bootConfig] Controller Artifact Options Object
+ * @param app - Application instance
+ * @param projectRoot - Root of User Project relative to which all paths are resolved
+ * @param bootConfig - Controller Artifact Options Object
  */
 export class ControllerBooter extends BaseArtifactBooter {
   constructor(

@@ -34,7 +34,7 @@ export class DefaultKeyValueRepository<T extends Entity>
 
   /**
    * Construct a KeyValueRepository with a legacy DataSource
-   * @param ds Legacy DataSource
+   * @param ds - Legacy DataSource
    */
   constructor(
     private entityClass: typeof Entity & {prototype: T},

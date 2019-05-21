@@ -27,7 +27,7 @@ export class MetadataAccessor<T, D extends DecoratorType = DecoratorType> {
 
   /**
    * Create a strongly-typed metadata accessor
-   * @param key The metadata key
+   * @param key - The metadata key
    * @typeparam T Type of the metadata value
    * @typeparam D Type of the decorator
    */

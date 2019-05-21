@@ -131,7 +131,7 @@ export class RequestBodyParser {
 
   /**
    * Find a body parser that supports the media type
-   * @param matchedMediaType Media type
+   * @param matchedMediaType - Media type
    */
   private _findParser(matchedMediaType: string) {
     for (const parser of this.parsers) {
@@ -150,8 +150,8 @@ export class RequestBodyParser {
 
   /**
    * Resolve and invoke a custom parser
-   * @param customParser The parser name, class or function
-   * @param request Http request
+   * @param customParser - The parser name, class or function
+   * @param request - Http request
    */
   private async _invokeCustomParser(
     customParser: string | Constructor<BodyParser> | BodyParserFunction,

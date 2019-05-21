@@ -32,7 +32,7 @@ import * as GEO_CODER_CONFIG from '../datasources/geocoder.datasource.json';
 
 /**
  * Generate a complete Todo object for use with tests.
- * @param todo A partial (or complete) Todo object.
+ * @param todo - A partial (or complete) Todo object.
  */
 export function givenTodo(todo?: Partial<Todo>) {
   const data = Object.assign(
