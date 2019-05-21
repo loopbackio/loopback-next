@@ -52,6 +52,12 @@ export class Note extends Entity {
   @property()
   content: string;
 }
+
+export interface NoteRelations {
+  // describe navigational properties here
+}
+
+export type NoteWithRelations = Note & NoteRelations;
 ```
 
 **NOTE**: There is no declarative support for data source and model yet in
@@ -66,12 +72,13 @@ dependency injection to resolve the datasource.
 ```ts
 // src/repositories/note.repository.ts
 import {DefaultCrudRepository, DataSourceType} from '@loopback/repository';
-import {Note} from '../models';
+import {Note, NoteRelations} from '../models';
 import {inject} from '@loopback/core';
 
 export class NoteRepository extends DefaultCrudRepository<
   Note,
-  typeof Note.prototype.id
+  typeof Note.prototype.id,
+  NoteRelations
 > {
   constructor(@inject('datasources.db') protected dataSource: DataSourceType) {
     super(Note, dataSource);

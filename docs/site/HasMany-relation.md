@@ -131,6 +131,12 @@ export class Order extends Entity {
     super(data);
   }
 }
+
+export interface OrderRelations {
+  // describe navigational properties here
+}
+
+export type OrderWithRelations = Order & OrderRelations;
 ```
 
 The foreign key property (`customerId`) in the target model can be added via a
@@ -140,7 +146,7 @@ corresponding [belongsTo](BelongsTo-relation.md) relation, too.
 
 ```ts
 import {Entity, model, property, belongsTo} from '@loopback/repository';
-import {Customer} from './customer.model';
+import {Customer, CustomerWithRelations} from './customer.model';
 
 @model()
 export class Order extends Entity {
@@ -164,6 +170,12 @@ export class Order extends Entity {
     super(data);
   }
 }
+
+export interface OrderRelations {
+  customer?: CustomerWithRelations;
+}
+
+export type OrderWithRelations = Order & OrderRelations;
 ```
 
 ## Configuring a hasMany relation
@@ -195,7 +207,7 @@ The following code snippet shows how it would look like:
 content="/src/repositories/customer.repository.ts" %}
 
 ```ts
-import {Order, Customer} from '../models';
+import {Order, Customer, CustomerRelations} from '../models';
 import {OrderRepository} from './order.repository';
 import {
   DefaultCrudRepository,
@@ -207,7 +219,8 @@ import {inject, Getter} from '@loopback/core';
 
 export class CustomerRepository extends DefaultCrudRepository<
   Customer,
-  typeof Customer.prototype.id
+  typeof Customer.prototype.id,
+  CustomerRelations
 > {
   public readonly orders: HasManyRepositoryFactory<
     Order,

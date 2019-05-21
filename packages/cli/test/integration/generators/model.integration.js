@@ -201,6 +201,34 @@ describe('lb4 model integration', () => {
       assert.fileContent(expectedModelFile, /\[prop: string\]: any;/);
     });
 
+    it('scaffolds empty model relation interface and relation type', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () => testUtils.givenLBProject(SANDBOX_PATH))
+        .withPrompts({
+          name: 'test',
+          propName: null,
+          modelBaseClass: 'Entity',
+          allowAdditionalProperties: false,
+        });
+
+      assert.file(expectedModelFile);
+      assert.file(expectedIndexFile);
+
+      assert.fileContent(
+        expectedModelFile,
+        /import {Entity, model, property} from '@loopback\/repository';/,
+      );
+      assert.fileContent(
+        expectedModelFile,
+        /export type TestWithRelations = Test & TestRelations;/,
+      );
+      assert.fileContent(
+        expectedModelFile,
+        /export interface TestRelations {\n  \/\/ describe navigational properties here\n}/,
+      );
+    });
+
     it('scaffolds correct files with args', async () => {
       await testUtils
         .executeGenerator(generator)

@@ -33,3 +33,9 @@ export class <%= className %> extends <%= modelBaseClass %> {
     super(data);
   }
 }
+
+export interface <%= className %>Relations {
+  // describe navigational properties here
+}
+
+export type <%= className %>WithRelations = <%= className %> & <%= className %>Relations;

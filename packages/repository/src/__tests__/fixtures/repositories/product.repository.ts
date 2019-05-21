@@ -4,12 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {DefaultCrudRepository, juggler} from '../../..';
-import {Product} from '../models/product.model';
+import {Product, ProductRelations} from '../models/product.model';
 export {Product};
 
 export class ProductRepository extends DefaultCrudRepository<
   Product,
-  typeof Product.prototype.id
+  typeof Product.prototype.id,
+  ProductRelations
 > {
   constructor(dataSource: juggler.DataSource) {
     super(Product, dataSource);

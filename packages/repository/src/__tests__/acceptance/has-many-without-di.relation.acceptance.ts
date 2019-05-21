@@ -8,12 +8,12 @@ import {
   DefaultCrudRepository,
   Entity,
   EntityCrudRepository,
+  Getter,
   hasMany,
   HasManyRepositoryFactory,
   juggler,
   model,
   property,
-  Getter,
 } from '../..';
 
 describe('HasMany relation', () => {

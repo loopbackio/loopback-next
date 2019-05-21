@@ -76,7 +76,7 @@ model. Add the following import statements and property to the `TodoList` model:
 
 ```ts
 import {hasMany} from '@loopback/repository';
-import {Todo} from './todo.model';
+import {Todo, TodoWithRelations} from './todo.model';
 
 @model()
 export class TodoList extends Entity {
@@ -87,6 +87,12 @@ export class TodoList extends Entity {
 
   // ...constructor def...
 }
+
+export interface TodoListRelations {
+  todos?: TodoWithRelations[];
+}
+
+export type TodoListWithRelations = TodoList & TodoListRelations;
 ```
 
 The `@hasMany()` decorator defines this property. As the decorator's name
@@ -108,6 +114,12 @@ export class Todo extends Entity {
 
   // ...constructor def...
 }
+
+export interface TodoRelations {
+  todoList?: TodoListWithRelations;
+}
+
+export type TodoWithRelations = Todo & TodoRelations;
 ```
 
 Once the models have been completely configured, it's time to move on to adding
