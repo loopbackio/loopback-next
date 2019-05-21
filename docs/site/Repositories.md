@@ -162,13 +162,14 @@ TypeScript version:
 
 ```ts
 import {DefaultCrudRepository, juggler} from '@loopback/repository';
-import {Account} from '../models';
+import {Account, AccountRelations} from '../models';
 import {DbDataSource} from '../datasources';
 import {inject} from '@loopback/context';
 
 export class AccountRepository extends DefaultCrudRepository<
   Account,
-  typeof Account.prototype.id
+  typeof Account.prototype.id,
+  AccountRelations
 > {
   constructor(@inject('datasources.db') dataSource: DbDataSource) {
     super(Account, dataSource);

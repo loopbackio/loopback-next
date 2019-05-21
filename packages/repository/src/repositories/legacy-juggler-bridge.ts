@@ -88,8 +88,11 @@ export function ensurePromise<T>(p: legacy.PromiseOrVoid<T>): Promise<T> {
  * Default implementation of CRUD repository using legacy juggler model
  * and data source
  */
-export class DefaultCrudRepository<T extends Entity, ID>
-  implements EntityCrudRepository<T, ID> {
+export class DefaultCrudRepository<
+  T extends Entity,
+  ID,
+  Relations extends object = {}
+> implements EntityCrudRepository<T, ID, Relations> {
   modelClass: juggler.PersistedModelClass;
 
   /**
@@ -207,7 +210,8 @@ export class DefaultCrudRepository<T extends Entity, ID>
    * ```ts
    * class CustomerRepository extends DefaultCrudRepository<
    *   Customer,
-   *   typeof Customer.prototype.id
+   *   typeof Customer.prototype.id,
+   *   CustomerRelations
    * > {
    *   public readonly orders: HasManyRepositoryFactory<Order, typeof Customer.prototype.id>;
    *
@@ -340,7 +344,10 @@ export class DefaultCrudRepository<T extends Entity, ID>
     }
   }
 
-  async find(filter?: Filter<T>, options?: Options): Promise<T[]> {
+  async find(
+    filter?: Filter<T>,
+    options?: Options,
+  ): Promise<(T & Relations)[]> {
     const models = await ensurePromise(
       this.modelClass.find(filter as legacy.Filter, options),
     );
@@ -355,14 +362,18 @@ export class DefaultCrudRepository<T extends Entity, ID>
     return this.toEntity(model);
   }
 
-  async findById(id: ID, filter?: Filter<T>, options?: Options): Promise<T> {
+  async findById(
+    id: ID,
+    filter?: Filter<T>,
+    options?: Options,
+  ): Promise<T & Relations> {
     const model = await ensurePromise(
       this.modelClass.findById(id, filter as legacy.Filter, options),
     );
     if (!model) {
       throw new EntityNotFoundError(this.entityClass, id);
     }
-    return this.toEntity(model);
+    return this.toEntity<T & Relations>(model);
   }
 
   update(entity: T, options?: Options): Promise<void> {
@@ -445,11 +456,11 @@ export class DefaultCrudRepository<T extends Entity, ID>
     return ensurePromise(this.dataSource.execute(command, parameters, options));
   }
 
-  protected toEntity(model: juggler.PersistedModel): T {
-    return new this.entityClass(model.toObject()) as T;
+  protected toEntity<R extends T>(model: juggler.PersistedModel): R {
+    return new this.entityClass(model.toObject()) as R;
   }
 
-  protected toEntities(models: juggler.PersistedModel[]): T[] {
-    return models.map(m => this.toEntity(m));
+  protected toEntities<R extends T>(models: juggler.PersistedModel[]): R[] {
+    return models.map(m => this.toEntity<R>(m));
   }
 }

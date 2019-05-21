@@ -28,3 +28,9 @@ export class Note extends Entity {
     super(data);
   }
 }
+
+export interface NoteRelations {
+  // describe navigational properties here
+}
+
+export type NoteWithRelations = Note & NoteRelations;

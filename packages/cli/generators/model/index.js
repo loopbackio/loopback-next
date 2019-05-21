@@ -71,7 +71,6 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
 
     this.artifactInfo.properties = {};
     this.artifactInfo.modelSettings = {};
-    this.propCounter = 0;
 
     this.artifactInfo.modelDir = path.resolve(
       this.artifactInfo.rootDir,

@@ -282,6 +282,7 @@ describe('lb4 repository', function() {
         /export class DefaultModelRepository extends DefaultCrudRepository\</,
       );
       assert.fileContent(expectedFile, /typeof DefaultModel.prototype.id/);
+      assert.fileContent(expectedFile, /DefaultModelRelations/);
       assert.file(INDEX_FILE);
       assert.fileContent(
         INDEX_FILE,

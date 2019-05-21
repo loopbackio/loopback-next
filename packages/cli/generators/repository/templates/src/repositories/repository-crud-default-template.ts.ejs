@@ -1,7 +1,7 @@
 <%if (isRepositoryBaseBuiltin) {  -%>
 import {<%= repositoryTypeClass %>} from '@loopback/repository';
 <% } -%>
-import {<%= modelName %>} from '../models';
+import {<%= modelName %>, <%= modelName %>Relations} from '../models';
 import {<%= dataSourceClassName %>} from '../datasources';
 import {inject} from '@loopback/core';
 <%if ( !isRepositoryBaseBuiltin ) { -%>
@@ -10,7 +10,8 @@ import {<%=repositoryBaseClass %>} from './<%=repositoryBaseFile %>';
 
 export class <%= className %>Repository extends <%= repositoryBaseClass %><
   <%= modelName %>,
-  typeof <%= modelName %>.prototype.<%= idProperty %>
+  typeof <%= modelName %>.prototype.<%= idProperty %>,
+  <%= modelName %>Relations
 > {
   constructor(
     @inject('datasources.<%= dataSourceName %>') dataSource: <%= dataSourceClassName %>,

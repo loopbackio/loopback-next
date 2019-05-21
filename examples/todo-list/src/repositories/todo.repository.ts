@@ -10,12 +10,13 @@ import {
   juggler,
   repository,
 } from '@loopback/repository';
-import {Todo, TodoList} from '../models';
+import {Todo, TodoList, TodoRelations} from '../models';
 import {TodoListRepository} from './todo-list.repository';
 
 export class TodoRepository extends DefaultCrudRepository<
   Todo,
-  typeof Todo.prototype.id
+  typeof Todo.prototype.id,
+  TodoRelations
 > {
   public readonly todoList: BelongsToAccessor<
     TodoList,

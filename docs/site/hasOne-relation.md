@@ -57,7 +57,7 @@ defined on a source model `Supplier` in the example below:
 {% include code-caption.html content="/src/models/supplier.model.ts" %}
 
 ```ts
-import {Account} from './account.model';
+import {Account, AccountWithRelations} from './account.model';
 import {Entity, property, hasOne} from '@loopback/repository';
 
 export class Supplier extends Entity {
@@ -80,13 +80,19 @@ export class Supplier extends Entity {
     super(data);
   }
 }
+
+export interface SupplierRelations {
+  account?: AccountWithRelations;
+}
+
+export type SupplierWithRelations = Supplier & SupplierRelations;
 ```
 
 On the other side of the relation, we'd need to declare a `belongsTo` relation
 since every `Account` has to belong to exactly one `Supplier`:
 
 ```ts
-import {Supplier} from './supplier.model';
+import {Supplier, SupplierWithRelations} from './supplier.model';
 import {Entity, property, belongsTo} from '@loopback/repository';
 
 export class Account extends Entity {
@@ -108,6 +114,12 @@ export class Account extends Entity {
     super(data);
   }
 }
+
+export interface AccountRelations {
+  supplier?: SupplierWithRelations;
+}
+
+export type AccountWithRelations = Account & AccountRelations;
 ```
 
 The definition of the `hasOne` relation is inferred by using the `@hasOne`
@@ -190,7 +202,7 @@ The following code snippet shows how it would look like:
 content="/src/repositories/supplier.repository.ts" %}
 
 ```ts
-import {Account, Supplier} from '../models';
+import {Account, Supplier, SupplierRelations} from '../models';
 import {AccountRepository} from './account.repository';
 import {
   DefaultCrudRepository,
@@ -202,7 +214,8 @@ import {inject, Getter} from '@loopback/core';
 
 export class SupplierRepository extends DefaultCrudRepository<
   Supplier,
-  typeof Supplier.prototype.id
+  typeof Supplier.prototype.id,
+  SupplierRelations
 > {
   public readonly account: HasOneRepositoryFactory<
     Account,

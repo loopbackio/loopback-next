@@ -10,12 +10,13 @@ import {
   juggler,
   repository,
 } from '../../..';
-import {Customer, Address} from '../models';
+import {Address, AddressRelations, Customer} from '../models';
 import {CustomerRepository} from '../repositories';
 
 export class AddressRepository extends DefaultCrudRepository<
   Address,
-  typeof Address.prototype.zipcode
+  typeof Address.prototype.zipcode,
+  AddressRelations
 > {
   public readonly customer: BelongsToAccessor<
     Customer,

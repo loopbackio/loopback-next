@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {model, property, Entity} from '../../..';
+import {Entity, model, property} from '../../..';
 
 @model()
 export class Product extends Entity {
@@ -24,3 +24,9 @@ export class Product extends Entity {
     super(data);
   }
 }
+
+export interface ProductRelations {
+  // describe navigational properties here
+}
+
+export type ProductWithRelations = Product & ProductRelations;

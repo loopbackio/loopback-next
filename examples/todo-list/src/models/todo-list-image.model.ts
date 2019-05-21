@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, model, property, belongsTo} from '@loopback/repository';
-import {TodoList} from './todo-list.model';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
+import {TodoList, TodoListWithRelations} from './todo-list.model';
 
 @model()
 export class TodoListImage extends Entity {
@@ -29,3 +29,9 @@ export class TodoListImage extends Entity {
     super(data);
   }
 }
+
+export interface TodoListImageRelations {
+  todoList?: TodoListWithRelations;
+}
+
+export type TodoListImageWithRelations = TodoListImage & TodoListImageRelations;
