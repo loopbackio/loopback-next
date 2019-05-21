@@ -538,6 +538,21 @@ describe('Context', () => {
     });
   });
 
+  describe('getOwnerContext', () => {
+    it('returns owner context', () => {
+      ctx.bind('foo').to('bar');
+      expect(ctx.getOwnerContext('foo')).to.equal(ctx);
+    });
+
+    it('returns owner context with parent', () => {
+      ctx.bind('foo').to('bar');
+      const childCtx = new Context(ctx, 'child');
+      childCtx.bind('xyz').to('abc');
+      expect(childCtx.getOwnerContext('foo')).to.equal(ctx);
+      expect(childCtx.getOwnerContext('xyz')).to.equal(childCtx);
+    });
+  });
+
   describe('get', () => {
     it('returns a promise when the binding is async', async () => {
       ctx.bind('foo').toDynamicValue(() => Promise.resolve('bar'));
