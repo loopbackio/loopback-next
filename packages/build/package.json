@@ -23,7 +23,7 @@
     "glob": "^7.1.4",
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
-    "prettier": "^1.17.0",
+    "prettier": "^1.17.1",
     "rimraf": "^2.6.2",
     "source-map-support": "^0.5.12",
     "strong-docs": "^4.2.0",
