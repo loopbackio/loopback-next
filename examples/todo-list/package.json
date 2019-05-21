@@ -52,7 +52,7 @@
     "@loopback/http-caching-proxy": "^1.0.19",
     "@loopback/testlab": "^1.2.9",
     "@loopback/tslint-config": "^2.0.4",
-    "@types/lodash": "^4.14.124",
+    "@types/lodash": "^4.14.130",
     "@types/node": "^10.11.2",
     "lodash": "^4.17.10",
     "tslint": "^5.15.0",
