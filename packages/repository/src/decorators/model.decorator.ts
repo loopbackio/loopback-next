@@ -39,7 +39,7 @@ export type PropertyMap = MetadataMap<PropertyDefinition>;
 /**
  * Decorator for model definitions
  * @param definition
- * @returns {(target:any)}
+ * @returns A class decorator for `model`
  */
 export function model(definition?: Partial<ModelDefinitionSyntax>) {
   return function(target: Function & {definition?: ModelDefinition}) {
@@ -107,7 +107,7 @@ export function buildModelDefinition(
 /**
  * Decorator for model properties
  * @param definition
- * @returns {(target:any, key:string)}
+ * @returns A property decorator
  */
 export function property(definition?: Partial<PropertyDefinition>) {
   return PropertyDecoratorFactory.createDecorator(

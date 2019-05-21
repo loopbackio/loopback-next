@@ -53,7 +53,7 @@ export class Bootstrapper {
    *
    * @param execOptions - Execution options for boot. These
    * determine the phases and booters that are run.
-   * @param {Context} [ctx] Optional Context to use to resolve bindings. This is
+   * @param ctx - Optional Context to use to resolve bindings. This is
    * primarily useful when running app.boot() again but with different settings
    * (in particular phases) such as 'start' / 'stop'. Using a returned Context from
    * a previous boot call allows DI to retrieve the same instances of Booters previously

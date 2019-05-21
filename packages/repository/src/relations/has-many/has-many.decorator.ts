@@ -13,7 +13,7 @@ import {HasManyDefinition, RelationType} from '../relation.types';
  * name from target model name unless explicitly specified
  * @param targetResolver - Target model for hasMany relation
  * @param definition - Optional metadata for setting up hasMany relation
- * @returns {(target:any, key:string)}
+ * @returns A property decorator
  */
 export function hasMany<T extends Entity>(
   targetResolver: EntityResolver<T>,

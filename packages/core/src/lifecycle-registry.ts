@@ -220,8 +220,6 @@ export class LifeCycleObserverRegistry implements LifeCycleObserver {
 
   /**
    * Notify all life cycle observers by group of `start`
-   *
-   * @returns {Promise}
    */
   public async start(): Promise<void> {
     debug('Starting the %s...');
@@ -231,8 +229,6 @@ export class LifeCycleObserverRegistry implements LifeCycleObserver {
 
   /**
    * Notify all life cycle observers by group of `stop`
-   *
-   * @returns {Promise}
    */
   public async stop(): Promise<void> {
     debug('Stopping the %s...');

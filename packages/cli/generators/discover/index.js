@@ -183,7 +183,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
    *
    * this will discover every model
    * and put it in artifactInfo.modelDefinitions
-   * @return {Promise<void>}
+   * @returns {Promise<void>}
    */
   async getAllModelDefs() {
     this.artifactInfo.modelDefinitions = [];

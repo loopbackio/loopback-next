@@ -46,8 +46,8 @@ export class Application extends Context implements LifeCycleObserver {
    *
    * @param controllerCtor {Function} The controller class
    * (constructor function).
-   * @param {string=} name Optional controller name, default to the class name
-   * @return {Binding} The newly created binding, you can use the reference to
+   * @param name - Optional controller name, default to the class name
+   * @returns The newly created binding, you can use the reference to
    * further modify the binding, e.g. lock the value to prevent further
    * modifications.
    *
@@ -83,9 +83,9 @@ export class Application extends Context implements LifeCycleObserver {
    * // This server instance will be bound under "servers.v1API".
    * ```
    *
-   * @param {Constructor<Server>} server The server constructor.
-   * @param {string=} name Optional override for key name.
-   * @returns {Binding} Binding for the server class
+   * @param server - The server constructor.
+   * @param name - Optional override for key name.
+   * @returns Binding for the server class
    *
    */
   public server<T extends Server>(
@@ -121,8 +121,8 @@ export class Application extends Context implements LifeCycleObserver {
    * // "servers.GRPCServer";
    * ```
    *
-   * @param {Constructor<Server>[]} ctors An array of Server constructors.
-   * @returns {Binding[]} An array of bindings for the registered server classes
+   * @param ctors - An array of Server constructors.
+   * @returns An array of bindings for the registered server classes
    *
    */
   public servers<T extends Server>(ctors: Constructor<T>[]): Binding[] {
@@ -130,12 +130,12 @@ export class Application extends Context implements LifeCycleObserver {
   }
 
   /**
-   * Retrieve the singleton instance for a bound constructor.
+   * Retrieve the singleton instance for a bound server.
    *
    * @typeparam T
-   * @param {Constructor<T>=} ctor The constructor that was used to make the
+   * @param ctor - The constructor that was used to make the
    * binding.
-   * @returns {Promise<T>}
+   * @returns A Promise of server instance
    *
    */
   public async getServer<T extends Server>(
@@ -154,9 +154,6 @@ export class Application extends Context implements LifeCycleObserver {
 
   /**
    * Start the application, and all of its registered observers.
-   *
-   * @returns {Promise}
-   *
    */
   public async start(): Promise<void> {
     const registry = await this.getLifeCycleObserverRegistry();
@@ -165,8 +162,6 @@ export class Application extends Context implements LifeCycleObserver {
 
   /**
    * Stop the application instance and all of its registered observers.
-   * @returns {Promise}
-   *
    */
   public async stop(): Promise<void> {
     const registry = await this.getLifeCycleObserverRegistry();
@@ -182,7 +177,7 @@ export class Application extends Context implements LifeCycleObserver {
    * controllers, providers, and servers from the component.
    *
    * @param componentCtor - The component class to add.
-   * @param {string=} name Optional component name, default to the class name
+   * @param name - Optional component name, default to the class name
    *
    * @example
    * ```ts

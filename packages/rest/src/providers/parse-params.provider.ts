@@ -12,7 +12,7 @@ import {ParseParams, Request} from '../types';
 /**
  * Provides the function for parsing args in requests at runtime.
  *
- * @returns {ParseParams} The handler function that will parse request args.
+ * @returns The handler function that will parse request args.
  */
 export class ParseParamsProvider implements Provider<ParseParams> {
   constructor(
