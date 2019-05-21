@@ -30,7 +30,7 @@ export interface Type<T> {
   /**
    * Check if the given value can be coerced into this type
    * @param value - The value to to be coerced
-   * @returns {boolean}
+   * @returns A flag to indicate if the value can be coerced
    */
   isCoercible(value: any, options?: Options): boolean;
 

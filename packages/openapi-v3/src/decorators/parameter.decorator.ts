@@ -17,8 +17,10 @@ import {OAI3Keys} from '../keys';
 /**
  * Describe an input parameter of a Controller method.
  *
- * `@param` must be applied to parameters. For example,
- * ```
+ * `@param` must be applied to parameters.
+ *
+ * @example
+ * ```ts
  * class MyController {
  *   @get('/')
  *   list(

@@ -16,7 +16,7 @@ const debug = debugFactory('loopback:boot:booter-utils');
  *
  * @param pattern - A glob pattern
  * @param root - Root folder to start searching for matching files
- * @returns {string[]} Array of discovered files
+ * @returns Array of discovered files
  */
 export async function discoverFiles(
   pattern: string,
@@ -29,7 +29,7 @@ export async function discoverFiles(
  * Given a function, returns true if it is a class, false otherwise.
  *
  * @param target - The function to check if it's a class or not.
- * @returns {boolean} True if target is a class. False otherwise.
+ * @returns True if target is a class. False otherwise.
  */
 // tslint:disable-next-line:no-any
 export function isClass(target: any): target is Constructor<any> {
@@ -45,7 +45,7 @@ export function isClass(target: any): target is Constructor<any> {
  *
  * @param files - An array of string of absolute file paths
  * @param projectRootDir - The project root directory
- * @returns {Constructor<{}>[]} An array of Class constructors from a file
+ * @returns An array of Class constructors from a file
  */
 export function loadClassesFromFiles(
   files: string[],

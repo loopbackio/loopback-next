@@ -177,7 +177,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    *
    * @param app - The application instance (injected via
    * CoreBindings.APPLICATION_INSTANCE).
-   * @param {RestServerConfig=} config The configuration options (injected via
+   * @param config - The configuration options (injected via
    * RestBindings.CONFIG).
    *
    */
@@ -456,7 +456,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    *
    * @param controllerCtor - The controller class
    * (constructor function).
-   * @returns {Binding} The newly created binding, you can use the reference to
+   * @returns The newly created binding, you can use the reference to
    * further modify the binding, e.g. lock the value to prevent further
    * modifications.
    *
@@ -658,7 +658,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
    * controller level (this function takes precedent).
    *
    * @param spec - The OpenAPI specification, as an object.
-   * @returns {Binding}
+   * @returns Binding for the spec
    *
    */
   api(spec: OpenApiSpec): Binding {
@@ -780,9 +780,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
   /**
    * Start this REST API's HTTP/HTTPS server.
-   *
-   * @returns {Promise<void>}
-   *
    */
   async start(): Promise<void> {
     // Set up the Express app if not done yet
@@ -812,9 +809,6 @@ export class RestServer extends Context implements Server, HttpServerLike {
 
   /**
    * Stop this REST API's HTTP/HTTPS server.
-   *
-   * @returns {Promise<void>}
-   *
    */
   async stop() {
     // Kill the server instance.

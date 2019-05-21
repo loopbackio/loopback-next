@@ -92,8 +92,8 @@ export interface Component {
 /**
  * Mount a component to an Application.
  *
- * @param {Application} app
- * @param {Component} component
+ * @param app - Application
+ * @param component - Component instance
  */
 export function mountComponent(app: Application, component: Component) {
   if (component.classes) {

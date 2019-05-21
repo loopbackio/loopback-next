@@ -20,8 +20,10 @@ export const REQUEST_BODY_INDEX = 'x-parameter-index';
 /**
  * Describe the request body of a Controller method parameter.
  *
- * A typical OpenAPI requestBody spec contains property
- * `description`, `required`, and `content`:
+ * A typical OpenAPI requestBody spec contains property:
+ * - `description`
+ * - `required`
+ * - `content`.
  *
  * @example
  * ```ts

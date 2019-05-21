@@ -15,7 +15,7 @@ import {BelongsToDefinition, RelationType} from '../relation.types';
  * a belongsTo relation
  * @param definition - Optional metadata for setting up a belongsTo relation
  * @param propertyDefinition - Optional metadata for setting up the property
- * @returns {(target: Object, key:string)}
+ * @returns A property decorator
  */
 export function belongsTo<T extends Entity>(
   targetResolver: EntityResolver<T>,

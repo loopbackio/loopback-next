@@ -270,7 +270,7 @@ export class RestApplication extends Application implements HttpServerLike {
    * controller level (this function takes precedent).
    *
    * @param spec - The OpenAPI specification, as an object.
-   * @returns {Binding}
+   * @returns Binding for the api spec
    */
   api(spec: OpenApiSpec): Binding {
     return this.bind(RestBindings.API_SPEC).to(spec);

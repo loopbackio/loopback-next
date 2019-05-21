@@ -20,7 +20,7 @@ async function discoverModelNames(ds, options) {
  * @param ds {Juggler.DataSource}
  * @param modelName {string}
  * @param options {object}
- * @return {Promise<Juggler.SchemaDefinition>}
+ * @returns {Promise<Juggler.SchemaDefinition>}
  */
 async function discoverSingleModel(ds, modelName, options) {
   const schema = await ds.discoverSchema(modelName, options);

@@ -9,7 +9,7 @@ import {writeResultToResponse} from '../writer';
  * Provides the function that populates the response object with
  * the results of the operation.
  *
- * @returns {BoundValue} The handler function that will populate the
+ * @returns The handler function that will populate the
  * response with operation results.
  */
 export class SendProvider implements Provider<BoundValue> {

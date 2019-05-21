@@ -13,7 +13,7 @@ export const RELATIONS_KEY = 'loopback:relations';
 /**
  * Decorator for relations
  * @param definition
- * @returns {(target:any, key:string)}
+ * @returns A property decorator
  */
 export function relation(definition?: Object) {
   // Apply relation definition to the model class
@@ -24,7 +24,7 @@ export function relation(definition?: Object) {
  * Get metadata of all relations defined on a given model class.
  *
  * @param modelCtor - The model class (the constructor function).
- * @return
+ * @returns A map of relation definitions
  */
 export function getModelRelations(
   modelCtor: typeof Model,
@@ -42,7 +42,7 @@ export function getModelRelations(
 /**
  * Decorator for embedsOne
  * @param definition
- * @returns {(target:any, key:string)}
+ * @returns A property decorator
  */
 export function embedsOne(definition?: Object) {
   const rel = Object.assign({type: RelationType.embedsOne}, definition);
@@ -52,7 +52,7 @@ export function embedsOne(definition?: Object) {
 /**
  * Decorator for embedsMany
  * @param definition
- * @returns {(target:any, key:string)}
+ * @returns A property decorator
  */
 export function embedsMany(definition?: Object) {
   const rel = Object.assign({type: RelationType.embedsMany}, definition);
@@ -62,7 +62,7 @@ export function embedsMany(definition?: Object) {
 /**
  * Decorator for referencesOne
  * @param definition
- * @returns {(target:any, key:string)}
+ * @returns A property decorator
  */
 export function referencesOne(definition?: Object) {
   const rel = Object.assign({type: RelationType.referencesOne}, definition);
@@ -72,7 +72,7 @@ export function referencesOne(definition?: Object) {
 /**
  * Decorator for referencesMany
  * @param definition
- * @returns {(target:any, key:string)}
+ * @returns A property decorator
  */
 export function referencesMany(definition?: Object) {
   const rel = Object.assign({type: RelationType.referencesMany}, definition);
