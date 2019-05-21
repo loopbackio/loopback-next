@@ -55,7 +55,7 @@
     "@loopback/rest": "^1.11.1",
     "@loopback/testlab": "^1.2.9",
     "@loopback/tslint-config": "^2.0.4",
-    "@types/lodash": "^4.14.126",
+    "@types/lodash": "^4.14.130",
     "@types/node": "^10.11.2",
     "lodash": "^4.17.11",
     "tslint": "^5.16.0",
