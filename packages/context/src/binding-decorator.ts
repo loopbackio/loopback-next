@@ -54,7 +54,7 @@ class BindDecoratorFactory extends ClassDecoratorFactory<BindingMetadata> {
  * }
  * ```
  *
- * @param specs A list of binding scope/tags or template functions to
+ * @param specs - A list of binding scope/tags or template functions to
  * configure the binding
  */
 export function bind(...specs: BindingSpec[]): ClassDecorator {

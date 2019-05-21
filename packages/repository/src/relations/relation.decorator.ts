@@ -23,7 +23,7 @@ export function relation(definition?: Object) {
 /**
  * Get metadata of all relations defined on a given model class.
  *
- * @param modelCtor The model class (the constructor function).
+ * @param modelCtor - The model class (the constructor function).
  * @return
  */
 export function getModelRelations(

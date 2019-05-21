@@ -170,7 +170,7 @@ export class HttpServer {
  *
  * See https://nodejs.org/api/net.html#net_identifying_paths_for_ipc_connections
  *
- * @param ipcPath Named pipe path
+ * @param ipcPath - Named pipe path
  */
 function checkNamedPipe(ipcPath: string) {
   /* istanbul ignore if */

@@ -82,7 +82,7 @@ export class LifeCycleObserverRegistry implements LifeCycleObserver {
 
   /**
    * Get the group for a given life cycle observer binding
-   * @param binding Life cycle observer binding
+   * @param binding - Life cycle observer binding
    */
   protected getObserverGroup(
     binding: Readonly<Binding<LifeCycleObserver>>,
@@ -106,7 +106,7 @@ export class LifeCycleObserverRegistry implements LifeCycleObserver {
    * Sort the life cycle observer bindings so that we can start/stop them
    * in the right order. By default, we can start other observers before servers
    * and stop them in the reverse order
-   * @param bindings Life cycle observer bindings
+   * @param bindings - Life cycle observer bindings
    */
   protected sortObserverBindingsByGroup(
     bindings: Readonly<Binding<LifeCycleObserver>>[],
@@ -140,8 +140,8 @@ export class LifeCycleObserverRegistry implements LifeCycleObserver {
 
   /**
    * Notify an observer group of the given event
-   * @param group A group of bindings for life cycle observers
-   * @param event Event name
+   * @param group - A group of bindings for life cycle observers
+   * @param event - Event name
    */
   protected async notifyObservers(
     observers: LifeCycleObserver[],
@@ -172,8 +172,8 @@ export class LifeCycleObserverRegistry implements LifeCycleObserver {
 
   /**
    * Invoke an observer for the given event
-   * @param observer A life cycle observer
-   * @param event Event name
+   * @param observer - A life cycle observer
+   * @param event - Event name
    */
   protected async invokeObserver(
     observer: LifeCycleObserver,
@@ -186,8 +186,8 @@ export class LifeCycleObserverRegistry implements LifeCycleObserver {
 
   /**
    * Emit events to the observer groups
-   * @param events Event names
-   * @param groups Observer groups
+   * @param events - Event names
+   * @param groups - Observer groups
    */
   protected async notifyGroups(
     events: (keyof LifeCycleObserver)[],

@@ -47,12 +47,12 @@ export class ControllerRoute<T> extends BaseRoute {
 
   /**
    * Construct a controller based route
-   * @param verb http verb
-   * @param path http request path
-   * @param spec OpenAPI operation spec
-   * @param controllerCtor Controller class
-   * @param controllerFactory A factory function to create a controller instance
-   * @param methodName Controller method name, default to `x-operation-name`
+   * @param verb - http verb
+   * @param path - http request path
+   * @param spec - OpenAPI operation spec
+   * @param controllerCtor - Controller class
+   * @param controllerFactory - A factory function to create a controller instance
+   * @param methodName - Controller method name, default to `x-operation-name`
    */
   constructor(
     verb: string,
@@ -147,7 +147,7 @@ export class ControllerRoute<T> extends BaseRoute {
 
 /**
  * Create a controller factory function for a given binding key
- * @param key Binding key
+ * @param key - Binding key
  */
 export function createControllerFactoryForBinding<T>(
   key: string,
@@ -157,7 +157,7 @@ export function createControllerFactoryForBinding<T>(
 
 /**
  * Create a controller factory function for a given class
- * @param controllerCtor Controller class
+ * @param controllerCtor - Controller class
  */
 export function createControllerFactoryForClass<T>(
   controllerCtor: ControllerClass<T>,
@@ -177,7 +177,7 @@ export function createControllerFactoryForClass<T>(
 
 /**
  * Create a controller factory function for a given instance
- * @param controllerCtor Controller instance
+ * @param controllerCtor - Controller instance
  */
 export function createControllerFactoryForInstance<T>(
   controllerInst: T,

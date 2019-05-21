@@ -16,8 +16,8 @@ const debug = debugModule('loopback:boot:booter:application-metadata');
  *
  * Configure the application with metadata from `package.json`
  *
- * @param app Application instance
- * @param projectRoot Root of User Project
+ * @param app - Application instance
+ * @param projectRoot - Root of User Project
  */
 export class ApplicationMetadataBooter implements Booter {
   constructor(

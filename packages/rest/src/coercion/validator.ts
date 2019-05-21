@@ -31,9 +31,9 @@ export class Validator {
    * The validation executed before type coercion. Like
    * checking absence.
    *
-   * @param type A parameter's type.
-   * @param value A parameter's raw value from http request.
-   * @param opts options
+   * @param type - A parameter's type.
+   * @param value - A parameter's raw value from http request.
+   * @param opts - options
    */
   validateParamBeforeCoercion(
     value: string | object | undefined,

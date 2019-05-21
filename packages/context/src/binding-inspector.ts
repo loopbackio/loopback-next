@@ -47,7 +47,7 @@ export type BindingSpec = BindingTemplate | BindingScopeAndTags;
 
 /**
  * Check if a class implements `Provider` interface
- * @param cls A class
+ * @param cls - A class
  */
 export function isProviderClass(
   cls: Constructor<unknown>,
@@ -58,7 +58,7 @@ export function isProviderClass(
 /**
  * A factory function to create a template function to bind the target class
  * as a `Provider`.
- * @param target Target provider class
+ * @param target - Target provider class
  */
 export function asProvider(
   target: Constructor<Provider<unknown>>,
@@ -72,7 +72,7 @@ export function asProvider(
 /**
  * A factory function to create a template function to bind the target class
  * as a class or `Provider`.
- * @param target Target class, which can be an implementation of `Provider`
+ * @param target - Target class, which can be an implementation of `Provider`
  */
 export function asClassOrProvider(
   target: Constructor<unknown>,
@@ -89,7 +89,7 @@ export function asClassOrProvider(
 
 /**
  * Convert binding scope and tags as a template function
- * @param scopeAndTags Binding scope and tags
+ * @param scopeAndTags - Binding scope and tags
  */
 export function asBindingTemplate(
   scopeAndTags: BindingScopeAndTags,
@@ -110,7 +110,7 @@ export function asBindingTemplate(
 
 /**
  * Get binding metadata for a class
- * @param target The target class
+ * @param target - The target class
  */
 export function getBindingMetadata(
   target: Function,
@@ -134,7 +134,7 @@ export function removeNameAndKeyTags(binding: Binding<unknown>) {
 /**
  * Get the binding template for a class with binding metadata
  *
- * @param cls A class with optional `@bind`
+ * @param cls - A class with optional `@bind`
  */
 export function bindingTemplateFor<T = unknown>(
   cls: Constructor<T | Provider<T>>,
@@ -208,8 +208,8 @@ export type BindingFromClassOptions = {
  * - `binding.toProvider(cls)`: it `cls` is a value provider class with a
  * prototype method `value()`
  *
- * @param cls A class. It can be either a plain class or  a value provider class
- * @param options Options to customize the binding key
+ * @param cls - A class. It can be either a plain class or  a value provider class
+ * @param options - Options to customize the binding key
  */
 export function createBindingFromClass<T = unknown>(
   cls: Constructor<T | Provider<T>>,
@@ -235,8 +235,8 @@ export function createBindingFromClass<T = unknown>(
 
 /**
  * Find/infer binding key namespace for a type
- * @param type Artifact type, such as `controller`, `datasource`, or `server`
- * @param typeNamespaces An object mapping type names to namespaces
+ * @param type - Artifact type, such as `controller`, `datasource`, or `server`
+ * @param typeNamespaces - An object mapping type names to namespaces
  */
 function getNamespace(type: string, typeNamespaces = DEFAULT_TYPE_NAMESPACES) {
   if (type in typeNamespaces) {
@@ -265,8 +265,8 @@ function getNamespace(type: string, typeNamespaces = DEFAULT_TYPE_NAMESPACES) {
  *     - `name` tag value
  *     - the class name
  *
- * @param cls A class to be bound
- * @param options Options to customize how to build the key
+ * @param cls - A class to be bound
+ * @param options - Options to customize how to build the key
  */
 function buildBindingKey(
   cls: Constructor<unknown>,

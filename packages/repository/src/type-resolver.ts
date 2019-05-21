@@ -31,7 +31,7 @@ export type TypeResolver<
 
 /**
  * A function that checks whether a function is a TypeResolver or not.
- * @param fn The value to check.
+ * @param fn - The value to check.
  */
 export function isTypeResolver<T extends Object>(
   // tslint:disable-next-line:no-any
@@ -74,7 +74,7 @@ export function isBuiltinType(fn: Function): boolean {
 
 /**
  * Resolve a type value that may have been provided via TypeResolver.
- * @param fn A type class or a type provider.
+ * @param fn - A type class or a type provider.
  * @returns The resolved type.
  */
 export function resolveType<T extends Object>(

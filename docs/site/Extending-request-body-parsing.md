@@ -43,12 +43,12 @@ export interface BodyParser {
   name: string | symbol;
   /**
    * Indicate if the given media type is supported
-   * @param mediaType Media type
+   * @param mediaType - Media type
    */
   supports(mediaType: string): boolean;
   /**
    * Parse the request body
-   * @param request http request
+   * @param request - http request
    */
   parse(request: Request): Promise<RequestBody>;
 }

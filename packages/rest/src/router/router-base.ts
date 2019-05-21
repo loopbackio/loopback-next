@@ -72,8 +72,8 @@ export abstract class BaseRouter implements RestRouter {
 
   /**
    * Build a key for verb+path as `/<verb>/<path>`
-   * @param verb HTTP verb/method
-   * @param path URL path
+   * @param verb - HTTP verb/method
+   * @param path - URL path
    */
   protected getKey(verb: string, path: string) {
     verb = normalizeVerb(verb);
@@ -84,13 +84,13 @@ export abstract class BaseRouter implements RestRouter {
   // The following abstract methods need to be implemented by its subclasses
   /**
    * Add a route with path variables
-   * @param route Route
+   * @param route - Route
    */
   protected abstract addRouteWithPathVars(route: RouteEntry): void;
 
   /**
    * Find a route with path variables for a given request
-   * @param request Http request
+   * @param request - Http request
    */
   protected abstract findRouteWithPathVars(
     verb: string,
@@ -105,7 +105,7 @@ export abstract class BaseRouter implements RestRouter {
 
 /**
  * Normalize http verb to lowercase
- * @param verb Http verb
+ * @param verb - Http verb
  */
 function normalizeVerb(verb: string) {
   // Use lower case, default to `get`
@@ -114,7 +114,7 @@ function normalizeVerb(verb: string) {
 
 /**
  * Normalize path to make sure it starts with `/`
- * @param path Path
+ * @param path - Path
  */
 function normalizePath(path: string) {
   // Prepend `/` if needed

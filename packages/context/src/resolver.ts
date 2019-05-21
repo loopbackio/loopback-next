@@ -37,10 +37,10 @@ const getTargetName = DecoratorFactory.getTargetName;
  * The function returns a class when all dependencies were
  * resolved synchronously, or a Promise otherwise.
  *
- * @param ctor The class constructor to call.
- * @param ctx The context containing values for `@inject` resolution
- * @param session Optional session for binding and dependency resolution
- * @param nonInjectedArgs Optional array of args for non-injected parameters
+ * @param ctor - The class constructor to call.
+ * @param ctx - The context containing values for `@inject` resolution
+ * @param session - Optional session for binding and dependency resolution
+ * @param nonInjectedArgs - Optional array of args for non-injected parameters
  */
 export function instantiateClass<T>(
   ctor: Constructor<T>,
@@ -119,9 +119,9 @@ function resolveContext(
 
 /**
  * Resolve the value or promise for a given injection
- * @param ctx Context
- * @param injection Descriptor of the injection
- * @param session Optional session for binding and dependency resolution
+ * @param ctx - Context
+ * @param injection - Descriptor of the injection
+ * @param session - Optional session for binding and dependency resolution
  */
 function resolve<T>(
   ctx: Context,
@@ -170,13 +170,13 @@ function resolve<T>(
  * The function returns an argument array when all dependencies were
  * resolved synchronously, or a Promise otherwise.
  *
- * @param target The class for constructor injection or prototype for method
+ * @param target - The class for constructor injection or prototype for method
  * injection
- * @param method The method name. If set to '', the constructor will
+ * @param method - The method name. If set to '', the constructor will
  * be used.
- * @param ctx The context containing values for `@inject` resolution
- * @param session Optional session for binding and dependency resolution
- * @param nonInjectedArgs Optional array of args for non-injected parameters
+ * @param ctx - The context containing values for `@inject` resolution
+ * @param session - Optional session for binding and dependency resolution
+ * @param nonInjectedArgs - Optional array of args for non-injected parameters
  */
 export function resolveInjectedArguments(
   target: Object,
@@ -250,11 +250,11 @@ export function resolveInjectedArguments(
 
 /**
  * Invoke an instance method with dependency injection
- * @param target Target of the method, it will be the class for a static
+ * @param target - Target of the method, it will be the class for a static
  * method, and instance or class prototype for a prototype method
- * @param method Name of the method
- * @param ctx Context
- * @param nonInjectedArgs Optional array of args for non-injected parameters
+ * @param method - Name of the method
+ * @param ctx - Context
+ * @param nonInjectedArgs - Optional array of args for non-injected parameters
  */
 export function invokeMethod(
   target: Object,
@@ -300,9 +300,9 @@ export function invokeMethod(
  * The function returns an argument array when all dependencies were
  * resolved synchronously, or a Promise otherwise.
  *
- * @param constructor The class for which properties should be resolved.
- * @param ctx The context containing values for `@inject` resolution
- * @param session Optional session for binding and dependency resolution
+ * @param constructor - The class for which properties should be resolved.
+ * @param ctx - The context containing values for `@inject` resolution
+ * @param session - Optional session for binding and dependency resolution
  */
 export function resolveInjectedProperties(
   constructor: Function,

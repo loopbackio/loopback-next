@@ -96,8 +96,8 @@ export class ModelDefinition {
 
   /**
    * Add a property
-   * @param name Property definition or name (string)
-   * @param definitionOrType Definition or property type
+   * @param name - Property definition or name (string)
+   * @param definitionOrType - Definition or property type
    */
   addProperty(
     name: string,
@@ -112,8 +112,8 @@ export class ModelDefinition {
 
   /**
    * Add a setting
-   * @param name Setting name
-   * @param value Setting value
+   * @param name - Setting name
+   * @param value - Setting value
    */
   addSetting(name: string, value: any): this {
     this.settings[name] = value;
@@ -122,7 +122,7 @@ export class ModelDefinition {
 
   /**
    * Define a new relation.
-   * @param definition The definition of the new relation.
+   * @param definition - The definition of the new relation.
    */
   addRelation(definition: RelationMetadata): this {
     this.relations[definition.name] = definition;
@@ -254,7 +254,7 @@ export abstract class Entity extends Model implements Persistable {
   /**
    * Get the identity value for a given entity instance or entity data object.
    *
-   * @param entityOrData The data object for which to determine the identity
+   * @param entityOrData - The data object for which to determine the identity
    * value.
    */
   static getIdOf(entityOrData: AnyObject): any {
@@ -301,7 +301,7 @@ export abstract class Entity extends Model implements Persistable {
 
   /**
    * Build the where object for the given id
-   * @param id The id value
+   * @param id - The id value
    */
   static buildWhereForId(id: any) {
     const where = {} as any;

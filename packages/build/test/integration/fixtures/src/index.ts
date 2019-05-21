@@ -19,7 +19,7 @@ export class Hello {
 
   /**
    * Return a greeting
-   * @param msg Message
+   * @param msg - Message
    */
   greet(msg: string) {
     return `Hello, ${this.name}: ${msg}`;

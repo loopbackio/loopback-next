@@ -99,10 +99,10 @@ export interface Injection<ValueType = BoundValue> {
  *
  *  - TODO(bajtos)
  *
- * @param bindingSelector What binding to use in order to resolve the value of the
+ * @param bindingSelector - What binding to use in order to resolve the value of the
  * decorated constructor parameter or property.
- * @param metadata Optional metadata to help the injection
- * @param resolve Optional function to resolve the injection
+ * @param metadata - Optional metadata to help the injection
+ * @param resolve - Optional function to resolve the injection
  *
  */
 export function inject(
@@ -216,7 +216,7 @@ export namespace Getter {
  * ```ts
  * setterFn('my-value');
  * ```
- * @param value The value for the underlying binding
+ * @param value - The value for the underlying binding
  */
 export type Setter<T> = (value: T) => void;
 
@@ -241,9 +241,9 @@ export namespace inject {
    *
    * See also `Getter<T>`.
    *
-   * @param bindingSelector The binding key or filter we want to eventually get
+   * @param bindingSelector - The binding key or filter we want to eventually get
    * value(s) from.
-   * @param metadata Optional metadata to help the injection
+   * @param metadata - Optional metadata to help the injection
    */
   export const getter = function injectGetter(
     bindingSelector: BindingSelector<unknown>,
@@ -269,8 +269,8 @@ export namespace inject {
    *
    * See also `Setter<T>`.
    *
-   * @param bindingKey The key of the value we want to set.
-   * @param metadata Optional metadata to help the injection
+   * @param bindingKey - The key of the value we want to set.
+   * @param metadata - Optional metadata to help the injection
    */
   export const setter = function injectSetter(
     bindingKey: BindingAddress,
@@ -302,8 +302,8 @@ export namespace inject {
    * }
    * ```
    *
-   * @param bindingKey Binding key
-   * @param metadata Metadata for the injection
+   * @param bindingKey - Binding key
+   * @param metadata - Metadata for the injection
    */
   export const binding = function injectBinding(
     bindingKey: BindingAddress,
@@ -324,8 +324,8 @@ export namespace inject {
    *   ) {}
    * }
    * ```
-   * @param bindingTag Tag name, regex or object
-   * @param metadata Optional metadata to help the injection
+   * @param bindingTag - Tag name, regex or object
+   * @param metadata - Optional metadata to help the injection
    */
   export const tag = function injectByTag(
     bindingTag: BindingTag | RegExp,
@@ -348,7 +348,7 @@ export namespace inject {
    *   view: ContextView<string[]>;
    * }
    * ```
-   * @param bindingFilter A binding filter function
+   * @param bindingFilter - A binding filter function
    * @param metadata
    */
   export const view = function injectContextView(
@@ -377,9 +377,9 @@ export namespace inject {
 /**
  * Assert the target type inspected from TypeScript for injection to be the
  * expected type. If the types don't match, an error is thrown.
- * @param injection Injection information
- * @param expectedType Expected type
- * @param expectedTypeName Name of the expected type to be used in the error
+ * @param injection - Injection information
+ * @param expectedType - Expected type
+ * @param expectedTypeName - Name of the expected type to be used in the error
  * @returns The name of the target
  */
 export function assertTargetType(
@@ -471,9 +471,9 @@ function findOrCreateBindingForInjection(
 
 /**
  * Return an array of injection objects for parameters
- * @param target The target class for constructor or static methods,
+ * @param target - The target class for constructor or static methods,
  * or the prototype for instance methods
- * @param method Method name, undefined for constructor
+ * @param method - Method name, undefined for constructor
  */
 export function describeInjectedArguments(
   target: Object,
@@ -504,7 +504,7 @@ export function describeInjectedArguments(
 /**
  * Inspect the target type for the injection to find out the corresponding
  * JavaScript type
- * @param injection Injection information
+ * @param injection - Injection information
  */
 function inspectTargetType(injection: Readonly<Injection>) {
   let type = MetadataInspector.getDesignTypeForProperty(
@@ -527,9 +527,9 @@ function inspectTargetType(injection: Readonly<Injection>) {
 
 /**
  * Resolve an array of bound values matching the filter function for `@inject`.
- * @param ctx Context object
- * @param injection Injection information
- * @param session Resolution session
+ * @param ctx - Context object
+ * @param injection - Injection information
+ * @param session - Resolution session
  */
 function resolveValuesByFilter(
   ctx: Context,
@@ -550,9 +550,9 @@ function resolveValuesByFilter(
  * Resolve to a getter function that returns an array of bound values matching
  * the filter function for `@inject.getter`.
  *
- * @param ctx Context object
- * @param injection Injection information
- * @param session Resolution session
+ * @param ctx - Context object
+ * @param injection - Injection information
+ * @param session - Resolution session
  */
 function resolveAsGetterByFilter(
   ctx: Context,
@@ -572,8 +572,8 @@ function resolveAsGetterByFilter(
 /**
  * Resolve to an instance of `ContextView` by the binding filter function
  * for `@inject.view`
- * @param ctx Context object
- * @param injection Injection information
+ * @param ctx - Context object
+ * @param injection - Injection information
  */
 function resolveAsContextView(ctx: Context, injection: Readonly<Injection>) {
   assertTargetType(injection, ContextView);
@@ -590,7 +590,7 @@ function resolveAsContextView(ctx: Context, injection: Readonly<Injection>) {
 
 /**
  * Return a map of injection objects for properties
- * @param target The target class for static properties or
+ * @param target - The target class for static properties or
  * prototype for instance properties.
  */
 export function describeInjectedProperties(

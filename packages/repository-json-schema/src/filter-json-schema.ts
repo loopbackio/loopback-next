@@ -18,7 +18,7 @@ const scopeFilter = getFilterJsonSchemaFor(EmptyModel);
  * Note we don't take the model properties into account yet and return
  * a generic json schema allowing any "where" condition.
  *
- * @param modelCtor The model constructor to build the filter schema for.
+ * @param modelCtor - The model constructor to build the filter schema for.
  */
 export function getFilterJsonSchemaFor(modelCtor: typeof Model): JsonSchema {
   const schema: JsonSchema = {
@@ -79,7 +79,7 @@ export function getFilterJsonSchemaFor(modelCtor: typeof Model): JsonSchema {
  * Note we don't take the model properties into account yet and return
  * a generic json schema allowing any "where" condition.
  *
- * @param modelCtor The model constructor to build the filter schema for.
+ * @param modelCtor - The model constructor to build the filter schema for.
  */
 export function getWhereJsonSchemaFor(modelCtor: typeof Model): JsonSchema {
   const schema: JsonSchema = {
@@ -95,7 +95,7 @@ export function getWhereJsonSchemaFor(modelCtor: typeof Model): JsonSchema {
  * Build a JSON schema describing the format of the "fields" object
  * used to include or exclude properties of model instances.
  *
- * @param modelCtor The model constructor to build the filter schema for.
+ * @param modelCtor - The model constructor to build the filter schema for.
  */
 
 export function getFieldsJsonSchemaFor(modelCtor: typeof Model): JsonSchema {

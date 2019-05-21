@@ -17,7 +17,7 @@ const debug = debugModule('loopback:rest:body-parser');
 
 /**
  * Get the content-type header value from the request
- * @param req Http request
+ * @param req - Http request
  */
 export function getContentType(req: Request): string | undefined {
   return req.get('content-type');
@@ -48,8 +48,8 @@ export function normalizeParsingError(err: HttpError) {
 
 /**
  * Parse the request body asynchronously
- * @param handle The express middleware handler
- * @param request Http request
+ * @param handle - The express middleware handler
+ * @param request - Http request
  */
 export function invokeBodyParserMiddleware(
   handle: BodyParserMiddleware,
@@ -73,7 +73,7 @@ export const DEFAULT_LIMIT = '1mb';
 
 /**
  * Extract parser options based on the parser type
- * @param type json|urlencoded|text
+ * @param type - json|urlencoded|text
  * @param options
  */
 export function getParserOptions(

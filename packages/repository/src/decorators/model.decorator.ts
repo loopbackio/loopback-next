@@ -61,8 +61,8 @@ export function model(definition?: Partial<ModelDefinitionSyntax>) {
 
 /**
  * Build model definition from decorations
- * @param target Target model class
- * @param def Model definition spec
+ * @param target - Target model class
+ * @param def - Model definition spec
  */
 export function buildModelDefinition(
   target: Function & {definition?: ModelDefinition | undefined},
@@ -123,9 +123,9 @@ export namespace property {
 
   /**
    *
-   * @param itemType The type of array items.
+   * @param itemType - The type of array items.
    * Examples: `number`, `Product`, `() => Order`.
-   * @param definition Optional PropertyDefinition object for additional
+   * @param definition - Optional PropertyDefinition object for additional
    * metadata
    */
   export function array(

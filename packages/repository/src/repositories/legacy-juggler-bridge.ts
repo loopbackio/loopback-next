@@ -70,7 +70,7 @@ export function bindModel<T extends juggler.ModelBaseClass>(
 
 /**
  * Ensure the value is a promise
- * @param p Promise or void
+ * @param p - Promise or void
  */
 /* tslint:disable-next-line:no-any */
 export function ensurePromise<T>(p: legacy.PromiseOrVoid<T>): Promise<T> {
@@ -94,8 +94,8 @@ export class DefaultCrudRepository<T extends Entity, ID>
 
   /**
    * Constructor of DefaultCrudRepository
-   * @param entityClass Legacy entity class
-   * @param dataSource Legacy data source
+   * @param entityClass - Legacy entity class
+   * @param dataSource - Legacy data source
    */
   constructor(
     // entityClass should have type "typeof T", but that's not supported by TSC
@@ -183,8 +183,8 @@ export class DefaultCrudRepository<T extends Entity, ID>
    *
    * Use `this.createHasManyRepositoryFactoryFor()` instead
    *
-   * @param relationName Name of the relation defined on the source model
-   * @param targetRepo Target repository instance
+   * @param relationName - Name of the relation defined on the source model
+   * @param targetRepo - Target repository instance
    */
   protected _createHasManyRepositoryFactoryFor<
     Target extends Entity,
@@ -224,8 +224,8 @@ export class DefaultCrudRepository<T extends Entity, ID>
    * }
    * ```
    *
-   * @param relationName Name of the relation defined on the source model
-   * @param targetRepo Target repository instance
+   * @param relationName - Name of the relation defined on the source model
+   * @param targetRepo - Target repository instance
    */
   protected createHasManyRepositoryFactoryFor<
     Target extends Entity,
@@ -248,8 +248,8 @@ export class DefaultCrudRepository<T extends Entity, ID>
    *
    * Use `this.createBelongsToAccessorFor()` instead
    *
-   * @param relationName Name of the relation defined on the source model
-   * @param targetRepo Target repository instance
+   * @param relationName - Name of the relation defined on the source model
+   * @param targetRepo - Target repository instance
    */
   protected _createBelongsToAccessorFor<Target extends Entity, TargetId>(
     relationName: string,
@@ -261,8 +261,8 @@ export class DefaultCrudRepository<T extends Entity, ID>
   /**
    * Function to create a belongs to accessor
    *
-   * @param relationName Name of the relation defined on the source model
-   * @param targetRepo Target repository instance
+   * @param relationName - Name of the relation defined on the source model
+   * @param targetRepo - Target repository instance
    */
   protected createBelongsToAccessorFor<Target extends Entity, TargetId>(
     relationName: string,
@@ -280,8 +280,8 @@ export class DefaultCrudRepository<T extends Entity, ID>
    * @deprecated
    * Function to create a constrained hasOne relation repository factory
    *
-   * @param relationName Name of the relation defined on the source model
-   * @param targetRepo Target repository instance
+   * @param relationName - Name of the relation defined on the source model
+   * @param targetRepo - Target repository instance
    */
   protected _createHasOneRepositoryFactoryFor<
     Target extends Entity,
@@ -300,8 +300,8 @@ export class DefaultCrudRepository<T extends Entity, ID>
   /**
    * Function to create a constrained hasOne relation repository factory
    *
-   * @param relationName Name of the relation defined on the source model
-   * @param targetRepo Target repository instance
+   * @param relationName - Name of the relation defined on the source model
+   * @param targetRepo - Target repository instance
    */
   protected createHasOneRepositoryFactoryFor<
     Target extends Entity,

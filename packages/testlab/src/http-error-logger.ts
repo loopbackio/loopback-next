@@ -9,7 +9,7 @@ import {IncomingMessage} from 'http';
 /**
  * Creates a Logger that logs an Error if the HTTP status code is not expected
  *
- * @param expectedStatusCode HTTP status code that is expected
+ * @param expectedStatusCode - HTTP status code that is expected
  */
 export function createUnexpectedHttpErrorLogger(
   expectedStatusCode?: number,

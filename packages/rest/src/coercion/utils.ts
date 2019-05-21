@@ -28,7 +28,7 @@ export function isEmpty(data: string) {
 /**
  * A set of truthy values. A data in this set will be coerced to `true`.
  *
- * @param data The raw data get from http request
+ * @param data - The raw data get from http request
  * @returns The corresponding coerced boolean type
  */
 export function isTrue(data: string): boolean {
@@ -37,7 +37,7 @@ export function isTrue(data: string): boolean {
 
 /**
  * A set of falsy values. A data in this set will be coerced to `false`.
- * @param data The raw data get from http request
+ * @param data - The raw data get from http request
  * @returns The corresponding coerced boolean type
  */
 export function isFalse(data: string): boolean {
@@ -56,7 +56,7 @@ const REGEX_RFC3339_DATE = /^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]
 /**
  * Return true when a date follows the RFC3339 standard
  *
- * @param date The date to verify
+ * @param date - The date to verify
  */
 export function matchDateFormat(date: string) {
   const pattern = new RegExp(REGEX_RFC3339_DATE);
@@ -68,8 +68,8 @@ export function matchDateFormat(date: string) {
 /**
  * Return the corresponding OpenAPI data type given an OpenAPI schema
  *
- * @param type The type in an OpenAPI schema specification
- * @param format The format in an OpenAPI schema specification
+ * @param type - The type in an OpenAPI schema specification
+ * @param format - The format in an OpenAPI schema specification
  */
 export function getOAIPrimitiveType(type?: string, format?: string) {
   if (type === 'object' || type === 'array') return type;

@@ -26,24 +26,24 @@ export interface KeyValueRepository<T extends Model> extends Repository<T> {
   /**
    * Delete an entry by key
    *
-   * @param key Key for the entry
-   * @param options Options for the operation
+   * @param key - Key for the entry
+   * @param options - Options for the operation
    */
   delete(key: string, options?: Options): Promise<void>;
 
   /**
    * Delete all entries
    *
-   * @param key Key for the entry
-   * @param options Options for the operation
+   * @param key - Key for the entry
+   * @param options - Options for the operation
    */
   deleteAll(options?: Options): Promise<void>;
 
   /**
    * Get an entry by key
    *
-   * @param key Key for the entry
-   * @param options Options for the operation
+   * @param key - Key for the entry
+   * @param options - Options for the operation
    * @returns A promise of the entry
    */
   get(key: string, options?: Options): Promise<T>;
@@ -51,26 +51,26 @@ export interface KeyValueRepository<T extends Model> extends Repository<T> {
   /**
    * Set an entry with key/value
    *
-   * @param key Key for the entry
-   * @param value Value for the entry
-   * @param options Options for the operation
+   * @param key - Key for the entry
+   * @param value - Value for the entry
+   * @param options - Options for the operation
    */
   set(key: string, value: DataObject<T>, options?: Options): Promise<void>;
 
   /**
    * Set up ttl for an entry by key
    *
-   * @param key Key for the entry
-   * @param ttl Ttl for the entry
-   * @param options Options for the operation
+   * @param key - Key for the entry
+   * @param ttl - Ttl for the entry
+   * @param options - Options for the operation
    */
   expire(key: string, ttl: number, options?: Options): Promise<void>;
 
   /**
    * Get ttl for an entry by key
    *
-   * @param key Key for the entry
-   * @param options Options for the operation
+   * @param key - Key for the entry
+   * @param options - Options for the operation
    * @returns A promise of the TTL value
    */
   ttl?(key: string, options?: Options): Promise<number>;
@@ -78,8 +78,8 @@ export interface KeyValueRepository<T extends Model> extends Repository<T> {
   /**
    * Get an Iterator for matching keys
    *
-   * @param filter Filter for keys
-   * @param options Options for the operation
+   * @param filter - Filter for keys
+   * @param options - Options for the operation
    * @returns An async iteratable iterator of keys so that the return value can
    * be used with `for-await-of`.
    */

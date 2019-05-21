@@ -16,9 +16,9 @@ export abstract class BaseRoute implements RouteEntry {
 
   /**
    * Construct a new route
-   * @param verb http verb
-   * @param path http request path pattern
-   * @param spec OpenAPI operation spec
+   * @param verb - http verb
+   * @param path - http request path pattern
+   * @param spec - OpenAPI operation spec
    */
   constructor(
     verb: string,

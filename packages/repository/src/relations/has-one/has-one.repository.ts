@@ -21,8 +21,8 @@ import {
 export interface HasOneRepository<Target extends Entity> {
   /**
    * Create a target model instance
-   * @param targetModelData The target model data
-   * @param options Options for the operation
+   * @param targetModelData - The target model data
+   * @param options - Options for the operation
    * @returns A promise which resolves to the newly created target model instance
    */
   create(
@@ -32,8 +32,8 @@ export interface HasOneRepository<Target extends Entity> {
 
   /**
    * Find the only target model instance that belongs to the declaring model.
-   * @param filter Query filter without a Where condition
-   * @param options Options for the operations
+   * @param filter - Query filter without a Where condition
+   * @param options - Options for the operations
    * @returns A promise of the target object or null if not found.
    */
   get(
@@ -50,7 +50,7 @@ export interface HasOneRepository<Target extends Entity> {
 
   /**
    * Patch the  related target model instance
-   * @param dataObject The target model fields and their new values to patch
+   * @param dataObject - The target model fields and their new values to patch
    * @param options
    * @returns A promise which resolves the patched target model instances
    */
@@ -64,8 +64,8 @@ export class DefaultHasOneRepository<
 > implements HasOneRepository<TargetEntity> {
   /**
    * Constructor of DefaultHasOneEntityCrudRepository
-   * @param getTargetRepository the getter of the related target model repository instance
-   * @param constraint the key value pair representing foreign key name to constrain
+   * @param getTargetRepository - the getter of the related target model repository instance
+   * @param constraint - the key value pair representing foreign key name to constrain
    * the target repository instance
    */
   constructor(

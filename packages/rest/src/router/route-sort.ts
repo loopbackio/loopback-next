@@ -21,8 +21,8 @@ const HTTP_VERBS: {[name: string]: number} = {
 
 /**
  * Compare two routes by verb/path for sorting
- * @param route1 First route entry
- * @param route2 Second route entry
+ * @param route1 - First route entry
+ * @param route2 - Second route entry
  */
 export function compareRoute(
   route1: Pick<RouteEntry, 'verb' | 'path'>,
@@ -57,7 +57,7 @@ export function compareRoute(
 
 /**
  *
- * @param path Parse a path template into tokens
+ * @param path - Parse a path template into tokens
  */
 function parse(path: string) {
   const tokens: pathToRegExp.Token[] = [];

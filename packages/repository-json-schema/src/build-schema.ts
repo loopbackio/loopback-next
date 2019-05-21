@@ -21,7 +21,7 @@ export interface JsonSchemaOptions {
 /**
  * Gets the JSON Schema of a TypeScript model/class by seeing if one exists
  * in a cache. If not, one is generated and then cached.
- * @param ctor Contructor of class to get JSON Schema from
+ * @param ctor - Contructor of class to get JSON Schema from
  */
 export function getJsonSchema(
   ctor: Function,
@@ -42,7 +42,7 @@ export function getJsonSchema(
 
 /**
  * Gets the wrapper function of primitives string, number, and boolean
- * @param type Name of type
+ * @param type - Name of type
  */
 export function stringTypeToWrapper(type: string | Function): Function {
   if (typeof type === 'function') {
@@ -88,7 +88,7 @@ export function stringTypeToWrapper(type: string | Function): Function {
 
 /**
  * Determines whether a given string or constructor is array type or not
- * @param type Type as string or wrapper
+ * @param type - Type as string or wrapper
  */
 export function isArrayType(type: string | Function) {
   return type === Array || type === 'array';
@@ -149,7 +149,7 @@ export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
 /**
  * Converts a TypeScript class into a JSON Schema using TypeScript's
  * reflection API
- * @param ctor Constructor of class to convert from
+ * @param ctor - Constructor of class to convert from
  */
 export function modelToJsonSchema(
   ctor: Function,

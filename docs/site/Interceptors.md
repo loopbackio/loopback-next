@@ -469,8 +469,8 @@ parameters:
  */
 export interface Interceptor {
   /**
-   * @param context Invocation context
-   * @param next A function to invoke next interceptor or the target method
+   * @param context - Invocation context
+   * @param next - A function to invoke next interceptor or the target method
    * @returns A result as value or promise
    */
   (
@@ -513,11 +513,11 @@ bindings. It extends `Context` with additional properties as follows:
 export class InvocationContext extends Context {
   /**
    * Construct a new instance
-   * @param parent Parent context, such as the RequestContext
-   * @param target Target class (for static methods) or prototype/object
+   * @param parent - Parent context, such as the RequestContext
+   * @param target - Target class (for static methods) or prototype/object
    * (for instance methods)
-   * @param methodName Method name
-   * @param args An array of arguments
+   * @param methodName - Method name
+   * @param args - An array of arguments
    */
   constructor(
     parent: Context,

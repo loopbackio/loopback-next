@@ -28,8 +28,8 @@ export class DefaultBelongsToRepository<
 > implements BelongsToRepository<TargetEntity> {
   /**
    * Constructor of DefaultBelongsToEntityCrudRepository
-   * @param getTargetRepository the getter of the related target model repository instance
-   * @param constraint the key value pair representing foreign key name to constrain
+   * @param getTargetRepository - the getter of the related target model repository instance
+   * @param constraint - the key value pair representing foreign key name to constrain
    * the target repository instance
    */
   constructor(

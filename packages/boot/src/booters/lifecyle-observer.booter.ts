@@ -24,9 +24,9 @@ type LifeCycleObserverClass = Constructor<LifeCycleObserver>;
  *
  * Supported phases: configure, discover, load
  *
- * @param app Application instance
- * @param projectRoot Root of User Project relative to which all paths are resolved
- * @param [bootConfig] LifeCycleObserver Artifact Options Object
+ * @param app - Application instance
+ * @param projectRoot - Root of User Project relative to which all paths are resolved
+ * @param bootConfig - LifeCycleObserver Artifact Options Object
  */
 export class LifeCycleObserverBooter extends BaseArtifactBooter {
   observers: LifeCycleObserverClass[];

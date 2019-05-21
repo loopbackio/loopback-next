@@ -10,8 +10,8 @@ import {HasOneDefinition, RelationType} from '../relation.types';
 /*
  * Decorator for hasOne
  * infers foreign key name from target model name unless explicitly specified
- * @param targetResolver Target model for hasOne relation
- * @param definition Optional metadata for setting up hasOne relation
+ * @param targetResolver - Target model for hasOne relation
+ * @param definition - Optional metadata for setting up hasOne relation
  * @returns {(target:any, key:string)}
  */
 export function hasOne<T extends Entity>(

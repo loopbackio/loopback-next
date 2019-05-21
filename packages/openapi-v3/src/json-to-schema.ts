@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 
 /**
  * Converts JSON Schemas into a SchemaObject
- * @param json JSON Schema to convert from
+ * @param json - JSON Schema to convert from
  */
 export function jsonToSchemaObject(json: JsonSchema): SchemaObject {
   const result: SchemaObject = {};
@@ -85,7 +85,7 @@ export function jsonToSchemaObject(json: JsonSchema): SchemaObject {
 /**
  * Helper function used to interpret boolean values as JSON Schemas.
  * See http://json-schema.org/draft-06/json-schema-release-notes.html
- * @param jsonOrBool converts boolean values into their representative JSON Schemas
+ * @param jsonOrBool - converts boolean values into their representative JSON Schemas
  * @returns A JSON Schema document representing the input value.
  */
 export function jsonOrBooleanToJSON(jsonOrBool: boolean | JsonSchema) {

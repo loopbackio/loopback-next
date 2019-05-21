@@ -12,8 +12,8 @@ import {OAI3Keys} from '../keys';
  * Expose a Controller method as a REST API operation
  * mapped to `GET` request method.
  *
- * @param path The URL path of this operation, e.g. `/product/{id}`
- * @param spec The OpenAPI specification describing parameters and responses
+ * @param path - The URL path of this operation, e.g. `/product/{id}`
+ * @param spec - The OpenAPI specification describing parameters and responses
  *   of this operation.
  */
 export function get(path: string, spec?: OperationObject) {
@@ -24,8 +24,8 @@ export function get(path: string, spec?: OperationObject) {
  * Expose a Controller method as a REST API operation
  * mapped to `POST` request method.
  *
- * @param path The URL path of this operation, e.g. `/product/{id}`
- * @param spec The OpenAPI specification describing parameters and responses
+ * @param path - The URL path of this operation, e.g. `/product/{id}`
+ * @param spec - The OpenAPI specification describing parameters and responses
  *   of this operation.
  */
 export function post(path: string, spec?: OperationObject) {
@@ -36,8 +36,8 @@ export function post(path: string, spec?: OperationObject) {
  * Expose a Controller method as a REST API operation
  * mapped to `PUT` request method.
  *
- * @param path The URL path of this operation, e.g. `/product/{id}`
- * @param spec The OpenAPI specification describing parameters and responses
+ * @param path - The URL path of this operation, e.g. `/product/{id}`
+ * @param spec - The OpenAPI specification describing parameters and responses
  *   of this operation.
  */
 export function put(path: string, spec?: OperationObject) {
@@ -48,8 +48,8 @@ export function put(path: string, spec?: OperationObject) {
  * Expose a Controller method as a REST API operation
  * mapped to `PATCH` request method.
  *
- * @param path The URL path of this operation, e.g. `/product/{id}`
- * @param spec The OpenAPI specification describing parameters and responses
+ * @param path - The URL path of this operation, e.g. `/product/{id}`
+ * @param spec - The OpenAPI specification describing parameters and responses
  *   of this operation.
  */
 export function patch(path: string, spec?: OperationObject) {
@@ -60,8 +60,8 @@ export function patch(path: string, spec?: OperationObject) {
  * Expose a Controller method as a REST API operation
  * mapped to `DELETE` request method.
  *
- * @param path The URL path of this operation, e.g. `/product/{id}`
- * @param spec The OpenAPI specification describing parameters and responses
+ * @param path - The URL path of this operation, e.g. `/product/{id}`
+ * @param spec - The OpenAPI specification describing parameters and responses
  *   of this operation.
  */
 export function del(path: string, spec?: OperationObject) {
@@ -71,9 +71,9 @@ export function del(path: string, spec?: OperationObject) {
 /**
  * Expose a Controller method as a REST API operation.
  *
- * @param verb HTTP verb, e.g. `GET` or `POST`.
- * @param path The URL path of this operation, e.g. `/product/{id}`
- * @param spec The OpenAPI specification describing parameters and responses
+ * @param verb - HTTP verb, e.g. `GET` or `POST`.
+ * @param path - The URL path of this operation, e.g. `/product/{id}`
+ * @param spec - The OpenAPI specification describing parameters and responses
  *   of this operation.
  */
 export function operation(verb: string, path: string, spec?: OperationObject) {

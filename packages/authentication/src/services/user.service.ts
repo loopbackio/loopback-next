@@ -84,7 +84,7 @@ export interface UserService<U, C> {
    *   }
    * };
    * ```
-   * @param credentials Credentials for basic auth or configurations for 3rd party.
+   * @param credentials - Credentials for basic auth or configurations for 3rd party.
    *                    Example see the
    */
   verifyCredentials(credentials: C): Promise<U>;
@@ -92,7 +92,7 @@ export interface UserService<U, C> {
   /**
    * Convert the user returned by `verifyCredentials()` to a common
    * user profile that describes a user in your application
-   * @param user The user returned from `verifyCredentials()`
+   * @param user - The user returned from `verifyCredentials()`
    */
   convertToUserProfile(user: U): UserProfile;
 }

@@ -21,8 +21,8 @@ export interface AuthenticationMetadata {
 /**
  * Mark a controller method as requiring authenticated user.
  *
- * @param strategyName The name of the authentication strategy to use.
- * @param options Additional options to configure the authentication.
+ * @param strategyName - The name of the authentication strategy to use.
+ * @param options - Additional options to configure the authentication.
  */
 export function authenticate(strategyName: string, options?: Object) {
   return MethodDecoratorFactory.createDecorator<AuthenticationMetadata>(
@@ -37,8 +37,8 @@ export function authenticate(strategyName: string, options?: Object) {
 /**
  * Fetch authentication metadata stored by `@authenticate` decorator.
  *
- * @param controllerClass Target controller
- * @param methodName Target method
+ * @param controllerClass - Target controller
+ * @param methodName - Target method
  */
 export function getAuthenticateMetadata(
   controllerClass: Constructor<{}>,

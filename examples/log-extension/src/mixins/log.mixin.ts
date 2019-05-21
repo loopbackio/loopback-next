@@ -33,7 +33,7 @@ export function LogMixin<T extends Constructor<any>>(superClass: T) {
     /**
      * Set minimum logLevel to be displayed.
      *
-     * @param level The log level to set for @log decorator
+     * @param level - The log level to set for @log decorator
      *
      * @example
      * ```ts

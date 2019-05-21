@@ -42,7 +42,7 @@ export type ResolutionElement = BindingElement | InjectionElement;
 
 /**
  * Type guard for binding elements
- * @param element A resolution element
+ * @param element - A resolution element
  */
 function isBinding(
   element: ResolutionElement | undefined,
@@ -52,7 +52,7 @@ function isBinding(
 
 /**
  * Type guard for injection elements
- * @param element A resolution element
+ * @param element - A resolution element
  */
 function isInjection(
   element: ResolutionElement | undefined,
@@ -75,7 +75,7 @@ export class ResolutionSession {
    * Fork the current session so that a new one with the same stack can be used
    * in parallel or future resolutions, such as multiple method arguments,
    * multiple properties, or a getter function
-   * @param session The current session
+   * @param session - The current session
    */
   static fork(session?: ResolutionSession): ResolutionSession | undefined {
     if (session === undefined) return undefined;
@@ -86,8 +86,8 @@ export class ResolutionSession {
 
   /**
    * Start to resolve a binding within the session
-   * @param binding The current binding
-   * @param session The current resolution session
+   * @param binding - The current binding
+   * @param session - The current resolution session
    */
   private static enterBinding(
     binding: Readonly<Binding>,
@@ -100,9 +100,9 @@ export class ResolutionSession {
 
   /**
    * Run the given action with the given binding and session
-   * @param action A function to do some work with the resolution session
-   * @param binding The current binding
-   * @param session The current resolution session
+   * @param action - A function to do some work with the resolution session
+   * @param binding - The current binding
+   * @param session - The current resolution session
    */
   static runWithBinding(
     action: ResolutionAction,
@@ -118,8 +118,8 @@ export class ResolutionSession {
 
   /**
    * Push an injection into the session
-   * @param injection The current injection
-   * @param session The current resolution session
+   * @param injection - The current injection
+   * @param session - The current resolution session
    */
   private static enterInjection(
     injection: Readonly<Injection>,
@@ -132,9 +132,9 @@ export class ResolutionSession {
 
   /**
    * Run the given action with the given injection and session
-   * @param action A function to do some work with the resolution session
-   * @param binding The current injection
-   * @param session The current resolution session
+   * @param action - A function to do some work with the resolution session
+   * @param binding - The current injection
+   * @param session - The current resolution session
    */
   static runWithInjection(
     action: ResolutionAction,
@@ -153,7 +153,7 @@ export class ResolutionSession {
 
   /**
    * Describe the injection for debugging purpose
-   * @param injection Injection object
+   * @param injection - Injection object
    */
   static describeInjection(injection?: Readonly<Injection>) {
     /* istanbul ignore if */
@@ -173,7 +173,7 @@ export class ResolutionSession {
 
   /**
    * Push the injection onto the session
-   * @param injection Injection The current injection
+   * @param injection - Injection The current injection
    */
   pushInjection(injection: Readonly<Injection>) {
     /* istanbul ignore if */
@@ -235,7 +235,7 @@ export class ResolutionSession {
 
   /**
    * Enter the resolution of the given binding. If
-   * @param binding Binding
+   * @param binding - Binding
    */
   pushBinding(binding: Readonly<Binding>) {
     /* istanbul ignore if */
@@ -354,7 +354,7 @@ export type ResolutionOptionsOrSession = ResolutionOptions | ResolutionSession;
 
 /**
  * Normalize ResolutionOptionsOrSession to ResolutionOptions
- * @param optionsOrSession resolution options or session
+ * @param optionsOrSession - resolution options or session
  */
 export function asResolutionOptions(
   optionsOrSession?: ResolutionOptionsOrSession,

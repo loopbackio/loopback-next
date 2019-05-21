@@ -38,7 +38,7 @@ export class GreetingService {
 
   /**
    * Find a greeter that can speak the given language
-   * @param language Language code for the greeting
+   * @param language - Language code for the greeting
    */
   async findGreeter(language: string): Promise<Greeter | undefined> {
     // Get the latest list of greeters
@@ -49,8 +49,8 @@ export class GreetingService {
 
   /**
    * Greet in the given language
-   * @param language Language code
-   * @param name Name
+   * @param language - Language code
+   * @param name - Name
    */
   async greet(language: string, name: string): Promise<string> {
     let greeting: string = '';

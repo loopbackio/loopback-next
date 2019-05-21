@@ -66,9 +66,9 @@ export class NamespacedReflect {
 
   /**
    * Check if the target has corresponding metadata
-   * @param metadataKey Key
-   * @param target Target
-   * @param propertyKey Optional property key
+   * @param metadataKey - Key
+   * @param target - Target
+   * @param propertyKey - Optional property key
    */
   hasMetadata(
     metadataKey: string,

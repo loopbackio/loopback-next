@@ -157,8 +157,8 @@ export class CustomSendProvider implements Provider<Send> {
   /**
    * Use the mimeType given in the request's Accept header to convert
    * the response object!
-   * @param response The response object used to reply to the  client.
-   * @param result The result of the operation carried out by the controller's
+   * @param response - The response object used to reply to the  client.
+   * @param result - The result of the operation carried out by the controller's
    * handling function.
    */
   action(response: Response, result: OperationRetval) {

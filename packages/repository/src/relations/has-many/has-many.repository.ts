@@ -20,8 +20,8 @@ import {EntityCrudRepository} from '../../repositories/repository';
 export interface HasManyRepository<Target extends Entity> {
   /**
    * Create a target model instance
-   * @param targetModelData The target model data
-   * @param options Options for the operation
+   * @param targetModelData - The target model data
+   * @param options - Options for the operation
    * @returns A promise which resolves to the newly created target model instance
    */
   create(
@@ -30,22 +30,22 @@ export interface HasManyRepository<Target extends Entity> {
   ): Promise<Target>;
   /**
    * Find target model instance(s)
-   * @param filter A filter object for where, order, limit, etc.
-   * @param options Options for the operation
+   * @param filter - A filter object for where, order, limit, etc.
+   * @param options - Options for the operation
    * @returns A promise which resolves with the found target instance(s)
    */
   find(filter?: Filter<Target>, options?: Options): Promise<Target[]>;
   /**
    * Delete multiple target model instances
-   * @param where Instances within the where scope are deleted
+   * @param where - Instances within the where scope are deleted
    * @param options
    * @returns A promise which resolves the deleted target model instances
    */
   delete(where?: Where<Target>, options?: Options): Promise<Count>;
   /**
    * Patch multiple target model instances
-   * @param dataObject The fields and their new values to patch
-   * @param where Instances within the where scope are patched
+   * @param dataObject - The fields and their new values to patch
+   * @param where - Instances within the where scope are patched
    * @param options
    * @returns A promise which resolves the patched target model instances
    */
@@ -63,8 +63,8 @@ export class DefaultHasManyRepository<
 > implements HasManyRepository<TargetEntity> {
   /**
    * Constructor of DefaultHasManyEntityCrudRepository
-   * @param getTargetRepository the getter of the related target model repository instance
-   * @param constraint the key value pair representing foreign key name to constrain
+   * @param getTargetRepository - the getter of the related target model repository instance
+   * @param constraint - the key value pair representing foreign key name to constrain
    * the target repository instance
    */
   constructor(

@@ -16,9 +16,9 @@ export type ContextEventType = 'bind' | 'unbind' | string;
 
 /**
  * Listen on `bind`, `unbind`, or other events
- * @param eventType Context event type
- * @param binding The binding as event source
- * @param context Context object for the binding event
+ * @param eventType - Context event type
+ * @param binding - The binding as event source
+ * @param context - Context object for the binding event
  */
 export type ContextObserverFn = (
   eventType: ContextEventType,
@@ -38,8 +38,8 @@ export interface ContextObserver {
 
   /**
    * Listen on `bind`, `unbind`, or other events
-   * @param eventType Context event type
-   * @param binding The binding as event source
+   * @param eventType - Context event type
+   * @param binding - The binding as event source
    */
   observe: ContextObserverFn;
 }

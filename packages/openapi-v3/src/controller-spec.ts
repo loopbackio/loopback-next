@@ -60,7 +60,7 @@ type ComponentSchemaMap = {[key: string]: SchemaObject};
 
 /**
  * Build the api spec from class and method level decorations
- * @param constructor Controller class
+ * @param constructor - Controller class
  */
 function resolveControllerSpec(constructor: Function): ControllerSpec {
   debug(`Retrieving OpenAPI specification for controller ${constructor.name}`);
@@ -234,8 +234,8 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
 
 /**
  * Resolve the x-ts-type in the schema object
- * @param spec Controller spec
- * @param schema Schema object
+ * @param spec - Controller spec
+ * @param schema - Schema object
  */
 function processSchemaExtensions(
   spec: ControllerSpec,
@@ -272,8 +272,8 @@ function processSchemaExtensions(
 
 /**
  * Generate json schema for a given x-ts-type
- * @param spec Controller spec
- * @param tsType TS Type
+ * @param spec - Controller spec
+ * @param tsType - TS Type
  */
 function generateOpenAPISchema(spec: ControllerSpec, tsType: Function) {
   if (!spec.components) {
@@ -299,8 +299,8 @@ function generateOpenAPISchema(spec: ControllerSpec, tsType: Function) {
 
 /**
  * Assign related schemas from definitions to the controller spec
- * @param spec Controller spec
- * @param definitions Schema definitions
+ * @param spec - Controller spec
+ * @param definitions - Schema definitions
  */
 function assignRelatedSchemas(
   spec: ControllerSpec,
@@ -330,7 +330,7 @@ function assignRelatedSchemas(
 
 /**
  * Get the controller spec for the given class
- * @param constructor Controller class
+ * @param constructor - Controller class
  */
 export function getControllerSpec(constructor: Function): ControllerSpec {
   let spec = MetadataInspector.getClassMetadata<ControllerSpec>(
