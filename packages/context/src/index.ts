@@ -5,6 +5,7 @@
 
 export * from '@loopback/metadata';
 export * from './binding';
+export * from './binding-config';
 export * from './binding-decorator';
 export * from './binding-filter';
 export * from './binding-inspector';
@@ -16,6 +17,7 @@ export * from './context-view';
 export * from './inject';
 export * from './interception-proxy';
 export * from './interceptor';
+export * from './inject-config';
 export * from './keys';
 export * from './provider';
 export * from './resolution-session';

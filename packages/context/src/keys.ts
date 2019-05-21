@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {ConfigurationResolver} from './binding-config';
 import {BindingKey} from './binding-key';
 
 /**
@@ -30,6 +31,11 @@ export namespace ContextTags {
   export const KEY = 'key';
 
   /**
+   * Binding tag to associate a configuration binding with the target binding key
+   */
+  export const CONFIGURATION_FOR = 'configurationFor';
+
+  /**
    * Binding tag for global interceptors
    */
   export const GLOBAL_INTERCEPTOR = 'globalInterceptor';
@@ -43,6 +49,13 @@ export namespace ContextTags {
  * Namespace for context bindings
  */
 export namespace ContextBindings {
+  /**
+   * Binding key for ConfigurationResolver
+   */
+  export const CONFIGURATION_RESOLVER = BindingKey.create<
+    ConfigurationResolver
+  >(`${BindingKey.CONFIG_NAMESPACE}.resolver`);
+
   /**
    * Binding key for ordered groups of global interceptors
    */

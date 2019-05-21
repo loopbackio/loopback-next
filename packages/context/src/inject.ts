@@ -506,7 +506,7 @@ export function describeInjectedArguments(
  * JavaScript type
  * @param injection - Injection information
  */
-function inspectTargetType(injection: Readonly<Injection>) {
+export function inspectTargetType(injection: Readonly<Injection>) {
   let type = MetadataInspector.getDesignTypeForProperty(
     injection.target,
     injection.member!,
