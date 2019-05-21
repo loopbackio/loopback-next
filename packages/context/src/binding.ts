@@ -7,6 +7,7 @@ import * as debugFactory from 'debug';
 import {BindingAddress, BindingKey} from './binding-key';
 import {Context} from './context';
 import {createProxyWithInterceptors} from './interception-proxy';
+import {ContextTags} from './keys';
 import {Provider} from './provider';
 import {
   asResolutionOptions,
@@ -187,9 +188,9 @@ export class Binding<T = BoundValue> {
     return this._valueConstructor;
   }
 
-  constructor(key: string, public isLocked: boolean = false) {
+  constructor(key: BindingAddress<T>, public isLocked: boolean = false) {
     BindingKey.validate(key);
-    this.key = key;
+    this.key = key.toString();
   }
 
   /**
@@ -303,6 +304,9 @@ export class Binding<T = BoundValue> {
     );
   }
 
+  /**
+   * Lock the binding so that it cannot be rebound
+   */
   lock(): this {
     this.isLocked = true;
     return this;
@@ -569,6 +573,9 @@ export class Binding<T = BoundValue> {
     return this;
   }
 
+  /**
+   * Convert to a plain JSON object
+   */
   toJSON(): Object {
     // tslint:disable-next-line:no-any
     const json: {[name: string]: any} = {
@@ -590,7 +597,27 @@ export class Binding<T = BoundValue> {
    * @param key - Binding key
    */
   static bind<T = unknown>(key: BindingAddress<T>): Binding<T> {
-    return new Binding(key.toString());
+    return new Binding(key);
+  }
+
+  /**
+   * Create a configuration binding for the given key
+   *
+   * @example
+   * ```ts
+   * const configBinding = Binding.configure('servers.RestServer.server1')
+   *   .to({port: 3000});
+   * ```
+   *
+   * @typeparam T Generic type for the configuration value (not the binding to
+   * be configured)
+   *
+   * @param key - Key for the binding to be configured
+   */
+  static configure<T = unknown>(key: BindingAddress): Binding<T> {
+    return new Binding(BindingKey.buildKeyForConfig<T>(key)).tag({
+      [ContextTags.CONFIGURATION_FOR]: key.toString(),
+    });
   }
 }
 

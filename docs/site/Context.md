@@ -531,3 +531,135 @@ class MyController {
   }
 }
 ```
+
+## Configuration by convention
+
+To allow bound items in the context to be configured, we introduce some
+conventions and corresponding APIs to make it simple and consistent.
+
+We treat configurations for bound items in the context as dependencies, which
+can be resolved and injected in the same way of other forms of dependencies. For
+example, the `RestServer` can be configured with `RestServerConfig`.
+
+Let's first look at an example:
+
+```ts
+export class RestServer {
+  constructor(
+    @inject(CoreBindings.APPLICATION_INSTANCE) app: Application,
+    @inject(RestBindings.CONFIG, {optional: true})
+    config: RestServerConfig = {},
+  ) {
+    // ...
+  }
+  // ...
+}
+```
+
+The configuration (`RestServerConfig`) itself is a binding
+(`RestBindings.CONFIG`) in the context. It's independent of the binding for
+`RestServer`. The caveat is that we need to maintain a different binding key for
+the configuration. Referencing a hard-coded key for the configuration also makes
+it impossible to have more than one instances of the `RestServer` to be
+configured with different options, such as `protocol` or `port`.
+
+To solve these problems, we introduce an accompanying binding for an item that
+expects configuration. For example:
+
+- `servers.RestServer.server1`: RestServer
+- `servers.RestServer.server1:$config`: RestServerConfig
+
+- `servers.RestServer.server2`: RestServer
+- `servers.RestServer.server2:$config`: RestServerConfig
+
+The following APIs are available to enforce/leverage this convention:
+
+1. `ctx.configure('servers.RestServer.server1')` => Binding for the
+   configuration
+2. `Binding.configure('servers.RestServer.server1')` => Creates a accompanying
+   binding for the configuration of the target binding
+3. `ctx.getConfig('servers.RestServer.server1')` => Get configuration
+4. `@config` to inject corresponding configuration
+5. `@config.getter` to inject a getter function for corresponding configuration
+6. `@config.view` to inject a `ContextView` for corresponding configuration
+
+The `RestServer` can now use `@config` to inject configuration for the current
+binding of `RestServer`.
+
+```ts
+export class RestServer {
+  constructor(
+    @inject(CoreBindings.APPLICATION_INSTANCE) app: Application,
+    @config()
+    config: RestServerConfig = {},
+  ) {
+    // ...
+  }
+  // ...
+}
+```
+
+The `@config.*` decorators can take an optional `configPath` parameter to allow
+the configuration value to be a deep property of the bound value. For example,
+`@config('port')` injects `RestServerConfig.port` to the target.
+
+```ts
+export class MyRestServer {
+  constructor(
+    @config('host')
+    host: string,
+    @config('port')
+    port: number,
+  ) {
+    // ...
+  }
+  // ...
+}
+```
+
+Now we can use `context.configure()` to provide configuration for target
+bindings.
+
+```ts
+const appCtx = new Context();
+appCtx.bind('servers.RestServer.server1').toClass(RestServer);
+appCtx
+  .configure('servers.RestServer.server1')
+  .to({protocol: 'https', port: 473});
+
+appCtx.bind('servers.RestServer.server2').toClass(RestServer);
+appCtx.configure('servers.RestServer.server2').to({protocol: 'http', port: 80});
+```
+
+Please note that `@config.*` is different from `@inject.*` as `@config.*`
+injects configuration based on the current binding where `@config.*` is applied.
+No hard-coded binding key is needed. The `@config.*` also allows the same class
+such as `RestServer` to be bound to different keys with different configurations
+as illustrated in the code snippet above.
+
+All configuration accessors or injectors (such as `ctx.getConfig`, `@config`) by
+default treat the configuration binding as optional, i.e. return `undefined` if
+no configuration was bound. This is different from `ctx.get` and `@inject` APIs,
+which require the binding to exist and throw an error when the requested binding
+is not found. The behavior can be customized via `ResolutionOptions.optional`
+flag.
+
+### Allow configuration to be changed dynamically
+
+Some configurations are designed to be changeable dynamically, for example, the
+logging level for an application. To allow that, we introduce `@config.getter`
+to always fetch the latest value of the configuration.
+
+```ts
+export class Logger {
+  @config.getter()
+  private getLevel: Getter<string>;
+
+  async log(level: string, message: string) {
+    const currentLevel = await getLevel();
+    if (shouldLog(level, currentLevel)) {
+      // ...
+    }
+  }
+}
+```

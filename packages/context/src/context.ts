@@ -7,6 +7,10 @@ import * as debugFactory from 'debug';
 import {EventEmitter} from 'events';
 import {v1 as uuidv1} from 'uuid';
 import {Binding, BindingTag} from './binding';
+import {
+  ConfigurationResolver,
+  DefaultConfigurationResolver,
+} from './binding-config';
 import {BindingFilter, filterByKey, filterByTag} from './binding-filter';
 import {BindingAddress, BindingKey} from './binding-key';
 import {BindingComparator} from './binding-sorter';
@@ -18,6 +22,7 @@ import {
   Subscription,
 } from './context-observer';
 import {ContextView} from './context-view';
+import {ContextBindings} from './keys';
 import {
   asResolutionOptions,
   ResolutionOptions,
@@ -66,6 +71,8 @@ export class Context extends EventEmitter {
    * Parent context
    */
   protected _parent?: Context;
+
+  protected configResolver: ConfigurationResolver;
 
   /**
    * Event listeners for parent context keyed by event names. It keeps track
@@ -357,10 +364,129 @@ export class Context extends EventEmitter {
   }
 
   /**
+   * Create a corresponding binding for configuration of the target bound by
+   * the given key in the context.
+   *
+   * For example, `ctx.configure('controllers.MyController').to({x: 1})` will
+   * create binding `controllers.MyController:$config` with value `{x: 1}`.
+   *
+   * @param key - The key for the binding to be configured
+   */
+  configure<ConfigValueType = BoundValue>(
+    key: BindingAddress = '',
+  ): Binding<ConfigValueType> {
+    const bindingForConfig = Binding.configure<ConfigValueType>(key);
+    this.add(bindingForConfig);
+    return bindingForConfig;
+  }
+
+  /**
+   * Get the value or promise of configuration for a given binding by key
+   *
+   * @param key - Binding key
+   * @param configPath - Property path for the option. For example, `x.y`
+   * requests for `<config>.x.y`. If not set, the `<config>` object will be
+   * returned.
+   * @param resolutionOptions - Options for the resolution.
+   * - optional: if not set or set to `true`, `undefined` will be returned if
+   * no corresponding value is found. Otherwise, an error will be thrown.
+   */
+  getConfigAsValueOrPromise<ConfigValueType>(
+    key: BindingAddress,
+    configPath?: string,
+    resolutionOptions?: ResolutionOptions,
+  ): ValueOrPromise<ConfigValueType | undefined> {
+    this.setupConfigurationResolverIfNeeded();
+    return this.configResolver.getConfigAsValueOrPromise(
+      key,
+      configPath,
+      resolutionOptions,
+    );
+  }
+
+  /**
+   * Set up the configuration resolver if needed
+   */
+  protected setupConfigurationResolverIfNeeded() {
+    if (!this.configResolver) {
+      // First try the bound ConfigurationResolver to this context
+      const configResolver = this.getSync<ConfigurationResolver>(
+        ContextBindings.CONFIGURATION_RESOLVER,
+        {
+          optional: true,
+        },
+      );
+      if (configResolver) {
+        debug(
+          'Custom ConfigurationResolver is loaded from %s.',
+          ContextBindings.CONFIGURATION_RESOLVER.toString(),
+        );
+        this.configResolver = configResolver;
+      } else {
+        // Fallback to DefaultConfigurationResolver
+        debug('DefaultConfigurationResolver is used.');
+        this.configResolver = new DefaultConfigurationResolver(this);
+      }
+    }
+    return this.configResolver;
+  }
+
+  /**
+   * Resolve configuration for the binding by key
+   *
+   * @param key - Binding key
+   * @param configPath - Property path for the option. For example, `x.y`
+   * requests for `<config>.x.y`. If not set, the `<config>` object will be
+   * returned.
+   * @param resolutionOptions - Options for the resolution.
+   */
+  async getConfig<ConfigValueType>(
+    key: BindingAddress,
+    configPath?: string,
+    resolutionOptions?: ResolutionOptions,
+  ): Promise<ConfigValueType | undefined> {
+    return await this.getConfigAsValueOrPromise<ConfigValueType>(
+      key,
+      configPath,
+      resolutionOptions,
+    );
+  }
+
+  /**
+   * Resolve configuration synchronously for the binding by key
+   *
+   * @param key - Binding key
+   * @param configPath - Property path for the option. For example, `x.y`
+   * requests for `config.x.y`. If not set, the `config` object will be
+   * returned.
+   * @param resolutionOptions - Options for the resolution.
+   */
+  getConfigSync<ConfigValueType>(
+    key: BindingAddress,
+    configPath?: string,
+    resolutionOptions?: ResolutionOptions,
+  ): ConfigValueType | undefined {
+    const valueOrPromise = this.getConfigAsValueOrPromise<ConfigValueType>(
+      key,
+      configPath,
+      resolutionOptions,
+    );
+    if (isPromiseLike(valueOrPromise)) {
+      const prop = configPath ? ` property ${configPath}` : '';
+      throw new Error(
+        `Cannot get config${prop} for ${key} synchronously: the value is a promise`,
+      );
+    }
+    return valueOrPromise;
+  }
+
+  /**
    * Unbind a binding from the context. No parent contexts will be checked.
    *
    * @remarks
-   * If you need to unbind a binding owned by a parent context, use the code below:
+   * If you need to unbind a binding owned by a parent context, use the code
+   * below:
+   *
    * ```ts
    * const ownerCtx = ctx.getOwnerContext(key);
    * return ownerCtx != null && ownerCtx.unbind(key);
