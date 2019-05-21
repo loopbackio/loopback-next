@@ -40,7 +40,7 @@
   "dependencies": {
     "@loopback/context": "^1.15.0",
     "@loopback/core": "^1.7.0",
-    "express": "^4.16.3",
+    "express": "^4.17.0",
     "p-event": "^4.1.0"
   },
   "devDependencies": {
