@@ -157,12 +157,12 @@ describe('Basic Authentication', () => {
       .expect({
         error: {
           message: `The strategy 'doesnotexist' is not available.`,
-          name: 'UnauthorizedError',
+          name: 'Error',
           statusCode: 401,
+          code: 'AUTHENTICATION_STRATEGY_NOT_FOUND',
         },
       });
   });
-
   it('returns error when undefined user profile returned from authentication strategy', async () => {
     class BadBasicStrategy implements AuthenticationStrategy {
       name: string = 'badbasic';
@@ -186,12 +186,12 @@ describe('Basic Authentication', () => {
       .expect({
         error: {
           message: `User profile not returned from strategy's authenticate function`,
-          name: 'UnauthorizedError',
+          name: 'Error',
           statusCode: 401,
+          code: 'USER_PROFILE_NOT_FOUND',
         },
       });
   });
-
   async function givenAServer() {
     app = getApp();
     server = await app.getServer(RestServer);

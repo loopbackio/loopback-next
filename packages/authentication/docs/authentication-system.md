@@ -270,7 +270,7 @@ interface is implemented by the `value()` function of
 `AuthenticateActionProvider` class in `/src/providers/auth-action.provider.ts`.
 
 ```ts
-class SequenceIncludingAuthentication implements SequenceHandler {
+export class SequenceIncludingAuthentication implements SequenceHandler {
   constructor(
     @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
     @inject(SequenceActions.PARSE_PARAMS)
@@ -287,6 +287,14 @@ class SequenceIncludingAuthentication implements SequenceHandler {
       const {request, response} = context;
       const route = this.findRoute(request);
 
+      //call authentication action
+      await this.authenticateRequest(request);
+
+      // Authentication successful, proceed to invoke controller
+      const args = await this.parseParams(request, route);
+      const result = await this.invoke(route, args);
+      this.send(response, result);
+    } catch (error) {
       //
       // The authentication action utilizes a strategy resolver to find
       // an authentication strategy by name, and then it calls
@@ -294,37 +302,27 @@ class SequenceIncludingAuthentication implements SequenceHandler {
       //
       // The strategy resolver throws a non-http error if it cannot
       // resolve the strategy. When the strategy resolver obtains
-      // a strategy, it calls strategy.authentication(request) which
+      // a strategy, it calls strategy.authenticate(request) which
       // is expected to return a user profile. If the user profile
       // is undefined, then it throws a non-http error.
       //
-      // It is necessary to catch these errors
-      // and rethrow them as http errors (in our REST application example)
+      // It is necessary to catch these errors and add HTTP-specific status
+      // code property.
       //
-      // Errors thrown by the strategy implementations are http errors
-      // (in our REST application example). We simply rethrow them.
+      // Errors thrown by the strategy implementations already come
+      // with statusCode set.
       //
-      try {
-        //call authentication action
-        await this.authenticateRequest(request);
-      } catch (e) {
-        // strategy not found error, or user profile undefined
-        if (
-          e.code === AUTHENTICATION_STRATEGY_NOT_FOUND ||
-          e.code === USER_PROFILE_NOT_FOUND
-        ) {
-          throw new HttpErrors.Unauthorized(e.message);
-        } else {
-          // strategy error
-          throw e;
-        }
+      // In the future, we want to improve `@loopback/rest` to provide
+      // an extension point allowing `@loopback/authentication` to contribute
+      // mappings from error codes to HTTP status codes, so that application
+      // don't have to map codes themselves.
+      if (
+        error.code === AUTHENTICATION_STRATEGY_NOT_FOUND ||
+        error.code === USER_PROFILE_NOT_FOUND
+      ) {
+        Object.assign(error, {statusCode: 401 /* Unauthorized */});
       }
 
-      // Authentication successful, proceed to invoke controller
-      const args = await this.parseParams(request, route);
-      const result = await this.invoke(route, args);
-      this.send(response, result);
-    } catch (error) {
       this.reject(context, error);
       return;
     }
