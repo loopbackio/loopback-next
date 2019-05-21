@@ -26,29 +26,29 @@ export function getUserRepository(): UserRepository {
   return new UserRepository({
     joe888: {
       id: '1',
-      firstname: 'joe',
-      surname: 'joeman',
+      firstName: 'joe',
+      lastName: 'joeman',
       username: 'joe888',
       password: 'joepa55w0rd',
     },
     jill888: {
       id: '2',
-      firstname: 'jill',
-      surname: 'jillman',
+      firstName: 'jill',
+      lastName: 'jillman',
       username: 'jill888',
       password: 'jillpa55w0rd',
     },
     jack888: {
       id: '3',
-      firstname: 'jack',
-      surname: 'jackman',
+      firstName: 'jack',
+      lastName: 'jackman',
       username: 'jack888',
       password: 'jackpa55w0rd',
     },
     janice888: {
       id: '4',
-      firstname: 'janice',
-      surname: 'janiceman',
+      firstName: 'janice',
+      lastName: 'janiceman',
       username: 'janice888',
       password: 'janicepa55w0rd',
     },
@@ -104,9 +104,13 @@ export function createBearerAuthorizationHeaderValue(
 export function createUserProfile(user: User): UserProfile {
   const userProfile = {id: '', name: ''};
 
-  if (user && user.id) userProfile.id = user.id;
-  if (user && user.firstname && user.surname)
-    userProfile.name = `${user.firstname} ${user.surname}`;
+  if (user.id) userProfile.id = user.id;
+
+  let userName = '';
+  if (user.firstName) userName = user.firstName;
+  if (user.lastName)
+    userName = user.firstName ? `${userName} ${user.lastName}` : user.lastName;
+  userProfile.name = userName;
 
   return userProfile;
 }

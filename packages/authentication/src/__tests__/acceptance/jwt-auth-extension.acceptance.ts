@@ -34,6 +34,8 @@ describe('JWT Authentication', () => {
   let testUsers: UserRepository;
   let joeUser: User;
   let token: string;
+  const TOKEN_SECRET_VALUE = 'myjwts3cr3t';
+  const TOKEN_EXPIRES_IN_VALUE = '600';
 
   beforeEach(givenAServer);
   beforeEach(givenAuthenticatedSequence);
@@ -268,8 +270,7 @@ describe('JWT Authentication', () => {
 
     app.controller(InfoController);
 
-    const expiredToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJlbWFpbCI6ImpvZUBleGFtcGxlLmNvbSIsIm5hbWUiOiJqb2Ugam9lbWFuIiwiaWF0IjoxNTU1ODY3NDAzLCJleHAiOjE1NTU4Njc0NjN9.QKmO5qDC8Yg-aK3EedLRsXczL7VQDDnWtA-cpyqszqM';
+    const expiredToken = await getExpiredToken();
 
     await whenIMakeRequestTo(server)
       .get('/whoAmI')
@@ -402,8 +403,9 @@ describe('JWT Authentication', () => {
       .expect({
         error: {
           message: `The strategy 'doesnotexist' is not available.`,
-          name: 'UnauthorizedError',
+          name: 'Error',
           statusCode: 401,
+          code: 'AUTHENTICATION_STRATEGY_NOT_FOUND',
         },
       });
   });
@@ -431,8 +433,9 @@ describe('JWT Authentication', () => {
       .expect({
         error: {
           message: `User profile not returned from strategy's authenticate function`,
-          name: 'UnauthorizedError',
+          name: 'Error',
           statusCode: 401,
+          code: 'USER_PROFILE_NOT_FOUND',
         },
       });
   });
@@ -440,6 +443,18 @@ describe('JWT Authentication', () => {
   async function givenAServer() {
     app = getApp();
     server = await app.getServer(RestServer);
+  }
+
+  /**
+   * Creates an expired token
+   *
+   * Specifying a negative value for 'expiresIn' so the
+   * token is automatically expired
+   */
+  async function getExpiredToken() {
+    const userProfile = createUserProfile(joeUser);
+    const tokenService = new JWTService(TOKEN_SECRET_VALUE, '-10');
+    return await tokenService.generateToken(userProfile);
   }
 
   function givenAuthenticatedSequence() {
@@ -452,9 +467,11 @@ describe('JWT Authentication', () => {
 
     server
       .bind(JWTAuthenticationStrategyBindings.TOKEN_SECRET)
-      .to('myjwts3cr3t');
+      .to(TOKEN_SECRET_VALUE);
 
-    server.bind(JWTAuthenticationStrategyBindings.TOKEN_EXPIRES_IN).to('60');
+    server
+      .bind(JWTAuthenticationStrategyBindings.TOKEN_EXPIRES_IN)
+      .to(TOKEN_EXPIRES_IN_VALUE);
 
     server
       .bind(JWTAuthenticationStrategyBindings.TOKEN_SERVICE)
