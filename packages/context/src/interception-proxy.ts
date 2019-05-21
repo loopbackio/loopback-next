@@ -29,8 +29,9 @@ infer R
 /**
  * The proxy type for `T`. The return type for any method of `T` with original
  * return type `R` becomes `ValueOrPromise<R>` if `R` does not extend `Promise`.
- * Property types stay untouched. For example:
+ * Property types stay untouched.
  *
+ * @example
  * ```ts
  * class MyController {
  *   name: string;
