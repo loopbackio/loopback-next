@@ -18,7 +18,7 @@
     "coveralls": "^3.0.0",
     "cz-conventional-changelog": "^2.1.0",
     "husky": "^2.0.0",
-    "lerna": "^3.13.4",
+    "lerna": "^3.14.1",
     "tslint": "^5.15.0",
     "typescript": "^3.4.3"
   },
