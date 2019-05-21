@@ -51,7 +51,7 @@
     "@loopback/rest": "^1.11.2",
     "@loopback/rest-explorer": "^1.1.22",
     "@loopback/service-proxy": "^1.1.10",
-    "express": "^4.16.4",
+    "express": "^4.17.0",
     "p-event": "^4.1.0"
   },
   "devDependencies": {

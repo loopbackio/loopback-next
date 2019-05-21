@@ -23,7 +23,7 @@
     "@types/shot": "^4.0.0",
     "@types/sinon": "^7.0.2",
     "@types/supertest": "^2.0.7",
-    "express": "^4.16.4",
+    "express": "^4.17.0",
     "fs-extra": "^8.0.1",
     "oas-validator": "^3.3.0",
     "should": "^13.2.3",
