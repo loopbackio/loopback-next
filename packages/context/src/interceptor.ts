@@ -317,8 +317,9 @@ class InterceptMethodDecoratorFactory extends MethodDecoratorFactory<
  * Decorator function `@intercept` for classes/methods to apply interceptors. It
  * can be applied on a class and its public methods. Multiple occurrences of
  * `@intercept` are allowed on the same target class or method. The decorator
- * takes a list of `interceptor` functions or binding keys. For example:
+ * takes a list of `interceptor` functions or binding keys.
  *
+ * @example
  * ```ts
  * @intercept(log, metrics)
  * class MyController {
