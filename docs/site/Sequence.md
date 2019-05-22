@@ -217,30 +217,106 @@ namespace.
 
 ### Query string parameters
 
-{% include content/tbd.html %}
+OAI 3.0.x describes the data from a request’s header, query and path in an
+operation specification’s parameters property. In a Controller method, such an
+argument is typically decorated by @param(). We've made multiple shortcuts
+available to the `@param()` decorator in the form of
+`@param.<http_source>.<OAI_primitive_type>`. Using this notation, query string
+parameters can be described as `@param.query.string`. Here is an example of a
+controller method which retrieves a Note model instance by obtaining the `id`
+from the query string object.
 
-How to get query string param values.
+```ts
+@get('/notes/{id}', {
+  responses: {
+    '200': {
+      description: 'Note model instance',
+      content: {'application/json': {schema: {'x-ts-type': Note}}},
+    },
+  },
+})
+async findById(@param.query.string('id') id: string): Promise<Note> {
+  return await this.noteRepository.findById(id);
+}
+```
+
+You can also specify a parameter which is an object value encoded as a JSON
+string or in multiple nested keys. For a JSON string, a sample value would be
+`location={"lang": 23.414, "lat": -98.1515}`. For the same `location` object, it
+can also be represented as `location[lang]=23.414&location[lat]=-98.1515`. Here
+is the equivalent usage for `@param.query.object()` decorator. It takes in the
+name of the parameter and an optional schema or reference object for it.
+
+```ts
+@param.query.object('location', {
+  type: 'object',
+  properties: {lat: {type: 'number', format: 'float'}, long: {type: 'number', format: 'float'}},
+})
+```
+
+The parameters are retrieved as the result of `parseParams` Sequence action.
+Please note that deeply nested properties are not officially supported by OAS
+yet and is tracked by
+[OAI/OpenAPI-Specification#1706](https://github.com/OAI/OpenAPI-Specification/issues/1706).
+Therefore, our REST API Explorer does not allow users to provide values for such
+parameters and unfortunately has no visible indication of that. This problem is
+tracked and discussed in
+[swagger-api/swagger-js#1385](https://github.com/swagger-api/swagger-js/issues/1385).
 
 ### Parsing Requests
 
 Parsing and validating arguments from the request url, headers, and body. See
-page [Parsing requests](Parsing-requests.md)
+page [Parsing requests](Parsing-requests.md).
 
 ### Invoking controller methods
 
-{% include content/tbd.html %}
+The `invoke` sequence action simply takes the parsed request parameters from the
+`parseParams` action along with non-decorated arguments, calls the corresponding
+controller method or route handler method, and returns the value from it. The
+default implementation of
+[invoke](https://github.com/strongloop/loopback-next/blob/6bafa0774662991199090219913c3dc77ad5b149/packages/rest/src/providers/invoke-method.provider.ts)
+action calls the handler function for the route with the request specific
+context and the arguments for the function. It is important to note that
+controller methods use `invokeMethod` from `@loopback/context` and can be used
+with global and custom interceptors. See
+[Interceptor docs](Interceptors.md#use-invokemethod-to-apply-interceptors) for
+more details. The request flow for two route flavours is explained below.
 
-- How to use `invoke()` in simple and advanced use cases.
-- Explain what happens when you call `invoke()`
-- Mention caching use case
-- Can I call invoke multiple times?
+For controller methods:
+
+- A controller instance is instantiated from the context. As part of the
+  instantiation, constructor and property dependencies are injected. The
+  appropriate controller method is invoked via the chain of interceptors.
+- Arguments decorated with `@param` are resolved using data parsed from the
+  request. Arguments decorated with `@inject` are resolved from the context.
+  Arguments with no decorators are set to undefined, which is replaced by the
+  argument default value if it's provided.
+
+For route handlers, the handler function is invoked via the chain of
+interceptors. The array of method arguments is constructed using OpenAPI spec
+provided at handler registration time (either via `.api()` for full schema or
+`.route()` for individual route registration).
 
 ### Writing the response
 
-{% include content/tbd.html %}
+The
+[send](https://github.com/strongloop/loopback-next/blob/6bafa0774662991199090219913c3dc77ad5b149/packages/rest/src/providers/send.provider.ts)
+sequence action is responsible for writing the result of the `invoke` action to
+the HTTP response object. The default sequence calls send with (transformed)
+data. Under the hood, send performs all steps required to send back the
+response, from content-negotiation to serialization of the response body. In
+Express, the handler is responsible for setting response status code, headers
+and writing the response body. In LoopBack, controller methods and route
+handlers return data describing the response and it's the responsibility of the
+Sequence to send that data back to the client. This design makes it easier to
+transform the response before it is sent.
 
-- Must call `sendResponse()` exactly once
-- Streams?
+LoopBack 4 does not yet provide first-class support for streaming responses, see
+[Issue#2230](https://github.com/strongloop/loopback-next/issues/2230). As a
+short-term workaround, controller methods are allowed to send the response
+directly, effectively bypassing send action. The default implementation of send
+is prepared to handle this case
+[here](https://github.com/strongloop/loopback-next/blob/bf07ff959a1f90577849b61221b292d3127696d6/packages/rest/src/writer.ts#L22-L26).
 
 ### Handling errors
 
@@ -331,11 +407,12 @@ An example error message when the debug mode is enabled:
 
 ### Keeping your Sequences
 
-{% include content/tbd.html %}
-
-- Try and use existing actions
-- Implement your own version of built in actions
-- Publish reusable actions to npm
+For most use cases, the
+[default](https://github.com/strongloop/loopback-next/blob/6bafa0774662991199090219913c3dc77ad5b149/packages/rest/src/sequence.ts)
+sequence supplied with LoopBack 4 applications is good enough for
+request-response handling pipeline. Check out
+[Custom Sequences](#custom-sequences) on how to extend it and implement custom
+actions.
 
 ## Working with Express middleware
 
