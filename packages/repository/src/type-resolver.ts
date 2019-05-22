@@ -14,10 +14,10 @@ import {Class} from './common-types';
  * the actual reference to the class itself until later, when both sides
  * of the relation are created as JavaScript classes.
  *
- * @typeparam Type The type we are resolving, for example `Entity` or `Product`.
+ * @typeParam Type - The type we are resolving, for example `Entity` or `Product`.
  * This parameter is required.
  *
- * @typeparam StaticMembers The static properties available on the
+ * @typeParam StaticMembers - The static properties available on the
  * type class. For example, all models have static `modelName` property.
  * When `StaticMembers` are not provided, we default to static properties of
  * a `Function` - `name`, `length`, `apply`, `call`, etc.

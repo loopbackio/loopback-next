@@ -132,7 +132,7 @@ export class Application extends Context implements LifeCycleObserver {
   /**
    * Retrieve the singleton instance for a bound server.
    *
-   * @typeparam T
+   * @typeParam T - Server type
    * @param ctor - The constructor that was used to make the
    * binding.
    * @returns A Promise of server instance
