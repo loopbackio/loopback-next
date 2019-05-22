@@ -14,6 +14,6 @@ export class EnglishGreeter implements Greeter {
   language = 'en';
 
   greet(name: string) {
-    return `Hello, ${name}`;
+    return `Hello, ${name}!`;
   }
 }

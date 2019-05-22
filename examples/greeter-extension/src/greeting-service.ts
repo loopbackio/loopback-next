@@ -3,10 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Getter} from '@loopback/context';
+import {config, Getter} from '@loopback/context';
 import {extensionPoint, extensions} from '@loopback/core';
 import chalk from 'chalk';
-import {configuration} from './decorators';
 import {Greeter, GREETER_EXTENSION_POINT_NAME} from './types';
 
 /**
@@ -32,7 +31,7 @@ export class GreetingService {
      * An extension point should be able to receive its options via dependency
      * injection.
      */
-    @configuration() // Sugar for @inject('services.GreetingService.options', {optional: true})
+    @config() // Sugar for @inject('services.GreetingService.options', {optional: true})
     public readonly options?: GreetingServiceOptions,
   ) {}
 
@@ -60,7 +59,7 @@ export class GreetingService {
       greeting = greeter.greet(name);
     } else {
       // Fall back to English
-      greeting = `Hello, ${name}`;
+      greeting = `Hello, ${name}!`;
     }
     if (this.options && this.options.color) {
       greeting = chalk.keyword(this.options.color)(greeting);
