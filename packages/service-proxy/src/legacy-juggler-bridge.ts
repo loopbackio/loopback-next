@@ -22,7 +22,7 @@ export interface GenericService {
  * service-oriented connectors such as `rest`, `soap`, and `grpc`.
  *
  * @param ds - A legacy data source
- * @typeparam T The generic type of service interface
+ * @typeParam T - The generic type of service interface
  */
 export async function getService<T = GenericService>(
   ds: legacy.DataSource,
