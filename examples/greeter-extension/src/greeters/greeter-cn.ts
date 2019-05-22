@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, inject} from '@loopback/context';
+import {bind, config} from '@loopback/context';
 import {asGreeter, Greeter} from '../types';
 
 /**
@@ -25,7 +25,7 @@ export class ChineseGreeter implements Greeter {
     /**
      * Inject the configuration for ChineseGreeter
      */
-    @inject('greeters.ChineseGreeter.options', {optional: true})
+    @config()
     private options: ChineseGreeterOptions = {nameFirst: true},
   ) {}
 

@@ -5,16 +5,16 @@
 
 import {createBindingFromClass} from '@loopback/context';
 import {Component} from '@loopback/core';
-import {GreetingService} from './greeting-service';
 import {ChineseGreeter} from './greeters/greeter-cn';
 import {EnglishGreeter} from './greeters/greeter-en';
+import {GreetingService} from './greeting-service';
 import {GREETING_SERVICE} from './keys';
 
 /**
  * Define a component to register the greeter extension point and built-in
  * extensions
  */
-export class GreeterComponent implements Component {
+export class GreetingComponent implements Component {
   bindings = [
     createBindingFromClass(GreetingService, {
       key: GREETING_SERVICE,

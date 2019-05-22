@@ -244,7 +244,7 @@ import {GREETING_SERVICE} from './keys';
  * Define a component to register the greeter extension point and built-in
  * extensions
  */
-export class GreeterComponent implements Component {
+export class GreetingComponent implements Component {
   bindings = [
     createBindingFromClass(GreetingService, {
       key: GREETING_SERVICE,
@@ -283,7 +283,7 @@ app.add(createBindingFromClass(FrenchGreeter));
 The registration can be done using a component too:
 
 ```ts
-export class GreeterComponent implements Component {
+export class GreetingComponent implements Component {
   bindings = [
     // ...
     createBindingFromClass(EnglishGreeter),
@@ -308,7 +308,7 @@ export class GreetingService {
      * An extension point should be able to receive its options via dependency
      * injection.
      */
-    @configuration() // Sugar for @inject('services.GreetingService.options', {optional: true})
+    @config()
     public readonly options?: GreetingServiceOptions,
   ) {}
 }
@@ -318,7 +318,8 @@ export class GreetingService {
 
 ```ts
 // Configure the extension point
-app.bind('services.GreetingService.options').to({color: 'blue'});
+import {GREETING_SERVICE} from './keys';
+app.configure(GREETING_SERVICE).to({color: 'blue'});
 ```
 
 ## Configure an extension
@@ -336,7 +337,7 @@ export class ChineseGreeter implements Greeter {
     /**
      * Inject the configuration for ChineseGreeter
      */
-    @inject('greeters.ChineseGreeter.options', {optional: true})
+    @config()
     private options: ChineseGreeterOptions = {nameFirst: true},
   ) {}
 }
@@ -346,7 +347,7 @@ export class ChineseGreeter implements Greeter {
 
 ```ts
 // Configure the ChineseGreeter
-app.bind('greeters.ChineseGreeter.options').to({nameFirst: false});
+app.configure('greeters.ChineseGreeter').to({nameFirst: false});
 ```
 
 ## Contributions
@@ -360,8 +361,8 @@ Run `npm start` from the root folder to run the sample application. You should
 see the following message:
 
 ```
-English: Hello, Raymond
-Chinese: Raymond，你好
+English: Hello, Raymond!
+Chinese: Raymond，你好！
 ```
 
 ## Tests
