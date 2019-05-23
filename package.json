@@ -55,7 +55,8 @@
     "verify:docs": "npm run build:site -- --verify",
     "build:site": "./bin/build-docs-site.sh",
     "mocha": "node packages/build/bin/run-mocha \"packages/*/dist/__tests__/**/*.js\" \"examples/*/dist/__tests__/**/*.js\" \"packages/cli/test/**/*.js\" \"packages/build/test/*/*.js\"",
-    "posttest": "npm run lint"
+    "posttest": "npm run lint",
+    "private": "node ./bin/mark-non-lab-packages-private.js"
   },
   "config": {
     "commitizen": {

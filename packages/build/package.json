@@ -43,5 +43,6 @@
   "scripts": {
     "test": "npm run mocha",
     "mocha": "node bin/run-mocha --timeout 30000 \"test/integration/*.js\""
-  }
+  },
+  "private": true
 }
