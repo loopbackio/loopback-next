@@ -81,6 +81,8 @@ function verifyGeneratedScript(group = '') {
   );
   assert.fileContent(expectedFile, `@lifeCycleObserver('${group}')`);
   assert.fileContent(expectedFile, /async start\(\): Promise\<void\> {/);
+  assert.fileContent(expectedFile, /\/\/ Add your logic for start/);
+  assert.fileContent(expectedFile, /\/\/ Add your logic for stop/);
   assert.fileContent(expectedFile, /async stop\(\): Promise\<void\> {/);
   assert.file(INDEX_FILE);
   assert.fileContent(INDEX_FILE, /export \* from '.\/my-observer.observer';/);

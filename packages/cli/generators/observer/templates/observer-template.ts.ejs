@@ -1,7 +1,6 @@
 import {
   /* inject, Application, CoreBindings, */
   lifeCycleObserver, // The decorator
-  CoreTags,
   LifeCycleObserver, // The interface
 } from '@loopback/core';
 
@@ -28,6 +27,6 @@ export class <%= className %> implements LifeCycleObserver {
    * This method will be invoked when the application stops
    */
   async stop(): Promise<void> {
-    // Add your logic for start
+    // Add your logic for stop
   }
 }
