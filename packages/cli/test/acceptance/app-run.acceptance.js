@@ -76,7 +76,14 @@ async function lernaBootstrap(scope) {
     _: [],
     ci: false,
     scope: scope,
-    loglevel: 'silent',
+    // The option "scope" controls both
+    // - which packages to bootstrap
+    // - which monorepo-local dependencies to resolve via symlinks
+    // The option "forceLocal" tells lerna to always symlink local packages.
+    // See https://github.com/lerna/lerna/commit/71174e4709 and
+    // https://github.com/lerna/lerna/pull/2104
+    forceLocal: 'forceLocal',
+    loglevel: 'warn',
     // Disable progress bars
     progress: false,
   });
