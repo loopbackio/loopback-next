@@ -149,10 +149,17 @@ import {ProductRepository, CategoryRepository} from '../../src/repositories';
 import {testdb} from '../fixtures/datasources/testdb.datasource';
 
 export async function givenEmptyDatabase() {
-  const categoryRepository = new CategoryRepository(testdb);
-  const productRepository = new ProductRepository(
+  let categoryRepository: CategoryRepository;
+  let productRepository: ProductRepository;
+
+  categoryRepository = new CategoryRepository(
     testdb,
-    Getter.fromValue(categoryRepository),
+    async () => productRepository,
+  );
+
+  productRepository = new ProductRepository(
+    testdb,
+    async () => categoryRepository,
   );
 
   await productRepository.deleteAll();
