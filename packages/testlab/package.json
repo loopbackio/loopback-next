@@ -1,6 +1,6 @@
 {
   "name": "@loopback/testlab",
-  "version": "1.2.9",
+  "version": "1.2.10",
   "description": "A collection of test utilities we use to write LoopBack tests.",
   "engines": {
     "node": ">=8.9"
@@ -31,7 +31,7 @@
     "supertest": "^4.0.2"
   },
   "devDependencies": {
-    "@loopback/build": "^1.5.4",
+    "@loopback/build": "^1.5.5",
     "@loopback/tslint-config": "^2.0.4",
     "@types/node": "^10.11.2"
   },

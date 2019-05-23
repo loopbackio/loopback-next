@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.18.0...@loopback/docs@1.19.0) (2019-05-23)
+
+
+### Bug Fixes
+
+* **docs:** add life cycle observer cli to sidebar ([224f446](https://github.com/strongloop/loopback-next/commit/224f446))
+
+
+### Features
+
+* **context:** support binding config and [@inject](https://github.com/inject).config ([a392852](https://github.com/strongloop/loopback-next/commit/a392852))
+
+
+
+
+
 # [1.18.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.17.1...@loopback/docs@1.18.0) (2019-05-14)
 
 

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.11](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-spec-builder@1.1.10...@loopback/openapi-spec-builder@1.1.11) (2019-05-23)
+
+**Note:** Version bump only for package @loopback/openapi-spec-builder
+
+
+
+
+
 ## [1.1.10](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-spec-builder@1.1.9...@loopback/openapi-spec-builder@1.1.10) (2019-05-14)
 
 **Note:** Version bump only for package @loopback/openapi-spec-builder
