@@ -213,7 +213,7 @@ export class SupplierRepository extends DefaultCrudRepository<
     @repository.getter('AccountRepository')
     getAccountRepository: Getter<AccountRepository>,
   ) {
-    super(Customer, db);
+    super(Supplier, db);
     this.account = this.createHasOneRepositoryFactoryFor(
       'account',
       getAccountRepository,
@@ -247,8 +247,8 @@ content="src/controllers/supplier-account.controller.ts" %}
 
 ```ts
 import {post, param, requestBody} from '@loopback/rest';
-import {CustomerRepository} from '../repositories/';
-import {Customer, Account} from '../models/';
+import {SupplierRepository} from '../repositories/';
+import {Supplier, Account} from '../models/';
 import {repository} from '@loopback/repository';
 
 export class SupplierAccountController {
@@ -259,7 +259,7 @@ export class SupplierAccountController {
 
   @post('/suppliers/{id}/account')
   async createAccount(
-    @param.path.number('id') supplierId: typeof Suppllier.prototype.id,
+    @param.path.number('id') supplierId: typeof Supplier.prototype.id,
     @requestBody() accountData: Account,
   ): Promise<Account> {
     return await this.supplierRepository
