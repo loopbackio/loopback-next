@@ -1,0 +1,64 @@
+{
+  "name": "@loopback/example-greeting-app",
+  "version": "1.0.0-1",
+  "description": "An example greeting application for LoopBack 4",
+  "main": "index.js",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {
+    "build:apidocs": "lb-apidocs",
+    "build": "lb-tsc es2017 --outDir dist",
+    "build:watch": "lb-tsc es2017 --outDir dist --watch",
+    "clean": "lb-clean *example-greeting-app-*.tgz dist package api-docs",
+    "lint": "npm run prettier:check && npm run tslint",
+    "lint:fix": "npm run tslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "tslint": "lb-tslint",
+    "tslint:fix": "npm run tslint -- --fix",
+    "pretest": "npm run clean && npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "posttest": "npm run lint",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "prestart": "npm run build",
+    "start": "node .",
+    "verify": "npm pack && tar xf *example-greeting-app*.tgz && tree package && npm run clean"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/strongloop/loopback-next.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "loopback",
+    "loopback-application"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/strongloop/loopback-next/issues"
+  },
+  "homepage": "https://github.com/strongloop/loopback-next/tree/master/examples/greeter-extension",
+  "devDependencies": {
+    "@loopback/build": "^1.5.5",
+    "@loopback/testlab": "^1.2.10",
+    "@loopback/tslint-config": "^2.0.4",
+    "@types/debug": "4.1.4",
+    "@types/node": "^10.11.2",
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "@loopback/example-greeter-extension": "^1.2.5",
+    "@loopback/boot": "^1.2.8",
+    "@loopback/context": "^1.16.0",
+    "@loopback/core": "^1.7.1",
+    "@loopback/openapi-v3": "^1.4.0",
+    "@loopback/rest": "^1.12.0",
+    "chalk": "^2.4.2",
+    "debug": "^4.0.1"
+  }
+}
