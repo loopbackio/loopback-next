@@ -16,7 +16,7 @@ import {
 let app: Context;
 let server: Context;
 
-describe('@inject.* to receive multiple values matching a filter', async () => {
+describe('@inject.* to receive multiple values matching a filter', () => {
   const workloadMonitorFilter = filterByTag('workloadMonitor');
   beforeEach(givenWorkloadMonitors);
 

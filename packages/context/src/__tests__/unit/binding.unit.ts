@@ -191,7 +191,7 @@ describe('Binding', () => {
     });
   });
 
-  describe('toAlias(bindingKeyWithPath)', async () => {
+  describe('toAlias(bindingKeyWithPath)', () => {
     it('binds to another binding with sync value', () => {
       ctx.bind('parent.options').to({child: {disabled: true}});
       ctx.bind('child.options').toAlias('parent.options#child');

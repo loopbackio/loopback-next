@@ -7,14 +7,14 @@ import {expect} from '@loopback/testlab';
 import {
   Binding,
   BindingScope,
-  filterByTag,
   Context,
   ContextView,
+  filterByTag,
   Getter,
   inject,
 } from '../..';
 
-describe('@inject.view', async () => {
+describe('@inject.view', () => {
   let ctx: Context;
   beforeEach(() => {
     ctx = givenContext();
