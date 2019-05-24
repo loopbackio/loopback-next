@@ -48,7 +48,7 @@
     "qs": "^6.5.2",
     "strong-error-handler": "^3.2.0",
     "type-is": "^1.6.17",
-    "validator": "^10.4.0"
+    "validator": "^11.0.0"
   },
   "devDependencies": {
     "@loopback/build": "^1.5.5",
