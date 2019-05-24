@@ -33,6 +33,11 @@ const PROPERTIES_KEY = MetadataAccessor.create<Injection, PropertyDecorator>(
   'inject:properties',
 );
 
+// A key to cache described argument injections
+const METHODS_KEY = MetadataAccessor.create<Injection, MethodDecorator>(
+  'inject:methods',
+);
+
 /**
  * A function to provide resolution of injected values
  */
@@ -542,6 +547,20 @@ export function describeInjectedArguments(
   method?: string,
 ): Readonly<Injection>[] {
   method = method || '';
+
+  // Try to read from cache
+  const cache =
+    MetadataInspector.getAllMethodMetadata<Readonly<Injection>[]>(
+      METHODS_KEY,
+      target,
+      {
+        ownMetadataOnly: true,
+      },
+    ) || {};
+  let meta: Readonly<Injection>[] = cache[method];
+  if (meta) return meta;
+
+  // Build the description
   const options: InspectionOptions = {};
   if (method === '') {
     if (shouldSkipBaseConstructorInjection(target)) {
@@ -552,13 +571,22 @@ export function describeInjectedArguments(
     // should be honored
     options.ownMetadataOnly = true;
   }
-  const meta = MetadataInspector.getAllParameterMetadata<Readonly<Injection>>(
-    PARAMETERS_KEY,
+  meta =
+    MetadataInspector.getAllParameterMetadata<Readonly<Injection>>(
+      PARAMETERS_KEY,
+      target,
+      method,
+      options,
+    ) || [];
+
+  // Cache the result
+  cache[method] = meta;
+  MetadataInspector.defineMetadata<MetadataMap<Readonly<Injection>[]>>(
+    METHODS_KEY,
+    cache,
     target,
-    method,
-    options,
   );
-  return meta || [];
+  return meta;
 }
 
 /**
