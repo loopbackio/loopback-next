@@ -14,7 +14,7 @@ import {
   inject,
 } from '../..';
 
-describe('@inject.* to receive multiple values matching a filter', async () => {
+describe('@inject.* to receive multiple values matching a filter', () => {
   let ctx: Context;
   beforeEach(() => {
     ctx = givenContext();
