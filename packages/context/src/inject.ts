@@ -470,6 +470,68 @@ function findOrCreateBindingForInjection(
 }
 
 /**
+ * Check if constructor injection should be applied to the base class
+ * of the given target class
+ *
+ * @param targetClass - Target class
+ */
+function shouldSkipBaseConstructorInjection(targetClass: Object) {
+  // FXIME(rfeng): We use the class definition to check certain patterns
+  const classDef = targetClass.toString();
+  return (
+    /*
+     * See https://github.com/strongloop/loopback-next/issues/2946
+     * A class decorator can return a new constructor that mixes in
+     * additional properties/methods.
+     *
+     * @example
+     * ```ts
+     * class extends baseConstructor {
+     *   // The constructor calls `super(...arguments)`
+     *   constructor() {
+     *     super(...arguments);
+     *   }
+     *   classProperty = 'a classProperty';
+     *   classFunction() {
+     *     return 'a classFunction';
+     *   }
+     * };
+     * ```
+     *
+     * We check the following pattern:
+     * ```ts
+     * constructor() {
+     *   super(...arguments);
+     * }
+     * ```
+     */
+    !classDef.match(
+      /\s+constructor\s*\(\s*\)\s*\{\s*super\(\.\.\.arguments\)/,
+    ) &&
+    /*
+     * See https://github.com/strongloop/loopback-next/issues/1565
+     *
+     * @example
+     * ```ts
+     * class BaseClass {
+     *   constructor(@inject('foo') protected foo: string) {}
+     *   // ...
+     * }
+     *
+     * class SubClass extends BaseClass {
+     *   // No explicit constructor is present
+     *
+     *   @inject('bar')
+     *   private bar: number;
+     *   // ...
+     * };
+     *
+     */
+    classDef.match(/\s+constructor\s*\([^\)]*\)\s+\{/m)
+  );
+}
+
+/**
  * Return an array of injection objects for parameters
  * @param target - The target class for constructor or static methods,
  * or the prototype for instance methods
@@ -482,9 +544,7 @@ export function describeInjectedArguments(
   method = method || '';
   const options: InspectionOptions = {};
   if (method === '') {
-    // A hacky way to check if an explicit constructor exists
-    // See https://github.com/strongloop/loopback-next/issues/1565
-    if (target.toString().match(/\s+constructor\s*\([^\)]*\)\s+\{/m)) {
+    if (shouldSkipBaseConstructorInjection(target)) {
       options.ownMetadataOnly = true;
     }
   } else if (target.hasOwnProperty(method)) {
