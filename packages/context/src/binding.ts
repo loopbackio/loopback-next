@@ -299,6 +299,8 @@ export class Binding<T = BoundValue> {
       );
       return this._cacheValue(ctx, result);
     }
+    // `@inject.binding` adds a binding without _getValue
+    if (options.optional) return undefined;
     return Promise.reject(
       new Error(`No value was configured for binding ${this.key}.`),
     );

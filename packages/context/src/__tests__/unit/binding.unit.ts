@@ -229,6 +229,13 @@ describe('Binding', () => {
       );
     });
 
+    it('allows optional if binding does not have a value getter', () => {
+      // This can happen for `@inject.binding`
+      ctx.bind('child.options');
+      const childOptions = ctx.getSync('child.options', {optional: true});
+      expect(childOptions).to.be.undefined();
+    });
+
     it('allows optional if alias binding cannot be resolved', () => {
       ctx.bind('child.options').toAlias('parent.options#child');
       const childOptions = ctx.getSync('child.options', {optional: true});
