@@ -43,6 +43,10 @@ describe('InvocationContext', () => {
     );
   });
 
+  it('has public access to parent context', () => {
+    expect(invocationCtxForGreet.parent).to.equal(ctx);
+  });
+
   it('throws error if method does not exist', () => {
     expect(() => invalidInvocationCtx.assertMethodExists()).to.throw(
       'Method MyController.prototype.invalid-method not found',
