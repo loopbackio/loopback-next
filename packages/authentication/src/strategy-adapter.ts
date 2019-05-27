@@ -25,8 +25,9 @@ const passportRequestMixin = require('passport/lib/http/request');
  */
 export class StrategyAdapter {
   /**
-   * @param strategy - instance of a class which implements a passport-strategy;
-   * @description http://passportjs.org/
+   * @param strategy - instance of a class which implements a passport-strategy
+   *
+   * @{@link http://passportjs.org/ | Passport}
    */
   constructor(private readonly strategy: Strategy) {}
 
