@@ -6,7 +6,15 @@
     "node": ">=8.9"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
+    "build:apidocs": "lb-apidocs",
+    "build": "lb-tsc es2017 --outDir dist",
+    "clean": "lb-clean loopback-passport-adapter*.tgz dist package api-docs",
+    "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-passport-adapter*.tgz && tree package && npm run clean"
   },
   "author": "IBM Corp.",
   "copyright.owner": "IBM Corp.",
@@ -33,6 +41,13 @@
   },
   "dependencies": {
     "@loopback/authentication": "^2.0.0",
-    "@loopback/rest": "^1.11.2"
+    "@loopback/rest": "^1.11.2",
+    "passport": "^0.4.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^1.5.5",
+    "@loopback/openapi-spec-builder": "^1.1.11",
+    "@loopback/testlab": "^1.2.10",
+    "passport-http": "^0.3.0"
   }
 }
