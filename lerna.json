@@ -5,6 +5,7 @@
     "docs",
     "examples/*",
     "packages/*",
+    "experimental/*",
     "sandbox/*"
   ],
   "command": {
