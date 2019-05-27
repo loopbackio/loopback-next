@@ -43,7 +43,6 @@
     "lodash": "^4.17.11",
     "on-finished": "^2.3.0",
     "openapi-schema-to-json-schema": "^2.1.0",
-    "openapi3-ts": "^1.0.0",
     "path-to-regexp": "^3.0.0",
     "qs": "^6.5.2",
     "strong-error-handler": "^3.2.0",
