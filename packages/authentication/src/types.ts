@@ -49,7 +49,7 @@ export interface AuthenticationStrategy {
    * If the user credentials are missing, this method should throw an error, or return 'undefined'
    * and let the authentication action deal with it.
    *
-   * @param request
+   * @param request - Express request object
    */
   authenticate(request: Request): Promise<UserProfile | undefined>;
 }
