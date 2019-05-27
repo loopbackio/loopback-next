@@ -11,6 +11,11 @@ LoopBack 4 comes with the following example projects:
 - **[hello-world](https://github.com/strongloop/loopback-next/tree/master/examples/hello-world)**:
   An example showing how to set up a simple application using LoopBack 4.
 
+- **[context](https://github.com/strongloop/loopback-next/tree/master/examples/context)**:
+  Standalone examples showing how to use
+  [`@loopback/context`](https://github.com/strongloop/loopback-next/tree/master/packages/context)
+  as an Inversion of Control (IoC) and Dependency Injection (DI) container.
+
 - **[rpc-server](https://github.com/strongloop/loopback-next/tree/master/examples/rpc-server)**:
   An example showing how to implement a made-up RPC protocol.
 
