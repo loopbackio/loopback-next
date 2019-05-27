@@ -17,6 +17,7 @@ import {
   JsonSchema,
   JSON_SCHEMA_KEY,
   modelToJsonSchema,
+  MODEL_TYPE_KEYS,
 } from '../..';
 import {expectValidJsonSchema} from '../helpers/expect-valid-json-schema';
 
@@ -648,7 +649,7 @@ describe('build-schema', () => {
       };
       MetadataInspector.defineMetadata(
         JSON_SCHEMA_KEY,
-        cachedSchema,
+        {[MODEL_TYPE_KEYS.ModelOnly]: cachedSchema},
         TestModel,
       );
       const jsonSchema = getJsonSchema(TestModel);
@@ -715,6 +716,198 @@ describe('build-schema', () => {
       it('generates the schema without running into infinite loop', () => {
         const schema = getJsonSchema(Category);
         expect(schema).to.deepEqual(expectedSchemaForCategory);
+      });
+    });
+
+    it('converts HasMany and BelongsTo relation links', () => {
+      @model()
+      class Product extends Entity {
+        @property({id: true})
+        id: number;
+
+        @belongsTo(() => Category)
+        categoryId: number;
+      }
+
+      @model()
+      class Category extends Entity {
+        @property({id: true})
+        id: number;
+
+        @hasMany(() => Product)
+        products?: Product[];
+      }
+
+      const expectedSchema: JsonSchema = {
+        definitions: {
+          ProductWithRelations: {
+            title: 'ProductWithRelations',
+            properties: {
+              id: {type: 'number'},
+              categoryId: {type: 'number'},
+              category: {$ref: '#/definitions/CategoryWithRelations'},
+            },
+          },
+        },
+        properties: {
+          id: {type: 'number'},
+          products: {
+            type: 'array',
+            items: {$ref: '#/definitions/ProductWithRelations'},
+          },
+        },
+        title: 'CategoryWithRelations',
+      };
+      const jsonSchema = getJsonSchema(Category, {includeRelations: true});
+      expect(jsonSchema).to.deepEqual(expectedSchema);
+    });
+
+    it('converts relation links when no other properties there', () => {
+      @model()
+      class Product extends Entity {
+        @property({id: true})
+        id: number;
+
+        @belongsTo(() => CategoryWithoutProp)
+        categoryId: number;
+      }
+
+      @model()
+      class CategoryWithoutProp extends Entity {
+        @hasMany(() => Product)
+        products?: Product[];
+      }
+      const expectedSchema: JsonSchema = {
+        definitions: {
+          ProductWithRelations: {
+            title: 'ProductWithRelations',
+            properties: {
+              id: {type: 'number'},
+              categoryId: {type: 'number'},
+              category: {
+                $ref: '#/definitions/CategoryWithoutPropWithRelations',
+              },
+            },
+          },
+        },
+        properties: {
+          products: {
+            type: 'array',
+            items: {$ref: '#/definitions/ProductWithRelations'},
+          },
+        },
+        title: 'CategoryWithoutPropWithRelations',
+      };
+
+      // To check for case when there are no other properties than relational
+      const jsonSchemaWithoutProp = getJsonSchema(CategoryWithoutProp, {
+        includeRelations: true,
+      });
+      expect(jsonSchemaWithoutProp).to.deepEqual(expectedSchema);
+    });
+
+    it('gets cached JSON schema with relation links if one exists', () => {
+      @model()
+      class Product extends Entity {
+        @property({id: true})
+        id: number;
+
+        @belongsTo(() => Category)
+        categoryId: number;
+      }
+
+      @model()
+      class Category extends Entity {
+        @property({id: true})
+        id: number;
+
+        @hasMany(() => Product)
+        products?: Product[];
+      }
+
+      const cachedSchema: JsonSchema = {
+        definitions: {
+          ProductWithRelations: {
+            title: 'ProductWithRelations',
+            properties: {
+              id: {type: 'number'},
+              categoryId: {type: 'number'},
+              category: {$ref: '#/definitions/CategoryWithRelations'},
+            },
+          },
+        },
+        properties: {
+          id: {type: 'number'},
+          cachedProp: {type: 'string'},
+          products: {
+            type: 'array',
+            items: {$ref: '#/definitions/ProductWithRelations'},
+          },
+        },
+        title: 'CategoryWithRelations',
+      };
+      MetadataInspector.defineMetadata(
+        JSON_SCHEMA_KEY,
+        {[MODEL_TYPE_KEYS.ModelWithRelations]: cachedSchema},
+        Category,
+      );
+      const jsonSchema = getJsonSchema(Category, {includeRelations: true});
+      expect(jsonSchema).to.eql(cachedSchema);
+    });
+
+    it('updates same cache with new key if one exists for model', () => {
+      @model()
+      class Product extends Entity {
+        @property({id: true})
+        id: number;
+
+        @belongsTo(() => Category)
+        categoryId: number;
+      }
+
+      @model()
+      class Category extends Entity {
+        @property({id: true})
+        id: number;
+
+        @hasMany(() => Product)
+        products?: Product[];
+      }
+
+      const cachedSchema: JsonSchema = {
+        definitions: {
+          ProductWithRelations: {
+            title: 'ProductWithRelations',
+            properties: {
+              id: {type: 'number'},
+              categoryId: {type: 'number'},
+              category: {$ref: '#/definitions/CategoryWithRelations'},
+            },
+          },
+        },
+        properties: {
+          id: {type: 'number'},
+          cachedProp: {type: 'string'},
+          products: {
+            type: 'array',
+            items: {$ref: '#/definitions/ProductWithRelations'},
+          },
+        },
+        title: 'CategoryWithRelations',
+      };
+      MetadataInspector.defineMetadata(
+        JSON_SCHEMA_KEY,
+        {[MODEL_TYPE_KEYS.ModelWithRelations]: cachedSchema},
+        Category,
+      );
+      const jsonSchema = getJsonSchema(Category);
+      // Make sure it's not pulling the withrelations key
+      expect(jsonSchema).to.not.eql(cachedSchema);
+      expect(jsonSchema).to.eql({
+        properties: {
+          id: {type: 'number'},
+        },
+        title: 'Category',
       });
     });
   });

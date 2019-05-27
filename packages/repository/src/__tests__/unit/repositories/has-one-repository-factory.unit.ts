@@ -125,6 +125,7 @@ describe('createHasOneRepositoryFactory', () => {
   ): HasOneDefinition {
     const defaults: HasOneDefinition = {
       type: RelationType.hasOne,
+      targetsMany: false,
       name: 'address',
       target: () => Address,
       source: Customer,

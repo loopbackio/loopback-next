@@ -9,12 +9,14 @@ import {
   ModelDefinition,
   ModelMetadataHelper,
   PropertyDefinition,
+  RelationMetadata,
   resolveType,
 } from '@loopback/repository';
 import {JSONSchema6 as JSONSchema} from 'json-schema';
-import {JSON_SCHEMA_KEY} from './keys';
+import {JSON_SCHEMA_KEY, MODEL_TYPE_KEYS} from './keys';
 
 export interface JsonSchemaOptions {
+  includeRelations?: boolean;
   visited?: {[key: string]: JSONSchema};
 }
 
@@ -30,14 +32,30 @@ export function getJsonSchema(
   // In the near future the metadata will be an object with
   // different titles as keys
   const cached = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor);
+  const key =
+    options && options.includeRelations
+      ? MODEL_TYPE_KEYS.ModelWithRelations
+      : MODEL_TYPE_KEYS.ModelOnly;
+  let schema = cached && cached[key];
 
-  if (cached) {
-    return cached;
-  } else {
-    const newSchema = modelToJsonSchema(ctor, options);
-    MetadataInspector.defineMetadata(JSON_SCHEMA_KEY.key, newSchema, ctor);
-    return newSchema;
+  if (!schema) {
+    // Create new json schema from model
+    // if not found in cache for specific key
+    schema = modelToJsonSchema(ctor, options);
+    if (cached) {
+      // Add a new key to the cached schema of the model
+      cached[key] = schema;
+    } else {
+      // Define new metadata and set in cache
+      MetadataInspector.defineMetadata(
+        JSON_SCHEMA_KEY.key,
+        {[key]: schema},
+        ctor,
+      );
+    }
   }
+
+  return schema;
 }
 
 /**
@@ -186,6 +204,31 @@ export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
   return result;
 }
 
+/**
+ * Checks and return navigational property definition for the relation
+ * @param relMeta Relation metadata object
+ * @param targetRef Schema definition for the target model
+ */
+export function getNavigationalPropertyForRelation(
+  relMeta: RelationMetadata,
+  targetRef: JSONSchema,
+): JSONSchema {
+  if (relMeta.targetsMany === true) {
+    // Targets an array of object, like, hasMany
+    return {
+      type: 'array',
+      items: targetRef,
+    };
+  } else if (relMeta.targetsMany === false) {
+    // Targets single object, like, hasOne, belongsTo
+    return targetRef;
+  } else {
+    // targetsMany is undefined or null
+    // not allowed if includeRelations is true
+    throw new Error(`targetsMany attribute missing for ${relMeta.name}`);
+  }
+}
+
 // NOTE(shimks) no metadata for: union, optional, nested array, any, enum,
 // string literal, anonymous types, and inherited properties
 
@@ -208,7 +251,10 @@ export function modelToJsonSchema(
     return {};
   }
 
-  const title = meta.title || ctor.name;
+  let title = meta.title || ctor.name;
+  if (options.includeRelations) {
+    title += 'WithRelations';
+  }
 
   if (options.visited[title]) return options.visited[title];
 
@@ -255,22 +301,37 @@ export function modelToJsonSchema(
     const propSchema = getJsonSchema(referenceType, options);
 
     includeReferencedSchema(referenceType.name, propSchema);
+  }
 
-    function includeReferencedSchema(name: string, schema: JSONSchema) {
-      if (!schema || !Object.keys(schema).length) return;
-      result.definitions = result.definitions || {};
+  if (options.includeRelations) {
+    for (const r in meta.relations) {
+      result.properties = result.properties || {};
+      const relMeta = meta.relations[r];
+      const targetType = resolveType(relMeta.target);
+      const targetSchema = getJsonSchema(targetType, options);
+      const targetRef = {$ref: `#/definitions/${targetSchema.title}`};
+      const propDef = getNavigationalPropertyForRelation(relMeta, targetRef);
 
-      // promote nested definition to the top level
-      if (schema.definitions) {
-        for (const key in schema.definitions) {
-          if (key === title) continue;
-          result.definitions[key] = schema.definitions[key];
-        }
-        delete schema.definitions;
-      }
-
-      result.definitions[name] = schema;
+      result.properties[relMeta.name] =
+        result.properties[relMeta.name] || propDef;
+      includeReferencedSchema(targetSchema.title!, targetSchema);
     }
+  }
+
+  function includeReferencedSchema(name: string, schema: JSONSchema) {
+    if (!schema || !Object.keys(schema).length) return;
+    result.definitions = result.definitions || {};
+
+    // promote nested definition to the top level
+    if (schema.definitions) {
+      for (const key in schema.definitions) {
+        if (key === title) continue;
+        result.definitions[key] = schema.definitions[key];
+      }
+      delete schema.definitions;
+    }
+
+    result.definitions[name] = schema;
   }
   return result;
 }

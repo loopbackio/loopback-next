@@ -6,10 +6,15 @@
 import {MetadataAccessor} from '@loopback/metadata';
 import {JSONSchema6 as JSONSchema} from 'json-schema';
 
+export const enum MODEL_TYPE_KEYS {
+  ModelOnly = 'modelOnly',
+  ModelWithRelations = 'modelWithRelations',
+}
+
 /**
  * Metadata key used to set or retrieve repository JSON Schema
  */
 export const JSON_SCHEMA_KEY = MetadataAccessor.create<
-  JSONSchema,
+  {[options in MODEL_TYPE_KEYS]: JSONSchema},
   ClassDecorator
 >('loopback:json-schema');

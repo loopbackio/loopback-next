@@ -253,6 +253,7 @@ class Customer extends Entity {
     .addRelation({
       name: 'orders',
       type: RelationType.hasMany,
+      targetsMany: true,
       source: Customer,
       target: () => Order,
       keyTo: 'customerId',
@@ -260,6 +261,7 @@ class Customer extends Entity {
     .addRelation({
       name: 'reviewsAuthored',
       type: RelationType.hasMany,
+      targetsMany: true,
       source: Customer,
       target: () => Review,
       keyTo: 'authorId',
@@ -267,6 +269,7 @@ class Customer extends Entity {
     .addRelation({
       name: 'reviewsApproved',
       type: RelationType.hasMany,
+      targetsMany: true,
       source: Customer,
       target: () => Review,
       keyTo: 'approvedId',

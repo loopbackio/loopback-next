@@ -3,9 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {PropertyDefinition} from '@loopback/repository';
+import {
+  PropertyDefinition,
+  RelationDefinitionBase,
+  RelationType,
+} from '@loopback/repository';
 import {expect} from '@loopback/testlab';
-import {metaToJsonProperty, stringTypeToWrapper} from '../..';
+import {
+  getNavigationalPropertyForRelation,
+  metaToJsonProperty,
+  stringTypeToWrapper,
+} from '../..';
 
 describe('build-schema', () => {
   class CustomType {}
@@ -188,6 +196,22 @@ describe('build-schema', () => {
         maxLength: 50,
         minLength: 5,
       });
+    });
+  });
+
+  describe('getNavigationalPropertyForRelation', () => {
+    it('errors out if targetsMany is undefined', () => {
+      expect(() =>
+        getNavigationalPropertyForRelation(
+          {
+            type: RelationType.hasMany,
+            name: 'Test',
+          } as RelationDefinitionBase,
+          {
+            $ref: `#/definitions/Test`,
+          },
+        ),
+      ).to.throw(/targetsMany attribute missing for Test/);
     });
   });
 });
