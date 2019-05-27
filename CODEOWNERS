@@ -27,6 +27,7 @@ packages/service-proxy/* @raymondfeng
 packages/testlab/* @bajtos
 packages/tsdocs/* @raymondfeng
 examples/todo/* @bajtos @hacksparrow
+examples/context/* @raymondfeng
 examples/express-composition/* @nabdelgadir
 examples/greeter-extension/* @raymondfeng
 examples/hello-world/* @b-admike
