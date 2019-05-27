@@ -29,6 +29,7 @@ export function hasOne<T extends Entity>(
       // properties enforced by the decorator
       {
         type: RelationType.hasOne,
+        targetsMany: false,
         name: key,
         source: decoratedTarget.constructor,
         target: targetResolver,

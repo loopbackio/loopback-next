@@ -4,7 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {InspectionOptions, MetadataInspector} from '@loopback/context';
-import {ModelDefinition} from '../model';
+import {ModelDefinition, RelationDefinitionMap} from '../model';
+import {RELATIONS_KEY} from '../relations';
 import {
   MODEL_KEY,
   MODEL_PROPERTIES_KEY,
@@ -59,6 +60,16 @@ export class ModelMetadataHelper {
             options,
           ),
         );
+
+        meta.relations = Object.assign(
+          <RelationDefinitionMap>{},
+          MetadataInspector.getAllPropertyMetadata(
+            RELATIONS_KEY,
+            target.prototype,
+            options,
+          ),
+        );
+
         MetadataInspector.defineMetadata(
           MODEL_WITH_PROPERTIES_KEY.key,
           meta,
