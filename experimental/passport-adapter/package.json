@@ -10,7 +10,6 @@
     "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
     "clean": "lb-clean loopback-passport-adapter*.tgz dist package api-docs",
-    "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
     "pretest": "npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
@@ -37,7 +36,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/strongloop/loopback-labs.git"
+    "url": "https://github.com/strongloop/loopback-next.git"
   },
   "dependencies": {
     "@loopback/authentication": "^2.0.0",

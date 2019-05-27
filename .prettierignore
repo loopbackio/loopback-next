@@ -4,6 +4,7 @@ packages/cli/generators/*/templates
 **/.sandbox
 packages/*/dist
 examples/*/dist
+experimental/*/dist
 benchmark/dist
 sandbox/**/*
 *.json
