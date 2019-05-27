@@ -3,16 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {CoreBindings} from '@loopback/core';
 import {BindingKey, Context} from '@loopback/context';
-
-/**
- * See https://github.com/Microsoft/TypeScript/issues/26985
- */
-// import {OpenApiSpec} from '@loopback/openapi-v3-types';
-import {OpenAPIObject as OpenApiSpec} from 'openapi3-ts';
-
+import {CoreBindings} from '@loopback/core';
+import {HttpProtocol} from '@loopback/http-server';
+import {OpenApiSpec} from '@loopback/openapi-v3-types';
+import * as https from 'https';
+import {ErrorWriterOptions} from 'strong-error-handler';
+import {BodyParser, RequestBodyParser} from './body-parsers';
 import {HttpHandler} from './http-handler';
+import {RestRouter, RestRouterOptions} from './router';
 import {SequenceHandler} from './sequence';
 import {
   BindElement,
@@ -20,19 +19,13 @@ import {
   GetFromContext,
   InvokeMethod,
   LogError,
-  Request,
-  Response,
   ParseParams,
   Reject,
-  Send,
+  Request,
   RequestBodyParserOptions,
+  Response,
+  Send,
 } from './types';
-
-import {HttpProtocol} from '@loopback/http-server';
-import * as https from 'https';
-import {ErrorWriterOptions} from 'strong-error-handler';
-import {RestRouter, RestRouterOptions} from './router';
-import {RequestBodyParser, BodyParser} from './body-parsers';
 
 /**
  * RestServer-specific bindings
