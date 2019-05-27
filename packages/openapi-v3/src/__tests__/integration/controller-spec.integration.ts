@@ -18,6 +18,7 @@ import {
   param,
   post,
   requestBody,
+  getModelSchemaRef,
 } from '../..';
 
 describe('controller spec', () => {
@@ -732,5 +733,52 @@ describe('controller spec', () => {
       }
       return MyController;
     }
+  });
+
+  describe('getModelSchemaRef', () => {
+    it('creates spec referencing shared model schema', () => {
+      @model()
+      class MyModel {
+        @property()
+        name: string;
+      }
+
+      class MyController {
+        @get('/my', {
+          responses: {
+            '200': {
+              description: 'Array of MyModel model instances',
+              content: {
+                'application/json': {
+                  schema: getModelSchemaRef(MyModel),
+                },
+              },
+            },
+          },
+        })
+        async find(): Promise<MyModel[]> {
+          return [];
+        }
+      }
+
+      const spec = getControllerSpec(MyController);
+      const opSpec: OperationObject = spec.paths['/my'].get;
+      const responseSpec = opSpec.responses['200'].content['application/json'];
+      expect(responseSpec.schema).to.deepEqual({
+        $ref: '#/components/schemas/MyModel',
+      });
+
+      const globalSchemas = (spec.components || {}).schemas;
+      expect(globalSchemas).to.deepEqual({
+        MyModel: {
+          title: 'MyModel',
+          properties: {
+            name: {
+              type: 'string',
+            },
+          },
+        },
+      });
+    });
   });
 });

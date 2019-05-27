@@ -15,11 +15,16 @@ import {
   RequestBodyObject,
   ResponseObject,
   SchemaObject,
+  SchemasObject,
 } from '@loopback/openapi-v3-types';
-import {getJsonSchema} from '@loopback/repository-json-schema';
+import {
+  getJsonSchema,
+  getJsonSchemaRef,
+  JsonSchemaOptions,
+} from '@loopback/repository-json-schema';
 import * as _ from 'lodash';
 import {resolveSchema} from './generate-schema';
-import {jsonToSchemaObject} from './json-to-schema';
+import {jsonToSchemaObject, SchemaRef} from './json-to-schema';
 import {OAI3Keys} from './keys';
 
 const debug = require('debug')('loopback:openapi3:metadata:controller-spec');
@@ -55,8 +60,6 @@ export interface RestEndpoint {
 }
 
 export const TS_TYPE_KEY = 'x-ts-type';
-
-type ComponentSchemaMap = {[key: string]: SchemaObject};
 
 /**
  * Build the api spec from class and method level decorations
@@ -139,7 +142,7 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
       params = DecoratorFactory.cloneDeep<ParameterObject[]>(params);
       /**
        * If a controller method uses dependency injection, the parameters
-       * might be sparsed. For example,
+       * might be sparse. For example,
        * ```ts
        * class MyController {
        *   greet(
@@ -304,7 +307,7 @@ function generateOpenAPISchema(spec: ControllerSpec, tsType: Function) {
  */
 function assignRelatedSchemas(
   spec: ControllerSpec,
-  definitions?: ComponentSchemaMap,
+  definitions?: SchemasObject,
 ) {
   if (!definitions) return;
   debug(
@@ -347,4 +350,35 @@ export function getControllerSpec(constructor: Function): ControllerSpec {
     );
   }
   return spec;
+}
+
+/**
+ * Describe the provided Model as a reference to a definition shared by multiple
+ * endpoints. The definition is included in the returned schema.
+ *
+ * @example
+ *
+ * ```ts
+ * const schema = {
+ *   $ref: '#/components/schemas/Product',
+ *   definitions: {
+ *     Product: {
+ *       title: 'Product',
+ *       properties: {
+ *         // etc.
+ *       }
+ *     }
+ *   }
+ * }
+ * ```
+ *
+ * @param modelCtor - The model constructor (e.g. `Product`)
+ * @param options - Additional options
+ */
+export function getModelSchemaRef(
+  modelCtor: Function,
+  options?: JsonSchemaOptions,
+): SchemaRef {
+  const jsonSchema = getJsonSchemaRef(modelCtor, options);
+  return jsonToSchemaObject(jsonSchema) as SchemaRef;
 }

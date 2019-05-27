@@ -41,6 +41,50 @@ export function getJsonSchema(
 }
 
 /**
+ * Describe the provided Model as a reference to a definition shared by multiple
+ * endpoints. The definition is included in the returned schema.
+ *
+ * @example
+ *
+ * ```ts
+ * const schema = {
+ *   $ref: '/definitions/Product',
+ *   definitions: {
+ *     Product: {
+ *       title: 'Product',
+ *       properties: {
+ *         // etc.
+ *       }
+ *     }
+ *   }
+ * }
+ * ```
+ *
+ * @param modelCtor - The model constructor (e.g. `Product`)
+ * @param options - Additional options
+ */
+export function getJsonSchemaRef(
+  modelCtor: Function,
+  options?: JsonSchemaOptions,
+): JSONSchema {
+  const schemaWithDefinitions = getJsonSchema(modelCtor, options);
+  const key = schemaWithDefinitions.title;
+
+  // ctor is not a model
+  if (!key) return schemaWithDefinitions;
+
+  const definitions = Object.assign({}, schemaWithDefinitions.definitions);
+  const schema = Object.assign({}, schemaWithDefinitions);
+  delete schema.definitions;
+  definitions[key] = schema;
+
+  return {
+    $ref: `#/definitions/${key}`,
+    definitions,
+  };
+}
+
+/**
  * Gets the wrapper function of primitives string, number, and boolean
  * @param type - Name of type
  */

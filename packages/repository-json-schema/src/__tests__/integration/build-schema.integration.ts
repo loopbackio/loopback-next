@@ -12,13 +12,13 @@ import {
   property,
 } from '@loopback/repository';
 import {expect} from '@loopback/testlab';
-import * as Ajv from 'ajv';
 import {
   getJsonSchema,
   JsonSchema,
   JSON_SCHEMA_KEY,
   modelToJsonSchema,
 } from '../..';
+import {expectValidJsonSchema} from '../helpers/expect-valid-json-schema';
 
 describe('build-schema', () => {
   describe('modelToJsonSchema', () => {
@@ -629,21 +629,9 @@ describe('build-schema', () => {
         expect(schema).to.deepEqual(expectedSchema);
       });
     });
-
-    function expectValidJsonSchema(schema: JsonSchema) {
-      const ajv = new Ajv();
-      const validate = ajv.compile(
-        require('ajv/lib/refs/json-schema-draft-06.json'),
-      );
-      const isValid = validate(schema);
-      const result = isValid
-        ? 'JSON Schema is valid'
-        : ajv.errorsText(validate.errors!);
-      expect(result).to.equal('JSON Schema is valid');
-    }
   });
 
-  describe('getjsonSchema', () => {
+  describe('getJsonSchema', () => {
     it('gets cached JSON schema if one exists', () => {
       @model()
       class TestModel {

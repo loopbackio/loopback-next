@@ -17,6 +17,7 @@ import {
   post,
   requestBody,
   RestApplication,
+  SchemaObject,
 } from '../../..';
 import {aBodySpec} from '../../helpers';
 
@@ -45,7 +46,7 @@ describe('Validation at REST level', () => {
   // Add a schema that requires `description`
   const PRODUCT_SPEC_WITH_DESCRIPTION = jsonToSchemaObject(
     getJsonSchema(Product),
-  );
+  ) as SchemaObject;
   PRODUCT_SPEC_WITH_DESCRIPTION.required!.push('description');
 
   // This is the standard use case that most LB4 applications should use.
