@@ -1,31 +1,22 @@
+'use strict';
 // Copyright IBM Corp. 2019. All Rights Reserved.
 // Node module: @loopback/authentication
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-
-// Should it be imported from 'express'?
-// The `Request` type from 'express' is not compatible
-// with the one from `@loopback/rest` now.
-import {Request} from '@loopback/rest';
-import {AuthenticateOptions, Strategy} from 'passport';
-import {UserProfile} from '@loopback/authentication';
-
+Object.defineProperty(exports, '__esModule', {value: true});
+const passport_1 = require('passport');
 /**
  * Test fixture for a mock asynchronous passport-strategy
  */
-export class MockPassportStrategy extends Strategy {
-  // user to return for successful authentication
-  private mockUser: UserProfile;
-
-  setMockUser(userObj: UserProfile) {
+class MockPassportStrategy extends passport_1.Strategy {
+  setMockUser(userObj) {
     this.mockUser = userObj;
   }
-
   /**
    * authenticate() function similar to passport-strategy packages
    * @param req
    */
-  async authenticate(req: Request, options?: AuthenticateOptions) {
+  async authenticate(req, options) {
     await this.verify(req);
   }
   /**
@@ -37,7 +28,7 @@ export class MockPassportStrategy extends Strategy {
    * pass req.query.testState = 'fail' to mock failed authorization
    * pass req.query.testState = 'error' to mock unexpected error
    */
-  async verify(request: Request) {
+  async verify(request) {
     if (
       request.headers &&
       request.headers.testState &&
@@ -55,16 +46,15 @@ export class MockPassportStrategy extends Strategy {
     }
     process.nextTick(this.returnMockUser.bind(this));
   }
-
   returnMockUser() {
     this.success(this.mockUser);
   }
-
-  returnUnauthorized(challenge?: string | number, status?: number) {
+  returnUnauthorized(challenge, status) {
     this.fail(challenge, status);
   }
-
-  returnError(err: string) {
+  returnError(err) {
     this.error(err);
   }
 }
+exports.MockPassportStrategy = MockPassportStrategy;
+//# sourceMappingURL=mock-passport-strategy.js.map

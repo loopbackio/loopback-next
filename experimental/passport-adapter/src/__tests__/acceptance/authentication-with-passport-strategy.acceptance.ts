@@ -31,6 +31,7 @@ import {
 } from '@loopback/authentication';
 import {StrategyAdapter} from '../../';
 const SequenceActions = RestBindings.SequenceActions;
+const AUTH_STRATEGY_NAME = 'basic';
 
 describe('Basic Authentication', () => {
   let app: Application;
@@ -92,16 +93,16 @@ describe('Basic Authentication', () => {
   // See Line 89 in the function `givenAServer`
   class PassportBasicAuthProvider implements Provider<AuthenticationStrategy> {
     value(): AuthenticationStrategy {
-      const basicStrategy = this.configuratedBasicStrategy(verify);
+      const basicStrategy = this.configuredBasicStrategy(verify);
       return this.convertToAuthStrategy(basicStrategy);
     }
 
-    configuratedBasicStrategy(verifyFn: BasicVerifyFunction): BasicStrategy {
+    configuredBasicStrategy(verifyFn: BasicVerifyFunction): BasicStrategy {
       return new BasicStrategy(verifyFn);
     }
 
     convertToAuthStrategy(basic: BasicStrategy): AuthenticationStrategy {
-      return new StrategyAdapter(basic, 'basic');
+      return new StrategyAdapter(basic, AUTH_STRATEGY_NAME);
     }
   }
 
@@ -148,7 +149,7 @@ describe('Basic Authentication', () => {
         @inject(AuthenticationBindings.CURRENT_USER) private user: UserProfile,
       ) {}
 
-      @authenticate('basic')
+      @authenticate(AUTH_STRATEGY_NAME)
       async whoAmI(): Promise<string> {
         return this.user.id;
       }

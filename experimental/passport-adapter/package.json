@@ -42,12 +42,20 @@
   "dependencies": {
     "@loopback/authentication": "^2.0.0",
     "@loopback/rest": "^1.11.2",
+    "@loopback/core": "^1.7.1",
+    "@loopback/context": "^1.16.0",
+    "@loopback/metadata": "^1.1.5",
+    "@loopback/openapi-v3": "^1.4.0",
     "passport": "^0.4.0"
   },
   "devDependencies": {
     "@loopback/build": "^1.5.5",
     "@loopback/openapi-spec-builder": "^1.1.11",
     "@loopback/testlab": "^1.2.10",
+    "@loopback/tslint-config": "^2.0.4",
+    "@types/node": "^10.11.2",
+    "@types/passport": "^1.0.0",
+    "@types/passport-http": "^0.3.8",
     "passport-http": "^0.3.0"
   }
 }
