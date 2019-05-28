@@ -30,6 +30,7 @@ async function updateGreenKeeperJson() {
   };
 
   for (const p of packageJsonPaths) {
+    if (p.startsWith('sandbox/')) continue;
     greenKeeperJson.groups.default.packages.push(p);
   }
 
@@ -64,13 +65,15 @@ async function updateGreenKeeperJson() {
     return;
   }
 
+  currentConfig = Object.assign(currentConfig, greenKeeperJson);
+
   if (process.argv[2] === '-f') {
     // Update `greenkeeper.json`
-    writeJsonFile(greenKeeperJsonFile, greenKeeperJson);
+    writeJsonFile(greenKeeperJsonFile, currentConfig);
   } else {
     // Print out `greenkeeper.json`
     console.error('%s is out of date.', 'greenkeeper.json');
-    console.log(JSON.stringify(greenKeeperJson, null, 2));
+    console.log(JSON.stringify(currentConfig, null, 2));
   }
 }
 
