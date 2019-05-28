@@ -33,10 +33,11 @@
         "packages/rest/package.json",
         "packages/service-proxy/package.json",
         "packages/testlab/package.json",
-        "packages/tslint-config/package.json",
-        "sandbox/example/package.json"
+        "packages/tslint-config/package.json"
       ]
     }
   },
-  "ignore": ["@types/node"]
+  "ignore": [
+    "@types/node"
+  ]
 }
