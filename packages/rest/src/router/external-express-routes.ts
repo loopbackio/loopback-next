@@ -10,7 +10,7 @@ import {
   SchemasObject,
 } from '@loopback/openapi-v3-types';
 import * as express from 'express';
-import {RequestHandler, Application} from 'express';
+import {RequestHandler} from 'express';
 import {PathParams} from 'express-serve-static-core';
 import * as HttpErrors from 'http-errors';
 import * as onFinished from 'on-finished';
@@ -50,10 +50,7 @@ export class ExternalExpressRoutes {
     rootDir: string,
     options?: ServeStaticOptions,
   ) {
-    this._staticRoutes.use(path, express.static(
-      rootDir,
-      options,
-    ) as Application);
+    this._staticRoutes.use(path, express.static(rootDir, options));
   }
 
   public mountRouter(
