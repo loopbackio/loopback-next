@@ -31,7 +31,7 @@ rm -rf sandbox/loopback.io/
 git clone --depth 1 https://github.com/strongloop/loopback.io.git sandbox/loopback.io
 
 # Bootstrap the `loopback.io` package
-lerna bootstrap --scope loopback.io-workflow-scripts
+lerna bootstrap --scope loopback.io-workflow-scripts --scope @loopback/docs
 
 pushd $REPO_ROOT/sandbox/loopback.io/ >/dev/null
 
