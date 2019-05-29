@@ -20,11 +20,11 @@ features along with regular ones in `loopback-next` repository.
 ```sh
 cd loopback-next
 git fetch --all
-git checkout labs && git checkout -b lab/<my-experimental-feature> && git checkout -b labs-dev/<my-experimental-feature>
+git checkout labs && git checkout -b lab/<my-experimental-feature> && git checkout -b lab-dev/<my-experimental-feature>
 git rebase origin/master
 ```
 
-We add a shell script to provision an experimental feature.
+Or you can execute the following shell script to provision your experimental feature. It does the same setup as the commands above.
 
 ```sh
 cd loopback-next
@@ -35,26 +35,34 @@ cd loopback-next
 
 ```sh
 cd loopback-next
-git checkout labs-dev/<my-experimental-feature>
+git checkout lab-dev/<my-experimental-feature>
 ```
 
 You can now start to make changes, commit them, and push to remote.
 
 3. Rebase the experimental feature branch against master
 
+To get the latest change from master, you can rebase your dev branch:
+
 ```
 cd loopback-next
-git checkout labs-dev/<my-experimental-feature>
+git checkout lab-dev/<my-experimental-feature>
 git fetch --all
 git rebase origin/master
 git push --force-with-lease
 ```
 
-4. Create PR for an experimental feature
+If you want to have a clean commit history in your PR without the noisy commits from the master branch, make sure branch `/labs` is rebased against master and `/lab/<my-experimental-feature>` is rebased against `/labs`.
 
+4. Release for an experimental feature
+
+- Use `0.x.y` versioning scheme
 - Use `lab/<my-experimental-feature>` as the branch
+
+*The release script to be created*
 
 ### Graduate an experimental feature
 
 1. Create a PR from `lab/<my-experimental-feature>` against `master`
+2. Remove the lab setup commits from `/labs`
 2. Follow the code review process to land the PR
