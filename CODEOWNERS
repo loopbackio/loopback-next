@@ -4,7 +4,10 @@
 #
 # See https://help.github.com/articles/about-codeowners/
 
-* @bajtos @raymondfeng
+# The lab feature owners can watch the code changes
+# in the lab branch `lab/<my-feature-name>` by adding
+# their names like:
+# labs/passport-adapter/* @jannyHou
 
 acceptance/repository-mongodb/* @bajtos
 acceptance/repository-mysql/* @bajtos

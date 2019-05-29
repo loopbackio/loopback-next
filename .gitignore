@@ -9,6 +9,7 @@ acceptance/*/dist
 packages/*/dist
 extensions/*/dist
 examples/*/dist
+labs/*/dist
 benchmark/dist
 **/package
 .sandbox
