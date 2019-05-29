@@ -14,7 +14,7 @@ FEATURE=$1
 echo Setting up experimental feature $FEATURE...
 pushd $REPO_ROOT >/dev/null
 
-git checkout labs && git fetch --all && git rebase origin/master && git checkout -b "lab/$FEATURE" && git checkout -b "lab-dev/$FEATURE"
+git checkout labs/base && git fetch --all && git rebase origin/master && git checkout -b "labs/$FEATURE" && git checkout -b "labs-dev/$FEATURE"
 
 mkdir -p "$REPO_ROOT/labs/$FEATURE"
 
