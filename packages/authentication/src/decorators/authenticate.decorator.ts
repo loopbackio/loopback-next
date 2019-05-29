@@ -24,7 +24,7 @@ export interface AuthenticationMetadata {
  * @param strategyName - The name of the authentication strategy to use.
  * @param options - Additional options to configure the authentication.
  */
-export function authenticate(strategyName: string, options?: Object) {
+export function authenticate(strategyName: string, options?: object) {
   return MethodDecoratorFactory.createDecorator<AuthenticationMetadata>(
     AUTHENTICATION_METADATA_KEY,
     {
