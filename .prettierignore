@@ -9,6 +9,7 @@ packages/tsdocs/fixtures/monorepo/**/docs
 **/.sandbox
 packages/*/dist
 examples/*/dist
+labs/*/dist
 benchmark/dist
 sandbox/**/*
 *.json
