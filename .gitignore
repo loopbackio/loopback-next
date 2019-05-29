@@ -8,6 +8,7 @@ api-docs
 **/*.tgz
 packages/*/dist
 examples/*/dist
+labs/*/dist
 benchmark/dist
 **/package
 .sandbox
