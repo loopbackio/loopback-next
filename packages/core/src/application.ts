@@ -44,7 +44,7 @@ export class Application extends Context implements LifeCycleObserver {
   /**
    * Register a controller class with this application.
    *
-   * @param controllerCtor {Function} The controller class
+   * @param controllerCtor - The controller class
    * (constructor function).
    * @param name - Optional controller name, default to the class name
    * @returns The newly created binding, you can use the reference to

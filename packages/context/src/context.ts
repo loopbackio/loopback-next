@@ -672,7 +672,7 @@ export class Context extends EventEmitter {
    * Find bindings using the tag filter. If the filter matches one of the
    * binding tags, the binding is included.
    *
-   * @param tagFilter  A filter for tags. It can be in one of the following
+   * @param tagFilter - A filter for tags. It can be in one of the following
    * forms:
    * - A regular expression, such as `/controller/`
    * - A wildcard pattern string with optional `*` and `?`, such as `'con*'`
