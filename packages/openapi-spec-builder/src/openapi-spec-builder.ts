@@ -3,16 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import * as assert from 'assert';
 import {
+  createEmptyApiSpec,
+  ISpecificationExtension,
   OpenApiSpec,
   OperationObject,
-  ResponseObject,
   ParameterObject,
-  createEmptyApiSpec,
   RequestBodyObject,
-  ISpecificationExtension,
+  ResponseObject,
 } from '@loopback/openapi-v3-types';
+import * as assert from 'assert';
 
 /**
  * Create a new instance of OpenApiSpecBuilder.
@@ -53,7 +53,10 @@ export class BuilderBase<T extends ISpecificationExtension> {
       `Invalid extension ${key}, extension keys must be prefixed with "x-"`,
     );
 
-    this._spec[key] = value;
+    // `this._spec[key] = value;` is broken in TypeScript 3.5
+    // See https://github.com/microsoft/TypeScript/issues/31661
+    // tslint:disable-next-line:no-any
+    (this._spec as Record<string, any>)[key] = value;
     return this;
   }
 

@@ -22,7 +22,8 @@ describe('repository booter unit tests', () => {
   class RepoApp extends RepositoryMixin(Application) {}
 
   let app: RepoApp;
-  let stub: sinon.SinonStub;
+  // tslint:disable-next-line:no-any
+  let stub: sinon.SinonStub<[any?, ...any[]], void>;
 
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(getApp);

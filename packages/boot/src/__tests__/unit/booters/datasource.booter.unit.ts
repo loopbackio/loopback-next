@@ -22,7 +22,8 @@ describe('datasource booter unit tests', () => {
   class AppWithRepo extends RepositoryMixin(Application) {}
 
   let app: AppWithRepo;
-  let stub: sinon.SinonStub;
+  // tslint:disable-next-line:no-any
+  let stub: sinon.SinonStub<[any?, ...any[]], void>;
 
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(getApp);

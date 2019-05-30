@@ -32,10 +32,9 @@ const lifeCycleMethods: (keyof LifeCycleObserver)[] = ['start', 'stop'];
  * Test if an object implements LifeCycleObserver
  * @param obj - An object
  */
-export function isLifeCycleObserver(obj: {
-  [name: string]: unknown;
-}): obj is LifeCycleObserver {
-  return lifeCycleMethods.some(m => typeof obj[m] === 'function');
+export function isLifeCycleObserver(obj: object): obj is LifeCycleObserver {
+  const candidate = obj as Partial<LifeCycleObserver>;
+  return lifeCycleMethods.some(m => typeof candidate[m] === 'function');
 }
 
 /**

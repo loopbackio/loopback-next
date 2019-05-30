@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, inject, invokeMethod} from '../..';
 import * as debugModule from 'debug';
+import {Context, inject, invokeMethod, BindingKey} from '../..';
 const debug = debugModule('loopback:context:test');
 
 class InfoController {
@@ -37,7 +37,7 @@ class InfoController {
   }
 }
 
-const INFO_CONTROLLER = 'controllers.info';
+const INFO_CONTROLLER = BindingKey.create<InfoController>('controllers.info');
 
 describe('Context bindings - Injecting dependencies of method', () => {
   let ctx: Context;
