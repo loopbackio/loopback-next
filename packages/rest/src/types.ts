@@ -4,14 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Binding, BoundValue} from '@loopback/context';
-import {ResolvedRoute, RouteEntry} from './router';
-import {Request, Response} from 'express';
+import {ReferenceObject, SchemaObject} from '@loopback/openapi-v3-types';
+import * as ajv from 'ajv';
 import {
-  OptionsJson,
-  OptionsUrlencoded,
-  OptionsText,
   Options,
+  OptionsJson,
+  OptionsText,
+  OptionsUrlencoded,
 } from 'body-parser';
+import {Request, Response} from 'express';
+import {ResolvedRoute, RouteEntry} from './router';
 
 export {Request, Response};
 
@@ -82,6 +84,20 @@ export type LogError = (
   request: Request,
 ) => void;
 
+/**
+ * Options for request body validation using AJV
+ */
+export interface RequestBodyValidationOptions extends ajv.Options {
+  /**
+   * Custom cache for compiled schemas by AJV. This setting makes it possible
+   * to skip the default cache.
+   */
+  compiledSchemaCache?: WeakMap<
+    SchemaObject | ReferenceObject,
+    ajv.ValidateFunction
+  >;
+}
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
@@ -93,6 +109,7 @@ export interface RequestBodyParserOptions extends Options {
   urlencoded?: OptionsUrlencoded;
   text?: OptionsText;
   raw?: Options;
+  validation?: RequestBodyValidationOptions;
   [name: string]: unknown;
 }
 

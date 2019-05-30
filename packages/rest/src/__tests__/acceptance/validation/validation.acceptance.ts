@@ -8,6 +8,7 @@ import {model, property} from '@loopback/repository';
 import {
   Client,
   createRestAppClient,
+  expect,
   givenHttpServerConfig,
 } from '@loopback/testlab';
 import {
@@ -16,7 +17,9 @@ import {
   jsonToSchemaObject,
   post,
   requestBody,
+  RequestBodyValidationOptions,
   RestApplication,
+  RestBindings,
   SchemaObject,
 } from '../../..';
 import {aBodySpec} from '../../helpers';
@@ -95,6 +98,57 @@ describe('Validation at REST level', () => {
         .type('json')
         .send('null')
         .expect(400);
+    });
+  });
+
+  context('with request body validation options', () => {
+    class ProductController {
+      @post('/products')
+      async create(
+        @requestBody({required: true}) data: Product,
+      ): Promise<Product> {
+        return new Product(data);
+      }
+    }
+
+    before(() =>
+      givenAnAppAndAClient(ProductController, {
+        nullable: false,
+        compiledSchemaCache: new WeakMap(),
+      }),
+    );
+    after(() => app.stop());
+
+    it('rejects requests with `null` with {nullable: false}', async () => {
+      const DATA = {
+        name: 'iPhone',
+        description: null,
+        price: 10,
+      };
+      const res = await client
+        .post('/products')
+        .send(DATA)
+        .expect(422);
+
+      expect(res.body).to.eql({
+        error: {
+          code: 'VALIDATION_FAILED',
+          details: [
+            {
+              code: 'type',
+              info: {
+                type: 'string',
+              },
+              message: 'should be string',
+              path: '.description',
+            },
+          ],
+          message:
+            'The request body is invalid. See error object `details` property for more info.',
+          name: 'UnprocessableEntityError',
+          statusCode: 422,
+        },
+      });
     });
   });
 
@@ -245,8 +299,15 @@ describe('Validation at REST level', () => {
       .expect(422);
   }
 
-  async function givenAnAppAndAClient(controller: ControllerClass) {
+  async function givenAnAppAndAClient(
+    controller: ControllerClass,
+    validationOptions?: RequestBodyValidationOptions,
+  ) {
     app = new RestApplication({rest: givenHttpServerConfig()});
+    if (validationOptions)
+      app
+        .bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS)
+        .to({validation: validationOptions});
     app.controller(controller);
     await app.start();
 

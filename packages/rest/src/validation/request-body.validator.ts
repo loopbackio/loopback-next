@@ -14,11 +14,10 @@ import * as debugModule from 'debug';
 import * as _ from 'lodash';
 import * as util from 'util';
 import {HttpErrors, RequestBody, RestHttpErrors} from '..';
+import {RequestBodyValidationOptions} from '../types';
 
 const toJsonSchema = require('openapi-schema-to-json-schema');
 const debug = debugModule('loopback:rest:validation');
-
-export type RequestBodyValidationOptions = AJV.Options;
 
 /**
  * Check whether the request body is valid according to the provided OpenAPI schema.
@@ -28,6 +27,7 @@ export type RequestBodyValidationOptions = AJV.Options;
  * @param body - The request body parsed from an HTTP request.
  * @param requestBodySpec - The OpenAPI requestBody specification defined in `@requestBody()`.
  * @param globalSchemas - The referenced schemas generated from `OpenAPISpec.components.schemas`.
+ * @param options - Request body validation options for AJV
  */
 export function validateRequestBody(
   body: RequestBody,
@@ -55,7 +55,7 @@ export function validateRequestBody(
   }
   if (!schema) return;
 
-  options = Object.assign({coerceTypes: body.coercionRequired}, options);
+  options = Object.assign({coerceTypes: !!body.coercionRequired}, options);
   validateValueAgainstSchema(body.value, schema, globalSchemas, options);
 }
 
@@ -77,28 +77,36 @@ function convertToJsonSchema(openapiSchema: SchemaObject) {
 }
 
 /**
+ * Built-in cache for complied schemas by AJV
+ */
+const DEFAULT_COMPILED_SCHEMA_CACHE = new WeakMap<
+  SchemaObject | ReferenceObject,
+  AJV.ValidateFunction
+>();
+
+/**
  * Validate the request body data against JSON schema.
  * @param body - The request body data.
  * @param schema - The JSON schema used to perform the validation.
  * @param globalSchemas - Schema references.
+ * @param options - Request body validation options.
  */
-
-const compiledSchemaCache = new WeakMap();
-
 function validateValueAgainstSchema(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body: any,
   schema: SchemaObject | ReferenceObject,
-  globalSchemas?: SchemasObject,
-  options?: RequestBodyValidationOptions,
+  globalSchemas: SchemasObject = {},
+  options: RequestBodyValidationOptions = {},
 ) {
-  let validate;
+  let validate: AJV.ValidateFunction;
 
-  if (compiledSchemaCache.has(schema)) {
-    validate = compiledSchemaCache.get(schema);
+  const cache = options.compiledSchemaCache || DEFAULT_COMPILED_SCHEMA_CACHE;
+
+  if (cache.has(schema)) {
+    validate = DEFAULT_COMPILED_SCHEMA_CACHE.get(schema)!;
   } else {
     validate = createValidator(schema, globalSchemas, options);
-    compiledSchemaCache.set(schema, validate);
+    cache.set(schema, validate);
   }
 
   if (validate(body)) {
@@ -133,7 +141,7 @@ function createValidator(
   schema: SchemaObject,
   globalSchemas?: SchemasObject,
   options?: RequestBodyValidationOptions,
-): Function {
+): AJV.ValidateFunction {
   const jsonSchema = convertToJsonSchema(schema);
 
   const schemaWithRef = Object.assign({components: {}}, jsonSchema);
