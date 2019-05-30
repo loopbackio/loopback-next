@@ -59,7 +59,7 @@
     "@types/node": "^10.11.2",
     "lodash": "^4.17.11",
     "tslint": "^5.16.0",
-    "typescript": "^3.5.1"
+    "typescript": "~3.5.1"
   },
   "keywords": [
     "loopback",

@@ -50,6 +50,6 @@
     "@types/express": "^4.11.1",
     "@types/node": "^10.11.2",
     "tslint": "^5.16.0",
-    "typescript": "^3.5.1"
+    "typescript": "~3.5.1"
   }
 }

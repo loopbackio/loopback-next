@@ -32,23 +32,36 @@ async function syncDevDeps() {
 
   // Update typescript & tslint dependencies in individual packages
   for (const pkg of packages) {
-    const data = readJsonFile(pkg.manifestLocation);
-    let modified = false;
-    for (const dep in masterDeps) {
-      if (data.devDependencies && dep in data.devDependencies) {
-        data.devDependencies[dep] = masterDeps[dep];
-        modified = true;
-      }
-    }
-    if (!modified) continue;
-    writeJsonFile(pkg.manifestLocation, data);
+    const pkgFile = pkg.manifestLocation;
+    updatePackageJson(pkgFile, masterDeps);
   }
 
   // Update dependencies in monorepo root
   const rootPackage = path.join(rootPath, 'package.json');
-  const data = readJsonFile(rootPackage);
-  Object.assign(data.devDependencies, masterDeps);
-  writeJsonFile(rootPackage, data);
+  updatePackageJson(rootPackage, masterDeps);
+}
+
+/**
+ * Update package.json with given master dependencies
+ * @param pkgFile - Path of `package.json`
+ * @param masterDeps - Master dependencies
+ */
+function updatePackageJson(pkgFile, masterDeps) {
+  const data = readJsonFile(pkgFile);
+  let modified = false;
+  for (const dep in masterDeps) {
+    if (data.devDependencies && dep in data.devDependencies) {
+      modified = data.devDependencies[dep] !== masterDeps[dep];
+      data.devDependencies[dep] = masterDeps[dep];
+    }
+    if (data.dependencies && dep in data.dependencies) {
+      modified = data.dependencies[dep] !== masterDeps[dep];
+      data.dependencies[dep] = masterDeps[dep];
+    }
+  }
+  if (!modified) return false;
+  writeJsonFile(pkgFile, data);
+  return true;
 }
 
 if (require.main === module) syncDevDeps();
