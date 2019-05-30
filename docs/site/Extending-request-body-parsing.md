@@ -122,7 +122,10 @@ the following configuration:
   },
   text: {
     limit: '2MB'
-  }
+  },
+  // Validation options for AJV, see https://github.com/epoberezkin/ajv#options
+  // This setting is global for all request body parsers.
+  validation: {nullable: true},
 }
 ```
 
