@@ -50,7 +50,8 @@ export class TodoListController {
     },
   })
   async count(
-    @param.query.object('where', getWhereSchemaFor(TodoList)) where?: Where,
+    @param.query.object('where', getWhereSchemaFor(TodoList))
+    where?: Where<TodoList>,
   ): Promise<Count> {
     return await this.todoListRepository.count(where);
   }
@@ -64,7 +65,8 @@ export class TodoListController {
     },
   })
   async find(
-    @param.query.object('filter', getFilterSchemaFor(TodoList)) filter?: Filter,
+    @param.query.object('filter', getFilterSchemaFor(TodoList))
+    filter?: Filter<TodoList>,
   ): Promise<TodoList[]> {
     return await this.todoListRepository.find(filter);
   }
@@ -79,7 +81,8 @@ export class TodoListController {
   })
   async updateAll(
     @requestBody() obj: Partial<TodoList>,
-    @param.query.object('where', getWhereSchemaFor(TodoList)) where?: Where,
+    @param.query.object('where', getWhereSchemaFor(TodoList))
+    where?: Where<TodoList>,
   ): Promise<Count> {
     return await this.todoListRepository.updateAll(obj, where);
   }

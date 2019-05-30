@@ -56,7 +56,7 @@ export class TodoListTodoController {
   })
   async find(
     @param.path.number('id') id: number,
-    @param.query.object('filter') filter?: Filter,
+    @param.query.object('filter') filter?: Filter<Todo>,
   ): Promise<Todo[]> {
     return await this.todoListRepo.todos(id).find(filter);
   }
@@ -72,7 +72,7 @@ export class TodoListTodoController {
   async patch(
     @param.path.number('id') id: number,
     @requestBody() todo: Partial<Todo>,
-    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where,
+    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where<Todo>,
   ): Promise<Count> {
     return await this.todoListRepo.todos(id).patch(todo, where);
   }
@@ -87,7 +87,7 @@ export class TodoListTodoController {
   })
   async delete(
     @param.path.number('id') id: number,
-    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where,
+    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where<Todo>,
   ): Promise<Count> {
     return await this.todoListRepo.todos(id).delete(where);
   }

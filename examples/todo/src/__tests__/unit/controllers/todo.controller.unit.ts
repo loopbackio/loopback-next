@@ -100,7 +100,7 @@ describe('TodoController', () => {
 
     it('uses the provided filter', async () => {
       const find = todoRepo.stubs.find;
-      const filter: Filter = {where: {isCompleted: false}};
+      const filter: Filter<Todo> = {where: {isComplete: false}};
 
       find.resolves(aListOfTodos);
       await controller.findTodos(filter);

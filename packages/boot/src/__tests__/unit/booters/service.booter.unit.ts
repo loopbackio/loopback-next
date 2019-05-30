@@ -19,7 +19,8 @@ describe('service booter unit tests', () => {
   class AppWithRepo extends ServiceMixin(Application) {}
 
   let app: AppWithRepo;
-  let stub: sinon.SinonStub;
+  // tslint:disable-next-line:no-any
+  let stub: sinon.SinonStub<[any?, ...any[]], void>;
 
   beforeEach('reset sandbox', () => sandbox.reset());
   beforeEach(getApp);

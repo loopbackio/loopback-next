@@ -11,14 +11,14 @@ import {
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getFilterSchemaFor,
   getWhereSchemaFor,
+  param,
   patch,
+  post,
   put,
-  del,
   requestBody,
 } from '@loopback/rest';
 import {Note} from '../models';
@@ -51,7 +51,7 @@ export class NoteController {
     },
   })
   async count(
-    @param.query.object('where', getWhereSchemaFor(Note)) where?: Where,
+    @param.query.object('where', getWhereSchemaFor(Note)) where?: Where<Note>,
   ): Promise<Count> {
     return await this.noteRepository.count(where);
   }
@@ -69,7 +69,8 @@ export class NoteController {
     },
   })
   async find(
-    @param.query.object('filter', getFilterSchemaFor(Note)) filter?: Filter,
+    @param.query.object('filter', getFilterSchemaFor(Note))
+    filter?: Filter<Note>,
   ): Promise<Note[]> {
     return await this.noteRepository.find(filter);
   }
@@ -84,7 +85,7 @@ export class NoteController {
   })
   async updateAll(
     @requestBody() note: Note,
-    @param.query.object('where', getWhereSchemaFor(Note)) where?: Where,
+    @param.query.object('where', getWhereSchemaFor(Note)) where?: Where<Note>,
   ): Promise<Count> {
     return await this.noteRepository.updateAll(note, where);
   }
