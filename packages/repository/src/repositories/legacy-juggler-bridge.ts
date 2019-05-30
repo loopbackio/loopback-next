@@ -55,8 +55,8 @@ function isModelClass(
 /**
  * This is a bridge to the legacy DAO class. The function mixes DAO methods
  * into a model class and attach it to a given data source
- * @param modelClass {} Model class
- * @param ds {DataSource} Data source
+ * @param modelClass - Model class
+ * @param ds - Data source
  * @returns {} The new model class with DAO (CRUD) operations
  */
 export function bindModel<T extends juggler.ModelBaseClass>(

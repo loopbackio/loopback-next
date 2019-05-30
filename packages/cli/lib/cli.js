@@ -13,10 +13,10 @@ const PREFIX = 'loopback4:';
 
 /**
  * Parse arguments and run corresponding command
- * @param env Yeoman env
+ * @param env - Yeoman env
  * @param {*} opts Command options
- * @param log Log function
- * @param dryRun flag for dryRun (for testing)
+ * @param log - Log function
+ * @param dryRun - flag for dryRun (for testing)
  */
 function runCommand(env, opts, log, dryRun) {
   const args = opts._;
@@ -113,7 +113,7 @@ function printVersions(log) {
 /**
  * Print a list of available commands
  * @param {*} env Yeoman env
- * @param log Log function
+ * @param log - Log function
  */
 function printCommands(env, log) {
   log('Available commands: ');

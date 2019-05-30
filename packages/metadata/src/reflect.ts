@@ -12,7 +12,7 @@ import 'reflect-metadata';
  */
 export class NamespacedReflect {
   /**
-   * @param namespace : namespace to bind this reflect context
+   * @param namespace - Namespace to bind this reflect context
    */
   constructor(private namespace?: string) {}
 

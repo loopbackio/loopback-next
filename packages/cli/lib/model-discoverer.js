@@ -17,9 +17,9 @@ async function discoverModelNames(ds, options) {
 
 /**
  * Returns the schema definition for a model
- * @param ds {Juggler.DataSource}
- * @param modelName {string}
- * @param options {object}
+ * @param ds - {Juggler.DataSource}
+ * @param modelName - {string}
+ * @param options - {object}
  * @returns {Promise<Juggler.SchemaDefinition>}
  */
 async function discoverSingleModel(ds, modelName, options) {
@@ -46,7 +46,7 @@ function loadDataSource(path) {
 
 /**
  * Loads a compiled loopback datasource by name
- * @param name {string}
+ * @param name - {string}
  * @returns {*}
  */
 function loadDataSourceByName(name) {

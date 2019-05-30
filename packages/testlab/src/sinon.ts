@@ -27,7 +27,7 @@ export type StubbedInstanceWithSinonAccessor<T> = T & {
  *  - https://github.com/DefinitelyTyped/DefinitelyTyped/issues/14811
  *
  * @typeParam TType - Type being stubbed.
- * @param constructor  Object or class to stub.
+ * @param constructor - Object or class to stub.
  * @returns A stubbed version of the constructor, with an extra property `stubs`
  * providing access to stub API for individual methods.
  */
