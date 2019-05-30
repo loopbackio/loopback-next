@@ -31,6 +31,12 @@ cd loopback-next
 ./bin/setup-lab.sh <my-experimental-feature>
 ```
 
+To enable the test in `/labs*` only and skip running unrelated tests in the production ready packages, you can execute script `bin/test-lab-only.js` to modify the mocha test command:
+
+```sh
+node bin/test-lab-only.js
+```
+
 2. Work on an experimental feature
 
 ```sh
@@ -68,4 +74,3 @@ If you want to have a clean commit history in your PR without the noisy commits 
 3. Update the entries/links in [register the new package](https://loopback.io/doc/en/contrib/code-contrib-lb4.html#register-the-new-package)
 4. Update the `CODEOWNERS` file in the root folder: add the graduated package and owners' names
 5. Follow the code review process to land the PR
-
