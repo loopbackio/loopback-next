@@ -1,6 +1,6 @@
 {
   "name": "@loopback/docs",
-  "version": "1.19.0",
+  "version": "1.20.0",
   "description": "Documentation for LoopBack 4",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/docs",
   "author": "IBM Corp.",
@@ -20,7 +20,7 @@
     "clean": "lb-clean loopback-docs*.tgz package api-docs apidocs site/readmes site/apidocs"
   },
   "devDependencies": {
-    "@loopback/build": "^1.5.5"
+    "@loopback/build": "^1.6.0"
   },
   "publishConfig": {
     "access": "public"

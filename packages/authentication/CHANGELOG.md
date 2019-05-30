@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.5](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@2.0.4...@loopback/authentication@2.0.5) (2019-05-30)
+
+
+### Bug Fixes
+
+* **authentication:** fix the options type in decorator ([d4116cf](https://github.com/strongloop/loopback-next/commit/d4116cf))
+
+
+
+
+
 ## [2.0.4](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@2.0.3...@loopback/authentication@2.0.4) (2019-05-23)
 
 **Note:** Version bump only for package @loopback/authentication

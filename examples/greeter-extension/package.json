@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-greeter-extension",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "An example extension point/extensions for LoopBack 4",
   "main": "index.js",
   "engines": {
@@ -43,8 +43,8 @@
   },
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/examples/greeter-extension",
   "devDependencies": {
-    "@loopback/build": "^1.5.5",
-    "@loopback/testlab": "^1.2.10",
+    "@loopback/build": "^1.6.0",
+    "@loopback/testlab": "^1.2.11",
     "@loopback/tslint-config": "^2.0.4",
     "@types/debug": "4.1.4",
     "@types/node": "^10.11.2",
@@ -52,9 +52,9 @@
     "typescript": "~3.5.1"
   },
   "dependencies": {
-    "@loopback/context": "^1.16.0",
-    "@loopback/core": "^1.7.1",
-    "@loopback/openapi-v3": "^1.4.0",
+    "@loopback/context": "^1.17.0",
+    "@loopback/core": "^1.7.2",
+    "@loopback/openapi-v3": "^1.5.0",
     "chalk": "^2.4.2",
     "debug": "^4.0.1"
   }

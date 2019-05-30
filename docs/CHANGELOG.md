@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.19.0...@loopback/docs@1.20.0) (2019-05-30)
+
+
+### Features
+
+* **build:** add eslint scripts and default configs ([a6abe86](https://github.com/strongloop/loopback-next/commit/a6abe86))
+* **cli:** add `lb4 relation` command ([75939a4](https://github.com/strongloop/loopback-next/commit/75939a4))
+* **tsdocs:** add integration with api-extractor/documenter ([c8d9572](https://github.com/strongloop/loopback-next/commit/c8d9572))
+
+
+
+
+
 # [1.19.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.18.0...@loopback/docs@1.19.0) (2019-05-23)
 
 

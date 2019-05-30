@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.16.0...@loopback/context@1.17.0) (2019-05-30)
+
+
+### Bug Fixes
+
+* **context:** allow injection when a class decorator returns a mixin ([28cc0a0](https://github.com/strongloop/loopback-next/commit/28cc0a0))
+* **context:** allow optional for a binding without value getter ([e211a71](https://github.com/strongloop/loopback-next/commit/e211a71))
+
+
+### Features
+
+* **context:** make parent public for invocation context ([19856c6](https://github.com/strongloop/loopback-next/commit/19856c6))
+
+
+### Performance Improvements
+
+* **context:** cache description of method parameter injections ([127f7c2](https://github.com/strongloop/loopback-next/commit/127f7c2))
+
+
+
+
+
 # [1.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.15.0...@loopback/context@1.16.0) (2019-05-23)
 
 

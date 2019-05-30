@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.11](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.2.10...@loopback/testlab@1.2.11) (2019-05-30)
+
+**Note:** Version bump only for package @loopback/testlab
+
+
+
+
+
 ## [1.2.10](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.2.9...@loopback/testlab@1.2.10) (2019-05-23)
 
 **Note:** Version bump only for package @loopback/testlab

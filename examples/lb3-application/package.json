@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-lb3-application",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Tutorial example on how to add existing an LB3 application to a LB4 project",
   "main": "index.js",
   "engines": {
@@ -36,13 +36,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/boot": "^1.2.8",
-    "@loopback/booter-lb3app": "^1.1.4",
-    "@loopback/context": "^1.16.0",
-    "@loopback/core": "^1.7.1",
-    "@loopback/repository": "^1.5.6",
-    "@loopback/rest": "^1.12.0",
-    "@loopback/rest-explorer": "^1.1.23",
+    "@loopback/boot": "^1.2.9",
+    "@loopback/booter-lb3app": "^1.1.5",
+    "@loopback/context": "^1.17.0",
+    "@loopback/core": "^1.7.2",
+    "@loopback/repository": "^1.5.7",
+    "@loopback/rest": "^1.13.0",
+    "@loopback/rest-explorer": "^1.1.24",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "debug": "^4.1.1",
@@ -51,9 +51,9 @@
     "loopback-boot": "^3.3.0"
   },
   "devDependencies": {
-    "@loopback/build": "^1.5.5",
+    "@loopback/build": "^1.6.0",
     "@loopback/rest": "^1.11.1",
-    "@loopback/testlab": "^1.2.10",
+    "@loopback/testlab": "^1.2.11",
     "@loopback/tslint-config": "^2.0.4",
     "@types/lodash": "^4.14.130",
     "@types/node": "^10.11.2",

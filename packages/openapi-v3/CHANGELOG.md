@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.4.0...@loopback/openapi-v3@1.5.0) (2019-05-30)
+
+
+### Features
+
+* helpers for building JSON/OpenAPI schema referencing shared definitions ([bf07ff9](https://github.com/strongloop/loopback-next/commit/bf07ff9))
+
+
+
+
+
 # [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.3.11...@loopback/openapi-v3@1.4.0) (2019-05-23)
 
 
