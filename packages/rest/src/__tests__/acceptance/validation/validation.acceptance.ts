@@ -30,8 +30,10 @@ describe('Validation at REST level', () => {
     @property({required: true})
     name: string;
 
-    @property({required: false})
-    description?: string;
+    // NOTE(rfeng): We have to add `type: 'string'` to `@property` as
+    // `string | null` removes TypeScript design:type reflection
+    @property({required: false, type: 'string', jsonSchema: {nullable: true}})
+    description?: string | null;
 
     @property({required: true})
     price: number;
@@ -41,13 +43,15 @@ describe('Validation at REST level', () => {
     }
   }
 
-  const PRODUCT_SPEC = jsonToSchemaObject(getJsonSchema(Product));
+  const PRODUCT_SPEC: SchemaObject = jsonToSchemaObject(getJsonSchema(Product));
 
   // Add a schema that requires `description`
-  const PRODUCT_SPEC_WITH_DESCRIPTION = jsonToSchemaObject(
-    getJsonSchema(Product),
-  ) as SchemaObject;
-  PRODUCT_SPEC_WITH_DESCRIPTION.required!.push('description');
+  const PRODUCT_SPEC_WITH_DESCRIPTION: SchemaObject = {
+    ...PRODUCT_SPEC,
+  };
+  PRODUCT_SPEC_WITH_DESCRIPTION.required = PRODUCT_SPEC.required!.concat(
+    'description',
+  );
 
   // This is the standard use case that most LB4 applications should use.
   // The request body specification is inferred from a decorated model class.
@@ -142,6 +146,9 @@ describe('Validation at REST level', () => {
 
     it('accepts valid values for json', () => serverAcceptsValidRequestBody());
 
+    it('accepts valid values for json with nullable properties', () =>
+      serverAcceptsValidRequestBodyWithNull());
+
     it('accepts valid values for urlencoded', () =>
       serverAcceptsValidRequestBodyForUrlencoded());
 
@@ -186,6 +193,18 @@ describe('Validation at REST level', () => {
     const DATA = {
       name: 'Pencil',
       description: 'An optional description of a pencil',
+      price: 10,
+    };
+    await client
+      .post('/products')
+      .send(DATA)
+      .expect(200, DATA);
+  }
+
+  async function serverAcceptsValidRequestBodyWithNull() {
+    const DATA = {
+      name: 'Pencil',
+      description: null,
       price: 10,
     };
     await client

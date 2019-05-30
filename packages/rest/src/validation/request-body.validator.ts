@@ -141,15 +141,18 @@ function createValidator(
     schemas: globalSchemas,
   };
 
-  const ajv = new AJV(
-    Object.assign(
-      {},
-      {
-        allErrors: true,
-      },
-      options,
-    ),
+  // See https://github.com/epoberezkin/ajv#options
+  options = Object.assign(
+    {},
+    {
+      allErrors: true,
+      // nullable: support keyword "nullable" from Open API 3 specification.
+      nullable: true,
+    },
+    options,
   );
+  debug('AJV options', options);
+  const ajv = new AJV(options);
 
   return ajv.compile(schemaWithRef);
 }
