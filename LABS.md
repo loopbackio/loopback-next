@@ -65,4 +65,7 @@ If you want to have a clean commit history in your PR without the noisy commits 
 
 1. Create a PR from `lab/<my-experimental-feature>` against `master`
 2. Remove the lab setup commits from `/labs`
-2. Follow the code review process to land the PR
+3. Update the entries/links in [register the new package](https://loopback.io/doc/en/contrib/code-contrib-lb4.html#register-the-new-package)
+4. Update the `CODEOWNERS` file in the root folder: add the graduated package and owners' names
+5. Follow the code review process to land the PR
+
