@@ -497,8 +497,6 @@ Please register the new package in the following files:
 - Update
   [CODEOWNERS](https://github.com/strongloop/loopback-next/blob/master/CODEOWNERS) -
   add a new entry listing the primary maintainers (owners) of the new package.
-- Run `npm run update-packages` to make sure the newly added package will be
-  monitored by greenkeeper and corresponding `package-lock.json` is updated.
 - Ask somebody from the IBM team (e.g. [@bajtos](https://github.com/bajtos) or
   [@raymondfeng](https://github.com/raymondfeng) to enlist the new package on
   <http://apidocs.loopback.io/>.
