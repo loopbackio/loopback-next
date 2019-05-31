@@ -13,7 +13,7 @@
   "devDependencies": {
     "@commitlint/cli": "^7.6.1",
     "@commitlint/config-conventional": "^7.6.0",
-    "@commitlint/travis-cli": "^7.6.1",
+    "@commitlint/travis-cli": "^8.0.0",
     "@types/mocha": "^5.0.0",
     "@typescript-eslint/eslint-plugin": "^1.4.2",
     "@typescript-eslint/parser": "^1.4.2",
