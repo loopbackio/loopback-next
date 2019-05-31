@@ -39,9 +39,9 @@
     "@loopback/openapi-spec-builder": "^1.1.12",
     "@loopback/rest": "^1.13.0",
     "@types/byline": "^4.2.31",
-    "@types/debug": "^4.1.0",
-    "@types/request-promise-native": "^1.0.15",
-    "autocannon": "^3.0.0",
+    "@types/debug": "^4.1.4",
+    "@types/request-promise-native": "^1.0.16",
+    "autocannon": "^4.0.0",
     "byline": "^5.0.0",
     "debug": "^4.0.1",
     "path-to-regexp": "^3.0.0",
@@ -51,10 +51,10 @@
   "devDependencies": {
     "@loopback/build": "^1.6.0",
     "@loopback/testlab": "^1.2.11",
-    "@types/mocha": "^5.0.0",
+    "@types/mocha": "^5.2.7",
     "@types/node": "^10.11.2",
-    "mocha": "^6.1.3",
+    "mocha": "^6.1.4",
     "p-event": "^4.1.0",
-    "source-map-support": "^0.5.5"
+    "source-map-support": "^0.5.12"
   }
 }
