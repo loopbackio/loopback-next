@@ -58,7 +58,7 @@
     "@types/lodash": "^4.14.130",
     "@types/node": "^10.11.2",
     "lodash": "^4.17.11",
-    "tslint": "^5.16.0",
+    "tslint": "^5.17.0",
     "typescript": "~3.5.1"
   },
   "keywords": [
