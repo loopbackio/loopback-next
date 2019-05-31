@@ -13,31 +13,62 @@ technique where the construction of dependencies of a class or function is
 separated from its behavior, in order to keep the code
 [loosely coupled](https://en.wikipedia.org/wiki/Loose_coupling).
 
-For example, the Sequence Action `authenticate` supports different
-authentication strategies (e.g. HTTP Basic Auth, OAuth2, etc.). Instead of
-hard-coding some sort of a lookup table to find the right strategy instance,
-`authenticate` uses dependency injection to let the caller specify which
-strategy to use.
+For example, the Sequence Action `authenticate` in `@loopback/authentication`
+supports different authentication strategies (e.g. HTTP Basic Auth, OAuth2,
+etc.). Instead of hard-coding some sort of a lookup table to find the right
+strategy instance, the `authenticate` action uses dependency injection to let
+the caller specify which strategy to use.
 
-The example below shows a simplified implementation of `authenticate` action,
-please refer to the source code of `@loopback/authenticate` for the full working
-version.
+The implementation of the `authenticate` action is shown below.
 
 ```ts
-class AuthenticateActionProvider {
-  constructor(@inject(AuthenticationBindings.STRATEGY) strategy) {
-    this.strategy = strategy;
-  }
+export class AuthenticateActionProvider implements Provider<AuthenticateFn> {
+  constructor(
+    // The provider is instantiated for Sequence constructor,
+    // at which time we don't have information about the current
+    // route yet. This information is needed to determine
+    // what auth strategy should be used.
+    // To solve this, we are injecting a getter function that will
+    // defer resolution of the strategy until authenticate() action
+    // is executed.
+    @inject.getter(AuthenticationBindings.STRATEGY)
+    readonly getStrategy: Getter<AuthenticationStrategy>,
+    @inject.setter(AuthenticationBindings.CURRENT_USER)
+    readonly setCurrentUser: Setter<UserProfile>,
+  ) {}
 
+  /**
+   * @returns AuthenticateFn
+   */
   value(): AuthenticateFn {
     return request => this.action(request);
   }
 
-  // this is the function invoked by "authenticate()" sequence action
-  action(request: Request) {
-    const adapter = new StrategyAdapter(this.strategy);
-    const user = await adapter.authenticate(request);
-    return user;
+  /**
+   * The implementation of authenticate() sequence action.
+   * @param request - The incoming request provided by the REST layer
+   */
+  async action(request: Request): Promise<UserProfile | undefined> {
+    const strategy = await this.getStrategy();
+    if (!strategy) {
+      // The invoked operation does not require authentication.
+      return undefined;
+    }
+
+    const userProfile = await strategy.authenticate(request);
+    if (!userProfile) {
+      // important to throw a non-protocol-specific error here
+      let error = new Error(
+        `User profile not returned from strategy's authenticate function`,
+      );
+      Object.assign(error, {
+        code: USER_PROFILE_NOT_FOUND,
+      });
+      throw error;
+    }
+
+    this.setCurrentUser(userProfile);
+    return userProfile;
   }
 }
 ```
@@ -62,24 +93,27 @@ In LoopBack, we use [Context](Context.md) to keep track of all injectable
 dependencies.
 
 There are several different ways for configuring the values to inject, the
-simplest options is to call `app.bind(key).to(value)`. Building on top of the
-example above, one can configure the app to use a Basic HTTP authentication
-strategy as follows:
+simplest options is to call `app.bind(key).to(value)`.
 
 ```ts
-// TypeScript example
-
-import {BasicStrategy} from 'passport-http';
-import {RestApplication, RestServer} from '@loopback/rest';
-// basic scaffolding stuff happens in between...
-
-// The REST server has its own context!
-const server = await app.getServer(RestServer);
-server.bind(AuthenticationBindings.STRATEGY).to(new BasicStrategy(loginUser));
-
-function loginUser(username, password, cb) {
-  // check that username + password are valid
+export namespace JWTAuthenticationStrategyBindings {
+  export const TOKEN_SECRET = BindingKey.create<string>(
+    'authentication.strategy.jwt.secret',
+  );
+  export const TOKEN_EXPIRES_IN = BindingKey.create<string>(
+    'authentication.strategy.jwt.expires.in.seconds',
+  );
 }
+
+...
+
+server
+  .bind(JWTAuthenticationStrategyBindings.TOKEN_SECRET)
+  .to('myjwts3cr3t');
+
+server
+  .bind(JWTAuthenticationStrategyBindings.TOKEN_EXPIRES_IN)
+  .to('600');
 ```
 
 However, when you want to create a binding that will instantiate a class and
@@ -87,14 +121,10 @@ automatically inject required dependencies, then you need to use `.toClass()`
 method:
 
 ```ts
-server
-  .bind(AuthenticationBindings.AUTH_ACTION)
-  .toClass(AuthenticateActionProvider);
+server.bind(TokenServiceBindings.TOKEN_SERVICE).toClass(TokenService);
 
-const provider = await server.get(AuthenticationBindings.AUTH_ACTION);
-// provider is an AuthenticateActionProvider instance
-// provider.strategy was set to the value returned
-// by server.get('authentication.strategy')
+const tokenService = await server.get(TokenServiceBindings.TOKEN_SERVICE);
+// tokenService is a TokenService instance
 ```
 
 When a binding is created via `.toClass()`, [Context](Context.md) will create a
