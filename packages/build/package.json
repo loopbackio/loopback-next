@@ -16,7 +16,7 @@
   "dependencies": {
     "@loopback/eslint-config": "^1.0.0-2",
     "@loopback/tslint-config": "^2.0.4",
-    "@types/mocha": "^5.0.0",
+    "@types/mocha": "^5.2.7",
     "@types/node": "^10.11.2",
     "cross-spawn": "^6.0.5",
     "debug": "^4.0.1",
@@ -30,7 +30,7 @@
     "rimraf": "^2.6.2",
     "source-map-support": "^0.5.12",
     "strong-docs": "^4.2.0",
-    "tslint": "^5.16.0",
+    "tslint": "^5.17.0",
     "typescript": "~3.5.1"
   },
   "bin": {
