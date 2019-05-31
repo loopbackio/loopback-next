@@ -45,7 +45,7 @@ and generates `loopback-next/docs/site/apidocs/index.md` as the index page.
 To run all steps together:
 
 ```sh
-npm run build:apidocs
+npm run build:tsdocs
 ```
 
 ## Installation
