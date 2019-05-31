@@ -47,7 +47,7 @@ Table of contents:
 - [sinon](#sinon) - Mocks, stubs and more.
 - [shot](#shot) - HTTP Request/Response stubs.
 - [validateApiSpec](#validateapispec) - Open API Spec validator.
-- [itSkippedOnTravis](#itskippedontravis) - Skip tests on Travis env.
+- [skipOnTravis](#skipontravis) - Skip tests on Travis env.
 - [createRestAppClient](#createrestappclient) - Create a supertest client
   connected to a running RestApplication.
 - [givenHttpServerConfig](#givenhttpserverconfig) - Generate HTTP server config.
@@ -82,10 +82,21 @@ by Shot in your unit tests:
 - Code modifying core HTTP Response, including full request/response handlers
 - Code parsing Express HTTP Request or modifying Express HTTP Response
 
-### `itSkippedOnTravis`
+### `skipOnTravis`
 
 Helper function for skipping tests on Travis environment. If you need to skip
-testing on Travis for any reason, use this instead of Mocha's `it`.
+testing on Travis for any reason, use this helper together with `it` or
+`describe`.
+
+```ts
+skipOnTravis(it, 'does something when some condition', async () => {
+  // the test code
+});
+```
+
+Under the hood, `skipOnTravis` invokes the provided test verb by default (e.g.
+`it`). When the helper detects Travis CI environment variables, then it calls
+`.skip` instead (e.g. `it.skip`).
 
 ### `createRestAppClient`
 

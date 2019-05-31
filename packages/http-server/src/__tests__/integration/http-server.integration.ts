@@ -8,7 +8,7 @@ import {
   givenHttpServerConfig,
   httpGetAsync,
   httpsGetAsync,
-  itSkippedOnTravis,
+  skipOnTravis,
   supertest,
 } from '@loopback/testlab';
 import * as fs from 'fs';
@@ -22,7 +22,7 @@ describe('HttpServer (integration)', () => {
 
   afterEach(stopServer);
 
-  itSkippedOnTravis('formats IPv6 url correctly', async () => {
+  skipOnTravis(it, 'formats IPv6 url correctly', async () => {
     server = new HttpServer(dummyRequestHandler, {
       host: '::1',
     } as HttpOptions);
@@ -164,7 +164,7 @@ describe('HttpServer (integration)', () => {
     expect(response.statusCode).to.equal(200);
   });
 
-  itSkippedOnTravis('supports HTTP over IPv6', async () => {
+  skipOnTravis(it, 'supports HTTP over IPv6', async () => {
     server = new HttpServer(dummyRequestHandler, {host: '::1'});
     await server.start();
     expect(getAddressFamily(server)).to.equal('IPv6');
@@ -190,7 +190,7 @@ describe('HttpServer (integration)', () => {
     expect(response.statusCode).to.equal(200);
   });
 
-  itSkippedOnTravis('handles IPv6 loopback address in HTTPS', async () => {
+  skipOnTravis(it, 'handles IPv6 loopback address in HTTPS', async () => {
     const httpsServer: HttpServer = givenHttpsServer({
       host: '::1',
     });
