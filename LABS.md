@@ -26,6 +26,8 @@ git rebase origin/master
 
 Or you can execute the following shell script to provision your experimental feature. It does the same setup as the commands above.
 
+*Please note that your feature branch name CANNOT begin with the same word as the base branch `labs`, because if branch `labs` exists, no branch named `labs/anything` can be created.*
+
 ```sh
 cd loopback-next
 ./bin/setup-lab.sh <my-experimental-feature>
