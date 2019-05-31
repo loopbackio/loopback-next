@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.14.0...@loopback/cli@1.14.1) (2019-05-31)
+
+
+### Bug Fixes
+
+* modelSettings is stringified properly [#2915](https://github.com/strongloop/loopback-next/issues/2915) ([84072ec](https://github.com/strongloop/loopback-next/commit/84072ec))
+
+
+
+
+
 # [1.14.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.13.1...@loopback/cli@1.14.0) (2019-05-30)
 
 

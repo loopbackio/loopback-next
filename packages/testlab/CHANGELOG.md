@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.2.11...@loopback/testlab@1.3.0) (2019-05-31)
+
+
+### Features
+
+* **testlab:** rework itSkippedOnTravis to support Jest framework ([c7e14ca](https://github.com/strongloop/loopback-next/commit/c7e14ca))
+
+
+
+
+
 ## [1.2.11](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.2.10...@loopback/testlab@1.2.11) (2019-05-30)
 
 **Note:** Version bump only for package @loopback/testlab
