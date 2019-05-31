@@ -4,8 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as assert from 'assert';
-import {promisify} from 'util';
-const autocannon = promisify(require('autocannon'));
+const autocannon = require('autocannon');
 
 export interface EndpointStats {
   requestsPerSecond: number;
