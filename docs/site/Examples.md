@@ -17,6 +17,10 @@ LoopBack 4 comes with the following example projects:
 - **[greeter-extension](https://github.com/strongloop/loopback-next/tree/master/examples/greeter-extension)**:
   An example showing how to implement the extension point/extension pattern.
 
+- **[greeting-app](https://github.com/strongloop/loopback-next/tree/master/examples/greeting-app)**:
+  An example showing how to compose an application from component and
+  controllers, interceptors, and observers.
+
 - **[loopback4-example-shopping](https://github.com/strongloop/loopback4-example-shopping)**:
   An online e-commerce demo to validate/test the LoopBack 4 framework readiness.
 
@@ -33,6 +37,7 @@ $ lb4 example
   soap-calculator: An example on how to integrate SOAP web services.
   express-composition: A simple Express application that uses LoopBack 4 REST API.
   greeter-extension: An example showing how to implement the extension point/extension pattern.
+  greeting-app: An example showing how to compose an application from component and controllers, interceptors, and observers.
   lb3-application: An example LoopBack 3 application mounted in a LoopBack 4 project.
 ```
 
