@@ -87,6 +87,17 @@ hello();
 For additional information, please refer to the
 [Context page](http://loopback.io/doc/en/lb4/Context.html).
 
+## Examples
+
+To learn more about advanced features, check out standalone examples at
+[`@loopback/example-context`](https://github.com/strongloop/loopback-next/tree/master/examples/context).
+
+Use the following command to download the example project to try out:
+
+```sh
+lb4 example context
+```
+
 ## Contributions
 
 - [Guidelines](https://github.com/strongloop/loopback-next/blob/master/docs/CONTRIBUTING.md)
