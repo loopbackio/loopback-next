@@ -43,21 +43,7 @@ To enable the test in `/labs/*` only and skip running unrelated tests in the pro
 node bin/test-lab-only.js
 ```
 
-- 1.3 Enable travis tests
-
-When you incrementally create PRs to your experimental branch, tests on both travis and appveyor should run.
-
-To enable the travis CI tests for your experimental branch, you need to add your branch name `<lab/my-branch-name>` in file `.travis.yml`:
-
-```
-... (Other settings)
-branches:
-  only:
-    - master
-    - lab/my-branch-name
-```
-
-Now all the setup of the experimental branch are finished! Next you can start to create PRs from the development branch.
+Now all the setup of the experimental branch have been finished! You can push the local changes and start to create PRs from the development branch.
 
 2. **Work on an experimental feature**
 
