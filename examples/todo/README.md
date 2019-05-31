@@ -53,15 +53,7 @@ application, follow these steps:
 1.  Run the `lb4 example` command to select and clone the todo repository:
 
     ```sh
-    $ lb4 example
-    ? What example would you like to clone? (Use arrow keys)
-    > todo: Tutorial example on how to build an application with LoopBack 4.
-      todo-list: Continuation of the todo example using relations in LoopBack 4.
-      hello-world: A simple hello-world Application using LoopBack 4.
-      log-extension: An example extension project for LoopBack 4.
-      rpc-server: A basic RPC server using a made-up protocol.
-      express-composition: A simple Express application that uses LoopBack 4 REST API.
-      greeter-extension: An example showing how to implement the extension point/extension pattern.
+    lb4 example todo
     ```
 
 2.  Switch to the directory.
