@@ -14,7 +14,6 @@ const inspect = require('util').inspect;
 const utils = require('../../lib/utils');
 const chalk = require('chalk');
 const path = require('path');
-const stringifyObject = require('stringify-object');
 
 const PROMPT_BASE_MODEL_CLASS = 'Please select the model base class';
 const ERROR_NO_MODELS_FOUND = 'Model was not found in';
@@ -515,13 +514,8 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     });
 
     if (this.artifactInfo.modelSettings) {
-      this.artifactInfo.modelSettings = stringifyObject(
-        {settings: this.artifactInfo.modelSettings},
-        {
-          indent: '  ', // two spaces
-          singleQuotes: true,
-          inlineCharacterLimit: 80,
-        },
+      this.artifactInfo.modelSettings = utils.stringifyModelSettings(
+        this.artifactInfo.modelSettings,
       );
     }
 

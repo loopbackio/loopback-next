@@ -23,6 +23,7 @@ const urlSlug = require('url-slug');
 const validate = require('validate-npm-package-name');
 const Conflicter = require('yeoman-generator/lib/util/conflicter');
 const connectors = require('../generators/datasource/connectors.json');
+const stringifyObject = require('stringify-object');
 
 const readdirAsync = promisify(fs.readdir);
 
@@ -515,6 +516,17 @@ exports.getDataSourceName = function(datasourcesDir, dataSourceClass) {
 exports.dataSourceToJSONFileName = function(dataSourceClass) {
   return path.join(
     _.kebabCase(dataSourceClass.replace('Datasource', '')) + '.datasource.json',
+  );
+};
+
+exports.stringifyModelSettings = function(modelSettings) {
+  return stringifyObject(
+    {settings: modelSettings},
+    {
+      indent: '  ', // two spaces
+      singleQuotes: true,
+      inlineCharacterLimit: 80,
+    },
   );
 };
 
