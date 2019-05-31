@@ -15,7 +15,9 @@ features along with regular ones in `loopback-next` repository.
 
 ### Work on an experimental feature
 
-1. Set up local git repository for an experiment feature
+1. **Set up local git repository for an experiment feature**
+
+- 1.1 Create experimental branch and dev branch
 
 ```sh
 cd loopback-next
@@ -33,13 +35,31 @@ cd loopback-next
 ./bin/setup-lab.sh <my-experimental-feature>
 ```
 
-To enable the test in `/labs*` only and skip running unrelated tests in the production ready packages, you can execute script `bin/test-lab-only.js` to modify the mocha test command:
+- 1.2 Enable tests in `/labs/*` only
+
+To enable the test in `/labs/*` only and skip running unrelated tests in the production ready packages, you can execute script `bin/test-lab-only.js` to modify the mocha test command:
 
 ```sh
 node bin/test-lab-only.js
 ```
 
-2. Work on an experimental feature
+- 1.3 Enable travis tests
+
+When you incrementally create PRs to your experimental branch, tests on both travis and appveyor should run.
+
+To enable the travis CI tests for your experimental branch, you need to add your branch name `<lab/my-branch-name>` in file `.travis.yml`:
+
+```
+... (Other settings)
+branches:
+  only:
+    - master
+    - lab/my-branch-name
+```
+
+Now all the setup of the experimental branch are finished! Next you can start to create PRs from the development branch.
+
+2. **Work on an experimental feature**
 
 ```sh
 cd loopback-next
@@ -48,7 +68,7 @@ git checkout lab-dev/<my-experimental-feature>
 
 You can now start to make changes, commit them, and push to remote.
 
-3. Rebase the experimental feature branch against master
+3. **Rebase the experimental feature branch against master**
 
 To get the latest change from master, you can rebase your dev branch:
 
@@ -62,7 +82,7 @@ git push --force-with-lease
 
 If you want to have a clean commit history in your PR without the noisy commits from the master branch, make sure branch `/labs` is rebased against master and `/lab/<my-experimental-feature>` is rebased against `/labs`.
 
-4. Release for an experimental feature
+4. **Release for an experimental feature**
 
 - Use `0.x.y` versioning scheme
 - Use `lab/<my-experimental-feature>` as the branch
