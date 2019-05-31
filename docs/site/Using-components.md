@@ -18,7 +18,6 @@ Install the following dependencies:
 
 ```sh
 npm install --save @loopback/authentication
-npm install @types/passport
 ```
 
 Load the component in your application:
