@@ -10,7 +10,7 @@ import {
   expect,
   givenHttpServerConfig,
   httpsGetAsync,
-  itSkippedOnTravis,
+  skipOnTravis,
   supertest,
 } from '@loopback/testlab';
 import * as fs from 'fs';
@@ -705,7 +705,7 @@ paths:
     await server.stop();
   });
 
-  itSkippedOnTravis('handles IPv6 loopback address in HTTPS', async () => {
+  skipOnTravis(it, 'handles IPv6 loopback address in HTTPS', async () => {
     const keyPath = path.join(FIXTURES, 'key.pem');
     const certPath = path.join(FIXTURES, 'cert.pem');
     const server = await givenAServer({
@@ -726,7 +726,7 @@ paths:
   });
 
   // https://github.com/strongloop/loopback-next/issues/1623
-  itSkippedOnTravis('handles IPv6 address for API Explorer UI', async () => {
+  skipOnTravis(it, 'handles IPv6 address for API Explorer UI', async () => {
     const keyPath = path.join(FIXTURES, 'key.pem');
     const certPath = path.join(FIXTURES, 'cert.pem');
     const server = await givenAServer({
