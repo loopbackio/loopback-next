@@ -51,11 +51,11 @@ function updatePackageJson(pkgFile, masterDeps) {
   let modified = false;
   for (const dep in masterDeps) {
     if (data.devDependencies && dep in data.devDependencies) {
-      modified = data.devDependencies[dep] !== masterDeps[dep];
+      modified = modified || data.devDependencies[dep] !== masterDeps[dep];
       data.devDependencies[dep] = masterDeps[dep];
     }
     if (data.dependencies && dep in data.dependencies) {
-      modified = data.dependencies[dep] !== masterDeps[dep];
+      modified = modified || data.dependencies[dep] !== masterDeps[dep];
       data.dependencies[dep] = masterDeps[dep];
     }
   }
