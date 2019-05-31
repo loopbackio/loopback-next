@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-greeting-app",
-  "version": "1.0.0-3",
+  "version": "1.0.0",
   "description": "An example greeting application for LoopBack 4",
   "main": "index.js",
   "engines": {
