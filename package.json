@@ -30,15 +30,14 @@
   },
   "scripts": {
     "postinstall": "lerna bootstrap",
-    "update-packages": "npm run -s update-package-locks && npm run -s update-greenkeeper-json",
+    "update-packages": "npm run -s update-package-locks",
     "prerelease": "npm run build:full && npm run mocha && npm run lint",
     "release": "lerna version && lerna publish from-git --yes",
     "update-package-locks": "lerna clean && lerna bootstrap --no-ci",
     "update-template-deps": "node bin/update-template-deps -f",
-    "update-greenkeeper-json": "node bin/update-greenkeeper-json -f",
     "update-all-deps": "npm update && lerna exec -- npm update && npm run update-package-locks",
     "sync-dev-deps": "node bin/sync-dev-deps",
-    "version": "npm run update-packages && git add greenkeeper.json \"**/package-lock.json\" && npm run update-template-deps && npm run apidocs",
+    "version": "npm run update-packages && git add \"**/package-lock.json\" && npm run update-template-deps && npm run apidocs",
     "outdated": "npm outdated --depth 0 && lerna exec --no-bail \"npm outdated --depth 0\"",
     "apidocs": "node bin/run-lerna run build:apidocs",
     "tsdocs": "lerna run --scope @loopback/tsdocs build:tsdocs",
@@ -75,26 +74,6 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "greenkeeper": {
-    "commitMessages": {
-      "initialBadge": "docs: add Greenkeeper badge",
-      "initialDependencies": "chore: update dependencies",
-      "initialBranches": "chore: whitelist greenkeeper branches",
-      "dependencyUpdate": "chore: update ${dependency} to version ${version}",
-      "devDependencyUpdate": "chore: update ${dependency} to version ${version}",
-      "lockfileUpdate": "chore: update lockfile ${lockfilePath}",
-      "dependencyPin": "chore: pin ${dependency} to ${oldVersion}",
-      "devDependencyPin": "chore: pin ${dependency} to ${oldVersion}"
-    },
-    "prTitles": {
-      "initialPR": "[greenkeeper] update dependencies to enable Greenkeeper",
-      "initialPrBadge": "[greenkeeper] add badge to enable Greenkeeper",
-      "initialPrBadgeOnly": "[greenkeeper] add Greenkeeper badge",
-      "initialSubgroupPR": "[greenkeeper] update dependencies for ${group}",
-      "basicPR": "[greenkeeper] update ${dependency} to the latest",
-      "groupPR": "[greenkeeper] update ${dependency} in group ${group} to the latest"
     }
   }
 }
