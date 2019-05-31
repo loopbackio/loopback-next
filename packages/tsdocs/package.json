@@ -1,6 +1,6 @@
 {
   "name": "@loopback/tsdocs",
-  "version": "1.0.0-2",
+  "version": "1.0.0",
   "description": "LoopBack's TypeScript docs based on Microsoft api-extractor and api-documenter",
   "engines": {
     "node": ">=8.9"
