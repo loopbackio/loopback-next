@@ -34,7 +34,7 @@ as a basis for the instruction.
 You can quickly clone the "todo" example app by running the command:
 
 ```sh
-$ lb4 example todo
+lb4 example todo
 ```
 
 We will be replacing the default memory-based connector of the app with a
