@@ -45,7 +45,8 @@ describe('Benchmark (SLOW)', function() {
       const requestOptions: request.OptionsWithUrl = {
         url: this.buildUrl(urlPath),
         method: options.method || 'GET',
-        body: options.body,
+        json: true,
+        body: options.body ? JSON.parse(options.body) : undefined,
       };
 
       debug(
