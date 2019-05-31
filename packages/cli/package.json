@@ -122,10 +122,10 @@
       "@loopback/example-greeter-extension": "^1.2.7",
       "@loopback/booter-lb3app": "^1.1.6",
       "@loopback/example-lb3-application": "^1.0.3",
-      "@loopback/eslint-config": "^1.0.0-3",
+      "@loopback/eslint-config": "^1.0.0",
       "eslint": "^5.16.0",
       "eslint-plugin-mocha": "^5.3.0",
-      "@loopback/example-greeting-app": "^1.0.0-3",
+      "@loopback/example-greeting-app": "^1.0.0",
       "@loopback/example-context": "^1.1.0"
     }
   },
