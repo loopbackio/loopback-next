@@ -82,7 +82,6 @@ export type NamedParameters = AnyObject;
 /**
  * Positional parameters, such as [1, 'a']
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type PositionalParameters = any[];
 
 /**

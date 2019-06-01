@@ -164,7 +164,6 @@ export function resolveList<T, V>(
     result[index] = val;
   };
 
-  // eslint-disable-next-line prefer-for-of
   for (let ix = 0; ix < list.length; ix++) {
     const valueOrPromise = resolver(list[ix], ix, list);
     if (isPromiseLike(valueOrPromise)) {

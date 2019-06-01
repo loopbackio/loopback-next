@@ -3,15 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Reflector, NamespacedReflect} from './reflect';
+import {NamespacedReflect, Reflector} from './reflect';
 import {
+  DecoratorType,
+  DesignTimeMethodMetadata,
   MetadataKey,
   MetadataMap,
-  DesignTimeMethodMetadata,
-  DecoratorType,
 } from './types';
-
-/* eslint-disable @typescript-eslint/ban-types */
 
 /**
  * TypeScript reflector without a namespace. The TypeScript compiler can be

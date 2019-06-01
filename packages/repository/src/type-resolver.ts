@@ -5,8 +5,6 @@
 
 import {Class} from './common-types';
 
-/* eslint-disable @typescript-eslint/ban-types */
-
 /**
  * A type resolver is a function that returns a class representing the type,
  * typically a Model or Entity (e.g. Product).

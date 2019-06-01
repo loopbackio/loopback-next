@@ -3,8 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import {EntityCrudRepository, repository} from '../..';
 import {Customer} from '../models/customer.model';
 /**
@@ -15,7 +13,6 @@ import {Customer} from '../models/customer.model';
 export class CustomerController {
   constructor(
     // Use constructor dependency injection
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @repository('Customer', 'mongodbDataSource')
     private _repository: EntityCrudRepository<Customer, string>,
   ) {}

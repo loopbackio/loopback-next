@@ -5,11 +5,11 @@
 
 import * as debugFactory from 'debug';
 import {
+  createServer,
+  IncomingMessage,
   OutgoingHttpHeaders,
   Server as HttpServer,
-  IncomingMessage,
   ServerResponse,
-  createServer,
 } from 'http';
 import {AddressInfo} from 'net';
 import pEvent from 'p-event';
@@ -174,7 +174,6 @@ export class HttpCachingProxy {
     clientRequest: IncomingMessage,
     clientResponse: ServerResponse,
   ) {
-    // eslint-disable-next-line await-promise
     const backendResponse = await makeRequest({
       resolveWithFullResponse: true,
       simple: false,

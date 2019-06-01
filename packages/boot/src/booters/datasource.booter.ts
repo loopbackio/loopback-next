@@ -59,7 +59,6 @@ export class DataSourceBooter extends BaseArtifactBooter {
         );
       } else {
         this.classes.forEach(cls => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           this.app.dataSource(cls as Class<juggler.DataSource>);
         });
       }

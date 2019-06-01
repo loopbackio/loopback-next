@@ -28,13 +28,11 @@ describe('legacy loopback-datasource-juggler', () => {
   });
 
   it('creates models', () => {
-    // eslint-disable-next-line  variable-name */
     const Note = ds.createModel<juggler.PersistedModelClass>(
       'note',
       {title: 'string', content: 'string', id: {type: 'number', id: true}},
       {},
     );
-    // eslint-disable-next-line  variable-name */
     const Note2 = bindModel(Note, ds);
     expect(Note2.modelName).to.eql('note');
     expect(Note2.definition).to.eql(Note.definition);
@@ -157,7 +155,6 @@ describe('DefaultCrudRepository', () => {
 
       expect(ds.getModel('User')).undefined();
 
-      // eslint-disable-next-line no-unused-expression
       new DefaultCrudRepository(User, ds);
 
       const JugglerUser = ds.getModel('User')!;

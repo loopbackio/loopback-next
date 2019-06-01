@@ -21,8 +21,7 @@ export type AsValueOrPromise<T> = T extends Promise<unknown>
  */
 export type AsInterceptedFunction<T> = T extends (
   ...args: InvocationArgs
-) => // eslint-disable-next-line @typescript-eslint/no-unused-vars (possible tslint bug to treat `R` as unused)
-infer R
+) => infer R
   ? (...args: InvocationArgs) => AsValueOrPromise<R>
   : T;
 

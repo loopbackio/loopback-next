@@ -27,7 +27,6 @@ const inject: (
 
 export {inject, ShotRequestOptions};
 
-// eslint-disable-next-line variable-name
 const ShotRequest: ShotRequestCtor = require('@hapi/shot/lib/request');
 type ShotRequestCtor = new (options: ShotRequestOptions) => IncomingMessage;
 
@@ -43,7 +42,6 @@ export function stubServerRequest(
   return stub;
 }
 
-// eslint-disable-next-line variable-name
 const ShotResponse: ShotResponseCtor = require('@hapi/shot/lib/response');
 export type ShotCallback = (response: ResponseObject) => void;
 

@@ -341,7 +341,6 @@ export class CrudRepositoryImpl<T extends Entity, ID>
       );
     } else {
       // FIXME: populate inst with all properties
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const inst = data;
       const where = this.entityClass.buildWhereForId(id);
       const result = await this.updateAll(data, where, options);

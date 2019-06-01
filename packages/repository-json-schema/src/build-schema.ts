@@ -143,7 +143,6 @@ export function isArrayType(type: string | Function) {
  * @param meta
  */
 export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const propDef: JSONSchema = {};
   let result: JSONSchema;
   let propertyType = meta.type as string | Function;

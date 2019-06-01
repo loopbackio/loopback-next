@@ -61,7 +61,6 @@ describe('repository decorator', () => {
     ctx.bind('controllers.MyController').toClass(MyController);
   });
 
-  // eslint-disable-next-line max-len
   it('supports referencing predefined repository by name via constructor', async () => {
     const myController = await ctx.get<MyController>(
       'controllers.MyController',
@@ -69,7 +68,6 @@ describe('repository decorator', () => {
     expect(myController.noteRepo).exactly(defaultRepo);
   });
 
-  // eslint-disable-next-line max-len
   it('supports referencing predefined repository by name via property', async () => {
     const myController = await ctx.get<MyController>(
       'controllers.MyController',
