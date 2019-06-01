@@ -25,3 +25,7 @@ packages/tsdocs/fixtures/monorepo/docs
 /sandbox/*
 !/sandbox/README.md
 !/sandbox/example/
+
+# ESLint cache
+.eslintcache
+
