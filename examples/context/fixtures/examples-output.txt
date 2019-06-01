@@ -1,9 +1,9 @@
 > binding-types.js
-[2019-05-31T17:52:20.865Z] (/greet#1) Hello, John
-[2019-05-31T17:52:20.865Z] (/greet#2) Hello, John
+[2019-06-01T22:49:33.602Z] (/greet#1) Hello, John
+[2019-06-01T22:49:33.621Z] (/greet#2) Hello, John
 
 > configuration-injection.js
-[2019-05-31T17:52:20.867Z] >>>: Hello, Ray
+[2019-06-01T22:49:33.641Z] >>>: Hello, Ray
 
 > context-chain.js
 [app] Hello, John!
@@ -35,13 +35,13 @@ Context: invocation-context Binding: greeter
 Injection: Greeter.constructor[0]
 Context: invocation-context Binding: greeter
 Injection: Greeter.prototype.prefix
-[2019-05-31T17:52:20.877Z] Hello, John
+[2019-06-01T22:49:33.650Z] Hello, John
 
 > dependency-injection.js
-[2019-05-31T17:52:20.879Z] (en) Hello, Jane!
-[2019-05-31T17:52:20.880Z] Hello, John!
-[2019-05-31T17:52:20.880Z] (zh) 你好，John！
-[2019-05-31T17:52:20.881Z] (en) Hello, Jane!
+[2019-06-01T22:49:33.652Z] (en) Hello, Jane!
+[2019-06-01T22:49:33.653Z] Hello, John!
+[2019-06-01T22:49:33.653Z] (zh) 你好，John！
+[2019-06-01T22:49:33.653Z] (en) Hello, Jane!
 
 > find-bindings.js
 greeters.EnglishGreeter
@@ -65,4 +65,10 @@ Hello, JOHN
 2: { tags: { prefix: '2' } }
 1: Hello, John
 2: Hello, Jane
+
+> sync-async.js
+Hello, John (sync)
+Hello, John (sync)
+Hello, Jane (async)
+Expect to fail with error: Cannot get greeter synchronously: the value is a promise
 
