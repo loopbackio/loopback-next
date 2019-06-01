@@ -29,8 +29,6 @@ import {OAI3Keys} from './keys';
 
 const debug = require('debug')('loopback:openapi3:metadata:controller-spec');
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 export interface ControllerSpec {
   /**
    * The base path on which the Controller API is served.

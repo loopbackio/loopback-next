@@ -53,8 +53,6 @@ import {iterator, multiple} from 'p-event';
 
 const debug = debugFactory('loopback:context');
 
-/* eslint-disable @typescript-eslint/ban-types */
-
 /**
  * Context provides an implementation of Inversion of Control (IoC) container
  */

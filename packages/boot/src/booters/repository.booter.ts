@@ -55,7 +55,6 @@ export class RepositoryBooter extends BaseArtifactBooter {
         );
       } else {
         this.classes.forEach(cls => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           this.app.repository(cls);
         });
       }

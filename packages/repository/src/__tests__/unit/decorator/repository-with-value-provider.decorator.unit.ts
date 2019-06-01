@@ -58,7 +58,6 @@ describe('repository class', () => {
     ctx.bind('controllers.MyController').toClass(MyController);
   });
 
-  // eslint-disable-next-line max-len
   it('supports referencing predefined repository by name via constructor', async () => {
     const myController = await ctx.get<MyController>(
       'controllers.MyController',

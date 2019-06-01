@@ -17,7 +17,6 @@ export type DecoratorType =
  * @typeParam T - Type of the metadata value
  * @typeParam D - Type of the decorator
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class MetadataAccessor<T, D extends DecoratorType = DecoratorType> {
   private constructor(public readonly key: string) {}
 

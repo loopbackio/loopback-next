@@ -38,7 +38,6 @@ export type NodeWithValue<T> = Node<T> & {value: T};
 
 export interface ResolvedNode<T> {
   node: Node<T>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params?: PathParameterValues;
 }
 

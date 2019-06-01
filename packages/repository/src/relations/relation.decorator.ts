@@ -4,13 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {PropertyDecoratorFactory} from '@loopback/context';
+import {buildModelDefinition} from '../decorators';
 import {Model, RelationDefinitionMap} from '../model';
 import {RelationType} from './relation.types';
-import {buildModelDefinition} from '../decorators';
 
 export const RELATIONS_KEY = 'loopback:relations';
 
-/* eslint-disable @typescript-eslint/ban-types */
 /**
  * Decorator for relations
  * @param definition

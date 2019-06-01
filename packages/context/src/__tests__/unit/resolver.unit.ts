@@ -111,7 +111,6 @@ describe('constructor injection', () => {
     expect(t.fooBar).to.eql('FOO:BAR');
   });
 
-  // eslint-disable-next-line max-len
   it('resolves constructor arguments with custom resolve function and no binding key', () => {
     class TestClass {
       constructor(
@@ -201,7 +200,6 @@ describe('constructor injection', () => {
     );
   });
 
-  // eslint-disable-next-line max-len
   it('will not report circular dependencies if a binding is injected twice', () => {
     const context = new Context();
     class XClass {}
@@ -350,7 +348,6 @@ describe('async constructor injection', () => {
     expect(t.foo).to.eql('FOO');
   });
 
-  // eslint-disable-next-line max-len
   it('resolves constructor arguments with custom async decorator', async () => {
     class TestClass {
       constructor(@customAsyncDecorator({x: 'bar'}) public fooBar: string) {}
@@ -405,7 +402,6 @@ describe('property injection', () => {
     expect(t.fooBar).to.eql('FOO:BAR');
   });
 
-  // eslint-disable-next-line max-len
   it('resolves inject properties with custom resolve function and no binding key', () => {
     class TestClass {
       @inject('', {x: 'bar'}, (c: Context, injection: Injection) => {

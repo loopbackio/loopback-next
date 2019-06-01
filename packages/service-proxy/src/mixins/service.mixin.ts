@@ -127,7 +127,6 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
  * Interface for an Application mixed in with ServiceMixin
  */
 export interface ApplicationWithServices extends Application {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   serviceProvider<S>(provider: Class<Provider<S>>, name?: string): Binding<S>;
   component(component: Class<{}>, name?: string): Binding;
   mountComponentServices(component: Class<{}>): void;

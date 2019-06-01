@@ -110,7 +110,6 @@ class MultipartFormDataBodyParser implements BodyParser {
           resolve({
             value: {
               files: request.files,
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               fields: request.body,
             },
           });

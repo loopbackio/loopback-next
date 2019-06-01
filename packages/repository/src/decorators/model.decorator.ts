@@ -34,8 +34,6 @@ export const MODEL_WITH_PROPERTIES_KEY = MetadataAccessor.create<
 
 export type PropertyMap = MetadataMap<PropertyDefinition>;
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 /**
  * Decorator for model definitions
  * @param definition

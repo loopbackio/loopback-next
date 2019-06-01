@@ -38,7 +38,6 @@ import {BindingAddress} from './binding-key';
  * 2. `(binding: Readonly<Binding<unknown>>) => binding is Readonly<Binding<ValueType>>`
  *
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export type BindingFilter<ValueType = unknown> = (
   binding: Readonly<Binding<unknown>>,
 ) => boolean;

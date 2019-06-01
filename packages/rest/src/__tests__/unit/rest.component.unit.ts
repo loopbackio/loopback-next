@@ -61,7 +61,6 @@ describe('RestComponent', () => {
         expect(logError.length).to.equal(3); // (err, statusCode, request)
       });
 
-      // eslint-disable-next-line max-len
       it('can be customized by extending RestComponent', async () => {
         let lastLog = 'logError() was not called';
 

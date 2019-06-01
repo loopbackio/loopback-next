@@ -30,7 +30,6 @@ describe('function argument injection', () => {
   });
 
   it('can retrieve information about injected method arguments', () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     class TestClass {
       test(@inject('foo') foo: string) {}
     }

@@ -16,7 +16,6 @@ import {HttpCachingProxy, ProxyOptions} from '../../http-caching-proxy';
 
 const CACHE_DIR = path.join(__dirname, '.cache');
 
-/* eslint-disable await-promise */
 const rimraf = util.promisify(rimrafCb);
 
 describe('HttpCachingProxy', () => {
