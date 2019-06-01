@@ -126,13 +126,13 @@ describe('DefaultCrudRepository', () => {
       @model()
       class Role {
         @property()
-        name: String;
+        name: string;
       }
 
       @model()
       class Address {
         @property()
-        street: String;
+        street: string;
       }
 
       @model()
@@ -144,7 +144,7 @@ describe('DefaultCrudRepository', () => {
         id: number;
 
         @property({type: 'string'})
-        name: String;
+        name: string;
 
         @property.array(Role)
         roles: Role[];
