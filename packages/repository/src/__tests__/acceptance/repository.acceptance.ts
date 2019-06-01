@@ -69,13 +69,13 @@ describe('Repository in Thinking in LoopBack', () => {
     @model()
     class Role extends Entity {
       @property()
-      name: String;
+      name: string;
     }
 
     @model()
     class Address extends Entity {
       @property()
-      street: String;
+      street: string;
     }
 
     @model()
@@ -87,7 +87,7 @@ describe('Repository in Thinking in LoopBack', () => {
       id: number;
 
       @property({type: 'string'})
-      name: String;
+      name: string;
 
       @property.array(Role)
       roles: Role[];

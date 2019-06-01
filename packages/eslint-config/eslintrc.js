@@ -60,7 +60,6 @@ module.exports = {
      */
     '@typescript-eslint/array-type': 'off',
     '@typescript-eslint/indent': 'off',
-    // '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-member-accessibility': 'off',
@@ -71,7 +70,6 @@ module.exports = {
     '@typescript-eslint/no-angle-bracket-type-assertion': 'off',
     '@typescript-eslint/prefer-interface': 'off',
     '@typescript-eslint/no-namespace': 'off',
-    // '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/ban-types': 'off',
     '@typescript-eslint/no-triple-slash-reference': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
