@@ -136,7 +136,7 @@ export class TodoController {
     },
   })
   async count(
-    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where,
+    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where<Todo>,
   ): Promise<number> {
     return await this.todoRepository.count(where);
   }
@@ -154,7 +154,8 @@ export class TodoController {
     },
   })
   async find(
-    @param.query.object('filter', getFilterSchemaFor(Todo)) filter?: Filter,
+    @param.query.object('filter', getFilterSchemaFor(Todo))
+    filter?: Filter<Todo>,
   ): Promise<Todo[]> {
     return await this.todoRepository.find(filter);
   }
@@ -169,7 +170,7 @@ export class TodoController {
   })
   async updateAll(
     @requestBody() data: Todo,
-    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where,
+    @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where<Todo>,
   ): Promise<number> {
     return await this.todoRepository.updateAll(data, where);
   }

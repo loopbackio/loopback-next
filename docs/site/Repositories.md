@@ -23,7 +23,7 @@ operations. These `Repository` implementations leverage `Model` definition and
 interface Repository<T extends Model> {}
 
 interface CustomerRepository extends Repository<Customer> {
-  find(filter?: Filter, options?: Options): Promise<Customer[]>;
+  find(filter?: Filter<Customer>, options?: Options): Promise<Customer[]>;
   findByEmail(email: string): Promise<Customer>;
   // ...
 }
@@ -492,10 +492,10 @@ retrieve all the rows that match a particular filter for a model instance.
 
 ```ts
 public find(
-  modelClass: Class<Entity>,
-  filter: Filter,
+  modelClass: Class<Account>,
+  filter: Filter<Account>,
   options: Options
-): Promise<EntityData[]> {
+): Promise<Account[]> {
   let self = this;
   let sqlStmt = "SELECT * FROM " + modelClass.name;
   if (filter.where) {
