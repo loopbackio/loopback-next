@@ -5,12 +5,12 @@
 
 import {expect} from '@loopback/testlab';
 import {
+  getDeepProperty,
   resolveList,
   resolveMap,
   resolveUntil,
   transformValueOrPromise,
   tryWithFinally,
-  getDeepProperty,
 } from '../..';
 
 describe('tryWithFinally', () => {
@@ -329,6 +329,14 @@ describe('transformValueOrPromise', () => {
   });
 
   it('transforms a promise', async () => {
+    const result = await transformValueOrPromise(
+      Promise.resolve('a'),
+      v => v && v.toUpperCase(),
+    );
+    expect(result).to.eql('A');
+  });
+
+  it('transforms a value to promise', async () => {
     const result = await transformValueOrPromise('a', v =>
       Promise.resolve(v && v.toUpperCase()),
     );
