@@ -21,6 +21,7 @@ Control (IoC) and Dependency Injection (DI) capabilities provided by
 | [interceptor-proxy.ts](https://github.com/strongloop/loopback-next/blob/master/examples/context/src/interceptor-proxy.ts)                         | Get proxies to intercept method invocations                        |
 | [parameterized-decoration.ts](https://github.com/strongloop/loopback-next/blob/master/examples/context/src/parameterized-decoration.ts)           | Apply decorators that require parameters as arguments              |
 | [sync-async.ts](https://github.com/strongloop/loopback-next/blob/master/examples/context/src/sync-async.ts)                                       | Resolve bindings with dependencies synchronously or asynchronously |
+| [value-promise.ts](https://github.com/strongloop/loopback-next/blob/master/examples/context/src/value-promise.ts)                                 | Handle synchronous or asynchronous results (ValueOrPromise)        |
 
 ## Use
 
