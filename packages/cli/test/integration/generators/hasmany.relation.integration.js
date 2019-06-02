@@ -386,7 +386,7 @@ context('check if the controller file created ', () => {
           /schema: { type: 'array', items: { 'x-ts-type': Order } },/,
           /},\n . {6}},\n . {4}},\n . {2}},\n {2}}\)\n/,
           /async find\(\n . {2}\@param.path.number\('id'\) id: number,\n/,
-          /\@param.query.object\('filter'\) filter\?: Filter,\n/,
+          /\@param.query.object\('filter'\) filter\?: Filter<Order>,\n/,
           /\)\: Promise<Order\[]> {\n/,
           /return await this\.customerRepository\.orders\(id\)\.find\(filter\);\n {2}}\n/,
         ];
@@ -397,7 +397,7 @@ context('check if the controller file created ', () => {
           /schema: { type: 'array', items: { 'x-ts-type': OrderClass } },/,
           /},\n . {6}},\n . {4}},\n . {2}},\n {2}}\)\n/,
           /async find\(\n . {2}\@param.path.number\('id'\) id: number,\n/,
-          /\@param.query.object\('filter'\) filter\?: Filter,\n/,
+          /\@param.query.object\('filter'\) filter\?: Filter<OrderClass>,\n/,
           /\)\: Promise<OrderClass\[]> {\n/,
           /return await this\.customerClassRepository\.orderClasses\(id\)\.find\(filter\);\n {2}}\n/,
         ];
@@ -408,7 +408,7 @@ context('check if the controller file created ', () => {
           /schema: { type: 'array', items: { 'x-ts-type': OrderClassType } },/,
           /},\n . {6}},\n . {4}},\n . {2}},\n {2}}\)\n/,
           /async find\(\n . {2}\@param.path.number\('id'\) id: number,\n/,
-          /\@param.query.object\('filter'\) filter\?: Filter,\n/,
+          /\@param.query.object\('filter'\) filter\?: Filter<OrderClassType>,\n/,
           /\)\: Promise<OrderClassType\[]> {\n/,
           /return await this\.customerClassTypeRepository\.orderClassTypes\(id\).find\(filter\);\n {2}}\n/,
         ];
@@ -495,7 +495,7 @@ context('check if the controller file created ', () => {
           /content: { 'application\/json': { schema: CountSchema } },\n/,
           /},\n {4}},\n {2}}\)\n {2}async patch\(\n/,
           /\@param\.path\.number\('id'\) id: number,\n {4}\@requestBody\(\) order: Partial<Order>,\n/,
-          /\@param\.query\.object\('where', getWhereSchemaFor\(Order\)\) where\?: Where,\n/,
+          /\@param\.query\.object\('where', getWhereSchemaFor\(Order\)\) where\?: Where<Order>,\n/,
           /\): Promise<Count> {\n/,
           /return await this\.customerRepository\.orders\(id\).patch\(order, where\);\n {2}}\n/,
         ];
@@ -506,7 +506,7 @@ context('check if the controller file created ', () => {
           /content: { 'application\/json': { schema: CountSchema } },\n/,
           /},\n {4}},\n {2}}\)\n {2}async patch\(\n/,
           /\@param\.path\.number\('id'\) id: number,\n {4}\@requestBody\(\) orderClass: Partial<OrderClass>,\n/,
-          /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClass\)\) where\?: Where,\n/,
+          /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClass\)\) where\?: Where<OrderClass>,\n/,
           /\): Promise<Count> {\n/,
           /return await this\.customerClassRepository\.orderClasses\(id\)\.patch\(orderClass, where\);\n {2}}\n/,
         ];
@@ -517,7 +517,7 @@ context('check if the controller file created ', () => {
           /content: { 'application\/json': { schema: CountSchema } },\n/,
           /},\n {4}},\n {2}}\)\n {2}async patch\(\n/,
           /\@param\.path\.number\('id'\) id: number,\n {4}\@requestBody\(\) orderClassType: Partial<OrderClassType>,\n/,
-          /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClassType\)\) where\?: Where,\n/,
+          /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClassType\)\) where\?: Where<OrderClassType>,\n/,
           /\): Promise<Count> {\n/,
           /return await this\.customerClassTypeRepository\.orderClassTypes\(id\).patch\(orderClassType, where\);\n {2}}\n/,
         ];
@@ -553,7 +553,7 @@ context('check if the controller file created ', () => {
           /content: { 'application\/json': { schema: CountSchema } },\n/,
           /},\n {4}},\n {2}}\)\n {2}async delete\(\n/,
           /\@param\.path\.number\('id'\) id: number,\n /,
-          /\@param\.query\.object\('where', getWhereSchemaFor\(Order\)\) where\?: Where,\n/,
+          /\@param\.query\.object\('where', getWhereSchemaFor\(Order\)\) where\?: Where<Order>,\n/,
           /\): Promise<Count> {\n/,
           /return await this\.customerRepository\.orders\(id\)\.delete\(where\);\n {2}}\n}\n/,
         ];
@@ -564,7 +564,7 @@ context('check if the controller file created ', () => {
           /content: { 'application\/json': { schema: CountSchema } },\n/,
           /},\n {4}},\n {2}}\)\n {2}async delete\(\n/,
           /\@param\.path\.number\('id'\) id: number,\n /,
-          /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClass\)\) where\?: Where,\n/,
+          /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClass\)\) where\?: Where<OrderClass>,\n/,
           /\): Promise<Count> {\n/,
           /return await this\.customerClassRepository\.orderClasses\(id\)\.delete\(where\);\n {2}}\n}\n/,
         ];
@@ -575,7 +575,7 @@ context('check if the controller file created ', () => {
           /content: { 'application\/json': { schema: CountSchema } },\n/,
           /},\n {4}},\n {2}}\)\n {2}async delete\(\n/,
           /\@param\.path\.number\('id'\) id: number,\n /,
-          /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClassType\)\) where\?: Where,\n/,
+          /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClassType\)\) where\?: Where<OrderClassType>,\n/,
           /\): Promise<Count> {\n/,
           /return await this\.customerClassTypeRepository\.orderClassTypes\(id\)\.delete\(where\);\n {2}}\n}\n/,
         ];

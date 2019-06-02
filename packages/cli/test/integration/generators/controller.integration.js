@@ -261,7 +261,7 @@ function checkRestCrudContents() {
     /'200': {/,
     /description: 'ProductReview model count'/,
     /content: {'application\/json': {schema: CountSchema}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async count\(\s+\@param\.query\.object\('where', getWhereSchemaFor\(ProductReview\)\) where\?: Where(|,\s+)\)/,
+    /async count\(\s+\@param\.query\.object\('where', getWhereSchemaFor\(ProductReview\)\) where\?: Where<ProductReview>(|,\s+)\)/,
   ];
   getCountRegEx.forEach(regex => {
     assert.fileContent(expectedFile, regex);
@@ -274,7 +274,7 @@ function checkRestCrudContents() {
     /'200': {/,
     /description: 'Array of ProductReview model instances'/,
     /content: {'application\/json': {schema: {'x-ts-type': ProductReview}}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async find\(\s*\@param\.query\.object\('filter', getFilterSchemaFor\(ProductReview\)\) filter\?: Filter(|,\s+)\)/,
+    /async find\(\s*\@param\.query\.object\('filter', getFilterSchemaFor\(ProductReview\)\) filter\?: Filter<ProductReview>(|,\s+)\)/,
   ];
   getFindRegEx.forEach(regex => {
     assert.fileContent(expectedFile, regex);
@@ -287,7 +287,7 @@ function checkRestCrudContents() {
     /'200': {/,
     /description: 'ProductReview PATCH success count'/,
     /content: {'application\/json': {schema: CountSchema}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async updateAll\(\s{1,}\@requestBody\(\) productReview: ProductReview,\s{1,} @param\.query\.object\('where', getWhereSchemaFor\(ProductReview\)\) where\?: Where(|,\s+)\)/,
+    /async updateAll\(\s{1,}\@requestBody\(\) productReview: ProductReview,\s{1,} @param\.query\.object\('where', getWhereSchemaFor\(ProductReview\)\) where\?: Where<ProductReview>(|,\s+)\)/,
   ];
   patchUpdateAllRegEx.forEach(regex => {
     assert.fileContent(expectedFile, regex);
