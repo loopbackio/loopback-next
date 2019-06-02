@@ -46,7 +46,7 @@ export class <%= className %>Controller {
     },
   })
   async count(
-    @param.query.object('where', getWhereSchemaFor(<%= modelName %>)) where?: Where,
+    @param.query.object('where', getWhereSchemaFor(<%= modelName %>)) where?: Where<<%= modelName %>>,
   ): Promise<Count> {
     return await this.<%= repositoryNameCamel %>.count(where);
   }
@@ -64,7 +64,7 @@ export class <%= className %>Controller {
     },
   })
   async find(
-    @param.query.object('filter', getFilterSchemaFor(<%= modelName %>)) filter?: Filter,
+    @param.query.object('filter', getFilterSchemaFor(<%= modelName %>)) filter?: Filter<<%= modelName %>>,
   ): Promise<<%= modelName %>[]> {
     return await this.<%= repositoryNameCamel %>.find(filter);
   }
@@ -79,7 +79,7 @@ export class <%= className %>Controller {
   })
   async updateAll(
     @requestBody() <%= modelVariableName %>: <%= modelName %>,
-    @param.query.object('where', getWhereSchemaFor(<%= modelName %>)) where?: Where,
+    @param.query.object('where', getWhereSchemaFor(<%= modelName %>)) where?: Where<<%= modelName %>>,
   ): Promise<Count> {
     return await this.<%= repositoryNameCamel %>.updateAll(<%= modelVariableName %>, where);
   }
