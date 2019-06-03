@@ -7,6 +7,6 @@
 # The lab feature owners can watch the code changes
 # in the lab branch `lab/<my-feature-name>` by adding
 # their names like:
-# lab/passport-adapter/* @jannyHou
+# labs/passport-adapter/* @jannyHou
 
 @raymondfeng
