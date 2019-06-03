@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.15.0...@loopback/cli@1.15.1) (2019-06-03)
+
+
+### Bug Fixes
+
+* **cli:** add eslint related dev dependencies to generated package.json ([fc18caf](https://github.com/strongloop/loopback-next/commit/fc18caf))
+
+
+
+
+
 # [1.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.14.1...@loopback/cli@1.15.0) (2019-06-03)
 
 

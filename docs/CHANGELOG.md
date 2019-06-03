@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.21.0...@loopback/docs@1.21.1) (2019-06-03)
+
+**Note:** Version bump only for package @loopback/docs
+
+
+
+
+
 # [1.21.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.20.1...@loopback/docs@1.21.0) (2019-06-03)
 
 
