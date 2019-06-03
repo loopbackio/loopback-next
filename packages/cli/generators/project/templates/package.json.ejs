@@ -31,7 +31,7 @@
     "prettier:fix": "npm run prettier:cli -- --write",
 <% } -%>
 <% if (project.eslint) { -%>
-    "eslint": "lb-eslint",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
     "eslint:fix": "npm run eslint -- --fix",
 <% } -%>
     "pretest": "npm run clean && npm run build",
