@@ -63,5 +63,5 @@ export async function main() {
   console.log('2: %s', greeting2.hello());
 }
 
-// tslint:disable-next-line:no-floating-promises
+// TBA:eslint-disable-next-line @typescript-eslint/no-floating-promises
 if (require.main === module) main();

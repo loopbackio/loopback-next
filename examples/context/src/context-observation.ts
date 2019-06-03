@@ -88,5 +88,5 @@ export async function main() {
   await requestCtx.waitUntilObserversNotified();
 }
 
-// tslint:disable-next-line:no-floating-promises
+// TBA:eslint-disable-next-line @typescript-eslint/no-floating-promises
 if (require.main === module) main();

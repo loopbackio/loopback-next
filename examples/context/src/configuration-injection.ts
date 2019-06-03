@@ -46,5 +46,5 @@ export async function main() {
   console.log(greeter.greet('Ray'));
 }
 
-// tslint:disable-next-line:no-floating-promises
+// TBA:eslint-disable-next-line @typescript-eslint/no-floating-promises
 if (require.main === module) main();
