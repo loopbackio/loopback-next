@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-hello-world@1.1.20...@loopback/example-hello-world@1.2.0) (2019-06-03)
+
+
+### Features
+
+* replace tslint with eslint ([44185a7](https://github.com/strongloop/loopback-next/commit/44185a7))
+
+
+
+
+
 ## [1.1.20](https://github.com/strongloop/loopback-next/compare/@loopback/example-hello-world@1.1.19...@loopback/example-hello-world@1.1.20) (2019-05-31)
 
 **Note:** Version bump only for package @loopback/example-hello-world

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.3.3...@loopback/example-express-composition@1.4.0) (2019-06-03)
+
+
+### Bug Fixes
+
+* **example-express-composition:** update migrate script file location ([8a6c072](https://github.com/strongloop/loopback-next/commit/8a6c072))
+
+
+### Features
+
+* add navigational properties to find* methods ([1f0aa0b](https://github.com/strongloop/loopback-next/commit/1f0aa0b))
+* replace tslint with eslint ([44185a7](https://github.com/strongloop/loopback-next/commit/44185a7))
+
+
+
+
+
 ## [1.3.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.3.2...@loopback/example-express-composition@1.3.3) (2019-05-31)
 
 **Note:** Version bump only for package @loopback/example-express-composition

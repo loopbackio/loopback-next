@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@2.0.6...@loopback/authentication@2.1.0) (2019-06-03)
+
+
+### Features
+
+* replace tslint with eslint ([44185a7](https://github.com/strongloop/loopback-next/commit/44185a7))
+
+
+
+
+
 ## [2.0.6](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@2.0.5...@loopback/authentication@2.0.6) (2019-05-31)
 
 **Note:** Version bump only for package @loopback/authentication

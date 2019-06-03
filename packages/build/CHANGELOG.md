@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.6.1...@loopback/build@1.7.0) (2019-06-03)
+
+
+### Features
+
+* replace tslint with eslint ([44185a7](https://github.com/strongloop/loopback-next/commit/44185a7))
+
+
+
+
+
 ## [1.6.1](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.6.0...@loopback/build@1.6.1) (2019-05-31)
 
 **Note:** Version bump only for package @loopback/build

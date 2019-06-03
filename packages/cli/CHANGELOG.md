@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.14.1...@loopback/cli@1.15.0) (2019-06-03)
+
+
+### Bug Fixes
+
+* **cli:** add type param to Filter and Where ([a9570bc](https://github.com/strongloop/loopback-next/commit/a9570bc))
+
+
+### Features
+
+* add navigational properties to find* methods ([1f0aa0b](https://github.com/strongloop/loopback-next/commit/1f0aa0b))
+* replace tslint with eslint ([44185a7](https://github.com/strongloop/loopback-next/commit/44185a7))
+
+
+
+
+
 ## [1.14.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.14.0...@loopback/cli@1.14.1) (2019-05-31)
 
 
