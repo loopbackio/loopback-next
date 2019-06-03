@@ -38,7 +38,7 @@ To use `@loopback/build` for your package:
     "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
-    "eslint": "lb-eslint",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
     "eslint:fix": "npm run eslint -- --fix",
     "pretest": "npm run clean && npm run build",
     "test": "lb-mocha \"dist/__tests__\"",
