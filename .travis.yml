@@ -42,5 +42,4 @@ branches:
   only:
     - master
     - /^greenkeeper/.*$/
-    - labs
-    - /^lab/.*$/
+    - /^labs/.*$/
