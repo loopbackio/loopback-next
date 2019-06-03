@@ -3,6 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+const fs = require('fs');
+
 /**
  * Default ESLint configuration for LoopBack
  *
@@ -26,7 +28,7 @@ module.exports = {
      * but it causes significant performance overhead (1m13s vs 13s)
      * See https://github.com/typescript-eslint/typescript-eslint/issues/389
      */
-    project: './tsconfig.json',
+    project: getProjectFile(),
     ecmaFeatures: {
       ecmaVersion: 2017,
       jsx: false,
@@ -130,3 +132,12 @@ module.exports = {
     'no-void': 'error', // tslint:no-void-expression: [true, 'ignore-arrow-function-shorthand'],
   },
 };
+
+/**
+ * Detect tsconfig file
+ */
+function getProjectFile() {
+  if (fs.existsSync('./tsconfig.build.json')) return './tsconfig.build.json';
+  if (fs.existsSync('./tsconfig.json')) return './tsconfig.json';
+  return undefined;
+}
