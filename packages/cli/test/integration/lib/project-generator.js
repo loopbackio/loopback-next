@@ -252,6 +252,11 @@ module.exports = function(projGenerator, props, projectType) {
           ['package.json', '@loopback/build'],
           ['package.json', '"typescript"'],
           ['package.json', '"eslint"'],
+          ['package.json', 'eslint-config-prettier'],
+          ['package.json', 'eslint-plugin-eslint-plugin'],
+          ['package.json', 'eslint-plugin-mocha'],
+          ['package.json', '@typescript-eslint/eslint-plugin'],
+          ['package.json', '@loopback/eslint-config'],
           ['.eslintrc.js', '@loopback/eslint-config'],
           ['tsconfig.json', '@loopback/build'],
         ]);
@@ -339,6 +344,11 @@ module.exports = function(projGenerator, props, projectType) {
           ['package.json', '"clean": "rimraf dist"'],
           ['package.json', '"typescript"'],
           ['package.json', '"eslint"'],
+          ['package.json', 'eslint-config-prettier'],
+          ['package.json', 'eslint-plugin-eslint-plugin'],
+          ['package.json', 'eslint-plugin-mocha'],
+          ['package.json', '@typescript-eslint/eslint-plugin'],
+          ['package.json', '@loopback/eslint-config'],
           ['package.json', '"prettier"'],
           ['.eslintrc.js', "extends: '@loopback/eslint-config'"],
           ['tsconfig.json', '"compilerOptions"'],
@@ -391,7 +401,15 @@ module.exports = function(projGenerator, props, projectType) {
       });
 
       it('creates files', () => {
-        assert.noFile(['.eslintrc.js', 'eslint.build.json']);
+        assert.noFile(
+          ['.eslintrc.js', 'eslint.build.json'],
+          ['package.json', '"eslint"'],
+          ['package.json', 'eslint-config-prettier'],
+          ['package.json', 'eslint-plugin-eslint-plugin'],
+          ['package.json', 'eslint-plugin-mocha'],
+          ['package.json', '@typescript-eslint/eslint-plugin'],
+          ['package.json', '@loopback/eslint-config'],
+        );
         assert.jsonFileContent('package.json', props);
       });
     });
@@ -422,6 +440,11 @@ module.exports = function(projGenerator, props, projectType) {
         assert.noFileContent([
           ['package.json', '@loopback/build'],
           ['package.json', '"eslint"'],
+          ['package.json', 'eslint-config-prettier'],
+          ['package.json', 'eslint-plugin-eslint-plugin'],
+          ['package.json', 'eslint-plugin-mocha'],
+          ['package.json', '@typescript-eslint/eslint-plugin'],
+          ['package.json', '@loopback/eslint-config'],
           ['tsconfig.json', '@loopback/build'],
         ]);
         assert.fileContent([
