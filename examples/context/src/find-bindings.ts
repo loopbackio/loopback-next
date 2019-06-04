@@ -75,5 +75,4 @@ export async function main() {
   console.log(view.bindings.map(b => b.key));
 }
 
-// TBA:eslint-disable-next-line @typescript-eslint/no-floating-promises
 if (require.main === module) main();
