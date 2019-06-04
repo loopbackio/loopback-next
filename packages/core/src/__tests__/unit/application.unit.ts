@@ -152,7 +152,7 @@ describe('Application', () => {
       expect(binding.tagNames).to.containEql('foo');
     });
 
-    it('binds providers from a component', () => {
+    it('honors tags when binding providers from a component', () => {
       @bind({tags: ['foo']})
       class MyProvider implements Provider<string> {
         value() {

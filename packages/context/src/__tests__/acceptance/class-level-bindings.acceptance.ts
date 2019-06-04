@@ -637,7 +637,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     expect(store.locations).to.eql(['San Francisco', 'San Jose']);
   });
 
-  it('injects values by tag asynchronously', async () => {
+  it('reports correct resolution path when injecting values by tag', async () => {
     class Store {
       constructor(@inject.tag('store:location') public locations: string[]) {}
     }

@@ -53,7 +53,7 @@ describe('BindingComparator', () => {
     assertOrder('validator1', 'validator2', 'metrics', 'logger1');
   });
 
-  it('sorts by binding order without phase tags', () => {
+  it('sorts by binding order without phase tags (for symbol tags)', () => {
     /**
      * Phases
      * - '': validator1 // not part of ['log', 'auth']

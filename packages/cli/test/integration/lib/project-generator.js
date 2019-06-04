@@ -36,7 +36,7 @@ module.exports = function(projGenerator, props, projectType) {
 
     describe('_setupGenerator', () => {
       describe('args validation', () => {
-        it('errors out if validation fails', () => {
+        it('errors out if validation fails for an argument value', () => {
           const result = testUtils
             .executeGenerator(projGenerator)
             .withArguments(['fooBar']);
@@ -45,7 +45,7 @@ module.exports = function(projGenerator, props, projectType) {
           );
         });
 
-        it('errors out if validation fails', () => {
+        it('errors out if validation fails for an option value', () => {
           const result = testUtils
             .executeGenerator(projGenerator)
             .withOptions({name: 'fooBar'})
