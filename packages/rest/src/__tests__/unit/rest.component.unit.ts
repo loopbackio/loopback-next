@@ -25,9 +25,20 @@ import {aRestServerConfig} from '../helpers';
 const SequenceActions = RestBindings.SequenceActions;
 describe('RestComponent', () => {
   describe('Providers', () => {
-    describe('Default implementations are bound', () => {
+    describe('Default implementation', () => {
       let app: Application;
       let comp: Component;
+
+      const EXPECTED_KEYS = [
+        RestBindings.SequenceActions.LOG_ERROR.key,
+        RestBindings.SequenceActions.FIND_ROUTE.key,
+        RestBindings.SequenceActions.INVOKE_METHOD.key,
+        RestBindings.SequenceActions.REJECT.key,
+        RestBindings.BIND_ELEMENT.key,
+        RestBindings.GET_FROM_CONTEXT.key,
+        RestBindings.SequenceActions.PARSE_PARAMS.key,
+        RestBindings.SequenceActions.SEND.key,
+      ];
 
       before(async () => {
         app = new Application();
@@ -42,16 +53,15 @@ describe('RestComponent', () => {
         comp = await app.get<Component>('components.RestComponent');
       });
 
-      it('', async () => {
-        for (const key in comp.providers || {}) {
-          it(key, async () => {
-            const result = await app.get(key);
-            const expected: Provider<BoundValue> = new comp.providers![key]();
-            expect(result).to.deepEqual(expected.value());
-          });
-        }
-      });
+      for (const key of EXPECTED_KEYS) {
+        it(`binds ${key}`, async () => {
+          const result = await app.get(key);
+          const expected: Provider<BoundValue> = new comp.providers![key]();
+          expect(result).to.deepEqual(expected.value());
+        });
+      }
     });
+
     describe('LOG_ERROR', () => {
       it('matches expected argument signature', async () => {
         const app = new Application();

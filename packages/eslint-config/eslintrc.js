@@ -57,6 +57,15 @@ module.exports = {
     'no-redeclare': 'off',
 
     /**
+     * Rules imported from eslint-config-loopback
+     */
+    'mocha/handle-done-callback': 'error',
+    'mocha/no-exclusive-tests': 'error',
+    'mocha/no-identical-title': 'error',
+    'mocha/no-nested-tests': 'error',
+    'no-array-constructor': 'error',
+
+    /**
      * TypeScript specific rules
      * See https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin#supported-rules
      */

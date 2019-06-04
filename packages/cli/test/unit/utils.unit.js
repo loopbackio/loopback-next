@@ -364,7 +364,7 @@ describe('Utils', () => {
       );
     });
 
-    it('returns string for an array check with a number', () => {
+    it('returns string for an array check with an object', () => {
       expect(utils.validateStringObject('array')({})).to.be.eql(
         'The value must be a stringified array',
       );
@@ -374,7 +374,7 @@ describe('Utils', () => {
       expect(utils.validateStringObject('object')('{}')).to.be.True();
     });
 
-    it('returns string for an array check with an object', () => {
+    it('returns string for an array check with an object-like string', () => {
       expect(utils.validateStringObject('array')('{}')).to.be.eql(
         'The value must be a stringified array',
       );
