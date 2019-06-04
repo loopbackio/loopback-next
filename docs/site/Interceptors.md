@@ -622,12 +622,10 @@ class NameValidator implements Provider<Interceptor> {
   constructor(@inject('valid-names') private validNames: string[]) {}
 
   value() {
-    const interceptor: Interceptor = (invocationCtx, next) =>
-      this.validateName(invocationCtx, next);
-    return interceptor;
+    return this.intercept.bind(this);
   }
 
-  async validateName<T>(
+  async intercept<T>(
     invocationCtx: InvocationContext,
     next: () => ValueOrPromise<T>,
   ) {
