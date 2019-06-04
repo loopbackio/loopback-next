@@ -40,9 +40,7 @@ class TracingInterceptor implements Provider<Interceptor> {
   ) {}
 
   value() {
-    const interceptor: Interceptor = (invocationCtx, next) =>
-      this.intercept(invocationCtx, next);
-    return interceptor;
+    return this.intercept.bind(this);
   }
 
   async intercept<T>(

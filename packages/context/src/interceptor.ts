@@ -211,7 +211,9 @@ export class InvocationContext extends Context {
 export function asGlobalInterceptor(group?: string): BindingTemplate {
   return binding => {
     binding
+      // Tagging with `GLOBAL_INTERCEPTOR` is required.
       .tag(ContextTags.GLOBAL_INTERCEPTOR)
+      // `GLOBAL_INTERCEPTOR_NAMESPACE` is to make the binding key more readable.
       .tag({[ContextTags.NAMESPACE]: GLOBAL_INTERCEPTOR_NAMESPACE});
     if (group) binding.tag({[ContextTags.GLOBAL_INTERCEPTOR_GROUP]: group});
   };
