@@ -121,5 +121,4 @@ async function greetFromAll(greetersView: ContextView<Greeter>) {
   await transformValueOrPromise(greetingsByLanguage, console.log);
 }
 
-// TBA:eslint-disable-next-line @typescript-eslint/no-floating-promises
 if (require.main === module) main();

@@ -26,6 +26,6 @@ export async function main() {
 
 if (require.main === module) {
   process.env.FOO = JSON.stringify({bar: 'xyz'});
-  // TBA:eslint-disable-next-line @typescript-eslint/no-floating-promises
+
   main();
 }

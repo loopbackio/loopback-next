@@ -76,5 +76,4 @@ export async function main() {
   await greetWithAsyncUser(ctx);
 }
 
-// TBA:eslint-disable-next-line @typescript-eslint/no-floating-promises
 if (require.main === module) main();

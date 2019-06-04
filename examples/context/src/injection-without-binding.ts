@@ -36,5 +36,4 @@ export async function main() {
   await sayHello(ctx);
 }
 
-// TBA:eslint-disable-next-line @typescript-eslint/no-floating-promises
 if (require.main === module) main();
