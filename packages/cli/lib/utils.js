@@ -17,15 +17,19 @@ const _ = require('lodash');
 const pascalCase = require('change-case').pascalCase;
 const lowerCase = require('change-case').lowerCase;
 const promisify = require('util').promisify;
-const camelCase = require('change-case').camelCase;
+const toVarName = require('change-case').camelCase;
 const pluralize = require('pluralize');
 const urlSlug = require('url-slug');
 const validate = require('validate-npm-package-name');
 const Conflicter = require('yeoman-generator/lib/util/conflicter');
 const connectors = require('../generators/datasource/connectors.json');
 const stringifyObject = require('stringify-object');
-
+const camelCase = _.camelCase;
+const kebabCase = _.kebabCase;
 const readdirAsync = promisify(fs.readdir);
+const toFileName = name => {
+  return kebabCase(name).replace(/\-(\d+)$/g, '$1');
+};
 
 const RESERVED_PROPERTY_NAMES = ['constructor'];
 
@@ -113,13 +117,14 @@ exports.validateNotExisting = function(projDir) {
 exports.toClassName = function(name) {
   if (name === '') return new Error('no input');
   if (typeof name != 'string' || name == null) return new Error('bad input');
-  return pascalCase(name);
+  return pascalCase(camelCase(name));
 };
 
 exports.lowerCase = lowerCase;
-exports.kebabCase = _.kebabCase;
+exports.toFileName = toFileName;
 exports.pascalCase = pascalCase;
 exports.camelCase = camelCase;
+exports.toVarName = toVarName;
 exports.pluralize = pluralize;
 exports.urlSlug = urlSlug;
 
@@ -377,7 +382,7 @@ function validateValue(name, unallowedCharacters) {
  * @param {string} modelName
  */
 exports.getModelFileName = function(modelName) {
-  return `${_.kebabCase(modelName)}.model.ts`;
+  return `${toFileName(modelName)}.model.ts`;
 };
 
 /**
@@ -385,7 +390,7 @@ exports.getModelFileName = function(modelName) {
  * @param {string} repositoryName
  */
 exports.getRepositoryFileName = function(repositoryName) {
-  return `${_.kebabCase(repositoryName)}.repository.ts`;
+  return `${toFileName(repositoryName)}.repository.ts`;
 };
 
 /**
@@ -393,7 +398,7 @@ exports.getRepositoryFileName = function(repositoryName) {
  * @param {string} serviceName
  */
 exports.getServiceFileName = function(serviceName) {
-  return `${_.kebabCase(serviceName)}.service.ts`;
+  return `${toFileName(serviceName)}.service.ts`;
 };
 
 /**
@@ -401,7 +406,7 @@ exports.getServiceFileName = function(serviceName) {
  * @param {string} observerName
  */
 exports.getObserverFileName = function(observerName) {
-  return `${_.kebabCase(observerName)}.observer.ts`;
+  return `${toFileName(observerName)}.observer.ts`;
 };
 
 /**
@@ -409,7 +414,7 @@ exports.getObserverFileName = function(observerName) {
  * @param {string} interceptorName
  */
 exports.getInterceptorFileName = function(interceptorName) {
-  return `${_.kebabCase(interceptorName)}.interceptor.ts`;
+  return `${toFileName(interceptorName)}.interceptor.ts`;
 };
 
 /**
@@ -523,7 +528,7 @@ exports.getDataSourceName = function(datasourcesDir, dataSourceClass) {
 
 exports.dataSourceToJSONFileName = function(dataSourceClass) {
   return path.join(
-    _.kebabCase(dataSourceClass.replace('Datasource', '')) + '.datasource.json',
+    toFileName(dataSourceClass.replace('Datasource', '')) + '.datasource.json',
   );
 };
 

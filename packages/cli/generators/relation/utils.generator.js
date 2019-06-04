@@ -198,7 +198,7 @@ exports.getRequiredImports = function(targetModel, relationType) {
   return [
     {
       name: targetModel,
-      module: './' + utils.kebabCase(targetModel) + '.model',
+      module: './' + utils.toFileName(targetModel) + '.model',
     },
     {
       name: relationType,

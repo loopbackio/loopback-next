@@ -192,7 +192,7 @@ module.exports = class BaseRelationGenerator extends ArtifactGenerator {
       },
       {
         name: dstRepositoryClassName,
-        module: `./${utils.kebabCase(dstModelClassName)}.repository`,
+        module: `./${utils.toFileName(dstModelClassName)}.repository`,
       },
     ];
   }

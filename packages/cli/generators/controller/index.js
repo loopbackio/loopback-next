@@ -75,6 +75,15 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
   promptArtifactType() {
     debug('Prompting for controller type');
     if (this.shouldExit()) return;
+
+    super.promptWarningMsgForName();
+    // inform user what controller/file names will be created
+    super.promptClassFileName(
+      'controller',
+      'controllers',
+      utils.toClassName(this.artifactInfo.name),
+    );
+
     return this.prompt([
       {
         type: 'list',
@@ -207,12 +216,11 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
     if (this.shouldExit()) return false;
     this.artifactInfo.className = utils.toClassName(this.artifactInfo.name);
     this.artifactInfo.outFile =
-      utils.kebabCase(this.artifactInfo.name) + '.controller.ts';
+      utils.toFileName(this.artifactInfo.name) + '.controller.ts';
     if (debug.enabled) {
       debug(`Artifact output filename set to: ${this.artifactInfo.outFile}`);
     }
-
-    this.artifactInfo.modelVariableName = utils.camelCase(
+    this.artifactInfo.modelVariableName = utils.toVarName(
       this.artifactInfo.modelName,
     );
 

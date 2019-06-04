@@ -93,7 +93,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
 
     this.dataSourceChoices = datasourcesList.map(s =>
       modelDiscoverer.loadDataSource(
-        path.resolve(dsDir, `${utils.kebabCase(s)}.datasource.js`),
+        path.resolve(dsDir, `${utils.toFileName(s)}.datasource.js`),
       ),
     );
     debug(`Done importing datasources`);

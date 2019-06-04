@@ -238,7 +238,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
 
     // Setting up data for templates
     this.artifactInfo.className = utils.toClassName(this.artifactInfo.name);
-    this.artifactInfo.fileName = utils.kebabCase(this.artifactInfo.name);
+    this.artifactInfo.fileName = utils.toFileName(this.artifactInfo.name);
     // prettier-ignore
     this.artifactInfo.jsonFileName = `${this.artifactInfo.fileName}.datasource.json`;
     // prettier-ignore

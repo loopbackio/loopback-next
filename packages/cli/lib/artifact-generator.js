@@ -63,6 +63,45 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
     });
   }
 
+  /**
+   * remind user the input might get changed if it contains _ or accented char
+   **/
+  promptWarningMsgForName() {
+    if (this.artifactInfo.name.includes('_')) {
+      this.log(
+        chalk.red('>>> ') +
+          `Underscores _ in the class name will get removed: ${
+            this.artifactInfo.name
+          }`,
+      );
+    }
+    if (this.artifactInfo.name.match(/[\u00C0-\u024F\u1E00-\u1EFF]/)) {
+      this.log(
+        chalk.red('>>> ') +
+          `Accented chars in the class name will get replaced: ${
+            this.artifactInfo.name
+          }`,
+      );
+    }
+  }
+
+  /**
+   * Inform user what model/file names will be created
+   *
+   * e.g: promptClassFileName('model', 'models', 'MyModel');
+   * >> Model MyModel will be created in src/models/my-model.model.ts
+   **/
+  promptClassFileName(type, typePlural, name) {
+    this.log(
+      `${utils.toClassName(type)} ${chalk.yellow(
+        name,
+      )} will be created in src/${typePlural}/${chalk.yellow(
+        utils.toFileName(name) + '.' + `${type}.ts`,
+      )}`,
+    );
+    this.log();
+  }
+
   scaffold() {
     debug('Scaffolding artifact(s)');
     if (this.shouldExit()) return false;
@@ -100,7 +139,7 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
       this.log();
       this.log(
         utils.toClassName(this.artifactInfo.type),
-        chalk.yellow(this.artifactInfo.name),
+        chalk.yellow(utils.toClassName(this.artifactInfo.name)),
         'was created in',
         `${this.artifactInfo.relPath}/`,
       );

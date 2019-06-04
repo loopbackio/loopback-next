@@ -106,7 +106,7 @@ module.exports = class ObserverGenerator extends ArtifactGenerator {
     // Setting up data for templates
     this.artifactInfo.className =
       utils.toClassName(this.artifactInfo.name) + 'Observer';
-    this.artifactInfo.fileName = utils.kebabCase(this.artifactInfo.name);
+    this.artifactInfo.fileName = utils.toFileName(this.artifactInfo.name);
 
     Object.assign(this.artifactInfo, {
       outFile: utils.getObserverFileName(this.artifactInfo.name),

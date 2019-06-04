@@ -289,14 +289,49 @@ describe('lb4 repository', function() {
       );
     });
 
+    it('generates a crud repository from numbered model file name', async () => {
+      const basicPrompt = {
+        dataSourceClass: 'DbmemDatasource',
+      };
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(SANDBOX_PATH, () =>
+          testUtils.givenLBProject(SANDBOX_PATH, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withPrompts(basicPrompt)
+        .withArguments(' --model Model1NameWithNum1');
+      const expectedFile = path.join(
+        SANDBOX_PATH,
+        REPOSITORY_APP_PATH,
+        'model-1-name-with-num1.repository.ts',
+      );
+      assert.file(expectedFile);
+      assert.fileContent(
+        expectedFile,
+        /export class Model1NameWithNum1Repository extends DefaultCrudRepository\</,
+      );
+      assert.fileContent(
+        expectedFile,
+        /typeof Model1NameWithNum1.prototype.id/,
+      );
+      assert.fileContent(expectedFile, /Model1NameWithNum1Relations/);
+      assert.file(INDEX_FILE);
+      assert.fileContent(
+        INDEX_FILE,
+        /export \* from '.\/model-1-name-with-num1.repository';/,
+      );
+    });
+
     it('allows other connectors', async () => {
       const files = SANDBOX_FILES.filter(
         e =>
           e.path !== 'src/datasources' ||
-          e.file.includes('sqlite-3.datasource.'),
+          e.file.includes('sqlite3.datasource.'),
       );
       const basicPrompt = {
-        dataSourceClass: 'Sqlite_3Datasource',
+        dataSourceClass: 'Sqlite3Datasource',
       };
       await testUtils
         .executeGenerator(generator)

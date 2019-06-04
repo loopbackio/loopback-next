@@ -183,6 +183,8 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
     if (this.shouldExit()) return;
     await super.promptArtifactName();
     this.artifactInfo.className = utils.toClassName(this.artifactInfo.name);
+    // Prompt warning msg for the name
+    super.promptWarningMsgForName();
   }
 
   // Ask for Model base class
@@ -293,6 +295,12 @@ module.exports = class ModelGenerator extends ArtifactGenerator {
         if (this.artifactInfo.allowAdditionalProperties) {
           Object.assign(this.artifactInfo.modelSettings, {strict: false});
         }
+        // inform user what model/file names will be created
+        super.promptClassFileName(
+          'model',
+          'models',
+          this.artifactInfo.className,
+        );
 
         this.log(
           `Let's add a property to ${chalk.yellow(

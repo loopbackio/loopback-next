@@ -88,8 +88,8 @@ describe('Utils', () => {
         'fooβbar',
       );
       testCorrectName(
-        'if the first character has an accented character',
-        'Óoobar',
+        'if the class name contains accented characters',
+        'Óoobãr',
       );
 
       function testCorrectName(testName, input) {
@@ -115,8 +115,27 @@ describe('Utils', () => {
       testExpect('if first letter is lower case', 'fooBar', 'FooBar');
       testExpect(
         'if first letter is lower case in different language',
-        'óooBar',
-        'ÓooBar',
+        'óooBãr',
+        'OooBar',
+      );
+    });
+
+    describe('should remove underscores', () => {
+      testExpect('if first letter is underscore', '_fooBar', 'FooBar');
+      testExpect(
+        'if the class name contains a underscore in the middle',
+        'foo_Bar',
+        'FooBar',
+      );
+      testExpect(
+        'if the class name contains more than one underscores',
+        'foo__b_ar',
+        'FooBAr',
+      );
+      testExpect(
+        'if the class name contains underscores and digits',
+        'foo_1b_ar',
+        'Foo1BAr',
       );
     });
 
@@ -143,6 +162,67 @@ describe('Utils', () => {
     function testExpect(testName, input, expected) {
       it(testName, () => {
         expect(utils.toClassName(input)).to.equal(expected);
+      });
+    }
+  });
+  describe('toFileName', () => {
+    describe('should error', () => {
+      testExpectError('if input is empty', '', /no input/);
+      testExpectError('if input is null', null, /bad input/);
+      testExpectError('if input is not a string', 42, /bad input/);
+    });
+
+    describe('should replace underscores with dash', () => {
+      testExpect('if first letter is underscore', '_foobar', 'foobar');
+      testExpect(
+        'if the class name contains a underscore in the middle',
+        'foo_Bar',
+        'foo-bar',
+      );
+      testExpect(
+        'if the class name contains more than one underscores',
+        'foo__b_ar',
+        'foo-b-ar',
+      );
+    });
+
+    describe('should use dash to seperate words', () => {
+      testExpect('first letter is upper case', 'Foobar', 'foobar');
+      testExpect(
+        'if the name contains upper case letters',
+        'FooBar',
+        'foo-bar',
+      );
+      testExpect(
+        'if the name contains upper case letters',
+        'FOoBAR',
+        'f-oo-bar',
+      );
+    });
+
+    describe('should use dash to seperate digits and words', () => {
+      testExpect(
+        'if the class name contains a digit in the middle',
+        'Car4Share',
+        'car-4-share',
+      );
+      testExpect('if the class name ends with a digit', 'FooBar1', 'foo-bar1');
+      testExpect(
+        'if the class name ends with digits',
+        'Car4share12',
+        'car-4-share12',
+      );
+    });
+
+    function testExpectError(testName, input, expected) {
+      it(testName, () => {
+        expect(utils.toClassName(input)).to.match(expected);
+      });
+    }
+
+    function testExpect(testName, input, expected) {
+      it(testName, () => {
+        expect(utils.toFileName(input)).to.equal(expected);
       });
     }
   });
