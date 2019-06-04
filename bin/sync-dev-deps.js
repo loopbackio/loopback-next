@@ -26,11 +26,13 @@ async function syncDevDeps() {
     .dependencies;
 
   const deps = [
-    'typescript',
-    'eslint',
     '@typescript-eslint/eslint-plugin',
     '@typescript-eslint/parser',
+    'eslint',
+    'eslint-config-prettier',
     'eslint-plugin-eslint-plugin',
+    'eslint-plugin-mocha',
+    'typescript',
   ];
   const masterDeps = {};
   for (const d of deps) {
@@ -61,7 +63,7 @@ async function syncDevDeps() {
  * @param masterDeps - Master dependencies
  */
 function updatePackageJson(pkgFile, masterDeps) {
-  const data = readJsonFile(pkgFile);
+  const data = readPackageJson(pkgFile);
   const isExample = data.name.startsWith('@loopback/example-');
   const isRoot = data.name === 'loopback-next';
 
@@ -85,17 +87,34 @@ function updatePackageJson(pkgFile, masterDeps) {
     }
   }
   if (!modified) return false;
-  writeJsonFile(pkgFile, data);
+  writePackageJson(pkgFile, data);
   return true;
 }
 
 if (require.main === module) syncDevDeps();
 
-function readJsonFile(filePath) {
+function readPackageJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 }
 
-function writeJsonFile(filePath, data) {
+function writePackageJson(filePath, data) {
+  data.dependencies = sortObjectByKeys(data.dependencies);
+  data.devDependencies = sortObjectByKeys(data.devDependencies);
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n', 'utf-8');
   console.log('%s has been updated.', filePath);
+}
+
+/**
+ * Sort an object by keys
+ * @param data - An object to be sorted
+ */
+function sortObjectByKeys(data) {
+  if (data == null) return undefined;
+  if (typeof data !== 'object') return data;
+  const keys = Object.keys(data).sort();
+  const result = {};
+  for (const k of keys) {
+    result[k] = data[k];
+  }
+  return result;
 }
