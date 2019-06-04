@@ -11,7 +11,7 @@ const {
   isExtension,
   titleCase,
   debugJson,
-  kebabCase,
+  toFileName,
   camelCase,
   escapeIdentifier,
 } = require('./utils');
@@ -367,7 +367,7 @@ function getControllerFileName(controllerName) {
       controllerName.length - 'Controller'.length,
     );
   }
-  return kebabCase(name) + '.controller.ts';
+  return toFileName(name) + '.controller.ts';
 }
 
 module.exports = {

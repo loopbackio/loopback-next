@@ -59,7 +59,7 @@ exports.SANDBOX_FILES = [
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'sqlite-3.datasource.json',
+    file: 'sqlite3.datasource.json',
     content: JSON.stringify({
       name: 'sqlite3',
       connector: 'loopback-connector-sqlite3',
@@ -67,7 +67,7 @@ exports.SANDBOX_FILES = [
   },
   {
     path: DATASOURCE_APP_PATH,
-    file: 'sqlite-3.datasource.ts',
+    file: 'sqlite3.datasource.ts',
     content: DUMMY_CONTENT,
   },
   {

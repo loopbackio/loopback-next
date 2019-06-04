@@ -31,11 +31,11 @@ module.exports = class HasManyRelationGenerator extends BaseRelationGenerator {
       this.artifactInfo.sourceModelClassName + 'Repository',
     );
 
-    this.artifactInfo.sourceModelName = utils.kebabCase(options.sourceModel);
+    this.artifactInfo.sourceModelName = utils.toFileName(options.sourceModel);
     this.artifactInfo.sourceModelPath = utils.pluralize(
       this.artifactInfo.sourceModelName,
     );
-    this.artifactInfo.targetModelName = utils.kebabCase(
+    this.artifactInfo.targetModelName = utils.toFileName(
       options.destinationModel,
     );
     this.artifactInfo.targetModelPath = utils.pluralize(
@@ -56,7 +56,7 @@ module.exports = class HasManyRelationGenerator extends BaseRelationGenerator {
     this.artifactInfo.name =
       options.sourceModel + '-' + options.destinationModel;
     this.artifactInfo.outFile =
-      utils.kebabCase(this.artifactInfo.name) + '.controller.ts';
+      utils.toFileName(this.artifactInfo.name) + '.controller.ts';
 
     const dest = this.destinationPath(
       path.join(this.artifactInfo.outDir, this.artifactInfo.outFile),
@@ -67,7 +67,7 @@ module.exports = class HasManyRelationGenerator extends BaseRelationGenerator {
       this,
       path.resolve(this.artifactInfo.outDir, 'index.ts'),
       this.artifactInfo.controllerClassName,
-      utils.kebabCase(this.artifactInfo.name) + '.controller',
+      utils.toFileName(this.artifactInfo.name) + '.controller',
     );
   }
 

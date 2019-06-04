@@ -8,9 +8,9 @@
 const {
   isExtension,
   titleCase,
-  kebabCase,
   escapePropertyName,
   toJsonStr,
+  toFileName,
 } = require('./utils');
 
 function setImport(typeSpec) {
@@ -406,7 +406,7 @@ function getModelFileName(modelName) {
   if (modelName.endsWith('Model')) {
     name = modelName.substring(0, modelName.length - 'Model'.length);
   }
-  return kebabCase(name) + '.model.ts';
+  return toFileName(name) + '.model.ts';
 }
 
 module.exports = {

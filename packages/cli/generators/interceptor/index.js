@@ -146,7 +146,7 @@ Group name for the global interceptor: ('')`,
     // Setting up data for templates
     this.artifactInfo.className =
       utils.toClassName(this.artifactInfo.name) + 'Interceptor';
-    this.artifactInfo.fileName = utils.kebabCase(this.artifactInfo.name);
+    this.artifactInfo.fileName = utils.toFileName(this.artifactInfo.name);
 
     Object.assign(this.artifactInfo, {
       outFile: utils.getInterceptorFileName(this.artifactInfo.name),

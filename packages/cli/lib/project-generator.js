@@ -160,7 +160,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
           // prompts if option was set to a directory that already exists
           utils.validateNotExisting(this.projectInfo.outdir) !== true,
         validate: utils.validateNotExisting,
-        default: utils.kebabCase(this.projectInfo.name),
+        default: utils.toFileName(this.projectInfo.name),
       },
     ];
 
