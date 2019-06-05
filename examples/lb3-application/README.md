@@ -11,6 +11,8 @@ new LoopBack 4 project.
    $ lb4 app
    ```
 
+   Fill out the prompts as they fit your project and leave all features enabled.
+
 2. Create a new directory `lb3app` from the root of your LoopBack 4 application
    and copy your existing LoopBack 3 application there. You should end up with
    the following directory layout:
