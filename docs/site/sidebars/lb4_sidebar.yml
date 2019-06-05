@@ -285,6 +285,15 @@ children:
 - title: 'For LoopBack 3.x users'
   url: LoopBack-3.x.html
   output: 'web, pdf'
+  children:
+
+  - title: 'Understanding the differences between LoopBack 3 and LoopBack 4'
+    url: Understanding-the-differences.html
+    output: 'web, pdf'
+
+  - title: 'Migrating from LoopBack 3'
+    url: Migrating-from-LoopBack-3.html
+    output: 'web, pdf'
 
 - title: 'Command-line interface'
   url: Command-line-interface.html
