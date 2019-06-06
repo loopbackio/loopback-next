@@ -214,13 +214,14 @@ src/__tests__/unit/application.unit.ts
 
 ## API Documentation
 
-We use [strong-docs](https://github.com/strongloop/strong-docs) to generate API
-documentation for all our packages. This documentation is generated when
-publishing new releases to npmjs.org and it's picked up by
-<http://apidocs.loopback.io/>.
+We use
+[@loopback/tsdocs](https://github.com/strongloop/loopback-next/tree/master/packages/tsdocs)
+to generate API documentation for all our packages. This documentation is
+generated when publishing new releases to npmjs.org and it's picked up by
+https://loopback.io/doc/en/lb4/apidocs.index.html.
 
-You can preview API docs locally by opening the file `docs/apidocs.html` in your
-browser.
+You can preview API docs locally by running `npm run tsdocs` and open
+[apidocs/index.md](apidocs/index.md).
 
 ## Commit message guidelines
 
@@ -490,16 +491,11 @@ Please register the new package in the following files:
 - Update [MONOREPO.md](./MONOREPO.md) - insert a new table row to describe the
   new package, please keep the rows sorted by package name.
 - Update
-  [docs/apidocs.html](https://github.com/strongloop/loopback-next/blob/master/docs/apidocs.html) -
-  add a link to API docs for this new package.
 - Update [Reserved-binding-keys.md](./Reserved-binding-keys.md) - add a link to
   the apidocs on Binding Keys if the new package has any.
 - Update
   [CODEOWNERS](https://github.com/strongloop/loopback-next/blob/master/CODEOWNERS) -
   add a new entry listing the primary maintainers (owners) of the new package.
-- Ask somebody from the IBM team (e.g. [@bajtos](https://github.com/bajtos) or
-  [@raymondfeng](https://github.com/raymondfeng) to enlist the new package on
-  <http://apidocs.loopback.io/>.
 
 ## Upgrading TypeScript/eslint
 

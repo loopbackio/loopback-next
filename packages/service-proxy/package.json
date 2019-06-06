@@ -8,9 +8,8 @@
   "main": "index",
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
-    "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
-    "clean": "lb-clean loopback-service-proxy*.tgz dist package api-docs",
+    "clean": "lb-clean loopback-service-proxy*.tgz dist package",
     "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
     "pretest": "npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",

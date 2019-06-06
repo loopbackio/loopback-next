@@ -7,9 +7,8 @@
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
-    "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
-    "clean": "lb-clean loopback-rest*.tgz dist package api-docs",
+    "clean": "lb-clean loopback-rest*.tgz dist package",
     "pretest": "npm run build",
     "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",

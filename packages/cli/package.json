@@ -86,7 +86,6 @@
       "prettier": "^1.17.1",
       "rimraf": "^2.6.2",
       "source-map-support": "^0.5.12",
-      "strong-docs": "^4.2.0",
       "typescript": "~3.5.1",
       "@loopback/authentication": "^2.1.1",
       "@loopback/boot": "^1.4.0",
