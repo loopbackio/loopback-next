@@ -138,7 +138,7 @@ scopes:
 - BindingScope.SINGLETON
 
 For a complete list of descriptions, please see
-[BindingScope](http://apidocs.loopback.io/@loopback%2fdocs/context.html#BindingScope).
+[BindingScope](https://loopback.io/doc/en/lb4/apidocs.context.bindingscope.html).
 
 ```ts
 binding.inScope(BindingScope.SINGLETON);
