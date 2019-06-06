@@ -1,15 +1,14 @@
 {
   "name": "@loopback/authorization",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A LoopBack component for authorization support.",
   "engines": {
-    "node": ">=8"
+    "node": ">=8.9"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
-    "build": "lb-tsc es2017 --outDir dist",
-    "build:apidocs": "lb-apidocs",
-    "clean": "lb-clean loopback-authorization*.tgz dist package api-docs",
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-authorization*.tgz dist package *.tsbuildinfo",
     "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
     "prepublishOnly": "npm run build && npm run build:apidocs",
     "pretest": "npm run build",
@@ -26,10 +25,10 @@
     "debug": "^4.1.1"
   },
   "devDependencies": {
-    "@loopback/build": "^1.5.2",
+    "@loopback/build": "^2.0.2",
     "@loopback/testlab": "^1.2.7",
     "@types/debug": "^4.1.4",
-    "casbin": "^2.0.4"
+    "casbin": "^3.0.1"
   },
   "keywords": [
     "LoopBack",
