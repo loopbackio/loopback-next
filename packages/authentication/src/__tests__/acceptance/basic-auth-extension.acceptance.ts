@@ -3,30 +3,21 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {inject} from '@loopback/context';
-import {Application} from '@loopback/core';
-import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
-import {api, get} from '@loopback/openapi-v3';
-import {Request, RestServer} from '@loopback/rest';
-import {Client, createClientForHandler} from '@loopback/testlab';
-import {
-  authenticate,
-  AuthenticationBindings,
-  registerAuthenticationStrategy,
-  UserProfile,
-} from '../..';
-import {AuthenticationStrategy} from '../../types';
-import {
-  createBasicAuthorizationHeaderValue,
-  getApp,
-  getUserRepository,
-} from '../fixtures/helper';
-import {BasicAuthenticationStrategyBindings, USER_REPO} from '../fixtures/keys';
-import {MyAuthenticationSequence} from '../fixtures/sequences/authentication.sequence';
-import {BasicAuthenticationUserService} from '../fixtures/services/basic-auth-user-service';
-import {BasicAuthenticationStrategy} from '../fixtures/strategies/basic-strategy';
-import {User} from '../fixtures/users/user';
-import {UserRepository} from '../fixtures/users/user.repository';
+import { inject } from '@loopback/context';
+import { Application } from '@loopback/core';
+import { anOpenApiSpec } from '@loopback/openapi-spec-builder';
+import { api, get } from '@loopback/openapi-v3';
+import { Request, RestServer } from '@loopback/rest';
+import { Client, createClientForHandler } from '@loopback/testlab';
+import { authenticate, AuthenticationBindings, registerAuthenticationStrategy, UserProfile } from '../..';
+import { AuthenticationStrategy } from '../../types';
+import { createBasicAuthorizationHeaderValue, getApp, getUserRepository } from '../fixtures/helper';
+import { BasicAuthenticationStrategyBindings, USER_REPO } from '../fixtures/keys';
+import { MyAuthenticationSequence } from '../fixtures/sequences/authentication.sequence';
+import { BasicAuthenticationUserService } from '../fixtures/services/basic-auth-user-service';
+import { BasicAuthenticationStrategy } from '../fixtures/strategies/basic-strategy';
+import { User } from '../fixtures/users/user';
+import { UserRepository } from '../fixtures/users/user.repository';
 
 describe('Basic Authentication', () => {
   let app: Application;
@@ -64,7 +55,7 @@ describe('Basic Authentication', () => {
       .get('/whoAmI')
       .set(
         'Authorization',
-        createBasicAuthorizationHeaderValue(joeUser, {prefix: 'NotB@sic '}),
+        createBasicAuthorizationHeaderValue(joeUser, { prefix: 'NotB@sic ' }),
       )
       .expect({
         error: {
@@ -98,7 +89,7 @@ describe('Basic Authentication', () => {
       .get('/whoAmI')
       .set(
         'Authorization',
-        createBasicAuthorizationHeaderValue(joeUser, {separator: '|'}),
+        createBasicAuthorizationHeaderValue(joeUser, { separator: '|' }),
       )
       .expect({
         error: {
@@ -132,14 +123,14 @@ describe('Basic Authentication', () => {
     class InfoController {
       @get('/status')
       status() {
-        return {running: true};
+        return { running: true };
       }
     }
 
     app.controller(InfoController);
     await whenIMakeRequestTo(server)
       .get('/status')
-      .expect(200, {running: true});
+      .expect(200, { running: true });
   });
 
   it('returns error for unknown authentication strategy', async () => {
@@ -147,7 +138,7 @@ describe('Basic Authentication', () => {
       @get('/status')
       @authenticate('doesnotexist')
       status() {
-        return {running: true};
+        return { running: true };
       }
     }
 
@@ -176,7 +167,7 @@ describe('Basic Authentication', () => {
       @get('/status')
       @authenticate('badbasic')
       status() {
-        return {running: true};
+        return { running: true };
       }
     }
 
@@ -214,7 +205,7 @@ describe('Basic Authentication', () => {
 
     @api(apispec)
     class MyController {
-      constructor() {}
+      constructor() { }
 
       @authenticate('basic')
       async whoAmI(
