@@ -8,7 +8,7 @@ permalink: /doc/en/lb4/soap-calculator-tutorial-add-controller.html
 
 ### Add a Controller
 
-![soap-calculator-add-service](./imgs/loopback-example-soap-calculator_figure4.png)
+![soap-calculator-add-service](../../imgs/loopback-example-soap-calculator_figure4.png)
 
 Now it is time to add the controller which will make the REST endpoints
 available to client applications through the REST server.

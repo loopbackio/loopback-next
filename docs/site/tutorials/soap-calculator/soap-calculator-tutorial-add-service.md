@@ -8,7 +8,7 @@ permalink: /doc/en/lb4/soap-calculator-tutorial-add-service.html
 
 ### Add a Service
 
-![soap-calculator-add-service](./imgs/loopback-example-soap-calculator_figure3.png)
+![soap-calculator-add-service](../../imgs/loopback-example-soap-calculator_figure3.png)
 
 **LB4** has the package _@loopback/proxy-server_ that contains the artifacts
 needed to implement the link between the methods described in the .json file and
