@@ -62,3 +62,6 @@ api-docs/
 
 # Transpiled JavaScript files from Typescript
 /dist
+
+# Cache used by TypeScript's incremental build
+*.tsbuildinfo

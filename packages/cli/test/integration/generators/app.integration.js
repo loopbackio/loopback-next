@@ -116,6 +116,10 @@ describe('app-generator specific files', () => {
     const pkg = JSON.parse(await readFile('package.json'));
     expect(pkg.scripts).to.have.property('migrate', 'node ./dist/migrate');
   });
+
+  it('creates .gitignore', () => {
+    assert.fileContent('.gitignore', /^\*\.tsbuildinfo$/m);
+  });
 });
 
 describe('app-generator with docker disabled', () => {
