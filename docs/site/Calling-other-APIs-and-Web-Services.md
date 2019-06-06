@@ -262,7 +262,7 @@ export class GeoServiceProvider implements Provider<GeoService> {
 If you get the error about the
 `app.serviceProvider() function is needed for ServiceBooter`, make sure you
 apply
-[ServiceMixin](http://apidocs.loopback.io/@loopback%2fdocs/service-proxy.html#ServiceMixin)
+[ServiceMixin](https://loopback.io/doc/en/lb4/apidocs.service-proxy.servicemixin.html)
 to your Application class in the `application.ts`.
 
 ```ts

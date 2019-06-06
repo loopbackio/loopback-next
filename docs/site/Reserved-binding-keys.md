@@ -37,9 +37,9 @@ the prefix. Example: `@loopback/authentication` component uses the prefix
 `authentication` for its binding keys.
 " %}
 
-- [AuthenticationBindings](http://apidocs.loopback.io/@loopback%2fdocs/authentication.html#AuthenticationBindings)
-- [BootBindings](http://apidocs.loopback.io/@loopback%2fdocs/boot.html#BootBindings)
-- [CoreBindings](http://apidocs.loopback.io/@loopback%2fdocs/core.html#CoreBindings)
-- [RestBindings](http://apidocs.loopback.io/@loopback%2fdocs/rest.html#RestBindings)
-- [RestBindings.Http](http://apidocs.loopback.io/@loopback%2fdocs/rest.html#Http)
-- [RestBindings.SequenceActions](http://apidocs.loopback.io/@loopback%2fdocs/rest.html#SequenceActions)
+- [AuthenticationBindings](https://loopback.io/doc/en/lb4/apidocs.authentication.authenticationbindings.html)
+- [BootBindings](https://loopback.io/doc/en/lb4/apidocs.boot.bootbindings.html)
+- [CoreBindings](https://loopback.io/doc/en/lb4/apidocs.core.corebindings.html)
+- [RestBindings](https://loopback.io/doc/en/lb4/apidocs.rest.restbindings.html)
+- [RestBindings.Http](https://loopback.io/doc/en/lb4/apidocs.rest.http.html)
+- [RestBindings.SequenceActions](https://loopback.io/doc/en/lb4/apidocs.rest.sequenceactions.html)

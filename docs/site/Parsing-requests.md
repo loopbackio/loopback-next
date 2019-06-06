@@ -121,10 +121,9 @@ decimal like "1.23" would be rejected.
 
 You can specify a parameter's type by calling shortcut decorators of `@param`
 like `@param.query.integer()`. A list of available shortcuts can be found in the
-[API Docs](https://apidocs.strongloop.com/@loopback%2fdocs/openapi-v3.html#param).
-Check out the section on
-[parameter decorators](Decorators.md#parameter-decorator) for instructions on
-how to decorate the controller parameter.
+[API Docs](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.param.html). Check
+out the section on [parameter decorators](Decorators.md#parameter-decorator) for
+instructions on how to decorate the controller parameter.
 
 Here are our default validation rules for each type:
 

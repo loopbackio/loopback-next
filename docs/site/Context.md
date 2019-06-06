@@ -155,7 +155,7 @@ The process of registering a BoundValue into the Context is known as _binding_.
 Please find more details at [Binding](Binding.md).
 
 For a list of the available functions you can use for binding, visit the
-[Context API Docs](http://apidocs.loopback.io/@loopback%2fdocs/context.html).
+[Context API Docs](https://loopback.io/doc/en/lb4/apidocs.context.html).
 
 ## Dependency injection
 

@@ -160,7 +160,7 @@ export class OrderRepository extends DefaultCrudRepository<
 `BelongsToAccessor` is a function accepting the primary key (id) of a source
 model instance (e.g. `order.id`) and returning back the related target model
 instance (e.g. a `Customer` the order belongs to). See also
-[API Docs](https://apidocs.strongloop.com/@loopback%2fdocs/repository.html#BelongsToAccessor)
+[API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.belongstoaccessor.html)
 
 ## Using BelongsToAccessor in a controller
 

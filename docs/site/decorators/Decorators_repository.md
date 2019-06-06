@@ -77,7 +77,7 @@ For usage examples, see [Define Models](Repositories.md#define-models)
 
 Syntax:
 
-[`@repository(modelOrRepo: string | Class<Repository<Model>> | typeof Entity, dataSource?: string | juggler.DataSource)`](http://apidocs.loopback.io/@loopback%2fdocs/repository.html#repository)
+[`@repository(modelOrRepo: string | Class<Repository<Model>> | typeof Entity, dataSource?: string | juggler.DataSource)`](https://loopback.io/doc/en/lb4/apidocs.repository.repository.html)
 
 This decorator either injects an existing repository or creates a repository
 from a model and a datasource.

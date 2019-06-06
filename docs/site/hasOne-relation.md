@@ -240,9 +240,9 @@ factory `Account` for instances of `supplierRepository`:
 
 - `create` for creating an `Account` model instance belonging to `Supplier`
   model instance
-  ([API Docs](https://apidocs.strongloop.com/@loopback%2fdocs/repository.html#HasOneRepository.prototype.create))
+  ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.hasonerepository.create.html))
 - `get` finding the target model instance belonging to `Supplier` model instance
-  ([API Docs](https://apidocs.strongloop.com/@loopback%2fdocs/repository.html#HasOneRepository.prototype.get))
+  ([API Docs](https://loopback.io/doc/en/lb4/apidocs.repository.hasonerepository.get.html))
 
 ## Using hasOne constrained repository in a controller
 

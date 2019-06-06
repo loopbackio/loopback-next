@@ -239,9 +239,8 @@ for the tutorial.
 
 Mounting an Express router on a LoopBack 4 application can be done using the
 `mountExpressRouter` function provided by both
-[`RestApplication`](http://apidocs.loopback.io/@loopback%2fdocs/rest.html#RestApplication)
-and
-[`RestServer`](http://apidocs.loopback.io/@loopback%2fdocs/rest.html#RestServer).
+[`RestApplication`](https://loopback.io/doc/en/lb4/apidocs.rest.restapplication.html)
+and [`RestServer`](https://loopback.io/doc/en/lb4/apidocs.rest.restserver.html).
 
 Example use:
 

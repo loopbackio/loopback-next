@@ -20,7 +20,7 @@ accordingly or do a composition of them:
 ### API Decorator
 
 Syntax:
-[`@api(spec: ControllerSpec)`](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3.html#api)
+[`@api(spec: ControllerSpec)`](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.api.html)
 
 `@api` is a decorator for the controller class and is appended just before it's
 declared. `@api` is used when you have multiple
@@ -66,7 +66,7 @@ A more detailed explanation can be found in
 ### Operation Decorator
 
 Syntax:
-[`@operation(verb: string, path: string, spec?: OperationObject)`](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3.html#operation)
+[`@operation(verb: string, path: string, spec?: OperationObject)`](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.operation.html)
 
 `@operation` is a controller method decorator. It exposes a Controller method as
 a REST API operation and is represented in the OpenAPI spec as an
@@ -97,13 +97,13 @@ class MyController {
 ### Commonly-used Operation Decorators
 
 Syntax:
-[`@get(path: string, spec?: OperationObject)`](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3.html#get)
+[`@get(path: string, spec?: OperationObject)`](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.get.html)
 
 Same Syntax for decorators
-[`@post`](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3.html#post) ,
-[`@put`](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3.html#put) ,
-[`@patch`](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3.html#patch) ,
-[`@del`](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3.html#del)
+[`@post`](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.post.html) ,
+[`@put`](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.put.html) ,
+[`@patch`](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.patch.html) ,
+[`@del`](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.del.html)
 
 You can call these sugar operation decorators as a shortcut of `@operation`. For
 example:
@@ -170,7 +170,7 @@ to define the params with the pattern `@param.${in}.${type}(${name})`:
 - name: Name of the parameter. It should be a `string`.
 
 A list of available shortcuts for `query` can be found in
-[API document](http://apidocs.loopback.io/@loopback%2fdocs/openapi-v3.html#param.query),
+[API document](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.param.query.html),
 along with the shortcuts for `path` and `header`.
 
 An equivalent example using the shortcut decorator would be:
