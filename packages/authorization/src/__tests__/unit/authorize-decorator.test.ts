@@ -98,7 +98,7 @@ describe('Authentication', () => {
       });
     });
 
-    it('can add allowAuthenticated to target method', () => {
+    it('can add denyUnauthenticated to target method', () => {
       class TestClass {
         @authorize.denyUnauthenticated()
         getSecret() {}
