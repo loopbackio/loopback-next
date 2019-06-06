@@ -10,6 +10,8 @@
     // FIXME(bajtos) LB4 is not compatible with this setting yet
     "strictPropertyInitialization": false,
 
+    "incremental": true,
+
     "lib": ["es2018", "esnext.asynciterable"],
     "module": "commonjs",
     "moduleResolution": "node",

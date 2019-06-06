@@ -16,6 +16,7 @@ packages/tsdocs/fixtures/monorepo/docs
 /docs/site/readmes
 /docs/apidocs/reports-temp
 /docs/apidocs/models
+*.tsbuildinfo
 
 # TBD: Exclude api reports from git for now
 /docs/apidocs/reports
