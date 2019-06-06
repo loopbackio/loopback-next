@@ -15,9 +15,8 @@
     "@types/node": "^10.11.2"
   },
   "scripts": {
-    "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
-    "clean": "lb-clean loopback-openapi-v3-types*.tgz dist package api-docs",
+    "clean": "lb-clean loopback-openapi-v3-types*.tgz dist package",
     "verify": "npm pack && tar xf loopback-openapi-v3-types*.tgz && tree package && npm run clean",
     "pretest": "npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",

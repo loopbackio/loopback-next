@@ -8,10 +8,9 @@
   },
   "author": "IBM Corp.",
   "scripts": {
-    "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
     "build:watch": "lb-tsc es2017 --outDir dist --watch",
-    "clean": "lb-clean *example-lb3-application*.tgz dist package api-docs",
+    "clean": "lb-clean *example-lb3-application*.tgz dist package",
     "lint": "npm run prettier:check && npm run eslint",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",
     "prettier:cli": "lb-prettier \"**/*.ts\"",

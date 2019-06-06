@@ -8,9 +8,8 @@
   "main": "index",
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
-    "build:apidocs": "lb-apidocs",
     "build": "lb-tsc es2017 --outDir dist",
-    "clean": "lb-clean loopback-repository*.tgz dist package api-docs",
+    "clean": "lb-clean loopback-repository*.tgz dist package",
     "pretest": "npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-repository*.tgz && tree package && npm run clean"
