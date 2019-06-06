@@ -119,7 +119,7 @@ describe('Validation at REST level', () => {
     );
     after(() => app.stop());
 
-    it('rejects requests with `null` with {nullable: false}', async () => {
+    it('rejects requests containing `null` with {nullable: false}', async () => {
       const DATA = {
         name: 'iPhone',
         description: null,

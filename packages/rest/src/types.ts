@@ -103,13 +103,36 @@ export interface RequestBodyValidationOptions extends ajv.Options {
 /**
  * Options for request body parsing
  * See https://github.com/expressjs/body-parser/#options
+ *
+ * Built-in parsers retrieve their own options from the request body parser
+ * options. The parser specific properties override common ones.
  */
 export interface RequestBodyParserOptions extends Options {
+  /**
+   * Options for json parser
+   */
   json?: OptionsJson;
+  /**
+   * Options for urlencoded parser
+   */
   urlencoded?: OptionsUrlencoded;
+  /**
+   * Options for text parser
+   */
   text?: OptionsText;
+  /**
+   * Options for raw parser
+   */
   raw?: Options;
+  /**
+   * Validation options for AJV, see https://github.com/epoberezkin/ajv#options
+   * This setting is global for all request body parsers and it cannot be
+   * overridden inside parser specific properties such as `json` or `text`.
+   */
   validation?: RequestBodyValidationOptions;
+  /**
+   * Common options for all parsers
+   */
   [name: string]: unknown;
 }
 
