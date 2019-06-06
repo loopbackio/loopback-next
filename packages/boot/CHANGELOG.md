@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@1.3.0...@loopback/boot@1.4.0) (2019-06-06)
+
+
+### Features
+
+* **boot:** add a booter for interceptors ([467d6ea](https://github.com/strongloop/loopback-next/commit/467d6ea))
+
+
+
+
+
 # [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/boot@1.2.10...@loopback/boot@1.3.0) (2019-06-03)
 
 

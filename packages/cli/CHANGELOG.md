@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.15.1...@loopback/cli@1.16.0) (2019-06-06)
+
+
+### Features
+
+* **cli:** add lb4 interceptor command to generate interceptors ([58017b6](https://github.com/strongloop/loopback-next/commit/58017b6))
+
+
+
+
+
 ## [1.15.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.15.0...@loopback/cli@1.15.1) (2019-06-03)
 
 

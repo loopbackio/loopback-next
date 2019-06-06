@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.3.0...@loopback/benchmark@1.3.1) (2019-06-06)
+
+
+### Bug Fixes
+
+* **benchmark:** fix the tests to pass ([d2cbd1d](https://github.com/strongloop/loopback-next/commit/d2cbd1d))
+
+
+
+
+
 # [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/benchmark@1.2.8...@loopback/benchmark@1.3.0) (2019-06-03)
 
 

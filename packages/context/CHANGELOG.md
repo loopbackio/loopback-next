@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.18.0...@loopback/context@1.19.0) (2019-06-06)
+
+
+### Features
+
+* **context:** add `[@global](https://github.com/global)Interceptor` decorator ([1010a37](https://github.com/strongloop/loopback-next/commit/1010a37))
+
+
+
+
+
 # [1.18.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.17.1...@loopback/context@1.18.0) (2019-06-03)
 
 
