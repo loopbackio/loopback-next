@@ -60,7 +60,7 @@ describe('Basic Authentication', () => {
       .get('/whoAmI')
       .set(
         'Authorization',
-        createBasicAuthorizationHeaderValue(joeUser, {prefix: 'NotB@sic '}),
+        createBasicAuthorizationHeaderValue(joeUser, { prefix: 'NotB@sic ' }),
       )
       .expect({
         error: {
@@ -94,7 +94,7 @@ describe('Basic Authentication', () => {
       .get('/whoAmI')
       .set(
         'Authorization',
-        createBasicAuthorizationHeaderValue(joeUser, {separator: '|'}),
+        createBasicAuthorizationHeaderValue(joeUser, { separator: '|' }),
       )
       .expect({
         error: {
@@ -128,14 +128,14 @@ describe('Basic Authentication', () => {
     class InfoController {
       @get('/status')
       status() {
-        return {running: true};
+        return { running: true };
       }
     }
 
     app.controller(InfoController);
     await whenIMakeRequestTo(server)
       .get('/status')
-      .expect(200, {running: true});
+      .expect(200, { running: true });
   });
 
   it('returns error for unknown authentication strategy', async () => {
@@ -143,7 +143,7 @@ describe('Basic Authentication', () => {
       @get('/status')
       @authenticate('doesnotexist')
       status() {
-        return {running: true};
+        return { running: true };
       }
     }
 
@@ -172,7 +172,7 @@ describe('Basic Authentication', () => {
       @get('/status')
       @authenticate('badbasic')
       status() {
-        return {running: true};
+        return { running: true };
       }
     }
 
@@ -210,7 +210,7 @@ describe('Basic Authentication', () => {
 
     @api(apispec)
     class MyController {
-      constructor() {}
+      constructor() { }
 
       @authenticate('basic')
       async whoAmI(
