@@ -8,7 +8,7 @@ permalink: /doc/en/lb4/soap-calculator-tutorial-add-datasource.html
 
 ### Add a Datasource
 
-![soap-calculator-add-data-source](./imgs/loopback-example-soap-calculator_figure2.png)
+![soap-calculator-add-data-source](../../imgs/loopback-example-soap-calculator_figure2.png)
 
 We will add a Datasource to the **LB4** application using the **CLI**. This step
 will not only create two files under the src/datasources, but also will install
