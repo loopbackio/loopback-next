@@ -17,6 +17,7 @@ Where <target> is one of es2015, es2017 or es2018.
 
 'use strict';
 
+const debug = require('debug')('loopback:build');
 const utils = require('./utils');
 const path = require('path');
 const fs = require('fs');
@@ -195,6 +196,12 @@ function copyResources(rootDir, packageDir, tsConfigFile, outDir, options) {
     if (compilerRootDir && file.startsWith(compilerRootDir + '/')) {
       targetFile = file.substring(compilerRootDir.length + 1);
     }
-    fse.copySync(path.join(packageDir, file), path.join(outDir, targetFile));
+
+    const copyFrom = path.join(packageDir, file);
+    const copyTo = path.join(outDir, targetFile);
+    debug('  copy %j to %j', copyFrom, copyTo);
+    if (!options.dryRun) {
+      fse.copySync(copyFrom, copyTo);
+    }
   }
 }

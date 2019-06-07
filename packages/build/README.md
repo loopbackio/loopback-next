@@ -76,9 +76,10 @@ Now you run the scripts, such as:
       "$schema": "http://json.schemastore.org/tsconfig",
       "extends": "@loopback/build/config/tsconfig.common.json",
       "compilerOptions": {
-        "rootDir": "."
+        "outDir": "dist",
+        "rootDir": "src"
       },
-      "include": ["src", "test"]
+      "include": ["src"]
     }
     ```
 
