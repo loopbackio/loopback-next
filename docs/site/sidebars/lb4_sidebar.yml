@@ -336,7 +336,7 @@ children:
     url: Life-cycle-observer-generator.html
     output: 'web, pdf'
 
-  - title: 'Global interceptor generator'
+  - title: 'Interceptor generator'
     url: Interceptor-generator.html
     output: 'web, pdf'
 
