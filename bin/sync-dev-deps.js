@@ -68,10 +68,6 @@ function updatePackageJson(pkgFile, masterDeps) {
   const isRoot = data.name === 'loopback-next';
 
   let modified = false;
-  if (isExample && data.devDependencies && data.devDependencies.tslint) {
-    delete data.devDependencies.tslint;
-    modified = true;
-  }
   for (const dep in masterDeps) {
     if (
       data.devDependencies &&

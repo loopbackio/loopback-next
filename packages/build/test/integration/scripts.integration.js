@@ -237,57 +237,6 @@ describe('build', function() {
     );
   });
 
-  it('runs tslint against ts files', done => {
-    const run = require('../../bin/run-tslint');
-    const childProcess = run(['node', 'bin/run-tslint']);
-    childProcess.on('close', code => {
-      assert.equal(code, 0);
-      done();
-    });
-  });
-
-  it('honors -c option for tslint', () => {
-    const run = require('../../bin/run-tslint');
-    const command = run(
-      ['node', 'bin/un-tslint', '-c', 'tslint.my.json'],
-      true,
-    );
-    assert(command.indexOf('-c tslint.my.json') !== -1, '-c should be honored');
-  });
-
-  it('honors --config option for tslint', () => {
-    const run = require('../../bin/run-tslint');
-    const command = run(
-      ['node', 'bin/un-tslint', '--config', 'tslint.my.json'],
-      true,
-    );
-    assert(
-      command.indexOf('--config tslint.my.json') !== -1,
-      '--config should be honored',
-    );
-  });
-
-  it('honors -p option for tslint', () => {
-    const run = require('../../bin/run-tslint');
-    const command = run(
-      ['node', 'bin/un-tslint', '-p', 'tsonfig.my.json'],
-      true,
-    );
-    assert(command.indexOf('-p tsonfig') !== -1, '-p should be honored');
-  });
-
-  it('honors --project option for tslint', () => {
-    const run = require('../../bin/run-tslint');
-    const command = run(
-      ['node', 'bin/run-tslint', '--project', 'tsonfig.my.json'],
-      true,
-    );
-    assert(
-      command.indexOf('--project tsonfig') !== -1,
-      '--project should be honored',
-    );
-  });
-
   it('runs prettier against ts files', done => {
     const run = require('../../bin/run-prettier');
     const childProcess = run(
