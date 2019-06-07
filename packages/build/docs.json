@@ -2,7 +2,6 @@
   "content": [
     "index.js",
     "bin/compile-package.js",
-    "bin/generate-apidocs.js",
     "bin/run-clean.js",
     "bin/run-nyc.js",
     "bin/run-mocha.js",
