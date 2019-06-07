@@ -8,6 +8,7 @@ import * as fs from 'fs-extra';
 import pEvent from 'p-event';
 import * as path from 'path';
 import {runExtractorForMonorepo, updateApiDocs} from '../..';
+import {fixConstructorName} from '../../update-api-md-docs';
 
 const runCLI = require('@loopback/build').runCLI;
 
@@ -79,7 +80,10 @@ describe('tsdocs', function() {
     });
 
     const files = await fs.readdir(SITE_APIDOCS_ROOT);
-    expect(files.sort()).to.eql(['index.md', ...API_MD_FILES]);
+    expect(files.sort()).to.eql([
+      'index.md',
+      ...API_MD_FILES.map(fixConstructorName),
+    ]);
 
     for (const f of files) {
       const md = await fs.readFile(path.join(SITE_APIDOCS_ROOT, f), 'utf-8');
@@ -104,5 +108,11 @@ permalink: /doc/en/lb4/apidocs.index.html
 - [pkg2](pkg2.md)
 
 `);
+
+    const constructorDoc = await fs.readFile(
+      path.join(SITE_APIDOCS_ROOT, 'pkg1.pet._constructor_.md'),
+      'utf-8',
+    );
+    expect(constructorDoc).to.not.match(/\.\(constructor\)/);
   });
 });
