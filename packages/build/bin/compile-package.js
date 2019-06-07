@@ -133,13 +133,13 @@ function run(argv, options) {
 
   if (outDir) {
     args.push('--outDir', path.relative(cwd, outDir));
+  }
 
+  if (isCopyResourcesSet) {
     // Since outDir is set, ts files are compiled into that directory.
     // If copy-resources flag is passed, copy resources (non-ts files)
     // to the same outDir as well.
-    if (isCopyResourcesSet) {
-      copyResources(rootDir, packageDir, tsConfigFile, outDir, options);
-    }
+    copyResources(rootDir, packageDir, tsConfigFile, outDir, options);
   }
 
   if (target) {
@@ -155,26 +155,46 @@ module.exports = run;
 if (require.main === module) run(process.argv);
 
 function copyResources(rootDir, packageDir, tsConfigFile, outDir, options) {
-  if (rootDir && tsConfigFile) {
-    const tsConfig = require(tsConfigFile);
-    const dirs = tsConfig.include
-      ? tsConfig.include.join('|')
-      : ['src', 'test'].join('|');
+  if (!rootDir) {
+    console.warn('Ignoring --copy-resources option - rootDir was not set.');
+    return;
+  }
+  if (!tsConfigFile) {
+    console.warn(
+      'Ignoring --copy-resources option - no tsconfig file was found.',
+    );
+    return;
+  }
 
-    const compilerRootDir =
-      (tsConfig.compilerOptions && tsConfig.compilerOptions.rootDir) || '';
+  const tsConfig = require(tsConfigFile);
 
-    const pattern = `@(${dirs})/**/!(*.ts)`;
-    const files = glob.sync(pattern, {root: packageDir, nodir: true});
-    for (const file of files) {
-      /**
-       * Trim path that matches tsConfig.compilerOptions.rootDir
-       */
-      let targetFile = file;
-      if (compilerRootDir && file.startsWith(compilerRootDir + '/')) {
-        targetFile = file.substring(compilerRootDir.length + 1);
-      }
-      fse.copySync(path.join(packageDir, file), path.join(outDir, targetFile));
+  if (!outDir) {
+    outDir = tsConfig.compilerOptions && tsConfig.compilerOptions.outDir;
+    if (!outDir) {
+      console.warn(
+        'Ignoring --copy-resources option - outDir was not configured.',
+      );
+      return;
     }
+  }
+
+  const dirs = tsConfig.include
+    ? tsConfig.include.join('|')
+    : ['src', 'test'].join('|');
+
+  const compilerRootDir =
+    (tsConfig.compilerOptions && tsConfig.compilerOptions.rootDir) || '';
+
+  const pattern = `@(${dirs})/**/!(*.ts)`;
+  const files = glob.sync(pattern, {root: packageDir, nodir: true});
+  for (const file of files) {
+    /**
+     * Trim path that matches tsConfig.compilerOptions.rootDir
+     */
+    let targetFile = file;
+    if (compilerRootDir && file.startsWith(compilerRootDir + '/')) {
+      targetFile = file.substring(compilerRootDir.length + 1);
+    }
+    fse.copySync(path.join(packageDir, file), path.join(outDir, targetFile));
   }
 }
