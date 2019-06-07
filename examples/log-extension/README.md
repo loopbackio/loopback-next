@@ -76,7 +76,7 @@ Initialize your new extension project as follows: `lb4 extension`
 - Project description: `An example extension project for LoopBack 4`
 - Project root directory: `(loopback4-example-log-extension)`
 - Component class name: `LogComponent`
-- Select features to enable in the project': `tslint`, `prettier`, `mocha`,
+- Select features to enable in the project': `eslint`, `prettier`, `mocha`,
   `loopbackBuild`
 
 Now you can write the extension as follows:
