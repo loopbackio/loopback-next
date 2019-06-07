@@ -23,6 +23,7 @@ import {
   Reject,
   Request,
   RequestBodyParserOptions,
+  RequestBodyValidationOptions,
   Response,
   RestAction,
   Send,
@@ -108,6 +109,13 @@ export namespace RestBindings {
   export const REQUEST_BODY_PARSER_OPTIONS = BindingKey.create<
     RequestBodyParserOptions
   >('rest.requestBodyParserOptions');
+
+  /**
+   * Binding key for request body validation options
+   */
+  export const REQUEST_BODY_VALIDATION_OPTIONS = BindingKey.create<
+    RequestBodyValidationOptions
+  >('rest.requestBodyParserOptions#validation');
 
   /**
    * Binding key for request body parser

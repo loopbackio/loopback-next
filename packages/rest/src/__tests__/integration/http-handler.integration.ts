@@ -623,7 +623,7 @@ describe('HttpHandler', () => {
   let rootContext: Context;
   let handler: HttpHandler;
 
-  async function bindAction<T>(
+  function bindAction<T>(
     ctx: Context,
     key: BindingAddress<T>,
     actionClass: Constructor<unknown>,

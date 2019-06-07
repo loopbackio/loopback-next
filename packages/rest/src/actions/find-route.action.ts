@@ -6,34 +6,30 @@
 import {Context, inject, Next} from '@loopback/context';
 import {HttpHandler} from '../http-handler';
 import {RestBindings} from '../keys';
-import {
-  FindRoute,
-  HttpContext,
-  Request,
-  RestAction,
-  restAction,
-} from '../types';
+import {FindRoute, HttpContext, Request, restAction} from '../types';
+import {BaseRestAction} from './base-action';
 
 /**
  * Find a route matching the incoming REST API request.
  * Throw an error when no route was found.
  */
 @restAction('route')
-export class FindRouteAction implements RestAction {
+export class FindRouteAction extends BaseRestAction {
   constructor(
-    @inject.context()
-    private context: Context,
+    @inject(RestBindings.Http.CONTEXT) protected context: Context,
     @inject(RestBindings.HANDLER) protected httpHandler: HttpHandler,
-  ) {}
-
-  action(ctx: HttpContext, next: Next) {
-    const found = this.findRoute(ctx.request);
-    // Bind resolved route
-    ctx.bind(RestBindings.RESOLVED_ROUTE).to(found);
-    return next();
+  ) {
+    super();
   }
 
-  findRoute(request: Request) {
+  async intercept(ctx: HttpContext, next: Next) {
+    const found = await this.delegate(ctx, 'findRoute');
+    // Bind resolved route
+    ctx.bind(RestBindings.RESOLVED_ROUTE).to(found);
+    return await next();
+  }
+
+  findRoute(@inject(RestBindings.Http.REQUEST) request: Request) {
     const found = this.httpHandler.findRoute(request);
     found.updateBindings(this.context);
     return found;

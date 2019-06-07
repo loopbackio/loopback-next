@@ -3,13 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BoundValue, Context, inject, Provider} from '@loopback/context';
-import {
-  Application,
-  Component,
-  CoreBindings,
-  ProviderMap,
-} from '@loopback/core';
+import {Context, inject, Provider} from '@loopback/context';
+import {Application, CoreBindings, ProviderMap} from '@loopback/core';
 import {expect, stubExpressContext} from '@loopback/testlab';
 import {
   HttpHandler,
@@ -24,20 +19,17 @@ import {aRestServerConfig} from '../helpers';
 
 const SequenceActions = RestBindings.SequenceActions;
 describe('RestComponent', () => {
-  describe('Providers', () => {
+  describe('Actions', () => {
     describe('Default implementation', () => {
       let app: Application;
-      let comp: Component;
 
       const EXPECTED_KEYS = [
-        RestBindings.SequenceActions.LOG_ERROR.key,
-        RestBindings.SequenceActions.FIND_ROUTE.key,
-        RestBindings.SequenceActions.INVOKE_METHOD.key,
-        RestBindings.SequenceActions.REJECT.key,
-        RestBindings.BIND_ELEMENT.key,
-        RestBindings.GET_FROM_CONTEXT.key,
-        RestBindings.SequenceActions.PARSE_PARAMS.key,
-        RestBindings.SequenceActions.SEND.key,
+        RestBindings.SequenceActions.LOG_ERROR,
+        RestBindings.SequenceActions.FIND_ROUTE,
+        RestBindings.SequenceActions.INVOKE_METHOD,
+        RestBindings.SequenceActions.REJECT,
+        RestBindings.SequenceActions.PARSE_PARAMS,
+        RestBindings.SequenceActions.SEND,
       ];
 
       before(async () => {
@@ -49,15 +41,12 @@ describe('RestComponent', () => {
         app
           .bind(RestBindings.HANDLER)
           .to(new HttpHandler(app, aRestServerConfig()));
-
-        comp = await app.get<Component>('components.RestComponent');
       });
 
       for (const key of EXPECTED_KEYS) {
         it(`binds ${key}`, async () => {
           const result = await app.get(key);
-          const expected: Provider<BoundValue> = new comp.providers![key]();
-          expect(result).to.deepEqual(expected.value());
+          expect(result).to.be.Function();
         });
       }
     });

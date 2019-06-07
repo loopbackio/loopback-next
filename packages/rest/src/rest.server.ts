@@ -62,8 +62,6 @@ export interface HttpServerLike {
   requestHandler: HttpRequestListener;
 }
 
-const SequenceActions = RestBindings.SequenceActions;
-
 // NOTE(bajtos) we cannot use `import * as cloneDeep from 'lodash/cloneDeep'
 // because it produces the following TypeScript error:
 //  Module '"(...)/node_modules/@types/lodash/cloneDeep/index"' resolves to

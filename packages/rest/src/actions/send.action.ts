@@ -3,17 +3,17 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Getter, inject, Next} from '@loopback/context';
+import {inject, Next} from '@loopback/context';
 import {RestBindings} from '../keys';
 import {
   HttpContext,
   OperationRetval,
   Response,
-  RestAction,
   restAction,
   Send,
 } from '../types';
 import {writeResultToResponse} from '../writer';
+import {BaseRestAction} from './base-action';
 
 /**
  * Provides the function that populates the response object with
@@ -23,19 +23,21 @@ import {writeResultToResponse} from '../writer';
  * response with operation results.
  */
 @restAction('send')
-export class SendAction implements RestAction {
-  constructor(
-    @inject.getter(RestBindings.OPERATION_RESULT, {optional: true})
-    private getReturnValue: Getter<OperationRetval>,
-  ) {}
-
-  async action(ctx: HttpContext, next: Next) {
-    const result = await next();
-    const returnVal = await this.getReturnValue();
-    this.send(ctx.response, returnVal || result);
+export class SendAction extends BaseRestAction {
+  constructor() {
+    super();
   }
 
-  send(response: Response, result: OperationRetval) {
+  async intercept(ctx: HttpContext, next: Next) {
+    await next();
+    return this.delegate(ctx, 'send');
+  }
+
+  send(
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+    @inject(RestBindings.OPERATION_RESULT, {optional: true})
+    result: OperationRetval,
+  ) {
     writeResultToResponse(response, result);
   }
 

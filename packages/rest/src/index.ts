@@ -19,6 +19,7 @@ export * from './rest.server';
 export * from './router';
 export * from './sequence';
 export * from './types';
+export * from './validation/request-body.validator';
 export * from './writer';
 
 // export all errors from external http-errors package

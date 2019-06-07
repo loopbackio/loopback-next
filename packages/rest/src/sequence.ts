@@ -6,14 +6,14 @@
 import {
   compareBindingsByTag,
   filterByTag,
-  Handler,
+  GenericInterceptor,
+  GenericInterceptorChain,
   inject,
-  HandlerChain,
 } from '@loopback/context';
 import {Response} from 'express';
 import {RestBindings, RestTags} from './keys';
 import {RequestContext} from './request-context';
-import {OperationRetval, RestAction} from './types';
+import {OperationRetval, RestAction, RestInterceptor} from './types';
 import {writeResultToResponse} from './writer';
 
 /**
@@ -103,11 +103,11 @@ export class DefaultSequence implements SequenceHandler {
   async handle(context: RequestContext): Promise<void> {
     const restActions: RestAction[] = await this.getActions(context);
 
-    const actionHandlers: Handler<RequestContext>[] = restActions.map(
-      action => (ctx, next) => action.action(ctx, next),
-    );
-    const actionChain = new HandlerChain(context, actionHandlers);
-    await actionChain.invokeHandlers();
+    const actionHandlers: GenericInterceptor<
+      RequestContext
+    >[] = restActions.map(action => (ctx, next) => action.intercept(ctx, next));
+    const actionChain = new GenericInterceptorChain(context, actionHandlers);
+    await actionChain.invokeInterceptors();
   }
 
   protected async getActions(context: RequestContext) {
@@ -122,7 +122,15 @@ export class DefaultSequence implements SequenceHandler {
       );
     const restActions: RestAction[] = [];
     for (const actionBinding of restActionBindings) {
-      restActions.push(await context.get(actionBinding.key));
+      let action = await context.get<RestAction | RestInterceptor>(
+        actionBinding.key,
+      );
+      if (typeof action === 'function') {
+        action = {
+          intercept: action,
+        };
+      }
+      restActions.push(action);
     }
     return restActions;
   }

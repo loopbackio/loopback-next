@@ -115,8 +115,6 @@ export interface RequestBodyValidationOptions extends ajv.Options {
   compiledSchemaCache?: SchemaValidatorCache;
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 /**
  * Options for request body parsing
  * See https://github.com/expressjs/body-parser/#options
@@ -153,7 +151,7 @@ export interface RequestBodyParserOptions extends Options {
   [name: string]: unknown;
 }
 
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type PathParameterValues = {[key: string]: any};
 export type OperationArgs = InvocationArgs;
 
@@ -170,10 +168,15 @@ export type OperationRetval = InvocationResult;
 export type HttpContext = HandlerContext & Context;
 
 /**
+ * Interceptor for REST operations
+ */
+export type RestInterceptor = GenericInterceptor<HandlerContext & Context>;
+
+/**
  * Action for REST request/response processing sequence
  */
 export interface RestAction {
-  action: GenericInterceptor<HandlerContext & Context>;
+  intercept: RestInterceptor;
 }
 
 /**
