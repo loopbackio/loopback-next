@@ -18,9 +18,7 @@ Usage:
 function run(argv, options) {
   const utils = require('./utils');
 
-  // Substitute the dist variable with the dist folder
-  const dist = utils.getDistribution();
-  const mochaOpts = argv.slice(2).map(a => a.replace(/\bDIST\b/g, dist));
+  const mochaOpts = argv.slice(2);
 
   const setMochaOpts =
     !utils.isOptionSet(

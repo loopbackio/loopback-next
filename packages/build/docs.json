@@ -7,7 +7,6 @@
     "bin/run-mocha.js",
     "bin/run-prettier.js",
     "bin/run-eslint.js",
-    "bin/select-dist.js",
     "bin/utils.js"
   ],
   "codeSectionDepth": 4

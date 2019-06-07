@@ -11,9 +11,6 @@ LoopBack 4 or other TypeScript modules, including:
 - lb-prettier: Run [`prettier`](https://github.com/prettier/prettier)
 - lb-mocha: Run [`mocha`](https://mochajs.org/) to execute test cases
 - lb-nyc: Run [`nyc`](https://github.com/istanbuljs/nyc)
-- lb-dist: Detect the correct distribution target: `dist` => ES2017, `dist6` =>
-  ES2015. The command is deprecated as `lb-mocha` detects the distribution
-  target now.
 
 These scripts first try to locate the CLI from target project dependencies and
 fall back to bundled ones in `@loopback/build`.

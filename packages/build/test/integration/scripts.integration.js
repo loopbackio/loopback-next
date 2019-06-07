@@ -38,12 +38,12 @@ describe('build', function() {
 
   it('compiles ts files', done => {
     const run = require('../../bin/compile-package');
-    const childProcess = run(['node', 'bin/compile-package', 'es2015']);
+    const childProcess = run(['node', 'bin/compile-package']);
     childProcess.on('close', code => {
       assert.equal(code, 0);
       assert(
-        fs.existsSync(path.join(projectDir, 'dist6')),
-        'dist6 should have been created',
+        fs.existsSync(path.join(projectDir, 'dist')),
+        'dist should have been created',
       );
       assert(
         fs.existsSync(path.join(projectDir, 'tsconfig.json')),
@@ -120,32 +120,7 @@ describe('build', function() {
     );
     assert(
       command.indexOf('--target es2015') !== -1,
-      '--target should be honored',
-    );
-  });
-
-  it('honors no-option as target for tsc', () => {
-    const run = require('../../bin/compile-package');
-    const command = run(['node', 'bin/compile-package', 'es2015'], true);
-    assert(
-      command.indexOf('--target es2015') !== -1,
-      '--target should be honored',
-    );
-  });
-
-  it('honors no-option as target with -p for tsc', () => {
-    const run = require('../../bin/compile-package');
-    const command = run(
-      ['node', 'bin/compile-package', 'es2015', '-p', 'tsconfig.my.json'],
-      true,
-    );
-    assert(
-      command.indexOf('--target es2015') !== -1,
-      '--target should be honored',
-    );
-    assert(
-      command.indexOf('-p tsconfig.my.json') !== -1,
-      '-p should be honored',
+      '--target should be honored (actual command: ' + command + ')',
     );
   });
 

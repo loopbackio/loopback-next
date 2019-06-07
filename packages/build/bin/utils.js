@@ -12,46 +12,6 @@ const spawn = require('cross-spawn');
 const debug = require('debug')('loopback:build');
 
 /**
- * Get the Node.js compilation target - es2015, es2017 or es2018
- */
-function getCompilationTarget() {
-  const nodeMajorVersion = +process.versions.node.split('.')[0];
-  return nodeMajorVersion >= 10
-    ? 'es2018'
-    : nodeMajorVersion >= 7
-    ? 'es2017'
-    : 'es2015';
-}
-
-/**
- * Get the distribution name
- * @param {*} target
- */
-function getDistribution(target) {
-  if (!target) {
-    target = getCompilationTarget();
-  }
-  let dist;
-  switch (target) {
-    case 'es2018':
-      dist = 'dist10';
-      break;
-    case 'es2017':
-      dist = 'dist8';
-      break;
-    case 'es2015':
-      dist = 'dist6';
-      break;
-    default:
-      console.error(
-        'Unknown build target %s. Supported values: es2015, es2017, es2018',
-      );
-      process.exit(1);
-  }
-  return dist;
-}
-
-/**
  * Get the root directory of this module
  */
 function getRootDir() {
@@ -228,8 +188,6 @@ function mochaConfiguredForProject() {
   });
 }
 
-exports.getCompilationTarget = getCompilationTarget;
-exports.getDistribution = getDistribution;
 exports.getRootDir = getRootDir;
 exports.getPackageDir = getPackageDir;
 exports.getConfigFile = getConfigFile;
