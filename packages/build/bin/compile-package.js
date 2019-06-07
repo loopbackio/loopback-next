@@ -43,47 +43,24 @@ function run(argv, options) {
     '--copy-resources',
   );
 
-  let target;
-
   // --copy-resources is not a TS Compiler option so we remove it from the
   // list of compiler options to avoid compiler errors.
   if (isCopyResourcesSet) {
     compilerOpts.splice(compilerOpts.indexOf('--copy-resources'), 1);
   }
 
-  if (!isTargetSet) {
-    // Find the last non-option argument as the `target`
-    // For example `-p tsconfig.json es2017` or `es2017 -p tsconfig.json`
-    for (let i = compilerOpts.length - 1; i >= 0; i--) {
-      target = compilerOpts[i];
-      // It's an option
-      if (target.indexOf('-') === 0) {
-        target = undefined;
-        continue;
-      }
-      // It's the value of an option
-      if (i >= 1 && compilerOpts[i - 1].indexOf('-') === 0) {
-        target = undefined;
-        continue;
-      }
-      // Remove the non-option
-      compilerOpts.splice(i, 1);
-      break;
-    }
-
-    if (!target) {
-      target = utils.getCompilationTarget();
-    }
+  let target;
+  if (isTargetSet) {
+    const targetIx = compilerOpts.indexOf('--target');
+    target = compilerOpts[targetIx + 1];
+    compilerOpts.splice(targetIx, 2);
   }
 
   let outDir;
-
   if (isOutDirSet) {
     const outDirIx = compilerOpts.indexOf('--outDir');
     outDir = path.resolve(process.cwd(), compilerOpts[outDirIx + 1]);
     compilerOpts.splice(outDirIx, 2);
-  } else {
-    outDir = path.join(packageDir, utils.getDistribution(target));
   }
 
   let tsConfigFile;
@@ -109,13 +86,11 @@ function run(argv, options) {
         JSON.stringify(
           {
             extends: baseConfigFile,
-            include: ['src', 'test'],
-            exclude: [
-              'node_modules/**',
-              'packages/*/node_modules/**',
-              'examples/*/node_modules/**',
-              '**/*.d.ts',
-            ],
+            compilerOptions: {
+              outDir: 'dist',
+              rootDir: 'src',
+            },
+            include: ['src'],
           },
           null,
           '  ',
@@ -134,6 +109,10 @@ function run(argv, options) {
 
   if (outDir) {
     args.push('--outDir', path.relative(cwd, outDir));
+  }
+
+  if (target) {
+    args.push('--target', target);
   }
 
   if (isCopyResourcesSet) {

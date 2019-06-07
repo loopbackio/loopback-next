@@ -26,11 +26,11 @@ Example usage:
 function run(argv, options) {
   const rimraf = require('rimraf');
   const path = require('path');
-  const utils = require('./utils');
-  let globPatterns = argv.slice(2);
+  const globPatterns = argv.slice(2);
   const removed = [];
   if (!globPatterns.length) {
-    globPatterns = [utils.getDistribution()];
+    console.error('Please specify file patterns to remove.');
+    process.exit(1);
   }
   // Keep it backward compatible as dryRun
   if (typeof options === 'boolean') options = {dryRun: options};
