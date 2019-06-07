@@ -17,12 +17,18 @@ Where <target> is one of es2015, es2017 or es2018.
 
 'use strict';
 
+const utils = require('./utils');
+const path = require('path');
+const fs = require('fs');
+const glob = require('glob');
+const fse = require('fs-extra');
+
 function run(argv, options) {
-  const utils = require('./utils');
-  const path = require('path');
-  const fs = require('fs');
-  const glob = require('glob');
-  const fse = require('fs-extra');
+  if (options === true) {
+    options = {dryRun: true};
+  } else {
+    options = options || {};
+  }
 
   const packageDir = utils.getPackageDir();
 
@@ -131,30 +137,8 @@ function run(argv, options) {
     // Since outDir is set, ts files are compiled into that directory.
     // If copy-resources flag is passed, copy resources (non-ts files)
     // to the same outDir as well.
-    if (rootDir && tsConfigFile && isCopyResourcesSet) {
-      const tsConfig = require(tsConfigFile);
-      const dirs = tsConfig.include
-        ? tsConfig.include.join('|')
-        : ['src', 'test'].join('|');
-
-      const compilerRootDir =
-        (tsConfig.compilerOptions && tsConfig.compilerOptions.rootDir) || '';
-
-      const pattern = `@(${dirs})/**/!(*.ts)`;
-      const files = glob.sync(pattern, {root: packageDir, nodir: true});
-      for (const file of files) {
-        /**
-         * Trim path that matches tsConfig.compilerOptions.rootDir
-         */
-        let targetFile = file;
-        if (compilerRootDir && file.startsWith(compilerRootDir + '/')) {
-          targetFile = file.substring(compilerRootDir.length + 1);
-        }
-        fse.copySync(
-          path.join(packageDir, file),
-          path.join(outDir, targetFile),
-        );
-      }
+    if (isCopyResourcesSet) {
+      copyResources(rootDir, packageDir, tsConfigFile, outDir, options);
     }
   }
 
@@ -164,13 +148,33 @@ function run(argv, options) {
 
   args.push(...compilerOpts);
 
-  if (options === true) {
-    options = {dryRun: true};
-  } else {
-    options = options || {};
-  }
   return utils.runCLI('typescript/lib/tsc', args, {cwd, ...options});
 }
 
 module.exports = run;
 if (require.main === module) run(process.argv);
+
+function copyResources(rootDir, packageDir, tsConfigFile, outDir, options) {
+  if (rootDir && tsConfigFile) {
+    const tsConfig = require(tsConfigFile);
+    const dirs = tsConfig.include
+      ? tsConfig.include.join('|')
+      : ['src', 'test'].join('|');
+
+    const compilerRootDir =
+      (tsConfig.compilerOptions && tsConfig.compilerOptions.rootDir) || '';
+
+    const pattern = `@(${dirs})/**/!(*.ts)`;
+    const files = glob.sync(pattern, {root: packageDir, nodir: true});
+    for (const file of files) {
+      /**
+       * Trim path that matches tsConfig.compilerOptions.rootDir
+       */
+      let targetFile = file;
+      if (compilerRootDir && file.startsWith(compilerRootDir + '/')) {
+        targetFile = file.substring(compilerRootDir.length + 1);
+      }
+      fse.copySync(path.join(packageDir, file), path.join(outDir, targetFile));
+    }
+  }
+}
