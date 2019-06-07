@@ -23,7 +23,6 @@ describe('build', function() {
       'tsconfig.json',
       'tsconfig.build.json',
       'dist*',
-      'api-docs',
     ]);
   }
 
@@ -162,81 +161,6 @@ describe('build', function() {
     );
   });
 
-  it('generates apidocs', done => {
-    const run = require('../../bin/generate-apidocs');
-    const childProcess = run(['node', 'bin/generate-apidocs'], {
-      stdio: [process.stdin, 'ignore', process.stderr],
-    });
-    childProcess.on('close', code => {
-      assert.equal(code, 0);
-      assert(
-        fs.existsSync(path.join(projectDir, 'api-docs')),
-        'api-docs should have been created',
-      );
-      let typedocDir = require.resolve('typedoc/package.json');
-      typedocDir = path.resolve(typedocDir, '..');
-      assert(
-        !fs.existsSync(path.join(typedocDir, './node_modules/typescript')),
-        'typedoc local dependency of typescript should have been renamed',
-      );
-      assert(
-        !fs.existsSync(
-          path.join(typedocDir, './node_modules/.bin/tsc'),
-          'typedoc local scripts from typescript should have been removed',
-        ),
-      );
-      done();
-    });
-  });
-
-  it('honors --tsconfig for apidocs', () => {
-    const run = require('../../bin/generate-apidocs');
-    const command = run(
-      ['node', 'bin/generate-apidocs', '--tsconfig', 'tsconfig.my.json'],
-      true,
-    );
-    assert(
-      command.indexOf('--tsconfig tsconfig.my.json') !== -1,
-      '--tsconfig should be honored',
-    );
-  });
-
-  it('honors --tstarget for apidocs', () => {
-    const run = require('../../bin/generate-apidocs');
-    const command = run(
-      ['node', 'bin/generate-apidocs', '--tstarget', 'es2017'],
-      true,
-    );
-    assert(
-      command.indexOf('--tstarget es2017') !== -1,
-      '--tstarget should be honored',
-    );
-  });
-
-  it('honors --skip-public-assets for apidocs', () => {
-    const run = require('../../bin/generate-apidocs');
-    const command = run(
-      ['node', 'bin/generate-apidocs', '--skip-public-assets'],
-      true,
-    );
-    assert(
-      command.indexOf('--skip-public-assets') !== -1,
-      '--skip-public-assets should be honored',
-    );
-  });
-
-  it('honors --html-file for apidocs', () => {
-    const run = require('../../bin/generate-apidocs');
-    const command = run(
-      ['node', 'bin/generate-apidocs', '--html-file=my.html'],
-      true,
-    );
-    assert(
-      command.indexOf('--html-file=my.html') !== -1,
-      '--html-file should be honored',
-    );
-  });
-
   it('runs prettier against ts files', done => {
     const run = require('../../bin/run-prettier');
     const childProcess = run(
@@ -254,10 +178,10 @@ describe('build', function() {
   it('removes directories/files', () => {
     const run = require('../../bin/run-clean');
     const command = run(
-      ['node', 'bin/run-clean', 'tsconfig.json', 'dist', 'api-docs'],
+      ['node', 'bin/run-clean', 'tsconfig.json', 'dist'],
       true,
     );
-    assert(command.indexOf('tsconfig.json dist api-docs') !== -1);
+    assert(command.indexOf('tsconfig.json dist') !== -1);
   });
 
   it('does not remove directories/files outside the project', () => {
@@ -278,24 +202,6 @@ describe('build', function() {
   describe('with LERNA_ROOT_PATH', () => {
     const repoRoot = path.join(__dirname, '../../../..');
     before(() => (process.env.LERNA_ROOT_PATH = repoRoot));
-
-    it('sets --skip-public-assets for apidocs', () => {
-      const run = require('../../bin/generate-apidocs');
-      const command = run(['node', 'bin/generate-apidocs'], true);
-      assert(
-        command.indexOf('--skip-public-assets') !== -1,
-        '--skip-public-assets should be set by default',
-      );
-    });
-
-    it('sets --html-file for apidocs', () => {
-      const run = require('../../bin/generate-apidocs');
-      const command = run(['node', 'bin/generate-apidocs'], true);
-      assert(
-        command.indexOf('--html-file ts-test-proj.html') !== -1,
-        '--html-file should be set to the package name by default',
-      );
-    });
 
     it('sets --project option for tsc', () => {
       const run = require('../../bin/compile-package');

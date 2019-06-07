@@ -32,7 +32,6 @@
     "prettier": "^1.17.1",
     "rimraf": "^2.6.2",
     "source-map-support": "^0.5.12",
-    "strong-docs": "^4.2.0",
     "typescript": "~3.5.1"
   },
   "bin": {
@@ -42,7 +41,6 @@
     "lb-mocha": "./bin/run-mocha.js",
     "lb-nyc": "./bin/run-nyc.js",
     "lb-dist": "./bin/select-dist.js",
-    "lb-apidocs": "./bin/generate-apidocs.js",
     "lb-clean": "./bin/run-clean.js"
   },
   "scripts": {
