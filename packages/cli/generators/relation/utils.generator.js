@@ -67,23 +67,28 @@ exports.addExportController = async function(
   const project = new this.AstLoopBackProject();
   let pFile;
   const exportDeclaration = {
+    kind: ast.StructureKind.ExportDeclaration,
     moduleSpecifier: './' + controllerFileName,
   };
 
   if (generator.fs.exists(fileName)) {
     pFile = project.addExistingSourceFile(fileName);
-    for (const declaration of pFile.getExportedDeclarations()) {
-      if (
-        ast.TypeGuards.isClassDeclaration(declaration) &&
-        controllerClassName === declaration.getName()
-      ) {
-        return;
+    // Exported declarations is now a `Map<string, Declaration[]>`
+    const exportedDeclarations = pFile.getExportedDeclarations();
+    for (const declarations of exportedDeclarations.values()) {
+      for (const declaration of declarations) {
+        if (
+          ast.TypeGuards.isClassDeclaration(declaration) &&
+          controllerClassName === declaration.getName()
+        ) {
+          return;
+        }
       }
     }
     pFile.addExportDeclaration(exportDeclaration);
   } else {
     pFile = project.createSourceFile(fileName, {
-      exports: [exportDeclaration],
+      statements: [exportDeclaration],
     });
   }
 
