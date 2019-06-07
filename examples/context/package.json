@@ -9,8 +9,8 @@
   "author": "IBM Corp.",
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
-    "build": "lb-tsc es2017 --outDir dist",
-    "build:watch": "lb-tsc es2017 --outDir dist --watch",
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
     "clean": "lb-clean *example-context*.tgz dist package",
     "verify": "npm pack && tar xf *example-context*.tgz && tree package && npm run clean",
     "lint": "npm run prettier:check && npm run eslint",

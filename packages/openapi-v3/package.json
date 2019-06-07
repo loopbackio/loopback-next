@@ -16,7 +16,7 @@
     "@types/node": "^10.11.2"
   },
   "scripts": {
-    "build": "lb-tsc es2017 --outDir dist",
+    "build": "lb-tsc",
     "clean": "lb-clean loopback-openapi-v3*.tgz dist package",
     "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
     "pretest": "npm run build",

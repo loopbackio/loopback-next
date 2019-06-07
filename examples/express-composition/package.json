@@ -14,7 +14,7 @@
     "node": ">=8.9"
   },
   "scripts": {
-    "build": "lb-tsc es2017 --outDir dist",
+    "build": "lb-tsc",
     "build:watch": "lb-tsc --watch",
     "clean": "lb-clean dist",
     "lint": "npm run prettier:check && npm run eslint",

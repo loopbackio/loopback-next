@@ -8,7 +8,7 @@
   "main": "index",
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
-    "build": "lb-tsc es2017 --outDir dist",
+    "build": "lb-tsc",
     "clean": "lb-clean loopback-repository*.tgz dist package",
     "pretest": "npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",

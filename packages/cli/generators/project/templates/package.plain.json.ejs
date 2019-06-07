@@ -11,8 +11,8 @@
     "node": ">=8.9"
   },
   "scripts": {
-    "build": "tsc --outDir dist --target es2017",
-    "build:watch": "tsc --outDir dist --target es2017 --watch",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
     "clean": "rimraf dist",
 <% if (project.prettier && project.eslint) { -%>
     "lint": "npm run prettier:check && npm run eslint",
