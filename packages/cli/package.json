@@ -25,7 +25,7 @@
     "@loopback/build": "^1.7.1",
     "@loopback/eslint-config": "^1.1.1",
     "@loopback/testlab": "^1.5.0",
-    "@types/ejs": "^2.6.0",
+    "@types/ejs": "^2.6.3",
     "@types/node": "^10.11.2",
     "glob": "^7.1.4",
     "loopback-datasource-juggler": "^4.7.1",
