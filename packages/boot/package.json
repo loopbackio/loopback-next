@@ -10,7 +10,7 @@
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
-    "build": "lb-tsc es2017 --outDir dist",
+    "build": "lb-tsc",
     "clean": "lb-clean loopback-boot*.tgz dist package",
     "pretest": "npm run build",
     "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",

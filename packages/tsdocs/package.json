@@ -11,7 +11,7 @@
     "extract-apidocs": "node bin/extract-apis",
     "document-apidocs": "api-documenter markdown -i ../../docs/apidocs/models -o ../../docs/site/apidocs",
     "update-apidocs": "node bin/update-apidocs",
-    "build": "lb-tsc es2017 --outDir dist",
+    "build": "lb-tsc",
     "clean": "lb-clean loopback-tsdocs*.tgz dist package",
     "pretest": "npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",

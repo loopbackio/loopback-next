@@ -8,8 +8,8 @@
   },
   "author": "IBM Corp.",
   "scripts": {
-    "build": "lb-tsc es2017 --outDir dist",
-    "build:watch": "lb-tsc es2017 --outDir dist --watch",
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
     "clean": "lb-clean *example-todo*.tgz dist package",
     "lint": "npm run prettier:check && npm run eslint",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",

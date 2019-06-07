@@ -9,7 +9,7 @@
     "pkg1": "*"
   },
   "scripts": {
-    "build": "lb-tsc es2017 --outDir dist",
+    "build": "lb-tsc",
     "clean": "lb-clean dist"
   }
 }
