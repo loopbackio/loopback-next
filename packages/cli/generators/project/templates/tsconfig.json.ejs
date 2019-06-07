@@ -3,11 +3,13 @@
 <% if (project.loopbackBuild) { -%>
   "extends": "@loopback/build/config/tsconfig.common.json",
   "compilerOptions": {
+    "outDir": "dist",
     "rootDir": "src"
   },
   "include": ["src"]
 <% } else { -%>
   "compilerOptions": {
+    "outDir": "dist",
     "rootDir": "src",
 
     "emitDecoratorMetadata": true,
