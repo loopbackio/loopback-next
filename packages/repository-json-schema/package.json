@@ -26,7 +26,7 @@
     "@loopback/context": "^1.19.0",
     "@loopback/metadata": "^1.2.1",
     "@loopback/repository": "^1.6.1",
-    "@types/json-schema": "^7.0.1"
+    "@types/json-schema": "^7.0.3"
   },
   "devDependencies": {
     "@loopback/build": "^1.7.1",
