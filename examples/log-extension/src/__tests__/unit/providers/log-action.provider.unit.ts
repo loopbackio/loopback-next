@@ -3,23 +3,28 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {sinon} from '@loopback/testlab';
 import {Request} from '@loopback/rest';
+import {sinon} from '@loopback/testlab';
+import chalk from 'chalk';
 import {
+  HighResTime,
+  log,
   LogActionProvider,
   LogFn,
   LogWriterFn,
-  log,
   LOG_LEVEL,
-  HighResTime,
 } from '../../..';
-import chalk from 'chalk';
-
-import {createLogSpy, restoreLogSpy, createConsoleStub} from '../../log-spy';
 import {logToMemory} from '../../in-memory-logger';
+import {
+  AddSpy,
+  createConsoleStub,
+  createLogSpy,
+  LogStub,
+  restoreLogSpy,
+} from '../../log-spy';
 
 describe('LogActionProvider with in-memory logger', () => {
-  let spy: sinon.SinonSpy;
+  let spy: AddSpy;
   let logger: LogFn;
   const req = <Request>{url: '/test'};
 
@@ -58,7 +63,7 @@ describe('LogActionProvider with in-memory logger', () => {
 });
 
 describe('LogActionProvider with default logger', () => {
-  let stub: sinon.SinonSpy;
+  let stub: LogStub;
   let logger: LogFn;
   const req = <Request>{url: '/test'};
 
