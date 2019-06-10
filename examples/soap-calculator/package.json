@@ -17,7 +17,7 @@
   "scripts": {
     "build": "lb-tsc",
     "build:watch": "lb-tsc --watch",
-    "clean": "lb-clean *example-soap*.tgz dist package api-docs dist",
+    "clean": "lb-clean *example-soap*.tgz dist package api-docs dist tsconfig.build.tsbuildinfo",
     "lint": "npm run prettier:check && npm run eslint",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",
     "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",

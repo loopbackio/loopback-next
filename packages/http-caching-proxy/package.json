@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "lb-tsc",
-    "clean": "lb-clean loopback-caching-proxy*.tgz dist package",
+    "clean": "lb-clean loopback-caching-proxy*.tgz dist tsconfig.build.tsbuildinfo package",
     "pretest": "npm run build",
     "test": "lb-mocha \"dist/__tests__/**/*.js\"",
     "verify": "npm pack && tar xf loopback-caching-proxy*.tgz && tree package && npm run clean"
