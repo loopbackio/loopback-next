@@ -23,6 +23,7 @@ const path = require('path');
 const fs = require('fs');
 const glob = require('glob');
 const fse = require('fs-extra');
+const json5 = require('json5');
 
 function run(argv, options) {
   if (options === true) {
@@ -41,6 +42,12 @@ function run(argv, options) {
   const isCopyResourcesSet = utils.isOptionSet(
     compilerOpts,
     '--copy-resources',
+  );
+
+  // Check if `--tsBuildInfoFile` is present
+  const isTsBuildInfoFileSet = utils.isOptionSet(
+    compilerOpts,
+    '--tsBuildInfoFile',
   );
 
   // --copy-resources is not a TS Compiler option so we remove it from the
@@ -87,6 +94,8 @@ function run(argv, options) {
           {
             extends: baseConfigFile,
             compilerOptions: {
+              incremental: true,
+              tsBuildInfoFile: 'dist/.tsbuildinfo',
               outDir: 'dist',
               rootDir: 'src',
             },
@@ -102,13 +111,25 @@ function run(argv, options) {
   const args = [];
 
   const cwd = process.env.LERNA_ROOT_PATH || process.cwd();
+
+  let tsConfig = {
+    compilerOptions: {
+      outDir: 'dist',
+    },
+  };
   if (tsConfigFile) {
     // Make the config file relative the current directory
     args.push('-p', path.relative(cwd, tsConfigFile));
+    const tsConfigContent = fse.readFileSync(tsConfigFile, 'utf-8');
+    tsConfig = json5.parse(tsConfigContent);
   }
 
+  tsConfig.compilerOptions = tsConfig.compilerOptions || {};
+
+  let relativeOutDir = tsConfig.compilerOptions.outDir || 'dist';
   if (outDir) {
-    args.push('--outDir', path.relative(cwd, outDir));
+    relativeOutDir = path.relative(cwd, outDir);
+    args.push('--outDir', relativeOutDir);
   }
 
   if (target) {
@@ -124,6 +145,11 @@ function run(argv, options) {
 
   if (target) {
     args.push('--target', target);
+  }
+
+  // Set default tsBuildInfoFile to `<outDir>/.tsbuildinfo`
+  if (!isTsBuildInfoFileSet && !tsConfig.compilerOptions.tsBuildInfoFile) {
+    args.push('--tsBuildInfoFile', path.join(relativeOutDir, '.tsbuildinfo'));
   }
 
   args.push(...compilerOpts);

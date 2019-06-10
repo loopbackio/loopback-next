@@ -112,6 +112,23 @@ describe('build', function() {
     );
   });
 
+  it('honors --tsBuildInfoFile option for tsc', () => {
+    const run = require('../../bin/compile-package');
+    const command = run(
+      [
+        'node',
+        'bin/compile-package',
+        '--tsBuildInfoFile',
+        './dist/.tsbuildinfo',
+      ],
+      true,
+    );
+    assert(
+      command.indexOf('--tsBuildInfoFile ./dist/.tsbuildinfo') !== -1,
+      '--tsBuildInfoFile should be honored',
+    );
+  });
+
   it('honors --target option for tsc', () => {
     const run = require('../../bin/compile-package');
     const command = run(
@@ -133,6 +150,24 @@ describe('build', function() {
     assert(
       command.indexOf('--outDir dist') !== -1,
       '--outDir should be honored',
+    );
+  });
+
+  it('adds --tsBuildInfoFile option for tsc', () => {
+    fs.writeJSONSync('tsconfig.build.json', {
+      extends: '../../../config/tsconfig.common.json',
+      compilerOptions: {
+        outDir: 'lib',
+        rootDir: 'src',
+      },
+      include: ['src'],
+      exclude: ['node_modules/**', 'packages/*/node_modules/**', '**/*.d.ts'],
+    });
+    const run = require('../../bin/compile-package');
+    const command = run(['node', 'bin/compile-package'], true);
+    assert(
+      command.indexOf('--tsBuildInfoFile lib/.tsbuildinfo') !== -1,
+      '--tsBuildInfoFile should be honored',
     );
   });
 
