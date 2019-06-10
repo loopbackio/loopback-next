@@ -1,6 +1,7 @@
 {
   "lerna": "3.3.0",
   "packages": [
+    "acceptance/*",
     "benchmark",
     "docs",
     "examples/*",
