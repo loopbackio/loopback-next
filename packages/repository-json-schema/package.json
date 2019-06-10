@@ -32,8 +32,8 @@
     "@loopback/build": "^1.7.1",
     "@loopback/eslint-config": "^1.1.1",
     "@loopback/testlab": "^1.5.0",
-    "@types/node": "^10.11.2",
-    "ajv": "^6.10.0"
+    "ajv": "^6.10.0",
+    "@types/node": "^10.14.8"
   },
   "files": [
     "README.md",
