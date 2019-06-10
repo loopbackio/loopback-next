@@ -23,6 +23,8 @@ routes with the following inputs:
 ```sh
 $ lb4 controller
 ? Controller class name: TodoList
+Controller TodoList will be created in src/controllers/todo-list.controller.ts
+
 ? What kind of controller would you like to generate? REST Controller with CRUD functions
 ? What is the name of the model to use with this CRUD repository? TodoList
 ? What is the name of your CRUD repository? TodoListRepository
@@ -44,6 +46,8 @@ controller:
 ```sh
 $ lb4 controller
 ? Controller class name: TodoListTodo
+Controller TodoListTodo will be created in src/controllers/todo-list-todo.controller.ts
+
 ? What kind of controller would you like to generate? Empty Controller
    create src/controllers/todo-list-todo.controller.ts
    update src/controllers/index.ts

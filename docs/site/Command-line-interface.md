@@ -25,3 +25,15 @@ npm install -g @loopback/cli
 ## Generating LoopBack artifacts
 
 {% include_relative tables/lb4-artifact-commands.html %}
+
+## Naming Convention
+
+LoopBack 4 uses different convention for naming classes, variables, and files.
+
+- Class name: `PascalCase`.
+- File name: `kebabCase`.
+- Variable name: `camelCase`.
+
+Here are some examples:
+
+{% include_relative tables/lb4-class-file-naming-convention.html %}

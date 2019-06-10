@@ -52,7 +52,7 @@ $ lb4 datasource
  # npm will install dependencies now
     update src/datasources/index.ts
 
-Datasource geocoder was created in src/datasources/
+Datasource Geocoder was created in src/datasources/
 ```
 
 Edit the newly created datasource configuration to configure Geocoder API

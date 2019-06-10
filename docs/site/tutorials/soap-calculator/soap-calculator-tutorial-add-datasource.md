@@ -71,7 +71,7 @@ entry inside the index.ts file.
    create src/datasources/calculator.datasource.ts
    update src/datasources/index.ts
 
-Datasource calculator was created in src/datasources/
+Datasource Calculator was created in src/datasources/
 ```
 
 #### Binding WSDL operations to Node.js methods

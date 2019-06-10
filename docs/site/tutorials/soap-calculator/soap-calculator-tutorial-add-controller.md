@@ -24,6 +24,8 @@ lb4 controller calculator
 Next, select the **Empty Controller**.
 
 ```sh
+Controller Caculator will be created in src/controllers/caculator.controller.ts
+
 ? What kind of controller would you like to generate? (Use arrow keys)
 ❯ Empty Controller
   REST Controller with CRUD functions
