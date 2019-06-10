@@ -6,14 +6,18 @@
 import {sinon} from '@loopback/testlab';
 import {InMemoryLog} from './in-memory-logger';
 
+export type AddSpy = sinon.SinonSpy<[(string | undefined)?], void>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type LogStub = sinon.SinonStub<[any?, ...any[]], void>;
+
 export function createLogSpy() {
   return sinon.spy(InMemoryLog.prototype, 'add');
 }
 
-export function restoreLogSpy(spy: sinon.SinonSpy) {
+export function restoreLogSpy(spy: AddSpy | LogStub) {
   spy.restore();
 }
 
-export function createConsoleStub() {
+export function createConsoleStub(): LogStub {
   return sinon.stub(console, 'log');
 }
