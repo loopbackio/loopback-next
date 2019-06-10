@@ -34,7 +34,7 @@ lb4 repository
 ? Please select the repository base class DefaultCrudRepository (Legacy juggler
 bridge)
 
-Repository TodoList was created in src/repositories/
+Repository TodoListRepository was created in src/repositories/
 ```
 
 From there, we'll need to make two more additions:

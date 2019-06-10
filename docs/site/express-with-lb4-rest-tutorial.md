@@ -60,7 +60,7 @@ Run `lb4 app note` to scaffold your application and fill out the following
 prompts as follows:
 
 ```sh
-$ lb4 app
+$ lb4 app note
 ? Project description: An application for recording notes.
 ? Project root directory: (note)
 ? Application class name: (NoteApplication)

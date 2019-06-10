@@ -31,6 +31,8 @@ You can create a REST controller using the CLI as follows:
 ```sh
 lb4 controller
 ? Controller class name: todo
+Controller Todo will be created in src/controllers/todo.controller.ts
+
 ? What kind of controller would you like to generate? REST Controller with CRUD functions
 ? What is the name of the model to use with this CRUD repository? Todo
 ? What is the name of your CRUD repository? TodoRepository
@@ -39,7 +41,7 @@ lb4 controller
    create src/controllers/todo.controller.ts
    update src/controllers/index.ts
 
-Controller todo was created in src/controllers/
+Controller Todo was created in src/controllers/
 ```
 
 Let's review the `TodoController` located in

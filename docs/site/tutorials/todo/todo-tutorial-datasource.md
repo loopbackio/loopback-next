@@ -43,7 +43,7 @@ lb4 datasource
   create src/datasources/db.datasource.ts
   update src/datasources/index.ts
 
-Datasource db was created in src/datasources/
+Datasource Db was created in src/datasources/
 ```
 
 Create a `data` folder in the applications root and add a new file called

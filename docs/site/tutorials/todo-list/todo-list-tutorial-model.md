@@ -33,6 +33,7 @@ $ lb4 model
 ? Model class name: TodoList
 ? Please select the model base class Entity
 ? Allow additional (free-form) properties? No
+Model TodoList will be created in src/models/todo-list.model.ts
 
 Let's add a property to TodoList
 Enter an empty property name when done

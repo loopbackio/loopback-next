@@ -38,7 +38,7 @@ lb4 repository
 ? Please select the repository base class DefaultCrudRepository (Legacy juggler
 bridge)
 
-Repository Todo was created in src/repositories/
+Repository TodoRepository was created in src/repositories/
 ```
 
 The `src/repositories/index.ts` file makes exporting artifacts central and also

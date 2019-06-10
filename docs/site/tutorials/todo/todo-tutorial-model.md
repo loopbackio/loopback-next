@@ -50,6 +50,7 @@ lb4 model
 ? Model class name: todo
 ? Please select the model base class: Entity
 ? Allow additional (free-form) properties? No
+Model Todo will be created in src/models/todo.model.ts
 
 Let's add a property to Todo
 Enter an empty property name when done
@@ -92,7 +93,7 @@ Enter an empty property name when done
    create src/models/todo.model.ts
    update src/models/index.ts
 
-Model todo was created in src/models/
+Model Todo was created in src/models/
 ```
 
 Now that we have our model, it's time to add a
