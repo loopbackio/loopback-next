@@ -1,7 +1,0 @@
-{
-  "content": [
-    "src/index.ts",
-    "src/http-server.ts"
-  ],
-  "codeSectionDepth": 4
-}

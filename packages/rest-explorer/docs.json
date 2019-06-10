@@ -1,9 +1,0 @@
-{
-  "content": [
-    "index.ts",
-    "src/rest-explorer.component.ts",
-    "src/rest-explorer.keys.ts",
-    "src/rest-explorer.types.ts"
-  ],
-  "codeSectionDepth": 4
-}

@@ -1,8 +1,0 @@
-{
-  "content": [
-    "index.ts",
-    "src/index.ts",
-    "src/build-schema.ts"
-  ],
-  "codeSectionDepth": 4
-}
