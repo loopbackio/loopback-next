@@ -33,7 +33,7 @@
     "@loopback/eslint-config": "^1.1.1",
     "@loopback/testlab": "^1.5.0",
     "@types/node": "^10.11.2",
-    "ajv": "^6.5.0"
+    "ajv": "^6.10.0"
   },
   "files": [
     "README.md",
