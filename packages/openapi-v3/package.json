@@ -51,7 +51,7 @@
     "@loopback/context": "^1.19.0",
     "@loopback/openapi-v3-types": "^1.1.1",
     "@loopback/repository-json-schema": "^1.6.1",
-    "debug": "^4.0.1",
+    "debug": "^4.1.1",
     "lodash": "^4.17.11"
   }
 }

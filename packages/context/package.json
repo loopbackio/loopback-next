@@ -19,7 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "@loopback/metadata": "^1.2.1",
-    "debug": "^4.0.1",
+    "debug": "^4.1.1",
     "p-event": "^4.1.0",
     "uuid": "^3.2.1"
   },
