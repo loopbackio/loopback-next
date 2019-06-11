@@ -35,6 +35,14 @@
   "separateMajorMinor": true,
   "separateMinorPatch": false,
 
+  "packageRules": [{
+    "packageNames": [
+      "@microsoft/api-extractor",
+      "@microsoft/api-documenter"
+    ],
+    "groupName": "api-extractor packages"
+  }],
+
   "masterIssue": true,
   "masterIssueApproval": false,
   "masterIssueAutoclose": true
