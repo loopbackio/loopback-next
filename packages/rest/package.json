@@ -34,7 +34,7 @@
     "@types/type-is": "^1.6.2",
     "ajv": "^6.10.0",
     "body-parser": "^1.19.0",
-    "cors": "^2.8.4",
+    "cors": "^2.8.5",
     "debug": "^4.0.1",
     "express": "^4.17.1",
     "http-errors": "^1.6.3",
