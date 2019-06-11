@@ -28,7 +28,7 @@
     "@loopback/context": "^1.19.0",
     "@loopback/core": "^1.8.1",
     "@types/debug": "^4.1.4",
-    "debug": "^4.0.1",
+    "debug": "^4.1.1",
     "lodash": "^4.17.11",
     "loopback-datasource-juggler": "^4.7.1"
   },

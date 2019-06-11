@@ -20,7 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "@loopback/context": "^1.19.0",
-    "debug": "^4.1.0"
+    "debug": "^4.1.1"
   },
   "devDependencies": {
     "@loopback/build": "^1.7.1",
