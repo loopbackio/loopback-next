@@ -7,7 +7,6 @@ node_js:
 
 os:
   - linux
-  - osx
 
 script:
   - npm run postinstall
@@ -22,6 +21,10 @@ after_success:
 
 matrix:
   include:
+    - node_js: "12"
+      os: osx
+      # using the default script to build & run the tests
+
     - node_js: "8"
       os: linux
       env: TASK=code-lint
