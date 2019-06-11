@@ -95,51 +95,6 @@ Now you run the scripts, such as:
     | ------------------ | ------------------------------------------------------------------------------------------------- |
     | `--copy-resources` | Copy all non-typescript files from `src` and `test` to `outDir`, preserving their relative paths. |
 
-- lb-tslint
-
-  By default, `lb-tslint` searches your project's root directory for
-  `tslint.build.json` then `tslint.json`. If neither of them exists, it falls
-  back to `./node_modules/@loopback/build/config/tslint.common.json`.
-
-  `lb-tslint` also depends on `tsconfig.build.json` or `tsconfig.json` to
-  reference the project.
-
-  **NOTE:** Our recommended configuration of tslint rules is maintained inside
-  the package `@loopback/tslint-config`. We strongly recommend users to create
-  their own tslint configuration files inheriting from `@loopback/tslint-config`
-  instead of relying on the defaults provided by `@loopback/build`.
-
-  To customize the configuration:
-
-  - Create `tslint.build.json` in your project's root directory, for example:
-
-    ```json
-    {
-      "$schema": "http://json.schemastore.org/tslint",
-      "extends": ["@loopback/eslint-config/tslint.build.json"],
-      // This configuration files enabled rules which require type checking
-      // and therefore cannot be run by Visual Studio Code TSLint extension
-      // See https://github.com/Microsoft/vscode-tslint/issues/70
-      "rules": {
-        // These rules find errors related to TypeScript features.
-        // These rules catch common errors in JS programming or otherwise
-        // confusing constructs that are prone to producing bugs.
-
-        "await-promise": true,
-        "no-floating-promises": true,
-        "no-void-expression": [true, "ignore-arrow-function-shorthand"]
-      }
-    }
-    ```
-
-- Set options explicitly for the script
-
-  ```sh
-  lb-tslint -c tslint.json -p tsconfig.json
-  ```
-
-  For more information, see <https://palantir.github.io/tslint/usage/cli/>.
-
 4.  Run builds
 
 ```sh
