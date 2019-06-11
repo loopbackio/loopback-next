@@ -65,18 +65,53 @@ export async function runExtractorForMonorepo(options: ExtractorOptions = {}) {
 
   for (const pkg of packages) {
     /* istanbul ignore if  */
-    if (!options.silent) {
-      console.log('> %s', pkg.name);
-    }
-    debug('Package: %s (%s)', pkg.name, pkg.location);
-
-    process.chdir(pkg.location);
-
-    const extractorConfig = buildExtractorConfig(pkg, options);
-
-    debug('Resolved extractor config:', extractorConfig);
-    invokeExtractor(extractorConfig, options);
+    invokeExtractorForPackage(pkg, options);
   }
+}
+
+export function runExtractorForPackage(
+  pkgDir: string = process.cwd(),
+  options: ExtractorOptions = {},
+) {
+  options = Object.assign(
+    {
+      rootDir: pkgDir,
+      apiDocsExtractionPath: DEFAULT_APIDOCS_EXTRACTION_PATH,
+      typescriptCompilerFolder: typeScriptPath,
+      tsconfigFilePath: 'tsconfig.build.json',
+      mainEntryPointFilePath: 'dist/index.d.ts',
+    },
+    options,
+  );
+  const pkgJson = require(path.join(pkgDir, 'package.json'));
+  setupApiDocsDirs(pkgDir, options);
+  const pkg: LernaPackage = {
+    private: pkgJson.private,
+    name: pkgJson.name,
+    location: pkgDir,
+    manifestLocation: path.join(pkgDir, 'package.json'),
+    rootPath: pkgDir,
+  };
+  invokeExtractorForPackage(pkg, options);
+}
+
+/**
+ * Run `api-extractor` on a given package
+ * @param pkg - Package descriptor
+ * @param options - Options for api extraction
+ */
+function invokeExtractorForPackage(
+  pkg: LernaPackage,
+  options: ExtractorOptions,
+) {
+  if (!options.silent) {
+    console.log('> %s', pkg.name);
+  }
+  debug('Package: %s (%s)', pkg.name, pkg.location);
+  process.chdir(pkg.location);
+  const extractorConfig = buildExtractorConfig(pkg, options);
+  debug('Resolved extractor config:', extractorConfig);
+  invokeExtractor(extractorConfig, options);
 }
 
 /**
