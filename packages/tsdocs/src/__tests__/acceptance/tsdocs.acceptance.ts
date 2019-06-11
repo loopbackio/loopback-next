@@ -8,6 +8,7 @@ import * as fs from 'fs-extra';
 import pEvent from 'p-event';
 import * as path from 'path';
 import {runExtractorForMonorepo, updateApiDocs} from '../..';
+import {runExtractorForPackage} from '../../monorepo-api-extractor';
 import {fixConstructorName} from '../../update-api-md-docs';
 
 const runCLI = require('@loopback/build').runCLI;
@@ -35,6 +36,7 @@ describe('tsdocs', function() {
   before('remove apidocs', () => {
     fs.emptyDirSync(APIDOCS_ROOT);
     fs.emptyDirSync(SITE_APIDOCS_ROOT);
+    fs.emptyDirSync(path.join(MONOREPO_ROOT, 'packages/pkg1/docs'));
   });
 
   it('runs api-extractor', async () => {
@@ -53,6 +55,26 @@ describe('tsdocs', function() {
 
     const reports = await fs.readdir(path.join(APIDOCS_ROOT, 'reports'));
     expect(reports.sort()).to.eql(['pkg1.api.md', 'pkg2.api.md']);
+  });
+
+  it('runs api-extractor on package only', async () => {
+    const pkgDir = path.join(MONOREPO_ROOT, 'packages/pkg1');
+    const apidocsRootDir = path.join(pkgDir, 'docs/apidocs');
+
+    runExtractorForPackage(pkgDir, {
+      silent: true,
+      apiDocsGenerationPath: 'docs/apidocs',
+      apiReportEnabled: true,
+    });
+
+    const dirs = await fs.readdir(apidocsRootDir);
+    expect(dirs.sort()).eql(['models', 'reports', 'reports-temp']);
+
+    const models = await fs.readdir(path.join(apidocsRootDir, 'models'));
+    expect(models.sort()).to.eql(['pkg1.api.json']);
+
+    const reports = await fs.readdir(path.join(apidocsRootDir, 'reports'));
+    expect(reports.sort()).to.eql(['pkg1.api.md']);
   });
 
   it('runs api-documenter', async () => {

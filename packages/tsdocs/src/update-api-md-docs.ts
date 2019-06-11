@@ -38,8 +38,10 @@ export async function updateApiDocs(options: ApiDocsOptions = {}) {
   /* istanbul ignore if  */
   if (!packages.length) return;
 
-  await addJekyllMetadata(packages[0].rootPath, options);
-  await generateIndex(packages, options);
+  const found = await addJekyllMetadata(packages[0].rootPath, options);
+  if (found) {
+    await generateIndex(packages, options);
+  }
 }
 
 /**
@@ -103,6 +105,11 @@ async function addJekyllMetadata(
   options: ApiDocsOptions,
 ) {
   const apiDocsRoot = path.join(lernaRootDir, options.apiDocsGenerationPath!);
+  const exists = await fs.pathExists(apiDocsRoot);
+  if (!exists) {
+    console.error('No API docs found at %s.', apiDocsRoot);
+    return false;
+  }
   const apiFiles = await fs.readdir(apiDocsRoot);
   for (const f of apiFiles) {
     /* istanbul ignore if  */
@@ -170,6 +177,7 @@ ${doc}
       }
     }
   }
+  return true;
 }
 
 // Fix `*.(constructor)`
