@@ -31,7 +31,7 @@ npm install -g @loopback/cli
 LoopBack 4 uses different convention for naming classes, variables, and files.
 
 - Class name: `PascalCase`.
-- File name: `kebabCase`.
+- File name: `kebab-case`.
 - Variable name: `camelCase`.
 
 Here are some examples:
