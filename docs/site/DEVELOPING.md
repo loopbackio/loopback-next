@@ -25,6 +25,7 @@ See [Monorepo overview](./MONOREPO.md) for a list of all packages.
 - [Adding a new package](#adding-a-new-package)
 - [Upgrading TypeScript/eslint](#upgrading-typescripteslint)
 - [How to test infrastructure changes](#how-to-test-infrastructure-changes)
+- [Renovate bot](#renovate-bot)
 
 ## Setting up development environment
 
@@ -587,3 +588,38 @@ This is why we have two sets of `tsconfig` files:
 - At monorepo root, there is `tsconfig.json` used by VS Code.
 - Inside each package, there is `tsconfig.build.json` used by `npm run build`
   command.
+
+## Renovate bot
+
+In loopback-next, we use package-lock files to speed up `npm install` times and
+[Renovate bot](http://renovatebot.com) to keep our lock files up to date.
+
+The bot is configured to maintain a special issue called
+`Update Dependencies (Renovate Bot)` where it lists all pull requests in
+progress and in queue:
+
+- [loopback-next#3042](https://github.com/strongloop/loopback-next/issues/3042)
+- [loopback4-example-shopping#94](https://github.com/strongloop/loopback4-example-shopping/issues/94)
+
+In `loopback4-example-shopping` (and any other repositories using DCO), pull
+requests opened by RenovateBot can be merged by pressing GitHub's big green
+button once all checks are green (all CI builds finished).
+
+RenovateBot periodically checks for changes on `master` and rebases pull request
+in progress when new commits were added. If GitHub complains that RenovateBot's
+pull request is out of date, then just wait until it's rebased and checks are
+green. The bot usually updates pull requests every hour. Alternatively, tick the
+check-box in the pull request description or in "Update Dependencies" issue.
+
+The situation is more tricky in `loopback-next` repository, because we require
+CLA which bots cannot sign (usually). The current solution is to check out the
+feature branch, run `git commit --amend --reset-author`, preferably delete
+`Signed-off-by` line from the commit message, and then
+`git push --force-with-lease`. Unfortunately, this prevents RenovateBot from
+further updates of the feature branch, you have to rebase it on top of the next
+master manually. Or tick a checkbox to let RenovateBot discard your amended
+commit and create a new one, after which you have to reset the author again.
+
+We have started the process of migrating `loopback-next` from CLA to DCO. When
+the switch is done, we will be able to land RenovateBot pull requests as created
+by the bot.
