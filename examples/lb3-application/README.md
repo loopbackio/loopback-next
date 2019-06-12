@@ -47,6 +47,8 @@ new LoopBack 4 project.
    }
    ```
 
+   Note: make sure to use `loopback-boot@3.2.1` or higher.
+
    Run `npm install` from the root of your LB4 project to install the LB3
    dependencies.
 
