@@ -91,7 +91,7 @@ export type KeyOf<MT extends object> = Exclude<
 export type Condition<MT extends object> = {
   [P in KeyOf<MT>]?:
     | PredicateComparison<MT[P]> // {x: {lt: 1}}
-    | (MT[P] & ShortHandEqualType) // {x: 1},
+    | (MT[P] & ShortHandEqualType); // {x: 1},
 };
 
 /**

@@ -209,9 +209,7 @@ function buildMethodSpec(controllerSpec, op, options) {
       if (p.in === 'path') {
         paramName = paramName.replace(/[^\w]+/g, '_');
       }
-      return `@param({name: '${paramName}', in: '${p.in}'}) ${name}: ${
-        pType.signature
-      }`;
+      return `@param({name: '${paramName}', in: '${p.in}'}) ${name}: ${pType.signature}`;
     });
   }
   if (op.spec.requestBody) {

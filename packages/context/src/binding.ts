@@ -394,9 +394,7 @@ export class Binding<T = BoundValue> {
     this._getValue = (ctx: Context, options: ResolutionOptions) => {
       if (options.asProxyWithInterceptors && this._type !== BindingType.CLASS) {
         throw new Error(
-          `Binding '${this.key}' (${
-            this._type
-          }) does not support 'asProxyWithInterceptors'`,
+          `Binding '${this.key}' (${this._type}) does not support 'asProxyWithInterceptors'`,
         );
       }
       return getValue(ctx, options);

@@ -397,9 +397,7 @@ export function assertTargetType(
   if (targetType && targetType !== expectedType) {
     expectedTypeName = expectedTypeName || expectedType.name;
     throw new Error(
-      `The type of ${targetName} (${
-        targetType.name
-      }) is not ${expectedTypeName}`,
+      `The type of ${targetName} (${targetType.name}) is not ${expectedTypeName}`,
     );
   }
   return targetName;

@@ -247,9 +247,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
         true,
       );
       debug(
-        `datasourcesList from ${utils.sourceRootDir}/${
-          utils.datasourcesDir
-        } : ${datasourcesList}`,
+        `datasourcesList from ${utils.sourceRootDir}/${utils.datasourcesDir} : ${datasourcesList}`,
       );
     } catch (err) {
       return this.exit(err);
@@ -400,9 +398,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
 
     if (this.options.repositoryBaseClass) {
       debug(
-        `Base repository received from command line: ${
-          this.options.repositoryBaseClass
-        }`,
+        `Base repository received from command line: ${this.options.repositoryBaseClass}`,
       );
       this.artifactInfo.repositoryBaseClass = this.options.repositoryBaseClass;
     }
