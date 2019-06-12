@@ -27,10 +27,6 @@ export class NoteApplication extends BootMixin(
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
 
-    // Customize @loopback/rest-explorer configuration here
-    this.bind(RestExplorerBindings.CONFIG).to({
-      path: '/explorer',
-    });
     this.component(RestExplorerComponent);
 
     this.projectRoot = __dirname;
