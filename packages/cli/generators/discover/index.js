@@ -194,7 +194,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         await modelMaker.discoverSingleModel(
           this.artifactInfo.dataSource,
           modelInfo.name,
-          {schema: modelInfo.schema},
+          {schema: modelInfo.owner},
         ),
       );
       debug(`Discovered: ${modelInfo.name}`);
