@@ -31,7 +31,7 @@
     "@types/node": "^10.14.8",
     "@types/request-promise-native": "^1.0.16",
     "@types/rimraf": "^2.0.2",
-    "delay": "^4.2.0"
+    "delay": "^4.3.0"
   },
   "keywords": [
     "LoopBack",
