@@ -95,9 +95,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
         true,
       );
       debug(
-        `datasourcesList from ${utils.sourceRootDir}/${
-          utils.datasourcesDir
-        } : ${datasourcesList}`,
+        `datasourcesList from ${utils.sourceRootDir}/${utils.datasourcesDir} : ${datasourcesList}`,
       );
     } catch (err) {
       return this.exit(err);

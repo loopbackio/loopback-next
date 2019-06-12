@@ -63,9 +63,7 @@ export function param(paramSpec: ParameterObject) {
       // The design-time type is `Object` for `any`
       if (paramType != null && paramType !== Object && paramType !== Array) {
         throw new Error(
-          `The parameter type is set to 'array' but the JavaScript type is ${
-            paramType.name
-          }`,
+          `The parameter type is set to 'array' but the JavaScript type is ${paramType.name}`,
         );
       }
     }

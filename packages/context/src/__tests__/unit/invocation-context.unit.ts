@@ -32,14 +32,10 @@ describe('InvocationContext', () => {
 
   it('has a getter for description', () => {
     expect(invocationCtxForGreet.description).to.equal(
-      `InvocationContext(${
-        invocationCtxForGreet.name
-      }): MyController.prototype.greet`,
+      `InvocationContext(${invocationCtxForGreet.name}): MyController.prototype.greet`,
     );
     expect(invocationCtxForCheckName.description).to.equal(
-      `InvocationContext(${
-        invocationCtxForCheckName.name
-      }): MyController.checkName`,
+      `InvocationContext(${invocationCtxForCheckName.name}): MyController.checkName`,
     );
   });
 

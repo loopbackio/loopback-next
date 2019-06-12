@@ -187,9 +187,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     if (this.options.relationType) {
       this.isChecked.relationType = true;
       debug(
-        `Relation type received from command line: ${
-          this.options.relationType
-        }`,
+        `Relation type received from command line: ${this.options.relationType}`,
       );
       if (!relationTypeChoices.includes(this.options.relationType)) {
         return this.exit(new Error(ERROR_INCORRECT_RELATION_TYPE));
@@ -300,9 +298,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     if (!this.artifactInfo.doesForeignKeyExist) {
       if (this.options.foreignKeyName) {
         debug(
-          `Foreign key name received from command line: ${
-            this.options.foreignKeyName
-          }`,
+          `Foreign key name received from command line: ${this.options.foreignKeyName}`,
         );
         this.artifactInfo.foreignKeyName = this.options.foreignKeyName;
       }
@@ -355,9 +351,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
     if (this.options.relationName) {
       debug(
-        `Relation name received from command line: ${
-          this.options.relationName
-        }`,
+        `Relation name received from command line: ${this.options.relationName}`,
       );
       this.artifactInfo.relationName = this.options.relationName;
     }

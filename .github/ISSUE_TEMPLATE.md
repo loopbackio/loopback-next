@@ -11,4 +11,5 @@ HELP US HELP YOU, PLEASE
 - Consider using a more suitable venue for questions such as Stack Overflow, Gitter, etc.
 -->
 
-_See [Reporting Issues](http://loopback.io/doc/en/contrib/Reporting-issues.html) for more tips on writing good issues_
+_See [Reporting Issues](http://loopback.io/doc/en/contrib/Reporting-issues.html)
+for more tips on writing good issues_

@@ -138,9 +138,7 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
       {views: this.options.views, schema: this.options.schema},
     );
     debug(
-      `Got ${this.modelChoices.length} models from ${
-        this.artifactInfo.dataSource.name
-      }`,
+      `Got ${this.modelChoices.length} models from ${this.artifactInfo.dataSource.name}`,
     );
   }
 
