@@ -22,6 +22,7 @@ describe('build', function() {
       'bin/run-clean',
       'tsconfig.json',
       'tsconfig.build.json',
+      '*.tsbuildinfo',
       'dist*',
     ]);
   }
