@@ -45,13 +45,19 @@ describe('API Explorer (acceptance)', () => {
       await request
         .get('/explorer')
         .expect(301)
-        .expect('location', '/explorer/');
+        // expect relative redirect so that it works seamlessly with many forms
+        // of base path, whether within the app or applied by a reverse proxy
+        .expect('location', './explorer/');
     });
 
-    it('configures swagger-ui with OpenAPI spec url "/openapi.json', async () => {
+    it('configures swagger-ui with OpenAPI spec url "./openapi.json', async () => {
       const response = await request.get('/explorer/').expect(200);
       const body = response.body;
-      expect(body).to.match(/^\s*url: '\/openapi.json',\s*$/m);
+      expect(body).to.match(/^\s*url: '\.\/openapi.json',\s*$/m);
+    });
+
+    it('hosts OpenAPI at "./openapi.json', async () => {
+      await request.get('/explorer/openapi.json').expect(200);
     });
 
     it('mounts swagger-ui assets at "/explorer"', async () => {
@@ -61,8 +67,8 @@ describe('API Explorer (acceptance)', () => {
   });
 
   context('with custom RestServerConfig', () => {
-    it('honours custom OpenAPI path', async () => {
-      await givenAppWithCustomRestConfig({
+    it('uses self-hosted spec by default', async () => {
+      await givenAppWithCustomExplorerConfig({
         openApiSpec: {
           endpointMapping: {
             '/apispec': {format: 'json', version: '3.0.0'},
@@ -74,20 +80,34 @@ describe('API Explorer (acceptance)', () => {
 
       const response = await request.get('/explorer/').expect(200);
       const body = response.body;
-      expect(body).to.match(/^\s*url: '\/apispec',\s*$/m);
+      expect(body).to.match(/^\s*url: '\.\/openapi.json',\s*$/m);
     });
 
-    async function givenAppWithCustomRestConfig(config: RestServerConfig) {
-      app = givenRestApplication(config);
-      app.component(RestExplorerComponent);
-      await app.start();
-      request = createRestAppClient(app);
-    }
+    it('honors flag to disable self-hosted spec', async () => {
+      await givenAppWithCustomExplorerConfig(
+        {
+          openApiSpec: {
+            endpointMapping: {
+              '/apispec': {format: 'json', version: '3.0.0'},
+              '/apispec/v2': {format: 'json', version: '2.0.0'},
+              '/apispec/yaml': {format: 'yaml', version: '3.0.0'},
+            },
+          },
+        },
+        {
+          useSelfHostedSpec: false,
+        },
+      );
+
+      const response = await request.get('/explorer/').expect(200);
+      const body = response.body;
+      expect(body).to.match(/^\s*url: '\/apispec',\s*$/m);
+    });
   });
 
   context('with custom RestExplorerConfig', () => {
     it('honors custom explorer path', async () => {
-      await givenAppWithCustomExplorerConfig({
+      await givenAppWithCustomExplorerConfig(undefined, {
         path: '/openapi/ui',
       });
 
@@ -98,20 +118,35 @@ describe('API Explorer (acceptance)', () => {
       await request
         .get('/openapi/ui')
         .expect(301)
-        .expect('Location', '/openapi/ui/');
+        // expect relative redirect so that it works seamlessly with many forms
+        // of base path, whether within the app or applied by a reverse proxy
+        .expect('Location', './ui/');
 
       await request.get('/explorer').expect(404);
     });
 
-    async function givenAppWithCustomExplorerConfig(
-      config: RestExplorerConfig,
-    ) {
-      app = givenRestApplication();
-      app.configure(RestExplorerBindings.COMPONENT).to(config);
-      app.component(RestExplorerComponent);
-      await app.start();
-      request = createRestAppClient(app);
-    }
+    it('honors flag to disable self-hosted spec', async () => {
+      await givenAppWithCustomExplorerConfig(undefined, {
+        path: '/openapi/ui',
+        useSelfHostedSpec: false,
+      });
+
+      const response = await request.get('/openapi/ui/').expect(200);
+      const body = response.body;
+      expect(body).to.match(/<title>LoopBack API Explorer/);
+      expect(body).to.match(/^\s*url: '\/openapi.json',\s*$/m);
+
+      await request
+        .get('/openapi/ui')
+        .expect(301)
+        // expect relative redirect so that it works seamlessly with many forms
+        // of base path, whether within the app or applied by a reverse proxy
+        .expect('Location', './ui/');
+
+      await request.get('/explorer').expect(404);
+      await request.get('/explorer/openapi.json').expect(404);
+      await request.get('/openapi/ui/openapi.json').expect(404);
+    });
   });
 
   context('with custom basePath', () => {
@@ -130,12 +165,25 @@ describe('API Explorer (acceptance)', () => {
         .expect(200)
         .expect('content-type', /html/)
         // OpenAPI endpoints DO NOT honor basePath
-        .expect(/url\: '\/openapi\.json'\,/);
+        .expect(/url\: '\.\/openapi\.json'\,/);
     });
   });
 
   function givenRestApplication(config?: RestServerConfig) {
     const rest = Object.assign({}, givenHttpServerConfig(), config);
     return new RestApplication({rest});
+  }
+
+  async function givenAppWithCustomExplorerConfig(
+    config?: RestServerConfig,
+    explorerConfig?: RestExplorerConfig,
+  ) {
+    app = givenRestApplication(config);
+    if (explorerConfig) {
+      app.bind(RestExplorerBindings.CONFIG).to(explorerConfig);
+    }
+    app.component(RestExplorerComponent);
+    await app.start();
+    request = createRestAppClient(app);
   }
 });
