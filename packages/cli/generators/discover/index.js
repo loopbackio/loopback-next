@@ -242,6 +242,8 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         dir: this.options.outDir || this.artifactInfo.outDir,
         file: utils.getModelFileName(modelDefinition.name),
       });
+
+      await this.artifactInfo.dataSource.disconnect();
     }
 
     // This part at the end is just for the ArtifactGenerator
