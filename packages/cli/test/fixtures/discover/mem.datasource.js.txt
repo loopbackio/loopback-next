@@ -80,6 +80,10 @@ class DiscoverOnly extends DataSource {
     this.connected = true;
   }
 
+  disconnect() {
+    this.connected = false;
+  }
+
   async discoverModelDefinitions(options = {views: true}) {
     let models = modelList;
     if (!options.views) {
