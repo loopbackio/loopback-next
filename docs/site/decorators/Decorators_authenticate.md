@@ -41,4 +41,4 @@ export class WhoAmIController {
 ```
 
 For more information on authentication with LoopBack, visit
-[here](https://github.com/strongloop/loopback-next/blob/master/packages/authentication/README.md).
+[here](../Loopback-component-authentication.md).
