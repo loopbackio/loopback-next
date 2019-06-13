@@ -10,7 +10,7 @@ export * from './http-server-config';
 export * from './request';
 export * from './shot';
 export * from './sinon';
-export * from './skip-travis';
+export * from './skip';
 export * from './test-sandbox';
 export * from './to-json';
 export * from './validate-api-spec';
