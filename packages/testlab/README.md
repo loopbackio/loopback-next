@@ -47,6 +47,7 @@ Table of contents:
 - [sinon](#sinon) - Mocks, stubs and more.
 - [shot](#shot) - HTTP Request/Response stubs.
 - [validateApiSpec](#validateapispec) - Open API Spec validator.
+- [skipIf](#skipif) - Skip tests when a condition is met.
 - [skipOnTravis](#skipontravis) - Skip tests on Travis env.
 - [createRestAppClient](#createrestappclient) - Create a supertest client
   connected to a running RestApplication.
@@ -81,6 +82,35 @@ by Shot in your unit tests:
 - Code parsing core HTTP Request
 - Code modifying core HTTP Response, including full request/response handlers
 - Code parsing Express HTTP Request or modifying Express HTTP Response
+
+### `skipIf`
+
+Helper function for skipping tests when a certain condition is met. Use this
+helper together with `it` or `describe`.
+
+```ts
+skipIf(someCondition, it, 'does something', async () => {
+  // the test code
+});
+```
+
+Unfortunately, type inference does not work well for `describe`, you have to
+help the compiler to figure out the correct types.
+
+```ts
+skipIf<[(this: Suite) => void], void>(
+  someCondition,
+  describe,
+  'some suite name',
+  () => {
+    // define the test cases
+  },
+);
+```
+
+Under the hood, `skipIf` invokes the provided test verb by default (e.g. `it`).
+When the provided condition was true, then it calls `.skip` instead (e.g.
+`it.skip`).
 
 ### `skipOnTravis`
 
