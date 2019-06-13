@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Getter, isPromiseLike} from '@loopback/context';
+import {Getter} from '@loopback/context';
 import * as assert from 'assert';
 import * as legacy from 'loopback-datasource-juggler';
 import {
@@ -74,11 +74,8 @@ export function bindModel<T extends juggler.ModelBaseClass>(
  * @param p - Promise or void
  */
 export function ensurePromise<T>(p: legacy.PromiseOrVoid<T>): Promise<T> {
-  if (p && isPromiseLike(p)) {
-    // Juggler uses promise-like Bluebird instead of native Promise
-    // implementation. We need to convert the promise returned by juggler
-    // methods to proper native Promise instance.
-    return Promise.resolve(p);
+  if (p && p instanceof Promise) {
+    return p;
   } else {
     return Promise.reject(new Error('The value should be a Promise: ' + p));
   }
