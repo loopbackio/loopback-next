@@ -20,7 +20,7 @@
   "dependencies": {
     "debug": "^4.1.1",
     "lodash": "^4.17.11",
-    "reflect-metadata": "^0.1.10"
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
     "@loopback/build": "^1.7.1",
