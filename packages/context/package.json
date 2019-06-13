@@ -21,7 +21,7 @@
     "@loopback/metadata": "^1.2.1",
     "debug": "^4.1.1",
     "p-event": "^4.1.0",
-    "uuid": "^3.2.1"
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@loopback/build": "^1.7.1",
@@ -30,7 +30,7 @@
     "@types/bluebird": "^3.5.27",
     "@types/debug": "^4.1.4",
     "@types/node": "^10.14.8",
-    "@types/uuid": "^3.4.3",
+    "@types/uuid": "^3.4.4",
     "bluebird": "^3.5.5"
   },
   "keywords": [
