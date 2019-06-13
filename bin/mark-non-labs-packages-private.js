@@ -23,7 +23,7 @@ async function markNonLabsPackagesPrivate() {
     const dir = path.relative(pkg.rootPath, pkg.location);
     if (dir.startsWith('labs')) continue;
     const data = readJsonFile(pkg.manifestLocation);
-    let modified = !data.private;
+    const modified = !data.private;
     if (!modified) continue;
     data.private = true;
     writeJsonFile(pkg.manifestLocation, data, dir);
