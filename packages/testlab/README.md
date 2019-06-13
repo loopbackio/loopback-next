@@ -155,12 +155,12 @@ describe('My application', () => {
 });
 ```
 
-### `givenhttpserverconfig`
+### `givenHttpServerConfig`
 
 Helper function for generating Travis-friendly host (127.0.0.1). This is
 required because Travis is not able to handle IPv6 addresses.
 
-### `httpgetasync`
+### `httpGetAsync`
 
 Async wrapper for making HTTP GET requests.
 
@@ -169,7 +169,7 @@ import {httpGetAsync} from '@loopback/testlab';
 const response = await httpGetAsync('http://example.com');
 ```
 
-### `httpsgetasync`
+### `httpsGetAsync`
 
 Async wrapper for making HTTPS GET requests.
 
