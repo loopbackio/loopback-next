@@ -3,7 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context, inject, Injection} from '@loopback/context';
+// TODO(bajtos) How to get rid of dependency on @loopback/core?
+// This is the only place using Context/inject/Injection.
+// Should we perhaps move this single file into a standalone package?
+import {Context, inject, Injection} from '@loopback/core';
 import * as assert from 'assert';
 import {Class} from '../common-types';
 import {DataSource} from '../datasource';

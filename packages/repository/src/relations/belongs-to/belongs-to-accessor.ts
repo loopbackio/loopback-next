@@ -4,12 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as debugFactory from 'debug';
-import {DataObject} from '../../common-types';
+import {DataObject, Getter} from '../../common-types';
 import {InvalidRelationError} from '../../errors';
 import {Entity} from '../../model';
 import {EntityCrudRepository} from '../../repositories/repository';
 import {isTypeResolver} from '../../type-resolver';
-import {BelongsToDefinition, Getter} from '../relation.types';
+import {BelongsToDefinition} from '../relation.types';
 import {DefaultBelongsToRepository} from './belongs-to.repository';
 
 const debug = debugFactory('loopback:repository:belongs-to-accessor');

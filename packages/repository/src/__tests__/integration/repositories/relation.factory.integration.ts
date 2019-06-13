@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Getter} from '@loopback/core';
 import {expect} from '@loopback/testlab';
 import {
   BelongsToAccessor,
@@ -13,7 +14,6 @@ import {
   Entity,
   EntityCrudRepository,
   EntityNotFoundError,
-  Getter,
   HasManyDefinition,
   HasManyRepository,
   HasManyRepositoryFactory,

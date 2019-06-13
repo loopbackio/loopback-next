@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {MetadataInspector} from '@loopback/context';
+import {MetadataInspector} from '@loopback/metadata';
 import {expect} from '@loopback/testlab';
 import {
   belongsTo,

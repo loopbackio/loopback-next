@@ -5,12 +5,12 @@
 
 import * as debugFactory from 'debug';
 import {camelCase} from 'lodash';
-import {DataObject} from '../../common-types';
+import {DataObject, Getter} from '../../common-types';
 import {InvalidRelationError} from '../../errors';
 import {Entity} from '../../model';
 import {EntityCrudRepository} from '../../repositories/repository';
 import {isTypeResolver} from '../../type-resolver';
-import {Getter, HasOneDefinition} from '../relation.types';
+import {HasOneDefinition} from '../relation.types';
 import {DefaultHasOneRepository, HasOneRepository} from './has-one.repository';
 
 const debug = debugFactory('loopback:repository:has-one-repository-factory');

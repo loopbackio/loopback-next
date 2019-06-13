@@ -3,17 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Context} from '@loopback/context';
-
+import {Context} from '@loopback/core';
 import {
-  juggler,
-  repository,
-  Entity,
-  Options,
   DataObject,
-  EntityCrudRepository,
   DefaultCrudRepository,
+  Entity,
+  EntityCrudRepository,
+  juggler,
   ModelDefinition,
+  Options,
+  repository,
 } from '../../';
 
 const ds: juggler.DataSource = new juggler.DataSource({

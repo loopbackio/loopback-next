@@ -9,7 +9,7 @@ import {
   MetadataInspector,
   MetadataMap,
   PropertyDecoratorFactory,
-} from '@loopback/context';
+} from '@loopback/metadata';
 import {
   ModelDefinition,
   ModelDefinitionSyntax,

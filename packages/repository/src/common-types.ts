@@ -100,3 +100,8 @@ export const CountSchema = {
   type: 'object',
   properties: {count: {type: 'number'}},
 };
+
+/**
+ * Asynchronous getter function.
+ */
+export type Getter<T> = () => Promise<T>;

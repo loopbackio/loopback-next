@@ -5,12 +5,12 @@
 
 import * as debugFactory from 'debug';
 import {camelCase} from 'lodash';
-import {DataObject} from '../../common-types';
+import {DataObject, Getter} from '../../common-types';
 import {InvalidRelationError} from '../../errors';
 import {Entity} from '../../model';
 import {EntityCrudRepository} from '../../repositories/repository';
 import {isTypeResolver} from '../../type-resolver';
-import {Getter, HasManyDefinition} from '../relation.types';
+import {HasManyDefinition} from '../relation.types';
 import {
   DefaultHasManyRepository,
   HasManyRepository,

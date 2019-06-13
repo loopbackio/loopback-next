@@ -19,18 +19,21 @@
   "license": "MIT",
   "devDependencies": {
     "@loopback/build": "^1.7.1",
+    "@loopback/core": "^1.8.1",
     "@loopback/eslint-config": "^1.1.1",
     "@loopback/testlab": "^1.5.0",
     "@types/lodash": "^4.14.134",
     "@types/node": "^10.14.8"
   },
   "dependencies": {
-    "@loopback/context": "^1.19.0",
-    "@loopback/core": "^1.8.1",
+    "@loopback/metadata": "^1.19.0",
     "@types/debug": "^4.1.4",
     "debug": "^4.1.1",
     "lodash": "^4.17.11",
     "loopback-datasource-juggler": "^4.8.0"
+  },
+  "optionalPeerDependencies": {
+    "@loopback/core": "^1.8.1"
   },
   "files": [
     "README.md",
