@@ -55,7 +55,7 @@
     "regenerate": "^1.4.0",
     "semver": "^6.1.1",
     "stringify-object": "^3.3.0",
-    "swagger-parser": "^6.0.5",
+    "swagger-parser": "^7.0.0",
     "swagger2openapi": "^5.3.0",
     "ts-morph": "^2.3.0",
     "typescript": "~3.5.2",
