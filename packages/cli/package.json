@@ -34,7 +34,7 @@
     "mock-stdin": "^0.3.1",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
-    "rimraf": "^2.6.2",
+    "rimraf": "^2.6.3",
     "sinon": "^7.3.2",
     "yeoman-assert": "^3.1.1",
     "yeoman-environment": "^2.0.6",
