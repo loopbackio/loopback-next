@@ -157,12 +157,13 @@ export class DecoratorFactory<
    * @param member - Method name
    */
   static getNumberOfParameters(target: Object, member?: string) {
-    if (target instanceof Function && !member) {
+    if (typeof target === 'function' && !member) {
       // constructor
       return target.length;
     } else {
       // target[member] is a function
-      return (<{[methodName: string]: Function}>target)[member!].length;
+      const method = (<{[methodName: string]: Function}>target)[member!];
+      return method.length;
     }
   }
 
