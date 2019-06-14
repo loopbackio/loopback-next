@@ -13,20 +13,20 @@ docs improvement, I'd like to propose the following changes.
   [Composition and responsibility of LoopBack 4 constructs for a typical application](https://github.com/strongloop/loopback-next/pull/2925)
   in the original proposal.
 
-* [Application](Application.md)
-* [Server](Server.md)
-* [Controller](Controllers.md)
-* Model & Model Relation: This page has a combination of [Model.md](Model.md)
-  and [Relations.md](Relations.md)
-  - [HasMany Relation](HasMany-relation.md)
-  - [BelongsTo Relation](BelongsTo-relation.md)
-  - [HasOne Relation](hasOne-relation.md)
-* [Repository](Repositories.md)
-* Service Proxy
-* Datasource & Connectors
-* Observers & Interceptors
+  - [Application](Application.md)
+  - [Server](Server.md)
+  - [Controller](Controllers.md)
+  - Model & Model Relation: This page has a combination of [Model.md](Model.md)
+    and [Relations.md](Relations.md)
+    - [HasMany Relation](HasMany-relation.md)
+    - [BelongsTo Relation](BelongsTo-relation.md)
+    - [HasOne Relation](hasOne-relation.md)
+  - [Repository](Repositories.md)
+  - Service Proxy
+  - Datasource & Connectors
+  - Observers & Interceptors
 
-* **Application life cycles**
+- **Application life cycles**
 
   - Create: includes scaffolding and adding more artifacts
   - Build
@@ -79,9 +79,6 @@ docs improvement, I'd like to propose the following changes.
 
 - **Examples**
 
-  Discussion: I think Raymond (or someone) proposed to move the Examples to be
-  lower in the sidebar
-
 - **CLI References**
 
 - **API docs**
@@ -109,7 +106,7 @@ will show the README file.
 
 ### Basic Constructs
 
-It will contain a diagram of how different basic constructs relate to each
-other, besides the one-liner description like in [Concepts.md](Concepts.md)
+1. It will contain a diagram of how different basic constructs relate to each
+   other, besides the one-liner description like in [Concepts.md](Concepts.md)
 
 _To be continued_
