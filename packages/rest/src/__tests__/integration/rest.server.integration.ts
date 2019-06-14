@@ -148,6 +148,7 @@ describe('RestServer (integration)', () => {
     await expect(server.stop()).to.fulfilled();
   });
 
+  // FIXME(bajtos) find a way how to test this scenario under Jest
   it('responds with 500 when Sequence fails with unhandled error', async () => {
     const server = await givenAServer();
     server.handler((context, sequence) => {
@@ -158,10 +159,10 @@ describe('RestServer (integration)', () => {
     const mochaListeners = process.listeners('uncaughtException');
     process.removeAllListeners('uncaughtException');
     process.once('uncaughtException', err => {
-      expect(err).to.have.property('message', 'unhandled test error');
       for (const l of mochaListeners) {
         process.on('uncaughtException', l);
       }
+      expect(err).to.have.property('message', 'unhandled test error');
     });
 
     return createClientForHandler(server.requestHandler)
