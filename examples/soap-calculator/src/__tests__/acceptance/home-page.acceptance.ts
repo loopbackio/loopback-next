@@ -11,7 +11,7 @@ describe('HomePage', () => {
   let app: SoapCalculatorApplication;
   let client: Client;
 
-  before('setupApplication', async () => {
+  before(async function givenApplication() {
     ({app, client} = await setupApplication());
   });
 

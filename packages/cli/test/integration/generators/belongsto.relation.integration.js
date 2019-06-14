@@ -43,8 +43,8 @@ describe('lb4 relation', function() {
   // eslint-disable-next-line no-invalid-this
   this.timeout(50000);
 
-  beforeEach('reset sandbox', async () => {
-    await sandbox.reset();
+  beforeEach(function resetSandbox() {
+    return sandbox.reset();
   });
 
   // special cases regardless of the repository type

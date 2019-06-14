@@ -15,11 +15,11 @@ describe('CoffeeShopApplication', () => {
   let app: CoffeeShopApplication;
   let client: Client;
 
-  before('setupApplication', async () => {
+  before(async function givenApplication() {
     ({app, client} = await setupApplication());
   });
 
-  after('closes application', async () => {
+  after(async function closeApplication() {
     if (app) await app.stop();
   });
 

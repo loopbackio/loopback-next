@@ -24,7 +24,9 @@ describe('cloneExampleFromGitHub (SLOW)', function() {
   // eslint-disable-next-line no-invalid-this
   this.timeout(20000);
 
-  beforeEach('reset sandbox', () => sandbox.reset());
+  beforeEach(function resetSandbox() {
+    return sandbox.reset();
+  });
 
   it('extracts project files', async () => {
     const outDir = await downloadAndExtractExample(VALID_EXAMPLE, SANDBOX_PATH);

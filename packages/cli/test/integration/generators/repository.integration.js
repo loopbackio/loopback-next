@@ -24,7 +24,7 @@ describe('lb4 repository', function() {
   // eslint-disable-next-line no-invalid-this
   this.timeout(30000);
 
-  beforeEach('reset sandbox', async () => {
+  beforeEach(async function resetSandbox() {
     await sandbox.reset();
   });
 

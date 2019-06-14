@@ -32,7 +32,7 @@ describe('openapi-generator specific files', () => {
     SANDBOX_PATH,
     'src/controllers/metadata.controller.ts',
   );
-  after('reset sandbox', async () => {
+  after(async function resetSandbox() {
     await sandbox.reset();
   });
 

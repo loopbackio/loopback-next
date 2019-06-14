@@ -34,7 +34,7 @@ class TestContext extends Context {
 
 describe('Context', () => {
   let ctx: TestContext;
-  beforeEach('given a context', createContext);
+  beforeEach(createContext);
 
   describe('observer subscription', () => {
     let nonMatchingObserver: ContextObserver;

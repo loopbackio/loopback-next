@@ -22,7 +22,9 @@ describe('service booter unit tests', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let stub: sinon.SinonStub<[any?, ...any[]], void>;
 
-  beforeEach('reset sandbox', () => sandbox.reset());
+  beforeEach(function resetSandbox() {
+    return sandbox.reset();
+  });
   beforeEach(getApp);
   beforeEach(createStub);
   afterEach(restoreStub);

@@ -26,7 +26,7 @@ const INFO_CONTROLLER = 'controllers.info';
 
 describe('Context bindings - Injecting dependencies of classes', () => {
   let ctx: Context;
-  beforeEach('given a context', createContext);
+  beforeEach(createContext);
 
   it('injects constructor args', async () => {
     ctx.bind('application.name').to('CodeHub');

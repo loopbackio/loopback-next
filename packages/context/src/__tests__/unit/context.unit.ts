@@ -68,7 +68,7 @@ describe('Context constructor', () => {
 
 describe('Context', () => {
   let ctx: TestContext;
-  beforeEach('given a context', createContext);
+  beforeEach(createContext);
 
   describe('bind', () => {
     it('adds a binding into the registry', () => {

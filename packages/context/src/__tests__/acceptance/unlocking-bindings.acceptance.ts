@@ -4,14 +4,16 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, Binding} from '../..';
+import {Binding, Context} from '../..';
 
 describe(`Context bindings - Unlocking bindings`, () => {
   describe('Unlocking a locked binding', () => {
     let ctx: Context;
     let binding: Binding;
-    before('given a context', createContext);
-    before('and a bound key `foo` that is locked', createLockedBinding);
+    before(createContext);
+    before(function givenBoundAndLockedKeyFoo() {
+      createLockedBinding();
+    });
 
     describe('when the binding', () => {
       context('is unlocked', () => {

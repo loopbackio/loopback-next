@@ -6,7 +6,7 @@ describe('PingController', () => {
   let app: <%= project.applicationName %>;
   let client: Client;
 
-  before('setupApplication', async () => {
+  before(async function givenApplication() {
     ({app, client} = await setupApplication());
   });
 

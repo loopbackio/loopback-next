@@ -10,7 +10,7 @@ describe('Context bindings - contexts inheritance', () => {
   let parentCtx: Context;
   let childCtx: Context;
 
-  beforeEach('given a parent and a child context', createParentAndChildContext);
+  beforeEach(createParentAndChildContext);
 
   it('child inherits values bound in parent', () => {
     parentCtx.bind('foo').to('bar');

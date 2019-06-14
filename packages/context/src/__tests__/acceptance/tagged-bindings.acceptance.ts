@@ -4,12 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, Binding} from '../..';
+import {Binding, Context} from '../..';
 
 describe('Context bindings - Tagged bindings', () => {
   let ctx: Context;
   let binding: Binding;
-  before('given a context', createContext);
+  before(createContext);
   before(createBinding);
 
   describe('tag', () => {

@@ -26,7 +26,7 @@ describe('booter-lb3app', () => {
     }));
   });
 
-  after('closes application', async () => {
+  after(async function closeApplication() {
     if (app) await app.stop();
   });
 

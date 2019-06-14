@@ -38,7 +38,9 @@ describe('model-generator extending BaseGenerator', baseTests);
 describe('generator-loopback4:model', tests);
 
 describe('lb4 model integration', () => {
-  beforeEach('reset sandbox', () => sandbox.reset());
+  beforeEach(function resetSandbox() {
+    return sandbox.reset();
+  });
 
   it('does not run without package.json', () => {
     return expect(

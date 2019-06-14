@@ -33,7 +33,7 @@ describe('tsdocs', function() {
     'pkg2.md',
   ];
 
-  before('remove apidocs', () => {
+  before(function removeApidocs() {
     fs.emptyDirSync(APIDOCS_ROOT);
     fs.emptyDirSync(SITE_APIDOCS_ROOT);
     fs.emptyDirSync(path.join(MONOREPO_ROOT, 'packages/pkg1/docs'));

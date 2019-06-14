@@ -21,7 +21,7 @@ const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
 const sandbox = new TestSandbox(SANDBOX_PATH);
 
 describe('lb4 service', () => {
-  beforeEach('reset sandbox', async () => {
+  beforeEach(async function resetSandbox() {
     await sandbox.reset();
   });
 

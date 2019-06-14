@@ -41,7 +41,7 @@ describe('openapi-generator specific files', () => {
     'src/models/perform-search-response-body.model.ts',
   );
 
-  after('reset sandbox', async () => {
+  after(async function resetSandbox() {
     await sandbox.reset();
   });
 

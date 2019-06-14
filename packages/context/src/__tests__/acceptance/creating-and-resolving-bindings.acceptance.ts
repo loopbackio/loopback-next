@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, BindingKey} from '../..';
+import {BindingKey, Context} from '../..';
 
 describe('Context bindings - Creating and resolving bindings', () => {
   let ctx: Context;
-  before('given a context', createContext);
+  before(createContext);
 
   describe('Simple bindings', () => {
     describe('when a simple binding', () => {

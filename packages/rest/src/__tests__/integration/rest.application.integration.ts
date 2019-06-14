@@ -172,7 +172,7 @@ describe('RestApplication (integration)', () => {
   });
 
   context('mounting an Express router on a LoopBack application', async () => {
-    beforeEach('set up RestApplication', async () => {
+    beforeEach(async function setupRestApplication() {
       givenApplication();
       await restApp.start();
       client = createRestAppClient(restApp);

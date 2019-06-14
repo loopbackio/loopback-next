@@ -4,18 +4,18 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Client} from '@loopback/testlab';
-import {setupExpressApplication} from './test-helper';
 import {ExpressServer} from '../../server';
+import {setupExpressApplication} from './test-helper';
 
 describe('ExpressApplication', () => {
   let server: ExpressServer;
   let client: Client;
 
-  before('setupApplication', async () => {
+  before(async function givenApplication() {
     ({server, client} = await setupExpressApplication());
   });
 
-  after('closes application', async () => {
+  after(async function closeApplication() {
     await server.stop();
   });
 

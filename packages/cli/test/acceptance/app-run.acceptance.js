@@ -23,7 +23,7 @@ describe('app-generator (SLOW)', function() {
     outdir: sandbox,
   };
 
-  before('scaffold a new application', async function createAppProject() {
+  before(async function createAppProject() {
     // Increase the timeout to 1 minute to accommodate slow CI build machines
     // eslint-disable-next-line no-invalid-this
     this.timeout(60 * 1000);
@@ -35,7 +35,7 @@ describe('app-generator (SLOW)', function() {
       .withPrompts(props);
   });
 
-  before('install dependencies', async function installDependencies() {
+  before(async function installDependencies() {
     // Run `lerna bootstrap --scope @loopback/sandbox-app --include-filtered-dependencies`
     // WARNING: It takes a while to run `lerna bootstrap`
     // eslint-disable-next-line no-invalid-this

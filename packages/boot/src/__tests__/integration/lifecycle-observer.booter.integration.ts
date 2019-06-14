@@ -22,7 +22,9 @@ describe('lifecycle script booter integration tests', () => {
 
   let app: BooterApp;
 
-  beforeEach('reset sandbox', () => sandbox.reset());
+  beforeEach(function resetSandbox() {
+    return sandbox.reset();
+  });
   beforeEach(getApp);
 
   it('boots life cycle observers when app.boot() is called', async () => {

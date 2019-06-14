@@ -16,7 +16,9 @@ describe('service booter integration tests', () => {
 
   let app: BooterApp;
 
-  beforeEach('reset sandbox', () => sandbox.reset());
+  beforeEach(function resetSandbox() {
+    return sandbox.reset();
+  });
   beforeEach(getApp);
 
   it('boots services when app.boot() is called', async () => {

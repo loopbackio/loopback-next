@@ -18,7 +18,9 @@ describe('interceptor script booter integration tests', () => {
 
   let app: BooterApp;
 
-  beforeEach('reset sandbox', () => sandbox.reset());
+  beforeEach(function resetSandbox() {
+    return sandbox.reset();
+  });
   beforeEach(buildAppWithInterceptors);
 
   it('boots global interceptors when app.boot() is called', async () => {

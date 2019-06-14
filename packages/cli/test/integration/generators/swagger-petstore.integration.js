@@ -36,7 +36,7 @@ describe('openapi-generator specific files', () => {
   const newPetModel = path.resolve(SANDBOX_PATH, 'src/models/new-pet.model.ts');
   const errorModel = path.resolve(SANDBOX_PATH, 'src/models/error.model.ts');
 
-  after('reset sandbox', async () => {
+  after(async function resetSandbox() {
     await sandbox.reset();
   });
 

@@ -4,14 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, BoundValue} from '../..';
+import {BoundValue, Context} from '../..';
 
 describe('Context bindings - Finding bindings', () => {
   let ctx: Context;
 
   describe('Finding all binding', () => {
-    before('given a context', createContext);
-    before('with two simple bindings', () => {
+    before(createContext);
+    before(function givenTwoSimpleBindings() {
       createBinding('foo', 'bar');
       createBinding('baz', 'qux');
     });
@@ -28,8 +28,8 @@ describe('Context bindings - Finding bindings', () => {
   });
 
   describe('Finding bindings by pattern', () => {
-    before('given a context', createContext);
-    before('with namespaced bindings', () => {
+    before(createContext);
+    before(function givenNamespacedBindings() {
       createBinding('my.foo', 'bar');
       createBinding('my.baz', 'qux');
       createBinding('ur.quux', 'quuz');
@@ -46,8 +46,8 @@ describe('Context bindings - Finding bindings', () => {
   });
 
   describe('Finding bindings by tag', () => {
-    before('given a context', createContext);
-    before('with tagged bindings', createTaggedBindings);
+    before(createContext);
+    before(createTaggedBindings);
 
     describe('when I find binding by tag', () => {
       it('returns all bindings matching the tag', () => {

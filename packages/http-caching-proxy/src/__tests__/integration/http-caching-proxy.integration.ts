@@ -26,7 +26,9 @@ describe('HttpCachingProxy', () => {
   let proxy: HttpCachingProxy;
   after(stopProxy);
 
-  beforeEach('clean cache dir', async () => await rimraf(CACHE_DIR));
+  beforeEach(async function cleanCacheDir() {
+    await rimraf(CACHE_DIR);
+  });
 
   it('provides "url" property when running', async () => {
     await givenRunningProxy();
