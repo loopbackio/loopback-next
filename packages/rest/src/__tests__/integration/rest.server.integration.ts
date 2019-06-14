@@ -41,7 +41,7 @@ describe('RestServer (integration)', () => {
   describe('url/rootUrl properties', () => {
     let server: RestServer;
 
-    afterEach('shuts down server', async () => {
+    afterEach(async function shutDownServer() {
       if (!server) return;
       await server.stop();
       expect(server.url).to.be.undefined();

@@ -21,7 +21,9 @@ import {
 
 describe('HttpHandler mounted as an express router', () => {
   let client: Client;
-  beforeEach(givenLoopBackApp);
+  beforeEach(async function setupApp() {
+    await givenLoopBackApp();
+  });
   beforeEach(givenExpressApp);
   beforeEach(givenClient);
 

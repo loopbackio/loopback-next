@@ -16,7 +16,9 @@ describe('REST Explorer mounted as an express router', () => {
   let client: Client;
   let expressApp: express.Application;
   let server: RestServer;
-  beforeEach(givenLoopBackApp);
+  beforeEach(async function setupApp() {
+    await givenLoopBackApp();
+  });
   beforeEach(givenExpressApp);
   beforeEach(givenClient);
 
