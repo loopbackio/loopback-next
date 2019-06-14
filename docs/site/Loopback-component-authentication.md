@@ -651,6 +651,6 @@ export class MyApplication extends BootMixin(
   }
 ```
 
-You can find a working example of a LoopBack 4 shopping cart application with
-JWT authentication
-[here](https://github.com/strongloop/loopback4-example-shopping).
+You can find a **completed example** and **tutorial** of a LoopBack 4 shopping
+cart application with JWT authentication
+[here](./tutorials/authentication/Authentication-Tutorial.md).
