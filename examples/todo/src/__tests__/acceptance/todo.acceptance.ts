@@ -43,7 +43,7 @@ describe('TodoApplication', () => {
     await todoRepo.deleteAll();
   });
 
-  it('creates a todo', async function() {
+  it('creates a todo', async function(this: Mocha.Context) {
     // Set timeout to 30 seconds as `post /todos` triggers geocode look up
     // over the internet and it takes more than 2 seconds
     // eslint-disable-next-line no-invalid-this
@@ -67,7 +67,7 @@ describe('TodoApplication', () => {
       .expect(422);
   });
 
-  it('creates an address-based reminder', async function() {
+  it('creates an address-based reminder', async function(this: Mocha.Context) {
     // Increase the timeout to accommodate slow network connections
     // eslint-disable-next-line no-invalid-this
     this.timeout(30000);

@@ -11,7 +11,7 @@ import {
 } from '../../../services/calculator.service';
 import {givenAConnectedDataSource} from '../../helpers';
 
-describe('CalculatorService', function() {
+describe('CalculatorService', function(this: Mocha.Suite) {
   let calculatorService: CalculatorService;
 
   // The calculator soap server is hosted in the cloud and it takes some time

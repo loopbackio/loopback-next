@@ -15,7 +15,7 @@ const DUMMY_STATS: EndpointStats = {
   requestsPerSecond: 1000,
 };
 
-describe('Benchmark (SLOW)', function() {
+describe('Benchmark (SLOW)', function(this: Mocha.Suite) {
   // Unfortunately, the todo app requires one second to start
   // eslint-disable-next-line no-invalid-this
   this.timeout(5000);

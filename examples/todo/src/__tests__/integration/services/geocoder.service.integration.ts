@@ -12,7 +12,7 @@ import {
   HttpCachingProxy,
 } from '../../helpers';
 
-describe('GeoLookupService', function() {
+describe('GeoLookupService', function(this: Mocha.Suite) {
   // eslint-disable-next-line no-invalid-this
   this.timeout(30 * 1000);
 

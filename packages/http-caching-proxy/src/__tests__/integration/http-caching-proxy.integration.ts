@@ -40,7 +40,7 @@ describe('HttpCachingProxy', () => {
     expect(proxy.url).to.match(/not-running/);
   });
 
-  it('proxies HTTP requests', async function() {
+  it('proxies HTTP requests', async function(this: Mocha.Context) {
     // Increase the timeout to accomodate slow network connections
     // eslint-disable-next-line no-invalid-this
     this.timeout(30000);
@@ -56,7 +56,7 @@ describe('HttpCachingProxy', () => {
     expect(result.body).to.containEql('example');
   });
 
-  it('proxies HTTPs requests (no tunneling)', async function() {
+  it('proxies HTTPs requests (no tunneling)', async function(this: Mocha.Context) {
     // Increase the timeout to accomodate slow network connections
     // eslint-disable-next-line no-invalid-this
     this.timeout(30000);
