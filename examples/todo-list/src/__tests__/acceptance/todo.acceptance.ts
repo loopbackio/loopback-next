@@ -4,17 +4,17 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {EntityNotFoundError} from '@loopback/repository';
-import {
-  Client,
-  createRestAppClient,
-  expect,
-  givenHttpServerConfig,
-  toJSON,
-} from '@loopback/testlab';
+import {Client, createRestAppClient, expect, toJSON} from '@loopback/testlab';
 import {TodoListApplication} from '../../application';
-import {Todo, TodoList} from '../../models/';
-import {TodoRepository, TodoListRepository} from '../../repositories/';
-import {givenTodo, givenTodoList} from '../helpers';
+import {Todo} from '../../models/';
+import {TodoListRepository, TodoRepository} from '../../repositories/';
+import {
+  givenRunningApplicationWithCustomConfiguration,
+  givenTodo,
+  givenTodoInstance,
+  givenTodoListInstance,
+  givenTodoRepositories,
+} from '../helpers';
 
 describe('TodoListApplication', () => {
   let app: TodoListApplication;
@@ -22,10 +22,14 @@ describe('TodoListApplication', () => {
   let todoRepo: TodoRepository;
   let todoListRepo: TodoListRepository;
 
-  before(givenRunningApplicationWithCustomConfiguration);
+  before(async () => {
+    app = await givenRunningApplicationWithCustomConfiguration();
+  });
   after(() => app.stop());
 
-  before(givenTodoRepositories);
+  before(async () => {
+    ({todoRepo, todoListRepo} = await givenTodoRepositories(app));
+  });
   before(() => {
     client = createRestAppClient(app);
   });
@@ -58,7 +62,7 @@ describe('TodoListApplication', () => {
     let persistedTodo: Todo;
 
     beforeEach(async () => {
-      persistedTodo = await givenTodoInstance();
+      persistedTodo = await givenTodoInstance(todoRepo);
     });
 
     it('gets a todo by ID', () => {
@@ -128,17 +132,17 @@ describe('TodoListApplication', () => {
     });
 
     it('returns the owning todo-list', async () => {
-      const list = await givenTodoListInstance();
-      const todo = await givenTodoInstance({todoListId: list.id});
+      const list = await givenTodoListInstance(todoListRepo);
+      const todo = await givenTodoInstance(todoRepo, {todoListId: list.id});
 
       await client.get(`/todos/${todo.id}/todo-list`).expect(200, toJSON(list));
     });
   });
 
   it('queries todos with a filter', async () => {
-    await givenTodoInstance({title: 'wake up', isComplete: true});
+    await givenTodoInstance(todoRepo, {title: 'wake up', isComplete: true});
 
-    const todoInProgress = await givenTodoInstance({
+    const todoInProgress = await givenTodoInstance(todoRepo, {
       title: 'go to sleep',
       isComplete: false,
     });
@@ -149,48 +153,17 @@ describe('TodoListApplication', () => {
       .expect(200, [toJSON(todoInProgress)]);
   });
 
-  /*
-   ============================================================================
-   TEST HELPERS
-   These functions help simplify setup of your test fixtures so that your tests
-   can:
-   - operate on a "clean" environment each time (a fresh in-memory database)
-   - avoid polluting the test with large quantities of setup logic to keep
-   them clear and easy to read
-   - keep them DRY (who wants to write the same stuff over and over?)
-   ============================================================================
-   */
+  it('includes TodoList in query result', async () => {
+    const list = await givenTodoListInstance(todoListRepo);
+    const todo = await givenTodoInstance(todoRepo, {todoListId: list.id});
+    const filter = JSON.stringify({include: [{relation: 'todoList'}]});
 
-  async function givenRunningApplicationWithCustomConfiguration() {
-    app = new TodoListApplication({
-      rest: givenHttpServerConfig(),
+    const response = await client.get('/todos').query({filter: filter});
+
+    expect(response.body).to.have.length(1);
+    expect(response.body[0]).to.deepEqual({
+      ...toJSON(todo),
+      todoList: toJSON(list),
     });
-
-    await app.boot();
-
-    /**
-     * Override default config for DataSource for testing so we don't write
-     * test data to file when using the memory connector.
-     */
-    app.bind('datasources.config.db').to({
-      name: 'db',
-      connector: 'memory',
-    });
-
-    // Start Application
-    await app.start();
-  }
-
-  async function givenTodoRepositories() {
-    todoRepo = await app.getRepository(TodoRepository);
-    todoListRepo = await app.getRepository(TodoListRepository);
-  }
-
-  async function givenTodoInstance(todo?: Partial<Todo>) {
-    return await todoRepo.create(givenTodo(todo));
-  }
-
-  async function givenTodoListInstance(data?: Partial<TodoList>) {
-    return await todoListRepo.create(givenTodoList(data));
-  }
+  });
 });

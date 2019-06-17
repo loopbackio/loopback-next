@@ -3,7 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {juggler} from '@loopback/repository';
+import {givenHttpServerConfig} from '@loopback/testlab';
+import {TodoListApplication} from '../application';
 import {Todo, TodoList, TodoListImage} from '../models';
+import {
+  TodoListImageRepository,
+  TodoListRepository,
+  TodoRepository,
+} from '../repositories';
 
 /*
  ==============================================================================
@@ -69,3 +77,84 @@ export function givenTodoListImage(todoListImage?: Partial<TodoListImage>) {
   );
   return new TodoListImage(data);
 }
+
+export async function givenRunningApplicationWithCustomConfiguration() {
+  const app = new TodoListApplication({
+    rest: givenHttpServerConfig(),
+  });
+
+  await app.boot();
+
+  /**
+   * Override default config for DataSource for testing so we don't write
+   * test data to file when using the memory connector.
+   */
+  app.bind('datasources.config.db').to({
+    name: 'db',
+    connector: 'memory',
+  });
+
+  // Start Application
+  await app.start();
+  return app;
+}
+
+export async function givenTodoRepositories(app: TodoListApplication) {
+  const todoRepo = await app.getRepository(TodoRepository);
+  const todoListRepo = await app.getRepository(TodoListRepository);
+  return {todoRepo, todoListRepo};
+}
+
+export async function givenTodoListRepositories(app: TodoListApplication) {
+  const todoListRepo = await app.getRepository(TodoListRepository);
+  const todoListImageRepo = await app.getRepository(TodoListImageRepository);
+  return {todoListRepo, todoListImageRepo};
+}
+
+export async function givenTodoInstance(
+  todoRepo: TodoRepository,
+  todo?: Partial<Todo>,
+) {
+  return await todoRepo.create(givenTodo(todo));
+}
+
+export async function givenTodoListInstance(
+  todoListRepo: TodoListRepository,
+  data?: Partial<TodoList>,
+) {
+  return await todoListRepo.create(givenTodoList(data));
+}
+
+export async function givenTodoListImageInstance(
+  todoListImageRepo: TodoListImageRepository,
+  data?: Partial<TodoListImage>,
+) {
+  return await todoListImageRepo.create(givenTodoListImage(data));
+}
+
+export async function givenEmptyDatabase() {
+  const todoRepo: TodoRepository = new TodoRepository(
+    testdb,
+    async () => todoListRepo,
+  );
+
+  const todoListRepo: TodoListRepository = new TodoListRepository(
+    testdb,
+    async () => todoRepo,
+    async () => todoListImageRepo,
+  );
+
+  const todoListImageRepo: TodoListImageRepository = new TodoListImageRepository(
+    testdb,
+    async () => todoListRepo,
+  );
+
+  await todoRepo.deleteAll();
+  await todoListRepo.deleteAll();
+  await todoListImageRepo.deleteAll();
+}
+
+export const testdb: juggler.DataSource = new juggler.DataSource({
+  name: 'db',
+  connector: 'memory',
+});

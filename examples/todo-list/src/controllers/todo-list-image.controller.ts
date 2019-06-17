@@ -3,10 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {TodoListRepository} from '../repositories';
 import {repository} from '@loopback/repository';
-import {param, post, requestBody, get} from '@loopback/rest';
+import {get, getModelSchemaRef, param, post, requestBody} from '@loopback/rest';
 import {TodoListImage} from '../models';
+import {TodoListRepository} from '../repositories';
 
 export class TodoListImageController {
   constructor(
@@ -32,7 +32,11 @@ export class TodoListImageController {
     responses: {
       '200': {
         description: 'The image belonging to the TodoList',
-        content: {'application/json': {schema: {'x-ts-type': TodoListImage}}},
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(TodoListImage, {includeRelations: true}),
+          },
+        },
       },
     },
   })

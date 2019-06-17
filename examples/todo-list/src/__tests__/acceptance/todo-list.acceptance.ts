@@ -4,27 +4,33 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {EntityNotFoundError} from '@loopback/repository';
-import {
-  Client,
-  createRestAppClient,
-  expect,
-  givenHttpServerConfig,
-  toJSON,
-} from '@loopback/testlab';
+import {Client, createRestAppClient, expect, toJSON} from '@loopback/testlab';
 import {TodoListApplication} from '../../application';
 import {TodoList} from '../../models/';
-import {TodoListRepository} from '../../repositories/';
-import {givenTodoList} from '../helpers';
+import {TodoListRepository, TodoRepository} from '../../repositories/';
+import {
+  givenRunningApplicationWithCustomConfiguration,
+  givenTodoInstance,
+  givenTodoList,
+  givenTodoListInstance,
+  givenTodoRepositories,
+} from '../helpers';
 
 describe('TodoListApplication', () => {
   let app: TodoListApplication;
   let client: Client;
+  let todoRepo: TodoRepository;
   let todoListRepo: TodoListRepository;
 
-  before(givenRunningApplicationWithCustomConfiguration);
+  before(async () => {
+    app = await givenRunningApplicationWithCustomConfiguration();
+  });
   after(() => app.stop());
 
-  before(givenTodoListRepository);
+  before(async () => {
+    ({todoRepo, todoListRepo} = await givenTodoRepositories(app));
+  });
+
   before(() => {
     client = createRestAppClient(app);
   });
@@ -90,8 +96,14 @@ describe('TodoListApplication', () => {
 
     it('updates selected todoLists', async () => {
       await todoListRepo.deleteAll();
-      await givenTodoListInstance({title: 'red-list', color: 'red'});
-      await givenTodoListInstance({title: 'green-list', color: 'green'});
+      await givenTodoListInstance(todoListRepo, {
+        title: 'red-list',
+        color: 'red',
+      });
+      await givenTodoListInstance(todoListRepo, {
+        title: 'green-list',
+        color: 'green',
+      });
 
       const response = await client
         .patch('/todo-lists')
@@ -118,7 +130,7 @@ describe('TodoListApplication', () => {
     let persistedTodoList: TodoList;
 
     beforeEach(async () => {
-      persistedTodoList = await givenTodoListInstance();
+      persistedTodoList = await givenTodoListInstance(todoListRepo);
     });
 
     it('gets a todoList by ID', async () => {
@@ -165,9 +177,9 @@ describe('TodoListApplication', () => {
   });
 
   it('queries todo-lists with a filter', async () => {
-    await givenTodoListInstance({title: 'day', color: 'white'});
+    await givenTodoListInstance(todoListRepo, {title: 'day', color: 'white'});
 
-    const listInBlack = await givenTodoListInstance({
+    const listInBlack = await givenTodoListInstance(todoListRepo, {
       title: 'night',
       color: 'black',
     });
@@ -176,6 +188,20 @@ describe('TodoListApplication', () => {
       .get('/todo-lists')
       .query({filter: {where: {color: 'black'}}})
       .expect(200, [toJSON(listInBlack)]);
+  });
+
+  it('includes Todos in query result', async () => {
+    const list = await givenTodoListInstance(todoListRepo);
+    const todo = await givenTodoInstance(todoRepo, {todoListId: list.id});
+    const filter = JSON.stringify({include: [{relation: 'todos'}]});
+
+    const response = await client.get('/todo-lists').query({filter: filter});
+
+    expect(response.body).to.have.length(1);
+    expect(response.body[0]).to.deepEqual({
+      ...toJSON(list),
+      todos: [toJSON(todo)],
+    });
   });
 
   /*
@@ -190,38 +216,10 @@ describe('TodoListApplication', () => {
    ============================================================================
    */
 
-  async function givenRunningApplicationWithCustomConfiguration() {
-    app = new TodoListApplication({
-      rest: givenHttpServerConfig(),
-    });
-
-    await app.boot();
-
-    /**
-     * Override default config for DataSource for testing so we don't write
-     * test data to file when using the memory connector.
-     */
-    app.bind('datasources.config.db').to({
-      name: 'db',
-      connector: 'memory',
-    });
-
-    // Start Application
-    await app.start();
-  }
-
-  async function givenTodoListRepository() {
-    todoListRepo = await app.getRepository(TodoListRepository);
-  }
-
-  async function givenTodoListInstance(todoList?: Partial<TodoList>) {
-    return await todoListRepo.create(givenTodoList(todoList));
-  }
-
   function givenMutlipleTodoListInstances() {
     return Promise.all([
-      givenTodoListInstance(),
-      givenTodoListInstance({title: 'so many things to do wow'}),
+      givenTodoListInstance(todoListRepo),
+      givenTodoListInstance(todoListRepo, {title: 'so many things to do wow'}),
     ]);
   }
 });

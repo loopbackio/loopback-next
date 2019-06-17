@@ -8,6 +8,7 @@ import {
   del,
   get,
   getFilterSchemaFor,
+  getModelSchemaRef,
   param,
   patch,
   post,
@@ -36,15 +37,20 @@ export class TodoController {
     responses: {
       '200': {
         description: 'Todo model instance',
-        content: {'application/json': {schema: {'x-ts-type': Todo}}},
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(Todo, {includeRelations: true}),
+          },
+        },
       },
     },
   })
   async findTodoById(
     @param.path.number('id') id: number,
-    @param.query.boolean('items') items?: boolean,
+    @param.query.object('filter', getFilterSchemaFor(Todo))
+    filter?: Filter<Todo>,
   ): Promise<Todo> {
-    return await this.todoRepo.findById(id);
+    return await this.todoRepo.findById(id, filter);
   }
 
   @get('/todos', {
@@ -53,7 +59,10 @@ export class TodoController {
         description: 'Array of Todo model instances',
         content: {
           'application/json': {
-            schema: {type: 'array', items: {'x-ts-type': Todo}},
+            schema: {
+              type: 'array',
+              items: getModelSchemaRef(Todo, {includeRelations: true}),
+            },
           },
         },
       },
