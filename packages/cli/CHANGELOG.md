@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.16.1...@loopback/cli@1.17.0) (2019-06-17)
+
+
+### Bug Fixes
+
+* **cli:** change class/file naming convention. Add prompt msg ([0b2a45b](https://github.com/strongloop/loopback-next/commit/0b2a45b))
+* discover uses owner instead of schema ([ed588b6](https://github.com/strongloop/loopback-next/commit/ed588b6))
+* remove forgotten references to tslint ([faa0a92](https://github.com/strongloop/loopback-next/commit/faa0a92))
+* **cli:** discover prompt exits after generating ([8ba0dd5](https://github.com/strongloop/loopback-next/commit/8ba0dd5))
+
+
+### Features
+
+* **build:** enable incremental compilation ([2120712](https://github.com/strongloop/loopback-next/commit/2120712))
+
+
+
+
+
 ## [1.16.1](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.16.0...@loopback/cli@1.16.1) (2019-06-06)
 
 **Note:** Version bump only for package @loopback/cli

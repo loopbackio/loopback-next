@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-rpc-server@1.2.1...@loopback/example-rpc-server@1.2.2) (2019-06-17)
+
+
+### Bug Fixes
+
+* remove forgotten references to tslint ([faa0a92](https://github.com/strongloop/loopback-next/commit/faa0a92))
+
+
+
+
+
 ## [1.2.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-rpc-server@1.2.0...@loopback/example-rpc-server@1.2.1) (2019-06-06)
 
 **Note:** Version bump only for package @loopback/example-rpc-server

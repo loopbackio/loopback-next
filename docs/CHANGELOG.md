@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.22.1...@loopback/docs@1.23.0) (2019-06-17)
+
+
+### Bug Fixes
+
+* **docs:** fix soap calculator controller parameters ([d549c44](https://github.com/strongloop/loopback-next/commit/d549c44))
+* **docs:** update soap calculator controller ([71d9d64](https://github.com/strongloop/loopback-next/commit/71d9d64))
+
+
+### Features
+
+* **rest:** expose request body validation options to be configurable ([00ec6df](https://github.com/strongloop/loopback-next/commit/00ec6df))
+
+
+
+
+
 ## [1.22.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.22.0...@loopback/docs@1.22.1) (2019-06-06)
 
 **Note:** Version bump only for package @loopback/docs

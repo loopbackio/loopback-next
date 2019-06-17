@@ -3,6 +3,61 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.7.1...@loopback/build@2.0.0) (2019-06-17)
+
+
+### Bug Fixes
+
+* **build:** remove `lb-tslint` from README ([be89eb6](https://github.com/strongloop/loopback-next/commit/be89eb6))
+
+
+### Features
+
+* **build:** add support for dryRun to `--copy-resources` ([f8f078f](https://github.com/strongloop/loopback-next/commit/f8f078f))
+* **build:** enable incremental compilation ([2120712](https://github.com/strongloop/loopback-next/commit/2120712))
+* **build:** read outDir from tsconfig when copying resources ([4f947a3](https://github.com/strongloop/loopback-next/commit/4f947a3))
+* **build:** remove lb-tslint ([e9e4bba](https://github.com/strongloop/loopback-next/commit/e9e4bba))
+* **build:** remove strong-docs based `lb-apidocs` helper ([871457e](https://github.com/strongloop/loopback-next/commit/871457e))
+* **build:** remove support for multi-dist compilation ([f6fcfe7](https://github.com/strongloop/loopback-next/commit/f6fcfe7))
+
+
+### BREAKING CHANGES
+
+* **build:** We are no longer choosing outDir for you, you have to
+specify it explicitly. It is no longer possible to specify compilation target
+via non-option argument like `lb-tsc es2017`.
+
+Migration guide:
+
+- Modify your `tsconfig.json` file and configure `dist` via `compilerOptions.outDir`
+
+- If you are using target different from `es2017`, then configure it via
+  `compilerOptions.target`.
+
+- Remove `es2017` and `--outDir dist` from lb-tsc arguments.
+
+- Ensure that the output directory is listed in `lb-clean` arguments,
+  e.g. call `lb-clean dist`.
+
+- When calling `lb-mocha`, replace `DIST` with the actual outDir value,
+  typically `dist`.
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+* **build:** `lb-apidocs` helper is no longer available. Please switch
+to Microsoft api-extractor and api-documenter.
+* **build:** `lb-tslint` helper is no longer available. Please
+install `tslint` directly as a dependency and invoke `tslint` instead
+of `lb-tslint`.
+
+Alternatively, you can migrate from tslint to eslint and use the
+recently introduced helper `lb-eslint`.
+
+Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
+
+
+
+
+
 ## [1.7.1](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.7.0...@loopback/build@1.7.1) (2019-06-06)
 
 **Note:** Version bump only for package @loopback/build

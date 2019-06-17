@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.8](https://github.com/strongloop/loopback-next/compare/@loopback/sandbox-example@1.0.7...@loopback/sandbox-example@1.0.8) (2019-06-17)
+
+
+### Bug Fixes
+
+* remove forgotten references to tslint ([faa0a92](https://github.com/strongloop/loopback-next/commit/faa0a92))
+
+
+
+
+
 ## [1.0.7](https://github.com/strongloop/loopback-next/compare/@loopback/sandbox-example@1.0.6...@loopback/sandbox-example@1.0.7) (2019-06-03)
 
 **Note:** Version bump only for package @loopback/sandbox-example

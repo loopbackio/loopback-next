@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.1...@loopback/example-lb3-application@1.1.2) (2019-06-17)
+
+
+### Bug Fixes
+
+* mention required loopback-boot version for mounting a lb3 app ([d76ad45](https://github.com/strongloop/loopback-next/commit/d76ad45))
+* remove forgotten references to tslint ([faa0a92](https://github.com/strongloop/loopback-next/commit/faa0a92))
+
+
+
+
+
 ## [1.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-lb3-application@1.1.0...@loopback/example-lb3-application@1.1.1) (2019-06-06)
 
 **Note:** Version bump only for package @loopback/example-lb3-application

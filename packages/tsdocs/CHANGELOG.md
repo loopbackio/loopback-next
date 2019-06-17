@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@1.1.1...@loopback/tsdocs@1.2.0) (2019-06-17)
+
+
+### Bug Fixes
+
+* **tsdocs:** escape constructor name to avoid Jekyll site generation issue ([d15c744](https://github.com/strongloop/loopback-next/commit/d15c744))
+
+
+### Features
+
+* **tsdocs:** make it possible to run api-extractor on a package ([6eb5773](https://github.com/strongloop/loopback-next/commit/6eb5773))
+
+
+
+
+
 ## [1.1.1](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@1.1.0...@loopback/tsdocs@1.1.1) (2019-06-06)
 
 **Note:** Version bump only for package @loopback/tsdocs

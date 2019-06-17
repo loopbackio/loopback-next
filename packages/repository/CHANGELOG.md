@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.6.1...@loopback/repository@1.7.0) (2019-06-17)
+
+
+### Features
+
+* **repository-json-schema:** enhance getJsonSchema to describe navigational properties ([7801f59](https://github.com/strongloop/loopback-next/commit/7801f59)), closes [#2630](https://github.com/strongloop/loopback-next/issues/2630)
+
+
+
+
+
 ## [1.6.1](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.6.0...@loopback/repository@1.6.1) (2019-06-06)
 
 **Note:** Version bump only for package @loopback/repository

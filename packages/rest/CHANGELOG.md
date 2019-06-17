@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.15.0...@loopback/rest@1.16.0) (2019-06-17)
+
+
+### Features
+
+* **rest:** expose request body validation options to be configurable ([00ec6df](https://github.com/strongloop/loopback-next/commit/00ec6df))
+* **rest:** set nullable to true by default for AJV validations ([73ad6ad](https://github.com/strongloop/loopback-next/commit/73ad6ad))
+
+
+
+
+
 # [1.15.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.14.0...@loopback/rest@1.15.0) (2019-06-06)
 
 

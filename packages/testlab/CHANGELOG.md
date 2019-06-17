@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.5.0...@loopback/testlab@1.6.0) (2019-06-17)
+
+
+### Features
+
+* **testlab:** add `skipIf` helper ([48f3703](https://github.com/strongloop/loopback-next/commit/48f3703))
+
+
+
+
+
 # [1.5.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.4.0...@loopback/testlab@1.5.0) (2019-06-06)
 
 
