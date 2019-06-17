@@ -5,6 +5,7 @@
 packages/cli/generators/*/templates
 packages/tsdocs/fixtures/monorepo/docs
 packages/tsdocs/fixtures/monorepo/**/dist
+packages/tsdocs/fixtures/monorepo/**/docs
 **/.sandbox
 packages/*/dist
 examples/*/dist
