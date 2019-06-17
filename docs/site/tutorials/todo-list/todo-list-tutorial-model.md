@@ -71,7 +71,8 @@ Model TodoList was created in src/models/
 ```
 
 Now that we have our new model, we need to define its relation with the `Todo`
-model. Add the following import statements and property to the `TodoList` model:
+model. Add the following import statements and property to the `TodoList` model
+and update the `TodoListRelations` interface to include `todos`:
 
 {% include code-caption.html content="src/models/todo-list.model.ts" %}
 
@@ -101,7 +102,8 @@ suggests, `@hasMany()` informs LoopBack 4 that a todo list can have many todo
 items.
 
 To complement `TodoList`'s relationship to `Todo`, we'll add in the `todoListId`
-property on the `Todo` model to define the relation on both ends:
+property on the `Todo` model to define the relation on both ends, along with
+updating the `TodoRelations` interface to include `todoList`:
 
 {% include code-caption.html content="src/models/todo.model.ts" %}
 

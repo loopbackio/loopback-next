@@ -38,6 +38,89 @@ Controller TodoList was created in src/controllers/
 
 And voilà! We now have a set of basic APIs for todo-lists, just like that!
 
+#### Inclusion of Related Models
+
+In order to get our related `Todo`s for each `TodoList`, let's update the
+`schema`.
+
+In `src/models/todo-list.controller.ts`, first import `getModelSchemaRef` from
+`@loopback/rest`.
+
+Then update the following `schema`s in `responses`'s `content`:
+
+{% include code-caption.html content="src/models/todo-list.controller.ts" %}
+
+```ts
+@get('/todo-lists', {
+  responses: {
+    '200': {
+      description: 'Array of TodoList model instances',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'array',
+            items: getModelSchemaRef(TodoList, {includeRelations: true}),
+          },
+        },
+      },
+    },
+  },
+})
+async find(/*...*/) {/*...*/}
+
+@get('/todo-lists/{id}', {
+  responses: {
+    '200': {
+      description: 'TodoList model instance',
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(TodoList, {includeRelations: true}),
+        },
+      },
+    },
+  },
+})
+async findById(/*...*/) {/*...*/}
+```
+
+Let's also update it in the `TodoController`:
+
+{% include code-caption.html content="src/models/todo.controller.ts" %}
+
+```ts
+@get('/todos', {
+  responses: {
+    '200': {
+      description: 'Array of Todo model instances',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'array',
+            items: getModelSchemaRef(Todo, {includeRelations: true}),
+          },
+        },
+      },
+    },
+  },
+})
+})
+async findTodos(/*...*/) {/*...*/}
+
+@get('/todos/{id}', {
+  responses: {
+    '200': {
+      description: 'Todo model instance',
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Todo, {includeRelations: true}),
+        },
+      },
+    },
+  },
+})
+async findTodoById(/*...*/) {/*...*/}
+```
+
 ### Create TodoList's Todo controller
 
 For the controller handling `Todos` of a `TodoList`, we'll start with an empty
@@ -196,8 +279,8 @@ export class TodoListTodoController {
 }
 ```
 
-Check out our todo-list example to see the full source code generated for
-TodoListTodo controller:
+Check out our `TodoList` example to see the full source code generated for the
+`TodoListTodo` controller:
 [src/controllers/todo-list-todo.controller.ts](https://github.com/strongloop/loopback-next/blob/master/examples/todo-list/src/controllers/todo-list-todo.controller.ts)
 
 ### Try it out

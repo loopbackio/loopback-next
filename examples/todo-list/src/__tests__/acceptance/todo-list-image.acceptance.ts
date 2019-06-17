@@ -3,31 +3,33 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  Client,
-  createRestAppClient,
-  expect,
-  givenHttpServerConfig,
-  toJSON,
-} from '@loopback/testlab';
+import {Client, createRestAppClient, expect, toJSON} from '@loopback/testlab';
 import {TodoListApplication} from '../../application';
 import {TodoList, TodoListImage} from '../../models/';
-import {TodoListRepository, TodoListImageRepository} from '../../repositories/';
-import {givenTodoListImage, givenTodoList} from '../helpers';
+import {TodoListImageRepository, TodoListRepository} from '../../repositories/';
+import {
+  givenRunningApplicationWithCustomConfiguration,
+  givenTodoListImage,
+  givenTodoListInstance,
+  givenTodoListRepositories,
+} from '../helpers';
 
 describe('TodoListApplication', () => {
   let app: TodoListApplication;
   let client: Client;
-  let todoListImageRepo: TodoListImageRepository;
   let todoListRepo: TodoListRepository;
+  let todoListImageRepo: TodoListImageRepository;
 
   let persistedTodoList: TodoList;
 
-  before(givenRunningApplicationWithCustomConfiguration);
+  before(async () => {
+    app = await givenRunningApplicationWithCustomConfiguration();
+  });
   after(() => app.stop());
 
-  before(givenTodoListImageRepository);
-  before(givenTodoListRepository);
+  before(async () => {
+    ({todoListRepo, todoListImageRepo} = await givenTodoListRepositories(app));
+  });
   before(() => {
     client = createRestAppClient(app);
   });
@@ -38,7 +40,7 @@ describe('TodoListApplication', () => {
   });
 
   beforeEach(async () => {
-    persistedTodoList = await givenTodoListInstance();
+    persistedTodoList = await givenTodoListInstance(todoListRepo);
   });
 
   it('creates image for a todoList', async () => {
@@ -84,34 +86,6 @@ describe('TodoListApplication', () => {
    ============================================================================
    */
 
-  async function givenRunningApplicationWithCustomConfiguration() {
-    app = new TodoListApplication({
-      rest: givenHttpServerConfig(),
-    });
-
-    await app.boot();
-
-    /**
-     * Override default config for DataSource for testing so we don't write
-     * test data to file when using the memory connector.
-     */
-    app.bind('datasources.config.db').to({
-      name: 'db',
-      connector: 'memory',
-    });
-
-    // Start Application
-    await app.start();
-  }
-
-  async function givenTodoListImageRepository() {
-    todoListImageRepo = await app.getRepository(TodoListImageRepository);
-  }
-
-  async function givenTodoListRepository() {
-    todoListRepo = await app.getRepository(TodoListRepository);
-  }
-
   async function givenTodoListImageInstanceOfTodoList(
     id: typeof TodoList.prototype.id,
     todoListImage?: Partial<TodoListImage>,
@@ -119,9 +93,5 @@ describe('TodoListApplication', () => {
     const data = givenTodoListImage(todoListImage);
     delete data.todoListId;
     return await todoListRepo.image(id).create(data);
-  }
-
-  async function givenTodoListInstance(todoList?: Partial<TodoList>) {
-    return await todoListRepo.create(givenTodoList(todoList));
   }
 });

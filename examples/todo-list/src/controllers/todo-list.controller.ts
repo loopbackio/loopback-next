@@ -14,6 +14,7 @@ import {
   del,
   get,
   getFilterSchemaFor,
+  getModelSchemaRef,
   getWhereSchemaFor,
   param,
   patch,
@@ -60,7 +61,14 @@ export class TodoListController {
     responses: {
       '200': {
         description: 'Array of TodoList model instances',
-        content: {'application/json': {schema: {'x-ts-type': TodoList}}},
+        content: {
+          'application/json': {
+            schema: {
+              type: 'array',
+              items: getModelSchemaRef(TodoList, {includeRelations: true}),
+            },
+          },
+        },
       },
     },
   })
@@ -91,12 +99,20 @@ export class TodoListController {
     responses: {
       '200': {
         description: 'TodoList model instance',
-        content: {'application/json': {schema: {'x-ts-type': TodoList}}},
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(TodoList, {includeRelations: true}),
+          },
+        },
       },
     },
   })
-  async findById(@param.path.number('id') id: number): Promise<TodoList> {
-    return await this.todoListRepository.findById(id);
+  async findById(
+    @param.path.number('id') id: number,
+    @param.query.object('filter', getFilterSchemaFor(TodoList))
+    filter?: Filter<TodoList>,
+  ): Promise<TodoList> {
+    return await this.todoListRepository.findById(id, filter);
   }
 
   @patch('/todo-lists/{id}', {
