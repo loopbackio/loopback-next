@@ -3,17 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [2.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@2.1.2...@loopback/authentication@2.2.0) (2019-06-18)
-
-
-### Features
-
-* adapter that wraps strategy ([b5a0ed7](https://github.com/strongloop/loopback-next/commit/b5a0ed7))
-
-
-
-
-
 ## [2.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@2.1.1...@loopback/authentication@2.1.2) (2019-06-17)
 
 **Note:** Version bump only for package @loopback/authentication
