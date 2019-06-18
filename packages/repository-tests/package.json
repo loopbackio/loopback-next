@@ -28,7 +28,7 @@
   "dependencies": {
     "@loopback/testlab": "^1.5.0",
     "@types/debug": "^4.1.4",
-    "debug": "^4.0.1"
+    "debug": "^4.1.1"
   },
   "peerDependencies": {
     "@loopback/repository": "^1.6.1"
