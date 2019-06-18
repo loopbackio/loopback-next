@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<<<<<<< HEAD
 ## [1.10.1](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.10.0...@loopback/core@1.10.1) (2019-09-06)
 
 **Note:** Version bump only for package @loopback/core
@@ -91,6 +92,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 ## [1.8.3](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.8.2...@loopback/core@1.8.3) (2019-06-20)
+=======
+## [1.8.3](https://github.com/strongloop/loopback-next/compare/@loopback/core@1.8.2...@loopback/core@1.8.3) (2019-06-18)
+>>>>>>> 683debc8... chore: publish release
 
 **Note:** Version bump only for package @loopback/core
 

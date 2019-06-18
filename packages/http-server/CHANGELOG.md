@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<<<<<<< HEAD
 ## [1.4.12](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.4.11...@loopback/http-server@1.4.12) (2019-09-06)
 
 **Note:** Version bump only for package @loopback/http-server
@@ -87,6 +88,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 ## [1.4.2](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.4.1...@loopback/http-server@1.4.2) (2019-06-20)
+=======
+## [1.4.2](https://github.com/strongloop/loopback-next/compare/@loopback/http-server@1.4.1...@loopback/http-server@1.4.2) (2019-06-18)
+>>>>>>> 683debc8... chore: publish release
 
 **Note:** Version bump only for package @loopback/http-server
 

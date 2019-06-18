@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<<<<<<< HEAD
 # [3.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@2.2.0...@loopback/authentication@3.0.0) (2019-09-06)
 
 
@@ -21,10 +22,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 # [2.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@2.1.11...@loopback/authentication@2.2.0) (2019-09-03)
+=======
+# [2.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@2.1.2...@loopback/authentication@2.2.0) (2019-06-18)
+>>>>>>> 683debc8... chore: publish release
 
 
 ### Features
 
+<<<<<<< HEAD
 * **authentication:** allow AuthenticationStrategyProvider to get extended ([c88a424](https://github.com/strongloop/loopback-next/commit/c88a424))
 
 
@@ -98,6 +103,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ## [2.1.3](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@2.1.2...@loopback/authentication@2.1.3) (2019-06-20)
 
 **Note:** Version bump only for package @loopback/authentication
+=======
+* adapter that wraps strategy ([b5a0ed7](https://github.com/strongloop/loopback-next/commit/b5a0ed7))
+>>>>>>> 683debc8... chore: publish release
 
 
 

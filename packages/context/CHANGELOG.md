@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<<<<<<< HEAD
 ## [1.22.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.22.0...@loopback/context@1.22.1) (2019-09-06)
 
 
@@ -35,6 +36,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 ## [1.21.3](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.21.2...@loopback/context@1.21.3) (2019-08-15)
+=======
+## [1.19.2](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.19.1...@loopback/context@1.19.2) (2019-06-18)
+>>>>>>> 683debc8... chore: publish release
 
 **Note:** Version bump only for package @loopback/context
 
@@ -42,6 +46,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+<<<<<<< HEAD
 ## [1.21.2](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.21.1...@loopback/context@1.21.2) (2019-08-15)
 
 **Note:** Version bump only for package @loopback/context
@@ -108,6 +113,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+=======
+>>>>>>> 683debc8... chore: publish release
 ## [1.19.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.19.0...@loopback/context@1.19.1) (2019-06-17)
 
 **Note:** Version bump only for package @loopback/context

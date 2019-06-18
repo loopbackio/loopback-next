@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<<<<<<< HEAD
 # [1.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.7.5...@loopback/testlab@1.8.0) (2019-09-06)
 
 
@@ -85,6 +86,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 ## [1.6.1](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.6.0...@loopback/testlab@1.6.1) (2019-06-20)
+=======
+## [1.6.1](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.6.0...@loopback/testlab@1.6.1) (2019-06-18)
+>>>>>>> 683debc8... chore: publish release
 
 **Note:** Version bump only for package @loopback/testlab
 

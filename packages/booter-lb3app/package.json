@@ -1,6 +1,10 @@
 {
   "name": "@loopback/booter-lb3app",
+<<<<<<< HEAD
   "version": "1.2.13",
+=======
+  "version": "1.2.3",
+>>>>>>> 683debc8... chore: publish release
   "description": "Boot a LoopBack 3 application in a LoopBack 4 project",
   "engines": {
     "node": ">=8.9"
@@ -29,6 +33,7 @@
     "@loopback/rest": "^1.10.3"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@loopback/boot": "^1.5.5",
     "@loopback/build": "^2.0.10",
     "@loopback/core": "^1.10.1",
@@ -39,6 +44,18 @@
     "@types/debug": "^4.1.5",
     "@types/lodash": "^4.14.138",
     "@types/node": "^10.14.18",
+=======
+    "@loopback/boot": "^1.4.2",
+    "@loopback/build": "^2.0.1",
+    "@loopback/core": "^1.8.3",
+    "@loopback/eslint-config": "^1.1.3",
+    "@loopback/repository": "^1.7.1",
+    "@loopback/rest": "^1.16.1",
+    "@loopback/testlab": "^1.6.1",
+    "@types/debug": "^4.1.4",
+    "@types/lodash": "^4.14.134",
+    "@types/node": "^10.14.8",
+>>>>>>> 683debc8... chore: publish release
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "helmet": "^3.21.0",

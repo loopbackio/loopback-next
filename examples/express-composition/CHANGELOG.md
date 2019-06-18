@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<<<<<<< HEAD
 ## [1.5.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.5.5...@loopback/example-express-composition@1.5.6) (2019-09-06)
 
 **Note:** Version bump only for package @loopback/example-express-composition
@@ -93,6 +94,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 ## [1.4.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.4.2...@loopback/example-express-composition@1.4.3) (2019-06-20)
+=======
+## [1.4.3](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.4.2...@loopback/example-express-composition@1.4.3) (2019-06-18)
+>>>>>>> 683debc8... chore: publish release
 
 **Note:** Version bump only for package @loopback/example-express-composition
 
