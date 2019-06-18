@@ -1,10 +1,14 @@
 {
   "name": "@loopback/testlab",
 <<<<<<< HEAD
+<<<<<<< HEAD
   "version": "1.8.0",
 =======
   "version": "1.6.1",
 >>>>>>> 683debc8... chore: publish release
+=======
+  "version": "1.6.0",
+>>>>>>> 36caec8f... Revert "chore: publish release"
   "description": "A collection of test utilities we use to write LoopBack tests.",
   "engines": {
     "node": ">=8.9"
@@ -35,12 +39,17 @@
   },
   "devDependencies": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "@loopback/build": "^2.0.10",
     "@loopback/eslint-config": "^4.0.2",
     "@types/node": "^10.14.18"
 =======
     "@loopback/build": "^2.0.1",
     "@loopback/eslint-config": "^1.1.3",
+=======
+    "@loopback/build": "^2.0.0",
+    "@loopback/eslint-config": "^1.1.2",
+>>>>>>> 36caec8f... Revert "chore: publish release"
     "@types/node": "^10.14.8"
 >>>>>>> 683debc8... chore: publish release
   },

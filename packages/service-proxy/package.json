@@ -1,10 +1,14 @@
 {
   "name": "@loopback/service-proxy",
 <<<<<<< HEAD
+<<<<<<< HEAD
   "version": "1.3.5",
 =======
   "version": "1.2.3",
 >>>>>>> 683debc8... chore: publish release
+=======
+  "version": "1.2.2",
+>>>>>>> 36caec8f... Revert "chore: publish release"
   "description": "Service integration for LoopBack 4",
   "engines": {
     "node": ">=8.9"
@@ -28,6 +32,7 @@
   "license": "MIT",
   "devDependencies": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "@loopback/build": "^2.0.10",
     "@loopback/eslint-config": "^4.0.2",
     "@loopback/testlab": "^1.8.0",
@@ -41,11 +46,16 @@
     "@loopback/build": "^2.0.1",
     "@loopback/eslint-config": "^1.1.3",
     "@loopback/testlab": "^1.6.1",
+=======
+    "@loopback/build": "^2.0.0",
+    "@loopback/eslint-config": "^1.1.2",
+    "@loopback/testlab": "^1.6.0",
+>>>>>>> 36caec8f... Revert "chore: publish release"
     "@types/node": "^10.14.8"
   },
   "dependencies": {
-    "@loopback/context": "^1.19.2",
-    "@loopback/core": "^1.8.3",
+    "@loopback/context": "^1.19.1",
+    "@loopback/core": "^1.8.2",
     "loopback-datasource-juggler": "^4.8.0"
 >>>>>>> 683debc8... chore: publish release
   },

@@ -7,10 +7,14 @@
     "directory": "packages/build"
   },
 <<<<<<< HEAD
+<<<<<<< HEAD
   "version": "2.0.10",
 =======
   "version": "2.0.1",
 >>>>>>> 683debc8... chore: publish release
+=======
+  "version": "2.0.0",
+>>>>>>> 36caec8f... Revert "chore: publish release"
   "engines": {
     "node": ">=8.9"
   },
@@ -20,10 +24,14 @@
   "license": "MIT",
   "dependencies": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "@loopback/eslint-config": "^4.0.2",
 =======
     "@loopback/eslint-config": "^1.1.3",
 >>>>>>> 683debc8... chore: publish release
+=======
+    "@loopback/eslint-config": "^1.1.2",
+>>>>>>> 36caec8f... Revert "chore: publish release"
     "@types/mocha": "^5.2.7",
     "@types/node": "^10.14.18",
     "@typescript-eslint/eslint-plugin": "^2.3.0",

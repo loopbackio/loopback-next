@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.30.0...@loopback/docs@2.0.0) (2019-09-06)
 
 
@@ -172,6 +173,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 =======
 >>>>>>> 683debc8... chore: publish release
+=======
+>>>>>>> 36caec8f... Revert "chore: publish release"
 # [1.23.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.22.1...@loopback/docs@1.23.0) (2019-06-17)
 
 

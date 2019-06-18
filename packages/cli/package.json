@@ -1,10 +1,14 @@
 {
   "name": "@loopback/cli",
 <<<<<<< HEAD
+<<<<<<< HEAD
   "version": "1.21.6",
 =======
   "version": "1.17.1",
 >>>>>>> 683debc8... chore: publish release
+=======
+  "version": "1.17.0",
+>>>>>>> 36caec8f... Revert "chore: publish release"
   "description": "Yeoman generator for LoopBack 4",
   "homepage": "https://github.com/strongloop/loopback-next/tree/master/packages/cli",
   "author": "IBM Corp.",
@@ -27,6 +31,7 @@
   ],
   "devDependencies": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "@loopback/build": "^2.0.10",
     "@loopback/eslint-config": "^4.0.2",
     "@loopback/testlab": "^1.8.0",
@@ -35,6 +40,11 @@
     "@loopback/eslint-config": "^1.1.3",
     "@loopback/testlab": "^1.6.1",
 >>>>>>> 683debc8... chore: publish release
+=======
+    "@loopback/build": "^2.0.0",
+    "@loopback/eslint-config": "^1.1.2",
+    "@loopback/testlab": "^1.6.0",
+>>>>>>> 36caec8f... Revert "chore: publish release"
     "@types/ejs": "^2.6.3",
     "@types/node": "^10.14.18",
     "glob": "^7.1.4",
@@ -130,8 +140,12 @@
       "@loopback/eslint-config": "^4.0.2",
 =======
       "@loopback/rest-explorer": "^1.2.2",
+<<<<<<< HEAD
       "@loopback/eslint-config": "^1.1.3",
 >>>>>>> 683debc8... chore: publish release
+=======
+      "@loopback/eslint-config": "^1.1.2",
+>>>>>>> 36caec8f... Revert "chore: publish release"
       "express-composition": "^1.1.0",
       "@loopback/example-express-composition": "^1.5.6",
       "@loopback/example-greeter-extension": "^1.3.13",
@@ -145,6 +159,7 @@
       "@typescript-eslint/parser": "^2.1.0",
       "eslint-plugin-eslint-plugin": "^2.1.0",
 <<<<<<< HEAD
+<<<<<<< HEAD
       "eslint-config-prettier": "^6.2.0",
       "@loopback/repository-tests": "^0.4.4",
       "@loopback/extension-health": "^0.2.5",
@@ -155,6 +170,9 @@
       "eslint-config-prettier": "^5.0.0",
       "@loopback/authentication-passport": "^0.2.0"
 >>>>>>> 683debc8... chore: publish release
+=======
+      "eslint-config-prettier": "^5.0.0"
+>>>>>>> 36caec8f... Revert "chore: publish release"
     }
   },
   "copyright.owner": "IBM Corp.",

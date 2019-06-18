@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## [1.1.13](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeting-app@1.1.12...@loopback/example-greeting-app@1.1.13) (2019-09-06)
 
 **Note:** Version bump only for package @loopback/example-greeting-app
@@ -95,6 +96,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+=======
+>>>>>>> 36caec8f... Revert "chore: publish release"
 ## [1.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeting-app@1.1.1...@loopback/example-greeting-app@1.1.2) (2019-06-17)
 
 **Note:** Version bump only for package @loopback/example-greeting-app

@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # [3.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@2.2.0...@loopback/authentication@3.0.0) (2019-09-06)
 
 
@@ -111,6 +112,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+=======
+>>>>>>> 36caec8f... Revert "chore: publish release"
 ## [2.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@2.1.1...@loopback/authentication@2.1.2) (2019-06-17)
 
 **Note:** Version bump only for package @loopback/authentication

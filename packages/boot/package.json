@@ -1,10 +1,14 @@
 {
   "name": "@loopback/boot",
 <<<<<<< HEAD
+<<<<<<< HEAD
   "version": "1.5.5",
 =======
   "version": "1.4.2",
 >>>>>>> 683debc8... chore: publish release
+=======
+  "version": "1.4.1",
+>>>>>>> 36caec8f... Revert "chore: publish release"
   "description": "A collection of Booters for LoopBack 4 Applications",
   "engines": {
     "node": ">=8.9"
@@ -27,6 +31,7 @@
   "license": "MIT",
   "dependencies": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "@loopback/context": "^1.22.1",
     "@loopback/core": "^1.10.1",
     "@loopback/repository": "^1.13.1",
@@ -37,6 +42,12 @@
     "@loopback/core": "^1.8.3",
     "@loopback/repository": "^1.7.1",
     "@loopback/service-proxy": "^1.2.3",
+=======
+    "@loopback/context": "^1.19.1",
+    "@loopback/core": "^1.8.2",
+    "@loopback/repository": "^1.7.0",
+    "@loopback/service-proxy": "^1.2.2",
+>>>>>>> 36caec8f... Revert "chore: publish release"
     "@types/debug": "^4.1.4",
 >>>>>>> 683debc8... chore: publish release
     "@types/glob": "^7.1.1",
@@ -44,6 +55,7 @@
     "glob": "^7.1.4"
   },
   "devDependencies": {
+<<<<<<< HEAD
 <<<<<<< HEAD
     "@loopback/build": "^2.0.10",
     "@loopback/eslint-config": "^4.0.2",
@@ -57,6 +69,13 @@
     "@loopback/openapi-v3": "^1.6.3",
     "@loopback/rest": "^1.16.1",
     "@loopback/testlab": "^1.6.1",
+=======
+    "@loopback/build": "^2.0.0",
+    "@loopback/eslint-config": "^1.1.2",
+    "@loopback/openapi-v3": "^1.6.2",
+    "@loopback/rest": "^1.16.0",
+    "@loopback/testlab": "^1.6.0",
+>>>>>>> 36caec8f... Revert "chore: publish release"
     "@types/node": "^10.14.8"
 >>>>>>> 683debc8... chore: publish release
   },

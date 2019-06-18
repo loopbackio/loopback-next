@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@1.2.9...@loopback/tsdocs@1.3.0) (2019-09-06)
 
 
@@ -96,6 +97,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+=======
+>>>>>>> 36caec8f... Revert "chore: publish release"
 # [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/tsdocs@1.1.1...@loopback/tsdocs@1.2.0) (2019-06-17)
 
 
