@@ -58,7 +58,7 @@
     "@types/js-yaml": "^3.12.1",
     "@types/lodash": "^4.14.134",
     "@types/multer": "^1.3.7",
-    "@types/node": "^10.14.8",
+    "@types/node": "^10.14.9",
     "@types/on-finished": "^2.3.1",
     "@types/qs": "^6.5.3",
     "multer": "^1.4.1"

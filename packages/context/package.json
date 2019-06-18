@@ -29,7 +29,7 @@
     "@loopback/testlab": "^1.6.0",
     "@types/bluebird": "^3.5.27",
     "@types/debug": "^4.1.4",
-    "@types/node": "^10.14.8",
+    "@types/node": "^10.14.9",
     "@types/uuid": "^3.4.4",
     "bluebird": "^3.5.5"
   },

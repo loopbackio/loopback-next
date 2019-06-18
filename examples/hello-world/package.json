@@ -43,7 +43,7 @@
     "@loopback/build": "^2.0.0",
     "@loopback/eslint-config": "^1.1.2",
     "@loopback/testlab": "^1.6.0",
-    "@types/node": "^10.14.8",
+    "@types/node": "^10.14.9",
     "@typescript-eslint/eslint-plugin": "^1.10.2",
     "@typescript-eslint/parser": "^1.10.2",
     "eslint": "^5.16.0",
