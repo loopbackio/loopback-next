@@ -38,6 +38,8 @@ Taking the basic strategy exported from
 first create an instance of the basic strategy with your `verify` function.
 
 ```ts
+// Create a file named `my-basic-auth-strategy.ts` to define your strategy below
+
 import {BasicStrategy} from 'passport-http';
 
 function verify(username: string, password: string, cb: Function) {
@@ -52,9 +54,17 @@ calling `passport.use()`.
 2. Apply the adapter to the strategy
 
 ```ts
-const AUTH_STRATEGY_NAME = 'basic';
+// In file 'my-basic-auth-strategy.ts'
+import {BasicStrategy} from 'passport-http';
 
-const basicAuthStrategy = new StrategyAdapter(
+function verify(username: string, password: string, cb: Function) {
+  users.find(username, password, cb);
+}
+const basicStrategy = new BasicStrategy(verify);
+
+// Apply the adapter
+export const AUTH_STRATEGY_NAME = 'basic';
+export const basicAuthStrategy = new StrategyAdapter(
   // The configured basic strategy instance
   basicStrategy,
   // Give the strategy a name
@@ -70,6 +80,7 @@ const basicAuthStrategy = new StrategyAdapter(
 ```ts
 import {Application, CoreTags} from '@loopback/core';
 import {AuthenticationBindings} from '@loopback/authentication';
+import {basicAuthStrategy} from './my-basic-auth-strategy';
 
 app
   .bind('authentication.strategies.basicAuthStrategy')
@@ -79,6 +90,37 @@ app
       AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
   });
 ```
+
+4. Decorate your endpoint
+
+To authenticate your request with the basic strategy, decorate your controller
+function like:
+
+```ts
+import {AUTH_STRATEGY_NAME} from './my-basic-auth-strategy';
+
+class MyController {
+  constructor(
+    @inject(AuthenticationBindings.CURRENT_USER, {optional: true})
+    private user: UserProfile,
+  ) {}
+
+  // Define your strategy name as a constant so that
+  // it is consistent with the name you provide in the adapter
+  @authenticate(AUTH_STRATEGY_NAME)
+  async whoAmI(): Promise<string> {
+    return this.user.id;
+  }
+}
+```
+
+5. Add the authentication action to your sequence
+
+This part is same as registering a non-passport based strategy. Please make sure
+you follow the documentation
+[adding-an-authentication-action-to-a-custom-sequence](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html#adding-an-authentication-action-to-a-custom-sequence)
+to rewrite your sequence. You can also find a sample implementation in
+[this example tutorial](https://loopback.io/doc/en/lb4/Authentication-Tutorial.html#creating-a-custom-sequence-and-adding-the-authentication-action)
 
 ### With Provider
 
@@ -94,6 +136,8 @@ in
 Use `passport-http` as the example again:
 
 ```ts
+// Create a file named `my-basic-auth-strategy.ts` to define your strategy below
+
 class PassportBasicAuthProvider implements Provider<AuthenticationStrategy> {
   value(): AuthenticationStrategy {
     // The code that returns the converted strategy
@@ -113,6 +157,8 @@ The Provider should have two functions:
 So a full implementation of the provider is:
 
 ```ts
+// In file 'my-basic-auth-strategy.ts'
+
 import {BasicStrategy, BasicVerifyFunction} from 'passport-http';
 import {StrategyAdapter} from `@loopback/passport-adapter`;
 import {AuthenticationStrategy} from '@loopback/authentication';
@@ -174,6 +220,8 @@ To authenticate your request with the basic strategy, decorate your controller
 function like:
 
 ```ts
+import {AUTH_STRATEGY_NAME} from './my-basic-auth-strategy';
+
 class MyController {
   constructor(
     @inject(AuthenticationBindings.CURRENT_USER) private user: UserProfile,
@@ -187,3 +235,11 @@ class MyController {
   }
 }
 ```
+
+4. Add the authentication action to your sequence
+
+This part is same as registering a non-passport based strategy. Please make sure
+you follow the documentation
+[adding-an-authentication-action-to-a-custom-sequence](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html#adding-an-authentication-action-to-a-custom-sequence)
+to rewrite your sequence. You can also find a sample implementation in
+[this example tutorial](https://loopback.io/doc/en/lb4/Authentication-Tutorial.html#creating-a-custom-sequence-and-adding-the-authentication-action)
