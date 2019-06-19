@@ -8,7 +8,7 @@ permalink: /doc/en/lb4/Decorators_authenticate.html
 
 ## Authentication Decorator
 
-Syntax: `@authenticate(strategyName: string, options?: Object)`
+Syntax: `@authenticate(strategyName: string, options?: object)`
 
 Marks a controller method as needing an authenticated user. This decorator
 requires a strategy name as a parameter.
