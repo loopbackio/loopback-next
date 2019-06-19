@@ -3,32 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  authenticate,
-  AuthenticateFn,
-  AuthenticationBindings,
-  AuthenticationComponent,
-  UserProfile,
-} from '@loopback/authentication';
-import {inject} from '@loopback/context';
-import {Application, CoreTags} from '@loopback/core';
-import {anOpenApiSpec} from '@loopback/openapi-spec-builder';
-import {api, get} from '@loopback/openapi-v3';
-import {
-  FindRoute,
-  InvokeMethod,
-  ParseParams,
-  Reject,
-  RequestContext,
-  RestBindings,
-  RestComponent,
-  RestServer,
-  Send,
-  SequenceHandler,
-} from '@loopback/rest';
-import {Client, createClientForHandler} from '@loopback/testlab';
-import {BasicStrategy} from 'passport-http';
-import {StrategyAdapter} from '../../strategy-adapter';
+import { authenticate, AuthenticateFn, AuthenticationBindings, AuthenticationComponent, AUTHENTICATION_STRATEGY_NOT_FOUND, UserProfile, USER_PROFILE_NOT_FOUND } from '@loopback/authentication';
+import { inject } from '@loopback/context';
+import { Application, CoreTags } from '@loopback/core';
+import { anOpenApiSpec } from '@loopback/openapi-spec-builder';
+import { api, get } from '@loopback/openapi-v3';
+import { FindRoute, InvokeMethod, ParseParams, Reject, RequestContext, RestBindings, RestComponent, RestServer, Send, SequenceHandler } from '@loopback/rest';
+import { Client, createClientForHandler } from '@loopback/testlab';
+import { BasicStrategy } from 'passport-http';
+import { StrategyAdapter } from '../../strategy-adapter';
 const SequenceActions = RestBindings.SequenceActions;
 const AUTH_STRATEGY_NAME = 'basic';
 
@@ -66,22 +49,22 @@ describe('Basic Authentication', () => {
     class InfoController {
       @get('/status')
       status() {
-        return {running: true};
+        return { running: true };
       }
     }
 
     app.controller(InfoController);
     await whenIMakeRequestTo(server)
       .get('/status')
-      .expect(200, {running: true});
+      .expect(200, { running: true });
   });
 
   function givenUserRepository() {
     users = new UserRepository({
-      joe: {profile: {id: 'joe'}, password: '12345'},
-      Simpson: {profile: {id: 'sim123'}, password: 'alpha'},
-      Flinstone: {profile: {id: 'Flint'}, password: 'beta'},
-      George: {profile: {id: 'Curious'}, password: 'gamma'},
+      joe: { profile: { id: 'joe' }, password: '12345' },
+      Simpson: { profile: { id: 'sim123' }, password: 'alpha' },
+      Flinstone: { profile: { id: 'Flint' }, password: 'beta' },
+      George: { profile: { id: 'Curious' }, password: 'gamma' },
     });
   }
 
@@ -134,7 +117,7 @@ describe('Basic Authentication', () => {
     class MyController {
       constructor(
         @inject(AuthenticationBindings.CURRENT_USER) private user: UserProfile,
-      ) {}
+      ) { }
 
       @authenticate(AUTH_STRATEGY_NAME)
       async whoAmI(): Promise<string> {
@@ -155,14 +138,14 @@ describe('Basic Authentication', () => {
         @inject(SequenceActions.REJECT) protected reject: Reject,
         @inject(AuthenticationBindings.AUTH_ACTION)
         protected authenticateRequest: AuthenticateFn,
-      ) {}
+      ) { }
 
       async handle(context: RequestContext) {
         try {
-          const {request, response} = context;
+          const { request, response } = context;
           const route = this.findRoute(request);
 
-          // Authenticate
+          //call authentication action
           await this.authenticateRequest(request);
 
           // Authentication successful, proceed to invoke controller
@@ -170,6 +153,34 @@ describe('Basic Authentication', () => {
           const result = await this.invoke(route, args);
           this.send(response, result);
         } catch (error) {
+          //
+          // The authentication action utilizes a strategy resolver to find
+          // an authentication strategy by name, and then it calls
+          // strategy.authenticate(request).
+          //
+          // The strategy resolver throws a non-http error if it cannot
+          // resolve the strategy. When the strategy resolver obtains
+          // a strategy, it calls strategy.authenticate(request) which
+          // is expected to return a user profile. If the user profile
+          // is undefined, then it throws a non-http error.
+          //
+          // It is necessary to catch these errors and add HTTP-specific status
+          // code property.
+          //
+          // Errors thrown by the strategy implementations already come
+          // with statusCode set.
+          //
+          // In the future, we want to improve `@loopback/rest` to provide
+          // an extension point allowing `@loopback/authentication` to contribute
+          // mappings from error codes to HTTP status codes, so that application
+          // don't have to map codes themselves.
+          if (
+            error.code === AUTHENTICATION_STRATEGY_NOT_FOUND ||
+            error.code === USER_PROFILE_NOT_FOUND
+          ) {
+            Object.assign(error, { statusCode: 401 /* Unauthorized */ });
+          }
+
           this.reject(context, error);
           return;
         }
@@ -186,8 +197,8 @@ describe('Basic Authentication', () => {
 
 class UserRepository {
   constructor(
-    readonly list: {[key: string]: {profile: UserProfile; password: string}},
-  ) {}
+    readonly list: { [key: string]: { profile: UserProfile; password: string } },
+  ) { }
   find(username: string, password: string, cb: Function): void {
     const userList = this.list;
     function search(key: string) {
