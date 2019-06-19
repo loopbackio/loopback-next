@@ -231,6 +231,9 @@ a user can print out his/her user profile by performing a `GET` request on the
   // ...
 ```
 
+{% include note.html content="Since this controller method is obtaining CURRENT_USER via [method injection](../../Dependency-injection.md#method-injection) (instead of [constructor injection](../../Dependency-injection.md#constructor-injection)) and this method is decorated with the <b>@authenticate</b> decorator, there is no need to specify <b>@inject(AuthenticationBindings.CURRENT_USER, {optional:true})</b>. See [Using the Authentication Decorator](../../Loopback-component-authentication.md#using-the-authentication-decorator) for details.
+" %}
+
 The `/users/me` endpoint is decorated with
 
 ```ts
