@@ -25,4 +25,3 @@ export * from './writer';
 // export all errors from external http-errors package
 import * as HttpErrors from 'http-errors';
 export {HttpErrors};
-

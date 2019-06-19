@@ -170,7 +170,7 @@ export type HttpContext = HandlerContext & Context;
 /**
  * Interceptor for REST operations
  */
-export type RestInterceptor = GenericInterceptor<HandlerContext & Context>;
+export type RestInterceptor = GenericInterceptor<HttpContext>;
 
 /**
  * Action for REST request/response processing sequence
