@@ -4,7 +4,13 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Entity, ModelDefinition, STRING} from '../../../';
+import {
+  Entity,
+  HasManyDefinition,
+  ModelDefinition,
+  RelationType,
+  STRING,
+} from '../../../';
 
 describe('model', () => {
   const customerDef = new ModelDefinition('Customer');
@@ -191,6 +197,102 @@ describe('model', () => {
         {label: 'home', number: '111-222-3333'},
         {label: 'work', number: '111-222-5555'},
       ],
+    });
+  });
+
+  it('includes navigational properties in JSON (strict-mode)', () => {
+    class Category extends Entity {
+      id: number;
+      products: Product[];
+
+      constructor(data: Partial<Category>) {
+        super(data);
+      }
+    }
+
+    class Product extends Entity {
+      id: number;
+      categoryId: number;
+
+      constructor(data: Partial<Product>) {
+        super(data);
+      }
+    }
+
+    Category.definition = new ModelDefinition('Category')
+      .addSetting('strict', true)
+      .addProperty('id', {type: 'number', id: true, required: true})
+      .addRelation(<HasManyDefinition>{
+        name: 'products',
+        type: RelationType.hasMany,
+        targetsMany: true,
+
+        source: Category,
+        keyFrom: 'id',
+
+        target: () => Product,
+        keyTo: 'categoryId',
+      });
+
+    const category = new Category({
+      id: 1,
+      products: [new Product({id: 2, categoryId: 1})],
+    });
+
+    const data = category.toJSON();
+    expect(data).to.deepEqual({
+      id: 1,
+      products: [{id: 2, categoryId: 1}],
+    });
+  });
+
+  it('includes navigational properties in JSON (non-strict-mode)', () => {
+    class Category extends Entity {
+      id: number;
+      products: Product[];
+
+      // allow additional (free-form) properties
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      [propName: string]: any;
+
+      constructor(data: Partial<Category>) {
+        super(data);
+      }
+    }
+
+    class Product extends Entity {
+      id: number;
+      categoryId: number;
+
+      constructor(data: Partial<Product>) {
+        super(data);
+      }
+    }
+
+    Category.definition = new ModelDefinition('Category')
+      .addSetting('strict', false)
+      .addProperty('id', {type: 'number', id: true, required: true})
+      .addRelation(<HasManyDefinition>{
+        name: 'products',
+        type: RelationType.hasMany,
+        targetsMany: true,
+
+        source: Category,
+        keyFrom: 'id',
+
+        target: () => Product,
+        keyTo: 'categoryId',
+      });
+
+    const category = new Category({
+      id: 1,
+      products: [new Product({id: 2, categoryId: 1})],
+    });
+
+    const data = category.toJSON();
+    expect(data).to.deepEqual({
+      id: 1,
+      products: [{id: 2, categoryId: 1}],
     });
   });
 
