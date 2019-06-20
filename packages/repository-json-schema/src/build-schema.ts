@@ -16,8 +16,42 @@ import {JSONSchema6 as JSONSchema} from 'json-schema';
 import {JSON_SCHEMA_KEY, MODEL_TYPE_KEYS} from './keys';
 
 export interface JsonSchemaOptions {
+  /**
+   * Set this flag if you want the schema to define navigational properties
+   * for model relations.
+   */
   includeRelations?: boolean;
+
+  /**
+   * Set this flag to mark all model properties as optional. This is typically
+   * used to describe request body of PATCH endpoints.
+   */
+  partial?: boolean;
+
+  /**
+   * @private
+   */
   visited?: {[key: string]: JSONSchema};
+}
+
+/**
+ * @private
+ */
+export function buildModelCacheKey(options: JsonSchemaOptions = {}): string {
+  const flags = Object.keys(options);
+
+  // Backwards compatibility
+  // Preserve cache keys "modelOnly" and "modelWithRelations"
+  if (flags.length === 0) {
+    return MODEL_TYPE_KEYS.ModelOnly;
+  } else if (flags.length === 1 && options.includeRelations) {
+    return MODEL_TYPE_KEYS.ModelWithRelations;
+  }
+
+  // New key schema: concatenate names of options (flags) that are set.
+  // For example: "includeRelations+partial"
+  flags.sort();
+  return flags.join('+');
 }
 
 /**
@@ -32,10 +66,7 @@ export function getJsonSchema(
   // In the near future the metadata will be an object with
   // different titles as keys
   const cached = MetadataInspector.getClassMetadata(JSON_SCHEMA_KEY, ctor);
-  const key =
-    options && options.includeRelations
-      ? MODEL_TYPE_KEYS.ModelWithRelations
-      : MODEL_TYPE_KEYS.ModelOnly;
+  const key = buildModelCacheKey(options);
   let schema = cached && cached[key];
 
   if (!schema) {
@@ -252,6 +283,9 @@ export function modelToJsonSchema(
   }
 
   let title = meta.title || ctor.name;
+  if (options.partial) {
+    title += 'Partial';
+  }
   if (options.includeRelations) {
     title += 'WithRelations';
   }
@@ -279,7 +313,7 @@ export function modelToJsonSchema(
     result.properties[p] = metaToJsonProperty(metaProperty);
 
     // handling 'required' metadata
-    if (metaProperty.required) {
+    if (metaProperty.required && !options.partial) {
       result.required = result.required || [];
       result.required.push(p);
     }
