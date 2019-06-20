@@ -10,6 +10,7 @@ import {
 } from '@loopback/repository';
 import {expect} from '@loopback/testlab';
 import {
+  buildModelCacheKey,
   getNavigationalPropertyForRelation,
   metaToJsonProperty,
   stringTypeToWrapper,
@@ -212,6 +213,32 @@ describe('build-schema', () => {
           },
         ),
       ).to.throw(/targetsMany attribute missing for Test/);
+    });
+  });
+
+  describe('buildModelCacheKey', () => {
+    it('returns "modelOnly" when no options were provided', () => {
+      const key = buildModelCacheKey();
+      expect(key).to.equal('modelOnly');
+    });
+
+    it('returns "modelWithRelations" when a single option "includeRelations" is set', () => {
+      const key = buildModelCacheKey({includeRelations: true});
+      expect(key).to.equal('modelWithRelations');
+    });
+
+    it('returns "partial" when a single option "partial" is set', () => {
+      const key = buildModelCacheKey({partial: true});
+      expect(key).to.equal('partial');
+    });
+
+    it('returns concatenated option names otherwise', () => {
+      const key = buildModelCacheKey({
+        // important: object keys are defined in reverse order
+        partial: true,
+        includeRelations: true,
+      });
+      expect(key).to.equal('includeRelations+partial');
     });
   });
 });

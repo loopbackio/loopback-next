@@ -6,6 +6,11 @@
 import {MetadataAccessor} from '@loopback/metadata';
 import {JSONSchema6 as JSONSchema} from 'json-schema';
 
+/**
+ * TODO(semver-major) remove these constants in the next major version
+ * @deprecated Use the helper `buildModelCacheKey` to obtain the cache key
+ * for a given set of schema options.
+ */
 export const enum MODEL_TYPE_KEYS {
   ModelOnly = 'modelOnly',
   ModelWithRelations = 'modelWithRelations',
@@ -15,6 +20,6 @@ export const enum MODEL_TYPE_KEYS {
  * Metadata key used to set or retrieve repository JSON Schema
  */
 export const JSON_SCHEMA_KEY = MetadataAccessor.create<
-  {[options in MODEL_TYPE_KEYS]: JSONSchema},
+  {[key: string]: JSONSchema},
   ClassDecorator
 >('loopback:json-schema');

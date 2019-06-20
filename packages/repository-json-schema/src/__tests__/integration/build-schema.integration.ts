@@ -910,5 +910,27 @@ describe('build-schema', () => {
         title: 'Category',
       });
     });
+
+    it('emits all properties as optional when the option "partial" is set', () => {
+      @model()
+      class Product extends Entity {
+        @property({id: true, required: true})
+        id: number;
+
+        @property({required: true})
+        name: string;
+
+        @property()
+        optionalDescription: string;
+      }
+
+      const originalSchema = getJsonSchema(Product);
+      expect(originalSchema.required).to.deepEqual(['id', 'name']);
+      expect(originalSchema.title).to.equal('Product');
+
+      const partialSchema = getJsonSchema(Product, {partial: true});
+      expect(partialSchema.required).to.equal(undefined);
+      expect(partialSchema.title).to.equal('ProductPartial');
+    });
   });
 });
