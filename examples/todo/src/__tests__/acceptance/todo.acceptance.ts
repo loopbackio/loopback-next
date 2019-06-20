@@ -126,7 +126,6 @@ describe('TodoApplication', () => {
 
     it('updates the todo by ID ', async () => {
       const updatedTodo = givenTodo({
-        title: 'DO SOMETHING AWESOME',
         isComplete: true,
       });
       await client
