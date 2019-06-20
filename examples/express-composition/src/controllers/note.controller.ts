@@ -14,6 +14,7 @@ import {
   del,
   get,
   getFilterSchemaFor,
+  getModelSchemaRef,
   getWhereSchemaFor,
   param,
   patch,
@@ -84,7 +85,14 @@ export class NoteController {
     },
   })
   async updateAll(
-    @requestBody() note: Note,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Note, {partial: true}),
+        },
+      },
+    })
+    note: Partial<Note>,
     @param.query.object('where', getWhereSchemaFor(Note)) where?: Where<Note>,
   ): Promise<Count> {
     return await this.noteRepository.updateAll(note, where);
@@ -111,7 +119,14 @@ export class NoteController {
   })
   async updateById(
     @param.path.number('id') id: number,
-    @requestBody() note: Note,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Note, {partial: true}),
+        },
+      },
+    })
+    note: Partial<Note>,
   ): Promise<void> {
     await this.noteRepository.updateById(id, note);
   }
