@@ -88,11 +88,18 @@ export class TodoListController {
     },
   })
   async updateAll(
-    @requestBody() obj: Partial<TodoList>,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(TodoList, {partial: true}),
+        },
+      },
+    })
+    todoList: Partial<TodoList>,
     @param.query.object('where', getWhereSchemaFor(TodoList))
     where?: Where<TodoList>,
   ): Promise<Count> {
-    return await this.todoListRepository.updateAll(obj, where);
+    return await this.todoListRepository.updateAll(todoList, where);
   }
 
   @get('/todo-lists/{id}', {
@@ -124,9 +131,16 @@ export class TodoListController {
   })
   async updateById(
     @param.path.number('id') id: number,
-    @requestBody() obj: TodoList,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(TodoList, {partial: true}),
+        },
+      },
+    })
+    todoList: Partial<TodoList>,
   ): Promise<void> {
-    await this.todoListRepository.updateById(id, obj);
+    await this.todoListRepository.updateById(id, todoList);
   }
 
   @del('/todo-lists/{id}', {
