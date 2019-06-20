@@ -13,6 +13,7 @@ import {
 import {
   del,
   get,
+  getModelSchemaRef,
   getWhereSchemaFor,
   param,
   patch,
@@ -71,7 +72,14 @@ export class TodoListTodoController {
   })
   async patch(
     @param.path.number('id') id: number,
-    @requestBody() todo: Partial<Todo>,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Todo, {partial: true}),
+        },
+      },
+    })
+    todo: Partial<Todo>,
     @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where<Todo>,
   ): Promise<Count> {
     return await this.todoListRepo.todos(id).patch(todo, where);
