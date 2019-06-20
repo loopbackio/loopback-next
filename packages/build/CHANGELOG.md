@@ -35,36 +35,29 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 specify it explicitly. It is no longer possible to specify compilation target
 via non-option argument like `lb-tsc es2017`.
 
-Migration guide:
+    Migration guide:
 
-- Modify your `tsconfig.json` file and configure `dist` via `compilerOptions.outDir`
+    - Modify your `tsconfig.json` file and configure `dist` via `compilerOptions.outDir`
 
-- If you are using target different from `es2017`, then configure it via
+    - If you are using target different from `es2017`, then configure it via
   `compilerOptions.target`.
 
-- Remove `es2017` and `--outDir dist` from lb-tsc arguments.
+    - Remove `es2017` and `--outDir dist` from lb-tsc arguments.
 
-- Ensure that the output directory is listed in `lb-clean` arguments,
-  e.g. call `lb-clean dist`.
+    - Ensure that the output directory is listed in `lb-clean` arguments,
+      e.g. call `lb-clean dist`.
 
-- When calling `lb-mocha`, replace `DIST` with the actual outDir value,
-  typically `dist`.
+    - When calling `lb-mocha`, replace `DIST` with the actual outDir value,
+      typically `dist`.
 
-Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
 * **build:** `lb-apidocs` helper is no longer available. Please switch
 to Microsoft api-extractor and api-documenter.
 * **build:** `lb-tslint` helper is no longer available. Please
 install `tslint` directly as a dependency and invoke `tslint` instead
 of `lb-tslint`.
 
-Alternatively, you can migrate from tslint to eslint and use the
-recently introduced helper `lb-eslint`.
-
-Signed-off-by: Miroslav Bajtoš <mbajtoss@gmail.com>
-
-
-
-
+    Alternatively, you can migrate from tslint to eslint and use the
+    recently introduced helper `lb-eslint`.
 
 ## [1.7.1](https://github.com/strongloop/loopback-next/compare/@loopback/build@1.7.0...@loopback/build@1.7.1) (2019-06-06)
 
