@@ -206,12 +206,24 @@ export abstract class Model {
       return this.toObject({ignoreUnknownProperties: false});
     }
 
+    const copyPropertyAsJson = (key: string) => {
+      json[key] = asJSON((this as AnyObject)[key]);
+    };
+
     const json: AnyObject = {};
     for (const p in def.properties) {
       if (p in this) {
-        json[p] = asJSON((this as AnyObject)[p]);
+        copyPropertyAsJson(p);
       }
     }
+
+    for (const r in def.relations) {
+      const relName = def.relations[r].name;
+      if (relName in this) {
+        copyPropertyAsJson(relName);
+      }
+    }
+
     return json;
   }
 
