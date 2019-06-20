@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.19.1...@loopback/context@1.20.0) (2019-06-20)
+
+
+### Features
+
+* **context:** generalize interceptors and chain for invocations ([34d31d8](https://github.com/strongloop/loopback-next/commit/34d31d8))
+
+
+
+
+
 ## [1.19.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.19.0...@loopback/context@1.19.1) (2019-06-17)
 
 **Note:** Version bump only for package @loopback/context

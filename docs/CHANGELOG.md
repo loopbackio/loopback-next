@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.23.0...@loopback/docs@1.24.0) (2019-06-20)
+
+
+### Features
+
+* shared Repository test suite ([e9dca4c](https://github.com/strongloop/loopback-next/commit/e9dca4c))
+
+
+
+
+
 # [1.23.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.22.1...@loopback/docs@1.23.0) (2019-06-17)
 
 

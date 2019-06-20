@@ -1,6 +1,6 @@
 {
   "name": "@loopback/test-repository-mysql",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "private": "true",
   "engines": {
@@ -20,8 +20,8 @@
   "devDependencies": {
     "@loopback/build": "^1.7.1",
     "@loopback/eslint-config": "^1.1.1",
-    "@loopback/repository": "^1.6.1",
-    "@loopback/repository-tests": "^0.1.0",
+    "@loopback/repository": "^1.8.0",
+    "@loopback/repository-tests": "^0.2.0",
     "@types/node": "^10.14.9",
     "loopback-connector-mysql": "^5.4.1"
   },

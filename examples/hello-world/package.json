@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-hello-world",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "A simple hello-world Application using LoopBack 4",
   "main": "index.js",
   "engines": {
@@ -36,13 +36,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/core": "^1.8.2",
-    "@loopback/rest": "^1.16.0"
+    "@loopback/core": "^1.8.3",
+    "@loopback/rest": "^1.16.1"
   },
   "devDependencies": {
-    "@loopback/build": "^2.0.0",
+    "@loopback/build": "^2.0.1",
     "@loopback/eslint-config": "^1.1.2",
-    "@loopback/testlab": "^1.6.0",
+    "@loopback/testlab": "^1.6.1",
     "@types/node": "^10.14.9",
     "@typescript-eslint/eslint-plugin": "^1.10.2",
     "@typescript-eslint/parser": "^1.10.2",
