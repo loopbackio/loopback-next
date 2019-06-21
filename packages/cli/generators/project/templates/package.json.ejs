@@ -13,7 +13,7 @@
   "scripts": {
     "build": "lb-tsc",
     "build:watch": "lb-tsc --watch",
-    "clean": "lb-clean dist tsconfig.build.tsbuildinfo",
+    "clean": "lb-clean dist *.tsbuildinfo",
 <% if (project.prettier && project.eslint) { -%>
     "lint": "npm run prettier:check && npm run eslint",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",
