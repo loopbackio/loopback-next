@@ -169,10 +169,17 @@ export class TodoController {
     },
   })
   async updateAll(
-    @requestBody() data: Todo,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Todo, {partial: true}),
+        },
+      },
+    })
+    todo: Partial<Todo>
     @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where<Todo>,
   ): Promise<number> {
-    return await this.todoRepository.updateAll(data, where);
+    return await this.todoRepository.updateAll(todo, where);
   }
 
   @get('/todos/{id}', {
@@ -196,9 +203,16 @@ export class TodoController {
   })
   async updateById(
     @param.path.number('id') id: number,
-    @requestBody() data: Todo,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Todo, {partial: true}),
+        },
+      },
+    })
+    todo: Partial<Todo>,
   ): Promise<void> {
-    await this.todoRepository.updateById(id, data);
+    await this.todoRepository.updateById(id, todo);
   }
 
   @del('/todos/{id}', {

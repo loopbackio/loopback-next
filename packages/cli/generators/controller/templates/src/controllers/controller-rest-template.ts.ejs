@@ -10,6 +10,7 @@ import {
   param,
   get,
   getFilterSchemaFor,
+  getModelSchemaRef,
   getWhereSchemaFor,
   patch,
   put,
@@ -78,7 +79,14 @@ export class <%= className %>Controller {
     },
   })
   async updateAll(
-    @requestBody() <%= modelVariableName %>: <%= modelName %>,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(<%= modelName %>, {partial: true}),
+        },
+      },
+    })
+    <%= modelVariableName %>: <%= modelName %>,
     @param.query.object('where', getWhereSchemaFor(<%= modelName %>)) where?: Where<<%= modelName %>>,
   ): Promise<Count> {
     return await this.<%= repositoryNameCamel %>.updateAll(<%= modelVariableName %>, where);
@@ -105,7 +113,14 @@ export class <%= className %>Controller {
   })
   async updateById(
     @param.path.<%= idType %>('id') id: <%= idType %>,
-    @requestBody() <%= modelVariableName %>: <%= modelName %>,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(<%= modelName %>, {partial: true}),
+        },
+      },
+    })
+    <%= modelVariableName %>: <%= modelName %>,
   ): Promise<void> {
     await this.<%= repositoryNameCamel %>.updateById(id, <%= modelVariableName %>);
   }
