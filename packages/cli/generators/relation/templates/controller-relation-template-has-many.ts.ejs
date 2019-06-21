@@ -8,6 +8,7 @@ import {
 import {
   del,
   get,
+  getModelSchemaRef,
   getWhereSchemaFor,
   param,
   patch,
@@ -69,7 +70,14 @@ export class <%= controllerClassName %> {
   })
   async patch(
     @param.path.<%= sourceModelPrimaryKeyType %>('id') id: <%= sourceModelPrimaryKeyType %>,
-    @requestBody() <%= targetModelRequestBody %>: Partial<<%= targetModelClassName %>>,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(<%= targetModelClassName %>, {partial: true}),
+        },
+      },
+    })
+    <%= targetModelRequestBody %>: Partial<<%= targetModelClassName %>>,
     @param.query.object('where', getWhereSchemaFor(<%= targetModelClassName %>)) where?: Where<<%= targetModelClassName %>>,
   ): Promise<Count> {
     return await this.<%= paramSourceRepository %>.<%= relationPropertyName %>(id).patch(<%= targetModelRequestBody %>, where);

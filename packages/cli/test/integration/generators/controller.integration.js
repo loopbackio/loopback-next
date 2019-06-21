@@ -287,7 +287,7 @@ function checkRestCrudContents() {
     /'200': {/,
     /description: 'ProductReview PATCH success count'/,
     /content: {'application\/json': {schema: CountSchema}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async updateAll\(\s{1,}\@requestBody\(\) productReview: ProductReview,\s{1,} @param\.query\.object\('where', getWhereSchemaFor\(ProductReview\)\) where\?: Where<ProductReview>(|,\s+)\)/,
+    /async updateAll\(\s+\@requestBody\({\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(ProductReview, {partial: true}\),\s+},\s+},\s+}\)\s+productReview: ProductReview,\s{1,} @param\.query\.object\('where', getWhereSchemaFor\(ProductReview\)\) where\?: Where<ProductReview>(|,\s+)\)/,
   ];
   patchUpdateAllRegEx.forEach(regex => {
     assert.fileContent(expectedFile, regex);
@@ -312,7 +312,7 @@ function checkRestCrudContents() {
     /responses: {/,
     /'204': {/,
     /description: 'ProductReview PATCH success'/,
-    /async updateById\(\s{1,}\@param.path.number\('id'\) id: number,\s{1,}\@requestBody\(\) productReview: ProductReview,\s+\)/,
+    /async updateById\(\s+\@param.path.number\('id'\) id: number,\s+\@requestBody\({\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(ProductReview, {partial: true}\),\s+},\s+},\s+}\)\s+productReview: ProductReview,\s+\)/,
   ];
   patchUpdateByIdRegEx.forEach(regex => {
     assert.fileContent(expectedFile, regex);
