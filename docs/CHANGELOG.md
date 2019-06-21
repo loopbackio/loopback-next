@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.25.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.24.0...@loopback/docs@1.25.0) (2019-06-21)
+
+
+### Bug Fixes
+
+* update sample todo and todo-lists ([99d3aa0](https://github.com/strongloop/loopback-next/commit/99d3aa0))
+
+
+### Features
+
+* add navigational properties to todo-list example ([fedb6a7](https://github.com/strongloop/loopback-next/commit/fedb6a7)), closes [#3195](https://github.com/strongloop/loopback-next/issues/3195)
+
+
+
+
+
 # [1.24.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.23.0...@loopback/docs@1.24.0) (2019-06-20)
 
 

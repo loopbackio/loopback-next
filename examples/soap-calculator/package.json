@@ -1,6 +1,6 @@
 {
   "name": "@loopback/example-soap-calculator",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "description": "Integrate a SOAP webservice with LoopBack 4",
   "keywords": [
     "loopback",
@@ -40,20 +40,20 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@loopback/boot": "^1.4.2",
-    "@loopback/context": "^1.20.0",
-    "@loopback/core": "^1.8.3",
-    "@loopback/openapi-v3": "^1.6.3",
-    "@loopback/repository": "^1.8.0",
-    "@loopback/rest": "^1.16.1",
-    "@loopback/rest-explorer": "^1.2.3",
-    "@loopback/service-proxy": "^1.2.3",
+    "@loopback/boot": "^1.4.3",
+    "@loopback/context": "^1.20.1",
+    "@loopback/core": "^1.8.4",
+    "@loopback/openapi-v3": "^1.6.4",
+    "@loopback/repository": "^1.8.1",
+    "@loopback/rest": "^1.16.2",
+    "@loopback/rest-explorer": "^1.2.4",
+    "@loopback/service-proxy": "^1.2.4",
     "loopback-connector-soap": "^5.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^2.0.1",
+    "@loopback/build": "^2.0.2",
     "@loopback/eslint-config": "^1.1.2",
-    "@loopback/testlab": "^1.6.1",
+    "@loopback/testlab": "^1.6.2",
     "@types/mocha": "^5.2.7",
     "@types/node": "^10.14.9",
     "@typescript-eslint/eslint-plugin": "^1.10.2",
