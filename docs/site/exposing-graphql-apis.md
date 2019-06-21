@@ -80,13 +80,28 @@ Here are some examples of the `query` and `mutation` calls:
 The expected output looks like this:
 
 ```json
-{ "data": { "todos": [
-      { "id": 1, "title": "Take over the galaxy", "desc": "MWAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHA" },
-      { "id": 2, "title": "destroy alderaan", "desc": "Make sure there are no survivors left!" },
-      {"id": 3, "title": "terrorize senate", "desc": "Tell them they're getting a budget
-  cut." },
-      { "id": 4, "title": "crush rebel scum", "desc": "Every.Last.One." }
-] } }
+{
+  "data": {
+    "todos": [
+      {
+        "id": 1,
+        "title": "Take over the galaxy",
+        "desc": "MWAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHA"
+      },
+      {
+        "id": 2,
+        "title": "destroy alderaan",
+        "desc": "Make sure there are no survivors left!"
+      },
+      {
+        "id": 3,
+        "title": "play space invaders",
+        "desc": "Become the very best!"
+      },
+      {"id": 4, "title": "crush rebel scum", "desc": "Every.Last.One."}
+    ]
+  }
+}
 ```
 
 2. Create a to-do instance and retrieve its ID and title in the response object
