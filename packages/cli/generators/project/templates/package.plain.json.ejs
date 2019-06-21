@@ -13,7 +13,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "clean": "rimraf dist",
+    "clean": "rimraf dist *.tsbuildinfo",
 <% if (project.prettier && project.eslint) { -%>
     "lint": "npm run prettier:check && npm run eslint",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",

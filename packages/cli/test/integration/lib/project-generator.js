@@ -341,7 +341,7 @@ module.exports = function(projGenerator, props, projectType) {
           ['tsconfig.json', '@loopback/build'],
         ]);
         assert.fileContent([
-          ['package.json', '"clean": "rimraf dist"'],
+          ['package.json', '"clean": "rimraf dist *.tsbuildinfo"'],
           ['package.json', '"typescript"'],
           ['package.json', '"eslint"'],
           ['package.json', 'eslint-config-prettier'],

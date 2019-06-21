@@ -112,6 +112,13 @@ describe('app-generator specific files', () => {
     assert.fileContent('package.json', /"docker:run": "docker run/);
   });
 
+  it('creates npm script "clean"', () => {
+    assert.fileContent(
+      'package.json',
+      '"clean": "lb-clean dist *.tsbuildinfo"',
+    );
+  });
+
   it('creates npm script "migrate-db"', async () => {
     const pkg = JSON.parse(await readFile('package.json'));
     expect(pkg.scripts).to.have.property('migrate', 'node ./dist/migrate');
