@@ -198,6 +198,10 @@ describe('lb4 model integration', () => {
         expectedModelFile,
         /export class Test extends Entity {/,
       );
+      assert.fileContent(
+        expectedModelFile,
+        /eslint-disable-next-line \@typescript-eslint\/no-explicit-any/,
+      );
       assert.fileContent(expectedModelFile, /\[prop: string\]: any;/);
     });
 
