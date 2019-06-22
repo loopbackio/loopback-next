@@ -1,0 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+<%_
+imports.forEach(i => {
+-%>
+<%- i %>
+<%_
+});
+-%>
+/**
+ * The model type is generated from OpenAPI schema - <%- name %>
+ * <%- escapeComment(description) %>
+ */
+export type <%- className %> = <%- declaration %>;
+

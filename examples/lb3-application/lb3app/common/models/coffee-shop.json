@@ -1,0 +1,30 @@
+{
+  "name": "CoffeeShop",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "forceId": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "city": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [
+    {
+      "accessType":"EXECUTE",
+      "principalType":"ROLE",
+      "principalId":"$unauthenticated",
+      "permission":"DENY",
+      "property":"greet"
+    }
+  ],
+  "methods": {}
+}

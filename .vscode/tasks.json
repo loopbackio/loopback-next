@@ -1,0 +1,108 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Install all dependencies",
+      "group": "build",
+      "command": "npm",
+      "type": "shell",
+      "args": [
+        "install",
+        "-s"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Remove all dependencies",
+      "group": "build",
+      "command": "npm",
+      "type": "shell",
+      "args": [
+        "run",
+        "-s",
+        "clean:lerna"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Build, test and lint",
+      "group": "test",
+      "command": "npm",
+      "type": "shell",
+      "args": [
+        "test"
+      ],
+      "problemMatcher": ["$tsc", "$eslint-stylish", "$eslint-compact"]
+    },
+    {
+      "label": "Lint all packages",
+      "group": "test",
+      "command": "npm",
+      "type": "shell",
+      "args": [
+        "run",
+        "-s",
+        "lint"
+      ],
+      "problemMatcher": [
+        "$eslint-stylish",
+        "$eslint-compact",
+        {
+          // compilation errors - relative paths
+          "owner": "eslint",
+          "fileLocation": [
+            "relative",
+            "${workspaceRoot}"
+          ],
+          "severity": "error",
+          "pattern": {
+            "regexp": "^Error at ([^/]\\S.*):(\\d+):(\\d+):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "message": 4
+          }
+        },
+        {
+          // compilation errors - absolute paths
+          "owner": "eslint",
+          "fileLocation": "absolute",
+          "severity": "error",
+          "pattern": {
+            "regexp": "^Error at (/\\S.*):(\\d+):(\\d+):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "message": 4
+          }
+        }
+      ]
+    },
+    {
+      "label": "Build project",
+      "group": "build",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "-s",
+        "build"
+      ],
+      "problemMatcher": "$tsc"
+    },
+    {
+      "label": "Clean project",
+      "group": "build",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "-s",
+        "clean"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}

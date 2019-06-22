@@ -1,0 +1,57 @@
+{
+  "name": "@loopback/openapi-v3",
+  "version": "1.6.4",
+  "description": "Processes openapi v3 related metadata",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "devDependencies": {
+    "@loopback/build": "^2.0.2",
+    "@loopback/eslint-config": "^1.1.2",
+    "@loopback/openapi-spec-builder": "^1.2.4",
+    "@loopback/repository": "^1.8.1",
+    "@loopback/testlab": "^1.6.2",
+    "@types/debug": "^4.1.4",
+    "@types/lodash": "^4.14.134",
+    "@types/node": "^10.14.9"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-openapi-v3*.tgz dist tsconfig.build.tsbuildinfo package",
+    "integration": "lb-mocha \"dist/__tests__/integration/**/*.js\"",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "unit": "lb-mocha \"dist/__tests__/unit/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-openapi-v3*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "keywords": [
+    "Swagger",
+    "OpenAPI Spec",
+    "TypeScript"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
+  "dependencies": {
+    "@loopback/context": "^1.20.1",
+    "@loopback/openapi-v3-types": "^1.1.4",
+    "@loopback/repository-json-schema": "^1.7.2",
+    "debug": "^4.1.1",
+    "lodash": "^4.17.11"
+  }
+}

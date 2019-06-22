@@ -1,0 +1,432 @@
+## definition of `menuitem`===========
+# title: string
+# url: string
+# output: [ enum{web, pdf} ] (expressed as comma separated string in YAML)
+# children?: [ menuitem ]
+
+## top level property=================
+# entries: [ menuitem ]
+
+title: LoopBack 4
+url: index.html
+children:
+
+- title: 'Getting started'
+  url: Getting-started.html
+  output: 'web, pdf'
+
+- title: 'Tutorials'
+  url: Tutorials.html
+  output: 'web, pdf'
+  children:
+
+  - title: 'Todo Tutorial'
+    url: todo-tutorial.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'Create your app scaffolding'
+      url: todo-tutorial-scaffolding.html
+      output: 'web, pdf'
+
+    - title: 'Add the Todo model'
+      url: todo-tutorial-model.html
+      output: 'web, pdf'
+
+    - title: 'Add a Datasource'
+      url: todo-tutorial-datasource.html
+      output: 'web, pdf'
+
+    - title: 'Add a Repository'
+      url: todo-tutorial-repository.html
+      output: 'web, pdf'
+
+    - title: 'Add a Controller'
+      url: todo-tutorial-controller.html
+      output: 'web, pdf'
+
+    - title: 'Putting it all together'
+      url: todo-tutorial-putting-it-together.html
+      output: 'web, pdf'
+
+    - title: 'Bonus: Integrate with a geo-coding service'
+      url: todo-tutorial-geocoding-service.html
+      output: 'web, pdf'
+
+  - title: 'TodoList Tutorial'
+    url: todo-list-tutorial.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'Add TodoList Model'
+      url: todo-list-tutorial-model.html
+      output: 'web, pdf'
+
+    - title: 'Add TodoList Repository'
+      url: todo-list-tutorial-repository.html
+      output: 'web, pdf'
+
+    - title: 'Add TodoList Controller'
+      url: todo-list-tutorial-controller.html
+      output: 'web, pdf'
+
+    - title: 'Running on relational databases'
+      url: todo-list-tutorial-sqldb.html
+      output: 'web, pdf'
+
+  - title: 'SOAP Web Service Tutorial'
+    url: soap-calculator-tutorial.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'SOAP Web Service Overview'
+      url: soap-calculator-tutorial-web-service-overview.html
+      output: 'web, pdf'
+
+    - title: 'App scaffolding'
+      url: soap-calculator-tutorial-scaffolding.html
+      output: 'web, pdf'
+
+    - title: 'Add a Datasource'
+      url: soap-calculator-tutorial-add-datasource.html
+      output: 'web, pdf'
+
+    - title: 'Add a Service'
+      url: soap-calculator-tutorial-add-service.html
+      output: 'web, pdf'
+
+    - title: 'Add a Controller'
+      url: soap-calculator-tutorial-add-controller.html
+      output: 'web, pdf'
+
+    - title: 'Run and Test it'
+      url: soap-calculator-tutorial-run-and-test.html
+      output: 'web, pdf'
+
+  - title: 'Creating an Express Application with LoopBack REST API'
+    url: express-with-lb4-rest-tutorial.html
+    output: 'web, pdf'
+
+  - title: 'How to secure your LoopBack 4 application with JWT authentication'
+    url: Authentication-Tutorial.html
+    output: 'web, pdf'
+
+- title: 'Examples'
+  url: Examples.html
+  output: 'web, pdf'
+
+- title: 'Key concepts'
+  url: Concepts.html
+  output: 'web, pdf'
+  children:
+
+  - title: 'Application'
+    url: Application.html
+    output: 'web, pdf'
+
+  - title: 'Server'
+    url: Server.html
+    output: 'web, pdf'
+
+  - title: 'Context'
+    url: Context.html
+    output: 'web, pdf'
+
+  - title: 'Binding'
+    url: Binding.html
+    output: 'web, pdf'
+
+  - title: 'Dependency injection'
+    url: Dependency-injection.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'Reserved binding keys'
+      url: Reserved-binding-keys.html
+      output: 'web, pdf'
+
+  - title: 'Controllers'
+    url: Controllers.html
+    output: 'web, pdf'
+
+  - title: 'Components'
+    url: Components.html
+    output: 'web, pdf'
+
+  - title: 'Interceptors'
+    url: Interceptors.html
+    output: 'web, pdf'
+
+  - title: 'DataSources'
+    url: DataSources.html
+    output: 'web, pdf'
+
+  - title: 'Life cycle events and observers'
+    url: Life-cycle.html
+    output: 'web, pdf'
+
+  - title: 'Routes'
+    url: Routes.html
+    output: 'web, pdf'
+
+  - title: 'Sequence'
+    url: Sequence.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'Routing requests'
+      url: Routing-requests.html
+      output: 'web, pdf'
+
+    - title: 'Parsing requests'
+      url: Parsing-requests.html
+      output: 'web, pdf'
+
+  - title: 'Model'
+    url: Model.html
+    output: 'web, pdf'
+
+  - title: 'Repositories'
+    url: Repositories.html
+    output: 'web, pdf'
+
+  - title: 'Relations'
+    url: Relations.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'HasMany Relation'
+      url: HasMany-relation.html
+      output: 'web, pdf'
+
+    - title: 'BelongsTo Relation'
+      url: BelongsTo-relation.html
+      output: 'web, pdf'
+
+    - title: 'HasOne Relation'
+      url: hasOne-relation.html
+      output: 'web, pdf'
+
+  - title: 'Decorators'
+    url: Decorators.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'OpenAPI Decorators'
+      url: Decorators_openapi.html
+      output: 'web, pdf'
+
+    - title: 'Dependency Injection Decorator'
+      url: Decorators_inject.html
+      output: 'web, pdf'
+
+    - title: 'Authentication Decorator'
+      url: Decorators_authenticate.html
+      output: 'web, pdf'
+
+    - title: 'Repository Decorators'
+      url: Decorators_repository.html
+      output: 'web, pdf'
+
+  - title: 'Error handling'
+    url: Error-handling.html
+    output: 'web, pdf'
+
+- title: 'How-tos'
+  url: How-tos.html
+  output: 'web, pdf'
+  children:
+
+    - title: 'Exposing GraphQL APIs'
+      url: exposing-graphql-apis.html
+      output: 'web, pdf'
+
+    - title: 'Deploying to IBM Cloud'
+      url: Deploying-to-IBM-Cloud.html
+      output: 'web, pdf'
+
+    - title: 'Deploying to Kubernetes on IBM Cloud'
+      url: deploying_to_ibm_cloud_kubernetes.html
+      output: 'web, pdf'
+
+    - title: 'Deploying with pm2 and nginx'
+      url: deploying-with-pm2-and-nginx.html
+      output: 'web, pdf'
+
+    - title: 'Serving static files'
+      url: Serving-static-files.html
+      output: 'web, pdf'
+
+    - title: 'Database Migrations'
+      url: Database-migrations.html
+      output: 'web, pdf'
+
+- title: 'Booting an Application'
+  url: Booting-an-Application.html
+  output: 'web, pdf'
+
+- title: 'Using Components'
+  url: Using-components.html
+  output: 'web, pdf'
+  children:
+
+  - title: Self-hosted REST API Explorer
+    url: Self-hosted-rest-api-explorer.html
+    output: 'web, pdf'
+
+  - title: 'Authentication'
+    url: Loopback-component-authentication.html
+    output: 'web, pdf'
+
+  - title: 'Authorization'
+    url: Loopback-component-authorization.html
+    output: 'web, pdf'
+
+  - title: 'Boot and Mount a LoopBack 3 Application'
+    url: Boot-and-Mount-a-LoopBack-3-application.html
+    output: 'web, pdf'
+
+- title: 'Calling other APIs'
+  url: Calling-other-APIs-and-web-services.html
+  output: 'web, pdf'
+
+- title: 'For LoopBack 3.x users'
+  url: LoopBack-3.x.html
+  output: 'web, pdf'
+  children:
+
+  - title: 'Understanding the differences between LoopBack 3 and LoopBack 4'
+    url: Understanding-the-differences.html
+    output: 'web, pdf'
+
+  - title: 'Migrating from LoopBack 3'
+    url: Migrating-from-LoopBack-3.html
+    output: 'web, pdf'
+
+- title: 'Command-line interface'
+  url: Command-line-interface.html
+  output: 'web, pdf'
+  children:
+
+  - title: 'Application generator'
+    url: Application-generator.html
+    output: 'web, pdf'
+
+  - title: 'Controller generator'
+    url: Controller-generator.html
+    output: 'web, pdf'
+
+  - title: 'DataSource generator'
+    url: DataSource-generator.html
+    output: 'web, pdf'
+
+  - title: 'Model generator'
+    url: Model-generator.html
+    output: 'web, pdf'
+
+  - title: 'Model discovery'
+    url: Discovering-models.html
+    output: 'web, pdf'
+
+  - title: 'Repository generator'
+    url: Repository-generator.html
+    output: 'web, pdf'
+
+  - title: 'Service generator'
+    url: Service-generator.html
+    output: 'web, pdf'
+
+  - title: 'OpenAPI generator'
+    url: OpenAPI-generator.html
+    output: 'web, pdf'
+
+  - title: 'Life cycle observer generator'
+    url: Life-cycle-observer-generator.html
+    output: 'web, pdf'
+
+  - title: 'Interceptor generator'
+    url: Interceptor-generator.html
+    output: 'web, pdf'
+
+  - title: 'Extension generator'
+    url: Extension-generator.html
+    output: 'web, pdf'
+
+  - title: 'Download examples'
+    url: Download-examples.html
+    output: 'web, pdf'
+
+- title: 'Best practices'
+  url: Best-practices.html
+  output: 'web, pdf'
+  children:
+
+  - title: 'Defining the API using code-first approach'
+    url: Defining-the-API-using-code-first-approach.html
+    output: 'web, pdf'
+
+  - title: 'Defining your testing strategy'
+    url: Defining-your-testing-strategy.html
+    output: 'web, pdf'
+
+  - title: 'Testing your application'
+    url: Testing-your-application.html
+    output: 'web, pdf'
+
+- title: 'Extending LoopBack 4'
+  url: Extending-LoopBack-4.html
+  output: 'web, pdf'
+  children:
+
+  - title: 'Creating components'
+    url: Creating-components.html
+    output: 'web, pdf'
+
+  - title: 'Creating decorators'
+    url: Creating-decorators.html
+    output: 'web, pdf'
+
+  - title: 'Creating servers'
+    url: Creating-servers.html
+    output: 'web, pdf'
+
+  - title: 'Extension point and extensions'
+    url: Extension-point-and-extensions.html
+    output: 'web, pdf'
+
+  - title: 'Extending request body parsing'
+    url: Extending-request-body-parsing.html
+    output: 'web, pdf'
+
+  - title: 'Extension life cycle'
+    url: Extension-life-cycle.html
+    output: 'web, pdf'
+
+  - title: 'Testing your extension'
+    url: Testing-your-extension.html
+    output: 'web, pdf'
+
+- title: 'Crafting LoopBack 4'
+  url: Crafting-LoopBack-4.html
+  output: 'web, pdf'
+
+- title: 'FAQ'
+  url: FAQ.html
+  output: 'web, pdf'
+
+- title: 'API docs'
+  url: apidocs.index.html
+  output: 'web, pdf'
+
+- title: 'Reference'
+  url: Reference.html
+  output: 'web, pdf'
+  children:
+
+  - title: 'Glossary'
+    url: Glossary.html
+    output: 'web, pdf'
+
+  - title: 'Considerations for GDPR readiness'
+    url: Deploy-for-GDPR-readiness.html
+    output: 'web, pdf'

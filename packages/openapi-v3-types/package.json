@@ -1,0 +1,48 @@
+{
+  "name": "@loopback/openapi-v3-types",
+  "version": "1.1.4",
+  "description": "TypeScript type definitions for OpenAPI Specifications.",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "dependencies": {
+    "openapi3-ts": "^1.3.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^2.0.2",
+    "@loopback/eslint-config": "^1.1.2",
+    "@loopback/testlab": "^1.6.2",
+    "@types/node": "^10.14.9"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-openapi-v3-types*.tgz dist tsconfig.build.tsbuildinfo package",
+    "verify": "npm pack && tar xf loopback-openapi-v3-types*.tgz && tree package && npm run clean",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "unit": "npm run build && lb-mocha \"dist/__tests__/unit/**/*.js\""
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "keywords": [
+    "OpenAPI Spec",
+    "TypeScript",
+    "Typings"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  }
+}

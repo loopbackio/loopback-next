@@ -1,0 +1,114 @@
+{
+  "name": "<%= project.name -%>",
+  "version": "1.0.0",
+  "description": "<%= project.description -%>",
+  "keywords": [
+    "loopback-<%= project.projectType -%>",
+    "loopback"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "clean": "rimraf dist *.tsbuildinfo",
+<% if (project.prettier && project.eslint) { -%>
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+<% } else if (project.prettier) { -%>
+    "lint": "npm run prettier:check",
+    "lint:fix": "npm run prettier:fix",
+<% } else if (project.eslint) { -%>
+    "lint": "npm run eslint",
+    "lint:fix": "npm run eslint:fix",
+<% } -%>
+<% if (project.prettier) { -%>
+    "prettier:cli": "prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+<% } -%>
+<% if (project.eslint) { -%>
+    "eslint": "eslint -p .",
+    "eslint:fix": "npm run eslint -- --fix",
+<% } -%>
+    "pretest": "npm run clean && npm run build",
+<% if (project.mocha) { -%>
+    "test": "mocha dist/__tests__",
+<% } -%>
+<% if (project.prettier || project.eslint) { -%>
+    "posttest": "npm run lint",
+<% } -%>
+<% if (project.mocha && (project.prettier || project.eslint)) { -%>
+    "test:dev": "mocha dist/__tests__/**/*.js && npm run posttest",
+<% } else if (project.mocha) { -%>
+    "test:dev": "mocha dist/__tests__/**/*.js",
+<% } -%>
+<% if (project.projectType === 'application') { -%>
+  <% if (project.docker) { -%>
+    "docker:build": "docker build -t <%= project.name -%> .",
+    "docker:run": "docker run -p 3000:3000 -d <%= project.name -%>",
+  <% } -%>
+    "migrate": "node ./dist/migrate",
+    "start": "npm run build && node .",
+<% } -%>
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git"
+  },
+<% if (project.private) { -%>
+  "private": true,
+<% } -%>
+  "author": "",
+  "license": "",
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "dependencies": {
+    "@loopback/boot": "<%= project.dependencies['@loopback/boot'] -%>",
+    "@loopback/context": "<%= project.dependencies['@loopback/context'] -%>",
+<% if (project.projectType === 'application') { -%>
+    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>",
+    "@loopback/openapi-v3": "<%= project.dependencies['@loopback/openapi-v3'] -%>",
+    "@loopback/repository": "<%= project.dependencies['@loopback/repository'] -%>",
+    "@loopback/rest": "<%= project.dependencies['@loopback/rest'] -%>",
+    "@loopback/rest-explorer": "<%= project.dependencies['@loopback/rest-explorer'] -%>"
+<% } else { -%>
+    "@loopback/core": "<%= project.dependencies['@loopback/core'] -%>"
+<% } -%>
+  },
+  "devDependencies": {
+    "rimraf": "<%= project.dependencies['rimraf'] -%>",
+    "@loopback/testlab": "<%= project.dependencies['@loopback/testlab'] -%>",
+<% if (project.mocha) { -%>
+    "@types/mocha": "<%= project.dependencies['@types/mocha'] -%>",
+<% } -%>
+    "@types/node": "<%= project.dependencies['@types/node'] -%>",
+<% if (project.mocha) { -%>
+    "mocha": "<%= project.dependencies['mocha'] -%>",
+<% } -%>
+<% if (project.prettier) { -%>
+    "prettier": "<%= project.dependencies['prettier'] -%>",
+<% } -%>
+<% if (project.mocha) { -%>
+    "source-map-support": "<%= project.dependencies['source-map-support'] -%>",
+<% } -%>
+<% if (project.eslint) { -%>
+    "@typescript-eslint/parser": "<%= project.dependencies['@typescript-eslint/parser'] -%>",
+    "@typescript-eslint/eslint-plugin": "<%= project.dependencies['@typescript-eslint/eslint-plugin'] -%>",
+    "@loopback/eslint-config": "<%= project.dependencies['@loopback/eslint-config'] -%>",
+    "eslint": "<%= project.dependencies['eslint'] -%>",
+    "eslint-config-prettier": "<%= project.dependencies['eslint-config-prettier'] -%>",
+    "eslint-plugin-eslint-plugin": "<%= project.dependencies['eslint-plugin-eslint-plugin'] -%>",
+    "eslint-plugin-mocha": "<%= project.dependencies['eslint-plugin-mocha'] -%>",
+  <% } -%>
+    "typescript": "<%= project.dependencies['typescript'] -%>"
+  }
+}

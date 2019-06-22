@@ -1,0 +1,109 @@
+const DataSource = require('loopback-datasource-juggler').DataSource;
+
+const modelList = [
+  {
+    name: 'Test',
+    view: false,
+    schema: '',
+  },
+  {
+    name:'Schema',
+    view: false,
+    schema: 'aSchema'
+  },
+  {
+    name:'View',
+    view: true,
+    schema: ''
+  }
+];
+// In real model definitions, the schema is contained in options->connectorName->schema
+const fullDefinitions = [
+  {
+    'name': 'Schema',
+    'schema': 'aSchema',
+    'properties': {}
+  },
+  {
+    'name': 'View',
+    'view': true,
+    'schema': '',
+    'properties': {}
+  },
+  {
+    'name': 'Test',
+    'properties': {
+      'dateTest': {
+        'type': 'Date',
+        'required': false,
+        'length': null,
+        'precision': null,
+        'scale': null,
+      },
+      'numberTest': {
+        'type': 'Number',
+        'required': false,
+        'length': null,
+        'precision': null,
+        'scale': null,
+      },
+      'stringTest': {
+        'type': 'String',
+        'required': false,
+        'length': null,
+        'precision': null,
+        'scale': null,
+      },
+      'booleanText': {
+        'type': 'Boolean',
+        'required': false,
+        'length': null,
+        'precision': null,
+        'scale': null,
+      },
+      'id': {
+        'type': 'Number',
+        'required': true,
+        'length': null,
+        'precision': null,
+        'scale': 0,
+        'id': 1,
+      },
+    },
+  },
+];
+
+class DiscoverOnly extends DataSource {
+  constructor() {
+    super();
+    this.name = 'mem';
+    this.connected = true;
+  }
+
+  disconnect() {
+    this.connected = false;
+  }
+
+  async discoverModelDefinitions(options = {views: true}) {
+    let models = modelList;
+    if (!options.views) {
+      models = models.filter(m => !m.view);
+    }
+    if (options.schema) {
+      models = models.filter(m => m.schema === options.schema);
+    }
+
+    return models;
+  }
+
+  async discoverSchema(name, options = {schema:''}) {
+    let fullDefs = fullDefinitions;
+    if (options.schema) {
+      fullDefs = fullDefs.filter(d => d.schema === options.schema);
+    }
+    return fullDefs.find(d => d.name === name);
+  }
+}
+module.exports  = {
+  DiscoverOnly
+};

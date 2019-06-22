@@ -1,0 +1,28 @@
+{
+  // Use IntelliSense to learn about possible Node.js debug attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run Mocha tests",
+      "program": "${workspaceRoot}/packages/build/node_modules/.bin/_mocha",
+      "cwd": "${workspaceRoot}",
+      "args": [
+        "--config",
+        "${workspaceRoot}/packages/build/config/.mocharc.json",
+        "packages/*/dist/__tests__/**/*.js",
+        "-t",
+        "0"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach to Process",
+      "port": 5858
+    }
+  ]
+}

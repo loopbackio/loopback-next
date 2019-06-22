@@ -1,0 +1,49 @@
+{
+  "extends": [
+    ":gitSignOff",
+    "group:monorepos",
+    "group:recommended",
+    "helpers:disableTypesNodeMajor"
+  ],
+
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/__tests__/**",
+    "**/test/**"
+  ],
+
+  "automerge": false,
+  "branchPrefix": "renovate/",
+  "ignoreUnstable": true,
+  "rangeStrategy": "bump",
+  "statusCheckVerify": true,
+  "updateNotScheduled": true,
+
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": "before 5am on monday"
+  },
+
+  "prConcurrentLimit": 5,
+  "prCreation": "immediate",
+  "prHourlyLimit": 2,
+
+  "semanticCommits": true,
+  "semanticCommitType": "chore",
+  "semanticCommitScope": null,
+
+  "separateMajorMinor": true,
+  "separateMinorPatch": false,
+
+  "packageRules": [{
+    "packageNames": [
+      "@microsoft/api-extractor",
+      "@microsoft/api-documenter"
+    ],
+    "groupName": "api-extractor packages"
+  }],
+
+  "masterIssue": true,
+  "masterIssueApproval": false,
+  "masterIssueAutoclose": true
+}

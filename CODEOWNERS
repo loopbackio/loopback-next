@@ -1,0 +1,41 @@
+# Lines starting with '#' are comments.
+# Each line is a file pattern followed by one or more owners,
+# the last matching pattern has the most precedence.
+#
+# See https://help.github.com/articles/about-codeowners/
+
+* @bajtos @raymondfeng
+
+acceptance/repository-mongodb/* @bajtos
+acceptance/repository-mysql/* @bajtos
+packages/authentication/* @bajtos @raymondfeng
+packages/boot/* @raymondfeng @hacksparrow
+packages/booter-lb3app/* @bajtos @nabdelgadir
+packages/build/* @bajtos @raymondfeng
+packages/http-caching-proxy/* @bajtos
+packages/http-server/* @hacksparrow @bajtos
+packages/cli/* @raymondfeng @bajtos
+packages/context/* @bajtos @raymondfeng
+packages/core/* @bajtos @raymondfeng
+packages/eslint-config/* @raymondfeng
+packages/metadata/* @raymondfeng
+packages/openapi-spec-builder/* @bajtos @raymondfeng
+packages/openapi-v3/* @bajtos @jannyHou
+packages/openapi-v3-types/* @bajtos @jannyHou
+packages/repository/* @raymondfeng
+packages/repository-tests/* @bajtos
+packages/repository-json-schema/* @bajtos
+packages/rest/* @bajtos @raymondfeng
+packages/service-proxy/* @raymondfeng
+packages/testlab/* @bajtos
+packages/tsdocs/* @raymondfeng
+examples/todo/* @bajtos @hacksparrow
+examples/context/* @raymondfeng
+examples/express-composition/* @nabdelgadir
+examples/greeter-extension/* @raymondfeng
+examples/hello-world/* @b-admike
+examples/lb3-application/* @bajtos @nabdelgadir
+examples/log-extension/* @hacksparrow
+examples/rpc-server/* @hacksparrow
+examples/soap-calculator/* @marioestradarosa
+docs/* @bajtos @raymondfeng @hacksparrow @b-admike @jannyHou

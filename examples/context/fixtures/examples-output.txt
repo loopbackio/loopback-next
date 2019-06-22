@@ -1,0 +1,80 @@
+> binding-types.js
+[2019-06-02T06:50:02.765Z] (/greet#1) Hello, John
+[2019-06-02T06:50:02.766Z] (/greet#2) Hello, John
+
+> configuration-injection.js
+[2019-06-02T06:50:02.768Z] >>>: Hello, Ray
+
+> context-chain.js
+[app] Hello, John!
+[request] Hello, John!
+[app] Hello, John!
+
+> context-observation.js
+Adding EnglishGreeter
+[observer] bind greeters.EnglishGreeter
+[view.refresh] ["greeters.EnglishGreeter"]
+Adding ChineseGreeter
+[observer] bind greeters.ChineseGreeter
+[view.refresh] ["greeters.EnglishGreeter","greeters.ChineseGreeter"]
+Removing ChineseGreeter
+[observer] unbind greeters.ChineseGreeter
+[view.refresh] ["greeters.EnglishGreeter"]
+Adding ChineseGreeter to request context
+[view.refresh] ["greeters.ChineseGreeter","greeters.EnglishGreeter"]
+
+> custom-configuration-resolver.js
+{ bar: 'abc' }
+xyz
+
+> custom-inject-decorator.js
+Hello, John
+
+> custom-inject-resolve.js
+Context: invocation-context Binding: greeter
+Injection: Greeter.constructor[0]
+Context: invocation-context Binding: greeter
+Injection: Greeter.prototype.prefix
+[2019-06-02T06:50:02.777Z] Hello, John
+
+> dependency-injection.js
+[2019-06-02T06:50:02.778Z] (en) Hello, Jane!
+[2019-06-02T06:50:02.779Z] Hello, John!
+[2019-06-02T06:50:02.779Z] (zh) 你好，John！
+[2019-06-02T06:50:02.780Z] (en) Hello, Jane!
+
+> find-bindings.js
+greeters.EnglishGreeter
+[ 'greeters.EnglishGreeter' ]
+[ 'greeters.EnglishGreeter' ]
+[ 'greeters.EnglishGreeter', 'greeters.ChineseGreeter' ]
+[ 'greeters.EnglishGreeter', 'greeters.ChineseGreeter' ]
+[ 'greeters.EnglishGreeter', 'greeters.ChineseGreeter' ]
+[ 'greeters.ChineseGreeter', 'greeters.EnglishGreeter' ]
+
+> injection-without-binding.js
+Hello, John
+
+> interceptor-proxy.js
+Adding request id at Greeter.prototype.greet: [request] 1
+Request id found at Converter.prototype.toUpperCase: [request] 1
+Hello, JOHN
+
+> parameterized-decoration.js
+1: { tags: { prefix: '1' } }
+2: { tags: { prefix: '2' } }
+1: Hello, John
+2: Hello, Jane
+
+> sync-async.js
+Hello, John (sync)
+Hello, John (sync)
+Hello, Jane (async)
+Expect to fail with error: Cannot get greeter synchronously: the value is a promise
+
+> value-promise.js
+sync: [ '[value] Hello, John!', '[value] 你好，John！' ]
+{ en: '[value] Hello, Jane!', zh: '[value] 你好，Jane！' }
+async: [ '[value] Hello, John!', '[promise] 你好，John！' ]
+{ en: '[value] Hello, Jane!', zh: '[promise] 你好，Jane！' }
+

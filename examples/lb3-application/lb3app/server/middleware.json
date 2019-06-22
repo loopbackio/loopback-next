@@ -1,0 +1,46 @@
+{
+  "initial:before": {
+    "loopback#favicon": {}
+  },
+  "initial": {
+    "compression": {},
+    "cors": {
+      "params": {
+        "origin": true,
+        "credentials": true,
+        "maxAge": 86400
+      }
+    },
+    "helmet#xssFilter": {},
+    "helmet#frameguard": {
+      "params": [
+        "deny"
+      ]
+    },
+    "helmet#hsts": {
+      "params": {
+        "maxAge": 0,
+        "includeSubDomains": true
+      }
+    },
+    "helmet#hidePoweredBy": {},
+    "helmet#ieNoOpen": {},
+    "helmet#noSniff": {},
+    "helmet#noCache": {
+      "enabled": false
+    }
+  },
+  "session": {},
+  "auth": {},
+  "parse": {},
+  "routes": {
+    "loopback#rest": {
+      "paths": [
+        "${restApiRoot}"
+      ]
+    }
+  },
+  "files": {},
+  "final": {},
+  "final:after": {}
+}

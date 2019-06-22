@@ -1,0 +1,37 @@
+{
+  "lerna": "3.3.0",
+  "packages": [
+    "acceptance/*",
+    "benchmark",
+    "docs",
+    "examples/*",
+    "packages/*",
+    "sandbox/*"
+  ],
+  "command": {
+    "bootstrap": {
+      "concurrency": 8,
+      "forceLocal": true
+    },
+    "version": {
+      "forcePublish": "@loopback/cli,@loopback/docs",
+      "conventionalCommits": true,
+      "message": "chore: publish release"
+    },
+    "publish": {
+    },
+    "run": {
+      "prefix": false,
+      "loglevel": "silent",
+      "stream": true,
+      "concurrency": 8,
+      "sort": false
+    },
+    "clean": {
+      "loglevel": "silent",
+      "concurrency": 8,
+      "yes": true
+    }
+  },
+  "version": "independent"
+}

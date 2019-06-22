@@ -1,0 +1,39 @@
+{
+  "editor.rulers": [80],
+  "editor.tabCompletion": "on",
+  "editor.tabSize": 2,
+  "editor.trimAutoWhitespace": true,
+  "editor.formatOnSave": true,
+  "[html]": {
+    "editor.formatOnSave": false
+  },
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
+  },
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/.git": true,
+    "**/.hg": true,
+    "**/.svn": true,
+    "**/CVS": true,
+    ".nyc_output": true,
+    "coverage": true,
+    "benchmark/dist": true,
+    "packages/*/dist": true,
+    "examples/*/dist": true,
+    "**/.sandbox": true
+  },
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "typescript.tsdk": "./packages/build/node_modules/typescript/lib",
+  "eslint.autoFixOnSave": true,
+  "eslint.run": "onSave",
+  "eslint.nodePath": "./packages/build/node_modules",
+  "eslint.validate": [
+    "javascript",
+    {
+        "language": "typescript",
+        "autoFix": true
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+environment:
+  matrix:
+    - nodejs_version: "8"
+
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - node --version
+  - npm --version
+  - npm ci
+
+test_script:
+  - npm run build
+  - npm run mocha --scripts-prepend-node-path
+
+build: off
+skip_branch_with_pr: true

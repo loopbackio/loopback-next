@@ -1,0 +1,42 @@
+<% if (isModelBaseBuiltin) { -%>
+import {<%= modelBaseClass %>, model, property} from '@loopback/repository';
+<% } else { -%>
+import {model, property} from '@loopback/repository';
+import {<%= modelBaseClass %>} from '.';
+<% } -%>
+
+<% if (modelSettings) { -%>
+@model(<%- modelSettings %>)
+<% } else { -%>
+@model()
+<% } -%>
+export class <%= className %> extends <%= modelBaseClass %> {
+<% Object.entries(properties).forEach(([key, val]) => { -%>
+  @property({
+  <%_ Object.entries(val).forEach(([propKey, propVal]) => { -%>
+    <%_ if (!['tsType'].includes(propKey)) { -%>
+    <%= propKey %>: <%- propVal %>,
+    <%_ } -%>
+  <%_ }) -%>
+  })
+  <%= key %><%if (!val.required) {%>?<% } %>: <%= val.tsType %>;
+
+<% }) -%>
+<% if(allowAdditionalProperties) { -%>
+  // Define well-known properties here
+
+  // Indexer property to allow additional data
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [prop: string]: any;
+<% } -%>
+
+  constructor(data?: Partial<<%= className %>>) {
+    super(data);
+  }
+}
+
+export interface <%= className %>Relations {
+  // describe navigational properties here
+}
+
+export type <%= className %>WithRelations = <%= className %> & <%= className %>Relations;

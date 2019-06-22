@@ -1,0 +1,60 @@
+{
+  "name": "@loopback/example-context",
+  "version": "1.2.4",
+  "description": "Standalone examples for @loopback/context",
+  "main": "index.js",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "author": "IBM Corp.",
+  "scripts": {
+    "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean *example-context*.tgz dist tsconfig.build.tsbuildinfo package",
+    "verify": "npm pack && tar xf *example-context*.tgz && tree package && npm run clean",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run clean && npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "posttest": "npm run lint",
+    "test:dev": "lb-mocha dist/__tests__/**/*.js && npm run posttest",
+    "prestart": "npm run build",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/context": "^1.20.1"
+  },
+  "devDependencies": {
+    "@loopback/build": "^2.0.2",
+    "@loopback/eslint-config": "^1.1.2",
+    "@loopback/testlab": "^1.6.2",
+    "@types/node": "^10.14.9",
+    "@typescript-eslint/eslint-plugin": "^1.10.2",
+    "@typescript-eslint/parser": "^1.10.2",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^5.0.0",
+    "eslint-plugin-eslint-plugin": "^2.1.0",
+    "eslint-plugin-mocha": "^5.3.0",
+    "typescript": "~3.5.2"
+  },
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "tutorial"
+  ]
+}

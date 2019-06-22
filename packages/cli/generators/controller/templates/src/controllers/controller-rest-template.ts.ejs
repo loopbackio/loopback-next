@@ -1,0 +1,137 @@
+import {
+  Count,
+  CountSchema,
+  Filter,
+  repository,
+  Where,
+} from '@loopback/repository';
+import {
+  post,
+  param,
+  get,
+  getFilterSchemaFor,
+  getWhereSchemaFor,
+  patch,
+  put,
+  del,
+  requestBody,
+} from '@loopback/rest';
+import {<%= modelName %>} from '../models';
+import {<%= repositoryName %>} from '../repositories';
+
+export class <%= className %>Controller {
+  constructor(
+    @repository(<%= repositoryName %>)
+    public <%= repositoryNameCamel %> : <%= repositoryName %>,
+  ) {}
+
+  @post('<%= httpPathName %>', {
+    responses: {
+      '200': {
+        description: '<%= modelName %> model instance',
+        content: {'application/json': {schema: {'x-ts-type': <%= modelName %>}}},
+      },
+    },
+  })
+  async create(@requestBody() <%= modelVariableName %>: <%= modelName %>): Promise<<%= modelName %>> {
+    return await this.<%= repositoryNameCamel %>.create(<%= modelVariableName %>);
+  }
+
+  @get('<%= httpPathName %>/count', {
+    responses: {
+      '200': {
+        description: '<%= modelName %> model count',
+        content: {'application/json': {schema: CountSchema}},
+      },
+    },
+  })
+  async count(
+    @param.query.object('where', getWhereSchemaFor(<%= modelName %>)) where?: Where<<%= modelName %>>,
+  ): Promise<Count> {
+    return await this.<%= repositoryNameCamel %>.count(where);
+  }
+
+  @get('<%= httpPathName %>', {
+    responses: {
+      '200': {
+        description: 'Array of <%= modelName %> model instances',
+        content: {
+          'application/json': {
+            schema: {type: 'array', items: {'x-ts-type': <%= modelName %>}},
+          },
+        },
+      },
+    },
+  })
+  async find(
+    @param.query.object('filter', getFilterSchemaFor(<%= modelName %>)) filter?: Filter<<%= modelName %>>,
+  ): Promise<<%= modelName %>[]> {
+    return await this.<%= repositoryNameCamel %>.find(filter);
+  }
+
+  @patch('<%= httpPathName %>', {
+    responses: {
+      '200': {
+        description: '<%= modelName %> PATCH success count',
+        content: {'application/json': {schema: CountSchema}},
+      },
+    },
+  })
+  async updateAll(
+    @requestBody() <%= modelVariableName %>: <%= modelName %>,
+    @param.query.object('where', getWhereSchemaFor(<%= modelName %>)) where?: Where<<%= modelName %>>,
+  ): Promise<Count> {
+    return await this.<%= repositoryNameCamel %>.updateAll(<%= modelVariableName %>, where);
+  }
+
+  @get('<%= httpPathName %>/{id}', {
+    responses: {
+      '200': {
+        description: '<%= modelName %> model instance',
+        content: {'application/json': {schema: {'x-ts-type': <%= modelName %>}}},
+      },
+    },
+  })
+  async findById(@param.path.<%= idType %>('id') id: <%= idType %>): Promise<<%= modelName %>> {
+    return await this.<%= repositoryNameCamel %>.findById(id);
+  }
+
+  @patch('<%= httpPathName %>/{id}', {
+    responses: {
+      '204': {
+        description: '<%= modelName %> PATCH success',
+      },
+    },
+  })
+  async updateById(
+    @param.path.<%= idType %>('id') id: <%= idType %>,
+    @requestBody() <%= modelVariableName %>: <%= modelName %>,
+  ): Promise<void> {
+    await this.<%= repositoryNameCamel %>.updateById(id, <%= modelVariableName %>);
+  }
+
+  @put('<%= httpPathName %>/{id}', {
+    responses: {
+      '204': {
+        description: '<%= modelName %> PUT success',
+      },
+    },
+  })
+  async replaceById(
+    @param.path.<%= idType %>('id') id: <%= idType %>,
+    @requestBody() <%= modelVariableName %>: <%= modelName %>,
+  ): Promise<void> {
+    await this.<%= repositoryNameCamel %>.replaceById(id, <%= modelVariableName %>);
+  }
+
+  @del('<%= httpPathName %>/{id}', {
+    responses: {
+      '204': {
+        description: '<%= modelName %> DELETE success',
+      },
+    },
+  })
+  async deleteById(@param.path.<%= idType %>('id') id: <%= idType %>): Promise<void> {
+    await this.<%= repositoryNameCamel %>.deleteById(id);
+  }
+}

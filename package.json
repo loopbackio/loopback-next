@@ -1,0 +1,75 @@
+{
+  "name": "loopback-next",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git"
+  },
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "author": "IBM Corp.",
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "^8.0.0",
+    "@commitlint/config-conventional": "^8.0.0",
+    "@commitlint/travis-cli": "^8.0.0",
+    "@types/mocha": "^5.2.7",
+    "@typescript-eslint/eslint-plugin": "^1.10.2",
+    "@typescript-eslint/parser": "^1.10.2",
+    "coveralls": "^3.0.4",
+    "cz-conventional-changelog": "^2.1.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^5.0.0",
+    "eslint-plugin-eslint-plugin": "^2.1.0",
+    "eslint-plugin-mocha": "^5.3.0",
+    "husky": "^2.4.1",
+    "lerna": "^3.15.0",
+    "typescript": "~3.5.2"
+  },
+  "scripts": {
+    "postinstall": "lerna bootstrap",
+    "update-packages": "npm run -s update-package-locks",
+    "prerelease": "npm run build:full && npm run mocha && npm run lint",
+    "release": "lerna version && lerna publish from-git --yes",
+    "update-package-locks": "lerna clean && lerna bootstrap --no-ci",
+    "update-template-deps": "node bin/update-template-deps -f",
+    "update-all-deps": "npm update && lerna exec -- npm update && npm run update-package-locks",
+    "sync-dev-deps": "node bin/sync-dev-deps",
+    "version": "npm run update-packages && git add \"**/package-lock.json\" && npm run update-template-deps",
+    "outdated": "npm outdated --depth 0 && lerna exec --no-bail \"npm outdated --depth 0\"",
+    "tsdocs": "lerna run --scope @loopback/tsdocs build:tsdocs",
+    "coverage:ci": "node packages/build/bin/run-nyc report --reporter=text-lcov | coveralls",
+    "precoverage": "npm test",
+    "coverage": "open coverage/index.html",
+    "lint": "npm run prettier:check && npm run eslint && node bin/check-package-locks",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "eslint": "node packages/build/bin/run-eslint --report-unused-disable-directives --cache .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "prettier:cli": "node packages/build/bin/run-prettier \"**/*.ts\" \"**/*.js\" \"**/*.md\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "clean": "lerna run clean && node packages/build/bin/run-clean \"packages/*/dist\" \"examples/*/dist\" \"benchmark/dist\"",
+    "clean:lerna": "lerna clean",
+    "build": "node bin/run-lerna run build",
+    "build:full": "npm run clean:lerna && npm install && npm run clean && npm run build",
+    "pretest": "npm run clean && npm run build",
+    "test": "node packages/build/bin/run-nyc npm run mocha --scripts-prepend-node-path",
+    "test:ci": "node packages/build/bin/run-nyc npm run mocha --scripts-prepend-node-path",
+    "verify:docs": "npm run build:site -- --verify",
+    "build:site": "./bin/build-docs-site.sh",
+    "mocha": "node packages/build/bin/run-mocha \"packages/*/dist/__tests__/**/*.js\" \"examples/*/dist/__tests__/**/*.js\" \"packages/cli/test/**/*.js\" \"packages/build/test/*/*.js\"",
+    "posttest": "npm run lint"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "copyright.owner": "IBM Corp.",
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}

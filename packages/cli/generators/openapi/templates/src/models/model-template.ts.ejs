@@ -1,0 +1,42 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+<%_
+const _properties = locals.properties || [];
+if (_properties.length) {
+-%>
+import {model, property} from '@loopback/repository';
+<%_
+} else {
+-%>
+import {model} from '@loopback/repository';
+<%_
+}
+
+imports.forEach(i => {
+-%>
+<%- i %>
+<%_
+});
+-%>
+
+/**
+ * The model class is generated from OpenAPI schema - <%- name %>
+ * <%- escapeComment(description) %>
+ */
+@model({name: '<%- name %>'})
+export class <%- className %> {
+  constructor(data?: Partial<<%- className %>>) {
+    if (data != null && typeof data === 'object') {
+      Object.assign(this, data);
+    }
+  }
+
+  <%_ for (const p of _properties) { -%>
+  /**
+   * <%- escapeComment(p.description) %>
+   */
+  <%- p.decoration %>
+  <%- p.signature %>
+
+  <%_ } -%>
+}
+

@@ -1,0 +1,69 @@
+{
+  "name": "@loopback/example-soap-calculator",
+  "version": "1.6.5",
+  "description": "Integrate a SOAP webservice with LoopBack 4",
+  "keywords": [
+    "loopback",
+    "LoopBack",
+    "example",
+    "tutorial",
+    "soap"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=8"
+  },
+  "author": "IBM Corp.",
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean *example-soap*.tgz dist package api-docs dist tsconfig.build.tsbuildinfo",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run clean && npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "posttest": "npm run lint",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "prestart": "npm run build",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/boot": "^1.4.3",
+    "@loopback/context": "^1.20.1",
+    "@loopback/core": "^1.8.4",
+    "@loopback/openapi-v3": "^1.6.4",
+    "@loopback/repository": "^1.8.1",
+    "@loopback/rest": "^1.16.2",
+    "@loopback/rest-explorer": "^1.2.4",
+    "@loopback/service-proxy": "^1.2.4",
+    "loopback-connector-soap": "^5.0.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^2.0.2",
+    "@loopback/eslint-config": "^1.1.2",
+    "@loopback/testlab": "^1.6.2",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^10.14.9",
+    "@typescript-eslint/eslint-plugin": "^1.10.2",
+    "@typescript-eslint/parser": "^1.10.2",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^5.0.0",
+    "eslint-plugin-eslint-plugin": "^2.1.0",
+    "eslint-plugin-mocha": "^5.3.0",
+    "mocha": "^6.1.4",
+    "source-map-support": "^0.5.12",
+    "typescript": "~3.5.2"
+  }
+}

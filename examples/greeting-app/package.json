@@ -1,0 +1,68 @@
+{
+  "name": "@loopback/example-greeting-app",
+  "version": "1.1.4",
+  "description": "An example greeting application for LoopBack 4",
+  "main": "index.js",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "clean": "lb-clean *example-greeting-app-*.tgz dist tsconfig.build.tsbuildinfo package",
+    "lint": "npm run prettier:check && npm run eslint",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+    "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+    "prettier:check": "npm run prettier:cli -- -l",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run clean && npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "posttest": "npm run lint",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "prestart": "npm run build",
+    "start": "node .",
+    "verify": "npm pack && tar xf *example-greeting-app*.tgz && tree package && npm run clean"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/strongloop/loopback-next.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "loopback",
+    "loopback-application"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/strongloop/loopback-next/issues"
+  },
+  "homepage": "https://github.com/strongloop/loopback-next/tree/master/examples/greeter-extension",
+  "devDependencies": {
+    "@loopback/build": "^2.0.2",
+    "@loopback/eslint-config": "^1.1.2",
+    "@loopback/testlab": "^1.6.2",
+    "@types/debug": "4.1.4",
+    "@types/node": "^10.14.9",
+    "@typescript-eslint/eslint-plugin": "^1.10.2",
+    "@typescript-eslint/parser": "^1.10.2",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^5.0.0",
+    "eslint-plugin-eslint-plugin": "^2.1.0",
+    "eslint-plugin-mocha": "^5.3.0",
+    "typescript": "~3.5.2"
+  },
+  "dependencies": {
+    "@loopback/boot": "^1.4.3",
+    "@loopback/context": "^1.20.1",
+    "@loopback/core": "^1.8.4",
+    "@loopback/example-greeter-extension": "^1.3.4",
+    "@loopback/openapi-v3": "^1.6.4",
+    "@loopback/rest": "^1.16.2",
+    "chalk": "^2.4.2",
+    "debug": "^4.1.1"
+  }
+}

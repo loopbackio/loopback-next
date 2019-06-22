@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+
+    // FIXME(bajtos) LB4 is not compatible with this setting yet
+    "strictPropertyInitialization": false,
+
+    "incremental": true,
+
+    "lib": ["es2018", "esnext.asynciterable"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2017",
+    "sourceMap": true,
+    "declaration": true
+  }
+}

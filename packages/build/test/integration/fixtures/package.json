@@ -1,0 +1,10 @@
+{
+  "name": "@loopback/ts-test-proj",
+  "version": "1.0.0",
+  "description": "Test",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "IBM Corp.",
+  "license": "MIT"
+}

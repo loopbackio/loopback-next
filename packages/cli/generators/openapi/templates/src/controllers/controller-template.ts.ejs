@@ -1,0 +1,32 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {operation, param, requestBody} from '@loopback/rest';
+<%_
+imports.forEach(i => {
+-%>
+<%- i %>
+<%_
+});
+-%>
+
+/**
+ * The controller class is generated from OpenAPI spec with operations tagged
+ * by <%- tag %>
+ * <%- escapeComment(description) %>
+ */
+export class <%- className %> {
+  constructor() {}
+
+  <%_ for (const m of methods) { -%>
+  /**
+  <%_ for (const c of m.comments) { -%>
+   * <%- escapeComment(c) %>
+  <%_ } -%>
+   */
+  <%- m.decoration %>
+  <%- m.signature %> {
+    <%- m.implementation || "throw new Error('Not implemented');" %>
+  }
+
+  <%_ } -%>
+}
+

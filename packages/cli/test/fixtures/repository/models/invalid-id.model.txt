@@ -1,0 +1,20 @@
+ import {Entity, model, property} from '@loopback/repository';
+
+    @model()
+    export class InvalidID extends Entity {
+      @property({
+        type: 'string',
+        required: true,
+        default: 0,
+      })
+      id: string;
+
+      @property({
+        type: 'string',
+      })
+      desc?: string;
+
+      constructor(data?: Partial<InvalidID>) {
+        super(data);
+      }
+    }

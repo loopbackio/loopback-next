@@ -1,0 +1,33 @@
+lerna-debug.log
+node_modules
+npm-debug.log
+.DS_Store
+coverage
+.nyc_output
+**/*.tgz
+acceptance/*/dist
+packages/*/dist
+examples/*/dist
+benchmark/dist
+**/package
+.sandbox
+packages/cli/generators/datasource/connectors.json
+packages/tsdocs/fixtures/monorepo/docs
+packages/tsdocs/fixtures/monorepo/packages/pkg1/docs
+/docs/site/readmes
+/docs/apidocs/reports-temp
+/docs/apidocs/models
+*.tsbuildinfo
+
+# TBD: Exclude api reports from git for now
+/docs/apidocs/reports
+/docs/site/apidocs
+
+# Exclude all files under sandbox except README.md and example
+/sandbox/*
+!/sandbox/README.md
+!/sandbox/example/
+
+# ESLint cache
+.eslintcache
+

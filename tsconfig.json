@@ -1,0 +1,15 @@
+{
+  "extends": "./packages/build/config/tsconfig.common.json",
+  "include": [
+    "benchmark",
+    "examples",
+    "packages"
+  ],
+  "exclude": [
+    "node_modules/**",
+    "benchmark/node_modules/**",
+    "examples/*/node_modules/**",
+    "packages/*/node_modules/**",
+    "**/*.d.ts"
+  ]
+}
