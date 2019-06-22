@@ -33,7 +33,7 @@ for all the API usages in each package.
 [LoopBack 2](https://loopback.io/doc/en/lb2/) became maintenance LTS version.
 
 | Version    | Status          | Published | EOL                  |
-| ---------- | --------------- | --------- | -------------------- |
+|:-----------|:----------------|:----------|:---------------------|
 | LoopBack 4 | Current         | Oct 2018  | Apr 2021 _(minimum)_ |
 | Loopback 3 | Active LTS      | Dec 2016  | Dec 2020             |
 | Loopback 2 | Maintenance LTS | Jul 2014  | Apr 2019             |
@@ -82,19 +82,47 @@ You can join the team by posting a comment to
 ### Project Architects
 
 |                  Raymond Feng                   |            Miroslav Bajtos            |           Ritchie Martori           |
-| :---------------------------------------------: | :-----------------------------------: | :---------------------------------: |
+|:-----------------------------------------------:|:-------------------------------------:|:-----------------------------------:|
 | [![raymondfeng]](http://github.com/raymondfeng) | [![bajtos]](http://github.com/bajtos) | [![ritch]](http://github.com/ritch) |
 
 ### Project Maintainers
 
-|                                                  |                                                  |                                                            |
-| :----------------------------------------------: | :----------------------------------------------: | :--------------------------------------------------------: |
-|                  Biniam Admikew                  |                    Diana Lau                     |                         Janny Hou                          |
-|    [![b-admike]](http://github.com/b-admike)     |      [![dhmlau]](http://github.com/dhmlau)       |         [![jannyhou]](http://github.com/jannyHou)          |
-|                    Hage Yaapa                    |                 Nora Abdelgadir                  |                       Mario Estrada                        |
-| [![hacksparrow]](https://github.com/hacksparrow) | [![nabdelgadir]](https://github.com/nabdelgadir) | [![marioestradarosa]](https://github.com/marioestradarosa) |
-|                   Hugo Da Roit                   |                 Dominique Emond                  |                         Agnes Lin                          |
-|        [![yaty]](https://github.com/yaty)        |     [![emonddr]](https://github.com/emonddr)     |         [![agnes512]](https://github.com/agnes512)         |
+<table>
+      <tbody>
+            <tr>
+                  <td align="center">Biniam Admikew</td>
+                  <td align="center">Diana Lau</td>
+                  <td align="center">Janny Hou</td>
+            </tr>
+            <tr>
+                  <td align="center"><a href="http://github.com/b-admike"><img src="https://avatars0.githubusercontent.com/u/13950637?v=3&amp;s=60" alt="b-admike" style="max-width:100%;"></a></td>
+                  <td align="center"><a href="http://github.com/dhmlau"><img src="https://avatars2.githubusercontent.com/u/25489897?v=3&amp;s=60" alt="dhmlau" style="max-width:100%;"></a>
+                  </td>
+                  <td align="center"><a href="http://github.com/jannyHou"><img src="https://avatars2.githubusercontent.com/u/12554153?v=3&amp;s=60" alt="jannyhou" style="max-width:100%;"></a></td>
+            </tr>
+            <tr>
+                  <td align="center">Hage Yaapa</td>
+                  <td align="center">Nora Abdelgadir</td>
+                  <td align="center">Mario Estrada</td>
+            </tr>
+            <tr>
+                  <td align="center"><a href="https://github.com/hacksparrow"><img src="https://avatars2.githubusercontent.com/u/950112?v=3&amp;s=60" alt="hacksparrow" style="max-width:100%;"></a></td>
+                  <td align="center"><a href="https://github.com/nabdelgadir"><img src="https://avatars0.githubusercontent.com/u/42985749?v=3&amp;s=60" alt="nabdelgadir" style="max-width:100%;"></a></td>
+                  <td align="center"><a href="https://github.com/marioestradarosa"><img src="https://avatars2.githubusercontent.com/u/4633823?v=3&amp;s=60" alt="marioestradarosa" style="max-width:100%;"></a></td>
+            </tr>
+            <tr>
+                  <td align="center">Hugo Da Roit</td>
+                  <td align="center">Dominique Emond</td>
+                  <td align="center">Agnes Lin</td>
+            </tr>
+            <tr>
+                  <td align="center"><a href="https://github.com/yaty"><img src="https://avatars3.githubusercontent.com/u/11981803?v=3&amp;s=60" alt="yaty" style="max-width:100%;"></a>
+                  </td>
+                  <td align="center"><a href="https://github.com/emonddr"><img src="https://avatars0.githubusercontent.com/u/6864736??v=3&amp;s=60" alt="emonddr" style="max-width:100%;"></a></td>
+                  <td align="center"><a href="https://github.com/agnes512"><img src="https://avatars3.githubusercontent.com/u/50331796?v=3&amp;s=60" alt="agnes512" style="max-width:100%;"></a></td>
+            </tr>
+      </tbody>
+</table>
 
 See
 [all contributors](https://github.com/strongloop/loopback-next/graphs/contributors).
