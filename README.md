@@ -33,7 +33,7 @@ for all the API usages in each package.
 [LoopBack 2](https://loopback.io/doc/en/lb2/) became maintenance LTS version.
 
 | Version    | Status          | Published | EOL                  |
-|:-----------|:----------------|:----------|:---------------------|
+| :--------- | :-------------- | :-------- | :------------------- |
 | LoopBack 4 | Current         | Oct 2018  | Apr 2021 _(minimum)_ |
 | Loopback 3 | Active LTS      | Dec 2016  | Dec 2020             |
 | Loopback 2 | Maintenance LTS | Jul 2014  | Apr 2019             |
@@ -82,7 +82,7 @@ You can join the team by posting a comment to
 ### Project Architects
 
 |                  Raymond Feng                   |            Miroslav Bajtos            |           Ritchie Martori           |
-|:-----------------------------------------------:|:-------------------------------------:|:-----------------------------------:|
+| :---------------------------------------------: | :-----------------------------------: | :---------------------------------: |
 | [![raymondfeng]](http://github.com/raymondfeng) | [![bajtos]](http://github.com/bajtos) | [![ritch]](http://github.com/ritch) |
 
 ### Project Maintainers
