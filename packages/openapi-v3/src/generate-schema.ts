@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {SchemaObject} from '@loopback/openapi-v3-types';
+import {SchemaObject} from './types';
 
 /**
  * Generate the `type` and `format` property in a Schema Object according to a

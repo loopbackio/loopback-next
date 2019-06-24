@@ -3,16 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  isSchemaObject,
-  ParameterObject,
-  ParameterLocation,
-  ReferenceObject,
-  SchemaObject,
-} from '@loopback/openapi-v3-types';
 import {MetadataInspector, ParameterDecoratorFactory} from '@loopback/context';
 import {resolveSchema} from '../generate-schema';
 import {OAI3Keys} from '../keys';
+import {
+  isSchemaObject,
+  ParameterLocation,
+  ParameterObject,
+  ReferenceObject,
+  SchemaObject,
+} from '../types';
 
 /**
  * Describe an input parameter of a Controller method.

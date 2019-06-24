@@ -3,11 +3,6 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  OperationObject,
-  ParameterObject,
-  SchemaObject,
-} from '@loopback/openapi-v3-types';
 import {Entity, model, property} from '@loopback/repository';
 import {expect} from '@loopback/testlab';
 import {
@@ -15,10 +10,13 @@ import {
   ControllerSpec,
   get,
   getControllerSpec,
+  getModelSchemaRef,
+  OperationObject,
   param,
+  ParameterObject,
   post,
   requestBody,
-  getModelSchemaRef,
+  SchemaObject,
 } from '../..';
 
 describe('controller spec', () => {

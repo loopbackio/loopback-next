@@ -4,13 +4,17 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {anOperationSpec} from '@loopback/openapi-spec-builder';
-import {
-  OperationObject,
-  ParameterObject,
-  ResponsesObject,
-} from '@loopback/openapi-v3-types';
 import {expect} from '@loopback/testlab';
-import {get, getControllerSpec, operation, param, patch} from '../../../../';
+import {
+  get,
+  getControllerSpec,
+  operation,
+  OperationObject,
+  param,
+  ParameterObject,
+  patch,
+  ResponsesObject,
+} from '../../../../';
 
 describe('Routing metadata for parameters', () => {
   describe('@param', () => {
