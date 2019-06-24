@@ -124,6 +124,10 @@ It serves 2 purposes:
 - Extension point/extension
 - Discovering and ordering
 - Chain of handling
+- Creating components, decorators, servers
+- Extending request body parsing
+- Extension life cycle
+- Testing your extension
 
 **Examples**
 
