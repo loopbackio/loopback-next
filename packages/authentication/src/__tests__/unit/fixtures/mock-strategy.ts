@@ -11,7 +11,7 @@ class AuthenticationError extends Error {
 }
 
 /**
- * Test fixture for a mock asynchronous passport-strategy
+ * Test fixture for a mock asynchronous authentication strategy
  */
 export class MockStrategy implements AuthenticationStrategy {
   name: 'MockStrategy';
@@ -26,17 +26,12 @@ export class MockStrategy implements AuthenticationStrategy {
     return this.mockUser;
   }
 
-  /**
-   * authenticate() function similar to passport-strategy packages
-   * @param req
-   */
   async authenticate(req: Request): Promise<UserProfile> {
     return await this.verify(req);
   }
   /**
    * @param req
-   * mock verification function; usually passed in as constructor argument for
-   * passport-strategy
+   * mock verification function
    *
    * For the purpose of mock tests we have this here
    * pass req.query.testState = 'fail' to mock failed authorization
