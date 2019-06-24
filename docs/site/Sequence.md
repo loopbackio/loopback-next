@@ -47,7 +47,7 @@ building sequences, you use LoopBack Elements to respond to a request:
   docs link
 - [`OperationRetVal`](https://loopback.io/doc/en/lb4/apidocs.rest.operationretval.html)
 - [`ParseParams`](https://loopback.io/doc/en/lb4/apidocs.rest.parseparams.html)
-- [`OpenAPISpec`](https://loopback.io/doc/en/lb4/apidocs.openapi-v3-types.openapispec.html)
+- [`OpenAPISpec`](https://loopback.io/doc/en/lb4/apidocs.openapi-v3.openapispec.html)
 
 ## Actions
 
