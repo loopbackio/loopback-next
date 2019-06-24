@@ -3,15 +3,23 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {createEmptyApiSpec, ParameterObject} from '@loopback/openapi-v3-types';
 import {expect} from '@loopback/testlab';
+import {ParameterObject} from 'openapi3-ts';
 import {anOpenApiSpec, anOperationSpec} from '../../openapi-spec-builder';
 
 describe('OpenAPI Spec Builder', () => {
   describe('anOpenApiSpec', () => {
     it('creates an empty spec', () => {
       const spec = anOpenApiSpec().build();
-      expect(spec).to.eql(createEmptyApiSpec());
+      expect(spec).to.eql({
+        openapi: '3.0.0',
+        info: {
+          title: 'LoopBack Application',
+          version: '1.0.0',
+        },
+        paths: {},
+        servers: [{url: '/'}],
+      });
     });
 
     it('adds an extension', () => {
