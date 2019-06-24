@@ -498,6 +498,7 @@ module.exports = function(projGenerator, props, projectType) {
 
     async function testPrompt(gen, prompts, fnName) {
       await gen.setOptions();
+      // eslint-disable-next-line require-atomic-updates
       gen.prompt = sinon.stub(gen, 'prompt');
       gen.prompt.resolves(prompts);
       return await gen[fnName]();
