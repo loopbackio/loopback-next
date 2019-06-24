@@ -41,6 +41,7 @@ export class MyGlobalInterceptor implements Provider<Interceptor> {
     invocationCtx: InvocationContext,
     next: () => ValueOrPromise<InvocationResult>,
   ) {
+    // eslint-disable-next-line no-useless-catch
     try {
       // Add pre-invocation logic here
       const result = await next();

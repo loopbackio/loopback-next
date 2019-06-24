@@ -216,6 +216,7 @@ describe('HttpCachingProxy', () => {
     if (!stubServer) return;
     stubServer.close();
     await pEvent(stubServer, 'close');
+    // eslint-disable-next-line require-atomic-updates
     stubServer = undefined;
   }
 

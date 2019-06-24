@@ -564,7 +564,7 @@ export function describeInjectedArguments(
     if (shouldSkipBaseConstructorInjection(target)) {
       options.ownMetadataOnly = true;
     }
-  } else if (target.hasOwnProperty(method)) {
+  } else if (Object.prototype.hasOwnProperty.call(target, method)) {
     // The method exists in the target, no injections on the super method
     // should be honored
     options.ownMetadataOnly = true;

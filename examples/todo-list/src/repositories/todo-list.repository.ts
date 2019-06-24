@@ -76,6 +76,7 @@ export class TodoListRepository extends DefaultCrudRepository<
     if (include && include.length && include[0].relation === 'todos') {
       await Promise.all(
         result.map(async r => {
+          // eslint-disable-next-line require-atomic-updates
           r.todos = await this.todos(r.id).find();
         }),
       );

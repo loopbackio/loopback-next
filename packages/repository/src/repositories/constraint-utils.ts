@@ -55,7 +55,7 @@ export function constrainDataObject<T extends Entity>(
 ): DataObject<T> {
   const constrainedData = cloneDeep(originalData);
   for (const c in constraint) {
-    if (constrainedData.hasOwnProperty(c)) {
+    if (Object.prototype.hasOwnProperty.call(constrainedData, c)) {
       // Known limitation: === does not work for objects such as ObjectId
       if (originalData[c] === constraint[c]) continue;
       throw new Error(`Property "${c}" cannot be changed!`);
