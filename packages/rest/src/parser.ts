@@ -3,13 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {REQUEST_BODY_INDEX} from '@loopback/openapi-v3';
 import {
   isReferenceObject,
   OperationObject,
   ParameterObject,
+  REQUEST_BODY_INDEX,
   SchemasObject,
-} from '@loopback/openapi-v3-types';
+} from '@loopback/openapi-v3';
 import * as debugFactory from 'debug';
 import {RequestBody, RequestBodyParser} from './body-parsers';
 import {coerceParameter} from './coercion/coerce-parameter';

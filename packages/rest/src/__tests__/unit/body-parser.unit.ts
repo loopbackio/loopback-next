@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from '@loopback/core';
-import {OperationObject, RequestBodyObject} from '@loopback/openapi-v3-types';
+import {OperationObject, RequestBodyObject} from '@loopback/openapi-v3';
 import {
   expect,
   ShotRequestOptions,

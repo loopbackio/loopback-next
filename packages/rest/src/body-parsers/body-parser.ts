@@ -11,7 +11,7 @@ import {
   inject,
   instantiateClass,
 } from '@loopback/context';
-import {isReferenceObject, OperationObject} from '@loopback/openapi-v3-types';
+import {isReferenceObject, OperationObject} from '@loopback/openapi-v3';
 import * as debugModule from 'debug';
 import {is} from 'type-is';
 import {RestHttpErrors} from '../rest-http-error';

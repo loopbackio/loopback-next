@@ -5,8 +5,12 @@
 
 import {Context} from '@loopback/context';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
-import {ControllerSpec, get} from '@loopback/openapi-v3';
-import {ParameterObject, RequestBodyObject} from '@loopback/openapi-v3-types';
+import {
+  ControllerSpec,
+  get,
+  ParameterObject,
+  RequestBodyObject,
+} from '@loopback/openapi-v3';
 import {
   Client,
   createClientForHandler,

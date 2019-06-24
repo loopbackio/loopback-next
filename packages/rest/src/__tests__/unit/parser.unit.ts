@@ -9,7 +9,7 @@ import {
   ParameterObject,
   RequestBodyObject,
   SchemaObject,
-} from '@loopback/openapi-v3-types';
+} from '@loopback/openapi-v3';
 import {
   expect,
   ShotRequestOptions,

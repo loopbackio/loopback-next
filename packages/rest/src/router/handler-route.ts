@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context, invokeMethodWithInterceptors} from '@loopback/context';
-import {OperationObject} from '@loopback/openapi-v3-types';
+import {OperationObject} from '@loopback/openapi-v3';
 import {OperationArgs, OperationRetval} from '../types';
 import {BaseRoute} from './base-route';
 

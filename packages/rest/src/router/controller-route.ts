@@ -4,15 +4,15 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  BindingScope,
   Constructor,
   Context,
   instantiateClass,
   invokeMethod,
   ValueOrPromise,
-  BindingScope,
 } from '@loopback/context';
 import {CoreBindings} from '@loopback/core';
-import {OperationObject} from '@loopback/openapi-v3-types';
+import {OperationObject} from '@loopback/openapi-v3';
 import * as HttpErrors from 'http-errors';
 import {OperationArgs, OperationRetval} from '../types';
 import {BaseRoute} from './base-route';

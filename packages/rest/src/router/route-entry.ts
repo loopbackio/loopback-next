@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from '@loopback/context';
-import {OperationObject, SchemasObject} from '@loopback/openapi-v3-types';
+import {OperationObject, SchemasObject} from '@loopback/openapi-v3';
 import {OperationArgs, OperationRetval, PathParameterValues} from '../types';
 
 /**

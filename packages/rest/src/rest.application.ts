@@ -5,7 +5,7 @@
 
 import {Binding, BindingAddress, Constructor} from '@loopback/context';
 import {Application, ApplicationConfig, Server} from '@loopback/core';
-import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3-types';
+import {OpenApiSpec, OperationObject} from '@loopback/openapi-v3';
 import {PathParams} from 'express-serve-static-core';
 import {ServeStaticOptions} from 'serve-static';
 import {format} from 'util';

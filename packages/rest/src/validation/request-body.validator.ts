@@ -8,7 +8,7 @@ import {
   RequestBodyObject,
   SchemaObject,
   SchemasObject,
-} from '@loopback/openapi-v3-types';
+} from '@loopback/openapi-v3';
 import * as AJV from 'ajv';
 import * as debugModule from 'debug';
 import * as _ from 'lodash';

@@ -27,4 +27,3 @@ import * as HttpErrors from 'http-errors';
 export {HttpErrors};
 
 export * from '@loopback/openapi-v3';
-export * from '@loopback/openapi-v3-types';
