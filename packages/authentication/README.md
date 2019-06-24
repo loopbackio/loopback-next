@@ -40,6 +40,8 @@ into your application.
   [bind the custom sequence to the application](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html#binding-the-authenticating-sequence-to-the-application)
 - [register the authentication strategies](https://loopback.io/doc/en/lb4/Loopback-component-authentication.html#registering-a-custom-authentication-strategy)
 
+[Create and register a passport based strategy](https://www.npmjs.com/package/@loopback/authentication-passport)
+
 ## Related resources
 
 For detailed documentation, see
