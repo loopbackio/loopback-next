@@ -3,9 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {get, param, getControllerSpec} from '../../../..';
 import {expect} from '@loopback/testlab';
-import {ParameterObject} from '@loopback/openapi-v3-types';
+import {get, getControllerSpec, param, ParameterObject} from '../../../..';
 
 describe('Routing metadata for parameters', () => {
   describe('@param.query.string', () => {

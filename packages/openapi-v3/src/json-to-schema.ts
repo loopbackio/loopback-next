@@ -3,13 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  ReferenceObject,
-  SchemaObject,
-  SchemasObject,
-} from '@loopback/openapi-v3-types';
 import {JsonSchema} from '@loopback/repository-json-schema';
 import * as _ from 'lodash';
+import {ReferenceObject, SchemaObject, SchemasObject} from './types';
 
 /**
  * Custom LoopBack extension: a reference to Schema object that's bundled

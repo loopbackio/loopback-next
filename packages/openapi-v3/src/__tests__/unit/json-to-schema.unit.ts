@@ -3,11 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {expect} from '@loopback/testlab';
-
-import {SchemaObject} from '@loopback/openapi-v3-types';
-import {jsonToSchemaObject, jsonOrBooleanToJSON} from '../..';
 import {JsonSchema} from '@loopback/repository-json-schema';
+import {expect} from '@loopback/testlab';
+import {jsonOrBooleanToJSON, jsonToSchemaObject, SchemaObject} from '../..';
 
 describe('jsonToSchemaObject', () => {
   it('does nothing when given an empty object', () => {

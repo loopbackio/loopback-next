@@ -4,15 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {MetadataInspector, ParameterDecoratorFactory} from '@loopback/context';
-import {
-  ReferenceObject,
-  RequestBodyObject,
-  SchemaObject,
-} from '@loopback/openapi-v3-types';
 import * as _ from 'lodash';
 import {inspect} from 'util';
 import {resolveSchema} from '../generate-schema';
 import {OAI3Keys} from '../keys';
+import {ReferenceObject, RequestBodyObject, SchemaObject} from '../types';
 
 const debug = require('debug')('loopback:openapi3:metadata:requestbody');
 export const REQUEST_BODY_INDEX = 'x-parameter-index';

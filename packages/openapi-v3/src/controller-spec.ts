@@ -5,6 +5,15 @@
 
 import {DecoratorFactory, MetadataInspector} from '@loopback/context';
 import {
+  getJsonSchema,
+  getJsonSchemaRef,
+  JsonSchemaOptions,
+} from '@loopback/repository-json-schema';
+import * as _ from 'lodash';
+import {resolveSchema} from './generate-schema';
+import {jsonToSchemaObject, SchemaRef} from './json-to-schema';
+import {OAI3Keys} from './keys';
+import {
   ComponentsObject,
   ISpecificationExtension,
   isReferenceObject,
@@ -16,16 +25,7 @@ import {
   ResponseObject,
   SchemaObject,
   SchemasObject,
-} from '@loopback/openapi-v3-types';
-import {
-  getJsonSchema,
-  getJsonSchemaRef,
-  JsonSchemaOptions,
-} from '@loopback/repository-json-schema';
-import * as _ from 'lodash';
-import {resolveSchema} from './generate-schema';
-import {jsonToSchemaObject, SchemaRef} from './json-to-schema';
-import {OAI3Keys} from './keys';
+} from './types';
 
 const debug = require('debug')('loopback:openapi3:metadata:controller-spec');
 

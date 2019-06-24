@@ -3,13 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {SchemaObject} from '@loopback/openapi-v3-types';
 import {
   getFilterJsonSchemaFor,
   getWhereJsonSchemaFor,
   Model,
 } from '@loopback/repository-json-schema';
 import {jsonToSchemaObject} from './json-to-schema';
+import {SchemaObject} from './types';
 
 /**
  * Build an OpenAPI schema describing the format of the "filter" object
