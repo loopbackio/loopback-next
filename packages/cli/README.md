@@ -394,7 +394,6 @@ Run the following command to install the CLI.
       - @loopback/core: ^1.1.7
       - @loopback/metadata: ^1.0.7
       - @loopback/openapi-spec-builder: ^1.0.7
-      - @loopback/openapi-v3-types: ^1.0.7
       - @loopback/openapi-v3: ^1.2.3
       - @loopback/repository-json-schema: ^1.3.3
       - @loopback/repository: ^1.1.7
