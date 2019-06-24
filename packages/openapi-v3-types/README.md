@@ -7,6 +7,11 @@ TypeScript type definitions for OpenAPI Spec/Swagger documents.
 TypeScript definitions describing the schema of OpenAPI/Swagger documents,
 including LoopBack-specific extensions.
 
+**This package is deprecated, use
+[openapi3-ts](https://www.npmjs.com/package/openapi3-ts) or
+[@loopback/openapi-v3](https://www.npmjs.com/package/@loopback/openapi-v3)
+instead.**
+
 ## Installation
 
 ```sh

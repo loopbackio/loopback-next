@@ -1,7 +1,7 @@
 {
   "name": "@loopback/openapi-v3-types",
   "version": "1.1.4",
-  "description": "TypeScript type definitions for OpenAPI Specifications.",
+  "description": "[DEPRECATED] TypeScript type definitions for OpenAPI Specifications.",
   "engines": {
     "node": ">=8.9"
   },
