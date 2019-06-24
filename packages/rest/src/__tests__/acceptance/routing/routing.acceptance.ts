@@ -6,12 +6,16 @@
 import {BindingScope, Constructor, Context, inject} from '@loopback/context';
 import {Application, CoreBindings} from '@loopback/core';
 import {anOpenApiSpec, anOperationSpec} from '@loopback/openapi-spec-builder';
-import {api, get, param, post, requestBody} from '@loopback/openapi-v3';
 import {
+  api,
+  get,
   OperationObject,
+  param,
   ParameterObject,
+  post,
+  requestBody,
   ResponseObject,
-} from '@loopback/openapi-v3-types';
+} from '@loopback/openapi-v3';
 import {
   Client,
   createClientForHandler,

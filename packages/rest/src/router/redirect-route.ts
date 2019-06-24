@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {RouteEntry, ResolvedRoute} from '.';
+import {OperationObject, SchemasObject} from '@loopback/openapi-v3';
+import {ResolvedRoute, RouteEntry} from '.';
 import {RequestContext} from '../request-context';
-import {OperationObject, SchemasObject} from '@loopback/openapi-v3-types';
 import {OperationArgs, OperationRetval, PathParameterValues} from '../types';
 
 export class RedirectRoute implements RouteEntry, ResolvedRoute {

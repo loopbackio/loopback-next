@@ -13,12 +13,12 @@ import {
 } from '@loopback/context';
 import {Application, CoreBindings, Server} from '@loopback/core';
 import {HttpServer, HttpServerOptions} from '@loopback/http-server';
-import {getControllerSpec} from '@loopback/openapi-v3';
 import {
+  getControllerSpec,
   OpenApiSpec,
   OperationObject,
   ServerObject,
-} from '@loopback/openapi-v3-types';
+} from '@loopback/openapi-v3';
 import {AssertionError} from 'assert';
 import * as cors from 'cors';
 import * as debugFactory from 'debug';

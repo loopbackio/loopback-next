@@ -7,7 +7,7 @@ import {
   ReferenceObject,
   RequestBodyObject,
   SchemaObject,
-} from '@loopback/openapi-v3-types';
+} from '@loopback/openapi-v3';
 import {RestServerConfig, RestServerResolvedConfig} from '../rest.server';
 
 /**

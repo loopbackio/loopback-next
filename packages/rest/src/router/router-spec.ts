@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {OpenApiSpec} from '@loopback/openapi-v3-types';
+import {OpenApiSpec} from '@loopback/openapi-v3';
 
 export type RouterSpec = Pick<OpenApiSpec, 'paths' | 'components' | 'tags'>;
 

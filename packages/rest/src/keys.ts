@@ -6,7 +6,7 @@
 import {BindingKey, Context} from '@loopback/context';
 import {CoreBindings} from '@loopback/core';
 import {HttpProtocol} from '@loopback/http-server';
-import {OpenApiSpec} from '@loopback/openapi-v3-types';
+import {OpenApiSpec} from '@loopback/openapi-v3';
 import * as https from 'https';
 import {ErrorWriterOptions} from 'strong-error-handler';
 import {BodyParser, RequestBodyParser} from './body-parsers';

@@ -4,22 +4,19 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Context} from '@loopback/context';
-import {PathObject, SchemasObject} from '@loopback/openapi-v3-types';
-import {ControllerSpec} from '@loopback/openapi-v3';
-
-import {SequenceHandler} from './sequence';
-import {
-  RoutingTable,
-  ResolvedRoute,
-  RouteEntry,
-  ControllerClass,
-  ControllerFactory,
-} from './router';
-import {Request, Response} from './types';
-
+import {ControllerSpec, PathObject, SchemasObject} from '@loopback/openapi-v3';
 import {RestBindings} from './keys';
 import {RequestContext} from './request-context';
 import {RestServerResolvedConfig} from './rest.server';
+import {
+  ControllerClass,
+  ControllerFactory,
+  ResolvedRoute,
+  RouteEntry,
+  RoutingTable,
+} from './router';
+import {SequenceHandler} from './sequence';
+import {Request, Response} from './types';
 
 export class HttpHandler {
   protected _apiDefinitions: SchemasObject;

@@ -8,7 +8,7 @@ import {
   OpenApiSpec,
   OperationObject,
   SchemasObject,
-} from '@loopback/openapi-v3-types';
+} from '@loopback/openapi-v3';
 import * as express from 'express';
 import {RequestHandler} from 'express';
 import {PathParams} from 'express-serve-static-core';

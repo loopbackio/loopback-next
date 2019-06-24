@@ -7,7 +7,7 @@ import {
   ReferenceObject,
   SchemaObject,
   SchemasObject,
-} from '@loopback/openapi-v3-types';
+} from '@loopback/openapi-v3';
 import {expect} from '@loopback/testlab';
 import {RestHttpErrors, validateRequestBody} from '../../';
 import {aBodySpec} from '../helpers';

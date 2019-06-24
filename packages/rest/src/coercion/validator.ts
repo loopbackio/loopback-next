@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {ParameterObject, SchemaObject} from '@loopback/openapi-v3-types';
+import {ParameterObject, SchemaObject} from '@loopback/openapi-v3';
 import {RestHttpErrors} from '../';
 
 /**

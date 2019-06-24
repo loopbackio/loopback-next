@@ -11,7 +11,7 @@ import {
   ProviderMap,
   Server,
 } from '@loopback/core';
-import {createEmptyApiSpec} from '@loopback/openapi-v3-types';
+import {createEmptyApiSpec} from '@loopback/openapi-v3';
 import {
   JsonBodyParser,
   RequestBodyParser,
