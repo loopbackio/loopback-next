@@ -134,9 +134,7 @@ module.exports = {
 
     // Rules mapped from `@loopback/tslint-config/tslint.build.json
     '@typescript-eslint/await-thenable': 'error', // tslint:await-promise: [true, 'PromiseLike', 'RequestPromise'],
-
-    // See https://github.com/typescript-eslint/typescript-eslint/issues/464
-    // tslint:no-floating-promises: [true, 'PromiseLike', 'RequestPromise'],
+    '@typescript-eslint/no-floating-promises': 'error',
 
     'no-void': 'error', // tslint:no-void-expression: [true, 'ignore-arrow-function-shorthand'],
   },
