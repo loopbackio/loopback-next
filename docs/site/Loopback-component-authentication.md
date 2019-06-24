@@ -384,7 +384,7 @@ export class MyAuthenticatingSequence implements SequenceHandler {
 }
 ```
 
-Notice the new dependency injection in the sequence's contructor.
+Notice the new dependency injection in the sequence's constructor.
 
 ```ts
 @inject(AuthenticationBindings.AUTH_ACTION)
@@ -608,6 +608,23 @@ export class MyApplication extends BootMixin(
 }
 ```
 
+### Using Passport-based Strategies
+
+The earlier version of `@loopback/authentication` is based on an express
+middleware called `passport`, which supports 500+ passport strategies for
+verifying an express app's requests. In `@loopback/authentication@2.0`, we
+defined our own interface `AuthenticationStrategy` that describes a strategy
+with different contracts than the passport strategy, but we still want to keep
+the ability to support those existing 500+ community passport strategies.
+Therefore, we rewrote the adapter class. It now converts a passport strategy to
+the one that LoopBack 4 authentication system expects and it was released in a
+new package `@loopback/authentication-passport`.
+
+Creating and registering a passport strategy is explained in
+[the README.md file](https://www.npmjs.com/package/@loopback/authentication-passport)
+
+The usage of authentication decorator and the change in sequence stay the same.
+
 ## Managing Custom Authentication Strategy Options
 
 This is an **optional** step.
@@ -801,7 +818,7 @@ overrides them with any request-level overriding options specified in the
 
 Then, in the `authenticate()` function of the custom authentication strategy,
 call the `processOptions()` function, and have the custom authentication
-strategy react to the upated options.
+strategy react to the updated options.
 
 ## Summary
 
