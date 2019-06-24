@@ -3,16 +3,15 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import * as assert from 'assert';
 import {
-  createEmptyApiSpec,
   ISpecificationExtension,
-  OpenApiSpec,
+  OpenAPIObject,
   OperationObject,
   ParameterObject,
   RequestBodyObject,
   ResponseObject,
-} from '@loopback/openapi-v3-types';
-import * as assert from 'assert';
+} from 'openapi3-ts';
 
 /**
  * Create a new instance of OpenApiSpecBuilder.
@@ -71,12 +70,20 @@ export class BuilderBase<T extends ISpecificationExtension> {
 /**
  * A builder for creating OpenApiSpec documents.
  */
-export class OpenApiSpecBuilder extends BuilderBase<OpenApiSpec> {
+export class OpenApiSpecBuilder extends BuilderBase<OpenAPIObject> {
   /**
    * @param basePath - The base path on which the API is served.
    */
   constructor() {
-    super(createEmptyApiSpec());
+    super({
+      openapi: '3.0.0',
+      info: {
+        title: 'LoopBack Application',
+        version: '1.0.0',
+      },
+      paths: {},
+      servers: [{url: '/'}],
+    });
   }
 
   /**
