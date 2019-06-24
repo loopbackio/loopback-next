@@ -36,4 +36,9 @@ export async function main() {
   await sayHello(ctx);
 }
 
-if (require.main === module) main();
+if (require.main === module) {
+  main().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+}

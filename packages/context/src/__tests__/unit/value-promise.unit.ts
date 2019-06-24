@@ -26,6 +26,7 @@ describe('tryWithFinally', () => {
     let finalActionInvoked = false;
     const action = () => 1;
     const finalAction = () => (finalActionInvoked = true);
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     tryWithFinally(action, finalAction);
     expect(finalActionInvoked).to.be.true();
   });

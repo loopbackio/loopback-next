@@ -87,7 +87,12 @@ function updatePackageJson(pkgFile, masterDeps) {
   return true;
 }
 
-if (require.main === module) syncDevDeps();
+if (require.main === module) {
+  syncDevDeps().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+}
 
 function readPackageJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf-8'));

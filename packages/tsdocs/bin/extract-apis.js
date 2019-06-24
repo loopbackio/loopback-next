@@ -27,4 +27,7 @@ async function main() {
   await runExtractorForMonorepo({silent, dryRun, apiReportEnabled});
 }
 
-main();
+main().catch(err => {
+  console.error(err);
+  process.exit(1);
+});

@@ -7,5 +7,8 @@ module.exports = require('./dist');
 
 if (require.main === module) {
   const app = new module.exports.GreetingApplication();
-  app.main();
+  app.main().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
 }

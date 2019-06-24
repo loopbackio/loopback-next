@@ -27,5 +27,8 @@ export async function main() {
 if (require.main === module) {
   process.env.FOO = JSON.stringify({bar: 'xyz'});
 
-  main();
+  main().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
 }

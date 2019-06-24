@@ -63,4 +63,9 @@ async function updateTemplateDeps() {
   }
 }
 
-if (require.main === module) updateTemplateDeps();
+if (require.main === module) {
+  updateTemplateDeps().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+}

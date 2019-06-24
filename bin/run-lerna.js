@@ -25,4 +25,9 @@ async function run(argv, options) {
 }
 
 module.exports = run;
-if (require.main === module) run(process.argv);
+if (require.main === module) {
+  run(process.argv).catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+}

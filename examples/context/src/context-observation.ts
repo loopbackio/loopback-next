@@ -88,4 +88,9 @@ export async function main() {
   await requestCtx.waitUntilObserversNotified();
 }
 
-if (require.main === module) main();
+if (require.main === module) {
+  main().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+}

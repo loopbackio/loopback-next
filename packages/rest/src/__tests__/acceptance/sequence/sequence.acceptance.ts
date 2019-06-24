@@ -38,7 +38,7 @@ describe('Sequence', () => {
   let server: RestServer;
   beforeEach(givenAppWithController);
   it('provides a default sequence', async () => {
-    whenIRequest()
+    await whenIRequest()
       .get('/name')
       .expect('SequenceApp');
   });
@@ -52,7 +52,7 @@ describe('Sequence', () => {
       .expect('hello world');
   });
 
-  it('allows users to define a custom sequence as a class', () => {
+  it('allows users to define a custom sequence as a class', async () => {
     class MySequence implements SequenceHandler {
       constructor(@inject(SequenceActions.SEND) private send: Send) {}
 
@@ -63,7 +63,7 @@ describe('Sequence', () => {
     // bind user defined sequence
     server.sequence(MySequence);
 
-    whenIRequest()
+    await whenIRequest()
       .get('/')
       .expect('hello world');
   });

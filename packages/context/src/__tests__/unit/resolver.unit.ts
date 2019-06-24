@@ -56,6 +56,7 @@ describe('constructor injection', () => {
     }
 
     expect(() => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       instantiateClass(TestClass, ctx);
     }).to.throw(/Cannot resolve injected arguments/);
   });
@@ -383,6 +384,7 @@ describe('property injection', () => {
     }
 
     expect(() => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       instantiateClass(TestClass, ctx);
     }).to.throw(/Cannot resolve injected property/);
   });
