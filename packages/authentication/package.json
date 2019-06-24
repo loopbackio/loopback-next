@@ -24,9 +24,7 @@
     "@loopback/metadata": "^1.2.4",
     "@loopback/openapi-v3": "^1.6.4",
     "@loopback/rest": "^1.16.2",
-    "@types/express": "^4.17.0",
-    "passport": "^0.4.0",
-    "passport-strategy": "^1.0.0"
+    "@types/express": "^4.17.0"
   },
   "devDependencies": {
     "@loopback/build": "^2.0.2",
@@ -34,10 +32,7 @@
     "@loopback/openapi-spec-builder": "^1.2.4",
     "@loopback/testlab": "^1.6.2",
     "@types/node": "^10.14.10",
-    "@types/passport": "^1.0.0",
-    "@types/passport-http": "^0.3.8",
-    "jsonwebtoken": "^8.5.1",
-    "passport-http": "^0.3.0"
+    "jsonwebtoken": "^8.5.1"
   },
   "keywords": [
     "LoopBack",

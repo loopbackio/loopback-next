@@ -7,5 +7,4 @@ export * from './authentication.component';
 export * from './decorators';
 export * from './keys';
 export * from './services';
-export * from './strategy-adapter';
 export * from './types';
