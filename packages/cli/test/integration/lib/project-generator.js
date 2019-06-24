@@ -257,6 +257,7 @@ module.exports = function(projGenerator, props, projectType) {
           ['package.json', 'eslint-plugin-mocha'],
           ['package.json', '@typescript-eslint/eslint-plugin'],
           ['package.json', '@loopback/eslint-config'],
+          ['package.json', 'source-map-support'],
           ['.eslintrc.js', '@loopback/eslint-config'],
           ['tsconfig.json', '@loopback/build'],
         ]);
@@ -282,7 +283,7 @@ module.exports = function(projGenerator, props, projectType) {
           assert.jsonFileContent('package.json', {
             scripts: {
               prestart: 'npm run build',
-              start: 'node .',
+              start: 'node -r source-map-support/register .',
             },
           });
         }

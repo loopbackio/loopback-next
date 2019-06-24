@@ -51,7 +51,7 @@
     "docker:run": "docker run -p 3000:3000 -d <%= project.name -%>",
   <% } -%>
     "migrate": "node ./dist/migrate",
-    "start": "npm run build && node .",
+    "start": "npm run build && node -r source-map-support/register .",
 <% } -%>
     "prepare": "npm run build"
   },
@@ -86,6 +86,7 @@
   },
   "devDependencies": {
     "rimraf": "<%= project.dependencies['rimraf'] -%>",
+    "source-map-support": "<%= project.dependencies['source-map-support'] -%>",
     "@loopback/testlab": "<%= project.dependencies['@loopback/testlab'] -%>",
 <% if (project.mocha) { -%>
     "@types/mocha": "<%= project.dependencies['@types/mocha'] -%>",

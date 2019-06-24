@@ -52,7 +52,7 @@
   <% } -%>
     "migrate": "node ./dist/migrate",
     "prestart": "npm run build",
-    "start": "node .",
+    "start": "node -r source-map-support/register .",
 <% } -%>
     "prepublishOnly": "npm run test"
   },
@@ -94,6 +94,7 @@
   },
   "devDependencies": {
     "@loopback/build": "<%= project.dependencies['@loopback/build'] -%>",
+    "source-map-support": "<%= project.dependencies['source-map-support'] -%>",
     "@loopback/testlab": "<%= project.dependencies['@loopback/testlab'] -%>",
     "@types/node": "<%= project.dependencies['@types/node'] -%>",
     <% if (project.eslint) { -%>
