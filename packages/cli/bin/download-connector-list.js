@@ -51,4 +51,7 @@ async function download() {
   await writeFileAsync(DEST, JSON.stringify(out, null, 2));
 }
 
-download();
+download().catch(err => {
+  console.error(err);
+  process.exit(1);
+});
