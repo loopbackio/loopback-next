@@ -38,20 +38,15 @@ export interface JsonSchemaOptions {
  * @private
  */
 export function buildModelCacheKey(options: JsonSchemaOptions = {}): string {
-  const flags = Object.keys(options);
-
-  // Backwards compatibility
-  // Preserve cache keys "modelOnly" and "modelWithRelations"
-  if (flags.length === 0) {
+  // Backwards compatibility: preserve cache key "modelOnly"
+  if (Object.keys(options).length === 0) {
     return MODEL_TYPE_KEYS.ModelOnly;
-  } else if (flags.length === 1 && options.includeRelations) {
-    return MODEL_TYPE_KEYS.ModelWithRelations;
   }
 
-  // New key schema: concatenate names of options (flags) that are set.
-  // For example: "includeRelations+partial"
-  flags.sort();
-  return flags.join('+');
+  // New key schema: use the same suffix as we use for schema title
+  // For example: "modelPartialWithRelations"
+  // Note this new key schema preserves the old key "modelWithRelations"
+  return 'model' + getTitleSuffix(options);
 }
 
 /**
@@ -260,6 +255,17 @@ export function getNavigationalPropertyForRelation(
   }
 }
 
+function getTitleSuffix(options: JsonSchemaOptions = {}) {
+  let suffix = '';
+  if (options.partial) {
+    suffix += 'Partial';
+  }
+  if (options.includeRelations) {
+    suffix += 'WithRelations';
+  }
+  return suffix;
+}
+
 // NOTE(shimks) no metadata for: union, optional, nested array, any, enum,
 // string literal, anonymous types, and inherited properties
 
@@ -282,13 +288,7 @@ export function modelToJsonSchema(
     return {};
   }
 
-  let title = meta.title || ctor.name;
-  if (options.partial) {
-    title += 'Partial';
-  }
-  if (options.includeRelations) {
-    title += 'WithRelations';
-  }
+  const title = (meta.title || ctor.name) + getTitleSuffix(options);
 
   if (options.visited[title]) return options.visited[title];
 

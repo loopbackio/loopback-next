@@ -229,7 +229,7 @@ describe('build-schema', () => {
 
     it('returns "partial" when a single option "partial" is set', () => {
       const key = buildModelCacheKey({partial: true});
-      expect(key).to.equal('partial');
+      expect(key).to.equal('modelPartial');
     });
 
     it('returns concatenated option names otherwise', () => {
@@ -238,7 +238,7 @@ describe('build-schema', () => {
         partial: true,
         includeRelations: true,
       });
-      expect(key).to.equal('includeRelations+partial');
+      expect(key).to.equal('modelPartialWithRelations');
     });
   });
 });
