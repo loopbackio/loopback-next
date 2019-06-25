@@ -14,7 +14,7 @@ import * as debugModule from 'debug';
 import * as _ from 'lodash';
 import * as util from 'util';
 import {HttpErrors, RequestBody, RestHttpErrors} from '..';
-import {RequestBodyValidationOptions} from '../types';
+import {RequestBodyValidationOptions, SchemaValidatorCache} from '../types';
 
 const toJsonSchema = require('openapi-schema-to-json-schema');
 const debug = debugModule('loopback:rest:validation');
@@ -79,10 +79,24 @@ function convertToJsonSchema(openapiSchema: SchemaObject) {
 /**
  * Built-in cache for complied schemas by AJV
  */
-const DEFAULT_COMPILED_SCHEMA_CACHE = new WeakMap<
-  SchemaObject | ReferenceObject,
-  AJV.ValidateFunction
->();
+const DEFAULT_COMPILED_SCHEMA_CACHE: SchemaValidatorCache = new WeakMap();
+
+/**
+ * Build a cache key for AJV options
+ * @param options - Request body validation options
+ */
+function getKeyForOptions(options: RequestBodyValidationOptions) {
+  const ajvOptions: Record<string, unknown> = {};
+  // Sort keys for options
+  const keys = Object.keys(
+    options,
+  ).sort() as (keyof RequestBodyValidationOptions)[];
+  for (const k of keys) {
+    if (k === 'compiledSchemaCache') continue;
+    ajvOptions[k] = options[k];
+  }
+  return JSON.stringify(ajvOptions);
+}
 
 /**
  * Validate the request body data against JSON schema.
@@ -98,15 +112,22 @@ function validateValueAgainstSchema(
   globalSchemas: SchemasObject = {},
   options: RequestBodyValidationOptions = {},
 ) {
-  let validate: AJV.ValidateFunction;
+  let validate: AJV.ValidateFunction | undefined;
 
   const cache = options.compiledSchemaCache || DEFAULT_COMPILED_SCHEMA_CACHE;
+  const key = getKeyForOptions(options);
 
+  let validatorMap: Map<string, AJV.ValidateFunction> | undefined;
   if (cache.has(schema)) {
-    validate = DEFAULT_COMPILED_SCHEMA_CACHE.get(schema)!;
-  } else {
+    validatorMap = cache.get(schema)!;
+    validate = validatorMap.get(key);
+  }
+
+  if (!validate) {
     validate = createValidator(schema, globalSchemas, options);
-    cache.set(schema, validate);
+    validatorMap = validatorMap || new Map();
+    validatorMap.set(key, validate);
+    cache.set(schema, validatorMap);
   }
 
   if (validate(body)) {
