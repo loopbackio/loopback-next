@@ -58,6 +58,44 @@ describe('validateRequestBody', () => {
     );
   });
 
+  // Test for https://github.com/strongloop/loopback-next/issues/3234
+  it('honors options for AJV validator caching', () => {
+    // 1. Trigger a validation with `{coerceTypes: false}`
+    validateRequestBody(
+      {
+        value: {city: 'San Jose', unit: 123, isOwner: true},
+        schema: ADDRESS_SCHEMA,
+      },
+      aBodySpec(ADDRESS_SCHEMA),
+      {},
+      {coerceTypes: false},
+    );
+
+    // 2. Trigger a validation with `{coerceTypes: true}`
+    validateRequestBody(
+      {
+        value: {city: 'San Jose', unit: '123', isOwner: 'true'},
+        schema: ADDRESS_SCHEMA,
+      },
+      aBodySpec(ADDRESS_SCHEMA),
+      {},
+      {coerceTypes: true},
+    );
+
+    // 3. Trigger a validation with `{coerceTypes: false}` with invalid data
+    expect(() =>
+      validateRequestBody(
+        {
+          value: {city: 'San Jose', unit: '123', isOwner: true},
+          schema: ADDRESS_SCHEMA,
+        },
+        aBodySpec(ADDRESS_SCHEMA),
+        {},
+        {coerceTypes: false},
+      ),
+    ).to.throw(/The request body is invalid/);
+  });
+
   it('rejects data missing a required property', () => {
     const details: RestHttpErrors.ValidationErrorDetails[] = [
       {
