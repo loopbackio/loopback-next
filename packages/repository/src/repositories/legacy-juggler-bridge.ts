@@ -346,17 +346,23 @@ export class DefaultCrudRepository<
     options?: Options,
   ): Promise<(T & Relations)[]> {
     const models = await ensurePromise(
-      this.modelClass.find(filter as legacy.Filter, options),
+      this.modelClass.find(this.normalizeFilter(filter), options),
     );
-    return this.toEntities(models);
+    const entities = this.toEntities(models);
+    return this.includeRelatedModels(entities, filter, options);
   }
 
-  async findOne(filter?: Filter<T>, options?: Options): Promise<T | null> {
+  async findOne(
+    filter?: Filter<T>,
+    options?: Options,
+  ): Promise<(T & Relations) | null> {
     const model = await ensurePromise(
-      this.modelClass.findOne(filter as legacy.Filter, options),
+      this.modelClass.findOne(this.normalizeFilter(filter), options),
     );
     if (!model) return null;
-    return this.toEntity(model);
+    const entity = this.toEntity(model);
+    const resolved = await this.includeRelatedModels([entity], filter, options);
+    return resolved[0];
   }
 
   async findById(
@@ -365,12 +371,14 @@ export class DefaultCrudRepository<
     options?: Options,
   ): Promise<T & Relations> {
     const model = await ensurePromise(
-      this.modelClass.findById(id, filter as legacy.Filter, options),
+      this.modelClass.findById(id, this.normalizeFilter(filter), options),
     );
     if (!model) {
       throw new EntityNotFoundError(this.entityClass, id);
     }
-    return this.toEntity<T & Relations>(model);
+    const entity = this.toEntity(model);
+    const resolved = await this.includeRelatedModels([entity], filter, options);
+    return resolved[0];
   }
 
   update(entity: T, options?: Options): Promise<void> {
@@ -459,5 +467,31 @@ export class DefaultCrudRepository<
 
   protected toEntities<R extends T>(models: juggler.PersistedModel[]): R[] {
     return models.map(m => this.toEntity<R>(m));
+  }
+
+  protected normalizeFilter(filter?: Filter<T>): legacy.Filter | undefined {
+    if (!filter) return undefined;
+    return {...filter, include: undefined} as legacy.Filter;
+  }
+
+  protected async includeRelatedModels(
+    entities: T[],
+    filter?: Filter<T>,
+    _options?: Options,
+  ): Promise<(T & Relations)[]> {
+    const result = entities as (T & Relations)[];
+    if (!filter || !filter.include || !filter.include.length) return result;
+
+    const msg =
+      'Inclusion of related models is not supported yet. ' +
+      'Please remove "include" property from the "filter" parameter.';
+    const err = new Error(msg);
+    Object.assign(err, {
+      code: 'FILTER_INCLUDE_NOT_SUPPORTED',
+      // temporary hack to report correct status code,
+      // this shouldn't be landed to master!
+      statusCode: 501, // Not Implemented
+    });
+    throw err;
   }
 }
