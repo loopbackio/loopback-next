@@ -5,11 +5,11 @@
 
 import {
   BindingAddress,
+  MetadataAccessor,
   MetadataInspector,
   MetadataMap,
   MethodDecoratorFactory,
 } from '@loopback/context';
-import {AuthorizationBindings} from '../keys';
 import {
   AUTHENTICATED,
   AuthorizationMetadata,
@@ -17,6 +17,16 @@ import {
   UNAUTHENTICATED,
   Voter,
 } from '../types';
+
+export const AUTHORIZATION_METHOD_KEY = MetadataAccessor.create<
+  AuthorizationMetadata,
+  MethodDecorator
+>('authorization:method');
+
+export const AUTHORIZATION_CLASS_KEY = MetadataAccessor.create<
+  AuthorizationMetadata,
+  ClassDecorator
+>('authorization:class');
 
 export class AuthorizeMethodDecoratorFactory extends MethodDecoratorFactory<
   AuthorizationMetadata
@@ -79,7 +89,7 @@ export class AuthorizeMethodDecoratorFactory extends MethodDecoratorFactory<
  */
 export function authorize(spec: AuthorizationMetadata) {
   return AuthorizeMethodDecoratorFactory.createDecorator(
-    AuthorizationBindings.METADATA,
+    AUTHORIZATION_METHOD_KEY,
     spec,
   );
 }
@@ -158,12 +168,21 @@ export function getAuthorizeMetadata(
   target: object,
   methodName: string,
 ): AuthorizationMetadata | undefined {
+  let targetClass: Function;
   if (typeof target === 'function') {
+    targetClass = target;
     target = target.prototype;
+  } else {
+    targetClass = target.constructor;
   }
-  return MetadataInspector.getMethodMetadata<AuthorizationMetadata>(
-    AuthorizationBindings.METADATA,
+  let metadata = MetadataInspector.getMethodMetadata<AuthorizationMetadata>(
+    AUTHORIZATION_METHOD_KEY,
     target,
     methodName,
+  );
+  if (metadata) return metadata;
+  return MetadataInspector.getClassMetadata<AuthorizationMetadata>(
+    AUTHORIZATION_CLASS_KEY,
+    targetClass,
   );
 }

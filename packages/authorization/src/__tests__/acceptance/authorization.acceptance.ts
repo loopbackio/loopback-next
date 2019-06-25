@@ -12,7 +12,7 @@ import {
   AuthorizationDecision,
   AuthorizationMetadata,
   authorize,
-  AuthorizeFn,
+  Authorizer,
   EVERYONE,
 } from '../..';
 
@@ -92,13 +92,13 @@ describe('Authorization', () => {
   /**
    * Provider of a function which authenticates
    */
-  class MyAuthorizationProvider implements Provider<AuthorizeFn> {
+  class MyAuthorizationProvider implements Provider<Authorizer> {
     constructor() {}
 
     /**
      * @returns authenticateFn
      */
-    value(): AuthorizeFn {
+    value(): Authorizer {
       return async (
         context: AuthorizationContext,
         metadata: AuthorizationMetadata,

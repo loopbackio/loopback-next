@@ -15,7 +15,7 @@ import {
   AuthorizationMetadata,
   AuthorizationRequest,
   authorize,
-  AuthorizeFn,
+  Authorizer,
 } from '../..';
 
 describe('Authorization', () => {
@@ -120,13 +120,13 @@ describe('Authorization', () => {
   /**
    * Provider of a function which authenticates
    */
-  class CasbinAuthorizationProvider implements Provider<AuthorizeFn> {
+  class CasbinAuthorizationProvider implements Provider<Authorizer> {
     constructor(@inject('casbin.enforcer') private enforcer: casbin.Enforcer) {}
 
     /**
      * @returns authenticateFn
      */
-    value(): AuthorizeFn {
+    value(): Authorizer {
       return async (
         authzCtx: AuthorizationContext,
         metadata: AuthorizationMetadata,
