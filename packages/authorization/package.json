@@ -20,13 +20,13 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^1.13.0",
-    "@loopback/core": "^1.6.2",
+    "@loopback/context": "^1.20.2",
+    "@loopback/core": "^1.8.5",
     "debug": "^4.1.1"
   },
   "devDependencies": {
-    "@loopback/build": "^2.0.2",
-    "@loopback/testlab": "^1.2.7",
+    "@loopback/build": "^2.0.3",
+    "@loopback/testlab": "^1.6.3",
     "@types/debug": "^4.1.4",
     "casbin": "^3.0.1"
   },
