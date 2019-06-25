@@ -17,7 +17,6 @@ export const MONGODB_CONFIG: DataSourceOptions = {
   database: process.env.MONGODB_DATABASE || 'repository-tests',
 };
 
-export const MONGODB_FEATURES: CrudConnectorFeatures = {
+export const MONGODB_FEATURES: Partial<CrudConnectorFeatures> = {
   idType: 'string',
-  freeFormProperties: false,
 };
