@@ -25,9 +25,9 @@ export enum VotingDecision {
 /**
  * A voter function
  */
-export interface Voter {
-  (authzCtx: AuthorizationContext): Promise<VotingDecision>;
-}
+export type Voter = (
+  authorizationCtx: AuthorizationContext,
+) => Promise<VotingDecision>;
 
 /**
  * Authorization metadata stored via Reflection API
@@ -198,15 +198,15 @@ export interface AuthorizationContext {
 /**
  * A function to decide if access to the target should be allowed or denied
  */
-export interface AuthorizeFn {
+export type Authorizer =
   /**
    * @param context: Context information for authorization
    * @param metadata: Metadata representing requirements for authorization
    */
-  (context: AuthorizationContext, metadata: AuthorizationMetadata): Promise<
-    AuthorizationDecision
-  >;
-}
+  (
+    context: AuthorizationContext,
+    metadata: AuthorizationMetadata,
+  ) => Promise<AuthorizationDecision>;
 
 /**
  * Inspired by https://github.com/casbin/node-casbin

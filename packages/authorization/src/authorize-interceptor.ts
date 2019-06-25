@@ -13,11 +13,7 @@ import {
 } from '@loopback/context';
 import * as debugFactory from 'debug';
 import {getAuthorizeMetadata} from './decorators/authorize';
-import {
-  AuthorizationContext,
-  AuthorizationDecision,
-  AuthorizeFn,
-} from './types';
+import {AuthorizationContext, AuthorizationDecision, Authorizer} from './types';
 
 const debug = debugFactory('loopback:authorization:interceptor');
 
@@ -25,7 +21,7 @@ const debug = debugFactory('loopback:authorization:interceptor');
 export class AuthorizationInterceptor implements Provider<Interceptor> {
   constructor(
     @inject(filterByTag('authorizationProvider'))
-    private authorizationFunctions: AuthorizeFn[],
+    private authorizationFunctions: Authorizer[],
   ) {}
 
   value(): Interceptor {
