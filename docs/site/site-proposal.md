@@ -42,110 +42,127 @@ docs improvement, I'd like to propose the following changes.
   - Datasource & Connectors
   - Observers & Interceptors
 
-**Application life cycles**
+- **Application life cycles**
 
-- Create: includes scaffolding
-  - download the cli module
-  - create project skeleton
-  - scaffold application, create model, add business logics in controller.
-- Add more artifacts
-  - start to add building blocks
-- Build
-  - part of `npm start`
-  - build step will transpile everything to javascript
-- Boot
-  - `app.boot()`
-  - load the artifact by convention from well know folders and populate into the
-    application context
-- Start
-  - `app.start()`
-  - LB application does the start event
-  - activation of endpoints
-  - start to listen on the transport and start to accept requests
-  - lifecycle event, e.g. start a timer to clean up cache periodically
-- Request/Response processing
-  - after start, requests can come in.
-  - can start accept request and produce response
-  - raymond has a diagram from server > sequence of actions> controller >
-    datasource > connector
-- Stop
-  - deactivate the endpoints. shutting down the application
+  - Installation
+  - Create: includes scaffolding
+    - download the cli module
+    - create project skeleton
+    - scaffold application, create model, add business logics in controller.
+  - Add more artifacts
+    - start to add building blocks
+  - Build
+    - part of `npm start`
+    - build step will transpile everything to javascript
+  - Boot
+    - `app.boot()`
+    - load the artifact by convention from well know folders and populate into
+      the application context
+  - Start
+    - `app.start()`
+    - LB application does the start event
+    - activation of endpoints
+    - start to listen on the transport and start to accept requests
+    - lifecycle event, e.g. start a timer to clean up cache periodically
+  - Try and test?
 
-**Developer Experiences**
+    Build the app iteratively.
 
-_Development and Deployment stories_
+  - Request/Response processing
+    - after start, requests can come in.
+    - can start accept request and produce response
+    - raymond has a diagram from server > sequence of actions> controller >
+      datasource > connector
+  - Stop
+    - deactivate the endpoints. shutting down the application
 
-_show how to add more integration capabilities to your app_
+- **Developer Experiences**
 
-- Create REST APIs
-  - Top-down vs Bottom up
-  - OpenAPI
-- Access databases
-- Call other services
-- Integrate with infrastructure
-  - Authentication
-  - Authorization
-  - Caching
-  - Distributed tracing
-- Debugging
-- Deployment
+  _Development and Deployment stories_
 
-**Behind the scene plumbing**
+  _show how to add more integration capabilities to your app_
 
-_what's the plumbing that we get all the artifacts working together_
+  - Create REST APIs
+    - Top-down vs Bottom up
+    - OpenAPI
+    - can expand to other APIs, e.g. gRPC and GraphQL
+  - Access databases
+  - Call other services
+  - Integrate with infrastructure
 
-- Context
-- Binding
-- Dependency injection
-- Component
+    _If we don't have out-of-box integration, we can document how to utilize
+    intercept to do the work. or create a PoC_
 
-**Request/response processing flow**
+    - Authentication
+    - Authorization
+    - Caching
+    - Distributed tracing
+    - Metrics
 
-_Programming model guide_
+  - Debugging
+  - Deployment - to docker containers, kubernetes, etc.
 
-It serves 2 purposes:
+- **Behind the scene plumbing**
 
-1. for extension devloper on how to extend LB
-2. for application developer to understand the processing flow
+  _what's the plumbing that we get all the artifacts working together_
 
-- Transport -> Server -> Sequence of actions -> Controller -> Repository ->
-  DataSource -> Connector -> Database
-- Express middleware
-- Sequence of actions
-  - Routing
-  - Parsing
-  - Invoking
-  - Sending
-  - Rejecting
-- Interceptors
+  _what infrastructure behind the magic and how developers can use it_
 
-**Extending LoopBack**
+  - Context
+  - Binding
+  - Dependency injection
+  - Component - allow you to group different bindings together
 
-- Extension point/extension
-- Discovering and ordering
-- Chain of handling
-- Creating components, decorators, servers
-- Extending request body parsing
-- Extension life cycle
-- Testing your extension
+- **Request/response processing flow**
 
-**Examples**
+  _Programming model guide: to understand what's the pipeline behind and how we
+  utilize different tiers to do different work_
 
-**CLI References**
+  It serves 2 purposes:
 
-**API docs**
+  1. for extension developer on how to extend LB
+  2. for application developer to understand the processing flow
 
-**For LoopBack 3.x users**
+  - Transport -> Server -> Sequence of actions -> Controller -> Repository ->
+    DataSource -> Connector -> Database
+  - Express middleware
+  - Sequence of actions
+    - Routing
+    - Parsing
+    - Invoking
+    - Sending
+    - Rejecting
+  - Interceptors
 
-- **Differences between v3 and v4**
-- **Migration Guide**
+- **Extending LoopBack**
 
-**References**
+  - Extension point/extension patterns: on top of the context registry
+  - Discovering and ordering: how to discover artifacts from the context, so
+    that we can form a chain of interceptors/actions
+  - Chain of handling
+  - Creating components, decorators, servers
+  - Extending request body parsing
+  - Extension life cycle
+  - Testing your extension
 
-Discussion: Per discussion with Barbara much earlier, she suggested us remove
-the Glossary as well because we have the one-liner description of the concepts.
+- **Examples**
 
-- Considerations for GDPR readiness
+- **CLI References**
+
+- **API docs**
+
+- **For LoopBack 3.x users**
+
+  - **Differences between v3 and v4**
+  - **Migration Guide**
+
+- **References**
+
+  Discussion: Per discussion with Barbara much earlier, she suggested us remove
+  the Glossary as well because we have the one-liner description of the
+  concepts.
+
+  - Considerations for GDPR readiness
 
 ## Proposed Changes on Individual Section
 
