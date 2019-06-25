@@ -20,7 +20,7 @@ export const MYSQL_CONFIG: DataSourceOptions = {
   createDatabase: true,
 };
 
-export const MYSQL_FEATURES: CrudConnectorFeatures = {
+export const MYSQL_FEATURES: Partial<CrudConnectorFeatures> = {
   idType: 'number',
   freeFormProperties: false,
 };
