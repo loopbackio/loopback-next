@@ -4,14 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {MetadataInspector} from '@loopback/context';
-import {
-  isBuiltinType,
-  ModelDefinition,
-  ModelMetadataHelper,
-  PropertyDefinition,
-  RelationMetadata,
-  resolveType,
-} from '@loopback/repository';
+import {isBuiltinType, ModelDefinition, ModelMetadataHelper, PropertyDefinition, RelationMetadata, resolveType} from '@loopback/repository';
 import {JSONSchema6 as JSONSchema} from 'json-schema';
 import {JSON_SCHEMA_KEY, MODEL_TYPE_KEYS} from './keys';
 
@@ -29,13 +22,13 @@ export interface JsonSchemaOptions {
   partial?: boolean;
 
   /**
-   * @private
+   * @internal
    */
   visited?: {[key: string]: JSONSchema};
 }
 
 /**
- * @private
+ * @internal
  */
 export function buildModelCacheKey(options: JsonSchemaOptions = {}): string {
   // Backwards compatibility: preserve cache key "modelOnly"
@@ -324,8 +317,8 @@ export function modelToJsonSchema(
     const resolvedType = resolveType(metaProperty.type) as string | Function;
     const referenceType = isArrayType(resolvedType)
       ? // shimks: ugly type casting; this should be replaced by logic to throw
-        // error if itemType/type is not a string or a function
-        resolveType(metaProperty.itemType as string | Function)
+      // error if itemType/type is not a string or a function
+      resolveType(metaProperty.itemType as string | Function)
       : resolvedType;
 
     if (typeof referenceType !== 'function' || isBuiltinType(referenceType)) {
