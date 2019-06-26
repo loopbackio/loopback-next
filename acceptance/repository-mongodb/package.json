@@ -23,7 +23,7 @@
     "@loopback/repository": "^1.8.1",
     "@loopback/repository-tests": "^0.2.1",
     "@types/node": "^10.14.10",
-    "loopback-connector-mongodb": "^4.2.0"
+    "loopback-connector-mongodb": "^5.0.0"
   },
   "files": [
     "README.md",
