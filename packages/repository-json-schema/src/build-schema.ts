@@ -29,13 +29,13 @@ export interface JsonSchemaOptions {
   partial?: boolean;
 
   /**
-   * @private
+   * @internal
    */
   visited?: {[key: string]: JSONSchema};
 }
 
 /**
- * @private
+ * @internal
  */
 export function buildModelCacheKey(options: JsonSchemaOptions = {}): string {
   // Backwards compatibility: preserve cache key "modelOnly"
