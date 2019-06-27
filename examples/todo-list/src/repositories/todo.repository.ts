@@ -36,6 +36,7 @@ export class TodoRepository extends DefaultCrudRepository<
       'todoList',
       todoListRepositoryGetter,
     );
+    this.registerBelongsToInclusion('todoList', todoListRepositoryGetter);
   }
 
   protected async includeRelatedModels(

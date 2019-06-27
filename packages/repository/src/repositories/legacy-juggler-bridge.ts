@@ -22,6 +22,7 @@ import {Filter, Inclusion, Where} from '../query';
 import {
   BelongsToAccessor,
   BelongsToDefinition,
+  BelongsToInclusionResolver,
   createBelongsToAccessor,
   createHasManyRepositoryFactory,
   createHasOneRepositoryFactory,
@@ -31,6 +32,7 @@ import {
   HasOneDefinition,
   HasOneRepositoryFactory,
   InclusionResolver,
+  RelationMetadata,
 } from '../relations';
 import {isTypeResolver, resolveType} from '../type-resolver';
 import {EntityCrudRepository} from './repository';
@@ -253,6 +255,11 @@ export class DefaultCrudRepository<
     );
   }
 
+  /**
+   * TODO - add docs
+   * @param relationName
+   * @param targetRepoGetter
+   */
   protected registerHasManyInclusion<
     Target extends Entity,
     TargetID,
@@ -263,10 +270,39 @@ export class DefaultCrudRepository<
       EntityCrudRepository<Target, TargetID, TargetRelations>
     >,
   ) {
+    const relations = this.entityClass.definition.relations;
     this.inclusionResolvers[relationName] = new HasManyInclusionResolver(
-      this.entityClass.definition.relations.todos as HasManyDefinition,
+      this.getRelationDefinition(relationName) as HasManyDefinition,
       targetRepoGetter,
     );
+  }
+
+  /**
+   * TODO - add docs
+   * @param relationName
+   * @param targetRepoGetter
+   */
+  protected registerBelongsToInclusion<
+    Target extends Entity,
+    TargetID,
+    TargetRelations extends object
+  >(
+    relationName: string,
+    targetRepoGetter: Getter<
+      EntityCrudRepository<Target, TargetID, TargetRelations>
+    >,
+  ) {
+    this.inclusionResolvers[relationName] = new BelongsToInclusionResolver(
+      this.getRelationDefinition(relationName) as BelongsToDefinition,
+      targetRepoGetter,
+    );
+  }
+
+  protected getRelationDefinition(relationName: string): RelationMetadata {
+    const relations = this.entityClass.definition.relations;
+    const meta = relations[relationName];
+    // FIXME(bajtos) Throw a helpful error when the relationName was not found
+    return meta;
   }
 
   /**
