@@ -26,9 +26,9 @@ type InterceptorProviderClass = Constructor<Provider<Interceptor>>;
  *
  * Supported phases: configure, discover, load
  *
- * @param app Application instance
- * @param projectRoot Root of User Project relative to which all paths are resolved
- * @param [bootConfig] InterceptorProvider Artifact Options Object
+ * @param app - Application instance
+ * @param projectRoot - Root of User Project relative to which all paths are resolved
+ * @param bootConfig - InterceptorProvider Artifact Options Object
  */
 export class InterceptorProviderBooter extends BaseArtifactBooter {
   interceptors: InterceptorProviderClass[];
@@ -67,7 +67,7 @@ export class InterceptorProviderBooter extends BaseArtifactBooter {
 }
 
 /**
- * Default ArtifactOptions for DataSourceBooter.
+ * Default ArtifactOptions for InterceptorProviderBooter.
  */
 export const InterceptorProviderDefaults: ArtifactOptions = {
   dirs: ['interceptors'],
