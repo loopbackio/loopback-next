@@ -270,8 +270,23 @@ describe('Application', () => {
       const binding = app.service(MyServiceProvider);
       expect(Array.from(binding.tagNames)).to.containEql(CoreTags.SERVICE);
       expect(binding.tagMap.date).to.eql('now');
-      expect(binding.key).to.equal('localServices.MyServiceProvider');
+      expect(binding.key).to.equal('localServices.MyService');
       expect(binding.scope).to.equal(BindingScope.TRANSIENT);
+      expect(findKeysByTag(app, 'service')).to.containEql(binding.key);
+    });
+
+    it('binds a service provider with name tag', () => {
+      @bind({tags: {date: 'now', name: 'my-service'}})
+      class MyServiceProvider implements Provider<Date> {
+        value() {
+          return new Date();
+        }
+      }
+
+      const binding = app.service(MyServiceProvider);
+      expect(Array.from(binding.tagNames)).to.containEql(CoreTags.SERVICE);
+      expect(binding.tagMap.date).to.eql('now');
+      expect(binding.key).to.equal('services.my-service');
       expect(findKeysByTag(app, 'service')).to.containEql(binding.key);
     });
 

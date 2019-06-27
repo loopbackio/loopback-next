@@ -3,14 +3,20 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {
+  BINDING_METADATA_KEY,
+  Constructor,
+  inject,
+  MetadataInspector,
+} from '@loopback/context';
 import {CoreBindings} from '@loopback/core';
 import {ApplicationWithServices} from '@loopback/service-proxy';
-import {inject, Provider, Constructor} from '@loopback/context';
+import * as debugFactory from 'debug';
 import {ArtifactOptions} from '../interfaces';
-import {BaseArtifactBooter} from './base-artifact.booter';
 import {BootBindings} from '../keys';
+import {BaseArtifactBooter} from './base-artifact.booter';
 
-type ServiceProviderClass = Constructor<Provider<object>>;
+const debug = debugFactory('loopback:boot:service-booter');
 
 /**
  * A class that extends BaseArtifactBooter to boot the 'Service' artifact type.
@@ -23,8 +29,6 @@ type ServiceProviderClass = Constructor<Provider<object>>;
  * @param bootConfig - Service Artifact Options Object
  */
 export class ServiceBooter extends BaseArtifactBooter {
-  serviceProviders: ServiceProviderClass[];
-
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: ApplicationWithServices,
@@ -46,24 +50,12 @@ export class ServiceBooter extends BaseArtifactBooter {
   async load() {
     await super.load();
 
-    this.serviceProviders = this.classes.filter(isServiceProvider);
+    for (const cls of this.classes) {
+      if (!isBindableClass(cls)) continue;
 
-    /**
-     * If Service providers were discovered, we need to make sure ServiceMixin
-     * was used (so we have `app.serviceProvider()`) to perform the binding of a
-     * Service provider class.
-     */
-    if (this.serviceProviders.length > 0) {
-      if (!this.app.serviceProvider) {
-        console.warn(
-          'app.serviceProvider() function is needed for ServiceBooter. You can add ' +
-            'it to your Application using ServiceMixin from @loopback/service-proxy.',
-        );
-      } else {
-        this.serviceProviders.forEach(cls => {
-          this.app.serviceProvider(cls as Constructor<Provider<object>>);
-        });
-      }
+      debug('Bind class: %s', cls.name);
+      const binding = this.app.service(cls);
+      debug('Binding created for class: %j', binding);
     }
   }
 }
@@ -77,8 +69,20 @@ export const ServiceDefaults: ArtifactOptions = {
   nested: true,
 };
 
-function isServiceProvider(cls: Constructor<{}>): cls is ServiceProviderClass {
+function isServiceProvider(cls: Constructor<unknown>) {
   const hasSupportedName = cls.name.endsWith('Provider');
-  const hasValueMethod = 'value' in cls.prototype;
+  const hasValueMethod = typeof cls.prototype.value === 'function';
   return hasSupportedName && hasValueMethod;
+}
+
+function isBindableClass(cls: Constructor<unknown>) {
+  if (MetadataInspector.getClassMetadata(BINDING_METADATA_KEY, cls)) {
+    return true;
+  }
+  if (isServiceProvider(cls)) {
+    debug('Provider class found: %s', cls.name);
+    return true;
+  }
+  debug('Skip class not decorated with @bind: %s', cls.name);
+  return false;
 }

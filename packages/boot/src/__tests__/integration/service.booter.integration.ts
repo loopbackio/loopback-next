@@ -21,13 +21,27 @@ describe('service booter integration tests', () => {
 
   it('boots services when app.boot() is called', async () => {
     const expectedBindings = [
-      `${SERVICES_PREFIX}.GeocoderService`,
-      // greeting service is skipped - service classes are not supported (yet)
+      'services.BindableGreetingService',
+      'services.CurrentDate',
+      'services.GeocoderService',
+      'services.NotBindableDate',
     ];
 
     await app.boot();
 
     const bindings = app.findByTag(SERVICES_TAG).map(b => b.key);
+    expect(bindings.sort()).to.eql(expectedBindings.sort());
+  });
+
+  it('boots bindable classes when app.boot() is called', async () => {
+    const expectedBindings = [
+      `${SERVICES_PREFIX}.CurrentDate`,
+      `${SERVICES_PREFIX}.BindableGreetingService`,
+    ];
+
+    await app.boot();
+
+    const bindings = app.findByTag({serviceType: 'local'}).map(b => b.key);
     expect(bindings.sort()).to.eql(expectedBindings.sort());
   });
 
@@ -41,6 +55,11 @@ describe('service booter integration tests', () => {
     await sandbox.copyFile(
       resolve(__dirname, '../fixtures/service-class.artifact.js'),
       'services/greeting.service.js',
+    );
+
+    await sandbox.copyFile(
+      resolve(__dirname, '../fixtures/bindable-classes.artifact.js'),
+      'services/bindable-classes.service.js',
     );
 
     const MyApp = require(resolve(SANDBOX_PATH, 'application.js')).BooterApp;

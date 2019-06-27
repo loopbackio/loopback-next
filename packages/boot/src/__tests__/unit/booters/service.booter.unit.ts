@@ -27,7 +27,7 @@ describe('service booter unit tests', () => {
   beforeEach(createStub);
   afterEach(restoreStub);
 
-  it('gives a warning if called on an app without RepositoryMixin', async () => {
+  it('does not require service mixin', async () => {
     const normalApp = new Application();
     await sandbox.copyFile(
       resolve(__dirname, '../../fixtures/service-provider.artifact.js'),
@@ -43,12 +43,7 @@ describe('service booter unit tests', () => {
     ];
     await booterInst.load();
 
-    sinon.assert.calledOnce(stub);
-    sinon.assert.calledWith(
-      stub,
-      'app.serviceProvider() function is needed for ServiceBooter. You can add ' +
-        'it to your Application using ServiceMixin from @loopback/service-proxy.',
-    );
+    sinon.assert.notCalled(stub);
   });
 
   it(`uses ServiceDefaults for 'options' if none are given`, () => {
