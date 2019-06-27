@@ -211,8 +211,9 @@ export abstract class Model {
     };
 
     const json: AnyObject = {};
+    const hiddenProperties = def.settings.hiddenProperties; // ToDo (frbuceta): Short-term solution
     for (const p in def.properties) {
-      if (p in this) {
+      if (p in this && hiddenProperties.indexOf(p) === -1) {
         copyPropertyAsJson(p);
       }
     }
