@@ -6,6 +6,7 @@
 export * from './application-metadata.booter';
 export * from './base-artifact.booter';
 export * from './booter-utils';
+export * from './bindable-class.booter';
 export * from './controller.booter';
 export * from './datasource.booter';
 export * from './interceptor.booter';

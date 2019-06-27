@@ -7,6 +7,7 @@ import {BindingScope, inject} from '@loopback/context';
 import {Application, Component, CoreBindings} from '@loopback/core';
 import {
   ApplicationMetadataBooter,
+  BindableClassBooter,
   ControllerBooter,
   DataSourceBooter,
   InterceptorProviderBooter,
@@ -33,6 +34,7 @@ export class BootComponent implements Component {
     DataSourceBooter,
     LifeCycleObserverBooter,
     InterceptorProviderBooter,
+    BindableClassBooter,
   ];
 
   /**
