@@ -85,6 +85,14 @@ export type LogError = (
 ) => void;
 
 /**
+ * Cache for AJV schema validators
+ */
+export type SchemaValidatorCache = WeakMap<
+  SchemaObject | ReferenceObject, // First keyed by schema object
+  Map<string, ajv.ValidateFunction> // Second level keyed by stringified AJV options
+>;
+
+/**
  * Options for request body validation using AJV
  */
 export interface RequestBodyValidationOptions extends ajv.Options {
@@ -92,10 +100,7 @@ export interface RequestBodyValidationOptions extends ajv.Options {
    * Custom cache for compiled schemas by AJV. This setting makes it possible
    * to skip the default cache.
    */
-  compiledSchemaCache?: WeakMap<
-    SchemaObject | ReferenceObject,
-    ajv.ValidateFunction
-  >;
+  compiledSchemaCache?: SchemaValidatorCache;
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

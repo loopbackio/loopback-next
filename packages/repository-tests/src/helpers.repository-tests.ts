@@ -17,7 +17,7 @@ export function getCrudContext(context: Mocha.Context) {
 /**
  * Convert a function accepting context in the first argument into a regular
  * Mocha function.
- * @param fn A Mocha function (describe/it/before/after callback) accepting
+ * @param fn - A Mocha function (describe/it/before/after callback) accepting
  * `CrudTestContext` as the regular argument.
  */
 export function withCrudCtx(

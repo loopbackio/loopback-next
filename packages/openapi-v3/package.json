@@ -19,7 +19,7 @@
     "@loopback/repository": "^1.8.1",
     "@loopback/testlab": "^1.6.2",
     "@types/debug": "^4.1.4",
-    "@types/lodash": "^4.14.134",
+    "@types/lodash": "^4.14.135",
     "@types/node": "^10.14.10"
   },
   "scripts": {
