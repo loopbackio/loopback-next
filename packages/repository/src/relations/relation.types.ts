@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Entity} from '../model';
+import {Inclusion} from '../query';
 import {TypeResolver} from '../type-resolver';
 
 export enum RelationType {
@@ -108,3 +109,10 @@ export type RelationMetadata =
 
 // Re-export Getter so that users don't have to import from @loopback/context
 export {Getter} from '@loopback/context';
+
+export interface InclusionResolver {
+  fetchIncludedModels<SourceWithRelations extends Entity>(
+    sourceEntities: SourceWithRelations[],
+    inclusion: Inclusion,
+  ): Promise<void>;
+}

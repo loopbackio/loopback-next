@@ -5,6 +5,7 @@
 
 import {Getter} from '@loopback/context';
 import * as assert from 'assert';
+import * as debugFactory from 'debug';
 import * as legacy from 'loopback-datasource-juggler';
 import {
   AnyObject,
@@ -17,7 +18,7 @@ import {
 } from '../common-types';
 import {EntityNotFoundError} from '../errors';
 import {Entity, Model, PropertyType} from '../model';
-import {Filter, Where} from '../query';
+import {Filter, Inclusion, Where} from '../query';
 import {
   BelongsToAccessor,
   BelongsToDefinition,
@@ -25,12 +26,16 @@ import {
   createHasManyRepositoryFactory,
   createHasOneRepositoryFactory,
   HasManyDefinition,
+  HasManyInclusionResolver,
   HasManyRepositoryFactory,
   HasOneDefinition,
   HasOneRepositoryFactory,
+  InclusionResolver,
 } from '../relations';
 import {isTypeResolver, resolveType} from '../type-resolver';
 import {EntityCrudRepository} from './repository';
+
+const debug = debugFactory('loopback:repository:legacy-juggler-bridge');
 
 export namespace juggler {
   /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -91,6 +96,7 @@ export class DefaultCrudRepository<
   Relations extends object = {}
 > implements EntityCrudRepository<T, ID, Relations> {
   modelClass: juggler.PersistedModelClass;
+  protected inclusionResolvers: {[key: string]: InclusionResolver};
 
   /**
    * Constructor of DefaultCrudRepository
@@ -113,6 +119,10 @@ export class DefaultCrudRepository<
     );
 
     this.modelClass = this.definePersistedModel(entityClass);
+
+    // Important! Create the map object with `null` prototype to avoid
+    // Prototype Poisoning vulnerabilities.
+    this.inclusionResolvers = Object.create(null);
   }
 
   // Create an internal legacy Model attached to the datasource
@@ -239,6 +249,22 @@ export class DefaultCrudRepository<
     const meta = this.entityClass.definition.relations[relationName];
     return createHasManyRepositoryFactory<Target, TargetID, ForeignKeyType>(
       meta as HasManyDefinition,
+      targetRepoGetter,
+    );
+  }
+
+  protected registerHasManyInclusion<
+    Target extends Entity,
+    TargetID,
+    TargetRelations extends object
+  >(
+    relationName: string,
+    targetRepoGetter: Getter<
+      EntityCrudRepository<Target, TargetID, TargetRelations>
+    >,
+  ) {
+    this.inclusionResolvers[relationName] = new HasManyInclusionResolver(
+      this.entityClass.definition.relations.todos as HasManyDefinition,
       targetRepoGetter,
     );
   }
@@ -480,18 +506,45 @@ export class DefaultCrudRepository<
     _options?: Options,
   ): Promise<(T & Relations)[]> {
     const result = entities as (T & Relations)[];
-    if (!filter || !filter.include || !filter.include.length) return result;
 
-    const msg =
-      'Inclusion of related models is not supported yet. ' +
-      'Please remove "include" property from the "filter" parameter.';
-    const err = new Error(msg);
-    Object.assign(err, {
-      code: 'FILTER_INCLUDE_NOT_SUPPORTED',
-      // temporary hack to report correct status code,
-      // this shouldn't be landed to master!
-      statusCode: 501, // Not Implemented
+    const include = filter && filter.include;
+    if (!include) return result;
+
+    const invalidInclusions = include.filter(i => !this.isInclusionAllowed(i));
+    if (invalidInclusions.length) {
+      const msg =
+        'Invalid "filter.include" entries: ' +
+        invalidInclusions.map(i => JSON.stringify(i)).join('; ');
+      const err = new Error(msg);
+      Object.assign(err, {
+        code: 'INVALID_INCLUSION_FILTER',
+      });
+      throw err;
+    }
+
+    const resolveTasks = include.map(i => {
+      const relationName = i.relation!;
+      const handler = this.inclusionResolvers[relationName];
+      return handler.fetchIncludedModels(entities, i);
     });
-    throw err;
+
+    await Promise.all(resolveTasks);
+
+    return result;
+  }
+
+  private isInclusionAllowed(inclusion: Inclusion): boolean {
+    const relationName = inclusion.relation;
+    if (!relationName) {
+      debug('isInclusionAllowed for %j? No: missing relation name', inclusion);
+      return false;
+    }
+    const allowed = Object.prototype.hasOwnProperty.call(
+      this.inclusionResolvers,
+      relationName,
+    );
+
+    debug('isInclusionAllowed for %j (relation %s)? %s', inclusion, allowed);
+    return allowed;
   }
 }
