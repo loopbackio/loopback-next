@@ -39,7 +39,7 @@ Here is a **high level** overview of the authentication component.
 
 Here is a **detailed** overview of the authentication component.
 
-<img src="https://loopback.io/pages/en/lb4/imgs/authentication_overview_detailed.png" alt="authentication_overview_detailed.png" style="max-height:758;max-width:1412">
+<img src="https://loopback.io/pages/en/lb4/imgs/authentication_overview_detailed.png" alt="authentication_overview_detailed.png" style="max-height:758px;max-width:1412px">
 
 Basically, to secure your API endpoints, you need to:
 
