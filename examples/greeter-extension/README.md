@@ -169,7 +169,7 @@ knowing much about one another.
 
 ```ts
 import {Greeter, asGreeter} from '../types';
-import {bind, inject} from '@loopback/context';
+import {bind, inject, config} from '@loopback/context';
 
 /**
  * Options for the Chinese greeter
@@ -190,7 +190,7 @@ export class ChineseGreeter implements Greeter {
     /**
      * Inject the configuration for ChineseGreeter
      */
-    @inject('greeters.ChineseGreeter.options', {optional: true})
+    @config()
     private options: ChineseGreeterOptions = {nameFirst: true},
   ) {}
 
