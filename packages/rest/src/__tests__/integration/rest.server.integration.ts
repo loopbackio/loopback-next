@@ -854,6 +854,14 @@ paths:
       expect(response.body.servers).to.containEql({url: '/api'});
     });
 
+    it('controls server urls even when set via server.basePath() API', async () => {
+      server.basePath('/v2');
+      const response = await createClientForHandler(server.requestHandler).get(
+        '/openapi.json',
+      );
+      expect(response.body.servers).to.containEql({url: '/v2'});
+    });
+
     it('controls redirect locations', async () => {
       server.controller(DummyController);
       server.redirect('/page/html', '/html');

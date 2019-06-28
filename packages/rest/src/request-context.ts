@@ -38,7 +38,12 @@ export class RequestContext extends Context implements HandlerContext {
     const request = this.request;
     let basePath = this.serverConfig.basePath || '';
     if (request.baseUrl && request.baseUrl !== '/') {
-      basePath = request.baseUrl + basePath;
+      if (!basePath || request.baseUrl.endsWith(basePath)) {
+        // Express has already applied basePath to baseUrl
+        basePath = request.baseUrl;
+      } else {
+        basePath = request.baseUrl + basePath;
+      }
     }
     return basePath;
   }
