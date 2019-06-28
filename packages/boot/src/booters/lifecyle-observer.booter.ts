@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Constructor, inject} from '@loopback/context';
+import {bind, config, Constructor, inject} from '@loopback/context';
 import {
   Application,
   CoreBindings,
@@ -28,6 +28,7 @@ type LifeCycleObserverClass = Constructor<LifeCycleObserver>;
  * @param projectRoot - Root of User Project relative to which all paths are resolved
  * @param bootConfig - LifeCycleObserver Artifact Options Object
  */
+@bind({tags: {configPath: 'observers'}})
 export class LifeCycleObserverBooter extends BaseArtifactBooter {
   observers: LifeCycleObserverClass[];
 
@@ -35,7 +36,7 @@ export class LifeCycleObserverBooter extends BaseArtifactBooter {
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: Application,
     @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
-    @inject(`${BootBindings.BOOT_OPTIONS}#observers`)
+    @config()
     public observerConfig: ArtifactOptions = {},
   ) {
     super(

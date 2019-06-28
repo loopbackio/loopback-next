@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {CoreBindings, Application} from '@loopback/core';
-import {inject} from '@loopback/context';
+import {bind, config, inject} from '@loopback/context';
+import {Application, CoreBindings} from '@loopback/core';
 import {ArtifactOptions} from '../interfaces';
-import {BaseArtifactBooter} from './base-artifact.booter';
 import {BootBindings} from '../keys';
+import {BaseArtifactBooter} from './base-artifact.booter';
 
 /**
  * A class that extends BaseArtifactBooter to boot the 'Controller' artifact type.
@@ -19,11 +19,12 @@ import {BootBindings} from '../keys';
  * @param projectRoot - Root of User Project relative to which all paths are resolved
  * @param bootConfig - Controller Artifact Options Object
  */
+@bind({tags: {configPath: 'controllers'}})
 export class ControllerBooter extends BaseArtifactBooter {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE) public app: Application,
     @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
-    @inject(`${BootBindings.BOOT_OPTIONS}#controllers`)
+    @config()
     public controllerConfig: ArtifactOptions = {},
   ) {
     super(

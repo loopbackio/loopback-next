@@ -4,7 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  bind,
   BINDING_METADATA_KEY,
+  config,
   Constructor,
   inject,
   MetadataInspector,
@@ -28,12 +30,13 @@ const debug = debugFactory('loopback:boot:service-booter');
  * @param projectRoot - Root of User Project relative to which all paths are resolved
  * @param bootConfig - Service Artifact Options Object
  */
+@bind({tags: {configPath: 'services'}})
 export class ServiceBooter extends BaseArtifactBooter {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: ApplicationWithServices,
     @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
-    @inject(`${BootBindings.BOOT_OPTIONS}#services`)
+    @config()
     public serviceConfig: ArtifactOptions = {},
   ) {
     super(
