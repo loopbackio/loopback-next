@@ -16,7 +16,17 @@
      }
   },
   "validations":[],
-  "relations":{},
+  "relations": {
+     "coffee": {
+        "type": "embedsMany",
+        "model": "Coffee",
+        "property": "coffees",
+        "options": {
+           "validate": true,
+           "forceId": false
+         }
+      }
+  },
   "acls":[
    {
       "accessType":"EXECUTE",

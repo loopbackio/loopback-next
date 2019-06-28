@@ -92,9 +92,15 @@ export class Lb3AppBooter implements Booter {
     const swaggerSpec = generateSwaggerSpec(lb3App, {
       generateOperationScopedModels: true,
     });
-    const result = await swagger2openapi.convertObj(swaggerSpec, {
+
+    // remove any properties that have values that are functions before
+    // converting, as `convertObj` can't handle function values
+    const fixedSwaggerSpec = JSON.parse(JSON.stringify(swaggerSpec));
+
+    const result = await swagger2openapi.convertObj(fixedSwaggerSpec, {
       // swagger2openapi options
     });
+
     return result.openapi as OpenApiSpec;
   }
 

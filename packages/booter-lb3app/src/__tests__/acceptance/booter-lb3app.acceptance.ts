@@ -49,6 +49,28 @@ describe('booter-lb3app', () => {
           // id is excluded, it is not allowed in CREATE requests
           name: {type: 'string'},
           city: {type: 'string'},
+          coffees: {
+            type: 'array',
+            items: {$ref: '#/components/schemas/Coffee'},
+          },
+        });
+    });
+
+    it('includes the target model as a property of the source model in a relation', () => {
+      const spec = app.restServer.getApiSpec();
+      const schemas = (spec.components || {}).schemas || {};
+
+      expect(schemas.CoffeeShop)
+        .to.have.property('properties')
+        .eql({
+          name: {type: 'string'},
+          city: {type: 'string'},
+          id: {type: 'number', format: 'double'},
+          coffees: {
+            // default is excluded
+            type: 'array',
+            items: {$ref: '#/components/schemas/Coffee'},
+          },
         });
     });
   });
