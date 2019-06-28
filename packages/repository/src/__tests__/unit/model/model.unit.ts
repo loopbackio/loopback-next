@@ -35,8 +35,10 @@ describe('model', () => {
   userDef
     .addProperty('id', {type: 'string', id: true})
     .addProperty('email', 'string')
+    .addProperty('password', 'string')
     .addProperty('firstName', String)
-    .addProperty('lastName', STRING);
+    .addProperty('lastName', STRING)
+    .addSetting('hiddenProperties', ['password']);
 
   const flexibleDef = new ModelDefinition('Flexible');
   flexibleDef
@@ -101,11 +103,11 @@ describe('model', () => {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   class User extends Entity {
     static definition = userDef;
     id: string;
     email: string;
+    password: string;
     firstName: string;
 
     constructor(data?: Partial<User>) {
@@ -152,6 +154,15 @@ describe('model', () => {
     customer.realm = 'org1';
     customer.email = 'xyz@example.com';
     return customer;
+  }
+
+  function createUser() {
+    const user = new User();
+    user.id = '123';
+    user.email = 'xyz@example.com';
+    user.password = '1234test';
+    user.firstName = 'Test User';
+    return user;
   }
 
   it('adds properties', () => {
@@ -402,5 +413,14 @@ describe('model', () => {
   it('reads model name from the class name', () => {
     class MyModel extends Entity {}
     expect(MyModel.modelName).to.equal('MyModel');
+  });
+
+  it('hidden password from userModel', () => {
+    const user = createUser();
+    expect(user.toJSON()).to.eql({
+      id: '123',
+      email: 'xyz@example.com',
+      firstName: 'Test User',
+    });
   });
 });
