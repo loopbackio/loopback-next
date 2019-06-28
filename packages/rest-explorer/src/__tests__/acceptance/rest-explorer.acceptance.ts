@@ -107,7 +107,7 @@ describe('API Explorer (acceptance)', () => {
       config: RestExplorerConfig,
     ) {
       app = givenRestApplication();
-      app.bind(RestExplorerBindings.CONFIG).to(config);
+      app.configure(RestExplorerBindings.COMPONENT).to(config);
       app.component(RestExplorerComponent);
       await app.start();
       request = createRestAppClient(app);
