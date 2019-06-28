@@ -38,5 +38,9 @@
   "CoffeeShop": {
      "dataSource": "db",
      "public": true
+  },
+  "Coffee": {
+   "dataSource": "db",
+   "public": true
   }
 }
