@@ -36,6 +36,51 @@ describe('Authentication', () => {
       });
     });
 
+    it('can add authorize metadata to target class', () => {
+      @authorize({allowedRoles: ['ADMIN'], scopes: ['secret.read']})
+      class TestClass {
+        getSecret() {}
+
+        @authorize({allowedRoles: ['OWNER'], scopes: ['data.update']})
+        update() {}
+      }
+
+      let metaData = getAuthorizeMetadata(TestClass, 'getSecret');
+      expect(metaData).to.eql({
+        allowedRoles: ['ADMIN'],
+        scopes: ['secret.read'],
+      });
+
+      metaData = getAuthorizeMetadata(TestClass, 'update');
+      expect(metaData).to.eql({
+        allowedRoles: ['OWNER'],
+        scopes: ['data.update'],
+      });
+    });
+
+    it('honors method level decoration over class level', () => {
+      @authorize({allowedRoles: ['ADMIN'], scopes: ['secret']})
+      class TestClass {
+        @authorize({allowedRoles: ['ADMIN'], scopes: ['secret.read']})
+        getSecret() {}
+
+        @authorize({allowedRoles: ['OWNER'], scopes: ['data.update']})
+        update() {}
+      }
+
+      let metaData = getAuthorizeMetadata(TestClass, 'getSecret');
+      expect(metaData).to.eql({
+        allowedRoles: ['ADMIN'],
+        scopes: ['secret.read'],
+      });
+
+      metaData = getAuthorizeMetadata(TestClass, 'update');
+      expect(metaData).to.eql({
+        allowedRoles: ['OWNER'],
+        scopes: ['data.update'],
+      });
+    });
+
     it('can add allowAll to target method', () => {
       class TestClass {
         @authorize.allowAll()
