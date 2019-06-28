@@ -5,10 +5,10 @@
 
 import {
   Binding,
+  BindingScope,
   Constructor,
   Context,
   createBindingFromClass,
-  BindingScope,
 } from '@loopback/context';
 import {BootComponent} from '../boot.component';
 import {Bootstrapper} from '../bootstrapper';
@@ -145,9 +145,17 @@ export function _bindBooter(
 ): Binding {
   const binding = createBindingFromClass(booterCls, {
     namespace: BootBindings.BOOTER_PREFIX,
-  })
-    .tag(BootBindings.BOOTER_TAG)
-    .inScope(BindingScope.SINGLETON);
+    defaultScope: BindingScope.SINGLETON,
+  }).tag(BootBindings.BOOTER_TAG);
   ctx.add(binding);
+  /**
+   * Set up configuration binding as alias to `BootBindings.BOOT_OPTIONS`
+   * so that the booter can use `@config`.
+   */
+  if (binding.tagMap.configPath) {
+    ctx
+      .configure(binding.key)
+      .toAlias(`${BootBindings.BOOT_OPTIONS.key}#${binding.tagMap.configPath}`);
+  }
   return binding;
 }

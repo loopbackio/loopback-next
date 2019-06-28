@@ -3,16 +3,16 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {bind, config, inject} from '@loopback/context';
 import {CoreBindings} from '@loopback/core';
 import {
   ApplicationWithRepositories,
-  juggler,
   Class,
+  juggler,
 } from '@loopback/repository';
-import {inject} from '@loopback/context';
 import {ArtifactOptions} from '../interfaces';
-import {BaseArtifactBooter} from './base-artifact.booter';
 import {BootBindings} from '../keys';
+import {BaseArtifactBooter} from './base-artifact.booter';
 
 /**
  * A class that extends BaseArtifactBooter to boot the 'DataSource' artifact type.
@@ -24,12 +24,13 @@ import {BootBindings} from '../keys';
  * @param projectRoot - Root of User Project relative to which all paths are resolved
  * @param bootConfig - DataSource Artifact Options Object
  */
+@bind({tags: {configPath: 'datasources'}})
 export class DataSourceBooter extends BaseArtifactBooter {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: ApplicationWithRepositories,
     @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
-    @inject(`${BootBindings.BOOT_OPTIONS}#datasources`)
+    @config()
     public datasourceConfig: ArtifactOptions = {},
   ) {
     super(
