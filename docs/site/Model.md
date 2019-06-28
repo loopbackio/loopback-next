@@ -194,6 +194,28 @@ Additionally, the model decorator is able to build the properties object through
 the information passed in or inferred by the property decorators, so the
 properties key value pair can also be omitted.
 
+To hide a property, you can use the hiddenProperties setting like this:
+
+```ts
+@model({
+  settings: {
+    hiddenProperties: ['password']
+  }
+})
+class MyUserModel extends Entity {
+  @property({id: true})
+  id: number;
+
+  @property({type: 'string'})
+  email: string;
+
+  @property({type: 'string'})
+  password: string;
+
+  ...
+}
+```
+
 ### Property Decorator
 
 The property decorator takes in the same arguments used in LoopBack 3 for
