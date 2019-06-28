@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.4.4...@loopback/example-express-composition@1.4.5) (2019-06-28)
+
+
+### Bug Fixes
+
+* **example-express-composition:** allow partial updates via PATCH ([15189ee](https://github.com/strongloop/loopback-next/commit/15189ee))
+
+
+
+
+
 ## [1.4.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.4.3...@loopback/example-express-composition@1.4.4) (2019-06-21)
 
 **Note:** Version bump only for package @loopback/example-express-composition

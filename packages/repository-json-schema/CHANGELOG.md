@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.7.2...@loopback/repository-json-schema@1.8.0) (2019-06-28)
+
+
+### Bug Fixes
+
+* address violations of "no-floating-promises" rule ([0947531](https://github.com/strongloop/loopback-next/commit/0947531))
+
+
+### Features
+
+* **repository-json-schema:** add an option to emit partial schema ([14af423](https://github.com/strongloop/loopback-next/commit/14af423))
+
+
+
+
+
 ## [1.7.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository-json-schema@1.7.1...@loopback/repository-json-schema@1.7.2) (2019-06-21)
 
 **Note:** Version bump only for package @loopback/repository-json-schema

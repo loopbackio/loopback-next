@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.20.2](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.20.1...@loopback/context@1.20.2) (2019-06-28)
+
+
+### Bug Fixes
+
+* address violations of "no-floating-promises" rule ([0947531](https://github.com/strongloop/loopback-next/commit/0947531))
+
+
+
+
+
 ## [1.20.1](https://github.com/strongloop/loopback-next/compare/@loopback/context@1.20.0...@loopback/context@1.20.1) (2019-06-21)
 
 **Note:** Version bump only for package @loopback/context

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.26.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.25.0...@loopback/docs@1.26.0) (2019-06-28)
+
+
+### Bug Fixes
+
+* **docs:** change folder naming for tests ([f2ba22d](https://github.com/strongloop/loopback-next/commit/f2ba22d))
+* **docs:** remove note about not supporting partial updates ([86fd23a](https://github.com/strongloop/loopback-next/commit/86fd23a))
+
+
+### Features
+
+* **cli:** modify Controller templates to allow partial updates via PATCH ([c7c6695](https://github.com/strongloop/loopback-next/commit/c7c6695))
+
+
+
+
+
 # [1.25.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.24.0...@loopback/docs@1.25.0) (2019-06-21)
 
 

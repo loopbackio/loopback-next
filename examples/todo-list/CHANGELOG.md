@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.8.0...@loopback/example-todo-list@1.8.1) (2019-06-28)
+
+
+### Bug Fixes
+
+* **example-todo-list:** allow partial updates via PATCH ([88df640](https://github.com/strongloop/loopback-next/commit/88df640))
+
+
+
+
+
 # [1.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.7.3...@loopback/example-todo-list@1.8.0) (2019-06-21)
 
 

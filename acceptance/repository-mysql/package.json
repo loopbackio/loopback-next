@@ -1,6 +1,6 @@
 {
   "name": "@loopback/test-repository-mysql",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "",
   "private": "true",
   "engines": {
@@ -19,9 +19,9 @@
   "license": "MIT",
   "devDependencies": {
     "@loopback/build": "^1.7.1",
-    "@loopback/eslint-config": "^1.1.1",
-    "@loopback/repository": "^1.8.1",
-    "@loopback/repository-tests": "^0.2.1",
+    "@loopback/eslint-config": "^2.0.0",
+    "@loopback/repository": "^1.8.2",
+    "@loopback/repository-tests": "^0.2.2",
     "@types/node": "^10.14.10",
     "loopback-connector-mysql": "^5.4.1"
   },

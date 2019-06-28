@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3-types@1.1.4...@loopback/openapi-v3-types@1.2.0) (2019-06-28)
+
+
+### Features
+
+* **openapi-v3-types:** deprecate this package ([5483321](https://github.com/strongloop/loopback-next/commit/5483321))
+
+
+
+
+
 ## [1.1.4](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3-types@1.1.3...@loopback/openapi-v3-types@1.1.4) (2019-06-21)
 
 **Note:** Version bump only for package @loopback/openapi-v3-types

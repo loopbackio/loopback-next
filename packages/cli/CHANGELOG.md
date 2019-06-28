@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.17.2...@loopback/cli@1.18.0) (2019-06-28)
+
+
+### Bug Fixes
+
+* address violations of "no-floating-promises" rule ([0947531](https://github.com/strongloop/loopback-next/commit/0947531))
+
+
+### Features
+
+* **cli:** enable source map for npm start script ([1882240](https://github.com/strongloop/loopback-next/commit/1882240))
+* **cli:** modify Controller templates to allow partial updates via PATCH ([c7c6695](https://github.com/strongloop/loopback-next/commit/c7c6695))
+
+
+
+
+
 ## [1.17.2](https://github.com/strongloop/loopback-next/compare/@loopback/cli@1.17.1...@loopback/cli@1.17.2) (2019-06-21)
 
 

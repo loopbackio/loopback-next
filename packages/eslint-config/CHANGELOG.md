@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@1.1.2...@loopback/eslint-config@2.0.0) (2019-06-28)
+
+
+### Features
+
+* **eslint-config:** enable "no-floating-promises" rule ([256e3e8](https://github.com/strongloop/loopback-next/commit/256e3e8))
+* **eslint-config:** upgrade eslint to v6 ([b52a40c](https://github.com/strongloop/loopback-next/commit/b52a40c))
+
+
+### BREAKING CHANGES
+
+* **eslint-config:** We require eslint version 6.0 as a peer dependency now.
+To upgrade your project using our eslint-config, bump up eslint version
+in your package.json file to "^6.0.0".
+
+The new eslint version added new recommended rules, most notably
+"require-atomic-updates" and "no-prototype-builtins". You may get new
+linting errors after upgrade, fix them by changing your code or adding
+eslint-ignore comments as needed.
+
+
+
+
+
 ## [1.1.2](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@1.1.1...@loopback/eslint-config@1.1.2) (2019-06-17)
 
 **Note:** Version bump only for package @loopback/eslint-config

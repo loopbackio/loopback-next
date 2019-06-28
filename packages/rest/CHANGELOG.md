@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.3](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.16.2...@loopback/rest@1.16.3) (2019-06-28)
+
+
+### Bug Fixes
+
+* **rest:** honor options for AJV validator caching ([1fd52a3](https://github.com/strongloop/loopback-next/commit/1fd52a3))
+* address violations of "no-floating-promises" rule ([0947531](https://github.com/strongloop/loopback-next/commit/0947531))
+
+
+
+
+
 ## [1.16.2](https://github.com/strongloop/loopback-next/compare/@loopback/rest@1.16.1...@loopback/rest@1.16.2) (2019-06-21)
 
 **Note:** Version bump only for package @loopback/rest

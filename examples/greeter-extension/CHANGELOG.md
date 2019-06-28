@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeter-extension@1.3.4...@loopback/example-greeter-extension@1.3.5) (2019-06-28)
+
+
+### Bug Fixes
+
+* address violations of "no-floating-promises" rule ([0947531](https://github.com/strongloop/loopback-next/commit/0947531))
+
+
+
+
+
 ## [1.3.4](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeter-extension@1.3.3...@loopback/example-greeter-extension@1.3.4) (2019-06-21)
 
 **Note:** Version bump only for package @loopback/example-greeter-extension

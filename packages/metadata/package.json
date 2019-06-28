@@ -1,6 +1,6 @@
 {
   "name": "@loopback/metadata",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "LoopBack's metadata utilities for reflection and decoration",
   "engines": {
     "node": ">=8.9"
@@ -23,9 +23,9 @@
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "@loopback/build": "^2.0.2",
-    "@loopback/eslint-config": "^1.1.2",
-    "@loopback/testlab": "^1.6.2",
+    "@loopback/build": "^2.0.3",
+    "@loopback/eslint-config": "^2.0.0",
+    "@loopback/testlab": "^1.6.3",
     "@types/debug": "^4.1.4",
     "@types/lodash": "^4.14.135",
     "@types/node": "^10.14.10"
