@@ -5,6 +5,8 @@
 
 import {
   BindingAddress,
+  ClassDecoratorFactory,
+  DecoratorFactory,
   MetadataAccessor,
   MetadataInspector,
   MetadataMap,
@@ -27,6 +29,10 @@ export const AUTHORIZATION_CLASS_KEY = MetadataAccessor.create<
   AuthorizationMetadata,
   ClassDecorator
 >('authorization:class');
+
+class AuthorizeClassDecoratorFactory extends ClassDecoratorFactory<
+  AuthorizationMetadata
+> {}
 
 export class AuthorizeMethodDecoratorFactory extends MethodDecoratorFactory<
   AuthorizationMetadata
@@ -88,10 +94,36 @@ export class AuthorizeMethodDecoratorFactory extends MethodDecoratorFactory<
  * @param spec Authorization metadata
  */
 export function authorize(spec: AuthorizationMetadata) {
-  return AuthorizeMethodDecoratorFactory.createDecorator(
-    AUTHORIZATION_METHOD_KEY,
-    spec,
-  );
+  return function authorizeDecoratorForClassOrMethod(
+    // Class or a prototype
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    target: any,
+    method?: string,
+    // Use `any` to for `TypedPropertyDescriptor`
+    // See https://github.com/strongloop/loopback-next/pull/2704
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    methodDescriptor?: TypedPropertyDescriptor<any>,
+  ) {
+    if (method && methodDescriptor) {
+      // Method
+      return AuthorizeMethodDecoratorFactory.createDecorator(
+        AUTHORIZATION_METHOD_KEY,
+        spec,
+      )(target, method, methodDescriptor!);
+    }
+    if (typeof target === 'function' && !method && !methodDescriptor) {
+      // Class
+      return AuthorizeClassDecoratorFactory.createDecorator(
+        AUTHORIZATION_CLASS_KEY,
+        spec,
+      )(target);
+    }
+    // Not on a class or method
+    throw new Error(
+      '@intercept cannot be used on a property: ' +
+        DecoratorFactory.getTargetName(target, method, methodDescriptor),
+    );
+  };
 }
 
 export namespace authorize {
@@ -175,12 +207,13 @@ export function getAuthorizeMetadata(
   } else {
     targetClass = target.constructor;
   }
-  let metadata = MetadataInspector.getMethodMetadata<AuthorizationMetadata>(
+  const metadata = MetadataInspector.getMethodMetadata<AuthorizationMetadata>(
     AUTHORIZATION_METHOD_KEY,
     target,
     methodName,
   );
   if (metadata) return metadata;
+  // Check if the class level has `@authorize`
   return MetadataInspector.getClassMetadata<AuthorizationMetadata>(
     AUTHORIZATION_CLASS_KEY,
     targetClass,
