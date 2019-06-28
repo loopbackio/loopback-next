@@ -7,6 +7,8 @@ A LoopBack 4 component for authorization support.
 Authorization decides if a **subject** can perform specific **action** on an
 **object**.
 
+![Authorization](authorization.png)
+
 ### Role based
 
 ### Permission based
