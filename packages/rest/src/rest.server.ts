@@ -776,6 +776,7 @@ export class RestServer extends Context implements Server, HttpServerLike {
     path = path.replace(/(^\/)|(\/$)/, '');
     if (path) path = '/' + path;
     this._basePath = path;
+    this.config.basePath = path;
   }
 
   /**

@@ -88,6 +88,20 @@ describe('RequestContext', () => {
 
       expect(observedCtx.basePath).to.equal('/api/v1');
     });
+
+    it('honors basePath from server config', async () => {
+      await givenRunningAppWithClient({basePath: '/api'});
+      await client.get('/api/products').expect(200);
+      expect(observedCtx.basePath).to.equal('/api');
+    });
+
+    it('honors basePath set via basePath() method', async () => {
+      await givenRunningAppWithClient({}, a => {
+        a.restServer.basePath('/api');
+      });
+      await client.get('/api/products').expect(200);
+      expect(observedCtx.basePath).to.equal('/api');
+    });
   });
 
   describe('requestedBaseUrl', () => {
@@ -142,12 +156,16 @@ async function teardown() {
   if (app) await app.stop();
 }
 
-async function givenRunningAppWithClient(restOptions?: RestServerConfig) {
+async function givenRunningAppWithClient(
+  restOptions?: RestServerConfig,
+  setupFn: (app: RestApplication) => void = () => {},
+) {
   const options: ApplicationConfig = {
     rest: givenHttpServerConfig(restOptions),
   };
   app = new RestApplication(options);
   app.handler(contextObservingHandler);
+  setupFn(app);
   await app.start();
   client = createRestAppClient(app);
 }
