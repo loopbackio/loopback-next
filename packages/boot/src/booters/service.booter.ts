@@ -3,12 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {bind, Constructor, inject, Provider, config} from '@loopback/context';
 import {CoreBindings} from '@loopback/core';
 import {ApplicationWithServices} from '@loopback/service-proxy';
-import {inject, Provider, Constructor} from '@loopback/context';
 import {ArtifactOptions} from '../interfaces';
-import {BaseArtifactBooter} from './base-artifact.booter';
 import {BootBindings} from '../keys';
+import {BaseArtifactBooter} from './base-artifact.booter';
 
 type ServiceProviderClass = Constructor<Provider<object>>;
 
@@ -22,6 +22,7 @@ type ServiceProviderClass = Constructor<Provider<object>>;
  * @param projectRoot - Root of User Project relative to which all paths are resolved
  * @param bootConfig - Service Artifact Options Object
  */
+@bind({tags: {configPath: 'services'}})
 export class ServiceBooter extends BaseArtifactBooter {
   serviceProviders: ServiceProviderClass[];
 
@@ -29,7 +30,7 @@ export class ServiceBooter extends BaseArtifactBooter {
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: ApplicationWithServices,
     @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
-    @inject(`${BootBindings.BOOT_OPTIONS}#services`)
+    @config()
     public serviceConfig: ArtifactOptions = {},
   ) {
     super(

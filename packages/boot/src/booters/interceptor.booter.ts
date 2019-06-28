@@ -4,7 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  bind,
   BindingScope,
+  config,
   Constructor,
   createBindingFromClass,
   inject,
@@ -30,6 +32,7 @@ type InterceptorProviderClass = Constructor<Provider<Interceptor>>;
  * @param projectRoot Root of User Project relative to which all paths are resolved
  * @param [bootConfig] InterceptorProvider Artifact Options Object
  */
+@bind({tags: {configPath: 'interceptors'}})
 export class InterceptorProviderBooter extends BaseArtifactBooter {
   interceptors: InterceptorProviderClass[];
 
@@ -37,7 +40,7 @@ export class InterceptorProviderBooter extends BaseArtifactBooter {
     @inject(CoreBindings.APPLICATION_INSTANCE)
     public app: Application,
     @inject(BootBindings.PROJECT_ROOT) projectRoot: string,
-    @inject(`${BootBindings.BOOT_OPTIONS}#interceptors`)
+    @config()
     public interceptorConfig: ArtifactOptions = {},
   ) {
     super(
