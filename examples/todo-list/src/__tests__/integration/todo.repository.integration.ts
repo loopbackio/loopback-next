@@ -56,4 +56,19 @@ describe('TodoRepository', () => {
       todoList: toJSON(list),
     });
   });
+
+  it('includes TodoList in findOne result', async () => {
+    const list = await givenTodoListInstance(todoListRepo, {});
+    const todo = await givenTodoInstance(todoRepo, {todoListId: list.id});
+
+    const response = await todoRepo.findOne({
+      where: {id: todo.id},
+      include: [{relation: 'todoList'}],
+    });
+
+    expect(toJSON(response)).to.deepEqual({
+      ...toJSON(todo),
+      todoList: toJSON(list),
+    });
+  });
 });

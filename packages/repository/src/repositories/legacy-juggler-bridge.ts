@@ -34,6 +34,7 @@ import {
   InclusionResolver,
   RelationMetadata,
 } from '../relations';
+import {HasOneInclusionResolver} from '../relations/has-one/has-one.inclusion-resolver';
 import {isTypeResolver, resolveType} from '../type-resolver';
 import {EntityCrudRepository} from './repository';
 
@@ -270,9 +271,29 @@ export class DefaultCrudRepository<
       EntityCrudRepository<Target, TargetID, TargetRelations>
     >,
   ) {
-    const relations = this.entityClass.definition.relations;
     this.inclusionResolvers[relationName] = new HasManyInclusionResolver(
       this.getRelationDefinition(relationName) as HasManyDefinition,
+      targetRepoGetter,
+    );
+  }
+
+  /**
+   * TODO - add docs
+   * @param relationName
+   * @param targetRepoGetter
+   */
+  protected registerHasOneInclusion<
+    Target extends Entity,
+    TargetID,
+    TargetRelations extends object
+  >(
+    relationName: string,
+    targetRepoGetter: Getter<
+      EntityCrudRepository<Target, TargetID, TargetRelations>
+    >,
+  ) {
+    this.inclusionResolvers[relationName] = new HasOneInclusionResolver(
+      this.getRelationDefinition(relationName) as HasOneDefinition,
       targetRepoGetter,
     );
   }

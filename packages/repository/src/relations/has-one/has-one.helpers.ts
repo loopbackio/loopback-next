@@ -7,7 +7,7 @@ import * as debugFactory from 'debug';
 import {camelCase} from 'lodash';
 import {InvalidRelationError} from '../../errors';
 import {isTypeResolver} from '../../type-resolver';
-import {HasOneDefinition} from '../relation.types';
+import {HasOneDefinition, RelationType} from '../relation.types';
 
 const debug = debugFactory('loopback:repository:has-one-helpers');
 
@@ -27,6 +27,11 @@ export type HasOneResolvedDefinition = HasOneDefinition & {keyTo: string};
 export function resolveHasOneMetadata(
   relationMeta: HasOneDefinition,
 ): HasOneResolvedDefinition {
+  if ((relationMeta.type as RelationType) !== RelationType.hasOne) {
+    const reason = 'relation type must be HasOne';
+    throw new InvalidRelationError(reason, relationMeta);
+  }
+
   if (!isTypeResolver(relationMeta.target)) {
     const reason = 'target must be a type resolver';
     throw new InvalidRelationError(reason, relationMeta);

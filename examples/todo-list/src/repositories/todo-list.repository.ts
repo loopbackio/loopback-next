@@ -48,6 +48,7 @@ export class TodoListRepository extends DefaultCrudRepository<
       'image',
       todoListImageRepositoryGetter,
     );
+    this.registerHasOneInclusion('image', this.todoListImageRepositoryGetter);
   }
 
   public findByTitle(title: string) {
