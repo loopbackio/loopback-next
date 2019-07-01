@@ -15,6 +15,7 @@ import {
   Authorizer,
   EVERYONE,
 } from '../..';
+import {AuthorizationTags} from '../../keys';
 
 describe('Authorization', () => {
   let app: Application;
@@ -22,7 +23,7 @@ describe('Authorization', () => {
   let reqCtx: Context;
   let events: string[];
 
-  before(givenApplication);
+  before(givenApplicationAndAuthorizer);
   beforeEach(givenRequestContext);
 
   it('allows placeOrder for everyone', async () => {
@@ -73,13 +74,13 @@ describe('Authorization', () => {
     }
   }
 
-  function givenApplication() {
+  function givenApplicationAndAuthorizer() {
     app = new Application();
     app.component(AuthorizationComponent);
     app
       .bind('authorizationProviders.my-provider')
       .toProvider(MyAuthorizationProvider)
-      .tag('authorizationProvider');
+      .tag(AuthorizationTags.AUTHORIZER);
   }
 
   function givenRequestContext() {
@@ -93,21 +94,17 @@ describe('Authorization', () => {
    * Provider of a function which authenticates
    */
   class MyAuthorizationProvider implements Provider<Authorizer> {
-    constructor() {}
-
     /**
      * @returns authenticateFn
      */
     value(): Authorizer {
-      return async (
-        context: AuthorizationContext,
-        metadata: AuthorizationMetadata,
-      ) => {
-        return this.authorize(context, metadata);
-      };
+      return this.authorize.bind(this);
     }
 
-    authorize(context: AuthorizationContext, metadata: AuthorizationMetadata) {
+    async authorize(
+      context: AuthorizationContext,
+      metadata: AuthorizationMetadata,
+    ) {
       events.push(context.resource);
       if (
         context.resource === 'OrderController.prototype.cancelOrder' &&

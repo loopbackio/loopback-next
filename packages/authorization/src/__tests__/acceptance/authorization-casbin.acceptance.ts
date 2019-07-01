@@ -17,6 +17,7 @@ import {
   authorize,
   Authorizer,
 } from '../..';
+import {AuthorizationTags} from '../../keys';
 
 describe('Authorization', () => {
   let app: Application;
@@ -24,7 +25,7 @@ describe('Authorization', () => {
   let reqCtx: Context;
   let events: string[];
 
-  before(givenApplication);
+  before(givenApplicationAndAuthorizer);
   beforeEach(givenRequestContext);
 
   it('allows placeOrder for everyone', async () => {
@@ -100,14 +101,14 @@ describe('Authorization', () => {
     }
   }
 
-  function givenApplication() {
+  function givenApplicationAndAuthorizer() {
     app = new Application();
     app.component(AuthorizationComponent);
     app.bind('casbin.enforcer').toDynamicValue(createEnforcer);
     app
       .bind('authorizationProviders.casbin-provider')
       .toProvider(CasbinAuthorizationProvider)
-      .tag('authorizationProvider');
+      .tag(AuthorizationTags.AUTHORIZER);
   }
 
   function givenRequestContext(user = {name: 'alice'}) {
@@ -127,22 +128,17 @@ describe('Authorization', () => {
      * @returns authenticateFn
      */
     value(): Authorizer {
-      return async (
-        authzCtx: AuthorizationContext,
-        metadata: AuthorizationMetadata,
-      ) => {
-        return this.authorize(authzCtx, metadata);
-      };
+      return this.authorize.bind(this);
     }
 
     async authorize(
-      authzCtx: AuthorizationContext,
+      authorizationCtx: AuthorizationContext,
       metadata: AuthorizationMetadata,
     ) {
-      events.push(authzCtx.resource);
+      events.push(authorizationCtx.resource);
       const request: AuthorizationRequest = {
-        subject: authzCtx.principals[0].name,
-        object: metadata.resource || authzCtx.resource,
+        subject: authorizationCtx.principals[0].name,
+        object: metadata.resource || authorizationCtx.resource,
         action: (metadata.scopes && metadata.scopes[0]) || 'execute',
       };
       const allow = await this.enforcer.enforce(

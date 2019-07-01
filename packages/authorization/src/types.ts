@@ -14,49 +14,6 @@ export const UNAUTHENTICATED = '$unauthenticated';
 export const ANONYMOUS = '$anonymous';
 
 /**
- * Voting decision for the authorization decision
- */
-export enum VotingDecision {
-  ALLOW = 'Allow',
-  DENY = 'Deny',
-  ABSTAIN = 'Abstain',
-}
-
-/**
- * A voter function
- */
-export type Voter = (
-  authorizationCtx: AuthorizationContext,
-) => Promise<VotingDecision>;
-
-/**
- * Authorization metadata stored via Reflection API
- */
-export interface AuthorizationMetadata {
-  /**
-   * Roles that are allowed access
-   */
-  allowedRoles?: string[];
-  /**
-   * Roles that are denied access
-   */
-  deniedRoles?: string[];
-  /**
-   * Voters that help make the authorization decision
-   */
-  voters?: (Voter | BindingAddress<Voter>)[];
-
-  /**
-   * Name of the resource, default to the method name
-   */
-  resource?: string;
-  /**
-   * Define the access scopes
-   */
-  scopes?: string[];
-}
-
-/**
  * Decisions for authorization
  */
 export enum AuthorizationDecision {
@@ -75,6 +32,34 @@ export enum AuthorizationDecision {
 }
 
 /**
+ * Authorization metadata supplied via `@authorize` decorator
+ */
+export interface AuthorizationMetadata {
+  /**
+   * Roles that are allowed access
+   */
+  allowedRoles?: string[];
+  /**
+   * Roles that are denied access
+   */
+  deniedRoles?: string[];
+
+  /**
+   * Voters that help make the authorization decision
+   */
+  voters?: (Authorizer | BindingAddress<Authorizer>)[];
+
+  /**
+   * Name of the resource, default to the method name
+   */
+  resource?: string;
+  /**
+   * Define the access scopes
+   */
+  scopes?: string[];
+}
+
+/**
  * Represent a user, an application, or a device
  */
 export interface Principal {
@@ -87,7 +72,7 @@ export interface Principal {
    */
   type: string;
 
-  // organization
+  // organization/realm/domain/tenant
   // team/group
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -212,6 +197,10 @@ export type Authorizer =
  * Inspired by https://github.com/casbin/node-casbin
  */
 export interface AuthorizationRequest {
+  /**
+   * The domain (realm/tenant)
+   */
+  domain?: string;
   /**
    * The requestor that wants to access a resource.
    */
