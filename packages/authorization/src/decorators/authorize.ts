@@ -15,9 +15,9 @@ import {
 import {
   AUTHENTICATED,
   AuthorizationMetadata,
+  Authorizer,
   EVERYONE,
   UNAUTHENTICATED,
-  Voter,
 } from '../types';
 
 export const AUTHORIZATION_METHOD_KEY = MetadataAccessor.create<
@@ -147,8 +147,9 @@ export namespace authorize {
    * Shortcut to configure voters
    * @param voters
    */
-  export const vote = (...voters: (Voter | BindingAddress<Voter>)[]) =>
-    authorize({voters});
+  export const vote = (
+    ...voters: (Authorizer | BindingAddress<Authorizer>)[]
+  ) => authorize({voters});
 
   /**
    * Allows all
