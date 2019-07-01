@@ -32,6 +32,21 @@ export function toJSON(value: number): number;
 export function toJSON(value: boolean): boolean;
 export function toJSON(value: string): string;
 
+// The following overloads are required to allow TypesScript handle
+// commonly used union types.
+
+export function toJSON(value: unknown[] | null): unknown[] | null;
+export function toJSON(value: unknown[] | undefined): unknown[] | undefined;
+export function toJSON(
+  value: unknown[] | null | undefined,
+): unknown[] | null | undefined;
+
+export function toJSON(value: object | null): object | null;
+export function toJSON(value: object | undefined): object | undefined;
+export function toJSON(
+  value: object | null | undefined,
+): object | null | undefined;
+
 export function toJSON<T>(value: T) {
   return JSON.parse(JSON.stringify({value})).value;
 }

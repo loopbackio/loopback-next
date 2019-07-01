@@ -62,6 +62,42 @@ describe('toJSON', () => {
     expectUndefined(value);
   });
 
+  it('handles `object | null`', () => {
+    const input = createValueOfUnionType<object | null>({});
+    const output = toJSON(input);
+    expectComplexType<object | null>(output, input);
+  });
+
+  it('handles `object | undefined`', () => {
+    const input = createValueOfUnionType<object | undefined>({});
+    const output = toJSON(input);
+    expectComplexType<object | undefined>(output, input);
+  });
+
+  it('handles `object | null | undefined`', () => {
+    const input = createValueOfUnionType<object | null | undefined>({});
+    const output = toJSON(input);
+    expectComplexType<object | null | undefined>(output, input);
+  });
+
+  it('handles `unknown[] | null`', () => {
+    const input = createValueOfUnionType<unknown[] | null>([]);
+    const output = toJSON(input);
+    expectComplexType<unknown[] | null>(output, input);
+  });
+
+  it('handles `unknown[] | undefined`', () => {
+    const input = createValueOfUnionType<unknown[] | undefined>([]);
+    const output = toJSON(input);
+    expectComplexType<unknown[] | undefined>(output, input);
+  });
+
+  it('handles `unknown[] | null | undefined`', () => {
+    const input = createValueOfUnionType<unknown[] | null | undefined>([]);
+    const output = toJSON(input);
+    expectComplexType<unknown[] | null | undefined>(output, input);
+  });
+
   it('handles classes with custom toJSON', () => {
     class Customer {
       private __data: object;
@@ -155,4 +191,14 @@ function expectNull(actual: null) {
 
 function expectUndefined(actual: undefined) {
   expect(actual).to.be.undefined();
+}
+
+function expectComplexType<T>(actual: T, expected: T) {
+  expect(actual).to.deepEqual(expected);
+}
+
+// A helper to force TypeScript to treat the given value as of a union type,
+// e.g. treat `{}` as `object | undefined | null`.
+function createValueOfUnionType<T>(value: T): T {
+  return value;
 }
