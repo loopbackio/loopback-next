@@ -7,7 +7,6 @@ LoopBack 4 or other TypeScript modules, including:
   [`tsc`](https://www.typescriptlang.org/docs/handbook/compiler-options.html) to
   compile typescript files
 - lb-eslint: Run [`eslint`](https://typescript-eslint.io/)
-- lb-tslint: Run [`tslint`](https://github.com/palantir/tslint)
 - lb-prettier: Run [`prettier`](https://github.com/prettier/prettier)
 - lb-mocha: Run [`mocha`](https://mochajs.org/) to execute test cases
 - lb-nyc: Run [`nyc`](https://github.com/istanbuljs/nyc)
@@ -100,6 +99,42 @@ Now you run the scripts, such as:
 ```sh
 npm run build
 ```
+
+5. Run code coverage reports
+- lb-nyc
+
+  By default, `lb-nyc` is a plain wrapper for https://github.com/istanbuljs/nyc
+
+  To customize the configuration:
+
+  - Create `.nycrc` in your project's root
+    directory
+
+    ```json
+    {
+      "include": [
+        "dist"
+      ],
+      "exclude": [
+        "dist/__tests__/"
+      ],
+      "extension": [
+        ".js",
+        ".ts"
+      ],
+      "reporter": [
+        "text",
+        "html"
+      ],
+      "exclude-after-remap": false
+    }
+    ```
+
+  - To run code coverage with every test execution update your package.json:
+  ```json
+    "coverage": "lb-nyc",
+    "test": "npm run coverage lb-mocha \"dist/__tests__\"",
+  ```
 
 ## Contributions
 
