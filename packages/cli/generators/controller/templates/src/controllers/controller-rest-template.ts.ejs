@@ -34,7 +34,16 @@ export class <%= className %>Controller {
       },
     },
   })
-  async create(@requestBody() <%= modelVariableName %>: <%= modelName %>): Promise<<%= modelName %>> {
+  async create(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(<%= modelName %>, {exclude: ['id']}),
+        },
+      },
+    })
+    <%= modelVariableName %>: Omit<<%= modelName %>, 'id'>,
+  ): Promise<<%= modelName %>> {
     return await this.<%= repositoryNameCamel %>.create(<%= modelVariableName %>);
   }
 

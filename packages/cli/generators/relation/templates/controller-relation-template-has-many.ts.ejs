@@ -55,7 +55,13 @@ export class <%= controllerClassName %> {
   })
   async create(
     @param.path.<%= sourceModelPrimaryKeyType %>('id') id: typeof <%= sourceModelClassName %>.prototype.<%= sourceModelPrimaryKey %>,
-    @requestBody() <%= targetModelRequestBody %>: <%= targetModelClassName %>,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(<%= targetModelClassName %>, {exclude: ['id']}),
+        },
+      },
+    }) <%= targetModelRequestBody %>: Omit<<%= targetModelClassName %>, 'id'>,
   ): Promise<<%= targetModelClassName %>> {
     return await this.<%= paramSourceRepository %>.<%= relationPropertyName %>(id).create(<%= targetModelRequestBody %>);
   }
