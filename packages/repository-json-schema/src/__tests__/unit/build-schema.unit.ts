@@ -232,13 +232,28 @@ describe('build-schema', () => {
       expect(key).to.equal('modelPartial');
     });
 
+    it('returns "excluding[id,_rev]" when a single option "exclude" is set', () => {
+      const key = buildModelCacheKey({exclude: ['id', '_rev']});
+      expect(key).to.equal('modelExcluding[id,_rev]');
+    });
+
+    it('does not include "exclude" in concatenated option names if it is empty', () => {
+      const key = buildModelCacheKey({
+        partial: true,
+        exclude: [],
+        includeRelations: true,
+      });
+      expect(key).to.equal('modelPartialWithRelations');
+    });
+
     it('returns concatenated option names otherwise', () => {
       const key = buildModelCacheKey({
         // important: object keys are defined in reverse order
         partial: true,
+        exclude: ['id', '_rev'],
         includeRelations: true,
       });
-      expect(key).to.equal('modelPartialWithRelations');
+      expect(key).to.equal('modelPartialExcluding[id,_rev]WithRelations');
     });
   });
 });
