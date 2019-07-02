@@ -39,7 +39,16 @@ export class NoteController {
       },
     },
   })
-  async create(@requestBody() note: Note): Promise<Note> {
+  async create(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Note, {exclude: ['id']}),
+        },
+      },
+    })
+    note: Omit<Note, 'id'>,
+  ): Promise<Note> {
     return await this.noteRepository.create(note);
   }
 
