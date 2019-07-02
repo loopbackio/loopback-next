@@ -248,7 +248,7 @@ function checkRestCrudContents() {
     /'200': {/,
     /description: 'ProductReview model instance'/,
     /content: {'application\/json': {schema: {'x-ts-type': ProductReview}}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async create\(\@requestBody\(\) productReview: ProductReview\)/,
+    /async create\(\s+\@requestBody\({\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(ProductReview, {exclude: \['id'\]}\),\s+},\s+},\s+}\)\s+productReview: Omit<ProductReview, 'id'>,\s+\)/,
   ];
   postCreateRegEx.forEach(regex => {
     assert.fileContent(expectedFile, regex);
