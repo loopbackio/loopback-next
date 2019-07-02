@@ -15,7 +15,7 @@ import {
 import {JSONSchema6 as JSONSchema} from 'json-schema';
 import {JSON_SCHEMA_KEY, MODEL_TYPE_KEYS} from './keys';
 
-export interface JsonSchemaOptions {
+export interface JsonSchemaOptions<T extends object> {
   /**
    * Set this flag if you want the schema to define navigational properties
    * for model relations.
@@ -29,6 +29,11 @@ export interface JsonSchemaOptions {
   partial?: boolean;
 
   /**
+   * List of model properties to exclude from the schema.
+   */
+  exclude?: (keyof T)[];
+
+  /**
    * @internal
    */
   visited?: {[key: string]: JSONSchema};
@@ -37,7 +42,9 @@ export interface JsonSchemaOptions {
 /**
  * @internal
  */
-export function buildModelCacheKey(options: JsonSchemaOptions = {}): string {
+export function buildModelCacheKey<T extends object>(
+  options: JsonSchemaOptions<T> = {},
+): string {
   // Backwards compatibility: preserve cache key "modelOnly"
   if (Object.keys(options).length === 0) {
     return MODEL_TYPE_KEYS.ModelOnly;
@@ -54,9 +61,9 @@ export function buildModelCacheKey(options: JsonSchemaOptions = {}): string {
  * in a cache. If not, one is generated and then cached.
  * @param ctor - Contructor of class to get JSON Schema from
  */
-export function getJsonSchema(
+export function getJsonSchema<T extends object>(
   ctor: Function,
-  options?: JsonSchemaOptions,
+  options?: JsonSchemaOptions<T>,
 ): JSONSchema {
   // In the near future the metadata will be an object with
   // different titles as keys
@@ -107,9 +114,9 @@ export function getJsonSchema(
  * @param modelCtor - The model constructor (e.g. `Product`)
  * @param options - Additional options
  */
-export function getJsonSchemaRef(
+export function getJsonSchemaRef<T extends object>(
   modelCtor: Function,
-  options?: JsonSchemaOptions,
+  options?: JsonSchemaOptions<T>,
 ): JSONSchema {
   const schemaWithDefinitions = getJsonSchema(modelCtor, options);
   const key = schemaWithDefinitions.title;
@@ -255,14 +262,18 @@ export function getNavigationalPropertyForRelation(
   }
 }
 
-function getTitleSuffix(options: JsonSchemaOptions = {}) {
+function getTitleSuffix<T extends object>(options: JsonSchemaOptions<T> = {}) {
   let suffix = '';
   if (options.partial) {
     suffix += 'Partial';
   }
+  if (options.exclude && options.exclude.length) {
+    suffix += 'Excluding[' + options.exclude + ']';
+  }
   if (options.includeRelations) {
     suffix += 'WithRelations';
   }
+
   return suffix;
 }
 
@@ -274,9 +285,9 @@ function getTitleSuffix(options: JsonSchemaOptions = {}) {
  * reflection API
  * @param ctor - Constructor of class to convert from
  */
-export function modelToJsonSchema(
+export function modelToJsonSchema<T extends object>(
   ctor: Function,
-  jsonSchemaOptions: JsonSchemaOptions = {},
+  jsonSchemaOptions: JsonSchemaOptions<T> = {},
 ): JSONSchema {
   const options = {...jsonSchemaOptions};
   options.visited = options.visited || {};
@@ -300,6 +311,10 @@ export function modelToJsonSchema(
   }
 
   for (const p in meta.properties) {
+    if (options.exclude && options.exclude.includes(p as keyof T)) {
+      continue;
+    }
+
     if (!meta.properties[p].type) {
       continue;
     }
