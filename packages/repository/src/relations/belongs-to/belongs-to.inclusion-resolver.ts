@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {AnyObject} from '../../common-types';
+import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
 import {Inclusion} from '../../query';
 import {EntityCrudRepository} from '../../repositories/repository';
-import {uniq} from '../relation.helpers';
+import {findByForeignKeys, uniq} from '../relation.helpers';
 import {
   BelongsToDefinition,
   Getter,
@@ -36,7 +36,8 @@ export class BelongsToInclusionResolver<
 
   async fetchIncludedModels<SourceWithRelations extends Entity>(
     entities: SourceWithRelations[],
-    inclusion: Inclusion,
+    inclusion: Inclusion<Target>,
+    options?: Options,
   ): Promise<void> {
     // TODO(bajtos) reject unsupported inclusion options, e.g. "scope"
 
@@ -44,18 +45,14 @@ export class BelongsToInclusionResolver<
     const targetKey = this.relationMeta.keyTo;
     const sourceIds = entities.map(e => e[sourceKey]);
 
-    // TODO(bajtos) take into account filter fields like pagination
-    const targetFilter = {
-      [targetKey]: {
-        inq: uniq(sourceIds),
-      },
-    };
-
-    // TODO(bajtos) split the query into multiple smaller ones
-    // when inq size is large. We should implement a new helper
-    // shared by all inclusion resolvers.
     const targetRepo = await this.getTargetRepo();
-    const found = await targetRepo.find(targetFilter);
+    const found = await findByForeignKeys(
+      targetRepo,
+      targetKey as keyof Target,
+      uniq(sourceIds),
+      inclusion.scope,
+      options,
+    );
 
     // TODO(bajtos) Extract this code into a shared helper
     // Build a lookup map sourceId -> target entity

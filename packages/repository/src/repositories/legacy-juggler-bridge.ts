@@ -560,7 +560,7 @@ export class DefaultCrudRepository<
   protected async includeRelatedModels(
     entities: T[],
     filter?: Filter<T>,
-    _options?: Options,
+    options?: Options,
   ): Promise<(T & Relations)[]> {
     const result = entities as (T & Relations)[];
 
@@ -582,7 +582,7 @@ export class DefaultCrudRepository<
     const resolveTasks = include.map(i => {
       const relationName = i.relation!;
       const handler = this.inclusionResolvers[relationName];
-      return handler.fetchIncludedModels(entities, i);
+      return handler.fetchIncludedModels(entities, i, options);
     });
 
     await Promise.all(resolveTasks);
