@@ -38,7 +38,14 @@ export class TodoListTodoController {
   })
   async create(
     @param.path.number('id') id: number,
-    @requestBody() todo: Todo,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Todo, {exclude: ['id']}),
+        },
+      },
+    })
+    todo: Omit<Todo, 'id'>,
   ): Promise<Todo> {
     return await this.todoListRepo.todos(id).create(todo);
   }

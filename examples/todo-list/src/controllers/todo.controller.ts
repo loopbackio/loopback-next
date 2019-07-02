@@ -29,7 +29,16 @@ export class TodoController {
       },
     },
   })
-  async createTodo(@requestBody() todo: Todo) {
+  async createTodo(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Todo, {exclude: ['id']}),
+        },
+      },
+    })
+    todo: Omit<Todo, 'id'>,
+  ): Promise<Todo> {
     return await this.todoRepo.create(todo);
   }
 

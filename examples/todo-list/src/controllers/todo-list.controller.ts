@@ -38,8 +38,17 @@ export class TodoListController {
       },
     },
   })
-  async create(@requestBody() obj: TodoList): Promise<TodoList> {
-    return await this.todoListRepository.create(obj);
+  async create(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(TodoList, {exclude: ['id']}),
+        },
+      },
+    })
+    todoList: Omit<TodoList, 'id'>,
+  ): Promise<TodoList> {
+    return await this.todoListRepository.create(todoList);
   }
 
   @get('/todo-lists/count', {
