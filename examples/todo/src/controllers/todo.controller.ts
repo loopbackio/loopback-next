@@ -34,7 +34,16 @@ export class TodoController {
       },
     },
   })
-  async createTodo(@requestBody() todo: Todo): Promise<Todo> {
+  async createTodo(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Todo, {exclude: ['id']}),
+        },
+      },
+    })
+    todo: Omit<Todo, 'id'>,
+  ): Promise<Todo> {
     if (todo.remindAtAddress) {
       // TODO(bajtos) handle "address not found"
       const geo = await this.geoService.geocode(todo.remindAtAddress);
