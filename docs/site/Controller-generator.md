@@ -123,8 +123,17 @@ export class TodoController {
       },
     },
   })
-  async create(@requestBody() data: Todo): Promise<Todo> {
-    return await this.todoRepository.create(data);
+  async create(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Todo, {exclude: ['id']}),
+        },
+      },
+    })
+    todo: Omit<Todo, 'id'>,
+  ): Promise<Todo> {
+    return await this.todoRepository.create(todo);
   }
 
   @get('/todos/count', {
