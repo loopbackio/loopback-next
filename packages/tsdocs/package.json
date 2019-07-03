@@ -32,7 +32,7 @@
     "@loopback/testlab": "^1.6.3",
     "@types/debug": "^4.1.4",
     "@types/fs-extra": "^8.0.0",
-    "@types/node": "^10.14.10",
+    "@types/node": "^10.14.12",
     "p-event": "^4.1.0"
   },
   "keywords": [
