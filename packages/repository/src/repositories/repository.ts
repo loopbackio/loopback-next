@@ -6,6 +6,7 @@
 import {
   AnyObject,
   Command,
+  ConnectorCapabilities,
   Count,
   DataObject,
   NamedParameters,
@@ -21,6 +22,27 @@ import {Filter, Where} from '../query';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 export interface Repository<T extends Model> {}
+
+export interface WithCapabilities {
+  /**
+   * Description of capabilities offered by this repository.
+   *
+   * TODO(semver-major): move this property to Repository interface
+   */
+  capabilities: ConnectorCapabilities;
+}
+
+export function getRepositoryCapabilities<T extends Model>(
+  repo: Repository<T>,
+): ConnectorCapabilities {
+  return isRepositoryWithCapabilities(repo) ? repo.capabilities : {};
+}
+
+function isRepositoryWithCapabilities<T extends Model>(
+  repo: Repository<T>,
+): repo is WithCapabilities {
+  return typeof (repo as WithCapabilities).capabilities === 'object';
+}
 
 export interface ExecutableRepository<T extends Model> extends Repository<T> {
   /**

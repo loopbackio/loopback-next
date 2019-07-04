@@ -10,6 +10,7 @@ import * as legacy from 'loopback-datasource-juggler';
 import {
   AnyObject,
   Command,
+  ConnectorCapabilities,
   Count,
   DataObject,
   NamedParameters,
@@ -36,7 +37,7 @@ import {
 } from '../relations';
 import {HasOneInclusionResolver} from '../relations/has-one/has-one.inclusion-resolver';
 import {isTypeResolver, resolveType} from '../type-resolver';
-import {EntityCrudRepository} from './repository';
+import {EntityCrudRepository, WithCapabilities} from './repository';
 
 const debug = debugFactory('loopback:repository:legacy-juggler-bridge');
 
@@ -97,7 +98,9 @@ export class DefaultCrudRepository<
   T extends Entity,
   ID,
   Relations extends object = {}
-> implements EntityCrudRepository<T, ID, Relations> {
+> implements EntityCrudRepository<T, ID, Relations>, WithCapabilities {
+  capabilities: ConnectorCapabilities;
+
   modelClass: juggler.PersistedModelClass;
   protected inclusionResolvers: {[key: string]: InclusionResolver};
 
@@ -111,6 +114,11 @@ export class DefaultCrudRepository<
     public entityClass: typeof Entity & {prototype: T},
     public dataSource: juggler.DataSource,
   ) {
+    this.capabilities = {
+      // TODO(bajtos) add test coverage
+      inqLimit: dataSource.settings && dataSource.settings.inqLimit,
+    };
+
     const definition = entityClass.definition;
     assert(
       !!definition,

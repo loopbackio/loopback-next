@@ -100,3 +100,16 @@ export const CountSchema = {
   type: 'object',
   properties: {count: {type: 'number'}},
 };
+
+/**
+ * Description of capabilities offered by the connector backing the given
+ * datasource.
+ */
+export interface ConnectorCapabilities {
+  /**
+   * Maximum number of items allowed for `inq` operators.
+   * This value is used to split queries when resolving related models
+   * for a large number of source instances.
+   */
+  inqLimit?: number;
+}

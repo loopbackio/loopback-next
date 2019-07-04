@@ -8,7 +8,7 @@ import {AnyObject} from 'loopback-datasource-juggler';
 import {Options} from '../common-types';
 import {Entity, Model} from '../model';
 import {Filter, Where} from '../query';
-import {EntityCrudRepository} from '../repositories';
+import {EntityCrudRepository, getRepositoryCapabilities} from '../repositories';
 
 // TODO(bajtos) add test coverage
 
@@ -48,7 +48,7 @@ export function isBsonType(value: unknown): value is object {
 }
 
 // TODO(bajtos) add test coverage
-export function findByForeignKeys<
+export async function findByForeignKeys<
   Target extends Entity,
   TargetID,
   TargetRelations extends object,
@@ -60,16 +60,45 @@ export function findByForeignKeys<
   _scope?: Filter<Target>,
   options?: Options,
 ): Promise<(Target & TargetRelations)[]> {
-  const where = ({
-    [fkName]: {inq: fkValues},
-  } as unknown) as Where<Target>;
+  const repoCapabilities = getRepositoryCapabilities(targetRepository);
+  const pageSize = repoCapabilities.inqLimit || 256;
 
-  // TODO(bajtos) take into account scope fields like pagination, fields, etc
-  // FIXME(bajtos) for v1, reject unsupported scope options
-  const targetFilter = {where};
+  // TODO(bajtos) add test coverage
+  const queries = splitByPageSize(fkValues, pageSize).map(fks => {
+    const where = ({
+      [fkName]: fks.length === 1 ? fks[0] : {inq: fks},
+    } as unknown) as Where<Target>;
 
-  // FIXME(bajtos) split the query into multiple smaller ones when inq is large.
-  return targetRepository.find(targetFilter, options);
+    // TODO(bajtos) take into account scope fields like pagination, fields, etc
+    // FIXME(bajtos) for v1, reject unsupported scope options
+    const targetFilter = {where};
+    return targetFilter;
+  });
+
+  const results = await Promise.all(
+    queries.map(q => targetRepository.find(q, options)),
+  );
+
+  return flatten(results);
+}
+
+function flatten<T>(items: T[][]): T[] {
+  // Node.js 11+
+  if (typeof items.flat === 'function') {
+    return items.flat(1);
+  }
+  // Node.js 8 and 10
+  return ([] as T[]).concat(...items);
+}
+
+function splitByPageSize<T>(items: T[], pageSize: number): T[][] {
+  if (pageSize < 0) return [items];
+  if (!pageSize) throw new Error(`Invalid page size: ${pageSize}`);
+  const pages: T[][] = [];
+  for (let i = 0; i < pages.length; i += pageSize) {
+    pages.push(items.slice(i, i + pageSize));
+  }
+  return pages;
 }
 
 export type StringKeyOf<T> = Extract<keyof T, string>;
