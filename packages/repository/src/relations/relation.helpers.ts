@@ -4,8 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as assert from 'assert';
+import {AnyObject} from 'loopback-datasource-juggler';
 import {Options} from '../common-types';
-import {Entity} from '../model';
+import {Entity, Model} from '../model';
 import {Filter, Where} from '../query';
 import {EntityCrudRepository} from '../repositories';
 
@@ -50,22 +51,101 @@ export function isBsonType(value: unknown): value is object {
 export function findByForeignKeys<
   Target extends Entity,
   TargetID,
-  Relations extends object,
+  TargetRelations extends object,
   ForeignKey
 >(
-  targetRepository: EntityCrudRepository<Target, TargetID, Relations>,
-  fkName: keyof Target,
+  targetRepository: EntityCrudRepository<Target, TargetID, TargetRelations>,
+  fkName: StringKeyOf<Target>,
   fkValues: ForeignKey[],
-  scope?: Filter<Target>,
+  _scope?: Filter<Target>,
   options?: Options,
-): Promise<(Target & Relations)[]> {
+): Promise<(Target & TargetRelations)[]> {
   const where = ({
     [fkName]: {inq: fkValues},
   } as unknown) as Where<Target>;
 
   // TODO(bajtos) take into account scope fields like pagination, fields, etc
+  // FIXME(bajtos) for v1, reject unsupported scope options
   const targetFilter = {where};
 
-  // TODO(bajtos) split the query into multiple smaller ones when inq is large.
-  return targetRepository.find(targetFilter);
+  // FIXME(bajtos) split the query into multiple smaller ones when inq is large.
+  return targetRepository.find(targetFilter, options);
+}
+
+export type StringKeyOf<T> = Extract<keyof T, string>;
+
+// TODO(bajtos) add test coverage
+export function buildLookupMap<Key, Entry, T extends Model>(
+  list: T[],
+  keyName: StringKeyOf<T>,
+  reducer: (accumulator: Entry | undefined, current: T) => Entry,
+): Map<Key, Entry> {
+  const lookup = new Map<Key, Entry>();
+  for (const entity of list) {
+    const key = (entity as AnyObject)[keyName] as Key;
+    const original = lookup.get(key);
+    const reduced = reducer(original, entity);
+    lookup.set(key, reduced);
+  }
+  return lookup;
+}
+
+// TODO(bajtos) add test coverage
+export function assignTargetsOfOneToOneRelation<
+  SourceWithRelations extends Entity,
+  Target extends Entity
+>(
+  sourceEntites: SourceWithRelations[],
+  sourceKey: StringKeyOf<SourceWithRelations>,
+  linkName: StringKeyOf<SourceWithRelations>,
+  targetEntities: Target[],
+  targetKey: StringKeyOf<Target>,
+) {
+  const lookup = buildLookupMap<unknown, Target, Target>(
+    targetEntities,
+    targetKey,
+    reduceAsSingleItem,
+  );
+
+  for (const src of sourceEntites) {
+    const target = lookup.get(src[sourceKey]);
+    if (!target) continue;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    src[linkName] = target as any;
+  }
+}
+
+function reduceAsSingleItem<T>(_acc: T | undefined, it: T) {
+  return it;
+}
+
+// TODO(bajtos) add test coverage
+export function assignTargetsOfOneToManyRelation<
+  SourceWithRelations extends Entity,
+  Target extends Entity
+>(
+  sourceEntites: SourceWithRelations[],
+  sourceKey: StringKeyOf<SourceWithRelations>,
+  linkName: StringKeyOf<SourceWithRelations>,
+  targetEntities: Target[],
+  targetKey: StringKeyOf<Target>,
+) {
+  const lookup = buildLookupMap<unknown, Target[], Target>(
+    targetEntities,
+    targetKey,
+    reduceAsArray,
+  );
+
+  for (const src of sourceEntites) {
+    const target = lookup.get(src[sourceKey]);
+    if (!target) continue;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    src[linkName] = target as any;
+  }
+}
+
+function reduceAsArray<T>(acc: T[] | undefined, it: T) {
+  if (acc) acc.push(it);
+  else acc = [it];
+  return acc;
 }
