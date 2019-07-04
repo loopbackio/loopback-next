@@ -15,7 +15,10 @@ const debug = debugFactory('loopback:repository:has-one-helpers');
  * Relation definition with optional metadata (e.g. `keyTo`) filled in.
  * @internal
  */
-export type HasOneResolvedDefinition = HasOneDefinition & {keyTo: string};
+export type HasOneResolvedDefinition = HasOneDefinition & {
+  keyFrom: string;
+  keyTo: string;
+};
 
 /**
  * Resolves given hasOne metadata if target is specified to be a resolver.
@@ -54,6 +57,14 @@ export function resolveHasOneMetadata(
     throw new InvalidRelationError(reason, relationMeta);
   }
 
+  // TODO(bajtos) add test coverage (when keyTo is and is not set)
+  const keyFrom = sourceModel.getIdProperties()[0];
+
+  if (relationMeta.keyTo) {
+    // The explict cast is needed because of a limitation of type inference
+    return Object.assign(relationMeta, {keyFrom}) as HasOneResolvedDefinition;
+  }
+
   debug(
     'Resolved model %s from given metadata: %o',
     targetModel.modelName,
@@ -67,5 +78,5 @@ export function resolveHasOneMetadata(
     throw new InvalidRelationError(reason, relationMeta);
   }
 
-  return Object.assign(relationMeta, {keyTo: defaultFkName});
+  return Object.assign(relationMeta, {keyFrom, keyTo: defaultFkName});
 }
