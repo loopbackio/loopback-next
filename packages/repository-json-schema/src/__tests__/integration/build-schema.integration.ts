@@ -983,7 +983,7 @@ describe('build-schema', () => {
         );
       });
 
-      it('doesn\'t exclude properties when the option "exclude" is set to exclude no properties', () => {
+      it(`doesn't exclude properties when the option "exclude" is set to exclude no properties`, () => {
         const originalSchema = getJsonSchema(Product);
         expect(originalSchema.properties).to.deepEqual({
           id: {type: 'number'},
@@ -999,6 +999,80 @@ describe('build-schema', () => {
           description: {type: 'string'},
         });
         expect(excludeNothingSchema.title).to.equal('Product');
+      });
+    });
+
+    context('optional properties when option "optional" is set', () => {
+      @model()
+      class Product extends Entity {
+        @property({id: true, required: true})
+        id: number;
+
+        @property({required: true})
+        name: string;
+
+        @property()
+        description: string;
+      }
+
+      it('makes one property optional when the option "optional" includes one property', () => {
+        const originalSchema = getJsonSchema(Product);
+        expect(originalSchema.required).to.deepEqual(['id', 'name']);
+        expect(originalSchema.title).to.equal('Product');
+
+        const optionalIdSchema = getJsonSchema(Product, {optional: ['id']});
+        expect(optionalIdSchema.required).to.deepEqual(['name']);
+        expect(optionalIdSchema.title).to.equal('ProductOptional[id]');
+      });
+
+      it('makes multiple properties optional when the option "optional" includes multiple properties', () => {
+        const originalSchema = getJsonSchema(Product);
+        expect(originalSchema.required).to.deepEqual(['id', 'name']);
+        expect(originalSchema.title).to.equal('Product');
+
+        const optionalIdAndNameSchema = getJsonSchema(Product, {
+          optional: ['id', 'name'],
+        });
+        expect(optionalIdAndNameSchema.required).to.equal(undefined);
+        expect(optionalIdAndNameSchema.title).to.equal(
+          'ProductOptional[id,name]',
+        );
+      });
+
+      it(`doesn't make properties optional when the option "optional" includes no properties`, () => {
+        const originalSchema = getJsonSchema(Product);
+        expect(originalSchema.required).to.deepEqual(['id', 'name']);
+        expect(originalSchema.title).to.equal('Product');
+
+        const optionalNothingSchema = getJsonSchema(Product, {optional: []});
+        expect(optionalNothingSchema.required).to.deepEqual(['id', 'name']);
+        expect(optionalNothingSchema.title).to.equal('Product');
+      });
+
+      it('overrides "partial" option when "optional" options is set', () => {
+        const originalSchema = getJsonSchema(Product);
+        expect(originalSchema.required).to.deepEqual(['id', 'name']);
+        expect(originalSchema.title).to.equal('Product');
+
+        const optionalNameSchema = getJsonSchema(Product, {
+          partial: true,
+          optional: ['name'],
+        });
+        expect(optionalNameSchema.required).to.deepEqual(['id']);
+        expect(optionalNameSchema.title).to.equal('ProductOptional[name]');
+      });
+
+      it('uses "partial" option, if provided, when "optional" options is set but empty', () => {
+        const originalSchema = getJsonSchema(Product);
+        expect(originalSchema.required).to.deepEqual(['id', 'name']);
+        expect(originalSchema.title).to.equal('Product');
+
+        const optionalNameSchema = getJsonSchema(Product, {
+          partial: true,
+          optional: [],
+        });
+        expect(optionalNameSchema.required).to.equal(undefined);
+        expect(optionalNameSchema.title).to.equal('ProductPartial');
       });
     });
   });
