@@ -12,8 +12,10 @@ import {
   RelationMetadata,
   resolveType,
 } from '@loopback/repository';
+import * as debugFactory from 'debug';
 import {JSONSchema6 as JSONSchema} from 'json-schema';
 import {JSON_SCHEMA_KEY, MODEL_TYPE_KEYS} from './keys';
+const debug = debugFactory('loopback:repository-json-schema:build-schema');
 
 export interface JsonSchemaOptions<T extends object> {
   /**
@@ -32,6 +34,11 @@ export interface JsonSchemaOptions<T extends object> {
    * List of model properties to exclude from the schema.
    */
   exclude?: (keyof T)[];
+
+  /**
+   * List of model properties to mark as optional.
+   */
+  optional?: (keyof T)[];
 
   /**
    * @internal
@@ -264,7 +271,9 @@ export function getNavigationalPropertyForRelation(
 
 function getTitleSuffix<T extends object>(options: JsonSchemaOptions<T> = {}) {
   let suffix = '';
-  if (options.partial) {
+  if (options.optional && options.optional.length) {
+    suffix += 'Optional[' + options.optional + ']';
+  } else if (options.partial) {
     suffix += 'Partial';
   }
   if (options.exclude && options.exclude.length) {
@@ -291,6 +300,15 @@ export function modelToJsonSchema<T extends object>(
 ): JSONSchema {
   const options = {...jsonSchemaOptions};
   options.visited = options.visited || {};
+  options.optional = options.optional || [];
+  const partial = options.partial && !options.optional.length;
+
+  if (options.partial && !partial) {
+    debug('Overriding "partial" option with "optional" option');
+    delete options.partial;
+  }
+
+  debug('JSON schema options: %o', options);
 
   const meta: ModelDefinition | {} = ModelMetadataHelper.getModelMetadata(ctor);
 
@@ -328,7 +346,9 @@ export function modelToJsonSchema<T extends object>(
     result.properties[p] = metaToJsonProperty(metaProperty);
 
     // handling 'required' metadata
-    if (metaProperty.required && !options.partial) {
+    const optional = options.optional.includes(p as keyof T);
+
+    if (metaProperty.required && !(partial || optional)) {
       result.required = result.required || [];
       result.required.push(p);
     }
