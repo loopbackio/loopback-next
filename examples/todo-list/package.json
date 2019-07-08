@@ -60,7 +60,7 @@
     "eslint-plugin-eslint-plugin": "^2.1.0",
     "eslint-plugin-mocha": "^5.3.0",
     "lodash": "^4.17.11",
-    "typescript": "~3.5.2"
+    "typescript": "~3.5.3"
   },
   "keywords": [
     "loopback",
