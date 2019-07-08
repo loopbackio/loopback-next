@@ -28,7 +28,7 @@ Please fill in the *entire* template below.
 
 <!-- Describe what did you expect instead, what is the desired outcome? -->
 
-## Link to reproduction sanbox
+## Link to reproduction sandbox
 
 <!-- See https://loopback.io/doc/en/contrib/Reporting-issues.html#loopback-4x-bugs  -->
 
