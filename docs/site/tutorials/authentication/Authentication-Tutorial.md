@@ -64,7 +64,7 @@ application, follow these steps:
 1. Start the application:
 
    ```sh
-   git clone git@github.com:strongloop/loopback4-example-shopping.git
+   git clone https://github.com/strongloop/loopback4-example-shopping.git
    cd loopback4-example-shopping
    npm install
    npm run docker:start
