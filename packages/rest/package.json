@@ -55,7 +55,7 @@
     "@loopback/testlab": "^1.6.3",
     "@types/debug": "^4.1.4",
     "@types/js-yaml": "^3.12.1",
-    "@types/lodash": "^4.14.135",
+    "@types/lodash": "^4.14.136",
     "@types/multer": "^1.3.7",
     "@types/node": "^10.14.12",
     "@types/on-finished": "^2.3.1",
