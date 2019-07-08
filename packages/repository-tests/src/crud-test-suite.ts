@@ -31,6 +31,7 @@ export function crudRepositoryTestSuite(
   const features: CrudFeatures = {
     idType: 'string',
     freeFormProperties: true,
+    inclusionResolvers: true,
     ...partialFeatures,
   };
 
@@ -70,7 +71,7 @@ export function crudRepositoryTestSuite(
           suite.name,
           dataSourceOptions,
           'class ' + repositoryClass.name,
-          partialFeatures,
+          features,
         );
         suite(dataSourceOptions, repositoryClass, features);
       }

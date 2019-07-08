@@ -149,7 +149,7 @@ describe('HasMany relation', () => {
           },
         ],
       }),
-    ).to.be.rejectedWith(/`orders` is not defined/);
+    ).to.be.rejectedWith(/Navigational properties are not allowed.*"orders"/);
   });
 
   context('when targeting the source model', () => {

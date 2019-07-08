@@ -111,7 +111,7 @@ export function buildLookupMap<Key, Entry, T extends Model>(
 ): Map<Key, Entry> {
   const lookup = new Map<Key, Entry>();
   for (const entity of list) {
-    const key = (entity as AnyObject)[keyName] as Key;
+    const key = getKeyValue(entity, keyName) as Key;
     const original = lookup.get(key);
     const reduced = reducer(original, entity);
     lookup.set(key, reduced);
@@ -137,7 +137,8 @@ export function assignTargetsOfOneToOneRelation<
   );
 
   for (const src of sourceEntites) {
-    const target = lookup.get(src[sourceKey]);
+    const key = getKeyValue(src, sourceKey);
+    const target = lookup.get(key);
     if (!target) continue;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     src[linkName] = target as any;
@@ -166,7 +167,8 @@ export function assignTargetsOfOneToManyRelation<
   );
 
   for (const src of sourceEntites) {
-    const target = lookup.get(src[sourceKey]);
+    const key = getKeyValue(src, sourceKey);
+    const target = lookup.get(key);
     if (!target) continue;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     src[linkName] = target as any;
@@ -177,4 +179,13 @@ function reduceAsArray<T>(acc: T[] | undefined, it: T) {
   if (acc) acc.push(it);
   else acc = [it];
   return acc;
+}
+
+function getKeyValue<T>(model: T, keyName: StringKeyOf<T>) {
+  const rawKey = (model as AnyObject)[keyName];
+  // Hacky workaround for MongoDB, see _SPIKE_.md for details
+  if (typeof rawKey === 'object' && rawKey.constructor.name === 'ObjectID') {
+    return rawKey.toString();
+  }
+  return rawKey;
 }

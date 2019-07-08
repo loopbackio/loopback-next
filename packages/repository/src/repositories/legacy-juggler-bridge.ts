@@ -102,7 +102,7 @@ export class DefaultCrudRepository<
   capabilities: ConnectorCapabilities;
 
   modelClass: juggler.PersistedModelClass;
-  protected inclusionResolvers: {[key: string]: InclusionResolver};
+  public inclusionResolvers: {[key: string]: InclusionResolver};
 
   /**
    * Constructor of DefaultCrudRepository
@@ -411,13 +411,21 @@ export class DefaultCrudRepository<
   }
 
   async create(entity: DataObject<T>, options?: Options): Promise<T> {
-    const model = await ensurePromise(this.modelClass.create(entity, options));
+    const model = await ensurePromise(
+      this.modelClass.create(
+        this.fromEntity(entity, {relations: 'throw'}),
+        options,
+      ),
+    );
     return this.toEntity(model);
   }
 
   async createAll(entities: DataObject<T>[], options?: Options): Promise<T[]> {
     const models = await ensurePromise(
-      this.modelClass.create(entities, options),
+      this.modelClass.create(
+        entities.map(e => this.fromEntity(e, {relations: 'throw'})),
+        options,
+      ),
     );
     return this.toEntities(models);
   }
@@ -487,7 +495,7 @@ export class DefaultCrudRepository<
   ): Promise<Count> {
     where = where || {};
     const result = await ensurePromise(
-      this.modelClass.updateAll(where, data, options),
+      this.modelClass.updateAll(where, this.fromEntity(data), options),
     );
     return {count: result.count};
   }
@@ -512,7 +520,17 @@ export class DefaultCrudRepository<
     options?: Options,
   ): Promise<void> {
     try {
-      await ensurePromise(this.modelClass.replaceById(id, data, options));
+      const payload = this.fromEntity(data);
+      debug(
+        '%s replaceById',
+        this.modelClass.modelName,
+        typeof id,
+        id,
+        payload,
+        'options',
+        options,
+      );
+      await ensurePromise(this.modelClass.replaceById(id, payload, options));
     } catch (err) {
       if (err.statusCode === 404) {
         throw new EntityNotFoundError(this.entityClass, id);
@@ -558,6 +576,43 @@ export class DefaultCrudRepository<
 
   protected toEntities<R extends T>(models: juggler.PersistedModel[]): R[] {
     return models.map(m => this.toEntity<R>(m));
+  }
+
+  // TODO(bajtos) add test coverage for all methods calling this helper
+  // and also test both variants (R.toJSON() and DataObject<R>)
+  protected fromEntity<R extends T>(
+    entity: R | DataObject<R>,
+    options: {relations?: true | false | 'throw'} = {},
+  ): legacy.ModelData<legacy.PersistedModel> {
+    // FIXME(bajtos) Ideally, we should call toJSON() to convert R to data object
+    // Unfortunately that breaks replaceById for MongoDB connector, where we
+    // would call replaceId with id *argument* set to ObjectID value but
+    // id *property* set to string value.
+    /*
+    const data: AnyObject =
+      typeof entity.toJSON === 'function' ? entity.toJSON() : {...entity};
+    */
+    const data: AnyObject = new this.entityClass(entity);
+
+    if (options.relations === true) return data;
+
+    const def = this.entityClass.definition;
+    for (const r in def.relations) {
+      const relName = def.relations[r].name;
+      if (relName in data) {
+        if (options.relations === 'throw') {
+          throw new Error(
+            `Navigational properties are not allowed in model data (model "${
+              this.entityClass.modelName
+            }" property "${relName}")`,
+          );
+        }
+
+        delete data[relName];
+      }
+    }
+
+    return data;
   }
 
   protected normalizeFilter(filter?: Filter<T>): legacy.Filter | undefined {

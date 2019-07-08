@@ -38,6 +38,14 @@ export interface CrudFeatures {
    * Default: `true`
    */
   freeFormProperties: boolean;
+
+  /**
+   * Does the repository provide `inclusionResolvers` object where resolvers
+   * can be registered?
+   *
+   * Default: `true`
+   */
+  inclusionResolvers: boolean;
 }
 
 /**

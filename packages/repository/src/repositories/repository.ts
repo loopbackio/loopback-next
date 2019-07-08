@@ -18,6 +18,7 @@ import {DataSource} from '../datasource';
 import {EntityNotFoundError} from '../errors';
 import {Entity, Model, ValueObject} from '../model';
 import {Filter, Where} from '../query';
+import {InclusionResolver} from '../relations';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
@@ -215,6 +216,18 @@ export interface EntityCrudRepository<
    * Promise<false>
    */
   exists(id: ID, options?: Options): Promise<boolean>;
+}
+
+// TODO(semver-major) move this property to CrudRepository interface
+export interface WithInclusionResolvers {
+  inclusionResolvers: {[key: string]: InclusionResolver};
+}
+
+export function hasInclusionResolvers<T extends Model>(
+  repo: Repository<T>,
+): repo is WithInclusionResolvers {
+  const resolvers = (repo as WithInclusionResolvers).inclusionResolvers;
+  return resolvers && typeof resolvers === 'object';
 }
 
 /**

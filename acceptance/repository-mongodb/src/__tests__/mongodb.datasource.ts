@@ -16,4 +16,8 @@ export const MONGODB_CONFIG: DataSourceOptions = {
 
 export const MONGODB_FEATURES: Partial<CrudFeatures> = {
   idType: 'string',
+
+  // TODO: we should run the test suite against two connector configurations:
+  // - one with "strictObjectID" set to true,
+  // - the other with "strictObjectID" turned off (the default).
 };
