@@ -50,12 +50,14 @@ describe('context examples', () => {
 
   function disableConsoleOutput() {
     originalConsoleLog = console.log;
-    console.log = (...args) => {
-      logs.push(format(...args));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    console.log = (fmt: any, ...params: any[]) => {
+      logs.push(format(fmt, ...params));
     };
     originalConsoleError = console.error;
-    console.error = (...args) => {
-      errors.push(format(...args));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    console.error = (fmt: any, ...params: any[]) => {
+      errors.push(format(fmt, ...params));
     };
   }
 
