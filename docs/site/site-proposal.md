@@ -164,6 +164,69 @@ docs improvement, I'd like to propose the following changes.
 
   - Considerations for GDPR readiness
 
+## Proposed Changes on sidebar
+
+Mapping the existing contents to the new sidebar structure:
+
+- Overview (new sidebar item. it will point to index.md)
+- Getting started
+- Tutorials
+- Basic building block
+  - Application
+  - Server
+  - Controllers
+  - Model and Model Relations
+  - Repositories
+  - Service Proxy (no matching content??)
+  - DataSources and Connectors
+  - Observers(same as `Life cycle events and observers`) and Interceptors
+- Application life cycles
+  - Booting an Application
+- Usage scenario (better than `Developer Experience`?)
+  - Create APIs
+    - Top down vs bottom up (new page)
+    - OpenAPI (new page)
+    - Exposing GraphQL APIs
+  - Access databases (new page)
+    - Database migrations
+  - Calling other APIs
+  - Integrate with other infrastructure (new intro page)
+    - Authentication
+    - Authorization
+  - Debugging (new page)
+  - Deployment
+    - Deploying to IBM Cloud
+    - Deploying to Kubernetes on IBM Cloud
+    - Deploying with pm2 and nginx
+- Behind the scene
+  - Context
+  - Binding
+  - Dependency injection
+  - Components
+- Request/Response processing flow
+
+  - Routes
+  - Sequence
+
+- Extending LoopBack
+  - Decorators
+  - Error handling
+- Examples
+- CLI References
+- API docs
+- For LoopBack 3.x users
+  - Differences between v3 and v4
+  - Migration guide
+- Best Practices
+- References
+
+Question: I have trouble mapping the following contents. Please help:
+
+- Serving static files ??
+- Self-hosted REST API Explorer -> Under "Extending LoopBack"?- Boot and Mount a
+  LoopBack 3 Application -> Under "For LoopBack 3.x users"?
+- Remove "Crafting LoopBack 4"??
+
 ## Proposed Changes on Individual Section
 
 ### Tutorials
