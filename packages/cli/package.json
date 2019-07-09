@@ -49,7 +49,7 @@
     "fs-extra": "^8.1.0",
     "inquirer": "~6.4.1",
     "json5": "^2.1.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "minimist": "^1.2.0",
     "pacote": "^9.5.1",
     "pluralize": "^8.0.0",
