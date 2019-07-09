@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, config, inject} from '@loopback/context';
+import {config, inject} from '@loopback/context';
 import {CoreBindings} from '@loopback/core';
 import {ApplicationWithRepositories} from '@loopback/repository';
-import {ArtifactOptions} from '../interfaces';
 import {BootBindings} from '../keys';
+import {ArtifactOptions, booter} from '../types';
 import {BaseArtifactBooter} from './base-artifact.booter';
 
 /**
@@ -21,7 +21,7 @@ import {BaseArtifactBooter} from './base-artifact.booter';
  * @param projectRoot - Root of User Project relative to which all paths are resolved
  * @param bootConfig - Repository Artifact Options Object
  */
-@bind({tags: {configPath: 'repositories'}})
+@booter('repositories')
 export class RepositoryBooter extends BaseArtifactBooter {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)

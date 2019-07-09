@@ -8,4 +8,4 @@ export * from './bootstrapper';
 export * from './boot.component';
 export * from './keys';
 export * from './mixins';
-export * from './interfaces';
+export * from './types';
