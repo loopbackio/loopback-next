@@ -56,7 +56,7 @@ describe('Context binding configuration', () => {
       expect(await ctx.getConfig('foo')).to.eql({x: 1});
     });
 
-    it('gets config for a binding with configPath', async () => {
+    it('gets config for a binding with propertyPath', async () => {
       ctx
         .configure('foo')
         .toDynamicValue(() => Promise.resolve({a: {x: 0, y: 0}}));
@@ -91,7 +91,7 @@ describe('Context binding configuration', () => {
       expect(ctx.getConfigSync('foo')).to.eql({x: 1});
     });
 
-    it('gets config for a binding with configPath', () => {
+    it('gets config for a binding with propertyPath', () => {
       ctx.configure('foo').to({x: 1});
       expect(ctx.getConfigSync('foo', 'x')).to.eql(1);
       expect(ctx.getConfigSync('foo', 'y')).to.be.undefined();
@@ -109,7 +109,7 @@ describe('Context binding configuration', () => {
     class MyConfigResolver implements ConfigurationResolver {
       getConfigAsValueOrPromise<ConfigValueType>(
         key: BindingAddress<unknown>,
-        configPath?: string,
+        propertyPath?: string,
         resolutionOptions?: ResolutionOptions,
       ): ValueOrPromise<ConfigValueType | undefined> {
         return (`Dummy config for ${key}` as unknown) as ConfigValueType;

@@ -767,7 +767,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     expect(store.optionXY).to.eql('y');
   });
 
-  it('injects config if the configPath is not present', () => {
+  it('injects config if the propertyPath is not present', () => {
     class Store {
       constructor(@config() public configObj: object) {}
     }
@@ -778,7 +778,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     expect(store.configObj).to.eql({x: 1, y: 'a'});
   });
 
-  it("injects config if the configPath is ''", () => {
+  it("injects config if the propertyPath is ''", () => {
     class Store {
       constructor(@config('') public configObj: object) {}
     }
@@ -789,7 +789,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     expect(store.configObj).to.eql({x: 1, y: 'a'});
   });
 
-  it('injects config with configPath', () => {
+  it('injects config with propertyPath', () => {
     class Store {
       constructor(@config('x') public optionX: number) {}
     }
@@ -800,7 +800,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     expect(store.optionX).to.eql(1);
   });
 
-  it('injects undefined option if configPath not found', () => {
+  it('injects undefined option if propertyPath not found', () => {
     class Store {
       constructor(@config('not-exist') public option: string | undefined) {}
     }

@@ -384,7 +384,7 @@ export class Context extends EventEmitter {
    * Get the value or promise of configuration for a given binding by key
    *
    * @param key - Binding key
-   * @param configPath - Property path for the option. For example, `x.y`
+   * @param propertyPath - Property path for the option. For example, `x.y`
    * requests for `<config>.x.y`. If not set, the `<config>` object will be
    * returned.
    * @param resolutionOptions - Options for the resolution.
@@ -393,13 +393,13 @@ export class Context extends EventEmitter {
    */
   getConfigAsValueOrPromise<ConfigValueType>(
     key: BindingAddress,
-    configPath?: string,
+    propertyPath?: string,
     resolutionOptions?: ResolutionOptions,
   ): ValueOrPromise<ConfigValueType | undefined> {
     this.setupConfigurationResolverIfNeeded();
     return this.configResolver.getConfigAsValueOrPromise(
       key,
-      configPath,
+      propertyPath,
       resolutionOptions,
     );
   }
@@ -435,19 +435,19 @@ export class Context extends EventEmitter {
    * Resolve configuration for the binding by key
    *
    * @param key - Binding key
-   * @param configPath - Property path for the option. For example, `x.y`
+   * @param propertyPath - Property path for the option. For example, `x.y`
    * requests for `<config>.x.y`. If not set, the `<config>` object will be
    * returned.
    * @param resolutionOptions - Options for the resolution.
    */
   async getConfig<ConfigValueType>(
     key: BindingAddress,
-    configPath?: string,
+    propertyPath?: string,
     resolutionOptions?: ResolutionOptions,
   ): Promise<ConfigValueType | undefined> {
     return await this.getConfigAsValueOrPromise<ConfigValueType>(
       key,
-      configPath,
+      propertyPath,
       resolutionOptions,
     );
   }
@@ -456,23 +456,23 @@ export class Context extends EventEmitter {
    * Resolve configuration synchronously for the binding by key
    *
    * @param key - Binding key
-   * @param configPath - Property path for the option. For example, `x.y`
+   * @param propertyPath - Property path for the option. For example, `x.y`
    * requests for `config.x.y`. If not set, the `config` object will be
    * returned.
    * @param resolutionOptions - Options for the resolution.
    */
   getConfigSync<ConfigValueType>(
     key: BindingAddress,
-    configPath?: string,
+    propertyPath?: string,
     resolutionOptions?: ResolutionOptions,
   ): ConfigValueType | undefined {
     const valueOrPromise = this.getConfigAsValueOrPromise<ConfigValueType>(
       key,
-      configPath,
+      propertyPath,
       resolutionOptions,
     );
     if (isPromiseLike(valueOrPromise)) {
-      const prop = configPath ? ` property ${configPath}` : '';
+      const prop = propertyPath ? ` property ${propertyPath}` : '';
       throw new Error(
         `Cannot get config${prop} for ${key} synchronously: the value is a promise`,
       );
