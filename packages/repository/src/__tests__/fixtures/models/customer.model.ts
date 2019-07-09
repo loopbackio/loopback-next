@@ -5,7 +5,7 @@
 
 import {belongsTo, Entity, hasMany, hasOne, model, property} from '../../..';
 import {Address, AddressWithRelations} from './address.model';
-import {Order} from './order.model';
+import {Order, OrderWithRelations} from './order.model';
 
 @model()
 export class Customer extends Entity {
@@ -35,6 +35,7 @@ export class Customer extends Entity {
 
 export interface CustomerRelations {
   address?: AddressWithRelations;
+  orders?: OrderWithRelations[];
   customers?: CustomerWithRelations[];
   parentCustomer?: CustomerWithRelations;
 }

@@ -10,8 +10,8 @@ import {
   juggler,
   repository,
 } from '../../..';
-import {Customer, Order, OrderRelations} from '../models';
-import {CustomerRepository} from '../repositories';
+import {Customer, Order, OrderRelations, Shipment} from '../models';
+import {CustomerRepository, ShipmentRepository} from '../repositories';
 
 export class OrderRepository extends DefaultCrudRepository<
   Order,
@@ -22,16 +22,26 @@ export class OrderRepository extends DefaultCrudRepository<
     Customer,
     typeof Order.prototype.id
   >;
+  public readonly shipment: BelongsToAccessor<
+    Shipment,
+    typeof Order.prototype.id
+  >;
 
   constructor(
     @inject('datasources.db') protected db: juggler.DataSource,
     @repository.getter('CustomerRepository')
     customerRepositoryGetter: Getter<CustomerRepository>,
+    @repository.getter('ShipmentRepository')
+    shipmentRepositoryGetter: Getter<ShipmentRepository>,
   ) {
     super(Order, db);
     this.customer = this.createBelongsToAccessorFor(
       'customer',
       customerRepositoryGetter,
+    );
+    this.shipment = this.createBelongsToAccessorFor(
+      'shipment_id',
+      shipmentRepositoryGetter,
     );
   }
 }
