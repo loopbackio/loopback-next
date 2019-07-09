@@ -29,7 +29,7 @@
     "@loopback/core": "^1.8.5",
     "@types/debug": "^4.1.4",
     "debug": "^4.1.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "loopback-datasource-juggler": "^4.8.2"
   },
   "files": [
