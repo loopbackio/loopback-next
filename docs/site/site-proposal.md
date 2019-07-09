@@ -187,22 +187,25 @@ Mapping the existing contents to the new sidebar structure:
     - Top down vs bottom up (new page)
     - OpenAPI (new page)
     - Exposing GraphQL APIs
+    - Self-hosted REST API Explorer
   - Access databases (new page)
     - Database migrations
   - Calling other APIs
   - Integrate with other infrastructure (new intro page)
     - Authentication
     - Authorization
+  - Serving static files
   - Debugging (new page)
   - Deployment
     - Deploying to IBM Cloud
     - Deploying to Kubernetes on IBM Cloud
     - Deploying with pm2 and nginx
-- Behind the scene
+- Architecture
   - Context
   - Binding
   - Dependency injection
   - Components
+  - Crafting LoopBack 4
 - Request/Response processing flow
 
   - Routes
@@ -216,16 +219,10 @@ Mapping the existing contents to the new sidebar structure:
 - API docs
 - For LoopBack 3.x users
   - Differences between v3 and v4
+  - Boot and Mount a LoopBack 3 Application
   - Migration guide
 - Best Practices
 - References
-
-Question: I have trouble mapping the following contents. Please help:
-
-- Serving static files ??
-- Self-hosted REST API Explorer -> Under "Extending LoopBack"?- Boot and Mount a
-  LoopBack 3 Application -> Under "For LoopBack 3.x users"?
-- Remove "Crafting LoopBack 4"??
 
 ## Proposed Changes on Individual Section
 
