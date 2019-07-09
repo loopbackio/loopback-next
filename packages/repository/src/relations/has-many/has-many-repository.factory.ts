@@ -72,7 +72,13 @@ function resolveHasManyMetadata(
     throw new InvalidRelationError(reason, relationMeta);
   }
 
-  if (relationMeta.keyTo) {
+  const targetModel = relationMeta.target();
+  const targetModelProperties =
+    targetModel.definition && targetModel.definition.properties;
+
+  // Make sure that if it already keys to the foreign key property,
+  // the key exists in the target model
+  if (relationMeta.keyTo && targetModelProperties[relationMeta.keyTo]) {
     // The explict cast is needed because of a limitation of type inference
     return relationMeta as HasManyResolvedDefinition;
   }
@@ -83,17 +89,13 @@ function resolveHasManyMetadata(
     throw new InvalidRelationError(reason, relationMeta);
   }
 
-  const targetModel = relationMeta.target();
   debug(
     'Resolved model %s from given metadata: %o',
     targetModel.modelName,
     targetModel,
   );
   const defaultFkName = camelCase(sourceModel.modelName + '_id');
-  const hasDefaultFkProperty =
-    targetModel.definition &&
-    targetModel.definition.properties &&
-    targetModel.definition.properties[defaultFkName];
+  const hasDefaultFkProperty = targetModelProperties[defaultFkName];
 
   if (!hasDefaultFkProperty) {
     const reason = `target model ${targetModel.name} is missing definition of foreign key ${defaultFkName}`;
