@@ -43,7 +43,7 @@
     "@loopback/rest": "^1.16.3",
     "@loopback/rest-explorer": "^1.2.5",
     "@loopback/service-proxy": "^1.2.5",
-    "loopback-connector-rest": "^3.4.1"
+    "loopback-connector-rest": "^3.4.2"
   },
   "devDependencies": {
     "@loopback/build": "^2.0.3",
