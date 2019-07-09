@@ -6,7 +6,7 @@
 import {Constructor} from '@loopback/context';
 import * as debugFactory from 'debug';
 import * as path from 'path';
-import {ArtifactOptions, Booter} from '../interfaces';
+import {ArtifactOptions, Booter} from '../types';
 import {discoverFiles, loadClassesFromFiles} from './booter-utils';
 
 const debug = debugFactory('loopback:boot:base-artifact-booter');

@@ -6,7 +6,7 @@
 import {CoreBindings, Application} from '@loopback/core';
 import {inject} from '@loopback/context';
 import {BootBindings} from '../keys';
-import {Booter} from '../interfaces';
+import {Booter} from '../types';
 import path = require('path');
 
 import * as debugModule from 'debug';

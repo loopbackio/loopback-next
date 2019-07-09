@@ -12,8 +12,8 @@ import {
 } from '@loopback/context';
 import {BootComponent} from '../boot.component';
 import {Bootstrapper} from '../bootstrapper';
-import {Bootable, Booter, BootOptions} from '../interfaces';
-import {BootBindings} from '../keys';
+import {BootBindings, BootTags} from '../keys';
+import {Bootable, Booter, BootOptions} from '../types';
 
 // Binding is re-exported as Binding / Booter types are needed when consuming
 // BootMixin and this allows a user to import them from the same package (UX!)
@@ -146,16 +146,18 @@ export function _bindBooter(
   const binding = createBindingFromClass(booterCls, {
     namespace: BootBindings.BOOTER_PREFIX,
     defaultScope: BindingScope.SINGLETON,
-  }).tag(BootBindings.BOOTER_TAG);
+  }).tag(BootTags.BOOTER);
   ctx.add(binding);
   /**
    * Set up configuration binding as alias to `BootBindings.BOOT_OPTIONS`
    * so that the booter can use `@config`.
    */
-  if (binding.tagMap.configPath) {
+  if (binding.tagMap.artifactNamespace) {
     ctx
       .configure(binding.key)
-      .toAlias(`${BootBindings.BOOT_OPTIONS.key}#${binding.tagMap.configPath}`);
+      .toAlias(
+        `${BootBindings.BOOT_OPTIONS.key}#${binding.tagMap.artifactNamespace}`,
+      );
   }
   return binding;
 }

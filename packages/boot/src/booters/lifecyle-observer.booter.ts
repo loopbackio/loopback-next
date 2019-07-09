@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {bind, config, Constructor, inject} from '@loopback/context';
+import {config, Constructor, inject} from '@loopback/context';
 import {
   Application,
   CoreBindings,
@@ -11,8 +11,8 @@ import {
   LifeCycleObserver,
 } from '@loopback/core';
 import * as debugFactory from 'debug';
-import {ArtifactOptions} from '../interfaces';
 import {BootBindings} from '../keys';
+import {ArtifactOptions, booter} from '../types';
 import {BaseArtifactBooter} from './base-artifact.booter';
 
 const debug = debugFactory('loopback:boot:lifecycle-observer-booter');
@@ -28,7 +28,7 @@ type LifeCycleObserverClass = Constructor<LifeCycleObserver>;
  * @param projectRoot - Root of User Project relative to which all paths are resolved
  * @param bootConfig - LifeCycleObserver Artifact Options Object
  */
-@bind({tags: {configPath: 'observers'}})
+@booter('observers')
 export class LifeCycleObserverBooter extends BaseArtifactBooter {
   observers: LifeCycleObserverClass[];
 

@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   BINDING_METADATA_KEY,
   config,
   Constructor,
@@ -14,8 +13,8 @@ import {
 import {CoreBindings} from '@loopback/core';
 import {ApplicationWithServices} from '@loopback/service-proxy';
 import * as debugFactory from 'debug';
-import {ArtifactOptions} from '../interfaces';
 import {BootBindings} from '../keys';
+import {ArtifactOptions, booter} from '../types';
 import {BaseArtifactBooter} from './base-artifact.booter';
 
 const debug = debugFactory('loopback:boot:service-booter');
@@ -30,7 +29,7 @@ const debug = debugFactory('loopback:boot:service-booter');
  * @param projectRoot - Root of User Project relative to which all paths are resolved
  * @param bootConfig - Service Artifact Options Object
  */
-@bind({tags: {configPath: 'services'}})
+@booter('services')
 export class ServiceBooter extends BaseArtifactBooter {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)

@@ -4,7 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
-  bind,
   BindingScope,
   config,
   Constructor,
@@ -15,8 +14,8 @@ import {
 } from '@loopback/context';
 import {Application, CoreBindings} from '@loopback/core';
 import * as debugFactory from 'debug';
-import {ArtifactOptions} from '../interfaces';
 import {BootBindings} from '../keys';
+import {ArtifactOptions, booter} from '../types';
 import {BaseArtifactBooter} from './base-artifact.booter';
 
 const debug = debugFactory('loopback:boot:interceptor-booter');
@@ -32,7 +31,7 @@ type InterceptorProviderClass = Constructor<Provider<Interceptor>>;
  * @param projectRoot - Root of User Project relative to which all paths are resolved
  * @param bootConfig - InterceptorProvider Artifact Options Object
  */
-@bind({tags: {configPath: 'interceptors'}})
+@booter('interceptors')
 export class InterceptorProviderBooter extends BaseArtifactBooter {
   interceptors: InterceptorProviderClass[];
 

@@ -3,19 +3,19 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {resolve} from 'path';
 import {Context, inject, resolveList} from '@loopback/context';
-import {CoreBindings, Application} from '@loopback/core';
-import {
-  BootOptions,
-  BootExecutionOptions,
-  BOOTER_PHASES,
-  Bootable,
-} from './interfaces';
-import {BootBindings} from './keys';
-import {_bindBooter} from './mixins';
-
+import {Application, CoreBindings} from '@loopback/core';
 import * as debugModule from 'debug';
+import {resolve} from 'path';
+import {BootBindings, BootTags} from './keys';
+import {_bindBooter} from './mixins';
+import {
+  Bootable,
+  BOOTER_PHASES,
+  BootExecutionOptions,
+  BootOptions,
+} from './types';
+
 const debug = debugModule('loopback:boot:bootstrapper');
 
 /**
@@ -81,7 +81,7 @@ export class Bootstrapper {
       : BOOTER_PHASES;
 
     // Find booters registered to the BOOTERS_TAG by getting the bindings
-    const bindings = bootCtx.findByTag(BootBindings.BOOTER_TAG);
+    const bindings = bootCtx.findByTag(BootTags.BOOTER);
 
     // Prefix length. +1 because of `.` => 'booters.'
     const prefixLength = BootBindings.BOOTER_PREFIX.length + 1;
