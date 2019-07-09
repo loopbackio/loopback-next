@@ -599,9 +599,9 @@ export class RestServer {
 }
 ```
 
-The `@config.*` decorators can take an optional `configPath` parameter to allow
-the configuration value to be a deep property of the bound value. For example,
-`@config('port')` injects `RestServerConfig.port` to the target.
+The `@config.*` decorators can take an optional `propertyPath` parameter to
+allow the configuration value to be a deep property of the bound value. For
+example, `@config('port')` injects `RestServerConfig.port` to the target.
 
 ```ts
 export class MyRestServer {
@@ -609,6 +609,25 @@ export class MyRestServer {
     @config('host')
     host: string,
     @config('port')
+    port: number,
+  ) {
+    // ...
+  }
+  // ...
+}
+```
+
+We also allow `@config.*` to be resolved from another binding than the current
+one:
+
+```ts
+export class MyRestServer {
+  constructor(
+    // Inject the `rest.host` from the application config
+    @config({fromBinding: 'application', propertyPath: 'rest.host'})
+    host: string,
+    // Inject the `rest.port` from the application config
+    @config({fromBinding: 'application', propertyPath: 'rest.port'})
     port: number,
   ) {
     // ...

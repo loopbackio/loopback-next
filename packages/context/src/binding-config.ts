@@ -21,7 +21,7 @@ export interface ConfigurationResolver {
    * Resolve config for the binding key
    *
    * @param key - Binding key
-   * @param configPath - Property path for the option. For example, `x.y`
+   * @param propertyPath - Property path for the option. For example, `x.y`
    * requests for `<config>.x.y`. If not set, the `config` object will be
    * returned.
    * @param resolutionOptions - Options for the resolution.
@@ -30,7 +30,7 @@ export interface ConfigurationResolver {
    */
   getConfigAsValueOrPromise<ConfigValueType>(
     key: BindingAddress<unknown>,
-    configPath?: string,
+    propertyPath?: string,
     resolutionOptions?: ResolutionOptions,
   ): ValueOrPromise<ConfigValueType | undefined>;
 }
@@ -43,11 +43,11 @@ export class DefaultConfigurationResolver implements ConfigurationResolver {
 
   getConfigAsValueOrPromise<ConfigValueType>(
     key: BindingAddress<unknown>,
-    configPath?: string,
+    propertyPath?: string,
     resolutionOptions?: ResolutionOptions,
   ): ValueOrPromise<ConfigValueType | undefined> {
-    configPath = configPath || '';
-    const configKey = configBindingKeyFor(key, configPath);
+    propertyPath = propertyPath || '';
+    const configKey = configBindingKeyFor(key, propertyPath);
 
     const options: ResolutionOptions = Object.assign(
       {optional: true},
@@ -60,14 +60,14 @@ export class DefaultConfigurationResolver implements ConfigurationResolver {
 /**
  * Create binding key for configuration of the binding
  * @param key - Binding key for the target binding
- * @param configPath - Property path for the configuration
+ * @param propertyPath - Property path for the configuration
  */
 export function configBindingKeyFor<ConfigValueType = unknown>(
   key: BindingAddress,
-  configPath?: string,
+  propertyPath?: string,
 ) {
   return BindingKey.create<ConfigValueType>(
     BindingKey.buildKeyForConfig<ConfigValueType>(key).toString(),
-    configPath,
+    propertyPath,
   );
 }

@@ -4,12 +4,29 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {BindingFilter} from './binding-filter';
-import {BindingKey} from './binding-key';
+import {BindingAddress, BindingKey} from './binding-key';
 import {Context} from './context';
 import {ContextView} from './context-view';
 import {assertTargetType, inject, Injection, InjectionMetadata} from './inject';
 import {ResolutionSession} from './resolution-session';
 import {getDeepProperty, ValueOrPromise} from './value-promise';
+
+/**
+ * Injection metadata for `@config.*`
+ */
+export interface ConfigInjectionMetadata extends InjectionMetadata {
+  /**
+   * Property path to retrieve the configuration of the target binding, for
+   * example, `rest.host`.
+   */
+  propertyPath?: string;
+  /**
+   * Customize the target binding key from which the configuration is fetched.
+   * If not specified, the configuration of the current binding that contains
+   * the injection is used.
+   */
+  fromBinding?: BindingAddress;
+}
 
 /**
  * Inject a property from `config` of the current binding. If no corresponding
@@ -40,14 +57,21 @@ import {getDeepProperty, ValueOrPromise} from './value-promise';
  * expect(store2.optionY).to.eql('b');
  * ```
  *
- * @param configPath - Optional property path of the config. If is `''` or not
+ * @param propertyPath - Optional property path of the config. If is `''` or not
  * present, the `config` object will be returned.
  * @param metadata - Optional metadata to help the injection
  */
-export function config(configPath?: string, metadata?: InjectionMetadata) {
-  configPath = configPath || '';
+export function config(
+  propertyPath?: string | ConfigInjectionMetadata,
+  metadata?: ConfigInjectionMetadata,
+) {
+  propertyPath = propertyPath || '';
+  if (typeof propertyPath === 'object') {
+    metadata = propertyPath;
+    propertyPath = '';
+  }
   metadata = Object.assign(
-    {configPath, decorator: '@config', optional: true},
+    {propertyPath, decorator: '@config', optional: true},
     metadata,
   );
   return inject('', metadata, resolveFromConfig);
@@ -56,16 +80,20 @@ export function config(configPath?: string, metadata?: InjectionMetadata) {
 export namespace config {
   /**
    * `@inject.getter` decorator to inject a config getter function
-   * @param configPath - Optional property path of the config object
+   * @param propertyPath - Optional property path of the config object
    * @param metadata - Injection metadata
    */
   export const getter = function injectConfigGetter(
-    configPath?: string,
-    metadata?: InjectionMetadata,
+    propertyPath?: string | ConfigInjectionMetadata,
+    metadata?: ConfigInjectionMetadata,
   ) {
-    configPath = configPath || '';
+    propertyPath = propertyPath || '';
+    if (typeof propertyPath === 'object') {
+      metadata = propertyPath;
+      propertyPath = '';
+    }
     metadata = Object.assign(
-      {configPath, decorator: '@config.getter', optional: true},
+      {propertyPath, decorator: '@config.getter', optional: true},
       metadata,
     );
     return inject('', metadata, resolveAsGetterFromConfig);
@@ -74,16 +102,20 @@ export namespace config {
   /**
    * `@inject.view` decorator to inject a config context view to allow dynamic
    * changes in configuration
-   * @param configPath - Optional property path of the config object
+   * @param propertyPath - Optional property path of the config object
    * @param metadata - Injection metadata
    */
   export const view = function injectConfigView(
-    configPath?: string,
-    metadata?: InjectionMetadata,
+    propertyPath?: string | ConfigInjectionMetadata,
+    metadata?: ConfigInjectionMetadata,
   ) {
-    configPath = configPath || '';
+    propertyPath = propertyPath || '';
+    if (typeof propertyPath === 'object') {
+      metadata = propertyPath;
+      propertyPath = '';
+    }
     metadata = Object.assign(
-      {configPath, decorator: '@config.view', optional: true},
+      {propertyPath, decorator: '@config.view', optional: true},
       metadata,
     );
     return inject('', metadata, resolveAsViewFromConfig);
@@ -101,6 +133,15 @@ function getCurrentBindingKey(session: ResolutionSession) {
 }
 
 /**
+ * Get the target binding key from which the configuration should be resolved
+ * @param injection - Injection
+ * @param session - Resolution session
+ */
+function getTargetBindingKey(injection: Injection, session: ResolutionSession) {
+  return injection.metadata.fromBinding || getCurrentBindingKey(session);
+}
+
+/**
  * Resolver for `@config`
  * @param ctx - Context object
  * @param injection - Injection metadata
@@ -111,11 +152,11 @@ function resolveFromConfig(
   injection: Injection,
   session: ResolutionSession,
 ): ValueOrPromise<unknown> {
-  const bindingKey = getCurrentBindingKey(session);
+  const bindingKey = getTargetBindingKey(injection, session);
   // Return `undefined` if no current binding is present
   if (!bindingKey) return undefined;
   const meta = injection.metadata;
-  return ctx.getConfigAsValueOrPromise(bindingKey, meta.configPath, {
+  return ctx.getConfigAsValueOrPromise(bindingKey, meta.propertyPath, {
     session,
     optional: meta.optional,
   });
@@ -133,14 +174,14 @@ function resolveAsGetterFromConfig(
   session: ResolutionSession,
 ) {
   assertTargetType(injection, Function, 'Getter function');
-  const bindingKey = getCurrentBindingKey(session);
+  const bindingKey = getTargetBindingKey(injection, session);
   // We need to clone the session for the getter as it will be resolved later
   const forkedSession = ResolutionSession.fork(session);
   const meta = injection.metadata;
   return async function getter() {
     // Return `undefined` if no current binding is present
     if (!bindingKey) return undefined;
-    return ctx.getConfigAsValueOrPromise(bindingKey, meta.configPath, {
+    return ctx.getConfigAsValueOrPromise(bindingKey, meta.propertyPath, {
       session: forkedSession,
       optional: meta.optional,
     });
@@ -159,14 +200,14 @@ function resolveAsViewFromConfig(
   session: ResolutionSession,
 ) {
   assertTargetType(injection, ContextView);
-  const bindingKey = getCurrentBindingKey(session);
+  const bindingKey = getTargetBindingKey(injection, session);
   // Return `undefined` if no current binding is present
   if (!bindingKey) return undefined;
   const view = new ConfigView(
     ctx,
     binding =>
       binding.key === BindingKey.buildKeyForConfig(bindingKey).toString(),
-    injection.metadata.configPath,
+    injection.metadata.propertyPath,
   );
   view.open();
   return view;
@@ -174,13 +215,13 @@ function resolveAsViewFromConfig(
 
 /**
  * A subclass of `ContextView` to handle dynamic configuration as its
- * `values()` honors the `configPath`.
+ * `values()` honors the `propertyPath`.
  */
 class ConfigView extends ContextView {
   constructor(
     ctx: Context,
     filter: BindingFilter,
-    private configPath?: string,
+    private propertyPath?: string,
   ) {
     super(ctx, filter);
   }
@@ -191,8 +232,8 @@ class ConfigView extends ContextView {
    */
   async values(session?: ResolutionSession) {
     const configValues = await super.values(session);
-    const configPath = this.configPath;
-    if (!configPath) return configValues;
-    return configValues.map(v => getDeepProperty(v, configPath));
+    const propertyPath = this.propertyPath;
+    if (!propertyPath) return configValues;
+    return configValues.map(v => getDeepProperty(v, propertyPath));
   }
 }
