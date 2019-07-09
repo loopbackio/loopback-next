@@ -3,15 +3,19 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {Application} from '@loopback/core';
+import {expect} from '@loopback/testlab';
 import {
+  ApplicationWithRepositories,
   juggler,
   repository,
   RepositoryMixin,
-  ApplicationWithRepositories,
 } from '../..';
-import {CustomerRepository, OrderRepository} from '../fixtures/repositories';
-import {expect} from '@loopback/testlab';
-import {Application} from '@loopback/core';
+import {
+  CustomerRepository,
+  OrderRepository,
+  ShipmentRepository,
+} from '../fixtures/repositories';
 
 describe('BelongsTo relation', () => {
   // Given a Customer and Order models - see definitions at the bottom
@@ -20,9 +24,10 @@ describe('BelongsTo relation', () => {
   let controller: OrderController;
   let customerRepo: CustomerRepository;
   let orderRepo: OrderRepository;
+  let shipmentRepo: ShipmentRepository;
 
   before(givenApplicationWithMemoryDB);
-  before(givenBoundCrudRepositoriesForCustomerAndOrder);
+  before(givenBoundCrudRepositories);
   before(givenOrderController);
 
   beforeEach(async () => {
@@ -39,6 +44,19 @@ describe('BelongsTo relation', () => {
     expect(result).to.deepEqual(customer);
   });
 
+  it('can find shipment of order with a custom foreign key name', async () => {
+    const shipment = await shipmentRepo.create({
+      name: 'Tuesday morning shipment',
+    });
+    const order = await orderRepo.create({
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      shipment_id: shipment.id,
+      description: 'Order that is shipped Tuesday morning',
+    });
+    const result = await controller.findOrderShipment(order.id);
+    expect(result).to.deepEqual(shipment);
+  });
+
   //--- HELPERS ---//
 
   class OrderController {
@@ -49,6 +67,10 @@ describe('BelongsTo relation', () => {
     async findOwnerOfOrder(orderId: string) {
       return await this.orderRepository.customer(orderId);
     }
+
+    async findOrderShipment(orderId: string) {
+      return await this.orderRepository.shipment(orderId);
+    }
   }
 
   function givenApplicationWithMemoryDB() {
@@ -57,11 +79,13 @@ describe('BelongsTo relation', () => {
     app.dataSource(new juggler.DataSource({name: 'db', connector: 'memory'}));
   }
 
-  async function givenBoundCrudRepositoriesForCustomerAndOrder() {
+  async function givenBoundCrudRepositories() {
     app.repository(CustomerRepository);
     app.repository(OrderRepository);
+    app.repository(ShipmentRepository);
     customerRepo = await app.getRepository(CustomerRepository);
     orderRepo = await app.getRepository(OrderRepository);
+    shipmentRepo = await app.getRepository(ShipmentRepository);
   }
 
   async function givenOrderController() {

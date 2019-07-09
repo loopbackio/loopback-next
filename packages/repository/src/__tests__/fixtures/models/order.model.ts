@@ -5,6 +5,7 @@
 
 import {belongsTo, Entity, model, property} from '../../..';
 import {Customer, CustomerWithRelations} from './customer.model';
+import {Shipment, ShipmentWithRelations} from './shipment.model';
 
 @model()
 export class Order extends Entity {
@@ -28,10 +29,14 @@ export class Order extends Entity {
 
   @belongsTo(() => Customer)
   customerId: number;
+
+  @belongsTo(() => Shipment)
+  shipment_id: number;
 }
 
 export interface OrderRelations {
   customer?: CustomerWithRelations;
+  shipment?: ShipmentWithRelations;
 }
 
 export type OrderWithRelations = Order & OrderRelations;
