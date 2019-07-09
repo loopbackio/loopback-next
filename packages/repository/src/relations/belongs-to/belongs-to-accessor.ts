@@ -80,7 +80,7 @@ function resolveBelongsToMetadata(relationMeta: BelongsToDefinition) {
   const targetProperties = targetModel.definition.properties;
   debug('relation metadata from %o: %o', targetName, targetProperties);
 
-  if (relationMeta.keyTo) {
+  if (relationMeta.keyTo && targetProperties[relationMeta.keyTo]) {
     // The explict cast is needed because of a limitation of type inference
     return relationMeta as BelongsToResolvedDefinition;
   }
