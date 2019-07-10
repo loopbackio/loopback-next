@@ -30,10 +30,10 @@ export class TodoList extends Entity {
   color?: string;
 
   @hasMany(() => Todo)
-  todos: Todo[];
+  todos?: Todo[];
 
   @hasOne(() => TodoListImage)
-  image: TodoListImage;
+  image?: TodoListImage;
 
   constructor(data?: Partial<TodoList>) {
     super(data);
