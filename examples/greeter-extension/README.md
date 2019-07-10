@@ -16,7 +16,7 @@ We'll use the following scenario to walk through important steps to organize the
 `greet` service that allows extensible languages - each of them being supported
 by a `Greeter` extension.
 
-![greeters](greeters.png)
+![greeters](https://raw.githubusercontent.com/strongloop/loopback-next/master/examples/greeter-extension/greeters.png)
 
 Various constructs from LoopBack 4, such as `Context`, `@inject.*`, and
 `Component` are used to build the service in an extensible fashion.

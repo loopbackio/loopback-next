@@ -4,7 +4,7 @@ A LoopBack 4 component for authentication support.
 
 ## Overview
 
-![AuthenticationComponent](./docs/imgs/authentication_overview_highlevel.png)
+![AuthenticationComponent](https://raw.githubusercontent.com/strongloop/loopback-next/master/packages/authentication/docs/imgs/authentication_overview_highlevel.png)
 
 This component contains the core logic for the authentication layer in
 LoopBack 4.
