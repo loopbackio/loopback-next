@@ -180,7 +180,7 @@ export class TodoList extends Entity {
   // other properties
 
   @hasOne(() => TodoListImage)
-  image: TodoListImage;
+  image?: TodoListImage;
 
   // etc
 }
@@ -202,7 +202,7 @@ export class TodoListImage extends Entity {
   // other properties
 
   @belongsTo(() => TodoList)
-  todoListId?: number;
+  todoListId: number;
 
   // etc
 }
@@ -232,7 +232,7 @@ export class TodoList extends Entity {
   // other properties
 
   @hasMany(() => Todo)
-  todos: Todo[];
+  todos?: Todo[];
 
   // etc
 }
@@ -248,7 +248,7 @@ export class Todo extends Entity {
   // other properties
 
   @belongsTo(() => TodoList)
-  todoListId?: number;
+  todoListId: number;
 
   // etc
 }
