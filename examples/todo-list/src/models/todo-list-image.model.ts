@@ -15,7 +15,7 @@ export class TodoListImage extends Entity {
   id: number;
 
   @belongsTo(() => TodoList)
-  todoListId?: number;
+  todoListId: number;
 
   @property({
     required: true,
