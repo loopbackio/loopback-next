@@ -7,6 +7,7 @@
 const BaseGenerator = require('./base-generator');
 const utils = require('./utils');
 const chalk = require('chalk');
+const cliVersion = require('../package.json').version;
 
 module.exports = class ProjectGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -211,6 +212,10 @@ module.exports = class ProjectGenerator extends BaseGenerator {
     if (this.shouldExit()) return false;
 
     this.destinationRoot(this.projectInfo.outdir);
+
+    // Store original cli version in .yo.rc.json
+    this.config.set('version', cliVersion);
+
     // First copy common files from ../../project/templates
     this.copyTemplatedFiles(
       this.templatePath('../../project/templates/**/*'),
