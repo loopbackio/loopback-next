@@ -4,14 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
+
 const BaseGenerator = require('./base-generator');
 const utils = require('./utils');
 const chalk = require('chalk');
-<<<<<<< HEAD
 const cliVersion = require('../package.json').version;
-=======
 const path = require('path');
->>>>>>> af20999f... fix(cli): fix app default project name. relevant test added
 
 module.exports = class ProjectGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
