@@ -11,6 +11,10 @@ title: LoopBack 4
 url: index.html
 children:
 
+- title: 'Overview'
+  url: index.html
+  output: 'web, pdf'
+
 - title: 'Getting started'
   url: Getting-started.html
   output: 'web, pdf'
@@ -110,10 +114,6 @@ children:
   - title: 'How to secure your LoopBack 4 application with JWT authentication'
     url: Authentication-Tutorial.html
     output: 'web, pdf'
-
-- title: 'Examples'
-  url: Examples.html
-  output: 'web, pdf'
 
 - title: 'Key concepts'
   url: Concepts.html
@@ -290,20 +290,51 @@ children:
   url: Calling-other-APIs-and-web-services.html
   output: 'web, pdf'
 
-- title: 'For LoopBack 3.x users'
-  url: LoopBack-3.x.html
+
+
+
+- title: 'Extending LoopBack 4'
+  url: Extending-LoopBack-4.html
   output: 'web, pdf'
   children:
 
-  - title: 'Understanding the differences between LoopBack 3 and LoopBack 4'
-    url: Understanding-the-differences.html
+  - title: 'Creating components'
+    url: Creating-components.html
     output: 'web, pdf'
 
-  - title: 'Migrating from LoopBack 3'
-    url: Migrating-from-LoopBack-3.html
+  - title: 'Creating decorators'
+    url: Creating-decorators.html
     output: 'web, pdf'
 
-- title: 'Command-line interface'
+  - title: 'Creating servers'
+    url: Creating-servers.html
+    output: 'web, pdf'
+
+  - title: 'Extension point and extensions'
+    url: Extension-point-and-extensions.html
+    output: 'web, pdf'
+
+  - title: 'Extending request body parsing'
+    url: Extending-request-body-parsing.html
+    output: 'web, pdf'
+
+  - title: 'Extension life cycle'
+    url: Extension-life-cycle.html
+    output: 'web, pdf'
+
+  - title: 'Testing your extension'
+    url: Testing-your-extension.html
+    output: 'web, pdf'
+
+- title: 'Crafting LoopBack 4'
+  url: Crafting-LoopBack-4.html
+  output: 'web, pdf'
+
+- title: 'Examples'
+  url: Examples.html
+  output: 'web, pdf'
+
+- title: 'CLI References'
   url: Command-line-interface.html
   output: 'web, pdf'
   children:
@@ -356,6 +387,23 @@ children:
     url: Download-examples.html
     output: 'web, pdf'
 
+- title: 'API docs'
+  url: apidocs.index.html
+  output: 'web, pdf'
+
+- title: 'For LoopBack 3.x users'
+  url: LoopBack-3.x.html
+  output: 'web, pdf'
+  children:
+
+  - title: 'Understanding the differences between LoopBack 3 and LoopBack 4'
+    url: Understanding-the-differences.html
+    output: 'web, pdf'
+
+  - title: 'Migrating from LoopBack 3'
+    url: Migrating-from-LoopBack-3.html
+    output: 'web, pdf'
+
 - title: 'Best practices'
   url: Best-practices.html
   output: 'web, pdf'
@@ -373,59 +421,10 @@ children:
     url: Testing-your-application.html
     output: 'web, pdf'
 
-- title: 'Extending LoopBack 4'
-  url: Extending-LoopBack-4.html
-  output: 'web, pdf'
-  children:
-
-  - title: 'Creating components'
-    url: Creating-components.html
-    output: 'web, pdf'
-
-  - title: 'Creating decorators'
-    url: Creating-decorators.html
-    output: 'web, pdf'
-
-  - title: 'Creating servers'
-    url: Creating-servers.html
-    output: 'web, pdf'
-
-  - title: 'Extension point and extensions'
-    url: Extension-point-and-extensions.html
-    output: 'web, pdf'
-
-  - title: 'Extending request body parsing'
-    url: Extending-request-body-parsing.html
-    output: 'web, pdf'
-
-  - title: 'Extension life cycle'
-    url: Extension-life-cycle.html
-    output: 'web, pdf'
-
-  - title: 'Testing your extension'
-    url: Testing-your-extension.html
-    output: 'web, pdf'
-
-- title: 'Crafting LoopBack 4'
-  url: Crafting-LoopBack-4.html
-  output: 'web, pdf'
-
-- title: 'FAQ'
-  url: FAQ.html
-  output: 'web, pdf'
-
-- title: 'API docs'
-  url: apidocs.index.html
-  output: 'web, pdf'
-
 - title: 'Reference'
   url: Reference.html
   output: 'web, pdf'
   children:
-
-  - title: 'Glossary'
-    url: Glossary.html
-    output: 'web, pdf'
 
   - title: 'Considerations for GDPR readiness'
     url: Deploy-for-GDPR-readiness.html
