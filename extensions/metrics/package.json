@@ -1,0 +1,56 @@
+{
+  "name": "@loopback/extension-metrics",
+  "version": "0.0.1",
+  "description": "LoopBack Metrics for Prometheus",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-extension-metrics*.tgz dist tsconfig.build.tsbuildinfo package",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-extension-metrics*.tgz && tree package && npm run clean"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/context": "^1.23.3",
+    "@loopback/core": "^1.10.5",
+    "@loopback/rest": "^1.21.0",
+    "prom-client": "^11.5.3"
+  },
+  "devDependencies": {
+    "@loopback/build": "^2.0.14",
+    "@loopback/eslint-config": "^4.1.2",
+    "@loopback/testlab": "^1.9.2",
+    "@types/express": "^4.17.1",
+    "@types/node": "^10.14.18",
+    "express": "^4.17.1",
+    "p-event": "^4.1.0"
+  },
+  "keywords": [
+    "LoopBack",
+    "Cloud Native",
+    "Prometheus",
+    "Metrics"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__",
+    "templates"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "extensions/metrics"
+  }
+}
