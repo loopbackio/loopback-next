@@ -41,7 +41,10 @@ export class TodoListTodoController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Todo, {exclude: ['id']}),
+          schema: getModelSchemaRef(Todo, {
+            exclude: ['id'],
+            optional: ['todoListId'],
+          }),
         },
       },
     })
