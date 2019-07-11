@@ -13,11 +13,8 @@ const tildify = require('tildify');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 const generator = path.join(__dirname, '../../../generators/app');
-<<<<<<< HEAD
 const cliVersion = require('../../../package.json').version;
-=======
 const build = require('@loopback/build');
->>>>>>> af20999f... fix(cli): fix app default project name. relevant test added
 const props = {
   name: 'my-app',
   description: 'My app for LoopBack 4',
@@ -223,6 +220,7 @@ describe('app-generator with default values', () => {
   const defaultValProjPath = path.join(rootDir, 'sandbox/default-value-app');
   const sandbox = path.join(rootDir, 'sandbox');
   const pathToDefValApp = path.join(defaultValProjPath, 'default-value-app');
+  const cwd = process.cwd();
   const defaultValProps = {
     name: '',
     description: 'An app to test out default values',
@@ -249,5 +247,55 @@ describe('app-generator with default values', () => {
   after(() => {
     process.chdir(sandbox);
     build.clean(['node', 'run-clean', defaultValProjPath]);
+    process.chdir(cwd);
+  });
+});
+
+/** For testing the support of tilde path as the input of project path.
+ * Use differnt paths to test out the support of `~` when the test runs outside of home dir.
+ */
+describe('app-generator with tilde project path', () => {
+  const rootDir = path.join(__dirname, '../../../..');
+  // tildify the path:
+  let sandbox = path.join(rootDir, 'sandbox/tilde-path-app');
+  let pathWithTilde = tildify(sandbox);
+  const cwd = process.cwd();
+
+  // If the test runs outside $home directory
+  if (process.env.CI && !process.env.DEBUG && tildify(sandbox) === sandbox) {
+    sandbox = path.join(os.homedir(), '.lb4sandbox/tilde-path-app');
+    pathWithTilde = '~/.lb4sandbox/tilde-path-app';
+  }
+  const tildePathProps = {
+    name: 'tildified-path',
+    description: 'An app to test out tilde project path',
+    outdir: pathWithTilde,
+  };
+
+  before(async function() {
+    // Increase the timeout to accommodate slow CI build machines
+    // eslint-disable-next-line no-invalid-this
+    this.timeout(30 * 1000);
+    // check it with full path. tilde-path-app should not exist at this point
+    assert.equal(fs.existsSync(sandbox), false);
+    await helpers
+      .run(generator)
+      .inDir(sandbox)
+      // Mark it private to prevent accidental npm publication
+      .withOptions({private: true})
+      .withPrompts(tildePathProps);
+  });
+  it('scaffold a new application for tilde-path-app', async () => {
+    // tilde-path-app should be created at this point
+    assert.equal(fs.existsSync(sandbox), true);
+  });
+  after(function() {
+    // Increase the timeout to accommodate slow CI build machines
+    // eslint-disable-next-line no-invalid-this
+    this.timeout(30 * 1000);
+
+    process.chdir(sandbox);
+    build.clean(['node', 'run-clean', sandbox]);
+    process.chdir(cwd);
   });
 });
