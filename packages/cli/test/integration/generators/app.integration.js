@@ -11,6 +11,7 @@ const path = require('path');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 const generator = path.join(__dirname, '../../../generators/app');
+const cliVersion = require('../../../package.json').version;
 const props = {
   name: 'my-app',
   description: 'My app for LoopBack 4',
@@ -88,6 +89,11 @@ describe('app-generator specific files', () => {
       'src/__tests__/acceptance/test-helper.ts',
       '+process.env.PORT',
     );
+    assert.jsonFileContent('.yo-rc.json', {
+      '@loopback/cli': {
+        version: cliVersion,
+      },
+    });
   });
 
   it('generates database migration script', () => {
