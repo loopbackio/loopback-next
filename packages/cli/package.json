@@ -51,7 +51,7 @@
     "json5": "^2.1.0",
     "lodash": "^4.17.14",
     "minimist": "^1.2.0",
-    "pacote": "^9.5.1",
+    "pacote": "^9.5.2",
     "pluralize": "^8.0.0",
     "regenerate": "^1.4.0",
     "semver": "^6.2.0",
