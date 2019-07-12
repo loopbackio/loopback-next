@@ -167,6 +167,13 @@ module.exports = class ControllerGenerator extends ArtifactGenerator {
         validate: utils.validateClassName,
       },
       {
+        type: 'input',
+        name: 'id',
+        message: 'What is the name of ID property?',
+        when: this.artifactInfo.id === undefined,
+        default: 'id',
+      },
+      {
         type: 'list',
         name: 'idType',
         message: 'What is the type of your ID?',

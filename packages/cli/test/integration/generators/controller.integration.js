@@ -29,7 +29,8 @@ const basicCLIInput = {
 const restCLIInput = {
   name: 'productReview',
   controllerType: ControllerGenerator.REST,
-  id: 'number',
+  id: 'productId',
+  idType: 'number',
 };
 
 // Expected File Name
@@ -248,7 +249,7 @@ function checkRestCrudContents() {
     /'200': {/,
     /description: 'ProductReview model instance'/,
     /content: {'application\/json': {schema: {'x-ts-type': ProductReview}}},\s{1,}},\s{1,}},\s{1,}}\)/,
-    /async create\(\s+\@requestBody\({\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(ProductReview, {exclude: \['id'\]}\),\s+},\s+},\s+}\)\s+productReview: Omit<ProductReview, 'id'>,\s+\)/,
+    /async create\(\s+\@requestBody\({\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(ProductReview, {exclude: \['productId'\]}\),\s+},\s+},\s+}\)\s+productReview: Omit<ProductReview, 'productId'>,\s+\)/,
   ];
   postCreateRegEx.forEach(regex => {
     assert.fileContent(expectedFile, regex);

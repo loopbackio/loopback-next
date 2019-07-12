@@ -269,6 +269,12 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
       return;
     }
 
+    this.artifactInfo.targetModelPrimaryKey = await relationUtils.getModelPrimaryKeyProperty(
+      this.fs,
+      this.artifactInfo.modelDir,
+      this.artifactInfo.destinationModel,
+    );
+
     if (this.artifactInfo.sourceModelPrimaryKey == null) {
       return this.exit(
         new Error(ERROR_SOURCE_MODEL_PRIMARY_KEY_DOES_NOT_EXIST),

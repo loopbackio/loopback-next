@@ -58,10 +58,10 @@ export class <%= controllerClassName %> {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(<%= targetModelClassName %>, {exclude: ['id']}),
+          schema: getModelSchemaRef(<%= targetModelClassName %>, {exclude: ['<%= targetModelPrimaryKey %>']}),
         },
       },
-    }) <%= targetModelRequestBody %>: Omit<<%= targetModelClassName %>, 'id'>,
+    }) <%= targetModelRequestBody %>: Omit<<%= targetModelClassName %>, '<%= targetModelPrimaryKey %>'>,
   ): Promise<<%= targetModelClassName %>> {
     return await this.<%= paramSourceRepository %>.<%= relationPropertyName %>(id).create(<%= targetModelRequestBody %>);
   }

@@ -449,7 +449,7 @@ context('check if the controller file created ', () => {
           /content: { 'application\/json': { schema: { 'x-ts-type': OrderClass } } },\n/,
           /},\n . {2}},\n .}\)\n {2}async create\(\n/,
           /\@param\.path\.number\('id'\) id: typeof CustomerClass\.prototype\.custNumber,\n/,
-          /\@requestBody\(\{\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(OrderClass, {exclude: \['id'\]}\),\s+},\s+},\s+}\) orderClass: Omit<OrderClass, 'id'>,\n/,
+          /\@requestBody\(\{\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(OrderClass, {exclude: \['orderNumber'\]}\),\s+},\s+},\s+}\) orderClass: Omit<OrderClass, 'orderNumber'>,\n/,
           /\): Promise<OrderClass> {\n/,
           /return await this\.customerClassRepository\.orderClasses\(id\)\.create\(orderClass\);\n {2}}\n/,
         ];
@@ -459,7 +459,7 @@ context('check if the controller file created ', () => {
           /content: { 'application\/json': { schema: { 'x-ts-type': OrderClassType } } },\n/,
           /},\n . {2}},\n .}\)\n {2}async create\(\n/,
           /\@param\.path\.number\('id'\) id: typeof CustomerClassType\.prototype\.custNumber,\n/,
-          /\@requestBody\(\{\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(OrderClassType, {exclude: \['id'\]}\),\s+},\s+},\s+}\) orderClassType: Omit<OrderClassType, 'id'>,\n/,
+          /\@requestBody\(\{\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(OrderClassType, {exclude: \['orderString'\]}\),\s+},\s+},\s+}\) orderClassType: Omit<OrderClassType, 'orderString'>,\n/,
           /\): Promise<OrderClassType> {\n/,
           /return await this\.customerClassTypeRepository\.orderClassTypes\(id\)\.create\(orderClassType\);\n {2}}\n/,
         ];

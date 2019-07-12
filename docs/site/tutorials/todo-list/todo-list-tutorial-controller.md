@@ -28,6 +28,7 @@ Controller TodoList will be created in src/controllers/todo-list.controller.ts
 ? What kind of controller would you like to generate? REST Controller with CRUD functions
 ? What is the name of the model to use with this CRUD repository? TodoList
 ? What is the name of your CRUD repository? TodoListRepository
+? What is the name of ID property? id
 ? What is the type of your ID? number
 ? What is the base HTTP path name of the CRUD operations? /todo-lists
    create src/controllers/todo-list.controller.ts

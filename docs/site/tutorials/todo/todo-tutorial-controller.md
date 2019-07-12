@@ -36,6 +36,7 @@ Controller Todo will be created in src/controllers/todo.controller.ts
 ? What kind of controller would you like to generate? REST Controller with CRUD functions
 ? What is the name of the model to use with this CRUD repository? Todo
 ? What is the name of your CRUD repository? TodoRepository
+? What is the name of ID property? id
 ? What is the type of your ID? number
 ? What is the base HTTP path name of the CRUD operations? /todos
    create src/controllers/todo.controller.ts

@@ -38,11 +38,11 @@ export class <%= className %>Controller {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(<%= modelName %>, {exclude: ['id']}),
+          schema: getModelSchemaRef(<%= modelName %>, {exclude: ['<%= id %>']}),
         },
       },
     })
-    <%= modelVariableName %>: Omit<<%= modelName %>, 'id'>,
+    <%= modelVariableName %>: Omit<<%= modelName %>, '<%= id %>'>,
   ): Promise<<%= modelName %>> {
     return await this.<%= repositoryNameCamel %>.create(<%= modelVariableName %>);
   }
