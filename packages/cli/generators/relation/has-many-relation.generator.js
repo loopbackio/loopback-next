@@ -50,6 +50,7 @@ module.exports = class HasManyRelationGenerator extends BaseRelationGenerator {
     this.artifactInfo.sourceModelPrimaryKey = options.sourceModelPrimaryKey;
     this.artifactInfo.sourceModelPrimaryKeyType =
       options.sourceModelPrimaryKeyType;
+    this.artifactInfo.targetModelPrimaryKey = options.targetModelPrimaryKey;
 
     const source = this.templatePath(CONTROLLER_TEMPLATE_PATH_HAS_MANY);
 
