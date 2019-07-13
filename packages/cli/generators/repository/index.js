@@ -550,7 +550,7 @@ module.exports = class RepositoryGenerator extends ArtifactGenerator {
     );
 
     this.artifactInfo.name = this.artifactInfo.modelNameList
-      ? this.artifactInfo.modelNameList.join()
+      ? this.artifactInfo.modelNameList.join(this.classNameSeparator)
       : this.artifactInfo.modelName;
 
     await super.end();
