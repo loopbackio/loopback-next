@@ -15,6 +15,8 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
   constructor(args, opts) {
     super(args, opts);
+    // how classes are separated when the output contains more than one
+    this.classNameSeparator = ', ';
   }
 
   _setupGenerator() {
@@ -131,12 +133,17 @@ module.exports = class ArtifactGenerator extends BaseGenerator {
     if (generationStatus) {
       await this._updateIndexFiles();
 
+      const classes = this.artifactInfo.name
+        .split(this.classNameSeparator)
+        .map(utils.toClassName);
+      const classesOutput = classes.join(this.classNameSeparator);
+
       // User Output
       this.log();
       this.log(
         utils.toClassName(this.artifactInfo.type),
-        chalk.yellow(utils.toClassName(this.artifactInfo.name)),
-        'was created in',
+        chalk.yellow(classesOutput),
+        classes.length > 1 ? 'were created in' : 'was created in',
         `${this.artifactInfo.relPath}/`,
       );
       this.log();
