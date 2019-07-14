@@ -6,12 +6,18 @@
 'use strict';
 
 const fs = require('fs');
+const os = require('os');
 const {promisify} = require('util');
 const path = require('path');
+const tildify = require('tildify');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 const generator = path.join(__dirname, '../../../generators/app');
+<<<<<<< HEAD
 const cliVersion = require('../../../package.json').version;
+=======
+const build = require('@loopback/build');
+>>>>>>> af20999f... fix(cli): fix app default project name. relevant test added
 const props = {
   name: 'my-app',
   description: 'My app for LoopBack 4',
@@ -210,3 +216,38 @@ function testFormat() {
 process.env.CI && !process.env.DEBUG
   ? describe.skip
   : describe('app-generator with --format', testFormat);
+
+/** For testing if the generator handles default values properly */
+describe('app-generator with default values', () => {
+  const rootDir = path.join(__dirname, '../../../..');
+  const defaultValProjPath = path.join(rootDir, 'sandbox/default-value-app');
+  const sandbox = path.join(rootDir, 'sandbox');
+  const pathToDefValApp = path.join(defaultValProjPath, 'default-value-app');
+  const defaultValProps = {
+    name: '',
+    description: 'An app to test out default values',
+    outdir: '',
+  };
+
+  before(async () => {
+    // default-value-app should not exist at this point
+    assert.equal(fs.existsSync(defaultValProjPath), false);
+    assert.equal(fs.existsSync(pathToDefValApp), false);
+    return (
+      helpers
+        .run(generator)
+        .inDir(defaultValProjPath)
+        // Mark it private to prevent accidental npm publication
+        .withOptions({private: true})
+        .withPrompts(defaultValProps)
+    );
+  });
+  it('scaffold a new app for default-value-app', async () => {
+    // default-value-app should be created at this point
+    assert.equal(fs.existsSync(pathToDefValApp), true);
+  });
+  after(() => {
+    process.chdir(sandbox);
+    build.clean(['node', 'run-clean', defaultValProjPath]);
+  });
+});
