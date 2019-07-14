@@ -26,6 +26,8 @@ const connectors = require('../generators/datasource/connectors.json');
 const stringifyObject = require('stringify-object');
 const camelCase = _.camelCase;
 const kebabCase = _.kebabCase;
+const untildify = require('untildify');
+const tildify = require('tildify');
 const readdirAsync = promisify(fs.readdir);
 const toFileName = name => {
   return kebabCase(name).replace(/\-(\d+)$/g, '$1');
@@ -127,6 +129,8 @@ exports.camelCase = camelCase;
 exports.toVarName = toVarName;
 exports.pluralize = pluralize;
 exports.urlSlug = urlSlug;
+exports.untildify = untildify;
+exports.tildify = tildify;
 
 exports.validate = function(name) {
   const isValid = validate(name).validForNewPackages;

@@ -7,7 +7,11 @@
 const BaseGenerator = require('./base-generator');
 const utils = require('./utils');
 const chalk = require('chalk');
+<<<<<<< HEAD
 const cliVersion = require('../package.json').version;
+=======
+const path = require('path');
+>>>>>>> af20999f... fix(cli): fix app default project name. relevant test added
 
 module.exports = class ProjectGenerator extends BaseGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -132,7 +136,8 @@ module.exports = class ProjectGenerator extends BaseGenerator {
         name: 'name',
         message: 'Project name:',
         when: this.projectInfo.name == null,
-        default: this.options.name || this.appname,
+        default:
+          this.options.name || utils.toFileName(path.basename(process.cwd())),
         validate: utils.validate,
       },
       {

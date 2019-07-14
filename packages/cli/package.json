@@ -63,6 +63,8 @@
     "unicode-10.0.0": "^0.7.5",
     "update-notifier": "^3.0.1",
     "url-slug": "^2.1.1",
+    "untildify": "^4.0.0",
+    "tildify": "^2.0.0",
     "validate-npm-package-name": "^3.0.0",
     "yeoman-generator": "^4.0.1"
   },
