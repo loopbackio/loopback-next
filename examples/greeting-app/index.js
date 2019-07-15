@@ -11,7 +11,7 @@ async function main() {
       port: +(process.env.PORT || 3000),
       host: process.env.HOST || '127.0.0.1',
       openApiSpec: {
-        // useful when used with OASGraph to locate your application
+        // useful when used with OpenAPI-to-GraphQL to locate your application
         setServersFromRequest: true,
       },
     },
