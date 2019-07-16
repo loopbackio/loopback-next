@@ -26,7 +26,8 @@ export interface JsonSchemaOptions<T extends object> {
 
   /**
    * Set this flag to mark all model properties as optional. This is typically
-   * used to describe request body of PATCH endpoints.
+   * used to describe request body of PATCH endpoints. This option will be
+   * overridden by the "optional" option if it is set and non-empty.
    */
   partial?: boolean;
 
@@ -36,7 +37,8 @@ export interface JsonSchemaOptions<T extends object> {
   exclude?: (keyof T)[];
 
   /**
-   * List of model properties to mark as optional.
+   * List of model properties to mark as optional. Overrides the "partial"
+   * option if it is not empty.
    */
   optional?: (keyof T)[];
 
