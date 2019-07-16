@@ -264,6 +264,13 @@ export abstract class ValueObject extends Model implements Persistable {}
  */
 export abstract class Entity extends Model implements Persistable {
   /**
+   * Get the names of identity properties (primary keys).
+   */
+  static getIdProperties(): string[] {
+    return this.definition.idProperties();
+  }
+
+  /**
    * Get the identity value for a given entity instance or entity data object.
    *
    * @param entityOrData - The data object for which to determine the identity
