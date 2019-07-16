@@ -1049,20 +1049,27 @@ describe('build-schema', () => {
         expect(optionalNothingSchema.title).to.equal('Product');
       });
 
-      it('overrides "partial" option when "optional" options is set', () => {
+      it('overrides "partial" option when "optional" option is set', () => {
         const originalSchema = getJsonSchema(Product);
         expect(originalSchema.required).to.deepEqual(['id', 'name']);
         expect(originalSchema.title).to.equal('Product');
 
-        const optionalNameSchema = getJsonSchema(Product, {
+        let optionalNameSchema = getJsonSchema(Product, {
           partial: true,
+          optional: ['name'],
+        });
+        expect(optionalNameSchema.required).to.deepEqual(['id']);
+        expect(optionalNameSchema.title).to.equal('ProductOptional[name]');
+
+        optionalNameSchema = getJsonSchema(Product, {
+          partial: false,
           optional: ['name'],
         });
         expect(optionalNameSchema.required).to.deepEqual(['id']);
         expect(optionalNameSchema.title).to.equal('ProductOptional[name]');
       });
 
-      it('uses "partial" option, if provided, when "optional" options is set but empty', () => {
+      it('uses "partial" option, if provided, when "optional" option is set but empty', () => {
         const originalSchema = getJsonSchema(Product);
         expect(originalSchema.required).to.deepEqual(['id', 'name']);
         expect(originalSchema.title).to.equal('Product');
