@@ -395,6 +395,11 @@ describe('model', () => {
     expect(() => instance.getId()).to.throw(/missing.*id/);
   });
 
+  it('gets id names via a static method', () => {
+    const names = Customer.getIdProperties();
+    expect(names).to.deepEqual(['id']);
+  });
+
   it('reads model name from the definition', () => {
     expect(Customer.modelName).to.equal('Customer');
   });
