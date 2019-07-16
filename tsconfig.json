@@ -4,7 +4,8 @@
     "acceptance",
     "benchmark",
     "examples",
-    "packages"
+    "packages",
+    "extensions"
   ],
   "exclude": [
     "node_modules/**",
@@ -12,6 +13,7 @@
     "benchmark/node_modules/**",
     "examples/*/node_modules/**",
     "packages/*/node_modules/**",
+    "extensions/*/node_modules/**",
     "**/*.d.ts"
   ]
 }

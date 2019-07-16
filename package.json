@@ -49,7 +49,7 @@
     "prettier:cli": "node packages/build/bin/run-prettier \"**/*.ts\" \"**/*.js\" \"**/*.md\"",
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
-    "clean": "lerna run clean && node packages/build/bin/run-clean \"packages/*/dist\" \"examples/*/dist\" \"benchmark/dist\"",
+    "clean": "lerna run clean && node packages/build/bin/run-clean \"packages/*/dist\" \"extensions/*/dist\" \"examples/*/dist\" \"benchmark/dist\"",
     "clean:lerna": "lerna clean",
     "build": "node bin/run-lerna run build",
     "build:full": "npm run clean:lerna && npm install && npm run clean && npm run build",
@@ -58,7 +58,7 @@
     "test:ci": "node packages/build/bin/run-nyc npm run mocha --scripts-prepend-node-path",
     "verify:docs": "npm run build:site -- --verify",
     "build:site": "./bin/build-docs-site.sh",
-    "mocha": "node packages/build/bin/run-mocha \"packages/*/dist/__tests__/**/*.js\" \"examples/*/dist/__tests__/**/*.js\" \"packages/cli/test/**/*.js\" \"packages/build/test/*/*.js\"",
+    "mocha": "node packages/build/bin/run-mocha \"packages/*/dist/__tests__/**/*.js\" \"extensions/*/dist/__tests__/**/*.js\" \"examples/*/dist/__tests__/**/*.js\" \"packages/cli/test/**/*.js\" \"packages/build/test/*/*.js\"",
     "posttest": "npm run lint"
   },
   "config": {

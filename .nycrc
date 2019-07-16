@@ -1,12 +1,14 @@
 {
   "include": [
     "packages/*/dist",
+    "extensions/*/dist",
     "packages/cli/",
     "examples/*/dist"
   ],
   "exclude": [
     "packages/*/dist/__tests__/",
     "packages/cli/test/",
+    "extensions/*/dist/__tests__/",
     "examples/*/dist/__tests__/",
     "**/.sandbox/"
   ],
