@@ -125,13 +125,17 @@ module.exports = class InterceptorGenerator extends ArtifactGenerator {
       'Global interceptors are sorted by the order of an array of' +
       ' group names bound to ContextBindings.GLOBAL_INTERCEPTOR_ORDERED_GROUPS.' +
       ' See https://loopback.io/doc/en/lb4/Interceptors.html#order-of-invocation-for-interceptors.';
+
+    this.log();
+    this.log(note);
+    this.log();
+
     const prompts = [
       {
         type: 'input',
         name: 'group',
         // capitalization
-        message: `${note}
-Group name for the global interceptor: ('')`,
+        message: `Group name for the global interceptor: ('')`,
       },
     ];
     return this.prompt(prompts).then(props => {
