@@ -12,7 +12,7 @@
     "@loopback/build": "^2.0.3",
     "@loopback/eslint-config": "^2.0.0",
     "@loopback/testlab": "^1.6.3",
-    "@types/node": "^10.14.12"
+    "@types/node": "^10.14.13"
   },
   "scripts": {
     "build": "lb-tsc",
