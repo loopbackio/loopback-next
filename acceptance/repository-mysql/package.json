@@ -22,7 +22,7 @@
     "@loopback/eslint-config": "^2.0.0",
     "@loopback/repository": "^1.8.2",
     "@loopback/repository-tests": "^0.2.2",
-    "@types/node": "^10.14.12",
+    "@types/node": "^10.14.13",
     "loopback-connector-mysql": "^5.4.1"
   },
   "files": [
