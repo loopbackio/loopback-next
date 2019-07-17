@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeter-extension@1.3.5...@loopback/example-greeter-extension@1.3.6) (2019-07-17)
+
+
+### Bug Fixes
+
+* **example-greeter-extension:** use `[@config](https://github.com/config)` for configuration injection in README ([ebc6136](https://github.com/strongloop/loopback-next/commit/ebc6136))
+
+
+
+
+
 ## [1.3.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-greeter-extension@1.3.4...@loopback/example-greeter-extension@1.3.5) (2019-06-28)
 
 

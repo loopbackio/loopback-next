@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.6](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@2.1.5...@loopback/authentication@2.1.6) (2019-07-17)
+
+**Note:** Version bump only for package @loopback/authentication
+
+
+
+
+
 ## [2.1.5](https://github.com/strongloop/loopback-next/compare/@loopback/authentication@2.1.4...@loopback/authentication@2.1.5) (2019-06-28)
 
 **Note:** Version bump only for package @loopback/authentication

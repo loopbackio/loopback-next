@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@2.0.0...@loopback/eslint-config@2.0.1) (2019-07-17)
+
+**Note:** Version bump only for package @loopback/eslint-config
+
+
+
+
+
 # [2.0.0](https://github.com/strongloop/loopback-next/compare/@loopback/eslint-config@1.1.2...@loopback/eslint-config@2.0.0) (2019-06-28)
 
 

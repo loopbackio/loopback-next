@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@1.6.5...@loopback/example-todo@1.6.6) (2019-07-17)
+
+
+### Bug Fixes
+
+* **example-todo:** exclude id from POST request body ([296ac6c](https://github.com/strongloop/loopback-next/commit/296ac6c))
+
+
+
+
+
 ## [1.6.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo@1.6.4...@loopback/example-todo@1.6.5) (2019-06-28)
 
 

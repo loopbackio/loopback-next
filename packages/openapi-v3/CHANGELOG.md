@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.7.0...@loopback/openapi-v3@1.8.0) (2019-07-17)
+
+
+### Features
+
+* **repository-json-schema:** add an option to exclude properties from schema ([53ac940](https://github.com/strongloop/loopback-next/commit/53ac940))
+
+
+
+
+
 # [1.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/openapi-v3@1.6.4...@loopback/openapi-v3@1.7.0) (2019-06-28)
 
 

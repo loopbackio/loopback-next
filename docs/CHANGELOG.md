@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.26.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.26.0...@loopback/docs@1.26.1) (2019-07-17)
+
+
+### Bug Fixes
+
+* **docs:** exclude id from POST request body ([d7ff903](https://github.com/strongloop/loopback-next/commit/d7ff903))
+* **docs:** make foreign key required and relation properties optional ([f0811aa](https://github.com/strongloop/loopback-next/commit/f0811aa))
+
+
+
+
+
 # [1.26.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.25.0...@loopback/docs@1.26.0) (2019-06-28)
 
 

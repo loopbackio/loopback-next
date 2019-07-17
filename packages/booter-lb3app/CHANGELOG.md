@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.6](https://github.com/strongloop/loopback-next/compare/@loopback/booter-lb3app@1.2.5...@loopback/booter-lb3app@1.2.6) (2019-07-17)
+
+
+### Bug Fixes
+
+* **booter-lb3app:** stringify and parse lb3 spec before converting it ([30727a5](https://github.com/strongloop/loopback-next/commit/30727a5))
+
+
+
+
+
 ## [1.2.5](https://github.com/strongloop/loopback-next/compare/@loopback/booter-lb3app@1.2.4...@loopback/booter-lb3app@1.2.5) (2019-06-28)
 
 **Note:** Version bump only for package @loopback/booter-lb3app

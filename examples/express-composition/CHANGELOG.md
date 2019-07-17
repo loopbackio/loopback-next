@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.4.5...@loopback/example-express-composition@1.4.6) (2019-07-17)
+
+
+### Bug Fixes
+
+* **example-express-composition:** exclude id from POST request body ([9158142](https://github.com/strongloop/loopback-next/commit/9158142))
+
+
+
+
+
 ## [1.4.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-express-composition@1.4.4...@loopback/example-express-composition@1.4.5) (2019-06-28)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.6](https://github.com/strongloop/loopback-next/compare/@loopback/example-context@1.2.5...@loopback/example-context@1.2.6) (2019-07-17)
+
+
+### Bug Fixes
+
+* **example-context:** improve type definitions to avoid TypeScript errors ([16591cf](https://github.com/strongloop/loopback-next/commit/16591cf))
+
+
+
+
+
 ## [1.2.5](https://github.com/strongloop/loopback-next/compare/@loopback/example-context@1.2.4...@loopback/example-context@1.2.5) (2019-06-28)
 
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.8.2...@loopback/repository@1.9.0) (2019-07-17)
+
+
+### Bug Fixes
+
+* **repository:** make sure foreign key property in keyTo exists in target model ([ce75385](https://github.com/strongloop/loopback-next/commit/ce75385))
+
+
+### Features
+
+* **repository:** add static method Entity.getIdProperties() ([be4bf31](https://github.com/strongloop/loopback-next/commit/be4bf31))
+
+
+
+
+
 ## [1.8.2](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.8.1...@loopback/repository@1.8.2) (2019-06-28)
 
 **Note:** Version bump only for package @loopback/repository

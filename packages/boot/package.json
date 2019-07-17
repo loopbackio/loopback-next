@@ -1,6 +1,6 @@
 {
   "name": "@loopback/boot",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "A collection of Booters for LoopBack 4 Applications",
   "engines": {
     "node": ">=8.9"
@@ -22,21 +22,21 @@
   "copyright.owner": "IBM Corp.",
   "license": "MIT",
   "dependencies": {
-    "@loopback/context": "^1.20.2",
-    "@loopback/core": "^1.8.5",
-    "@loopback/repository": "^1.8.2",
-    "@loopback/service-proxy": "^1.2.5",
+    "@loopback/context": "^1.20.3",
+    "@loopback/core": "^1.8.6",
+    "@loopback/repository": "^1.9.0",
+    "@loopback/service-proxy": "^1.2.6",
     "@types/debug": "^4.1.4",
     "@types/glob": "^7.1.1",
     "debug": "^4.1.1",
     "glob": "^7.1.4"
   },
   "devDependencies": {
-    "@loopback/build": "^2.0.3",
-    "@loopback/eslint-config": "^2.0.0",
-    "@loopback/openapi-v3": "^1.7.0",
-    "@loopback/rest": "^1.16.3",
-    "@loopback/testlab": "^1.6.3",
+    "@loopback/build": "^2.0.4",
+    "@loopback/eslint-config": "^2.0.1",
+    "@loopback/openapi-v3": "^1.8.0",
+    "@loopback/rest": "^1.16.4",
+    "@loopback/testlab": "^1.7.0",
     "@types/node": "^10.14.13"
   },
   "files": [

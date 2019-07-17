@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.8.1...@loopback/example-todo-list@1.8.2) (2019-07-17)
+
+
+### Bug Fixes
+
+* **example-todo-list:** exclude id from POST request body ([79e0561](https://github.com/strongloop/loopback-next/commit/79e0561))
+* **example-todo-list:** make foreign key optional in request body ([363a4b5](https://github.com/strongloop/loopback-next/commit/363a4b5))
+* **example-todo-list:** make foreign key required and relation properties optional ([b9808ea](https://github.com/strongloop/loopback-next/commit/b9808ea))
+
+
+
+
+
 ## [1.8.1](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.8.0...@loopback/example-todo-list@1.8.1) (2019-06-28)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.6.3...@loopback/testlab@1.7.0) (2019-07-17)
+
+
+### Features
+
+* **testlab:** improve typings for `toJSON()` helper ([a64e860](https://github.com/strongloop/loopback-next/commit/a64e860))
+
+
+
+
+
 ## [1.6.3](https://github.com/strongloop/loopback-next/compare/@loopback/testlab@1.6.2...@loopback/testlab@1.6.3) (2019-06-28)
 
 **Note:** Version bump only for package @loopback/testlab
