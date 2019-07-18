@@ -62,7 +62,7 @@
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-eslint-plugin": "^2.1.0",
     "eslint-plugin-mocha": "^6.0.0",
-    "mocha": "^6.1.4",
+    "mocha": "^6.2.0",
     "source-map-support": "^0.5.12",
     "typescript": "~3.5.3"
   }
