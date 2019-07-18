@@ -367,6 +367,94 @@ describe('Interceptor', () => {
     });
   });
 
+  context('invocation options for invokeMethodWithInterceptors', () => {
+    it('can skip parameter injection', async () => {
+      const controller = givenController();
+
+      ctx.bind('name').to('Jane');
+      const msg = await invokeMethodWithInterceptors(
+        ctx,
+        controller,
+        'greetWithDI',
+        // 'John' is passed in as an arg
+        ['John'],
+        {
+          skipParameterInjection: true,
+        },
+      );
+      expect(msg).to.equal('Hello, John');
+      expect(events).to.eql([
+        'log: before-greetWithDI',
+        'log: after-greetWithDI',
+      ]);
+    });
+
+    it('can support parameter injection', async () => {
+      const controller = givenController();
+      ctx.bind('name').to('Jane');
+      const msg = await invokeMethodWithInterceptors(
+        ctx,
+        controller,
+        'greetWithDI',
+        // No name is passed in here as it will be provided by the injection
+        [],
+        {
+          skipParameterInjection: false,
+        },
+      );
+      // `Jane` is bound to `name` in the current context
+      expect(msg).to.equal('Hello, Jane');
+      expect(events).to.eql([
+        'log: before-greetWithDI',
+        'log: after-greetWithDI',
+      ]);
+    });
+
+    it('does not allow skipInterceptors', async () => {
+      const controller = givenController();
+      expect(() => {
+        invokeMethodWithInterceptors(ctx, controller, 'greetWithDI', ['John'], {
+          skipInterceptors: true,
+        });
+      }).to.throw(/skipInterceptors is not allowed/);
+    });
+
+    function givenController() {
+      class MyController {
+        // Apply `log` to an async instance method with parameter injection
+        @intercept(log)
+        async greetWithDI(@inject('name') name: string) {
+          return `Hello, ${name}`;
+        }
+      }
+      return new MyController();
+    }
+  });
+
+  context('controller method with both interception and injection', () => {
+    it('allows interceptor to influence parameter injection', async () => {
+      const result = await invokeMethodWithInterceptors(
+        ctx,
+        new MyController(),
+        'interceptedHello',
+        [],
+        {skipParameterInjection: false},
+      );
+      // `Mary` is bound to `name` by the interceptor
+      expect(result).to.eql('Hello, Mary');
+    });
+
+    class MyController {
+      @intercept(async (invocationCtx, next) => {
+        invocationCtx.bind('name').to('Mary');
+        return await next();
+      })
+      async interceptedHello(@inject('name') name: string) {
+        return `Hello, ${name}`;
+      }
+    }
+  });
+
   context('class level interceptors', () => {
     it('invokes sync and async interceptors', async () => {
       // Apply `log` to all methods on the class

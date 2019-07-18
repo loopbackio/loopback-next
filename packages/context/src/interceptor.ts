@@ -11,6 +11,7 @@ import {
   MetadataMap,
   MethodDecoratorFactory,
 } from '@loopback/metadata';
+import * as assert from 'assert';
 import * as debugFactory from 'debug';
 import {Binding, BindingTemplate} from './binding';
 import {bind} from './binding-decorator';
@@ -26,6 +27,7 @@ import {
 import {
   InvocationArgs,
   InvocationContext,
+  InvocationOptions,
   InvocationResult,
 } from './invocation';
 import {
@@ -284,13 +286,18 @@ export function intercept(...interceptorOrKeys: InterceptorOrKey[]) {
  * @param target - Target class (for static methods) or object (for instance methods)
  * @param methodName - Method name
  * @param args - An array of argument values
+ * @param options - Options for the invocation
  */
 export function invokeMethodWithInterceptors(
   context: Context,
   target: object,
   methodName: string,
   args: InvocationArgs,
+  options: InvocationOptions = {},
 ): ValueOrPromise<InvocationResult> {
+  // Do not allow `skipInterceptors` as it's against the function name
+  // `invokeMethodWithInterceptors`
+  assert(!options.skipInterceptors, 'skipInterceptors is not allowed');
   const invocationCtx = new InterceptedInvocationContext(
     context,
     target,
@@ -302,7 +309,8 @@ export function invokeMethodWithInterceptors(
   return tryWithFinally(
     () => {
       const interceptors = invocationCtx.loadInterceptors();
-      const targetMethodInvoker = () => invocationCtx.invokeTargetMethod();
+      const targetMethodInvoker = () =>
+        invocationCtx.invokeTargetMethod(options);
       interceptors.push(targetMethodInvoker);
       return invokeInterceptors(invocationCtx, interceptors);
     },
