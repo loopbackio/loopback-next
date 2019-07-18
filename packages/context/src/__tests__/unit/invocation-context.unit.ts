@@ -4,11 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {expect} from '@loopback/testlab';
-import {Context, InvocationContext} from '../..';
+import {Context, inject, InvocationContext} from '../..';
 
 describe('InvocationContext', () => {
   let ctx: Context;
   let invocationCtxForGreet: InvocationContext;
+  let invocationCtxForHello: InvocationContext;
   let invocationCtxForCheckName: InvocationContext;
   let invalidInvocationCtx: InvocationContext;
   let invalidInvocationCtxForStaticMethod: InvocationContext;
@@ -60,6 +61,14 @@ describe('InvocationContext', () => {
     expect(invocationCtxForCheckName.invokeTargetMethod()).to.eql(true);
   });
 
+  it('invokes target method with injection', async () => {
+    expect(
+      await invocationCtxForHello.invokeTargetMethod({
+        skipParameterInjection: false,
+      }),
+    ).to.eql('Hello, Jane');
+  });
+
   it('does not close when an interceptor is in processing', () => {
     const result = invocationCtxForGreet.invokeTargetMethod();
     expect(invocationCtxForGreet.isBound('abc'));
@@ -73,6 +82,10 @@ describe('InvocationContext', () => {
     }
 
     async greet(name: string) {
+      return `Hello, ${name}`;
+    }
+
+    async hello(@inject('name') name: string) {
       return `Hello, ${name}`;
     }
   }
@@ -89,6 +102,14 @@ describe('InvocationContext', () => {
       'greet',
       ['John'],
     );
+
+    invocationCtxForHello = new InvocationContext(
+      ctx,
+      new MyController(),
+      'hello',
+      [],
+    );
+    invocationCtxForHello.bind('name').to('Jane');
 
     invocationCtxForCheckName = new InvocationContext(
       ctx,

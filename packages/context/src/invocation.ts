@@ -94,9 +94,20 @@ export class InvocationContext extends Context {
   /**
    * Invoke the target method with the given context
    * @param context - Invocation context
+   * @param options - Options for the invocation
    */
-  invokeTargetMethod() {
+  invokeTargetMethod(
+    options: InvocationOptions = {skipParameterInjection: true},
+  ) {
     const targetWithMethods = this.assertMethodExists();
+    if (!options.skipParameterInjection) {
+      return invokeTargetMethodWithInjection(
+        this,
+        targetWithMethods,
+        this.methodName,
+        this.args,
+      );
+    }
     return invokeTargetMethod(
       this,
       targetWithMethods,
@@ -137,44 +148,38 @@ export function invokeMethod(
   nonInjectedArgs: InvocationArgs = [],
   options: InvocationOptions = {},
 ): ValueOrPromise<InvocationResult> {
-  if (options.skipParameterInjection) {
-    if (options.skipInterceptors) {
+  if (options.skipInterceptors) {
+    if (options.skipParameterInjection) {
       // Invoke the target method directly without injection or interception
       return invokeTargetMethod(ctx, target, method, nonInjectedArgs);
     } else {
-      // Invoke the target method with interception but no injection
-      return invokeMethodWithInterceptors(ctx, target, method, nonInjectedArgs);
+      return invokeTargetMethodWithInjection(
+        ctx,
+        target,
+        method,
+        nonInjectedArgs,
+      );
     }
   }
-  // Parameter injection is required
-  const invoker = options.skipInterceptors
-    ? invokeTargetMethod
-    : invokeMethodWithInterceptors;
-  return invokeMethodWithInvoker(invoker, ctx, target, method, nonInjectedArgs);
+  // Invoke the target method with interception but no injection
+  return invokeMethodWithInterceptors(
+    ctx,
+    target,
+    method,
+    nonInjectedArgs,
+    options,
+  );
 }
 
 /**
- * An invoker for a method within the given context and arguments
- */
-type MethodInvoker = (
-  ctx: Context,
-  target: Record<string, Function>,
-  methodName: string,
-  args: InvocationArgs,
-) => ValueOrPromise<InvocationResult>;
-
-/**
- * Invoke a method with the given invoker. Method parameter dependency injection
- * is honored.
- * @param invoker - Method invoker
+ * Invoke a method. Method parameter dependency injection is honored.
  * @param target - Target of the method, it will be the class for a static
  * method, and instance or class prototype for a prototype method
  * @param method - Name of the method
  * @param ctx - Context
  * @param nonInjectedArgs - Optional array of args for non-injected parameters
  */
-function invokeMethodWithInvoker(
-  invoker: MethodInvoker,
+function invokeTargetMethodWithInjection(
   ctx: Context,
   target: object,
   method: string,
@@ -205,7 +210,7 @@ function invokeMethodWithInvoker(
     if (debug.enabled) {
       debug('Injected arguments for %s:', methodName, args);
     }
-    return invoker(ctx, targetWithMethods, method, args);
+    return invokeTargetMethod(ctx, targetWithMethods, method, args);
   });
 }
 
