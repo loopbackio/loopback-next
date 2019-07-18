@@ -21,7 +21,6 @@ packages/eslint-config/* @raymondfeng
 packages/metadata/* @raymondfeng
 packages/openapi-spec-builder/* @bajtos @raymondfeng
 packages/openapi-v3/* @bajtos @jannyHou
-packages/openapi-v3-types/* @bajtos @jannyHou
 packages/repository/* @raymondfeng
 packages/repository-tests/* @bajtos
 packages/repository-json-schema/* @bajtos
