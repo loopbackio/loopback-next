@@ -1,0 +1,56 @@
+{
+  "name": "@loopback/extension-tracing",
+  "version": "0.0.1",
+  "description": "LoopBack Distributed Tracing",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {
+    "build": "lb-tsc",
+    "clean": "lb-clean loopback-extension-tracing*.tgz dist tsconfig.build.tsbuildinfo package",
+    "pretest": "npm run build",
+    "test": "lb-mocha \"dist/__tests__/**/*.js\"",
+    "verify": "npm pack && tar xf loopback-extension-tracing*.tgz && tree package && npm run clean",
+    "demo": "./src/__examples__/demo.sh"
+  },
+  "author": "IBM Corp.",
+  "copyright.owner": "IBM Corp.",
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/core": "^1.10.6",
+    "@loopback/rest": "^1.22.0",
+    "@types/jaeger-client": "^3.15.1",
+    "debug": "^4.1.1",
+    "jaeger-client": "^3.17.1",
+    "opentracing": "^0.14.4",
+    "p-event": "^4.1.0"
+  },
+  "devDependencies": {
+    "@loopback/build": "^2.0.15",
+    "@loopback/eslint-config": "^4.1.3",
+    "@loopback/testlab": "^1.9.3",
+    "@types/debug": "^4.1.5",
+    "@types/node": "^10.14.13"
+  },
+  "keywords": [
+    "LoopBack",
+    "Cloud Native",
+    "Tracing"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "index.d.ts",
+    "dist",
+    "src",
+    "!*/__tests__"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "extensions/tracing"
+  }
+}
