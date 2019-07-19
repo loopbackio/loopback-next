@@ -32,7 +32,7 @@ export class TodoListTodoController {
     responses: {
       '200': {
         description: 'TodoList.Todo model instance',
-        content: {'application/json': {schema: {'x-ts-type': Todo}}},
+        content: {'application/json': {schema: getModelSchemaRef(Todo)}},
       },
     },
   })
@@ -59,7 +59,7 @@ export class TodoListTodoController {
         description: "Array of Todo's belonging to TodoList",
         content: {
           'application/json': {
-            schema: {type: 'array', items: {'x-ts-type': Todo}},
+            schema: {type: 'array', items: getModelSchemaRef(Todo)},
           },
         },
       },

@@ -231,7 +231,7 @@ from the path object.
   responses: {
     '200': {
       description: 'Note model instance',
-      content: {'application/json': {schema: {'x-ts-type': Note}}},
+      content: {'application/json': {schema: getModelSchemaRef(Note)}},
     },
   },
 })
