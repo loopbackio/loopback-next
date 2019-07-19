@@ -96,12 +96,19 @@ Here's an example of what the template will produce given a `Todo` model and a
 `TodoRepository`:
 
 ```ts
-import {Filter, repository, Where} from '@loopback/repository';
+import {
+  Count,
+  CountSchema,
+  Filter,
+  repository,
+  Where
+} from '@loopback/repository';
 import {
   post,
   param,
   get,
   getFilterSchemaFor,
+  getModelSchemaRef,
   getWhereSchemaFor,
   patch,
   del,
@@ -119,7 +126,7 @@ export class TodoController {
     responses: {
       '200': {
         description: 'Todo model instance',
-        content: {'application/json': {schema: {'x-ts-type': Todo}}},
+        content: {'application/json': {schema: getModelSchemaRef(Todo)}},
       },
     },
   })
@@ -140,13 +147,13 @@ export class TodoController {
     responses: {
       '200': {
         description: 'Todo model count',
-        content: {'application/json': {schema: {'x-ts-type': Number}}},
+        content: {'application/json': {schema: CountSchema}},
       },
     },
   })
   async count(
     @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where<Todo>,
-  ): Promise<number> {
+  ): Promise<Count> {
     return await this.todoRepository.count(where);
   }
 
@@ -156,7 +163,7 @@ export class TodoController {
         description: 'Array of Todo model instances',
         content: {
           'application/json': {
-            schema: {type: 'array', items: {'x-ts-type': Todo}},
+            schema: {type: 'array', items: getModelSchemaRef(Todo)},
           },
         },
       },
@@ -173,7 +180,7 @@ export class TodoController {
     responses: {
       '200': {
         description: 'Todo PATCH success count',
-        content: {'application/json': {schema: {'x-ts-type': Number}}},
+        content: {'application/json': {schema: CountSchema}},
       },
     },
   })
@@ -187,7 +194,7 @@ export class TodoController {
     })
     todo: Partial<Todo>
     @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where<Todo>,
-  ): Promise<number> {
+  ): Promise<Count> {
     return await this.todoRepository.updateAll(todo, where);
   }
 
@@ -195,7 +202,7 @@ export class TodoController {
     responses: {
       '200': {
         description: 'Todo model instance',
-        content: {'application/json': {schema: {'x-ts-type': Todo}}},
+        content: {'application/json': {schema: getModelSchemaRef(Todo)}},
       },
     },
   })

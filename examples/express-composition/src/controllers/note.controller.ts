@@ -35,7 +35,7 @@ export class NoteController {
     responses: {
       '200': {
         description: 'Note model instance',
-        content: {'application/json': {schema: {'x-ts-type': Note}}},
+        content: {'application/json': {schema: getModelSchemaRef(Note)}},
       },
     },
   })
@@ -72,7 +72,7 @@ export class NoteController {
         description: 'Array of Note model instances',
         content: {
           'application/json': {
-            schema: {type: 'array', items: {'x-ts-type': Note}},
+            schema: {type: 'array', items: getModelSchemaRef(Note)},
           },
         },
       },
@@ -111,7 +111,7 @@ export class NoteController {
     responses: {
       '200': {
         description: 'Note model instance',
-        content: {'application/json': {schema: {'x-ts-type': Note}}},
+        content: {'application/json': {schema: getModelSchemaRef(Note)}},
       },
     },
   })

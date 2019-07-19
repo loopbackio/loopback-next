@@ -17,7 +17,9 @@ export class TodoListImageController {
     responses: {
       '200': {
         description: 'create todoListImage model instance',
-        content: {'application/json': {schema: {'x-ts-type': TodoListImage}}},
+        content: {
+          'application/json': {schema: getModelSchemaRef(TodoListImage)},
+        },
       },
     },
   })
