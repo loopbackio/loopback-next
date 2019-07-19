@@ -627,6 +627,7 @@ export class DefaultCrudRepository<
     return {...filter, include: undefined} as legacy.Filter;
   }
 
+  // TODO(bajtos) Extract a public helper that other repositories can use too
   protected async includeRelatedModels(
     entities: T[],
     filter?: Filter<T>,
@@ -649,10 +650,15 @@ export class DefaultCrudRepository<
       throw err;
     }
 
-    const resolveTasks = include.map(i => {
+    const resolveTasks = include.map(async i => {
       const relationName = i.relation!;
       const resolver = this.inclusionResolvers.get(relationName)!;
-      return resolver(entities, i, options);
+      const targets = await resolver(entities, i, options);
+
+      for (const ix in result) {
+        const src = result[ix];
+        (src as AnyObject)[relationName] = targets[ix];
+      }
     });
 
     await Promise.all(resolveTasks);

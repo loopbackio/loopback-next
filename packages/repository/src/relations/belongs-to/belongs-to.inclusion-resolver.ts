@@ -8,8 +8,8 @@ import {Entity} from '../../model';
 import {Filter, Inclusion} from '../../query';
 import {EntityCrudRepository} from '../../repositories/repository';
 import {
-  assignTargetsOfOneToOneRelation,
   findByForeignKeys,
+  flattenTargetsOfOneToOneRelation,
   StringKeyOf,
   uniq,
 } from '../relation.helpers';
@@ -36,8 +36,8 @@ export function createBelongsToInclusionResolver<
     entities: Entity[],
     inclusion: Inclusion,
     options?: Options,
-  ): Promise<void> {
-    if (!entities.length) return;
+  ): Promise<((Target & TargetRelations) | undefined)[]> {
+    if (!entities.length) return [];
 
     const sourceKey = relationMeta.keyFrom;
     const sourceIds = entities.map(e => (e as AnyObject)[sourceKey]);
@@ -52,14 +52,6 @@ export function createBelongsToInclusionResolver<
       options,
     );
 
-    const linkName = relationMeta.name;
-
-    assignTargetsOfOneToOneRelation(
-      entities,
-      sourceKey,
-      linkName,
-      targetsFound,
-      targetKey,
-    );
+    return flattenTargetsOfOneToOneRelation(sourceIds, targetsFound, targetKey);
   };
 }

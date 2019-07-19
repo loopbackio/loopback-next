@@ -38,7 +38,11 @@ resolver for each relation type.
 
 ```ts
 /**
- * @returns Promise of void. The source models are updated in-place.
+ * @returns An array of resolved values, the items must be ordered in the same
+ * way as `sourceEntities`. The resolved value can be one of:
+ * - `undefined` when no target model(s) were found
+ * - `Entity` for relations targeting a single model
+ * - `Entity[]` for relations targeting multiple models
  */
 export type InclusionResolver = (
   /**
@@ -53,11 +57,21 @@ export type InclusionResolver = (
    * Generic options object, e.g. carrying the Transaction object.
    */
   options?: Options,
-) => Promise<void>;
+) => Promise<(Entity | undefined)[] | (Entity[] | undefined)[]>;
 ```
 
-With a bit of luck, we will be able to use these resolvers for GraphQL too.
-However, such use-case is out of scope of this spike.
+This signature is loosely aligned with GraphQL resolvers as described e.g. in
+[Apollo docs](https://www.apollographql.com/docs/graphql-tools/resolvers/).
+While it should be possible to use these resolvers to directly implement GraphQL
+resolvers, such implementation would be prone to
+[`SELECT N+1` problem](https://stackoverflow.com/q/97197/69868). I did a quick
+search and it looks like the recommended solution is to leverage
+[DataLoader](https://github.com/graphql/dataloader/) to batch multiple queries
+into a single one. DataLoader's example showing integration with GraphQL is not
+trivial: https://github.com/graphql/dataloader#using-with-graphql.
+
+As I see it, implementing inclusion resolvers for GraphQL requires further
+research that's out of scope of this spike.
 
 ### 2. Base repository classes handle inclusions via resolvers
 
@@ -109,11 +123,17 @@ export class DefaultCrudRepository<T, Relations> {
     const result = entities as (T & Relations)[];
 
     // process relations in parallel
-    const resolveTasks = filter.include.map(i => {
+    const resolveTasks = filter.include.map(async i => {
       const relationName = i.relation;
       const resolver = this.inclusionResolvers.get(relationName);
-      return resolve(entities, i, options);
+      const targets = await resolver(entities, i, options);
+
+      for (const ix in result) {
+        const src = result[ix];
+        (src as AnyObject)[relationName] = targets[ix];
+      }
     });
+
     await Promise.all(resolveTasks);
 
     return result;

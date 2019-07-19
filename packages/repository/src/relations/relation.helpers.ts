@@ -6,7 +6,7 @@
 import * as assert from 'assert';
 import {AnyObject} from 'loopback-datasource-juggler';
 import {Options} from '../common-types';
-import {Entity, Model} from '../model';
+import {Entity} from '../model';
 import {Filter, Where} from '../query';
 import {EntityCrudRepository, getRepositoryCapabilities} from '../repositories';
 
@@ -104,12 +104,12 @@ function splitByPageSize<T>(items: T[], pageSize: number): T[][] {
 export type StringKeyOf<T> = Extract<keyof T, string>;
 
 // TODO(bajtos) add test coverage
-export function buildLookupMap<Key, Entry, T extends Model>(
-  list: T[],
-  keyName: StringKeyOf<T>,
-  reducer: (accumulator: Entry | undefined, current: T) => Entry,
-): Map<Key, Entry> {
-  const lookup = new Map<Key, Entry>();
+export function buildLookupMap<Key, InType, OutType = InType>(
+  list: InType[],
+  keyName: StringKeyOf<InType>,
+  reducer: (accumulator: OutType | undefined, current: InType) => OutType,
+): Map<Key, OutType> {
+  const lookup = new Map<Key, OutType>();
   for (const entity of list) {
     const key = getKeyValue(entity, keyName) as Key;
     const original = lookup.get(key);
@@ -120,70 +120,68 @@ export function buildLookupMap<Key, Entry, T extends Model>(
 }
 
 // TODO(bajtos) add test coverage
-export function assignTargetsOfOneToOneRelation<
+export function flattenTargetsOfOneToOneRelation<
   SourceWithRelations extends Entity,
   Target extends Entity
 >(
-  sourceEntites: SourceWithRelations[],
-  sourceKey: string,
-  linkName: string,
+  sourceIds: unknown[],
   targetEntities: Target[],
   targetKey: StringKeyOf<Target>,
-) {
+): (Target | undefined)[] {
   const lookup = buildLookupMap<unknown, Target, Target>(
     targetEntities,
     targetKey,
     reduceAsSingleItem,
   );
 
-  for (const src of sourceEntites) {
-    const key = getKeyValue(src, sourceKey);
-    const target = lookup.get(key);
-    if (!target) continue;
-    (src as AnyObject)[linkName] = target;
-  }
+  return flattenMapByKeys(sourceIds, lookup);
 }
 
-function reduceAsSingleItem<T>(_acc: T | undefined, it: T) {
+export function reduceAsSingleItem<T>(_acc: T | undefined, it: T) {
   return it;
 }
 
 // TODO(bajtos) add test coverage
-export function assignTargetsOfOneToManyRelation<
-  SourceWithRelations extends Entity,
-  Target extends Entity
->(
-  sourceEntites: SourceWithRelations[],
-  sourceKey: string,
-  linkName: string,
+export function flattenTargetsOfOneToManyRelation<Target extends Entity>(
+  sourceIds: unknown[],
   targetEntities: Target[],
   targetKey: StringKeyOf<Target>,
-) {
-  const lookup = buildLookupMap<unknown, Target[], Target>(
+): (Target[] | undefined)[] {
+  const lookup = buildLookupMap<unknown, Target, Target[]>(
     targetEntities,
     targetKey,
     reduceAsArray,
   );
 
-  for (const src of sourceEntites) {
-    const key = getKeyValue(src, sourceKey);
-    const target = lookup.get(key);
-    if (!target) continue;
-    (src as AnyObject)[linkName] = target;
-  }
+  return flattenMapByKeys(sourceIds, lookup);
 }
 
-function reduceAsArray<T>(acc: T[] | undefined, it: T) {
+export function reduceAsArray<T>(acc: T[] | undefined, it: T) {
   if (acc) acc.push(it);
   else acc = [it];
   return acc;
 }
 
-function getKeyValue<T>(model: T, keyName: string) {
+export function getKeyValue<T>(model: T, keyName: string) {
   const rawKey = (model as AnyObject)[keyName];
   // Hacky workaround for MongoDB, see _SPIKE_.md for details
   if (typeof rawKey === 'object' && rawKey.constructor.name === 'ObjectID') {
     return rawKey.toString();
   }
   return rawKey;
+}
+
+export function flattenMapByKeys<T>(
+  sourceIds: unknown[],
+  targetMap: Map<unknown, T>,
+): (T | undefined)[] {
+  const result: (T | undefined)[] = new Array(sourceIds.length);
+
+  for (const ix in sourceIds) {
+    const key = sourceIds[ix];
+    const target = targetMap.get(key);
+    result[ix] = target;
+  }
+
+  return result;
 }

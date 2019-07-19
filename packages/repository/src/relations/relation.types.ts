@@ -112,7 +112,11 @@ export type RelationMetadata =
 export {Getter} from '@loopback/context';
 
 /**
- * @returns Promise of void. The source models are updated in-place.
+ * @returns An array of resolved values, the items must be ordered in the same
+ * way as `sourceEntities`. The resolved value can be one of:
+ * - `undefined` when no target model(s) were found
+ * - `Entity` for relations targeting a single model
+ * - `Entity[]` for relations targeting multiple models
  */
 export type InclusionResolver = (
   /**
@@ -127,4 +131,4 @@ export type InclusionResolver = (
    * Generic options object, e.g. carrying the Transaction object.
    */
   options?: Options,
-) => Promise<void>;
+) => Promise<(Entity | undefined)[] | (Entity[] | undefined)[]>;
