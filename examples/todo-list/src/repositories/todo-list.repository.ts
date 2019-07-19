@@ -42,13 +42,13 @@ export class TodoListRepository extends DefaultCrudRepository<
       'todos',
       todoRepositoryGetter,
     );
-    this.registerHasManyInclusion('todos', this.todoRepositoryGetter);
+    this.registerInclusion('todos', this.todos.inclusionResolver);
 
     this.image = this.createHasOneRepositoryFactoryFor(
       'image',
       todoListImageRepositoryGetter,
     );
-    this.registerHasOneInclusion('image', this.todoListImageRepositoryGetter);
+    this.registerInclusion('image', this.image.inclusionResolver);
   }
 
   public findByTitle(title: string) {

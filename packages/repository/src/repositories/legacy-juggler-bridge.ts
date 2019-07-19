@@ -24,8 +24,6 @@ import {
   BelongsToAccessor,
   BelongsToDefinition,
   createBelongsToAccessor,
-  createBelongsToInclusionResolver,
-  createHasManyInclusionResolver,
   createHasManyRepositoryFactory,
   createHasOneRepositoryFactory,
   HasManyDefinition,
@@ -35,7 +33,6 @@ import {
   InclusionResolver,
   RelationMetadata,
 } from '../relations';
-import {createHasOneInclusionResolver} from '../relations/has-one/has-one.inclusion-resolver';
 import {isTypeResolver, resolveType} from '../type-resolver';
 import {EntityCrudRepository, WithCapabilities} from './repository';
 
@@ -264,74 +261,12 @@ export class DefaultCrudRepository<
 
   /**
    * TODO - add docs
-   * @param relationName
-   * @param targetRepoGetter
    */
-  protected registerHasManyInclusion<
-    Target extends Entity,
-    TargetID,
-    TargetRelations extends object
-  >(
+  protected registerInclusion(
     relationName: string,
-    targetRepoGetter: Getter<
-      EntityCrudRepository<Target, TargetID, TargetRelations>
-    >,
+    resolver: InclusionResolver,
   ) {
-    this.inclusionResolvers.set(
-      relationName,
-      createHasManyInclusionResolver(
-        this.getRelationDefinition(relationName) as HasManyDefinition,
-        targetRepoGetter,
-      ),
-    );
-  }
-
-  /**
-   * TODO - add docs
-   * @param relationName
-   * @param targetRepoGetter
-   */
-  protected registerHasOneInclusion<
-    Target extends Entity,
-    TargetID,
-    TargetRelations extends object
-  >(
-    relationName: string,
-    targetRepoGetter: Getter<
-      EntityCrudRepository<Target, TargetID, TargetRelations>
-    >,
-  ) {
-    this.inclusionResolvers.set(
-      relationName,
-      createHasOneInclusionResolver(
-        this.getRelationDefinition(relationName) as HasOneDefinition,
-        targetRepoGetter,
-      ),
-    );
-  }
-
-  /**
-   * TODO - add docs
-   * @param relationName
-   * @param targetRepoGetter
-   */
-  protected registerBelongsToInclusion<
-    Target extends Entity,
-    TargetID,
-    TargetRelations extends object
-  >(
-    relationName: string,
-    targetRepoGetter: Getter<
-      EntityCrudRepository<Target, TargetID, TargetRelations>
-    >,
-  ) {
-    this.inclusionResolvers.set(
-      relationName,
-      createBelongsToInclusionResolver(
-        this.getRelationDefinition(relationName) as BelongsToDefinition,
-        targetRepoGetter,
-      ),
-    );
+    this.inclusionResolvers.set(relationName, resolver);
   }
 
   protected getRelationDefinition(relationName: string): RelationMetadata {
@@ -609,9 +544,7 @@ export class DefaultCrudRepository<
       if (relName in data) {
         if (options.relations === 'throw') {
           throw new Error(
-            `Navigational properties are not allowed in model data (model "${
-              this.entityClass.modelName
-            }" property "${relName}")`,
+            `Navigational properties are not allowed in model data (model "${this.entityClass.modelName}" property "${relName}")`,
           );
         }
 

@@ -7,15 +7,28 @@ import * as debugFactory from 'debug';
 import {DataObject} from '../../common-types';
 import {Entity} from '../../model';
 import {EntityCrudRepository} from '../../repositories/repository';
-import {BelongsToDefinition, Getter} from '../relation.types';
+import {
+  BelongsToDefinition,
+  Getter,
+  InclusionResolver,
+} from '../relation.types';
 import {resolveBelongsToMetadata} from './belongs-to.helpers';
+import {createBelongsToInclusionResolver} from './belongs-to.inclusion-resolver';
 import {DefaultBelongsToRepository} from './belongs-to.repository';
 
 const debug = debugFactory('loopback:repository:belongs-to-accessor');
 
-export type BelongsToAccessor<Target extends Entity, SourceId> = (
-  sourceId: SourceId,
-) => Promise<Target>;
+export interface BelongsToAccessor<Target extends Entity, SourceId> {
+  /**
+   * Invoke the function to obtain HasManyRepository.
+   */
+  (sourceId: SourceId): Promise<Target>;
+
+  /**
+   * Use `resolver` property to obtain an InclusionResolver for this relation.
+   */
+  inclusionResolver: InclusionResolver;
+}
 
 /**
  * Enforces a BelongsTo constraint on a repository
@@ -32,7 +45,10 @@ export function createBelongsToAccessor<
 ): BelongsToAccessor<Target, SourceId> {
   const meta = resolveBelongsToMetadata(belongsToMetadata);
   debug('Resolved BelongsTo relation metadata: %o', meta);
-  return async function getTargetInstanceOfBelongsTo(sourceId: SourceId) {
+  const result: BelongsToAccessor<
+    Target,
+    SourceId
+  > = async function getTargetInstanceOfBelongsTo(sourceId: SourceId) {
     const foreignKey = meta.keyFrom;
     const primaryKey = meta.keyTo;
     const sourceModel = await sourceRepository.findById(sourceId);
@@ -45,4 +61,10 @@ export function createBelongsToAccessor<
     );
     return constrainedRepo.get();
   };
+
+  result.inclusionResolver = createBelongsToInclusionResolver(
+    meta,
+    targetRepoGetter,
+  );
+  return result;
 }

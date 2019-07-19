@@ -109,9 +109,7 @@ export function retrieveIncludingRelationsSuite(
 
           if (!hasInclusionResolvers(categoryRepo)) {
             throw new Error(
-              `Repository class "${
-                categoryRepo.constructor.name
-              }" must provide a public "inclusionResolvers" property`,
+              `Repository class "${categoryRepo.constructor.name}" must provide a public "inclusionResolvers" property`,
             );
           }
 

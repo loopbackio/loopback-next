@@ -147,6 +147,10 @@ Model-specific repository classes (e.g. `CategoryRepository`) should register
 inclusion resolvers for model relations, similarly to how we are creating
 relation-repository factories now.
 
+To make this process easier, relation-repository factories should provide
+`inclusionResolver` property containing the appropriate `InclusionResolver`
+implementation.
+
 Conceptually:
 
 ```ts
@@ -166,7 +170,7 @@ export class CategoryRepository extends DefaultCrudRepository {
     );
 
     // add this line to register inclusion resolver
-    this.registerHasManyInclusion('products', this.productRepositoryGetter);
+    this.registerInclusion('products', this.products.inclusionResolver);
   }
 }
 ```
@@ -186,9 +190,9 @@ error for such relations (rather than a generic "unknown inclusion" error).
 this.prohibitInclusion('accessTokens');
 
 // implementation
-this.inclusionResolvers.set(
+this.registerInclusion(
   relationName,
-  new RejectedInclusionResolver(relationName),
+  createRejectedInclusionResolver(relationName),
 );
 ```
 
