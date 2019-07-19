@@ -32,7 +32,7 @@ export class <%= controllerClassName %> {
         description: 'Array of <%= targetModelClassName %>\'s belonging to <%= sourceModelClassName %>',
         content: {
           'application/json': {
-            schema: { type: 'array', items: { 'x-ts-type': <%= targetModelClassName %> } },
+            schema: { type: 'array', items: getModelSchemaRef(<%= targetModelClassName %>) },
           },
         },
       },
@@ -49,7 +49,7 @@ export class <%= controllerClassName %> {
     responses: {
       '200': {
         description: '<%= sourceModelClassName %> model instance',
-        content: { 'application/json': { schema: { 'x-ts-type': <%= targetModelClassName %> } } },
+        content: { 'application/json': { schema: getModelSchemaRef(<%= targetModelClassName %>) } },
       },
     },
   })
