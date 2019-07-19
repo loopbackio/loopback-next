@@ -4,12 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  createHasManyInclusionResolver,
   Entity,
   EntityCrudRepository,
   hasInclusionResolvers,
   hasMany,
   HasManyDefinition,
-  HasManyInclusionResolver,
   model,
   property,
 } from '@loopback/repository';
@@ -116,7 +116,7 @@ export function retrieveIncludingRelationsSuite(
           }
 
           const itemsMeta = Category.definition.relations.items;
-          const itemsResolver = new HasManyInclusionResolver(
+          const itemsResolver = createHasManyInclusionResolver(
             itemsMeta as HasManyDefinition,
             async () => itemRepo,
           );

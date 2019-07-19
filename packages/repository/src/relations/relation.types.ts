@@ -111,10 +111,20 @@ export type RelationMetadata =
 // Re-export Getter so that users don't have to import from @loopback/context
 export {Getter} from '@loopback/context';
 
-export interface InclusionResolver {
-  fetchIncludedModels<SourceWithRelations extends Entity>(
-    sourceEntities: SourceWithRelations[],
-    inclusion: Inclusion,
-    options?: Options,
-  ): Promise<void>;
-}
+/**
+ * @returns Promise of void. The source models are updated in-place.
+ */
+export type InclusionResolver = (
+  /**
+   * List of source models as returned by the first database query.
+   */
+  sourceEntities: Entity[],
+  /**
+   * Inclusion requested by the user (e.g. scope constraints to apply).
+   */
+  inclusion: Inclusion,
+  /**
+   * Generic options object, e.g. carrying the Transaction object.
+   */
+  options?: Options,
+) => Promise<void>;

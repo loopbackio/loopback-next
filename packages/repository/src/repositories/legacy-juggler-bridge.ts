@@ -23,19 +23,19 @@ import {Filter, Inclusion, Where} from '../query';
 import {
   BelongsToAccessor,
   BelongsToDefinition,
-  BelongsToInclusionResolver,
   createBelongsToAccessor,
+  createBelongsToInclusionResolver,
+  createHasManyInclusionResolver,
   createHasManyRepositoryFactory,
   createHasOneRepositoryFactory,
   HasManyDefinition,
-  HasManyInclusionResolver,
   HasManyRepositoryFactory,
   HasOneDefinition,
   HasOneRepositoryFactory,
   InclusionResolver,
   RelationMetadata,
 } from '../relations';
-import {HasOneInclusionResolver} from '../relations/has-one/has-one.inclusion-resolver';
+import {createHasOneInclusionResolver} from '../relations/has-one/has-one.inclusion-resolver';
 import {isTypeResolver, resolveType} from '../type-resolver';
 import {EntityCrudRepository, WithCapabilities} from './repository';
 
@@ -279,7 +279,7 @@ export class DefaultCrudRepository<
   ) {
     this.inclusionResolvers.set(
       relationName,
-      new HasManyInclusionResolver(
+      createHasManyInclusionResolver(
         this.getRelationDefinition(relationName) as HasManyDefinition,
         targetRepoGetter,
       ),
@@ -303,7 +303,7 @@ export class DefaultCrudRepository<
   ) {
     this.inclusionResolvers.set(
       relationName,
-      new HasOneInclusionResolver(
+      createHasOneInclusionResolver(
         this.getRelationDefinition(relationName) as HasOneDefinition,
         targetRepoGetter,
       ),
@@ -327,7 +327,7 @@ export class DefaultCrudRepository<
   ) {
     this.inclusionResolvers.set(
       relationName,
-      new BelongsToInclusionResolver(
+      createBelongsToInclusionResolver(
         this.getRelationDefinition(relationName) as BelongsToDefinition,
         targetRepoGetter,
       ),
@@ -651,8 +651,8 @@ export class DefaultCrudRepository<
 
     const resolveTasks = include.map(i => {
       const relationName = i.relation!;
-      const handler = this.inclusionResolvers.get(relationName)!;
-      return handler.fetchIncludedModels(entities, i, options);
+      const resolver = this.inclusionResolvers.get(relationName)!;
+      return resolver(entities, i, options);
     });
 
     await Promise.all(resolveTasks);

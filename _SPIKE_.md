@@ -32,22 +32,28 @@ Additional constraints:
 
 ### 1. Introduce the concept of `InclusionResolver`
 
-An inclusion resolver is a class that can fetch target models for the given list
-of source model instances. The idea is to create a different inclusion resolver
-for each relation type, e.g. `HasManyInclusionResolver`, etc.
+An inclusion resolver is a function that can fetch target models for the given
+list of source model instances. The idea is to create a different inclusion
+resolver for each relation type.
 
 ```ts
-export interface InclusionResolver {
-  fetchIncludedModels<SourceWithRelations extends Entity>(
-    // list of source models as returned by the first database query
-    sourceEntities: SourceWithRelations[],
-    // inclusion requested by the user (e.g. scope constraints to apply)
-    inclusion: Inclusion,
-    // generic options object, e.g. carrying the Transaction object
-    options?: Options,
-  ): Promise<void>;
-  // ^^ nothing is returned, the source models are updated in-place
-}
+/**
+ * @returns Promise of void. The source models are updated in-place.
+ */
+export type InclusionResolver = (
+  /**
+   * List of source models as returned by the first database query.
+   */
+  sourceEntities: Entity[],
+  /**
+   * Inclusion requested by the user (e.g. scope constraints to apply).
+   */
+  inclusion: Inclusion,
+  /**
+   * Generic options object, e.g. carrying the Transaction object.
+   */
+  options?: Options,
+) => Promise<void>;
 ```
 
 With a bit of luck, we will be able to use these resolvers for GraphQL too.
@@ -105,8 +111,8 @@ export class DefaultCrudRepository<T, Relations> {
     // process relations in parallel
     const resolveTasks = filter.include.map(i => {
       const relationName = i.relation;
-      const handler = this.inclusionResolvers.get(relationName);
-      return handler.fetchIncludedModels(entities, i, options);
+      const resolver = this.inclusionResolvers.get(relationName);
+      return resolve(entities, i, options);
     });
     await Promise.all(resolveTasks);
 

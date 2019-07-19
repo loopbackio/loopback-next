@@ -125,8 +125,8 @@ export function assignTargetsOfOneToOneRelation<
   Target extends Entity
 >(
   sourceEntites: SourceWithRelations[],
-  sourceKey: StringKeyOf<SourceWithRelations>,
-  linkName: StringKeyOf<SourceWithRelations>,
+  sourceKey: string,
+  linkName: string,
   targetEntities: Target[],
   targetKey: StringKeyOf<Target>,
 ) {
@@ -140,8 +140,7 @@ export function assignTargetsOfOneToOneRelation<
     const key = getKeyValue(src, sourceKey);
     const target = lookup.get(key);
     if (!target) continue;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    src[linkName] = target as any;
+    (src as AnyObject)[linkName] = target;
   }
 }
 
@@ -155,8 +154,8 @@ export function assignTargetsOfOneToManyRelation<
   Target extends Entity
 >(
   sourceEntites: SourceWithRelations[],
-  sourceKey: StringKeyOf<SourceWithRelations>,
-  linkName: StringKeyOf<SourceWithRelations>,
+  sourceKey: string,
+  linkName: string,
   targetEntities: Target[],
   targetKey: StringKeyOf<Target>,
 ) {
@@ -170,8 +169,7 @@ export function assignTargetsOfOneToManyRelation<
     const key = getKeyValue(src, sourceKey);
     const target = lookup.get(key);
     if (!target) continue;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    src[linkName] = target as any;
+    (src as AnyObject)[linkName] = target;
   }
 }
 
@@ -181,7 +179,7 @@ function reduceAsArray<T>(acc: T[] | undefined, it: T) {
   return acc;
 }
 
-function getKeyValue<T>(model: T, keyName: StringKeyOf<T>) {
+function getKeyValue<T>(model: T, keyName: string) {
   const rawKey = (model as AnyObject)[keyName];
   // Hacky workaround for MongoDB, see _SPIKE_.md for details
   if (typeof rawKey === 'object' && rawKey.constructor.name === 'ObjectID') {

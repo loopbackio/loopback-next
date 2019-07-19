@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Options} from '../../common-types';
+import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
-import {Inclusion} from '../../query';
+import {Filter, Inclusion} from '../../query';
 import {EntityCrudRepository} from '../../repositories/repository';
 import {
   assignTargetsOfOneToOneRelation,
@@ -18,50 +18,41 @@ import {
   Getter,
   InclusionResolver,
 } from '../relation.types';
-import {
-  BelongsToResolvedDefinition,
-  resolveBelongsToMetadata,
-} from './belongs-to.helpers';
+import {resolveBelongsToMetadata} from './belongs-to.helpers';
 
-export class BelongsToInclusionResolver<
+export function createBelongsToInclusionResolver<
   Target extends Entity,
   TargetID,
   TargetRelations extends object
-> implements InclusionResolver {
-  private relationMeta: BelongsToResolvedDefinition;
+>(
+  meta: BelongsToDefinition,
+  getTargetRepo: Getter<
+    EntityCrudRepository<Target, TargetID, TargetRelations>
+  >,
+): InclusionResolver {
+  const relationMeta = resolveBelongsToMetadata(meta);
 
-  constructor(
-    relationMeta: BelongsToDefinition,
-    protected getTargetRepo: Getter<
-      EntityCrudRepository<Target, TargetID, TargetRelations>
-    >,
-  ) {
-    this.relationMeta = resolveBelongsToMetadata(relationMeta);
-  }
-
-  async fetchIncludedModels<SourceWithRelations extends Entity>(
-    entities: SourceWithRelations[],
-    inclusion: Inclusion<Target>,
+  return async function fetchIncludedModels(
+    entities: Entity[],
+    inclusion: Inclusion,
     options?: Options,
   ): Promise<void> {
     if (!entities.length) return;
 
-    const sourceKey = this.relationMeta.keyFrom as StringKeyOf<
-      SourceWithRelations
-    >;
-    const sourceIds = entities.map(e => e[sourceKey]);
-    const targetKey = this.relationMeta.keyTo as StringKeyOf<Target>;
+    const sourceKey = relationMeta.keyFrom;
+    const sourceIds = entities.map(e => (e as AnyObject)[sourceKey]);
+    const targetKey = relationMeta.keyTo as StringKeyOf<Target>;
 
-    const targetRepo = await this.getTargetRepo();
+    const targetRepo = await getTargetRepo();
     const targetsFound = await findByForeignKeys(
       targetRepo,
-      targetKey as StringKeyOf<Target>,
+      targetKey,
       uniq(sourceIds),
-      inclusion.scope,
+      inclusion.scope as Filter<Target>,
       options,
     );
 
-    const linkName = this.relationMeta.name as StringKeyOf<SourceWithRelations>;
+    const linkName = relationMeta.name;
 
     assignTargetsOfOneToOneRelation(
       entities,
@@ -70,5 +61,5 @@ export class BelongsToInclusionResolver<
       targetsFound,
       targetKey,
     );
-  }
+  };
 }
