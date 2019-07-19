@@ -3,29 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {DecoratorFactory, MetadataInspector} from '@loopback/context';
-import {
-  getJsonSchema,
-  getJsonSchemaRef,
-  JsonSchemaOptions,
-} from '@loopback/repository-json-schema';
+import { DecoratorFactory, MetadataInspector } from '@loopback/context';
+import { getJsonSchemaRef, JsonSchemaOptions } from '@loopback/repository-json-schema';
 import * as _ from 'lodash';
-import {resolveSchema} from './generate-schema';
-import {jsonToSchemaObject, SchemaRef} from './json-to-schema';
-import {OAI3Keys} from './keys';
-import {
-  ComponentsObject,
-  ISpecificationExtension,
-  isReferenceObject,
-  OperationObject,
-  ParameterObject,
-  PathObject,
-  ReferenceObject,
-  RequestBodyObject,
-  ResponseObject,
-  SchemaObject,
-  SchemasObject,
-} from './types';
+import { SchemaOptions } from './decorators/request-body.option1.decorator';
+import { resolveSchema } from './generate-schema';
+import { jsonToSchemaObject, SchemaRef } from './json-to-schema';
+import { OAI3Keys } from './keys';
+import { ComponentsObject, ISpecificationExtension, isReferenceObject, OperationObject, ParameterObject, PathObject, ReferenceObject, RequestBodyObject, ResponseObject, SchemaObject, SchemasObject } from './types';
 
 const debug = require('debug')('loopback:openapi3:metadata:controller-spec');
 
@@ -74,7 +59,7 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
     debug('  using class-level spec defined via @api()', spec);
     spec = DecoratorFactory.cloneDeep(spec);
   } else {
-    spec = {paths: {}};
+    spec = { paths: {} };
   }
 
   let endpoints =
@@ -183,7 +168,7 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
 
         const content = requestBody.content || {};
         for (const mediaType in content) {
-          processSchemaExtensions(spec, content[mediaType].schema);
+          processSchemaExtensionsForRequestBody(spec, content[mediaType].schema);
         }
       }
     }
@@ -271,31 +256,67 @@ function processSchemaExtensions(
   }
 }
 
+function processSchemaExtensionsForRequestBody(
+  spec: ControllerSpec,
+  schema?: SchemaObject | (ReferenceObject & ISpecificationExtension),
+) {
+  debug('  processing extensions in schema: %j', schema);
+  if (!schema) return;
+
+  assignRelatedSchemas(spec, schema.definitions);
+  delete schema.definitions;
+
+  const tsType = schema.options && schema.options[TS_TYPE_KEY];
+  debug('  %s => %o', TS_TYPE_KEY, tsType);
+  if (tsType) {
+
+    if (!schema.options.isVisited) schema = resolveSchema(tsType, schema);
+    if (schema.$ref) generateOpenAPISchema(spec, tsType, schema.options);
+
+    // We don't want a Function type in the final spec.
+    delete schema.options;
+    return;
+  }
+  if (schema.type === 'array') {
+    processSchemaExtensionsForRequestBody(spec, schema.items);
+  } else if (schema.type === 'object') {
+    if (schema.properties) {
+      for (const p in schema.properties) {
+        processSchemaExtensionsForRequestBody(spec, schema.properties[p]);
+      }
+    }
+  }
+}
+
 /**
  * Generate json schema for a given x-ts-type
  * @param spec - Controller spec
  * @param tsType - TS Type
  */
-function generateOpenAPISchema(spec: ControllerSpec, tsType: Function) {
+function generateOpenAPISchema(spec: ControllerSpec, tsType: Function, options?: SchemaOptions) {
   if (!spec.components) {
     spec.components = {};
   }
   if (!spec.components.schemas) {
     spec.components.schemas = {};
   }
-  if (tsType.name in spec.components.schemas) {
+  const schemaName = options && options.schemaName || tsType.name
+  if (schemaName in spec.components.schemas) {
     // Preserve user-provided definitions
     debug('    skipping type %j as already defined', tsType.name || tsType);
     return;
   }
-  const jsonSchema = getJsonSchema(tsType);
-  const openapiSchema = jsonToSchemaObject(jsonSchema);
+
+  const openapiSchema = getModelSchemaRef(tsType, options);
+  // const jsonSchema = getJsonSchema(tsType);
+  // const openapiSchema = jsonToSchemaObject(jsonSchema);
+  delete openapiSchema.definitions.options;
 
   assignRelatedSchemas(spec, openapiSchema.definitions);
   delete openapiSchema.definitions;
 
-  debug('    defining schema for %j: %j', tsType.name, openapiSchema);
-  spec.components.schemas[tsType.name] = openapiSchema;
+  // debug('    defining schema for %j: %j', tsType.name, openapiSchema);
+  // spec.components.schemas[tsType.name] = openapiSchema;
 }
 
 /**
@@ -337,7 +358,7 @@ export function getControllerSpec(constructor: Function): ControllerSpec {
   let spec = MetadataInspector.getClassMetadata<ControllerSpec>(
     OAI3Keys.CONTROLLER_SPEC_KEY,
     constructor,
-    {ownMetadataOnly: true},
+    { ownMetadataOnly: true },
   );
   if (!spec) {
     spec = resolveControllerSpec(constructor);

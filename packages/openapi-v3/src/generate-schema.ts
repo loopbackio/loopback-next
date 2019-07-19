@@ -3,7 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {SchemaObject} from './types';
+import { getTitleSuffix } from '@loopback/repository-json-schema';
+import { TS_TYPE_KEY } from './controller-spec';
+import { SchemaOptions } from './decorators/request-body.option1.decorator';
+import { SchemaObject } from './types';
 
 /**
  * Generate the `type` and `format` property in a Schema Object according to a
@@ -17,26 +20,31 @@ import {SchemaObject} from './types';
 export function resolveSchema(
   fn?: Function,
   schema: SchemaObject = {},
+  options?: SchemaOptions,
 ): SchemaObject {
   let resolvedSchema: SchemaObject = {};
 
   if (typeof fn === 'function') {
+    const noTsType = !(options && options[TS_TYPE_KEY]);
     if (fn === String) {
-      resolvedSchema = {type: 'string'};
+      resolvedSchema = { type: 'string' };
     } else if (fn === Number) {
-      resolvedSchema = {type: 'number'};
+      resolvedSchema = { type: 'number' };
     } else if (fn === Boolean) {
-      resolvedSchema = {type: 'boolean'};
+      resolvedSchema = { type: 'boolean' };
     } else if (fn === Date) {
-      resolvedSchema = {type: 'string', format: 'date-time'};
-    } else if (fn === Object) {
-      resolvedSchema = {type: 'object'};
+      resolvedSchema = { type: 'string', format: 'date-time' };
+    } else if (fn === Object && noTsType) {
+      resolvedSchema = { type: 'object' };
     } else if (fn === Array) {
-      resolvedSchema = {type: 'array'};
+      resolvedSchema = { type: 'array' };
     } else {
-      resolvedSchema = {$ref: `#/components/schemas/${fn.name}`};
+      // schemaName will override the function name
+      const schemaName = options && options.schemaName;
+      const titleFromMeta = fn.name + getTitleSuffix(options);
+      resolvedSchema = { $ref: `#/components/schemas/${schemaName || titleFromMeta}` };
     }
   }
 
-  return Object.assign(schema, resolvedSchema);
+  return Object.assign(schema, resolvedSchema, { options: Object.assign(options, { isVisited: true }) });
 }

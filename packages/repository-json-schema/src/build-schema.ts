@@ -3,19 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {MetadataInspector} from '@loopback/context';
-import {
-  isBuiltinType,
-  ModelDefinition,
-  ModelMetadataHelper,
-  PropertyDefinition,
-  RelationMetadata,
-  resolveType,
-} from '@loopback/repository';
-import {JSONSchema6 as JSONSchema} from 'json-schema';
-import {JSON_SCHEMA_KEY, MODEL_TYPE_KEYS} from './keys';
+import { MetadataInspector } from '@loopback/context';
+import { isBuiltinType, ModelDefinition, ModelMetadataHelper, PropertyDefinition, RelationMetadata, resolveType } from '@loopback/repository';
+import { JSONSchema6 as JSONSchema } from 'json-schema';
+import { JSON_SCHEMA_KEY, MODEL_TYPE_KEYS } from './keys';
 
 export interface JsonSchemaOptions {
+  schemaName?: string,
   /**
    * Set this flag if you want the schema to define navigational properties
    * for model relations.
@@ -28,10 +22,12 @@ export interface JsonSchemaOptions {
    */
   partial?: boolean;
 
+  exclude?: string[];
+
   /**
    * @internal
    */
-  visited?: {[key: string]: JSONSchema};
+  visited?: { [key: string]: JSONSchema };
 }
 
 /**
@@ -42,6 +38,8 @@ export function buildModelCacheKey(options: JsonSchemaOptions = {}): string {
   if (Object.keys(options).length === 0) {
     return MODEL_TYPE_KEYS.ModelOnly;
   }
+
+  if (options.schemaName) return options.schemaName;
 
   // New key schema: use the same suffix as we use for schema title
   // For example: "modelPartialWithRelations"
@@ -75,7 +73,7 @@ export function getJsonSchema(
       // Define new metadata and set in cache
       MetadataInspector.defineMetadata(
         JSON_SCHEMA_KEY.key,
-        {[key]: schema},
+        { [key]: schema },
         ctor,
       );
     }
@@ -195,7 +193,7 @@ export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
     if (Array.isArray(meta.itemType)) {
       throw new Error('itemType as an array is not supported');
     }
-    result = {type: 'array', items: propDef};
+    result = { type: 'array', items: propDef };
     propertyType = meta.itemType as string | Function;
   } else {
     result = propDef;
@@ -214,7 +212,7 @@ export function metaToJsonProperty(meta: PropertyDefinition): JSONSchema {
       type: resolvedType.name.toLowerCase(),
     });
   } else {
-    Object.assign(propDef, {$ref: `#/definitions/${resolvedType.name}`});
+    Object.assign(propDef, { $ref: `#/definitions/${resolvedType.name}` });
   }
 
   if (meta.description) {
@@ -255,7 +253,7 @@ export function getNavigationalPropertyForRelation(
   }
 }
 
-function getTitleSuffix(options: JsonSchemaOptions = {}) {
+export function getTitleSuffix(options: JsonSchemaOptions = {}) {
   let suffix = '';
   if (options.partial) {
     suffix += 'Partial';
@@ -278,7 +276,7 @@ export function modelToJsonSchema(
   ctor: Function,
   jsonSchemaOptions: JsonSchemaOptions = {},
 ): JSONSchema {
-  const options = {...jsonSchemaOptions};
+  const options = { ...jsonSchemaOptions };
   options.visited = options.visited || {};
 
   const meta: ModelDefinition | {} = ModelMetadataHelper.getModelMetadata(ctor);
@@ -288,11 +286,13 @@ export function modelToJsonSchema(
     return {};
   }
 
-  const title = (meta.title || ctor.name) + getTitleSuffix(options);
+  const schemaName = options && options.schemaName
+  const titleFromMeta = meta.title || ctor.name
+  const title = schemaName || titleFromMeta + getTitleSuffix(options);
 
   if (options.visited[title]) return options.visited[title];
 
-  const result: JSONSchema = {title};
+  const result: JSONSchema = { title };
   options.visited[title] = result;
 
   if (meta.description) {
@@ -324,8 +324,8 @@ export function modelToJsonSchema(
     const resolvedType = resolveType(metaProperty.type) as string | Function;
     const referenceType = isArrayType(resolvedType)
       ? // shimks: ugly type casting; this should be replaced by logic to throw
-        // error if itemType/type is not a string or a function
-        resolveType(metaProperty.itemType as string | Function)
+      // error if itemType/type is not a string or a function
+      resolveType(metaProperty.itemType as string | Function)
       : resolvedType;
 
     if (typeof referenceType !== 'function' || isBuiltinType(referenceType)) {
@@ -343,7 +343,7 @@ export function modelToJsonSchema(
       const relMeta = meta.relations[r];
       const targetType = resolveType(relMeta.target);
       const targetSchema = getJsonSchema(targetType, options);
-      const targetRef = {$ref: `#/definitions/${targetSchema.title}`};
+      const targetRef = { $ref: `#/definitions/${targetSchema.title}` };
       const propDef = getNavigationalPropertyForRelation(relMeta, targetRef);
 
       result.properties[relMeta.name] =
