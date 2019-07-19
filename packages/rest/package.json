@@ -38,7 +38,7 @@
     "express": "^4.17.1",
     "http-errors": "^1.7.3",
     "js-yaml": "^3.13.1",
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.15",
     "on-finished": "^2.3.0",
     "openapi-schema-to-json-schema": "^2.2.0",
     "path-to-regexp": "^3.0.0",

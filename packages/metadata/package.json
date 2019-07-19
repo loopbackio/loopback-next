@@ -19,7 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "debug": "^4.1.1",
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.15",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
