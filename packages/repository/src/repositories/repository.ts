@@ -220,7 +220,7 @@ export interface EntityCrudRepository<
 
 // TODO(semver-major) move this property to CrudRepository interface
 export interface WithInclusionResolvers {
-  inclusionResolvers: {[key: string]: InclusionResolver};
+  inclusionResolvers: Map<string, InclusionResolver>;
 }
 
 export function hasInclusionResolvers<T extends Model>(

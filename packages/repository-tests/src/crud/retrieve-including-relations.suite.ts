@@ -120,7 +120,7 @@ export function retrieveIncludingRelationsSuite(
             itemsMeta as HasManyDefinition,
             async () => itemRepo,
           );
-          categoryRepo.inclusionResolvers['items'] = itemsResolver;
+          categoryRepo.inclusionResolvers.set('items', itemsResolver);
 
           await ctx.dataSource.automigrate([Category.name, Item.name]);
         }),

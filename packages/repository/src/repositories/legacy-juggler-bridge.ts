@@ -102,7 +102,7 @@ export class DefaultCrudRepository<
   capabilities: ConnectorCapabilities;
 
   modelClass: juggler.PersistedModelClass;
-  public inclusionResolvers: {[key: string]: InclusionResolver};
+  public inclusionResolvers: Map<string, InclusionResolver>;
 
   /**
    * Constructor of DefaultCrudRepository
@@ -131,9 +131,7 @@ export class DefaultCrudRepository<
 
     this.modelClass = this.definePersistedModel(entityClass);
 
-    // Important! Create the map object with `null` prototype to avoid
-    // Prototype Poisoning vulnerabilities.
-    this.inclusionResolvers = Object.create(null);
+    this.inclusionResolvers = new Map<string, InclusionResolver>();
   }
 
   // Create an internal legacy Model attached to the datasource
@@ -279,9 +277,12 @@ export class DefaultCrudRepository<
       EntityCrudRepository<Target, TargetID, TargetRelations>
     >,
   ) {
-    this.inclusionResolvers[relationName] = new HasManyInclusionResolver(
-      this.getRelationDefinition(relationName) as HasManyDefinition,
-      targetRepoGetter,
+    this.inclusionResolvers.set(
+      relationName,
+      new HasManyInclusionResolver(
+        this.getRelationDefinition(relationName) as HasManyDefinition,
+        targetRepoGetter,
+      ),
     );
   }
 
@@ -300,9 +301,12 @@ export class DefaultCrudRepository<
       EntityCrudRepository<Target, TargetID, TargetRelations>
     >,
   ) {
-    this.inclusionResolvers[relationName] = new HasOneInclusionResolver(
-      this.getRelationDefinition(relationName) as HasOneDefinition,
-      targetRepoGetter,
+    this.inclusionResolvers.set(
+      relationName,
+      new HasOneInclusionResolver(
+        this.getRelationDefinition(relationName) as HasOneDefinition,
+        targetRepoGetter,
+      ),
     );
   }
 
@@ -321,9 +325,12 @@ export class DefaultCrudRepository<
       EntityCrudRepository<Target, TargetID, TargetRelations>
     >,
   ) {
-    this.inclusionResolvers[relationName] = new BelongsToInclusionResolver(
-      this.getRelationDefinition(relationName) as BelongsToDefinition,
-      targetRepoGetter,
+    this.inclusionResolvers.set(
+      relationName,
+      new BelongsToInclusionResolver(
+        this.getRelationDefinition(relationName) as BelongsToDefinition,
+        targetRepoGetter,
+      ),
     );
   }
 
@@ -644,7 +651,7 @@ export class DefaultCrudRepository<
 
     const resolveTasks = include.map(i => {
       const relationName = i.relation!;
-      const handler = this.inclusionResolvers[relationName];
+      const handler = this.inclusionResolvers.get(relationName)!;
       return handler.fetchIncludedModels(entities, i, options);
     });
 
@@ -659,11 +666,8 @@ export class DefaultCrudRepository<
       debug('isInclusionAllowed for %j? No: missing relation name', inclusion);
       return false;
     }
-    const allowed = Object.prototype.hasOwnProperty.call(
-      this.inclusionResolvers,
-      relationName,
-    );
 
+    const allowed = this.inclusionResolvers.has(relationName);
     debug('isInclusionAllowed for %j (relation %s)? %s', inclusion, allowed);
     return allowed;
   }

@@ -63,7 +63,7 @@ Conceptually:
 
 ```ts
 export class DefaultCrudRepository {
-  public inclusionResolvers: {[key: string]: InclusionResolver};
+  public inclusionResolvers: Map<string, InclusionResolver>;
 
   // ...
 }
@@ -105,7 +105,7 @@ export class DefaultCrudRepository<T, Relations> {
     // process relations in parallel
     const resolveTasks = filter.include.map(i => {
       const relationName = i.relation;
-      const handler = this.inclusionResolvers[relationName];
+      const handler = this.inclusionResolvers.get(relationName);
       return handler.fetchIncludedModels(entities, i, options);
     });
     await Promise.all(resolveTasks);
@@ -160,8 +160,9 @@ error for such relations (rather than a generic "unknown inclusion" error).
 this.prohibitInclusion('accessTokens');
 
 // implementation
-this.inclusionResolvers[relationName] = new RejectedInclusionResolver(
+this.inclusionResolvers.set(
   relationName,
+  new RejectedInclusionResolver(relationName),
 );
 ```
 
