@@ -157,7 +157,7 @@ error for such relations (rather than a generic "unknown inclusion" error).
 
 ```ts
 // usage
-this.registerForbiddenInclusion('accessTokens');
+this.prohibitInclusion('accessTokens');
 
 // implementation
 this.inclusionResolvers[relationName] = new RejectedInclusionResolver(
