@@ -248,7 +248,7 @@ function checkRestCrudContents() {
     /responses: {/,
     /'200': {/,
     /description: 'ProductReview model instance'/,
-    /content: {'application\/json': {schema: {'x-ts-type': ProductReview}}},\s{1,}},\s{1,}},\s{1,}}\)/,
+    /content: {'application\/json': {schema: getModelSchemaRef\(ProductReview\)}},\s{1,}},\s{1,}},\s{1,}}\)/,
     /async create\(\s+\@requestBody\({\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(ProductReview, {exclude: \['productId'\]}\),\s+},\s+},\s+}\)\s+productReview: Omit<ProductReview, 'productId'>,\s+\)/,
   ];
   postCreateRegEx.forEach(regex => {
@@ -274,7 +274,7 @@ function checkRestCrudContents() {
     /responses: {/,
     /'200': {/,
     /description: 'Array of ProductReview model instances'/,
-    /content: {'application\/json': {schema: {'x-ts-type': ProductReview}}},\s{1,}},\s{1,}},\s{1,}}\)/,
+    /content: {'application\/json': {schema: getModelSchemaRef\(ProductReview\)}},\s{1,}},\s{1,}},\s{1,}}\)/,
     /async find\(\s*\@param\.query\.object\('filter', getFilterSchemaFor\(ProductReview\)\) filter\?: Filter<ProductReview>(|,\s+)\)/,
   ];
   getFindRegEx.forEach(regex => {
@@ -300,7 +300,7 @@ function checkRestCrudContents() {
     /responses: {/,
     /'200': {/,
     /description: 'ProductReview model instance'/,
-    /content: {'application\/json': {schema: {'x-ts-type': ProductReview}}},\s{1,}},\s{1,}},\s{1,}}\)/,
+    /content: {'application\/json': {schema: getModelSchemaRef\(ProductReview\)}},\s{1,}},\s{1,}},\s{1,}}\)/,
     /async findById\(\@param.path.number\('id'\)/,
   ];
   getFindByIdRegEx.forEach(regex => {

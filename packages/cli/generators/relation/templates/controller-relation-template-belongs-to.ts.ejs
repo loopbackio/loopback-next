@@ -4,6 +4,7 @@ import {
 import {
   param,
   get,
+  getModelSchemaRef
 } from '@loopback/rest';
 import {
   <%= sourceModelClassName %>,
@@ -23,7 +24,7 @@ export class <%= controllerClassName %> {
         description: '<%= targetModelClassName %> belonging to <%= sourceModelClassName %>',
         content: {
           'application/json': {
-            schema: { type: 'array', items: { 'x-ts-type': <%= targetModelClassName %> } },
+            schema: { type: 'array', items: getModelSchemaRef(<%= targetModelClassName %>) },
           },
         },
       },
