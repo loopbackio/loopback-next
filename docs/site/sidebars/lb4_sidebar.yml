@@ -19,7 +19,6 @@ children:
   url: Getting-started.html
   output: 'web, pdf'
 
-
 - title: 'Key concepts'
   url: Concepts.html
   output: 'web, pdf'
@@ -137,34 +136,64 @@ children:
     url: Error-handling.html
     output: 'web, pdf'
 
-- title: 'How-tos'
-  url: How-tos.html
+- title: 'Usage Scenarios'
+  url: Usage-scenarios.html
   output: 'web, pdf'
   children:
 
-    - title: 'Exposing GraphQL APIs'
-      url: exposing-graphql-apis.html
+  - title: 'Create Other Forms of APIs'
+    url: Create-other-forms-of-apis.html
+    output: 'web, pdf'
+    children:
+      - title: 'Exposing GraphQL APIs'
+        url: exposing-graphql-apis.html
+        output: 'web, pdf'
+
+  - title: 'Access Databases'
+    url: Access-databases.html
+    output: 'web, pdf'
+    children:
+
+      - title: 'Database Migrations'
+        url: Database-migrations.html
+        output: 'web, pdf'
+
+  - title: 'Call Other Services'
+    url: Calling-other-APIs-and-web-services.html
+    output: 'web, pdf'
+
+  - title: 'Integrate with Infrastructures'
+    url: Integrate-with-infrastructures.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'Authentication'
+      url: Loopback-component-authentication.html
       output: 'web, pdf'
 
-    - title: 'Deploying to IBM Cloud'
-      url: Deploying-to-IBM-Cloud.html
+    - title: 'Authorization'
+      url: Loopback-component-authorization.html
       output: 'web, pdf'
 
-    - title: 'Deploying to Kubernetes on IBM Cloud'
-      url: deploying_to_ibm_cloud_kubernetes.html
-      output: 'web, pdf'
+  - title: 'Deployment'
+    url: Deployment.html
+    output: 'web, pdf'
+    children:
+      - title: 'Deploying to IBM Cloud'
+        url: Deploying-to-IBM-Cloud.html
+        output: 'web, pdf'
 
-    - title: 'Deploying with pm2 and nginx'
-      url: deploying-with-pm2-and-nginx.html
-      output: 'web, pdf'
+      - title: 'Deploying to Kubernetes on IBM Cloud'
+        url: deploying_to_ibm_cloud_kubernetes.html
+        output: 'web, pdf'
 
-    - title: 'Serving static files'
-      url: Serving-static-files.html
-      output: 'web, pdf'
+      - title: 'Deploying with pm2 and nginx'
+        url: deploying-with-pm2-and-nginx.html
+        output: 'web, pdf'
 
-    - title: 'Database Migrations'
-      url: Database-migrations.html
-      output: 'web, pdf'
+  - title: 'Serving static files'
+    url: Serving-static-files.html
+    output: 'web, pdf'
 
 - title: 'Booting an Application'
   url: Booting-an-Application.html
@@ -190,10 +219,6 @@ children:
   - title: 'Boot and Mount a LoopBack 3 Application'
     url: Boot-and-Mount-a-LoopBack-3-application.html
     output: 'web, pdf'
-
-- title: 'Calling other APIs'
-  url: Calling-other-APIs-and-web-services.html
-  output: 'web, pdf'
 
 - title: 'Extending LoopBack 4'
   url: Extending-LoopBack-4.html
