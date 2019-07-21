@@ -19,7 +19,7 @@
     "@typescript-eslint/parser": "^1.13.0",
     "coveralls": "^3.0.5",
     "cz-conventional-changelog": "^3.0.2",
-    "eslint": "^6.0.1",
+    "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-eslint-plugin": "^2.1.0",
     "eslint-plugin-mocha": "^6.0.0",
