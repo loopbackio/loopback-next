@@ -1,12 +1,14 @@
 {
   "extends": "./packages/build/config/tsconfig.common.json",
   "include": [
+    "acceptance",
     "benchmark",
     "examples",
     "packages"
   ],
   "exclude": [
     "node_modules/**",
+    "acceptance/node_modules/**",
     "benchmark/node_modules/**",
     "examples/*/node_modules/**",
     "packages/*/node_modules/**",
