@@ -9,7 +9,7 @@ import {expect, skipIf, toJSON} from '@loopback/testlab';
 import {Suite} from 'mocha';
 import {withCrudCtx} from '../helpers.repository-tests';
 import {
-  CrudConnectorFeatures,
+  CrudFeatures,
   CrudRepositoryCtor,
   CrudTestContext,
   DataSourceOptions,
@@ -18,7 +18,7 @@ import {
 export function freeformPropertiesSuite(
   dataSourceOptions: DataSourceOptions,
   repositoryClass: CrudRepositoryCtor,
-  connectorFeatures: CrudConnectorFeatures,
+  connectorFeatures: CrudFeatures,
 ) {
   skipIf<[(this: Suite) => void], void>(
     !connectorFeatures.freeFormProperties,

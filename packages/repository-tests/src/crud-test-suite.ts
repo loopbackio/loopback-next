@@ -9,7 +9,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {withCrudCtx} from './helpers.repository-tests';
 import {
-  CrudConnectorFeatures,
+  CrudFeatures,
   CrudRepositoryCtor,
   CrudTestContext,
   DataSourceOptions,
@@ -20,15 +20,15 @@ const debug = debugFactory('loopback:repository-tests');
 type SuiteFn = (
   dataSourceOptions: DataSourceOptions,
   repositoryClass: CrudRepositoryCtor,
-  connectorFeatures: CrudConnectorFeatures,
+  connectorFeatures: CrudFeatures,
 ) => void;
 
 export function crudRepositoryTestSuite(
   dataSourceOptions: DataSourceOptions,
   repositoryClass: CrudRepositoryCtor,
-  connectorFeatures: Partial<CrudConnectorFeatures>,
+  connectorFeatures: Partial<CrudFeatures>,
 ) {
-  const features: CrudConnectorFeatures = {
+  const features: CrudFeatures = {
     idType: 'string',
     freeFormProperties: true,
     ...connectorFeatures,

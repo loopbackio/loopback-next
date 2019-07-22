@@ -8,7 +8,7 @@ import {EntityCrudRepository} from '@loopback/repository/src';
 import {expect, toJSON} from '@loopback/testlab';
 import {withCrudCtx} from '../helpers.repository-tests';
 import {
-  CrudConnectorFeatures,
+  CrudFeatures,
   CrudRepositoryCtor,
   CrudTestContext,
   DataSourceOptions,
@@ -19,7 +19,7 @@ import {
 export function createRetrieveSuite(
   dataSourceOptions: DataSourceOptions,
   repositoryClass: CrudRepositoryCtor,
-  connectorFeatures: CrudConnectorFeatures,
+  connectorFeatures: CrudFeatures,
 ) {
   @model()
   class Product extends Entity {
