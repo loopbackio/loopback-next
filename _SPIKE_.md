@@ -415,7 +415,7 @@ MongoDB is tricky.
 
 - It uses a custom `ObjectID` type for primary keys.
 - `ObjectID` is represented as a `string` when converted to JSON
-- In queries, string values must be case to ObjectID, otherwise they are not
+- In queries, string values must be cast to ObjectID, otherwise they are not
   considered as the same value: `'some-id' !== ObjectID('some-id')`.
 
 As a result, both PK and FK properties must use `ObjectID` as the type, and
