@@ -32,7 +32,7 @@ export class <%= controllerClassName %> {
         description: 'Array of <%= targetModelClassName %>\'s belonging to <%= sourceModelClassName %>',
         content: {
           'application/json': {
-            schema: { type: 'array', items: getModelSchemaRef(<%= targetModelClassName %>) },
+            schema: {type: 'array', items: getModelSchemaRef(<%= targetModelClassName %>)},
           },
         },
       },
@@ -49,7 +49,7 @@ export class <%= controllerClassName %> {
     responses: {
       '200': {
         description: '<%= sourceModelClassName %> model instance',
-        content: { 'application/json': { schema: getModelSchemaRef(<%= targetModelClassName %>) } },
+        content: {'application/json': {schema: getModelSchemaRef(<%= targetModelClassName %>)}},
       },
     },
   })
@@ -70,7 +70,7 @@ export class <%= controllerClassName %> {
     responses: {
       '200': {
         description: '<%= sourceModelClassName %>.<%= targetModelClassName %> PATCH success count',
-        content: { 'application/json': { schema: CountSchema } },
+        content: {'application/json': {schema: CountSchema}},
       },
     },
   })
@@ -93,7 +93,7 @@ export class <%= controllerClassName %> {
     responses: {
       '200': {
         description: '<%= sourceModelClassName %>.<%= targetModelClassName %> DELETE success count',
-        content: { 'application/json': { schema: CountSchema } },
+        content: {'application/json': {schema: CountSchema}},
       },
     },
   })

@@ -383,7 +383,7 @@ context('check if the controller file created ', () => {
           /\@get\('\/customers\/{id}\/orders', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'Array of Order\\'s belonging to Customer',\n/,
           /content: {\n {10}'application\/json': {\n/,
-          /schema: { type: 'array', items: getModelSchemaRef\(Order\) },/,
+          /schema: {type: 'array', items: getModelSchemaRef\(Order\)},/,
           /},\n . {6}},\n . {4}},\n . {2}},\n {2}}\)\n/,
           /async find\(\n . {2}\@param.path.number\('id'\) id: number,\n/,
           /\@param.query.object\('filter'\) filter\?: Filter<Order>,\n/,
@@ -394,7 +394,7 @@ context('check if the controller file created ', () => {
           /\@get\('\/customer-classes\/{id}\/order-classes', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'Array of OrderClass\\'s belonging to CustomerClass',\n/,
           /content: {\n {10}'application\/json': {\n/,
-          /schema: { type: 'array', items: getModelSchemaRef\(OrderClass\) },/,
+          /schema: {type: 'array', items: getModelSchemaRef\(OrderClass\)},/,
           /},\n . {6}},\n . {4}},\n . {2}},\n {2}}\)\n/,
           /async find\(\n . {2}\@param.path.number\('id'\) id: number,\n/,
           /\@param.query.object\('filter'\) filter\?: Filter<OrderClass>,\n/,
@@ -405,7 +405,7 @@ context('check if the controller file created ', () => {
           /\@get\('\/customer-class-types\/{id}\/order-class-types', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'Array of OrderClassType\\'s belonging to CustomerClassType',\n/,
           /content: {\n {10}'application\/json': {\n/,
-          /schema: { type: 'array', items: getModelSchemaRef\(OrderClassType\) },/,
+          /schema: {type: 'array', items: getModelSchemaRef\(OrderClassType\)},/,
           /},\n . {6}},\n . {4}},\n . {2}},\n {2}}\)\n/,
           /async find\(\n . {2}\@param.path.number\('id'\) id: number,\n/,
           /\@param.query.object\('filter'\) filter\?: Filter<OrderClassType>,\n/,
@@ -436,7 +436,7 @@ context('check if the controller file created ', () => {
         const postClassCreateRegEx = [
           /\@post\('\/customers\/{id}\/orders', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'Customer model instance',\n/,
-          /content: { 'application\/json': { schema: getModelSchemaRef\(Order\) } },\n/,
+          /content: {'application\/json': {schema: getModelSchemaRef\(Order\)}},\n/,
           /},\n . {2}},\n .}\)\n {2}async create\(\n/,
           /\@param\.path\.number\('id'\) id: typeof Customer\.prototype\.id,\n/,
           /\@requestBody\(\{\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(Order, {exclude: \['id'\]}\),\s+},\s+},\s+}\) order: Omit<Order, 'id'>,\n/,
@@ -446,7 +446,7 @@ context('check if the controller file created ', () => {
         const postMultiWordClassCreateRegEx = [
           /\@post\('\/customer-classes\/{id}\/order-classes', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'CustomerClass model instance',\n/,
-          /content: { 'application\/json': { schema: getModelSchemaRef\(OrderClass\) } },\n/,
+          /content: {'application\/json': {schema: getModelSchemaRef\(OrderClass\)}},\n/,
           /},\n . {2}},\n .}\)\n {2}async create\(\n/,
           /\@param\.path\.number\('id'\) id: typeof CustomerClass\.prototype\.custNumber,\n/,
           /\@requestBody\(\{\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(OrderClass, {exclude: \['orderNumber'\]}\),\s+},\s+},\s+}\) orderClass: Omit<OrderClass, 'orderNumber'>,\n/,
@@ -456,7 +456,7 @@ context('check if the controller file created ', () => {
         const postTypeClassCreateRegEx = [
           /\@post\('\/customer-class-types\/{id}\/order-class-types', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'CustomerClassType model instance',\n/,
-          /content: { 'application\/json': { schema: getModelSchemaRef\(OrderClassType\) } },\n/,
+          /content: {'application\/json': {schema: getModelSchemaRef\(OrderClassType\)}},\n/,
           /},\n . {2}},\n .}\)\n {2}async create\(\n/,
           /\@param\.path\.number\('id'\) id: typeof CustomerClassType\.prototype\.custNumber,\n/,
           /\@requestBody\(\{\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(OrderClassType, {exclude: \['orderString'\]}\),\s+},\s+},\s+}\) orderClassType: Omit<OrderClassType, 'orderString'>,\n/,
@@ -492,7 +492,7 @@ context('check if the controller file created ', () => {
         const updateOrderByCustomerIdRegEx = [
           /\@patch\('\/customers\/{id}\/orders', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'Customer.Order PATCH success count',\n/,
-          /content: { 'application\/json': { schema: CountSchema } },\n/,
+          /content: {'application\/json': {schema: CountSchema}},\n/,
           /},\n {4}},\n {2}}\)\n {2}async patch\(\n/,
           /\@param\.path\.number\('id'\) id: number,\n {4}/,
           /\@requestBody\({\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(Order, {partial: true}\),\s+},\s+},\s+}\)\s+order: Partial<Order>,\n/,
@@ -504,7 +504,7 @@ context('check if the controller file created ', () => {
         const updateOrderClassByCustomerClassIdRegEx = [
           /\@patch\('\/customer-classes\/{id}\/order-classes', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'CustomerClass.OrderClass PATCH success count',\n/,
-          /content: { 'application\/json': { schema: CountSchema } },\n/,
+          /content: {'application\/json': {schema: CountSchema}},\n/,
           /},\n {4}},\n {2}}\)\n {2}async patch\(\n/,
           /\@param\.path\.number\('id'\) id: number,\n {4}/,
           /\@requestBody\({\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(OrderClass, {partial: true}\),\s+},\s+},\s+}\)\s+orderClass: Partial<OrderClass>,\n/,
@@ -516,7 +516,7 @@ context('check if the controller file created ', () => {
         const updateOrderClassByCustomerClassTypeIdRegEx = [
           /\@patch\('\/customer-class-types\/{id}\/order-class-types', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'CustomerClassType.OrderClassType PATCH success count',\n/,
-          /content: { 'application\/json': { schema: CountSchema } },\n/,
+          /content: {'application\/json': {schema: CountSchema}},\n/,
           /},\n {4}},\n {2}}\)\n {2}async patch\(\n/,
           /\@param\.path\.number\('id'\) id: number,\n {4}/,
           /\@requestBody\({\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(OrderClassType, {partial: true}\),\s+},\s+},\s+}\)\s+orderClassType: Partial<OrderClassType>,\n/,
@@ -553,7 +553,7 @@ context('check if the controller file created ', () => {
         const deleteOrderByCustomerIdRegEx = [
           /\@del\('\/customers\/{id}\/orders', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'Customer.Order DELETE success count',\n/,
-          /content: { 'application\/json': { schema: CountSchema } },\n/,
+          /content: {'application\/json': {schema: CountSchema}},\n/,
           /},\n {4}},\n {2}}\)\n {2}async delete\(\n/,
           /\@param\.path\.number\('id'\) id: number,\n /,
           /\@param\.query\.object\('where', getWhereSchemaFor\(Order\)\) where\?: Where<Order>,\n/,
@@ -564,7 +564,7 @@ context('check if the controller file created ', () => {
         const deleteOrderClassByCustomerClassIdRegEx = [
           /\@del\('\/customer-classes\/{id}\/order-classes', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'CustomerClass.OrderClass DELETE success count',\n/,
-          /content: { 'application\/json': { schema: CountSchema } },\n/,
+          /content: {'application\/json': {schema: CountSchema}},\n/,
           /},\n {4}},\n {2}}\)\n {2}async delete\(\n/,
           /\@param\.path\.number\('id'\) id: number,\n /,
           /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClass\)\) where\?: Where<OrderClass>,\n/,
@@ -575,7 +575,7 @@ context('check if the controller file created ', () => {
         const deleteOrderClassTypeByCustomerClassTypeIdRegEx = [
           /\@del\('\/customer-class-types\/{id}\/order-class-types', {\n {4}responses: {\n {6}'200': {\n/,
           /description: 'CustomerClassType.OrderClassType DELETE success count',\n/,
-          /content: { 'application\/json': { schema: CountSchema } },\n/,
+          /content: {'application\/json': {schema: CountSchema}},\n/,
           /},\n {4}},\n {2}}\)\n {2}async delete\(\n/,
           /\@param\.path\.number\('id'\) id: number,\n /,
           /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClassType\)\) where\?: Where<OrderClassType>,\n/,
