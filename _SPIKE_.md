@@ -165,7 +165,7 @@ export class CategoryRepository extends DefaultCrudRepository {
 
     // we already have this line to create HasManyRepository factory
     this.products = this.createHasManyRepositoryFactoryFor(
-      'todos',
+      'products',
       productRepositoryGetter,
     );
 

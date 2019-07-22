@@ -7,9 +7,7 @@ import {Getter, inject} from '@loopback/core';
 import {
   BelongsToAccessor,
   DefaultCrudRepository,
-  Filter,
   juggler,
-  Options,
   repository,
 } from '@loopback/repository';
 import {Todo, TodoList, TodoRelations} from '../models';
@@ -37,29 +35,5 @@ export class TodoRepository extends DefaultCrudRepository<
       todoListRepositoryGetter,
     );
     this.registerInclusion('todoList', this.todoList.inclusionResolver);
-  }
-
-  protected async includeRelatedModels(
-    entities: Todo[],
-    filter?: Filter<Todo>,
-    _options?: Options,
-  ): Promise<(Todo & TodoRelations)[]> {
-    const result = entities as (Todo & TodoRelations)[];
-
-    // poor-mans inclusion resolver, this should be handled by DefaultCrudRepo
-    // and use `inq` operator to fetch related todo-lists in fewer DB queries
-    // this is a temporary implementation, please see
-    // https://github.com/strongloop/loopback-next/issues/3195
-    const include = filter && filter.include;
-    if (include && include.length && include[0].relation === 'todoList') {
-      await Promise.all(
-        result.map(async r => {
-          // eslint-disable-next-line require-atomic-updates
-          r.todoList = await this.todoList(r.id);
-        }),
-      );
-    }
-
-    return result;
   }
 }
