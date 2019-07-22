@@ -4,13 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as debugFactory from 'debug';
-import {camelCase} from 'lodash';
 import {DataObject} from '../../common-types';
-import {InvalidRelationError} from '../../errors';
 import {Entity} from '../../model';
 import {EntityCrudRepository} from '../../repositories/repository';
-import {isTypeResolver} from '../../type-resolver';
 import {Getter, HasOneDefinition} from '../relation.types';
+import {resolveHasOneMetadata} from './has-one.helpers';
 import {DefaultHasOneRepository, HasOneRepository} from './has-one.repository';
 
 const debug = debugFactory('loopback:repository:has-one-repository-factory');
@@ -51,53 +49,4 @@ export function createHasOneRepositoryFactory<
       EntityCrudRepository<Target, TargetID>
     >(targetRepositoryGetter, constraint as DataObject<Target>);
   };
-}
-
-type HasOneResolvedDefinition = HasOneDefinition & {keyTo: string};
-
-/**
- * Resolves given hasOne metadata if target is specified to be a resolver.
- * Mainly used to infer what the `keyTo` property should be from the target's
- * hasOne metadata
- * @param relationMeta - hasOne metadata to resolve
- */
-function resolveHasOneMetadata(
-  relationMeta: HasOneDefinition,
-): HasOneResolvedDefinition {
-  if (!isTypeResolver(relationMeta.target)) {
-    const reason = 'target must be a type resolver';
-    throw new InvalidRelationError(reason, relationMeta);
-  }
-
-  const targetModel = relationMeta.target();
-  const targetModelProperties =
-    targetModel.definition && targetModel.definition.properties;
-
-  // Make sure that if it already keys to the foreign key property,
-  // the key exists in the target model
-  if (relationMeta.keyTo && targetModelProperties[relationMeta.keyTo]) {
-    // The explict cast is needed because of a limitation of type inference
-    return relationMeta as HasOneResolvedDefinition;
-  }
-
-  const sourceModel = relationMeta.source;
-  if (!sourceModel || !sourceModel.modelName) {
-    const reason = 'source model must be defined';
-    throw new InvalidRelationError(reason, relationMeta);
-  }
-
-  debug(
-    'Resolved model %s from given metadata: %o',
-    targetModel.modelName,
-    targetModel,
-  );
-  const defaultFkName = camelCase(sourceModel.modelName + '_id');
-  const hasDefaultFkProperty = targetModelProperties[defaultFkName];
-
-  if (!hasDefaultFkProperty) {
-    const reason = `target model ${targetModel.name} is missing definition of foreign key ${defaultFkName}`;
-    throw new InvalidRelationError(reason, relationMeta);
-  }
-
-  return Object.assign(relationMeta, {keyTo: defaultFkName});
 }
