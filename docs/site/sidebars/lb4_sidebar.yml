@@ -358,6 +358,10 @@ children:
     url: Discovering-models.html
     output: 'web, pdf'
 
+  - title: 'Relation generator'
+    url: Relation-generator.html
+    output: 'web, pdf'
+
   - title: 'Repository generator'
     url: Repository-generator.html
     output: 'web, pdf'
