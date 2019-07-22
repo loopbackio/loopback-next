@@ -50,3 +50,6 @@ types, use the [relation best suited for your database](https://github.com/stron
 The articles on each type of relation above will show you how to leverage the
 new relation engine to define and configure relations in your LoopBack
 application.
+
+To generate a `HasMany` or `BelongsTo` relation through the CLI, see
+[Relation generator](Relation-generator.md).
