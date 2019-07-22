@@ -60,6 +60,6 @@ export type CrudRepositoryCtor = new <
 export interface CrudTestContext {
   dataSourceOptions: DataSourceOptions;
   repositoryClass: CrudRepositoryCtor;
-  connectorFeatures: CrudFeatures;
+  features: CrudFeatures;
   dataSource: juggler.DataSource;
 }

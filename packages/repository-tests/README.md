@@ -67,7 +67,7 @@ tests:
 export function createRetrieveSuite(
   dataSourceOptions: DataSourceOptions,
   repositoryClass: CrudRepositoryCtor,
-  connectorFeatures: CrudConnectorFeatures,
+  features: CrudFeatures,
 ) {
   // test code
 }
