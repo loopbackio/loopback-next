@@ -3,10 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  CrudConnectorFeatures,
-  DataSourceOptions,
-} from '@loopback/repository-tests';
+import {CrudFeatures, DataSourceOptions} from '@loopback/repository-tests';
 
 const connector = require('loopback-connector-mongodb');
 
@@ -17,6 +14,6 @@ export const MONGODB_CONFIG: DataSourceOptions = {
   database: process.env.MONGODB_DATABASE || 'repository-tests',
 };
 
-export const MONGODB_FEATURES: Partial<CrudConnectorFeatures> = {
+export const MONGODB_FEATURES: Partial<CrudFeatures> = {
   idType: 'string',
 };

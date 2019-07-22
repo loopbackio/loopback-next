@@ -3,10 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  CrudConnectorFeatures,
-  DataSourceOptions,
-} from '@loopback/repository-tests';
+import {CrudFeatures, DataSourceOptions} from '@loopback/repository-tests';
 
 const connector = require('loopback-connector-mysql');
 
@@ -20,7 +17,7 @@ export const MYSQL_CONFIG: DataSourceOptions = {
   createDatabase: true,
 };
 
-export const MYSQL_FEATURES: Partial<CrudConnectorFeatures> = {
+export const MYSQL_FEATURES: Partial<CrudFeatures> = {
   idType: 'number',
   freeFormProperties: false,
 };
