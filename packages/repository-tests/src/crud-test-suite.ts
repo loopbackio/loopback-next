@@ -20,18 +20,18 @@ const debug = debugFactory('loopback:repository-tests');
 type SuiteFn = (
   dataSourceOptions: DataSourceOptions,
   repositoryClass: CrudRepositoryCtor,
-  connectorFeatures: CrudFeatures,
+  features: CrudFeatures,
 ) => void;
 
 export function crudRepositoryTestSuite(
   dataSourceOptions: DataSourceOptions,
   repositoryClass: CrudRepositoryCtor,
-  connectorFeatures: Partial<CrudFeatures>,
+  partialFeatures: Partial<CrudFeatures>,
 ) {
   const features: CrudFeatures = {
     idType: 'string',
     freeFormProperties: true,
-    ...connectorFeatures,
+    ...partialFeatures,
   };
 
   describe('CRUD Repository operations', () => {
@@ -39,7 +39,7 @@ export function crudRepositoryTestSuite(
       withCrudCtx(function setupContext(ctx: CrudTestContext) {
         ctx.dataSourceOptions = dataSourceOptions;
         ctx.repositoryClass = repositoryClass;
-        ctx.connectorFeatures = features;
+        ctx.features = features;
       }),
     );
     before(
@@ -70,7 +70,7 @@ export function crudRepositoryTestSuite(
           suite.name,
           dataSourceOptions,
           'class ' + repositoryClass.name,
-          connectorFeatures,
+          partialFeatures,
         );
         suite(dataSourceOptions, repositoryClass, features);
       }

@@ -19,12 +19,12 @@ import {
 export function createRetrieveSuite(
   dataSourceOptions: DataSourceOptions,
   repositoryClass: CrudRepositoryCtor,
-  connectorFeatures: CrudFeatures,
+  features: CrudFeatures,
 ) {
   @model()
   class Product extends Entity {
     @property({
-      type: connectorFeatures.idType,
+      type: features.idType,
       id: true,
       generated: true,
       description: 'The unique identifier for a product',

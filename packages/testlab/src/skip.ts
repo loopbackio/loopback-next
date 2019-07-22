@@ -17,7 +17,7 @@ export type TestDefinition<ARGS extends unknown[], RETVAL> = (
  * @example
  * ```ts
  * skipIf(
- *   !connectorFeatures.freeFormProperties,
+ *   !features.freeFormProperties,
  *   describe,
  *  'free-form properties (strict: false)',
  *   () => {
