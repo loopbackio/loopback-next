@@ -9,7 +9,6 @@ import pEvent from 'p-event';
 import * as path from 'path';
 import {runExtractorForMonorepo, updateApiDocs} from '../..';
 import {runExtractorForPackage} from '../../monorepo-api-extractor';
-import {fixConstructorName} from '../../update-api-md-docs';
 
 const runCLI = require('@loopback/build').runCLI;
 
@@ -23,7 +22,9 @@ describe('tsdocs', function() {
 
   const API_MD_FILES = [
     'pkg1.md',
-    'pkg1.pet.(constructor).md',
+    // It was `'pkg1.pet._constructor_.md'` before
+    // https://github.com/microsoft/web-build-tools/pull/1410
+    'pkg1.pet._constructor_.md',
     'pkg1.pet.greet.md',
     'pkg1.pet.kind.md',
     'pkg1.pet.md',
@@ -102,10 +103,7 @@ describe('tsdocs', function() {
     });
 
     const files = await fs.readdir(SITE_APIDOCS_ROOT);
-    expect(files.sort()).to.eql([
-      'index.md',
-      ...API_MD_FILES.map(fixConstructorName),
-    ]);
+    expect(files.sort()).to.eql(['index.md', ...API_MD_FILES]);
 
     for (const f of files) {
       const md = await fs.readFile(path.join(SITE_APIDOCS_ROOT, f), 'utf-8');
@@ -135,6 +133,6 @@ permalink: /doc/en/lb4/apidocs.index.html
       path.join(SITE_APIDOCS_ROOT, 'pkg1.pet._constructor_.md'),
       'utf-8',
     );
-    expect(constructorDoc).to.not.match(/\.\(constructor\)/);
+    expect(constructorDoc).to.not.match(/\.\(constructor\)\.md/);
   });
 });
