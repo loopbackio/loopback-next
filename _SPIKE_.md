@@ -1,5 +1,16 @@
 # Spike: Resolve included models
 
+## Table of contents
+
+- [Introduction](#introduction)
+- [The problem](#the-problem)
+- [Proposed solution](#proposed-solution)
+- [Follow-up tasks](#follow-up-tasks)
+  - [MVP Scope](#mvp-scope)
+  - [Post-MVP](#post-mvp)
+
+## Introduction
+
 Consider the following domain model(s):
 
 - A model called `Category` with properties `id`, `name`.
@@ -357,7 +368,7 @@ userRepo.find({
 There is already an issue tracking this feature, see
 https://github.com/strongloop/loopback-next/issues/3205
 
-### Limit on `inq` size
+#### Limit on `inq` size
 
 Under the hood, inclusion resolvers are implemented using `inq` operator:
 
@@ -409,7 +420,7 @@ export interface WithCapabilities {
 }
 ```
 
-### MongoDB and `ObjectID` type
+#### MongoDB and `ObjectID` type
 
 MongoDB is tricky.
 
@@ -524,4 +535,238 @@ include them as part of the test suite for each inclusion resolver.
 
 ## Follow-up tasks
 
-To be done after the high-level proposal is approved.
+I am proposing to split the scope in two parts:
+
+1. A minimal viable product (MVP, the initial release)
+2. Improvements to be implemented later, possibly based on user demand
+
+### MVP Scope
+
+#### Run repository tests for PostgreSQL
+
+Add `acceptance/repository-postgresql` package, modelled after MySQL tests in
+`acceptance/repository-mysql`. The tests should be run as a new Travis CI job,
+see the existing setup for other connectors.
+
+#### Run repository tests for Cloudant
+
+Add `acceptance/repository-cloudant` package, modelled after MongoDB & MySQL
+tests. The tests should be run as a new Travis CI job, see the existing setup
+for other connectors.
+
+#### Reject create/update requests when data contains navigational properties
+
+Step 1:
+
+- Introduce a new protected method `DefaultCrudRepository.fromEntity`.
+- Update repository methods to call `fromEntity` whenever we need to convert LB4
+  Entity into data to be passed to juggler's PersistedModel.
+- This new method is an extension point for app & extension developers, it
+  complements already existing `toEntity` method and provides functionality
+  similar to LB3 Operation Hook `persist`.
+
+Step 2:
+
+- Modify `fromEntity` to detect navigational properties in data and throw a
+  helpful error.
+
+See
+https://github.com/strongloop/loopback-next/commit/5beb7b93a3d1ce1077538bed39abfa31c309eba0
+
+#### Verify relation type in `resolve{Relation}Metadata`
+
+Improve helper functions `resolveHasManyMetadata`, `resolveBelongsToMetadata`,
+`resolveHasOneMetadata` to assert that the provided metadata has the right
+relation type.
+
+This is important because in some places we are casting generic
+`RelationMetadata` to a more specific variant, thus bypassing compiler checks.
+
+#### Add `keyFrom` to resolved relation metadata
+
+Add `keyFrom` to HasOne/HasMany resolved metadata. This enables a more generic
+implementation of inclusion resolvers, because we can use `keyFrom` instead of
+having to find out what is the name of the primary key (which I found difficult
+to implement inside inclusion resolvers because of TypeScript limitations).
+
+See https://github.com/strongloop/loopback-next/commit/a624d9701
+
+#### Test relations against databases
+
+Refactor existing integration & acceptance tests for relations, move most (or
+all) of them to
+[repository-tests](https://github.com/strongloop/loopback-next/tree/master/packages/repository-tests)
+package.
+
+Tests to review & move:
+
+- [`belongs-to.relation.acceptance.ts`](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/__tests__/acceptance/belongs-to.relation.acceptance.ts)
+- [`has-many-without-di.relation.acceptance.ts`](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/__tests__/acceptance/has-many-without-di.relation.acceptance.ts)
+- [`has-many.relation.acceptance.ts`](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/__tests__/acceptance/has-many.relation.acceptance.ts)
+- [`has-one.relation.acceptance.ts`](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/__tests__/acceptance/has-one.relation.acceptance.ts)
+- [`relation.factory.integration.ts`](https://github.com/strongloop/loopback-next/blob/master/packages/repository/src/__tests__/integration/repositories/relation.factory.integration.ts) -
+  this file needs to be split into multiple smaller files, one (or more) for
+  each relation type.
+
+I am not sure how much work will be required to make these tests pass against
+MongoDB. If it would require non-trivial amount of time, then:
+
+- Introduce a new `CrudFeature` flag allowing MongoDB test suite to skip these
+  new tests.
+- Open a follow-up issue to investigate & fix the MongoDB test suite later.
+
+#### `findByForeignKeys` helper - initial version
+
+Implement a new helper function `findByForeignKeys`, it will become a part of a
+public API of `@loopback/repository`.
+
+Signature:
+
+```ts
+function findByForeignKeys<
+  Target extends Entity,
+  TargetID,
+  TargetRelations extends object,
+  ForeignKey
+>(
+  targetRepository: EntityCrudRepository<Target, TargetID, TargetRelations>,
+  fkName: StringKeyOf<Target>,
+  fkValues: ForeignKey[],
+  scope?: Filter<Target>,
+  options?: Options,
+): Promise<(Target & TargetRelations)[]>;
+```
+
+The initial version should be simple, "inq splitting" and additional "scope"
+constraints are out of scope of this task.
+
+It's important to create testing infrastructure that will make it easy to add
+new tests in the future. There should be two kinds of tests:
+
+- Unit-level tests inside `packages/repository`, these tests should mock
+  `targetRepository`. By using a mock repository, we can assert on how many
+  queries are called, introduce errors to verify how are they handled, etc.
+- Integration-level tests inside `packages/repository-tests`, these tests will
+  call real repository class & database, we will invoke them against different
+  connectors (MySQL, MongoDB, and so on).
+
+#### Support `inq` splitting in `findByForeignKeys`
+
+The inclusion API does not impose any limit on how many entries can be passed in
+`fkValues` parameter. Not all databases support arbitrary number of parameters
+for `IN` (`inq`) condition though.
+
+In this task, we need to improve `findByForeignKeys` to handle the maximum size
+of `inq` parameter supported by the target database (data-source). When the list
+of provided FK values is too long, then we should split it into smaller chunks
+and execute multiple queries.
+
+To allow the helper to detect `inqLimit`, we need to extend Repository
+interfaces.
+
+- Introduce `RepositoryCapabilities` interface (called `ConnectorCapabilities`
+  in the spike), this interface will have a single property `inqLimit` (for
+  now).
+- Introduce `RepositoryWithCapabilities` interface (called `WithCapabilities` in
+  the spike), this interface should define `capabilities` property.
+- Implement `isRepositoryWithCapabilities` type guard
+- Implement `getRepositoryCapabilities` helper
+
+The rest should be straightforward:
+
+- Modify `findByForeignKeys` to obtain `inqLimit` from repository capabilities
+  and implement query splitting (see the spike implementation).
+- Write unit-level tests where we verify what (and how many) queries are called
+  by `findByForeignKeys`.
+- Write integration-level tests (in `repository-tests`) to verify that
+  connectors can handle `inqLimit` they are advertising. For example, create a
+  test that runs a query returning 1000 records.
+
+#### Introduce `InclusionResolver` concept
+
+- Introduce a new interface `InclusionResolver`
+- Implement a new helper function `includeRelatedModels`, it will become a part
+  of a public API of `@loopback/repository`. Under the hood, this function
+  should leverage inclusion resolvers to fetch related models.
+- Write unit-level tests to verify the implementation, use mocked or stubbed
+  inclusion resolvers.
+
+Note: helper name `includeRelatedModels` is not final, feel free to propose a
+better one!
+
+#### Include related models in `DefaultCrudRepository`
+
+- Enhance `DefaultCrudRepository` class: add a new public property
+  `inclusionResolvers` and a new public method `registerInclusionResolver`
+- Add a new protected method `includeRelatedModels`, this method will become an
+  extension point for repository classes extending our default implementation.
+- Modify `find`, `findById` and `findOne` methods to call `includeRelatedModels`
+  and also to remove `filter.include` from the filter argument passed to
+  juggler's `PersistedModel` APIs (see `normalizeFilter` in the spike).
+- Under the hood, this new method should call the recently introduced helper
+  `includeRelatedModels`.
+- Write unit-level tests to verify the implementation, use mocked or stubbed
+  inclusion resolvers.
+
+#### Implement InclusionResolver for hasMany relation
+
+- Implement a factory function for creating an inclusion resolver for the given
+  hasMany relation (see `createHasManyInclusionResolver` in the spike).
+- Enhance `HasManyRepositoryFactory` to provide `resolver` property (see the
+  spike).
+- Write integration-level tests in `packages/repository-tests` to verify that
+  resolver works for real databases.
+- Feel free to write unit-level tests using mocked repositories too, as needed.
+- Update documentation (e.g.
+  [Configuring a hasMany relation](https://loopback.io/doc/en/lb4/HasMany-relation.html#configuring-a-hasmany-relation)
+  to explain how to enable or disable inclusion.
+
+#### Implement InclusionResolver for belongsTo relation
+
+- Implement a factory function for creating an inclusion resolver for the given
+  hasMany relation (see `createHasManyInclusionResolver` in the spike).
+- Enhance `HasManyRepositoryFactory` to provide `resolver` property (see the
+  spike).
+- Write integration-level tests in `packages/repository-tests` to verify that
+  resolver works for real databases.
+- Feel free to write unit-level tests using mocked repositories too, as needed.
+- Update documentation (e.g.
+  [Configuring a belongsTo relation](https://loopback.io/doc/en/lb4/BelongsTo-relation.html#configuring-a-belongsto-relation)
+  to explain how to enable or disable inclusion.
+
+#### Implement InclusionResolver for hasOne relation
+
+- Implement a factory function for creating an inclusion resolver for the given
+  hasMany relation (see `createHasManyInclusionResolver` in the spike).
+- Enhance `HasManyRepositoryFactory` to provide `resolver` property (see the
+  spike).
+- Write integration-level tests in `packages/repository-tests` to verify that
+  resolver works for real databases.
+- Feel free to write unit-level tests using mocked repositories too, as needed.
+- Update documentation (e.g.
+  [Configuring a hasOne relation](https://loopback.io/doc/en/lb4/hasOne-relation.html#configuring-a-hasone-relation)
+  to explain how to enable or disable inclusion.
+
+#### Update `todo-list` example to use inclusion resolvers
+
+Remove manually written "poor man's" resolvers, replace them with the real
+resolvers.
+
+#### Add inclusion resolvers to `lb4 relation` CLI
+
+At the moment, `lb4 relation` initializes the factory for relation repository.
+We need to enhance this part to register the inclusion resolver too.
+
+#### Blog post
+
+Write a blog post announcing the new features, describing the high-level design
+and listing limitations of the initial implementation (e.g. as a list of GH
+issues that are out of MVP scope).
+
+### Post-MVP
+
+- [Inclusion with custom scope](#inclusion-with-custom-scope)
+- [Recursive inclusion](#recursive-inclusion)
+- [Interaction between `filter.fields` and `filter.include`](#interaction-between-filterfields-and-filterinclude)
+- [Syntax sugar for `filter.include`](#syntax-sugar-for-filterinclude)
+- [MongoDB and `ObjectID` type](#mongodb-and-objectid-type)
