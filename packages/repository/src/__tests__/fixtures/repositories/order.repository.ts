@@ -40,7 +40,7 @@ export class OrderRepository extends DefaultCrudRepository<
       customerRepositoryGetter,
     );
     this.shipment = this.createBelongsToAccessorFor(
-      'shipment_id',
+      'shipment',
       shipmentRepositoryGetter,
     );
   }

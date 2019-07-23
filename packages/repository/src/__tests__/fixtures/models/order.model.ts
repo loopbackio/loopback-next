@@ -30,7 +30,7 @@ export class Order extends Entity {
   @belongsTo(() => Customer)
   customerId: number;
 
-  @belongsTo(() => Shipment)
+  @belongsTo(() => Shipment, {name: 'shipment'})
   shipment_id: number;
 }
 
