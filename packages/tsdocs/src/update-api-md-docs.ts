@@ -126,7 +126,6 @@ async function addJekyllMetadata(
     }
 
     const docFile = path.join(apiDocsRoot, f);
-    const targetDocFile = path.join(apiDocsRoot, fixConstructorName(f));
     let doc = await fs.readFile(docFile, 'utf-8');
 
     if (isPackage && options.generateDefaultPackageDoc) {
@@ -165,20 +164,9 @@ permalink: /doc/en/lb4/apidocs.${name}.html
 ${doc}
 `;
 
-    // Fix `*.(constructor)`
-    doc = fixConstructorName(doc);
-
     if (!options.dryRun) {
-      await fs.writeFile(targetDocFile, doc, 'utf-8');
-      if (targetDocFile !== docFile) {
-        await fs.remove(docFile);
-      }
+      await fs.writeFile(docFile, doc, 'utf-8');
     }
   }
   return true;
-}
-
-// Fix `*.(constructor)`
-export function fixConstructorName(name: string) {
-  return name.replace(/\.\(constructor\)/g, '._constructor_');
 }
