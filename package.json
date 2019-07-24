@@ -24,7 +24,7 @@
     "eslint-plugin-eslint-plugin": "^2.1.0",
     "eslint-plugin-mocha": "^6.0.0",
     "husky": "^3.0.1",
-    "lerna": "^3.16.3",
+    "lerna": "^3.16.4",
     "typescript": "~3.5.3"
   },
   "scripts": {
