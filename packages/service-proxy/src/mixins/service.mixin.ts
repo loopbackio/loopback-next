@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Binding, createBindingFromClass, Provider} from '@loopback/context';
+import {Binding, Provider} from '@loopback/context';
 import {Application} from '@loopback/core';
 
 /**
@@ -41,6 +41,8 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
     /**
      * Add a service to this application.
      *
+     * @deprecated Use app.service() instead
+     *
      * @param provider - The service provider to register.
      *
      * @example
@@ -67,14 +69,7 @@ export function ServiceMixin<T extends Class<any>>(superClass: T) {
       provider: Class<Provider<S>>,
       name?: string,
     ): Binding<S> {
-      const serviceName = name || provider.name.replace(/Provider$/, '');
-      const binding = createBindingFromClass(provider, {
-        name: serviceName,
-        namespace: 'services',
-        type: 'service',
-      });
-      this.add(binding);
-      return binding;
+      return this.service(provider, name);
     }
 
     /**
