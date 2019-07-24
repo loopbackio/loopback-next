@@ -30,7 +30,7 @@
     "prettier:fix": "npm run prettier:cli -- --write",
 <% } -%>
 <% if (project.eslint) { -%>
-    "eslint": "eslint -p .",
+    "eslint": "eslint .",
     "eslint:fix": "npm run eslint -- --fix",
 <% } -%>
     "pretest": "npm run clean && npm run build",
