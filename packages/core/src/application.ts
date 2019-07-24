@@ -6,9 +6,13 @@
 import {
   Binding,
   BindingScope,
+  bindingTemplateFor,
   Constructor,
   Context,
+  ContextTags,
   createBindingFromClass,
+  isProviderClass,
+  Provider,
 } from '@loopback/context';
 import * as debugFactory from 'debug';
 import {Component, mountComponent} from './component';
@@ -238,6 +242,73 @@ export class Application extends Context implements LifeCycleObserver {
       type: CoreTags.LIFE_CYCLE_OBSERVER,
       defaultScope: BindingScope.SINGLETON,
     }).apply(asLifeCycleObserver);
+    this.add(binding);
+    return binding;
+  }
+
+  /**
+   * Add a service to this application.
+   *
+   * @param cls - The service or provider class
+   *
+   * @example
+   *
+   * ```ts
+   * // Define a class to be bound via ctx.toClass()
+   * @bind({scope: BindingScope.SINGLETON})
+   * export class LogService {
+   *   log(msg: string) {
+   *     console.log(msg);
+   *   }
+   * }
+   *
+   * // Define a class to be bound via ctx.toProvider()
+   * const uuidv4 = require('uuid/v4');
+   * export class UuidProvider implements Provider<string> {
+   *   value() {
+   *     return uuidv4();
+   *   }
+   * }
+   *
+   * // Register the local services
+   * app.service(LogService);
+   * app.service(UuidProvider, 'uuid');
+   *
+   * export class MyController {
+   *   constructor(
+   *     @inject('services.uuid') private uuid: string,
+   *     @inject('services.LogService') private log: LogService,
+   *   ) {
+   *   }
+   *
+   *   greet(name: string) {
+   *     this.log(`Greet request ${this.uuid} received: ${name}`);
+   *     return `${this.uuid}: ${name}`;
+   *   }
+   * }
+   * ```
+   */
+  public service<S>(
+    cls: Constructor<S> | Constructor<Provider<S>>,
+    name?: string,
+  ): Binding<S> {
+    if (!name && isProviderClass(cls)) {
+      // Trim `Provider` from the default service name
+      // This is needed to keep backward compatibility
+      const templateFn = bindingTemplateFor(cls);
+      const template = Binding.bind<S>('template').apply(templateFn);
+      if (
+        template.tagMap[ContextTags.PROVIDER] &&
+        !template.tagMap[ContextTags.NAME]
+      ) {
+        // The class is a provider and no `name` tag is found
+        name = cls.name.replace(/Provider$/, '');
+      }
+    }
+    const binding = createBindingFromClass(cls, {
+      name,
+      type: 'service',
+    });
     this.add(binding);
     return binding;
   }

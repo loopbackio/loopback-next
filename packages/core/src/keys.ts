@@ -112,6 +112,11 @@ export namespace CoreTags {
   export const CONTROLLER = 'controller';
 
   /**
+   * Binding tag for services
+   */
+  export const SERVICE = 'service';
+
+  /**
    * Binding tag for life cycle observers
    */
   export const LIFE_CYCLE_OBSERVER = 'lifeCycleObserver';
