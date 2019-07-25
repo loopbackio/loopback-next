@@ -3,8 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, model, property} from '@loopback/repository';
-import {EntityCrudRepository} from '@loopback/repository/src';
+import {
+  Entity,
+  EntityCrudRepository,
+  model,
+  property,
+} from '@loopback/repository';
 import {expect, toJSON} from '@loopback/testlab';
 import {withCrudCtx} from '../helpers.repository-tests';
 import {
