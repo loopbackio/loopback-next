@@ -1,0 +1,19 @@
+import {bind, /* inject, */ BindingScope, Provider} from '@loopback/core';
+
+/*
+ * Fix the service type. Possible options can be:
+ * - import {<%= className %>} from 'your-module';
+ * - export type <%= className %> = string;
+ * - export interface <%= className %> {}
+ */
+export type <%= className %> = unknown;
+
+@bind({scope: BindingScope.TRANSIENT})
+export class <%= className %>Provider implements Provider<<%= className %>> {
+  constructor(/* Add @inject to inject parameters */) {}
+
+  value() {
+    // Add your implementation here
+    throw new Error('To be implemented');
+  }
+}
