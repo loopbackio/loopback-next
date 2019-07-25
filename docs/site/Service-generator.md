@@ -18,6 +18,8 @@ lb4 service [options] [<name>]
 
 ### Options
 
+`--type` : _(Optional)_ service type: proxy, class, or provider
+
 `--datasource` : _(Optional)_ name of a valid REST or SOAP datasource already
 created in src/datasources
 
@@ -34,20 +36,39 @@ file.
 }
 ```
 
-### Notes
+### Remote and local services
 
-There should be at least one valid _(REST or SOAP)_ data source created already
-in the `src/datasources` directory.
+We support three types of services now:
+
+- proxy: A service proxy for remote REST/SOAP/gRPC APIs
+- class: A TypeScript class that can be bound to the application context
+- provider: A TypeScript class that implements `Provider` interface and can be
+  bound to the application context
+
+For remote services (type=proxy), there should be at least one valid _(REST or
+SOAP)_ data source created already in the `src/datasources` directory.
 
 {% include_relative includes/CLI-std-options.md %}
 
 ### Arguments
 
-`<name>` - Optional argument specifyng the service name to be generated.
+`<name>` - Optional argument specifying the service name to be generated.
 
-### Interactive Prompts
+### Interactive prompts
 
 The tool will prompt you for:
+
+- **Service type.** _(serviceType)_ If the service type had been supplied from
+  the command line with `--type` or `--datasource` (implying `proxy`) option and
+  it is a valid one, then the prompt is skipped, otherwise it will present you
+  the list of all valid service types.
+
+  ```
+  ? Service type: (Use arrow keys)
+  ❯ Remote service proxy backed by a data source
+    Local service class bound to application context
+    Local service provider bound to application context
+  ```
 
 - **Please select the datasource.** _(datasource)_ If the name of the datasource
   had been supplied from the command line with `--datasource` option and it is a
