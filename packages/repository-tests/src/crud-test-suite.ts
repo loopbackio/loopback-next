@@ -31,6 +31,7 @@ export function crudRepositoryTestSuite(
   const features: CrudFeatures = {
     idType: 'string',
     freeFormProperties: true,
+    emptyValue: undefined,
     ...partialFeatures,
   };
 
