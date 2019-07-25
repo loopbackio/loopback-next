@@ -20,7 +20,7 @@ const testUtils = require('../../test-utils');
 const SANDBOX_PATH = path.resolve(__dirname, '..', '.sandbox');
 const sandbox = new TestSandbox(SANDBOX_PATH);
 
-describe('lb4 service', () => {
+describe('lb4 service (remote)', () => {
   beforeEach('reset sandbox', async () => {
     await sandbox.reset();
   });
@@ -53,14 +53,11 @@ describe('lb4 service', () => {
       assert.file(expectedFile);
       assert.fileContent(
         expectedFile,
-        /export class MyServiceServiceProvider implements Provider<MyServiceService> {/,
+        /export class MyServiceProvider implements Provider<MyService> {/,
       );
-      assert.fileContent(expectedFile, /export interface MyServiceService {/);
+      assert.fileContent(expectedFile, /export interface MyService {/);
       assert.fileContent(expectedFile, /\@inject\('datasources.myds'\)/);
-      assert.fileContent(
-        expectedFile,
-        /value\(\): Promise\<MyServiceService\> {/,
-      );
+      assert.fileContent(expectedFile, /value\(\): Promise\<MyService\> {/);
       assert.file(INDEX_FILE);
       assert.fileContent(INDEX_FILE, /export \* from '.\/my-service.service';/);
     });
@@ -82,7 +79,7 @@ describe('lb4 service', () => {
       assert.file(expectedFile);
       assert.fileContent(
         expectedFile,
-        /export class MultiWordServiceServiceProvider implements Provider\<MultiWordServiceService\> {/,
+        /export class MultiWordServiceProvider implements Provider\<MultiWordService\> {/,
       );
       assert.fileContent(
         expectedFile,
@@ -90,7 +87,7 @@ describe('lb4 service', () => {
       );
       assert.fileContent(
         expectedFile,
-        /value\(\): Promise\<MultiWordServiceService\> {/,
+        /value\(\): Promise\<MultiWordService\> {/,
       );
       assert.file(INDEX_FILE);
       assert.fileContent(
@@ -121,14 +118,11 @@ describe('lb4 service', () => {
       assert.file(expectedFile);
       assert.fileContent(
         expectedFile,
-        /export class MyServiceServiceProvider implements Provider<MyServiceService> {/,
+        /export class MyServiceProvider implements Provider<MyService> {/,
       );
-      assert.fileContent(expectedFile, /export interface MyServiceService {/);
+      assert.fileContent(expectedFile, /export interface MyService {/);
       assert.fileContent(expectedFile, /\@inject\('datasources.myds'\)/);
-      assert.fileContent(
-        expectedFile,
-        /value\(\): Promise\<MyServiceService\> {/,
-      );
+      assert.fileContent(expectedFile, /value\(\): Promise\<MyService\> {/);
       assert.file(INDEX_FILE);
       assert.fileContent(INDEX_FILE, /export \* from '.\/my-service.service';/);
     });
@@ -156,14 +150,11 @@ describe('lb4 service', () => {
       assert.file(expectedFile);
       assert.fileContent(
         expectedFile,
-        /export class MyserviceServiceProvider implements Provider<MyserviceService> {/,
+        /export class MyserviceProvider implements Provider<Myservice> {/,
       );
-      assert.fileContent(expectedFile, /export interface MyserviceService {/);
+      assert.fileContent(expectedFile, /export interface Myservice {/);
       assert.fileContent(expectedFile, /\@inject\('datasources.restdb'\)/);
-      assert.fileContent(
-        expectedFile,
-        /value\(\): Promise\<MyserviceService\> {/,
-      );
+      assert.fileContent(expectedFile, /value\(\): Promise\<Myservice\> {/);
       assert.file(INDEX_FILE);
       assert.fileContent(INDEX_FILE, /export \* from '.\/myservice.service';/);
     });
@@ -184,14 +175,11 @@ describe('lb4 service', () => {
       assert.file(expectedFile);
       assert.fileContent(
         expectedFile,
-        /export class MyserviceServiceProvider implements Provider<MyserviceService> {/,
+        /export class MyserviceProvider implements Provider<Myservice> {/,
       );
-      assert.fileContent(expectedFile, /export interface MyserviceService {/);
+      assert.fileContent(expectedFile, /export interface Myservice {/);
       assert.fileContent(expectedFile, /\@inject\('datasources.restdb'\)/);
-      assert.fileContent(
-        expectedFile,
-        /value\(\): Promise\<MyserviceService\> {/,
-      );
+      assert.fileContent(expectedFile, /value\(\): Promise\<Myservice\> {/);
       assert.file(INDEX_FILE);
       assert.fileContent(INDEX_FILE, /export \* from '.\/myservice.service';/);
     });
@@ -212,14 +200,11 @@ describe('lb4 service', () => {
       assert.file(expectedFile);
       assert.fileContent(
         expectedFile,
-        /export class MyserviceServiceProvider implements Provider<MyserviceService> {/,
+        /export class MyserviceProvider implements Provider<Myservice> {/,
       );
-      assert.fileContent(expectedFile, /export interface MyserviceService {/);
+      assert.fileContent(expectedFile, /export interface Myservice {/);
       assert.fileContent(expectedFile, /\@inject\('datasources.restdb'\)/);
-      assert.fileContent(
-        expectedFile,
-        /value\(\): Promise\<MyserviceService\> {/,
-      );
+      assert.fileContent(expectedFile, /value\(\): Promise\<Myservice\> {/);
       assert.file(INDEX_FILE);
       assert.fileContent(INDEX_FILE, /export \* from '.\/myservice.service';/);
     });
@@ -247,9 +232,9 @@ describe('lb4 service', () => {
       assert.file(expectedFile);
       assert.fileContent(
         expectedFile,
-        /export class MyserviceServiceProvider implements Provider<MyserviceService> {/,
+        /export class MyserviceProvider implements Provider<Myservice> {/,
       );
-      assert.fileContent(expectedFile, /export interface MyserviceService {/);
+      assert.fileContent(expectedFile, /export interface Myservice {/);
       assert.fileContent(
         expectedFile,
         /import {MapDsDataSource} from '..\/datasources';/,
@@ -260,10 +245,7 @@ describe('lb4 service', () => {
       );
 
       assert.fileContent(expectedFile, /\@inject\('datasources.MapDS'\)/);
-      assert.fileContent(
-        expectedFile,
-        /value\(\): Promise\<MyserviceService\> {/,
-      );
+      assert.fileContent(expectedFile, /value\(\): Promise\<Myservice\> {/);
       assert.file(INDEX_FILE);
       assert.fileContent(INDEX_FILE, /export \* from '.\/myservice.service';/);
     });

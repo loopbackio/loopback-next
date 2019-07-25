@@ -14,11 +14,23 @@ const utils = require('../../lib/utils');
 
 const VALID_CONNECTORS_FOR_SERVICE = ['Model'];
 
-const SERVICE_TEMPLATE = 'service-template.ts.ejs';
+const REMOTE_SERVICE_TEMPLATE = 'remote-service-proxy-template.ts.ejs';
+const LOCAL_CLASS_TEMPLATE = 'local-service-class-template.ts.ejs';
+const LOCAL_PROVIDER_TEMPLATE = 'local-service-provider-template.ts.ejs';
 
 const PROMPT_MESSAGE_DATA_SOURCE = 'Please select the datasource';
 
 const ERROR_NO_DATA_SOURCES_FOUND = 'No datasources found at';
+
+const REMOTE_SERVICE_PROXY = 'proxy';
+const LOCAL_SERVICE_CLASS = 'class';
+const LOCAL_SERVICE_PROVIDER = 'provider';
+
+const TEMPLATES = {
+  [REMOTE_SERVICE_PROXY]: REMOTE_SERVICE_TEMPLATE,
+  [LOCAL_SERVICE_CLASS]: LOCAL_CLASS_TEMPLATE,
+  [LOCAL_SERVICE_PROVIDER]: LOCAL_PROVIDER_TEMPLATE,
+};
 
 module.exports = class ServiceGenerator extends ArtifactGenerator {
   // Note: arguments and options should be defined in the constructor.
@@ -42,7 +54,11 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
       utils.datasourcesDir,
     );
 
-    this.artifactInfo.defaultTemplate = SERVICE_TEMPLATE;
+    this.option('type', {
+      type: String,
+      required: false,
+      description: 'Service type - proxy, class or provider',
+    });
 
     this.option('datasource', {
       type: String,
@@ -62,8 +78,73 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
     return super.checkLoopBackProject();
   }
 
-  async checkPaths() {
+  /**
+   * Ask for Service Type
+   */
+  async promptServiceType() {
+    debug('Prompting for service type');
     if (this.shouldExit()) return;
+
+    if (this.options.datasource) {
+      // The `datasource` option implies remote proxy
+      this.artifactInfo.serviceType = REMOTE_SERVICE_PROXY;
+    } else if (this.options.type === REMOTE_SERVICE_PROXY) {
+      this.artifactInfo.serviceType = REMOTE_SERVICE_PROXY;
+    } else if (this.options.type === LOCAL_SERVICE_CLASS) {
+      this.artifactInfo.serviceType = LOCAL_SERVICE_CLASS;
+    } else if (this.options.type === LOCAL_SERVICE_PROVIDER) {
+      this.artifactInfo.serviceType = LOCAL_SERVICE_PROVIDER;
+    } else if (this.options.type) {
+      this.exit(
+        new Error(
+          `Invalid service type: ${this.options.type} (${REMOTE_SERVICE_PROXY}, ${LOCAL_SERVICE_CLASS}, or ${LOCAL_SERVICE_PROVIDER}).`,
+        ),
+      );
+      return;
+    }
+
+    if (!this.artifactInfo.serviceType) {
+      const prompts = [
+        {
+          type: 'list',
+          name: 'serviceType',
+          // capitalization
+          message: utils.toClassName(this.artifactInfo.type) + ' type:',
+          choices: [
+            {
+              name: 'Remote service proxy backed by a data source',
+              value: REMOTE_SERVICE_PROXY,
+            },
+            {
+              name: 'Local service class bound to application context',
+              value: LOCAL_SERVICE_CLASS,
+            },
+            {
+              name: 'Local service provider bound to application context',
+              value: LOCAL_SERVICE_PROVIDER,
+            },
+          ],
+          default: 0,
+          when: !this.options.datasource && !this.options.local,
+        },
+      ];
+      const props = await this.prompt(prompts);
+      Object.assign(this.artifactInfo, props);
+    }
+
+    this.artifactInfo.serviceType =
+      this.artifactInfo.serviceType || REMOTE_SERVICE_PROXY;
+    this.artifactInfo.defaultTemplate =
+      TEMPLATES[this.artifactInfo.serviceType];
+  }
+
+  _isRemoteProxy() {
+    return this.artifactInfo.serviceType === REMOTE_SERVICE_PROXY;
+  }
+
+  async checkDataSources() {
+    if (this.shouldExit()) return;
+    if (!this._isRemoteProxy()) return;
     // check for datasources
     if (!fs.existsSync(this.artifactInfo.datasourcesDir)) {
       new Error(
@@ -79,6 +160,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
   async promptDataSourceName() {
     debug('Prompting for a datasource ');
     if (this.shouldExit()) return;
+    if (!this._isRemoteProxy()) return;
     let datasourcesList;
 
     // grab the datasource name from the command line
@@ -146,6 +228,14 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
     ])
       .then(props => {
         Object.assign(this.artifactInfo, props);
+        this.artifactInfo.dataSourceName = utils.getDataSourceName(
+          this.artifactInfo.datasourcesDir,
+          this.artifactInfo.dataSourceClass,
+        );
+
+        this.artifactInfo.dataSourceClassName =
+          utils.toClassName(this.artifactInfo.dataSourceName) + 'DataSource';
+
         debug(`props after datasource prompt: ${inspect(props)}`);
         return props;
       })
@@ -191,6 +281,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
    */
   async inferInterfaces() {
     if (this.shouldExit()) return;
+    if (!this._isRemoteProxy()) return;
     const connectorType = utils.getDataSourceConnectorName(
       this.artifactInfo.datasourcesDir,
       this.artifactInfo.dataSourceClass,
@@ -203,14 +294,6 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
 
   scaffold() {
     if (this.shouldExit()) return false;
-
-    this.artifactInfo.dataSourceName = utils.getDataSourceName(
-      this.artifactInfo.datasourcesDir,
-      this.artifactInfo.dataSourceClass,
-    );
-
-    this.artifactInfo.dataSourceClassName =
-      utils.toClassName(this.artifactInfo.dataSourceName) + 'DataSource';
 
     // Setting up data for templates
     this.artifactInfo.className = utils.toClassName(this.artifactInfo.name);
@@ -235,6 +318,10 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
 
   install() {
     if (this.shouldExit()) return false;
+    if (!this._isRemoteProxy()) return;
+
+    this.artifactInfo.dataSourceClassName =
+      utils.toClassName(this.artifactInfo.dataSourceName) + 'DataSource';
     debug('install npm dependencies');
     const pkgJson = this.packageJson || {};
     const deps = pkgJson.dependencies || {};
