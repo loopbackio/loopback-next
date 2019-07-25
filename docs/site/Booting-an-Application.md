@@ -243,12 +243,12 @@ The `datasources` object support the following options:
 
 #### Description
 
-Discovers and binds Service providers using `app.serviceProvider()` (Application
-must use `ServiceMixin` from `@loopback/service-proxy`).
+Discovers and binds remote service proxies or local service classes or providers
+using `app.service()`.
 
 **IMPORTANT:** For a class to be recognized by `ServiceBooter` as a service
-provider, its name must end with `Provider` suffix and its prototype must have a
-`value()` method.
+provider, it either has to be decorated with `@bind` or the class name must end
+with `Provider` suffix and its prototype must have a `value()` method.
 
 #### Options
 
