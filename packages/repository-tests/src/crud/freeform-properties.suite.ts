@@ -7,7 +7,10 @@ import {Entity, model, property} from '@loopback/repository';
 import {EntityCrudRepository} from '@loopback/repository/src';
 import {expect, skipIf, toJSON} from '@loopback/testlab';
 import {Suite} from 'mocha';
-import {withCrudCtx} from '../helpers.repository-tests';
+import {
+  withCrudCtx,
+  deleteAllModelsInDefaultDataSource,
+} from '../helpers.repository-tests';
 import {
   CrudFeatures,
   CrudRepositoryCtor,
@@ -25,6 +28,8 @@ export function freeformPropertiesSuite(
     describe,
     'free-form properties (strict: false)',
     () => {
+      before(deleteAllModelsInDefaultDataSource);
+
       @model({settings: {strict: false}})
       class Freeform extends Entity {
         @property({

@@ -29,3 +29,14 @@ export function withCrudCtx(
     return fn.call(this, getCrudContext(this));
   };
 }
+
+/**
+ * Remove any models created by previous tests from the default DataSource
+ * instance (`ctx.dataSource`).
+ *
+ * Call this method from the first `before` hook of your test suite to avoid
+ * conflicts when the same model name is used for different model classes.
+ */
+export const deleteAllModelsInDefaultDataSource = withCrudCtx(ctx => {
+  ctx.dataSource.deleteAllModels();
+});

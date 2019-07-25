@@ -10,7 +10,10 @@ import {
   property,
 } from '@loopback/repository';
 import {expect, toJSON} from '@loopback/testlab';
-import {withCrudCtx} from '../helpers.repository-tests';
+import {
+  deleteAllModelsInDefaultDataSource,
+  withCrudCtx,
+} from '../helpers.repository-tests';
 import {
   CrudFeatures,
   CrudRepositoryCtor,
@@ -44,6 +47,8 @@ export function createRetrieveSuite(
   }
 
   describe('create-retrieve', () => {
+    before(deleteAllModelsInDefaultDataSource);
+
     let repo: EntityCrudRepository<Product, typeof Product.prototype.id>;
     before(
       withCrudCtx(async function setupRepository(ctx: CrudTestContext) {
