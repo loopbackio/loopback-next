@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {
+  AnyObject,
   Entity,
   EntityCrudRepository,
   model,
@@ -63,6 +64,15 @@ export function createRetrieveSuite(
       expect(created.id).to.be.ok();
 
       const found = await repo.findById(created.id);
+      expect(toJSON(created)).to.deepEqual(toJSON(found));
+    });
+
+    it('retrieves a newly created model when id was transformed via JSON', async () => {
+      const created = await repo.create({name: 'Pen'});
+      expect(created.id).to.be.ok();
+
+      const id = (toJSON(created) as AnyObject).id;
+      const found = await repo.findById(id);
       expect(toJSON(created)).to.deepEqual(toJSON(found));
     });
   });

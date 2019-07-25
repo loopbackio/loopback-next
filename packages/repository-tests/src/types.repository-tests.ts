@@ -38,6 +38,14 @@ export interface CrudFeatures {
    * Default: `true`
    */
   freeFormProperties: boolean;
+
+  /**
+   * The value used by the database to store properties set to `undefined`.
+   * Typically, SQL databases store both `undefined` and `null` as `null`.
+   *
+   * Default: `undefined`
+   */
+  emptyValue: undefined | null;
 }
 
 /**
