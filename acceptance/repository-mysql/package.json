@@ -23,7 +23,7 @@
     "@loopback/repository": "^1.9.0",
     "@loopback/repository-tests": "^0.2.3",
     "@types/node": "^10.14.13",
-    "loopback-connector-mysql": "^5.4.1"
+    "loopback-connector-mysql": "^5.4.2"
   },
   "files": [
     "README.md",
