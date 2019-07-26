@@ -32,37 +32,46 @@ children:
     url: Server.html
     output: 'web, pdf'
 
-  - title: 'Context'
-    url: Context.html
-    output: 'web, pdf'
-
-  - title: 'Binding'
-    url: Binding.html
-    output: 'web, pdf'
-
-  - title: 'Dependency injection'
-    url: Dependency-injection.html
-    output: 'web, pdf'
-    children:
-
-    - title: 'Reserved binding keys'
-      url: Reserved-binding-keys.html
-      output: 'web, pdf'
-
   - title: 'Controllers'
     url: Controllers.html
     output: 'web, pdf'
 
-  - title: 'Components'
-    url: Components.html
+  - title: 'Models'
+    url: Model.html
     output: 'web, pdf'
 
-  - title: 'Interceptors'
-    url: Interceptors.html
+  - title: 'Relations'
+    url: Relations.html
     output: 'web, pdf'
+    children:
+
+    - title: 'HasMany Relation'
+      url: HasMany-relation.html
+      output: 'web, pdf'
+
+    - title: 'BelongsTo Relation'
+      url: BelongsTo-relation.html
+      output: 'web, pdf'
+
+    - title: 'HasOne Relation'
+      url: hasOne-relation.html
+      output: 'web, pdf'
 
   - title: 'DataSources'
     url: DataSources.html
+    output: 'web, pdf'
+
+  - title: 'Repositories'
+    url: Repositories.html
+    output: 'web, pdf'
+    children:
+
+    - title: 'Database Transactions'
+      url: Using-database-transactions.html
+      output: 'web, pdf'
+
+  - title: 'Interceptors'
+    url: Interceptors.html
     output: 'web, pdf'
 
   - title: 'Life cycle events and observers'
@@ -84,36 +93,6 @@ children:
 
     - title: 'Parsing requests'
       url: Parsing-requests.html
-      output: 'web, pdf'
-
-  - title: 'Model'
-    url: Model.html
-    output: 'web, pdf'
-
-  - title: 'Repositories'
-    url: Repositories.html
-    output: 'web, pdf'
-    children:
-
-    - title: 'Database Transactions'
-      url: Using-database-transactions.html
-      output: 'web, pdf'
-
-  - title: 'Relations'
-    url: Relations.html
-    output: 'web, pdf'
-    children:
-
-    - title: 'HasMany Relation'
-      url: HasMany-relation.html
-      output: 'web, pdf'
-
-    - title: 'BelongsTo Relation'
-      url: BelongsTo-relation.html
-      output: 'web, pdf'
-
-    - title: 'HasOne Relation'
-      url: hasOne-relation.html
       output: 'web, pdf'
 
   - title: 'Decorators'
@@ -199,6 +178,32 @@ children:
   - title: 'Serving static files'
     url: Serving-static-files.html
     output: 'web, pdf'
+
+- title: 'Behind the Scene'
+  url: Behind-the-scene.html
+  output: 'web, pdf'
+  children:
+
+    - title: 'Context'
+      url: Context.html
+      output: 'web, pdf'
+
+    - title: 'Binding'
+      url: Binding.html
+      output: 'web, pdf'
+
+    - title: 'Dependency Injection'
+      url: Dependency-injection.html
+      output: 'web, pdf'
+      children:
+
+        - title: 'Reserved binding keys'
+          url: Reserved-binding-keys.html
+          output: 'web, pdf'
+
+    - title: 'Components'
+      url: Components.html
+      output: 'web, pdf'
 
 - title: 'Booting an Application'
   url: Booting-an-Application.html

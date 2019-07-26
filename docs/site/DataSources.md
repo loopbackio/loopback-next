@@ -12,6 +12,8 @@ A `DataSource` in LoopBack 4 is a named configuration for a Connector instance
 that represents data in an external system. The Connector is used by
 `legacy-juggler-bridge` to power LoopBack 4 Repositories for Data operations.
 
+![Datasource diagram](imgs/datasource.png)
+
 ### Creating a DataSource
 
 It is recommended to use the [`lb4 datasource` command](DataSource-generator.md)
