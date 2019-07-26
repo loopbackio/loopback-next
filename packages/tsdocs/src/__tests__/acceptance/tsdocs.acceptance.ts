@@ -134,5 +134,13 @@ permalink: /doc/en/lb4/apidocs.index.html
       'utf-8',
     );
     expect(constructorDoc).to.not.match(/\.\(constructor\)\.md/);
+
+    const pkgDoc = await fs.readFile(
+      path.join(SITE_APIDOCS_ROOT, 'pkg1.md'),
+      'utf-8',
+    );
+    expect(pkgDoc).to.match(
+      /\[pkg1\]\(https\:\/\/github\.com\/strongloop\/loopback\-next\/tree\/master\/packages\/pkg1\)/,
+    );
   });
 });

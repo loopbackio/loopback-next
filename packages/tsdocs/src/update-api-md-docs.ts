@@ -145,7 +145,7 @@ async function addJekyllMetadata(
       const model = await fs.readJson(modelFile, {encoding: 'utf-8'});
       debug('Package %s', name, model);
       if (model.kind === 'Package' && !model.docComment) {
-        const pkgDoc = `[${model.canonicalReference}](https://github.com/strongloop/loopback-next/tree/master/packages/${name})`;
+        const pkgDoc = `[${model.name}](https://github.com/strongloop/loopback-next/tree/master/packages/${name})`;
         doc = doc.replace(
           `## ${name} package`,
           `## ${name} package\n\n${pkgDoc}`,
