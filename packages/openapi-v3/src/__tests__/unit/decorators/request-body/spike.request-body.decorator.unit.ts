@@ -6,11 +6,10 @@
 import { belongsTo, Entity, hasMany, model, property } from '@loopback/repository';
 import { expect } from '@loopback/testlab';
 import { getControllerSpec, post, put } from '../../../..';
-import { TS_TYPE_KEY } from '../../../../controller-spec';
-import { newRequestBody1 } from '../../../../decorators/request-body.option1.decorator';
+import { requestBody2 } from '../../../../decorators/request-body.spike.decorator';
 
 describe.only('spike - requestBody decorator', () => {
-  context('proposal 1', () => {
+  context('proposal 2 - CRUD', () => {
     @model()
     class Product extends Entity {
       @property({
@@ -59,15 +58,15 @@ describe.only('spike - requestBody decorator', () => {
       };
 
       const excludeOptions = {
-        [TS_TYPE_KEY]: Product,
         schemaName: 'ProductWithoutID',
         exclude: ['id']
       }
 
       class MyController1 {
         @post('/Product')
-        create(@newRequestBody1(
+        create(@requestBody2(
           requestBodySpec,
+          Product,
           excludeOptions
         ) product: Exclude<Product, ['id']>) { }
       }
@@ -112,15 +111,14 @@ describe.only('spike - requestBody decorator', () => {
       };
 
       const partialOptions = {
-        [TS_TYPE_KEY]: Product,
-        schemaName: 'PartialProduct',
         partial: true
       }
 
       class MyController2 {
         @put('/Product')
-        update(@newRequestBody1(
+        update(@requestBody2(
           requestSpecForUpdate,
+          Product,
           partialOptions
         ) product: Partial<Product>) { }
       }
@@ -131,7 +129,7 @@ describe.only('spike - requestBody decorator', () => {
         '/Product'
       ]['put'].requestBody;
 
-      const referenceSchema = spec2.components!.schemas!.PartialProduct;
+      const referenceSchema = spec2.components!.schemas!.ProductPartial;
 
       expect(requestBodySpecForCreate).to.have.properties({
         description: 'Update a product',
@@ -139,7 +137,7 @@ describe.only('spike - requestBody decorator', () => {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/PartialProduct'
+              $ref: '#/components/schemas/ProductPartial'
             }
           }
         }
@@ -150,7 +148,7 @@ describe.only('spike - requestBody decorator', () => {
       // scope of this spike, so that the schema `PartialProduct`
       // here is still the same as `Product`
       expect(referenceSchema).to.have.properties({
-        title: 'PartialProduct',
+        title: 'ProductPartial',
         properties: {
           categoryId: { type: 'number' },
           name: { type: 'string' }
@@ -158,4 +156,74 @@ describe.only('spike - requestBody decorator', () => {
       });
     });
   });
+  context('proposal 2 - different signatures', () => {
+    @model()
+    class Test extends Entity {
+      @property({
+        type: 'string',
+      })
+      name: string;
+      constructor(data?: Partial<Test>) {
+        super(data);
+      }
+    }
+    it('default', () => {
+      class TestController {
+        @post('/Test')
+        create(@requestBody2() test: Test) { }
+      }
+
+      const testSpec1 = getControllerSpec(TestController);
+
+      const requestBodySpecForCreate = testSpec1.paths[
+        '/Test'
+      ]['post'].requestBody;
+      expect(requestBodySpecForCreate).to.have.properties({
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/components/schemas/Test'
+            }
+          }
+        }
+      });
+
+      const referenceSchema = testSpec1.components!.schemas!.Test;
+      expect(referenceSchema).to.have.properties({
+        title: 'Test',
+        properties: {
+          name: { type: 'string' }
+        }
+      });
+    });
+    it('omits the 1st parameter', () => {
+      class TestController {
+        @post('/Test')
+        create(@requestBody2(Test, { partial: true }) test: Partial<Test>) { }
+      }
+
+      const testSpec1 = getControllerSpec(TestController);
+
+      const requestBodySpecForCreate = testSpec1.paths[
+        '/Test'
+      ]['post'].requestBody;
+      expect(requestBodySpecForCreate).to.have.properties({
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/components/schemas/TestPartial'
+            }
+          }
+        }
+      });
+
+      const referenceSchema = testSpec1.components!.schemas!.TestPartial;
+      expect(referenceSchema).to.have.properties({
+        title: 'TestPartial',
+        properties: {
+          name: { type: 'string' }
+        }
+      });
+    });
+  })
 });

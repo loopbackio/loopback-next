@@ -8,10 +8,9 @@ import * as _ from 'lodash';
 import { inspect } from 'util';
 import { resolveSchema } from '../generate-schema';
 import { OAI3Keys } from '../keys';
-import { ReferenceObject, RequestBodyObject, SchemaObject } from '../types';
+import { ReferenceObject, RequestBodyObject, REQUEST_BODY_INDEX, SchemaObject } from '../types';
 
 const debug = require('debug')('loopback:openapi3:metadata:requestbody');
-export const REQUEST_BODY_INDEX = 'x-parameter-index';
 
 /**
  * Describe the request body of a Controller method parameter.

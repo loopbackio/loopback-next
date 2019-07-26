@@ -5,7 +5,7 @@
 
 import { getTitleSuffix } from '@loopback/repository-json-schema';
 import { TS_TYPE_KEY } from './controller-spec';
-import { SchemaOptions } from './decorators/request-body.option1.decorator';
+import { SchemaOptions } from './decorators/request-body.spike.decorator';
 import { SchemaObject } from './types';
 
 /**
@@ -20,7 +20,7 @@ import { SchemaObject } from './types';
 export function resolveSchema(
   fn?: Function,
   schema: SchemaObject = {},
-  options?: SchemaOptions,
+  options: SchemaOptions = {},
 ): SchemaObject {
   let resolvedSchema: SchemaObject = {};
 

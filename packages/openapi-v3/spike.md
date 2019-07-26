@@ -8,7 +8,23 @@ The current @requestBody() can only
 or
 - generate the schema inferred from the parameter type
 
-To simplify the signature, this spike PR introduces a 2nd parameter `schemaOptions` to configure the schema. The new decorator `newRequestBody1` is written in file 'request-body.options1.decorator.ts'
+To simplify the signature, this spike PR introduces two more parameters `modelCtor` and `schemaOptions` to configure the schema. The new decorator `requestBody2()`(let's discuss a better name later, see section [Naming](#Naming) is written in file 'request-body.spike.decorator.ts'
+
+### Signature
+
+The new decorator's signature  is `@requestBody2(spec, modelCtor, schemaOptions)`.
+
+```ts
+export function requestBody2(
+  specOrModelOrOptions?: Partial<RequestBodyObject> | Function | SchemaOptions,
+  modelOrOptions?: Function | SchemaOptions,
+  schemaOptions?: SchemaOptions
+) {
+  // implementation
+}
+```
+
+All the 3 parameters are optional, therefore in the PoC, the real implementation are in `_requestBody2()`, `requestBody2()` is a wrapper that resolves different combination of the parameters.
 
 ### Create - exclude properties
 
@@ -23,11 +39,6 @@ const requestBodySpec = {
 
 // Provide the options that configure your schema
 const excludeOptions = {
-  // Using advanced ts types like `Exclude<>`, `Partial<>` results in
-  // `MetadataInspector.getDesignTypeForMethod(target, member)` only
-  // returns `Object` as the param type, which loses the model type's info.
-  // Therefore user must provide the model type in options.
-  [TS_TYPE_KEY]: Product,
   // Make sure you give the custom schema a unique schema name,
   // this name will be used as the reference name
   // like `$ref: '#components/schemas/ProductWithoutID'`
@@ -41,6 +52,11 @@ class MyController1 {
   @post('/Product')
   create(@newRequestBody1(
     requestBodySpec,
+    // Using advanced ts types like `Exclude<>`, `Partial<>` results in
+    // `MetadataInspector.getDesignTypeForMethod(target, member)` only
+    // returns `Object` as the param type, which loses the model type's info.
+    // Therefore user must provide the model type in options.
+    Product
     excludeOptions
   ) product: Exclude<Product, ['id']>) { }
 }
@@ -55,8 +71,6 @@ const requestSpecForUpdate = {
 };
 
 const partialOptions = {
-  [TS_TYPE_KEY]: Product,
-  schemaName: 'PartialProduct',
   partial: true
 }
 
@@ -64,8 +78,12 @@ class MyController2 {
   @put('/Product')
   update(@newRequestBody1(
     requestSpecForUpdate,
+    Product
     partialOptions
   ) product: Partial<Product>) { }
 }
 ```
 
+## Naming
+
+From @jannyHou: I think we can keep the name `requestBody` unchanged. I enabled the existing `@requestBody()`'s tests but applied `requestBody2()` decorator, all tests pass, which means there is no breaking change.

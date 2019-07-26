@@ -6,7 +6,7 @@
 import { DecoratorFactory, MetadataInspector } from '@loopback/context';
 import { getJsonSchemaRef, JsonSchemaOptions } from '@loopback/repository-json-schema';
 import * as _ from 'lodash';
-import { SchemaOptions } from './decorators/request-body.option1.decorator';
+import { SchemaOptions } from './decorators/request-body.spike.decorator';
 import { resolveSchema } from './generate-schema';
 import { jsonToSchemaObject, SchemaRef } from './json-to-schema';
 import { OAI3Keys } from './keys';
@@ -272,11 +272,11 @@ function processSchemaExtensionsForRequestBody(
 
     if (!schema.options.isVisited) schema = resolveSchema(tsType, schema);
     if (schema.$ref) generateOpenAPISchema(spec, tsType, schema.options);
-
-    // We don't want a Function type in the final spec.
     delete schema.options;
     return;
   }
+  // We don't want a Function type in the final spec.
+  delete schema.options;
   if (schema.type === 'array') {
     processSchemaExtensionsForRequestBody(spec, schema.items);
   } else if (schema.type === 'object') {
@@ -308,15 +308,10 @@ function generateOpenAPISchema(spec: ControllerSpec, tsType: Function, options?:
   }
 
   const openapiSchema = getModelSchemaRef(tsType, options);
-  // const jsonSchema = getJsonSchema(tsType);
-  // const openapiSchema = jsonToSchemaObject(jsonSchema);
-  delete openapiSchema.definitions.options;
+  if (openapiSchema.definitions) delete openapiSchema.definitions.options;
 
   assignRelatedSchemas(spec, openapiSchema.definitions);
   delete openapiSchema.definitions;
-
-  // debug('    defining schema for %j: %j', tsType.name, openapiSchema);
-  // spec.components.schemas[tsType.name] = openapiSchema;
 }
 
 /**

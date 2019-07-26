@@ -3,11 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {post, requestBody, getControllerSpec} from '../../../..';
-import {expect} from '@loopback/testlab';
-import {model, property} from '@loopback/repository';
+import { model, property } from '@loopback/repository';
+import { expect } from '@loopback/testlab';
+import { getControllerSpec, post, requestBody2 } from '../../../..';
 
-describe('requestBody decorator', () => {
+describe.only('requestBody decorator', () => {
   context('can build a correct "RequestBody" spec and', () => {
     it('persists "description" and "required" into the generated schema', () => {
       const requestSpec = {
@@ -16,7 +16,7 @@ describe('requestBody decorator', () => {
       };
       class MyController {
         @post('/greeting')
-        greet(@requestBody(requestSpec) name: string) {}
+        greet(@requestBody2(requestSpec) name: string) { }
       }
 
       const requestBodySpec = getControllerSpec(MyController).paths[
@@ -35,7 +35,7 @@ describe('requestBody decorator', () => {
       };
       class MyController {
         @post('/greeting')
-        greet(@requestBody(requestSpec) name: string) {}
+        greet(@requestBody2(requestSpec) name: string) { }
       }
 
       const requestBodySpec = getControllerSpec(MyController).paths[
@@ -47,7 +47,7 @@ describe('requestBody decorator', () => {
     it('infers request body with complex type', () => {
       const expectedContent = {
         'application/text': {
-          schema: {$ref: '#/components/schemas/MyModel'},
+          schema: { $ref: '#/components/schemas/MyModel' },
         },
       };
 
@@ -60,8 +60,8 @@ describe('requestBody decorator', () => {
       class MyController {
         @post('/MyModel')
         createMyModel(
-          @requestBody({content: {'application/text': {}}}) inst: MyModel,
-        ) {}
+          @requestBody2({ content: { 'application/text': {} } }) inst: MyModel,
+        ) { }
       }
 
       const requestBodySpec = getControllerSpec(MyController).paths['/MyModel'][
@@ -73,15 +73,15 @@ describe('requestBody decorator', () => {
     it('preserves user-provided schema in requestBody', () => {
       const expectedContent = {
         'application/json': {
-          schema: {type: 'object'},
+          schema: { type: 'object' },
         },
       };
 
-      class MyModel {}
+      class MyModel { }
 
       class MyController {
         @post('/MyModel')
-        createMyModel(@requestBody({content: expectedContent}) inst: MyModel) {}
+        createMyModel(@requestBody2({ content: expectedContent }) inst: MyModel) { }
       }
 
       const requestBodySpec = getControllerSpec(MyController).paths['/MyModel'][
@@ -93,17 +93,17 @@ describe('requestBody decorator', () => {
     it('preserves user-provided reference in requestBody', () => {
       const expectedContent = {
         'application/json': {
-          schema: {$ref: '#/components/schemas/MyModel'},
+          schema: { $ref: '#/components/schemas/MyModel' },
         },
       };
 
-      class MyModel {}
+      class MyModel { }
 
       class MyController {
         @post('/MyModel')
         createMyModel(
-          @requestBody({content: expectedContent}) inst: Partial<MyModel>,
-        ) {}
+          @requestBody2({ content: expectedContent }) inst: Partial<MyModel>,
+        ) { }
       }
 
       const requestBodySpec = getControllerSpec(MyController).paths['/MyModel'][
@@ -115,7 +115,7 @@ describe('requestBody decorator', () => {
     it('reports error if more than one requestBody are found for the same method', () => {
       class MyController {
         @post('/greeting')
-        greet(@requestBody() name: string, @requestBody() foo: number) {}
+        greet(@requestBody2() name: string, @requestBody2() foo: number) { }
       }
       expect(() => getControllerSpec(MyController)).to.throwError(
         /An operation should only have one parameter decorated by @requestBody/,

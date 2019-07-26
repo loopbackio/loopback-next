@@ -10,22 +10,60 @@ import { inspect } from 'util';
 import { TS_TYPE_KEY } from '../controller-spec';
 import { resolveSchema } from '../generate-schema';
 import { OAI3Keys } from '../keys';
-import { RequestBodyObject, SchemaObject } from '../types';
+import { RequestBodyObject, REQUEST_BODY_INDEX, SchemaObject } from '../types';
 
 const debug = require('debug')('loopback:openapi3:metadata:requestbody');
-export const REQUEST_BODY_INDEX = 'x-parameter-index';
 
 export type SchemaOptions = JsonSchemaOptions & {
-  // If the schema options are provided, it implies
-  // the default paramter type need to be configured,
-  // so that `generateOpenAPISchema` can name the
-  // generated schema as `schemaName`
+  // To support the current flavor using 'x-ts-type',
+  // preserve backward compatibility
   [TS_TYPE_KEY]?: Function,
   isVisited?: boolean,
 }
+
+function isRequestBodySpec(spec: Partial<RequestBodyObject> | SchemaOptions): spec is Partial<RequestBodyObject> {
+  return (spec as Partial<RequestBodyObject>).description !== undefined
+    || (spec as Partial<RequestBodyObject>).required !== undefined
+    || (spec as Partial<RequestBodyObject>).content !== undefined;
+}
+
+export function requestBody2(
+  specOrModelOrOptions?: Partial<RequestBodyObject> | Function | SchemaOptions,
+  modelOrOptions?: Function | SchemaOptions,
+  schemaOptions?: SchemaOptions
+) {
+  if (typeof specOrModelOrOptions == 'function') {
+    // omit the 1st param
+    // @requestBody(modelCtor, schemaOptions)
+    if (modelOrOptions && typeof modelOrOptions == 'object')
+      return _requestBody2({}, specOrModelOrOptions, modelOrOptions as SchemaOptions);
+    // @requestBody(modelCtor)
+    return _requestBody2({}, specOrModelOrOptions);
+  } else if (specOrModelOrOptions && isRequestBodySpec(specOrModelOrOptions)) {
+    // 1st param is spec
+    if (modelOrOptions && typeof modelOrOptions == 'object')
+      // omit the 2nd param
+      // @requestBody(spec, schemaOptions)
+      return _requestBody2(specOrModelOrOptions, undefined, modelOrOptions)
+    // @requestBody(spec)
+    // @requestBody(spec, modelCtor)
+    // @requestBody(spec, modelCtor, schemaOptions)
+    return _requestBody2(specOrModelOrOptions, modelOrOptions, schemaOptions);
+  } else if (specOrModelOrOptions !== undefined) {
+    // omit 1st and 2nd params
+    // @requestBody(schemaOptions)
+    return _requestBody2({}, undefined, specOrModelOrOptions as SchemaOptions);
+  } else {
+    // no params
+    // @requestBody()
+    return _requestBody2();
+  }
+}
+
 // `name` is provided to avoid generating the same schema
-export function newRequestBody1(
+function _requestBody2(
   requestBodySpecification?: Partial<RequestBodyObject>,
+  modelCtor?: Function,
   schemaOptions?: SchemaOptions
 ) {
   return function (target: object, member: string, index: number) {
@@ -47,13 +85,17 @@ export function newRequestBody1(
 
     const paramType = paramTypes[index];
 
+    // preserve backward compatibility
+    if (modelCtor) schemaOptions = Object.assign({}, schemaOptions, { [TS_TYPE_KEY]: modelCtor });
+
     // Assumption: the paramType is always the type to be configured
     let schema: SchemaObject;
     if (schemaOptions) {
-      schema = resolveSchema(paramType, undefined, schemaOptions)
+      schema = resolveSchema(modelCtor || paramType, undefined, schemaOptions)
     } else {
-      schema = resolveSchema(paramType);
+      schema = resolveSchema(modelCtor || paramType);
     }
+
     /* istanbul ignore if */
     if (debug.enabled)
       debug('  inferred schema: %s', inspect(schema, { depth: null }));
@@ -79,3 +121,4 @@ export function newRequestBody1(
     )(target, member, index);
   };
 }
+

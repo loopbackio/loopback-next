@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {OpenAPIObject} from 'openapi3-ts';
+import { OpenAPIObject } from 'openapi3-ts';
 /*
  * OpenApiSpec - A typescript representation of OpenApi 3.0.0
  */
@@ -25,6 +25,8 @@ export function createEmptyApiSpec(): OpenApiSpec {
       version: '1.0.0',
     },
     paths: {},
-    servers: [{url: '/'}],
+    servers: [{ url: '/' }],
   };
 }
+
+export const REQUEST_BODY_INDEX = 'x-parameter-index';
