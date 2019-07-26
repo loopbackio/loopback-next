@@ -3,8 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {get, param, getControllerSpec} from '../../../..';
 import {expect} from '@loopback/testlab';
+import {get, getControllerSpec, param} from '../../../..';
 
 describe('Routing metadata for parameters', () => {
   describe('@param.header.string', () => {
@@ -16,6 +16,24 @@ describe('Routing metadata for parameters', () => {
       const expectedParamSpec = {
         name: 'name',
         in: 'header',
+        schema: {
+          type: 'string',
+        },
+      };
+      expectSpecToBeEqual(MyController, expectedParamSpec);
+    });
+
+    it('allows additional spec properties with in:header type:string', () => {
+      class MyController {
+        @get('/greet')
+        greet(
+          @param.header.string('name', {description: 'Name'}) name: string,
+        ) {}
+      }
+      const expectedParamSpec = {
+        name: 'name',
+        in: 'header',
+        description: 'Name',
         schema: {
           type: 'string',
         },

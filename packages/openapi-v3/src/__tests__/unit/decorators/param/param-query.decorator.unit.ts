@@ -269,6 +269,46 @@ describe('Routing metadata for parameters', () => {
       expectSpecToBeEqual(MyController, expectedParamSpec);
     });
   });
+
+  it('allows additional properties for parameter object', () => {
+    class MyController {
+      @get('/greet')
+      greet(@param.query.string('name', {description: 'Name'}) name: string) {}
+    }
+    const expectedParamSpec = {
+      name: 'name',
+      in: 'query',
+      description: 'Name',
+      schema: {
+        type: 'string',
+      },
+    };
+    expectSpecToBeEqual(MyController, expectedParamSpec);
+  });
+
+  it('allows additional spec properties for @param.query.object', () => {
+    class MyController {
+      @get('/greet')
+      greet(
+        @param.query.object('filter', undefined, {
+          description: 'Search criteria',
+        })
+        filter: object,
+      ) {}
+    }
+    const expectedParamSpec = <ParameterObject>{
+      name: 'filter',
+      in: 'query',
+      description: 'Search criteria',
+      style: 'deepObject',
+      explode: true,
+      schema: {
+        type: 'object',
+        additionalProperties: true,
+      },
+    };
+    expectSpecToBeEqual(MyController, expectedParamSpec);
+  });
 });
 
 function expectSpecToBeEqual(controller: Function, paramSpec: object) {
