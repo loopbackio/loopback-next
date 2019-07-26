@@ -52,22 +52,18 @@ describe.only('spike - requestBody decorator', () => {
     type CategoryWithRelations = Category & CategoryRelations;
 
     it('create - generates schema with excluded properties', () => {
-      const requestBodySpec = {
-        description: 'Create a product',
-        required: true,
-      };
-
-      const excludeOptions = {
-        schemaName: 'ProductWithoutID',
-        exclude: ['id']
-      }
-
       class MyController1 {
         @post('/Product')
         create(@requestBody2(
-          requestBodySpec,
+          {
+            description: 'Create a product',
+            required: true,
+          },
           Product,
-          excludeOptions
+          {
+            schemaName: 'ProductWithoutID',
+            exclude: ['id']
+          }
         ) product: Exclude<Product, ['id']>) { }
       }
 
@@ -105,21 +101,17 @@ describe.only('spike - requestBody decorator', () => {
     })
 
     it('update - generates schema with partial properties', () => {
-      const requestSpecForUpdate = {
-        description: 'Update a product',
-        required: true,
-      };
-
-      const partialOptions = {
-        partial: true
-      }
-
       class MyController2 {
         @put('/Product')
         update(@requestBody2(
-          requestSpecForUpdate,
+          {
+            description: 'Update a product',
+            required: true,
+          },
           Product,
-          partialOptions
+          {
+            partial: true
+          }
         ) product: Partial<Product>) { }
       }
 
