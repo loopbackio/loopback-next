@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.9.0...@loopback/repository@1.10.0) (2019-07-26)
+
+
+### Features
+
+* **repository:** add hidden properties in model ([e669913](https://github.com/strongloop/loopback-next/commit/e669913))
+
+
+
+
+
 # [1.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/repository@1.8.2...@loopback/repository@1.9.0) (2019-07-17)
 
 

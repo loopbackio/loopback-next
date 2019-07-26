@@ -1,6 +1,6 @@
 {
   "name": "@loopback/eslint-config",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Shared configuration for ESLint",
   "engines": {
     "node": ">=8.9"

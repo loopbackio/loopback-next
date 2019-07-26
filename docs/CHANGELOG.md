@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.27.0](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.26.1...@loopback/docs@1.27.0) (2019-07-26)
+
+
+### Bug Fixes
+
+* **docs:** refactor sidebar ([27a7e15](https://github.com/strongloop/loopback-next/commit/27a7e15))
+* add support for excluding custom pk from POST requests ([9694d99](https://github.com/strongloop/loopback-next/commit/9694d99))
+
+
+### Features
+
+* **context:** allow [@config](https://github.com/config).* to specify the target binding key ([42b7b98](https://github.com/strongloop/loopback-next/commit/42b7b98))
+* update examples and docs to use getModelSchemaRef ([99758b1](https://github.com/strongloop/loopback-next/commit/99758b1))
+* **repository:** add hidden properties in model ([e669913](https://github.com/strongloop/loopback-next/commit/e669913))
+* remove openapi-v3-types package ([2a93395](https://github.com/strongloop/loopback-next/commit/2a93395))
+
+
+
+
+
 ## [1.26.1](https://github.com/strongloop/loopback-next/compare/@loopback/docs@1.26.0...@loopback/docs@1.26.1) (2019-07-17)
 
 

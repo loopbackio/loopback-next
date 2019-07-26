@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/strongloop/loopback-next/compare/@loopback/rest-explorer@1.2.6...@loopback/rest-explorer@1.3.0) (2019-07-26)
+
+
+### Features
+
+* **rest-explorer:** use configuration apis/decorators ([dd6b005](https://github.com/strongloop/loopback-next/commit/dd6b005))
+
+
+
+
+
 ## [1.2.6](https://github.com/strongloop/loopback-next/compare/@loopback/rest-explorer@1.2.5...@loopback/rest-explorer@1.2.6) (2019-07-17)
 
 **Note:** Version bump only for package @loopback/rest-explorer

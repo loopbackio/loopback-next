@@ -1,6 +1,6 @@
 {
   "name": "@loopback/repository-tests",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Shared test-suite for repository based persistence",
   "engines": {
     "node": ">=8.9"
@@ -21,12 +21,12 @@
   "license": "MIT",
   "devDependencies": {
     "@loopback/build": "^1.7.1",
-    "@loopback/repository": "^1.9.0",
+    "@loopback/repository": "^1.10.0",
     "@types/debug": "^4.1.4",
     "@types/node": "^10.14.13"
   },
   "dependencies": {
-    "@loopback/testlab": "^1.7.0",
+    "@loopback/testlab": "^1.7.1",
     "@types/debug": "^4.1.4",
     "debug": "^4.1.1"
   },

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.8.2...@loopback/example-todo-list@1.9.0) (2019-07-26)
+
+
+### Features
+
+* update examples and docs to use getModelSchemaRef ([99758b1](https://github.com/strongloop/loopback-next/commit/99758b1))
+
+
+
+
+
 ## [1.8.2](https://github.com/strongloop/loopback-next/compare/@loopback/example-todo-list@1.8.1...@loopback/example-todo-list@1.8.2) (2019-07-17)
 
 
