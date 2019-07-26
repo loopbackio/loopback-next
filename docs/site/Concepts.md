@@ -6,7 +6,10 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Concepts.html
 ---
 
-LoopBack 4 introduces some new concepts that are important to understand:
+LoopBack 4 defines some key building blocks to represent different
+responsibilities for typical API and/or Microservice applications.
+
+![Key concepts overview diagram](imgs/key-concepts-overview-diagram.png)
 
 - [**Application**](Application.md): The central class for setting up all of
   your module’s components, controllers, servers and bindings. The Application
@@ -17,19 +20,6 @@ LoopBack 4 introduces some new concepts that are important to understand:
   such as REST (http, https), gRPC (http2) and graphQL (http, https). It
   typically listens on a specific endpoint (protocol/host/port), handles
   incoming requests, and then returns appropriate responses.
-
-- [**Context**](Context.md): An abstraction of states and dependencies in your
-  application that LoopBack uses to manage everything. It's a global registry
-  for everything in your app (configurations, state, dependencies, classes and
-  so on).
-
-- [**Binding**](Binding.md): An abstraction of items managed by a context. Each
-  binding has a unique key within the context and a value provider to resolve
-  the key to a value.
-
-- [**Dependency Injection**](Dependency-injection.md): The technique used to
-  separate the construction of dependencies of a class or function from its
-  behavior to keep the code loosely coupled.
 
 - [**Controller**](Controllers.md): A class that implements operations defined
   by the application’s REST API. It implements an application’s business logic
@@ -65,6 +55,3 @@ LoopBack 4 introduces some new concepts that are important to understand:
 
 - [**Decorator**](Decorators.md): The pattern used to annotate or modify your
   class declarations and their members with metadata.
-
-- [**Component**](Components.md): A package that bundles one or more LoopBack
-  extensions.
