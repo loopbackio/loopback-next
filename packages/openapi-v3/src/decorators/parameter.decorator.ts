@@ -95,32 +95,13 @@ const builtinTypes = {
   password: {type: 'string', format: 'password'},
 };
 
-// FIXME: Typedoc does not feed `param` as both a function and a namespace.
-// As a workaround, we add the apidocs for `@param` under the namespace.
 /**
- *
- * Describe an input parameter of a Controller method. The `@param` decorator
- * takes an argument of `ParameterObject` to define how to map the parameter
- * to OpenAPI specification.
- *
- * `@param(paramSpec)` must be applied to parameters.
- *
- * @example
- * ```ts
- * class MyController {
- *   @get('/')
- *   list(
- *     @param(offsetSpec) offset?: number,
- *     @param(pageSizeSpec) pageSize?: number,
- *   ) {}
- * }
- * ```
- *
- * @param paramSpec - Parameter specification.
- *
- * Please also see `@param.*` shortcut parameter decorators
+ * Namespace for `@param.*` decorators
  */
 export namespace param {
+  /**
+   * Query parameter decorator
+   */
   export const query = {
     /**
      * Define a parameter of "integer" type that's read from the query string.
@@ -221,17 +202,26 @@ export namespace param {
         type: 'object',
         additionalProperties: true,
       },
+      spec?: Partial<ParameterObject>,
     ) {
+      schema = {
+        type: 'object',
+        ...schema,
+      };
       return param({
         name,
         in: 'query',
         style: 'deepObject',
         explode: true,
         schema,
+        ...spec,
       });
     },
   };
 
+  /**
+   * Header parameter decorator
+   */
   export const header = {
     /**
      * Define a parameter of "string" type that's read from a request header.
@@ -322,6 +312,10 @@ export namespace param {
      */
     password: createParamShortcut('header', builtinTypes.password),
   };
+
+  /**
+   * Path parameter decorator
+   */
   export const path = {
     /**
      * Define a parameter of "string" type that's read from request path.
@@ -448,7 +442,7 @@ function createParamShortcut(
   source: ParameterLocation,
   options: ParamShortcutOptions,
 ) {
-  return (name: string) => {
-    return param({name, in: source, schema: {...options}});
+  return (name: string, spec?: Partial<ParameterObject>) => {
+    return param({name, in: source, schema: {...options}, ...spec});
   };
 }
