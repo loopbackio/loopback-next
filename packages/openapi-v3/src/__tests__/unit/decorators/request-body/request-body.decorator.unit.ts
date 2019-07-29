@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {post, requestBody, getControllerSpec} from '../../../..';
+import {post, requestBody2, getControllerSpec} from '../../../..';
 import {expect} from '@loopback/testlab';
 import {model, property} from '@loopback/repository';
 
@@ -16,7 +16,7 @@ describe('requestBody decorator', () => {
       };
       class MyController {
         @post('/greeting')
-        greet(@requestBody(requestSpec) name: string) {}
+        greet(@requestBody2(requestSpec) name: string) {}
       }
 
       const requestBodySpec = getControllerSpec(MyController).paths[
@@ -35,7 +35,7 @@ describe('requestBody decorator', () => {
       };
       class MyController {
         @post('/greeting')
-        greet(@requestBody(requestSpec) name: string) {}
+        greet(@requestBody2(requestSpec) name: string) {}
       }
 
       const requestBodySpec = getControllerSpec(MyController).paths[
@@ -60,7 +60,7 @@ describe('requestBody decorator', () => {
       class MyController {
         @post('/MyModel')
         createMyModel(
-          @requestBody({content: {'application/text': {}}}) inst: MyModel,
+          @requestBody2({content: {'application/text': {}}}) inst: MyModel,
         ) {}
       }
 
@@ -81,7 +81,9 @@ describe('requestBody decorator', () => {
 
       class MyController {
         @post('/MyModel')
-        createMyModel(@requestBody({content: expectedContent}) inst: MyModel) {}
+        createMyModel(
+          @requestBody2({content: expectedContent}) inst: MyModel,
+        ) {}
       }
 
       const requestBodySpec = getControllerSpec(MyController).paths['/MyModel'][
@@ -102,7 +104,7 @@ describe('requestBody decorator', () => {
       class MyController {
         @post('/MyModel')
         createMyModel(
-          @requestBody({content: expectedContent}) inst: Partial<MyModel>,
+          @requestBody2({content: expectedContent}) inst: Partial<MyModel>,
         ) {}
       }
 
@@ -115,7 +117,7 @@ describe('requestBody decorator', () => {
     it('reports error if more than one requestBody are found for the same method', () => {
       class MyController {
         @post('/greeting')
-        greet(@requestBody() name: string, @requestBody() foo: number) {}
+        greet(@requestBody2() name: string, @requestBody2() foo: number) {}
       }
       expect(() => getControllerSpec(MyController)).to.throwError(
         /An operation should only have one parameter decorated by @requestBody/,

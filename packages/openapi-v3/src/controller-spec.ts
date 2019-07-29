@@ -59,6 +59,10 @@ export interface RestEndpoint {
 
 export const TS_TYPE_KEY = 'x-ts-type';
 
+export function isComplexType(ctor: Function): Boolean {
+  return !_.includes([String, Number, Boolean, Array, Object], ctor);
+}
+
 /**
  * Build the api spec from class and method level decorations
  * @param constructor - Controller class
@@ -220,9 +224,6 @@ function resolveControllerSpec(constructor: Function): ControllerSpec {
       op,
     );
     const paramTypes = opMetadata.parameterTypes;
-
-    const isComplexType = (ctor: Function) =>
-      !_.includes([String, Number, Boolean, Array, Object], ctor);
 
     for (const p of paramTypes) {
       if (isComplexType(p)) {

@@ -7,3 +7,4 @@ export * from './api.decorator';
 export * from './operation.decorator';
 export * from './parameter.decorator';
 export * from './request-body.decorator';
+export * from './request-body.spike.decorator';

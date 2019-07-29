@@ -28,3 +28,5 @@ export function createEmptyApiSpec(): OpenApiSpec {
     servers: [{url: '/'}],
   };
 }
+
+export const REQUEST_BODY_INDEX = 'x-parameter-index';
