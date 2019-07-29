@@ -21,9 +21,6 @@
     "benchmark:routing": "node ./dist/rest-routing/routing-table",
     "start": "node ."
   },
-  "repository": {
-    "type": "git"
-  },
   "author": "IBM Corp.",
   "license": "MIT",
   "files": [
@@ -56,5 +53,10 @@
     "mocha": "^6.2.0",
     "p-event": "^4.1.0",
     "source-map-support": "^0.5.12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "benchmark"
   }
 }
