@@ -34,7 +34,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git"
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "examples/express-composition"
   },
   "publishConfig": {
     "access": "public"

@@ -1,7 +1,7 @@
 {
   "name": "@loopback/core",
   "version": "1.8.7",
-  "description": "",
+  "description": "LoopBack 4 core",
   "engines": {
     "node": ">=8.9"
   },
@@ -39,6 +39,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/strongloop/loopback-next.git"
+    "url": "https://github.com/strongloop/loopback-next.git",
+    "directory": "packages/core"
   }
 }
