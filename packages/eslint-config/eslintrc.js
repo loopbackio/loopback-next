@@ -56,6 +56,10 @@ module.exports = {
     // TypeScript allows the same name for namespace and function
     'no-redeclare': 'off',
 
+    // Avoid promise rewrapping
+    // https://exploringjs.com/es2016-es2017/ch_async-functions.html#_returned-promises-are-not-wrapped
+    'no-return-await': 'error',
+
     /**
      * Rules imported from eslint-config-loopback
      */
