@@ -7,6 +7,7 @@ import {
   AnyObject,
   Entity,
   EntityCrudRepository,
+  findByForeignKeys,
   model,
   property,
 } from '@loopback/repository';
@@ -42,6 +43,9 @@ export function createRetrieveSuite(
     @property({type: 'string', required: true})
     name: string;
 
+    @property()
+    categoryId?: number;
+
     constructor(data?: Partial<Product>) {
       super(data);
     }
@@ -58,9 +62,13 @@ export function createRetrieveSuite(
       }),
     );
 
+    beforeEach(async () => {
+      await repo.deleteAll();
+    });
+
     it('retrieves a newly created model with id set by the database', async () => {
-      const created = await repo.create({name: 'Pencil'});
-      expect(created.toObject()).to.have.properties('id', 'name');
+      const created = await repo.create({name: 'Pencil', categoryId: 1});
+      expect(created.toObject()).to.have.properties('id', 'name', 'categoryId');
       expect(created.id).to.be.ok();
 
       const found = await repo.findById(created.id);
@@ -68,12 +76,27 @@ export function createRetrieveSuite(
     });
 
     it('retrieves a newly created model when id was transformed via JSON', async () => {
-      const created = await repo.create({name: 'Pen'});
+      const created = await repo.create({name: 'Pen', categoryId: 1});
       expect(created.id).to.be.ok();
 
       const id = (toJSON(created) as AnyObject).id;
       const found = await repo.findById(id);
       expect(toJSON(created)).to.deepEqual(toJSON(found));
+    });
+
+    it('retrieves an instance of a model from its foreign key value', async () => {
+      const pens = await repo.create({name: 'Pens', categoryId: 1});
+      const pencils = await repo.create({name: 'Pencils', categoryId: 2});
+      const products = await findByForeignKeys(repo, 'categoryId', [1]);
+      expect(products).deepEqual([pens]);
+      expect(products).to.not.containDeep(pencils);
+    });
+
+    it('retrieves instances of a model from their foreign key value', async () => {
+      const pens = await repo.create({name: 'Pens', categoryId: 1});
+      const pencils = await repo.create({name: 'Pencils', categoryId: 2});
+      const products = await findByForeignKeys(repo, 'categoryId', [1, 2]);
+      expect(products).deepEqual([pens, pencils]);
     });
   });
 }
