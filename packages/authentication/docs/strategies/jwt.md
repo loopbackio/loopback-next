@@ -24,7 +24,7 @@ class JWTAuthenticationStrategy implements AuthenticationStrategy {
     const token = await this.extractCredentials(request);
     // `verifyToken` should decode the payload from the token and convert the token payload to
     // userProfile object.
-    return await tokenService.verifyToken(token);
+    return tokenService.verifyToken(token);
   }
 
   extractCredentials(request): Promise<string> {

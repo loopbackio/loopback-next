@@ -221,17 +221,14 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
   async promptSourceModels() {
     if (this.shouldExit()) return false;
 
-    return await this._promptModelList(
-      PROMPT_MESSAGE_SOURCE_MODEL,
-      'sourceModel',
-    );
+    return this._promptModelList(PROMPT_MESSAGE_SOURCE_MODEL, 'sourceModel');
   }
 
   // Get model list for target model.
   async promptTargetModels() {
     if (this.shouldExit()) return false;
 
-    return await this._promptModelList(
+    return this._promptModelList(
       PROMPT_MESSAGE_TARGET_MODEL,
       'destinationModel',
     );

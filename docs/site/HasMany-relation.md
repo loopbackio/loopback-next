@@ -294,7 +294,7 @@ export class CustomerOrdersController {
     @param.path.number('id') customerId: typeof Customer.prototype.id,
     @requestBody() orderData: Order,
   ): Promise<Order> {
-    return await this.customerRepository.orders(customerId).create(orderData);
+    return this.customerRepository.orders(customerId).create(orderData);
   }
 }
 ```

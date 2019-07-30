@@ -32,11 +32,6 @@ export class Route extends BaseRoute {
   ): Promise<OperationRetval> {
     // Use `invokeMethodWithInterceptors` to invoke the handler function so
     // that global interceptors are applied
-    return await invokeMethodWithInterceptors(
-      requestContext,
-      this,
-      '_handler',
-      args,
-    );
+    return invokeMethodWithInterceptors(requestContext, this, '_handler', args);
   }
 }

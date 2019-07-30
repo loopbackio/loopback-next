@@ -22,7 +22,7 @@ export async function discoverFiles(
   pattern: string,
   root: string,
 ): Promise<string[]> {
-  return await glob(pattern, {root: root});
+  return glob(pattern, {root: root});
 }
 
 /**

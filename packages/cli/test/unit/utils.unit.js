@@ -388,12 +388,7 @@ describe('Utils', () => {
         return files;
       };
       const artifactPath = path.join('tmp', 'app', folder);
-      return await utils.getArtifactList(
-        artifactPath,
-        artifactType,
-        suffix,
-        reader,
-      );
+      return utils.getArtifactList(artifactPath, artifactType, suffix, reader);
     }
   });
 

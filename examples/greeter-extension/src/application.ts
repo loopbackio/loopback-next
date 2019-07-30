@@ -22,6 +22,6 @@ export class GreetingApplication extends Application {
   }
 
   async getGreetingService() {
-    return await this.get(GREETING_SERVICE);
+    return this.get(GREETING_SERVICE);
   }
 }

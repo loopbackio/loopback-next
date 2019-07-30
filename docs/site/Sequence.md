@@ -236,7 +236,7 @@ from the path object.
   },
 })
 async findById(@param.path.string('id') id: string): Promise<Note> {
-  return await this.noteRepository.findById(id);
+  return this.noteRepository.findById(id);
 }
 ```
 

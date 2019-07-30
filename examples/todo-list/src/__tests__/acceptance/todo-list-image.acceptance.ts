@@ -92,6 +92,6 @@ describe('TodoListApplication', () => {
   ) {
     const data = givenTodoListImage(todoListImage);
     delete data.todoListId;
-    return await todoListRepo.image(id).create(data);
+    return todoListRepo.image(id).create(data);
   }
 });

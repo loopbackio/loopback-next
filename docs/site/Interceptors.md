@@ -635,7 +635,7 @@ class NameValidator implements Provider<Interceptor> {
         `Name '${name}' is not on the list of '${this.validNames}`,
       );
     }
-    return await next();
+    return next();
   }
 }
 ```

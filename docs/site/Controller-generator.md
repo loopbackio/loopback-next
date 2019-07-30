@@ -140,7 +140,7 @@ export class TodoController {
     })
     todo: Omit<Todo, 'id'>,
   ): Promise<Todo> {
-    return await this.todoRepository.create(todo);
+    return this.todoRepository.create(todo);
   }
 
   @get('/todos/count', {
@@ -154,7 +154,7 @@ export class TodoController {
   async count(
     @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where<Todo>,
   ): Promise<Count> {
-    return await this.todoRepository.count(where);
+    return this.todoRepository.count(where);
   }
 
   @get('/todos', {
@@ -173,7 +173,7 @@ export class TodoController {
     @param.query.object('filter', getFilterSchemaFor(Todo))
     filter?: Filter<Todo>,
   ): Promise<Todo[]> {
-    return await this.todoRepository.find(filter);
+    return this.todoRepository.find(filter);
   }
 
   @patch('/todos', {
@@ -195,7 +195,7 @@ export class TodoController {
     todo: Partial<Todo>
     @param.query.object('where', getWhereSchemaFor(Todo)) where?: Where<Todo>,
   ): Promise<Count> {
-    return await this.todoRepository.updateAll(todo, where);
+    return this.todoRepository.updateAll(todo, where);
   }
 
   @get('/todos/{id}', {
@@ -207,7 +207,7 @@ export class TodoController {
     },
   })
   async findById(@param.path.number('id') id: number): Promise<Todo> {
-    return await this.todoRepository.findById(id);
+    return this.todoRepository.findById(id);
   }
 
   @patch('/todos/{id}', {

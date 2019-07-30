@@ -27,7 +27,7 @@ export class MockStrategy implements AuthenticationStrategy {
   }
 
   async authenticate(req: Request): Promise<UserProfile> {
-    return await this.verify(req);
+    return this.verify(req);
   }
   /**
    * @param req

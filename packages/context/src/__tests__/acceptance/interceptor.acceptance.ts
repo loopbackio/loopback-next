@@ -176,7 +176,7 @@ describe('Interceptor', () => {
       // Add observers to the invocation context, which in turn adds listeners
       // to its parent - `ctx`
       invocationCtx.subscribe(() => {});
-      return await next();
+      return next();
     };
 
     class MyController {
@@ -447,7 +447,7 @@ describe('Interceptor', () => {
     class MyController {
       @intercept(async (invocationCtx, next) => {
         invocationCtx.bind('name').to('Mary');
-        return await next();
+        return next();
       })
       async interceptedHello(@inject('name') name: string) {
         return `Hello, ${name}`;
@@ -730,7 +730,7 @@ describe('Interceptor', () => {
           `Name '${name}' is not on the list of '${this.validNames}`,
         );
       }
-      return await next();
+      return next();
     }
   }
 

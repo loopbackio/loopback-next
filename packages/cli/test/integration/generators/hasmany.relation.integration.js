@@ -388,7 +388,7 @@ context('check if the controller file created ', () => {
           /async find\(\n . {2}\@param.path.number\('id'\) id: number,\n/,
           /\@param.query.object\('filter'\) filter\?: Filter<Order>,\n/,
           /\)\: Promise<Order\[]> {\n/,
-          /return await this\.customerRepository\.orders\(id\)\.find\(filter\);\n {2}}\n/,
+          /return this\.customerRepository\.orders\(id\)\.find\(filter\);\n {2}}\n/,
         ];
         const getOrdersClassByCustomerClassIdRegEx = [
           /\@get\('\/customer-classes\/{id}\/order-classes', {\n {4}responses: {\n {6}'200': {\n/,
@@ -399,7 +399,7 @@ context('check if the controller file created ', () => {
           /async find\(\n . {2}\@param.path.number\('id'\) id: number,\n/,
           /\@param.query.object\('filter'\) filter\?: Filter<OrderClass>,\n/,
           /\)\: Promise<OrderClass\[]> {\n/,
-          /return await this\.customerClassRepository\.orderClasses\(id\)\.find\(filter\);\n {2}}\n/,
+          /return this\.customerClassRepository\.orderClasses\(id\)\.find\(filter\);\n {2}}\n/,
         ];
         const getOrdersClassTypeByCustomerClassTypeIdRegEx = [
           /\@get\('\/customer-class-types\/{id}\/order-class-types', {\n {4}responses: {\n {6}'200': {\n/,
@@ -410,7 +410,7 @@ context('check if the controller file created ', () => {
           /async find\(\n . {2}\@param.path.number\('id'\) id: number,\n/,
           /\@param.query.object\('filter'\) filter\?: Filter<OrderClassType>,\n/,
           /\)\: Promise<OrderClassType\[]> {\n/,
-          /return await this\.customerClassTypeRepository\.orderClassTypes\(id\).find\(filter\);\n {2}}\n/,
+          /return this\.customerClassTypeRepository\.orderClassTypes\(id\).find\(filter\);\n {2}}\n/,
         ];
 
         const getRegEx = [
@@ -441,7 +441,7 @@ context('check if the controller file created ', () => {
           /\@param\.path\.number\('id'\) id: typeof Customer\.prototype\.id,\n/,
           /\@requestBody\(\{\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(Order, {exclude: \['id'\]}\),\s+},\s+},\s+}\) order: Omit<Order, 'id'>,\n/,
           /\): Promise<Order> {\n/,
-          /return await this\.customerRepository\.orders\(id\)\.create\(order\);\n {2}}\n/,
+          /return this\.customerRepository\.orders\(id\)\.create\(order\);\n {2}}\n/,
         ];
         const postMultiWordClassCreateRegEx = [
           /\@post\('\/customer-classes\/{id}\/order-classes', {\n {4}responses: {\n {6}'200': {\n/,
@@ -451,7 +451,7 @@ context('check if the controller file created ', () => {
           /\@param\.path\.number\('id'\) id: typeof CustomerClass\.prototype\.custNumber,\n/,
           /\@requestBody\(\{\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(OrderClass, {exclude: \['orderNumber'\]}\),\s+},\s+},\s+}\) orderClass: Omit<OrderClass, 'orderNumber'>,\n/,
           /\): Promise<OrderClass> {\n/,
-          /return await this\.customerClassRepository\.orderClasses\(id\)\.create\(orderClass\);\n {2}}\n/,
+          /return this\.customerClassRepository\.orderClasses\(id\)\.create\(orderClass\);\n {2}}\n/,
         ];
         const postTypeClassCreateRegEx = [
           /\@post\('\/customer-class-types\/{id}\/order-class-types', {\n {4}responses: {\n {6}'200': {\n/,
@@ -461,7 +461,7 @@ context('check if the controller file created ', () => {
           /\@param\.path\.number\('id'\) id: typeof CustomerClassType\.prototype\.custNumber,\n/,
           /\@requestBody\(\{\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(OrderClassType, {exclude: \['orderString'\]}\),\s+},\s+},\s+}\) orderClassType: Omit<OrderClassType, 'orderString'>,\n/,
           /\): Promise<OrderClassType> {\n/,
-          /return await this\.customerClassTypeRepository\.orderClassTypes\(id\)\.create\(orderClassType\);\n {2}}\n/,
+          /return this\.customerClassTypeRepository\.orderClassTypes\(id\)\.create\(orderClassType\);\n {2}}\n/,
         ];
 
         const expectedControllerFile = path.join(
@@ -498,7 +498,7 @@ context('check if the controller file created ', () => {
           /\@requestBody\({\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(Order, {partial: true}\),\s+},\s+},\s+}\)\s+order: Partial<Order>,\n/,
           /\@param\.query\.object\('where', getWhereSchemaFor\(Order\)\) where\?: Where<Order>,\n/,
           /\): Promise<Count> {\n/,
-          /return await this\.customerRepository\.orders\(id\).patch\(order, where\);\n {2}}\n/,
+          /return this\.customerRepository\.orders\(id\).patch\(order, where\);\n {2}}\n/,
         ];
 
         const updateOrderClassByCustomerClassIdRegEx = [
@@ -510,7 +510,7 @@ context('check if the controller file created ', () => {
           /\@requestBody\({\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(OrderClass, {partial: true}\),\s+},\s+},\s+}\)\s+orderClass: Partial<OrderClass>,\n/,
           /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClass\)\) where\?: Where<OrderClass>,\n/,
           /\): Promise<Count> {\n/,
-          /return await this\.customerClassRepository\.orderClasses\(id\)\.patch\(orderClass, where\);\n {2}}\n/,
+          /return this\.customerClassRepository\.orderClasses\(id\)\.patch\(orderClass, where\);\n {2}}\n/,
         ];
 
         const updateOrderClassByCustomerClassTypeIdRegEx = [
@@ -522,7 +522,7 @@ context('check if the controller file created ', () => {
           /\@requestBody\({\s+content: {\s+'application\/json': {\s+schema: getModelSchemaRef\(OrderClassType, {partial: true}\),\s+},\s+},\s+}\)\s+orderClassType: Partial<OrderClassType>,\n/,
           /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClassType\)\) where\?: Where<OrderClassType>,\n/,
           /\): Promise<Count> {\n/,
-          /return await this\.customerClassTypeRepository\.orderClassTypes\(id\).patch\(orderClassType, where\);\n {2}}\n/,
+          /return this\.customerClassTypeRepository\.orderClassTypes\(id\).patch\(orderClassType, where\);\n {2}}\n/,
         ];
 
         const expectedControllerFile = path.join(
@@ -558,7 +558,7 @@ context('check if the controller file created ', () => {
           /\@param\.path\.number\('id'\) id: number,\n /,
           /\@param\.query\.object\('where', getWhereSchemaFor\(Order\)\) where\?: Where<Order>,\n/,
           /\): Promise<Count> {\n/,
-          /return await this\.customerRepository\.orders\(id\)\.delete\(where\);\n {2}}\n}\n/,
+          /return this\.customerRepository\.orders\(id\)\.delete\(where\);\n {2}}\n}\n/,
         ];
 
         const deleteOrderClassByCustomerClassIdRegEx = [
@@ -569,7 +569,7 @@ context('check if the controller file created ', () => {
           /\@param\.path\.number\('id'\) id: number,\n /,
           /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClass\)\) where\?: Where<OrderClass>,\n/,
           /\): Promise<Count> {\n/,
-          /return await this\.customerClassRepository\.orderClasses\(id\)\.delete\(where\);\n {2}}\n}\n/,
+          /return this\.customerClassRepository\.orderClasses\(id\)\.delete\(where\);\n {2}}\n}\n/,
         ];
 
         const deleteOrderClassTypeByCustomerClassTypeIdRegEx = [
@@ -580,7 +580,7 @@ context('check if the controller file created ', () => {
           /\@param\.path\.number\('id'\) id: number,\n /,
           /\@param\.query\.object\('where', getWhereSchemaFor\(OrderClassType\)\) where\?: Where<OrderClassType>,\n/,
           /\): Promise<Count> {\n/,
-          /return await this\.customerClassTypeRepository\.orderClassTypes\(id\)\.delete\(where\);\n {2}}\n}\n/,
+          /return this\.customerClassTypeRepository\.orderClassTypes\(id\)\.delete\(where\);\n {2}}\n}\n/,
         ];
 
         const expectedControllerFile = path.join(

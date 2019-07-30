@@ -3,12 +3,12 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {BindingScope, Binding, createBindingFromClass} from '@loopback/context';
+import {Binding, BindingScope, createBindingFromClass} from '@loopback/context';
 import {Application} from '@loopback/core';
 import * as debugFactory from 'debug';
 import {Class} from '../common-types';
-import {juggler, Repository} from '../repositories';
 import {SchemaMigrationOptions} from '../datasource';
+import {juggler, Repository} from '../repositories';
 
 const debug = debugFactory('loopback:repository:mixin');
 
@@ -85,7 +85,7 @@ export function RepositoryMixin<T extends Class<any>>(superClass: T) {
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async getRepository<R extends Repository<any>>(repo: Class<R>): Promise<R> {
-      return await this.get(`repositories.${repo.name}`);
+      return this.get(`repositories.${repo.name}`);
     }
 
     /**

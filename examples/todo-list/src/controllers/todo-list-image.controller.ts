@@ -27,7 +27,7 @@ export class TodoListImageController {
     @param.path.number('id') id: number,
     @requestBody() image: TodoListImage,
   ): Promise<TodoListImage> {
-    return await this.todoListRepo.image(id).create(image);
+    return this.todoListRepo.image(id).create(image);
   }
 
   @get('/todo-lists/{id}/image', {
@@ -43,6 +43,6 @@ export class TodoListImageController {
     },
   })
   async find(@param.path.number('id') id: number): Promise<TodoListImage> {
-    return await this.todoListRepo.image(id).get();
+    return this.todoListRepo.image(id).get();
   }
 }

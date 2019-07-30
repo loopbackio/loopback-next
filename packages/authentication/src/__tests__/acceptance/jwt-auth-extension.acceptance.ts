@@ -57,9 +57,7 @@ describe('JWT Authentication', () => {
         //
 
         // Now with a valid userProfile, let's create a JSON web token
-        return await this.tokenService.generateToken(
-          createUserProfile(joeUser),
-        );
+        return this.tokenService.generateToken(createUserProfile(joeUser));
       }
 
       @get('/whoAmI')
@@ -106,9 +104,7 @@ describe('JWT Authentication', () => {
         //
 
         // Now with a valid userProfile, let's create a JSON web token
-        return await this.tokenService.generateToken(
-          createUserProfile(joeUser),
-        );
+        return this.tokenService.generateToken(createUserProfile(joeUser));
       }
 
       @get('/whoAmI')
@@ -158,9 +154,7 @@ describe('JWT Authentication', () => {
         //
 
         // Now with a valid userProfile, let's create a JSON web token
-        return await this.tokenService.generateToken(
-          createUserProfile(joeUser),
-        );
+        return this.tokenService.generateToken(createUserProfile(joeUser));
       }
 
       @get('/whoAmI')
@@ -213,9 +207,7 @@ describe('JWT Authentication', () => {
         // ...Other code for verifying a valid user (e.g. basic or local strategy)...
         //
 
-        return await this.tokenService.generateToken(
-          createUserProfile(joeUser),
-        );
+        return this.tokenService.generateToken(createUserProfile(joeUser));
       }
 
       @get('/whoAmI')
@@ -357,7 +349,7 @@ describe('JWT Authentication', () => {
 
       @get('/createtoken')
       async createToken() {
-        return await this.tokenService.generateToken(undefined);
+        return this.tokenService.generateToken(undefined);
       }
     }
 
@@ -454,7 +446,7 @@ describe('JWT Authentication', () => {
   async function getExpiredToken() {
     const userProfile = createUserProfile(joeUser);
     const tokenService = new JWTService(TOKEN_SECRET_VALUE, '-10');
-    return await tokenService.generateToken(userProfile);
+    return tokenService.generateToken(userProfile);
   }
 
   function givenAuthenticatedSequence() {

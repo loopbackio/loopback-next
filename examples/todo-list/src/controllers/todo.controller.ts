@@ -39,7 +39,7 @@ export class TodoController {
     })
     todo: Omit<Todo, 'id'>,
   ): Promise<Todo> {
-    return await this.todoRepo.create(todo);
+    return this.todoRepo.create(todo);
   }
 
   @get('/todos/{id}', {
@@ -59,7 +59,7 @@ export class TodoController {
     @param.query.object('filter', getFilterSchemaFor(Todo))
     filter?: Filter<Todo>,
   ): Promise<Todo> {
-    return await this.todoRepo.findById(id, filter);
+    return this.todoRepo.findById(id, filter);
   }
 
   @get('/todos', {
@@ -81,7 +81,7 @@ export class TodoController {
     @param.query.object('filter', getFilterSchemaFor(Todo))
     filter?: Filter<Todo>,
   ): Promise<Todo[]> {
-    return await this.todoRepo.find(filter);
+    return this.todoRepo.find(filter);
   }
 
   @put('/todos/{id}', {
@@ -139,6 +139,6 @@ export class TodoController {
     },
   })
   async findOwningList(@param.path.number('id') id: number): Promise<TodoList> {
-    return await this.todoRepo.todoList(id);
+    return this.todoRepo.todoList(id);
   }
 }

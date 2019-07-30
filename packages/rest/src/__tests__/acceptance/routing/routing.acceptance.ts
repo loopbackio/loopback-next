@@ -859,7 +859,7 @@ describe('Routing', () => {
   }
 
   async function givenAServer(app: Application) {
-    return await app.getServer(RestServer);
+    return app.getServer(RestServer);
   }
 
   function givenControllerInApp(

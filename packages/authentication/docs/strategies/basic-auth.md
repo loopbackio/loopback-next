@@ -23,7 +23,7 @@ class BasicAuthenticationStrategy implements AuthenticationStrategy {
     const credentials = await this.extractCredentials(request);
     // `verifyCredentials` throws error accordingly: user doesn't exist OR invalid credentials
     const user = await userService.verifyCredentials(credentials);
-    return await userService.convertToUserProfile(user);
+    return userService.convertToUserProfile(user);
   }
 
   extractCredentials(request): Promise<Credentials> {

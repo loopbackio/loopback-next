@@ -33,6 +33,6 @@ export class <%= controllerClassName %> {
   async get<%= targetModelClassName %>(
     @param.path.<%= sourceModelPrimaryKeyType %>('id') id: typeof <%= sourceModelClassName %>.prototype.<%= sourceModelPrimaryKey %>,
   ): Promise<<%= targetModelClassName %>> {
-    return await this.<%= paramSourceRepository %>.<%= paramTargetModel %>(id);
+    return this.<%= paramSourceRepository %>.<%= paramTargetModel %>(id);
   }
 }

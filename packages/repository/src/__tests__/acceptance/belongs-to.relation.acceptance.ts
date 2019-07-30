@@ -65,11 +65,11 @@ describe('BelongsTo relation', () => {
     ) {}
 
     async findOwnerOfOrder(orderId: string) {
-      return await this.orderRepository.customer(orderId);
+      return this.orderRepository.customer(orderId);
     }
 
     async findOrderShipment(orderId: string) {
-      return await this.orderRepository.shipment(orderId);
+      return this.orderRepository.shipment(orderId);
     }
   }
 

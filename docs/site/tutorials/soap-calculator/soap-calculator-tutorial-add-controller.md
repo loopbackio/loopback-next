@@ -113,7 +113,7 @@ async divide(intA: number, intB: number): Promise<DivideResponse> {
   if (intB === 0) {
     throw new HttpErrors.PreconditionFailed('Cannot divide by zero');
   }
-  return await this.calculatorService.divide(<CalculatorParameters>{
+  return this.calculatorService.divide(<CalculatorParameters>{
     intA,
     intB,
   });
@@ -145,7 +145,7 @@ async divide(
   if (intB === 0) {
     throw new HttpErrors.PreconditionFailed('Cannot divide by zero');
   }
-  return await this.calculatorService.divide(<CalculatorParameters>{
+  return this.calculatorService.divide(<CalculatorParameters>{
     intA,
     intB,
   });
@@ -163,7 +163,7 @@ async multiply(
   @param.path.integer('intA') intA: number,
   @param.path.integer('intB') intB: number,
 ): Promise<MultiplyResponse> {
-  return await this.calculatorService.multiply(<CalculatorParameters>{
+  return this.calculatorService.multiply(<CalculatorParameters>{
     intA,
     intB,
   });
@@ -173,7 +173,7 @@ async add(
   @param.path.integer('intA') intA: number,
   @param.path.integer('intB') intB: number,
 ): Promise<AddResponse> {
-  return await this.calculatorService.add(<CalculatorParameters>{
+  return this.calculatorService.add(<CalculatorParameters>{
     intA,
     intB,
   });
@@ -184,7 +184,7 @@ async subtract(
   @param.path.integer('intA') intA: number,
   @param.path.integer('intB') intB: number,
 ): Promise<SubtractResponse> {
-  return await this.calculatorService.subtract(<CalculatorParameters>{
+  return this.calculatorService.subtract(<CalculatorParameters>{
     intA,
     intB,
   });

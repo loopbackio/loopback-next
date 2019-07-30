@@ -214,6 +214,6 @@ describe('TodoApplication', () => {
   }
 
   async function givenTodoInstance(todo?: Partial<Todo>) {
-    return await todoRepo.create(givenTodo(todo));
+    return todoRepo.create(givenTodo(todo));
   }
 });

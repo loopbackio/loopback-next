@@ -445,7 +445,7 @@ export class Context extends EventEmitter {
     propertyPath?: string,
     resolutionOptions?: ResolutionOptions,
   ): Promise<ConfigValueType | undefined> {
-    return await this.getConfigAsValueOrPromise<ConfigValueType>(
+    return this.getConfigAsValueOrPromise<ConfigValueType>(
       key,
       propertyPath,
       resolutionOptions,
@@ -762,7 +762,7 @@ export class Context extends EventEmitter {
     optionsOrSession?: ResolutionOptionsOrSession,
   ): Promise<ValueType | undefined> {
     this._debug('Resolving binding: %s', keyWithPath);
-    return await this.getValueOrPromise<ValueType | undefined>(
+    return this.getValueOrPromise<ValueType | undefined>(
       keyWithPath,
       optionsOrSession,
     );

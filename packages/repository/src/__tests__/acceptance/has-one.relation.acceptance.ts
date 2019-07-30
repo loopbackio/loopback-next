@@ -210,32 +210,28 @@ describe('hasOne relation', () => {
       customerId: number,
       addressData: Partial<Address>,
     ): Promise<Address> {
-      return await this.customerRepository
-        .address(customerId)
-        .create(addressData);
+      return this.customerRepository.address(customerId).create(addressData);
     }
 
     async findCustomerAddress(customerId: number) {
-      return await this.customerRepository.address(customerId).get();
+      return this.customerRepository.address(customerId).get();
     }
 
     async findCustomerAddressWithFilter(
       customerId: number,
       filter: Filter<Address>,
     ) {
-      return await this.customerRepository.address(customerId).get(filter);
+      return this.customerRepository.address(customerId).get(filter);
     }
     async patchCustomerAddress(
       customerId: number,
       addressData: Partial<Address>,
     ) {
-      return await this.customerRepository
-        .address(customerId)
-        .patch(addressData);
+      return this.customerRepository.address(customerId).patch(addressData);
     }
 
     async deleteCustomerAddress(customerId: number) {
-      return await this.customerRepository.address(customerId).delete();
+      return this.customerRepository.address(customerId).delete();
     }
   }
 

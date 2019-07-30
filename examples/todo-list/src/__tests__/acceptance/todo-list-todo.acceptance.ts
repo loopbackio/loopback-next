@@ -224,7 +224,7 @@ describe('TodoListApplication', () => {
   }
 
   async function givenTodoInstance(todo?: Partial<Todo>) {
-    return await todoRepo.create(givenTodo(todo));
+    return todoRepo.create(givenTodo(todo));
   }
 
   async function givenTodoInstanceOfTodoList(
@@ -233,10 +233,10 @@ describe('TodoListApplication', () => {
   ) {
     const data = givenTodo(todo);
     delete data.todoListId;
-    return await todoListRepo.todos(id).create(data);
+    return todoListRepo.todos(id).create(data);
   }
 
   async function givenTodoListInstance(todoList?: Partial<TodoList>) {
-    return await todoListRepo.create(givenTodoList(todoList));
+    return todoListRepo.create(givenTodoList(todoList));
   }
 });

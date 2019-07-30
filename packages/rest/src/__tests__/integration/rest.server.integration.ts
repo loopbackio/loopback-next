@@ -880,7 +880,7 @@ paths:
     options.rest = givenHttpServerConfig(options.rest);
     const app = new Application(options);
     app.component(RestComponent);
-    return await app.getServer(RestServer);
+    return app.getServer(RestServer);
   }
 
   function dummyRequestHandler(handler: {
