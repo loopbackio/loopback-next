@@ -43,6 +43,11 @@
     "groupName": "api-extractor packages"
   }],
 
+  "travis": {
+    "enabled": true,
+    "supportPolicy": ["lts", "current"]
+  },
+
   "masterIssue": true,
   "masterIssueApproval": false,
   "masterIssueAutoclose": true
