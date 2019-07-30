@@ -103,6 +103,13 @@
         "clean"
       ],
       "problemMatcher": []
+    },
+    {
+      "type": "npm",
+      "script": "lint:fix",
+      "problemMatcher": [
+        "$eslint-stylish"
+      ]
     }
   ]
 }
